@@ -404,7 +404,7 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 	int proc_get_ht_enable(char *page, char **start,
 			  off_t offset, int count,
 			  int *eof, void *data);
-			  
+			
 	int proc_set_ht_enable(struct file *file, const char *buffer,
 		unsigned long count, void *data);
 
@@ -418,7 +418,7 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 	int proc_get_ampdu_enable(char *page, char **start,
 			  off_t offset, int count,
 			  int *eof, void *data);
-			  
+			
 	int proc_set_ampdu_enable(struct file *file, const char *buffer,
 		unsigned long count, void *data);
 	

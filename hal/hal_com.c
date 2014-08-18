@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -237,9 +237,9 @@ _TwoOutPipeMapping(
 
 	if(bWIFICfg){ //WMM
 		
-		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA 
+		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
 		//{  0, 	1, 	0, 	1, 	0, 	0, 	0, 	0, 		0	};
-		//0:H, 1:N 
+		//0:H, 1:N
 		
 		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[1];//VO
 		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];//VI
@@ -255,9 +255,9 @@ _TwoOutPipeMapping(
 	else{//typical setting
 
 		
-		//BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA 
+		//BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
 		//{  1, 	1, 	0, 	0, 	0, 	0, 	0, 	0, 		0	};			
-		//0:H, 1:N 
+		//0:H, 1:N
 		
 		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
 		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];//VI
@@ -282,9 +282,9 @@ static VOID _ThreeOutPipeMapping(
 
 	if(bWIFICfg){//for WMM
 		
-		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA 
+		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
 		//{  1, 	2, 	1, 	0, 	0, 	0, 	0, 	0, 		0	};
-		//0:H, 1:N, 2:L 
+		//0:H, 1:N, 2:L
 		
 		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
 		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[1];//VI
@@ -300,9 +300,9 @@ static VOID _ThreeOutPipeMapping(
 	else{//typical setting
 
 		
-		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA 
+		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
 		//{  2, 	2, 	1, 	0, 	0, 	0, 	0, 	0, 		0	};			
-		//0:H, 1:N, 2:L 
+		//0:H, 1:N, 2:L
 		
 		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
 		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[1];//VI
@@ -325,7 +325,7 @@ static VOID _FourOutPipeMapping(
 
 	if(bWIFICfg){//for WMM
 		
-		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA 
+		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
 		//{  1, 	2, 	1, 	0, 	0, 	0, 	0, 	0, 		0	};
 		//0:H, 1:N, 2:L ,3:E
 		
@@ -343,9 +343,9 @@ static VOID _FourOutPipeMapping(
 	else{//typical setting
 
 		
-		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA 
+		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
 		//{  2, 	2, 	1, 	0, 	0, 	0, 	0, 	0, 		0	};			
-		//0:H, 1:N, 2:L 
+		//0:H, 1:N, 2:L
 		
 		pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
 		pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[1];//VI
@@ -401,7 +401,7 @@ void hal_init_macaddr(_adapter *adapter)
 #endif
 }
 
-/* 
+/*
 * C2H event format:
 * Field	 TRIGGER		CONTENT	   CMD_SEQ 	CMD_LEN		 CMD_ID
 * BITS	 [127:120]	[119:16]      [15:8]		  [7:4]	 	   [3:0]
@@ -455,7 +455,7 @@ s32 c2h_evt_read(_adapter *adapter, u8 *buf)
 	ret = _SUCCESS;
 
 clear_evt:
-	/* 
+	/*
 	* Clear event to notify FW we have read the command.
 	* If this field isn't clear, the FW won't update the next command message.
 	*/

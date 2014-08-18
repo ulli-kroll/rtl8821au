@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -238,7 +238,7 @@ int rtw_android_get_rssi(struct net_device *net, char *command, int total_len)
 	int bytes_written = 0;
 
 	if(check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {	
-		bytes_written += snprintf(&command[bytes_written], total_len, "%s rssi %d", 
+		bytes_written += snprintf(&command[bytes_written], total_len, "%s rssi %d",
 			pcur_network->network.Ssid.Ssid, padapter->recvpriv.rssi);
 	}
 

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -33,7 +33,7 @@
 
 
 //================================================================================
-// LED_819xUsb routines. 
+// LED_819xUsb routines.
 //================================================================================
 
 //
@@ -42,7 +42,7 @@
 //
 static void
 SwLedOn_8812AU(
-	PADAPTER		padapter, 
+	PADAPTER		padapter,
 	PLED_USB		pLed
 )
 {
@@ -128,7 +128,7 @@ SwLedOn_8812AU(
 //
 static void
 SwLedOff_8812AU(
-	PADAPTER		padapter, 
+	PADAPTER		padapter,
 	PLED_USB		pLed
 )
 {
@@ -237,7 +237,7 @@ SwLedOff_8812AU(
 //
 static void
 SwLedOn_8821AU(
-	PADAPTER		Adapter, 
+	PADAPTER		Adapter,
 	PLED_USB		pLed
 )
 {
@@ -308,7 +308,7 @@ SwLedOn_8821AU(
 //
 static void
 SwLedOff_8821AU(
-	PADAPTER		Adapter, 
+	PADAPTER		Adapter,
 	PLED_USB		pLed
 )
 {

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -29,10 +29,10 @@
  * Abbrev:	
  *
  * History:
- *		Data		Who		Remark 
+ *		Data		Who		Remark
  *      08/07/2007  MHC    	1. Porting from 9x series PHYCFG.h.
  *							2. Reorganize code architecture.
- * 
+ *
  *****************************************************************************/
  /* Check to see if the file has been included already.  */
 #ifndef __INC_HAL8192CPHYCFG_H
@@ -79,12 +79,12 @@
 /*--------------------------Define Parameters-------------------------------*/
 
 
-/*------------------------------Define structure----------------------------*/ 
+/*------------------------------Define structure----------------------------*/
 
 
 /* BB/RF related */
 
-/*------------------------------Define structure----------------------------*/ 
+/*------------------------------Define structure----------------------------*/
 
 
 /*------------------------Export global variable----------------------------*/
@@ -140,7 +140,7 @@ void	rtl8192c_PHY_GetHWRegOriginalValue(	IN	PADAPTER		Adapter	);
 //
 // RF Power setting
 //
-//extern	BOOLEAN	PHY_SetRFPowerState(IN	PADAPTER			Adapter, 
+//extern	BOOLEAN	PHY_SetRFPowerState(IN	PADAPTER			Adapter,
 //									IN	RT_RF_POWER_STATE	eRFPowerState);
 
 //
@@ -154,7 +154,7 @@ BOOLEAN	PHY_UpdateTxPowerDbm8192C(	IN	PADAPTER	Adapter,
 											IN	int		powerInDbm	);
 
 //
-VOID 
+VOID
 PHY_ScanOperationBackup8192C(IN	PADAPTER	Adapter,
 										IN	u8		Operation	);
 

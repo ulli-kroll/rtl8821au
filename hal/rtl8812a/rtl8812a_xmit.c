@@ -244,7 +244,7 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 		}	
 		
 		
-	} 
+	}
 	_rtw_memset(pxmitpriv->agg_pkt,0,sizeof(struct agg_pkt_info)*MAX_AGG_PKT_NUM);
 
 }
@@ -310,7 +310,7 @@ void rtl8812a_fill_fake_txdesc(
 	//Set NAVUSEHDR to prevent Ps-poll AId filed to be changed to error vlaue by Hw.
 	if (IsPsPoll)
 	{
-		SET_TX_DESC_NAV_USE_HDR_8812(pDesc, 1); 
+		SET_TX_DESC_NAV_USE_HDR_8812(pDesc, 1);
 	}
 	else
 	{
@@ -413,7 +413,7 @@ void rtl8812a_fill_txdesc_phy(PADAPTER padapter, struct pkt_attrib *pattrib, u8 
 	}
 }
 
-u8 
+u8
 BWMapping_8812(
 	IN	PADAPTER		Adapter,
 	IN	struct pkt_attrib	*pattrib
@@ -446,7 +446,7 @@ BWMapping_8812(
 	return BWSettingOfDesc;
 }
 
-u8 
+u8
 SCMapping_8812(
 	IN	PADAPTER		Adapter,
 	IN	struct pkt_attrib	*pattrib

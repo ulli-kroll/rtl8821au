@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -44,16 +44,16 @@ u8 RSN_CIPHER_SUITE_WRAP[] = { 0x00, 0x0f, 0xac, 3 };
 u8 RSN_CIPHER_SUITE_CCMP[] = { 0x00, 0x0f, 0xac, 4 };
 u8 RSN_CIPHER_SUITE_WEP104[] = { 0x00, 0x0f, 0xac, 5 };
 //-----------------------------------------------------------
-// for adhoc-master to generate ie and provide supported-rate to fw 
+// for adhoc-master to generate ie and provide supported-rate to fw
 //-----------------------------------------------------------
 
-static u8 	WIFI_CCKRATES[] = 
+static u8 	WIFI_CCKRATES[] =
 {(IEEE80211_CCK_RATE_1MB | IEEE80211_BASIC_RATE_MASK),
  (IEEE80211_CCK_RATE_2MB | IEEE80211_BASIC_RATE_MASK),
  (IEEE80211_CCK_RATE_5MB | IEEE80211_BASIC_RATE_MASK),
  (IEEE80211_CCK_RATE_11MB | IEEE80211_BASIC_RATE_MASK)};
 
-static u8 	WIFI_OFDMRATES[] = 
+static u8 	WIFI_OFDMRATES[] =
 {(IEEE80211_OFDM_RATE_6MB),
  (IEEE80211_OFDM_RATE_9MB),
  (IEEE80211_OFDM_RATE_12MB),
@@ -143,10 +143,10 @@ u8 *rtw_set_fixed_ie(unsigned char *pbuf, unsigned int len, unsigned char *sourc
 // rtw_set_ie will update frame length
 u8 *rtw_set_ie
 (
-	u8 *pbuf, 
-	sint index, 
+	u8 *pbuf,
+	sint index,
 	uint len,
-	u8 *source, 
+	u8 *source,
 	uint *frlen //frame length
 )
 {
@@ -351,7 +351,7 @@ exit:
 	return ret;
 }
 
-void rtw_set_supported_rate(u8* SupportedRates, uint mode) 
+void rtw_set_supported_rate(u8* SupportedRates, uint mode)
 {
 _func_enter_;
 
@@ -416,7 +416,7 @@ _func_enter_;
 	
 	//beacon interval : 2bytes
 	*(u16*)ie = cpu_to_le16((u16)pdev_network->Configuration.BeaconPeriod);//BCN_INTERVAL;
-	sz += 2; 
+	sz += 2;
 	ie += 2;
 	
 	//capability info
@@ -478,7 +478,7 @@ _func_enter_;
 	
 #ifdef CONFIG_80211N_HT
 	//HT Cap.
-	if(((pregistrypriv->wireless_mode&WIRELESS_11_5N)||(pregistrypriv->wireless_mode&WIRELESS_11_24N)) 
+	if(((pregistrypriv->wireless_mode&WIRELESS_11_5N)||(pregistrypriv->wireless_mode&WIRELESS_11_24N))
 		&& (pregistrypriv->ht_enable==_TRUE))
 	{
 		//todo:
@@ -503,7 +503,7 @@ unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit)
 	u8 *pbuf = pie;
 	int limit_new = limit;
 
-	while(1) 
+	while(1)
 	{
 		pbuf = rtw_get_ie(pbuf, _WPA_IE_ID_, &len, limit_new);
 
@@ -623,7 +623,7 @@ int rtw_parse_wpa_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwis
 		pos += WPA_SELECTOR_LEN;
 		left -= WPA_SELECTOR_LEN;
 		
-	} 
+	}
 	else if (left > 0)
 	{
 		RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("%s: ie length mismatch, %u too much", __FUNCTION__, left));
@@ -654,7 +654,7 @@ int rtw_parse_wpa_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwis
 			left -= WPA_SELECTOR_LEN;
 		}
 		
-	} 
+	}
 	else if (left == 1)
 	{
 		RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("%s: ie too short (for key mgmt)",   __FUNCTION__));
@@ -732,7 +732,7 @@ int rtw_parse_wpa2_ie(u8* rsn_ie, int rsn_ie_len, int *group_cipher, int *pairwi
 			left -= RSN_SELECTOR_LEN;
 		}
 
-	} 
+	}
 	else if (left == 1)
 	{
 		RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("%s: ie too short (for key mgmt)",  __FUNCTION__));
@@ -1617,7 +1617,7 @@ void rtw_WLAN_BSSID_EX_remove_p2p_attr(WLAN_BSSID_EX *bss_ex, u8 attr_id)
 	uint p2p_ielen, p2p_ielen_ori;
 	int cnt;
 	
-	if( (p2p_ie=rtw_get_p2p_ie(bss_ex->IEs+_FIXED_IE_LENGTH_, bss_ex->IELength-_FIXED_IE_LENGTH_, NULL, &p2p_ielen_ori)) ) 
+	if( (p2p_ie=rtw_get_p2p_ie(bss_ex->IEs+_FIXED_IE_LENGTH_, bss_ex->IELength-_FIXED_IE_LENGTH_, NULL, &p2p_ielen_ori)) )
 	{
 		#if 0
 		if(rtw_get_p2p_attr(p2p_ie, p2p_ielen_ori, attr_id, NULL, NULL)) {

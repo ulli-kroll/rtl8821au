@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -50,9 +50,9 @@
 #endif
 
 //
-// Customer ID, note that: 
-// This variable is initiailzed through EEPROM or registry, 
-// however, its definition may be different with that in EEPROM for 
+// Customer ID, note that:
+// This variable is initiailzed through EEPROM or registry,
+// however, its definition may be different with that in EEPROM for
 // EEPROM size consideration. So, we have to perform proper translation between them.
 // Besides, CustomerID of registry has precedence of that of EEPROM.
 // defined below. 060703, by rcnjko.
@@ -107,8 +107,8 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_WNC_NEC = 45,//add by page for NEC
 }RT_CUSTOMER_ID, *PRT_CUSTOMER_ID;
 
-struct eeprom_priv 
-{    
+struct eeprom_priv
+{
 	u8		bautoload_fail_flag;
 	u8		bloadfile_fail_flag;
 	u8		bloadmac_fail_flag;
@@ -133,7 +133,7 @@ struct eeprom_priv
 extern void eeprom_write16(_adapter *padapter, u16 reg, u16 data);
 extern u16 eeprom_read16(_adapter *padapter, u16 reg);
 extern void read_eeprom_content(_adapter *padapter);
-extern void eeprom_read_sz(_adapter * padapter, u16 reg,u8* data, u32 sz); 
+extern void eeprom_read_sz(_adapter * padapter, u16 reg,u8* data, u32 sz);
 
 extern void read_eeprom_content_by_attrib(_adapter *	padapter	);
 

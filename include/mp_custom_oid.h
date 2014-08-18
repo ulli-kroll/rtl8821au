@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -71,7 +71,7 @@
 #define OID_RT_PRO_READ_EEPROM				0xFF818022
 #define OID_RT_PRO_RESET_TX_PACKET_SENT			0xFF818023
 #define OID_RT_PRO_QUERY_TX_PACKET_SENT			0xFF818024
-#define OID_RT_PRO_RESET_RX_PACKET_RECEIVED		0xFF818025 
+#define OID_RT_PRO_RESET_RX_PACKET_RECEIVED		0xFF818025
 #define OID_RT_PRO_QUERY_RX_PACKET_RECEIVED		0xFF818026
 #define OID_RT_PRO_QUERY_RX_PACKET_CRC32_ERROR		0xFF818027
 #define OID_RT_PRO_QUERY_CURRENT_ADDRESS		0xFF818028
@@ -283,9 +283,9 @@
 #define OID_RT_PRO_READ_TSSI				0xFF871123//S
 #define OID_RT_PRO_SET_POWER_TRACKING			0xFF871124//S
 
- 
+
 #define OID_RT_PRO_QRY_PWRSTATE				0xFF871150 //Q
-#define OID_RT_PRO_SET_PWRSTATE				0xFF871151 //S 
+#define OID_RT_PRO_SET_PWRSTATE				0xFF871151 //S
 
 //Method 2 , using workitem
 #define OID_RT_SET_READ_REG				0xFF871181 //S

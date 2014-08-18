@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -73,7 +73,7 @@ struct {
   u8 TSC6;
   u8 TSC7;
 } _byte_;
- 
+
 #elif defined(CONFIG_BIG_ENDIAN)
 
 struct {
@@ -86,7 +86,7 @@ struct {
   u8 TSC1;
   u8 TSC0;
 } _byte_;
- 
+
 #endif
 
 };
@@ -110,7 +110,7 @@ typedef struct _RT_PMKID_LIST
 
 struct security_priv
 {
-	u32	  dot11AuthAlgrthm;		// 802.11 auth, could be open, shared, 8021x and authswitch 
+	u32	  dot11AuthAlgrthm;		// 802.11 auth, could be open, shared, 8021x and authswitch
 	u32	  dot11PrivacyAlgrthm;	// This specify the privacy for shared auth. algorithm.
 
 	/* WEP */
@@ -118,7 +118,7 @@ struct security_priv
 	union Keytype dot11DefKey[4];			// this is only valid for def. key	
 	u32 	dot11DefKeylen[4];
 
-	u32 dot118021XGrpPrivacy;	// This specify the privacy algthm. used for Grp key 
+	u32 dot118021XGrpPrivacy;	// This specify the privacy algthm. used for Grp key
 	u32	dot118021XGrpKeyid;		// key id used for Grp Key ( tx key index)
 	union Keytype	dot118021XGrpKey[4];	// 802.1x Group Key, for inx0 and inx1	
 	union Keytype	dot118021XGrptxmickey[4];
@@ -127,7 +127,7 @@ struct security_priv
 	union pn48		dot11Grprxpn;			// PN48 used for Grp Key recv.
 
 #ifdef CONFIG_AP_MODE
-	//extend security capabilities for AP_MODE 
+	//extend security capabilities for AP_MODE
 	unsigned int dot8021xalg;//0:disable, 1:psk, 2:802.1x
 	unsigned int wpa_psk;//0:disable, bit(0): WPA, bit(1):WPA2
 	unsigned int wpa_group_cipher;
@@ -382,7 +382,7 @@ static const unsigned long K[64] = {
 ( ((((unsigned long) (x) & 0xFFFFFFFFUL) >> (unsigned long) ((y) & 31)) | \
    ((unsigned long) (x) << (unsigned long) (32 - ((y) & 31)))) & 0xFFFFFFFFUL)
 #define Ch(x,y,z)       (z ^ (x & (y ^ z)))
-#define Maj(x,y,z)      (((x | y) & z) | (x & y)) 
+#define Maj(x,y,z)      (((x | y) & z) | (x & y))
 #define S(x, n)         RORc((x), (n))
 #define R(x, n)         (((x)&0xFFFFFFFFUL)>>(n))
 #define Sigma0(x)       (S(x, 2) ^ S(x, 13) ^ S(x, 22))
@@ -416,10 +416,10 @@ void rtw_wep_decrypt(_adapter *padapter, u8  *precvframe);
 
 #ifdef CONFIG_TDLS
 void wpa_tdls_generate_tpk(_adapter *padapter, struct sta_info *psta);
-int wpa_tdls_ftie_mic(u8 *kck, u8 trans_seq, 
+int wpa_tdls_ftie_mic(u8 *kck, u8 trans_seq,
 						u8 *lnkid, u8 *rsnie, u8 *timeoutie, u8 *ftie,
 						u8 *mic);
-int tdls_verify_mic(u8 *kck, u8 trans_seq, 
+int tdls_verify_mic(u8 *kck, u8 trans_seq,
 						u8 *lnkid, u8 *rsnie, u8 *timeoutie, u8 *ftie);
 #endif //CONFIG_TDLS
 

@@ -234,7 +234,7 @@ void _rtw_read_mem(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
 
 	if( (adapter->bDriverStopped ==_TRUE) || (adapter->bSurpriseRemoved == _TRUE))
 	{
-	     RT_TRACE(_module_rtl871x_io_c_, _drv_info_, ("rtw_read_mem:bDriverStopped(%d) OR bSurpriseRemoved(%d)", adapter->bDriverStopped, adapter->bSurpriseRemoved));	    
+	     RT_TRACE(_module_rtl871x_io_c_, _drv_info_, ("rtw_read_mem:bDriverStopped(%d) OR bSurpriseRemoved(%d)", adapter->bDriverStopped, adapter->bSurpriseRemoved));	
 	     return;
 	}
 
@@ -274,7 +274,7 @@ void _rtw_read_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem)
 
 	if( (adapter->bDriverStopped ==_TRUE) || (adapter->bSurpriseRemoved == _TRUE))
 	{
-	     RT_TRACE(_module_rtl871x_io_c_, _drv_info_, ("rtw_read_port:bDriverStopped(%d) OR bSurpriseRemoved(%d)", adapter->bDriverStopped, adapter->bSurpriseRemoved));	    
+	     RT_TRACE(_module_rtl871x_io_c_, _drv_info_, ("rtw_read_port:bDriverStopped(%d) OR bSurpriseRemoved(%d)", adapter->bDriverStopped, adapter->bSurpriseRemoved));	
 	     return;
 	}
 
@@ -368,12 +368,12 @@ int rtw_init_io_priv(_adapter *padapter, void (*set_intf_ops)(_adapter *padapter
 
 u16 read_sniff_ranges[][2] = {
 	//{0x550, 0x551},
-}; 
+};
 
 u16 write_sniff_ranges[][2] = {
 	//{0x550, 0x551},
 	//{0x4c, 0x4c},
-}; 
+};
 
 int read_sniff_num = sizeof(read_sniff_ranges)/sizeof(u16)/2;
 int write_sniff_num = sizeof(write_sniff_ranges)/sizeof(u16)/2;

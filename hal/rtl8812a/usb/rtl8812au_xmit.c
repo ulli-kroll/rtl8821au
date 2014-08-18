@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -59,7 +59,7 @@ static s32 update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem, s32 sz ,u8 bag
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	sint	bmcst = IS_MCAST(pattrib->ra);
 
-#ifndef CONFIG_USE_USB_BUFFER_ALLOC_TX 
+#ifndef CONFIG_USE_USB_BUFFER_ALLOC_TX
 	if (padapter->registrypriv.mp_mode == 0)
 	{
 		if((!bagg_pkt) &&(rtw_usb_bulk_size_boundary(padapter,TXDESC_SIZE+sz)==_FALSE))
@@ -367,7 +367,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 		}
 
 		pull = update_txdesc(pxmitframe, mem_addr, sz, _FALSE);
-             
+
 		if(pull)
 		{
 			mem_addr += PACKET_OFFSET_SZ; //pull txdesc head
@@ -394,7 +394,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 		rtw_count_tx_stats(padapter, pxmitframe, sz);
 
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_write_port, w_sz=%d\n", w_sz));
-		//DBG_8192C("rtw_write_port, w_sz=%d, sz=%d, txdesc_sz=%d, tid=%d\n", w_sz, sz, w_sz-sz, pattrib->priority);      
+		//DBG_8192C("rtw_write_port, w_sz=%d, sz=%d, txdesc_sz=%d, tid=%d\n", w_sz, sz, w_sz-sz, pattrib->priority);
 
 		mem_addr += w_sz;
 
@@ -776,7 +776,7 @@ s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 			
 			if(res == _SUCCESS)
 			{
-				rtw_dump_xframe(padapter, pxmitframe);		 
+				rtw_dump_xframe(padapter, pxmitframe);		
 			}
 			else
 			{
@@ -907,7 +907,7 @@ s32	 rtl8812au_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmi
 	struct xmit_priv 	*pxmitpriv = &padapter->xmitpriv;
 	s32 err;
 	
-	if ((err=rtw_xmitframe_enqueue(padapter, pxmitframe)) != _SUCCESS) 
+	if ((err=rtw_xmitframe_enqueue(padapter, pxmitframe)) != _SUCCESS)
 	{
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
@@ -990,7 +990,7 @@ s32 rtl8812au_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 	_rtw_memset(ptxdesc, 0, sizeof(*ptxdesc));
 		
 	//offset 0	
-	ptxdesc->txdw0 |= cpu_to_le32(len&0x0000ffff); 
+	ptxdesc->txdw0 |= cpu_to_le32(len&0x0000ffff);
 	ptxdesc->txdw0 |= cpu_to_le32(((TXDESC_SIZE+OFFSET_SZ)<<OFFSET_SHT)&0x00ff0000);//default = 32 bytes for TX Desc
 	ptxdesc->txdw0 |= cpu_to_le32(OWN | FSG | LSG);
 

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -82,7 +82,7 @@ u32 rtw_hal_power_on(_adapter *padapter)
 }
 
 
-uint	 rtw_hal_init(_adapter *padapter) 
+uint	 rtw_hal_init(_adapter *padapter)
 {
 	uint	status = _SUCCESS;
 
@@ -204,7 +204,7 @@ void rtw_hal_enable_interrupt(_adapter *padapter)
 {
 	if (padapter->HalFunc.enable_interrupt)
 		padapter->HalFunc.enable_interrupt(padapter);
-	else 
+	else
 		DBG_871X("%s: HalFunc.enable_interrupt is NULL!\n", __FUNCTION__);
 	
 }
@@ -212,7 +212,7 @@ void rtw_hal_disable_interrupt(_adapter *padapter)
 {
 	if (padapter->HalFunc.disable_interrupt)
 		padapter->HalFunc.disable_interrupt(padapter);
-	else 
+	else
 		DBG_871X("%s: HalFunc.disable_interrupt is NULL!\n", __FUNCTION__);
 	
 }
@@ -441,7 +441,7 @@ s32	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 void	rtw_hal_sreset_init(_adapter *padapter)
 {
 	if(padapter->HalFunc.sreset_init_value)
-		padapter->HalFunc.sreset_init_value(padapter); 
+		padapter->HalFunc.sreset_init_value(padapter);
 }
 void rtw_hal_sreset_reset(_adapter *padapter)
 {
@@ -475,7 +475,7 @@ u8   rtw_hal_sreset_get_wifi_status(_adapter *padapter)
 {
 	u8 status = 0;
 	if(padapter->HalFunc.sreset_get_wifi_status)				
-		status = padapter->HalFunc.sreset_get_wifi_status(padapter);       
+		status = padapter->HalFunc.sreset_get_wifi_status(padapter);
 	return status;
 }
 

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -64,16 +64,16 @@ u32 rtw_atoi(u8* s)
 	{
 	  if(s[i] >= '0' && s[i] <= '9')
 		 num = num * 10 + s[i] -'0';
-	  else if(s[0] == '-' && i==0) 
+	  else if(s[0] == '-' && i==0)
 		 flag =1;
-	  else 
+	  else
 		  break;
 	 }
 
 	if(flag == 1)
 	   num = num * -1;
 
-	 return(num); 
+	 return(num);
 
 }
 
@@ -237,7 +237,7 @@ void	_rtw_mfree(u8 *pbuf, u32 sz)
 
 struct rtw_dbg_mem_stat {
 	ATOMIC_T vir_alloc; // the memory bytes we allocate now
-	ATOMIC_T vir_peak; // the peak memory bytes we allocate 
+	ATOMIC_T vir_peak; // the peak memory bytes we allocate
 	ATOMIC_T vir_alloc_err; // the error times we fail to allocate memory
 	
 	ATOMIC_T phy_alloc;
@@ -389,9 +389,9 @@ inline u8* dbg_rtw_vmalloc(u32 sz, const char *func, int line)
 inline u8* dbg_rtw_zvmalloc(u32 sz, const char *func, int line)
 {
 	u8 *p;
-	//DBG_871X("DBG_MEM_ALLOC %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz)); 
+	//DBG_871X("DBG_MEM_ALLOC %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz));
 	
-	p=_rtw_zvmalloc((sz)); 
+	p=_rtw_zvmalloc((sz));
 
 	rtw_update_mem_stat(
 		p ? MEM_STAT_VIR_ALLOC_SUCCESS : MEM_STAT_VIR_ALLOC_FAIL
@@ -405,7 +405,7 @@ inline void dbg_rtw_vmfree(u8 *pbuf, u32 sz, const char *func, int line)
 {
 	//DBG_871X("DBG_MEM_ALLOC %s:%d %s(%p,%d)\n",  func, line, __FUNCTION__, (pbuf), (sz));
 	
-	_rtw_vmfree((pbuf), (sz)); 
+	_rtw_vmfree((pbuf), (sz));
 
 	rtw_update_mem_stat(
 		MEM_STAT_VIR_FREE
@@ -414,12 +414,12 @@ inline void dbg_rtw_vmfree(u8 *pbuf, u32 sz, const char *func, int line)
 
 }
 
-inline u8* dbg_rtw_malloc(u32 sz, const char *func, int line) 
+inline u8* dbg_rtw_malloc(u32 sz, const char *func, int line)
 {
 	u8 *p;
 	
-	if((sz)>4096) 
-		DBG_871X("DBG_MEM_ALLOC !!!!!!!!!!!!!! %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz)); 
+	if((sz)>4096)
+		DBG_871X("DBG_MEM_ALLOC !!!!!!!!!!!!!! %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz));
 
 	p=_rtw_malloc((sz));
 	
@@ -629,7 +629,7 @@ void _rtw_init_listhead(_list *list)
 
 
 /*
-For the following list_xxx operations, 
+For the following list_xxx operations,
 caller must guarantee the atomic context.
 Otherwise, there will be racing condition.
 */
@@ -807,7 +807,7 @@ u32 _rtw_down_sema(_sema *sema)
 
 #ifdef PLATFORM_OS_CE
 	if(WAIT_OBJECT_0 == WaitForSingleObject(*sema, INFINITE ))
-		return _SUCCESS; 
+		return _SUCCESS;
 	else
 		return _FAIL;
 #endif
@@ -1035,7 +1035,7 @@ u32	rtw_get_current_time(void)
 #ifdef PLATFORM_WINDOWS
 	LARGE_INTEGER	SystemTime;
 	NdisGetCurrentSystemTime(&SystemTime);
-	return (u32)(SystemTime.LowPart);// count of 100-nanosecond intervals 
+	return (u32)(SystemTime.LowPart);// count of 100-nanosecond intervals
 #endif
 }
 
@@ -1048,7 +1048,7 @@ inline u32 rtw_systime_to_ms(u32 systime)
 	return systime * 1000;
 #endif	
 #ifdef PLATFORM_WINDOWS
-	return systime / 10000 ; 
+	return systime / 10000 ;
 #endif
 }
 
@@ -1061,7 +1061,7 @@ inline u32 rtw_ms_to_systime(u32 ms)
 	return ms /1000;
 #endif	
 #ifdef PLATFORM_WINDOWS
-	return ms * 10000 ; 
+	return ms * 10000 ;
 #endif
 }
 
@@ -1101,7 +1101,7 @@ void rtw_sleep_schedulable(int ms)
 #ifdef PLATFORM_LINUX
 
     u32 delta;
-    
+
     delta = (ms * HZ)/1000;//(ms)
     if (delta == 0) {
         delta = 1;// 1 ms
@@ -1136,7 +1136,7 @@ void rtw_msleep_os(int ms)
 
 #endif	
 #ifdef PLATFORM_FREEBSD
-       //Delay for delay microseconds 
+       //Delay for delay microseconds
 	DELAY(ms*1000);
 	return ;
 #endif	
@@ -1161,7 +1161,7 @@ void rtw_usleep_os(int us)
 
 #endif	
 #ifdef PLATFORM_FREEBSD
-	//Delay for delay microseconds 
+	//Delay for delay microseconds
 	DELAY(us);
 
 	return ;
@@ -1191,7 +1191,7 @@ void _rtw_mdelay_os(int ms, const char *func, const int line)
 
 #if defined(PLATFORM_LINUX)
 
-   	mdelay((unsigned long)ms); 
+   	mdelay((unsigned long)ms);
 
 #elif defined(PLATFORM_WINDOWS)
 
@@ -1210,7 +1210,7 @@ void _rtw_udelay_os(int us, const char *func, const int line)
 		rtw_usleep_os(us);
 		return;
 	}
-	#endif 
+	#endif
 
 
 	DBG_871X("%s:%d %s(%d)\n", func, line, __FUNCTION__, us);
@@ -1218,7 +1218,7 @@ void _rtw_udelay_os(int us, const char *func, const int line)
 	
 #if defined(PLATFORM_LINUX)
 
-      udelay((unsigned long)us); 
+      udelay((unsigned long)us);
 
 #elif defined(PLATFORM_WINDOWS)
 
@@ -1233,7 +1233,7 @@ void rtw_mdelay_os(int ms)
 
 #ifdef PLATFORM_LINUX
 
-   	mdelay((unsigned long)ms); 
+   	mdelay((unsigned long)ms);
 
 #endif	
 #ifdef PLATFORM_FREEBSD
@@ -1253,11 +1253,11 @@ void rtw_udelay_os(int us)
 
 #ifdef PLATFORM_LINUX
 
-      udelay((unsigned long)us); 
+      udelay((unsigned long)us);
 
 #endif	
 #ifdef PLATFORM_FREEBSD
-	//Delay for delay microseconds 
+	//Delay for delay microseconds
 	DELAY(us);
 	return ;
 #endif		
@@ -1358,17 +1358,17 @@ inline void rtw_lock_suspend_timeout(long timeout)
 * @param mode please refer to linux document
 * @return Linux specific error code
 */
-static int openFile(struct file **fpp, char *path, int flag, int mode) 
-{ 
-	struct file *fp; 
- 
-	fp=filp_open(path, flag, mode); 
+static int openFile(struct file **fpp, char *path, int flag, int mode)
+{
+	struct file *fp;
+
+	fp=filp_open(path, flag, mode);
 	if(IS_ERR(fp)) {
 		*fpp=NULL;
 		return PTR_ERR(fp);
 	}
 	else {
-		*fpp=fp; 
+		*fpp=fp;
 		return 0;
 	}	
 }
@@ -1378,17 +1378,17 @@ static int openFile(struct file **fpp, char *path, int flag, int mode)
 * @param fp the pointer of struct file to close
 * @return always 0
 */
-static int closeFile(struct file *fp) 
-{ 
+static int closeFile(struct file *fp)
+{
 	filp_close(fp,NULL);
-	return 0; 
+	return 0;
 }
 
-static int readFile(struct file *fp,char *buf,int len) 
-{ 
+static int readFile(struct file *fp,char *buf,int len)
+{
 	int rlen=0, sum=0;
 	
-	if (!fp->f_op || !fp->f_op->read) 
+	if (!fp->f_op || !fp->f_op->read)
 		return -EPERM;
 
 	while(sum<len) {
@@ -1405,12 +1405,12 @@ static int readFile(struct file *fp,char *buf,int len)
 
 }
 
-static int writeFile(struct file *fp,char *buf,int len) 
-{ 
+static int writeFile(struct file *fp,char *buf,int len)
+{
 	int wlen=0, sum=0;
 	
-	if (!fp->f_op || !fp->f_op->write) 
-		return -EPERM; 
+	if (!fp->f_op || !fp->f_op->write)
+		return -EPERM;
 
 	while(sum<len) {
 		wlen=fp->f_op->write(fp,buf+sum,len-sum, &fp->f_pos);
@@ -1432,13 +1432,13 @@ static int writeFile(struct file *fp,char *buf,int len)
 * @return Linux specific error code
 */
 static int isFileReadable(char *path)
-{ 
+{
 	struct file *fp;
 	int ret = 0;
 	mm_segment_t oldfs;
 	char buf;
- 
-	fp=filp_open(path, O_RDONLY, 0); 
+
+	fp=filp_open(path, O_RDONLY, 0);
 	if(IS_ERR(fp)) {
 		ret = PTR_ERR(fp);
 	}
@@ -1646,7 +1646,7 @@ RETURN:
 }
 
 /*
-* Jeff: this function should be called under ioctl (rtnl_lock is accquired) while 
+* Jeff: this function should be called under ioctl (rtnl_lock is accquired) while
 * LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26)
 */
 int rtw_change_ifname(_adapter *padapter, const char *ifname)
@@ -1715,20 +1715,20 @@ error:
 
 #ifdef PLATFORM_FREEBSD
 /*
- * Copy a buffer from userspace and write into kernel address 
+ * Copy a buffer from userspace and write into kernel address
  * space.
  *
- * This emulation just calls the FreeBSD copyin function (to 
+ * This emulation just calls the FreeBSD copyin function (to
  * copy data from user space buffer into a kernel space buffer)
  * and is designed to be used with the above io_write_wrapper.
  *
  * This function should return the number of bytes not copied.
- * I.e. success results in a zero value. 
+ * I.e. success results in a zero value.
  * Negative error values are not returned.
  */
 unsigned long
 copy_from_user(void *to, const void *from, unsigned long n)
-{      
+{
         if ( copyin(from, to, n) != 0 ) {
                 /* Any errors will be treated as a failure
                    to copy any of the requested bytes */
@@ -1759,7 +1759,7 @@ copy_to_user(void *to, const void *from, unsigned long n)
  *
  * usb_register and usb_deregister simply call these functions.
  */
-int 
+int
 usb_register(struct usb_driver *driver)
 {
         rtw_usb_linux_register(driver);
@@ -1767,7 +1767,7 @@ usb_register(struct usb_driver *driver)
 }
 
 
-int 
+int
 usb_deregister(struct usb_driver *driver)
 {
         rtw_usb_linux_deregister(driver);

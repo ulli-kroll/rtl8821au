@@ -103,7 +103,7 @@ struct reportpwrstate_parm {
 	unsigned char mode;
 	unsigned char state; //the CPWM value
 	unsigned short rsvd;
-}; 
+};
 
 
 typedef _sema _pwrlock;
@@ -209,7 +209,7 @@ struct pwrctrl_priv
 
 #ifdef CONFIG_PCI_HCI
 	//just for PCIE ASPM
-	u8	b_support_aspm; // If it supports ASPM, Offset[560h] = 0x40, otherwise Offset[560h] = 0x00. 
+	u8	b_support_aspm; // If it supports ASPM, Offset[560h] = 0x40, otherwise Offset[560h] = 0x00.
 	u8	b_support_backdoor;
 
 	//just for PCIE ASPM
@@ -219,7 +219,7 @@ struct pwrctrl_priv
 	uint 	ips_enter_cnts;
 	uint 	ips_leave_cnts;
 
-	u8	ips_mode; 
+	u8	ips_mode;
 	u8	ips_mode_req; // used to accept the mode setting request, will update to ipsmode later
 	uint bips_processing;
 	u32 ips_deny_time; /* will deny IPS when system time is smaller than this */

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -145,7 +145,7 @@ struct mp_tx
 #define u4Byte u32
 #define s4Byte s32
 #define u1Byte		u8
-#define pu1Byte 		u8* 
+#define pu1Byte 		u8*
 
 #define u2Byte		u16
 #define pu2Byte 		u16*		
@@ -157,7 +157,7 @@ struct mp_tx
 #define pu8Byte 		u64*
 
 #define s1Byte		s8
-#define ps1Byte 		s8* 
+#define ps1Byte 		s8*
 
 #define s2Byte		s16
 #define ps2Byte 		s16*	
@@ -275,7 +275,7 @@ typedef struct _MPT_CONTEXT
     u1Byte          btInBuf[100];
 	ULONG			mptOutLen;
     u1Byte          mptOutBuf[100];
-    
+
 }MPT_CONTEXT, *PMPT_CONTEXT;
 #endif
 //#endif
@@ -313,7 +313,7 @@ typedef struct _MPT_CONTEXT
 /* end of E-Fuse */
 
 //#define RTPRIV_IOCTL_MP 					( SIOCIWFIRSTPRIV + 0x17)
-enum {	  
+enum {	
 	WRITE_REG = 1,
 	READ_REG,
 	WRITE_RF,

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -63,7 +63,7 @@ typedef enum tag_HAL_Manufacturer_Version_Definition
 {
 	CHIP_VENDOR_TSMC 	=	0,
 	CHIP_VENDOR_UMC 	=	1,
-	CHIP_VENDOR_SMIC 	=	2, 
+	CHIP_VENDOR_SMIC 	=	2,
 }HAL_VENDOR_E;
 
 typedef enum tag_HAL_RF_Type_Definition

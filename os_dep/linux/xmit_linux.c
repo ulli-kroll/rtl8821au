@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -54,7 +54,7 @@ _func_enter_;
 
        pfile->cur_addr += len;
        pfile->pkt_len -= len;
-	   
+	
 _func_exit_;	       		
 
 	return len;	
@@ -92,7 +92,7 @@ void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib)
                                 //skb_checksum_help(skb);
                         } else if (ip->protocol == IPPROTO_UDP) {
                                 //DBG_871X("CHECKSUM_PARTIAL UDP\n");
-#if 1                       
+#if 1
                                 skb_checksum_help(skb);
 #else
                                 // Set UDP checksum = 0 to skip checksum check
@@ -143,10 +143,10 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 		for(i=0; i<8; i++)
 	      	{
 	      		pxmitbuf->pxmit_urb[i] = usb_alloc_urb(0, GFP_KERNEL);
-	             	if(pxmitbuf->pxmit_urb[i] == NULL) 
+	             	if(pxmitbuf->pxmit_urb[i] == NULL)
 	             	{
 	             		DBG_871X("pxmitbuf->pxmit_urb[i]==NULL");
-		        	return _FAIL;	 
+		        	return _FAIL;	
 	             	}
 	      	}
 #endif
@@ -332,7 +332,7 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 		if(!(psta->state &_FW_LINKED))
 			continue;		
 		
-		/* avoid come from STA1 and send back STA1 */ 
+		/* avoid come from STA1 and send back STA1 */
 		if (_rtw_memcmp(psta->hwaddr, &skb->data[6], 6) == _TRUE
 			|| _rtw_memcmp(psta->hwaddr, null_addr, 6) == _TRUE
 			|| _rtw_memcmp(psta->hwaddr, bc_addr, 6) == _TRUE

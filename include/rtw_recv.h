@@ -131,7 +131,7 @@ struct smooth_rssi_data {
 };
 
 struct signal_stat {
-	u8	update_req;		//used to indicate 
+	u8	update_req;		//used to indicate
 	u8	avg_val;		//avg of valid elements
 	u32	total_num;		//num of valid elements
 	u32	total_val;		//sum of valid elements	
@@ -141,7 +141,7 @@ struct phy_info
 {		
 	u8		RxPWDBAll;
 
-	u8		SignalQuality;	 // in 0-100 index. 
+	u8		SignalQuality;	 // in 0-100 index.
 	s8		RxMIMOSignalQuality[4];	//per-path's EVM
 	u8		RxMIMOEVMdbm[4]; 		//per-path's EVM dbm
 
@@ -770,8 +770,8 @@ __inline static s32 translate_percentage_to_dbm(u32 SignalStrengthIndex)
 	s32	SignalPower; // in dBm.
 
 	// Translate to dBm (x=0.5y-95).
-	SignalPower = (s32)((SignalStrengthIndex + 1) >> 1); 
-	SignalPower -= 95; 
+	SignalPower = (s32)((SignalStrengthIndex + 1) >> 1);
+	SignalPower -= 95;
 
 	return SignalPower;
 }

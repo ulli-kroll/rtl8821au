@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -189,7 +189,7 @@
 #endif
 
 //
-// Check if FW header exists. We do not consider the lower 4 bits in this case. 
+// Check if FW header exists. We do not consider the lower 4 bits in this case.
 // By tynli. 2009.12.04.
 //
 #define IS_FW_HEADER_EXIST_92D(_pFwHdr)	((le16_to_cpu(_pFwHdr->Signature)&0xFFF0) == 0x92C0 ||\

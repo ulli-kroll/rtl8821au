@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -192,7 +192,7 @@ enum WIFI_STATUS_CODE {
 #define WLAN_STATUS_AP_UNABLE_TO_HANDLE_NEW_STA 17
 #define WLAN_STATUS_ASSOC_DENIED_RATES 18
 #endif
-//entended 
+//entended
 /* IEEE 802.11b */
 #define WLAN_STATUS_ASSOC_DENIED_NOSHORT 19
 #define WLAN_STATUS_ASSOC_DENIED_NOPBCC 20
@@ -647,7 +647,7 @@ typedef	enum _ELEMENT_ID{
 
 	EID_CellPwr					= 150, // 0x96: Cell Power Limit IE. Ref. 0x96.
 
-	EID_CCKM    					= 156, 
+	EID_CCKM    					= 156,
 
 	EID_Vendor					= 221, // 0xDD: Vendor Specific
 
@@ -714,7 +714,7 @@ typedef	enum _ELEMENT_ID{
 
 
 /*-----------------------------------------------------------------------------
-				Below is the definition for 802.11n 
+				Below is the definition for 802.11n
 ------------------------------------------------------------------------------*/
 
 //#ifdef CONFIG_80211N_HT
@@ -759,7 +759,7 @@ struct rtw_ieee80211_bar {
  * This structure refers to "HT capabilities element" as
  * described in 802.11n draft section 7.3.2.52
  */
- 
+
 struct rtw_ieee80211_ht_cap {
 	unsigned short 	cap_info;
 	unsigned char 	ampdu_params_info;
@@ -787,8 +787,8 @@ struct ieee80211_ht_addt_info {
 struct HT_caps_element
 {
 	union
-	{ 
-		struct 
+	{
+		struct
 		{ 	
 			unsigned short	HT_caps_info;
 			unsigned char	AMPDU_para;
@@ -860,8 +860,8 @@ struct ieee80211_ht_addt_info {
 struct HT_caps_element
 {
 	union
-	{ 
-		struct 
+	{
+		struct
 		{ 	
 			unsigned short	HT_caps_info;
 			unsigned char	AMPDU_para;
@@ -1185,7 +1185,7 @@ typedef enum _HT_CAP_AMPDU_FACTOR {
 
 #define	P2P_FINDPHASE_EX_NONE				0	// default value, used when: (1)p2p disabed or (2)p2p enabled but only do 1 scan phase
 #define	P2P_FINDPHASE_EX_FULL				1	// used when p2p enabled and want to do 1 scan phase and P2P_FINDPHASE_EX_MAX-1 find phase
-#define	P2P_FINDPHASE_EX_SOCIAL_FIRST		(P2P_FINDPHASE_EX_FULL+1) 
+#define	P2P_FINDPHASE_EX_SOCIAL_FIRST		(P2P_FINDPHASE_EX_FULL+1)
 #define	P2P_FINDPHASE_EX_MAX					4
 #define	P2P_FINDPHASE_EX_SOCIAL_LAST		P2P_FINDPHASE_EX_MAX
 

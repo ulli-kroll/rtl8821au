@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -302,7 +302,7 @@ static u32 _InitPowerOn8812AU(_adapter *padapter)
 				| PROTOCOL_EN | SCHEDULE_EN | ENSEC | CALTMR_EN);
 	rtw_write16(padapter, REG_CR, u2btmp);
 
-	//Need remove below furture, suggest by Jackie. 
+	//Need remove below furture, suggest by Jackie.
 	// if 0xF0[24] =1 (LDO), need to set the 0x7C[6] to 1.
 	if(IS_HARDWARE_TYPE_8821U(padapter))
 	{
@@ -475,7 +475,7 @@ _InitTxBufferBoundary_8821AUsb(
 	)
 {	
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
-	u8	txpktbuf_bndy; 
+	u8	txpktbuf_bndy;
 
 	if(!pregistrypriv->wifi_spec){
 		txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
@@ -506,7 +506,7 @@ _InitTxBufferBoundary_8812AUsb(
 	)
 {	
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
-	u8	txpktbuf_bndy; 
+	u8	txpktbuf_bndy;
 
 	if(!pregistrypriv->wifi_spec){
 		txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
@@ -542,7 +542,7 @@ _InitPageBoundary_8812AUsb(
 
 	if(IS_HARDWARE_TYPE_8812(Adapter))
 		rtw_write16(Adapter, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8812-1);
-	else 
+	else
 		rtw_write16(Adapter, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8821-1);
 	
 }
@@ -606,7 +606,7 @@ _InitNormalChipTwoOutEpPriority_8812AUsb(
 		bkQ		= valueLow;
 		viQ		= valueHi;
 		voQ		= valueHi;
-		mgtQ	= valueHi; 
+		mgtQ	= valueHi;
 		hiQ		= valueHi;								
 	}
 	else{//for WMM ,CONFIG_OUT_EP_WIFI_MODE
@@ -728,8 +728,8 @@ _InitWMACSetting_8812A(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
 	//pHalData->ReceiveConfig = AAP | APM | AM | AB | APP_ICV | ADF | AMF | APP_FCS | HTC_LOC_CTRL | APP_MIC | APP_PHYSTS;
-	pHalData->ReceiveConfig = 
-	RCR_APM | RCR_AM | RCR_AB |RCR_CBSSID_DATA| RCR_CBSSID_BCN| RCR_APP_ICV | RCR_AMF | RCR_HTC_LOC_CTRL | RCR_APP_MIC | RCR_APP_PHYST_RXFF;	  
+	pHalData->ReceiveConfig =
+	RCR_APM | RCR_AM | RCR_AB |RCR_CBSSID_DATA| RCR_CBSSID_BCN| RCR_APP_ICV | RCR_AMF | RCR_HTC_LOC_CTRL | RCR_APP_MIC | RCR_APP_PHYST_RXFF;	
 
 #if (1 == RTL8812A_RX_PACKET_INCLUDE_CRC)
 	pHalData->ReceiveConfig |= ACRC32;
@@ -848,7 +848,7 @@ static void _InitHWLed(PADAPTER Adapter)
 		return;
 	
 // HW led control
-// to do .... 
+// to do ....
 //must consider cases of antenna diversity/ commbo card/solo card/mini card
 
 }
@@ -892,7 +892,7 @@ _InitRetryFunction_8812A(
 /*-----------------------------------------------------------------------------
  * Function:	usb_AggSettingTxUpdate()
  *
- * Overview:	Seperate TX/RX parameters update independent for TP detection and 
+ * Overview:	Seperate TX/RX parameters update independent for TP detection and
  *			dynamic TX/RX aggreagtion parameters update.
  *
  * Input:			PADAPTER
@@ -931,7 +931,7 @@ usb_AggSettingTxUpdate_8812A(
 /*-----------------------------------------------------------------------------
  * Function:	usb_AggSettingRxUpdate()
  *
- * Overview:	Seperate TX/RX parameters update independent for TP detection and 
+ * Overview:	Seperate TX/RX parameters update independent for TP detection and
  *			dynamic TX/RX aggreagtion parameters update.
  *
  * Input:			PADAPTER
@@ -969,14 +969,14 @@ usb_AggSettingRxUpdate_8812A(
 
 				//Adjust DMA page and thresh.
 				temp = pHalData->RegAcUsbDmaSize | (pHalData->RegAcUsbDmaTime<<8);
-				rtw_write16(Adapter, REG_RXDMA_AGG_PG_TH, temp); 
+				rtw_write16(Adapter, REG_RXDMA_AGG_PG_TH, temp);
 			}
 			break;
 		case USB_RX_AGG_USB:
 		case USB_RX_AGG_MIX:
 		case USB_RX_AGG_DISABLE:
 		default:
-			// TODO: 
+			// TODO:
 			break;
 	}
 
@@ -1017,7 +1017,7 @@ init_UsbAggregationSetting_8812A(
  *
  * Revised History:
  *	When		Who		Remark
- *	12/10/2010	MHC		Create Version 0.  
+ *	12/10/2010	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
 VOID
@@ -1030,20 +1030,20 @@ USB_AggModeSwitch(
 	PMGNT_INFO		pMgntInfo = &(Adapter->MgntInfo);
 
 	//pHalData->UsbRxHighSpeedMode = FALSE;
-	// How to measure the RX speed? We assume that when traffic is more than 
+	// How to measure the RX speed? We assume that when traffic is more than
 	if (pMgntInfo->bRegAggDMEnable == FALSE)
 	{
 		return;	// Inf not support.
 	}
 	
 	
-	if (pMgntInfo->LinkDetectInfo.bHigherBusyRxTraffic == TRUE && 
+	if (pMgntInfo->LinkDetectInfo.bHigherBusyRxTraffic == TRUE &&
 		pHalData->UsbRxHighSpeedMode == FALSE)
 	{
 		pHalData->UsbRxHighSpeedMode = TRUE;
 		RT_TRACE(COMP_INIT, DBG_LOUD, ("UsbAggModeSwitchCheck to HIGH\n"));
 	}
-	else if (pMgntInfo->LinkDetectInfo.bHigherBusyRxTraffic == FALSE && 
+	else if (pMgntInfo->LinkDetectInfo.bHigherBusyRxTraffic == FALSE &&
 		pHalData->UsbRxHighSpeedMode == TRUE)
 	{
 		pHalData->UsbRxHighSpeedMode = FALSE;
@@ -1051,7 +1051,7 @@ USB_AggModeSwitch(
 	}
 	else
 	{
-		return; 
+		return;
 	}
 	
 
@@ -1099,7 +1099,7 @@ USB_AggModeSwitch(
 		usb_AggSettingRxUpdate_8188E(Adapter);
 
 		// 2010/12/27 MH According to designer's suggstion, we can only modify Timeout value. Otheriwse
-		// there might many HW incorrect behavior, the XP BSOD at usbehci.sys may be relative to the 
+		// there might many HW incorrect behavior, the XP BSOD at usbehci.sys may be relative to the
 		// issue. Base on the newest test, we can not enable block cnt > 30, otherwise XP usbehci.sys may
 		// BSOD.
 	}
@@ -1218,7 +1218,7 @@ static VOID _RfPowerSave(
 	}
 	else{
 		pHalData->eRFPowerState = eRfOn;
-		pMgntInfo->RfOffReason = 0; 
+		pMgntInfo->RfOffReason = 0;
 		if(Adapter->bInSetPower || Adapter->bResetInProgress)
 			PlatformUsbEnableInPipes(Adapter);
 		RT_TRACE((COMP_INIT|COMP_RF), DBG_LOUD, ("InitializeAdapter8192CUsb(): RF is on.\n"));
@@ -1269,7 +1269,7 @@ HalDetectSelectiveSuspendMode(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(Adapter);
 
-	// If support HW radio detect, we need to enable WOL ability, otherwise, we 
+	// If support HW radio detect, we need to enable WOL ability, otherwise, we
 	// can not use FW to notify host the power state switch.
 	
 	EFUSE_ShadowRead(Adapter, 1, EEPROM_USB_OPTIONAL1, (u32 *)&tmpvalue);
@@ -1313,7 +1313,7 @@ HalDetectSelectiveSuspendMode(
  *	When		Who		Remark
  *	08/23/2010	MHC		HW suspend mode switch test..
  *---------------------------------------------------------------------------*/
-static VOID 
+static VOID
 HwSuspendModeEnable_8812AU(
 	IN	PADAPTER	pAdapter,
 	IN	u8			Type
@@ -1329,11 +1329,11 @@ HwSuspendModeEnable_8812AU(
 
 	//
 	// 2010/08/23 MH According to Alfred's suggestion, we need to to prevent HW
-	// to enter suspend mode automatically. Otherwise, it will shut down major power 
+	// to enter suspend mode automatically. Otherwise, it will shut down major power
 	// domain and 8051 will stop. When we try to enter selective suspend mode, we
 	// need to prevent HW to enter D2 mode aumotmatically. Another way, Host will
 	// issue a S10 signal to power domain. Then it will cleat SIC setting(from Yngli).
-	// We need to enable HW suspend mode when enter S3/S4 or disable. We need 
+	// We need to enable HW suspend mode when enter S3/S4 or disable. We need
 	// to disable HW suspend mode for IPS/radio_off.
 	//
 	//RT_TRACE(COMP_RF, DBG_LOUD, ("HwSuspendModeEnable92Cu = %d\n", Type));
@@ -1650,7 +1650,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC02);
 
 	//
 	// Init CR MACTXEN, MACRXEN after setting RxFF boundary REG_TRXFF_BNDY to patch
-	// Hw bug which Hw initials RxFF boundry size to a value which is larger than the real Rx buffer size in 88E. 
+	// Hw bug which Hw initials RxFF boundry size to a value which is larger than the real Rx buffer size in 88E.
 	// 2011.08.05. by tynli.
 	//
 	value8 = rtw_read8(Adapter, REG_CR);
@@ -1710,7 +1710,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_RF);
 	else
 		PHY_SwitchWirelessBand8812(Adapter, BAND_ON_5G);
 
-	rtw_hal_set_chnl_bw(Adapter, Adapter->registrypriv.channel, 
+	rtw_hal_set_chnl_bw(Adapter, Adapter->registrypriv.channel,
 		CHANNEL_WIDTH_20, HAL_PRIME_CHNL_OFFSET_DONT_CARE, HAL_PRIME_CHNL_OFFSET_DONT_CARE);
 
 HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_TURN_ON_BLOCK);
@@ -1723,9 +1723,9 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC11);
 
 	// HW SEQ CTRL
 	//set 0x0 to 0xFF by tynli. Default enable HW SEQ NUM.
-	rtw_write8(Adapter,REG_HWSEQ_CTRL, 0xFF); 
+	rtw_write8(Adapter,REG_HWSEQ_CTRL, 0xFF);
 	
-	// 
+	//
 	// Disable BAR, suggested by Scott
 	// 2010.04.09 add by hpfan
 	//
@@ -1751,11 +1751,11 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 	{
 	//
 	// 2010/08/11 MH Merge from 8192SE for Minicard init. We need to confirm current radio status
-	// and then decide to enable RF or not.!!!??? For Selective suspend mode. We may not 
+	// and then decide to enable RF or not.!!!??? For Selective suspend mode. We may not
 	// call init_adapter. May cause some problem??
 	//
-	// Fix the bug that Hw/Sw radio off before S3/S4, the RF off action will not be executed 
-	// in MgntActSet_RF_State() after wake up, because the value of pHalData->eRFPowerState 
+	// Fix the bug that Hw/Sw radio off before S3/S4, the RF off action will not be executed
+	// in MgntActSet_RF_State() after wake up, because the value of pHalData->eRFPowerState
 	// is the same as eRfOff, we should change it to eRfOn after we config RF parameters.
 	// Added by tynli. 2010.03.30.
 	pwrctrlpriv->rf_pwrstate = rf_on;
@@ -1805,7 +1805,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 			else
 			{
 				pwrctrlpriv->rf_pwrstate = rf_off;
-				pwrctrlpriv->rfoff_reason = RF_CHANGE_BY_INIT; 
+				pwrctrlpriv->rfoff_reason = RF_CHANGE_BY_INIT;
 				pwrctrlpriv->b_hw_radio_off = _FALSE;					
 				//MgntActSet_RF_State(Adapter, rf_on, pwrctrlpriv->rfoff_reason, _TRUE);
 			}
@@ -1817,7 +1817,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 			//MgntActSet_RF_State(Adapter, rf_on, pwrctrlpriv->rfoff_reason, _TRUE);
 		}
 	
-		pwrctrlpriv->rfoff_reason = 0; 
+		pwrctrlpriv->rfoff_reason = 0;
 		pwrctrlpriv->b_hw_radio_off = _FALSE;
 		pwrctrlpriv->rf_pwrstate = rf_on;
 		rtw_led_control(Adapter, LED_CTL_POWER_ON);
@@ -1959,7 +1959,7 @@ _func_exit_;
 
 VOID
 CardDisableRTL8812AU(
-	IN	PADAPTER			Adapter 
+	IN	PADAPTER			Adapter
 )
 {
 	u8	u1bTmp;
@@ -1974,7 +1974,7 @@ CardDisableRTL8812AU(
 	u1bTmp = rtw_read8(Adapter, REG_TX_RPT_CTRL);
 	rtw_write8(Adapter, REG_TX_RPT_CTRL, val8&(~BIT1));
 
-	// stop rx 
+	// stop rx
 	rtw_write8(Adapter, REG_CR, 0x0);
 	
 	// Run LPS WL RFOFF flow
@@ -1983,7 +1983,7 @@ CardDisableRTL8812AU(
 	else	
 		HalPwrSeqCmdParsing(Adapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_LPS_ENTER_FLOW);
 
-	if((rtw_read8(Adapter, REG_MCUFWDL)&RAM_DL_SEL) && 
+	if((rtw_read8(Adapter, REG_MCUFWDL)&RAM_DL_SEL) &&
 		Adapter->bFWReady) //8051 RAM code
 	{
 		_8051Reset8812(Adapter);
@@ -2160,7 +2160,7 @@ hal_ReadIDs_8812AU(
 
 	if( !AutoloadFail )
 	{
-		// VID, PID 
+		// VID, PID
 		if(IS_HARDWARE_TYPE_8812AU(Adapter))
 		{
 			pHalData->EEPROMVID = EF2Byte( *(u16 *)&PROMContent[EEPROM_VID_8812AU] );
@@ -2212,7 +2212,7 @@ hal_ReadMACAddress_8812AU(
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 
-	if(_FALSE == AutoloadFail)  
+	if(_FALSE == AutoloadFail)
 	{
 		if(IS_HARDWARE_TYPE_8812AU(Adapter))
 		{
@@ -2338,7 +2338,7 @@ hal_CustomizeByCustomerID_8812AU(
 
 	// For customized behavior.
 	if((pHalData->EEPROMVID == 0x103C) && (pHalData->EEPROMPID == 0x1629))// HP Lite-On for RTL8188CUS Slim Combo.
-		pEEPROM->CustomerID = RT_CID_819x_HP; 
+		pEEPROM->CustomerID = RT_CID_819x_HP;
 	else if ((pHalData->EEPROMVID == 0x9846) && (pHalData->EEPROMPID == 0x9041))
 		pEEPROM->CustomerID = RT_CID_NETGEAR;
 	else if ((pHalData->EEPROMVID == 0x2019) && (pHalData->EEPROMPID == 0x1201))
@@ -2513,7 +2513,7 @@ hal_ReadRFType_8812A(
 	//	pHalData->bRFPathRxEnable[0] = pHalData->bRFPathRxEnable[1] = _TRUE;
 	//}
 
-	if (IsSupported24G(Adapter->registrypriv.wireless_mode) && 
+	if (IsSupported24G(Adapter->registrypriv.wireless_mode) &&
 		IsSupported5G(Adapter->registrypriv.wireless_mode))
 		pHalData->BandSet = BAND_ON_BOTH;
 	else if (IsSupported5G(Adapter->registrypriv.wireless_mode))
@@ -2698,7 +2698,7 @@ SetHalDefVar8812AUsb(
 }
 
 //
-//	Description: 
+//	Description:
 //		Query setting of specified variable.
 //
 u8

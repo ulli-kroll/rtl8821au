@@ -17,10 +17,10 @@
  *
  *
  ******************************************************************************/
- 
+
  #ifndef __HAL_PHY_RF_H__
  #define __HAL_PHY_RF_H__
- 
+
 typedef enum _SPUR_CAL_METHOD {
 	PLL_RESET,
 	AFE_PHASE_SEL
@@ -77,9 +77,9 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 VOID
 ODM_ResetIQKResult(
-	IN PDM_ODM_T	pDM_Odm 
+	IN PDM_ODM_T	pDM_Odm
 );
-u1Byte 
+u1Byte
 ODM_GetRightChnlPlaceforIQK(
     IN u1Byte chnl
 );

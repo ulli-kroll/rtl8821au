@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -65,7 +65,7 @@
 #define _IO_CMDMASK_	(0x1F80)
 
 
-/* 
+/*
 	For prompt mode accessing, caller shall free io_req
 	Otherwise, io_handler will free io_req
 */
@@ -166,7 +166,7 @@ struct io_req {
 
 #ifdef PLATFORM_OS_XP	
 	PMDL pmdl;
-	PIRP  pirp; 
+	PIRP  pirp;
 
 #ifdef CONFIG_SDIO_HCI
 	PSDBUS_REQUEST_PACKET sdrp;
@@ -434,7 +434,7 @@ extern int dbg_rtw_writeN(_adapter *adapter, u32 addr ,u32 length , u8 *data, co
 
 extern void rtw_write_scsi(_adapter *adapter, u32 cnt, u8 *pmem);
 
-//ioreq 
+//ioreq
 extern void ioreq_read8(_adapter *adapter, u32 addr, u8 *pval);
 extern void ioreq_read16(_adapter *adapter, u32 addr, u16 *pval);	
 extern void ioreq_read32(_adapter *adapter, u32 addr, u32 *pval);
@@ -444,11 +444,11 @@ extern void ioreq_write32(_adapter *adapter, u32 addr, u32 val);
 
 
 extern uint async_read8(_adapter *adapter, u32 addr, u8 *pbuff,
-	void (*_async_io_callback)(_adapter *padater, struct io_req *pio_req, u8 *cnxt), u8 *cnxt); 
+	void (*_async_io_callback)(_adapter *padater, struct io_req *pio_req, u8 *cnxt), u8 *cnxt);
 extern uint async_read16(_adapter *adapter, u32 addr,  u8 *pbuff,
-	void (*_async_io_callback)(_adapter *padater, struct io_req *pio_req, u8 *cnxt), u8 *cnxt); 
+	void (*_async_io_callback)(_adapter *padater, struct io_req *pio_req, u8 *cnxt), u8 *cnxt);
 extern uint async_read32(_adapter *adapter, u32 addr,  u8 *pbuff,
-	void (*_async_io_callback)(_adapter *padater, struct io_req *pio_req, u8 *cnxt), u8 *cnxt); 
+	void (*_async_io_callback)(_adapter *padater, struct io_req *pio_req, u8 *cnxt), u8 *cnxt);
 
 extern void async_read_mem(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
 extern void async_read_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem);

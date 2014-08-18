@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -22,19 +22,19 @@
 #include <drv_types.h>
 
 #ifdef CONFIG_80211AC_VHT
-// 				20/40/80,	ShortGI,	MCS Rate 
-const u16 VHT_MCS_DATA_RATE[3][2][20] = 
+// 				20/40/80,	ShortGI,	MCS Rate
+const u16 VHT_MCS_DATA_RATE[3][2][20] =
 	{	{	{13, 26, 39, 52, 78, 104, 117, 130, 156, 156,
 			 26, 52, 78, 104, 156, 208, 234, 260, 312, 312},			// Long GI, 20MHz
 			{14, 29, 43, 58, 87, 116, 130, 144, 173, 173,
 			29, 58, 87, 116, 173, 231, 260, 289, 347, 347}	},		// Short GI, 20MHz
-		{	{27, 54, 81, 108, 162, 216, 243, 270, 324, 360, 
+		{	{27, 54, 81, 108, 162, 216, 243, 270, 324, 360,
 			54, 108, 162, 216, 324, 432, 486, 540, 648, 720}, 		// Long GI, 40MHz
-			{30, 60, 90, 120, 180, 240, 270, 300,360, 400, 
+			{30, 60, 90, 120, 180, 240, 270, 300,360, 400,
 			60, 120, 180, 240, 360, 480, 540, 600, 720, 800}},		// Short GI, 40MHz
 		{	{59, 117,  176, 234, 351, 468, 527, 585, 702, 780,
 			117, 234, 351, 468, 702, 936, 1053, 1170, 1404, 1560}, 	// Long GI, 80MHz
-			{65, 130, 195, 260, 390, 520, 585, 650, 780, 867, 
+			{65, 130, 195, 260, 390, 520, 585, 650, 780, 867,
 			130, 260, 390, 520, 780, 1040, 1170, 1300, 1560,1734}	}	// Short GI, 80MHz
 	};
 
@@ -230,7 +230,7 @@ void	update_sta_vht_info_apmode(_adapter *padapter, PVOID psta)
 	}
 
 	// B8 B9 B10 Rx STBC
-	if (TEST_FLAG(pvhtpriv_ap->stbc_cap, STBC_VHT_ENABLE_TX) && 
+	if (TEST_FLAG(pvhtpriv_ap->stbc_cap, STBC_VHT_ENABLE_TX) &&
 		GET_VHT_CAPABILITY_ELE_RX_STBC(pvhtpriv_sta->vht_cap))
 	{
 		SET_FLAG(cur_stbc_cap, (STBC_VHT_ENABLE_TX | STBC_VHT_CAP_TX));	
@@ -239,7 +239,7 @@ void	update_sta_vht_info_apmode(_adapter *padapter, PVOID psta)
 	DBG_871X("Current STA VHT STBC = %02X\n", cur_stbc_cap);
 
 	// B11 SU Beamformer Capable, the target supports Beamformer and we are Beamformee
-	if (TEST_FLAG(pvhtpriv_ap->beamform_cap, BEAMFORMING_VHT_BEAMFORMER_ENABLE) && 
+	if (TEST_FLAG(pvhtpriv_ap->beamform_cap, BEAMFORMING_VHT_BEAMFORMER_ENABLE) &&
 		GET_VHT_CAPABILITY_ELE_SU_BFEE(pvhtpriv_sta->vht_cap))
 	{
 		SET_FLAG(cur_beamform_cap, BEAMFORMING_VHT_BEAMFORMEE_ENABLE);
@@ -306,7 +306,7 @@ void VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	DBG_871X("Current ShortGI80MHz = %d\n", pvhtpriv->sgi);
 
 	// B8 B9 B10 Rx STBC
-	if (TEST_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_TX) && 
+	if (TEST_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_TX) &&
 		GET_VHT_CAPABILITY_ELE_RX_STBC(pIE->data))
 	{
 		SET_FLAG(cur_stbc_cap, (STBC_VHT_ENABLE_TX | STBC_VHT_CAP_TX));	
@@ -315,7 +315,7 @@ void VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	DBG_871X("Current VHT STBC Setting = %02X\n", cur_stbc_cap);
 
 	// B11 SU Beamformer Capable, the target supports Beamformer and we are Beamformee
-	if (TEST_FLAG(pvhtpriv->beamform_cap, BEAMFORMING_VHT_BEAMFORMER_ENABLE) && 
+	if (TEST_FLAG(pvhtpriv->beamform_cap, BEAMFORMING_VHT_BEAMFORMER_ENABLE) &&
 		GET_VHT_CAPABILITY_ELE_SU_BFEE(pIE->data))
 	{
 		SET_FLAG(cur_beamform_cap, BEAMFORMING_VHT_BEAMFORMEE_ENABLE);
@@ -359,7 +359,7 @@ void VHT_operation_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 
 	if(pvhtpriv->vht_option == _FALSE)	return;
 
-	if ((GET_VHT_OPERATION_ELE_CHL_WIDTH(pIE->data) >= 1) 
+	if ((GET_VHT_OPERATION_ELE_CHL_WIDTH(pIE->data) >= 1)
 		&& ((pregistrypriv->bw_mode & 0xf0) >= CHANNEL_WIDTH_80)) {
 		pvhtpriv->bwmode = CHANNEL_WIDTH_80;
 	} else {

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -104,7 +104,7 @@ if (adapter->registrypriv.mp_mode == 1)
 #ifdef CONFIG_SET_SCAN_DENY_TIMER
 void _rtw_set_scan_deny_timer_hdl(void *FunctionContext)
 {
-	_adapter *adapter = (_adapter *)FunctionContext;	 
+	_adapter *adapter = (_adapter *)FunctionContext;	
 	rtw_set_scan_deny_timer_hdl(adapter);
 }
 #endif
@@ -174,7 +174,7 @@ void rtw_reset_securitypriv( _adapter *adapter )
 	u32	backupTKIPcountermeasure_time = 0;
 
 	if(adapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)//802.1x
-	{		 
+	{		
 		// Added by Albert 2009/02/18
 		// We have to backup the PMK information for WiFi PMK Caching test item.
 		//
@@ -202,7 +202,7 @@ void rtw_reset_securitypriv( _adapter *adapter )
 		adapter->securitypriv.ndisencryptstatus = Ndis802_11WEPDisabled;
 
 	}
-	else //reset values in securitypriv 
+	else //reset values in securitypriv
 	{
 		//if(adapter->mlmepriv.fw_state & WIFI_STATION_STATE)
 		//{
@@ -224,7 +224,7 @@ void rtw_reset_securitypriv( _adapter *adapter )
 void rtw_os_indicate_disconnect( _adapter *adapter )
 {
    //RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
-  
+
 _func_enter_;
 
 	netif_carrier_off(adapter->pnetdev); // Do it first for tx broadcast pkt after disconnection issue!
@@ -455,7 +455,7 @@ static int mgnt_netdev_open(struct net_device *pnetdev)
 
 	netif_carrier_on(pnetdev);
 		
-	//rtw_write16(phostapdpriv->padapter, 0x0116, 0x0100);//only excluding beacon 
+	//rtw_write16(phostapdpriv->padapter, 0x0116, 0x0100);//only excluding beacon
 		
 	return 0;	
 }
@@ -570,7 +570,7 @@ int hostapd_mode_init(_adapter *padapter)
 		DBG_871X("hostapd_mode_init(): register_netdev fail!\n");
 		
 		if(pnetdev)
-      		{	 
+      		{	
 			rtw_free_netdev(pnetdev);
       		}
 	}

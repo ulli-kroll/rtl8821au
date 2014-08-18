@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -49,7 +49,7 @@ static u8 usb_read8(struct intf_hdl *pintfhdl, u32 addr)
 }
 
 static u16 usb_read16(struct intf_hdl *pintfhdl, u32 addr)
-{       
+{
 	u8 request;
 	u8 requesttype;
 	u16 wvalue;
@@ -226,7 +226,7 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 		return ;
 	}
 
-	// HISR 
+	// HISR
 	_rtw_memcpy(&(pHalData->IntArray[0]), &(pbuf[USB_INTR_CONTENT_HISR_OFFSET]), 4);
 	_rtw_memcpy(&(pHalData->IntArray[1]), &(pbuf[USB_INTR_CONTENT_HISRE_OFFSET]), 4);
 
@@ -316,7 +316,7 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 #endif//DBG_CONFIG_ERROR_DETECT_INT
 
 
-	// C2H Event 
+	// C2H Event
 	if(pbuf[0]!= 0){
 		_rtw_memcpy(&(pHalData->C2hArray[0]), &(pbuf[USB_INTR_CONTENT_C2H_OFFSET]), 16);		
 		//rtw_c2h_wk_cmd(padapter); to do..
@@ -333,7 +333,7 @@ static void usb_read_interrupt_complete(struct urb *purb, struct pt_regs *regs)
 
 	if(padapter->bSurpriseRemoved || padapter->bDriverStopped||padapter->bReadPortCancel)
 	{
-		DBG_8192C("%s() RX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d) bReadPortCancel(%d)\n", 
+		DBG_8192C("%s() RX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d) bReadPortCancel(%d)\n",
 		__FUNCTION__,padapter->bDriverStopped, padapter->bSurpriseRemoved,padapter->bReadPortCancel);
 
 		return;
@@ -396,7 +396,7 @@ _func_enter_;
 	//translate DMA FIFO addr to pipehandle
 	pipe = ffaddr2pipehdl(pdvobj, addr);
 
-	usb_fill_int_urb(precvpriv->int_in_urb, pusbd, pipe, 
+	usb_fill_int_urb(precvpriv->int_in_urb, pusbd, pipe,
 					precvpriv->int_in_buf,
             				INTERRUPT_MSG_FORMAT_LEN,
             				usb_read_interrupt_complete,
@@ -575,7 +575,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 
 }
 
-static int recvbuf2recvframe(_adapter *padapter, 
+static int recvbuf2recvframe(_adapter *padapter,
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
 struct recv_buf *precvbuf
 #else
@@ -642,7 +642,7 @@ _pkt *pskb
 			goto _exit_recvbuf2recvframe;
 		}
 	
-		if(rtw_os_alloc_recvframe(padapter, precvframe, 
+		if(rtw_os_alloc_recvframe(padapter, precvframe,
 			(pbuf+pattrib->shift_sz + pattrib->drvinfo_sz + RXDESC_SIZE),			
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
 			NULL
@@ -775,7 +775,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 
 			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 		}
-		else 
+		else
 		{			
 			rtw_reset_continual_urb_error(adapter_to_dvobj(padapter));
 			
@@ -869,7 +869,7 @@ _func_enter_;
 			//translate DMA FIFO addr to pipehandle
 			pipe = ffaddr2pipehdl(pdvobj, addr);	
 
-			usb_fill_bulk_urb(purb, pusbd, pipe, 
+			usb_fill_bulk_urb(purb, pusbd, pipe,
 						precvbuf->pbuf,
                 				MAX_RECVBUF_SZ,
                 				usb_read_port_complete,
@@ -970,7 +970,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 			dev_kfree_skb_any(precvbuf->pskb);				
 		}	
 	#endif
-		DBG_8192C("%s() RX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d) bReadPortCancel(%d)\n", 
+		DBG_8192C("%s() RX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d) bReadPortCancel(%d)\n",
 		__FUNCTION__,padapter->bDriverStopped, padapter->bSurpriseRemoved,padapter->bReadPortCancel);	
 		goto exit;
 	}
@@ -984,7 +984,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 			DBG_8192C("%s()-%d: RX Warning!\n", __FUNCTION__, __LINE__);	
 		}
-		else 
+		else
 		{	
 			rtw_reset_continual_urb_error(adapter_to_dvobj(padapter));
 			
@@ -1138,7 +1138,7 @@ _func_enter_;
 		//translate DMA FIFO addr to pipehandle
 		pipe = ffaddr2pipehdl(pdvobj, addr);
 
-		usb_fill_bulk_urb(purb, pusbd, pipe, 
+		usb_fill_bulk_urb(purb, pusbd, pipe,
 						precvbuf->pbuf,
                 				MAX_RECVBUF_SZ,
                 				usb_read_port_complete,

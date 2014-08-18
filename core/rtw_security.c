@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -22,7 +22,7 @@
 #include <drv_types.h>
 
 
-//=====WEP related===== 
+//=====WEP related=====
 
 #define CRC32_POLY 0x04c11db7
 
@@ -80,11 +80,11 @@ _func_enter_;
 _func_exit_;	
 	return state[(sx + sy) & 0xff];
 }
-              
-           
-static void arcfour_encrypt(	struct arc4context	*parc4ctx, 
+
+
+static void arcfour_encrypt(	struct arc4context	*parc4ctx,
 	u8 * dest,
-	u8 * src, 
+	u8 * src,
 	u32 len)
 {
 	u32	i;
@@ -106,7 +106,7 @@ static u8 crc32_reverseBit( u8 data)
 static void crc32_init(void)
 {
 _func_enter_;	
-	if (bcrc32initialized == 1) 
+	if (bcrc32initialized == 1)
 		goto exit;
 	else{
 		sint i, j;
@@ -116,7 +116,7 @@ _func_enter_;
 
 		c = 0x12340000;
 
-		for (i = 0; i < 256; ++i) 
+		for (i = 0; i < 256; ++i)
 		{
 			k = crc32_reverseBit((u8)i);
 			for (c = ((u32)k) << 24, j = 8; j > 0; --j){
@@ -144,7 +144,7 @@ _func_enter_;
 
 	crc = 0xffffffff;       /* preload shift register, per CRC-32 spec */
 
-	for (p = buf; len > 0; ++p, --len) 
+	for (p = buf; len > 0; ++p, --len)
 	{
 		crc = crc32_table[ (crc ^ *p) & 0xff] ^ (crc >> 8);
 	}
@@ -493,7 +493,7 @@ static const unsigned short Sbox1[2][256]=       /* Sbox for hash (can be in ROM
    0x038F,0x59F8,0x0980,0x1A17,0x65DA,0xD731,0x84C6,0xD0B8,
    0x82C3,0x29B0,0x5A77,0x1E11,0x7BCB,0xA8FC,0x6DD6,0x2C3A,
   },
- 
+
 
   {  /* second half of table is unsigned char-reversed version of first! */
    0xA5C6,0x84F8,0x99EE,0x8DF6,0x0DFF,0xBDD6,0xB1DE,0x5491,
@@ -530,7 +530,7 @@ static const unsigned short Sbox1[2][256]=       /* Sbox for hash (can be in ROM
    0xC382,0xB029,0x775A,0x111E,0xCB7B,0xFCA8,0xD66D,0x3A2C,
   }
 };
- 
+
  /*
 **********************************************************************
 * Routine: Phase 1 -- generate P1K, given TA, TK, IV32
@@ -572,7 +572,7 @@ _func_enter_;
         }
 _func_exit_;
 }
- 
+
 
 /*
 **********************************************************************
@@ -631,7 +631,7 @@ _func_enter_;
 	rc4key[1] =(Hi8(iv16) | 0x20) & 0x7F; /* Help avoid weak (FMS) keys  */
 	rc4key[2] = Lo8(iv16);
 	rc4key[3] = Lo8((PPK[5] ^ TK16(0)) >> 1);
-	 
+	
 
 	/* Copy 96 bits of PPK[0..5] to RC4KEY[4..15]  (little-endian)       */
 	for (i=0;i<6;i++)
@@ -941,7 +941,7 @@ static void next_key(u8 *key, sint round);
 static void byte_sub(u8 *in, u8 *out);
 static void shift_row(u8 *in, u8 *out);
 static void mix_column(u8 *in, u8 *out);
-#ifndef PLATFORM_FREEBSD 
+#ifndef PLATFORM_FREEBSD
 static void add_round_key( u8 *shiftrow_in,
                     u8 *mcol_in,
                     u8 *block_in,
@@ -1288,9 +1288,9 @@ _func_enter_;
     i = 0;
 
     ctr_preload[0] = 0x01;                                  /* flag */
-    if (qc_exists && a4_exists) 
+    if (qc_exists && a4_exists)
 		ctr_preload[1] = mpdu[30] & 0x0f;   /* QoC_Control */
-    if (qc_exists && !a4_exists) 
+    if (qc_exists && !a4_exists)
 		ctr_preload[1] = mpdu[24] & 0x0f;
 
     for (i = 2; i < 8; i++)
@@ -1370,7 +1370,7 @@ _func_enter_;
 		{
 			qc_exists = 1;
 					if(hdrlen !=  WLAN_HDR_A3_QOS_LEN){
-				 
+				
 					hdrlen += 2;
 			}
 		}
@@ -1381,7 +1381,7 @@ _func_enter_;
 		(frsubtype == 0x0b))
 		{
 			if(hdrlen !=  WLAN_HDR_A3_QOS_LEN){
-				 
+				
 					hdrlen += 2;
 			}
 			qc_exists = 1;
@@ -1523,7 +1523,7 @@ u32	rtw_aes_encrypt(_adapter *padapter, u8 *pxmitframe)
 {	// exclude ICV
 
 
-	/*static*/ 
+	/*static*/
 //	unsigned char	message[MAX_MSG_SIZE];
 
     	/* Intermediate Buffers */
@@ -1699,7 +1699,7 @@ _func_enter_;
 		{
 			qc_exists = 1;
 					if(hdrlen !=  WLAN_HDR_A3_QOS_LEN){
-				 
+				
 					hdrlen += 2;
 			}
 		}
@@ -1710,7 +1710,7 @@ _func_enter_;
 		(frsubtype == 0x0b))
 		{
 			if(hdrlen !=  WLAN_HDR_A3_QOS_LEN){
-				 
+				
 					hdrlen += 2;
 			}
 			qc_exists = 1;
@@ -1910,7 +1910,7 @@ u32	rtw_aes_decrypt(_adapter *padapter, u8 *precvframe)
 {	// exclude ICV
 
 
-	/*static*/ 
+	/*static*/
 //	unsigned char	message[MAX_MSG_SIZE];
 
 
@@ -1925,7 +1925,7 @@ u32	rtw_aes_decrypt(_adapter *padapter, u8 *precvframe)
 	struct 	security_priv	*psecuritypriv=&padapter->securitypriv;
 //	struct	recv_priv		*precvpriv=&padapter->recvpriv;
 	u32	res=_SUCCESS;
-_func_enter_;	 
+_func_enter_;	
 	pframe=(unsigned char *)((union recv_frame*)precvframe)->u.hdr.rx_data;
 	//4 start to encrypt each fragment
 	if((prxattrib->encrypt==_AES_)){
@@ -1996,7 +1996,7 @@ static int sha256_compress(struct sha256_state *md, unsigned char *buf)
 	for (i = 16; i < 64; i++) {
 		W[i] = Gamma1(W[i - 2]) + W[i - 7] + Gamma0(W[i - 15]) +
 			W[i - 16];
-	}        
+	}
 
 	/* Compress */
 #define RND(a,b,c,d,e,f,g,h,i)                          \
@@ -2007,7 +2007,7 @@ static int sha256_compress(struct sha256_state *md, unsigned char *buf)
 
 	for (i = 0; i < 64; ++i) {
 		RND(S[0], S[1], S[2], S[3], S[4], S[5], S[6], S[7], i);
-		t = S[7]; S[7] = S[6]; S[6] = S[5]; S[5] = S[4]; 
+		t = S[7]; S[7] = S[6]; S[6] = S[5]; S[5] = S[4];
 		S[4] = S[3]; S[3] = S[2]; S[2] = S[1]; S[1] = S[0]; S[0] = t;
 	}
 
@@ -2749,7 +2749,7 @@ void wpa_tdls_generate_tpk(_adapter *padapter, struct sta_info *psta)
  *
  * Calculate MIC for TDLS frame.
  */
-int wpa_tdls_ftie_mic(u8 *kck, u8 trans_seq, 
+int wpa_tdls_ftie_mic(u8 *kck, u8 trans_seq,
 							u8 *lnkid, u8 *rsnie, u8 *timeoutie, u8 *ftie,
 							u8 *mic)
 {
@@ -2789,7 +2789,7 @@ int wpa_tdls_ftie_mic(u8 *kck, u8 trans_seq,
 	_ftie = (struct wpa_tdls_ftie *) pos;
 	_rtw_memset(_ftie->mic, 0, TDLS_MIC_LEN);
 	pos += 2 + ftie[1];
- 
+
 	ret = omac1_aes_128(kck, buf, pos - buf, mic);
 	rtw_mfree(buf, len);
 	return ret;

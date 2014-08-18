@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -34,11 +34,11 @@
  * Abbrev:	
  *
  * History:
- *	Data			Who		Remark 
+ *	Data			Who		Remark
  *	08/07/2007	MHC		1. Porting from 9x series PHYCFG.h.
  *						2. Reorganize code architecture.
  *	09/25/2008	MH		1. Add RL6052 register definition
- * 
+ *
  *****************************************************************************/
 #ifndef __RTW_MP_PHY_REGDEF_H_
 #define __RTW_MP_PHY_REGDEF_H_
@@ -212,7 +212,7 @@
 #define		rOFDM0_XDRxIQImbalance    	0xc2c
 
 #define		rOFDM0_RxDetector1			0xc30  //PD,BW & SBD	// DM tune init gain
-#define		rOFDM0_RxDetector2			0xc34  //SBD & Fame Sync. 
+#define		rOFDM0_RxDetector2			0xc34  //SBD & Fame Sync.
 #define		rOFDM0_RxDetector3			0xc38  //Frame Sync.
 #define		rOFDM0_RxDetector4			0xc3c  //PD, SBD, Frame Sync & Short-GI
 
@@ -221,7 +221,7 @@
 #define		rOFDM0_CCADropThreshold	0xc48 //CCA Drop threshold
 #define		rOFDM0_ECCAThreshold		0xc4c // energy CCA
 
-#define		rOFDM0_XAAGCCore1			0xc50	// DIG  
+#define		rOFDM0_XAAGCCore1			0xc50	// DIG
 #define		rOFDM0_XAAGCCore2			0xc54
 #define		rOFDM0_XBAGCCore1			0xc58
 #define		rOFDM0_XBAGCCore2			0xc5c
@@ -342,48 +342,48 @@
 //
 // RL6052 Register definition
 //
-#define		RF_AC						0x00	// 
+#define		RF_AC						0x00	//
 
-#define		RF_IQADJ_G1				0x01	// 
-#define		RF_IQADJ_G2				0x02	// 
-#define		RF_POW_TRSW				0x05	// 
+#define		RF_IQADJ_G1				0x01	//
+#define		RF_IQADJ_G2				0x02	//
+#define		RF_POW_TRSW				0x05	//
 
-#define		RF_GAIN_RX					0x06	// 
-#define		RF_GAIN_TX					0x07	// 
+#define		RF_GAIN_RX					0x06	//
+#define		RF_GAIN_TX					0x07	//
 
-#define		RF_TXM_IDAC				0x08	// 
-#define		RF_BS_IQGEN				0x0F	// 
+#define		RF_TXM_IDAC				0x08	//
+#define		RF_BS_IQGEN				0x0F	//
 
-#define		RF_MODE1					0x10	// 
-#define		RF_MODE2					0x11	// 
+#define		RF_MODE1					0x10	//
+#define		RF_MODE2					0x11	//
 
-#define		RF_RX_AGC_HP				0x12	// 
-#define		RF_TX_AGC					0x13	// 
-#define		RF_BIAS						0x14	// 
-#define		RF_IPA						0x15	// 
+#define		RF_RX_AGC_HP				0x12	//
+#define		RF_TX_AGC					0x13	//
+#define		RF_BIAS						0x14	//
+#define		RF_IPA						0x15	//
 #define		RF_TXBIAS					0x16 //
-#define		RF_POW_ABILITY			0x17	// 
-#define		RF_MODE_AG				0x18	// 
+#define		RF_POW_ABILITY			0x17	//
+#define		RF_MODE_AG				0x18	//
 #define		rRfChannel					0x18	// RF channel and BW switch
 #define		RF_CHNLBW					0x18	// RF channel and BW switch
-#define		RF_TOP						0x19	// 
+#define		RF_TOP						0x19	//
 
-#define		RF_RX_G1					0x1A	// 
-#define		RF_RX_G2					0x1B	// 
+#define		RF_RX_G1					0x1A	//
+#define		RF_RX_G2					0x1B	//
 
-#define		RF_RX_BB2					0x1C	// 
-#define		RF_RX_BB1					0x1D	// 
+#define		RF_RX_BB2					0x1C	//
+#define		RF_RX_BB1					0x1D	//
 
-#define		RF_RCK1					0x1E	// 
-#define		RF_RCK2					0x1F	// 
+#define		RF_RCK1					0x1E	//
+#define		RF_RCK2					0x1F	//
 
-#define		RF_TX_G1					0x20	// 
-#define		RF_TX_G2					0x21	// 
-#define		RF_TX_G3					0x22	// 
+#define		RF_TX_G1					0x20	//
+#define		RF_TX_G2					0x21	//
+#define		RF_TX_G3					0x22	//
 
-#define		RF_TX_BB1					0x23	// 
+#define		RF_TX_BB1					0x23	//
 
-#define		RF_T_METER					0x24	// 
+#define		RF_T_METER					0x24	//
 
 #define		RF_SYN_G1					0x25	// RF TX Power control
 #define		RF_SYN_G2					0x26	// RF TX Power control
@@ -511,7 +511,7 @@
 #define		bRFSI_ANTSW               		0x100
 #define		bRFSI_ANTSWB              		0x200
 #define		bRFSI_PAPE                			0x400
-#define		bRFSI_PAPE5G              		0x800 
+#define		bRFSI_PAPE5G              		0x800
 #define		bBandSelect               			0x1
 #define		bHTSIG2_GI                			0x80
 #define		bHTSIG2_Smoothing         		0x01
@@ -849,7 +849,7 @@
 #define		bTRSWIsolation_B         0x7f00
 #define		bTRSWIsolation_C         0x7f0000
 #define		bTRSWIsolation_D         0x7f000000       		
-#define		bExtLNAGain              0x7c00          
+#define		bExtLNAGain              0x7c00
 
 // 6. PageE(0xE00)
 #define		bSTBCEn                  0x4	// Useless

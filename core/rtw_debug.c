@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -223,7 +223,7 @@ int proc_get_sec_info(char *page, char **start,
 	
 	int len = 0;
 
-	len += snprintf(page + len, count - len, "auth_alg=0x%x, enc_alg=0x%x, auth_type=0x%x, enc_type=0x%x\n", 
+	len += snprintf(page + len, count - len, "auth_alg=0x%x, enc_alg=0x%x, auth_type=0x%x, enc_type=0x%x\n",
 						psecuritypriv->dot11AuthAlgrthm, psecuritypriv->dot11PrivacyAlgrthm,
 						psecuritypriv->ndisauthtype, psecuritypriv->ndisencryptstatus);
 				
@@ -290,10 +290,10 @@ int proc_get_rf_info(char *page, char **start,
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;	
 	int len = 0;
 
-	len += snprintf(page + len, count - len, "cur_ch=%d, cur_bw=%d, cur_ch_offet=%d\n", 
+	len += snprintf(page + len, count - len, "cur_ch=%d, cur_bw=%d, cur_ch_offet=%d\n",
 					pmlmeext->cur_channel, pmlmeext->cur_bwmode, pmlmeext->cur_ch_offset);
 	
-	len += snprintf(page + len, count - len, "oper_ch=%d, oper_bw=%d, oper_ch_offet=%d\n", 
+	len += snprintf(page + len, count - len, "oper_ch=%d, oper_bw=%d, oper_ch_offet=%d\n",
 					rtw_get_oper_ch(padapter), rtw_get_oper_bw(padapter),  rtw_get_oper_choffset(padapter));
 				
 	*eof = 1;
@@ -360,7 +360,7 @@ int proc_get_adapter_state(char *page, char **start,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	int len = 0;
 	
-	len += snprintf(page + len, count - len, "bSurpriseRemoved=%d, bDriverStopped=%d\n", 
+	len += snprintf(page + len, count - len, "bSurpriseRemoved=%d, bDriverStopped=%d\n",
 						padapter->bSurpriseRemoved, padapter->bDriverStopped);
 
 	*eof = 1;
@@ -387,7 +387,7 @@ int proc_get_trx_info(char *page, char **start,
 				pxmitpriv->free_xmit_extbuf_cnt, pxmitpriv->free_xframe_ext_cnt,
 				precvpriv->free_recvframe_cnt);
 
-	for(i = 0; i < 4; i++) 
+	for(i = 0; i < 4; i++)
 	{
 		phwxmit = pxmitpriv->hwxmits + i;
 		len += snprintf(page + len, count - len, "%d, hwq.accnt=%d\n", i, phwxmit->accnt);
@@ -653,7 +653,7 @@ int proc_get_rx_signal(char *page, char **start,
 		"rxpwdb:%d\n"
 		"signal_strength:%u\n"
 		"signal_qual:%u\n"
-		"noise:%u\n", 
+		"noise:%u\n",
 		padapter->recvpriv.rssi,
 		padapter->recvpriv.rxpwdb,
 		padapter->recvpriv.signal_strength,
@@ -1109,7 +1109,7 @@ int proc_get_best_channel(char *page, char **start,
 			}
 		}
 #if 1 // debug
-		len += snprintf(page + len, count - len, "The rx cnt of channel %3d = %d\n", 
+		len += snprintf(page + len, count - len, "The rx cnt of channel %3d = %d\n",
 					pmlmeext->channel_set[i].ChannelNum, pmlmeext->channel_set[i].rx_count);
 #endif
 	}

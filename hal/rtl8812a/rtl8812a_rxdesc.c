@@ -165,7 +165,7 @@ static void process_phy_info(_adapter *padapter, void *prframe)
 	//
 	// Check PWDB.
 	//
-	//process_PWDB(padapter, precvframe); 
+	//process_PWDB(padapter, precvframe);
 
 	//UpdateRxSignalStatistics8192C(Adapter, pRfd);
 	//

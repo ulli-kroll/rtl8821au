@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -17,7 +17,7 @@
  *
  *
  ******************************************************************************/
-#ifndef	__RTW_RF_H_ 
+#ifndef	__RTW_RF_H_
 #define __RTW_RF_H_
 
 
@@ -53,7 +53,7 @@
 #define JAPAN						0x2 //temp, should be provided later	
 
 struct	regulatory_class {
-	u32	starting_freq;					//MHz, 
+	u32	starting_freq;					//MHz,
 	u8	channel_set[MAX_CHANNEL_NUM];
 	u8	channel_cck_power[MAX_CHANNEL_NUM];//dbm
 	u8	channel_ofdm_power[MAX_CHANNEL_NUM];//dbm

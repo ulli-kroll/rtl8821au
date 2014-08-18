@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -290,14 +290,14 @@ Caller Mode: AP, Ad-HoC, Infra
 
 Notes: To ask RTL8711 performing site-survey
 
-Command-Event Mode 
+Command-Event Mode
 
 */
 
 #define RTW_SSID_SCAN_AMOUNT 9 // for WEXT_CSCAN_AMOUNT 9
 #define RTW_CHANNEL_SCAN_AMOUNT (14+37)
 struct sitesurvey_parm {
-	sint scan_mode;	//active: 1, passive: 0 
+	sint scan_mode;	//active: 1, passive: 0
 	/* sint bsslimit;	// 1 ~ 48 */
 	u8 ssid_num;
 	u8 ch_num;
@@ -340,18 +340,18 @@ struct setkey_parm {
 };
 
 /*
-When in AP or Ad-Hoc mode, this is used to 
+When in AP or Ad-Hoc mode, this is used to
 allocate an sw/hw entry for a newly associated sta.
 
 Command
 
-when shared key ==> algorithm/keyid 
+when shared key ==> algorithm/keyid
 
 */
 struct set_stakey_parm {
 	u8	addr[ETH_ALEN];
 	u8	algorithm;
-	u8 	id;// currently for erasing cam entry if algorithm == _NO_PRIVACY_ 
+	u8 	id;// currently for erasing cam entry if algorithm == _NO_PRIVACY_
 	u8	key[16];
 };
 
@@ -573,7 +573,7 @@ struct Tx_Beacon_param
 /*
 	Notes: This command is used for H2C/C2H loopback testing
 
-	mac[0] == 0 
+	mac[0] == 0
 	==> CMD mode, return H2C_SUCCESS.
 	The following condition must be ture under CMD mode
 		mac[1] == mac[4], mac[2] == mac[3], mac[0]=mac[5]= 0;
@@ -614,7 +614,7 @@ struct Tx_Beacon_param
 		w0		=  	swap32(w0);
 		b0		= 	b1
 		s2		= 	s0 + event.mac[2]
-		b1		= 	b0 
+		b1		= 	b0
 		w1		=	swap32(w1) - event.mac[2];	
 	
 		parm->mac[3] is the total event counts that host requested.
@@ -889,25 +889,25 @@ struct SwitchBandwidth_parm
 
 #endif	/* MP_FIRMWARE_OFFLOAD */
 
-/*H2C Handler index: 59 */ 
+/*H2C Handler index: 59 */
 struct SetChannelPlan_param
 {
 	u8 channel_plan;
 };
 
-/*H2C Handler index: 60 */ 
+/*H2C Handler index: 60 */
 struct LedBlink_param
 {
 	PVOID	 pLed;
 };
 
-/*H2C Handler index: 61 */ 
+/*H2C Handler index: 61 */
 struct SetChannelSwitch_param
 {
 	u8 new_ch_no;
 };
 
-/*H2C Handler index: 62 */ 
+/*H2C Handler index: 62 */
 struct TDLSoption_param
 {
 	u8 addr[ETH_ALEN];
@@ -919,7 +919,7 @@ struct TDLSoption_param
 
 /*
 
-Result: 
+Result:
 0x00: success
 0x01: sucess, and check Response.
 0x02: cmd ignored due to duplicated sequcne number
@@ -1013,24 +1013,24 @@ struct _cmd_callback {
 enum rtw_h2c_cmd
 {
 	GEN_CMD_CODE(_Read_MACREG) ,	/*0*/
- 	GEN_CMD_CODE(_Write_MACREG) ,    
- 	GEN_CMD_CODE(_Read_BBREG) ,  
- 	GEN_CMD_CODE(_Write_BBREG) ,  
- 	GEN_CMD_CODE(_Read_RFREG) ,  
+ 	GEN_CMD_CODE(_Write_MACREG) ,
+ 	GEN_CMD_CODE(_Read_BBREG) ,
+ 	GEN_CMD_CODE(_Write_BBREG) ,
+ 	GEN_CMD_CODE(_Read_RFREG) ,
  	GEN_CMD_CODE(_Write_RFREG) , /*5*/
- 	GEN_CMD_CODE(_Read_EEPROM) ,  
- 	GEN_CMD_CODE(_Write_EEPROM) ,  
- 	GEN_CMD_CODE(_Read_EFUSE) ,  
- 	GEN_CMD_CODE(_Write_EFUSE) , 
+ 	GEN_CMD_CODE(_Read_EEPROM) ,
+ 	GEN_CMD_CODE(_Write_EEPROM) ,
+ 	GEN_CMD_CODE(_Read_EFUSE) ,
+ 	GEN_CMD_CODE(_Write_EFUSE) ,
  	
  	GEN_CMD_CODE(_Read_CAM) ,	/*10*/
- 	GEN_CMD_CODE(_Write_CAM) ,   
+ 	GEN_CMD_CODE(_Write_CAM) ,
  	GEN_CMD_CODE(_setBCNITV),
  	GEN_CMD_CODE(_setMBIDCFG),
  	GEN_CMD_CODE(_JoinBss),   /*14*/
  	GEN_CMD_CODE(_DisConnect) , /*15*/
  	GEN_CMD_CODE(_CreateBss) ,
-	GEN_CMD_CODE(_SetOpMode) , 
+	GEN_CMD_CODE(_SetOpMode) ,
 	GEN_CMD_CODE(_SiteSurvey),  /*18*/
  	GEN_CMD_CODE(_SetAuth) ,
  	
@@ -1038,7 +1038,7 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_SetStaKey) ,
  	GEN_CMD_CODE(_SetAssocSta) ,
  	GEN_CMD_CODE(_DelAssocSta) ,
- 	GEN_CMD_CODE(_SetStaPwrState) , 
+ 	GEN_CMD_CODE(_SetStaPwrState) ,
  	GEN_CMD_CODE(_SetBasicRate) , /*25*/
  	GEN_CMD_CODE(_GetBasicRate) ,
  	GEN_CMD_CODE(_SetDataRate) ,
@@ -1051,7 +1051,7 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_readRssi) ,
  	GEN_CMD_CODE(_readGain) ,
  	GEN_CMD_CODE(_SetAtim) , /*35*/
- 	GEN_CMD_CODE(_SetPwrMode) , 
+ 	GEN_CMD_CODE(_SetPwrMode) ,
  	GEN_CMD_CODE(_JoinbssRpt),
  	GEN_CMD_CODE(_SetRaTable) ,
  	GEN_CMD_CODE(_GetRaTable) ,  	
@@ -1063,7 +1063,7 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_SetH2cLbk),
  	GEN_CMD_CODE(_AddBAReq) , /*45*/
 	GEN_CMD_CODE(_SetChannel), /*46*/
-	GEN_CMD_CODE(_SetTxPower), 
+	GEN_CMD_CODE(_SetTxPower),
 	GEN_CMD_CODE(_SwitchAntenna),
 	GEN_CMD_CODE(_SetCrystalCap),
 	GEN_CMD_CODE(_SetSingleCarrierTx), /*50*/
@@ -1093,10 +1093,10 @@ enum rtw_h2c_cmd
 #define _SetRFReg_CMD_ 		_Write_RFREG_CMD_
 
 #ifdef _RTW_CMD_C_
-struct _cmd_callback 	rtw_cmd_callback[] = 
+struct _cmd_callback 	rtw_cmd_callback[] =
 {
 	{GEN_CMD_CODE(_Read_MACREG), NULL}, /*0*/
-	{GEN_CMD_CODE(_Write_MACREG), NULL}, 
+	{GEN_CMD_CODE(_Write_MACREG), NULL},
 	{GEN_CMD_CODE(_Read_BBREG), &rtw_getbbrfreg_cmdrsp_callback},
 	{GEN_CMD_CODE(_Write_BBREG), NULL},
 	{GEN_CMD_CODE(_Read_RFREG), &rtw_getbbrfreg_cmdrsp_callback},
@@ -1141,8 +1141,8 @@ struct _cmd_callback 	rtw_cmd_callback[] =
  	
 	{GEN_CMD_CODE(_GetCCXReport), NULL}, /*40*/
  	{GEN_CMD_CODE(_GetDTMReport),	NULL},
- 	{GEN_CMD_CODE(_GetTXRateStatistics), NULL}, 
- 	{GEN_CMD_CODE(_SetUsbSuspend), NULL}, 
+ 	{GEN_CMD_CODE(_GetTXRateStatistics), NULL},
+ 	{GEN_CMD_CODE(_SetUsbSuspend), NULL},
  	{GEN_CMD_CODE(_SetH2cLbk), NULL},
  	{GEN_CMD_CODE(_AddBAReq), NULL}, /*45*/
 	{GEN_CMD_CODE(_SetChannel), NULL},		/*46*/

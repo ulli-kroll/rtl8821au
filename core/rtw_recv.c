@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -723,7 +723,7 @@ union recv_frame * portctrl(_adapter *adapter,union recv_frame * precv_frame)
 	struct sta_priv *pstapriv ;
 	union recv_frame *prtnframe;
 	u16	ether_type=0;
-	u16  eapol_type = 0x888e;//for Funia BD's WPA issue  
+	u16  eapol_type = 0x888e;//for Funia BD's WPA issue
 	struct rx_pkt_attrib *pattrib;
 
 _func_enter_;
@@ -970,11 +970,11 @@ sint OnTDLS(_adapter *adapter, union recv_frame *precv_frame)
 	struct tdls_info *ptdlsinfo = &(adapter->tdlsinfo);
 
 	//point to action field
-	paction+=pattrib->hdrlen 
-			+ pattrib->iv_len 
-			+ SNAP_SIZE 
-			+ ETH_TYPE_LEN 
-			+ PAYLOAD_TYPE_LEN 
+	paction+=pattrib->hdrlen
+			+ pattrib->iv_len
+			+ SNAP_SIZE
+			+ ETH_TYPE_LEN
+			+ PAYLOAD_TYPE_LEN
 			+ category_field;
 
 	if(ptdlsinfo->enable == 0)
@@ -1327,7 +1327,7 @@ sint ap2sta_data_frame(
 _func_enter_;
 
 	if ((check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE)
-		&& (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE 
+		&& (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE
 			|| check_fwstate(pmlmepriv, _FW_UNDER_LINKING) == _TRUE	)
 		)
 	{
@@ -1608,7 +1608,7 @@ sint validate_recv_ctrl_frame(_adapter *padapter, union recv_frame *precv_frame)
 
 		if((psta->state&WIFI_SLEEP_STATE) && (pstapriv->sta_dz_bitmap&BIT(psta->aid)))
 		{
-			_irqL irqL;	 
+			_irqL irqL;	
 			_list	*xmitframe_plist, *xmitframe_phead;
 			struct xmit_frame *pxmitframe=NULL;
 			struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
@@ -1747,7 +1747,7 @@ sint validate_recv_mgnt_frame(PADAPTER padapter, union recv_frame *precv_frame)
 				else if (is_broadcast_mac_addr(GetAddr1Ptr(precv_frame->u.hdr.rx_data))
 					|| is_multicast_mac_addr(GetAddr1Ptr(precv_frame->u.hdr.rx_data)))
 					psta->sta_stats.rx_probersp_bm_pkts++;
-				else 
+				else
 					psta->sta_stats.rx_probersp_uo_pkts++;
 			}
 		}
@@ -1759,7 +1759,7 @@ sint validate_recv_mgnt_frame(PADAPTER padapter, union recv_frame *precv_frame)
 		struct rx_pkt_attrib * pattrib=&precv_frame->u.hdr.attrib;
 		 struct recv_stat* prxstat=( struct recv_stat * )  precv_frame->u.hdr.rx_head ;
 		 u8 * pda,*psa,*pbssid,*ptr;
-		 ptr=precv_frame->u.hdr.rx_data; 
+		 ptr=precv_frame->u.hdr.rx_data;
 		pda = get_da(ptr);
 		psa = get_sa(ptr);
 		pbssid = get_hdr_bssid(ptr);
@@ -2210,7 +2210,7 @@ _func_enter_;
 	/* convert hdr + possible LLC headers into Ethernet header */
 	//eth_type = (psnap_type[0] << 8) | psnap_type[1];
 	if((_rtw_memcmp(psnap, rtw_rfc1042_header, SNAP_SIZE) &&
-		(_rtw_memcmp(psnap_type, SNAP_ETH_TYPE_IPX, 2) == _FALSE) && 
+		(_rtw_memcmp(psnap_type, SNAP_ETH_TYPE_IPX, 2) == _FALSE) &&
 		(_rtw_memcmp(psnap_type, SNAP_ETH_TYPE_APPLETALK_AARP, 2)==_FALSE) )||
 		//eth_type != ETH_P_AARP && eth_type != ETH_P_IPX) ||
 		 _rtw_memcmp(psnap, rtw_bridge_tunnel_header, SNAP_SIZE)){
@@ -2244,7 +2244,7 @@ _func_enter_;
 
 			rx_pid = *(u16*)(ptr+rmv_len+2);
 			
-			DBG_871X("wlan rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n", 
+			DBG_871X("wlan rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n",
 				rx_pid, MAC_ARG(psta->hwaddr), psta->pid);
 
 			if(rx_pid == psta->pid)
@@ -2253,14 +2253,14 @@ _func_enter_;
 				u16 len = *(u16*)(ptr+rmv_len+4);
 				//u16 ctrl_type = *(u16*)(ptr+rmv_len+6);
 
-				//DBG_871X("RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type); 
-				DBG_871X("RC: len=0x%x\n", len); 
+				//DBG_871X("RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type);
+				DBG_871X("RC: len=0x%x\n", len);
 
 				for(i=0;i<len;i++)
 					DBG_871X("0x%x\n", *(ptr+rmv_len+6+i));
 					//DBG_871X("0x%x\n", *(ptr+rmv_len+8+i));
 
-				DBG_871X("RC-end\n"); 
+				DBG_871X("RC-end\n");
 			}			
 		}		
 	}
@@ -2820,7 +2820,7 @@ int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num)
 		//DbgPrint("CheckRxTsIndicateSeq(): Packet Drop! IndicateSeq: %d, NewSeq: %d\n", precvpriv->indicate_seq, seq_num);
 
 		#ifdef DBG_RX_DROP_FRAME
-		DBG_871X("%s IndicateSeq: %d > NewSeq: %d\n", __FUNCTION__, 
+		DBG_871X("%s IndicateSeq: %d > NewSeq: %d\n", __FUNCTION__,
 			preorder_ctrl->indicate_seq, seq_num);
 		#endif
 
@@ -3309,7 +3309,7 @@ int process_recv_indicatepkts(_adapter *padapter, union recv_frame *prframe)
 
 #ifdef CONFIG_TDLS
 	if( (phtpriv->ht_option==_TRUE) ||
-		((psta->tdls_sta_state & TDLS_LINKED_STATE) && 
+		((psta->tdls_sta_state & TDLS_LINKED_STATE) &&
 		 (psta->htpriv.ht_option==_TRUE) &&
 		 (psta->htpriv.ampdu_enable==_TRUE))) //B/G/N Mode
 #else

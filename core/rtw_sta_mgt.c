@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -97,7 +97,7 @@ _func_enter_;
 	if(!pstapriv->pallocated_stainfo_buf)
 		return _FAIL;
 
-	pstapriv->pstainfo_buf = pstapriv->pallocated_stainfo_buf + 4 - 
+	pstapriv->pstainfo_buf = pstapriv->pallocated_stainfo_buf + 4 -
 		((SIZE_PTR)(pstapriv->pallocated_stainfo_buf ) & 3);
 
 	_rtw_init_queue(&pstapriv->free_sta_queue);
@@ -137,7 +137,7 @@ _func_enter_;
 	pstapriv->asoc_list_cnt = 0;
 	pstapriv->auth_list_cnt = 0;
 
-	pstapriv->auth_to = 3; // 3*2 = 6 sec 
+	pstapriv->auth_to = 3; // 3*2 = 6 sec
 	pstapriv->assoc_to = 3;
 	//pstapriv->expire_to = 900;// 900*2 = 1800 sec = 30 min, expire after no any traffic.
 	//pstapriv->expire_to = 30;// 30*2 = 60 sec = 1 min, expire after no any traffic.
@@ -278,7 +278,7 @@ u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
 _func_enter_;
 	if(pstapriv){
 
-		/*	delete all reordering_ctrl_timer		*/ 
+		/*	delete all reordering_ctrl_timer		*/
 		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
 		for(index = 0; index < NUM_STA; index++)
 		{
@@ -314,7 +314,7 @@ _func_exit_;
 
 
 //struct	sta_info *rtw_alloc_stainfo(_queue *pfree_sta_queue, unsigned char *hwaddr)
-struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr) 
+struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
 {	
 	_irqL irqL, irqL2;
 	uint tmp_aid;
@@ -384,7 +384,7 @@ _func_enter_;
                      _rtw_memcpy( &psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2 );
 		}
 
-		RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_info_,("alloc number_%d stainfo  with hwaddr = %x %x %x %x %x %x  \n", 
+		RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_info_,("alloc number_%d stainfo  with hwaddr = %x %x %x %x %x %x  \n",
 		pstapriv->asoc_sta_count , hwaddr[0], hwaddr[1], hwaddr[2],hwaddr[3],hwaddr[4],hwaddr[5]));
 
 		init_addba_retry_timer(pstapriv->padapter, psta);
@@ -413,7 +413,7 @@ _func_enter_;
 			DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d\n", __FUNCTION__, __LINE__,
 				preorder_ctrl->indicate_seq);
 			#endif
-			preorder_ctrl->wend_b= 0xffff;       
+			preorder_ctrl->wend_b= 0xffff;
 			//preorder_ctrl->wsize_b = (NR_RECVBUFF-2);
 			preorder_ctrl->wsize_b = 64;//64;
 
@@ -732,7 +732,7 @@ _func_enter_;
 	
 		psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 		
-		if ((_rtw_memcmp(psta->hwaddr, addr, ETH_ALEN))== _TRUE) 
+		if ((_rtw_memcmp(psta->hwaddr, addr, ETH_ALEN))== _TRUE)
 		{ // if found the matched address
 			break;
 		}
@@ -755,7 +755,7 @@ u32 rtw_init_bcmc_stainfo(_adapter* padapter)
 	NDIS_802_11_MAC_ADDRESS	bcast_addr= {0xff,0xff,0xff,0xff,0xff,0xff};
 	
 	struct	sta_priv *pstapriv = &padapter->stapriv;
-	//_queue	*pstapending = &padapter->xmitpriv.bm_pending; 
+	//_queue	*pstapending = &padapter->xmitpriv.bm_pending;
 	
 _func_enter_;
 
@@ -795,7 +795,7 @@ struct sta_info* rtw_get_bcmc_stainfo(_adapter* padapter)
 	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 _func_enter_;
 	 psta = rtw_get_stainfo(pstapriv, bc_addr);
-_func_exit_;		 
+_func_exit_;		
 	return psta;
 
 }

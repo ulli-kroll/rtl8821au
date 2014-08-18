@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -24,7 +24,7 @@
 //
 // RF RL6052 Series API
 //
-void		rtl8192c_RF_ChangeTxPath(	IN	PADAPTER	Adapter, 
+void		rtl8192c_RF_ChangeTxPath(	IN	PADAPTER	Adapter,
 										IN	u16		DataRate);
 void		rtl8192c_PHY_RF6052SetBandwidth(	
 										IN	PADAPTER				Adapter,

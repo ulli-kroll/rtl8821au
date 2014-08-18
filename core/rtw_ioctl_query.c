@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -33,21 +33,21 @@ query_802_11_capability(
 	u32 *		pulOutLen
 )
 {
-	static NDIS_802_11_AUTHENTICATION_ENCRYPTION szAuthEnc[] = 
+	static NDIS_802_11_AUTHENTICATION_ENCRYPTION szAuthEnc[] =
 	{
-		{Ndis802_11AuthModeOpen, Ndis802_11EncryptionDisabled}, 
+		{Ndis802_11AuthModeOpen, Ndis802_11EncryptionDisabled},
 		{Ndis802_11AuthModeOpen, Ndis802_11Encryption1Enabled},
-		{Ndis802_11AuthModeShared, Ndis802_11EncryptionDisabled}, 
+		{Ndis802_11AuthModeShared, Ndis802_11EncryptionDisabled},
 		{Ndis802_11AuthModeShared, Ndis802_11Encryption1Enabled},
-		{Ndis802_11AuthModeWPA, Ndis802_11Encryption2Enabled}, 
+		{Ndis802_11AuthModeWPA, Ndis802_11Encryption2Enabled},
 		{Ndis802_11AuthModeWPA, Ndis802_11Encryption3Enabled},
-		{Ndis802_11AuthModeWPAPSK, Ndis802_11Encryption2Enabled}, 
+		{Ndis802_11AuthModeWPAPSK, Ndis802_11Encryption2Enabled},
 		{Ndis802_11AuthModeWPAPSK, Ndis802_11Encryption3Enabled},
-		{Ndis802_11AuthModeWPANone, Ndis802_11Encryption2Enabled}, 
+		{Ndis802_11AuthModeWPANone, Ndis802_11Encryption2Enabled},
 		{Ndis802_11AuthModeWPANone, Ndis802_11Encryption3Enabled},
-		{Ndis802_11AuthModeWPA2, Ndis802_11Encryption2Enabled}, 
+		{Ndis802_11AuthModeWPA2, Ndis802_11Encryption2Enabled},
 		{Ndis802_11AuthModeWPA2, Ndis802_11Encryption3Enabled},
-		{Ndis802_11AuthModeWPA2PSK, Ndis802_11Encryption2Enabled}, 
+		{Ndis802_11AuthModeWPA2PSK, Ndis802_11Encryption2Enabled},
 		{Ndis802_11AuthModeWPA2PSK, Ndis802_11Encryption3Enabled}
 	};	
 	static ULONG	ulNumOfPairSupported = sizeof(szAuthEnc)/sizeof(NDIS_802_11_AUTHENTICATION_ENCRYPTION);
@@ -108,7 +108,7 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 		
 		if(psecuritypriv->ndisauthtype>=Ndis802_11AuthModeWPA2)
 			pDest[0] =48;		//RSN Information Element
-		else 
+		else
 			pDest[0] =221;	//WPA(SSN) Information Element
 		
 		RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("\n Adapter->ndisauthtype==Ndis802_11AuthModeWPA)?0xdd:0x30 [%d]",pDest[0]));
@@ -123,7 +123,7 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 		while((i<supp_ie[0]) && (i<256)){
 			if((unsigned char)supp_ie[i]==pDest[0]){
 						_rtw_memcpy((u8 *)(pDest),
-							&supp_ie[i], 
+							&supp_ie[i],
 							supp_ie[1+i]+2);
 			
 				break;
@@ -173,11 +173,11 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 		i=auth_ie[0]-12;
 		if(i>0){
 			_rtw_memcpy((u8 *)&pDest[0],&auth_ie[1],i);
-			pAssocInfo->ResponseIELength =i; 
+			pAssocInfo->ResponseIELength =i;
 		}
 
 
-		pAssocInfo->OffsetResponseIEs = sizeof(NDIS_802_11_ASSOCIATION_INFORMATION) + pAssocInfo->RequestIELength;  
+		pAssocInfo->OffsetResponseIEs = sizeof(NDIS_802_11_ASSOCIATION_INFORMATION) + pAssocInfo->RequestIELength;
 
 
 		RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("\n tgt_network != NULL,fwstate==_FW_LINKED \n"));

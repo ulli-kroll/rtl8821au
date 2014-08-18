@@ -34,7 +34,7 @@ PHY_RF6052SetCckTxPower8723B(
 	IN	PADAPTER		Adapter,
 	IN	u8*			pPowerlevel);
 
-VOID 
+VOID
 PHY_RF6052SetOFDMTxPower8723B(
 	IN	PADAPTER	Adapter,
 	IN	u8		*pPowerLevelOFDM,

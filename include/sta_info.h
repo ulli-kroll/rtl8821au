@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -110,7 +110,7 @@ struct sta_info {
 	uint qos_option;
 	u8	hwaddr[ETH_ALEN];
 
-	uint	ieee8021x_blocked;	//0: allowed, 1:blocked 
+	uint	ieee8021x_blocked;	//0: allowed, 1:blocked
 	uint	dot118021XPrivacy; //aes, tkip...
 	union Keytype	dot11tkiptxmickey;
 	union Keytype	dot11tkiprxmickey;
@@ -162,7 +162,7 @@ struct sta_info {
 	//for A-MPDU TX, ADDBA timeout check	
 	_timer addba_retry_timer;
 	
-	//for A-MPDU Rx reordering buffer control 
+	//for A-MPDU Rx reordering buffer control
 	struct recv_reorder_ctrl recvreorder_ctrl[16];
 
 	//for A-MPDU Tx
@@ -191,7 +191,7 @@ struct sta_info {
 
 	_list asoc_list;
 	_list auth_list;
-	 
+	
 	unsigned int expire_to;
 	unsigned int auth_seq;
 	unsigned int authalg;
@@ -279,12 +279,12 @@ struct sta_info {
 	//
 	// Driver Write
 	u8		bValid;				// record the sta status link or not?
-	//u8		WirelessMode;		// 
+	//u8		WirelessMode;		//
 	u8		IOTPeer;			// Enum value.	HT_IOT_PEER_E
 	u8		rssi_level;			//for Refresh RA mask
 	// ODM Write
 	//1 PHY_STATUS_INFO
-	u8		RSSI_Path[4];		// 
+	u8		RSSI_Path[4];		//
 	u8		RSSI_Ave;
 	u8		RXEVM[4];
 	u8		RXSNR[4];

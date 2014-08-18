@@ -20,7 +20,7 @@
 #ifndef __RTL8812A_CMD_H__
 #define __RTL8812A_CMD_H__
 
-typedef enum _RTL8812_H2C_CMD 
+typedef enum _RTL8812_H2C_CMD
 {
 	H2C_8812_RSVDPAGE = 0,
 	H2C_8812_MSRRPT = 1,

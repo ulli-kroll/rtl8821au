@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -88,10 +88,10 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 #define MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE	4
 #define MAX_2_4G_BANDWITH_NUM					2
 #define MAX_2_4G_RATE_SECTION_NUM				3
-#define MAX_2_4G_CHANNEL_NUM						5 // adopt channel group instead of individual channel 
+#define MAX_2_4G_CHANNEL_NUM						5 // adopt channel group instead of individual channel
 #define MAX_5G_BANDWITH_NUM						4
 #define MAX_5G_RATE_SECTION_NUM					4
-#define MAX_5G_CHANNEL_NUM						14 // adopt channel group instead of individual channel 
+#define MAX_5G_CHANNEL_NUM						14 // adopt channel group instead of individual channel
 
 #define MAX_BASE_NUM_IN_PHY_REG_PG_2_4G			4 //  CCK:1,OFDM:2, HT:2
 #define MAX_BASE_NUM_IN_PHY_REG_PG_5G			5 // OFDM:1, HT:2, VHT:2
@@ -136,7 +136,7 @@ struct dm_priv
 	u8	DM_Type;
 	u8	DMFlag;
 	u8	InitDMFlag;
-	//u8   RSVD_1;   
+	//u8   RSVD_1;
 	
 	u32	InitODMFlag;
 	//* Upper and Lower Signal threshold for Rate Adaptive*/
@@ -170,7 +170,7 @@ struct dm_priv
 	u8	ThermalValue;
 	u8	ThermalValue_LCK;
 	u8	ThermalValue_IQK;
-	u8	ThermalValue_DPK; 
+	u8	ThermalValue_DPK;
 	u8	bRfPiEnable;
 	//u8   RSVD_2;		
 
@@ -335,9 +335,9 @@ typedef struct hal_com_data
 	u8	TxPwrCalibrateRate;
 	//
 	// TX power by rate table at most 4RF path.
-	// The register is 
+	// The register is
 	//
-	// VHT TX power by rate off setArray = 
+	// VHT TX power by rate off setArray =
 	// Band:-2G&5G = 0 / 1
 	// RF: at most 4*4 = ABCD=0/1/2/3
 	// CCK=0 OFDM=1/2 HT-MCS 0-15=3/4/56 VHT=7/8/9/10/11			
@@ -349,7 +349,7 @@ typedef struct hal_com_data
 						[TX_PWR_BY_RATE_NUM_SECTION];
 	//---------------------------------------------------------------------------------//
 
-	//2 Power Limit Table 
+	//2 Power Limit Table
 	u8	TxPwrLevelCck[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
 	u8	TxPwrLevelHT40_1S[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];	// For HT 40MHZ pwr
 	u8	TxPwrLevelHT40_2S[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];	// For HT 40MHZ pwr
@@ -617,7 +617,7 @@ typedef struct hal_com_data
 	BOOLEAN		bSupportRemoteWakeUp;
 	BOOLEAN		bInSetPower;
 	u8	RTSInitRate;	 // 2010.11.24.by tynli.	
-	#endif //CONFIG_RTL8192D 
+	#endif //CONFIG_RTL8192D
 
 #endif //defined(CONFIG_RTL8192C) ||defined(CONFIG_RTL8192D)
 } HAL_DATA_COMMON, *PHAL_DATA_COMMON;

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -190,8 +190,8 @@ enum NETWORK_TYPE
 	WIRELESS_11A = BIT(2), // tx: ofdm only, rx: ofdm only, hw: ofdm only
 	WIRELESS_11_24N = BIT(3), // tx: MCS only, rx: MCS & cck, hw: MCS & cck
 	WIRELESS_11_5N = BIT(4), // tx: MCS only, rx: MCS & ofdm, hw: ofdm only
-	WIRELESS_AUTO = BIT(5), 
-	WIRELESS_11AC = BIT(6), 
+	WIRELESS_AUTO = BIT(5),
+	WIRELESS_11AC = BIT(6),
 
 	//Combination
 	//Type for current wireless mode
@@ -227,9 +227,9 @@ enum NETWORK_TYPE
 
 #define IsSupportedTxCCK(NetType) ((NetType) & (WIRELESS_11B) ? _TRUE : _FALSE)
 #define IsSupportedTxOFDM(NetType) ((NetType) & (WIRELESS_11G|WIRELESS_11A) ? _TRUE : _FALSE)
-#define IsSupportedTxHT(NetType) ((NetType) & (WIRELESS_11_24N|WIRELESS_11_5N) ? _TRUE : _FALSE) 
+#define IsSupportedTxHT(NetType) ((NetType) & (WIRELESS_11_24N|WIRELESS_11_5N) ? _TRUE : _FALSE)
 
-#define IsSupportedVHT(NetType) ((NetType) & (WIRELESS_11AC) ? _TRUE : _FALSE) 
+#define IsSupportedVHT(NetType) ((NetType) & (WIRELESS_11AC) ? _TRUE : _FALSE)
 
 
 typedef struct ieee_param {
@@ -272,7 +272,7 @@ typedef struct ieee_param {
 		} bcn_ie;
 #endif
 
-	} u;	   
+	} u;	
 }ieee_param;
 
 #ifdef CONFIG_AP_MODE
@@ -334,7 +334,7 @@ struct ieee_ibss_seq {
 	_list	list;
 };
 
-#if defined(PLATFORM_LINUX) || defined(CONFIG_RTL8711FW)||defined(PLATFORM_FREEBSD) 
+#if defined(PLATFORM_LINUX) || defined(CONFIG_RTL8711FW)||defined(PLATFORM_FREEBSD)
 
 struct rtw_ieee80211_hdr {
 	u16 frame_ctl;
@@ -1476,7 +1476,7 @@ enum rtw_ieee80211_back_parties {
           RTW_IEEE80211_CHAN_NO_HT40PLUS      = 1<<4,
           RTW_IEEE80211_CHAN_NO_HT40MINUS     = 1<<5,
   };
-  
+
   #define RTW_IEEE80211_CHAN_NO_HT40 \
           (RTW_IEEE80211_CHAN_NO_HT40PLUS | RTW_IEEE80211_CHAN_NO_HT40MINUS)
 
@@ -1493,7 +1493,7 @@ struct rtw_ieee80211_channel {
 	//u32 orig_flags;
 	//int orig_mag;
 	//int orig_mpwr;
-}; 
+};
 
 #define CHAN_FMT \
 	/*"band:%d, "*/ \
@@ -1506,7 +1506,7 @@ struct rtw_ieee80211_channel {
 	/*"beacon_found:%u\n"*/ \
 	/*"orig_flags:0x%08x\n"*/ \
 	/*"orig_mag:%d\n"*/ \
-	/*"orig_mpwr:%d\n"*/ 
+	/*"orig_mpwr:%d\n"*/
 
 #define CHAN_ARG(channel) \
 	/*(channel)->band*/ \

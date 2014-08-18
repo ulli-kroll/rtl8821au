@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -96,7 +96,7 @@ Efuse_Write1ByteToFakeContent(
 /*-----------------------------------------------------------------------------
  * Function:	Efuse_PowerSwitch
  *
- * Overview:	When we want to enable write operation, we should change to 
+ * Overview:	When we want to enable write operation, we should change to
  *				pwr on state. When we stop write, we should switch to 500k mode
  *				and disable LDO 2.5V.
  *
@@ -176,9 +176,9 @@ Efuse_CalculateWordCnts(IN u8	word_en)
 VOID
 ReadEFuseByte(
 		PADAPTER	Adapter,
-		u16 			_offset, 
-		u8 			*pbuf, 
-		IN BOOLEAN	bPseudoTest) 
+		u16 			_offset,
+		u8 			*pbuf,
+		IN BOOLEAN	bPseudoTest)
 {
 	u32	value32;
 	u8	readbyte;
@@ -225,7 +225,7 @@ ReadEFuseByte(
 
 //
 //	Description:
-//		1. Execute E-Fuse read byte operation according as map offset and 
+//		1. Execute E-Fuse read byte operation according as map offset and
 //		    save to E-Fuse table.
 //		2. Refered from SD1 Richard.
 //
@@ -293,7 +293,7 @@ EFUSE_GetEfuseDefinition(
  *---------------------------------------------------------------------------*/
 u8
 EFUSE_Read1Byte(	
-	IN	PADAPTER	Adapter, 
+	IN	PADAPTER	Adapter,
 	IN	u16		Address)
 {
 	u8	data;
@@ -358,12 +358,12 @@ EFUSE_Read1Byte(
 
 void	
 EFUSE_Write1Byte(	
-	IN	PADAPTER	Adapter, 
+	IN	PADAPTER	Adapter,
 	IN	u16		Address,
 	IN	u8		Value);
 void	
 EFUSE_Write1Byte(	
-	IN	PADAPTER	Adapter, 
+	IN	PADAPTER	Adapter,
 	IN	u16		Address,
 	IN	u8		Value)
 {
@@ -412,7 +412,7 @@ EFUSE_Write1Byte(
 /*  11/16/2008 MH Read one byte from real Efuse. */
 u8
 efuse_OneByteRead(
-	IN	PADAPTER	pAdapter, 
+	IN	PADAPTER	pAdapter,
 	IN	u16			addr,
 	IN	u8			*data,
 	IN	BOOLEAN		bPseudoTest)
@@ -436,7 +436,7 @@ efuse_OneByteRead(
 		// <20130121, Kordan> For SMIC EFUSE specificatoin.
 		//0x34[11]: SW force PGMEN input of efuse to high. (for the bank selected by 0x34[9:8])	
 		//PHY_SetMacReg(pAdapter, 0x34, BIT11, 0);
-		rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter,0x34)& (~BIT11) ); 
+		rtw_write16(pAdapter, 0x34, rtw_read16(pAdapter,0x34)& (~BIT11) );
 	}
 */
 	// -----------------e-fuse reg ctrl ---------------------------------
@@ -469,8 +469,8 @@ efuse_OneByteRead(
 /*  11/16/2008 MH Write one byte to reald Efuse. */
 u8
 efuse_OneByteWrite(
-	IN	PADAPTER	pAdapter,  
-	IN	u16			addr, 
+	IN	PADAPTER	pAdapter,
+	IN	u16			addr,
 	IN	u8			data,
 	IN	BOOLEAN		bPseudoTest)
 {
@@ -552,8 +552,8 @@ Efuse_PgPacketRead(	IN	PADAPTER	pAdapter,
 	return ret;
 }
 
-int 
-Efuse_PgPacketWrite(IN	PADAPTER	pAdapter, 
+int
+Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 					IN	u8 			offset,
 					IN	u8			word_en,
 					IN	u8			*data,
@@ -567,8 +567,8 @@ Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 }
 
 
-int 
-Efuse_PgPacketWrite_BT(IN	PADAPTER	pAdapter, 
+int
+Efuse_PgPacketWrite_BT(IN	PADAPTER	pAdapter,
 					IN	u8 			offset,
 					IN	u8			word_en,
 					IN	u8			*data,
@@ -629,7 +629,7 @@ efuse_WordEnableDataRead(IN	u8	word_en,
 u8
 Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 							IN	u16		efuse_addr,
-							IN	u8		word_en, 
+							IN	u8		word_en,
 							IN	u8		*data,
 							IN	BOOLEAN		bPseudoTest)
 {
@@ -956,15 +956,15 @@ exit:
  * 11/11/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-VOID 
+VOID
 Efuse_ReadAllMap(
-	IN		PADAPTER	pAdapter, 
+	IN		PADAPTER	pAdapter,
 	IN		u8		efuseType,
 	IN OUT	u8		*Efuse,
 	IN		BOOLEAN		bPseudoTest);
-VOID 
+VOID
 Efuse_ReadAllMap(
-	IN		PADAPTER	pAdapter, 
+	IN		PADAPTER	pAdapter,
 	IN		u8		efuseType,
 	IN OUT	u8		*Efuse,
 	IN		BOOLEAN		bPseudoTest)
@@ -1152,7 +1152,7 @@ void EFUSE_ShadowMapUpdate(
 		#endif
 	}
 
-	//PlatformMoveMemory((PVOID)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0], 
+	//PlatformMoveMemory((PVOID)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0],
 	//(PVOID)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen);
 }// EFUSE_ShadowMapUpdate
 

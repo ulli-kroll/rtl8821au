@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -243,7 +243,7 @@ static int update_nd_link_layer_addr(unsigned char *data, int len, unsigned char
 	struct icmp6hdr *icmphdr = (struct icmp6hdr *)data;
 	unsigned char *mac;
 	
-	if (icmphdr->icmp6_type == NDISC_ROUTER_SOLICITATION) { 
+	if (icmphdr->icmp6_type == NDISC_ROUTER_SOLICITATION) {
 		if (len >= 8) {
 			mac = scan_tlv(&data[8], len-8, 1, 1);
 			if (mac) {
@@ -318,7 +318,7 @@ static void convert_ipv6_mac_to_mc(struct sk_buff *skb)
 	dst_mac[0] = 0x33;
 	dst_mac[1] = 0x33;
 	memcpy(&dst_mac[2], &iph->daddr.s6_addr32[3], 4);
-	#if defined(__LINUX_2_6__) 
+	#if defined(__LINUX_2_6__)
 	/*modified by qinjunjie,warning:should not remove next line*/
 	skb->pkt_type = PACKET_MULTICAST;
 	#endif
@@ -1427,7 +1427,7 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 			case NAT25_INSERT:
 				{
 					DEBUG_INFO("NAT25: Insert IP, SA=%4x:%4x:%4x:%4x:%4x:%4x:%4x:%4x,"
-									" DA=%4x:%4x:%4x:%4x:%4x:%4x:%4x:%4x\n", 
+									" DA=%4x:%4x:%4x:%4x:%4x:%4x:%4x:%4x\n",
 						iph->saddr.s6_addr16[0],iph->saddr.s6_addr16[1],iph->saddr.s6_addr16[2],iph->saddr.s6_addr16[3],
 						iph->saddr.s6_addr16[4],iph->saddr.s6_addr16[5],iph->saddr.s6_addr16[6],iph->saddr.s6_addr16[7],
 						iph->daddr.s6_addr16[0],iph->daddr.s6_addr16[1],iph->daddr.s6_addr16[2],iph->daddr.s6_addr16[3],
@@ -1438,10 +1438,10 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 						__nat25_db_network_insert(priv, skb->data+ETH_ALEN, networkAddr);
 						__nat25_db_print(priv);
 
-						if (iph->nexthdr == IPPROTO_ICMPV6 && 
+						if (iph->nexthdr == IPPROTO_ICMPV6 &&
 								skb->len > (ETH_HLEN +  sizeof(*iph) + 4)) {
-							if (update_nd_link_layer_addr(skb->data + ETH_HLEN + sizeof(*iph), 
-                                                                skb->len - ETH_HLEN - sizeof(*iph), GET_MY_HWADDR(priv))) {                                                   
+							if (update_nd_link_layer_addr(skb->data + ETH_HLEN + sizeof(*iph),
+                                                                skb->len - ETH_HLEN - sizeof(*iph), GET_MY_HWADDR(priv))) {
 								struct icmp6hdr  *hdr = (struct icmp6hdr *)(skb->data + ETH_HLEN + sizeof(*iph));
 								hdr->icmp6_cksum = 0;
 								hdr->icmp6_cksum = csum_ipv6_magic(&iph->saddr, &iph->daddr,
@@ -1456,7 +1456,7 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 
 			case NAT25_LOOKUP:
 				DEBUG_INFO("NAT25: Lookup IP, SA=%4x:%4x:%4x:%4x:%4x:%4x:%4x:%4x,"
-								" DA=%4x:%4x:%4x:%4x:%4x:%4x:%4x:%4x\n", 
+								" DA=%4x:%4x:%4x:%4x:%4x:%4x:%4x:%4x\n",
 						iph->saddr.s6_addr16[0],iph->saddr.s6_addr16[1],iph->saddr.s6_addr16[2],iph->saddr.s6_addr16[3],
 						iph->saddr.s6_addr16[4],iph->saddr.s6_addr16[5],iph->saddr.s6_addr16[6],iph->saddr.s6_addr16[7],
 						iph->daddr.s6_addr16[0],iph->daddr.s6_addr16[1],iph->daddr.s6_addr16[2],iph->daddr.s6_addr16[3],

@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -29,21 +29,21 @@ typedef enum _REGULATION_TXPWR_LMT {
 	TXPWR_LMT_ETSI,
 } REGULATION_TXPWR_LMT;
 
-/*------------------------------Define structure----------------------------*/ 
+/*------------------------------Define structure----------------------------*/
 typedef struct _BB_REGISTER_DEFINITION{
-	u32 rfintfs;			// set software control: 
+	u32 rfintfs;			// set software control:
 						//		0x870~0x877[8 bytes]
 							
-	u32 rfintfo; 			// output data: 
+	u32 rfintfo; 			// output data:
 						//		0x860~0x86f [16 bytes]
 							
-	u32 rfintfe; 			// output enable: 
+	u32 rfintfe; 			// output enable:
 						//		0x860~0x86f [16 bytes]
 							
 	u32 rf3wireOffset;	// LSSI data:
 						//		0x840~0x84f [16 bytes]
 
-	u32 rfHSSIPara2; 	// wire parameter control2 : 
+	u32 rfHSSIPara2; 	// wire parameter control2 :
 						//		0x824~0x827,0x82c~0x82f, 0x834~0x837, 0x83c~0x83f [16 bytes]
 								
 	u32 rfLSSIReadBack; 	//LSSI RF readback data SI mode

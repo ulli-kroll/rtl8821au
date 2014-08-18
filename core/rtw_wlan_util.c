@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -239,7 +239,7 @@ unsigned char ratetbl_val_2wifirate(unsigned char rate)
 {
 	unsigned char val = 0;
 
-	switch (rate & 0x7f) 
+	switch (rate & 0x7f)
 	{
 		case 0:
 			val = IEEE80211_CCK_RATE_1MB;
@@ -673,7 +673,7 @@ int get_bsstype(unsigned short capability)
 
 __inline u8 *get_my_bssid(WLAN_BSSID_EX *pnetwork)
 {	
-	return (pnetwork->MacAddress); 
+	return (pnetwork->MacAddress);
 }
 
 u16 get_beacon_interval(WLAN_BSSID_EX *bss)
@@ -744,7 +744,7 @@ unsigned int decide_wait_for_beacon_timeout(unsigned int bcn_interval)
 	if ((bcn_interval << 2) < WAIT_FOR_BCN_TO_MIN)
 	{
 		return WAIT_FOR_BCN_TO_MIN;
-	} 
+	}
 	else if ((bcn_interval << 2) > WAIT_FOR_BCN_TO_MAX)
 	{
 		return WAIT_FOR_BCN_TO_MAX;
@@ -916,7 +916,7 @@ void flush_all_cam_entry(_adapter *padapter)
 			psta = rtw_get_stainfo(pstapriv, pmlmeinfo->network.MacAddress);
 			if(psta) {
 				if(psta->state & WIFI_AP_STATE)
-				{}   //clear cam when ap free per sta_info        
+				{}   //clear cam when ap free per sta_info
 				else {
 
 					cam_id = (u8)rtw_get_camid(psta->mac_id);
@@ -928,7 +928,7 @@ void flush_all_cam_entry(_adapter *padapter)
 		}
 		else if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
 		{
-			//clear cam when ap free per sta_info 
+			//clear cam when ap free per sta_info
 		}			
 	}
 #else //CONFIG_CONCURRENT_MODE
@@ -1030,7 +1030,7 @@ void WMMOnAssocRsp(_adapter *padapter)
 
 	acm_mask = 0;
 
-	if (IsSupported5G(pmlmeext->cur_wireless_mode) || 
+	if (IsSupported5G(pmlmeext->cur_wireless_mode) ||
 		(pmlmeext->cur_wireless_mode & WIRELESS_11_24N) )
 		aSifsTime = 16;
 	else
@@ -1064,7 +1064,7 @@ void WMMOnAssocRsp(_adapter *padapter)
 	}
 	else
 	{
-		for (i = 0; i < 4; i++)  
+		for (i = 0; i < 4; i++)
 		{
 			ACI = (pmlmeinfo->WMM_param.ac_param[i].ACI_AIFSN >> 5) & 0x03;
 			ACM = (pmlmeinfo->WMM_param.ac_param[i].ACI_AIFSN >> 4) & 0x01;
@@ -1414,7 +1414,7 @@ void HTOnAssocRsp(_adapter *padapter)
 
 #if 0 //move to rtw_update_ht_cap()
 	if ((pregpriv->bw_mode > 0) &&
-		(pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info & BIT(1)) && 
+		(pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info & BIT(1)) &&
 		(pmlmeinfo->HT_info.infos[0] & BIT(2)))
 	{
 		//switch to the 40M Hz mode accoring to the AP
@@ -1623,7 +1623,7 @@ int rtw_check_bcn_info(ADAPTER *Adapter, u8 *pframe, u32 packet_len)
 				//bcn_info_update
 				cur_network->BcnInfo.ht_cap_info = ht_cap_info;
 				cur_network->BcnInfo.ht_info_infos_0 = ht_info_infos_0;
-				//to do : need to check that whether modify related register of BB or not 
+				//to do : need to check that whether modify related register of BB or not
 			}
 			//goto _mismatch;
 	}
@@ -1812,7 +1812,7 @@ void process_csa_ie(_adapter *padapter, u8 *pframe, uint pkt_len)
 	unsigned int i;
 	unsigned int len;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
-	u8 new_ch_no = 0; 
+	u8 new_ch_no = 0;
 		
 	len = pkt_len - (_BEACON_IE_OFFSET_ + WLAN_HDR_A3_LEN);
 
@@ -1853,14 +1853,14 @@ unsigned int is_ap_in_tkip(_adapter *padapter)
 			switch (pIE->ElementID)
 			{
 				case _VENDOR_SPECIFIC_IE_:
-					if ((_rtw_memcmp(pIE->data, RTW_WPA_OUI, 4)) && (_rtw_memcmp((pIE->data + 12), WPA_TKIP_CIPHER, 4))) 
+					if ((_rtw_memcmp(pIE->data, RTW_WPA_OUI, 4)) && (_rtw_memcmp((pIE->data + 12), WPA_TKIP_CIPHER, 4)))
 					{
 						return _TRUE;
 					}
 					break;
 				
 				case _RSN_IE_2_:
-					if (_rtw_memcmp((pIE->data + 8), RSN_TKIP_CIPHER, 4)) 
+					if (_rtw_memcmp((pIE->data + 8), RSN_TKIP_CIPHER, 4))
 					{
 						return _TRUE;
 					}
@@ -1971,7 +1971,7 @@ int wifirate2_ratetbl_inx(unsigned char rate)
 	int	inx = 0;
 	rate = rate & 0x7f;
 
-	switch (rate) 
+	switch (rate)
 	{
 		case 54*2:
 			inx = 11;
@@ -2369,7 +2369,7 @@ void update_capinfo(PADAPTER Adapter, u16 updateCap)
 			pmlmeinfo->slotTime = NON_SHORT_SLOT_TIME;
 		}
  	}
- 
+
 	rtw_hal_set_hwreg( Adapter, HW_VAR_SLOT_TIME, &pmlmeinfo->slotTime );
 
 }
@@ -2455,7 +2455,7 @@ void fire_write_MAC_cmd(_adapter *padapter, unsigned int addr, unsigned int valu
 		return;
 	}	
 
-	if ((pwriteMacPara = (struct reg_rw_parm*)rtw_malloc(sizeof(struct reg_rw_parm))) == NULL) 
+	if ((pwriteMacPara = (struct reg_rw_parm*)rtw_malloc(sizeof(struct reg_rw_parm))) == NULL)
 	{		
 		rtw_mfree((unsigned char *)ph2c, sizeof(struct cmd_obj));
 		return;
@@ -2703,7 +2703,7 @@ unsigned int setup_beacon_frame(_adapter *padapter, unsigned char *beacon_frame)
 	len += 8;
 
 	// beacon interval: 2 bytes
-	_rtw_memcpy(pframe, (unsigned char *)(rtw_get_beacon_interval_from_ie(cur_network->IEs)), 2); 
+	_rtw_memcpy(pframe, (unsigned char *)(rtw_get_beacon_interval_from_ie(cur_network->IEs)), 2);
 
 	pframe += 2;
 	len += 2;
@@ -2747,7 +2747,7 @@ unsigned int setup_beacon_frame(_adapter *padapter, unsigned char *beacon_frame)
 	ptxdesc = (struct tx_desc *)beacon_frame;
 	
 	//offset 0	
-	ptxdesc->txdw0 |= cpu_to_le32(len & 0x0000ffff); 
+	ptxdesc->txdw0 |= cpu_to_le32(len & 0x0000ffff);
 	ptxdesc->txdw0 |= cpu_to_le32(((TXDESC_SIZE + OFFSET_SZ) << OFFSET_SHT) & 0x00ff0000); //default = 32 bytes for TX Desc
 	
 	//offset 4	

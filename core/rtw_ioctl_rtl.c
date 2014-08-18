@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -149,7 +149,7 @@ struct oid_obj_priv oid_rtl_seg_03_00[] =
 };
 
 
-//**************  oid_rtl_seg_01_01 section start ************** 
+//**************  oid_rtl_seg_01_01 section start **************
 
 NDIS_STATUS oid_rt_pro_set_fw_dig_state_hdl(struct oid_par_priv* poid_par_priv)
 {
@@ -160,7 +160,7 @@ NDIS_STATUS oid_rt_pro_set_fw_dig_state_hdl(struct oid_par_priv* poid_par_priv)
 	
 	_func_enter_;
 	
-	if(poid_par_priv->type_of_oid != SET_OID) 
+	if(poid_par_priv->type_of_oid != SET_OID)
 	{
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
@@ -174,11 +174,11 @@ NDIS_STATUS oid_rt_pro_set_fw_dig_state_hdl(struct oid_par_priv* poid_par_priv)
 		{
 			status = NDIS_STATUS_NOT_ACCEPTED;
 		}
-		                   
+		
 	}
 	else{
 		status = NDIS_STATUS_NOT_ACCEPTED;
-	}  
+	}
 	_irqlevel_changed_(&oldirql,RAISE);
 	_func_exit_;
 #endif
@@ -194,7 +194,7 @@ NDIS_STATUS oid_rt_pro_set_fw_ra_state_hdl(struct oid_par_priv* poid_par_priv)
 	_irqL			oldirql;
 	
 	_func_enter_;	
-	if(poid_par_priv->type_of_oid != SET_OID) 
+	if(poid_par_priv->type_of_oid != SET_OID)
 	{
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
@@ -210,11 +210,11 @@ NDIS_STATUS oid_rt_pro_set_fw_ra_state_hdl(struct oid_par_priv* poid_par_priv)
 		{
 			status = NDIS_STATUS_NOT_ACCEPTED;
 		}
-		                   
+		
 	}
 	else{
 		status = NDIS_STATUS_NOT_ACCEPTED;
-	}  
+	}
 	_irqlevel_changed_(&oldirql,RAISE);
 	_func_exit_;
 #endif
@@ -531,7 +531,7 @@ NDIS_STATUS oid_rt_set_preamble_mode_hdl(struct oid_par_priv* poid_par_priv)
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
 	}
-	 
+	
 	if(poid_par_priv->information_buf_len>= sizeof(ULONG))
 	{		
 		preamblemode = *(ULONG *)poid_par_priv->information_buf ;
@@ -802,9 +802,9 @@ NDIS_STATUS oid_rt_scan_with_magic_packet_hdl(struct oid_par_priv* poid_par_priv
 
 	return status;
 }
-//**************  oid_rtl_seg_01_01 section end ************** 
+//**************  oid_rtl_seg_01_01 section end **************
 
-//**************  oid_rtl_seg_01_03 section start ************** 
+//**************  oid_rtl_seg_01_03 section start **************
 NDIS_STATUS oid_rt_ap_get_associated_station_list_hdl(struct oid_par_priv* poid_par_priv)
 {
 	NDIS_STATUS	 	status = NDIS_STATUS_SUCCESS;
@@ -846,7 +846,7 @@ NDIS_STATUS oid_rt_ap_set_passphrase_hdl(struct oid_par_priv* poid_par_priv)
 	return status;
 }
 
-//**************  oid_rtl_seg_01_03 section end ************** 
+//**************  oid_rtl_seg_01_03 section end **************
 
 //****************  oid_rtl_seg_01_11   section start ****************
 NDIS_STATUS oid_rt_pro_rf_write_registry_hdl(struct oid_par_priv* poid_par_priv)
@@ -864,24 +864,24 @@ NDIS_STATUS oid_rt_pro_rf_write_registry_hdl(struct oid_par_priv* poid_par_priv)
 	
 	_irqlevel_changed_(&oldirql,LOWER);
 	if(poid_par_priv->information_buf_len== (sizeof(unsigned long)*3))
-	{      
+	{
 		//RegOffsetValue	- The offset of RF register to write.
 		//RegDataWidth	- The data width of RF register to write.
-		//RegDataValue	- The value to write. 
+		//RegDataValue	- The value to write.
 		//RegOffsetValue = *((unsigned long*)InformationBuffer);
-		//RegDataWidth = *((unsigned long*)InformationBuffer+1);	   
+		//RegDataWidth = *((unsigned long*)InformationBuffer+1);	
 		//RegDataValue =  *((unsigned long*)InformationBuffer+2);	
-		if(!rtw_setrfreg_cmd(Adapter, 
-						*(unsigned char*)poid_par_priv->information_buf, 
+		if(!rtw_setrfreg_cmd(Adapter,
+						*(unsigned char*)poid_par_priv->information_buf,
 						(unsigned long)(*((unsigned long*)poid_par_priv->information_buf+2))))
 		{
 			status = NDIS_STATUS_NOT_ACCEPTED;
 		}
-	                   
+	
 	}
 	else{
 		status = NDIS_STATUS_INVALID_LENGTH;
-	}   
+	}
 	_irqlevel_changed_(&oldirql,RAISE);
 	_func_exit_;
 
@@ -919,22 +919,22 @@ NDIS_STATUS oid_rt_pro_rf_read_registry_hdl(struct oid_par_priv* poid_par_priv)
 			Adapter->mppriv.workparam.act_type = MPT_READ_RF;
 			Adapter->mppriv.workparam.io_offset = *(unsigned long*)poid_par_priv->information_buf;		
 			Adapter->mppriv.workparam.io_value = 0xcccccccc;
-				       
+				
 			//RegOffsetValue	- The offset of RF register to read.
 			//RegDataWidth	- The data width of RF register to read.
-			//RegDataValue	- The value to read. 
+			//RegDataValue	- The value to read.
 			//RegOffsetValue = *((unsigned long*)InformationBuffer);
-			//RegDataWidth = *((unsigned long*)InformationBuffer+1);	   
-			//RegDataValue =  *((unsigned long*)InformationBuffer+2);	   	 	                   
-			if(!rtw_getrfreg_cmd(Adapter, 
-							*(unsigned char*)poid_par_priv->information_buf, 
+			//RegDataWidth = *((unsigned long*)InformationBuffer+1);	
+			//RegDataValue =  *((unsigned long*)InformationBuffer+2);	   	 	
+			if(!rtw_getrfreg_cmd(Adapter,
+							*(unsigned char*)poid_par_priv->information_buf,
 							(unsigned char*)&Adapter->mppriv.workparam.io_value))
 			{
 				status = NDIS_STATUS_NOT_ACCEPTED;
 			}
 		}
-				      		   
-		                   
+				      		
+		
 	}
 	else	{
 		status = NDIS_STATUS_INVALID_LENGTH;
@@ -948,7 +948,7 @@ NDIS_STATUS oid_rt_pro_rf_read_registry_hdl(struct oid_par_priv* poid_par_priv)
 //****************  oid_rtl_seg_01_11   section end****************	
 
 
-//**************  oid_rtl_seg_03_00 section start **************  
+//**************  oid_rtl_seg_03_00 section start **************
 enum _CONNECT_STATE_{
 	CHECKINGSTATUS,
 	ASSOCIATED,
@@ -1019,5 +1019,5 @@ NDIS_STATUS oid_rt_set_default_key_id_hdl(struct oid_par_priv* poid_par_priv)
 	
 	return status;
 }
-//**************  oid_rtl_seg_03_00 section end **************  
+//**************  oid_rtl_seg_03_00 section end **************
 

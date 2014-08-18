@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -62,7 +62,7 @@ typedef struct _NDIS_802_11_CONFIGURATION_FH
     ULONG           HopSet;             // to one if non-802.11
     ULONG           DwellTime;          // units are Kusec
 } NDIS_802_11_CONFIGURATION_FH, *PNDIS_802_11_CONFIGURATION_FH;
- 
+
 
 /*
 	FW will only save the channel number in DSConfig.
@@ -224,7 +224,7 @@ typedef enum _NDIS_802_11_RELOAD_DEFAULTS
 typedef struct _NDIS_802_11_KEY
 {
     ULONG           Length;             // Length of this structure
-    ULONG           KeyIndex;           
+    ULONG           KeyIndex;
     ULONG           KeyLength;          // length of key in bytes
     NDIS_802_11_MAC_ADDRESS BSSID;
     NDIS_802_11_KEY_RSC KeyRSC;
@@ -234,8 +234,8 @@ typedef struct _NDIS_802_11_KEY
 typedef struct _NDIS_802_11_REMOVE_KEY
 {
     ULONG                   Length;        // Length of this structure
-    ULONG                   KeyIndex;           
-    NDIS_802_11_MAC_ADDRESS BSSID;      
+    ULONG                   KeyIndex;
+    NDIS_802_11_MAC_ADDRESS BSSID;
 } NDIS_802_11_REMOVE_KEY, *PNDIS_802_11_REMOVE_KEY;
 
 typedef struct _NDIS_802_11_WEP
@@ -281,7 +281,7 @@ typedef struct _NDIS_802_11_AUTHENTICATION_EVENT
     NDIS_802_11_STATUS_INDICATION       Status;
     NDIS_802_11_AUTHENTICATION_REQUEST  Request[1];
 } NDIS_802_11_AUTHENTICATION_EVENT, *PNDIS_802_11_AUTHENTICATION_EVENT;
-        
+
 typedef struct _NDIS_802_11_TEST
 {
     ULONG Length;
@@ -334,7 +334,7 @@ typedef struct _NDIS_802_11_CONFIGURATION_FH
     ULONG           HopSet;             // to one if non-802.11
     ULONG           DwellTime;          // units are Kusec
 } NDIS_802_11_CONFIGURATION_FH, *PNDIS_802_11_CONFIGURATION_FH;
- 
+
 
 /*
 	FW will only save the channel number in DSConfig.
@@ -494,7 +494,7 @@ typedef enum _NDIS_802_11_RELOAD_DEFAULTS
 typedef struct _NDIS_802_11_KEY
 {
     ULONG           Length;             // Length of this structure
-    ULONG           KeyIndex;           
+    ULONG           KeyIndex;
     ULONG           KeyLength;          // length of key in bytes
     NDIS_802_11_MAC_ADDRESS BSSID;
     NDIS_802_11_KEY_RSC KeyRSC;
@@ -504,8 +504,8 @@ typedef struct _NDIS_802_11_KEY
 typedef struct _NDIS_802_11_REMOVE_KEY
 {
     ULONG                   Length;        // Length of this structure
-    ULONG                   KeyIndex;           
-    NDIS_802_11_MAC_ADDRESS BSSID;      
+    ULONG                   KeyIndex;
+    NDIS_802_11_MAC_ADDRESS BSSID;
 } NDIS_802_11_REMOVE_KEY, *PNDIS_802_11_REMOVE_KEY;
 
 typedef struct _NDIS_802_11_WEP
@@ -551,7 +551,7 @@ typedef struct _NDIS_802_11_AUTHENTICATION_EVENT
     NDIS_802_11_STATUS_INDICATION       Status;
     NDIS_802_11_AUTHENTICATION_REQUEST  Request[1];
 } NDIS_802_11_AUTHENTICATION_EVENT, *PNDIS_802_11_AUTHENTICATION_EVENT;
-        
+
 typedef struct _NDIS_802_11_TEST
 {
     ULONG Length;
@@ -613,7 +613,7 @@ typedef struct _WLAN_BSSID_EX
   WLAN_PHY_INFO	PhyInfo;
   ULONG  IELength;
   UCHAR  IEs[MAX_IE_SZ];	//(timestamp, beacon interval, and capability information)
-} 
+}
 #ifndef PLATFORM_WINDOWS
 __attribute__((packed))
 #endif
@@ -627,12 +627,12 @@ __inline  static uint get_WLAN_BSSID_EX_sz(WLAN_BSSID_EX *bss)
 #if 0
 	uint t_len;
 	
-	t_len = sizeof (ULONG) 
-		+ sizeof (NDIS_802_11_MAC_ADDRESS) 
-		+ 2 
-		+ sizeof (NDIS_802_11_SSID) 
-		+ sizeof (ULONG) 
-		+ sizeof (NDIS_802_11_RSSI) 
+	t_len = sizeof (ULONG)
+		+ sizeof (NDIS_802_11_MAC_ADDRESS)
+		+ 2
+		+ sizeof (NDIS_802_11_SSID)
+		+ sizeof (ULONG)
+		+ sizeof (NDIS_802_11_RSSI)
 		+ sizeof (NDIS_802_11_NETWORK_TYPE)
 		+ sizeof (NDIS_802_11_CONFIGURATION)
 		+ sizeof (NDIS_802_11_NETWORK_INFRASTRUCTURE)
@@ -674,7 +674,7 @@ enum VCS_TYPE
 {
     NONE_VCS,	
     RTS_CTS,
-    CTS_TO_SELF 
+    CTS_TO_SELF
 };
 
 
@@ -725,7 +725,7 @@ typedef struct _NDIS_802_11_AUTHENTICATION_ENCRYPTION
 	
 } NDIS_802_11_AUTHENTICATION_ENCRYPTION, *PNDIS_802_11_AUTHENTICATION_ENCRYPTION;
 
-typedef struct _NDIS_802_11_CAPABILITY 
+typedef struct _NDIS_802_11_CAPABILITY
 {
 	ULONG  Length;
 	ULONG  Version;

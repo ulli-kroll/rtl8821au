@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -56,10 +56,10 @@ typedef enum _BAND_TYPE{
 typedef	enum _RF_TYPE{
 	RF_TYPE_MIN = 0, 	// 0
 	RF_8225=1,			// 1 11b/g RF for verification only
-	RF_8256=2,			// 2 11b/g/n 
+	RF_8256=2,			// 2 11b/g/n
 	RF_8258=3,			// 3 11a/b/g/n RF
 	RF_6052=4,			// 4 11b/g/n RF
-	RF_PSEUDO_11N=5,	// 5, It is a temporality RF. 
+	RF_PSEUDO_11N=5,	// 5, It is a temporality RF.
 	RF_TYPE_MAX
 }RF_TYPE_E,*PRF_TYPE_E;
 
@@ -76,7 +76,7 @@ typedef enum _RF_PATH{
 #define	TX_4S			3
 
 #define	RF_PATH_MAX_92C_88E 		2
-#define	RF_PATH_MAX_90_8812		4	//Max RF number 90 support 
+#define	RF_PATH_MAX_90_8812		4	//Max RF number 90 support
 
 typedef enum _ANTENNA_PATH{
        ANTENNA_NONE 	= 0,

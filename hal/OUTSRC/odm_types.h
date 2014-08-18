@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -23,7 +23,7 @@
 //
 // Define Different SW team support
 //
-#define	ODM_AP		 	0x01	//BIT0 
+#define	ODM_AP		 	0x01	//BIT0
 #define	ODM_ADSL	 	0x02	//BIT1
 #define	ODM_CE		 	0x04	//BIT2
 #define	ODM_WIN		 	0x08	//BIT3
@@ -68,7 +68,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 	RT_RM_SPINLOCK = 3,
 	RT_CAM_SPINLOCK = 4,
 	RT_SCAN_SPINLOCK = 5,
-	RT_LOG_SPINLOCK = 7, 
+	RT_LOG_SPINLOCK = 7,
 	RT_BW_SPINLOCK = 8,
 	RT_CHNLOP_SPINLOCK = 9,
 	RT_RF_OPERATE_SPINLOCK = 10,
@@ -87,7 +87,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 	RT_WAPI_OPTION_SPINLOCK=26,
 	RT_WAPI_RX_SPINLOCK=27,
 
-      // add for 92D CCK control issue  
+      // add for 92D CCK control issue
 	RT_CCK_PAGEA_SPINLOCK = 28,
 	RT_BUFFER_SPINLOCK = 29,
 	RT_CHANNEL_AND_BANDWIDTH_SPINLOCK = 30,
@@ -106,8 +106,8 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#define	PSTA_INFO_T			PRT_WLAN_STA
 
 //    typedef unsigned long		u4Byte,*pu4Byte;
-#define CONFIG_HW_ANTENNA_DIVERSITY 
-#define CONFIG_SW_ANTENNA_DIVERSITY 
+#define CONFIG_HW_ANTENNA_DIVERSITY
+#define CONFIG_SW_ANTENNA_DIVERSITY
 
 #elif (DM_ODM_SUPPORT_TYPE == ODM_AP)
 

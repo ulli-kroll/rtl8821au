@@ -35,7 +35,7 @@ enum cmd_msg_element_id
 	P2P_PS_OFFLOAD_EID = 8,
 	SELECTIVE_SUSPEND_ROF_CMD = 9,
 	P2P_PS_CTW_CMD_EID = 32,
-	MAX_CMDMSG_EID	 
+	MAX_CMDMSG_EID	
 };
 #else
 typedef enum _RTL8188E_H2C_CMD_ID
@@ -78,7 +78,7 @@ typedef enum _RTL8188E_H2C_CMD_ID
 	H2C_COM_REMOTE_WAKE_CTRL	=0x81,
 #endif
 
-	//Class 
+	//Class
 	 H2C_RESET_TSF				=0xc0,
 }RTL8188E_H2C_CMD_ID;
 	

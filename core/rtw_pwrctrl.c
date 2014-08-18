@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -192,7 +192,7 @@ bool rtw_pwr_unassociated_idle(_adapter *adapter)
 	if (pxmit_priv->free_xmitbuf_cnt != NR_XMITBUFF ||
 		pxmit_priv->free_xmit_extbuf_cnt != NR_XMIT_EXTBUFF) {
 		DBG_871X_LEVEL(_drv_always_, "There are some pkts to transmit\n");
-		DBG_871X_LEVEL(_drv_info_, "free_xmitbuf_cnt: %d, free_xmit_extbuf_cnt: %d\n", 
+		DBG_871X_LEVEL(_drv_info_, "free_xmitbuf_cnt: %d, free_xmit_extbuf_cnt: %d\n",
 			pxmit_priv->free_xmitbuf_cnt, pxmit_priv->free_xmit_extbuf_cnt);	
 		goto exit;
 	}
@@ -221,7 +221,7 @@ void rtw_ps_processor(_adapter*padapter)
 		goto exit;
 	
 	//DBG_871X("==> fw report state(0x%x)\n",rtw_read8(padapter,0x1ca));	
-	if(padapter->pwrctrlpriv.bHWPwrPindetect) 
+	if(padapter->pwrctrlpriv.bHWPwrPindetect)
 	{
 	#ifdef CONFIG_AUTOSUSPEND
 		if(padapter->registrypriv.usbss_enable)
@@ -294,7 +294,7 @@ void rtw_ps_processor(_adapter*padapter)
 		#ifdef CONFIG_AUTOSUSPEND
 		if(padapter->registrypriv.usbss_enable)
 		{
-			if(pwrpriv->bHWPwrPindetect) 
+			if(pwrpriv->bHWPwrPindetect)
 				pwrpriv->bkeepfwalive = _TRUE;
 			
 			if(padapter->net_closed == _TRUE)
@@ -709,7 +709,7 @@ _func_enter_;
 	if (pwrpriv->bLeisurePs)
 	{
 		// Idle for a while if we connect to AP a while ago.
-		if(pwrpriv->LpsIdleCount >= 2) //  4 Sec 
+		if(pwrpriv->LpsIdleCount >= 2) //  4 Sec
 		{
 			if(pwrpriv->pwr_mode == PS_MODE_ACTIVE)
 			{
@@ -768,7 +768,7 @@ _func_exit_;
 
 //
 // Description: Leave all power save mode: LPS, FwLPS, IPS if needed.
-// Move code to function by tynli. 2010.03.26. 
+// Move code to function by tynli. 2010.03.26.
 //
 void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 {
@@ -1028,13 +1028,13 @@ __inline static void unregister_task_alive(struct pwrctrl_priv *pwrctrl, u32 tag
 
 /*
  * Caller: rtw_xmit_thread
- * 
+ *
  * Check if the fw_pwrstate is okay for xmit.
  * If not (cpwm is less than S3), then the sub-routine
- * will raise the cpwm to be greater than or equal to S3. 
+ * will raise the cpwm to be greater than or equal to S3.
  *
  * Calling Context: Passive
- * 
+ *
  * Return Value:
  *	 _SUCCESS	rtw_xmit_thread can write fifo/txcmd afterwards.
  *	 _FAIL		rtw_xmit_thread can not do anything.
@@ -1420,7 +1420,7 @@ _func_enter_;
 
 
 	#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	if (pwrctrlpriv->rtw_workqueue) { 
+	if (pwrctrlpriv->rtw_workqueue) {
 		flush_workqueue(pwrctrlpriv->rtw_workqueue);
 		destroy_workqueue(pwrctrlpriv->rtw_workqueue);
 	}
@@ -1542,7 +1542,7 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv)
 
 	rtw_set_do_late_resume(pwrpriv, _FALSE);
 
-	if (pwrpriv->early_suspend.suspend) 
+	if (pwrpriv->early_suspend.suspend)
 		unregister_early_suspend(&pwrpriv->early_suspend);
 
 	pwrpriv->early_suspend.suspend = NULL;
@@ -1607,7 +1607,7 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv)
 
 	rtw_set_do_late_resume(pwrpriv, _FALSE);
 
-	if (pwrpriv->early_suspend.suspend) 
+	if (pwrpriv->early_suspend.suspend)
 		android_unregister_early_suspend(&pwrpriv->early_suspend);
 
 	pwrpriv->early_suspend.suspend = NULL;
@@ -1683,7 +1683,7 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 
 	if (pwrpriv->bInternalAutoSuspend == _FALSE && pwrpriv->bInSuspend) {
 		DBG_871X("%s wait bInSuspend...\n", __func__);
-		while (pwrpriv->bInSuspend 
+		while (pwrpriv->bInSuspend
 			&& ((rtw_get_passing_time_ms(start) <= 3000 && !rtw_is_do_late_resume(pwrpriv))
 				|| (rtw_get_passing_time_ms(start) <= 500 && rtw_is_do_late_resume(pwrpriv)))
 		) {
@@ -1714,7 +1714,7 @@ int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
 		if(_TRUE==pwrpriv->bInternalAutoSuspend){
 			if(0==pwrpriv->autopm_cnt){
 			#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,33))				
-				if (usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf) < 0) 
+				if (usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf) < 0)
 				{
 					DBG_871X( "can't get autopm: \n");
 				}			
@@ -1827,7 +1827,7 @@ int rtw_pm_set_ips(_adapter *padapter, u8 mode)
 		rtw_ips_mode_req(pwrctrlpriv, mode);
 		DBG_871X("%s %s\n", __FUNCTION__, mode == IPS_NORMAL?"IPS_NORMAL":"IPS_LEVEL_2");
 		return 0;
-	} 
+	}
 	else if(mode ==IPS_NONE){
 		rtw_ips_mode_req(pwrctrlpriv, mode);
 		DBG_871X("%s %s\n", __FUNCTION__, "IPS_NONE");

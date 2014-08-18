@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -156,7 +156,7 @@ _func_enter_;
 
 			}			
 			else
-			{ 
+			{
 				// can't associate ; reset under-linking			
 				_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 
@@ -164,7 +164,7 @@ _func_enter_;
 				if((check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE))
 				{
 					if(_rtw_memcmp(pmlmepriv->cur_network.network.Ssid.Ssid, pmlmepriv->assoc_ssid.Ssid, pmlmepriv->assoc_ssid.SsidLength))
-					{ 
+					{
 						// for funk to do roaming
 						// funk will reconnect, but funk will not sitesurvey before reconnect
 						RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_info_,("for funk to do roaming"));
@@ -508,7 +508,7 @@ _func_exit_;
 	
 }
 
-u8 rtw_set_802_11_infrastructure_mode(_adapter* padapter, 
+u8 rtw_set_802_11_infrastructure_mode(_adapter* padapter,
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networktype)
 {
 	_irqL irqL;
@@ -674,7 +674,7 @@ _func_exit_;
 	return res;	
 }
 
-u8 rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICATION_MODE authmode) 
+u8 rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
 {
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	int res;
@@ -784,7 +784,7 @@ _func_enter_;
 		goto exit;
 
 	}
-	else 
+	else
 	{
 		int res;
 		struct security_priv* psecuritypriv=&(padapter->securitypriv);
@@ -828,7 +828,7 @@ _func_enter_;
 
 	if (((key->KeyIndex & 0x80000000) == 0) && ((key->KeyIndex & 0x40000000) > 0)){
 
-		// It is invalid to clear bit 31 and set bit 30. If the miniport driver encounters this combination, 
+		// It is invalid to clear bit 31 and set bit 30. If the miniport driver encounters this combination,
 		// it must fail the request and return NDIS_STATUS_INVALID_DATA.
 		RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_info_,("rtw_set_802_11_add_key: ((key->KeyIndex & 0x80000000) == 0)[=%d] ",(int)(key->KeyIndex & 0x80000000) == 0));
 		RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_info_,("rtw_set_802_11_add_key:((key->KeyIndex & 0x40000000) > 0)[=%d]" , (int)(key->KeyIndex & 0x40000000) > 0));
@@ -838,7 +838,7 @@ _func_enter_;
 	}
 
 	if(key->KeyIndex & 0x40000000)
-	{ 
+	{
 		// Pairwise key
 
 		RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("OID_802_11_ADD_KEY: +++++ Pairwise key +++++\n"));
@@ -893,7 +893,7 @@ _func_enter_;
 		if((encryptionalgo== _AES_)&& (key->KeyLength != 16)) {
 			// For our supplicant, EAPPkt9x.vxd, cannot differentiate TKIP and AES case.
 			if(key->KeyLength == 32) {
-				key->KeyLength = 16; 
+				key->KeyLength = 16;
 			} else {
 				ret= _FAIL;
 				goto exit;
@@ -918,7 +918,7 @@ _func_enter_;
 		RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("------------------------------------------\n"));
 	
 	}
-	else 
+	else
 	{	
 		// Group key - KeyIndex(BIT30==0)
 		RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("OID_802_11_ADD_KEY: +++++ Group key +++++\n"));
@@ -950,7 +950,7 @@ _func_enter_;
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,(" Adapter->securitypriv.dot11PrivacyAlgrthm=%x\n", padapter->securitypriv.dot11PrivacyAlgrthm));
 			
 		}
-		else 
+		else
 		{
 			encryptionalgo=padapter->securitypriv.dot118021XGrpPrivacy;
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("( Adapter->securitypriv.dot11PrivacyAlgrthm=%x  )encryptionalgo(%x)=padapter->securitypriv.dot118021XGrpPrivacy(%x)keylen=%d\n", padapter->securitypriv.dot11PrivacyAlgrthm,encryptionalgo,padapter->securitypriv.dot118021XGrpPrivacy,key->KeyLength));
@@ -981,7 +981,7 @@ _func_enter_;
 
 		// Change the key length for EAPPkt9x.vxd. Added by Annie, 2005-11-03.
 		if((encryptionalgo==  _AES_) && (key->KeyLength == 32) ) {
-			key->KeyLength = 16; 
+			key->KeyLength = 16;
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("AES key length changed: %u\n", key->KeyLength) );
 		}
 
@@ -1041,8 +1041,8 @@ _func_enter_;
 		{
 			NDIS_802_11_KEY_RSC keysrc=key->KeyRSC & 0x00FFFFFFFFFFFFULL;
 			_rtw_memcpy(&padapter->securitypriv.dot11Grprxpn, &keysrc, 8);			
-		} 
-		else 
+		}
+		else
 		{		
 			NDIS_802_11_KEY_RSC keysrc=key->KeyRSC & 0x00FFFFFFFFFFFFULL;	
 			_rtw_memcpy(&padapter->securitypriv.dot11Grptxpn, &keysrc, 8);			
@@ -1234,9 +1234,9 @@ _func_exit_;
 }
 
 /*
-* rtw_get_cur_max_rate - 
+* rtw_get_cur_max_rate -
 * @adapter: pointer to _adapter structure
-* 
+*
 * Return 0 or 100Kbps
 */
 u16 rtw_get_cur_max_rate(_adapter *adapter)
@@ -1268,7 +1268,7 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 	}
 #endif
 
-	if((check_fwstate(pmlmepriv, _FW_LINKED) != _TRUE) 
+	if((check_fwstate(pmlmepriv, _FW_LINKED) != _TRUE)
 		&& (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) != _TRUE))
 		return 0;
 
@@ -1301,7 +1301,7 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 
 			max_rate = rtw_mcs_rate(
 				rf_type,
-				bw_40MHz & cbw40_enable, 
+				bw_40MHz & cbw40_enable,
 				short_GI_20,
 				short_GI_40,
 				pmlmeinfo->HT_caps.u.HT_cap_element.MCS_rate
@@ -1313,7 +1313,7 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 		max_rate = ((rtw_vht_data_rate(pvhtpriv->bwmode, pvhtpriv->sgi, pvhtpriv->vht_highest_rate) + 1) >> 1) * 10;
 	}
 #endif //CONFIG_80211AC_VHT
-	else 
+	else
 #endif //CONFIG_80211N_HT
 	{
 		while( (pcur_bss->SupportedRates[i]!=0) && (pcur_bss->SupportedRates[i]!=0xFF))
@@ -1331,10 +1331,10 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 }
 
 /*
-* rtw_set_scan_mode - 
+* rtw_set_scan_mode -
 * @adapter: pointer to _adapter structure
-* @scan_mode: 
-* 
+* @scan_mode:
+*
 * Return _SUCCESS or _FAIL
 */
 int rtw_set_scan_mode(_adapter *adapter, RT_SCAN_TYPE scan_mode)
@@ -1348,10 +1348,10 @@ int rtw_set_scan_mode(_adapter *adapter, RT_SCAN_TYPE scan_mode)
 }
 
 /*
-* rtw_set_channel_plan - 
+* rtw_set_channel_plan -
 * @adapter: pointer to _adapter structure
-* @channel_plan: 
-* 
+* @channel_plan:
+*
 * Return _SUCCESS or _FAIL
 */
 int rtw_set_channel_plan(_adapter *adapter, u8 channel_plan)
@@ -1364,10 +1364,10 @@ int rtw_set_channel_plan(_adapter *adapter, u8 channel_plan)
 }
 
 /*
-* rtw_set_country - 
+* rtw_set_country -
 * @adapter: pointer to _adapter structure
 * @country_code: string of country code
-* 
+*
 * Return _SUCCESS or _FAIL
 */
 int rtw_set_country(_adapter *adapter, const char *country_code)

@@ -2136,7 +2136,7 @@ static const struct net_device_ops rtw_netdev_if2_ops = {
 };
 #endif
 
-_adapter *rtw_drv_if2_init(_adapter *primary_padapter, 
+_adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	void (*set_intf_ops)(_adapter *primary_padapter,struct _io_ops *pops))
 {
 	int res = _FAIL;

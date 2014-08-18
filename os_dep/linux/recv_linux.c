@@ -51,7 +51,7 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 
 		//alloc_sz = 1664;	//1664 is 128 alignment.
 		alloc_sz = (skb_len <= 1650) ? 1664:(skb_len + 14);		
 	}
-	else 
+	else
 	{
 		alloc_sz = skb_len;
 		//	6 is for IP header 8 bytes alignment in QoS packet case.
@@ -513,7 +513,7 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 
 		rx_pid = *(u16*)(skb->data+ETH_HLEN);
 			
-		DBG_871X("eth rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n", 
+		DBG_871X("eth rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n",
 			rx_pid, MAC_ARG(psta->hwaddr), psta->pid);
 
 		if(rx_pid == psta->pid)
@@ -522,20 +522,20 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 			u16 len = *(u16*)(skb->data+ETH_HLEN+2);
 			//u16 ctrl_type = *(u16*)(skb->data+ETH_HLEN+4);
 
-			//DBG_871X("eth, RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type); 
+			//DBG_871X("eth, RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type);
 			DBG_871X("eth, RC: len=0x%x\n", len);
 
 			for(i=0;i<len;i++)
 				DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+4+i));
 				//DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+6+i));
 
-			DBG_871X("eth, RC-end\n"); 
+			DBG_871X("eth, RC-end\n");
 
 #if 0
 			//send_sz = ksocket_send(padapter->ksock_send, &padapter->kaddr_send, (skb->data+ETH_HLEN+2), len);				
 			rtw_recv_ksocket_send_cmd(padapter, (skb->data+ETH_HLEN+2), len);
 
-			//DBG_871X("ksocket_send size=%d\n", send_sz); 
+			//DBG_871X("ksocket_send size=%d\n", send_sz);
 #endif			
 		}
 		

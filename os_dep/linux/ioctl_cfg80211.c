@@ -4202,7 +4202,7 @@ static s32 cfg80211_rtw_remain_on_channel(struct wiphy *wiphy,
 		_cancel_timer_ex(&padapter->cfg80211_wdinfo.remain_on_ch_timer);
 
 #ifdef CONFIG_CONCURRENT_MODE
-                ATOMIC_SET(&pwdev_priv->ro_ch_to, 1);			
+                atomic_set(&pwdev_priv->ro_ch_to, 1);			
 #endif //CONFIG_CONCURRENT_MODE	
 
 		p2p_protocol_wk_hdl(padapter, P2P_RO_CH_WK);
@@ -4274,7 +4274,7 @@ static s32 cfg80211_rtw_remain_on_channel(struct wiphy *wiphy,
 					DBG_8192C("%s, issue nulldata pwrbit=1\n", __func__);		
 					issue_nulldata(padapter->pbuddy_adapter, NULL, 1, 3, 500);
 				
-					ATOMIC_SET(&pwdev_priv->switch_ch_to, 0);
+					atomic_set(&pwdev_priv->switch_ch_to, 0);
 			
 					DBG_8192C("%s, set switch ch timer, duration=%d\n", __func__, duration-pwdinfo->ext_listen_interval);
 					_set_timer(&pwdinfo->ap_p2p_switch_timer, duration-pwdinfo->ext_listen_interval);	
@@ -4303,7 +4303,7 @@ static s32 cfg80211_rtw_remain_on_channel(struct wiphy *wiphy,
 		(remain_ch != pmlmeext->cur_channel))
 	{
 		u8 co_channel = 0xff;
-		ATOMIC_SET(&pwdev_priv->ro_ch_to, 0);
+		atomic_set(&pwdev_priv->ro_ch_to, 0);
 #endif
 
 		if(ready_on_channel == _TRUE)
@@ -4360,7 +4360,7 @@ static s32 cfg80211_rtw_cancel_remain_on_channel(struct wiphy *wiphy,
 		DBG_8192C("%s, cancel ro ch timer\n", __func__);
 		_cancel_timer_ex(&padapter->cfg80211_wdinfo.remain_on_ch_timer);
 		#ifdef CONFIG_CONCURRENT_MODE
-		ATOMIC_SET(&pwdev_priv->ro_ch_to, 1);
+		atomic_set(&pwdev_priv->ro_ch_to, 1);
 		#endif
 		p2p_protocol_wk_hdl(padapter, P2P_RO_CH_WK);
 	}
@@ -4445,7 +4445,7 @@ static int _cfg80211_rtw_mgmt_tx(_adapter *padapter, u8 tx_ch, const u8 *buf, si
 				DBG_8192C("%s, issue nulldata pwrbit=1\n", __func__);
 				issue_nulldata(padapter->pbuddy_adapter, NULL, 1, 3, 500);
 
-				ATOMIC_SET(&pwdev_priv->switch_ch_to, 0);
+				atomic_set(&pwdev_priv->switch_ch_to, 0);
 
 				//DBG_8192C("%s, set switch ch timer, period=%d\n", __func__, pwdinfo->ext_listen_period);
 				//_set_timer(&pwdinfo->ap_p2p_switch_timer, pwdinfo->ext_listen_period);
@@ -5311,8 +5311,8 @@ int rtw_wdev_alloc(_adapter *padapter, struct device *dev)
 		pwdev_priv->power_mgmt = _FALSE;
 	
 #ifdef CONFIG_CONCURRENT_MODE
-	ATOMIC_SET(&pwdev_priv->switch_ch_to, 1);	
-	ATOMIC_SET(&pwdev_priv->ro_ch_to, 1);	
+	atomic_set(&pwdev_priv->switch_ch_to, 1);	
+	atomic_set(&pwdev_priv->ro_ch_to, 1);	
 #endif
 
 	return ret;

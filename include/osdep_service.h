@@ -393,7 +393,6 @@ extern void rtw_unlock_suspend(void);
 extern void rtw_lock_suspend_timeout(long timeout);
 #endif //CONFIG_WOWLAN
 
-extern void ATOMIC_SET(ATOMIC_T *v, int i);
 
 //File operation APIs, just for linux now
 extern int rtw_is_file_readable(char *path);

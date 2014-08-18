@@ -291,12 +291,12 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 	int peak, alloc;
 
 	if(!update_time) {
-		ATOMIC_SET(&rtw_dbg_mem_stat.vir_alloc,0);
-		ATOMIC_SET(&rtw_dbg_mem_stat.vir_peak,0);
-		ATOMIC_SET(&rtw_dbg_mem_stat.vir_alloc_err,0);
-		ATOMIC_SET(&rtw_dbg_mem_stat.phy_alloc,0);
-		ATOMIC_SET(&rtw_dbg_mem_stat.phy_peak,0);
-		ATOMIC_SET(&rtw_dbg_mem_stat.phy_alloc_err,0);
+		atomic_set(&rtw_dbg_mem_stat.vir_alloc,0);
+		atomic_set(&rtw_dbg_mem_stat.vir_peak,0);
+		atomic_set(&rtw_dbg_mem_stat.vir_alloc_err,0);
+		atomic_set(&rtw_dbg_mem_stat.phy_alloc,0);
+		atomic_set(&rtw_dbg_mem_stat.phy_peak,0);
+		atomic_set(&rtw_dbg_mem_stat.phy_alloc_err,0);
 	}
 		
 	switch(flag) {
@@ -304,7 +304,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			alloc = atomic_add_return(&rtw_dbg_mem_stat.vir_alloc, sz);
 			peak=atomic_read(&rtw_dbg_mem_stat.vir_peak);
 			if (peak<alloc)
-				ATOMIC_SET(&rtw_dbg_mem_stat.vir_peak, alloc);
+				atomic_set(&rtw_dbg_mem_stat.vir_peak, alloc);
 			break;
 			
 		case MEM_STAT_VIR_ALLOC_FAIL:
@@ -319,7 +319,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			alloc = atomic_add_return(&rtw_dbg_mem_stat.phy_alloc, sz);
 			peak=atomic_read(&rtw_dbg_mem_stat.phy_peak);
 			if (peak<alloc)
-				ATOMIC_SET(&rtw_dbg_mem_stat.phy_peak, alloc);
+				atomic_set(&rtw_dbg_mem_stat.phy_peak, alloc);
 			break;
 
 		case MEM_STAT_PHY_ALLOC_FAIL:
@@ -334,7 +334,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			alloc = atomic_add_return(&rtw_dbg_mem_stat.tx_alloc, sz);
 			peak=atomic_read(&rtw_dbg_mem_stat.tx_peak);
 			if (peak<alloc)
-				ATOMIC_SET(&rtw_dbg_mem_stat.tx_peak, alloc);
+				atomic_set(&rtw_dbg_mem_stat.tx_peak, alloc);
 			break;
 			
  		case MEM_STAT_TX_ALLOC_FAIL:
@@ -349,7 +349,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			alloc = atomic_add_return(&rtw_dbg_mem_stat.rx_alloc, sz);
 			peak=atomic_read(&rtw_dbg_mem_stat.rx_peak);
 			if (peak<alloc)
-				ATOMIC_SET(&rtw_dbg_mem_stat.rx_peak, alloc);
+				atomic_set(&rtw_dbg_mem_stat.rx_peak, alloc);
 			break;
 			
 		case MEM_STAT_RX_ALLOC_FAIL:
@@ -1347,17 +1347,6 @@ inline void rtw_lock_suspend_timeout(long timeout)
 	#endif
 }
 #endif //CONFIG_WOWLAN
-
-inline void ATOMIC_SET(ATOMIC_T *v, int i)
-{
-	#ifdef PLATFORM_LINUX
-	atomic_set(v,i);
-	#elif defined(PLATFORM_WINDOWS)
-	*v=i;// other choice????
-	#elif defined(PLATFORM_FREEBSD)
-	atomic_set_int(v,i);
-	#endif
-}
 
 
 #ifdef PLATFORM_LINUX

@@ -1392,18 +1392,6 @@ inline void ATOMIC_DEC(ATOMIC_T *v)
 	#endif
 }
 
-inline int ATOMIC_DEC_RETURN(ATOMIC_T *v)
-{
-	#ifdef PLATFORM_LINUX
-	return atomic_dec_return(v);
-	#elif defined(PLATFORM_WINDOWS)
-	return InterlockedDecrement(v);
-	#elif defined(PLATFORM_FREEBSD)
-	atomic_subtract_int(v,1);
-	return atomic_load_acq_32(v);
-	#endif
-}
-
 
 #ifdef PLATFORM_LINUX
 /*

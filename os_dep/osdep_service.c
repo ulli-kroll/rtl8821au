@@ -258,21 +258,21 @@ void rtw_dump_mem_stat (void)
 	int vir_alloc, vir_peak, vir_alloc_err, phy_alloc, phy_peak, phy_alloc_err;
 	int tx_alloc, tx_peak, tx_alloc_err, rx_alloc, rx_peak, rx_alloc_err;
 	
-	vir_alloc=ATOMIC_READ(&rtw_dbg_mem_stat.vir_alloc);
-	vir_peak=ATOMIC_READ(&rtw_dbg_mem_stat.vir_peak);
-	vir_alloc_err=ATOMIC_READ(&rtw_dbg_mem_stat.vir_alloc_err);
+	vir_alloc=atomic_read(&rtw_dbg_mem_stat.vir_alloc);
+	vir_peak=atomic_read(&rtw_dbg_mem_stat.vir_peak);
+	vir_alloc_err=atomic_read(&rtw_dbg_mem_stat.vir_alloc_err);
 
-	phy_alloc=ATOMIC_READ(&rtw_dbg_mem_stat.phy_alloc);
-	phy_peak=ATOMIC_READ(&rtw_dbg_mem_stat.phy_peak);
-	phy_alloc_err=ATOMIC_READ(&rtw_dbg_mem_stat.phy_alloc_err);
+	phy_alloc=atomic_read(&rtw_dbg_mem_stat.phy_alloc);
+	phy_peak=atomic_read(&rtw_dbg_mem_stat.phy_peak);
+	phy_alloc_err=atomic_read(&rtw_dbg_mem_stat.phy_alloc_err);
 
-	tx_alloc=ATOMIC_READ(&rtw_dbg_mem_stat.tx_alloc);
-	tx_peak=ATOMIC_READ(&rtw_dbg_mem_stat.tx_peak);
-	tx_alloc_err=ATOMIC_READ(&rtw_dbg_mem_stat.tx_alloc_err);
+	tx_alloc=atomic_read(&rtw_dbg_mem_stat.tx_alloc);
+	tx_peak=atomic_read(&rtw_dbg_mem_stat.tx_peak);
+	tx_alloc_err=atomic_read(&rtw_dbg_mem_stat.tx_alloc_err);
 	
-	rx_alloc=ATOMIC_READ(&rtw_dbg_mem_stat.rx_alloc);
-	rx_peak=ATOMIC_READ(&rtw_dbg_mem_stat.rx_peak);
-	rx_alloc_err=ATOMIC_READ(&rtw_dbg_mem_stat.rx_alloc_err);
+	rx_alloc=atomic_read(&rtw_dbg_mem_stat.rx_alloc);
+	rx_peak=atomic_read(&rtw_dbg_mem_stat.rx_peak);
+	rx_alloc_err=atomic_read(&rtw_dbg_mem_stat.rx_alloc_err);
 
 	DBG_871X(	"vir_alloc:%d, vir_peak:%d, vir_alloc_err:%d\n"
 				"phy_alloc:%d, phy_peak:%d, phy_alloc_err:%d\n"
@@ -302,7 +302,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 	switch(flag) {
 		case MEM_STAT_VIR_ALLOC_SUCCESS:
 			alloc = atomic_add_return(&rtw_dbg_mem_stat.vir_alloc, sz);
-			peak=ATOMIC_READ(&rtw_dbg_mem_stat.vir_peak);
+			peak=atomic_read(&rtw_dbg_mem_stat.vir_peak);
 			if (peak<alloc)
 				ATOMIC_SET(&rtw_dbg_mem_stat.vir_peak, alloc);
 			break;
@@ -317,7 +317,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			
 		case MEM_STAT_PHY_ALLOC_SUCCESS:
 			alloc = atomic_add_return(&rtw_dbg_mem_stat.phy_alloc, sz);
-			peak=ATOMIC_READ(&rtw_dbg_mem_stat.phy_peak);
+			peak=atomic_read(&rtw_dbg_mem_stat.phy_peak);
 			if (peak<alloc)
 				ATOMIC_SET(&rtw_dbg_mem_stat.phy_peak, alloc);
 			break;
@@ -332,7 +332,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 		
 		case MEM_STAT_TX_ALLOC_SUCCESS:
 			alloc = atomic_add_return(&rtw_dbg_mem_stat.tx_alloc, sz);
-			peak=ATOMIC_READ(&rtw_dbg_mem_stat.tx_peak);
+			peak=atomic_read(&rtw_dbg_mem_stat.tx_peak);
 			if (peak<alloc)
 				ATOMIC_SET(&rtw_dbg_mem_stat.tx_peak, alloc);
 			break;
@@ -347,7 +347,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			
 		case MEM_STAT_RX_ALLOC_SUCCESS:
 			alloc = atomic_add_return(&rtw_dbg_mem_stat.rx_alloc, sz);
-			peak=ATOMIC_READ(&rtw_dbg_mem_stat.rx_peak);
+			peak=atomic_read(&rtw_dbg_mem_stat.rx_peak);
 			if (peak<alloc)
 				ATOMIC_SET(&rtw_dbg_mem_stat.rx_peak, alloc);
 			break;
@@ -1356,17 +1356,6 @@ inline void ATOMIC_SET(ATOMIC_T *v, int i)
 	*v=i;// other choice????
 	#elif defined(PLATFORM_FREEBSD)
 	atomic_set_int(v,i);
-	#endif
-}
-
-inline int ATOMIC_READ(ATOMIC_T *v)
-{
-	#ifdef PLATFORM_LINUX
-	return atomic_read(v);
-	#elif defined(PLATFORM_WINDOWS)
-	return *v; // other choice????
-	#elif defined(PLATFORM_FREEBSD)
-	return atomic_load_acq_32(v);
 	#endif
 }
 

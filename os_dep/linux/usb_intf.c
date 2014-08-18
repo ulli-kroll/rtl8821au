@@ -638,7 +638,7 @@ _func_enter_;
 		rtw_mfree((u8*)dvobj, sizeof(*dvobj));
 	}
 
-	//DBG_871X("%s %d\n", __func__, ATOMIC_READ(&usb_intf->dev.kobj.kref.refcount));
+	//DBG_871X("%s %d\n", __func__, atomic_read(&usb_intf->dev.kobj.kref.refcount));
 	usb_put_dev(interface_to_usbdev(usb_intf));
 
 _func_exit_;

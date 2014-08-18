@@ -2582,7 +2582,7 @@ void rtw_dynamic_check_timer_handlder(_adapter *adapter)
 inline bool rtw_is_scan_deny(_adapter *adapter)
 {
 	struct mlme_priv *mlmepriv = &adapter->mlmepriv;
-	return (ATOMIC_READ(&mlmepriv->set_scan_deny) != 0) ? _TRUE : _FALSE;
+	return (atomic_read(&mlmepriv->set_scan_deny) != 0) ? _TRUE : _FALSE;
 }
 
 inline void rtw_clear_scan_deny(_adapter *adapter)

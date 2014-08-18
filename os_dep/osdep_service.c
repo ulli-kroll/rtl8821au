@@ -1370,17 +1370,6 @@ inline int ATOMIC_READ(ATOMIC_T *v)
 	#endif
 }
 
-inline void ATOMIC_SUB(ATOMIC_T *v, int i)
-{
-	#ifdef PLATFORM_LINUX
-	atomic_sub(i,v);
-	#elif defined(PLATFORM_WINDOWS)
-	InterlockedAdd(v,-i);
-	#elif defined(PLATFORM_FREEBSD)
-	atomic_subtract_int(v,i);
-	#endif
-}
-
 inline void ATOMIC_INC(ATOMIC_T *v)
 {
 	#ifdef PLATFORM_LINUX

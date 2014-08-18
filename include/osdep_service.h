@@ -395,7 +395,6 @@ extern void rtw_lock_suspend_timeout(long timeout);
 
 extern void ATOMIC_SET(ATOMIC_T *v, int i);
 extern int ATOMIC_READ(ATOMIC_T *v);
-extern void ATOMIC_SUB(ATOMIC_T *v, int i);
 extern void ATOMIC_INC(ATOMIC_T *v);
 extern void ATOMIC_DEC(ATOMIC_T *v);
 extern int ATOMIC_ADD_RETURN(ATOMIC_T *v, int i);

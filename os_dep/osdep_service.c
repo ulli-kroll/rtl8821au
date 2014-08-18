@@ -312,7 +312,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 			
 		case MEM_STAT_VIR_FREE:
-			alloc = ATOMIC_SUB_RETURN(&rtw_dbg_mem_stat.vir_alloc, sz);
+			alloc = atomic_sub_return(&rtw_dbg_mem_stat.vir_alloc, sz);
 			break;
 			
 		case MEM_STAT_PHY_ALLOC_SUCCESS:
@@ -327,7 +327,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 		
 		case MEM_STAT_PHY_FREE:
-			alloc = ATOMIC_SUB_RETURN(&rtw_dbg_mem_stat.phy_alloc, sz);
+			alloc = atomic_sub_return(&rtw_dbg_mem_stat.phy_alloc, sz);
 			break;
 		
 		case MEM_STAT_TX_ALLOC_SUCCESS:
@@ -342,7 +342,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 			
 		case MEM_STAT_TX_FREE:
-			alloc = ATOMIC_SUB_RETURN(&rtw_dbg_mem_stat.tx_alloc, sz);
+			alloc = atomic_sub_return(&rtw_dbg_mem_stat.tx_alloc, sz);
 			break;
 			
 		case MEM_STAT_RX_ALLOC_SUCCESS:
@@ -357,7 +357,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 			
 		case MEM_STAT_RX_FREE:
-			alloc = ATOMIC_SUB_RETURN(&rtw_dbg_mem_stat.rx_alloc, sz);
+			alloc = atomic_sub_return(&rtw_dbg_mem_stat.rx_alloc, sz);
 			break;
 			
 	};
@@ -1389,18 +1389,6 @@ inline void ATOMIC_DEC(ATOMIC_T *v)
 	InterlockedDecrement(v);
 	#elif defined(PLATFORM_FREEBSD)
 	atomic_subtract_int(v,1);
-	#endif
-}
-
-inline int ATOMIC_SUB_RETURN(ATOMIC_T *v, int i)
-{
-	#ifdef PLATFORM_LINUX
-	return atomic_sub_return(i,v);
-	#elif defined(PLATFORM_WINDOWS)
-	return InterlockedAdd(v,-i);
-	#elif defined(PLATFORM_FREEBSD)
-	atomic_subtract_int(v,i);
-	return atomic_load_acq_32(v);
 	#endif
 }
 

@@ -727,16 +727,6 @@ KVER:= 2.6.31.6
 KSRC:= ../code/linux-2.6.31.6-2020/
 endif
 
-#Add setting for MN10300
-ifeq ($(CONFIG_PLATFORM_MN10300), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_MN10300
-ARCH := mn10300
-CROSS_COMPILE := mn10300-linux-
-KVER := 2.6.32.2
-KSRC := /home/winuser/work/Plat_sLD2T_V3010/usr/src/linux-2.6.32.2
-INSTALL_PREFIX :=
-endif
-
 
 
 ifeq ($(CONFIG_MULTIDRV), y)	

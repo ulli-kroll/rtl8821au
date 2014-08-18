@@ -52,16 +52,12 @@ CONFIG_WOWLAN = n
 CONFIG_PLATFORM_I386_PC = y
 CONFIG_PLATFORM_ANDROID_X86 = n
 CONFIG_PLATFORM_JB_X86 = n
-CONFIG_PLATFORM_MIPS_RMI = n
 CONFIG_PLATFORM_RTD2880B = n
-CONFIG_PLATFORM_MIPS_AR9132 = n
 CONFIG_PLATFORM_RTK_DMP = n
-CONFIG_PLATFORM_MIPS_PLM = n
 CONFIG_PLATFORM_MSTAR389 = n
 CONFIG_PLATFORM_MT53XX = n
 CONFIG_PLATFORM_FS_MX61 = n
 CONFIG_PLATFORM_ACTIONS_ATJ227X = n
-CONFIG_PLATFORM_MIPS_JZ4760 = n
 CONFIG_PLATFORM_DMP_PHILIPS = n
 CONFIG_PLATFORM_TI_DM365 = n
 CONFIG_PLATFORM_MSTAR_TITANIA12 = n
@@ -698,35 +694,12 @@ KVER:=
 KSRC:=
 endif
 
-ifeq ($(CONFIG_PLATFORM_MIPS_RMI), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
-ARCH:=mips
-CROSS_COMPILE:=mipsisa32r2-uclibc-
-KVER:=
-KSRC:= /root/work/kernel_realtek
-endif
-
-ifeq ($(CONFIG_PLATFORM_MIPS_PLM), y)
-EXTRA_CFLAGS += -DCONFIG_BIG_ENDIAN
-ARCH:=mips
-CROSS_COMPILE:=mipsisa32r2-uclibc-
-KVER:=
-KSRC:= /root/work/kernel_realtek
-endif
-
 ifeq ($(CONFIG_PLATFORM_MSTAR389), y)
 EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_MSTAR389
 ARCH:=mips
 CROSS_COMPILE:= mips-linux-gnu-
 KVER:= 2.6.28.10
 KSRC:= /home/mstar/mstar_linux/2.6.28.9/
-endif
-
-ifeq ($(CONFIG_PLATFORM_MIPS_AR9132), y)
-EXTRA_CFLAGS += -DCONFIG_BIG_ENDIAN
-ARCH := mips
-CROSS_COMPILE := mips-openwrt-linux-
-KSRC := /home/alex/test_openwrt/tmp/linux-2.6.30.9
 endif
 
 ifeq ($(CONFIG_PLATFORM_DMP_PHILIPS), y)
@@ -776,13 +749,6 @@ ARCH := arm
 CROSS_COMPILE := /home/cnsd4/Appro/mv_pro_5.0/montavista/pro/devkit/arm/v5t_le/bin/arm_v5t_le-
 KVER  := 2.6.18
 KSRC := /home/cnsd4/Appro/mv_pro_5.0/montavista/pro/devkit/lsp/ti-davinci/linux-dm365
-endif
-
-ifeq ($(CONFIG_PLATFORM_MIPS_JZ4760), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_MINIMAL_MEMORY_USAGE
-ARCH ?= mips
-CROSS_COMPILE ?= /mnt/sdb5/Ingenic/Umido/mips-4.3/bin/mips-linux-gnu-
-KSRC ?= /mnt/sdb5/Ingenic/Umido/kernel
 endif
 
 ifeq ($(CONFIG_PLATFORM_SZEBOOK), y)

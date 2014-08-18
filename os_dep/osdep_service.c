@@ -1381,17 +1381,6 @@ inline void ATOMIC_INC(ATOMIC_T *v)
 	#endif
 }
 
-inline void ATOMIC_DEC(ATOMIC_T *v)
-{
-	#ifdef PLATFORM_LINUX
-	atomic_dec(v);
-	#elif defined(PLATFORM_WINDOWS)
-	InterlockedDecrement(v);
-	#elif defined(PLATFORM_FREEBSD)
-	atomic_subtract_int(v,1);
-	#endif
-}
-
 
 #ifdef PLATFORM_LINUX
 /*

@@ -396,7 +396,6 @@ extern void rtw_lock_suspend_timeout(long timeout);
 extern void ATOMIC_SET(ATOMIC_T *v, int i);
 extern int ATOMIC_READ(ATOMIC_T *v);
 extern void ATOMIC_INC(ATOMIC_T *v);
-extern void ATOMIC_DEC(ATOMIC_T *v);
 
 //File operation APIs, just for linux now
 extern int rtw_is_file_readable(char *path);

@@ -111,13 +111,17 @@ struct net_device *rtw_init_netdev(_adapter *padapter);
 u16 rtw_recv_select_queue(struct sk_buff *skb);
 #endif //LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35)
 
-#ifdef CONFIG_PROC_DEBUG
-void rtw_proc_init_one(struct net_device *dev);
-void rtw_proc_remove_one(struct net_device *dev);
-#else //!CONFIG_PROC_DEBUG
+/*
+ *	#ifdef CONFIG_PROC_DEBUG
+ *	void rtw_proc_init_one(struct net_device *dev);
+ *	void rtw_proc_remove_one(struct net_device *dev);
+ *	#else //!CONFIG_PROC_DEBUG
+*/
 static void rtw_proc_init_one(struct net_device *dev){}
 static void rtw_proc_remove_one(struct net_device *dev){}
-#endif //!CONFIG_PROC_DEBUG
+/*
+ *	#endif //!CONFIG_PROC_DEBUG
+*/
 #endif //PLATFORM_LINUX
 
 

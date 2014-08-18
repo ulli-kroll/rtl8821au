@@ -316,6 +316,7 @@ static int	rtw_proc_cnt = 0;
 
 #define RTW_PROC_NAME DRV_NAME
 
+#if 0
 void rtw_proc_init_one(struct net_device *dev)
 {
 	struct proc_dir_entry *dir_dev = NULL;
@@ -749,6 +750,7 @@ void rtw_proc_remove_one(struct net_device *dev)
 		}
 	}
 }
+#endif
 #endif
 
 uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)

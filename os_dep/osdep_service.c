@@ -308,7 +308,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 			
 		case MEM_STAT_VIR_ALLOC_FAIL:
-			ATOMIC_INC(&rtw_dbg_mem_stat.vir_alloc_err);
+			atomic_inc(&rtw_dbg_mem_stat.vir_alloc_err);
 			break;
 			
 		case MEM_STAT_VIR_FREE:
@@ -323,7 +323,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 
 		case MEM_STAT_PHY_ALLOC_FAIL:
-			ATOMIC_INC(&rtw_dbg_mem_stat.phy_alloc_err);
+			atomic_inc(&rtw_dbg_mem_stat.phy_alloc_err);
 			break;
 		
 		case MEM_STAT_PHY_FREE:
@@ -338,7 +338,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 			
  		case MEM_STAT_TX_ALLOC_FAIL:
-			ATOMIC_INC(&rtw_dbg_mem_stat.tx_alloc_err);
+			atomic_inc(&rtw_dbg_mem_stat.tx_alloc_err);
 			break;
 			
 		case MEM_STAT_TX_FREE:
@@ -353,7 +353,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 			
 		case MEM_STAT_RX_ALLOC_FAIL:
-			ATOMIC_INC(&rtw_dbg_mem_stat.rx_alloc_err);
+			atomic_inc(&rtw_dbg_mem_stat.rx_alloc_err);
 			break;
 			
 		case MEM_STAT_RX_FREE:
@@ -1367,17 +1367,6 @@ inline int ATOMIC_READ(ATOMIC_T *v)
 	return *v; // other choice????
 	#elif defined(PLATFORM_FREEBSD)
 	return atomic_load_acq_32(v);
-	#endif
-}
-
-inline void ATOMIC_INC(ATOMIC_T *v)
-{
-	#ifdef PLATFORM_LINUX
-	atomic_inc(v);
-	#elif defined(PLATFORM_WINDOWS)
-	InterlockedIncrement(v);
-	#elif defined(PLATFORM_FREEBSD)
-	atomic_add_int(v,1);
 	#endif
 }
 

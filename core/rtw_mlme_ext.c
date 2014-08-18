@@ -11995,7 +11995,7 @@ u8 mlme_evt_hdl(_adapter *padapter, unsigned char *pbuf)
 			
 	}
 
-	ATOMIC_INC(&pevt_priv->event_seq);
+	atomic_inc(&pevt_priv->event_seq);
 
 	peventbuf += 2;
 				

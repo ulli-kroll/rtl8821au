@@ -397,7 +397,6 @@ extern void ATOMIC_SET(ATOMIC_T *v, int i);
 extern int ATOMIC_READ(ATOMIC_T *v);
 extern void ATOMIC_INC(ATOMIC_T *v);
 extern void ATOMIC_DEC(ATOMIC_T *v);
-extern int ATOMIC_ADD_RETURN(ATOMIC_T *v, int i);
 extern int ATOMIC_SUB_RETURN(ATOMIC_T *v, int i);
 extern int ATOMIC_INC_RETURN(ATOMIC_T *v);
 extern int ATOMIC_DEC_RETURN(ATOMIC_T *v);

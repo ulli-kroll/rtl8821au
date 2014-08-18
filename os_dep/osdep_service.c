@@ -301,7 +301,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 		
 	switch(flag) {
 		case MEM_STAT_VIR_ALLOC_SUCCESS:
-			alloc = ATOMIC_ADD_RETURN(&rtw_dbg_mem_stat.vir_alloc, sz);
+			alloc = atomic_add_return(&rtw_dbg_mem_stat.vir_alloc, sz);
 			peak=ATOMIC_READ(&rtw_dbg_mem_stat.vir_peak);
 			if (peak<alloc)
 				ATOMIC_SET(&rtw_dbg_mem_stat.vir_peak, alloc);
@@ -316,7 +316,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 			
 		case MEM_STAT_PHY_ALLOC_SUCCESS:
-			alloc = ATOMIC_ADD_RETURN(&rtw_dbg_mem_stat.phy_alloc, sz);
+			alloc = atomic_add_return(&rtw_dbg_mem_stat.phy_alloc, sz);
 			peak=ATOMIC_READ(&rtw_dbg_mem_stat.phy_peak);
 			if (peak<alloc)
 				ATOMIC_SET(&rtw_dbg_mem_stat.phy_peak, alloc);
@@ -331,7 +331,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 		
 		case MEM_STAT_TX_ALLOC_SUCCESS:
-			alloc = ATOMIC_ADD_RETURN(&rtw_dbg_mem_stat.tx_alloc, sz);
+			alloc = atomic_add_return(&rtw_dbg_mem_stat.tx_alloc, sz);
 			peak=ATOMIC_READ(&rtw_dbg_mem_stat.tx_peak);
 			if (peak<alloc)
 				ATOMIC_SET(&rtw_dbg_mem_stat.tx_peak, alloc);
@@ -346,7 +346,7 @@ void rtw_update_mem_stat(u8 flag, u32 sz)
 			break;
 			
 		case MEM_STAT_RX_ALLOC_SUCCESS:
-			alloc = ATOMIC_ADD_RETURN(&rtw_dbg_mem_stat.rx_alloc, sz);
+			alloc = atomic_add_return(&rtw_dbg_mem_stat.rx_alloc, sz);
 			peak=ATOMIC_READ(&rtw_dbg_mem_stat.rx_peak);
 			if (peak<alloc)
 				ATOMIC_SET(&rtw_dbg_mem_stat.rx_peak, alloc);
@@ -1389,18 +1389,6 @@ inline void ATOMIC_DEC(ATOMIC_T *v)
 	InterlockedDecrement(v);
 	#elif defined(PLATFORM_FREEBSD)
 	atomic_subtract_int(v,1);
-	#endif
-}
-
-inline int ATOMIC_ADD_RETURN(ATOMIC_T *v, int i)
-{
-	#ifdef PLATFORM_LINUX
-	return atomic_add_return(i,v);
-	#elif defined(PLATFORM_WINDOWS)
-	return InterlockedAdd(v,i);
-	#elif defined(PLATFORM_FREEBSD)
-	atomic_add_int(v,i);
-	return atomic_load_acq_32(v);
 	#endif
 }
 

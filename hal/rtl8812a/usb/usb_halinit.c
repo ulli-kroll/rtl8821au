@@ -2217,12 +2217,12 @@ hal_ReadMACAddress_8812AU(
 		if(IS_HARDWARE_TYPE_8812AU(Adapter))
 		{
 			//Read Permanent MAC address and set value to hardware
-			_rtw_memcpy(pEEPROM->mac_addr, &PROMContent[EEPROM_MAC_ADDR_8812AU], ETH_ALEN);
+			memcpy(pEEPROM->mac_addr, &PROMContent[EEPROM_MAC_ADDR_8812AU], ETH_ALEN);
 		}
 		else if(IS_HARDWARE_TYPE_8821U(Adapter))
 		{
 			//Read Permanent MAC address and set value to hardware
-			_rtw_memcpy(pEEPROM->mac_addr, &PROMContent[EEPROM_MAC_ADDR_8821AU], ETH_ALEN);
+			memcpy(pEEPROM->mac_addr, &PROMContent[EEPROM_MAC_ADDR_8821AU], ETH_ALEN);
 		}
 	}
 	else
@@ -2230,7 +2230,7 @@ hal_ReadMACAddress_8812AU(
 		//Random assigh MAC address
 		u8	sMacAddr[ETH_ALEN] = {0x00, 0xE0, 0x4C, 0x88, 0x12, 0x00};
 		//sMacAddr[5] = (u8)GetRandomNumber(1, 254);
-		_rtw_memcpy(pEEPROM->mac_addr, sMacAddr, ETH_ALEN);
+		memcpy(pEEPROM->mac_addr, sMacAddr, ETH_ALEN);
 	}
 
 	DBG_8192C("%s MAC Address from EFUSE = "MAC_FMT"\n",__FUNCTION__, MAC_ARG(pEEPROM->mac_addr));

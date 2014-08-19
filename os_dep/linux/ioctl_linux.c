@@ -141,7 +141,7 @@ static void indicate_wx_custom_event(_adapter *padapter, char *msg)
 	if(!buff)
 		return;
 
-	_rtw_memcpy(buff, msg, strlen(msg));
+	memcpy(buff, msg, strlen(msg));
 
 	memset(&wrqu,0,sizeof(wrqu));
 	wrqu.data.length = strlen(msg);
@@ -236,7 +236,7 @@ void rtw_indicate_wx_assoc_event(_adapter *padapter)
 
 	wrqu.ap_addr.sa_family = ARPHRD_ETHER;
 
-	_rtw_memcpy(wrqu.ap_addr.sa_data, pmlmepriv->cur_network.network.MacAddress, ETH_ALEN);
+	memcpy(wrqu.ap_addr.sa_data, pmlmepriv->cur_network.network.MacAddress, ETH_ALEN);
 	DBG_871X("BSSID:" MAC_FMT "\n", MAC_ARG(pmlmepriv->cur_network.network.MacAddress));
 	DBG_871X_LEVEL(_drv_always_, "assoc success\n");
 #ifndef CONFIG_IOCTL_CFG80211
@@ -398,7 +398,7 @@ static char *translate_scan(_adapter *padapter,
 	iwe.cmd = SIOCGIWAP;
 	iwe.u.ap_addr.sa_family = ARPHRD_ETHER;
 
-	_rtw_memcpy(iwe.u.ap_addr.sa_data, pnetwork->network.MacAddress, ETH_ALEN);
+	memcpy(iwe.u.ap_addr.sa_data, pnetwork->network.MacAddress, ETH_ALEN);
 	start = iwe_stream_add_event(info, start, stop, &iwe, IW_EV_ADDR_LEN);
 
 	/* Add the ESSID */
@@ -415,7 +415,7 @@ static char *translate_scan(_adapter *padapter,
 		struct rtw_ieee80211_ht_cap *pht_capie;
 		ht_cap = _TRUE;
 		pht_capie = (struct rtw_ieee80211_ht_cap *)(p+2);
-		_rtw_memcpy(&mcs_rate , pht_capie->supp_mcs_set, 2);
+		memcpy(&mcs_rate , pht_capie->supp_mcs_set, 2);
 		bw_40MHz = (pht_capie->cap_info&IEEE80211_HT_CAP_SUP_WIDTH) ? 1:0;
 		short_GI = (pht_capie->cap_info&(IEEE80211_HT_CAP_SGI_20|IEEE80211_HT_CAP_SGI_40)) ? 1:0;
 	}
@@ -434,7 +434,7 @@ static char *translate_scan(_adapter *padapter,
 		else
 			short_GI = GET_VHT_CAPABILITY_ELE_SHORT_GI80M(p+2);
 
-		_rtw_memcpy(mcs_map, GET_VHT_CAPABILITY_ELE_TX_MCS(p+2), 2);
+		memcpy(mcs_map, GET_VHT_CAPABILITY_ELE_TX_MCS(p+2), 2);
 
 		vht_highest_rate = rtw_get_vht_highest_rate(padapter, mcs_map);
 		vht_data_rate = rtw_vht_data_rate(CHANNEL_WIDTH_80, short_GI, vht_highest_rate);
@@ -481,7 +481,7 @@ static char *translate_scan(_adapter *padapter,
 
 	  /* Add mode */
         iwe.cmd = SIOCGIWMODE;
-	_rtw_memcpy((u8 *)&cap, rtw_get_capability_from_ie(pnetwork->network.IEs), 2);
+	memcpy((u8 *)&cap, rtw_get_capability_from_ie(pnetwork->network.IEs), 2);
 
 
 	cap = le16_to_cpu(cap);
@@ -853,7 +853,7 @@ _func_enter_;
 		pwep->KeyIndex = wep_key_idx;
 		pwep->KeyIndex |= 0x80000000;
 
-		_rtw_memcpy(pwep->KeyMaterial,  param->u.crypt.key, pwep->KeyLength);
+		memcpy(pwep->KeyMaterial,  param->u.crypt.key, pwep->KeyLength);
 
 		if(param->u.crypt.set_tx)
 		{
@@ -876,7 +876,7 @@ _func_enter_;
 				goto exit;
 			}
 
-		      _rtw_memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
+		      memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
 			psecuritypriv->dot11DefKeylen[wep_key_idx]=pwep->KeyLength;
 			rtw_set_key(padapter, psecuritypriv, wep_key_idx, 0);
 		}
@@ -909,13 +909,13 @@ _func_enter_;
 
 				if(param->u.crypt.set_tx ==1)//pairwise key
 				{
-					_rtw_memcpy(psta->dot118021x_UncstKey.skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
+					memcpy(psta->dot118021x_UncstKey.skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
 					if(strcmp(param->u.crypt.alg, "TKIP") == 0)//set mic key
 					{
 						//DEBUG_ERR(("\nset key length :param->u.crypt.key_len=%d\n", param->u.crypt.key_len));
-						_rtw_memcpy(psta->dot11tkiptxmickey.skey, &(param->u.crypt.key[16]), 8);
-						_rtw_memcpy(psta->dot11tkiprxmickey.skey, &(param->u.crypt.key[24]), 8);
+						memcpy(psta->dot11tkiptxmickey.skey, &(param->u.crypt.key[16]), 8);
+						memcpy(psta->dot11tkiprxmickey.skey, &(param->u.crypt.key[24]), 8);
 
 						padapter->securitypriv.busetkipkey=_FALSE;
 						//_set_timer(&padapter->securitypriv.tkip_timer, 50);
@@ -928,9 +928,9 @@ _func_enter_;
 				}
 				else//group key
 				{
-					_rtw_memcpy(padapter->securitypriv.dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key,(param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
-					_rtw_memcpy(padapter->securitypriv.dot118021XGrptxmickey[param->u.crypt.idx].skey,&(param->u.crypt.key[16]),8);
-					_rtw_memcpy(padapter->securitypriv.dot118021XGrprxmickey[param->u.crypt.idx].skey,&(param->u.crypt.key[24]),8);
+					memcpy(padapter->securitypriv.dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key,(param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
+					memcpy(padapter->securitypriv.dot118021XGrptxmickey[param->u.crypt.idx].skey,&(param->u.crypt.key[16]),8);
+					memcpy(padapter->securitypriv.dot118021XGrprxmickey[param->u.crypt.idx].skey,&(param->u.crypt.key[24]),8);
                                         padapter->securitypriv.binstallGrpkey = _TRUE;
 					//DEBUG_ERR((" param->u.crypt.key_len=%d\n", param->u.crypt.key_len));
 					DBG_871X(" ~~~~set sta key:groupkey\n");
@@ -985,19 +985,19 @@ _func_enter_;
 			list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list) {
 				if(_rtw_memcmp(pWapiSta->PeerMacAddr,param->sta_addr,6))
 				{
-					_rtw_memcpy(pWapiSta->lastTxUnicastPN,WapiASUEPNInitialValueSrc,16);
+					memcpy(pWapiSta->lastTxUnicastPN,WapiASUEPNInitialValueSrc,16);
 
 					pWapiSta->wapiUsk.bSet = true;
-					_rtw_memcpy(pWapiSta->wapiUsk.dataKey,param->u.crypt.key,16);
-					_rtw_memcpy(pWapiSta->wapiUsk.micKey,param->u.crypt.key+16,16);
+					memcpy(pWapiSta->wapiUsk.dataKey,param->u.crypt.key,16);
+					memcpy(pWapiSta->wapiUsk.micKey,param->u.crypt.key+16,16);
 					pWapiSta->wapiUsk.keyId = param->u.crypt.idx ;
 					pWapiSta->wapiUsk.bTxEnable = true;
 
-					_rtw_memcpy(pWapiSta->lastRxUnicastPNBEQueue,WapiAEPNInitialValueSrc,16);
-					_rtw_memcpy(pWapiSta->lastRxUnicastPNBKQueue,WapiAEPNInitialValueSrc,16);
-					_rtw_memcpy(pWapiSta->lastRxUnicastPNVIQueue,WapiAEPNInitialValueSrc,16);
-					_rtw_memcpy(pWapiSta->lastRxUnicastPNVOQueue,WapiAEPNInitialValueSrc,16);
-					_rtw_memcpy(pWapiSta->lastRxUnicastPN,WapiAEPNInitialValueSrc,16);
+					memcpy(pWapiSta->lastRxUnicastPNBEQueue,WapiAEPNInitialValueSrc,16);
+					memcpy(pWapiSta->lastRxUnicastPNBKQueue,WapiAEPNInitialValueSrc,16);
+					memcpy(pWapiSta->lastRxUnicastPNVIQueue,WapiAEPNInitialValueSrc,16);
+					memcpy(pWapiSta->lastRxUnicastPNVOQueue,WapiAEPNInitialValueSrc,16);
+					memcpy(pWapiSta->lastRxUnicastPN,WapiAEPNInitialValueSrc,16);
 					pWapiSta->wapiUskUpdate.bTxEnable = false;
 					pWapiSta->wapiUskUpdate.bSet = false;
 
@@ -1015,15 +1015,15 @@ _func_enter_;
 				if(_rtw_memcmp(pWapiSta->PeerMacAddr,get_bssid(pmlmepriv),6))
 				{
 					pWapiSta->wapiMsk.bSet = true;
-					_rtw_memcpy(pWapiSta->wapiMsk.dataKey,param->u.crypt.key,16);
-					_rtw_memcpy(pWapiSta->wapiMsk.micKey,param->u.crypt.key+16,16);
+					memcpy(pWapiSta->wapiMsk.dataKey,param->u.crypt.key,16);
+					memcpy(pWapiSta->wapiMsk.micKey,param->u.crypt.key+16,16);
 					pWapiSta->wapiMsk.keyId = param->u.crypt.idx ;
 					pWapiSta->wapiMsk.bTxEnable = false;
 					if(!pWapiSta->bSetkeyOk)
 						pWapiSta->bSetkeyOk = true;
 					pWapiSta->bAuthenticateInProgress = false;
 
-					_rtw_memcpy(pWapiSta->lastRxMulticastPN, WapiAEMultiCastPNInitialValueSrc, 16);
+					memcpy(pWapiSta->lastRxMulticastPN, WapiAEMultiCastPNInitialValueSrc, 16);
 
 					if (psecuritypriv->sw_decrypt == false)
 					{
@@ -1075,7 +1075,7 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 			goto exit;
 		}
 
-		_rtw_memcpy(buf, pie , ielen);
+		memcpy(buf, pie , ielen);
 
 		//dump
 		{
@@ -1111,14 +1111,14 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 		{
 			padapter->securitypriv.dot11AuthAlgrthm= dot11AuthAlgrthm_8021X;
 			padapter->securitypriv.ndisauthtype=Ndis802_11AuthModeWPAPSK;
-			_rtw_memcpy(padapter->securitypriv.supplicant_ie, &buf[0], ielen);
+			memcpy(padapter->securitypriv.supplicant_ie, &buf[0], ielen);
 		}
 
 		if(rtw_parse_wpa2_ie(buf, ielen, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS)
 		{
 			padapter->securitypriv.dot11AuthAlgrthm= dot11AuthAlgrthm_8021X;
 			padapter->securitypriv.ndisauthtype=Ndis802_11AuthModeWPA2PSK;
-			_rtw_memcpy(padapter->securitypriv.supplicant_ie, &buf[0], ielen);
+			memcpy(padapter->securitypriv.supplicant_ie, &buf[0], ielen);
 		}
 
 		if (group_cipher == 0)
@@ -1193,7 +1193,7 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 
 					padapter->securitypriv.wps_ie_len = ( (buf[cnt+1]+2) < (MAX_WPA_IE_LEN<<2)) ? (buf[cnt+1]+2):(MAX_WPA_IE_LEN<<2);
 
-					_rtw_memcpy(padapter->securitypriv.wps_ie, &buf[cnt], padapter->securitypriv.wps_ie_len);
+					memcpy(padapter->securitypriv.wps_ie, &buf[cnt], padapter->securitypriv.wps_ie_len);
 
 					set_fwstate(&padapter->mlmepriv, WIFI_UNDER_WPS);
 
@@ -1484,7 +1484,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
         If cmd is IW_PMKSA_REMOVE, it means the wpa_supplicant wants to remove a PMKID/BSSID from driver.
         */
 
-	_rtw_memcpy( strIssueBssid, pPMK->bssid.sa_data, ETH_ALEN);
+	memcpy( strIssueBssid, pPMK->bssid.sa_data, ETH_ALEN);
         if ( pPMK->cmd == IW_PMKSA_ADD )
         {
                 DBG_871X( "[rtw_wx_set_pmkid] IW_PMKSA_ADD!\n" );
@@ -1506,7 +1506,7 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
 
                                 DBG_871X( "[rtw_wx_set_pmkid] BSSID exists in the PMKList.\n" );
 
-				_rtw_memcpy( psecuritypriv->PMKIDList[j].PMKID, pPMK->pmkid, IW_PMKID_LEN);
+				memcpy( psecuritypriv->PMKIDList[j].PMKID, pPMK->pmkid, IW_PMKID_LEN);
                                 psecuritypriv->PMKIDList[ j ].bUsed = _TRUE;
 				psecuritypriv->PMKIDIndex = j+1;
 				blInserted = _TRUE;
@@ -1520,8 +1520,8 @@ static int rtw_wx_set_pmkid(struct net_device *dev,
                     DBG_871X( "[rtw_wx_set_pmkid] Use the new entry index = %d for this PMKID.\n",
                             psecuritypriv->PMKIDIndex );
 
-	            _rtw_memcpy(psecuritypriv->PMKIDList[psecuritypriv->PMKIDIndex].Bssid, strIssueBssid, ETH_ALEN);
-		    _rtw_memcpy(psecuritypriv->PMKIDList[psecuritypriv->PMKIDIndex].PMKID, pPMK->pmkid, IW_PMKID_LEN);
+	            memcpy(psecuritypriv->PMKIDList[psecuritypriv->PMKIDIndex].Bssid, strIssueBssid, ETH_ALEN);
+		    memcpy(psecuritypriv->PMKIDList[psecuritypriv->PMKIDIndex].PMKID, pPMK->pmkid, IW_PMKID_LEN);
 
                     psecuritypriv->PMKIDList[ psecuritypriv->PMKIDIndex ].bUsed = _TRUE;
 		    psecuritypriv->PMKIDIndex++ ;
@@ -1866,7 +1866,7 @@ static int rtw_wx_get_wap(struct net_device *dev,
 			((check_fwstate(pmlmepriv, WIFI_AP_STATE)) == _TRUE) )
 	{
 
-		_rtw_memcpy(wrqu->ap_addr.sa_data, pcur_bss->MacAddress, ETH_ALEN);
+		memcpy(wrqu->ap_addr.sa_data, pcur_bss->MacAddress, ETH_ALEN);
 	}
 	else
 	{
@@ -2068,7 +2068,7 @@ if (padapter->registrypriv.mp_mode == 1)
 		{
 			int len = min((int)req->essid_len, IW_ESSID_MAX_SIZE);
 
-			_rtw_memcpy(ssid[0].Ssid, req->essid, len);
+			memcpy(ssid[0].Ssid, req->essid, len);
 			ssid[0].SsidLength = len;
 
 			DBG_871X("IW_SCAN_THIS_ESSID, ssid=%s, len=%d\n", req->essid, req->essid_len);
@@ -2116,7 +2116,7 @@ if (padapter->registrypriv.mp_mode == 1)
 
 					if(sec_len>0 && sec_len<=len) {
 						ssid[ssid_index].SsidLength = sec_len;
-						_rtw_memcpy(ssid[ssid_index].Ssid, pos, ssid[ssid_index].SsidLength);
+						memcpy(ssid[ssid_index].Ssid, pos, ssid[ssid_index].SsidLength);
 						//DBG_871X("%s COMBO_SCAN with specific ssid:%s, %d\n", __FUNCTION__
 						//	, ssid[ssid_index].Ssid, ssid[ssid_index].SsidLength);
 						ssid_index++;
@@ -2444,7 +2444,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 
 		memset(&ndis_ssid, 0, sizeof(NDIS_802_11_SSID));
 		ndis_ssid.SsidLength = len;
-		_rtw_memcpy(ndis_ssid.Ssid, extra, len);
+		memcpy(ndis_ssid.Ssid, extra, len);
 		src_ssid = ndis_ssid.Ssid;
 
 		RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_info_, ("rtw_wx_set_essid: ssid=[%s]\n", src_ssid));
@@ -2552,7 +2552,7 @@ static int rtw_wx_get_essid(struct net_device *dev,
 
 		wrqu->essid.length = len;
 
-		_rtw_memcpy(extra, pcur_bss->Ssid.Ssid, len);
+		memcpy(extra, pcur_bss->Ssid.Ssid, len);
 
 		wrqu->essid.flags = 1;
 	}
@@ -2928,7 +2928,7 @@ static int rtw_wx_set_enc(struct net_device *dev,
 
 	wep.KeyIndex |= 0x80000000;
 
-	_rtw_memcpy(wep.KeyMaterial, keybuf, wep.KeyLength);
+	memcpy(wep.KeyMaterial, keybuf, wep.KeyLength);
 
 	if (rtw_set_802_11_add_wep(padapter, &wep) == _FALSE) {
 		if(rf_on == pwrpriv->rf_pwrstate )
@@ -3000,7 +3000,7 @@ static int rtw_wx_get_enc(struct net_device *dev,
 
 		if(erq->length)
 		{
-			_rtw_memcpy(keybuf, padapter->securitypriv.dot11DefKey[key].skey, padapter->securitypriv.dot11DefKeylen[key]);
+			memcpy(keybuf, padapter->securitypriv.dot11DefKey[key].skey, padapter->securitypriv.dot11DefKeylen[key]);
 
 		erq->flags |= IW_ENCODE_ENABLED;
 
@@ -3262,7 +3262,7 @@ static int rtw_wx_set_enc_ext(struct net_device *dev,
 #ifndef CONFIG_IOCTL_CFG80211
 	case IW_ENCODE_ALG_SM4:
 		alg_name= "SMS4";
-		_rtw_memcpy(param->sta_addr, pext->addr.sa_data, ETH_ALEN);
+		memcpy(param->sta_addr, pext->addr.sa_data, ETH_ALEN);
 		DBG_871X("rtw_wx_set_enc_ext: SMS4 case \n");
 		break;
 #endif
@@ -3294,18 +3294,18 @@ static int rtw_wx_set_enc_ext(struct net_device *dev,
 #ifdef CONFIG_WAPI_SUPPORT
 #ifndef CONFIG_IOCTL_CFG80211
 		if(pext->alg == IW_ENCODE_ALG_SM4)
-			_rtw_memcpy(param->u.crypt.seq, pext->rx_seq, 16);
+			memcpy(param->u.crypt.seq, pext->rx_seq, 16);
 		else
 #endif
 #endif
-		_rtw_memcpy(param->u.crypt.seq, pext->rx_seq, 8);
+		memcpy(param->u.crypt.seq, pext->rx_seq, 8);
 	}
 
 	if(pext->key_len)
 	{
 		param->u.crypt.key_len = pext->key_len;
-		//_rtw_memcpy(param + 1, pext + 1, pext->key_len);
-		_rtw_memcpy(param->u.crypt.key, pext + 1, pext->key_len);
+		//memcpy(param + 1, pext + 1, pext->key_len);
+		memcpy(param->u.crypt.key, pext + 1, pext->key_len);
 	}
 
 	if (pencoding->flags & IW_ENCODE_DISABLED)
@@ -3337,7 +3337,7 @@ static int rtw_wx_get_nick(struct net_device *dev,
 	{
 		wrqu->data.length = 14;
 		wrqu->data.flags = 1;
-		_rtw_memcpy(extra, "<WIFI@REALTEK>", 14);
+		memcpy(extra, "<WIFI@REALTEK>", 14);
 	}
 
 	//rtw_signal_process(pid, SIGUSR1); //for test
@@ -3684,7 +3684,7 @@ struct	iw_point
 		ret = 0;
 
 		if (bset == 0x00) {//query info
-			//_rtw_memcpy(p->pointer, pparmbuf, len);
+			//memcpy(p->pointer, pparmbuf, len);
 			if (copy_to_user(p->pointer, pparmbuf, len))
 				ret = -EFAULT;
 		}
@@ -4216,7 +4216,7 @@ static int rtw_p2p_set_go_nego_ssid(struct net_device *dev,
 	struct wifidirect_info *pwdinfo= &(padapter->wdinfo);
 
 	DBG_871X( "[%s] ssid = %s, len = %zu\n", __FUNCTION__, extra, strlen( extra ) );
-	_rtw_memcpy( pwdinfo->nego_ssid, extra, strlen( extra ) );
+	memcpy( pwdinfo->nego_ssid, extra, strlen( extra ) );
 	pwdinfo->nego_ssidlen = strlen( extra );
 
 	return ret;
@@ -4393,7 +4393,7 @@ static int rtw_p2p_profilefound(struct net_device *dev,
 				}
 
 				//pwdinfo->profileinfo[ pwdinfo->profileindex ].ssidlen = ( extra[18] - '0' ) * 10 + ( extra[ 19 ] - '0' );
-				//_rtw_memcpy( pwdinfo->profileinfo[ pwdinfo->profileindex ].ssid, &extra[ 20 ], pwdinfo->profileinfo[ pwdinfo->profileindex ].ssidlen );
+				//memcpy( pwdinfo->profileinfo[ pwdinfo->profileindex ].ssid, &extra[ 20 ], pwdinfo->profileinfo[ pwdinfo->profileindex ].ssidlen );
 				pwdinfo->profileindex++;
 			}
 		}
@@ -4415,7 +4415,7 @@ static int rtw_p2p_setDN(struct net_device *dev,
 
 	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
 	memset( pwdinfo->device_name, 0x00, WPS_MAX_DEVICE_NAME_LEN );
-	_rtw_memcpy( pwdinfo->device_name, extra, wrqu->data.length - 1 );
+	memcpy( pwdinfo->device_name, extra, wrqu->data.length - 1 );
 	pwdinfo->device_name_len = wrqu->data.length - 1;
 
 	return ret;
@@ -4691,7 +4691,7 @@ static int rtw_p2p_get_wps_configmethod(struct net_device *dev,
 	}
 
 	wrqu->data.length = strlen(attr_content_str);
-	_rtw_memcpy(extra, attr_content_str, wrqu->data.length);
+	memcpy(extra, attr_content_str, wrqu->data.length);
 
 	return ret;
 
@@ -4844,7 +4844,7 @@ static int rtw_p2p_get_go_device_address(struct net_device *dev,
 	}
 
 	wrqu->data.length = strlen(go_devadd_str);
-	_rtw_memcpy(extra, go_devadd_str, wrqu->data.length);
+	memcpy(extra, go_devadd_str, wrqu->data.length);
 
 	return ret;
 
@@ -4901,7 +4901,7 @@ static int rtw_p2p_get_device_type(struct net_device *dev,
 				{
 					u16	type = 0;
 
-					_rtw_memcpy(&type, dev_type, 2);
+					memcpy(&type, dev_type, 2);
 					type = be16_to_cpu(type);
 					sprintf(dev_type_str, "\n\nN=%.2d", type);
 					blnMatch = 1;
@@ -4922,7 +4922,7 @@ static int rtw_p2p_get_device_type(struct net_device *dev,
 	}
 
 	wrqu->data.length = strlen(dev_type_str);
-	_rtw_memcpy(extra, dev_type_str, wrqu->data.length);
+	memcpy(extra, dev_type_str, wrqu->data.length);
 
 	return ret;
 
@@ -4996,7 +4996,7 @@ static int rtw_p2p_get_device_name(struct net_device *dev,
 	}
 
 	wrqu->data.length = strlen(dev_name_str);
-	_rtw_memcpy(extra, dev_name_str, wrqu->data.length);
+	memcpy(extra, dev_name_str, wrqu->data.length);
 
 	return ret;
 
@@ -5085,7 +5085,7 @@ static int rtw_p2p_get_invitation_procedure(struct net_device *dev,
 	}
 
 	wrqu->data.length = strlen(inv_proc_str);
-	_rtw_memcpy(extra, inv_proc_str, wrqu->data.length);
+	memcpy(extra, inv_proc_str, wrqu->data.length);
 
 	return ret;
 
@@ -5175,7 +5175,7 @@ static int rtw_p2p_connect(struct net_device *dev,
 		memset( &pwdinfo->groupid_info, 0x00, sizeof( struct group_id_info ) );
 
 		pwdinfo->nego_req_info.peer_channel_num[ 0 ] = uintPeerChannel;
-		_rtw_memcpy( pwdinfo->nego_req_info.peerDevAddr, pnetwork->network.MacAddress, ETH_ALEN );
+		memcpy( pwdinfo->nego_req_info.peerDevAddr, pnetwork->network.MacAddress, ETH_ALEN );
 		pwdinfo->nego_req_info.benable = _TRUE;
 
 		_cancel_timer_ex( &pwdinfo->restore_p2p_state_timer );
@@ -5395,7 +5395,7 @@ static int rtw_p2p_invite_req(struct net_device *dev,
 
 		//	Store the GO's ssid
 		pinvite_req_info->ssidlen = wrqu->data.length - 36;
-		_rtw_memcpy( pinvite_req_info->go_ssid, &extra[ 36 ], (u32) pinvite_req_info->ssidlen );
+		memcpy( pinvite_req_info->go_ssid, &extra[ 36 ], (u32) pinvite_req_info->ssidlen );
 		pinvite_req_info->benable = _TRUE;
 		pinvite_req_info->peer_ch = uintPeerChannel;
 
@@ -5985,8 +5985,8 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 			_cancel_timer_ex( &pwdinfo->ap_p2p_switch_timer );
 		}
 #endif // CONFIG_CONCURRENT_MODE
-		_rtw_memcpy( pwdinfo->tx_prov_disc_info.peerIFAddr, pnetwork->network.MacAddress, ETH_ALEN );
-		_rtw_memcpy( pwdinfo->tx_prov_disc_info.peerDevAddr, peerMAC, ETH_ALEN );
+		memcpy( pwdinfo->tx_prov_disc_info.peerIFAddr, pnetwork->network.MacAddress, ETH_ALEN );
+		memcpy( pwdinfo->tx_prov_disc_info.peerDevAddr, peerMAC, ETH_ALEN );
 		pwdinfo->tx_prov_disc_info.peer_channel_num[0] = ( u16 ) uintPeerChannel;
 		pwdinfo->tx_prov_disc_info.benable = _TRUE;
 		rtw_p2p_set_pre_state(pwdinfo, rtw_p2p_state(pwdinfo));
@@ -5994,11 +5994,11 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 
 		if(rtw_p2p_chk_role(pwdinfo, P2P_ROLE_CLIENT))
 		{
-			_rtw_memcpy( &pwdinfo->tx_prov_disc_info.ssid, &pnetwork->network.Ssid, sizeof( NDIS_802_11_SSID ) );
+			memcpy( &pwdinfo->tx_prov_disc_info.ssid, &pnetwork->network.Ssid, sizeof( NDIS_802_11_SSID ) );
 		}
 		else if(rtw_p2p_chk_role(pwdinfo, P2P_ROLE_DEVICE) || rtw_p2p_chk_role(pwdinfo, P2P_ROLE_GO))
 		{
-			_rtw_memcpy( pwdinfo->tx_prov_disc_info.ssid.Ssid, pwdinfo->p2p_wildcard_ssid, P2P_WILDCARD_SSID_LEN );
+			memcpy( pwdinfo->tx_prov_disc_info.ssid.Ssid, pwdinfo->p2p_wildcard_ssid, P2P_WILDCARD_SSID_LEN );
 			pwdinfo->tx_prov_disc_info.ssid.SsidLength= P2P_WILDCARD_SSID_LEN;
 		}
 
@@ -7561,7 +7561,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 
 		pwep->KeyIndex = wep_key_idx;
 
-		_rtw_memcpy(pwep->KeyMaterial,  param->u.crypt.key, pwep->KeyLength);
+		memcpy(pwep->KeyMaterial,  param->u.crypt.key, pwep->KeyLength);
 
 		if(param->u.crypt.set_tx)
 		{
@@ -7581,7 +7581,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 
 			psecuritypriv->dot11PrivacyKeyIndex = wep_key_idx;
 
-			_rtw_memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
+			memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
 
 			psecuritypriv->dot11DefKeylen[wep_key_idx]=pwep->KeyLength;
 
@@ -7594,7 +7594,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 			//don't update "psecuritypriv->dot11PrivacyAlgrthm" and
 			//"psecuritypriv->dot11PrivacyKeyIndex=keyid", but can rtw_set_key to cam
 
-		      _rtw_memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
+		      memcpy(&(psecuritypriv->dot11DefKey[wep_key_idx].skey[0]), pwep->KeyMaterial, pwep->KeyLength);
 
 			psecuritypriv->dot11DefKeylen[wep_key_idx] = pwep->KeyLength;
 
@@ -7614,7 +7614,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 			{
 				DBG_871X("%s, set group_key, WEP\n", __FUNCTION__);
 
-				_rtw_memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
+				memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
 				psecuritypriv->dot118021XGrpPrivacy = _WEP40_;
 				if(param->u.crypt.key_len==13)
@@ -7629,12 +7629,12 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 
 				psecuritypriv->dot118021XGrpPrivacy = _TKIP_;
 
-				_rtw_memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
+				memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
 				//DEBUG_ERR("set key length :param->u.crypt.key_len=%d\n", param->u.crypt.key_len);
 				//set mic key
-				_rtw_memcpy(psecuritypriv->dot118021XGrptxmickey[param->u.crypt.idx].skey, &(param->u.crypt.key[16]), 8);
-				_rtw_memcpy(psecuritypriv->dot118021XGrprxmickey[param->u.crypt.idx].skey, &(param->u.crypt.key[24]), 8);
+				memcpy(psecuritypriv->dot118021XGrptxmickey[param->u.crypt.idx].skey, &(param->u.crypt.key[16]), 8);
+				memcpy(psecuritypriv->dot118021XGrprxmickey[param->u.crypt.idx].skey, &(param->u.crypt.key[24]), 8);
 
 				psecuritypriv->busetkipkey = _TRUE;
 
@@ -7645,7 +7645,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 
 				psecuritypriv->dot118021XGrpPrivacy = _AES_;
 
-				_rtw_memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
+				memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 			}
 			else
 			{
@@ -7681,7 +7681,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 		{
 			if(param->u.crypt.set_tx ==1)
 			{
-				_rtw_memcpy(psta->dot118021x_UncstKey.skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
+				memcpy(psta->dot118021x_UncstKey.skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
 				if(strcmp(param->u.crypt.alg, "WEP") == 0)
 				{
@@ -7701,8 +7701,8 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 
 					//DEBUG_ERR("set key length :param->u.crypt.key_len=%d\n", param->u.crypt.key_len);
 					//set mic key
-					_rtw_memcpy(psta->dot11tkiptxmickey.skey, &(param->u.crypt.key[16]), 8);
-					_rtw_memcpy(psta->dot11tkiprxmickey.skey, &(param->u.crypt.key[24]), 8);
+					memcpy(psta->dot11tkiptxmickey.skey, &(param->u.crypt.key[16]), 8);
+					memcpy(psta->dot11tkiprxmickey.skey, &(param->u.crypt.key[24]), 8);
 
 					psecuritypriv->busetkipkey = _TRUE;
 
@@ -7730,7 +7730,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 			{
 				if(strcmp(param->u.crypt.alg, "WEP") == 0)
 				{
-					_rtw_memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
+					memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
 					psecuritypriv->dot118021XGrpPrivacy = _WEP40_;
 					if(param->u.crypt.key_len==13)
@@ -7742,12 +7742,12 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 				{
 					psecuritypriv->dot118021XGrpPrivacy = _TKIP_;
 
-					_rtw_memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
+					memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 
 					//DEBUG_ERR("set key length :param->u.crypt.key_len=%d\n", param->u.crypt.key_len);
 					//set mic key
-					_rtw_memcpy(psecuritypriv->dot118021XGrptxmickey[param->u.crypt.idx].skey, &(param->u.crypt.key[16]), 8);
-					_rtw_memcpy(psecuritypriv->dot118021XGrprxmickey[param->u.crypt.idx].skey, &(param->u.crypt.key[24]), 8);
+					memcpy(psecuritypriv->dot118021XGrptxmickey[param->u.crypt.idx].skey, &(param->u.crypt.key[16]), 8);
+					memcpy(psecuritypriv->dot118021XGrprxmickey[param->u.crypt.idx].skey, &(param->u.crypt.key[24]), 8);
 
 					psecuritypriv->busetkipkey = _TRUE;
 
@@ -7756,7 +7756,7 @@ static int rtw_set_encryption(struct net_device *dev, struct ieee_param *param, 
 				{
 					psecuritypriv->dot118021XGrpPrivacy = _AES_;
 
-					_rtw_memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
+					memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len>16 ?16:param->u.crypt.key_len));
 				}
 				else
 				{
@@ -7809,7 +7809,7 @@ static int rtw_set_beacon(struct net_device *dev, struct ieee_param *param, int 
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) != _TRUE)
 		return -EINVAL;
 
-	_rtw_memcpy(&pstapriv->max_num_sta, param->u.bcn_ie.reserved, 2);
+	memcpy(&pstapriv->max_num_sta, param->u.bcn_ie.reserved, 2);
 
 	if((pstapriv->max_num_sta>NUM_STA) || (pstapriv->max_num_sta<=0))
 		pstapriv->max_num_sta = NUM_STA;
@@ -7889,7 +7889,7 @@ static int rtw_add_sta(struct net_device *dev, struct ieee_param *param)
 
 		psta->aid = param->u.add_sta.aid;//aid=1~2007
 
-		_rtw_memcpy(psta->bssrateset, param->u.add_sta.tx_supp_rates, 16);
+		memcpy(psta->bssrateset, param->u.add_sta.tx_supp_rates, 16);
 
 
 		//check wmm cap.
@@ -7908,7 +7908,7 @@ static int rtw_add_sta(struct net_device *dev, struct ieee_param *param)
 		{
 			psta->htpriv.ht_option = _TRUE;
 			psta->qos_option = 1;
-			_rtw_memcpy((void*)&psta->htpriv.ht_cap, (void*)&param->u.add_sta.ht_cap, sizeof(struct rtw_ieee80211_ht_cap));
+			memcpy((void*)&psta->htpriv.ht_cap, (void*)&param->u.add_sta.ht_cap, sizeof(struct rtw_ieee80211_ht_cap));
 		}
 		else
 		{
@@ -8055,9 +8055,9 @@ static int rtw_ioctl_get_sta_data(struct net_device *dev, struct ieee_param *par
 							(psta->ht_20mhz_set <<5));
 
 		psta_data->tx_supp_rates_len =  psta->bssratelen;
-		_rtw_memcpy(psta_data->tx_supp_rates, psta->bssrateset, psta->bssratelen);
+		memcpy(psta_data->tx_supp_rates, psta->bssrateset, psta->bssratelen);
 #ifdef CONFIG_80211N_HT
-		_rtw_memcpy(&psta_data->ht_cap, &psta->htpriv.ht_cap, sizeof(struct rtw_ieee80211_ht_cap));
+		memcpy(&psta_data->ht_cap, &psta->htpriv.ht_cap, sizeof(struct rtw_ieee80211_ht_cap));
 #endif //CONFIG_80211N_HT
 		psta_data->rx_pkts = psta->sta_stats.rx_data_pkts;
 		psta_data->rx_bytes = psta->sta_stats.rx_bytes;
@@ -8114,7 +8114,7 @@ static int rtw_get_sta_wpaie(struct net_device *dev, struct ieee_param *param)
 
 			param->u.wpa_ie.len = copy_len;
 
-			_rtw_memcpy(param->u.wpa_ie.reserved, psta->wpa_ie, copy_len);
+			memcpy(param->u.wpa_ie.reserved, psta->wpa_ie, copy_len);
 		}
 		else
 		{
@@ -8164,7 +8164,7 @@ static int rtw_set_wps_beacon(struct net_device *dev, struct ieee_param *param, 
 			return -EINVAL;
 		}
 
-		_rtw_memcpy(pmlmepriv->wps_beacon_ie, param->u.bcn_ie.buf, ie_len);
+		memcpy(pmlmepriv->wps_beacon_ie, param->u.bcn_ie.buf, ie_len);
 
 		update_beacon(padapter, _VENDOR_SPECIFIC_IE_, wps_oui, _TRUE);
 
@@ -8206,7 +8206,7 @@ static int rtw_set_wps_probe_resp(struct net_device *dev, struct ieee_param *par
 			DBG_871X("%s()-%d: rtw_malloc() ERROR!\n", __FUNCTION__, __LINE__);
 			return -EINVAL;
 		}
-		_rtw_memcpy(pmlmepriv->wps_probe_resp_ie, param->u.bcn_ie.buf, ie_len);
+		memcpy(pmlmepriv->wps_probe_resp_ie, param->u.bcn_ie.buf, ie_len);
 	}
 
 
@@ -8244,7 +8244,7 @@ static int rtw_set_wps_assoc_resp(struct net_device *dev, struct ieee_param *par
 			return -EINVAL;
 		}
 
-		_rtw_memcpy(pmlmepriv->wps_assoc_resp_ie, param->u.bcn_ie.buf, ie_len);
+		memcpy(pmlmepriv->wps_assoc_resp_ie, param->u.bcn_ie.buf, ie_len);
 	}
 
 
@@ -8280,7 +8280,7 @@ static int rtw_set_hidden_ssid(struct net_device *dev, struct ieee_param *param,
 		WLAN_BSSID_EX *pbss_network = &mlmepriv->cur_network.network;
 		WLAN_BSSID_EX *pbss_network_ext = &mlmeinfo->network;
 
-		_rtw_memcpy(ssid, ssid_ie+2, ssid_len);
+		memcpy(ssid, ssid_ie+2, ssid_len);
 		ssid[ssid_len>NDIS_802_11_LENGTH_SSID?NDIS_802_11_LENGTH_SSID:ssid_len] = 0x0;
 
 		if(0)
@@ -8289,9 +8289,9 @@ static int rtw_set_hidden_ssid(struct net_device *dev, struct ieee_param *param,
 			pbss_network->Ssid.Ssid, pbss_network->Ssid.SsidLength,
 			pbss_network_ext->Ssid.Ssid, pbss_network_ext->Ssid.SsidLength);
 
-		_rtw_memcpy(pbss_network->Ssid.Ssid, (void *)ssid, ssid_len);
+		memcpy(pbss_network->Ssid.Ssid, (void *)ssid, ssid_len);
 		pbss_network->Ssid.SsidLength = ssid_len;
-		_rtw_memcpy(pbss_network_ext->Ssid.Ssid, (void *)ssid, ssid_len);
+		memcpy(pbss_network_ext->Ssid.Ssid, (void *)ssid, ssid_len);
 		pbss_network_ext->Ssid.SsidLength = ssid_len;
 
 		if(0)
@@ -8554,7 +8554,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 		return -ENOMEM;
 	}
 
-	_rtw_memcpy(ext_dbg, ext, len);
+	memcpy(ext_dbg, ext, len);
 	#endif
 
 	//added for wps2.0 @20110524
@@ -8571,7 +8571,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 		{
 			cp_sz = probereq_wpsie_len>MAX_WPS_IE_LEN ? MAX_WPS_IE_LEN:probereq_wpsie_len;
 
-			//_rtw_memcpy(pmlmepriv->probereq_wpsie, probereq_wpsie, cp_sz);
+			//memcpy(pmlmepriv->probereq_wpsie, probereq_wpsie, cp_sz);
 			//pmlmepriv->probereq_wpsie_len = cp_sz;
 			if(pmlmepriv->wps_probe_req_ie)
 			{
@@ -8589,7 +8589,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 
 			}
 
-			_rtw_memcpy(pmlmepriv->wps_probe_req_ie, probereq_wpsie, cp_sz);
+			memcpy(pmlmepriv->wps_probe_req_ie, probereq_wpsie, cp_sz);
 			pmlmepriv->wps_probe_req_ie_len = cp_sz;
 
 		}
@@ -9766,7 +9766,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 	}
 	else if (strcmp(tmp[0], "btfk2map") == 0)
 	{
-		_rtw_memcpy(pEfuseHal->BTEfuseModifiedMap, pEfuseHal->fakeBTEfuseModifiedMap, EFUSE_BT_MAX_MAP_LEN);
+		memcpy(pEfuseHal->BTEfuseModifiedMap, pEfuseHal->fakeBTEfuseModifiedMap, EFUSE_BT_MAX_MAP_LEN);
 
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_BT, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
 		if (max_available_size < 1)
@@ -11444,7 +11444,7 @@ static int rtw_tdls_enable(struct net_device *dev,
 
 				if(psta->tdls_sta_state != TDLS_STATE_NONE)
 				{
-					_rtw_memcpy(tdls_sta[index], psta->hwaddr, ETH_ALEN);
+					memcpy(tdls_sta[index], psta->hwaddr, ETH_ALEN);
 				}
 			}
 		}
@@ -12019,7 +12019,7 @@ static int rtw_widi_set_probe_request(struct net_device *dev,
 	if(pbuf)
 	{
 		copy_from_user(pbuf, wrqu->data.pointer, wrqu->data.length);
-		//_rtw_memcpy(pbuf, wrqu->data.pointer, wrqu->data.length);
+		//memcpy(pbuf, wrqu->data.pointer, wrqu->data.length);
 
 		if( wrqu->data.flags == 0 )
 		intel_widi_wk_cmd(padapter, INTEL_WIDI_ISSUE_PROB_WK, pbuf);
@@ -12134,11 +12134,11 @@ static s32 createpseudoadhoc(PADAPTER padapter)
 	passoc_ssid = &pmlmepriv->assoc_ssid;
 	memset(passoc_ssid, 0, sizeof(NDIS_802_11_SSID));
 	passoc_ssid->SsidLength = sizeof(ssid) - 1;
-	_rtw_memcpy(passoc_ssid->Ssid, ssid, passoc_ssid->SsidLength);
+	memcpy(passoc_ssid->Ssid, ssid, passoc_ssid->SsidLength);
 
 	pdev_network = &padapter->registrypriv.dev_network;
 	pibss = padapter->registrypriv.dev_network.MacAddress;
-	_rtw_memcpy(&pdev_network->Ssid, passoc_ssid, sizeof(NDIS_802_11_SSID));
+	memcpy(&pdev_network->Ssid, passoc_ssid, sizeof(NDIS_802_11_SSID));
 
 	rtw_update_registrypriv_dev_network(padapter);
 	rtw_generate_random_ibss(pibss);
@@ -12168,7 +12168,7 @@ static s32 createpseudoadhoc(PADAPTER padapter)
 	//3  join psudo AdHoc
 	pcur_network->join_res = 1;
 	pcur_network->aid = psta->aid = 1;
-	_rtw_memcpy(&pcur_network->network, pdev_network, get_WLAN_BSSID_EX_sz(pdev_network));
+	memcpy(&pcur_network->network, pdev_network, get_WLAN_BSSID_EX_sz(pdev_network));
 
 	// set msr to WIFI_FW_ADHOC_STATE
 #if 0
@@ -12232,10 +12232,10 @@ static struct xmit_frame* createloopbackpkt(PADAPTER padapter, u32 size)
 	memset(pattrib, 0, sizeof(struct pkt_attrib));
 
 	pattrib->ether_type = 0x8723;
-	_rtw_memcpy(pattrib->src, padapter->eeprompriv.mac_addr, ETH_ALEN);
-	_rtw_memcpy(pattrib->ta, pattrib->src, ETH_ALEN);
+	memcpy(pattrib->src, padapter->eeprompriv.mac_addr, ETH_ALEN);
+	memcpy(pattrib->ta, pattrib->src, ETH_ALEN);
 	memset(pattrib->dst, 0xFF, ETH_ALEN);
-	_rtw_memcpy(pattrib->ra, pattrib->dst, ETH_ALEN);
+	memcpy(pattrib->ra, pattrib->dst, ETH_ALEN);
 
 //	pattrib->dhcp_pkt = 0;
 //	pattrib->pktlen = 0;
@@ -12304,9 +12304,9 @@ static struct xmit_frame* createloopbackpkt(PADAPTER padapter, u32 size)
 	//3 5.1. make wlan header, make_wlanhdr()
 	hdr = (struct rtw_ieee80211_hdr *)pkt_start;
 	SetFrameSubType(&hdr->frame_ctl, pattrib->subtype);
-	_rtw_memcpy(hdr->addr1, pattrib->dst, ETH_ALEN); // DA
-	_rtw_memcpy(hdr->addr2, pattrib->src, ETH_ALEN); // SA
-	_rtw_memcpy(hdr->addr3, get_bssid(&padapter->mlmepriv), ETH_ALEN); // RA, BSSID
+	memcpy(hdr->addr1, pattrib->dst, ETH_ALEN); // DA
+	memcpy(hdr->addr2, pattrib->src, ETH_ALEN); // SA
+	memcpy(hdr->addr3, get_bssid(&padapter->mlmepriv), ETH_ALEN); // RA, BSSID
 
 	//3 5.2. make payload
 	ptr = pkt_start + pattrib->hdrlen;
@@ -12350,14 +12350,14 @@ static void printdata(u8 *pbuf, u32 len)
 #else // CONFIG_LITTLE_ENDIAN
 #if 0
 		val = 0;
-		_rtw_memcpy(&val, pbuf + i, len - i);
+		memcpy(&val, pbuf + i, len - i);
 		printk("%8X", val);
 #else
 		u8 str[9];
 		u8 n;
 		val = 0;
 		n = len - i;
-		_rtw_memcpy(&val, pbuf+i, n);
+		memcpy(&val, pbuf+i, n);
 		sprintf(str, "%08X", val);
 		n = (4 - n) * 2;
 		printk("%8s", str+n);
@@ -12470,7 +12470,7 @@ thread_return lbk_thread(thread_context context)
 		}
 
 		ploopback->txsize = TXDESC_SIZE + pxmitframe->attrib.last_txcmdsz;
-		_rtw_memcpy(ploopback->txbuf, pxmitframe->buf_addr, ploopback->txsize);
+		memcpy(ploopback->txbuf, pxmitframe->buf_addr, ploopback->txsize);
 		ff_hwaddr = rtw_get_ff_hwaddr(pxmitframe);
 		cnt++;
 		DBG_8192C("%s: wirte port cnt=%d size=%d\n", __func__, cnt, ploopback->txsize);
@@ -12538,7 +12538,7 @@ static void loopbackTest(PADAPTER padapter, u32 cnt, u32 size, u8* pmsg)
 			if (len) break;
 			rtw_msleep_os(1);
 		} while (1);
-		_rtw_memcpy(pmsg, ploopback->msg, len+1);
+		memcpy(pmsg, ploopback->msg, len+1);
 		freeLoopback(padapter);
 
 		return;
@@ -13232,7 +13232,7 @@ static int rtw_ioctl_wext_private(struct net_device *dev, union iwreq_data *wrq_
 	union iwreq_data wdata;
 
 
-	_rtw_memcpy(&wdata, wrq_data, sizeof(wdata));
+	memcpy(&wdata, wrq_data, sizeof(wdata));
 
 	input_len = wdata.data.length;
 	input = rtw_zmalloc(input_len);
@@ -13359,7 +13359,7 @@ static int rtw_ioctl_wext_private(struct net_device *dev, union iwreq_data *wrq_
 						wdata.data.length = priv_args[k].set_args & IW_PRIV_SIZE_MASK;
 
 					/* Fetch string */
-					_rtw_memcpy(buffer, ptr, wdata.data.length);
+					memcpy(buffer, ptr, wdata.data.length);
 				}
 				else
 				{
@@ -13397,7 +13397,7 @@ static int rtw_ioctl_wext_private(struct net_device *dev, union iwreq_data *wrq_
 		/* First case : all SET args fit within wrq */
 		if (offset)
 			wdata.mode = subcmd;
-		_rtw_memcpy(wdata.name + offset, buffer, IFNAMSIZ - offset);
+		memcpy(wdata.name + offset, buffer, IFNAMSIZ - offset);
 	}
 	else
 	{
@@ -13487,7 +13487,7 @@ static int rtw_ioctl_wext_private(struct net_device *dev, union iwreq_data *wrq_
 						err = -E2BIG;
 						goto exit;
 					}
-					_rtw_memcpy(output+output_len, str, len);
+					memcpy(output+output_len, str, len);
 				}
 				break;
 
@@ -13502,13 +13502,13 @@ static int rtw_ioctl_wext_private(struct net_device *dev, union iwreq_data *wrq_
 						err = -E2BIG;
 						goto exit;
 					}
-					_rtw_memcpy(output+output_len, str, len);
+					memcpy(output+output_len, str, len);
 				}
 				break;
 
 			case IW_PRIV_TYPE_CHAR:
 				/* Display args */
-				_rtw_memcpy(output, extra, n);
+				memcpy(output, extra, n);
 				break;
 
 			default:

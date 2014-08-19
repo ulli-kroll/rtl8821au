@@ -220,8 +220,8 @@ mptbt_BtFwOpCodeProcess(
 	pH2c->opCodeVer = opCodeVer;
 	pH2c->reqNum = pMptCtx->h2cReqNum;
 	//PlatformMoveMemory(&pH2c->buf[0], pH2cPar, h2cParaLen);
-	//_rtw_memcpy(&pH2c->buf[0], pH2cPar, h2cParaLen);
-	_rtw_memcpy(pH2c->buf, pH2cPar, h2cParaLen);
+	//memcpy(&pH2c->buf[0], pH2cPar, h2cParaLen);
+	memcpy(pH2c->buf, pH2cPar, h2cParaLen);
 
 	DBG_8192C("[MPT], pH2c->opCode=%d\n", pH2c->opCode);
 	DBG_8192C("[MPT], pH2c->opCodeVer=%d\n", pH2c->opCodeVer);
@@ -532,7 +532,7 @@ MPTBT_FwC2hBtMpCtrl(
 		case EXT_C2H_TRIG_BY_BT_FW:
 			DBG_8192C("[MPT], EXT_C2H_TRIG_BY_BT_FW\n");
 				//PlatformMoveMemory(&pMptCtx->c2hBuf[0], tmpBuf, length);
-			_rtw_memcpy(&pMptCtx->c2hBuf[0], tmpBuf, length);
+			memcpy(&pMptCtx->c2hBuf[0], tmpBuf, length);
 			DBG_8192C("[MPT], pExtC2h->statusCode=0x%x\n", pExtC2h->statusCode);
 			DBG_8192C("[MPT], pExtC2h->retLen=0x%x\n", pExtC2h->retLen);
 			DBG_8192C("[MPT], pExtC2h->opCodeVer=0x%x\n", pExtC2h->opCodeVer);

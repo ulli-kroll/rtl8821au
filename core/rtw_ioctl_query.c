@@ -65,7 +65,7 @@ query_802_11_capability(
 
 	if( sizeof (szAuthEnc) <= 240 )		// 240 = 256 - 4*4	// SecurityInfo.szCapability: only 256 bytes in size.
 	{
-		_rtw_memcpy( pucAuthEncryptionSupported, (u8*)szAuthEnc,  sizeof (szAuthEnc) );
+		memcpy( pucAuthEncryptionSupported, (u8*)szAuthEnc,  sizeof (szAuthEnc) );
 		*pulOutLen = pCap->Length;
 		return _TRUE;
 	}
@@ -98,7 +98,7 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 
 	pAssocInfo->AvailableRequestFixedIEs |= NDIS_802_11_AI_REQFI_CAPABILITIES|NDIS_802_11_AI_REQFI_CURRENTAPADDRESS;
 	pAssocInfo->RequestFixedIEs.Capabilities = (unsigned short)* & psecnetwork->IEs[10];
-	_rtw_memcpy(pAssocInfo->RequestFixedIEs.CurrentAPAddress,
+	memcpy(pAssocInfo->RequestFixedIEs.CurrentAPAddress,
 		& psecnetwork->MacAddress, 6);
 
 	pAssocInfo->OffsetRequestIEs = sizeof(NDIS_802_11_ASSOCIATION_INFORMATION);
@@ -122,7 +122,7 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 		RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("i= %d tgt_network->network.IELength=%d\n\n", i,(int)psecnetwork->IELength));
 		while((i<supp_ie[0]) && (i<256)){
 			if((unsigned char)supp_ie[i]==pDest[0]){
-						_rtw_memcpy((u8 *)(pDest),
+						memcpy((u8 *)(pDest),
 							&supp_ie[i],
 							supp_ie[1+i]+2);
 
@@ -172,7 +172,7 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 
 		i=auth_ie[0]-12;
 		if(i>0){
-			_rtw_memcpy((u8 *)&pDest[0],&auth_ie[1],i);
+			memcpy((u8 *)&pDest[0],&auth_ie[1],i);
 			pAssocInfo->ResponseIELength =i;
 		}
 

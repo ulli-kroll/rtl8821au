@@ -258,7 +258,7 @@ void	update_sta_vht_info_apmode(_adapter *padapter, PVOID psta)
 	pvhtpriv_sta->ampdu_len = GET_VHT_CAPABILITY_ELE_MAX_RXAMPDU_FACTOR(pvhtpriv_sta->vht_cap);
 
 	pcap_mcs = GET_VHT_CAPABILITY_ELE_RX_MCS(pvhtpriv_sta->vht_cap);
-	_rtw_memcpy(pvhtpriv_sta->vht_mcs_map, pcap_mcs, 2);
+	memcpy(pvhtpriv_sta->vht_mcs_map, pcap_mcs, 2);
 
 	pvhtpriv_sta->vht_highest_rate = rtw_get_vht_highest_rate(padapter, pvhtpriv_sta->vht_mcs_map);
 
@@ -334,7 +334,7 @@ void VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	pvhtpriv->ampdu_len = GET_VHT_CAPABILITY_ELE_MAX_RXAMPDU_FACTOR(pIE->data);
 
 	pcap_mcs = GET_VHT_CAPABILITY_ELE_RX_MCS(pIE->data);
-	_rtw_memcpy(vht_mcs, pcap_mcs, 2);
+	memcpy(vht_mcs, pcap_mcs, 2);
 
 	rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
 	if ((rf_type == RF_1T1R) || (rf_type == RF_1T2R))
@@ -342,7 +342,7 @@ void VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	else if (rf_type == RF_2T2R)
 		vht_mcs[0] |= 0xf0;
 
-	_rtw_memcpy(pvhtpriv->vht_mcs_map, vht_mcs, 2);
+	memcpy(pvhtpriv->vht_mcs_map, vht_mcs, 2);
 
 	pvhtpriv->vht_highest_rate = rtw_get_vht_highest_rate(padapter, pvhtpriv->vht_mcs_map);
 }
@@ -507,10 +507,10 @@ u32	rtw_build_vht_cap_ie(_adapter *padapter, u8 *pbuf)
 	SET_VHT_CAPABILITY_ELE_LINK_ADAPTION(pcap, 0);
 
 	pcap_mcs = GET_VHT_CAPABILITY_ELE_RX_MCS(pcap);
-	_rtw_memcpy(pcap_mcs, pvhtpriv->vht_mcs_map, 2);
+	memcpy(pcap_mcs, pvhtpriv->vht_mcs_map, 2);
 
 	pcap_mcs = GET_VHT_CAPABILITY_ELE_TX_MCS(pcap);
-	_rtw_memcpy(pcap_mcs, pvhtpriv->vht_mcs_map, 2);
+	memcpy(pcap_mcs, pvhtpriv->vht_mcs_map, 2);
 
 	bw = (pregistrypriv->bw_mode >> 4) & 0xf;
 	HighestRate = VHT_MCS_DATA_RATE[bw][pvhtpriv->sgi][((pvhtpriv->vht_highest_rate - MGN_VHT1SS_MCS0)&0x3f)];

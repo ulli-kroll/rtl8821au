@@ -204,7 +204,7 @@ static int usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, u8 *pdata
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = length;
-	 _rtw_memcpy(buf, pdata, len );
+	 memcpy(buf, pdata, len );
 
 	ret = usbctrl_vendorreq(pintfhdl, request, wvalue, index, buf, len, requesttype);
 
@@ -227,16 +227,16 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 	}
 
 	// HISR
-	_rtw_memcpy(&(pHalData->IntArray[0]), &(pbuf[USB_INTR_CONTENT_HISR_OFFSET]), 4);
-	_rtw_memcpy(&(pHalData->IntArray[1]), &(pbuf[USB_INTR_CONTENT_HISRE_OFFSET]), 4);
+	memcpy(&(pHalData->IntArray[0]), &(pbuf[USB_INTR_CONTENT_HISR_OFFSET]), 4);
+	memcpy(&(pHalData->IntArray[1]), &(pbuf[USB_INTR_CONTENT_HISRE_OFFSET]), 4);
 
 	#if 0 //DBG
 	{
 		u32 hisr=0 ,hisr_ex=0;
-		_rtw_memcpy(&hisr,&(pHalData->IntArray[0]),4);
+		memcpy(&hisr,&(pHalData->IntArray[0]),4);
 		hisr = le32_to_cpu(hisr);
 
-		_rtw_memcpy(&hisr_ex,&(pHalData->IntArray[1]),4);
+		memcpy(&hisr_ex,&(pHalData->IntArray[1]),4);
 		hisr_ex = le32_to_cpu(hisr_ex);
 
 		if((hisr != 0) || (hisr_ex!=0))
@@ -248,8 +248,8 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 #ifdef CONFIG_LPS_LCLK
 	if(  pHalData->IntArray[0]  & IMR_CPWM_88E )
 	{
-		_rtw_memcpy(&pwr_rpt.state, &(pbuf[USB_INTR_CONTENT_CPWM1_OFFSET]), 1);
-		//_rtw_memcpy(&pwr_rpt.state2, &(pbuf[USB_INTR_CONTENT_CPWM2_OFFSET]), 1);
+		memcpy(&pwr_rpt.state, &(pbuf[USB_INTR_CONTENT_CPWM1_OFFSET]), 1);
+		//memcpy(&pwr_rpt.state2, &(pbuf[USB_INTR_CONTENT_CPWM2_OFFSET]), 1);
 
 		//88e's cpwm value only change BIT0, so driver need to add PS_STATE_S2 for LPS flow.
 		pwr_rpt.state |= PS_STATE_S2;
@@ -318,7 +318,7 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 
 	// C2H Event
 	if(pbuf[0]!= 0){
-		_rtw_memcpy(&(pHalData->C2hArray[0]), &(pbuf[USB_INTR_CONTENT_C2H_OFFSET]), 16);
+		memcpy(&(pHalData->C2hArray[0]), &(pbuf[USB_INTR_CONTENT_C2H_OFFSET]), 16);
 		//rtw_c2h_wk_cmd(padapter); to do..
 	}
 
@@ -539,7 +539,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 				precvframe_if2->u.hdr.precvbuf = NULL;	//can't access the precvbuf for new arch.
 				precvframe_if2->u.hdr.len=0;
 
-				_rtw_memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
+				memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
 
 				pattrib = &precvframe_if2->u.hdr.attrib;
 

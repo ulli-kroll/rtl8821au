@@ -347,14 +347,14 @@ void efuse_read_phymap_from_txpktbuf(
 
 			DBG_871X("%s len:%u, lenbak:%u, aaa:%u, aaabak:%u\n", __FUNCTION__, len, lenbak, aaa, aaabak);
 
-			_rtw_memcpy(pos, ((u8*)&lo32)+2, limit>=count+2?2:limit-count);
+			memcpy(pos, ((u8*)&lo32)+2, limit>=count+2?2:limit-count);
 			count+=limit>=count+2?2:limit-count;
 			pos=content+count;
 
 		}
 		else
 		{
-			_rtw_memcpy(pos, ((u8*)&lo32), limit>=count+4?4:limit-count);
+			memcpy(pos, ((u8*)&lo32), limit>=count+4?4:limit-count);
 			count+=limit>=count+4?4:limit-count;
 			pos=content+count;
 
@@ -362,7 +362,7 @@ void efuse_read_phymap_from_txpktbuf(
 		}
 
 		if(limit>count && len-2>count) {
-			_rtw_memcpy(pos, (u8*)&hi32, limit>=count+4?4:limit-count);
+			memcpy(pos, (u8*)&hi32, limit>=count+4?4:limit-count);
 			count+=limit>=count+4?4:limit-count;
 			pos=content+count;
 		}
@@ -3616,21 +3616,21 @@ void rtl8812_clone_haldata(_adapter* dst_adapter, _adapter* src_adapter)
 	_lock                temp_SdioTxFIFOFreePageLock;
 
 #ifndef CONFIG_SDIO_TX_TASKLET
-	_rtw_memcpy(&temp_SdioXmitSema, &(pHalData->SdioXmitSema), sizeof(_sema));
-	_rtw_memcpy(&temp_SdioXmitTerminateSema, &(pHalData->SdioXmitTerminateSema), sizeof(_sema));
+	memcpy(&temp_SdioXmitSema, &(pHalData->SdioXmitSema), sizeof(_sema));
+	memcpy(&temp_SdioXmitTerminateSema, &(pHalData->SdioXmitTerminateSema), sizeof(_sema));
 #endif
-	_rtw_memcpy(&temp_SdioTxFIFOFreePageLock, &(pHalData->SdioTxFIFOFreePageLock), sizeof(_lock));
+	memcpy(&temp_SdioTxFIFOFreePageLock, &(pHalData->SdioTxFIFOFreePageLock), sizeof(_lock));
 
-	_rtw_memcpy(dst_adapter->HalData, src_adapter->HalData, dst_adapter->hal_data_sz);
+	memcpy(dst_adapter->HalData, src_adapter->HalData, dst_adapter->hal_data_sz);
 
 #ifndef CONFIG_SDIO_TX_TASKLET
-	_rtw_memcpy(&(pHalData->SdioXmitSema), &temp_SdioXmitSema, sizeof(_sema));
-	_rtw_memcpy(&(pHalData->SdioXmitTerminateSema), &temp_SdioXmitTerminateSema, sizeof(_sema));
+	memcpy(&(pHalData->SdioXmitSema), &temp_SdioXmitSema, sizeof(_sema));
+	memcpy(&(pHalData->SdioXmitTerminateSema), &temp_SdioXmitTerminateSema, sizeof(_sema));
 #endif
-	_rtw_memcpy(&(pHalData->SdioTxFIFOFreePageLock), &temp_SdioTxFIFOFreePageLock, sizeof(_lock));
+	memcpy(&(pHalData->SdioTxFIFOFreePageLock), &temp_SdioTxFIFOFreePageLock, sizeof(_lock));
 
 #else
-	_rtw_memcpy(dst_adapter->HalData, src_adapter->HalData, dst_adapter->hal_data_sz);
+	memcpy(dst_adapter->HalData, src_adapter->HalData, dst_adapter->hal_data_sz);
 #endif
 
 }
@@ -3721,7 +3721,7 @@ void InitPGData8812A(PADAPTER padapter)
 		else
 			addr = EEPROM_MAC_ADDR_8821AE;
 #endif // CONFIG_PCI_HCI
-		_rtw_memcpy(&pEEPROM->efuse_eeprom_data[addr], pEEPROM->mac_addr, ETH_ALEN);
+		memcpy(&pEEPROM->efuse_eeprom_data[addr], pEEPROM->mac_addr, ETH_ALEN);
 	}
 #else // !CONFIG_EFUSE_CONFIG_FILE
 
@@ -3820,7 +3820,7 @@ ReadChipVersion8812A(
 	dump_chip_info(ChipVersion);
 #endif
 
-	_rtw_memcpy(&pHalData->VersionID, &ChipVersion, sizeof(HAL_VERSION));
+	memcpy(&pHalData->VersionID, &ChipVersion, sizeof(HAL_VERSION));
 
 	if (IS_1T2R(ChipVersion)){
 		pHalData->rf_type = RF_1T2R;

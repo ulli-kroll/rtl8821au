@@ -161,7 +161,7 @@ static void update_BCNTIM(_adapter *padapter)
 		if (remainder_ielen > 0) {
 			pbackup_remainder_ie = rtw_malloc(remainder_ielen);
 			if (pbackup_remainder_ie && premainder_ie)
-				_rtw_memcpy(pbackup_remainder_ie, premainder_ie, remainder_ielen);
+				memcpy(pbackup_remainder_ie, premainder_ie, remainder_ielen);
 		}
 
 		*dst_ie++ = _TIM_IE_;
@@ -194,13 +194,13 @@ static void update_BCNTIM(_adapter *padapter)
 			*dst_ie++ = pvb;
 
 		} else if (tim_ielen == 5) {
-			_rtw_memcpy(dst_ie, &tim_bitmap_le, 2);
+			memcpy(dst_ie, &tim_bitmap_le, 2);
 			dst_ie += 2;
 		}
 
 		/* copy remainder IE */
 		if (pbackup_remainder_ie) {
-			_rtw_memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
+			memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
 
 			rtw_mfree(pbackup_remainder_ie, remainder_ielen);
 		}
@@ -262,18 +262,18 @@ void rtw_add_bcn_ie(_adapter *padapter, WLAN_BSSID_EX *pnetwork, u8 index, u8 *d
 	if (remainder_ielen > 0) {
 		pbackup_remainder_ie = rtw_malloc(remainder_ielen);
 		if (pbackup_remainder_ie && premainder_ie)
-			_rtw_memcpy(pbackup_remainder_ie, premainder_ie, remainder_ielen);
+			memcpy(pbackup_remainder_ie, premainder_ie, remainder_ielen);
 	}
 
 	*dst_ie++ = index;
 	*dst_ie++ = len;
 
-	_rtw_memcpy(dst_ie, data, len);
+	memcpy(dst_ie, data, len);
 	dst_ie += len;
 
 	/* copy remainder IE */
 	if (pbackup_remainder_ie) {
-		_rtw_memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
+		memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
 
 		rtw_mfree(pbackup_remainder_ie, remainder_ielen);
 	}
@@ -304,12 +304,12 @@ void rtw_remove_bcn_ie(_adapter *padapter, WLAN_BSSID_EX *pnetwork, u8 index)
 	if (remainder_ielen > 0) {
 		pbackup_remainder_ie = rtw_malloc(remainder_ielen);
 		if (pbackup_remainder_ie && premainder_ie)
-			_rtw_memcpy(pbackup_remainder_ie, premainder_ie, remainder_ielen);
+			memcpy(pbackup_remainder_ie, premainder_ie, remainder_ielen);
 	}
 
 	/* copy remainder IE */
 	if (pbackup_remainder_ie) {
-		_rtw_memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
+		memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
 
 		rtw_mfree(pbackup_remainder_ie, remainder_ielen);
 	}
@@ -840,7 +840,7 @@ static void update_bmc_sta(_adapter *padapter)
 		supportRateNum = rtw_get_rateset_len((u8*)&pcur_network->SupportedRates);
 		network_type = rtw_check_network_type((u8*)&pcur_network->SupportedRates, supportRateNum, 1);
 
-		_rtw_memcpy(psta->bssrateset, &pcur_network->SupportedRates, supportRateNum);
+		memcpy(psta->bssrateset, &pcur_network->SupportedRates, supportRateNum);
 		psta->bssratelen = supportRateNum;
 
 		//b/g mode ra_bitmap
@@ -1329,10 +1329,10 @@ static void start_bss_network(_adapter *padapter, u8 *pbuf)
 	update_capinfo(padapter, rtw_get_capability((WLAN_BSSID_EX *)pnetwork));
 
 	//let pnetwork_mlmeext == pnetwork_mlme.
-	_rtw_memcpy(pnetwork_mlmeext, pnetwork, pnetwork->Length);
+	memcpy(pnetwork_mlmeext, pnetwork, pnetwork->Length);
 
 #ifdef CONFIG_P2P
-	_rtw_memcpy(pwdinfo->p2p_group_ssid, pnetwork->Ssid.Ssid, pnetwork->Ssid.SsidLength);
+	memcpy(pwdinfo->p2p_group_ssid, pnetwork->Ssid.Ssid, pnetwork->Ssid.SsidLength);
 	pwdinfo->p2p_group_ssid_len = pnetwork->Ssid.SsidLength;
 #endif //CONFIG_P2P
 
@@ -1406,7 +1406,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 
 	memset(ie, 0, MAX_IE_SZ);
 
-	_rtw_memcpy(ie, pbuf, pbss_network->IELength);
+	memcpy(ie, pbuf, pbss_network->IELength);
 
 
 	if (pbss_network->InfrastructureMode!=Ndis802_11APMode)
@@ -1414,7 +1414,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 
 	pbss_network->Rssi = 0;
 
-	_rtw_memcpy(pbss_network->MacAddress, myid(&(padapter->eeprompriv)), ETH_ALEN);
+	memcpy(pbss_network->MacAddress, myid(&(padapter->eeprompriv)), ETH_ALEN);
 
 	//beacon interval
 	p = rtw_get_beacon_interval_from_ie(ie);//ie + 8;	// 8: TimeStamp, 2: Beacon Interval 2:Capability
@@ -1430,7 +1430,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, _SSID_IE_, &ie_len, (pbss_network->IELength -_BEACON_IE_OFFSET_));
 	if (p && ie_len>0) {
 		memset(&pbss_network->Ssid, 0, sizeof(NDIS_802_11_SSID));
-		_rtw_memcpy(pbss_network->Ssid.Ssid, (p + 2), ie_len);
+		memcpy(pbss_network->Ssid.Ssid, (p + 2), ie_len);
 		pbss_network->Ssid.SsidLength = ie_len;
 	}
 
@@ -1448,14 +1448,14 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 	// get supported rates
 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, _SUPPORTEDRATES_IE_, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_));
 	if (p !=  NULL) {
-		_rtw_memcpy(supportRate, p+2, ie_len);
+		memcpy(supportRate, p+2, ie_len);
 		supportRateNum = ie_len;
 	}
 
 	//get ext_supported rates
 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, _EXT_SUPPORTEDRATES_IE_, &ie_len, pbss_network->IELength - _BEACON_IE_OFFSET_);
 	if (p !=  NULL) {
-		_rtw_memcpy(supportRate+supportRateNum, p+2, ie_len);
+		memcpy(supportRate+supportRateNum, p+2, ie_len);
 		supportRateNum += ie_len;
 
 	}
@@ -1657,7 +1657,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 			pht_cap->supp_mcs_set[1] = 0x0;
 		}
 
-		_rtw_memcpy(&pmlmepriv->htpriv.ht_cap, p+2, ie_len);
+		memcpy(&pmlmepriv->htpriv.ht_cap, p+2, ie_len);
 
 	}
 
@@ -1819,7 +1819,7 @@ int rtw_acl_add_sta(_adapter *padapter, u8 *addr)
 		if (paclnode->valid == _FALSE) {
 			_rtw_init_listhead(&paclnode->list);
 
-			_rtw_memcpy(paclnode->addr, addr, ETH_ALEN);
+			memcpy(paclnode->addr, addr, ETH_ALEN);
 
 			paclnode->valid = _TRUE;
 
@@ -1903,9 +1903,9 @@ u8 rtw_ap_set_pairwise_key(_adapter *padapter, struct sta_info *psta)
 
 	psetstakey_para->algorithm = (u8)psta->dot118021XPrivacy;
 
-	_rtw_memcpy(psetstakey_para->addr, psta->hwaddr, ETH_ALEN);
+	memcpy(psetstakey_para->addr, psta->hwaddr, ETH_ALEN);
 
-	_rtw_memcpy(psetstakey_para->key, &psta->dot118021x_UncstKey, 16);
+	memcpy(psetstakey_para->key, &psta->dot118021x_UncstKey, 16);
 
 
 	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
@@ -1963,7 +1963,7 @@ static int rtw_ap_set_key(_adapter *padapter, u8 *key, u8 alg, int keyid, u8 set
 		keylen = 16;
 	}
 
-	_rtw_memcpy(&(psetkeyparm->key[0]), key, keylen);
+	memcpy(&(psetkeyparm->key[0]), key, keylen);
 
 	pcmd->cmdcode = _SetKey_CMD_;
 	pcmd->parmbuf = (u8 *)psetkeyparm;
@@ -2108,7 +2108,7 @@ static void update_bcn_wps_ie(_adapter *padapter)
 	if (remainder_ielen>0) {
 		pbackup_remainder_ie = rtw_malloc(remainder_ielen);
 		if (pbackup_remainder_ie)
-			_rtw_memcpy(pbackup_remainder_ie, premainder_ie, remainder_ielen);
+			memcpy(pbackup_remainder_ie, premainder_ie, remainder_ielen);
 	}
 
 
@@ -2119,11 +2119,11 @@ static void update_bcn_wps_ie(_adapter *padapter)
 
 	wps_ielen = (uint)pwps_ie_src[1];//to get ie data len
 	if ((wps_offset+wps_ielen+2+remainder_ielen)<=MAX_IE_SZ) {
-		_rtw_memcpy(pwps_ie, pwps_ie_src, wps_ielen+2);
+		memcpy(pwps_ie, pwps_ie_src, wps_ielen+2);
 		pwps_ie += (wps_ielen+2);
 
 		if (pbackup_remainder_ie)
-			_rtw_memcpy(pwps_ie, pbackup_remainder_ie, remainder_ielen);
+			memcpy(pwps_ie, pbackup_remainder_ie, remainder_ielen);
 
 		//update IELength
 		pnetwork->IELength = wps_offset + (wps_ielen+2) + remainder_ielen;

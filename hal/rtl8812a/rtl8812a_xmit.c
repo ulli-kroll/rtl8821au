@@ -30,19 +30,19 @@ void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag, u8 *ptxdesc)
 
 	if(bDumpTxPkt ==1){//dump txdesc for data frame
 		DBG_871X("dump tx_desc for data frame\n");
-		if((frame_tag&0x0f) == DATA_FRAMETAG){	
-			bDumpTxDesc = _TRUE;		
+		if((frame_tag&0x0f) == DATA_FRAMETAG){
+			bDumpTxDesc = _TRUE;
 		}
-	}	
+	}
 	else if(bDumpTxPkt ==2){//dump txdesc for mgnt frame
 		DBG_871X("dump tx_desc for mgnt frame\n");
-		if((frame_tag&0x0f) == MGNT_FRAMETAG){	
-			bDumpTxDesc = _TRUE;		
+		if((frame_tag&0x0f) == MGNT_FRAMETAG){
+			bDumpTxDesc = _TRUE;
 		}
-	}	
+	}
 	else if(bDumpTxPkt ==3){//dump early info
 	}
-	
+
 	if(bDumpTxDesc){
 		//	ptxdesc->txdw4 = cpu_to_le32(0x00001006);//RTS Rate=24M
 		//	ptxdesc->txdw6 = 0x6666f800;
@@ -75,7 +75,7 @@ void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag, u8 *ptxdesc)
 
 //#define DBG_EMINFO
 
-#if RTL8188E_EARLY_MODE_PKT_NUM_10 == 1	
+#if RTL8188E_EARLY_MODE_PKT_NUM_10 == 1
 	#define EARLY_MODE_MAX_PKT_NUM	10
 #else
 	#define EARLY_MODE_MAX_PKT_NUM	5
@@ -99,7 +99,7 @@ InsertEMContent_8812(
 	u4Byte	dwtmp=0;
 #endif
 
-	_rtw_memset(VirtualAddress, 0, EARLY_MODE_INFO_SIZE);
+	memset(VirtualAddress, 0, EARLY_MODE_INFO_SIZE);
 	if(pEMInfo->EMPktNum==0)
 		return;
 
@@ -113,7 +113,7 @@ InsertEMContent_8812(
 
 	}
 	#endif
-	
+
 #if RTL8188E_EARLY_MODE_PKT_NUM_10 == 1
 	SET_EARLYMODE_PKTNUM(VirtualAddress, pEMInfo->EMPktNum);
 
@@ -158,7 +158,7 @@ InsertEMContent_8812(
 		dwtmp += pEMInfo->EMPktLen[9];
 	}
 	SET_EARLYMODE_LEN4(VirtualAddress, dwtmp);
-#else	
+#else
 	SET_EARLYMODE_PKTNUM(VirtualAddress, pEMInfo->EMPktNum);
 	SET_EARLYMODE_LEN0(VirtualAddress, pEMInfo->EMPktLen[0]);
 	SET_EARLYMODE_LEN1(VirtualAddress, pEMInfo->EMPktLen[1]);
@@ -166,7 +166,7 @@ InsertEMContent_8812(
 	SET_EARLYMODE_LEN2_2(VirtualAddress, pEMInfo->EMPktLen[2]>>4);
 	SET_EARLYMODE_LEN3(VirtualAddress, pEMInfo->EMPktLen[3]);
 	SET_EARLYMODE_LEN4(VirtualAddress, pEMInfo->EMPktLen[4]);
-#endif	
+#endif
 	//RT_PRINT_DATA(COMP_SEND, DBG_LOUD, "EMHdr:", VirtualAddress, 8);
 
 }
@@ -179,15 +179,15 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 	int index,j;
 	u16 offset,pktlen;
 	PTXDESC_8812 ptxdesc;
-	
+
 	u8 *pmem,*pEMInfo_mem;
 	s8 node_num_0=0,node_num_1=0;
 	struct EMInfo eminfo;
 	struct agg_pkt_info *paggpkt;
-	struct xmit_frame *pframe = (struct xmit_frame*)pxmitbuf->priv_data;	
-	pmem= pframe->buf_addr;	
-	
-	#ifdef DBG_EMINFO			
+	struct xmit_frame *pframe = (struct xmit_frame*)pxmitbuf->priv_data;
+	pmem= pframe->buf_addr;
+
+	#ifdef DBG_EMINFO
 	DBG_8192C("\n%s ==> agg_num:%d\n",__FUNCTION__, pframe->agg_num);
 	for(index=0;index<pframe->agg_num;index++){
 		offset = 	pxmitpriv->agg_pkt[index].offset;
@@ -196,19 +196,19 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 		DBG_8192C("%s ==> agg_pkt[%d].pkt_len=%d\n",__FUNCTION__,index,pktlen);
 	}
 	#endif
-	
+
 	if( pframe->agg_num > EARLY_MODE_MAX_PKT_NUM)
-	{	
+	{
 		node_num_0 = pframe->agg_num;
 		node_num_1= EARLY_MODE_MAX_PKT_NUM-1;
 	}
-	
+
 	for(index=0;index<pframe->agg_num;index++){
 
 		offset = pxmitpriv->agg_pkt[index].offset;
-		pktlen = pxmitpriv->agg_pkt[index].pkt_len;		
+		pktlen = pxmitpriv->agg_pkt[index].pkt_len;
 
-		_rtw_memset(&eminfo,0,sizeof(struct EMInfo));
+		memset(&eminfo,0,sizeof(struct EMInfo));
 		if( pframe->agg_num > EARLY_MODE_MAX_PKT_NUM){
 			if(node_num_0 > EARLY_MODE_MAX_PKT_NUM){
 				eminfo.EMPktNum = EARLY_MODE_MAX_PKT_NUM;
@@ -216,36 +216,36 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 			}
 			else{
 				eminfo.EMPktNum = node_num_1;
-				node_num_1--;				
-			}			
+				node_num_1--;
+			}
 		}
 		else{
-			eminfo.EMPktNum = pframe->agg_num-(index+1);	
-		}				
+			eminfo.EMPktNum = pframe->agg_num-(index+1);
+		}
 		for(j=0;j< eminfo.EMPktNum ;j++){
 			eminfo.EMPktLen[j] = pxmitpriv->agg_pkt[index+1+j].pkt_len+4;// 4 bytes CRC
 		}
-			
+
 		if(pmem){
 			if(index==0){
 				ptxdesc = (PTXDESC_8812)(pmem);
-				pEMInfo_mem = ((u8 *)ptxdesc)+TXDESC_SIZE;				
+				pEMInfo_mem = ((u8 *)ptxdesc)+TXDESC_SIZE;
 			}
 			else{
 				pmem = pmem + pxmitpriv->agg_pkt[index-1].offset;
 				ptxdesc = (PTXDESC_8812)(pmem);
-				pEMInfo_mem = ((u8 *)ptxdesc)+TXDESC_SIZE;					
+				pEMInfo_mem = ((u8 *)ptxdesc)+TXDESC_SIZE;
 			}
-			
+
 			#ifdef DBG_EMINFO
 			DBG_8192C("%s ==> desc.pkt_len=%d\n",__FUNCTION__,ptxdesc->pktlen);
 			#endif
 			InsertEMContent_8812(&eminfo,pEMInfo_mem);
-		}	
-		
-		
+		}
+
+
 	}
-	_rtw_memset(pxmitpriv->agg_pkt,0,sizeof(struct agg_pkt_info)*MAX_AGG_PKT_NUM);
+	memset(pxmitpriv->agg_pkt,0,sizeof(struct agg_pkt_info)*MAX_AGG_PKT_NUM);
 
 }
 #endif
@@ -290,7 +290,7 @@ void rtl8812a_fill_fake_txdesc(
 
 
 	// Clear all status
-	_rtw_memset(pDesc, 0, TXDESC_SIZE);
+	memset(pDesc, 0, TXDESC_SIZE);
 
 	SET_TX_DESC_FIRST_SEG_8812(pDesc, 1);
 	SET_TX_DESC_LAST_SEG_8812(pDesc, 1);
@@ -324,7 +324,7 @@ void rtl8812a_fill_fake_txdesc(
 
 	SET_TX_DESC_USE_RATE_8812(pDesc, 1);
 	SET_TX_DESC_OWN_8812(pDesc, 1);
-	
+
 	SET_TX_DESC_TX_RATE_8812(pDesc, MRateToHwRate(pmlmeext->tx_rate));
 
 #if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
@@ -339,12 +339,12 @@ void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, u8 *ptxdesc)
 	if ((pattrib->encrypt > 0) && !pattrib->bswenc)
 	{
 		switch (pattrib->encrypt)
-		{	
+		{
 			//SEC_TYPE : 0:NO_ENC,1:WEP40/TKIP,2:WAPI,3:AES
 			case _WEP40_:
 			case _WEP104_:
 			case _TKIP_:
-			case _TKIP_WTMIC_:	
+			case _TKIP_WTMIC_:
 					SET_TX_DESC_SEC_TYPE_8812(ptxdesc, 0x1);
 					break;
 #ifdef CONFIG_WAPI_SUPPORT
@@ -359,9 +359,9 @@ void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, u8 *ptxdesc)
 			default:
 					SET_TX_DESC_SEC_TYPE_8812(ptxdesc, 0x0);
 					break;
-		
+
 		}
-		
+
 	}
 
 }
@@ -371,7 +371,7 @@ void rtl8812a_fill_txdesc_vcs(PADAPTER padapter, struct pkt_attrib *pattrib, u8 
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	//DBG_8192C("vcs_mode=%d\n", pattrib->vcs_mode);	
+	//DBG_8192C("vcs_mode=%d\n", pattrib->vcs_mode);
 
 	if (pattrib->vcs_mode) {
 
@@ -455,7 +455,7 @@ SCMapping_8812(
 	u8	SCSettingOfDesc = 0;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	//DBG_871X("SCMapping: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
-	
+
 	if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_80)
 	{
 		if(pattrib->bwmode == CHANNEL_WIDTH_80)
@@ -507,7 +507,7 @@ SCMapping_8812(
 			{
 				SCSettingOfDesc = VHT_DATA_SC_DONOT_CARE;
 			}
-				
+
 		}
 	}
 	else

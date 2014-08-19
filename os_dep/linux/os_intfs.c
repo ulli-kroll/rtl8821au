@@ -781,7 +781,7 @@ _func_enter_;
 		&& (registry_par->channel <= 14)) {
 		registry_par->channel = 36;
 	}
-	
+
 	registry_par->vrtl_carrier_sense = (u8)rtw_vrtl_carrier_sense ;
 	registry_par->vcs_type = (u8)rtw_vcs_type;
 	registry_par->rts_thresh=(u16)rtw_rts_thresh;
@@ -1433,7 +1433,7 @@ _func_enter_;
 	}
 
 	// We don't need to memset padapter->XXX to zero, because adapter is allocated by rtw_zvmalloc().
-	//_rtw_memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
+	//memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
 
 	//_init_timer(&(padapter->securitypriv.tkip_timer), padapter->pifp, rtw_use_tkipkey_handler, padapter);
 
@@ -1450,7 +1450,7 @@ _func_enter_;
 
 	rtw_init_pwrctrl_priv(padapter);
 
-	//_rtw_memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
+	//memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
 
 #ifdef CONFIG_MP_INCLUDED
 	if (init_mp_priv(padapter) == _FAIL) {

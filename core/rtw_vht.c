@@ -43,7 +43,7 @@ u8	rtw_get_vht_highest_rate(_adapter *padapter, u8 *pvht_mcs_map)
 	u8	i, j;
 	u8	bit_map;
 	u8	vht_mcs_rate = 0;
-	
+
 	for(i = 0; i < 2; i++)
 	{
 		if(pvht_mcs_map[i] != 0xff)
@@ -51,13 +51,13 @@ u8	rtw_get_vht_highest_rate(_adapter *padapter, u8 *pvht_mcs_map)
 			for(j = 0; j < 8; j += 2)
 			{
 				bit_map = (pvht_mcs_map[i] >> j) & 3;
-				
+
 				if(bit_map != 3)
 					vht_mcs_rate = MGN_VHT1SS_MCS7 + 10*j/2 + i*40 + bit_map;  //VHT rate indications begin from 0x90
 			}
 		}
 	}
-	
+
 	//DBG_871X("HighestVHTMCSRate is %x\n", vht_mcs_rate);
 	return vht_mcs_rate;
 }
@@ -125,7 +125,7 @@ void	rtw_vht_use_default_setting(_adapter *padapter)
 	pvhtpriv->vht_mcs_map[1] = 0xff;
 
 	if(pregistrypriv->vht_rate_sel == 1)
-	{			
+	{
 		pvhtpriv->vht_mcs_map[0] = 0xfc;	// support 1SS MCS 0~7
 	}
 	else if(pregistrypriv->vht_rate_sel == 2)
@@ -169,14 +169,14 @@ u32	rtw_vht_rate_to_bitmap(u8 *pVHTRate)
 
 	u8	i,j , tmpRate;
 	u32	RateBitmap = 0;
-		
+
 	for(i = j= 0; i < 4; i+=2, j+=10)
 	{
 		tmpRate = (pVHTRate[0] >> i) & 3;
 
 		switch(tmpRate){
 		case 2:
-			RateBitmap = RateBitmap | (0x03ff << j);	
+			RateBitmap = RateBitmap | (0x03ff << j);
 			break;
 		case 1:
 			RateBitmap = RateBitmap | (0x01ff << j);
@@ -233,7 +233,7 @@ void	update_sta_vht_info_apmode(_adapter *padapter, PVOID psta)
 	if (TEST_FLAG(pvhtpriv_ap->stbc_cap, STBC_VHT_ENABLE_TX) &&
 		GET_VHT_CAPABILITY_ELE_RX_STBC(pvhtpriv_sta->vht_cap))
 	{
-		SET_FLAG(cur_stbc_cap, (STBC_VHT_ENABLE_TX | STBC_VHT_CAP_TX));	
+		SET_FLAG(cur_stbc_cap, (STBC_VHT_ENABLE_TX | STBC_VHT_CAP_TX));
 	}
 	pvhtpriv_sta->stbc_cap = cur_stbc_cap;
 	DBG_871X("Current STA VHT STBC = %02X\n", cur_stbc_cap);
@@ -309,7 +309,7 @@ void VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	if (TEST_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_TX) &&
 		GET_VHT_CAPABILITY_ELE_RX_STBC(pIE->data))
 	{
-		SET_FLAG(cur_stbc_cap, (STBC_VHT_ENABLE_TX | STBC_VHT_CAP_TX));	
+		SET_FLAG(cur_stbc_cap, (STBC_VHT_ENABLE_TX | STBC_VHT_CAP_TX));
 	}
 	pvhtpriv->stbc_cap = cur_stbc_cap;
 	DBG_871X("Current VHT STBC Setting = %02X\n", cur_stbc_cap);
@@ -432,7 +432,7 @@ u32	rtw_build_vht_cap_ie(_adapter *padapter, u8 *pbuf)
 	struct vht_priv	*pvhtpriv = &pmlmepriv->vhtpriv;
 
 	pcap = pvhtpriv->vht_cap;
-	_rtw_memset(pcap, 0, 32);
+	memset(pcap, 0, 32);
 
 	// B2 B3 Supported Channel Width Set
 	SET_VHT_CAPABILITY_ELE_CHL_WIDTH(pcap, 0);  //indicate we don't support neither 160M nor 80+80M bandwidth.
@@ -514,7 +514,7 @@ u32	rtw_build_vht_cap_ie(_adapter *padapter, u8 *pbuf)
 
 	bw = (pregistrypriv->bw_mode >> 4) & 0xf;
 	HighestRate = VHT_MCS_DATA_RATE[bw][pvhtpriv->sgi][((pvhtpriv->vht_highest_rate - MGN_VHT1SS_MCS0)&0x3f)];
-	HighestRate = (HighestRate+1) >> 1;	
+	HighestRate = (HighestRate+1) >> 1;
 
 	SET_VHT_CAPABILITY_ELE_MCS_RX_HIGHEST_RATE(pcap, HighestRate); //indicate we support highest rx rate is 600Mbps.
 	SET_VHT_CAPABILITY_ELE_MCS_TX_HIGHEST_RATE(pcap, HighestRate); //indicate we support highest tx rate is 600Mbps.
@@ -538,7 +538,7 @@ u32 rtw_restructure_vht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, uint in_le
 	p = rtw_get_ie(in_ie+12, EID_VHTCapability, &ielen, in_len-12);
 	if (p && ielen>0) {
 		supported_chnl_width = GET_VHT_CAPABILITY_ELE_CHL_WIDTH(p+2);
-		
+
 		// VHT Capabilities element
 		cap_len = rtw_build_vht_cap_ie(padapter, out_ie+*pout_len);
 		*pout_len += cap_len;
@@ -577,9 +577,9 @@ u32 rtw_restructure_vht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, uint in_le
 
 		pvhtpriv->vht_option = _TRUE;
 	}
-	
+
 	return (pvhtpriv->vht_option);
-	
+
 }
 
 void VHTOnAssocRsp(_adapter *padapter)
@@ -589,7 +589,7 @@ void VHTOnAssocRsp(_adapter *padapter)
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	u8	ht_AMPDU_len;
-	
+
 	DBG_871X("%s\n", __FUNCTION__);
 
 	if (!pmlmeinfo->HT_enable)

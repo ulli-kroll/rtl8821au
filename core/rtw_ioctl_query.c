@@ -49,7 +49,7 @@ query_802_11_capability(
 		{Ndis802_11AuthModeWPA2, Ndis802_11Encryption3Enabled},
 		{Ndis802_11AuthModeWPA2PSK, Ndis802_11Encryption2Enabled},
 		{Ndis802_11AuthModeWPA2PSK, Ndis802_11Encryption3Enabled}
-	};	
+	};
 	static ULONG	ulNumOfPairSupported = sizeof(szAuthEnc)/sizeof(NDIS_802_11_AUTHENTICATION_ENCRYPTION);
 	NDIS_802_11_CAPABILITY * pCap = (NDIS_802_11_CAPABILITY *)pucBuf;
 	u8*	pucAuthEncryptionSupported = (u8*) pCap->AuthenticationEncryptionSupported;
@@ -58,9 +58,9 @@ query_802_11_capability(
 	pCap->Length = sizeof(NDIS_802_11_CAPABILITY);
 	if(ulNumOfPairSupported > 1 )
 		pCap->Length += 	(ulNumOfPairSupported-1) * sizeof(NDIS_802_11_AUTHENTICATION_ENCRYPTION);
-	
-	pCap->Version = 2;	
-	pCap->NoOfPMKIDs = NUM_PMKID_CACHE;	
+
+	pCap->Version = 2;
+	pCap->NoOfPMKIDs = NUM_PMKID_CACHE;
 	pCap->NoOfAuthEncryptPairsSupported = ulNumOfPairSupported;
 
 	if( sizeof (szAuthEnc) <= 240 )		// 240 = 256 - 4*4	// SecurityInfo.szCapability: only 256 bytes in size.
@@ -82,12 +82,12 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 	struct wlan_network *tgt_network;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	struct	security_priv  *psecuritypriv=&(padapter->securitypriv);
-	WLAN_BSSID_EX	*psecnetwork=(WLAN_BSSID_EX*)&(psecuritypriv->sec_bss);					
+	WLAN_BSSID_EX	*psecnetwork=(WLAN_BSSID_EX*)&(psecuritypriv->sec_bss);
 	u8 *	pDest = (u8 *)pAssocInfo + sizeof(NDIS_802_11_ASSOCIATION_INFORMATION);
 	unsigned char i,*auth_ie,*supp_ie;
 
 	//NdisZeroMemory(pAssocInfo, sizeof(NDIS_802_11_ASSOCIATION_INFORMATION));
-	_rtw_memset(pAssocInfo, 0, sizeof(NDIS_802_11_ASSOCIATION_INFORMATION));
+	memset(pAssocInfo, 0, sizeof(NDIS_802_11_ASSOCIATION_INFORMATION));
 	//pAssocInfo->Length = sizeof(NDIS_802_11_ASSOCIATION_INFORMATION);
 
 	//------------------------------------------------------
@@ -95,7 +95,7 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 	//------------------------------------------------------
 	// Req_1. AvailableRequestFixedIEs
 	if(psecnetwork!=NULL){
-		
+
 	pAssocInfo->AvailableRequestFixedIEs |= NDIS_802_11_AI_REQFI_CAPABILITIES|NDIS_802_11_AI_REQFI_CURRENTAPADDRESS;
 	pAssocInfo->RequestFixedIEs.Capabilities = (unsigned short)* & psecnetwork->IEs[10];
 	_rtw_memcpy(pAssocInfo->RequestFixedIEs.CurrentAPAddress,
@@ -105,12 +105,12 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 
 	if(check_fwstate( pmlmepriv, _FW_UNDER_LINKING|_FW_LINKED)==_TRUE)
 	{
-		
+
 		if(psecuritypriv->ndisauthtype>=Ndis802_11AuthModeWPA2)
 			pDest[0] =48;		//RSN Information Element
 		else
 			pDest[0] =221;	//WPA(SSN) Information Element
-		
+
 		RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("\n Adapter->ndisauthtype==Ndis802_11AuthModeWPA)?0xdd:0x30 [%d]",pDest[0]));
 		supp_ie=&psecuritypriv->supplicant_ie[0];
 		for(i=0;i<supp_ie[0];i++)
@@ -118,34 +118,34 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 			RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("IEs [%d] = 0x%x \n\n", i,supp_ie[i]));
 		}
 
-		i=13;	//0~11 is fixed information element		
+		i=13;	//0~11 is fixed information element
 		RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("i= %d tgt_network->network.IELength=%d\n\n", i,(int)psecnetwork->IELength));
 		while((i<supp_ie[0]) && (i<256)){
 			if((unsigned char)supp_ie[i]==pDest[0]){
 						_rtw_memcpy((u8 *)(pDest),
 							&supp_ie[i],
 							supp_ie[1+i]+2);
-			
+
 				break;
 			}
-			
+
 			i=i+supp_ie[i+1]+2;
 			if(supp_ie[1+i]==0)
 				i=i+1;
 			RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("iteration i=%d IEs [%d] = 0x%x \n\n", i,i,supp_ie[i+1]));
-			
+
 		}
-		
+
 
 		pAssocInfo->RequestIELength += (2 + supp_ie[1+i]);// (2 + psecnetwork->IEs[1+i]+4);
 
 	}
-	
+
 
 		RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("\n psecnetwork != NULL,fwstate==_FW_UNDER_LINKING \n"));
 
 	}
-	
+
 
 	//------------------------------------------------------
 	// Association Response related information
@@ -182,7 +182,7 @@ u8 query_802_11_association_information(	_adapter *padapter,PNDIS_802_11_ASSOCIA
 
 		RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("\n tgt_network != NULL,fwstate==_FW_LINKED \n"));
 		}
-	}												  	
+	}
 	RT_TRACE(_module_rtl871x_ioctl_query_c_,_drv_info_,("\n exit query_802_11_association_information \n"));
 _func_exit_;
 

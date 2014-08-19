@@ -25,7 +25,7 @@
 #include <sys/unistd.h>		/* for RFHIGHPID */
 #endif
 
-#include "../hal/OUTSRC/odm_precomp.h"		
+#include "../hal/OUTSRC/odm_precomp.h"
 #if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B))
 #include <rtw_bt_mp.h>
 #endif
@@ -54,7 +54,7 @@ u32 read_macreg(_adapter *padapter, u32 addr, u32 sz)
 	}
 
 	return val;
-	
+
 }
 
 void write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz)
@@ -110,7 +110,7 @@ static void _init_mp_priv_(struct mp_priv *pmp_priv)
 {
 	WLAN_BSSID_EX *pnetwork;
 
-	_rtw_memset(pmp_priv, 0, sizeof(struct mp_priv));
+	memset(pmp_priv, 0, sizeof(struct mp_priv));
 
 	pmp_priv->mode = MP_OFF;
 
@@ -257,14 +257,14 @@ static void mp_init_xmit_attrib(struct mp_tx *pmptx, PADAPTER padapter)
 
 	// init xmitframe attribute
 	pattrib = &pmptx->attrib;
-	_rtw_memset(pattrib, 0, sizeof(struct pkt_attrib));
+	memset(pattrib, 0, sizeof(struct pkt_attrib));
 	desc = &pmptx->desc;
-	_rtw_memset(desc, 0, TXDESC_SIZE);
+	memset(desc, 0, TXDESC_SIZE);
 
 	pattrib->ether_type = 0x8712;
 	//_rtw_memcpy(pattrib->src, padapter->eeprompriv.mac_addr, ETH_ALEN);
 //	_rtw_memcpy(pattrib->ta, pattrib->src, ETH_ALEN);
-	_rtw_memset(pattrib->dst, 0xFF, ETH_ALEN);
+	memset(pattrib->dst, 0xFF, ETH_ALEN);
 
 //	pattrib->dhcp_pkt = 0;
 //	pattrib->pktlen = 0;
@@ -329,7 +329,7 @@ static VOID PHY_IQCalibrate_default(
 	IN	PADAPTER	pAdapter,
 	IN	BOOLEAN 	bReCovery
 	)
-{	
+{
 	DBG_871X("%s\n", __func__);
 }
 
@@ -454,7 +454,7 @@ MPT_InitializeAdapter(
 	pMptCtx->bMPh2c_timeout = _FALSE;
 	pMptCtx->MptH2cRspEvent = _FALSE;
 	pMptCtx->MptBtC2hEvent = _FALSE;
-	
+
 	_rtw_init_sema(&pMptCtx->MPh2c_Sema, 0);
 	_init_timer( &pMptCtx->MPh2c_timeout_timer, pAdapter->pnetdev, MPh2c_timeout_handle, pAdapter );
 #endif
@@ -483,7 +483,7 @@ MPT_InitializeAdapter(
 
 	//ledsetting = rtw_read32(pAdapter, REG_LEDCFG0);
 	//rtw_write32(pAdapter, REG_LEDCFG0, ledsetting & ~LED0DIS);
-	
+
 	if(IS_HARDWARE_TYPE_8192DU(pAdapter))
 	{
 		rtw_write32(pAdapter, REG_LEDCFG0, 0x8888);
@@ -492,12 +492,12 @@ MPT_InitializeAdapter(
 	{
 		//rtw_write32(pAdapter, REG_LEDCFG0, 0x08080);
 		ledsetting = rtw_read32(pAdapter, REG_LEDCFG0);
-		
+
 	#if defined (CONFIG_RTL8192C) || defined( CONFIG_RTL8192D )
 			rtw_write32(pAdapter, REG_LEDCFG0, ledsetting & ~BIT(7));
 	#endif
 	}
-	
+
 	PHY_IQCalibrate(pAdapter, _FALSE);
 	dm_CheckTXPowerTracking(&pHalData->odmpriv);	//trigger thermal meter
 	PHY_LCCalibrate(pAdapter);
@@ -659,7 +659,7 @@ s32 mp_start_test(PADAPTER padapter)
 
 	padapter->registrypriv.mp_mode = 1;
 	pmppriv->bSetTxPower=0;		//for  manually set tx power
-	
+
 	//3 disable dynamic mechanism
 	disable_dm(padapter);
 	#ifdef CONFIG_RTL8812A
@@ -690,11 +690,11 @@ s32 mp_start_test(PADAPTER padapter)
 				break;
 		}
 	}
-	
+
 	mpt_ProStartTest(padapter);
 
 	//3 1. initialize a new WLAN_BSSID_EX
-//	_rtw_memset(&bssid, 0, sizeof(WLAN_BSSID_EX));
+//	memset(&bssid, 0, sizeof(WLAN_BSSID_EX));
 	_rtw_memcpy(bssid.MacAddress, pmppriv->network_macaddr, ETH_ALEN);
 	bssid.Ssid.SsidLength = strlen("mp_pseudo_adhoc");
 	_rtw_memcpy(bssid.Ssid.Ssid, (u8*)"mp_pseudo_adhoc", bssid.Ssid.SsidLength);
@@ -793,11 +793,11 @@ void mp_stop_test(PADAPTER padapter)
 	struct sta_info *psta;
 
 	_irqL irqL;
-	
+
 	if(pmppriv->mode==MP_ON)
 	{
 	pmppriv->bSetTxPower=0;
-	_enter_critical_bh(&pmlmepriv->lock, &irqL);	
+	_enter_critical_bh(&pmlmepriv->lock, &irqL);
 	if (check_fwstate(pmlmepriv, WIFI_MP_STATE) == _FALSE)
 		goto end_of_mp_stop_test;
 
@@ -813,7 +813,7 @@ void mp_stop_test(PADAPTER padapter)
 	pmlmepriv->fw_state = pmppriv->prev_fw_state; // WIFI_STATION_STATE;
 
 	//flush the cur_network
-	_rtw_memset(tgt_network, 0, sizeof(struct wlan_network));
+	memset(tgt_network, 0, sizeof(struct wlan_network));
 
 	_clr_fwstate_(pmlmepriv, WIFI_MP_STATE);
 
@@ -946,10 +946,10 @@ void	SetAntennaPathPower(PADAPTER pAdapter)
 {
 	Hal_SetAntennaPathPower(pAdapter);
 }
-	
+
 int SetTxPower(PADAPTER pAdapter)
 {
-	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(pAdapter);	
+	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(pAdapter);
 	u1Byte			CurrChannel;
 	BOOLEAN 		bResult = _TRUE;
 	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
@@ -957,7 +957,7 @@ int SetTxPower(PADAPTER pAdapter)
 
 	u8 u1TxPower = pAdapter->mppriv.txpoweridx;
 	CurrChannel = pMptCtx->MptChannelToSw;
-	
+
 	if(HAL_IsLegalChannel(pAdapter, CurrChannel) == _FALSE)
 	{
 		DBG_871X("SetTxPower(): CurrentChannel:%d is not valid\n", CurrChannel);
@@ -1066,10 +1066,10 @@ void SetContinuousTx(PADAPTER pAdapter, u8 bStart)
 void PhySetTxPowerLevel(PADAPTER pAdapter)
 {
 	struct mp_priv *pmp_priv = &pAdapter->mppriv;
-		
+
 	if (pmp_priv->bSetTxPower==0) // for NO manually set power index
 	{
-#ifdef CONFIG_RTL8188E	
+#ifdef CONFIG_RTL8188E
 		PHY_SetTxPowerLevel8188E(pAdapter,pmp_priv->channel);
 #endif
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
@@ -1137,7 +1137,7 @@ static thread_return mp_xmit_packet_thread(thread_context context)
 	pmptx = &pmp_priv->tx;
 	padapter = pmp_priv->papdater;
 	pxmitpriv = &(padapter->xmitpriv);
-	
+
 	thread_enter("RTW_MP_THREAD");
 
 	DBG_871X("%s:pkTx Start\n", __func__);
@@ -1156,7 +1156,7 @@ static thread_return mp_xmit_packet_thread(thread_context context)
 		}
 		_rtw_memcpy((u8 *)(pxmitframe->buf_addr+TXDESC_OFFSET), pmptx->buf, pmptx->write_size);
 		_rtw_memcpy(&(pxmitframe->attrib), &(pmptx->attrib), sizeof(struct pkt_attrib));
-		
+
 		dump_mpframe(padapter, pxmitframe);
 		pmptx->sended++;
 		pmp_priv->tx_pktcount++;
@@ -1182,7 +1182,7 @@ exit:
 }
 
 void fill_txdesc_for_mp(PADAPTER padapter, struct tx_desc *ptxdesc)
-{		
+{
 	struct mp_priv *pmp_priv = &padapter->mppriv;
 	_rtw_memcpy(ptxdesc, &(pmp_priv->tx.desc), TXDESC_SIZE);
 }
@@ -1193,7 +1193,7 @@ void fill_tx_desc_8192cd(PADAPTER padapter)
 	struct mp_priv *pmp_priv = &padapter->mppriv;
 	struct tx_desc *desc   = &(pmp_priv->tx.desc);
 	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);
-	
+
 	desc->txdw1 |= cpu_to_le32(BK); // don't aggregate(AMPDU)
 	desc->txdw1 |= cpu_to_le32((pattrib->mac_id) & 0x1F); //CAM_ID(MAC_ID)
 	desc->txdw1 |= cpu_to_le32((pattrib->qsel << QSEL_SHT) & 0x00001F00); // Queue Select, TID
@@ -1203,7 +1203,7 @@ void fill_tx_desc_8192cd(PADAPTER padapter)
 	//	desc->txdw2 |= cpu_to_le32(AGG_BK);//AGG BK
 	desc->txdw3 |= cpu_to_le32((pattrib->seqnum<<16)&0x0fff0000);
 	desc->txdw4 |= cpu_to_le32(HW_SEQ_EN);
-		
+
 	desc->txdw4 |= cpu_to_le32(USERATE);
 	desc->txdw4 |= cpu_to_le32(DISDATAFB);
 
@@ -1253,7 +1253,7 @@ void fill_tx_desc_8188e(PADAPTER padapter)
 
 	desc->txdw3 |= cpu_to_le32((pattrib->seqnum<<16)&0x0fff0000);
 	desc->txdw4 |= cpu_to_le32(HW_SSN);
-		
+
 	desc->txdw4 |= cpu_to_le32(USERATE);
 	desc->txdw4 |= cpu_to_le32(DISDATAFB);
 
@@ -1274,9 +1274,9 @@ void fill_tx_desc_8188e(PADAPTER padapter)
 	}
 
 	desc->txdw5 |= cpu_to_le32(RTY_LMT_EN); // retry limit enable
-	desc->txdw5 |= cpu_to_le32(0x00180000); // DATA/RTS Rate Fallback Limit	
-		
-	
+	desc->txdw5 |= cpu_to_le32(0x00180000); // DATA/RTS Rate Fallback Limit
+
+
 }
 #endif
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
@@ -1286,7 +1286,7 @@ void fill_tx_desc_8812a(PADAPTER padapter)
 	//struct tx_desc *pDesc   = &(pmp_priv->tx.desc);
 	u8 *pDesc   = (u8 *)&(pmp_priv->tx.desc);
 	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);
-	
+
 	u32	pkt_size = pattrib->last_txcmdsz;
 	s32 bmcast = IS_MCAST(pattrib->ra);
 	u8 data_rate,pwr_status,offset;
@@ -1294,14 +1294,14 @@ void fill_tx_desc_8812a(PADAPTER padapter)
 	SET_TX_DESC_FIRST_SEG_8812(pDesc, 1);
 	SET_TX_DESC_LAST_SEG_8812(pDesc, 1);
 	SET_TX_DESC_OWN_8812(pDesc, 1);
-	
+
 	SET_TX_DESC_PKT_SIZE_8812(pDesc, pkt_size);
-	
-	offset = TXDESC_SIZE + OFFSET_SZ;		
+
+	offset = TXDESC_SIZE + OFFSET_SZ;
 
 	SET_TX_DESC_OFFSET_8812(pDesc, offset);
 	SET_TX_DESC_PKT_OFFSET_8812(pDesc, 1);
-	
+
 	if (bmcast) {
 		SET_TX_DESC_BMC_8812(pDesc, 1);
 	}
@@ -1312,13 +1312,13 @@ void fill_tx_desc_8812a(PADAPTER padapter)
 	//SET_TX_DESC_RATE_ID_8812(pDesc, RATEID_IDX_G);
 	SET_TX_DESC_QUEUE_SEL_8812(pDesc,  pattrib->qsel);
 	//SET_TX_DESC_QUEUE_SEL_8812(pDesc,  QSLT_MGNT);
-	
+
 	if (!pattrib->qos_en) {
 		SET_TX_DESC_HWSEQ_EN_8812(pDesc, 1); // Hw set sequence number
 	} else {
 		SET_TX_DESC_SEQ_8812(pDesc, pattrib->seqnum);
 	}
-	
+
 	SET_TX_DESC_DISABLE_FB_8812(pDesc, 1);
 	SET_TX_DESC_USE_RATE_8812(pDesc, 1);
 	SET_TX_DESC_TX_RATE_8812(pDesc, pmp_priv->rateidx);
@@ -1341,7 +1341,7 @@ void fill_tx_desc_8723b(PADAPTER padapter)
 	struct tx_desc *desc   = &(pmp_priv->tx.desc);
 	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);
 	PTXDESC_8723B ptxdesc;
-	
+
 	ptxdesc->bk = 1;
 	ptxdesc->macid = pattrib->mac_id;
 	ptxdesc->qsel = pattrib->qsel;
@@ -1378,7 +1378,7 @@ void SetPacketTx(PADAPTER padapter)
 	struct mp_priv *pmp_priv;
 
 	pmp_priv = &padapter->mppriv;
-	
+
 	if (pmp_priv->tx.stop) return;
 	pmp_priv->tx.sended = 0;
 	pmp_priv->tx.stop = 0;
@@ -1416,7 +1416,7 @@ void SetPacketTx(PADAPTER padapter)
 	ptr = pmp_priv->tx.buf;
 
 	desc = &(pmp_priv->tx.desc);
-	_rtw_memset(desc, 0, TXDESC_SIZE);
+	memset(desc, 0, TXDESC_SIZE);
 	pkt_start = ptr;
 	pkt_end = pkt_start + pkt_size;
 
@@ -1444,7 +1444,7 @@ void SetPacketTx(PADAPTER padapter)
 	if(IS_HARDWARE_TYPE_8723B(padapter))
 		fill_tx_desc_8723b(padapter);
 #endif
-	
+
 
 	//3 4. make wlan header, make_wlanhdr()
 	hdr = (struct rtw_ieee80211_hdr *)pkt_start;
@@ -1474,7 +1474,7 @@ void SetPacketTx(PADAPTER padapter)
 			break;
 	}
 
-	_rtw_memset(ptr, payload, pkt_end - ptr);
+	memset(ptr, payload, pkt_end - ptr);
 
 	//3 6. start thread
 #ifdef PLATFORM_LINUX
@@ -1505,11 +1505,11 @@ void SetPacketRx(PADAPTER pAdapter, u8 bStartRx)
 #if 1
 //ndef CONFIG_RTL8723A
 		pHalData->ReceiveConfig = AAP | APM | AM | AB | APP_ICV | ADF | AMF | HTC_LOC_CTRL | APP_MIC | APP_PHYSTS;
-		
+
 		pHalData->ReceiveConfig |= ACRC32;
-		
+
 		rtw_write32(pAdapter, REG_RCR, pHalData->ReceiveConfig);
-		
+
 		// Accept all data frames
 		rtw_write16(pAdapter, REG_RXFLTMAP2, 0xFFFF);
 #else
@@ -1576,15 +1576,15 @@ u32 GetPhyRxPktCRC32Error(PADAPTER pAdapter)
 static u32 rtw_GetPSDData(PADAPTER pAdapter, u32 point)
 {
 	u32 psd_val=0;
-	
-#if defined(CONFIG_RTL8812A) //MP PSD for 8812A	
+
+#if defined(CONFIG_RTL8812A) //MP PSD for 8812A
 	u16 psd_reg = 0x910;
 	u16 psd_regL= 0xF44;
-	
-#else	
+
+#else
 	u16 psd_reg = 0x808;
 	u16 psd_regL= 0x8B4;
-	
+
 #endif
 
 	psd_val = rtw_read32(pAdapter, psd_reg);
@@ -1639,7 +1639,7 @@ u32 mp_query_psd(PADAPTER pAdapter, u8 *data)
 		sscanf(data, "pts=%d,start=%d,stop=%d", &psd_pts, &psd_start, &psd_stop);
 	}
 
-	_rtw_memset(data, '\0', sizeof(data));
+	memset(data, '\0', sizeof(data));
 
 	i = psd_start;
 	while (i < psd_stop)
@@ -1670,7 +1670,7 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 	  _adapter *padapter = pxmitpriv->adapter;
 	struct xmit_frame	*pxmitframe = (struct xmit_frame*) pxmitpriv->pxmit_frame_buf;
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
-	
+
 	u32 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
 	u32 num_xmit_extbuf = NR_XMIT_EXTBUFF;
 	if(padapter->registrypriv.mp_mode ==0)
@@ -1688,7 +1688,7 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 	for(i=0; i<num_xmit_extbuf; i++)
 	{
 		rtw_os_xmit_resource_free(padapter, pxmitbuf,(max_xmit_extbuf_size + XMITBUF_ALIGN_SZ), _FALSE);
-		
+
 		pxmitbuf++;
 	}
 
@@ -1706,12 +1706,12 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 		max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
 		num_xmit_extbuf = NR_XMIT_EXTBUFF;
 	}
-	
+
 	// Init xmit extension buff
 	_rtw_init_queue(&pxmitpriv->free_xmit_extbuf_queue);
 
 	pxmitpriv->pallocated_xmit_extbuf = rtw_zvmalloc(num_xmit_extbuf * sizeof(struct xmit_buf) + 4);
-	
+
 	if (pxmitpriv->pallocated_xmit_extbuf  == NULL){
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_err_,("alloc xmit_extbuf fail!\n"));
 		res= _FAIL;
@@ -1734,7 +1734,7 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 			res= _FAIL;
 			goto exit;
 		}
-		
+
 #if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
 		pxmitbuf->phead = pxmitbuf->pbuf;
 		pxmitbuf->pend = pxmitbuf->pbuf + max_xmit_extbuf_size;
@@ -1747,7 +1747,7 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 		pxmitbuf->no=i;
 		#endif
 		pxmitbuf++;
-		
+
 	}
 
 	pxmitpriv->free_xmit_extbuf_cnt = num_xmit_extbuf;
@@ -1790,7 +1790,7 @@ ULONG getPowerDiffByRate8188E(
 						PwrGroup = 1;
 					else if(CurrChannel > 9)
 						PwrGroup = 2;
-						
+
 					if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_20)
 						PwrGroup++;
 					else
@@ -1901,7 +1901,7 @@ ULONG getPowerDiffByRate8188E(
 				//RT_DISP(FPHY, PHY_TXPWR,("MCSTxPowerLevelOriginalOffset[%d][3] = 0x%x, MCS7, TxPower = %d\n",
 				//	PwrGroup, pHalData->MCSTxPowerLevelOriginalOffset[PwrGroup][3], TxPower));
 				break;
-				
+
 			case MPT_RATE_MCS8: //0xe18[31:0]= MCS=11,10,09,08
 				TxPower += ((pHalData->MCSTxPowerLevelOriginalOffset[PwrGroup][4+Pathmapping])&0xff);
 				//RT_DISP(FPHY, PHY_TXPWR,("MCSTxPowerLevelOriginalOffset[%d][4] = 0x%x, MCS8, TxPower = %d\n",
@@ -1958,7 +1958,7 @@ ULONG getPowerDiffByRate8188E(
 static	ULONG
 mpt_ProQueryCalTxPower_8188E(
 	IN	PADAPTER		pAdapter,
-	IN	u1Byte			RfPath	
+	IN	u1Byte			RfPath
 	)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(pAdapter);
@@ -1968,23 +1968,23 @@ mpt_ProQueryCalTxPower_8188E(
 	ULONG				TxPowerCCK = 1, TxPowerOFDM = 1, TxPowerBW20 = 1, TxPowerBW40 = 1 ;
 	PMPT_CONTEXT		pMptCtx = &(pAdapter->mppriv.MptCtx);
 	u1Byte				CurrChannel = pHalData->CurrentChannel;
-	u1Byte				index = (CurrChannel -1);	
+	u1Byte				index = (CurrChannel -1);
 	u1Byte				rf_path=(RfPath), rfPath;
 	u1Byte				limit = 0, rate = 0;
 
 	if(HAL_IsLegalChannel(pAdapter, CurrChannel) == FALSE)
 	{
 		CurrChannel = 1;
-	}	
-	
+	}
+
 	if( pMptCtx->MptRateIndex >= MPT_RATE_1M &&
 		pMptCtx->MptRateIndex <= MPT_RATE_11M )
 	{
-		TxPower = pHalData->Index24G_CCK_Base[rf_path][index];	
+		TxPower = pHalData->Index24G_CCK_Base[rf_path][index];
 	}
 	else if(pMptCtx->MptRateIndex >= MPT_RATE_6M &&
 		pMptCtx->MptRateIndex <= MPT_RATE_54M )
-	{				
+	{
 		TxPower = pHalData->Index24G_BW40_Base[rf_path][index];
 	}
 	else if(pMptCtx->MptRateIndex >= MPT_RATE_MCS0 &&
@@ -1992,7 +1992,7 @@ mpt_ProQueryCalTxPower_8188E(
 	{
 		TxPower = pHalData->Index24G_BW40_Base[rf_path][index];
 	}
-	
+
 	//RT_DISP(FPHY, PHY_TXPWR, ("HT40 rate(%d) Tx power(RF-%c) = 0x%x\n", pMptCtx->MptRateIndex, ((rf_path==0)?'A':'B'), TxPower));
 
 
@@ -2017,7 +2017,7 @@ mpt_ProQueryCalTxPower_8188E(
 
 #ifdef ENABLE_POWER_BY_RATE
 	PowerDiffByRate = getPowerDiffByRate8188E(pAdapter, CurrChannel, RfPath);
-#else	
+#else
 	PowerDiffByRate = 0;
 #endif
 
@@ -2041,7 +2041,7 @@ mpt_ProQueryCalTxPower_8188E(
 	}
 	else if(pMptCtx->MptRateIndex >= MPT_RATE_6M &&
 		pMptCtx->MptRateIndex <= MPT_RATE_54M )
-	{				
+	{
 		rate = MGN_54M;
 	}
 	else if(pMptCtx->MptRateIndex >= MPT_RATE_MCS0 &&
@@ -2056,7 +2056,7 @@ mpt_ProQueryCalTxPower_8188E(
 								   rate, CurrChannel);
 	#endif
 	TxPower = TxPower > limit ? limit : TxPower;
-	
+
 	return TxPower;
 }
 
@@ -2072,9 +2072,9 @@ ULONG mpt_ProQueryCalTxPower(
 	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
 	u1Byte			limit = 0, rate = 0;
 	rate=pMptCtx->MptRateIndex;
-	
+
 	 if ( IS_HARDWARE_TYPE_8188E(pAdapter) || IS_HARDWARE_TYPE_8192E(pAdapter) )//|| IS_HARDWARE_TYPE_8723B(pAdapter))
-	 {	
+	 {
 	 	return mpt_ProQueryCalTxPower_8188E(pAdapter, RfPath);
 	 }
 	 else
@@ -2107,12 +2107,12 @@ void Hal_ProSetCrystalCap (PADAPTER pAdapter , u32 CrystalCapVal)
 	{
 		// write 0x2C[30:25] = 0x2C[24:19] = CrystalCap
 		PHY_SetBBReg(pAdapter, REG_MAC_PHY_CTRL, 0x7FF80000, (CrystalCapVal | (CrystalCapVal << 6)));
-	}	
+	}
 	else if(IS_HARDWARE_TYPE_8821(pAdapter) || IS_HARDWARE_TYPE_8192E(pAdapter))
 	{
 		// write 0x2C[23:18] = 0x2C[17:12] = CrystalCap
-		PHY_SetBBReg(pAdapter, REG_MAC_PHY_CTRL, 0xFFF000, (CrystalCapVal | (CrystalCapVal << 6)));	
-	}	
+		PHY_SetBBReg(pAdapter, REG_MAC_PHY_CTRL, 0xFFF000, (CrystalCapVal | (CrystalCapVal << 6)));
+	}
 	else
 	{
 		PHY_SetBBReg(pAdapter, 0x2c, 0xFFF000, (CrystalCapVal | (CrystalCapVal << 6)));

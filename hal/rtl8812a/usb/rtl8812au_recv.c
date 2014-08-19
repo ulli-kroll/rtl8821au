@@ -46,7 +46,7 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 	int	i, res = _SUCCESS;
 	struct recv_buf *precvbuf;
 
-#ifdef CONFIG_RECV_THREAD_MODE	
+#ifdef CONFIG_RECV_THREAD_MODE
 	_rtw_init_sema(&precvpriv->recv_sema, 0);//will be removed
 	_rtw_init_sema(&precvpriv->terminate_recvthread_sema, 0);//will be removed
 #endif
@@ -87,7 +87,7 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,("alloc recv_buf fail!\n"));
 		goto exit;
 	}
-	_rtw_memset(precvpriv->pallocated_recv_buf, 0, NR_RECVBUFF *sizeof(struct recv_buf) + 4);
+	memset(precvpriv->pallocated_recv_buf, 0, NR_RECVBUFF *sizeof(struct recv_buf) + 4);
 
 	precvpriv->precv_buf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_recv_buf), 4);
 	//precvpriv->precv_buf = precvpriv->pallocated_recv_buf + 4 -

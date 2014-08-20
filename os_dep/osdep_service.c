@@ -84,9 +84,6 @@ inline u8* _rtw_vmalloc(u32 sz)
 	pbuf = vmalloc(sz);
 #endif
 
-#ifdef PLATFORM_WINDOWS
-	NdisAllocateMemoryWithTag(&pbuf,sz, RT_TAG);
-#endif
 
 #ifdef DBG_MEMORY_LEAK
 #ifdef PLATFORM_LINUX
@@ -108,11 +105,6 @@ inline u8* _rtw_zvmalloc(u32 sz)
 	if (pbuf != NULL)
 		memset(pbuf, 0, sz);
 #endif
-#ifdef PLATFORM_WINDOWS
-	NdisAllocateMemoryWithTag(&pbuf,sz, RT_TAG);
-	if (pbuf != NULL)
-		NdisFillMemory(pbuf, sz, 0);
-#endif
 
 	return pbuf;
 }
@@ -121,9 +113,6 @@ inline void _rtw_vmfree(u8 *pbuf, u32 sz)
 {
 #ifdef	PLATFORM_LINUX
 	vfree(pbuf);
-#endif
-#ifdef PLATFORM_WINDOWS
-	NdisFreeMemory(pbuf,sz, 0);
 #endif
 
 #ifdef DBG_MEMORY_LEAK
@@ -146,11 +135,6 @@ u8* _rtw_malloc(u32 sz)
 	else
 #endif
 		pbuf = kmalloc(sz,in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
-
-#endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisAllocateMemoryWithTag(&pbuf,sz, RT_TAG);
 
 #endif
 
@@ -178,9 +162,6 @@ u8* _rtw_zmalloc(u32 sz)
 		memset(pbuf, 0, sz);
 #endif
 
-#ifdef PLATFORM_WINDOWS
-		NdisFillMemory(pbuf, sz, 0);
-#endif
 
 	}
 
@@ -197,11 +178,6 @@ void	_rtw_mfree(u8 *pbuf, u32 sz)
 	else
 #endif
 		kfree(pbuf);
-
-#endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisFreeMemory(pbuf,sz, 0);
 
 #endif
 
@@ -479,15 +455,6 @@ int	_rtw_memcmp(void *dst, void *src, u32 sz)
 #endif
 
 
-#ifdef PLATFORM_WINDOWS
-//under Windows, the return value of NdisEqualMemory for two same mem. chunk is 1
-
-	if (NdisEqualMemory (dst, src, sz))
-		return _TRUE;
-	else
-		return _FALSE;
-
-#endif
 }
 
 
@@ -503,11 +470,6 @@ void _rtw_init_listhead(_list *list)
 
 #endif
 
-#ifdef PLATFORM_WINDOWS
-
-        NdisInitializeListHead(list);
-
-#endif
 
 }
 
@@ -529,14 +491,6 @@ u32	rtw_is_list_empty(_list *phead)
 
 #endif
 
-#ifdef PLATFORM_WINDOWS
-
-	if (IsListEmpty(phead))
-		return _TRUE;
-	else
-		return _FALSE;
-
-#endif
 
 
 }
@@ -548,9 +502,6 @@ void rtw_list_insert_head(_list *plist, _list *phead)
 	list_add(plist, phead);
 #endif
 
-#ifdef PLATFORM_WINDOWS
-	InsertHeadList(phead, plist);
-#endif
 }
 
 void rtw_list_insert_tail(_list *plist, _list *phead)
@@ -559,11 +510,6 @@ void rtw_list_insert_tail(_list *plist, _list *phead)
 #ifdef PLATFORM_LINUX
 
 	list_add_tail(plist, phead);
-
-#endif
-#ifdef PLATFORM_WINDOWS
-
-  InsertTailList(phead, plist);
 
 #endif
 
@@ -575,9 +521,6 @@ void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 
 #ifdef PLATFORM_LINUX
 	_init_timer(ptimer, adapter->pnetdev, pfunc, adapter);
-#endif
-#ifdef PLATFORM_WINDOWS
-	_init_timer(ptimer, adapter->hndis_adapter, pfunc, adapter->mlmepriv.nic_hdl);
 #endif
 }
 
@@ -717,22 +660,12 @@ void	_rtw_spinlock_init(_lock *plock)
 	spin_lock_init(plock);
 
 #endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisAllocateSpinLock(plock);
-
-#endif
 
 }
 
 void	_rtw_spinlock_free(_lock *plock)
 {
 
-#ifdef PLATFORM_WINDOWS
-
-	NdisFreeSpinLock(plock);
-
-#endif
 
 }
 
@@ -742,11 +675,6 @@ void	_rtw_spinlock(_lock	*plock)
 #ifdef PLATFORM_LINUX
 
 	spin_lock(plock);
-
-#endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisAcquireSpinLock(plock);
 
 #endif
 
@@ -760,11 +688,6 @@ void	_rtw_spinunlock(_lock *plock)
 	spin_unlock(plock);
 
 #endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisReleaseSpinLock(plock);
-
-#endif
 }
 
 
@@ -776,11 +699,6 @@ void	_rtw_spinlock_ex(_lock	*plock)
 	spin_lock(plock);
 
 #endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisDprAcquireSpinLock(plock);
-
-#endif
 
 }
 
@@ -790,11 +708,6 @@ void	_rtw_spinunlock_ex(_lock *plock)
 #ifdef PLATFORM_LINUX
 
 	spin_unlock(plock);
-
-#endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisDprReleaseSpinLock(plock);
 
 #endif
 }
@@ -831,11 +744,6 @@ u32	rtw_get_current_time(void)
 #ifdef PLATFORM_LINUX
 	return jiffies;
 #endif
-#ifdef PLATFORM_WINDOWS
-	LARGE_INTEGER	SystemTime;
-	NdisGetCurrentSystemTime(&SystemTime);
-	return (u32)(SystemTime.LowPart);// count of 100-nanosecond intervals
-#endif
 }
 
 inline u32 rtw_systime_to_ms(u32 systime)
@@ -843,18 +751,12 @@ inline u32 rtw_systime_to_ms(u32 systime)
 #ifdef PLATFORM_LINUX
 	return systime * 1000 / HZ;
 #endif
-#ifdef PLATFORM_WINDOWS
-	return systime / 10000 ;
-#endif
 }
 
 inline u32 rtw_ms_to_systime(u32 ms)
 {
 #ifdef PLATFORM_LINUX
 	return ms * HZ / 1000;
-#endif
-#ifdef PLATFORM_WINDOWS
-	return ms * 10000 ;
 #endif
 }
 
@@ -864,19 +766,11 @@ inline s32 rtw_get_passing_time_ms(u32 start)
 #ifdef PLATFORM_LINUX
 	return rtw_systime_to_ms(jiffies-start);
 #endif
-#ifdef PLATFORM_WINDOWS
-	LARGE_INTEGER	SystemTime;
-	NdisGetCurrentSystemTime(&SystemTime);
-	return rtw_systime_to_ms((u32)(SystemTime.LowPart) - start) ;
-#endif
 }
 
 inline s32 rtw_get_time_interval_ms(u32 start, u32 end)
 {
 #ifdef PLATFORM_LINUX
-	return rtw_systime_to_ms(end-start);
-#endif
-#ifdef PLATFORM_WINDOWS
 	return rtw_systime_to_ms(end-start);
 #endif
 }
@@ -901,11 +795,6 @@ void rtw_sleep_schedulable(int ms)
 
 #endif
 
-#ifdef PLATFORM_WINDOWS
-
-	NdisMSleep(ms*1000); //(us)*1000=(ms)
-
-#endif
 
 }
 
@@ -916,11 +805,6 @@ void rtw_msleep_os(int ms)
 #ifdef PLATFORM_LINUX
 
   	msleep((unsigned int)ms);
-
-#endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisMSleep(ms*1000); //(us)*1000=(ms)
 
 #endif
 
@@ -936,11 +820,6 @@ void rtw_usleep_os(int us)
                 msleep(1);
       else
 		msleep( (us/1000) + 1);
-
-#endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisMSleep(us); //(us)
 
 #endif
 
@@ -965,10 +844,6 @@ void _rtw_mdelay_os(int ms, const char *func, const int line)
 
    	mdelay((unsigned long)ms);
 
-#elif defined(PLATFORM_WINDOWS)
-
-	NdisStallExecution(ms*1000); //(us)*1000=(ms)
-
 #endif
 
 
@@ -992,10 +867,6 @@ void _rtw_udelay_os(int us, const char *func, const int line)
 
       udelay((unsigned long)us);
 
-#elif defined(PLATFORM_WINDOWS)
-
-	NdisStallExecution(us); //(us)
-
 #endif
 
 }
@@ -1006,11 +877,6 @@ void rtw_mdelay_os(int ms)
 #ifdef PLATFORM_LINUX
 
    	mdelay((unsigned long)ms);
-
-#endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisStallExecution(ms*1000); //(us)*1000=(ms)
 
 #endif
 
@@ -1024,11 +890,6 @@ void rtw_udelay_os(int us)
       udelay((unsigned long)us);
 
 #endif
-#ifdef PLATFORM_WINDOWS
-
-	NdisStallExecution(us); //(us)
-
-#endif
 
 }
 #endif
@@ -1037,9 +898,6 @@ void rtw_yield_os()
 {
 #ifdef PLATFORM_LINUX
 	yield();
-#endif
-#ifdef PLATFORM_WINDOWS
-	SwitchToThread();
 #endif
 }
 
@@ -1485,8 +1343,6 @@ u64 rtw_modular64(u64 x, u64 y)
 {
 #ifdef PLATFORM_LINUX
 	return do_div(x, y);
-#elif defined(PLATFORM_WINDOWS)
-	return (x % y);
 #endif
 }
 
@@ -1495,8 +1351,6 @@ u64 rtw_division64(u64 x, u64 y)
 #ifdef PLATFORM_LINUX
 	do_div(x, y);
 	return x;
-#elif defined(PLATFORM_WINDOWS)
-	return (x / y);
 #endif
 }
 

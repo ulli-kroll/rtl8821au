@@ -33,10 +33,6 @@
 #define _FALSE		0
 
 
-#ifdef PLATFORM_FREEBSD
-#include <osdep_service_bsd.h>
-#endif
-
 #ifdef PLATFORM_LINUX
 #include <osdep_service_linux.h>
 #endif

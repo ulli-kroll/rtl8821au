@@ -158,9 +158,7 @@ extern void	_rtw_init_listhead(_list *list);
 extern u32	rtw_is_list_empty(_list *phead);
 extern void	rtw_list_insert_head(_list *plist, _list *phead);
 extern void	rtw_list_insert_tail(_list *plist, _list *phead);
-#ifndef PLATFORM_FREEBSD
 extern void	rtw_list_delete(_list *plist);
-#endif //PLATFORM_FREEBSD
 
 extern void	_rtw_init_sema(_sema *sema, int init_val);
 extern void	_rtw_free_sema(_sema	*sema);
@@ -168,9 +166,7 @@ extern void	_rtw_up_sema(_sema	*sema);
 extern u32	_rtw_down_sema(_sema *sema);
 extern void	_rtw_mutex_init(_mutex *pmutex);
 extern void	_rtw_mutex_free(_mutex *pmutex);
-#ifndef PLATFORM_FREEBSD
 extern void	_rtw_spinlock_init(_lock *plock);
-#endif //PLATFORM_FREEBSD
 extern void	_rtw_spinlock_free(_lock *plock);
 extern void	_rtw_spinlock(_lock	*plock);
 extern void	_rtw_spinunlock(_lock	*plock);
@@ -215,10 +211,6 @@ __inline static unsigned char _cancel_timer_ex(_timer *ptimer)
 #ifdef PLATFORM_LINUX
 	return del_timer_sync(ptimer);
 #endif
-#ifdef PLATFORM_FREEBSD
-	_cancel_timer(ptimer,0);
-	return 0;
-#endif
 #ifdef PLATFORM_WINDOWS
 	u8 bcancelled;
 
@@ -235,9 +227,6 @@ static __inline void thread_enter(char *name)
 	daemonize("%s", name);
 	#endif
 	allow_signal(SIGTERM);
-#endif
-#ifdef PLATFORM_FREEBSD
-	printf("%s", "RTKTHREAD_enter");
 #endif
 }
 
@@ -386,9 +375,7 @@ extern int rtw_retrive_from_file(char *path, u8* buf, u32 sz);
 extern int rtw_store_to_file(char *path, u8* buf, u32 sz);
 
 
-#ifndef PLATFORM_FREEBSD
 extern void rtw_free_netdev(struct net_device * netdev);
-#endif //PLATFORM_FREEBSD
 
 
 extern u64 rtw_modular64(u64 x, u64 y);

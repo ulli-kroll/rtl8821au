@@ -211,13 +211,6 @@ __inline static unsigned char _cancel_timer_ex(_timer *ptimer)
 #ifdef PLATFORM_LINUX
 	return del_timer_sync(ptimer);
 #endif
-#ifdef PLATFORM_WINDOWS
-	u8 bcancelled;
-
-	_cancel_timer(ptimer, &bcancelled);
-
-	return bcancelled;
-#endif
 }
 
 static __inline void thread_enter(char *name)
@@ -247,14 +240,6 @@ __inline static _OS_STATUS res_to_status(sint res)
 	return res;
 #endif
 
-#ifdef PLATFORM_WINDOWS
-
-	if (res == _SUCCESS)
-		return NDIS_STATUS_SUCCESS;
-	else
-		return NDIS_STATUS_FAILURE;
-
-#endif
 
 }
 
@@ -269,16 +254,6 @@ __inline static int rtw_bug_check(void *parg1, void *parg2, void *parg3, void *p
 {
 	int ret = _TRUE;
 
-#ifdef PLATFORM_WINDOWS
-	if ( ((uint)parg1) <= 0x7fffffff ||
-	 	((uint)parg2) <= 0x7fffffff ||
-	 	((uint)parg3) <= 0x7fffffff ||
-	 	((uint)parg4) <= 0x7fffffff)
-	{
-		ret = _FALSE;
-		KeBugCheckEx(0x87110000, (ULONG_PTR)parg1, (ULONG_PTR)parg2, (ULONG_PTR)parg3, (ULONG_PTR)parg4);
-	}
-#endif
 
 	return ret;
 

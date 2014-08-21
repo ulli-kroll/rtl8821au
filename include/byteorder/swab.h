@@ -34,7 +34,7 @@ typedef unsigned char __u8;
 #endif
 
 #ifndef __u64
-typedef unsigned long long	__u64;	
+typedef unsigned long long	__u64;
 #endif
 
 
@@ -61,7 +61,7 @@ __inline static __u32  ___swab32(__u32 x)
 __inline static __u64  ___swab64(__u64 x)
 {
 	__u64 __x = (x);
-	
+
 	return
 	((__u64)( \
 		(__u64)(((__u64)(__x) & (__u64)0x00000000000000ffULL) << 56) | \
@@ -125,7 +125,7 @@ __inline static const __u32 __fswab32(__u32 x)
 	return __arch__swab32(x);
 }
 
-#if defined(PLATFORM_LINUX) || defined(PLATFORM_WINDOWS)
+#if defined(PLATFORM_LINUX)
 #define swab16 __swab16
 #define swab32 __swab32
 #define swab64 __swab64

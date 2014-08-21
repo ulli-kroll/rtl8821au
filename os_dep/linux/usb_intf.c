@@ -27,11 +27,6 @@
 
 #endif
 
-#if defined (PLATFORM_LINUX) && defined (PLATFORM_WINDOWS)
-
-#error "Shall be Linux or Windows, but not both!\n"
-
-#endif
 
 #ifdef CONFIG_80211N_HT
 extern int rtw_ht_enable;
@@ -1205,7 +1200,7 @@ int rtw_resume_process(_adapter *padapter)
 		_exit_pwrlock(&pwrpriv->lock);
 		goto exit;
 	}
-	
+
 	netif_device_attach(pnetdev);
 	netif_carrier_on(pnetdev);
 
@@ -1443,7 +1438,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	padapter->iface_type = IFACE_PORT0;
 	#else
 	padapter->iface_type = IFACE_PORT1;
-	#endif	
+	#endif
 #endif
 
 	//step 1-1., decide the chip_type via driver_info

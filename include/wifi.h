@@ -63,7 +63,7 @@ enum WIFI_FRAME_TYPE {
 	WIFI_MGT_TYPE  =	(0),
 	WIFI_CTRL_TYPE =	(BIT(2)),
 	WIFI_DATA_TYPE =	(BIT(3)),
-	WIFI_QOS_DATA_TYPE	= (BIT(7)|BIT(3)),	//!< QoS Data	
+	WIFI_QOS_DATA_TYPE	= (BIT(7)|BIT(3)),	//!< QoS Data
 };
 
 enum WIFI_FRAME_SUBTYPE {
@@ -407,7 +407,7 @@ enum WIFI_REG_DOMAIN {
 #define SetAMsdu(pbuf, amsdu)	\
 	do	{	\
 		*(unsigned short *)(pbuf) |= cpu_to_le16( (amsdu & 1) << 7); \
-	} while(0)	
+	} while(0)
 
 #define GetAid(pbuf)	(cpu_to_le16(*(unsigned short *)((SIZE_PTR)(pbuf) + 2)) & 0x3fff)
 
@@ -502,7 +502,7 @@ __inline static unsigned char * get_hdr_bssid(unsigned char *pframe)
 		case 0x03:	// ToDs=1, FromDs=1
 			sa = GetAddr1Ptr(pframe);
 			break;
-		default:	
+		default:
 			sa =NULL; //???????
 			break;
 	}
@@ -598,7 +598,7 @@ typedef	enum _ELEMENT_ID{
 	EID_TClass					= 14,
 	EID_Schedule				= 15,
 	//
-	
+
 	EID_Ctext					= 16, /* challenge text*/
 	EID_POWER_CONSTRAINT		= 32, /* Power Constraint*/
 
@@ -610,7 +610,7 @@ typedef	enum _ELEMENT_ID{
 
 	EID_MeasureRequest			= 38, // Measurement Request
 	EID_MeasureReport			= 39, // Measurement Report
-	
+
 	EID_ERPInfo 				= 42,
 
 	// Form 7.3.2: Information elements in 802.11E/D13.0, page 46.
@@ -619,27 +619,27 @@ typedef	enum _ELEMENT_ID{
 	EID_HTCapability			= 45,
 	EID_QoSCap					= 46,
 	//
-	
+
 	EID_WPA2					= 48,
 	EID_ExtSupRates			= 50,
 
 	EID_FTIE					= 55, // Defined in 802.11r
 	EID_Timeout				= 56, // Defined in 802.11r
-	
+
 	EID_SupRegulatory			= 59, // Supported Requlatory Classes 802.11y
 	EID_HTInfo 					= 61,
 	EID_SecondaryChnlOffset		= 62,
-	
+
 	EID_BSSCoexistence			= 72, // 20/40 BSS Coexistence
 	EID_BSSIntolerantChlReport	= 73,
 	EID_OBSS					= 74, // Overlapping BSS Scan Parameters
-	
+
 	EID_LinkIdentifier			= 101, // Defined in 802.11z
 	EID_WakeupSchedule		= 102, // Defined in 802.11z
 	EID_ChnlSwitchTimeing		= 104, // Defined in 802.11z
 	EID_PTIControl				= 105, // Defined in 802.11z
 	EID_PUBufferStatus			= 106, // Defined in 802.11z
-	
+
 	EID_EXTCapability			= 127, // Extended Capabilities
 	// From S19:Aironet IE and S21:AP IP address IE in CCX v1.13, p16 and p18.
 	EID_Aironet					= 133, // 0x85: Aironet Element for Cisco CCX
@@ -705,7 +705,7 @@ typedef	enum _ELEMENT_ID{
 #define _WEP_104_PRIVACY_		5
 #define _WEP_WPA_MIXED_PRIVACY_ 6	// WEP + WPA
 */
-				
+
 /*-----------------------------------------------------------------------------
 				Below is the definition for WMM
 ------------------------------------------------------------------------------*/
@@ -789,7 +789,7 @@ struct HT_caps_element
 	union
 	{
 		struct
-		{ 	
+		{
 			unsigned short	HT_caps_info;
 			unsigned char	AMPDU_para;
 			unsigned char	MCS_rate[16];
@@ -835,84 +835,12 @@ struct ADDBA_request
 #endif
 
 
-#ifdef PLATFORM_WINDOWS
-
-#pragma pack(1)
-
-struct rtw_ieee80211_ht_cap {
-	unsigned short 	cap_info;
-	unsigned char 	ampdu_params_info;
-	unsigned char 	supp_mcs_set[16];
-	unsigned short 	extended_ht_cap_info;
-	unsigned int		tx_BF_cap_info;
-	unsigned char	       antenna_selection_info;
-};
-
-
-struct ieee80211_ht_addt_info {
-	unsigned char 	control_chan;
-	unsigned char		ht_param;
-	unsigned short	operation_mode;
-	unsigned short	stbc_param;
-	unsigned char		basic_set[16];
-};
-
-struct HT_caps_element
-{
-	union
-	{
-		struct
-		{ 	
-			unsigned short	HT_caps_info;
-			unsigned char	AMPDU_para;
-			unsigned char	MCS_rate[16];
-			unsigned short	HT_ext_caps;
-			unsigned int	Beamforming_caps;
-			unsigned char	ASEL_caps;
-		} HT_cap_element;
-		unsigned char HT_cap[26];
-	};
-};
-
-struct HT_info_element
-{
-	unsigned char	primary_channel;
-	unsigned char	infos[5];
-	unsigned char	MCS_rate[16];
-};
-
-struct AC_param
-{
-	unsigned char		ACI_AIFSN;
-	unsigned char		CW;
-	unsigned short	TXOP_limit;
-};
-
-struct WMM_para_element
-{
-	unsigned char		QoS_info;
-	unsigned char		reserved;
-	struct AC_param	ac_param[4];
-};
-
-struct ADDBA_request
-{
-	unsigned char		dialog_token;
-	unsigned short	BA_para_set;
-	unsigned short	BA_timeout_value;
-	unsigned short	BA_starting_seqctrl;
-};
-
-
-#pragma pack()
-
-#endif
 
 typedef enum _HT_CAP_AMPDU_FACTOR {
 	MAX_AMPDU_FACTOR_8K		= 0,
 	MAX_AMPDU_FACTOR_16K	= 1,
 	MAX_AMPDU_FACTOR_32K	= 2,
-	MAX_AMPDU_FACTOR_64K	= 3,	
+	MAX_AMPDU_FACTOR_64K	= 3,
 }HT_CAP_AMPDU_FACTOR;
 
 /* 802.11n HT capabilities masks */
@@ -1219,7 +1147,7 @@ enum P2P_ROLE {
 	P2P_ROLE_DISABLE = 0,
 	P2P_ROLE_DEVICE = 1,
 	P2P_ROLE_CLIENT = 2,
-	P2P_ROLE_GO = 3	
+	P2P_ROLE_GO = 3
 };
 
 enum P2P_STATE {
@@ -1231,7 +1159,7 @@ enum P2P_STATE {
 	P2P_STATE_FIND_PHASE_SEARCH = 5,				//	In the search state of find phase
 	P2P_STATE_TX_PROVISION_DIS_REQ = 6,			//	In P2P provisioning discovery
 	P2P_STATE_RX_PROVISION_DIS_RSP = 7,
-	P2P_STATE_RX_PROVISION_DIS_REQ = 8,	
+	P2P_STATE_RX_PROVISION_DIS_REQ = 8,
 	P2P_STATE_GONEGO_ING = 9,						//	Doing the group owner negoitation handshake
 	P2P_STATE_GONEGO_OK = 10,						//	finish the group negoitation handshake with success
 	P2P_STATE_GONEGO_FAIL = 11,					//	finish the group negoitation handshake with failure
@@ -1262,7 +1190,7 @@ enum P2P_PROTO_WK_ID
 	P2P_FIND_PHASE_WK = 0,
 	P2P_RESTORE_STATE_WK = 1,
 	P2P_PRE_TX_PROVDISC_PROCESS_WK = 2,
-	P2P_PRE_TX_NEGOREQ_PROCESS_WK = 3,	
+	P2P_PRE_TX_NEGOREQ_PROCESS_WK = 3,
 	P2P_PRE_TX_INVITEREQ_PROCESS_WK = 4,
 	P2P_AP_P2P_CH_SWITCH_PROCESS_WK =5,
 	P2P_RO_CH_WK = 6,

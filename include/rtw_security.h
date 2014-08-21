@@ -58,9 +58,9 @@ typedef enum {
 #endif
 
 union pn48	{
-	
+
 	u64	val;
-	
+
 #ifdef CONFIG_LITTLE_ENDIAN
 
 struct {
@@ -115,12 +115,12 @@ struct security_priv
 
 	/* WEP */
 	u32	  dot11PrivacyKeyIndex;	// this is only valid for legendary wep, 0~3 for key id. (tx key index)
-	union Keytype dot11DefKey[4];			// this is only valid for def. key	
+	union Keytype dot11DefKey[4];			// this is only valid for def. key
 	u32 	dot11DefKeylen[4];
 
 	u32 dot118021XGrpPrivacy;	// This specify the privacy algthm. used for Grp key
 	u32	dot118021XGrpKeyid;		// key id used for Grp Key ( tx key index)
-	union Keytype	dot118021XGrpKey[4];	// 802.1x Group Key, for inx0 and inx1	
+	union Keytype	dot118021XGrpKey[4];	// 802.1x Group Key, for inx0 and inx1
 	union Keytype	dot118021XGrptxmickey[4];
 	union Keytype	dot118021XGrprxmickey[4];
 	union pn48		dot11Grptxpn;			// PN48 used for Grp Key xmit.
@@ -133,24 +133,24 @@ struct security_priv
 	unsigned int wpa_group_cipher;
 	unsigned int wpa2_group_cipher;
 	unsigned int wpa_pairwise_cipher;
-	unsigned int wpa2_pairwise_cipher;	
+	unsigned int wpa2_pairwise_cipher;
 #endif
 
 	u8 wps_ie[MAX_WPS_IE_LEN];//added in assoc req
 	int wps_ie_len;
-	
-	
+
+
 	u8	binstallGrpkey;
 	u8	busetkipkey;
 	//_timer tkip_timer;
 	u8	bcheck_grpkey;
 	u8	bgrpkey_handshake;
-	
+
 	//u8	packet_cnt;//unused, removed
-	
+
 	s32	sw_encrypt;//from registry_priv
 	s32	sw_decrypt;//from registry_priv
-	
+
 	s32 	hw_decrypted;//if the rx packets is hw_decrypted==_FALSE, it means the hw has not been ready.
 
 
@@ -161,9 +161,6 @@ struct security_priv
 	WLAN_BSSID_EX sec_bss;  //for joinbss (h2c buffer) usage
 
 	NDIS_802_11_WEP ndiswep;
-#ifdef PLATFORM_WINDOWS
-	u8 KeyMaterial[16];// variable length depending on above field.
-#endif
 
 	u8 assoc_info[600];
 	u8 szofcapability[256]; //for wpa2 usage
@@ -173,7 +170,7 @@ struct security_priv
 
 
 	//for tkip countermeasure
-	u32 last_mic_err_time;	
+	u32 last_mic_err_time;
 	u8	btkip_countermeasure;
 	u8	btkip_wait_report;
 	u32 btkip_countermeasure_time;
@@ -353,7 +350,7 @@ static inline u32 rotr(u32 val, int bits)
 		(a)[6] = (u8) (((u64) (val)) >> 8);	\
 		(a)[7] = (u8) (((u64) (val)) & 0xff);	\
 	} while (0)
-	
+
 /* ===== start - public domain SHA256 implementation ===== */
 
 /* This is based on SHA256 implementation in LibTomCrypt that was released into

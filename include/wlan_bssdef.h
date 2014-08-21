@@ -66,7 +66,7 @@ typedef struct _NDIS_802_11_CONFIGURATION_FH
 
 /*
 	FW will only save the channel number in DSConfig.
-	ODI Handler will convert the channel number to freq. number.	
+	ODI Handler will convert the channel number to freq. number.
 */
 typedef struct _NDIS_802_11_CONFIGURATION
 {
@@ -257,7 +257,7 @@ typedef enum _NDIS_802_11_STATUS_TYPE
 {
 	Ndis802_11StatusType_Authentication,
 	Ndis802_11StatusType_MediaStreamMode,
-	Ndis802_11StatusType_PMKID_CandidateList,		
+	Ndis802_11StatusType_PMKID_CandidateList,
 	Ndis802_11StatusTypeMax    // not a real type, defined as an upper bound
 } NDIS_802_11_STATUS_TYPE, *PNDIS_802_11_STATUS_TYPE;
 
@@ -338,7 +338,7 @@ typedef struct _NDIS_802_11_CONFIGURATION_FH
 
 /*
 	FW will only save the channel number in DSConfig.
-	ODI Handler will convert the channel number to freq. number.	
+	ODI Handler will convert the channel number to freq. number.
 */
 typedef struct _NDIS_802_11_CONFIGURATION
 {
@@ -527,7 +527,7 @@ typedef enum _NDIS_802_11_STATUS_TYPE
 {
 	Ndis802_11StatusType_Authentication,
 	Ndis802_11StatusType_MediaStreamMode,
-	Ndis802_11StatusType_PMKID_CandidateList,		
+	Ndis802_11StatusType_PMKID_CandidateList,
 	Ndis802_11StatusTypeMax    // not a real type, defined as an upper bound
 } NDIS_802_11_STATUS_TYPE, *PNDIS_802_11_STATUS_TYPE;
 
@@ -594,10 +594,6 @@ typedef struct _WLAN_BCN_INFO
 /* temporally add #pragma pack for structure alignment issue of
 *   WLAN_BSSID_EX and get_WLAN_BSSID_EX_sz()
 */
-#ifdef PLATFORM_WINDOWS
-#pragma pack(push)
-#pragma pack(1)
-#endif
 typedef struct _WLAN_BSSID_EX
 {
   ULONG  Length;
@@ -613,20 +609,14 @@ typedef struct _WLAN_BSSID_EX
   WLAN_PHY_INFO	PhyInfo;
   ULONG  IELength;
   UCHAR  IEs[MAX_IE_SZ];	//(timestamp, beacon interval, and capability information)
-}
-#ifndef PLATFORM_WINDOWS
-__attribute__((packed))
-#endif
+} __attribute__((packed))
 WLAN_BSSID_EX, *PWLAN_BSSID_EX;
-#ifdef PLATFORM_WINDOWS
-#pragma pack(pop)
-#endif
 
 __inline  static uint get_WLAN_BSSID_EX_sz(WLAN_BSSID_EX *bss)
 {
 #if 0
 	uint t_len;
-	
+
 	t_len = sizeof (ULONG)
 		+ sizeof (NDIS_802_11_MAC_ADDRESS)
 		+ 2
@@ -641,7 +631,7 @@ __inline  static uint get_WLAN_BSSID_EX_sz(WLAN_BSSID_EX *bss)
 		+ sizeof(WLAN_PHY_INFO)
 		//all new member add here
 		+ sizeof (ULONG)
-		+ bss->IELength;	
+		+ bss->IELength;
 	return t_len;
 #else
 	return (sizeof(WLAN_BSSID_EX) -MAX_IE_SZ + bss->IELength);
@@ -649,7 +639,7 @@ __inline  static uint get_WLAN_BSSID_EX_sz(WLAN_BSSID_EX *bss)
 }
 
 struct	wlan_network {
-	_list	list;	
+	_list	list;
 	int	network_type;	//refer to ieee80211.h for WIRELESS_11A/B/G
 	int	fixed;			// set to fixed when not to be removed as site-surveying
 	unsigned long	last_scanned; //timestamp for the network
@@ -657,22 +647,18 @@ struct	wlan_network {
 	int	join_res;
 	WLAN_BSSID_EX	network; //must be the last item
 	WLAN_BCN_INFO	BcnInfo;
-#ifdef PLATFORM_WINDOWS	
-	unsigned char  iebuf[MAX_IE_SZ];
-#endif
-
 };
 
 enum VRTL_CARRIER_SENSE
 {
-    DISABLE_VCS,	
-    ENABLE_VCS,	
+    DISABLE_VCS,
+    ENABLE_VCS,
     AUTO_VCS
 };
 
 enum VCS_TYPE
 {
-    NONE_VCS,	
+    NONE_VCS,
     RTS_CTS,
     CTS_TO_SELF
 };
@@ -722,7 +708,7 @@ typedef struct _NDIS_802_11_AUTHENTICATION_ENCRYPTION
 {
 	NDIS_802_11_AUTHENTICATION_MODE AuthModeSupported;
 	NDIS_802_11_ENCRYPTION_STATUS EncryptStatusSupported;
-	
+
 } NDIS_802_11_AUTHENTICATION_ENCRYPTION, *PNDIS_802_11_AUTHENTICATION_ENCRYPTION;
 
 typedef struct _NDIS_802_11_CAPABILITY
@@ -732,7 +718,7 @@ typedef struct _NDIS_802_11_CAPABILITY
 	ULONG  NoOfPMKIDs;
 	ULONG  NoOfAuthEncryptPairsSupported;
 	NDIS_802_11_AUTHENTICATION_ENCRYPTION AuthenticationEncryptionSupported[1];
-	
+
 } NDIS_802_11_CAPABILITY, *PNDIS_802_11_CAPABILITY;
 #endif
 

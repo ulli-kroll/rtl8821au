@@ -106,21 +106,6 @@ struct mp_wiparam
 
 typedef void(*wi_act_func)(void* padapter);
 
-#ifdef PLATFORM_WINDOWS
-struct mp_wi_cntx
-{
-	u8 bmpdrv_unload;
-
-	// Work Item
-	NDIS_WORK_ITEM mp_wi;
-	NDIS_EVENT mp_wi_evt;
-	_lock mp_wi_lock;
-	u8 bmp_wi_progress;
-	wi_act_func curractfunc;
-	// Variable needed in each implementation of CurrActFunc.
-	struct mp_wiparam param;
-};
-#endif
 
 struct mp_tx
 {
@@ -148,10 +133,10 @@ struct mp_tx
 #define pu1Byte 		u8*
 
 #define u2Byte		u16
-#define pu2Byte 		u16*		
+#define pu2Byte 		u16*
 
 #define u4Byte		u32
-#define pu4Byte 		u32*	
+#define pu4Byte 		u32*
 
 #define u8Byte		u64
 #define pu8Byte 		u64*
@@ -160,10 +145,10 @@ struct mp_tx
 #define ps1Byte 		s8*
 
 #define s2Byte		s16
-#define ps2Byte 		s16*	
+#define ps2Byte 		s16*
 
 #define s4Byte		s32
-#define ps4Byte 		s32*	
+#define ps4Byte 		s32*
 
 #define s8Byte		s64
 #define ps8Byte 		s64*
@@ -192,7 +177,7 @@ typedef struct _MPT_CONTEXT
 	BOOLEAN		MptH2cRspEvent;
 	BOOLEAN		MptBtC2hEvent;
 	BOOLEAN		bMPh2c_timeout;
-	
+
 	/* 8190 PCI does not support NDIS_WORK_ITEM. */
 	// Work Item for Mass Production Test.
 	//NDIS_WORK_ITEM	MptWorkItem;
@@ -268,7 +253,7 @@ typedef struct _MPT_CONTEXT
 	u8		backup0xc30;
 	u8 		backup0x52_RF_A;
 	u8 		backup0x52_RF_B;
-	
+
 	u1Byte			h2cReqNum;
 	u1Byte			c2hBuf[20];
 
@@ -313,7 +298,7 @@ typedef struct _MPT_CONTEXT
 /* end of E-Fuse */
 
 //#define RTPRIV_IOCTL_MP 					( SIOCIWFIRSTPRIV + 0x17)
-enum {	
+enum {
 	WRITE_REG = 1,
 	READ_REG,
 	WRITE_RF,
@@ -386,7 +371,7 @@ struct mp_priv
 	u16 antenna_tx;
 	u16 antenna_rx;
 //	u8 curr_rfpath;
-	
+
 	u8 check_mp_pkt;
 
 	u8 bSetTxPower;
@@ -394,31 +379,6 @@ struct mp_priv
 
 	struct wlan_network mp_network;
 	NDIS_802_11_MAC_ADDRESS network_macaddr;
-
-#ifdef PLATFORM_WINDOWS
-	u32 rx_testcnt;
-	u32 rx_testcnt1;
-	u32 rx_testcnt2;
-	u32 tx_testcnt;
-	u32 tx_testcnt1;
-
-	struct mp_wi_cntx wi_cntx;
-
-	u8 h2c_result;
-	u8 h2c_seqnum;
-	u16 h2c_cmdcode;
-	u8 h2c_resp_parambuf[512];
-	_lock h2c_lock;
-	_lock wkitm_lock;
-	u32 h2c_cmdcnt;
-	NDIS_EVENT h2c_cmd_evt;
-	NDIS_EVENT c2h_set;
-	NDIS_EVENT h2c_clr;
-	NDIS_EVENT cpwm_int;
-
-	NDIS_EVENT scsir_full_evt;
-	NDIS_EVENT scsiw_empty_evt;
-#endif
 
 	u8 *pallocated_mp_xmitframe_buf;
 	u8 *pmp_xmtframe_buf;
@@ -561,7 +521,7 @@ typedef enum _POWER_MODE_ {
 
 // The following enumeration is used to define the value of Reg0xD00[30:28] or JaguarReg0x914[18:16].
 typedef enum _OFDM_TX_MODE {
-	OFDM_ALL_OFF		= 0,	
+	OFDM_ALL_OFF		= 0,
 	OFDM_ContinuousTx	= 1,
 	OFDM_SingleCarrier	= 2,
 	OFDM_SingleTone 	= 4,

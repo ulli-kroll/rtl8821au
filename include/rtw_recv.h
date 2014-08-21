@@ -40,13 +40,13 @@
 		#if defined(CONFIG_GSPI_HCI)
 			#define NR_RECVBUFF (32)
 		#elif defined(CONFIG_SDIO_HCI)
-			#define NR_RECVBUFF (8)	
+			#define NR_RECVBUFF (8)
 		#else
 			#define NR_RECVBUFF (4)
-		#endif	
+		#endif
 	#endif //CONFIG_SINGLE_RECV_BUF
 
-	#define NR_PREALLOC_RECV_SKB (8)	
+	#define NR_PREALLOC_RECV_SKB (8)
 #endif
 
 #define NR_RECVFRAME 256
@@ -134,11 +134,11 @@ struct signal_stat {
 	u8	update_req;		//used to indicate
 	u8	avg_val;		//avg of valid elements
 	u32	total_num;		//num of valid elements
-	u32	total_val;		//sum of valid elements	
+	u32	total_val;		//sum of valid elements
 };
 
 struct phy_info
-{		
+{
 	u8		RxPWDBAll;
 
 	u8		SignalQuality;	 // in 0-100 index.
@@ -152,11 +152,11 @@ struct phy_info
 
 	s8		RxPower; // in dBm Translate from PWdB
 	s8		RecvSignalPower;// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
-	u8		BTRxRSSIPercentage;	
+	u8		BTRxRSSIPercentage;
 	u8		SignalStrength; // in 0-100 index.
 
 	u8		RxPwr[4];				//per-path's pwdb
-	u8		RxSNR[4];				//per-path's SNR	
+	u8		RxSNR[4];				//per-path's SNR
 	u8		BandWidth;
 	u8		btCoexPwrAdjust;
 };
@@ -193,9 +193,9 @@ struct rx_pkt_attrib	{
 	u8 	ta[ETH_ALEN];
 	u8 	ra[ETH_ALEN];
 	u8 	bssid[ETH_ALEN];
-	
+
 	u8	ack_policy;
-	
+
 //#ifdef CONFIG_TCP_CSUM_OFFLOAD_RX
 	u8	tcpchk_valid; // 0: invalid, 1: valid
 	u8	ip_chkrpt; //0: incorrect, 1: correct
@@ -212,10 +212,10 @@ struct rx_pkt_attrib	{
 	u8	signal_qual;
 	s8	rx_mimo_signal_qual[2];
 	u8	signal_strength;
-	u32	RxPWDBAll;	
+	u32	RxPWDBAll;
 	s32	RecvSignalPower;
 */
-	struct phy_info phy_info;	
+	struct phy_info phy_info;
 };
 
 
@@ -293,17 +293,6 @@ struct recv_priv
 	uint free_recvframe_cnt;
 
 	_adapter	*adapter;
-
-#ifdef PLATFORM_WINDOWS
-	_nic_hdl  RxPktPoolHdl;
-	_nic_hdl  RxBufPoolHdl;
-
-#ifdef PLATFORM_OS_XP
-	PMDL	pbytecnt_mdl;
-#endif
-	uint	counter; //record the number that up-layer will return to drv; only when counter==0 can we  release recv_priv
-	NDIS_EVENT 	recv_resource_evt ;
-#endif
 
 	u32	bIsAnyNonBEPkts;
 	u64	rx_bytes;
@@ -703,9 +692,6 @@ __inline static _buffer * get_rxbuf_desc(union recv_frame *precvframe)
 
 	if(precvframe==NULL)
 		return NULL;
-#ifdef PLATFORM_WINDOWS
-	NdisQueryPacket(precvframe->u.hdr.pkt, NULL, NULL, &buf_desc, NULL);
-#endif
 
 	return buf_desc;
 }
@@ -726,13 +712,6 @@ __inline static union recv_frame *pkt_to_recvframe(_pkt *pkt)
 
 	u8 * buf_star;
 	union recv_frame * precv_frame;
-#ifdef PLATFORM_WINDOWS
-	_buffer * buf_desc;
-	uint len;
-
-	NdisQueryPacket(pkt, NULL, NULL, &buf_desc, &len);
-	NdisQueryBufferSafe(buf_desc, &buf_star, &len, HighPagePriority);
-#endif
 	precv_frame = rxmem_to_recvframe((unsigned char*)buf_star);
 
 	return precv_frame;

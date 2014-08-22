@@ -2891,7 +2891,7 @@ static int cfg80211_rtw_set_power_mgmt(struct wiphy *wiphy,
 }
 
 static int cfg80211_rtw_set_pmksa(struct wiphy *wiphy,
-				  struct net_device *netdev,
+				  struct net_device *ndev,
 				  struct cfg80211_pmksa *pmksa)
 {
 	u8	index,blInserted = _FALSE;
@@ -2899,7 +2899,7 @@ static int cfg80211_rtw_set_pmksa(struct wiphy *wiphy,
 	struct security_priv	*psecuritypriv = &padapter->securitypriv;
 	u8	strZeroMacAddress[ ETH_ALEN ] = { 0x00 };
 
-	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(netdev));
+	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
 	if ( _rtw_memcmp( pmksa->bssid, strZeroMacAddress, ETH_ALEN ) == _TRUE )
 	{
@@ -2913,7 +2913,7 @@ static int cfg80211_rtw_set_pmksa(struct wiphy *wiphy,
 	{
 		if( _rtw_memcmp( psecuritypriv->PMKIDList[index].Bssid, pmksa->bssid, ETH_ALEN) ==_TRUE )
 		{ // BSSID is matched, the same AP => rewrite with new PMKID.
-			DBG_871X(FUNC_NDEV_FMT" BSSID exists in the PMKList.\n", FUNC_NDEV_ARG(netdev));
+			DBG_871X(FUNC_NDEV_FMT" BSSID exists in the PMKList.\n", FUNC_NDEV_ARG(ndev));
 
 			memcpy( psecuritypriv->PMKIDList[index].PMKID, pmksa->pmkid, WLAN_PMKID_LEN);
 			psecuritypriv->PMKIDList[index].bUsed = _TRUE;
@@ -2927,7 +2927,7 @@ static int cfg80211_rtw_set_pmksa(struct wiphy *wiphy,
 	{
 		// Find a new entry
 		DBG_871X(FUNC_NDEV_FMT" Use the new entry index = %d for this PMKID.\n",
-			FUNC_NDEV_ARG(netdev), psecuritypriv->PMKIDIndex );
+			FUNC_NDEV_ARG(ndev), psecuritypriv->PMKIDIndex );
 
 		memcpy(psecuritypriv->PMKIDList[psecuritypriv->PMKIDIndex].Bssid, pmksa->bssid, ETH_ALEN);
 		memcpy(psecuritypriv->PMKIDList[psecuritypriv->PMKIDIndex].PMKID, pmksa->pmkid, WLAN_PMKID_LEN);
@@ -2944,14 +2944,14 @@ static int cfg80211_rtw_set_pmksa(struct wiphy *wiphy,
 }
 
 static int cfg80211_rtw_del_pmksa(struct wiphy *wiphy,
-				  struct net_device *netdev,
+				  struct net_device *ndev,
 				  struct cfg80211_pmksa *pmksa)
 {
 	u8	index, bMatched = _FALSE;
 	_adapter	*padapter = wiphy_to_adapter(wiphy);
 	struct security_priv	*psecuritypriv = &padapter->securitypriv;
 
-	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(netdev));
+	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
 	for(index=0 ; index<NUM_PMKID_CACHE; index++)
 	{
@@ -2968,7 +2968,7 @@ static int cfg80211_rtw_del_pmksa(struct wiphy *wiphy,
 	if(_FALSE == bMatched)
 	{
 		DBG_871X(FUNC_NDEV_FMT" do not have matched BSSID\n"
-			, FUNC_NDEV_ARG(netdev));
+			, FUNC_NDEV_ARG(ndev));
 		return -EINVAL;
 	}
 
@@ -2976,12 +2976,12 @@ static int cfg80211_rtw_del_pmksa(struct wiphy *wiphy,
 }
 
 static int cfg80211_rtw_flush_pmksa(struct wiphy *wiphy,
-				    struct net_device *netdev)
+				    struct net_device *ndev)
 {
 	_adapter	*padapter = wiphy_to_adapter(wiphy);
 	struct security_priv	*psecuritypriv = &padapter->securitypriv;
 
-	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(netdev));
+	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
 	memset( &psecuritypriv->PMKIDList[ 0 ], 0x00, sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
 	psecuritypriv->PMKIDIndex = 0;
@@ -3360,7 +3360,7 @@ static int rtw_cfg80211_add_monitor_if(_adapter *padapter, char *name, struct ne
 	}
 
 	mon_wdev->wiphy = padapter->rtw_wdev->wiphy;
-	mon_wdev->netdev = mon_ndev;
+	mon_wdev->ndev = mon_ndev;
 	mon_wdev->iftype = NL80211_IFTYPE_MONITOR;
 	mon_ndev->ieee80211_ptr = mon_wdev;
 
@@ -3461,7 +3461,7 @@ static int cfg80211_rtw_del_virtual_intf(struct wiphy *wiphy,
 	struct rtw_wdev_priv *pwdev_priv = (struct rtw_wdev_priv *)wiphy_priv(wiphy);
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
 	struct net_device *ndev;
-	ndev = wdev ? wdev->netdev : NULL;
+	ndev = wdev ? wdev->ndev : NULL;
 #endif
 
 	if (!ndev)
@@ -5284,7 +5284,7 @@ int rtw_wdev_alloc(_adapter *padapter, struct device *dev)
 		goto unregister_wiphy;
 	}
 	wdev->wiphy = wiphy;
-	wdev->netdev = ndev;
+	wdev->ndev = ndev;
 	//wdev->iftype = NL80211_IFTYPE_STATION;
 	wdev->iftype = NL80211_IFTYPE_MONITOR; // for rtw_setopmode_cmd() in cfg80211_rtw_change_iface()
 	padapter->rtw_wdev = wdev;

@@ -939,7 +939,6 @@ static struct net_device_stats *rtw_net_get_stats(struct net_device *ndev)
 	return &padapter->stats;
 }
 
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 /*
  * AC to queue mapping
  *
@@ -1017,21 +1016,16 @@ u16 rtw_recv_select_queue(struct sk_buff *skb)
 
 }
 
-#endif
 
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_open = netdev_open,
 	.ndo_stop = netdev_close,
 	.ndo_start_xmit = rtw_xmit_entry,
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	.ndo_select_queue	= rtw_select_queue,
-#endif
 	.ndo_set_mac_address = rtw_net_set_mac_address,
 	.ndo_get_stats = rtw_net_get_stats,
 	.ndo_do_ioctl = rtw_ioctl,
 };
-#endif
 
 int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 {
@@ -1044,16 +1038,8 @@ int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 
 	if(padapter->bDongle == 1)
 	{
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24))
-		TargetNetdev = dev_get_by_name("wlan0");
-#else
-	#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26))
-		devnet = ndev->nd_net;
-	#else
 		devnet = dev_net(ndev);
-	#endif
 		TargetNetdev = dev_get_by_name(devnet, "wlan0");
-#endif
 		if(TargetNetdev) {
 			DBG_871X("Force onboard module driver disappear !!!\n");
 			TargetAdapter = rtw_netdev_priv(TargetNetdev);
@@ -1103,23 +1089,11 @@ struct net_device *rtw_init_netdev(_adapter *old_padapter)
 	padapter = rtw_netdev_priv(ndev);
 	padapter->ndev = ndev;
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24)
-	SET_MODULE_OWNER(ndev);
-#endif
 
 	//ndev->init = NULL;
 
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 	DBG_871X("register rtw_netdev_ops to netdev_ops\n");
 	ndev->netdev_ops = &rtw_netdev_ops;
-#else
-	ndev->open = netdev_open;
-	ndev->stop = netdev_close;
-	ndev->hard_start_xmit = rtw_xmit_entry;
-	ndev->set_mac_address = rtw_net_set_mac_address;
-	ndev->get_stats = rtw_net_get_stats;
-	ndev->do_ioctl = rtw_ioctl;
-#endif
 
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
@@ -1736,7 +1710,6 @@ static int netdev_vir_if_close(struct net_device *ndev)
 	return 0;
 }
 
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 static const struct net_device_ops rtw_netdev_vir_if_ops = {
 	 .ndo_open = netdev_vir_if_open,
         .ndo_stop = netdev_vir_if_close,
@@ -1744,11 +1717,8 @@ static const struct net_device_ops rtw_netdev_vir_if_ops = {
         .ndo_set_mac_address = rtw_net_set_mac_address,
         .ndo_get_stats = rtw_net_get_stats,
         .ndo_do_ioctl = rtw_ioctl,
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	.ndo_select_queue	= rtw_select_queue,
-#endif
 };
-#endif
 
 _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 	void (*set_intf_ops)(_adapter *primary_padapter,struct _io_ops *pops))
@@ -1773,13 +1743,8 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 	if (!ndev)
 		goto error_rtw_drv_add_iface;
 
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 	DBG_871X("register rtw_netdev_virtual_iface_ops to netdev_ops\n");
 	ndev->netdev_ops = &rtw_netdev_vir_if_ops;
-#else
-	ndev->open = netdev_vir_if_open;
-	ndev->stop = netdev_vir_if_close;
-#endif
 
 #ifdef CONFIG_NO_WIRELESS_HANDLERS
 	ndev->wireless_handlers = NULL;
@@ -2117,7 +2082,6 @@ static int netdev_if2_close(struct net_device *ndev)
 	return 0;
 }
 
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 static const struct net_device_ops rtw_netdev_if2_ops = {
 	.ndo_open = netdev_if2_open,
         .ndo_stop = netdev_if2_close,
@@ -2125,11 +2089,8 @@ static const struct net_device_ops rtw_netdev_if2_ops = {
         .ndo_set_mac_address = rtw_net_set_mac_address,
         .ndo_get_stats = rtw_net_get_stats,
         .ndo_do_ioctl = rtw_ioctl,
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	.ndo_select_queue	= rtw_select_queue,
-#endif
 };
-#endif
 
 _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	void (*set_intf_ops)(_adapter *primary_padapter,struct _io_ops *pops))
@@ -2145,13 +2106,8 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	if (!ndev)
 		goto error_rtw_drv_if2_init;
 
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 	DBG_871X("register rtw_netdev_if2_ops to netdev_ops\n");
 	ndev->netdev_ops = &rtw_netdev_if2_ops;
-#else
-	ndev->open = netdev_if2_open;
-	ndev->stop = netdev_if2_close;
-#endif
 
 #ifdef CONFIG_NO_WIRELESS_HANDLERS
 	ndev->wireless_handlers = NULL;
@@ -2337,9 +2293,7 @@ void netdev_br_init(struct net_device *netdev)
 {
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(netdev);
 
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 35))
 	rcu_read_lock();
-#endif	// (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 35))
 
 	//if(check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) == _TRUE)
 	{
@@ -2375,9 +2329,7 @@ void netdev_br_init(struct net_device *netdev)
 		adapter->ethBrExtInfo.addPPPoETag = 1;
 	}
 
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 35))
 	rcu_read_unlock();
-#endif	// (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 35))
 }
 #endif //CONFIG_BR_EXT
 

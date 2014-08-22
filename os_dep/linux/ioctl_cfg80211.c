@@ -601,12 +601,12 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
 
 
 #ifdef CONFIG_AP_MODE
-static int rtw_cfg80211_ap_set_encryption(struct net_device *dev, struct ieee_param *param, u32 param_len)
+static int rtw_cfg80211_ap_set_encryption(struct net_device *ndev, struct ieee_param *param, u32 param_len)
 {
 	int ret = 0;
 	u32 wep_key_idx, wep_key_len,wep_total_len;
 	struct sta_info *psta = NULL, *pbcmc_sta = NULL;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct mlme_priv 	*pmlmepriv = &padapter->mlmepriv;
 	struct security_priv* psecuritypriv=&(padapter->securitypriv);
 	struct sta_priv *pstapriv = &padapter->stapriv;

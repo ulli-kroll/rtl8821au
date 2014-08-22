@@ -148,7 +148,7 @@ static void indicate_wx_custom_event(_adapter *padapter, char *msg)
 
 	DBG_871X("%s %s\n", __FUNCTION__, buff);
 #ifndef CONFIG_IOCTL_CFG80211
-	wireless_send_event(padapter->pnetdev, IWEVCUSTOM, &wrqu, buff);
+	wireless_send_event(padapter->ndev, IWEVCUSTOM, &wrqu, buff);
 #endif
 
 	rtw_mfree(buff, IW_CUSTOM_MAX+1);
@@ -181,7 +181,7 @@ static void request_wps_pbc_event(_adapter *padapter)
 	DBG_871X("%s\n", __FUNCTION__);
 
 #ifndef CONFIG_IOCTL_CFG80211
-	wireless_send_event(padapter->pnetdev, IWEVCUSTOM, &wrqu, buff);
+	wireless_send_event(padapter->ndev, IWEVCUSTOM, &wrqu, buff);
 #endif
 
 	if(buff)
@@ -195,9 +195,9 @@ void rtw_request_wps_pbc_event(_adapter *padapter)
 {
 #ifdef RTK_DMP_PLATFORM
 #if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,12))
-	kobject_uevent(&padapter->pnetdev->dev.kobj, KOBJ_NET_PBC);
+	kobject_uevent(&padapter->ndev->dev.kobj, KOBJ_NET_PBC);
 #else
-	kobject_hotplug(&padapter->pnetdev->class_dev.kobj, KOBJ_NET_PBC);
+	kobject_hotplug(&padapter->ndev->class_dev.kobj, KOBJ_NET_PBC);
 #endif
 #else
 
@@ -222,7 +222,7 @@ void indicate_wx_scan_complete_event(_adapter *padapter)
 
 	//DBG_871X("+rtw_indicate_wx_scan_complete_event\n");
 #ifndef CONFIG_IOCTL_CFG80211
-	wireless_send_event(padapter->pnetdev, SIOCGIWSCAN, &wrqu, NULL);
+	wireless_send_event(padapter->ndev, SIOCGIWSCAN, &wrqu, NULL);
 #endif
 }
 
@@ -240,7 +240,7 @@ void rtw_indicate_wx_assoc_event(_adapter *padapter)
 	DBG_871X("BSSID:" MAC_FMT "\n", MAC_ARG(pmlmepriv->cur_network.network.MacAddress));
 	DBG_871X_LEVEL(_drv_always_, "assoc success\n");
 #ifndef CONFIG_IOCTL_CFG80211
-	wireless_send_event(padapter->pnetdev, SIOCGIWAP, &wrqu, NULL);
+	wireless_send_event(padapter->ndev, SIOCGIWAP, &wrqu, NULL);
 #endif
 }
 
@@ -255,7 +255,7 @@ void rtw_indicate_wx_disassoc_event(_adapter *padapter)
 
 #ifndef CONFIG_IOCTL_CFG80211
 	DBG_871X_LEVEL(_drv_always_, "indicate disassoc\n");
-	wireless_send_event(padapter->pnetdev, SIOCGIWAP, &wrqu, NULL);
+	wireless_send_event(padapter->ndev, SIOCGIWAP, &wrqu, NULL);
 #endif
 }
 

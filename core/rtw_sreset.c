@@ -265,8 +265,8 @@ void sreset_stop_adapter(_adapter *padapter)
 
 	DBG_871X(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(padapter));
 
-	if (!rtw_netif_queue_stopped(padapter->pnetdev))
-		rtw_netif_stop_queue(padapter->pnetdev);
+	if (!rtw_netif_queue_stopped(padapter->ndev))
+		rtw_netif_stop_queue(padapter->ndev);
 
 	rtw_cancel_all_timer(padapter);
 
@@ -304,8 +304,8 @@ void sreset_start_adapter(_adapter *padapter)
 
 	_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
 
-	if (rtw_netif_queue_stopped(padapter->pnetdev))
-		rtw_netif_wake_queue(padapter->pnetdev);
+	if (rtw_netif_queue_stopped(padapter->ndev))
+		rtw_netif_wake_queue(padapter->ndev);
 
 }
 

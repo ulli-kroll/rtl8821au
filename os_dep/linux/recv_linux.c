@@ -62,12 +62,12 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,18)) // http://www.mail-archive.com/netdev@vger.kernel.org/msg17214.html
 	pkt_copy = dev_alloc_skb(alloc_sz);
 #else
-	pkt_copy = netdev_alloc_skb(padapter->pnetdev, alloc_sz);
+	pkt_copy = netdev_alloc_skb(padapter->ndev, alloc_sz);
 #endif
 
 	if(pkt_copy)
 	{
-		pkt_copy->dev = padapter->pnetdev;
+		pkt_copy->dev = padapter->ndev;
 		precvframe->u.hdr.pkt = pkt_copy;
 		precvframe->u.hdr.rx_head = pkt_copy->data;
 		precvframe->u.hdr.rx_end = pkt_copy->data + alloc_sz;
@@ -320,17 +320,17 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 				if(psta)
 				{
-					struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
+					struct net_device *ndev= (struct net_device*)padapter->ndev;
 
 					//DBG_871X("directly forwarding to the rtw_xmit_entry\n");
 
 					//skb->ip_summed = CHECKSUM_NONE;
-					pkt->dev = pnetdev;
+					pkt->dev = ndev;
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 					skb_set_queue_mapping(pkt, rtw_recv_select_queue(pkt));
 #endif //LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35)
 
-					rtw_xmit_entry(pkt, pnetdev);
+					rtw_xmit_entry(pkt, ndev);
 
 					if(bmcast && (pskb2 != NULL) ) {
 						pkt = pskb2;
@@ -348,10 +348,10 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 #ifdef CONFIG_BR_EXT
 		// Insert NAT2.5 RX here!
 #if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-		br_port = padapter->pnetdev->br_port;
+		br_port = padapter->ndev->br_port;
 #else   // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 		rcu_read_lock();
-		br_port = rcu_dereference(padapter->pnetdev->rx_handler_data);
+		br_port = rcu_dereference(padapter->ndev->rx_handler_data);
 		rcu_read_unlock();
 #endif  // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 
@@ -374,8 +374,8 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 		}
 #endif	// CONFIG_BR_EXT
 
-		pkt->protocol = eth_type_trans(pkt, padapter->pnetdev);
-		pkt->dev = padapter->pnetdev;
+		pkt->protocol = eth_type_trans(pkt, padapter->ndev);
+		pkt->dev = padapter->ndev;
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_RX
 		if ( (pattrib->tcpchk_valid == 1) && (pattrib->tcp_chkrpt == 1) ) {
@@ -432,7 +432,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 		key_type |= NL80211_KEYTYPE_PAIRWISE;
 	}
 
-	cfg80211_michael_mic_failure(padapter->pnetdev, (u8 *)&pmlmepriv->assoc_bssid[ 0 ], key_type, -1,
+	cfg80211_michael_mic_failure(padapter->ndev, (u8 *)&pmlmepriv->assoc_bssid[ 0 ], key_type, -1,
 		NULL, GFP_ATOMIC);
 #endif
 
@@ -453,7 +453,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 	wrqu.data.length = sizeof( ev );
 
 #ifndef CONFIG_IOCTL_CFG80211
-	wireless_send_event( padapter->pnetdev, IWEVMICHAELMICFAILURE, &wrqu, (char*) &ev );
+	wireless_send_event( padapter->ndev, IWEVMICHAELMICFAILURE, &wrqu, (char*) &ev );
 #endif
 }
 
@@ -674,7 +674,7 @@ void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
 {
 	_adapter *padapter = preorder_ctrl->padapter;
 
-	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter->pnetdev, _rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
+	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter->ndev, _rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
 
 }
 

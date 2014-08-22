@@ -372,7 +372,7 @@ void	expire_timeout_chk(_adapter *padapter)
 #ifdef DBG_EXPIRATION_CHK
 	if (rtw_end_of_queue_search(phead, plist) == _FALSE) {
 		DBG_871X(FUNC_NDEV_FMT" auth_list, cnt:%u\n"
-			, FUNC_NDEV_ARG(padapter->pnetdev), pstapriv->auth_list_cnt);
+			, FUNC_NDEV_ARG(padapter->ndev), pstapriv->auth_list_cnt);
 	}
 #endif
 	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
@@ -414,7 +414,7 @@ void	expire_timeout_chk(_adapter *padapter)
 #ifdef DBG_EXPIRATION_CHK
 	if (rtw_end_of_queue_search(phead, plist) == _FALSE) {
 		DBG_871X(FUNC_NDEV_FMT" asoc_list, cnt:%u\n"
-			, FUNC_NDEV_ARG(padapter->pnetdev), pstapriv->asoc_list_cnt);
+			, FUNC_NDEV_ARG(padapter->ndev), pstapriv->asoc_list_cnt);
 	}
 #endif
 	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
@@ -2685,7 +2685,7 @@ int rtw_ap_inform_ch_switch(_adapter *padapter, u8 new_ch, u8 ch_offset)
 		return ret;
 
 	DBG_871X(FUNC_NDEV_FMT" with ch:%u, offset:%u\n",
-		FUNC_NDEV_ARG(padapter->pnetdev), new_ch, ch_offset);
+		FUNC_NDEV_ARG(padapter->ndev), new_ch, ch_offset);
 
 	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
 	phead = &pstapriv->asoc_list;
@@ -2717,7 +2717,7 @@ int rtw_sta_flush(_adapter *padapter)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 
-	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(padapter->pnetdev));
+	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(padapter->ndev));
 
 	if ((pmlmeinfo->state&0x03) != WIFI_FW_AP_STATE)
 		return ret;

@@ -1775,7 +1775,7 @@ u8 rtw_set_ch_cmd(_adapter*padapter, u8 ch, u8 bw, u8 ch_offset, u8 enqueue)
 _func_enter_;
 
 	DBG_871X(FUNC_NDEV_FMT" ch:%u, bw:%u, ch_offset:%u\n",
-		FUNC_NDEV_ARG(padapter->pnetdev), ch, bw, ch_offset);
+		FUNC_NDEV_ARG(padapter->ndev), ch, bw, ch_offset);
 
 	/* check input parameter */
 
@@ -1812,7 +1812,7 @@ _func_enter_;
 
 exit:
 
-	DBG_871X(FUNC_NDEV_FMT" res:%u\n", FUNC_NDEV_ARG(padapter->pnetdev), res);
+	DBG_871X(FUNC_NDEV_FMT" res:%u\n", FUNC_NDEV_ARG(padapter->ndev), res);
 
 _func_exit_;
 

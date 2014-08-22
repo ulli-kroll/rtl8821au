@@ -197,18 +197,18 @@ void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 
 	queue = skb_get_queue_mapping(pkt);
 	if (padapter->registrypriv.wifi_spec) {
-		if(__netif_subqueue_stopped(padapter->pnetdev, queue) &&
+		if(__netif_subqueue_stopped(padapter->ndev, queue) &&
 			(pxmitpriv->hwxmits[queue].accnt < WMM_XMIT_THRESHOLD))
 		{
-			netif_wake_subqueue(padapter->pnetdev, queue);
+			netif_wake_subqueue(padapter->ndev, queue);
 		}
 	} else {
-		if(__netif_subqueue_stopped(padapter->pnetdev, queue))
-			netif_wake_subqueue(padapter->pnetdev, queue);
+		if(__netif_subqueue_stopped(padapter->ndev, queue))
+			netif_wake_subqueue(padapter->ndev, queue);
 	}
 #else
-	if (netif_queue_stopped(padapter->pnetdev))
-		netif_wake_queue(padapter->pnetdev);
+	if (netif_queue_stopped(padapter->ndev))
+		netif_wake_queue(padapter->ndev);
 #endif
 
 	dev_kfree_skb_any(pkt);
@@ -276,19 +276,19 @@ static void rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)
 		/* No free space for Tx, tx_worker is too slow */
 		if (pxmitpriv->hwxmits[queue].accnt > WMM_XMIT_THRESHOLD) {
 			//DBG_871X("%s(): stop netif_subqueue[%d]\n", __FUNCTION__, queue);
-			netif_stop_subqueue(padapter->pnetdev, queue);
+			netif_stop_subqueue(padapter->ndev, queue);
 		}
 	} else {
 		if(pxmitpriv->free_xmitframe_cnt<=4) {
-			if (!netif_tx_queue_stopped(netdev_get_tx_queue(padapter->pnetdev, queue)))
-				netif_stop_subqueue(padapter->pnetdev, queue);
+			if (!netif_tx_queue_stopped(netdev_get_tx_queue(padapter->ndev, queue)))
+				netif_stop_subqueue(padapter->ndev, queue);
 		}
 	}
 #else
 	if(pxmitpriv->free_xmitframe_cnt<=4)
 	{
-		if (!rtw_netif_queue_stopped(padapter->pnetdev))
-			rtw_netif_stop_queue(padapter->pnetdev);
+		if (!rtw_netif_queue_stopped(padapter->ndev))
+			rtw_netif_stop_queue(padapter->ndev);
 	}
 #endif
 }
@@ -364,9 +364,9 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 #endif	// CONFIG_TX_MCAST2UNI
 
 
-int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
+int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev)
 {
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 #ifdef CONFIG_TX_MCAST2UNI
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;

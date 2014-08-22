@@ -521,7 +521,7 @@ void rtw_cfg80211_indicate_connect(_adapter *padapter)
 		#endif
 
 		DBG_871X("%s call cfg80211_roamed\n", __FUNCTION__);
-		cfg80211_roamed(padapter->pnetdev
+		cfg80211_roamed(padapter->ndev
 			#if LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 39) || defined(COMPAT_KERNEL_RELEASE)
 			, notify_channel
 			#endif
@@ -536,7 +536,7 @@ void rtw_cfg80211_indicate_connect(_adapter *padapter)
 	#endif
 	{
 		DBG_8192C("pwdev->sme_state(b)=%d\n", pwdev->sme_state);
-		cfg80211_connect_result(padapter->pnetdev, cur_network->network.MacAddress
+		cfg80211_connect_result(padapter->ndev, cur_network->network.MacAddress
 			, pmlmepriv->assoc_req+sizeof(struct rtw_ieee80211_hdr_3addr)+2
 			, pmlmepriv->assoc_req_len-sizeof(struct rtw_ieee80211_hdr_3addr)-2
 			, pmlmepriv->assoc_rsp+sizeof(struct rtw_ieee80211_hdr_3addr)+6
@@ -588,10 +588,10 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
 		DBG_8192C("pwdev->sme_state(b)=%d\n", pwdev->sme_state);
 
 		if(pwdev->sme_state==CFG80211_SME_CONNECTING)
-			cfg80211_connect_result(padapter->pnetdev, NULL, NULL, 0, NULL, 0,
+			cfg80211_connect_result(padapter->ndev, NULL, NULL, 0, NULL, 0,
 				WLAN_STATUS_UNSPECIFIED_FAILURE, GFP_ATOMIC/*GFP_KERNEL*/);
 		else if(pwdev->sme_state==CFG80211_SME_CONNECTED)
-			cfg80211_disconnected(padapter->pnetdev, 0, NULL, 0, GFP_ATOMIC);
+			cfg80211_disconnected(padapter->ndev, 0, NULL, 0, GFP_ATOMIC);
 		//else
 			//DBG_8192C("pwdev->sme_state=%d\n", pwdev->sme_state);
 
@@ -1441,9 +1441,9 @@ exit:
 	return ret;
 }
 
-extern int netdev_open(struct net_device *pnetdev);
+extern int netdev_open(struct net_device *ndev);
 #ifdef CONFIG_CONCURRENT_MODE
-extern int netdev_if2_open(struct net_device *pnetdev);
+extern int netdev_if2_open(struct net_device *ndev);
 #endif
 
 /*
@@ -2996,7 +2996,7 @@ void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint f
 	int channel;
 	struct wireless_dev *pwdev = padapter->rtw_wdev;
 	struct mlme_ext_priv *pmlmeext = &(padapter->mlmeextpriv);
-	struct net_device *ndev = padapter->pnetdev;
+	struct net_device *ndev = padapter->ndev;
 
 	DBG_8192C("%s(padapter=%p,%s)\n", __func__, padapter, ndev->name);
 
@@ -3036,7 +3036,7 @@ void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint f
 		rtw_cfg80211_send_rx_assoc(padapter, NULL, pmgmt_frame, frame_len);
 		DBG_8192C("iftype=%d after call cfg80211_send_rx_assoc()\n", pwdev->iftype);
 		pwdev->iftype = NL80211_IFTYPE_AP;
-		//cfg80211_rx_action(padapter->pnetdev, freq, pmgmt_frame, frame_len, GFP_ATOMIC);
+		//cfg80211_rx_action(padapter->ndev, freq, pmgmt_frame, frame_len, GFP_ATOMIC);
 	}
 	#endif //COMPAT_KERNEL_RELEASE
 #endif /* defined(RTW_USE_CFG80211_STA_EVENT) */
@@ -3054,7 +3054,7 @@ void rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, u
 	u8 mgmt_buf[128] = {0};
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	struct net_device *ndev = padapter->pnetdev;
+	struct net_device *ndev = padapter->ndev;
 
 	DBG_8192C("%s(padapter=%p,%s)\n", __func__, padapter, ndev->name);
 
@@ -3094,8 +3094,8 @@ void rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, u
 	#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)) && !defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
 	rtw_cfg80211_rx_mgmt(padapter, freq, 0, mgmt_buf, frame_len, GFP_ATOMIC);
 	#else //COMPAT_KERNEL_RELEASE
-	cfg80211_send_disassoc(padapter->pnetdev, mgmt_buf, frame_len);
-	//cfg80211_rx_action(padapter->pnetdev, freq, mgmt_buf, frame_len, GFP_ATOMIC);
+	cfg80211_send_disassoc(padapter->ndev, mgmt_buf, frame_len);
+	//cfg80211_rx_action(padapter->ndev, freq, mgmt_buf, frame_len, GFP_ATOMIC);
 	#endif //COMPAT_KERNEL_RELEASE
 #endif /* defined(RTW_USE_CFG80211_STA_EVENT) */
 }
@@ -3181,7 +3181,7 @@ static int rtw_cfg80211_monitor_if_xmit_entry(struct sk_buff *skb, struct net_de
 		DBG_8192C("should be eapol packet\n");
 
 		/* Use the real net device to transmit the packet */
-		ret =  rtw_xmit_entry(skb, padapter->pnetdev);
+		ret =  rtw_xmit_entry(skb, padapter->ndev);
 
 		return ret;
 
@@ -3873,7 +3873,7 @@ indicate:
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)) || defined(COMPAT_KERNEL_RELEASE)
 	rtw_cfg80211_rx_mgmt(padapter, freq, 0, pmgmt_frame, frame_len, GFP_ATOMIC);
 #else
-	cfg80211_rx_action(padapter->pnetdev, freq, pmgmt_frame, frame_len, GFP_ATOMIC);
+	cfg80211_rx_action(padapter->ndev, freq, pmgmt_frame, frame_len, GFP_ATOMIC);
 #endif
 }
 
@@ -3911,7 +3911,7 @@ indicate:
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)) || defined(COMPAT_KERNEL_RELEASE)
 	rtw_cfg80211_rx_mgmt(padapter, freq, 0, pmgmt_frame, frame_len, GFP_ATOMIC);
 #else
-	cfg80211_rx_action(padapter->pnetdev, freq, pmgmt_frame, frame_len, GFP_ATOMIC);
+	cfg80211_rx_action(padapter->ndev, freq, pmgmt_frame, frame_len, GFP_ATOMIC);
 #endif
 }
 
@@ -3941,7 +3941,7 @@ void rtw_cfg80211_rx_action(_adapter *adapter, u8 *frame, uint frame_len, const 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)) || defined(COMPAT_KERNEL_RELEASE)
 	rtw_cfg80211_rx_mgmt(adapter, freq, 0, frame, frame_len, GFP_ATOMIC);
 #else
-	cfg80211_rx_action(adapter->pnetdev, freq, frame, frame_len, GFP_ATOMIC);
+	cfg80211_rx_action(adapter->ndev, freq, frame, frame_len, GFP_ATOMIC);
 #endif
 
 }
@@ -5256,7 +5256,7 @@ int rtw_wdev_alloc(_adapter *padapter, struct device *dev)
 	struct wiphy *wiphy;
 	struct wireless_dev *wdev;
 	struct rtw_wdev_priv *pwdev_priv;
-	struct net_device *pnetdev = padapter->pnetdev;
+	struct net_device *ndev = padapter->ndev;
 
 	DBG_8192C("%s(padapter=%p)\n", __func__, padapter);
 
@@ -5284,11 +5284,11 @@ int rtw_wdev_alloc(_adapter *padapter, struct device *dev)
 		goto unregister_wiphy;
 	}
 	wdev->wiphy = wiphy;
-	wdev->netdev = pnetdev;
+	wdev->netdev = ndev;
 	//wdev->iftype = NL80211_IFTYPE_STATION;
 	wdev->iftype = NL80211_IFTYPE_MONITOR; // for rtw_setopmode_cmd() in cfg80211_rtw_change_iface()
 	padapter->rtw_wdev = wdev;
-	pnetdev->ieee80211_ptr = wdev;
+	ndev->ieee80211_ptr = wdev;
 
 	//init pwdev_priv
 	pwdev_priv = wdev_to_priv(wdev);

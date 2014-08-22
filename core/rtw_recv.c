@@ -2453,9 +2453,9 @@ static void recvframe_expand_pkt(
 	// prepare extra space for 4 bytes alignment
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,18)) // http://www.mail-archive.com/netdev@vger.kernel.org/msg17214.html
 	ppkt = dev_alloc_skb(alloc_sz);
-	if (ppkt) ppkt->dev = padapter->pnetdev;
+	if (ppkt) ppkt->dev = padapter->ndev;
 #else
-	ppkt = netdev_alloc_skb(padapter->pnetdev, alloc_sz);
+	ppkt = netdev_alloc_skb(padapter->ndev, alloc_sz);
 #endif
 	if (!ppkt) return; // no way to expand
 

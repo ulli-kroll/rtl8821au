@@ -643,7 +643,7 @@ void rtl8812_init_dm_priv(IN PADAPTER Adapter)
 	//_rtw_spinlock_init(&(pHalData->odm_stainfo_lock));
 	Init_ODM_ComInfo_8812(Adapter);
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
-	//_init_timer(&(pdmpriv->SwAntennaSwitchTimer),  Adapter->pnetdev , odm_SW_AntennaSwitchCallback, Adapter);
+	//_init_timer(&(pdmpriv->SwAntennaSwitchTimer),  Adapter->ndev , odm_SW_AntennaSwitchCallback, Adapter);
 	ODM_InitAllTimers(podmpriv );
 #endif
 	ODM_InitDebugSetting(podmpriv);

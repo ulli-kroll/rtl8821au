@@ -2697,7 +2697,7 @@ void init_TPK_timer(_adapter *padapter, struct sta_info *psta)
 {
 	psta->padapter=padapter;
 
-	_init_timer(&psta->TPK_timer, padapter->pnetdev, _TPK_timer_hdl, psta);
+	_init_timer(&psta->TPK_timer, padapter->ndev, _TPK_timer_hdl, psta);
 }
 
 // TDLS_DONE_CH_SEN: channel sensing and report candidate channel
@@ -2722,7 +2722,7 @@ void _ch_switch_timer_hdl(void *FunctionContext)
 void init_ch_switch_timer(_adapter *padapter, struct sta_info *psta)
 {
 	psta->padapter=padapter;
-	_init_timer(&psta->option_timer, padapter->pnetdev, _ch_switch_timer_hdl, psta);
+	_init_timer(&psta->option_timer, padapter->ndev, _ch_switch_timer_hdl, psta);
 }
 
 void _base_ch_timer_hdl(void *FunctionContext)
@@ -2734,7 +2734,7 @@ void _base_ch_timer_hdl(void *FunctionContext)
 void init_base_ch_timer(_adapter *padapter, struct sta_info *psta)
 {
 	psta->padapter=padapter;
-	_init_timer(&psta->base_ch_timer, padapter->pnetdev, _base_ch_timer_hdl, psta);
+	_init_timer(&psta->base_ch_timer, padapter->ndev, _base_ch_timer_hdl, psta);
 }
 
 void _off_ch_timer_hdl(void *FunctionContext)
@@ -2746,7 +2746,7 @@ void _off_ch_timer_hdl(void *FunctionContext)
 void init_off_ch_timer(_adapter *padapter, struct sta_info *psta)
 {
 	psta->padapter=padapter;
-	_init_timer(&psta->off_ch_timer, padapter->pnetdev, _off_ch_timer_hdl, psta);
+	_init_timer(&psta->off_ch_timer, padapter->ndev, _off_ch_timer_hdl, psta);
 }
 
 void _tdls_handshake_timer_hdl(void *FunctionContext)
@@ -2766,7 +2766,7 @@ void _tdls_handshake_timer_hdl(void *FunctionContext)
 void init_handshake_timer(_adapter *padapter, struct sta_info *psta)
 {
 	psta->padapter=padapter;
-	_init_timer(&psta->handshake_timer, padapter->pnetdev, _tdls_handshake_timer_hdl, psta);
+	_init_timer(&psta->handshake_timer, padapter->ndev, _tdls_handshake_timer_hdl, psta);
 }
 
 //Check tdls peer sta alive.
@@ -2853,8 +2853,8 @@ void _tdls_alive_timer_phase2_hdl(void *FunctionContext)
 void init_tdls_alive_timer(_adapter *padapter, struct sta_info *psta)
 {
 	psta->padapter=padapter;
-	_init_timer(&psta->alive_timer1, padapter->pnetdev, _tdls_alive_timer_phase1_hdl, psta);
-	_init_timer(&psta->alive_timer2, padapter->pnetdev, _tdls_alive_timer_phase2_hdl, psta);
+	_init_timer(&psta->alive_timer1, padapter->ndev, _tdls_alive_timer_phase1_hdl, psta);
+	_init_timer(&psta->alive_timer2, padapter->ndev, _tdls_alive_timer_phase2_hdl, psta);
 }
 
 int update_sgi_tdls(_adapter *padapter, struct sta_info *psta)

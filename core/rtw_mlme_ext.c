@@ -2610,7 +2610,7 @@ unsigned int on_action_spct_ch_switch(_adapter *padapter, struct sta_info *psta,
 		struct ieee80211_info_element *ie;
 
 		DBG_871X(FUNC_NDEV_FMT" from "MAC_FMT"\n",
-			FUNC_NDEV_ARG(padapter->pnetdev), MAC_ARG(psta->hwaddr));
+			FUNC_NDEV_ARG(padapter->ndev), MAC_ARG(psta->hwaddr));
 
 		for_each_ie(ie, ies, ies_len) {
 			if (ie->id == WLAN_EID_CHANNEL_SWITCH) {
@@ -2660,7 +2660,7 @@ unsigned int on_action_spct(_adapter *padapter, union recv_frame *precv_frame)
 	u8 category;
 	u8 action;
 
-	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(padapter->pnetdev));
+	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(padapter->ndev));
 
 	psta = rtw_get_stainfo(pstapriv, GetAddr2Ptr(pframe));
 
@@ -8384,7 +8384,7 @@ void issue_action_spct_ch_switch(_adapter *padapter, u8 *ra, u8 new_ch, u8 ch_of
 
 
 	DBG_871X(FUNC_NDEV_FMT" ra="MAC_FMT", ch:%u, offset:%u\n",
-		FUNC_NDEV_ARG(padapter->pnetdev), MAC_ARG(ra), new_ch, ch_offset);
+		FUNC_NDEV_ARG(padapter->ndev), MAC_ARG(ra), new_ch, ch_offset);
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 		return;
@@ -13070,7 +13070,7 @@ u8 set_ch_hdl(_adapter *padapter, u8 *pbuf)
 	set_ch_parm = (struct set_ch_parm *)pbuf;
 
 	DBG_871X(FUNC_NDEV_FMT" ch:%u, bw:%u, ch_offset:%u\n",
-		FUNC_NDEV_ARG(padapter->pnetdev),
+		FUNC_NDEV_ARG(padapter->ndev),
 		set_ch_parm->ch, set_ch_parm->bw, set_ch_parm->ch_offset);
 
 	pmlmeext->cur_channel = set_ch_parm->ch;

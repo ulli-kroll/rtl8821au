@@ -1521,13 +1521,13 @@ void rtw_scan_abort(_adapter *adapter)
 		if (adapter->bDriverStopped || adapter->bSurpriseRemoved)
 			break;
 
-		DBG_871X(FUNC_NDEV_FMT"fw_state=_FW_UNDER_SURVEY!\n", FUNC_NDEV_ARG(adapter->pnetdev));
+		DBG_871X(FUNC_NDEV_FMT"fw_state=_FW_UNDER_SURVEY!\n", FUNC_NDEV_ARG(adapter->ndev));
 		rtw_msleep_os(20);
 	}
 
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY)) {
 		if (!adapter->bDriverStopped && !adapter->bSurpriseRemoved)
-			DBG_871X(FUNC_NDEV_FMT"waiting for scan_abort time out!\n", FUNC_NDEV_ARG(adapter->pnetdev));
+			DBG_871X(FUNC_NDEV_FMT"waiting for scan_abort time out!\n", FUNC_NDEV_ARG(adapter->ndev));
 		#ifdef CONFIG_PLATFORM_MSTAR_TITANIA12
 		//_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
 		set_survey_timer(pmlmeext, 0);
@@ -2549,9 +2549,9 @@ void rtw_dynamic_check_timer_handlder(_adapter *adapter)
 #endif	// (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 35))
 
 #if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-	if( adapter->pnetdev->br_port
+	if( adapter->ndev->br_port
 #else	// (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-	if( rcu_dereference(adapter->pnetdev->rx_handler_data)
+	if( rcu_dereference(adapter->ndev->rx_handler_data)
 #endif	// (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 		&& (check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) == _TRUE) )
 	{

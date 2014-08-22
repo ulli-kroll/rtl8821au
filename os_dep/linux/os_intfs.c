@@ -296,10 +296,10 @@ uint rtw_notch_filter = RTW_NOTCH_FILTER;
 module_param(rtw_notch_filter, uint, 0644);
 MODULE_PARM_DESC(rtw_notch_filter, "0:Disable, 1:Enable, 2:Enable only for P2P");
 
-static uint loadparam(PADAPTER padapter, _nic_hdl pnetdev);
-int _netdev_open(struct net_device *pnetdev);
-int netdev_open (struct net_device *pnetdev);
-static int netdev_close (struct net_device *pnetdev);
+static uint loadparam(PADAPTER padapter, _nic_hdl ndev);
+int _netdev_open(struct net_device *ndev);
+int netdev_open (struct net_device *ndev);
+static int netdev_close (struct net_device *ndev);
 
 //#ifdef RTK_DMP_PLATFORM
 #ifdef CONFIG_PROC_DEBUG
@@ -748,7 +748,7 @@ void rtw_proc_remove_one(struct net_device *dev)
 #endif
 #endif
 
-uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
+uint loadparam( _adapter *padapter,  _nic_hdl	ndev)
 {
 
 	uint status = _SUCCESS;
@@ -906,9 +906,9 @@ _func_exit_;
 	return status;
 }
 
-static int rtw_net_set_mac_address(struct net_device *pnetdev, void *p)
+static int rtw_net_set_mac_address(struct net_device *ndev, void *p)
 {
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct sockaddr *addr = p;
 
 	if(padapter->bup == _FALSE)
@@ -916,16 +916,16 @@ static int rtw_net_set_mac_address(struct net_device *pnetdev, void *p)
 		//DBG_871X("r8711_net_set_mac_address(), MAC=%x:%x:%x:%x:%x:%x\n", addr->sa_data[0], addr->sa_data[1], addr->sa_data[2], addr->sa_data[3],
 		//addr->sa_data[4], addr->sa_data[5]);
 		memcpy(padapter->eeprompriv.mac_addr, addr->sa_data, ETH_ALEN);
-		//memcpy(pnetdev->dev_addr, addr->sa_data, ETH_ALEN);
+		//memcpy(ndev->dev_addr, addr->sa_data, ETH_ALEN);
 		//padapter->bset_hwaddr = _TRUE;
 	}
 
 	return 0;
 }
 
-static struct net_device_stats *rtw_net_get_stats(struct net_device *pnetdev)
+static struct net_device_stats *rtw_net_get_stats(struct net_device *ndev)
 {
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct xmit_priv *pxmitpriv = &(padapter->xmitpriv);
 	struct recv_priv *precvpriv = &(padapter->recvpriv);
 
@@ -1033,9 +1033,9 @@ static const struct net_device_ops rtw_netdev_ops = {
 };
 #endif
 
-int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
+int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 {
-	_adapter *padapter = rtw_netdev_priv(pnetdev);
+	_adapter *padapter = rtw_netdev_priv(ndev);
 
 #ifdef CONFIG_EASY_REPLACEMENT
 	struct net_device	*TargetNetdev = NULL;
@@ -1048,9 +1048,9 @@ int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
 		TargetNetdev = dev_get_by_name("wlan0");
 #else
 	#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26))
-		devnet = pnetdev->nd_net;
+		devnet = ndev->nd_net;
 	#else
-		devnet = dev_net(pnetdev);
+		devnet = dev_net(ndev);
 	#endif
 		TargetNetdev = dev_get_by_name(devnet, "wlan0");
 #endif
@@ -1074,13 +1074,13 @@ int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
 	}
 #endif //CONFIG_EASY_REPLACEMENT
 
-	if(dev_alloc_name(pnetdev, ifname) < 0)
+	if(dev_alloc_name(ndev, ifname) < 0)
 	{
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("dev_alloc_name, fail! \n"));
 	}
 
-	netif_carrier_off(pnetdev);
-	//rtw_netif_stop_queue(pnetdev);
+	netif_carrier_off(ndev);
+	//rtw_netif_stop_queue(ndev);
 
 	return 0;
 }
@@ -1088,58 +1088,58 @@ int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
 struct net_device *rtw_init_netdev(_adapter *old_padapter)
 {
 	_adapter *padapter;
-	struct net_device *pnetdev;
+	struct net_device *ndev;
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+init_net_dev\n"));
 
 	if(old_padapter != NULL)
-		pnetdev = rtw_alloc_etherdev_with_old_priv(sizeof(_adapter), (void *)old_padapter);
+		ndev = rtw_alloc_etherdev_with_old_priv(sizeof(_adapter), (void *)old_padapter);
 	else
-		pnetdev = rtw_alloc_etherdev(sizeof(_adapter));
+		ndev = rtw_alloc_etherdev(sizeof(_adapter));
 
-	if (!pnetdev)
+	if (!ndev)
 		return NULL;
 
-	padapter = rtw_netdev_priv(pnetdev);
-	padapter->pnetdev = pnetdev;
+	padapter = rtw_netdev_priv(ndev);
+	padapter->ndev = ndev;
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24)
-	SET_MODULE_OWNER(pnetdev);
+	SET_MODULE_OWNER(ndev);
 #endif
 
-	//pnetdev->init = NULL;
+	//ndev->init = NULL;
 
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 	DBG_871X("register rtw_netdev_ops to netdev_ops\n");
-	pnetdev->netdev_ops = &rtw_netdev_ops;
+	ndev->netdev_ops = &rtw_netdev_ops;
 #else
-	pnetdev->open = netdev_open;
-	pnetdev->stop = netdev_close;
-	pnetdev->hard_start_xmit = rtw_xmit_entry;
-	pnetdev->set_mac_address = rtw_net_set_mac_address;
-	pnetdev->get_stats = rtw_net_get_stats;
-	pnetdev->do_ioctl = rtw_ioctl;
+	ndev->open = netdev_open;
+	ndev->stop = netdev_close;
+	ndev->hard_start_xmit = rtw_xmit_entry;
+	ndev->set_mac_address = rtw_net_set_mac_address;
+	ndev->get_stats = rtw_net_get_stats;
+	ndev->do_ioctl = rtw_ioctl;
 #endif
 
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	pnetdev->features |= NETIF_F_IP_CSUM;
+	ndev->features |= NETIF_F_IP_CSUM;
 #endif
-	//pnetdev->tx_timeout = NULL;
-	pnetdev->watchdog_timeo = HZ*3; /* 3 second timeout */
+	//ndev->tx_timeout = NULL;
+	ndev->watchdog_timeo = HZ*3; /* 3 second timeout */
 #ifdef CONFIG_WIRELESS_EXT
-	pnetdev->wireless_handlers = (struct iw_handler_def *)&rtw_handlers_def;
+	ndev->wireless_handlers = (struct iw_handler_def *)&rtw_handlers_def;
 #endif
 
 #ifdef WIRELESS_SPY
 	//priv->wireless_data.spy_data = &priv->spy_data;
-	//pnetdev->wireless_data = &priv->wireless_data;
+	//ndev->wireless_data = &priv->wireless_data;
 #endif
 
 	//step 2.
-   	loadparam(padapter, pnetdev);
+   	loadparam(padapter, ndev);
 
-	return pnetdev;
+	return ndev;
 
 }
 
@@ -1543,7 +1543,7 @@ void rtw_cancel_all_timer(_adapter *padapter)
 
 u8 rtw_free_drv_sw(_adapter *padapter)
 {
-	struct net_device *pnetdev = (struct net_device*)padapter->pnetdev;
+	struct net_device *ndev = (struct net_device*)padapter->ndev;
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("==>rtw_free_drv_sw"));
 
@@ -1611,10 +1611,10 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("<==rtw_free_drv_sw\n"));
 
-	//free the old_pnetdev
-	if(padapter->rereg_nd_name_priv.old_pnetdev) {
-		free_netdev(padapter->rereg_nd_name_priv.old_pnetdev);
-		padapter->rereg_nd_name_priv.old_pnetdev = NULL;
+	//free the old_ndev
+	if(padapter->rereg_nd_name_priv.old_ndev) {
+		free_netdev(padapter->rereg_nd_name_priv.old_ndev);
+		padapter->rereg_nd_name_priv.old_ndev = NULL;
 	}
 
 	// clear pbuddy_adapter to avoid access wrong pointer.
@@ -1630,19 +1630,19 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 
 #ifdef CONFIG_CONCURRENT_MODE
 #ifdef CONFIG_MULTI_VIR_IFACES
-int _netdev_vir_if_open(struct net_device *pnetdev)
+int _netdev_vir_if_open(struct net_device *ndev)
 {
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	_adapter *primary_padapter = GET_PRIMARY_ADAPTER(padapter);
 
-	DBG_871X(FUNC_NDEV_FMT" enter\n", FUNC_NDEV_ARG(pnetdev));
+	DBG_871X(FUNC_NDEV_FMT" enter\n", FUNC_NDEV_ARG(ndev));
 
 	if(!primary_padapter)
 		goto _netdev_virtual_iface_open_error;
 
 	if(primary_padapter->bup == _FALSE || primary_padapter->hw_init_completed == _FALSE)
 	{
-		_netdev_open(primary_padapter->pnetdev);
+		_netdev_open(primary_padapter->ndev);
 	}
 
 	if(padapter->bup == _FALSE && primary_padapter->bup == _TRUE &&
@@ -1664,7 +1664,7 @@ int _netdev_vir_if_open(struct net_device *pnetdev)
 		}
 
 		padapter->dir_dev = NULL;
-		rtw_proc_init_one(pnetdev);
+		rtw_proc_init_one(ndev);
 
 #ifdef CONFIG_IOCTL_CFG80211
 		rtw_cfg80211_init_wiphy(padapter);
@@ -1679,33 +1679,33 @@ int _netdev_vir_if_open(struct net_device *pnetdev)
 
 	_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
 
-	if(!rtw_netif_queue_stopped(pnetdev))
-		rtw_netif_start_queue(pnetdev);
+	if(!rtw_netif_queue_stopped(ndev))
+		rtw_netif_start_queue(ndev);
 	else
-		rtw_netif_wake_queue(pnetdev);
+		rtw_netif_wake_queue(ndev);
 
 
-	DBG_871X(FUNC_NDEV_FMT" exit\n", FUNC_NDEV_ARG(pnetdev));
+	DBG_871X(FUNC_NDEV_FMT" exit\n", FUNC_NDEV_ARG(ndev));
 	return 0;
 
 _netdev_virtual_iface_open_error:
 
 	padapter->bup = _FALSE;
 
-	netif_carrier_off(pnetdev);
-	rtw_netif_stop_queue(pnetdev);
+	netif_carrier_off(ndev);
+	rtw_netif_stop_queue(ndev);
 
 	return (-1);
 
 }
 
-int netdev_vir_if_open(struct net_device *pnetdev)
+int netdev_vir_if_open(struct net_device *ndev)
 {
 	int ret;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
-	ret = _netdev_vir_if_open(pnetdev);
+	ret = _netdev_vir_if_open(ndev);
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 
 #ifdef CONFIG_AUTO_AP_MODE
@@ -1716,16 +1716,16 @@ int netdev_vir_if_open(struct net_device *pnetdev)
 	return ret;
 }
 
-static int netdev_vir_if_close(struct net_device *pnetdev)
+static int netdev_vir_if_close(struct net_device *ndev)
 {
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 
 	padapter->net_closed = _TRUE;
 
-	if(pnetdev)
+	if(ndev)
 	{
-		if (!rtw_netif_queue_stopped(pnetdev))
-			rtw_netif_stop_queue(pnetdev);
+		if (!rtw_netif_queue_stopped(ndev))
+			rtw_netif_stop_queue(ndev);
 	}
 
 #ifdef CONFIG_IOCTL_CFG80211
@@ -1755,7 +1755,7 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 {
 
 	int res = _FAIL;
-	struct net_device *pnetdev=NULL;
+	struct net_device *ndev=NULL;
 	_adapter *padapter = NULL;
 	struct dvobj_priv *pdvobjpriv;
 	u8 mac[ETH_ALEN];
@@ -1769,24 +1769,24 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 
 */
 	/****** init netdev ******/
-	pnetdev = rtw_init_netdev(NULL);
-	if (!pnetdev)
+	ndev = rtw_init_netdev(NULL);
+	if (!ndev)
 		goto error_rtw_drv_add_iface;
 
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 	DBG_871X("register rtw_netdev_virtual_iface_ops to netdev_ops\n");
-	pnetdev->netdev_ops = &rtw_netdev_vir_if_ops;
+	ndev->netdev_ops = &rtw_netdev_vir_if_ops;
 #else
-	pnetdev->open = netdev_vir_if_open;
-	pnetdev->stop = netdev_vir_if_close;
+	ndev->open = netdev_vir_if_open;
+	ndev->stop = netdev_vir_if_close;
 #endif
 
 #ifdef CONFIG_NO_WIRELESS_HANDLERS
-	pnetdev->wireless_handlers = NULL;
+	ndev->wireless_handlers = NULL;
 #endif
 
 	/****** init adapter ******/
-	padapter = rtw_netdev_priv(pnetdev);
+	padapter = rtw_netdev_priv(ndev);
 	memcpy(padapter, primary_padapter, sizeof(_adapter));
 
 	//
@@ -1810,14 +1810,14 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 	padapter->iface_type = IFACE_PORT0;
 #endif
 	//
-	padapter->pnetdev = pnetdev;
+	padapter->ndev = ndev;
 
 	/****** setup dvobj ******/
 	pdvobjpriv = adapter_to_dvobj(padapter);
 	padapter->iface_id = pdvobjpriv->iface_nums;
 	pdvobjpriv->padapters[pdvobjpriv->iface_nums++] = padapter;
 
-	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(pdvobjpriv));
+	SET_NETDEV_DEV(ndev, dvobj_to_dev(pdvobjpriv));
 #ifdef CONFIG_IOCTL_CFG80211
 	rtw_wdev_alloc(padapter, dvobj_to_dev(pdvobjpriv));
 #endif //CONFIG_IOCTL_CFG80211
@@ -1892,8 +1892,8 @@ error_rtw_drv_add_iface:
 	if(padapter)
 		rtw_free_drv_sw(padapter);
 
-	if (pnetdev)
-		rtw_free_netdev(pnetdev);
+	if (ndev)
+		rtw_free_netdev(ndev);
 
 	return NULL;
 
@@ -1901,17 +1901,17 @@ error_rtw_drv_add_iface:
 
 void rtw_drv_stop_vir_if(_adapter *padapter)
 {
-	struct net_device *pnetdev=NULL;
+	struct net_device *ndev=NULL;
 
 	if (padapter == NULL)
 		return;
 
-	pnetdev = padapter->pnetdev;
+	ndev = padapter->ndev;
 
-	if(pnetdev)
+	if(ndev)
 	{
-		unregister_netdev(pnetdev); //will call netdev_close()
-		rtw_proc_remove_one(pnetdev);
+		unregister_netdev(ndev); //will call netdev_close()
+		rtw_proc_remove_one(ndev);
 	}
 
 	rtw_cancel_all_timer(padapter);
@@ -1943,14 +1943,14 @@ void rtw_drv_stop_vir_if(_adapter *padapter)
 
 void rtw_drv_free_vir_if(_adapter *padapter)
 {
-	struct net_device *pnetdev=NULL;
+	struct net_device *ndev=NULL;
 
 	if (padapter == NULL)
 		return;
 
 	padapter->pbuddy_adapter = NULL;
 
-	pnetdev = padapter->pnetdev;
+	ndev = padapter->ndev;
 
 #ifdef CONFIG_IOCTL_CFG80211
 	rtw_wdev_free(padapter->rtw_wdev);
@@ -1958,7 +1958,7 @@ void rtw_drv_free_vir_if(_adapter *padapter)
 
 	rtw_free_drv_sw(padapter);
 
-	rtw_free_netdev(pnetdev);
+	rtw_free_netdev(ndev);
 }
 
 void rtw_drv_stop_vir_ifaces(struct dvobj_priv *dvobj)
@@ -2001,16 +2001,16 @@ void rtw_drv_del_vir_ifaces(_adapter *primary_padapter)
 }
 #endif //CONFIG_MULTI_VIR_IFACES
 
-int _netdev_if2_open(struct net_device *pnetdev)
+int _netdev_if2_open(struct net_device *ndev)
 {
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	_adapter *primary_padapter = padapter->pbuddy_adapter;
 
 	DBG_871X("+871x_drv - if2_open, bup=%d\n", padapter->bup);
 
 	if(primary_padapter->bup == _FALSE || primary_padapter->hw_init_completed == _FALSE)
 	{
-		_netdev_open(primary_padapter->pnetdev);
+		_netdev_open(primary_padapter->ndev);
 	}
 
 	if(padapter->bup == _FALSE && primary_padapter->bup == _TRUE &&
@@ -2046,7 +2046,7 @@ int _netdev_if2_open(struct net_device *pnetdev)
 		padapter->hw_init_completed = _TRUE;
 
 		padapter->dir_dev = NULL;
-		rtw_proc_init_one(pnetdev);
+		rtw_proc_init_one(ndev);
 
 
 #ifdef CONFIG_IOCTL_CFG80211
@@ -2061,10 +2061,10 @@ int _netdev_if2_open(struct net_device *pnetdev)
 
 	_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
 
-	if(!rtw_netif_queue_stopped(pnetdev))
-		rtw_netif_start_queue(pnetdev);
+	if(!rtw_netif_queue_stopped(ndev))
+		rtw_netif_start_queue(ndev);
 	else
-		rtw_netif_wake_queue(pnetdev);
+		rtw_netif_wake_queue(ndev);
 
 	DBG_871X("-871x_drv - if2_open, bup=%d\n", padapter->bup);
 	return 0;
@@ -2073,20 +2073,20 @@ netdev_if2_open_error:
 
 	padapter->bup = _FALSE;
 
-	netif_carrier_off(pnetdev);
-	rtw_netif_stop_queue(pnetdev);
+	netif_carrier_off(ndev);
+	rtw_netif_stop_queue(ndev);
 
 	return (-1);
 
 }
 
-int netdev_if2_open(struct net_device *pnetdev)
+int netdev_if2_open(struct net_device *ndev)
 {
 	int ret;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
-	ret = _netdev_if2_open(pnetdev);
+	ret = _netdev_if2_open(ndev);
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 
 #ifdef CONFIG_AUTO_AP_MODE
@@ -2097,16 +2097,16 @@ int netdev_if2_open(struct net_device *pnetdev)
 	return ret;
 }
 
-static int netdev_if2_close(struct net_device *pnetdev)
+static int netdev_if2_close(struct net_device *ndev)
 {
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 
 	padapter->net_closed = _TRUE;
 
-	if(pnetdev)
+	if(ndev)
 	{
-		if (!rtw_netif_queue_stopped(pnetdev))
-			rtw_netif_stop_queue(pnetdev);
+		if (!rtw_netif_queue_stopped(ndev))
+			rtw_netif_stop_queue(ndev);
 	}
 
 #ifdef CONFIG_IOCTL_CFG80211
@@ -2135,30 +2135,30 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	void (*set_intf_ops)(_adapter *primary_padapter,struct _io_ops *pops))
 {
 	int res = _FAIL;
-	struct net_device *pnetdev = NULL;
+	struct net_device *ndev = NULL;
 	_adapter *padapter = NULL;
 	struct dvobj_priv *pdvobjpriv;
 	u8 mac[ETH_ALEN];
 
 	/****** init netdev ******/
-	pnetdev = rtw_init_netdev(NULL);
-	if (!pnetdev)
+	ndev = rtw_init_netdev(NULL);
+	if (!ndev)
 		goto error_rtw_drv_if2_init;
 
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 	DBG_871X("register rtw_netdev_if2_ops to netdev_ops\n");
-	pnetdev->netdev_ops = &rtw_netdev_if2_ops;
+	ndev->netdev_ops = &rtw_netdev_if2_ops;
 #else
-	pnetdev->open = netdev_if2_open;
-	pnetdev->stop = netdev_if2_close;
+	ndev->open = netdev_if2_open;
+	ndev->stop = netdev_if2_close;
 #endif
 
 #ifdef CONFIG_NO_WIRELESS_HANDLERS
-	pnetdev->wireless_handlers = NULL;
+	ndev->wireless_handlers = NULL;
 #endif
 
 	/****** init adapter ******/
-	padapter = rtw_netdev_priv(pnetdev);
+	padapter = rtw_netdev_priv(ndev);
 	memcpy(padapter, primary_padapter, sizeof(_adapter));
 
 	//
@@ -2177,14 +2177,14 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	padapter->iface_type = IFACE_PORT0;
 #endif  //CONFIG_HWPORT_SWAP
 	//
-	padapter->pnetdev = pnetdev;
+	padapter->ndev = ndev;
 
 	/****** setup dvobj ******/
 	pdvobjpriv = adapter_to_dvobj(padapter);
 	pdvobjpriv->if2 = padapter;
 	pdvobjpriv->padapters[pdvobjpriv->iface_nums++] = padapter;
 
-	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(pdvobjpriv));
+	SET_NETDEV_DEV(ndev, dvobj_to_dev(pdvobjpriv));
 	#ifdef CONFIG_IOCTL_CFG80211
 	rtw_wdev_alloc(padapter, dvobj_to_dev(pdvobjpriv));
 	#endif //CONFIG_IOCTL_CFG80211
@@ -2263,8 +2263,8 @@ error_rtw_drv_if2_init:
 	if(padapter)
 		rtw_free_drv_sw(padapter);
 
-	if (pnetdev)
-		rtw_free_netdev(pnetdev);
+	if (ndev)
+		rtw_free_netdev(ndev);
 
 	return NULL;
 
@@ -2273,12 +2273,12 @@ error_rtw_drv_if2_init:
 void rtw_drv_if2_free(_adapter *if2)
 {
 	_adapter *padapter = if2;
-	struct net_device *pnetdev = NULL;
+	struct net_device *ndev = NULL;
 
 	if (padapter == NULL)
 		return;
 
-	pnetdev = padapter->pnetdev;
+	ndev = padapter->ndev;
 
 #ifdef CONFIG_IOCTL_CFG80211
 	rtw_wdev_free(padapter->rtw_wdev);
@@ -2287,23 +2287,23 @@ void rtw_drv_if2_free(_adapter *if2)
 
 	rtw_free_drv_sw(padapter);
 
-	rtw_free_netdev(pnetdev);
+	rtw_free_netdev(ndev);
 
 }
 
 void rtw_drv_if2_stop(_adapter *if2)
 {
 	_adapter *padapter = if2;
-	struct net_device *pnetdev = NULL;
+	struct net_device *ndev = NULL;
 
 	if (padapter == NULL)
 		return;
 
-	pnetdev = padapter->pnetdev;
+	ndev = padapter->ndev;
 
-	if (pnetdev) {
-		unregister_netdev(pnetdev); //will call netdev_close()
-		rtw_proc_remove_one(pnetdev);
+	if (ndev) {
+		unregister_netdev(ndev); //will call netdev_close()
+		rtw_proc_remove_one(ndev);
 	}
 
 	rtw_cancel_all_timer(padapter);
@@ -2347,7 +2347,7 @@ void netdev_br_init(struct net_device *netdev)
 #if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 		if (netdev->br_port)
 #else   // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-		if (rcu_dereference(adapter->pnetdev->rx_handler_data))
+		if (rcu_dereference(adapter->ndev->rx_handler_data))
 #endif  // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 		{
 			struct net_device *br_netdev;
@@ -2384,21 +2384,21 @@ void netdev_br_init(struct net_device *netdev)
 static int _rtw_drv_register_netdev(_adapter *padapter, char *name)
 {
 	int ret = _SUCCESS;
-	struct net_device *pnetdev = padapter->pnetdev;
+	struct net_device *ndev = padapter->ndev;
 
 	/* alloc netdev name */
-	rtw_init_netdev_name(pnetdev, name);
+	rtw_init_netdev_name(ndev, name);
 
-	memcpy(pnetdev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
+	memcpy(ndev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
 
 	/* Tell the network stack we exist */
-	if (register_netdev(pnetdev) != 0) {
-		DBG_871X(FUNC_NDEV_FMT "Failed!\n", FUNC_NDEV_ARG(pnetdev));
+	if (register_netdev(ndev) != 0) {
+		DBG_871X(FUNC_NDEV_FMT "Failed!\n", FUNC_NDEV_ARG(ndev));
 		ret = _FAIL;
 		goto error_register_netdev;
 	}
 
-	DBG_871X("%s, MAC Address (if%d) = " MAC_FMT "\n", __FUNCTION__, (padapter->iface_id+1), MAC_ARG(pnetdev->dev_addr));
+	DBG_871X("%s, MAC Address (if%d) = " MAC_FMT "\n", __FUNCTION__, (padapter->iface_id+1), MAC_ARG(ndev->dev_addr));
 
 	return ret;
 
@@ -2408,7 +2408,7 @@ error_register_netdev:
 	{
 		rtw_free_drv_sw(padapter);
 
-		rtw_free_netdev(pnetdev);
+		rtw_free_netdev(ndev);
 	}
 
 	return ret;
@@ -2446,10 +2446,10 @@ int rtw_drv_register_netdev(_adapter *if1)
 	return status;
 }
 
-int _netdev_open(struct net_device *pnetdev)
+int _netdev_open(struct net_device *ndev)
 {
 	uint status;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+871x_drv - dev_open\n"));
@@ -2473,7 +2473,7 @@ int _netdev_open(struct net_device *pnetdev)
 			goto netdev_open_error;
 		}
 
-		DBG_871X("MAC Address = "MAC_FMT"\n", MAC_ARG(pnetdev->dev_addr));
+		DBG_871X("MAC Address = "MAC_FMT"\n", MAC_ARG(ndev->dev_addr));
 
 		status=rtw_start_drv_threads(padapter);
 		if(status ==_FAIL)
@@ -2498,7 +2498,7 @@ int _netdev_open(struct net_device *pnetdev)
 		}
 
 #ifndef RTK_DMP_PLATFORM
-		rtw_proc_init_one(pnetdev);
+		rtw_proc_init_one(ndev);
 #endif
 
 #ifdef CONFIG_IOCTL_CFG80211
@@ -2516,14 +2516,14 @@ int _netdev_open(struct net_device *pnetdev)
 	padapter->pwrctrlpriv.bips_processing = _FALSE;
 	rtw_set_pwr_state_check_timer(&padapter->pwrctrlpriv);
 
-	//netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
-	if(!rtw_netif_queue_stopped(pnetdev))
-		rtw_netif_start_queue(pnetdev);
+	//netif_carrier_on(ndev);//call this func when rtw_joinbss_event_callback return success
+	if(!rtw_netif_queue_stopped(ndev))
+		rtw_netif_start_queue(ndev);
 	else
-		rtw_netif_wake_queue(pnetdev);
+		rtw_netif_wake_queue(ndev);
 
 #ifdef CONFIG_BR_EXT
-	netdev_br_init(pnetdev);
+	netdev_br_init(ndev);
 #endif	// CONFIG_BR_EXT
 
 netdev_open_normal_process:
@@ -2532,7 +2532,7 @@ netdev_open_normal_process:
 	{
 		_adapter *sec_adapter = padapter->pbuddy_adapter;
 		if(sec_adapter && (sec_adapter->bup == _FALSE || sec_adapter->hw_init_completed == _FALSE))
-			_netdev_if2_open(sec_adapter->pnetdev);
+			_netdev_if2_open(sec_adapter->ndev);
 	}
 	#endif
 
@@ -2545,8 +2545,8 @@ netdev_open_error:
 
 	padapter->bup = _FALSE;
 
-	netif_carrier_off(pnetdev);
-	rtw_netif_stop_queue(pnetdev);
+	netif_carrier_off(ndev);
+	rtw_netif_stop_queue(ndev);
 
 	RT_TRACE(_module_os_intfs_c_,_drv_err_,("-871x_drv - dev_open, fail!\n"));
 	DBG_871X("-871x_drv - drv_open fail, bup=%d\n", padapter->bup);
@@ -2555,13 +2555,13 @@ netdev_open_error:
 
 }
 
-int netdev_open(struct net_device *pnetdev)
+int netdev_open(struct net_device *ndev)
 {
 	int ret;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
-	ret = _netdev_open(pnetdev);
+	ret = _netdev_open(ndev);
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 
 	return ret;
@@ -2636,7 +2636,7 @@ void rtw_ips_pwr_down(_adapter *padapter)
 #endif
 void rtw_ips_dev_unload(_adapter *padapter)
 {
-	struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
+	struct net_device *ndev= (struct net_device*)padapter->ndev;
 	struct xmit_priv	*pxmitpriv = &(padapter->xmitpriv);
 	DBG_871X("====> %s...\n",__FUNCTION__);
 
@@ -2655,24 +2655,24 @@ void rtw_ips_dev_unload(_adapter *padapter)
 
 }
 
-int pm_netdev_open(struct net_device *pnetdev,u8 bnormal)
+int pm_netdev_open(struct net_device *ndev,u8 bnormal)
 {
 	int status;
 
 
 	if (_TRUE == bnormal)
-		status = netdev_open(pnetdev);
+		status = netdev_open(ndev);
 #ifdef CONFIG_IPS
 	else
-		status =  (_SUCCESS == ips_netdrv_open((_adapter *)rtw_netdev_priv(pnetdev)))?(0):(-1);
+		status =  (_SUCCESS == ips_netdrv_open((_adapter *)rtw_netdev_priv(ndev)))?(0):(-1);
 #endif
 
 	return status;
 }
 
-static int netdev_close(struct net_device *pnetdev)
+static int netdev_close(struct net_device *ndev)
 {
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
+	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+871x_drv - drv_close\n"));
 
@@ -2697,10 +2697,10 @@ static int netdev_close(struct net_device *pnetdev)
 		DBG_871X("(2)871x_drv - drv_close, bup=%d, hw_init_completed=%d\n", padapter->bup, padapter->hw_init_completed);
 
 		//s1.
-		if(pnetdev)
+		if(ndev)
 		{
-			if (!rtw_netif_queue_stopped(pnetdev))
-				rtw_netif_stop_queue(pnetdev);
+			if (!rtw_netif_queue_stopped(ndev))
+				rtw_netif_stop_queue(ndev);
 		}
 
 #ifndef CONFIG_ANDROID

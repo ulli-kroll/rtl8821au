@@ -681,7 +681,7 @@ s32 Hal_SetThermalMeter(PADAPTER pAdapter, u8 target_ther)
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 
 
-	if (!netif_running(pAdapter->pnetdev)) {
+	if (!netif_running(pAdapter->ndev)) {
 		RT_TRACE(_module_mp_, _drv_warning_, ("SetThermalMeter! Fail: interface not opened!\n"));
 		return _FAIL;
 	}

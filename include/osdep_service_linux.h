@@ -315,42 +315,42 @@ __inline static void _cancel_workitem_sync(_workitem *pwork)
 	atomic_dec((atomic_t *)&(_MutexCounter));        \
 }
 
-static inline int rtw_netif_queue_stopped(struct net_device *pnetdev)
+static inline int rtw_netif_queue_stopped(struct net_device *ndev)
 {
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
-	return (netif_tx_queue_stopped(netdev_get_tx_queue(pnetdev, 0)) &&
-		netif_tx_queue_stopped(netdev_get_tx_queue(pnetdev, 1)) &&
-		netif_tx_queue_stopped(netdev_get_tx_queue(pnetdev, 2)) &&
-		netif_tx_queue_stopped(netdev_get_tx_queue(pnetdev, 3)) );
+	return (netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 0)) &&
+		netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 1)) &&
+		netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 2)) &&
+		netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 3)) );
 #else
-	return netif_queue_stopped(pnetdev);
+	return netif_queue_stopped(ndev);
 #endif
 }
 
-static inline void rtw_netif_wake_queue(struct net_device *pnetdev)
+static inline void rtw_netif_wake_queue(struct net_device *ndev)
 {
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
-	netif_tx_wake_all_queues(pnetdev);
+	netif_tx_wake_all_queues(ndev);
 #else
-	netif_wake_queue(pnetdev);
+	netif_wake_queue(ndev);
 #endif
 }
 
-static inline void rtw_netif_start_queue(struct net_device *pnetdev)
+static inline void rtw_netif_start_queue(struct net_device *ndev)
 {
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
-	netif_tx_start_all_queues(pnetdev);
+	netif_tx_start_all_queues(ndev);
 #else
-	netif_start_queue(pnetdev);
+	netif_start_queue(ndev);
 #endif
 }
 
-static inline void rtw_netif_stop_queue(struct net_device *pnetdev)
+static inline void rtw_netif_stop_queue(struct net_device *ndev)
 {
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
-	netif_tx_stop_all_queues(pnetdev);
+	netif_tx_stop_all_queues(ndev);
 #else
-	netif_stop_queue(pnetdev);
+	netif_stop_queue(ndev);
 #endif
 }
 
@@ -379,11 +379,11 @@ static inline void rtw_netif_stop_queue(struct net_device *pnetdev)
 #define NDEV_FMT "%s"
 #define NDEV_ARG(ndev) ndev->name
 #define ADPT_FMT "%s"
-#define ADPT_ARG(adapter) adapter->pnetdev->name
+#define ADPT_ARG(adapter) adapter->ndev->name
 #define FUNC_NDEV_FMT "%s(%s)"
 #define FUNC_NDEV_ARG(ndev) __func__, ndev->name
 #define FUNC_ADPT_FMT "%s(%s)"
-#define FUNC_ADPT_ARG(adapter) __func__, adapter->pnetdev->name
+#define FUNC_ADPT_ARG(adapter) __func__, adapter->ndev->name
 
 struct rtw_netdev_priv_indicator {
 	void *priv;

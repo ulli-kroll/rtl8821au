@@ -555,7 +555,7 @@ ODM_InitializeTimer(
 	init_timer(pTimer);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
 	PADAPTER Adapter = pDM_Odm->Adapter;
-	_init_timer(pTimer,Adapter->pnetdev,CallBackFunc,pDM_Odm);
+	_init_timer(pTimer,Adapter->ndev,CallBackFunc,pDM_Odm);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	PADAPTER Adapter = pDM_Odm->Adapter;
 	PlatformInitializeTimer(Adapter, pTimer, CallBackFunc,pContext,szID);

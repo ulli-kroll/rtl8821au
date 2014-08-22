@@ -952,7 +952,7 @@ s32 rtl8812au_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 	struct tx_desc *ptxdesc;
 	struct rtw_ieee80211_hdr *tx_hdr;
 	struct hostapd_priv *phostapdpriv = padapter->phostapdpriv;
-	struct net_device *pnetdev = padapter->pnetdev;
+	struct net_device *ndev = padapter->ndev;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
 	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
 
@@ -972,7 +972,7 @@ s32 rtl8812au_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,18)) // http://www.mail-archive.com/netdev@vger.kernel.org/msg17214.html
 	pxmit_skb = dev_alloc_skb(len + TXDESC_SIZE);
 #else
-	pxmit_skb = netdev_alloc_skb(pnetdev, len + TXDESC_SIZE);
+	pxmit_skb = netdev_alloc_skb(ndev, len + TXDESC_SIZE);
 #endif
 
 	if(!pxmit_skb)

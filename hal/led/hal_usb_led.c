@@ -4683,7 +4683,7 @@ InitLed(
 
 	ResetLedStatus(pLed);
 
-	_init_timer(&(pLed->BlinkTimer), padapter->pnetdev, BlinkTimerCallback, pLed);
+	_init_timer(&(pLed->BlinkTimer), padapter->ndev, BlinkTimerCallback, pLed);
 
 	_init_workitem(&(pLed->BlinkWorkItem), BlinkWorkItemCallback, pLed);
 }

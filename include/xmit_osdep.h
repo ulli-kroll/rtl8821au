@@ -33,7 +33,7 @@ struct pkt_file {
 
 #ifdef PLATFORM_FREEBSD
 #define NR_XMITFRAME	256
-extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);
+extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev);
 extern void rtw_xmit_entry_wrap (struct ifnet * pifp);
 #endif //PLATFORM_FREEBSD
 
@@ -47,7 +47,7 @@ struct sta_xmit_priv;
 struct xmit_frame;
 struct xmit_buf;
 
-extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);
+extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev);
 
 #endif
 

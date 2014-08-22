@@ -3088,10 +3088,10 @@ int rtw_br_client_tx(_adapter *padapter, struct sk_buff **pskb)
 		//mac_clone_handle_frame(priv, skb);
 
 #if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-		br_port = padapter->pnetdev->br_port;
+		br_port = padapter->ndev->br_port;
 #else   // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 		rcu_read_lock();
-		br_port = rcu_dereference(padapter->pnetdev->rx_handler_data);
+		br_port = rcu_dereference(padapter->ndev->rx_handler_data);
 		rcu_read_unlock();
 #endif  // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 		_enter_critical_bh(&padapter->br_ext_lock, &irqL);
@@ -3355,10 +3355,10 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 #ifdef CONFIG_BR_EXT
 
 #if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-	br_port = padapter->pnetdev->br_port;
+	br_port = padapter->ndev->br_port;
 #else   // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 	rcu_read_lock();
-	br_port = rcu_dereference(padapter->pnetdev->rx_handler_data);
+	br_port = rcu_dereference(padapter->ndev->rx_handler_data);
 	rcu_read_unlock();
 #endif  // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
 

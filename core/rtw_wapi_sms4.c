@@ -466,7 +466,7 @@ u8 WapiCheckPnInSwDecrypt(
 	else
 		pDaddr = header->addr1;
 
-	if ((_rtw_memcmp(pRaddr, padapter->pnetdev->dev_addr, ETH_ALEN) == 0)
+	if ((_rtw_memcmp(pRaddr, padapter->ndev->dev_addr, ETH_ALEN) == 0)
 		&&	! (pDaddr)
 		&& (GetFrameType(&fc) == WIFI_QOS_DATA_TYPE))
 		//&& ieee->pHTInfo->bCurrentHTSupport &&

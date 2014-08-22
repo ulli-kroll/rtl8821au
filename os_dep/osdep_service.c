@@ -520,7 +520,7 @@ void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 	_adapter *adapter = (_adapter *)padapter;
 
 #ifdef PLATFORM_LINUX
-	_init_timer(ptimer, adapter->pnetdev, pfunc, adapter);
+	_init_timer(ptimer, adapter->ndev, pfunc, adapter);
 #endif
 }
 
@@ -1198,50 +1198,50 @@ int rtw_store_to_file(char *path, u8* buf, u32 sz)
 #ifdef PLATFORM_LINUX
 struct net_device *rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_priv)
 {
-	struct net_device *pnetdev;
+	struct net_device *ndev;
 	struct rtw_netdev_priv_indicator *pnpi;
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
-	pnetdev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
+	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
 #else
-	pnetdev = alloc_etherdev(sizeof(struct rtw_netdev_priv_indicator));
+	ndev = alloc_etherdev(sizeof(struct rtw_netdev_priv_indicator));
 #endif
-	if (!pnetdev)
+	if (!ndev)
 		goto RETURN;
 
-	pnpi = netdev_priv(pnetdev);
+	pnpi = netdev_priv(ndev);
 	pnpi->priv=old_priv;
 	pnpi->sizeof_priv=sizeof_priv;
 
 RETURN:
-	return pnetdev;
+	return ndev;
 }
 
 struct net_device *rtw_alloc_etherdev(int sizeof_priv)
 {
-	struct net_device *pnetdev;
+	struct net_device *ndev;
 	struct rtw_netdev_priv_indicator *pnpi;
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
-	pnetdev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
+	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
 #else
-	pnetdev = alloc_etherdev(sizeof(struct rtw_netdev_priv_indicator));
+	ndev = alloc_etherdev(sizeof(struct rtw_netdev_priv_indicator));
 #endif
-	if (!pnetdev)
+	if (!ndev)
 		goto RETURN;
 
-	pnpi = netdev_priv(pnetdev);
+	pnpi = netdev_priv(ndev);
 
 	pnpi->priv = rtw_zvmalloc(sizeof_priv);
 	if (!pnpi->priv) {
-		free_netdev(pnetdev);
-		pnetdev = NULL;
+		free_netdev(ndev);
+		ndev = NULL;
 		goto RETURN;
 	}
 
 	pnpi->sizeof_priv=sizeof_priv;
 RETURN:
-	return pnetdev;
+	return ndev;
 }
 
 void rtw_free_netdev(struct net_device * netdev)
@@ -1269,8 +1269,8 @@ RETURN:
 */
 int rtw_change_ifname(_adapter *padapter, const char *ifname)
 {
-	struct net_device *pnetdev;
-	struct net_device *cur_pnetdev = padapter->pnetdev;
+	struct net_device *ndev;
+	struct net_device *cur_ndev = padapter->ndev;
 	struct rereg_nd_name_data *rereg_priv;
 	int ret;
 
@@ -1279,48 +1279,48 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 
 	rereg_priv = &padapter->rereg_nd_name_priv;
 
-	//free the old_pnetdev
-	if(rereg_priv->old_pnetdev) {
-		free_netdev(rereg_priv->old_pnetdev);
-		rereg_priv->old_pnetdev = NULL;
+	//free the old_ndev
+	if(rereg_priv->old_ndev) {
+		free_netdev(rereg_priv->old_ndev);
+		rereg_priv->old_ndev = NULL;
 	}
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26))
 	if(!rtnl_is_locked())
-		unregister_netdev(cur_pnetdev);
+		unregister_netdev(cur_ndev);
 	else
 #endif
-		unregister_netdevice(cur_pnetdev);
+		unregister_netdevice(cur_ndev);
 
-	rtw_proc_remove_one(cur_pnetdev);
+	rtw_proc_remove_one(cur_ndev);
 
-	rereg_priv->old_pnetdev=cur_pnetdev;
+	rereg_priv->old_ndev=cur_ndev;
 
-	pnetdev = rtw_init_netdev(padapter);
-	if (!pnetdev)  {
+	ndev = rtw_init_netdev(padapter);
+	if (!ndev)  {
 		ret = -1;
 		goto error;
 	}
 
-	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(adapter_to_dvobj(padapter)));
+	SET_NETDEV_DEV(ndev, dvobj_to_dev(adapter_to_dvobj(padapter)));
 
-	rtw_init_netdev_name(pnetdev, ifname);
+	rtw_init_netdev_name(ndev, ifname);
 
-	memcpy(pnetdev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
+	memcpy(ndev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26))
 	if(!rtnl_is_locked())
-		ret = register_netdev(pnetdev);
+		ret = register_netdev(ndev);
 	else
 #endif
-		ret = register_netdevice(pnetdev);
+		ret = register_netdevice(ndev);
 
 	if ( ret != 0) {
 		RT_TRACE(_module_hci_intfs_c_,_drv_err_,("register_netdev() failed\n"));
 		goto error;
 	}
 
-	rtw_proc_init_one(pnetdev);
+	rtw_proc_init_one(ndev);
 
 	return 0;
 

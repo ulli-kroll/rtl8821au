@@ -394,7 +394,7 @@ MPT_InitializeAdapter(
 	pMptCtx->MptBtC2hEvent = _FALSE;
 
 	_rtw_init_sema(&pMptCtx->MPh2c_Sema, 0);
-	_init_timer( &pMptCtx->MPh2c_timeout_timer, pAdapter->pnetdev, MPh2c_timeout_handle, pAdapter );
+	_init_timer( &pMptCtx->MPh2c_timeout_timer, pAdapter->ndev, MPh2c_timeout_handle, pAdapter );
 #endif
 
 	pMptCtx->bMptWorkItemInProgress = _FALSE;
@@ -1558,7 +1558,7 @@ u32 mp_query_psd(PADAPTER pAdapter, u8 *data)
 
 
 #ifdef PLATFORM_LINUX
-	if (!netif_running(pAdapter->pnetdev)) {
+	if (!netif_running(pAdapter->ndev)) {
 		RT_TRACE(_module_mp_, _drv_warning_, ("mp_query_psd: Fail! interface not opened!\n"));
 		return 0;
 	}

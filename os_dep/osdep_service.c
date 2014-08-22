@@ -612,11 +612,7 @@ void	_rtw_mutex_init(_mutex *pmutex)
 {
 #ifdef PLATFORM_LINUX
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
 	mutex_init(pmutex);
-#else
-	init_MUTEX(pmutex);
-#endif
 
 #endif
 #ifdef PLATFORM_OS_XP
@@ -635,10 +631,7 @@ void	_rtw_mutex_free(_mutex *pmutex)
 {
 #ifdef PLATFORM_LINUX
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
 	mutex_destroy(pmutex);
-#else
-#endif
 
 
 #endif
@@ -1201,11 +1194,7 @@ struct net_device *rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_p
 	struct net_device *ndev;
 	struct rtw_netdev_priv_indicator *pnpi;
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
 	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
-#else
-	ndev = alloc_etherdev(sizeof(struct rtw_netdev_priv_indicator));
-#endif
 	if (!ndev)
 		goto RETURN;
 
@@ -1222,11 +1211,7 @@ struct net_device *rtw_alloc_etherdev(int sizeof_priv)
 	struct net_device *ndev;
 	struct rtw_netdev_priv_indicator *pnpi;
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
 	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
-#else
-	ndev = alloc_etherdev(sizeof(struct rtw_netdev_priv_indicator));
-#endif
 	if (!ndev)
 		goto RETURN;
 

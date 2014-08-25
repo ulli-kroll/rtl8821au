@@ -51,7 +51,7 @@ u32 WaitC2Hevent( PADAPTER pAdapter,BOOLEAN *C2H_event ,u32 delay_time)
 
 	_set_timer( &pMptCtx->MPh2c_timeout_timer, delay_time );
 
-	_rtw_down_sema(&pMptCtx->MPh2c_Sema);
+	down_sema(&pMptCtx->MPh2c_Sema);
 
 	if( pMptCtx->bMPh2c_timeout == _TRUE )
 	{

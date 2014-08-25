@@ -279,8 +279,8 @@ s32 rtl8812au_xmit_buf_handler(PADAPTER padapter)
 	phal = GET_HAL_DATA(padapter);
 	pxmitpriv = &padapter->xmitpriv;
 
-	ret = _rtw_down_sema(&pxmitpriv->xmit_sema);
-	if (_FAIL == ret) {
+	ret = _down_sema(&pxmitpriv->xmit_sema);
+	if (ret) {
 		RT_TRACE(_module_hal_xmit_c_, _drv_emerg_,
 				 ("%s: down SdioXmitBufSema fail!\n", __FUNCTION__));
 		return _FAIL;

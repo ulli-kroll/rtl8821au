@@ -35,11 +35,6 @@
 #include <rtw_bt_mp.h>
 #endif
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
-#define  iwe_stream_add_event(a, b, c, d, e)  iwe_stream_add_event(b, c, d, e)
-#define  iwe_stream_add_point(a, b, c, d, e)  iwe_stream_add_point(b, c, d, e)
-#endif
-
 
 #define RTL_IOCTL_WPA_SUPPLICANT	SIOCIWFIRSTPRIV+30
 
@@ -12478,7 +12473,7 @@ thread_return lbk_thread(thread_context context)
 		rtw_write_port(padapter, ff_hwaddr, ploopback->txsize, (u8 *)pxmitframe->pxmitbuf);
 
 		// wait for rx pkt
-		_rtw_down_sema(&ploopback->sema);
+		down_sema(&ploopback->sema);
 
 		err = pktcmp(padapter, ploopback->txbuf, ploopback->txsize, ploopback->rxbuf, ploopback->rxsize);
 		if (err == _TRUE)

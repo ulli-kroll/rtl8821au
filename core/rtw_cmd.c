@@ -432,7 +432,7 @@ _func_enter_;
 
 	while(1)
 	{
-		if (_rtw_down_sema(&pcmdpriv->cmd_queue_sema) == _FAIL)
+		if (down_interruptible(&pcmdpriv->cmd_queue_sema))
 			break;
 
 		if ((padapter->bDriverStopped == _TRUE)||(padapter->bSurpriseRemoved == _TRUE))

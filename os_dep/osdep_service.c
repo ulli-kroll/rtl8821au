@@ -530,35 +530,6 @@ Caller must check if the list is empty before calling rtw_list_delete
 
 */
 
-u32 _rtw_down_sema(struct semaphore *sema)
-{
-
-#ifdef PLATFORM_LINUX
-
-	if (down_interruptible(sema))
-		return _FAIL;
-	else
-		return _SUCCESS;
-
-#endif
-#ifdef PLATFORM_OS_XP
-
-	if(STATUS_SUCCESS == KeWaitForSingleObject(sema, Executive, KernelMode, TRUE, NULL))
-		return  _SUCCESS;
-	else
-		return _FAIL;
-#endif
-
-#ifdef PLATFORM_OS_CE
-	if(WAIT_OBJECT_0 == WaitForSingleObject(*sema, INFINITE ))
-		return _SUCCESS;
-	else
-		return _FAIL;
-#endif
-}
-
-
-
 void	_rtw_mutex_init(_mutex *pmutex)
 {
 #ifdef PLATFORM_LINUX

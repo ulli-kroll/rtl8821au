@@ -531,26 +531,6 @@ Caller must check if the list is empty before calling rtw_list_delete
 */
 
 
-void _rtw_init_sema(struct semaphore	*sema, int init_val)
-{
-
-#ifdef PLATFORM_LINUX
-
-	sema_init(sema, init_val);
-
-#endif
-#ifdef PLATFORM_OS_XP
-
-	KeInitializeSemaphore(sema, init_val,  SEMA_UPBND); // count=0;
-
-#endif
-
-#ifdef PLATFORM_OS_CE
-	if(*sema == NULL)
-		*sema = CreateSemaphore(NULL, init_val, SEMA_UPBND, NULL);
-#endif
-
-}
 
 void _rtw_free_sema(struct semaphore	*sema)
 {

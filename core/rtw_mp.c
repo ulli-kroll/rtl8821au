@@ -393,7 +393,7 @@ MPT_InitializeAdapter(
 	pMptCtx->MptH2cRspEvent = _FALSE;
 	pMptCtx->MptBtC2hEvent = _FALSE;
 
-	_rtw_init_sema(&pMptCtx->MPh2c_Sema, 0);
+	sema_init(&pMptCtx->MPh2c_Sema, 0);
 	_init_timer( &pMptCtx->MPh2c_timeout_timer, pAdapter->ndev, MPh2c_timeout_handle, pAdapter );
 #endif
 

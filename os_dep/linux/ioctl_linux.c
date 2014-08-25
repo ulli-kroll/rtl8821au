@@ -12074,7 +12074,7 @@ static s32 initLoopback(PADAPTER padapter)
 		ploopback = (PLOOPBACKDATA)rtw_zmalloc(sizeof(LOOPBACKDATA));
 		if (ploopback == NULL) return -ENOMEM;
 
-		_rtw_init_sema(&ploopback->sema, 0);
+		sema_init(&ploopback->sema, 0);
 		ploopback->bstop = _TRUE;
 		ploopback->cnt = 0;
 		ploopback->size = 300;

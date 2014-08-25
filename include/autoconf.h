@@ -358,8 +358,6 @@
 //#define DBG_IOCTL
 
 //#define DBG_TX
-//#define DBG_XMIT_BUF
-//#define DBG_XMIT_BUF_EXT
 
 //#define DBG_RX_SIGNAL_DISPLAY_PROCESSING
 //#define DBG_RX_SIGNAL_DISPLAY_SSID_MONITORED "jeff-ap"

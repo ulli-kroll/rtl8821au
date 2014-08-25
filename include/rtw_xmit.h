@@ -466,9 +466,6 @@ struct xmit_buf
 #endif
 #endif
 
-#if defined(DBG_XMIT_BUF )|| defined(DBG_XMIT_BUF_EXT)
-	u8 no;
-#endif
 
 };
 

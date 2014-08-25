@@ -531,7 +531,7 @@ Caller must check if the list is empty before calling rtw_list_delete
 */
 
 
-void _rtw_init_sema(_sema	*sema, int init_val)
+void _rtw_init_sema(struct semaphore	*sema, int init_val)
 {
 
 #ifdef PLATFORM_LINUX
@@ -552,7 +552,7 @@ void _rtw_init_sema(_sema	*sema, int init_val)
 
 }
 
-void _rtw_free_sema(_sema	*sema)
+void _rtw_free_sema(struct semaphore	*sema)
 {
 #ifdef PLATFORM_OS_CE
 	CloseHandle(*sema);
@@ -560,7 +560,7 @@ void _rtw_free_sema(_sema	*sema)
 
 }
 
-void _rtw_up_sema(_sema	*sema)
+void _rtw_up_sema(struct semaphore	*sema)
 {
 
 #ifdef PLATFORM_LINUX
@@ -579,7 +579,7 @@ void _rtw_up_sema(_sema	*sema)
 #endif
 }
 
-u32 _rtw_down_sema(_sema *sema)
+u32 _rtw_down_sema(struct semaphore *sema)
 {
 
 #ifdef PLATFORM_LINUX

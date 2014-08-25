@@ -158,7 +158,7 @@ do{\
 
 enum TXDESC_SC{
 	SC_DONT_CARE = 0x00,
-	SC_UPPER= 0x01,	
+	SC_UPPER= 0x01,
 	SC_LOWER=0x02,
 	SC_DUPLICATE=0x03
 };
@@ -336,7 +336,7 @@ struct pkt_attrib
 	//union Keytype	dot11tkiprxmickey;
 	union Keytype	dot118021x_UncstKey;
 
-	
+
 };
 #endif
 
@@ -457,7 +457,7 @@ struct xmit_buf
 	u8 *ptail;
 	u8 *pend;
 	u32 ff_hwaddr;
-	u8	pg_num;	
+	u8	pg_num;
 	u8	agg_num;
 #ifdef PLATFORM_OS_XP
 	PMDL pxmitbuf_mdl;
@@ -566,8 +566,8 @@ struct	xmit_priv	{
 
 	_lock	lock;
 
-	_sema	xmit_sema;
-	_sema	terminate_xmitthread_sema;
+	struct semaphore	xmit_sema;
+	struct semaphore	terminate_xmitthread_sema;
 
 	//_queue	blk_strms[MAX_NUMBLKS];
 	_queue	be_pending;
@@ -619,7 +619,7 @@ struct	xmit_priv	{
 	u8	wmm_para_seq[4];//sequence for wmm ac parameter strength from large to small. it's value is 0->vo, 1->vi, 2->be, 3->bk.
 
 #ifdef CONFIG_USB_HCI
-	_sema	tx_retevt;//all tx return event;
+	struct semaphore	tx_retevt;//all tx return event;
 	u8		txirp_cnt;//
 
 #ifdef PLATFORM_OS_CE
@@ -675,11 +675,11 @@ struct	xmit_priv	{
 	#ifdef CONFIG_TX_EARLY_MODE
 
 	#ifdef CONFIG_SDIO_HCI
-	#define MAX_AGG_PKT_NUM 20	
+	#define MAX_AGG_PKT_NUM 20
 	#else
-	#define MAX_AGG_PKT_NUM 256 //Max tx ampdu coounts		
+	#define MAX_AGG_PKT_NUM 256 //Max tx ampdu coounts
 	#endif
-	
+
 	struct agg_pkt_info agg_pkt[MAX_AGG_PKT_NUM];
 	#endif
 

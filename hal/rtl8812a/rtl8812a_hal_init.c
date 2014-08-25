@@ -3609,23 +3609,23 @@ void rtl8812_clone_haldata(_adapter* dst_adapter, _adapter* src_adapter)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(dst_adapter);
 	//_thread_hdl_  SdioXmitThread;
 #ifndef CONFIG_SDIO_TX_TASKLET
-	_sema             temp_SdioXmitSema;
-	_sema             temp_SdioXmitTerminateSema;
+	struct semaphore	temp_SdioXmitSema;
+	struct semaphore	temp_SdioXmitTerminateSema;
 #endif
 	//u8                    SdioTxFIFOFreePage[SDIO_TX_FREE_PG_QUEUE];
 	_lock                temp_SdioTxFIFOFreePageLock;
 
 #ifndef CONFIG_SDIO_TX_TASKLET
-	memcpy(&temp_SdioXmitSema, &(pHalData->SdioXmitSema), sizeof(_sema));
-	memcpy(&temp_SdioXmitTerminateSema, &(pHalData->SdioXmitTerminateSema), sizeof(_sema));
+	memcpy(&temp_SdioXmitSema, &(pHalData->SdioXmitSema), sizeof(struct semaphore));
+	memcpy(&temp_SdioXmitTerminateSema, &(pHalData->SdioXmitTerminateSema), sizeof(struct semaphore));
 #endif
 	memcpy(&temp_SdioTxFIFOFreePageLock, &(pHalData->SdioTxFIFOFreePageLock), sizeof(_lock));
 
 	memcpy(dst_adapter->HalData, src_adapter->HalData, dst_adapter->hal_data_sz);
 
 #ifndef CONFIG_SDIO_TX_TASKLET
-	memcpy(&(pHalData->SdioXmitSema), &temp_SdioXmitSema, sizeof(_sema));
-	memcpy(&(pHalData->SdioXmitTerminateSema), &temp_SdioXmitTerminateSema, sizeof(_sema));
+	memcpy(&(pHalData->SdioXmitSema), &temp_SdioXmitSema, sizeof(struct semaphore));
+	memcpy(&(pHalData->SdioXmitTerminateSema), &temp_SdioXmitTerminateSema, sizeof(struct semaphore));
 #endif
 	memcpy(&(pHalData->SdioTxFIFOFreePageLock), &temp_SdioTxFIFOFreePageLock, sizeof(_lock));
 

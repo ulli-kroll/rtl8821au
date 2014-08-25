@@ -21,13 +21,13 @@
 #define __RTW_PWRCTRL_H_
 
 
-#define FW_PWR0	0	
+#define FW_PWR0	0
 #define FW_PWR1 	1
 #define FW_PWR2 	2
 #define FW_PWR3 	3
 
 
-#define HW_PWR0	7	
+#define HW_PWR0	7
 #define HW_PWR1 	6
 #define HW_PWR2 	2
 #define HW_PWR3	0
@@ -106,29 +106,28 @@ struct reportpwrstate_parm {
 };
 
 
-typedef _sema _pwrlock;
+typedef struct semaphore _pwrlock;
 
 
 __inline static void _init_pwrlock(_pwrlock *plock)
 {
-	_rtw_init_sema(plock, 1);
+	sema_init(plock, 1);
 }
 
 __inline static void _free_pwrlock(_pwrlock *plock)
 {
-	_rtw_free_sema(plock);
 }
 
 
 __inline static void _enter_pwrlock(_pwrlock *plock)
 {
-	_rtw_down_sema(plock);
+	down(plock);
 }
 
 
 __inline static void _exit_pwrlock(_pwrlock *plock)
 {
-	_rtw_up_sema(plock);
+	up(plock);
 }
 
 #define LPS_DELAY_TIME	1*HZ // 1 sec
@@ -174,7 +173,7 @@ enum _PS_BBRegBackup_ {
 enum { // for ips_mode
 	IPS_NONE=0,
 	IPS_NORMAL,
-	IPS_LEVEL_2,	
+	IPS_LEVEL_2,
 };
 
 struct pwrctrl_priv
@@ -241,7 +240,7 @@ struct pwrctrl_priv
 	u8		bAutoResume;
 	u8		autopm_cnt;
 #endif
-	u8		bSupportRemoteWakeup;	
+	u8		bSupportRemoteWakeup;
 #ifdef CONFIG_WOWLAN
 	u8		wowlan_mode;
 	u8		wowlan_pattern;
@@ -256,7 +255,7 @@ struct pwrctrl_priv
 	u8		pwr_state_check_cnts;
 
 	int 		ps_flag;
-	
+
 	rt_rf_power_state	rf_pwrstate;//cur power state
 	//rt_rf_power_state 	current_rfpwrstate;
 	rt_rf_power_state	change_rfpwrstate;
@@ -264,7 +263,7 @@ struct pwrctrl_priv
 	u8		wepkeymask;
 	u8		bHWPowerdown;//if support hw power down
 	u8		bHWPwrPindetect;
-	u8		bkeepfwalive;		
+	u8		bkeepfwalive;
 	u8		brfoffbyhw;
 	unsigned long PS_BBRegBackup[PSBBREG_TOTALCNT];
 
@@ -277,7 +276,7 @@ struct pwrctrl_priv
 	struct early_suspend early_suspend;
 	u8 do_late_resume;
 	#endif //CONFIG_HAS_EARLYSUSPEND
-	
+
 	#ifdef CONFIG_ANDROID_POWER
 	android_early_suspend_t early_suspend;
 	u8 do_late_resume;
@@ -301,7 +300,7 @@ struct pwrctrl_priv
 		/*DBG_871X("%s _rtw_set_pwr_state_check_timer(%p, %d)\n", __FUNCTION__, (pwrctrlpriv), (ms));*/ \
 		_set_timer(&(pwrctrlpriv)->pwr_state_check_timer, (ms)); \
 	} while(0)
-	
+
 #define rtw_set_pwr_state_check_timer(pwrctrlpriv) \
 	_rtw_set_pwr_state_check_timer((pwrctrlpriv), (pwrctrlpriv)->pwr_state_check_interval)
 

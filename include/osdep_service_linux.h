@@ -108,11 +108,7 @@
 #endif
 
 	typedef	spinlock_t	_lock;
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
 	typedef struct mutex 		_mutex;
-#else
-	typedef struct semaphore	_mutex;
-#endif
 	typedef struct timer_list _timer;
 
 	struct	__queue	{

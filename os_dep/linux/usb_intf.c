@@ -1915,9 +1915,6 @@ _func_enter_;
 	rtw_sw_export=NULL;
 #endif
 
-	#ifdef DBG_MEM_ALLOC
-	rtw_dump_mem_stat ();
-	#endif
 _func_exit_;
 
 	return;

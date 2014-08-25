@@ -1173,15 +1173,15 @@ void rtw_stop_drv_threads (_adapter *padapter)
 #endif //CONFIG_CONCURRENT_MODE
 	{
 		//Below is to termindate rtw_cmd_thread & event_thread...
-		_rtw_up_sema(&padapter->cmdpriv.cmd_queue_sema);
-		//_rtw_up_sema(&padapter->cmdpriv.cmd_done_sema);
+		up(&padapter->cmdpriv.cmd_queue_sema);
+		//up(&padapter->cmdpriv.cmd_done_sema);
 		if(padapter->cmdThread){
 			_rtw_down_sema(&padapter->cmdpriv.terminate_cmdthread_sema);
 		}
 	}
 
 #ifdef CONFIG_EVENT_THREAD_MODE
-        _rtw_up_sema(&padapter->evtpriv.evt_notify);
+        up(&padapter->evtpriv.evt_notify);
 	if(padapter->evtThread){
 		_rtw_down_sema(&padapter->evtpriv.terminate_evtthread_sema);
 	}
@@ -1194,7 +1194,7 @@ void rtw_stop_drv_threads (_adapter *padapter)
 	if(padapter->adapter_type == PRIMARY_ADAPTER)
 #endif  //SDIO_HCI + CONCURRENT
 	{
-	_rtw_up_sema(&padapter->xmitpriv.xmit_sema);
+	up(&padapter->xmitpriv.xmit_sema);
 	_rtw_down_sema(&padapter->xmitpriv.terminate_xmitthread_sema);
 	}
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("\n drv_halt: rtw_xmit_thread can be terminated ! \n"));
@@ -1202,7 +1202,7 @@ void rtw_stop_drv_threads (_adapter *padapter)
 
 #ifdef CONFIG_RECV_THREAD_MODE
 	// Below is to termindate rx_thread...
-	_rtw_up_sema(&padapter->recvpriv.recv_sema);
+	up(&padapter->recvpriv.recv_sema);
 	_rtw_down_sema(&padapter->recvpriv.terminate_recvthread_sema);
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("\n drv_halt:recv_thread can be terminated! \n"));
 #endif

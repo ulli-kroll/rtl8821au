@@ -4070,7 +4070,7 @@ void enqueue_pending_xmitbuf(
 	if (pri_adapter->adapter_type > PRIMARY_ADAPTER)
 		pri_adapter = pri_adapter->pbuddy_adapter;
 #endif  //SDIO_HCI + CONCURRENT
-	_rtw_up_sema(&(pri_adapter->xmitpriv.xmit_sema));
+	up(&(pri_adapter->xmitpriv.xmit_sema));
 
 }
 
@@ -4190,7 +4190,7 @@ thread_return rtw_xmit_thread(thread_context context)
 		flush_signals_thread();
 	} while (_SUCCESS == err);
 
-	_rtw_up_sema(&padapter->xmitpriv.terminate_xmitthread_sema);
+	up(&padapter->xmitpriv.terminate_xmitthread_sema);
 
 	thread_exit();
 }

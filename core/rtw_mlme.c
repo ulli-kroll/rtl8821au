@@ -2347,7 +2347,7 @@ void _rtw_join_timeout_handler (_adapter *adapter)
 
 #if 0
 	if (adapter->bDriverStopped == _TRUE){
-		_rtw_up_sema(&pmlmepriv->assoc_terminate);
+		up(&pmlmepriv->assoc_terminate);
 		return;
 	}
 #endif

@@ -161,7 +161,6 @@ extern void	rtw_list_insert_tail(_list *plist, _list *phead);
 extern void	rtw_list_delete(_list *plist);
 
 extern void	_rtw_free_sema(struct semaphore	*sema);
-extern void	_rtw_up_sema(struct semaphore	*sema);
 extern u32	_rtw_down_sema(struct semaphore *sema);
 extern void	_rtw_mutex_init(_mutex *pmutex);
 extern void	_rtw_mutex_free(_mutex *pmutex);

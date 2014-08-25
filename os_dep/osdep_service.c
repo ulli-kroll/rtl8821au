@@ -540,24 +540,6 @@ void _rtw_free_sema(struct semaphore	*sema)
 
 }
 
-void _rtw_up_sema(struct semaphore	*sema)
-{
-
-#ifdef PLATFORM_LINUX
-
-	up(sema);
-
-#endif
-#ifdef PLATFORM_OS_XP
-
-	KeReleaseSemaphore(sema, IO_NETWORK_INCREMENT, 1,  FALSE );
-
-#endif
-
-#ifdef PLATFORM_OS_CE
-	ReleaseSemaphore(*sema,  1,  NULL );
-#endif
-}
 
 u32 _rtw_down_sema(struct semaphore *sema)
 {

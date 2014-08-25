@@ -12530,7 +12530,7 @@ static void loopbackTest(PADAPTER padapter, u32 cnt, u32 size, u8* pmsg)
 	{
 		if (ploopback->bstop == _FALSE) {
 			ploopback->bstop = _TRUE;
-			_rtw_up_sema(&ploopback->sema);
+			up(&ploopback->sema);
 		}
 		len = 0;
 		do {

@@ -1941,9 +1941,6 @@ static int rtw_wx_set_scan(struct net_device *ndev, struct iw_request_info *a,
 
 _func_enter_;
 
-	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
-	#endif
 /*
 #ifdef CONFIG_CONCURRENT_MODE
 	if(padapter->iface_type > PRIMARY_IFACE)
@@ -2168,9 +2165,6 @@ if (padapter->registrypriv.mp_mode == 1)
 		ret = -1;
 
 exit:
-	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
-	#endif
 
 _func_exit_;
 
@@ -2204,9 +2198,6 @@ static int rtw_wx_get_scan(struct net_device *ndev, struct iw_request_info *a,
 
 	_func_enter_;
 
-	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
-	#endif
 
 /*
 #ifdef CONFIG_CONCURRENT_MODE
@@ -2322,9 +2313,6 @@ exit:
 
 	_func_exit_;
 
-	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
-	#endif
 
 	return ret ;
 
@@ -2355,9 +2343,6 @@ static int rtw_wx_set_essid(struct net_device *ndev,
 
 	_func_enter_;
 
-	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
-	#endif
 
 /*
 #ifdef CONFIG_CONCURRENT_MODE
@@ -2518,9 +2503,6 @@ exit:
 
 	DBG_871X("<=%s, ret %d\n",__FUNCTION__, ret);
 
-	#ifdef DBG_IOCTL
-	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
-	#endif
 
 	_func_exit_;
 

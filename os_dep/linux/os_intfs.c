@@ -1149,7 +1149,7 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 	        if(IS_ERR(padapter->cmdThread))
 			_status = _FAIL;
 		else
-			_rtw_down_sema(&padapter->cmdpriv.terminate_cmdthread_sema); //wait for cmd_thread to run
+			down_interruptible(&padapter->cmdpriv.terminate_cmdthread_sema); //wait for cmd_thread to run
 	}
 
 
@@ -1176,14 +1176,14 @@ void rtw_stop_drv_threads (_adapter *padapter)
 		up(&padapter->cmdpriv.cmd_queue_sema);
 		//up(&padapter->cmdpriv.cmd_done_sema);
 		if(padapter->cmdThread){
-			_rtw_down_sema(&padapter->cmdpriv.terminate_cmdthread_sema);
+			down_interruptible(&padapter->cmdpriv.terminate_cmdthread_sema);
 		}
 	}
 
 #ifdef CONFIG_EVENT_THREAD_MODE
         up(&padapter->evtpriv.evt_notify);
 	if(padapter->evtThread){
-		_rtw_down_sema(&padapter->evtpriv.terminate_evtthread_sema);
+		down_interruptible(&padapter->evtpriv.terminate_evtthread_sema);
 	}
 #endif
 
@@ -1195,7 +1195,7 @@ void rtw_stop_drv_threads (_adapter *padapter)
 #endif  //SDIO_HCI + CONCURRENT
 	{
 	up(&padapter->xmitpriv.xmit_sema);
-	_rtw_down_sema(&padapter->xmitpriv.terminate_xmitthread_sema);
+	down_interruptible(&padapter->xmitpriv.terminate_xmitthread_sema);
 	}
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("\n drv_halt: rtw_xmit_thread can be terminated ! \n"));
 #endif
@@ -1203,7 +1203,7 @@ void rtw_stop_drv_threads (_adapter *padapter)
 #ifdef CONFIG_RECV_THREAD_MODE
 	// Below is to termindate rx_thread...
 	up(&padapter->recvpriv.recv_sema);
-	_rtw_down_sema(&padapter->recvpriv.terminate_recvthread_sema);
+	down_interruptible(&padapter->recvpriv.terminate_recvthread_sema);
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("\n drv_halt:recv_thread can be terminated! \n"));
 #endif
 

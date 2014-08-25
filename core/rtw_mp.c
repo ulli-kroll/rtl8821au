@@ -287,7 +287,7 @@ static VOID PHY_SetRFPathSwitch_default(
 }
 
 
-#if defined (CONFIG_RTL8192C) || defined (CONFIG_RTL8723A)
+#if defined (CONFIG_RTL8723A)
 #define PHY_IQCalibrate(a,b)	rtl8192c_PHY_IQCalibrate(a,b)
 #define PHY_LCCalibrate(a)	rtl8192c_PHY_LCCalibrate(a)
 //#define dm_CheckTXPowerTracking(a)	rtl8192c_odm_CheckTXPowerTracking(a)
@@ -431,7 +431,7 @@ MPT_InitializeAdapter(
 		//rtw_write32(pAdapter, REG_LEDCFG0, 0x08080);
 		ledsetting = rtw_read32(pAdapter, REG_LEDCFG0);
 
-	#if defined (CONFIG_RTL8192C) || defined( CONFIG_RTL8192D )
+	#if defined( CONFIG_RTL8192D )
 			rtw_write32(pAdapter, REG_LEDCFG0, ledsetting & ~BIT(7));
 	#endif
 	}
@@ -444,10 +444,6 @@ MPT_InitializeAdapter(
 	PHY_SetRFPathSwitch(pAdapter, 1/*pHalData->bDefaultAntenna*/);	//Wifi default use Main
 #else
 
-#ifdef CONFIG_RTL8192C
-	if (pHalData->BoardType == BOARD_MINICARD)
-		PHY_SetRFPathSwitch(pAdapter, 1/*pHalData->bDefaultAntenna*/); //default use Main
-#endif
 
 #endif
 
@@ -1015,9 +1011,6 @@ void PhySetTxPowerLevel(PADAPTER pAdapter)
 #if defined(CONFIG_RTL8192D)
 		PHY_SetTxPowerLevel8192D(pAdapter,pmp_priv->channel);
 #endif
-#if defined(CONFIG_RTL8192C)
-		PHY_SetTxPowerLevel8192C(pAdapter,pmp_priv->channel);
-#endif
 #if defined(CONFIG_RTL8192E)
 		PHY_SetTxPowerLevel8192E(pAdapter,pmp_priv->channel);
 #endif
@@ -1124,7 +1117,7 @@ void fill_txdesc_for_mp(PADAPTER padapter, struct tx_desc *ptxdesc)
 	memcpy(ptxdesc, &(pmp_priv->tx.desc), TXDESC_SIZE);
 }
 
-#if defined(CONFIG_RTL8192C) || defined(CONFIG_RTL8192D)
+#if defined(CONFIG_RTL8192D)
 void fill_tx_desc_8192cd(PADAPTER padapter)
 {
 	struct mp_priv *pmp_priv = &padapter->mppriv;
@@ -1358,7 +1351,7 @@ void SetPacketTx(PADAPTER padapter)
 	pkt_end = pkt_start + pkt_size;
 
 	//3 3. init TX descriptor
-#if defined(CONFIG_RTL8192C) || defined(CONFIG_RTL8192D)
+#if defined(CONFIG_RTL8192D)
 	if(IS_HARDWARE_TYPE_8192C(padapter) ||IS_HARDWARE_TYPE_8192D(padapter))
 		fill_tx_desc_8192cd(padapter);
 #endif

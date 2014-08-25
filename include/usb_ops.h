@@ -51,12 +51,6 @@ enum{
 #include <usb_ops_linux.h>
 #endif //PLATFORM_LINUX
 
-#ifdef CONFIG_RTL8192C
-void rtl8192cu_set_hw_type(_adapter *padapter);
-void rtl8192cu_set_intf_ops(struct _io_ops *pops);
-void rtl8192cu_recv_tasklet(void *priv);
-void rtl8192cu_xmit_tasklet(void *priv);
-#endif
 
 #ifdef CONFIG_RTL8723A
 void rtl8723au_set_hw_type(_adapter *padapter);
@@ -117,7 +111,7 @@ static inline int rtw_inc_and_chk_continual_urb_error(struct dvobj_priv *dvobj)
 */
 static inline void rtw_reset_continual_urb_error(struct dvobj_priv *dvobj)
 {
-	atomic_set(&dvobj->continual_urb_error, 0);	
+	atomic_set(&dvobj->continual_urb_error, 0);
 }
 
 enum RTW_USB_SPEED {
@@ -142,9 +136,9 @@ static inline u8 rtw_usb_bulk_size_boundary(_adapter * padapter,int buf_len)
 	if (IS_SUPER_SPEED_USB(padapter))
 		rst = (0 == (buf_len) % USB_SUPER_SPEED_BULK_SIZE)?_TRUE:_FALSE;
 	if (IS_HIGH_SPEED_USB(padapter))
-		rst = (0 == (buf_len) % USB_HIGH_SPEED_BULK_SIZE)?_TRUE:_FALSE;	
-	else	
-		rst = (0 == (buf_len) % USB_FULL_SPEED_BULK_SIZE)?_TRUE:_FALSE;		
+		rst = (0 == (buf_len) % USB_HIGH_SPEED_BULK_SIZE)?_TRUE:_FALSE;
+	else
+		rst = (0 == (buf_len) % USB_FULL_SPEED_BULK_SIZE)?_TRUE:_FALSE;
 	return rst;
 }
 

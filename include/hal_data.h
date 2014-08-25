@@ -575,7 +575,7 @@ typedef struct hal_com_data
 #endif //endif CONFIG_RTL8723A
 
 
-#if defined(CONFIG_RTL8192C) ||defined(CONFIG_RTL8192D)
+#if defined(CONFIG_RTL8192D)
 
 	u8	BluetoothCoexist;
 
@@ -612,7 +612,7 @@ typedef struct hal_com_data
 	u8	RTSInitRate;	 // 2010.11.24.by tynli.
 	#endif //CONFIG_RTL8192D
 
-#endif //defined(CONFIG_RTL8192C) ||defined(CONFIG_RTL8192D)
+#endif //defined(CONFIG_RTL8192D)
 } HAL_DATA_COMMON, *PHAL_DATA_COMMON;
 
 

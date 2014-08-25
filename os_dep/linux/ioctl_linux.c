@@ -8894,9 +8894,6 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 	}
 	else if (strcmp(tmp[0], "mac") == 0)
 	{
-		#ifdef CONFIG_RTL8192C
-		addr = EEPROM_MAC_ADDR_92C;
-		#endif // CONFIG_RTL8192C
 		#ifdef CONFIG_RTL8192D
 			#ifdef CONFIG_USB_HCI
 			if (pHalData->interfaceIndex == 0)
@@ -8987,9 +8984,6 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 	}
 	else if (strcmp(tmp[0], "vidpid") == 0)
 	{
-		#ifdef CONFIG_RTL8192C
-		addr = EEPROM_VID_92C;
-		#endif // CONFIG_RTL8192C
 		#ifdef CONFIG_RTL8192D
 			#ifdef CONFIG_USB_HCI
 			addr = EEPROM_VID_92DU;
@@ -9436,9 +9430,6 @@ static int rtw_mp_efuse_set(struct net_device *ndev,
 		}
 
 		//mac,00e04c871200
-		#ifdef CONFIG_RTL8192C
-		addr = EEPROM_MAC_ADDR_92C;
-		#endif
 		#ifdef CONFIG_RTL8192D
 			#ifdef CONFIG_USB_HCI
 			if (pHalData->interfaceIndex == 0)
@@ -9555,9 +9546,6 @@ static int rtw_mp_efuse_set(struct net_device *ndev,
 		}
 
 		// pidvid,da0b7881
-		#ifdef CONFIG_RTL8192C
-		addr = EEPROM_VID_92C;
-		#endif // CONFIG_RTL8192C
 		#ifdef CONFIG_RTL8192D
 			#ifdef CONFIG_USB_HCI
 			addr = EEPROM_VID_92DU;
@@ -10709,9 +10697,6 @@ static int rtw_mp_thermal(struct net_device *ndev,
 	u8 val;
 	u16 bwrite=1;
 
-	#ifdef CONFIG_RTL8192C
-			u16 addr=EEPROM_THERMAL_METER_92C;
-	#endif
 	#ifdef CONFIG_RTL8192D
 			u16 addr=EEPROM_THERMAL_METER_92D;
 	#endif

@@ -31,7 +31,7 @@ void ips_enter(_adapter * padapter)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 
 	pwrpriv->bips_processing = _TRUE;
 
@@ -56,7 +56,7 @@ void ips_enter(_adapter * padapter)
 	}
 	pwrpriv->bips_processing = _FALSE;
 
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 }
 
@@ -69,7 +69,7 @@ int ips_leave(_adapter * padapter)
 	sint keyid;
 
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 
 	if((pwrpriv->rf_pwrstate == rf_off) &&(!pwrpriv->bips_processing))
 	{
@@ -104,7 +104,7 @@ int ips_leave(_adapter * padapter)
 		pwrpriv->bpower_saving = _FALSE;
 	}
 
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 	return result;
 }
@@ -522,7 +522,7 @@ _func_enter_;
 	}
 
 #ifdef CONFIG_LPS_LCLK
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 #endif
 
 	//if(pwrpriv->pwr_mode == PS_MODE_ACTIVE)
@@ -614,7 +614,7 @@ _func_enter_;
 	}
 
 #ifdef CONFIG_LPS_LCLK
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 #endif
 
 _func_exit_;
@@ -846,7 +846,7 @@ _func_enter_;
 
 	while(1)
 	{
-		_enter_pwrlock(&pwrpriv->lock);
+		down(&pwrpriv->lock);
 
 		if ((padapter->bSurpriseRemoved == _TRUE)
 			|| (padapter->hw_init_completed == _FALSE)
@@ -859,7 +859,7 @@ _func_enter_;
 			bReady = _TRUE;
 		}
 
-		_exit_pwrlock(&pwrpriv->lock);
+		up(&pwrpriv->lock);
 
 		if(_TRUE == bReady)
 			break;
@@ -900,13 +900,13 @@ _func_enter_;
 	}
 #endif
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 
 #ifdef CONFIG_LPS_RPWM_TIMER
 	if (pwrpriv->rpwm < PS_STATE_S2)
 	{
 		DBG_871X("%s: Redundant CPWM Int. RPWM=0x%02X CPWM=0x%02x\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
-		_exit_pwrlock(&pwrpriv->lock);
+		up(&pwrpriv->lock);
 		goto exit;
 	}
 #endif // CONFIG_LPS_RPWM_TIMER
@@ -923,7 +923,7 @@ _func_enter_;
 			_rtw_up_sema(&padapter->xmitpriv.xmit_sema);
 	}
 
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 exit:
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
@@ -955,13 +955,13 @@ static void rpwmtimeout_workitem_callback(struct work_struct *work)
 	padapter = container_of(pwrpriv, _adapter, pwrctrlpriv);
 //	DBG_871X("+%s: rpwm=0x%02X cpwm=0x%02X\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 	if ((pwrpriv->rpwm == pwrpriv->cpwm) || (pwrpriv->cpwm >= PS_STATE_S2))
 	{
 		DBG_871X("%s: rpwm=0x%02X cpwm=0x%02X CPWM done!\n", __func__, pwrpriv->rpwm, pwrpriv->cpwm);
 		goto exit;
 	}
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 	if (rtw_read8(padapter, 0x100) != 0xEA)
 	{
@@ -978,7 +978,7 @@ static void rpwmtimeout_workitem_callback(struct work_struct *work)
 		return;
 	}
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 
 	if ((pwrpriv->rpwm == pwrpriv->cpwm) || (pwrpriv->cpwm >= PS_STATE_S2))
 	{
@@ -990,7 +990,7 @@ static void rpwmtimeout_workitem_callback(struct work_struct *work)
 	pwrpriv->brpwmtimeout = _FALSE;
 
 exit:
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 }
 
 /*
@@ -1058,7 +1058,7 @@ _func_enter_;
 		pslv = PS_STATE_S2;
 	}
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	register_task_alive(pwrctrl, XMIT_ALIVE);
 
@@ -1077,7 +1077,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 
@@ -1116,7 +1116,7 @@ _func_enter_;
 		pslv = PS_STATE_S2;
 	}
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	register_task_alive(pwrctrl, CMD_ALIVE);
 
@@ -1135,7 +1135,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 
@@ -1159,14 +1159,14 @@ _func_enter_;
 
 	pwrctrl = &padapter->pwrctrlpriv;
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	register_task_alive(pwrctrl, RECV_ALIVE);
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
 			 ("rtw_register_rx_alive: cpwm=0x%02x alives=0x%08x\n",
 			  pwrctrl->cpwm, pwrctrl->alives));
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 
@@ -1190,14 +1190,14 @@ _func_enter_;
 
 	pwrctrl = &padapter->pwrctrlpriv;
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	register_task_alive(pwrctrl, EVT_ALIVE);
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
 			 ("rtw_register_evt_alive: cpwm=0x%02x alives=0x%08x\n",
 			  pwrctrl->cpwm, pwrctrl->alives));
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 
@@ -1219,7 +1219,7 @@ _func_enter_;
 
 	pwrctrl = &padapter->pwrctrlpriv;
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	unregister_task_alive(pwrctrl, XMIT_ALIVE);
 
@@ -1237,7 +1237,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 }
@@ -1257,7 +1257,7 @@ _func_enter_;
 
 	pwrctrl = &padapter->pwrctrlpriv;
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	unregister_task_alive(pwrctrl, CMD_ALIVE);
 
@@ -1275,7 +1275,7 @@ _func_enter_;
 		}
 	}
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 }
@@ -1291,7 +1291,7 @@ _func_enter_;
 
 	pwrctrl = &padapter->pwrctrlpriv;
 
-	_enter_pwrlock(&pwrctrl->lock);
+	down(&pwrctrl->lock);
 
 	unregister_task_alive(pwrctrl, RECV_ALIVE);
 
@@ -1299,7 +1299,7 @@ _func_enter_;
 			 ("rtw_unregister_rx_alive: cpwm=0x%02x alives=0x%08x\n",
 			  pwrctrl->cpwm, pwrctrl->alives));
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 }
@@ -1318,7 +1318,7 @@ _func_enter_;
 			 ("rtw_unregister_evt_alive: cpwm=0x%02x alives=0x%08x\n",
 			  pwrctrl->cpwm, pwrctrl->alives));
 
-	_exit_pwrlock(&pwrctrl->lock);
+	up(&pwrctrl->lock);
 
 _func_exit_;
 }
@@ -1334,8 +1334,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 
 _func_enter_;
 
-
-	_init_pwrlock(&pwrctrlpriv->lock);
+	sema_init(&pwrctrlpriv->lock, 1);
 	pwrctrlpriv->rf_pwrstate = rf_on;
 	pwrctrlpriv->ips_enter_cnts=0;
 	pwrctrlpriv->ips_leave_cnts=0;
@@ -1427,8 +1426,6 @@ _func_enter_;
 	#if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
 	rtw_unregister_early_suspend(pwrctrlpriv);
 	#endif //CONFIG_HAS_EARLYSUSPEND || CONFIG_ANDROID_POWER
-
-	_free_pwrlock(&pwrctrlpriv->lock);
 
 _func_exit_;
 }

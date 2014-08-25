@@ -894,7 +894,7 @@ int rtw_hw_suspend(_adapter *padapter )
 		LeaveAllPowerSaveMode(padapter);
 
 		DBG_871X("==> rtw_hw_suspend\n");
-		_enter_pwrlock(&pwrpriv->lock);
+		down(&pwrpriv->lock);
 		pwrpriv->bips_processing = _TRUE;
 		//padapter->net_closed = _TRUE;
 		//s1.
@@ -938,7 +938,7 @@ int rtw_hw_suspend(_adapter *padapter )
 		pwrpriv->rf_pwrstate = rf_off;
 		pwrpriv->bips_processing = _FALSE;
 
-		_exit_pwrlock(&pwrpriv->lock);
+		up(&pwrpriv->lock);
 	}
 	else
 		goto error_exit;
@@ -963,13 +963,13 @@ int rtw_hw_resume(_adapter *padapter)
 	if(padapter)//system resume
 	{
 		DBG_871X("==> rtw_hw_resume\n");
-		_enter_pwrlock(&pwrpriv->lock);
+		down(&pwrpriv->lock);
 		pwrpriv->bips_processing = _TRUE;
 		rtw_reset_drv_sw(padapter);
 
 		if(pm_netdev_open(ndev,_FALSE) != 0)
 		{
-			_exit_pwrlock(&pwrpriv->lock);
+			up(&pwrpriv->lock);
 			goto error_exit;
 		}
 
@@ -987,7 +987,7 @@ int rtw_hw_resume(_adapter *padapter)
 		pwrpriv->rf_pwrstate = rf_on;
 		pwrpriv->bips_processing = _FALSE;
 
-		_exit_pwrlock(&pwrpriv->lock);
+		up(&pwrpriv->lock);
 	}
 	else
 	{
@@ -1054,7 +1054,7 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 	rtw_cancel_all_timer(padapter);
 	LeaveAllPowerSaveMode(padapter);
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 	//padapter->net_closed = _TRUE;
 	//s1.
 	if(ndev)
@@ -1105,7 +1105,7 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 	pwrpriv->rf_pwrstate = rf_off;
 	pwrpriv->bips_processing = _FALSE;
 #endif
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 	if(check_fwstate(pmlmepriv, _FW_UNDER_SURVEY))
 		rtw_indicate_scan_done(padapter, 1);
@@ -1172,7 +1172,7 @@ int rtw_resume_process(_adapter *padapter)
 		goto exit;
 	}
 
-	_enter_pwrlock(&pwrpriv->lock);
+	down(&pwrpriv->lock);
 #ifdef CONFIG_BT_COEXIST
 #ifdef CONFIG_AUTOSUSPEND
 	#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,32))
@@ -1197,7 +1197,7 @@ int rtw_resume_process(_adapter *padapter)
 
 	DBG_871X("bkeepfwalive(%x)\n",pwrpriv->bkeepfwalive);
 	if(pm_netdev_open(ndev,_TRUE) != 0){
-		_exit_pwrlock(&pwrpriv->lock);
+		up(&pwrpriv->lock);
 		goto exit;
 	}
 
@@ -1250,7 +1250,7 @@ int rtw_resume_process(_adapter *padapter)
 		}
 	}
 #endif
-	_exit_pwrlock(&pwrpriv->lock);
+	up(&pwrpriv->lock);
 
 	if( padapter->pid[1]!=0) {
 		DBG_871X("pid[1]:%d\n",padapter->pid[1]);

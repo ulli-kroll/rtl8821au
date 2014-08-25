@@ -109,26 +109,10 @@ struct reportpwrstate_parm {
 typedef struct semaphore _pwrlock;
 
 
-__inline static void _init_pwrlock(_pwrlock *plock)
-{
-	sema_init(plock, 1);
-}
-
-__inline static void _free_pwrlock(_pwrlock *plock)
-{
-}
 
 
-__inline static void _enter_pwrlock(_pwrlock *plock)
-{
-	down(plock);
-}
 
 
-__inline static void _exit_pwrlock(_pwrlock *plock)
-{
-	up(plock);
-}
 
 #define LPS_DELAY_TIME	1*HZ // 1 sec
 

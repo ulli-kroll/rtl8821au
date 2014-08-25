@@ -363,7 +363,6 @@
 //#define DBG_TX_DROP_FRAME
 
 //#define DBG_RX_DROP_FRAME
-//#define DBG_RX_SEQ
 //#define DBG_RX_SIGNAL_DISPLAY_PROCESSING
 //#define DBG_RX_SIGNAL_DISPLAY_SSID_MONITORED "jeff-ap"
 

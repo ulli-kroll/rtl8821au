@@ -404,10 +404,6 @@ _func_enter_;
 			preorder_ctrl->enable = _FALSE;
 
 			preorder_ctrl->indicate_seq = 0xffff;
-			#ifdef DBG_RX_SEQ
-			DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d\n", __FUNCTION__, __LINE__,
-				preorder_ctrl->indicate_seq);
-			#endif
 			preorder_ctrl->wend_b= 0xffff;
 			//preorder_ctrl->wsize_b = (NR_RECVBUFF-2);
 			preorder_ctrl->wsize_b = 64;//64;

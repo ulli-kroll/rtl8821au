@@ -2796,10 +2796,6 @@ int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num)
 	if (preorder_ctrl->indicate_seq == 0xFFFF)
 	{
 		preorder_ctrl->indicate_seq = seq_num;
-		#ifdef DBG_RX_SEQ
-		DBG_871X("DBG_RX_SEQ %s:%d init IndicateSeq: %d, NewSeq: %d\n", __FUNCTION__, __LINE__,
-			preorder_ctrl->indicate_seq, seq_num);
-		#endif
 
 		//DbgPrint("check_indicate_seq, 1st->indicate_seq=%d\n", precvpriv->indicate_seq);
 	}
@@ -2829,10 +2825,6 @@ int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num)
 	if( SN_EQUAL(seq_num, preorder_ctrl->indicate_seq) )
 	{
 		preorder_ctrl->indicate_seq = (preorder_ctrl->indicate_seq + 1) & 0xFFF;
-		#ifdef DBG_RX_SEQ
-		DBG_871X("DBG_RX_SEQ %s:%d SN_EQUAL IndicateSeq: %d, NewSeq: %d\n", __FUNCTION__, __LINE__,
-			preorder_ctrl->indicate_seq, seq_num);
-		#endif
 	}
 	else if(SN_LESS(wend, seq_num))
 	{
@@ -2845,10 +2837,6 @@ int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num)
 		else
 			preorder_ctrl->indicate_seq = 0xFFF - (wsize - (seq_num + 1)) + 1;
 
-		#ifdef DBG_RX_SEQ
-		DBG_871X("DBG_RX_SEQ %s:%d SN_LESS(wend, seq_num) IndicateSeq: %d, NewSeq: %d\n", __FUNCTION__, __LINE__,
-			preorder_ctrl->indicate_seq, seq_num);
-		#endif
 	}
 
 	//DbgPrint("exit->check_indicate_seq(): IndicateSeq: %d, NewSeq: %d\n", precvpriv->indicate_seq, seq_num);
@@ -2958,10 +2946,6 @@ int recv_indicatepkts_in_order(_adapter *padapter, struct recv_reorder_ctrl *pre
 		 prframe = LIST_CONTAINOR(plist, union recv_frame, u);
 	        pattrib = &prframe->u.hdr.attrib;
 		preorder_ctrl->indicate_seq = pattrib->seq_num;
-		#ifdef DBG_RX_SEQ
-		DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d, NewSeq: %d\n", __FUNCTION__, __LINE__,
-			preorder_ctrl->indicate_seq, pattrib->seq_num);
-		#endif
 	}
 
 	// Prepare indication list and indication.
@@ -2994,10 +2978,6 @@ int recv_indicatepkts_in_order(_adapter *padapter, struct recv_reorder_ctrl *pre
 			if(SN_EQUAL(preorder_ctrl->indicate_seq, pattrib->seq_num))
 			{
 				preorder_ctrl->indicate_seq = (preorder_ctrl->indicate_seq + 1) & 0xFFF;
-				#ifdef DBG_RX_SEQ
-				DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d, NewSeq: %d\n", __FUNCTION__, __LINE__,
-					preorder_ctrl->indicate_seq, pattrib->seq_num);
-				#endif
 			}
 
 #if 0
@@ -3126,18 +3106,10 @@ int recv_indicatepkt_reorder(_adapter *padapter, union recv_frame *prframe)
 		{
 			//indicate this recv_frame
 			preorder_ctrl->indicate_seq = pattrib->seq_num;
-			#ifdef DBG_RX_SEQ
-			DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d, NewSeq: %d\n", __FUNCTION__, __LINE__,
-				preorder_ctrl->indicate_seq, pattrib->seq_num);
-			#endif
 
 			rtw_recv_indicatepkt(padapter, prframe);
 
 			preorder_ctrl->indicate_seq = (preorder_ctrl->indicate_seq + 1)%4096;
-			#ifdef DBG_RX_SEQ
-			DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d, NewSeq: %d\n", __FUNCTION__, __LINE__,
-				preorder_ctrl->indicate_seq, pattrib->seq_num);
-			#endif
 
 			return _SUCCESS;
 		}
@@ -3154,18 +3126,10 @@ int recv_indicatepkt_reorder(_adapter *padapter, union recv_frame *prframe)
 		if (preorder_ctrl->enable == _FALSE)
 		{
 			preorder_ctrl->indicate_seq = pattrib->seq_num;
-			#ifdef DBG_RX_SEQ
-			DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d, NewSeq: %d\n", __FUNCTION__, __LINE__,
-				preorder_ctrl->indicate_seq, pattrib->seq_num);
-			#endif
 
 			retval = amsdu_to_msdu(padapter, prframe);
 
 			preorder_ctrl->indicate_seq = (preorder_ctrl->indicate_seq + 1)%4096;
-			#ifdef DBG_RX_SEQ
-			DBG_871X("DBG_RX_SEQ %s:%d IndicateSeq: %d, NewSeq: %d\n", __FUNCTION__, __LINE__,
-				preorder_ctrl->indicate_seq, pattrib->seq_num);
-			#endif
 
 			if(retval != _SUCCESS){
 				#ifdef DBG_RX_DROP_FRAME

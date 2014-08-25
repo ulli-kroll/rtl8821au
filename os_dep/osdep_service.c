@@ -25,12 +25,6 @@
 
 #define RT_TAG	'1178'
 
-#ifdef DBG_MEMORY_LEAK
-#ifdef PLATFORM_LINUX
-atomic_t _malloc_cnt = ATOMIC_INIT(0);
-atomic_t _malloc_size = ATOMIC_INIT(0);
-#endif
-#endif /* DBG_MEMORY_LEAK */
 
 
 #if defined(PLATFORM_LINUX)
@@ -85,14 +79,6 @@ inline u8* _rtw_vmalloc(u32 sz)
 #endif
 
 
-#ifdef DBG_MEMORY_LEAK
-#ifdef PLATFORM_LINUX
-	if ( pbuf != NULL) {
-		atomic_inc(&_malloc_cnt);
-		atomic_add(sz, &_malloc_size);
-	}
-#endif
-#endif /* DBG_MEMORY_LEAK */
 
 	return pbuf;
 }
@@ -115,12 +101,6 @@ inline void _rtw_vmfree(u8 *pbuf, u32 sz)
 	vfree(pbuf);
 #endif
 
-#ifdef DBG_MEMORY_LEAK
-#ifdef PLATFORM_LINUX
-	atomic_dec(&_malloc_cnt);
-	atomic_sub(sz, &_malloc_size);
-#endif
-#endif /* DBG_MEMORY_LEAK */
 }
 
 u8* _rtw_malloc(u32 sz)
@@ -138,14 +118,6 @@ u8* _rtw_malloc(u32 sz)
 
 #endif
 
-#ifdef DBG_MEMORY_LEAK
-#ifdef PLATFORM_LINUX
-	if ( pbuf != NULL) {
-		atomic_inc(&_malloc_cnt);
-		atomic_add(sz, &_malloc_size);
-	}
-#endif
-#endif /* DBG_MEMORY_LEAK */
 
 	return pbuf;
 
@@ -181,12 +153,6 @@ void	_rtw_mfree(u8 *pbuf, u32 sz)
 
 #endif
 
-#ifdef DBG_MEMORY_LEAK
-#ifdef PLATFORM_LINUX
-	atomic_dec(&_malloc_cnt);
-	atomic_sub(sz, &_malloc_size);
-#endif
-#endif /* DBG_MEMORY_LEAK */
 
 }
 

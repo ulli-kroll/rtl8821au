@@ -22,9 +22,6 @@
 #include <drv_types.h>
 
 // Should not include hal dependent herader here, it will remove later. Lucas@20130123
-#ifdef CONFIG_BT_COEXIST
-#include <rtl8723a_hal.h>
-#endif
 
 #ifdef CONFIG_IPS
 void ips_enter(_adapter * padapter)
@@ -40,9 +37,6 @@ void ips_enter(_adapter * padapter)
 
 	pwrpriv->ips_enter_cnts++;
 	DBG_871X("==>ips_enter cnts:%d\n",pwrpriv->ips_enter_cnts);
-#ifdef CONFIG_BT_COEXIST
-	BTDM_TurnOffBtCoexistBeforeEnterIPS(padapter);
-#endif
 	if(rf_off == pwrpriv->change_rfpwrstate )
 	{
 		pwrpriv->bpower_saving = _TRUE;
@@ -564,9 +558,6 @@ _func_enter_;
 	else
 	{
 		if (PS_RDY_CHECK(padapter)
-#ifdef CONFIG_BT_COEXIST
-			|| (BT_1Ant(padapter) == _TRUE)
-#endif
 			)
 		{
 			DBG_871X("%s: Enter 802.11 power save\n", __FUNCTION__);
@@ -1049,11 +1040,6 @@ _func_enter_;
 
 	res = _SUCCESS;
 	pwrctrl = &padapter->pwrctrlpriv;
-#ifdef CONFIG_BT_COEXIST
-	if (_TRUE == pwrctrl->btcoex_rfon)
-		pslv = PS_STATE_S3;
-	else
-#endif
 	{
 		pslv = PS_STATE_S2;
 	}
@@ -1107,11 +1093,6 @@ _func_enter_;
 
 	res = _SUCCESS;
 	pwrctrl = &padapter->pwrctrlpriv;
-#ifdef CONFIG_BT_COEXIST
-	if (_TRUE == pwrctrl->btcoex_rfon)
-		pslv = PS_STATE_S3;
-	else
-#endif
 	{
 		pslv = PS_STATE_S2;
 	}

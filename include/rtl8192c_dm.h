@@ -33,12 +33,12 @@
 #define DYNAMIC_FUNC_BT BIT(0)
 
 typedef	enum _BT_CurState{
-	BT_OFF		= 0,	
+	BT_OFF		= 0,
 	BT_ON		= 1,
 } BT_CurState, *PBT_CurState;
 
 typedef	enum _BT_ServiceType{
-	BT_SCO		= 0,	
+	BT_SCO		= 0,
 	BT_A2DP		= 1,
 	BT_HID		= 2,
 	BT_HID_Idle	= 3,
@@ -90,10 +90,6 @@ struct btcoexist_priv	{
 //============================================================
 // function prototype
 //============================================================
-#ifdef CONFIG_BT_COEXIST
-void rtl8192c_set_dm_bt_coexist(_adapter *padapter, u8 bStart);
-void rtl8192c_issue_delete_ba(_adapter *padapter, u8 dir);
-#endif
 
 void rtl8192c_init_dm_priv(IN PADAPTER Adapter);
 void rtl8192c_deinit_dm_priv(IN PADAPTER Adapter);

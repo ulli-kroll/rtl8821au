@@ -133,9 +133,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_iol.h>
 #endif // CONFIG_IOL
 
-#ifdef CONFIG_BT_COEXIST
-#include <rtl8723a_hal.h>
-#endif // CONFIG_BT_COEXIST
 
 #ifdef CONFIG_IOCTL_CFG80211
 #include "ioctl_cfg80211.h"
@@ -245,12 +242,6 @@ struct registry_priv
 	u8	wifi_spec;// !turbo_mode
 
 	u8	channel_plan;
-#ifdef CONFIG_BT_COEXIST
-	u8	btcoex;
-	u8	bt_iso;
-	u8	bt_sco;
-	u8	bt_ampdu;
-#endif
 	BOOLEAN	bAcceptAddbaReq;
 
 	u8	antdiv_cfg;

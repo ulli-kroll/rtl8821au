@@ -254,14 +254,6 @@ dm_InitGPIOSetting(
 	tmp1byte = rtw_read8(Adapter, REG_GPIO_MUXCFG);
 	tmp1byte &= (GPIOSEL_GPIO | ~GPIOSEL_ENBT);
 
-#ifdef CONFIG_BT_COEXIST
-	// UMB-B cut bug. We need to support the modification.
-	if (IS_81xxC_VENDOR_UMC_B_CUT(pHalData->VersionID) &&
-		pHalData->bt_coexist.BT_Coexist)
-	{
-		tmp1byte |= (BIT5);
-	}
-#endif
 	rtw_write8(Adapter, REG_GPIO_MUXCFG, tmp1byte);
 
 }

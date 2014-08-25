@@ -131,12 +131,6 @@ int rtw_wifi_spec = 0;
 #endif
 int rtw_channel_plan = RT_CHANNEL_DOMAIN_MAX;
 
-#ifdef CONFIG_BT_COEXIST
-int rtw_btcoex_enable = 1;
-int rtw_bt_iso = 2;// 0:Low, 1:High, 2:From Efuse
-int rtw_bt_sco = 3;// 0:Idle, 1:None-SCO, 2:SCO, 3:From Counter, 4.Busy, 5.OtherBusy
-int rtw_bt_ampdu =1 ;// 0:Disable BT control A-MPDU, 1:Enable BT control A-MPDU.
-#endif
 
 int rtw_AcceptAddbaReq = _TRUE;// 0:Reject AP's Add BA req, 1:Accept AP's Add BA req.
 
@@ -287,10 +281,6 @@ module_param(rtw_80211d, int, 0644);
 MODULE_PARM_DESC(rtw_80211d, "Enable 802.11d mechanism");
 #endif
 
-#ifdef CONFIG_BT_COEXIST
-module_param(rtw_btcoex_enable, int, 0644);
-MODULE_PARM_DESC(rtw_btcoex_enable, "Enable BT co-existence mechanism");
-#endif
 
 uint rtw_notch_filter = RTW_NOTCH_FILTER;
 module_param(rtw_notch_filter, uint, 0644);
@@ -621,15 +611,6 @@ void rtw_proc_init_one(struct net_device *ndev)
 		return;
 	}
 	entry->write_proc = proc_set_rssi_disp;
-#ifdef CONFIG_BT_COEXIST
-	entry = create_proc_read_entry("btcoex_dbg", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_btcoex_dbg, dev);
-	if (!entry) {
-		DBG_871X("Unable to create_proc_read_entry!\n");
-		return;
-	}
-	entry->write_proc = proc_set_btcoex_dbg;
-#endif /*CONFIG_BT_COEXIST*/
 
 #if defined(DBG_CONFIG_ERROR_DETECT)
 	entry = create_proc_read_entry("sreset", S_IFREG | S_IRUGO,
@@ -701,9 +682,6 @@ void rtw_proc_remove_one(struct net_device *ndev)
 
 		remove_proc_entry("rssi_disp", dir_dev);
 
-#ifdef CONFIG_BT_COEXIST
-		remove_proc_entry("btcoex_dbg", dir_dev);
-#endif //CONFIG_BT_COEXIST
 
 #if defined(DBG_CONFIG_ERROR_DETECT)
 		remove_proc_entry("sreset", dir_dev);
@@ -828,12 +806,6 @@ _func_enter_;
 
 	registry_par->channel_plan = (u8)rtw_channel_plan;
 
-#ifdef CONFIG_BT_COEXIST
-	registry_par->btcoex = (u8)rtw_btcoex_enable;
-	registry_par->bt_iso = (u8)rtw_bt_iso;
-	registry_par->bt_sco = (u8)rtw_bt_sco;
-	registry_par->bt_ampdu = (u8)rtw_bt_ampdu;
-#endif
 
 	registry_par->bAcceptAddbaReq = (u8)rtw_AcceptAddbaReq;
 

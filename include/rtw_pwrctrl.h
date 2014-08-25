@@ -212,10 +212,6 @@ struct pwrctrl_priv
 
 	u8		bInternalAutoSuspend;
 	u8		bInSuspend;
-#ifdef	CONFIG_BT_COEXIST
-	u8		bAutoResume;
-	u8		autopm_cnt;
-#endif
 	u8		bSupportRemoteWakeup;
 #ifdef CONFIG_WOWLAN
 	u8		wowlan_mode;

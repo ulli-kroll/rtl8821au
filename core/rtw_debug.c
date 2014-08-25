@@ -1103,58 +1103,6 @@ int proc_get_best_channel(char *page, char **start,
 
 }
 #endif /* CONFIG_FIND_BEST_CHANNEL */
-#ifdef CONFIG_BT_COEXIST
-#define _bt_dbg_off_		0
-#define _bt_dbg_on_		1
-
-extern u32 BTCoexDbgLevel;
-int proc_get_btcoex_dbg(char *page, char **start,
-			  off_t offset, int count,
-			  int *eof, void *data)
-{
-	struct net_device *ndev = data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
-
-	int len = 0;
-
-	if(pregpriv)
-		len += snprintf(page + len, count - len,
-			"%d\n",
-			BTCoexDbgLevel
-			);
-
-	*eof = 1;
-	return len;
-}
-
-int proc_set_btcoex_dbg(struct file *file, const char *buffer,
-		unsigned long count, void *data)
-{
-	struct net_device *ndev = (struct net_device *)data;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
-	char tmp[32];
-	u32 mode;
-
-	if (count < 1)
-		return -EFAULT;
-
-	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
-
-		int num = sscanf(tmp, "%d ", &mode);
-
-		if( pregpriv && (mode == 0 || mode == 1|| mode == 2|| mode == 3))
-		{
-			BTCoexDbgLevel= mode;
-			printk("btcoex_dbg=%d\n", BTCoexDbgLevel);
-		}
-	}
-
-	return count;
-
-}
-#endif /* CONFIG_BT_COEXIST */
 
 #if defined(DBG_CONFIG_ERROR_DETECT)
 int proc_get_sreset(char *page, char **start, off_t offset, int count, int *eof, void *data)

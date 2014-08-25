@@ -30,30 +30,30 @@ enum h2c_cmd_8723B{
 	H2C_8723B_MEDIA_STATUS_RPT = 0x01,
 	H2C_8723B_SCAN_ENABLE = 0x02,
 	H2C_8723B_KEEP_ALIVE = 0x03,
-	H2C_8723B_DISCON_DECISION = 0x04,	
-	H2C_8723B_PSD_OFFLOAD = 0x05,	
-	H2C_8723B_AP_OFFLOAD = 0x08,	
-	H2C_8723B_BCN_RSVDPAGE = 0x09,	
-	H2C_8723B_PROBERSP_RSVDPAGE = 0x0A,	
-	H2C_8723B_FCS_RSVDPAGE = 0x10,	
-	H2C_8723B_FCS_INFO = 0x11,	
+	H2C_8723B_DISCON_DECISION = 0x04,
+	H2C_8723B_PSD_OFFLOAD = 0x05,
+	H2C_8723B_AP_OFFLOAD = 0x08,
+	H2C_8723B_BCN_RSVDPAGE = 0x09,
+	H2C_8723B_PROBERSP_RSVDPAGE = 0x0A,
+	H2C_8723B_FCS_RSVDPAGE = 0x10,
+	H2C_8723B_FCS_INFO = 0x11,
 
 	//PoweSave Class: 001
 	H2C_8723B_SET_PWR_MODE = 0x20,
 	H2C_8723B_PS_TUNING_PARA = 0x21,
 	H2C_8723B_PS_TUNING_PARA2 = 0x22,
-	H2C_8723B_P2P_LPS_PARAM = 0x23,	
-	H2C_8723B_P2P_PS_OFFLOAD = 0x24,	
-	H2C_8723B_PS_SCAN_ENABLE = 0x25,	
-	H2C_8723B_SAP_PS_ = 0x26,	
+	H2C_8723B_P2P_LPS_PARAM = 0x23,
+	H2C_8723B_P2P_PS_OFFLOAD = 0x24,
+	H2C_8723B_PS_SCAN_ENABLE = 0x25,
+	H2C_8723B_SAP_PS_ = 0x26,
 
 	//Dynamic Mechanism Class: 010
-	H2C_8723B_MACID_CFG = 0x40,	
-	H2C_8723B_TXBF = 0x41,	
-	H2C_8723B_RSSI_SETTING = 0x42,	
-	H2C_8723B_AP_REQ_TXRPT = 0x43,	
-	H2C_8723B_INIT_RATE_COLLECT = 0x44,	
-	
+	H2C_8723B_MACID_CFG = 0x40,
+	H2C_8723B_TXBF = 0x41,
+	H2C_8723B_RSSI_SETTING = 0x42,
+	H2C_8723B_AP_REQ_TXRPT = 0x43,
+	H2C_8723B_INIT_RATE_COLLECT = 0x44,
+
 	//BT Class: 011
 	H2C_8723B_B_TYPE_TDMA = 0x60,
 	H2C_8723B_BT_INFO = 0x61,
@@ -66,19 +66,19 @@ enum h2c_cmd_8723B{
 	H2C_8723B_BT_CONTROL = 0x68,
 	H2C_8723B_BT_WIFI_CTRL = 0x69,
 	H2C_8723B_BT_FW_PATCH = 0x6A,
-	
+
 	//WOWLAN Class: 100
 	H2C_8723B_WOWLAN = 0x80,
 	H2C_8723B_REMOTE_WAKE_CTRL = 0x81,
-	H2C_8723B_AOAC_GLOBAL_INFO = 0x82,	
-	H2C_8723B_AOAC_RSVD_PAGE = 0x83,	
+	H2C_8723B_AOAC_GLOBAL_INFO = 0x82,
+	H2C_8723B_AOAC_RSVD_PAGE = 0x83,
 	H2C_8723B_AOAC_RSVD_PAGE2 = 0x84,
 	H2C_8723B_D0_SCAN_OFFLOAD_INFO = 0x85,
 	H2C_8723B_D0_SCAN_OFFLOAD_CTRL = 0x86,
 	H2C_8723B_CHNL_SWITCH_OFFLOAD = 0x87,
 
 	H2C_8723B_RESET_TSF = 0xC0,
-	
+
 	H2C_8723B_MAXID,
 };
 
@@ -101,7 +101,7 @@ enum h2c_cmd_8723B{
 #define H2C_8723B_AP_REQ_TXRPT_LEN		2
 #define H2C_8723B_FORCE_BT_TXPWR_LEN		3
 
-#ifdef CONFIG_WOWLAN_8723	
+#ifdef CONFIG_WOWLAN_8723
 #define eqMacAddr(a,b)						( ((a)[0]==(b)[0] && (a)[1]==(b)[1] && (a)[2]==(b)[2] && (a)[3]==(b)[3] && (a)[4]==(b)[4] && (a)[5]==(b)[5]) ? 1:0 )
 #define cpMacAddr(des,src)					((des)[0]=(src)[0],(des)[1]=(src)[1],(des)[2]=(src)[2],(des)[3]=(src)[3],(des)[4]=(src)[4],(des)[5]=(src)[5])
 #define cpIpAddr(des,src)					((des)[0]=(src)[0],(des)[1]=(src)[1],(des)[2]=(src)[2],(des)[3]=(src)[3])
@@ -279,7 +279,7 @@ typedef struct _RSVDPAGE_LOC {
 	u8 LocGTKInfo;
 	u8 LocProbeReq;
 	u8 LocNetList;
-#endif //CONFIG_WOWLAN_8723	
+#endif //CONFIG_WOWLAN_8723
 } RSVDPAGE_LOC_8723B, *PRSVDPAGE_LOC_8723B;
 
 
@@ -290,9 +290,6 @@ typedef struct _RSVDPAGE_LOC {
 // host message to firmware cmd
 void rtl8723b_set_FwPwrMode_cmd(PADAPTER padapter, u8 Mode);
 void rtl8723b_set_FwJoinBssRpt_cmd(PADAPTER padapter, u8 mstatus);
-#ifdef CONFIG_BT_COEXIST
-void rtl8723b_set_BTCoex_AP_mode_FwRsvdPkt_cmd(PADAPTER padapter);
-#endif
 void rtl8723b_set_rssi_cmd(PADAPTER padapter, u8 *param);
 void rtl8723b_Add_RateATid(PADAPTER pAdapter, u32 bitmap, u8* arg, u8 rssi_level);
 void rtl8723b_fw_try_ap_cmd(PADAPTER padapter, u32 need_ack);

@@ -1499,16 +1499,6 @@ Hal_EfuseParseBTCoexistInfo8812A(
 	IN BOOLEAN			AutoLoadFail
 	)
 {
-#ifdef CONFIG_BT_COEXIST
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-
-	pHalData->EEPROMBluetoothCoexist = 0;
-	pHalData->EEPROMBluetoothType = BT_CSR_BC8;
-	pHalData->EEPROMBluetoothAntNum = Ant_x2;
-	pHalData->EEPROMBluetoothAntIsolation = 1;
-	pHalData->EEPROMBluetoothRadioShared = BT_Radio_Shared;
-	BT_InitHalVars(Adapter);
-#endif
 }
 
 void
@@ -4911,9 +4901,6 @@ _func_enter_;
 		case HW_VAR_MLME_SITESURVEY:
 			hw_var_set_mlme_sitesurvey(padapter, variable,  pval);
 
-#ifdef CONFIG_BT_COEXIST
-			BT_WifiScanNotify(padapter, *pval?_TRUE:_FALSE);
-#endif
 			break;
 
 		case HW_VAR_MLME_JOIN:
@@ -4972,23 +4959,6 @@ _func_enter_;
 			}
 #endif // !CONFIG_CONCURRENT_MODE
 
-#ifdef CONFIG_BT_COEXIST
-			switch (*pval)
-			{
-				case 0:
-					// prepare to join
-					BT_WifiAssociateNotify(padapter, _TRUE);
-					break;
-				case 1:
-					// joinbss_event callback when join res < 0
-					BT_WifiAssociateNotify(padapter, _FALSE);
-					break;
-				case 2:
-					// sta add event callback
-//					BT_WifiMediaStatusNotify(padapter, RT_MEDIA_CONNECT);
-					break;
-			}
-#endif
 			break;
 
 		case HW_VAR_ON_RCR_AM:
@@ -5294,15 +5264,6 @@ _func_enter_;
 			}
 			break;
 
-#ifdef CONFIG_BT_COEXIST
-		case HW_VAR_BT_SET_COEXIST:
-			rtl8812_set_dm_bt_coexist(padapter, *pval);
-			break;
-
-		case HW_VAR_BT_ISSUE_DELBA:
-			rtl8812_issue_delete_ba(padapter, *pval);
-			break;
-#endif
 
 #if (RATE_ADAPTIVE_SUPPORT==1)
 		case HW_VAR_RPT_TIMER_SETTING:

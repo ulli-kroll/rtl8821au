@@ -54,7 +54,7 @@ enum cmd_msg_element_id
 	SCAN_EN_EID = 59,
 	LOWPWR_LPS_EID = 71,
 	H2C_RESET_TSF = 75,
-	MAX_CMDMSG_EID	
+	MAX_CMDMSG_EID
 };
 
 struct cmd_msg_parm {
@@ -186,9 +186,6 @@ typedef struct _LOWPWR_LPS_PARM
 // host message to firmware cmd
 void rtl8723a_set_FwPwrMode_cmd(PADAPTER padapter, u8 Mode);
 void rtl8723a_set_FwJoinBssReport_cmd(PADAPTER padapter, u8 mstatus);
-#ifdef CONFIG_BT_COEXIST
-void rtl8723a_set_BTCoex_AP_mode_FwRsvdPkt_cmd(PADAPTER padapter);
-#endif
 u8 rtl8192c_set_rssi_cmd(PADAPTER padapter, u8 *param);
 //u8 rtl8723a_set_rssi_cmd(PADAPTER padapter, u8 *param);
 void rtl8192c_set_raid_cmd(PADAPTER padapter, u32 mask, u8* arg);

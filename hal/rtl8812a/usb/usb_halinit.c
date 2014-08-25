@@ -1398,9 +1398,6 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 	struct registry_priv	*pregistrypriv = &Adapter->registrypriv;
 
 	rt_rf_power_state		eRfPowerStateToSet;
-#ifdef CONFIG_BT_COEXIST
-	struct btcoexist_priv	*pbtpriv = &(pHalData->bt_coexist);
-#endif
 
 	u32 init_start_time = rtw_get_current_time();
 
@@ -1427,9 +1424,6 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 		HAL_INIT_STAGES_LCK,
 		HAL_INIT_STAGES_MISC21,
 		//HAL_INIT_STAGES_INIT_PABIAS,
-		#ifdef CONFIG_BT_COEXIST
-		HAL_INIT_STAGES_BT_COEXIST,
-		#endif
 		//HAL_INIT_STAGES_ANTENNA_SEL,
 		HAL_INIT_STAGES_MISC31,
 		HAL_INIT_STAGES_END,
@@ -1455,9 +1449,6 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 		"HAL_INIT_STAGES_PW_TRACK",
 		"HAL_INIT_STAGES_LCK",
 		"HAL_INIT_STAGES_MISC21",
-		#ifdef CONFIG_BT_COEXIST
-		"HAL_INIT_STAGES_BT_COEXIST",
-		#endif
 		//"HAL_INIT_STAGES_ANTENNA_SEL",
 		"HAL_INIT_STAGES_MISC31",
 		"HAL_INIT_STAGES_END",
@@ -1903,10 +1894,6 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC21);
 //HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_PABIAS);
 //	_InitPABias(Adapter);
 
-#ifdef CONFIG_BT_COEXIST
-HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_BT_COEXIST);
-	//_InitBTCoexist(Adapter);
-#endif
 
 	// 2010/08/23 MH According to Alfred's suggestion, we need to to prevent HW enter
 	// suspend mode automatically.
@@ -2019,18 +2006,6 @@ u32 rtl8812au_hal_deinit(PADAPTER Adapter)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
    	DBG_8192C("==> %s \n",__FUNCTION__);
 
-#ifdef CONFIG_BT_COEXIST
-	if (BT_IsBtExist(Adapter))
-	{
-		DBG_871X("BT module enable SIC\n");
-		// Only under WIN7 we can support selective suspend and enter D3 state when system call halt adapter.
-
-		//rtw_write16(Adapter, REG_GPIO_MUXCFG, rtw_read16(Adapter, REG_GPIO_MUXCFG)|BIT12);
-		// 2010/10/13 MH If we enable SIC in the position and then call _ResetDigitalProcedure1. in XP,
-		// the system will hang due to 8051 reset fail.
-	}
-	else
-#endif
 	{
 		rtw_write16(Adapter, REG_GPIO_MUXCFG, rtw_read16(Adapter, REG_GPIO_MUXCFG)&(~BIT12));
 	}

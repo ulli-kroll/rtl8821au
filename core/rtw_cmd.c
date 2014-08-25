@@ -2016,16 +2016,11 @@ static void traffic_status_watchdog(_adapter *padapter)
 		/*&& !MgntInitAdapterInProgress(pMgntInfo)*/)
 	{
 
-#ifdef CONFIG_BT_COEXIST
-		if( pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > 50 ||
-			pmlmepriv->LinkDetectInfo.NumTxOkInPeriod > 50 )
-#else // !CONFIG_BT_COEXIST
 		// if we raise bBusyTraffic in last watchdog, using lower threshold.
 		if (pmlmepriv->LinkDetectInfo.bBusyTraffic)
 			BusyThreshold = 75;
 		if( pmlmepriv->LinkDetectInfo.NumRxOkInPeriod > BusyThreshold ||
 			pmlmepriv->LinkDetectInfo.NumTxOkInPeriod > BusyThreshold )
-#endif // !CONFIG_BT_COEXIST
 		{
 			bBusyTraffic = _TRUE;
 
@@ -2072,9 +2067,6 @@ static void traffic_status_watchdog(_adapter *padapter)
 #endif //CONFIG_TDLS
 
 #ifdef CONFIG_LPS
-#ifdef CONFIG_BT_COEXIST
-		if (BT_1Ant(padapter) == _FALSE)
-#endif
 		{
 		// check traffic for  powersaving.
 		if( ((pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod + pmlmepriv->LinkDetectInfo.NumTxOkInPeriod) > 8 ) ||
@@ -2149,12 +2141,6 @@ void dynamic_chk_wk_hdl(_adapter *padapter, u8 *pbuf, int sz)
 
 	//check_hw_pbc(padapter, pdrvextra_cmd->pbuf, pdrvextra_cmd->type_size);
 
-#ifdef CONFIG_BT_COEXIST
-	//
-	// BT-Coexist
-	//
-	BT_CoexistMechanism(padapter);
-#endif
 }
 
 #ifdef CONFIG_LPS
@@ -2178,10 +2164,6 @@ _func_enter_;
 	{
 		case LPS_CTRL_SCAN:
 			//DBG_871X("LPS_CTRL_SCAN \n");
-#ifdef CONFIG_BT_COEXIST
-			BT_WifiScanNotify(padapter, _TRUE);
-			if (BT_1Ant(padapter) == _FALSE)
-#endif
 			{
 				if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
 				{ //connect
@@ -2199,17 +2181,10 @@ _func_enter_;
 			// Reset LPS Setting
 			padapter->pwrctrlpriv.LpsIdleCount = 0;
 			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_JOINBSSRPT, (u8 *)(&mstatus));
-#ifdef CONFIG_BT_COEXIST
-			BT_WifiMediaStatusNotify(padapter, mstatus);
-#endif
 			break;
 		case LPS_CTRL_DISCONNECT:
 			//DBG_871X("LPS_CTRL_DISCONNECT \n");
 			mstatus = 0;//disconnect
-#ifdef CONFIG_BT_COEXIST
-			BT_WifiMediaStatusNotify(padapter, mstatus);
-			if (BT_1Ant(padapter) == _FALSE)
-#endif
 			{
 				LPS_Leave(padapter);
 			}
@@ -2218,20 +2193,12 @@ _func_enter_;
 		case LPS_CTRL_SPECIAL_PACKET:
 			//DBG_871X("LPS_CTRL_SPECIAL_PACKET \n");
 			pwrpriv->DelayLPSLastTimeStamp = rtw_get_current_time();
-#ifdef CONFIG_BT_COEXIST
-			BT_SpecialPacketNotify(padapter);
-			if (BT_1Ant(padapter) == _FALSE)
-#endif
 			{
 				LPS_Leave(padapter);
 			}
 			break;
 		case LPS_CTRL_LEAVE:
 			//DBG_871X("LPS_CTRL_LEAVE \n");
-#ifdef CONFIG_BT_COEXIST
-			BT_LpsLeave(padapter);
-			if (BT_1Ant(padapter) == _FALSE)
-#endif
 			{
 				LPS_Leave(padapter);
 			}

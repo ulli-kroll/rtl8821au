@@ -690,9 +690,6 @@ static char *translate_scan(_adapter *padapter,
 	iwe.u.qual.level = (u8) translate_percentage_to_dbm(ss);//dbm
 	#else
 	iwe.u.qual.level = (u8)ss;//%
-	#ifdef CONFIG_BT_COEXIST
-	BT_SignalCompensation(padapter, &iwe.u.qual.level, NULL);
-	#endif // CONFIG_BT_COEXIST
 	#endif
 
 	iwe.u.qual.qual = (u8)sq;   // signal quality
@@ -3758,16 +3755,6 @@ static void rtw_dbg_mode_hdl(_adapter *padapter, u32 id, u8 *pdata, u32 len)
 			DBG_871X("==> trigger gpio 0\n");
 			rtw_hal_set_hwreg(padapter, HW_VAR_TRIGGER_GPIO_0, 0);
 			break;
-#ifdef CONFIG_BT_COEXIST
-		case GEN_MP_IOCTL_SUBCODE(SET_DM_BT):
-			DBG_871X("==> set dm_bt_coexist:%x\n",*(u8 *)pdata);
-			rtw_hal_set_hwreg(padapter, HW_VAR_BT_SET_COEXIST, pdata);
-			break;
-		case GEN_MP_IOCTL_SUBCODE(DEL_BA):
-			DBG_871X("==> delete ba:%x\n",*(u8 *)pdata);
-			rtw_hal_set_hwreg(padapter, HW_VAR_BT_ISSUE_DELBA, pdata);
-			break;
-#endif
 #ifdef DBG_CONFIG_ERROR_DETECT
 		case GEN_MP_IOCTL_SUBCODE(GET_WIFI_STATUS):
 			*pdata = rtw_hal_sreset_get_wifi_status(padapter);
@@ -12662,46 +12649,6 @@ static int rtw_test(
 	}
 #endif
 
-#ifdef CONFIG_BT_COEXIST
-#define GET_BT_INFO(padapter)	(&GET_HAL_DATA(padapter)->BtInfo)
-
-	if (strcmp(pch, "btdbg") == 0)
-	{
-		DBG_8192C("===== BT debug information Start =====\n");
-		DBG_8192C("WIFI status=\n");
-		DBG_8192C("BT status=\n");
-		DBG_8192C("BT profile=\n");
-		DBG_8192C("WIFI RSSI=%d\n", GET_HAL_DATA(padapter)->dmpriv.UndecoratedSmoothedPWDB);
-		DBG_8192C("BT RSSI=\n");
-		DBG_8192C("coex mechanism=\n");
-		DBG_8192C("BT counter TX/RX=/\n");
-		DBG_8192C("0x880=0x%08x\n", rtw_read32(padapter, 0x880));
-		DBG_8192C("0x6c0=0x%08x\n", rtw_read32(padapter, 0x6c0));
-		DBG_8192C("0x6c4=0x%08x\n", rtw_read32(padapter, 0x6c4));
-		DBG_8192C("0x6c8=0x%08x\n", rtw_read32(padapter, 0x6c8));
-		DBG_8192C("0x6cc=0x%08x\n", rtw_read32(padapter, 0x6cc));
-		DBG_8192C("0x778=0x%08x\n", rtw_read32(padapter, 0x778));
-		DBG_8192C("0xc50=0x%08x\n", rtw_read32(padapter, 0xc50));
-		BT_DisplayBtCoexInfo(padapter);
-		DBG_8192C("===== BT debug information End =====\n");
-	}
-
-	if (strcmp(pch, "bton") == 0)
-	{
-		PBT30Info		pBTInfo = GET_BT_INFO(padapter);
-		PBT_MGNT		pBtMgnt = &pBTInfo->BtMgnt;
-
-		pBtMgnt->ExtConfig.bManualControl = _FALSE;
-	}
-
-	if (strcmp(pch, "btoff") == 0)
-	{
-		PBT30Info		pBTInfo = GET_BT_INFO(padapter);
-		PBT_MGNT		pBtMgnt = &pBTInfo->BtMgnt;
-
-		pBtMgnt->ExtConfig.bManualControl = _TRUE;
-	}
-#endif // CONFIG_BT_COEXIST
 
 	if (strcmp(pch, "h2c") == 0)
 	{
@@ -13099,13 +13046,6 @@ static struct iw_statistics *rtw_get_wireless_stats(struct net_device *ndev)
 		tmp_level = translate_percentage_to_dbm(padapter->recvpriv.signal_strength);
 		#else
 		tmp_level = padapter->recvpriv.signal_strength;
-		#ifdef CONFIG_BT_COEXIST
-		{
-			u8 signal = (u8)tmp_level;
-			BT_SignalCompensation(padapter, &signal, NULL);
-			tmp_level= signal;
-		}
-		#endif // CONFIG_BT_COEXIST
 		#endif
 
 		tmp_qual = padapter->recvpriv.signal_qual;

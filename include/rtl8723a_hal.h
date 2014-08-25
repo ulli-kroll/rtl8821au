@@ -33,9 +33,6 @@
 #include "Hal8723APhyReg.h"
 #include "Hal8723APhyCfg.h"
 #include "rtl8723a_rf.h"
-#ifdef CONFIG_BT_COEXIST
-#include "rtl8723a_bt-coexist.h"
-#endif
 #include "rtl8723a_dm.h"
 #include "rtl8723a_recv.h"
 #include "rtl8723a_xmit.h"
@@ -508,9 +505,6 @@ void Hal_InitChannelPlan(PADAPTER padapter);
 void rtl8723a_set_hal_ops(struct hal_ops *pHalFunc);
 void SetHwReg8723A(PADAPTER padapter, u8 variable, u8 *val);
 void GetHwReg8723A(PADAPTER padapter, u8 variable, u8 *val);
-#ifdef CONFIG_BT_COEXIST
-void rtl8723a_SingleDualAntennaDetection(PADAPTER padapter);
-#endif
 
 // register
 void SetBcnCtrlReg(PADAPTER padapter, u8 SetBits, u8 ClearBits);

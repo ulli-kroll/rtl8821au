@@ -35,9 +35,6 @@
 #ifdef DBG_CONFIG_ERROR_DETECT
 #include "rtl8723b_sreset.h"
 #endif
-#ifdef CONFIG_BT_COEXIST
-#include "rtl8723b_bt-coexist.h"
-#endif
 
 #if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
 
@@ -52,7 +49,7 @@
 	#define RTL8723B_PHY_REG					"rtl8723B\\PHY_REG_1T.txt"
 	#define RTL8723B_PHY_RADIO_A				"rtl8723B\\radio_a_1T.txt"
 	#define RTL8723B_PHY_RADIO_B				"rtl8723B\\radio_b_1T.txt"
-	#define RTL8723B_TXPWR_TRACK				"rtl8723B\\TxPowerTrack.txt" 
+	#define RTL8723B_TXPWR_TRACK				"rtl8723B\\TxPowerTrack.txt"
 	#define RTL8723B_AGC_TAB					"rtl8723B\\AGC_TAB_1T.txt"
 	#define RTL8723B_PHY_MACREG 				"rtl8723B\\MAC_REG.txt"
 	#define RTL8723B_PHY_REG_PG				"rtl8723B\\PHY_REG_PG.txt"
@@ -94,7 +91,7 @@
 	#define RTL8723B_PHY_REG					"rtl8723B\\PHY_REG_1T.txt"
 	#define RTL8723B_PHY_RADIO_A				"rtl8723B\\radio_a_1T.txt"
 	#define RTL8723B_PHY_RADIO_B				"rtl8723B\\radio_b_1T.txt"
-	#define RTL8723B_TXPWR_TRACK				"rtl8723B\\TxPowerTrack.txt" 
+	#define RTL8723B_TXPWR_TRACK				"rtl8723B\\TxPowerTrack.txt"
 	#define RTL8723B_AGC_TAB					"rtl8723B\\AGC_TAB_1T.txt"
 	#define RTL8723B_PHY_MACREG 				"rtl8723B\\MAC_REG.txt"
 	#define RTL8723B_PHY_REG_PG				"rtl8723B\\PHY_REG_PG.txt"
@@ -329,9 +326,6 @@ void Hal_EfuseParseThermalMeter_8723B(PADAPTER padapter, u8 *hwinfo, u8 AutoLoad
 void rtl8723b_set_hal_ops(struct hal_ops *pHalFunc);
 void SetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val);
 void GetHwReg8723B(PADAPTER padapter, u8 variable, u8 *val);
-#ifdef CONFIG_BT_COEXIST
-void rtl8723b_SingleDualAntennaDetection(PADAPTER padapter);
-#endif
 
 // register
 void SetBcnCtrlReg(PADAPTER padapter, u8 SetBits, u8 ClearBits);
@@ -346,12 +340,6 @@ void rtl8723b_clone_haldata(_adapter *dst_adapter, _adapter *src_adapter);
 void rtl8723b_start_thread(_adapter *padapter);
 void rtl8723b_stop_thread(_adapter *padapter);
 
-#if defined(CONFIG_CHECK_BT_HANG) && defined(CONFIG_BT_COEXIST)
-void rtl8723bs_init_checkbthang_workqueue(_adapter * adapter);
-void rtl8723bs_free_checkbthang_workqueue(_adapter * adapter);
-void rtl8723bs_cancle_checkbthang_workqueue(_adapter * adapter);
-void rtl8723bs_hal_check_bt_hang(_adapter * adapter);
-#endif
 
 #ifdef CONFIG_WOWLAN_8723
 void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip);

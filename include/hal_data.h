@@ -148,10 +148,6 @@ struct dm_priv
 	int	LastMinUndecoratedPWDBForDM;
 
 	s32	UndecoratedSmoothedBeacon;
-	#ifdef CONFIG_BT_COEXIST
-	s32 	BT_EntryMinUndecoratedSmoothedPWDB;
-	s32 	BT_EntryMaxUndecoratedSmoothedPWDB;
-	#endif
 
 //###### duplicate code,will move to ODM #########
 	//for High Power
@@ -571,9 +567,6 @@ typedef struct hal_com_data
 	struct sreset_priv srestpriv;
 #endif
 
-#ifdef CONFIG_BT_COEXIST
-	struct btcoexist_priv	bt_coexist;
-#endif
 
 #if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
 	// Interrupt relatd register information.

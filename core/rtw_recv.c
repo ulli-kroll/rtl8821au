@@ -3593,17 +3593,6 @@ void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS){
 			recvpriv->rssi = (s8)translate_percentage_to_dbm(tmp_s);
 			recvpriv->signal_qual = tmp_q;
 
-			#if defined(DBG_RX_SIGNAL_DISPLAY_PROCESSING) && 1
-			DBG_871X("%s signal_strength:%3u, rssi:%3d, signal_qual:%3u"
-				", num_signal_strength:%u, num_signal_qual:%u"
-				"\n"
-				, __FUNCTION__
-				, recvpriv->signal_strength
-				, recvpriv->rssi
-				, recvpriv->signal_qual
-				, num_signal_strength, num_signal_qual
-			);
-			#endif
 		}
 	}
 	rtw_set_signal_stat_timer(recvpriv);

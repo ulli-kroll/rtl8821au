@@ -358,7 +358,6 @@
 
 //#define DBG_TX
 
-//#define DBG_RX_SIGNAL_DISPLAY_PROCESSING
 //#define DBG_RX_SIGNAL_DISPLAY_SSID_MONITORED "jeff-ap"
 
 

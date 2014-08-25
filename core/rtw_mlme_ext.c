@@ -9477,15 +9477,6 @@ u8 collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSI
 	}
 #endif // CONFIG_INTEL_WIDI
 
-	#if defined(DBG_RX_SIGNAL_DISPLAY_PROCESSING) & 1
-	if(strcmp(bssid->Ssid.Ssid, DBG_RX_SIGNAL_DISPLAY_SSID_MONITORED) == 0) {
-		DBG_871X("Receiving %s("MAC_FMT", DSConfig:%u) from ch%u with ss:%3u, sq:%3u, RawRSSI:%3ld\n"
-			, bssid->Ssid.Ssid, MAC_ARG(bssid->MacAddress), bssid->Configuration.DSConfig
-			, rtw_get_oper_ch(padapter)
-			, bssid->PhyInfo.SignalStrength, bssid->PhyInfo.SignalQuality, bssid->Rssi
-		);
-	}
-	#endif
 
 	// mark bss info receving from nearby channel as SignalQuality 101
 	if(bssid->Configuration.DSConfig != rtw_get_oper_ch(padapter))

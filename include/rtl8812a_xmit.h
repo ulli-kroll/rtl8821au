@@ -114,7 +114,7 @@ typedef struct txdescriptor_8812
 
 	// Offset 4
 	u32 macid:6;
-	u32 rsvd0406:2;	
+	u32 rsvd0406:2;
 	u32 qsel:5;
 	u32 rd_nav_ext:1;
 	u32 lsig_txop_en:1;
@@ -164,7 +164,7 @@ typedef struct txdescriptor_8812
 	u32 cts2self:1;
 	u32 rtsen:1;
 	u32 hw_rts_en:1;
-	u32 port_id:1;	
+	u32 port_id:1;
 	u32 pwr_status:3;
 	u32 wait_dcts:1;
 	u32 cts2ap_en:1;
@@ -209,7 +209,7 @@ typedef struct txdescriptor_8812
 
 	// Offset 36
 	u32 rsvd36;
-}TXDESC_8812, *PTXDESC_8812; 
+}TXDESC_8812, *PTXDESC_8812;
 
 
 // Dword 0
@@ -237,7 +237,7 @@ typedef struct txdescriptor_8812
 #define SET_TX_DESC_PKT_OFFSET_8812(__pTxDesc, __Value) 		SET_BITS_TO_LE_4BYTE(__pTxDesc+4, 24, 5, __Value)
 
 // Dword 2
-#define SET_TX_DESC_PAID_8812(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+8, 0,  9, __Value) 
+#define SET_TX_DESC_PAID_8812(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+8, 0,  9, __Value)
 #define SET_TX_DESC_CCA_RTS_8812(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+8, 10, 2, __Value)
 #define SET_TX_DESC_AGG_ENABLE_8812(__pTxDesc, __Value) 		SET_BITS_TO_LE_4BYTE(__pTxDesc+8, 12, 1, __Value)
 #define SET_TX_DESC_RDG_ENABLE_8812(__pTxDesc, __Value) 		SET_BITS_TO_LE_4BYTE(__pTxDesc+8, 13, 1, __Value)
@@ -287,10 +287,10 @@ typedef struct txdescriptor_8812
 // Dword 6
 #define SET_TX_DESC_MBSSID_8821(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+24, 12, 4, __Value)
 
-// Dword 7 
+// Dword 7
 #define SET_TX_DESC_TX_BUFFER_SIZE_8812(__pTxDesc, __Value) 		SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 0, 16, __Value)
 #define SET_TX_DESC_TX_DESC_CHECKSUM_8812(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 0, 16, __Value)
-#define SET_TX_DESC_USB_TXAGG_NUM_8812(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 24, 8, __Value) 
+#define SET_TX_DESC_USB_TXAGG_NUM_8812(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 24, 8, __Value)
 #ifdef CONFIG_SDIO_HCI
 #define SET_TX_DESC_SDIO_TXSEQ_8812(__pTxDesc, __Value)			SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 16, 8, __Value)
 #endif
@@ -340,15 +340,6 @@ void rtl8812au_xmit_tasklet(void *priv);
 s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 #endif
 
-#ifdef CONFIG_PCI_HCI
-s32 rtl8812e_init_xmit_priv(PADAPTER padapter);
-void rtl8812e_free_xmit_priv(PADAPTER padapter);
-struct xmit_buf *rtl8812e_dequeue_xmitbuf(struct rtw_tx_ring *ring);
-void	rtl8812e_xmitframe_resume(_adapter *padapter);
-s32 rtl8812e_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);
-s32 rtl8812e_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe);
-void rtl8812e_xmit_tasklet(void *priv);
-#endif
 
 #ifdef CONFIG_TX_EARLY_MODE
 void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitbuf );

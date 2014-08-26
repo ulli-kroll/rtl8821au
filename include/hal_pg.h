@@ -26,9 +26,9 @@
 //====================================================
 #define EEPROM_VID_92C							0x0A
 #define EEPROM_PID_92C							0x0C
-#define EEPROM_DID_92C							0x0C 
+#define EEPROM_DID_92C							0x0C
 #define EEPROM_SVID_92C						0x0E
-#define EEPROM_SMID_92C						0x10 
+#define EEPROM_SMID_92C						0x10
 #define EEPROM_MAC_ADDR_92C					0x16
 
 #define EEPROM_MAC_ADDR						0x16
@@ -70,8 +70,8 @@
 #define EEPROM_HT40_1S_TX_PWR_INX_8723A		0x16
 #define EEPROM_HT20_TX_PWR_INX_DIFF_8723A	0x1C
 #define EEPROM_OFDM_TX_PWR_INX_DIFF_8723A	0x1F
-#define EEPROM_HT40_MAX_PWR_OFFSET_8723A	0x22 
-#define EEPROM_HT20_MAX_PWR_OFFSET_8723A	0x25 
+#define EEPROM_HT40_MAX_PWR_OFFSET_8723A	0x22
+#define EEPROM_HT20_MAX_PWR_OFFSET_8723A	0x25
 
 #define EEPROM_ChannelPlan_8723A				0x28
 #define EEPROM_TSSI_A_8723A					0x29
@@ -158,7 +158,7 @@
 #define EEPROM_HT20_MAX_PWR_OFFSET_5GH_92D				0xB8
 
 
-#define EEPROM_CHANNEL_PLAN_92D							0xBB // Map of supported channels.	
+#define EEPROM_CHANNEL_PLAN_92D							0xBB // Map of supported channels.
 #define EEPROM_TEST_CHANNEL_PLAN_92D					0xBB
 #define EEPROM_THERMAL_METER_92D							0xC3	//[4:0]
 #define EEPROM_IQK_DELTA_92D								0xBC
@@ -373,11 +373,11 @@
 
 
 #define EEPROM_VID_92SU						0x08
-#define EEPROM_PID_92SU						0x0A 
+#define EEPROM_PID_92SU						0x0A
 
 #define EEPROM_Version_92SU					0x50
-#define EEPROM_TSSI_A_92SU						0x6b 
-#define EEPROM_TSSI_B_92SU						0x6c 
+#define EEPROM_TSSI_A_92SU						0x6b
+#define EEPROM_TSSI_B_92SU						0x6c
 
 //====================================================
 //			EEPROM/Efuse PG Offset for 8723BE/8723BU/8723BS
@@ -486,7 +486,7 @@
 #define EEPROM_Default_HT20_Diff				2
 #define EEPROM_Default_LegacyHTTxPowerDiff		0x3
 #define EEPROM_Default_LegacyHTTxPowerDiff_92C	0x3
-#define EEPROM_Default_LegacyHTTxPowerDiff_92D	0x4	
+#define EEPROM_Default_LegacyHTTxPowerDiff_92D	0x4
 #define EEPROM_Default_HT40_PwrMaxOffset		0
 #define EEPROM_Default_HT20_PwrMaxOffset		0
 
@@ -502,11 +502,7 @@
 #define EEPROM_Default_internalPA_SP3T_C9	0xAA
 #define EEPROM_Default_internalPA_SP3T_CC	0xAF
 #define EEPROM_Default_internalPA_SPDT_C9	0xAA
-#ifdef CONFIG_PCI_HCI
-#define EEPROM_Default_internalPA_SPDT_CC	0xA0
-#else
 #define EEPROM_Default_internalPA_SPDT_CC	0xFA
-#endif
 #define EEPROM_Default_PAType						0
 #define EEPROM_Default_LNAType						0
 
@@ -531,10 +527,10 @@
 
 //
 // For VHT series TX power by rate table.
-// VHT TX power by rate off setArray = 
+// VHT TX power by rate off setArray =
 // Band:-2G&5G = 0 / 1
 // RF: at most 4*4 = ABCD=0/1/2/3
-// CCK=0 OFDM=1/2 HT-MCS 0-15=3/4/56 VHT=7/8/9/10/11			
+// CCK=0 OFDM=1/2 HT-MCS 0-15=3/4/56 VHT=7/8/9/10/11
 //
 #define TX_PWR_BY_RATE_NUM_BAND			2
 #define TX_PWR_BY_RATE_NUM_RF			4
@@ -563,7 +559,7 @@ typedef struct _TxPowerInfo{
 //For 88E new structure
 
 /*
-2.4G: 
+2.4G:
 {
 {1,2},
 {3,4,5},
@@ -591,9 +587,9 @@ typedef struct _TxPowerInfo{
 }
 */
 #define	MAX_RF_PATH				4
-#define 	RF_PATH_MAX				MAX_RF_PATH	
-#define	MAX_CHNL_GROUP_24G		6 
-#define	MAX_CHNL_GROUP_5G		14 
+#define 	RF_PATH_MAX				MAX_RF_PATH
+#define	MAX_CHNL_GROUP_24G		6
+#define	MAX_CHNL_GROUP_5G		14
 
 //It must always set to 4, otherwise read efuse table secquence will be wrong.
 #define 	MAX_TX_COUNT				4
@@ -602,7 +598,7 @@ typedef struct _TxPowerInfo24G{
 	u8 IndexCCK_Base[MAX_RF_PATH][MAX_CHNL_GROUP_24G];
 	u8 IndexBW40_Base[MAX_RF_PATH][MAX_CHNL_GROUP_24G-1];
 	//If only one tx, only BW20 and OFDM are used.
-	s8 CCK_Diff[MAX_RF_PATH][MAX_TX_COUNT];	
+	s8 CCK_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8 OFDM_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8 BW20_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8 BW40_Diff[MAX_RF_PATH][MAX_TX_COUNT];
@@ -620,12 +616,12 @@ typedef struct _TxPowerInfo5G{
 
 
 typedef	enum _BT_Ant_NUM{
-	Ant_x2	= 0,		
+	Ant_x2	= 0,
 	Ant_x1	= 1
 } BT_Ant_NUM, *PBT_Ant_NUM;
 
 typedef	enum _BT_CoType{
-	BT_2Wire		= 0,		
+	BT_2Wire		= 0,
 	BT_ISSC_3Wire	= 1,
 	BT_ACCEL		= 2,
 	BT_CSR_BC4		= 3,
@@ -637,7 +633,7 @@ typedef	enum _BT_CoType{
 } BT_CoType, *PBT_CoType;
 
 typedef	enum _BT_RadioShared{
-	BT_Radio_Shared 	= 0,	
+	BT_Radio_Shared 	= 0,
 	BT_Radio_Individual	= 1,
 } BT_RadioShared, *PBT_RadioShared;
 

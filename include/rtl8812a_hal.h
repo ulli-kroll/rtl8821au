@@ -27,7 +27,7 @@
 #include "../hal/OUTSRC/odm_precomp.h"
 #endif
 
-//include HAL Related header after HAL Related compiling flags 
+//include HAL Related header after HAL Related compiling flags
 #include "rtl8812a_spec.h"
 #include "rtl8812a_rf.h"
 #include "rtl8812a_dm.h"
@@ -49,30 +49,30 @@
 //---------------------------------------------------------------------
 		#define RTL8812_FW_IMG						"rtl8812AU\\rtl8812Ufw.bin"
 		#define RTL8812_FW_WW_IMG				"rtl8812AU\\rtl8812Ufwww.bin"
-		#define RTL8812_PHY_REG					"rtl8812AU\\PHY_REG.txt" 
+		#define RTL8812_PHY_REG					"rtl8812AU\\PHY_REG.txt"
 		#define RTL8812_PHY_RADIO_A				"rtl8812AU\\RadioA.txt"
 		#define RTL8812_PHY_RADIO_B				"rtl8812AU\\RadioB.txt"
-		#define RTL8812_TXPWR_TRACK				"rtl8812AU\\TxPowerTrack.txt"			
+		#define RTL8812_TXPWR_TRACK				"rtl8812AU\\TxPowerTrack.txt"
 		#define RTL8812_AGC_TAB					"rtl8812AU\\AGC_TAB.txt"
 		#define RTL8812_PHY_MACREG 				"rtl8812AU\\MAC_REG.txt"
 		#define RTL8812_PHY_REG_PG					"rtl8812AU\\PHY_REG_PG.txt"
-		#define RTL8812_PHY_REG_MP 				"rtl8812AU\\PHY_REG_MP.txt" 
-		#define RTL8812_TXPWR_LMT					"rtl8812AU\\TXPWR_LMT.txt" 
+		#define RTL8812_PHY_REG_MP 				"rtl8812AU\\PHY_REG_MP.txt"
+		#define RTL8812_TXPWR_LMT					"rtl8812AU\\TXPWR_LMT.txt"
 
 //---------------------------------------------------------------------
 //		RTL8821U From file
 //---------------------------------------------------------------------
 		#define RTL8821_FW_IMG						"rtl8821AU\\rtl8821Ufw.bin"
 		#define RTL8821_FW_WW_IMG				"rtl8821AU\\rtl8821Ufwww.bin"
-		#define RTL8821_PHY_REG					"rtl8821AU\\PHY_REG.txt" 
+		#define RTL8821_PHY_REG					"rtl8821AU\\PHY_REG.txt"
 		#define RTL8821_PHY_RADIO_A				"rtl8821AU\\RadioA.txt"
-		#define RTL8821_PHY_RADIO_B				"rtl8821AU\\RadioB.txt" 
-		#define RTL8821_TXPWR_TRACK				"rtl8821AU\\TxPowerTrack.txt"		
+		#define RTL8821_PHY_RADIO_B				"rtl8821AU\\RadioB.txt"
+		#define RTL8821_TXPWR_TRACK				"rtl8821AU\\TxPowerTrack.txt"
 		#define RTL8821_AGC_TAB					"rtl8821AU\\AGC_TAB.txt"
 		#define RTL8821_PHY_MACREG 				"rtl8821AU\\MAC_REG.txt"
 		#define RTL8821_PHY_REG_PG					"rtl8821AU\\PHY_REG_PG.txt"
 		#define RTL8821_PHY_REG_MP 				"rtl8821AU\\PHY_REG_MP.txt"
-		#define RTL8821_TXPWR_LMT					"rtl8821AU\\TXPWR_LMT.txt" 
+		#define RTL8821_TXPWR_LMT					"rtl8821AU\\TXPWR_LMT.txt"
 
 //---------------------------------------------------------------------
 //		RTL8812 Power Configuration CMDs for PCIe interface
@@ -85,7 +85,7 @@
 #define Rtl8812_NIC_RESUME_FLOW				rtl8812_resume_flow
 #define Rtl8812_NIC_PDN_FLOW					rtl8812_hwpdn_flow
 #define Rtl8812_NIC_LPS_ENTER_FLOW			rtl8812_enter_lps_flow
-#define Rtl8812_NIC_LPS_LEAVE_FLOW				rtl8812_leave_lps_flow		
+#define Rtl8812_NIC_LPS_LEAVE_FLOW				rtl8812_leave_lps_flow
 
 //---------------------------------------------------------------------
 //		RTL8821 Power Configuration CMDs for PCIe interface
@@ -98,7 +98,7 @@
 #define Rtl8821A_NIC_RESUME_FLOW				rtl8821A_resume_flow
 #define Rtl8821A_NIC_PDN_FLOW					rtl8821A_hwpdn_flow
 #define Rtl8821A_NIC_LPS_ENTER_FLOW			rtl8821A_enter_lps_flow
-#define Rtl8821A_NIC_LPS_LEAVE_FLOW			rtl8821A_leave_lps_flow	
+#define Rtl8821A_NIC_LPS_LEAVE_FLOW			rtl8821A_leave_lps_flow
 
 
 #if 1 // download firmware related data structure
@@ -139,7 +139,7 @@ typedef struct _RT_FIRMWARE_8812 {
 #define GET_FIRMWARE_HDR_FUNCTION_8812(__FwHdr)		LE_BITS_TO_4BYTE(__FwHdr, 24, 8) // Reserved for different FW function indcation, for further use when driver needs to download different FW in different conditions
 #define GET_FIRMWARE_HDR_VERSION_8812(__FwHdr)		LE_BITS_TO_4BYTE(__FwHdr+4, 0, 16)// FW Version
 #define GET_FIRMWARE_HDR_SUB_VER_8812(__FwHdr)		LE_BITS_TO_4BYTE(__FwHdr+4, 16, 8) // FW Subversion, default 0x00
-#define GET_FIRMWARE_HDR_RSVD1_8812(__FwHdr)			LE_BITS_TO_4BYTE(__FwHdr+4, 24, 8) 		
+#define GET_FIRMWARE_HDR_RSVD1_8812(__FwHdr)			LE_BITS_TO_4BYTE(__FwHdr+4, 24, 8)
 
 //--- LONG WORD 1 ----
 #define GET_FIRMWARE_HDR_MONTH_8812(__FwHdr)			LE_BITS_TO_4BYTE(__FwHdr+8, 0, 8) // Release time Month field
@@ -222,13 +222,8 @@ typedef struct _RT_FIRMWARE_8812 {
 #define	EFUSE_HIDDEN_812AU_VL				2
 #define	EFUSE_HIDDEN_812AU_VN				3
 
-#ifdef CONFIG_PCI_HCI
-#define EFUSE_REAL_CONTENT_LEN_JAGUAR		1024
-#define HWSET_MAX_SIZE_JAGUAR					1024
-#else
 #define EFUSE_REAL_CONTENT_LEN_JAGUAR		512
 #define HWSET_MAX_SIZE_JAGUAR					512
-#endif
 
 #define EFUSE_MAX_BANK_8812A					2
 #define EFUSE_MAP_LEN_JAGUAR					512
@@ -247,7 +242,7 @@ typedef enum _TX_PWR_PERCENTAGE{
 	TX_PWR_PERCENTAGE_0 = 0x01, // 12.5%
 	TX_PWR_PERCENTAGE_1 = 0x02, // 25%
 	TX_PWR_PERCENTAGE_2 = 0x04, // 50%
-	TX_PWR_PERCENTAGE_3 = 0x08, //100%, default target output power.	
+	TX_PWR_PERCENTAGE_3 = 0x08, //100%, default target output power.
 } TX_PWR_PERCENTAGE;
 
 #define GET_RF_TYPE(priv)			(GET_HAL_DATA(priv)->rf_type)
@@ -298,7 +293,7 @@ void	Hal_EfuseParseBTCoexistInfo8812A(PADAPTER Adapter, u8* hwinfo, BOOLEAN Auto
 void	hal_ReadUsbType_8812AU(PADAPTER Adapter, u8 *PROMContent, BOOLEAN AutoloadFail);
 
 BOOLEAN HalDetectPwrDownMode8812(PADAPTER Adapter);
-	
+
 #ifdef CONFIG_WOWLAN
 void Hal_DetectWoWMode(PADAPTER pAdapter);
 #endif //CONFIG_WOWLAN

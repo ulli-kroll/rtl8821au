@@ -679,10 +679,6 @@ _BlockWrite_8812(
 	u32			remainSize_p1 = 0, remainSize_p2 = 0;
 	u8			*bufferPtr	= (u8*)buffer;
 	u32			i=0, offset=0;
-#ifdef CONFIG_PCI_HCI
-	u8			remainFW[4] = {0, 0, 0, 0};
-	u8			*p = NULL;
-#endif
 
 #ifdef CONFIG_USB_HCI
 	blockSize_p1 = MAX_REG_BOLCK_SIZE;
@@ -710,24 +706,6 @@ _BlockWrite_8812(
 			goto exit;
 	}
 
-#ifdef CONFIG_PCI_HCI
-	p = (u8*)((u32*)(bufferPtr + blockCount_p1 * blockSize_p1));
-	if (remainSize_p1) {
-		switch (remainSize_p1) {
-		case 0:
-			break;
-		case 3:
-			remainFW[2]=*(p+2);
-		case 2:
-			remainFW[1]=*(p+1);
-		case 1:
-			remainFW[0]=*(p);
-			ret = rtw_write32(padapter, (FW_START_ADDRESS + blockCount_p1 * blockSize_p1),
-				 le32_to_cpu(*(u32*)remainFW));
-		}
-		return ret;
-	}
-#endif
 
 	//3 Phase #2
 	if (remainSize_p1)
@@ -827,11 +805,6 @@ _WriteFW_8812(
 	u32	page, offset;
 	u8	*bufferPtr = (u8*)buffer;
 
-#ifdef CONFIG_PCI_HCI
-	// 20100120 Joseph: Add for 88CE normal chip.
-	// Fill in zero to make firmware image to dword alignment.
-//		_FillDummy(bufferPtr, &size);
-#endif
 
 	pageNums = size / MAX_DLFW_PAGE_SIZE ;
 	//RT_ASSERT((pageNums <= 4), ("Page numbers should not greater then 4 \n"));
@@ -3705,12 +3678,7 @@ void InitPGData8812A(PADAPTER padapter)
 			addr = EEPROM_MAC_ADDR_8812AE;
 		else
 			addr = EEPROM_MAC_ADDR_8821AE;
-#elif defined(CONFIG_PCI_HCI)
-		if (IS_HARDWARE_TYPE_8812E(padapter))
-			addr = EEPROM_MAC_ADDR_8812AE;
-		else
-			addr = EEPROM_MAC_ADDR_8821AE;
-#endif // CONFIG_PCI_HCI
+#endif
 		memcpy(&pEEPROM->efuse_eeprom_data[addr], pEEPROM->mac_addr, ETH_ALEN);
 	}
 #else // !CONFIG_EFUSE_CONFIG_FILE

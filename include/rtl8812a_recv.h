@@ -36,14 +36,6 @@
 	#endif
 #endif
 
-#elif defined(CONFIG_PCI_HCI)
-//#ifndef CONFIG_MINIMAL_MEMORY_USAGE
-//	#define MAX_RECVBUF_SZ (9100)
-//#else
-	#define MAX_RECVBUF_SZ (4000) // about 4K
-//#endif
-
-
 #elif defined(CONFIG_SDIO_HCI)
 
 #define MAX_RECVBUF_SZ (10240)
@@ -141,10 +133,6 @@ void rtl8812au_recv_tasklet(void *priv);
 
 #endif
 
-#ifdef CONFIG_PCI_HCI
-s32 rtl8812e_init_recv_priv(PADAPTER padapter);
-void rtl8812e_free_recv_priv(PADAPTER padapter);
-#endif
 
 void rtl8812_query_rx_desc_status(union recv_frame *precvframe, u8 *pdesc);
 void rtl8812_query_rx_phy_status(union recv_frame *prframe, u8 *pphy_stat);

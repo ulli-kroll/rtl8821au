@@ -49,19 +49,12 @@
 #else
 #define NR_XMITBUFF	(4)
 #endif //CONFIG_SINGLE_XMIT_BUF
-#elif defined (CONFIG_PCI_HCI)
-#define MAX_XMITBUF_SZ	(1664)
-#define NR_XMITBUFF	(128)
 #endif
 
 #ifdef PLATFORM_OS_CE
 #define XMITBUF_ALIGN_SZ 4
 #else
-#ifdef CONFIG_PCI_HCI
-#define XMITBUF_ALIGN_SZ 4
-#else
 #define XMITBUF_ALIGN_SZ 512
-#endif
 #endif
 
 // xmit extension buff defination
@@ -86,11 +79,6 @@
 
 #define HW_QUEUE_ENTRY	8
 
-#ifdef CONFIG_PCI_HCI
-//#define TXDESC_NUM						64
-#define TXDESC_NUM						128
-#define TXDESC_NUM_BE_QUEUE			128
-#endif
 
 #define WEP_IV(pattrib_iv, dot11txpn, keyidx)\
 do{\
@@ -151,10 +139,6 @@ do{\
 #define TXDESC_OFFSET (TXDESC_SIZE + PACKET_OFFSET_SZ)
 #endif
 
-#ifdef CONFIG_PCI_HCI
-#define TXDESC_OFFSET 0
-#define TX_DESC_NEXT_DESC_OFFSET	40
-#endif
 
 enum TXDESC_SC{
 	SC_DONT_CARE = 0x00,
@@ -163,9 +147,7 @@ enum TXDESC_SC{
 	SC_DUPLICATE=0x03
 };
 
-#ifdef CONFIG_PCI_HCI
-#define TXDESC_64_BYTES
-#elif defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8723B)
 #define TXDESC_40_BYTES
 #endif
 
@@ -206,18 +188,6 @@ union txdesc {
 	unsigned int value[TXDESC_SIZE>>2];
 };
 
-#ifdef CONFIG_PCI_HCI
-#define PCI_MAX_TX_QUEUE_COUNT	8
-
-struct rtw_tx_ring {
-	struct tx_desc	*desc;
-	dma_addr_t		dma;
-	unsigned int		idx;
-	unsigned int		entries;
-	_queue			queue;
-	u32				qlen;
-};
-#endif
 
 struct	hw_xmit	{
 	//_lock xmit_lock;
@@ -633,15 +603,6 @@ struct	xmit_priv	{
 
 #endif
 
-#ifdef CONFIG_PCI_HCI
-	// Tx
-	struct rtw_tx_ring	tx_ring[PCI_MAX_TX_QUEUE_COUNT];
-	int	txringcount[PCI_MAX_TX_QUEUE_COUNT];
-	u8 	beaconDMAing;		//flag of indicating beacon is transmiting to HW by DMA
-#ifdef PLATFORM_LINUX
-	struct tasklet_struct xmit_tasklet;
-#endif
-#endif
 
 #ifdef CONFIG_SDIO_HCI
 #ifdef CONFIG_SDIO_TX_TASKLET

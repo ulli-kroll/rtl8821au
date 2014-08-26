@@ -27,7 +27,6 @@ CONFIG_RTL8821A = y
 CONFIG_RTL8723B = n
 
 CONFIG_USB_HCI = y
-CONFIG_PCI_HCI = n
 CONFIG_SDIO_HCI = n
 CONFIG_GSPI_HCI = n
 
@@ -72,11 +71,6 @@ endif
 ifeq ($(CONFIG_USB_HCI), y)
 HCI_NAME = usb
 endif
-
-ifeq ($(CONFIG_PCI_HCI), y)
-HCI_NAME = pci
-endif
-
 
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/linux/os_intfs.o \
@@ -128,9 +122,6 @@ endif
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8723au
 endif
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8723ae
-endif
 EXTRA_CFLAGS += -DCONFIG_RTL8723A
 
 _HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
@@ -176,9 +167,6 @@ ifeq ($(CONFIG_USB_HCI), y)
 _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/Hal8723UHWImg_CE.o
 endif
 
-ifeq ($(CONFIG_PCI_HCI), y)
-_OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/Hal8723EHWImg_CE.o
-endif
 
 #hal/OUTSRC/$(RTL871X)/HalHWImg8723A_FW.o
 _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/HalHWImg8723A_BB.o\
@@ -200,9 +188,6 @@ ifneq ($(CONFIG_RTL8812A)_$(CONFIG_RTL8821A), n_n)
 RTL871X = rtl8812a
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8812au
-endif
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8812ae
 endif
 ifeq ($(CONFIG_SDIO_HCI), y)
 MODULE_NAME = 8812as
@@ -258,9 +243,6 @@ ifeq ($(CONFIG_RTL8821A), y)
 ifeq ($(CONFIG_RTL8812A), n)
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME := 8821au
-endif
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME := 8821ae
 endif
 endif
 
@@ -507,9 +489,6 @@ ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME := rtw_usb
 endif
 
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME := rtw_pci
-endif
 
 
 endif

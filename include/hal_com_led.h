@@ -100,7 +100,7 @@ typedef enum _LED_CTL_MODE{
 	LED_CTL_START_WPS = 9,
 	LED_CTL_STOP_WPS = 10,
 	LED_CTL_START_WPS_BOTTON = 11, //added for runtop
-	LED_CTL_STOP_WPS_FAIL = 12, //added for ALPHA	
+	LED_CTL_STOP_WPS_FAIL = 12, //added for ALPHA
 	LED_CTL_STOP_WPS_FAIL_OVERLAP = 13, //added for BELKIN
 	LED_CTL_CONNECTION_NO_TRANSFER = 14,
 }LED_CTL_MODE;
@@ -144,59 +144,7 @@ typedef enum _LED_PIN{
 //================================================================================
 // PCIE LED Definition.
 //================================================================================
-#ifdef CONFIG_PCI_HCI
-typedef	enum _LED_STRATEGY_PCIE{
-	SW_LED_MODE0, // SW control 1 LED via GPIO0. It is default option.
-	SW_LED_MODE1, // SW control for PCI Express
-	SW_LED_MODE2, // SW control for Cameo.
-	SW_LED_MODE3, // SW contorl for RunTop.
-	SW_LED_MODE4, // SW control for Netcore
-	SW_LED_MODE5, //added by vivi, for led new mode, DLINK
-	SW_LED_MODE6, //added by vivi, for led new mode, PRONET
-	SW_LED_MODE7, //added by chiyokolin, for Lenovo, PCI Express Minicard Spec Rev.1.2 spec
-	SW_LED_MODE8, //added by chiyokolin, for QMI
-	SW_LED_MODE9, //added by chiyokolin, for BITLAND-LENOVO, PCI Express Minicard Spec Rev.1.1 	
-	SW_LED_MODE10, //added by chiyokolin, for Edimax-ASUS
-	SW_LED_MODE11,	//added by hpfan, for Xavi
-	SW_LED_MODE12,	//added by chiyokolin, for Azurewave
-	HW_LED, // HW control 2 LEDs, LED0 and LED1 (there are 4 different control modes)
-}LED_STRATEGY_PCIE, *PLED_STRATEGY_PCIE;
-
-typedef struct _LED_PCIE{
-	PADAPTER		padapter;
-
-	LED_PIN			LedPin;	// Identify how to implement this SW led.
-
-	LED_STATE		CurrLedState; // Current LED state.
-	BOOLEAN			bLedOn; // TRUE if LED is ON, FALSE if LED is OFF.
-
-	BOOLEAN			bLedBlinkInProgress; // TRUE if it is blinking, FALSE o.w..
-	BOOLEAN			bLedWPSBlinkInProgress; // TRUE if it is blinking, FALSE o.w..
-
-	BOOLEAN			bLedSlowBlinkInProgress;//added by vivi, for led new mode
-	u32				BlinkTimes; // Number of times to toggle led state for blinking.
-	LED_STATE		BlinkingLedState; // Next state for blinking, either LED_ON or LED_OFF are.
-
-	_timer			BlinkTimer; // Timer object for led blinking.
-} LED_PCIE, *PLED_PCIE;
-
-typedef struct _LED_PCIE	LED_DATA, *PLED_DATA;
-typedef enum _LED_STRATEGY_PCIE	LED_STRATEGY, *PLED_STRATEGY;
-
-VOID
-LedControlPCIE(
-	IN	PADAPTER		Adapter,
-	IN	LED_CTL_MODE		LedAction
-	);
-
-VOID
-gen_RefreshLedState(
-	IN	PADAPTER		Adapter);
-
-//================================================================================
-// USB  LED Definition.
-//================================================================================
-#elif defined(CONFIG_USB_HCI)
+#if defined(CONFIG_USB_HCI)
 
 #define IS_LED_WPS_BLINKING(_LED_USB)	(((PLED_USB)_LED_USB)->CurrLedState==LED_BLINK_WPS \
 					|| ((PLED_USB)_LED_USB)->CurrLedState==LED_BLINK_WPS_STOP \
@@ -212,7 +160,7 @@ typedef	enum _LED_STRATEGY_USB{
 	SW_LED_MODE2, // SW control 1 LED via GPIO0, customized for AzWave 8187 minicard.
 	SW_LED_MODE3, // SW control 1 LED via GPIO0, customized for Sercomm Printer Server case.
 	SW_LED_MODE4, //for Edimax / Belkin
-	SW_LED_MODE5, //for Sercomm / Belkin	
+	SW_LED_MODE5, //for Sercomm / Belkin
 	SW_LED_MODE6,	//for 88CU minicard, porting from ce SW_LED_MODE7
 	SW_LED_MODE7,	//for Netgear special requirement
 	SW_LED_MODE8, //for LC
@@ -239,10 +187,10 @@ typedef struct _LED_USB{
 	// ALPHA, added by chiyoko, 20090106
 	BOOLEAN				bLedNoLinkBlinkInProgress;
 	BOOLEAN				bLedLinkBlinkInProgress;
-	BOOLEAN				bLedStartToLinkBlinkInProgress;	
+	BOOLEAN				bLedStartToLinkBlinkInProgress;
 	BOOLEAN				bLedScanBlinkInProgress;
 	BOOLEAN				bLedWPSBlinkInProgress;
-	
+
 	u32					BlinkTimes; // Number of times to toggle led state for blinking.
 	u8					BlinkCounter; //Added for turn off overlap led after blinking a while, by page, 20120821
 	LED_STATE			BlinkingLedState; // Next state for blinking, either LED_ON or LED_OFF are.
@@ -281,7 +229,7 @@ typedef	enum _LED_STRATEGY_SDIO{
 	SW_LED_MODE2, // SW control 1 LED via GPIO0, customized for AzWave 8187 minicard.
 	SW_LED_MODE3, // SW control 1 LED via GPIO0, customized for Sercomm Printer Server case.
 	SW_LED_MODE4, //for Edimax / Belkin
-	SW_LED_MODE5, //for Sercomm / Belkin	
+	SW_LED_MODE5, //for Sercomm / Belkin
 	SW_LED_MODE6,	//for 88CU minicard, porting from ce SW_LED_MODE7
 	HW_LED, // HW control 2 LEDs, LED0 and LED1 (there are 4 different control modes, see MAC.CONFIG1 for details.)
 }LED_STRATEGY_SDIO, *PLED_STRATEGY_SDIO;
@@ -300,10 +248,10 @@ typedef struct _LED_SDIO{
 	// ALPHA, added by chiyoko, 20090106
 	BOOLEAN				bLedNoLinkBlinkInProgress;
 	BOOLEAN				bLedLinkBlinkInProgress;
-	BOOLEAN				bLedStartToLinkBlinkInProgress;	
+	BOOLEAN				bLedStartToLinkBlinkInProgress;
 	BOOLEAN				bLedScanBlinkInProgress;
 	BOOLEAN				bLedWPSBlinkInProgress;
-	
+
 	u32					BlinkTimes; // Number of times to toggle led state for blinking.
 	LED_STATE			BlinkingLedState; // Next state for blinking, either LED_ON or LED_OFF are.
 

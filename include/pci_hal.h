@@ -22,9 +22,6 @@
 
 
 
-#ifdef CONFIG_RTL8188E
-void rtl8188ee_set_hal_ops(_adapter * padapter);
-#endif
 
 void rtw_set_hal_ops(_adapter *padapter);
 

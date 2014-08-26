@@ -151,10 +151,6 @@ void rtl8723as_set_hal_ops(PADAPTER padapter);
 #define set_hal_ops rtl8723as_set_hal_ops
 #endif
 
-#ifdef CONFIG_RTL8188E
-void rtl8188es_set_hal_ops(PADAPTER padapter);
-#define set_hal_ops rtl8188es_set_hal_ops
-#endif
 extern void spi_set_chip_endian(PADAPTER padapter);
 extern void spi_set_intf_ops(_adapter *padapter,struct _io_ops *pops);
 extern void spi_set_chip_endian(PADAPTER padapter);

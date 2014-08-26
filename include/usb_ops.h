@@ -60,10 +60,6 @@ void rtl8192cu_xmit_tasklet(void *priv);
 #endif
 
 
-#ifdef CONFIG_RTL8188E
-void rtl8188eu_set_hw_type(_adapter *padapter);
-void rtl8188eu_set_intf_ops(struct _io_ops *pops);
-#endif
 
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 void rtl8812au_set_hw_type(_adapter *padapter);

@@ -28,10 +28,6 @@ void rtw_set_hal_ops(_adapter *padapter);
 void rtl8723as_set_hal_ops(PADAPTER padapter);
 #endif
 
-#ifdef CONFIG_RTL8188E
-void rtl8188es_set_hal_ops(PADAPTER padapter);
-#endif
-
 #ifdef CONFIG_RTL8723B
 void rtl8723bs_set_hal_ops(PADAPTER padapter);
 #endif

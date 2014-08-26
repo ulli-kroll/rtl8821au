@@ -49,13 +49,6 @@ extern void DisableInterrupt8723ASdio(PADAPTER padapter);
 extern u8 HalQueryTxBufferStatus8723ASdio(PADAPTER padapter);
 #endif // CONFIG_RTL8723A
 
-#ifdef CONFIG_RTL8188E
-extern void InitInterrupt8188ESdio(PADAPTER padapter);
-extern void EnableInterrupt8188ESdio(PADAPTER padapter);
-extern void DisableInterrupt8188ESdio(PADAPTER padapter);
-extern void UpdateInterruptMask8188ESdio(PADAPTER padapter, u32 AddMSR, u32 RemoveMSR);
-extern u8 HalQueryTxBufferStatus8189ESdio(PADAPTER padapter);
-#endif // CONFIG_RTL8188E
 
 #ifdef CONFIG_RTL8821A
 extern void InitInterrupt8821AS(PADAPTER padapter);

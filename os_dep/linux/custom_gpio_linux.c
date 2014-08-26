@@ -28,10 +28,6 @@
 
 #if !(defined ANDROID_2X)
 
-#ifdef CONFIG_RTL8188E
-#include <mach/regulator.h>
-#include <linux/regulator/consumer.h>
-#endif // CONFIG_RTL8188E
 
 #ifndef GPIO_WIFI_POWER
 #define GPIO_WIFI_POWER -1
@@ -73,7 +69,7 @@ int rtw_wifi_gpio_init(void)
 #ifdef CONFIG_SDIO_HCI
 #if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)) && (MP_DRIVER == 1)
 	if(rtw_mp_mode==1){
-		DBG_871X("%s GPIO_BT_RESET pin special for mp_test\n", __func__);	
+		DBG_871X("%s GPIO_BT_RESET pin special for mp_test\n", __func__);
 		if (GPIO_BT_RESET > 0)
 			gpio_request(GPIO_BT_RESET , "bt_rst");
 	}
@@ -164,9 +160,6 @@ void rtw_wifi_gpio_wlan_ctrl(int onoff)
 
 #include <mach/ldo.h>
 
-#ifdef CONFIG_RTL8188E
-extern int sprd_3rdparty_gpio_wifi_power;
-#endif
 extern int sprd_3rdparty_gpio_wifi_pwd;
 #if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B))
 extern int sprd_3rdparty_gpio_bt_reset;
@@ -221,39 +214,9 @@ void rtw_wifi_gpio_wlan_ctrl(int onoff)
 		break;
 
 		case WLAN_POWER_OFF:
-#ifdef CONFIG_RTL8188E
-#ifdef CONFIG_WIF1_LDO
-			DBG_8192C("%s: turn off VDD-WIFI0 1.2V\n", __FUNCTION__);
-			LDO_TurnOffLDO(LDO_LDO_WIF1);
-#endif //CONFIG_WIF1_LDO
-
-			DBG_8192C("%s: turn off VDD-WIFI0 3.3V\n", __FUNCTION__);
-			LDO_TurnOffLDO(LDO_LDO_WIF0);
-
-			DBG_8192C("%s: call customer specific GPIO(%d) to turn off wifi power\n",
-				__FUNCTION__, sprd_3rdparty_gpio_wifi_power);
-			if (sprd_3rdparty_gpio_wifi_power != 65535)
-				gpio_set_value(sprd_3rdparty_gpio_wifi_power, 0);
-#endif
 		break;
 
 		case WLAN_POWER_ON:
-#ifdef CONFIG_RTL8188E
-			DBG_8192C("%s: call customer specific GPIO(%d) to turn on wifi power\n",
-				__FUNCTION__, sprd_3rdparty_gpio_wifi_power);
-			if (sprd_3rdparty_gpio_wifi_power != 65535)
-				gpio_set_value(sprd_3rdparty_gpio_wifi_power, 1);
-
-			DBG_8192C("%s: turn on VDD-WIFI0 3.3V\n", __FUNCTION__);
-			LDO_TurnOnLDO(LDO_LDO_WIF0);
-			LDO_SetVoltLevel(LDO_LDO_WIF0,LDO_VOLT_LEVEL1);
-
-#ifdef CONFIG_WIF1_LDO
-			DBG_8192C("%s: turn on VDD-WIFI1 1.2V\n", __func__);
-			LDO_TurnOnLDO(LDO_LDO_WIF1);
-			LDO_SetVoltLevel(LDO_LDO_WIF1,LDO_VOLT_LEVEL3);
-#endif //CONFIG_WIF1_LDO
-#endif
 		break;
 
 		case WLAN_BT_PWDN_OFF:

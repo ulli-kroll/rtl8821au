@@ -21,19 +21,6 @@
 #define __PCI_OPS_H_
 
 
-#ifdef CONFIG_RTL8188E
-u32	rtl8188ee_init_desc_ring(_adapter * padapter);
-u32	rtl8188ee_free_desc_ring(_adapter * padapter);
-void	rtl8188ee_reset_desc_ring(_adapter * padapter);
-#ifdef CONFIG_64BIT_DMA
-u8	PlatformEnable88EEDMA64(PADAPTER Adapter);
-#endif
-int	rtl8188ee_interrupt(PADAPTER Adapter);
-void	rtl8188ee_xmit_tasklet(void *priv);
-void	rtl8188ee_recv_tasklet(void *priv);
-void	rtl8188ee_prepare_bcn_tasklet(void *priv);
-void	rtl8188ee_set_intf_ops(struct _io_ops	*pops);
-#endif
 
 
 

@@ -274,11 +274,6 @@ void	_rtw_mutex_init(_mutex *pmutex)
 	mutex_init(pmutex);
 
 #endif
-#ifdef PLATFORM_OS_XP
-
-	KeInitializeMutex(pmutex, 0);
-
-#endif
 
 }
 
@@ -292,9 +287,6 @@ void	_rtw_mutex_free(_mutex *pmutex)
 
 #endif
 
-#ifdef PLATFORM_OS_XP
-
-#endif
 
 }
 

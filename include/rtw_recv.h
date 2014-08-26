@@ -20,13 +20,6 @@
 #ifndef _RTW_RECV_H_
 #define _RTW_RECV_H_
 
-#ifdef PLATFORM_OS_XP
-	#ifdef CONFIG_SDIO_HCI
-		#define NR_RECVBUFF 1024//512//128
-	#else
-		#define NR_RECVBUFF (16)
-	#endif
-#else //PLATFORM_LINUX /PLATFORM_BSD
 
 	#ifdef CONFIG_SINGLE_RECV_BUF
 		#define NR_RECVBUFF (1)
@@ -41,7 +34,6 @@
 	#endif //CONFIG_SINGLE_RECV_BUF
 
 	#define NR_PREALLOC_RECV_SKB (8)
-#endif
 
 #define NR_RECVFRAME 256
 
@@ -395,15 +387,12 @@ struct recv_buf
 
 #ifdef CONFIG_USB_HCI
 
-	#if defined(PLATFORM_OS_XP)||defined(PLATFORM_LINUX)||defined(PLATFORM_FREEBSD)
+	#if defined(PLATFORM_LINUX)||defined(PLATFORM_FREEBSD)
 	PURB	purb;
 	dma_addr_t dma_transfer_addr;	/* (in) dma addr for transfer_buffer */
 	u32 alloc_sz;
 	#endif
 
-	#ifdef PLATFORM_OS_XP
-	PIRP		pirp;
-	#endif
 
 	u8  irp_pending;
 	int  transfer_len;

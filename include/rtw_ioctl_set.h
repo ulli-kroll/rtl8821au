@@ -29,13 +29,6 @@ typedef struct _BSSIDInfo {
 } BSSIDInfo, *PBSSIDInfo;
 
 
-#ifdef PLATFORM_OS_XP
-typedef struct _NDIS_802_11_PMKID {
-	u32	Length;
-	u32	BSSIDInfoCount;
-	BSSIDInfo BSSIDInfo[1];
-} NDIS_802_11_PMKID, *PNDIS_802_11_PMKID;
-#endif
 
 
 u8 rtw_set_802_11_add_key(_adapter * padapter, NDIS_802_11_KEY * key);

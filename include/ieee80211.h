@@ -23,9 +23,6 @@
 
 #ifndef CONFIG_RTL8711FW
 
-	#if defined PLATFORM_OS_XP
-	#include <ntstrsafe.h>
-	#endif
 #else
 
 #endif

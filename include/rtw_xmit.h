@@ -398,14 +398,11 @@ struct xmit_buf
 	//u32 sz[8];
 	u32	ff_hwaddr;
 
-#if defined(PLATFORM_OS_XP)||defined(PLATFORM_LINUX) || defined(PLATFORM_FREEBSD)
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_FREEBSD)
 	PURB	pxmit_urb[8];
 	dma_addr_t dma_transfer_addr;	/* (in) dma addr for transfer_buffer */
 #endif
 
-#ifdef PLATFORM_OS_XP
-	PIRP		pxmit_irp[8];
-#endif
 
 
 	u8 bpending[8];
@@ -422,11 +419,6 @@ struct xmit_buf
 	u32 ff_hwaddr;
 	u8	pg_num;
 	u8	agg_num;
-#ifdef PLATFORM_OS_XP
-	PMDL pxmitbuf_mdl;
-	PIRP  pxmitbuf_irp;
-	PSDBUS_REQUEST_PACKET pxmitbuf_sdrp;
-#endif
 #endif
 
 

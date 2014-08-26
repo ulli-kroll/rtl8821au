@@ -4,9 +4,6 @@
 #include <drv_conf.h>
 #include <osdep_service.h>
 
-#ifdef PLATFORM_OS_XP
-#include <drv_types_xp.h>
-#endif
 
 
 #ifdef PLATFORM_LINUX

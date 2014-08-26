@@ -77,27 +77,7 @@ typedef struct _DR_VARIABLE_STRUCT_ {
 
 //int mp_start_joinbss(_adapter *padapter, NDIS_802_11_SSID *pssid);
 
-//void _irqlevel_changed_(_irqL *irqlevel, /*BOOLEAN*/unsigned char bLower);
-#ifdef PLATFORM_OS_XP
-static void _irqlevel_changed_(_irqL *irqlevel, u8 bLower)
-{
-
-	if (bLower == LOWER) {
-		*irqlevel = KeGetCurrentIrql();
-
-		if (*irqlevel > PASSIVE_LEVEL) {
-			KeLowerIrql(PASSIVE_LEVEL);
-		}
-	} else {
-		if (KeGetCurrentIrql() == PASSIVE_LEVEL) {
-			KeRaiseIrql(DISPATCH_LEVEL, irqlevel);
-		}
-	}
-
-}
-#else
 #define _irqlevel_changed_(a,b)
-#endif
 
 //oid_rtl_seg_81_80_00
 NDIS_STATUS oid_rt_pro_set_data_rate_hdl(struct oid_par_priv* poid_par_priv);
@@ -522,7 +502,7 @@ enum RTL871X_MP_IOCTL_SUBCODE {
 	GEN_MP_IOCTL_SUBCODE(TRIGGER_GPIO),
 	GEN_MP_IOCTL_SUBCODE(SET_DM_BT),		/*35*/
 	GEN_MP_IOCTL_SUBCODE(DEL_BA),			/*36*/
-	GEN_MP_IOCTL_SUBCODE(GET_WIFI_STATUS),	/*37*/	
+	GEN_MP_IOCTL_SUBCODE(GET_WIFI_STATUS),	/*37*/
 	MAX_MP_IOCTL_SUBCODE,
 };
 

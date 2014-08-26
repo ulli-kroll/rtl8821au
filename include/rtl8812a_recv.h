@@ -22,9 +22,6 @@
 
 #if defined(CONFIG_USB_HCI)
 
-#ifdef PLATFORM_OS_CE
-#define MAX_RECVBUF_SZ (8192+1024) // 8K+1k
-#else
 	#ifndef CONFIG_MINIMAL_MEMORY_USAGE
 		#define MAX_RECVBUF_SZ (24576) // 24k
 		//#define MAX_RECVBUF_SZ (20480) //20K
@@ -34,7 +31,6 @@
 	#else
 		#define MAX_RECVBUF_SZ (4000) // about 4K
 	#endif
-#endif
 
 #elif defined(CONFIG_SDIO_HCI)
 

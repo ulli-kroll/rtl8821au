@@ -26,12 +26,6 @@
 	#else
 		#define NR_RECVBUFF (16)
 	#endif
-#elif defined(PLATFORM_OS_CE)
-	#ifdef CONFIG_SDIO_HCI
-		#define NR_RECVBUFF (128)
-	#else
-		#define NR_RECVBUFF (4)
-	#endif
 #else //PLATFORM_LINUX /PLATFORM_BSD
 
 	#ifdef CONFIG_SINGLE_RECV_BUF
@@ -409,10 +403,6 @@ struct recv_buf
 
 	#ifdef PLATFORM_OS_XP
 	PIRP		pirp;
-	#endif
-
-	#ifdef PLATFORM_OS_CE
-	USB_TRANSFER	usb_transfer_read_port;
 	#endif
 
 	u8  irp_pending;

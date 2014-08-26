@@ -280,9 +280,6 @@ void	_rtw_mutex_init(_mutex *pmutex)
 
 #endif
 
-#ifdef PLATFORM_OS_CE
-	*pmutex =  CreateMutex( NULL, _FALSE, NULL);
-#endif
 }
 
 void	_rtw_mutex_free(_mutex *pmutex);
@@ -299,9 +296,6 @@ void	_rtw_mutex_free(_mutex *pmutex)
 
 #endif
 
-#ifdef PLATFORM_OS_CE
-
-#endif
 }
 
 void	_rtw_spinlock_init(_lock *plock)

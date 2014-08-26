@@ -51,11 +51,7 @@
 #endif //CONFIG_SINGLE_XMIT_BUF
 #endif
 
-#ifdef PLATFORM_OS_CE
-#define XMITBUF_ALIGN_SZ 4
-#else
 #define XMITBUF_ALIGN_SZ 512
-#endif
 
 // xmit extension buff defination
 #define MAX_XMIT_EXTBUF_SZ	(1536)
@@ -411,9 +407,6 @@ struct xmit_buf
 	PIRP		pxmit_irp[8];
 #endif
 
-#ifdef PLATFORM_OS_CE
-	USB_TRANSFER	usb_transfer_write_port;
-#endif
 
 	u8 bpending[8];
 
@@ -585,10 +578,6 @@ struct	xmit_priv	{
 	struct semaphore	tx_retevt;//all tx return event;
 	u8		txirp_cnt;//
 
-#ifdef PLATFORM_OS_CE
-	USB_TRANSFER	usb_transfer_write_port;
-//	USB_TRANSFER	usb_transfer_write_mem;
-#endif
 #ifdef PLATFORM_LINUX
 	struct tasklet_struct xmit_tasklet;
 #endif

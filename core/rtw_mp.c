@@ -294,13 +294,6 @@ static VOID PHY_SetRFPathSwitch_default(
 #define PHY_SetRFPathSwitch(a,b)	rtl8192c_PHY_SetRFPathSwitch(a,b)
 #endif
 
-#ifdef CONFIG_RTL8192D
-#define PHY_IQCalibrate(a,b)	rtl8192d_PHY_IQCalibrate(a)
-#define PHY_LCCalibrate(a)	rtl8192d_PHY_LCCalibrate(a)
-//#define dm_CheckTXPowerTracking(a)	rtl8192d_odm_CheckTXPowerTracking(a)
-#define PHY_SetRFPathSwitch(a,b)	rtl8192d_PHY_SetRFPathSwitch(a,b)
-#endif
-
 #ifdef CONFIG_RTL8188E
 #define PHY_IQCalibrate(a,b)	PHY_IQCalibrate_8188E(a,b)
 #define PHY_LCCalibrate(a)	PHY_LCCalibrate_8188E(&(GET_HAL_DATA(a)->odmpriv))
@@ -431,9 +424,6 @@ MPT_InitializeAdapter(
 		//rtw_write32(pAdapter, REG_LEDCFG0, 0x08080);
 		ledsetting = rtw_read32(pAdapter, REG_LEDCFG0);
 
-	#if defined( CONFIG_RTL8192D )
-			rtw_write32(pAdapter, REG_LEDCFG0, ledsetting & ~BIT(7));
-	#endif
 	}
 
 	PHY_IQCalibrate(pAdapter, _FALSE);
@@ -1008,9 +998,6 @@ void PhySetTxPowerLevel(PADAPTER pAdapter)
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 		PHY_SetTxPowerLevel8812(pAdapter,pmp_priv->channel);
 #endif
-#if defined(CONFIG_RTL8192D)
-		PHY_SetTxPowerLevel8192D(pAdapter,pmp_priv->channel);
-#endif
 #if defined(CONFIG_RTL8192E)
 		PHY_SetTxPowerLevel8192E(pAdapter,pmp_priv->channel);
 #endif
@@ -1117,45 +1104,6 @@ void fill_txdesc_for_mp(PADAPTER padapter, struct tx_desc *ptxdesc)
 	memcpy(ptxdesc, &(pmp_priv->tx.desc), TXDESC_SIZE);
 }
 
-#if defined(CONFIG_RTL8192D)
-void fill_tx_desc_8192cd(PADAPTER padapter)
-{
-	struct mp_priv *pmp_priv = &padapter->mppriv;
-	struct tx_desc *desc   = &(pmp_priv->tx.desc);
-	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);
-
-	desc->txdw1 |= cpu_to_le32(BK); // don't aggregate(AMPDU)
-	desc->txdw1 |= cpu_to_le32((pattrib->mac_id) & 0x1F); //CAM_ID(MAC_ID)
-	desc->txdw1 |= cpu_to_le32((pattrib->qsel << QSEL_SHT) & 0x00001F00); // Queue Select, TID
-	desc->txdw1 |= cpu_to_le32((pattrib->raid << Rate_ID_SHT) & 0x000F0000); // Rate Adaptive ID
-
-	// offset 8
-	//	desc->txdw2 |= cpu_to_le32(AGG_BK);//AGG BK
-	desc->txdw3 |= cpu_to_le32((pattrib->seqnum<<16)&0x0fff0000);
-	desc->txdw4 |= cpu_to_le32(HW_SEQ_EN);
-
-	desc->txdw4 |= cpu_to_le32(USERATE);
-	desc->txdw4 |= cpu_to_le32(DISDATAFB);
-
-	if( pmp_priv->preamble ){
-		if (pmp_priv->rateidx <=  MPT_RATE_54M)
-			desc->txdw4 |= cpu_to_le32(DATA_SHORT); // CCK Short Preamble
-	}
-
-	if (pmp_priv->bandwidth == CHANNEL_WIDTH_40)
-		desc->txdw4 |= cpu_to_le32(DATA_BW);
-
-	// offset 20
-	desc->txdw5 |= cpu_to_le32(pmp_priv->rateidx & 0x0000001F);
-
-	if( pmp_priv->preamble ){
-		if (pmp_priv->rateidx > MPT_RATE_54M)
-			desc->txdw5 |= cpu_to_le32(SGI); // MCS Short Guard Interval
-	}
-
-	desc->txdw5 |= cpu_to_le32(0x0001FF00); // DATA/RTS Rate Fallback Limit
-}
-#endif
 
 #if defined(CONFIG_RTL8188E)
 void fill_tx_desc_8188e(PADAPTER padapter)
@@ -1351,10 +1299,6 @@ void SetPacketTx(PADAPTER padapter)
 	pkt_end = pkt_start + pkt_size;
 
 	//3 3. init TX descriptor
-#if defined(CONFIG_RTL8192D)
-	if(IS_HARDWARE_TYPE_8192C(padapter) ||IS_HARDWARE_TYPE_8192D(padapter))
-		fill_tx_desc_8192cd(padapter);
-#endif
 
 #if defined(CONFIG_RTL8188E)
 	if(IS_HARDWARE_TYPE_8188E(padapter))

@@ -37,21 +37,6 @@ void	rtl8188ee_set_intf_ops(struct _io_ops	*pops);
 
 
 
-#ifdef CONFIG_RTL8192D
-u32	rtl8192de_init_desc_ring(_adapter * padapter);
-u32	rtl8192de_free_desc_ring(_adapter * padapter);
-void	rtl8192de_reset_desc_ring(_adapter * padapter);
-#ifdef CONFIG_64BIT_DMA
-u8	PlatformEnable92DEDMA64(PADAPTER Adapter);
-#endif
-int	rtl8192de_interrupt(PADAPTER Adapter);
-void	rtl8192de_xmit_tasklet(void *priv);
-void	rtl8192de_recv_tasklet(void *priv);
-void	rtl8192de_prepare_bcn_tasklet(void *priv);
-void	rtl8192de_set_intf_ops(struct _io_ops	*pops);
-u32	MpReadPCIDwordDBI8192D(IN PADAPTER Adapter, IN u16 Offset, IN u8 Direct);
-void	MpWritePCIDwordDBI8192D(IN PADAPTER Adapter, IN u16 Offset, IN u32 Value, IN u8 Direct);
-#endif
 
 #endif
 

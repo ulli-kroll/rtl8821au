@@ -8894,19 +8894,6 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 	}
 	else if (strcmp(tmp[0], "mac") == 0)
 	{
-		#ifdef CONFIG_RTL8192D
-			#ifdef CONFIG_USB_HCI
-			if (pHalData->interfaceIndex == 0)
-				addr = EEPROM_MAC_ADDR_MAC0_92DU;
-			else
-				addr = EEPROM_MAC_ADDR_MAC1_92DU;
-			#else
-			if (pHalData->interfaceIndex == 0)
-				addr = EEPROM_MAC_ADDR_MAC0_92DE;
-			else
-				addr = EEPROM_MAC_ADDR_MAC1_92DE;
-			#endif
-		#endif // CONFIG_RTL8192D
 		#ifdef CONFIG_RTL8723A
 			#ifdef CONFIG_SDIO_HCI
 			addr = EEPROM_MAC_ADDR_8723AS;
@@ -8984,13 +8971,6 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 	}
 	else if (strcmp(tmp[0], "vidpid") == 0)
 	{
-		#ifdef CONFIG_RTL8192D
-			#ifdef CONFIG_USB_HCI
-			addr = EEPROM_VID_92DU;
-			#else
-			addr = EEPROM_VID_92DE;
-			#endif
-		#endif // CONFIG_RTL8192D
 		#ifdef CONFIG_RTL8723A
 			#ifdef CONFIG_USB_HCI
 			addr = EEPROM_VID_8723AU;
@@ -9430,19 +9410,6 @@ static int rtw_mp_efuse_set(struct net_device *ndev,
 		}
 
 		//mac,00e04c871200
-		#ifdef CONFIG_RTL8192D
-			#ifdef CONFIG_USB_HCI
-			if (pHalData->interfaceIndex == 0)
-				addr = EEPROM_MAC_ADDR_MAC0_92DU;
-			else
-				addr = EEPROM_MAC_ADDR_MAC1_92DU;
-			#else
-			if (pHalData->interfaceIndex == 0)
-				addr = EEPROM_MAC_ADDR_MAC0_92DE;
-			else
-				addr = EEPROM_MAC_ADDR_MAC1_92DE;
-			#endif
-		#endif
 		#ifdef CONFIG_RTL8723A
 		#ifdef CONFIG_SDIO_HCI
 		addr = EEPROM_MAC_ADDR_8723AS;
@@ -9546,13 +9513,6 @@ static int rtw_mp_efuse_set(struct net_device *ndev,
 		}
 
 		// pidvid,da0b7881
-		#ifdef CONFIG_RTL8192D
-			#ifdef CONFIG_USB_HCI
-			addr = EEPROM_VID_92DU;
-			#else
-			addr = EEPROM_VID_92DE;
-			#endif
-		#endif // CONFIG_RTL8192D
 		#ifdef CONFIG_RTL8723A
 			#ifdef CONFIG_USB_HCI
 			addr = EEPROM_VID_8723AU;
@@ -10697,9 +10657,6 @@ static int rtw_mp_thermal(struct net_device *ndev,
 	u8 val;
 	u16 bwrite=1;
 
-	#ifdef CONFIG_RTL8192D
-			u16 addr=EEPROM_THERMAL_METER_92D;
-	#endif
 	#ifdef CONFIG_RTL8723A
 			u16 addr=EEPROM_THERMAL_METER_8723A;
 	#endif
@@ -10823,14 +10780,10 @@ static int rtw_mp_dump(struct net_device *ndev,
 
 			for(path=0;path<path_nums;path++)
 			{
-#ifdef CONFIG_RTL8192D
-			  for (i = 0; i < 0x50; i++)
-#else
 #ifdef CONFIG_RTL8723B
 			  for (i = 0; i < 0x100; i++)
 #else
 	   		 for (i = 0; i < 0x34; i++)
-#endif
 #endif
 				{
 					//value = PHY_QueryRFReg(padapter, (RF_RADIO_PATH_E)path,i, bMaskDWord);

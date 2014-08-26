@@ -21,9 +21,6 @@
 #define __PCI_HAL_H__
 
 
-#ifdef CONFIG_RTL8192D
-void rtl8192de_set_hal_ops(_adapter * padapter);
-#endif
 
 #ifdef CONFIG_RTL8188E
 void rtl8188ee_set_hal_ops(_adapter * padapter);

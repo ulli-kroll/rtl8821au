@@ -65,11 +65,6 @@ void rtl8192cu_xmit_tasklet(void *priv);
 void rtl8812au_set_hw_type(_adapter *padapter);
 void rtl8812au_set_intf_ops(struct _io_ops *pops);
 #endif
-
-#ifdef CONFIG_RTL8192E
-void rtl8192eu_set_hw_type(_adapter *padapter);
-void rtl8192eu_set_intf_ops(struct _io_ops *pops);
-#endif
 /*
 * Increase and check if the continual_urb_error of this @param dvobjprive is larger than MAX_CONTINUAL_URB_ERR
 * @return _TRUE:

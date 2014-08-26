@@ -24,7 +24,6 @@ CONFIG_MULTIDRV = n
 CONFIG_RTL8723A = n
 CONFIG_RTL8812A = y
 CONFIG_RTL8821A = y
-CONFIG_RTL8192E = n
 CONFIG_RTL8723B = n
 
 CONFIG_USB_HCI = y
@@ -193,62 +192,6 @@ _OUTSRC_FILES += hal/OUTSRC/rtl8192c/HalDMOutSrc8192C_CE.o
 endif
 
 
-########### HAL_RTL8192E #################################
-ifeq ($(CONFIG_RTL8192E), y)
-
-RTL871X = rtl8192e
-ifeq ($(CONFIG_SDIO_HCI), y)
-MODULE_NAME = 8192es
-endif
-
-ifeq ($(CONFIG_USB_HCI), y)
-MODULE_NAME = 8192eu
-endif
-
-ifeq ($(CONFIG_PCI_HCI), y)
-MODULE_NAME = 8192ee
-endif
-EXTRA_CFLAGS += -DCONFIG_RTL8192E
-_HAL_INTFS_FILES += hal/HalPwrSeqCmd.o \
-					hal/$(RTL871X)/Hal8192EPwrSeq.o\
-					hal/$(RTL871X)/$(RTL871X)_xmit.o\
-					hal/$(RTL871X)/$(RTL871X)_sreset.o
-
-_HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
-			hal/$(RTL871X)/$(RTL871X)_phycfg.o \
-			hal/$(RTL871X)/$(RTL871X)_rf6052.o \
-			hal/$(RTL871X)/$(RTL871X)_dm.o \
-			hal/$(RTL871X)/$(RTL871X)_rxdesc.o \
-			hal/$(RTL871X)/$(RTL871X)_cmd.o \
-			hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_halinit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_led.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_xmit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_recv.o
-
-ifeq ($(CONFIG_SDIO_HCI), y)
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops.o
-else
-ifeq ($(CONFIG_GSPI_HCI), y)
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops.o
-else
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops_linux.o
-endif
-endif
-
-ifeq ($(CONFIG_MP_INCLUDED), y)
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(RTL871X)_mp.o
-endif
-
-#hal/OUTSRC/$(RTL871X)/HalHWImg8188E_FW.o
-_OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/HalHWImg8192E_MAC.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8192E_BB.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8192E_RF.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8192E_FW.o\
-		hal/OUTSRC/$(RTL871X)/HalPhyRf_8192e.o\
-		hal/OUTSRC/$(RTL871X)/odm_RegConfig8192E.o\
-		hal/OUTSRC/$(RTL871X)/odm_RTL8192E.o
-
-endif
 
 ########### HAL_RTL8812A_RTL8821A #################################
 

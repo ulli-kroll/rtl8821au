@@ -131,7 +131,7 @@ do{\
 
 #define HWXMIT_ENTRY	4
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)|| defined(CONFIG_RTL8192E) || defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8723B)
 #define TXDESC_SIZE 40
 #else
 #define TXDESC_SIZE 32

@@ -154,10 +154,6 @@ static struct usb_device_id rtw_usb_id_tbl[] ={
 	{USB_DEVICE(0x2001, 0x3314),.driver_info = RTL8821}, /* D-Link - Cameo */
 #endif
 
-#ifdef CONFIG_RTL8192E
-	/*=== Realtek demoboard ===*/
-	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x818B),.driver_info = RTL8192E},/* Default ID */
-#endif
 	{}	/* Terminating entry */
 };
 
@@ -529,12 +525,6 @@ static void rtw_decide_chip_type_by_usb_info(_adapter *padapter, const struct us
 	if(padapter->chip_type == RTL8812 || padapter->chip_type == RTL8821)
 		rtl8812au_set_hw_type(padapter);
 	#endif
-
-	#ifdef CONFIG_RTL8192E
-	if(padapter->chip_type == RTL8192E)
-		rtl8192eu_set_hw_type(padapter);
-	#endif
-
 }
 void rtw_set_hal_ops(_adapter *padapter)
 {
@@ -548,11 +538,6 @@ void rtw_set_hal_ops(_adapter *padapter)
 	#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 	if(padapter->chip_type == RTL8812 || padapter->chip_type == RTL8821)
 		rtl8812au_set_hal_ops(padapter);
-	#endif
-
-	#ifdef CONFIG_RTL8192E
-	if(padapter->chip_type == RTL8192E)
-		rtl8192eu_set_hal_ops(padapter);
 	#endif
 }
 
@@ -570,12 +555,6 @@ void usb_set_intf_ops(_adapter *padapter,struct _io_ops *pops)
 	if(padapter->chip_type == RTL8812 || padapter->chip_type == RTL8821)
 		rtl8812au_set_intf_ops(pops);
 	#endif
-
-	#ifdef CONFIG_RTL8192E
-	if(padapter->chip_type == RTL8192E)
-		rtl8192eu_set_intf_ops(pops);
-	#endif
-
 }
 
 

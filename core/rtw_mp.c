@@ -328,11 +328,6 @@ static VOID PHY_SetRFPathSwitch_default(
 		PHY_SetRFPathSwitch_default(_Adapter, b)
 
 #endif //#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
-#ifdef CONFIG_RTL8192E
-#define PHY_IQCalibrate(a,b)	PHY_IQCalibrate_8192E(a,b)
-#define PHY_LCCalibrate(a)	PHY_LCCalibrate_8192E(&(GET_HAL_DATA(a)->odmpriv))
-#define PHY_SetRFPathSwitch(a,b) PHY_SetRFPathSwitch_8192E(a,b)
-#endif //CONFIG_RTL8812A_8821A
 
 #ifdef CONFIG_RTL8723B
 #define PHY_IQCalibrate(a,b)	PHY_IQCalibrate_8723B(a,b)
@@ -549,7 +544,7 @@ static void disable_dm(PADAPTER padapter)
 	Switch_DM_Func(padapter, DYNAMIC_FUNC_DISABLE, _FALSE);
 
 	// enable APK, LCK and IQK but disable power tracking
-#if !(defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)|| defined(CONFIG_RTL8192E))
+#if !(defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A))
 	pdmpriv->TxPowerTrackControl = _FALSE;
 #endif
 	Switch_DM_Func(padapter, DYNAMIC_RF_CALIBRATION, _TRUE);
@@ -985,9 +980,6 @@ void PhySetTxPowerLevel(PADAPTER pAdapter)
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 		PHY_SetTxPowerLevel8812(pAdapter,pmp_priv->channel);
 #endif
-#if defined(CONFIG_RTL8192E)
-		PHY_SetTxPowerLevel8192E(pAdapter,pmp_priv->channel);
-#endif
 #if defined(CONFIG_RTL8723B)
 		PHY_SetTxPowerLevel8723B(pAdapter,pmp_priv->channel);
 #endif
@@ -1190,14 +1182,6 @@ void fill_tx_desc_8812a(PADAPTER padapter)
 
 }
 #endif
-#if defined(CONFIG_RTL8192E)
-void fill_tx_desc_8192e(PADAPTER padapter)
-{
-	struct mp_priv *pmp_priv = &padapter->mppriv;
-	struct tx_desc *desc   = &(pmp_priv->tx.desc);
-	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);
-}
-#endif
 
 #if defined(CONFIG_RTL8723B)
 void fill_tx_desc_8723b(PADAPTER padapter)
@@ -1297,10 +1281,6 @@ void SetPacketTx(PADAPTER padapter)
 		fill_tx_desc_8812a(padapter);
 #endif
 
-#if defined(CONFIG_RTL8192E)
-	if(IS_HARDWARE_TYPE_8188E(padapter))
-		fill_tx_desc_8192e(padapter);
-#endif
 #if defined(CONFIG_RTL8723B)
 	if(IS_HARDWARE_TYPE_8723B(padapter))
 		fill_tx_desc_8723b(padapter);

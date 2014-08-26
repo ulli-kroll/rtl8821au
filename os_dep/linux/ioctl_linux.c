@@ -8906,17 +8906,6 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 			#endif
 		#endif // CONFIG_RTL8723A
 
-		#ifdef CONFIG_RTL8192E
-			#ifdef CONFIG_USB_HCI
-			addr = EEPROM_MAC_ADDR_8192EU;
-			#endif
-			#ifdef CONFIG_SDIO_HCI
-			addr = EEPROM_MAC_ADDR_8192ES;
-			#endif
-			#ifdef CONFIG_PCI_HCI
-			addr = EEPROM_MAC_ADDR_8192EE;
-			#endif
-		#endif
 		#ifdef CONFIG_RTL8723B
 		#ifdef CONFIG_SDIO_HCI
 		addr = EEPROM_MAC_ADDR_8723BS;
@@ -8965,15 +8954,6 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 			addr = EEPROM_VID_8723AU;
 			#endif
 		#endif // CONFIG_RTL8723A
-
-		#ifdef CONFIG_RTL8192E
-			#ifdef CONFIG_USB_HCI
-			addr = EEPROM_VID_8192EU;
-			#endif
-			#ifdef CONFIG_PCI_HCI
-			addr = EEPROM_VID_8192EE;
-			#endif
-		#endif // CONFIG_RTL8192E
 		#ifdef CONFIG_RTL8723B
 		addr = EEPROM_VID_8723BU;
 		#endif // CONFIG_RTL8192E
@@ -9397,19 +9377,6 @@ static int rtw_mp_efuse_set(struct net_device *ndev,
 		addr = EEPROM_MAC_ADDR_8723AU;
 		#endif
 		#endif // CONFIG_RTL8723A
-
-		#ifdef CONFIG_RTL8192E
-			#ifdef CONFIG_USB_HCI
-			addr = EEPROM_MAC_ADDR_8192EU;
-			#endif
-			#ifdef CONFIG_SDIO_HCI
-			addr = EEPROM_MAC_ADDR_8192ES;
-			#endif
-			#ifdef CONFIG_PCI_HCI
-			addr = EEPROM_MAC_ADDR_8192EE;
-			#endif
-		#endif //#ifdef CONFIG_RTL8192E
-
 		#ifdef CONFIG_RTL8723B
 		#ifdef CONFIG_SDIO_HCI
 		addr = EEPROM_MAC_ADDR_8723BS;
@@ -9478,15 +9445,6 @@ static int rtw_mp_efuse_set(struct net_device *ndev,
 			addr = EEPROM_VID_8723AU;
 			#endif
 		#endif // CONFIG_RTL8723A
-
-		#ifdef CONFIG_RTL8192E
-			#ifdef CONFIG_USB_HCI
-			addr = EEPROM_VID_8192EU;
-			#endif
-			#ifdef CONFIG_PCI_HCI
-			addr = EEPROM_VID_8192EE;
-			#endif
-		#endif // CONFIG_RTL8188E
 
 		#ifdef CONFIG_RTL8723B
 		addr = EEPROM_VID_8723BU;
@@ -10614,9 +10572,6 @@ static int rtw_mp_thermal(struct net_device *ndev,
 	#endif
 	#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 			u16 addr=EEPROM_THERMAL_METER_8812;
-	#endif
-	#ifdef CONFIG_RTL8192E
-			u16 addr=EEPROM_THERMAL_METER_8192E;
 	#endif
 	#ifdef CONFIG_RTL8723B
 			u16 addr=EEPROM_THERMAL_METER_8723B;

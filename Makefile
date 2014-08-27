@@ -42,7 +42,6 @@ CONFIG_FTP_PROTECT = n
 CONFIG_WOWLAN = n
 
 CONFIG_PLATFORM_I386_PC = y
-CONFIG_PLATFORM_TI_DM365 = n
 CONFIG_PLATFORM_MSTAR_TITANIA12 = n
 CONFIG_PLATFORM_SZEBOOK = n
 
@@ -279,14 +278,6 @@ ARCH:=mips
 CROSS_COMPILE:= /usr/src/Mstar_kernel/mips-4.3/bin/mips-linux-gnu-
 KVER:= 2.6.28.9
 KSRC:= /usr/src/Mstar_kernel/2.6.28.9/
-endif
-
-ifeq ($(CONFIG_PLATFORM_TI_DM365), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_TI_DM365
-ARCH := arm
-CROSS_COMPILE := /home/cnsd4/Appro/mv_pro_5.0/montavista/pro/devkit/arm/v5t_le/bin/arm_v5t_le-
-KVER  := 2.6.18
-KSRC := /home/cnsd4/Appro/mv_pro_5.0/montavista/pro/devkit/lsp/ti-davinci/linux-dm365
 endif
 
 ifeq ($(CONFIG_PLATFORM_SZEBOOK), y)

@@ -272,9 +272,6 @@
  * Platform  Related Config
  */
 
-#ifdef CONFIG_PLATFORM_TI_DM365
-#define CONFIG_USE_USB_BUFFER_ALLOC_RX
-#endif
 
 
 

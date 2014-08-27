@@ -42,7 +42,6 @@ CONFIG_FTP_PROTECT = n
 CONFIG_WOWLAN = n
 
 CONFIG_PLATFORM_I386_PC = y
-CONFIG_PLATFORM_DMP_PHILIPS = n
 CONFIG_PLATFORM_TI_DM365 = n
 CONFIG_PLATFORM_MSTAR_TITANIA12 = n
 CONFIG_PLATFORM_SZEBOOK = n
@@ -281,20 +280,6 @@ CROSS_COMPILE:= /usr/src/Mstar_kernel/mips-4.3/bin/mips-linux-gnu-
 KVER:= 2.6.28.9
 KSRC:= /usr/src/Mstar_kernel/2.6.28.9/
 endif
-
-
-
-ifeq ($(CONFIG_PLATFORM_DMP_PHILIPS), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DRTK_DMP_PLATFORM
-ARCH := mips
-#CROSS_COMPILE:=/usr/local/msdk-4.3.6-mips-EL-2.6.12.6-0.9.30.3/bin/mipsel-linux-
-CROSS_COMPILE:=/usr/local/toolchain_mipsel/bin/mipsel-linux-
-KSRC ?=/usr/local/Jupiter/linux-2.6.12
-endif
-
-
-
-
 
 ifeq ($(CONFIG_PLATFORM_TI_DM365), y)
 EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_TI_DM365

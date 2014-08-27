@@ -42,7 +42,6 @@ CONFIG_FTP_PROTECT = n
 CONFIG_WOWLAN = n
 
 CONFIG_PLATFORM_I386_PC = y
-CONFIG_PLATFORM_FS_MX61 = n
 CONFIG_PLATFORM_DMP_PHILIPS = n
 CONFIG_PLATFORM_TI_DM365 = n
 CONFIG_PLATFORM_MSTAR_TITANIA12 = n
@@ -294,12 +293,6 @@ KSRC ?=/usr/local/Jupiter/linux-2.6.12
 endif
 
 
-ifeq ($(CONFIG_PLATFORM_FS_MX61), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
-ARCH := arm
-CROSS_COMPILE := /home/share/CusEnv/FreeScale/arm-eabi-4.4.3/bin/arm-eabi-
-KSRC ?= /home/share/CusEnv/FreeScale/FS_kernel_env
-endif
 
 
 

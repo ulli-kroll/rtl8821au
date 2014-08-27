@@ -141,17 +141,6 @@ typedef struct txdescriptor_8821a
 	u32 final_data_rate:8;
 }TXDESC_8821A, *PTXDESC_8821A;
 
-#ifdef CONFIG_SDIO_HCI
-s32 InitXmitPriv8821AS(PADAPTER padapter);
-void FreeXmitPriv8821AS(PADAPTER padapter);
-s32 XmitBufHandler8821AS(PADAPTER padapter);
-s32 MgntXmit8821AS(PADAPTER padapter, struct xmit_frame *pmgntframe);
-s32	HalXmitNoLock8821AS(PADAPTER padapter, struct xmit_frame *pxmitframe);
-s32 HalXmit8821AS(PADAPTER padapter, struct xmit_frame *pxmitframe);
-#ifndef CONFIG_SDIO_TX_TASKLET
-thread_return XmitThread8821AS(thread_context context);
-#endif // !CONFIG_SDIO_TX_TASKLET
-#endif // CONFIG_SDIO_HCI
 
 #if 0
 #ifdef CONFIG_USB_HCI

@@ -30,7 +30,7 @@
 
 #define	EEPROM_MAX_SIZE			HWSET_MAX_SIZE_512
 
-#define	CLOCK_RATE					50			//100us		
+#define	CLOCK_RATE					50			//100us
 
 //- EEPROM opcodes
 #define EEPROM_READ_OPCODE		06
@@ -41,13 +41,9 @@
 
 //Country codes
 #define USA							0x555320
-#define EUROPE						0x1 //temp, should be provided later	
+#define EUROPE						0x1 //temp, should be provided later
 #define JAPAN						0x2 //temp, should be provided later
 
-#ifdef CONFIG_SDIO_HCI
-#define eeprom_cis0_sz	17
-#define eeprom_cis1_sz	50
-#endif
 
 //
 // Customer ID, note that:
@@ -121,12 +117,6 @@ struct eeprom_priv
 
 	u8		efuse_eeprom_data[EEPROM_MAX_SIZE]; //92C:256bytes, 88E:512bytes, we use union set (512bytes)
 
-#ifdef CONFIG_SDIO_HCI
-	u8		sdio_setting;	
-	u32		ocr;
-	u8		cis0[eeprom_cis0_sz];
-	u8		cis1[eeprom_cis1_sz];	
-#endif
 };
 
 

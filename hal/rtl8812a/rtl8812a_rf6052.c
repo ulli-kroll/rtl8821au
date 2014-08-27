@@ -41,9 +41,9 @@ VOID
 PHY_RF6052SetBandwidth8812(
 	IN	PADAPTER				Adapter,
 	IN	CHANNEL_WIDTH		Bandwidth)	//20M or 40M
-{	
+{
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	
+
 	switch(Bandwidth)
 	{
 		case CHANNEL_WIDTH_20:
@@ -51,22 +51,22 @@ PHY_RF6052SetBandwidth8812(
 			PHY_SetRFReg(Adapter, RF_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 3);
 			PHY_SetRFReg(Adapter, RF_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 3);
 		break;
-			
+
 		case CHANNEL_WIDTH_40:
 			//DBG_871X("PHY_RF6052SetBandwidth8812(), set 40MHz, pHalData->RfRegChnlVal[0] = 0x%x \n", pHalData->RfRegChnlVal[0]);
-			PHY_SetRFReg(Adapter, RF_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 1);	
-			PHY_SetRFReg(Adapter, RF_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 1);	
+			PHY_SetRFReg(Adapter, RF_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 1);
+			PHY_SetRFReg(Adapter, RF_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 1);
 		break;
-		
+
 		case CHANNEL_WIDTH_80:
 			//DBG_871X("PHY_RF6052SetBandwidth8812(), set 80MHz, pHalData->RfRegChnlVal[0] = 0x%x \n", pHalData->RfRegChnlVal[0]);
-			PHY_SetRFReg(Adapter, RF_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 0);	
-			PHY_SetRFReg(Adapter, RF_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 0);	
+			PHY_SetRFReg(Adapter, RF_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 0);
+			PHY_SetRFReg(Adapter, RF_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 0);
 		break;
-			
+
 		default:
 			DBG_871X("PHY_RF6052SetBandwidth8812(): unknown Bandwidth: %#X\n",Bandwidth );
-			break;			
+			break;
 	}
 }
 
@@ -107,7 +107,7 @@ void getPowerBase8812(
 		else
 		{
 			powerlevel[i] = pPowerLevelBW40[i];
-		}	
+		}
 		powerBase1 = powerlevel[i];
 		powerBase1 = (powerBase1<<24) | (powerBase1<<16) |(powerBase1<<8) |powerBase1;
 		*(MCSBase+i) = powerBase1;
@@ -124,7 +124,7 @@ void getTxPowerWriteValByRegulatory8812(
 	OUT		u32*		pOutWriteVal
 	)
 {
-	
+
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	u8			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
@@ -147,9 +147,9 @@ void getTxPowerWriteValByRegulatory8812(
 			case 0:	// Realtek better performance
 					// increase power diff defined by Realtek for large power
 				chnlGroup = 0;
-				//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n", 
+				//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
 				//	chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
-				writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] + 
+				writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] +
 					((index<2)?powerBase0[rf]:powerBase1[rf]);
 				//RTPRINT(FPHY, PHY_TXPWR, ("RTK better performance, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
 				break;
@@ -171,8 +171,8 @@ void getTxPowerWriteValByRegulatory8812(
 						else if(Channel <14)		// Channel 12-13
 							chnlGroup = 4;
 						else if(Channel ==14)		// Channel 14
-							chnlGroup = 5;	
-				
+							chnlGroup = 5;
+
 /*
 						if(Channel <= 3)
 							chnlGroup = 0;
@@ -180,17 +180,17 @@ void getTxPowerWriteValByRegulatory8812(
 							chnlGroup = 1;
 						else if(Channel > 9)
 							chnlGroup = 2;
-						
-						
+
+
 						if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_20)
 							chnlGroup++;
 						else
 							chnlGroup+=4;
-*/							
+*/
 					}
-					//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n", 
+					//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
 					//chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
-					writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] + 
+					writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] +
 							((index<2)?powerBase0[rf]:powerBase1[rf]);
 					//RTPRINT(FPHY, PHY_TXPWR, ("Realtek regulatory, 20MHz, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
 				}
@@ -203,18 +203,18 @@ void getTxPowerWriteValByRegulatory8812(
 			case 3:	// Customer defined power diff.
 					// increase power diff defined by customer.
 				chnlGroup = 0;
-				//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n", 
+				//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
 				//	chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
 
 				/*
 				if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_40)
 				{
-					RTPRINT(FPHY, PHY_TXPWR, ("customer's limit, 40MHz rf(%c) = 0x%x\n", 
+					RTPRINT(FPHY, PHY_TXPWR, ("customer's limit, 40MHz rf(%c) = 0x%x\n",
 						((rf==0)?'A':'B'), pHalData->PwrGroupHT40[rf][Channel-1]));
 				}
 				else
 				{
-					RTPRINT(FPHY, PHY_TXPWR, ("customer's limit, 20MHz rf(%c) = 0x%x\n", 
+					RTPRINT(FPHY, PHY_TXPWR, ("customer's limit, 20MHz rf(%c) = 0x%x\n",
 						((rf==0)?'A':'B'), pHalData->PwrGroupHT20[rf][Channel-1]));
 				}*/
 
@@ -236,11 +236,11 @@ void getTxPowerWriteValByRegulatory8812(
 					pwr_diff = 0;
 				else
 					pwr_diff = customer_pwr_limit - pwr_diff;
-				
+
 				for (i=0; i<4; i++)
 				{
 					pwr_diff_limit[i] = (u1Byte)((pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]&(0x7f<<(i*8)))>>(i*8));
-					
+
 					if(pwr_diff_limit[i] > pwr_diff)
 						pwr_diff_limit[i] = pwr_diff;
 				}
@@ -252,7 +252,7 @@ void getTxPowerWriteValByRegulatory8812(
 				break;
 			default:
 				chnlGroup = 0;
-				writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] + 
+				writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] +
 						((index<2)?powerBase0[rf]:powerBase1[rf]);
 				//RTPRINT(FPHY, PHY_TXPWR, ("RTK better performance, writeVal rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
 				break;
@@ -277,12 +277,12 @@ void getTxPowerWriteValByRegulatory8812(
 		else if(pdmpriv->DynamicTxHighPowerLvl == TxHighPwrLevel_BT2)
 		{
 			//RTPRINT(FBT, BT_TRACE, ("Tx Power (-0)\n"));
-			writeVal = writeVal ;		
+			writeVal = writeVal ;
 		}
 		/*
 		if(pMgntInfo->bDisableTXPowerByRate)
 		{
-		// add for  OID_RT_11N_TX_POWER_BY_RATE ,disable tx powre change by rate                                  
+		// add for  OID_RT_11N_TX_POWER_BY_RATE ,disable tx powre change by rate
 			writeVal = 0x2c2c2c2c;
 		}
 		*/
@@ -298,7 +298,7 @@ static void writeOFDMPowerReg8812(
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
-	u2Byte RegOffset_A[6] = {	
+	u2Byte RegOffset_A[6] = {
     	rTxAGC_A_Ofdm18_Ofdm6_JAguar,
         rTxAGC_A_Ofdm54_Ofdm24_JAguar,
         rTxAGC_A_MCS3_MCS0_JAguar,
@@ -312,7 +312,7 @@ static void writeOFDMPowerReg8812(
         rTxAGC_B_MCS3_MCS0_JAguar,
         rTxAGC_B_MCS7_MCS4_JAguar,
         rTxAGC_B_MCS11_MCS8_JAguar,
-        rTxAGC_B_MCS15_MCS12_JAguar 
+        rTxAGC_B_MCS15_MCS12_JAguar
     };
 
 	u8	i, rf, pwr_val[4];
@@ -353,7 +353,7 @@ PHY_RF6052SetCckTxPower8812(
 	u8*			ptr;
 
 	//FOR CE ,must disable turbo scan
-	TurboScanOff = _TRUE;	
+	TurboScanOff = _TRUE;
 
 	if(pmlmeext->sitesurvey_res.state == SCAN_PROCESS)
 	{
@@ -369,7 +369,7 @@ PHY_RF6052SetCckTxPower8812(
 				TxAGC[idx1] =
 					pPowerlevel[idx1] | (pPowerlevel[idx1]<<8) |
 					(pPowerlevel[idx1]<<16) | (pPowerlevel[idx1]<<24);
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
+#if defined(CONFIG_USB_HCI)
 				// 2010/10/18 MH For external PA module. We need to limit power index to be less than 0x20.
 				if (TxAGC[idx1] > 0x20 && pHalData->ExternalPA_5G)
 					TxAGC[idx1] = 0x20;
@@ -443,25 +443,25 @@ PHY_RF6052SetCckTxPower8812(
 
 }	/* PHY_RF6052SetCckTxPower */
 
-VOID 
+VOID
 PHY_RF6052SetOFDMTxPower8812(
 	IN	PADAPTER	Adapter,
 	IN	u8*		pPowerLevelOFDM,
 	IN	u8*		pPowerLevelBW20,
-	IN	u8*		pPowerLevelBW40,	
+	IN	u8*		pPowerLevelBW40,
 	IN	u8		Channel)
 {
 	u32 writeVal[2], powerBase0[2], powerBase1[2], pwrtrac_value;
-	u8 index = 0;	
-	
+	u8 index = 0;
+
 
 	//DBG_871X("PHY_RF6052SetOFDMTxPower, channel(%d) \n", Channel);
 
 	getPowerBase8812(Adapter, pPowerLevelOFDM,pPowerLevelBW20,pPowerLevelBW40, Channel, &powerBase0[0], &powerBase1[0]);
-	
+
 	for(index=0; index<6; index++)
 	{
-		getTxPowerWriteValByRegulatory8812(Adapter, Channel, index, 
+		getTxPowerWriteValByRegulatory8812(Adapter, Channel, index,
 			&powerBase0[0], &powerBase1[0], &writeVal[0]);
 
 		writeOFDMPowerReg8812(Adapter, index, &writeVal[0]);
@@ -476,12 +476,12 @@ phy_RF6052_Config_ParaFile_8812(
 	u8					eRFPath;
 	int					rtStatus = _SUCCESS;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
-	static char			sz8812RadioAFile[] = RTL8812_PHY_RADIO_A;	
+	static char			sz8812RadioAFile[] = RTL8812_PHY_RADIO_A;
 	static char			sz8812RadioBFile[] = RTL8812_PHY_RADIO_B;
 	static char 			sz8812TxPwrTrack[] = RTL8812_TXPWR_TRACK;
 	static char			sz8821RadioAFile[] = RTL8821_PHY_RADIO_A;
 	static char			sz8821RadioBFile[] = RTL8821_PHY_RADIO_B;
-	static char 			sz8821TxPwrTrack[] = RTL8821_TXPWR_TRACK;	
+	static char 			sz8821TxPwrTrack[] = RTL8821_TXPWR_TRACK;
 	char					*pszRadioAFile = NULL, *pszRadioBFile = NULL, *pszTxPwrTrack = NULL;
 
 
@@ -536,7 +536,7 @@ phy_RF6052_Config_ParaFile_8812(
 	}
 
 	//3 -----------------------------------------------------------------
-	//3 Configuration of Tx Power Tracking 
+	//3 Configuration of Tx Power Tracking
 	//3 -----------------------------------------------------------------
 
 #ifdef CONFIG_EMBEDDED_FWIMG

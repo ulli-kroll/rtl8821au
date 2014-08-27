@@ -25,7 +25,6 @@ CONFIG_RTL8812A = y
 CONFIG_RTL8821A = y
 
 CONFIG_USB_HCI = y
-CONFIG_SDIO_HCI = n
 
 CONFIG_MP_INCLUDED = y
 CONFIG_POWER_SAVING = y
@@ -47,10 +46,6 @@ CONFIG_DRVEXT_MODULE = n
 export TopDIR ?= $(shell pwd)
 
 ########### COMMON  #################################
-ifeq ($(CONFIG_SDIO_HCI), y)
-HCI_NAME = sdio
-endif
-
 ifeq ($(CONFIG_USB_HCI), y)
 HCI_NAME = usb
 endif
@@ -66,11 +61,6 @@ _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/linux/ioctl_cfg80211.o \
 			os_dep/linux/rtw_android.o
 
-ifeq ($(CONFIG_SDIO_HCI), y)
-_OS_INTFS_FILES += os_dep/linux/custom_gpio_linux.o
-_OS_INTFS_FILES += os_dep/linux/$(HCI_NAME)_ops_linux.o
-endif
-
 _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com.o \
 			hal/hal_com_phycfg.o \
@@ -83,10 +73,6 @@ _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
 		hal/OUTSRC/odm.o\
 		hal/OUTSRC/HalPhyRf.o
 
-
-
-
-
 ########### HAL_RTL8812A_RTL8821A #################################
 
 ifneq ($(CONFIG_RTL8812A)_$(CONFIG_RTL8821A), n_n)
@@ -94,9 +80,6 @@ ifneq ($(CONFIG_RTL8812A)_$(CONFIG_RTL8821A), n_n)
 RTL871X = rtl8812a
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8812au
-endif
-ifeq ($(CONFIG_SDIO_HCI), y)
-MODULE_NAME = 8812as
 endif
 
 _HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
@@ -116,11 +99,7 @@ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
 			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_xmit.o \
 			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_recv.o
 
-ifeq ($(CONFIG_SDIO_HCI), y)
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops.o
-else
 _HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops_linux.o
-endif
 
 ifeq ($(CONFIG_MP_INCLUDED), y)
 _HAL_INTFS_FILES += hal/$(RTL871X)/$(RTL871X)_mp.o
@@ -148,10 +127,6 @@ MODULE_NAME := 8821au
 endif
 endif
 
-ifeq ($(CONFIG_SDIO_HCI), y)
-MODULE_NAME := 8821as
-endif
-
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
 _OUTSRC_FILES += hal/OUTSRC/rtl8821a/HalHWImg8821A_FW.o\
 		hal/OUTSRC/rtl8821a/HalHWImg8821A_MAC.o\
@@ -176,11 +151,7 @@ ifeq ($(CONFIG_AUTOCFG_CP), y)
 ifeq ($(CONFIG_MULTIDRV), y)
 $(shell cp $(TopDIR)/autoconf_multidrv_$(HCI_NAME)_linux.h $(TopDIR)/include/autoconf.h)
 else
-ifeq ($(CONFIG_RTL8188E)$(CONFIG_SDIO_HCI),yy)
-$(shell cp $(TopDIR)/autoconf_rtl8189e_$(HCI_NAME)_linux.h $(TopDIR)/include/autoconf.h)
-else
 $(shell cp $(TopDIR)/autoconf_$(RTL871X)_$(HCI_NAME)_linux.h $(TopDIR)/include/autoconf.h)
-endif
 endif
 
 endif
@@ -250,9 +221,6 @@ endif
 
 ifeq ($(CONFIG_MULTIDRV), y)
 
-ifeq ($(CONFIG_SDIO_HCI), y)
-MODULE_NAME := rtw_sdio
-endif
 
 ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME := rtw_usb

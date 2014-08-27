@@ -447,37 +447,6 @@ typedef struct hal_com_data
 
 	RT_AMPDU_BRUST		AMPDUBurstMode; //92C maybe not use, but for compile successfully
 
-#ifdef CONFIG_SDIO_HCI
-	//
-	// For SDIO Interface HAL related
-	//
-
-	//
-	// SDIO ISR Related
-	//
-//	u32			IntrMask[1];
-//	u32			IntrMaskToSet[1];
-//	LOG_INTERRUPT		InterruptLog;
-	u32			sdio_himr;
-	u32			sdio_hisr;
-
-	//
-	// SDIO Tx FIFO related.
-	//
-	// HIQ, MID, LOW, PUB free pages; padapter->xmitpriv.free_txpg
-	u8			SdioTxFIFOFreePage[SDIO_TX_FREE_PG_QUEUE];
-	_lock		SdioTxFIFOFreePageLock;
-	#ifndef CONFIG_SDIO_TX_TASKLET
-	_thread_hdl_	SdioXmitThread;
-	struct semaphore		SdioXmitSema;
-	struct semaphore		SdioXmitTerminateSema;
-	#endif//CONFIG_SDIO_TX_TASKLET
-	//
-	// SDIO Rx FIFO related.
-	//
-	u8			SdioRxFIFOCnt;
-	u16			SdioRxFIFOSize;
-#endif //CONFIG_SDIO_HCI
 
 #ifdef CONFIG_USB_HCI
 	u32	UsbBulkOutSize;

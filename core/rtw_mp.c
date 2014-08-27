@@ -1426,12 +1426,6 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 			goto exit;
 		}
 
-#if defined(CONFIG_SDIO_HCI)
-		pxmitbuf->phead = pxmitbuf->pbuf;
-		pxmitbuf->pend = pxmitbuf->pbuf + max_xmit_extbuf_size;
-		pxmitbuf->len = 0;
-		pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
-#endif
 
 		rtw_list_insert_tail(&pxmitbuf->list, &(pxmitpriv->free_xmit_extbuf_queue.queue));
 		pxmitbuf++;

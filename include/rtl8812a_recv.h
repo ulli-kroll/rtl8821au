@@ -31,11 +31,6 @@
 	#else
 		#define MAX_RECVBUF_SZ (4000) // about 4K
 	#endif
-
-#elif defined(CONFIG_SDIO_HCI)
-
-#define MAX_RECVBUF_SZ (10240)
-
 #endif
 
 
@@ -114,10 +109,6 @@
 #define SET_RX_STATUS_DESC_BUFF_ADDR_8812(__pRxDesc, __Value) 	SET_BITS_TO_LE_4BYTE(__pRxDesc+24, 0, 32, __Value)
 
 
-#ifdef CONFIG_SDIO_HCI
-s32 InitRecvPriv8821AS(PADAPTER padapter);
-void FreeRecvPriv8821AS(PADAPTER padapter);
-#endif // CONFIG_SDIO_HCI
 
 #ifdef CONFIG_USB_HCI
 #define INTERRUPT_MSG_FORMAT_LEN 60

@@ -93,7 +93,7 @@ static void dm_CheckPbcGPIO(_adapter *padapter)
 	if(!padapter->registrypriv.hw_wps_pbc)
 		return;
 
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
+#if defined(CONFIG_USB_HCI)
 	if (IS_HARDWARE_TYPE_8812(padapter))
 	{
 		tmp1byte = rtw_read8(padapter, GPIO_IO_SEL);
@@ -254,7 +254,7 @@ static void Init_ODM_ComInfo_8812(PADAPTER	Adapter)
 	ODM_CmnInfoInit(pDM_Odm,	ODM_CMNINFO_MP_TEST_CHIP,IS_NORMAL_CHIP(pHalData->VersionID));
 
 	//1 ======= BoardType: ODM_CMNINFO_BOARD_TYPE =======
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
+#if defined(CONFIG_USB_HCI)
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power)
 	{
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_PA, 1);

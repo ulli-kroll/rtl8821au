@@ -1210,9 +1210,6 @@ NDIS_STATUS oid_rt_rd_attrib_mem_hdl(struct oid_par_priv *poid_par_priv)
 
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 
-#ifdef CONFIG_SDIO_HCI
-	void (*_attrib_read)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
-#endif
 
 _func_enter_;
 
@@ -1221,17 +1218,6 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != QUERY_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-#ifdef CONFIG_SDIO_HCI
-	_irqlevel_changed_(&oldirql, LOWER);
-{
-	u32 *plmem = (u32*)poid_par_priv->information_buf+2;
-	_attrib_read = pintfhdl->io_ops._attrib_read;
-	_attrib_read(pintfhdl, *((u32*)poid_par_priv->information_buf),
-				*((u32*)poid_par_priv->information_buf+1), (u8*)plmem);
-	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
-}
-	_irqlevel_changed_(&oldirql, RAISE);
-#endif
 
 _func_exit_;
 
@@ -1250,25 +1236,12 @@ NDIS_STATUS oid_rt_wr_attrib_mem_hdl (struct oid_par_priv *poid_par_priv)
 
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 
-#ifdef CONFIG_SDIO_HCI
-	void (*_attrib_write)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
-#endif
 
 _func_enter_;
 
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-#ifdef CONFIG_SDIO_HCI
-	_irqlevel_changed_(&oldirql, LOWER);
-{
-	u32 *plmem = (u32*)poid_par_priv->information_buf + 2;
-	_attrib_write = pintfhdl->io_ops._attrib_write;
-	_attrib_write(pintfhdl, *(u32*)poid_par_priv->information_buf,
-				*((u32*)poid_par_priv->information_buf+1), (u8*)plmem);
-}
-	_irqlevel_changed_(&oldirql, RAISE);
-#endif
 
 _func_exit_;
 
@@ -1889,174 +1862,6 @@ NDIS_STATUS oid_rt_pro_dele_sta_info_hdl(struct oid_par_priv *poid_par_priv)
 #if 0
 static u32 mp_query_drv_var(_adapter *padapter, u8 offset, u32 var)
 {
-#ifdef CONFIG_SDIO_HCI
-
-	if (offset == 1) {
-		u16 tmp_blk_num;
-		tmp_blk_num = rtw_read16(padapter, SDIO_RX0_RDYBLK_NUM);
-		RT_TRACE(_module_mp_, _drv_err_, ("Query Information, mp_query_drv_var  SDIO_RX0_RDYBLK_NUM=0x%x   dvobj.rxblknum=0x%x\n", tmp_blk_num, adapter_to_dvobj(padapter)->rxblknum));
-		if (adapter_to_dvobj(padapter)->rxblknum != tmp_blk_num) {
-			RT_TRACE(_module_mp_,_drv_err_, ("Query Information, mp_query_drv_var  call recv rx\n"));
-		//	sd_recv_rxfifo(padapter);
-		}
-	}
-
-#if 0
-	if(offset <=100){  //For setting data rate and query data rate
-		if(offset==100){ //For query data rate
-			RT_TRACE(_module_mp_, _drv_emerg_, ("\n mp_query_drv_var: offset(%d): query rate=0x%.2x \n",offset,padapter->registrypriv.tx_rate));
-			var=padapter->registrypriv.tx_rate;
-
-		}
-		else if(offset<0x1d){  //For setting data rate
-			padapter->registrypriv.tx_rate=offset;
-			var=padapter->registrypriv.tx_rate;
-			padapter->registrypriv.use_rate=_TRUE;
-			RT_TRACE(_module_mp_, _drv_emerg_, ("\n mp_query_drv_var: offset(%d): set rate=0x%.2x \n",offset,padapter->registrypriv.tx_rate));
-		}
-		else{ //not use the data rate
-			padapter->registrypriv.use_rate=_FALSE;
-			RT_TRACE(_module_mp_, _drv_emerg_, ("\n mp_query_drv_var: offset(%d) out of rate range\n",offset));
-		}
-	}
-	else if (offset<=110){  //for setting debug level
-		RT_TRACE(_module_mp_, _drv_emerg_, (" mp_query_drv_var: offset(%d) for set debug level\n",offset));
-		if(offset==110){ //For query data rate
-			RT_TRACE(_module_mp_, _drv_emerg_, (" mp_query_drv_var: offset(%d): query dbg level=0x%.2x \n",offset,padapter->registrypriv.dbg_level));
-			padapter->registrypriv.dbg_level=GlobalDebugLevel;
-			var=padapter->registrypriv.dbg_level;
-		}
-		else if(offset<110 && offset>100){
-			RT_TRACE(_module_mp_, _drv_emerg_, (" mp_query_drv_var: offset(%d): set dbg level=0x%.2x \n",offset,offset-100));
-			padapter->registrypriv.dbg_level=GlobalDebugLevel=offset-100;
-			var=padapter->registrypriv.dbg_level;
-			RT_TRACE(_module_mp_, _drv_emerg_, (" mp_query_drv_var(_drv_emerg_): offset(%d): set dbg level=0x%.2x \n",offset,GlobalDebugLevel));
-			RT_TRACE(_module_mp_, _drv_alert_, (" mp_query_drv_var(_drv_alert_): offset(%d): set dbg level=0x%.2x \n",offset,GlobalDebugLevel));
-			RT_TRACE(_module_mp_, _drv_crit_, (" mp_query_drv_var(_drv_crit_): offset(%d): set dbg level=0x%.2x \n",offset,GlobalDebugLevel));
-			RT_TRACE(_module_mp_, _drv_err_, (" mp_query_drv_var(_drv_err_): offset(%d): set dbg level=0x%.2x \n",offset,GlobalDebugLevel));
-			RT_TRACE(_module_mp_, _drv_warning_, (" mp_query_drv_var(_drv_warning_): offset(%d): set dbg level=0x%.2x \n",offset,GlobalDebugLevel));
-			RT_TRACE(_module_mp_, _drv_notice_, (" mp_query_drv_var(_drv_notice_): offset(%d): set dbg level=0x%.2x \n",offset,GlobalDebugLevel));
-			RT_TRACE(_module_mp_, _drv_info_, (" mp_query_drv_var(_drv_info_): offset(%d): set dbg level=0x%.2x \n",offset,GlobalDebugLevel));
-			RT_TRACE(_module_mp_, _drv_debug_, (" mp_query_drv_var(_drv_debug_): offset(%d): set dbg level=0x%.2x \n",offset,GlobalDebugLevel));
-
-		}
-	}
-	else if(offset >110 &&offset <116){
-		if(115==offset){
-			RT_TRACE(_module_mp_, _drv_emerg_, (" mp_query_drv_var(_drv_emerg_): offset(%d): query TRX access type: [tx_block_mode=%x,rx_block_mode=%x]\n",\
-															offset, adapter_to_dvobj(padapter)->tx_block_mode, adapter_to_dvobj(padapter)->rx_block_mode));
-		}
-		else {
-			switch(offset){
-				case 111:
-					adapter_to_dvobj(padapter)->tx_block_mode=1;
-					adapter_to_dvobj(padapter)->rx_block_mode=1;
-					RT_TRACE(_module_mp_, _drv_emerg_, \
-						(" mp_query_drv_var(_drv_emerg_): offset(%d): SET TRX access type:(TX block/RX block) [tx_block_mode=%x,rx_block_mode=%x]\n",\
-						offset, adapter_to_dvobj(padapter)->tx_block_mode, adapter_to_dvobj(padapter)->rx_block_mode));
-					break;
-				case 112:
-					adapter_to_dvobj(padapter)->tx_block_mode=1;
-					adapter_to_dvobj(padapter)->rx_block_mode=0;
-					RT_TRACE(_module_mp_, _drv_emerg_, \
-						(" mp_query_drv_var(_drv_emerg_): offset(%d): SET TRX access type:(TX block/RX byte) [tx_block_mode=%x,rx_block_mode=%x]\n",\
-						offset, adapter_to_dvobj(padapter)->tx_block_mode, adapter_to_dvobj(padapter)->rx_block_mode));
-					break;
-				case 113:
-					adapter_to_dvobj(padapter)->tx_block_mode=0;
-					adapter_to_dvobj(padapter)->rx_block_mode=1;
-					RT_TRACE(_module_mp_, _drv_emerg_, \
-						(" mp_query_drv_var(_drv_emerg_): offset(%d): SET TRX access type:(TX byte/RX block) [tx_block_mode=%x,rx_block_mode=%x]\n",\
-						offset, adapter_to_dvobj(padapter)->tx_block_mode, adapter_to_dvobj(padapter)->rx_block_mode));
-					break;
-				case 114:
-					adapter_to_dvobj(padapter)->tx_block_mode=0;
-					adapter_to_dvobj(padapter)->rx_block_mode=0;
-					RT_TRACE(_module_mp_, _drv_emerg_, \
-						(" mp_query_drv_var(_drv_emerg_): offset(%d): SET TRX access type:(TX byte/RX byte) [tx_block_mode=%x,rx_block_mode=%x]\n",\
-						offset, adapter_to_dvobj(padapter)->tx_block_mode, adapter_to_dvobj(padapter)->rx_block_mode));
-					break;
-				default :
-					break;
-
-			}
-
-		}
-
-	}
-	else if(offset>=127){
-		u64	prnt_dbg_comp;
-		u8   chg_idx;
-		u64	tmp_dbg_comp;
-		chg_idx=offset-0x80;
-		tmp_dbg_comp=BIT(chg_idx);
-		prnt_dbg_comp=padapter->registrypriv.dbg_component= GlobalDebugComponents;
-		RT_TRACE(_module_mp_, _drv_emerg_, (" 1: mp_query_drv_var: offset(%d;0x%x):for dbg conpoment prnt_dbg_comp=0x%.16x GlobalDebugComponents=0x%.16x padapter->registrypriv.dbg_component=0x%.16x\n",offset,offset,prnt_dbg_comp,GlobalDebugComponents,padapter->registrypriv.dbg_component));
-		if(offset==127){
-	//		prnt_dbg_comp=padapter->registrypriv.dbg_component= GlobalDebugComponents;
-			var=(u32)(padapter->registrypriv.dbg_component);
-			RT_TRACE(0xffffffff, _drv_emerg_, ("2: mp_query_drv_var: offset(%d;0x%x):for query dbg conpoment=0x%x(l) 0x%x(h)  GlobalDebugComponents=0x%x(l) 0x%x(h) \n",offset,offset,padapter->registrypriv.dbg_component,prnt_dbg_comp));
-			prnt_dbg_comp=GlobalDebugComponents;
-			RT_TRACE(0xffffffff, _drv_emerg_, ("2-1: mp_query_drv_var: offset(%d;0x%x):for query dbg conpoment=0x%x(l) 0x%x(h)  GlobalDebugComponents=0x%x(l) 0x%x(h)\n",offset,offset,padapter->registrypriv.dbg_component,prnt_dbg_comp));
-			prnt_dbg_comp=GlobalDebugComponents=padapter->registrypriv.dbg_component;
-			RT_TRACE(0xffffffff, _drv_emerg_, ("2-2: mp_query_drv_var: offset(%d;0x%x):for query dbg conpoment=0x%x(l) 0x%x(h)  GlobalDebugComponents=0x%x(l) 0x%x(h)\n",offset,offset,padapter->registrypriv.dbg_component,prnt_dbg_comp));
-
-		}
-		else{
-			RT_TRACE(0xffffffff, _drv_emerg_, ("3: mp_query_drv_var: offset(%d;0x%x):for query dbg conpoment=0x%x(l) 0x%x(h) GlobalDebugComponents=0x%x(l) 0x%x(h) chg_idx=%d\n",offset,offset,padapter->registrypriv.dbg_component,prnt_dbg_comp,chg_idx));
-			prnt_dbg_comp=GlobalDebugComponents;
-			RT_TRACE(0xffffffff, _drv_emerg_,("3-1: mp_query_drv_var: offset(%d;0x%x):for query dbg conpoment=0x%x(l) 0x%x(h)  GlobalDebugComponents=0x%x(l) 0x%x(h) chg_idx=%d\n",offset,offset,padapter->registrypriv.dbg_component,prnt_dbg_comp,chg_idx));// ("3-1: mp_query_drv_var: offset(%d;0x%x):before set dbg conpoment=0x%x chg_idx=%d or0x%x BIT(chg_idx[%d]=0x%x)\n",offset,offset,prnt_dbg_comp,chg_idx,chg_idx,(chg_idx),tmp_dbg_comp)
-			prnt_dbg_comp=GlobalDebugComponents=padapter->registrypriv.dbg_component;
-			RT_TRACE(0xffffffff, _drv_emerg_, ("3-2: mp_query_drv_var: offset(%d;0x%x):for query dbg conpoment=0x%x(l) 0x%x(h)  GlobalDebugComponents=0x%x(l) 0x%x(h)\n",offset,offset,padapter->registrypriv.dbg_component,prnt_dbg_comp));
-
-			if(GlobalDebugComponents&tmp_dbg_comp){
-				//this bit is already set, now clear it
-				GlobalDebugComponents=GlobalDebugComponents&(~tmp_dbg_comp);
-			}
-			else{
-				//this bit is not set, now set it.
-				GlobalDebugComponents =GlobalDebugComponents|tmp_dbg_comp;
-			}
-			RT_TRACE(0xffffffff, _drv_emerg_, ("4: mp_query_drv_var: offset(%d;0x%x):before set dbg conpoment tmp_dbg_comp=0x%x GlobalDebugComponents=0x%x(l) 0x%x(h)",offset,offset,tmp_dbg_comp,prnt_dbg_comp));
-			prnt_dbg_comp=GlobalDebugComponents;
-			RT_TRACE(0xffffffff, _drv_emerg_, ("4-1: mp_query_drv_var: offset(%d;0x%x):before set dbg conpoment tmp_dbg_comp=0x%x GlobalDebugComponents=0x%x(l) 0x%x(h)",offset,offset,tmp_dbg_comp,prnt_dbg_comp));
-
-			RT_TRACE(_module_rtl871x_xmit_c_, _drv_emerg_, ("0: mp_query_drv_var(_module_rtl871x_xmit_c_:0): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,prnt_dbg_comp));
-			RT_TRACE(_module_xmit_osdep_c_, _drv_emerg_, ("1: mp_query_drv_var(_module_xmit_osdep_c_:1): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_recv_c_, _drv_emerg_, ("2: mp_query_drv_var(_module_rtl871x_recv_c_:2): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_recv_osdep_c_, _drv_emerg_, ("3: mp_query_drv_var(_module_recv_osdep_c_:3): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_mlme_c_, _drv_emerg_, ("4: mp_query_drv_var(_module_rtl871x_mlme_c_:4): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_mlme_osdep_c_, _drv_emerg_, (" 5:mp_query_drv_var(_module_mlme_osdep_c_:5): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_sta_mgt_c_, _drv_emerg_, ("6: mp_query_drv_var(_module_rtl871x_sta_mgt_c_:6): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_cmd_c_, _drv_emerg_, ("7: mp_query_drv_var(_module_rtl871x_cmd_c_:7): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_cmd_osdep_c_, _drv_emerg_, ("8: mp_query_drv_var(_module_cmd_osdep_c_:8): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_io_c_, _drv_emerg_, ("9: mp_query_drv_var(_module_rtl871x_io_c_:9): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_io_osdep_c_, _drv_emerg_, ("10: mp_query_drv_var(_module_io_osdep_c_:10): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_os_intfs_c_, _drv_emerg_, ("11: mp_query_drv_var(_module_os_intfs_c_:11): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_security_c_, _drv_emerg_, ("12: mp_query_drv_var(_module_rtl871x_security_c_:12): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_eeprom_c_, _drv_emerg_, ("13: mp_query_drv_var(_module_rtl871x_eeprom_c_:13): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_hal_init_c_, _drv_emerg_, ("14: mp_query_drv_var(_module_hal_init_c_:14): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_hci_hal_init_c_, _drv_emerg_, ("15: mp_query_drv_var(_module_hci_hal_init_c_:15): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_ioctl_c_, _drv_emerg_, ("16: mp_query_drv_var(_module_rtl871x_ioctl_c_:16): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_ioctl_set_c_, _drv_emerg_, ("17: mp_query_drv_var(_module_rtl871x_ioctl_set_c_:17): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_ioctl_query_c_, _drv_emerg_, ("18: mp_query_drv_var(_module_rtl871x_ioctl_query_c_:18): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_emerg_, ("19: mp_query_drv_var(_module_rtl871x_pwrctrl_c_:19): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_hci_intfs_c_, _drv_emerg_, ("20: mp_query_drv_var(_module_hci_intfs_c_:20): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_hci_ops_c_, _drv_emerg_, ("21: mp_query_drv_var(_module_hci_ops_c_:21): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_osdep_service_c_, _drv_emerg_, ("22: mp_query_drv_var(_module_osdep_service_c_:22): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_mp_, _drv_emerg_, ("23: mp_query_drv_var(_module_mp_:23): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			RT_TRACE(_module_hci_ops_os_c_, _drv_emerg_, ("24: mp_query_drv_var(_module_hci_ops_os_c_:24): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-			var=(u32)(GlobalDebugComponents);
-			//GlobalDebugComponents=padapter->registrypriv.dbg_component;
-			RT_TRACE(0xffffffff, _drv_emerg_, (" ==mp_query_drv_var(_module_mp_): offset(%d;0x%x):before set dbg conpoment=0x%x(l) 0x%x(h)\n",offset,offset,GlobalDebugComponents));
-
-		}
-	}
-	else{
-		RT_TRACE(_module_mp_, _drv_emerg_, ("\n mp_query_drv_var: offset(%d) >110\n",offset));
-	}
-#endif
-#endif
 
 	return var;
 }
@@ -2731,9 +2536,6 @@ NDIS_STATUS oid_rt_set_power_down_hdl(struct oid_par_priv *poid_par_priv)
 	u8		bpwrup;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 #ifdef PLATFORM_LINUX
-#if defined(CONFIG_SDIO_HCI)
-	PADAPTER	padapter = (PADAPTER)(poid_par_priv->adapter_context);
-#endif
 #endif
 
 _func_enter_;

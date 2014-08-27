@@ -627,11 +627,6 @@ void SetBcnCtrlReg(
 	pHalData->RegBcnCtrlVal |= SetBits;
 	pHalData->RegBcnCtrlVal &= ~ClearBits;
 
-#if 0
-//#ifdef CONFIG_SDIO_HCI
-	if (pHalData->sdio_himr & (SDIO_HIMR_TXBCNOK_MSK | SDIO_HIMR_TXBCNERR_MSK))
-		pHalData->RegBcnCtrlVal |= EN_TXBCN_RPT;
-#endif
 
 	rtw_write8(padapter, REG_BCN_CTRL, (u8)pHalData->RegBcnCtrlVal);
 }
@@ -3568,33 +3563,7 @@ void rtl8812_SetHalODMVar(
 
 void rtl8812_clone_haldata(_adapter* dst_adapter, _adapter* src_adapter)
 {
-#ifdef CONFIG_SDIO_HCI
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(dst_adapter);
-	//_thread_hdl_  SdioXmitThread;
-#ifndef CONFIG_SDIO_TX_TASKLET
-	struct semaphore	temp_SdioXmitSema;
-	struct semaphore	temp_SdioXmitTerminateSema;
-#endif
-	//u8                    SdioTxFIFOFreePage[SDIO_TX_FREE_PG_QUEUE];
-	_lock                temp_SdioTxFIFOFreePageLock;
-
-#ifndef CONFIG_SDIO_TX_TASKLET
-	memcpy(&temp_SdioXmitSema, &(pHalData->SdioXmitSema), sizeof(struct semaphore));
-	memcpy(&temp_SdioXmitTerminateSema, &(pHalData->SdioXmitTerminateSema), sizeof(struct semaphore));
-#endif
-	memcpy(&temp_SdioTxFIFOFreePageLock, &(pHalData->SdioTxFIFOFreePageLock), sizeof(_lock));
-
 	memcpy(dst_adapter->HalData, src_adapter->HalData, dst_adapter->hal_data_sz);
-
-#ifndef CONFIG_SDIO_TX_TASKLET
-	memcpy(&(pHalData->SdioXmitSema), &temp_SdioXmitSema, sizeof(struct semaphore));
-	memcpy(&(pHalData->SdioXmitTerminateSema), &temp_SdioXmitTerminateSema, sizeof(struct semaphore));
-#endif
-	memcpy(&(pHalData->SdioTxFIFOFreePageLock), &temp_SdioTxFIFOFreePageLock, sizeof(_lock));
-
-#else
-	memcpy(dst_adapter->HalData, src_adapter->HalData, dst_adapter->hal_data_sz);
-#endif
 
 }
 
@@ -3671,9 +3640,7 @@ void InitPGData8812A(PADAPTER padapter)
 		tmp = _halReadMACAddrFromFile(padapter, pEEPROM->mac_addr);
 		pEEPROM->bloadmac_fail_flag = ((tmp==_FAIL) ? _TRUE : _FALSE);
 
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8821AS;
-#elif defined(CONFIG_USB_HCI)
+#if defined(CONFIG_USB_HCI)
 		if (IS_HARDWARE_TYPE_8812AU(padapter))
 			addr = EEPROM_MAC_ADDR_8812AE;
 		else

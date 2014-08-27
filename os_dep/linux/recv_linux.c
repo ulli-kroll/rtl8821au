@@ -658,9 +658,6 @@ void rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf)
 
 
 #endif
-#if defined(CONFIG_SDIO_HCI)
-		precvbuf->pskb = NULL;
-#endif
 
 }
 void _rtw_reordering_ctrl_timeout_handler (void *FunctionContext);

@@ -232,20 +232,6 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 {
 	_adapter *pri_adapter = padapter;
 
-#if defined(CONFIG_SDIO_HCI)
-	if(!padapter)
-		return;
-
-#ifdef CONFIG_CONCURRENT_MODE
-	if(padapter->adapter_type > PRIMARY_ADAPTER)
-		pri_adapter = padapter->pbuddy_adapter;
-#endif
-
-	if (_rtw_queue_empty(&pri_adapter->xmitpriv.pending_xmitbuf_queue) == _FALSE)
-		_rtw_up_sema(&pri_adapter->xmitpriv.xmit_sema);
-
-
-#else
 	_irqL  irqL;
 	struct xmit_priv *pxmitpriv;
 
@@ -262,7 +248,6 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 	}
 
 	_exit_critical_bh(&pxmitpriv->lock, &irqL);
-#endif
 }
 
 static void rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)

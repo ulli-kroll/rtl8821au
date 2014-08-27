@@ -284,13 +284,7 @@ static VOID PHY_SetRFPathSwitch_default(
 }
 
 
-#if defined (CONFIG_RTL8723A)
-#define PHY_IQCalibrate(a,b)	rtl8192c_PHY_IQCalibrate(a,b)
-#define PHY_LCCalibrate(a)	rtl8192c_PHY_LCCalibrate(a)
-//#define dm_CheckTXPowerTracking(a)	rtl8192c_odm_CheckTXPowerTracking(a)
-#define PHY_SetRFPathSwitch(a,b)	rtl8192c_PHY_SetRFPathSwitch(a,b)
-#endif
-
+#
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 /*
 #define PHY_IQCalibrate(a,b)	PHY_IQCalibrate_8812A(a,b)
@@ -362,14 +356,6 @@ MPT_InitializeAdapter(
 		"MptWorkItem");
 #endif
 	//init for BT MP
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
-	pMptCtx->bMPh2c_timeout = _FALSE;
-	pMptCtx->MptH2cRspEvent = _FALSE;
-	pMptCtx->MptBtC2hEvent = _FALSE;
-
-	sema_init(&pMptCtx->MPh2c_Sema, 0);
-	_init_timer( &pMptCtx->MPh2c_timeout_timer, pAdapter->ndev, MPh2c_timeout_handle, pAdapter );
-#endif
 
 	pMptCtx->bMptWorkItemInProgress = _FALSE;
 	pMptCtx->CurrMptAct = NULL;
@@ -451,9 +437,6 @@ MPT_DeInitAdapter(
 	PMPT_CONTEXT		pMptCtx = &pAdapter->mppriv.MptCtx;
 
 	pMptCtx->bMptDrvUnload = _TRUE;
-	#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
-	_cancel_timer_ex( &pMptCtx->MPh2c_timeout_timer);
-	#endif
 #if 0 // for Windows
 	PlatformFreeWorkItem( &(pMptCtx->MptWorkItem) );
 
@@ -955,9 +938,6 @@ void PhySetTxPowerLevel(PADAPTER pAdapter)
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 		PHY_SetTxPowerLevel8812(pAdapter,pmp_priv->channel);
 #endif
-#if defined(CONFIG_RTL8723B)
-		PHY_SetTxPowerLevel8723B(pAdapter,pmp_priv->channel);
-#endif
 
 	}
 }
@@ -1158,37 +1138,6 @@ void fill_tx_desc_8812a(PADAPTER padapter)
 }
 #endif
 
-#if defined(CONFIG_RTL8723B)
-void fill_tx_desc_8723b(PADAPTER padapter)
-{
-	struct mp_priv *pmp_priv = &padapter->mppriv;
-	struct tx_desc *desc   = &(pmp_priv->tx.desc);
-	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);
-	PTXDESC_8723B ptxdesc;
-
-	ptxdesc->bk = 1;
-	ptxdesc->macid = pattrib->mac_id;
-	ptxdesc->qsel = pattrib->qsel;
-
-	ptxdesc->rate_id = pattrib->raid;
-	ptxdesc->seq = pattrib->seqnum;
-	ptxdesc->hwseq_sel = 2;
-	ptxdesc->userate = 1;
-	ptxdesc->disdatafb = 1;
-
-	if( pmp_priv->preamble ){
-		if (pmp_priv->rateidx <=  MPT_RATE_54M)
-			ptxdesc->data_short = 1;
-	}
-	if (pmp_priv->bandwidth == CHANNEL_WIDTH_40)
-		ptxdesc->data_bw = 1;
-
-	ptxdesc->datarate = pmp_priv->rateidx;
-
-	ptxdesc->data_ratefb_lmt = 0x1F;
-	ptxdesc->rts_ratefb_lmt = 0xF;
-}
-#endif
 
 void SetPacketTx(PADAPTER padapter)
 {
@@ -1256,10 +1205,6 @@ void SetPacketTx(PADAPTER padapter)
 		fill_tx_desc_8812a(padapter);
 #endif
 
-#if defined(CONFIG_RTL8723B)
-	if(IS_HARDWARE_TYPE_8723B(padapter))
-		fill_tx_desc_8723b(padapter);
-#endif
 
 
 	//3 4. make wlan header, make_wlanhdr()

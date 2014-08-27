@@ -26,14 +26,6 @@
 #include "../../hal/OUTSRC/odm_precomp.h"
 //#endif
 
-#if defined(CONFIG_RTL8723A)
-#include "rtl8723a_hal.h"
-#include <rtw_bt_mp.h>
-#endif
-
-#if defined(CONFIG_RTL8723B)
-#include <rtw_bt_mp.h>
-#endif
 
 
 #define RTL_IOCTL_WPA_SUPPLICANT	SIOCIWFIRSTPRIV+30
@@ -9943,10 +9935,6 @@ static int rtw_mp_start(struct net_device *ndev,
 
 	if(padapter->registrypriv.mp_mode ==0)
 	{
-		#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B))
-		DBG_871X("_rtw_mp_xmit_priv for Download BT patch FW\n");
-		_rtw_mp_xmit_priv(&padapter->xmitpriv);
-		#endif
 
 		padapter->registrypriv.mp_mode =1;
 
@@ -9976,10 +9964,6 @@ static int rtw_mp_stop(struct net_device *ndev,
 
 	if(padapter->registrypriv.mp_mode ==1)
 	{
-		#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B))
-		DBG_871X("_rtw_mp_xmit_priv reinit for normal mode\n");
-		_rtw_mp_xmit_priv(&padapter->xmitpriv);
-		#endif
 
 		MPT_DeInitAdapter(padapter);
 		padapter->registrypriv.mp_mode=0;
@@ -10906,12 +10890,6 @@ static int rtw_mp_get(struct net_device *ndev,
 			rtw_mp_txpower_index (ndev,info,wrqu,extra);
 		break;
 
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
-	case MP_SetBT:
-			DBG_871X("set MP_SetBT \n");
-			rtw_mp_SetBT  (ndev,info,wdata,extra);
-			break;
-#endif
 
 	}
 
@@ -11617,12 +11595,6 @@ extern void rtl8188es_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbu
 #define fill_default_txdesc rtl8188es_fill_default_txdesc
 #endif // CONFIG_SDIO_HCI
 #endif // CONFIG_RTL8188E
-#if defined(CONFIG_RTL8723B)
-extern void rtl8723b_cal_txdesc_chksum(struct tx_desc *ptxdesc);
-#define cal_txdesc_chksum rtl8723b_cal_txdesc_chksum
-extern void rtl8723b_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
-#define fill_default_txdesc rtl8723b_fill_default_txdesc
-#endif // CONFIG_RTL8723B
 
 static s32 initLoopback(PADAPTER padapter)
 {
@@ -12205,72 +12177,6 @@ static int rtw_test(
 	}
 #endif
 
-#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B))
-#if 0
-	if (strcmp(pch, "poweron") == 0)
-	{
-		s32 ret;
-
-		ret = _InitPowerOn(padapter);
-		DBG_871X("%s: power on %s\n", __func__, (_FAIL==ret) ? "FAIL!":"OK.");
-		sprintf(extra, "Power ON %s", (_FAIL==ret) ? "FAIL!":"OK.");
-		wrqu->data.length = strlen(extra) + 1;
-
-		rtw_mfree(pbuf, len);
-		return 0;
-	}
-
-	if (strcmp(pch, "dlfw") == 0)
-	{
-		s32 ret;
-
-		ret = rtl8723a_FirmwareDownload(padapter);
-		DBG_871X("%s: download FW %s\n", __func__, (_FAIL==ret) ? "FAIL!":"OK.");
-		sprintf(extra, "download FW %s", (_FAIL==ret) ? "FAIL!":"OK.");
-		wrqu->data.length = strlen(extra) + 1;
-
-		rtw_mfree(pbuf, len);
-		return 0;
-	}
-#endif
-
-
-	if (strcmp(pch, "h2c") == 0)
-	{
-		u8 param[6];
-		u8 count = 0;
-		u32 tmp;
-		u8 i;
-		u32 pos;
-		s32 ret;
-
-
-		do {
-			pch = strsep(&ptmp, delim);
-			if ((pch == NULL) || (strlen(pch) == 0))
-				break;
-
-			sscanf(pch, "%x", &tmp);
-			param[count++] = (u8)tmp;
-		} while (count < 6);
-
-		if (count == 0) {
-			rtw_mfree(pbuf, len);
-			DBG_8192C("%s: parameter error(level 2)!\n", __func__);
-			return -EFAULT;
-		}
-
-		pos = sprintf(extra, "H2C ID=%02x content=", param[0]);
-		for (i=1; i<count; i++) {
-			pos += sprintf(extra+pos, "%02x,", param[i]);
-		}
-		extra[pos] = 0;
-		pos--;
-		pos += sprintf(extra+pos, " %s", ret==_FAIL?"FAIL":"OK");
-
-		wrqu->data.length = strlen(extra) + 1;
-	}
-#endif // CONFIG_RTL8723A
 
 	rtw_mfree(pbuf, len);
 	return 0;

@@ -206,7 +206,7 @@ __inline static void flush_signals_thread(void)
 __inline static _OS_STATUS res_to_status(sint res)
 {
 
-#if defined (PLATFORM_LINUX) || defined (PLATFORM_MPIXEL) || defined (PLATFORM_FREEBSD)
+#if defined (PLATFORM_LINUX) || defined (PLATFORM_MPIXEL)
 	return res;
 #endif
 

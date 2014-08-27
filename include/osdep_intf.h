@@ -106,9 +106,6 @@ static void rtw_proc_remove_one(struct net_device *dev){}
 #endif //PLATFORM_LINUX
 
 
-#ifdef PLATFORM_FREEBSD
-extern int rtw_ioctl(struct ifnet * ifp, u_long cmd, caddr_t data);
-#endif
 
 void rtw_ips_dev_unload(_adapter *padapter);
 #ifdef CONFIG_IPS

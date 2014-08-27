@@ -43,7 +43,6 @@ CONFIG_WOWLAN = n
 
 CONFIG_PLATFORM_I386_PC = y
 CONFIG_PLATFORM_ANDROID_X86 = n
-CONFIG_PLATFORM_JB_X86 = n
 CONFIG_PLATFORM_RTD2880B = n
 CONFIG_PLATFORM_RTK_DMP = n
 CONFIG_PLATFORM_MSTAR389 = n
@@ -297,17 +296,6 @@ KSRC := /media/DATA-2/android-x86/ics-x86_20120130/out/target/product/generic_x8
 MODULE_NAME :=wlan
 endif
 
-ifeq ($(CONFIG_PLATFORM_JB_X86), y)
-EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
-EXTRA_CFLAGS += -DCONFIG_CONCURRENT_MODE
-EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
-EXTRA_CFLAGS += -DCONFIG_P2P_IPS
-SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
-ARCH := $(SUBARCH)
-CROSS_COMPILE := /home/android_sdk/android-x86_JB/prebuilts/gcc/linux-x86/x86/i686-linux-android-4.7/bin/i686-linux-android-
-KSRC := /home/android_sdk/android-x86_JB/out/target/product/x86/obj/kernel/
-MODULE_NAME :=wlan
-endif
 
 ifeq ($(CONFIG_PLATFORM_RTD2880B), y)
 EXTRA_CFLAGS += -DCONFIG_BIG_ENDIAN -DCONFIG_PLATFORM_RTD2880B

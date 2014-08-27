@@ -146,10 +146,6 @@ struct spi_more_data {
 	unsigned long len;
 };
 
-#ifdef CONFIG_RTL8723A
-void rtl8723as_set_hal_ops(PADAPTER padapter);
-#define set_hal_ops rtl8723as_set_hal_ops
-#endif
 
 extern void spi_set_chip_endian(PADAPTER padapter);
 extern void spi_set_intf_ops(_adapter *padapter,struct _io_ops *pops);
@@ -163,12 +159,5 @@ extern u8 HalQueryTxBufferStatus8723ASdio(PADAPTER padapter);
 extern void InitInterrupt8188ESdio(PADAPTER padapter);
 extern void EnableInterrupt8188ESdio(PADAPTER padapter);
 extern void DisableInterrupt8188ESdio(PADAPTER padapter);
-#ifdef CONFIG_RTL8723B
-extern void InitInterrupt8723BSdio(PADAPTER padapter);
-extern void InitSysInterrupt8723BSdio(PADAPTER padapter);
-extern void EnableInterrupt8723BSdio(PADAPTER padapter);
-extern void DisableInterrupt8723BSdio(PADAPTER padapter);
-extern u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter);
-#endif
 
 #endif //__GSPI_OPS_H__

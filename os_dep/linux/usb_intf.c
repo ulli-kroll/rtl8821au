@@ -111,11 +111,6 @@ static struct usb_device_id rtw_usb_id_tbl[] ={
 
 
 
-#ifdef CONFIG_RTL8723A
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDER_ID_REALTEK, 0x8724,0xff,0xff,0xff),.driver_info = RTL8723A}, /* 8723AU 1*1 */
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDER_ID_REALTEK, 0x1724,0xff,0xff,0xff),.driver_info = RTL8723A}, /* 8723AU 1*1 */
-	{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDER_ID_REALTEK, 0x0724,0xff,0xff,0xff),.driver_info = RTL8723A}, /* 8723AU 1*1 */
-#endif
 
 
 #ifdef CONFIG_RTL8812A
@@ -515,10 +510,6 @@ static void rtw_decide_chip_type_by_usb_info(_adapter *padapter, const struct us
 
 
 
-	#ifdef CONFIG_RTL8723A
-	if(padapter->chip_type == RTL8723A)
-		rtl8723au_set_hw_type(padapter);
-	#endif
 
 
 	#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
@@ -530,10 +521,6 @@ void rtw_set_hal_ops(_adapter *padapter)
 {
 
 
-	#ifdef CONFIG_RTL8723A
-	if(padapter->chip_type == RTL8723A)
-		rtl8723au_set_hal_ops(padapter);
-	#endif
 
 	#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 	if(padapter->chip_type == RTL8812 || padapter->chip_type == RTL8821)
@@ -544,11 +531,6 @@ void rtw_set_hal_ops(_adapter *padapter)
 void usb_set_intf_ops(_adapter *padapter,struct _io_ops *pops)
 {
 
-
-	#ifdef CONFIG_RTL8723A
-	if(padapter->chip_type == RTL8723A)
-		rtl8723au_set_intf_ops(pops);
-	#endif
 
 
 	#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)

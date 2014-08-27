@@ -41,13 +41,6 @@ s32 _sdio_write32(PADAPTER padapter, u32 addr, u32 val);
 
 extern void sd_int_hdl(PADAPTER padapter);
 
-#ifdef CONFIG_RTL8723A
-extern void InitInterrupt8723ASdio(PADAPTER padapter);
-extern void InitSysInterrupt8723ASdio(PADAPTER padapter);
-extern void EnableInterrupt8723ASdio(PADAPTER padapter);
-extern void DisableInterrupt8723ASdio(PADAPTER padapter);
-extern u8 HalQueryTxBufferStatus8723ASdio(PADAPTER padapter);
-#endif // CONFIG_RTL8723A
 
 
 #ifdef CONFIG_RTL8821A
@@ -60,17 +53,6 @@ extern u8 HalQueryTxBufferStatus8821AS(PADAPTER padapter);
 #ifdef CONFIG_WOWLAN
 extern u8 RecvOnePkt(PADAPTER padapter, u32 size);
 #endif // CONFIG_WOWLAN
-#ifdef CONFIG_RTL8723B
-extern void InitInterrupt8723BSdio(PADAPTER padapter);
-extern void InitSysInterrupt8723BSdio(PADAPTER padapter);
-extern void EnableInterrupt8723BSdio(PADAPTER padapter);
-extern void DisableInterrupt8723BSdio(PADAPTER padapter);
-extern u8 HalQueryTxBufferStatus8723BSdio(PADAPTER padapter);
-#ifdef CONFIG_WOWLAN
-extern void DisableInterruptButCpwm28723BSdio(PADAPTER padapter);
-extern void ClearInterrupt8723BSdio(PADAPTER padapter);
-#endif //CONFIG_WOWLAN
-#endif
 
 #endif // !__SDIO_OPS_H__
 

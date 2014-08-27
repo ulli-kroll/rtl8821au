@@ -8894,29 +8894,7 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 	}
 	else if (strcmp(tmp[0], "mac") == 0)
 	{
-		#ifdef CONFIG_RTL8723A
-			#ifdef CONFIG_SDIO_HCI
-			addr = EEPROM_MAC_ADDR_8723AS;
-			#endif
-			#ifdef CONFIG_GSPI_HCI
-			addr = EEPROM_MAC_ADDR_8723AS;
-			#endif
-			#ifdef CONFIG_USB_HCI
-			addr = EEPROM_MAC_ADDR_8723AU;
-			#endif
-		#endif // CONFIG_RTL8723A
 
-		#ifdef CONFIG_RTL8723B
-		#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif
-		#ifdef CONFIG_GSPI_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif
-		#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_8723BU;
-		#endif
-		#endif // CONFIG_RTL8723B
 		cnts = 6;
 
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
@@ -8949,14 +8927,6 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 	}
 	else if (strcmp(tmp[0], "vidpid") == 0)
 	{
-		#ifdef CONFIG_RTL8723A
-			#ifdef CONFIG_USB_HCI
-			addr = EEPROM_VID_8723AU;
-			#endif
-		#endif // CONFIG_RTL8723A
-		#ifdef CONFIG_RTL8723B
-		addr = EEPROM_VID_8723BU;
-		#endif // CONFIG_RTL8192E
 		cnts = 4;
 
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
@@ -9366,28 +9336,6 @@ static int rtw_mp_efuse_set(struct net_device *ndev,
 		}
 
 		//mac,00e04c871200
-		#ifdef CONFIG_RTL8723A
-		#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8723AS;
-		#endif
-		#ifdef CONFIG_GSPI_HCI
-		addr = EEPROM_MAC_ADDR_8723AS;
-		#endif
-		#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_8723AU;
-		#endif
-		#endif // CONFIG_RTL8723A
-		#ifdef CONFIG_RTL8723B
-		#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif
-		#ifdef CONFIG_GSPI_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-		#endif
-		#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_8723BU;
-		#endif
-		#endif // CONFIG_RTL8723B
 
 		cnts = strlen(tmp[1]);
 		if (cnts%2)
@@ -9440,15 +9388,7 @@ static int rtw_mp_efuse_set(struct net_device *ndev,
 		}
 
 		// pidvid,da0b7881
-		#ifdef CONFIG_RTL8723A
-			#ifdef CONFIG_USB_HCI
-			addr = EEPROM_VID_8723AU;
-			#endif
-		#endif // CONFIG_RTL8723A
 
-		#ifdef CONFIG_RTL8723B
-		addr = EEPROM_VID_8723BU;
-		#endif
 
 		cnts = strlen(tmp[1]);
 		if (cnts%2)
@@ -10567,14 +10507,8 @@ static int rtw_mp_thermal(struct net_device *ndev,
 	u8 val;
 	u16 bwrite=1;
 
-	#ifdef CONFIG_RTL8723A
-			u16 addr=EEPROM_THERMAL_METER_8723A;
-	#endif
 	#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 			u16 addr=EEPROM_THERMAL_METER_8812;
-	#endif
-	#ifdef CONFIG_RTL8723B
-			u16 addr=EEPROM_THERMAL_METER_8723B;
 	#endif
 	u16 cnt=1;
 	u16 max_available_size=0;
@@ -10684,11 +10618,7 @@ static int rtw_mp_dump(struct net_device *ndev,
 
 			for(path=0;path<path_nums;path++)
 			{
-#ifdef CONFIG_RTL8723B
-			  for (i = 0; i < 0x100; i++)
-#else
 	   		 for (i = 0; i < 0x34; i++)
-#endif
 				{
 					//value = PHY_QueryRFReg(padapter, (RF_RADIO_PATH_E)path,i, bMaskDWord);
 					value = rtw_hal_read_rfreg(padapter, path, i, 0xffffffff);
@@ -10796,167 +10726,6 @@ static int rtw_mp_antBdiff(struct net_device *ndev,
 }
 
 
-#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B))
-/* update Tx AGC offset */
-static int rtw_mp_SetBT(struct net_device *ndev,
-			struct iw_request_info *info,
-			union iwreq_data *wrqu, char *extra)
-{
-	PADAPTER padapter = rtw_netdev_priv(ndev);
-	BT_REQ_CMD	BtReq;
-	PMPT_CONTEXT	pMptCtx=&(padapter->mppriv.MptCtx);
-	PBT_RSP_CMD 	pBtRsp=(PBT_RSP_CMD)&pMptCtx->mptOutBuf[0];
-	char	input[128];
-	char *pch, *ptmp, *token, *tmp[2]={0x00,0x00};
-	u8 setdata[100];
-
-	u16 testmode=1,ready=1,trxparam=1,setgen=1,getgen=1,testctrl=1,testbt=1;
-	u32 i,ii,jj,kk,cnts,status;
-
-	if (copy_from_user(extra, wrqu->data.pointer, wrqu->data.length))
-			return -EFAULT;
-	if(strlen(extra)<1) return -EFAULT;
-
-	DBG_871X("%s:iwpriv in=%s\n", __func__, extra);
-	ready = strncmp(extra, "ready", 5);
-	testmode = strncmp(extra, "testmode", 8); // strncmp TRUE is 0
-	trxparam = strncmp(extra, "trxparam", 8);
-	setgen = strncmp(extra, "setgen", 6);
-	getgen = strncmp(extra, "getgen", 6);
-	testctrl = strncmp(extra, "testctrl", 8);
-	testbt = strncmp(extra, "testbt", 6);
-
-	if ( strncmp(extra, "dlfw", 4) == 0)
-	{
-#if defined(CONFIG_PLATFORM_SPRD) && (MP_DRIVER == 1)
-		// Pull up BT reset pin.
-		DBG_871X("%s: pull up BT reset pin when bt start mp test\n", __FUNCTION__);
-		rtw_wifi_gpio_wlan_ctrl(WLAN_BT_PWDN_ON);
-#endif
-#ifdef CONFIG_RTL8723A
-		status = rtl8723a_FirmwareDownload(padapter);
-#elif defined(CONFIG_RTL8723B)
-		status = rtl8723b_FirmwareDownload(padapter, _FALSE);
-#endif
-		if(status==_SUCCESS)
-		{
-			memset(extra,'\0', wrqu->data.length);
-			DBG_871X("%s: download FW %s\n", __func__, (_FAIL==status) ? "FAIL!":"OK.");
-			sprintf(extra, "download FW %s", (_FAIL==status) ? "FAIL!":"OK.");
-			wrqu->data.length = strlen(extra) + 1;
-		}
-		goto exit;
-	}
-	if( testbt==0 )
-	{
-			BtReq.opCodeVer=1;
-			BtReq.OpCode=6;
-			BtReq.paraLength=cnts/2;
-			goto todo;
-	}
-	if( ready==0 )
-	{
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=0;
-		BtReq.paraLength=0;
-		goto todo;
-	}
-
-	DBG_871X("%s:after strncmp\n", __func__);
-	pch = extra;
-	i = 0;
-	while ((token = strsep(&pch, ",")) != NULL)
-	{
-		if (i > 1) break;
-		tmp[i] = token;
-		i++;
-	}
-
-	if ((tmp[0]==NULL) && (tmp[1]==NULL))
-	{
-		return -EFAULT;
-	}
-	else
-	{
-		cnts = strlen(tmp[1]);
-		if (cnts<1) return -EFAULT;
-
-		DBG_871X("%s: cnts=%d\n", __FUNCTION__, cnts);
-		DBG_871X("%s: data=%s\n", __FUNCTION__, tmp[1]);
-
-		for (jj=0, kk=0; jj<cnts; jj++, kk+=2)
-		{
-				BtReq.pParamStart[jj] = key_2char2num(tmp[1][kk], tmp[1][kk+1]);
-				DBG_871X("BtReq.pParamStart[%d]=%x \n",ii,BtReq.pParamStart[jj]);
-		}
-	}
-
-	if( testmode==0 )
-	{
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=1;
-		BtReq.paraLength=1;
-	}
-	if( trxparam==0 )
-	{
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=2;
-		BtReq.paraLength=cnts/2;
-	}
-	if( setgen==0 )
-	{
-		DBG_871X("%s: BT_SET_GENERAL \n", __func__);
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=3; //BT_SET_GENERAL	3
-		BtReq.paraLength=cnts/2;
-	}
-	if( getgen==0 )
-	{
-		DBG_871X("%s: BT_GET_GENERAL \n", __func__);
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=4;		//BT_GET_GENERAL	4
-		BtReq.paraLength=cnts/2;
-	}
-	if( testctrl==0 )
-	{
-		DBG_871X("%s: BT_TEST_CTRL \n", __func__);
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=5;		//BT_TEST_CTRL	5
-		BtReq.paraLength=cnts/2;
-	}
-
-
-	DBG_871X("%s: BtReq.paraLength =%d\n", __FUNCTION__, BtReq.paraLength);
-
-	DBG_871X("opCodeVer=%d,OpCode=%d \n",BtReq.opCodeVer,BtReq.OpCode);
-
-	if(BtReq.paraLength<1)
-		goto todo;
-
-	for(i=0;i<BtReq.paraLength;i++)
-	{
-		DBG_871X("%s: BtReq.pParamStart[ %d ] = 0x%02x \n", __func__,i,BtReq.pParamStart[i]);
-	}
-
-todo:
-	memset(extra,'\0', wrqu->data.length);
-
-	mptbt_BtControlProcess(padapter,&BtReq);
-
-	for (i=4; i<pMptCtx->mptOutLen; i++)
-	{
-		DBG_8192C("0x%x ", pMptCtx->mptOutBuf[i]);
-		sprintf(extra, "%s 0x%x ", extra, pMptCtx->mptOutBuf[i]);
-	}
-
-exit:
-	wrqu->data.length = strlen(extra) + 1;
-
-return status;
-
-}
-
-#endif //#ifdef CONFIG_RTL8723A
 
 static int rtw_mp_set(struct net_device *ndev,
 			struct iw_request_info *info,
@@ -11836,25 +11605,9 @@ static int rtw_widi_set_probe_request(struct net_device *ndev,
 }
 #endif // CONFIG_INTEL_WIDI
 
-#ifdef CONFIG_RTL8723A
-#include <rtl8723a_hal.h>
-//extern u8 _InitPowerOn(PADAPTER padapter);
-extern s32 FillH2CCmd(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer);
-#endif
-#ifdef CONFIG_RTL8723B
-#include <rtl8723b_hal.h>
-//extern u8 _InitPowerOn(PADAPTER padapter);
-extern s32 FillH2CCmd8723B(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer);
-#endif
 
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
 
-#ifdef CONFIG_RTL8723A
-extern void rtl8723a_cal_txdesc_chksum(struct tx_desc *ptxdesc);
-#define cal_txdesc_chksum rtl8723a_cal_txdesc_chksum
-extern void rtl8723a_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
-#define fill_default_txdesc rtl8723a_fill_default_txdesc
-#endif
 #if defined(CONFIG_RTL8188E)
 #include <rtl8188e_hal.h>
 extern void rtl8188e_cal_txdesc_chksum(struct tx_desc *ptxdesc);
@@ -12507,11 +12260,6 @@ static int rtw_test(
 			return -EFAULT;
 		}
 
-#ifdef CONFIG_RTL8723A
-		ret = FillH2CCmd(padapter, param[0], count-1, &param[1]);
-#elif defined(CONFIG_RTL8723B)
-		ret = FillH2CCmd8723B(padapter, param[0], count-1, &param[1]);
-#endif
 		pos = sprintf(extra, "H2C ID=%02x content=", param[0]);
 		for (i=1; i<count; i++) {
 			pos += sprintf(extra+pos, "%02x,", param[i]);
@@ -12635,9 +12383,6 @@ static const struct iw_priv_args rtw_private_args[] =
 		{ MP_QueryDrvStats, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "mp_drvquery" },
 		{ MP_IOCTL, IW_PRIV_TYPE_CHAR | 1024, 0, "mp_ioctl"}, // mp_ioctl
 		{ MP_SetRFPathSwh, IW_PRIV_TYPE_CHAR | 1024, 0, "mp_setrfpath" },
-#ifdef CONFIG_RTL8723A
-		{ MP_SetBT, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "mp_setbt" },
-#endif
 	{ SIOCIWFIRSTPRIV + 0x02, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK , "test"},//set
 };
 static iw_handler rtw_private_handler[] =
@@ -12792,9 +12537,6 @@ static const struct iw_priv_args rtw_private_args[] = {
 		{ MP_IOCTL, IW_PRIV_TYPE_CHAR | 1024, 0, "mp_ioctl"}, // mp_ioctl
 		{ MP_SetRFPathSwh, IW_PRIV_TYPE_CHAR | 1024, 0, "mp_setrfpath" },
 		{ MP_GET_TXPOWER_INX, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "mp_get_txpower" },
-#ifdef CONFIG_RTL8723A
-		{ MP_SetBT, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "mp_setbt" },
-#endif
 		{ CTA_TEST, IW_PRIV_TYPE_CHAR | 1024, 0, "cta_test"},
 #endif
 };

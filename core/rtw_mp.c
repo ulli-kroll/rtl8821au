@@ -26,9 +26,6 @@
 #endif
 
 #include "../hal/OUTSRC/odm_precomp.h"
-#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B))
-#include <rtw_bt_mp.h>
-#endif
 
 
 #ifdef CONFIG_MP_INCLUDED
@@ -329,11 +326,6 @@ static VOID PHY_SetRFPathSwitch_default(
 
 #endif //#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 
-#ifdef CONFIG_RTL8723B
-#define PHY_IQCalibrate(a,b)	PHY_IQCalibrate_8723B(a,b)
-#define PHY_LCCalibrate(a)	PHY_LCCalibrate_8723B(a)
-#define PHY_SetRFPathSwitch(a,b)	PHY_SetRFPathSwitch_8723B(a,b)
-#endif
 
 s32
 MPT_InitializeAdapter(
@@ -424,12 +416,6 @@ MPT_InitializeAdapter(
 	pMptCtx->backup0xc58 = (u1Byte)PHY_QueryBBReg(pAdapter, rOFDM0_XBAGCCore1, bMaskByte0);
 	pMptCtx->backup0xc30 = (u1Byte)PHY_QueryBBReg(pAdapter, rOFDM0_RxDetector1, bMaskByte0);
 
-#ifdef CONFIG_RTL8723A
-	rtl8723a_InitAntenna_Selection(pAdapter);
-#endif //CONFIG_RTL8723A
-#ifdef CONFIG_RTL8723B
-	rtl8723b_InitAntenna_Selection(pAdapter);
-#endif //CONFIG_RTL8723B
 	//set ant to wifi side in mp mode
 	rtw_write16(pAdapter, 0x870, 0x300);
 	rtw_write16(pAdapter, 0x860, 0x110);
@@ -514,22 +500,17 @@ void GetPowerTracking(PADAPTER padapter, u8 *enable)
 
 static void disable_dm(PADAPTER padapter)
 {
-#ifndef CONFIG_RTL8723A
 	u8 v8;
-#endif
+
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 
 
 	//3 1. disable firmware dynamic mechanism
 	// disable Power Training, Rate Adaptive
-#ifdef CONFIG_RTL8723A
-	SetBcnCtrlReg(padapter, 0, EN_BCN_FUNCTION);
-#else
 	v8 = rtw_read8(padapter, REG_BCN_CTRL);
 	v8 &= ~EN_BCN_FUNCTION;
 	rtw_write8(padapter, REG_BCN_CTRL, v8);
-#endif
 
 	//3 2. disable driver dynamic mechanism
 	// disable Dynamic Initial Gain

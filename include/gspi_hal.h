@@ -24,13 +24,6 @@
 void spi_int_dpc(PADAPTER padapter);
 void rtw_set_hal_ops(_adapter *padapter);
 
-#ifdef CONFIG_RTL8723A
-void rtl8723as_set_hal_ops(PADAPTER padapter);
-#endif
-
-#ifdef CONFIG_RTL8723B
-void rtl8723bs_set_hal_ops(PADAPTER padapter);
-#endif
 
 #endif //__GSPI_HAL_H__
 

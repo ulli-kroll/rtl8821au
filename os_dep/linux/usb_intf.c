@@ -1116,9 +1116,6 @@ error_exit:
 }
 #endif
 
-#ifdef CONFIG_PLATFORM_RTD2880B
-extern void rtd2885_wlan_netlink_sendMsg(char *action_string, char *name);
-#endif
 
 
 /*
@@ -1338,10 +1335,6 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 	if(ndev)
 		rtw_free_netdev(ndev);
 
-#ifdef CONFIG_PLATFORM_RTD2880B
-	DBG_871X("wlan link down\n");
-	rtd2885_wlan_netlink_sendMsg("linkdown", "8712");
-#endif
 
 }
 
@@ -1525,10 +1518,6 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 	hostapd_mode_init(if1);
 #endif
 
-#ifdef CONFIG_PLATFORM_RTD2880B
-	DBG_871X("wlan link up\n");
-	rtd2885_wlan_netlink_sendMsg("linkup", "8712");
-#endif
 
 #ifdef RTK_DMP_PLATFORM
 	rtw_proc_init_one(if1->ndev);

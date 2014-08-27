@@ -42,7 +42,6 @@ CONFIG_FTP_PROTECT = n
 CONFIG_WOWLAN = n
 
 CONFIG_PLATFORM_I386_PC = y
-CONFIG_PLATFORM_SZEBOOK = n
 
 CONFIG_DRVEXT_MODULE = n
 
@@ -271,13 +270,6 @@ KSRC := $(shell pwd)/../../../Android/kernel
 ARCH := arm
 endif
 
-ifeq ($(CONFIG_PLATFORM_SZEBOOK), y)
-EXTRA_CFLAGS += -DCONFIG_BIG_ENDIAN
-ARCH:=arm
-CROSS_COMPILE:=/opt/crosstool2/bin/armeb-unknown-linux-gnueabi-
-KVER:= 2.6.31.6
-KSRC:= ../code/linux-2.6.31.6-2020/
-endif
 
 
 

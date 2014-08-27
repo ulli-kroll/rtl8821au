@@ -1618,13 +1618,6 @@ extern int console_suspend_enabled;
 
 static int __init rtw_drv_entry(void)
 {
-#ifdef CONFIG_PLATFORM_RTK_DMP
-	u32 tmp;
-	tmp=readl((volatile unsigned int*)0xb801a608);
-	tmp &= 0xffffff00;
-	tmp |= 0x55;
-	writel(tmp,(volatile unsigned int*)0xb801a608);//write dummy register for 1055
-#endif
 
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("+rtw_drv_entry\n"));
 

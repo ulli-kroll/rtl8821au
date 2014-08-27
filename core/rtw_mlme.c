@@ -1511,11 +1511,6 @@ void rtw_scan_abort(_adapter *adapter)
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY)) {
 		if (!adapter->bDriverStopped && !adapter->bSurpriseRemoved)
 			DBG_871X(FUNC_NDEV_FMT"waiting for scan_abort time out!\n", FUNC_NDEV_ARG(adapter->ndev));
-		#ifdef CONFIG_PLATFORM_MSTAR_TITANIA12
-		//_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
-		set_survey_timer(pmlmeext, 0);
-		_set_timer(&pmlmepriv->scan_to_timer, 50);
-		#endif
 		rtw_indicate_scan_done(adapter, _TRUE);
 	}
 	pmlmeext->scan_abort = _FALSE;

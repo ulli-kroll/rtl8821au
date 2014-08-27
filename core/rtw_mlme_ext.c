@@ -8800,7 +8800,7 @@ unsigned int send_beacon(_adapter *padapter)
 //#endif
 
 
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
 	u32 start = rtw_get_current_time();
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
@@ -12025,7 +12025,7 @@ u8 tx_beacon_hdl(_adapter *padapter, unsigned char *pbuf)
 			//_exit_critical_bh(&psta_bmc->sleep_q.lock, &irqL);
 			_exit_critical_bh(&pxmitpriv->lock, &irqL);
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_SDIO_HCI)
 			rtw_chk_hi_queue_cmd(padapter);
 #endif
 

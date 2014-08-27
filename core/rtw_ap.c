@@ -211,7 +211,7 @@ static void update_BCNTIM(_adapter *padapter)
 	}
 
 #ifndef CONFIG_INTERRUPT_BASED_TXBCN
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
 	set_tx_beacon_cmd(padapter);
 #endif
 #endif //!CONFIG_INTERRUPT_BASED_TXBCN
@@ -1340,7 +1340,7 @@ static void start_bss_network(_adapter *padapter, u8 *pbuf)
 		update_beacon(padapter, _TIM_IE_, NULL, _FALSE);
 
 #ifndef CONFIG_INTERRUPT_BASED_TXBCN //other case will  tx beacon when bcn interrupt coming in.
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
 		//issue beacon frame
 		if (send_beacon(padapter) == _FAIL)
 		{
@@ -2217,7 +2217,7 @@ void update_beacon(_adapter *padapter, u8 ie_id, u8 *oui, u8 tx)
 	_exit_critical_bh(&pmlmepriv->bcn_update_lock, &irqL);
 
 #ifndef CONFIG_INTERRUPT_BASED_TXBCN
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
 	if (tx) {
 		//send_beacon(padapter);//send_beacon must execute on TSR level
 		set_tx_beacon_cmd(padapter);

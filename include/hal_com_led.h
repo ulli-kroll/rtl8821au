@@ -213,7 +213,7 @@ LedControlUSB(
 //================================================================================
 // SDIO LED Definition.
 //================================================================================
-#elif defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#elif defined(CONFIG_SDIO_HCI)
 
 #define IS_LED_WPS_BLINKING(_LED_SDIO)	(((PLED_SDIO)_LED_SDIO)->CurrLedState==LED_BLINK_WPS \
 					|| ((PLED_SDIO)_LED_SDIO)->CurrLedState==LED_BLINK_WPS_STOP \

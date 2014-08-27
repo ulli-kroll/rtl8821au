@@ -308,9 +308,6 @@ struct registry_priv
 #ifdef CONFIG_SDIO_HCI
 #include <drv_types_sdio.h>
 #define INTF_DATA SDIO_DATA
-#elif defined(CONFIG_GSPI_HCI)
-#include <drv_types_gspi.h>
-#define INTF_DATA GSPI_DATA
 #endif
 
 #define GET_PRIMARY_ADAPTER(padapter) (((_adapter *)padapter)->dvobj->if1)
@@ -414,9 +411,6 @@ static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 	return &dvobj->pusbintf->dev;
 #endif
 #ifdef CONFIG_SDIO_HCI
-	return &dvobj->intf_data.func->dev;
-#endif
-#ifdef CONFIG_GSPI_HCI
 	return &dvobj->intf_data.func->dev;
 #endif
 }
@@ -682,11 +676,6 @@ __inline static u8 *myid(struct eeprom_priv *peepriv)
 #include <sdio_hal.h>
 #endif
 
-#ifdef CONFIG_GSPI_HCI
-#include <gspi_osintf.h>
-#include <gspi_ops.h>
-#include <gspi_hal.h>
-#endif
 
 
 

@@ -210,8 +210,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 		#define DEV_BUS_TYPE  	RT_USB_INTERFACE
 	#elif defined(CONFIG_SDIO_HCI)
 		#define DEV_BUS_TYPE  	RT_SDIO_INTERFACE
-	#elif defined(CONFIG_GSPI_HCI)
-		#define DEV_BUS_TYPE  	RT_SDIO_INTERFACE
 	#endif
 
 

@@ -118,7 +118,7 @@ struct mp_tx
 	_thread_hdl_ PktTxThread;
 };
 
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8723B)
 
 #define MP_MAX_LINES		1000
 #define MP_MAX_LINES_BYTES	256
@@ -269,8 +269,6 @@ typedef struct _MPT_CONTEXT
 
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 #define EFUSE_MAX_SIZE		1024
-#elif defined(CONFIG_RTL8188E)
-#define EFUSE_MAX_SIZE		256
 #else
 #define EFUSE_MAX_SIZE		512
 #endif

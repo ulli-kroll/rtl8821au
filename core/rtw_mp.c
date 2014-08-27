@@ -502,7 +502,7 @@ static void disable_dm(PADAPTER padapter)
 	Switch_DM_Func(padapter, DYNAMIC_FUNC_DISABLE, _FALSE);
 
 	// enable APK, LCK and IQK but disable power tracking
-#if !(defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A))
+#if (defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A))
 	pdmpriv->TxPowerTrackControl = _FALSE;
 #endif
 	Switch_DM_Func(padapter, DYNAMIC_RF_CALIBRATION, _TRUE);
@@ -1039,58 +1039,6 @@ void fill_txdesc_for_mp(PADAPTER padapter, struct tx_desc *ptxdesc)
 }
 
 
-#if defined(CONFIG_RTL8188E)
-void fill_tx_desc_8188e(PADAPTER padapter)
-{
-	struct mp_priv *pmp_priv = &padapter->mppriv;
-	struct tx_desc *desc   = &(pmp_priv->tx.desc);
-	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);
-	u32	pkt_size = pattrib->last_txcmdsz;
-	s32 bmcast = IS_MCAST(pattrib->ra);
-// offset 0
-#if !defined(CONFIG_RTL8188E_SDIO)
-	desc->txdw0 |= cpu_to_le32(OWN | FSG | LSG);
-	desc->txdw0 |= cpu_to_le32(pkt_size & 0x0000FFFF); // packet size
-	desc->txdw0 |= cpu_to_le32(((TXDESC_SIZE + OFFSET_SZ) << OFFSET_SHT) & 0x00FF0000); //32 bytes for TX Desc
-	if (bmcast) desc->txdw0 |= cpu_to_le32(BMC); // broadcast packet
-
-	desc->txdw1 |= cpu_to_le32((0x01 << 26) & 0xff000000);
-#endif
-
-	desc->txdw1 |= cpu_to_le32((pattrib->mac_id) & 0x3F); //CAM_ID(MAC_ID)
-	desc->txdw1 |= cpu_to_le32((pattrib->qsel << QSEL_SHT) & 0x00001F00); // Queue Select, TID
-	desc->txdw1 |= cpu_to_le32((pattrib->raid << RATE_ID_SHT) & 0x000F0000); // Rate Adaptive ID
-	// offset 8
-	//	desc->txdw2 |= cpu_to_le32(AGG_BK);//AGG BK
-
-	desc->txdw3 |= cpu_to_le32((pattrib->seqnum<<16)&0x0fff0000);
-	desc->txdw4 |= cpu_to_le32(HW_SSN);
-
-	desc->txdw4 |= cpu_to_le32(USERATE);
-	desc->txdw4 |= cpu_to_le32(DISDATAFB);
-
-	if( pmp_priv->preamble ){
-		if (pmp_priv->rateidx <=  MPT_RATE_54M)
-			desc->txdw4 |= cpu_to_le32(DATA_SHORT); // CCK Short Preamble
-	}
-
-	if (pmp_priv->bandwidth == CHANNEL_WIDTH_40)
-		desc->txdw4 |= cpu_to_le32(DATA_BW);
-
-	// offset 20
-	desc->txdw5 |= cpu_to_le32(pmp_priv->rateidx & 0x0000001F);
-
-	if( pmp_priv->preamble ){
-		if (pmp_priv->rateidx > MPT_RATE_54M)
-			desc->txdw5 |= cpu_to_le32(SGI); // MCS Short Guard Interval
-	}
-
-	desc->txdw5 |= cpu_to_le32(RTY_LMT_EN); // retry limit enable
-	desc->txdw5 |= cpu_to_le32(0x00180000); // DATA/RTS Rate Fallback Limit
-
-
-}
-#endif
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 void fill_tx_desc_8812a(PADAPTER padapter)
 {
@@ -1195,10 +1143,6 @@ void SetPacketTx(PADAPTER padapter)
 
 	//3 3. init TX descriptor
 
-#if defined(CONFIG_RTL8188E)
-	if(IS_HARDWARE_TYPE_8188E(padapter))
-		fill_tx_desc_8188e(padapter);
-#endif
 
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 	if(IS_HARDWARE_TYPE_8812(padapter))

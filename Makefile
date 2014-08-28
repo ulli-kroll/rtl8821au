@@ -110,10 +110,6 @@ _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/HalHWImg8812A_FW.o\
 		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_MAC.o\
 		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_BB.o\
 		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_RF.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_TestChip_FW.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_TestChip_MAC.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_TestChip_BB.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_TestChip_RF.o\
 		hal/OUTSRC/$(RTL871X)/HalPhyRf_8812A.o\
 		hal/OUTSRC/$(RTL871X)/odm_RegConfig8812A.o
 endif
@@ -131,9 +127,6 @@ _OUTSRC_FILES += hal/OUTSRC/rtl8821a/HalHWImg8821A_FW.o\
 		hal/OUTSRC/rtl8821a/HalHWImg8821A_MAC.o\
 		hal/OUTSRC/rtl8821a/HalHWImg8821A_BB.o\
 		hal/OUTSRC/rtl8821a/HalHWImg8821A_RF.o\
-		hal/OUTSRC/rtl8821a/HalHWImg8821A_TestChip_MAC.o\
-		hal/OUTSRC/rtl8821a/HalHWImg8821A_TestChip_BB.o\
-		hal/OUTSRC/rtl8821a/HalHWImg8821A_TestChip_RF.o\
 		hal/OUTSRC/rtl8812a/HalPhyRf_8812A.o\
 		hal/OUTSRC/rtl8821a/HalPhyRf_8821A.o\
 		hal/OUTSRC/rtl8821a/odm_RegConfig8821A.o

@@ -53,7 +53,7 @@
 	//#define PVOID	(void *)
 	#endif
 
-        #define UCHAR u8
+//        #define UCHAR u8
 	#define USHORT u16
 	#define UINT u32
 	#define ULONG u32

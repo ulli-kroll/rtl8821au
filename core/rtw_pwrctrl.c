@@ -345,9 +345,9 @@ void pwr_state_check_handler(RTW_TIMER_HDL_ARGS)
  *	pslv			power state level, only could be PS_STATE_S0 ~ PS_STATE_S4
  *
  */
-void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
+void rtw_set_rpwm(PADAPTER padapter, uint8_t pslv)
 {
-	u8	rpwm;
+	uint8_t	rpwm;
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 
 _func_enter_;
@@ -420,7 +420,7 @@ _func_enter_;
 	if (rpwm & PS_ACK)
 		_set_timer(&pwrpriv->pwr_rpwm_timer, LPS_RPWM_WAIT_MS);
 #endif // CONFIG_LPS_RPWM_TIMER
-	rtw_hal_set_hwreg(padapter, HW_VAR_SET_RPWM, (u8 *)(&rpwm));
+	rtw_hal_set_hwreg(padapter, HW_VAR_SET_RPWM, (uint8_t *)(&rpwm));
 
 	pwrpriv->tog += 0x80;
 
@@ -435,8 +435,8 @@ _func_enter_;
 _func_exit_;
 }
 
-u8 PS_RDY_CHECK(_adapter * padapter);
-u8 PS_RDY_CHECK(_adapter * padapter)
+uint8_t PS_RDY_CHECK(_adapter * padapter);
+uint8_t PS_RDY_CHECK(_adapter * padapter)
 {
 	u32 curr_time, delta_time;
 	struct pwrctrl_priv	*pwrpriv = &padapter->pwrctrlpriv;
@@ -479,7 +479,7 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 	return _TRUE;
 }
 
-void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode)
+void rtw_set_ps_mode(PADAPTER padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 #ifdef CONFIG_P2P
@@ -551,7 +551,7 @@ _func_enter_;
 
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(padapter, PS_STATE_S4);
-			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
+			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (uint8_t *)(&ps_mode));
 			pwrpriv->bFwCurrentInPSMode = _FALSE;
 		}
 	}
@@ -587,7 +587,7 @@ _func_enter_;
 			pwrpriv->pwr_mode = ps_mode;
 			pwrpriv->smart_ps = smart_ps;
 			pwrpriv->bcn_ant_mode = bcn_ant_mode;
-			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
+			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (uint8_t *)(&ps_mode));
 
 #ifdef CONFIG_P2P_PS
 			// Set CTWindow after LPS
@@ -620,7 +620,7 @@ _func_exit_;
 s32 LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms)
 {
 	u32 start_time;
-	u8 bAwake = _FALSE;
+	uint8_t bAwake = _FALSE;
 	s32 err = 0;
 
 
@@ -727,7 +727,7 @@ void LPS_Leave(PADAPTER padapter)
 
 	struct pwrctrl_priv	*pwrpriv = &padapter->pwrctrlpriv;
 	u32 start_time;
-	u8 bAwake = _FALSE;
+	uint8_t bAwake = _FALSE;
 
 _func_enter_;
 
@@ -764,7 +764,7 @@ _func_exit_;
 void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 {
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
-	u8	enqueue = 0;
+	uint8_t	enqueue = 0;
 
 _func_enter_;
 
@@ -824,7 +824,7 @@ void LPS_Leave_check(
 {
 	struct pwrctrl_priv *pwrpriv;
 	u32	start_time;
-	u8	bReady;
+	uint8_t	bReady;
 
 _func_enter_;
 
@@ -1034,7 +1034,7 @@ s32 rtw_register_tx_alive(PADAPTER padapter)
 {
 	s32 res;
 	struct pwrctrl_priv *pwrctrl;
-	u8 pslv;
+	uint8_t pslv;
 
 _func_enter_;
 
@@ -1087,7 +1087,7 @@ s32 rtw_register_cmd_alive(PADAPTER padapter)
 {
 	s32 res;
 	struct pwrctrl_priv *pwrctrl;
-	u8 pslv;
+	uint8_t pslv;
 
 _func_enter_;
 
@@ -1358,7 +1358,7 @@ _func_enter_;
 	pwrctrlpriv->btcoex_rfon = _FALSE;
 
 #ifdef CONFIG_LPS_LCLK
-	rtw_hal_set_hwreg(padapter, HW_VAR_SET_RPWM, (u8 *)(&pwrctrlpriv->rpwm));
+	rtw_hal_set_hwreg(padapter, HW_VAR_SET_RPWM, (uint8_t *)(&pwrctrlpriv->rpwm));
 
 	_init_workitem(&pwrctrlpriv->cpwm_event, cpwm_event_callback, NULL);
 
@@ -1590,9 +1590,9 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv)
 }
 #endif //CONFIG_ANDROID_POWER
 
-u8 rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val)
+uint8_t rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,uint8_t * val)
 {
-	u8 bResult = _TRUE;
+	uint8_t bResult = _TRUE;
 	rtw_hal_intf_ps_func(padapter,efunc_id,val);
 
 	return bResult;
@@ -1765,7 +1765,7 @@ exit:
 
 }
 
-int rtw_pm_set_lps(_adapter *padapter, u8 mode)
+int rtw_pm_set_lps(_adapter *padapter, uint8_t mode)
 {
 	int	ret = 0;
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
@@ -1794,7 +1794,7 @@ int rtw_pm_set_lps(_adapter *padapter, u8 mode)
 	return ret;
 }
 
-int rtw_pm_set_ips(_adapter *padapter, u8 mode)
+int rtw_pm_set_ips(_adapter *padapter, uint8_t mode)
 {
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
 

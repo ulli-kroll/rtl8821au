@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2012 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -48,13 +48,13 @@ void sreset_reset_value(_adapter *padapter)
 #endif
 }
 
-u8 sreset_get_wifi_status(_adapter *padapter)
+uint8_t sreset_get_wifi_status(_adapter *padapter)
 {
 #if defined(DBG_CONFIG_ERROR_DETECT)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
-	u8 status = WIFI_STATUS_SUCCESS;
+	uint8_t status = WIFI_STATUS_SUCCESS;
 	u32 val32 = 0;
 	_irqL irqL;
 	if(psrtpriv->silent_reset_inprogress == _TRUE)
@@ -114,7 +114,7 @@ bool sreset_inprogress(_adapter *padapter)
 
 void sreset_restore_security_station(_adapter *padapter)
 {
-	u8 EntryId = 0;
+	uint8_t EntryId = 0;
 	struct mlme_priv *mlmepriv = &padapter->mlmepriv;
 	struct sta_priv * pstapriv = &padapter->stapriv;
 	struct sta_info *psta;
@@ -122,7 +122,7 @@ void sreset_restore_security_station(_adapter *padapter)
 	struct mlme_ext_info	*pmlmeinfo = &padapter->mlmeextpriv.mlmext_info;
 
 	{
-		u8 val8;
+		uint8_t val8;
 
 		if (pmlmeinfo->auth_algo == dot11AuthAlgrthm_8021X) {
 			val8 = 0xcc;
@@ -134,7 +134,7 @@ void sreset_restore_security_station(_adapter *padapter)
 		} else {
 			val8 = 0xcf;
 		}
-		rtw_hal_set_hwreg(padapter, HW_VAR_SEC_CFG, (u8 *)(&val8));
+		rtw_hal_set_hwreg(padapter, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
 	}
 
 	#if 0
@@ -182,7 +182,7 @@ void sreset_restore_network_station(_adapter *padapter)
 	// reset related register of Beacon control
 
 	//set MSR to nolink
-	Set_MSR(padapter, _HW_STATE_NOLINK_);		
+	Set_MSR(padapter, _HW_STATE_NOLINK_);
 	// reject all data frame
 	rtw_write16(padapter, REG_RXFLTMAP2,0x00);
 	//reset TSF
@@ -194,23 +194,23 @@ void sreset_restore_network_station(_adapter *padapter)
 	//=======================================================
 	}
 	#endif
-	
+
 	rtw_setopmode_cmd(padapter, Ndis802_11Infrastructure);
 
 	{
-		u8 threshold;
+		uint8_t threshold;
 		#ifdef CONFIG_USB_HCI
 		// TH=1 => means that invalidate usb rx aggregation
 		// TH=0 => means that validate usb rx aggregation, use init value.
 		if(mlmepriv->htpriv.ht_option) {
-			if(padapter->registrypriv.wifi_spec==1)		
+			if(padapter->registrypriv.wifi_spec==1)
 				threshold = 1;
 			else
 				threshold = 0;
-			rtw_hal_set_hwreg(padapter, HW_VAR_RXDMA_AGG_PG_TH, (u8 *)(&threshold));
+			rtw_hal_set_hwreg(padapter, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
 		} else {
 			threshold = 1;
-			rtw_hal_set_hwreg(padapter, HW_VAR_RXDMA_AGG_PG_TH, (u8 *)(&threshold));
+			rtw_hal_set_hwreg(padapter, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
 		}
 		#endif
 	}
@@ -219,12 +219,12 @@ void sreset_restore_network_station(_adapter *padapter)
 
 	//disable dynamic functions, such as high power, DIG
 	//Switch_DM_Func(padapter, DYNAMIC_FUNC_DISABLE, _FALSE);
-	
+
 	rtw_hal_set_hwreg(padapter, HW_VAR_BSSID, pmlmeinfo->network.MacAddress);
 
 	{
-		u8	join_type = 0;
-		rtw_hal_set_hwreg(padapter, HW_VAR_MLME_JOIN, (u8 *)(&join_type));
+		uint8_t	join_type = 0;
+		rtw_hal_set_hwreg(padapter, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
 	}
 
 	Set_MSR(padapter, (pmlmeinfo->state & 0x3));

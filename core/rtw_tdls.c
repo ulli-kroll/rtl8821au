@@ -94,7 +94,7 @@ void issue_nulldata_to_TDLS_peer_STA(_adapter *padapter, struct sta_info *ptdls_
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
 
-	pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
+	pframe = (uint8_t *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
 
 	fctrl = &(pwlanhdr->frame_ctl);
@@ -176,7 +176,7 @@ s32 update_tdls_attrib(_adapter *padapter, struct pkt_attrib *pattrib)
 			case dot11AuthAlgrthm_Open:
 			case dot11AuthAlgrthm_Shared:
 			case dot11AuthAlgrthm_Auto:
-				pattrib->key_idx = (u8)psecuritypriv->dot11PrivacyKeyIndex;
+				pattrib->key_idx = (uint8_t)psecuritypriv->dot11PrivacyKeyIndex;
 				break;
 			case dot11AuthAlgrthm_8021X:
 				pattrib->key_idx = 0;
@@ -260,7 +260,7 @@ void free_tdls_sta(_adapter *padapter, struct sta_info *ptdls_sta)
 	//ready to clear cam
 	if(ptdls_sta->mac_id!=0){
 		ptdlsinfo->clear_cam=ptdls_sta->mac_id;
-		rtw_setstakey_cmd(padapter, (u8 *)ptdls_sta, _TRUE);
+		rtw_setstakey_cmd(padapter, (uint8_t *)ptdls_sta, _TRUE);
 	}
 
 	if(ptdlsinfo->sta_cnt==0){
@@ -291,11 +291,11 @@ void rtw_tdls_set_key(_adapter *adapter, struct rx_pkt_attrib *prx_pkt_attrib, s
 	if(prx_pkt_attrib->encrypt)
 	{
 		ptdls_sta->dot118021XPrivacy=_AES_;
-		rtw_setstakey_cmd(adapter, (u8*)ptdls_sta, _TRUE);
+		rtw_setstakey_cmd(adapter, (uint8_t *)ptdls_sta, _TRUE);
 	}
 }
 
-void rtw_tdls_process_ht_cap(_adapter *adapter, struct sta_info *ptdls_sta, u8 *data, u8 Length)
+void rtw_tdls_process_ht_cap(_adapter *adapter, struct sta_info *ptdls_sta, uint8_t *data, uint8_t Length)
 {
 	/* save HT capabilities in the sta object */
 	memset(&ptdls_sta->htpriv.ht_cap, 0, sizeof(struct rtw_ieee80211_ht_cap));
@@ -345,10 +345,10 @@ void rtw_tdls_process_ht_cap(_adapter *adapter, struct sta_info *ptdls_sta, u8 *
 	}
 }
 
-u8 *rtw_tdls_set_ht_cap(_adapter *padapter, u8 *pframe, struct pkt_attrib *pattrib)
+uint8_t *rtw_tdls_set_ht_cap(_adapter *padapter, uint8_t *pframe, struct pkt_attrib *pattrib)
 {
 	struct rtw_ieee80211_ht_cap ht_capie;
-	u8 rf_type;
+	uint8_t rf_type;
 
 	//HT capabilities
 	memset(&ht_capie, 0, sizeof(struct rtw_ieee80211_ht_cap));
@@ -366,7 +366,7 @@ u8 *rtw_tdls_set_ht_cap(_adapter *padapter, u8 *pframe, struct pkt_attrib *pattr
 
 	ht_capie.ampdu_params_info = (IEEE80211_HT_CAP_AMPDU_FACTOR&0x03);
 
-	padapter->HalFunc.GetHwRegHandler(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
+	padapter->HalFunc.GetHwRegHandler(padapter, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 	switch(rf_type)
 	{
 		case RF_1T1R:
@@ -386,9 +386,9 @@ u8 *rtw_tdls_set_ht_cap(_adapter *padapter, u8 *pframe, struct pkt_attrib *pattr
 						sizeof(struct rtw_ieee80211_ht_cap), (unsigned char*)&ht_capie, &(pattrib->pktlen)));
 }
 
-u8 *rtw_tdls_set_sup_ch(struct mlme_ext_priv *pmlmeext, u8 *pframe, struct pkt_attrib *pattrib)
+uint8_t *rtw_tdls_set_sup_ch(struct mlme_ext_priv *pmlmeext, uint8_t *pframe, struct pkt_attrib *pattrib)
 {
-	u8 sup_ch[ 30 * 2 ] = { 0x00 }, sup_ch_idx = 0, idx_5g = 2;	//For supported channel
+	uint8_t sup_ch[ 30 * 2 ] = { 0x00 }, sup_ch_idx = 0, idx_5g = 2;	//For supported channel
 	do{
 		if( pmlmeext->channel_set[sup_ch_idx].ChannelNum <= 14 )
 		{
@@ -408,9 +408,9 @@ u8 *rtw_tdls_set_sup_ch(struct mlme_ext_priv *pmlmeext, u8 *pframe, struct pkt_a
 }
 
 #ifdef CONFIG_WFD
-void rtw_tdls_process_wfd_ie(struct tdls_info *ptdlsinfo, u8 *ptr, u8 length)
+void rtw_tdls_process_wfd_ie(struct tdls_info *ptdlsinfo, uint8_t *ptr, uint8_t length)
 {
-	u8	wfd_ie[ 128 ] = { 0x00 };
+	uint8_t	wfd_ie[ 128 ] = { 0x00 };
 	u32	wfd_ielen = 0;
 	u32	wfd_offset = 0;
 	//	Try to get the TCP port information when receiving the negotiation response.
@@ -420,7 +420,7 @@ void rtw_tdls_process_wfd_ie(struct tdls_info *ptdlsinfo, u8 *ptr, u8 length)
 	wfd_offset = rtw_get_wfd_ie( ptr + wfd_offset, length - wfd_offset, wfd_ie, &wfd_ielen );
 	while( wfd_offset )
 	{
-		u8	attr_content[ 10 ] = { 0x00 };
+		uint8_t	attr_content[ 10 ] = { 0x00 };
 		u32	attr_contentlen = 0;
 		int	i;
 
@@ -453,7 +453,7 @@ void issue_tunneled_probe_req(_adapter *padapter)
 	struct pkt_attrib			*pattrib;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct xmit_priv			*pxmitpriv = &(padapter->xmitpriv);
-	u8 baddr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+	uint8_t baddr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 	DBG_871X("[%s]\n", __FUNCTION__);
 
@@ -532,7 +532,7 @@ exit:
 }
 #endif //CONFIG_WFD
 
-void issue_tdls_setup_req(_adapter *padapter, u8 *mac_addr)
+void issue_tdls_setup_req(_adapter *padapter, uint8_t *mac_addr)
 {
 	struct tdls_info	*ptdlsinfo = &padapter->tdlsinfo;
 	struct xmit_frame			*pmgntframe;
@@ -542,7 +542,7 @@ void issue_tdls_setup_req(_adapter *padapter, u8 *mac_addr)
    	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info *ptdls_sta= NULL;
 	_irqL irqL;
-	static u8 dialogtoken = 0;
+	static uint8_t dialogtoken = 0;
 	u32 timeout_interval= TPK_RESEND_COUNT * 1000;	//retry timer should set at least 301 sec, using TPK_count counting 301 times.
 
 	if(ptdlsinfo->ap_prohibited == _TRUE)
@@ -613,7 +613,7 @@ exit:
 	return;
 }
 
-void issue_tdls_teardown(_adapter *padapter, u8 *mac_addr)
+void issue_tdls_teardown(_adapter *padapter, uint8_t *mac_addr)
 {
 	struct xmit_frame			*pmgntframe;
 	struct pkt_attrib			*pattrib;
@@ -676,13 +676,13 @@ exit:
 	return;
 }
 
-void issue_tdls_dis_req(_adapter *padapter, u8 *mac_addr)
+void issue_tdls_dis_req(_adapter *padapter, uint8_t *mac_addr)
 {
 	struct xmit_frame			*pmgntframe;
 	struct pkt_attrib			*pattrib;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct xmit_priv			*pxmitpriv = &(padapter->xmitpriv);
-	u8 baddr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+	uint8_t baddr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
@@ -807,7 +807,7 @@ exit:
 }
 
 //TDLS Discovery Response frame is a management action frame
-void issue_tdls_dis_rsp(_adapter *padapter, union recv_frame *precv_frame, u8 dialog)
+void issue_tdls_dis_rsp(_adapter *padapter, union recv_frame *precv_frame, uint8_t dialog)
 {
 	struct xmit_frame		*pmgntframe;
 	struct pkt_attrib		*pattrib;
@@ -830,7 +830,7 @@ void issue_tdls_dis_rsp(_adapter *padapter, union recv_frame *precv_frame, u8 di
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
 
-	pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
+	pframe = (uint8_t *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
 
 	fctrl = &(pwlanhdr->frame_ctl);
@@ -870,7 +870,7 @@ void issue_tdls_peer_traffic_indication(_adapter *padapter, struct sta_info *ptd
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct xmit_priv			*pxmitpriv = &(padapter->xmitpriv);
 
-	static u8 dialogtoken=0;
+	static uint8_t dialogtoken=0;
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
@@ -909,7 +909,7 @@ exit:
 	return;
 }
 
-void issue_tdls_ch_switch_req(_adapter *padapter, u8 *mac_addr)
+void issue_tdls_ch_switch_req(_adapter *padapter, uint8_t *mac_addr)
 {
 	struct xmit_frame	*pmgntframe;
 	struct pkt_attrib	*pattrib;
@@ -948,7 +948,7 @@ exit:
 	return;
 }
 
-void issue_tdls_ch_switch_rsp(_adapter *padapter, u8 *mac_addr)
+void issue_tdls_ch_switch_rsp(_adapter *padapter, uint8_t *mac_addr)
 {
 	struct xmit_frame	*pmgntframe;
 	struct pkt_attrib	*pattrib;
@@ -1000,10 +1000,10 @@ sint On_TDLS_Dis_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 {
 	struct sta_info *ptdls_sta = NULL, *psta = rtw_get_stainfo(&(adapter->stapriv), get_bssid(&(adapter->mlmepriv)));
 	struct recv_priv *precvpriv = &(adapter->recvpriv);
-	u8 *ptr = precv_frame->u.hdr.rx_data, *psa;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data, *psa;
 	struct rx_pkt_attrib *pattrib = &(precv_frame->u.hdr.attrib);
 	struct tdls_info *ptdlsinfo = &(adapter->tdlsinfo);
-	u8 empty_addr[ETH_ALEN] = { 0x00 };
+	uint8_t empty_addr[ETH_ALEN] = { 0x00 };
 	int UndecoratedSmoothedPWDB;
 
 
@@ -1075,23 +1075,23 @@ sint On_TDLS_Dis_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 sint On_TDLS_Setup_Req(_adapter *adapter, union recv_frame *precv_frame)
 {
 	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
-	u8 *psa, *pmyid;
+	uint8_t *psa, *pmyid;
 	struct sta_info *ptdls_sta= NULL;
    	struct sta_priv *pstapriv = &adapter->stapriv;
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
 	struct security_priv *psecuritypriv = &adapter->securitypriv;
 	_irqL irqL;
 	struct rx_pkt_attrib	*prx_pkt_attrib = &precv_frame->u.hdr.attrib;
-	u8 *prsnie, *ppairwise_cipher;
-	u8 i, k, pairwise_count;
-	u8 ccmp_have=0, rsnie_have=0;
+	uint8_t *prsnie, *ppairwise_cipher;
+	uint8_t i, k, pairwise_count;
+	uint8_t ccmp_have=0, rsnie_have=0;
 	u16 j;
-	u8 SNonce[32];
+	uint8_t SNonce[32];
 	u32 *timeout_interval;
 	sint parsing_length;	//frame body length, without icv_len
 	PNDIS_802_11_VARIABLE_IEs	pIE;
-	u8 FIXED_IE = 5;
+	uint8_t FIXED_IE = 5;
 	unsigned char		supportRate[16];
 	int				supportRateNum = 0;
 
@@ -1174,7 +1174,7 @@ sint On_TDLS_Setup_Req(_adapter *adapter, union recv_frame *precv_frame)
 				case _RSN_IE_2_:
 					rsnie_have=1;
 					if(prx_pkt_attrib->encrypt){
-						prsnie=(u8*)pIE;
+						prsnie=(uint8_t *)pIE;
 						//check whether initiator STA has CCMP pairwise_cipher.
 						ppairwise_cipher=prsnie+10;
 						memcpy(&pairwise_count, (u16*)(ppairwise_cipher-2), 1);
@@ -1296,17 +1296,17 @@ sint On_TDLS_Setup_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
 	struct sta_info *ptdls_sta= NULL;
    	struct sta_priv *pstapriv = &adapter->stapriv;
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	_irqL irqL;
 	struct rx_pkt_attrib	*prx_pkt_attrib = &precv_frame->u.hdr.attrib;
-	u8 *psa;
+	uint8_t *psa;
 	u16 stat_code;
 	sint parsing_length;	//frame body length, without icv_len
 	PNDIS_802_11_VARIABLE_IEs	pIE;
-	u8 FIXED_IE =7;
-	u8  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic, *ppairwise_cipher;
+	uint8_t FIXED_IE =7;
+	uint8_t  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic, *ppairwise_cipher;
 	u16 pairwise_count, j, k;
-	u8 verify_ccmp=0;
+	uint8_t verify_ccmp=0;
 	unsigned char		supportRate[16];
 	int				supportRateNum = 0;
 
@@ -1362,7 +1362,7 @@ sint On_TDLS_Setup_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 			case _SUPPORTED_CH_IE_:
 				break;
 			case _RSN_IE_2_:
-				prsnie=(u8*)pIE;
+				prsnie=(uint8_t *)pIE;
 				//check whether responder STA has CCMP pairwise_cipher.
 				ppairwise_cipher=prsnie+10;
 				memcpy(&pairwise_count, (u16*)(ppairwise_cipher-2), 2);
@@ -1375,11 +1375,11 @@ sint On_TDLS_Setup_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 			case _VENDOR_SPECIFIC_IE_:
 				break;
 			case _FTIE_:
-				pftie=(u8*)pIE;
+				pftie=(uint8_t *)pIE;
 				memcpy(ptdls_sta->ANonce, (ptr+j+20), 32);
 				break;
 			case _TIMEOUT_ITVL_IE_:
-				ptimeout_ie=(u8*)pIE;
+				ptimeout_ie=(uint8_t *)pIE;
 				break;
 			case _RIC_Descriptor_IE_:
 				break;
@@ -1389,7 +1389,7 @@ sint On_TDLS_Setup_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 			case EID_BSSCoexistence:
 				break;
 			case _LINK_ID_IE_:
-				plinkid_ie=(u8*)pIE;
+				plinkid_ie=(uint8_t *)pIE;
 				break;
 			default:
 				break;
@@ -1471,15 +1471,15 @@ sint On_TDLS_Setup_Cfm(_adapter *adapter, union recv_frame *precv_frame)
 	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
 	struct sta_info *ptdls_sta= NULL;
    	struct sta_priv *pstapriv = &adapter->stapriv;
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	_irqL irqL;
 	struct rx_pkt_attrib	*prx_pkt_attrib = &precv_frame->u.hdr.attrib;
-	u8 *psa;
+	uint8_t *psa;
 	u16 stat_code;
 	sint parsing_length;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
-	u8 FIXED_IE =5;
-	u8  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic, *ppairwise_cipher;
+	uint8_t FIXED_IE =5;
+	uint8_t  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic, *ppairwise_cipher;
 	u16 j, pairwise_count;
 
 	psa = get_sa(ptr);
@@ -1511,20 +1511,20 @@ sint On_TDLS_Setup_Cfm(_adapter *adapter, union recv_frame *precv_frame)
 			switch (pIE->ElementID)
 			{
 				case _RSN_IE_2_:
-					prsnie=(u8*)pIE;
+					prsnie=(uint8_t *)pIE;
 					break;
 				case _VENDOR_SPECIFIC_IE_:
 					break;
 	 			case _FTIE_:
-					pftie=(u8*)pIE;
+					pftie=(uint8_t *)pIE;
 					break;
 				case _TIMEOUT_ITVL_IE_:
-					ptimeout_ie=(u8*)pIE;
+					ptimeout_ie=(uint8_t *)pIE;
 					break;
 				case _HT_EXTRA_INFO_IE_:
 					break;
 	 			case _LINK_ID_IE_:
-					plinkid_ie=(u8*)pIE;
+					plinkid_ie=(uint8_t *)pIE;
 					break;
 				default:
 					break;
@@ -1566,10 +1566,10 @@ sint On_TDLS_Dis_Req(_adapter *adapter, union recv_frame *precv_frame)
 	struct rx_pkt_attrib	*prx_pkt_attrib = &precv_frame->u.hdr.attrib;
 	struct sta_priv *pstapriv = &adapter->stapriv;
 	struct sta_info *psta_ap;
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	sint parsing_length;	//frame body length, without icv_len
 	PNDIS_802_11_VARIABLE_IEs	pIE;
-	u8 FIXED_IE = 3, *dst, *pdialog = NULL;
+	uint8_t FIXED_IE = 3, *dst, *pdialog = NULL;
 	u16 j;
 
 	ptr +=prx_pkt_attrib->hdrlen + prx_pkt_attrib->iv_len + LLC_HEADER_SIZE+TYPE_LENGTH_FIELD_SIZE + 1;
@@ -1623,8 +1623,8 @@ exit:
 
 sint On_TDLS_Teardown(_adapter *adapter, union recv_frame *precv_frame)
 {
-	u8 *psa;
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *psa;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib	*prx_pkt_attrib = &precv_frame->u.hdr.attrib;
 	struct mlme_ext_priv	*pmlmeext = &(adapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -1646,7 +1646,7 @@ sint On_TDLS_Teardown(_adapter *adapter, union recv_frame *precv_frame)
 
 }
 
-u8 TDLS_check_ch_state(uint state){
+uint8_t TDLS_check_ch_state(uint state){
 	if(	(state & TDLS_CH_SWITCH_ON_STATE) &&
 		(state & TDLS_AT_OFF_CH_STATE) &&
 		(state & TDLS_PEER_AT_OFF_STATE) ){
@@ -1668,7 +1668,7 @@ sint On_TDLS_Peer_Traffic_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 	struct sta_priv *pstapriv = &adapter->stapriv;
 	//get peer sta infomation
 	struct sta_info *ptdls_sta = rtw_get_stainfo(pstapriv, pattrib->src);
-	u8 wmmps_ac=0, state=TDLS_check_ch_state(ptdls_sta->tdls_sta_state);
+	uint8_t wmmps_ac=0, state=TDLS_check_ch_state(ptdls_sta->tdls_sta_state);
 	int i;
 
 	ptdls_sta->sta_stats.rx_data_pkts++;
@@ -1759,12 +1759,12 @@ sint On_TDLS_Ch_Switch_Req(_adapter *adapter, union recv_frame *precv_frame)
 {
 	struct sta_info *ptdls_sta= NULL;
    	struct sta_priv *pstapriv = &adapter->stapriv;
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib	*prx_pkt_attrib = &precv_frame->u.hdr.attrib;
-	u8 *psa;
+	uint8_t *psa;
 	sint parsing_length;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
-	u8 FIXED_IE =3;
+	uint8_t FIXED_IE =3;
 	u16 j;
 	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
 
@@ -1832,12 +1832,12 @@ sint On_TDLS_Ch_Switch_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 {
 	struct sta_info *ptdls_sta= NULL;
    	struct sta_priv *pstapriv = &adapter->stapriv;
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib	*prx_pkt_attrib = &precv_frame->u.hdr.attrib;
-	u8 *psa;
+	uint8_t *psa;
 	sint parsing_length;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
-	u8 FIXED_IE =4;
+	uint8_t FIXED_IE =4;
 	u16 stat_code, j, switch_time, switch_timeout;
 	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
 
@@ -1915,11 +1915,11 @@ sint On_TDLS_Ch_Switch_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 }
 
 #ifdef CONFIG_WFD
-void wfd_ie_tdls(_adapter * padapter, u8 *pframe, u32 *pktlen )
+void wfd_ie_tdls(_adapter * padapter, uint8_t *pframe, u32 *pktlen )
 {
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	struct wifi_display_info	*pwfd_info = padapter->tdlsinfo.wfd_info;
-	u8 wfdie[ MAX_WFD_IE_LEN] = { 0x00 };
+	uint8_t wfdie[ MAX_WFD_IE_LEN] = { 0x00 };
 	u32 wfdielen = 0;
 
 	//	WFD OUI
@@ -2004,7 +2004,7 @@ void wfd_ie_tdls(_adapter * padapter, u8 *pframe, u32 *pktlen )
 }
 #endif //CONFIG_WFD
 
-void rtw_build_tdls_setup_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tdls_setup_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &pmlmeext->mlmext_info;
@@ -2012,26 +2012,26 @@ void rtw_build_tdls_setup_req_ies(_adapter * padapter, struct xmit_frame * pxmit
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
 	struct sta_info *ptdls_sta=rtw_get_stainfo( (&padapter->stapriv) , pattrib->dst);
 
-	u8 payload_type = 0x02;
-	u8 category = RTW_WLAN_CATEGORY_TDLS;
-	u8 action = TDLS_SETUP_REQUEST;
-	u8 bssrate[NDIS_802_11_LENGTH_RATES_EX]; //Use NDIS_802_11_LENGTH_RATES_EX in order to call func.rtw_set_supported_rate
+	uint8_t payload_type = 0x02;
+	uint8_t category = RTW_WLAN_CATEGORY_TDLS;
+	uint8_t action = TDLS_SETUP_REQUEST;
+	uint8_t bssrate[NDIS_802_11_LENGTH_RATES_EX]; //Use NDIS_802_11_LENGTH_RATES_EX in order to call func.rtw_set_supported_rate
  	int	bssrate_len = 0, i = 0 ;
-	u8 more_supportedrates = 0;
+	uint8_t more_supportedrates = 0;
 	unsigned int ie_len;
-	u8 *p;
+	uint8_t *p;
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
-	u8 link_id_addr[18] = {0};
-	u8 iedata=0;
-	u8 sup_ch[ 30 * 2 ] = {0x00 }, sup_ch_idx = 0, idx_5g = 2;	//For supported channel
-	u8 timeout_itvl[5];	//set timeout interval to maximum value
+	uint8_t link_id_addr[18] = {0};
+	uint8_t iedata=0;
+	uint8_t sup_ch[ 30 * 2 ] = {0x00 }, sup_ch_idx = 0, idx_5g = 2;	//For supported channel
+	uint8_t timeout_itvl[5];	//set timeout interval to maximum value
 	u32 time;
 
 	//SNonce
 	if(pattrib->encrypt){
 		for(i=0;i<8;i++){
 			time=rtw_get_current_time();
-			memcpy(&ptdls_sta->SNonce[4*i], (u8 *)&time, 4);
+			memcpy(&ptdls_sta->SNonce[4*i], (uint8_t *)&time, 4);
 		}
 	}
 
@@ -2098,7 +2098,7 @@ void rtw_build_tdls_setup_req_ies(_adapter * padapter, struct xmit_frame * pxmit
 
 		//Timeout interval
 		timeout_itvl[0]=0x02;
-		memcpy(timeout_itvl+1, (u8 *)(&ptdls_sta->TDLS_PeerKey_Lifetime), 4);
+		memcpy(timeout_itvl+1, (uint8_t *)(&ptdls_sta->TDLS_PeerKey_Lifetime), 4);
 		pframe = rtw_set_ie(pframe, _TIMEOUT_ITVL_IE_, 5, timeout_itvl,  &(pattrib->pktlen));
 	}
 
@@ -2123,7 +2123,7 @@ void rtw_build_tdls_setup_req_ies(_adapter * padapter, struct xmit_frame * pxmit
 
 }
 
-void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2131,21 +2131,21 @@ void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmit
 	struct sta_info *ptdls_sta;
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
 
-	u8 payload_type = 0x02;
+	uint8_t payload_type = 0x02;
 	unsigned char category = RTW_WLAN_CATEGORY_TDLS;
 	unsigned char action = TDLS_SETUP_RESPONSE;
 	unsigned char	bssrate[NDIS_802_11_LENGTH_RATES_EX];
 	int	bssrate_len = 0;
-	u8 more_supportedrates = 0;
+	uint8_t more_supportedrates = 0;
 	unsigned int ie_len;
 	unsigned char *p;
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
-	u8 link_id_addr[18] = {0};
-	u8 iedata=0;
-	u8 timeout_itvl[5];	//setup response timeout interval will copy from request
-	u8 ANonce[32];	//maybe it can put in ontdls_req
-	u8 k;		//for random ANonce
-	u8  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic;
+	uint8_t link_id_addr[18] = {0};
+	uint8_t iedata=0;
+	uint8_t timeout_itvl[5];	//setup response timeout interval will copy from request
+	uint8_t ANonce[32];	//maybe it can put in ontdls_req
+	uint8_t k;		//for random ANonce
+	uint8_t  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic;
 	u32 time;
 
 	ptdls_sta = rtw_get_stainfo( &(padapter->stapriv) , pattrib->dst);
@@ -2159,7 +2159,7 @@ void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmit
 	if(pattrib->encrypt){
 		for(k=0;k<8;k++){
 			time=rtw_get_current_time();
-			memcpy(&ptdls_sta->ANonce[4*k], (u8*)&time, 4);
+			memcpy(&ptdls_sta->ANonce[4*k], (uint8_t *)&time, 4);
 		}
 	}
 
@@ -2168,7 +2168,7 @@ void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmit
 	//category, action, status code
 	pframe = rtw_set_fixed_ie(pframe, 1, &(category), &(pattrib->pktlen));
 	pframe = rtw_set_fixed_ie(pframe, 1, &(action), &(pattrib->pktlen));
-	pframe = rtw_set_fixed_ie(pframe, 2, (u8 *)&ptdls_sta->stat_code, &(pattrib->pktlen));
+	pframe = rtw_set_fixed_ie(pframe, 2, (uint8_t *)&ptdls_sta->stat_code, &(pattrib->pktlen));
 
 	if(ptdls_sta->stat_code!=0)	//invalid setup request
 	{
@@ -2242,7 +2242,7 @@ void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmit
 		//Timeout interval
 		ptimeout_ie = pframe;
 		timeout_itvl[0]=0x02;
-		memcpy(timeout_itvl+1, (u8 *)(&ptdls_sta->TDLS_PeerKey_Lifetime), 4);
+		memcpy(timeout_itvl+1, (uint8_t *)(&ptdls_sta->TDLS_PeerKey_Lifetime), 4);
 		pframe = rtw_set_ie(pframe, _TIMEOUT_ITVL_IE_, 5, timeout_itvl,  &(pattrib->pktlen));
 	}
 
@@ -2272,7 +2272,7 @@ void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmit
 
 }
 
-void rtw_build_tdls_setup_cfm_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tdls_setup_cfm_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
@@ -2280,23 +2280,23 @@ void rtw_build_tdls_setup_cfm_ies(_adapter * padapter, struct xmit_frame * pxmit
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
 	struct sta_info *ptdls_sta=rtw_get_stainfo( (&padapter->stapriv) , pattrib->dst);
 
-	u8 payload_type = 0x02;
+	uint8_t payload_type = 0x02;
 	unsigned char category = RTW_WLAN_CATEGORY_TDLS;
 	unsigned char action = TDLS_SETUP_CONFIRM;
-	u8 more_supportedrates = 0;
+	uint8_t more_supportedrates = 0;
 	unsigned int ie_len;
 	unsigned char *p;
-	u8 timeout_itvl[5];	//set timeout interval to maximum value
+	uint8_t timeout_itvl[5];	//set timeout interval to maximum value
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
-	u8	link_id_addr[18] = {0};
-	u8  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic;
+	uint8_t	link_id_addr[18] = {0};
+	uint8_t  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic;
 
 	//payload type
 	pframe = rtw_set_fixed_ie(pframe, 1, &(payload_type), &(pattrib->pktlen));
 	//category, action, status code, dialog token
 	pframe = rtw_set_fixed_ie(pframe, 1, &(category), &(pattrib->pktlen));
 	pframe = rtw_set_fixed_ie(pframe, 1, &(action), &(pattrib->pktlen));
-	pframe = rtw_set_fixed_ie(pframe, 2, (u8 *)&ptdls_sta->stat_code, &(pattrib->pktlen));
+	pframe = rtw_set_fixed_ie(pframe, 2, (uint8_t *)&ptdls_sta->stat_code, &(pattrib->pktlen));
 	pframe = rtw_set_fixed_ie(pframe, 1, &(ptdls_sta->dialog), &(pattrib->pktlen));
 
 	if(ptdls_sta->stat_code!=0)	//invalid setup request
@@ -2324,7 +2324,7 @@ void rtw_build_tdls_setup_cfm_ies(_adapter * padapter, struct xmit_frame * pxmit
 		//Timeout interval
 		ptimeout_ie = pframe;
 		timeout_itvl[0]=0x02;
-		memcpy(timeout_itvl+1, (u8 *)(&ptdls_sta->TDLS_PeerKey_Lifetime), 4);
+		memcpy(timeout_itvl+1, (uint8_t *)(&ptdls_sta->TDLS_PeerKey_Lifetime), 4);
 		ptdls_sta->TPK_count=0;
 		_set_timer(&ptdls_sta->TPK_timer, ptdls_sta->TDLS_PeerKey_Lifetime/TPK_RESEND_COUNT);
 		pframe = rtw_set_ie(pframe, _TIMEOUT_ITVL_IE_, 5, timeout_itvl,  &(pattrib->pktlen));
@@ -2344,14 +2344,14 @@ void rtw_build_tdls_setup_cfm_ies(_adapter * padapter, struct xmit_frame * pxmit
 
 }
 
-void rtw_build_tdls_teardown_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tdls_teardown_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
-	u8 payload_type = 0x02;
+	uint8_t payload_type = 0x02;
 	unsigned char category = RTW_WLAN_CATEGORY_TDLS;
 	unsigned char action = TDLS_TEARDOWN;
-	u8	link_id_addr[18] = {0};
+	uint8_t	link_id_addr[18] = {0};
 
 	struct sta_info *ptdls_sta = rtw_get_stainfo( &(padapter->stapriv) , pattrib->dst);
 	struct sta_priv 	*pstapriv = &padapter->stapriv;
@@ -2361,7 +2361,7 @@ void rtw_build_tdls_teardown_ies(_adapter * padapter, struct xmit_frame * pxmitf
 	//category, action, reason code
 	pframe = rtw_set_fixed_ie(pframe, 1, &(category), &(pattrib->pktlen));
 	pframe = rtw_set_fixed_ie(pframe, 1, &(action), &(pattrib->pktlen));
-	pframe = rtw_set_fixed_ie(pframe, 1, (u8 *)&ptdls_sta->stat_code, &(pattrib->pktlen));
+	pframe = rtw_set_fixed_ie(pframe, 1, (uint8_t *)&ptdls_sta->stat_code, &(pattrib->pktlen));
 
 	//Link identifier
 	if(ptdls_sta->tdls_sta_state & TDLS_INITIATOR_STATE){
@@ -2377,15 +2377,15 @@ void rtw_build_tdls_teardown_ies(_adapter * padapter, struct xmit_frame * pxmitf
 
 }
 
-void rtw_build_tdls_dis_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tdls_dis_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
-	u8 payload_type = 0x02;
-	u8 category = RTW_WLAN_CATEGORY_TDLS;
-	u8 action = TDLS_DISCOVERY_REQUEST;
-	u8	link_id_addr[18] = {0};
-	static u8 dialogtoken=0;
+	uint8_t payload_type = 0x02;
+	uint8_t category = RTW_WLAN_CATEGORY_TDLS;
+	uint8_t action = TDLS_DISCOVERY_REQUEST;
+	uint8_t	link_id_addr[18] = {0};
+	static uint8_t dialogtoken=0;
 
 	//payload type
 	pframe = rtw_set_fixed_ie(pframe, 1, &(payload_type), &(pattrib->pktlen));
@@ -2403,23 +2403,23 @@ void rtw_build_tdls_dis_req_ies(_adapter * padapter, struct xmit_frame * pxmitfr
 
 }
 
-void rtw_build_tdls_dis_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe, u8 dialog)
+void rtw_build_tdls_dis_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe, uint8_t dialog)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &pmlmeext->mlmext_info;
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
 	struct registry_priv	*pregistrypriv = &padapter->registrypriv;
 
-	u8 category = RTW_WLAN_CATEGORY_PUBLIC;
-	u8 action = TDLS_DISCOVERY_RESPONSE;
-	u8 bssrate[NDIS_802_11_LENGTH_RATES_EX];
+	uint8_t category = RTW_WLAN_CATEGORY_PUBLIC;
+	uint8_t action = TDLS_DISCOVERY_RESPONSE;
+	uint8_t bssrate[NDIS_802_11_LENGTH_RATES_EX];
  	int bssrate_len = 0;
-	u8 more_supportedrates = 0;
-	u8 *p;
+	uint8_t more_supportedrates = 0;
+	uint8_t *p;
 	struct mlme_priv 		*pmlmepriv = &padapter->mlmepriv;
-	u8 link_id_addr[18] = {0};
-	u8 iedata=0;
-	u8 timeout_itvl[5];	//set timeout interval to maximum value
+	uint8_t link_id_addr[18] = {0};
+	uint8_t iedata=0;
+	uint8_t timeout_itvl[5];	//set timeout interval to maximum value
 	u32 timeout_interval= TPK_RESEND_COUNT * 1000;
 
 	//category, action, dialog token
@@ -2495,16 +2495,16 @@ void rtw_build_tdls_dis_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitfr
 
 }
 
-void rtw_build_tdls_peer_traffic_indication_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tdls_peer_traffic_indication_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
-	u8 payload_type = 0x02;
+	uint8_t payload_type = 0x02;
 	unsigned char category = RTW_WLAN_CATEGORY_TDLS;
 	unsigned char action = TDLS_PEER_TRAFFIC_INDICATION;
 
-	u8	link_id_addr[18] = {0};
-	u8 AC_queue=0;
+	uint8_t	link_id_addr[18] = {0};
+	uint8_t AC_queue=0;
 	struct sta_priv 	*pstapriv = &padapter->stapriv;
 	struct sta_info *ptdls_sta = rtw_get_stainfo(pstapriv, pattrib->dst);
 
@@ -2535,18 +2535,18 @@ void rtw_build_tdls_peer_traffic_indication_ies(_adapter * padapter, struct xmit
 
 }
 
-void rtw_build_tdls_ch_switch_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tdls_ch_switch_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
 	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	u8 payload_type = 0x02;
+	uint8_t payload_type = 0x02;
 	unsigned char category = RTW_WLAN_CATEGORY_TDLS;
 	unsigned char action = TDLS_CHANNEL_SWITCH_REQUEST;
-	u8	link_id_addr[18] = {0};
+	uint8_t	link_id_addr[18] = {0};
 	struct sta_priv 	*pstapriv = &padapter->stapriv;
 	struct sta_info *ptdls_sta = rtw_get_stainfo(pstapriv, pattrib->dst);
-	u8 ch_switch_timing[4] = {0};
+	uint8_t ch_switch_timing[4] = {0};
 	u16 switch_time= CH_SWITCH_TIME, switch_timeout=CH_SWITCH_TIMEOUT;
 
 	//payload type
@@ -2574,26 +2574,26 @@ void rtw_build_tdls_ch_switch_req_ies(_adapter * padapter, struct xmit_frame * p
 
 }
 
-void rtw_build_tdls_ch_switch_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tdls_ch_switch_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
-	u8 payload_type = 0x02;
+	uint8_t payload_type = 0x02;
 	unsigned char category = RTW_WLAN_CATEGORY_TDLS;
 	unsigned char action = TDLS_CHANNEL_SWITCH_RESPONSE;
-	u8	link_id_addr[18] = {0};
+	uint8_t	link_id_addr[18] = {0};
 	struct sta_priv 	*pstapriv = &padapter->stapriv;
 	struct sta_info *ptdls_sta = rtw_get_stainfo(pstapriv, pattrib->dst);
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info *pmlmeinfo = &pmlmeext->mlmext_info;
-	u8 ch_switch_timing[4] = {0};
+	uint8_t ch_switch_timing[4] = {0};
 
 	//payload type
 	pframe = rtw_set_fixed_ie(pframe, 1, &(payload_type), &(pattrib->pktlen));
 	//category, action, status_code
 	pframe = rtw_set_fixed_ie(pframe, 1, &(category), &(pattrib->pktlen));
 	pframe = rtw_set_fixed_ie(pframe, 1, &(action), &(pattrib->pktlen));
-	pframe = rtw_set_fixed_ie(pframe, 2, (u8 *)&ptdls_sta->stat_code, &(pattrib->pktlen));
+	pframe = rtw_set_fixed_ie(pframe, 2, (uint8_t *)&ptdls_sta->stat_code, &(pattrib->pktlen));
 
 	//Link identifier
 	memcpy(link_id_addr, pattrib->ra, 6);
@@ -2609,17 +2609,17 @@ void rtw_build_tdls_ch_switch_rsp_ies(_adapter * padapter, struct xmit_frame * p
 }
 
 #ifdef CONFIG_WFD
-void rtw_build_tunneled_probe_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tunneled_probe_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
 	struct wifidirect_info *pwdinfo = &padapter->wdinfo;
 	struct wifidirect_info *pbuddy_wdinfo = &padapter->pbuddy_adapter->wdinfo;
-	u8 payload_type = 0x02;
-	u8 category = RTW_WLAN_CATEGORY_P2P;
-	u8 WFA_OUI[3] = { 0x50, 0x6f, 0x9a};
-	u8 probe_req = 4;
-	u8 wfdielen = 0;
+	uint8_t payload_type = 0x02;
+	uint8_t category = RTW_WLAN_CATEGORY_P2P;
+	uint8_t WFA_OUI[3] = { 0x50, 0x6f, 0x9a};
+	uint8_t probe_req = 4;
+	uint8_t wfdielen = 0;
 
 	//payload type
 	pframe = rtw_set_fixed_ie(pframe, 1, &(payload_type), &(pattrib->pktlen));
@@ -2643,17 +2643,17 @@ void rtw_build_tunneled_probe_req_ies(_adapter * padapter, struct xmit_frame * p
 
 }
 
-void rtw_build_tunneled_probe_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe)
+void rtw_build_tunneled_probe_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
 	struct wifidirect_info *pwdinfo = &padapter->wdinfo;
 	struct wifidirect_info *pbuddy_wdinfo = &padapter->pbuddy_adapter->wdinfo;
-	u8 payload_type = 0x02;
-	u8 category = RTW_WLAN_CATEGORY_P2P;
-	u8 WFA_OUI[3] = { 0x50, 0x6f, 0x9a};
-	u8 probe_rsp = 5;
-	u8 wfdielen = 0;
+	uint8_t payload_type = 0x02;
+	uint8_t category = RTW_WLAN_CATEGORY_P2P;
+	uint8_t WFA_OUI[3] = { 0x50, 0x6f, 0x9a};
+	uint8_t probe_rsp = 5;
+	uint8_t wfdielen = 0;
 
 	//payload type
 	pframe = rtw_set_fixed_ie(pframe, 1, &(payload_type), &(pattrib->pktlen));
@@ -2873,7 +2873,7 @@ int update_sgi_tdls(_adapter *padapter, struct sta_info *psta)
 u32 update_mask_tdls(_adapter *padapter, struct sta_info *psta)
 {
 	int i;
-	u8 rf_type, id;
+	uint8_t rf_type, id;
 	unsigned char sta_band = 0;
 	unsigned char limit;
 	unsigned int tx_ra_bitmap=0;
@@ -2892,7 +2892,7 @@ u32 update_mask_tdls(_adapter *padapter, struct sta_info *psta)
 	//n mode ra_bitmap
 	if(psta_ht->ht_option)
 	{
-		padapter->HalFunc.GetHwRegHandler(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
+		padapter->HalFunc.GetHwRegHandler(padapter, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 		if(rf_type == RF_2T2R)
 			limit=16;// 2R
 		else

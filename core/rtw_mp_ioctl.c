@@ -31,13 +31,13 @@ NDIS_STATUS oid_rt_wireless_mode_hdl(struct oid_par_priv *poid_par_priv)
 
 _func_enter_;
 
-	if (poid_par_priv->information_buf_len < sizeof(u8))
+	if (poid_par_priv->information_buf_len < sizeof(uint8_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	if (poid_par_priv->type_of_oid == SET_OID) {
-		Adapter->registrypriv.wireless_mode = *(u8*)poid_par_priv->information_buf;
+		Adapter->registrypriv.wireless_mode = *(uint8_t *)poid_par_priv->information_buf;
 	} else if (poid_par_priv->type_of_oid == QUERY_OID) {
-		*(u8*)poid_par_priv->information_buf = Adapter->registrypriv.wireless_mode;
+		*(uint8_t *)poid_par_priv->information_buf = Adapter->registrypriv.wireless_mode;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 		 RT_TRACE(_module_mp_, _drv_info_, ("-query Wireless Mode=%d\n", Adapter->registrypriv.wireless_mode));
 	} else {
@@ -128,8 +128,8 @@ _func_exit_;
 NDIS_STATUS oid_rt_pro_write_rf_reg_hdl(struct oid_par_priv *poid_par_priv)
 {
 	struct rf_reg_param *pbbreg;
-	u8 path;
-	u8 offset;
+	uint8_t path;
+	uint8_t offset;
 	u32 value;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
@@ -153,8 +153,8 @@ _func_enter_;
 	if (pbbreg->value > 0xFFFFF)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	path = (u8)pbbreg->path;
-	offset = (u8)pbbreg->offset;
+	path = (uint8_t)pbbreg->path;
+	offset = (uint8_t)pbbreg->offset;
 	value = pbbreg->value;
 
 	RT_TRACE(_module_mp_, _drv_notice_,
@@ -173,8 +173,8 @@ _func_exit_;
 NDIS_STATUS oid_rt_pro_read_rf_reg_hdl(struct oid_par_priv *poid_par_priv)
 {
 	struct rf_reg_param *pbbreg;
-	u8 path;
-	u8 offset;
+	uint8_t path;
+	uint8_t offset;
 	u32 value;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
@@ -196,8 +196,8 @@ _func_enter_;
 	if (pbbreg->offset > 0xFF)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	path = (u8)pbbreg->path;
-	offset = (u8)pbbreg->offset;
+	path = (uint8_t)pbbreg->path;
+	offset = (uint8_t)pbbreg->offset;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 	value = read_rfreg(Adapter, path, offset);
@@ -374,8 +374,8 @@ _func_enter_;
 
 	if (bandwidth != CHANNEL_WIDTH_40)
 		bandwidth = CHANNEL_WIDTH_20;
-	padapter->mppriv.bandwidth = (u8)bandwidth;
-	padapter->mppriv.prime_channel_offset = (u8)channel_offset;
+	padapter->mppriv.bandwidth = (uint8_t)bandwidth;
+	padapter->mppriv.prime_channel_offset = (uint8_t)channel_offset;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 	SetBandwidth(padapter);
@@ -446,7 +446,7 @@ _func_enter_;
 	if (tx_pwr_idx > MAX_TX_PWR_INDEX_N_MODE)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	Adapter->mppriv.txpoweridx = (u8)tx_pwr_idx;
+	Adapter->mppriv.txpoweridx = (uint8_t)tx_pwr_idx;
 
 	RT_TRACE(_module_mp_, _drv_notice_,
 		 ("oid_rt_pro_set_tx_power_control_hdl: idx=0x%2x\n",
@@ -678,7 +678,7 @@ _func_enter_;
 	bStartTest = *((u32*)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetContinuousTx(Adapter,(u8)bStartTest);
+	SetContinuousTx(Adapter,(uint8_t)bStartTest);
 	if (bStartTest) {
 		struct mp_priv *pmp_priv = &Adapter->mppriv;
 		if (pmp_priv->tx.stop == 0) {
@@ -713,7 +713,7 @@ _func_enter_;
 	bStartTest = *((u32*)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetSingleCarrierTx(Adapter, (u8)bStartTest);
+	SetSingleCarrierTx(Adapter, (uint8_t)bStartTest);
 	if (bStartTest) {
 		struct mp_priv *pmp_priv = &Adapter->mppriv;
 		if (pmp_priv->tx.stop == 0) {
@@ -748,7 +748,7 @@ _func_enter_;
 	bStartTest = *((u32*)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetCarrierSuppressionTx(Adapter, (u8)bStartTest);
+	SetCarrierSuppressionTx(Adapter, (uint8_t)bStartTest);
 	if (bStartTest) {
 		struct mp_priv *pmp_priv = &Adapter->mppriv;
 		if (pmp_priv->tx.stop == 0) {
@@ -783,7 +783,7 @@ _func_enter_;
 	bStartTest = *((u32*)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetSingleToneTx(Adapter,(u8)bStartTest);
+	SetSingleToneTx(Adapter,(uint8_t)bStartTest);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -935,7 +935,7 @@ _func_enter_;
 				status = NDIS_STATUS_NOT_ACCEPTED;
 				break;
 			}
-			rtw_write8(padapter, offset, (u8)value);
+			rtw_write8(padapter, offset, (uint8_t)value);
 			break;
 		case 2:
 			if (value > 0xFFFF) {
@@ -1379,7 +1379,7 @@ _func_exit_;
 NDIS_STATUS oid_rt_get_thermal_meter_hdl(struct oid_par_priv *poid_par_priv)
 {
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
-	u8 thermal = 0;
+	uint8_t thermal = 0;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
 _func_enter_;
@@ -1421,7 +1421,7 @@ _func_enter_;
 	if (Adapter->mppriv.act_in_progress == _TRUE)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len < sizeof(u8))
+	if (poid_par_priv->information_buf_len < sizeof(uint8_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	//init workparam
@@ -1433,7 +1433,7 @@ _func_enter_;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 
-	if (!rtw_gettssi_cmd(Adapter,0, (u8*)&Adapter->mppriv.workparam.io_value))
+	if (!rtw_gettssi_cmd(Adapter,0, (uint8_t *)&Adapter->mppriv.workparam.io_value))
 		status = NDIS_STATUS_NOT_ACCEPTED;
 
 	_irqlevel_changed_(&oldirql, RAISE);
@@ -1457,20 +1457,20 @@ _func_enter_;
 //	if (poid_par_priv->type_of_oid != SET_OID)
 //		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len < sizeof(u8))
+	if (poid_par_priv->information_buf_len < sizeof(uint8_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 	if (poid_par_priv->type_of_oid == SET_OID) {
-		u8 enable;
+		uint8_t enable;
 
-		enable = *(u8*)poid_par_priv->information_buf;
+		enable = *(uint8_t *)poid_par_priv->information_buf;
 		RT_TRACE(_module_mp_, _drv_notice_,
 			 ("+oid_rt_pro_set_power_tracking_hdl: enable=%d\n", enable));
 
 		SetPowerTracking(Adapter, enable);
 	} else {
-		GetPowerTracking(Adapter, (u8*)poid_par_priv->information_buf);
+		GetPowerTracking(Adapter, (uint8_t *)poid_par_priv->information_buf);
 	}
 	_irqlevel_changed_(&oldirql, RAISE);
 
@@ -1483,7 +1483,7 @@ NDIS_STATUS oid_rt_pro_set_basic_rate_hdl(struct oid_par_priv *poid_par_priv)
 {
 #if 0
 	u32 ratevalue;
-	u8 datarates[NumRates];
+	uint8_t datarates[NumRates];
 	int i;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	padapter = (PADAPTER)(poid_par_priv->adapter_context);
@@ -1597,7 +1597,7 @@ NDIS_STATUS oid_rt_pro_h2c_set_rate_table_hdl(struct oid_par_priv *poid_par_priv
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 
 	struct setratable_parm *prate_table;
-	u8		res;
+	uint8_t		res;
 
 _func_enter_;
 
@@ -1639,7 +1639,7 @@ _func_enter_;
 
 	#if 0
 			struct mp_wi_cntx *pmp_wi_cntx=&(Adapter->mppriv.wi_cntx);
-			u8 res=_SUCCESS;
+			uint8_t res=_SUCCESS;
 			DEBUG_INFO(("===> Set OID_RT_PRO_H2C_GET_RATE_TABLE.\n"));
 
 			if(pmp_wi_cntx->bmp_wi_progress ==_TRUE){
@@ -1685,13 +1685,13 @@ NDIS_STATUS oid_rt_pro_encryption_ctrl_hdl(struct oid_par_priv *poid_par_priv)
 	ENCRY_CTRL_STATE encry_mode;
 
 
-	*poid_par_priv->bytes_needed = sizeof(u8);
+	*poid_par_priv->bytes_needed = sizeof(uint8_t);
 	if (poid_par_priv->information_buf_len < *poid_par_priv->bytes_needed)
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	if (poid_par_priv->type_of_oid == SET_OID)
 	{
-		encry_mode = *((u8*)poid_par_priv->information_buf);
+		encry_mode = *((uint8_t *)poid_par_priv->information_buf);
 		switch (encry_mode)
 		{
 			case HW_CONTROL:
@@ -1763,7 +1763,7 @@ NDIS_STATUS oid_rt_pro_encryption_ctrl_hdl(struct oid_par_priv *poid_par_priv)
 
 		#endif
 
-		*(u8*)poid_par_priv->information_buf =  encry_mode;
+		*(uint8_t *)poid_par_priv->information_buf =  encry_mode;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 
 		RT_TRACE(_module_mp_, _drv_notice_,
@@ -1860,7 +1860,7 @@ NDIS_STATUS oid_rt_pro_dele_sta_info_hdl(struct oid_par_priv *poid_par_priv)
 }
 //------------------------------------------------------------------------------
 #if 0
-static u32 mp_query_drv_var(_adapter *padapter, u8 offset, u32 var)
+static u32 mp_query_drv_var(_adapter *padapter, uint8_t offset, u32 var)
 {
 
 	return var;
@@ -1952,7 +1952,7 @@ NDIS_STATUS oid_rt_pro_rx_packet_type_hdl(struct oid_par_priv *poid_par_priv)
 NDIS_STATUS oid_rt_pro_read_efuse_hdl(struct oid_par_priv *poid_par_priv)
 {
 	PEFUSE_ACCESS_STRUCT pefuse;
-	u8 *data;
+	uint8_t *data;
 	u16 addr = 0, cnts = 0, max_available_size = 0;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
@@ -1997,7 +1997,7 @@ _func_exit_;
 NDIS_STATUS oid_rt_pro_write_efuse_hdl(struct oid_par_priv *poid_par_priv)
 {
 	PEFUSE_ACCESS_STRUCT pefuse;
-	u8 *data;
+	uint8_t *data;
 	u16 addr = 0, cnts = 0, max_available_size = 0;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
@@ -2091,7 +2091,7 @@ _func_exit_;
 NDIS_STATUS oid_rt_get_efuse_current_size_hdl(struct oid_par_priv *poid_par_priv)
 {
 	u16 size;
-	u8 ret;
+	uint8_t ret;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -2164,7 +2164,7 @@ _func_exit_;
 //------------------------------------------------------------------------------
 NDIS_STATUS oid_rt_pro_efuse_map_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u8		*data;
+	uint8_t		*data;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 	u16	mapLen=0;
@@ -2180,7 +2180,7 @@ _func_enter_;
 	if (poid_par_priv->information_buf_len < mapLen)
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	data = (u8*)poid_par_priv->information_buf;
+	data = (uint8_t *)poid_par_priv->information_buf;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 
@@ -2255,7 +2255,7 @@ _func_exit_;
 
 NDIS_STATUS oid_rt_set_rx_packet_type_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u8		rx_pkt_type;
+	uint8_t		rx_pkt_type;
 //	u32		rcr_val32;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 //	PADAPTER	padapter = (PADAPTER)(poid_par_priv->adapter_context);
@@ -2267,10 +2267,10 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len < sizeof(u8))
+	if (poid_par_priv->information_buf_len < sizeof(uint8_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	rx_pkt_type = *((u8*)poid_par_priv->information_buf);//4
+	rx_pkt_type = *((uint8_t *)poid_par_priv->information_buf);//4
 
 	RT_TRACE(_module_mp_, _drv_info_, ("rx_pkt_type: %x\n",rx_pkt_type ));
 #if 0
@@ -2461,7 +2461,7 @@ unsigned int mp_ioctl_xmit_packet_hdl(struct oid_par_priv *poid_par_priv)
 	int llc_sz, payload_len;
 	struct mp_xmit_frame *pxframe=  NULL;
 	struct mp_xmit_packet *pmp_xmitpkt = (struct mp_xmit_packet*)param;
-	u8 addr3[] = {0x02, 0xE0, 0x4C, 0x87, 0x66, 0x55};
+	uint8_t addr3[] = {0x02, 0xE0, 0x4C, 0x87, 0x66, 0x55};
 
 //	DBG_871X("+mp_ioctl_xmit_packet_hdl\n");
 
@@ -2484,7 +2484,7 @@ unsigned int mp_ioctl_xmit_packet_hdl(struct oid_par_priv *poid_par_priv)
 
 	//update attribute
 	pattrib = &pxframe->attrib;
-	memset((u8 *)(pattrib), 0, sizeof (struct pkt_attrib));
+	memset((uint8_t *)(pattrib), 0, sizeof (struct pkt_attrib));
 	pattrib->pktlen = pmp_xmitpkt->len;
 	pattrib->ether_type = ntohs(pethhdr->h_proto);
 	pattrib->hdrlen = 24;
@@ -2501,7 +2501,7 @@ unsigned int mp_ioctl_xmit_packet_hdl(struct oid_par_priv *poid_par_priv)
 
 	//
 	memset(pxframe->mem, 0 , WLANHDR_OFFSET);
-	pframe = (u8 *)(pxframe->mem) + WLANHDR_OFFSET;
+	pframe = (uint8_t *)(pxframe->mem) + WLANHDR_OFFSET;
 
 	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
 
@@ -2533,7 +2533,7 @@ unsigned int mp_ioctl_xmit_packet_hdl(struct oid_par_priv *poid_par_priv)
 //------------------------------------------------------------------------------
 NDIS_STATUS oid_rt_set_power_down_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u8		bpwrup;
+	uint8_t		bpwrup;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 #ifdef PLATFORM_LINUX
 #endif
@@ -2550,7 +2550,7 @@ _func_enter_;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 
-	bpwrup = *(u8 *)poid_par_priv->information_buf;
+	bpwrup = *(uint8_t *)poid_par_priv->information_buf;
 	//CALL  the power_down function
 #ifdef PLATFORM_LINUX
 #if defined(CONFIG_RTL8712) //Linux MP insmod unknown symbol

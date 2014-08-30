@@ -34,7 +34,7 @@ void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv)
 
 _func_enter_;
 
-	memset((u8 *)psta_recvpriv, 0, sizeof (struct sta_recv_priv));
+	memset((uint8_t *)psta_recvpriv, 0, sizeof (struct sta_recv_priv));
 
 	_rtw_spinlock_init(&psta_recvpriv->lock);
 
@@ -80,7 +80,7 @@ _func_enter_;
 	}
 	//memset(precvpriv->pallocated_frame_buf, 0, NR_RECVFRAME * sizeof(union recv_frame) + RXFRAME_ALIGN_SZ);
 
-	precvpriv->precv_frame_buf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_frame_buf), RXFRAME_ALIGN_SZ);
+	precvpriv->precv_frame_buf = (uint8_t *)N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_frame_buf), RXFRAME_ALIGN_SZ);
 	//precvpriv->precv_frame_buf = precvpriv->pallocated_frame_buf + RXFRAME_ALIGN_SZ -
 	//						((SIZE_PTR) (precvpriv->pallocated_frame_buf) &(RXFRAME_ALIGN_SZ-1));
 
@@ -431,11 +431,11 @@ sint recvframe_chkmic(_adapter *adapter,  union recv_frame *precvframe){
 
 	sint	i,res=_SUCCESS;
 	u32	datalen;
-	u8	miccode[8];
-	u8	bmic_err=_FALSE,brpt_micerror = _TRUE;
-	u8	*pframe, *payload,*pframemic;
-	u8	*mickey;
-	//u8	*iv,rxdata_key_idx=0;
+	uint8_t	miccode[8];
+	uint8_t	bmic_err=_FALSE,brpt_micerror = _TRUE;
+	uint8_t	*pframe, *payload,*pframemic;
+	uint8_t	*mickey;
+	//uint8_t	*iv,rxdata_key_idx=0;
 	struct	sta_info		*stainfo;
 	struct	rx_pkt_attrib	*prxattrib=&precvframe->u.hdr.attrib;
 	struct 	security_priv	*psecuritypriv=&adapter->securitypriv;
@@ -533,7 +533,7 @@ _func_enter_;
 
 				if((prxattrib->bdecrypted ==_TRUE)&& (brpt_micerror == _TRUE))
 				{
-					rtw_handle_tkip_mic_err(adapter,(u8)IS_MCAST(prxattrib->ra));
+					rtw_handle_tkip_mic_err(adapter,(uint8_t)IS_MCAST(prxattrib->ra));
 					RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,(" mic error :prxattrib->bdecrypted=%d ",prxattrib->bdecrypted));
 					DBG_871X(" mic error :prxattrib->bdecrypted=%d\n",prxattrib->bdecrypted);
 				}
@@ -587,7 +587,7 @@ _func_enter_;
 
 	if(prxattrib->encrypt>0)
 	{
-		u8 *iv = precv_frame->u.hdr.rx_data+prxattrib->hdrlen;
+		uint8_t *iv = precv_frame->u.hdr.rx_data+prxattrib->hdrlen;
 		prxattrib->key_index = ( ((iv[3])>>6)&0x3) ;
 
 		if(prxattrib->key_index > WEP_KEYS)
@@ -624,17 +624,17 @@ _func_enter_;
 		switch(prxattrib->encrypt){
 		case _WEP40_:
 		case _WEP104_:
-			rtw_wep_decrypt(padapter, (u8 *)precv_frame);
+			rtw_wep_decrypt(padapter, (uint8_t *)precv_frame);
 			break;
 		case _TKIP_:
-			res = rtw_tkip_decrypt(padapter, (u8 *)precv_frame);
+			res = rtw_tkip_decrypt(padapter, (uint8_t *)precv_frame);
 			break;
 		case _AES_:
-			res = rtw_aes_decrypt(padapter, (u8 * )precv_frame);
+			res = rtw_aes_decrypt(padapter, (uint8_t * )precv_frame);
 			break;
 #ifdef CONFIG_WAPI_SUPPORT
 		case _SMS4_:
-			rtw_sms4_decrypt(padapter, (u8 * )precv_frame);
+			rtw_sms4_decrypt(padapter, (uint8_t * )precv_frame);
 			break;
 #endif
 		default:
@@ -693,7 +693,7 @@ _func_exit_;
 union recv_frame * portctrl(_adapter *adapter,union recv_frame * precv_frame);
 union recv_frame * portctrl(_adapter *adapter,union recv_frame * precv_frame)
 {
-	u8   *psta_addr, *ptr;
+	uint8_t   *psta_addr, *ptr;
 	uint  auth_alg;
 	struct recv_frame_hdr *pfhdr;
 	struct sta_info *psta;
@@ -780,8 +780,8 @@ _func_exit_;
 
 }
 
-sint recv_decache(union recv_frame *precv_frame, u8 bretry, struct stainfo_rxcache *prxcache);
-sint recv_decache(union recv_frame *precv_frame, u8 bretry, struct stainfo_rxcache *prxcache)
+sint recv_decache(union recv_frame *precv_frame, uint8_t bretry, struct stainfo_rxcache *prxcache);
+sint recv_decache(union recv_frame *precv_frame, uint8_t bretry, struct stainfo_rxcache *prxcache)
 {
 	sint tid = precv_frame->u.hdr.attrib.priority;
 
@@ -820,7 +820,7 @@ void process_pwrbit_data(_adapter *padapter, union recv_frame *precv_frame)
 {
 #ifdef CONFIG_AP_MODE
 	unsigned char pwrbit;
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info *psta=NULL;
@@ -890,7 +890,7 @@ void process_wmmps_data(_adapter *padapter, union recv_frame *precv_frame)
 
 	if(psta->state&WIFI_SLEEP_STATE)
 	{
-		u8 wmmps_ac=0;
+		uint8_t wmmps_ac=0;
 
 		switch(pattrib->priority)
 		{
@@ -939,10 +939,10 @@ sint OnTDLS(_adapter *adapter, union recv_frame *precv_frame)
 {
 	struct rx_pkt_attrib	*pattrib = & precv_frame->u.hdr.attrib;
 	sint ret = _SUCCESS;
-	u8 *paction = get_recvframe_data(precv_frame);
-	u8 category_field = 1;
+	uint8_t *paction = get_recvframe_data(precv_frame);
+	uint8_t category_field = 1;
 #ifdef CONFIG_WFD
-	u8 WFA_OUI[3] = { 0x50, 0x6f, 0x9a };
+	uint8_t WFA_OUI[3] = { 0x50, 0x6f, 0x9a };
 #endif //CONFIG_WFD
 	struct tdls_info *ptdlsinfo = &(adapter->tdlsinfo);
 
@@ -1071,22 +1071,22 @@ sint sta2sta_data_frame(
 	struct sta_info**psta
 )
 {
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	sint ret = _SUCCESS;
 	struct rx_pkt_attrib *pattrib = & precv_frame->u.hdr.attrib;
 	struct	sta_priv 		*pstapriv = &adapter->stapriv;
 	struct	mlme_priv	*pmlmepriv = &adapter->mlmepriv;
-	u8 *mybssid  = get_bssid(pmlmepriv);
-	u8 *myhwaddr = myid(&adapter->eeprompriv);
-	u8 * sta_addr = NULL;
+	uint8_t *mybssid  = get_bssid(pmlmepriv);
+	uint8_t *myhwaddr = myid(&adapter->eeprompriv);
+	uint8_t * sta_addr = NULL;
 	sint bmcast = IS_MCAST(pattrib->dst);
 
 #ifdef CONFIG_TDLS
 	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
 	struct sta_info *ptdls_sta=NULL;
-	u8 *psnap_type=ptr+pattrib->hdrlen + pattrib->iv_len+SNAP_SIZE;
+	uint8_t *psnap_type=ptr+pattrib->hdrlen + pattrib->iv_len+SNAP_SIZE;
 	//frame body located after [+2]: ether-type, [+1]: payload type
-	u8 *pframe_body = psnap_type+2+1;
+	uint8_t *pframe_body = psnap_type+2+1;
 #endif
 
 _func_enter_;
@@ -1292,13 +1292,13 @@ sint ap2sta_data_frame(
 	union recv_frame *precv_frame,
 	struct sta_info**psta )
 {
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib *pattrib = & precv_frame->u.hdr.attrib;
 	sint ret = _SUCCESS;
 	struct	sta_priv 		*pstapriv = &adapter->stapriv;
 	struct	mlme_priv	*pmlmepriv = &adapter->mlmepriv;
-	u8 *mybssid  = get_bssid(pmlmepriv);
-	u8 *myhwaddr = myid(&adapter->eeprompriv);
+	uint8_t *mybssid  = get_bssid(pmlmepriv);
+	uint8_t *myhwaddr = myid(&adapter->eeprompriv);
 	sint bmcast = IS_MCAST(pattrib->dst);
 
 _func_enter_;
@@ -1428,7 +1428,7 @@ sint sta2ap_data_frame(
 	union recv_frame *precv_frame,
 	struct sta_info**psta )
 {
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib *pattrib = & precv_frame->u.hdr.attrib;
 	struct	sta_priv 		*pstapriv = &adapter->stapriv;
 	struct	mlme_priv	*pmlmepriv = &adapter->mlmepriv;
@@ -1472,7 +1472,7 @@ _func_enter_;
 		}
 	}
 	else {
-		u8 *myhwaddr = myid(&adapter->eeprompriv);
+		uint8_t *myhwaddr = myid(&adapter->eeprompriv);
 		if (!_rtw_memcmp(pattrib->ra, myhwaddr, ETH_ALEN)) {
 			ret = RTW_RX_HANDLED;
 			goto exit;
@@ -1497,7 +1497,7 @@ sint validate_recv_ctrl_frame(_adapter *padapter, union recv_frame *precv_frame)
 #ifdef CONFIG_AP_MODE
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
 	struct sta_priv *pstapriv = &padapter->stapriv;
-	u8 *pframe = precv_frame->u.hdr.rx_data;
+	uint8_t *pframe = precv_frame->u.hdr.rx_data;
 	//uint len = precv_frame->u.hdr.len;
 
 	//DBG_871X("+validate_recv_ctrl_frame\n");
@@ -1517,7 +1517,7 @@ sint validate_recv_ctrl_frame(_adapter *padapter, union recv_frame *precv_frame)
 	if(GetFrameSubType(pframe) == WIFI_PSPOLL)
 	{
 		u16 aid;
-		u8 wmmps_ac=0;
+		uint8_t wmmps_ac=0;
 		struct sta_info *psta=NULL;
 
 		aid = GetAid(pframe);
@@ -1714,7 +1714,7 @@ sint validate_recv_mgnt_frame(PADAPTER padapter, union recv_frame *precv_frame)
 	{
 		struct rx_pkt_attrib * pattrib=&precv_frame->u.hdr.attrib;
 		 struct recv_stat* prxstat=( struct recv_stat * )  precv_frame->u.hdr.rx_head ;
-		 u8 * pda,*psa,*pbssid,*ptr;
+		 uint8_t * pda,*psa,*pbssid,*ptr;
 		 ptr=precv_frame->u.hdr.rx_data;
 		pda = get_da(ptr);
 		psa = get_sa(ptr);
@@ -1768,10 +1768,10 @@ sint validate_recv_mgnt_frame(PADAPTER padapter, union recv_frame *precv_frame)
 sint validate_recv_data_frame(_adapter *adapter, union recv_frame *precv_frame);
 sint validate_recv_data_frame(_adapter *adapter, union recv_frame *precv_frame)
 {
-	u8 bretry;
-	u8 *psa, *pda, *pbssid;
+	uint8_t bretry;
+	uint8_t *psa, *pda, *pbssid;
 	struct sta_info *psta = NULL;
-	u8 *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
 	struct rx_pkt_attrib	*pattrib = & precv_frame->u.hdr.attrib;
 	struct sta_priv 	*pstapriv = &adapter->stapriv;
 	struct security_priv	*psecuritypriv = &adapter->securitypriv;
@@ -1931,14 +1931,14 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 
 	//then call check if rx seq/frag. duplicated.
 
-	u8 type;
-	u8 subtype;
+	uint8_t type;
+	uint8_t subtype;
 	sint retval = _SUCCESS;
 
 	struct rx_pkt_attrib *pattrib = & precv_frame->u.hdr.attrib;
 
-	u8 *ptr = precv_frame->u.hdr.rx_data;
-	u8  ver =(unsigned char) (*ptr)&0x3 ;
+	uint8_t *ptr = precv_frame->u.hdr.rx_data;
+	uint8_t  ver =(unsigned char) (*ptr)&0x3 ;
 #ifdef CONFIG_FIND_BEST_CHANNEL
 	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
 #endif
@@ -1949,9 +1949,9 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 #ifdef CONFIG_WAPI_SUPPORT
 	PRT_WAPI_T	pWapiInfo = &adapter->wapiInfo;
 	struct recv_frame_hdr *phdr = &precv_frame->u.hdr;
-	u8 wai_pkt = 0;
+	uint8_t wai_pkt = 0;
 	u16 sc;
-	u8	external_len = 0;
+	uint8_t	external_len = 0;
 #endif
 
 _func_enter_;
@@ -2012,7 +2012,7 @@ _func_enter_;
 
 #if 1 //Dump rx packets
 {
-	u8 bDumpRxPkt;
+	uint8_t bDumpRxPkt;
 	rtw_hal_get_def_var(adapter, HAL_DEF_DBG_DUMP_RXPKT, &(bDumpRxPkt));
 	if(bDumpRxPkt ==1){//dump all rx packets
 		int i;
@@ -2129,15 +2129,15 @@ sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 {
 	sint	rmv_len;
 	u16	eth_type, len;
-	u8	bsnaphdr;
-	u8	*psnap_type;
+	uint8_t	bsnaphdr;
+	uint8_t	*psnap_type;
 	struct ieee80211_snap_hdr	*psnap;
 
 	sint ret=_SUCCESS;
 	_adapter			*adapter =precvframe->u.hdr.adapter;
 	struct mlme_priv	*pmlmepriv = &adapter->mlmepriv;
 
-	u8	*ptr = get_recvframe_data(precvframe) ; // point to frame_ctrl field
+	uint8_t	*ptr = get_recvframe_data(precvframe) ; // point to frame_ctrl field
 	struct rx_pkt_attrib *pattrib = & precvframe->u.hdr.attrib;
 
 _func_enter_;
@@ -2242,15 +2242,15 @@ sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 {
 	sint rmv_len;
 	u16 eth_type;
-	u8	bsnaphdr;
-	u8	*psnap_type;
+	uint8_t	bsnaphdr;
+	uint8_t	*psnap_type;
 	struct ieee80211_snap_hdr	*psnap;
 
 	sint ret=_SUCCESS;
 	_adapter	*adapter =precvframe->u.hdr.adapter;
 	struct	mlme_priv	*pmlmepriv = &adapter->mlmepriv;
 
-	u8* ptr = get_recvframe_data(precvframe) ; // point to frame_ctrl field
+	uint8_t * ptr = get_recvframe_data(precvframe) ; // point to frame_ctrl field
 	struct rx_pkt_attrib *pattrib = & precvframe->u.hdr.attrib;
 	struct _vlan *pvlan = NULL;
 
@@ -2312,7 +2312,7 @@ _func_enter_;
 	if(eth_type==0x0800)//ip
 	{
 		//struct iphdr*  piphdr = (struct iphdr*) ptr;
-		//__u8 tos = (unsigned char)(pattrib->priority & 0xff);
+		//__uint8_t tos = (unsigned char)(pattrib->priority & 0xff);
 
 		//piphdr->tos = tos;
 
@@ -2358,8 +2358,8 @@ union recv_frame * recvframe_defrag(_adapter *adapter,_queue *defrag_q);
 union recv_frame * recvframe_defrag(_adapter *adapter,_queue *defrag_q)
 {
 	_list	 *plist, *phead;
-	u8	*data,wlanhdr_offset;
-	u8	curfragnum;
+	uint8_t	*data,wlanhdr_offset;
+	uint8_t	curfragnum;
 	struct recv_frame_hdr *pfhdr,*pnfhdr;
 	union recv_frame* prframe, *pnextrframe;
 	_queue	*pfree_recv_queue;
@@ -2446,9 +2446,9 @@ _func_exit_;
 //check if need to defrag, if needed queue the frame to defrag_q
 union recv_frame* recvframe_chk_defrag(PADAPTER padapter, union recv_frame *precv_frame)
 {
-	u8	ismfrag;
-	u8	fragnum;
-	u8	*psta_addr;
+	uint8_t	ismfrag;
+	uint8_t	fragnum;
+	uint8_t	*psta_addr;
 	struct recv_frame_hdr *pfhdr;
 	struct sta_info *psta;
 	struct sta_priv *pstapriv;
@@ -2472,7 +2472,7 @@ _func_enter_;
 	psta = rtw_get_stainfo(pstapriv, psta_addr);
 	if (psta == NULL)
 	{
-		u8 type = GetFrameType(pfhdr->rx_data);
+		uint8_t type = GetFrameType(pfhdr->rx_data);
 		if (type != WIFI_DATA_TYPE) {
 			psta = rtw_get_bcmc_stainfo(padapter);
 			pdefrag_q = &psta->sta_recvpriv.defrag_q;
@@ -2575,8 +2575,8 @@ int amsdu_to_msdu(_adapter *padapter, union recv_frame *prframe)
 {
 	int	a_len, padding_len;
 	u16	nSubframe_Length;
-	u8	nr_subframes, i;
-	u8	*pdata;
+	uint8_t	nr_subframes, i;
+	uint8_t	*pdata;
 	_pkt *sub_pkt,*subframes[MAX_SUBFRAME_COUNT];
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 	_queue *pfree_recv_queue = &(precvpriv->free_recv_queue);
@@ -2657,7 +2657,7 @@ int amsdu_to_msdu(_adapter *padapter, union recv_frame *prframe)
 int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num);
 int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num)
 {
-	u8	wsize = preorder_ctrl->wsize_b;
+	uint8_t	wsize = preorder_ctrl->wsize_b;
 	u16	wend = (preorder_ctrl->indicate_seq + wsize -1) & 0xFFF;//% 4096;
 
 	// Rx Reorder initialize condition.
@@ -2774,11 +2774,11 @@ int recv_indicatepkts_in_order(_adapter *padapter, struct recv_reorder_ctrl *pre
 int recv_indicatepkts_in_order(_adapter *padapter, struct recv_reorder_ctrl *preorder_ctrl, int bforced)
 {
 	//_irqL irql;
-	//u8 bcancelled;
+	//uint8_t bcancelled;
 	_list	*phead, *plist;
 	union recv_frame *prframe;
 	struct rx_pkt_attrib *pattrib;
-	//u8 index = 0;
+	//uint8_t index = 0;
 	int bPktInBuf = _FALSE;
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
@@ -3225,7 +3225,7 @@ int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 
 
 #ifdef CONFIG_TDLS
-	u8 *psnap_type, *pcategory;
+	uint8_t *psnap_type, *pcategory;
 	struct sta_info *ptdls_sta = NULL;
 #endif //CONFIG_TDLS
 
@@ -3246,7 +3246,7 @@ int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 		DBG_871X("+++\n");
 		{
 			int i;
-			u8	*ptr = get_recvframe_data(prframe);
+			uint8_t	*ptr = get_recvframe_data(prframe);
 			for(i=0; i<140;i=i+8)
 				DBG_871X("%02X:%02X:%02X:%02X:%02X:%02X:%02X:%02X:", *(ptr+i),
 				*(ptr+i+1), *(ptr+i+2) ,*(ptr+i+3) ,*(ptr+i+4),*(ptr+i+5), *(ptr+i+6), *(ptr+i+7));
@@ -3449,16 +3449,16 @@ void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS){
 	struct recv_priv *recvpriv = &adapter->recvpriv;
 
 	u32 tmp_s, tmp_q;
-	u8 avg_signal_strength = 0;
-	u8 avg_signal_qual = 0;
+	uint8_t avg_signal_strength = 0;
+	uint8_t avg_signal_qual = 0;
 	u32 num_signal_strength = 0;
 	u32 num_signal_qual = 0;
-	u8 _alpha = 3; // this value is based on converging_constant = 5000 and sampling_interval = 1000
+	uint8_t _alpha = 3; // this value is based on converging_constant = 5000 and sampling_interval = 1000
 
 	if(adapter->recvpriv.is_signal_dbg) {
 		//update the user specific value, signal_strength_dbg, to signal_strength, rssi
 		adapter->recvpriv.signal_strength= adapter->recvpriv.signal_strength_dbg;
-		adapter->recvpriv.rssi=(s8)translate_percentage_to_dbm((u8)adapter->recvpriv.signal_strength_dbg);
+		adapter->recvpriv.rssi=(s8)translate_percentage_to_dbm((uint8_t)adapter->recvpriv.signal_strength_dbg);
 	} else {
 
 		if(recvpriv->signal_strength_data.update_req == 0) {// update_req is clear, means we got rx

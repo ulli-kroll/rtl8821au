@@ -229,10 +229,10 @@ static unsigned char *scan_tlv(unsigned char *data, int len, unsigned char tag, 
 {
 	while (len > 0) {
 		if (*data == tag && *(data+1) == len8b && len >= len8b*8)
-			return data+2;	
-		
-		len -= (*(data+1))*8;		
-		data += (*(data+1))*8;		
+			return data+2;
+
+		len -= (*(data+1))*8;
+		data += (*(data+1))*8;
 	}
 	return NULL;
 }
@@ -242,16 +242,16 @@ static int update_nd_link_layer_addr(unsigned char *data, int len, unsigned char
 {
 	struct icmp6hdr *icmphdr = (struct icmp6hdr *)data;
 	unsigned char *mac;
-	
+
 	if (icmphdr->icmp6_type == NDISC_ROUTER_SOLICITATION) {
 		if (len >= 8) {
 			mac = scan_tlv(&data[8], len-8, 1, 1);
 			if (mac) {
 				_DEBUG_INFO("Router Solicitation, replace MAC From: %02x:%02x:%02x:%02x:%02x:%02x, To: %02x:%02x:%02x:%02x:%02x:%02x\n",
-					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],					
+					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],
 					replace_mac[0],replace_mac[1],replace_mac[2],replace_mac[3],replace_mac[4],replace_mac[5]);
-				memcpy(mac, replace_mac, 6);	
-				return 1;				
+				memcpy(mac, replace_mac, 6);
+				return 1;
 			}
 		}
 	}
@@ -260,55 +260,55 @@ static int update_nd_link_layer_addr(unsigned char *data, int len, unsigned char
 			mac = scan_tlv(&data[16], len-16, 1, 1);
 			if (mac) {
 				_DEBUG_INFO("Router Advertisement, replace MAC From: %02x:%02x:%02x:%02x:%02x:%02x, To: %02x:%02x:%02x:%02x:%02x:%02x\n",
-					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],					
+					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],
 					replace_mac[0],replace_mac[1],replace_mac[2],replace_mac[3],replace_mac[4],replace_mac[5]);
-				memcpy(mac, replace_mac, 6);			
-				return 1;				
+				memcpy(mac, replace_mac, 6);
+				return 1;
 			}
-		}		
+		}
 	}
 	else if (icmphdr->icmp6_type == NDISC_NEIGHBOUR_SOLICITATION) {
 		if (len >= 24) {
 			mac = scan_tlv(&data[24], len-24, 1, 1);
-			if (mac) {		
+			if (mac) {
 				_DEBUG_INFO("Neighbor Solicitation, replace MAC From: %02x:%02x:%02x:%02x:%02x:%02x, To: %02x:%02x:%02x:%02x:%02x:%02x\n",
-					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],					
+					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],
 					replace_mac[0],replace_mac[1],replace_mac[2],replace_mac[3],replace_mac[4],replace_mac[5]);
-				memcpy(mac, replace_mac, 6);	
-				return 1;								
+				memcpy(mac, replace_mac, 6);
+				return 1;
 			}
-		}		
+		}
 	}
 	else if (icmphdr->icmp6_type == NDISC_NEIGHBOUR_ADVERTISEMENT) {
 		if (len >= 24) {
 			mac = scan_tlv(&data[24], len-24, 2, 1);
 			if (mac) {
 				_DEBUG_INFO("Neighbor Advertisement, replace MAC From: %02x:%02x:%02x:%02x:%02x:%02x, To: %02x:%02x:%02x:%02x:%02x:%02x\n",
-					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],					
+					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],
 					replace_mac[0],replace_mac[1],replace_mac[2],replace_mac[3],replace_mac[4],replace_mac[5]);
-				memcpy(mac, replace_mac, 6);		
-				return 1;				
+				memcpy(mac, replace_mac, 6);
+				return 1;
 			}
-		}		
+		}
 	}
 	else if (icmphdr->icmp6_type == NDISC_REDIRECT) {
 		if (len >= 40) {
 			mac = scan_tlv(&data[40], len-40, 2, 1);
-			if (mac) {				
+			if (mac) {
 				_DEBUG_INFO("Redirect,  replace MAC From: %02x:%02x:%02x:%02x:%02x:%02x, To: %02x:%02x:%02x:%02x:%02x:%02x\n",
-					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],					
+					mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],
 					replace_mac[0],replace_mac[1],replace_mac[2],replace_mac[3],replace_mac[4],replace_mac[5]);
-				memcpy(mac, replace_mac, 6);	
-				return 1;				
+				memcpy(mac, replace_mac, 6);
+				return 1;
 			}
-		}		
-	}	
+		}
+	}
 	return 0;
 }
 
 
 static void convert_ipv6_mac_to_mc(struct sk_buff *skb)
-{	
+{
 	struct ipv6hdr *iph = (struct ipv6hdr *)(skb->data + ETH_HLEN);
 	unsigned char *dst_mac = skb->data;
 
@@ -370,10 +370,10 @@ static __inline__ int __nat25_network_hash(unsigned char *networkAddr)
 			networkAddr[6] ^ networkAddr[7] ^ networkAddr[8] ^ networkAddr[9] ^ networkAddr[10] ^
 			networkAddr[11] ^ networkAddr[12] ^ networkAddr[13] ^ networkAddr[14] ^ networkAddr[15] ^
 			networkAddr[16];
-	
+
 		return x & (NAT25_HASH_SIZE - 1);
 	}
-#endif	
+#endif
 	else
 	{
 		unsigned long x = 0;
@@ -439,8 +439,8 @@ static int __nat25_db_network_lookup_and_replace(_adapter *priv,
 				atomic_inc(&db->use_count);
 
 #ifdef CL_IPV6_PASS
-				DEBUG_INFO("NAT25: Lookup M:%02x%02x%02x%02x%02x%02x N:%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"	
-							"%02x%02x%02x%02x%02x%02x\n",				
+				DEBUG_INFO("NAT25: Lookup M:%02x%02x%02x%02x%02x%02x N:%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"
+							"%02x%02x%02x%02x%02x%02x\n",
 					db->macAddr[0],
 					db->macAddr[1],
 					db->macAddr[2],
@@ -464,7 +464,7 @@ static int __nat25_db_network_lookup_and_replace(_adapter *priv,
 					db->networkAddr[14],
 					db->networkAddr[15],
 					db->networkAddr[16]);
-#else				
+#else
 				DEBUG_INFO("NAT25: Lookup M:%02x%02x%02x%02x%02x%02x N:%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x\n",
 					db->macAddr[0],
 					db->macAddr[1],
@@ -631,7 +631,7 @@ void nat25_db_cleanup(_adapter *priv)
 	int i;
 	_irqL irqL;
 	_enter_critical_bh(&priv->br_ext_lock, &irqL);
-	
+
 	for(i=0; i<NAT25_HASH_SIZE; i++)
 	{
 		struct nat25_network_db_entry *f;
@@ -647,7 +647,7 @@ void nat25_db_cleanup(_adapter *priv)
 				priv->scdb_entry = NULL;
 			}
 			__network_hash_unlink(f);
-			rtw_mfree((u8 *) f, sizeof(struct nat25_network_db_entry));
+			rtw_mfree((uint8_t *) f, sizeof(struct nat25_network_db_entry));
 
 			f = g;
 		}
@@ -662,7 +662,7 @@ void nat25_db_expire(_adapter *priv)
 	int i;
 	_irqL irqL;
 	_enter_critical_bh(&priv->br_ext_lock, &irqL);
-	
+
 	//if(!priv->ethBrExtInfo.nat25_disable)
 	{
 		for (i=0; i<NAT25_HASH_SIZE; i++)
@@ -737,7 +737,7 @@ void nat25_db_expire(_adapter *priv)
 							priv->scdb_entry = NULL;
 						}
 						__network_hash_unlink(f);
-						rtw_mfree((u8 *) f, sizeof(struct nat25_network_db_entry));
+						rtw_mfree((uint8_t *) f, sizeof(struct nat25_network_db_entry));
 					}
 				}
 
@@ -1421,7 +1421,7 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 		{
 			case NAT25_CHECK:
 				if (skb->data[0] & 1)
-					return 0;				
+					return 0;
 				return -1;
 
 			case NAT25_INSERT:
@@ -1447,9 +1447,9 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 								hdr->icmp6_cksum = csum_ipv6_magic(&iph->saddr, &iph->daddr,
 												iph->payload_len,
 												IPPROTO_ICMPV6,
-												csum_partial((__u8 *)hdr, iph->payload_len, 0));
+												csum_partial((uint8_t *)hdr, iph->payload_len, 0));
 							}
-						}						
+						}
 					}
 				}
 				return 0;
@@ -1461,14 +1461,14 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 						iph->saddr.s6_addr16[4],iph->saddr.s6_addr16[5],iph->saddr.s6_addr16[6],iph->saddr.s6_addr16[7],
 						iph->daddr.s6_addr16[0],iph->daddr.s6_addr16[1],iph->daddr.s6_addr16[2],iph->daddr.s6_addr16[3],
 						iph->daddr.s6_addr16[4],iph->daddr.s6_addr16[5],iph->daddr.s6_addr16[6],iph->daddr.s6_addr16[7]);
-			
+
 
 				__nat25_generate_ipv6_network_addr(networkAddr, (unsigned int *)&iph->daddr);
 				if (!__nat25_db_network_lookup_and_replace(priv, skb, networkAddr)) {
-#ifdef SUPPORT_RX_UNI2MCAST							
+#ifdef SUPPORT_RX_UNI2MCAST
 					if (iph->daddr.s6_addr[0] == 0xff)
-						convert_ipv6_mac_to_mc(skb);	
-#endif											
+						convert_ipv6_mac_to_mc(skb);
+#endif
 				}
 				return 0;
 
@@ -1529,12 +1529,12 @@ int nat25_handle_frame(_adapter *priv, struct sk_buff *skb)
 				(*((unsigned short *)(skb->data+ETH_ALEN*2)) == __constant_htons(ETH_P_IP)) &&
 				!memcmp(priv->scdb_ip, skb->data+ETH_HLEN+16, 4)) {
 				memcpy(skb->data, priv->scdb_mac, ETH_ALEN);
-				
+
 				_exit_critical_bh(&priv->br_ext_lock, &irqL);
 			}
 			else {
 				_exit_critical_bh(&priv->br_ext_lock, &irqL);
-				
+
 				retval = nat25_db_handle(priv, skb, NAT25_LOOKUP);
 			}
 		}

@@ -31,10 +31,10 @@ extern void indicate_wx_scan_complete_event(_adapter *padapter);
 		(addr[4] == 0xff) && (addr[5] == 0xff) )  ? _TRUE : _FALSE \
 )
 
-u8 rtw_validate_ssid(NDIS_802_11_SSID *ssid)
+uint8_t rtw_validate_ssid(NDIS_802_11_SSID *ssid)
 {
-	u8	 i;
-	u8	ret=_TRUE;
+	uint8_t	 i;
+	uint8_t	ret=_TRUE;
 
 _func_enter_;
 
@@ -61,15 +61,15 @@ _func_exit_;
 	return ret;
 }
 
-u8 rtw_do_join(_adapter * padapter);
-u8 rtw_do_join(_adapter * padapter)
+uint8_t rtw_do_join(_adapter * padapter);
+uint8_t rtw_do_join(_adapter * padapter)
 {
 	_irqL	irqL;
 	_list	*plist, *phead;
-	u8* pibss = NULL;
+	uint8_t * pibss = NULL;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
-	u8 ret=_SUCCESS;
+	uint8_t ret=_SUCCESS;
 
 _func_enter_;
 
@@ -206,10 +206,10 @@ _func_exit_;
 }
 
 
-u8 rtw_set_802_11_bssid(_adapter* padapter, u8 *bssid)
+uint8_t rtw_set_802_11_bssid(_adapter* padapter, uint8_t *bssid)
 {
 	_irqL irqL;
-	u8 status=_SUCCESS;
+	uint8_t status=_SUCCESS;
 
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -288,10 +288,10 @@ _func_exit_;
 	return status;
 }
 
-u8 rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
+uint8_t rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
 {
 	_irqL irqL;
-	u8 status = _SUCCESS;
+	uint8_t status = _SUCCESS;
 	u32 cur_time = 0;
 
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -413,7 +413,7 @@ _func_exit_;
 
 }
 
-u8 rtw_set_802_11_infrastructure_mode(_adapter* padapter,
+uint8_t rtw_set_802_11_infrastructure_mode(_adapter* padapter,
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networktype)
 {
 	_irqL irqL;
@@ -501,7 +501,7 @@ _func_exit_;
 }
 
 
-u8 rtw_set_802_11_disassociate(_adapter *padapter)
+uint8_t rtw_set_802_11_disassociate(_adapter *padapter)
 {
 	_irqL irqL;
 	struct mlme_priv * pmlmepriv = &padapter->mlmepriv;
@@ -527,11 +527,11 @@ _func_exit_;
 	return _TRUE;
 }
 
-u8 rtw_set_802_11_bssid_list_scan(_adapter* padapter, NDIS_802_11_SSID *pssid, int ssid_max_num)
+uint8_t rtw_set_802_11_bssid_list_scan(_adapter* padapter, NDIS_802_11_SSID *pssid, int ssid_max_num)
 {
 	_irqL	irqL;
 	struct	mlme_priv		*pmlmepriv= &padapter->mlmepriv;
-	u8	res=_TRUE;
+	uint8_t	res=_TRUE;
 
 _func_enter_;
 
@@ -579,11 +579,11 @@ _func_exit_;
 	return res;
 }
 
-u8 rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
+uint8_t rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
 {
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	int res;
-	u8 ret;
+	uint8_t ret;
 
 _func_enter_;
 
@@ -613,13 +613,13 @@ _func_exit_;
 	return ret;
 }
 
-u8 rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
+uint8_t rtw_set_802_11_add_wep(_adapter* padapter, NDIS_802_11_WEP *wep){
 
-	u8		bdefaultkey;
-	u8		btransmitkey;
+	uint8_t		bdefaultkey;
+	uint8_t		btransmitkey;
 	sint		keyid,res;
 	struct security_priv* psecuritypriv=&(padapter->securitypriv);
-	u8		ret=_SUCCESS;
+	uint8_t		ret=_SUCCESS;
 
 _func_enter_;
 
@@ -677,9 +677,9 @@ _func_exit_;
 
 }
 
-u8 rtw_set_802_11_remove_wep(_adapter* padapter, u32 keyindex){
+uint8_t rtw_set_802_11_remove_wep(_adapter* padapter, u32 keyindex){
 
-	u8 ret=_SUCCESS;
+	uint8_t ret=_SUCCESS;
 
 _func_enter_;
 
@@ -720,14 +720,14 @@ _func_exit_;
 
 }
 
-u8 rtw_set_802_11_add_key(_adapter* padapter, NDIS_802_11_KEY *key){
+uint8_t rtw_set_802_11_add_key(_adapter* padapter, NDIS_802_11_KEY *key){
 
 	uint	encryptionalgo;
-	u8 * pbssid;
+	uint8_t * pbssid;
 	struct sta_info *stainfo;
-	u8	bgroup = _FALSE;
-	u8	bgrouptkey = _FALSE;//can be remove later
-	u8	ret=_SUCCESS;
+	uint8_t	bgroup = _FALSE;
+	uint8_t	bgrouptkey = _FALSE;//can be remove later
+	uint8_t	ret=_SUCCESS;
 
 _func_enter_;
 
@@ -913,7 +913,7 @@ _func_enter_;
 	// If WEP encryption algorithm, just call rtw_set_802_11_add_wep().
 	if((padapter->securitypriv.dot11AuthAlgrthm !=dot11AuthAlgrthm_8021X)&&(encryptionalgo== _WEP40_  || encryptionalgo== _WEP104_))
 	{
-		u8 ret;
+		uint8_t ret;
 		u32 keyindex;
 		u32 len = FIELD_OFFSET(NDIS_802_11_KEY, KeyMaterial) + key->KeyLength;
 		NDIS_802_11_WEP *wep = &padapter->securitypriv.ndiswep;
@@ -963,7 +963,7 @@ _func_enter_;
 
 		if(bgrouptkey == _TRUE)
 		{
-			padapter->securitypriv.dot118021XGrpKeyid=(u8)key->KeyIndex;
+			padapter->securitypriv.dot118021XGrpKeyid=(uint8_t)key->KeyIndex;
 		}
 
 		if((key->KeyIndex&0x3) == 0){
@@ -971,39 +971,39 @@ _func_enter_;
 			goto exit;
 		}
 
-		memset(&padapter->securitypriv.dot118021XGrpKey[(u8)((key->KeyIndex) & 0x03)], 0, 16);
-		memset(&padapter->securitypriv.dot118021XGrptxmickey[(u8)((key->KeyIndex) & 0x03)], 0, 16);
-		memset(&padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)], 0, 16);
+		memset(&padapter->securitypriv.dot118021XGrpKey[(uint8_t)((key->KeyIndex) & 0x03)], 0, 16);
+		memset(&padapter->securitypriv.dot118021XGrptxmickey[(uint8_t)((key->KeyIndex) & 0x03)], 0, 16);
+		memset(&padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)], 0, 16);
 
 		if((key->KeyIndex & 0x10000000))
 		{
-			memcpy(&padapter->securitypriv.dot118021XGrptxmickey[(u8)((key->KeyIndex) & 0x03)], key->KeyMaterial + 16, 8);
-			memcpy(&padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)], key->KeyMaterial + 24, 8);
+			memcpy(&padapter->securitypriv.dot118021XGrptxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 16, 8);
+			memcpy(&padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 24, 8);
 
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("\n rtw_set_802_11_add_key:rx mic :0x%02x:0x%02x:0x%02x:0x%02x:0x%02x:0x%02x:0x%02x:0x%02x\n",
-				padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)].skey[0],padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex-1) & 0x03)].skey[1],
-				padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)].skey[2],padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex-1) & 0x03)].skey[3],
-				padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)].skey[4],padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex-1) & 0x03)].skey[5],
-				padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)].skey[6],padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex-1) & 0x03)].skey[7]));
+				padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)].skey[0],padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex-1) & 0x03)].skey[1],
+				padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)].skey[2],padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex-1) & 0x03)].skey[3],
+				padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)].skey[4],padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex-1) & 0x03)].skey[5],
+				padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)].skey[6],padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex-1) & 0x03)].skey[7]));
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("\n rtw_set_802_11_add_key:set Group mic key!!!!!!!!\n"));
 
 		}
 		else
 		{
-			memcpy(&padapter->securitypriv.dot118021XGrptxmickey[(u8)((key->KeyIndex) & 0x03)], key->KeyMaterial + 24, 8);
-			memcpy(&padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)], key->KeyMaterial + 16, 8);
+			memcpy(&padapter->securitypriv.dot118021XGrptxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 24, 8);
+			memcpy(&padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 16, 8);
 
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("\n rtw_set_802_11_add_key:rx mic :0x%02x:0x%02x:0x%02x:0x%02x:0x%02x:0x%02x:0x%02x:0x%02x\n",
-				padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)].skey[0],padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex-1) & 0x03)].skey[1],
-				padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)].skey[2],padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex-1) & 0x03)].skey[3],
-				padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)].skey[4],padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex-1) & 0x03)].skey[5],
-				padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex) & 0x03)].skey[6],padapter->securitypriv.dot118021XGrprxmickey[(u8)((key->KeyIndex-1) & 0x03)].skey[7]));
+				padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)].skey[0],padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex-1) & 0x03)].skey[1],
+				padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)].skey[2],padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex-1) & 0x03)].skey[3],
+				padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)].skey[4],padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex-1) & 0x03)].skey[5],
+				padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)].skey[6],padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex-1) & 0x03)].skey[7]));
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("\n rtw_set_802_11_add_key:set Group mic key!!!!!!!!\n"));
 
 		}
 
 		//set group key by index
-		memcpy(&padapter->securitypriv.dot118021XGrpKey[(u8)((key->KeyIndex) & 0x03)], key->KeyMaterial, key->KeyLength);
+		memcpy(&padapter->securitypriv.dot118021XGrpKey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial, key->KeyLength);
 
 		key->KeyIndex=key->KeyIndex & 0x03;
 
@@ -1023,7 +1023,7 @@ _func_enter_;
 	}
 	else // Pairwise Key
 	{
-		u8 res;
+		uint8_t res;
 
 		pbssid=get_bssid(&padapter->mlmepriv);
 		stainfo=rtw_get_stainfo(&padapter->stapriv , pbssid );
@@ -1085,14 +1085,14 @@ _func_exit_;
 	return ret;
 }
 
-u8 rtw_set_802_11_remove_key(_adapter*	padapter, NDIS_802_11_REMOVE_KEY *key){
+uint8_t rtw_set_802_11_remove_key(_adapter*	padapter, NDIS_802_11_REMOVE_KEY *key){
 
 	uint				encryptionalgo;
-	u8 * pbssid;
+	uint8_t * pbssid;
 	struct sta_info *stainfo;
-	u8	bgroup = (key->KeyIndex & 0x4000000) > 0 ? _FALSE: _TRUE;
-	u8	keyIndex = (u8)key->KeyIndex & 0x03;
-	u8	ret=_SUCCESS;
+	uint8_t	bgroup = (key->KeyIndex & 0x4000000) > 0 ? _FALSE: _TRUE;
+	uint8_t	keyIndex = (uint8_t)key->KeyIndex & 0x03;
+	uint8_t	ret=_SUCCESS;
 
 _func_enter_;
 
@@ -1147,7 +1147,7 @@ _func_exit_;
 u16 rtw_get_cur_max_rate(_adapter *adapter)
 {
 	int	i = 0;
-	u8	*p;
+	uint8_t	*p;
 	u16	rate = 0, max_rate = 0;
 	struct mlme_ext_priv	*pmlmeext = &adapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -1156,8 +1156,8 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 	WLAN_BSSID_EX  *pcur_bss = &pmlmepriv->cur_network.network;
 #ifdef CONFIG_80211N_HT
 	struct rtw_ieee80211_ht_cap *pht_capie;
-	u8	rf_type = 0;
-	u8	bw_40MHz=0, short_GI_20=0, short_GI_40=0, cbw40_enable=0;
+	uint8_t	rf_type = 0;
+	uint8_t	bw_40MHz=0, short_GI_20=0, short_GI_40=0, cbw40_enable=0;
 	u16	mcs_rate=0;
 	u32	ht_ielen = 0;
 #endif
@@ -1194,7 +1194,7 @@ u16 rtw_get_cur_max_rate(_adapter *adapter)
 			short_GI_20 = (pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info&IEEE80211_HT_CAP_SGI_20) ? 1:0;
 			short_GI_40 = (pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info&IEEE80211_HT_CAP_SGI_40) ? 1:0;
 
-			rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
+			rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 
 			if (pmlmeext->cur_channel > 14) {
 				if ((pregistrypriv->bw_mode & 0xf0) > 0)
@@ -1259,7 +1259,7 @@ int rtw_set_scan_mode(_adapter *adapter, RT_SCAN_TYPE scan_mode)
 *
 * Return _SUCCESS or _FAIL
 */
-int rtw_set_channel_plan(_adapter *adapter, u8 channel_plan)
+int rtw_set_channel_plan(_adapter *adapter, uint8_t channel_plan)
 {
 	struct registry_priv *pregistrypriv = &adapter->registrypriv;
 	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;

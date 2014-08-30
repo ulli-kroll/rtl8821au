@@ -50,7 +50,7 @@ void WapiSetIE(_adapter *padapter)
 	u16		akmCnt = 1;
 	u16		suiteCnt = 1;
 	u16		capability = 0;
-	u8		OUI[3];
+	uint8_t		OUI[3];
 
 	OUI[0] = 0x00;
 	OUI[1] = 0x14;
@@ -99,7 +99,7 @@ void WapiSetIE(_adapter *padapter)
 /*  PN1 > PN2, return 1,
  *  else return 0.
  */
-u32 WapiComparePN(u8 *PN1, u8 *PN2)
+u32 WapiComparePN(uint8_t *PN1, uint8_t *PN2)
 {
 	char i;
 
@@ -124,12 +124,12 @@ u32 WapiComparePN(u8 *PN1, u8 *PN2)
 }
 
 u8
-WapiGetEntryForCamWrite(_adapter *padapter,u8 *pMacAddr,u8 KID,BOOLEAN IsMsk)
+WapiGetEntryForCamWrite(_adapter *padapter,uint8_t *pMacAddr,uint8_t KID,BOOLEAN IsMsk)
 {
 	PRT_WAPI_T		pWapiInfo=NULL;
 	//PRT_WAPI_CAM_ENTRY	pEntry=NULL;
-	u8 i=0;
-	u8 ret = 0xff;
+	uint8_t i=0;
+	uint8_t ret = 0xff;
 
 	WAPI_TRACE(WAPI_API, "===========> %s\n", __FUNCTION__);
 
@@ -181,10 +181,10 @@ WapiGetEntryForCamWrite(_adapter *padapter,u8 *pMacAddr,u8 KID,BOOLEAN IsMsk)
 	return pEntry->entry_idx;*/
 }
 
-u8 WapiGetEntryForCamClear(_adapter *padapter,u8 *pPeerMac,u8 keyid,u8 IsMsk)
+uint8_t WapiGetEntryForCamClear(_adapter *padapter,uint8_t *pPeerMac,uint8_t keyid,uint8_t IsMsk)
 {
 	PRT_WAPI_T		pWapiInfo=NULL;
-	u8		i=0;
+	uint8_t		i=0;
 
 	WAPI_TRACE(WAPI_API, "===========> %s\n", __FUNCTION__);
 
@@ -255,17 +255,17 @@ WapiResetAllCamEntry(_adapter *padapter)
 	return;
 }
 
-u8 WapiWriteOneCamEntry(
+uint8_t WapiWriteOneCamEntry(
 	_adapter 	*padapter,
-	u8 			*pMacAddr,
-	u8 			KeyId,
-	u8			EntryId,
-	u8 			EncAlg,
-	u8 			bGroupKey,
-	u8 			*pKey
+	uint8_t 			*pMacAddr,
+	uint8_t 			KeyId,
+	uint8_t			EntryId,
+	uint8_t 			EncAlg,
+	uint8_t 			bGroupKey,
+	uint8_t 			*pKey
 )
 {
-	u8 retVal = 0;
+	uint8_t retVal = 0;
 	u16 usConfig = 0;
 
 	WAPI_TRACE(WAPI_API, "===========> %s\n", __FUNCTION__);
@@ -368,14 +368,14 @@ void rtw_wapi_disable_tx(_adapter *padapter)
 	WAPI_TRACE(WAPI_INIT, "<========== %s\n", __FUNCTION__);
 }
 
-u8 rtw_wapi_is_wai_packet(_adapter* padapter,u8 *pkt_data)
+uint8_t rtw_wapi_is_wai_packet(_adapter* padapter,uint8_t *pkt_data)
 {
 	PRT_WAPI_T pWapiInfo = &(padapter->wapiInfo);
 	struct mlme_priv 	*pmlmepriv = &padapter->mlmepriv;
 	struct security_priv   *psecuritypriv = &padapter->securitypriv;
 	PRT_WAPI_STA_INFO pWapiSta = NULL;
-	u8 WaiPkt = 0, *pTaddr, bFind = false;
-	u8 Offset_TypeWAI = 0 ;	// (mac header len + llc length)
+	uint8_t WaiPkt = 0, *pTaddr, bFind = false;
+	uint8_t Offset_TypeWAI = 0 ;	// (mac header len + llc length)
 
 	WAPI_TRACE(WAPI_TX|WAPI_RX, "===========> %s\n", __FUNCTION__);
 
@@ -432,9 +432,9 @@ void rtw_wapi_update_info(_adapter *padapter, union recv_frame *precv_frame)
 {
 	PRT_WAPI_T     pWapiInfo = &(padapter->wapiInfo);
 	struct recv_frame_hdr *precv_hdr;
-	u8 	*ptr;
-	u8 	*pTA;
-	u8 	*pRecvPN;
+	uint8_t 	*ptr;
+	uint8_t 	*pTA;
+	uint8_t 	*pRecvPN;
 
 
 	WAPI_TRACE(WAPI_RX, "===========> %s\n", __FUNCTION__);
@@ -458,9 +458,9 @@ void rtw_wapi_update_info(_adapter *padapter, union recv_frame *precv_frame)
 	}
 
 	pTA = GetAddr2Ptr(ptr);
-	memcpy((u8 *)precv_hdr->WapiSrcAddr, pTA, 6);
+	memcpy((uint8_t *)precv_hdr->WapiSrcAddr, pTA, 6);
 	pRecvPN = ptr + precv_hdr->attrib.hdrlen + 2;
-	memcpy((u8 *)precv_hdr->WapiTempPN, pRecvPN, 16);
+	memcpy((uint8_t *)precv_hdr->WapiTempPN, pRecvPN, 16);
 
 	WAPI_TRACE(WAPI_RX, "<========== %s\n", __FUNCTION__);
 }
@@ -470,20 +470,20 @@ TRUE-----------------Drop
 FALSE---------------- handle
 add to support WAPI to N-mode
 *****************************************************************************/
-u8 rtw_wapi_check_for_drop(
+uint8_t rtw_wapi_check_for_drop(
 	_adapter *padapter,
 	union recv_frame *precv_frame
 )
 {
 	PRT_WAPI_T     pWapiInfo = &(padapter->wapiInfo);
-	u8			*pLastRecvPN = NULL;
-	u8			bFind = false;
+	uint8_t			*pLastRecvPN = NULL;
+	uint8_t			bFind = false;
 	PRT_WAPI_STA_INFO	pWapiSta = NULL;
-	u8 			bDrop = false;
+	uint8_t 			bDrop = false;
 	struct recv_frame_hdr *precv_hdr = &precv_frame->u.hdr;
-	u8					WapiAEPNInitialValueSrc[16] = {0x37,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
-	u8 					WapiAEMultiCastPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
-	u8 					*ptr = precv_frame->u.hdr.rx_data;
+	uint8_t					WapiAEPNInitialValueSrc[16] = {0x37,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
+	uint8_t 					WapiAEMultiCastPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
+	uint8_t 					*ptr = precv_frame->u.hdr.rx_data;
 	int					i;
 
 	WAPI_TRACE(WAPI_RX, "===========> %s\n", __FUNCTION__);
@@ -596,7 +596,7 @@ u8 rtw_wapi_check_for_drop(
 void rtw_build_probe_resp_wapi_ie(_adapter *padapter, unsigned char *pframe, struct pkt_attrib *pattrib)
 {
 	PRT_WAPI_T pWapiInfo = &(padapter->wapiInfo);
-	u8 WapiIELength = 0;
+	uint8_t WapiIELength = 0;
 
 	WAPI_TRACE(WAPI_MLME, "===========> %s\n", __FUNCTION__);
 
@@ -620,7 +620,7 @@ void rtw_build_probe_resp_wapi_ie(_adapter *padapter, unsigned char *pframe, str
 void rtw_build_beacon_wapi_ie(_adapter *padapter, unsigned char *pframe, struct pkt_attrib *pattrib)
 {
 	PRT_WAPI_T pWapiInfo = &(padapter->wapiInfo);
-	u8 WapiIELength = 0;
+	uint8_t WapiIELength = 0;
 	WAPI_TRACE(WAPI_MLME, "===========> %s\n", __FUNCTION__);
 
 	if ((!padapter->WapiSupport)  || (!pWapiInfo->bWapiEnable))
@@ -645,7 +645,7 @@ void rtw_build_assoc_req_wapi_ie(_adapter *padapter, unsigned char *pframe, stru
 	PRT_WAPI_BKID		pWapiBKID;
 	u16					bkidNum;
 	PRT_WAPI_T			pWapiInfo = &(padapter->wapiInfo);
-	u8					WapiIELength = 0;
+	uint8_t					WapiIELength = 0;
 
 	WAPI_TRACE(WAPI_MLME, "===========> %s\n", __FUNCTION__);
 
@@ -680,9 +680,9 @@ void rtw_wapi_on_assoc_ok(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 {
 	PRT_WAPI_T pWapiInfo = &(padapter->wapiInfo);
 	PRT_WAPI_STA_INFO pWapiSta;
-	u8 WapiAEPNInitialValueSrc[16] = {0x37,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
-	//u8 WapiASUEPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
-	u8 WapiAEMultiCastPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
+	uint8_t WapiAEPNInitialValueSrc[16] = {0x37,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
+	//uint8_t WapiASUEPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
+	uint8_t WapiAEMultiCastPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
 
 	WAPI_TRACE(WAPI_MLME, "===========> %s\n", __FUNCTION__);
 
@@ -709,7 +709,7 @@ void rtw_wapi_on_assoc_ok(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 }
 
 
-void rtw_wapi_return_one_sta_info(_adapter *padapter, u8 *MacAddr)
+void rtw_wapi_return_one_sta_info(_adapter *padapter, uint8_t *MacAddr)
 {
 	PRT_WAPI_T				pWapiInfo;
 	PRT_WAPI_STA_INFO		pWapiStaInfo = NULL;
@@ -842,9 +842,9 @@ void rtw_wapi_return_all_sta_info(_adapter *padapter)
 	WAPI_TRACE(WAPI_API, "<========== %s\n", __FUNCTION__);
 }
 
-void rtw_wapi_clear_cam_entry(_adapter *padapter, u8 *pMacAddr)
+void rtw_wapi_clear_cam_entry(_adapter *padapter, uint8_t *pMacAddr)
 {
-	u8 UcIndex = 0;
+	uint8_t UcIndex = 0;
 
 	WAPI_TRACE(WAPI_API, "===========> %s\n", __FUNCTION__);
 
@@ -897,13 +897,13 @@ void rtw_wapi_clear_all_cam_entry(_adapter *padapter)
 	WAPI_TRACE(WAPI_API, "===========> %s\n", __FUNCTION__);
 }
 
-void rtw_wapi_set_key(_adapter *padapter, RT_WAPI_KEY *pWapiKey, RT_WAPI_STA_INFO *pWapiSta, u8 bGroupKey, u8 bUseDefaultKey)
+void rtw_wapi_set_key(_adapter *padapter, RT_WAPI_KEY *pWapiKey, RT_WAPI_STA_INFO *pWapiSta, uint8_t bGroupKey, uint8_t bUseDefaultKey)
 {
 	PRT_WAPI_T		pWapiInfo =  &padapter->wapiInfo;
-	u8				*pMacAddr = pWapiSta->PeerMacAddr;
+	uint8_t				*pMacAddr = pWapiSta->PeerMacAddr;
 	u32 EntryId = 0;
 	BOOLEAN IsPairWise = false ;
-	u8 EncAlgo;
+	uint8_t EncAlgo;
 
 	WAPI_TRACE(WAPI_API, "===========> %s\n", __FUNCTION__);
 
@@ -960,19 +960,19 @@ void rtw_wapi_set_key(_adapter *padapter, RT_WAPI_KEY *pWapiKey, RT_WAPI_STA_INF
 
 #if 0
 //YJ,test,091013
-void wapi_test_set_key(struct _adapter *padapter, u8* buf)
+void wapi_test_set_key(struct _adapter *padapter, uint8_t * buf)
 { /*Data: keyType(1) + bTxEnable(1) + bAuthenticator(1) + bUpdate(1) + PeerAddr(6) + DataKey(16) + MicKey(16) + KeyId(1)*/
 	PRT_WAPI_T			pWapiInfo = &padapter->wapiInfo;
 	PRT_WAPI_BKID		pWapiBkid;
 	PRT_WAPI_STA_INFO	pWapiSta;
-	u8					data[43];
+	uint8_t					data[43];
 	bool					bTxEnable;
 	bool					bUpdate;
 	bool					bAuthenticator;
-	u8					PeerAddr[6];
-	u8					WapiAEPNInitialValueSrc[16] = {0x37,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
-	u8					WapiASUEPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
-	u8					WapiAEMultiCastPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
+	uint8_t					PeerAddr[6];
+	uint8_t					WapiAEPNInitialValueSrc[16] = {0x37,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
+	uint8_t					WapiASUEPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
+	uint8_t					WapiAEMultiCastPNInitialValueSrc[16] = {0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C,0x36,0x5C} ;
 
 	WAPI_TRACE(WAPI_INIT, "===========>%s\n", __FUNCTION__);
 
@@ -1125,14 +1125,14 @@ void wapi_test_set_key(struct _adapter *padapter, u8* buf)
 
 void wapi_test_init(struct _adapter *padapter)
 {
-	u8 keybuf[100];
-	u8 mac_addr[6]={0x00,0xe0,0x4c,0x72,0x04,0x70};
-	u8 UskDataKey[16]={0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f};
-	u8 UskMicKey[16]={0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f};
-	u8 UskId = 0;
-	u8 MskDataKey[16]={0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f};
-	u8 MskMicKey[16]={0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f};
-	u8 MskId = 0;
+	uint8_t keybuf[100];
+	uint8_t mac_addr[6]={0x00,0xe0,0x4c,0x72,0x04,0x70};
+	uint8_t UskDataKey[16]={0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f};
+	uint8_t UskMicKey[16]={0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f};
+	uint8_t UskId = 0;
+	uint8_t MskDataKey[16]={0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f};
+	uint8_t MskMicKey[16]={0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f};
+	uint8_t MskId = 0;
 
 	WAPI_TRACE(WAPI_INIT, "===========>%s\n", __FUNCTION__);
 
@@ -1197,7 +1197,7 @@ void wapi_test_init(struct _adapter *padapter)
 }
 #endif
 
-void rtw_wapi_get_iv(_adapter *padapter,u8 *pRA, u8*IV)
+void rtw_wapi_get_iv(_adapter *padapter,uint8_t *pRA, uint8_t *IV)
 {
 	PWLAN_HEADER_WAPI_EXTENSION pWapiExt = NULL;
        PRT_WAPI_T         pWapiInfo = &padapter->wapiInfo;
@@ -1232,7 +1232,7 @@ void rtw_wapi_get_iv(_adapter *padapter,u8 *pRA, u8*IV)
 		else{
 				list_for_each_entry(pWapiSta, &pWapiInfo->wapiSTAUsedList, list){
 					WAPI_DATA(WAPI_RX,"rtw_wapi_get_iv: peermacaddr ",pWapiSta->PeerMacAddr,6);
-					if (_rtw_memcmp((u8*)pWapiSta->PeerMacAddr, pRA, 6) == _TRUE) {
+					if (_rtw_memcmp((uint8_t *)pWapiSta->PeerMacAddr, pRA, 6) == _TRUE) {
 						bFindMatchPeer = true;
 						break;
 					}
@@ -1263,7 +1263,7 @@ void rtw_wapi_get_iv(_adapter *padapter,u8 *pRA, u8*IV)
 
 }
 
-bool rtw_wapi_drop_for_key_absent(_adapter *padapter,u8 *pRA)
+bool rtw_wapi_drop_for_key_absent(_adapter *padapter,uint8_t *pRA)
 {
 	PRT_WAPI_T         pWapiInfo = &padapter->wapiInfo;
 	bool				bFindMatchPeer = false;

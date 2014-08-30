@@ -29,7 +29,7 @@ void _rtw_init_stainfo(struct sta_info *psta)
 
 _func_enter_;
 
-	memset((u8 *)psta, 0, sizeof (struct sta_info));
+	memset((uint8_t *)psta, 0, sizeof (struct sta_info));
 
 	 _rtw_spinlock_init(&psta->lock);
 	_rtw_init_listhead(&psta->list);
@@ -153,7 +153,7 @@ _func_exit_;
 
 inline int rtw_stainfo_offset(struct sta_priv *stapriv, struct sta_info *sta)
 {
-	int offset = (((u8 *)sta) - stapriv->pstainfo_buf)/sizeof(struct sta_info);
+	int offset = (((uint8_t *)sta) - stapriv->pstainfo_buf)/sizeof(struct sta_info);
 
 	if (!stainfo_offset_valid(offset))
 		DBG_871X("%s invalid offset(%d), out of range!!!", __func__, offset);
@@ -309,7 +309,7 @@ _func_exit_;
 
 
 //struct	sta_info *rtw_alloc_stainfo(_queue *pfree_sta_queue, unsigned char *hwaddr)
-struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
+struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, uint8_t *hwaddr)
 {
 	_irqL irqL, irqL2;
 	uint tmp_aid;
@@ -681,7 +681,7 @@ _func_exit_;
 }
 
 /* any station allocated can be searched by hash list */
-struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
+struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 {
 
 	_irqL	 irqL;
@@ -692,9 +692,9 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, u8 *hwaddr)
 
 	u32	index;
 
-	u8 *addr;
+	uint8_t *addr;
 
-	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
+	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 
 _func_enter_;
 
@@ -783,7 +783,7 @@ struct sta_info* rtw_get_bcmc_stainfo(_adapter* padapter)
 {
 	struct sta_info 	*psta;
 	struct sta_priv 	*pstapriv = &padapter->stapriv;
-	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
+	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 _func_enter_;
 	 psta = rtw_get_stainfo(pstapriv, bc_addr);
 _func_exit_;
@@ -791,14 +791,14 @@ _func_exit_;
 
 }
 
-u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr)
+uint8_t rtw_access_ctrl(_adapter *padapter, uint8_t *mac_addr)
 {
-	u8 res = _TRUE;
+	uint8_t res = _TRUE;
 #ifdef  CONFIG_AP_MODE
 	_irqL irqL;
 	_list	*plist, *phead;
 	struct rtw_wlan_acl_node *paclnode;
-	u8 match = _FALSE;
+	uint8_t match = _FALSE;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
 	_queue	*pacl_node_q =&pacl_list->acl_node_q;

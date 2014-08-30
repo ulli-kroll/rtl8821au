@@ -281,10 +281,10 @@ void rtl8812a_cal_txdesc_chksum(u8 *ptxdesc)
 //
 void rtl8812a_fill_fake_txdesc(
 	PADAPTER	padapter,
-	u8*			pDesc,
+	uint8_t *			pDesc,
 	u32			BufferLen,
-	u8			IsPsPoll,
-	u8			IsBTQosNull)
+	uint8_t			IsPsPoll,
+	uint8_t			IsBTQosNull)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 
@@ -419,7 +419,7 @@ BWMapping_8812(
 	IN	struct pkt_attrib	*pattrib
 )
 {
-	u8	BWSettingOfDesc = 0;
+	uint8_t	BWSettingOfDesc = 0;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 
 	//DBG_871X("BWMapping pHalData->CurrentChannelBW %d, pattrib->bwmode %d \n",pHalData->CurrentChannelBW,pattrib->bwmode);
@@ -452,7 +452,7 @@ SCMapping_8812(
 	IN	struct pkt_attrib	*pattrib
 )
 {
-	u8	SCSettingOfDesc = 0;
+	uint8_t	SCSettingOfDesc = 0;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	//DBG_871X("SCMapping: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
 

@@ -76,17 +76,17 @@ PHY_RF6052SetBandwidth8812(
 //
 void getPowerBase8812(
 	IN	PADAPTER	Adapter,
-	IN	u8*			pPowerLevelOFDM,
-	IN	u8*			pPowerLevelBW20,
-	IN	u8*			pPowerLevelBW40,
-	IN	u8			Channel,
+	IN	uint8_t *			pPowerLevelOFDM,
+	IN	uint8_t *			pPowerLevelBW20,
+	IN	uint8_t *			pPowerLevelBW40,
+	IN	uint8_t			Channel,
 	IN OUT u32*		OfdmBase,
 	IN OUT u32*		MCSBase
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	u32			powerBase0, powerBase1;
-	u8			i, powerlevel[2];
+	uint8_t			i, powerlevel[2];
 
 	for(i=0; i<2; i++)
 	{
@@ -117,8 +117,8 @@ void getPowerBase8812(
 
 void getTxPowerWriteValByRegulatory8812(
 	IN		PADAPTER	Adapter,
-	IN		u8			Channel,
-	IN		u8			index,
+	IN		uint8_t			Channel,
+	IN		uint8_t			index,
 	IN		u32*		powerBase0,
 	IN		u32*		powerBase1,
 	OUT		u32*		pOutWriteVal
@@ -127,10 +127,10 @@ void getTxPowerWriteValByRegulatory8812(
 
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	u8			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
+	uint8_t			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
 	s8			pwr_diff=0;
 	u32 			writeVal, customer_limit, rf;
-	u8			Regulatory = pHalData->EEPROMRegulatory;
+	uint8_t			Regulatory = pHalData->EEPROMRegulatory;
 
 	//
 	// Index 0 & 1= legacy OFDM, 2-5=HT_MCS rate
@@ -292,7 +292,7 @@ void getTxPowerWriteValByRegulatory8812(
 
 static void writeOFDMPowerReg8812(
 	IN		PADAPTER	Adapter,
-	IN		u8		index,
+	IN		uint8_t		index,
 	IN 		u32*		pValue
 	)
 {
@@ -315,7 +315,7 @@ static void writeOFDMPowerReg8812(
         rTxAGC_B_MCS15_MCS12_JAguar
     };
 
-	u8	i, rf, pwr_val[4];
+	uint8_t	i, rf, pwr_val[4];
 	u32	writeVal;
 	u16	RegOffset;
 
@@ -324,7 +324,7 @@ static void writeOFDMPowerReg8812(
 		writeVal = pValue[rf];
 		for(i=0; i<RF_PATH_MAX_92C_88E; i++)
 		{
-			pwr_val[i] = (u8)((writeVal & (0x7f<<(i*8)))>>(i*8));
+			pwr_val[i] = (uint8_t)((writeVal & (0x7f<<(i*8)))>>(i*8));
 			if (pwr_val[i]  > RF6052_MAX_TX_PWR)
 				pwr_val[i]  = RF6052_MAX_TX_PWR;
 		}
@@ -342,15 +342,15 @@ static void writeOFDMPowerReg8812(
 VOID
 PHY_RF6052SetCckTxPower8812(
 	IN	PADAPTER	Adapter,
-	IN	u8*			pPowerlevel)
+	IN	uint8_t *			pPowerlevel)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv		*pdmpriv = &pHalData->dmpriv;
 	struct mlme_ext_priv 	*pmlmeext = &Adapter->mlmeextpriv;
 	u32			TxAGC[2]={0, 0}, tmpval=0;
 	BOOLEAN		TurboScanOff = _FALSE;
-	u8			idx1, idx2;
-	u8*			ptr;
+	uint8_t			idx1, idx2;
+	uint8_t *			ptr;
 
 	//FOR CE ,must disable turbo scan
 	TurboScanOff = _TRUE;
@@ -416,7 +416,7 @@ PHY_RF6052SetCckTxPower8812(
 
 	for(idx1=RF_PATH_A; idx1<=RF_PATH_B; idx1++)
 	{
-		ptr = (u8*)(&(TxAGC[idx1]));
+		ptr = (uint8_t *)(&(TxAGC[idx1]));
 		for(idx2=0; idx2<4; idx2++)
 		{
 			if(*ptr > RF6052_MAX_TX_PWR)
@@ -446,10 +446,10 @@ PHY_RF6052SetCckTxPower8812(
 VOID
 PHY_RF6052SetOFDMTxPower8812(
 	IN	PADAPTER	Adapter,
-	IN	u8*		pPowerLevelOFDM,
-	IN	u8*		pPowerLevelBW20,
-	IN	u8*		pPowerLevelBW40,
-	IN	u8		Channel)
+	IN	uint8_t *		pPowerLevelOFDM,
+	IN	uint8_t *		pPowerLevelBW20,
+	IN	uint8_t *		pPowerLevelBW40,
+	IN	uint8_t		Channel)
 {
 	u32 writeVal[2], powerBase0[2], powerBase1[2], pwrtrac_value;
 	u8 index = 0;
@@ -473,7 +473,7 @@ phy_RF6052_Config_ParaFile_8812(
 	IN	PADAPTER		Adapter
 	)
 {
-	u8					eRFPath;
+	uint8_t					eRFPath;
 	int					rtStatus = _SUCCESS;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	static char			sz8812RadioAFile[] = RTL8812_PHY_RADIO_A;

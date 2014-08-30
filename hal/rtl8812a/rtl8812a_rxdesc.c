@@ -77,10 +77,10 @@ static void process_rssi(_adapter *padapter,union recv_frame *prframe)
 
 		if(padapter->recvpriv.is_signal_dbg) {
 			padapter->recvpriv.signal_strength= padapter->recvpriv.signal_strength_dbg;
-			padapter->recvpriv.rssi=(s8)translate2dbm((u8)padapter->recvpriv.signal_strength_dbg);
+			padapter->recvpriv.rssi=(s8)translate2dbm((uint8_t)padapter->recvpriv.signal_strength_dbg);
 		} else {
 			padapter->recvpriv.signal_strength= tmp_val;
-			padapter->recvpriv.rssi=(s8)translate2dbm((u8)tmp_val);
+			padapter->recvpriv.rssi=(s8)translate2dbm((uint8_t)tmp_val);
 		}
 
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("UI RSSI = %d, ui_rssi.TotalVal = %d, ui_rssi.TotalNum = %d\n", tmp_val, padapter->recvpriv.signal_strength_data.total_val,padapter->recvpriv.signal_strength_data.total_num));
@@ -143,7 +143,7 @@ static void process_link_qual(_adapter *padapter,union recv_frame *prframe)
 
 			// <1> Showed on UI for user, in percentage.
 			tmpVal = padapter->recvpriv.signal_qual_data.total_val/padapter->recvpriv.signal_qual_data.total_num;
-			padapter->recvpriv.signal_qual=(u8)tmpVal;
+			padapter->recvpriv.signal_qual=(uint8_t)tmpVal;
 
 	}
 	else
@@ -183,23 +183,23 @@ void rtl8812_query_rx_desc_status(union recv_frame *precvframe, u8 *pdesc)
 
 	//Offset 0
 	pattrib->pkt_len = (u16)GET_RX_STATUS_DESC_PKT_LEN_8812(pdesc);//(le32_to_cpu(pdesc->rxdw0)&0x00003fff)
-	pattrib->crc_err = (u8)GET_RX_STATUS_DESC_CRC32_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 14) & 0x1);
-	pattrib->icv_err = (u8)GET_RX_STATUS_DESC_ICV_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 15) & 0x1);
-	pattrib->drvinfo_sz = (u8)GET_RX_STATUS_DESC_DRVINFO_SIZE_8812(pdesc) * 8;//((le32_to_cpu(pdesc->rxdw0) >> 16) & 0xf) * 8;//uint 2^3 = 8 bytes
-	pattrib->encrypt = (u8)GET_RX_STATUS_DESC_SECURITY_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 20) & 0x7);
-	pattrib->qos = (u8)GET_RX_STATUS_DESC_QOS_8812(pdesc);//(( le32_to_cpu( pdesc->rxdw0 ) >> 23) & 0x1);// Qos data, wireless lan header length is 26
-	pattrib->shift_sz = (u8)GET_RX_STATUS_DESC_SHIFT_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 24) & 0x3);
-	pattrib->physt = (u8)GET_RX_STATUS_DESC_PHY_STATUS_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 26) & 0x1);
+	pattrib->crc_err = (uint8_t)GET_RX_STATUS_DESC_CRC32_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 14) & 0x1);
+	pattrib->icv_err = (uint8_t)GET_RX_STATUS_DESC_ICV_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 15) & 0x1);
+	pattrib->drvinfo_sz = (uint8_t)GET_RX_STATUS_DESC_DRVINFO_SIZE_8812(pdesc) * 8;//((le32_to_cpu(pdesc->rxdw0) >> 16) & 0xf) * 8;//uint 2^3 = 8 bytes
+	pattrib->encrypt = (uint8_t)GET_RX_STATUS_DESC_SECURITY_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 20) & 0x7);
+	pattrib->qos = (uint8_t)GET_RX_STATUS_DESC_QOS_8812(pdesc);//(( le32_to_cpu( pdesc->rxdw0 ) >> 23) & 0x1);// Qos data, wireless lan header length is 26
+	pattrib->shift_sz = (uint8_t)GET_RX_STATUS_DESC_SHIFT_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 24) & 0x3);
+	pattrib->physt = (uint8_t)GET_RX_STATUS_DESC_PHY_STATUS_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 26) & 0x1);
 	pattrib->bdecrypted = !GET_RX_STATUS_DESC_SWDEC_8812(pdesc);//(le32_to_cpu(pdesc->rxdw0) & BIT(27))? 0:1;
 
 	//Offset 4
-	pattrib->priority = (u8)GET_RX_STATUS_DESC_TID_8812(pdesc);//((le32_to_cpu(pdesc->rxdw1) >> 8) & 0xf);
-	pattrib->mdata = (u8)GET_RX_STATUS_DESC_MORE_DATA_8812(pdesc);//((le32_to_cpu(pdesc->rxdw1) >> 26) & 0x1);
-	pattrib->mfrag = (u8)GET_RX_STATUS_DESC_MORE_FRAG_8812(pdesc);//((le32_to_cpu(pdesc->rxdw1) >> 27) & 0x1);//more fragment bit
+	pattrib->priority = (uint8_t)GET_RX_STATUS_DESC_TID_8812(pdesc);//((le32_to_cpu(pdesc->rxdw1) >> 8) & 0xf);
+	pattrib->mdata = (uint8_t)GET_RX_STATUS_DESC_MORE_DATA_8812(pdesc);//((le32_to_cpu(pdesc->rxdw1) >> 26) & 0x1);
+	pattrib->mfrag = (uint8_t)GET_RX_STATUS_DESC_MORE_FRAG_8812(pdesc);//((le32_to_cpu(pdesc->rxdw1) >> 27) & 0x1);//more fragment bit
 
 	//Offset 8
 	pattrib->seq_num = (u16)GET_RX_STATUS_DESC_SEQ_8812(pdesc);//(le32_to_cpu(pdesc->rxdw2) & 0x00000fff);
-	pattrib->frag_num = (u8)GET_RX_STATUS_DESC_FRAG_8812(pdesc);//((le32_to_cpu(pdesc->rxdw2) >> 12) & 0xf);//fragmentation number
+	pattrib->frag_num = (uint8_t)GET_RX_STATUS_DESC_FRAG_8812(pdesc);//((le32_to_cpu(pdesc->rxdw2) >> 12) & 0xf);//fragmentation number
 
 	if (GET_RX_STATUS_DESC_RPT_SEL_8812(pdesc))
 		pattrib->pkt_rpt_type = C2H_PACKET;
@@ -207,7 +207,7 @@ void rtl8812_query_rx_desc_status(union recv_frame *precvframe, u8 *pdesc)
 		pattrib->pkt_rpt_type = NORMAL_RX;
 
 	//Offset 12
-	pattrib->data_rate=(u8)GET_RX_STATUS_DESC_RX_RATE_8812(pdesc);//((le32_to_cpu(pdesc->rxdw3))&0x7f);
+	pattrib->data_rate=(uint8_t)GET_RX_STATUS_DESC_RX_RATE_8812(pdesc);//((le32_to_cpu(pdesc->rxdw3))&0x7f);
 
 	//Offset 16
 	//Offset 20
@@ -228,7 +228,7 @@ void rtl8812_query_rx_phy_status(
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	PODM_PHY_INFO_T 	pPHYInfo  = (PODM_PHY_INFO_T)(&pattrib->phy_info);
-	u8					*wlanhdr;
+	uint8_t					*wlanhdr;
 	ODM_PACKET_INFO_T	pkt_info;
 	u8 *sa;
 	struct sta_priv *pstapriv;

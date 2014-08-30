@@ -87,8 +87,8 @@ dm_CheckStatistics(
 
 static void dm_CheckPbcGPIO(_adapter *padapter)
 {
-	u8	tmp1byte;
-	u8	bPbcPressed = _FALSE;
+	uint8_t	tmp1byte;
+	uint8_t	bPbcPressed = _FALSE;
 
 	if(!padapter->registrypriv.hw_wps_pbc)
 		return;
@@ -165,7 +165,7 @@ dm_InitGPIOSetting(
 {
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
 
-	u8	tmp1byte;
+	uint8_t	tmp1byte;
 
 	tmp1byte = rtw_read8(Adapter, REG_GPIO_MUXCFG);
 	tmp1byte &= (GPIOSEL_GPIO | ~GPIOSEL_ENBT);
@@ -218,8 +218,8 @@ static void Init_ODM_ComInfo_8812(PADAPTER	Adapter)
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
-	u8	cut_ver,fab_ver;
-	u8	BoardType = ODM_BOARD_DEFAULT;
+	uint8_t	cut_ver,fab_ver;
+	uint8_t	BoardType = ODM_BOARD_DEFAULT;
 
 	//
 	// Init Value
@@ -407,7 +407,7 @@ rtl8812_InitHalDm(
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
-	u8	i;
+	uint8_t	i;
 
 #ifdef CONFIG_USB_HCI
 	dm_InitGPIOSetting(Adapter);
@@ -485,7 +485,7 @@ rtl8812_HalDmWatchDog(
 	//ODM
 	if (hw_init_completed == _TRUE)
 	{
-		u8	bLinked=_FALSE;
+		uint8_t	bLinked=_FALSE;
 
 		#ifdef CONFIG_DISABLE_ODM
 		pHalData->odmpriv.SupportAbility = 0;

@@ -15,7 +15,7 @@
 /* WAPI trace debug */
 extern u32 wapi_debug_component;
 
-static inline void dump_buf(u8 *buf, u32 len)
+static inline void dump_buf(uint8_t *buf, u32 len)
 {
 	u32 i;
 	printk("-----------------Len %d----------------\n", len);
@@ -78,14 +78,14 @@ enum WAPI_DEBUG {
 typedef struct  _RT_WAPI_BKID
 {
 	struct list_head	list;
-	u8				bkid[16];
+	uint8_t				bkid[16];
 }RT_WAPI_BKID,*PRT_WAPI_BKID;
 
 typedef struct  _RT_WAPI_KEY
 {
-	u8			dataKey[16];
-	u8			micKey[16];
-	u8			keyId;
+	uint8_t			dataKey[16];
+	uint8_t			micKey[16];
+	uint8_t			keyId;
 	bool			bSet;
 	bool             bTxEnable;
 }RT_WAPI_KEY,*PRT_WAPI_KEY;
@@ -110,18 +110,18 @@ typedef enum _RT_WAPI_PACKET_TYPE
 typedef struct	_RT_WAPI_STA_INFO
 {
 	struct list_head		list;
-	u8					PeerMacAddr[6];
+	uint8_t					PeerMacAddr[6];
 	RT_WAPI_KEY		      wapiUsk;
 	RT_WAPI_KEY		      wapiUskUpdate;
 	RT_WAPI_KEY		      wapiMsk;
 	RT_WAPI_KEY		      wapiMskUpdate;
-	u8					lastRxUnicastPN[16];
-	u8					lastTxUnicastPN[16];
-	u8					lastRxMulticastPN[16];
-	u8					lastRxUnicastPNBEQueue[16];
-	u8					lastRxUnicastPNBKQueue[16];
-	u8					lastRxUnicastPNVIQueue[16];
-	u8					lastRxUnicastPNVOQueue[16];
+	uint8_t					lastRxUnicastPN[16];
+	uint8_t					lastTxUnicastPN[16];
+	uint8_t					lastRxMulticastPN[16];
+	uint8_t					lastRxUnicastPNBEQueue[16];
+	uint8_t					lastRxUnicastPNBKQueue[16];
+	uint8_t					lastRxUnicastPNVIQueue[16];
+	uint8_t					lastRxUnicastPNVOQueue[16];
 	bool					bSetkeyOk;
 	bool					bAuthenticateInProgress;
 	bool					bAuthenticatorInUpdata;
@@ -130,11 +130,11 @@ typedef struct	_RT_WAPI_STA_INFO
 //Added for HW wapi en/decryption
 typedef struct _RT_WAPI_CAM_ENTRY{
 	//RT_LIST_ENTRY		list;
-	u8			IsUsed;
-	u8			entry_idx;//for cam entry
-	u8			keyidx;	// 0 or 1,new or old key
-	u8			PeerMacAddr[6];
-	u8			type;	//should be 110,wapi
+	uint8_t			IsUsed;
+	uint8_t			entry_idx;//for cam entry
+	uint8_t			keyidx;	// 0 or 1,new or old key
+	uint8_t			PeerMacAddr[6];
+	uint8_t			type;	//should be 110,wapi
 }RT_WAPI_CAM_ENTRY,*PRT_WAPI_CAM_ENTRY;
 
 typedef struct _RT_WAPI_T
@@ -147,7 +147,7 @@ typedef struct _RT_WAPI_T
 	RT_WAPI_KEY		      wapiTxMsk;
 
 //sec related
-	u8				lastTxMulticastPN[16];
+	uint8_t				lastTxMulticastPN[16];
 //STA list
 	RT_WAPI_STA_INFO	wapiSta[WAPI_MAX_STAINFO_NUM];
 	struct list_head		wapiSTAIdleList;
@@ -156,8 +156,8 @@ typedef struct _RT_WAPI_T
 	bool				bWapiEnable;
 
 //store WAPI IE
-	u8				wapiIE[256];
-	u8				wapiIELength;
+	uint8_t				wapiIE[256];
+	uint8_t				wapiIELength;
 	bool				bWapiPSK;
 //last sequece number for wai packet
 	u16				wapiSeqnumAndFragNum;
@@ -169,12 +169,12 @@ typedef struct _RT_WAPI_T
 
 typedef struct _WLAN_HEADER_WAPI_EXTENSION
 {
-    u8      KeyIdx;
-    u8      Reserved;
-    u8      PN[16];
+    uint8_t      KeyIdx;
+    uint8_t      Reserved;
+    uint8_t      PN[16];
 } WLAN_HEADER_WAPI_EXTENSION, *PWLAN_HEADER_WAPI_EXTENSION;
 
-u32 WapiComparePN(u8 *PN1, u8 *PN2);
+u32 WapiComparePN(uint8_t *PN1, uint8_t *PN2);
 
 
 void rtw_wapi_init(_adapter *padapter);
@@ -183,11 +183,11 @@ void rtw_wapi_free(_adapter *padapter);
 
 void rtw_wapi_disable_tx(_adapter *padapter);
 
-u8 rtw_wapi_is_wai_packet(_adapter* padapter,u8 *pkt_data);
+uint8_t rtw_wapi_is_wai_packet(_adapter* padapter,uint8_t *pkt_data);
 
 void rtw_wapi_update_info(_adapter *padapter, union recv_frame *precv_frame);
 
-u8 rtw_wapi_check_for_drop(_adapter *padapter, union recv_frame *precv_frame);
+uint8_t rtw_wapi_check_for_drop(_adapter *padapter, union recv_frame *precv_frame);
 
 void rtw_build_probe_resp_wapi_ie(_adapter *padapter, unsigned char *pframe, struct pkt_attrib *pattrib);
 
@@ -197,26 +197,26 @@ void rtw_build_assoc_req_wapi_ie(_adapter *padapter, unsigned char *pframe, stru
 
 void rtw_wapi_on_assoc_ok(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
 
-void rtw_wapi_return_one_sta_info(_adapter *padapter, u8 *MacAddr);
+void rtw_wapi_return_one_sta_info(_adapter *padapter, uint8_t *MacAddr);
 
 void rtw_wapi_return_all_sta_info(_adapter *padapter);
 
-void rtw_wapi_clear_cam_entry(_adapter *padapter, u8 *pMacAddr);
+void rtw_wapi_clear_cam_entry(_adapter *padapter, uint8_t *pMacAddr);
 
 void rtw_wapi_clear_all_cam_entry(_adapter *padapter);
 
-void rtw_wapi_set_key(_adapter *padapter, RT_WAPI_KEY *pWapiKey, RT_WAPI_STA_INFO *pWapiSta, u8 bGroupKey, u8 bUseDefaultKey);
+void rtw_wapi_set_key(_adapter *padapter, RT_WAPI_KEY *pWapiKey, RT_WAPI_STA_INFO *pWapiSta, uint8_t bGroupKey, uint8_t bUseDefaultKey);
 
-int rtw_wapi_create_event_send(_adapter *padapter, u8 EventId, u8 *MacAddr, u8 *Buff, u16 BufLen);
+int rtw_wapi_create_event_send(_adapter *padapter, uint8_t EventId, uint8_t *MacAddr, uint8_t *Buff, u16 BufLen);
 
-u32	rtw_sms4_encrypt(_adapter *padapter, u8 *pxmitframe);
+u32	rtw_sms4_encrypt(_adapter *padapter, uint8_t *pxmitframe);
 
-u32	rtw_sms4_decrypt(_adapter *padapter, u8 *precvframe);
+u32	rtw_sms4_decrypt(_adapter *padapter, uint8_t *precvframe);
 
 void rtw_wapi_get_iv(_adapter *padapter, u8*pRA, u8*IV);
 
-u8 WapiIncreasePN(u8 *PN, u8 AddCount);
+uint8_t WapiIncreasePN(uint8_t *PN, uint8_t AddCount);
 
-bool rtw_wapi_drop_for_key_absent(_adapter *padapter,u8 *pRA);
+bool rtw_wapi_drop_for_key_absent(_adapter *padapter,uint8_t *pRA);
 
 #endif

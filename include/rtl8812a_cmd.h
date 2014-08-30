@@ -28,12 +28,12 @@ typedef enum _RTL8812_H2C_CMD
 	H2C_8812_KEEP_ALIVE_CTRL = 3,
 	H2C_8812_DISCONNECT_DECISION = 4,
 
-	H2C_8812_INIT_OFFLOAD = 6,		
+	H2C_8812_INIT_OFFLOAD = 6,
 	H2C_8812_AP_OFFLOAD = 8,
 	H2C_8812_BCN_RSVDPAGE = 9,
 	H2C_8812_PROBERSP_RSVDPAGE = 10,
-	
-	H2C_8812_SETPWRMODE = 0x20,		
+
+	H2C_8812_SETPWRMODE = 0x20,
 	H2C_8812_PS_TUNING_PARA = 0x21,
 	H2C_8812_PS_TUNING_PARA2 = 0x22,
 	H2C_8812_PS_LPS_PARA = 0x23,
@@ -69,9 +69,9 @@ typedef enum _RTL8812_C2H_EVT
 
 
 struct cmd_msg_parm {
-	u8 eid; //element id
-	u8 sz; // sz
-	u8 buf[6];
+	uint8_t eid; //element id
+	uint8_t sz; // sz
+	uint8_t buf[6];
 };
 
 enum{
@@ -79,7 +79,7 @@ enum{
 };
 
 struct H2C_SS_RFOFF_PARAM{
-	u8 ROFOn; // 1: on, 0:off
+	uint8_t ROFOn; // 1: on, 0:off
 	u16 gpio_period; // unit: 1024 us
 }__attribute__ ((packed));
 
@@ -121,31 +121,31 @@ struct H2C_SS_RFOFF_PARAM{
 void	Set_RA_LDPC_8812(struct sta_info	*psta, BOOLEAN bLDPC);
 
 // host message to firmware cmd
-void rtl8812_set_FwPwrMode_cmd(PADAPTER padapter, u8 PSMode);
-void rtl8812_set_FwJoinBssReport_cmd(PADAPTER padapter, u8 mstatus);
-u8 rtl8812_set_rssi_cmd(PADAPTER padapter, u8 *param);
+void rtl8812_set_FwPwrMode_cmd(PADAPTER padapter, uint8_t PSMode);
+void rtl8812_set_FwJoinBssReport_cmd(PADAPTER padapter, uint8_t mstatus);
+uint8_t rtl8812_set_rssi_cmd(PADAPTER padapter, uint8_t *param);
 void rtl8812_set_raid_cmd(PADAPTER padapter, u32 bitmap, u8* arg);
-void rtl8812_Add_RateATid(PADAPTER padapter, u32 bitmap, u8* arg, u8 rssi_level);
+void rtl8812_Add_RateATid(PADAPTER padapter, u32 bitmap, u8* arg, uint8_t rssi_level);
 
 
 #ifdef CONFIG_P2P_PS
-void rtl8812_set_p2p_ps_offload_cmd(PADAPTER padapter, u8 p2p_ps_state);
+void rtl8812_set_p2p_ps_offload_cmd(PADAPTER padapter, uint8_t p2p_ps_state);
 #endif //CONFIG_P2P
 
 void CheckFwRsvdPageContent(PADAPTER padapter);
 void rtl8812_set_FwMediaStatus_cmd(PADAPTER padapter, u16 mstatus_rpt );
 
 #ifdef CONFIG_TSF_RESET_OFFLOAD
-int reset_tsf(PADAPTER Adapter, u8 reset_port );
+int reset_tsf(PADAPTER Adapter, uint8_t reset_port );
 #endif	// CONFIG_TSF_RESET_OFFLOAD
 
 #ifdef CONFIG_WOWLAN
 typedef struct _SETWOWLAN_PARM{
-	u8		mode;
-	u8		gpio_index;
-	u8		gpio_duration;
-	u8		second_mode;
-	u8		reserve;
+	uint8_t		mode;
+	uint8_t		gpio_index;
+	uint8_t		gpio_duration;
+	uint8_t		second_mode;
+	uint8_t		reserve;
 }SETWOWLAN_PARM, *PSETWOWLAN_PARM;
 
 #define FW_WOWLAN_FUN_EN				BIT(0)
@@ -162,8 +162,8 @@ typedef struct _SETWOWLAN_PARM{
 
 #define FW_REMOTE_WAKE_CTRL_EN			BIT(0)
 #define FW_REALWOWLAN_EN				BIT(5)
-void rtl8812a_set_wowlan_cmd(_adapter* padapter, u8 enable);
-void SetFwRelatedForWoWLAN8812(_adapter* padapter, u8 bHostIsGoingtoSleep);
+void rtl8812a_set_wowlan_cmd(_adapter* padapter, uint8_t enable);
+void SetFwRelatedForWoWLAN8812(_adapter* padapter, uint8_t bHostIsGoingtoSleep);
 #endif//CONFIG_WOWLAN
 #endif//__RTL8188E_CMD_H__
 

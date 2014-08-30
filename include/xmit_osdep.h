@@ -25,8 +25,8 @@ struct pkt_file {
 	_pkt *pkt;
 	SIZE_T pkt_len;	 //the remainder length of the open_file
 	_buffer *cur_buffer;
-	u8 *buf_start;
-	u8 *cur_addr;
+	uint8_t *buf_start;
+	uint8_t *cur_addr;
 	SIZE_T buf_len;
 };
 
@@ -48,14 +48,14 @@ extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev);
 
 void rtw_os_xmit_schedule(_adapter *padapter);
 
-int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, u8 flag);
-void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 free_sz, u8 flag);
+int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag);
+void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 free_sz, uint8_t flag);
 
 extern void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib);
 
 extern uint rtw_remainder_len(struct pkt_file *pfile);
 extern void _rtw_open_pktfile(_pkt *pkt, struct pkt_file *pfile);
-extern uint _rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen);
+extern uint _rtw_pktfile_read (struct pkt_file *pfile, uint8_t *rmem, uint rlen);
 extern sint rtw_endofpktfile (struct pkt_file *pfile);
 
 extern void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt);

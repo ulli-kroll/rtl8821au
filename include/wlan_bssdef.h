@@ -302,17 +302,17 @@ typedef struct _NDIS_802_11_TEST
 
 typedef struct _WLAN_PHY_INFO
 {
-	u8	SignalStrength;//(in percentage)
-  	u8	SignalQuality;//(in percentage)
-  	u8	Optimum_antenna;  //for Antenna diversity
-  	u8  	Reserved_0;
+	uint8_t	SignalStrength;//(in percentage)
+  	uint8_t	SignalQuality;//(in percentage)
+  	uint8_t	Optimum_antenna;  //for Antenna diversity
+  	uint8_t  	Reserved_0;
 }WLAN_PHY_INFO,*PWLAN_PHY_INFO;
 
 typedef struct _WLAN_BCN_INFO
 {
 	/* these infor get from rtw_get_encrypt_info when
 	 * 	 * translate scan to UI */
-	u8 encryp_protocol;//ENCRYP_PROTOCOL_E: OPEN/WEP/WPA/WPA2/WAPI
+	uint8_t encryp_protocol;//ENCRYP_PROTOCOL_E: OPEN/WEP/WPA/WPA2/WAPI
 	int group_cipher; //WPA/WPA2 group cipher
 	int pairwise_cipher;////WPA/WPA2/WEP pairwise cipher
 	int is_8021x;

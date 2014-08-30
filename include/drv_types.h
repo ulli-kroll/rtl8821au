@@ -155,142 +155,142 @@ struct specific_device_id{
 
 struct registry_priv
 {
-	u8	chip_version;
-	u8	rfintfs;
-	u8	lbkmode;
-	u8	hci;
+	uint8_t	chip_version;
+	uint8_t	rfintfs;
+	uint8_t	lbkmode;
+	uint8_t	hci;
 	NDIS_802_11_SSID	ssid;
-	u8	network_mode;	//infra, ad-hoc, auto
-	u8	channel;//ad-hoc support requirement
-	u8	wireless_mode;//A, B, G, auto
-	u8 	scan_mode;//active, passive
-	u8	radio_enable;
-	u8	preamble;//long, short, auto
-	u8	vrtl_carrier_sense;//Enable, Disable, Auto
-	u8	vcs_type;//RTS/CTS, CTS-to-self
+	uint8_t	network_mode;	//infra, ad-hoc, auto
+	uint8_t	channel;//ad-hoc support requirement
+	uint8_t	wireless_mode;//A, B, G, auto
+	uint8_t 	scan_mode;//active, passive
+	uint8_t	radio_enable;
+	uint8_t	preamble;//long, short, auto
+	uint8_t	vrtl_carrier_sense;//Enable, Disable, Auto
+	uint8_t	vcs_type;//RTS/CTS, CTS-to-self
 	u16	rts_thresh;
 	u16  frag_thresh;
-	u8	adhoc_tx_pwr;
-	u8	soft_ap;
-	u8	power_mgnt;
-	u8	ips_mode;
-	u8	smart_ps;
-	u8	long_retry_lmt;
-	u8	short_retry_lmt;
+	uint8_t	adhoc_tx_pwr;
+	uint8_t	soft_ap;
+	uint8_t	power_mgnt;
+	uint8_t	ips_mode;
+	uint8_t	smart_ps;
+	uint8_t	long_retry_lmt;
+	uint8_t	short_retry_lmt;
 	u16	busy_thresh;
-	u8	ack_policy;
-	u8	mp_mode;
-	u8	software_encrypt;
-	u8	software_decrypt;
+	uint8_t	ack_policy;
+	uint8_t	mp_mode;
+	uint8_t	software_encrypt;
+	uint8_t	software_decrypt;
 	#ifdef CONFIG_TX_EARLY_MODE
-	u8   early_mode;
+	uint8_t   early_mode;
 	#endif
-	u8	acm_method;
+	uint8_t	acm_method;
 	  //UAPSD
-	u8	wmm_enable;
-	u8	uapsd_enable;
-	u8	uapsd_max_sp;
-	u8	uapsd_acbk_en;
-	u8	uapsd_acbe_en;
-	u8	uapsd_acvi_en;
-	u8	uapsd_acvo_en;
+	uint8_t	wmm_enable;
+	uint8_t	uapsd_enable;
+	uint8_t	uapsd_max_sp;
+	uint8_t	uapsd_acbk_en;
+	uint8_t	uapsd_acbe_en;
+	uint8_t	uapsd_acvi_en;
+	uint8_t	uapsd_acvo_en;
 
 	WLAN_BSSID_EX    dev_network;
 
 #ifdef CONFIG_80211N_HT
-	u8	ht_enable;
+	uint8_t	ht_enable;
 	// 0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160MHz
 	// 2.4G use bit 0 ~ 3, 5G use bit 4 ~ 7
 	// 0x21 means enable 2.4G 40MHz & 5G 80MHz
-	u8	bw_mode;
-	u8	ampdu_enable;//for tx
-	u8 	rx_stbc;
-	u8	ampdu_amsdu;//A-MPDU Supports A-MSDU is permitted
+	uint8_t	bw_mode;
+	uint8_t	ampdu_enable;//for tx
+	uint8_t 	rx_stbc;
+	uint8_t	ampdu_amsdu;//A-MPDU Supports A-MSDU is permitted
 	// Short GI support Bit Map
 	// BIT0 - 20MHz, 1: support, 0: non-support
 	// BIT1 - 40MHz, 1: support, 0: non-support
 	// BIT2 - 80MHz, 1: support, 0: non-support
 	// BIT3 - 160MHz, 1: support, 0: non-support
-	u8	short_gi;
+	uint8_t	short_gi;
 #endif //CONFIG_80211N_HT
 
 #ifdef CONFIG_80211AC_VHT
-	u8	vht_enable;
-	u8	ampdu_factor;
-	u8	vht_rate_sel;
+	uint8_t	vht_enable;
+	uint8_t	ampdu_factor;
+	uint8_t	vht_rate_sel;
 	// BIT0: Enable VHT LDPC Rx, BIT1: Enable VHT LDPC Tx, BIT4: Enable HT LDPC Rx, BIT5: Enable HT LDPC Tx
-	u8	ldpc_cap;
+	uint8_t	ldpc_cap;
 	// BIT0: Enable VHT STBC Rx, BIT1: Enable VHT STBC Tx, BIT4: Enable HT STBC Rx, BIT5: Enable HT STBC Tx
-	u8	stbc_cap;
+	uint8_t	stbc_cap;
 	// BIT0: Enable VHT Beamformer, BIT1: Enable VHT Beamformee, BIT4: Enable HT Beamformer, BIT5: Enable HT Beamformee
-	u8	beamform_cap;
+	uint8_t	beamform_cap;
 #endif //CONFIG_80211AC_VHT
 
-	u8	lowrate_two_xmit;
+	uint8_t	lowrate_two_xmit;
 
-	u8	rf_config ;
-	u8	low_power ;
+	uint8_t	rf_config ;
+	uint8_t	low_power ;
 
-	u8	wifi_spec;// !turbo_mode
+	uint8_t	wifi_spec;// !turbo_mode
 
-	u8	channel_plan;
+	uint8_t	channel_plan;
 	BOOLEAN	bAcceptAddbaReq;
 
-	u8	antdiv_cfg;
-	u8	antdiv_type;
+	uint8_t	antdiv_cfg;
+	uint8_t	antdiv_type;
 
-	u8	usbss_enable;//0:disable,1:enable
-	u8	hwpdn_mode;//0:disable,1:enable,2:decide by EFUSE config
-	u8	hwpwrp_detect;//0:disable,1:enable
+	uint8_t	usbss_enable;//0:disable,1:enable
+	uint8_t	hwpdn_mode;//0:disable,1:enable,2:decide by EFUSE config
+	uint8_t	hwpwrp_detect;//0:disable,1:enable
 
-	u8	hw_wps_pbc;//0:disable,1:enable
+	uint8_t	hw_wps_pbc;//0:disable,1:enable
 
 #ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
 	char	adaptor_info_caching_file_path[PATH_LENGTH_MAX];
 #endif
 
 #ifdef CONFIG_LAYER2_ROAMING
-	u8	max_roaming_times; // the max number driver will try to roaming
+	uint8_t	max_roaming_times; // the max number driver will try to roaming
 #endif
 
 #ifdef CONFIG_IOL
-	u8 fw_iol; //enable iol without other concern
+	uint8_t fw_iol; //enable iol without other concern
 #endif
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
-	u8	dmsp;//0:disable,1:enable
+	uint8_t	dmsp;//0:disable,1:enable
 #endif
 
 #ifdef CONFIG_80211D
-	u8 enable80211d;
+	uint8_t enable80211d;
 #endif
 
-	u8 ifname[16];
-	u8 if2name[16];
+	uint8_t ifname[16];
+	uint8_t if2name[16];
 
-	u8 notch_filter;
+	uint8_t notch_filter;
 
 #ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-	u8 force_ant;//0 normal,1 main,2 aux
-	u8 force_igi;//0 normal
+	uint8_t force_ant;//0 normal,1 main,2 aux
+	uint8_t force_igi;//0 normal
 #endif
-	u8 regulatory_tid;
+	uint8_t regulatory_tid;
 
 	//define for tx power adjust
 	u32	RegTxPwrLimit;
-	u8	RegEnableTxPowerLimit;
-	u8	RegPowerBase;
-	u8	RegPwrTblSel;
-	u8	RegPwrByRate;
+	uint8_t	RegEnableTxPowerLimit;
+	uint8_t	RegPowerBase;
+	uint8_t	RegPwrTblSel;
+	uint8_t	RegPwrByRate;
 	s8	TxBBSwing_2G;
 	s8	TxBBSwing_5G;
-	u8	AmplifierType_2G;
-	u8	AmplifierType_5G;
-	u8	bEn_RFE;
-	u8	RFE_Type;
+	uint8_t	AmplifierType_2G;
+	uint8_t	AmplifierType_5G;
+	uint8_t	bEn_RFE;
+	uint8_t	RFE_Type;
 
 #ifdef CONFIG_MULTI_VIR_IFACES
-	u8 ext_iface_num;//primary/secondary iface is excluded
+	uint8_t ext_iface_num;//primary/secondary iface is excluded
 #endif
 };
 
@@ -339,19 +339,19 @@ struct dvobj_priv
 	//padapters[IFACE_ID0] == if1
 	//padapters[IFACE_ID1] == if2
 	_adapter *padapters[IFACE_ID_MAX];
-	u8 iface_nums; // total number of ifaces used runtime
+	uint8_t iface_nums; // total number of ifaces used runtime
 
 
 	//For 92D, DMDP have 2 interface.
-	u8	InterfaceNumber;
-	u8	NumInterfaces;
+	uint8_t	InterfaceNumber;
+	uint8_t	NumInterfaces;
 
 	//In /Out Pipe information
 	int	RtInPipe[2];
 	int	RtOutPipe[3];
-	u8	Queue2Pipe[HW_QUEUE_ENTRY];//for out pipe mapping
+	uint8_t	Queue2Pipe[HW_QUEUE_ENTRY];//for out pipe mapping
 
-	u8	irq_alloc;
+	uint8_t	irq_alloc;
 
 /*-------- below is for SDIO INTERFACE --------*/
 
@@ -363,10 +363,10 @@ struct dvobj_priv
 
 #ifdef CONFIG_USB_HCI
 
-	u8	usb_speed; // 1.1, 2.0 or 3.0
-	u8	nr_endpoint;
-	u8	RtNumInPipes;
-	u8	RtNumOutPipes;
+	uint8_t	usb_speed; // 1.1, 2.0 or 3.0
+	uint8_t	nr_endpoint;
+	uint8_t	RtNumInPipes;
+	uint8_t	RtNumOutPipes;
 	int	ep_num[6]; //endpoint number
 
 	int	RegUsbSS;
@@ -378,8 +378,8 @@ struct dvobj_priv
 #endif
 
 #ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
-	u8 * usb_alloc_vendor_req_buf;
-	u8 * usb_vendor_req_buf;
+	uint8_t * usb_alloc_vendor_req_buf;
+	uint8_t * usb_vendor_req_buf;
 #endif
 
 #ifdef PLATFORM_LINUX
@@ -433,7 +433,7 @@ struct proxim {
 	void *proximity_priv;
 	int (*proxim_rx)(_adapter *padapter,
 		union recv_frame *precv_frame);
-	u8	(*proxim_get_var)(_adapter* padapter, u8 type);
+	uint8_t	(*proxim_get_var)(_adapter* padapter, uint8_t type);
 };
 #endif	//CONFIG_INTEL_PROXIM
 
@@ -442,14 +442,14 @@ typedef struct loopbackdata
 {
 	struct semaphore	sema;
 	_thread_hdl_ lbkthread;
-	u8 bstop;
+	uint8_t bstop;
 	u32 cnt;
 	u16 size;
 	u16 txsize;
-	u8 txbuf[0x8000];
+	uint8_t txbuf[0x8000];
 	u16 rxsize;
-	u8 rxbuf[0x8000];
-	u8 msg[100];
+	uint8_t rxbuf[0x8000];
+	uint8_t msg[100];
 
 }LOOPBACKDATA, *PLOOPBACKDATA;
 #endif
@@ -505,7 +505,7 @@ struct _ADAPTER{
 #endif //CONFIG_TDLS
 
 #ifdef CONFIG_WAPI_SUPPORT
-	u8	WapiSupport;
+	uint8_t	WapiSupport;
 	RT_WAPI_T	wapiInfo;
 #endif
 
@@ -525,11 +525,11 @@ struct _ADAPTER{
 	u32	IsrContent;
 	u32	ImrContent;
 
-	u8	EepromAddressSize;
-	u8	hw_init_completed;
-	u8	bDriverIsGoingToUnload;
-	u8	init_adpt_in_progress;
-	u8	bHaltInProgress;
+	uint8_t	EepromAddressSize;
+	uint8_t	hw_init_completed;
+	uint8_t	bDriverIsGoingToUnload;
+	uint8_t	init_adpt_in_progress;
+	uint8_t	bHaltInProgress;
 
 	_thread_hdl_ cmdThread;
 	_thread_hdl_ evtThread;
@@ -552,8 +552,8 @@ struct _ADAPTER{
 	struct rereg_nd_name_data {
 		_nic_hdl old_ndev;
 		char old_ifname[IFNAMSIZ];
-		u8 old_ips_mode;
-		u8 old_bRegUseLed;
+		uint8_t old_ips_mode;
+		uint8_t old_bRegUseLed;
 	} rereg_nd_name_priv;
 
 	int bup;
@@ -569,21 +569,21 @@ struct _ADAPTER{
 
 	int net_closed;
 
-	u8 bFWReady;
-	u8 bBTFWReady;
-	u8 bReadPortCancel;
-	u8 bWritePortCancel;
-	u8 bLinkInfoDump;
+	uint8_t bFWReady;
+	uint8_t bBTFWReady;
+	uint8_t bReadPortCancel;
+	uint8_t bWritePortCancel;
+	uint8_t bLinkInfoDump;
 	//	Added by Albert 2012/10/26
 	//	The driver will show up the desired channel number when this flag is 1.
-	u8 bNotifyChannelChange;
+	uint8_t bNotifyChannelChange;
 #ifdef CONFIG_P2P
 	//	Added by Albert 2012/12/06
 	//	The driver will show the current P2P status when the upper application reads it.
-	u8 bShowGetP2PState;
+	uint8_t bShowGetP2PState;
 #endif
 #ifdef CONFIG_AUTOSUSPEND
-	u8	bDisableAutosuspend;
+	uint8_t	bDisableAutosuspend;
 #endif
 
 	//pbuddy_adapter is used only in  two inteface case, (iface_nums=2 in struct dvobj_priv)
@@ -595,22 +595,22 @@ struct _ADAPTER{
 	_adapter *pbuddy_adapter;
 
 #if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
-	u8 isprimary; //is primary adapter or not
+	uint8_t isprimary; //is primary adapter or not
 	//notes:
 	// if isprimary is true, the adapter_type value is 0, iface_id is IFACE_ID0 for PRIMARY_ADAPTER
 	// if isprimary is false, the adapter_type value is 1, iface_id is IFACE_ID1 for SECONDARY_ADAPTER
 	// refer to iface_id if iface_nums>2 and isprimary is false and the adapter_type value is 0xff.
-	u8 adapter_type;//used only in  two inteface case(PRIMARY_ADAPTER and SECONDARY_ADAPTER) .
-	u8 iface_type; //interface port type, it depends on HW port
+	uint8_t adapter_type;//used only in  two inteface case(PRIMARY_ADAPTER and SECONDARY_ADAPTER) .
+	uint8_t iface_type; //interface port type, it depends on HW port
 #endif //CONFIG_CONCURRENT_MODE || CONFIG_DUALMAC_CONCURRENT
 
 	//extend to support multi interface
        //IFACE_ID0 is equals to PRIMARY_ADAPTER
        //IFACE_ID1 is equals to SECONDARY_ADAPTER
-	u8 iface_id;
+	uint8_t iface_id;
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
-	u8 DualMacConcurrent; // 1: DMSP 0:DMDP
+	uint8_t DualMacConcurrent; // 1: DMSP 0:DMDP
 #endif
 
 #ifdef CONFIG_BR_EXT
@@ -639,7 +639,7 @@ struct _ADAPTER{
 	PLOOPBACKDATA ploopback;
 #endif
 
-        u8    fix_rate;
+        uint8_t    fix_rate;
 
 	unsigned char     in_cta_test;
 
@@ -649,7 +649,7 @@ struct _ADAPTER{
 
 int rtw_handle_dualmac(_adapter *adapter, bool init);
 
-__inline static u8 *myid(struct eeprom_priv *peepriv)
+__inline static uint8_t *myid(struct eeprom_priv *peepriv)
 {
 	return (peepriv->mac_addr);
 }

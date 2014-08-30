@@ -179,10 +179,10 @@ struct	hw_xmit	{
 #if 0
 struct pkt_attrib
 {
-	u8	type;
-	u8	subtype;
-	u8	bswenc;
-	u8	dhcp_pkt;
+	uint8_t	type;
+	uint8_t	subtype;
+	uint8_t	bswenc;
+	uint8_t	dhcp_pkt;
 	u16	ether_type;
 	int	pktlen;		//the original 802.3 pkt raw_data len (not include ether_hdr data)
 	int	pkt_hdrlen;	//the original 802.3 pkt header len
@@ -190,96 +190,96 @@ struct pkt_attrib
 	int	nr_frags;
 	int	last_txcmdsz;
 	int	encrypt;	//when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith
-	u8	iv[8];
+	uint8_t	iv[8];
 	int	iv_len;
-	u8	icv[8];
+	uint8_t	icv[8];
 	int	icv_len;
 	int	priority;
 	int	ack_policy;
 	int	mac_id;
 	int	vcs_mode;	//virtual carrier sense method
 
-	u8 	dst[ETH_ALEN];
-	u8	src[ETH_ALEN];
-	u8	ta[ETH_ALEN];
-	u8 	ra[ETH_ALEN];
+	uint8_t 	dst[ETH_ALEN];
+	uint8_t	src[ETH_ALEN];
+	uint8_t	ta[ETH_ALEN];
+	uint8_t 	ra[ETH_ALEN];
 
-	u8	key_idx;
+	uint8_t	key_idx;
 
-	u8	qos_en;
-	u8	ht_en;
-	u8	raid;//rate adpative id
-	u8	bwmode;
-	u8	ch_offset;//PRIME_CHNL_OFFSET
-	u8	sgi;//short GI
-	u8	ampdu_en;//tx ampdu enable
-	u8	mdata;//more data bit
-	u8	eosp;
+	uint8_t	qos_en;
+	uint8_t	ht_en;
+	uint8_t	raid;//rate adpative id
+	uint8_t	bwmode;
+	uint8_t	ch_offset;//PRIME_CHNL_OFFSET
+	uint8_t	sgi;//short GI
+	uint8_t	ampdu_en;//tx ampdu enable
+	uint8_t	mdata;//more data bit
+	uint8_t	eosp;
 
-	u8	triggered;//for ap mode handling Power Saving sta
+	uint8_t	triggered;//for ap mode handling Power Saving sta
 
 	u32	qsel;
 	u16	seqnum;
 
 	struct sta_info * psta;
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	u8	hw_tcp_csum;
+	uint8_t	hw_tcp_csum;
 #endif
 };
 #else
 //reduce size
 struct pkt_attrib
 {
-	u8	type;
-	u8	subtype;
-	u8	bswenc;
-	u8	dhcp_pkt;
+	uint8_t	type;
+	uint8_t	subtype;
+	uint8_t	bswenc;
+	uint8_t	dhcp_pkt;
 	u16	ether_type;
 	u16	seqnum;
 	u16	pkt_hdrlen;	//the original 802.3 pkt header len
 	u16	hdrlen;		//the WLAN Header Len
 	u32	pktlen;		//the original 802.3 pkt raw_data len (not include ether_hdr data)
 	u32	last_txcmdsz;
-	u8	nr_frags;
-	u8	encrypt;	//when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith
-	u8	iv_len;
-	u8	icv_len;
-	u8	iv[18];
-	u8	icv[16];
-	u8	priority;
-	u8	ack_policy;
-	u8	mac_id;
-	u8	vcs_mode;	//virtual carrier sense method
-	u8 	dst[ETH_ALEN];
-	u8	src[ETH_ALEN];
-	u8	ta[ETH_ALEN];
-	u8 	ra[ETH_ALEN];
-	u8	key_idx;
-	u8	qos_en;
-	u8	ht_en;
-	u8	raid;//rate adpative id
-	u8	bwmode;
-	u8	ch_offset;//PRIME_CHNL_OFFSET
-	u8	sgi;//short GI
-	u8	ampdu_en;//tx ampdu enable
-	u8	mdata;//more data bit
-	u8	pctrl;//per packet txdesc control enable
-	u8	triggered;//for ap mode handling Power Saving sta
-	u8	qsel;
-	u8	eosp;
-	u8	rate;
-	u8	intel_proxim;
-	u8 	retry_ctrl;
-	u8   mbssid;
-	u8	ldpc;
-	u8	stbc;
+	uint8_t	nr_frags;
+	uint8_t	encrypt;	//when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith
+	uint8_t	iv_len;
+	uint8_t	icv_len;
+	uint8_t	iv[18];
+	uint8_t	icv[16];
+	uint8_t	priority;
+	uint8_t	ack_policy;
+	uint8_t	mac_id;
+	uint8_t	vcs_mode;	//virtual carrier sense method
+	uint8_t 	dst[ETH_ALEN];
+	uint8_t	src[ETH_ALEN];
+	uint8_t	ta[ETH_ALEN];
+	uint8_t 	ra[ETH_ALEN];
+	uint8_t	key_idx;
+	uint8_t	qos_en;
+	uint8_t	ht_en;
+	uint8_t	raid;//rate adpative id
+	uint8_t	bwmode;
+	uint8_t	ch_offset;//PRIME_CHNL_OFFSET
+	uint8_t	sgi;//short GI
+	uint8_t	ampdu_en;//tx ampdu enable
+	uint8_t	mdata;//more data bit
+	uint8_t	pctrl;//per packet txdesc control enable
+	uint8_t	triggered;//for ap mode handling Power Saving sta
+	uint8_t	qsel;
+	uint8_t	eosp;
+	uint8_t	rate;
+	uint8_t	intel_proxim;
+	uint8_t 	retry_ctrl;
+	uint8_t   mbssid;
+	uint8_t	ldpc;
+	uint8_t	stbc;
 	struct sta_info * psta;
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	u8	hw_tcp_csum;
+	uint8_t	hw_tcp_csum;
 #endif
 
-	u8 rtsen;
-	u8 cts2self;
+	uint8_t rtsen;
+	uint8_t cts2self;
 	union Keytype	dot11tkiptxmickey;
 	//union Keytype	dot11tkiprxmickey;
 	union Keytype	dot118021x_UncstKey;
@@ -346,9 +346,9 @@ struct xmit_buf
 
 	_adapter *padapter;
 
-	u8 *pallocated_buf;
+	uint8_t *pallocated_buf;
 
-	u8 *pbuf;
+	uint8_t *pbuf;
 
 	void *priv_data;
 
@@ -372,7 +372,7 @@ struct xmit_buf
 
 
 
-	u8 bpending[8];
+	uint8_t bpending[8];
 
 	sint last[8];
 
@@ -395,24 +395,24 @@ struct xmit_frame
 
 	_adapter *padapter;
 
-	u8	*buf_addr;
+	uint8_t	*buf_addr;
 
 	struct xmit_buf *pxmitbuf;
 
 
 #ifdef CONFIG_USB_HCI
 #ifdef CONFIG_USB_TX_AGGREGATION
-	u8	agg_num;
+	uint8_t	agg_num;
 #endif
 	s8	pkt_offset;
 #endif
 
 #ifdef CONFIG_XMIT_ACK
-	u8 ack_report;
+	uint8_t ack_report;
 #endif
 
-	u8 *alloc_addr; /* the actual address this xmitframe allocated */
-	u8 ext_tag; /* 0:data, 1:mgmt */
+	uint8_t *alloc_addr; /* the actual address this xmitframe allocated */
+	uint8_t ext_tag; /* 0:data, 1:mgmt */
 
 };
 
@@ -481,16 +481,16 @@ struct	xmit_priv	{
 	//_queue	legacy_dz_queue;
 	//_queue	apsd_queue;
 
-	u8 *pallocated_frame_buf;
-	u8 *pxmit_frame_buf;
+	uint8_t *pallocated_frame_buf;
+	uint8_t *pxmit_frame_buf;
 	uint free_xmitframe_cnt;
 	_queue	free_xmit_queue;
 
 	//uint mapping_addr;
 	//uint pkt_sz;
 
-	u8 *xframe_ext_alloc_addr;
-	u8 *xframe_ext;
+	uint8_t *xframe_ext_alloc_addr;
+	uint8_t *xframe_ext;
 	uint free_xframe_ext_cnt;
 	_queue free_xframe_ext_queue;
 
@@ -504,9 +504,9 @@ struct	xmit_priv	{
 
 	_adapter	*adapter;
 
-	u8   vcs_setting;
-	u8	vcs;
-	u8	vcs_type;
+	uint8_t   vcs_setting;
+	uint8_t	vcs;
+	uint8_t	vcs_type;
 	//u16  rts_thresh;
 
 	u64	tx_bytes;
@@ -516,13 +516,13 @@ struct	xmit_priv	{
 	u64	last_tx_pkts;
 
 	struct hw_xmit *hwxmits;
-	u8	hwxmit_entry;
+	uint8_t	hwxmit_entry;
 
-	u8	wmm_para_seq[4];//sequence for wmm ac parameter strength from large to small. it's value is 0->vo, 1->vi, 2->be, 3->bk.
+	uint8_t	wmm_para_seq[4];//sequence for wmm ac parameter strength from large to small. it's value is 0->vo, 1->vi, 2->be, 3->bk.
 
 #ifdef CONFIG_USB_HCI
 	struct semaphore	tx_retevt;//all tx return event;
-	u8		txirp_cnt;//
+	uint8_t		txirp_cnt;//
 
 #ifdef PLATFORM_LINUX
 	struct tasklet_struct xmit_tasklet;
@@ -539,13 +539,13 @@ struct	xmit_priv	{
 
 	_queue free_xmitbuf_queue;
 	_queue pending_xmitbuf_queue;
-	u8 *pallocated_xmitbuf;
-	u8 *pxmitbuf;
+	uint8_t *pallocated_xmitbuf;
+	uint8_t *pxmitbuf;
 	uint free_xmitbuf_cnt;
 
 	_queue free_xmit_extbuf_queue;
-	u8 *pallocated_xmit_extbuf;
-	u8 *pxmit_extbuf;
+	uint8_t *pallocated_xmit_extbuf;
+	uint8_t *pxmit_extbuf;
 	uint free_xmit_extbuf_cnt;
 
 	struct xmit_buf	pcmd_xmitbuf;
@@ -578,16 +578,16 @@ extern struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv);
 extern s32 rtw_free_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 
 void rtw_count_tx_stats(_adapter *padapter, struct xmit_frame *pxmitframe, int sz);
-extern void rtw_update_protection(_adapter *padapter, u8 *ie, uint ie_len);
-extern s32 rtw_make_wlanhdr(_adapter *padapter, u8 *hdr, struct pkt_attrib *pattrib);
-extern s32 rtw_put_snap(u8 *data, u16 h_proto);
+extern void rtw_update_protection(_adapter *padapter, uint8_t *ie, uint ie_len);
+extern s32 rtw_make_wlanhdr(_adapter *padapter, uint8_t *hdr, struct pkt_attrib *pattrib);
+extern s32 rtw_put_snap(uint8_t *data, u16 h_proto);
 
 extern struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv);
 struct xmit_frame *rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv);
 struct xmit_frame *rtw_alloc_xmitframe_once(struct xmit_priv *pxmitpriv);
 extern s32 rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitframe);
 extern void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, _queue *pframequeue);
-struct tx_servq *rtw_get_sta_pending(_adapter *padapter, struct sta_info *psta, sint up, u8 *ac);
+struct tx_servq *rtw_get_sta_pending(_adapter *padapter, struct sta_info *psta, sint up, uint8_t *ac);
 extern s32 rtw_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
 extern struct xmit_frame* rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmit *phwxmit_i, sint entry);
 
@@ -596,9 +596,9 @@ extern u32 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib);
 #define rtw_wlan_pkt_size(f) rtw_calculate_wlan_pkt_size_by_attribue(&f->attrib)
 extern s32 rtw_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxmitframe);
 #ifdef CONFIG_TDLS
-s32 rtw_xmit_tdls_coalesce(_adapter *padapter, struct xmit_frame *pxmitframe, u8 action);
+s32 rtw_xmit_tdls_coalesce(_adapter *padapter, struct xmit_frame *pxmitframe, uint8_t action);
 #endif
-s32 _rtw_init_hw_txqueue(struct hw_txqueue* phw_txqueue, u8 ac_tag);
+s32 _rtw_init_hw_txqueue(struct hw_txqueue* phw_txqueue, uint8_t ac_tag);
 void _rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
 
 
@@ -624,7 +624,7 @@ void wakeup_sta_to_xmit(_adapter *padapter, struct sta_info *psta);
 void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta);
 #endif
 
-u8	qos_acm(u8 acm_mask, u8 priority);
+uint8_t	qos_acm(uint8_t acm_mask, uint8_t priority);
 
 #ifdef CONFIG_XMIT_THREAD_MODE
 void	enqueue_pending_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);

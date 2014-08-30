@@ -100,9 +100,9 @@ enum RTW_USB_SPEED {
 #define USB_HIGH_SPEED_BULK_SIZE	512		// usb 2.0
 #define USB_FULL_SPEED_BULK_SIZE	64		// usb 1.1
 
-static inline u8 rtw_usb_bulk_size_boundary(_adapter * padapter,int buf_len)
+static inline uint8_t rtw_usb_bulk_size_boundary(_adapter * padapter,int buf_len)
 {
-	u8 rst = _TRUE;
+	uint8_t rst = _TRUE;
 
 	if (IS_SUPER_SPEED_USB(padapter))
 		rst = (0 == (buf_len) % USB_SUPER_SPEED_BULK_SIZE)?_TRUE:_FALSE;

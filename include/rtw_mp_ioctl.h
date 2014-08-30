@@ -52,26 +52,26 @@ typedef struct _EEPROM_RW_PARAM {
 typedef struct _EFUSE_ACCESS_STRUCT_ {
 	u16	start_addr;
 	u16	cnts;
-	u8	data[0];
+	uint8_t	data[0];
 }EFUSE_ACCESS_STRUCT, *PEFUSE_ACCESS_STRUCT;
 
 typedef struct _BURST_RW_REG {
 	u32 offset;
 	u32 len;
-	u8 Data[256];
+	uint8_t Data[256];
 }burst_rw_reg,Burst_RW_Reg, *pBurst_RW_Reg;
 
 typedef struct _USB_VendorReq{
-	u8	bRequest;
+	uint8_t	bRequest;
 	u16	wValue;
 	u16	wIndex;
 	u16	wLength;
-	u8	u8Dir;//0:OUT, 1:IN
-	u8	u8InData;
+	uint8_t	u8Dir;//0:OUT, 1:IN
+	uint8_t	u8InData;
 }usb_vendor_req, USB_VendorReq, *pUSB_VendorReq;
 
 typedef struct _DR_VARIABLE_STRUCT_ {
-	u8 offset;
+	uint8_t offset;
 	u32 variable;
 }DR_VARIABLE_STRUCT;
 
@@ -430,11 +430,11 @@ struct rfintfs_parm {
 };
 
 typedef struct _mp_xmit_parm_ {
-	u8 enable;
+	uint8_t enable;
 	u32 count;
 	u16 length;
-	u8 payload_type;
-	u8 da[ETH_ALEN];
+	uint8_t payload_type;
+	uint8_t da[ETH_ALEN];
 }MP_XMIT_PARM, *PMP_XMIT_PARM;
 
 struct mp_xmit_packet {
@@ -462,7 +462,7 @@ struct mp_ioctl_handler {
 struct mp_ioctl_param{
 	u32 subcode;
 	u32 len;
-	u8 data[0];
+	uint8_t data[0];
 };
 
 #define GEN_MP_IOCTL_SUBCODE(code) _MP_IOCTL_ ## code ## _CMD_

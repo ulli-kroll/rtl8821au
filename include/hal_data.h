@@ -126,10 +126,10 @@ typedef enum _USB_RX_AGG_MODE{
 
 struct dm_priv
 {
-	u8	DM_Type;
-	u8	DMFlag;
-	u8	InitDMFlag;
-	//u8   RSVD_1;
+	uint8_t	DM_Type;
+	uint8_t	DMFlag;
+	uint8_t	InitDMFlag;
+	//uint8_t   RSVD_1;
 
 	u32	InitODMFlag;
 	//* Upper and Lower Signal threshold for Rate Adaptive*/
@@ -144,35 +144,35 @@ struct dm_priv
 
 //###### duplicate code,will move to ODM #########
 	//for High Power
-	u8 	bDynamicTxPowerEnable;
-	u8 	LastDTPLvl;
-	u8	DynamicTxHighPowerLvl;//Add by Jacken Tx Power Control for Near/Far Range 2008/03/06
+	uint8_t 	bDynamicTxPowerEnable;
+	uint8_t 	LastDTPLvl;
+	uint8_t	DynamicTxHighPowerLvl;//Add by Jacken Tx Power Control for Near/Far Range 2008/03/06
 
 	//for tx power tracking
-	u8	bTXPowerTracking;
-	u8	TXPowercount;
-	u8	bTXPowerTrackingInit;
-	u8	TxPowerTrackControl;	//for mp mode, turn off txpwrtracking as default
-	u8	TM_Trigger;
+	uint8_t	bTXPowerTracking;
+	uint8_t	TXPowercount;
+	uint8_t	bTXPowerTrackingInit;
+	uint8_t	TxPowerTrackControl;	//for mp mode, turn off txpwrtracking as default
+	uint8_t	TM_Trigger;
 
-	u8	ThermalMeter[2];				// ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
-	u8	ThermalValue;
-	u8	ThermalValue_LCK;
-	u8	ThermalValue_IQK;
-	u8	ThermalValue_DPK;
-	u8	bRfPiEnable;
-	//u8   RSVD_2;
+	uint8_t	ThermalMeter[2];				// ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
+	uint8_t	ThermalValue;
+	uint8_t	ThermalValue_LCK;
+	uint8_t	ThermalValue_IQK;
+	uint8_t	ThermalValue_DPK;
+	uint8_t	bRfPiEnable;
+	//uint8_t   RSVD_2;
 
 	//for APK
 	u32	APKoutput[2][2];	//path A/B; output1_1a/output1_2a
-	u8	bAPKdone;
-	u8	bAPKThermalMeterIgnore;
-	u8	bDPdone;
-	u8	bDPPathAOK;
-	u8	bDPPathBOK;
-	//u8   RSVD_3;
-	//u8   RSVD_4;
-	//u8   RSVD_5;
+	uint8_t	bAPKdone;
+	uint8_t	bAPKThermalMeterIgnore;
+	uint8_t	bDPdone;
+	uint8_t	bDPPathAOK;
+	uint8_t	bDPPathBOK;
+	//uint8_t   RSVD_3;
+	//uint8_t   RSVD_4;
+	//uint8_t   RSVD_5;
 
 	//for IQK
 	u32	ADDA_backup[IQK_ADDA_REG_NUM];
@@ -180,18 +180,18 @@ struct dm_priv
 	u32	IQK_BB_backup_recover[9];
 	u32	IQK_BB_backup[IQK_BB_REG_NUM];
 
-	u8	PowerIndex_backup[6];
-	u8	OFDM_index[2];
+	uint8_t	PowerIndex_backup[6];
+	uint8_t	OFDM_index[2];
 
-	u8	bCCKinCH14;
-	u8	CCK_index;
-	u8	bDoneTxpower;
-	u8	CCK_index_HP;
+	uint8_t	bCCKinCH14;
+	uint8_t	CCK_index;
+	uint8_t	bDoneTxpower;
+	uint8_t	CCK_index_HP;
 
-	u8	OFDM_index_HP[2];
-	u8	ThermalValue_HP[HP_THERMAL_NUM];
-	u8	ThermalValue_HP_index;
-	//u8   RSVD_6;
+	uint8_t	OFDM_index_HP[2];
+	uint8_t	ThermalValue_HP[HP_THERMAL_NUM];
+	uint8_t	ThermalValue_HP_index;
+	//uint8_t   RSVD_6;
 
 	//for TxPwrTracking2
 	s32	RegE94;
@@ -205,7 +205,7 @@ struct dm_priv
 //###### duplicate code,will move to ODM #########
 
 	// Add for Reading Initial Data Rate SEL Register 0x484 during watchdog. Using for fill tx desc. 2011.3.21 by Thomas
-	u8	INIDATA_RATE[32];
+	uint8_t	INIDATA_RATE[32];
 };
 
 
@@ -226,10 +226,10 @@ typedef struct hal_com_data
 	CHANNEL_WIDTH	CurrentChannelBW;
 	BAND_TYPE			CurrentBandType;	//0:2.4G, 1:5G
 	BAND_TYPE			BandSet;
-	u8	CurrentChannel;
-	u8	CurrentCenterFrequencyIndex1;
-	u8	nCur40MhzPrimeSC;// Control channel sub-carrier
-	u8	nCur80MhzPrimeSC;   //used for primary 40MHz of 80MHz mode
+	uint8_t	CurrentChannel;
+	uint8_t	CurrentCenterFrequencyIndex1;
+	uint8_t	nCur40MhzPrimeSC;// Control channel sub-carrier
+	uint8_t	nCur80MhzPrimeSC;   //used for primary 40MHz of 80MHz mode
 
 	u16	CustomerID;
 	u16	BasicRateSet;
@@ -237,15 +237,15 @@ typedef struct hal_com_data
 	u32	ReceiveConfig;
 
 	//rf_ctrl
-	u8	rf_chip;
-	u8	rf_type;
-	u8	NumTotalRFPath;
+	uint8_t	rf_chip;
+	uint8_t	rf_type;
+	uint8_t	NumTotalRFPath;
 
-	u8	InterfaceSel;
-	u8	framesync;
+	uint8_t	InterfaceSel;
+	uint8_t	framesync;
 	u32	framesyncC34;
-	u8	framesyncMonitor;
-	u8	DefaultInitialGain[4];
+	uint8_t	framesyncMonitor;
+	uint8_t	DefaultInitialGain[4];
 	//
 	// EEPROM setting.
 	//
@@ -256,48 +256,48 @@ typedef struct hal_com_data
 	u16	EEPROMSDID;
 #endif
 
-	u8	EEPROMCustomerID;
-	u8	EEPROMSubCustomerID;
-	u8	EEPROMVersion;
-	u8	EEPROMRegulatory;
-	u8	EEPROMThermalMeter;
-	u8	EEPROMBluetoothCoexist;
-	u8	EEPROMBluetoothType;
-	u8	EEPROMBluetoothAntNum;
-	u8	EEPROMBluetoothAntIsolation;
-	u8	EEPROMBluetoothRadioShared;
-	u8	bTXPowerDataReadFromEEPORM;
-	u8	bAPKThermalMeterIgnore;
+	uint8_t	EEPROMCustomerID;
+	uint8_t	EEPROMSubCustomerID;
+	uint8_t	EEPROMVersion;
+	uint8_t	EEPROMRegulatory;
+	uint8_t	EEPROMThermalMeter;
+	uint8_t	EEPROMBluetoothCoexist;
+	uint8_t	EEPROMBluetoothType;
+	uint8_t	EEPROMBluetoothAntNum;
+	uint8_t	EEPROMBluetoothAntIsolation;
+	uint8_t	EEPROMBluetoothRadioShared;
+	uint8_t	bTXPowerDataReadFromEEPORM;
+	uint8_t	bAPKThermalMeterIgnore;
 
 	BOOLEAN 		EepromOrEfuse;
-	u8				EfuseUsedPercentage;
+	uint8_t				EfuseUsedPercentage;
 	u16				EfuseUsedBytes;
-	//u8				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
+	//uint8_t				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
 	EFUSE_HAL		EfuseHal;
 
 	//---------------------------------------------------------------------------------//
 	//3 [2.4G]
-	u8	Index24G_CCK_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
-	u8	Index24G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	uint8_t	Index24G_CCK_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	uint8_t	Index24G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
 	//If only one tx, only BW20 and OFDM are used.
 	s8	CCK_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8	OFDM_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8	BW20_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8	BW40_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	//3 [5G]
-	u8	Index5G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
-	u8	Index5G_BW80_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER_5G_80M];
+	uint8_t	Index5G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	uint8_t	Index5G_BW80_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER_5G_80M];
 	s8	OFDM_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8	BW20_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8	BW40_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8	BW80_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 
-	u8	Regulation2_4G;
-	u8	Regulation5G;
+	uint8_t	Regulation2_4G;
+	uint8_t	Regulation5G;
 
-	u8	TxPwrInPercentage;
+	uint8_t	TxPwrInPercentage;
 
-	u8	TxPwrCalibrateRate;
+	uint8_t	TxPwrCalibrateRate;
 	//
 	// TX power by rate table at most 4RF path.
 	// The register is
@@ -307,29 +307,29 @@ typedef struct hal_com_data
 	// RF: at most 4*4 = ABCD=0/1/2/3
 	// CCK=0 OFDM=1/2 HT-MCS 0-15=3/4/56 VHT=7/8/9/10/11
 	//
-	u8	TxPwrByRateTable;
-	u8	TxPwrByRateBand;
+	uint8_t	TxPwrByRateTable;
+	uint8_t	TxPwrByRateBand;
 	u32	TxPwrByRateOffset[TX_PWR_BY_RATE_NUM_BAND]
 						[TX_PWR_BY_RATE_NUM_RF]
 						[TX_PWR_BY_RATE_NUM_SECTION];
 	//---------------------------------------------------------------------------------//
 
 	//2 Power Limit Table
-	u8	TxPwrLevelCck[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
-	u8	TxPwrLevelHT40_1S[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];	// For HT 40MHZ pwr
-	u8	TxPwrLevelHT40_2S[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];	// For HT 40MHZ pwr
-	u8	TxPwrHt20Diff[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];// HT 20<->40 Pwr diff
-	u8	TxPwrLegacyHtDiff[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];// For HT<->legacy pwr diff
+	uint8_t	TxPwrLevelCck[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
+	uint8_t	TxPwrLevelHT40_1S[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];	// For HT 40MHZ pwr
+	uint8_t	TxPwrLevelHT40_2S[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];	// For HT 40MHZ pwr
+	uint8_t	TxPwrHt20Diff[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];// HT 20<->40 Pwr diff
+	uint8_t	TxPwrLegacyHtDiff[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];// For HT<->legacy pwr diff
 
 	// Power Limit Table for 2.4G
-	u8	TxPwrLimit_2_4G[MAX_REGULATION_NUM]
+	uint8_t	TxPwrLimit_2_4G[MAX_REGULATION_NUM]
 						[MAX_2_4G_BANDWITH_NUM]
 	                                [MAX_2_4G_RATE_SECTION_NUM]
 	                                [MAX_2_4G_CHANNEL_NUM]
 						[MAX_RF_PATH_NUM];
 
 	// Power Limit Table for 5G
-	u8	TxPwrLimit_5G[MAX_REGULATION_NUM]
+	uint8_t	TxPwrLimit_5G[MAX_REGULATION_NUM]
 						[MAX_5G_BANDWITH_NUM]
 						[MAX_5G_RATE_SECTION_NUM]
 						[MAX_5G_CHANNEL_NUM]
@@ -337,47 +337,47 @@ typedef struct hal_com_data
 
 
 	// Store the original power by rate value of the base of each rate section of rf path A & B
-	u8	TxPwrByRateBase2_4G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
+	uint8_t	TxPwrByRateBase2_4G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
 						[MAX_BASE_NUM_IN_PHY_REG_PG_2_4G];
-	u8	TxPwrByRateBase5G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
+	uint8_t	TxPwrByRateBase5G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
 						[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
 
 	// For power group
-	u8	PwrGroupHT20[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
-	u8	PwrGroupHT40[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
+	uint8_t	PwrGroupHT20[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
+	uint8_t	PwrGroupHT40[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
 
 
 
 
-	u8	PGMaxGroup;
-	u8	LegacyHTTxPowerDiff;// Legacy to HT rate power diff
+	uint8_t	PGMaxGroup;
+	uint8_t	LegacyHTTxPowerDiff;// Legacy to HT rate power diff
 	// The current Tx Power Level
-	u8	CurrentCckTxPwrIdx;
-	u8	CurrentOfdm24GTxPwrIdx;
-	u8	CurrentBW2024GTxPwrIdx;
-	u8	CurrentBW4024GTxPwrIdx;
+	uint8_t	CurrentCckTxPwrIdx;
+	uint8_t	CurrentOfdm24GTxPwrIdx;
+	uint8_t	CurrentBW2024GTxPwrIdx;
+	uint8_t	CurrentBW4024GTxPwrIdx;
 
 	// Read/write are allow for following hardware information variables
-	u8	pwrGroupCnt;
+	uint8_t	pwrGroupCnt;
 	u32	MCSTxPowerLevelOriginalOffset[MAX_PG_GROUP][16];
 	u32	CCKTxPowerLevelOriginalOffset;
 
-	u8	CrystalCap;
+	uint8_t	CrystalCap;
 	u32	AntennaTxPath;					// Antenna path Tx
 	u32	AntennaRxPath;					// Antenna path Rx
 
-	u8	PAType_2G;
-	u8	PAType_5G;
-	u8	LNAType_2G;
-	u8	LNAType_5G;
-	u8	ExternalPA_2G;
-	u8	ExternalLNA_2G;
-	u8	ExternalPA_5G;
-	u8	ExternalLNA_5G;
-	u8	RFEType;
-	u8	BoardType;
-	u8	ExternalPA;
-	u8	bIQKInitialized;
+	uint8_t	PAType_2G;
+	uint8_t	PAType_5G;
+	uint8_t	LNAType_2G;
+	uint8_t	LNAType_5G;
+	uint8_t	ExternalPA_2G;
+	uint8_t	ExternalLNA_2G;
+	uint8_t	ExternalPA_5G;
+	uint8_t	ExternalLNA_5G;
+	uint8_t	RFEType;
+	uint8_t	BoardType;
+	uint8_t	ExternalPA;
+	uint8_t	bIQKInitialized;
 	BOOLEAN		bLCKInProgress;
 
 	BOOLEAN		bSwChnl;
@@ -385,9 +385,9 @@ typedef struct hal_com_data
 	BOOLEAN		bChnlBWInitialzed;
 	BOOLEAN		bNeedIQK;
 
-	u8	bLedOpenDrain; // Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16.
-	u8	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
-	u8	b1x1RecvCombine;	// for 1T1R receive combining
+	uint8_t	bLedOpenDrain; // Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16.
+	uint8_t	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
+	uint8_t	b1x1RecvCombine;	// for 1T1R receive combining
 
 	u32	AcParam_BE; //Original parameter for BE, use for EDCA turbo.
 
@@ -399,26 +399,26 @@ typedef struct hal_com_data
 	BOOLEAN	 bRDGEnable;
 
 	//for host message to fw
-	u8	LastHMEBoxNum;
+	uint8_t	LastHMEBoxNum;
 
-	u8	fw_ractrl;
-	u8	RegTxPause;
+	uint8_t	fw_ractrl;
+	uint8_t	RegTxPause;
 	// Beacon function related global variable.
-	u8	RegBcnCtrlVal;
-	u8	RegFwHwTxQCtrl;
-	u8	RegReg542;
-	u8	RegCR_1;
-	u8	Reg837;
-	u8	RegRFPathS1;
+	uint8_t	RegBcnCtrlVal;
+	uint8_t	RegFwHwTxQCtrl;
+	uint8_t	RegReg542;
+	uint8_t	RegCR_1;
+	uint8_t	Reg837;
+	uint8_t	RegRFPathS1;
 	u16	RegRRSR;
 
-	u8	CurAntenna;
-	u8	AntDivCfg;
-	u8	TRxAntDivType;
+	uint8_t	CurAntenna;
+	uint8_t	AntDivCfg;
+	uint8_t	TRxAntDivType;
 
-	u8	bDumpRxPkt;//for debug
-	u8	bDumpTxPkt;//for debug
-	u8	FwRsvdPageStartOffset; //2010.06.23. Added by tynli. Reserve page start offset except beacon in TxQ.
+	uint8_t	bDumpRxPkt;//for debug
+	uint8_t	bDumpTxPkt;//for debug
+	uint8_t	FwRsvdPageStartOffset; //2010.06.23. Added by tynli. Reserve page start offset except beacon in TxQ.
 
 	// 2010/08/09 MH Add CU power down mode.
 	BOOLEAN		pwrdown;
@@ -426,8 +426,8 @@ typedef struct hal_com_data
 	// Add for dual MAC  0--Mac0 1--Mac1
 	u32	interfaceIndex;
 
-	u8	OutEpQueueSel;
-	u8	OutEpNumber;
+	uint8_t	OutEpQueueSel;
+	uint8_t	OutEpNumber;
 
 	// 2010/12/10 MH Add for USB aggreation mode dynamic shceme.
 	BOOLEAN		UsbRxHighSpeedMode;
@@ -437,13 +437,13 @@ typedef struct hal_com_data
 	BOOLEAN		SlimComboDbg;
 
 #ifdef CONFIG_P2P
-	u8	p2p_ps_offload;
+	uint8_t	p2p_ps_offload;
 #endif
 
-	u8	AMPDUDensity;
+	uint8_t	AMPDUDensity;
 
 	// Auto FSM to Turn On, include clock, isolation, power control for MAC only
-	u8	bMacPwrCtrlOn;
+	uint8_t	bMacPwrCtrlOn;
 
 	RT_AMPDU_BRUST		AMPDUBurstMode; //92C maybe not use, but for compile successfully
 
@@ -455,10 +455,10 @@ typedef struct hal_com_data
 	// Interrupt relatd register information.
 	u32	IntArray[3];//HISR0,HISR1,HSISR
 	u32	IntrMask[3];
-	u8	C2hArray[16];
+	uint8_t	C2hArray[16];
 	#ifdef CONFIG_USB_TX_AGGREGATION
-	u8	UsbTxAggMode;
-	u8	UsbTxAggDescNum;
+	uint8_t	UsbTxAggMode;
+	uint8_t	UsbTxAggDescNum;
 	#endif // CONFIG_USB_TX_AGGREGATION
 
 	#ifdef CONFIG_USB_RX_AGGREGATION
@@ -466,13 +466,13 @@ typedef struct hal_com_data
 	u32	MaxUsbRxAggBlock;
 
 	USB_RX_AGG_MODE	UsbRxAggMode;
-	u8	UsbRxAggBlockCount;			// USB Block count. Block size is 512-byte in hight speed and 64-byte in full speed
-	u8	UsbRxAggBlockTimeout;
-	u8	UsbRxAggPageCount;			// 8192C DMA page count
-	u8	UsbRxAggPageTimeout;
+	uint8_t	UsbRxAggBlockCount;			// USB Block count. Block size is 512-byte in hight speed and 64-byte in full speed
+	uint8_t	UsbRxAggBlockTimeout;
+	uint8_t	UsbRxAggPageCount;			// 8192C DMA page count
+	uint8_t	UsbRxAggPageTimeout;
 
-	u8	RegAcUsbDmaSize;
-	u8	RegAcUsbDmaTime;
+	uint8_t	RegAcUsbDmaSize;
+	uint8_t	RegAcUsbDmaTime;
 	#endif//CONFIG_USB_RX_AGGREGATION
 #endif //CONFIG_USB_HCI
 

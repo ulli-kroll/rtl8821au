@@ -41,7 +41,7 @@ PHY_RF6052SetOFDMTxPower8812(
 	IN	u8*			pPowerLevelOFDM,
 	IN	u8*			pPowerLevelBW20,
 	IN	u8*			pPowerLevelBW40,
-	IN	u8			Channel);
+	IN	uint8_t			Channel);
 
 #endif//__RTL8188E_RF_H__
 

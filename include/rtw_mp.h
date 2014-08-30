@@ -75,7 +75,7 @@ struct mp_xmit_frame
 	//insert urb, irp, and irpcnt info below...
 	//max frag_cnt = 8
 
-	u8 *mem_addr;
+	uint8_t *mem_addr;
 	u32 sz[8];
 
 #if defined(PLATFORM_LINUX)
@@ -83,7 +83,7 @@ struct mp_xmit_frame
 #endif
 
 
-	u8 bpending[8];
+	uint8_t bpending[8];
 	sint ac_tag[8];
 	sint last[8];
 	uint irpcnt;
@@ -106,14 +106,14 @@ typedef void(*wi_act_func)(void* padapter);
 
 struct mp_tx
 {
-	u8 stop;
+	uint8_t stop;
 	u32 count, sended;
-	u8 payload;
+	uint8_t payload;
 	struct pkt_attrib attrib;
 	struct tx_desc desc;
-	u8 resvdtx[7];
-	u8 *pallocated_buf;
-	u8 *buf;
+	uint8_t resvdtx[7];
+	uint8_t *pallocated_buf;
+	uint8_t *buf;
 	u32 buf_size, write_size;
 	_thread_hdl_ PktTxThread;
 };
@@ -202,17 +202,17 @@ typedef struct _MPT_CONTEXT
 	ULONG			MptRfPath;
 
 	WIRELESS_MODE		MptWirelessModeToSw;	// Wireless mode to switch.
-	u8			MptChannelToSw; 	// Channel to switch.
-	u8			MptInitGainToSet; 	// Initial gain to set.
+	uint8_t			MptChannelToSw; 	// Channel to switch.
+	uint8_t			MptInitGainToSet; 	// Initial gain to set.
 	//ULONG			bMptAntennaA; 		// TRUE if we want to use antenna A.
 	ULONG			MptBandWidth;		// bandwidth to switch.
 	ULONG			MptRateIndex;		// rate index.
 	// Register value kept for Single Carrier Tx test.
-	u8			btMpCckTxPower;
+	uint8_t			btMpCckTxPower;
 	// Register value kept for Single Carrier Tx test.
-	u8			btMpOfdmTxPower;
+	uint8_t			btMpOfdmTxPower;
 	// For MP Tx Power index
-	u8			TxPwrLevel[2];	// rf-A, rf-B
+	uint8_t			TxPwrLevel[2];	// rf-A, rf-B
 	u32			RegTxPwrLimit;
 	// Content of RCR Regsiter for Mass Production Test.
 	ULONG			MptRCR;
@@ -242,14 +242,14 @@ typedef struct _MPT_CONTEXT
 	//s1Byte			BufOfLines[2][MP_MAX_LINES][MP_MAX_LINES_BYTES];
 	//s4Byte			RfReadLine[2];
 
-	u8		APK_bound[2];	//for APK	path A/path B
+	uint8_t		APK_bound[2];	//for APK	path A/path B
 	BOOLEAN		bMptIndexEven;
 
-	u8		backup0xc50;
-	u8		backup0xc58;
-	u8		backup0xc30;
-	u8 		backup0x52_RF_A;
-	u8 		backup0x52_RF_B;
+	uint8_t		backup0xc50;
+	uint8_t		backup0xc58;
+	uint8_t		backup0xc30;
+	uint8_t 		backup0x52_RF_A;
+	uint8_t 		backup0x52_RF_B;
 
 	u1Byte			h2cReqNum;
 	u1Byte			c2hBuf[20];
@@ -319,10 +319,10 @@ struct mp_priv
 
 	//OID cmd handler
 	struct mp_wiparam workparam;
-//	u8 act_in_progress;
+//	uint8_t act_in_progress;
 
 	//Tx Section
-	u8 TID;
+	uint8_t TID;
 	u32 tx_pktcount;
 	struct mp_tx tx;
 
@@ -334,31 +334,31 @@ struct mp_priv
 	struct recv_stat rxstat;
 
 	//RF/BB relative
-	u8 channel;
-	u8 bandwidth;
-	u8 prime_channel_offset;
-	u8 txpoweridx;
-	u8 txpoweridx_b;
-	u8 rateidx;
+	uint8_t channel;
+	uint8_t bandwidth;
+	uint8_t prime_channel_offset;
+	uint8_t txpoweridx;
+	uint8_t txpoweridx_b;
+	uint8_t rateidx;
 	u32 preamble;
-//	u8 modem;
+//	uint8_t modem;
 	u32 CrystalCap;
 //	u32 curr_crystalcap;
 
 	u16 antenna_tx;
 	u16 antenna_rx;
-//	u8 curr_rfpath;
+//	uint8_t curr_rfpath;
 
-	u8 check_mp_pkt;
+	uint8_t check_mp_pkt;
 
-	u8 bSetTxPower;
+	uint8_t bSetTxPower;
 //	uint ForcedDataRate;
 
 	struct wlan_network mp_network;
 	NDIS_802_11_MAC_ADDRESS network_macaddr;
 
-	u8 *pallocated_mp_xmitframe_buf;
-	u8 *pmp_xmtframe_buf;
+	uint8_t *pallocated_mp_xmitframe_buf;
+	uint8_t *pmp_xmtframe_buf;
 	_queue free_mp_xmitqueue;
 	u32 free_mp_xmitframe_cnt;
 
@@ -366,9 +366,9 @@ struct mp_priv
 };
 
 typedef struct _IOCMD_STRUCT_ {
-	u8	cmdclass;
+	uint8_t	cmdclass;
 	u16	value;
-	u8	index;
+	uint8_t	index;
 }IOCMD_STRUCT;
 
 struct rf_reg_param {
@@ -427,7 +427,7 @@ typedef enum _MP_MODE_ {
 #define MAX_RF_PATH_NUMS	RF_PATH_MAX
 
 
-extern u8 mpdatarate[NumRates];
+extern uint8_t mpdatarate[NumRates];
 
 /* MP set force data rate base on the definition. */
 typedef enum _MPT_RATE_INDEX
@@ -559,7 +559,7 @@ typedef enum _ENCRY_CTRL_STATE_ {
 
 extern s32 init_mp_priv(PADAPTER padapter);
 extern void free_mp_priv(struct mp_priv *pmp_priv);
-extern s32 MPT_InitializeAdapter(PADAPTER padapter, u8 Channel);
+extern s32 MPT_InitializeAdapter(PADAPTER padapter, uint8_t Channel);
 extern void MPT_DeInitAdapter(PADAPTER padapter);
 extern s32 mp_start_test(PADAPTER padapter);
 extern void mp_stop_test(PADAPTER padapter);
@@ -568,24 +568,24 @@ extern void mp_stop_test(PADAPTER padapter);
 //extern void	IQCalibrateBcut(PADAPTER pAdapter);
 
 //extern u32	bb_reg_read(PADAPTER Adapter, u16 offset);
-//extern u8	bb_reg_write(PADAPTER Adapter, u16 offset, u32 value);
-//extern u32	rf_reg_read(PADAPTER Adapter, u8 path, u8 offset);
-//extern u8	rf_reg_write(PADAPTER Adapter, u8 path, u8 offset, u32 value);
+//extern uint8_t	bb_reg_write(PADAPTER Adapter, u16 offset, u32 value);
+//extern u32	rf_reg_read(PADAPTER Adapter, uint8_t path, uint8_t offset);
+//extern uint8_t	rf_reg_write(PADAPTER Adapter, uint8_t path, uint8_t offset, u32 value);
 
 //extern u32	get_bb_reg(PADAPTER Adapter, u16 offset, u32 bitmask);
-//extern u8	set_bb_reg(PADAPTER Adapter, u16 offset, u32 bitmask, u32 value);
-//extern u32	get_rf_reg(PADAPTER Adapter, u8 path, u8 offset, u32 bitmask);
-//extern u8	set_rf_reg(PADAPTER Adapter, u8 path, u8 offset, u32 bitmask, u32 value);
+//extern uint8_t	set_bb_reg(PADAPTER Adapter, u16 offset, u32 bitmask, u32 value);
+//extern u32	get_rf_reg(PADAPTER Adapter, uint8_t path, uint8_t offset, u32 bitmask);
+//extern uint8_t	set_rf_reg(PADAPTER Adapter, uint8_t path, uint8_t offset, u32 bitmask, u32 value);
 
-extern u32 _read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask);
-extern void _write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask, u32 val);
+extern u32 _read_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr, u32 bitmask);
+extern void _write_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr, u32 bitmask, u32 val);
 
 extern u32 read_macreg(_adapter *padapter, u32 addr, u32 sz);
 extern void write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz);
 extern u32 read_bbreg(_adapter *padapter, u32 addr, u32 bitmask);
 extern void write_bbreg(_adapter *padapter, u32 addr, u32 bitmask, u32 val);
-extern u32 read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr);
-extern void write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 val);
+extern u32 read_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr);
+extern void write_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr, u32 val);
 
 extern void	SetChannel(PADAPTER pAdapter);
 extern void	SetBandwidth(PADAPTER pAdapter);
@@ -598,59 +598,59 @@ extern void	SetAntenna(PADAPTER pAdapter);
 
 //extern void	SetCrystalCap(PADAPTER pAdapter);
 
-extern s32	SetThermalMeter(PADAPTER pAdapter, u8 target_ther);
-extern void	GetThermalMeter(PADAPTER pAdapter, u8 *value);
+extern s32	SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther);
+extern void	GetThermalMeter(PADAPTER pAdapter, uint8_t *value);
 
-extern void	SetContinuousTx(PADAPTER pAdapter, u8 bStart);
-extern void	SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart);
-extern void	SetSingleToneTx(PADAPTER pAdapter, u8 bStart);
-extern void	SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart);
+extern void	SetContinuousTx(PADAPTER pAdapter, uint8_t bStart);
+extern void	SetSingleCarrierTx(PADAPTER pAdapter, uint8_t bStart);
+extern void	SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart);
+extern void	SetCarrierSuppressionTx(PADAPTER pAdapter, uint8_t bStart);
 extern void PhySetTxPowerLevel(PADAPTER pAdapter);
 
 extern void	fill_txdesc_for_mp(PADAPTER padapter, struct tx_desc *ptxdesc);
 extern void	SetPacketTx(PADAPTER padapter);
-extern void	SetPacketRx(PADAPTER pAdapter, u8 bStartRx);
+extern void	SetPacketRx(PADAPTER pAdapter, uint8_t bStartRx);
 
 extern void	ResetPhyRxPktCount(PADAPTER pAdapter);
 extern u32	GetPhyRxPktReceived(PADAPTER pAdapter);
 extern u32	GetPhyRxPktCRC32Error(PADAPTER pAdapter);
 
-extern s32	SetPowerTracking(PADAPTER padapter, u8 enable);
-extern void	GetPowerTracking(PADAPTER padapter, u8 *enable);
+extern s32	SetPowerTracking(PADAPTER padapter, uint8_t enable);
+extern void	GetPowerTracking(PADAPTER padapter, uint8_t *enable);
 
-extern u32	mp_query_psd(PADAPTER pAdapter, u8 *data);
+extern u32	mp_query_psd(PADAPTER pAdapter, uint8_t *data);
 
 
 extern void Hal_SetAntenna(PADAPTER pAdapter);
 extern void Hal_SetBandwidth(PADAPTER pAdapter);
 
 extern void Hal_SetTxPower(PADAPTER pAdapter);
-extern void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart);
-extern void Hal_SetSingleToneTx ( PADAPTER pAdapter , u8 bStart );
-extern void Hal_SetSingleCarrierTx (PADAPTER pAdapter, u8 bStart);
-extern void Hal_SetContinuousTx (PADAPTER pAdapter, u8 bStart);
+extern void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, uint8_t bStart);
+extern void Hal_SetSingleToneTx ( PADAPTER pAdapter , uint8_t bStart );
+extern void Hal_SetSingleCarrierTx (PADAPTER pAdapter, uint8_t bStart);
+extern void Hal_SetContinuousTx (PADAPTER pAdapter, uint8_t bStart);
 extern void Hal_SetBandwidth(PADAPTER pAdapter);
 
 extern void Hal_SetDataRate(PADAPTER pAdapter);
 extern void Hal_SetChannel(PADAPTER pAdapter);
 extern void Hal_SetAntennaPathPower(PADAPTER pAdapter);
-extern s32 Hal_SetThermalMeter(PADAPTER pAdapter, u8 target_ther);
-extern s32 Hal_SetPowerTracking(PADAPTER padapter, u8 enable);
-extern void Hal_GetPowerTracking(PADAPTER padapter, u8 * enable);
-extern void Hal_GetThermalMeter(PADAPTER pAdapter, u8 *value);
+extern s32 Hal_SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther);
+extern s32 Hal_SetPowerTracking(PADAPTER padapter, uint8_t enable);
+extern void Hal_GetPowerTracking(PADAPTER padapter, uint8_t * enable);
+extern void Hal_GetThermalMeter(PADAPTER pAdapter, uint8_t *value);
 extern void Hal_mpt_SwitchRfSetting(PADAPTER pAdapter);
 extern void Hal_MPT_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14);
 extern void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven);
-extern void Hal_SetCCKTxPower(PADAPTER pAdapter, u8 * TxPower);
-extern void Hal_SetOFDMTxPower(PADAPTER pAdapter, u8 * TxPower);
+extern void Hal_SetCCKTxPower(PADAPTER pAdapter, uint8_t * TxPower);
+extern void Hal_SetOFDMTxPower(PADAPTER pAdapter, uint8_t * TxPower);
 extern void Hal_TriggerRFThermalMeter(PADAPTER pAdapter);
-extern u8 Hal_ReadRFThermalMeter(PADAPTER pAdapter);
-extern void Hal_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart);
-extern void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart);
+extern uint8_t Hal_ReadRFThermalMeter(PADAPTER pAdapter);
+extern void Hal_SetCCKContinuousTx(PADAPTER pAdapter, uint8_t bStart);
+extern void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, uint8_t bStart);
 extern void Hal_ProSetCrystalCap (PADAPTER pAdapter , u32 CrystalCapVal);
 extern void _rtw_mp_xmit_priv(struct xmit_priv *pxmitpriv);
 extern void MP_PHY_SetRFPathSwitch(PADAPTER pAdapter ,BOOLEAN bMain);
-extern ULONG mpt_ProQueryCalTxPower(PADAPTER	pAdapter,u8 RfPath);
+extern ULONG mpt_ProQueryCalTxPower(PADAPTER	pAdapter,uint8_t RfPath);
 
 #endif //_RTW_MP_H_
 

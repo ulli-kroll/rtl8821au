@@ -92,7 +92,7 @@
 
 enum{
 	UP_LINK,
-	DOWN_LINK,	
+	DOWN_LINK,
 };
 typedef enum _RT_MEDIA_STATUS {
 	RT_MEDIA_DISCONNECT = 0,
@@ -122,12 +122,12 @@ typedef enum _FIRMWARE_SOURCE {
 
 void dump_chip_info(HAL_VERSION	ChipVersion);
 
-u8	//return the final channel plan decision
+uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
 	IN	PADAPTER	padapter,
-	IN	u8			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
-	IN	u8			sw_channel_plan,	//channel plan from SW (registry/module param)
-	IN	u8			def_channel_plan,	//channel plan used when the former two is invalid
+	IN	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
+	IN	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
+	IN	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
 	IN	BOOLEAN		AutoLoadFail
 	);
 
@@ -137,25 +137,25 @@ HAL_IsLegalChannel(
 	IN	u32			Channel
 	);
 
-u8	MRateToHwRate(u8 rate);
+uint8_t	MRateToHwRate(uint8_t rate);
 
 void	HalSetBrateCfg(
 	IN PADAPTER		Adapter,
-	IN u8			*mBratesOS,
+	IN uint8_t			*mBratesOS,
 	OUT u16			*pBrateCfg);
 
 BOOLEAN
 Hal_MappingOutPipe(
 	IN	PADAPTER	pAdapter,
-	IN	u8		NumOutPipe
+	IN	uint8_t		NumOutPipe
 	);
 
 void hal_init_macaddr(_adapter *adapter);
 
 void c2h_evt_clear(_adapter *adapter);
-s32 c2h_evt_read(_adapter *adapter, u8 *buf);
+s32 c2h_evt_read(_adapter *adapter, uint8_t *buf);
 
-u8 rtw_hal_networktype_to_raid(_adapter *adapter,unsigned char network_type);
-u8 rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type);
+uint8_t rtw_hal_networktype_to_raid(_adapter *adapter,unsigned char network_type);
+uint8_t rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type);
 #endif //__HAL_COMMON_H__
 

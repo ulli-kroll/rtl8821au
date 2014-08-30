@@ -49,17 +49,17 @@
 
 //Country codes
 #define USA							0x555320
-#define EUROPE						0x1 //temp, should be provided later	
-#define JAPAN						0x2 //temp, should be provided later	
+#define EUROPE						0x1 //temp, should be provided later
+#define JAPAN						0x2 //temp, should be provided later
 
 struct	regulatory_class {
 	u32	starting_freq;					//MHz,
-	u8	channel_set[MAX_CHANNEL_NUM];
-	u8	channel_cck_power[MAX_CHANNEL_NUM];//dbm
-	u8	channel_ofdm_power[MAX_CHANNEL_NUM];//dbm
-	u8	txpower_limit;  				//dbm
-	u8	channel_spacing;				//MHz
-	u8	modem;
+	uint8_t	channel_set[MAX_CHANNEL_NUM];
+	uint8_t	channel_cck_power[MAX_CHANNEL_NUM];//dbm
+	uint8_t	channel_ofdm_power[MAX_CHANNEL_NUM];//dbm
+	uint8_t	txpower_limit;  				//dbm
+	uint8_t	channel_spacing;				//MHz
+	uint8_t	modem;
 };
 
 typedef enum _CAPABILITY{

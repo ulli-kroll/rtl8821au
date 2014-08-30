@@ -64,27 +64,27 @@ union pn48	{
 #ifdef CONFIG_LITTLE_ENDIAN
 
 struct {
-  u8 TSC0;
-  u8 TSC1;
-  u8 TSC2;
-  u8 TSC3;
-  u8 TSC4;
-  u8 TSC5;
-  u8 TSC6;
-  u8 TSC7;
+  uint8_t TSC0;
+  uint8_t TSC1;
+  uint8_t TSC2;
+  uint8_t TSC3;
+  uint8_t TSC4;
+  uint8_t TSC5;
+  uint8_t TSC6;
+  uint8_t TSC7;
 } _byte_;
 
 #elif defined(CONFIG_BIG_ENDIAN)
 
 struct {
-  u8 TSC7;
-  u8 TSC6;
-  u8 TSC5;
-  u8 TSC4;
-  u8 TSC3;
-  u8 TSC2;
-  u8 TSC1;
-  u8 TSC0;
+  uint8_t TSC7;
+  uint8_t TSC6;
+  uint8_t TSC5;
+  uint8_t TSC4;
+  uint8_t TSC3;
+  uint8_t TSC2;
+  uint8_t TSC1;
+  uint8_t TSC0;
 } _byte_;
 
 #endif
@@ -92,17 +92,17 @@ struct {
 };
 
 union Keytype {
-        u8   skey[16];
+        uint8_t   skey[16];
         u32    lkey[4];
 };
 
 
 typedef struct _RT_PMKID_LIST
 {
-	u8						bUsed;
-	u8 						Bssid[6];
-	u8						PMKID[16];
-	u8						SsidBuf[33];
+	uint8_t						bUsed;
+	uint8_t 						Bssid[6];
+	uint8_t						PMKID[16];
+	uint8_t						SsidBuf[33];
 	u8*						ssid_octet;
 	u16 						ssid_length;
 } RT_PMKID_LIST, *PRT_PMKID_LIST;
@@ -136,17 +136,17 @@ struct security_priv
 	unsigned int wpa2_pairwise_cipher;
 #endif
 
-	u8 wps_ie[MAX_WPS_IE_LEN];//added in assoc req
+	uint8_t wps_ie[MAX_WPS_IE_LEN];//added in assoc req
 	int wps_ie_len;
 
 
-	u8	binstallGrpkey;
-	u8	busetkipkey;
+	uint8_t	binstallGrpkey;
+	uint8_t	busetkipkey;
 	//_timer tkip_timer;
-	u8	bcheck_grpkey;
-	u8	bgrpkey_handshake;
+	uint8_t	bcheck_grpkey;
+	uint8_t	bgrpkey_handshake;
 
-	//u8	packet_cnt;//unused, removed
+	//uint8_t	packet_cnt;//unused, removed
 
 	s32	sw_encrypt;//from registry_priv
 	s32	sw_decrypt;//from registry_priv
@@ -162,36 +162,36 @@ struct security_priv
 
 	NDIS_802_11_WEP ndiswep;
 
-	u8 assoc_info[600];
-	u8 szofcapability[256]; //for wpa2 usage
-	u8 oidassociation[512]; //for wpa/wpa2 usage
-	u8 authenticator_ie[256];  //store ap security information element
-	u8 supplicant_ie[256];  //store sta security information element
+	uint8_t assoc_info[600];
+	uint8_t szofcapability[256]; //for wpa2 usage
+	uint8_t oidassociation[512]; //for wpa/wpa2 usage
+	uint8_t authenticator_ie[256];  //store ap security information element
+	uint8_t supplicant_ie[256];  //store sta security information element
 
 
 	//for tkip countermeasure
 	u32 last_mic_err_time;
-	u8	btkip_countermeasure;
-	u8	btkip_wait_report;
+	uint8_t	btkip_countermeasure;
+	uint8_t	btkip_wait_report;
 	u32 btkip_countermeasure_time;
 
 	//---------------------------------------------------------------------------
 	// For WPA2 Pre-Authentication.
 	//---------------------------------------------------------------------------
-	//u8				RegEnablePreAuth;				// Default value: Pre-Authentication enabled or not, from registry "EnablePreAuth". Added by Annie, 2005-11-01.
-	//u8				EnablePreAuthentication;			// Current Value: Pre-Authentication enabled or not.
+	//uint8_t				RegEnablePreAuth;				// Default value: Pre-Authentication enabled or not, from registry "EnablePreAuth". Added by Annie, 2005-11-01.
+	//uint8_t				EnablePreAuthentication;			// Current Value: Pre-Authentication enabled or not.
 	RT_PMKID_LIST		PMKIDList[NUM_PMKID_CACHE];	// Renamed from PreAuthKey[NUM_PRE_AUTH_KEY]. Annie, 2006-10-13.
-	u8				PMKIDIndex;
+	uint8_t				PMKIDIndex;
 	//u32				PMKIDCount;						// Added by Annie, 2006-10-13.
-	//u8				szCapability[256];				// For WPA2-PSK using zero-config, by Annie, 2005-09-20.
+	//uint8_t				szCapability[256];				// For WPA2-PSK using zero-config, by Annie, 2005-09-20.
 
-	u8 bWepDefaultKeyIdxSet;
+	uint8_t bWepDefaultKeyIdxSet;
 };
 
 struct sha256_state {
 	u64 length;
 	u32 state[8], curlen;
-	u8 buf[64];
+	uint8_t buf[64];
 };
 
 #define GET_ENCRY_ALGO(psecuritypriv, psta, encry_algo, bmcst)\
@@ -201,16 +201,16 @@ do{\
 		case dot11AuthAlgrthm_Open:\
 		case dot11AuthAlgrthm_Shared:\
 		case dot11AuthAlgrthm_Auto:\
-			encry_algo = (u8)psecuritypriv->dot11PrivacyAlgrthm;\
+			encry_algo = (uint8_t)psecuritypriv->dot11PrivacyAlgrthm;\
 			break;\
 		case dot11AuthAlgrthm_8021X:\
 			if(bmcst)\
-				encry_algo = (u8)psecuritypriv->dot118021XGrpPrivacy;\
+				encry_algo = (uint8_t)psecuritypriv->dot118021XGrpPrivacy;\
 			else\
-				encry_algo =(u8) psta->dot118021XPrivacy;\
+				encry_algo =(uint8_t) psta->dot118021XPrivacy;\
 			break;\
 	     case dot11AuthAlgrthm_WAPI:\
-		     encry_algo = (u8)psecuritypriv->dot11PrivacyAlgrthm;\
+		     encry_algo = (uint8_t)psecuritypriv->dot11PrivacyAlgrthm;\
 		     break;\
 	}\
 }while(0)
@@ -278,8 +278,8 @@ extern const u32 Td2[256];
 extern const u32 Td3[256];
 extern const u32 Td4[256];
 extern const u32 rcon[10];
-extern const u8 Td4s[256];
-extern const u8 rcons[10];
+extern const uint8_t Td4s[256];
+extern const uint8_t rcons[10];
 
 #define RCON(i) (rcons[(i)] << 24)
 
@@ -319,8 +319,8 @@ static inline u32 rotr(u32 val, int bits)
 			((u32)(pt)[2] <<  8) ^ ((u32)(pt)[3]))
 
 #define PUTU32(ct, st) { \
-(ct)[0] = (u8)((st) >> 24); (ct)[1] = (u8)((st) >> 16); \
-(ct)[2] = (u8)((st) >>  8); (ct)[3] = (u8)(st); }
+(ct)[0] = (uint8_t)((st) >> 24); (ct)[1] = (uint8_t)((st) >> 16); \
+(ct)[2] = (uint8_t)((st) >>  8); (ct)[3] = (uint8_t)(st); }
 
 #define WPA_GET_BE32(a) ((((u32) (a)[0]) << 24) | (((u32) (a)[1]) << 16) | \
 			 (((u32) (a)[2]) << 8) | ((u32) (a)[3]))
@@ -333,22 +333,22 @@ static inline u32 rotr(u32 val, int bits)
 
 #define WPA_PUT_BE32(a, val)					\
 	do {							\
-		(a)[0] = (u8) ((((u32) (val)) >> 24) & 0xff);	\
-		(a)[1] = (u8) ((((u32) (val)) >> 16) & 0xff);	\
-		(a)[2] = (u8) ((((u32) (val)) >> 8) & 0xff);	\
-		(a)[3] = (u8) (((u32) (val)) & 0xff);		\
+		(a)[0] = (uint8_t) ((((u32) (val)) >> 24) & 0xff);	\
+		(a)[1] = (uint8_t) ((((u32) (val)) >> 16) & 0xff);	\
+		(a)[2] = (uint8_t) ((((u32) (val)) >> 8) & 0xff);	\
+		(a)[3] = (uint8_t) (((u32) (val)) & 0xff);		\
 	} while (0)
 
 #define WPA_PUT_BE64(a, val)				\
 	do {						\
-		(a)[0] = (u8) (((u64) (val)) >> 56);	\
-		(a)[1] = (u8) (((u64) (val)) >> 48);	\
-		(a)[2] = (u8) (((u64) (val)) >> 40);	\
-		(a)[3] = (u8) (((u64) (val)) >> 32);	\
-		(a)[4] = (u8) (((u64) (val)) >> 24);	\
-		(a)[5] = (u8) (((u64) (val)) >> 16);	\
-		(a)[6] = (u8) (((u64) (val)) >> 8);	\
-		(a)[7] = (u8) (((u64) (val)) & 0xff);	\
+		(a)[0] = (uint8_t) (((u64) (val)) >> 56);	\
+		(a)[1] = (uint8_t) (((u64) (val)) >> 48);	\
+		(a)[2] = (uint8_t) (((u64) (val)) >> 40);	\
+		(a)[3] = (uint8_t) (((u64) (val)) >> 32);	\
+		(a)[4] = (uint8_t) (((u64) (val)) >> 24);	\
+		(a)[5] = (uint8_t) (((u64) (val)) >> 16);	\
+		(a)[6] = (uint8_t) (((u64) (val)) >> 8);	\
+		(a)[7] = (uint8_t) (((u64) (val)) & 0xff);	\
 	} while (0)
 
 /* ===== start - public domain SHA256 implementation ===== */
@@ -390,34 +390,34 @@ static const unsigned long K[64] = {
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 #endif
 
-void rtw_secmicsetkey(struct mic_data *pmicdata, u8 * key );
-void rtw_secmicappendbyte(struct mic_data *pmicdata, u8 b );
-void rtw_secmicappend(struct mic_data *pmicdata, u8 * src, u32 nBytes );
-void rtw_secgetmic(struct mic_data *pmicdata, u8 * dst );
+void rtw_secmicsetkey(struct mic_data *pmicdata, uint8_t * key );
+void rtw_secmicappendbyte(struct mic_data *pmicdata, uint8_t b );
+void rtw_secmicappend(struct mic_data *pmicdata, uint8_t * src, u32 nBytes );
+void rtw_secgetmic(struct mic_data *pmicdata, uint8_t * dst );
 
 void rtw_seccalctkipmic(
-	u8 * key,
-	u8 *header,
-	u8 *data,
+	uint8_t * key,
+	uint8_t *header,
+	uint8_t *data,
 	u32 data_len,
-	u8 *Miccode,
-	u8   priority);
+	uint8_t *Miccode,
+	uint8_t   priority);
 
-u32 rtw_aes_encrypt(_adapter *padapter, u8 *pxmitframe);
-u32 rtw_tkip_encrypt(_adapter *padapter, u8 *pxmitframe);
-void rtw_wep_encrypt(_adapter *padapter, u8  *pxmitframe);
+u32 rtw_aes_encrypt(_adapter *padapter, uint8_t *pxmitframe);
+u32 rtw_tkip_encrypt(_adapter *padapter, uint8_t *pxmitframe);
+void rtw_wep_encrypt(_adapter *padapter, uint8_t  *pxmitframe);
 
-u32 rtw_aes_decrypt(_adapter *padapter, u8  *precvframe);
-u32 rtw_tkip_decrypt(_adapter *padapter, u8  *precvframe);
-void rtw_wep_decrypt(_adapter *padapter, u8  *precvframe);
+u32 rtw_aes_decrypt(_adapter *padapter, uint8_t  *precvframe);
+u32 rtw_tkip_decrypt(_adapter *padapter, uint8_t  *precvframe);
+void rtw_wep_decrypt(_adapter *padapter, uint8_t  *precvframe);
 
 #ifdef CONFIG_TDLS
 void wpa_tdls_generate_tpk(_adapter *padapter, struct sta_info *psta);
-int wpa_tdls_ftie_mic(u8 *kck, u8 trans_seq,
-						u8 *lnkid, u8 *rsnie, u8 *timeoutie, u8 *ftie,
-						u8 *mic);
-int tdls_verify_mic(u8 *kck, u8 trans_seq,
-						u8 *lnkid, u8 *rsnie, u8 *timeoutie, u8 *ftie);
+int wpa_tdls_ftie_mic(uint8_t *kck, uint8_t trans_seq,
+						uint8_t *lnkid, uint8_t *rsnie, uint8_t *timeoutie, uint8_t *ftie,
+						uint8_t *mic);
+int tdls_verify_mic(uint8_t *kck, uint8_t trans_seq,
+						uint8_t *lnkid, uint8_t *rsnie, uint8_t *timeoutie, uint8_t *ftie);
 #endif //CONFIG_TDLS
 
 void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS);

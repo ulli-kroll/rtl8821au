@@ -24,18 +24,18 @@
 
 struct intf_priv {
 
-	u8 *intf_dev;
+	uint8_t *intf_dev;
 	u32	max_iosz; 	//USB2.0: 128, USB1.1: 64, SDIO:64
 	u32	max_xmitsz; //USB2.0: unlimited, SDIO:512
 	u32	max_recvsz; //USB2.0: unlimited, SDIO:512
 
-	volatile u8 *io_rwmem;
-	volatile u8 *allocated_io_rwmem;
+	volatile uint8_t *io_rwmem;
+	volatile uint8_t *allocated_io_rwmem;
 	u32	io_wsz; //unit: 4bytes
 	u32	io_rsz;//unit: 4bytes
-	u8 intf_status;
+	uint8_t intf_status;
 
-	void (*_bus_io)(u8 *priv);
+	void (*_bus_io)(uint8_t *priv);
 
 /*
 Under Sync. IRP (SDIO/USB)
@@ -53,12 +53,12 @@ The protection mechanism is through the pending queue.
 	// when in USB, IO is through interrupt in/out endpoints
 	struct usb_device 	*udev;
 	PURB	piorw_urb;
-	u8 io_irp_cnt;
-	u8 bio_irp_pending;
+	uint8_t io_irp_cnt;
+	uint8_t bio_irp_pending;
 	struct semaphore io_retevt;
 	_timer	io_timer;
-	u8 bio_irp_timeout;
-	u8 bio_timer_cancel;
+	uint8_t bio_irp_timeout;
+	uint8_t bio_timer_cancel;
 	#endif
 #endif
 
@@ -71,9 +71,9 @@ int rtw_start_pseudo_adhoc(_adapter *padapter);
 int rtw_stop_pseudo_adhoc(_adapter *padapter);
 #endif
 
-u8 rtw_init_drv_sw(_adapter *padapter);
-u8 rtw_free_drv_sw(_adapter *padapter);
-u8 rtw_reset_drv_sw(_adapter *padapter);
+uint8_t rtw_init_drv_sw(_adapter *padapter);
+uint8_t rtw_free_drv_sw(_adapter *padapter);
+uint8_t rtw_reset_drv_sw(_adapter *padapter);
 
 u32 rtw_start_drv_threads(_adapter *padapter);
 void rtw_stop_drv_threads (_adapter *padapter);

@@ -62,11 +62,11 @@ void	PHY_SetBBReg8812(	IN	PADAPTER		Adapter,
 								IN	u32			BitMask,
 								IN	u32			Data	);
 u32	PHY_QueryRFReg8812(	IN	PADAPTER	Adapter,
-								IN	u8			eRFPath,
+								IN	uint8_t			eRFPath,
 								IN	u32			RegAddr,
 								IN	u32			BitMask	);
 void	PHY_SetRFReg8812(	IN	PADAPTER		Adapter,
-								IN	u8			eRFPath,
+								IN	uint8_t			eRFPath,
 								IN	u32			RegAddr,
 								IN	u32			BitMask,
 								IN	u32			Data	);
@@ -109,8 +109,8 @@ PHY_GetPowerLimitValue(
 	IN	BAND_TYPE			Band,
 	IN	CHANNEL_WIDTH		Bandwidth,
 	IN	RF_PATH				RfPath,
-	IN	u8					DataRate,
-	IN	u8					Channel
+	IN	uint8_t					DataRate,
+	IN	uint8_t					Channel
 	);
 
 /* RF config */
@@ -118,27 +118,27 @@ PHY_GetPowerLimitValue(
 s32
 PHY_SwitchWirelessBand8812(
 	IN PADAPTER		Adapter,
-	IN u8			Band
+	IN uint8_t			Band
 );
 
 //
 // BB TX Power R/W
 //
 void	PHY_GetTxPowerLevel8812(	IN PADAPTER	Adapter, OUT u32*	powerlevel	);
-void	PHY_SetTxPowerLevel8812(	IN PADAPTER	Adapter, IN u8	Channel	);
+void	PHY_SetTxPowerLevel8812(	IN PADAPTER	Adapter, IN uint8_t	Channel	);
 BOOLEAN	PHY_UpdateTxPowerDbm8812( IN PADAPTER	Adapter, IN int	powerInDbm	);
 u32 PHY_GetTxPowerIndex_8812A(
 	IN	PADAPTER			pAdapter,
-	IN	u8					RFPath,
-	IN	u8					Rate,
+	IN	uint8_t					RFPath,
+	IN	uint8_t					Rate,
 	IN	CHANNEL_WIDTH		BandWidth,
-	IN	u8					Channel
+	IN	uint8_t					Channel
 	);
 
 u32 PHY_GetTxBBSwing_8812A(
 	IN	PADAPTER	Adapter,
 	IN	BAND_TYPE 	Band,
-	IN	u8			RFPath
+	IN	uint8_t			RFPath
 	);
 
 VOID
@@ -155,7 +155,7 @@ VOID
 PHY_SetBWMode8812(
 	IN	PADAPTER			pAdapter,
 	IN	CHANNEL_WIDTH		Bandwidth,
-	IN	u8					Offset
+	IN	uint8_t					Offset
 );
 
 //
@@ -164,17 +164,17 @@ PHY_SetBWMode8812(
 VOID
 PHY_SwChnl8812(
 	IN	PADAPTER	Adapter,
-	IN	u8			channel
+	IN	uint8_t			channel
 );
 
 
 VOID
 PHY_SetSwChnlBWMode8812(
 	IN	PADAPTER			Adapter,
-	IN	u8					channel,
+	IN	uint8_t					channel,
 	IN	CHANNEL_WIDTH		Bandwidth,
-	IN	u8					Offset40,
-	IN	u8					Offset80
+	IN	uint8_t					Offset40,
+	IN	uint8_t					Offset80
 );
 
 //

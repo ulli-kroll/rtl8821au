@@ -70,74 +70,74 @@ enum _EFUSE_DEF_TYPE {
 
 /*------------------------------Define structure----------------------------*/
 typedef struct PG_PKT_STRUCT_A{
-	u8 offset;
-	u8 word_en;
-	u8 data[8];	
-	u8 word_cnts;
+	uint8_t offset;
+	uint8_t word_en;
+	uint8_t data[8];
+	uint8_t word_cnts;
 }PGPKT_STRUCT,*PPGPKT_STRUCT;
 
 /*------------------------------Define structure----------------------------*/
 typedef struct _EFUSE_HAL{
-	u8	fakeEfuseBank;
+	uint8_t	fakeEfuseBank;
 	u32	fakeEfuseUsedBytes;
-	u8	fakeEfuseContent[EFUSE_MAX_HW_SIZE];
-	u8	fakeEfuseInitMap[EFUSE_MAX_MAP_LEN];
-	u8	fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN];
+	uint8_t	fakeEfuseContent[EFUSE_MAX_HW_SIZE];
+	uint8_t	fakeEfuseInitMap[EFUSE_MAX_MAP_LEN];
+	uint8_t	fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN];
 
 	u16	BTEfuseUsedBytes;
-	u8	BTEfuseUsedPercentage;
-	u8	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-	u8	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
-	u8	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
+	uint8_t	BTEfuseUsedPercentage;
+	uint8_t	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
+	uint8_t	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
+	uint8_t	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
 
 	u16	fakeBTEfuseUsedBytes;
-	u8	fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-	u8	fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
-	u8	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
+	uint8_t	fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
+	uint8_t	fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
+	uint8_t	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
 }EFUSE_HAL, *PEFUSE_HAL;
 
 
 /*------------------------Export global variable----------------------------*/
-extern u8 fakeEfuseBank;
+extern uint8_t fakeEfuseBank;
 extern u32 fakeEfuseUsedBytes;
-extern u8 fakeEfuseContent[];
-extern u8 fakeEfuseInitMap[];
-extern u8 fakeEfuseModifiedMap[];
+extern uint8_t fakeEfuseContent[];
+extern uint8_t fakeEfuseInitMap[];
+extern uint8_t fakeEfuseModifiedMap[];
 
 extern u32 BTEfuseUsedBytes;
-extern u8 BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-extern u8 BTEfuseInitMap[];
-extern u8 BTEfuseModifiedMap[];
+extern uint8_t BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
+extern uint8_t BTEfuseInitMap[];
+extern uint8_t BTEfuseModifiedMap[];
 
 extern u32 fakeBTEfuseUsedBytes;
-extern u8 fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-extern u8 fakeBTEfuseInitMap[];
-extern u8 fakeBTEfuseModifiedMap[];
+extern uint8_t fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
+extern uint8_t fakeBTEfuseInitMap[];
+extern uint8_t fakeBTEfuseModifiedMap[];
 /*------------------------Export global variable----------------------------*/
 
-u8	efuse_GetCurrentSize(PADAPTER padapter, u16 *size);
+uint8_t	efuse_GetCurrentSize(PADAPTER padapter, u16 *size);
 u16	efuse_GetMaxSize(PADAPTER padapter);
-u8	rtw_efuse_access(PADAPTER padapter, u8 bRead, u16 start_addr, u16 cnts, u8 *data);
-u8	rtw_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
-u8	rtw_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
-u8	rtw_BT_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
-u8 	rtw_BT_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
+uint8_t	rtw_efuse_access(PADAPTER padapter, uint8_t bRead, u16 start_addr, u16 cnts, uint8_t *data);
+uint8_t	rtw_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
+uint8_t	rtw_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
+uint8_t	rtw_BT_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
+uint8_t 	rtw_BT_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
 
-u16	Efuse_GetCurrentSize(PADAPTER pAdapter, u8 efuseType, BOOLEAN bPseudoTest);
-u8	Efuse_CalculateWordCnts(u8 word_en);
-void	ReadEFuseByte(PADAPTER Adapter, u16 _offset, u8 *pbuf, BOOLEAN bPseudoTest) ;
-void	EFUSE_GetEfuseDefinition(PADAPTER pAdapter, u8 efuseType, u8 type, void *pOut, BOOLEAN bPseudoTest);
-u8	efuse_OneByteRead(PADAPTER pAdapter, u16 addr, u8 *data, BOOLEAN	 bPseudoTest);
-u8	efuse_OneByteWrite(PADAPTER pAdapter, u16 addr, u8 data, BOOLEAN	 bPseudoTest);
+u16	Efuse_GetCurrentSize(PADAPTER pAdapter, uint8_t efuseType, BOOLEAN bPseudoTest);
+uint8_t	Efuse_CalculateWordCnts(uint8_t word_en);
+void	ReadEFuseByte(PADAPTER Adapter, u16 _offset, uint8_t *pbuf, BOOLEAN bPseudoTest) ;
+void	EFUSE_GetEfuseDefinition(PADAPTER pAdapter, uint8_t efuseType, uint8_t type, void *pOut, BOOLEAN bPseudoTest);
+uint8_t	efuse_OneByteRead(PADAPTER pAdapter, u16 addr, uint8_t *data, BOOLEAN	 bPseudoTest);
+uint8_t	efuse_OneByteWrite(PADAPTER pAdapter, u16 addr, uint8_t data, BOOLEAN	 bPseudoTest);
 
-void	Efuse_PowerSwitch(PADAPTER pAdapter,u8	bWrite,u8	 PwrState);
-int 	Efuse_PgPacketRead(PADAPTER pAdapter, u8 offset, u8 *data, BOOLEAN bPseudoTest);
-int 	Efuse_PgPacketWrite(PADAPTER pAdapter, u8 offset, u8 word_en, u8 *data, BOOLEAN bPseudoTest);
-void	efuse_WordEnableDataRead(u8 word_en, u8 *sourdata, u8 *targetdata);
-u8	Efuse_WordEnableDataWrite(PADAPTER pAdapter, u16 efuse_addr, u8 word_en, u8 *data, BOOLEAN bPseudoTest);
+void	Efuse_PowerSwitch(PADAPTER pAdapter,uint8_t	bWrite,uint8_t	 PwrState);
+int 	Efuse_PgPacketRead(PADAPTER pAdapter, uint8_t offset, uint8_t *data, BOOLEAN bPseudoTest);
+int 	Efuse_PgPacketWrite(PADAPTER pAdapter, uint8_t offset, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);
+void	efuse_WordEnableDataRead(uint8_t word_en, uint8_t *sourdata, uint8_t *targetdata);
+uint8_t	Efuse_WordEnableDataWrite(PADAPTER pAdapter, u16 efuse_addr, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);
 
-u8	EFUSE_Read1Byte(PADAPTER pAdapter, u16 Address);
-void	EFUSE_ShadowMapUpdate(PADAPTER pAdapter, u8 efuseType, BOOLEAN bPseudoTest);
-void	EFUSE_ShadowRead(PADAPTER pAdapter, u8 Type, u16 Offset, u32 *Value);
+uint8_t	EFUSE_Read1Byte(PADAPTER pAdapter, u16 Address);
+void	EFUSE_ShadowMapUpdate(PADAPTER pAdapter, uint8_t efuseType, BOOLEAN bPseudoTest);
+void	EFUSE_ShadowRead(PADAPTER pAdapter, uint8_t Type, u16 Offset, u32 *Value);
 #endif
 

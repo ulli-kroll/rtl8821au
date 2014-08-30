@@ -542,17 +542,17 @@
 #define MAX_RF_PATH_NUM	2
 #define MAX_CHNL_GROUP		3+9
 typedef struct _TxPowerInfo{
-	u8 CCKIndex[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	u8 HT40_1SIndex[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	u8 HT40_2SIndexDiff[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
+	uint8_t CCKIndex[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
+	uint8_t HT40_1SIndex[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
+	uint8_t HT40_2SIndexDiff[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
 	s8 HT20IndexDiff[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	u8 OFDMIndexDiff[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	u8 HT40MaxOffset[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	u8 HT20MaxOffset[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	u8 TSSI_A[3];
-	u8 TSSI_B[3];
-	u8 TSSI_A_5G[3];		//5GL/5GM/5GH
-	u8 TSSI_B_5G[3];
+	uint8_t OFDMIndexDiff[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
+	uint8_t HT40MaxOffset[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
+	uint8_t HT20MaxOffset[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
+	uint8_t TSSI_A[3];
+	uint8_t TSSI_B[3];
+	uint8_t TSSI_A_5G[3];		//5GL/5GM/5GH
+	uint8_t TSSI_B_5G[3];
 }TxPowerInfo, *PTxPowerInfo;
 
 
@@ -595,8 +595,8 @@ typedef struct _TxPowerInfo{
 #define 	MAX_TX_COUNT				4
 
 typedef struct _TxPowerInfo24G{
-	u8 IndexCCK_Base[MAX_RF_PATH][MAX_CHNL_GROUP_24G];
-	u8 IndexBW40_Base[MAX_RF_PATH][MAX_CHNL_GROUP_24G-1];
+	uint8_t IndexCCK_Base[MAX_RF_PATH][MAX_CHNL_GROUP_24G];
+	uint8_t IndexBW40_Base[MAX_RF_PATH][MAX_CHNL_GROUP_24G-1];
 	//If only one tx, only BW20 and OFDM are used.
 	s8 CCK_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8 OFDM_Diff[MAX_RF_PATH][MAX_TX_COUNT];
@@ -605,7 +605,7 @@ typedef struct _TxPowerInfo24G{
 }TxPowerInfo24G, *PTxPowerInfo24G;
 
 typedef struct _TxPowerInfo5G{
-	u8 IndexBW40_Base[MAX_RF_PATH][MAX_CHNL_GROUP_5G];
+	uint8_t IndexBW40_Base[MAX_RF_PATH][MAX_CHNL_GROUP_5G];
 	//If only one tx, only BW20, OFDM, BW80 and BW160 are used.
 	s8 OFDM_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8 BW20_Diff[MAX_RF_PATH][MAX_TX_COUNT];

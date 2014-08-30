@@ -152,27 +152,27 @@ enum { // for ips_mode
 struct pwrctrl_priv
 {
 	struct semaphore lock;
-	volatile u8 rpwm; // requested power state for fw
-	volatile u8 cpwm; // fw current power state. updated when 1. read from HCPWM 2. driver lowers power level
-	volatile u8 tog; // toggling
-	volatile u8 cpwm_tog; // toggling
+	volatile uint8_t rpwm; // requested power state for fw
+	volatile uint8_t cpwm; // fw current power state. updated when 1. read from HCPWM 2. driver lowers power level
+	volatile uint8_t tog; // toggling
+	volatile uint8_t cpwm_tog; // toggling
 
-	u8	pwr_mode;
-	u8	smart_ps;
-	u8	bcn_ant_mode;
+	uint8_t	pwr_mode;
+	uint8_t	smart_ps;
+	uint8_t	bcn_ant_mode;
 
 	u32	alives;
 	_workitem cpwm_event;
 #ifdef CONFIG_LPS_RPWM_TIMER
-	u8 brpwmtimeout;
+	uint8_t brpwmtimeout;
 	_workitem rpwmtimeoutwi;
 	_timer pwr_rpwm_timer;
 #endif // CONFIG_LPS_RPWM_TIMER
-	u8	bpower_saving;
+	uint8_t	bpower_saving;
 
-	u8	b_hw_radio_off;
-	u8	reg_rfoff;
-	u8	reg_pdnmode; //powerdown mode
+	uint8_t	b_hw_radio_off;
+	uint8_t	reg_rfoff;
+	uint8_t	reg_pdnmode; //powerdown mode
 	u32	rfoff_reason;
 
 	//RF OFF Level
@@ -183,37 +183,37 @@ struct pwrctrl_priv
 	uint 	ips_enter_cnts;
 	uint 	ips_leave_cnts;
 
-	u8	ips_mode;
-	u8	ips_mode_req; // used to accept the mode setting request, will update to ipsmode later
+	uint8_t	ips_mode;
+	uint8_t	ips_mode_req; // used to accept the mode setting request, will update to ipsmode later
 	uint bips_processing;
 	u32 ips_deny_time; /* will deny IPS when system time is smaller than this */
-	u8 ps_processing; /* temporarily used to mark whether in rtw_ps_processor */
+	uint8_t ps_processing; /* temporarily used to mark whether in rtw_ps_processor */
 
-	u8	bLeisurePs;
-	u8	LpsIdleCount;
-	u8	power_mgnt;
-	u8	bFwCurrentInPSMode;
+	uint8_t	bLeisurePs;
+	uint8_t	LpsIdleCount;
+	uint8_t	power_mgnt;
+	uint8_t	bFwCurrentInPSMode;
 	u32	DelayLPSLastTimeStamp;
-	u8 	btcoex_rfon;
+	uint8_t 	btcoex_rfon;
 	s32		pnp_current_pwr_state;
-	u8		pnp_bstop_trx;
+	uint8_t		pnp_bstop_trx;
 
 
-	u8		bInternalAutoSuspend;
-	u8		bInSuspend;
-	u8		bSupportRemoteWakeup;
+	uint8_t		bInternalAutoSuspend;
+	uint8_t		bInSuspend;
+	uint8_t		bSupportRemoteWakeup;
 #ifdef CONFIG_WOWLAN
-	u8		wowlan_mode;
-	u8		wowlan_pattern;
-	u8		wowlan_magic;
-	u8		wowlan_unicast;
-	u8		wowlan_pattern_idx;
-	u8		wowlan_wake_reason;
+	uint8_t		wowlan_mode;
+	uint8_t		wowlan_pattern;
+	uint8_t		wowlan_magic;
+	uint8_t		wowlan_unicast;
+	uint8_t		wowlan_pattern_idx;
+	uint8_t		wowlan_wake_reason;
 	u32		wowlan_pattern_context[8][5];
 #endif // CONFIG_WOWLAN
 	_timer 	pwr_state_check_timer;
 	int		pwr_state_check_interval;
-	u8		pwr_state_check_cnts;
+	uint8_t		pwr_state_check_cnts;
 
 	int 		ps_flag;
 
@@ -221,11 +221,11 @@ struct pwrctrl_priv
 	//rt_rf_power_state 	current_rfpwrstate;
 	rt_rf_power_state	change_rfpwrstate;
 
-	u8		wepkeymask;
-	u8		bHWPowerdown;//if support hw power down
-	u8		bHWPwrPindetect;
-	u8		bkeepfwalive;
-	u8		brfoffbyhw;
+	uint8_t		wepkeymask;
+	uint8_t		bHWPowerdown;//if support hw power down
+	uint8_t		bHWPwrPindetect;
+	uint8_t		bkeepfwalive;
+	uint8_t		brfoffbyhw;
 	unsigned long PS_BBRegBackup[PSBBREG_TOTALCNT];
 
 	#ifdef CONFIG_RESUME_IN_WORKQUEUE
@@ -235,16 +235,16 @@ struct pwrctrl_priv
 
 	#ifdef CONFIG_HAS_EARLYSUSPEND
 	struct early_suspend early_suspend;
-	u8 do_late_resume;
+	uint8_t do_late_resume;
 	#endif //CONFIG_HAS_EARLYSUSPEND
 
 	#ifdef CONFIG_ANDROID_POWER
 	android_early_suspend_t early_suspend;
-	u8 do_late_resume;
+	uint8_t do_late_resume;
 	#endif
 
 	#ifdef CONFIG_INTEL_PROXIM
-	u8	stored_power_mgnt;
+	uint8_t	stored_power_mgnt;
 	#endif
 };
 
@@ -281,8 +281,8 @@ extern void cpwm_int_hdl(PADAPTER padapter, struct reportpwrstate_parm *preportp
 extern void LPS_Leave_check(PADAPTER padapter);
 #endif
 
-extern void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode);
-extern void rtw_set_rpwm(_adapter * padapter, u8 val8);
+extern void rtw_set_ps_mode(PADAPTER padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode);
+extern void rtw_set_rpwm(_adapter * padapter, uint8_t val8);
 extern void LeaveAllPowerSaveMode(PADAPTER Adapter);
 #ifdef CONFIG_IPS
 void ips_enter(_adapter * padapter);
@@ -323,13 +323,13 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv);
 #define rtw_unregister_early_suspend(pwrpriv) do {} while (0)
 #endif /* CONFIG_HAS_EARLYSUSPEND || CONFIG_ANDROID_POWER */
 
-u8 rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val);
+uint8_t rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val);
 void rtw_set_ips_deny(_adapter *padapter, u32 ms);
 int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller);
 #define rtw_pwr_wakeup(adapter) _rtw_pwr_wakeup(adapter, RTW_PWR_STATE_CHK_INTERVAL, __FUNCTION__)
 #define rtw_pwr_wakeup_ex(adapter, ips_deffer_ms) _rtw_pwr_wakeup(adapter, ips_deffer_ms, __FUNCTION__)
-int rtw_pm_set_ips(_adapter *padapter, u8 mode);
-int rtw_pm_set_lps(_adapter *padapter, u8 mode);
+int rtw_pm_set_ips(_adapter *padapter, uint8_t mode);
+int rtw_pm_set_lps(_adapter *padapter, uint8_t mode);
 
 #endif  //__RTL871X_PWRCTRL_H_
 

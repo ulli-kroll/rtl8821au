@@ -92,34 +92,34 @@
 
 struct vht_priv
 {
-	u8	vht_option;
+	uint8_t	vht_option;
 
-	u8	ldpc_cap;
-	u8	stbc_cap;
-	u8	beamform_cap;
+	uint8_t	ldpc_cap;
+	uint8_t	stbc_cap;
+	uint8_t	beamform_cap;
 
-	u8	bwmode;
-	u8	sgi;//short GI
-	u8	ampdu_len;
+	uint8_t	bwmode;
+	uint8_t	sgi;//short GI
+	uint8_t	ampdu_len;
 
-	u8	vht_highest_rate;
-	u8	vht_mcs_map[2];
+	uint8_t	vht_highest_rate;
+	uint8_t	vht_mcs_map[2];
 
-	u8	vht_cap[32];
+	uint8_t	vht_cap[32];
 };
 
-u8	rtw_get_vht_highest_rate(_adapter *padapter, u8 *pvht_mcs_map);
-u16	rtw_vht_data_rate(u8 bw, u8 short_GI, u8 vht_mcs_rate);
-u32	rtw_vht_rate_to_bitmap(u8 *pVHTRate);
+uint8_t	rtw_get_vht_highest_rate(_adapter *padapter, uint8_t *pvht_mcs_map);
+u16	rtw_vht_data_rate(uint8_t bw, uint8_t short_GI, uint8_t vht_mcs_rate);
+u32	rtw_vht_rate_to_bitmap(uint8_t *pVHTRate);
 void	rtw_vht_use_default_setting(_adapter *padapter);
-u32	rtw_build_vht_operation_ie(_adapter *padapter, u8 *pbuf, u8 channel);
-u32	rtw_build_vht_op_mode_notify_ie(_adapter *padapter, u8 *pbuf);
-u32	rtw_build_vht_cap_ie(_adapter *padapter, u8 *pbuf);
+u32	rtw_build_vht_operation_ie(_adapter *padapter, uint8_t *pbuf, uint8_t channel);
+u32	rtw_build_vht_op_mode_notify_ie(_adapter *padapter, uint8_t *pbuf);
+u32	rtw_build_vht_cap_ie(_adapter *padapter, uint8_t *pbuf);
 void	update_sta_vht_info_apmode(_adapter *padapter, PVOID psta);
 void	update_hw_vht_param(_adapter *padapter);
 void	VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
 void	VHT_operation_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-u32	rtw_restructure_vht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, uint in_len, uint *pout_len);
+u32	rtw_restructure_vht_ie(_adapter *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len);
 void	VHTOnAssocRsp(_adapter *padapter);
 
 #endif	//_RTW_VHT_H_

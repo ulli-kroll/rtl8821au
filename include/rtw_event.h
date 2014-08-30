@@ -40,8 +40,8 @@ bss_cnt indicates the number of bss that has been reported.
 
 */
 struct surveydone_event {
-	unsigned int	bss_cnt;	
-	
+	unsigned int	bss_cnt;
+
 };
 
 /*
@@ -68,7 +68,7 @@ struct stassoc_event {
 	unsigned char macaddr[6];
 	unsigned char rsvd[2];
 	int    cam_id;
-	
+
 };
 
 struct stadel_event {
@@ -92,7 +92,7 @@ struct c2hlbk_event{
 	unsigned char	b0;
 	unsigned short  s2;
 	unsigned char	b1;
-	unsigned int	w1;	
+	unsigned int	w1;
 };
 #endif//CONFIG_H2CLBK
 
@@ -102,11 +102,11 @@ struct c2hlbk_event{
 
 struct fwevent {
 	u32	parmsize;
-	void (*event_callback)(_adapter *dev, u8 *pbuf);
+	void (*event_callback)(_adapter *dev, uint8_t *pbuf);
 };
 
 
-#define C2HEVENT_SZ			32	
+#define C2HEVENT_SZ			32
 
 struct event_node{
 	unsigned char *node;
@@ -128,7 +128,7 @@ struct c2hevent_queue {
 struct network_queue {
 	volatile int	head;
 	volatile int	tail;
-	WLAN_BSSID_EX networks[NETWORK_QUEUE_SZ];	
+	WLAN_BSSID_EX networks[NETWORK_QUEUE_SZ];
 };
 
 

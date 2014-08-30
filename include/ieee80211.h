@@ -124,31 +124,31 @@ enum {
 
 
 #define WPA_SELECTOR_LEN 4
-extern u8 RTW_WPA_OUI_TYPE[] ;
+extern uint8_t RTW_WPA_OUI_TYPE[] ;
 extern u16 RTW_WPA_VERSION ;
-extern u8 WPA_AUTH_KEY_MGMT_NONE[];
-extern u8 WPA_AUTH_KEY_MGMT_UNSPEC_802_1X[];
-extern u8 WPA_AUTH_KEY_MGMT_PSK_OVER_802_1X[];
-extern u8 WPA_CIPHER_SUITE_NONE[];
-extern u8 WPA_CIPHER_SUITE_WEP40[];
-extern u8 WPA_CIPHER_SUITE_TKIP[];
-extern u8 WPA_CIPHER_SUITE_WRAP[];
-extern u8 WPA_CIPHER_SUITE_CCMP[];
-extern u8 WPA_CIPHER_SUITE_WEP104[];
+extern uint8_t WPA_AUTH_KEY_MGMT_NONE[];
+extern uint8_t WPA_AUTH_KEY_MGMT_UNSPEC_802_1X[];
+extern uint8_t WPA_AUTH_KEY_MGMT_PSK_OVER_802_1X[];
+extern uint8_t WPA_CIPHER_SUITE_NONE[];
+extern uint8_t WPA_CIPHER_SUITE_WEP40[];
+extern uint8_t WPA_CIPHER_SUITE_TKIP[];
+extern uint8_t WPA_CIPHER_SUITE_WRAP[];
+extern uint8_t WPA_CIPHER_SUITE_CCMP[];
+extern uint8_t WPA_CIPHER_SUITE_WEP104[];
 
 
 #define RSN_HEADER_LEN 4
 #define RSN_SELECTOR_LEN 4
 
 extern u16 RSN_VERSION_BSD;
-extern u8 RSN_AUTH_KEY_MGMT_UNSPEC_802_1X[];
-extern u8 RSN_AUTH_KEY_MGMT_PSK_OVER_802_1X[];
-extern u8 RSN_CIPHER_SUITE_NONE[];
-extern u8 RSN_CIPHER_SUITE_WEP40[];
-extern u8 RSN_CIPHER_SUITE_TKIP[];
-extern u8 RSN_CIPHER_SUITE_WRAP[];
-extern u8 RSN_CIPHER_SUITE_CCMP[];
-extern u8 RSN_CIPHER_SUITE_WEP104[];
+extern uint8_t RSN_AUTH_KEY_MGMT_UNSPEC_802_1X[];
+extern uint8_t RSN_AUTH_KEY_MGMT_PSK_OVER_802_1X[];
+extern uint8_t RSN_CIPHER_SUITE_NONE[];
+extern uint8_t RSN_CIPHER_SUITE_WEP40[];
+extern uint8_t RSN_CIPHER_SUITE_TKIP[];
+extern uint8_t RSN_CIPHER_SUITE_WRAP[];
+extern uint8_t RSN_CIPHER_SUITE_CCMP[];
+extern uint8_t RSN_CIPHER_SUITE_WEP104[];
 
 
 typedef enum _RATEID_IDX_ {
@@ -231,41 +231,41 @@ enum NETWORK_TYPE
 
 typedef struct ieee_param {
 	u32 cmd;
-	u8 sta_addr[ETH_ALEN];
+	uint8_t sta_addr[ETH_ALEN];
 	union {
 		struct {
-			u8 name;
+			uint8_t name;
 			u32 value;
 		} wpa_param;
 		struct {
 			u32 len;
-			u8 reserved[32];
-			u8 data[0];
+			uint8_t reserved[32];
+			uint8_t data[0];
 		} wpa_ie;
 	        struct{
 			int command;
     			int reason_code;
 		} mlme;
 		struct {
-			u8 alg[IEEE_CRYPT_ALG_NAME_LEN];
-			u8 set_tx;
+			uint8_t alg[IEEE_CRYPT_ALG_NAME_LEN];
+			uint8_t set_tx;
 			u32 err;
-			u8 idx;
-			u8 seq[8]; /* sequence counter (set: RX, get: TX) */
+			uint8_t idx;
+			uint8_t seq[8]; /* sequence counter (set: RX, get: TX) */
 			u16 key_len;
-			u8 key[0];
+			uint8_t key[0];
 		} crypt;
 #ifdef CONFIG_AP_MODE
 		struct {
 			u16 aid;
 			u16 capability;
 			int flags;
-			u8 tx_supp_rates[16];
+			uint8_t tx_supp_rates[16];
 			struct rtw_ieee80211_ht_cap ht_cap;
 		} add_sta;
 		struct {
-			u8	reserved[2];//for set max_num_sta
-			u8	buf[0];
+			uint8_t	reserved[2];//for set max_num_sta
+			uint8_t	buf[0];
 		} bcn_ie;
 #endif
 
@@ -275,8 +275,8 @@ typedef struct ieee_param {
 #ifdef CONFIG_AP_MODE
 typedef struct ieee_param_ex {
 	u32 cmd;
-	u8 sta_addr[ETH_ALEN];
-	u8 data[0];
+	uint8_t sta_addr[ETH_ALEN];
+	uint8_t data[0];
 }ieee_param_ex;
 
 struct sta_data{
@@ -284,7 +284,7 @@ struct sta_data{
 	u16 capability;
 	int flags;
 	u32 sta_set;
-	u8 tx_supp_rates[16];
+	uint8_t tx_supp_rates[16];
 	u32 tx_supp_rates_len;
 	struct rtw_ieee80211_ht_cap ht_cap;
 	u64	rx_pkts;
@@ -324,7 +324,7 @@ struct sta_data{
 #define IEEE_IBSS_MAC_HASH_SIZE 31
 
 struct ieee_ibss_seq {
-	u8 mac[ETH_ALEN];
+	uint8_t mac[ETH_ALEN];
 	u16 seq_num;
 	u16 frag_num;
 	unsigned long packet_time;
@@ -336,19 +336,19 @@ struct ieee_ibss_seq {
 struct rtw_ieee80211_hdr {
 	u16 frame_ctl;
 	u16 duration_id;
-	u8 addr1[ETH_ALEN];
-	u8 addr2[ETH_ALEN];
-	u8 addr3[ETH_ALEN];
+	uint8_t addr1[ETH_ALEN];
+	uint8_t addr2[ETH_ALEN];
+	uint8_t addr3[ETH_ALEN];
 	u16 seq_ctl;
-	u8 addr4[ETH_ALEN];
+	uint8_t addr4[ETH_ALEN];
 } __attribute__ ((packed));
 
 struct rtw_ieee80211_hdr_3addr {
 	u16 frame_ctl;
 	u16 duration_id;
-	u8 addr1[ETH_ALEN];
-	u8 addr2[ETH_ALEN];
-	u8 addr3[ETH_ALEN];
+	uint8_t addr1[ETH_ALEN];
+	uint8_t addr2[ETH_ALEN];
+	uint8_t addr3[ETH_ALEN];
 	u16 seq_ctl;
 } __attribute__ ((packed));
 
@@ -356,29 +356,29 @@ struct rtw_ieee80211_hdr_3addr {
 struct rtw_ieee80211_hdr_qos {
 	u16 frame_ctl;
 	u16 duration_id;
-	u8 addr1[ETH_ALEN];
-	u8 addr2[ETH_ALEN];
-	u8 addr3[ETH_ALEN];
+	uint8_t addr1[ETH_ALEN];
+	uint8_t addr2[ETH_ALEN];
+	uint8_t addr3[ETH_ALEN];
 	u16 seq_ctl;
-	u8 addr4[ETH_ALEN];
+	uint8_t addr4[ETH_ALEN];
 	u16	qc;
 }  __attribute__ ((packed));
 
 struct rtw_ieee80211_hdr_3addr_qos {
         u16 frame_ctl;
 	u16 duration_id;
-	u8 addr1[ETH_ALEN];
-	u8 addr2[ETH_ALEN];
-	u8 addr3[ETH_ALEN];
+	uint8_t addr1[ETH_ALEN];
+	uint8_t addr2[ETH_ALEN];
+	uint8_t addr3[ETH_ALEN];
 	u16 seq_ctl;
        u16     qc;
 }  __attribute__ ((packed));
 
 struct eapol {
-	u8 snap[6];
+	uint8_t snap[6];
 	u16 ethertype;
-	u8 version;
-	u8 type;
+	uint8_t version;
+	uint8_t type;
 	u16 length;
 } __attribute__ ((packed));
 
@@ -496,10 +496,10 @@ enum eap_type {
 
 struct ieee80211_snap_hdr {
 
-        u8    dsap;   /* always 0xAA */
-        u8    ssap;   /* always 0xAA */
-        u8    ctrl;   /* always 0x03 */
-        u8    oui[P80211_OUI_LEN];    /* organizational universal id */
+        uint8_t    dsap;   /* always 0xAA */
+        uint8_t    ssap;   /* always 0xAA */
+        uint8_t    ctrl;   /* always 0x03 */
+        uint8_t    oui[P80211_OUI_LEN];    /* organizational universal id */
 
 } __attribute__ ((packed));
 
@@ -759,13 +759,13 @@ struct ieee80211_snap_hdr {
 struct ieee80211_rx_stats {
 	//u32 mac_time[2];
 	s8 rssi;
-	u8 signal;
-	u8 noise;
-	u8 received_channel;
+	uint8_t signal;
+	uint8_t noise;
+	uint8_t received_channel;
 	u16 rate; /* in 100 kbps */
-	//u8 control;
-	u8 mask;
-	u8 freq;
+	//uint8_t control;
+	uint8_t mask;
+	uint8_t freq;
 	u16 len;
 };
 
@@ -782,8 +782,8 @@ struct ieee80211_frag_entry {
 	uint qos;   //jackson
 	uint tid;	//jackson
 	struct sk_buff *skb;
-	u8 src_addr[ETH_ALEN];
-	u8 dst_addr[ETH_ALEN];
+	uint8_t src_addr[ETH_ALEN];
+	uint8_t dst_addr[ETH_ALEN];
 };
 
 struct ieee80211_stats {
@@ -858,9 +858,9 @@ struct ieee80211_security {
 	    auth_mode:2,
             auth_algo:4,
             unicast_uses_group:1;
-	u8 key_sizes[WEP_KEYS];
-	u8 keys[WEP_KEYS][WEP_KEY_LEN];
-	u8 level;
+	uint8_t key_sizes[WEP_KEYS];
+	uint8_t keys[WEP_KEYS][WEP_KEY_LEN];
+	uint8_t level;
 	u16 flags;
 } __attribute__ ((packed));
 
@@ -884,9 +884,9 @@ Total: 28-2340 bytes
 struct ieee80211_header_data {
 	u16 frame_ctl;
 	u16 duration_id;
-	u8 addr1[6];
-	u8 addr2[6];
-	u8 addr3[6];
+	uint8_t addr1[6];
+	uint8_t addr2[6];
+	uint8_t addr3[6];
 	u16 seq_ctrl;
 };
 
@@ -909,14 +909,14 @@ struct ieee80211_header_data {
 #if defined(PLATFORM_LINUX) || defined(CONFIG_RTL8711FW)
 
 struct ieee80211_info_element_hdr {
-	u8 id;
-	u8 len;
+	uint8_t id;
+	uint8_t len;
 } __attribute__ ((packed));
 
 struct ieee80211_info_element {
-	u8 id;
-	u8 len;
-	u8 data[0];
+	uint8_t id;
+	uint8_t len;
+	uint8_t data[0];
 } __attribute__ ((packed));
 #endif
 
@@ -928,7 +928,7 @@ struct ieee80211_info_element {
 	u16 auth_sequence;
 	u16 beacon_interval;
 	u16 capability;
-	u8 current_ap[ETH_ALEN];
+	uint8_t current_ap[ETH_ALEN];
 	u16 listen_interval;
 	struct {
 		u16 association_id:14, reserved:2;
@@ -971,7 +971,7 @@ struct ieee80211_assoc_request_frame {
 	struct rtw_ieee80211_hdr_3addr header;
 	u16 capability;
 	u16 listen_interval;
-	//u8 current_ap[ETH_ALEN];
+	//uint8_t current_ap[ETH_ALEN];
 	struct ieee80211_info_element_hdr info_element;
 } __attribute__ ((packed));
 
@@ -990,8 +990,8 @@ struct ieee80211_assoc_response_frame {
 
 
 struct ieee80211_txb {
-	u8 nr_frags;
-	u8 encrypted;
+	uint8_t nr_frags;
+	uint8_t encrypted;
 	u16 reserved;
 	u16 frag_size;
 	u16 payload_size;
@@ -1037,42 +1037,42 @@ struct ieee80211_txb {
 #if 0
 struct ieee80211_network {
 	/* These entries are used to identify a unique network */
-	u8 bssid[ETH_ALEN];
-	u8 channel;
+	uint8_t bssid[ETH_ALEN];
+	uint8_t channel;
 	/* Ensure null-terminated for any debug msgs */
-	u8 ssid[IW_ESSID_MAX_SIZE + 1];
-	u8 ssid_len;
-	u8	rssi;	//relative signal strength
-	u8	sq;		//signal quality
+	uint8_t ssid[IW_ESSID_MAX_SIZE + 1];
+	uint8_t ssid_len;
+	uint8_t	rssi;	//relative signal strength
+	uint8_t	sq;		//signal quality
 
 	/* These are network statistics */
 	//struct ieee80211_rx_stats stats;
 	u16 capability;
 	u16	aid;
-	u8 rates[MAX_RATES_LENGTH];
-	u8 rates_len;
-	u8 rates_ex[MAX_RATES_EX_LENGTH];
-	u8 rates_ex_len;
+	uint8_t rates[MAX_RATES_LENGTH];
+	uint8_t rates_len;
+	uint8_t rates_ex[MAX_RATES_EX_LENGTH];
+	uint8_t rates_ex_len;
 
-	u8 edca_parmsets[18];
+	uint8_t edca_parmsets[18];
 
-	u8 mode;
-	u8 flags;
-	u8 time_stamp[8];
+	uint8_t mode;
+	uint8_t flags;
+	uint8_t time_stamp[8];
 	u16 beacon_interval;
 	u16 listen_interval;
 	u16 atim_window;
-	u8 wpa_ie[MAX_WPA_IE_LEN];
+	uint8_t wpa_ie[MAX_WPA_IE_LEN];
 	size_t wpa_ie_len;
-	u8 rsn_ie[MAX_WPA_IE_LEN];
+	uint8_t rsn_ie[MAX_WPA_IE_LEN];
 	size_t rsn_ie_len;
-	u8 country[6];
-	u8 dtim_period;
-	u8 dtim_data;
-	u8 power_constraint;
-	u8 qosinfo;
-	u8 qbssload[5];
-	u8 network_type;
+	uint8_t country[6];
+	uint8_t dtim_period;
+	uint8_t dtim_data;
+	uint8_t power_constraint;
+	uint8_t qosinfo;
+	uint8_t qbssload[5];
+	uint8_t network_type;
 	int join_res;
 	unsigned long	last_scanned;
 };
@@ -1129,12 +1129,12 @@ enum ieee80211_state {
 #define MAC_FMT "%02x:%02x:%02x:%02x:%02x:%02x"
 #define MAC_ARG(x) ((u8*)(x))[0],((u8*)(x))[1],((u8*)(x))[2],((u8*)(x))[3],((u8*)(x))[4],((u8*)(x))[5]
 
-extern __inline int is_multicast_mac_addr(const u8 *addr)
+extern __inline int is_multicast_mac_addr(const uint8_t *addr)
 {
         return ((addr[0] != 0xff) && (0x01 & addr[0]));
 }
 
-extern __inline int is_broadcast_mac_addr(const u8 *addr)
+extern __inline int is_broadcast_mac_addr(const uint8_t *addr)
 {
 	return ((addr[0] == 0xff) && (addr[1] == 0xff) && (addr[2] == 0xff) &&   \
 		(addr[3] == 0xff) && (addr[4] == 0xff) && (addr[5] == 0xff));
@@ -1363,100 +1363,100 @@ struct rtw_ieee80211_channel {
 
 /* Parsed Information Elements */
 struct rtw_ieee802_11_elems {
-	u8 *ssid;
-	u8 ssid_len;
-	u8 *supp_rates;
-	u8 supp_rates_len;
-	u8 *fh_params;
-	u8 fh_params_len;
-	u8 *ds_params;
-	u8 ds_params_len;
-	u8 *cf_params;
-	u8 cf_params_len;
-	u8 *tim;
-	u8 tim_len;
-	u8 *ibss_params;
-	u8 ibss_params_len;
-	u8 *challenge;
-	u8 challenge_len;
-	u8 *erp_info;
-	u8 erp_info_len;
-	u8 *ext_supp_rates;
-	u8 ext_supp_rates_len;
-	u8 *wpa_ie;
-	u8 wpa_ie_len;
-	u8 *rsn_ie;
-	u8 rsn_ie_len;
-	u8 *wme;
-	u8 wme_len;
-	u8 *wme_tspec;
-	u8 wme_tspec_len;
-	u8 *wps_ie;
-	u8 wps_ie_len;
-	u8 *power_cap;
-	u8 power_cap_len;
-	u8 *supp_channels;
-	u8 supp_channels_len;
-	u8 *mdie;
-	u8 mdie_len;
-	u8 *ftie;
-	u8 ftie_len;
-	u8 *timeout_int;
-	u8 timeout_int_len;
-	u8 *ht_capabilities;
-	u8 ht_capabilities_len;
-	u8 *ht_operation;
-	u8 ht_operation_len;
-	u8 *vendor_ht_cap;
-	u8 vendor_ht_cap_len;
-	u8 *vht_capabilities;
-	u8 vht_capabilities_len;
-	u8 *vht_operation;
-	u8 vht_operation_len;
-	u8 *vht_op_mode_notify;
-	u8 vht_op_mode_notify_len;
+	uint8_t *ssid;
+	uint8_t ssid_len;
+	uint8_t *supp_rates;
+	uint8_t supp_rates_len;
+	uint8_t *fh_params;
+	uint8_t fh_params_len;
+	uint8_t *ds_params;
+	uint8_t ds_params_len;
+	uint8_t *cf_params;
+	uint8_t cf_params_len;
+	uint8_t *tim;
+	uint8_t tim_len;
+	uint8_t *ibss_params;
+	uint8_t ibss_params_len;
+	uint8_t *challenge;
+	uint8_t challenge_len;
+	uint8_t *erp_info;
+	uint8_t erp_info_len;
+	uint8_t *ext_supp_rates;
+	uint8_t ext_supp_rates_len;
+	uint8_t *wpa_ie;
+	uint8_t wpa_ie_len;
+	uint8_t *rsn_ie;
+	uint8_t rsn_ie_len;
+	uint8_t *wme;
+	uint8_t wme_len;
+	uint8_t *wme_tspec;
+	uint8_t wme_tspec_len;
+	uint8_t *wps_ie;
+	uint8_t wps_ie_len;
+	uint8_t *power_cap;
+	uint8_t power_cap_len;
+	uint8_t *supp_channels;
+	uint8_t supp_channels_len;
+	uint8_t *mdie;
+	uint8_t mdie_len;
+	uint8_t *ftie;
+	uint8_t ftie_len;
+	uint8_t *timeout_int;
+	uint8_t timeout_int_len;
+	uint8_t *ht_capabilities;
+	uint8_t ht_capabilities_len;
+	uint8_t *ht_operation;
+	uint8_t ht_operation_len;
+	uint8_t *vendor_ht_cap;
+	uint8_t vendor_ht_cap_len;
+	uint8_t *vht_capabilities;
+	uint8_t vht_capabilities_len;
+	uint8_t *vht_operation;
+	uint8_t vht_operation_len;
+	uint8_t *vht_op_mode_notify;
+	uint8_t vht_op_mode_notify_len;
 };
 
 typedef enum { ParseOK = 0, ParseUnknown = 1, ParseFailed = -1 } ParseRes;
 
-ParseRes rtw_ieee802_11_parse_elems(u8 *start, uint len,
+ParseRes rtw_ieee802_11_parse_elems(uint8_t *start, uint len,
 				struct rtw_ieee802_11_elems *elems,
 				int show_errors);
 
-u8 *rtw_set_fixed_ie(unsigned char *pbuf, unsigned int len, unsigned char *source, unsigned int *frlen);
-u8 *rtw_set_ie(u8 *pbuf, sint index, uint len, u8 *source, uint *frlen);
+uint8_t *rtw_set_fixed_ie(unsigned char *pbuf, unsigned int len, unsigned char *source, unsigned int *frlen);
+uint8_t *rtw_set_ie(uint8_t *pbuf, sint index, uint len, uint8_t *source, uint *frlen);
 
 enum secondary_ch_offset {
 	SCN = 0, /* no secondary channel */
 	SCA = 1, /* secondary channel above */
 	SCB = 3,  /* secondary channel below */
 };
-u8 secondary_ch_offset_to_hal_ch_offset(u8 ch_offset);
-u8 hal_ch_offset_to_secondary_ch_offset(u8 ch_offset);
-u8 *rtw_set_ie_ch_switch(u8 *buf, u32 *buf_len, u8 ch_switch_mode, u8 new_ch, u8 ch_switch_cnt);
-u8 *rtw_set_ie_secondary_ch_offset(u8 *buf, u32 *buf_len, u8 secondary_ch_offset);
-u8 *rtw_set_ie_mesh_ch_switch_parm(u8 *buf, u32 *buf_len, u8 ttl, u8 flags, u16 reason, u16 precedence);
+uint8_t secondary_ch_offset_to_hal_ch_offset(uint8_t ch_offset);
+uint8_t hal_ch_offset_to_secondary_ch_offset(uint8_t ch_offset);
+uint8_t *rtw_set_ie_ch_switch(uint8_t *buf, u32 *buf_len, uint8_t ch_switch_mode, uint8_t new_ch, uint8_t ch_switch_cnt);
+uint8_t *rtw_set_ie_secondary_ch_offset(uint8_t *buf, u32 *buf_len, uint8_t secondary_ch_offset);
+uint8_t *rtw_set_ie_mesh_ch_switch_parm(uint8_t *buf, u32 *buf_len, uint8_t ttl, uint8_t flags, u16 reason, u16 precedence);
 
-u8 *rtw_get_ie(u8*pbuf, sint index, sint *len, sint limit);
-u8 *rtw_get_ie_ex(u8 *in_ie, uint in_len, u8 eid, u8 *oui, u8 oui_len, u8 *ie, uint *ielen);
-int rtw_ies_remove_ie(u8 *ies, uint *ies_len, uint offset, u8 eid, u8 *oui, u8 oui_len);
+uint8_t *rtw_get_ie(u8*pbuf, sint index, sint *len, sint limit);
+uint8_t *rtw_get_ie_ex(uint8_t *in_ie, uint in_len, uint8_t eid, uint8_t *oui, uint8_t oui_len, uint8_t *ie, uint *ielen);
+int rtw_ies_remove_ie(uint8_t *ies, uint *ies_len, uint offset, uint8_t eid, uint8_t *oui, uint8_t oui_len);
 
 void rtw_set_supported_rate(u8* SupportedRates, uint mode) ;
 
 unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit);
 unsigned char *rtw_get_wpa2_ie(unsigned char *pie, int *rsn_ie_len, int limit);
-int rtw_get_wpa_cipher_suite(u8 *s);
-int rtw_get_wpa2_cipher_suite(u8 *s);
-int rtw_get_wapi_ie(u8 *in_ie,uint in_len,u8 *wapi_ie,u16 *wapi_len);
+int rtw_get_wpa_cipher_suite(uint8_t *s);
+int rtw_get_wpa2_cipher_suite(uint8_t *s);
+int rtw_get_wapi_ie(uint8_t *in_ie,uint in_len,uint8_t *wapi_ie,u16 *wapi_len);
 int rtw_parse_wpa_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x);
 int rtw_parse_wpa2_ie(u8* wpa_ie, int wpa_ie_len, int *group_cipher, int *pairwise_cipher, int *is_8021x);
 
-int rtw_get_sec_ie(u8 *in_ie,uint in_len,u8 *rsn_ie,u16 *rsn_len,u8 *wpa_ie,u16 *wpa_len);
+int rtw_get_sec_ie(uint8_t *in_ie,uint in_len,uint8_t *rsn_ie,u16 *rsn_len,uint8_t *wpa_ie,u16 *wpa_len);
 
-u8 rtw_is_wps_ie(u8 *ie_ptr, uint *wps_ielen);
-u8 *rtw_get_wps_ie(u8 *in_ie, uint in_len, u8 *wps_ie, uint *wps_ielen);
-u8 *rtw_get_wps_attr(u8 *wps_ie, uint wps_ielen, u16 target_attr_id ,u8 *buf_attr, u32 *len_attr);
-u8 *rtw_get_wps_attr_content(u8 *wps_ie, uint wps_ielen, u16 target_attr_id ,u8 *buf_content, uint *len_content);
+uint8_t rtw_is_wps_ie(uint8_t *ie_ptr, uint *wps_ielen);
+uint8_t *rtw_get_wps_ie(uint8_t *in_ie, uint in_len, uint8_t *wps_ie, uint *wps_ielen);
+uint8_t *rtw_get_wps_attr(uint8_t *wps_ie, uint wps_ielen, u16 target_attr_id ,uint8_t *buf_attr, u32 *len_attr);
+uint8_t *rtw_get_wps_attr_content(uint8_t *wps_ie, uint wps_ielen, u16 target_attr_id ,uint8_t *buf_content, uint *len_content);
 
 /**
  * for_each_ie - iterate over continuous IEs
@@ -1467,45 +1467,45 @@ u8 *rtw_get_wps_attr_content(u8 *wps_ie, uint wps_ielen, u16 target_attr_id ,u8 
 #define for_each_ie(ie, buf, buf_len) \
 	for (ie = (void*)buf; (((u8*)ie) - ((u8*)buf) + 1) < buf_len; ie = (void*)(((u8*)ie) + *(((u8*)ie)+1) + 2))
 
-void dump_ies(u8 *buf, u32 buf_len);
-void dump_wps_ie(u8 *ie, u32 ie_len);
+void dump_ies(uint8_t *buf, u32 buf_len);
+void dump_wps_ie(uint8_t *ie, u32 ie_len);
 
 #ifdef CONFIG_P2P
-void dump_p2p_ie(u8 *ie, u32 ie_len);
-u8 *rtw_get_p2p_ie(u8 *in_ie, int in_len, u8 *p2p_ie, uint *p2p_ielen);
-u8 *rtw_get_p2p_attr(u8 *p2p_ie, uint p2p_ielen, u8 target_attr_id ,u8 *buf_attr, u32 *len_attr);
-u8 *rtw_get_p2p_attr_content(u8 *p2p_ie, uint p2p_ielen, u8 target_attr_id ,u8 *buf_content, uint *len_content);
-u32 rtw_set_p2p_attr_content(u8 *pbuf, u8 attr_id, u16 attr_len, u8 *pdata_attr);
-void rtw_WLAN_BSSID_EX_remove_p2p_attr(WLAN_BSSID_EX *bss_ex, u8 attr_id);
+void dump_p2p_ie(uint8_t *ie, u32 ie_len);
+uint8_t *rtw_get_p2p_ie(uint8_t *in_ie, int in_len, uint8_t *p2p_ie, uint *p2p_ielen);
+uint8_t *rtw_get_p2p_attr(uint8_t *p2p_ie, uint p2p_ielen, uint8_t target_attr_id ,uint8_t *buf_attr, u32 *len_attr);
+uint8_t *rtw_get_p2p_attr_content(uint8_t *p2p_ie, uint p2p_ielen, uint8_t target_attr_id ,uint8_t *buf_content, uint *len_content);
+u32 rtw_set_p2p_attr_content(uint8_t *pbuf, uint8_t attr_id, u16 attr_len, uint8_t *pdata_attr);
+void rtw_WLAN_BSSID_EX_remove_p2p_attr(WLAN_BSSID_EX *bss_ex, uint8_t attr_id);
 #endif
 
 #ifdef CONFIG_WFD
-int rtw_get_wfd_ie(u8 *in_ie, int in_len, u8 *wfd_ie, uint *wfd_ielen);
-int rtw_get_wfd_attr_content(u8 *wfd_ie, uint wfd_ielen, u8 target_attr_id ,u8 *attr_content, uint *attr_contentlen);
+int rtw_get_wfd_ie(uint8_t *in_ie, int in_len, uint8_t *wfd_ie, uint *wfd_ielen);
+int rtw_get_wfd_attr_content(uint8_t *wfd_ie, uint wfd_ielen, uint8_t target_attr_id ,uint8_t *attr_content, uint *attr_contentlen);
 #endif // CONFIG_WFD
 
-uint	rtw_get_rateset_len(u8	*rateset);
+uint	rtw_get_rateset_len(uint8_t	*rateset);
 
 struct registry_priv;
 int rtw_generate_ie(struct registry_priv *pregistrypriv);
 
 
-int rtw_get_bit_value_from_ieee_value(u8 val);
+int rtw_get_bit_value_from_ieee_value(uint8_t val);
 
-uint	rtw_is_cckrates_included(u8 *rate);
+uint	rtw_is_cckrates_included(uint8_t *rate);
 
-uint	rtw_is_cckratesonly_included(u8 *rate);
+uint	rtw_is_cckratesonly_included(uint8_t *rate);
 
 int rtw_check_network_type(unsigned char *rate, int ratelen, int channel);
 
 void rtw_get_bcn_info(struct wlan_network *pnetwork);
 
-void rtw_macaddr_cfg(u8 *mac_addr);
+void rtw_macaddr_cfg(uint8_t *mac_addr);
 
-u16 rtw_mcs_rate(u8 rf_type, u8 bw_40MHz, u8 short_GI_20, u8 short_GI_40, unsigned char * MCS_rate);
+u16 rtw_mcs_rate(uint8_t rf_type, uint8_t bw_40MHz, uint8_t short_GI_20, uint8_t short_GI_40, unsigned char * MCS_rate);
 
-int rtw_action_frame_parse(const u8 *frame, u32 frame_len, u8* category, u8 *action);
-const char *action_public_str(u8 action);
+int rtw_action_frame_parse(const uint8_t *frame, u32 frame_len, u8* category, uint8_t *action);
+const char *action_public_str(uint8_t action);
 
 #endif /* IEEE80211_H */
 

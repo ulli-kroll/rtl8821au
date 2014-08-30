@@ -104,13 +104,13 @@ typedef enum _PWRSEQ_CMD_DELAY_UNIT_
 typedef struct _WL_PWR_CFG_
 {
 	u16 offset;
-	u8 cut_msk;
-	u8 fab_msk:4;
-	u8 interface_msk:4;
-	u8 base:4;
-	u8 cmd:4;
-	u8 msk;
-	u8 value;
+	uint8_t cut_msk;
+	uint8_t fab_msk:4;
+	uint8_t interface_msk:4;
+	uint8_t base:4;
+	uint8_t cmd:4;
+	uint8_t msk;
+	uint8_t value;
 } WLAN_PWR_CFG, *PWLAN_PWR_CFG;
 
 
@@ -127,11 +127,11 @@ typedef struct _WL_PWR_CFG_
 //================================================================================
 //	Prototype of protected function.
 //================================================================================
-u8 HalPwrSeqCmdParsing(
+uint8_t HalPwrSeqCmdParsing(
 	PADAPTER		padapter,
-	u8				CutVersion,
-	u8				FabVersion,
-	u8				InterfaceType,
+	uint8_t				CutVersion,
+	uint8_t				FabVersion,
+	uint8_t				InterfaceType,
 	WLAN_PWR_CFG	PwrCfgCmd[]);
 
 #endif

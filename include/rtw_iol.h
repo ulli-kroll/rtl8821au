@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -22,8 +22,8 @@
 
 
 struct xmit_frame	*rtw_IOL_accquire_xmit_frame(ADAPTER *adapter);
-int rtw_IOL_append_cmds(struct xmit_frame *xmit_frame, u8 *IOL_cmds, u32 cmd_len);
-int rtw_IOL_append_LLT_cmd(struct xmit_frame *xmit_frame, u8 page_boundary);
+int rtw_IOL_append_cmds(struct xmit_frame *xmit_frame, uint8_t *IOL_cmds, u32 cmd_len);
+int rtw_IOL_append_LLT_cmd(struct xmit_frame *xmit_frame, uint8_t page_boundary);
 int rtw_IOL_exec_cmds_sync(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wating_ms, u32 bndy_cnt);
 bool rtw_IOL_applied(ADAPTER *adapter);
 int rtw_IOL_append_DELAY_US_cmd(struct xmit_frame *xmit_frame, u16 us);
@@ -35,8 +35,8 @@ int rtw_IOL_append_END_cmd(struct xmit_frame *xmit_frame);
 #define IOREG_CMD_END_LEN	4
 
 struct ioreg_cfg{
-	u8 	length;
-	u8 	cmd_id;
+	uint8_t 	length;
+	uint8_t 	cmd_id;
 	u16 	address;
 	u32	data;
 	u32  mask;
@@ -51,21 +51,21 @@ enum ioreg_cmd{
 	IOREG_CMD_W_RF 		= 0x07,
 	IOREG_CMD_DELAY_US 	= 0x10,
 	IOREG_CMD_DELAY_MS	= 0x11,
-	IOREG_CMD_END 		= 0xFF,		
+	IOREG_CMD_END 		= 0xFF,
 };
-void read_efuse_from_txpktbuf(ADAPTER *adapter, int bcnhead, u8 *content, u16 *size);
+void read_efuse_from_txpktbuf(ADAPTER *adapter, int bcnhead, uint8_t *content, u16 *size);
 
-int _rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, u8 value, u8 mask);
+int _rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, uint8_t value, uint8_t mask);
 int _rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, u16 addr, u16 value, u16 mask);
 int _rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value, u32 mask);
-int _rtw_IOL_append_WRF_cmd(struct xmit_frame *xmit_frame, u8 rf_path, u16 addr, u32 value, u32 mask);
+int _rtw_IOL_append_WRF_cmd(struct xmit_frame *xmit_frame, uint8_t rf_path, u16 addr, u32 value, u32 mask);
 #define rtw_IOL_append_WB_cmd(xmit_frame, addr, value,mask) _rtw_IOL_append_WB_cmd((xmit_frame), (addr), (value) ,(mask))
 #define rtw_IOL_append_WW_cmd(xmit_frame, addr, value,mask) _rtw_IOL_append_WW_cmd((xmit_frame), (addr), (value),(mask))
 #define rtw_IOL_append_WD_cmd(xmit_frame, addr, value,mask) _rtw_IOL_append_WD_cmd((xmit_frame), (addr), (value),(mask))
 #define rtw_IOL_append_WRF_cmd(xmit_frame, rf_path, addr, value,mask) _rtw_IOL_append_WRF_cmd((xmit_frame),(rf_path), (addr), (value),(mask))
 
-u8 rtw_IOL_cmd_boundary_handle(struct xmit_frame *pxmit_frame);
-void  rtw_IOL_cmd_buf_dump(ADAPTER *Adapter,int buf_len,u8 *pbuf);
+uint8_t rtw_IOL_cmd_boundary_handle(struct xmit_frame *pxmit_frame);
+void  rtw_IOL_cmd_buf_dump(ADAPTER *Adapter,int buf_len,uint8_t *pbuf);
 
 #ifdef CONFIG_IOL_IOREG_CFG_DBG
 	struct cmd_cmp{
@@ -77,8 +77,8 @@ void  rtw_IOL_cmd_buf_dump(ADAPTER *Adapter,int buf_len,u8 *pbuf);
 #else //CONFIG_IOL_NEW_GENERATION
 
 typedef struct _io_offload_cmd {
-	u8 rsvd0;
-	u8 cmd;
+	uint8_t rsvd0;
+	uint8_t cmd;
 	u16 address;
 	u32 value;
 } IO_OFFLOAD_CMD, IOL_CMD;
@@ -109,16 +109,16 @@ IOL_CMD_DELAY_MS	-				B6~B7
 //IOL_CMD_DELAY_S	-				B6~B7
 IOL_CMD_END		-				-
 ******************************************************/
-int _rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, u8 value);
+int _rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, uint8_t value);
 int _rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, u16 addr, u16 value);
 int _rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value);
 
 
-int rtw_IOL_exec_cmd_array_sync(PADAPTER adapter, u8 *IOL_cmds, u32 cmd_num, u32 max_wating_ms);
+int rtw_IOL_exec_cmd_array_sync(PADAPTER adapter, uint8_t *IOL_cmds, u32 cmd_num, u32 max_wating_ms);
 int rtw_IOL_exec_empty_cmds_sync(ADAPTER *adapter, u32 max_wating_ms);
 
 #ifdef DBG_IO
-int dbg_rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, u8 value, const char *caller, const int line);
+int dbg_rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, uint8_t value, const char *caller, const int line);
 int dbg_rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, u16 addr, u16 value, const char *caller, const int line);
 int dbg_rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value, const char *caller, const int line);
 #define rtw_IOL_append_WB_cmd(xmit_frame, addr, value) dbg_rtw_IOL_append_WB_cmd((xmit_frame), (addr), (value), __FUNCTION__, __LINE__)

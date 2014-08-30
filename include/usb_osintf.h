@@ -28,7 +28,7 @@
 //uint usb_dvobj_init(_adapter * adapter);
 //void usb_dvobj_deinit(_adapter * adapter);
 
-u8 usbvendorrequest(struct dvobj_priv *pdvobjpriv, RT_USB_BREQUEST brequest, RT_USB_WVALUE wvalue, u8 windex, void* data, u8 datalen, u8 isdirectionin);
+uint8_t usbvendorrequest(struct dvobj_priv *pdvobjpriv, RT_USB_BREQUEST brequest, RT_USB_WVALUE wvalue, uint8_t windex, void* data, uint8_t datalen, uint8_t isdirectionin);
 
 
 #endif

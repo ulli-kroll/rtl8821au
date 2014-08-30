@@ -105,17 +105,17 @@ typedef enum _RT_CUSTOMER_ID
 
 struct eeprom_priv
 {
-	u8		bautoload_fail_flag;
-	u8		bloadfile_fail_flag;
-	u8		bloadmac_fail_flag;
-	u8		EepromOrEfuse;
+	uint8_t		bautoload_fail_flag;
+	uint8_t		bloadfile_fail_flag;
+	uint8_t		bloadmac_fail_flag;
+	uint8_t		EepromOrEfuse;
 
-	u8		mac_addr[6];	//PermanentAddress
+	uint8_t		mac_addr[6];	//PermanentAddress
 
 	u16		channel_plan;
 	u16		CustomerID;
 
-	u8		efuse_eeprom_data[EEPROM_MAX_SIZE]; //92C:256bytes, 88E:512bytes, we use union set (512bytes)
+	uint8_t		efuse_eeprom_data[EEPROM_MAX_SIZE]; //92C:256bytes, 88E:512bytes, we use union set (512bytes)
 
 };
 

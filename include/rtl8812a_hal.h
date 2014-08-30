@@ -113,7 +113,7 @@ typedef struct _RT_FIRMWARE_8812 {
 #ifdef CONFIG_EMBEDDED_FWIMG
 	u8*			szFwBuffer;
 #else
-	u8			szFwBuffer[FW_SIZE_8812];
+	uint8_t			szFwBuffer[FW_SIZE_8812];
 #endif
 	u32			ulFwLength;
 
@@ -270,27 +270,27 @@ void	_8051Reset8812(PADAPTER padapter);
 s32	FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw);
 void	InitializeFirmwareVars8812(PADAPTER padapter);
 
-s32	InitLLTTable8812(PADAPTER padapter, u8 txpktbuf_bndy);
+s32	InitLLTTable8812(PADAPTER padapter, uint8_t txpktbuf_bndy);
 void InitRDGSetting8812A(PADAPTER padapter);
 
 void CheckAutoloadState8812A(PADAPTER padapter);
 
 // EFuse
-u8	GetEEPROMSize8812A(PADAPTER padapter);
+uint8_t	GetEEPROMSize8812A(PADAPTER padapter);
 void InitPGData8812A(PADAPTER padapter);
-void	Hal_EfuseParseIDCode8812A(PADAPTER padapter, u8 *hwinfo);
-void	Hal_ReadPROMVersion8812A(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
+void	Hal_EfuseParseIDCode8812A(PADAPTER padapter, uint8_t *hwinfo);
+void	Hal_ReadPROMVersion8812A(PADAPTER padapter, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
 void	Hal_ReadTxPowerInfo8812A(PADAPTER padapter,u8* hwinfo,BOOLEAN	AutoLoadFail);
 void	Hal_ReadBoardType8812A(PADAPTER pAdapter,u8* hwinfo,BOOLEAN AutoLoadFail);
 void	Hal_ReadThermalMeter_8812A(PADAPTER	Adapter,u8* PROMContent,BOOLEAN 	AutoloadFail);
-void	Hal_ReadChannelPlan8812A(PADAPTER padapter, u8 *hwinfo, BOOLEAN AutoLoadFail);
+void	Hal_ReadChannelPlan8812A(PADAPTER padapter, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
 void	Hal_EfuseParseXtal_8812A(PADAPTER pAdapter,u8* hwinfo,BOOLEAN AutoLoadFail);
 void	Hal_ReadAntennaDiversity8812A(PADAPTER pAdapter,u8* PROMContent,BOOLEAN AutoLoadFail);
 void	Hal_ReadPAType_8812A(PADAPTER Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
 void	Hal_ReadPAType_8821A(PADAPTER Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
 void	Hal_ReadRFEType_8812A(PADAPTER Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
 void	Hal_EfuseParseBTCoexistInfo8812A(PADAPTER Adapter, u8* hwinfo, BOOLEAN AutoLoadFail);
-void	hal_ReadUsbType_8812AU(PADAPTER Adapter, u8 *PROMContent, BOOLEAN AutoloadFail);
+void	hal_ReadUsbType_8812AU(PADAPTER Adapter, uint8_t *PROMContent, BOOLEAN AutoloadFail);
 
 BOOLEAN HalDetectPwrDownMode8812(PADAPTER Adapter);
 
@@ -304,14 +304,14 @@ void SetBeaconRelatedRegisters8812A(PADAPTER padapter);
 void ReadRFType8812A(PADAPTER padapter);
 void InitDefaultValue8821A(PADAPTER padapter);
 
-void SetHwReg8812A(PADAPTER padapter, u8 variable, u8 *pval);
-void GetHwReg8812A(PADAPTER padapter, u8 variable, u8 *pval);
-u8 SetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
-u8 GetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
+void SetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval);
+void GetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval);
+uint8_t SetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
+uint8_t GetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
 void rtl8812_set_hal_ops(struct hal_ops *pHalFunc);
 
 // register
-void SetBcnCtrlReg(PADAPTER padapter, u8 SetBits, u8 ClearBits);
+void SetBcnCtrlReg(PADAPTER padapter, uint8_t SetBits, uint8_t ClearBits);
 
 void rtl8812_clone_haldata(PADAPTER dst_adapter, PADAPTER src_adapter);
 void rtl8812_start_thread(PADAPTER padapter);

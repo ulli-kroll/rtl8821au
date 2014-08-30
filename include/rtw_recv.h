@@ -51,31 +51,31 @@
 #define RX_CMD_QUEUE				1
 #define RX_MAX_QUEUE				2
 
-static u8 SNAP_ETH_TYPE_IPX[2] = {0x81, 0x37};
+static uint8_t SNAP_ETH_TYPE_IPX[2] = {0x81, 0x37};
 
-static u8 SNAP_ETH_TYPE_APPLETALK_AARP[2] = {0x80, 0xf3};
-static u8 SNAP_ETH_TYPE_APPLETALK_DDP[2] = {0x80, 0x9b};
-static u8 SNAP_ETH_TYPE_TDLS[2] = {0x89, 0x0d};
-static u8 SNAP_HDR_APPLETALK_DDP[3] = {0x08, 0x00, 0x07}; // Datagram Delivery Protocol
+static uint8_t SNAP_ETH_TYPE_APPLETALK_AARP[2] = {0x80, 0xf3};
+static uint8_t SNAP_ETH_TYPE_APPLETALK_DDP[2] = {0x80, 0x9b};
+static uint8_t SNAP_ETH_TYPE_TDLS[2] = {0x89, 0x0d};
+static uint8_t SNAP_HDR_APPLETALK_DDP[3] = {0x08, 0x00, 0x07}; // Datagram Delivery Protocol
 
-static u8 oui_8021h[] = {0x00, 0x00, 0xf8};
-static u8 oui_rfc1042[]= {0x00,0x00,0x00};
+static uint8_t oui_8021h[] = {0x00, 0x00, 0xf8};
+static uint8_t oui_rfc1042[]= {0x00,0x00,0x00};
 
 #define MAX_SUBFRAME_COUNT	64
-static u8 rtw_rfc1042_header[] =
+static uint8_t rtw_rfc1042_header[] =
 { 0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00 };
 /* Bridge-Tunnel header (for EtherTypes ETH_P_AARP and ETH_P_IPX) */
-static u8 rtw_bridge_tunnel_header[] =
+static uint8_t rtw_bridge_tunnel_header[] =
 { 0xaa, 0xaa, 0x03, 0x00, 0x00, 0xf8 };
 
 //for Rx reordering buffer control
 struct recv_reorder_ctrl
 {
 	_adapter	*padapter;
-	u8 enable;
+	uint8_t enable;
 	u16 indicate_seq;//=wstart_b, init_value=0xffff
 	u16 wend_b;
-	u8 wsize_b;
+	uint8_t wsize_b;
 	_queue pending_recvframe_queue;
 	_timer reordering_ctrl_timer;
 };
@@ -111,87 +111,87 @@ struct smooth_rssi_data {
 };
 
 struct signal_stat {
-	u8	update_req;		//used to indicate
-	u8	avg_val;		//avg of valid elements
+	uint8_t	update_req;		//used to indicate
+	uint8_t	avg_val;		//avg of valid elements
 	u32	total_num;		//num of valid elements
 	u32	total_val;		//sum of valid elements
 };
 
 struct phy_info
 {
-	u8		RxPWDBAll;
+	uint8_t		RxPWDBAll;
 
-	u8		SignalQuality;	 // in 0-100 index.
+	uint8_t		SignalQuality;	 // in 0-100 index.
 	s8		RxMIMOSignalQuality[4];	//per-path's EVM
-	u8		RxMIMOEVMdbm[4]; 		//per-path's EVM dbm
+	uint8_t		RxMIMOEVMdbm[4]; 		//per-path's EVM dbm
 
-	u8		RxMIMOSignalStrength[4];// in 0~100 index
+	uint8_t		RxMIMOSignalStrength[4];// in 0~100 index
 
 	u16		Cfo_short[4]; 			// per-path's Cfo_short
 	u16		Cfo_tail[4];			// per-path's Cfo_tail
 
 	s8		RxPower; // in dBm Translate from PWdB
 	s8		RecvSignalPower;// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
-	u8		BTRxRSSIPercentage;
-	u8		SignalStrength; // in 0-100 index.
+	uint8_t		BTRxRSSIPercentage;
+	uint8_t		SignalStrength; // in 0-100 index.
 
-	u8		RxPwr[4];				//per-path's pwdb
-	u8		RxSNR[4];				//per-path's SNR
-	u8		BandWidth;
-	u8		btCoexPwrAdjust;
+	uint8_t		RxPwr[4];				//per-path's pwdb
+	uint8_t		RxSNR[4];				//per-path's SNR
+	uint8_t		BandWidth;
+	uint8_t		btCoexPwrAdjust;
 };
 
 
 struct rx_pkt_attrib	{
 	u16	pkt_len;
-	u8	physt;
-	u8	drvinfo_sz;
-	u8	shift_sz;
-	u8	hdrlen; //the WLAN Header Len
-	u8 	to_fr_ds;
-	u8 	amsdu;
-	u8	qos;
-	u8	priority;
-	u8	pw_save;
-	u8	mdata;
+	uint8_t	physt;
+	uint8_t	drvinfo_sz;
+	uint8_t	shift_sz;
+	uint8_t	hdrlen; //the WLAN Header Len
+	uint8_t 	to_fr_ds;
+	uint8_t 	amsdu;
+	uint8_t	qos;
+	uint8_t	priority;
+	uint8_t	pw_save;
+	uint8_t	mdata;
 	u16	seq_num;
-	u8	frag_num;
-	u8	mfrag;
-	u8	order;
-	u8	privacy; //in frame_ctrl field
-	u8	bdecrypted;
-	u8	encrypt; //when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith
-	u8	iv_len;
-	u8	icv_len;
-	u8	crc_err;
-	u8	icv_err;
+	uint8_t	frag_num;
+	uint8_t	mfrag;
+	uint8_t	order;
+	uint8_t	privacy; //in frame_ctrl field
+	uint8_t	bdecrypted;
+	uint8_t	encrypt; //when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith
+	uint8_t	iv_len;
+	uint8_t	icv_len;
+	uint8_t	crc_err;
+	uint8_t	icv_err;
 
 	u16	eth_type;
 
-	u8 	dst[ETH_ALEN];
-	u8 	src[ETH_ALEN];
-	u8 	ta[ETH_ALEN];
-	u8 	ra[ETH_ALEN];
-	u8 	bssid[ETH_ALEN];
+	uint8_t 	dst[ETH_ALEN];
+	uint8_t 	src[ETH_ALEN];
+	uint8_t 	ta[ETH_ALEN];
+	uint8_t 	ra[ETH_ALEN];
+	uint8_t 	bssid[ETH_ALEN];
 
-	u8	ack_policy;
+	uint8_t	ack_policy;
 
 //#ifdef CONFIG_TCP_CSUM_OFFLOAD_RX
-	u8	tcpchk_valid; // 0: invalid, 1: valid
-	u8	ip_chkrpt; //0: incorrect, 1: correct
-	u8	tcp_chkrpt; //0: incorrect, 1: correct
+	uint8_t	tcpchk_valid; // 0: invalid, 1: valid
+	uint8_t	ip_chkrpt; //0: incorrect, 1: correct
+	uint8_t	tcp_chkrpt; //0: incorrect, 1: correct
 //#endif
-	u8 	key_index;
+	uint8_t 	key_index;
 
-	u8	data_rate;
-	u8 	sgi;
-	u8 	pkt_rpt_type;
+	uint8_t	data_rate;
+	uint8_t 	sgi;
+	uint8_t 	pkt_rpt_type;
 	u32	MacIDValidEntry[2];	// 64 bits present 64 entry.
 
 /*
-	u8	signal_qual;
+	uint8_t	signal_qual;
 	s8	rx_mimo_signal_qual[2];
-	u8	signal_strength;
+	uint8_t	signal_strength;
 	u32	RxPWDBAll;
 	s32	RecvSignalPower;
 */
@@ -251,8 +251,8 @@ struct recv_priv
 	_queue	uc_swdec_pending_queue;
 
 
-	u8 *pallocated_frame_buf;
-	u8 *precv_frame_buf;
+	uint8_t *pallocated_frame_buf;
+	uint8_t *precv_frame_buf;
 
 	uint free_recvframe_cnt;
 
@@ -270,17 +270,17 @@ struct recv_priv
 	uint  rx_middlepacket_crcerr;
 
 #ifdef CONFIG_USB_HCI
-	//u8 *pallocated_urb_buf;
+	//uint8_t *pallocated_urb_buf;
 	struct semaphore allrxreturnevt;
 	uint	ff_hwaddr;
-	u8	rx_pending_cnt;
+	uint8_t	rx_pending_cnt;
 
 #ifdef CONFIG_USB_INTERRUPT_IN_PIPE
 #ifdef PLATFORM_LINUX
 	PURB	int_in_urb;
 #endif
 
-	u8	*int_in_buf;
+	uint8_t	*int_in_buf;
 #endif //CONFIG_USB_INTERRUPT_IN_PIPE
 
 #endif
@@ -299,21 +299,21 @@ struct recv_priv
 #endif	// CONFIG_USE_USB_BUFFER_ALLOC_RX
 #endif //defined(PLATFORM_LINUX)
 
-	u8 *pallocated_recv_buf;
-	u8 *precv_buf;    // 4 alignment
+	uint8_t *pallocated_recv_buf;
+	uint8_t *precv_buf;    // 4 alignment
 	_queue	free_recv_buf_queue;
 	u32	free_recv_buf_queue_cnt;
 
 
 
 	//For display the phy informatiom
-	u8 is_signal_dbg;	// for debug
-	u8 signal_strength_dbg;	// for debug
+	uint8_t is_signal_dbg;	// for debug
+	uint8_t signal_strength_dbg;	// for debug
 	s8 rssi;
 	s8 rxpwdb;
-	u8 signal_strength;
-	u8 signal_qual;
-	u8 noise;
+	uint8_t signal_strength;
+	uint8_t signal_qual;
+	uint8_t noise;
 	int RxSNRdB[2];
 	s8 RxRssi[2];
 	int FalseAlmCnt_all;
@@ -362,14 +362,14 @@ struct recv_buf
 
 	PADAPTER adapter;
 
-	u8	*pbuf;
-	u8	*pallocated_buf;
+	uint8_t	*pbuf;
+	uint8_t	*pallocated_buf;
 
 	u32	len;
-	u8	*phead;
-	u8	*pdata;
-	u8	*ptail;
-	u8	*pend;
+	uint8_t	*phead;
+	uint8_t	*pdata;
+	uint8_t	*ptail;
+	uint8_t	*pend;
 
 #ifdef CONFIG_USB_HCI
 
@@ -380,14 +380,14 @@ struct recv_buf
 	#endif
 
 
-	u8  irp_pending;
+	uint8_t  irp_pending;
 	int  transfer_len;
 
 #endif
 
 #ifdef PLATFORM_LINUX
 	_pkt	*pskb;
-	u8	reuse;
+	uint8_t	reuse;
 #endif
 };
 
@@ -420,17 +420,17 @@ struct recv_frame_hdr
 
 	_adapter  *adapter;
 
-	u8 fragcnt;
+	uint8_t fragcnt;
 
 	int frame_tag;
 
 	struct rx_pkt_attrib attrib;
 
 	uint  len;
-	u8 *rx_head;
-	u8 *rx_data;
-	u8 *rx_tail;
-	u8 *rx_end;
+	uint8_t *rx_head;
+	uint8_t *rx_data;
+	uint8_t *rx_tail;
+	uint8_t *rx_end;
 
 	void *precvbuf;
 
@@ -442,11 +442,11 @@ struct recv_frame_hdr
 	struct recv_reorder_ctrl *preorder_ctrl;
 
 #ifdef CONFIG_WAPI_SUPPORT
-	u8 UserPriority;
-	u8 WapiTempPN[16];
-	u8 WapiSrcAddr[6];
-	u8 bWapiCheckPNInDecrypt;
-	u8 bIsWaiPacket;
+	uint8_t UserPriority;
+	uint8_t WapiTempPN[16];
+	uint8_t WapiSrcAddr[6];
+	uint8_t bWapiCheckPNInDecrypt;
+	uint8_t bIsWaiPacket;
 #endif
 
 };
@@ -490,7 +490,7 @@ struct recv_buf *rtw_dequeue_recvbuf (_queue *queue);
 
 void rtw_reordering_ctrl_timeout_handler(void *pcontext);
 
-__inline static u8 *get_rxmem(union recv_frame *precvframe)
+__inline static uint8_t *get_rxmem(union recv_frame *precvframe)
 {
 	//always return rx_head...
 	if(precvframe==NULL)
@@ -499,14 +499,14 @@ __inline static u8 *get_rxmem(union recv_frame *precvframe)
 	return precvframe->u.hdr.rx_head;
 }
 
-__inline static u8 *get_rx_status(union recv_frame *precvframe)
+__inline static uint8_t *get_rx_status(union recv_frame *precvframe)
 {
 
 	return get_rxmem(precvframe);
 
 }
 
-__inline static u8 *get_recvframe_data(union recv_frame *precvframe)
+__inline static uint8_t *get_recvframe_data(union recv_frame *precvframe)
 {
 
 	//alwasy return rx_data
@@ -517,7 +517,7 @@ __inline static u8 *get_recvframe_data(union recv_frame *precvframe)
 
 }
 
-__inline static u8 *recvframe_push(union recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_push(union recv_frame *precvframe, sint sz)
 {
 	// append data before rx_data
 
@@ -545,7 +545,7 @@ __inline static u8 *recvframe_push(union recv_frame *precvframe, sint sz)
 }
 
 
-__inline static u8 *recvframe_pull(union recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_pull(union recv_frame *precvframe, sint sz)
 {
 	// rx_data += sz; move rx_data sz bytes  hereafter
 
@@ -570,7 +570,7 @@ __inline static u8 *recvframe_pull(union recv_frame *precvframe, sint sz)
 
 }
 
-__inline static u8 *recvframe_put(union recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_put(union recv_frame *precvframe, sint sz)
 {
 	// rx_tai += sz; move rx_tail sz bytes  hereafter
 
@@ -599,7 +599,7 @@ __inline static u8 *recvframe_put(union recv_frame *precvframe, sint sz)
 
 
 
-__inline static u8 *recvframe_pull_tail(union recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_pull_tail(union recv_frame *precvframe, sint sz)
 {
 	// rmv data from rx_tail (by yitsen)
 
@@ -636,7 +636,7 @@ __inline static _buffer * get_rxbuf_desc(union recv_frame *precvframe)
 }
 
 
-__inline static union recv_frame *rxmem_to_recvframe(u8 *rxmem)
+__inline static union recv_frame *rxmem_to_recvframe(uint8_t *rxmem)
 {
 	//due to the design of 2048 bytes alignment of recv_frame, we can reference the union recv_frame
 	//from any given member of recv_frame.
@@ -649,14 +649,14 @@ __inline static union recv_frame *rxmem_to_recvframe(u8 *rxmem)
 __inline static union recv_frame *pkt_to_recvframe(_pkt *pkt)
 {
 
-	u8 * buf_star;
+	uint8_t * buf_star;
 	union recv_frame * precv_frame;
 	precv_frame = rxmem_to_recvframe((unsigned char*)buf_star);
 
 	return precv_frame;
 }
 
-__inline static u8 *pkt_to_recvmem(_pkt *pkt)
+__inline static uint8_t *pkt_to_recvmem(_pkt *pkt)
 {
 	// return the rx_head
 
@@ -666,7 +666,7 @@ __inline static u8 *pkt_to_recvmem(_pkt *pkt)
 
 }
 
-__inline static u8 *pkt_to_recvdata(_pkt *pkt)
+__inline static uint8_t *pkt_to_recvdata(_pkt *pkt)
 {
 	// return the rx_data
 

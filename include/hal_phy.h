@@ -70,9 +70,9 @@ typedef enum _RF_PATH{
 	RF_PATH_D
 }RF_PATH, *PRF_PATH;
 
-#define	TX_1S			0			
-#define	TX_2S			1			
-#define	TX_3S			2			
+#define	TX_1S			0
+#define	TX_2S			1
+#define	TX_3S			2
 #define	TX_4S			3
 
 #define	RF_PATH_MAX_92C_88E 		2
@@ -108,7 +108,7 @@ typedef enum _BaseBand_Config_Type{
 	BaseBand_Config_PHY_REG = 0,			//Radio Path A
 	BaseBand_Config_AGC_TAB = 1,			//Radio Path B
 	BaseBand_Config_AGC_TAB_2G = 2,
-	BaseBand_Config_AGC_TAB_5G = 3,	
+	BaseBand_Config_AGC_TAB_5G = 3,
 	BaseBand_Config_PHY_REG_PG
 }BaseBand_Config_Type, *PBaseBand_Config_Type;
 
@@ -148,10 +148,10 @@ typedef struct _SwChnlCmd{
 	u32				msDelay;
 }SwChnlCmd;
 
-typedef struct _R_ANTENNA_SELECT_OFDM{	
-	u32			r_tx_antenna:4;	
+typedef struct _R_ANTENNA_SELECT_OFDM{
+	u32			r_tx_antenna:4;
 	u32			r_ant_l:4;
-	u32			r_ant_non_ht:4;	
+	u32			r_ant_non_ht:4;
 	u32			r_ant_ht1:4;
 	u32			r_ant_ht2:4;
 	u32			r_ant_ht_s1:4;
@@ -161,22 +161,22 @@ typedef struct _R_ANTENNA_SELECT_OFDM{
 }R_ANTENNA_SELECT_OFDM;
 
 typedef struct _R_ANTENNA_SELECT_CCK{
-	u8			r_cckrx_enable_2:2;	
-	u8			r_cckrx_enable:2;
-	u8			r_ccktx_enable:4;
+	uint8_t			r_cckrx_enable_2:2;
+	uint8_t			r_cckrx_enable:2;
+	uint8_t			r_ccktx_enable:4;
 }R_ANTENNA_SELECT_CCK;
 
 typedef struct RF_Shadow_Compare_Map {
 	// Shadow register value
 	u32		Value;
 	// Compare or not flag
-	u8		Compare;
+	uint8_t		Compare;
 	// Record If it had ever modified unpredicted
-	u8		ErrorOrNot;
+	uint8_t		ErrorOrNot;
 	// Recorver Flag
-	u8		Recorver;
+	uint8_t		Recorver;
 	//
-	u8		Driver_Write;
+	uint8_t		Driver_Write;
 }RF_SHADOW_T;
 
 /*--------------------------Exported Function prototype---------------------*/
@@ -189,26 +189,26 @@ PHY_CalculateBitShift(
 u32
 PHY_RFShadowRead(
 	IN	PADAPTER		Adapter,
-	IN	u8				eRFPath,
+	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
 VOID
 PHY_RFShadowWrite(
 	IN	PADAPTER		Adapter,
-	IN	u8				eRFPath,
+	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
 	IN	u32				Data);
 
 BOOLEAN
 PHY_RFShadowCompare(
 	IN	PADAPTER		Adapter,
-	IN	u8				eRFPath,
+	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
 VOID
 PHY_RFShadowRecorver(
 	IN	PADAPTER		Adapter,
-	IN	u8				eRFPath,
+	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
 VOID
@@ -222,16 +222,16 @@ PHY_RFShadowRecorverAll(
 VOID
 PHY_RFShadowCompareFlagSet(
 	IN	PADAPTER		Adapter,
-	IN	u8				eRFPath,
+	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
-	IN	u8				Type);
+	IN	uint8_t				Type);
 
 VOID
 PHY_RFShadowRecorverFlagSet(
 	IN	PADAPTER		Adapter,
-	IN	u8				eRFPath,
+	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
-	IN	u8				Type);
+	IN	uint8_t				Type);
 
 VOID
 PHY_RFShadowCompareFlagSetAll(

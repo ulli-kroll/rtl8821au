@@ -50,38 +50,38 @@
 
 #ifdef PLATFORM_LINUX
 struct wpa_ie_hdr {
-	u8 elem_id;
-	u8 len;
-	u8 oui[4]; /* 24-bit OUI followed by 8-bit OUI type */
-	u8 version[2]; /* little endian */
+	uint8_t elem_id;
+	uint8_t len;
+	uint8_t oui[4]; /* 24-bit OUI followed by 8-bit OUI type */
+	uint8_t version[2]; /* little endian */
 }__attribute__ ((packed));
 
 struct rsn_ie_hdr {
-	u8 elem_id; /* WLAN_EID_RSN */
-	u8 len;
-	u8 version[2]; /* little endian */
+	uint8_t elem_id; /* WLAN_EID_RSN */
+	uint8_t len;
+	uint8_t version[2]; /* little endian */
 }__attribute__ ((packed));
 
 struct wme_ac_parameter {
 #if defined(CONFIG_LITTLE_ENDIAN)
 	/* byte 1 */
-	u8 	aifsn:4,
+	uint8_t 	aifsn:4,
 		acm:1,
 	 	aci:2,
 	 	reserved:1;
 
 	/* byte 2 */
-	u8 	eCWmin:4,
+	uint8_t 	eCWmin:4,
 	 	eCWmax:4;
 #elif defined(CONFIG_BIG_ENDIAN)
 	/* byte 1 */
-	u8 	reserved:1,
+	uint8_t 	reserved:1,
 	 	aci:2,
 	 	acm:1,
 	 	aifsn:4;
 
 	/* byte 2 */
-	u8 	eCWmax:4,
+	uint8_t 	eCWmax:4,
 	 	eCWmin:4;
 #else
 #error	"Please fix <endian.h>"
@@ -93,12 +93,12 @@ struct wme_ac_parameter {
 
 struct wme_parameter_element {
 	/* required fields for WME version 1 */
-	u8 oui[3];
-	u8 oui_type;
-	u8 oui_subtype;
-	u8 version;
-	u8 acInfo;
-	u8 reserved;
+	uint8_t oui[3];
+	uint8_t oui_type;
+	uint8_t oui_subtype;
+	uint8_t version;
+	uint8_t acInfo;
+	uint8_t reserved;
 	struct wme_ac_parameter ac[4];
 
 } __attribute__ ((packed));
@@ -113,22 +113,22 @@ struct wme_parameter_element {
 
 #define WPA_PUT_BE32(a, val)					\
 	do {							\
-		(a)[0] = (u8) ((((u32) (val)) >> 24) & 0xff);	\
-		(a)[1] = (u8) ((((u32) (val)) >> 16) & 0xff);	\
-		(a)[2] = (u8) ((((u32) (val)) >> 8) & 0xff);	\
-		(a)[3] = (u8) (((u32) (val)) & 0xff);		\
+		(a)[0] = (uint8_t) ((((u32) (val)) >> 24) & 0xff);	\
+		(a)[1] = (uint8_t) ((((u32) (val)) >> 16) & 0xff);	\
+		(a)[2] = (uint8_t) ((((u32) (val)) >> 8) & 0xff);	\
+		(a)[3] = (uint8_t) (((u32) (val)) & 0xff);		\
 	} while (0)
 
 #define WPA_PUT_LE32(a, val)					\
 	do {							\
-		(a)[3] = (u8) ((((u32) (val)) >> 24) & 0xff);	\
-		(a)[2] = (u8) ((((u32) (val)) >> 16) & 0xff);	\
-		(a)[1] = (u8) ((((u32) (val)) >> 8) & 0xff);	\
-		(a)[0] = (u8) (((u32) (val)) & 0xff);		\
+		(a)[3] = (uint8_t) ((((u32) (val)) >> 24) & 0xff);	\
+		(a)[2] = (uint8_t) ((((u32) (val)) >> 16) & 0xff);	\
+		(a)[1] = (uint8_t) ((((u32) (val)) >> 8) & 0xff);	\
+		(a)[0] = (uint8_t) (((u32) (val)) & 0xff);		\
 	} while (0)
 
-#define RSN_SELECTOR_PUT(a, val) WPA_PUT_BE32((u8 *) (a), (val))
-//#define RSN_SELECTOR_PUT(a, val) WPA_PUT_LE32((u8 *) (a), (val))
+#define RSN_SELECTOR_PUT(a, val) WPA_PUT_BE32((uint8_t *) (a), (val))
+//#define RSN_SELECTOR_PUT(a, val) WPA_PUT_LE32((uint8_t *) (a), (val))
 
 
 
@@ -184,9 +184,9 @@ enum ieee80211_back_parties {
 struct ieee80211_mgmt {
 	u16 frame_control;
 	u16 duration;
-	u8 da[6];
-	u8 sa[6];
-	u8 bssid[6];
+	uint8_t da[6];
+	uint8_t sa[6];
+	uint8_t bssid[6];
 	u16 seq_ctrl;
 	union {
 		struct {
@@ -194,7 +194,7 @@ struct ieee80211_mgmt {
 			u16 auth_transaction;
 			u16 status_code;
 			/* possibly followed by Challenge text */
-			u8 variable[0];
+			uint8_t variable[0];
 		}  __attribute__ ((packed)) auth;
 		struct {
 			u16 reason_code;
@@ -203,21 +203,21 @@ struct ieee80211_mgmt {
 			u16 capab_info;
 			u16 listen_interval;
 			/* followed by SSID and Supported rates */
-			u8 variable[0];
+			uint8_t variable[0];
 		}  __attribute__ ((packed)) assoc_req;
 		struct {
 			u16 capab_info;
 			u16 status_code;
 			u16 aid;
 			/* followed by Supported rates */
-			u8 variable[0];
+			uint8_t variable[0];
 		}  __attribute__ ((packed)) assoc_resp, reassoc_resp;
 		struct {
 			u16 capab_info;
 			u16 listen_interval;
-			u8 current_ap[6];
+			uint8_t current_ap[6];
 			/* followed by SSID and Supported rates */
-			u8 variable[0];
+			uint8_t variable[0];
 		}  __attribute__ ((packed)) reassoc_req;
 		struct {
 			u16 reason_code;
@@ -228,11 +228,11 @@ struct ieee80211_mgmt {
 			u16 capab_info;
 			/* followed by some of SSID, Supported rates,
 			 * FH Params, DS Params, CF Params, IBSS Params, TIM */
-			u8 variable[0];
+			uint8_t variable[0];
 		}  __attribute__ ((packed)) beacon;
 		struct {
 			/* only variable items: SSID, Supported rates */
-			u8 variable[0];
+			uint8_t variable[0];
 		}  __attribute__ ((packed)) probe_req;
 		struct {
 			__le64 timestamp;
@@ -240,53 +240,53 @@ struct ieee80211_mgmt {
 			u16 capab_info;
 			/* followed by some of SSID, Supported rates,
 			 * FH Params, DS Params, CF Params, IBSS Params */
-			u8 variable[0];
+			uint8_t variable[0];
 		}  __attribute__ ((packed)) probe_resp;
 		struct {
-			u8 category;
+			uint8_t category;
 			union {
 				struct {
-					u8 action_code;
-					u8 dialog_token;
-					u8 status_code;
-					u8 variable[0];
+					uint8_t action_code;
+					uint8_t dialog_token;
+					uint8_t status_code;
+					uint8_t variable[0];
 				}  __attribute__ ((packed)) wme_action;
 #if 0
 				struct{
-					u8 action_code;
-					u8 element_id;
-					u8 length;
+					uint8_t action_code;
+					uint8_t element_id;
+					uint8_t length;
 					struct ieee80211_channel_sw_ie sw_elem;
 				}  __attribute__ ((packed)) chan_switch;
 				struct{
-					u8 action_code;
-					u8 dialog_token;
-					u8 element_id;
-					u8 length;
+					uint8_t action_code;
+					uint8_t dialog_token;
+					uint8_t element_id;
+					uint8_t length;
 					struct ieee80211_msrment_ie msr_elem;
 				}  __attribute__ ((packed)) measurement;
 #endif
 				struct{
-					u8 action_code;
-					u8 dialog_token;
+					uint8_t action_code;
+					uint8_t dialog_token;
 					u16 capab;
 					u16 timeout;
 					u16 start_seq_num;
 				}  __attribute__ ((packed)) addba_req;
 				struct{
-					u8 action_code;
-					u8 dialog_token;
+					uint8_t action_code;
+					uint8_t dialog_token;
 					u16 status;
 					u16 capab;
 					u16 timeout;
 				}  __attribute__ ((packed)) addba_resp;
 				struct{
-					u8 action_code;
+					uint8_t action_code;
 					u16 params;
 					u16 reason_code;
 				}  __attribute__ ((packed)) delba;
 				struct{
-					u8 action_code;
+					uint8_t action_code;
 					/* capab_info for open and confirm,
 					 * reason for close
 					 */
@@ -296,11 +296,11 @@ struct ieee80211_mgmt {
 					 * and directly by supported rates in
 					 * plink_open and plink_close
 					 */
-					u8 variable[0];
+					uint8_t variable[0];
 				}  __attribute__ ((packed)) plink_action;
 				struct{
-					u8 action_code;
-					u8 variable[0];
+					uint8_t action_code;
+					uint8_t variable[0];
 				}  __attribute__ ((packed)) mesh_action;
 			} __attribute__ ((packed)) u;
 		}  __attribute__ ((packed)) action;

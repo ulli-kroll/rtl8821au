@@ -192,7 +192,7 @@ typedef struct _LED_USB{
 	BOOLEAN				bLedWPSBlinkInProgress;
 
 	u32					BlinkTimes; // Number of times to toggle led state for blinking.
-	u8					BlinkCounter; //Added for turn off overlap led after blinking a while, by page, 20120821
+	uint8_t					BlinkCounter; //Added for turn off overlap led after blinking a while, by page, 20120821
 	LED_STATE			BlinkingLedState; // Next state for blinking, either LED_ON or LED_OFF are.
 
 	_timer				BlinkTimer; // Timer object for led blinking.
@@ -216,7 +216,7 @@ struct led_priv{
 	LED_DATA			SwLed1;
 	LED_DATA			SwLed2;
 	LED_STRATEGY		LedStrategy;
-	u8					bRegUseLed;
+	uint8_t					bRegUseLed;
 	void (*LedControlHandler)(_adapter *padapter, LED_CTL_MODE LedAction);
 	void (*SwLedOn)(_adapter *padapter, PLED_DATA pLed);
 	void (*SwLedOff)(_adapter *padapter, PLED_DATA pLed);

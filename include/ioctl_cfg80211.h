@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *                                        
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
  * published by the Free Software Foundation.
@@ -18,7 +18,7 @@
  *
  ******************************************************************************/
 #ifndef __IOCTL_CFG80211_H__
-#define __IOCTL_CFG80211_H__ 
+#define __IOCTL_CFG80211_H__
 
 
 #if defined(RTW_USE_CFG80211_STA_EVENT)
@@ -26,11 +26,11 @@
 #endif
 
 struct rtw_wdev_invit_info {
-	u8 token;
-	u8 flags;
-	u8 status;
-	u8 req_op_ch;
-	u8 rsp_op_ch;	
+	uint8_t token;
+	uint8_t flags;
+	uint8_t status;
+	uint8_t req_op_ch;
+	uint8_t rsp_op_ch;
 };
 
 #define rtw_wdev_invit_info_init(invit_info) \
@@ -43,9 +43,9 @@ struct rtw_wdev_invit_info {
 	} while (0)
 
 struct rtw_wdev_priv
-{	
+{
 	struct wireless_dev *rtw_wdev;
-	
+
 	_adapter *padapter;
 
 	struct cfg80211_scan_request *scan_request;
@@ -54,21 +54,21 @@ struct rtw_wdev_priv
 	struct net_device *pmon_ndev;//for monitor interface
 	char ifname_mon[IFNAMSIZ + 1]; //interface name for monitor interface
 
-	u8 p2p_enabled;
+	uint8_t p2p_enabled;
 
-	u8 provdisc_req_issued;
+	uint8_t provdisc_req_issued;
 
 	struct rtw_wdev_invit_info invit_info;
 
-	u8 bandroid_scan;
+	uint8_t bandroid_scan;
 	bool block;
 	bool power_mgmt;
 
 #ifdef CONFIG_CONCURRENT_MODE
 	ATOMIC_T ro_ch_to;
-	ATOMIC_T switch_ch_to;	
-#endif	
-	
+	ATOMIC_T switch_ch_to;
+#endif
+
 };
 
 #define wdev_to_priv(w) ((struct rtw_wdev_priv *)(wdev_priv(w)))
@@ -90,14 +90,14 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter);
 void rtw_cfg80211_indicate_scan_done(struct rtw_wdev_priv *pwdev_priv, bool aborted);
 
 #ifdef CONFIG_AP_MODE
-void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
+void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, uint8_t *pmgmt_frame, uint frame_len);
 void rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, unsigned short reason);
 #endif //CONFIG_AP_MODE
 
-void rtw_cfg80211_issue_p2p_provision_request(_adapter *padapter, const u8 *buf, size_t len);
-void rtw_cfg80211_rx_p2p_action_public(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
-void rtw_cfg80211_rx_action_p2p(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
-void rtw_cfg80211_rx_action(_adapter *adapter, u8 *frame, uint frame_len, const char*msg);
+void rtw_cfg80211_issue_p2p_provision_request(_adapter *padapter, const uint8_t *buf, size_t len);
+void rtw_cfg80211_rx_p2p_action_public(_adapter *padapter, uint8_t *pmgmt_frame, uint frame_len);
+void rtw_cfg80211_rx_action_p2p(_adapter *padapter, uint8_t *pmgmt_frame, uint frame_len);
+void rtw_cfg80211_rx_action(_adapter *adapter, uint8_t *frame, uint frame_len, const char*msg);
 
 int rtw_cfg80211_set_mgnt_wpsp2pie(struct net_device *net, char *buf, int len, int type);
 

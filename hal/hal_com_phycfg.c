@@ -81,7 +81,7 @@ int
 PHY_ConfigRFWithParaFile(
 	IN	PADAPTER		Adapter,
 	IN	u8* 				pFileName,
-	IN	u8				eRFPath
+	IN	uint8_t				eRFPath
 )
 {
 	int	rtStatus = _SUCCESS;

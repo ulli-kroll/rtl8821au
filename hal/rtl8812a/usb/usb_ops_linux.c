@@ -22,14 +22,14 @@
 //#include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-static u8 usb_read8(struct intf_hdl *pintfhdl, u32 addr)
+static uint8_t usb_read8(struct intf_hdl *pintfhdl, u32 addr)
 {
-	u8 request;
-	u8 requesttype;
+	uint8_t request;
+	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
-	u8 data=0;
+	uint8_t data=0;
 
 	_func_enter_;
 
@@ -50,8 +50,8 @@ static u8 usb_read8(struct intf_hdl *pintfhdl, u32 addr)
 
 static u16 usb_read16(struct intf_hdl *pintfhdl, u32 addr)
 {
-	u8 request;
-	u8 requesttype;
+	uint8_t request;
+	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
@@ -76,8 +76,8 @@ static u16 usb_read16(struct intf_hdl *pintfhdl, u32 addr)
 
 static u32 usb_read32(struct intf_hdl *pintfhdl, u32 addr)
 {
-	u8 request;
-	u8 requesttype;
+	uint8_t request;
+	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
@@ -100,14 +100,14 @@ static u32 usb_read32(struct intf_hdl *pintfhdl, u32 addr)
 
 }
 
-static int usb_write8(struct intf_hdl *pintfhdl, u32 addr, u8 val)
+static int usb_write8(struct intf_hdl *pintfhdl, u32 addr, uint8_t val)
 {
-	u8 request;
-	u8 requesttype;
+	uint8_t request;
+	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
-	u8 data;
+	uint8_t data;
 	int ret;
 
 	_func_enter_;
@@ -131,8 +131,8 @@ static int usb_write8(struct intf_hdl *pintfhdl, u32 addr, u8 val)
 
 static int usb_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 {
-	u8 request;
-	u8 requesttype;
+	uint8_t request;
+	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
@@ -160,8 +160,8 @@ static int usb_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 
 static int usb_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 {
-	u8 request;
-	u8 requesttype;
+	uint8_t request;
+	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
@@ -186,14 +186,14 @@ static int usb_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 
 }
 
-static int usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, u8 *pdata)
+static int usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, uint8_t *pdata)
 {
-	u8 request;
-	u8 requesttype;
+	uint8_t request;
+	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
-	u8 buf[VENDOR_CMD_MAX_DATA_LEN]={0};
+	uint8_t buf[VENDOR_CMD_MAX_DATA_LEN]={0};
 	int ret;
 
 	_func_enter_;
@@ -215,7 +215,7 @@ static int usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, u8 *pdata
 }
 
 #ifdef CONFIG_SUPPORT_USB_INT
-void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
+void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,uint8_t *pbuf)
 {
 	HAL_DATA_TYPE	*pHalData=GET_HAL_DATA(padapter);
 	struct reportpwrstate_parm pwr_rpt;
@@ -416,17 +416,17 @@ _func_exit_;
 }
 #endif
 
-static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
+static s32 pre_recv_entry(union recv_frame *precvframe, uint8_t *pphy_status)
 {
 	s32 ret=_SUCCESS;
 #ifdef CONFIG_CONCURRENT_MODE
-	u8 *primary_myid, *secondary_myid, *paddr1;
+	uint8_t *primary_myid, *secondary_myid, *paddr1;
 	union recv_frame	*precvframe_if2 = NULL;
 	_adapter *primary_padapter = precvframe->u.hdr.adapter;
 	_adapter *secondary_padapter = primary_padapter->pbuddy_adapter;
 	struct recv_priv *precvpriv = &primary_padapter->recvpriv;
 	_queue *pfree_recv_queue = &precvpriv->free_recv_queue;
-	u8	*pbuf = precvframe->u.hdr.rx_data;
+	uint8_t	*pbuf = precvframe->u.hdr.rx_data;
 
 	if(!secondary_padapter)
 		return ret;
@@ -450,9 +450,9 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 	else // Handle BC/MC Packets
 	{
 
-		u8 clone = _TRUE;
+		uint8_t clone = _TRUE;
 #if 0
-		u8 type, subtype, *paddr2, *paddr3;
+		uint8_t type, subtype, *paddr2, *paddr3;
 
 		type =  GetFrameType(pbuf);
 		subtype = GetFrameSubType(pbuf); //bit(7)~bit(2)
@@ -583,11 +583,11 @@ _pkt *pskb
 #endif
 )
 {
-	u8	*pbuf;
-	u8	pkt_cnt = 0;
+	uint8_t	*pbuf;
+	uint8_t	pkt_cnt = 0;
 	u32	pkt_offset;
 	s32	transfer_len;
-	u8				*pphy_status = NULL;
+	uint8_t				*pphy_status = NULL;
 	union recv_frame	*precvframe = NULL;
 	struct rx_pkt_attrib	*pattrib = NULL;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
@@ -836,7 +836,7 @@ _func_exit_;
 
 }
 
-static u32 usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
+static u32 usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *rmem)
 {
 	int err;
 	unsigned int pipe;
@@ -1050,7 +1050,7 @@ _func_exit_;
 
 }
 
-static u32 usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
+static u32 usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *rmem)
 {
 	_irqL irqL;
 	int err;
@@ -1194,7 +1194,7 @@ void rtl8812au_set_intf_ops(struct _io_ops	*pops)
 {
 	_func_enter_;
 
-	memset((u8 *)pops, 0, sizeof(struct _io_ops));
+	memset((uint8_t *)pops, 0, sizeof(struct _io_ops));
 
 	pops->_read8 = &usb_read8;
 	pops->_read16 = &usb_read16;

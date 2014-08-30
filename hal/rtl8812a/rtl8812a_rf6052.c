@@ -452,7 +452,7 @@ PHY_RF6052SetOFDMTxPower8812(
 	IN	uint8_t		Channel)
 {
 	u32 writeVal[2], powerBase0[2], powerBase1[2], pwrtrac_value;
-	u8 index = 0;
+	uint8_t index = 0;
 
 
 	//DBG_871X("PHY_RF6052SetOFDMTxPower, channel(%d) \n", Channel);

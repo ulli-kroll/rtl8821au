@@ -44,17 +44,17 @@ void	rtl8812au_free_xmit_priv(_adapter *padapter)
 {
 }
 
-static s32 update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem, s32 sz ,u8 bagg_pkt)
+static s32 update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, s32 sz ,uint8_t bagg_pkt)
 {
       int	pull=0;
 	uint	qsel;
-	u8 data_rate,pwr_status,offset;
+	uint8_t data_rate,pwr_status,offset;
 	_adapter			*padapter = pxmitframe->padapter;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	u8	*ptxdesc =  pmem;
+	uint8_t	*ptxdesc =  pmem;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	sint	bmcst = IS_MCAST(pattrib->ra);
@@ -329,7 +329,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 	s32 ret = _SUCCESS;
 	s32 inner_ret = _SUCCESS;
 	int t, sz, w_sz, pull=0;
-	u8 *mem_addr;
+	uint8_t *mem_addr;
 	u32 ff_hwaddr;
 	struct xmit_buf *pxmitbuf = pxmitframe->pxmitbuf;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
@@ -398,7 +398,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 
 		mem_addr += w_sz;
 
-		mem_addr = (u8 *)RND4(((SIZE_PTR)(mem_addr)));
+		mem_addr = (uint8_t *)RND4(((SIZE_PTR)(mem_addr)));
 
 	}
 
@@ -449,7 +449,7 @@ s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 	u32	len;	// packet length, except TXDESC_SIZE and PKT_OFFSET
 
 	u32	bulkSize = pHalData->UsbBulkOutSize;
-	u8	descCount;
+	uint8_t	descCount;
 	u32	bulkPtr;
 
 	// dump frame variable

@@ -22,10 +22,10 @@
 //#include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag, u8 *ptxdesc)
+void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag, uint8_t *ptxdesc)
 {
-	u8 bDumpTxPkt;
-	u8 bDumpTxDesc = _FALSE;
+	uint8_t bDumpTxPkt;
+	uint8_t bDumpTxDesc = _FALSE;
 	rtw_hal_get_def_var(padapter, HAL_DEF_DBG_DUMP_TXPKT, &(bDumpTxPkt));
 
 	if(bDumpTxPkt ==1){//dump txdesc for data frame
@@ -83,7 +83,7 @@ void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag, u8 *ptxdesc)
 
 
 struct EMInfo{
-	u8 	EMPktNum;
+	uint8_t 	EMPktNum;
 	u16  EMPktLen[EARLY_MODE_MAX_PKT_NUM];
 };
 
@@ -180,7 +180,7 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 	u16 offset,pktlen;
 	PTXDESC_8812 ptxdesc;
 
-	u8 *pmem,*pEMInfo_mem;
+	uint8_t *pmem,*pEMInfo_mem;
 	s8 node_num_0=0,node_num_1=0;
 	struct EMInfo eminfo;
 	struct agg_pkt_info *paggpkt;
@@ -229,12 +229,12 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 		if(pmem){
 			if(index==0){
 				ptxdesc = (PTXDESC_8812)(pmem);
-				pEMInfo_mem = ((u8 *)ptxdesc)+TXDESC_SIZE;
+				pEMInfo_mem = ((uint8_t *)ptxdesc)+TXDESC_SIZE;
 			}
 			else{
 				pmem = pmem + pxmitpriv->agg_pkt[index-1].offset;
 				ptxdesc = (PTXDESC_8812)(pmem);
-				pEMInfo_mem = ((u8 *)ptxdesc)+TXDESC_SIZE;
+				pEMInfo_mem = ((uint8_t *)ptxdesc)+TXDESC_SIZE;
 			}
 
 			#ifdef DBG_EMINFO
@@ -250,7 +250,7 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 }
 #endif
 
-void rtl8812a_cal_txdesc_chksum(u8 *ptxdesc)
+void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 {
 	u16	*usPtr;
 	u32 count;
@@ -334,7 +334,7 @@ void rtl8812a_fill_fake_txdesc(
 #endif
 }
 
-void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, u8 *ptxdesc)
+void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
 	if ((pattrib->encrypt > 0) && !pattrib->bswenc)
 	{
@@ -366,7 +366,7 @@ void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, u8 *ptxdesc)
 
 }
 
-void rtl8812a_fill_txdesc_vcs(PADAPTER padapter, struct pkt_attrib *pattrib, u8 *ptxdesc)
+void rtl8812a_fill_txdesc_vcs(PADAPTER padapter, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -400,7 +400,7 @@ void rtl8812a_fill_txdesc_vcs(PADAPTER padapter, struct pkt_attrib *pattrib, u8 
 	}
 }
 
-void rtl8812a_fill_txdesc_phy(PADAPTER padapter, struct pkt_attrib *pattrib, u8 *ptxdesc)
+void rtl8812a_fill_txdesc_phy(PADAPTER padapter, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
 	//DBG_8192C("bwmode=%d, ch_off=%d\n", pattrib->bwmode, pattrib->ch_offset);
 

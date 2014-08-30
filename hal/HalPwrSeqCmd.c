@@ -45,17 +45,17 @@ Major Change History:
 //
 //	2011.07.07, added by Roger.
 //
-u8 HalPwrSeqCmdParsing(
+uint8_t HalPwrSeqCmdParsing(
 	PADAPTER		padapter,
-	u8				CutVersion,
-	u8				FabVersion,
-	u8				InterfaceType,
+	uint8_t				CutVersion,
+	uint8_t				FabVersion,
+	uint8_t				InterfaceType,
 	WLAN_PWR_CFG	PwrSeqCmd[])
 {
 	WLAN_PWR_CFG 	PwrCfgCmd = {0};
-	u8				bPollingBit = _FALSE;
+	uint8_t				bPollingBit = _FALSE;
 	u32				AryIdx = 0;
-	u8				value = 0;
+	uint8_t				value = 0;
 	u32				offset = 0;
 	u32				pollingCount = 0; // polling autoload done.
 	u32				maxPollingCnt = 5000;

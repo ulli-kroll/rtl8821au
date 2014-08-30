@@ -791,12 +791,12 @@ PHY_ConvertPowerLimitToPowerIndex(
 	)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
-	u8 				BW40PwrBasedBm2_4G, BW40PwrBasedBm5G;
-	u8 				regulation, bw, channel, rateSection, group;
-	u8 				baseIndex2_4G;
+	uint8_t 				BW40PwrBasedBm2_4G, BW40PwrBasedBm5G;
+	uint8_t 				regulation, bw, channel, rateSection, group;
+	uint8_t 				baseIndex2_4G;
 	uint8_t				baseIndex5G;
 	s8 				tempValue = 0, tempPwrLmt = 0;
-	u8 				rfPath = 0;
+	uint8_t 				rfPath = 0;
 
 	DBG_871X( "=====> PHY_ConvertPowerLimitToPowerIndex()\n" );
 	for ( regulation = 0; regulation < MAX_REGULATION_NUM; ++regulation )
@@ -1435,15 +1435,15 @@ phy_ChangePGDataFromExactToRelativeValue(
 		if ( i >= Start && i <= End )
 		{
 			// Get the exact value
-			TempValue = ( u8 ) ( *pData >> ( i * 8 ) ) & 0xF;
-			TempValue += ( ( u8 ) ( ( *pData >> ( i * 8 + 4 ) ) & 0xF ) ) * 10;
+			TempValue = ( uint8_t ) ( *pData >> ( i * 8 ) ) & 0xF;
+			TempValue += ( ( uint8_t ) ( ( *pData >> ( i * 8 + 4 ) ) & 0xF ) ) * 10;
 
 			// Change the value to a relative value
 			TempValue = ( TempValue > BaseValue ) ? TempValue - BaseValue : BaseValue - TempValue;
 		}
 		else
 		{
-			TempValue = ( u8 ) ( *pData >> ( i * 8 ) ) & 0xFF;
+			TempValue = ( uint8_t ) ( *pData >> ( i * 8 ) ) & 0xFF;
 		}
 
 
@@ -1498,7 +1498,7 @@ VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
 	}
 	else if ( rf_path == 1 )
 	{
-		rate_section = ( u8 ) ( ( RegAddr & 0xFFF ) - 0xE20 ) / 4;
+		rate_section = ( uint8_t ) ( ( RegAddr & 0xFFF ) - 0xE20 ) / 4;
 	}
 
 	switch ( RegAddr )
@@ -1508,7 +1508,7 @@ VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
 			//RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
 			//RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, before changing to relative\n",
 			//	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
-			BaseValue = ( ( u8 ) ( *pData >> 28 ) & 0xF ) *10 + ( ( u8 ) ( *pData >> 24 ) & 0xF );
+			BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 			phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 			//RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, after changing to relative\n",
 			//		pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
@@ -1526,7 +1526,7 @@ VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
 			//	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
 			//RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, before changing to relative\n",
 			//	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
-			BaseValue = ( ( u8 ) ( *pData >> 28 ) & 0xF ) *10 + ( ( u8 ) ( *pData >> 24 ) & 0xF );
+			BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 			phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 			phy_ChangePGDataFromExactToRelativeValue(
 				&( pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ),
@@ -1547,8 +1547,8 @@ VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
 			//	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
 			//RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, before changing to relative\n",
 			//	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
-			BaseValue = ( ( u8 ) ( pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 28 ) & 0xF ) * 10 +
-						( ( u8 ) ( pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 24 ) & 0xF );
+			BaseValue = ( ( uint8_t ) ( pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 28 ) & 0xF ) * 10 +
+						( ( uint8_t ) ( pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 24 ) & 0xF );
 			phy_ChangePGDataFromExactToRelativeValue( pData, 0, 1, BaseValue );
 			phy_ChangePGDataFromExactToRelativeValue(
 				&( pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ),
@@ -1573,7 +1573,7 @@ VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
 			//	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
 			//RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, before changing to relative\n",
 			//	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
-			BaseValue = ( ( u8 ) ( *pData >> 12 ) & 0xF ) *10 + ( ( u8 ) ( *pData >> 8 ) & 0xF );
+			BaseValue = ( ( uint8_t ) ( *pData >> 12 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 8 ) & 0xF );
 			phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 			phy_ChangePGDataFromExactToRelativeValue(
 				&( pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ),
@@ -1609,7 +1609,7 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 		//	pHalData->pwrGroupCnt, *pData );
 		//DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][0] = 0x%x, before changing to relative\n",
 		//	pHalData->pwrGroupCnt, pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][0] );
-		BaseValue = ( ( u8 ) ( *pData >> 28 ) & 0xF ) *10 + ( ( u8 ) ( *pData >> 24 ) & 0xF );
+		BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 		//DBG_871X("BaseValue = %d\n", BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
@@ -1642,7 +1642,7 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 		//	pHalData->pwrGroupCnt, *pData );
 		//DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][2] = 0x%x, before changing to relative\n",
 		//	pHalData->pwrGroupCnt, pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][2] );
-		BaseValue = ( ( u8 ) ( *pData >> 28 ) & 0xF ) *10 + ( ( u8 ) ( *pData >> 24 ) & 0xF );
+		BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 		//DBG_871X("BaseValue = %d\n", BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
@@ -1668,7 +1668,7 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 		//	pHalData->pwrGroupCnt, *pData );
 		//DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][4] = 0x%x, before changing to relative\n",
 		//	pHalData->pwrGroupCnt, pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][4] );
-		BaseValue = ( ( u8 ) ( *pData >> 28 ) & 0xF ) *10 + ( ( u8 ) ( *pData >> 24 ) & 0xF );
+		BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 		//DBG_871X("BaseValue = %d\n", BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
@@ -1687,7 +1687,7 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 		//	pHalData->pwrGroupCnt, *pData );
 		//DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][8] = 0x%x, before changing to relative\n",
 		//	pHalData->pwrGroupCnt, pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][8] );
-		BaseValue = ( ( u8 ) ( *pData >> 28 ) & 0xF ) *10 + ( ( u8 ) ( *pData >> 24 ) & 0xF );
+		BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 		//DBG_871X("BaseValue = %d\n", BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
@@ -1721,7 +1721,7 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 		//	pHalData->pwrGroupCnt, *pData );
 		//DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][10] = 0x%x, before changing to relative\n",
 		//	pHalData->pwrGroupCnt, pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][10] );
-		BaseValue = ( ( u8 ) ( *pData >> 28 ) & 0xF ) *10 + ( ( u8 ) ( *pData >> 24 ) & 0xF );
+		BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 		//DBG_871X("BaseValue = %d\n", BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
@@ -1740,7 +1740,7 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 		//	pHalData->pwrGroupCnt, *pData );
 		//DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][12] = 0x%x, before changing to relative\n",
 		//	pHalData->pwrGroupCnt, pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][12] );
-		BaseValue = ( ( u8 ) ( *pData >> 28 ) & 0xF ) *10 + ( ( u8 ) ( *pData >> 24 ) & 0xF );
+		BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 		//DBG_871X("BaseValue = %d\n", BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
@@ -1783,8 +1783,8 @@ phy_StorePwrByRateIndexBase(
 	{
 		if ( pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE )
 		{
-			Base = ( ( ( u8 ) ( Data >> 28 ) & 0xF ) * 10 +
-					( ( u8 ) ( Data >> 24 ) & 0xF ) );
+			Base = ( ( ( uint8_t ) ( Data >> 28 ) & 0xF ) * 10 +
+					( ( uint8_t ) ( Data >> 24 ) & 0xF ) );
 
 			switch( RegAddr ) {
 				case 0xC20:
@@ -1813,7 +1813,7 @@ phy_StorePwrByRateIndexBase(
 		}
 		else
 		{
-			Base = ( u8 ) ( Data >> 24 );
+			Base = ( uint8_t ) ( Data >> 24 );
 			switch( RegAddr ) {
 				case 0xC20:
 					pHalData->TxPwrByRateBase2_4G[ODM_RF_PATH_A][0] = Base;
@@ -1844,8 +1844,8 @@ phy_StorePwrByRateIndexBase(
 	{
 		if ( pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE )
 		{
-			Base = ( ( ( u8 ) ( Data >> 28 ) & 0xF ) * 10 +
-					( ( u8 ) ( Data >> 24 ) & 0xF ) );
+			Base = ( ( ( uint8_t ) ( Data >> 28 ) & 0xF ) * 10 +
+					( ( uint8_t ) ( Data >> 24 ) & 0xF ) );
 
 			switch( RegAddr )
 			{
@@ -1871,8 +1871,8 @@ phy_StorePwrByRateIndexBase(
 					break;
 				case 0xC4C:
 					pHalData->TxPwrByRateBase5G[ODM_RF_PATH_A][4] =
-						( u8 ) ( ( Data >> 12 ) & 0xF ) * 10 +
-						( u8 ) ( ( Data >> 8 ) & 0xF );
+						( uint8_t ) ( ( Data >> 12 ) & 0xF ) * 10 +
+						( uint8_t ) ( ( Data >> 8 ) & 0xF );
 					//RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 2SS MCS7 (RF path A) = %d\n",
 					//	pHalData->TxPwrByRateBase5G[ODM_RF_PATH_A][4] ) );
 					break;
@@ -1898,8 +1898,8 @@ phy_StorePwrByRateIndexBase(
 					break;
 				case 0xE4C:
 					pHalData->TxPwrByRateBase5G[ODM_RF_PATH_B][4] =
-						( u8 ) ( ( Data >> 12 ) & 0xF ) * 10 +
-						( u8 ) ( ( Data >> 8 ) & 0xF );
+						( uint8_t ) ( ( Data >> 12 ) & 0xF ) * 10 +
+						( uint8_t ) ( ( Data >> 8 ) & 0xF );
 					//RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 2SS MCS7 (RF path B) = %d\n",
 					//	pHalData->TxPwrByRateBase5G[ODM_RF_PATH_B][4] ) );
 					break;
@@ -1909,7 +1909,7 @@ phy_StorePwrByRateIndexBase(
 		}
 		else
 		{
-			Base = ( u8 ) ( Data >> 24 );
+			Base = ( uint8_t ) ( Data >> 24 );
 			switch( RegAddr ) {
 				case 0xC28:
 					pHalData->TxPwrByRateBase5G[ODM_RF_PATH_A][0]  = Base;
@@ -1932,7 +1932,7 @@ phy_StorePwrByRateIndexBase(
 					//	pHalData->TxPwrByRateBase5G[ODM_RF_PATH_A][3] ) );
 					break;
 				case 0xC4C:
-					pHalData->TxPwrByRateBase5G[ODM_RF_PATH_A][4] = ( u8 ) ( ( Data >> 8 ) & 0xFF );
+					pHalData->TxPwrByRateBase5G[ODM_RF_PATH_A][4] = ( uint8_t ) ( ( Data >> 8 ) & 0xFF );
 					//RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 2SS MCS7 (RF path A) = %d\n",
 					//	pHalData->TxPwrByRateBase5G[ODM_RF_PATH_A][4] ) );
 					break;
@@ -1957,7 +1957,7 @@ phy_StorePwrByRateIndexBase(
 					//	pHalData->TxPwrByRateBase5G[ODM_RF_PATH_B][3] ) );
 					break;
 				case 0xE4C:
-					pHalData->TxPwrByRateBase5G[ODM_RF_PATH_B][4] = ( u8 ) ( ( Data >> 8 ) & 0xFF );
+					pHalData->TxPwrByRateBase5G[ODM_RF_PATH_B][4] = ( uint8_t ) ( ( Data >> 8 ) & 0xFF );
 					//RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 2SS MCS7 (RF path B) = %d\n",
 					//	pHalData->TxPwrByRateBase5G[ODM_RF_PATH_B][4] ) );
 					break;
@@ -1970,8 +1970,8 @@ phy_StorePwrByRateIndexBase(
 	{
 		if ( pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE )
 		{
-			Base = ( ( ( u8 ) ( Data >> 28 ) & 0xF ) * 10 +
-					( ( u8 ) ( Data >> 24 ) & 0xF ) );
+			Base = ( ( ( uint8_t ) ( Data >> 28 ) & 0xF ) * 10 +
+					( ( uint8_t ) ( Data >> 24 ) & 0xF ) );
 
 			switch( RegAddr ) {
 				case 0xE20:
@@ -2001,7 +2001,7 @@ phy_StorePwrByRateIndexBase(
 		}
 		else
 		{
-			Base = ( u8 ) ( Data >> 24 );
+			Base = ( uint8_t ) ( Data >> 24 );
 			switch( RegAddr ) {
 				case 0xC20:
 					pHalData->TxPwrByRateBase2_4G[ODM_RF_PATH_B][0] = Base;
@@ -2033,12 +2033,12 @@ phy_StorePwrByRateIndexBase(
 
 	if ( pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE )
 	{
-		Base =  ( u8 ) ( ( Data >> 28 ) & 0xF ) * 10 +
-				( u8 ) ( ( Data >> 24 ) & 0xF );
+		Base =  ( uint8_t ) ( ( Data >> 28 ) & 0xF ) * 10 +
+				( uint8_t ) ( ( Data >> 24 ) & 0xF );
 	}
 	else
 	{
-		Base =  ( u8 ) ( ( Data >> 24 ) & 0xFF );
+		Base =  ( uint8_t ) ( ( Data >> 24 ) & 0xFF );
 	}
 
 	switch ( RegAddr )
@@ -2342,10 +2342,10 @@ PHY_GetTxPowerLevel8812(
 void phy_PowerIndexCheck8812(
 	IN	PADAPTER	Adapter,
 	IN	uint8_t			channel,
-	IN OUT u8 *		cckPowerLevel,
-	IN OUT u8 *		ofdmPowerLevel,
-	IN OUT u8 *		BW20PowerLevel,
-	IN OUT u8 *		BW40PowerLevel
+	IN OUT uint8_t *		cckPowerLevel,
+	IN OUT uint8_t *		ofdmPowerLevel,
+	IN OUT uint8_t *		BW20PowerLevel,
+	IN OUT uint8_t *		BW40PowerLevel
 	)
 {
 
@@ -2418,11 +2418,11 @@ void phy_PowerIndexCheck8812(
 
 BOOLEAN
 phy_GetChnlIndex8812A(
-	IN	u8 	Channel,
+	IN	uint8_t 	Channel,
 	OUT uint8_t *	ChannelIdx
 	)
 {
-	u8 	channel5G[CHANNEL_MAX_NUMBER_5G] =
+	uint8_t 	channel5G[CHANNEL_MAX_NUMBER_5G] =
 				 {36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,100,102,104,106,108,110,112,
 				114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,149,151,
 				153,155,157,159,161,163,165,167,168,169,171,173,175,177};
@@ -2867,7 +2867,7 @@ PHY_GetTxPowerIndex_8812A(
 		if ( ( pregistrypriv->RegEnableTxPowerLimit == 1 && pHalData->EEPROMRegulatory != 2 ) ||
 		 	  pHalData->EEPROMRegulatory == 1 )
 		{
-			u8 limit = 0;
+			uint8_t limit = 0;
 			limit = PHY_GetPowerLimitValue(pAdapter, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (ODM_RF_RADIO_PATH_E)RFPath, Rate, Channel);
 
 			if ( Rate == MGN_VHT1SS_MCS8 || Rate == MGN_VHT1SS_MCS9  ||
@@ -2932,7 +2932,7 @@ PHY_GetTxPowerIndex_8812A(
 	// 2012/09/26 MH We need to take care high power device limiation to prevent destroy EXT_PA.
 	// This case had ever happened in CU/SU high power module. THe limitation = 0x20.
 	// But for 8812, we still not know the value.
-	phy_TxPwrAdjInPercentage(pAdapter, (u8 *)&txPower);
+	phy_TxPwrAdjInPercentage(pAdapter, (uint8_t *)&txPower);
 
 	return txPower;
 }
@@ -3132,7 +3132,7 @@ PHY_SetTxPowerIndex_8812A(
 VOID
 phy_SetTxPowerIndexByRateArray(
 	IN	PADAPTER			pAdapter,
-	IN 	u8  					RFPath,
+	IN 	uint8_t  					RFPath,
 	IN	CHANNEL_WIDTH	BandWidth,
 	IN	uint8_t					Channel,
 	IN	uint8_t *					Rates,
@@ -3154,7 +3154,7 @@ phy_SetTxPowerIndexByRateArray(
 VOID
 PHY_GetTxPowerIndexByRateArray_8812A(
 	IN	PADAPTER			pAdapter,
-	IN	u8  					RFPath,
+	IN	uint8_t  					RFPath,
 	IN	CHANNEL_WIDTH	BandWidth,
 	IN	uint8_t					Channel,
 	IN	uint8_t *					Rate,
@@ -3163,7 +3163,7 @@ PHY_GetTxPowerIndexByRateArray_8812A(
 	)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(pAdapter);
-	u8 i;
+	uint8_t i;
 	for(i=0 ; i<ArraySize; i++)
 	{
 		PowerIndex[i] = (uint8_t)PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rate[i], BandWidth, Channel);
@@ -4199,7 +4199,7 @@ VOID phy_InitRssiTRSW(
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	u8 			channel = pHalData->CurrentChannel;
+	uint8_t 			channel = pHalData->CurrentChannel;
 
 	if (pHalData->RFEType == 3){
 

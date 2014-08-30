@@ -27,7 +27,7 @@
 void dump_chip_info(HAL_VERSION	ChipVersion)
 {
 	int cnt = 0;
-	u8 buf[128];
+	uint8_t buf[128];
 
 	if(IS_81XXC(ChipVersion)){
 		cnt += sprintf((buf+cnt), "Chip Version Info: %s_", IS_92C_SERIAL(ChipVersion)?"CHIP_8192C":"CHIP_8188C");
@@ -82,17 +82,17 @@ void dump_chip_info(HAL_VERSION	ChipVersion)
 
 #define	EEPROM_CHANNEL_PLAN_BY_HW_MASK	0x80
 
-u8	//return the final channel plan decision
+uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
 	IN	PADAPTER	padapter,
-	IN	u8			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
-	IN	u8			sw_channel_plan,	//channel plan from SW (registry/module param)
-	IN	u8			def_channel_plan,	//channel plan used when the former two is invalid
+	IN	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
+	IN	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
+	IN	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
 	IN	BOOLEAN		AutoLoadFail
 	)
 {
-	u8 swConfig;
-	u8 chnlPlan;
+	uint8_t swConfig;
+	uint8_t chnlPlan;
 
 	swConfig = _TRUE;
 	if (!AutoLoadFail)
@@ -140,9 +140,9 @@ HAL_IsLegalChannel(
 	return bLegalChannel;
 }
 
-u8	MRateToHwRate(u8 rate)
+uint8_t	MRateToHwRate(uint8_t rate)
 {
-	u8	ret = DESC_RATE1M;
+	uint8_t	ret = DESC_RATE1M;
 
 	switch(rate)
 	{
@@ -178,10 +178,10 @@ u8	MRateToHwRate(u8 rate)
 
 void	HalSetBrateCfg(
 	IN PADAPTER		Adapter,
-	IN u8			*mBratesOS,
+	IN uint8_t			*mBratesOS,
 	OUT u16			*pBrateCfg)
 {
-	u8	i, is_brate, brate;
+	uint8_t	i, is_brate, brate;
 
 	for(i=0;i<NDIS_802_11_LENGTH_RATES_EX;i++)
 	{
@@ -362,7 +362,7 @@ static VOID _FourOutPipeMapping(
 BOOLEAN
 Hal_MappingOutPipe(
 	IN	PADAPTER	pAdapter,
-	IN	u8		NumOutPipe
+	IN	uint8_t		NumOutPipe
 	)
 {
 	struct registry_priv *pregistrypriv = &pAdapter->registrypriv;
@@ -412,12 +412,12 @@ void c2h_evt_clear(_adapter *adapter)
 	rtw_write8(adapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
 
-s32 c2h_evt_read(_adapter *adapter, u8 *buf)
+s32 c2h_evt_read(_adapter *adapter, uint8_t *buf)
 {
 	s32 ret = _FAIL;
 	struct c2h_evt_hdr *c2h_evt;
 	int i;
-	u8 trigger;
+	uint8_t trigger;
 
 	if (buf == NULL)
 		goto exit;
@@ -464,7 +464,7 @@ exit:
 	return ret;
 }
 
-u8  rtw_hal_networktype_to_raid(_adapter *adapter,unsigned char network_type)
+uint8_t  rtw_hal_networktype_to_raid(_adapter *adapter,unsigned char network_type)
 {
 	if(IS_NEW_GENERATION_IC(adapter)){
 		return networktype_to_raid_ex(adapter,network_type);
@@ -474,10 +474,10 @@ u8  rtw_hal_networktype_to_raid(_adapter *adapter,unsigned char network_type)
 	}
 
 }
-u8 rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type)
+uint8_t rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type)
 {
 
-	u8 raid;
+	uint8_t raid;
 	if(IS_NEW_GENERATION_IC(adapter)){
 
 		raid = (network_type & WIRELESS_11B)	?RATEID_IDX_B

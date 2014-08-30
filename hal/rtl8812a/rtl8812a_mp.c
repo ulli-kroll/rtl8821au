@@ -24,7 +24,7 @@
 #include <rtl8812a_hal.h>
 
 
-s32 Hal_SetPowerTracking(PADAPTER padapter, u8 enable)
+s32 Hal_SetPowerTracking(PADAPTER padapter, uint8_t enable)
 {
 	BOOLEAN 				bResult = TRUE;
 	PMPT_CONTEXT			pMptCtx = &(padapter->mppriv.MptCtx);
@@ -39,7 +39,7 @@ s32 Hal_SetPowerTracking(PADAPTER padapter, u8 enable)
 	return _SUCCESS;
 }
 
-void Hal_GetPowerTracking(PADAPTER padapter, u8 *enable)
+void Hal_GetPowerTracking(PADAPTER padapter, uint8_t *enable)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
@@ -52,7 +52,7 @@ void Hal_GetPowerTracking(PADAPTER padapter, u8 *enable)
 
 static void Hal_disable_dm(PADAPTER padapter)
 {
-	u8 v8;
+	uint8_t v8;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -313,7 +313,7 @@ void Hal_SetChannel(PADAPTER pAdapter)
 //	SelectChannel(pAdapter, pmp->channel);
 	set_channel_bwmode(pAdapter, pmp->channel, pmp->channel_offset, pmp->bandwidth);
 #else
-	u8 		eRFPath;
+	uint8_t 		eRFPath;
 
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	struct mp_priv	*pmp = &pAdapter->mppriv;
@@ -362,7 +362,7 @@ void Hal_SetBandwidth(PADAPTER pAdapter)
 	Hal_mpt_SwitchRfSetting(pAdapter);
 }
 
-void Hal_SetCCKTxPower(PADAPTER pAdapter, u8 *TxPower)
+void Hal_SetCCKTxPower(PADAPTER pAdapter, uint8_t *TxPower)
 {
 	u32 tmpval = 0;
 
@@ -382,10 +382,10 @@ void Hal_SetCCKTxPower(PADAPTER pAdapter, u8 *TxPower)
 		  TxPower[RF_PATH_A], TxPower[RF_PATH_B]));
 }
 
-void Hal_SetOFDMTxPower(PADAPTER pAdapter, u8 *TxPower)
+void Hal_SetOFDMTxPower(PADAPTER pAdapter, uint8_t *TxPower)
 {
 	u32 TxAGC = 0;
-	u8 tmpval = 0;
+	uint8_t tmpval = 0;
 	PMPT_CONTEXT	pMptCtx = &pAdapter->mppriv.MptCtx;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
@@ -417,8 +417,8 @@ void Hal_SetOFDMTxPower(PADAPTER pAdapter, u8 *TxPower)
 void Hal_SetAntennaPathPower(PADAPTER pAdapter)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
-	u8 TxPowerLevel[MAX_RF_PATH];
-	u8 rfPath;
+	uint8_t TxPowerLevel[MAX_RF_PATH];
+	uint8_t rfPath;
 
 	TxPowerLevel[RF_PATH_A] = pAdapter->mppriv.txpoweridx;
 	TxPowerLevel[RF_PATH_B] = pAdapter->mppriv.txpoweridx_b;
@@ -676,7 +676,7 @@ void Hal_SetAntenna(PADAPTER pAdapter)
 	RT_TRACE(_module_mp_, _drv_notice_, ("-SwitchAntenna: finished\n"));
 }
 
-s32 Hal_SetThermalMeter(PADAPTER pAdapter, u8 target_ther)
+s32 Hal_SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 
@@ -709,7 +709,7 @@ void Hal_TriggerRFThermalMeter(PADAPTER pAdapter)
 //	RT_TRACE(_module_mp_,_drv_alert_, ("TriggerRFThermalMeter() finished.\n" ));
 }
 
-u8 Hal_ReadRFThermalMeter(PADAPTER pAdapter)
+uint8_t Hal_ReadRFThermalMeter(PADAPTER pAdapter)
 {
 	u32 ThermalValue = 0;
 
@@ -719,7 +719,7 @@ u8 Hal_ReadRFThermalMeter(PADAPTER pAdapter)
 	return (uint8_t)ThermalValue;
 }
 
-void Hal_GetThermalMeter(PADAPTER pAdapter, u8 *value)
+void Hal_GetThermalMeter(PADAPTER pAdapter, uint8_t *value)
 {
 #if 0
 	fw_cmd(pAdapter, IOCMD_GET_THERMAL_METER);
@@ -734,7 +734,7 @@ void Hal_GetThermalMeter(PADAPTER pAdapter, u8 *value)
 #endif
 }
 
-void Hal_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart)
+void Hal_SetSingleCarrierTx(PADAPTER pAdapter, uint8_t bStart)
 {
     HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 	pAdapter->mppriv.MptCtx.bSingleCarrier = bStart;
@@ -785,13 +785,13 @@ void Hal_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart)
 }
 
 
-void Hal_SetSingleToneTx(PADAPTER pAdapter, u8 bStart)
+void Hal_SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	PMPT_CONTEXT	pMptCtx = &pAdapter->mppriv.MptCtx;
 	BOOLEAN		is92C = IS_92C_SERIAL(pHalData->VersionID);
 
-	u8 rfPath;
+	uint8_t rfPath;
 	u32              reg58 = 0x0;
 	static u4Byte       regRF0x0 = 0x0;
     static u4Byte       reg0xCB0 = 0x0;
@@ -902,7 +902,7 @@ void Hal_SetSingleToneTx(PADAPTER pAdapter, u8 bStart)
 
 
 
-void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart)
+void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, uint8_t bStart)
 {
 	pAdapter->mppriv.MptCtx.bCarrierSuppression = bStart;
 	if (bStart) // Start Carrier Suppression.
@@ -954,7 +954,7 @@ void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart)
 	//DbgPrint("\n MPT_ProSetCarrierSupp() is finished. \n");
 }
 
-void Hal_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
+void Hal_SetCCKContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 {
 	u32 cckrate;
 
@@ -1026,7 +1026,7 @@ void Hal_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
 	}
 }/* mpt_StartCckContTx */
 
-void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart)
+void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 {
     HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
@@ -1074,7 +1074,7 @@ void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart)
 	pAdapter->mppriv.MptCtx.bOfdmContTx = bStart;
 }/* mpt_StartOfdmContTx */
 
-void Hal_SetContinuousTx(PADAPTER pAdapter, u8 bStart)
+void Hal_SetContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 {
 #if 0
 	// ADC turn off [bit24-21] adc port0 ~ port1

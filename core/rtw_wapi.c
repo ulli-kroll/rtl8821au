@@ -123,7 +123,7 @@ u32 WapiComparePN(uint8_t *PN1, uint8_t *PN2)
 	return 0;
 }
 
-u8
+uint8_t
 WapiGetEntryForCamWrite(_adapter *padapter,uint8_t *pMacAddr,uint8_t KID,BOOLEAN IsMsk)
 {
 	PRT_WAPI_T		pWapiInfo=NULL;

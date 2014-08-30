@@ -89,7 +89,7 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 	}
 	memset(precvpriv->pallocated_recv_buf, 0, NR_RECVBUFF *sizeof(struct recv_buf) + 4);
 
-	precvpriv->precv_buf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_recv_buf), 4);
+	precvpriv->precv_buf = (uint8_t *)N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_recv_buf), 4);
 	//precvpriv->precv_buf = precvpriv->pallocated_recv_buf + 4 -
 	//						((uint) (precvpriv->pallocated_recv_buf) &(4-1));
 

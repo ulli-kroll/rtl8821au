@@ -175,7 +175,7 @@ dm_InitGPIOSetting(
 }
 
 // A mapping from HalData to ODM.
-ODM_BOARD_TYPE_E boardType(u8 InterfaceSel)
+ODM_BOARD_TYPE_E boardType(uint8_t InterfaceSel)
 {
     ODM_BOARD_TYPE_E        board	= ODM_BOARD_DEFAULT;
 
@@ -431,7 +431,7 @@ rtl8812_HalDmWatchDog(
 {
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
 	BOOLEAN		bFwPSAwake = _TRUE;
-	u8 hw_init_completed = _FALSE;
+	uint8_t hw_init_completed = _FALSE;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
@@ -450,12 +450,12 @@ rtl8812_HalDmWatchDog(
 	#ifdef CONFIG_CONCURRENT_MODE
 	if (Adapter->iface_type != IFACE_PORT0 && pbuddy_adapter) {
 		bFwCurrentInPSMode = pbuddy_adapter->pwrctrlpriv.bFwCurrentInPSMode;
-		rtw_hal_get_hwreg(pbuddy_adapter, HW_VAR_FWLPS_RF_ON, (u8 *)(&bFwPSAwake));
+		rtw_hal_get_hwreg(pbuddy_adapter, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&bFwPSAwake));
 	} else
 	#endif //CONFIG_CONCURRENT_MODE
 	{
 		bFwCurrentInPSMode = Adapter->pwrctrlpriv.bFwCurrentInPSMode;
-		rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (u8 *)(&bFwPSAwake));
+		rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&bFwPSAwake));
 	}
 #endif
 
@@ -576,7 +576,7 @@ void	AntDivCompare8812(PADAPTER Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
 }
 
 // Add new function to reset the state of antenna diversity before link.
-u8 AntDivBeforeLink8812(PADAPTER Adapter )
+uint8_t AntDivBeforeLink8812(PADAPTER Adapter )
 {
 
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);

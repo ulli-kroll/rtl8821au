@@ -307,7 +307,7 @@ void rtw_proc_init_one(struct net_device *ndev)
 	struct proc_dir_entry *dir_dev = NULL;
 	struct proc_dir_entry *entry=NULL;
 	_adapter	*padapter = rtw_netdev_priv(dev);
-	u8 rf_type;
+	uint8_t rf_type;
 
 	if(rtw_proc == NULL)
 	{
@@ -523,7 +523,7 @@ void rtw_proc_init_one(struct net_device *ndev)
 		return;
 	}
 
-	rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
+	rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 	if((RF_1T2R == rf_type) ||(RF_1T1R ==rf_type ))	{
 		entry = create_proc_read_entry("rf_reg_dump3", S_IFREG | S_IRUGO,
 					   dir_dev, proc_get_rf_reg_dump3, dev);
@@ -628,7 +628,7 @@ void rtw_proc_remove_one(struct net_device *ndev)
 {
 	struct proc_dir_entry *dir_dev = NULL;
 	_adapter	*padapter = rtw_netdev_priv(dev);
-	u8 rf_type;
+	uint8_t rf_type;
 
 	dir_dev = padapter->dir_dev;
 	padapter->dir_dev = NULL;
@@ -655,7 +655,7 @@ void rtw_proc_remove_one(struct net_device *ndev)
 		remove_proc_entry("bb_reg_dump3", dir_dev);
 		remove_proc_entry("rf_reg_dump1", dir_dev);
 		remove_proc_entry("rf_reg_dump2", dir_dev);
-		rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
+		rtw_hal_get_hwreg(padapter, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 		if((RF_1T2R == rf_type) ||(RF_1T1R ==rf_type ))	{
 			remove_proc_entry("rf_reg_dump3", dir_dev);
 			remove_proc_entry("rf_reg_dump4", dir_dev);
@@ -723,17 +723,17 @@ uint loadparam( _adapter *padapter,  _nic_hdl	ndev)
 
 _func_enter_;
 
-	registry_par->chip_version = (u8)rtw_chip_version;
-	registry_par->rfintfs = (u8)rtw_rfintfs;
-	registry_par->lbkmode = (u8)rtw_lbkmode;
-	//registry_par->hci = (u8)hci;
-	registry_par->network_mode  = (u8)rtw_network_mode;
+	registry_par->chip_version = (uint8_t)rtw_chip_version;
+	registry_par->rfintfs = (uint8_t)rtw_rfintfs;
+	registry_par->lbkmode = (uint8_t)rtw_lbkmode;
+	//registry_par->hci = (uint8_t)hci;
+	registry_par->network_mode  = (uint8_t)rtw_network_mode;
 
 	memcpy(registry_par->ssid.Ssid, "ANY", 3);
 	registry_par->ssid.SsidLength = 3;
 
-	registry_par->channel = (u8)rtw_channel;
-	registry_par->wireless_mode = (u8)rtw_wireless_mode;
+	registry_par->channel = (uint8_t)rtw_channel;
+	registry_par->wireless_mode = (uint8_t)rtw_wireless_mode;
 
 	if (IsSupported24G(registry_par->wireless_mode) && (!IsSupported5G(registry_par->wireless_mode))
 		&& (registry_par->channel > 14)) {
@@ -744,83 +744,83 @@ _func_enter_;
 		registry_par->channel = 36;
 	}
 
-	registry_par->vrtl_carrier_sense = (u8)rtw_vrtl_carrier_sense ;
-	registry_par->vcs_type = (u8)rtw_vcs_type;
+	registry_par->vrtl_carrier_sense = (uint8_t)rtw_vrtl_carrier_sense ;
+	registry_par->vcs_type = (uint8_t)rtw_vcs_type;
 	registry_par->rts_thresh=(u16)rtw_rts_thresh;
 	registry_par->frag_thresh=(u16)rtw_frag_thresh;
-	registry_par->preamble = (u8)rtw_preamble;
-	registry_par->scan_mode = (u8)rtw_scan_mode;
-	registry_par->adhoc_tx_pwr = (u8)rtw_adhoc_tx_pwr;
-	registry_par->soft_ap=  (u8)rtw_soft_ap;
-	registry_par->smart_ps =  (u8)rtw_smart_ps;
-	registry_par->power_mgnt = (u8)rtw_power_mgnt;
-	registry_par->ips_mode = (u8)rtw_ips_mode;
-	registry_par->radio_enable = (u8)rtw_radio_enable;
-	registry_par->long_retry_lmt = (u8)rtw_long_retry_lmt;
-	registry_par->short_retry_lmt = (u8)rtw_short_retry_lmt;
+	registry_par->preamble = (uint8_t)rtw_preamble;
+	registry_par->scan_mode = (uint8_t)rtw_scan_mode;
+	registry_par->adhoc_tx_pwr = (uint8_t)rtw_adhoc_tx_pwr;
+	registry_par->soft_ap=  (uint8_t)rtw_soft_ap;
+	registry_par->smart_ps =  (uint8_t)rtw_smart_ps;
+	registry_par->power_mgnt = (uint8_t)rtw_power_mgnt;
+	registry_par->ips_mode = (uint8_t)rtw_ips_mode;
+	registry_par->radio_enable = (uint8_t)rtw_radio_enable;
+	registry_par->long_retry_lmt = (uint8_t)rtw_long_retry_lmt;
+	registry_par->short_retry_lmt = (uint8_t)rtw_short_retry_lmt;
   	registry_par->busy_thresh = (u16)rtw_busy_thresh;
-  	//registry_par->qos_enable = (u8)rtw_qos_enable;
-	registry_par->ack_policy = (u8)rtw_ack_policy;
-	registry_par->mp_mode = (u8)rtw_mp_mode;
-	registry_par->software_encrypt = (u8)rtw_software_encrypt;
-	registry_par->software_decrypt = (u8)rtw_software_decrypt;
+  	//registry_par->qos_enable = (uint8_t)rtw_qos_enable;
+	registry_par->ack_policy = (uint8_t)rtw_ack_policy;
+	registry_par->mp_mode = (uint8_t)rtw_mp_mode;
+	registry_par->software_encrypt = (uint8_t)rtw_software_encrypt;
+	registry_par->software_decrypt = (uint8_t)rtw_software_decrypt;
 
-	registry_par->acm_method = (u8)rtw_acm_method;
+	registry_par->acm_method = (uint8_t)rtw_acm_method;
 
 	 //UAPSD
-	registry_par->wmm_enable = (u8)rtw_wmm_enable;
-	registry_par->uapsd_enable = (u8)rtw_uapsd_enable;
-	registry_par->uapsd_max_sp = (u8)rtw_uapsd_max_sp;
-	registry_par->uapsd_acbk_en = (u8)rtw_uapsd_acbk_en;
-	registry_par->uapsd_acbe_en = (u8)rtw_uapsd_acbe_en;
-	registry_par->uapsd_acvi_en = (u8)rtw_uapsd_acvi_en;
-	registry_par->uapsd_acvo_en = (u8)rtw_uapsd_acvo_en;
+	registry_par->wmm_enable = (uint8_t)rtw_wmm_enable;
+	registry_par->uapsd_enable = (uint8_t)rtw_uapsd_enable;
+	registry_par->uapsd_max_sp = (uint8_t)rtw_uapsd_max_sp;
+	registry_par->uapsd_acbk_en = (uint8_t)rtw_uapsd_acbk_en;
+	registry_par->uapsd_acbe_en = (uint8_t)rtw_uapsd_acbe_en;
+	registry_par->uapsd_acvi_en = (uint8_t)rtw_uapsd_acvi_en;
+	registry_par->uapsd_acvo_en = (uint8_t)rtw_uapsd_acvo_en;
 
 #ifdef CONFIG_80211N_HT
-	registry_par->ht_enable = (u8)rtw_ht_enable;
-	registry_par->bw_mode = (u8)rtw_bw_mode;
-	registry_par->ampdu_enable = (u8)rtw_ampdu_enable;
-	registry_par->rx_stbc = (u8)rtw_rx_stbc;
-	registry_par->ampdu_amsdu = (u8)rtw_ampdu_amsdu;
-	registry_par->short_gi = (u8)rtw_short_gi;
+	registry_par->ht_enable = (uint8_t)rtw_ht_enable;
+	registry_par->bw_mode = (uint8_t)rtw_bw_mode;
+	registry_par->ampdu_enable = (uint8_t)rtw_ampdu_enable;
+	registry_par->rx_stbc = (uint8_t)rtw_rx_stbc;
+	registry_par->ampdu_amsdu = (uint8_t)rtw_ampdu_amsdu;
+	registry_par->short_gi = (uint8_t)rtw_short_gi;
 #endif
 
 #ifdef CONFIG_80211AC_VHT
-	registry_par->vht_enable = (u8)rtw_vht_enable;
-	registry_par->ampdu_factor = (u8)rtw_ampdu_factor;
-	registry_par->vht_rate_sel = (u8)rtw_vht_rate_sel;
-	registry_par->ldpc_cap = (u8)rtw_ldpc_cap;
-	registry_par->stbc_cap = (u8)rtw_stbc_cap;
-	registry_par->beamform_cap = (u8)rtw_beamform_cap;
+	registry_par->vht_enable = (uint8_t)rtw_vht_enable;
+	registry_par->ampdu_factor = (uint8_t)rtw_ampdu_factor;
+	registry_par->vht_rate_sel = (uint8_t)rtw_vht_rate_sel;
+	registry_par->ldpc_cap = (uint8_t)rtw_ldpc_cap;
+	registry_par->stbc_cap = (uint8_t)rtw_stbc_cap;
+	registry_par->beamform_cap = (uint8_t)rtw_beamform_cap;
 #endif
 
 #ifdef CONFIG_TX_EARLY_MODE
-	registry_par->early_mode = (u8)rtw_early_mode;
+	registry_par->early_mode = (uint8_t)rtw_early_mode;
 #endif
-	registry_par->lowrate_two_xmit = (u8)rtw_lowrate_two_xmit;
-	registry_par->rf_config = (u8)rtw_rf_config;
-	registry_par->low_power = (u8)rtw_low_power;
+	registry_par->lowrate_two_xmit = (uint8_t)rtw_lowrate_two_xmit;
+	registry_par->rf_config = (uint8_t)rtw_rf_config;
+	registry_par->low_power = (uint8_t)rtw_low_power;
 
 
-	registry_par->wifi_spec = (u8)rtw_wifi_spec;
+	registry_par->wifi_spec = (uint8_t)rtw_wifi_spec;
 
-	registry_par->channel_plan = (u8)rtw_channel_plan;
+	registry_par->channel_plan = (uint8_t)rtw_channel_plan;
 
 
-	registry_par->bAcceptAddbaReq = (u8)rtw_AcceptAddbaReq;
+	registry_par->bAcceptAddbaReq = (uint8_t)rtw_AcceptAddbaReq;
 
-	registry_par->antdiv_cfg = (u8)rtw_antdiv_cfg;
-	registry_par->antdiv_type = (u8)rtw_antdiv_type;
+	registry_par->antdiv_cfg = (uint8_t)rtw_antdiv_cfg;
+	registry_par->antdiv_type = (uint8_t)rtw_antdiv_type;
 
 #ifdef CONFIG_AUTOSUSPEND
-	registry_par->usbss_enable = (u8)rtw_enusbss;//0:disable,1:enable
+	registry_par->usbss_enable = (uint8_t)rtw_enusbss;//0:disable,1:enable
 #endif
 #ifdef SUPPORT_HW_RFOFF_DETECTED
-	registry_par->hwpdn_mode = (u8)rtw_hwpdn_mode;//0:disable,1:enable,2:by EFUSE config
-	registry_par->hwpwrp_detect = (u8)rtw_hwpwrp_detect;//0:disable,1:enable
+	registry_par->hwpdn_mode = (uint8_t)rtw_hwpdn_mode;//0:disable,1:enable,2:by EFUSE config
+	registry_par->hwpwrp_detect = (uint8_t)rtw_hwpwrp_detect;//0:disable,1:enable
 #endif
 
-	registry_par->hw_wps_pbc = (u8)rtw_hw_wps_pbc;
+	registry_par->hw_wps_pbc = (uint8_t)rtw_hw_wps_pbc;
 
 #ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
 	snprintf(registry_par->adaptor_info_caching_file_path, PATH_LENGTH_MAX, "%s", rtw_adaptor_info_caching_file_path);
@@ -828,9 +828,9 @@ _func_enter_;
 #endif
 
 #ifdef CONFIG_LAYER2_ROAMING
-	registry_par->max_roaming_times = (u8)rtw_max_roaming_times;
+	registry_par->max_roaming_times = (uint8_t)rtw_max_roaming_times;
 #ifdef CONFIG_INTEL_WIDI
-	registry_par->max_roaming_times = (u8)rtw_max_roaming_times + 2;
+	registry_par->max_roaming_times = (uint8_t)rtw_max_roaming_times + 2;
 #endif // CONFIG_INTEL_WIDI
 #endif
 
@@ -839,27 +839,27 @@ _func_enter_;
 #endif
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
-	registry_par->dmsp= (u8)rtw_dmsp;
+	registry_par->dmsp= (uint8_t)rtw_dmsp;
 #endif
 
 #ifdef CONFIG_80211D
-	registry_par->enable80211d = (u8)rtw_80211d;
+	registry_par->enable80211d = (uint8_t)rtw_80211d;
 #endif
 
 	snprintf(registry_par->ifname, 16, "%s", ifname);
 	snprintf(registry_par->if2name, 16, "%s", if2name);
 
-	registry_par->notch_filter = (u8)rtw_notch_filter;
+	registry_par->notch_filter = (uint8_t)rtw_notch_filter;
 
 #ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-	registry_par->force_ant = (u8)rtw_force_ant;
-	registry_par->force_igi = (u8)rtw_force_igi;
+	registry_par->force_ant = (uint8_t)rtw_force_ant;
+	registry_par->force_igi = (uint8_t)rtw_force_igi;
 #endif
 
-	registry_par->regulatory_tid = (u8)rtw_regulatory_id;
+	registry_par->regulatory_tid = (uint8_t)rtw_regulatory_id;
 
 #ifdef CONFIG_MULTI_VIR_IFACES
-	registry_par->ext_iface_num = (u8)rtw_ext_iface_num;
+	registry_par->ext_iface_num = (uint8_t)rtw_ext_iface_num;
 #endif //CONFIG_MULTI_VIR_IFACES
 
 _func_exit_;
@@ -955,7 +955,7 @@ u16 rtw_recv_select_queue(struct sk_buff *skb)
 	unsigned int dscp;
 	u16	eth_type;
 	u32 priority;
-	u8 *pdata = skb->data;
+	uint8_t *pdata = skb->data;
 
 	memcpy(&eth_type, pdata+(ETH_ALEN<<1), 2);
 
@@ -1161,10 +1161,10 @@ void rtw_stop_drv_threads (_adapter *padapter)
 	rtw_hal_stop_thread(padapter);
 }
 
-u8 rtw_init_default_value(_adapter *padapter);
-u8 rtw_init_default_value(_adapter *padapter)
+uint8_t rtw_init_default_value(_adapter *padapter);
+uint8_t rtw_init_default_value(_adapter *padapter)
 {
-	u8 ret  = _SUCCESS;
+	uint8_t ret  = _SUCCESS;
 	struct registry_priv* pregistrypriv = &padapter->registrypriv;
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
 	struct mlme_priv *pmlmepriv= &padapter->mlmepriv;
@@ -1232,9 +1232,9 @@ u8 rtw_init_default_value(_adapter *padapter)
 	return ret;
 }
 
-u8 rtw_reset_drv_sw(_adapter *padapter)
+uint8_t rtw_reset_drv_sw(_adapter *padapter)
 {
-	u8	ret8=_SUCCESS;
+	uint8_t	ret8=_SUCCESS;
 	struct mlme_priv *pmlmepriv= &padapter->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
 
@@ -1274,10 +1274,10 @@ u8 rtw_reset_drv_sw(_adapter *padapter)
 }
 
 
-u8 rtw_init_drv_sw(_adapter *padapter)
+uint8_t rtw_init_drv_sw(_adapter *padapter)
 {
 
-	u8	ret8=_SUCCESS;
+	uint8_t	ret8=_SUCCESS;
 
 _func_enter_;
 
@@ -1370,7 +1370,7 @@ _func_enter_;
 
 	rtw_init_pwrctrl_priv(padapter);
 
-	//memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
+	//memset((uint8_t *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
 
 #ifdef CONFIG_MP_INCLUDED
 	if (init_mp_priv(padapter) == _FAIL) {
@@ -1463,7 +1463,7 @@ void rtw_cancel_all_timer(_adapter *padapter)
 
 }
 
-u8 rtw_free_drv_sw(_adapter *padapter)
+uint8_t rtw_free_drv_sw(_adapter *padapter)
 {
 	struct net_device *ndev = (struct net_device*)padapter->ndev;
 
@@ -1676,7 +1676,7 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 	struct net_device *ndev=NULL;
 	_adapter *padapter = NULL;
 	struct dvobj_priv *pdvobjpriv;
-	u8 mac[ETH_ALEN];
+	uint8_t mac[ETH_ALEN];
 
 /*
 	if((primary_padapter->bup == _FALSE) ||
@@ -2047,7 +2047,7 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	struct net_device *ndev = NULL;
 	_adapter *padapter = NULL;
 	struct dvobj_priv *pdvobjpriv;
-	u8 mac[ETH_ALEN];
+	uint8_t mac[ETH_ALEN];
 
 	/****** init netdev ******/
 	ndev = rtw_init_netdev(NULL);
@@ -2555,7 +2555,7 @@ void rtw_ips_dev_unload(_adapter *padapter)
 
 }
 
-int pm_netdev_open(struct net_device *ndev,u8 bnormal)
+int pm_netdev_open(struct net_device *ndev,uint8_t bnormal)
 {
 	int status;
 
@@ -2658,7 +2658,7 @@ void rtw_ndev_destructor(struct net_device *ndev)
 
 #ifdef CONFIG_IOCTL_CFG80211
 	if (ndev->ieee80211_ptr)
-		rtw_mfree((u8 *)ndev->ieee80211_ptr, sizeof(struct wireless_dev));
+		rtw_mfree((uint8_t *)ndev->ieee80211_ptr, sizeof(struct wireless_dev));
 #endif
 	free_netdev(ndev);
 }

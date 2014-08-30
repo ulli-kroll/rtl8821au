@@ -560,7 +560,7 @@ int rtw_android_priv_cmd(struct net_device *ndev, struct ifreq *ifr, int cmd)
 		pwfd_info = &padapter->wfd_info;
 		if( padapter->wdinfo.driver_interface == DRIVER_CFG80211 )
 		{
-			pwfd_info->wfd_device_type = ( u8 ) get_int_from_command( priv_cmd.buf );
+			pwfd_info->wfd_device_type = ( uint8_t ) get_int_from_command( priv_cmd.buf );
 
 			pwfd_info->wfd_device_type &= WFD_DEVINFO_DUAL;
 		}

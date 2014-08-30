@@ -22,7 +22,7 @@
 #include <hal_data.h>
 #include <rtw_sreset.h>
 
-int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 index, void *pdata, u16 len, u8 requesttype)
+int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {
 	_adapter	*padapter = pintfhdl->padapter;
 	struct dvobj_priv  *pdvobjpriv = adapter_to_dvobj(padapter);
@@ -31,14 +31,14 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 inde
 	unsigned int pipe;
 	int status = 0;
 	u32 tmp_buflen=0;
-	u8 reqtype;
-	u8 *pIo_buf;
+	uint8_t reqtype;
+	uint8_t *pIo_buf;
 	int vendorreq_times = 0;
 
 	#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
-	u8 *tmp_buf;
+	uint8_t *tmp_buf;
 	#else // use stack memory
-	u8 tmp_buf[MAX_USB_IO_CTL_SIZE];
+	uint8_t tmp_buf[MAX_USB_IO_CTL_SIZE];
 	#endif
 
 #ifdef CONFIG_CONCURRENT_MODE
@@ -183,16 +183,16 @@ static void _usbctrl_vendorreq_async_callback(struct urb *urb, struct pt_regs *r
 	}
 }
 
-static int _usbctrl_vendorreq_async_write(struct usb_device *udev, u8 request,
-	u16 value, u16 index, void *pdata, u16 len, u8 requesttype)
+static int _usbctrl_vendorreq_async_write(struct usb_device *udev, uint8_t request,
+	u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {
 	int rc;
 	unsigned int pipe;
-	u8 reqtype;
+	uint8_t reqtype;
 	struct usb_ctrlrequest *dr;
 	struct urb *urb;
 	struct rtl819x_async_write_data {
-		u8 data[VENDOR_CMD_MAX_DATA_LEN];
+		uint8_t data[VENDOR_CMD_MAX_DATA_LEN];
 		struct usb_ctrlrequest dr;
 	} *buf;
 
@@ -214,7 +214,7 @@ static int _usbctrl_vendorreq_async_write(struct usb_device *udev, u8 request,
 
 	urb = usb_alloc_urb(0, GFP_ATOMIC);
 	if (!urb) {
-		rtw_mfree((u8*)buf, sizeof(*buf));
+		rtw_mfree((uint8_t *)buf, sizeof(*buf));
 		rc = -ENOMEM;
 		goto exit;
 	}
@@ -234,7 +234,7 @@ static int _usbctrl_vendorreq_async_write(struct usb_device *udev, u8 request,
 
 	rc = usb_submit_urb(urb, GFP_ATOMIC);
 	if (rc < 0) {
-		rtw_mfree((u8*)buf, sizeof(*buf));
+		rtw_mfree((uint8_t *)buf, sizeof(*buf));
 		usb_free_urb(urb);
 	}
 
@@ -244,8 +244,8 @@ exit:
 
 int usb_write_async(struct usb_device *udev, u32 addr, void *pdata, u16 len)
 {
-	u8 request;
-	u8 requesttype;
+	uint8_t request;
+	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 
@@ -262,9 +262,9 @@ int usb_write_async(struct usb_device *udev, u32 addr, void *pdata, u16 len)
 	return ret;
 }
 
-int usb_async_write8(struct intf_hdl *pintfhdl, u32 addr, u8 val)
+int usb_async_write8(struct intf_hdl *pintfhdl, u32 addr, uint8_t val)
 {
-	u8 data;
+	uint8_t data;
 	int ret;
 	struct dvobj_priv  *pdvobjpriv = (struct dvobj_priv  *)pintfhdl->pintf_dev;
 	struct usb_device *udev=pdvobjpriv->pusbdev;
@@ -353,7 +353,7 @@ static void usb_bulkout_zero_complete(struct urb *purb, struct pt_regs *regs)
 		}
 
 
-		rtw_mfree((u8*)pcontext, sizeof(struct zero_bulkout_context));
+		rtw_mfree((uint8_t *)pcontext, sizeof(struct zero_bulkout_context));
 	}
 
 
@@ -416,12 +416,12 @@ static u32 usb_bulkout_zero(struct intf_hdl *pintfhdl, u32 addr)
 
 }
 
-void usb_read_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
+void usb_read_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *rmem)
 {
 
 }
 
-void usb_write_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wmem)
+void usb_write_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 {
 
 }
@@ -606,7 +606,7 @@ _func_exit_;
 
 }
 
-u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wmem)
+u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 {
 	_irqL irqL;
 	unsigned int pipe;

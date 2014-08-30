@@ -39,7 +39,7 @@ int ui_pid[3] = {0, 0, 0};
 #endif
 
 
-extern int pm_netdev_open(struct net_device *ndev,u8 bnormal);
+extern int pm_netdev_open(struct net_device *ndev,uint8_t bnormal);
 static int rtw_suspend(struct usb_interface *intf, pm_message_t message);
 static int rtw_resume(struct usb_interface *intf);
 int rtw_resume_process(_adapter *padapter);
@@ -172,7 +172,7 @@ static struct specific_device_id specific_device_id_tbl[] = {
 struct rtw_usb_drv {
 	struct usb_driver usbdrv;
 	int drv_registered;
-	u8 hw_type;
+	uint8_t hw_type;
 };
 
 struct rtw_usb_drv usb_drv = {
@@ -230,9 +230,9 @@ static inline int RT_usb_endpoint_num(const struct usb_endpoint_descriptor *epd)
 	return epd->bEndpointAddress & USB_ENDPOINT_NUMBER_MASK;
 }
 
-static u8 rtw_init_intf_priv(struct dvobj_priv *dvobj)
+static uint8_t rtw_init_intf_priv(struct dvobj_priv *dvobj)
 {
-	u8 rst = _SUCCESS;
+	uint8_t rst = _SUCCESS;
 
 	#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
 	_rtw_mutex_init(&dvobj->usb_vendor_req_mutex);
@@ -247,7 +247,7 @@ static u8 rtw_init_intf_priv(struct dvobj_priv *dvobj)
 		goto exit;
 	}
 	dvobj->usb_vendor_req_buf  =
-		(u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(dvobj->usb_alloc_vendor_req_buf ), ALIGNMENT_UNIT);
+		(uint8_t *)N_BYTE_ALIGMENT((SIZE_PTR)(dvobj->usb_alloc_vendor_req_buf ), ALIGNMENT_UNIT);
 exit:
 	#endif
 
@@ -255,9 +255,9 @@ exit:
 
 }
 
-static u8 rtw_deinit_intf_priv(struct dvobj_priv *dvobj)
+static uint8_t rtw_deinit_intf_priv(struct dvobj_priv *dvobj)
 {
-	u8 rst = _SUCCESS;
+	uint8_t rst = _SUCCESS;
 
 	#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
 	if(dvobj->usb_vendor_req_buf)
@@ -274,7 +274,7 @@ static u8 rtw_deinit_intf_priv(struct dvobj_priv *dvobj)
 static struct dvobj_priv *usb_dvobj_init(struct usb_interface *usb_intf)
 {
 	int	i;
-	u8	val8;
+	uint8_t	val8;
 	int	status = _FAIL;
 	struct dvobj_priv *pdvobjpriv;
 	struct usb_device_descriptor 	*pdev_desc;
@@ -463,7 +463,7 @@ free_dvobj:
 		_rtw_mutex_free(&pdvobjpriv->h2c_fwcmd_mutex);
 		_rtw_mutex_free(&pdvobjpriv->setch_mutex);
 		_rtw_mutex_free(&pdvobjpriv->setbw_mutex);
-		rtw_mfree((u8*)pdvobjpriv, sizeof(*pdvobjpriv));
+		rtw_mfree((uint8_t *)pdvobjpriv, sizeof(*pdvobjpriv));
 		pdvobjpriv = NULL;
 	}
 exit:
@@ -495,7 +495,7 @@ _func_enter_;
 		_rtw_mutex_free(&dvobj->h2c_fwcmd_mutex);
 		_rtw_mutex_free(&dvobj->setch_mutex);
 		_rtw_mutex_free(&dvobj->setbw_mutex);
-		rtw_mfree((u8*)dvobj, sizeof(*dvobj));
+		rtw_mfree((uint8_t *)dvobj, sizeof(*dvobj));
 	}
 
 	//DBG_871X("%s %d\n", __func__, atomic_read(&usb_intf->dev.kobj.kref.refcount));
@@ -579,7 +579,7 @@ static void usb_intf_stop(_adapter *padapter)
 static void rtw_dev_unload(_adapter *padapter)
 {
 	struct net_device *ndev= (struct net_device*)padapter->ndev;
-	u8 val8;
+	uint8_t val8;
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("+rtw_dev_unload\n"));
 
 	if(padapter->bup == _TRUE)
@@ -841,7 +841,7 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 		// The FW command register update must after MAC and FW init ready.
 		if((padapter->bFWReady) && ( padapter->pwrctrlpriv.bHWPwrPindetect ) && (padapter->registrypriv.usbss_enable ))
 		{
-			u8 bOpen = _TRUE;
+			uint8_t bOpen = _TRUE;
 			rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
 			//rtl8192c_set_FwSelectSuspend_cmd(padapter,_TRUE ,500);//note fw to support hw power down ping detect
 		}
@@ -865,7 +865,7 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 	if(padapter->pwrctrlpriv.bSupportRemoteWakeup==_TRUE&&padapter->pwrctrlpriv.wowlan_mode==_TRUE){
 		//set H2C command
 		poidparam.subcode=WOWLAN_ENABLE;
-		padapter->HalFunc.SetHwRegHandler(padapter,HW_VAR_WOWLAN,(u8 *)&poidparam);
+		padapter->HalFunc.SetHwRegHandler(padapter,HW_VAR_WOWLAN,(uint8_t *)&poidparam);
 	}
 	else
 #else
@@ -989,7 +989,7 @@ int rtw_resume_process(_adapter *padapter)
 		if((padapter->bFWReady) && ( padapter->pwrctrlpriv.bHWPwrPindetect ) && (padapter->registrypriv.usbss_enable ))
 		{
 			//rtl8192c_set_FwSelectSuspend_cmd(padapter,_FALSE ,500);//note fw to support hw power down ping detect
-			u8 bOpen = _FALSE;
+			uint8_t bOpen = _FALSE;
 			rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
 		}
 		#endif
@@ -1279,7 +1279,7 @@ free_adapter:
 		if (ndev)
 			rtw_free_netdev(ndev);
 		else if (padapter)
-			rtw_vmfree((u8*)padapter, sizeof(*padapter));
+			rtw_vmfree((uint8_t *)padapter, sizeof(*padapter));
 		padapter = NULL;
 	}
 exit:
@@ -1341,7 +1341,7 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 static void dump_usb_interface(struct usb_interface *usb_intf)
 {
 	int	i;
-	u8	val8;
+	uint8_t	val8;
 
 	struct usb_device				*udev = interface_to_usbdev(usb_intf);
 	struct usb_device_descriptor 	*dev_desc = &udev->descriptor;

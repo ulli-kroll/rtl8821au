@@ -169,8 +169,8 @@ void rtw_os_indicate_scan_done( _adapter *padapter, bool aborted)
 static RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
 void rtw_reset_securitypriv( _adapter *adapter )
 {
-	u8	backupPMKIDIndex = 0;
-	u8	backupTKIPCountermeasure = 0x00;
+	uint8_t	backupPMKIDIndex = 0;
+	uint8_t	backupTKIPCountermeasure = 0x00;
 	u32	backupTKIPcountermeasure_time = 0;
 
 	if(adapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)//802.1x
@@ -244,10 +244,10 @@ _func_exit_;
 
 }
 
-void rtw_report_sec_ie(_adapter *adapter,u8 authmode,u8 *sec_ie)
+void rtw_report_sec_ie(_adapter *adapter,uint8_t authmode,uint8_t *sec_ie)
 {
 	uint	len;
-	u8	*buff,*p,i;
+	uint8_t	*buff,*p,i;
 	union iwreq_data wrqu;
 
 _func_enter_;
@@ -346,9 +346,9 @@ void init_mlme_ext_timer(_adapter *padapter)
 	//_init_timer(&pmlmeext->reassoc_timer, padapter->ndev, _reassoc_timer_hdl, padapter);
 }
 
-u8 rtw_handle_tkip_countermeasure(_adapter* padapter)
+uint8_t rtw_handle_tkip_countermeasure(_adapter* padapter)
 {
-	u8 status = _SUCCESS;
+	uint8_t status = _SUCCESS;
 	u32 cur_time = 0;
 
 	if (padapter->securitypriv.btkip_countermeasure == _TRUE) {

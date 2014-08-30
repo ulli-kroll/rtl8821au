@@ -21,10 +21,10 @@
 
 #include <drv_types.h>
 
-int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 *pdata, _pkt *pskb)
+int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, uint8_t *pdata, _pkt *pskb)
 {
 	int res = _SUCCESS;
-	u8	shift_sz = 0;
+	uint8_t	shift_sz = 0;
 	u32	skb_len, alloc_sz;
 	_pkt	 *pkt_copy = NULL;
 	struct rx_pkt_attrib *pattrib = &precvframe->u.hdr.attrib;
@@ -232,10 +232,10 @@ int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 
 }
 
-_pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 *pdata)
+_pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, uint8_t *pdata)
 {
 	u16	eth_type;
-	u8	*data_ptr;
+	uint8_t	*data_ptr;
 	_pkt *sub_skb;
 	struct rx_pkt_attrib *pattrib;
 
@@ -246,7 +246,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 	if(sub_skb)
 	{
 		skb_reserve(sub_skb, 12);
-		data_ptr = (u8 *)skb_put(sub_skb, nSubframe_Length);
+		data_ptr = (uint8_t *)skb_put(sub_skb, nSubframe_Length);
 		memcpy(data_ptr, (pdata + ETH_HLEN), nSubframe_Length);
 	}
 	else
@@ -391,7 +391,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 	}
 }
 
-void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
+void rtw_handle_tkip_mic_err(_adapter *padapter,uint8_t bgroup)
 {
 #ifdef CONFIG_IOCTL_CFG80211
 	enum nl80211_key_type key_type;
@@ -432,7 +432,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,u8 bgroup)
 		key_type |= NL80211_KEYTYPE_PAIRWISE;
 	}
 
-	cfg80211_michael_mic_failure(padapter->ndev, (u8 *)&pmlmepriv->assoc_bssid[ 0 ], key_type, -1,
+	cfg80211_michael_mic_failure(padapter->ndev, (uint8_t *)&pmlmepriv->assoc_bssid[ 0 ], key_type, -1,
 		NULL, GFP_ATOMIC);
 #endif
 

@@ -40,7 +40,7 @@ _func_enter_;
 _func_exit_;
 }
 
-uint _rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen)
+uint _rtw_pktfile_read (struct pkt_file *pfile, uint8_t *rmem, uint rlen)
 {
 	uint	len = 0;
 
@@ -113,7 +113,7 @@ void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib)
 
 }
 
-int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, u8 flag)
+int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag)
 {
 	if (alloc_sz > 0) {
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_TX
@@ -132,7 +132,7 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 			return _FAIL;
 		}
 
-		pxmitbuf->pbuf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(pxmitbuf->pallocated_buf), XMITBUF_ALIGN_SZ);
+		pxmitbuf->pbuf = (uint8_t *)N_BYTE_ALIGMENT((SIZE_PTR)(pxmitbuf->pallocated_buf), XMITBUF_ALIGN_SZ);
 
 #endif // CONFIG_USE_USB_BUFFER_ALLOC_TX
 	}
@@ -155,7 +155,7 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 	return _SUCCESS;
 }
 
-void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, u8 flag)
+void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, uint8_t flag)
 {
 	if (flag) {
 #ifdef CONFIG_USB_HCI
@@ -287,10 +287,10 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 	_list	*phead, *plist;
 	struct sk_buff *newskb;
 	struct sta_info *psta = NULL;
-	u8 chk_alive_num = 0;
+	uint8_t chk_alive_num = 0;
 	char chk_alive_list[NUM_STA];
-	u8 bc_addr[6]={0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-	u8 null_addr[6]={0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	uint8_t bc_addr[6]={0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+	uint8_t null_addr[6]={0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 	int i;
 	s32	res;

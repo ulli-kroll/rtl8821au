@@ -1086,10 +1086,6 @@ ODM_DMWatchdog(
 #endif
 #endif
 
-#if (RTL8192E_SUPPORT == 1)
-        if(pDM_Odm->SupportICType==ODM_RTL8192E)
-                odm_DynamicPrimaryCCA_Check(pDM_Odm);
-#endif
 	 if(pDM_Odm->SupportICType == ODM_RTL8192E)
 	         return;
 
@@ -5450,15 +5446,6 @@ odm_RSSIMonitorCheckCE(
 	}
 	#endif
 
-	#if(RTL8192E_SUPPORT==1)
-	/*
-	if(pDM_Odm->SupportICType == ODM_RTL8192E)
-	{
-		STBC_TX = ((pMgntInfo->pHTInfo->HtCurStbc)&0x02)>>1;
-		H2C_Parameter[4] = STBC_TX;
-	}
-	*/
-	#endif
 
 	//if(check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE)
 	{
@@ -5565,12 +5552,6 @@ odm_RSSIMonitorCheckCE(
 					if((pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821)){
 						PWDB_rssi[i] |= (UL_DL_STATE << 24);
 						rtl8812_set_rssi_cmd(Adapter, (u8 *)(&PWDB_rssi[i]));
-					}
-					#endif
-					#if(RTL8192E_SUPPORT==1)
-					if(pDM_Odm->SupportICType == ODM_RTL8192E){
-						PWDB_rssi[i] |= (UL_DL_STATE << 24);
-						rtl8192e_set_rssi_cmd(Adapter, (u8 *)(&PWDB_rssi[i]));
 					}
 					#endif
 				}
@@ -5785,7 +5766,7 @@ odm_TXPowerTrackingThermalMeterInit(
 	PADAPTER			Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 
-	#if( (RTL8812A_SUPPORT==1) || (RTL8821A_SUPPORT==1) ||(RTL8192E_SUPPORT==1) )
+	#if( (RTL8812A_SUPPORT==1) || (RTL8821A_SUPPORT==1) )
 	{
 		pDM_Odm->RFCalibrateInfo.bTXPowerTracking = _TRUE;
 		pDM_Odm->RFCalibrateInfo.TXPowercount = 0;
@@ -5915,7 +5896,7 @@ odm_TXPowerTrackingCheckCE(
 	}
 	#endif
 
-	#if( ((RTL8812A_SUPPORT==1) ||  (RTL8821A_SUPPORT==1) ||  (RTL8192E_SUPPORT==1)  ||  (RTL8723B_SUPPORT==1)  ))
+	#if( ((RTL8812A_SUPPORT==1) ||  (RTL8821A_SUPPORT==1) ||  (RTL8723B_SUPPORT==1)  ))
 	if(!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
 	{
 		return;

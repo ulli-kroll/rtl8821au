@@ -1749,16 +1749,6 @@ ODM_ConfigRFWithHeaderFile(
 	}
 #endif
 
-#if (RTL8192E_SUPPORT == 1)
-	if (pDM_Odm->SupportICType == ODM_RTL8192E)
-	{
-		if(eRFPath == ODM_RF_PATH_A)
-			READ_AND_CONFIG(8192E,_RadioA);
-		else if(eRFPath == ODM_RF_PATH_B)
-			READ_AND_CONFIG(8192E,_RadioB);
-	}
-#endif
-
 	return HAL_STATUS_SUCCESS;
 }
 
@@ -1797,15 +1787,6 @@ ODM_ConfigRFWithTxPwrTrackHeaderFile(
 #endif
 
 
-#if (RTL8192E_SUPPORT == 1)
-        if(pDM_Odm->SupportICType == ODM_RTL8192E)
-	{
-		if (pDM_Odm->SupportInterface == ODM_ITRF_PCIE)
-			READ_AND_CONFIG(8192E,_TxPowerTrack_PCIE);
-		else if (pDM_Odm->SupportInterface == ODM_ITRF_USB)
-			READ_AND_CONFIG(8192E,_TxPowerTrack_USB);
-	}
-#endif
 #if RTL8723B_SUPPORT
         if(pDM_Odm->SupportICType == ODM_RTL8723B)
 	{
@@ -1920,24 +1901,6 @@ ODM_ConfigBBWithHeaderFile(
 		}
 	}
 #endif
-#if (RTL8192E_SUPPORT == 1)
-    if(pDM_Odm->SupportICType == ODM_RTL8192E)
-	{
-
-		if(ConfigType == CONFIG_BB_PHY_REG)
-		{
-			READ_AND_CONFIG(8192E,_PHY_REG);
-		}
-		else if(ConfigType == CONFIG_BB_AGC_TAB)
-		{
-			READ_AND_CONFIG(8192E,_AGC_TAB);
-		}
-		else if(ConfigType == CONFIG_BB_PHY_REG_PG)
-		{
-			//READ_AND_CONFIG(8192E,_PHY_REG_PG);
-		}
-	}
-#endif
 	return HAL_STATUS_SUCCESS;
 }
 
@@ -1978,12 +1941,6 @@ ODM_ConfigMACWithHeaderFile(
 	if (pDM_Odm->SupportICType == ODM_RTL8723B)
 	{
 		READ_AND_CONFIG(8723B,_MAC_REG);
-	}
-#endif
-#if (RTL8192E_SUPPORT == 1)
-	if (pDM_Odm->SupportICType == ODM_RTL8192E)
-	{
-		READ_AND_CONFIG(8192E,_MAC_REG);
 	}
 #endif
 
@@ -2050,19 +2007,6 @@ ODM_ConfigFWWithHeaderFile(
 		else if (ConfigType == CONFIG_FW_BT)
 		{
 			READ_FIRMWARE(8821A,_FW_BT);
-		}
-	}
-#endif
-#if (RTL8192E_SUPPORT == 1)
-	if (pDM_Odm->SupportICType == ODM_RTL8192E)
-	{
-		if (ConfigType == CONFIG_FW_NIC)
-		{
-			READ_FIRMWARE(8192E,_FW_NIC);
-		}
-		else if (ConfigType == CONFIG_FW_WoWLAN)
-		{
-			READ_FIRMWARE(8192E,_FW_WoWLAN);
 		}
 	}
 #endif

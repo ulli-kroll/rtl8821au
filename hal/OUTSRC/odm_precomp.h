@@ -174,11 +174,6 @@
 		#include "rtl8723a_hal.h"
 	#endif
 
-	#if (RTL8192E_SUPPORT==1)
-		#include "rtl8192e/HalPhyRf_8192e.h"//for IQK,LCK,Power-tracking
-		#include "rtl8192e_hal.h"
-	#endif
-
 	#if (RTL8812A_SUPPORT==1)
 		#include "rtl8812a/HalPhyRf_8812A.h"//for IQK,LCK,Power-tracking
 		#include "rtl8812a_hal.h"
@@ -223,16 +218,6 @@
 
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 #include "rtl8188e/HalPhyRf_8188e.h"
-#endif
-
-#if (RTL8192E_SUPPORT==1)
-#include "rtl8192e/HalHWImg8192E_MAC.h"
-#include "rtl8192e/HalHWImg8192E_RF.h"
-#include "rtl8192e/HalHWImg8192E_BB.h"
-#include "rtl8192e/HalHWImg8192E_FW.h"
-#include "rtl8192e/Hal8192EReg_Odm.h"
-#include "rtl8192e/odm_RegConfig8192E.h"
-#include "rtl8192e/odm_RTL8192E.h"
 #endif
 
 #if (RTL8723B_SUPPORT==1)

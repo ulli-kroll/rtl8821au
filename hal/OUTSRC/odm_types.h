@@ -124,7 +124,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	typedef unsigned char			u1Byte,*pu1Byte;
 	typedef unsigned short			u2Byte,*pu2Byte;
 	typedef unsigned int			u4Byte,*pu4Byte;
-	typedef unsigned long long		u8Byte,*pu8Byte;
 	typedef char					s1Byte,*ps1Byte;
 	typedef short					s2Byte,*ps2Byte;
 	typedef long					s4Byte,*ps4Byte;
@@ -152,7 +151,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	typedef unsigned char			u1Byte,*pu1Byte;
 	typedef unsigned short			u2Byte,*pu2Byte;
 	typedef unsigned int			u4Byte,*pu4Byte;
-	typedef unsigned long long		u8Byte,*pu8Byte;
 	typedef char					s1Byte,*ps1Byte;
 	typedef short					s2Byte,*ps2Byte;
 	typedef long					s4Byte,*ps4Byte;
@@ -175,7 +173,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	typedef u8					u1Byte, *pu1Byte;
 	typedef uint16_t					u2Byte,*pu2Byte;
 	typedef u32					u4Byte,*pu4Byte;
-	typedef u64					u8Byte,*pu8Byte;
 	typedef s8					s1Byte,*ps1Byte;
 	typedef s16					s2Byte,*ps2Byte;
 	typedef s32					s4Byte,*ps4Byte;
@@ -189,9 +186,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 
 	#define u4Byte 		u32
 	#define	pu4Byte 	u32*
-
-	#define u8Byte 		u64
-	#define	pu8Byte 	u64*
 
 	#define s1Byte 		s8
 	#define	ps1Byte 	s8*

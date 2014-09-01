@@ -843,8 +843,8 @@ ODM_EdcaParaSelByIot(
 VOID
 odm_EdcaChooseTrafficIdx(
 	IN	PDM_ODM_T		pDM_Odm,
-	IN	u8Byte  			cur_tx_bytes,
-	IN	u8Byte  			cur_rx_bytes,
+	IN	uint64_t  			cur_tx_bytes,
+	IN	uint64_t  			cur_rx_bytes,
 	IN	BOOLEAN 		bBiasOnRx,
 	OUT BOOLEAN 		*pbIsCurRDLState
 	);
@@ -1318,11 +1318,11 @@ ODM_CmnInfoHook(
 			break;
 
 		case	ODM_CMNINFO_TX_UNI:
-			pDM_Odm->pNumTxBytesUnicast = (u8Byte *)pValue;
+			pDM_Odm->pNumTxBytesUnicast = (uint64_t *)pValue;
 			break;
 
 		case	ODM_CMNINFO_RX_UNI:
-			pDM_Odm->pNumRxBytesUnicast = (u8Byte *)pValue;
+			pDM_Odm->pNumRxBytesUnicast = (uint64_t *)pValue;
 			break;
 
 		case	ODM_CMNINFO_WM_MODE:
@@ -1464,7 +1464,7 @@ VOID
 ODM_CmnInfoUpdate(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u4Byte			CmnInfo,
-	IN		u8Byte			Value
+	IN		uint64_t			Value
 	)
 {
 	//
@@ -3124,12 +3124,12 @@ odm_DIG(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
 	//PMGNT_INFO			pMgntInfo	= &(pAdapter->MgntInfo);
 	// for LC issue to dymanic modify DIG lower bound----------LC Mocca Issue
-	u8Byte			curTxOkCnt=0, curRxOkCnt=0;
-	static u8Byte		lastTxOkCnt=0, lastRxOkCnt=0;
+	uint64_t			curTxOkCnt=0, curRxOkCnt=0;
+	static uint64_t		lastTxOkCnt=0, lastRxOkCnt=0;
 
-	//u8Byte			OKCntAll=0;
-	//static u8Byte		TXByteCnt_A=0, TXByteCnt_B=0, RXByteCnt_A=0, RXByteCnt_B=0;
-	//u8Byte			CurByteCnt=0, PreByteCnt=0;
+	//uint64_t			OKCntAll=0;
+	//static uint64_t		TXByteCnt_A=0, TXByteCnt_B=0, RXByteCnt_A=0, RXByteCnt_B=0;
+	//uint64_t			CurByteCnt=0, PreByteCnt=0;
 
 	curTxOkCnt = pAdapter->TxStats.NumTxBytesUnicast - lastTxOkCnt;
 	curRxOkCnt =pAdapter->RxStats.NumRxBytesUnicast - lastRxOkCnt;
@@ -5223,8 +5223,8 @@ odm_RSSIMonitorCheckMP(
 	s4Byte			tmpEntryMaxPWDB=0, tmpEntryMinPWDB=0xff;
 	u1Byte			H2C_Parameter[4] ={0};
 	PMGNT_INFO			pMgntInfo = &Adapter->MgntInfo;
-	u8Byte				curTxOkCnt = 0;
-	u8Byte				curRxOkCnt = 0;
+	uint64_t				curTxOkCnt = 0;
+	uint64_t				curRxOkCnt = 0;
 	BEAMFORMING_CAP 	 Beamform_cap = BEAMFORMING_CAP_NONE;
 	u1Byte	  TxBF_EN = 0;
 
@@ -5382,8 +5382,8 @@ odm_RSSIMonitorCheckMP(
 		odm_RSSIDumpToRegister(pDM_Odm);
 
 	odm_FindMinimumRSSI(Adapter);
-	ODM_CmnInfoUpdate(&pHalData->DM_OutSrc ,ODM_CMNINFO_LINK, (u8Byte)pHalData->bLinked);
-	ODM_CmnInfoUpdate(&pHalData->DM_OutSrc ,ODM_CMNINFO_RSSI_MIN, (u8Byte)pHalData->MinUndecoratedPWDBForDM);
+	ODM_CmnInfoUpdate(&pHalData->DM_OutSrc ,ODM_CMNINFO_LINK, (uint64_t)pHalData->bLinked);
+	ODM_CmnInfoUpdate(&pHalData->DM_OutSrc ,ODM_CMNINFO_RSSI_MIN, (uint64_t)pHalData->MinUndecoratedPWDBForDM);
 #endif	// #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 }
 
@@ -6380,10 +6380,10 @@ odm_SwAntDivChkAntSwitchNIC(
 	pSWAT_T		pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	s4Byte			curRSSI=100, RSSI_A, RSSI_B;
 	u1Byte			nextAntenna=AUX_ANT;
-	//static u8Byte		lastTxOkCnt=0, lastRxOkCnt=0;
-	u8Byte			curTxOkCnt=0, curRxOkCnt=0;
-	//static u8Byte		TXByteCnt_A=0, TXByteCnt_B=0, RXByteCnt_A=0, RXByteCnt_B=0;
-	u8Byte			CurByteCnt=0, PreByteCnt=0;
+	//static uint64_t		lastTxOkCnt=0, lastRxOkCnt=0;
+	uint64_t			curTxOkCnt=0, curRxOkCnt=0;
+	//static uint64_t		TXByteCnt_A=0, TXByteCnt_B=0, RXByteCnt_A=0, RXByteCnt_B=0;
+	uint64_t			CurByteCnt=0, PreByteCnt=0;
 	//static u1Byte		TrafficLoad = TRAFFIC_LOW;
 	u1Byte			Score_A=0, Score_B=0;       //A: Main; B: AUX
 	u1Byte			i;
@@ -8168,8 +8168,8 @@ odm_EdcaTurboCheckMP(
 	PMGNT_INFO			pMgntInfo = &Adapter->MgntInfo;
 	PSTA_QOS			pStaQos = Adapter->MgntInfo.pStaQos;
 	//[Win7 Count Tx/Rx statistic for Extension Port] odm_CheckEdcaTurbo's Adapter is always Default. 2009.08.20, by Bohn
-	u8Byte				Ext_curTxOkCnt = 0;
-	u8Byte				Ext_curRxOkCnt = 0;
+	uint64_t				Ext_curTxOkCnt = 0;
+	uint64_t				Ext_curRxOkCnt = 0;
 	//For future Win7  Enable Default Port to modify AMPDU size dynamically, 2009.08.20, Bohn.
 	u1Byte TwoPortStatus = (u1Byte)TWO_PORT_STATUS__WITHOUT_ANY_ASSOCIATE;
 
@@ -8183,8 +8183,8 @@ odm_EdcaTurboCheckMP(
        u1Byte bbtchange =FALSE;
 #endif
 	// Keep past Tx/Rx packet count for RT-to-RT EDCA turbo.
-	u8Byte				curTxOkCnt = 0;
-	u8Byte				curRxOkCnt = 0;
+	uint64_t				curTxOkCnt = 0;
+	uint64_t				curRxOkCnt = 0;
 	u4Byte				EDCA_BE_UL = 0x5ea42b;//Parameter suggested by Scott  //edca_setting_UL[pMgntInfo->IOTPeer];
 	u4Byte				EDCA_BE_DL = 0x5ea42b;//Parameter suggested by Scott  //edca_setting_DL[pMgntInfo->IOTPeer];
        u4Byte                         EDCA_BE = 0x5ea42b;
@@ -8194,7 +8194,7 @@ odm_EdcaTurboCheckMP(
 	BOOLEAN				 bBiasOnRx=FALSE;
 	BOOLEAN				bEdcaTurboOn=FALSE;
 	u1Byte				TxRate = 0xFF;
-	u8Byte				value64;
+	uint64_t				value64;
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("odm_EdcaTurboCheckMP========================>"));
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial BE PARAM: 0x%x\n",ODM_Read4Byte(pDM_Odm,ODM_EDCA_BE_PARAM)));
@@ -8679,8 +8679,8 @@ ODM_EdcaParaSelByIot(
 VOID
 odm_EdcaChooseTrafficIdx(
 	IN	PDM_ODM_T		pDM_Odm,
-	IN	u8Byte  			cur_tx_bytes,
-	IN	u8Byte  			cur_rx_bytes,
+	IN	uint64_t  			cur_tx_bytes,
+	IN	uint64_t  			cur_rx_bytes,
 	IN	BOOLEAN 		bBiasOnRx,
 	OUT BOOLEAN 		*pbIsCurRDLState
 	)
@@ -9957,7 +9957,7 @@ odm_PSD_Monitor(
 	static u1Byte		PSD_bitmap_memory[80], init_memory = 0;
 	static u1Byte 		psd_cnt=0;
 	static u4Byte		PSD_report[80], PSD_report_tmp;
-	static u8Byte		lastTxOkCnt=0, lastRxOkCnt=0;
+	static uint64_t		lastTxOkCnt=0, lastRxOkCnt=0;
 	u1Byte 			H2C_PSD_DATA[5]={0,0,0,0,0};
 	static u1Byte		H2C_PSD_DATA_last[5] ={0,0,0,0,0};
 	u1Byte			idx[20]={96,99,102,106,109,112,115,118,122,125,
@@ -9967,7 +9967,7 @@ odm_PSD_Monitor(
 	s4Byte    			PSD_skip_start, PSD_skip_stop;
 	u4Byte			CurrentChannel, RXIQI, RxIdleLowPwr, wlan_channel;
 	u4Byte			ReScan, Interval, Is40MHz;
-	u8Byte			curTxOkCnt, curRxOkCnt;
+	uint64_t			curTxOkCnt, curRxOkCnt;
 	int 				cur_byte_idx, cur_bit_idx;
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 	PMGNT_INFO      	pMgntInfo = &Adapter->MgntInfo;
@@ -10487,7 +10487,7 @@ odm_PSDMonitorWorkItemCallback(
 VOID
 odm_RFEControl(
 	IN	PDM_ODM_T	pDM_Odm,
-	IN  u8Byte		RSSIVal
+	IN  uint64_t		RSSIVal
 	)
 {
 	PADAPTER		Adapter = (PADAPTER)pDM_Odm->Adapter;
@@ -10533,7 +10533,7 @@ ODM_MPT_DIG(
 	PFALSE_ALARM_STATISTICS 	pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 	u1Byte						CurrentIGI = (u1Byte)pDM_DigTable->CurIGValue;
 	u1Byte						DIG_Upper = 0x40, DIG_Lower = 0x20, C50, E50;
-	u8Byte						RXOK_cal;
+	uint64_t						RXOK_cal;
 	u1Byte						IGI_A = 0x20, IGI_B = 0x20;
 
 #if ODM_FIX_2G_DIG
@@ -11115,7 +11115,7 @@ odm_PSD_RXHP(
 	static u1Byte		PSD_bitmap_memory[80], init_memory = 0;
 	static u1Byte 		psd_cnt=0;
 	static u4Byte		PSD_report[80], PSD_report_tmp;
-	static u8Byte		lastTxOkCnt=0, lastRxOkCnt=0;
+	static uint64_t		lastTxOkCnt=0, lastRxOkCnt=0;
 	u1Byte			idx[20]={96,99,102,106,109,112,115,118,122,125,
 					0,3,6,10,13,16,19,22,26,29};
 	u1Byte			n, i, channel, BBReset,tone_idx;
@@ -11123,7 +11123,7 @@ odm_PSD_RXHP(
 	s4Byte    			PSD_skip_start, PSD_skip_stop;
 	u4Byte			CurrentChannel, RXIQI, RxIdleLowPwr, wlan_channel;
 	u4Byte			ReScan, Interval, Is40MHz;
-	u8Byte			curTxOkCnt, curRxOkCnt;
+	uint64_t			curTxOkCnt, curRxOkCnt;
 	//--------------2G band synthesizer for 92D switch RF channel using-----------------
 	u1Byte			group_idx=0;
 	u4Byte			SYN_RF25=0, SYN_RF26=0, SYN_RF27=0, SYN_RF2B=0, SYN_RF2C=0;
@@ -12339,10 +12339,10 @@ odm_PathDivChkAntSwitch(
 	pSWAT_T			pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	s4Byte			curRSSI=100, RSSI_A, RSSI_B;
 	u1Byte			nextAntenna=AUX_ANT;
-	static u8Byte		lastTxOkCnt=0, lastRxOkCnt=0;
-	u8Byte			curTxOkCnt, curRxOkCnt;
-	static u8Byte		TXByteCnt_A=0, TXByteCnt_B=0, RXByteCnt_A=0, RXByteCnt_B=0;
-	u8Byte			CurByteCnt=0, PreByteCnt=0;
+	static uint64_t		lastTxOkCnt=0, lastRxOkCnt=0;
+	uint64_t			curTxOkCnt, curRxOkCnt;
+	static uint64_t		TXByteCnt_A=0, TXByteCnt_B=0, RXByteCnt_A=0, RXByteCnt_B=0;
+	uint64_t			CurByteCnt=0, PreByteCnt=0;
 	static u1Byte		TrafficLoad = TRAFFIC_LOW;
 	u1Byte			Score_A=0, Score_B=0;
 	u1Byte			i=0x0;
@@ -12355,7 +12355,7 @@ odm_PathDivChkAntSwitch(
 
        //u1Byte                 reg637 =0x0;
        static u1Byte        fw_value=0x0;
-	//u8Byte			curTxOkCnt_tmp, curRxOkCnt_tmp;
+	//uint64_t			curTxOkCnt_tmp, curRxOkCnt_tmp;
        PADAPTER            BuddyAdapter = Adapter->BuddyAdapter;     // another adapter MAC
         // Path Diversity   //Neil Chen--2011--06--22
 

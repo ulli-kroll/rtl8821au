@@ -869,7 +869,7 @@ extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag);
 extern	void	DBG_DumpMem(const u1Byte DbgComp,
 							const u1Byte DbgLevel,
 							pu1Byte pMem,
-							u2Byte Len);
+							uint16_t Len);
 
 /*--------------------------Exported Function prototype---------------------*/
 

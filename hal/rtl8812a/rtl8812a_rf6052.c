@@ -298,7 +298,7 @@ static void writeOFDMPowerReg8812(
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
-	u2Byte RegOffset_A[6] = {
+	uint16_t RegOffset_A[6] = {
     	rTxAGC_A_Ofdm18_Ofdm6_JAguar,
         rTxAGC_A_Ofdm54_Ofdm24_JAguar,
         rTxAGC_A_MCS3_MCS0_JAguar,
@@ -306,7 +306,7 @@ static void writeOFDMPowerReg8812(
         rTxAGC_A_MCS11_MCS8_JAguar,
         rTxAGC_A_MCS15_MCS12_JAguar
     };
-	u2Byte RegOffset_B[6] = {
+	uint16_t RegOffset_B[6] = {
         rTxAGC_B_Ofdm18_Ofdm6_JAguar,
         rTxAGC_B_Ofdm54_Ofdm24_JAguar,
         rTxAGC_B_MCS3_MCS0_JAguar,

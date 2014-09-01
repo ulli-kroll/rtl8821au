@@ -206,7 +206,7 @@ efuse_phymap_to_logical(uint8_t * phymap, uint16_t _offset, uint16_t _size_byte,
 					//RTPRINT(FEEPROM, EFUSE_READ_ALL, ("Data=0x%x\n", *rtemp8));
 
 					efuse_utilized++;
-					eFuseWord[offset][i] |= (((u2Byte)rtemp8 << 8) & 0xff00);
+					eFuseWord[offset][i] |= (((uint16_t)rtemp8 << 8) & 0xff00);
 
 					if(eFuse_Addr >= EFUSE_REAL_CONTENT_LEN_JAGUAR)
 						break;
@@ -2495,36 +2495,36 @@ Hal_EFUSEGetEfuseDefinition_Pseudo8812A(
 		case TYPE_EFUSE_REAL_CONTENT_LEN:
 			{
 				u16* pu2Tmp;
-				pu2Tmp = (pu2Byte)pOut;
+				pu2Tmp = (puint16_t)pOut;
 				*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
 			}
 			break;
 		case TYPE_EFUSE_CONTENT_LEN_BANK:
 			{
 				u16* pu2Tmp;
-				pu2Tmp = (pu2Byte)pOut;
+				pu2Tmp = (puint16_t)pOut;
 				*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
 			}
 			break;
 		case TYPE_AVAILABLE_EFUSE_BYTES_BANK:
 			{
 				u16* pu2Tmp;
-				pu2Tmp = (pu2Byte)pOut;
-				*pu2Tmp = (u2Byte)(EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
+				pu2Tmp = (puint16_t)pOut;
+				*pu2Tmp = (uint16_t)(EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
 			}
 			break;
 		case TYPE_AVAILABLE_EFUSE_BYTES_TOTAL:
 			{
 				u16* pu2Tmp;
-				pu2Tmp = (pu2Byte)pOut;
-				*pu2Tmp = (u2Byte)(EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
+				pu2Tmp = (puint16_t)pOut;
+				*pu2Tmp = (uint16_t)(EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
 			}
 			break;
 		case TYPE_EFUSE_MAP_LEN:
 			{
 				u16* pu2Tmp;
-				pu2Tmp = (pu2Byte)pOut;
-				*pu2Tmp = (u2Byte)EFUSE_MAP_LEN_JAGUAR;
+				pu2Tmp = (puint16_t)pOut;
+				*pu2Tmp = (uint16_t)EFUSE_MAP_LEN_JAGUAR;
 			}
 			break;
 		case TYPE_EFUSE_PROTECT_BYTES_BANK:
@@ -3658,7 +3658,7 @@ void InitPGData8812A(PADAPTER padapter)
 			// Read all Content from EEPROM or EFUSE.
 			for (i = 0; i < HWSET_MAX_SIZE_JAGUAR; i += 2)
 			{
-				//val16 = EF2Byte(ReadEEprom(pAdapter, (u2Byte) (i>>1)));
+				//val16 = EF2Byte(ReadEEprom(pAdapter, (uint16_t) (i>>1)));
 				//*((uint16_t *)(&PROMContent[i])) = val16;
 			}
 		}

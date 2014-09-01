@@ -25,7 +25,7 @@
 #include "odm_precomp.h"
 
 
-const u2Byte dB_Invert_Table[8][12] = {
+const uint16_t dB_Invert_Table[8][12] = {
 	{	1,		1,		1,		2,		2,		2,		2,		3,		3,		3,		4,		4},
 	{	4,		5,		6,		6,		7,		8,		9,		10,		11,		13,		14,		16},
 	{	18,		20,		22,		25,		28,		32,		35,		40,		45,		50,		56,		63},
@@ -1394,7 +1394,7 @@ ODM_CmnInfoHook(
 			break;
 
 		case 	ODM_CMNINFO_FORCED_RATE:
-			pDM_Odm->pForcedDataRate = (pu2Byte)pValue;
+			pDM_Odm->pForcedDataRate = (puint16_t)pValue;
 			break;
 
 		case	ODM_CMNINFO_MP_MODE:
@@ -1433,7 +1433,7 @@ VOID
 ODM_CmnInfoPtrArrayHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		u2Byte			Index,
+	IN		uint16_t			Index,
 	IN		PVOID			pValue
 	)
 {
@@ -9752,7 +9752,7 @@ GoodChannelDecision(
 	//s4Byte	TH1 =  SSBT-0x15;    // modify TH by Neil Chen
 	s4Byte	TH1= RSSI_BT+0x14;
 	s4Byte	TH2 = RSSI_BT+85;
-	//u2Byte    TH3;
+	//uint16_t    TH3;
 //	s4Byte	RegB34;
 	u1Byte	bitmap, Smooth_size[3], Smooth_TH[3];
 	//u1Byte	psd_bit;

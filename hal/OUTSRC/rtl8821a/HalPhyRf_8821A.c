@@ -309,8 +309,8 @@ GetDeltaSwingTable_8821A(
     PADAPTER        Adapter   		 = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	HAL_DATA_TYPE  	*pHalData  		 = GET_HAL_DATA(Adapter);
-	//u2Byte         	rate 	  	   	 = pMgntInfo->ForcedDataRate;
-	u2Byte         	rate 	  	   	 = 0;
+	//uint16_t         	rate 	  	   	 = pMgntInfo->ForcedDataRate;
+	uint16_t         	rate 	  	   	 = 0;
 	u1Byte         	channel   		 = pHalData->CurrentChannel;
 
 

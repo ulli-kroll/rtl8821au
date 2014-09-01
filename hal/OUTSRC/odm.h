@@ -478,8 +478,8 @@ typedef struct _ODM_Phy_Status_Info_
 
 	u1Byte		RxMIMOSignalStrength[4];// in 0~100 index
 
-	u2Byte		Cfo_short[4]; 			// per-path's Cfo_short
-	u2Byte		Cfo_tail[4];			// per-path's Cfo_tail
+	uint16_t		Cfo_short[4]; 			// per-path's Cfo_short
+	uint16_t		Cfo_tail[4];			// per-path's Cfo_tail
 
 #if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))
 	s1Byte		RxPower;				// in dBm Translate from PWdB
@@ -597,9 +597,9 @@ typedef		struct _ODM_STA_INFO{
 
 	// Driver write Wilson handle.
 	//1 TX_RPT (don't redefine the naming)
-	u2Byte		RTY[4];				// ???
-	u2Byte		TOTAL;				// ???
-	u2Byte		DROP;				// ???
+	uint16_t		RTY[4];				// ???
+	uint16_t		TOTAL;				// ???
+	uint16_t		DROP;				// ???
 	//
 	// Please use compile flag to disabe the strcutrue for other IC except 88E.
 	//
@@ -960,11 +960,11 @@ typedef struct _ODM_RA_Info_
 	u1Byte LowestRate;
 	uint32_t NscUp;
 	uint32_t NscDown;
-	u2Byte RTY[5];
+	uint16_t RTY[5];
 	uint32_t TOTAL;
-	u2Byte DROP;
+	uint16_t DROP;
 	u1Byte Active;
-	u2Byte RptTime;
+	uint16_t RptTime;
 	u1Byte RAWaitingCounter;
 	u1Byte RAPendingCounter;
 #if 1 //POWER_TRAINING_ACTIVE == 1 // For compile  pass only~!
@@ -1323,7 +1323,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u1Byte			*mp_mode;
 	//u1Byte			*pAidMap;
 //--------- POINTER REFERENCE-----------//
-	pu2Byte			pForcedDataRate;
+	puint16_t			pForcedDataRate;
 //------------CALL BY VALUE-------------//
 	BOOLEAN			bLinkInProcess;
 	BOOLEAN			bWIFI_Direct;
@@ -1380,7 +1380,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	PSTA_INFO_T		pODM_StaInfo[ODM_ASSOCIATE_ENTRY_NUM];
 
 #if (RATE_ADAPTIVE_SUPPORT == 1)
-	u2Byte 			CurrminRptTime;
+	uint16_t 			CurrminRptTime;
 	ODM_RA_INFO_T   RAInfo[ODM_ASSOCIATE_ENTRY_NUM]; //See HalMacID support
 #endif
 	//
@@ -2027,7 +2027,7 @@ VOID
 ODM_CmnInfoPtrArrayHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		u2Byte			Index,
+	IN		uint16_t			Index,
 	IN		PVOID			pValue
 	);
 

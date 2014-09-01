@@ -529,8 +529,8 @@ _InitPageBoundary_8812AUsb(
 	IN  PADAPTER Adapter
 	)
 {
-	//u2Byte 			rxff_bndy;
-	//u2Byte			Offset;
+	//uint16_t 			rxff_bndy;
+	//uint16_t			Offset;
 	//BOOLEAN			bSupportRemoteWakeUp;
 
 	//Adapter->HalFunc.GetHalDefVarHandler(Adapter, HAL_DEF_WOWLAN , &bSupportRemoteWakeUp);
@@ -2229,7 +2229,7 @@ hal_InitPGData_8812A(
 			// Read all Content from EEPROM or EFUSE.
 			for(i = 0; i < HWSET_MAX_SIZE_JAGUAR; i += 2)
 			{
-				//value16 = EF2Byte(ReadEEprom(pAdapter, (u2Byte) (i>>1)));
+				//value16 = EF2Byte(ReadEEprom(pAdapter, (uint16_t) (i>>1)));
 				//*((uint16_t *)(&PROMContent[i])) = value16;
 			}
 		}

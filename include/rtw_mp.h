@@ -129,9 +129,6 @@ struct mp_tx
 #define u1Byte		u8
 #define pu1Byte 		u8*
 
-#define u2Byte		u16
-#define pu2Byte 		u16*
-
 #define s1Byte		s8
 #define ps1Byte 		s8*
 

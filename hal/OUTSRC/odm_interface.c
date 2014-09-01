@@ -47,7 +47,7 @@ ODM_Read1Byte(
 }
 
 
-u2Byte
+uint16_t
 ODM_Read2Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	uint32_t			RegAddr
@@ -112,7 +112,7 @@ VOID
 ODM_Write2Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	uint32_t			RegAddr,
-	IN	u2Byte			Data
+	IN	uint16_t			Data
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))

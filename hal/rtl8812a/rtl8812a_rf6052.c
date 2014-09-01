@@ -317,7 +317,7 @@ static void writeOFDMPowerReg8812(
 
 	uint8_t	i, rf, pwr_val[4];
 	u32	writeVal;
-	u16	RegOffset;
+	uint16_t	RegOffset;
 
 	for(rf=0; rf<2; rf++)
 	{

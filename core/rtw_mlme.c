@@ -447,9 +447,9 @@ uint8_t *rtw_get_capability_from_ie(uint8_t *ie)
 }
 
 
-u16 rtw_get_capability(WLAN_BSSID_EX *bss)
+uint16_t rtw_get_capability(WLAN_BSSID_EX *bss)
 {
-	u16	val;
+	uint16_t	val;
 _func_enter_;
 
 	memcpy((uint8_t *)&val, rtw_get_capability_from_ie(bss->IEs), 2);
@@ -590,7 +590,7 @@ inline int is_same_ess(WLAN_BSSID_EX *a, WLAN_BSSID_EX *b)
 
 int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst)
 {
-	 u16 s_cap, d_cap;
+	 uint16_t s_cap, d_cap;
 
 _func_enter_;
 
@@ -1985,7 +1985,7 @@ uint8_t search_max_mac_id(_adapter *padapter)
 //FOR AP ,AD-HOC mode
 void rtw_stassoc_hw_rpt(_adapter *adapter,struct sta_info *psta)
 {
-	u16 media_status;
+	uint16_t media_status;
 
 	if(psta==NULL)	return;
 
@@ -2155,7 +2155,7 @@ _func_enter_;
 	DBG_871X("%s(mac_id=%d)=" MAC_FMT "\n", __func__, mac_id, MAC_ARG(pstadel->macaddr));
 
 	if(mac_id>=0){
-		u16 media_status;
+		uint16_t media_status;
 		media_status = (mac_id<<8)|0; //  MACID|OPMODE:0 means disconnect
 		//for STA,AP,ADHOC mode, report disconnect stauts to FW
 		rtw_hal_set_hwreg(adapter, HW_VAR_H2C_MEDIA_STATUS_RPT, (uint8_t *)&media_status);
@@ -2167,7 +2167,7 @@ _func_enter_;
 		#ifdef COMPAT_KERNEL_RELEASE
 
 		#elif (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)) || defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
-		rtw_cfg80211_indicate_sta_disassoc(adapter, pstadel->macaddr, *(u16*)pstadel->rsvd);
+		rtw_cfg80211_indicate_sta_disassoc(adapter, pstadel->macaddr, *(uint16_t *)pstadel->rsvd);
 		#endif //(LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)) || defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
 #endif //CONFIG_IOCTL_CFG80211
 

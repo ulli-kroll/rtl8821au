@@ -75,7 +75,7 @@ exit:
 int rtw_IOL_append_cmds(struct xmit_frame *xmit_frame, uint8_t *IOL_cmds, u32 cmd_len)
 {
 	struct pkt_attrib	*pattrib = &xmit_frame->attrib;
-	u16 buf_offset;
+	uint16_t buf_offset;
 	u32 ori_len;
 
 	buf_offset = TXDESC_OFFSET;
@@ -120,7 +120,7 @@ int rtw_IOL_append_LLT_cmd(struct xmit_frame *xmit_frame, uint8_t page_boundary)
 {
 	return _SUCCESS;
 }
-int _rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, uint8_t value, uint8_t mask)
+int _rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, uint16_t addr, uint8_t value, uint8_t mask)
 {
 	struct ioreg_cfg cmd = {8,IOREG_CMD_WB_REG,0x0, 0x0,0x0};
 
@@ -141,7 +141,7 @@ int _rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, uint8_t valu
 	return rtw_IOL_append_cmds(xmit_frame, (uint8_t *)&cmd, cmd.length);
 
 }
-int _rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, u16 addr, u16 value, u16 mask)
+int _rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, uint16_t addr, uint16_t value, uint16_t mask)
 {
 	struct ioreg_cfg cmd = {8,IOREG_CMD_WW_REG,0x0, 0x0,0x0};
 
@@ -162,7 +162,7 @@ int _rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, u16 addr, u16 value, u
 	return rtw_IOL_append_cmds(xmit_frame, (uint8_t *)&cmd, cmd.length);
 
 }
-int _rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value, u32 mask)
+int _rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, uint16_t addr, u32 value, u32 mask)
 {
 	struct ioreg_cfg cmd = {8,IOREG_CMD_WD_REG,0x0, 0x0,0x0};
 
@@ -184,7 +184,7 @@ int _rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value, u
 
 }
 
-int _rtw_IOL_append_WRF_cmd(struct xmit_frame *xmit_frame, uint8_t rf_path, u16 addr, u32 value, u32 mask)
+int _rtw_IOL_append_WRF_cmd(struct xmit_frame *xmit_frame, uint8_t rf_path, uint16_t addr, u32 value, u32 mask)
 {
 	struct ioreg_cfg cmd = {8,IOREG_CMD_W_RF,0x0, 0x0,0x0};
 
@@ -208,7 +208,7 @@ int _rtw_IOL_append_WRF_cmd(struct xmit_frame *xmit_frame, uint8_t rf_path, u16 
 
 
 
-int rtw_IOL_append_DELAY_US_cmd(struct xmit_frame *xmit_frame, u16 us)
+int rtw_IOL_append_DELAY_US_cmd(struct xmit_frame *xmit_frame, uint16_t us)
 {
 	struct ioreg_cfg cmd = {4,IOREG_CMD_DELAY_US,0x0, 0x0,0x0};
 	//RTW_PUT_LE16((uint8_t *)&cmd.address, us);
@@ -218,7 +218,7 @@ int rtw_IOL_append_DELAY_US_cmd(struct xmit_frame *xmit_frame, u16 us)
 	return rtw_IOL_append_cmds(xmit_frame, (uint8_t *)&cmd, 4);
 }
 
-int rtw_IOL_append_DELAY_MS_cmd(struct xmit_frame *xmit_frame, u16 ms)
+int rtw_IOL_append_DELAY_MS_cmd(struct xmit_frame *xmit_frame, uint16_t ms)
 {
 	struct ioreg_cfg cmd = {4,IOREG_CMD_DELAY_US,0x0, 0x0,0x0};
 
@@ -275,39 +275,39 @@ int rtw_IOL_append_LLT_cmd(struct xmit_frame *xmit_frame, uint8_t page_boundary)
 	return rtw_IOL_append_cmds(xmit_frame, (uint8_t *)&cmd, 8);
 }
 
-int _rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, uint8_t value)
+int _rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, uint16_t addr, uint8_t value)
 {
 	IOL_CMD cmd = {0x0, IOL_CMD_WB_REG, 0x0, 0x0};
 
-	RTW_PUT_BE16((uint8_t *)&cmd.address, (u16)addr);
+	RTW_PUT_BE16((uint8_t *)&cmd.address, (uint16_t)addr);
 	RTW_PUT_BE32((uint8_t *)&cmd.value, (u32)value);
 
 	return rtw_IOL_append_cmds(xmit_frame, (uint8_t *)&cmd, 8);
 }
 
-int _rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, u16 addr, u16 value)
+int _rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, uint16_t addr, uint16_t value)
 {
 	IOL_CMD cmd = {0x0, IOL_CMD_WW_REG, 0x0, 0x0};
 
-	RTW_PUT_BE16((uint8_t *)&cmd.address, (u16)addr);
+	RTW_PUT_BE16((uint8_t *)&cmd.address, (uint16_t)addr);
 	RTW_PUT_BE32((uint8_t *)&cmd.value, (u32)value);
 
 	return rtw_IOL_append_cmds(xmit_frame, (uint8_t *)&cmd, 8);
 }
 
-int _rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value)
+int _rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, uint16_t addr, u32 value)
 {
 	IOL_CMD cmd = {0x0, IOL_CMD_WD_REG, 0x0, 0x0};
 	uint8_t * pos = (uint8_t *)&cmd;
 
-	RTW_PUT_BE16((uint8_t *)&cmd.address, (u16)addr);
+	RTW_PUT_BE16((uint8_t *)&cmd.address, (uint16_t)addr);
 	RTW_PUT_BE32((uint8_t *)&cmd.value, (u32)value);
 
 	return rtw_IOL_append_cmds(xmit_frame, (uint8_t *)&cmd, 8);
 }
 
 #ifdef DBG_IO
-int dbg_rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, uint8_t value, const char *caller, const int line)
+int dbg_rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, uint16_t addr, uint8_t value, const char *caller, const int line)
 {
 	if (match_write_sniff_ranges(addr, 1))
 		DBG_871X("DBG_IO %s:%d IOL_WB(0x%04x, 0x%02x)\n", caller, line, addr, value);
@@ -315,7 +315,7 @@ int dbg_rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, uint8_t v
 	return _rtw_IOL_append_WB_cmd(xmit_frame, addr, value);
 }
 
-int dbg_rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, u16 addr, u16 value, const char *caller, const int line)
+int dbg_rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, uint16_t addr, uint16_t value, const char *caller, const int line)
 {
 	if (match_write_sniff_ranges(addr, 2))
 		DBG_871X("DBG_IO %s:%d IOL_WW(0x%04x, 0x%04x)\n", caller, line, addr, value);
@@ -323,7 +323,7 @@ int dbg_rtw_IOL_append_WW_cmd(struct xmit_frame *xmit_frame, u16 addr, u16 value
 	return _rtw_IOL_append_WW_cmd(xmit_frame, addr, value);
 }
 
-int dbg_rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value, const char *caller, const int line)
+int dbg_rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, uint16_t addr, u32 value, const char *caller, const int line)
 {
 	if (match_write_sniff_ranges(addr, 4))
 		DBG_871X("DBG_IO %s:%d IOL_WD(0x%04x, 0x%08x)\n", caller, line, addr, value);
@@ -332,7 +332,7 @@ int dbg_rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value
 }
 #endif
 
-int rtw_IOL_append_DELAY_US_cmd(struct xmit_frame *xmit_frame, u16 us)
+int rtw_IOL_append_DELAY_US_cmd(struct xmit_frame *xmit_frame, uint16_t us)
 {
 	IOL_CMD cmd = {0x0, IOL_CMD_DELAY_US, 0x0, 0x0};
 
@@ -343,7 +343,7 @@ int rtw_IOL_append_DELAY_US_cmd(struct xmit_frame *xmit_frame, u16 us)
 	return rtw_IOL_append_cmds(xmit_frame, (uint8_t *)&cmd, 8);
 }
 
-int rtw_IOL_append_DELAY_MS_cmd(struct xmit_frame *xmit_frame, u16 ms)
+int rtw_IOL_append_DELAY_MS_cmd(struct xmit_frame *xmit_frame, uint16_t ms)
 {
 	IOL_CMD cmd = {0x0, IOL_CMD_DELAY_MS, 0x0, 0x0};
 

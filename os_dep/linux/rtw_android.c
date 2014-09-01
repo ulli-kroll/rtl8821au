@@ -251,7 +251,7 @@ int rtw_android_get_link_speed(struct net_device *ndev, char *command, int total
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	struct	wlan_network	*pcur_network = &pmlmepriv->cur_network;
 	int bytes_written = 0;
-	u16 link_speed = 0;
+	uint16_t link_speed = 0;
 
 	link_speed = rtw_get_cur_max_rate(padapter)/10;
 	bytes_written = snprintf(command, total_len, "LinkSpeed %d", link_speed);
@@ -540,7 +540,7 @@ int rtw_android_priv_cmd(struct net_device *ndev, struct ifreq *ifr, int cmd)
 
 		pwfd_info = &padapter->wfd_info;
 		if( padapter->wdinfo.driver_interface == DRIVER_CFG80211 )
-			pwfd_info->rtsp_ctrlport = ( u16 ) get_int_from_command( priv_cmd.buf );
+			pwfd_info->rtsp_ctrlport = ( uint16_t ) get_int_from_command( priv_cmd.buf );
 		break;
 	}
 	case ANDROID_WIFI_CMD_WFD_SET_MAX_TPUT:

@@ -232,9 +232,9 @@ int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 
 }
 
-_pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, uint8_t *pdata)
+_pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, uint16_t nSubframe_Length, uint8_t *pdata)
 {
-	u16	eth_type;
+	uint16_t	eth_type;
 	uint8_t	*data_ptr;
 	_pkt *sub_skb;
 	struct rx_pkt_attrib *pattrib;
@@ -277,7 +277,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, uin
 		memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->src, ETH_ALEN);
 		memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->dst, ETH_ALEN);
 	} else {
-		u16 len;
+		uint16_t len;
 		/* Leave Ethernet header part of hdr and full payload */
 		len = htons(sub_skb->len);
 		memcpy(skb_push(sub_skb, 2), &len, 2);
@@ -509,9 +509,9 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 
 	if (psta && psta->isrc && psta->pid>0)
 	{
-		u16 rx_pid;
+		uint16_t rx_pid;
 
-		rx_pid = *(u16*)(skb->data+ETH_HLEN);
+		rx_pid = *(uint16_t *)(skb->data+ETH_HLEN);
 
 		DBG_871X("eth rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n",
 			rx_pid, MAC_ARG(psta->hwaddr), psta->pid);
@@ -519,8 +519,8 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 		if(rx_pid == psta->pid)
 		{
 			int i;
-			u16 len = *(u16*)(skb->data+ETH_HLEN+2);
-			//u16 ctrl_type = *(u16*)(skb->data+ETH_HLEN+4);
+			uint16_t len = *(uint16_t *)(skb->data+ETH_HLEN+2);
+			//uint16_t ctrl_type = *(uint16_t *)(skb->data+ETH_HLEN+4);
 
 			//DBG_871X("eth, RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type);
 			DBG_871X("eth, RC: len=0x%x\n", len);

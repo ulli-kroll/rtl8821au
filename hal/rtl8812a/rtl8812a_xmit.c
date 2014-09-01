@@ -84,7 +84,7 @@ void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag, uint8_t *ptxdesc)
 
 struct EMInfo{
 	uint8_t 	EMPktNum;
-	u16  EMPktLen[EARLY_MODE_MAX_PKT_NUM];
+	uint16_t  EMPktLen[EARLY_MODE_MAX_PKT_NUM];
 };
 
 
@@ -177,7 +177,7 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 {
 	//_adapter *padapter, struct xmit_frame *pxmitframe,struct tx_servq	*ptxservq
 	int index,j;
-	u16 offset,pktlen;
+	uint16_t offset,pktlen;
 	PTXDESC_8812 ptxdesc;
 
 	uint8_t *pmem,*pEMInfo_mem;
@@ -252,13 +252,13 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 
 void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 {
-	u16	*usPtr;
+	uint16_t	*usPtr;
 	u32 count;
 	u32 index;
-	u16 checksum = 0;
+	uint16_t checksum = 0;
 
 
-	usPtr = (u16*)ptxdesc;
+	usPtr = (uint16_t *)ptxdesc;
 	// checksume is always calculated by first 32 bytes,
 	// and it doesn't depend on TX DESC length.
 	// Thomas,Lucas@SD4,20130515

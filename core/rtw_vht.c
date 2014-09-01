@@ -23,7 +23,7 @@
 
 #ifdef CONFIG_80211AC_VHT
 // 				20/40/80,	ShortGI,	MCS Rate
-const u16 VHT_MCS_DATA_RATE[3][2][20] =
+const uint16_t VHT_MCS_DATA_RATE[3][2][20] =
 	{	{	{13, 26, 39, 52, 78, 104, 117, 130, 156, 156,
 			 26, 52, 78, 104, 156, 208, 234, 260, 312, 312},			// Long GI, 20MHz
 			{14, 29, 43, 58, 87, 116, 130, 144, 173, 173,
@@ -62,7 +62,7 @@ uint8_t	rtw_get_vht_highest_rate(_adapter *padapter, uint8_t *pvht_mcs_map)
 	return vht_mcs_rate;
 }
 
-u16	rtw_vht_data_rate(uint8_t bw, uint8_t short_GI, uint8_t vht_mcs_rate)
+uint16_t	rtw_vht_data_rate(uint8_t bw, uint8_t short_GI, uint8_t vht_mcs_rate)
 {
 	if(vht_mcs_rate > MGN_VHT2SS_MCS9)
 		vht_mcs_rate = MGN_VHT2SS_MCS9;
@@ -424,7 +424,7 @@ u32	rtw_build_vht_op_mode_notify_ie(_adapter *padapter, uint8_t *pbuf)
 u32	rtw_build_vht_cap_ie(_adapter *padapter, uint8_t *pbuf)
 {
 	uint8_t	bw, rf_type;
-	u16	HighestRate;
+	uint16_t	HighestRate;
 	uint8_t	*pcap, *pcap_mcs;
 	u32	len = 0;
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;

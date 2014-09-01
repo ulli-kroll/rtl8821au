@@ -182,7 +182,7 @@ void rtl8812_query_rx_desc_status(union recv_frame *precvframe, uint8_t *pdesc)
 	memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
 
 	//Offset 0
-	pattrib->pkt_len = (u16)GET_RX_STATUS_DESC_PKT_LEN_8812(pdesc);//(le32_to_cpu(pdesc->rxdw0)&0x00003fff)
+	pattrib->pkt_len = (uint16_t)GET_RX_STATUS_DESC_PKT_LEN_8812(pdesc);//(le32_to_cpu(pdesc->rxdw0)&0x00003fff)
 	pattrib->crc_err = (uint8_t)GET_RX_STATUS_DESC_CRC32_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 14) & 0x1);
 	pattrib->icv_err = (uint8_t)GET_RX_STATUS_DESC_ICV_8812(pdesc);//((le32_to_cpu(pdesc->rxdw0) >> 15) & 0x1);
 	pattrib->drvinfo_sz = (uint8_t)GET_RX_STATUS_DESC_DRVINFO_SIZE_8812(pdesc) * 8;//((le32_to_cpu(pdesc->rxdw0) >> 16) & 0xf) * 8;//uint 2^3 = 8 bytes
@@ -198,7 +198,7 @@ void rtl8812_query_rx_desc_status(union recv_frame *precvframe, uint8_t *pdesc)
 	pattrib->mfrag = (uint8_t)GET_RX_STATUS_DESC_MORE_FRAG_8812(pdesc);//((le32_to_cpu(pdesc->rxdw1) >> 27) & 0x1);//more fragment bit
 
 	//Offset 8
-	pattrib->seq_num = (u16)GET_RX_STATUS_DESC_SEQ_8812(pdesc);//(le32_to_cpu(pdesc->rxdw2) & 0x00000fff);
+	pattrib->seq_num = (uint16_t)GET_RX_STATUS_DESC_SEQ_8812(pdesc);//(le32_to_cpu(pdesc->rxdw2) & 0x00000fff);
 	pattrib->frag_num = (uint8_t)GET_RX_STATUS_DESC_FRAG_8812(pdesc);//((le32_to_cpu(pdesc->rxdw2) >> 12) & 0xf);//fragmentation number
 
 	if (GET_RX_STATUS_DESC_RPT_SEL_8812(pdesc))

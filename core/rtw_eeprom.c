@@ -23,7 +23,7 @@
 #include <osdep_service.h>
 #include <drv_types.h>
 
-void up_clk(_adapter*	padapter,	 u16 *x)
+void up_clk(_adapter*	padapter,	 uint16_t *x)
 {
 _func_enter_;
 	*x = *x | _EESK;
@@ -34,7 +34,7 @@ _func_exit_;
 
 }
 
-void down_clk(_adapter *	padapter, u16 *x	)
+void down_clk(_adapter *	padapter, uint16_t *x	)
 {
 _func_enter_;
 	*x = *x & ~_EESK;
@@ -43,9 +43,9 @@ _func_enter_;
 _func_exit_;
 }
 
-void shift_out_bits(_adapter * padapter, u16 data, u16 count)
+void shift_out_bits(_adapter * padapter, uint16_t data, uint16_t count)
 {
-	u16 x,mask;
+	uint16_t x,mask;
 _func_enter_;
 
 	if(padapter->bSurpriseRemoved==_TRUE){
@@ -82,9 +82,9 @@ out:
 _func_exit_;
 }
 
-u16 shift_in_bits (_adapter * padapter)
+uint16_t shift_in_bits (_adapter * padapter)
 {
-	u16 x,d=0,i;
+	uint16_t x,d=0,i;
 _func_enter_;
 	if(padapter->bSurpriseRemoved==_TRUE){
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -133,10 +133,10 @@ _func_enter_;
 _func_exit_;
 }
 
-u16 wait_eeprom_cmd_done(_adapter* padapter)
+uint16_t wait_eeprom_cmd_done(_adapter* padapter)
 {
 	uint8_t 	x;
-	u16	i,res=_FALSE;
+	uint16_t	i,res=_FALSE;
 _func_enter_;
 	standby(padapter );
 	for (i=0; i<200; i++)
@@ -155,7 +155,7 @@ _func_exit_;
 
 void eeprom_clean(_adapter * padapter)
 {
-	u16 x;
+	uint16_t x;
 _func_enter_;
 	if(padapter->bSurpriseRemoved==_TRUE){
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -182,7 +182,7 @@ out:
 _func_exit_;
 }
 
-void eeprom_write16(_adapter * padapter, u16 reg, u16 data)
+void eeprom_write16(_adapter * padapter, uint16_t reg, uint16_t data)
 {
 	uint8_t x;
 #ifdef CONFIG_RTL8712
@@ -266,11 +266,11 @@ _func_exit_;
 	return;
 }
 
-u16 eeprom_read16(_adapter * padapter, u16 reg) //ReadEEprom
+uint16_t eeprom_read16(_adapter * padapter, uint16_t reg) //ReadEEprom
 {
 
-	u16 x;
-	u16 data=0;
+	uint16_t x;
+	uint16_t data=0;
 #ifdef CONFIG_RTL8712
 	uint8_t	tmp8_ori,tmp8_new,tmp8_clk_ori,tmp8_clk_new;
 	tmp8_ori= rtw_read8(padapter, 0x102502f1);
@@ -331,10 +331,10 @@ _func_exit_;
 
 
 //From even offset
-void eeprom_read_sz(_adapter * padapter, u16 reg, uint8_t * data, u32 sz)
+void eeprom_read_sz(_adapter * padapter, uint16_t reg, uint8_t * data, u32 sz)
 {
 
-	u16 x, data16;
+	uint16_t x, data16;
 	u32 i;
 _func_enter_;
 	if(padapter->bSurpriseRemoved==_TRUE){
@@ -379,9 +379,9 @@ _func_exit_;
 uint8_t eeprom_read(_adapter * padapter, u32 addr_off, uint8_t sz, uint8_t * rbuf)
 {
 	uint8_t quotient, remainder, addr_2align_odd;
-	u16 reg, stmp , i=0, idx = 0;
+	uint16_t reg, stmp , i=0, idx = 0;
 _func_enter_;
-	reg = (u16)(addr_off >> 1);
+	reg = (uint16_t)(addr_off >> 1);
 	addr_2align_odd = (uint8_t)(addr_off & 0x1);
 
 	if(addr_2align_odd) //read that start at high part: e.g  1,3,5,7,9,...

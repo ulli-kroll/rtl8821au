@@ -173,7 +173,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 
 #if 0
 	typedef u8					u1Byte, *pu1Byte;
-	typedef u16					u2Byte,*pu2Byte;
+	typedef uint16_t					u2Byte,*pu2Byte;
 	typedef u32					u4Byte,*pu4Byte;
 	typedef u64					u8Byte,*pu8Byte;
 	typedef s8					s1Byte,*ps1Byte;

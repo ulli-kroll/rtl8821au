@@ -46,10 +46,10 @@ void WapiSetIE(_adapter *padapter)
 {
 	PRT_WAPI_T		pWapiInfo = &(padapter->wapiInfo);
 	//PRT_WAPI_BKID	pWapiBkid;
-	u16		protocolVer = 1;
-	u16		akmCnt = 1;
-	u16		suiteCnt = 1;
-	u16		capability = 0;
+	uint16_t		protocolVer = 1;
+	uint16_t		akmCnt = 1;
+	uint16_t		suiteCnt = 1;
+	uint16_t		capability = 0;
 	uint8_t		OUI[3];
 
 	OUI[0] = 0x00;
@@ -266,7 +266,7 @@ uint8_t WapiWriteOneCamEntry(
 )
 {
 	uint8_t retVal = 0;
-	u16 usConfig = 0;
+	uint16_t usConfig = 0;
 
 	WAPI_TRACE(WAPI_API, "===========> %s\n", __FUNCTION__);
 
@@ -276,7 +276,7 @@ uint8_t WapiWriteOneCamEntry(
 		return retVal;
 	}
 
-	usConfig=usConfig|(0x01<<15)|((u16)(EncAlg)<<2)|(KeyId);
+	usConfig=usConfig|(0x01<<15)|((uint16_t)(EncAlg)<<2)|(KeyId);
 
 	if(EncAlg == _SMS4_ )
 	{
@@ -643,7 +643,7 @@ void rtw_build_beacon_wapi_ie(_adapter *padapter, unsigned char *pframe, struct 
 void rtw_build_assoc_req_wapi_ie(_adapter *padapter, unsigned char *pframe, struct pkt_attrib *pattrib)
 {
 	PRT_WAPI_BKID		pWapiBKID;
-	u16					bkidNum;
+	uint16_t					bkidNum;
 	PRT_WAPI_T			pWapiInfo = &(padapter->wapiInfo);
 	uint8_t					WapiIELength = 0;
 

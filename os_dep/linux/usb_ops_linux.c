@@ -22,7 +22,7 @@
 #include <hal_data.h>
 #include <rtw_sreset.h>
 
-int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
+int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, uint16_t value, uint16_t index, void *pdata, uint16_t len, uint8_t requesttype)
 {
 	_adapter	*padapter = pintfhdl->padapter;
 	struct dvobj_priv  *pdvobjpriv = adapter_to_dvobj(padapter);
@@ -184,7 +184,7 @@ static void _usbctrl_vendorreq_async_callback(struct urb *urb, struct pt_regs *r
 }
 
 static int _usbctrl_vendorreq_async_write(struct usb_device *udev, uint8_t request,
-	u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
+	uint16_t value, uint16_t index, void *pdata, uint16_t len, uint8_t requesttype)
 {
 	int rc;
 	unsigned int pipe;
@@ -242,12 +242,12 @@ exit:
 	return rc;
 }
 
-int usb_write_async(struct usb_device *udev, u32 addr, void *pdata, u16 len)
+int usb_write_async(struct usb_device *udev, u32 addr, void *pdata, uint16_t len)
 {
 	uint8_t request;
 	uint8_t requesttype;
-	u16 wvalue;
-	u16 index;
+	uint16_t wvalue;
+	uint16_t index;
 
 	int ret;
 
@@ -255,7 +255,7 @@ int usb_write_async(struct usb_device *udev, u32 addr, void *pdata, u16 len)
 	request = REALTEK_USB_VENQT_CMD_REQ;
 	index = REALTEK_USB_VENQT_CMD_IDX;//n/a
 
-	wvalue = (u16)(addr&0x0000ffff);
+	wvalue = (uint16_t)(addr&0x0000ffff);
 
 	ret = _usbctrl_vendorreq_async_write(udev, request, wvalue, index, pdata, len, requesttype);
 
@@ -277,9 +277,9 @@ int usb_async_write8(struct intf_hdl *pintfhdl, u32 addr, uint8_t val)
 	return ret;
 }
 
-int usb_async_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
+int usb_async_write16(struct intf_hdl *pintfhdl, u32 addr, uint16_t val)
 {
-	u16 data;
+	uint16_t data;
 	int ret;
 	struct dvobj_priv  *pdvobjpriv = (struct dvobj_priv  *)pintfhdl->pintf_dev;
 	struct usb_device *udev=pdvobjpriv->pusbdev;

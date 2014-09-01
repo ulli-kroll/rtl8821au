@@ -1178,7 +1178,7 @@ _func_exit_;
 
 s32 rtw_make_wlanhdr (_adapter *padapter , uint8_t *hdr, struct pkt_attrib *pattrib)
 {
-	u16 *qc;
+	uint16_t *qc;
 
 	struct rtw_ieee80211_hdr *pwlanhdr = (struct rtw_ieee80211_hdr *)hdr;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -1192,7 +1192,7 @@ s32 rtw_make_wlanhdr (_adapter *padapter , uint8_t *hdr, struct pkt_attrib *patt
 #endif //CONFIG_TDLS
 
 	sint res = _SUCCESS;
-	u16 *fctrl = &pwlanhdr->frame_ctl;
+	uint16_t *fctrl = &pwlanhdr->frame_ctl;
 
 	//struct sta_info *psta;
 
@@ -1355,7 +1355,7 @@ _func_enter_;
 				//re-check if enable ampdu by BA_starting_seqctrl
 				if(pattrib->ampdu_en == _TRUE)
 				{
-					u16 tx_seq;
+					uint16_t tx_seq;
 
 					tx_seq = psta->BA_starting_seqctrl[pattrib->priority & 0x0f];
 
@@ -1540,7 +1540,7 @@ int rtw_build_tdls_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint
 
 s32 rtw_make_tdls_wlanhdr (_adapter *padapter , uint8_t *hdr, struct pkt_attrib *pattrib, uint8_t action)
 {
-	u16 *qc;
+	uint16_t *qc;
 	struct rtw_ieee80211_hdr *pwlanhdr = (struct rtw_ieee80211_hdr *)hdr;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct qos_priv *pqospriv = &pmlmepriv->qospriv;
@@ -1549,7 +1549,7 @@ s32 rtw_make_tdls_wlanhdr (_adapter *padapter , uint8_t *hdr, struct pkt_attrib 
 	uint8_t tdls_seq=0, baddr[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 
 	sint res = _SUCCESS;
-	u16 *fctrl = &pwlanhdr->frame_ctl;
+	uint16_t *fctrl = &pwlanhdr->frame_ctl;
 
 _func_enter_;
 
@@ -1763,7 +1763,7 @@ u32 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib)
 	u32	len = 0;
 
 	len = pattrib->hdrlen + pattrib->iv_len; // WLAN Header and IV
-	len += SNAP_SIZE + sizeof(u16); // LLC
+	len += SNAP_SIZE + sizeof(uint16_t); // LLC
 	len += pattrib->pktlen;
 	if (pattrib->encrypt == _TKIP_) len += 8; // MIC
 	len += ((pattrib->bswenc) ? pattrib->icv_len : 0); // ICV
@@ -2002,7 +2002,7 @@ _func_exit_;
  *	Organizationally Unique Identifier(OUI), 3 octets,
  *	type, defined by that organization, 2 octets.
  */
-s32 rtw_put_snap(uint8_t *data, u16 h_proto)
+s32 rtw_put_snap(uint8_t *data, uint16_t h_proto)
 {
 	struct ieee80211_snap_hdr *snap;
 	uint8_t *oui;
@@ -2023,11 +2023,11 @@ _func_enter_;
 	snap->oui[1] = oui[1];
 	snap->oui[2] = oui[2];
 
-	*(u16 *)(data + SNAP_SIZE) = htons(h_proto);
+	*(uint16_t *)(data + SNAP_SIZE) = htons(h_proto);
 
 _func_exit_;
 
-	return SNAP_SIZE + sizeof(u16);
+	return SNAP_SIZE + sizeof(uint16_t);
 }
 
 void rtw_update_protection(_adapter *padapter, uint8_t *ie, uint ie_len)

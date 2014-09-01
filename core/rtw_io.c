@@ -70,13 +70,13 @@ uint8_t _rtw_read8(_adapter *adapter, u32 addr)
 	return r_val;
 }
 
-u16 _rtw_read16(_adapter *adapter, u32 addr)
+uint16_t _rtw_read16(_adapter *adapter, u32 addr)
 {
-	u16 r_val;
+	uint16_t r_val;
 	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
-	u16 	(*_read16)(struct intf_hdl *pintfhdl, u32 addr);
+	uint16_t 	(*_read16)(struct intf_hdl *pintfhdl, u32 addr);
 	_func_enter_;
 	_read16 = pintfhdl->io_ops._read16;
 
@@ -116,12 +116,12 @@ int _rtw_write8(_adapter *adapter, u32 addr, uint8_t val)
 
 	return RTW_STATUS_CODE(ret);
 }
-int _rtw_write16(_adapter *adapter, u32 addr, u16 val)
+int _rtw_write16(_adapter *adapter, u32 addr, uint16_t val)
 {
 	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
-	int (*_write16)(struct intf_hdl *pintfhdl, u32 addr, u16 val);
+	int (*_write16)(struct intf_hdl *pintfhdl, u32 addr, uint16_t val);
 	int ret;
 	_func_enter_;
 	_write16 = pintfhdl->io_ops._write16;
@@ -179,12 +179,12 @@ int _rtw_write8_async(_adapter *adapter, u32 addr, uint8_t val)
 
 	return RTW_STATUS_CODE(ret);
 }
-int _rtw_write16_async(_adapter *adapter, u32 addr, u16 val)
+int _rtw_write16_async(_adapter *adapter, u32 addr, uint16_t val)
 {
 	//struct	io_queue  	*pio_queue = (struct io_queue *)adapter->pio_queue;
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl		*pintfhdl = &(pio_priv->intf);
-	int (*_write16_async)(struct intf_hdl *pintfhdl, u32 addr, u16 val);
+	int (*_write16_async)(struct intf_hdl *pintfhdl, u32 addr, uint16_t val);
 	int ret;
 	_func_enter_;
 	_write16_async = pintfhdl->io_ops._write16_async;
@@ -353,19 +353,19 @@ int rtw_init_io_priv(_adapter *padapter, void (*set_intf_ops)(_adapter *padapter
 
 #ifdef DBG_IO
 
-u16 read_sniff_ranges[][2] = {
+uint16_t read_sniff_ranges[][2] = {
 	//{0x550, 0x551},
 };
 
-u16 write_sniff_ranges[][2] = {
+uint16_t write_sniff_ranges[][2] = {
 	//{0x550, 0x551},
 	//{0x4c, 0x4c},
 };
 
-int read_sniff_num = sizeof(read_sniff_ranges)/sizeof(u16)/2;
-int write_sniff_num = sizeof(write_sniff_ranges)/sizeof(u16)/2;
+int read_sniff_num = sizeof(read_sniff_ranges)/sizeof(uint16_t)/2;
+int write_sniff_num = sizeof(write_sniff_ranges)/sizeof(uint16_t)/2;
 
-bool match_read_sniff_ranges(u16 addr, u16 len)
+bool match_read_sniff_ranges(uint16_t addr, uint16_t len)
 {
 	int i;
 	for (i = 0; i<read_sniff_num; i++) {
@@ -376,7 +376,7 @@ bool match_read_sniff_ranges(u16 addr, u16 len)
 	return _FALSE;
 }
 
-bool match_write_sniff_ranges(u16 addr, u16 len)
+bool match_write_sniff_ranges(uint16_t addr, uint16_t len)
 {
 	int i;
 	for (i = 0; i<write_sniff_num; i++) {
@@ -397,9 +397,9 @@ uint8_t dbg_rtw_read8(_adapter *adapter, u32 addr, const char *caller, const int
 	return val;
 }
 
-u16 dbg_rtw_read16(_adapter *adapter, u32 addr, const char *caller, const int line)
+uint16_t dbg_rtw_read16(_adapter *adapter, u32 addr, const char *caller, const int line)
 {
-	u16 val = _rtw_read16(adapter, addr);
+	uint16_t val = _rtw_read16(adapter, addr);
 
 	if (match_read_sniff_ranges(addr, 2))
 		DBG_871X("DBG_IO %s:%d rtw_read16(0x%04x) return 0x%04x\n", caller, line, addr, val);
@@ -424,7 +424,7 @@ int dbg_rtw_write8(_adapter *adapter, u32 addr, uint8_t val, const char *caller,
 
 	return _rtw_write8(adapter, addr, val);
 }
-int dbg_rtw_write16(_adapter *adapter, u32 addr, u16 val, const char *caller, const int line)
+int dbg_rtw_write16(_adapter *adapter, u32 addr, uint16_t val, const char *caller, const int line)
 {
 	if (match_write_sniff_ranges(addr, 2))
 		DBG_871X("DBG_IO %s:%d rtw_write16(0x%04x, 0x%04x)\n", caller, line, addr, val);

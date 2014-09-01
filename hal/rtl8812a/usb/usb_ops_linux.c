@@ -26,9 +26,9 @@ static uint8_t usb_read8(struct intf_hdl *pintfhdl, u32 addr)
 {
 	uint8_t request;
 	uint8_t requesttype;
-	u16 wvalue;
-	u16 index;
-	u16 len;
+	uint16_t wvalue;
+	uint16_t index;
+	uint16_t len;
 	uint8_t data=0;
 
 	_func_enter_;
@@ -37,7 +37,7 @@ static uint8_t usb_read8(struct intf_hdl *pintfhdl, u32 addr)
 	requesttype = 0x01;//read_in
 	index = 0;//n/a
 
-	wvalue = (u16)(addr&0x0000ffff);
+	wvalue = (uint16_t)(addr&0x0000ffff);
 	len = 1;
 
 	usbctrl_vendorreq(pintfhdl, request, wvalue, index, &data, len, requesttype);
@@ -48,14 +48,14 @@ static uint8_t usb_read8(struct intf_hdl *pintfhdl, u32 addr)
 
 }
 
-static u16 usb_read16(struct intf_hdl *pintfhdl, u32 addr)
+static uint16_t usb_read16(struct intf_hdl *pintfhdl, u32 addr)
 {
 	uint8_t request;
 	uint8_t requesttype;
-	u16 wvalue;
-	u16 index;
-	u16 len;
-	u16 data=0;
+	uint16_t wvalue;
+	uint16_t index;
+	uint16_t len;
+	uint16_t data=0;
 
 	_func_enter_;
 
@@ -63,7 +63,7 @@ static u16 usb_read16(struct intf_hdl *pintfhdl, u32 addr)
 	requesttype = 0x01;//read_in
 	index = 0;//n/a
 
-	wvalue = (u16)(addr&0x0000ffff);
+	wvalue = (uint16_t)(addr&0x0000ffff);
 	len = 2;
 
 	usbctrl_vendorreq(pintfhdl, request, wvalue, index, &data, len, requesttype);
@@ -78,9 +78,9 @@ static u32 usb_read32(struct intf_hdl *pintfhdl, u32 addr)
 {
 	uint8_t request;
 	uint8_t requesttype;
-	u16 wvalue;
-	u16 index;
-	u16 len;
+	uint16_t wvalue;
+	uint16_t index;
+	uint16_t len;
 	u32 data=0;
 
 	_func_enter_;
@@ -89,7 +89,7 @@ static u32 usb_read32(struct intf_hdl *pintfhdl, u32 addr)
 	requesttype = 0x01;//read_in
 	index = 0;//n/a
 
-	wvalue = (u16)(addr&0x0000ffff);
+	wvalue = (uint16_t)(addr&0x0000ffff);
 	len = 4;
 
 	usbctrl_vendorreq(pintfhdl, request, wvalue, index, &data, len, requesttype);
@@ -104,9 +104,9 @@ static int usb_write8(struct intf_hdl *pintfhdl, u32 addr, uint8_t val)
 {
 	uint8_t request;
 	uint8_t requesttype;
-	u16 wvalue;
-	u16 index;
-	u16 len;
+	uint16_t wvalue;
+	uint16_t index;
+	uint16_t len;
 	uint8_t data;
 	int ret;
 
@@ -116,7 +116,7 @@ static int usb_write8(struct intf_hdl *pintfhdl, u32 addr, uint8_t val)
 	requesttype = 0x00;//write_out
 	index = 0;//n/a
 
-	wvalue = (u16)(addr&0x0000ffff);
+	wvalue = (uint16_t)(addr&0x0000ffff);
 	len = 1;
 
 	data = val;
@@ -129,14 +129,14 @@ static int usb_write8(struct intf_hdl *pintfhdl, u32 addr, uint8_t val)
 
 }
 
-static int usb_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
+static int usb_write16(struct intf_hdl *pintfhdl, u32 addr, uint16_t val)
 {
 	uint8_t request;
 	uint8_t requesttype;
-	u16 wvalue;
-	u16 index;
-	u16 len;
-	u16 data;
+	uint16_t wvalue;
+	uint16_t index;
+	uint16_t len;
+	uint16_t data;
 	int ret;
 
 	_func_enter_;
@@ -145,7 +145,7 @@ static int usb_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 	requesttype = 0x00;//write_out
 	index = 0;//n/a
 
-	wvalue = (u16)(addr&0x0000ffff);
+	wvalue = (uint16_t)(addr&0x0000ffff);
 	len = 2;
 
 	data = val;
@@ -162,9 +162,9 @@ static int usb_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 {
 	uint8_t request;
 	uint8_t requesttype;
-	u16 wvalue;
-	u16 index;
-	u16 len;
+	uint16_t wvalue;
+	uint16_t index;
+	uint16_t len;
 	u32 data;
 	int ret;
 
@@ -174,7 +174,7 @@ static int usb_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 	requesttype = 0x00;//write_out
 	index = 0;//n/a
 
-	wvalue = (u16)(addr&0x0000ffff);
+	wvalue = (uint16_t)(addr&0x0000ffff);
 	len = 4;
 	data =val;
 
@@ -190,9 +190,9 @@ static int usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, uint8_t *
 {
 	uint8_t request;
 	uint8_t requesttype;
-	u16 wvalue;
-	u16 index;
-	u16 len;
+	uint16_t wvalue;
+	uint16_t index;
+	uint16_t len;
 	uint8_t buf[VENDOR_CMD_MAX_DATA_LEN]={0};
 	int ret;
 
@@ -202,7 +202,7 @@ static int usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, uint8_t *
 	requesttype = 0x00;//write_out
 	index = 0;//n/a
 
-	wvalue = (u16)(addr&0x0000ffff);
+	wvalue = (uint16_t)(addr&0x0000ffff);
 	len = length;
 	 memcpy(buf, pdata, len );
 
@@ -215,7 +215,7 @@ static int usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, uint8_t *
 }
 
 #ifdef CONFIG_SUPPORT_USB_INT
-void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,uint8_t *pbuf)
+void interrupt_handler_8812au(_adapter *padapter,uint16_t pkt_len,uint8_t *pbuf)
 {
 	HAL_DATA_TYPE	*pHalData=GET_HAL_DATA(padapter);
 	struct reportpwrstate_parm pwr_rpt;
@@ -711,7 +711,7 @@ _pkt *pskb
 
 #ifdef CONFIG_USB_RX_AGGREGATION
 		// jaguar 8-byte alignment
-		pkt_offset = (u16)_RND8(pkt_offset);
+		pkt_offset = (uint16_t)_RND8(pkt_offset);
 		pkt_cnt--;
 		pbuf += pkt_offset;
 #endif

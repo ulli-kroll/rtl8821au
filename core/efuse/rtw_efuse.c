@@ -49,12 +49,12 @@ uint8_t	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
 BOOLEAN
 Efuse_Read1ByteFromFakeContent(
 	IN		PADAPTER	pAdapter,
-	IN		u16		Offset,
+	IN		uint16_t		Offset,
 	IN OUT	uint8_t		*Value	);
 BOOLEAN
 Efuse_Read1ByteFromFakeContent(
 	IN		PADAPTER	pAdapter,
-	IN		u16		Offset,
+	IN		uint16_t		Offset,
 	IN OUT	uint8_t		*Value	)
 {
 	if(Offset >= EFUSE_MAX_HW_SIZE)
@@ -72,12 +72,12 @@ Efuse_Read1ByteFromFakeContent(
 BOOLEAN
 Efuse_Write1ByteToFakeContent(
 	IN		PADAPTER	pAdapter,
-	IN		u16		Offset,
+	IN		uint16_t		Offset,
 	IN 		uint8_t		Value	);
 BOOLEAN
 Efuse_Write1ByteToFakeContent(
 	IN		PADAPTER	pAdapter,
-	IN		u16		Offset,
+	IN		uint16_t		Offset,
 	IN 		uint8_t		Value	)
 {
 	if(Offset >= EFUSE_MAX_HW_SIZE)
@@ -143,7 +143,7 @@ Efuse_GetCurrentSize(
 	IN uint8_t			efuseType,
 	IN BOOLEAN		bPseudoTest)
 {
-	u16 ret=0;
+	uint16_t ret=0;
 
 	ret = pAdapter->HalFunc.EfuseGetCurrentSize(pAdapter, efuseType, bPseudoTest);
 
@@ -176,13 +176,13 @@ Efuse_CalculateWordCnts(IN uint8_t	word_en)
 VOID
 ReadEFuseByte(
 		PADAPTER	Adapter,
-		u16 			_offset,
+		uint16_t 			_offset,
 		uint8_t 			*pbuf,
 		IN BOOLEAN	bPseudoTest)
 {
 	u32	value32;
 	uint8_t	readbyte;
-	u16	retry;
+	uint16_t	retry;
 	//u32 start=rtw_get_current_time();
 
 	if(bPseudoTest)
@@ -245,8 +245,8 @@ VOID
 efuse_ReadEFuse(
 	PADAPTER	Adapter,
 	uint8_t		efuseType,
-	u16		_offset,
-	u16 		_size_byte,
+	uint16_t		_offset,
+	uint16_t 		_size_byte,
 	uint8_t      	*pbuf,
 	IN	BOOLEAN	bPseudoTest
 	);
@@ -254,8 +254,8 @@ VOID
 efuse_ReadEFuse(
 	PADAPTER	Adapter,
 	uint8_t		efuseType,
-	u16		_offset,
-	u16 		_size_byte,
+	uint16_t		_offset,
+	uint16_t 		_size_byte,
 	uint8_t      	*pbuf,
 	IN	BOOLEAN	bPseudoTest
 	)
@@ -294,13 +294,13 @@ EFUSE_GetEfuseDefinition(
 uint8_t
 EFUSE_Read1Byte(
 	IN	PADAPTER	Adapter,
-	IN	u16		Address)
+	IN	uint16_t		Address)
 {
 	uint8_t	data;
 	uint8_t	Bytetemp = {0x00};
 	uint8_t	temp = {0x00};
 	u32	k=0;
-	u16	contentLen=0;
+	uint16_t	contentLen=0;
 
 	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen, _FALSE);
 
@@ -359,18 +359,18 @@ EFUSE_Read1Byte(
 void
 EFUSE_Write1Byte(
 	IN	PADAPTER	Adapter,
-	IN	u16		Address,
+	IN	uint16_t		Address,
 	IN	uint8_t		Value);
 void
 EFUSE_Write1Byte(
 	IN	PADAPTER	Adapter,
-	IN	u16		Address,
+	IN	uint16_t		Address,
 	IN	uint8_t		Value)
 {
 	uint8_t	Bytetemp = {0x00};
 	uint8_t	temp = {0x00};
 	u32	k=0;
-	u16	contentLen=0;
+	uint16_t	contentLen=0;
 
 	//RT_TRACE(COMP_EFUSE, DBG_LOUD, ("Addr=%x Data =%x\n", Address, Value));
 	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen, _FALSE);
@@ -413,7 +413,7 @@ EFUSE_Write1Byte(
 uint8_t
 efuse_OneByteRead(
 	IN	PADAPTER	pAdapter,
-	IN	u16			addr,
+	IN	uint16_t			addr,
 	IN	uint8_t			*data,
 	IN	BOOLEAN		bPseudoTest)
 {
@@ -470,7 +470,7 @@ efuse_OneByteRead(
 uint8_t
 efuse_OneByteWrite(
 	IN	PADAPTER	pAdapter,
-	IN	u16			addr,
+	IN	uint16_t			addr,
 	IN	uint8_t			data,
 	IN	BOOLEAN		bPseudoTest)
 {
@@ -628,7 +628,7 @@ efuse_WordEnableDataRead(IN	uint8_t	word_en,
 
 uint8_t
 Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
-							IN	u16		efuse_addr,
+							IN	uint16_t		efuse_addr,
 							IN	uint8_t		word_en,
 							IN	uint8_t		*data,
 							IN	BOOLEAN		bPseudoTest)
@@ -640,12 +640,12 @@ Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 	return ret;
 }
 
-static uint8_t efuse_read8(PADAPTER padapter, u16 address, uint8_t *value)
+static uint8_t efuse_read8(PADAPTER padapter, uint16_t address, uint8_t *value)
 {
 	return efuse_OneByteRead(padapter,address, value, _FALSE);
 }
 
-static uint8_t efuse_write8(PADAPTER padapter, u16 address, uint8_t *value)
+static uint8_t efuse_write8(PADAPTER padapter, uint16_t address, uint8_t *value)
 {
 	return efuse_OneByteWrite(padapter,address, *value, _FALSE);
 }
@@ -653,10 +653,10 @@ static uint8_t efuse_write8(PADAPTER padapter, u16 address, uint8_t *value)
 /*
  * read/wirte raw efuse data
  */
-uint8_t rtw_efuse_access(PADAPTER padapter, uint8_t bWrite, u16 start_addr, u16 cnts, uint8_t *data)
+uint8_t rtw_efuse_access(PADAPTER padapter, uint8_t bWrite, uint16_t start_addr, uint16_t cnts, uint8_t *data)
 {
 	int i = 0;
-	u16	real_content_len = 0, max_available_size = 0;
+	uint16_t	real_content_len = 0, max_available_size = 0;
 	uint8_t res = _FAIL ;
 	uint8_t (*rw8)(PADAPTER, u16, uint8_t*);
 
@@ -691,14 +691,14 @@ uint8_t rtw_efuse_access(PADAPTER padapter, uint8_t bWrite, u16 start_addr, u16 
 	return res;
 }
 //------------------------------------------------------------------------------
-u16 efuse_GetMaxSize(PADAPTER padapter)
+uint16_t efuse_GetMaxSize(PADAPTER padapter)
 {
-	u16	max_size;
+	uint16_t	max_size;
 	EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI , TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_size, _FALSE);
 	return max_size;
 }
 //------------------------------------------------------------------------------
-uint8_t efuse_GetCurrentSize(PADAPTER padapter, u16 *size)
+uint8_t efuse_GetCurrentSize(PADAPTER padapter, uint16_t *size)
 {
 	Efuse_PowerSwitch(padapter, _FALSE, _TRUE);
 	*size = Efuse_GetCurrentSize(padapter, EFUSE_WIFI, _FALSE);
@@ -707,9 +707,9 @@ uint8_t efuse_GetCurrentSize(PADAPTER padapter, u16 *size)
 	return _SUCCESS;
 }
 //------------------------------------------------------------------------------
-uint8_t rtw_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data)
+uint8_t rtw_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
 {
-	u16	mapLen=0;
+	uint16_t	mapLen=0;
 
 	EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen, _FALSE);
 
@@ -725,9 +725,9 @@ uint8_t rtw_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data)
 	return _SUCCESS;
 }
 
-uint8_t rtw_BT_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data)
+uint8_t rtw_BT_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
 {
-	u16	mapLen=0;
+	uint16_t	mapLen=0;
 
 	EFUSE_GetEfuseDefinition(padapter, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen, _FALSE);
 
@@ -743,14 +743,14 @@ uint8_t rtw_BT_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *da
 	return _SUCCESS;
 }
 //------------------------------------------------------------------------------
-uint8_t rtw_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data)
+uint8_t rtw_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
 {
 	uint8_t	offset, word_en;
 	uint8_t	*map;
 	uint8_t	newdata[PGPKT_DATA_SIZE];
 	s32	i, j, idx;
 	uint8_t	ret = _SUCCESS;
-	u16	mapLen=0;
+	uint16_t	mapLen=0;
 
 	EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen, _FALSE);
 
@@ -841,14 +841,14 @@ exit:
 
 
 //------------------------------------------------------------------------------
-uint8_t rtw_BT_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data)
+uint8_t rtw_BT_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
 {
 	uint8_t	offset, word_en;
 	uint8_t	*map;
 	uint8_t	newdata[PGPKT_DATA_SIZE];
 	s32	i, j, idx;
 	uint8_t	ret = _SUCCESS;
-	u16	mapLen=0;
+	uint16_t	mapLen=0;
 
 	EFUSE_GetEfuseDefinition(padapter, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen, _FALSE);
 
@@ -969,7 +969,7 @@ Efuse_ReadAllMap(
 	IN OUT	uint8_t		*Efuse,
 	IN		BOOLEAN		bPseudoTest)
 {
-	u16	mapLen=0;
+	uint16_t	mapLen=0;
 
 	Efuse_PowerSwitch(pAdapter,_FALSE, _TRUE);
 
@@ -1001,7 +1001,7 @@ Efuse_ReadAllMap(
 static VOID
 efuse_ShadowRead1Byte(
 	IN	PADAPTER	pAdapter,
-	IN	u16		Offset,
+	IN	uint16_t		Offset,
 	IN OUT	uint8_t		*Value)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
@@ -1014,8 +1014,8 @@ efuse_ShadowRead1Byte(
 static VOID
 efuse_ShadowRead2Byte(
 	IN	PADAPTER	pAdapter,
-	IN	u16		Offset,
-	IN OUT	u16		*Value)
+	IN	uint16_t		Offset,
+	IN OUT	uint16_t		*Value)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
 
@@ -1028,7 +1028,7 @@ efuse_ShadowRead2Byte(
 static VOID
 efuse_ShadowRead4Byte(
 	IN	PADAPTER	pAdapter,
-	IN	u16		Offset,
+	IN	uint16_t		Offset,
 	IN OUT	u32		*Value)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
@@ -1063,13 +1063,13 @@ efuse_ShadowRead4Byte(
 static VOID
 efuse_ShadowWrite1Byte(
 	IN	PADAPTER	pAdapter,
-	IN	u16		Offset,
+	IN	uint16_t		Offset,
 	IN 	uint8_t		Value);
 #endif //PLATFORM
 static VOID
 efuse_ShadowWrite1Byte(
 	IN	PADAPTER	pAdapter,
-	IN	u16		Offset,
+	IN	uint16_t		Offset,
 	IN 	uint8_t		Value)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
@@ -1082,8 +1082,8 @@ efuse_ShadowWrite1Byte(
 static VOID
 efuse_ShadowWrite2Byte(
 	IN	PADAPTER	pAdapter,
-	IN	u16		Offset,
-	IN 	u16		Value)
+	IN	uint16_t		Offset,
+	IN 	uint16_t		Value)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
 
@@ -1096,7 +1096,7 @@ efuse_ShadowWrite2Byte(
 static VOID
 efuse_ShadowWrite4Byte(
 	IN	PADAPTER	pAdapter,
-	IN	u16		Offset,
+	IN	uint16_t		Offset,
 	IN	u32		Value)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
@@ -1130,7 +1130,7 @@ void EFUSE_ShadowMapUpdate(
 	IN BOOLEAN	bPseudoTest)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
-	u16	mapLen=0;
+	uint16_t	mapLen=0;
 
 	EFUSE_GetEfuseDefinition(pAdapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen, bPseudoTest);
 
@@ -1177,13 +1177,13 @@ void
 EFUSE_ShadowRead(
 	IN		PADAPTER	pAdapter,
 	IN		uint8_t		Type,
-	IN		u16		Offset,
+	IN		uint16_t		Offset,
 	IN OUT	u32		*Value	)
 {
 	if (Type == 1)
 		efuse_ShadowRead1Byte(pAdapter, Offset, (uint8_t *)Value);
 	else if (Type == 2)
-		efuse_ShadowRead2Byte(pAdapter, Offset, (u16 *)Value);
+		efuse_ShadowRead2Byte(pAdapter, Offset, (uint16_t *)Value);
 	else if (Type == 4)
 		efuse_ShadowRead4Byte(pAdapter, Offset, (u32 *)Value);
 
@@ -1209,13 +1209,13 @@ VOID
 EFUSE_ShadowWrite(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t		Type,
-	IN	u16		Offset,
+	IN	uint16_t		Offset,
 	IN OUT	u32		Value);
 VOID
 EFUSE_ShadowWrite(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t		Type,
-	IN	u16		Offset,
+	IN	uint16_t		Offset,
 	IN OUT	u32		Value)
 {
 #if (MP_DRIVER == 0)

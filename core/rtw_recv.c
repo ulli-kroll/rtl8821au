@@ -699,8 +699,8 @@ union recv_frame * portctrl(_adapter *adapter,union recv_frame * precv_frame)
 	struct sta_info *psta;
 	struct sta_priv *pstapriv ;
 	union recv_frame *prtnframe;
-	u16	ether_type=0;
-	u16  eapol_type = 0x888e;//for Funia BD's WPA issue
+	uint16_t	ether_type=0;
+	uint16_t  eapol_type = 0x888e;//for Funia BD's WPA issue
 	struct rx_pkt_attrib *pattrib;
 
 _func_enter_;
@@ -785,7 +785,7 @@ sint recv_decache(union recv_frame *precv_frame, uint8_t bretry, struct stainfo_
 {
 	sint tid = precv_frame->u.hdr.attrib.priority;
 
-	u16 seq_ctrl = ( (precv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
+	uint16_t seq_ctrl = ( (precv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
 		(precv_frame->u.hdr.attrib.frag_num & 0xf);
 
 _func_enter_;
@@ -923,7 +923,7 @@ void process_wmmps_data(_adapter *padapter, union recv_frame *precv_frame)
 			else
 			{
 				//issue one qos null frame with More data bit = 0 and the EOSP bit set (=1)
-				issue_qos_nulldata(padapter, psta->hwaddr, (u16)pattrib->priority, 0, 0);
+				issue_qos_nulldata(padapter, psta->hwaddr, (uint16_t)pattrib->priority, 0, 0);
 			}
 		}
 
@@ -1516,7 +1516,7 @@ sint validate_recv_ctrl_frame(_adapter *padapter, union recv_frame *precv_frame)
 	//only handle ps-poll
 	if(GetFrameSubType(pframe) == WIFI_PSPOLL)
 	{
-		u16 aid;
+		uint16_t aid;
 		uint8_t wmmps_ac=0;
 		struct sta_info *psta=NULL;
 
@@ -1950,7 +1950,7 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 	PRT_WAPI_T	pWapiInfo = &adapter->wapiInfo;
 	struct recv_frame_hdr *phdr = &precv_frame->u.hdr;
 	uint8_t wai_pkt = 0;
-	u16 sc;
+	uint16_t sc;
 	uint8_t	external_len = 0;
 #endif
 
@@ -2128,7 +2128,7 @@ sint wlanhdr_to_ethhdr ( union recv_frame *precvframe);
 sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 {
 	sint	rmv_len;
-	u16	eth_type, len;
+	uint16_t	eth_type, len;
 	uint8_t	bsnaphdr;
 	uint8_t	*psnap_type;
 	struct ieee80211_snap_hdr	*psnap;
@@ -2181,9 +2181,9 @@ _func_enter_;
 
 		if (psta && psta->isrc && psta->pid>0)
 		{
-			u16 rx_pid;
+			uint16_t rx_pid;
 
-			rx_pid = *(u16*)(ptr+rmv_len+2);
+			rx_pid = *(uint16_t *)(ptr+rmv_len+2);
 
 			DBG_871X("wlan rx(pid=0x%x): sta("MAC_FMT") pid=0x%x\n",
 				rx_pid, MAC_ARG(psta->hwaddr), psta->pid);
@@ -2191,8 +2191,8 @@ _func_enter_;
 			if(rx_pid == psta->pid)
 			{
 				int i;
-				u16 len = *(u16*)(ptr+rmv_len+4);
-				//u16 ctrl_type = *(u16*)(ptr+rmv_len+6);
+				uint16_t len = *(uint16_t *)(ptr+rmv_len+4);
+				//uint16_t ctrl_type = *(uint16_t *)(ptr+rmv_len+6);
 
 				//DBG_871X("RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type);
 				DBG_871X("RC: len=0x%x\n", len);
@@ -2241,7 +2241,7 @@ _func_exit_;
 sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 {
 	sint rmv_len;
-	u16 eth_type;
+	uint16_t eth_type;
 	uint8_t	bsnaphdr;
 	uint8_t	*psnap_type;
 	struct ieee80211_snap_hdr	*psnap;
@@ -2574,7 +2574,7 @@ _func_exit_;
 int amsdu_to_msdu(_adapter *padapter, union recv_frame *prframe)
 {
 	int	a_len, padding_len;
-	u16	nSubframe_Length;
+	uint16_t	nSubframe_Length;
 	uint8_t	nr_subframes, i;
 	uint8_t	*pdata;
 	_pkt *sub_pkt,*subframes[MAX_SUBFRAME_COUNT];
@@ -2654,11 +2654,11 @@ int amsdu_to_msdu(_adapter *padapter, union recv_frame *prframe)
 	return ret;
 }
 
-int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num);
-int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num)
+int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, uint16_t seq_num);
+int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, uint16_t seq_num)
 {
 	uint8_t	wsize = preorder_ctrl->wsize_b;
-	u16	wend = (preorder_ctrl->indicate_seq + wsize -1) & 0xFFF;//% 4096;
+	uint16_t	wend = (preorder_ctrl->indicate_seq + wsize -1) & 0xFFF;//% 4096;
 
 	// Rx Reorder initialize condition.
 	if (preorder_ctrl->indicate_seq == 0xFFFF)

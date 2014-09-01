@@ -59,7 +59,7 @@ void write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz)
 			rtw_write8(padapter, addr, (uint8_t)val);
 			break;
 		case 2:
-			rtw_write16(padapter, addr, (u16)val);
+			rtw_write16(padapter, addr, (uint16_t)val);
 			break;
 		case 4:
 			rtw_write32(padapter, addr, val);
@@ -1269,12 +1269,12 @@ static u32 rtw_GetPSDData(PADAPTER pAdapter, u32 point)
 	u32 psd_val=0;
 
 #if defined(CONFIG_RTL8812A) //MP PSD for 8812A
-	u16 psd_reg = 0x910;
-	u16 psd_regL= 0xF44;
+	uint16_t psd_reg = 0x910;
+	uint16_t psd_regL= 0xF44;
 
 #else
-	u16 psd_reg = 0x808;
-	u16 psd_regL= 0x8B4;
+	uint16_t psd_reg = 0x808;
+	uint16_t psd_regL= 0x8B4;
 
 #endif
 

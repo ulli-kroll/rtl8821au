@@ -153,11 +153,11 @@ void SMS4KeyExt(uint8_t *Key, u32 *rk, u32 CryptFlag)
 }
 
 
-void WapiSMS4Cryption(uint8_t *Key, uint8_t *IV, uint8_t *Input, u16 InputLength,
-                                                uint8_t *Output, u16 *OutputLength, u32 CryptFlag)
+void WapiSMS4Cryption(uint8_t *Key, uint8_t *IV, uint8_t *Input, uint16_t InputLength,
+                                                uint8_t *Output, uint16_t *OutputLength, u32 CryptFlag)
 {
 	u32 blockNum,i,j, rk[32];
-	u16 remainder;
+	uint16_t remainder;
 	uint8_t blockIn[16],blockOut[16], tempIV[16], k;
 
 	*OutputLength = 0;
@@ -194,22 +194,22 @@ void WapiSMS4Cryption(uint8_t *Key, uint8_t *IV, uint8_t *Input, u16 InputLength
 
 }
 
-void WapiSMS4Encryption(uint8_t *Key, uint8_t *IV, uint8_t *Input, u16 InputLength,
-                                                    uint8_t *Output, u16 *OutputLength)
+void WapiSMS4Encryption(uint8_t *Key, uint8_t *IV, uint8_t *Input, uint16_t InputLength,
+                                                    uint8_t *Output, uint16_t *OutputLength)
 {
 
 	WapiSMS4Cryption(Key, IV, Input, InputLength, Output, OutputLength, ENCRYPT);
 }
 
-void WapiSMS4Decryption(uint8_t *Key, uint8_t *IV, uint8_t *Input, u16 InputLength,
-                                                    uint8_t *Output, u16 *OutputLength)
+void WapiSMS4Decryption(uint8_t *Key, uint8_t *IV, uint8_t *Input, uint16_t InputLength,
+                                                    uint8_t *Output, uint16_t *OutputLength)
 {
 	// OFB mode: is also ENCRYPT flag
 	WapiSMS4Cryption(Key, IV, Input, InputLength, Output, OutputLength, ENCRYPT);
 }
 
 void WapiSMS4CalculateMic(uint8_t *Key, uint8_t *IV, uint8_t *Input1, uint8_t Input1Length,
-                                                 uint8_t *Input2, u16 Input2Length, uint8_t *Output, uint8_t *OutputLength)
+                                                 uint8_t *Input2, uint16_t Input2Length, uint8_t *Output, uint8_t *OutputLength)
 {
 	u32 blockNum, i, remainder, rk[32];
 	uint8_t BlockIn[16], BlockOut[16], TempBlock[16], tempIV[16], k;
@@ -265,26 +265,26 @@ void SecCalculateMicSMS4(
 	uint8_t        *MicKey,
 	uint8_t        *pHeader,
 	uint8_t        *pData,
-	u16       DataLen,
+	uint16_t       DataLen,
 	uint8_t        *MicBuffer
 	)
 {
 #if 0
 	struct ieee80211_hdr_3addr_qos *header;
 	uint8_t TempBuf[34], TempLen = 32, MicLen, QosOffset, *IV;
-	u16 *pTemp, fc;
+	uint16_t *pTemp, fc;
 
 	WAPI_TRACE(WAPI_TX|WAPI_RX, "=========>%s\n", __FUNCTION__);
 
 	header = (struct ieee80211_hdr_3addr_qos *)pHeader;
 	memset(TempBuf, 0, 34);
 	memcpy(TempBuf, pHeader, 2); //FrameCtrl
-	pTemp = (u16*)TempBuf;
+	pTemp = (uint16_t *)TempBuf;
 	*pTemp &= 0xc78f;       //bit4,5,6,11,12,13
 
 	memcpy((TempBuf+2), (pHeader+4), 12); //Addr1, Addr2
 	memcpy((TempBuf+14), (pHeader+22), 2); // SeqCtrl
-	pTemp = (u16*)(TempBuf + 14);
+	pTemp = (uint16_t *)(TempBuf + 14);
 	*pTemp &= 0x000f;
 
 	memcpy((TempBuf+16), (pHeader+16), 6); //Addr3
@@ -293,7 +293,7 @@ void SecCalculateMicSMS4(
 
 
 
-	if (GetFrDs((u16*)&fc) && GetToDs((u16 *)&fc))
+	if (GetFrDs((uint16_t *)&fc) && GetToDs((uint16_t *)&fc))
 	{
 		memcpy((TempBuf+22), (pHeader+24), 6);
 		QosOffset = 30;
@@ -305,11 +305,11 @@ void SecCalculateMicSMS4(
 	if((fc & 0x0088) == 0x0088){
 		memcpy((TempBuf+28), (pHeader+QosOffset), 2);
 		TempLen += 2;
-		//IV = pHeader + QosOffset + 2 + SNAP_SIZE + sizeof(u16) + 2;
+		//IV = pHeader + QosOffset + 2 + SNAP_SIZE + sizeof(uint16_t) + 2;
 		IV = pHeader + QosOffset + 2 + 2;
 	}else{
 		IV = pHeader + QosOffset + 2;
-		//IV = pHeader + QosOffset + SNAP_SIZE + sizeof(u16) + 2;
+		//IV = pHeader + QosOffset + SNAP_SIZE + sizeof(uint16_t) + 2;
 	}
 
 	TempBuf[TempLen-1] = (uint8_t)(DataLen & 0xff);
@@ -453,7 +453,7 @@ uint8_t WapiCheckPnInSwDecrypt(
 
 #if 0
 	struct ieee80211_hdr_3addr_qos *header;
-	u16 				fc;
+	uint16_t 				fc;
 	uint8_t				*pDaddr, *pTaddr, *pRaddr;
 
 	header = (struct ieee80211_hdr_3addr_qos *)pskb->data;
@@ -499,7 +499,7 @@ int SecSMS4HeaderFillIV(_adapter *padapter, uint8_t *pxmitframe)
 	{
 		hdr_len += 2;
 	}
-	//hdr_len += SNAP_SIZE + sizeof(u16);
+	//hdr_len += SNAP_SIZE + sizeof(uint16_t);
 
 	pos = skb_push(pskb, padapter->wapiInfo.extra_prefix_len);
 	memmove(pos, pos+padapter->wapiInfo.extra_prefix_len, hdr_len);
@@ -587,7 +587,7 @@ void SecSWSMS4Encryption(
 
 	uint8_t *SecPtr = NULL, *pRA, *pMicKey = NULL, *pDataKey = NULL, *pIV = NULL;
 	uint8_t IVOffset, DataOffset, bFindMatchPeer = false, KeyIdx = 0, MicBuffer[16];
-	u16 OutputLength;
+	uint16_t OutputLength;
 
 	WAPI_TRACE(WAPI_TX, "=========>%s\n", __FUNCTION__);
 
@@ -669,7 +669,7 @@ uint8_t SecSWSMS4Decryption(
 	uint8_t KeyIdx, MicBuffer[16], lastRxPNforQoS[16];
 	uint8_t *pRA, *pTA, *pMicKey, *pDataKey, *pLastRxPN, *pRecvPN, *pSecData, *pRecvMic, *pos;
 	uint8_t TID = 0;
-	u16 OutputLength, DataLen;
+	uint16_t OutputLength, DataLen;
 	uint8_t   bQosData;
 	struct sk_buff * 	pskb;
 
@@ -692,7 +692,7 @@ uint8_t SecSWSMS4Decryption(
 	//if(GetHTC())
 	//	IVOffset += 4;
 
-	//IVOffset += SNAP_SIZE + sizeof(u16);
+	//IVOffset += SNAP_SIZE + sizeof(uint16_t);
 
 	DataOffset = IVOffset + padapter->wapiInfo.extra_prefix_len;
 

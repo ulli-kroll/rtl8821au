@@ -52,7 +52,7 @@ _func_exit_;
 NDIS_STATUS oid_rt_pro_write_bb_reg_hdl(struct oid_par_priv *poid_par_priv)
 {
 	struct bb_reg_param *pbbreg;
-	u16 offset;
+	uint16_t offset;
 	u32 value;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
@@ -69,7 +69,7 @@ _func_enter_;
 
 	pbbreg = (struct bb_reg_param *)(poid_par_priv->information_buf);
 
-	offset = (u16)(pbbreg->offset) & 0xFFF; //0ffset :0x800~0xfff
+	offset = (uint16_t)(pbbreg->offset) & 0xFFF; //0ffset :0x800~0xfff
 	if (offset < BB_REG_BASE_ADDR) offset |= BB_REG_BASE_ADDR;
 
 	value = pbbreg->value;
@@ -90,7 +90,7 @@ _func_exit_;
 NDIS_STATUS oid_rt_pro_read_bb_reg_hdl(struct oid_par_priv *poid_par_priv)
 {
 	struct bb_reg_param *pbbreg;
-	u16 offset;
+	uint16_t offset;
 	u32 value;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
@@ -107,7 +107,7 @@ _func_enter_;
 
 	pbbreg = (struct bb_reg_param *)(poid_par_priv->information_buf);
 
-	offset = (u16)(pbbreg->offset) & 0xFFF; //0ffset :0x800~0xfff
+	offset = (uint16_t)(pbbreg->offset) & 0xFFF; //0ffset :0x800~0xfff
 	if (offset < BB_REG_BASE_ADDR) offset |= BB_REG_BASE_ADDR;
 
 	_irqlevel_changed_(&oldirql, LOWER);
@@ -353,8 +353,8 @@ _func_exit_;
 //------------------------------------------------------------------------------
 NDIS_STATUS oid_rt_set_bandwidth_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u16		bandwidth;
-	u16		channel_offset;
+	uint16_t		bandwidth;
+	uint16_t		channel_offset;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	padapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -407,8 +407,8 @@ _func_enter_;
 	{
 		antenna = *(u32*)poid_par_priv->information_buf;
 
-		Adapter->mppriv.antenna_tx = (u16)((antenna & 0xFFFF0000) >> 16);
-		Adapter->mppriv.antenna_rx = (u16)(antenna & 0x0000FFFF);
+		Adapter->mppriv.antenna_tx = (uint16_t)((antenna & 0xFFFF0000) >> 16);
+		Adapter->mppriv.antenna_rx = (uint16_t)(antenna & 0x0000FFFF);
 		RT_TRACE(_module_mp_, _drv_notice_,
 			 ("oid_rt_pro_set_antenna_bb_hdl: tx_ant=0x%04x rx_ant=0x%04x\n",
 			  Adapter->mppriv.antenna_tx, Adapter->mppriv.antenna_rx));
@@ -942,7 +942,7 @@ _func_enter_;
 				status = NDIS_STATUS_NOT_ACCEPTED;
 				break;
 			}
-			rtw_write16(padapter, offset, (u16)value);
+			rtw_write16(padapter, offset, (uint16_t)value);
 			break;
 		case 4:
 			rtw_write32(padapter, offset, value);
@@ -1086,7 +1086,7 @@ _func_enter_;
 	pEEPROM = (pEEPROM_RWParam)poid_par_priv->information_buf;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	pEEPROM->value = eeprom_read16(padapter, (u16)(pEEPROM->offset >> 1));
+	pEEPROM->value = eeprom_read16(padapter, (uint16_t)(pEEPROM->offset >> 1));
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
@@ -1120,7 +1120,7 @@ _func_enter_;
 	pEEPROM = (pEEPROM_RWParam)poid_par_priv->information_buf;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	eeprom_write16(padapter, (u16)(pEEPROM->offset >> 1), pEEPROM->value);
+	eeprom_write16(padapter, (uint16_t)(pEEPROM->offset >> 1), pEEPROM->value);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
@@ -1925,7 +1925,7 @@ NDIS_STATUS oid_rt_pro_rx_packet_type_hdl(struct oid_par_priv *poid_par_priv)
 												Adapter->mppriv.rx_with_status));
 
 		//*(u32 *)&Adapter->eeprompriv.mac_addr[0]=rtw_read32(Adapter, 0x10250050);
-		//*(u16 *)&Adapter->eeprompriv.mac_addr[4]=rtw_read16(Adapter, 0x10250054);
+		//*(uint16_t *)&Adapter->eeprompriv.mac_addr[4]=rtw_read16(Adapter, 0x10250054);
 		RT_TRACE(_module_rtl871x_ioctl_c_,_drv_err_,("MAC addr=0x%x:0x%x:0x%x:0x%x:0x%x:0x%x  \n",
 			Adapter->eeprompriv.mac_addr[0],Adapter->eeprompriv.mac_addr[1],Adapter->eeprompriv.mac_addr[2],\
 			Adapter->eeprompriv.mac_addr[3],Adapter->eeprompriv.mac_addr[4],Adapter->eeprompriv.mac_addr[5]));
@@ -1939,7 +1939,7 @@ NDIS_STATUS oid_rt_pro_rx_packet_type_hdl(struct oid_par_priv *poid_par_priv)
 												Adapter->mppriv.rx_with_status));
 
 		//*(u32 *)&Adapter->eeprompriv.mac_addr[0]=rtw_read32(Adapter, 0x10250050);
-		//*(u16 *)&Adapter->eeprompriv.mac_addr[4]=rtw_read16(Adapter, 0x10250054);
+		//*(uint16_t *)&Adapter->eeprompriv.mac_addr[4]=rtw_read16(Adapter, 0x10250054);
 		RT_TRACE(_module_rtl871x_ioctl_c_,_drv_err_,("MAC addr=0x%x:0x%x:0x%x:0x%x:0x%x:0x%x  \n",
 			Adapter->eeprompriv.mac_addr[0],Adapter->eeprompriv.mac_addr[1],Adapter->eeprompriv.mac_addr[2],\
 			Adapter->eeprompriv.mac_addr[3],Adapter->eeprompriv.mac_addr[4],Adapter->eeprompriv.mac_addr[5]));
@@ -1953,7 +1953,7 @@ NDIS_STATUS oid_rt_pro_read_efuse_hdl(struct oid_par_priv *poid_par_priv)
 {
 	PEFUSE_ACCESS_STRUCT pefuse;
 	uint8_t *data;
-	u16 addr = 0, cnts = 0, max_available_size = 0;
+	uint16_t addr = 0, cnts = 0, max_available_size = 0;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -1998,7 +1998,7 @@ NDIS_STATUS oid_rt_pro_write_efuse_hdl(struct oid_par_priv *poid_par_priv)
 {
 	PEFUSE_ACCESS_STRUCT pefuse;
 	uint8_t *data;
-	u16 addr = 0, cnts = 0, max_available_size = 0;
+	uint16_t addr = 0, cnts = 0, max_available_size = 0;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -2090,7 +2090,7 @@ _func_exit_;
 //------------------------------------------------------------------------------
 NDIS_STATUS oid_rt_get_efuse_current_size_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u16 size;
+	uint16_t size;
 	uint8_t ret;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
@@ -2167,7 +2167,7 @@ NDIS_STATUS oid_rt_pro_efuse_map_hdl(struct oid_par_priv *poid_par_priv)
 	uint8_t		*data;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
-	u16	mapLen=0;
+	uint16_t	mapLen=0;
 
 _func_enter_;
 

@@ -419,7 +419,7 @@ static u32 xmitframe_need_length(struct xmit_frame *pxmitframe)
 
 	// no consider fragement
 	len = pattrib->hdrlen + pattrib->iv_len +
-		SNAP_SIZE + sizeof(u16) +
+		SNAP_SIZE + sizeof(uint16_t) +
 		pattrib->pktlen +
 		((pattrib->bswenc) ? pattrib->icv_len : 0);
 
@@ -943,7 +943,7 @@ static void rtl8812au_hostap_mgnt_xmit_cb(struct urb *urb)
 s32 rtl8812au_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 {
 #ifdef PLATFORM_LINUX
-	u16 fc;
+	uint16_t fc;
 	int rc, len, pipe;
 	unsigned int bmcst, tid, qsel;
 	struct sk_buff *skb, *pxmit_skb;

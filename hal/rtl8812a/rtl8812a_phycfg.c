@@ -605,7 +605,7 @@ GetU1ByteIntegerFromStringInDecimal(
 	IN OUT	uint8_t *	pInt
 	)
 {
-	u16 i = 0;
+	uint16_t i = 0;
 	*pInt = 0;
 
 	while ( Str[i] != '\0' )
@@ -3805,7 +3805,7 @@ PHY_SwitchWirelessBand8812(
 	}
 	else	//5G band
 	{
-		u16	count = 0, reg41A = 0;
+		uint16_t	count = 0, reg41A = 0;
 
 		if (IS_HARDWARE_TYPE_8821(Adapter))
 		{
@@ -4016,7 +4016,7 @@ phy_SetRegBW_8812(
 	CHANNEL_WIDTH 	CurrentBW
 )
 {
-	u16	RegRfMod_BW, u2tmp = 0;
+	uint16_t	RegRfMod_BW, u2tmp = 0;
 	RegRfMod_BW = rtw_read16(Adapter, REG_WMAC_TRXPTCL_CTL);
 
 	switch(CurrentBW)

@@ -746,8 +746,8 @@ _func_enter_;
 
 	registry_par->vrtl_carrier_sense = (uint8_t)rtw_vrtl_carrier_sense ;
 	registry_par->vcs_type = (uint8_t)rtw_vcs_type;
-	registry_par->rts_thresh=(u16)rtw_rts_thresh;
-	registry_par->frag_thresh=(u16)rtw_frag_thresh;
+	registry_par->rts_thresh=(uint16_t)rtw_rts_thresh;
+	registry_par->frag_thresh=(uint16_t)rtw_frag_thresh;
 	registry_par->preamble = (uint8_t)rtw_preamble;
 	registry_par->scan_mode = (uint8_t)rtw_scan_mode;
 	registry_par->adhoc_tx_pwr = (uint8_t)rtw_adhoc_tx_pwr;
@@ -758,7 +758,7 @@ _func_enter_;
 	registry_par->radio_enable = (uint8_t)rtw_radio_enable;
 	registry_par->long_retry_lmt = (uint8_t)rtw_long_retry_lmt;
 	registry_par->short_retry_lmt = (uint8_t)rtw_short_retry_lmt;
-  	registry_par->busy_thresh = (u16)rtw_busy_thresh;
+  	registry_par->busy_thresh = (uint16_t)rtw_busy_thresh;
   	//registry_par->qos_enable = (uint8_t)rtw_qos_enable;
 	registry_par->ack_policy = (uint8_t)rtw_ack_policy;
 	registry_par->mp_mode = (uint8_t)rtw_mp_mode;
@@ -908,7 +908,7 @@ static struct net_device_stats *rtw_net_get_stats(struct net_device *ndev)
  * AC_BE -> queue 2
  * AC_BK -> queue 3
  */
-static const u16 rtw_1d_to_queue[8] = { 2, 3, 3, 2, 1, 1, 0, 0 };
+static const uint16_t rtw_1d_to_queue[8] = { 2, 3, 3, 2, 1, 1, 0, 0 };
 
 /* Given a data frame determine the 802.1p/1d tag to use. */
 unsigned int rtw_classify8021d(struct sk_buff *skb)
@@ -934,7 +934,7 @@ unsigned int rtw_classify8021d(struct sk_buff *skb)
 	return dscp >> 5;
 }
 
-static u16 rtw_select_queue(struct net_device *ndev, struct sk_buff *skb)
+static uint16_t rtw_select_queue(struct net_device *ndev, struct sk_buff *skb)
 {
 	_adapter	*padapter = rtw_netdev_priv(ndev);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -949,11 +949,11 @@ static u16 rtw_select_queue(struct net_device *ndev, struct sk_buff *skb)
 	return rtw_1d_to_queue[skb->priority];
 }
 
-u16 rtw_recv_select_queue(struct sk_buff *skb)
+uint16_t rtw_recv_select_queue(struct sk_buff *skb)
 {
 	struct iphdr *piphdr;
 	unsigned int dscp;
-	u16	eth_type;
+	uint16_t	eth_type;
 	u32 priority;
 	uint8_t *pdata = skb->data;
 

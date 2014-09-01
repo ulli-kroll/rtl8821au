@@ -192,7 +192,7 @@ void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32
 void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
-	u16	queue;
+	uint16_t	queue;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 
 	queue = skb_get_queue_mapping(pkt);
@@ -254,7 +254,7 @@ static void rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)
 {
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
-	u16	queue;
+	uint16_t	queue;
 
 	queue = skb_get_queue_mapping(pkt);
 	if (padapter->registrypriv.wifi_spec) {
@@ -359,7 +359,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev)
 #endif	// CONFIG_TX_MCAST2UNI
 	s32 res = 0;
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
-	u16 queue;
+	uint16_t queue;
 #endif
 
 _func_enter_;

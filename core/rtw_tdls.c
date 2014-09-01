@@ -1086,7 +1086,7 @@ sint On_TDLS_Setup_Req(_adapter *adapter, union recv_frame *precv_frame)
 	uint8_t *prsnie, *ppairwise_cipher;
 	uint8_t i, k, pairwise_count;
 	uint8_t ccmp_have=0, rsnie_have=0;
-	u16 j;
+	uint16_t j;
 	uint8_t SNonce[32];
 	u32 *timeout_interval;
 	sint parsing_length;	//frame body length, without icv_len
@@ -1177,7 +1177,7 @@ sint On_TDLS_Setup_Req(_adapter *adapter, union recv_frame *precv_frame)
 						prsnie=(uint8_t *)pIE;
 						//check whether initiator STA has CCMP pairwise_cipher.
 						ppairwise_cipher=prsnie+10;
-						memcpy(&pairwise_count, (u16*)(ppairwise_cipher-2), 1);
+						memcpy(&pairwise_count, (uint16_t *)(ppairwise_cipher-2), 1);
 						for(k=0;k<pairwise_count;k++){
 							if(_rtw_memcmp( ppairwise_cipher+4*k, RSN_CIPHER_SUITE_CCMP, 4)==_TRUE)
 								ccmp_have=1;
@@ -1300,12 +1300,12 @@ sint On_TDLS_Setup_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 	_irqL irqL;
 	struct rx_pkt_attrib	*prx_pkt_attrib = &precv_frame->u.hdr.attrib;
 	uint8_t *psa;
-	u16 stat_code;
+	uint16_t stat_code;
 	sint parsing_length;	//frame body length, without icv_len
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 	uint8_t FIXED_IE =7;
 	uint8_t  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic, *ppairwise_cipher;
-	u16 pairwise_count, j, k;
+	uint16_t pairwise_count, j, k;
 	uint8_t verify_ccmp=0;
 	unsigned char		supportRate[16];
 	int				supportRateNum = 0;
@@ -1365,7 +1365,7 @@ sint On_TDLS_Setup_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 				prsnie=(uint8_t *)pIE;
 				//check whether responder STA has CCMP pairwise_cipher.
 				ppairwise_cipher=prsnie+10;
-				memcpy(&pairwise_count, (u16*)(ppairwise_cipher-2), 2);
+				memcpy(&pairwise_count, (uint16_t *)(ppairwise_cipher-2), 2);
 				for(k=0;k<pairwise_count;k++){
 					if(_rtw_memcmp( ppairwise_cipher+4*k, RSN_CIPHER_SUITE_CCMP, 4)==_TRUE)
 						verify_ccmp=1;
@@ -1475,12 +1475,12 @@ sint On_TDLS_Setup_Cfm(_adapter *adapter, union recv_frame *precv_frame)
 	_irqL irqL;
 	struct rx_pkt_attrib	*prx_pkt_attrib = &precv_frame->u.hdr.attrib;
 	uint8_t *psa;
-	u16 stat_code;
+	uint16_t stat_code;
 	sint parsing_length;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 	uint8_t FIXED_IE =5;
 	uint8_t  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic, *ppairwise_cipher;
-	u16 j, pairwise_count;
+	uint16_t j, pairwise_count;
 
 	psa = get_sa(ptr);
 	ptdls_sta = rtw_get_stainfo(pstapriv, psa);
@@ -1570,7 +1570,7 @@ sint On_TDLS_Dis_Req(_adapter *adapter, union recv_frame *precv_frame)
 	sint parsing_length;	//frame body length, without icv_len
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 	uint8_t FIXED_IE = 3, *dst, *pdialog = NULL;
-	u16 j;
+	uint16_t j;
 
 	ptr +=prx_pkt_attrib->hdrlen + prx_pkt_attrib->iv_len + LLC_HEADER_SIZE+TYPE_LENGTH_FIELD_SIZE + 1;
 	pdialog=ptr+2;
@@ -1765,7 +1765,7 @@ sint On_TDLS_Ch_Switch_Req(_adapter *adapter, union recv_frame *precv_frame)
 	sint parsing_length;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 	uint8_t FIXED_IE =3;
-	u16 j;
+	uint16_t j;
 	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
 
 	psa = get_sa(ptr);
@@ -1838,7 +1838,7 @@ sint On_TDLS_Ch_Switch_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 	sint parsing_length;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 	uint8_t FIXED_IE =4;
-	u16 stat_code, j, switch_time, switch_timeout;
+	uint16_t stat_code, j, switch_time, switch_timeout;
 	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
 
 	psa = get_sa(ptr);
@@ -2547,7 +2547,7 @@ void rtw_build_tdls_ch_switch_req_ies(_adapter * padapter, struct xmit_frame * p
 	struct sta_priv 	*pstapriv = &padapter->stapriv;
 	struct sta_info *ptdls_sta = rtw_get_stainfo(pstapriv, pattrib->dst);
 	uint8_t ch_switch_timing[4] = {0};
-	u16 switch_time= CH_SWITCH_TIME, switch_timeout=CH_SWITCH_TIMEOUT;
+	uint16_t switch_time= CH_SWITCH_TIME, switch_timeout=CH_SWITCH_TIMEOUT;
 
 	//payload type
 	pframe = rtw_set_fixed_ie(pframe, 1, &(payload_type), &(pattrib->pktlen));

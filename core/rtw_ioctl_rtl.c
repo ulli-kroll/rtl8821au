@@ -500,7 +500,7 @@ NDIS_STATUS oid_rt_get_channelplan_hdl(struct oid_par_priv* poid_par_priv)
 		return status;
 	}
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
-	*(u16 *)poid_par_priv->information_buf = peeprompriv->channel_plan ;
+	*(uint16_t *)poid_par_priv->information_buf = peeprompriv->channel_plan ;
 
 	return status;
 }
@@ -516,7 +516,7 @@ NDIS_STATUS oid_rt_set_channelplan_hdl(struct oid_par_priv* poid_par_priv)
 		return status;
 	}
 
-	peeprompriv->channel_plan = *(u16 *)poid_par_priv->information_buf ;
+	peeprompriv->channel_plan = *(uint16_t *)poid_par_priv->information_buf ;
 
 	return status;
 }

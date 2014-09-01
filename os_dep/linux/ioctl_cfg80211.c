@@ -315,11 +315,11 @@ static int rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_network *pnet
 	struct ieee80211_channel *notify_channel;
 	struct cfg80211_bss *bss;
 	//struct ieee80211_supported_band *band;
-	u16 channel;
+	uint16_t channel;
 	u32 freq;
 	u64 notify_timestamp;
-	u16 notify_capability;
-	u16 notify_interval;
+	uint16_t notify_capability;
+	uint16_t notify_interval;
 	uint8_t *notify_ie;
 	size_t notify_ielen;
 	s32 notify_signal;
@@ -353,8 +353,8 @@ static int rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_network *pnet
 	//rtw_get_timestampe_from_ie()
 	notify_timestamp = jiffies_to_msecs(jiffies)*1000; /* uSec */
 
-	notify_interval = le16_to_cpu(*(u16*)rtw_get_beacon_interval_from_ie(pnetwork->network.IEs));
-	notify_capability = le16_to_cpu(*(u16*)rtw_get_capability_from_ie(pnetwork->network.IEs));
+	notify_interval = le16_to_cpu(*(uint16_t *)rtw_get_beacon_interval_from_ie(pnetwork->network.IEs));
+	notify_capability = le16_to_cpu(*(uint16_t *)rtw_get_capability_from_ie(pnetwork->network.IEs));
 
 
 	notify_ie = pnetwork->network.IEs+_FIXED_IE_LENGTH_;
@@ -510,7 +510,7 @@ void rtw_cfg80211_indicate_connect(_adapter *padapter)
 		struct wiphy *wiphy = pwdev->wiphy;
 		struct ieee80211_channel *notify_channel;
 		u32 freq;
-		u16 channel = cur_network->network.Configuration.DSConfig;
+		uint16_t channel = cur_network->network.Configuration.DSConfig;
 
 		if (channel <= RTW_CH_MAX_2G_CHANNEL)
 			freq = rtw_ieee80211_channel_to_frequency(channel, IEEE80211_BAND_2GHZ);
@@ -2767,7 +2767,7 @@ exit:
 }
 
 static int cfg80211_rtw_disconnect(struct wiphy *wiphy, struct net_device *ndev,
-				   u16 reason_code)
+				   uint16_t reason_code)
 {
 	_adapter *padapter = wiphy_to_adapter(wiphy);
 
@@ -3109,7 +3109,7 @@ static int rtw_cfg80211_monitor_if_xmit_entry(struct sk_buff *skb, struct net_de
 	int dot11_hdr_len = 24;
 	int snap_len = 6;
 	unsigned char *pdata;
-	u16 frame_ctl;
+	uint16_t frame_ctl;
 	unsigned char src_mac_addr[6];
 	unsigned char dst_mac_addr[6];
 	struct ieee80211_hdr *dot11_hdr;
@@ -3932,14 +3932,14 @@ void rtw_cfg80211_rx_action(_adapter *adapter, uint8_t *frame, uint frame_len, c
 #ifdef CONFIG_P2P
 void rtw_cfg80211_issue_p2p_provision_request(_adapter *padapter, const uint8_t *buf, size_t len)
 {
-	u16	wps_devicepassword_id = 0x0000;
+	uint16_t	wps_devicepassword_id = 0x0000;
 	uint	wps_devicepassword_id_len = 0;
 	uint8_t			wpsie[ 255 ] = { 0x00 }, p2p_ie[ 255 ] = { 0x00 };
 	uint			p2p_ielen = 0;
 	uint			wpsielen = 0;
 	u32	devinfo_contentlen = 0;
 	uint8_t	devinfo_content[64] = { 0x00 };
-	u16	capability = 0;
+	uint16_t	capability = 0;
 	uint capability_len = 0;
 
 	unsigned char category = RTW_WLAN_CATEGORY_PUBLIC;
@@ -4070,7 +4070,7 @@ void rtw_cfg80211_issue_p2p_provision_request(_adapter *padapter, const uint8_t 
 	p2p_ie[ p2pielen++ ] = P2P_ATTR_CAPABILITY;
 
 	//	Length:
-	//*(u16*) ( p2pie + p2pielen ) = cpu_to_le16( 0x0002 );
+	//*(uint16_t *) ( p2pie + p2pielen ) = cpu_to_le16( 0x0002 );
 	RTW_PUT_LE16(p2p_ie + p2pielen, 0x0002);
 	p2pielen += 2;
 
@@ -4088,7 +4088,7 @@ void rtw_cfg80211_issue_p2p_provision_request(_adapter *padapter, const uint8_t 
 	//	Length:
 	//	21 -> P2P Device Address (6bytes) + Config Methods (2bytes) + Primary Device Type (8bytes)
 	//	+ NumofSecondDevType (1byte) + WPS Device Name ID field (2bytes) + WPS Device Name Len field (2bytes)
-	//*(u16*) ( p2pie + p2pielen ) = cpu_to_le16( 21 + pwdinfo->device_name_len );
+	//*(uint16_t *) ( p2pie + p2pielen ) = cpu_to_le16( 21 + pwdinfo->device_name_len );
 	RTW_PUT_LE16(p2p_ie + p2pielen, devinfo_contentlen);
 	p2pielen += 2;
 
@@ -4109,11 +4109,11 @@ void rtw_cfg80211_issue_p2p_provision_request(_adapter *padapter, const uint8_t 
 
 	//	WPS version
 	//	Type:
-	*(u16*) ( wpsie + wpsielen ) = cpu_to_be16( WPS_ATTR_VER1 );
+	*(uint16_t *) ( wpsie + wpsielen ) = cpu_to_be16( WPS_ATTR_VER1 );
 	wpsielen += 2;
 
 	//	Length:
-	*(u16*) ( wpsie + wpsielen ) = cpu_to_be16( 0x0001 );
+	*(uint16_t *) ( wpsie + wpsielen ) = cpu_to_be16( 0x0001 );
 	wpsielen += 2;
 
 	//	Value:
@@ -4121,15 +4121,15 @@ void rtw_cfg80211_issue_p2p_provision_request(_adapter *padapter, const uint8_t 
 
 	//	Config Method
 	//	Type:
-	*(u16*) ( wpsie + wpsielen ) = cpu_to_be16( WPS_ATTR_CONF_METHOD );
+	*(uint16_t *) ( wpsie + wpsielen ) = cpu_to_be16( WPS_ATTR_CONF_METHOD );
 	wpsielen += 2;
 
 	//	Length:
-	*(u16*) ( wpsie + wpsielen ) = cpu_to_be16( 0x0002 );
+	*(uint16_t *) ( wpsie + wpsielen ) = cpu_to_be16( 0x0002 );
 	wpsielen += 2;
 
 	//	Value:
-	*(u16*) ( wpsie + wpsielen ) = cpu_to_be16( pwdinfo->tx_prov_disc_info.wps_config_method_request );
+	*(uint16_t *) ( wpsie + wpsielen ) = cpu_to_be16( pwdinfo->tx_prov_disc_info.wps_config_method_request );
 	wpsielen += 2;
 
 	pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, wpsielen, (unsigned char *) wpsie, &pattrib->pktlen );
@@ -4643,7 +4643,7 @@ static void cfg80211_rtw_mgmt_frame_register(struct wiphy *wiphy,
 #else
 	struct net_device *ndev,
 #endif
-	u16 frame_type, bool reg)
+	uint16_t frame_type, bool reg)
 {
 	_adapter *adapter = wiphy_to_adapter(wiphy);
 
@@ -4792,7 +4792,7 @@ static int rtw_cfg80211_set_probe_resp_wpsp2pie(struct net_device *net, char *bu
 		if((wps_ie = rtw_get_wps_ie(buf, len, NULL, &wps_ielen)))
 		{
 			uint	attr_contentlen = 0;
-			u16	uconfig_method, *puconfig_method = NULL;
+			uint16_t	uconfig_method, *puconfig_method = NULL;
 
 			#ifdef CONFIG_DEBUG_CFG80211
 			DBG_8192C("probe_resp_wps_ielen=%d\n", wps_ielen);
@@ -4814,7 +4814,7 @@ static int rtw_cfg80211_set_probe_resp_wpsp2pie(struct net_device *net, char *bu
 			}
 
 			//add PUSH_BUTTON config_method by driver self in wpsie of probe_resp at GO Mode
-			if ( (puconfig_method = (u16*)rtw_get_wps_attr_content( wps_ie, wps_ielen, WPS_ATTR_CONF_METHOD , NULL, &attr_contentlen)) != NULL )
+			if ( (puconfig_method = (uint16_t *)rtw_get_wps_attr_content( wps_ie, wps_ielen, WPS_ATTR_CONF_METHOD , NULL, &attr_contentlen)) != NULL )
 			{
 				#ifdef CONFIG_DEBUG_CFG80211
 				//printk("config_method in wpsie of probe_resp = 0x%x\n", be16_to_cpu(*puconfig_method));
@@ -4839,7 +4839,7 @@ static int rtw_cfg80211_set_probe_resp_wpsp2pie(struct net_device *net, char *bu
 		{
 			uint8_t is_GO = _FALSE;
 			u32 attr_contentlen = 0;
-			u16 cap_attr=0;
+			uint16_t cap_attr=0;
 
 			#ifdef CONFIG_DEBUG_CFG80211
 			DBG_8192C("probe_resp_p2p_ielen=%d\n", p2p_ielen);

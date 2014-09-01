@@ -268,7 +268,7 @@ _InitBurstPktLen(IN PADAPTER Adapter)
 
 static u32 _InitPowerOn8812AU(_adapter *padapter)
 {
-	u16	u2btmp = 0;
+	uint16_t	u2btmp = 0;
 	uint8_t	u1btmp = 0;
 
 	if(IS_VENDOR_8821A_MP_CHIP(padapter))
@@ -551,15 +551,15 @@ _InitPageBoundary_8812AUsb(
 static VOID
 _InitNormalChipRegPriority_8812AUsb(
 	IN	PADAPTER	Adapter,
-	IN	u16		beQ,
-	IN	u16		bkQ,
-	IN	u16		viQ,
-	IN	u16		voQ,
-	IN	u16		mgtQ,
-	IN	u16		hiQ
+	IN	uint16_t		beQ,
+	IN	uint16_t		bkQ,
+	IN	uint16_t		viQ,
+	IN	uint16_t		voQ,
+	IN	uint16_t		mgtQ,
+	IN	uint16_t		hiQ
 	)
 {
-	u16 value16	= (rtw_read16(Adapter, REG_TRXDMA_CTRL) & 0x7);
+	uint16_t value16	= (rtw_read16(Adapter, REG_TRXDMA_CTRL) & 0x7);
 
 	value16 |=	_TXDMA_BEQ_MAP(beQ) 	| _TXDMA_BKQ_MAP(bkQ) |
 				_TXDMA_VIQ_MAP(viQ) 	| _TXDMA_VOQ_MAP(voQ) |
@@ -575,11 +575,11 @@ _InitNormalChipTwoOutEpPriority_8812AUsb(
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
-	u16			beQ,bkQ,viQ,voQ,mgtQ,hiQ;
+	uint16_t			beQ,bkQ,viQ,voQ,mgtQ,hiQ;
 
 
-	u16	valueHi = 0;
-	u16	valueLow = 0;
+	uint16_t	valueHi = 0;
+	uint16_t	valueLow = 0;
 
 	switch(pHalData->OutEpQueueSel)
 	{
@@ -628,7 +628,7 @@ _InitNormalChipThreeOutEpPriority_8812AUsb(
 	)
 {
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
-	u16			beQ,bkQ,viQ,voQ,mgtQ,hiQ;
+	uint16_t			beQ,bkQ,viQ,voQ,mgtQ,hiQ;
 
 	if(!pregistrypriv->wifi_spec ){// typical setting
 		beQ		= QUEUE_LOW;
@@ -724,7 +724,7 @@ _InitWMACSetting_8812A(
 	)
 {
 	//u4Byte			value32;
-	//u16			value16;
+	//uint16_t			value16;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
 	//pHalData->ReceiveConfig = AAP | APM | AM | AB | APP_ICV | ADF | AMF | APP_FCS | HTC_LOC_CTRL | APP_MIC | APP_PHYSTS;
@@ -770,7 +770,7 @@ _InitAdaptiveCtrl_8812AUsb(
 	IN  PADAPTER Adapter
 	)
 {
-	u16	value16;
+	uint16_t	value16;
 	u32	value32;
 
 	// Response Rate Set
@@ -965,7 +965,7 @@ usb_AggSettingRxUpdate_8812A(
 			// 2012/10/26 MH For TX throught start rate temp fix.
 			//
 			{
-				u16			temp;
+				uint16_t			temp;
 
 				//Adjust DMA page and thresh.
 				temp = pHalData->RegAcUsbDmaSize | (pHalData->RegAcUsbDmaTime<<8);
@@ -1320,7 +1320,7 @@ HwSuspendModeEnable_8812AU(
 	)
 {
 	//PRT_USB_DEVICE 		pDevice = GET_RT_USB_DEVICE(pAdapter);
-	u16	reg = rtw_read16(pAdapter, REG_GPIO_MUXCFG);
+	uint16_t	reg = rtw_read16(pAdapter, REG_GPIO_MUXCFG);
 
 	//if (!pDevice->RegUsbSS)
 	{
@@ -1390,7 +1390,7 @@ void _ps_close_RF(_adapter *padapter){
 u32 rtl8812au_hal_init(PADAPTER Adapter)
 {
 	uint8_t	value8 = 0, u1bRegCR;
-	u16  value16;
+	uint16_t  value16;
 	uint8_t	txpktbuf_bndy;
 	u32	status = _SUCCESS;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
@@ -1951,7 +1951,7 @@ CardDisableRTL8812AU(
 {
 	uint8_t	u1bTmp;
 	uint8_t 	val8;
-	u16	val16;
+	uint16_t	val16;
 	u32	val32;
 
 
@@ -2138,14 +2138,14 @@ hal_ReadIDs_8812AU(
 		// VID, PID
 		if(IS_HARDWARE_TYPE_8812AU(Adapter))
 		{
-			pHalData->EEPROMVID = EF2Byte( *(u16 *)&PROMContent[EEPROM_VID_8812AU] );
-			pHalData->EEPROMPID = EF2Byte( *(u16 *)&PROMContent[EEPROM_PID_8812AU] );
+			pHalData->EEPROMVID = EF2Byte( *(uint16_t *)&PROMContent[EEPROM_VID_8812AU] );
+			pHalData->EEPROMPID = EF2Byte( *(uint16_t *)&PROMContent[EEPROM_PID_8812AU] );
 		}
 		else if (IS_HARDWARE_TYPE_8821U(Adapter))
 
 		{
-			pHalData->EEPROMVID = EF2Byte( *(u16 *)&PROMContent[EEPROM_VID_8821AU] );
-			pHalData->EEPROMPID = EF2Byte( *(u16 *)&PROMContent[EEPROM_PID_8821AU] );
+			pHalData->EEPROMVID = EF2Byte( *(uint16_t *)&PROMContent[EEPROM_VID_8821AU] );
+			pHalData->EEPROMPID = EF2Byte( *(uint16_t *)&PROMContent[EEPROM_PID_8821AU] );
 		}
 
 
@@ -2220,7 +2220,7 @@ hal_InitPGData_8812A(
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 //	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	u32			i;
-	u16			value16;
+	uint16_t			value16;
 
 	if(_FALSE == pEEPROM->bautoload_fail_flag)
 	{ // autoload OK.
@@ -2230,7 +2230,7 @@ hal_InitPGData_8812A(
 			for(i = 0; i < HWSET_MAX_SIZE_JAGUAR; i += 2)
 			{
 				//value16 = EF2Byte(ReadEEprom(pAdapter, (u2Byte) (i>>1)));
-				//*((u16*)(&PROMContent[i])) = value16;
+				//*((uint16_t *)(&PROMContent[i])) = value16;
 			}
 		}
 		else

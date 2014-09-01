@@ -225,7 +225,7 @@ void rtw_add_bcn_ie(_adapter *padapter, WLAN_BSSID_EX *pnetwork, uint8_t index, 
 	uint8_t	bmatch = _FALSE;
 	uint8_t	*pie = pnetwork->IEs;
 	uint8_t	*p, *dst_ie, *premainder_ie = NULL, *pbackup_remainder_ie = NULL;
-	u32	i, offset, ielen, ie_offset, remainder_ielen = 0;
+	uint32_t	i, offset, ielen, ie_offset, remainder_ielen = 0;
 
 	for (i = sizeof(NDIS_802_11_FIXED_IEs); i < pnetwork->IELength;) {
 		pIE = (PNDIS_802_11_VARIABLE_IEs)(pnetwork->IEs + i);
@@ -585,7 +585,7 @@ void add_RATid(_adapter *padapter, struct sta_info *psta, uint8_t rssi_level)
 {
 	int i;
 	uint8_t rf_type;
-	u32 init_rate = 0;
+	uint32_t	 init_rate = 0;
 	unsigned char sta_band = 0, raid, shortGIrate = _FALSE;
 	unsigned char limit;
 	unsigned int tx_ra_bitmap=0;
@@ -612,7 +612,7 @@ void add_RATid(_adapter *padapter, struct sta_info *psta, uint8_t rssi_level)
 #ifdef CONFIG_80211AC_VHT
 	//AC mode ra_bitmap
 	if (psta->vhtpriv.vht_option) {
-		u32	vht_bitmap = 0;
+		uint32_t	vht_bitmap = 0;
 
 		vht_bitmap = rtw_vht_rate_to_bitmap(psta->vhtpriv.vht_mcs_map);
 		tx_ra_bitmap |= (vht_bitmap << 12);
@@ -806,7 +806,7 @@ void add_RATid(_adapter *padapter, struct sta_info *psta, uint8_t rssi_level)
 static void update_bmc_sta(_adapter *padapter)
 {
 	_irqL	irqL;
-	u32 init_rate=0;
+	uint32_t	 init_rate=0;
 	unsigned char	network_type, raid;
 	int i, supportRateNum = 0;
 	unsigned int tx_ra_bitmap = 0;
@@ -1052,7 +1052,7 @@ static void start_bss_network(_adapter *padapter, uint8_t *pbuf)
 	uint8_t *p;
 	uint8_t val8, cur_channel, cur_bwmode, cur_ch_offset;
 	uint16_t bcn_interval;
-	u32	acparm;
+	uint32_t	acparm;
 	int	ie_len;
 	struct registry_priv	 *pregpriv = &padapter->registrypriv;
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
@@ -1142,7 +1142,7 @@ static void start_bss_network(_adapter *padapter, uint8_t *pbuf)
 	rtw_hal_set_hwreg(padapter, HW_VAR_BEACON_INTERVAL, (uint8_t *)(&bcn_interval));
 
 	if (pmlmepriv->cur_network.join_res != _TRUE) { //setting only at  first time
-		//u32 initialgain;
+		//uint32_t	 initialgain;
 
 		//initialgain = 0x1e;
 
@@ -2023,7 +2023,7 @@ static void update_bcn_erpinfo_ie(_adapter *padapter)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX *pnetwork = &(pmlmeinfo->network);
 	unsigned char *p, *ie = pnetwork->IEs;
-	u32 len = 0;
+	uint32_t	 len = 0;
 
 	DBG_871X("%s, ERP_enable=%d\n", __FUNCTION__, pmlmeinfo->ERP_enable);
 
@@ -2089,7 +2089,7 @@ static void update_bcn_wps_ie(_adapter *padapter)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX *pnetwork = &(pmlmeinfo->network);
 	unsigned char *ie = pnetwork->IEs;
-	u32 ielen = pnetwork->IELength;
+	uint32_t	 ielen = pnetwork->IELength;
 
 
 	DBG_871X("%s\n", __FUNCTION__);

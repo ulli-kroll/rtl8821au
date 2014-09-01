@@ -292,7 +292,7 @@ uint8_t rtw_set_802_11_ssid(_adapter* padapter, NDIS_802_11_SSID *ssid)
 {
 	_irqL irqL;
 	uint8_t status = _SUCCESS;
-	u32 cur_time = 0;
+	uint32_t	 cur_time = 0;
 
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct wlan_network *pnetwork = &pmlmepriv->cur_network;
@@ -677,7 +677,7 @@ _func_exit_;
 
 }
 
-uint8_t rtw_set_802_11_remove_wep(_adapter* padapter, u32 keyindex){
+uint8_t rtw_set_802_11_remove_wep(_adapter* padapter, uint32_t	 keyindex){
 
 	uint8_t ret=_SUCCESS;
 
@@ -914,8 +914,8 @@ _func_enter_;
 	if((padapter->securitypriv.dot11AuthAlgrthm !=dot11AuthAlgrthm_8021X)&&(encryptionalgo== _WEP40_  || encryptionalgo== _WEP104_))
 	{
 		uint8_t ret;
-		u32 keyindex;
-		u32 len = FIELD_OFFSET(NDIS_802_11_KEY, KeyMaterial) + key->KeyLength;
+		uint32_t	 keyindex;
+		uint32_t	 len = FIELD_OFFSET(NDIS_802_11_KEY, KeyMaterial) + key->KeyLength;
 		NDIS_802_11_WEP *wep = &padapter->securitypriv.ndiswep;
 
 		RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("OID_802_11_ADD_KEY: +++++ WEP key +++++\n"));
@@ -1159,7 +1159,7 @@ uint16_t rtw_get_cur_max_rate(_adapter *adapter)
 	uint8_t	rf_type = 0;
 	uint8_t	bw_40MHz=0, short_GI_20=0, short_GI_40=0, cbw40_enable=0;
 	uint16_t	mcs_rate=0;
-	u32	ht_ielen = 0;
+	uint32_t	ht_ielen = 0;
 #endif
 #ifdef CONFIG_80211AC_VHT
 	struct vht_priv	*pvhtpriv = &pmlmepriv->vhtpriv;

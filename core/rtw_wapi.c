@@ -6,7 +6,7 @@
 #include <rtw_wapi.h>
 
 
-u32 wapi_debug_component =
+uint32_t	 wapi_debug_component =
 //				WAPI_INIT	|
 //				WAPI_API    	|
 //				WAPI_TX    	|
@@ -99,7 +99,7 @@ void WapiSetIE(_adapter *padapter)
 /*  PN1 > PN2, return 1,
  *  else return 0.
  */
-u32 WapiComparePN(uint8_t *PN1, uint8_t *PN2)
+uint32_t	 WapiComparePN(uint8_t *PN1, uint8_t *PN2)
 {
 	char i;
 
@@ -901,7 +901,7 @@ void rtw_wapi_set_key(_adapter *padapter, RT_WAPI_KEY *pWapiKey, RT_WAPI_STA_INF
 {
 	PRT_WAPI_T		pWapiInfo =  &padapter->wapiInfo;
 	uint8_t				*pMacAddr = pWapiSta->PeerMacAddr;
-	u32 EntryId = 0;
+	uint32_t	 EntryId = 0;
 	BOOLEAN IsPairWise = false ;
 	uint8_t EncAlgo;
 

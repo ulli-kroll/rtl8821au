@@ -25,17 +25,17 @@
 
 /*------------------------Define local variable------------------------------*/
 uint8_t	fakeEfuseBank=0;
-u32	fakeEfuseUsedBytes=0;
+uint32_t	fakeEfuseUsedBytes=0;
 uint8_t	fakeEfuseContent[EFUSE_MAX_HW_SIZE]={0};
 uint8_t	fakeEfuseInitMap[EFUSE_MAX_MAP_LEN]={0};
 uint8_t	fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN]={0};
 
-u32	BTEfuseUsedBytes=0;
+uint32_t	BTEfuseUsedBytes=0;
 uint8_t	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
 uint8_t	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
 uint8_t	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
 
-u32	fakeBTEfuseUsedBytes=0;
+uint32_t	fakeBTEfuseUsedBytes=0;
 uint8_t	fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
 uint8_t	fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
 uint8_t	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
@@ -180,10 +180,10 @@ ReadEFuseByte(
 		uint8_t 			*pbuf,
 		IN BOOLEAN	bPseudoTest)
 {
-	u32	value32;
+	uint32_t	value32;
 	uint8_t	readbyte;
 	uint16_t	retry;
-	//u32 start=rtw_get_current_time();
+	//uint32_t start=rtw_get_current_time();
 
 	if(bPseudoTest)
 	{
@@ -299,7 +299,7 @@ EFUSE_Read1Byte(
 	uint8_t	data;
 	uint8_t	Bytetemp = {0x00};
 	uint8_t	temp = {0x00};
-	u32	k=0;
+	uint32_t	k=0;
 	uint16_t	contentLen=0;
 
 	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen, _FALSE);
@@ -369,7 +369,7 @@ EFUSE_Write1Byte(
 {
 	uint8_t	Bytetemp = {0x00};
 	uint8_t	temp = {0x00};
-	u32	k=0;
+	uint32_t	k=0;
 	uint16_t	contentLen=0;
 
 	//RT_TRACE(COMP_EFUSE, DBG_LOUD, ("Addr=%x Data =%x\n", Address, Value));
@@ -476,7 +476,7 @@ efuse_OneByteWrite(
 {
 	uint8_t	tmpidx = 0;
 	uint8_t	bResult=_FALSE;
-	u32 efuseValue = 0;
+	uint32_t efuseValue = 0;
 
 	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
 	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
@@ -1029,7 +1029,7 @@ static VOID
 efuse_ShadowRead4Byte(
 	IN	PADAPTER	pAdapter,
 	IN	uint16_t		Offset,
-	IN OUT	u32		*Value)
+	IN OUT	uint32_t		*Value)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
 
@@ -1097,7 +1097,7 @@ static VOID
 efuse_ShadowWrite4Byte(
 	IN	PADAPTER	pAdapter,
 	IN	uint16_t		Offset,
-	IN	u32		Value)
+	IN	uint32_t		Value)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
 
@@ -1178,14 +1178,14 @@ EFUSE_ShadowRead(
 	IN		PADAPTER	pAdapter,
 	IN		uint8_t		Type,
 	IN		uint16_t		Offset,
-	IN OUT	u32		*Value	)
+	IN OUT	uint32_t		*Value	)
 {
 	if (Type == 1)
 		efuse_ShadowRead1Byte(pAdapter, Offset, (uint8_t *)Value);
 	else if (Type == 2)
 		efuse_ShadowRead2Byte(pAdapter, Offset, (uint16_t *)Value);
 	else if (Type == 4)
-		efuse_ShadowRead4Byte(pAdapter, Offset, (u32 *)Value);
+		efuse_ShadowRead4Byte(pAdapter, Offset, (uint32_t *)Value);
 
 }	// EFUSE_ShadowRead
 
@@ -1210,13 +1210,13 @@ EFUSE_ShadowWrite(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t		Type,
 	IN	uint16_t		Offset,
-	IN OUT	u32		Value);
+	IN OUT	uint32_t		Value);
 VOID
 EFUSE_ShadowWrite(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t		Type,
 	IN	uint16_t		Offset,
-	IN OUT	u32		Value)
+	IN OUT	uint32_t		Value)
 {
 #if (MP_DRIVER == 0)
 	return;

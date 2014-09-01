@@ -230,16 +230,16 @@ _func_exit_;
 	return obj;
 }
 
-u32	rtw_init_cmd_priv(struct cmd_priv *pcmdpriv)
+uint32_t	rtw_init_cmd_priv(struct cmd_priv *pcmdpriv)
 {
-	u32	res;
+	uint32_t	res;
 _func_enter_;
 	res = _rtw_init_cmd_priv (pcmdpriv);
 _func_exit_;
 	return res;
 }
 
-u32	rtw_init_evt_priv (struct	evt_priv *pevtpriv)
+uint32_t	rtw_init_evt_priv (struct	evt_priv *pevtpriv)
 {
 	int	res;
 _func_enter_;
@@ -307,7 +307,7 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 
 
 
-u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
+uint32_t	 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 {
 	int res = _FAIL;
 	PADAPTER padapter = pcmdpriv->padapter;
@@ -533,7 +533,7 @@ _func_exit_;
 
 
 #ifdef CONFIG_EVENT_THREAD_MODE
-u32 rtw_enqueue_evt(struct evt_priv *pevtpriv, struct evt_obj *obj)
+uint32_t	 rtw_enqueue_evt(struct evt_priv *pevtpriv, struct evt_obj *obj)
 {
 	_irqL irqL;
 	int	res;
@@ -777,8 +777,8 @@ _func_enter_;
 
 	init_h2fwcmd_w_parm_no_rsp(ph2c, pbsetdataratepara, GEN_CMD_CODE(_SetDataRate));
 #ifdef MP_FIRMWARE_OFFLOAD
-	pbsetdataratepara->curr_rateidx = *(u32*)rateset;
-//	memcpy(pbsetdataratepara, rateset, sizeof(u32));
+	pbsetdataratepara->curr_rateidx = *(uint32_t *)rateset;
+//	memcpy(pbsetdataratepara, rateset, sizeof(uint32_t));
 #else
 	pbsetdataratepara->mac_id = 5;
 	memcpy(pbsetdataratepara->datarates, rateset, NumRates);
@@ -936,7 +936,7 @@ _func_exit_;
 	return res;
 }
 
-uint8_t rtw_setrfreg_cmd(_adapter  *padapter, uint8_t offset, u32 val)
+uint8_t rtw_setrfreg_cmd(_adapter  *padapter, uint8_t offset, uint32_t	 val)
 {
 	struct cmd_obj*			ph2c;
 	struct writeRF_parm*		pwriterfparm;
@@ -1230,7 +1230,7 @@ _func_enter_;
 
 	if(pregistrypriv->wmm_enable)
 	{
-		u32 tmp_len;
+		uint32_t	 tmp_len;
 
 		tmp_len = rtw_restruct_wmm_ie(padapter, &pnetwork->network.IEs[0], &psecnetwork->IEs[0], pnetwork->network.IELength, psecnetwork->IELength);
 
@@ -1323,7 +1323,7 @@ _func_exit_;
 	return res;
 }
 
-uint8_t rtw_disassoc_cmd(_adapter*padapter, u32 deauth_timeout_ms, bool enqueue) /* for sta_mode */
+uint8_t rtw_disassoc_cmd(_adapter*padapter, uint32_t	 deauth_timeout_ms, bool enqueue) /* for sta_mode */
 {
 	struct cmd_obj *cmdobj = NULL;
 	struct disconnect_parm *param = NULL;
@@ -2855,7 +2855,7 @@ _func_enter_;
 		memcpy(&tgt_network->network, pnetwork, (get_WLAN_BSSID_EX_sz(pnetwork)));
 
 		// reset DSConfig
-		//tgt_network->network.Configuration.DSConfig = (u32)rtw_ch2freq(pnetwork->Configuration.DSConfig);
+		//tgt_network->network.Configuration.DSConfig = (uint32_t)rtw_ch2freq(pnetwork->Configuration.DSConfig);
 
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 

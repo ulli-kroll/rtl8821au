@@ -391,7 +391,7 @@ void UpdateBrateTbl(
 
 }
 
-void UpdateBrateTblForSoftAP(uint8_t *bssrateset, u32 bssratelen)
+void UpdateBrateTblForSoftAP(uint8_t *bssrateset, uint32_t	 bssratelen)
 {
 	uint8_t	i;
 	uint8_t	rate;
@@ -437,7 +437,7 @@ void Restore_DM_Func_Flag(_adapter *padapter)
 	rtw_hal_set_hwreg(padapter, HW_VAR_DM_FUNC_OP, (uint8_t *)(&bSaveFlag));
 }
 
-void Switch_DM_Func(_adapter *padapter, u32 mode, uint8_t enable)
+void Switch_DM_Func(_adapter *padapter, uint32_t	 mode, uint8_t enable)
 {
 #ifdef CONFIG_CONCURRENT_MODE
 	_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
@@ -768,9 +768,9 @@ void invalidate_cam_all(_adapter *padapter)
 	rtw_hal_set_hwreg(padapter, HW_VAR_CAM_INVALID_ALL, 0);
 }
 #if 0
-static u32 _ReadCAM(_adapter *padapter ,u32 addr)
+static uint32_t	 _ReadCAM(_adapter *padapter ,uint32_t	 addr)
 {
-	u32 count = 0, cmd;
+	uint32_t	 count = 0, cmd;
 	cmd = CAM_POLLINIG |addr ;
 	rtw_write32(padapter, RWCAM, cmd);
 
@@ -784,7 +784,7 @@ static u32 _ReadCAM(_adapter *padapter ,u32 addr)
 }
 void read_cam(_adapter *padapter ,uint8_t entry)
 {
-	u32	j,count = 0, addr, cmd;
+	uint32_t	j,count = 0, addr, cmd;
 	addr = entry << 3;
 
 	DBG_8192C("********* DUMP CAM Entry_#%02d***************\n",entry);
@@ -802,7 +802,7 @@ void write_cam(_adapter *padapter, uint8_t entry, uint16_t ctrl, uint8_t *mac, u
 	unsigned int	i, val, addr;
 	//unsigned int    cmd;
 	int j;
-	u32	cam_val[2];
+	uint32_t	cam_val[2];
 
 	addr = entry << 3;
 
@@ -844,8 +844,8 @@ void write_cam(_adapter *padapter, uint8_t entry, uint16_t ctrl, uint8_t *mac, u
 void clear_cam_entry(_adapter *padapter, uint8_t entry)
 {
 #if 0
-	u32	addr, val=0;
-	u32	cam_val[2];
+	uint32_t	addr, val=0;
+	uint32_t	cam_val[2];
 
 	addr = entry << 3;
 
@@ -950,14 +950,14 @@ int WFD_info_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct wifidirect_info	*pwdinfo;
 	uint8_t	wfd_ie[ 128 ] = { 0x00 };
-	u32	wfd_ielen = 0;
+	uint32_t	wfd_ielen = 0;
 
 
 	pwdinfo = &padapter->wdinfo;
 	if ( rtw_get_wfd_ie( ( uint8_t * ) pIE, pIE->Length, wfd_ie, &wfd_ielen ) )
 	{
 		uint8_t	attr_content[ 10 ] = { 0x00 };
-		u32	attr_contentlen = 0;
+		uint32_t	attr_contentlen = 0;
 
 		DBG_871X( "[%s] Found WFD IE\n", __FUNCTION__ );
 		rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_DEVICE_INFO, attr_content, &attr_contentlen);
@@ -1021,8 +1021,8 @@ void WMMOnAssocRsp(_adapter *padapter)
 	uint8_t	ACI, ACM, AIFS, ECWMin, ECWMax, aSifsTime;
 	uint8_t	acm_mask;
 	uint16_t	TXOP;
-	u32	acParm, i;
-	u32	edca[4], inx[4];
+	uint32_t	acParm, i;
+	uint32_t	edca[4], inx[4];
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct xmit_priv		*pxmitpriv = &padapter->xmitpriv;
@@ -1117,7 +1117,7 @@ void WMMOnAssocRsp(_adapter *padapter)
 
 		if(pregpriv->wifi_spec==1)
 		{
-			u32	j, tmp, change_inx;
+			uint32_t	j, tmp, change_inx;
 
 			//entry indx: 0->vo, 1->vi, 2->be, 3->bk.
 			for(i=0; i<4; i++)
@@ -1544,7 +1544,7 @@ int check_ap_tdls_prohibited(uint8_t *pframe, uint8_t pkt_len)
 }
 #endif //CONFIG_TDLS
 
-int rtw_check_bcn_info(ADAPTER *Adapter, uint8_t *pframe, u32 packet_len)
+int rtw_check_bcn_info(ADAPTER *Adapter, uint8_t *pframe, uint32_t	 packet_len)
 {
 	unsigned int		len;
 	unsigned char		*p;
@@ -1556,13 +1556,13 @@ int rtw_check_bcn_info(ADAPTER *Adapter, uint8_t *pframe, u32 packet_len)
 	WLAN_BSSID_EX *bssid;
 	int group_cipher = 0, pairwise_cipher = 0, is_8021x = 0;
 	unsigned char *pbuf;
-	u32 wpa_ielen = 0;
+	uint32_t	 wpa_ielen = 0;
 	uint8_t *pbssid = GetAddr3Ptr(pframe);
-	u32 hidden_ssid = 0;
+	uint32_t	 hidden_ssid = 0;
 	uint8_t cur_network_type, network_type=0;
 	struct HT_info_element *pht_info = NULL;
 	struct rtw_ieee80211_ht_cap *pht_cap = NULL;
-	u32 bcn_channel;
+	uint32_t	 bcn_channel;
 	unsigned short 	ht_cap_info;
 	unsigned char	ht_info_infos_0;
 
@@ -1838,7 +1838,7 @@ void process_csa_ie(_adapter *padapter, uint8_t *pframe, uint pkt_len)
 
 unsigned int is_ap_in_tkip(_adapter *padapter)
 {
-	u32 i;
+	uint32_t	 i;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -1883,7 +1883,7 @@ unsigned int is_ap_in_tkip(_adapter *padapter)
 
 unsigned int should_forbid_n_rate(_adapter * padapter)
 {
-	u32 i;
+	uint32_t	 i;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	WLAN_BSSID_EX  *cur_network = &pmlmepriv->cur_network.network;
@@ -1927,7 +1927,7 @@ unsigned int should_forbid_n_rate(_adapter * padapter)
 
 unsigned int is_ap_in_wep(_adapter *padapter)
 {
-	u32 i;
+	uint32_t	 i;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2089,7 +2089,7 @@ int support_short_GI(_adapter *padapter, struct HT_caps_element *pHT_caps)
 	}
 }
 
-unsigned char get_highest_rate_idx(u32 mask)
+unsigned char get_highest_rate_idx(uint32_t	 mask)
 {
 	int i;
 	unsigned char rate_idx=0;
@@ -2223,7 +2223,7 @@ unsigned char check_assoc_AP(uint8_t *pframe, uint len)
 				}
 				else if (_rtw_memcmp(pIE->data, REALTEK_OUI, 3))
 				{
-					u32	Vender = HT_IOT_PEER_REALTEK;
+					uint32_t	Vender = HT_IOT_PEER_REALTEK;
 
 					if(pIE->Length >= 5) {
 						if(pIE->data[4]==1)
@@ -2377,7 +2377,7 @@ void update_capinfo(PADAPTER Adapter, uint16_t updateCap)
 void update_wireless_mode(_adapter *padapter)
 {
 	int ratelen, network_type = 0;
-	u32 SIFS_Timer;
+	uint32_t	 SIFS_Timer;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX 		*cur_network = &(pmlmeinfo->network);
@@ -2470,7 +2470,7 @@ void fire_write_MAC_cmd(_adapter *padapter, unsigned int addr, unsigned int valu
 #endif
 }
 
-void update_bmc_sta_support_rate(_adapter *padapter, u32 mac_id)
+void update_bmc_sta_support_rate(_adapter *padapter, uint32_t	 mac_id)
 {
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2548,10 +2548,10 @@ void process_addba_req(_adapter *padapter, uint8_t *paddba_req, uint8_t *addr)
 void update_TSF(struct mlme_ext_priv *pmlmeext, uint8_t *pframe, uint len)
 {
 	uint8_t * pIE;
-	u32 *pbuf;
+	uint32_t	 *pbuf;
 
 	pIE = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
-	pbuf = (u32*)pIE;
+	pbuf = (uint32_t *)pIE;
 
 	pmlmeext->TSFValue = le32_to_cpu(*(pbuf+1));
 

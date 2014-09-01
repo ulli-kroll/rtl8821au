@@ -27,9 +27,9 @@
 
 #ifdef CONFIG_MP_INCLUDED
 
-u32 read_macreg(_adapter *padapter, u32 addr, u32 sz)
+uint32_t	 read_macreg(_adapter *padapter, uint32_t	 addr, uint32_t	 sz)
 {
-	u32 val = 0;
+	uint32_t	 val = 0;
 
 	switch(sz)
 	{
@@ -51,7 +51,7 @@ u32 read_macreg(_adapter *padapter, u32 addr, u32 sz)
 
 }
 
-void write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz)
+void write_macreg(_adapter *padapter, uint32_t	 addr, uint32_t	 val, uint32_t	 sz)
 {
 	switch(sz)
 	{
@@ -70,32 +70,32 @@ void write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz)
 
 }
 
-u32 read_bbreg(_adapter *padapter, u32 addr, u32 bitmask)
+uint32_t	 read_bbreg(_adapter *padapter, uint32_t	 addr, uint32_t	 bitmask)
 {
 	return rtw_hal_read_bbreg(padapter, addr, bitmask);
 }
 
-void write_bbreg(_adapter *padapter, u32 addr, u32 bitmask, u32 val)
+void write_bbreg(_adapter *padapter, uint32_t	 addr, uint32_t	 bitmask, uint32_t	 val)
 {
 	rtw_hal_write_bbreg(padapter, addr, bitmask, val);
 }
 
-u32 _read_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr, u32 bitmask)
+uint32_t	 _read_rfreg(PADAPTER padapter, uint8_t rfpath, uint32_t	 addr, uint32_t	 bitmask)
 {
 	return rtw_hal_read_rfreg(padapter, rfpath, addr, bitmask);
 }
 
-void _write_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr, u32 bitmask, u32 val)
+void _write_rfreg(PADAPTER padapter, uint8_t rfpath, uint32_t	 addr, uint32_t	 bitmask, uint32_t	 val)
 {
 	rtw_hal_write_rfreg(padapter, rfpath, addr, bitmask, val);
 }
 
-u32 read_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr)
+uint32_t	 read_rfreg(PADAPTER padapter, uint8_t rfpath, uint32_t	 addr)
 {
 	return _read_rfreg(padapter, rfpath, addr, bRFRegOffsetMask);
 }
 
-void write_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr, u32 val)
+void write_rfreg(PADAPTER padapter, uint8_t rfpath, uint32_t	 addr, uint32_t	 val)
 {
 	_write_rfreg(padapter, rfpath, addr, bRFRegOffsetMask, val);
 }
@@ -327,7 +327,7 @@ MPT_InitializeAdapter(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	s32		rtStatus = _SUCCESS;
 	PMPT_CONTEXT	pMptCtx = &pAdapter->mppriv.MptCtx;
-	u32		ledsetting;
+	uint32_t		ledsetting;
 	struct mlme_priv *pmlmepriv = &pAdapter->mlmepriv;
 
 	//-------------------------------------------------------------------------
@@ -510,7 +510,7 @@ s32 mp_start_test(PADAPTER padapter)
 {
 	WLAN_BSSID_EX bssid;
 	struct sta_info *psta;
-	u32 length;
+	uint32_t	 length;
 	uint8_t val8;
 
 	_irqL irqL;
@@ -691,7 +691,7 @@ end_of_mp_stop_test:
 static VOID mpt_AdjustRFRegByRateByChan92CU(PADAPTER pAdapter, uint8_t RateIdx, uint8_t Channel, uint8_t BandWidthID)
 {
 	uint8_t		eRFPath;
-	u32		rfReg0x26;
+	uint32_t		rfReg0x26;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
 
@@ -843,9 +843,9 @@ int SetTxPower(PADAPTER pAdapter)
 	return _TRUE;
 }
 
-void SetTxAGCOffset(PADAPTER pAdapter, u32 ulTxAGCOffset)
+void SetTxAGCOffset(PADAPTER pAdapter, uint32_t	 ulTxAGCOffset)
 {
-	u32 TxAGCOffset_B, TxAGCOffset_C, TxAGCOffset_D,tmpAGC;
+	uint32_t	 TxAGCOffset_B, TxAGCOffset_C, TxAGCOffset_D,tmpAGC;
 
 	TxAGCOffset_B = (ulTxAGCOffset&0x000000ff);
 	TxAGCOffset_C = ((ulTxAGCOffset&0x0000ff00)>>8);
@@ -1044,7 +1044,7 @@ void fill_tx_desc_8812a(PADAPTER padapter)
 	uint8_t *pDesc   = (uint8_t *)&(pmp_priv->tx.desc);
 	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);
 
-	u32	pkt_size = pattrib->last_txcmdsz;
+	uint32_t	pkt_size = pattrib->last_txcmdsz;
 	s32 bmcast = IS_MCAST(pattrib->ra);
 	uint8_t data_rate,pwr_status,offset;
 
@@ -1087,7 +1087,7 @@ void fill_tx_desc_8812a(PADAPTER padapter)
 void SetPacketTx(PADAPTER padapter)
 {
 	uint8_t *ptr, *pkt_start, *pkt_end;
-	u32 pkt_size,offset;
+	uint32_t	 pkt_size,offset;
 	struct tx_desc *desc;
 	struct rtw_ieee80211_hdr *hdr;
 	uint8_t payload;
@@ -1215,7 +1215,7 @@ void SetPacketRx(PADAPTER pAdapter, uint8_t bStartRx)
 
 void ResetPhyRxPktCount(PADAPTER pAdapter)
 {
-	u32 i, phyrx_set = 0;
+	uint32_t	 i, phyrx_set = 0;
 
 	for (i = 0; i <= 0xF; i++) {
 		phyrx_set = 0;
@@ -1225,10 +1225,10 @@ void ResetPhyRxPktCount(PADAPTER pAdapter)
 	}
 }
 
-static u32 GetPhyRxPktCounts(PADAPTER pAdapter, u32 selbit)
+static uint32_t	 GetPhyRxPktCounts(PADAPTER pAdapter, uint32_t	 selbit)
 {
 	//selection
-	u32 phyrx_set = 0, count = 0;
+	uint32_t	 phyrx_set = 0, count = 0;
 
 	phyrx_set = _RXERR_RPT_SEL(selbit & 0xF);
 	rtw_write32(pAdapter, REG_RXERR_RPT, phyrx_set);
@@ -1239,9 +1239,9 @@ static u32 GetPhyRxPktCounts(PADAPTER pAdapter, u32 selbit)
 	return count;
 }
 
-u32 GetPhyRxPktReceived(PADAPTER pAdapter)
+uint32_t	 GetPhyRxPktReceived(PADAPTER pAdapter)
 {
-	u32 OFDM_cnt = 0, CCK_cnt = 0, HT_cnt = 0;
+	uint32_t	 OFDM_cnt = 0, CCK_cnt = 0, HT_cnt = 0;
 
 	OFDM_cnt = GetPhyRxPktCounts(pAdapter, RXERR_TYPE_OFDM_MPDU_OK);
 	CCK_cnt = GetPhyRxPktCounts(pAdapter, RXERR_TYPE_CCK_MPDU_OK);
@@ -1250,9 +1250,9 @@ u32 GetPhyRxPktReceived(PADAPTER pAdapter)
 	return OFDM_cnt + CCK_cnt + HT_cnt;
 }
 
-u32 GetPhyRxPktCRC32Error(PADAPTER pAdapter)
+uint32_t	 GetPhyRxPktCRC32Error(PADAPTER pAdapter)
 {
-	u32 OFDM_cnt = 0, CCK_cnt = 0, HT_cnt = 0;
+	uint32_t	 OFDM_cnt = 0, CCK_cnt = 0, HT_cnt = 0;
 
 	OFDM_cnt = GetPhyRxPktCounts(pAdapter, RXERR_TYPE_OFDM_MPDU_FAIL);
 	CCK_cnt = GetPhyRxPktCounts(pAdapter, RXERR_TYPE_CCK_MPDU_FAIL);
@@ -1264,9 +1264,9 @@ u32 GetPhyRxPktCRC32Error(PADAPTER pAdapter)
 //reg 0x808[9:0]: FFT data x
 //reg 0x808[22]:  0  -->  1  to get 1 FFT data y
 //reg 0x8B4[15:0]: FFT data y report
-static u32 rtw_GetPSDData(PADAPTER pAdapter, u32 point)
+static uint32_t	 rtw_GetPSDData(PADAPTER pAdapter, uint32_t	 point)
 {
-	u32 psd_val=0;
+	uint32_t	 psd_val=0;
 
 #if defined(CONFIG_RTL8812A) //MP PSD for 8812A
 	uint16_t psd_reg = 0x910;
@@ -1304,10 +1304,10 @@ static u32 rtw_GetPSDData(PADAPTER pAdapter, u32 point)
  * 1024	512			512 + 1024 = 1536
  *
  */
-u32 mp_query_psd(PADAPTER pAdapter, uint8_t *data)
+uint32_t	 mp_query_psd(PADAPTER pAdapter, uint8_t *data)
 {
-	u32 i, psd_pts=0, psd_start=0, psd_stop=0;
-	u32 psd_data=0;
+	uint32_t	 i, psd_pts=0, psd_start=0, psd_stop=0;
+	uint32_t	 psd_data=0;
 
 
 #ifdef PLATFORM_LINUX
@@ -1362,8 +1362,8 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 	struct xmit_frame	*pxmitframe = (struct xmit_frame*) pxmitpriv->pxmit_frame_buf;
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
 
-	u32 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
-	u32 num_xmit_extbuf = NR_XMIT_EXTBUFF;
+	uint32_t	 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
+	uint32_t	 num_xmit_extbuf = NR_XMIT_EXTBUFF;
 	if(padapter->registrypriv.mp_mode ==0)
 	{
 		max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
@@ -1769,7 +1769,7 @@ ULONG mpt_ProQueryCalTxPower(
 }
 
 
-void Hal_ProSetCrystalCap (PADAPTER pAdapter , u32 CrystalCapVal)
+void Hal_ProSetCrystalCap (PADAPTER pAdapter , uint32_t	 CrystalCapVal)
 {
 	HAL_DATA_TYPE		*pHalData	= GET_HAL_DATA(pAdapter);
 

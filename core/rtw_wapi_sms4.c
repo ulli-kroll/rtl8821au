@@ -35,7 +35,7 @@ const uint8_t Sbox[256] = {
 0x18,0xf0,0x7d,0xec,0x3a,0xdc,0x4d,0x20,0x79,0xee,0x5f,0x3e,0xd7,0xcb,0x39,0x48
 };
 
-const u32 CK[32] = {
+const uint32_t	 CK[32] = {
 	0x00070e15, 0x1c232a31, 0x383f464d, 0x545b6269,
 	0x70777e85, 0x8c939aa1, 0xa8afb6bd, 0xc4cbd2d9,
 	0xe0e7eef5, 0xfc030a11, 0x181f262d, 0x343b4249,
@@ -59,17 +59,17 @@ static void
 xor_block(void *dst, void *src1, void *src2)
 /* 128-bit xor: *dst = *src1 xor *src2. Pointers must be 32-bit aligned  */
 {
-    ((u32 *)dst)[0] = ((u32 *)src1)[0] ^ ((u32 *)src2)[0];
-    ((u32 *)dst)[1] = ((u32 *)src1)[1] ^ ((u32 *)src2)[1];
-    ((u32 *)dst)[2] = ((u32 *)src1)[2] ^ ((u32 *)src2)[2];
-    ((u32 *)dst)[3] = ((u32 *)src1)[3] ^ ((u32 *)src2)[3];
+    ((uint32_t	 *)dst)[0] = ((uint32_t	 *)src1)[0] ^ ((uint32_t	 *)src2)[0];
+    ((uint32_t	 *)dst)[1] = ((uint32_t	 *)src1)[1] ^ ((uint32_t	 *)src2)[1];
+    ((uint32_t	 *)dst)[2] = ((uint32_t	 *)src1)[2] ^ ((uint32_t	 *)src2)[2];
+    ((uint32_t	 *)dst)[3] = ((uint32_t	 *)src1)[3] ^ ((uint32_t	 *)src2)[3];
 }
 
 
-void SMS4Crypt(uint8_t *Input, uint8_t *Output, u32 *rk)
+void SMS4Crypt(uint8_t *Input, uint8_t *Output, uint32_t	 *rk)
 {
-	 u32 r, mid, x0, x1, x2, x3, *p;
-	 p = (u32 *)Input;
+	 uint32_t	 r, mid, x0, x1, x2, x3, *p;
+	 p = (uint32_t	 *)Input;
 	 x0 = p[0];
 	 x1 = p[1];
 	 x2 = p[2];
@@ -101,7 +101,7 @@ void SMS4Crypt(uint8_t *Input, uint8_t *Output, u32 *rk)
 	 x2 = Rotl(x2, 16); x2 = ((x2 & 0x00FF00FF) << 8) | ((x2 & 0xFF00FF00) >> 8);
 	 x3 = Rotl(x3, 16); x3 = ((x3 & 0x00FF00FF) << 8) | ((x3 & 0xFF00FF00) >> 8);
 #endif
-	 p = (u32 *)Output;
+	 p = (uint32_t	 *)Output;
 	 p[0] = x3;
 	 p[1] = x2;
 	 p[2] = x1;
@@ -110,11 +110,11 @@ void SMS4Crypt(uint8_t *Input, uint8_t *Output, u32 *rk)
 
 
 
-void SMS4KeyExt(uint8_t *Key, u32 *rk, u32 CryptFlag)
+void SMS4KeyExt(uint8_t *Key, uint32_t	 *rk, uint32_t	 CryptFlag)
 {
-	 u32 r, mid, x0, x1, x2, x3, *p;
+	 uint32_t	 r, mid, x0, x1, x2, x3, *p;
 
-	 p = (u32 *)Key;
+	 p = (uint32_t	 *)Key;
 	 x0 = p[0];
 	 x1 = p[1];
 	 x2 = p[2];
@@ -154,9 +154,9 @@ void SMS4KeyExt(uint8_t *Key, u32 *rk, u32 CryptFlag)
 
 
 void WapiSMS4Cryption(uint8_t *Key, uint8_t *IV, uint8_t *Input, uint16_t InputLength,
-                                                uint8_t *Output, uint16_t *OutputLength, u32 CryptFlag)
+                                                uint8_t *Output, uint16_t *OutputLength, uint32_t	 CryptFlag)
 {
-	u32 blockNum,i,j, rk[32];
+	uint32_t	 blockNum,i,j, rk[32];
 	uint16_t remainder;
 	uint8_t blockIn[16],blockOut[16], tempIV[16], k;
 
@@ -211,7 +211,7 @@ void WapiSMS4Decryption(uint8_t *Key, uint8_t *IV, uint8_t *Input, uint16_t Inpu
 void WapiSMS4CalculateMic(uint8_t *Key, uint8_t *IV, uint8_t *Input1, uint8_t Input1Length,
                                                  uint8_t *Input2, uint16_t Input2Length, uint8_t *Output, uint8_t *OutputLength)
 {
-	u32 blockNum, i, remainder, rk[32];
+	uint32_t	 blockNum, i, remainder, rk[32];
 	uint8_t BlockIn[16], BlockOut[16], TempBlock[16], tempIV[16], k;
 
 	*OutputLength = 0;
@@ -847,11 +847,11 @@ uint8_t SecSWSMS4Decryption(
 	return true;
 }
 
-u32	rtw_sms4_encrypt(_adapter *padapter, uint8_t *pxmitframe)
+uint32_t	rtw_sms4_encrypt(_adapter *padapter, uint8_t *pxmitframe)
 {
 
 	uint8_t	*pframe;
-	u32 res = _SUCCESS;
+	uint32_t	 res = _SUCCESS;
 
 	WAPI_TRACE(WAPI_TX, "=========>%s\n", __FUNCTION__);
 
@@ -872,10 +872,10 @@ u32	rtw_sms4_encrypt(_adapter *padapter, uint8_t *pxmitframe)
 	return res;
 }
 
-u32	rtw_sms4_decrypt(_adapter *padapter, uint8_t *precvframe)
+uint32_t	rtw_sms4_decrypt(_adapter *padapter, uint8_t *precvframe)
 {
 	uint8_t	*pframe;
-	u32 res = _SUCCESS;
+	uint32_t	 res = _SUCCESS;
 
 	WAPI_TRACE(WAPI_RX, "=========>%s\n", __FUNCTION__);
 
@@ -904,14 +904,14 @@ u32	rtw_sms4_decrypt(_adapter *padapter, uint8_t *precvframe)
 
 #else
 
-u32	rtw_sms4_encrypt(_adapter *padapter, uint8_t *pxmitframe)
+uint32_t	rtw_sms4_encrypt(_adapter *padapter, uint8_t *pxmitframe)
 {
 	WAPI_TRACE(WAPI_TX, "=========>Dummy %s\n", __FUNCTION__);
 	WAPI_TRACE(WAPI_TX, "<=========Dummy %s\n", __FUNCTION__);
 	return _SUCCESS;
 }
 
-u32	rtw_sms4_decrypt(_adapter *padapter, uint8_t *precvframe)
+uint32_t	rtw_sms4_decrypt(_adapter *padapter, uint8_t *precvframe)
 {
 	WAPI_TRACE(WAPI_RX, "=========>Dummy %s\n", __FUNCTION__);
 	WAPI_TRACE(WAPI_RX, "<=========Dummy %s\n", __FUNCTION__);

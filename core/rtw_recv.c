@@ -355,9 +355,9 @@ _func_exit_;
 
 }
 
-u32 rtw_free_uc_swdec_pending_queue(_adapter *adapter)
+uint32_t	 rtw_free_uc_swdec_pending_queue(_adapter *adapter)
 {
-	u32 cnt = 0;
+	uint32_t	 cnt = 0;
 	union recv_frame *pending_frame;
 	while((pending_frame=rtw_alloc_recvframe(&adapter->recvpriv.uc_swdec_pending_queue))) {
 		rtw_free_recvframe(pending_frame, &adapter->recvpriv.free_recv_queue);
@@ -430,7 +430,7 @@ sint recvframe_chkmic(_adapter *adapter,  union recv_frame *precvframe);
 sint recvframe_chkmic(_adapter *adapter,  union recv_frame *precvframe){
 
 	sint	i,res=_SUCCESS;
-	u32	datalen;
+	uint32_t	datalen;
 	uint8_t	miccode[8];
 	uint8_t	bmic_err=_FALSE,brpt_micerror = _TRUE;
 	uint8_t	*pframe, *payload,*pframemic;
@@ -580,7 +580,7 @@ union recv_frame * decryptor(_adapter *padapter,union recv_frame *precv_frame)
 	struct rx_pkt_attrib *prxattrib = &precv_frame->u.hdr.attrib;
 	struct security_priv *psecuritypriv=&padapter->securitypriv;
 	union recv_frame *return_packet=precv_frame;
-	u32	 res=_SUCCESS;
+	uint32_t	 res=_SUCCESS;
 _func_enter_;
 
 	RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("prxstat->decrypted=%x prxattrib->encrypt = 0x%03x\n",prxattrib->bdecrypted,prxattrib->encrypt));
@@ -3448,11 +3448,11 @@ void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS){
 	_adapter *adapter = (_adapter *)FunctionContext;
 	struct recv_priv *recvpriv = &adapter->recvpriv;
 
-	u32 tmp_s, tmp_q;
+	uint32_t	 tmp_s, tmp_q;
 	uint8_t avg_signal_strength = 0;
 	uint8_t avg_signal_qual = 0;
-	u32 num_signal_strength = 0;
-	u32 num_signal_qual = 0;
+	uint32_t	 num_signal_strength = 0;
+	uint32_t	 num_signal_qual = 0;
 	uint8_t _alpha = 3; // this value is based on converging_constant = 5000 and sampling_interval = 1000
 
 	if(adapter->recvpriv.is_signal_dbg) {

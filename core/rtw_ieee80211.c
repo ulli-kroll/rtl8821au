@@ -79,7 +79,7 @@ int rtw_get_bit_value_from_ieee_value(uint8_t val)
 
 uint	rtw_is_cckrates_included(uint8_t *rate)
 {
-		u32	i = 0;
+		uint32_t	i = 0;
 
 		while(rate[i]!=0)
 		{
@@ -94,7 +94,7 @@ uint	rtw_is_cckrates_included(uint8_t *rate)
 
 uint	rtw_is_cckratesonly_included(uint8_t *rate)
 {
-	u32 i = 0;
+	uint32_t	 i = 0;
 
 
 	while(rate[i]!=0)
@@ -164,7 +164,7 @@ _func_enter_;
 _func_exit_;
 }
 
-inline uint8_t *rtw_set_ie_ch_switch(uint8_t *buf, u32 *buf_len, uint8_t ch_switch_mode,
+inline uint8_t *rtw_set_ie_ch_switch(uint8_t *buf, uint32_t	 *buf_len, uint8_t ch_switch_mode,
 	uint8_t new_ch, uint8_t ch_switch_cnt)
 {
 	uint8_t ie_data[3];
@@ -199,12 +199,12 @@ inline uint8_t hal_ch_offset_to_secondary_ch_offset(uint8_t ch_offset)
 	return SCN;
 }
 
-inline uint8_t *rtw_set_ie_secondary_ch_offset(uint8_t *buf, u32 *buf_len, uint8_t secondary_ch_offset)
+inline uint8_t *rtw_set_ie_secondary_ch_offset(uint8_t *buf, uint32_t	 *buf_len, uint8_t secondary_ch_offset)
 {
 	return rtw_set_ie(buf, WLAN_EID_SECONDARY_CHANNEL_OFFSET,  1, &secondary_ch_offset, buf_len);
 }
 
-inline uint8_t *rtw_set_ie_mesh_ch_switch_parm(uint8_t *buf, u32 *buf_len, uint8_t ttl,
+inline uint8_t *rtw_set_ie_mesh_ch_switch_parm(uint8_t *buf, uint32_t	 *buf_len, uint8_t ttl,
 	uint8_t flags, uint16_t reason, uint16_t precedence)
 {
 	uint8_t ie_data[6];
@@ -319,7 +319,7 @@ int rtw_ies_remove_ie(uint8_t *ies, uint *ies_len, uint offset, uint8_t eid, uin
 {
 	int ret = _FAIL;
 	uint8_t *target_ie;
-	u32 target_ielen;
+	uint32_t	 target_ielen;
 	uint8_t *start;
 	uint search_len;
 
@@ -945,7 +945,7 @@ uint8_t *rtw_get_wps_ie(uint8_t *in_ie, uint in_len, uint8_t *wps_ie, uint *wps_
  *
  * Returns: the address of the specific WPS attribute found, or NULL
  */
-uint8_t *rtw_get_wps_attr(uint8_t *wps_ie, uint wps_ielen, uint16_t target_attr_id ,uint8_t *buf_attr, u32 *len_attr)
+uint8_t *rtw_get_wps_attr(uint8_t *wps_ie, uint wps_ielen, uint16_t target_attr_id ,uint8_t *buf_attr, uint32_t	 *len_attr)
 {
 	uint8_t *attr_ptr = NULL;
 	uint8_t * target_attr_ptr = NULL;
@@ -1006,7 +1006,7 @@ uint8_t *rtw_get_wps_attr(uint8_t *wps_ie, uint wps_ielen, uint16_t target_attr_
 uint8_t *rtw_get_wps_attr_content(uint8_t *wps_ie, uint wps_ielen, uint16_t target_attr_id ,uint8_t *buf_content, uint *len_content)
 {
 	uint8_t *attr_ptr;
-	u32 attr_len;
+	uint32_t	 attr_len;
 
 	if(len_content)
 		*len_content = 0;
@@ -1341,7 +1341,7 @@ void rtw_macaddr_cfg(uint8_t *mac_addr)
 	DBG_871X("rtw_macaddr_cfg MAC Address  = "MAC_FMT"\n", MAC_ARG(mac_addr));
 }
 
-void dump_ies(uint8_t *buf, u32 buf_len) {
+void dump_ies(uint8_t *buf, uint32_t	 buf_len) {
 	uint8_t * pos = (uint8_t *)buf;
 	uint8_t id, len;
 
@@ -1359,7 +1359,7 @@ void dump_ies(uint8_t *buf, u32 buf_len) {
 	}
 }
 
-void dump_wps_ie(uint8_t *ie, u32 ie_len) {
+void dump_wps_ie(uint8_t *ie, uint32_t	 ie_len) {
 	uint8_t * pos = (uint8_t *)ie;
 	uint16_t id;
 	uint16_t len;
@@ -1383,7 +1383,7 @@ void dump_wps_ie(uint8_t *ie, u32 ie_len) {
 }
 
 #ifdef CONFIG_P2P
-void dump_p2p_ie(uint8_t *ie, u32 ie_len) {
+void dump_p2p_ie(uint8_t *ie, uint32_t	 ie_len) {
 	uint8_t * pos = (uint8_t *)ie;
 	uint8_t id;
 	uint16_t len;
@@ -1470,7 +1470,7 @@ uint8_t *rtw_get_p2p_ie(uint8_t *in_ie, int in_len, uint8_t *p2p_ie, uint *p2p_i
  *
  * Returns: the address of the specific WPS attribute found, or NULL
  */
-uint8_t *rtw_get_p2p_attr(uint8_t *p2p_ie, uint p2p_ielen, uint8_t target_attr_id ,uint8_t *buf_attr, u32 *len_attr)
+uint8_t *rtw_get_p2p_attr(uint8_t *p2p_ie, uint p2p_ielen, uint8_t target_attr_id ,uint8_t *buf_attr, uint32_t	 *len_attr)
 {
 	uint8_t *attr_ptr = NULL;
 	uint8_t *target_attr_ptr = NULL;
@@ -1531,7 +1531,7 @@ uint8_t *rtw_get_p2p_attr(uint8_t *p2p_ie, uint p2p_ielen, uint8_t target_attr_i
 uint8_t *rtw_get_p2p_attr_content(uint8_t *p2p_ie, uint p2p_ielen, uint8_t target_attr_id ,uint8_t *buf_content, uint *len_content)
 {
 	uint8_t *attr_ptr;
-	u32 attr_len;
+	uint32_t	 attr_len;
 
 	if(len_content)
 		*len_content = 0;
@@ -1552,9 +1552,9 @@ uint8_t *rtw_get_p2p_attr_content(uint8_t *p2p_ie, uint p2p_ielen, uint8_t targe
 	return NULL;
 }
 
-u32 rtw_set_p2p_attr_content(uint8_t *pbuf, uint8_t attr_id, uint16_t attr_len, uint8_t *pdata_attr)
+uint32_t	 rtw_set_p2p_attr_content(uint8_t *pbuf, uint8_t attr_id, uint16_t attr_len, uint8_t *pdata_attr)
 {
-	u32 a_len;
+	uint32_t	 a_len;
 
 	*pbuf = attr_id;
 
@@ -1572,7 +1572,7 @@ u32 rtw_set_p2p_attr_content(uint8_t *pbuf, uint8_t attr_id, uint16_t attr_len, 
 static uint rtw_p2p_attr_remove(uint8_t *ie, uint ielen_ori, uint8_t attr_id)
 {
 	uint8_t *target_attr;
-	u32 target_attr_len;
+	uint32_t	 target_attr_len;
 	uint ielen = ielen_ori;
 	int index=0;
 
@@ -1803,7 +1803,7 @@ int ieee80211_get_hdrlen(uint16_t fc)
 
 int rtw_get_cipher_info(struct wlan_network *pnetwork)
 {
-	u32 wpa_ielen;
+	uint32_t	 wpa_ielen;
 	unsigned char *pbuf;
 	int group_cipher = 0, pairwise_cipher = 0, is8021x = 0;
 	int ret = _FAIL;
@@ -1968,7 +1968,7 @@ uint16_t rtw_mcs_rate(uint8_t rf_type, uint8_t bw_40MHz, uint8_t short_GI_20, ui
 	return max_rate;
 }
 
-int rtw_action_frame_parse(const uint8_t *frame, u32 frame_len, uint8_t * category, uint8_t *action)
+int rtw_action_frame_parse(const uint8_t *frame, uint32_t	 frame_len, uint8_t * category, uint8_t *action)
 {
 	const uint8_t *frame_body = frame + sizeof(struct rtw_ieee80211_hdr_3addr);
 	uint16_t fc;

@@ -85,7 +85,7 @@ void getPowerBase8812(
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	u32			powerBase0, powerBase1;
+	uint32_t			powerBase0, powerBase1;
 	uint8_t			i, powerlevel[2];
 
 	for(i=0; i<2; i++)
@@ -129,7 +129,7 @@ void getTxPowerWriteValByRegulatory8812(
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	uint8_t			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
 	s8			pwr_diff=0;
-	u32 			writeVal, customer_limit, rf;
+	uint32_t 			writeVal, customer_limit, rf;
 	uint8_t			Regulatory = pHalData->EEPROMRegulatory;
 
 	//
@@ -316,7 +316,7 @@ static void writeOFDMPowerReg8812(
     };
 
 	uint8_t	i, rf, pwr_val[4];
-	u32	writeVal;
+	uint32_t	writeVal;
 	uint16_t	RegOffset;
 
 	for(rf=0; rf<2; rf++)
@@ -347,7 +347,7 @@ PHY_RF6052SetCckTxPower8812(
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv		*pdmpriv = &pHalData->dmpriv;
 	struct mlme_ext_priv 	*pmlmeext = &Adapter->mlmeextpriv;
-	u32			TxAGC[2]={0, 0}, tmpval=0;
+	uint32_t			TxAGC[2]={0, 0}, tmpval=0;
 	BOOLEAN		TurboScanOff = _FALSE;
 	uint8_t			idx1, idx2;
 	uint8_t *			ptr;
@@ -451,7 +451,7 @@ PHY_RF6052SetOFDMTxPower8812(
 	IN	uint8_t *		pPowerLevelBW40,
 	IN	uint8_t		Channel)
 {
-	u32 writeVal[2], powerBase0[2], powerBase1[2], pwrtrac_value;
+	uint32_t writeVal[2], powerBase0[2], powerBase1[2], pwrtrac_value;
 	uint8_t index = 0;
 
 

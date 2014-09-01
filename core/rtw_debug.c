@@ -23,7 +23,7 @@
 
 #ifdef CONFIG_DEBUG_RTL871X
 
-	u32 GlobalDebugLevel = _drv_err_;
+	uint32_t	 GlobalDebugLevel = _drv_err_;
 
 	u64 GlobalDebugComponents = \
 			_module_rtl871x_xmit_c_ |
@@ -89,7 +89,7 @@ int proc_set_write_reg(struct file *file, const char *buffer,
 	struct net_device *ndev = (struct net_device *)data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	char tmp[32];
-	u32 addr, val, len;
+	uint32_t	 addr, val, len;
 
 	if (count < 3)
 	{
@@ -128,8 +128,8 @@ int proc_set_write_reg(struct file *file, const char *buffer,
 
 }
 
-static u32 proc_get_read_addr=0xeeeeeeee;
-static u32 proc_get_read_len=0x4;
+static uint32_t	 proc_get_read_addr=0xeeeeeeee;
+static uint32_t	 proc_get_read_len=0x4;
 
 int proc_get_read_reg(char *page, char **start,
 			  off_t offset, int count,
@@ -171,7 +171,7 @@ int proc_set_read_reg(struct file *file, const char *buffer,
 		unsigned long count, void *data)
 {
 	char tmp[16];
-	u32 addr, len;
+	uint32_t	 addr, len;
 
 	if (count < 2)
 	{
@@ -539,7 +539,7 @@ int proc_get_rf_reg_dump1(char *page, char **start,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	int len = 0;
 	int i,j=1,path;
-	u32 value;
+	uint32_t	 value;
 
 	len += snprintf(page + len, count - len, "\n======= RF REG =======\n");
 	path = 1;
@@ -566,7 +566,7 @@ int proc_get_rf_reg_dump2(char *page, char **start,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	int len = 0;
 	int i,j=1,path;
-	u32 value;
+	uint32_t	 value;
 
 	len += snprintf(page + len, count - len, "\n======= RF REG =======\n");
 	path = 1;
@@ -592,7 +592,7 @@ int proc_get_rf_reg_dump3(char *page, char **start,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	int len = 0;
 	int i,j=1,path;
-	u32 value;
+	uint32_t	 value;
 
 	len += snprintf(page + len, count - len, "\n======= RF REG =======\n");
 	path = 2;
@@ -619,7 +619,7 @@ int proc_get_rf_reg_dump4(char *page, char **start,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	int len = 0;
 	int i,j=1,path;
-	u32 value;
+	uint32_t	 value;
 
 	len += snprintf(page + len, count - len, "\n======= RF REG =======\n");
 	path = 2;
@@ -671,7 +671,7 @@ int proc_set_rx_signal(struct file *file, const char *buffer,
 	struct net_device *ndev = (struct net_device *)data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	char tmp[32];
-	u32 is_signal_dbg, signal_strength;
+	uint32_t	 is_signal_dbg, signal_strength;
 
 	if (count < 1)
 		return -EFAULT;
@@ -730,7 +730,7 @@ int proc_set_ht_enable(struct file *file, const char *buffer,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	char tmp[32];
-	u32 mode;
+	uint32_t	 mode;
 
 	if (count < 1)
 		return -EFAULT;
@@ -777,7 +777,7 @@ int proc_set_bw_mode(struct file *file, const char *buffer,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	char tmp[32];
-	u32 mode;
+	uint32_t	 mode;
 
 	if (count < 1)
 		return -EFAULT;
@@ -826,7 +826,7 @@ int proc_set_ampdu_enable(struct file *file, const char *buffer,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	char tmp[32];
-	u32 mode;
+	uint32_t	 mode;
 
 	if (count < 1)
 		return -EFAULT;
@@ -895,7 +895,7 @@ int proc_set_rx_stbc(struct file *file, const char *buffer,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct registry_priv	*pregpriv = &padapter->registrypriv;
 	char tmp[32];
-	u32 mode;
+	uint32_t	 mode;
 
 	if (count < 1)
 		return -EFAULT;
@@ -930,7 +930,7 @@ int proc_set_rssi_disp(struct file *file, const char *buffer,
 	struct net_device *ndev = (struct net_device *)data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	char tmp[32];
-	u32 enable=0;
+	uint32_t	 enable=0;
 
 	if (count < 1)
 	{
@@ -1051,7 +1051,7 @@ int proc_get_best_channel(char *page, char **start,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	int len = 0;
-	u32 i, best_channel_24G = 1, best_channel_5G = 36, index_24G = 0, index_5G = 0;
+	uint32_t	 i, best_channel_24G = 1, best_channel_5G = 36, index_24G = 0, index_5G = 0;
 
 	for (i=0; pmlmeext->channel_set[i].ChannelNum !=0; i++) {
 		if ( pmlmeext->channel_set[i].ChannelNum == 1)

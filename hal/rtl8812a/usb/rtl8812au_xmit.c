@@ -330,7 +330,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 	s32 inner_ret = _SUCCESS;
 	int t, sz, w_sz, pull=0;
 	uint8_t *mem_addr;
-	u32 ff_hwaddr;
+	uint32_t ff_hwaddr;
 	struct xmit_buf *pxmitbuf = pxmitframe->pxmitbuf;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
@@ -411,11 +411,11 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 }
 
 #ifdef CONFIG_USB_TX_AGGREGATION
-static u32 xmitframe_need_length(struct xmit_frame *pxmitframe)
+static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 {
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 
-	u32	len = 0;
+	uint32_t	len = 0;
 
 	// no consider fragement
 	len = pattrib->hdrlen + pattrib->iv_len +
@@ -444,16 +444,16 @@ s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 	_irqL irqL;
 	_list *xmitframe_plist = NULL, *xmitframe_phead = NULL;
 
-	u32	pbuf;	// next pkt address
-	u32	pbuf_tail;	// last pkt tail
-	u32	len;	// packet length, except TXDESC_SIZE and PKT_OFFSET
+	uint32_t	pbuf;	// next pkt address
+	uint32_t	pbuf_tail;	// last pkt tail
+	uint32_t	len;	// packet length, except TXDESC_SIZE and PKT_OFFSET
 
-	u32	bulkSize = pHalData->UsbBulkOutSize;
+	uint32_t	bulkSize = pHalData->UsbBulkOutSize;
 	uint8_t	descCount;
-	u32	bulkPtr;
+	uint32_t	bulkPtr;
 
 	// dump frame variable
-	u32 ff_hwaddr;
+	uint32_t ff_hwaddr;
 
 #ifndef IDEA_CONDITION
 	int res = _SUCCESS;

@@ -64,8 +64,8 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, _adapter *padapter)
 	struct xmit_buf *pxmitbuf;
 	struct xmit_frame *pxframe;
 	sint	res=_SUCCESS;
-	u32 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
-	u32 num_xmit_extbuf = NR_XMIT_EXTBUFF;
+	uint32_t	 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
+	uint32_t	 num_xmit_extbuf = NR_XMIT_EXTBUFF;
 
 _func_enter_;
 
@@ -331,8 +331,8 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
       _adapter *padapter = pxmitpriv->adapter;
 	struct xmit_frame	*pxmitframe = (struct xmit_frame*) pxmitpriv->pxmit_frame_buf;
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
-	u32 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
-	u32 num_xmit_extbuf = NR_XMIT_EXTBUFF;
+	uint32_t	 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
+	uint32_t	 num_xmit_extbuf = NR_XMIT_EXTBUFF;
 #if defined(CONFIG_MP_INCLUDED) && (defined(CONFIG_RTL8723A) ||defined(CONFIG_RTL8723B))
 	if (padapter->registrypriv.mp_mode) {
 		max_xmit_extbuf_size = 20000;
@@ -415,7 +415,7 @@ _func_exit_;
 
 static void update_attrib_vcs_info(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
-	u32	sz;
+	uint32_t	sz;
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
 	//struct sta_info	*psta = pattrib->psta;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
@@ -1758,9 +1758,9 @@ _func_exit_;
  * Calculate wlan 802.11 packet MAX size from pkt_attrib
  * This function doesn't consider fragment case
  */
-u32 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib)
+uint32_t	 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib)
 {
-	u32	len = 0;
+	uint32_t	len = 0;
 
 	len = pattrib->hdrlen + pattrib->iv_len; // WLAN Header and IV
 	len += SNAP_SIZE + sizeof(uint16_t); // LLC
@@ -2109,7 +2109,7 @@ void rtw_count_tx_stats(PADAPTER padapter, struct xmit_frame *pxmitframe, int sz
 	}
 }
 
-struct xmit_buf *rtw_alloc_cmd_xmitbuf(struct xmit_priv *pxmitpriv, u32 buffsize)
+struct xmit_buf *rtw_alloc_cmd_xmitbuf(struct xmit_priv *pxmitpriv, uint32_t	 buffsize)
 {
 	struct xmit_buf *pxmitbuf =  NULL;
 
@@ -2158,7 +2158,7 @@ _func_exit_;
 	return _SUCCESS;
 }
 
-struct xmit_frame *rtw_alloc_cmdxmitframe(struct xmit_priv *pxmitpriv, u32 buffsize)
+struct xmit_frame *rtw_alloc_cmdxmitframe(struct xmit_priv *pxmitpriv, uint32_t	 buffsize)
 {
 	struct xmit_frame		*pcmdframe;
 	struct xmit_buf		*pxmitbuf;
@@ -3176,9 +3176,9 @@ int rtw_br_client_tx(_adapter *padapter, struct sk_buff **pskb)
 }
 #endif	// CONFIG_BR_EXT
 
-u32 rtw_get_ff_hwaddr(struct xmit_frame *pxmitframe)
+uint32_t	 rtw_get_ff_hwaddr(struct xmit_frame *pxmitframe)
 {
-	u32 addr;
+	uint32_t	 addr;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 
 	switch(pattrib->qsel)
@@ -3241,8 +3241,8 @@ static void do_queue_select(_adapter	*padapter, struct pkt_attrib *pattrib)
  */
 s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 {
-	static u32 start = 0;
-	static u32 drop_cnt = 0;
+	static uint32_t	 start = 0;
+	static uint32_t	 drop_cnt = 0;
 #ifdef CONFIG_AP_MODE
 	_irqL irqL0;
 #endif
@@ -4191,7 +4191,7 @@ s32 c2h_evt_hdl(_adapter *adapter, struct c2h_evt_hdr *c2h_evt, c2h_id_filter fi
  * till tx report or timeout
  * Returns: _SUCCESS if TX report ok, _FAIL for others
  */
-int rtw_ack_tx_polling(struct xmit_priv *pxmitpriv, u32 timeout_ms)
+int rtw_ack_tx_polling(struct xmit_priv *pxmitpriv, uint32_t	 timeout_ms)
 {
 	int ret = _FAIL;
 	struct submit_ctx *pack_tx_ops = &pxmitpriv->ack_tx_ops;
@@ -4230,7 +4230,7 @@ int rtw_ack_tx_polling(struct xmit_priv *pxmitpriv, u32 timeout_ms)
 }
 #endif
 
-int rtw_ack_tx_wait(struct xmit_priv *pxmitpriv, u32 timeout_ms)
+int rtw_ack_tx_wait(struct xmit_priv *pxmitpriv, uint32_t	 timeout_ms)
 {
 #ifdef CONFIG_XMIT_ACK_POLLING
 	return rtw_ack_tx_polling(pxmitpriv, timeout_ms);

@@ -31,9 +31,9 @@
 
 static void _dbg_dump_macreg(_adapter *padapter)
 {
-	u32 offset = 0;
-	u32 val32 = 0;
-	u32 index =0 ;
+	uint32_t offset = 0;
+	uint32_t val32 = 0;
+	uint32_t index =0 ;
 	for(index=0;index<64;index++)
 	{
 		offset = index*4;
@@ -266,7 +266,7 @@ _InitBurstPktLen(IN PADAPTER Adapter)
 
 }
 
-static u32 _InitPowerOn8812AU(_adapter *padapter)
+static uint32_t _InitPowerOn8812AU(_adapter *padapter)
 {
 	uint16_t	u2btmp = 0;
 	uint8_t	u1btmp = 0;
@@ -347,11 +347,11 @@ _InitQueueReservedPage_8821AUsb(
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	struct registry_priv	*pregistrypriv = &Adapter->registrypriv;
-	u32			numHQ		= 0;
-	u32			numLQ		= 0;
-	u32			numNQ		= 0;
-	u32			numPubQ	= 0;
-	u32			value32;
+	uint32_t			numHQ		= 0;
+	uint32_t			numLQ		= 0;
+	uint32_t			numNQ		= 0;
+	uint32_t			numPubQ	= 0;
+	uint32_t			value32;
 	uint8_t			value8;
 	BOOLEAN			bWiFiConfig	= pregistrypriv->wifi_spec;
 
@@ -409,11 +409,11 @@ _InitQueueReservedPage_8812AUsb(
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	struct registry_priv	*pregistrypriv = &Adapter->registrypriv;
-	u32			numHQ		= 0;
-	u32			numLQ		= 0;
-	u32			numNQ		= 0;
-	u32			numPubQ	= 0;
-	u32			value32;
+	uint32_t			numHQ		= 0;
+	uint32_t			numLQ		= 0;
+	uint32_t			numNQ		= 0;
+	uint32_t			numPubQ	= 0;
+	uint32_t			value32;
 	uint8_t			value8;
 	BOOLEAN			bWiFiConfig	= pregistrypriv->wifi_spec;
 
@@ -678,7 +678,7 @@ _InitHardwareDropIncorrectBulkOut_8812A(
 	IN  PADAPTER Adapter
 	)
 {
-	u32	value32 = rtw_read32(Adapter, REG_TXDMA_OFFSET_CHK);
+	uint32_t	value32 = rtw_read32(Adapter, REG_TXDMA_OFFSET_CHK);
 	value32 |= DROP_DATA_EN;
 	rtw_write32(Adapter, REG_TXDMA_OFFSET_CHK, value32);
 }
@@ -688,7 +688,7 @@ _InitNetworkType_8812A(
 	IN  PADAPTER Adapter
 	)
 {
-	u32	value32;
+	uint32_t	value32;
 
 	value32 = rtw_read32(Adapter, REG_CR);
 	// TODO: use the other function to set network type
@@ -771,7 +771,7 @@ _InitAdaptiveCtrl_8812AUsb(
 	)
 {
 	uint16_t	value16;
-	u32	value32;
+	uint32_t	value32;
 
 	// Response Rate Set
 	value32 = rtw_read32(Adapter, REG_RRSR);
@@ -911,7 +911,7 @@ usb_AggSettingTxUpdate_8812A(
 {
 #ifdef CONFIG_USB_TX_AGGREGATION
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	u32			value32;
+	uint32_t			value32;
 
 	if(Adapter->registrypriv.wifi_spec)
 		pHalData->UsbTxAggMode = _FALSE;
@@ -1272,7 +1272,7 @@ HalDetectSelectiveSuspendMode(
 	// If support HW radio detect, we need to enable WOL ability, otherwise, we
 	// can not use FW to notify host the power state switch.
 
-	EFUSE_ShadowRead(Adapter, 1, EEPROM_USB_OPTIONAL1, (u32 *)&tmpvalue);
+	EFUSE_ShadowRead(Adapter, 1, EEPROM_USB_OPTIONAL1, (uint32_t *)&tmpvalue);
 
 	DBG_8192C("HalDetectSelectiveSuspendMode(): SS ");
 	if(tmpvalue & BIT1)
@@ -1387,19 +1387,19 @@ void _ps_close_RF(_adapter *padapter){
 	//phy_SsPwrSwitch92CU(padapter, rf_off, 1);
 }
 
-u32 rtl8812au_hal_init(PADAPTER Adapter)
+uint32_t rtl8812au_hal_init(PADAPTER Adapter)
 {
 	uint8_t	value8 = 0, u1bRegCR;
 	uint16_t  value16;
 	uint8_t	txpktbuf_bndy;
-	u32	status = _SUCCESS;
+	uint32_t	status = _SUCCESS;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	struct pwrctrl_priv		*pwrctrlpriv = &Adapter->pwrctrlpriv;
 	struct registry_priv	*pregistrypriv = &Adapter->registrypriv;
 
 	rt_rf_power_state		eRfPowerStateToSet;
 
-	u32 init_start_time = rtw_get_current_time();
+	uint32_t init_start_time = rtw_get_current_time();
 
 
 #ifdef DBG_HAL_INIT_PROFILING
@@ -1455,7 +1455,7 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 	};
 
 	int hal_init_profiling_i;
-	u32 hal_init_stages_timestamp[HAL_INIT_STAGES_NUM]; //used to record the time of each stage's starting point
+	uint32_t hal_init_stages_timestamp[HAL_INIT_STAGES_NUM]; //used to record the time of each stage's starting point
 
 	for(hal_init_profiling_i=0;hal_init_profiling_i<HAL_INIT_STAGES_NUM;hal_init_profiling_i++)
 		hal_init_stages_timestamp[hal_init_profiling_i]=0;
@@ -1952,7 +1952,7 @@ CardDisableRTL8812AU(
 	uint8_t	u1bTmp;
 	uint8_t 	val8;
 	uint16_t	val16;
-	u32	val32;
+	uint32_t	val32;
 
 
 	//DBG_871X("CardDisableRTL8188EU\n");
@@ -2000,7 +2000,7 @@ static void rtl8812au_hw_power_down(_adapter *padapter)
 	rtw_write16(padapter, REG_APS_FSMCO, 0x8812);
 }
 
-u32 rtl8812au_hal_deinit(PADAPTER Adapter)
+uint32_t rtl8812au_hal_deinit(PADAPTER Adapter)
  {
 
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -2051,10 +2051,10 @@ unsigned int rtl8812au_inirp_init(PADAPTER Adapter)
 	struct dvobj_priv *pdev= adapter_to_dvobj(Adapter);
 	struct intf_hdl * pintfhdl=&Adapter->iopriv.intf;
 	struct recv_priv *precvpriv = &(Adapter->recvpriv);
-	u32 (*_read_port)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *pmem);
+	uint32_t (*_read_port)(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t cnt, uint8_t *pmem);
 #ifdef CONFIG_USB_INTERRUPT_IN_PIPE
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
-	u32 (*_read_interrupt)(struct intf_hdl *pintfhdl, u32 addr);
+	uint32_t (*_read_interrupt)(struct intf_hdl *pintfhdl, uint32_t addr);
 #endif
 
 _func_enter_;
@@ -2219,7 +2219,7 @@ hal_InitPGData_8812A(
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 //	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-	u32			i;
+	uint32_t			i;
 	uint16_t			value16;
 
 	if(_FALSE == pEEPROM->bautoload_fail_flag)
@@ -2543,11 +2543,11 @@ ReadAdapterInfo8812AU(
 	DBG_871X("ReadAdapterInfo8812AU <====\n");
 }
 
-void UpdateInterruptMask8812AU(PADAPTER padapter,uint8_t bHIMR0 ,u32 AddMSR, u32 RemoveMSR)
+void UpdateInterruptMask8812AU(PADAPTER padapter,uint8_t bHIMR0 ,uint32_t AddMSR, uint32_t RemoveMSR)
 {
 	HAL_DATA_TYPE *pHalData;
 
-	u32 *himr;
+	uint32_t *himr;
 	pHalData = GET_HAL_DATA(padapter);
 
 	if(bHIMR0)

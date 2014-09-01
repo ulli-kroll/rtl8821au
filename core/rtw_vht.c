@@ -164,11 +164,11 @@ void	rtw_vht_use_default_setting(_adapter *padapter)
 	pvhtpriv->vht_highest_rate = rtw_get_vht_highest_rate(padapter, pvhtpriv->vht_mcs_map);
 }
 
-u32	rtw_vht_rate_to_bitmap(uint8_t *pVHTRate)
+uint32_t	rtw_vht_rate_to_bitmap(uint8_t *pVHTRate)
 {
 
 	uint8_t	i,j , tmpRate;
-	u32	RateBitmap = 0;
+	uint32_t	RateBitmap = 0;
 
 	for(i = j= 0; i < 4; i+=2, j+=10)
 	{
@@ -367,14 +367,14 @@ void VHT_operation_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	}
 }
 
-u32	rtw_build_vht_operation_ie(_adapter *padapter, uint8_t *pbuf, uint8_t channel)
+uint32_t	rtw_build_vht_operation_ie(_adapter *padapter, uint8_t *pbuf, uint8_t channel)
 {
 	//struct registry_priv	*pregistrypriv = &padapter->registrypriv;
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv		*pvhtpriv = &pmlmepriv->vhtpriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	uint8_t	ChnlWidth, center_freq;
-	u32	len = 0;
+	uint32_t	len = 0;
 	uint8_t	operation[5];
 
 	if (pvhtpriv->bwmode >= CHANNEL_WIDTH_80)
@@ -395,12 +395,12 @@ u32	rtw_build_vht_operation_ie(_adapter *padapter, uint8_t *pbuf, uint8_t channe
 	return len;
 }
 
-u32	rtw_build_vht_op_mode_notify_ie(_adapter *padapter, uint8_t *pbuf)
+uint32_t	rtw_build_vht_op_mode_notify_ie(_adapter *padapter, uint8_t *pbuf)
 {
 	//struct registry_priv *pregistrypriv = &padapter->registrypriv;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv	*pvhtpriv = &pmlmepriv->vhtpriv;
-	u32	len = 0;
+	uint32_t	len = 0;
 	uint8_t	opmode = 0, rf_type = 0;
 	uint8_t	chnl_width, rx_nss;
 
@@ -421,12 +421,12 @@ u32	rtw_build_vht_op_mode_notify_ie(_adapter *padapter, uint8_t *pbuf)
 	return len;
 }
 
-u32	rtw_build_vht_cap_ie(_adapter *padapter, uint8_t *pbuf)
+uint32_t	rtw_build_vht_cap_ie(_adapter *padapter, uint8_t *pbuf)
 {
 	uint8_t	bw, rf_type;
 	uint16_t	HighestRate;
 	uint8_t	*pcap, *pcap_mcs;
-	u32	len = 0;
+	uint32_t	len = 0;
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv	*pvhtpriv = &pmlmepriv->vhtpriv;
@@ -524,9 +524,9 @@ u32	rtw_build_vht_cap_ie(_adapter *padapter, uint8_t *pbuf)
 	return len;
 }
 
-u32 rtw_restructure_vht_ie(_adapter *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len)
+uint32_t	 rtw_restructure_vht_ie(_adapter *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len)
 {
-	u32	ielen, out_len;
+	uint32_t	ielen, out_len;
 	uint8_t	cap_len, notify_len, operation_bw, supported_chnl_width;
 	uint8_t	*p, *pframe;
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;

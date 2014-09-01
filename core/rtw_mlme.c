@@ -105,7 +105,7 @@ void rtw_mfree_mlme_priv_lock (struct mlme_priv *pmlmepriv)
 	_rtw_spinlock_free(&(pmlmepriv->scanned_queue.lock));
 }
 
-static void rtw_free_mlme_ie_data(uint8_t **ppie, u32 *plen)
+static void rtw_free_mlme_ie_data(uint8_t **ppie, uint32_t	 *plen)
 {
 	if(*ppie)
 	{
@@ -250,8 +250,8 @@ _func_exit_;
 
 void _rtw_free_network(struct	mlme_priv *pmlmepriv ,struct wlan_network *pnetwork, uint8_t isfreeall)
 {
-	u32 delta_time;
-	u32 lifetime = SCANQUEUE_LIFETIME;
+	uint32_t	 delta_time;
+	uint32_t	 lifetime = SCANQUEUE_LIFETIME;
 	_irqL irqL;
 	_queue *free_queue = &(pmlmepriv->free_bss_pool);
 
@@ -269,7 +269,7 @@ _func_enter_;
 
 	if(!isfreeall)
 	{
-		delta_time = (u32) rtw_get_passing_time_ms(pnetwork->last_scanned);
+		delta_time = (uint32_t) rtw_get_passing_time_ms(pnetwork->last_scanned);
 		if(delta_time < lifetime)// unit:msec
 			goto exit;
 	}
@@ -428,7 +428,7 @@ _func_exit_;
 
 void rtw_generate_random_ibss(uint8_t * pibss)
 {
-	u32	curtime = rtw_get_current_time();
+	uint32_t	curtime = rtw_get_current_time();
 
 _func_enter_;
 	pibss[0] = 0x02;  //in ad-hoc mode bit1 must set to 1
@@ -685,8 +685,8 @@ _func_enter_;
 	}
 	else {
 		if(sq_smp != 101) { /* from the right channel */
-			ss_final = ((u32)(src->PhyInfo.SignalStrength)+(u32)(dst->PhyInfo.SignalStrength)*4)/5;
-			sq_final = ((u32)(src->PhyInfo.SignalQuality)+(u32)(dst->PhyInfo.SignalQuality)*4)/5;
+			ss_final = ((uint32_t)(src->PhyInfo.SignalStrength)+(uint32_t)(dst->PhyInfo.SignalStrength)*4)/5;
+			sq_final = ((uint32_t)(src->PhyInfo.SignalQuality)+(uint32_t)(dst->PhyInfo.SignalQuality)*4)/5;
 			rssi_final = (src->Rssi+dst->Rssi*4)/5;
 		} else {
 			/* bss info not receving from the right channel, use the original RX signal infos */
@@ -926,8 +926,8 @@ int rtw_is_desired_network(_adapter *adapter, struct wlan_network *pnetwork)
 {
 	struct security_priv *psecuritypriv = &adapter->securitypriv;
 	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;
-	u32 desired_encmode;
-	u32 privacy;
+	uint32_t	 desired_encmode;
+	uint32_t	 privacy;
 
 	//uint8_t wps_ie[512];
 	uint wps_ielen;
@@ -984,7 +984,7 @@ _func_exit_;
 void rtw_survey_event_callback(_adapter	*adapter, uint8_t *pbuf)
 {
 	_irqL  irqL;
-	u32 len;
+	uint32_t	 len;
 	WLAN_BSSID_EX *pnetwork;
 	struct	mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
 
@@ -1083,7 +1083,7 @@ _func_enter_;
 
 	if(pmlmepriv->wps_probe_req_ie)
 	{
-		u32 free_len = pmlmepriv->wps_probe_req_ie_len;
+		uint32_t	 free_len = pmlmepriv->wps_probe_req_ie_len;
 		pmlmepriv->wps_probe_req_ie_len = 0;
 		rtw_mfree(pmlmepriv->wps_probe_req_ie, free_len);
 		pmlmepriv->wps_probe_req_ie = NULL;
@@ -1491,8 +1491,8 @@ inline void rtw_indicate_scan_done( _adapter *padapter, bool aborted)
 
 void rtw_scan_abort(_adapter *adapter)
 {
-	u32 cnt=0;
-	u32 start;
+	uint32_t	 cnt=0;
+	uint32_t	 start;
 	struct mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
 	struct mlme_ext_priv	*pmlmeext = &(adapter->mlmeextpriv);
 
@@ -2028,7 +2028,7 @@ _func_enter_;
 
 			#elif (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)) || defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
 			uint8_t *passoc_req = NULL;
-			u32 assoc_req_len;
+			uint32_t	 assoc_req_len;
 
 			_enter_critical_bh(&psta->lock, &irqL);
 			if(psta->passoc_req && psta->assoc_req_len>0)
@@ -2559,7 +2559,7 @@ void rtw_set_scan_deny_timer_hdl(_adapter *adapter)
 	rtw_clear_scan_deny(adapter);
 }
 
-void rtw_set_scan_deny(_adapter *adapter, u32 ms)
+void rtw_set_scan_deny(_adapter *adapter, uint32_t	 ms)
 {
 	struct mlme_priv *mlmepriv = &adapter->mlmepriv;
 #ifdef CONFIG_CONCURRENT_MODE
@@ -2622,7 +2622,7 @@ static int rtw_check_join_candidate(struct mlme_priv *pmlmepriv
 
 #ifdef  CONFIG_LAYER2_ROAMING
 	if(rtw_to_roaming(adapter) > 0) {
-		if(	rtw_get_passing_time_ms((u32)competitor->last_scanned) >= RTW_SCAN_RESULT_EXPIRE
+		if(	rtw_get_passing_time_ms((uint32_t)competitor->last_scanned) >= RTW_SCAN_RESULT_EXPIRE
 			|| is_same_ess(&competitor->network, &pmlmepriv->cur_network.network) == _FALSE
 		)
 			goto exit;
@@ -2654,7 +2654,7 @@ static int rtw_check_join_candidate(struct mlme_priv *pmlmepriv
 		if(	(*candidate == NULL ||(*candidate)->network.Rssi<competitor->network.Rssi )
 			&& is_same_ess(&competitor->network, &pmlmepriv->cur_network.network)
 			//&&(!is_same_network(&competitor->network, &pmlmepriv->cur_network.network))
-			&& rtw_get_passing_time_ms((u32)competitor->last_scanned) < RTW_SCAN_RESULT_EXPIRE
+			&& rtw_get_passing_time_ms((uint32_t)competitor->last_scanned) < RTW_SCAN_RESULT_EXPIRE
 			&& rtw_is_desired_network(adapter, competitor)
 		) {
 			*candidate = competitor;
@@ -3290,7 +3290,7 @@ void rtw_joinbss_reset(_adapter *padapter)
 //the fucntion is >= passive_level
 unsigned int rtw_restructure_ht_ie(_adapter *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len)
 {
-	u32 ielen, out_len;
+	uint32_t	 ielen, out_len;
 	HT_CAP_AMPDU_FACTOR max_rx_ampdu_factor;
 	unsigned char *p, *pframe;
 	struct rtw_ieee80211_ht_cap ht_capie;
@@ -3325,7 +3325,7 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, uint8_t *in_ie, uint8_t *
 
 
 		{
-			u32 rx_packet_offset, max_recvbuf_sz;
+			uint32_t	 rx_packet_offset, max_recvbuf_sz;
 			rtw_hal_get_def_var(padapter, HAL_DEF_RX_PACKET_OFFSET, &rx_packet_offset);
 			rtw_hal_get_def_var(padapter, HAL_DEF_MAX_RECVBUF_SZ, &max_recvbuf_sz);
 			//if(max_recvbuf_sz-rx_packet_offset>(8191-256)) {

@@ -55,7 +55,7 @@ uint8_t sreset_get_wifi_status(_adapter *padapter)
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
 	uint8_t status = WIFI_STATUS_SUCCESS;
-	u32 val32 = 0;
+	uint32_t	 val32 = 0;
 	_irqL irqL;
 	if(psrtpriv->silent_reset_inprogress == _TRUE)
         {
@@ -86,7 +86,7 @@ uint8_t sreset_get_wifi_status(_adapter *padapter)
 #endif
 }
 
-void sreset_set_wifi_error_status(_adapter *padapter, u32 status)
+void sreset_set_wifi_error_status(_adapter *padapter, uint32_t	 status)
 {
 #if defined(DBG_CONFIG_ERROR_DETECT)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
@@ -318,7 +318,7 @@ void sreset_reset(_adapter *padapter)
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
 	_irqL irqL;
-	u32 start = rtw_get_current_time();
+	uint32_t	 start = rtw_get_current_time();
 
 	DBG_871X("%s\n", __FUNCTION__);
 

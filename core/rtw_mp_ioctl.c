@@ -53,7 +53,7 @@ NDIS_STATUS oid_rt_pro_write_bb_reg_hdl(struct oid_par_priv *poid_par_priv)
 {
 	struct bb_reg_param *pbbreg;
 	uint16_t offset;
-	u32 value;
+	uint32_t	 value;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -91,7 +91,7 @@ NDIS_STATUS oid_rt_pro_read_bb_reg_hdl(struct oid_par_priv *poid_par_priv)
 {
 	struct bb_reg_param *pbbreg;
 	uint16_t offset;
-	u32 value;
+	uint32_t	 value;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -130,7 +130,7 @@ NDIS_STATUS oid_rt_pro_write_rf_reg_hdl(struct oid_par_priv *poid_par_priv)
 	struct rf_reg_param *pbbreg;
 	uint8_t path;
 	uint8_t offset;
-	u32 value;
+	uint32_t	 value;
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -175,7 +175,7 @@ NDIS_STATUS oid_rt_pro_read_rf_reg_hdl(struct oid_par_priv *poid_par_priv)
 	struct rf_reg_param *pbbreg;
 	uint8_t path;
 	uint8_t offset;
-	u32 value;
+	uint32_t	 value;
 	PADAPTER Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 	NDIS_STATUS status = NDIS_STATUS_SUCCESS;
 
@@ -222,7 +222,7 @@ _func_exit_;
 //------------------------------------------------------------------------------
 NDIS_STATUS oid_rt_pro_set_data_rate_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u32		ratevalue;//4
+	uint32_t		ratevalue;//4
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -234,10 +234,10 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len != sizeof(u32))
+	if (poid_par_priv->information_buf_len != sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	ratevalue = *((u32*)poid_par_priv->information_buf);//4
+	ratevalue = *((uint32_t *)poid_par_priv->information_buf);//4
 	RT_TRACE(_module_mp_, _drv_notice_,
 		 ("oid_rt_pro_set_data_rate_hdl: data rate idx=%d\n", ratevalue));
 	if (ratevalue >= MPT_RATE_LAST)
@@ -256,7 +256,7 @@ _func_exit_;
 //------------------------------------------------------------------------------
 NDIS_STATUS oid_rt_pro_start_test_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u32		mode;
+	uint32_t		mode;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -274,7 +274,7 @@ _func_enter_;
 
 	//IQCalibrateBcut(Adapter);
 
-	mode = *((u32*)poid_par_priv->information_buf);
+	mode = *((uint32_t *)poid_par_priv->information_buf);
 	Adapter->mppriv.mode = mode;// 1 for loopback
 
 	if (mp_start_test(Adapter) == _FAIL) {
@@ -317,7 +317,7 @@ _func_exit_;
 //------------------------------------------------------------------------------
 NDIS_STATUS oid_rt_pro_set_channel_direct_call_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u32		Channel;
+	uint32_t		Channel;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -325,18 +325,18 @@ _func_enter_;
 
 	RT_TRACE(_module_mp_, _drv_notice_, ("+oid_rt_pro_set_channel_direct_call_hdl\n"));
 
-	if (poid_par_priv->information_buf_len != sizeof(u32))
+	if (poid_par_priv->information_buf_len != sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	if (poid_par_priv->type_of_oid == QUERY_OID) {
-		*((u32*)poid_par_priv->information_buf) = Adapter->mppriv.channel;
+		*((uint32_t *)poid_par_priv->information_buf) = Adapter->mppriv.channel;
 		return NDIS_STATUS_SUCCESS;
 	}
 
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	Channel = *((u32*)poid_par_priv->information_buf);
+	Channel = *((uint32_t *)poid_par_priv->information_buf);
 	RT_TRACE(_module_mp_, _drv_notice_, ("oid_rt_pro_set_channel_direct_call_hdl: Channel=%d\n", Channel));
 	if (Channel > 14)
 		return NDIS_STATUS_NOT_ACCEPTED;
@@ -366,10 +366,10 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len < sizeof(u32))
+	if (poid_par_priv->information_buf_len < sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	bandwidth = *((u32*)poid_par_priv->information_buf);//4
+	bandwidth = *((uint32_t *)poid_par_priv->information_buf);//4
 	channel_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
 
 	if (bandwidth != CHANNEL_WIDTH_40)
@@ -392,7 +392,7 @@ _func_exit_;
 //------------------------------------------------------------------------------
 NDIS_STATUS oid_rt_pro_set_antenna_bb_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u32		antenna;
+	uint32_t		antenna;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -400,12 +400,12 @@ _func_enter_;
 
 	RT_TRACE(_module_mp_, _drv_notice_, ("+oid_rt_pro_set_antenna_bb_hdl\n"));
 
-	if (poid_par_priv->information_buf_len != sizeof(u32))
+	if (poid_par_priv->information_buf_len != sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	if (poid_par_priv->type_of_oid == SET_OID)
 	{
-		antenna = *(u32*)poid_par_priv->information_buf;
+		antenna = *(uint32_t *)poid_par_priv->information_buf;
 
 		Adapter->mppriv.antenna_tx = (uint16_t)((antenna & 0xFFFF0000) >> 16);
 		Adapter->mppriv.antenna_rx = (uint16_t)(antenna & 0x0000FFFF);
@@ -418,7 +418,7 @@ _func_enter_;
 		_irqlevel_changed_(&oldirql, RAISE);
 	} else {
 		antenna = (Adapter->mppriv.antenna_tx << 16)|Adapter->mppriv.antenna_rx;
-		*(u32*)poid_par_priv->information_buf = antenna;
+		*(uint32_t *)poid_par_priv->information_buf = antenna;
 	}
 
 _func_exit_;
@@ -428,7 +428,7 @@ _func_exit_;
 
 NDIS_STATUS oid_rt_pro_set_tx_power_control_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u32		tx_pwr_idx;
+	uint32_t		tx_pwr_idx;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -439,10 +439,10 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len != sizeof(u32))
+	if (poid_par_priv->information_buf_len != sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	tx_pwr_idx = *((u32*)poid_par_priv->information_buf);
+	tx_pwr_idx = *((uint32_t *)poid_par_priv->information_buf);
 	if (tx_pwr_idx > MAX_TX_PWR_INDEX_N_MODE)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
@@ -664,7 +664,7 @@ _func_exit_;
 //****************  oid_rtl_seg_81_80_20   section end ****************
 NDIS_STATUS oid_rt_pro_set_continuous_tx_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u32		bStartTest;
+	uint32_t		bStartTest;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -675,7 +675,7 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	bStartTest = *((u32*)poid_par_priv->information_buf);
+	bStartTest = *((uint32_t *)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
 	SetContinuousTx(Adapter,(uint8_t)bStartTest);
@@ -699,7 +699,7 @@ _func_exit_;
 
 NDIS_STATUS oid_rt_pro_set_single_carrier_tx_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u32		bStartTest;
+	uint32_t		bStartTest;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -710,7 +710,7 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	bStartTest = *((u32*)poid_par_priv->information_buf);
+	bStartTest = *((uint32_t *)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
 	SetSingleCarrierTx(Adapter, (uint8_t)bStartTest);
@@ -734,7 +734,7 @@ _func_exit_;
 
 NDIS_STATUS oid_rt_pro_set_carrier_suppression_tx_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u32		bStartTest;
+	uint32_t		bStartTest;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -745,7 +745,7 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	bStartTest = *((u32*)poid_par_priv->information_buf);
+	bStartTest = *((uint32_t *)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
 	SetCarrierSuppressionTx(Adapter, (uint8_t)bStartTest);
@@ -769,7 +769,7 @@ _func_exit_;
 
 NDIS_STATUS oid_rt_pro_set_single_tone_tx_hdl(struct oid_par_priv *poid_par_priv)
 {
-	u32 		bStartTest;
+	uint32_t	 		bStartTest;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -780,7 +780,7 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	bStartTest = *((u32*)poid_par_priv->information_buf);
+	bStartTest = *((uint32_t *)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
 	SetSingleToneTx(Adapter,(uint8_t)bStartTest);
@@ -830,7 +830,7 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	*poid_par_priv->bytes_needed = (u32)sizeof(NDIS_802_11_SSID);
+	*poid_par_priv->bytes_needed = (uint32_t)sizeof(NDIS_802_11_SSID);
 	*poid_par_priv->bytes_rw = 0;
 	if (poid_par_priv->information_buf_len < *poid_par_priv->bytes_needed)
 		return NDIS_STATUS_INVALID_LENGTH;
@@ -857,7 +857,7 @@ _func_exit_;
 NDIS_STATUS oid_rt_pro_read_register_hdl(struct oid_par_priv *poid_par_priv)
 {
 	pRW_Reg 	RegRWStruct;
-	u32		offset, width;
+	uint32_t		offset, width;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -906,7 +906,7 @@ _func_exit_;
 NDIS_STATUS oid_rt_pro_write_register_hdl(struct oid_par_priv *poid_par_priv)
 {
 	pRW_Reg 	RegRWStruct;
-	u32		offset, width, value;
+	uint32_t		offset, width, value;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 	PADAPTER	padapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -980,7 +980,7 @@ _func_enter_;
 	pBstRwReg = (pBurst_RW_Reg)poid_par_priv->information_buf;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	rtw_read_mem(padapter, pBstRwReg->offset, (u32)pBstRwReg->len, pBstRwReg->Data);
+	rtw_read_mem(padapter, pBstRwReg->offset, (uint32_t)pBstRwReg->len, pBstRwReg->Data);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
@@ -1012,7 +1012,7 @@ _func_enter_;
 	pBstRwReg = (pBurst_RW_Reg)poid_par_priv->information_buf;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	rtw_write_mem(padapter, pBstRwReg->offset, (u32)pBstRwReg->len, pBstRwReg->Data);
+	rtw_write_mem(padapter, pBstRwReg->offset, (uint32_t)pBstRwReg->len, pBstRwReg->Data);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	RT_TRACE(_module_mp_, _drv_info_, ("-oid_rt_pro_burst_write_register_hdl\n"));
@@ -1329,16 +1329,16 @@ _func_enter_;
 		GlobalDebugComponents = (pdbg_msg->DebugComponent_H32 << 32) | pdbg_msg->DebugComponent_L32;
 		RT_TRACE(0xffffffffff, _drv_alert_,
 			 ("===> Set level :0x%08x, component:0x%016x\n",
-			  GlobalDebugLevel, (u32)GlobalDebugComponents));
+			  GlobalDebugLevel, (uint32_t)GlobalDebugComponents));
 	} else {
 		pdbg_msg->DebugLevel = GlobalDebugLevel;
-		pdbg_msg->DebugComponent_H32 = (u32)(GlobalDebugComponents >> 32);
-		pdbg_msg->DebugComponent_L32 = (u32)GlobalDebugComponents;
+		pdbg_msg->DebugComponent_H32 = (uint32_t)(GlobalDebugComponents >> 32);
+		pdbg_msg->DebugComponent_L32 = (uint32_t)GlobalDebugComponents;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 
 		RT_TRACE(0xffffffffff, _drv_alert_,
 			 ("===>Query level:0x%08x H32:0x%08x L32:0x%08x\n",
-			  (u32)pdbg_msg->DebugLevel, (u32)pdbg_msg->DebugComponent_H32, (u32)pdbg_msg->DebugComponent_L32));
+			  (uint32_t)pdbg_msg->DebugLevel, (uint32_t)pdbg_msg->DebugComponent_H32, (uint32_t)pdbg_msg->DebugComponent_L32));
 	}
 
 #endif
@@ -1389,15 +1389,15 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != QUERY_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len < sizeof(u32))
+	if (poid_par_priv->information_buf_len < sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 	GetThermalMeter(Adapter, &thermal);
 	_irqlevel_changed_(&oldirql, RAISE);
 
-	*(u32*)poid_par_priv->information_buf = (u32)thermal;
-	*poid_par_priv->bytes_rw = sizeof(u32);
+	*(uint32_t *)poid_par_priv->information_buf = (uint32_t)thermal;
+	*poid_par_priv->bytes_rw = sizeof(uint32_t);
 
 _func_exit_;
 
@@ -1482,7 +1482,7 @@ _func_exit_;
 NDIS_STATUS oid_rt_pro_set_basic_rate_hdl(struct oid_par_priv *poid_par_priv)
 {
 #if 0
-	u32 ratevalue;
+	uint32_t	 ratevalue;
 	uint8_t datarates[NumRates];
 	int i;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
@@ -1495,7 +1495,7 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 #if 0
-	ratevalue = *((u32*)poid_par_priv->information_buf);
+	ratevalue = *((uint32_t *)poid_par_priv->information_buf);
 
 	for (i = 0; i < NumRates; i++) {
 		if (ratevalue == mpdatarate[i])
@@ -1860,7 +1860,7 @@ NDIS_STATUS oid_rt_pro_dele_sta_info_hdl(struct oid_par_priv *poid_par_priv)
 }
 //------------------------------------------------------------------------------
 #if 0
-static u32 mp_query_drv_var(_adapter *padapter, uint8_t offset, u32 var)
+static uint32_t	 mp_query_drv_var(_adapter *padapter, uint8_t offset, uint32_t	 var)
 {
 
 	return var;
@@ -1924,7 +1924,7 @@ NDIS_STATUS oid_rt_pro_rx_packet_type_hdl(struct oid_par_priv *poid_par_priv)
 		RT_TRACE(_module_rtl871x_ioctl_c_,_drv_err_, ("Query Information, OID_RT_PRO_RX_PACKET_TYPE:%d \n",\
 												Adapter->mppriv.rx_with_status));
 
-		//*(u32 *)&Adapter->eeprompriv.mac_addr[0]=rtw_read32(Adapter, 0x10250050);
+		//*(uint32_t	 *)&Adapter->eeprompriv.mac_addr[0]=rtw_read32(Adapter, 0x10250050);
 		//*(uint16_t *)&Adapter->eeprompriv.mac_addr[4]=rtw_read16(Adapter, 0x10250054);
 		RT_TRACE(_module_rtl871x_ioctl_c_,_drv_err_,("MAC addr=0x%x:0x%x:0x%x:0x%x:0x%x:0x%x  \n",
 			Adapter->eeprompriv.mac_addr[0],Adapter->eeprompriv.mac_addr[1],Adapter->eeprompriv.mac_addr[2],\
@@ -1938,7 +1938,7 @@ NDIS_STATUS oid_rt_pro_rx_packet_type_hdl(struct oid_par_priv *poid_par_priv)
 		RT_TRACE(_module_rtl871x_ioctl_c_,_drv_err_, ("Query Information, OID_RT_PRO_RX_PACKET_TYPE:%d \n", \
 												Adapter->mppriv.rx_with_status));
 
-		//*(u32 *)&Adapter->eeprompriv.mac_addr[0]=rtw_read32(Adapter, 0x10250050);
+		//*(uint32_t	 *)&Adapter->eeprompriv.mac_addr[0]=rtw_read32(Adapter, 0x10250050);
 		//*(uint16_t *)&Adapter->eeprompriv.mac_addr[4]=rtw_read16(Adapter, 0x10250054);
 		RT_TRACE(_module_rtl871x_ioctl_c_,_drv_err_,("MAC addr=0x%x:0x%x:0x%x:0x%x:0x%x:0x%x  \n",
 			Adapter->eeprompriv.mac_addr[0],Adapter->eeprompriv.mac_addr[1],Adapter->eeprompriv.mac_addr[2],\
@@ -2100,14 +2100,14 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != QUERY_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len <sizeof(u32))
+	if (poid_par_priv->information_buf_len <sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 	ret = efuse_GetCurrentSize(Adapter, &size);
 	_irqlevel_changed_(&oldirql, RAISE);
 	if (ret == _SUCCESS) {
-		*(u32*)poid_par_priv->information_buf = size;
+		*(uint32_t *)poid_par_priv->information_buf = size;
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 	} else
 		status = NDIS_STATUS_FAILURE;
@@ -2127,10 +2127,10 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != QUERY_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len < sizeof(u32))
+	if (poid_par_priv->information_buf_len < sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	*(u32*)poid_par_priv->information_buf = efuse_GetMaxSize(Adapter);
+	*(uint32_t *)poid_par_priv->information_buf = efuse_GetMaxSize(Adapter);
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 
 	RT_TRACE(_module_mp_, _drv_info_,
@@ -2227,17 +2227,17 @@ NDIS_STATUS oid_rt_set_crystal_cap_hdl(struct oid_par_priv *poid_par_priv)
 	PADAPTER	Adapter = (PADAPTER)(poid_par_priv->adapter_context);
 
 
-	u32		crystal_cap = 0;
+	uint32_t		crystal_cap = 0;
 
 _func_enter_;
 
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len <sizeof(u32))
+	if (poid_par_priv->information_buf_len <sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	crystal_cap = *((u32*)poid_par_priv->information_buf);//4
+	crystal_cap = *((uint32_t *)poid_par_priv->information_buf);//4
 	if (crystal_cap > 0xf)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
@@ -2256,7 +2256,7 @@ _func_exit_;
 NDIS_STATUS oid_rt_set_rx_packet_type_hdl(struct oid_par_priv *poid_par_priv)
 {
 	uint8_t		rx_pkt_type;
-//	u32		rcr_val32;
+//	uint32_t		rcr_val32;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 //	PADAPTER	padapter = (PADAPTER)(poid_par_priv->adapter_context);
 
@@ -2350,17 +2350,17 @@ NDIS_STATUS oid_rt_pro_set_tx_agc_offset_hdl(struct oid_par_priv *poid_par_priv)
 
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 
-	u32 		txagc;
+	uint32_t	 		txagc;
 
 _func_enter_;
 
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len < sizeof(u32))
+	if (poid_par_priv->information_buf_len < sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	txagc = *(u32*)poid_par_priv->information_buf;
+	txagc = *(uint32_t *)poid_par_priv->information_buf;
 	RT_TRACE(_module_mp_, _drv_info_,
 		 ("oid_rt_pro_set_tx_agc_offset_hdl: 0x%08x\n", txagc));
 
@@ -2385,17 +2385,17 @@ NDIS_STATUS oid_rt_pro_set_pkt_test_mode_hdl(struct oid_par_priv *poid_par_priv)
 
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct mp_priv		*pmppriv = &Adapter->mppriv;
-	u32 			type;
+	uint32_t	 			type;
 
 _func_enter_;
 
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	if (poid_par_priv->information_buf_len <sizeof(u32))
+	if (poid_par_priv->information_buf_len <sizeof(uint32_t))
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	type = *(u32*)poid_par_priv->information_buf;
+	type = *(uint32_t *)poid_par_priv->information_buf;
 
 	if (_LOOPBOOK_MODE_ == type) {
 		pmppriv->mode = type;
@@ -2579,7 +2579,7 @@ _func_enter_;
 		status = NDIS_STATUS_NOT_ACCEPTED;
 		return status;
 	}
-	if (poid_par_priv->information_buf_len < sizeof(u32)) {
+	if (poid_par_priv->information_buf_len < sizeof(uint32_t)) {
 		status = NDIS_STATUS_INVALID_LENGTH;
 		return status;
 	}

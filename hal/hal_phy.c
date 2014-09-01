@@ -40,10 +40,10 @@ static RF_SHADOW_T RF_Shadow[RF6052_MAX_PATH][RF6052_MAX_REG];
 */
 u32
 PHY_CalculateBitShift(
-	u32 BitMask
+	uint32_t BitMask
 	)
 {
-	u32 i;
+	uint32_t i;
 
 	for(i=0; i<=31; i++)
 	{
@@ -87,7 +87,7 @@ u32
 PHY_RFShadowRead(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				Offset)
+	IN	uint32_t				Offset)
 {
 	return	RF_Shadow[eRFPath][Offset].Value;
 
@@ -98,8 +98,8 @@ VOID
 PHY_RFShadowWrite(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				Offset,
-	IN	u32				Data)
+	IN	uint32_t				Offset,
+	IN	uint32_t				Data)
 {
 	RF_Shadow[eRFPath][Offset].Value = (Data & bRFRegOffsetMask);
 	RF_Shadow[eRFPath][Offset].Driver_Write = _TRUE;
@@ -111,9 +111,9 @@ BOOLEAN
 PHY_RFShadowCompare(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				Offset)
+	IN	uint32_t				Offset)
 {
-	u32	reg;
+	uint32_t	reg;
 	// Check if we need to check the register
 	if (RF_Shadow[eRFPath][Offset].Compare == _TRUE)
 	{
@@ -137,7 +137,7 @@ VOID
 PHY_RFShadowRecorver(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				Offset)
+	IN	uint32_t				Offset)
 {
 	// Check if the address is error
 	if (RF_Shadow[eRFPath][Offset].ErrorOrNot == _TRUE)
@@ -161,7 +161,7 @@ PHY_RFShadowCompareAll(
 	IN	PADAPTER			Adapter)
 {
 	uint8_t		eRFPath = 0 ;
-	u32		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	uint32_t		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++)
 	{
@@ -179,7 +179,7 @@ PHY_RFShadowRecorverAll(
 	IN	PADAPTER			Adapter)
 {
 	uint8_t		eRFPath =0;
-	u32		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	uint32_t		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++)
 	{
@@ -196,7 +196,7 @@ VOID
 PHY_RFShadowCompareFlagSet(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				Offset,
+	IN	uint32_t				Offset,
 	IN	uint8_t				Type)
 {
 	// Set True or False!!!
@@ -209,7 +209,7 @@ VOID
 PHY_RFShadowRecorverFlagSet(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				Offset,
+	IN	uint32_t				Offset,
 	IN	uint8_t				Type)
 {
 	// Set True or False!!!
@@ -223,7 +223,7 @@ PHY_RFShadowCompareFlagSetAll(
 	IN	PADAPTER			Adapter)
 {
 	uint8_t		eRFPath = 0;
-	u32		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	uint32_t		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++)
 	{
@@ -245,7 +245,7 @@ PHY_RFShadowRecorverFlagSetAll(
 	IN	PADAPTER			Adapter)
 {
 	uint8_t		eRFPath = 0;
-	u32		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	uint32_t		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++)
 	{
@@ -266,7 +266,7 @@ PHY_RFShadowRefresh(
 	IN	PADAPTER			Adapter)
 {
 	uint8_t		eRFPath = 0;
-	u32		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
+	uint32_t		Offset = 0, maxReg= GET_RF6052_REAL_MAX_REG(Adapter);
 
 	for (eRFPath = 0; eRFPath < RF6052_MAX_PATH; eRFPath++)
 	{

@@ -846,7 +846,7 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 							else {
 								// forward unknow IP packet to upper TCP/IP
 								DEBUG_INFO("NAT25: Replace DA with BR's MAC\n");
-								if ( (*(u32 *)priv->br_mac) == 0 && (*(uint16_t *)(priv->br_mac+4)) == 0 ) {
+								if ( (*(uint32_t	 *)priv->br_mac) == 0 && (*(uint16_t *)(priv->br_mac+4)) == 0 ) {
 									void netdev_br_init(struct net_device *netdev);
 									printk("Re-init netdev_br_init() due to br_mac==0!\n");
 									netdev_br_init(priv->ndev);

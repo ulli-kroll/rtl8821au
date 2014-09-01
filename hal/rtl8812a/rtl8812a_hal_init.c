@@ -50,7 +50,7 @@ s32 iol_execute(PADAPTER padapter, uint8_t control)
 {
 	s32 status = _FAIL;
 	uint8_t reg_0x88 = 0;
-	u32 start = 0, passing_time = 0;
+	uint32_t start = 0, passing_time = 0;
 	control = control&0x0f;
 
 	reg_0x88 = rtw_read8(padapter, 0x88);
@@ -271,10 +271,10 @@ void efuse_read_phymap_from_txpktbuf(
 	)
 {
 	uint16_t dbg_addr = 0;
-	u32 start  = 0, passing_time = 0;
+	uint32_t start  = 0, passing_time = 0;
 	uint8_t reg_0x143 = 0;
 	uint8_t reg_0x106 = 0;
-	u32 lo32 = 0, hi32 = 0;
+	uint32_t lo32 = 0, hi32 = 0;
 	uint16_t len = 0, count = 0;
 	int i = 0;
 	uint16_t limit = *size;
@@ -472,11 +472,11 @@ s32 iol_read_efuse(
 // LLT R/W/Init function
 //
 //-------------------------------------------------------------------------
-static s32 _LLTWrite(PADAPTER padapter, u32 address, u32 data)
+static s32 _LLTWrite(PADAPTER padapter, uint32_t address, uint32_t data)
 {
 	s32	status = _SUCCESS;
 	s32	count = 0;
-	u32	value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | _LLT_OP(_LLT_WRITE_ACCESS);
+	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | _LLT_OP(_LLT_WRITE_ACCESS);
 	uint16_t	LLTReg = REG_LLT_INIT;
 
 
@@ -499,10 +499,10 @@ static s32 _LLTWrite(PADAPTER padapter, u32 address, u32 data)
 	return status;
 }
 
-uint8_t _LLTRead(PADAPTER padapter, u32 address)
+uint8_t _LLTRead(PADAPTER padapter, uint32_t address)
 {
 	s32	count = 0;
-	u32	value = _LLT_INIT_ADDR(address) | _LLT_OP(_LLT_READ_ACCESS);
+	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_OP(_LLT_READ_ACCESS);
 	uint16_t	LLTReg = REG_LLT_INIT;
 
 
@@ -527,8 +527,8 @@ uint8_t _LLTRead(PADAPTER padapter, u32 address)
 s32 InitLLTTable8812(PADAPTER padapter, uint8_t txpktbuf_bndy)
 {
 	s32	status = _FAIL;
-	u32	i;
-	u32	Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
+	uint32_t	i;
+	uint32_t	Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
 	HAL_DATA_TYPE *pHalData	= GET_HAL_DATA(padapter);
 
 #if defined(CONFIG_IOL_LLT)
@@ -580,7 +580,7 @@ BOOLEAN HalDetectPwrDownMode8812(PADAPTER Adapter)
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
 	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
 
-	EFUSE_ShadowRead(Adapter, 1, EEPROM_RF_OPT3_92C, (u32 *)&tmpvalue);
+	EFUSE_ShadowRead(Adapter, 1, EEPROM_RF_OPT3_92C, (uint32_t *)&tmpvalue);
 
 	// 2010/08/25 MH INF priority > PDN Efuse value.
 	if(tmpvalue & BIT(4) && pwrctrlpriv->reg_pdnmode)
@@ -662,18 +662,18 @@ static int
 _BlockWrite_8812(
 	IN		PADAPTER		padapter,
 	IN		PVOID		buffer,
-	IN		u32			buffSize
+	IN		uint32_t			buffSize
 	)
 {
 	int ret = _SUCCESS;
 
-	u32			blockSize_p1 = 4;	// (Default) Phase #1 : PCI muse use 4-byte write to download FW
-	u32			blockSize_p2 = 8;	// Phase #2 : Use 8-byte, if Phase#1 use big size to write FW.
-	u32			blockSize_p3 = 1;	// Phase #3 : Use 1-byte, the remnant of FW image.
-	u32			blockCount_p1 = 0, blockCount_p2 = 0, blockCount_p3 = 0;
-	u32			remainSize_p1 = 0, remainSize_p2 = 0;
+	uint32_t			blockSize_p1 = 4;	// (Default) Phase #1 : PCI muse use 4-byte write to download FW
+	uint32_t			blockSize_p2 = 8;	// Phase #2 : Use 8-byte, if Phase#1 use big size to write FW.
+	uint32_t			blockSize_p3 = 1;	// Phase #3 : Use 1-byte, the remnant of FW image.
+	uint32_t			blockCount_p1 = 0, blockCount_p2 = 0, blockCount_p3 = 0;
+	uint32_t			remainSize_p1 = 0, remainSize_p2 = 0;
 	uint8_t			*bufferPtr	= (uint8_t *)buffer;
-	u32			i=0, offset=0;
+	uint32_t			i=0, offset=0;
 
 #ifdef CONFIG_USB_HCI
 	blockSize_p1 = MAX_REG_BOLCK_SIZE;
@@ -752,9 +752,9 @@ exit:
 static int
 _PageWrite_8812(
 	IN		PADAPTER	padapter,
-	IN		u32			page,
+	IN		uint32_t			page,
 	IN		PVOID		buffer,
-	IN		u32			size
+	IN		uint32_t			size
 	)
 {
 	uint8_t value8;
@@ -772,7 +772,7 @@ _FillDummy_8812(
 	u32*	pFwLen
 	)
 {
-	u32	FwLen = *pFwLen;
+	uint32_t	FwLen = *pFwLen;
 	uint8_t	remain = (uint8_t)(FwLen%4);
 	remain = (remain==0)?0:(4-remain);
 
@@ -790,14 +790,14 @@ static int
 _WriteFW_8812(
 	IN		PADAPTER		padapter,
 	IN		PVOID			buffer,
-	IN		u32			size
+	IN		uint32_t			size
 	)
 {
 	// Since we need dynamic decide method of dwonload fw, so we call this function to get chip version.
 	// We can remove _ReadChipVersion from ReadpadapterInfo8192C later.
 	int	ret = _SUCCESS;
-	u32	pageNums,remainSize ;
-	u32	page, offset;
+	uint32_t	pageNums,remainSize ;
+	uint32_t	page, offset;
 	uint8_t	*bufferPtr = (uint8_t *)buffer;
 
 
@@ -865,8 +865,8 @@ void _8051Reset8812(PADAPTER padapter)
 
 static s32 _FWFreeToGo8812(PADAPTER padapter)
 {
-	u32	counter = 0;
-	u32	value32;
+	uint32_t	counter = 0;
+	uint32_t	value32;
 	uint8_t 	value8;
 
 	// polling CheckSum report
@@ -916,7 +916,7 @@ FirmwareDownload8812(
 {
 	s32	rtStatus = _SUCCESS;
 	uint8_t	writeFW_retry = 0;
-	u32 fwdl_start_time;
+	uint32_t fwdl_start_time;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 
 	uint8_t				*pFwImageFileName;
@@ -924,7 +924,7 @@ FirmwareDownload8812(
 	PRT_FIRMWARE_8812	pFirmware = NULL;
 	uint8_t				*pFwHdr = NULL;
 	uint8_t				*pFirmwareBuf;
-	u32				FirmwareLen;
+	uint32_t				FirmwareLen;
 
 
 	RT_TRACE(_module_hal_init_c_, _drv_info_, ("+%s\n", __FUNCTION__));
@@ -1188,7 +1188,7 @@ hal_ReadPowerValueFromPROM8812A(
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	u32 rfPath, eeAddr=EEPROM_TX_PWR_INX_8812, group,TxCount=0;
+	uint32_t rfPath, eeAddr=EEPROM_TX_PWR_INX_8812, group,TxCount=0;
 
 	memset(pwrInfo24G, 0, sizeof(TxPowerInfo24G));
 	memset(pwrInfo5G, 0, sizeof(TxPowerInfo5G));
@@ -3350,7 +3350,7 @@ rtl8812_Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 #ifdef CONFIG_EFUSE_CONFIG_FILE
 static s32 _halReadPGDataFromFile(PADAPTER padapter, uint8_t *pbuf)
 {
-	u32 i;
+	uint32_t i;
 	struct file *fp;
 	mm_segment_t fs;
 	uint8_t temp[3];
@@ -3402,8 +3402,8 @@ static s32 _halReadMACAddrFromFile(PADAPTER padapter, uint8_t *pbuf)
 	loff_t pos = 0;
 	uint8_t source_addr[18];
 	uint8_t *head, *end;
-	u32	curtime;
-	u32 i;
+	uint32_t	curtime;
+	uint32_t i;
 	s32 ret = _SUCCESS;
 
 	uint8_t null_mac_addr[ETH_ALEN] = {0, 0, 0, 0, 0, 0};
@@ -3592,7 +3592,7 @@ GetEEPROMSize8812A(
 	)
 {
 	uint8_t	size = 0;
-	u32	curRCR;
+	uint32_t	curRCR;
 
 	curRCR = rtw_read16(Adapter, REG_SYS_EEPROM_CTRL);
 	size = (curRCR & EEPROMSEL) ? 6 : 4; // 6: EEPROM used is 93C46, 4: boot from E-Fuse.
@@ -3624,7 +3624,7 @@ void CheckAutoloadState8812A(PADAPTER padapter)
 void InitPGData8812A(PADAPTER padapter)
 {
 	PEEPROM_EFUSE_PRIV pEEPROM;
-	u32 i;
+	uint32_t i;
 	uint16_t val16;
 
 
@@ -3633,7 +3633,7 @@ void InitPGData8812A(PADAPTER padapter)
 #ifdef CONFIG_EFUSE_CONFIG_FILE
 	{
 		s32 tmp;
-		u32 addr;
+		uint32_t addr;
 
 		tmp = _halReadPGDataFromFile(padapter, pEEPROM->efuse_eeprom_data);
 		pEEPROM->bloadfile_fail_flag = ((tmp==_FAIL) ? _TRUE : _FALSE);
@@ -3682,7 +3682,7 @@ ReadChipVersion8812A(
 	IN	PADAPTER	Adapter
 	)
 {
-	u32	value32;
+	uint32_t	value32;
 	HAL_VERSION		ChipVersion;
 	PHAL_DATA_TYPE	pHalData;
 
@@ -3710,7 +3710,7 @@ ReadChipVersion8812A(
 		ChipVersion.VendorType = ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : CHIP_VENDOR_TSMC);
 	else
 	{
-		u32 vendor;
+		uint32_t vendor;
 
 		vendor = (value32 & EXT_VENDOR_ID) >> EXT_VENDOR_ID_SHIFT;
 		switch (vendor)
@@ -3800,12 +3800,12 @@ Hal_PatchwithJaguar_8812(
 	}
 }
 
-void UpdateHalRAMask8812A(PADAPTER padapter, u32 mac_id, uint8_t rssi_level)
+void UpdateHalRAMask8812A(PADAPTER padapter, uint32_t mac_id, uint8_t rssi_level)
 {
 	//volatile unsigned int result;
 	uint8_t	init_rate=0;
 	uint8_t	networkType, raid;
-	u32	mask,rate_bitmap;
+	uint32_t	mask,rate_bitmap;
 	uint8_t	shortGIrate = _FALSE;
 	int	supportRateNum = 0;
 	uint8_t	arg[4] = {0};
@@ -4007,11 +4007,11 @@ static void StopTxBeacon(_adapter *padapter)
 
 void SetBeaconRelatedRegisters8812A(PADAPTER padapter)
 {
-	u32	value32;
+	uint32_t	value32;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	u32 bcn_ctrl_reg 			= REG_BCN_CTRL;
+	uint32_t bcn_ctrl_reg 			= REG_BCN_CTRL;
 	//reset TSF, enable update TSF, correcting TSF On Beacon
 
 	//REG_BCN_INTERVAL
@@ -4293,7 +4293,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, uint8_t variable, uint8_t * val)
 static void hw_var_set_macaddr(PADAPTER Adapter, uint8_t variable, uint8_t * val)
 {
 	uint8_t idx = 0;
-	u32 reg_macid;
+	uint32_t reg_macid;
 
 #ifdef CONFIG_CONCURRENT_MODE
 	if(Adapter->iface_type == IFACE_PORT1)
@@ -4316,7 +4316,7 @@ static void hw_var_set_macaddr(PADAPTER Adapter, uint8_t variable, uint8_t * val
 static void hw_var_set_bssid(PADAPTER Adapter, uint8_t variable, uint8_t * val)
 {
 	uint8_t	idx = 0;
-	u32 reg_bssid;
+	uint32_t reg_bssid;
 
 #ifdef CONFIG_CONCURRENT_MODE
 	if(Adapter->iface_type == IFACE_PORT1)
@@ -4338,7 +4338,7 @@ static void hw_var_set_bssid(PADAPTER Adapter, uint8_t variable, uint8_t * val)
 
 static void hw_var_set_bcn_func(PADAPTER Adapter, uint8_t variable, uint8_t * val)
 {
-	u32 bcn_ctrl_reg;
+	uint32_t bcn_ctrl_reg;
 
 #ifdef CONFIG_CONCURRENT_MODE
 	if(Adapter->iface_type == IFACE_PORT1)
@@ -4487,7 +4487,7 @@ static void hw_var_set_mlme_disconnect(PADAPTER Adapter, uint8_t variable, uint8
 
 static void hw_var_set_mlme_sitesurvey(PADAPTER Adapter, uint8_t variable, uint8_t * val)
 {
-	u32	value_rcr, rcr_clear_bit, reg_bcn_ctl;
+	uint32_t	value_rcr, rcr_clear_bit, reg_bcn_ctl;
 	uint16_t	value_rxfltmap2;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
 	struct mlme_priv *pmlmepriv=&(Adapter->mlmepriv);
@@ -4684,7 +4684,7 @@ void SetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval)
 	PDM_ODM_T podmpriv;
 	uint8_t val8;
 	uint16_t val16;
-	u32 val32;
+	uint32_t val32;
 
 _func_enter_;
 
@@ -4999,9 +4999,9 @@ _func_enter_;
 			{
 				uint8_t ucIndex = *pval;
 				uint8_t i;
-				u32	ulCommand = 0;
-				u32	ulContent = 0;
-				u32	ulEncAlgo = CAM_AES;
+				uint32_t	ulCommand = 0;
+				uint32_t	ulContent = 0;
+				uint32_t	ulEncAlgo = CAM_AES;
 
 				for (i=0; i<CAM_CONTENT_COUNT; i++)
 				{
@@ -5032,8 +5032,8 @@ _func_enter_;
 
 		case HW_VAR_CAM_WRITE:
 			{
-				u32 cmd;
-				u32 *cam_val = (u32*)pval;
+				uint32_t cmd;
+				uint32_t *cam_val = (u32*)pval;
 
 				rtw_write32(padapter, WCAMI, cam_val[0]);
 
@@ -5099,7 +5099,7 @@ _func_enter_;
 
 		case HW_VAR_AMPDU_FACTOR:
 			{
-				u32	AMPDULen = *(uint8_t *)pval;
+				uint32_t	AMPDULen = *(uint8_t *)pval;
 
 				if (IS_HARDWARE_TYPE_8812(padapter))
 				{
@@ -5188,7 +5188,7 @@ _func_enter_;
 		case HW_VAR_INITIAL_GAIN:
 			{
 				pDIG_T pDigTable = &podmpriv->DM_DigTable;
-				u32 rx_gain = *(u32*)pval;
+				uint32_t rx_gain = *(u32*)pval;
 
 				if (rx_gain == 0xff) {//restore rx gain
 					ODM_Write_DIG(podmpriv, pDigTable->BackupIGValue);
@@ -5297,9 +5297,9 @@ _func_enter_;
 #ifdef CONFIG_CONCURRENT_MODE
 		case HW_VAR_CHECK_TXBUF:
 			{
-				u32 i;
+				uint32_t i;
 				uint8_t RetryLimit;
-				u32 reg_200, reg_204;
+				uint32_t reg_200, reg_204;
 
 				RetryLimit = 0x01;
 
@@ -5363,7 +5363,7 @@ _func_enter_;
 
 		case HW_VAR_NAV_UPPER:
 			{
-				u32 usNavUpper = *((u32*)pval);
+				uint32_t usNavUpper = *((u32*)pval);
 
 				if (usNavUpper > HAL_NAV_UPPER_UNIT * 0xFF)
 				{
@@ -5463,7 +5463,7 @@ void GetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval)
 	PDM_ODM_T podmpriv;
 	uint8_t val8;
 	uint16_t val16;
-	u32 val32;
+	uint32_t val32;
 
 _func_enter_;
 
@@ -5514,7 +5514,7 @@ _func_enter_;
 			}
 			else
 			{
-				u32 valRCR;
+				uint32_t valRCR;
 				valRCR = rtw_read32(padapter, REG_RCR);
 				valRCR &= 0x00070000;
 				if(valRCR)
@@ -5791,9 +5791,9 @@ uint8_t GetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pv
 		case HW_DEF_RA_INFO_DUMP:
 			{
 				uint8_t mac_id = *(uint8_t *)pval;
-				u32 cmd = 0x40000400 | mac_id;
-				u32 ra_info1, ra_info2;
-				u32 rate_mask1, rate_mask2;
+				uint32_t cmd = 0x40000400 | mac_id;
+				uint32_t ra_info1, ra_info2;
+				uint32_t rate_mask1, rate_mask2;
 
 				if ((padapter->bLinkInfoDump & BIT(0))
 					&& (check_fwstate(&padapter->mlmepriv, _FW_LINKED) == _TRUE))

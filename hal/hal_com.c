@@ -117,7 +117,7 @@ hal_com_get_channel_plan(
 BOOLEAN
 HAL_IsLegalChannel(
 	IN	PADAPTER	Adapter,
-	IN	u32			Channel
+	IN	uint32_t			Channel
 	)
 {
 	BOOLEAN bLegalChannel = _TRUE;

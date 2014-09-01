@@ -74,7 +74,7 @@ void rtw_hal_sw_led_deinit(_adapter *padapter)
 		padapter->HalFunc.DeInitSwLeds(padapter);
 }
 
-u32 rtw_hal_power_on(_adapter *padapter)
+uint32_t rtw_hal_power_on(_adapter *padapter)
 {
 	if(padapter->HalFunc.hal_power_on)
 		return padapter->HalFunc.hal_power_on(padapter);
@@ -218,9 +218,9 @@ void rtw_hal_disable_interrupt(_adapter *padapter)
 }
 
 
-u32	rtw_hal_inirp_init(_adapter *padapter)
+uint32_t	rtw_hal_inirp_init(_adapter *padapter)
 {
-	u32 rst = _FAIL;
+	uint32_t rst = _FAIL;
 	if(padapter->HalFunc.inirp_init)
 		rst = padapter->HalFunc.inirp_init(padapter);
 	else
@@ -228,7 +228,7 @@ u32	rtw_hal_inirp_init(_adapter *padapter)
 	return rst;
 }
 
-u32	rtw_hal_inirp_deinit(_adapter *padapter)
+uint32_t	rtw_hal_inirp_deinit(_adapter *padapter)
 {
 
 	if(padapter->HalFunc.inirp_deinit)
@@ -321,7 +321,7 @@ void rtw_hal_update_ra_mask(struct sta_info *psta, uint8_t rssi_level)
 	}
 }
 
-void	rtw_hal_add_ra_tid(_adapter *padapter, u32 bitmap, u8* arg, uint8_t rssi_level)
+void	rtw_hal_add_ra_tid(_adapter *padapter, uint32_t bitmap, u8* arg, uint8_t rssi_level)
 {
 	if(padapter->HalFunc.Add_RateATid)
 		padapter->HalFunc.Add_RateATid(padapter, bitmap, arg, rssi_level);
@@ -346,27 +346,27 @@ void	rtw_hal_stop_thread(_adapter *padapter)
 		padapter->HalFunc.cancel_thread(padapter);
 }
 
-u32	rtw_hal_read_bbreg(_adapter *padapter, u32 RegAddr, u32 BitMask)
+uint32_t	rtw_hal_read_bbreg(_adapter *padapter, uint32_t RegAddr, uint32_t BitMask)
 {
-	u32 data = 0;
+	uint32_t data = 0;
 	if(padapter->HalFunc.read_bbreg)
 		 data = padapter->HalFunc.read_bbreg(padapter, RegAddr, BitMask);
 	return data;
 }
-void	rtw_hal_write_bbreg(_adapter *padapter, u32 RegAddr, u32 BitMask, u32 Data)
+void	rtw_hal_write_bbreg(_adapter *padapter, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
 	if(padapter->HalFunc.write_bbreg)
 		padapter->HalFunc.write_bbreg(padapter, RegAddr, BitMask, Data);
 }
 
-u32	rtw_hal_read_rfreg(_adapter *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask)
+uint32_t	rtw_hal_read_rfreg(_adapter *padapter, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask)
 {
-	u32 data = 0;
+	uint32_t data = 0;
 	if( padapter->HalFunc.read_rfreg)
 		data = padapter->HalFunc.read_rfreg(padapter, eRFPath, RegAddr, BitMask);
 	return data;
 }
-void	rtw_hal_write_rfreg(_adapter *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask, u32 Data)
+void	rtw_hal_write_rfreg(_adapter *padapter, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
 	if(padapter->HalFunc.write_rfreg)
 		padapter->HalFunc.write_rfreg(padapter, eRFPath, RegAddr, BitMask, Data);
@@ -492,7 +492,7 @@ bool rtw_hal_sreset_inprogress(_adapter *padapter)
 #endif	//DBG_CONFIG_ERROR_DETECT
 
 #ifdef CONFIG_IOL
-int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wating_ms, u32 bndy_cnt)
+int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, uint32_t max_wating_ms, uint32_t bndy_cnt)
 {
 	if(adapter->HalFunc.IOL_exec_cmds_sync)
 		return adapter->HalFunc.IOL_exec_cmds_sync(adapter, xmit_frame, max_wating_ms,bndy_cnt);

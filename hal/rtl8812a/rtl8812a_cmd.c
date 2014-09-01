@@ -64,17 +64,17 @@ static uint8_t _is_fw_read_cmd_down(_adapter* padapter, uint8_t msgbox_num)
 *|31 - 0	  |
 *|ext_msg|
 ******************************************/
-static s32 FillH2CCmd_8812(PADAPTER padapter, uint8_t ElementID, u32 CmdLen, uint8_t *pCmdBuffer)
+static s32 FillH2CCmd_8812(PADAPTER padapter, uint8_t ElementID, uint32_t CmdLen, uint8_t *pCmdBuffer)
 {
 	uint8_t bcmd_down = _FALSE;
 	s32 retry_cnts = 100;
 	uint8_t h2c_box_num;
-	u32	msgbox_addr;
-	u32 msgbox_ex_addr;
+	uint32_t	msgbox_addr;
+	uint32_t msgbox_ex_addr;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
 	uint8_t cmd_idx,ext_cmd_len;
-	u32	h2c_cmd = 0;
-	u32	h2c_cmd_ex = 0;
+	uint32_t	h2c_cmd = 0;
+	uint32_t	h2c_cmd_ex = 0;
 	s32 ret = _FAIL;
 
 _func_enter_;
@@ -198,9 +198,9 @@ _func_exit_;
 }
 
 uint8_t	Get_VHT_ENI(
-	u32		IOTAction,
-	u32		WirelessMode,
-	u32		ratr_bitmap
+	uint32_t		IOTAction,
+	uint32_t		WirelessMode,
+	uint32_t		ratr_bitmap
 	)
 {
 	uint8_t	Ret = 0;
@@ -312,7 +312,7 @@ Get_RA_LDPC_8812(
 	return (bLDPC << 2);
 }
 
-void rtl8812_set_raid_cmd(PADAPTER padapter, u32 bitmap, uint8_t * arg)
+void rtl8812_set_raid_cmd(PADAPTER padapter, uint32_t bitmap, uint8_t * arg)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -363,7 +363,7 @@ _func_exit_;
 
 }
 
-void rtl8812_Add_RateATid(PADAPTER pAdapter, u32 bitmap, uint8_t * arg, uint8_t rssi_level)
+void rtl8812_Add_RateATid(PADAPTER pAdapter, uint32_t bitmap, uint8_t * arg, uint8_t rssi_level)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t	macid;
@@ -465,11 +465,11 @@ void rtl8812_set_FwMediaStatus_cmd(PADAPTER padapter, uint16_t mstatus_rpt )
 	FillH2CCmd_8812(padapter, H2C_8812_MSRRPT, 3, u1JoinBssRptParm);
 }
 
-void ConstructBeacon(_adapter *padapter, uint8_t *pframe, u32 *pLength)
+void ConstructBeacon(_adapter *padapter, uint8_t *pframe, uint32_t *pLength)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	uint16_t					*fctrl;
-	u32					rate_len, pktlen;
+	uint32_t					rate_len, pktlen;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX 		*cur_network = &(pmlmeinfo->network);
@@ -533,7 +533,7 @@ void ConstructBeacon(_adapter *padapter, uint8_t *pframe, u32 *pLength)
 
 	if( (pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
 	{
-		u32 ATIMWindow;
+		uint32_t ATIMWindow;
 		// IBSS Parameter Set...
 		//ATIMWindow = cur->Configuration.ATIMWindow;
 		ATIMWindow = 0;
@@ -567,11 +567,11 @@ _ConstructBeacon:
 
 }
 
-void ConstructPSPoll(_adapter *padapter, uint8_t *pframe, u32 *pLength)
+void ConstructPSPoll(_adapter *padapter, uint8_t *pframe, uint32_t *pLength)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	uint16_t					*fctrl;
-	u32					pktlen;
+	uint32_t					pktlen;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -600,7 +600,7 @@ void ConstructPSPoll(_adapter *padapter, uint8_t *pframe, u32 *pLength)
 void ConstructNullFunctionData(
 	PADAPTER padapter,
 	uint8_t		*pframe,
-	u32		*pLength,
+	uint32_t		*pLength,
 	uint8_t		*StaAddr,
 	uint8_t		bQoS,
 	uint8_t		AC,
@@ -609,7 +609,7 @@ void ConstructNullFunctionData(
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	uint16_t						*fctrl;
-	u32						pktlen;
+	uint32_t						pktlen;
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	struct wlan_network		*cur_network = &pmlmepriv->cur_network;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
@@ -670,12 +670,12 @@ void ConstructNullFunctionData(
 	*pLength = pktlen;
 }
 
-void ConstructProbeRsp(_adapter *padapter, uint8_t *pframe, u32 *pLength, uint8_t *StaAddr, BOOLEAN bHideSSID)
+void ConstructProbeRsp(_adapter *padapter, uint8_t *pframe, uint32_t *pLength, uint8_t *StaAddr, BOOLEAN bHideSSID)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	uint16_t					*fctrl;
 	uint8_t					*mac, *bssid;
-	u32					pktlen;
+	uint32_t					pktlen;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX 		*cur_network = &(pmlmeinfo->network);
@@ -718,7 +718,7 @@ CheckFwRsvdPageContent(
 )
 {
 	HAL_DATA_TYPE*	pHalData = GET_HAL_DATA(Adapter);
-	u32	MaxBcnPageNum;
+	uint32_t	MaxBcnPageNum;
 
  	if(pHalData->FwRsvdPageStartOffset != 0)
  	{
@@ -777,13 +777,13 @@ static void SetFwRsvdPagePkt_8812(PADAPTER padapter, BOOLEAN bDLFinished)
 	struct xmit_priv	*pxmitpriv;
 	struct mlme_ext_priv	*pmlmeext;
 	struct mlme_ext_info	*pmlmeinfo;
-	u32	PSPollLength, NullFunctionDataLength, QosNullLength;
-	u32	BcnLen;
+	uint32_t	PSPollLength, NullFunctionDataLength, QosNullLength;
+	uint32_t	BcnLen;
 	uint8_t	TotalPageNum=0, CurtPktPageNum=0, TxDescLen=0, RsvdPageNum=0;
 	uint8_t	*ReservedPagePacket;
 	uint8_t	RsvdPageLoc[5] = {0};
 	uint16_t	BufIndex=0, PageSize = 256;
-	u32	TotalPacketLen, MaxRsvdPageBufSize=0;;
+	uint32_t	TotalPacketLen, MaxRsvdPageBufSize=0;;
 
 
 	//DBG_871X("%s\n", __FUNCTION__);
@@ -953,7 +953,7 @@ void rtl8812_set_FwJoinBssReport_cmd(PADAPTER padapter, uint8_t mstatus)
 	BOOLEAN		bSendBeacon=_FALSE;
 	BOOLEAN		bcn_valid = _FALSE;
 	uint8_t	DLBcnCount=0;
-	u32 poll = 0;
+	uint32_t poll = 0;
 
 _func_enter_;
 
@@ -1232,9 +1232,9 @@ _func_exit_;
 int reset_tsf(PADAPTER Adapter, uint8_t reset_port )
 {
 	uint8_t reset_cnt_before = 0, reset_cnt_after = 0, loop_cnt = 0;
-	u32 reg_reset_tsf_cnt = (IFACE_PORT0==reset_port) ?
+	uint32_t reg_reset_tsf_cnt = (IFACE_PORT0==reset_port) ?
 				REG_FW_RESET_TSF_CNT_0:REG_FW_RESET_TSF_CNT_1;
-	u32 reg_bcncrtl = (IFACE_PORT0==reset_port) ?
+	uint32_t reg_bcncrtl = (IFACE_PORT0==reset_port) ?
 				REG_BCN_CTRL_1:REG_BCN_CTRL;
 
 	rtw_scan_abort(Adapter->pbuddy_adapter);	/*	site survey will cause reset_tsf fail	*/
@@ -1257,7 +1257,7 @@ int reset_tsf(PADAPTER Adapter, uint8_t reset_port )
 void rtl8812_set_wowlan_cmd(_adapter* padapter, uint8_t enable)
 {
 	uint8_t		res=_SUCCESS;
-	u32		test=0;
+	uint32_t		test=0;
 	struct recv_priv	*precvpriv = &padapter->recvpriv;
 	SETWOWLAN_PARM		pwowlan_parm;
 	struct pwrctrl_priv	*pwrpriv=&padapter->pwrctrlpriv;

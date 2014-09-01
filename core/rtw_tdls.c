@@ -357,7 +357,7 @@ uint8_t *rtw_tdls_set_ht_cap(_adapter *padapter, uint8_t *pframe, struct pkt_att
 						IEEE80211_HT_CAP_SGI_40 | IEEE80211_HT_CAP_TX_STBC |IEEE80211_HT_CAP_DSSSCCK40;
 
 	{
-		u32 rx_packet_offset, max_recvbuf_sz;
+		uint32_t	 rx_packet_offset, max_recvbuf_sz;
 		padapter->HalFunc.GetHalDefVarHandler(padapter, HAL_DEF_RX_PACKET_OFFSET, &rx_packet_offset);
 		padapter->HalFunc.GetHalDefVarHandler(padapter, HAL_DEF_MAX_RECVBUF_SZ, &max_recvbuf_sz);
 		if(max_recvbuf_sz-rx_packet_offset>(8191-256))
@@ -411,8 +411,8 @@ uint8_t *rtw_tdls_set_sup_ch(struct mlme_ext_priv *pmlmeext, uint8_t *pframe, st
 void rtw_tdls_process_wfd_ie(struct tdls_info *ptdlsinfo, uint8_t *ptr, uint8_t length)
 {
 	uint8_t	wfd_ie[ 128 ] = { 0x00 };
-	u32	wfd_ielen = 0;
-	u32	wfd_offset = 0;
+	uint32_t	wfd_ielen = 0;
+	uint32_t	wfd_offset = 0;
 	//	Try to get the TCP port information when receiving the negotiation response.
 	//
 
@@ -421,7 +421,7 @@ void rtw_tdls_process_wfd_ie(struct tdls_info *ptdlsinfo, uint8_t *ptr, uint8_t 
 	while( wfd_offset )
 	{
 		uint8_t	attr_content[ 10 ] = { 0x00 };
-		u32	attr_contentlen = 0;
+		uint32_t	attr_contentlen = 0;
 		int	i;
 
 		DBG_871X( "[%s] WFD IE Found!!\n", __FUNCTION__ );
@@ -543,7 +543,7 @@ void issue_tdls_setup_req(_adapter *padapter, uint8_t *mac_addr)
 	struct sta_info *ptdls_sta= NULL;
 	_irqL irqL;
 	static uint8_t dialogtoken = 0;
-	u32 timeout_interval= TPK_RESEND_COUNT * 1000;	//retry timer should set at least 301 sec, using TPK_count counting 301 times.
+	uint32_t	 timeout_interval= TPK_RESEND_COUNT * 1000;	//retry timer should set at least 301 sec, using TPK_count counting 301 times.
 
 	if(ptdlsinfo->ap_prohibited == _TRUE)
 		goto exit;
@@ -1088,7 +1088,7 @@ sint On_TDLS_Setup_Req(_adapter *adapter, union recv_frame *precv_frame)
 	uint8_t ccmp_have=0, rsnie_have=0;
 	uint16_t j;
 	uint8_t SNonce[32];
-	u32 *timeout_interval;
+	uint32_t	 *timeout_interval;
 	sint parsing_length;	//frame body length, without icv_len
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 	uint8_t FIXED_IE = 5;
@@ -1198,7 +1198,7 @@ sint On_TDLS_Setup_Req(_adapter *adapter, union recv_frame *precv_frame)
 					break;
 				case _TIMEOUT_ITVL_IE_:
 					if(prx_pkt_attrib->encrypt)
-						timeout_interval = (u32 *)(ptr+j+3);
+						timeout_interval = (uint32_t	 *)(ptr+j+3);
 					break;
 				case _RIC_Descriptor_IE_:
 					break;
@@ -1915,12 +1915,12 @@ sint On_TDLS_Ch_Switch_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 }
 
 #ifdef CONFIG_WFD
-void wfd_ie_tdls(_adapter * padapter, uint8_t *pframe, u32 *pktlen )
+void wfd_ie_tdls(_adapter * padapter, uint8_t *pframe, uint32_t	 *pktlen )
 {
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	struct wifi_display_info	*pwfd_info = padapter->tdlsinfo.wfd_info;
 	uint8_t wfdie[ MAX_WFD_IE_LEN] = { 0x00 };
-	u32 wfdielen = 0;
+	uint32_t	 wfdielen = 0;
 
 	//	WFD OUI
 	wfdielen = 0;
@@ -2025,7 +2025,7 @@ void rtw_build_tdls_setup_req_ies(_adapter * padapter, struct xmit_frame * pxmit
 	uint8_t iedata=0;
 	uint8_t sup_ch[ 30 * 2 ] = {0x00 }, sup_ch_idx = 0, idx_5g = 2;	//For supported channel
 	uint8_t timeout_itvl[5];	//set timeout interval to maximum value
-	u32 time;
+	uint32_t	 time;
 
 	//SNonce
 	if(pattrib->encrypt){
@@ -2146,7 +2146,7 @@ void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmit
 	uint8_t ANonce[32];	//maybe it can put in ontdls_req
 	uint8_t k;		//for random ANonce
 	uint8_t  *pftie, *ptimeout_ie, *plinkid_ie, *prsnie, *pftie_mic;
-	u32 time;
+	uint32_t	 time;
 
 	ptdls_sta = rtw_get_stainfo( &(padapter->stapriv) , pattrib->dst);
 
@@ -2420,7 +2420,7 @@ void rtw_build_tdls_dis_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitfr
 	uint8_t link_id_addr[18] = {0};
 	uint8_t iedata=0;
 	uint8_t timeout_itvl[5];	//set timeout interval to maximum value
-	u32 timeout_interval= TPK_RESEND_COUNT * 1000;
+	uint32_t	 timeout_interval= TPK_RESEND_COUNT * 1000;
 
 	//category, action, dialog token
 	pframe = rtw_set_fixed_ie(pframe, 1, &(category), &(pattrib->pktlen));
@@ -2870,7 +2870,7 @@ int update_sgi_tdls(_adapter *padapter, struct sta_info *psta)
 		return _FALSE;
 }
 
-u32 update_mask_tdls(_adapter *padapter, struct sta_info *psta)
+uint32_t	 update_mask_tdls(_adapter *padapter, struct sta_info *psta)
 {
 	int i;
 	uint8_t rf_type, id;

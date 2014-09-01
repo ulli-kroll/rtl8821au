@@ -54,11 +54,11 @@ uint8_t HalPwrSeqCmdParsing(
 {
 	WLAN_PWR_CFG 	PwrCfgCmd = {0};
 	uint8_t				bPollingBit = _FALSE;
-	u32				AryIdx = 0;
+	uint32_t				AryIdx = 0;
 	uint8_t				value = 0;
-	u32				offset = 0;
-	u32				pollingCount = 0; // polling autoload done.
-	u32				maxPollingCnt = 5000;
+	uint32_t				offset = 0;
+	uint32_t				pollingCount = 0; // polling autoload done.
+	uint32_t				maxPollingCnt = 5000;
 
 	do {
 		PwrCfgCmd = PwrSeqCmd[AryIdx];

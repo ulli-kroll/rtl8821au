@@ -23,8 +23,8 @@
 
 
 struct ch_freq {
-	u32 channel;
-	u32 frequency;
+	uint32_t	 channel;
+	uint32_t	 frequency;
 };
 
 struct ch_freq ch_freq_map[] = {
@@ -51,10 +51,10 @@ struct ch_freq ch_freq_map[] = {
 
 int ch_freq_map_num = (sizeof(ch_freq_map) / sizeof(struct ch_freq));
 
-u32 rtw_ch2freq(u32 channel)
+uint32_t	 rtw_ch2freq(uint32_t	 channel)
 {
 	uint8_t	i;
-	u32	freq = 0;
+	uint32_t	freq = 0;
 
 	for (i = 0; i < ch_freq_map_num; i++)
 	{
@@ -70,10 +70,10 @@ u32 rtw_ch2freq(u32 channel)
 	return freq;
 }
 
-u32 rtw_freq2ch(u32 freq)
+uint32_t	 rtw_freq2ch(uint32_t	 freq)
 {
 	uint8_t	i;
-	u32	ch = 0;
+	uint32_t	ch = 0;
 
 	for (i = 0; i < ch_freq_map_num; i++)
 	{

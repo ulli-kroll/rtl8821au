@@ -47,16 +47,16 @@ void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag, uint8_t *ptxdesc)
 		//	ptxdesc->txdw4 = cpu_to_le32(0x00001006);//RTS Rate=24M
 		//	ptxdesc->txdw6 = 0x6666f800;
 		DBG_8192C("=====================================\n");
-		DBG_8192C("Offset00(0x%08x)\n",*((u32 *)(ptxdesc)));
-		DBG_8192C("Offset04(0x%08x)\n",*((u32 *)(ptxdesc+4)));
-		DBG_8192C("Offset08(0x%08x)\n",*((u32 *)(ptxdesc+8)));
-		DBG_8192C("Offset12(0x%08x)\n",*((u32 *)(ptxdesc+12)));
-		DBG_8192C("Offset16(0x%08x)\n",*((u32 *)(ptxdesc+16)));
-		DBG_8192C("Offset20(0x%08x)\n",*((u32 *)(ptxdesc+20)));
-		DBG_8192C("Offset24(0x%08x)\n",*((u32 *)(ptxdesc+24)));
-		DBG_8192C("Offset28(0x%08x)\n",*((u32 *)(ptxdesc+28)));
-		DBG_8192C("Offset32(0x%08x)\n",*((u32 *)(ptxdesc+32)));
-		DBG_8192C("Offset36(0x%08x)\n",*((u32 *)(ptxdesc+36)));
+		DBG_8192C("Offset00(0x%08x)\n",*((uint32_t *)(ptxdesc)));
+		DBG_8192C("Offset04(0x%08x)\n",*((uint32_t *)(ptxdesc+4)));
+		DBG_8192C("Offset08(0x%08x)\n",*((uint32_t *)(ptxdesc+8)));
+		DBG_8192C("Offset12(0x%08x)\n",*((uint32_t *)(ptxdesc+12)));
+		DBG_8192C("Offset16(0x%08x)\n",*((uint32_t *)(ptxdesc+16)));
+		DBG_8192C("Offset20(0x%08x)\n",*((uint32_t *)(ptxdesc+20)));
+		DBG_8192C("Offset24(0x%08x)\n",*((uint32_t *)(ptxdesc+24)));
+		DBG_8192C("Offset28(0x%08x)\n",*((uint32_t *)(ptxdesc+28)));
+		DBG_8192C("Offset32(0x%08x)\n",*((uint32_t *)(ptxdesc+32)));
+		DBG_8192C("Offset36(0x%08x)\n",*((uint32_t *)(ptxdesc+36)));
 		DBG_8192C("=====================================\n");
 	}
 
@@ -253,8 +253,8 @@ void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitb
 void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 {
 	uint16_t	*usPtr;
-	u32 count;
-	u32 index;
+	uint32_t count;
+	uint32_t index;
 	uint16_t checksum = 0;
 
 
@@ -282,7 +282,7 @@ void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 void rtl8812a_fill_fake_txdesc(
 	PADAPTER	padapter,
 	uint8_t *			pDesc,
-	u32			BufferLen,
+	uint32_t			BufferLen,
 	uint8_t			IsPsPoll,
 	uint8_t			IsBTQosNull)
 {

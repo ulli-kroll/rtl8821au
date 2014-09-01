@@ -5475,7 +5475,7 @@ odm_RSSIMonitorCheckCE(
 	int	tmpEntryMaxPWDB=0, tmpEntryMinPWDB=0xff;
 	u8 	sta_cnt=0;
 	u8	UL_DL_STATE = 0;// for 8812 use
-	u32	PWDB_rssi[NUM_STA]={0};//[0~15]:MACID, [16~31]:PWDB_rssi
+	uint32_t	PWDB_rssi[NUM_STA]={0};//[0~15]:MACID, [16~31]:PWDB_rssi
 
 	if(pDM_Odm->bLinked != _TRUE)
 		return;
@@ -7989,13 +7989,13 @@ odm_EdcaTurboCheckCE(
 #if(DM_ODM_SUPPORT_TYPE==ODM_CE)
 
 	PADAPTER		       Adapter = pDM_Odm->Adapter;
-	u32	EDCA_BE_UL = 0x5ea42b;//Parameter suggested by Scott  //edca_setting_UL[pMgntInfo->IOTPeer];
-	u32	EDCA_BE_DL = 0x5ea42b;//Parameter suggested by Scott  //edca_setting_DL[pMgntInfo->IOTPeer];
-	u32	ICType=pDM_Odm->SupportICType;
-	u32	IOTPeer=0;
+	uint32_t	EDCA_BE_UL = 0x5ea42b;//Parameter suggested by Scott  //edca_setting_UL[pMgntInfo->IOTPeer];
+	uint32_t	EDCA_BE_DL = 0x5ea42b;//Parameter suggested by Scott  //edca_setting_DL[pMgntInfo->IOTPeer];
+	uint32_t	ICType=pDM_Odm->SupportICType;
+	uint32_t	IOTPeer=0;
 	u8	WirelessMode=0xFF;                   //invalid value
-	u32 	trafficIndex;
-	u32	edca_param;
+	uint32_t 	trafficIndex;
+	uint32_t	edca_param;
 	u64	cur_tx_bytes = 0;
 	u64	cur_rx_bytes = 0;
 	u8	bbtchange = _FALSE;

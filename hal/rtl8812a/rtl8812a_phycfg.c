@@ -45,11 +45,11 @@ const char *const GLBwSrc[]={
 u32
 PHY_QueryBBReg8812(
 	IN	PADAPTER	Adapter,
-	IN	u32			RegAddr,
-	IN	u32			BitMask
+	IN	uint32_t			RegAddr,
+	IN	uint32_t			BitMask
 	)
 {
-	u32	ReturnValue = 0, OriginalValue, BitShift;
+	uint32_t	ReturnValue = 0, OriginalValue, BitShift;
 
 #if (DISABLE_BB_RF == 1)
 	return 0;
@@ -101,10 +101,10 @@ static	u32
 phy_RFSerialRead(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				Offset
+	IN	uint32_t				Offset
 	)
 {
-	u32							retValue = 0;
+	uint32_t							retValue = 0;
 	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 	BOOLEAN						bIsPIMode = _FALSE;
@@ -164,11 +164,11 @@ static	VOID
 phy_RFSerialWrite(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				Offset,
-	IN	u32				Data
+	IN	uint32_t				Offset,
+	IN	uint32_t				Data
 	)
 {
-	u32							DataAndAddr = 0;
+	uint32_t							DataAndAddr = 0;
 	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 
@@ -221,11 +221,11 @@ u32
 PHY_QueryRFReg8812(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				RegAddr,
-	IN	u32				BitMask
+	IN	uint32_t				RegAddr,
+	IN	uint32_t				BitMask
 	)
 {
-	u32				Original_Value, Readback_Value, BitShift;
+	uint32_t				Original_Value, Readback_Value, BitShift;
 
 #if (DISABLE_BB_RF == 1)
 	return 0;
@@ -243,9 +243,9 @@ VOID
 PHY_SetRFReg8812(
 	IN	PADAPTER		Adapter,
 	IN	uint8_t				eRFPath,
-	IN	u32				RegAddr,
-	IN	u32				BitMask,
-	IN	u32				Data
+	IN	uint32_t				RegAddr,
+	IN	uint32_t				BitMask,
+	IN	uint32_t				Data
 	)
 {
 #if (DISABLE_BB_RF == 1)
@@ -257,7 +257,7 @@ PHY_SetRFReg8812(
 
 	// RF data is 20 bits only
 	if (BitMask != bLSSIWrite_data_Jaguar) {
-		u32	Original_Value, BitShift;
+		uint32_t	Original_Value, BitShift;
 		Original_Value = phy_RFSerialRead(Adapter, eRFPath, RegAddr);
 		BitShift =  PHY_CalculateBitShift(BitMask);
 		Data = ((Original_Value) & (~BitMask)) | (Data<< BitShift);
@@ -585,7 +585,7 @@ BOOLEAN
 eqNByte(
 	uint8_t *	str1,
 	uint8_t *	str2,
-	u32	num
+	uint32_t	num
 	)
 {
 	if(num==0)
@@ -1182,7 +1182,7 @@ PHY_SetPowerLimitTableValue(
 u8
 PHY_GetPowerLimitValue(
 	IN	PADAPTER			Adapter,
-	IN	u32					RegPwrTblSel,
+	IN	uint32_t					RegPwrTblSel,
 	IN	BAND_TYPE			Band,
 	IN	CHANNEL_WIDTH	Bandwidth,
 	IN	RF_PATH				RfPath,
@@ -1342,9 +1342,9 @@ PHY_GetPowerLimitValue(
 VOID
 PHY_StorePwrByRateIndexVhtSeries(
 	IN	PADAPTER	Adapter,
-	IN	u32			RegAddr,
-	IN	u32			BitMask,
-	IN	u32			Data
+	IN	uint32_t			RegAddr,
+	IN	uint32_t			BitMask,
+	IN	uint32_t			Data
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -1426,7 +1426,7 @@ phy_ChangePGDataFromExactToRelativeValue(
 {
 	s8	i = 0;
 	uint8_t	TempValue = 0;
-	u32	TempData = 0;
+	uint32_t	TempData = 0;
 	//BaseValue = ( BaseValue & 0xf ) + ( ( BaseValue >> 4 ) & 0xf ) * 10;
 	//RT_TRACE(COMP_INIT, DBG_LOUD, ("Corrected BaseValue %u\n", BaseValue ) );
 
@@ -1457,8 +1457,8 @@ phy_ChangePGDataFromExactToRelativeValue(
 
 VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
 	IN	PADAPTER	Adapter,
-	IN	u32			RegAddr,
-	IN	u32			BitMask,
+	IN	uint32_t			RegAddr,
+	IN	uint32_t			BitMask,
 	IN	u32*		pData
 	)
 {
@@ -1771,8 +1771,8 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 VOID
 phy_StorePwrByRateIndexBase(
 	IN	PADAPTER	Adapter,
-	IN	u32			RegAddr,
-	IN	u32			Data
+	IN	uint32_t			RegAddr,
+	IN	uint32_t			Data
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -2068,13 +2068,13 @@ phy_StorePwrByRateIndexBase(
 VOID
 storePwrIndexDiffRateOffset(
 	IN	PADAPTER	Adapter,
-	IN	u32		RegAddr,
-	IN	u32		BitMask,
-	IN	u32		Data
+	IN	uint32_t		RegAddr,
+	IN	uint32_t		BitMask,
+	IN	uint32_t		Data
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	u32	tmpData = Data;
+	uint32_t	tmpData = Data;
 
 	// If the pHalData->DM_OutSrc.PhyRegPgValueType == 1, which means that the data in PHY_REG_PG data are
 	// exact value, we must change them into relative values
@@ -2463,7 +2463,7 @@ phy_GetTxPwrByRateOffset_8812(
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(pAdapter);
 	uint8_t			shift = 0, original_rate = Rate_Section;
-	u32			tx_pwr_diff = 0;
+	uint32_t			tx_pwr_diff = 0;
 
 	//
 	// For VHT series TX power by rate table.
@@ -2713,8 +2713,8 @@ PHY_GetTxPowerIndex_8812A(
 	PDM_ODM_T			pDM_Odm = &pHalData->odmpriv;
 	uint8_t					i = 0;	//default set to 1S
 	struct registry_priv	*pregistrypriv = &pAdapter->registrypriv;
-	u32					powerDiffByRate = 0;
-	u32					txPower = 0;
+	uint32_t					powerDiffByRate = 0;
+	uint32_t					txPower = 0;
 	uint8_t					chnlIdx = (Channel-1);
 	BOOLEAN				bIn24G = _FALSE;
 
@@ -3139,7 +3139,7 @@ phy_SetTxPowerIndexByRateArray(
 	IN	uint8_t					RateArraySize
 	)
 {
-	u32	powerIndex = 0;
+	uint32_t	powerIndex = 0;
 	int	i = 0;
 
 	for (i = 0; i < RateArraySize; ++i)
@@ -3184,7 +3184,7 @@ phy_TxPowerTrainingByPath_8812(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
 	uint8_t	i;
-	u32	PowerLevel, writeData, writeOffset;
+	uint32_t	PowerLevel, writeData, writeOffset;
 
 	if(RfPath >= pHalData->NumTotalRFPath)
 		return;
@@ -3437,7 +3437,7 @@ PHY_UpdateTxPowerDbm8812(
 }
 
 
-u32 PHY_GetTxBBSwing_8812A(
+uint32_t PHY_GetTxBBSwing_8812A(
 	IN	PADAPTER	Adapter,
 	IN	BAND_TYPE 	Band,
 	IN	uint8_t			RFPath
@@ -3449,7 +3449,7 @@ u32 PHY_GetTxBBSwing_8812A(
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	s8	bbSwing_2G = -1 * GetRegTxBBSwing_2G(Adapter);
 	s8	bbSwing_5G = -1 * GetRegTxBBSwing_5G(Adapter);
-	u32	out = 0x200;
+	uint32_t	out = 0x200;
 	const s8	AUTO = -1;
 
 
@@ -3493,12 +3493,12 @@ u32 PHY_GetTxBBSwing_8812A(
 	}
 	else
 	{
-		u32	swing = 0, swingA = 0, swingB = 0;
+		uint32_t	swing = 0, swingA = 0, swingB = 0;
 
 		if (Band == BAND_ON_2_4G) {
 			if (GetRegTxBBSwing_2G(Adapter) == AUTO)
 			{
-				EFUSE_ShadowRead(Adapter, 1, EEPROM_TX_BBSWING_2G_8812, (u32 *)&swing);
+				EFUSE_ShadowRead(Adapter, 1, EEPROM_TX_BBSWING_2G_8812, (uint32_t *)&swing);
 				swing = (swing == 0xFF) ? 0x00 : swing;
 			}
 			else if (bbSwing_2G ==  0) swing = 0x00; //  0 dB
@@ -3510,7 +3510,7 @@ u32 PHY_GetTxBBSwing_8812A(
 		else {
 			if (GetRegTxBBSwing_5G(Adapter) == AUTO)
 			{
-				EFUSE_ShadowRead(Adapter, 1, EEPROM_TX_BBSWING_5G_8812, (u32 *)&swing);
+				EFUSE_ShadowRead(Adapter, 1, EEPROM_TX_BBSWING_5G_8812, (uint32_t *)&swing);
 				swing = (swing == 0xFF) ? 0x00 : swing;
 			}
 			else if (bbSwing_5G ==  0) swing = 0x00; //  0 dB

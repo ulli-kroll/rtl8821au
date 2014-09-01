@@ -31,8 +31,8 @@ void rtl8812_sreset_xmit_status_check(_adapter *padapter)
 	unsigned long current_time;
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
 	unsigned int diff_time;
-	u32 txdma_status;
-	
+	uint32_t txdma_status;
+
 	if( (txdma_status=rtw_read32(padapter, REG_TXDMA_STATUS)) !=0x00){
 		DBG_871X("%s REG_TXDMA_STATUS:0x%08x\n", __FUNCTION__, txdma_status);
 		rtw_hal_sreset_reset(padapter);
@@ -75,13 +75,13 @@ void rtl8812_sreset_linked_status_check(_adapter *padapter)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
-	u32 rx_dma_status = 0;
+	uint32_t rx_dma_status = 0;
 	rx_dma_status = rtw_read32(padapter,REG_RXDMA_STATUS);
 	if(rx_dma_status!= 0x00){
 		DBG_8192C("%s REG_RXDMA_STATUS:0x%08x\n",__FUNCTION__,rx_dma_status);
-	}	
+	}
 #if 0
-	u32 regc50,regc58,reg824,reg800;
+	uint32_t regc50,regc58,reg824,reg800;
 	regc50 = rtw_read32(padapter,0xc50);
 	regc58 = rtw_read32(padapter,0xc58);
 	reg824 = rtw_read32(padapter,0x824);

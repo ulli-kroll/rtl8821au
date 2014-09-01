@@ -115,8 +115,8 @@ void Hal_mpt_SwitchRfSetting(PADAPTER pAdapter)
 /*---------------------------hal\rtl8192c\MPT_HelperFunc.c---------------------------*/
 void Hal_MPT_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 {
-	u32		TempVal = 0, TempVal2 = 0, TempVal3 = 0;
-	u32		CurrCCKSwingVal = 0, CCKSwingIndex = 12;
+	uint32_t		TempVal = 0, TempVal2 = 0, TempVal3 = 0;
+	uint32_t		CurrCCKSwingVal = 0, CCKSwingIndex = 12;
 	uint8_t		i;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
@@ -364,7 +364,7 @@ void Hal_SetBandwidth(PADAPTER pAdapter)
 
 void Hal_SetCCKTxPower(PADAPTER pAdapter, uint8_t *TxPower)
 {
-	u32 tmpval = 0;
+	uint32_t tmpval = 0;
 
 
 	// rf-A cck tx power
@@ -384,7 +384,7 @@ void Hal_SetCCKTxPower(PADAPTER pAdapter, uint8_t *TxPower)
 
 void Hal_SetOFDMTxPower(PADAPTER pAdapter, uint8_t *TxPower)
 {
-	u32 TxAGC = 0;
+	uint32_t TxAGC = 0;
 	uint8_t tmpval = 0;
 	PMPT_CONTEXT	pMptCtx = &pAdapter->mppriv.MptCtx;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -571,9 +571,9 @@ void Hal_SetTxPower(PADAPTER pAdapter)
 
 }
 
-void Hal_SetTxAGCOffset(PADAPTER pAdapter, u32 ulTxAGCOffset)
+void Hal_SetTxAGCOffset(PADAPTER pAdapter, uint32_t ulTxAGCOffset)
 {
-	u32 TxAGCOffset_B, TxAGCOffset_C, TxAGCOffset_D,tmpAGC;
+	uint32_t TxAGCOffset_B, TxAGCOffset_C, TxAGCOffset_D,tmpAGC;
 
 	TxAGCOffset_B = (ulTxAGCOffset&0x000000ff);
 	TxAGCOffset_C = ((ulTxAGCOffset&0x0000ff00)>>8);
@@ -599,7 +599,7 @@ void Hal_SetAntenna(PADAPTER pAdapter)
 
 	uint8_t	r_rx_antenna_ofdm = 0, r_ant_select_cck_val = 0;
 	uint8_t	chgTx = 0, chgRx = 0;
-	u32	r_ant_sel_cck_val = 0, r_ant_select_ofdm_val = 0, r_ofdm_tx_en_val = 0;
+	uint32_t	r_ant_sel_cck_val = 0, r_ant_select_ofdm_val = 0, r_ofdm_tx_en_val = 0;
 
 
 	p_ofdm_tx = (R_ANTENNA_SELECT_OFDM *)&r_ant_select_ofdm_val;
@@ -637,7 +637,7 @@ void Hal_SetAntenna(PADAPTER pAdapter)
 
 	switch (pAdapter->mppriv.antenna_rx)
 	{
-		u32 reg0xC50 = 0;
+		uint32_t reg0xC50 = 0;
 		case ANTENNA_A:
 			PHY_SetBBReg(pAdapter, rRxPath_Jaguar, bMaskByte0, 0x11);
 			PHY_SetRFReg(pAdapter, ODM_RF_PATH_B, RF_AC_Jaguar, 0xF0000, 0x1); // RF_B_0x0[19:16] = 1, Standby mode
@@ -711,7 +711,7 @@ void Hal_TriggerRFThermalMeter(PADAPTER pAdapter)
 
 uint8_t Hal_ReadRFThermalMeter(PADAPTER pAdapter)
 {
-	u32 ThermalValue = 0;
+	uint32_t ThermalValue = 0;
 
 	ThermalValue = (u1Byte)PHY_QueryRFReg(pAdapter, ODM_RF_PATH_A, RF_T_METER_8812A, 0xfc00);	// 0x42: RF Reg[15:10]
 
@@ -792,7 +792,7 @@ void Hal_SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart)
 	BOOLEAN		is92C = IS_92C_SERIAL(pHalData->VersionID);
 
 	uint8_t rfPath;
-	u32              reg58 = 0x0;
+	uint32_t              reg58 = 0x0;
 	static u4Byte       regRF0x0 = 0x0;
     static u4Byte       reg0xCB0 = 0x0;
     static u4Byte       reg0xEB0 = 0x0;
@@ -956,7 +956,7 @@ void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, uint8_t bStart)
 
 void Hal_SetCCKContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 {
-	u32 cckrate;
+	uint32_t cckrate;
 
 	if (bStart)
 	{

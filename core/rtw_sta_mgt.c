@@ -80,7 +80,7 @@ _func_exit_;
 
 }
 
-u32	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
+uint32_t	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
 {
 	struct sta_info *psta;
 	s32 i;
@@ -262,7 +262,7 @@ void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv)
 
 }
 
-u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
+uint32_t	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
 {
 	_irqL 	irqL;
 	_list	*phead, *plist;
@@ -439,7 +439,7 @@ _func_exit_;
 
 
 // using pstapriv->sta_hash_lock to protect
-u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
+uint32_t	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 {
 	int i;
 	_irqL irqL0;
@@ -690,7 +690,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 
 	struct sta_info *psta = NULL;
 
-	u32	index;
+	uint32_t	index;
 
 	uint8_t *addr;
 
@@ -737,12 +737,12 @@ _func_exit_;
 
 }
 
-u32 rtw_init_bcmc_stainfo(_adapter* padapter)
+uint32_t	 rtw_init_bcmc_stainfo(_adapter* padapter)
 {
 
 	struct sta_info 	*psta;
 	struct tx_servq	*ptxservq;
-	u32 res=_SUCCESS;
+	uint32_t	 res=_SUCCESS;
 	NDIS_802_11_MAC_ADDRESS	bcast_addr= {0xff,0xff,0xff,0xff,0xff,0xff};
 
 	struct	sta_priv *pstapriv = &padapter->stapriv;

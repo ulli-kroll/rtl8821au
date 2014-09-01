@@ -438,7 +438,7 @@ _func_exit_;
 uint8_t PS_RDY_CHECK(_adapter * padapter);
 uint8_t PS_RDY_CHECK(_adapter * padapter)
 {
-	u32 curr_time, delta_time;
+	uint32_t	 curr_time, delta_time;
 	struct pwrctrl_priv	*pwrpriv = &padapter->pwrctrlpriv;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 
@@ -617,9 +617,9 @@ _func_exit_;
  *	-1:	Timeout
  *	-2:	Other error
  */
-s32 LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms)
+s32 LPS_RF_ON_check(PADAPTER padapter, uint32_t	 delay_ms)
 {
-	u32 start_time;
+	uint32_t	 start_time;
 	uint8_t bAwake = _FALSE;
 	s32 err = 0;
 
@@ -726,7 +726,7 @@ void LPS_Leave(PADAPTER padapter)
 #define LPS_LEAVE_TIMEOUT_MS 100
 
 	struct pwrctrl_priv	*pwrpriv = &padapter->pwrctrlpriv;
-	u32 start_time;
+	uint32_t	 start_time;
 	uint8_t bAwake = _FALSE;
 
 _func_enter_;
@@ -823,7 +823,7 @@ void LPS_Leave_check(
 	PADAPTER padapter)
 {
 	struct pwrctrl_priv *pwrpriv;
-	u32	start_time;
+	uint32_t	start_time;
 	uint8_t	bReady;
 
 _func_enter_;
@@ -1007,12 +1007,12 @@ static void pwr_rpwm_timeout_handler(void *FunctionContext)
 }
 #endif // CONFIG_LPS_RPWM_TIMER
 
-__inline static void register_task_alive(struct pwrctrl_priv *pwrctrl, u32 tag)
+__inline static void register_task_alive(struct pwrctrl_priv *pwrctrl, uint32_t	 tag)
 {
 	pwrctrl->alives |= tag;
 }
 
-__inline static void unregister_task_alive(struct pwrctrl_priv *pwrctrl, u32 tag)
+__inline static void unregister_task_alive(struct pwrctrl_priv *pwrctrl, uint32_t	 tag)
 {
 	pwrctrl->alives &= ~tag;
 }
@@ -1599,7 +1599,7 @@ uint8_t rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,uint8
 }
 
 
-inline void rtw_set_ips_deny(_adapter *padapter, u32 ms)
+inline void rtw_set_ips_deny(_adapter *padapter, uint32_t	 ms)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	pwrpriv->ips_deny_time = rtw_get_current_time() + rtw_ms_to_systime(ms);
@@ -1612,12 +1612,12 @@ inline void rtw_set_ips_deny(_adapter *padapter, u32 ms)
 * Return _SUCCESS or _FAIL
 */
 
-int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller)
+int _rtw_pwr_wakeup(_adapter *padapter, uint32_t	 ips_deffer_ms, const char *caller)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	int ret = _SUCCESS;
-	u32 start = rtw_get_current_time();
+	uint32_t	 start = rtw_get_current_time();
 
 #ifdef CONFIG_CONCURRENT_MODE
 	if (padapter->pbuddy_adapter)

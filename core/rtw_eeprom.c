@@ -331,11 +331,11 @@ _func_exit_;
 
 
 //From even offset
-void eeprom_read_sz(_adapter * padapter, uint16_t reg, uint8_t * data, u32 sz)
+void eeprom_read_sz(_adapter * padapter, uint16_t reg, uint8_t * data, uint32_t	 sz)
 {
 
 	uint16_t x, data16;
-	u32 i;
+	uint32_t	 i;
 _func_enter_;
 	if(padapter->bSurpriseRemoved==_TRUE){
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -376,7 +376,7 @@ _func_exit_;
 
 
 //addr_off : address offset of the entry in eeprom (not the tuple number of eeprom (reg); that is addr_off !=reg)
-uint8_t eeprom_read(_adapter * padapter, u32 addr_off, uint8_t sz, uint8_t * rbuf)
+uint8_t eeprom_read(_adapter * padapter, uint32_t	 addr_off, uint8_t sz, uint8_t * rbuf)
 {
 	uint8_t quotient, remainder, addr_2align_odd;
 	uint16_t reg, stmp , i=0, idx = 0;

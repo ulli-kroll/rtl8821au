@@ -1394,43 +1394,6 @@ odm_Process_RSSIForDM(
 	}
 #endif
 	//-----------------Smart Antenna Debug Message------------------//
-#if (RTL8188E_SUPPORT == 1)
-	if(pDM_Odm->SupportICType == ODM_RTL8188E)
-	{
-		u1Byte	antsel_tr_mux;
-		pFAT_T	pDM_FatTable = &pDM_Odm->DM_FatTable;
-
-		if(pDM_Odm->AntDivType == CG_TRX_SMART_ANTDIV)
-		{
-			if(pDM_FatTable->FAT_State == FAT_TRAINING_STATE)
-			{
-				if(pPktinfo->bPacketToSelf)	//(pPktinfo->bPacketMatchBSSID && (!pPktinfo->bPacketBeacon))
-				{
-					antsel_tr_mux = (pDM_FatTable->antsel_rx_keep_2<<2) |(pDM_FatTable->antsel_rx_keep_1 <<1) |pDM_FatTable->antsel_rx_keep_0;
-					pDM_FatTable->antSumRSSI[antsel_tr_mux] += pPhyInfo->RxPWDBAll;
-					pDM_FatTable->antRSSIcnt[antsel_tr_mux]++;
-						//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("isCCKrate=%d, PWDB_ALL=%d\n",isCCKrate, pPhyInfo->RxPWDBAll));
-						//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("antsel_tr_mux=3'b%d%d%d\n",
-							//pDM_FatTable->antsel_rx_keep_2, pDM_FatTable->antsel_rx_keep_1, pDM_FatTable->antsel_rx_keep_0));
-
-				}
-			}
-		}
-		else if((pDM_Odm->AntDivType == CG_TRX_HW_ANTDIV)||(pDM_Odm->AntDivType == CGCS_RX_HW_ANTDIV))
-		{
-			//if(pPktinfo->bPacketToSelf)  //Suggested by Luke, 121009
-			if(pPktinfo->bPacketToSelf || pPktinfo->bPacketMatchBSSID)
-			{
-				antsel_tr_mux = (pDM_FatTable->antsel_rx_keep_2<<2) |(pDM_FatTable->antsel_rx_keep_1 <<1) |pDM_FatTable->antsel_rx_keep_0;
-				//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("antsel_tr_mux=3'b%d%d%d\n",
-				//			pDM_FatTable->antsel_rx_keep_2, pDM_FatTable->antsel_rx_keep_1, pDM_FatTable->antsel_rx_keep_0));
-
-				ODM_AntselStatistics_88E(pDM_Odm, antsel_tr_mux, pPktinfo->StationID, pPhyInfo->RxPWDBAll);
-			}
-		}
-
-	}
-#endif
 #if (RTL8821A_SUPPORT == 1)
 	if(pDM_Odm->SupportICType == ODM_RTL8821)
 	{
@@ -1742,18 +1705,6 @@ ODM_ConfigRFWithHeaderFile(
 	}
 #endif
 
-#if (RTL8188E_SUPPORT == 1)
-	if (pDM_Odm->SupportICType == ODM_RTL8188E)
-	{
-		if(ConfigType == CONFIG_RF_RADIO) {
-			if(eRFPath == ODM_RF_PATH_A)
-				READ_AND_CONFIG(8188E,_RadioA_1T);
-		}
-		else if(ConfigType == CONFIG_RF_TXPWR_LMT) {
-			READ_AND_CONFIG(8188E,_TXPWR_LMT);
-		}
-	}
-#endif
 
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
@@ -1900,24 +1851,6 @@ ODM_ConfigBBWithHeaderFile(
 	}
 #endif
 
-#if (RTL8188E_SUPPORT == 1)
-    if(pDM_Odm->SupportICType == ODM_RTL8188E)
-	{
-
-		if(ConfigType == CONFIG_BB_PHY_REG)
-		{
-			READ_AND_CONFIG(8188E,_PHY_REG_1T);
-		}
-		else if(ConfigType == CONFIG_BB_AGC_TAB)
-		{
-			READ_AND_CONFIG(8188E,_AGC_TAB_1T);
-		}
-		else if(ConfigType == CONFIG_BB_PHY_REG_PG)
-		{
-			READ_AND_CONFIG(8188E,_PHY_REG_PG);
-		}
-	}
-#endif
 
 #if (RTL8812A_SUPPORT == 1)
 	if(pDM_Odm->SupportICType == ODM_RTL8812)
@@ -2027,12 +1960,6 @@ ODM_ConfigMACWithHeaderFile(
 		READ_AND_CONFIG_MP(8723A,_MAC_REG);
 	}
 #endif
-#if (RTL8188E_SUPPORT == 1)
-	if (pDM_Odm->SupportICType == ODM_RTL8188E)
-	{
-		result = READ_AND_CONFIG(8188E,_MAC_REG);
-	}
-#endif
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
 	{
@@ -2072,27 +1999,6 @@ ODM_ConfigFWWithHeaderFile(
 	)
 {
 
-#if (RTL8188E_SUPPORT == 1)
-	if (pDM_Odm->SupportICType == ODM_RTL8188E)
-	{
-		if (ConfigType == CONFIG_FW_NIC)
-		{
-			READ_FIRMWARE(8188E,_FW_NIC);
-		}
-		else if (ConfigType == CONFIG_FW_WoWLAN)
-		{
-			READ_FIRMWARE(8188E,_FW_WoWLAN);
-		}
-        /* else if(ConfigType == CONFIG_FW_NIC_2)
-		{
-			READ_FIRMWARE_MP(8188E,_FW_NIC_S);
-		}
-		else if (ConfigType == CONFIG_FW_WoWLAN_2)
-		{
-			READ_FIRMWARE_MP(8188E,_FW_WoWLAN_S);
-		}*/
-	}
-#endif
 #if (RTL8723B_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8723B)
 	{

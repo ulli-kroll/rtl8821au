@@ -957,12 +957,6 @@ ODM_DMInit(
 	odm_AdaptivityInit(pDM_Odm);
 	odm_RateAdaptiveMaskInit(pDM_Odm);
 
-#if (RTL8192E_SUPPORT == 1)
-	if(pDM_Odm->SupportICType==ODM_RTL8192E)
-	{
-		odm_PrimaryCCA_Check_Init(pDM_Odm);
-	}
-#endif
 
 //#if (MP_DRIVER != 1)
 	if ( *(pDM_Odm->mp_mode) != 1)
@@ -1003,13 +997,6 @@ ODM_DMInit(
 
 //2010.05.30 LukeLee: For CE platform, files in IC subfolders may not be included to be compiled,
 // so compile flags must be left here to prevent from compile errors
-#if (RTL8188E_SUPPORT == 1)
-		if(pDM_Odm->SupportICType==ODM_RTL8188E)
-		{
-			odm_PrimaryCCA_Init(pDM_Odm);    // Gary
-			ODM_RAInfo_Init_all(pDM_Odm);
-		}
-#endif
 
 //2010.05.30 LukeLee: Following are not incorporated into ODM structure yet.
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
@@ -1177,10 +1164,6 @@ if ( *(pDM_Odm->mp_mode) != 1) {
                 ODM_DynamicEarlyMode(pDM_Odm);
 #endif
         odm_DynamicBBPowerSaving(pDM_Odm);
-#if (RTL8188E_SUPPORT == 1)
-        if(pDM_Odm->SupportICType==ODM_RTL8188E)
-                odm_DynamicPrimaryCCA(pDM_Odm);
-#endif
 
 	}
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
@@ -1787,14 +1770,6 @@ ODM_InitAllWorkItems(IN PDM_ODM_T	pDM_Odm )
 		"MPT_DIGWorkitem");
 
 #if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-#if (RTL8188E_SUPPORT == 1)
-	ODM_InitializeWorkItem(
-		pDM_Odm,
-		&(pDM_Odm->FastAntTrainingWorkitem),
-		(RT_WORKITEM_CALL_BACK)odm_FastAntTrainingWorkItemCallback,
-		(PVOID)pAdapter,
-		"FastAntTrainingWorkitem");
-#endif
 #endif
 	ODM_InitializeWorkItem(
 		pDM_Odm,
@@ -2932,16 +2907,6 @@ odm_DIG(
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : pDM_Odm->RSSI_Min=%d\n",pDM_Odm->RSSI_Min));
 			}
 			//1 Lower Bound for 88E AntDiv
-#if (RTL8188E_SUPPORT == 1)
-			else if((pDM_Odm->SupportICType == ODM_RTL8188E)&&(pDM_Odm->SupportAbility & ODM_BB_ANT_DIV))
-			{
-				if((pDM_Odm->AntDivType == CG_TRX_HW_ANTDIV) ||(pDM_Odm->AntDivType == CGCS_RX_HW_ANTDIV))
-				{
-					DIG_Dynamic_MIN = (u1Byte) pDM_DigTable->AntDiv_RSSI_max;
-					ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("odm_DIG(): pDM_DigTable->AntDiv_RSSI_max=%d \n",pDM_DigTable->AntDiv_RSSI_max));
-				}
-			}
-#endif
 			else
 			{
 				DIG_Dynamic_MIN=dm_dig_min;
@@ -3358,14 +3323,6 @@ odm_FalseAlarmCounterStatistics(
 									FalseAlmCnt->Cnt_Crc8_fail + FalseAlmCnt->Cnt_Mcs_fail +
 									FalseAlmCnt->Cnt_Fast_Fsync + FalseAlmCnt->Cnt_SB_Search_fail;
 
-#if (RTL8188E_SUPPORT==1)
-		if((pDM_Odm->SupportICType == ODM_RTL8188E)||(pDM_Odm->SupportICType == ODM_RTL8192E))
-		{
-			ret_value = ODM_GetBBReg(pDM_Odm, ODM_REG_SC_CNT_11N, bMaskDWord);
-			FalseAlmCnt->Cnt_BW_LSC = (ret_value&0xffff);
-			FalseAlmCnt->Cnt_BW_USC = ((ret_value&0xffff0000)>>16);
-		}
-#endif
 
 #if (RTL8192D_SUPPORT==1)
 		if(pDM_Odm->SupportICType == ODM_RTL8192D)
@@ -5618,12 +5575,6 @@ odm_RSSIMonitorCheckCE(
 					#endif
 				}
 				else{
-					#if((RTL8188E_SUPPORT==1)&&(RATE_ADAPTIVE_SUPPORT == 1))
-					if(pDM_Odm->SupportICType == ODM_RTL8188E){
-						ODM_RA_SetRSSI_8188E(
-						&(pHalData->odmpriv), (PWDB_rssi[i]&0xFF), (u8)((PWDB_rssi[i]>>16) & 0xFF));
-					}
-					#endif
 				}
 			}
 		}
@@ -5700,10 +5651,6 @@ ODM_InitAllTimers(
 
 #if (!(DM_ODM_SUPPORT_TYPE == ODM_CE))
 #if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-#if (RTL8188E_SUPPORT == 1)
-	ODM_InitializeTimer(pDM_Odm,&pDM_Odm->FastAntTrainingTimer,
-		(RT_TIMER_CALL_BACK)odm_FastAntTrainingCallback, NULL, "FastAntTrainingTimer");
-#endif
 #endif
 #endif
 
@@ -5745,9 +5692,6 @@ ODM_CancelAllTimers(
 #endif
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 
-#if (RTL8188E_SUPPORT == 1)
-	ODM_CancelTimer(pDM_Odm,&pDM_Odm->FastAntTrainingTimer);
-#endif
 	ODM_CancelTimer(pDM_Odm, &pDM_Odm->PSDTimer);
 	//
 	//Path Diversity
@@ -5771,9 +5715,6 @@ ODM_ReleaseAllTimers(
 {
 	ODM_ReleaseTimer(pDM_Odm,&pDM_Odm->DM_SWAT_Table.SwAntennaSwitchTimer);
 
-#if (RTL8188E_SUPPORT == 1)
-	ODM_ReleaseTimer(pDM_Odm,&pDM_Odm->FastAntTrainingTimer);
-#endif
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 
@@ -5844,7 +5785,7 @@ odm_TXPowerTrackingThermalMeterInit(
 	PADAPTER			Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 
-	#if( (RTL8188E_SUPPORT==1) ||  (RTL8812A_SUPPORT==1) || (RTL8821A_SUPPORT==1) ||(RTL8192E_SUPPORT==1) )
+	#if( (RTL8812A_SUPPORT==1) || (RTL8821A_SUPPORT==1) ||(RTL8192E_SUPPORT==1) )
 	{
 		pDM_Odm->RFCalibrateInfo.bTXPowerTracking = _TRUE;
 		pDM_Odm->RFCalibrateInfo.TXPowercount = 0;
@@ -5875,14 +5816,6 @@ odm_TXPowerTrackingThermalMeterInit(
 	}
 	#endif//endif (CONFIG_RTL8188E==1)
 #elif (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
-	#ifdef RTL8188E_SUPPORT
-	{
-		pDM_Odm->RFCalibrateInfo.bTXPowerTracking = _TRUE;
-		pDM_Odm->RFCalibrateInfo.TXPowercount = 0;
-		pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = _FALSE;
-		pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = _TRUE;
-	}
-	#endif
 #endif
 
 	pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = TRUE;
@@ -5982,7 +5915,7 @@ odm_TXPowerTrackingCheckCE(
 	}
 	#endif
 
-	#if(((RTL8188E_SUPPORT==1) ||  (RTL8812A_SUPPORT==1) ||  (RTL8821A_SUPPORT==1) ||  (RTL8192E_SUPPORT==1)  ||  (RTL8723B_SUPPORT==1)  ))
+	#if( ((RTL8812A_SUPPORT==1) ||  (RTL8821A_SUPPORT==1) ||  (RTL8192E_SUPPORT==1)  ||  (RTL8723B_SUPPORT==1)  ))
 	if(!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
 	{
 		return;
@@ -7319,9 +7252,6 @@ odm_InitHybridAntDiv(
 	}
 	else if(pDM_Odm->SupportICType == ODM_RTL8188E)
 	{
-#if (RTL8188E_SUPPORT == 1)
-		ODM_AntennaDiversityInit_88E(pDM_Odm);
-#endif
 	}
 	else if(pDM_Odm->SupportICType == ODM_RTL8821)
 	{
@@ -7656,9 +7586,6 @@ odm_HwAntDiv(
 	}
 	else if(pDM_Odm->SupportICType == ODM_RTL8188E)
 	{
-#if (RTL8188E_SUPPORT == 1)
-		ODM_AntennaDiversity_88E(pDM_Odm);
-#endif
 	}
 	else if(pDM_Odm->SupportICType == ODM_RTL8821)
 	{

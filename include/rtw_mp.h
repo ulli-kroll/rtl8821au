@@ -124,16 +124,13 @@ struct mp_tx
 #define MP_MAX_LINES_BYTES	256
 #define u1Byte u8
 #define s1Byte s8
-#define u4Byte u32
+#define uint32_t u32
 #define s4Byte s32
 #define u1Byte		u8
 #define pu1Byte 		u8*
 
 #define u2Byte		u16
 #define pu2Byte 		u16*
-
-#define u4Byte		u32
-#define pu4Byte 		u32*
 
 #define s1Byte		s8
 #define ps1Byte 		s8*

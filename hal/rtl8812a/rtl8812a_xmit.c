@@ -96,7 +96,7 @@ InsertEMContent_8812(
 
 #if RTL8188E_EARLY_MODE_PKT_NUM_10 == 1
 	u1Byte index=0;
-	u4Byte	dwtmp=0;
+	uint32_t	dwtmp=0;
 #endif
 
 	memset(VirtualAddress, 0, EARLY_MODE_INFO_SIZE);

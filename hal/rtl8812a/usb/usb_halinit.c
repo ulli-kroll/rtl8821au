@@ -723,7 +723,7 @@ _InitWMACSetting_8812A(
 	IN  PADAPTER Adapter
 	)
 {
-	//u4Byte			value32;
+	//uint32_t			value32;
 	//uint16_t			value16;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
@@ -1117,7 +1117,7 @@ _InitOperationMode_8812A(
 #if 0//gtest
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	u1Byte				regBwOpMode = 0;
-	u4Byte				regRATR = 0, regRRSR = 0;
+	uint32_t				regRATR = 0, regRRSR = 0;
 
 
 	//1 This part need to modified according to the rate set we filtered!!

@@ -45,15 +45,15 @@ void setIqkMatrix_8821A(
 {
 	s4Byte			ele_A=0, ele_D, ele_C=0, value32;
 
-	ele_D = (OFDMSwingTable_New[OFDM_index] & 0xFFC00000)>>22;		
-	
+	ele_D = (OFDMSwingTable_New[OFDM_index] & 0xFFC00000)>>22;
+
     //new element A = element D x X
 	if((IqkResult_X != 0) && (*(pDM_Odm->pBandType) == ODM_BAND_2_4G))
 	{
 		if ((IqkResult_X & 0x00000200) != 0)	//consider minus
 			IqkResult_X = IqkResult_X | 0xFFFFFC00;
 		ele_A = ((IqkResult_X * ele_D)>>8)&0x000003FF;
-			
+
 		//new element C = element D x Y
 		if ((IqkResult_Y & 0x00000200) != 0)
 			IqkResult_Y = IqkResult_Y | 0xFFFFFC00;
@@ -71,35 +71,35 @@ void setIqkMatrix_8821A(
 			ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskH4Bits, value32);
 
 			value32 = ((IqkResult_X * ele_D)>>7)&0x01;
-			ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, value32);			
+			ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, value32);
 			break;
 		default:
 			break;
-		}	
+		}
 	}
 	else
 	{
 		switch (RFPath)
 		{
 		case ODM_RF_PATH_A:
-			ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord, OFDMSwingTable_New[OFDM_index]);				
+			ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord, OFDMSwingTable_New[OFDM_index]);
 			ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskH4Bits, 0x00);
-			ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, 0x00);			
+			ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, 0x00);
 			break;
 
 		default:
 			break;
-		}		
+		}
 	}
 
-    ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxPwrTracking path B: X = 0x%x, Y = 0x%x ele_A = 0x%x ele_C = 0x%x ele_D = 0x%x 0xeb4 = 0x%x 0xebc = 0x%x\n", 
-    (u4Byte)IqkResult_X, (u4Byte)IqkResult_Y, (u4Byte)ele_A, (u4Byte)ele_C, (u4Byte)ele_D, (u4Byte)IqkResult_X, (u4Byte)IqkResult_Y));				
+    ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxPwrTracking path B: X = 0x%x, Y = 0x%x ele_A = 0x%x ele_C = 0x%x ele_D = 0x%x 0xeb4 = 0x%x 0xebc = 0x%x\n",
+    (uint32_t)IqkResult_X, (uint32_t)IqkResult_Y, (uint32_t)ele_A, (uint32_t)ele_C, (uint32_t)ele_D, (uint32_t)IqkResult_X, (uint32_t)IqkResult_Y));
 }
 
 void DoIQK_8821A(
 	PDM_ODM_T	pDM_Odm,
 	u1Byte 		DeltaThermalIndex,
-	u1Byte		ThermalValue,	
+	u1Byte		ThermalValue,
 	u1Byte 		Threshold
 	)
 {
@@ -108,10 +108,10 @@ void DoIQK_8821A(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 #endif
 
-	ODM_ResetIQKResult(pDM_Odm);		
+	ODM_ResetIQKResult(pDM_Odm);
 
 #if(DM_ODM_SUPPORT_TYPE  & ODM_WIN)
-#if (DEV_BUS_TYPE == RT_PCI_INTERFACE)	
+#if (DEV_BUS_TYPE == RT_PCI_INTERFACE)
 #if USE_WORKITEM
 	PlatformAcquireMutex(&pHalData->mxChnlBwControl);
 #else
@@ -120,15 +120,15 @@ void DoIQK_8821A(
 #elif((DEV_BUS_TYPE == RT_USB_INTERFACE) || (DEV_BUS_TYPE == RT_SDIO_INTERFACE))
 	PlatformAcquireMutex(&pHalData->mxChnlBwControl);
 #endif
-#endif			
+#endif
 
 
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK= ThermalValue;
 	PHY_IQCalibrate_8821A(Adapter, FALSE);
 
-    
+
 #if(DM_ODM_SUPPORT_TYPE  & ODM_WIN)
-#if (DEV_BUS_TYPE == RT_PCI_INTERFACE)	
+#if (DEV_BUS_TYPE == RT_PCI_INTERFACE)
 #if USE_WORKITEM
 	PlatformReleaseMutex(&pHalData->mxChnlBwControl);
 #else
@@ -154,14 +154,14 @@ ODM_TxPwrTrackSetPwr8821A(
 
 	u1Byte			PwrTrackingLimit = 26; //+1.0dB
 	u1Byte			TxRate = 0xFF;
-	s1Byte			Final_OFDM_Swing_Index = 0; 
-	s1Byte			Final_CCK_Swing_Index = 0; 
+	s1Byte			Final_OFDM_Swing_Index = 0;
+	s1Byte			Final_CCK_Swing_Index = 0;
 	u1Byte			i = 0;
-	u4Byte			finalBbSwingIdx[1];
+	uint32_t			finalBbSwingIdx[1];
 
 
 #if 0 //gtemp
-#if (MP_DRIVER==1)	
+#if (MP_DRIVER==1)
 	//PMPT_CONTEXT			pMptCtx = &(Adapter->MptCtx);
 	PMPT_CONTEXT			pMptCtx = &Adapter->mppriv.MptCtx;
 	TxRate = MptToMgntRate(pMptCtx->MptRateIndex);
@@ -171,7 +171,7 @@ ODM_TxPwrTrackSetPwr8821A(
 	if(!pMgntInfo->ForcedDataRate) //auto rate
 	{
 		if(pDM_Odm->TxRate != 0xFF)
-			TxRate = HwRateToMRate8812(pDM_Odm->TxRate); 
+			TxRate = HwRateToMRate8812(pDM_Odm->TxRate);
 	}
 	else //force rate
 	{
@@ -220,11 +220,11 @@ ODM_TxPwrTrackSetPwr8821A(
 	if (Method == BBSWING)
 	{
 		if (RFPath == ODM_RF_PATH_A)
-		{		
+		{
 			finalBbSwingIdx[ODM_RF_PATH_A] = (pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A];
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[ODM_RF_PATH_A]=%d\n",
 				pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A], finalBbSwingIdx[ODM_RF_PATH_A]));
-			
+
 			ODM_SetBBReg(pDM_Odm, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[ODM_RF_PATH_A]]);
 		}
 	}
@@ -232,16 +232,16 @@ ODM_TxPwrTrackSetPwr8821A(
 	{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
 				pDM_Odm->DefaultOfdmIndex, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath],RFPath ));
-			
-	
+
+
 			Final_OFDM_Swing_Index = pDM_Odm->DefaultOfdmIndex + pDM_Odm->Aboslute_OFDMSwingIdx[RFPath];
-			
-			if (RFPath == ODM_RF_PATH_A)  
+
+			if (RFPath == ODM_RF_PATH_A)
 			{
 				if(Final_OFDM_Swing_Index > PwrTrackingLimit)     //BBSwing higher then Limit
 				{
 					pDM_Odm->Remnant_CCKSwingIdx= Final_OFDM_Swing_Index - PwrTrackingLimit;            // CCK Follow the same compensate value as Path A
-					pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = Final_OFDM_Swing_Index - PwrTrackingLimit;            
+					pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = Final_OFDM_Swing_Index - PwrTrackingLimit;
 
 					ODM_SetBBReg(pDM_Odm, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[PwrTrackingLimit]);
 
@@ -256,7 +256,7 @@ ODM_TxPwrTrackSetPwr8821A(
 				else if (Final_OFDM_Swing_Index < 0)
 				{
 					pDM_Odm->Remnant_CCKSwingIdx= Final_OFDM_Swing_Index;            // CCK Follow the same compensate value as Path A
-					pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = Final_OFDM_Swing_Index;     
+					pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = Final_OFDM_Swing_Index;
 
 					ODM_SetBBReg(pDM_Odm, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[0]);
 
@@ -277,7 +277,7 @@ ODM_TxPwrTrackSetPwr8821A(
 					if(pDM_Odm->Modify_TxAGC_Flag_PathA)  //If TxAGC has changed, reset TxAGC again
 					{
 						pDM_Odm->Remnant_CCKSwingIdx= 0;
-						pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = 0;     
+						pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = 0;
 
 						//Set TxAGC Page C{};
 						//Adapter->HalFunc.SetTxPowerLevelHandler(Adapter, pHalData->CurrentChannel);
@@ -287,9 +287,9 @@ ODM_TxPwrTrackSetPwr8821A(
 
 						ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
 					}
-				}	
+				}
 			}
-			
+
 	}
 	else
 	{
@@ -303,7 +303,7 @@ GetDeltaSwingTable_8821A(
 	OUT pu1Byte 			*TemperatureUP_A,
 	OUT pu1Byte 			*TemperatureDOWN_A,
 	OUT pu1Byte 			*TemperatureUP_B,
-	OUT pu1Byte 			*TemperatureDOWN_B	
+	OUT pu1Byte 			*TemperatureDOWN_B
 	)
 {
     PADAPTER        Adapter   		 = pDM_Odm->Adapter;
@@ -313,18 +313,18 @@ GetDeltaSwingTable_8821A(
 	u2Byte         	rate 	  	   	 = 0;
 	u1Byte         	channel   		 = pHalData->CurrentChannel;
 
-		
+
 	if ( 1 <= channel && channel <= 14) {
 		if (IS_CCK_RATE(rate)) {
 	        *TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P;
 	        *TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N;
 	        *TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P;
-	        *TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N;		
+	        *TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N;
 		} else {
 	        *TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P;
 	        *TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N;
 	        *TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P;
-	        *TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N;			
+	        *TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N;
 		}
  	} else if ( 36 <= channel && channel <= 64) {
         *TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[0];
@@ -337,17 +337,17 @@ GetDeltaSwingTable_8821A(
         *TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[1];
         *TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[1];
     } else if ( 149 <= channel && channel <= 173) {
-        *TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[2]; 
-        *TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[2]; 
-        *TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[2]; 
-        *TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[2]; 
+        *TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[2];
+        *TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[2];
+        *TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[2];
+        *TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[2];
     } else {
 	    *TemperatureUP_A   = (pu1Byte)DeltaSwingTableIdx_2GA_P_8188E;
-	    *TemperatureDOWN_A = (pu1Byte)DeltaSwingTableIdx_2GA_N_8188E;	
+	    *TemperatureDOWN_A = (pu1Byte)DeltaSwingTableIdx_2GA_N_8188E;
 	    *TemperatureUP_B   = (pu1Byte)DeltaSwingTableIdx_2GA_P_8188E;
-	    *TemperatureDOWN_B = (pu1Byte)DeltaSwingTableIdx_2GA_N_8188E;		
+	    *TemperatureDOWN_B = (pu1Byte)DeltaSwingTableIdx_2GA_N_8188E;
     }
-	
+
 	return;
 }
 
@@ -361,7 +361,7 @@ void ConfigureTxpowerTrack_8821A(
 	pConfig->AverageThermalNum = AVG_THERMAL_NUM_8812A;
 	pConfig->RfPathCount = MAX_PATH_NUM_8821A;
 	pConfig->ThermalRegAddr = RF_T_METER_8812A;
-		
+
 	pConfig->ODM_TxPwrTrackSetPwr = ODM_TxPwrTrackSetPwr8821A;
 	pConfig->DoIQK = DoIQK_8821A;
 	pConfig->PHY_LCCalibrate = PHY_LCCalibrate_8821A;
@@ -377,7 +377,7 @@ void _IQK_RX_FillIQC_8821A(
 	IN ODM_RF_RADIO_PATH_E 	Path,
 	IN unsigned int			RX_X,
 	IN unsigned int			RX_Y
-	) 
+	)
 {
 	switch (Path) {
 	case ODM_RF_PATH_A:
@@ -390,8 +390,8 @@ void _IQK_RX_FillIQC_8821A(
 		}
 		break;
 	default:
-		break;					
-	};	
+		break;
+	};
 }
 
 void _IQK_TX_FillIQC_8821A(
@@ -399,7 +399,7 @@ void _IQK_TX_FillIQC_8821A(
 	IN ODM_RF_RADIO_PATH_E 	Path,
 	IN unsigned int			TX_X,
 	IN unsigned int			TX_Y
-	) 
+	)
 {
 	switch (Path) {
 	case ODM_RF_PATH_A:
@@ -415,36 +415,36 @@ void _IQK_TX_FillIQC_8821A(
 		}
 		break;
 	default:
-		break;					
-	};	
+		break;
+	};
 }
 
 void _IQK_BackupMacBB_8821A(
 	IN PDM_ODM_T	pDM_Odm,
-	IN pu4Byte		MACBB_backup,
-	IN pu4Byte		Backup_MACBB_REG, 
-	IN u4Byte		MACBB_NUM
+	IN uint32_t		*MACBB_backup,
+	IN uint32_t		*Backup_MACBB_REG,
+	IN uint32_t		MACBB_NUM
 	)
 {
-	u4Byte i;
+	uint32_t i;
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
 	 //save MACBB default value
 	for (i = 0; i < MACBB_NUM; i++){
 		MACBB_backup[i] = ODM_Read4Byte(pDM_Odm, Backup_MACBB_REG[i]);
 	}
-	
+
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n"));
 }
 void _IQK_BackupRF_8821A(
 	IN PDM_ODM_T	pDM_Odm,
-	IN pu4Byte		RFA_backup,
-	IN pu4Byte		RFB_backup, 
-	IN pu4Byte		Backup_RF_REG, 
-	IN u4Byte		RF_NUM
-	)	
+	IN uint32_t		*RFA_backup,
+	IN uint32_t		*RFB_backup,
+	IN uint32_t		*Backup_RF_REG,
+	IN uint32_t		RF_NUM
+	)
 {
 
-	u4Byte i;
+	uint32_t i;
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
 	//Save RF Parameters
     	for (i = 0; i < RF_NUM; i++){
@@ -454,29 +454,29 @@ void _IQK_BackupRF_8821A(
 }
 void _IQK_BackupAFE_8821A(
 	IN PDM_ODM_T		pDM_Odm,
-	IN pu4Byte		AFE_backup,
-	IN pu4Byte		Backup_AFE_REG, 
-	IN u4Byte		AFE_NUM
+	IN uint32_t		*AFE_backup,
+	IN uint32_t		*Backup_AFE_REG,
+	IN uint32_t		AFE_NUM
 	)
 {
-	u4Byte i;
+	uint32_t i;
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
-	//Save AFE Parameters 
+	//Save AFE Parameters
     	for (i = 0; i < AFE_NUM; i++){
-        	AFE_backup[i] = ODM_Read4Byte(pDM_Odm, Backup_AFE_REG[i]);	
+        	AFE_backup[i] = ODM_Read4Byte(pDM_Odm, Backup_AFE_REG[i]);
     	}
     	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n"));
 }
 void _IQK_RestoreMacBB_8821A(
 	IN PDM_ODM_T		pDM_Odm,
-	IN pu4Byte		MACBB_backup,
-	IN pu4Byte		Backup_MACBB_REG, 
-	IN u4Byte		MACBB_NUM
-	)	
+	IN uint32_t		*MACBB_backup,
+	IN uint32_t		*Backup_MACBB_REG,
+	IN uint32_t		MACBB_NUM
+	)
 {
-	u4Byte i;
+	uint32_t i;
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
-	//Reload MacBB Parameters 
+	//Reload MacBB Parameters
     	for (i = 0; i < MACBB_NUM; i++){
         	ODM_Write4Byte(pDM_Odm, Backup_MACBB_REG[i], MACBB_backup[i]);
     	}
@@ -485,12 +485,12 @@ void _IQK_RestoreMacBB_8821A(
 void _IQK_RestoreRF_8821A(
 	IN PDM_ODM_T			pDM_Odm,
 	IN ODM_RF_RADIO_PATH_E 	Path,
-	IN pu4Byte			Backup_RF_REG,
-	IN pu4Byte 			RF_backup,
-	IN u4Byte			RF_REG_NUM
+	IN uint32_t			*Backup_RF_REG,
+	IN uint32_t 			*RF_backup,
+	IN uint32_t			RF_REG_NUM
 	)
-{	
-	u4Byte i;
+{
+	uint32_t i;
 
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
     	for (i = 0; i < RF_REG_NUM; i++)
@@ -508,14 +508,14 @@ void _IQK_RestoreRF_8821A(
 }
 void _IQK_RestoreAFE_8821A(
 	IN PDM_ODM_T		pDM_Odm,
-	IN pu4Byte		AFE_backup,
-	IN pu4Byte		Backup_AFE_REG, 
-	IN u4Byte		AFE_NUM
+	IN uint32_t		*AFE_backup,
+	IN uint32_t		*Backup_AFE_REG,
+	IN uint32_t		AFE_NUM
 	)
 {
-	u4Byte i;
+	uint32_t i;
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
-	//Reload AFE Parameters 
+	//Reload AFE Parameters
     	for (i = 0; i < AFE_NUM; i++){
         	ODM_Write4Byte(pDM_Odm, Backup_AFE_REG[i], AFE_backup[i]);
     	}
@@ -550,30 +550,30 @@ void _IQK_Tx_8821A(
 	IN ODM_RF_RADIO_PATH_E Path
 	)
 {
-	u4Byte 		TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
+	uint32_t 		TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int 		TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
 	int 		TX_X0[cal_num], TX_Y0[cal_num], TX_X0_RXK[cal_num], TX_Y0_RXK[cal_num], RX_X0[cal_num], RX_Y0[cal_num];
     	BOOLEAN 	TX0IQKOK = FALSE, RX0IQKOK = FALSE;
 	BOOLEAN  	VDF_enable = FALSE;
 	int 			i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0;
-	
+
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d\n", *pDM_Odm->pBandWidth));
 	if (*pDM_Odm->pBandWidth == 2){
 		VDF_enable = TRUE;
 	}
-	
+
 	while (cal < cal_num){
 		switch (Path) {
 			case ODM_RF_PATH_A:
-			{	
+			{
 				temp_reg65 = ODM_GetRFReg(pDM_Odm, Path, 0x65, bMaskDWord);
-				
+
 				if (pDM_Odm->ExtPA){
 					ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
 					ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, 0x931d5);
 				}
-				
+
 				//Path-A LOK
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
 				// ========Path-A AFE all on========
@@ -630,10 +630,10 @@ void _IQK_Tx_8821A(
 				ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00100000);// cb8[20] 將 SI/PI 使用權切給 iqk_dpk module
 				ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 				ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
-				
+
 				ODM_delay_ms(10); //Delay 10ms
 				ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
-				
+
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
 				ODM_SetRFReg(pDM_Odm, Path, 0x58, 0x7fe00, ODM_GetRFReg(pDM_Odm, Path, 0x8, 0xffc00)); // Load LOK
 				switch (*pDM_Odm->pBandWidth)
@@ -650,10 +650,10 @@ void _IQK_Tx_8821A(
 						break;
 					default:
 						break;
-					
+
 					}
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1); // [31] = 1 --> Page C1
-				
+
 				// 3. TX RF Setting
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
 				ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x80000);
@@ -741,7 +741,7 @@ void _IQK_Tx_8821A(
 							if (delay_count < 20){							// If 20ms No Result, then cal_retry++
 					              	// ============TXIQK Check==============
 								TX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(12));
-								
+
 								if (~TX_fail){
 									ODM_Write4Byte(pDM_Odm, 0xcb8, 0x02000000);
 									VDF_X[k] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
@@ -801,7 +801,7 @@ void _IQK_Tx_8821A(
 						if (delay_count < 20){							// If 20ms No Result, then cal_retry++
 					       // ============TXIQK Check==============
 						TX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(12));
-								
+
 							if (~TX_fail){
 								ODM_Write4Byte(pDM_Odm, 0xcb8, 0x02000000);
 								TX_X0[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
@@ -824,15 +824,15 @@ void _IQK_Tx_8821A(
 		                        		TX0IQKOK = FALSE;
 		                        		cal_retry++;
 		                        		if (cal_retry == 10)
-		                            		break;	
+		                            		break;
 		                    		}
 		                	}
 				}
-				
+
 
 			if (TX0IQKOK == FALSE)
 				break;				// TXK fail, Don't do RXK
-			
+
 			if (VDF_enable == 1){
 				ODM_SetBBReg(pDM_Odm, 0xce8, BIT(31), 0x0);    // TX VDF Disable
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXVDF Start\n"));
@@ -847,7 +847,7 @@ void _IQK_Tx_8821A(
 					ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, temp_reg65);
 					ODM_SetRFReg(pDM_Odm, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 					ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x00000);
-					
+
 					ODM_SetBBReg(pDM_Odm, 0xcb8, 0xf, 0xd);
 					ODM_Write4Byte(pDM_Odm, 0x978, 0x29002000);// TX (X,Y)
 					ODM_Write4Byte(pDM_Odm, 0x97c, 0xa9002000);// RX (X,Y)
@@ -908,11 +908,11 @@ void _IQK_Tx_8821A(
 								delay_count++;
 							}
 						}
-						
+
 						if (delay_count < 20){							// If 20ms No Result, then cal_retry++
 					      		// ============TXIQK Check==============
 							TX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(12));
-							
+
 							if (~TX_fail){
 								ODM_Write4Byte(pDM_Odm, 0xcb8, 0x02000000);
 								TX_X0_RXK[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
@@ -943,7 +943,7 @@ void _IQK_Tx_8821A(
 			                		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXK Step 1 fail\n"));
 			            	}
 
-							
+
 					//====== RX IQK ======
 			            	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); // [31] = 0 --> Page C
 					// 1. RX RF Setting
@@ -954,7 +954,7 @@ void _IQK_Tx_8821A(
 					ODM_SetRFReg(pDM_Odm, Path, 0x8f, bRFRegOffsetMask, 0x88001);
 					ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, 0x931d8);
 					ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x00000);
-					
+
 					ODM_SetBBReg(pDM_Odm, 0x978, 0x03FF8000, (TX_X0_RXK[cal])>>21&0x000007ff);
 			              ODM_SetBBReg(pDM_Odm, 0x978, 0x000007FF, (TX_Y0_RXK[cal])>>21&0x000007ff);
 					ODM_SetBBReg(pDM_Odm, 0x978, BIT(31), 0x1);
@@ -962,10 +962,10 @@ void _IQK_Tx_8821A(
 					ODM_SetBBReg(pDM_Odm, 0xcb8, 0xF, 0xe);
 					ODM_Write4Byte(pDM_Odm, 0x90c, 0x00008000);
 					ODM_Write4Byte(pDM_Odm, 0x984, 0x0046a911);
-					
+
 					ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1); // [31] = 1 --> Page C1
-					ODM_SetBBReg(pDM_Odm, 0xc80, BIT(29), 0x1); 
-					ODM_SetBBReg(pDM_Odm, 0xc84, BIT(29), 0x0); 
+					ODM_SetBBReg(pDM_Odm, 0xc80, BIT(29), 0x1);
+					ODM_SetBBReg(pDM_Odm, 0xc84, BIT(29), 0x0);
 					ODM_Write4Byte(pDM_Odm, 0xc88, 0x02140119);
 					ODM_Write4Byte(pDM_Odm, 0xc8c, 0x28161420);
 
@@ -973,7 +973,7 @@ void _IQK_Tx_8821A(
 						ODM_SetBBReg(pDM_Odm, 0xce8, BIT(30), 0x1);  //RX VDF Enable
 						}
 					ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00100000);// cb8[20] 將 SI/PI 使用權切給 iqk_dpk module
-					
+
 					cal_retry = 0;
 					while(1){
 						// one shot
@@ -993,7 +993,7 @@ void _IQK_Tx_8821A(
 								delay_count++;
 							}
 						}
-							
+
 						if (delay_count < 20){	// If 20ms No Result, then cal_retry++
 							// ============RXIQK Check==============
 							RX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(11));
@@ -1012,7 +1012,7 @@ void _IQK_Tx_8821A(
 								cal_retry++;
 								if (cal_retry == 10)
 									break;
-									
+
 							}
 						}
 						else{
@@ -1022,7 +1022,7 @@ void _IQK_Tx_8821A(
 				                     	break;
 			                		}
 			            	}
-					
+
 				}
 				if (k == 3){
 					RX_X0[cal] = VDF_X[k-1] ;
@@ -1070,11 +1070,11 @@ void _IQK_Tx_8821A(
 							delay_count++;
 						}
 					}
-					
+
 					if (delay_count < 20){							// If 20ms No Result, then cal_retry++
 				      		// ============TXIQK Check==============
 						TX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(12));
-						
+
 						if (~TX_fail){
 							ODM_Write4Byte(pDM_Odm, 0xcb8, 0x02000000);
 							TX_X0_RXK[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
@@ -1117,7 +1117,7 @@ void _IQK_Tx_8821A(
 				ODM_SetRFReg(pDM_Odm, Path, 0x8f, bRFRegOffsetMask, 0x88001);
 				ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, 0x931d8);
 				ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x00000);
-				
+
 				ODM_SetBBReg(pDM_Odm, 0x978, 0x03FF8000, (TX_X0_RXK[cal])>>21&0x000007ff);
 	                     ODM_SetBBReg(pDM_Odm, 0x978, 0x000007FF, (TX_Y0_RXK[cal])>>21&0x000007ff);
 				ODM_SetBBReg(pDM_Odm, 0x978, BIT(31), 0x1);
@@ -1125,14 +1125,14 @@ void _IQK_Tx_8821A(
 				ODM_SetBBReg(pDM_Odm, 0xcb8, 0xF, 0xe);
 				ODM_Write4Byte(pDM_Odm, 0x90c, 0x00008000);
 				ODM_Write4Byte(pDM_Odm, 0x984, 0x0046a911);
-				
+
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1); // [31] = 1 --> Page C1
 				ODM_Write4Byte(pDM_Odm, 0xc80, 0x38008c10);// TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16
 				ODM_Write4Byte(pDM_Odm, 0xc84, 0x18008c10);// RX_Tone_idx[9:0], RxK_Mask[29]
 				ODM_Write4Byte(pDM_Odm, 0xc88, 0x02140119);
 				ODM_Write4Byte(pDM_Odm, 0xc8c, 0x28161440);
 				ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00100000);// cb8[20] 將 SI/PI 使用權切給 iqk_dpk module
-				
+
 				cal_retry = 0;
 				while(1){
 					// one shot
@@ -1152,7 +1152,7 @@ void _IQK_Tx_8821A(
 							delay_count++;
 						}
 					}
-						
+
 					if (delay_count < 20){	// If 20ms No Result, then cal_retry++
 						// ============RXIQK Check==============
 						RX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(11));
@@ -1171,7 +1171,7 @@ void _IQK_Tx_8821A(
 							cal_retry++;
 							if (cal_retry == 10)
 								break;
-								
+
 						}
 					}
 					else{
@@ -1181,7 +1181,7 @@ void _IQK_Tx_8821A(
 			                     	break;
 	                    		}
 				}
-			}	
+			}
                 	if (TX0IQKOK)
                     		TX_Average++;
 			if (RX0IQKOK)
@@ -1191,7 +1191,7 @@ void _IQK_Tx_8821A(
 		}
 		break;
 	default:
-		break;					
+		break;
 		}
 	cal++;
 	}
@@ -1202,7 +1202,7 @@ void _IQK_Tx_8821A(
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("========Path_A =======\n"));
 		if (TX_Average == 0)
 		    	break;
-		
+
 		for (i = 0; i < TX_Average; i++){
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, (" TX_X0_RXK[%d] = %x ;; TX_Y0_RXK[%d] = %x\n", i, (TX_X0_RXK[i])>>21&0x000007ff, i, (TX_Y0_RXK[i])>>21&0x000007ff));
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X0[%d] = %x ;; TX_Y0[%d] = %x\n", i, (TX_X0[i])>>21&0x000007ff, i, (TX_Y0[i])>>21&0x000007ff));
@@ -1222,7 +1222,7 @@ void _IQK_Tx_8821A(
 			}
 			if (TX_finish == 1)
 				break;
-		}	
+		}
 
 		if (TX_finish == 1){
 			_IQK_TX_FillIQC_8821A(pDM_Odm, Path, TX_X, TX_Y);
@@ -1230,10 +1230,10 @@ void _IQK_Tx_8821A(
 		else{
 			_IQK_TX_FillIQC_8821A(pDM_Odm, Path, 0x200, 0x0);
 		}
-		
+
 		if (RX_Average == 0)
 		    	break;
-		
+
 		for (i = 0; i < RX_Average; i++){
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X0[%d] = %x ;; RX_Y0[%d] = %x\n", i, (RX_X0[i])>>21&0x000007ff, i, (RX_Y0[i])>>21&0x000007ff));
 		}
@@ -1252,7 +1252,7 @@ void _IQK_Tx_8821A(
 			}
 			if (RX_finish == 1)
 				break;
-		}	
+		}
 
 		if (RX_finish == 1){
 			_IQK_RX_FillIQC_8821A(pDM_Odm, Path, RX_X, RX_Y);
@@ -1296,35 +1296,35 @@ phy_IQCalibrate_By_FW_8821A(
 		Buf2 = 0x1<<2;
 	else
 		Buf2 = 0x1<<3;
-	
+
 	IQKcmd[1] = Buf1 | Buf2;
 	IQKcmd[2] = pHalData->ExternalPA_5G | pHalData->ExternalLNA_5G<<1;
-	
-	
+
+
 	//RT_TRACE(COMP_MP, DBG_LOUD, ("== IQK Start ==\n"));
 
 	//FillH2CCmd_8812(pAdapter, 0x45, 3, IQKcmd);
 
 }
-                         
-VOID	
+
+VOID
 phy_IQCalibrate_8821A(
 	IN PDM_ODM_T		pDM_Odm
 	)
 {
-	u4Byte	MACBB_backup[MACBB_REG_NUM], AFE_backup[AFE_REG_NUM], RFA_backup[RF_REG_NUM], RFB_backup[RF_REG_NUM];
-	u4Byte 	Backup_MACBB_REG[MACBB_REG_NUM] = {0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00, 0xc50, 0xe00, 0xe50, 0x838, 0x82c}; 
-	u4Byte 	Backup_AFE_REG[AFE_REG_NUM] = {0xc5c, 0xc60, 0xc64, 0xc68, 0xc6c, 0xc70, 0xc74, 0xc78, 0xc7c, 0xc80, 0xc84, 0xcb8}; 
-	u4Byte 	Backup_RF_REG[RF_REG_NUM] = {0x65, 0x8f, 0x0}; 
-	
+	uint32_t	MACBB_backup[MACBB_REG_NUM], AFE_backup[AFE_REG_NUM], RFA_backup[RF_REG_NUM], RFB_backup[RF_REG_NUM];
+	uint32_t 	Backup_MACBB_REG[MACBB_REG_NUM] = {0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00, 0xc50, 0xe00, 0xe50, 0x838, 0x82c};
+	uint32_t 	Backup_AFE_REG[AFE_REG_NUM] = {0xc5c, 0xc60, 0xc64, 0xc68, 0xc6c, 0xc70, 0xc74, 0xc78, 0xc7c, 0xc80, 0xc84, 0xcb8};
+	uint32_t 	Backup_RF_REG[RF_REG_NUM] = {0x65, 0x8f, 0x0};
+
 	_IQK_BackupMacBB_8821A(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 	_IQK_BackupAFE_8821A(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
 	_IQK_BackupRF_8821A(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
-	
+
 	_IQK_ConfigureMAC_8821A(pDM_Odm);
 	_IQK_Tx_8821A(pDM_Odm, ODM_RF_PATH_A);
 	_IQK_RestoreRF_8821A(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG, RFA_backup, RF_REG_NUM);
-	
+
 	_IQK_RestoreAFE_8821A(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
 	_IQK_RestoreMacBB_8821A(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 
@@ -1356,21 +1356,21 @@ PHY_IQCalibrate_8821A(
 
 
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);	
+	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
 	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;	
+	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#else  // (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;	
+	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
-#endif	
+#endif
 
 #if (MP_DRIVER == 1)
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)	
-	PMPT_CONTEXT	pMptCtx = &(pAdapter->MptCtx);	
+	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
+	PMPT_CONTEXT	pMptCtx = &(pAdapter->MptCtx);
 	#else// (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);		
-	#endif	
+	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
+	#endif
 #endif//(MP_DRIVER == 1)
 
 #if 0 //ODM_CheckPowerStatus always return TRUE currently!
@@ -1381,7 +1381,7 @@ PHY_IQCalibrate_8821A(
 #endif //gtemp
 
 
-#if MP_DRIVER == 1	
+#if MP_DRIVER == 1
 	if( ! (pMptCtx->bSingleTone || pMptCtx->bCarrierSuppression) )
 #endif
 	{

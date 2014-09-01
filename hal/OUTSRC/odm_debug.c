@@ -70,7 +70,7 @@ pDM_Odm->DebugComponents			=
 #if 0
 /*------------------Declare variable-----------------------
 // Define debug flag array for common debug print macro. */
-u4Byte ODM_DBGP_Type[ODM_DBGP_TYPE_MAX];
+uint32_t ODM_DBGP_Type[ODM_DBGP_TYPE_MAX];
 
 /* Define debug print header for every service module. */
 ODM_DBGP_HEAD_T	ODM_DBGP_Head;
@@ -185,7 +185,7 @@ extern	void	ODM_DBGP_Flag_Init(void)
 
 
 #if 0
-u4Byte GlobalDebugLevel			= 	DBG_LOUD;
+uint32_t GlobalDebugLevel			= 	DBG_LOUD;
 //
 // 2009/06/22 MH Allow Fre build to print none debug info at init time.
 //
@@ -270,7 +270,7 @@ EXPORT_SYMBOL(GlobalDebugLevel);
 
 /*------------------Declare variable-----------------------
 // Define debug flag array for common debug print macro. */
-u4Byte			DBGP_Type[DBGP_TYPE_MAX];
+uint32_t			DBGP_Type[DBGP_TYPE_MAX];
 
 /* Define debug print header for every service module. */
 DBGP_HEAD_T		DBGP_Head;

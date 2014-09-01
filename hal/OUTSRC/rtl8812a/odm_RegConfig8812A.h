@@ -25,55 +25,55 @@
 void
 odm_ConfigRFReg_8812A(
 	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	u4Byte 					Addr,
-	IN 	u4Byte 					Data,
+	IN 	uint32_t 					Addr,
+	IN 	uint32_t 					Data,
 	IN  ODM_RF_RADIO_PATH_E     RF_PATH,
-	IN	u4Byte				    RegAddr
+	IN	uint32_t				    RegAddr
 	);
 
 void
 odm_ConfigRF_RadioA_8812A(
 	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	u4Byte 					Addr,
-	IN 	u4Byte 					Data
+	IN 	uint32_t 					Addr,
+	IN 	uint32_t 					Data
 	);
 
 void
 odm_ConfigRF_RadioB_8812A(
 	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	u4Byte 					Addr,
-	IN 	u4Byte 					Data
+	IN 	uint32_t 					Addr,
+	IN 	uint32_t 					Data
 	);
 
 void
 odm_ConfigMAC_8812A(
  	IN 	PDM_ODM_T 	pDM_Odm,
- 	IN 	u4Byte 		Addr,
+ 	IN 	uint32_t 		Addr,
  	IN 	u1Byte 		Data
  	);
 
 void
 odm_ConfigBB_AGC_8812A(
     IN 	PDM_ODM_T 	pDM_Odm,
-    IN 	u4Byte 		Addr,
-    IN 	u4Byte 		Bitmask,
-    IN 	u4Byte 		Data
+    IN 	uint32_t 		Addr,
+    IN 	uint32_t 		Bitmask,
+    IN 	uint32_t 		Data
     );
 
 void
 odm_ConfigBB_PHY_REG_PG_8812A(
 	IN 	PDM_ODM_T 	pDM_Odm,
-    IN 	u4Byte 		Addr,
-    IN 	u4Byte 		Bitmask,
-    IN 	u4Byte 		Data
+    IN 	uint32_t 		Addr,
+    IN 	uint32_t 		Bitmask,
+    IN 	uint32_t 		Data
     );
 
 void
 odm_ConfigBB_PHY_8812A(
 	IN 	PDM_ODM_T 	pDM_Odm,
-    IN 	u4Byte 		Addr,
-    IN 	u4Byte 		Bitmask,
-    IN 	u4Byte 		Data
+    IN 	uint32_t 		Addr,
+    IN 	uint32_t 		Bitmask,
+    IN 	uint32_t 		Data
     );
 
 void

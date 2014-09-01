@@ -1,21 +1,21 @@
-/****************************************************************************** 
-* 
-* Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved. 
-* 
-* This program is free software; you can redistribute it and/or modify it 
-* under the terms of version 2 of the GNU General Public License as 
-* published by the Free Software Foundation. 
-* 
-* This program is distributed in the hope that it will be useful, but WITHOUT 
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
-* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
-* more details. 
-* 
-* You should have received a copy of the GNU General Public License along with 
-* this program; if not, write to the Free Software Foundation, Inc., 
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA 
-* 
-* 
+/******************************************************************************
+*
+* Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of version 2 of the GNU General Public License as
+* published by the Free Software Foundation.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* this program; if not, write to the Free Software Foundation, Inc.,
+* 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
+*
+*
 ******************************************************************************/
 
 //#include "Mp_Precomp.h"
@@ -24,14 +24,14 @@
 #if (RTL8821A_SUPPORT == 1)
 static BOOLEAN
 CheckCondition(
-    const u4Byte  Condition,
-    const u4Byte  Hex
+    const uint32_t  Condition,
+    const uint32_t  Hex
     )
 {
-    u4Byte _board     = (Hex & 0x000000FF);
-    u4Byte _interface = (Hex & 0x0000FF00) >> 8;
-    u4Byte _platform  = (Hex & 0x00FF0000) >> 16;
-    u4Byte cond = Condition;
+    uint32_t _board     = (Hex & 0x000000FF);
+    uint32_t _interface = (Hex & 0x0000FF00) >> 8;
+    uint32_t _platform  = (Hex & 0x00FF0000) >> 16;
+    uint32_t cond = Condition;
 
     if ( Condition == 0xCDCDCDCD )
         return TRUE;
@@ -57,7 +57,7 @@ CheckCondition(
 *                           MAC_REG.TXT
 ******************************************************************************/
 
-u4Byte Array_MP_8821A_MAC_REG[] = { 
+uint32_t Array_MP_8821A_MAC_REG[] = {
 		0x428, 0x0000000A,
 		0x429, 0x00000010,
 		0x430, 0x00000000,
@@ -164,15 +164,15 @@ ODM_ReadAndConfig_MP_8821A_MAC_REG(
 {
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
-	u4Byte     hex         = 0;
-	u4Byte     i           = 0;
+	uint32_t     hex         = 0;
+	uint32_t     i           = 0;
 	u2Byte     count       = 0;
-	pu4Byte    ptr_array   = NULL;
+	uint32_t    *ptr_array   = NULL;
 	u1Byte     platform    = pDM_Odm->SupportPlatform;
 	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;  
-	u4Byte     ArrayLen    = sizeof(Array_MP_8821A_MAC_REG)/sizeof(u4Byte);
-	pu4Byte    Array       = Array_MP_8821A_MAC_REG;
+	u1Byte     board       = pDM_Odm->BoardType;
+	uint32_t     ArrayLen    = sizeof(Array_MP_8821A_MAC_REG)/sizeof(uint32_t);
+	uint32_t    *Array       = Array_MP_8821A_MAC_REG;
 
 
 	hex += board;
@@ -183,9 +183,9 @@ ODM_ReadAndConfig_MP_8821A_MAC_REG(
 
 	for (i = 0; i < ArrayLen; i += 2 )
 	{
-	    u4Byte v1 = Array[i];
-	    u4Byte v2 = Array[i+1];
-	
+	    uint32_t v1 = Array[i];
+	    uint32_t v2 = Array[i+1];
+
 	    // This (offset, data) pair meets the condition.
 	    if ( v1 < 0xCDCDCDCD )
 	    {
@@ -197,8 +197,8 @@ ODM_ReadAndConfig_MP_8821A_MAC_REG(
 		    if ( !CheckCondition(Array[i], hex) )
 		    { // Discard the following (offset, data) pairs.
 		        READ_NEXT_PAIR(v1, v2, i);
-		        while (v2 != 0xDEAD && 
-		               v2 != 0xCDEF && 
+		        while (v2 != 0xDEAD &&
+		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
 		            READ_NEXT_PAIR(v1, v2, i);
@@ -208,8 +208,8 @@ ODM_ReadAndConfig_MP_8821A_MAC_REG(
 		    else // Configure matched pairs and skip to end of if-else.
 		    {
 		        READ_NEXT_PAIR(v1, v2, i);
-		        while (v2 != 0xDEAD && 
-		               v2 != 0xCDEF && 
+		        while (v2 != 0xDEAD &&
+		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
 	 				odm_ConfigMAC_8821A(pDM_Odm, v1, (u1Byte)v2);
@@ -220,9 +220,9 @@ ODM_ReadAndConfig_MP_8821A_MAC_REG(
 		        {
 		            READ_NEXT_PAIR(v1, v2, i);
 		        }
-		        
+
 		    }
-		}	
+		}
 	}
 
 }

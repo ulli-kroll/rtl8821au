@@ -105,7 +105,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#define	STA_INFO_T			RT_WLAN_STA
 	#define	PSTA_INFO_T			PRT_WLAN_STA
 
-//    typedef unsigned long		u4Byte,*pu4Byte;
 #define CONFIG_HW_ANTENNA_DIVERSITY
 #define CONFIG_SW_ANTENNA_DIVERSITY
 
@@ -123,7 +122,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	typedef unsigned char			BOOLEAN,*PBOOLEAN;
 	typedef unsigned char			u1Byte,*pu1Byte;
 	typedef unsigned short			u2Byte,*pu2Byte;
-	typedef unsigned int			u4Byte,*pu4Byte;
 	typedef char					s1Byte,*ps1Byte;
 	typedef short					s2Byte,*ps2Byte;
 	typedef long					s4Byte,*ps4Byte;
@@ -150,7 +148,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	typedef unsigned char			BOOLEAN,*PBOOLEAN;
 	typedef unsigned char			u1Byte,*pu1Byte;
 	typedef unsigned short			u2Byte,*pu2Byte;
-	typedef unsigned int			u4Byte,*pu4Byte;
 	typedef char					s1Byte,*ps1Byte;
 	typedef short					s2Byte,*ps2Byte;
 	typedef long					s4Byte,*ps4Byte;
@@ -172,7 +169,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 #if 0
 	typedef u8					u1Byte, *pu1Byte;
 	typedef uint16_t					u2Byte,*pu2Byte;
-	typedef u32					u4Byte,*pu4Byte;
 	typedef s8					s1Byte,*ps1Byte;
 	typedef s16					s2Byte,*ps2Byte;
 	typedef s32					s4Byte,*ps4Byte;
@@ -183,9 +179,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 
 	#define u2Byte 		u16
 	#define	pu2Byte 	u16*
-
-	#define u4Byte 		u32
-	#define	pu4Byte 	u32*
 
 	#define s1Byte 		s8
 	#define	ps1Byte 	s8*

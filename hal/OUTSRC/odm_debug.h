@@ -175,8 +175,8 @@ ODM_InitDebugSetting(
 			{																		\
 				char			*szTitle = _TitleString;									\
 				pu1Byte		pbtHexData = _HexData;									\
-				u4Byte		u4bHexDataLen = _HexDataLen;							\
-				u4Byte		__i;														\
+				uint32_t		u4bHexDataLen = _HexDataLen;							\
+				uint32_t		__i;														\
 				DbgPrint("%s", szTitle);													\
 				for (__i=0;__i<u4bHexDataLen;__i++)									\
 				{																	\
@@ -333,7 +333,7 @@ typedef enum tag_ODM_DBGP_Flag_Type_Definition
 
 
 
-extern	u4Byte ODM_GlobalDebugLevel;
+extern	uint32_t ODM_GlobalDebugLevel;
 
 
 #if DBG
@@ -473,10 +473,10 @@ extern	uint64_t ODM_GlobalDebugComponents;
      is a UINT32 integer and you can assign 32 different events. */
 typedef struct tag_DBGP_Debug_Flag_Structure
 {
-	u4Byte	Mans;			/* Main Scheduler module. */
-	u4Byte	Rtos;			/* RTOS module. */
-	u4Byte	Alarm;		/* Alarm module. */
-	u4Byte	Pm;			/* Performance monitor module. */
+	uint32_t	Mans;			/* Main Scheduler module. */
+	uint32_t	Rtos;			/* RTOS module. */
+	uint32_t	Alarm;		/* Alarm module. */
+	uint32_t	Pm;			/* Performance monitor module. */
 }DBGP_FLAG_T;
 
 /* Define debug print header for every service module.*/
@@ -699,8 +699,8 @@ typedef enum tag_DBGP_Flag_Type_Definition
 			{																		\
 				char			*szTitle = _TitleString;									\
 				pu1Byte		pbtHexData = _HexData;									\
-				u4Byte		u4bHexDataLen = _HexDataLen;							\
-				u4Byte		__i;														\
+				uint32_t		u4bHexDataLen = _HexDataLen;							\
+				uint32_t		__i;														\
 				DbgPrint("%s", szTitle);													\
 				for (__i=0;__i<u4bHexDataLen;__i++)									\
 				{																	\
@@ -855,7 +855,7 @@ typedef enum tag_DBGP_Flag_Type_Definition
 
 
 /*------------------------Export global variable----------------------------*/
-extern	u4Byte			DBGP_Type[DBGP_TYPE_MAX];
+extern	uint32_t			DBGP_Type[DBGP_TYPE_MAX];
 extern	DBGP_HEAD_T	DBGP_Head;
 
 /*------------------------Export global variable----------------------------*/
@@ -881,7 +881,7 @@ extern	void	DBG_DumpMem(const u1Byte DbgComp,
 
 
 
-extern u4Byte GlobalDebugLevel;
+extern uint32_t GlobalDebugLevel;
 extern uint64_t GlobalDebugComponents;
 
 

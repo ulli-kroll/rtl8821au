@@ -30,7 +30,7 @@
 u1Byte
 ODM_Read1Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
-	IN	u4Byte			RegAddr
+	IN	uint32_t			RegAddr
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -50,7 +50,7 @@ ODM_Read1Byte(
 u2Byte
 ODM_Read2Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
-	IN	u4Byte			RegAddr
+	IN	uint32_t			RegAddr
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -67,10 +67,10 @@ ODM_Read2Byte(
 }
 
 
-u4Byte
+uint32_t
 ODM_Read4Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
-	IN	u4Byte			RegAddr
+	IN	uint32_t			RegAddr
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -90,7 +90,7 @@ ODM_Read4Byte(
 VOID
 ODM_Write1Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
-	IN	u4Byte			RegAddr,
+	IN	uint32_t			RegAddr,
 	IN	u1Byte			Data
 	)
 {
@@ -111,7 +111,7 @@ ODM_Write1Byte(
 VOID
 ODM_Write2Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
-	IN	u4Byte			RegAddr,
+	IN	uint32_t			RegAddr,
 	IN	u2Byte			Data
 	)
 {
@@ -132,8 +132,8 @@ ODM_Write2Byte(
 VOID
 ODM_Write4Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
-	IN	u4Byte			RegAddr,
-	IN	u4Byte			Data
+	IN	uint32_t			RegAddr,
+	IN	uint32_t			Data
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -153,9 +153,9 @@ ODM_Write4Byte(
 VOID
 ODM_SetMACReg(
 	IN 	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		RegAddr,
-	IN	u4Byte		BitMask,
-	IN	u4Byte		Data
+	IN	uint32_t		RegAddr,
+	IN	uint32_t		BitMask,
+	IN	uint32_t		Data
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -167,11 +167,11 @@ ODM_SetMACReg(
 }
 
 
-u4Byte
+uint32_t
 ODM_GetMACReg(
 	IN 	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		RegAddr,
-	IN	u4Byte		BitMask
+	IN	uint32_t		RegAddr,
+	IN	uint32_t		BitMask
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -186,9 +186,9 @@ ODM_GetMACReg(
 VOID
 ODM_SetBBReg(
 	IN 	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		RegAddr,
-	IN	u4Byte		BitMask,
-	IN	u4Byte		Data
+	IN	uint32_t		RegAddr,
+	IN	uint32_t		BitMask,
+	IN	uint32_t		Data
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -200,11 +200,11 @@ ODM_SetBBReg(
 }
 
 
-u4Byte
+uint32_t
 ODM_GetBBReg(
 	IN 	PDM_ODM_T	pDM_Odm,
-	IN	u4Byte		RegAddr,
-	IN	u4Byte		BitMask
+	IN	uint32_t		RegAddr,
+	IN	uint32_t		BitMask
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -220,9 +220,9 @@ VOID
 ODM_SetRFReg(
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	ODM_RF_RADIO_PATH_E	eRFPath,
-	IN	u4Byte				RegAddr,
-	IN	u4Byte				BitMask,
-	IN	u4Byte				Data
+	IN	uint32_t				RegAddr,
+	IN	uint32_t				BitMask,
+	IN	uint32_t				Data
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -234,12 +234,12 @@ ODM_SetRFReg(
 }
 
 
-u4Byte
+uint32_t
 ODM_GetRFReg(
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	ODM_RF_RADIO_PATH_E	eRFPath,
-	IN	u4Byte				RegAddr,
-	IN	u4Byte				BitMask
+	IN	uint32_t				RegAddr,
+	IN	uint32_t				BitMask
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -260,7 +260,7 @@ VOID
 ODM_AllocateMemory(
 	IN 	PDM_ODM_T	pDM_Odm,
 	OUT	PVOID		*pPtr,
-	IN	u4Byte		length
+	IN	uint32_t		length
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -278,7 +278,7 @@ VOID
 ODM_FreeMemory(
 	IN 	PDM_ODM_T	pDM_Odm,
 	OUT	PVOID		pPtr,
-	IN	u4Byte		length
+	IN	uint32_t		length
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -296,7 +296,7 @@ ODM_MoveMemory(
 	IN 	PDM_ODM_T	pDM_Odm,
 	OUT PVOID		pDest,
 	IN  PVOID		pSrc,
-	IN  u4Byte		Length
+	IN  uint32_t		Length
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -312,7 +312,7 @@ s4Byte ODM_CompareMemory(
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	PVOID           pBuf1,
       IN	PVOID           pBuf2,
-      IN	u4Byte          length
+      IN	uint32_t          length
        )
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -464,7 +464,7 @@ ODM_IsWorkItemScheduled(
 //
 VOID
 ODM_StallExecution(
-	IN	u4Byte	usDelay
+	IN	uint32_t	usDelay
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -477,7 +477,7 @@ ODM_StallExecution(
 }
 
 VOID
-ODM_delay_ms(IN u4Byte	ms)
+ODM_delay_ms(IN uint32_t	ms)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	delay_ms(ms);
@@ -489,7 +489,7 @@ ODM_delay_ms(IN u4Byte	ms)
 }
 
 VOID
-ODM_delay_us(IN u4Byte	us)
+ODM_delay_us(IN uint32_t	us)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	delay_us(us);
@@ -501,7 +501,7 @@ ODM_delay_us(IN u4Byte	us)
 }
 
 VOID
-ODM_sleep_ms(IN u4Byte	ms)
+ODM_sleep_ms(IN uint32_t	ms)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 
@@ -512,7 +512,7 @@ ODM_sleep_ms(IN u4Byte	ms)
 }
 
 VOID
-ODM_sleep_us(IN u4Byte	us)
+ODM_sleep_us(IN uint32_t	us)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 
@@ -526,7 +526,7 @@ VOID
 ODM_SetTimer(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PRT_TIMER 		pTimer,
-	IN	u4Byte 			msDelay
+	IN	uint32_t 			msDelay
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -615,7 +615,7 @@ VOID
 ODM_FillH2CCmd(
 	IN	PADAPTER		Adapter,
 	IN	u1Byte 	ElementID,
-	IN	u4Byte 	CmdLen,
+	IN	uint32_t 	CmdLen,
 	IN	pu1Byte	pCmdBuffer
 )
 {
@@ -701,13 +701,13 @@ ODM_FillH2CCmd(
 	}
 }
 #else
-u4Byte
+uint32_t
 ODM_FillH2CCmd(
 	IN	pu1Byte		pH2CBuffer,
-	IN	u4Byte		H2CBufferLen,
-	IN	u4Byte		CmdNum,
-	IN	pu4Byte		pElementID,
-	IN	pu4Byte		pCmdLen,
+	IN	uint32_t		H2CBufferLen,
+	IN	uint32_t		CmdNum,
+	IN	uint32_t		*pElementID,
+	IN	uint32_t		*pCmdLen,
 	IN	pu1Byte*		pCmbBuffer,
 	IN	pu1Byte		CmdStartSeq
 	)

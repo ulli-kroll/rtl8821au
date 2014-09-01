@@ -70,12 +70,12 @@ PHY_QueryBBReg8812(
 VOID
 PHY_SetBBReg8812(
 	IN	PADAPTER	Adapter,
-	IN	u4Byte		RegAddr,
-	IN	u4Byte		BitMask,
-	IN	u4Byte		Data
+	IN	uint32_t		RegAddr,
+	IN	uint32_t		BitMask,
+	IN	uint32_t		Data
 	)
 {
-	u4Byte			OriginalValue, BitShift;
+	uint32_t			OriginalValue, BitShift;
 
 #if (DISABLE_BB_RF == 1)
 	return;
@@ -1594,9 +1594,9 @@ VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
 VOID
 phy_PreprocessPGDataFromExactToRelativeValue(
 	IN	PADAPTER	Adapter,
-	IN	u4Byte		RegAddr,
-	IN	u4Byte		BitMask,
-	IN	pu4Byte		pData
+	IN	uint32_t		RegAddr,
+	IN	uint32_t		BitMask,
+	IN	uint32_t		*pData
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -2947,14 +2947,14 @@ PHY_GetTxPowerIndex_8812A(
 VOID
 PHY_SetTxPowerIndex_8812A(
 	IN	PADAPTER			Adapter,
-	IN	u4Byte				PowerIndex,
+	IN	uint32_t				PowerIndex,
 	IN	u1Byte				RFPath,
 	IN	u1Byte				Rate
 	)
 {
 	HAL_DATA_TYPE		*pHalData	= GET_HAL_DATA(Adapter);
 	BOOLEAN				Direction = FALSE;
-	u4Byte				TxagcOffset = 0;
+	uint32_t				TxagcOffset = 0;
 
 	// <20120928, Kordan> A workaround in 8812A/8821A testchip, to fix the bug of odd Tx power indexes.
 	if ( (PowerIndex % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(Adapter) && IS_TEST_CHIP(pHalData->VersionID) )
@@ -3272,7 +3272,7 @@ PHY_SetTxPowerLevelByPath8812(
 		u1Byte PowerIndexArray[POWERINDEX_ARRAY_SIZE];
 
 		u1Byte Length;
-		u4Byte RegAddress;
+		uint32_t RegAddress;
 
 
 		RT_TRACE(COMP_SCAN, DBG_LOUD, ("PHY_SetTxPowerLevel8812ByPath(): path = %d.\n",path));
@@ -3308,7 +3308,7 @@ PHY_SetTxPowerLevelByPath8812(
 				u1Byte i, j;
 				for(i = 0;i < Length;i+=4)
 				{
-					u4Byte powerIndex = 0;
+					uint32_t powerIndex = 0;
 					for(j = 0;j < 4; j++)
 					{
 						powerIndex |= (PowerIndexArray[i+j]<<(8*j));
@@ -3347,7 +3347,7 @@ PHY_SetTxPowerLevelByPath8812(
 					u1Byte i, j;
 					for(i = 0;i < vhtRates1TSize;i+=4)
 					{
-						u4Byte powerIndex = 0;
+						uint32_t powerIndex = 0;
 						for(j = 0;j < 4; j++)
 						{
 							powerIndex |= (PowerIndexArray[cckRatesSize + ofdmRatesSize + htRates1TSize + htRates2TSize+i+j]<<(8*j));
@@ -3357,7 +3357,7 @@ PHY_SetTxPowerLevelByPath8812(
 					}
 
 					{
-						u4Byte powerIndex = 0;
+						uint32_t powerIndex = 0;
 						//i+=4;
 						for(j = 0;j < vhtRates1TSize%4;j++)  // for Nss1 MCS8,9
 						{
@@ -3386,7 +3386,7 @@ PHY_SetTxPowerLevelByPath8812(
 				u1Byte i, j;
 				for(i = 0;i < Length;i+=4)
 				{
-					u4Byte powerIndex = 0;
+					uint32_t powerIndex = 0;
 					for(j = 0;j < 4; j++)
 					{
 						powerIndex |= (PowerIndexArray[cckRatesSize+i+j]<<(8*j));

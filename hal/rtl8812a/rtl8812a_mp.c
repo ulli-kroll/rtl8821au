@@ -793,11 +793,11 @@ void Hal_SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart)
 
 	uint8_t rfPath;
 	uint32_t              reg58 = 0x0;
-	static u4Byte       regRF0x0 = 0x0;
-    static u4Byte       reg0xCB0 = 0x0;
-    static u4Byte       reg0xEB0 = 0x0;
-    static u4Byte       reg0xCB4 = 0x0;
-    static u4Byte       reg0xEB4 = 0x0;
+	static uint32_t       regRF0x0 = 0x0;
+    static uint32_t       reg0xCB0 = 0x0;
+    static uint32_t       reg0xEB0 = 0x0;
+    static uint32_t       reg0xCB4 = 0x0;
+    static uint32_t       reg0xEB4 = 0x0;
 	switch (pAdapter->mppriv.antenna_tx)
 	{
 		case ANTENNA_A:

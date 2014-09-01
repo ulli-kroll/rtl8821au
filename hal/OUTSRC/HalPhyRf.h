@@ -38,16 +38,16 @@ typedef VOID 	(*FuncLCK)(PDM_ODM_T);
 typedef VOID  	(*FuncSwing)(PDM_ODM_T, pu1Byte*, pu1Byte*, pu1Byte*, pu1Byte*);
 
 typedef struct _TXPWRTRACK_CFG {
-	u1Byte 		SwingTableSize_CCK;	
+	u1Byte 		SwingTableSize_CCK;
 	u1Byte 		SwingTableSize_OFDM;
-	u1Byte 		Threshold_IQK;	
+	u1Byte 		Threshold_IQK;
 	u1Byte 		AverageThermalNum;
 	u1Byte 		RfPathCount;
-	u4Byte 		ThermalRegAddr;	
+	uint32_t 		ThermalRegAddr;
 	FuncSetPwr 	ODM_TxPwrTrackSetPwr;
 	FuncIQK 	DoIQK;
 	FuncLCK		PHY_LCCalibrate;
-	FuncSwing	GetDeltaSwingTable;	
+	FuncSwing	GetDeltaSwingTable;
 } TXPWRTRACK_CFG, *PTXPWRTRACK_CFG;
 
 void ConfigureTxpowerTrack(
@@ -84,6 +84,6 @@ ODM_GetRightChnlPlaceforIQK(
     IN u1Byte chnl
 );
 
-								
+
 #endif	// #ifndef __HAL_PHY_RF_H__
 

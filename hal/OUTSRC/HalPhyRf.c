@@ -52,11 +52,6 @@ void ConfigureTxpowerTrack(
 		ConfigureTxpowerTrack_8812A(pConfig);
 #endif
 
-#if RTL8723B_SUPPORT
-	if(pDM_Odm->SupportICType==ODM_RTL8723B)
-		ConfigureTxpowerTrack_8723B(pConfig);
-#endif
-
 }
 
 //======================================================================

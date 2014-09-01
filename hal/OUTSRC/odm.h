@@ -90,11 +90,6 @@
 #define	Smooth_TH_3	4
 #define   Smooth_Step_Size 5
 #define	Adaptive_SIR	1
-#if(RTL8723_FPGA_VERIFICATION == 1)
-#define	PSD_RESCAN		1
-#else
-#define	PSD_RESCAN		4
-#endif
 #define	PSD_SCAN_INTERVAL	700 //ms
 
 

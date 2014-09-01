@@ -1080,10 +1080,6 @@ ODM_DMWatchdog(
 	odm_DynamicATCSwitch(pDM_Odm);
 
 #if 0
-#if (RTL8723B_SUPPORT == 1)
-        if(pDM_Odm->SupportICType==ODM_RTL8723B)
-                odm_DynamicPrimaryCCA_Check(pDM_Odm);
-#endif
 #endif
 
 	 if(pDM_Odm->SupportICType == ODM_RTL8192E)
@@ -5896,7 +5892,7 @@ odm_TXPowerTrackingCheckCE(
 	}
 	#endif
 
-	#if( ((RTL8812A_SUPPORT==1) ||  (RTL8821A_SUPPORT==1) ||  (RTL8723B_SUPPORT==1)  ))
+	#if( ((RTL8812A_SUPPORT==1) ||  (RTL8821A_SUPPORT==1) ))
 	if(!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
 	{
 		return;
@@ -7242,9 +7238,6 @@ odm_InitHybridAntDiv(
 	}
 	else if(pDM_Odm->SupportICType == ODM_RTL8723B)
 	{
-#if (RTL8723B_SUPPORT == 1)
-		ODM_AntennaDiversityInit_8723B(pDM_Odm);
-#endif
 	}
 
 }
@@ -7576,9 +7569,6 @@ odm_HwAntDiv(
 	}
 	else if(pDM_Odm->SupportICType == ODM_RTL8723B)
 	{
-#if (RTL8723B_SUPPORT == 1)
-		ODM_AntennaDiversity_8723B(pDM_Odm);
-#endif
 	}
 
 }

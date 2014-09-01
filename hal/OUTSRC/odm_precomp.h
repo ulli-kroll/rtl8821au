@@ -124,14 +124,6 @@
 	#include "rtl8192d/Hal8192DUMACImg_CE.h"
 	#endif
 
-	#if(RTL8723AS_SUPPORT==1)
-	#include "rtl8723a/Hal8723SHWImg_CE.h"
-	#endif
-
-	#if(RTL8723AU_SUPPORT==1)
-	#include "rtl8723a/Hal8723UHWImg_CE.h"
-	#endif
-
 #elif (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 
 #endif
@@ -169,11 +161,6 @@
 	#include  "rtl8192d_hal.h"
 	#endif
 
-	#if (RTL8723A_SUPPORT==1)
-		#include "rtl8192c/HalDMOutSrc8192C_CE.h" //for IQK,LCK,Power-tracking
-		#include "rtl8723a_hal.h"
-	#endif
-
 	#if (RTL8812A_SUPPORT==1)
 		#include "rtl8812a/HalPhyRf_8812A.h"//for IQK,LCK,Power-tracking
 		#include "rtl8812a_hal.h"
@@ -185,11 +172,6 @@
 		#include "rtl8812a_hal.h"
 	#endif
 
-	#if (RTL8723B_SUPPORT==1)
-		#include "rtl8723b/HalPhyRf_8723B.h"//for IQK,LCK,Power-tracking
-		#include "rtl8723b/HalPhyRf_8723B.h"//for IQK,LCK,Power-tracking
-		#include "rtl8723b_hal.h"
-	#endif
 #endif
 
 #include "odm_interface.h"
@@ -208,28 +190,11 @@
 #include "rtl8192d/odm_RTL8192D.h"
 #endif
 
-#if (RTL8723A_SUPPORT==1)
-#include "rtl8723a/HalHWImg8723A_MAC.h"
-#include "rtl8723a/HalHWImg8723A_RF.h"
-#include "rtl8723a/HalHWImg8723A_BB.h"
-#include "rtl8723a/HalHWImg8723A_FW.h"
-#include "rtl8723a/odm_RegConfig8723A.h"
-#endif
 
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 #include "rtl8188e/HalPhyRf_8188e.h"
 #endif
 
-#if (RTL8723B_SUPPORT==1)
-#include "rtl8723b/HalHWImg8723B_MAC.h"
-#include "rtl8723b/HalHWImg8723B_RF.h"
-#include "rtl8723b/HalHWImg8723B_BB.h"
-#include "rtl8723b/HalHWImg8723B_FW.h"
-#include "rtl8723b/HalHWImg8723B_MP.h"
-#include "rtl8723b/Hal8723BReg.h"
-#include "rtl8723b/odm_RTL8723B.h"
-#include "rtl8723b/odm_RegConfig8723B.h"
-#endif
 
 #if (RTL8812A_SUPPORT==1)
 #include "rtl8812a/HalHWImg8812A_MAC.h"

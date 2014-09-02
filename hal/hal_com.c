@@ -35,9 +35,6 @@ void dump_chip_info(HAL_VERSION	ChipVersion)
 	else if(IS_92D(ChipVersion)){
 		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8192D_");
 	}
-	else if(IS_8723_SERIES(ChipVersion)){
-		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8723A_");
-	}
 	else if(IS_8188E(ChipVersion)){
 		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8188E_");
 	}
@@ -49,9 +46,6 @@ void dump_chip_info(HAL_VERSION	ChipVersion)
 	}
 	else if(IS_8821_SERIES(ChipVersion)){
 		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8821_");
-	}
-	else if(IS_8723B_SERIES(ChipVersion)){
-		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8723B_");
 	}
 
 	cnt += sprintf((buf+cnt), "%s_", IS_NORMAL_CHIP(ChipVersion)?"Normal_Chip":"Test_Chip");

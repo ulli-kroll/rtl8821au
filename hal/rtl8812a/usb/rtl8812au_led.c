@@ -201,10 +201,7 @@ SwLedOff_8812AU(
 				{
 					LedCfg = rtw_read8(padapter, REG_LEDCFG2);
 					LedCfg &= 0xe0; // Set to software control.
-					if(IS_HARDWARE_TYPE_8723A(padapter))
-						rtw_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT5));
-					else
-						rtw_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT6|BIT5));
+					rtw_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT6|BIT5));
 					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedOff LED0 0x%x\n", rtw_read32(padapter, REG_LEDCFG2)));
 				}
 				break;

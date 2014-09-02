@@ -539,9 +539,7 @@ PHY_BBConfig8812(
 		CrystalCap = pHalData->CrystalCap & 0x3F;
 		PHY_SetBBReg(Adapter, REG_MAC_PHY_CTRL, 0x7FF80000, (CrystalCap | (CrystalCap << 6)));
 	}
-	else if ((IS_HARDWARE_TYPE_8723A(Adapter) && pHalData->EEPROMVersion >= 0x01) ||
-		IS_HARDWARE_TYPE_8821(Adapter) || IS_HARDWARE_TYPE_8723B(Adapter) ||
-		IS_HARDWARE_TYPE_8192E(Adapter))
+	else if (IS_HARDWARE_TYPE_8821(Adapter) || IS_HARDWARE_TYPE_8192E(Adapter))
 	{
 		// 0x2C[23:18] = 0x2C[17:12] = CrystalCap
 		CrystalCap = pHalData->CrystalCap & 0x3F;

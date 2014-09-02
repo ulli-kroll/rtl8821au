@@ -1926,12 +1926,7 @@ IN PDM_ODM_T pDM_Odm
 {
 	PADAPTER		pAdapter	= pDM_Odm->Adapter;
 
-	if(IS_HARDWARE_TYPE_8723B(pAdapter))
-	{
-		pDM_Odm->TH_H = 0xf8; //-8dB
-		pDM_Odm->TH_L = 0xfb; //-5dB
-	}
-	else if(IS_HARDWARE_TYPE_8192EE(pAdapter))
+	if(IS_HARDWARE_TYPE_8192EE(pAdapter))
 	{
 		pDM_Odm->TH_H = 0xf0; //-16dB
 		pDM_Odm->TH_L = 0xf3; //-13dB
@@ -2261,16 +2256,13 @@ odm_Write_CrystalCap(
 	}
 
 	//only for B-cut
-	if ((IS_HARDWARE_TYPE_8723A(Adapter) && pHalData->EEPROMVersion >= 0x01) ||
-		IS_HARDWARE_TYPE_8723B(Adapter) ||IS_HARDWARE_TYPE_8192E(Adapter) || IS_HARDWARE_TYPE_8821(Adapter))
+	if (IS_HARDWARE_TYPE_8192E(Adapter) || IS_HARDWARE_TYPE_8821(Adapter))
 	{
 		// 0x2C[23:18] = 0x2C[17:12] = CrystalCap
 		CrystalCap = CrystalCap & 0x3F;
 		PHY_SetBBReg(Adapter, REG_MAC_PHY_CTRL, 0xFFF000, (CrystalCap | (CrystalCap << 6)));
 	}
 
-	if(IS_HARDWARE_TYPE_8723AE(Adapter))
-		PHY_SetBBReg(Adapter, REG_LDOA15_CTRL, bMaskDWord, 0x01572505);
 
 }
 
@@ -5538,7 +5530,7 @@ odm_RSSIMonitorCheckCE(
 					#endif
 
 
-					#if((RTL8192C_SUPPORT==1)||(RTL8723A_SUPPORT==1))
+					#if((RTL8192C_SUPPORT==1))
 					if((pDM_Odm->SupportICType == ODM_RTL8192C)||(pDM_Odm->SupportICType == ODM_RTL8723A)){
 						rtl8192c_set_rssi_cmd(Adapter, (u8*)&PWDB_rssi[i]);
 					}
@@ -5875,7 +5867,7 @@ odm_TXPowerTrackingCheckCE(
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PADAPTER	Adapter = pDM_Odm->Adapter;
-	#if( (RTL8192C_SUPPORT==1) ||  (RTL8723A_SUPPORT==1) )
+	#if( (RTL8192C_SUPPORT==1) )
 	if(IS_HARDWARE_TYPE_8192C(Adapter)){
 		rtl8192c_odm_CheckTXPowerTracking(Adapter);
 		return;

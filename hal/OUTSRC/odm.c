@@ -2539,46 +2539,6 @@ odm_DIGInit(
 }
 
 VOID
-odm_DigForBtHsMode(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	pDIG_T					pDM_DigTable=&pDM_Odm->DM_DigTable;
-	u1Byte					digForBtHs=0;
-	u1Byte					digUpBound=0x5a;
-
-	if(pDM_Odm->bBtConnectProcess)
-	{
-		if(pDM_Odm->SupportICType&(ODM_RTL8723A))
-			digForBtHs = 0x28;
-		else
-			digForBtHs = 0x22;
-	}
-	else
-	{
-		//
-		// Decide DIG value by BT HS RSSI.
-		//
-		digForBtHs = pDM_Odm->btHsRssi+4;
-
-		//DIG Bound
-		if(pDM_Odm->SupportICType&(ODM_RTL8723A))
-			digUpBound = 0x3e;
-
-		if(digForBtHs > digUpBound)
-			digForBtHs = digUpBound;
-		if(digForBtHs < 0x1c)
-			digForBtHs = 0x1c;
-
-		// update Current IGI
-		pDM_DigTable->BT30_CurIGI = digForBtHs;
-	}
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DigForBtHsMode() : set DigValue=0x%x\n", digForBtHs));
-#endif
-}
-
-VOID
 odm_DIG(
 	IN		PDM_ODM_T		pDM_Odm
 	)

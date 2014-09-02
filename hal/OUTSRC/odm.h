@@ -2189,16 +2189,6 @@ ODM_AntselStatistics_88C(
 
 #if( DM_ODM_SUPPORT_TYPE & (ODM_WIN |ODM_CE))
 
-VOID
-ODM_SingleDualAntennaDefaultSetting(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-BOOLEAN
-ODM_SingleDualAntennaDetection(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u1Byte			mode
-	);
 
 #endif	// #if((DM_ODM_SUPPORT_TYPE==ODM_WIN)||(DM_ODM_SUPPORT_TYPE==ODM_CE))
 

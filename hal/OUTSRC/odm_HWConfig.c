@@ -579,7 +579,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 		//2011.11.28 LukeLee: 88E use different LNA & VGA gain table
 		//The RSSI formula should be modified according to the gain table
 		//In 88E, cck_highpwr is always set to 1
-		if(pDM_Odm->SupportICType & (ODM_RTL8188E|ODM_RTL8192E|ODM_RTL8723B))
+		if(pDM_Odm->SupportICType & (ODM_RTL8188E|ODM_RTL8192E))
 		{
 			LNA_idx = ((cck_agc_rpt & 0xE0) >>5);
 			VGA_idx = (cck_agc_rpt & 0x1F);
@@ -639,9 +639,6 @@ odm_RxPhyStatus92CSeries_Parsing(
 					PWDB_ALL = 100;
 			}
 		}
-			else if(pDM_Odm->SupportICType & (ODM_RTL8723B))
-			{
-			}
 		}
 		else
 		{

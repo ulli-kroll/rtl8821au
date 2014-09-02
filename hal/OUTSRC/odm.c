@@ -6013,7 +6013,7 @@ GetPSDData(
 	//Read PSD report, Reg8B4[15:0]
 	psd_report = ODM_GetBBReg(pDM_Odm,0x8B4, bMaskDWord) & 0x0000FFFF;
 
-#if 1//(DEV_BUS_TYPE == RT_PCI_INTERFACE) && ( (RT_PLATFORM == PLATFORM_LINUX) || (RT_PLATFORM == PLATFORM_MACOSX))
+#if 1
 	psd_report = (uint32_t) (ConvertTo_dB(psd_report))+(uint32_t)(initial_gain_psd-0x1c);
 #else
 	psd_report = (int) (20*log10((double)psd_report))+(int)(initial_gain_psd-0x1c);
@@ -6267,15 +6267,7 @@ odm_MPT_DIGCallback(
 	  PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 
 
-	#if DEV_BUS_TYPE==RT_PCI_INTERFACE
-		#if USE_WORKITEM
-			PlatformScheduleWorkItem(&pDM_Odm->MPT_DIGWorkitem);
-		#else
-			ODM_MPT_DIG(pDM_Odm);
-		#endif
-	#else
 		PlatformScheduleWorkItem(&pDM_Odm->MPT_DIGWorkitem);
-	#endif
 
 }
 
@@ -6303,22 +6295,6 @@ ODM_PSDDbgControl(
 	IN	uint32_t		btRssi
 	)
 {
-#if (DEV_BUS_TYPE == RT_PCI_INTERFACE)
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-
-	ODM_RT_TRACE(pDM_Odm,COMP_PSD, DBG_LOUD, (" Monitor mode=%d, btRssi=%d\n", mode, btRssi));
-	if(mode)
-	{
-		pDM_Odm->RSSI_BT = (u1Byte)btRssi;
-		pDM_Odm->bUserAssignLevel = TRUE;
-		ODM_SetTimer( pDM_Odm, &pDM_Odm->PSDTimer, 0); //ms
-	}
-	else
-	{
-		ODM_CancelTimer(pDM_Odm, &pDM_Odm->PSDTimer);
-	}
-#endif
 }
 
 
@@ -6327,7 +6303,7 @@ ODM_PSDDbgControl(
 void	odm_RXHPInit(
 	IN		PDM_ODM_T		pDM_Odm)
 {
-#if (DEV_BUS_TYPE == RT_PCI_INTERFACE)|(DEV_BUS_TYPE == RT_USB_INTERFACE)
+#if (DEV_BUS_TYPE == RT_USB_INTERFACE)
 	pRXHP_T			pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
    	u1Byte			index;
 
@@ -6351,7 +6327,7 @@ void odm_RXHP(
 	IN		PDM_ODM_T		pDM_Odm)
 {
 #if( DM_ODM_SUPPORT_TYPE & (ODM_WIN))
-#if (DEV_BUS_TYPE == RT_PCI_INTERFACE) | (DEV_BUS_TYPE == RT_USB_INTERFACE)
+#if (DEV_BUS_TYPE == RT_USB_INTERFACE)
 	PADAPTER	Adapter =  pDM_Odm->Adapter;
 	PMGNT_INFO	pMgntInfo = &(Adapter->MgntInfo);
 	pDIG_T		pDM_DigTable = &pDM_Odm->DM_DigTable;
@@ -6692,7 +6668,7 @@ void odm_RXHP(
 		odm_Write_RXHP(pDM_Odm);
 	}
 #endif //#if( DM_ODM_SUPPORT_TYPE & (ODM_WIN))
-#endif //#if (DEV_BUS_TYPE == RT_PCI_INTERFACE) | (DEV_BUS_TYPE == RT_USB_INTERFACE)
+#endif //#if (DEV_BUS_TYPE == RT_USB_INTERFACE)
 }
 
 void odm_Write_RXHP(
@@ -7040,16 +7016,7 @@ odm_PSD_RXHPCallback(
 	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	pRXHP_T			pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
 
-#if DEV_BUS_TYPE==RT_PCI_INTERFACE
-	#if USE_WORKITEM
 	ODM_ScheduleWorkItem(&pRX_HP_Table->PSDTimeWorkitem);
-	#else
-	odm_PSD_RXHP(pDM_Odm);
-	#endif
-#else
-	ODM_ScheduleWorkItem(&pRX_HP_Table->PSDTimeWorkitem);
-#endif
-
 	}
 
 VOID

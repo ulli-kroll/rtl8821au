@@ -204,52 +204,6 @@ odm_SignalScaleMapping_92CSeries(
 )
 {
 	s4Byte RetSig;
-#if (DEV_BUS_TYPE == RT_PCI_INTERFACE)
-	if(pDM_Odm->SupportInterface  == ODM_ITRF_PCIE)
-	{
-		// Step 1. Scale mapping.
-		if(CurrSig >= 61 && CurrSig <= 100)
-		{
-			RetSig = 90 + ((CurrSig - 60) / 4);
-		}
-		else if(CurrSig >= 41 && CurrSig <= 60)
-		{
-			RetSig = 78 + ((CurrSig - 40) / 2);
-		}
-		else if(CurrSig >= 31 && CurrSig <= 40)
-		{
-			RetSig = 66 + (CurrSig - 30);
-		}
-		else if(CurrSig >= 21 && CurrSig <= 30)
-		{
-			RetSig = 54 + (CurrSig - 20);
-		}
-		else if(CurrSig >= 5 && CurrSig <= 20)
-		{
-			RetSig = 42 + (((CurrSig - 5) * 2) / 3);
-		}
-		else if(CurrSig == 4)
-		{
-			RetSig = 36;
-		}
-		else if(CurrSig == 3)
-		{
-			RetSig = 27;
-		}
-		else if(CurrSig == 2)
-		{
-			RetSig = 18;
-		}
-		else if(CurrSig == 1)
-		{
-			RetSig = 9;
-		}
-		else
-		{
-			RetSig = CurrSig;
-		}
-	}
-#endif
 
 #if ((DEV_BUS_TYPE == RT_USB_INTERFACE) ||(DEV_BUS_TYPE == RT_SDIO_INTERFACE))
 	if((pDM_Odm->SupportInterface  == ODM_ITRF_USB) || (pDM_Odm->SupportInterface  == ODM_ITRF_SDIO))

@@ -32,7 +32,6 @@ CONFIG_USB_AUTOSUSPEND = n
 CONFIG_HW_PWRP_DETECTION = n
 CONFIG_WIFI_TEST = n
 CONFIG_RTL8192CU_REDEFINE_1X1 = n
-CONFIG_INTEL_WIDI = n
 CONFIG_WAPI_SUPPORT = n
 CONFIG_EFUSE_CONFIG_FILE = n
 CONFIG_EXT_CLK = n
@@ -179,10 +178,6 @@ ifeq ($(CONFIG_RTL8192CU_REDEFINE_1X1), y)
 EXTRA_CFLAGS += -DRTL8192C_RECONFIG_TO_1T1R
 endif
 
-ifeq ($(CONFIG_INTEL_WIDI), y)
-EXTRA_CFLAGS += -DCONFIG_INTEL_WIDI
-endif
-
 ifeq ($(CONFIG_WAPI_SUPPORT), y)
 EXTRA_CFLAGS += -DCONFIG_WAPI_SUPPORT
 endif
@@ -253,8 +248,6 @@ rtk_core :=	core/rtw_cmd.o \
 		core/efuse/rtw_efuse.o
 
 $(MODULE_NAME)-y += $(rtk_core)
-
-$(MODULE_NAME)-$(CONFIG_INTEL_WIDI) += core/rtw_intel_widi.o
 
 $(MODULE_NAME)-$(CONFIG_WAPI_SUPPORT) += core/rtw_wapi.o	\
 					core/rtw_wapi_sms4.o

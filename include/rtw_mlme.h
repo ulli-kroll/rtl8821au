@@ -545,16 +545,6 @@ struct mlme_priv {
 	_workitem	Linkdown_workitem;
 #endif
 
-#ifdef CONFIG_INTEL_WIDI
-	int	widi_state;
-	int	listen_state;
-	_timer	listen_timer;
-	ATOMIC_T	rx_probe_rsp; // 1:receive probe respone from RDS source.
-	uint8_t	*l2sdTaBuffer;
-	uint8_t	channel_idx;
-	uint8_t	group_cnt;	//In WiDi 3.5, they specified another scan algo. for WFD/RDS co-existed
-	uint8_t	sa_ext[L2SDTA_SERVICE_VE_LEN];
-#endif // CONFIG_INTEL_WIDI
 
 #ifdef CONFIG_CONCURRENT_MODE
 	uint8_t	scanning_via_buddy_intf;

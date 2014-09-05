@@ -41,10 +41,8 @@ void DoIQK_8812A(
 	u1Byte 		Threshold
 	)
 {
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	PADAPTER 		Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-#endif
 
 	ODM_ResetIQKResult(pDM_Odm);
 
@@ -2014,11 +2012,9 @@ PHY_IQCalibrate_8812A(
 {
 
 
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-#endif
 
 #if (MP_DRIVER == 1)
 	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
@@ -2051,7 +2047,6 @@ PHY_LCCalibrate_8812A(
 {
 	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
 
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	PADAPTER 		pAdapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
@@ -2062,7 +2057,6 @@ PHY_LCCalibrate_8812A(
 	bSingleTone = pMptCtx->bSingleTone;
 	bCarrierSuppression = pMptCtx->bCarrierSuppression;
 	#endif//(MP_DRIVER == 1)
-#endif
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_LCCalibrate_8812A\n"));
 
@@ -2075,22 +2069,16 @@ PHY_LCCalibrate_8812A(
 }
 
 VOID phy_SetRFPathSwitch_8812A(
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN PDM_ODM_T		pDM_Odm,
-#else
 	IN	PADAPTER	pAdapter,
-#endif
 	IN	BOOLEAN		bMain,
 	IN	BOOLEAN		is2T
 	)
 {
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	#endif
 
-#endif
 
 	if (IS_HARDWARE_TYPE_8821(pAdapter))
 	{
@@ -2118,11 +2106,7 @@ VOID phy_SetRFPathSwitch_8812A(
 }
 
 VOID PHY_SetRFPathSwitch_8812A(
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN PDM_ODM_T		pDM_Odm,
-#else
 	IN	PADAPTER	pAdapter,
-#endif
 	IN	BOOLEAN		bMain
 	)
 {
@@ -2131,11 +2115,7 @@ VOID PHY_SetRFPathSwitch_8812A(
 	return;
 #endif
 
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-
 		phy_SetRFPathSwitch_8812A(pAdapter, bMain, TRUE);
-
-#endif
 }
 
 

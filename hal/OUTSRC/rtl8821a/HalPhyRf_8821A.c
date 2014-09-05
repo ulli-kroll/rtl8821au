@@ -103,10 +103,8 @@ void DoIQK_8821A(
 	u1Byte 		Threshold
 	)
 {
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	PADAPTER 		Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-#endif
 
 	ODM_ResetIQKResult(pDM_Odm);
 
@@ -1331,11 +1329,9 @@ PHY_IQCalibrate_8821A(
 {
 
 
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-#endif
 
 #if (MP_DRIVER == 1)
 	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);

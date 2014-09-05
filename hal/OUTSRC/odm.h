@@ -136,7 +136,7 @@
 // 2011/09/20 MH Add for AP/ADSLpseudo DM structuer requirement.
 // We need to remove to other position???
 //
-#if(DM_ODM_SUPPORT_TYPE & (ODM_CE|ODM_WIN))
+#if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
 typedef		struct rtl8192cd_priv {
 	u1Byte		temp;
 
@@ -262,11 +262,6 @@ typedef struct _RX_High_Power_
 	BOOLEAN		RXHP_enable;
 	u1Byte		TP_Mode;
 	RT_TIMER	PSDTimer;
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	#if USE_WORKITEM
-	RT_WORK_ITEM		PSDTimeWorkitem;
-	#endif
-#endif
 
 }RXHP_T, *pRXHP_T;
 
@@ -330,11 +325,6 @@ typedef struct _SW_Antenna_Switch_
 	uint64_t 		RXByteCnt_B;
 	u1Byte 		TrafficLoad;
 	RT_TIMER 	SwAntennaSwitchTimer;
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	#if USE_WORKITEM
-	RT_WORK_ITEM			SwAntennaSwitchWorkitem;
-	#endif
-#endif
 /* CE Platform use
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
 	_timer SwAntennaSwitchTimer;
@@ -461,11 +451,7 @@ typedef struct _ODM_Phy_Status_Info_
 	// Be care, if you want to add any element please insert between
 	// RxPWDBAll & SignalStrength.
 	//
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN))
-	uint32_t		RxPWDBAll;
-#else
 	u1Byte		RxPWDBAll;
-#endif
 
 	u1Byte		SignalQuality;	 		// in 0-100 index.
 	s1Byte		RxMIMOSignalQuality[4];	//per-path's EVM
@@ -476,7 +462,7 @@ typedef struct _ODM_Phy_Status_Info_
 	uint16_t		Cfo_short[4]; 			// per-path's Cfo_short
 	uint16_t		Cfo_tail[4];			// per-path's Cfo_tail
 
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 	s1Byte		RxPower;				// in dBm Translate from PWdB
 	s1Byte		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
 	u1Byte		BTRxRSSIPercentage;
@@ -979,30 +965,6 @@ typedef struct _IQK_MATRIX_REGS_SETTING{
 	BOOLEAN 	bBWIqkResultSaved[3];
 }IQK_MATRIX_REGS_SETTING,*PIQK_MATRIX_REGS_SETTING;
 
-#if (DM_ODM_SUPPORT_TYPE & ODM_WIN)
-typedef struct _PathDiv_Parameter_define_
-{
-	uint32_t org_5g_RegE30;
-	uint32_t org_5g_RegC14;
-	uint32_t org_5g_RegCA0;
-	uint32_t swt_5g_RegE30;
-	uint32_t swt_5g_RegC14;
-	uint32_t swt_5g_RegCA0;
-	//for 2G IQK information
-	uint32_t org_2g_RegC80;
-	uint32_t org_2g_RegC4C;
-	uint32_t org_2g_RegC94;
-	uint32_t org_2g_RegC14;
-	uint32_t org_2g_RegCA0;
-
-	uint32_t swt_2g_RegC80;
-	uint32_t swt_2g_RegC4C;
-	uint32_t swt_2g_RegC94;
-	uint32_t swt_2g_RegC14;
-	uint32_t swt_2g_RegCA0;
-}PATHDIV_PARA,*pPATHDIV_PARA;
-#endif
-
 
 typedef struct ODM_RF_Calibration_Structure
 {
@@ -1177,14 +1139,7 @@ typedef struct _ANT_DETECTED_INFO{
 //
 // 2011/09/22 MH Copy from SD4 defined structure. We use to support PHY DM integration.
 //
-#if(DM_ODM_SUPPORT_TYPE & ODM_WIN)
-#if (RT_PLATFORM != PLATFORM_LINUX)
-typedef
-#endif
-struct DM_Out_Source_Dynamic_Mechanism_Structure
-#else// for AP,ADSL,CE Team
 typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
-#endif
 {
 	//RT_TIMER 	FastAntTrainingTimer;
 	//
@@ -1195,7 +1150,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	// WHen you use Adapter or priv pointer, you must make sure the pointer is ready.
 	BOOLEAN			odm_ready;
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_CE|ODM_WIN))
+#if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	rtl8192cd_priv		fake_priv;
 #endif
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
@@ -1414,10 +1369,6 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	BOOLEAN		RSSI_test;
 	//#endif
 
-#if (DM_ODM_SUPPORT_TYPE & ODM_WIN)
-	//Path Div Struct
-	PATHDIV_PARA	pathIQK;
-#endif
 
 	EDCA_T		DM_EDCA_Table;
 	uint32_t		WMMEDCA_BE;
@@ -1507,27 +1458,8 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	RT_TIMER 	FastAntTrainingTimer;
 
 	// ODM relative workitem.
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	#if USE_WORKITEM
-	RT_WORK_ITEM			PathDivSwitchWorkitem;
-	RT_WORK_ITEM			CCKPathDiversityWorkitem;
-	RT_WORK_ITEM			FastAntTrainingWorkitem;
-	RT_WORK_ITEM			MPT_DIGWorkitem;
-	RT_WORK_ITEM			RaRptWorkitem;
-	#endif
-#endif
 
-#if(DM_ODM_SUPPORT_TYPE & ODM_WIN)
-
-#if (RT_PLATFORM != PLATFORM_LINUX)
 } DM_ODM_T, *PDM_ODM_T;		// DM_Dynamic_Mechanism_Structure
-#else
-};
-#endif
-
-#else// for AP,ADSL,CE Team
-} DM_ODM_T, *PDM_ODM_T;		// DM_Dynamic_Mechanism_Structure
-#endif
 
 
 
@@ -1577,7 +1509,6 @@ typedef enum _ODM_FW_Config_Type{
 } ODM_FW_Config_Type;
 
 // Status code
-#if (DM_ODM_SUPPORT_TYPE != ODM_WIN)
 typedef enum _RT_STATUS{
 	RT_STATUS_SUCCESS,
 	RT_STATUS_FAILURE,
@@ -1588,7 +1519,6 @@ typedef enum _RT_STATUS{
 	RT_STATUS_NOT_SUPPORT,
 	RT_STATUS_OS_API_FAILED,
 }RT_STATUS,*PRT_STATUS;
-#endif // end of RT_STATUS definition
 
 #ifdef REMOVE_PACK
 #pragma pack()
@@ -1800,8 +1730,6 @@ static u1Byte DeltaSwingTableIdx_2GA_N_8188E[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 
 //
 #if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 #define IS_STA_VALID(pSta)		(pSta && pSta->expire_to)
-#elif (DM_ODM_SUPPORT_TYPE & ODM_WIN)
-#define IS_STA_VALID(pSta)		(pSta && pSta->bUsed)
 #else
 #define IS_STA_VALID(pSta)		(pSta)
 #endif
@@ -1843,7 +1771,7 @@ ODM_RAStateCheck(
 	OUT		pu1Byte			pRATRState
 	);
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_AP|ODM_ADSL))
+#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 //============================================================
 // function prototype
 //============================================================
@@ -1920,7 +1848,7 @@ VOID ODM_SwAntDivChkPerPktRssi(
 	IN PODM_PHY_INFO_T pPhyInfo
 	);
 
-#if((DM_ODM_SUPPORT_TYPE==ODM_WIN)||(DM_ODM_SUPPORT_TYPE==ODM_CE))
+#if((DM_ODM_SUPPORT_TYPE==ODM_CE))
 
 uint32_t ConvertTo_dB(uint32_t Value);
 
@@ -1948,41 +1876,6 @@ uint32_t ODM_Get_Rate_Bitmap(
 #endif
 
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_WIN))
-#define	dm_PSDMonitorCallback	odm_PSDMonitorCallback
-VOID	odm_PSDMonitorCallback(PRT_TIMER		pTimer);
-
-VOID
-odm_PSDMonitorWorkItemCallback(
-    IN PVOID            pContext
-    );
-
-VOID
-ODM_MPT_DIG(
-	IN	PDM_ODM_T	pDM_Odm
-);
-
-VOID
-PatchDCTone(
-	IN	PDM_ODM_T	pDM_Odm,
-	uint32_t		*PSD_report,
-	u1Byte 		initial_gain_psd
-);
-VOID
-ODM_PSDMonitor(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-VOID	odm_PSD_Monitor(PDM_ODM_T	pDM_Odm);
-VOID	odm_PSDMonitorInit(PDM_ODM_T 	pDM_Odm);
-
-VOID
-ODM_PSDDbgControl(
-	IN	PADAPTER	Adapter,
-	IN	uint32_t		mode,
-	IN	uint32_t		btRssi
-	);
-
-#endif	// DM_ODM_SUPPORT_TYPE
 
 
 #if (BEAMFORMING_SUPPORT == 1)
@@ -2052,133 +1945,6 @@ ODM_ResetIQKResult(
     );
 
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-VOID ODM_InitAllWorkItems(IN PDM_ODM_T	pDM_Odm );
-VOID ODM_FreeAllWorkItems(IN PDM_ODM_T	pDM_Odm );
-
-VOID odm_PathDivChkAntSwitch(PDM_ODM_T pDM_Odm);
-VOID ODM_PathDivRestAfterLink(
-	IN	PDM_ODM_T		pDM_Odm
-	);
-
-
-//===========================================//
-// Neil Chen----2011--06--15--
-
-//3 Path Diversity
-//===========================================================
-
-#define	TP_MODE		       0
-#define	RSSI_MODE		       1
-#define	TRAFFIC_LOW	       0
-#define	TRAFFIC_HIGH	       1
-
-//#define   PATHDIV_ENABLE 	 1
-
-//VOID odm_PathDivChkAntSwitch(PADAPTER	Adapter,u1Byte	Step);
-VOID ODM_PathDivRestAfterLink(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-
-#define dm_PathDiv_RSSI_Check	ODM_PathDivChkPerPktRssi
-VOID ODM_PathDivChkPerPktRssi(PADAPTER		Adapter,
-										BOOLEAN			bIsDefPort,
-										BOOLEAN			bMatchBSSID,
-										PRT_WLAN_STA	pEntry,
-										PRT_RFD			pRfd	);
-
-uint64_t
-PlatformDivision64(
-	IN uint64_t	x,
-	IN uint64_t	y
-);
-
-
-// 20100514 Joseph: Add definition for antenna switching test after link.
-// This indicates two different the steps.
-// In SWAW_STEP_PEAK, driver needs to switch antenna and listen to the signal on the air.
-// In SWAW_STEP_DETERMINE, driver just compares the signal captured in SWAW_STEP_PEAK
-// with original RSSI to determine if it is necessary to switch antenna.
-#define SWAW_STEP_PEAK		0
-#define SWAW_STEP_DETERMINE	1
-
-//====================================================
-//3 PathDiV End
-//====================================================
-
-#define PathDivCheckBeforeLink8192C	ODM_PathDiversityBeforeLink92C
-BOOLEAN
-ODM_PathDiversityBeforeLink92C(
-	//IN	PADAPTER	Adapter
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-#define DM_ChangeDynamicInitGainThresh		ODM_ChangeDynamicInitGainThresh
-//void	ODM_ChangeDynamicInitGainThresh(IN	PADAPTER	pAdapter,
-//											IN	INT32		DM_Type,
-//											IN	INT32		DM_Value);
-//
-
-
-VOID
-ODM_CCKPathDiversityChkPerPktRssi(
-	PADAPTER		Adapter,
-	BOOLEAN			bIsDefPort,
-	BOOLEAN			bMatchBSSID,
-	PRT_WLAN_STA	pEntry,
-	PRT_RFD			pRfd,
-	pu1Byte			pDesc
-	);
-
-
-typedef enum tag_DIG_Connect_Definition
-{
-	DIG_STA_DISCONNECT = 0,
-	DIG_STA_CONNECT = 1,
-	DIG_STA_BEFORE_CONNECT = 2,
-	DIG_MultiSTA_DISCONNECT = 3,
-	DIG_MultiSTA_CONNECT = 4,
-	DIG_CONNECT_MAX
-}DM_DIG_CONNECT_E;
-
-
-VOID
-ODM_FillTXPathInTXDESC(
-		IN	PADAPTER	Adapter,
-		IN	PRT_TCB		pTcb,
-		IN	pu1Byte		pDesc
-);
-
-
-#define dm_SWAW_RSSI_Check	ODM_SwAntDivChkPerPktRssi
-
-//
-// 2012/01/12 MH Check afapter status. Temp fix BSOD.
-//
-#define	HAL_ADAPTER_STS_CHK(pDM_Odm)\
-	if (pDM_Odm->Adapter == NULL)\
-	{\
-		return;\
-	}\
-
-
-//
-// For new definition in MP temporarily fro power tracking,
-//
-#define odm_TXPowerTrackingDirectCall(_Adapter)	\
-	IS_HARDWARE_TYPE_8192D(_Adapter) ? odm_TXPowerTrackingCallback_ThermalMeter_92D(_Adapter) : \
-	IS_HARDWARE_TYPE_8192C(_Adapter) ? odm_TXPowerTrackingCallback_ThermalMeter_92C(_Adapter) : \
-	IS_HARDWARE_TYPE_8723A(_Adapter) ? odm_TXPowerTrackingCallback_ThermalMeter_8723A(_Adapter) :\
-	ODM_TXPowerTrackingCallback_ThermalMeter(_Adapter)
-
-VOID
-ODM_SetTxAntByTxInfo_88C_92D(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		pu1Byte			pDesc,
-	IN		u1Byte			macId
-	);
-
-#endif	// #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 VOID
 ODM_AntselStatistics_88C(
 	IN		PDM_ODM_T		pDM_Odm,
@@ -2187,10 +1953,10 @@ ODM_AntselStatistics_88C(
 	IN		BOOLEAN			isCCKrate
 );
 
-#if( DM_ODM_SUPPORT_TYPE & (ODM_WIN |ODM_CE))
+#if( DM_ODM_SUPPORT_TYPE & (ODM_CE))
 
 
-#endif	// #if((DM_ODM_SUPPORT_TYPE==ODM_WIN)||(DM_ODM_SUPPORT_TYPE==ODM_CE))
+#endif	// #if((DM_ODM_SUPPORT_TYPE==ODM_CE))
 
 VOID
 ODM_UpdateInitRate(

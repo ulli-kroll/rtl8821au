@@ -98,9 +98,7 @@
 #define ODM_COMP_INIT				BIT31
 
 /*------------------------Export Marco Definition---------------------------*/
-#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	#define RT_PRINTK				DbgPrint
-#elif (DM_ODM_SUPPORT_TYPE == ODM_CE)
+#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	#define DbgPrint	printk
 	#define RT_PRINTK(fmt, args...)	DbgPrint( "%s(): " fmt, __FUNCTION__, ## args);
 	#define	RT_DISP(dbgtype, dbgflag, printstr)
@@ -659,7 +657,6 @@ typedef enum tag_DBGP_Flag_Type_Definition
 
 
 /*------------------------Export Marco Definition---------------------------*/
-#if (DM_ODM_SUPPORT_TYPE != ODM_WIN)
 #define RT_PRINTK(fmt, args...)    printk( "%s(): " fmt, __FUNCTION__, ## args);
 
 #if DBG
@@ -792,7 +789,6 @@ typedef enum tag_DBGP_Flag_Type_Definition
 
 
 
-#endif	// #if (DM_ODM_SUPPORT_TYPE != ODM_WIN)
 
 #define		DEBUG_PRINT				1
 

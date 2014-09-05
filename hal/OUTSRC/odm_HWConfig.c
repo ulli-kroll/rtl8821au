@@ -996,15 +996,6 @@ odm_Process_RSSIForDM(
 	if(pPktinfo->StationID == 0xFF)
 		return;
 
-	//
-	// 2012/05/30 MH/Luke.Lee Add some description
-	// In windows driver: AP/IBSS mode STA
-	//
-	//if (pDM_Odm->SupportPlatform == ODM_WIN)
-	//{
-	//	pEntry = pDM_Odm->pODM_StaInfo[pDM_Odm->pAidMap[pPktinfo->StationID-1]];
-	//}
-	//else
 		pEntry = pDM_Odm->pODM_StaInfo[pPktinfo->StationID];
 
 	if(!IS_STA_VALID(pEntry) ){

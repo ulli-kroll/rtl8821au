@@ -2720,7 +2720,7 @@ odm_DynamicBBPowerSaving(
 	{
 		ODM_RF_Saving(pDM_Odm, FALSE);
 	}
-#endif	// #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
+#endif
 
 }
 
@@ -3087,10 +3087,6 @@ odm_RefreshRateAdaptiveMask(
 	//
 	switch	(pDM_Odm->SupportPlatform)
 	{
-		case	ODM_WIN:
-			odm_RefreshRateAdaptiveMaskMP(pDM_Odm);
-			break;
-
 		case	ODM_CE:
 			odm_RefreshRateAdaptiveMaskCE(pDM_Odm);
 			break;
@@ -4473,7 +4469,7 @@ odm_PathDiversity(
 // 2011/12/02 MH Copy from MP oursrc for temporarily test.
 //
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN| ODM_CE))
+#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 
 
 

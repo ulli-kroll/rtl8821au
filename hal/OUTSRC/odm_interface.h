@@ -98,7 +98,6 @@ typedef enum _ODM_H2C_CMD
 // 2012/02/17 MH For non-MP compile pass only. Linux does not support workitem.
 // Suggest HW team to use thread instead of workitem. Windows also support the feature.
 //
-#if (DM_ODM_SUPPORT_TYPE != ODM_WIN)
 typedef  void *PRT_WORK_ITEM ;
 typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
 typedef VOID (*RT_WORKITEM_CALL_BACK)(PVOID pContext);
@@ -122,7 +121,6 @@ typedef struct _RT_WORK_ITEM
 #endif
 
 
-#endif
 
 //
 // =========== Extern Variable ??? It should be forbidden.
@@ -358,15 +356,6 @@ ODM_ReleaseTimer(
 //
 // ODM FW relative API.
 //
-#if (DM_ODM_SUPPORT_TYPE & ODM_WIN)
-VOID
-ODM_FillH2CCmd(
-	IN	PADAPTER		Adapter,
-	IN	u1Byte 	ElementID,
-	IN	uint32_t 	CmdLen,
-	IN	pu1Byte	pCmdBuffer
-);
-#else
 uint32_t
 ODM_FillH2CCmd(
 	IN	pu1Byte		pH2CBuffer,
@@ -377,6 +366,5 @@ ODM_FillH2CCmd(
 	IN	pu1Byte*		pCmbBuffer,
 	IN	pu1Byte		CmdStartSeq
 	);
-#endif
 #endif	// __ODM_INTERFACE_H__
 

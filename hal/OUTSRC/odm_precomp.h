@@ -46,26 +46,6 @@
 	#include "../8192cd_debug.h"
 	#endif
 
-#elif (DM_ODM_SUPPORT_TYPE == ODM_ADSL)
-	// Flags
-	#include "../8192cd_cfg.h"		// OUTSRC needs ADSL config flags.
-	#include "../odm_inc.h"			// OUTSRC needs some extra flags.
-	// Data Structure
-	#include "../common_types.h"	// OUTSRC and rtl8192cd both needs basic type such as UINT8 and BIT0.
-	#include "../8192cd.h"			// OUTSRC needs basic ADSL struct definition.
-	#include "../8192cd_util.h"		// OUTSRC needs basic I/O function.
-	#ifdef _BIG_ENDIAN_
-	#define	ODM_ENDIAN_TYPE				ODM_ENDIAN_BIG
-	#else
-	#define	ODM_ENDIAN_TYPE				ODM_ENDIAN_LITTLE
-	#endif
-
-	#ifdef ADSL_AP_BUILD_WORKAROUND
-	// NESTED_INC: Functions defined outside should not be included!! Marked by Annie, 2011-10-14.
-	#include "../8192cd_headers.h"
-	#include "../8192cd_debug.h"
-	#endif
-
 #elif (DM_ODM_SUPPORT_TYPE ==ODM_CE)
 	//#include <drv_conf.h>
 	//#include <basic_types.h>
@@ -86,11 +66,6 @@
 	#include "rtl8192c/Hal8192CEPHYImg_AP.h"
 	#include "rtl8192c/Hal8192CEMACImg_AP.h"
 #endif
-#elif (DM_ODM_SUPPORT_TYPE == ODM_ADSL)
-	#include "rtl8192c/Hal8192CEFWImg_ADSL.h"
-	#include "rtl8192c/Hal8192CEPHYImg_ADSL.h"
-	#include "rtl8192c/Hal8192CEMACImg_ADSL.h"
-
 #elif (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	#if(RTL8192CE_SUPPORT ==1)
 	#include "rtl8192c/Hal8192CEFWImg_CE.h"
@@ -131,9 +106,6 @@
 #if (RTL8192C_SUPPORT==1)
 	#include "rtl8192c/HalDMOutSrc8192C_AP.h"
 #endif
-
-#elif (DM_ODM_SUPPORT_TYPE == ODM_ADSL)
-	#include "rtl8192c/HalDMOutSrc8192C_ADSL.h"
 
 #elif (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	//#include "hal_com.h"

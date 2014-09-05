@@ -57,30 +57,6 @@ static uint32_t edca_setting_DL_GMode[HT_IOT_PEER_MAX] =
 //============================================================
 // EDCA Paramter for AP/ADSL   by Mingzhi 2011-11-22
 //============================================================
-#elif (DM_ODM_SUPPORT_TYPE &ODM_ADSL)
-enum qos_prio { BK, BE, VI, VO, VI_AG, VO_AG };
-
-static const struct ParaRecord rtl_ap_EDCA[] =
-{
-//ACM,AIFSN, ECWmin, ECWmax, TXOplimit
-     {0,     7,      4,      10,     0},            //BK
-     {0,     3,      4,      6,      0},             //BE
-     {0,     1,      3,      4,      188},         //VI
-     {0,     1,      2,      3,      102},         //VO
-     {0,     1,      3,      4,      94},          //VI_AG
-     {0,     1,      2,      3,      47},          //VO_AG
-};
-
-static const struct ParaRecord rtl_sta_EDCA[] =
-{
-//ACM,AIFSN, ECWmin, ECWmax, TXOplimit
-     {0,     7,      4,      10,     0},
-     {0,     3,      4,      10,     0},
-     {0,     2,      3,      4,      188},
-     {0,     2,      2,      3,      102},
-     {0,     2,      3,      4,      94},
-     {0,     2,      2,      3,      47},
-};
 #endif
 
 //============================================================
@@ -640,8 +616,6 @@ odm_SwAntDivChkAntSwitchNIC(
 
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
-#elif (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
 #endif
 
@@ -1501,7 +1475,7 @@ odm_CmnInfoHook_Debug(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbScanInProcess=%d\n",*(pDM_Odm->pbScanInProcess)) );
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbPowerSaving=%d\n",*(pDM_Odm->pbPowerSaving)) );
 
-	if(pDM_Odm->SupportPlatform & (ODM_AP|ODM_ADSL))
+	if(pDM_Odm->SupportPlatform & (ODM_AP))
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pOnePathCCA=%d\n",*(pDM_Odm->pOnePathCCA)) );
 }
 
@@ -1908,7 +1882,7 @@ ODM_Write_DIG(
 			if(pDM_Odm->RFType != ODM_1T1R)
 				ODM_SetBBReg(pDM_Odm, ODM_REG(IGI_B,pDM_Odm), ODM_BIT(IGI,pDM_Odm), CurrentIGI);
 		}
-		else if(pDM_Odm->SupportPlatform & (ODM_AP|ODM_ADSL))
+		else if(pDM_Odm->SupportPlatform & (ODM_AP))
 		{
 			switch(*(pDM_Odm->pOnePathCCA))
 			{
@@ -2063,7 +2037,7 @@ odm_DIG(
 	}
 #endif
 #endif
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#if (DM_ODM_SUPPORT_TYPE & (ODM_AP))
 	prtl8192cd_priv	priv			= pDM_Odm->priv;
 	if (!((priv->up_time > 5) && (priv->up_time % 2)) )
 	{
@@ -2077,7 +2051,7 @@ odm_DIG(
 	if((!(pDM_Odm->SupportAbility&ODM_BB_DIG)) ||(!(pDM_Odm->SupportAbility&ODM_BB_FA_CNT)))
 	{
 #if 0
-		if(pDM_Odm->SupportPlatform & (ODM_AP|ODM_ADSL))
+		if(pDM_Odm->SupportPlatform & (ODM_AP))
 		{
 			if ((pDM_Odm->SupportICType == ODM_RTL8192C) && (pDM_Odm->ExtLNA == 1))
 				CurrentIGI = 0x30; //pDM_DigTable->CurIGValue  = 0x30;
@@ -2140,7 +2114,7 @@ odm_DIG(
 	//1 Boundary Decision
 	if(pDM_Odm->SupportICType & (ODM_RTL8192C) &&(pDM_Odm->BoardType & (ODM_BOARD_EXT_LNA | ODM_BOARD_EXT_PA)))
 	{
-		if(pDM_Odm->SupportPlatform & (ODM_AP|ODM_ADSL))
+		if(pDM_Odm->SupportPlatform & (ODM_AP))
 		{
 
 			dm_dig_max = DM_DIG_MAX_AP_HP;
@@ -2155,9 +2129,9 @@ odm_DIG(
 	}
 	else
 	{
-		if(pDM_Odm->SupportPlatform & (ODM_AP|ODM_ADSL))
+		if(pDM_Odm->SupportPlatform & (ODM_AP))
 		{
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#if (DM_ODM_SUPPORT_TYPE & (ODM_AP))
 #ifdef DFS
 			if (!priv->pmib->dot11DFSEntry.disable_DFS &&
 				(OPMODE & WIFI_AP_STATE) &&
@@ -3092,7 +3066,6 @@ odm_RefreshRateAdaptiveMask(
 			break;
 
 		case	ODM_AP:
-		case	ODM_ADSL:
 			odm_RefreshRateAdaptiveMaskAPADSL(pDM_Odm);
 			break;
 	}
@@ -3173,7 +3146,7 @@ odm_RefreshRateAdaptiveMaskAPADSL(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#if (DM_ODM_SUPPORT_TYPE & (ODM_AP))
 	struct rtl8192cd_priv *priv = pDM_Odm->priv;
 	struct stat_info	*pstat;
 
@@ -3393,10 +3366,6 @@ odm_DynamicTxPower(
 		case	ODM_AP:
 			odm_DynamicTxPowerAP(pDM_Odm);
 			break;
-
-		case	ODM_ADSL:
-			//odm_DIGAP(pDM_Odm);
-			break;
 	}
 
 
@@ -3517,10 +3486,6 @@ odm_RSSIMonitorCheck(
 
 		case	ODM_AP:
 			odm_RSSIMonitorCheckAP(pDM_Odm);
-			break;
-
-		case	ODM_ADSL:
-			//odm_DIGAP(pDM_Odm);
 			break;
 	}
 
@@ -3891,7 +3856,7 @@ odm_TXPowerTrackingThermalMeterInit(
 
 	}
 	#endif//endif (CONFIG_RTL8188E==1)
-#elif (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#elif (DM_ODM_SUPPORT_TYPE & (ODM_AP))
 #endif
 
 	pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = TRUE;
@@ -3954,10 +3919,6 @@ ODM_TXPowerTrackingCheck(
 
 		case	ODM_AP:
 			odm_TXPowerTrackingCheckAP(pDM_Odm);
-			break;
-
-		case	ODM_ADSL:
-			//odm_DIGAP(pDM_Odm);
 			break;
 	}
 
@@ -4092,7 +4053,7 @@ VOID ODM_SwAntDivResetBeforeLink(	IN		PDM_ODM_T		pDM_Odm	){}
 VOID ODM_SwAntDivRestAfterLink(	IN		PDM_ODM_T		pDM_Odm	){}
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext){}
-#elif (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#elif (DM_ODM_SUPPORT_TYPE & (ODM_AP))
 VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext){}
 #endif
 
@@ -4136,7 +4097,7 @@ ODM_EdcaTurboInit(
 	IN    PDM_ODM_T		pDM_Odm)
 {
 
-#if ((DM_ODM_SUPPORT_TYPE == ODM_AP)||(DM_ODM_SUPPORT_TYPE==ODM_ADSL))
+#if ((DM_ODM_SUPPORT_TYPE == ODM_AP))
 	odm_EdcaParaInit(pDM_Odm);
 #elif(DM_ODM_SUPPORT_TYPE==ODM_CE)
 	PADAPTER	Adapter = pDM_Odm->Adapter;
@@ -4182,9 +4143,8 @@ odm_EdcaTurboCheck(
 			break;
 
 		case	ODM_AP:
-		case	ODM_ADSL:
 
-#if ((DM_ODM_SUPPORT_TYPE == ODM_AP)||(DM_ODM_SUPPORT_TYPE==ODM_ADSL))
+#if ((DM_ODM_SUPPORT_TYPE == ODM_AP))
 		odm_IotEngine(pDM_Odm);
 #endif
 			break;
@@ -4369,7 +4329,7 @@ dm_CheckEdcaTurbo_EXIT:
 
 #endif
 
-#if((DM_ODM_SUPPORT_TYPE==ODM_AP)||(DM_ODM_SUPPORT_TYPE==ODM_ADSL))
+#if((DM_ODM_SUPPORT_TYPE==ODM_AP))
 
 
 

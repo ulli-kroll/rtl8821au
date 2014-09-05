@@ -24,7 +24,6 @@
 // Define Different SW team support
 //
 #define	ODM_AP		 	0x01	//BIT0
-#define	ODM_ADSL	 	0x02	//BIT1
 #define	ODM_CE		 	0x04	//BIT2
 
 #define	DM_ODM_SUPPORT_TYPE			ODM_CE
@@ -52,7 +51,7 @@ typedef enum _HAL_STATUS{
 typedef enum _RT_SPINLOCK_TYPE{
 	RT_TEMP =1,
 }RT_SPINLOCK_TYPE;
-#elif( (DM_ODM_SUPPORT_TYPE == ODM_AP) ||(DM_ODM_SUPPORT_TYPE == ODM_ADSL))
+#elif( (DM_ODM_SUPPORT_TYPE == ODM_AP))
 
 #define		VISTA_USB_RX_REVISE			0
 
@@ -116,30 +115,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	typedef long					s4Byte,*ps4Byte;
 	typedef long long				s8Byte,*ps8Byte;
 	#endif
-
-	typedef struct rtl8192cd_priv	*prtl8192cd_priv;
-	typedef struct stat_info		STA_INFO_T,*PSTA_INFO_T;
-	typedef struct timer_list		RT_TIMER, *PRT_TIMER;
-	typedef  void *				RT_TIMER_CALL_BACK;
-
-	#define DEV_BUS_TYPE		RT_PCI_INTERFACE
-
-	#define _TRUE				1
-	#define _FALSE				0
-
-#elif (DM_ODM_SUPPORT_TYPE == ODM_ADSL)
-
-	// To let ADSL/AP project compile ok; it should be removed after all conflict are solved. Added by Annie, 2011-10-07.
-	#define ADSL_AP_BUILD_WORKAROUND
-	#define ADSL_BUILD_WORKAROUND
-	//
-
-	typedef unsigned char			BOOLEAN,*PBOOLEAN;
-	typedef unsigned char			u1Byte,*pu1Byte;
-	typedef char					s1Byte,*ps1Byte;
-	typedef short					s2Byte,*ps2Byte;
-	typedef long					s4Byte,*ps4Byte;
-	typedef long long				s8Byte,*ps8Byte;
 
 	typedef struct rtl8192cd_priv	*prtl8192cd_priv;
 	typedef struct stat_info		STA_INFO_T,*PSTA_INFO_T;

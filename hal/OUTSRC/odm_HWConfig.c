@@ -500,7 +500,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 
 			pPhyInfo->RxMIMOSignalStrength[i] =(u1Byte) RSSI;
 
-		#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE|ODM_AP|ODM_ADSL))
+		#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE|ODM_AP))
 			//Get Rx snr value in DB
 			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = (s4Byte)(pPhyStaRpt->path_rxsnr[i]/2);
 		#endif
@@ -835,7 +835,7 @@ odm_RxPhyStatusJaguarSeries_Parsing(
 
 			pPhyInfo->RxMIMOSignalStrength[i] =(u1Byte) RSSI;
 
-		#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE|ODM_AP|ODM_ADSL))
+		#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE|ODM_AP))
 			//Get Rx snr value in DB
 			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = pPhyStaRpt->rxsnr[i]/2;
 		#endif

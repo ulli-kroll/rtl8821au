@@ -144,7 +144,7 @@ typedef		struct rtl8192cd_priv {
 #endif
 
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
 typedef		struct _ADAPTER{
 	u1Byte		temp;
 	#ifdef AP_BUILD_WORKAROUND
@@ -269,7 +269,7 @@ typedef struct _RX_High_Power_
 #define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
 #define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
 
-#elif(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#elif(DM_ODM_SUPPORT_TYPE & (ODM_AP))
 #define ASSOCIATE_ENTRY_NUM					NUM_STAT
 #define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM+1
 
@@ -383,7 +383,7 @@ typedef struct _ODM_RATE_ADAPTIVE
 } ODM_RATE_ADAPTIVE, *PODM_RATE_ADAPTIVE;
 
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
 
 
 #ifdef ADSL_AP_BUILD_WORKAROUND
@@ -414,7 +414,7 @@ typedef enum _HT_IOT_PEER
 	HT_IOT_PEER_REALTEK_WOW 		= 15,
 	HT_IOT_PEER_MAX 				= 16
 }HT_IOT_PEER_E, *PHTIOT_PEER_E;
-#endif//#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#endif//#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
 
 
 
@@ -1153,7 +1153,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 #if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	rtl8192cd_priv		fake_priv;
 #endif
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
 	// ADSL_AP_BUILD_WORKAROUND
 	ADAPTER			fake_adapter;
 #endif
@@ -1728,7 +1728,7 @@ static u1Byte DeltaSwingTableIdx_2GA_N_8188E[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 
 //
 // check Sta pointer valid or not
 //
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#if (DM_ODM_SUPPORT_TYPE & (ODM_AP))
 #define IS_STA_VALID(pSta)		(pSta && pSta->expire_to)
 #else
 #define IS_STA_VALID(pSta)		(pSta)
@@ -1771,7 +1771,7 @@ ODM_RAStateCheck(
 	OUT		pu1Byte			pRATRState
 	);
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
 //============================================================
 // function prototype
 //============================================================
@@ -1792,17 +1792,15 @@ ODM_CheckPowerStatus(
 	);
 
 
-#if (DM_ODM_SUPPORT_TYPE != ODM_ADSL)
 VOID
 ODM_RateAdaptiveStateApInit(
 	IN	PADAPTER	Adapter	,
 	IN	PRT_WLAN_STA  pEntry
 	);
-#endif
 #define AP_InitRateAdaptiveState	ODM_RateAdaptiveStateApInit
 
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
+#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
 #ifdef WIFI_WMM
 VOID
 ODM_IotEdcaSwitch(

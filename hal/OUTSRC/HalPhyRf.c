@@ -99,19 +99,13 @@ ODM_ClearTxPowerTrackingState(
 
 VOID
 ODM_TXPowerTrackingCallback_ThermalMeter(
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN PDM_ODM_T		pDM_Odm
-#else
 	IN PADAPTER	Adapter
-#endif
 	)
 {
 
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-#endif
 #endif
 
 	u1Byte			ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;
@@ -377,11 +371,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 					pDM_Odm->RFCalibrateInfo.PowerIndexOffset[ODM_RF_PATH_B], delta, ThermalValue, pHalData->EEPROMThermalMeter, pDM_Odm->RFCalibrateInfo.ThermalValue));
 
 			}
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 			if (ThermalValue > pHalData->EEPROMThermalMeter)
-#else
-			if (ThermalValue > pDM_Odm->priv->pmib->dot11RFEntry.ther)
-#endif
 			{
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 					("Temperature(%d) higher than PG value(%d)\n", ThermalValue, pHalData->EEPROMThermalMeter));
@@ -431,10 +421,8 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 			pDM_Odm->RFCalibrateInfo.ThermalValue = ThermalValue;         //Record last Power Tracking Thermal Value
 
 	}
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	if ((delta_IQK >= c.Threshold_IQK)) // Delta temperature is equal to or larger than 20 centigrade (When threshold is 8).
 		(*c.DoIQK)(pDM_Odm, delta_IQK, ThermalValue, 8);
-#endif
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("<===ODM_TXPowerTrackingCallback_ThermalMeter\n"));
 
@@ -482,7 +470,6 @@ ODM_ResetIQKResult(
 	}
 
 }
-#if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
 {
 	u1Byte	channel_all[ODM_TARGET_CHNL_NUM_2G_5G] =
@@ -503,5 +490,4 @@ u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
 	return 0;
 
 }
-#endif
 

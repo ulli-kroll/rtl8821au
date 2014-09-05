@@ -48,22 +48,10 @@ void DoIQK_8812A(
 
 	ODM_ResetIQKResult(pDM_Odm);
 
-#if(DM_ODM_SUPPORT_TYPE  & ODM_WIN)
-#if ((DEV_BUS_TYPE == RT_USB_INTERFACE) || (DEV_BUS_TYPE == RT_SDIO_INTERFACE))
-	PlatformAcquireMutex(&pHalData->mxChnlBwControl);
-#endif
-#endif
-
-
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK= ThermalValue;
 	PHY_IQCalibrate_8812A(Adapter, FALSE);
 
 
-#if(DM_ODM_SUPPORT_TYPE  & ODM_WIN)
-#if ((DEV_BUS_TYPE == RT_USB_INTERFACE) || (DEV_BUS_TYPE == RT_SDIO_INTERFACE))
-	PlatformReleaseMutex(&pHalData->mxChnlBwControl);
-#endif
-#endif
 }
 
 /*-----------------------------------------------------------------------------
@@ -422,7 +410,6 @@ void ConfigureTxpowerTrack_8812A(
 // 2011/07/26 MH Add an API for testing IQK fail case.
 //
 // MP Already declare in odm.c
-#if !(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 BOOLEAN
 ODM_CheckPowerStatus(
 	IN	PADAPTER		Adapter)
@@ -453,7 +440,6 @@ ODM_CheckPowerStatus(
 */
 	return	TRUE;
 }
-#endif
 
 #define BW_20M 	0
 #define	BW_40M  1
@@ -2031,22 +2017,14 @@ PHY_IQCalibrate_8812A(
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
-	#else  // (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#endif
 #endif
 
 #if (MP_DRIVER == 1)
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PMPT_CONTEXT	pMptCtx = &(pAdapter->MptCtx);
-	#else// (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
-	#endif
 #endif//(MP_DRIVER == 1)
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE) )
+#if (DM_ODM_SUPPORT_TYPE & (ODM_CE) )
 	if (ODM_CheckPowerStatus(pAdapter) == FALSE)
 		return;
 #endif
@@ -2079,11 +2057,7 @@ PHY_LCCalibrate_8812A(
 
 
 	#if (MP_DRIVER == 1)
-	#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PMPT_CONTEXT	pMptCtx = &(pAdapter->MptCtx);
-	#else// (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
-	#endif
 	bStartContTx = pMptCtx->bStartContTx;
 	bSingleTone = pMptCtx->bSingleTone;
 	bCarrierSuppression = pMptCtx->bCarrierSuppression;
@@ -2114,8 +2088,6 @@ VOID phy_SetRFPathSwitch_8812A(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-	#elif (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 	#endif
 
 #endif

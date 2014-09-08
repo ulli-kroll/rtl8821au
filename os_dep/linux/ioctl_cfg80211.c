@@ -322,7 +322,7 @@ static int rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_network *pnet
 	uint16_t notify_interval;
 	uint8_t *notify_ie;
 	size_t notify_ielen;
-	s32 notify_signal;
+	int32_t notify_signal;
 	uint8_t buf[MAX_BSSINFO_LEN], *pbuf;
 	size_t len,bssinf_len=0;
 	struct rtw_ieee80211_hdr *pwlanhdr;
@@ -2977,7 +2977,7 @@ static int cfg80211_rtw_flush_pmksa(struct wiphy *wiphy,
 #ifdef CONFIG_AP_MODE
 void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, uint8_t *pmgmt_frame, uint frame_len)
 {
-	s32 freq;
+	int32_t freq;
 	int channel;
 	struct wireless_dev *pwdev = padapter->rtw_wdev;
 	struct mlme_ext_priv *pmlmeext = &(padapter->mlmeextpriv);
@@ -3028,7 +3028,7 @@ void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, uint8_t *pmgmt_frame, u
 
 void rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, unsigned short reason)
 {
-	s32 freq;
+	int32_t freq;
 	int channel;
 	uint8_t *pmgmt_frame;
 	uint frame_len;
@@ -3831,7 +3831,7 @@ static int	cfg80211_rtw_assoc(struct wiphy *wiphy, struct net_device *ndev,
 void rtw_cfg80211_rx_action_p2p(_adapter *padapter, uint8_t *pmgmt_frame, uint frame_len)
 {
 	int type;
-	s32 freq;
+	int32_t freq;
 	int channel;
 	struct mlme_ext_priv *pmlmeext = &(padapter->mlmeextpriv);
 	uint8_t category, action;
@@ -3863,7 +3863,7 @@ indicate:
 void rtw_cfg80211_rx_p2p_action_public(_adapter *padapter, uint8_t *pmgmt_frame, uint frame_len)
 {
 	int type;
-	s32 freq;
+	int32_t freq;
 	int channel;
 	struct mlme_ext_priv *pmlmeext = &(padapter->mlmeextpriv);
 	uint8_t category, action;
@@ -3900,7 +3900,7 @@ indicate:
 
 void rtw_cfg80211_rx_action(_adapter *adapter, uint8_t *frame, uint frame_len, const char*msg)
 {
-	s32 freq;
+	int32_t freq;
 	int channel;
 	struct mlme_ext_priv *pmlmeext = &(adapter->mlmeextpriv);
 	struct rtw_wdev_priv *pwdev_priv = wdev_to_priv(adapter->rtw_wdev);
@@ -4155,7 +4155,7 @@ void rtw_cfg80211_issue_p2p_provision_request(_adapter *padapter, const uint8_t 
 
 }
 
-static s32 cfg80211_rtw_remain_on_channel(struct wiphy *wiphy,
+static int32_t cfg80211_rtw_remain_on_channel(struct wiphy *wiphy,
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
 	struct wireless_dev *wdev,
 #else
@@ -4167,7 +4167,7 @@ static s32 cfg80211_rtw_remain_on_channel(struct wiphy *wiphy,
 #endif
 	unsigned int duration, u64 *cookie)
 {
-	s32 err = 0;
+	int32_t err = 0;
 	_adapter *padapter = wiphy_to_adapter(wiphy);
 	struct rtw_wdev_priv *pwdev_priv = wdev_to_priv(padapter->rtw_wdev);
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
@@ -4322,7 +4322,7 @@ exit:
 	return err;
 }
 
-static s32 cfg80211_rtw_cancel_remain_on_channel(struct wiphy *wiphy,
+static int32_t cfg80211_rtw_cancel_remain_on_channel(struct wiphy *wiphy,
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
 	struct wireless_dev *wdev,
 #else
@@ -4330,7 +4330,7 @@ static s32 cfg80211_rtw_cancel_remain_on_channel(struct wiphy *wiphy,
 #endif
 	u64 cookie)
 {
-	s32 err = 0;
+	int32_t err = 0;
 	_adapter *padapter = wiphy_to_adapter(wiphy);
 	struct rtw_wdev_priv *pwdev_priv = wdev_to_priv(padapter->rtw_wdev);
 	struct wifidirect_info *pwdinfo = &padapter->wdinfo;

@@ -617,11 +617,11 @@ _func_exit_;
  *	-1:	Timeout
  *	-2:	Other error
  */
-s32 LPS_RF_ON_check(PADAPTER padapter, uint32_t	 delay_ms)
+int32_t LPS_RF_ON_check(PADAPTER padapter, uint32_t	 delay_ms)
 {
 	uint32_t	 start_time;
 	uint8_t bAwake = _FALSE;
-	s32 err = 0;
+	int32_t err = 0;
 
 
 	start_time = rtw_get_current_time();
@@ -1030,9 +1030,9 @@ __inline static void unregister_task_alive(struct pwrctrl_priv *pwrctrl, uint32_
  *	 _SUCCESS	rtw_xmit_thread can write fifo/txcmd afterwards.
  *	 _FAIL		rtw_xmit_thread can not do anything.
  */
-s32 rtw_register_tx_alive(PADAPTER padapter)
+int32_t rtw_register_tx_alive(PADAPTER padapter)
 {
-	s32 res;
+	int32_t res;
 	struct pwrctrl_priv *pwrctrl;
 	uint8_t pslv;
 
@@ -1083,9 +1083,9 @@ _func_exit_;
  *	_SUCCESS	rtw_cmd_thread can issue cmds to firmware afterwards.
  *	_FAIL		rtw_cmd_thread can not do anything.
  */
-s32 rtw_register_cmd_alive(PADAPTER padapter)
+int32_t rtw_register_cmd_alive(PADAPTER padapter)
 {
-	s32 res;
+	int32_t res;
 	struct pwrctrl_priv *pwrctrl;
 	uint8_t pslv;
 
@@ -1132,7 +1132,7 @@ _func_exit_;
  *	_SUCCESS
  *	_FAIL
  */
-s32 rtw_register_rx_alive(PADAPTER padapter)
+int32_t rtw_register_rx_alive(PADAPTER padapter)
 {
 	struct pwrctrl_priv *pwrctrl;
 
@@ -1163,7 +1163,7 @@ _func_exit_;
  *	_SUCCESS
  *	_FAIL
  */
-s32 rtw_register_evt_alive(PADAPTER padapter)
+int32_t rtw_register_evt_alive(PADAPTER padapter)
 {
 	struct pwrctrl_priv *pwrctrl;
 

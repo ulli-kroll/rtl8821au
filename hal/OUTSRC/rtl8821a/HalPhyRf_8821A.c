@@ -39,11 +39,11 @@ void setIqkMatrix_8821A(
 	PDM_ODM_T	pDM_Odm,
 	u1Byte 		OFDM_index,
 	u1Byte 		RFPath,
-	s4Byte 		IqkResult_X,
-	s4Byte 		IqkResult_Y
+	int32_t 		IqkResult_X,
+	int32_t 		IqkResult_Y
 	)
 {
-	s4Byte			ele_A=0, ele_D, ele_C=0, value32;
+	int32_t			ele_A=0, ele_D, ele_C=0, value32;
 
 	ele_D = (OFDMSwingTable_New[OFDM_index] & 0xFFC00000)>>22;
 

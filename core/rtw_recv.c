@@ -3401,11 +3401,11 @@ exit:
 }
 
 
-s32 rtw_recv_entry(union recv_frame *precvframe)
+int32_t rtw_recv_entry(union recv_frame *precvframe)
 {
 	_adapter *padapter;
 	struct recv_priv *precvpriv;
-	s32 ret=_SUCCESS;
+	int32_t ret=_SUCCESS;
 
 _func_enter_;
 

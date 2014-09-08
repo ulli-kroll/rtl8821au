@@ -5473,7 +5473,7 @@ exit:
 
 #endif //CONFIG_P2P
 
-s32 rtw_action_public_decache(union recv_frame *recv_frame, s32 token)
+int32_t rtw_action_public_decache(union recv_frame *recv_frame, int32_t token)
 {
 	_adapter *adapter = recv_frame->u.hdr.adapter;
 	struct mlme_ext_priv *mlmeext = &(adapter->mlmeextpriv);
@@ -6190,9 +6190,9 @@ void dump_mgntframe(_adapter *padapter, struct xmit_frame *pmgntframe)
 	rtw_hal_mgnt_xmit(padapter, pmgntframe);
 }
 
-s32 dump_mgntframe_and_wait(_adapter *padapter, struct xmit_frame *pmgntframe, int timeout_ms)
+int32_t dump_mgntframe_and_wait(_adapter *padapter, struct xmit_frame *pmgntframe, int timeout_ms)
 {
-	s32 ret = _FAIL;
+	int32_t ret = _FAIL;
 	_irqL irqL;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	struct xmit_buf *pxmitbuf = pmgntframe->pxmitbuf;
@@ -6217,10 +6217,10 @@ s32 dump_mgntframe_and_wait(_adapter *padapter, struct xmit_frame *pmgntframe, i
 	 return ret;
 }
 
-s32 dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntframe)
+int32_t dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntframe)
 {
 #ifdef CONFIG_XMIT_ACK
-	s32 ret = _FAIL;
+	int32_t ret = _FAIL;
 	uint32_t	 timeout_ms = 500;//  500ms
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
 	#ifdef CONFIG_CONCURRENT_MODE

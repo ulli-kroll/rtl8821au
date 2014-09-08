@@ -271,7 +271,7 @@ PHY_SetRFReg8812(
 // 3. Initial MAC/BB/RF config by reading MAC/BB/RF txt.
 //
 
-s32 PHY_MACConfig8812(PADAPTER Adapter)
+int32_t PHY_MACConfig8812(PADAPTER Adapter)
 {
 	int				rtStatus = _SUCCESS;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -2211,7 +2211,7 @@ phy_DbmToTxPwrIdx(
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	TxPwrIdx = 0;
-	s32	Offset = 0;
+	int32_t	Offset = 0;
 
 #if 0
 	//
@@ -3711,7 +3711,7 @@ phy_SetRFEReg8812(
 	}
 }
 
-s32
+int32_t
 PHY_SwitchWirelessBand8812(
 	IN PADAPTER		Adapter,
 	IN uint8_t			Band

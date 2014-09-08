@@ -267,10 +267,10 @@ typedef enum _TX_PWR_PERCENTAGE{
 
 // rtl8812_hal_init.c
 void	_8051Reset8812(PADAPTER padapter);
-s32	FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw);
+int32_t	FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw);
 void	InitializeFirmwareVars8812(PADAPTER padapter);
 
-s32	InitLLTTable8812(PADAPTER padapter, uint8_t txpktbuf_bndy);
+int32_t	InitLLTTable8812(PADAPTER padapter, uint8_t txpktbuf_bndy);
 void InitRDGSetting8812A(PADAPTER padapter);
 
 void CheckAutoloadState8812A(PADAPTER padapter);

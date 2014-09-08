@@ -83,7 +83,7 @@ _func_exit_;
 uint32_t	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
 {
 	struct sta_info *psta;
-	s32 i;
+	int32_t i;
 
 _func_enter_;
 
@@ -313,7 +313,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, uint8_t *hwaddr)
 {
 	_irqL irqL, irqL2;
 	uint tmp_aid;
-	s32	index;
+	int32_t	index;
 	_list	*phash_list;
 	struct sta_info	*psta;
 	_queue *pfree_sta_queue;
@@ -643,7 +643,7 @@ void rtw_free_all_stainfo(_adapter *padapter)
 {
 	_irqL	 irqL;
 	_list	*plist, *phead;
-	s32	index;
+	int32_t	index;
 	struct sta_info *psta = NULL;
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info* pbcmc_stainfo =rtw_get_bcmc_stainfo( padapter);

@@ -113,7 +113,7 @@
 #ifdef CONFIG_USB_HCI
 #define INTERRUPT_MSG_FORMAT_LEN 60
 void rtl8812au_init_recvbuf(_adapter *padapter, struct recv_buf *precvbuf);
-s32 rtl8812au_init_recv_priv(PADAPTER padapter);
+int32_t rtl8812au_init_recv_priv(PADAPTER padapter);
 void rtl8812au_free_recv_priv(PADAPTER padapter);
 void rtl8812au_recv_hdl(PADAPTER padapter, struct recv_buf *precvbuf);
 void rtl8812au_recv_tasklet(void *priv);

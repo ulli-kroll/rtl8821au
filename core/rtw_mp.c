@@ -213,7 +213,7 @@ static void mp_init_xmit_attrib(struct mp_tx *pmptx, PADAPTER padapter)
 	pattrib->qos_en = _FALSE;
 }
 
-s32 init_mp_priv(PADAPTER padapter)
+int32_t init_mp_priv(PADAPTER padapter)
 {
 	struct mp_priv *pmppriv = &padapter->mppriv;
 
@@ -318,14 +318,14 @@ static VOID PHY_SetRFPathSwitch_default(
 #endif //#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 
 
-s32
+int32_t
 MPT_InitializeAdapter(
 	IN	PADAPTER			pAdapter,
 	IN	uint8_t				Channel
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	s32		rtStatus = _SUCCESS;
+	int32_t		rtStatus = _SUCCESS;
 	PMPT_CONTEXT	pMptCtx = &pAdapter->mppriv.MptCtx;
 	uint32_t		ledsetting;
 	struct mlme_priv *pmlmepriv = &pAdapter->mlmepriv;
@@ -466,7 +466,7 @@ static uint8_t mpt_ProStartTest(PADAPTER padapter)
 /*
  * General use
  */
-s32 SetPowerTracking(PADAPTER padapter, uint8_t enable)
+int32_t SetPowerTracking(PADAPTER padapter, uint8_t enable)
 {
 
 	Hal_SetPowerTracking( padapter, enable );
@@ -506,7 +506,7 @@ static void disable_dm(PADAPTER padapter)
 }
 
 //This function initializes the DUT to the MP test mode
-s32 mp_start_test(PADAPTER padapter)
+int32_t mp_start_test(PADAPTER padapter)
 {
 	WLAN_BSSID_EX bssid;
 	struct sta_info *psta;
@@ -514,7 +514,7 @@ s32 mp_start_test(PADAPTER padapter)
 	uint8_t val8;
 
 	_irqL irqL;
-	s32 res = _SUCCESS;
+	int32_t res = _SUCCESS;
 
 	struct mp_priv *pmppriv = &padapter->mppriv;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -869,7 +869,7 @@ void MP_PHY_SetRFPathSwitch(PADAPTER pAdapter ,BOOLEAN bMain)
 }
 
 
-s32 SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther)
+int32_t SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther)
 {
 	return Hal_SetThermalMeter( pAdapter, target_ther);
 }
@@ -1045,7 +1045,7 @@ void fill_tx_desc_8812a(PADAPTER padapter)
 	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);
 
 	uint32_t	pkt_size = pattrib->last_txcmdsz;
-	s32 bmcast = IS_MCAST(pattrib->ra);
+	int32_t bmcast = IS_MCAST(pattrib->ra);
 	uint8_t data_rate,pwr_status,offset;
 
 	SET_TX_DESC_FIRST_SEG_8812(pDesc, 1);
@@ -1091,7 +1091,7 @@ void SetPacketTx(PADAPTER padapter)
 	struct tx_desc *desc;
 	struct rtw_ieee80211_hdr *hdr;
 	uint8_t payload;
-	s32 bmcast;
+	int32_t bmcast;
 	struct pkt_attrib *pattrib;
 	struct mp_priv *pmp_priv;
 

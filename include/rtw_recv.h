@@ -193,7 +193,7 @@ struct rx_pkt_attrib	{
 	s8	rx_mimo_signal_qual[2];
 	uint8_t	signal_strength;
 	u32	RxPWDBAll;
-	s32	RecvSignalPower;
+	int32_t	RecvSignalPower;
 */
 	struct phy_info phy_info;
 };
@@ -683,12 +683,12 @@ __inline static sint get_recvframe_len(union recv_frame *precvframe)
 }
 
 
-__inline static s32 translate_percentage_to_dbm(u32 SignalStrengthIndex)
+__inline static int32_t translate_percentage_to_dbm(u32 SignalStrengthIndex)
 {
-	s32	SignalPower; // in dBm.
+	int32_t	SignalPower; // in dBm.
 
 	// Translate to dBm (x=0.5y-95).
-	SignalPower = (s32)((SignalStrengthIndex + 1) >> 1);
+	SignalPower = (int32_t)((SignalStrengthIndex + 1) >> 1);
 	SignalPower -= 95;
 
 	return SignalPower;

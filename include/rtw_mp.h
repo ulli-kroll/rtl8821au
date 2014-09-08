@@ -125,7 +125,6 @@ struct mp_tx
 #define u1Byte u8
 #define s1Byte s8
 #define uint32_t u32
-#define s4Byte s32
 #define u1Byte		u8
 #define pu1Byte 		u8*
 
@@ -134,9 +133,6 @@ struct mp_tx
 
 #define s2Byte		s16
 #define ps2Byte 		s16*
-
-#define s4Byte		s32
-#define ps4Byte 		s32*
 
 #define s8Byte		s64
 #define ps8Byte 		s64*
@@ -231,7 +227,7 @@ typedef struct _MPT_CONTEXT
 	// SD3 Willis For 8192S to save 1T/2T RF table for ACUT	Only fro ACUT delete later ~~~!
 	//s1Byte		BufOfLines[2][MAX_LINES_HWCONFIG_TXT][MAX_BYTES_LINE_HWCONFIG_TXT];
 	//s1Byte			BufOfLines[2][MP_MAX_LINES][MP_MAX_LINES_BYTES];
-	//s4Byte			RfReadLine[2];
+	//int32_t			RfReadLine[2];
 
 	uint8_t		APK_bound[2];	//for APK	path A/path B
 	BOOLEAN		bMptIndexEven;
@@ -548,11 +544,11 @@ typedef enum _ENCRY_CTRL_STATE_ {
 //extern struct mp_xmit_frame *alloc_mp_xmitframe(struct mp_priv *pmp_priv);
 //extern int free_mp_xmitframe(struct xmit_priv *pxmitpriv, struct mp_xmit_frame *pmp_xmitframe);
 
-extern s32 init_mp_priv(PADAPTER padapter);
+extern int32_t init_mp_priv(PADAPTER padapter);
 extern void free_mp_priv(struct mp_priv *pmp_priv);
-extern s32 MPT_InitializeAdapter(PADAPTER padapter, uint8_t Channel);
+extern int32_t MPT_InitializeAdapter(PADAPTER padapter, uint8_t Channel);
 extern void MPT_DeInitAdapter(PADAPTER padapter);
-extern s32 mp_start_test(PADAPTER padapter);
+extern int32_t mp_start_test(PADAPTER padapter);
 extern void mp_stop_test(PADAPTER padapter);
 
 //=======================================================================
@@ -589,7 +585,7 @@ extern void	SetAntenna(PADAPTER pAdapter);
 
 //extern void	SetCrystalCap(PADAPTER pAdapter);
 
-extern s32	SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther);
+extern int32_t	SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther);
 extern void	GetThermalMeter(PADAPTER pAdapter, uint8_t *value);
 
 extern void	SetContinuousTx(PADAPTER pAdapter, uint8_t bStart);
@@ -606,7 +602,7 @@ extern void	ResetPhyRxPktCount(PADAPTER pAdapter);
 extern u32	GetPhyRxPktReceived(PADAPTER pAdapter);
 extern u32	GetPhyRxPktCRC32Error(PADAPTER pAdapter);
 
-extern s32	SetPowerTracking(PADAPTER padapter, uint8_t enable);
+extern int32_t	SetPowerTracking(PADAPTER padapter, uint8_t enable);
 extern void	GetPowerTracking(PADAPTER padapter, uint8_t *enable);
 
 extern u32	mp_query_psd(PADAPTER pAdapter, uint8_t *data);
@@ -625,8 +621,8 @@ extern void Hal_SetBandwidth(PADAPTER pAdapter);
 extern void Hal_SetDataRate(PADAPTER pAdapter);
 extern void Hal_SetChannel(PADAPTER pAdapter);
 extern void Hal_SetAntennaPathPower(PADAPTER pAdapter);
-extern s32 Hal_SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther);
-extern s32 Hal_SetPowerTracking(PADAPTER padapter, uint8_t enable);
+extern int32_t Hal_SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther);
+extern int32_t Hal_SetPowerTracking(PADAPTER padapter, uint8_t enable);
 extern void Hal_GetPowerTracking(PADAPTER padapter, uint8_t * enable);
 extern void Hal_GetThermalMeter(PADAPTER pAdapter, uint8_t *value);
 extern void Hal_mpt_SwitchRfSetting(PADAPTER pAdapter);

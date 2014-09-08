@@ -140,7 +140,7 @@ struct dm_priv
 	int	MinUndecoratedPWDBForDM;
 	int	LastMinUndecoratedPWDBForDM;
 
-	s32	UndecoratedSmoothedBeacon;
+	int32_t	UndecoratedSmoothedBeacon;
 
 //###### duplicate code,will move to ODM #########
 	//for High Power
@@ -194,10 +194,10 @@ struct dm_priv
 	//uint8_t   RSVD_6;
 
 	//for TxPwrTracking2
-	s32	RegE94;
-	s32  RegE9C;
-	s32	RegEB4;
-	s32	RegEBC;
+	int32_t	RegE94;
+	int32_t  RegE9C;
+	int32_t	RegEB4;
+	int32_t	RegEBC;
 
 	u32	TXPowerTrackingCallbackCnt;	//cosa add for debug
 

@@ -25,7 +25,7 @@
 extern unsigned char MCS_rate_2R[16];
 extern unsigned char MCS_rate_1R[16];
 extern void process_wmmps_data(_adapter *padapter, union recv_frame *precv_frame);
-extern s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe);
+extern int32_t rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe);
 
 void rtw_reset_tdls_info(_adapter* padapter)
 {
@@ -125,7 +125,7 @@ void issue_nulldata_to_TDLS_peer_STA(_adapter *padapter, struct sta_info *ptdls_
 	return;
 }
 
-s32 update_tdls_attrib(_adapter *padapter, struct pkt_attrib *pattrib)
+int32_t update_tdls_attrib(_adapter *padapter, struct pkt_attrib *pattrib)
 {
 
 	struct sta_info *psta = NULL;
@@ -134,7 +134,7 @@ s32 update_tdls_attrib(_adapter *padapter, struct pkt_attrib *pattrib)
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct qos_priv		*pqospriv= &pmlmepriv->qospriv;
 
-	s32 res=_SUCCESS;
+	int32_t res=_SUCCESS;
 	sint bmcast;
 
 	bmcast = IS_MCAST(pattrib->ra);

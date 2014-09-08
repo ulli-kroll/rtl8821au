@@ -292,7 +292,7 @@ _func_exit_;
 static uint32_t	 secmicgetuint32( uint8_t * p )
 // Convert from Byte[] to Us4Byte32 in a portable way
 {
-	s32 i;
+	int32_t i;
 	uint32_t	 res = 0;
 _func_enter_;
 	for( i=0; i<4; i++ )

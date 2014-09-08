@@ -245,7 +245,7 @@ uint8_t	rtw_hal_intf_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id, u8* v
 	return _FAIL;
 }
 
-s32	rtw_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe)
+int32_t	rtw_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
 	if(padapter->HalFunc.hal_xmitframe_enqueue)
 		return padapter->HalFunc.hal_xmitframe_enqueue(padapter, pxmitframe);
@@ -253,7 +253,7 @@ s32	rtw_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe)
 	return _FALSE;
 }
 
-s32	rtw_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe)
+int32_t	rtw_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
 	if(padapter->HalFunc.hal_xmit)
 		return padapter->HalFunc.hal_xmit(padapter, pxmitframe);
@@ -261,9 +261,9 @@ s32	rtw_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe)
 	return _FALSE;
 }
 
-s32	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
+int32_t	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
 {
-	s32 ret = _FAIL;
+	int32_t ret = _FAIL;
 
 	update_mgntframe_attrib_addr(padapter, pmgntframe);
 
@@ -272,7 +272,7 @@ s32	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
 	return ret;
 }
 
-s32	rtw_hal_init_xmit_priv(_adapter *padapter)
+int32_t	rtw_hal_init_xmit_priv(_adapter *padapter)
 {
 	if(padapter->HalFunc.init_xmit_priv != NULL)
 		return padapter->HalFunc.init_xmit_priv(padapter);
@@ -284,7 +284,7 @@ void	rtw_hal_free_xmit_priv(_adapter *padapter)
 		padapter->HalFunc.free_xmit_priv(padapter);
 }
 
-s32	rtw_hal_init_recv_priv(_adapter *padapter)
+int32_t	rtw_hal_init_recv_priv(_adapter *padapter)
 {
 	if(padapter->HalFunc.init_recv_priv)
 		return padapter->HalFunc.init_recv_priv(padapter);
@@ -372,7 +372,7 @@ void	rtw_hal_write_rfreg(_adapter *padapter, uint32_t eRFPath, uint32_t RegAddr,
 		padapter->HalFunc.write_rfreg(padapter, eRFPath, RegAddr, BitMask, Data);
 }
 
-s32	rtw_hal_interrupt_handler(_adapter *padapter)
+int32_t	rtw_hal_interrupt_handler(_adapter *padapter)
 {
 	if(padapter->HalFunc.interrupt_handler)
 		return padapter->HalFunc.interrupt_handler(padapter);
@@ -429,7 +429,7 @@ void	rtw_hal_antdiv_rssi_compared(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_B
 #endif
 
 #ifdef CONFIG_HOSTAPD_MLME
-s32	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
+int32_t	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 {
 	if(padapter->HalFunc.hostap_mgnt_xmit_entry)
 		return padapter->HalFunc.hostap_mgnt_xmit_entry(padapter, pkt);
@@ -501,7 +501,7 @@ int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, uint32_t ma
 #endif
 
 #ifdef CONFIG_XMIT_THREAD_MODE
-s32 rtw_hal_xmit_thread_handler(_adapter *padapter)
+int32_t rtw_hal_xmit_thread_handler(_adapter *padapter)
 {
 	if(padapter->HalFunc.xmit_thread_handler)
 		return padapter->HalFunc.xmit_thread_handler(padapter);
@@ -521,9 +521,9 @@ void rtw_hal_reset_security_engine(_adapter * adapter)
 		adapter->HalFunc.hal_reset_security_engine(adapter);
 }
 
-s32 rtw_hal_c2h_handler(_adapter *adapter, struct c2h_evt_hdr *c2h_evt)
+int32_t rtw_hal_c2h_handler(_adapter *adapter, struct c2h_evt_hdr *c2h_evt)
 {
-	s32 ret = _FAIL;
+	int32_t ret = _FAIL;
 	if (adapter->HalFunc.c2h_handler)
 		ret = adapter->HalFunc.c2h_handler(adapter, c2h_evt);
 	return ret;

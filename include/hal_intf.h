@@ -161,7 +161,7 @@ typedef enum _HAL_INTF_PS_FUNC{
 	HAL_MAX_ID,
 }HAL_INTF_PS_FUNC;
 
-typedef s32 (*c2h_id_filter)(uint8_t id);
+typedef int32_t (*c2h_id_filter)(uint8_t id);
 
 struct hal_ops {
 	u32	(*hal_power_on)(_adapter *padapter);
@@ -173,10 +173,10 @@ struct hal_ops {
 	u32	(*inirp_init)(_adapter *padapter);
 	u32	(*inirp_deinit)(_adapter *padapter);
 
-	s32	(*init_xmit_priv)(_adapter *padapter);
+	int32_t	(*init_xmit_priv)(_adapter *padapter);
 	void	(*free_xmit_priv)(_adapter *padapter);
 
-	s32	(*init_recv_priv)(_adapter *padapter);
+	int32_t	(*init_recv_priv)(_adapter *padapter);
 	void	(*free_recv_priv)(_adapter *padapter);
 
 	void	(*InitSwLeds)(_adapter *padapter);
@@ -194,7 +194,7 @@ struct hal_ops {
 
 	void	(*enable_interrupt)(_adapter *padapter);
 	void	(*disable_interrupt)(_adapter *padapter);
-	s32	(*interrupt_handler)(_adapter *padapter);
+	int32_t	(*interrupt_handler)(_adapter *padapter);
 
 	void	(*set_bwmode_handler)(_adapter *padapter, CHANNEL_WIDTH Bandwidth, uint8_t Offset);
 	void	(*set_channel_handler)(_adapter *padapter, uint8_t channel);
@@ -227,9 +227,9 @@ struct hal_ops {
 #endif
 	uint8_t	(*interface_ps_func)(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id, u8* val);
 
-	s32	(*hal_xmit)(_adapter *padapter, struct xmit_frame *pxmitframe);
-	s32 (*mgnt_xmit)(_adapter *padapter, struct xmit_frame *pmgntframe);
-	s32	(*hal_xmitframe_enqueue)(_adapter *padapter, struct xmit_frame *pxmitframe);
+	int32_t	(*hal_xmit)(_adapter *padapter, struct xmit_frame *pxmitframe);
+	int32_t (*mgnt_xmit)(_adapter *padapter, struct xmit_frame *pmgntframe);
+	int32_t	(*hal_xmitframe_enqueue)(_adapter *padapter, struct xmit_frame *pxmitframe);
 
 	u32	(*read_bbreg)(_adapter *padapter, u32 RegAddr, u32 BitMask);
 	void	(*write_bbreg)(_adapter *padapter, u32 RegAddr, u32 BitMask, u32 Data);
@@ -237,7 +237,7 @@ struct hal_ops {
 	void	(*write_rfreg)(_adapter *padapter, uint8_t eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 
 #ifdef CONFIG_HOSTAPD_MLME
-	s32	(*hostap_mgnt_xmit_entry)(_adapter *padapter, _pkt *pkt);
+	int32_t	(*hostap_mgnt_xmit_entry)(_adapter *padapter, _pkt *pkt);
 #endif
 
 	void (*EfusePowerSwitch)(_adapter *padapter, uint8_t bWrite, uint8_t PwrState);
@@ -264,11 +264,11 @@ struct hal_ops {
 #endif
 
 #ifdef CONFIG_XMIT_THREAD_MODE
-	s32 (*xmit_thread_handler)(_adapter *padapter);
+	int32_t (*xmit_thread_handler)(_adapter *padapter);
 #endif
 	void (*hal_notch_filter)(_adapter * adapter, bool enable);
 	void (*hal_reset_security_engine)(_adapter * adapter);
-	s32 (*c2h_handler)(_adapter *padapter, struct c2h_evt_hdr *c2h_evt);
+	int32_t (*c2h_handler)(_adapter *padapter, struct c2h_evt_hdr *c2h_evt);
 	c2h_id_filter c2h_id_filter_ccx;
 };
 
@@ -447,14 +447,14 @@ u32	rtw_hal_inirp_deinit(_adapter *padapter);
 
 uint8_t	rtw_hal_intf_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id, u8* val);
 
-s32	rtw_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
-s32	rtw_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe);
-s32	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe);
+int32_t	rtw_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
+int32_t	rtw_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe);
+int32_t	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe);
 
-s32	rtw_hal_init_xmit_priv(_adapter *padapter);
+int32_t	rtw_hal_init_xmit_priv(_adapter *padapter);
 void	rtw_hal_free_xmit_priv(_adapter *padapter);
 
-s32	rtw_hal_init_recv_priv(_adapter *padapter);
+int32_t	rtw_hal_init_recv_priv(_adapter *padapter);
 void	rtw_hal_free_recv_priv(_adapter *padapter);
 
 void rtw_hal_update_ra_mask(struct sta_info *psta, uint8_t rssi_level);
@@ -475,7 +475,7 @@ void	rtw_hal_write_rfreg(_adapter *padapter, u32 eRFPath, u32 RegAddr, u32 BitMa
 #define PHY_QueryRFReg(Adapter, eRFPath, RegAddr, BitMask) rtw_hal_read_rfreg((Adapter), (eRFPath), (RegAddr), (BitMask))
 #define PHY_SetRFReg(Adapter, eRFPath, RegAddr, BitMask, Data) rtw_hal_write_rfreg((Adapter), (eRFPath), (RegAddr), (BitMask), (Data))
 
-s32	rtw_hal_interrupt_handler(_adapter *padapter);
+int32_t	rtw_hal_interrupt_handler(_adapter *padapter);
 
 void	rtw_hal_set_bwmode(_adapter *padapter, CHANNEL_WIDTH Bandwidth, uint8_t Offset);
 void	rtw_hal_set_chan(_adapter *padapter, uint8_t channel);
@@ -488,7 +488,7 @@ void	rtw_hal_antdiv_rssi_compared(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_B
 #endif
 
 #ifdef CONFIG_HOSTAPD_MLME
-s32	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt);
+int32_t	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt);
 #endif
 
 #ifdef DBG_CONFIG_ERROR_DETECT
@@ -506,13 +506,13 @@ int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wat
 #endif
 
 #ifdef CONFIG_XMIT_THREAD_MODE
-s32 rtw_hal_xmit_thread_handler(_adapter *padapter);
+int32_t rtw_hal_xmit_thread_handler(_adapter *padapter);
 #endif
 
 void rtw_hal_notch_filter(_adapter * adapter, bool enable);
 void rtw_hal_reset_security_engine(_adapter * adapter);
 
-s32 rtw_hal_c2h_handler(_adapter *adapter, struct c2h_evt_hdr *c2h_evt);
+int32_t rtw_hal_c2h_handler(_adapter *adapter, struct c2h_evt_hdr *c2h_evt);
 c2h_id_filter rtw_hal_c2h_id_filter_ccx(_adapter *adapter);
 
 #endif //__HAL_INTF_H__

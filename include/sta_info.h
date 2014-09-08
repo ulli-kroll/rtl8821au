@@ -45,9 +45,9 @@ struct wlan_acl_pool {
 };
 
 typedef struct _RSSI_STA{
-	s32	UndecoratedSmoothedPWDB;
-	s32	UndecoratedSmoothedCCK;
-	s32	UndecoratedSmoothedOFDM;
+	int32_t	UndecoratedSmoothedPWDB;
+	int32_t	UndecoratedSmoothedCCK;
+	int32_t	UndecoratedSmoothedOFDM;
 	u64	PacketMap;
 	uint8_t	ValidBit;
 }RSSI_STA, *PRSSI_STA;
@@ -121,8 +121,8 @@ struct sta_info {
 
 	uint8_t	bssrateset[16];
 	u32	bssratelen;
-	s32  rssi;
-	s32	signal_quality;
+	int32_t  rssi;
+	int32_t	signal_quality;
 
 	uint8_t	cts2self;
 	uint8_t	rtsen;

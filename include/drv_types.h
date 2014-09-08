@@ -515,9 +515,9 @@ struct _ADAPTER{
 	u32 hal_data_sz;
 	struct hal_ops	HalFunc;
 
-	s32	bDriverStopped;
-	s32	bSurpriseRemoved;
-	s32  bCardDisableWOHSM;
+	int32_t	bDriverStopped;
+	int32_t	bSurpriseRemoved;
+	int32_t  bCardDisableWOHSM;
 
 	u32	IsrContent;
 	u32	ImrContent;

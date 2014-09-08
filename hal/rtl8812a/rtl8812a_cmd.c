@@ -64,10 +64,10 @@ static uint8_t _is_fw_read_cmd_down(_adapter* padapter, uint8_t msgbox_num)
 *|31 - 0	  |
 *|ext_msg|
 ******************************************/
-static s32 FillH2CCmd_8812(PADAPTER padapter, uint8_t ElementID, uint32_t CmdLen, uint8_t *pCmdBuffer)
+static int32_t FillH2CCmd_8812(PADAPTER padapter, uint8_t ElementID, uint32_t CmdLen, uint8_t *pCmdBuffer)
 {
 	uint8_t bcmd_down = _FALSE;
-	s32 retry_cnts = 100;
+	int32_t retry_cnts = 100;
 	uint8_t h2c_box_num;
 	uint32_t	msgbox_addr;
 	uint32_t msgbox_ex_addr;
@@ -75,7 +75,7 @@ static s32 FillH2CCmd_8812(PADAPTER padapter, uint8_t ElementID, uint32_t CmdLen
 	uint8_t cmd_idx,ext_cmd_len;
 	uint32_t	h2c_cmd = 0;
 	uint32_t	h2c_cmd_ex = 0;
-	s32 ret = _FAIL;
+	int32_t ret = _FAIL;
 
 _func_enter_;
 
@@ -1214,7 +1214,7 @@ uint8_t rtl8812_reset_tsf(_adapter *padapter, uint8_t reset_port )
 	uint8_t	buf[2];
 	uint8_t	res=_SUCCESS;
 
-	s32 ret;
+	int32_t ret;
 _func_enter_;
 	if (IFACE_PORT0==reset_port) {
 		buf[0] = 0x1; buf[1] = 0;

@@ -22,13 +22,13 @@
 //#include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-static s32  translate2dbm(uint8_t signal_strength_idx)
+static int32_t  translate2dbm(uint8_t signal_strength_idx)
 {
-	s32	signal_power; // in dBm.
+	int32_t	signal_power; // in dBm.
 
 
 	// Translate to dBm (x=0.5y-95).
-	signal_power = (s32)((signal_strength_idx + 1) >> 1);
+	signal_power = (int32_t)((signal_strength_idx + 1) >> 1);
 	signal_power -= 95;
 
 	return signal_power;

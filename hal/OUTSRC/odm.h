@@ -274,7 +274,7 @@ typedef struct _RX_High_Power_
 typedef struct _SW_Antenna_Switch_
 {
 	u1Byte		try_flag;
-	s4Byte		PreRSSI;
+	int32_t		PreRSSI;
 	u1Byte		CurAntenna;
 	u1Byte		PreAntenna;
 	u1Byte		RSSI_Trying;
@@ -289,10 +289,10 @@ typedef struct _SW_Antenna_Switch_
 	BOOLEAN		ANTA_ON;	//To indicate Ant A is or not
 	BOOLEAN		ANTB_ON;	//To indicate Ant B is on or not
 
-	s4Byte		RSSI_sum_A;
-	s4Byte		RSSI_sum_B;
-	s4Byte		RSSI_cnt_A;
-	s4Byte		RSSI_cnt_B;
+	int32_t		RSSI_sum_A;
+	int32_t		RSSI_sum_B;
+	int32_t		RSSI_cnt_A;
+	int32_t		RSSI_cnt_B;
 
 	uint64_t		lastTxOkCnt;
 	uint64_t		lastRxOkCnt;
@@ -441,7 +441,7 @@ typedef struct _ODM_Phy_Dbg_Info_
 	uint64_t		NumQryPhyStatusOFDM;
 	u1Byte		NumQryBeaconPkt;
 	//Others
-	s4Byte		RxEVM[4];
+	int32_t		RxEVM[4];
 
 }ODM_PHY_DBG_INFO_T;
 
@@ -905,7 +905,7 @@ typedef struct _ODM_RA_Info_
 
 typedef struct _IQK_MATRIX_REGS_SETTING{
 	BOOLEAN 	bIQKDone;
-	s4Byte		Value[3][IQK_Matrix_REG_NUM];
+	int32_t		Value[3][IQK_Matrix_REG_NUM];
 	BOOLEAN 	bBWIqkResultSaved[3];
 }IQK_MATRIX_REGS_SETTING,*PIQK_MATRIX_REGS_SETTING;
 
@@ -915,10 +915,10 @@ typedef struct ODM_RF_Calibration_Structure
 	//for tx power tracking
 
 	uint32_t	RegA24; // for TempCCK
-	s4Byte	RegE94;
-	s4Byte 	RegE9C;
-	s4Byte	RegEB4;
-	s4Byte	RegEBC;
+	int32_t	RegE94;
+	int32_t 	RegE9C;
+	int32_t	RegEB4;
+	int32_t	RegEBC;
 
 	u1Byte  	TXPowercount;
 	BOOLEAN bTXPowerTrackingInit;
@@ -1702,7 +1702,7 @@ ODM_TXPowerTrackingCheck(
 BOOLEAN
 ODM_RAStateCheck(
 	IN		PDM_ODM_T		pDM_Odm,
-	IN		s4Byte			RSSI,
+	IN		int32_t			RSSI,
 	IN		BOOLEAN			bForceUpdate,
 	OUT		pu1Byte			pRATRState
 	);

@@ -10321,7 +10321,7 @@ static int rtw_mp_pwrtrk(struct net_device *ndev,
 {
 	uint8_t enable;
 	u32 thermal;
-	s32 ret;
+	int32_t ret;
 	PADAPTER padapter = rtw_netdev_priv(ndev);
 	HAL_DATA_TYPE			*pHalData = GET_HAL_DATA(padapter);
 	uint8_t 		input[wrqu->length];
@@ -10856,7 +10856,7 @@ static int rtw_tdls_enable(struct net_device *ndev,
 	struct tdls_info	*ptdlsinfo = &padapter->tdlsinfo;
 	_irqL	 irqL;
 	_list	*plist, *phead;
-	s32	index;
+	int32_t	index;
 	struct sta_info *psta = NULL;
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	uint8_t tdls_sta[NUM_STA][ETH_ALEN];
@@ -11442,7 +11442,7 @@ static int rtw_tdls_get(struct net_device *ndev,
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
 
 
-static s32 initLoopback(PADAPTER padapter)
+static int32_t initLoopback(PADAPTER padapter)
 {
 	PLOOPBACKDATA ploopback;
 
@@ -11475,10 +11475,10 @@ static void freeLoopback(PADAPTER padapter)
 	}
 }
 
-static s32 initpseudoadhoc(PADAPTER padapter)
+static int32_t initpseudoadhoc(PADAPTER padapter)
 {
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networkType;
-	s32 err;
+	int32_t err;
 
 	networkType = Ndis802_11IBSS;
 	err = rtw_set_802_11_infrastructure_mode(padapter, networkType);
@@ -11490,7 +11490,7 @@ static s32 initpseudoadhoc(PADAPTER padapter)
 	return _SUCCESS;
 }
 
-static s32 createpseudoadhoc(PADAPTER padapter)
+static int32_t createpseudoadhoc(PADAPTER padapter)
 {
 	NDIS_802_11_AUTHENTICATION_MODE authmode;
 	struct mlme_priv *pmlmepriv;
@@ -11498,7 +11498,7 @@ static s32 createpseudoadhoc(PADAPTER padapter)
 	WLAN_BSSID_EX *pdev_network;
 	uint8_t *pibss;
 	uint8_t ssid[] = "pseduo_ad-hoc";
-	s32 err;
+	int32_t err;
 	_irqL irqL;
 
 
@@ -11575,7 +11575,7 @@ static struct xmit_frame* createloopbackpkt(PADAPTER padapter, u32 size)
 	struct tx_desc *desc;
 	uint8_t *pkt_start, *pkt_end, *ptr;
 	struct rtw_ieee80211_hdr *hdr;
-	s32 bmcast;
+	int32_t bmcast;
 	_irqL irqL;
 
 
@@ -11804,7 +11804,7 @@ static uint8_t pktcmp(PADAPTER padapter, uint8_t *txbuf, u32 txsz, uint8_t *rxbu
 
 thread_return lbk_thread(thread_context context)
 {
-	s32 err;
+	int32_t err;
 	PADAPTER padapter;
 	PLOOPBACKDATA ploopback;
 	struct xmit_frame *pxmitframe;
@@ -11888,7 +11888,7 @@ static void loopbackTest(PADAPTER padapter, u32 cnt, u32 size, uint8_t * pmsg)
 {
 	PLOOPBACKDATA ploopback;
 	u32 len;
-	s32 err;
+	int32_t err;
 
 
 	ploopback = padapter->ploopback;
@@ -11992,7 +11992,7 @@ static int rtw_test(
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
 	if (strcmp(pch, "loopback") == 0)
 	{
-		s32 cnt = 0;
+		int32_t cnt = 0;
 		u32 size = 64;
 
 		pch = strsep(&ptmp, delim);
@@ -12444,11 +12444,11 @@ static int rtw_ioctl_wext_private(struct net_device *ndev, union iwreq_data *wrq
 	char *ptr = NULL;
 	uint8_t cmdname[17] = {0}; // IFNAMSIZ+1
 	u32 cmdlen;
-	s32 len;
+	int32_t len;
 	uint8_t *extra = NULL;
 	u32 extra_size = 0;
 
-	s32 k;
+	int32_t k;
 	const iw_handler *priv;		/* Private ioctl */
 	const struct iw_priv_args *priv_args;	/* Private ioctl description */
 	u32 num_priv;				/* Number of ioctl */
@@ -12568,9 +12568,9 @@ static int rtw_ioctl_wext_private(struct net_device *ndev, union iwreq_data *wrq
 					str = strsep(&ptr, delim);
 					if (NULL == str) break;
 					sscanf(str, "%i", &temp);
-					((s32*)buffer)[count++] = (s32)temp;
+					((int32_t*)buffer)[count++] = (int32_t)temp;
 				} while (1);
-				buffer_len = count * sizeof(s32);
+				buffer_len = count * sizeof(int32_t);
 
 				/* Number of args to fetch */
 				wdata.data.length = count;

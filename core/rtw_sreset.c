@@ -94,7 +94,7 @@ void sreset_set_wifi_error_status(_adapter *padapter, uint32_t	 status)
 #endif
 }
 
-void sreset_set_trigger_point(_adapter *padapter, s32 tgp)
+void sreset_set_trigger_point(_adapter *padapter, int32_t tgp)
 {
 #if defined(DBG_CONFIG_ERROR_DETECT)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);

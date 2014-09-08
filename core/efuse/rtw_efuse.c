@@ -748,7 +748,7 @@ uint8_t rtw_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, uin
 	uint8_t	offset, word_en;
 	uint8_t	*map;
 	uint8_t	newdata[PGPKT_DATA_SIZE];
-	s32	i, j, idx;
+	int32_t	i, j, idx;
 	uint8_t	ret = _SUCCESS;
 	uint16_t	mapLen=0;
 
@@ -846,7 +846,7 @@ uint8_t rtw_BT_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, 
 	uint8_t	offset, word_en;
 	uint8_t	*map;
 	uint8_t	newdata[PGPKT_DATA_SIZE];
-	s32	i, j, idx;
+	int32_t	i, j, idx;
 	uint8_t	ret = _SUCCESS;
 	uint16_t	mapLen=0;
 

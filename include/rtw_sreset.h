@@ -35,7 +35,7 @@ struct sreset_priv {
 	unsigned long last_tx_time;
 	unsigned long last_tx_complete_time;
 
-	s32 dbg_trigger_point;
+	int32_t dbg_trigger_point;
 };
 
 
@@ -53,7 +53,7 @@ void sreset_init_value(_adapter *padapter);
 void sreset_reset_value(_adapter *padapter);
 uint8_t sreset_get_wifi_status(_adapter *padapter);
 void sreset_set_wifi_error_status(_adapter *padapter, u32 status);
-void sreset_set_trigger_point(_adapter *padapter, s32 tgp);
+void sreset_set_trigger_point(_adapter *padapter, int32_t tgp);
 bool sreset_inprogress(_adapter *padapter);
 void sreset_reset(_adapter *padapter);
 

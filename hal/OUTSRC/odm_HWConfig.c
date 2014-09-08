@@ -79,34 +79,34 @@ odm_QueryRxPwrPercentage(
 // 2012/01/12 MH MOve some signal strength smooth method to MP HAL layer.
 // IF other SW team do not support the feature, remove this section.??
 //
-s4Byte
+int32_t
 odm_SignalScaleMapping_92CSeries_patch_RT_CID_819x_Lenovo(
 	IN OUT PDM_ODM_T pDM_Odm,
-	s4Byte CurrSig
+	int32_t CurrSig
 )
 {
-	s4Byte RetSig;
+	int32_t RetSig;
 	return RetSig;
 }
 
-s4Byte
+int32_t
 odm_SignalScaleMapping_92CSeries_patch_RT_CID_819x_Netcore(
 	IN OUT PDM_ODM_T pDM_Odm,
-	s4Byte CurrSig
+	int32_t CurrSig
 )
 {
-	s4Byte RetSig;
+	int32_t RetSig;
 	return RetSig;
 }
 
 
-s4Byte
+int32_t
 odm_SignalScaleMapping_92CSeries(
 	IN OUT PDM_ODM_T pDM_Odm,
-	IN s4Byte CurrSig
+	IN int32_t CurrSig
 )
 {
-	s4Byte RetSig;
+	int32_t RetSig;
 
 #if ((DEV_BUS_TYPE == RT_USB_INTERFACE) ||(DEV_BUS_TYPE == RT_SDIO_INTERFACE))
 	if((pDM_Odm->SupportInterface  == ODM_ITRF_USB) || (pDM_Odm->SupportInterface  == ODM_ITRF_SDIO))
@@ -148,10 +148,10 @@ odm_SignalScaleMapping_92CSeries(
 #endif
 	return RetSig;
 }
-s4Byte
+int32_t
 odm_SignalScaleMapping(
 	IN OUT PDM_ODM_T pDM_Odm,
-	IN	s4Byte CurrSig
+	IN	int32_t CurrSig
 )
 {
 		return odm_SignalScaleMapping_92CSeries(pDM_Odm,CurrSig);
@@ -502,7 +502,7 @@ odm_RxPhyStatus92CSeries_Parsing(
 
 		#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 			//Get Rx snr value in DB
-			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = (s4Byte)(pPhyStaRpt->path_rxsnr[i]/2);
+			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = (int32_t)(pPhyStaRpt->path_rxsnr[i]/2);
 		#endif
 
 			/* Record Signal Strength for next packet */
@@ -985,7 +985,7 @@ odm_Process_RSSIForDM(
 	)
 {
 
-	s4Byte			UndecoratedSmoothedPWDB, UndecoratedSmoothedCCK, UndecoratedSmoothedOFDM, RSSI_Ave;
+	int32_t			UndecoratedSmoothedPWDB, UndecoratedSmoothedCCK, UndecoratedSmoothedOFDM, RSSI_Ave;
 	u1Byte			isCCKrate=0;
 	u1Byte			RSSI_max, RSSI_min, i;
 	uint32_t			OFDM_pkt=0;

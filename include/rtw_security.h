@@ -148,10 +148,10 @@ struct security_priv
 
 	//uint8_t	packet_cnt;//unused, removed
 
-	s32	sw_encrypt;//from registry_priv
-	s32	sw_decrypt;//from registry_priv
+	int32_t	sw_encrypt;//from registry_priv
+	int32_t	sw_decrypt;//from registry_priv
 
-	s32 	hw_decrypted;//if the rx packets is hw_decrypted==_FALSE, it means the hw has not been ready.
+	int32_t 	hw_decrypted;//if the rx packets is hw_decrypted==_FALSE, it means the hw has not been ready.
 
 
 	//keeps the auth_type & enc_status from upper layer ioctl(wpa_supplicant or wzc)

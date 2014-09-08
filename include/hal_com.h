@@ -153,7 +153,7 @@ Hal_MappingOutPipe(
 void hal_init_macaddr(_adapter *adapter);
 
 void c2h_evt_clear(_adapter *adapter);
-s32 c2h_evt_read(_adapter *adapter, uint8_t *buf);
+int32_t c2h_evt_read(_adapter *adapter, uint8_t *buf);
 
 uint8_t rtw_hal_networktype_to_raid(_adapter *adapter,unsigned char network_type);
 uint8_t rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type);

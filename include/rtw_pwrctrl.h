@@ -195,7 +195,7 @@ struct pwrctrl_priv
 	uint8_t	bFwCurrentInPSMode;
 	u32	DelayLPSLastTimeStamp;
 	uint8_t 	btcoex_rfon;
-	s32		pnp_current_pwr_state;
+	int32_t		pnp_current_pwr_state;
 	uint8_t		pnp_bstop_trx;
 
 
@@ -269,13 +269,13 @@ extern void rtw_init_pwrctrl_priv(_adapter *adapter);
 extern void rtw_free_pwrctrl_priv(_adapter * adapter);
 
 #ifdef CONFIG_LPS_LCLK
-extern s32 rtw_register_tx_alive(PADAPTER padapter);
+extern int32_t rtw_register_tx_alive(PADAPTER padapter);
 extern void rtw_unregister_tx_alive(PADAPTER padapter);
-extern s32 rtw_register_rx_alive(PADAPTER padapter);
+extern int32_t rtw_register_rx_alive(PADAPTER padapter);
 extern void rtw_unregister_rx_alive(PADAPTER padapter);
-extern s32 rtw_register_cmd_alive(PADAPTER padapter);
+extern int32_t rtw_register_cmd_alive(PADAPTER padapter);
 extern void rtw_unregister_cmd_alive(PADAPTER padapter);
-extern s32 rtw_register_evt_alive(PADAPTER padapter);
+extern int32_t rtw_register_evt_alive(PADAPTER padapter);
 extern void rtw_unregister_evt_alive(PADAPTER padapter);
 extern void cpwm_int_hdl(PADAPTER padapter, struct reportpwrstate_parm *preportpwrstate);
 extern void LPS_Leave_check(PADAPTER padapter);
@@ -300,7 +300,7 @@ rt_rf_power_state RfOnOffDetect(IN	PADAPTER pAdapter );
 
 
 #ifdef CONFIG_LPS
-s32 LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms);
+int32_t LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms);
 void LPS_Enter(PADAPTER padapter);
 void LPS_Leave(PADAPTER padapter);
 #endif

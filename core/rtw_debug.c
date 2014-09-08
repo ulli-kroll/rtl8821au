@@ -1122,7 +1122,7 @@ int proc_set_sreset(struct file *file, const char *buffer, unsigned long count, 
 	struct net_device *ndev = (struct net_device *)data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	char tmp[32];
-	s32 trigger_point;
+	int32_t trigger_point;
 
 	if (count < 1)
 		return -EFAULT;

@@ -243,7 +243,7 @@ ODM_MoveMemory(
 	IN  uint32_t		Length
 	);
 
-s4Byte ODM_CompareMemory(
+int32_t ODM_CompareMemory(
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	PVOID           pBuf1,
       IN	PVOID           pBuf2,

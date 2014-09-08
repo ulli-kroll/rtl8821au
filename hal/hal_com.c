@@ -406,9 +406,9 @@ void c2h_evt_clear(_adapter *adapter)
 	rtw_write8(adapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
 
-s32 c2h_evt_read(_adapter *adapter, uint8_t *buf)
+int32_t c2h_evt_read(_adapter *adapter, uint8_t *buf)
 {
-	s32 ret = _FAIL;
+	int32_t ret = _FAIL;
 	struct c2h_evt_hdr *c2h_evt;
 	int i;
 	uint8_t trigger;

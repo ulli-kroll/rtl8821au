@@ -23,7 +23,7 @@
 #include <rtl8812a_hal.h>
 
 
-s32	rtl8812au_init_xmit_priv(_adapter *padapter)
+int32_t	rtl8812au_init_xmit_priv(_adapter *padapter)
 {
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
@@ -44,7 +44,7 @@ void	rtl8812au_free_xmit_priv(_adapter *padapter)
 {
 }
 
-static s32 update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, s32 sz ,uint8_t bagg_pkt)
+static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32_t sz ,uint8_t bagg_pkt)
 {
       int	pull=0;
 	uint	qsel;
@@ -268,12 +268,12 @@ static s32 update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, s32 sz ,u
  *	_SUCCESS	ok
  *	_FAIL		something error
  */
-s32 rtl8812au_xmit_buf_handler(PADAPTER padapter)
+int32_t rtl8812au_xmit_buf_handler(PADAPTER padapter)
 {
 	PHAL_DATA_TYPE phal;
 	struct xmit_priv *pxmitpriv;
 	struct xmit_buf *pxmitbuf;
-	s32 ret;
+	int32_t ret;
 
 
 	phal = GET_HAL_DATA(padapter);
@@ -324,10 +324,10 @@ s32 rtl8812au_xmit_buf_handler(PADAPTER padapter)
 
 
 //for non-agg data frame or  management frame
-static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
+static int32_t rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
-	s32 ret = _SUCCESS;
-	s32 inner_ret = _SUCCESS;
+	int32_t ret = _SUCCESS;
+	int32_t inner_ret = _SUCCESS;
 	int t, sz, w_sz, pull=0;
 	uint8_t *mem_addr;
 	uint32_t ff_hwaddr;
@@ -430,7 +430,7 @@ static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 }
 
 #define IDEA_CONDITION 1	// check all packets before enqueue
-s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
+int32_t rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct xmit_frame *pxmitframe = NULL;
@@ -725,7 +725,7 @@ s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 
 #else
 
-s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
+int32_t rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
 
 	struct hw_xmit *phwxmits;
@@ -804,9 +804,9 @@ s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 
 
 
-static s32 xmitframe_direct(_adapter *padapter, struct xmit_frame *pxmitframe)
+static int32_t xmitframe_direct(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
-	s32 res = _SUCCESS;
+	int32_t res = _SUCCESS;
 //DBG_8192C("==> %s \n",__FUNCTION__);
 
 	res = rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe);
@@ -825,10 +825,10 @@ static s32 xmitframe_direct(_adapter *padapter, struct xmit_frame *pxmitframe)
  *	_TRUE	dump packet directly
  *	_FALSE	enqueue packet
  */
-static s32 pre_xmitframe(_adapter *padapter, struct xmit_frame *pxmitframe)
+static int32_t pre_xmitframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
         _irqL irqL;
-	s32 res;
+	int32_t res;
 	struct xmit_buf *pxmitbuf = NULL;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
@@ -887,7 +887,7 @@ enqueue:
 	return _FALSE;
 }
 
-s32 rtl8812au_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
+int32_t rtl8812au_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
 {
 	return rtw_dump_xframe(padapter, pmgntframe);
 }
@@ -897,15 +897,15 @@ s32 rtl8812au_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
  *	_TRUE	dump packet directly ok
  *	_FALSE	temporary can't transmit packets to hardware
  */
-s32 rtl8812au_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe)
+int32_t rtl8812au_hal_xmit(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
 	return pre_xmitframe(padapter, pxmitframe);
 }
 
-s32	 rtl8812au_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe)
+int32_t	 rtl8812au_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
 	struct xmit_priv 	*pxmitpriv = &padapter->xmitpriv;
-	s32 err;
+	int32_t err;
 
 	if ((err=rtw_xmitframe_enqueue(padapter, pxmitframe)) != _SUCCESS)
 	{
@@ -940,7 +940,7 @@ static void rtl8812au_hostap_mgnt_xmit_cb(struct urb *urb)
 #endif
 }
 
-s32 rtl8812au_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
+int32_t rtl8812au_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 {
 #ifdef PLATFORM_LINUX
 	uint16_t fc;

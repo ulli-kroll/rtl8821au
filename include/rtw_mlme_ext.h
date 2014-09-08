@@ -449,7 +449,7 @@ typedef struct _RT_CHANNEL_INFO
 	uint8_t				ChannelNum;		// The channel number.
 	RT_SCAN_TYPE	ScanType;		// Scan type such as passive or active scan.
 	//u16				ScanPeriod;		// Listen time in millisecond in this channel.
-	//s32				MaxTxPwrDbm;	// Max allowed tx power.
+	//int32_t				MaxTxPwrDbm;	// Max allowed tx power.
 	//u32				ExInfo;			// Extended Information for this channel.
 #ifdef CONFIG_FIND_BEST_CHANNEL
 	u32				rx_count;
@@ -671,8 +671,8 @@ void update_mgnt_tx_rate(_adapter *padapter, uint8_t rate);
 void update_mgntframe_attrib(_adapter *padapter, struct pkt_attrib *pattrib);
 void update_mgntframe_attrib_addr(_adapter *padapter, struct xmit_frame *pmgntframe);
 void dump_mgntframe(_adapter *padapter, struct xmit_frame *pmgntframe);
-s32 dump_mgntframe_and_wait(_adapter *padapter, struct xmit_frame *pmgntframe, int timeout_ms);
-s32 dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntframe);
+int32_t dump_mgntframe_and_wait(_adapter *padapter, struct xmit_frame *pmgntframe, int timeout_ms);
+int32_t dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntframe);
 
 #ifdef CONFIG_P2P
 void issue_probersp_p2p(_adapter *padapter, unsigned char *da);
@@ -689,7 +689,7 @@ void issue_assocreq(_adapter *padapter);
 void issue_asocrsp(_adapter *padapter, unsigned short status, struct sta_info *pstat, int pkt_type);
 void issue_auth(_adapter *padapter, struct sta_info *psta, unsigned short status);
 void issue_probereq(_adapter *padapter, NDIS_802_11_SSID *pssid, uint8_t *da);
-s32 issue_probereq_ex(_adapter *padapter, NDIS_802_11_SSID *pssid, u8* da, int try_cnt, int wait_ms);
+int32_t issue_probereq_ex(_adapter *padapter, NDIS_802_11_SSID *pssid, u8* da, int try_cnt, int wait_ms);
 int issue_nulldata(_adapter *padapter, unsigned char *da, unsigned int power_mode, int try_cnt, int wait_ms);
 int issue_qos_nulldata(_adapter *padapter, unsigned char *da, u16 tid, int try_cnt, int wait_ms);
 int issue_deauth(_adapter *padapter, unsigned char *da, unsigned short reason);

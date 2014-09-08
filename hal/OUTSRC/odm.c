@@ -1701,8 +1701,8 @@ odm_Adaptivity(
 	IN		u1Byte			IGI
 )
 {
-	s4Byte TH_H_dmc, TH_L_dmc;
-	s4Byte TH_H, TH_L, Diff, IGI_target;
+	int32_t TH_H_dmc, TH_L_dmc;
+	int32_t TH_H, TH_L, Diff, IGI_target;
 	uint32_t value32;
 	BOOLEAN EDCCA_State;
 
@@ -1790,7 +1790,7 @@ odm_Adaptivity(
 	{
 		if(IGI < IGI_target)
 		{
-			Diff = IGI_target -(s4Byte)IGI;
+			Diff = IGI_target -(int32_t)IGI;
 			TH_H_dmc = TH_H + Diff;
 			if(TH_H_dmc > 10)
 				TH_H_dmc = 10;
@@ -1800,7 +1800,7 @@ odm_Adaptivity(
 		}
 		else
 		{
-			Diff = (s4Byte)IGI - IGI_target;
+			Diff = (int32_t)IGI - IGI_target;
 			TH_H_dmc = TH_H - Diff;
 			TH_L_dmc = TH_L - Diff;
 		}
@@ -2967,7 +2967,7 @@ odm_RefreshRateAdaptiveMaskAPADSL(
 BOOLEAN
 ODM_RAStateCheck(
 	IN		PDM_ODM_T		pDM_Odm,
-	IN		s4Byte			RSSI,
+	IN		int32_t			RSSI,
 	IN		BOOLEAN			bForceUpdate,
 	OUT		pu1Byte			pRATRState
 	)
@@ -3259,7 +3259,7 @@ FindMinimumRSSI_Dmsp(
 #if 0
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	s32	Rssi_val_min_back_for_mac0;
+	int32_t	Rssi_val_min_back_for_mac0;
 	BOOLEAN		bGetValueFromBuddyAdapter = dm_DualMacGetParameterFromBuddyAdapter(pAdapter);
 	BOOLEAN		bRestoreRssi = _FALSE;
 	PADAPTER	BuddyAdapter = pAdapter->BuddyAdapter;

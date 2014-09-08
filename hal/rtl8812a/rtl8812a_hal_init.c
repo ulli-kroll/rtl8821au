@@ -46,9 +46,9 @@ void iol_mode_enable(PADAPTER padapter, uint8_t enable)
 	}
 }
 
-s32 iol_execute(PADAPTER padapter, uint8_t control)
+int32_t iol_execute(PADAPTER padapter, uint8_t control)
 {
-	s32 status = _FAIL;
+	int32_t status = _FAIL;
 	uint8_t reg_0x88 = 0;
 	uint32_t start = 0, passing_time = 0;
 	control = control&0x0f;
@@ -75,7 +75,7 @@ s32 iol_execute(PADAPTER padapter, uint8_t control)
 	return status;
 }
 
-s32 iol_InitLLTTable(
+int32_t iol_InitLLTTable(
 	PADAPTER padapter,
 	uint8_t txpktbuf_bndy
 	)
@@ -422,7 +422,7 @@ static bool efuse_read_phymap(
 
 }
 
-s32 iol_read_efuse(
+int32_t iol_read_efuse(
 	PADAPTER padapter,
 	uint8_t txpktbuf_bndy,
 	uint16_t offset,
@@ -430,7 +430,7 @@ s32 iol_read_efuse(
 	uint8_t *logical_map
 	)
 {
-	s32 status = _FAIL;
+	int32_t status = _FAIL;
 	uint8_t reg_0x106 = 0;
 	uint8_t physical_map[512];
 	uint16_t size = 512;
@@ -472,10 +472,10 @@ s32 iol_read_efuse(
 // LLT R/W/Init function
 //
 //-------------------------------------------------------------------------
-static s32 _LLTWrite(PADAPTER padapter, uint32_t address, uint32_t data)
+static int32_t _LLTWrite(PADAPTER padapter, uint32_t address, uint32_t data)
 {
-	s32	status = _SUCCESS;
-	s32	count = 0;
+	int32_t	status = _SUCCESS;
+	int32_t	count = 0;
 	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | _LLT_OP(_LLT_WRITE_ACCESS);
 	uint16_t	LLTReg = REG_LLT_INIT;
 
@@ -501,7 +501,7 @@ static s32 _LLTWrite(PADAPTER padapter, uint32_t address, uint32_t data)
 
 uint8_t _LLTRead(PADAPTER padapter, uint32_t address)
 {
-	s32	count = 0;
+	int32_t	count = 0;
 	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_OP(_LLT_READ_ACCESS);
 	uint16_t	LLTReg = REG_LLT_INIT;
 
@@ -524,9 +524,9 @@ uint8_t _LLTRead(PADAPTER padapter, uint32_t address)
 	return 0xFF;
 }
 
-s32 InitLLTTable8812(PADAPTER padapter, uint8_t txpktbuf_bndy)
+int32_t InitLLTTable8812(PADAPTER padapter, uint8_t txpktbuf_bndy)
 {
-	s32	status = _FAIL;
+	int32_t	status = _FAIL;
 	uint32_t	i;
 	uint32_t	Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
 	HAL_DATA_TYPE *pHalData	= GET_HAL_DATA(padapter);
@@ -863,7 +863,7 @@ void _8051Reset8812(PADAPTER padapter)
 	DBG_871X("=====> _8051Reset8812(): 8051 reset success .\n");
 }
 
-static s32 _FWFreeToGo8812(PADAPTER padapter)
+static int32_t _FWFreeToGo8812(PADAPTER padapter)
 {
 	uint32_t	counter = 0;
 	uint32_t	value32;
@@ -908,13 +908,13 @@ extern char *rtw_fw_file_path;
 uint8_t	FwBuffer8812[FW_SIZE_8812];
 #endif //CONFIG_FILE_FWIMG
 
-s32
+int32_t
 FirmwareDownload8812(
 	IN	PADAPTER			Adapter,
 	IN	BOOLEAN			bUsedWoWLANFw
 )
 {
-	s32	rtStatus = _SUCCESS;
+	int32_t	rtStatus = _SUCCESS;
 	uint8_t	writeFW_retry = 0;
 	uint32_t fwdl_start_time;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
@@ -3348,7 +3348,7 @@ rtl8812_Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 }
 
 #ifdef CONFIG_EFUSE_CONFIG_FILE
-static s32 _halReadPGDataFromFile(PADAPTER padapter, uint8_t *pbuf)
+static int32_t _halReadPGDataFromFile(PADAPTER padapter, uint8_t *pbuf)
 {
 	uint32_t i;
 	struct file *fp;
@@ -3395,7 +3395,7 @@ static s32 _halReadPGDataFromFile(PADAPTER padapter, uint8_t *pbuf)
 	return _SUCCESS;
 }
 
-static s32 _halReadMACAddrFromFile(PADAPTER padapter, uint8_t *pbuf)
+static int32_t _halReadMACAddrFromFile(PADAPTER padapter, uint8_t *pbuf)
 {
 	struct file *fp;
 	mm_segment_t fs;
@@ -3404,7 +3404,7 @@ static s32 _halReadMACAddrFromFile(PADAPTER padapter, uint8_t *pbuf)
 	uint8_t *head, *end;
 	uint32_t	curtime;
 	uint32_t i;
-	s32 ret = _SUCCESS;
+	int32_t ret = _SUCCESS;
 
 	uint8_t null_mac_addr[ETH_ALEN] = {0, 0, 0, 0, 0, 0};
 	uint8_t multi_mac_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
@@ -3632,7 +3632,7 @@ void InitPGData8812A(PADAPTER padapter)
 
 #ifdef CONFIG_EFUSE_CONFIG_FILE
 	{
-		s32 tmp;
+		int32_t tmp;
 		uint32_t addr;
 
 		tmp = _halReadPGDataFromFile(padapter, pEEPROM->efuse_eeprom_data);

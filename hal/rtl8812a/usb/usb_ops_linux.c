@@ -416,9 +416,9 @@ _func_exit_;
 }
 #endif
 
-static s32 pre_recv_entry(union recv_frame *precvframe, uint8_t *pphy_status)
+static int32_t pre_recv_entry(union recv_frame *precvframe, uint8_t *pphy_status)
 {
-	s32 ret=_SUCCESS;
+	int32_t ret=_SUCCESS;
 #ifdef CONFIG_CONCURRENT_MODE
 	uint8_t *primary_myid, *secondary_myid, *paddr1;
 	union recv_frame	*precvframe_if2 = NULL;
@@ -586,7 +586,7 @@ _pkt *pskb
 	uint8_t	*pbuf;
 	uint8_t	pkt_cnt = 0;
 	uint32_t	pkt_offset;
-	s32	transfer_len;
+	int32_t	transfer_len;
 	uint8_t				*pphy_status = NULL;
 	union recv_frame	*precvframe = NULL;
 	struct rx_pkt_attrib	*pattrib = NULL;
@@ -595,10 +595,10 @@ _pkt *pskb
 	_queue			*pfree_recv_queue = &precvpriv->free_recv_queue;
 
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
-	transfer_len = (s32)precvbuf->transfer_len;
+	transfer_len = (int32_t)precvbuf->transfer_len;
 	pbuf = precvbuf->pbuf;
 #else
-	transfer_len = (s32)pskb->len;
+	transfer_len = (int32_t)pskb->len;
 	pbuf = pskb->data;
 #endif//CONFIG_USE_USB_BUFFER_ALLOC_RX
 

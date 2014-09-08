@@ -2552,9 +2552,9 @@ exit:
 	return res;
 }
 
-s32 c2h_evt_hdl(_adapter *adapter, struct c2h_evt_hdr *c2h_evt, c2h_id_filter filter)
+int32_t c2h_evt_hdl(_adapter *adapter, struct c2h_evt_hdr *c2h_evt, c2h_id_filter filter)
 {
-	s32 ret = _FAIL;
+	int32_t ret = _FAIL;
 	uint8_t buf[16];
 
 	if (!c2h_evt) {

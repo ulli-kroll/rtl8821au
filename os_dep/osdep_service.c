@@ -399,14 +399,14 @@ inline u32 rtw_ms_to_systime(u32 ms)
 }
 
 // the input parameter start use the same unit as returned by rtw_get_current_time
-inline s32 rtw_get_passing_time_ms(u32 start)
+inline int32_t rtw_get_passing_time_ms(u32 start)
 {
 #ifdef PLATFORM_LINUX
 	return rtw_systime_to_ms(jiffies-start);
 #endif
 }
 
-inline s32 rtw_get_time_interval_ms(u32 start, u32 end)
+inline int32_t rtw_get_time_interval_ms(u32 start, u32 end)
 {
 #ifdef PLATFORM_LINUX
 	return rtw_systime_to_ms(end-start);

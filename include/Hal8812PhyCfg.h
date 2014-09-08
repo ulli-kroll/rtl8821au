@@ -115,7 +115,7 @@ PHY_GetPowerLimitValue(
 
 /* RF config */
 
-s32
+int32_t
 PHY_SwitchWirelessBand8812(
 	IN PADAPTER		Adapter,
 	IN uint8_t			Band

@@ -293,7 +293,7 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 	uint8_t null_addr[6]={0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 	int i;
-	s32	res;
+	int32_t	res;
 
 	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
 	phead = &pstapriv->asoc_list;
@@ -357,7 +357,7 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev)
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	extern int rtw_mc2u_disable;
 #endif	// CONFIG_TX_MCAST2UNI
-	s32 res = 0;
+	int32_t res = 0;
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	uint16_t queue;
 #endif

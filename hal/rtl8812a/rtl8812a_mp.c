@@ -24,7 +24,7 @@
 #include <rtl8812a_hal.h>
 
 
-s32 Hal_SetPowerTracking(PADAPTER padapter, uint8_t enable)
+int32_t Hal_SetPowerTracking(PADAPTER padapter, uint8_t enable)
 {
 	BOOLEAN 				bResult = TRUE;
 	PMPT_CONTEXT			pMptCtx = &(padapter->mppriv.MptCtx);
@@ -195,11 +195,11 @@ void Hal_MPT_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 
 void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
 {
-	s32		TempCCk;
+	int32_t		TempCCk;
 	uint8_t		CCK_index, CCK_index_old;
 	uint8_t		Action = 0;	//0: no action, 1: even->odd, 2:odd->even
 	uint8_t		TimeOut = 100;
-	s32		i = 0;
+	int32_t		i = 0;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	PMPT_CONTEXT	pMptCtx = &pAdapter->mppriv.MptCtx;
 
@@ -676,7 +676,7 @@ void Hal_SetAntenna(PADAPTER pAdapter)
 	RT_TRACE(_module_mp_, _drv_notice_, ("-SwitchAntenna: finished\n"));
 }
 
-s32 Hal_SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther)
+int32_t Hal_SetThermalMeter(PADAPTER pAdapter, uint8_t target_ther)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 

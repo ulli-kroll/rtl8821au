@@ -39,13 +39,13 @@ GetDeltaSwingTable_8812A(
 	OUT pu1Byte 			*TemperatureUP_A,
 	OUT pu1Byte 			*TemperatureDOWN_A,
 	OUT pu1Byte 			*TemperatureUP_B,
-	OUT pu1Byte 			*TemperatureDOWN_B	
+	OUT pu1Byte 			*TemperatureDOWN_B
 	);
 
 void DoIQK_8812A(
 	PDM_ODM_T	pDM_Odm,
 	u1Byte 		DeltaThermalIndex,
-	u1Byte		ThermalValue,	
+	u1Byte		ThermalValue,
 	u1Byte 		Threshold
 	);
 
@@ -59,9 +59,9 @@ ODM_TxPwrTrackSetPwr8812A(
 
 //1 7.	IQK
 
-void	
-PHY_IQCalibrate_8812A(	
-	IN	PADAPTER	pAdapter,	
+void
+PHY_IQCalibrate_8812A(
+	IN	PADAPTER	pAdapter,
 	IN	BOOLEAN 	bReCovery
 );
 
@@ -69,7 +69,7 @@ PHY_IQCalibrate_8812A(
 //
 // LC calibrate
 //
-void	
+void
 PHY_LCCalibrate_8812A(
 	IN PDM_ODM_T		pDM_Odm
 );
@@ -77,30 +77,22 @@ PHY_LCCalibrate_8812A(
 //
 // AP calibrate
 //
-void	
-PHY_APCalibrate_8812A(		
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN PDM_ODM_T		pDM_Odm,
-#else
+void
+PHY_APCalibrate_8812A(
 	IN	PADAPTER	pAdapter,
-#endif
 							IN 	s1Byte		delta);
-void	
+void
 PHY_DigitalPredistortion_8812A(		IN	PADAPTER	pAdapter);
 
-VOID	                                                 
-PHY_DPCalibrate_8812A(                                   
-	IN 	PDM_ODM_T	pDM_Odm                          
-);           
+VOID
+PHY_DPCalibrate_8812A(
+	IN 	PDM_ODM_T	pDM_Odm
+);
 VOID PHY_SetRFPathSwitch_8812A(
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-	IN PDM_ODM_T		pDM_Odm,
-#else
 	IN	PADAPTER	pAdapter,
-#endif
 	IN	BOOLEAN		bMain
 	);
 
-								
-#endif	// #ifndef __HAL_PHY_RF_8812A_H__								
+
+#endif	// #ifndef __HAL_PHY_RF_8812A_H__
 

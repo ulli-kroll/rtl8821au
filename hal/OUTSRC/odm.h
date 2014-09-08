@@ -143,25 +143,6 @@ typedef		struct rtl8192cd_priv {
 }rtl8192cd_priv, *prtl8192cd_priv;
 #endif
 
-
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
-typedef		struct _ADAPTER{
-	u1Byte		temp;
-	#ifdef AP_BUILD_WORKAROUND
-	HAL_DATA_TYPE*		temp2;
-	prtl8192cd_priv		priv;
-	#endif
-}ADAPTER, *PADAPTER;
-#endif
-
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-
-typedef		struct _WLAN_STA{
-	u1Byte		temp;
-} WLAN_STA, *PRT_WLAN_STA;
-
-#endif
-
 typedef struct _Dynamic_Initial_Gain_Threshold_
 {
 	u1Byte		Dig_Enable_Flag;
@@ -268,10 +249,6 @@ typedef struct _RX_High_Power_
 #if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
 #define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
 #define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
-
-#elif(DM_ODM_SUPPORT_TYPE & (ODM_AP))
-#define ASSOCIATE_ENTRY_NUM					NUM_STAT
-#define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM+1
 
 #else
 //
@@ -383,38 +360,6 @@ typedef struct _ODM_RATE_ADAPTIVE
 } ODM_RATE_ADAPTIVE, *PODM_RATE_ADAPTIVE;
 
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
-
-
-#ifdef ADSL_AP_BUILD_WORKAROUND
-#define MAX_TOLERANCE			5
-#define IQK_DELAY_TIME			1		//ms
-#endif
-
-//
-// Indicate different AP vendor for IOT issue.
-//
-typedef enum _HT_IOT_PEER
-{
-	HT_IOT_PEER_UNKNOWN 			= 0,
-	HT_IOT_PEER_REALTEK 			= 1,
-	HT_IOT_PEER_REALTEK_92SE 		= 2,
-	HT_IOT_PEER_BROADCOM 		= 3,
-	HT_IOT_PEER_RALINK 			= 4,
-	HT_IOT_PEER_ATHEROS 			= 5,
-	HT_IOT_PEER_CISCO 				= 6,
-	HT_IOT_PEER_MERU 				= 7,
-	HT_IOT_PEER_MARVELL 			= 8,
-	HT_IOT_PEER_REALTEK_SOFTAP 	= 9,// peer is RealTek SOFT_AP, by Bohn, 2009.12.17
-	HT_IOT_PEER_SELF_SOFTAP 		= 10, // Self is SoftAP
-	HT_IOT_PEER_AIRGO 				= 11,
-	HT_IOT_PEER_INTEL 				= 12,
-	HT_IOT_PEER_RTK_APCLIENT 		= 13,
-	HT_IOT_PEER_REALTEK_81XX 		= 14,
-	HT_IOT_PEER_REALTEK_WOW 		= 15,
-	HT_IOT_PEER_MAX 				= 16
-}HT_IOT_PEER_E, *PHTIOT_PEER_E;
-#endif//#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
 
 
 
@@ -837,7 +782,6 @@ typedef enum tag_Operation_Mode_Definition
 	ODM_LINK 			= BIT1,
 	ODM_SCAN 			= BIT2,
 	ODM_POWERSAVE 	= BIT3,
-	ODM_AP_MODE 		= BIT4,
 	ODM_CLIENT_MODE	= BIT5,
 	ODM_AD_HOC 		= BIT6,
 	ODM_WIFI_DIRECT	= BIT7,
@@ -1152,10 +1096,6 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 
 #if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	rtl8192cd_priv		fake_priv;
-#endif
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
-	// ADSL_AP_BUILD_WORKAROUND
-	ADAPTER			fake_adapter;
 #endif
 
 	PHY_REG_PG_TYPE		PhyRegPgValueType;
@@ -1728,11 +1668,7 @@ static u1Byte DeltaSwingTableIdx_2GA_N_8188E[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 
 //
 // check Sta pointer valid or not
 //
-#if (DM_ODM_SUPPORT_TYPE & (ODM_AP))
-#define IS_STA_VALID(pSta)		(pSta && pSta->expire_to)
-#else
 #define IS_STA_VALID(pSta)		(pSta)
-#endif
 // 20100514 Joseph: Add definition for antenna switching test after link.
 // This indicates two different the steps.
 // In SWAW_STEP_PEAK, driver needs to switch antenna and listen to the signal on the air.
@@ -1771,73 +1707,6 @@ ODM_RAStateCheck(
 	OUT		pu1Byte			pRATRState
 	);
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
-//============================================================
-// function prototype
-//============================================================
-//#define DM_ChangeDynamicInitGainThresh		ODM_ChangeDynamicInitGainThresh
-//void	ODM_ChangeDynamicInitGainThresh(IN	PADAPTER	pAdapter,
-//											IN	INT32		DM_Type,
-//											IN	INT32		DM_Value);
-VOID
-ODM_ChangeDynamicInitGainThresh(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	uint32_t  DM_Type,
-	IN	uint32_t DM_Value
-	);
-
-BOOLEAN
-ODM_CheckPowerStatus(
-	IN	PADAPTER		Adapter
-	);
-
-
-VOID
-ODM_RateAdaptiveStateApInit(
-	IN	PADAPTER	Adapter	,
-	IN	PRT_WLAN_STA  pEntry
-	);
-#define AP_InitRateAdaptiveState	ODM_RateAdaptiveStateApInit
-
-
-#if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
-#ifdef WIFI_WMM
-VOID
-ODM_IotEdcaSwitch(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	unsigned char		enable
-	);
-#endif
-
-BOOLEAN
-ODM_ChooseIotMainSTA(
-	IN	PDM_ODM_T		pDM_Odm,
-	IN	PSTA_INFO_T		pstat
-	);
-#endif
-
-#if(DM_ODM_SUPPORT_TYPE==ODM_AP)
-#ifdef HW_ANT_SWITCH
-u1Byte
-ODM_Diversity_AntennaSelect(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u1Byte	*data
-);
-#endif
-#endif
-
-#define SwAntDivResetBeforeLink		ODM_SwAntDivResetBeforeLink
-VOID ODM_SwAntDivResetBeforeLink(IN	PDM_ODM_T	pDM_Odm);
-
-//#define SwAntDivCheckBeforeLink8192C	ODM_SwAntDivCheckBeforeLink8192C
-#define SwAntDivCheckBeforeLink	ODM_SwAntDivCheckBeforeLink8192C
-BOOLEAN
-ODM_SwAntDivCheckBeforeLink8192C(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-
-#endif
 
 #define dm_SWAW_RSSI_Check	ODM_SwAntDivChkPerPktRssi
 VOID ODM_SwAntDivChkPerPktRssi(

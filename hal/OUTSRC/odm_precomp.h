@@ -29,24 +29,7 @@
 
 //2 Config Flags and Structs - defined by each ODM Type
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-	#include "../8192cd_cfg.h"
-	#include "../odm_inc.h"
-
-	#include "../8192cd.h"
-	#include "../8192cd_util.h"
-	#ifdef _BIG_ENDIAN_
-	#define	ODM_ENDIAN_TYPE				ODM_ENDIAN_BIG
-	#else
-	#define	ODM_ENDIAN_TYPE				ODM_ENDIAN_LITTLE
-	#endif
-
-	#ifdef AP_BUILD_WORKAROUND
-	#include "../8192cd_headers.h"
-	#include "../8192cd_debug.h"
-	#endif
-
-#elif (DM_ODM_SUPPORT_TYPE ==ODM_CE)
+#if (DM_ODM_SUPPORT_TYPE ==ODM_CE)
 	//#include <drv_conf.h>
 	//#include <basic_types.h>
 	//#include <osdep_service.h>
@@ -60,13 +43,7 @@
 //2 Hardware Parameter Files
 
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-#if (RTL8192C_SUPPORT==1)
-	#include "rtl8192c/Hal8192CEFWImg_AP.h"
-	#include "rtl8192c/Hal8192CEPHYImg_AP.h"
-	#include "rtl8192c/Hal8192CEMACImg_AP.h"
-#endif
-#elif (DM_ODM_SUPPORT_TYPE == ODM_CE)
+#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	#if(RTL8192CE_SUPPORT ==1)
 	#include "rtl8192c/Hal8192CEFWImg_CE.h"
 	#include "rtl8192c/Hal8192CEPHYImg_CE.h"
@@ -102,12 +79,8 @@
 #include "odm_RegDefine11AC.h"
 #include "odm_RegDefine11N.h"
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-#if (RTL8192C_SUPPORT==1)
-	#include "rtl8192c/HalDMOutSrc8192C_AP.h"
-#endif
 
-#elif (DM_ODM_SUPPORT_TYPE == ODM_CE)
+#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	//#include "hal_com.h"
 	#include "HalPhyRf.h"
 	#if (RTL8192C_SUPPORT==1)
@@ -140,12 +113,6 @@
 #include "odm_reg.h"
 
 #if (RTL8192C_SUPPORT==1)
-#if (DM_ODM_SUPPORT_TYPE == ODM_AP)
-#include "rtl8192c/Hal8192CHWImg_MAC.h"
-#include "rtl8192c/Hal8192CHWImg_RF.h"
-#include "rtl8192c/Hal8192CHWImg_BB.h"
-#include "rtl8192c/Hal8192CHWImg_FW.h"
-#endif
 #include "rtl8192c/odm_RTL8192C.h"
 #endif
 #if (RTL8192D_SUPPORT==1)
@@ -153,9 +120,6 @@
 #endif
 
 
-#if (DM_ODM_SUPPORT_TYPE & ODM_AP)
-#include "rtl8188e/HalPhyRf_8188e.h"
-#endif
 
 
 #if (RTL8812A_SUPPORT==1)

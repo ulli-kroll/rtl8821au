@@ -866,13 +866,6 @@ void Hal_SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart)
 
 	 	{   // <20120326, Kordan> To amplify the power of tone for Xtal calibration. (asked by Edlu)
             // <20120326, Kordan> Only in single tone mode. (asked by Edlu)
-            if (IS_HARDWARE_TYPE_8188E(pAdapter))
-            {
-                reg58 = PHY_QueryRFReg(pAdapter, RF_PATH_A, LNA_Low_Gain_3, bRFRegOffsetMask);
-                reg58 &= 0xFFFFFFF0;
-                PHY_SetRFReg(pAdapter, RF_PATH_A, LNA_Low_Gain_3, bRFRegOffsetMask, reg58);
-            }
-
 		write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, 0x1);
 		write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, 0x1);
 		}

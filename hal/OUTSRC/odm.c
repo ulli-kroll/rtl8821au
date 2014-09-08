@@ -1665,12 +1665,6 @@ odm_Write_CrystalCap(
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
-	if(IS_HARDWARE_TYPE_8188E(Adapter))
-	{
-		// write 0x24[16:11] = 0x24[22:17] = CrystalCap
-		PHY_SetBBReg(Adapter, REG_AFE_XTAL_CTRL, 0x7ff800, (CrystalCap | (CrystalCap << 6)));
-	}
-
 	if(IS_HARDWARE_TYPE_8812(Adapter))
 	{
 		// write 0x2C[30:25] = 0x2C[24:19] = CrystalCap
@@ -3666,7 +3660,7 @@ odm_TXPowerTrackingCheckCE(
 	if(!pDM_Odm->RFCalibrateInfo.TM_Trigger)		//at least delay 1 sec
 	{
 		//pHalData->TxPowerCheckCnt++;	//cosa add for debug
-		if(IS_HARDWARE_TYPE_8188E(Adapter) || IS_HARDWARE_TYPE_JAGUAR(Adapter) || IS_HARDWARE_TYPE_8192E(Adapter) )//||IS_HARDWARE_TYPE_8723B(Adapter))
+		if(IS_HARDWARE_TYPE_JAGUAR(Adapter) || IS_HARDWARE_TYPE_8192E(Adapter) )//||IS_HARDWARE_TYPE_8723B(Adapter))
 			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 		else
 			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);

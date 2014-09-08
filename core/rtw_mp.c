@@ -1748,7 +1748,7 @@ ULONG mpt_ProQueryCalTxPower(
 	u1Byte			limit = 0, rate = 0;
 	rate=pMptCtx->MptRateIndex;
 
-	 if ( IS_HARDWARE_TYPE_8188E(pAdapter) || IS_HARDWARE_TYPE_8192E(pAdapter) )//|| IS_HARDWARE_TYPE_8723B(pAdapter))
+	 if ( IS_HARDWARE_TYPE_8192E(pAdapter) )//|| IS_HARDWARE_TYPE_8723B(pAdapter))
 	 {
 	 	return mpt_ProQueryCalTxPower_8188E(pAdapter, RfPath);
 	 }
@@ -1768,12 +1768,7 @@ void Hal_ProSetCrystalCap (PADAPTER pAdapter , uint32_t	 CrystalCapVal)
 
 		CrystalCapVal = pHalData->CrystalCap & 0x3F;
 
-	if(IS_HARDWARE_TYPE_8188E(pAdapter))
-	{
-		// write 0x24[16:11] = 0x24[22:17] = CrystalCap
-		PHY_SetBBReg(pAdapter, REG_AFE_XTAL_CTRL, 0x7FF800, (CrystalCapVal | (CrystalCapVal << 6)));
-	}
-	else if(IS_HARDWARE_TYPE_8812(pAdapter))
+	if(IS_HARDWARE_TYPE_8812(pAdapter))
 	{
 		// write 0x2C[30:25] = 0x2C[24:19] = CrystalCap
 		PHY_SetBBReg(pAdapter, REG_MAC_PHY_CTRL, 0x7FF80000, (CrystalCapVal | (CrystalCapVal << 6)));

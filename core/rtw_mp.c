@@ -379,16 +379,9 @@ MPT_InitializeAdapter(
 	//ledsetting = rtw_read32(pAdapter, REG_LEDCFG0);
 	//rtw_write32(pAdapter, REG_LEDCFG0, ledsetting & ~LED0DIS);
 
-	if(IS_HARDWARE_TYPE_8192DU(pAdapter))
-	{
-		rtw_write32(pAdapter, REG_LEDCFG0, 0x8888);
-	}
-	else
-	{
-		//rtw_write32(pAdapter, REG_LEDCFG0, 0x08080);
-		ledsetting = rtw_read32(pAdapter, REG_LEDCFG0);
+	//rtw_write32(pAdapter, REG_LEDCFG0, 0x08080);
+	ledsetting = rtw_read32(pAdapter, REG_LEDCFG0);
 
-	}
 
 	PHY_IQCalibrate(pAdapter, _FALSE);
 	dm_CheckTXPowerTracking(&pHalData->odmpriv);	//trigger thermal meter
@@ -1775,12 +1768,7 @@ void Hal_ProSetCrystalCap (PADAPTER pAdapter , uint32_t	 CrystalCapVal)
 
 		CrystalCapVal = pHalData->CrystalCap & 0x3F;
 
-	if(IS_HARDWARE_TYPE_8192D(pAdapter))
-	{
-		PHY_SetBBReg(pAdapter, REG_AFE_XTAL_CTRL, 0xF0, CrystalCapVal & 0x0F);
-		PHY_SetBBReg(pAdapter, REG_AFE_PLL_CTRL, 0xF0000000, (CrystalCapVal & 0xF0) >> 4);
-	}
-	else if(IS_HARDWARE_TYPE_8188E(pAdapter))
+	if(IS_HARDWARE_TYPE_8188E(pAdapter))
 	{
 		// write 0x24[16:11] = 0x24[22:17] = CrystalCap
 		PHY_SetBBReg(pAdapter, REG_AFE_XTAL_CTRL, 0x7FF800, (CrystalCapVal | (CrystalCapVal << 6)));

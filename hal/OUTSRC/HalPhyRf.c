@@ -445,29 +445,8 @@ ODM_ResetIQKResult(
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PADAPTER	Adapter = pDM_Odm->Adapter;
 
-	if (!IS_HARDWARE_TYPE_8192D(Adapter))
-		return;
+	return;
 #endif
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD,("PHY_ResetIQKResult:: settings regs %d default regs %d\n", (u32)(sizeof(pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting)/sizeof(IQK_MATRIX_REGS_SETTING)), IQK_Matrix_Settings_NUM));
-	//0xe94, 0xe9c, 0xea4, 0xeac, 0xeb4, 0xebc, 0xec4, 0xecc
-
-	for(i = 0; i < IQK_Matrix_Settings_NUM; i++)
-	{
-		{
-			pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][0] =
-				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][2] =
-				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][4] =
-				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][6] = 0x100;
-
-			pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][1] =
-				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][3] =
-				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][5] =
-				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].Value[0][7] = 0x0;
-
-			pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[i].bIQKDone = FALSE;
-
-		}
-	}
 
 }
 u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)

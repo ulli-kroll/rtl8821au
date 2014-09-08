@@ -1665,12 +1665,6 @@ odm_Write_CrystalCap(
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
-	if(IS_HARDWARE_TYPE_8192D(Adapter))
-	{
-		PHY_SetBBReg(Adapter, 0x24, 0xF0, CrystalCap & 0x0F);
-		PHY_SetBBReg(Adapter, 0x28, 0xF0000000, ((CrystalCap & 0xF0) >> 4));
-	}
-
 	if(IS_HARDWARE_TYPE_8188E(Adapter))
 	{
 		// write 0x24[16:11] = 0x24[22:17] = CrystalCap
@@ -3661,13 +3655,6 @@ odm_TXPowerTrackingCheckCE(
 	#endif
 
 	#if (RTL8192D_SUPPORT==1)
-	if(IS_HARDWARE_TYPE_8192D(Adapter)){
-		#if (RTL8192D_EASY_SMART_CONCURRENT == 1)
-		if(!Adapter->bSlaveOfDMSP)
-		#endif
-			rtl8192d_odm_CheckTXPowerTracking(Adapter);
-		return;
-	}
 	#endif
 
 	#if( ((RTL8812A_SUPPORT==1) ||  (RTL8821A_SUPPORT==1) ))

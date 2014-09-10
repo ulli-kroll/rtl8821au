@@ -35,13 +35,6 @@
 #include <wifi.h>
 #include <ieee80211.h>
 
-
-
-
-#ifdef PLATFORM_LINUX
-#include <drv_types_linux.h>
-#endif
-
 enum _NIC_VERSION {
 
 	RTL8711_NIC,
@@ -85,8 +78,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_io.h>
 #include <rtw_ioctl.h>
 #include <rtw_ioctl_set.h>
-#include <rtw_ioctl_query.h>
-#include <rtw_ioctl_rtl.h>
 #include <osdep_intf.h>
 #include <rtw_eeprom.h>
 #include <sta_info.h>

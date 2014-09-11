@@ -1111,7 +1111,7 @@ SetFwRelatedForWoWLAN8812(
 }
 #endif //CONFIG_WOWLAN
 
-static void rtl8812_free_hal_data(PADAPTER padapter)
+void rtl8812_free_hal_data(PADAPTER padapter)
 {
 _func_enter_;
 	if (padapter->HalData) {
@@ -2142,7 +2142,7 @@ Hal_EfusePowerSwitch8812A(
 	}
 }
 
-static VOID
+VOID
 rtl8812_EfusePowerSwitch(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t		bWrite,
@@ -2349,7 +2349,7 @@ exit:
 		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(uint16_t));
 }
 
-static VOID
+VOID
 rtl8812_ReadEFuse(
 	PADAPTER	Adapter,
 	uint8_t		efuseType,
@@ -2545,7 +2545,7 @@ Hal_EFUSEGetEfuseDefinition_Pseudo8812A(
 }
 
 
-static VOID
+VOID
 rtl8812_EFUSE_GetEfuseDefinition(
 	IN		PADAPTER	pAdapter,
 	IN		uint8_t		efuseType,
@@ -2630,7 +2630,7 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 	return badworden;
 }
 
-static u8
+u8
 rtl8812_Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 							IN	uint16_t		efuse_addr,
 							IN	uint8_t		word_en,
@@ -2645,7 +2645,7 @@ rtl8812_Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 }
 
 
-static u16
+u16
 hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter,
 		IN		BOOLEAN			bPseudoTest)
 {
@@ -2716,7 +2716,7 @@ hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter,
 	return efuse_addr;
 }
 
-static u16
+u16
 rtl8812_EfuseGetCurrentSize(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t			efuseType,
@@ -2730,7 +2730,7 @@ rtl8812_EfuseGetCurrentSize(
 }
 
 
-static int
+int
 hal_EfusePgPacketRead_8812A(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t			offset,
@@ -2844,7 +2844,7 @@ hal_EfusePgPacketRead_8812A(
 
 }
 
-static int
+int
 rtl8812_Efuse_PgPacketRead(	IN	PADAPTER	pAdapter,
 					IN	uint8_t			offset,
 					IN	uint8_t			*data,
@@ -3333,7 +3333,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 	return _TRUE;
 }
 
-static int
+int
 rtl8812_Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 					IN	uint8_t 			offset,
 					IN	uint8_t			word_en,

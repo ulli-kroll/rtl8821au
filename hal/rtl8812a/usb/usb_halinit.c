@@ -2808,11 +2808,31 @@ static uint8_t rtl8812au_ps_func(PADAPTER Adapter,HAL_INTF_PS_FUNC efunc_id, uin
 	return bResult;
 }
 
+/*
+ *
+ * ULLI
+ * It's messy but we need here some prototypes
+ */
+
+void rtl8812_free_hal_data(PADAPTER padapter);
+void UpdateHalRAMask8812A(PADAPTER padapter, uint32_t mac_id, uint8_t rssi_level);
+void ReadChipVersion8812A(PADAPTER	Adapter);
+VOID rtl8812_EfusePowerSwitch(PADAPTER	pAdapter, uint8_t bWrite, uint8_t PwrState);
+VOID rtl8812_ReadEFuse(PADAPTER	Adapter, uint8_t efuseType, uint16_t _offset, uint16_t 	_size_byte, uint8_t *pbuf, BOOLEAN bPseudoTest);
+VOID Hal_EFUSEGetEfuseDefinition_Pseudo8812A(PADAPTER pAdapter, uint8_t	efuseType, uint8_t type, PVOID pOut);
+VOID rtl8812_EFUSE_GetEfuseDefinition(PADAPTER pAdapter, uint8_t efuseType, uint8_t type, void *pOut, BOOLEAN bPseudoTest);
+u16 rtl8812_EfuseGetCurrentSize(PADAPTER pAdapter, uint8_t efuseType, BOOLEAN bPseudoTest);
+int rtl8812_Efuse_PgPacketRead(PADAPTER	pAdapter, uint8_t offset, uint8_t *data, BOOLEAN bPseudoTest);
+int rtl8812_Efuse_PgPacketWrite(PADAPTER pAdapter, uint8_t offset, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);
+u8 rtl8812_Efuse_WordEnableDataWrite(PADAPTER pAdapter, uint16_t efuse_addr, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);
+void rtl8812_GetHalODMVar(PADAPTER Adapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet);
+void rtl8812_SetHalODMVar(PADAPTER Adapter, HAL_ODM_VARIABLE eVariable,	PVOID 	pValue1, BOOLEAN bSet);
+void hal_notch_filter_8812(_adapter *adapter, bool enable);
+
+
 void rtl8812au_set_hal_ops(_adapter * padapter)
 {
 	struct hal_ops	*pHalFunc = &padapter->HalFunc;
-
-_func_enter_;
 
 #ifdef CONFIG_CONCURRENT_MODE
 	if(padapter->isprimary)
@@ -2878,8 +2898,64 @@ _func_enter_;
 #ifdef CONFIG_XMIT_THREAD_MODE
 	pHalFunc->xmit_thread_handler = &rtl8812au_xmit_buf_handler;
 #endif
-	rtl8812_set_hal_ops(pHalFunc);
-_func_exit_;
 
+
+	pHalFunc->free_hal_data = &rtl8812_free_hal_data;
+
+	pHalFunc->dm_init = &rtl8812_init_dm_priv;
+	pHalFunc->dm_deinit = &rtl8812_deinit_dm_priv;
+
+	pHalFunc->UpdateRAMaskHandler = &UpdateHalRAMask8812A;
+
+	pHalFunc->read_chip_version = &ReadChipVersion8812A;
+
+	pHalFunc->set_bwmode_handler = &PHY_SetBWMode8812;
+	pHalFunc->set_channel_handler = &PHY_SwChnl8812;
+	pHalFunc->set_chnl_bw_handler = &PHY_SetSwChnlBWMode8812;
+
+	pHalFunc->hal_dm_watchdog = &rtl8812_HalDmWatchDog;
+
+	pHalFunc->Add_RateATid = &rtl8812_Add_RateATid;
+#ifdef CONFIG_CONCURRENT_MODE
+	pHalFunc->clone_haldata = &rtl8812_clone_haldata;
+#endif
+	pHalFunc->run_thread= &rtl8812_start_thread;
+	pHalFunc->cancel_thread= &rtl8812_stop_thread;
+
+#ifdef CONFIG_ANTENNA_DIVERSITY
+	pHalFunc->AntDivBeforeLinkHandler = &AntDivBeforeLink8812;
+	pHalFunc->AntDivCompareHandler = &AntDivCompare8812;
+#endif
+
+	pHalFunc->read_bbreg = &PHY_QueryBBReg8812;
+	pHalFunc->write_bbreg = &PHY_SetBBReg8812;
+	pHalFunc->read_rfreg = &PHY_QueryRFReg8812;
+	pHalFunc->write_rfreg = &PHY_SetRFReg8812;
+
+
+	// Efuse related function
+	pHalFunc->EfusePowerSwitch = &rtl8812_EfusePowerSwitch;
+	pHalFunc->ReadEFuse = &rtl8812_ReadEFuse;
+	pHalFunc->EFUSEGetEfuseDefinition = &rtl8812_EFUSE_GetEfuseDefinition;
+	pHalFunc->EfuseGetCurrentSize = &rtl8812_EfuseGetCurrentSize;
+	pHalFunc->Efuse_PgPacketRead = &rtl8812_Efuse_PgPacketRead;
+	pHalFunc->Efuse_PgPacketWrite = &rtl8812_Efuse_PgPacketWrite;
+	pHalFunc->Efuse_WordEnableDataWrite = &rtl8812_Efuse_WordEnableDataWrite;
+
+#ifdef DBG_CONFIG_ERROR_DETECT
+	pHalFunc->sreset_init_value = &sreset_init_value;
+	pHalFunc->sreset_reset_value = &sreset_reset_value;
+	pHalFunc->silentreset = &sreset_reset;
+	pHalFunc->sreset_xmit_status_check = &rtl8812_sreset_xmit_status_check;
+	pHalFunc->sreset_linked_status_check  = &rtl8812_sreset_linked_status_check;
+	pHalFunc->sreset_get_wifi_status  = &sreset_get_wifi_status;
+	pHalFunc->sreset_inprogress= &sreset_inprogress;
+#endif //DBG_CONFIG_ERROR_DETECT
+
+	pHalFunc->GetHalODMVarHandler = &rtl8812_GetHalODMVar;
+	pHalFunc->SetHalODMVarHandler = &rtl8812_SetHalODMVar;
+	pHalFunc->hal_notch_filter = &hal_notch_filter_8812;
+
+	pHalFunc->SetBeaconRelatedRegistersHandler = &SetBeaconRelatedRegisters8812A;
 }
 

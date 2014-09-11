@@ -2830,6 +2830,123 @@ void rtl8812_SetHalODMVar(PADAPTER Adapter, HAL_ODM_VARIABLE eVariable,	PVOID 	p
 void hal_notch_filter_8812(_adapter *adapter, bool enable);
 
 
+static struct hal_ops rtl8812au_hal_ops = {
+	.hal_power_on = 	_InitPowerOn8812AU,
+	.hal_init =	 	rtl8812au_hal_init,
+	.hal_deinit = 		rtl8812au_hal_deinit,
+
+	//.free_hal_data = rtl8192c_free_hal_data,
+
+	.inirp_init =		rtl8812au_inirp_init,
+	.inirp_deinit =		rtl8812au_inirp_deinit,
+
+	.init_xmit_priv =	rtl8812au_init_xmit_priv,
+	.free_xmit_priv =	rtl8812au_free_xmit_priv,
+
+	.init_recv_priv =	rtl8812au_init_recv_priv,
+	.free_recv_priv =	rtl8812au_free_recv_priv,
+#ifdef CONFIG_SW_LED
+	.InitSwLeds = 		rtl8812au_InitSwLeds,
+	.DeInitSwLeds =		rtl8812au_DeInitSwLeds,
+#else //case of hw led or no led
+	pHalFunc->InitSwLeds =		NULL,
+	pHalFunc->DeInitSwLeds	= NULL,
+#endif//CONFIG_SW_LED
+
+	.init_default_value =	rtl8812au_init_default_value,
+	.intf_chip_configure =	rtl8812au_interface_configure,
+	.read_adapter_info =	ReadAdapterInfo8812AU,
+
+	//.set_bwmode_handler = 	PHY_SetBWMode8192C;
+	//.set_channel_handler = 	PHY_SwChnl8192C;
+
+	//.hal_dm_watchdog = 	rtl8192c_HalDmWatchDog;
+
+
+	.SetHwRegHandler = 	SetHwReg8812AU,
+	.GetHwRegHandler = 	GetHwReg8812AU,
+	.GetHalDefVarHandler = 	GetHalDefVar8812AUsb,
+	.SetHalDefVarHandler = 	SetHalDefVar8812AUsb,
+
+	.SetBeaconRelatedRegistersHandler = 	SetBeaconRelatedRegisters8812A,
+
+	//.Add_RateATid = &rtl8192c_Add_RateATid,
+
+	.hal_xmit = 		rtl8812au_hal_xmit,
+	.mgnt_xmit = 		rtl8812au_mgnt_xmit,
+	.hal_xmitframe_enqueue = 	rtl8812au_hal_xmitframe_enqueue,
+
+#ifdef CONFIG_HOSTAPD_MLME
+	.hostap_mgnt_xmit_entry = 	rtl8812au_hostap_mgnt_xmit_entry,
+#endif
+	.interface_ps_func = 	rtl8812au_ps_func,
+#ifdef CONFIG_XMIT_THREAD_MODE
+	.xmit_thread_handler = 	rtl8812au_xmit_buf_handler
+#endif
+
+
+	.free_hal_data =	rtl8812_free_hal_data,
+
+	.dm_init =		rtl8812_init_dm_priv,
+	.dm_deinit =		rtl8812_deinit_dm_priv,
+
+	.UpdateRAMaskHandler =	UpdateHalRAMask8812A,
+
+	.read_chip_version =	ReadChipVersion8812A,
+
+	.set_bwmode_handler =	PHY_SetBWMode8812,
+	.set_channel_handler =	PHY_SwChnl8812,
+	.set_chnl_bw_handler =	PHY_SetSwChnlBWMode8812,
+
+	.hal_dm_watchdog =	rtl8812_HalDmWatchDog,
+
+	.Add_RateATid =		rtl8812_Add_RateATid,
+#ifdef CONFIG_CONCURRENT_MODE
+	.clone_haldata =	rtl8812_clone_haldata,
+#endif
+	.run_thread =		rtl8812_start_thread,
+	.cancel_thread =	rtl8812_stop_thread,
+
+#ifdef CONFIG_ANTENNA_DIVERSITY
+	.AntDivBeforeLinkHandler =	AntDivBeforeLink8812,
+	.AntDivCompareHandler =		AntDivCompare8812,
+#endif
+
+	.read_bbreg = 	PHY_QueryBBReg8812,
+	.write_bbreg = 	PHY_SetBBReg8812,
+	.read_rfreg = 	PHY_QueryRFReg8812,
+	.write_rfreg = 	PHY_SetRFReg8812,
+
+
+	// Efuse related function
+	.EfusePowerSwitch =	rtl8812_EfusePowerSwitch,
+	.ReadEFuse =		rtl8812_ReadEFuse,
+	.EFUSEGetEfuseDefinition =	rtl8812_EFUSE_GetEfuseDefinition,
+	.EfuseGetCurrentSize =	rtl8812_EfuseGetCurrentSize,
+	.Efuse_PgPacketRead =	rtl8812_Efuse_PgPacketRead,
+	.Efuse_PgPacketWrite =	rtl8812_Efuse_PgPacketWrite,
+	.Efuse_WordEnableDataWrite = &rtl8812_Efuse_WordEnableDataWrite,
+
+#ifdef DBG_CONFIG_ERROR_DETECT
+	.sreset_init_value =	sreset_init_value,
+	.sreset_reset_value =	sreset_reset_value,
+	.silentreset =		sreset_reset,
+	.sreset_xmit_status_check =	rtl8812_sreset_xmit_status_check,
+	.sreset_linked_status_check =	rtl8812_sreset_linked_status_check,
+	.sreset_get_wifi_status  =	sreset_get_wifi_status,
+	.sreset_inprogress =		sreset_inprogress,
+#endif //DBG_CONFIG_ERROR_DETECT
+
+	.GetHalODMVarHandler = rtl8812_GetHalODMVar,
+	.SetHalODMVarHandler = rtl8812_SetHalODMVar,
+	.hal_notch_filter = hal_notch_filter_8812,
+
+	.SetBeaconRelatedRegistersHandler =	SetBeaconRelatedRegisters8812A,
+};
+
+
+
+
 void rtl8812au_set_hal_ops(_adapter * padapter)
 {
 	struct hal_ops	*pHalFunc = &padapter->HalFunc;

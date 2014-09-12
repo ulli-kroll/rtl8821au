@@ -1461,9 +1461,6 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 	_adapter *if1 = NULL, *if2 = NULL;
 	int status;
 	struct dvobj_priv *dvobj;
-#ifdef CONFIG_MULTI_VIR_IFACES
-	int i;
-#endif //CONFIG_MULTI_VIR_IFACES
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("+rtw_drv_init\n"));
 	//DBG_871X("+rtw_drv_init\n");
@@ -1486,16 +1483,6 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 	if((if2 = rtw_drv_if2_init(if1, usb_set_intf_ops)) == NULL) {
 		goto free_if1;
 	}
-#ifdef CONFIG_MULTI_VIR_IFACES
-	for(i=0; i<if1->registrypriv.ext_iface_num;i++)
-	{
-		if(rtw_drv_add_vir_if(if1, usb_set_intf_ops) == NULL)
-		{
-			DBG_871X("rtw_drv_add_iface failed! (%d)\n", i);
-			goto free_if2;
-		}
-	}
-#endif //CONFIG_MULTI_VIR_IFACES
 #endif
 
 #ifdef CONFIG_INTEL_PROXIM
@@ -1582,18 +1569,12 @@ _func_enter_;
 	LeaveAllPowerSaveMode(padapter);
 
 #ifdef CONFIG_CONCURRENT_MODE
-#ifdef CONFIG_MULTI_VIR_IFACES
-	rtw_drv_stop_vir_ifaces(dvobj);
-#endif //CONFIG_MULTI_VIR_IFACES
 	rtw_drv_if2_stop(dvobj->if2);
 #endif //CONFIG_CONCURRENT_MODE
 
 	rtw_usb_if1_deinit(padapter);
 
 #ifdef CONFIG_CONCURRENT_MODE
-#ifdef CONFIG_MULTI_VIR_IFACES
-	rtw_drv_free_vir_ifaces(dvobj);
-#endif //CONFIG_MULTI_VIR_IFACES
 	rtw_drv_if2_free(dvobj->if2);
 #endif //CONFIG_CONCURRENT_MODE
 

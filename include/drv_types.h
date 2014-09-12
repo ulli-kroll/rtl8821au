@@ -277,9 +277,6 @@ struct registry_priv
 	uint8_t	bEn_RFE;
 	uint8_t	RFE_Type;
 
-#ifdef CONFIG_MULTI_VIR_IFACES
-	uint8_t ext_iface_num;//primary/secondary iface is excluded
-#endif
 };
 
 

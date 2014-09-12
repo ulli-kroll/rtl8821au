@@ -107,9 +107,6 @@
 	//#define CONFIG_CONCURRENT_MODE 1
 	#ifdef CONFIG_CONCURRENT_MODE
 		//#define CONFIG_HWPORT_SWAP				//Port0->Sec , Port1 -> Pri
-		#ifdef CONFIG_RTL8812A
-			#define CONFIG_TSF_RESET_OFFLOAD 1		// For 2 PORT TSF SYNC.
-		#endif
 		//#define CONFIG_MULTI_VIR_IFACES //besides primary&secondary interfaces, extend to support more interfaces
 	#endif
 

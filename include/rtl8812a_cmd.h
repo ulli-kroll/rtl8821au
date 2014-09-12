@@ -135,10 +135,6 @@ void rtl8812_set_p2p_ps_offload_cmd(PADAPTER padapter, uint8_t p2p_ps_state);
 void CheckFwRsvdPageContent(PADAPTER padapter);
 void rtl8812_set_FwMediaStatus_cmd(PADAPTER padapter, u16 mstatus_rpt );
 
-#ifdef CONFIG_TSF_RESET_OFFLOAD
-int reset_tsf(PADAPTER Adapter, uint8_t reset_port );
-#endif	// CONFIG_TSF_RESET_OFFLOAD
-
 #ifdef CONFIG_WOWLAN
 typedef struct _SETWOWLAN_PARM{
 	uint8_t		mode;

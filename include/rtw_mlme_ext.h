@@ -766,21 +766,6 @@ int concurrent_chk_start_clnt_join(_adapter *padapter);
 void concurrent_chk_joinbss_done(_adapter *padapter, int join_res);
 #endif //CONFIG_CONCURRENT_MODE
 
-#ifdef CONFIG_DUALMAC_CONCURRENT
-void	dc_SelectChannel(_adapter *padapter, unsigned char channel);
-void	dc_SetBWMode(_adapter *padapter, unsigned short bwmode, unsigned char channel_offset);
-void	dc_set_channel_bwmode_disconnect(_adapter *padapter);
-uint8_t	dc_handle_join_request(_adapter *padapter);
-void	dc_handle_join_done(_adapter *padapter, uint8_t join_res);
-sint	dc_check_fwstate(_adapter *padapter, sint fw_state);
-uint8_t	dc_handle_site_survey(_adapter *padapter);
-void	dc_report_survey_event(_adapter *padapter, union recv_frame *precv_frame);
-void	dc_set_channel_bwmode_survey_done(_adapter *padapter);
-void	dc_set_ap_channel_bandwidth(_adapter *padapter, uint8_t channel, uint8_t channel_offset, uint8_t bwmode);
-void	dc_resume_xmit(_adapter *padapter);
-uint8_t	dc_check_xmit(_adapter *padapter);
-#endif
-
 struct cmd_hdl {
 	uint	parmsize;
 	uint8_t (*h2cfuns)(struct _ADAPTER *padapter, uint8_t *pbuf);

@@ -1220,9 +1220,6 @@ static void start_bss_network(_adapter *padapter, uint8_t *pbuf)
 	}
 #endif
 
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	dc_set_ap_channel_bandwidth(padapter, cur_channel, cur_ch_offset, cur_bwmode);
-#else
 	//TODO: need to judge the phy parameters on concurrent mode for single phy
 	//set_channel_bwmode(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
 #ifdef CONFIG_CONCURRENT_MODE
@@ -1314,7 +1311,6 @@ static void start_bss_network(_adapter *padapter, uint8_t *pbuf)
 	//buddy interface band is different from current interface, update ERP, support rate, ext support rate IE
 	if (change_band == _TRUE)
 		change_band_update_ie(padapter, pnetwork);
-#endif //CONFIG_DUALMAC_CONCURRENT
 
 	pmlmeext->cur_wireless_mode = pmlmepriv->cur_network.network_type;
 

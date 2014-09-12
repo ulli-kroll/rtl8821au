@@ -1090,9 +1090,6 @@ _func_enter_;
 #ifdef CONFIG_CONCURRENT_MODE
 	rtw_os_xmit_schedule(adapter->pbuddy_adapter);
 #endif
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	dc_resume_xmit(adapter);
-#endif
 
 #ifdef CONFIG_DRVEXT_MODULE_WSC
 	drvext_surveydone_callback(&adapter->drvextpriv);
@@ -1762,11 +1759,6 @@ _func_enter_;
 #ifdef CONFIG_CONCURRENT_MODE
 	rtw_os_xmit_schedule(adapter->pbuddy_adapter);
 #endif
-
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	dc_resume_xmit(adapter);
-#endif
-
 _func_exit_;
 }
 

@@ -1736,14 +1736,6 @@ static int rtw_wx_set_wap(struct net_device *ndev,
 	}
 #endif
 
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	if (dc_check_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING)== _TRUE)
-	{
-		DBG_871X("set bssid, but buddy_intf is under scanning or linking\n");
-		ret = -EINVAL;
-		goto exit;
-	}
-#endif
 
 	if(_FAIL == rtw_pwr_wakeup(padapter))
 	{
@@ -2003,13 +1995,6 @@ if (padapter->registrypriv.mp_mode == 1)
 	}
 #endif
 
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	if (dc_check_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING)== _TRUE)
-	{
-		indicate_wx_scan_complete_event(padapter);
-		goto exit;
-	}
-#endif
 
 //	Mareded by Albert 20101103
 //	For the DMP WiFi Display project, the driver won't to scan because
@@ -2240,16 +2225,6 @@ static int rtw_wx_get_scan(struct net_device *ndev, struct iw_request_info *a,
 
 	wait_status = _FW_UNDER_SURVEY |_FW_UNDER_LINKING ;
 
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	while(dc_check_fwstate(padapter, wait_status)== _TRUE)
-	{
-		rtw_msleep_os(30);
-		cnt++;
-		if(cnt > wait_for_surveydone )
-			break;
-	}
-#endif // CONFIG_DUALMAC_CONCURRENT
-
  	while(check_fwstate(pmlmepriv, wait_status) == _TRUE)
 	{
 		rtw_msleep_os(30);
@@ -2346,15 +2321,6 @@ static int rtw_wx_set_essid(struct net_device *ndev,
 
 		ret = -EINVAL;
 
-		goto exit;
-	}
-#endif
-
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	if (dc_check_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING)== _TRUE)
-	{
-		DBG_871X("set bssid, but buddy_intf is under scanning or linking\n");
-		ret = -EINVAL;
 		goto exit;
 	}
 #endif

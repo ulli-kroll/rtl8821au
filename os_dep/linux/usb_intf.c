@@ -1149,11 +1149,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	//set adapter_type/iface type for primary padapter
 	padapter->isprimary = _TRUE;
 	padapter->adapter_type = PRIMARY_ADAPTER;
-	#ifndef CONFIG_HWPORT_SWAP
 	padapter->iface_type = IFACE_PORT0;
-	#else
-	padapter->iface_type = IFACE_PORT1;
-	#endif
 #endif
 
 	//step 1-1., decide the chip_type via driver_info

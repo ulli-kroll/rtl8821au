@@ -106,7 +106,6 @@
 
 	//#define CONFIG_CONCURRENT_MODE 1
 	#ifdef CONFIG_CONCURRENT_MODE
-		//#define CONFIG_HWPORT_SWAP				//Port0->Sec , Port1 -> Pri
 	#endif
 
 	//#define CONFIG_IOL

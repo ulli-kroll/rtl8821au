@@ -1651,10 +1651,6 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 	uint8_t p2p_status_code = P2P_STATUS_SUCCESS;
 	uint8_t *p2pie;
 	uint32_t	 p2pielen = 0;
-#ifdef CONFIG_WFD
-	uint8_t	wfd_ie[ 128 ] = { 0x00 };
-	uint32_t	wfd_ielen = 0;
-#endif // CONFIG_WFD
 #endif //CONFIG_P2P
 
 	if((pmlmeinfo->state&0x03) != WIFI_FW_AP_STATE)
@@ -2110,21 +2106,6 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 				goto OnAssocReqFail;
 			}
 		}
-#ifdef CONFIG_WFD
-		if(rtw_get_wfd_ie(pframe + WLAN_HDR_A3_LEN + ie_offset , pkt_len - WLAN_HDR_A3_LEN - ie_offset , wfd_ie, &wfd_ielen ))
-		{
-			uint8_t	attr_content[ 10 ] = { 0x00 };
-			uint32_t	attr_contentlen = 0;
-
-			DBG_8192C( "[%s] WFD IE Found!!\n", __FUNCTION__ );
-			rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_DEVICE_INFO, attr_content, &attr_contentlen);
-			if ( attr_contentlen )
-			{
-				pwdinfo->wfd_info->peer_rtsp_ctrlport = RTW_GET_BE16( attr_content + 2 );
-				DBG_8192C( "[%s] Peer PORT NUM = %d\n", __FUNCTION__, pwdinfo->wfd_info->peer_rtsp_ctrlport );
-			}
-		}
-#endif
 	}
 	pstat->p2p_status_code = p2p_status_code;
 #endif //CONFIG_P2P
@@ -2328,13 +2309,6 @@ unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame)
 				{
 					WMM_param_handler(padapter, pIE);
 				}
-#if defined(CONFIG_P2P) && defined(CONFIG_WFD)
-				else if ( _rtw_memcmp(pIE->data, WFD_OUI, 4))		//WFD
-				{
-					DBG_871X( "[%s] Found WFD IE\n", __FUNCTION__ );
-					WFD_info_handler( padapter, pIE );
-				}
-#endif
 				break;
 
 #ifdef CONFIG_WAPI_SUPPORT
@@ -2834,9 +2808,6 @@ void issue_p2p_GO_request(_adapter *padapter, uint8_t * raddr)
 	uint8_t			wpsielen = 0, p2pielen = 0, i;
 	uint8_t			channel_cnt_24g = 0, channel_cnt_5gl = 0, channel_cnt_5gh = 0;
 	uint16_t			len_channellist_attr = 0;
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 
 	struct xmit_frame			*pmgntframe;
 	struct pkt_attrib			*pattrib;
@@ -3194,12 +3165,6 @@ void issue_p2p_GO_request(_adapter *padapter, uint8_t * raddr)
 
 	pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, p2pielen, (unsigned char *) p2pie, &pattrib->pktlen );
 
-#ifdef CONFIG_WFD
-	wfdielen = build_nego_req_wfd_ie(pwdinfo, pframe);
-	pframe += wfdielen;
-	pattrib->pktlen += wfdielen;
-#endif //CONFIG_WFD
-
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	dump_mgntframe(padapter, pmgntframe);
@@ -3233,10 +3198,6 @@ void issue_p2p_GO_response(_adapter *padapter, uint8_t * raddr, uint8_t * frame_
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo);
-
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
@@ -3617,12 +3578,6 @@ void issue_p2p_GO_response(_adapter *padapter, uint8_t * raddr, uint8_t * frame_
 
 	pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, p2pielen, (unsigned char *) p2pie, &pattrib->pktlen );
 
-#ifdef CONFIG_WFD
-	wfdielen = build_nego_resp_wfd_ie(pwdinfo, pframe);
-	pframe += wfdielen;
-	pattrib->pktlen += wfdielen;
-#endif //CONFIG_WFD
-
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	dump_mgntframe(padapter, pmgntframe);
@@ -3650,9 +3605,6 @@ void issue_p2p_GO_confirm(_adapter *padapter, uint8_t * raddr, uint8_t result)
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo);
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
@@ -3837,12 +3789,6 @@ void issue_p2p_GO_confirm(_adapter *padapter, uint8_t * raddr, uint8_t result)
 
 	pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, p2pielen, (unsigned char *) p2pie, &pattrib->pktlen );
 
-#ifdef CONFIG_WFD
-	wfdielen = build_nego_confirm_wfd_ie(pwdinfo, pframe);
-	pframe += wfdielen;
-	pattrib->pktlen += wfdielen;
-#endif //CONFIG_WFD
-
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	dump_mgntframe(padapter, pmgntframe);
@@ -3863,9 +3809,6 @@ void issue_p2p_invitation_request(_adapter *padapter, uint8_t * raddr )
 	uint8_t			dialogToken = 3;
 	uint8_t			channel_cnt_24g = 0, channel_cnt_5gl = 0, channel_cnt_5gh = 0;
 	uint16_t			len_channellist_attr = 0;
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 
 	struct xmit_frame			*pmgntframe;
 	struct pkt_attrib			*pattrib;
@@ -4112,12 +4055,6 @@ void issue_p2p_invitation_request(_adapter *padapter, uint8_t * raddr )
 
 	pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, p2pielen, (unsigned char *) p2pie, &pattrib->pktlen );
 
-#ifdef CONFIG_WFD
-	wfdielen = build_invitation_req_wfd_ie(pwdinfo, pframe);
-	pframe += wfdielen;
-	pattrib->pktlen += wfdielen;
-#endif //CONFIG_WFD
-
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	dump_mgntframe(padapter, pmgntframe);
@@ -4137,9 +4074,6 @@ void issue_p2p_invitation_response(_adapter *padapter, uint8_t * raddr, uint8_t 
 	uint8_t			p2pielen = 0, i;
 	uint8_t			channel_cnt_24g = 0, channel_cnt_5gl = 0, channel_cnt_5gh = 0;
 	uint16_t			len_channellist_attr = 0;
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 
 	struct xmit_frame			*pmgntframe;
 	struct pkt_attrib			*pattrib;
@@ -4326,12 +4260,6 @@ void issue_p2p_invitation_response(_adapter *padapter, uint8_t * raddr, uint8_t 
 
 	pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, p2pielen, (unsigned char *) p2pie, &pattrib->pktlen );
 
-#ifdef CONFIG_WFD
-	wfdielen = build_invitation_resp_wfd_ie(pwdinfo, pframe);
-	pframe += wfdielen;
-	pattrib->pktlen += wfdielen;
-#endif //CONFIG_WFD
-
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	dump_mgntframe(padapter, pmgntframe);
@@ -4350,9 +4278,6 @@ void issue_p2p_provision_request(_adapter *padapter, uint8_t * pssid, uint8_t us
 	uint8_t			wpsie[ 100 ] = { 0x00 };
 	uint8_t			wpsielen = 0;
 	uint32_t			p2pielen = 0;
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 
 	struct xmit_frame			*pmgntframe;
 	struct pkt_attrib			*pattrib;
@@ -4437,13 +4362,6 @@ void issue_p2p_provision_request(_adapter *padapter, uint8_t * pssid, uint8_t us
 
 	pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, wpsielen, (unsigned char *) wpsie, &pattrib->pktlen );
 
-
-#ifdef CONFIG_WFD
-	wfdielen = build_provdisc_req_wfd_ie(pwdinfo, pframe);
-	pframe += wfdielen;
-	pattrib->pktlen += wfdielen;
-#endif //CONFIG_WFD
-
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	dump_mgntframe(padapter, pmgntframe);
@@ -4493,9 +4411,6 @@ void issue_probersp_p2p(_adapter *padapter, unsigned char *da)
 	struct wifidirect_info	*pwdinfo = &(padapter->wdinfo);
 	uint8_t					wpsie[255] = { 0x00 };
 	uint32_t					wpsielen = 0, p2pielen = 0;
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 #ifdef CONFIG_IOCTL_CFG80211
 	struct cfg80211_wifidirect_info *pcfg80211_wdinfo = &padapter->cfg80211_wdinfo;
 	struct ieee80211_channel *ieee_ch = &pcfg80211_wdinfo->remain_on_ch_channel;
@@ -4762,26 +4677,6 @@ void issue_probersp_p2p(_adapter *padapter, unsigned char *da)
 		pattrib->pktlen += p2pielen;
 	}
 
-#ifdef CONFIG_WFD
-#ifdef CONFIG_IOCTL_CFG80211
-	if ( _TRUE == pwdinfo->wfd_info->wfd_enable )
-#endif //CONFIG_IOCTL_CFG80211
-	{
-		wfdielen = build_probe_resp_wfd_ie(pwdinfo, pframe, 0);
-		pframe += wfdielen;
-		pattrib->pktlen += wfdielen;
-	}
-#ifdef CONFIG_IOCTL_CFG80211
-	else if (pmlmepriv->wfd_probe_resp_ie != NULL && pmlmepriv->wfd_probe_resp_ie_len>0)
-	{
-		//WFD IE
-		memcpy(pframe, pmlmepriv->wfd_probe_resp_ie, pmlmepriv->wfd_probe_resp_ie_len);
-		pattrib->pktlen += pmlmepriv->wfd_probe_resp_ie_len;
-		pframe += pmlmepriv->wfd_probe_resp_ie_len;
-	}
-#endif //CONFIG_IOCTL_CFG80211
-#endif //CONFIG_WFD
-
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 
@@ -4809,9 +4704,6 @@ int _issue_probereq_p2p(_adapter *padapter, uint8_t *da, int wait_ack)
 	struct wifidirect_info	*pwdinfo = &(padapter->wdinfo);
 	uint8_t					wpsie[255] = { 0x00 }, p2pie[ 255 ] = { 0x00 };
 	uint16_t					wpsielen = 0, p2pielen = 0;
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 
@@ -5097,26 +4989,6 @@ int _issue_probereq_p2p(_adapter *padapter, uint8_t *da, int wait_ack)
 		pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, p2pielen, (unsigned char *) p2pie, &pattrib->pktlen );
 
 	}
-
-#ifdef CONFIG_WFD
-#ifdef CONFIG_IOCTL_CFG80211
-	if ( _TRUE == pwdinfo->wfd_info->wfd_enable )
-#endif
-	{
-		wfdielen = build_probe_req_wfd_ie(pwdinfo, pframe);
-		pframe += wfdielen;
-		pattrib->pktlen += wfdielen;
-	}
-#ifdef CONFIG_IOCTL_CFG80211
-	else if (pmlmepriv->wfd_probe_req_ie != NULL && pmlmepriv->wfd_probe_req_ie_len>0)
-	{
-		//WFD IE
-		memcpy(pframe, pmlmepriv->wfd_probe_req_ie, pmlmepriv->wfd_probe_req_ie_len);
-		pattrib->pktlen += pmlmepriv->wfd_probe_req_ie_len;
-		pframe += pmlmepriv->wfd_probe_req_ie_len;
-	}
-#endif //CONFIG_IOCTL_CFG80211
-#endif //CONFIG_WFD
 
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
@@ -6192,27 +6064,6 @@ void issue_beacon(_adapter *padapter, int timeout_ms)
 
 			pframe += len;
 			pattrib->pktlen += len;
-#ifdef CONFIG_WFD
-#ifdef CONFIG_IOCTL_CFG80211
-			if(_TRUE == pwdinfo->wfd_info->wfd_enable)
-#endif //CONFIG_IOCTL_CFG80211
-			{
-			len = build_beacon_wfd_ie( pwdinfo, pframe );
-			}
-#ifdef CONFIG_IOCTL_CFG80211
-			else
-			{
-				len = 0;
-				if(pmlmepriv->wfd_beacon_ie && pmlmepriv->wfd_beacon_ie_len>0)
-				{
-					len = pmlmepriv->wfd_beacon_ie_len;
-					memcpy(pframe, pmlmepriv->wfd_beacon_ie, len);
-				}
-			}
-#endif //CONFIG_IOCTL_CFG80211
-			pframe += len;
-			pattrib->pktlen += len;
-#endif //CONFIG_WFD
 		}
 #endif //CONFIG_P2P
 
@@ -6317,9 +6168,6 @@ void issue_probersp(_adapter *padapter, unsigned char *da, uint8_t is_valid_p2p_
 	unsigned int	rate_len;
 #ifdef CONFIG_P2P
 	struct wifidirect_info	*pwdinfo = &(padapter->wdinfo);
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 #endif //CONFIG_P2P
 
 	//DBG_871X("%s\n", __FUNCTION__);
@@ -6520,29 +6368,6 @@ void issue_probersp(_adapter *padapter, unsigned char *da, uint8_t is_valid_p2p_
 
 		pframe += len;
 		pattrib->pktlen += len;
-
-#ifdef CONFIG_WFD
-#ifdef CONFIG_IOCTL_CFG80211
-		if(_TRUE == pwdinfo->wfd_info->wfd_enable)
-#endif //CONFIG_IOCTL_CFG80211
-		{
-			len = build_probe_resp_wfd_ie(pwdinfo, pframe, 0);
-		}
-#ifdef CONFIG_IOCTL_CFG80211
-		else
-		{
-			len = 0;
-			if(pmlmepriv->wfd_probe_resp_ie && pmlmepriv->wfd_probe_resp_ie_len>0)
-			{
-				len = pmlmepriv->wfd_probe_resp_ie_len;
-				memcpy(pframe, pmlmepriv->wfd_probe_resp_ie, len);
-			}
-		}
-#endif //CONFIG_IOCTL_CFG80211
-		pframe += len;
-		pattrib->pktlen += len;
-#endif //CONFIG_WFD
-
 	}
 #endif //CONFIG_P2P
 
@@ -6910,9 +6735,6 @@ void issue_asocrsp(_adapter *padapter, unsigned short status, struct sta_info *p
 	uint8_t *ie = pnetwork->IEs;
 #ifdef CONFIG_P2P
 	struct wifidirect_info	*pwdinfo = &(padapter->wdinfo);
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 
 #endif //CONFIG_P2P
 
@@ -7080,18 +6902,6 @@ void issue_asocrsp(_adapter *padapter, unsigned short status, struct sta_info *p
 			pattrib->pktlen += len;
 		}
 	}
-#ifdef CONFIG_WFD
-	if(rtw_p2p_chk_role(pwdinfo, P2P_ROLE_GO)
-#ifdef CONFIG_IOCTL_CFG80211
-		&& (_TRUE == pwdinfo->wfd_info->wfd_enable)
-#endif //CONFIG_IOCTL_CFG80211
-	)
-	{
-		wfdielen = build_assoc_resp_wfd_ie(pwdinfo, pframe);
-		pframe += wfdielen;
-		pattrib->pktlen += wfdielen;
-	}
-#endif //CONFIG_WFD
 #endif //CONFIG_P2P
 
 	pattrib->last_txcmdsz = pattrib->pktlen;
@@ -7124,9 +6934,6 @@ void issue_assocreq(_adapter *padapter)
 	struct wifidirect_info	*pwdinfo = &(padapter->wdinfo);
 	uint8_t					p2pie[ 255 ] = { 0x00 };
 	uint16_t					p2pielen = 0;
-#ifdef CONFIG_WFD
-	uint32_t					wfdielen = 0;
-#endif //CONFIG_WFD
 #endif //CONFIG_P2P
 
 #ifdef CONFIG_DFS
@@ -7552,36 +7359,10 @@ void issue_assocreq(_adapter *padapter)
 			p2pielen += ETH_ALEN;
 
 			pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, p2pielen, (unsigned char *) p2pie, &pattrib->pktlen );
-
-#ifdef CONFIG_WFD
-			//wfdielen = build_assoc_req_wfd_ie(pwdinfo, pframe);
-			//pframe += wfdielen;
-			//pattrib->pktlen += wfdielen;
-#endif //CONFIG_WFD
 		}
 	}
 
 #endif //CONFIG_P2P
-
-#ifdef CONFIG_WFD
-#ifdef CONFIG_IOCTL_CFG80211
-	if ( _TRUE == pwdinfo->wfd_info->wfd_enable )
-#endif //CONFIG_IOCTL_CFG80211
-	{
-		wfdielen = build_assoc_req_wfd_ie(pwdinfo, pframe);
-		pframe += wfdielen;
-		pattrib->pktlen += wfdielen;
-	}
-#ifdef CONFIG_IOCTL_CFG80211
-	else if (pmlmepriv->wfd_assoc_req_ie != NULL && pmlmepriv->wfd_assoc_req_ie_len>0)
-	{
-		//WFD IE
-		memcpy(pframe, pmlmepriv->wfd_assoc_req_ie, pmlmepriv->wfd_assoc_req_ie_len);
-		pattrib->pktlen += pmlmepriv->wfd_assoc_req_ie_len;
-		pframe += pmlmepriv->wfd_assoc_req_ie_len;
-	}
-#endif //CONFIG_IOCTL_CFG80211
-#endif //CONFIG_WFD
 
 	pattrib->last_txcmdsz = pattrib->pktlen;
 	dump_mgntframe(padapter, pmgntframe);

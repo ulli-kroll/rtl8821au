@@ -1479,11 +1479,6 @@ u32 rtw_set_p2p_attr_content(uint8_t *pbuf, uint8_t attr_id, u16 attr_len, uint8
 void rtw_WLAN_BSSID_EX_remove_p2p_attr(WLAN_BSSID_EX *bss_ex, uint8_t attr_id);
 #endif
 
-#ifdef CONFIG_WFD
-int rtw_get_wfd_ie(uint8_t *in_ie, int in_len, uint8_t *wfd_ie, uint *wfd_ielen);
-int rtw_get_wfd_attr_content(uint8_t *wfd_ie, uint wfd_ielen, uint8_t target_attr_id ,uint8_t *attr_content, uint *attr_contentlen);
-#endif // CONFIG_WFD
-
 uint	rtw_get_rateset_len(uint8_t	*rateset);
 
 struct registry_priv;

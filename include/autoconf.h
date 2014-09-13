@@ -129,12 +129,6 @@
 
 #define CONFIG_P2P	1
 #ifdef CONFIG_P2P
-	//The CONFIG_WFD is for supporting the Wi-Fi display
-	#define CONFIG_WFD
-
-	#ifndef CONFIG_WIFI_TEST
-		#define CONFIG_P2P_REMOVE_GROUP_INFO
-	#endif
 	//#define CONFIG_DBG_P2P
 
 	#define CONFIG_P2P_PS
@@ -144,11 +138,6 @@
 //	Added by Kurt 20110511
 //#define CONFIG_TDLS	1
 #ifdef CONFIG_TDLS
-//	#ifndef CONFIG_WFD
-//		#define CONFIG_WFD	1
-//	#endif
-//	#define CONFIG_TDLS_AUTOSETUP			1
-//	#define CONFIG_TDLS_AUTOCHECKALIVE		1
 #endif
 
 

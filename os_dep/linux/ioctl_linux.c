@@ -299,14 +299,6 @@ static char *translate_scan(_adapter *padapter,
 #endif //CONFIG_P2P
 
 #ifdef CONFIG_P2P
-#ifdef CONFIG_WFD
-	if ( SCAN_RESULT_ALL == pwdinfo->wfd_info->scan_result_type )
-	{
-
-	}
-	else if ( ( SCAN_RESULT_P2P_ONLY == pwdinfo->wfd_info->scan_result_type ) ||
-		      ( SCAN_RESULT_WFD_TYPE == pwdinfo->wfd_info->scan_result_type ) )
-#endif // CONFIG_WFD
 	{
 		if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
 		{
@@ -335,49 +327,6 @@ static char *translate_scan(_adapter *padapter,
 
 		}
 	}
-
-#ifdef CONFIG_WFD
-	if ( SCAN_RESULT_WFD_TYPE == pwdinfo->wfd_info->scan_result_type )
-	{
-		u32	blnGotWFD = _FALSE;
-		uint8_t	wfd_ie[ 128 ] = { 0x00 };
-		uint	wfd_ielen = 0;
-
-		if ( rtw_get_wfd_ie( &pnetwork->network.IEs[12], pnetwork->network.IELength - 12,  wfd_ie, &wfd_ielen ) )
-		{
-			uint8_t	wfd_devinfo[ 6 ] = { 0x00 };
-			uint	wfd_devlen = 6;
-
-			if ( rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_DEVICE_INFO, wfd_devinfo, &wfd_devlen) )
-			{
-				if ( pwdinfo->wfd_info->wfd_device_type == WFD_DEVINFO_PSINK )
-				{
-					//	the first two bits will indicate the WFD device type
-					if ( ( wfd_devinfo[ 1 ] & 0x03 ) == WFD_DEVINFO_SOURCE )
-					{
-						//	If this device is Miracast PSink device, the scan reuslt should just provide the Miracast source.
-						blnGotWFD = _TRUE;
-					}
-				}
-				else if ( pwdinfo->wfd_info->wfd_device_type == WFD_DEVINFO_SOURCE )
-				{
-					//	the first two bits will indicate the WFD device type
-					if ( ( wfd_devinfo[ 1 ] & 0x03 ) == WFD_DEVINFO_PSINK )
-					{
-						//	If this device is Miracast source device, the scan reuslt should just provide the Miracast PSink.
-						//	Todo: How about the SSink?!
-						blnGotWFD = _TRUE;
-					}
-				}
-			}
-		}
-
-		if ( blnGotWFD == _FALSE )
-		{
-			return start;
-		}
-	}
-#endif // CONFIG_WFD
 
 #endif //CONFIG_P2P
 
@@ -4484,67 +4433,6 @@ static int rtw_p2p_get_wps_configmethod(struct net_device *ndev,
 
 }
 
-#ifdef CONFIG_WFD
-static int rtw_p2p_get_peer_wfd_port(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-
-	int ret = 0;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct iw_point *pdata = &wrqu->data;
-	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
-
-	DBG_871X( "[%s] p2p_state = %d\n", __FUNCTION__, rtw_p2p_state(pwdinfo) );
-
-	sprintf( extra, "\n\nPort=%d\n", pwdinfo->wfd_info->peer_rtsp_ctrlport );
-	DBG_871X( "[%s] remote port = %d\n", __FUNCTION__, pwdinfo->wfd_info->peer_rtsp_ctrlport );
-
-	wrqu->data.length = strlen( extra );
-	return ret;
-
-}
-
-static int rtw_p2p_get_peer_wfd_preferred_connection(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-
-	int ret = 0;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct iw_point *pdata = &wrqu->data;
-	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
-
-	sprintf( extra, "\n\nwfd_pc=%d\n", pwdinfo->wfd_info->wfd_pc );
-	DBG_871X( "[%s] wfd_pc = %d\n", __FUNCTION__, pwdinfo->wfd_info->wfd_pc );
-
-	wrqu->data.length = strlen( extra );
-	pwdinfo->wfd_info->wfd_pc = _FALSE;	//	Reset the WFD preferred connection to P2P
-	return ret;
-
-}
-
-static int rtw_p2p_get_peer_wfd_session_available(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-
-	int ret = 0;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct iw_point *pdata = &wrqu->data;
-	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
-
-	sprintf( extra, "\n\nwfd_sa=%d\n", pwdinfo->wfd_info->peer_session_avail );
-	DBG_871X( "[%s] wfd_sa = %d\n", __FUNCTION__, pwdinfo->wfd_info->peer_session_avail );
-
-	wrqu->data.length = strlen( extra );
-	pwdinfo->wfd_info->peer_session_avail = _TRUE;	//	Reset the WFD session available
-	return ret;
-
-}
-
-#endif // CONFIG_WFD
-
 static int rtw_p2p_get_go_device_address(struct net_device *ndev,
 										 struct iw_request_info *info,
 										 union iwreq_data *wrqu, char *extra, char *subcmd)
@@ -5001,10 +4889,6 @@ static int rtw_p2p_invite_req(struct net_device *ndev,
 	_irqL					irqL;
 	struct tx_invite_req_info*	pinvite_req_info = &pwdinfo->invitereq_info;
 
-#ifdef CONFIG_WFD
-	struct wifi_display_info*	pwfd_info = pwdinfo->wfd_info;
-#endif // CONFIG_WFD
-
 	//	Commented by Albert 20120321
 	//	The input data contains two informations.
 	//	1. First information is the P2P device address which you want to send to.
@@ -5090,45 +4974,6 @@ static int rtw_p2p_invite_req(struct net_device *ndev,
 
 	_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
 
-#ifdef CONFIG_WFD
-	if ( uintPeerChannel )
-	{
-		uint8_t	wfd_ie[ 128 ] = { 0x00 };
-		uint	wfd_ielen = 0;
-
-		if ( rtw_get_wfd_ie( &pnetwork->network.IEs[12], pnetwork->network.IELength - 12,  wfd_ie, &wfd_ielen ) )
-		{
-			uint8_t	wfd_devinfo[ 6 ] = { 0x00 };
-			uint	wfd_devlen = 6;
-
-			DBG_871X( "[%s] Found WFD IE!\n", __FUNCTION__ );
-			if ( rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_DEVICE_INFO, wfd_devinfo, &wfd_devlen ) )
-			{
-				uint16_t	wfd_devinfo_field = 0;
-
-				//	Commented by Albert 20120319
-				//	The first two bytes are the WFD device information field of WFD device information subelement.
-				//	In big endian format.
-				wfd_devinfo_field = RTW_GET_BE16(wfd_devinfo);
-				if ( wfd_devinfo_field & WFD_DEVINFO_SESSION_AVAIL )
-				{
-					pwfd_info->peer_session_avail = _TRUE;
-				}
-				else
-				{
-					pwfd_info->peer_session_avail = _FALSE;
-				}
-			}
-		}
-
-		if ( _FALSE == pwfd_info->peer_session_avail )
-		{
-			DBG_871X( "[%s] WFD Session not avaiable!\n", __FUNCTION__ );
-			goto exit;
-		}
-	}
-#endif // CONFIG_WFD
-
 	if ( uintPeerChannel )
 	{
 
@@ -5185,10 +5030,6 @@ static int rtw_p2p_set_persistent(struct net_device *ndev,
 	_irqL					irqL;
 	struct tx_invite_req_info*	pinvite_req_info = &pwdinfo->invitereq_info;
 
-#ifdef CONFIG_WFD
-	struct wifi_display_info*	pwfd_info = pwdinfo->wfd_info;
-#endif // CONFIG_WFD
-
 	//	Commented by Albert 20120328
 	//	The input data is 0 or 1
 	//	0: disable persistent group functionality
@@ -5224,263 +5065,6 @@ exit:
 
 }
 
-#ifdef CONFIG_WFD
-static int rtw_p2p_set_pc(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-
-	int ret = 0;
-	_adapter 				*padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct iw_point 		*pdata = &wrqu->data;
-	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
-	uint8_t					peerMAC[ ETH_ALEN ] = { 0x00 };
-	int 					jj,kk;
-	uint8_t   					peerMACStr[ ETH_ALEN * 2 ] = { 0x00 };
-	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
-	_list					*plist, *phead;
-	_queue				*queue	= &(pmlmepriv->scanned_queue);
-	struct	wlan_network	*pnetwork = NULL;
-	uint8_t					attr_content[50] = { 0x00 }, _status = 0;
-	uint8_t *p2pie;
-	uint					p2pielen = 0, attr_contentlen = 0;
-	_irqL				irqL;
-	uint					uintPeerChannel = 0;
-
-	struct wifi_display_info*	pwfd_info = pwdinfo->wfd_info;
-
-	//	Commented by Albert 20120512
-	//	1. Input information is the MAC address which wants to know the Preferred Connection bit (PC bit)
-	//	Format: 00:E0:4C:00:00:05
-
-	DBG_871X( "[%s] data = %s\n", __FUNCTION__, extra );
-
-	if(rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-	{
-		DBG_871X( "[%s] WiFi Direct is disable!\n", __FUNCTION__ );
-		return ret;
-	}
-
-	for( jj = 0, kk = 0; jj < ETH_ALEN; jj++, kk += 3 )
-	{
-		peerMAC[ jj ] = key_2char2num( extra[kk], extra[kk+ 1] );
-	}
-
-	_enter_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
-
-	phead = get_list_head(queue);
-	plist = get_next(phead);
-
-	while(1)
-	{
-		if (rtw_end_of_queue_search(phead,plist)== _TRUE)
-			break;
-
-		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
-
-		//	Commented by Albert 2011/05/18
-		//	Match the device address located in the P2P IE
-		//	This is for the case that the P2P device address is not the same as the P2P interface address.
-
-		if ( (p2pie=rtw_get_p2p_ie( &pnetwork->network.IEs[12], pnetwork->network.IELength - 12, NULL, &p2pielen)) )
-		{
-			//	The P2P Device ID attribute is included in the Beacon frame.
-			//	The P2P Device Info attribute is included in the probe response frame.
-			printk( "[%s] Got P2P IE\n", __FUNCTION__ );
-			if ( rtw_get_p2p_attr_content( p2pie, p2pielen, P2P_ATTR_DEVICE_ID, attr_content, &attr_contentlen) )
-			{
-				//	Handle the P2P Device ID attribute of Beacon first
-				printk( "[%s] P2P_ATTR_DEVICE_ID \n", __FUNCTION__ );
-				if ( _rtw_memcmp( attr_content, peerMAC, ETH_ALEN ) )
-				{
-					uintPeerChannel = pnetwork->network.Configuration.DSConfig;
-					break;
-				}
-			}
-			else if ( rtw_get_p2p_attr_content( p2pie, p2pielen, P2P_ATTR_DEVICE_INFO, attr_content, &attr_contentlen) )
-			{
-				//	Handle the P2P Device Info attribute of probe response
-				printk( "[%s] P2P_ATTR_DEVICE_INFO \n", __FUNCTION__ );
-				if ( _rtw_memcmp( attr_content, peerMAC, ETH_ALEN ) )
-				{
-					uintPeerChannel = pnetwork->network.Configuration.DSConfig;
-					break;
-				}
-			}
-
-		}
-
-		plist = get_next(plist);
-
-	}
-
-	_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
-	printk( "[%s] channel = %d\n", __FUNCTION__, uintPeerChannel );
-
-	if ( uintPeerChannel )
-	{
-		uint8_t	wfd_ie[ 128 ] = { 0x00 };
-		uint	wfd_ielen = 0;
-
-		if ( rtw_get_wfd_ie( &pnetwork->network.IEs[12], pnetwork->network.IELength - 12,  wfd_ie, &wfd_ielen ) )
-		{
-			uint8_t	wfd_devinfo[ 6 ] = { 0x00 };
-			uint	wfd_devlen = 6;
-
-			DBG_871X( "[%s] Found WFD IE!\n", __FUNCTION__ );
-			if ( rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_DEVICE_INFO, wfd_devinfo, &wfd_devlen ) )
-			{
-				uint16_t	wfd_devinfo_field = 0;
-
-				//	Commented by Albert 20120319
-				//	The first two bytes are the WFD device information field of WFD device information subelement.
-				//	In big endian format.
-				wfd_devinfo_field = RTW_GET_BE16(wfd_devinfo);
-				if ( wfd_devinfo_field & WFD_DEVINFO_PC_TDLS )
-				{
-					pwfd_info->wfd_pc = _TRUE;
-				}
-				else
-				{
-					pwfd_info->wfd_pc = _FALSE;
-				}
-			}
-		}
-	}
-	else
-	{
-		DBG_871X( "[%s] NOT Found in the Scanning Queue!\n", __FUNCTION__ );
-	}
-
-exit:
-
-	return ret;
-
-}
-
-static int rtw_p2p_set_wfd_device_type(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-
-	int ret = 0;
-	_adapter 					*padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct iw_point 			*pdata = &wrqu->data;
-	struct wifidirect_info		*pwdinfo = &( padapter->wdinfo );
-	struct wifi_display_info		*pwfd_info = pwdinfo->wfd_info;
-
-	//	Commented by Albert 20120328
-	//	The input data is 0 or 1
-	//	0: specify to Miracast source device
-	//	1 or others: specify to Miracast sink device (display device)
-
-	DBG_871X( "[%s] data = %s\n", __FUNCTION__, extra );
-
-	if ( extra[ 0 ] == '0' )	//	Set to Miracast source device.
-	{
-		pwfd_info->wfd_device_type = WFD_DEVINFO_SOURCE;
-	}
-	else					//	Set to Miracast sink device.
-	{
-		pwfd_info->wfd_device_type = WFD_DEVINFO_PSINK;
-	}
-
-exit:
-
-	return ret;
-
-}
-
-static int rtw_p2p_set_wfd_enable(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-//	Commented by Kurt 20121206
-//	This function is used to set wfd enabled
-
-	int ret = 0;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct wifidirect_info *pwdinfo= &(padapter->wdinfo);
-
-	if(*extra == '0' )
-		pwdinfo->wfd_info->wfd_enable = _FALSE;
-	else if(*extra == '1')
-		pwdinfo->wfd_info->wfd_enable = _TRUE;
-
-	DBG_871X( "[%s] wfd_enable = %d\n", __FUNCTION__, pwdinfo->wfd_info->wfd_enable );
-
-	return ret;
-
-}
-
-static int rtw_p2p_set_driver_iface(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-//	Commented by Kurt 20121206
-//	This function is used to set driver iface is WEXT or CFG80211
-	int ret = 0;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct wifidirect_info *pwdinfo= &(padapter->wdinfo);
-
-	if(*extra == '1' )
-	{
-		pwdinfo->driver_interface = DRIVER_WEXT;
-		DBG_871X( "[%s] driver_interface = WEXT\n", __FUNCTION__);
-	}
-	else if(*extra == '2')
-	{
-		pwdinfo->driver_interface = DRIVER_CFG80211;
-		DBG_871X( "[%s] driver_interface = CFG80211\n", __FUNCTION__);
-	}
-
-	return ret;
-
-}
-
-//	To set the WFD session available to enable or disable
-static int rtw_p2p_set_sa(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-
-	int ret = 0;
-	_adapter 					*padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct iw_point 			*pdata = &wrqu->data;
-	struct wifidirect_info		*pwdinfo = &( padapter->wdinfo );
-	struct wifi_display_info		*pwfd_info = pwdinfo->wfd_info;
-
-	DBG_871X( "[%s] data = %s\n", __FUNCTION__, extra );
-
-	if( 0 )
-	{
-		DBG_871X( "[%s] WiFi Direct is disable!\n", __FUNCTION__ );
-		return ret;
-	}
-	else
-	{
-		if ( extra[ 0 ] == '0' )	//	Disable the session available.
-		{
-			pwdinfo->session_available = _FALSE;
-		}
-		else if ( extra[ 0 ] == '1' )	//	Enable the session available.
-		{
-			pwdinfo->session_available = _TRUE;
-		}
-		else
-		{
-			pwdinfo->session_available = _FALSE;
-		}
-	}
-	printk( "[%s] session available = %d\n", __FUNCTION__, pwdinfo->session_available );
-
-exit:
-
-	return ret;
-
-}
-#endif // CONFIG_WFD
-
 static int rtw_p2p_prov_disc(struct net_device *ndev,
                                struct iw_request_info *info,
                                union iwreq_data *wrqu, char *extra)
@@ -5501,9 +5085,6 @@ static int rtw_p2p_prov_disc(struct net_device *ndev,
 	uint					p2pielen = 0, attr_contentlen = 0;
 	_irqL				irqL;
 	uint8_t 					ie_offset;
-#ifdef CONFIG_WFD
-	struct wifi_display_info*	pwfd_info = pwdinfo->wfd_info;
-#endif // CONFIG_WFD
 
 	//	Commented by Albert 20110301
 	//	The input data contains two informations.
@@ -5624,44 +5205,6 @@ static int rtw_p2p_prov_disc(struct net_device *ndev,
 
 	if ( uintPeerChannel )
 	{
-#ifdef CONFIG_WFD
-		{
-			uint8_t	wfd_ie[ 128 ] = { 0x00 };
-			uint	wfd_ielen = 0;
-
-			if ( rtw_get_wfd_ie( &pnetwork->network.IEs[12], pnetwork->network.IELength - 12,  wfd_ie, &wfd_ielen ) )
-			{
-				uint8_t	wfd_devinfo[ 6 ] = { 0x00 };
-				uint	wfd_devlen = 6;
-
-				DBG_871X( "[%s] Found WFD IE!\n", __FUNCTION__ );
-				if ( rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_DEVICE_INFO, wfd_devinfo, &wfd_devlen ) )
-				{
-					uint16_t	wfd_devinfo_field = 0;
-
-					//	Commented by Albert 20120319
-					//	The first two bytes are the WFD device information field of WFD device information subelement.
-					//	In big endian format.
-					wfd_devinfo_field = RTW_GET_BE16(wfd_devinfo);
-					if ( wfd_devinfo_field & WFD_DEVINFO_SESSION_AVAIL )
-					{
-						pwfd_info->peer_session_avail = _TRUE;
-					}
-					else
-					{
-						pwfd_info->peer_session_avail = _FALSE;
-					}
-				}
-			}
-
-			if ( _FALSE == pwfd_info->peer_session_avail )
-			{
-				DBG_871X( "[%s] WFD Session not avaiable!\n", __FUNCTION__ );
-				goto exit;
-			}
-		}
-#endif // CONFIG_WFD
-
 		DBG_871X( "[%s] peer channel: %d!\n", __FUNCTION__, uintPeerChannel );
 		memcpy( pwdinfo->tx_prov_disc_info.peerIFAddr, pnetwork->network.MacAddress, ETH_ALEN );
 		memcpy( pwdinfo->tx_prov_disc_info.peerDevAddr, peerMAC, ETH_ALEN );
@@ -5829,36 +5372,6 @@ static int rtw_p2p_set(struct net_device *ndev,
 		wrqu->data.length -= 11;
 		rtw_p2p_set_persistent( ndev, info, wrqu, &extra[11] );
 	}
-#ifdef CONFIG_WFD
-	else if ( _rtw_memcmp( extra, "sa=", 3 ) )
-	{
-		//	sa: WFD Session Available information
-		wrqu->data.length -= 3;
-		rtw_p2p_set_sa( ndev, info, wrqu, &extra[3] );
-	}
-	else if ( _rtw_memcmp( extra, "pc=", 3 ) )
-	{
-		//	pc: WFD Preferred Connection
-		wrqu->data.length -= 3;
-		rtw_p2p_set_pc( ndev, info, wrqu, &extra[3] );
-	}
-	else if ( _rtw_memcmp( extra, "wfd_type=", 9 ) )
-	{
-		//	pc: WFD Preferred Connection
-		wrqu->data.length -= 9;
-		rtw_p2p_set_wfd_device_type( ndev, info, wrqu, &extra[9] );
-	}
-	else if ( _rtw_memcmp( extra, "wfd_enable=", 11 ) )
-	{
-		wrqu->data.length -= 11;
-		rtw_p2p_set_wfd_enable( ndev, info, wrqu, &extra[11] );
-	}
-	else if ( _rtw_memcmp( extra, "driver_iface=", 13 ) )
-	{
-		wrqu->data.length -= 13;
-		rtw_p2p_set_driver_iface( ndev, info, wrqu, &extra[13] );
-	}
-#endif //CONFIG_WFD
 
 #endif //CONFIG_P2P
 
@@ -5920,20 +5433,6 @@ static int rtw_p2p_get(struct net_device *ndev,
 	{
 		rtw_p2p_get_op_ch( ndev, info, wrqu, extra);
 	}
-#ifdef CONFIG_WFD
-	else if ( _rtw_memcmp( wrqu->data.pointer, "peer_port", 9 ) )
-	{
-		rtw_p2p_get_peer_wfd_port( ndev, info, wrqu, extra );
-	}
-	else if ( _rtw_memcmp( wrqu->data.pointer, "wfd_sa", 6 ) )
-	{
-		rtw_p2p_get_peer_wfd_session_available( ndev, info, wrqu, extra );
-	}
-	else if ( _rtw_memcmp( wrqu->data.pointer, "wfd_pc", 6 ) )
-	{
-		rtw_p2p_get_peer_wfd_preferred_connection( ndev, info, wrqu, extra );
-	}
-#endif // CONFIG_WFD
 
 #endif //CONFIG_P2P
 
@@ -10518,22 +10017,6 @@ static int rtw_wfd_tdls_enable(struct net_device *ndev,
 	int ret = 0;
 
 #ifdef CONFIG_TDLS
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-
-	printk( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	if ( extra[ 0 ] == '0' )
-	{
-		padapter->wdinfo.wfd_tdls_enable = 0;
-	}
-	else
-	{
-		padapter->wdinfo.wfd_tdls_enable = 1;
-	}
-
-#endif //CONFIG_WFD
 #endif //CONFIG_TDLS
 
 	return ret;
@@ -10647,9 +10130,6 @@ static int rtw_tdls_setup(struct net_device *ndev,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	uint8_t mac_addr[ETH_ALEN];
 
-#ifdef CONFIG_WFD
-	struct wifidirect_info *pwdinfo= &(padapter->wdinfo);
-#endif // CONFIG_WFD
 
 	printk( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
 
@@ -10657,22 +10137,6 @@ static int rtw_tdls_setup(struct net_device *ndev,
 		mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
 	}
 
-#ifdef CONFIG_WFD
-	if ( _AES_ != padapter->securitypriv.dot11PrivacyAlgrthm )
-	{
-		//	Weak Security situation with AP.
-		if ( 0 == pwdinfo->wfd_tdls_weaksec )
-		{
-			//	Can't send the tdls setup request out!!
-			DBG_871X( "[%s] Current link is not AES, SKIP sending the tdls setup request!!\n", __FUNCTION__ );
-		}
-		else
-		{
-			issue_tdls_setup_req(padapter, mac_addr);
-		}
-	}
-	else
-#endif // CONFIG_WFD
 	{
 		issue_tdls_setup_req(padapter, mac_addr);
 	}
@@ -10830,42 +10294,6 @@ static int rtw_tdls_setip(struct net_device *ndev,
 	int ret = 0;
 
 #ifdef CONFIG_TDLS
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	struct wifi_display_info *pwfd_info = ptdlsinfo->wfd_info;
-	uint8_t i=0, j=0, k=0, tag=0, ip[3] = { 0xff }, *ptr = extra;
-
-	printk( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length - 1  );
-
-
-	while( i < 4 )
-	{
-		for( j=0; j < 4; j++)
-		{
-			if( *( extra + j + tag ) == '.' || *( extra + j + tag ) == '\0' )
-			{
-				if( j == 1 )
-					pwfd_info->ip_address[i]=convert_ip_addr( '0', '0', *(extra+(j-1)+tag));
-				if( j == 2 )
-					pwfd_info->ip_address[i]=convert_ip_addr( '0', *(extra+(j-2)+tag), *(extra+(j-1)+tag));
-				if( j == 3 )
-					pwfd_info->ip_address[i]=convert_ip_addr( *(extra+(j-3)+tag), *(extra+(j-2)+tag), *(extra+(j-1)+tag));
-
-				tag += j + 1;
-				break;
-			}
-		}
-		i++;
-	}
-
-	printk( "[%s] Set IP = %u.%u.%u.%u \n", __FUNCTION__,
-		ptdlsinfo->wfd_info->ip_address[0], ptdlsinfo->wfd_info->ip_address[1],
-		ptdlsinfo->wfd_info->ip_address[2], ptdlsinfo->wfd_info->ip_address[3]
-	);
-
-#endif //CONFIG_WFD
 #endif //CONFIG_TDLS
 
 	return ret;
@@ -10878,27 +10306,6 @@ static int rtw_tdls_getip(struct net_device *ndev,
 	int ret = 0;
 
 #ifdef CONFIG_TDLS
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	struct wifi_display_info *pwfd_info = ptdlsinfo->wfd_info;
-
-	printk( "[%s]\n", __FUNCTION__);
-
-	sprintf( extra, "\n\n%u.%u.%u.%u\n",
-		pwfd_info->peer_ip_address[0], pwfd_info->peer_ip_address[1],
-		pwfd_info->peer_ip_address[2], pwfd_info->peer_ip_address[3]
-		);
-
-	printk( "[%s] IP=%u.%u.%u.%u\n", __FUNCTION__,
-		pwfd_info->peer_ip_address[0], pwfd_info->peer_ip_address[1],
-		pwfd_info->peer_ip_address[2], pwfd_info->peer_ip_address[3]
-		);
-
-	wrqu->data.length = strlen( extra );
-
-#endif //CONFIG_WFD
 #endif //CONFIG_TDLS
 
 	return ret;
@@ -10912,20 +10319,6 @@ static int rtw_tdls_getport(struct net_device *ndev,
 	int ret = 0;
 
 #ifdef CONFIG_TDLS
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	struct wifi_display_info *pwfd_info = ptdlsinfo->wfd_info;
-
-	printk( "[%s]\n", __FUNCTION__);
-
-	sprintf( extra, "\n\n%d\n", pwfd_info->peer_rtsp_ctrlport );
-	printk( "[%s] remote port = %d\n", __FUNCTION__, pwfd_info->peer_rtsp_ctrlport );
-
-	wrqu->data.length = strlen( extra );
-
-#endif //CONFIG_WFD
 #endif //CONFIG_TDLS
 
 	return ret;
@@ -10941,23 +10334,6 @@ static int rtw_tdls_dis_result(struct net_device *ndev,
 	int ret = 0;
 
 #ifdef CONFIG_TDLS
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	struct wifi_display_info *pwfd_info = ptdlsinfo->wfd_info;
-
-	printk( "[%s]\n", __FUNCTION__);
-
-	if(ptdlsinfo->dev_discovered == 1 )
-	{
-		sprintf( extra, "\n\nDis=1\n" );
-		ptdlsinfo->dev_discovered = 0;
-	}
-
-	wrqu->data.length = strlen( extra );
-
-#endif //CONFIG_WFD
 #endif //CONFIG_TDLS
 
 	return ret;
@@ -10973,26 +10349,6 @@ static int rtw_wfd_tdls_status(struct net_device *ndev,
 	int ret = 0;
 
 #ifdef CONFIG_TDLS
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	struct wifi_display_info *pwfd_info = ptdlsinfo->wfd_info;
-
-	printk( "[%s]\n", __FUNCTION__);
-
-	if(ptdlsinfo->setup_state == TDLS_LINKED_STATE )
-	{
-		sprintf( extra, "\n\nStatus=1\n" );
-	}
-	else
-	{
-		sprintf( extra, "\n\nStatus=0\n" );
-	}
-
-	wrqu->data.length = strlen( extra );
-
-#endif //CONFIG_WFD
 #endif //CONFIG_TDLS
 
 	return ret;
@@ -11104,17 +10460,6 @@ static int rtw_tdls(struct net_device *ndev,
 		wrqu->data.length -= 6;
 		rtw_tdls_psoff( ndev, info, wrqu, &extra[6] );
 	}
-#ifdef CONFIG_WFD
-	else if (_rtw_memcmp( extra, "setip=", 6 ) )
-	{
-		wrqu->data.length -= 6;
-		rtw_tdls_setip( ndev, info, wrqu, &extra[6] );
-	}
-	else if (_rtw_memcmp( extra, "tprobe=", 6 ) )
-	{
-		issue_tunneled_probe_req((_adapter *)rtw_netdev_priv(ndev));
-	}
-#endif //CONFIG_WFD
 
 #endif //CONFIG_TDLS
 
@@ -11127,30 +10472,6 @@ static int rtw_tdls_get(struct net_device *ndev,
 				union iwreq_data *wrqu, char *extra)
 {
 	int ret = 0;
-
-#ifdef CONFIG_WFD
-
-	DBG_871X( "[%s] extra = %s\n", __FUNCTION__, (char*) wrqu->data.pointer );
-
-	if ( _rtw_memcmp( wrqu->data.pointer, "ip", 2 ) )
-	{
-		rtw_tdls_getip( ndev, info, wrqu, extra );
-	}
-	if ( _rtw_memcmp( wrqu->data.pointer, "port", 4 ) )
-	{
-		rtw_tdls_getport( ndev, info, wrqu, extra );
-	}
-	//WFDTDLS, for sigma test
-	if ( _rtw_memcmp( wrqu->data.pointer, "dis", 3 ) )
-	{
-		rtw_tdls_dis_result( ndev, info, wrqu, extra );
-	}
-	if ( _rtw_memcmp( wrqu->data.pointer, "status", 6 ) )
-	{
-		rtw_wfd_tdls_status( ndev, info, wrqu, extra );
-	}
-
-#endif //CONFIG_WFD
 
 	return ret;
 }

@@ -849,42 +849,6 @@ void flush_all_cam_entry(_adapter *padapter)
 
 }
 
-#if defined(CONFIG_P2P) && defined(CONFIG_WFD)
-int WFD_info_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
-{
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
-	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	struct wifidirect_info	*pwdinfo;
-	uint8_t	wfd_ie[ 128 ] = { 0x00 };
-	uint32_t	wfd_ielen = 0;
-
-
-	pwdinfo = &padapter->wdinfo;
-	if ( rtw_get_wfd_ie( ( uint8_t * ) pIE, pIE->Length, wfd_ie, &wfd_ielen ) )
-	{
-		uint8_t	attr_content[ 10 ] = { 0x00 };
-		uint32_t	attr_contentlen = 0;
-
-		DBG_871X( "[%s] Found WFD IE\n", __FUNCTION__ );
-		rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_DEVICE_INFO, attr_content, &attr_contentlen);
-		if ( attr_contentlen )
-		{
-			pwdinfo->wfd_info->peer_rtsp_ctrlport = RTW_GET_BE16( attr_content + 2 );
-			DBG_8192C( "[%s] Peer PORT NUM = %d\n", __FUNCTION__, pwdinfo->wfd_info->peer_rtsp_ctrlport );
-			return( _TRUE );
-		}
-	}
-	else
-	{
-		DBG_871X( "[%s] NO WFD IE\n", __FUNCTION__ );
-
-	}
-	return( _FAIL );
-}
-#endif
-
 int WMM_param_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
 {
 	//struct registry_priv	*pregpriv = &padapter->registrypriv;

@@ -42,10 +42,6 @@ void rtw_reset_tdls_info(_adapter* padapter)
 	ptdlsinfo->candidate_ch = 1;	//when inplement channel switching, default candidate channel is 1
 	ptdlsinfo->watchdog_count = 0;
 	ptdlsinfo->dev_discovered = 0;
-
-#ifdef CONFIG_WFD
-	ptdlsinfo->wfd_info = &padapter->wfd_info;
-#endif //CONFIG_WFD
 }
 
 int rtw_init_tdls_info(_adapter* padapter)
@@ -407,130 +403,6 @@ uint8_t *rtw_tdls_set_sup_ch(struct mlme_ext_priv *pmlmeext, uint8_t *pframe, st
 	return(rtw_set_ie(pframe, _SUPPORTED_CH_IE_, idx_5g, sup_ch, &(pattrib->pktlen)));
 }
 
-#ifdef CONFIG_WFD
-void rtw_tdls_process_wfd_ie(struct tdls_info *ptdlsinfo, uint8_t *ptr, uint8_t length)
-{
-	uint8_t	wfd_ie[ 128 ] = { 0x00 };
-	uint32_t	wfd_ielen = 0;
-	uint32_t	wfd_offset = 0;
-	//	Try to get the TCP port information when receiving the negotiation response.
-	//
-
-	wfd_offset = 0;
-	wfd_offset = rtw_get_wfd_ie( ptr + wfd_offset, length - wfd_offset, wfd_ie, &wfd_ielen );
-	while( wfd_offset )
-	{
-		uint8_t	attr_content[ 10 ] = { 0x00 };
-		uint32_t	attr_contentlen = 0;
-		int	i;
-
-		DBG_871X( "[%s] WFD IE Found!!\n", __FUNCTION__ );
-		rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_DEVICE_INFO, attr_content, &attr_contentlen);
-		if ( attr_contentlen )
-		{
-			ptdlsinfo->wfd_info->peer_rtsp_ctrlport = RTW_GET_BE16( attr_content + 2 );
-			DBG_871X( "[%s] Peer PORT NUM = %d\n", __FUNCTION__, ptdlsinfo->wfd_info->peer_rtsp_ctrlport );
-		}
-
-		memset( attr_content, 0x00, 10);
-		attr_contentlen = 0;
-		rtw_get_wfd_attr_content( wfd_ie, wfd_ielen, WFD_ATTR_LOCAL_IP_ADDR, attr_content, &attr_contentlen);
-		if ( attr_contentlen )
-		{
-			memcpy(ptdlsinfo->wfd_info->peer_ip_address, ( attr_content + 1 ), 4);
-			DBG_871X( "[%s] Peer IP = %02u.%02u.%02u.%02u \n", __FUNCTION__,
-				ptdlsinfo->wfd_info->peer_ip_address[0], ptdlsinfo->wfd_info->peer_ip_address[1],
-				ptdlsinfo->wfd_info->peer_ip_address[2], ptdlsinfo->wfd_info->peer_ip_address[3]
-				);
-		}
-		wfd_offset = rtw_get_wfd_ie( ptr + wfd_offset, length - wfd_offset, wfd_ie, &wfd_ielen );
-	}
-}
-
-void issue_tunneled_probe_req(_adapter *padapter)
-{
-	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	struct xmit_priv			*pxmitpriv = &(padapter->xmitpriv);
-	uint8_t baddr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-
-	DBG_871X("[%s]\n", __FUNCTION__);
-
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
-	{
-		return;
-	}
-
-	//update attribute
-	pattrib = &pmgntframe->attrib;
-
-	pmgntframe->frame_tag = DATA_FRAMETAG;
-	pattrib->ether_type = 0x890d;
-
-	memcpy(pattrib->dst, baddr, ETH_ALEN);
-
-	memcpy(pattrib->src, myid(&(padapter->eeprompriv)), ETH_ALEN);
-
-	memcpy(pattrib->ra, get_bssid(pmlmepriv), ETH_ALEN);
-	memcpy(pattrib->ta, pattrib->src, ETH_ALEN);
-
-	update_tdls_attrib(padapter, pattrib);
-	pattrib->qsel=pattrib->priority;
-	if (rtw_xmit_tdls_coalesce(padapter, pmgntframe, TUNNELED_PROBE_REQ) != _SUCCESS) {
-		rtw_free_xmitbuf(pxmitpriv, pmgntframe->pxmitbuf);
-		rtw_free_xmitframe(pxmitpriv, pmgntframe);
-		goto exit;
-	}
-	rtw_dump_xframe(padapter, pmgntframe);
-
-exit:
-
-	return;
-}
-
-void issue_tunneled_probe_rsp(_adapter *padapter, union recv_frame *precv_frame)
-{
-	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	struct xmit_priv			*pxmitpriv = &(padapter->xmitpriv);
-	struct rx_pkt_attrib	*rx_pkt_pattrib = &precv_frame->u.hdr.attrib;
-
-	DBG_871X("[%s]\n", __FUNCTION__);
-
-	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
-	{
-		return;
-	}
-
-	//update attribute
-	pattrib = &pmgntframe->attrib;
-
-	pmgntframe->frame_tag = DATA_FRAMETAG;
-	pattrib->ether_type = 0x890d;
-
-	memcpy(pattrib->dst, rx_pkt_pattrib->src, ETH_ALEN);
-
-	memcpy(pattrib->src, myid(&(padapter->eeprompriv)), ETH_ALEN);
-
-	memcpy(pattrib->ra, get_bssid(pmlmepriv), ETH_ALEN);
-	memcpy(pattrib->ta, pattrib->src, ETH_ALEN);
-
-	update_tdls_attrib(padapter, pattrib);
-	pattrib->qsel=pattrib->priority;
-	if (rtw_xmit_tdls_coalesce(padapter, pmgntframe, TUNNELED_PROBE_RSP) != _SUCCESS) {
-		rtw_free_xmitbuf(pxmitpriv, pmgntframe->pxmitbuf);
-		rtw_free_xmitframe(pxmitpriv, pmgntframe);
-		goto exit;
-	}
-	rtw_dump_xframe(padapter, pmgntframe);
-
-exit:
-
-	return;
-}
-#endif //CONFIG_WFD
 
 void issue_tdls_setup_req(_adapter *padapter, uint8_t *mac_addr)
 {
@@ -1237,18 +1109,6 @@ sint On_TDLS_Setup_Req(_adapter *adapter, union recv_frame *precv_frame)
 				//request haven't RSNIE
 				ptdls_sta->stat_code = 38;
 			}
-
-#ifdef CONFIG_WFD
-			//WFD test plan version 0.18.2 test item 5.1.5
-			//SoUT does not use TDLS if AP uses weak security
-			if ( adapter->wdinfo.wfd_tdls_enable )
-			{
-				if(rsnie_have && (prx_pkt_attrib->encrypt != _AES_))
-				{
-					ptdls_sta->stat_code = 5;
-				}
-			}
-#endif //CONFIG_WFD
 		}
 
 		ptdls_sta->tdls_sta_state|= TDLS_INITIATOR_STATE;
@@ -1264,11 +1124,6 @@ sint On_TDLS_Setup_Req(_adapter *adapter, union recv_frame *precv_frame)
 		{
 			ptdlsinfo->sta_maximum = _TRUE;
 		}
-
-#ifdef CONFIG_WFD
-		rtw_tdls_process_wfd_ie(ptdlsinfo, ptr + FIXED_IE, parsing_length - FIXED_IE);
-#endif // CONFIG_WFD
-
 	}
 	else
 	{
@@ -1402,10 +1257,6 @@ sint On_TDLS_Setup_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 	//update station supportRate
 	ptdls_sta->bssratelen = supportRateNum;
 	memcpy(ptdls_sta->bssrateset, supportRate, supportRateNum);
-
-#ifdef CONFIG_WFD
-	rtw_tdls_process_wfd_ie(ptdlsinfo, ptr + FIXED_IE, parsing_length - FIXED_IE);
-#endif // CONFIG_WFD
 
 	if(stat_code != 0)
 	{
@@ -1914,96 +1765,6 @@ sint On_TDLS_Ch_Switch_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 	return _FAIL;
 }
 
-#ifdef CONFIG_WFD
-void wfd_ie_tdls(_adapter * padapter, uint8_t *pframe, uint32_t	 *pktlen )
-{
-	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
-	struct wifi_display_info	*pwfd_info = padapter->tdlsinfo.wfd_info;
-	uint8_t wfdie[ MAX_WFD_IE_LEN] = { 0x00 };
-	uint32_t	 wfdielen = 0;
-
-	//	WFD OUI
-	wfdielen = 0;
-	wfdie[ wfdielen++ ] = 0x50;
-	wfdie[ wfdielen++ ] = 0x6F;
-	wfdie[ wfdielen++ ] = 0x9A;
-	wfdie[ wfdielen++ ] = 0x0A;	//	WFA WFD v1.0
-
-	//	Commented by Albert 20110825
-	//	According to the WFD Specification, the negotiation request frame should contain 3 WFD attributes
-	//	1. WFD Device Information
-	//	2. Associated BSSID ( Optional )
-	//	3. Local IP Adress ( Optional )
-
-	//	WFD Device Information ATTR
-	//	Type:
-	wfdie[ wfdielen++ ] = WFD_ATTR_DEVICE_INFO;
-
-	//	Length:
-	//	Note: In the WFD specification, the size of length field is 2.
-	RTW_PUT_BE16(wfdie + wfdielen, 0x0006);
-	wfdielen += 2;
-
-	//	Value1:
-	//	WFD device information
-	//	available for WFD session + Preferred TDLS + WSD ( WFD Service Discovery )
-	RTW_PUT_BE16(wfdie + wfdielen, pwfd_info->wfd_device_type | WFD_DEVINFO_SESSION_AVAIL
-								| WFD_DEVINFO_PC_TDLS | WFD_DEVINFO_WSD);
-	wfdielen += 2;
-
-	//	Value2:
-	//	Session Management Control Port
-	//	Default TCP port for RTSP messages is 554
-	RTW_PUT_BE16(wfdie + wfdielen, pwfd_info->rtsp_ctrlport );
-	wfdielen += 2;
-
-	//	Value3:
-	//	WFD Device Maximum Throughput
-	//	300Mbps is the maximum throughput
-	RTW_PUT_BE16(wfdie + wfdielen, 300);
-	wfdielen += 2;
-
-	//	Associated BSSID ATTR
-	//	Type:
-	wfdie[ wfdielen++ ] = WFD_ATTR_ASSOC_BSSID;
-
-	//	Length:
-	//	Note: In the WFD specification, the size of length field is 2.
-	RTW_PUT_BE16(wfdie + wfdielen, 0x0006);
-	wfdielen += 2;
-
-	//	Value:
-	//	Associated BSSID
-	if ( check_fwstate( pmlmepriv, _FW_LINKED) == _TRUE )
-	{
-		memcpy( wfdie + wfdielen, &pmlmepriv->assoc_bssid[ 0 ], ETH_ALEN );
-	}
-	else
-	{
-		memset( wfdie + wfdielen, 0x00, ETH_ALEN );
-	}
-
-	//	Local IP Address ATTR
-	wfdie[ wfdielen++ ] = WFD_ATTR_LOCAL_IP_ADDR;
-
-	//	Length:
-	//	Note: In the WFD specification, the size of length field is 2.
-	RTW_PUT_BE16(wfdie + wfdielen, 0x0005);
-	wfdielen += 2;
-
-	//	Version:
-	//	0x01: Version1;IPv4
-	wfdie[ wfdielen++ ] = 0x01;
-
-	//	IPv4 Address
-	memcpy( wfdie + wfdielen, pwfd_info->ip_address, 4 );
-	wfdielen += 4;
-
-	pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, wfdielen, (unsigned char *) wfdie, pktlen);
-
-}
-#endif //CONFIG_WFD
-
 void rtw_build_tdls_setup_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -2116,11 +1877,6 @@ void rtw_build_tdls_setup_req_ies(_adapter * padapter, struct xmit_frame * pxmit
 	memcpy((link_id_addr+6), pattrib->src, 6);
 	memcpy((link_id_addr+12), pattrib->dst, 6);
 	pframe = rtw_set_ie(pframe, _LINK_ID_IE_,  18, link_id_addr, &(pattrib->pktlen));
-
-#ifdef CONFIG_WFD
-	wfd_ie_tdls( padapter, pframe, &(pattrib->pktlen) );
-#endif //CONFIG_WFD
-
 }
 
 void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
@@ -2265,11 +2021,6 @@ void rtw_build_tdls_setup_rsp_ies(_adapter * padapter, struct xmit_frame * pxmit
 	//fill FTIE mic
 	if(pattrib->encrypt)
 		wpa_tdls_ftie_mic(ptdls_sta->tpk.kck, 2, plinkid_ie, prsnie, ptimeout_ie, pftie, pftie_mic);
-
-#ifdef CONFIG_WFD
-	wfd_ie_tdls( padapter, pframe, &(pattrib->pktlen) );
-#endif //CONFIG_WFD
-
 }
 
 void rtw_build_tdls_setup_cfm_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
@@ -2607,76 +2358,6 @@ void rtw_build_tdls_ch_switch_rsp_ies(_adapter * padapter, struct xmit_frame * p
 	pframe = rtw_set_ie(pframe, _CH_SWITCH_TIMING_,  4, ch_switch_timing, &(pattrib->pktlen));
 
 }
-
-#ifdef CONFIG_WFD
-void rtw_build_tunneled_probe_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
-{
-
-	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
-	struct wifidirect_info *pwdinfo = &padapter->wdinfo;
-	struct wifidirect_info *pbuddy_wdinfo = &padapter->pbuddy_adapter->wdinfo;
-	uint8_t payload_type = 0x02;
-	uint8_t category = RTW_WLAN_CATEGORY_P2P;
-	uint8_t WFA_OUI[3] = { 0x50, 0x6f, 0x9a};
-	uint8_t probe_req = 4;
-	uint8_t wfdielen = 0;
-
-	//payload type
-	pframe = rtw_set_fixed_ie(pframe, 1, &(payload_type), &(pattrib->pktlen));
-	//category, OUI, frame_body_type
-	pframe = rtw_set_fixed_ie(pframe, 1, &(category), &(pattrib->pktlen));
-	pframe = rtw_set_fixed_ie(pframe, 3, WFA_OUI, &(pattrib->pktlen));
-	pframe = rtw_set_fixed_ie(pframe, 1, &(probe_req), &(pattrib->pktlen));
-
-	if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-	{
-		wfdielen = build_probe_req_wfd_ie(pwdinfo, pframe);
-		pframe += wfdielen;
-		pattrib->pktlen += wfdielen;
-	}
-	else if(!rtw_p2p_chk_state(pbuddy_wdinfo, P2P_STATE_NONE))
-	{
-		wfdielen = build_probe_req_wfd_ie(pbuddy_wdinfo, pframe);
-		pframe += wfdielen;
-		pattrib->pktlen += wfdielen;
-	}
-
-}
-
-void rtw_build_tunneled_probe_rsp_ies(_adapter * padapter, struct xmit_frame * pxmitframe, uint8_t *pframe)
-{
-
-	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
-	struct wifidirect_info *pwdinfo = &padapter->wdinfo;
-	struct wifidirect_info *pbuddy_wdinfo = &padapter->pbuddy_adapter->wdinfo;
-	uint8_t payload_type = 0x02;
-	uint8_t category = RTW_WLAN_CATEGORY_P2P;
-	uint8_t WFA_OUI[3] = { 0x50, 0x6f, 0x9a};
-	uint8_t probe_rsp = 5;
-	uint8_t wfdielen = 0;
-
-	//payload type
-	pframe = rtw_set_fixed_ie(pframe, 1, &(payload_type), &(pattrib->pktlen));
-	//category, OUI, frame_body_type
-	pframe = rtw_set_fixed_ie(pframe, 1, &(category), &(pattrib->pktlen));
-	pframe = rtw_set_fixed_ie(pframe, 3, WFA_OUI, &(pattrib->pktlen));
-	pframe = rtw_set_fixed_ie(pframe, 1, &(probe_rsp), &(pattrib->pktlen));
-
-	if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-	{
-		wfdielen = build_probe_resp_wfd_ie(pwdinfo, pframe, 1);
-		pframe += wfdielen;
-		pattrib->pktlen += wfdielen;
-	}
-	else if(!rtw_p2p_chk_state(pbuddy_wdinfo, P2P_STATE_NONE))
-	{
-		wfdielen = build_probe_resp_wfd_ie(pbuddy_wdinfo, pframe, 1);
-		pframe += wfdielen;
-		pattrib->pktlen += wfdielen;
-	}
-
-}
-#endif //CONFIG_WFD
 
 void _TPK_timer_hdl(void *FunctionContext)
 {

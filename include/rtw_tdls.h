@@ -100,10 +100,6 @@ void init_off_ch_timer(_adapter *padapter, struct sta_info *psta);
 void init_tdls_alive_timer(_adapter *padapter, struct sta_info *psta);
 void init_handshake_timer(_adapter *padapter, struct sta_info *psta);
 void free_tdls_sta(_adapter *padapter, struct sta_info *ptdls_sta);
-#ifdef CONFIG_WFD
-void issue_tunneled_probe_req(_adapter *padapter);
-void issue_tunneled_probe_rsp(_adapter *padapter, union recv_frame *precv_frame);
-#endif //CONFIG_WFD
 void issue_tdls_dis_req(_adapter *padapter, uint8_t *mac_addr);
 void issue_tdls_setup_req(_adapter *padapter, uint8_t *mac_addr);
 void issue_tdls_setup_rsp(_adapter *padapter, union recv_frame *precv_frame);

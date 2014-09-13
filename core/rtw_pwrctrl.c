@@ -257,9 +257,6 @@ void rtw_ps_processor(struct _ADAPTER *padapter)
 #endif //SUPPORT_HW_RFOFF_DETECTED
 
 	if (pwrpriv->ips_mode_req == IPS_NONE
-#ifdef CONFIG_CONCURRENT_MODE
-		|| padapter->pbuddy_adapter->pwrctrlpriv.ips_mode_req == IPS_NONE
-#endif
 	)
 		goto exit;
 
@@ -628,35 +625,6 @@ _func_enter_;
 
 //	DBG_871X("+LeisurePSEnter\n");
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->iface_type != IFACE_PORT0)
-		return; /* Skip power saving for concurrent mode port 1*/
-
-	/* consider buddy, if exist */
-	if (buddy) {
-		struct mlme_priv *b_pmlmepriv = &(buddy->mlmepriv);
-		#ifdef CONFIG_P2P
-		struct wifidirect_info *b_pwdinfo = &(buddy->wdinfo);
-		#ifdef CONFIG_IOCTL_CFG80211
-		struct cfg80211_wifidirect_info *b_pcfg80211_wdinfo = &buddy->cfg80211_wdinfo;
-		#endif
-		#endif
-
-		if (check_fwstate(b_pmlmepriv, WIFI_ASOC_STATE|WIFI_SITE_MONITOR)
-			|| check_fwstate(b_pmlmepriv, WIFI_UNDER_LINKING|WIFI_UNDER_WPS)
-			|| check_fwstate(b_pmlmepriv, WIFI_AP_STATE)
-			|| check_fwstate(b_pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_ADHOC_STATE)
-			#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211) && defined(CONFIG_P2P_IPS)
-			|| b_pcfg80211_wdinfo->is_ro_ch
-			#elif defined(CONFIG_P2P)
-			|| !rtw_p2p_chk_state(b_pwdinfo, P2P_STATE_NONE)
-			#endif
-			|| rtw_is_scan_deny(buddy)
-		) {
-			return;
-		}
-	}
-#endif
 
 	if (PS_RDY_CHECK(padapter) == _FALSE)
 		return;
@@ -691,10 +659,6 @@ void LPS_Leave(PADAPTER padapter)
 
 _func_enter_;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->iface_type != IFACE_PORT0)
-		return; /* Skip power saving for concurrent mode port 1*/
-#endif
 
 //	DBG_871X("+LeisurePSLeave\n");
 
@@ -1426,10 +1390,6 @@ void rtw_register_early_suspend(struct pwrctrl_priv *pwrpriv)
 {
 	struct _ADAPTER *adapter = container_of(pwrpriv, struct _ADAPTER, pwrctrlpriv);
 
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (adapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
 
 	DBG_871X("%s\n", __FUNCTION__);
 
@@ -1446,10 +1406,6 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv)
 {
 	struct _ADAPTER *adapter = container_of(pwrpriv, struct _ADAPTER, pwrctrlpriv);
 
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (adapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
 
 	DBG_871X("%s\n", __FUNCTION__);
 
@@ -1493,10 +1449,6 @@ void rtw_register_early_suspend(struct pwrctrl_priv *pwrpriv)
 {
 	struct _ADAPTER *adapter = container_of(pwrpriv, struct _ADAPTER, pwrctrlpriv);
 
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (adapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
 
 	DBG_871X("%s\n", __FUNCTION__);
 
@@ -1511,10 +1463,6 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv)
 {
 	struct _ADAPTER *adapter = container_of(pwrpriv, struct _ADAPTER, pwrctrlpriv);
 
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (adapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
 
 	DBG_871X("%s\n", __FUNCTION__);
 
@@ -1557,16 +1505,6 @@ int _rtw_pwr_wakeup(struct _ADAPTER *padapter, uint32_t	 ips_deffer_ms, const ch
 	int ret = _SUCCESS;
 	uint32_t	 start = rtw_get_current_time();
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->pbuddy_adapter)
-		LeaveAllPowerSaveMode(padapter->pbuddy_adapter);
-
-	if ((padapter->isprimary == _FALSE) && padapter->pbuddy_adapter){
-		padapter = padapter->pbuddy_adapter;
-		pwrpriv = &padapter->pwrctrlpriv;
-		pmlmepriv = &padapter->mlmepriv;
-	}
-#endif
 
 	if (pwrpriv->ips_deny_time < rtw_get_current_time() + rtw_ms_to_systime(ips_deffer_ms))
 		pwrpriv->ips_deny_time = rtw_get_current_time() + rtw_ms_to_systime(ips_deffer_ms);

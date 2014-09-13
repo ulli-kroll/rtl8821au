@@ -435,9 +435,6 @@ rtl8812_HalDmWatchDog(
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
-#ifdef CONFIG_CONCURRENT_MODE
-	PADAPTER pbuddy_adapter = Adapter->pbuddy_adapter;
-#endif //CONFIG_CONCURRENT_MODE
 
 	_func_enter_;
 
@@ -447,12 +444,6 @@ rtl8812_HalDmWatchDog(
 		goto skip_dm;
 
 #ifdef CONFIG_LPS
-	#ifdef CONFIG_CONCURRENT_MODE
-	if (Adapter->iface_type != IFACE_PORT0 && pbuddy_adapter) {
-		bFwCurrentInPSMode = pbuddy_adapter->pwrctrlpriv.bFwCurrentInPSMode;
-		rtw_hal_get_hwreg(pbuddy_adapter, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&bFwPSAwake));
-	} else
-	#endif //CONFIG_CONCURRENT_MODE
 	{
 		bFwCurrentInPSMode = Adapter->pwrctrlpriv.bFwCurrentInPSMode;
 		rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&bFwPSAwake));
@@ -494,10 +485,6 @@ rtl8812_HalDmWatchDog(
 		if(rtw_linked_check(Adapter))
 			bLinked = _TRUE;
 
-#ifdef CONFIG_CONCURRENT_MODE
-		if(pbuddy_adapter && rtw_linked_check(pbuddy_adapter))
-			bLinked = _TRUE;
-#endif //CONFIG_CONCURRENT_MODE
 
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 		ODM_DMWatchdog(&pHalData->odmpriv);

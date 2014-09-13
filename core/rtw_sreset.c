@@ -337,19 +337,12 @@ void sreset_reset(struct _ADAPTER *padapter)
 	pwrpriv->change_rfpwrstate = rf_off;
 
 	sreset_stop_adapter(padapter);
-#ifdef CONFIG_CONCURRENT_MODE
-	sreset_stop_adapter(padapter->pbuddy_adapter);
-#endif
-
 #ifdef CONFIG_IPS
 	ips_enter(padapter);
 	ips_leave(padapter);
 #endif
 
 	sreset_startstruct _ADAPTER(padapter);
-#ifdef CONFIG_CONCURRENT_MODE
-	sreset_startstruct _ADAPTER(padapter->pbuddy_adapter);
-#endif
 
 	psrtpriv->silent_reset_inprogress = _FALSE;
 	_exit_critical_mutex(&psrtpriv->silentreset_mutex, &irqL);

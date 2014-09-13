@@ -490,14 +490,6 @@ _InitTxBufferBoundary_8821AUsb(
 	rtw_write8(Adapter, REG_WMAC_LBK_BF_HD, txpktbuf_bndy);
 	rtw_write8(Adapter, REG_TRXFF_BNDY, txpktbuf_bndy);
 	rtw_write8(Adapter, REG_TDECTRL+1, txpktbuf_bndy);
-
-#ifdef CONFIG_CONCURRENT_MODE
-	rtw_write8(Adapter, REG_BCNQ1_BDNY, txpktbuf_bndy+8);
-	rtw_write8(Adapter, REG_TDECTRL1_8812+1, txpktbuf_bndy+8);//BCN1_HEAD
-	// BIT1- BIT_SW_BCN_SEL_EN
-	rtw_write8(Adapter, REG_TDECTRL1_8812+2, rtw_read8(Adapter, REG_TDECTRL1_8812+2)|BIT1);
-#endif
-
 }
 
 static VOID
@@ -1647,7 +1639,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC02);
 	value8 = rtw_read8(Adapter, REG_CR);
 	rtw_write8(Adapter, REG_CR, (value8|MACTXEN|MACRXEN));
 
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_TX_MCAST2UNI)
+#if defined(CONFIG_TX_MCAST2UNI)
 
 #ifdef CONFIG_CHECK_AC_LIFETIME
 	// Enable lifetime check for the four ACs
@@ -1661,7 +1653,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC02);
 	rtw_write16(Adapter, REG_PKT_VO_VI_LIFE_TIME, 0x3000);	// unit: 256us. 3s
 	rtw_write16(Adapter, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	// unit: 256us. 3s
 #endif	// CONFIG_TX_MCAST2UNI
-#endif	// CONFIG_CONCURRENT_MODE || CONFIG_TX_MCAST2UNI
+#endif	// CONFIG_TX_MCAST2UNI
 
 
 #ifdef CONFIG_LED
@@ -1909,11 +1901,6 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC31);
 		uint8_t mac_addr[6];
 		for(i=0; i<6; i++)
 		{
-#ifdef CONFIG_CONCURRENT_MODE
-			if(Adapter->iface_type == IFACE_PORT1)
-				mac_addr[i] = rtw_read8(Adapter, REG_MACID1+i);
-			else
-#endif
 			mac_addr[i] = rtw_read8(Adapter, REG_MACID+i);
 		}
 
@@ -2901,9 +2888,6 @@ static struct hal_ops rtl8812au_hal_ops = {
 	.hal_dm_watchdog =	rtl8812_HalDmWatchDog,
 
 	.Add_RateATid =		rtl8812_Add_RateATid,
-#ifdef CONFIG_CONCURRENT_MODE
-	.clone_haldata =	rtl8812_clone_haldata,
-#endif
 	.run_thread =		rtl8812_start_thread,
 	.cancel_thread =	rtl8812_stop_thread,
 
@@ -2951,9 +2935,6 @@ void rtl8812au_set_hal_ops(_adapter * padapter)
 {
 	struct hal_ops	*pHalFunc = &padapter->HalFunc;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if(padapter->isprimary)
-#endif //CONFIG_CONCURRENT_MODE
 	{
 		padapter->HalData = rtw_zmalloc(sizeof(HAL_DATA_TYPE));
 		if(padapter->HalData == NULL){
@@ -3033,9 +3014,6 @@ void rtl8812au_set_hal_ops(_adapter * padapter)
 	pHalFunc->hal_dm_watchdog = &rtl8812_HalDmWatchDog;
 
 	pHalFunc->Add_RateATid = &rtl8812_Add_RateATid;
-#ifdef CONFIG_CONCURRENT_MODE
-	pHalFunc->clone_haldata = &rtl8812_clone_haldata;
-#endif
 	pHalFunc->run_thread= &rtl8812_start_thread;
 	pHalFunc->cancel_thread= &rtl8812_stop_thread;
 

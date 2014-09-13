@@ -295,13 +295,6 @@ void	rtw_hal_add_ra_tid(_adapter *padapter, uint32_t bitmap, u8* arg, uint8_t rs
 	if(padapter->HalFunc.Add_RateATid)
 		padapter->HalFunc.Add_RateATid(padapter, bitmap, arg, rssi_level);
 }
-#ifdef CONFIG_CONCURRENT_MODE
-void	rtw_hal_clone_data(_adapter *dst_padapter, _adapter *src_padapter)
-{
-	if(dst_padapter->HalFunc.clone_haldata)
-		dst_padapter->HalFunc.clone_haldata(dst_padapter, src_padapter);
-}
-#endif
 /*	Start specifical interface thread		*/
 void	rtw_hal_start_thread(_adapter *padapter)
 {
@@ -368,10 +361,6 @@ void	rtw_hal_set_chnl_bw(_adapter *padapter, uint8_t channel, CHANNEL_WIDTH Band
 
 void	rtw_hal_dm_watchdog(_adapter *padapter)
 {
-#if defined(CONFIG_CONCURRENT_MODE)
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
 	if(padapter->HalFunc.hal_dm_watchdog)
 		padapter->HalFunc.hal_dm_watchdog(padapter);
 }
@@ -428,10 +417,6 @@ void rtw_hal_sreset_reset_value(_adapter *padapter)
 
 void rtw_hal_sreset_xmit_status_check(_adapter *padapter)
 {
-#ifdef CONFIG_CONCURRENT_MODE
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
 	if(padapter->HalFunc.sreset_xmit_status_check)
 		padapter->HalFunc.sreset_xmit_status_check(padapter);
 }

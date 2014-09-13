@@ -386,11 +386,6 @@ struct FW_Sta_Info
  * 4. Back to channel 1 for 300 milliseconds
  * 5. ... and so on, till survey done.
  */
-#if defined CONFIG_STA_MODE_SCAN_UNDER_AP_MODE && defined CONFIG_CONCURRENT_MODE
-#define RTW_SCAN_NUM_OF_CH			8
-#define RTW_STAY_AP_CH_MILLISECOND	3	// this value is a multiplier,for example, when this value is 3, it would stay AP's op ch for
-											// 3 * SURVEY_TO millisecond.
-#endif //defined CONFIG_STA_MODE_SCAN_UNDER_AP_MODE && defined CONFIG_CONCURRENT_MODE
 
 struct mlme_ext_info
 {
@@ -758,13 +753,6 @@ extern void process_addba_req(_adapter *padapter, uint8_t *paddba_req, uint8_t *
 
 extern void update_TSF(struct mlme_ext_priv *pmlmeext, uint8_t *pframe, uint len);
 extern void correct_TSF(_adapter *padapter, struct mlme_ext_priv *pmlmeext);
-
-
-#ifdef CONFIG_CONCURRENT_MODE
- sint check_buddy_mlmeinfo_state(_adapter *padapter, u32 state);
-int concurrent_chk_start_clnt_join(_adapter *padapter);
-void concurrent_chk_joinbss_done(_adapter *padapter, int join_res);
-#endif //CONFIG_CONCURRENT_MODE
 
 struct cmd_hdl {
 	uint	parmsize;

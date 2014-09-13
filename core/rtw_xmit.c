@@ -962,12 +962,6 @@ static int32_t update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *p
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("update_attrib: bswenc=_FALSE\n"));
 	}
 
-#ifdef CONFIG_CONCURRENT_MODE
-	if((pattrib->encrypt && bmcast) || (pattrib->encrypt ==_WEP40_) || (pattrib->encrypt ==_WEP104_))
-	{
-		pattrib->bswenc = _TRUE;//force using sw enc.
-	}
-#endif
 
 #ifdef CONFIG_WAPI_SUPPORT
 	if(pattrib->encrypt == _SMS4_)
@@ -3223,10 +3217,6 @@ static void do_queue_select(_adapter	*padapter, struct pkt_attrib *pattrib)
 	qsel = pattrib->priority;
 	RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("### do_queue_select priority=%d ,qsel = %d\n",pattrib->priority ,qsel));
 
-#ifdef CONFIG_CONCURRENT_MODE
-//	if (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == _TRUE)
-//		qsel = 7;//
-#endif
 
 	pattrib->qsel = qsel;
 }

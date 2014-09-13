@@ -286,18 +286,6 @@ void interrupt_handler_8812au(_adapter *padapter,uint16_t pkt_len,uint8_t *pbuf)
 				set_tx_beacon_cmd(padapter);
 			}
 		}
-#ifdef CONFIG_CONCURRENT_MODE
-		if(check_buddy_fwstate(padapter, WIFI_AP_STATE))
-		{
-			//send_beacon(padapter);
-			if(padapter->pbuddy_adapter->mlmepriv.update_bcn == _TRUE)
-			{
-				//tx_beacon_hdl(padapter, NULL);
-				set_tx_beacon_cmd(padapter->pbuddy_adapter);
-			}
-		}
-#endif
-
 	}
 #endif //CONFIG_INTERRUPT_BASED_TXBCN
 
@@ -419,157 +407,6 @@ _func_exit_;
 static int32_t pre_recv_entry(union recv_frame *precvframe, uint8_t *pphy_status)
 {
 	int32_t ret=_SUCCESS;
-#ifdef CONFIG_CONCURRENT_MODE
-	uint8_t *primary_myid, *secondary_myid, *paddr1;
-	union recv_frame	*precvframe_if2 = NULL;
-	_adapter *primary_padapter = precvframe->u.hdr.adapter;
-	_adapter *secondary_padapter = primary_padapter->pbuddy_adapter;
-	struct recv_priv *precvpriv = &primary_padapter->recvpriv;
-	_queue *pfree_recv_queue = &precvpriv->free_recv_queue;
-	uint8_t	*pbuf = precvframe->u.hdr.rx_data;
-
-	if(!secondary_padapter)
-		return ret;
-
-	paddr1 = GetAddr1Ptr(pbuf);
-
-	if(IS_MCAST(paddr1) == _FALSE)//unicast packets
-	{
-		//primary_myid = myid(&primary_padapter->eeprompriv);
-		secondary_myid = myid(&secondary_padapter->eeprompriv);
-
-		if(_rtw_memcmp(paddr1, secondary_myid, ETH_ALEN))
-		{
-			//change to secondary interface
-			precvframe->u.hdr.adapter = secondary_padapter;
-		}
-
-		//ret = recv_entry(precvframe);
-
-	}
-	else // Handle BC/MC Packets
-	{
-
-		uint8_t clone = _TRUE;
-#if 0
-		uint8_t type, subtype, *paddr2, *paddr3;
-
-		type =  GetFrameType(pbuf);
-		subtype = GetFrameSubType(pbuf); //bit(7)~bit(2)
-
-		switch (type)
-		{
-			case WIFI_MGT_TYPE: //Handle BC/MC mgnt Packets
-				if(subtype == WIFI_BEACON)
-				{
-					paddr3 = GetAddr3Ptr(precvframe->u.hdr.rx_data);
-
-					if (check_fwstate(&secondary_padapter->mlmepriv, _FW_LINKED) &&
-						_rtw_memcmp(paddr3, get_bssid(&secondary_padapter->mlmepriv), ETH_ALEN))
-					{
-						//change to secondary interface
-						precvframe->u.hdr.adapter = secondary_padapter;
-						clone = _FALSE;
-					}
-
-					if(check_fwstate(&primary_padapter->mlmepriv, _FW_LINKED) &&
-						_rtw_memcmp(paddr3, get_bssid(&primary_padapter->mlmepriv), ETH_ALEN))
-					{
-						if(clone==_FALSE)
-						{
-							clone = _TRUE;
-						}
-						else
-						{
-							clone = _FALSE;
-						}
-
-						precvframe->u.hdr.adapter = primary_padapter;
-					}
-
-					if(check_fwstate(&primary_padapter->mlmepriv, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) ||
-						check_fwstate(&secondary_padapter->mlmepriv, _FW_UNDER_SURVEY|_FW_UNDER_LINKING))
-					{
-						clone = _TRUE;
-						precvframe->u.hdr.adapter = primary_padapter;
-					}
-
-				}
-				else if(subtype == WIFI_PROBEREQ)
-				{
-					//probe req frame is only for interface2
-					//change to secondary interface
-					precvframe->u.hdr.adapter = secondary_padapter;
-					clone = _FALSE;
-				}
-				break;
-			case WIFI_CTRL_TYPE: // Handle BC/MC ctrl Packets
-
-				break;
-			case WIFI_DATA_TYPE: //Handle BC/MC data Packets
-					//Notes: AP MODE never rx BC/MC data packets
-
-				paddr2 = GetAddr2Ptr(precvframe->u.hdr.rx_data);
-
-				if(_rtw_memcmp(paddr2, get_bssid(&secondary_padapter->mlmepriv), ETH_ALEN))
-				{
-					//change to secondary interface
-					precvframe->u.hdr.adapter = secondary_padapter;
-					clone = _FALSE;
-				}
-
-				break;
-			default:
-
-				break;
-		}
-#endif
-
-		if(_TRUE == clone)
-		{
-			//clone/copy to if2
-			struct rx_pkt_attrib *pattrib = NULL;
-
-			precvframe_if2 = rtw_alloc_recvframe(pfree_recv_queue);
-			if(precvframe_if2)
-			{
-				precvframe_if2->u.hdr.adapter = secondary_padapter;
-
-				_rtw_init_listhead(&precvframe_if2->u.hdr.list);
-				precvframe_if2->u.hdr.precvbuf = NULL;	//can't access the precvbuf for new arch.
-				precvframe_if2->u.hdr.len=0;
-
-				memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
-
-				pattrib = &precvframe_if2->u.hdr.attrib;
-
-				if(rtw_os_alloc_recvframe(secondary_padapter, precvframe_if2, pbuf, NULL) == _SUCCESS)
-				{
-					recvframe_put(precvframe_if2, pattrib->pkt_len);
-					//recvframe_pull(precvframe_if2, drvinfo_sz + RXDESC_SIZE);
-
-					if (pattrib->physt && pphy_status)
-						rtl8812_query_rx_phy_status(precvframe_if2, pphy_status);
-
-					ret = rtw_recv_entry(precvframe_if2);
-				}
-				else
-				{
-					rtw_free_recvframe(precvframe_if2, pfree_recv_queue);
-					DBG_8192C("%s()-%d: alloc_skb() failed!\n", __FUNCTION__, __LINE__);
-				}
-
-			}
-
-		}
-
-	}
-	//if (precvframe->u.hdr.attrib.physt)
-	//	rtl8812_query_rx_phy_status(precvframe, pphy_status);
-
-	//ret = rtw_recv_entry(precvframe);
-
-#endif
 
 	return ret;
 
@@ -663,17 +500,6 @@ _pkt *pskb
 		{
 			if(pattrib->physt)
 				pphy_status = (pbuf + RXDESC_OFFSET);
-
-#ifdef CONFIG_CONCURRENT_MODE
-			if(rtw_buddy_adapter_up(padapter))
-			{
-				if(pre_recv_entry(precvframe, pphy_status) != _SUCCESS)
-				{
-					RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,
-						("recvbuf2recvframe: recv_entry(precvframe) != _SUCCESS\n"));
-				}
-			}
-#endif //CONFIG_CONCURRENT_MODE
 
 			if(pattrib->physt && pphy_status)
 				rtl8812_query_rx_phy_status(precvframe, pphy_status);

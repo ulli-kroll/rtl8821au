@@ -416,11 +416,6 @@ void Save_DM_Func_Flag(_adapter *padapter)
 {
 	uint8_t	bSaveFlag = _TRUE;
 
-#ifdef CONFIG_CONCURRENT_MODE
-	_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
-	if(pbuddy_adapter)
-	rtw_hal_set_hwreg(pbuddy_adapter, HW_VAR_DM_FUNC_OP, (uint8_t *)(&bSaveFlag));
-#endif
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_DM_FUNC_OP, (uint8_t *)(&bSaveFlag));
 
@@ -429,34 +424,18 @@ void Save_DM_Func_Flag(_adapter *padapter)
 void Restore_DM_Func_Flag(_adapter *padapter)
 {
 	uint8_t	bSaveFlag = _FALSE;
-#ifdef CONFIG_CONCURRENT_MODE
-	_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
-	if(pbuddy_adapter)
-	rtw_hal_set_hwreg(pbuddy_adapter, HW_VAR_DM_FUNC_OP, (uint8_t *)(&bSaveFlag));
-#endif
 	rtw_hal_set_hwreg(padapter, HW_VAR_DM_FUNC_OP, (uint8_t *)(&bSaveFlag));
 }
 
 void Switch_DM_Func(_adapter *padapter, uint32_t	 mode, uint8_t enable)
 {
-#ifdef CONFIG_CONCURRENT_MODE
-	_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
-#endif
 
 	if(enable == _TRUE)
 	{
-#ifdef CONFIG_CONCURRENT_MODE
-		if(pbuddy_adapter)
-		rtw_hal_set_hwreg(pbuddy_adapter, HW_VAR_DM_FUNC_SET, (uint8_t *)(&mode));
-#endif
 		rtw_hal_set_hwreg(padapter, HW_VAR_DM_FUNC_SET, (uint8_t *)(&mode));
 	}
 	else
 	{
-#ifdef CONFIG_CONCURRENT_MODE
-		if(pbuddy_adapter)
-		rtw_hal_set_hwreg(pbuddy_adapter, HW_VAR_DM_FUNC_CLR, (uint8_t *)(&mode));
-#endif
 		rtw_hal_set_hwreg(padapter, HW_VAR_DM_FUNC_CLR, (uint8_t *)(&mode));
 	}
 
@@ -489,13 +468,6 @@ static void Set_NETYPE0_MSR(_adapter *padapter, uint8_t type)
 
 void Set_MSR(_adapter *padapter, uint8_t type)
 {
-#ifdef CONFIG_CONCURRENT_MODE
-	if(padapter->iface_type == IFACE_PORT1)
-	{
-		Set_NETYPE1_MSR(padapter, type);
-	}
-	else
-#endif
 	{
 		Set_NETYPE0_MSR(padapter, type);
 	}
@@ -869,46 +841,9 @@ void flush_all_cam_entry(_adapter *padapter)
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-#ifdef CONFIG_CONCURRENT_MODE
-
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-
-	//if(check_buddy_mlmeinfo_state(padapter, _HW_STATE_NOLINK_))
-	if(check_buddy_fwstate(padapter, _FW_LINKED) == _FALSE)
-	{
-		rtw_hal_set_hwreg(padapter, HW_VAR_CAM_INVALID_ALL, 0);
-	}
-	else
-	{
-		if(check_fwstate(pmlmepriv, WIFI_STATION_STATE))
-		{
-			struct sta_priv	*pstapriv = &padapter->stapriv;
-			struct sta_info	*psta;
-			uint8_t cam_id;//cam_entry
-
-			psta = rtw_get_stainfo(pstapriv, pmlmeinfo->network.MacAddress);
-			if(psta) {
-				if(psta->state & WIFI_AP_STATE)
-				{}   //clear cam when ap free per sta_info
-				else {
-
-					cam_id = (uint8_t)rtw_get_camid(psta->mac_id);
-
-					//clear_cam_entry(padapter, cam_id);
-					rtw_clearstakey_cmd(padapter, (uint8_t *)psta, cam_id, _FALSE);
-				}
-			}
-		}
-		else if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
-		{
-			//clear cam when ap free per sta_info
-		}
-	}
-#else //CONFIG_CONCURRENT_MODE
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_CAM_INVALID_ALL, 0);
 
-#endif //CONFIG_CONCURRENT_MODE
 
 	memset((uint8_t *)(pmlmeinfo->FW_sta_info), 0, sizeof(pmlmeinfo->FW_sta_info));
 

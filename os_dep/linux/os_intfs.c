@@ -1128,8 +1128,6 @@ void rtw_stop_drv_threads (_adapter *padapter)
 	down_interruptible(&padapter->recvpriv.terminate_recvthread_sema);
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("\n drv_halt:recv_thread can be terminated! \n"));
 #endif
-
-	rtw_hal_stop_thread(padapter);
 }
 
 uint8_t rtw_init_default_value(_adapter *padapter);

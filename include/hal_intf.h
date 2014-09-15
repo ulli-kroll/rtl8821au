@@ -215,8 +215,6 @@ struct hal_ops {
 	void	(*SetBeaconRelatedRegistersHandler)(_adapter *padapter);
 
 	void	(*Add_RateATid)(_adapter *padapter, u32 bitmap, u8* arg, uint8_t rssi_level);
-	void	(*cancel_thread)(_adapter *padapter);
-
 #ifdef CONFIG_ANTENNA_DIVERSITY
 	uint8_t	(*AntDivBeforeLinkHandler)(_adapter *padapter);
 	void	(*AntDivCompareHandler)(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
@@ -423,7 +421,6 @@ void	rtw_hal_free_recv_priv(_adapter *padapter);
 
 void rtw_hal_update_ra_mask(struct sta_info *psta, uint8_t rssi_level);
 void	rtw_hal_add_ra_tid(_adapter *padapter, u32 bitmap, u8* arg, uint8_t rssi_level);
-void	rtw_hal_stop_thread(_adapter *padapter);
 
 void rtw_hal_bcn_related_reg_setting(_adapter *padapter);
 

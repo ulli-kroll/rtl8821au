@@ -3558,10 +3558,6 @@ void rtl8812_SetHalODMVar(
 	}
 }
 
-void rtl8812_stop_thread(PADAPTER padapter)
-{
-}
-
 void hal_notch_filter_8812(_adapter *adapter, bool enable)
 {
 	if (enable) {
@@ -5415,8 +5411,6 @@ void rtl8812_set_hal_ops(struct hal_ops *pHalFunc)
 	pHalFunc->hal_dm_watchdog = &rtl8812_HalDmWatchDog;
 
 	pHalFunc->Add_RateATid = &rtl8812_Add_RateATid;
-	pHalFunc->cancel_thread= &rtl8812_stop_thread;
-
 #ifdef CONFIG_ANTENNA_DIVERSITY
 	pHalFunc->AntDivBeforeLinkHandler = &AntDivBeforeLink8812;
 	pHalFunc->AntDivCompareHandler = &AntDivCompare8812;

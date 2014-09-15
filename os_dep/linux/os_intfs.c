@@ -1089,8 +1089,6 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 	if(IS_ERR(padapter->evtThread))
 		_status = _FAIL;
 #endif
-
-	rtw_hal_start_thread(padapter);
 	return _status;
 
 }

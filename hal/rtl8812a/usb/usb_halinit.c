@@ -2888,7 +2888,6 @@ static struct hal_ops rtl8812au_hal_ops = {
 	.hal_dm_watchdog =	rtl8812_HalDmWatchDog,
 
 	.Add_RateATid =		rtl8812_Add_RateATid,
-	.run_thread =		rtl8812_start_thread,
 	.cancel_thread =	rtl8812_stop_thread,
 
 #ifdef CONFIG_ANTENNA_DIVERSITY
@@ -3011,7 +3010,6 @@ void rtl8812au_set_hal_ops(_adapter * padapter)
 	pHalFunc->hal_dm_watchdog = &rtl8812_HalDmWatchDog;
 
 	pHalFunc->Add_RateATid = &rtl8812_Add_RateATid;
-	pHalFunc->run_thread= &rtl8812_start_thread;
 	pHalFunc->cancel_thread= &rtl8812_stop_thread;
 
 #ifdef CONFIG_ANTENNA_DIVERSITY

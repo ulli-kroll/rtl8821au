@@ -3558,12 +3558,6 @@ void rtl8812_SetHalODMVar(
 	}
 }
 
-void rtl8812_clone_haldata(_adapter* dst_adapter, _adapter* src_adapter)
-{
-	memcpy(dst_adapter->HalData, src_adapter->HalData, dst_adapter->hal_data_sz);
-
-}
-
 void rtl8812_start_thread(PADAPTER padapter)
 {
 }

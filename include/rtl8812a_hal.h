@@ -313,7 +313,6 @@ void rtl8812_set_hal_ops(struct hal_ops *pHalFunc);
 // register
 void SetBcnCtrlReg(PADAPTER padapter, uint8_t SetBits, uint8_t ClearBits);
 
-void rtl8812_clone_haldata(PADAPTER dst_adapter, PADAPTER src_adapter);
 void rtl8812_start_thread(PADAPTER padapter);
 void rtl8812_stop_thread(PADAPTER padapter);
 #endif //__RTL8188E_HAL_H__

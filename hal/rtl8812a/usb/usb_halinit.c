@@ -2941,9 +2941,6 @@ void rtl8812au_set_hal_ops(_adapter * padapter)
 			DBG_8192C("cant not alloc memory for HAL DATA \n");
 		}
 	}
-	//memset(padapter->HalData, 0, sizeof(HAL_DATA_TYPE));
-	padapter->hal_data_sz = sizeof(HAL_DATA_TYPE);
-
 	pHalFunc->hal_power_on = _InitPowerOn8812AU;
 	pHalFunc->hal_init = &rtl8812au_hal_init;
 	pHalFunc->hal_deinit = &rtl8812au_hal_deinit;

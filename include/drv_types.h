@@ -490,7 +490,6 @@ struct _ADAPTER{
 	RT_WAPI_T	wapiInfo;
 #endif
 	PVOID			HalData;
-	u32 hal_data_sz;
 	struct hal_ops	HalFunc;
 
 	int32_t	bDriverStopped;

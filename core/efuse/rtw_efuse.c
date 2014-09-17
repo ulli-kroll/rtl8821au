@@ -271,7 +271,7 @@ EFUSE_GetEfuseDefinition(
 	OUT		void		*pOut
 	)
 {
-	pAdapter->HalFunc.EFUSEGetEfuseDefinition(pAdapter, efuseType, type, pOut, _FALSE);
+	pAdapter->HalFunc.EFUSEGetEfuseDefinition(pAdapter, efuseType, type, pOut);
 }
 
 /*-----------------------------------------------------------------------------

@@ -2547,18 +2547,9 @@ rtl8812_EFUSE_GetEfuseDefinition(
 	IN		PADAPTER	pAdapter,
 	IN		uint8_t		efuseType,
 	IN		uint8_t		type,
-	OUT		void		*pOut,
-	IN		BOOLEAN		bPseudoTest
-	)
+	OUT		void		*pOut)
 {
-	if(bPseudoTest)
-	{
-		Hal_EFUSEGetEfuseDefinition_Pseudo8812A(pAdapter, efuseType, type, pOut);
-	}
-	else
-	{
-		Hal_EFUSEGetEfuseDefinition8812A(pAdapter, efuseType, type, pOut);
-	}
+	Hal_EFUSEGetEfuseDefinition8812A(pAdapter, efuseType, type, pOut);
 }
 
 static u8

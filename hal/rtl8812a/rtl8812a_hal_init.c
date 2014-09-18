@@ -2651,7 +2651,6 @@ hal_EfusePgPacketRead_8812A(
 	IN	uint8_t			offset,
 	IN	uint8_t			*data)
 {
-	BOOLEAN bPseudoTest = _FALSE;
 	uint8_t	ReadState = PG_STATE_HEADER;
 
 	int	bContinual = _TRUE;
@@ -2684,13 +2683,13 @@ hal_EfusePgPacketRead_8812A(
 		//-------  Header Read -------------
 		if(ReadState & PG_STATE_HEADER)
 		{
-			if(efuse_OneByteRead(pAdapter, efuse_addr ,&efuse_data, bPseudoTest)&&(efuse_data!=0xFF))
+			if(efuse_OneByteRead(pAdapter, efuse_addr ,&efuse_data, _FALSE)&&(efuse_data!=0xFF))
 			{
 				if(EXT_HEADER(efuse_data))
 				{
 					tmp_header = efuse_data;
 					efuse_addr++;
-					efuse_OneByteRead(pAdapter, efuse_addr ,&efuse_data, bPseudoTest);
+					efuse_OneByteRead(pAdapter, efuse_addr ,&efuse_data, _FALSE);
 					if(!ALL_WORDS_DISABLED(efuse_data))
 					{
 						hoffset = ((tmp_header & 0xE0) >> 5) | ((efuse_data & 0xF0) >> 1);
@@ -2715,7 +2714,7 @@ hal_EfusePgPacketRead_8812A(
 				{
 					for(tmpidx = 0;tmpidx< word_cnts*2 ;tmpidx++)
 					{
-						if(efuse_OneByteRead(pAdapter, efuse_addr+1+tmpidx ,&efuse_data, bPseudoTest) )
+						if(efuse_OneByteRead(pAdapter, efuse_addr+1+tmpidx ,&efuse_data, _FALSE) )
 						{
 							tmpdata[tmpidx] = efuse_data;
 							if(efuse_data!=0xff)

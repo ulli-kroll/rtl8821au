@@ -530,12 +530,11 @@ efuse_OneByteWrite(
 int
 Efuse_PgPacketRead(	IN	PADAPTER	pAdapter,
 					IN	uint8_t			offset,
-					IN	uint8_t			*data,
-					IN	BOOLEAN		bPseudoTest)
+					IN	uint8_t			*data)
 {
 	int	ret=0;
 
-	ret =  pAdapter->HalFunc.Efuse_PgPacketRead(pAdapter, offset, data, bPseudoTest);
+	ret =  pAdapter->HalFunc.Efuse_PgPacketRead(pAdapter, offset, data);
 
 	return ret;
 }

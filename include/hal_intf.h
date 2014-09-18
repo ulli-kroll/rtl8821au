@@ -238,7 +238,7 @@ struct hal_ops {
 	void (*ReadEFuse)(_adapter *padapter, uint8_t efuseType, u16 _offset, u16 _size_byte, uint8_t *pbuf);
 	void (*EFUSEGetEfuseDefinition)(_adapter *padapter, uint8_t efuseType, uint8_t type, void *pOut);
 	u16	(*EfuseGetCurrentSize)(_adapter *padapter, uint8_t efuseType, BOOLEAN bPseudoTest);
-	int 	(*Efuse_PgPacketRead)(_adapter *padapter, uint8_t offset, uint8_t *data, BOOLEAN bPseudoTest);
+	int 	(*Efuse_PgPacketRead)(_adapter *padapter, uint8_t offset, uint8_t *data);
 	int 	(*Efuse_PgPacketWrite)(_adapter *padapter, uint8_t offset, uint8_t word_en, uint8_t *data);
 	uint8_t	(*Efuse_WordEnableDataWrite)(_adapter *padapter, u16 efuse_addr, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);
 	BOOLEAN	(*Efuse_PgPacketWrite_BT)(_adapter *padapter, uint8_t offset, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);

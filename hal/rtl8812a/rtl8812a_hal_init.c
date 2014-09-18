@@ -2649,9 +2649,9 @@ static int
 hal_EfusePgPacketRead_8812A(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t			offset,
-	IN	uint8_t			*data,
-	IN	BOOLEAN		bPseudoTest)
+	IN	uint8_t			*data)
 {
+	BOOLEAN bPseudoTest = _FALSE;
 	uint8_t	ReadState = PG_STATE_HEADER;
 
 	int	bContinual = _TRUE;
@@ -2762,12 +2762,11 @@ hal_EfusePgPacketRead_8812A(
 int
 rtl8812_Efuse_PgPacketRead(	IN	PADAPTER	pAdapter,
 					IN	uint8_t			offset,
-					IN	uint8_t			*data,
-					IN	BOOLEAN		bPseudoTest)
+					IN	uint8_t			*data)
 {
 	int	ret=0;
 
-	ret = hal_EfusePgPacketRead_8812A(pAdapter, offset, data, bPseudoTest);
+	ret = hal_EfusePgPacketRead_8812A(pAdapter, offset, data);
 
 	return ret;
 }
@@ -3168,7 +3167,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 					//************	s1-2-A :cover the exist data *******************
 					memset(originaldata, 0xff, sizeof(uint8_t)*8);
 
-					if(Efuse_PgPacketRead( pAdapter, tmp_pkt.offset,originaldata, _FALSE))
+					if(Efuse_PgPacketRead( pAdapter, tmp_pkt.offset,originaldata))
 					{	//check if data exist
 						//efuse_reg_ctrl(pAdapter,_TRUE);//power on
 						badworden = Efuse_WordEnableDataWrite(pAdapter,efuse_addr+1,tmp_pkt.word_en,originaldata, _FALSE);

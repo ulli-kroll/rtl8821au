@@ -616,12 +616,11 @@ uint8_t
 Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 							IN	uint16_t		efuse_addr,
 							IN	uint8_t		word_en,
-							IN	uint8_t		*data,
-							IN	BOOLEAN		bPseudoTest)
+							IN	uint8_t		*data)
 {
 	uint8_t	ret=0;
 
-	ret =  pAdapter->HalFunc.Efuse_WordEnableDataWrite(pAdapter, efuse_addr, word_en, data, bPseudoTest);
+	ret =  pAdapter->HalFunc.Efuse_WordEnableDataWrite(pAdapter, efuse_addr, word_en, data);
 
 	return ret;
 }

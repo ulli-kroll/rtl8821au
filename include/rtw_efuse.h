@@ -134,7 +134,7 @@ void	Efuse_PowerSwitch(PADAPTER pAdapter,uint8_t	bWrite,uint8_t	 PwrState);
 int 	Efuse_PgPacketRead(PADAPTER pAdapter, uint8_t offset, uint8_t *data);
 int 	Efuse_PgPacketWrite(PADAPTER pAdapter, uint8_t offset, uint8_t word_en, uint8_t *data);
 void	efuse_WordEnableDataRead(uint8_t word_en, uint8_t *sourdata, uint8_t *targetdata);
-uint8_t	Efuse_WordEnableDataWrite(PADAPTER pAdapter, u16 efuse_addr, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);
+uint8_t	Efuse_WordEnableDataWrite(PADAPTER pAdapter, u16 efuse_addr, uint8_t word_en, uint8_t *data);
 
 uint8_t	EFUSE_Read1Byte(PADAPTER pAdapter, u16 Address);
 void	EFUSE_ShadowMapUpdate(PADAPTER pAdapter, uint8_t efuseType);

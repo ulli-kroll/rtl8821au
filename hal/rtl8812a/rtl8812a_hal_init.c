@@ -2483,9 +2483,9 @@ static u8
 Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 							IN	uint16_t		efuse_addr,
 							IN	uint8_t		word_en,
-							IN	uint8_t		*data,
-							IN	BOOLEAN		bPseudoTest)
+							IN	uint8_t		*data)
 {
+	BOOLEAN bPseudoTest = _FALSE;
 	uint16_t	tmpaddr = 0;
 	uint16_t	start_addr = efuse_addr;
 	uint8_t	badworden = 0x0F;
@@ -2549,12 +2549,11 @@ u8
 rtl8812_Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 							IN	uint16_t		efuse_addr,
 							IN	uint8_t		word_en,
-							IN	uint8_t		*data,
-							IN	BOOLEAN		bPseudoTest)
+							IN	uint8_t		*data)
 {
 	uint8_t	ret=0;
 
-	ret = Hal_EfuseWordEnableDataWrite8812A(pAdapter, efuse_addr, word_en, data, bPseudoTest);
+	ret = Hal_EfuseWordEnableDataWrite8812A(pAdapter, efuse_addr, word_en, data);
 
 	return ret;
 }
@@ -2978,7 +2977,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 						//************	so-2-2-A *******************
 						if((match_word_en&0x0F)!=0x0F)
 						{
-							badworden = Efuse_WordEnableDataWrite(pAdapter,efuse_addr+1, tmp_pkt.word_en ,target_pkt.data, _FALSE);
+							badworden = Efuse_WordEnableDataWrite(pAdapter,efuse_addr+1, tmp_pkt.word_en ,target_pkt.data);
 
 							//************	so-2-2-A-1 *******************
 							//############################
@@ -3169,7 +3168,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 					if(Efuse_PgPacketRead( pAdapter, tmp_pkt.offset,originaldata))
 					{	//check if data exist
 						//efuse_reg_ctrl(pAdapter,_TRUE);//power on
-						badworden = Efuse_WordEnableDataWrite(pAdapter,efuse_addr+1,tmp_pkt.word_en,originaldata, _FALSE);
+						badworden = Efuse_WordEnableDataWrite(pAdapter,efuse_addr+1,tmp_pkt.word_en,originaldata);
 						//############################
 						if(0x0F != (badworden&0x0F))
 						{
@@ -3209,7 +3208,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 		{	//************	s1-1  *******************
 			//DBG_871X("EFUSE PG_STATE_DATA\n");
 			badworden = 0x0f;
-			badworden = Efuse_WordEnableDataWrite(pAdapter,efuse_addr+1,target_pkt.word_en,target_pkt.data, _FALSE);
+			badworden = Efuse_WordEnableDataWrite(pAdapter,efuse_addr+1,target_pkt.word_en,target_pkt.data);
 			if((badworden&0x0F)==0x0F)
 			{ //************  s1-1-A *******************
 				bContinual = _FALSE;

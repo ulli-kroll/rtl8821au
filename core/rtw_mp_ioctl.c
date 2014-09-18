@@ -2071,7 +2071,7 @@ _func_enter_;
 			ppgpkt->offset, ppgpkt->word_en));
 
 		Efuse_PowerSwitch(Adapter, _TRUE, _TRUE);
-		if (Efuse_PgPacketWrite(Adapter, ppgpkt->offset, ppgpkt->word_en, ppgpkt->data, _FALSE) == _TRUE)
+		if (Efuse_PgPacketWrite(Adapter, ppgpkt->offset, ppgpkt->word_en, ppgpkt->data) == _TRUE)
 			*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 		else
 			status = NDIS_STATUS_FAILURE;

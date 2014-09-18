@@ -2809,7 +2809,7 @@ VOID rtl8812_ReadEFuse(PADAPTER	Adapter, uint8_t efuseType, uint16_t _offset, ui
 VOID rtl8812_EFUSE_GetEfuseDefinition(PADAPTER pAdapter, uint8_t efuseType, uint8_t type, void *pOut);
 u16 rtl8812_EfuseGetCurrentSize(PADAPTER pAdapter, uint8_t efuseType, BOOLEAN bPseudoTest);
 int rtl8812_Efuse_PgPacketRead(PADAPTER	pAdapter, uint8_t offset, uint8_t *data, BOOLEAN bPseudoTest);
-int rtl8812_Efuse_PgPacketWrite(PADAPTER pAdapter, uint8_t offset, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);
+int rtl8812_Efuse_PgPacketWrite(PADAPTER pAdapter, uint8_t offset, uint8_t word_en, uint8_t *data);
 u8 rtl8812_Efuse_WordEnableDataWrite(PADAPTER pAdapter, uint16_t efuse_addr, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);
 void rtl8812_GetHalODMVar(PADAPTER Adapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet);
 void rtl8812_SetHalODMVar(PADAPTER Adapter, HAL_ODM_VARIABLE eVariable,	PVOID 	pValue1, BOOLEAN bSet);

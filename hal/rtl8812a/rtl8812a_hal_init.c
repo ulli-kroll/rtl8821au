@@ -2776,9 +2776,9 @@ static int
 hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 					IN	uint8_t 			offset,
 					IN	uint8_t			word_en,
-					IN	uint8_t			*data,
-					IN	BOOLEAN		bPseudoTest)
+					IN	uint8_t			*data)
 {
+	BOOLEAN bPseudoTest = _FALSE;
 	uint8_t WriteState = PG_STATE_HEADER;
 
 	int bContinual = _TRUE,bDataEmpty=_TRUE;
@@ -2989,7 +2989,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 							{
 								uint8_t	reorg_offset = offset;
 								uint8_t	reorg_worden=badworden;
-								Efuse_PgPacketWrite(pAdapter, reorg_offset, reorg_worden, target_pkt.data, bPseudoTest);
+								Efuse_PgPacketWrite(pAdapter, reorg_offset, reorg_worden, target_pkt.data);
 							}
 							//############################
 
@@ -3178,7 +3178,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 						{
 							uint8_t	reorg_offset = tmp_pkt.offset;
 							uint8_t	reorg_worden=badworden;
-							Efuse_PgPacketWrite(pAdapter,reorg_offset,reorg_worden,originaldata, bPseudoTest);
+							Efuse_PgPacketWrite(pAdapter,reorg_offset,reorg_worden,originaldata);
 							efuse_addr = Efuse_GetCurrentSize(pAdapter, efuseType, bPseudoTest);
 						}
 						//############################
@@ -3252,12 +3252,12 @@ int
 rtl8812_Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 					IN	uint8_t 			offset,
 					IN	uint8_t			word_en,
-					IN	uint8_t			*data,
-					IN	BOOLEAN		bPseudoTest)
+					IN	uint8_t			*data)
 {
 	int	ret;
+	BOOLEAN bPseudoTest = _FALSE;
 
-	ret = hal_EfusePgPacketWrite_8812A(pAdapter, offset, word_en, data, bPseudoTest);
+	ret = hal_EfusePgPacketWrite_8812A(pAdapter, offset, word_en, data);
 
 	return ret;
 }

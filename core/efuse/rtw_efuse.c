@@ -544,12 +544,11 @@ int
 Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 					IN	uint8_t 			offset,
 					IN	uint8_t			word_en,
-					IN	uint8_t			*data,
-					IN	BOOLEAN		bPseudoTest)
+					IN	uint8_t			*data)
 {
 	int ret;
 
-	ret =  pAdapter->HalFunc.Efuse_PgPacketWrite(pAdapter, offset, word_en, data, bPseudoTest);
+	ret =  pAdapter->HalFunc.Efuse_PgPacketWrite(pAdapter, offset, word_en, data);
 
 	return ret;
 }
@@ -798,7 +797,7 @@ uint8_t rtw_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, uin
 		}
 
 		if (word_en != 0xF) {
-			ret = Efuse_PgPacketWrite(padapter, offset, word_en, newdata, _FALSE);
+			ret = Efuse_PgPacketWrite(padapter, offset, word_en, newdata);
 			DBG_871X("offset=%x \n",offset);
 			DBG_871X("word_en=%x \n",word_en);
 

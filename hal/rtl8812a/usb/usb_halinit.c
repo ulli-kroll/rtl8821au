@@ -2806,7 +2806,6 @@ void UpdateHalRAMask8812A(PADAPTER padapter, uint32_t mac_id, uint8_t rssi_level
 void ReadChipVersion8812A(PADAPTER	Adapter);
 VOID rtl8812_EfusePowerSwitch(PADAPTER	pAdapter, uint8_t bWrite, uint8_t PwrState);
 VOID rtl8812_ReadEFuse(PADAPTER	Adapter, uint8_t efuseType, uint16_t _offset, uint16_t 	_size_byte, uint8_t *pbuf, BOOLEAN bPseudoTest);
-VOID Hal_EFUSEGetEfuseDefinition_Pseudo8812A(PADAPTER pAdapter, uint8_t	efuseType, uint8_t type, PVOID pOut);
 VOID rtl8812_EFUSE_GetEfuseDefinition(PADAPTER pAdapter, uint8_t efuseType, uint8_t type, void *pOut);
 u16 rtl8812_EfuseGetCurrentSize(PADAPTER pAdapter, uint8_t efuseType, BOOLEAN bPseudoTest);
 int rtl8812_Efuse_PgPacketRead(PADAPTER	pAdapter, uint8_t offset, uint8_t *data, BOOLEAN bPseudoTest);

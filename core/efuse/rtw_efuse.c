@@ -955,18 +955,11 @@ exit:
  * 11/11/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-VOID
+static VOID
 Efuse_ReadAllMap(
 	IN		PADAPTER	pAdapter,
 	IN		uint8_t		efuseType,
-	IN OUT	uint8_t		*Efuse,
-	IN		BOOLEAN		bPseudoTest);
-VOID
-Efuse_ReadAllMap(
-	IN		PADAPTER	pAdapter,
-	IN		uint8_t		efuseType,
-	IN OUT	uint8_t		*Efuse,
-	IN		BOOLEAN		bPseudoTest)
+	IN OUT	uint8_t		*Efuse)
 {
 	uint16_t	mapLen=0;
 
@@ -974,7 +967,7 @@ Efuse_ReadAllMap(
 
 	EFUSE_GetEfuseDefinition(pAdapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
-	efuse_ReadEFuse(pAdapter, efuseType, 0, mapLen, Efuse, bPseudoTest);
+	efuse_ReadEFuse(pAdapter, efuseType, 0, mapLen, Efuse, _FALSE);
 
 	Efuse_PowerSwitch(pAdapter,_FALSE, _FALSE);
 }
@@ -1125,8 +1118,7 @@ efuse_ShadowWrite4Byte(
  *---------------------------------------------------------------------------*/
 void EFUSE_ShadowMapUpdate(
 	IN PADAPTER	pAdapter,
-	IN uint8_t		efuseType,
-	IN BOOLEAN	bPseudoTest)
+	IN uint8_t		efuseType)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
 	uint16_t	mapLen=0;
@@ -1143,7 +1135,7 @@ void EFUSE_ShadowMapUpdate(
 		if(_SUCCESS != retriveAdaptorInfoFile(pAdapter->registrypriv.adaptor_info_caching_file_path, pEEPROM)) {
 		#endif
 
-		Efuse_ReadAllMap(pAdapter, efuseType, pEEPROM->efuse_eeprom_data, bPseudoTest);
+		Efuse_ReadAllMap(pAdapter, efuseType, pEEPROM->efuse_eeprom_data);
 
 		#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
 			storeAdaptorInfoFile(pAdapter->registrypriv.adaptor_info_caching_file_path, pEEPROM);

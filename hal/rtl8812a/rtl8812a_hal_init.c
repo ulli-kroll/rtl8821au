@@ -3570,14 +3570,14 @@ void InitPGData8812A(PADAPTER padapter)
 		else
 		{
 			// Read EFUSE real map to shadow.
-			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI, _FALSE);
+			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI);
 		}
 	}
 	else
 	{
 		// update to default value 0xFF
 		if (!is_boot_from_eeprom(padapter))
-			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI, _FALSE);
+			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI);
 	}
 #endif // !CONFIG_EFUSE_CONFIG_FILE
 }

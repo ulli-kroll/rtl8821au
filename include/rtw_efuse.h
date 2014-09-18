@@ -137,7 +137,7 @@ void	efuse_WordEnableDataRead(uint8_t word_en, uint8_t *sourdata, uint8_t *targe
 uint8_t	Efuse_WordEnableDataWrite(PADAPTER pAdapter, u16 efuse_addr, uint8_t word_en, uint8_t *data, BOOLEAN bPseudoTest);
 
 uint8_t	EFUSE_Read1Byte(PADAPTER pAdapter, u16 Address);
-void	EFUSE_ShadowMapUpdate(PADAPTER pAdapter, uint8_t efuseType, BOOLEAN bPseudoTest);
+void	EFUSE_ShadowMapUpdate(PADAPTER pAdapter, uint8_t efuseType);
 void	EFUSE_ShadowRead(PADAPTER pAdapter, uint8_t Type, u16 Offset, u32 *Value);
 #endif
 

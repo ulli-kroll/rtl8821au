@@ -2223,7 +2223,7 @@ hal_InitPGData_8812A(
 		else
 		{
 			// Read EFUSE real map to shadow.
-			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI, _FALSE);
+			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI);
 		}
 	}
 	else
@@ -2232,7 +2232,7 @@ hal_InitPGData_8812A(
 		//pHalData->AutoloadFailFlag = _TRUE;
 		//update to default value 0xFF
 		if (!is_boot_from_eeprom(padapter))
-			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI, _FALSE);
+			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI);
 	}
 }
 

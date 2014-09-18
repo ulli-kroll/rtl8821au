@@ -2352,9 +2352,7 @@ rtl8812_ReadEFuse(
 	uint8_t		efuseType,
 	uint16_t		_offset,
 	uint16_t 		_size_byte,
-	uint8_t      	*pbuf,
-	IN	BOOLEAN	bPseudoTest
-	)
+	uint8_t      	*pbuf)
 {
 #ifdef DBG_IOL_READ_EFUSE_MAP
 	uint8_t logical_map[512];
@@ -2379,7 +2377,7 @@ rtl8812_ReadEFuse(
 			goto exit;
 	}
 #endif
-	Hal_EfuseReadEFuse8812A(Adapter, _offset, _size_byte, pbuf, bPseudoTest);
+	Hal_EfuseReadEFuse8812A(Adapter, _offset, _size_byte, pbuf, _FALSE);
 
 #ifdef CONFIG_IOL_READ_EFUSE_MAP
 exit:

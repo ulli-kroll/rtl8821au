@@ -249,7 +249,7 @@ efuse_ReadEFuse(
 	uint8_t      	*pbuf
 	)
 {
-	Adapter->HalFunc.ReadEFuse(Adapter, efuseType, _offset, _size_byte, pbuf, _FALSE);
+	Adapter->HalFunc.ReadEFuse(Adapter, efuseType, _offset, _size_byte, pbuf);
 }
 
 VOID

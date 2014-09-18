@@ -458,12 +458,12 @@ uint8_t
 efuse_OneByteWrite(
 	IN	PADAPTER	pAdapter,
 	IN	uint16_t			addr,
-	IN	uint8_t			data,
-	IN	BOOLEAN		bPseudoTest)
+	IN	uint8_t			data)
 {
 	uint8_t	tmpidx = 0;
 	uint8_t	bResult=_FALSE;
 	uint32_t efuseValue = 0;
+	BOOLEAN bPseudoTest = _FALSE;
 
 	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
 	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
@@ -631,7 +631,7 @@ static uint8_t efuse_read8(PADAPTER padapter, uint16_t address, uint8_t *value)
 
 static uint8_t efuse_write8(PADAPTER padapter, uint16_t address, uint8_t *value)
 {
-	return efuse_OneByteWrite(padapter,address, *value, _FALSE);
+	return efuse_OneByteWrite(padapter,address, *value);
 }
 
 /*

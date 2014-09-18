@@ -2496,8 +2496,8 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 	if(!(word_en&BIT0))
 	{
 		tmpaddr = start_addr;
-		efuse_OneByteWrite(pAdapter,start_addr++, data[0], _FALSE);
-		efuse_OneByteWrite(pAdapter,start_addr++, data[1], _FALSE);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[0]);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[1]);
 
 		efuse_OneByteRead(pAdapter,tmpaddr, &tmpdata[0]);
 		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[1]);
@@ -2508,8 +2508,8 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 	if(!(word_en&BIT1))
 	{
 		tmpaddr = start_addr;
-		efuse_OneByteWrite(pAdapter,start_addr++, data[2], _FALSE);
-		efuse_OneByteWrite(pAdapter,start_addr++, data[3], _FALSE);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[2]);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[3]);
 
 		efuse_OneByteRead(pAdapter,tmpaddr    , &tmpdata[2]);
 		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[3]);
@@ -2520,8 +2520,8 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 	if(!(word_en&BIT2))
 	{
 		tmpaddr = start_addr;
-		efuse_OneByteWrite(pAdapter,start_addr++, data[4], _FALSE);
-		efuse_OneByteWrite(pAdapter,start_addr++, data[5], _FALSE);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[4]);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[5]);
 
 		efuse_OneByteRead(pAdapter,tmpaddr, &tmpdata[4]);
 		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[5]);
@@ -2532,8 +2532,8 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 	if(!(word_en&BIT3))
 	{
 		tmpaddr = start_addr;
-		efuse_OneByteWrite(pAdapter,start_addr++, data[6], _FALSE);
-		efuse_OneByteWrite(pAdapter,start_addr++, data[7], _FALSE);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[6]);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[7]);
 
 		efuse_OneByteRead(pAdapter,tmpaddr, &tmpdata[6]);
 		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[7]);
@@ -2862,7 +2862,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 								case 0xA:
 								case 0xC:
 									for (i = 0; i < 3; ++i) {
-								        efuse_OneByteWrite(pAdapter, efuse_addr, 0x27, _FALSE);
+								        efuse_OneByteWrite(pAdapter, efuse_addr, 0x27);
 										efuse_OneByteRead(pAdapter, efuse_addr, &data);
 										if (data == 0x27)
 											break;
@@ -2870,7 +2870,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 									break;
 								case 0xE:
 									for (i = 0; i < 3; ++i) {
-								        efuse_OneByteWrite(pAdapter, efuse_addr, 0x17, _FALSE);
+								        efuse_OneByteWrite(pAdapter, efuse_addr, 0x17);
 										efuse_OneByteRead(pAdapter, efuse_addr, &data);
 										if (data == 0x17)
 											break;
@@ -2879,8 +2879,8 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 								default:
 									break;
 							}
-							efuse_OneByteWrite(pAdapter, efuse_addr+1, 0xFF, _FALSE);
-							efuse_OneByteWrite(pAdapter, efuse_addr+2, 0xFF, _FALSE);
+							efuse_OneByteWrite(pAdapter, efuse_addr+1, 0xFF);
+							efuse_OneByteWrite(pAdapter, efuse_addr+2, 0xFF);
 							efuse_addr += 3;
 						} else {
 							efuse_addr++;
@@ -2906,13 +2906,13 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 						if (next == 0xFF) { // Have enough space to make fake data to recover bad header.
 							tmp_header = (tmp_header & 0xF0) | 0x7;
 							for (i = 0; i < 3; ++i) {
-						        efuse_OneByteWrite(pAdapter, efuse_addr, tmp_header, _FALSE);
+						        efuse_OneByteWrite(pAdapter, efuse_addr, tmp_header);
 								efuse_OneByteRead(pAdapter, efuse_addr, &data);
 								if (data == tmp_header)
 									break;
 							}
-							efuse_OneByteWrite(pAdapter, efuse_addr+1, 0xFF, _FALSE);
-							efuse_OneByteWrite(pAdapter, efuse_addr+2, 0xFF, _FALSE);
+							efuse_OneByteWrite(pAdapter, efuse_addr+1, 0xFF);
+							efuse_OneByteWrite(pAdapter, efuse_addr+2, 0xFF);
 							efuse_addr += 2;
 						}
 					}
@@ -3049,7 +3049,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 
 					//DBG_871X("hal_EfusePgPacketWrite_8812A extended pg_header[2:0] |0x0F 0x%x \n", pg_header);
 
-					efuse_OneByteWrite(pAdapter,efuse_addr, pg_header, _FALSE);
+					efuse_OneByteWrite(pAdapter,efuse_addr, pg_header);
 					efuse_OneByteRead(pAdapter,efuse_addr, &tmp_header);
 
 					while(tmp_header == 0xFF)
@@ -3064,7 +3064,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 							efuse_addr++;
 							break;
 						}
-						efuse_OneByteWrite(pAdapter,efuse_addr, pg_header, _FALSE);
+						efuse_OneByteWrite(pAdapter,efuse_addr, pg_header);
 						efuse_OneByteRead(pAdapter,efuse_addr, &tmp_header);
 					}
 
@@ -3079,7 +3079,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 
 						//DBG_871X("hal_EfusePgPacketWrite_8812A extended pg_header[6:3] | worden 0x%x word_en 0x%x \n", pg_header, target_pkt.word_en);
 
-						efuse_OneByteWrite(pAdapter,efuse_addr, pg_header, _FALSE);
+						efuse_OneByteWrite(pAdapter,efuse_addr, pg_header);
 						efuse_OneByteRead(pAdapter,efuse_addr, &tmp_header);
 
 						while(tmp_header == 0xFF)
@@ -3091,7 +3091,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 								//bResult = _FALSE;
 								break;
 							}
-							efuse_OneByteWrite(pAdapter,efuse_addr, pg_header, _FALSE);
+							efuse_OneByteWrite(pAdapter,efuse_addr, pg_header);
 							efuse_OneByteRead(pAdapter,efuse_addr, &tmp_header);
 						}
 
@@ -3130,7 +3130,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 				else
 				{
 					pg_header = ((target_pkt.offset << 4)&0xf0) |target_pkt.word_en;
-					efuse_OneByteWrite(pAdapter,efuse_addr, pg_header, _FALSE);
+					efuse_OneByteWrite(pAdapter,efuse_addr, pg_header);
 					efuse_OneByteRead(pAdapter,efuse_addr, &tmp_header);
 				}
 

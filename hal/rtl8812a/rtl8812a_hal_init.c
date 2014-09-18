@@ -403,7 +403,7 @@ static bool efuse_read_phymap(
 	//
 	while(addr < limit)
 	{
-		ReadEFuseByte(Adapter, addr, pos, _FALSE);
+		ReadEFuseByte(Adapter, addr, pos);
 		if(*pos != 0xFF)
 		{
 			pos++;

@@ -125,7 +125,7 @@ uint8_t 	rtw_BT_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *
 
 u16	Efuse_GetCurrentSize(PADAPTER pAdapter, uint8_t efuseType, BOOLEAN bPseudoTest);
 uint8_t	Efuse_CalculateWordCnts(uint8_t word_en);
-void	ReadEFuseByte(PADAPTER Adapter, u16 _offset, uint8_t *pbuf, BOOLEAN bPseudoTest) ;
+void	ReadEFuseByte(PADAPTER Adapter, u16 _offset, uint8_t *pbuf) ;
 void	EFUSE_GetEfuseDefinition(PADAPTER pAdapter, uint8_t efuseType, uint8_t type, void *pOut);
 uint8_t	efuse_OneByteRead(PADAPTER pAdapter, u16 addr, uint8_t *data, BOOLEAN	 bPseudoTest);
 uint8_t	efuse_OneByteWrite(PADAPTER pAdapter, u16 addr, uint8_t data, BOOLEAN	 bPseudoTest);

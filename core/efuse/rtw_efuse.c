@@ -177,15 +177,14 @@ VOID
 ReadEFuseByte(
 		PADAPTER	Adapter,
 		uint16_t 			_offset,
-		uint8_t 			*pbuf,
-		IN BOOLEAN	bPseudoTest)
+		uint8_t 			*pbuf)
 {
 	uint32_t	value32;
 	uint8_t	readbyte;
 	uint16_t	retry;
 	//uint32_t start=rtw_get_current_time();
 
-	if(bPseudoTest)
+	if(_FALSE)
 	{
 		Efuse_Read1ByteFromFakeContent(Adapter, _offset, pbuf);
 		return;

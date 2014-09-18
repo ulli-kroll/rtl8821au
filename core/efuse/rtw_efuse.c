@@ -241,26 +241,16 @@ ReadEFuseByte(
 //					write addr must be after sec5.
 //
 
-VOID
+static VOID
 efuse_ReadEFuse(
 	PADAPTER	Adapter,
 	uint8_t		efuseType,
 	uint16_t		_offset,
 	uint16_t 		_size_byte,
-	uint8_t      	*pbuf,
-	IN	BOOLEAN	bPseudoTest
-	);
-VOID
-efuse_ReadEFuse(
-	PADAPTER	Adapter,
-	uint8_t		efuseType,
-	uint16_t		_offset,
-	uint16_t 		_size_byte,
-	uint8_t      	*pbuf,
-	IN	BOOLEAN	bPseudoTest
+	uint8_t      	*pbuf
 	)
 {
-	Adapter->HalFunc.ReadEFuse(Adapter, efuseType, _offset, _size_byte, pbuf, bPseudoTest);
+	Adapter->HalFunc.ReadEFuse(Adapter, efuseType, _offset, _size_byte, pbuf, _FALSE);
 }
 
 VOID
@@ -717,7 +707,7 @@ uint8_t rtw_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint
 
 	Efuse_PowerSwitch(padapter, _FALSE, _TRUE);
 
-	efuse_ReadEFuse(padapter, EFUSE_WIFI, addr, cnts, data, _FALSE);
+	efuse_ReadEFuse(padapter, EFUSE_WIFI, addr, cnts, data);
 
 	Efuse_PowerSwitch(padapter, _FALSE, _FALSE);
 
@@ -735,7 +725,7 @@ uint8_t rtw_BT_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, u
 
 	Efuse_PowerSwitch(padapter, _FALSE, _TRUE);
 
-	efuse_ReadEFuse(padapter, EFUSE_BT, addr, cnts, data, _FALSE);
+	efuse_ReadEFuse(padapter, EFUSE_BT, addr, cnts, data);
 
 	Efuse_PowerSwitch(padapter, _FALSE, _FALSE);
 
@@ -967,7 +957,7 @@ Efuse_ReadAllMap(
 
 	EFUSE_GetEfuseDefinition(pAdapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
-	efuse_ReadEFuse(pAdapter, efuseType, 0, mapLen, Efuse, _FALSE);
+	efuse_ReadEFuse(pAdapter, efuseType, 0, mapLen, Efuse);
 
 	Efuse_PowerSwitch(pAdapter,_FALSE, _FALSE);
 }

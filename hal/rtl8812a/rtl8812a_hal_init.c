@@ -2163,9 +2163,7 @@ Hal_EfuseReadEFuse8812A(
 	PADAPTER		Adapter,
 	uint16_t			_offset,
 	uint16_t 			_size_byte,
-	uint8_t      		*pbuf,
-	IN	BOOLEAN	bPseudoTest
-	)
+	uint8_t      		*pbuf)
 {
 	uint8_t	*efuseTbl = NULL;
 	uint16_t	eFuse_Addr = 0;
@@ -2209,7 +2207,7 @@ Hal_EfuseReadEFuse8812A(
 	// 1. Read the first byte to check if efuse is empty!!!
 	//
 	//
-	efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseHeader, bPseudoTest);
+	efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseHeader, _FALSE);
 
 	if(efuseHeader != 0xFF)
 	{
@@ -2236,7 +2234,7 @@ Hal_EfuseReadEFuse8812A(
 			offset_2_0 = GET_HDR_OFFSET_2_0(efuseHeader);
 			//RT_DISP(FEEPROM, EFUSE_READ_ALL, ("extended header offset_2_0=%X\n", offset_2_0));
 
-			efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseExtHdr, bPseudoTest);
+			efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseExtHdr, _FALSE);
 
 			//RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseExtHdr));
 
@@ -2245,7 +2243,7 @@ Hal_EfuseReadEFuse8812A(
 				efuse_utilized++;
 				if(ALL_WORDS_DISABLED(efuseExtHdr))
 				{
-					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseHeader, bPseudoTest);
+					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseHeader, _FALSE);
 					if(efuseHeader != 0xff)
 					{
 						efuse_utilized++;
@@ -2281,7 +2279,7 @@ Hal_EfuseReadEFuse8812A(
 				// Check word enable condition in the section
 				if(!(wden & (0x01<<i)))
 				{
-					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseData, bPseudoTest);
+					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseData, _FALSE);
 					//RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseData));
 					efuse_utilized++;
 					eFuseWord[offset][i] = (efuseData & 0xff);
@@ -2289,7 +2287,7 @@ Hal_EfuseReadEFuse8812A(
 					if(!AVAILABLE_EFUSE_ADDR_8812(eFuse_Addr))
 						break;
 
-					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseData, bPseudoTest);
+					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseData, _FALSE);
 					//RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseData));
 					efuse_utilized++;
 					eFuseWord[offset][i] |= (((uint16_t)efuseData << 8) & 0xff00);
@@ -2301,7 +2299,7 @@ Hal_EfuseReadEFuse8812A(
 		}
 
 		// Read next PG header
-		efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseHeader, bPseudoTest);
+		efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseHeader, _FALSE);
 		//RTPRINT(FEEPROM, EFUSE_READ_ALL, ("Addr=%d rtemp 0x%x\n", eFuse_Addr, *rtemp8));
 
 		if(efuseHeader != 0xFF)
@@ -2377,7 +2375,7 @@ rtl8812_ReadEFuse(
 			goto exit;
 	}
 #endif
-	Hal_EfuseReadEFuse8812A(Adapter, _offset, _size_byte, pbuf, _FALSE);
+	Hal_EfuseReadEFuse8812A(Adapter, _offset, _size_byte, pbuf);
 
 #ifdef CONFIG_IOL_READ_EFUSE_MAP
 exit:

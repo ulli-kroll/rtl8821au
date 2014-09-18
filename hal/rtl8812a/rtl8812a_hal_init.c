@@ -2559,10 +2559,11 @@ rtl8812_Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 
 
 static u16
-hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter,
-		IN		BOOLEAN			bPseudoTest)
+hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter)
 {
 	int	bContinual = _TRUE;
+
+	BOOLEAN bPseudoTest = _FALSE;
 
 	uint16_t	efuse_addr = 0;
 	uint8_t	hoffset=0,hworden=0;
@@ -2632,12 +2633,11 @@ hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter,
 u16
 rtl8812_EfuseGetCurrentSize(
 	IN	PADAPTER	pAdapter,
-	IN	uint8_t			efuseType,
-	IN	BOOLEAN		bPseudoTest)
+	IN	uint8_t			efuseType)
 {
 	uint16_t	ret=0;
 
-	ret = hal_EfuseGetCurrentSize_8812A(pAdapter, bPseudoTest);
+	ret = hal_EfuseGetCurrentSize_8812A(pAdapter);
 
 	return ret;
 }
@@ -2804,9 +2804,9 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 	// (i.e., offset 0~497, and dummy 1bytes) expected after CP test.
 	// 2009.02.19.
 	//
-	if( Efuse_GetCurrentSize(pAdapter, efuseType, _FALSE) >= (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR))
+	if( Efuse_GetCurrentSize(pAdapter, efuseType) >= (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR))
 	{
-		DBG_871X("hal_EfusePgPacketWrite_8812A() error: %x >= %x\n", Efuse_GetCurrentSize(pAdapter, efuseType, _FALSE), (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR));
+		DBG_871X("hal_EfusePgPacketWrite_8812A() error: %x >= %x\n", Efuse_GetCurrentSize(pAdapter, efuseType), (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR));
 		return _FALSE;
 	}
 
@@ -3010,7 +3010,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 							if((tmp_word_en&0x0F)!=0x0F){
 								//reorganize other pg packet
 //								efuse_addr = efuse_addr + (2*tmp_word_cnts) +1;//next pg packet addr
-								efuse_addr = Efuse_GetCurrentSize(pAdapter, efuseType, _FALSE);
+								efuse_addr = Efuse_GetCurrentSize(pAdapter, efuseType);
 								//===========================
 								target_pkt.offset = offset;
 								target_pkt.word_en= tmp_word_en;
@@ -3174,7 +3174,7 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 							uint8_t	reorg_offset = tmp_pkt.offset;
 							uint8_t	reorg_worden=badworden;
 							Efuse_PgPacketWrite(pAdapter,reorg_offset,reorg_worden,originaldata);
-							efuse_addr = Efuse_GetCurrentSize(pAdapter, efuseType, _FALSE);
+							efuse_addr = Efuse_GetCurrentSize(pAdapter, efuseType);
 						}
 						//############################
 						else{

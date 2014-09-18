@@ -140,12 +140,11 @@ Efuse_PowerSwitch(
 u16
 Efuse_GetCurrentSize(
 	IN PADAPTER		pAdapter,
-	IN uint8_t			efuseType,
-	IN BOOLEAN		bPseudoTest)
+	IN uint8_t			efuseType)
 {
 	uint16_t ret=0;
 
-	ret = pAdapter->HalFunc.EfuseGetCurrentSize(pAdapter, efuseType, bPseudoTest);
+	ret = pAdapter->HalFunc.EfuseGetCurrentSize(pAdapter, efuseType);
 
 	return ret;
 }
@@ -686,7 +685,7 @@ uint16_t efuse_GetMaxSize(PADAPTER padapter)
 uint8_t efuse_GetCurrentSize(PADAPTER padapter, uint16_t *size)
 {
 	Efuse_PowerSwitch(padapter, _FALSE, _TRUE);
-	*size = Efuse_GetCurrentSize(padapter, EFUSE_WIFI, _FALSE);
+	*size = Efuse_GetCurrentSize(padapter, EFUSE_WIFI);
 	Efuse_PowerSwitch(padapter, _FALSE, _FALSE);
 
 	return _SUCCESS;

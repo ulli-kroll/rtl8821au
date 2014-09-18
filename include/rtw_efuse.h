@@ -123,7 +123,7 @@ uint8_t	rtw_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data
 uint8_t	rtw_BT_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
 uint8_t 	rtw_BT_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
 
-u16	Efuse_GetCurrentSize(PADAPTER pAdapter, uint8_t efuseType, BOOLEAN bPseudoTest);
+u16	Efuse_GetCurrentSize(PADAPTER pAdapter, uint8_t efuseType);
 uint8_t	Efuse_CalculateWordCnts(uint8_t word_en);
 void	ReadEFuseByte(PADAPTER Adapter, u16 _offset, uint8_t *pbuf) ;
 void	EFUSE_GetEfuseDefinition(PADAPTER pAdapter, uint8_t efuseType, uint8_t type, void *pOut);

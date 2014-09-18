@@ -2807,7 +2807,7 @@ void ReadChipVersion8812A(PADAPTER	Adapter);
 VOID rtl8812_EfusePowerSwitch(PADAPTER	pAdapter, uint8_t bWrite, uint8_t PwrState);
 VOID rtl8812_ReadEFuse(PADAPTER	Adapter, uint8_t efuseType, uint16_t _offset, uint16_t 	_size_byte, uint8_t *pbuf, BOOLEAN bPseudoTest);
 VOID rtl8812_EFUSE_GetEfuseDefinition(PADAPTER pAdapter, uint8_t efuseType, uint8_t type, void *pOut);
-u16 rtl8812_EfuseGetCurrentSize(PADAPTER pAdapter, uint8_t efuseType, BOOLEAN bPseudoTest);
+u16 rtl8812_EfuseGetCurrentSize(PADAPTER pAdapter, uint8_t efuseType);
 int rtl8812_Efuse_PgPacketRead(PADAPTER	pAdapter, uint8_t offset, uint8_t *data);
 int rtl8812_Efuse_PgPacketWrite(PADAPTER pAdapter, uint8_t offset, uint8_t word_en, uint8_t *data);
 u8 rtl8812_Efuse_WordEnableDataWrite(PADAPTER pAdapter, uint16_t efuse_addr, uint8_t word_en, uint8_t *data);

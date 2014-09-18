@@ -2562,14 +2562,11 @@ static u16
 hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter)
 {
 	int	bContinual = _TRUE;
-
-	BOOLEAN bPseudoTest = _FALSE;
-
 	uint16_t	efuse_addr = 0;
 	uint8_t	hoffset=0,hworden=0;
 	uint8_t	efuse_data,word_cnts=0;
 
-	if(bPseudoTest)
+	if(_FALSE)
 	{
 		efuse_addr = (uint16_t)(fakeEfuseUsedBytes);
 	}
@@ -2580,7 +2577,7 @@ hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter)
 	//RTPRINT(FEEPROM, EFUSE_PG, ("hal_EfuseGetCurrentSize_8723A(), start_efuse_addr = %d\n", efuse_addr));
 
 	while (	bContinual &&
-			efuse_OneByteRead(pAdapter, efuse_addr ,&efuse_data, bPseudoTest) &&
+			efuse_OneByteRead(pAdapter, efuse_addr ,&efuse_data, _FALSE) &&
 			(efuse_addr  < EFUSE_REAL_CONTENT_LEN_JAGUAR))
 	{
 		if(efuse_data!=0xFF)
@@ -2589,7 +2586,7 @@ hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter)
 			{
 				hoffset = efuse_data;
 				efuse_addr++;
-				efuse_OneByteRead(pAdapter, efuse_addr ,&efuse_data, bPseudoTest);
+				efuse_OneByteRead(pAdapter, efuse_addr ,&efuse_data, _FALSE);
 				if((efuse_data & 0x0F) == 0x0F)
 				{
 					efuse_addr++;
@@ -2616,7 +2613,7 @@ hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter)
 		}
 	}
 
-	if(bPseudoTest)
+	if(_FALSE)
 	{
 		fakeEfuseUsedBytes = efuse_addr;
 		//RTPRINT(FEEPROM, EFUSE_PG, ("hal_EfuseGetCurrentSize_8723A(), return %d\n", fakeEfuseUsedBytes));

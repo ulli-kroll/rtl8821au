@@ -2404,7 +2404,7 @@ exit:
 }
 
 //Do not support BT
-VOID
+static VOID
 Hal_EFUSEGetEfuseDefinition8812A(
 	IN		PADAPTER	pAdapter,
 	IN		u1Byte		efuseType,
@@ -2564,7 +2564,7 @@ rtl8812_Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 }
 
 
-u16
+static u16
 hal_EfuseGetCurrentSize_8812A(IN	PADAPTER	pAdapter,
 		IN		BOOLEAN			bPseudoTest)
 {
@@ -2649,7 +2649,7 @@ rtl8812_EfuseGetCurrentSize(
 }
 
 
-int
+static int
 hal_EfusePgPacketRead_8812A(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t			offset,
@@ -2776,7 +2776,7 @@ rtl8812_Efuse_PgPacketRead(	IN	PADAPTER	pAdapter,
 	return ret;
 }
 
-int
+static int
 hal_EfusePgPacketWrite_8812A(IN	PADAPTER	pAdapter,
 					IN	uint8_t 			offset,
 					IN	uint8_t			word_en,

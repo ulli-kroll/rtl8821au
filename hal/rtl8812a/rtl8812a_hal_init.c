@@ -2485,7 +2485,6 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 							IN	uint8_t		word_en,
 							IN	uint8_t		*data)
 {
-	BOOLEAN bPseudoTest = _FALSE;
 	uint16_t	tmpaddr = 0;
 	uint16_t	start_addr = efuse_addr;
 	uint8_t	badworden = 0x0F;
@@ -2497,11 +2496,11 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 	if(!(word_en&BIT0))
 	{
 		tmpaddr = start_addr;
-		efuse_OneByteWrite(pAdapter,start_addr++, data[0], bPseudoTest);
-		efuse_OneByteWrite(pAdapter,start_addr++, data[1], bPseudoTest);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[0], _FALSE);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[1], _FALSE);
 
-		efuse_OneByteRead(pAdapter,tmpaddr, &tmpdata[0], bPseudoTest);
-		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[1], bPseudoTest);
+		efuse_OneByteRead(pAdapter,tmpaddr, &tmpdata[0], _FALSE);
+		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[1], _FALSE);
 		if((data[0]!=tmpdata[0])||(data[1]!=tmpdata[1])){
 			badworden &= (~BIT0);
 		}
@@ -2509,11 +2508,11 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 	if(!(word_en&BIT1))
 	{
 		tmpaddr = start_addr;
-		efuse_OneByteWrite(pAdapter,start_addr++, data[2], bPseudoTest);
-		efuse_OneByteWrite(pAdapter,start_addr++, data[3], bPseudoTest);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[2], _FALSE);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[3], _FALSE);
 
-		efuse_OneByteRead(pAdapter,tmpaddr    , &tmpdata[2], bPseudoTest);
-		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[3], bPseudoTest);
+		efuse_OneByteRead(pAdapter,tmpaddr    , &tmpdata[2], _FALSE);
+		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[3], _FALSE);
 		if((data[2]!=tmpdata[2])||(data[3]!=tmpdata[3])){
 			badworden &=( ~BIT1);
 		}
@@ -2521,11 +2520,11 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 	if(!(word_en&BIT2))
 	{
 		tmpaddr = start_addr;
-		efuse_OneByteWrite(pAdapter,start_addr++, data[4], bPseudoTest);
-		efuse_OneByteWrite(pAdapter,start_addr++, data[5], bPseudoTest);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[4], _FALSE);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[5], _FALSE);
 
-		efuse_OneByteRead(pAdapter,tmpaddr, &tmpdata[4], bPseudoTest);
-		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[5], bPseudoTest);
+		efuse_OneByteRead(pAdapter,tmpaddr, &tmpdata[4], _FALSE);
+		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[5], _FALSE);
 		if((data[4]!=tmpdata[4])||(data[5]!=tmpdata[5])){
 			badworden &=( ~BIT2);
 		}
@@ -2533,11 +2532,11 @@ Hal_EfuseWordEnableDataWrite8812A(	IN	PADAPTER	pAdapter,
 	if(!(word_en&BIT3))
 	{
 		tmpaddr = start_addr;
-		efuse_OneByteWrite(pAdapter,start_addr++, data[6], bPseudoTest);
-		efuse_OneByteWrite(pAdapter,start_addr++, data[7], bPseudoTest);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[6], _FALSE);
+		efuse_OneByteWrite(pAdapter,start_addr++, data[7], _FALSE);
 
-		efuse_OneByteRead(pAdapter,tmpaddr, &tmpdata[6], bPseudoTest);
-		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[7], bPseudoTest);
+		efuse_OneByteRead(pAdapter,tmpaddr, &tmpdata[6], _FALSE);
+		efuse_OneByteRead(pAdapter,tmpaddr+1, &tmpdata[7], _FALSE);
 		if((data[6]!=tmpdata[6])||(data[7]!=tmpdata[7])){
 			badworden &=( ~BIT3);
 		}

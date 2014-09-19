@@ -5700,9 +5700,6 @@ void rf_reg_dump(_adapter *padapter)
 	}
 }
 
-#ifdef CONFIG_IOL
-#include <rtw_iol.h>
-#endif
 static int rtw_dbg_port(struct net_device *ndev,
                                struct iw_request_info *info,
                                union iwreq_data *wrqu, char *extra)
@@ -5796,168 +5793,6 @@ static int rtw_dbg_port(struct net_device *ndev,
 		case 0x78: //IOL test
 			switch(minor_cmd)
 			{
-				#ifdef CONFIG_IOL
-				case 0x04: //LLT table initialization test
-				{
-					uint8_t page_boundary = 0xf9;
-					{
-						struct xmit_frame	*xmit_frame;
-
-						if((xmit_frame=rtw_IOL_accquire_xmit_frame(padapter)) == NULL) {
-							ret = -ENOMEM;
-							break;
-						}
-
-						rtw_IOL_append_LLT_cmd(xmit_frame, page_boundary);
-
-
-						if(_SUCCESS != rtw_IOL_exec_cmds_sync(padapter, xmit_frame, 500,0) )
-							ret = -EPERM;
-					}
-				}
-					break;
-				case 0x05: //blink LED test
-				{
-					uint16_t reg = 0x4c;
-					u32 blink_num = 50;
-					u32 blink_delay_ms = 200;
-					int i;
-
-					{
-						struct xmit_frame	*xmit_frame;
-
-						if((xmit_frame=rtw_IOL_accquire_xmit_frame(padapter)) == NULL) {
-							ret = -ENOMEM;
-							break;
-						}
-
-						for(i=0;i<blink_num;i++){
-							#ifdef CONFIG_IOL_NEW_GENERATION
-							rtw_IOL_append_WB_cmd(xmit_frame, reg, 0x00,0xff);
-							rtw_IOL_append_DELAY_MS_cmd(xmit_frame, blink_delay_ms);
-							rtw_IOL_append_WB_cmd(xmit_frame, reg, 0x08,0xff);
-							rtw_IOL_append_DELAY_MS_cmd(xmit_frame, blink_delay_ms);
-							#else
-							rtw_IOL_append_WB_cmd(xmit_frame, reg, 0x00);
-							rtw_IOL_append_DELAY_MS_cmd(xmit_frame, blink_delay_ms);
-							rtw_IOL_append_WB_cmd(xmit_frame, reg, 0x08);
-							rtw_IOL_append_DELAY_MS_cmd(xmit_frame, blink_delay_ms);
-							#endif
-						}
-						if(_SUCCESS != rtw_IOL_exec_cmds_sync(padapter, xmit_frame, (blink_delay_ms*blink_num*2)+200,0) )
-							ret = -EPERM;
-					}
-				}
-					break;
-
-				case 0x06: //continuous wirte byte test
-				{
-					uint16_t reg = arg;
-					uint16_t start_value = 0;
-					u32 write_num = extra_arg;
-					int i;
-					uint8_t final;
-
-					{
-						struct xmit_frame	*xmit_frame;
-
-						if((xmit_frame=rtw_IOL_accquire_xmit_frame(padapter)) == NULL) {
-							ret = -ENOMEM;
-							break;
-						}
-
-						for(i=0;i<write_num;i++){
-							#ifdef CONFIG_IOL_NEW_GENERATION
-							rtw_IOL_append_WB_cmd(xmit_frame, reg, i+start_value,0xFF);
-							#else
-							rtw_IOL_append_WB_cmd(xmit_frame, reg, i+start_value);
-							#endif
-						}
-						if(_SUCCESS != rtw_IOL_exec_cmds_sync(padapter, xmit_frame, 5000,0))
-							ret = -EPERM;
-					}
-
-					if(start_value+write_num-1 == (final=rtw_read8(padapter, reg)) ) {
-						DBG_871X("continuous IOL_CMD_WB_REG to 0x%x %u times Success, start:%u, final:%u\n", reg, write_num, start_value, final);
-					} else {
-						DBG_871X("continuous IOL_CMD_WB_REG to 0x%x %u times Fail, start:%u, final:%u\n", reg, write_num, start_value, final);
-					}
-				}
-					break;
-
-				case 0x07: //continuous wirte word test
-				{
-					uint16_t reg = arg;
-					uint16_t start_value = 200;
-					u32 write_num = extra_arg;
-
-					int i;
-					uint16_t final;
-
-					{
-						struct xmit_frame	*xmit_frame;
-
-						if((xmit_frame=rtw_IOL_accquire_xmit_frame(padapter)) == NULL) {
-							ret = -ENOMEM;
-							break;
-						}
-
-						for(i=0;i<write_num;i++){
-							#ifdef CONFIG_IOL_NEW_GENERATION
-							rtw_IOL_append_WW_cmd(xmit_frame, reg, i+start_value,0xFFFF);
-							#else
-							rtw_IOL_append_WW_cmd(xmit_frame, reg, i+start_value);
-							#endif
-						}
-						if(_SUCCESS !=rtw_IOL_exec_cmds_sync(padapter, xmit_frame, 5000,0))
-							ret = -EPERM;
-					}
-
-					if(start_value+write_num-1 == (final=rtw_read16(padapter, reg)) ) {
-						DBG_871X("continuous IOL_CMD_WW_REG to 0x%x %u times Success, start:%u, final:%u\n", reg, write_num, start_value, final);
-					} else {
-						DBG_871X("continuous IOL_CMD_WW_REG to 0x%x %u times Fail, start:%u, final:%u\n", reg, write_num, start_value, final);
-					}
-				}
-					break;
-
-				case 0x08: //continuous wirte dword test
-				{
-					uint16_t reg = arg;
-					u32 start_value = 0x110000c7;
-					u32 write_num = extra_arg;
-
-					int i;
-					u32 final;
-
-					{
-						struct xmit_frame	*xmit_frame;
-
-						if((xmit_frame=rtw_IOL_accquire_xmit_frame(padapter)) == NULL) {
-							ret = -ENOMEM;
-							break;
-						}
-
-						for(i=0;i<write_num;i++){
-							#ifdef CONFIG_IOL_NEW_GENERATION
-							rtw_IOL_append_WD_cmd(xmit_frame, reg, i+start_value,0xFFFFFFFF);
-							#else
-							rtw_IOL_append_WD_cmd(xmit_frame, reg, i+start_value);
-							#endif
-						}
-						if(_SUCCESS !=rtw_IOL_exec_cmds_sync(padapter, xmit_frame, 5000,0))
-							ret = -EPERM;
-
-					}
-
-					if(start_value+write_num-1 == (final=rtw_read32(padapter, reg)) ) {
-						DBG_871X("continuous IOL_CMD_WD_REG to 0x%x %u times Success, start:%u, final:%u\n", reg, write_num, start_value, final);
-					} else {
-						DBG_871X("continuous IOL_CMD_WD_REG to 0x%x %u times Fail, start:%u, final:%u\n", reg, write_num, start_value, final);
-					}
-				}
-					break;
-				#endif //CONFIG_IOL
 			}
 			break;
 		case 0x79:
@@ -7806,9 +7641,6 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 	uint16_t i=0, j=0, mapLen=0, addr=0, cnts=0;
 	uint16_t max_available_size=0, raw_cursize=0, raw_maxsize=0;
 	int err;
-	#ifdef CONFIG_IOL
-	uint8_t org_fw_iol = padapter->registrypriv.fw_iol;// 0:Disable, 1:enable, 2:by usb speed
-	#endif
 
 	wrqu = (struct iw_point*)wdata;
 	pwrctrlpriv = &padapter->pwrctrlpriv;
@@ -7854,9 +7686,6 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 		tmp[i] = token;
 		i++;
 	}
-	#ifdef CONFIG_IOL
-	padapter->registrypriv.fw_iol = 0;// 0:Disable, 1:enable, 2:by usb speed
-	#endif
 
 	if(strcmp(tmp[0], "status") == 0){
 		sprintf(extra, "Load File efuse=%s,Load File MAC=%s",(pEEPROM->bloadfile_fail_flag? "FAIL" : "OK"),(pEEPROM->bloadmac_fail_flag? "FAIL" : "OK"));
@@ -8261,9 +8090,6 @@ exit:
 	#endif
 	#ifdef CONFIG_LPS
 	rtw_pm_set_lps(padapter, lps_mode);
-	#endif
-	#ifdef CONFIG_IOL
-	padapter->registrypriv.fw_iol = org_fw_iol;// 0:Disable, 1:enable, 2:by usb speed
 	#endif
 	return err;
 }

@@ -88,15 +88,6 @@ int32_t InitLLTTable8812(PADAPTER padapter, uint8_t txpktbuf_bndy)
 	uint32_t	Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
 	HAL_DATA_TYPE *pHalData	= GET_HAL_DATA(padapter);
 
-#if defined(CONFIG_IOL_LLT)
-	if(1 || rtw_IOL_applied(padapter))
-	{
-		iol_mode_enable(padapter, 1);
-		status = iol_InitLLTTable(padapter, txpktbuf_bndy);
-		iol_mode_enable(padapter, 0);
-	}
-	else
-#endif
 	{
 		for (i = 0; i < (txpktbuf_bndy - 1); i++) {
 			status = _LLTWrite(padapter, i, i + 1);

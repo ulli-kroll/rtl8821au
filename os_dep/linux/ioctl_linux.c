@@ -5790,11 +5790,6 @@ static int rtw_dbg_port(struct net_device *ndev,
 					break;
 			}
 			break;
-		case 0x78: //IOL test
-			switch(minor_cmd)
-			{
-			}
-			break;
 		case 0x79:
 			{
 				/*

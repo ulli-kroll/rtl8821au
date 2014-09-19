@@ -103,7 +103,6 @@
 	#define CONFIG_HW_ANTENNA_DIVERSITY
 	#endif
 
-	//#define CONFIG_IOL
 //#else 	//#ifndef CONFIG_MP_INCLUDED
 
 //#endif 	//#ifndef CONFIG_MP_INCLUDED
@@ -150,13 +149,6 @@
 		//#define CONFIG_LED_HANDLED_BY_CMD_THREAD
 	#endif
 #endif // CONFIG_LED
-
-#ifdef CONFIG_IOL
-	#define CONFIG_IOL_READ_EFUSE_MAP
-	//#define DBG_IOL_READ_EFUSE_MAP
-	#define CONFIG_IOL_LLT
-#endif
-
 
 #define USB_INTERFERENCE_ISSUE // this should be checked in all usb interface
 #define CONFIG_GLOBAL_UI_PID

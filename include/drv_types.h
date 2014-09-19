@@ -111,11 +111,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_br_ext.h>
 #endif // CONFIG_BR_EXT
 
-#ifdef CONFIG_IOL
-#include <rtw_iol.h>
-#endif // CONFIG_IOL
-
-
 #ifdef CONFIG_IOCTL_CFG80211
 #include "ioctl_cfg80211.h"
 #endif //CONFIG_IOCTL_CFG80211
@@ -239,10 +234,6 @@ struct registry_priv
 
 #ifdef CONFIG_LAYER2_ROAMING
 	uint8_t	max_roaming_times; // the max number driver will try to roaming
-#endif
-
-#ifdef CONFIG_IOL
-	uint8_t fw_iol; //enable iol without other concern
 #endif
 
 #ifdef CONFIG_80211D

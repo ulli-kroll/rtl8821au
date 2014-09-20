@@ -904,21 +904,6 @@ unsigned int rtw_classify8021d(struct sk_buff *skb)
 	return dscp >> 5;
 }
 
-static uint16_t rtw_select_queue(struct net_device *ndev, struct sk_buff *skb)
-{
-	_adapter	*padapter = rtw_netdev_priv(ndev);
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-
-	skb->priority = rtw_classify8021d(skb);
-
-	if(pmlmepriv->acm_mask != 0)
-	{
-		skb->priority = qos_acm(pmlmepriv->acm_mask, skb->priority);
-	}
-
-	return rtw_1d_to_queue[skb->priority];
-}
-
 uint16_t rtw_recv_select_queue(struct sk_buff *skb)
 {
 	struct iphdr *piphdr;
@@ -952,7 +937,6 @@ static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_open = netdev_open,
 	.ndo_stop = netdev_close,
 	.ndo_start_xmit = rtw_xmit_entry,
-	.ndo_select_queue	= rtw_select_queue,
 	.ndo_set_mac_address = rtw_net_set_mac_address,
 	.ndo_get_stats = rtw_net_get_stats,
 	.ndo_do_ioctl = rtw_ioctl,

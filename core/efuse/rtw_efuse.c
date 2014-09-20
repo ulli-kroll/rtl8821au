@@ -405,12 +405,11 @@ efuse_OneByteRead(
 {
 	uint8_t	tmpidx = 0;
 	uint8_t	bResult;
-	BOOLEAN bPseudoTest = _FALSE;
 
 	//DBG_871X("===> EFUSE_OneByteRead(), addr = %x\n", addr);
 	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
 
-	if(bPseudoTest)
+	if(_FALSE)
 	{
 		bResult = Efuse_Read1ByteFromFakeContent(pAdapter, addr, data);
 		return bResult;
@@ -463,12 +462,11 @@ efuse_OneByteWrite(
 	uint8_t	tmpidx = 0;
 	uint8_t	bResult=_FALSE;
 	uint32_t efuseValue = 0;
-	BOOLEAN bPseudoTest = _FALSE;
 
 	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
 	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
 
-	if(bPseudoTest)
+	if(_FALSE)
 	{
 		bResult = Efuse_Write1ByteToFakeContent(pAdapter, addr, data);
 		return bResult;
@@ -556,12 +554,11 @@ int
 Efuse_PgPacketWrite_BT(IN	PADAPTER	pAdapter,
 					IN	uint8_t 			offset,
 					IN	uint8_t			word_en,
-					IN	uint8_t			*data,
-					IN	BOOLEAN		bPseudoTest)
+					IN	uint8_t			*data)
 {
 	int ret;
 
-	ret =  pAdapter->HalFunc.Efuse_PgPacketWrite_BT(pAdapter, offset, word_en, data, bPseudoTest);
+	ret =  pAdapter->HalFunc.Efuse_PgPacketWrite_BT(pAdapter, offset, word_en, data);
 
 	return ret;
 }
@@ -902,7 +899,7 @@ uint8_t rtw_BT_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, 
 			}
 			DBG_871X("\n");
 
-			ret = Efuse_PgPacketWrite_BT(padapter, offset, word_en, newdata, _FALSE);
+			ret = Efuse_PgPacketWrite_BT(padapter, offset, word_en, newdata);
 			if (ret == _FAIL) break;
 		}
 

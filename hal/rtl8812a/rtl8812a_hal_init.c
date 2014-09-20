@@ -1594,8 +1594,7 @@ rtl8812_EfusePowerSwitch(
 static BOOLEAN
 Hal_EfuseSwitchToBank8812A(
 	IN		PADAPTER	pAdapter,
-	IN		u1Byte		bank,
-	IN		BOOLEAN		bPseudoTest
+	IN		u1Byte		bank
 	)
 {
 	return _FALSE;
@@ -2592,7 +2591,6 @@ rtl8812_Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 					IN	uint8_t			*data)
 {
 	int	ret;
-	BOOLEAN bPseudoTest = _FALSE;
 
 	ret = hal_EfusePgPacketWrite_8812A(pAdapter, offset, word_en, data);
 

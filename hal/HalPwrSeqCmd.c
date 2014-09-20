@@ -45,20 +45,16 @@ Major Change History:
 //
 //	2011.07.07, added by Roger.
 //
-uint8_t HalPwrSeqCmdParsing(
-	PADAPTER		padapter,
-	uint8_t				CutVersion,
-	uint8_t				FabVersion,
-	uint8_t				InterfaceType,
-	WLAN_PWR_CFG	PwrSeqCmd[])
+uint8_t HalPwrSeqCmdParsing(PADAPTER padapter, uint8_t CutVersion,
+	uint8_t FabVersion, uint8_t InterfaceType, WLAN_PWR_CFG	PwrSeqCmd[])
 {
 	WLAN_PWR_CFG 	PwrCfgCmd = {0};
-	uint8_t				bPollingBit = _FALSE;
-	uint32_t				AryIdx = 0;
-	uint8_t				value = 0;
-	uint32_t				offset = 0;
-	uint32_t				pollingCount = 0; // polling autoload done.
-	uint32_t				maxPollingCnt = 5000;
+	uint8_t	bPollingBit = _FALSE;
+	uint32_t AryIdx = 0;
+	uint8_t value = 0;
+	uint32_t offset = 0;
+	uint32_t pollingCount = 0; 	/* polling autoload done. */
+	uint32_t maxPollingCnt = 5000;
 
 	do {
 		PwrCfgCmd = PwrSeqCmd[AryIdx];
@@ -74,77 +70,75 @@ uint8_t HalPwrSeqCmdParsing(
 					GET_PWR_CFG_MASK(PwrCfgCmd),
 					GET_PWR_CFG_VALUE(PwrCfgCmd)));
 
-		//2 Only Handle the command whose FAB, CUT, and Interface are matched
-		if ((GET_PWR_CFG_FAB_MASK(PwrCfgCmd) & FabVersion) &&
-			(GET_PWR_CFG_CUT_MASK(PwrCfgCmd) & CutVersion) &&
-			(GET_PWR_CFG_INTF_MASK(PwrCfgCmd) & InterfaceType))
-		{
-			switch (GET_PWR_CFG_CMD(PwrCfgCmd))
-			{
-				case PWR_CMD_READ:
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_READ\n"));
-					break;
+		/* 2 Only Handle the command whose FAB, CUT, and Interface are matched */
+		if ((GET_PWR_CFG_FAB_MASK(PwrCfgCmd) & FabVersion)
+		   && (GET_PWR_CFG_CUT_MASK(PwrCfgCmd) & CutVersion)
+		   && (GET_PWR_CFG_INTF_MASK(PwrCfgCmd) & InterfaceType)) {
+			switch (GET_PWR_CFG_CMD(PwrCfgCmd)) {
+			case PWR_CMD_READ:
+				RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_READ\n"));
+				break;
 
-				case PWR_CMD_WRITE:
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_WRITE\n"));
-					offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
+			case PWR_CMD_WRITE:
+				RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_WRITE\n"));
+				offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
 
-					{
-						// Read the value from system register
+				{
+					/* Read the value from system register */
+					value = rtw_read8(padapter, offset);
+
+					value=value&(~(GET_PWR_CFG_MASK(PwrCfgCmd)));
+					value=value|(GET_PWR_CFG_VALUE(PwrCfgCmd)&GET_PWR_CFG_MASK(PwrCfgCmd));
+
+					/* Write the value back to sytem register */
+					rtw_write8(padapter, offset, value);
+				}
+				break;
+
+			case PWR_CMD_POLLING:
+				RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_POLLING\n"));
+
+				bPollingBit = _FALSE;
+				offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
+				do {
 						value = rtw_read8(padapter, offset);
 
-						value=value&(~(GET_PWR_CFG_MASK(PwrCfgCmd)));
-						value=value|(GET_PWR_CFG_VALUE(PwrCfgCmd)&GET_PWR_CFG_MASK(PwrCfgCmd));
-
-						// Write the value back to sytem register
-						rtw_write8(padapter, offset, value);
-					}
-					break;
-
-				case PWR_CMD_POLLING:
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_POLLING\n"));
-
-					bPollingBit = _FALSE;
-					offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
-					do {
-							value = rtw_read8(padapter, offset);
-
-						value=value&GET_PWR_CFG_MASK(PwrCfgCmd);
-						if (value == (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd)))
-							bPollingBit = _TRUE;
-						else
-							rtw_udelay_os(10);
-
-						if (pollingCount++ > maxPollingCnt) {
-							DBG_871X("Fail to polling Offset[%#x]\n", offset);
-							return _FALSE;
-						}
-					} while (!bPollingBit);
-
-					break;
-
-				case PWR_CMD_DELAY:
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_DELAY\n"));
-					if (GET_PWR_CFG_VALUE(PwrCfgCmd) == PWRSEQ_DELAY_US)
-						rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd));
+					value=value&GET_PWR_CFG_MASK(PwrCfgCmd);
+					if (value == (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd)))
+						bPollingBit = _TRUE;
 					else
-						rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd)*1000);
-					break;
+						rtw_udelay_os(10);
 
-				case PWR_CMD_END:
-					// When this command is parsed, end the process
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_END\n"));
-					return _TRUE;
-					break;
+					if (pollingCount++ > maxPollingCnt) {
+						DBG_871X("Fail to polling Offset[%#x]\n", offset);
+						return _FALSE;
+					}
+				} while (!bPollingBit);
 
-				default:
-					RT_TRACE(_module_hal_init_c_ , _drv_err_, ("HalPwrSeqCmdParsing: Unknown CMD!!\n"));
-					break;
+				break;
+
+			case PWR_CMD_DELAY:
+				RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_DELAY\n"));
+				if (GET_PWR_CFG_VALUE(PwrCfgCmd) == PWRSEQ_DELAY_US)
+					rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd));
+				else
+					rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd)*1000);
+				break;
+
+			case PWR_CMD_END:
+				/* When this command is parsed, end the process */
+				RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_END\n"));
+				return _TRUE;
+				break;
+
+			default:
+				RT_TRACE(_module_hal_init_c_ , _drv_err_, ("HalPwrSeqCmdParsing: Unknown CMD!!\n"));
+				break;
 			}
 		}
 
-		AryIdx++;//Add Array Index
-	}while(1);
+		AryIdx++;		/* Add Array Index */
+	} while(1);
 
 	return _TRUE;
 }

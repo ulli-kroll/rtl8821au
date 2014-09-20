@@ -19,7 +19,6 @@
  ******************************************************************************/
 #define _HCI_HAL_INIT_C_
 
-//#include <drv_types.h>
 #include <rtl8812a_hal.h>
 
 #ifndef CONFIG_USB_HCI
@@ -34,73 +33,66 @@ static void _dbg_dump_macreg(_adapter *padapter)
 	uint32_t offset = 0;
 	uint32_t val32 = 0;
 	uint32_t index =0 ;
-	for(index=0;index<64;index++)
-	{
+	for (index = 0;index < 64; index++) {
 		offset = index*4;
 		val32 = rtw_read32(padapter,offset);
 		DBG_8192C("offset : 0x%02x ,val:0x%08x\n",offset,val32);
 	}
 }
 
-static VOID
-_ConfigChipOutEP_8812(
-	IN	PADAPTER	pAdapter,
-	IN	uint8_t		NumOutPipe
-	)
+static VOID _ConfigChipOutEP_8812(PADAPTER pAdapter, uint8_t NumOutPipe)
 {
-	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(pAdapter);
-
+	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 
 	pHalData->OutEpQueueSel = 0;
 	pHalData->OutEpNumber = 0;
 
-	switch(NumOutPipe){
-		case 	4:
-				pHalData->OutEpQueueSel=TX_SELE_HQ| TX_SELE_LQ|TX_SELE_NQ;
-				pHalData->OutEpNumber=4;
-				break;
-		case 	3:
-				pHalData->OutEpQueueSel=TX_SELE_HQ| TX_SELE_LQ|TX_SELE_NQ;
-				pHalData->OutEpNumber=3;
-				break;
-		case 	2:
-				pHalData->OutEpQueueSel=TX_SELE_HQ| TX_SELE_NQ;
-				pHalData->OutEpNumber=2;
-				break;
-		case 	1:
-				pHalData->OutEpQueueSel=TX_SELE_HQ;
-				pHalData->OutEpNumber=1;
-				break;
-		default:
-				break;
+	switch (NumOutPipe) {
+	case 	4:
+			pHalData->OutEpQueueSel=TX_SELE_HQ| TX_SELE_LQ|TX_SELE_NQ;
+			pHalData->OutEpNumber=4;
+			break;
+	case 	3:
+			pHalData->OutEpQueueSel=TX_SELE_HQ| TX_SELE_LQ|TX_SELE_NQ;
+			pHalData->OutEpNumber=3;
+			break;
+	case 	2:
+			pHalData->OutEpQueueSel=TX_SELE_HQ| TX_SELE_NQ;
+			pHalData->OutEpNumber=2;
+			break;
+	case 	1:
+			pHalData->OutEpQueueSel=TX_SELE_HQ;
+			pHalData->OutEpNumber=1;
+			break;
+	default:
+			break;
 
 	}
 	DBG_871X("%s OutEpQueueSel(0x%02x), OutEpNumber(%d) \n",__FUNCTION__,pHalData->OutEpQueueSel,pHalData->OutEpNumber );
 
 }
 
-static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(
-	IN	PADAPTER	pAdapter,
-	IN	uint8_t		NumInPipe,
-	IN	uint8_t		NumOutPipe
-	)
+static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(PADAPTER pAdapter,
+	uint8_t	NumInPipe, uint8_t NumOutPipe)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(pAdapter);
 	BOOLEAN			result		= _FALSE;
 
 	_ConfigChipOutEP_8812(pAdapter, NumOutPipe);
 
-	// Normal chip with one IN and one OUT doesn't have interrupt IN EP.
-	if(1 == pHalData->OutEpNumber){
-		if(1 != NumInPipe){
+	/* Normal chip with one IN and one OUT doesn't have interrupt IN EP. */
+	if (1 == pHalData->OutEpNumber) {
+		if (1 != NumInPipe) {
 			return result;
 		}
 	}
 
-	// All config other than above support one Bulk IN and one Interrupt IN.
-	//if(2 != NumInPipe){
-	//	return result;
-	//}
+	/*
+	 * All config other than above support one Bulk IN and one Interrupt IN.
+	 * if(2 != NumInPipe){
+	 * 	return result;
+	 * }
+	 */
 
 	result = Hal_MappingOutPipe(pAdapter, NumOutPipe);
 
@@ -113,35 +105,30 @@ void rtl8812au_interface_configure(_adapter *padapter)
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(padapter);
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 
-	if (IS_SUPER_SPEED_USB(padapter))
-	{
-		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;//1024 bytes
-	}
-	else if (IS_HIGH_SPEED_USB(padapter))
-	{
-		pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;//512 bytes
-	}
-	else
-	{
-		pHalData->UsbBulkOutSize = USB_FULL_SPEED_BULK_SIZE;//64 bytes
+	if (IS_SUPER_SPEED_USB(padapter)) {
+		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;	/* 1024 bytes */
+	} else if (IS_HIGH_SPEED_USB(padapter)) {
+		pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;	/* 512 bytes */
+	} else {
+		pHalData->UsbBulkOutSize = USB_FULL_SPEED_BULK_SIZE; 	/*64 bytes */
 	}
 
 	pHalData->interfaceIndex = pdvobjpriv->InterfaceNumber;
 
 #ifdef CONFIG_USB_TX_AGGREGATION
 	pHalData->UsbTxAggMode		= 1;
-	pHalData->UsbTxAggDescNum	= 6;	// only 4 bits
+	pHalData->UsbTxAggDescNum	= 6;	/* only 4 bits */
 
-	if(IS_HARDWARE_TYPE_8812AU(padapter))    //page added for Jaguar
+	if(IS_HARDWARE_TYPE_8812AU(padapter))	/* page added for Jaguar */
 		pHalData->UsbTxAggDescNum = 3;
 #endif
 
 #ifdef CONFIG_USB_RX_AGGREGATION
-	pHalData->UsbRxAggMode		= USB_RX_AGG_DMA;// USB_RX_AGG_DMA;
-	pHalData->UsbRxAggBlockCount	= 8; //unit : 512b
+	pHalData->UsbRxAggMode		= USB_RX_AGG_DMA;	/* USB_RX_AGG_DMA; */
+	pHalData->UsbRxAggBlockCount	= 8; 			/* unit : 512b */
 	pHalData->UsbRxAggBlockTimeout	= 0x6;
-	pHalData->UsbRxAggPageCount	= 16; //uint :128 b //0x0A;	// 10 = MAX_RX_DMA_BUFFER_SIZE/2/pHalData->UsbBulkOutSize
-	pHalData->UsbRxAggPageTimeout = 0x6; //6, absolute time = 34ms/(2^6)
+	pHalData->UsbRxAggPageCount	= 16; 			/* uint :128 b //0x0A;	// 10 = MAX_RX_DMA_BUFFER_SIZE/2/pHalData->UsbBulkOutSize */
+	pHalData->UsbRxAggPageTimeout = 0x6; 			/* 6, absolute time = 34ms/(2^6) */
 
 	pHalData->RegAcUsbDmaSize = 4;
 	pHalData->RegAcUsbDmaTime = 8;
@@ -152,21 +139,21 @@ void rtl8812au_interface_configure(_adapter *padapter)
 
 }
 
-static VOID
-_InitBurstPktLen(IN PADAPTER Adapter)
+static VOID _InitBurstPktLen(IN PADAPTER Adapter)
 {
 	u1Byte speedvalue, provalue, temp;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
+	/*
+	 * rtw_write16(Adapter, REG_TRXDMA_CTRL_8195, 0xf5b0);
+	 * rtw_write16(Adapter, REG_TRXDMA_CTRL_8812, 0xf5b4);
+	 */
+	rtw_write8(Adapter, 0xf050, 0x01);		/* usb3 rx interval */
+	rtw_write16(Adapter, REG_RXDMA_STATUS, 0x7400);	/* burset lenght=4, set 0x3400 for burset length=2 */
+	rtw_write8(Adapter, 0x289,0xf5);		/* for rxdma control */
+	/* rtw_write8(Adapter, 0x3a, 0x46); */
 
-	//rtw_write16(Adapter, REG_TRXDMA_CTRL_8195, 0xf5b0);
-	//rtw_write16(Adapter, REG_TRXDMA_CTRL_8812, 0xf5b4);
-	rtw_write8(Adapter, 0xf050, 0x01);  //usb3 rx interval
-	rtw_write16(Adapter, REG_RXDMA_STATUS, 0x7400);  //burset lenght=4, set 0x3400 for burset length=2
-	rtw_write8(Adapter, 0x289,0xf5);				//for rxdma control
-	//rtw_write8(Adapter, 0x3a, 0x46);
-
-	// 0x456 = 0x70, sugguested by Zhilin
+	/*  0x456 = 0x70, sugguested by Zhilin */
 	rtw_write8(Adapter, REG_AMPDU_MAX_TIME_8812, 0x70);
 
 	rtw_write32(Adapter, 0x458, 0xffffffff);
@@ -176,20 +163,16 @@ _InitBurstPktLen(IN PADAPTER Adapter)
 	if(IS_HARDWARE_TYPE_8821U(Adapter))
 		speedvalue = BIT7;
 	else
-		speedvalue = rtw_read8(Adapter, 0xff); //check device operation speed: SS 0xff bit7
+		speedvalue = rtw_read8(Adapter, 0xff); /* check device operation speed: SS 0xff bit7 */
 
-	if(speedvalue & BIT7)   //USB2/1.1 Mode
-	{
+	if (speedvalue & BIT7) {		/* USB2/1.1 Mode */
 		temp = rtw_read8(Adapter, 0xfe17);
-		if(((temp>>4)&0x03)==0)
-		{
+		if (((temp>>4)&0x03)==0) {
 			pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;
 			provalue = rtw_read8(Adapter, REG_RXDMA_PRO_8812);
 			rtw_write8(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(4))&(~BIT(5)))); //set burst pkt len=512B
 			rtw_write16(Adapter, REG_RXDMA_PRO_8812, 0x1e);
-		}
-		else
-		{
+		} else {
 			pHalData->UsbBulkOutSize = 64;
 			provalue = rtw_read8(Adapter, REG_RXDMA_PRO_8812);
 			rtw_write8(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(5))&(~BIT(4)))); //set burst pkt len=64B
@@ -197,67 +180,63 @@ _InitBurstPktLen(IN PADAPTER Adapter)
 
 		rtw_write16(Adapter, REG_RXDMA_AGG_PG_TH,0x2005); //dmc agg th 20K
 
-		//rtw_write8(Adapter, 0x10c, 0xb4);
-		//hal_UphyUpdate8812AU(Adapter);
+		/*
+		 * rtw_write8(Adapter, 0x10c, 0xb4);
+		 * hal_UphyUpdate8812AU(Adapter);
+		 */
 
 		pHalData->bSupportUSB3 = _FALSE;
-	}
-	else  //USB3 Mode
-	{
+	} else {		/* USB3 Mode */
 		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;
 		provalue = rtw_read8(Adapter, REG_RXDMA_PRO_8812);
 		rtw_write8(Adapter, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); //set burst pkt len=1k
 		rtw_write16(Adapter, REG_RXDMA_PRO_8812, 0x0e);
-		//PlatformEFIOWrite2Byte(Adapter, REG_RXDMA_AGG_PG_TH,0x0a05); //dmc agg th 20K
+		/* PlatformEFIOWrite2Byte(Adapter, REG_RXDMA_AGG_PG_TH,0x0a05); //dmc agg th 20K */
 		pHalData->bSupportUSB3 = _TRUE;
 
-		// set Reg 0xf008[3:4] to 2'00 to disable U1/U2 Mode to avoid 2.5G spur in USB3.0. added by page, 20120712
+		/*  set Reg 0xf008[3:4] to 2'00 to disable U1/U2 Mode to avoid 2.5G spur in USB3.0. added by page, 20120712 */
 		rtw_write8(Adapter, 0xf008, rtw_read8(Adapter, 0xf008)&0xE7);
 	}
 
 #ifdef CONFIG_USB_TX_AGGREGATION
-	//rtw_write8(Adapter, REG_TDECTRL_8195, 0x30);
+	/* rtw_write8(Adapter, REG_TDECTRL_8195, 0x30); */
 #else
 	rtw_write8(Adapter, REG_TDECTRL, 0x10);
 #endif
 
 	temp = rtw_read8(Adapter, REG_SYS_FUNC_EN);
-	rtw_write8(Adapter, REG_SYS_FUNC_EN, temp&(~BIT(10))); //reset 8051
+	rtw_write8(Adapter, REG_SYS_FUNC_EN, temp&(~BIT(10))); 	/* reset 8051 */
 
-	rtw_write8(Adapter, REG_HT_SINGLE_AMPDU_8812,rtw_read8(Adapter, REG_HT_SINGLE_AMPDU_8812)|BIT(7)); //enable single pkt ampdu
-	rtw_write8(Adapter, REG_RX_PKT_LIMIT, 0x18);		//for VHT packet length 11K
+	rtw_write8(Adapter, REG_HT_SINGLE_AMPDU_8812,rtw_read8(Adapter, REG_HT_SINGLE_AMPDU_8812)|BIT(7));	/* enable single pkt ampdu */
+	rtw_write8(Adapter, REG_RX_PKT_LIMIT, 0x18);		/* for VHT packet length 11K */
 
 	rtw_write8(Adapter, REG_PIFS, 0x00);
 
-	//Suggention by SD1 Jong and Pisa, by Maddest 20130107.
-	if(IS_HARDWARE_TYPE_8821U(Adapter) && (Adapter->registrypriv.wifi_spec == _FALSE))
-	{
+	/* Suggention by SD1 Jong and Pisa, by Maddest 20130107. */
+	if (IS_HARDWARE_TYPE_8821U(Adapter) && (Adapter->registrypriv.wifi_spec == _FALSE)) {
 		rtw_write16(Adapter, REG_MAX_AGGR_NUM, 0x0a0a);
 		rtw_write8(Adapter, REG_FWHW_TXQ_CTRL, 0x80);
 		rtw_write8(Adapter, REG_AMPDU_MAX_TIME_8812, 0x5e);
 		rtw_write32(Adapter, REG_FAST_EDCA_CTRL, 0x03087777);
-	}
-	else
-	{
+	} else {
 		rtw_write8(Adapter, REG_MAX_AGGR_NUM, 0x1f);
 		rtw_write8(Adapter, REG_FWHW_TXQ_CTRL, rtw_read8(Adapter, REG_FWHW_TXQ_CTRL)&(~BIT(7)));
 	}
 
-	if(pHalData->AMPDUBurstMode)
-	{
+	if (pHalData->AMPDUBurstMode) {
 		rtw_write8(Adapter,REG_AMPDU_BURST_MODE_8812,  0x5F);
 	}
 
 	rtw_write8(Adapter, 0x1c, rtw_read8(Adapter, 0x1c) | BIT(5) |BIT(6));  //to prevent mac is reseted by bus. 20111208, by Page
 
-	// ARFB table 9 for 11ac 5G 2SS
+	/* ARFB table 9 for 11ac 5G 2SS */
 	rtw_write32(Adapter, REG_ARFR0, 0x00000010);
-	if(IS_NORMAL_CHIP(pHalData->VersionID))
+	if (IS_NORMAL_CHIP(pHalData->VersionID))
 		rtw_write32(Adapter, REG_ARFR0+4, 0xfffff000);
 	else
 		rtw_write32(Adapter, REG_ARFR0+4, 0x3e0ff000);
 
-	// ARFB table 10 for 11ac 5G 1SS
+	/* ARFB table 10 for 11ac 5G 1SS */
 	rtw_write32(Adapter, REG_ARFR1, 0x00000010);
 	if(IS_VENDOR_8812A_TEST_CHIP(Adapter))
 		rtw_write32(Adapter, REG_ARFR1_8812+4, 0x000ff000);
@@ -271,8 +250,7 @@ static uint32_t _InitPowerOn8812AU(_adapter *padapter)
 	uint16_t	u2btmp = 0;
 	uint8_t	u1btmp = 0;
 
-	if(IS_VENDOR_8821A_MP_CHIP(padapter))
-	{
+	if (IS_VENDOR_8821A_MP_CHIP(padapter)) {
 		// HW Power on sequence
 		if(!HalPwrSeqCmdParsing(padapter, PWR_CUT_A_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
 			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
@@ -2915,7 +2893,7 @@ static struct hal_ops rtl8812au_hal_ops = {
 	.sreset_linked_status_check =	rtl8812_sreset_linked_status_check,
 	.sreset_get_wifi_status  =	sreset_get_wifi_status,
 	.sreset_inprogress =		sreset_inprogress,
-#endif //DBG_CONFIG_ERROR_DETECT
+#endif
 
 	.GetHalODMVarHandler = rtl8812_GetHalODMVar,
 	.SetHalODMVarHandler = rtl8812_SetHalODMVar,

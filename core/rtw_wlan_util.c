@@ -553,7 +553,7 @@ void SetBWMode(_adapter *padapter, unsigned short bwmode, unsigned char channel_
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
-	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->setbw_mutex), NULL);
+	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setbw_mutex));
 
 	//saved bw info
 	rtw_set_oper_bw(padapter, bwmode);
@@ -561,7 +561,7 @@ void SetBWMode(_adapter *padapter, unsigned short bwmode, unsigned char channel_
 
 	rtw_hal_set_bwmode(padapter, (CHANNEL_WIDTH)bwmode, channel_offset);
 
-	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->setbw_mutex), NULL);
+	mutex_unlock(&(adapter_to_dvobj(padapter)->setbw_mutex));
 }
 
 void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode)

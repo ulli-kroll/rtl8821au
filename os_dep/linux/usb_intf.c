@@ -236,7 +236,7 @@ static struct dvobj_priv *usb_dvobj_init(struct usb_interface *usb_intf)
 	mutex_init(&pdvobjpriv->hw_init_mutex);
 	mutex_init(&pdvobjpriv->h2c_fwcmd_mutex);
 	mutex_init(&pdvobjpriv->setch_mutex);
-	_rtw_mutex_init(&pdvobjpriv->setbw_mutex);
+	mutex_init(&pdvobjpriv->setbw_mutex);
 
 	_rtw_spinlock_init(&pdvobjpriv->lock);
 
@@ -399,7 +399,7 @@ free_dvobj:
 		mutex_destroy(&pdvobjpriv->hw_init_mutex);
 		mutex_destroy(&pdvobjpriv->h2c_fwcmd_mutex);
 		mutex_destroy(&pdvobjpriv->setch_mutex);
-		_rtw_mutex_free(&pdvobjpriv->setbw_mutex);
+		mutex_destroy(&pdvobjpriv->setbw_mutex);
 		rtw_mfree((uint8_t *)pdvobjpriv, sizeof(*pdvobjpriv));
 		pdvobjpriv = NULL;
 	}
@@ -430,7 +430,7 @@ static void usb_dvobj_deinit(struct usb_interface *usb_intf)
 		mutex_destroy(&dvobj->hw_init_mutex);
 		mutex_destroy(&dvobj->h2c_fwcmd_mutex);
 		mutex_destroy(&dvobj->setch_mutex);
-		_rtw_mutex_free(&dvobj->setbw_mutex);
+		mutex_destroy(&dvobj->setbw_mutex);
 		rtw_mfree((uint8_t *)dvobj, sizeof(*dvobj));
 	}
 

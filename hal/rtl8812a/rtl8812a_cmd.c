@@ -415,9 +415,6 @@ _func_enter_;
 
 	if (Mode > PS_MODE_ACTIVE) {
 		PowerState = 0x00;// AllON(0x0C), RFON(0x04), RFOFF(0x00)
-#ifdef CONFIG_EXT_CLK
-		Mode |= BIT(7);//supporting 26M XTAL CLK_Request feature.
-#endif //CONFIG_EXT_CLK
 	} else {
 		PowerState = 0x0C;// AllON(0x0C), RFON(0x04), RFOFF(0x00)
 	}

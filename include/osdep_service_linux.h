@@ -28,9 +28,7 @@
 	#include <linux/init.h>
 	#include <linux/slab.h>
 	#include <linux/module.h>
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,5))
 	#include <linux/kref.h>
-#endif
 	//#include <linux/smp_lock.h>
 	#include <linux/netdevice.h>
 	#include <linux/skbuff.h>
@@ -39,11 +37,7 @@
 	#include <asm/byteorder.h>
 	#include <asm/atomic.h>
 	#include <asm/io.h>
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26))
-	#include <asm/semaphore.h>
-#else
 	#include <linux/semaphore.h>
-#endif
 	#include <linux/sem.h>
 	#include <linux/sched.h>
 	#include <linux/etherdevice.h>
@@ -58,10 +52,6 @@
 	#include <linux/kthread.h>
 	#include <linux/list.h>
 	#include <linux/vmalloc.h>
-
-#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2,5,41))
-	#include <linux/tqueue.h>
-#endif
 
 #ifdef CONFIG_IOCTL_CFG80211
 //	#include <linux/ieee80211.h>
@@ -80,19 +70,13 @@
 
 #ifdef CONFIG_USB_HCI
 	#include <linux/usb.h>
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,21))
-	#include <linux/usb_ch9.h>
-#else
 	#include <linux/usb/ch9.h>
-#endif
 #endif
 
 #ifdef CONFIG_USB_HCI
 	typedef struct urb *  PURB;
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,22))
 #ifdef CONFIG_USB_SUSPEND
 #define CONFIG_AUTOSUSPEND	1
-#endif
 #endif
 #endif
 
@@ -123,38 +107,8 @@
 	typedef void timer_hdl_return;
 	typedef void* timer_hdl_context;
 
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,5,41))
 	typedef struct work_struct _workitem;
-#else
-	typedef struct tq_struct _workitem;
-#endif
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24))
-	#define DMA_BIT_MASK(n) (((n) == 64) ? ~0ULL : ((1ULL<<(n))-1))
-#endif
-
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,22))
-// Porting from linux kernel, for compatible with old kernel.
-static inline unsigned char *skb_tail_pointer(const struct sk_buff *skb)
-{
-	return skb->tail;
-}
-
-static inline void skb_reset_tail_pointer(struct sk_buff *skb)
-{
-	skb->tail = skb->data;
-}
-
-static inline void skb_set_tail_pointer(struct sk_buff *skb, const int offset)
-{
-	skb->tail = skb->data + offset;
-}
-
-static inline unsigned char *skb_end_pointer(const struct sk_buff *skb)
-{
-	return skb->end;
-}
-#endif
 
 __inline static _list *get_next(_list	*list)
 {
@@ -230,33 +184,17 @@ __inline static void _cancel_timer(_timer *ptimer,u8 *bcancelled)
 
 __inline static void _init_workitem(_workitem *pwork, void *pfunc, PVOID cntx)
 {
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,20))
 	INIT_WORK(pwork, pfunc);
-#elif (LINUX_VERSION_CODE > KERNEL_VERSION(2,5,41))
-	INIT_WORK(pwork, pfunc,pwork);
-#else
-	INIT_TQUEUE(pwork, pfunc,pwork);
-#endif
 }
 
 __inline static void _set_workitem(_workitem *pwork)
 {
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,5,41))
 	schedule_work(pwork);
-#else
-	schedule_task(pwork);
-#endif
 }
 
 __inline static void _cancel_workitem_sync(_workitem *pwork)
 {
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,22))
 	cancel_work_sync(pwork);
-#elif (LINUX_VERSION_CODE > KERNEL_VERSION(2,5,41))
-	flush_scheduled_work();
-#else
-	flush_scheduled_tasks();
-#endif
 }
 //
 // Global Mutex: can only be used at PASSIVE level.
@@ -278,48 +216,28 @@ __inline static void _cancel_workitem_sync(_workitem *pwork)
 
 static inline int rtw_netif_queue_stopped(struct net_device *ndev)
 {
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	return (netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 0)) &&
 		netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 1)) &&
 		netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 2)) &&
 		netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 3)) );
-#else
-	return netif_queue_stopped(ndev);
-#endif
 }
 
 static inline void rtw_netif_wake_queue(struct net_device *ndev)
 {
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	netif_tx_wake_all_queues(ndev);
-#else
-	netif_wake_queue(ndev);
-#endif
 }
 
 static inline void rtw_netif_start_queue(struct net_device *ndev)
 {
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	netif_tx_start_all_queues(ndev);
-#else
-	netif_start_queue(ndev);
-#endif
 }
 
 static inline void rtw_netif_stop_queue(struct net_device *ndev)
 {
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	netif_tx_stop_all_queues(ndev);
-#else
-	netif_stop_queue(ndev);
-#endif
 }
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
 #define rtw_signal_process(pid, sig) kill_pid(find_vpid((pid)),(sig), 1)
-#else //(LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
-#define rtw_signal_process(pid, sig) kill_proc((pid), (sig), 1)
-#endif //(LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
 
 
 // Suspend lock prevent system from going suspend

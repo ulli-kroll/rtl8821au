@@ -299,7 +299,7 @@ struct dvobj_priv
 	int macid[NUM_STA];
 
 	struct mutex hw_init_mutex;
-	_mutex h2c_fwcmd_mutex;
+	struct mutex h2c_fwcmd_mutex;
 	_mutex setch_mutex;
 	_mutex setbw_mutex;
 

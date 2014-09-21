@@ -89,7 +89,7 @@ _func_enter_;
 		return ret;
 	}
 
-	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex), NULL);
+	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex));
 
 
 	if (!pCmdBuffer) {
@@ -156,7 +156,7 @@ _func_enter_;
 
 exit:
 
-	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex), NULL);
+	mutex_unlock(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex));
 
 _func_exit_;
 

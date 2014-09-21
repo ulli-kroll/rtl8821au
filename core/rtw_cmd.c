@@ -1970,9 +1970,6 @@ static void traffic_status_watchdog(_adapter *padapter)
 	uint16_t	BusyThreshold = 100;
 	uint8_t	bBusyTraffic = _FALSE, bTxBusyTraffic = _FALSE, bRxBusyTraffic = _FALSE;
 	uint8_t	bHigherBusyTraffic = _FALSE, bHigherBusyRxTraffic = _FALSE, bHigherBusyTxTraffic = _FALSE;
-#ifdef CONFIG_FTP_PROTECT
-	uint16_t	bPktCount = 0;
-#endif
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
 #ifdef CONFIG_TDLS
 	struct tdls_info *ptdlsinfo = &(padapter->tdlsinfo);
@@ -2010,23 +2007,6 @@ static void traffic_status_watchdog(_adapter *padapter)
 			else
 				bHigherBusyTxTraffic = _TRUE;
 		}
-
-#ifdef CONFIG_FTP_PROTECT
-		DBG_871X("RX in period:%d, TX in period:%d, ftp_lock_flag:%d\n",
-			pmlmepriv->LinkDetectInfo.NumRxOkInPeriod,
-			pmlmepriv->LinkDetectInfo.NumTxOkInPeriod,
-			pmlmepriv->ftp_lock_flag);
-
-		bPktCount = pmlmepriv->LinkDetectInfo.NumRxOkInPeriod + pmlmepriv->LinkDetectInfo.NumTxOkInPeriod;
-		if (bPktCount > 20 && !pmlmepriv->ftp_lock_flag) {
-			pmlmepriv->ftp_lock_flag = 1;
-			rtw_lock_suspend();
-		} else if(bPktCount == 0 && pmlmepriv->ftp_lock_flag) {
-			pmlmepriv->ftp_lock_flag = 0;
-			rtw_unlock_suspend();
-		}
-#endif //CONFIG_KEEP_FTP_TRANSMIT
-
 #ifdef CONFIG_TDLS
 #ifdef CONFIG_TDLS_AUTOSETUP
 		if( ( ptdlsinfo->watchdog_count % TDLS_WATCHDOG_PERIOD ) == 0 )	//10 * 2sec, periodically sending

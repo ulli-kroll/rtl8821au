@@ -483,10 +483,6 @@ struct mlme_priv {
 
 
 #endif //#if defined (CONFIG_AP_MODE) && defined (CONFIG_NATIVEAP_MLME)
-
-#ifdef CONFIG_FTP_PROTECT
-	uint8_t	ftp_lock_flag;
-#endif //CONFIG_FTP_PROTECT
 };
 
 #ifdef CONFIG_AP_MODE

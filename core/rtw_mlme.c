@@ -83,11 +83,6 @@ sint _rtw_init_mlme_priv (struct _ADAPTER *padapter)
 	/* allocate DMA-able/Non-Page memory for cmd_buf and rsp_buf */
 
 	rtw_clear_scan_deny(padapter);
-
-#ifdef CONFIG_FTP_PROTECT
-	pmlmepriv->ftp_lock_flag = 0;
-#endif
-
 	rtw_init_mlme_timer(padapter);
 
 exit:

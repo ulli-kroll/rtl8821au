@@ -300,7 +300,7 @@ struct dvobj_priv
 
 	struct mutex hw_init_mutex;
 	struct mutex h2c_fwcmd_mutex;
-	_mutex setch_mutex;
+	struct mutex setch_mutex;
 	_mutex setbw_mutex;
 
 	unsigned char	oper_channel; //saved channel info when call set_channel_bw

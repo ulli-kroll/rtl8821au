@@ -539,14 +539,14 @@ void SelectChannel(_adapter *padapter, unsigned char channel)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
-	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->setch_mutex), NULL);
+	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
 
 	//saved channel info
 	rtw_set_oper_ch(padapter, channel);
 
 	rtw_hal_set_chan(padapter, channel);
 
-	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->setch_mutex), NULL);
+	mutex_unlock(&(adapter_to_dvobj(padapter)->setch_mutex));
 }
 
 void SetBWMode(_adapter *padapter, unsigned short bwmode, unsigned char channel_offset)
@@ -588,7 +588,7 @@ void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char
 
 	//set Channel
 
-	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->setch_mutex), NULL);
+	 mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
 
 	//saved channel/bw info
 	rtw_set_oper_ch(padapter, channel);
@@ -597,7 +597,7 @@ void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char
 
 	rtw_hal_set_chnl_bw(padapter, center_ch, bwmode, channel_offset, chnl_offset80); // set center channel
 
-	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->setch_mutex), NULL);
+	mutex_unlock(&(adapter_to_dvobj(padapter)->setch_mutex));
 }
 
 int get_bsstype(unsigned short capability)

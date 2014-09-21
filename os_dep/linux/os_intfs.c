@@ -1692,9 +1692,10 @@ int netdev_open(struct net_device *ndev)
 	int ret;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 
-	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
+	/* ULLI: orignal driver doesn't use the return value */
+	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->hw_init_mutex));
 	ret = _netdev_open(ndev);
-	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
+	mutex_unlock(&(adapter_to_dvobj(padapter)->hw_init_mutex));
 
 	return ret;
 }

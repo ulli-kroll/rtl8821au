@@ -233,7 +233,7 @@ static struct dvobj_priv *usb_dvobj_init(struct usb_interface *usb_intf)
 		goto exit;
 	}
 
-	_rtw_mutex_init(&pdvobjpriv->hw_init_mutex);
+	mutex_init(&pdvobjpriv->hw_init_mutex);
 	_rtw_mutex_init(&pdvobjpriv->h2c_fwcmd_mutex);
 	_rtw_mutex_init(&pdvobjpriv->setch_mutex);
 	_rtw_mutex_init(&pdvobjpriv->setbw_mutex);
@@ -396,7 +396,7 @@ free_dvobj:
 	if (status != _SUCCESS && pdvobjpriv) {
 		usb_set_intfdata(usb_intf, NULL);
 		_rtw_spinlock_free(&pdvobjpriv->lock);
-		_rtw_mutex_free(&pdvobjpriv->hw_init_mutex);
+		mutex_destroy(&pdvobjpriv->hw_init_mutex);
 		_rtw_mutex_free(&pdvobjpriv->h2c_fwcmd_mutex);
 		_rtw_mutex_free(&pdvobjpriv->setch_mutex);
 		_rtw_mutex_free(&pdvobjpriv->setbw_mutex);
@@ -427,7 +427,7 @@ static void usb_dvobj_deinit(struct usb_interface *usb_intf)
 		}
 		rtw_deinit_intf_priv(dvobj);
 		_rtw_spinlock_free(&dvobj->lock);
-		_rtw_mutex_free(&dvobj->hw_init_mutex);
+		mutex_destroy(&dvobj->hw_init_mutex);
 		_rtw_mutex_free(&dvobj->h2c_fwcmd_mutex);
 		_rtw_mutex_free(&dvobj->setch_mutex);
 		_rtw_mutex_free(&dvobj->setbw_mutex);

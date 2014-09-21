@@ -298,7 +298,7 @@ struct dvobj_priv
 	_lock	lock;
 	int macid[NUM_STA];
 
-	_mutex hw_init_mutex;
+	struct mutex hw_init_mutex;
 	_mutex h2c_fwcmd_mutex;
 	_mutex setch_mutex;
 	_mutex setbw_mutex;

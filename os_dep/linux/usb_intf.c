@@ -178,7 +178,7 @@ static uint8_t rtw_init_intf_priv(struct dvobj_priv *dvobj)
 	uint8_t rst = _SUCCESS;
 
 #ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	_rtw_mutex_init(&dvobj->usb_vendor_req_mutex);
+	mutex_init(&dvobj->usb_vendor_req_mutex);
 #endif
 
 
@@ -208,7 +208,7 @@ static uint8_t rtw_deinit_intf_priv(struct dvobj_priv *dvobj)
 	#endif
 
 	#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	_rtw_mutex_free(&dvobj->usb_vendor_req_mutex);
+	mutex_destroy(&dvobj->usb_vendor_req_mutex);
 	#endif
 
 	return rst;

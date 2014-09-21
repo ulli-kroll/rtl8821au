@@ -346,7 +346,7 @@ struct dvobj_priv
 	struct  semaphore	usb_suspend_sema;
 
 #ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	_mutex  usb_vendor_req_mutex;
+	struct mutex usb_vendor_req_mutex;
 #endif
 
 #ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC

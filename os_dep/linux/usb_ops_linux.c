@@ -56,7 +56,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, uint16_t value
 	}
 
 	#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	_enter_critical_mutex(&pdvobjpriv->usb_vendor_req_mutex, NULL);
+	mutex_lock_interruptible(&pdvobjpriv->usb_vendor_req_mutex);
 	#endif
 
 
@@ -156,7 +156,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, uint16_t value
 
 release_mutex:
 	#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	_exit_critical_mutex(&pdvobjpriv->usb_vendor_req_mutex, NULL);
+	mutex_unlock(&pdvobjpriv->usb_vendor_req_mutex);
 	#endif
 exit:
 	return status;

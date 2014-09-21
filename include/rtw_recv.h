@@ -440,15 +440,6 @@ struct recv_frame_hdr
 
 	//for A-MPDU Rx reordering buffer control
 	struct recv_reorder_ctrl *preorder_ctrl;
-
-#ifdef CONFIG_WAPI_SUPPORT
-	uint8_t UserPriority;
-	uint8_t WapiTempPN[16];
-	uint8_t WapiSrcAddr[6];
-	uint8_t bWapiCheckPNInDecrypt;
-	uint8_t bIsWaiPacket;
-#endif
-
 };
 
 

@@ -754,50 +754,6 @@ int rtw_parse_wpa2_ie(uint8_t * rsn_ie, int rsn_ie_len, int *group_cipher, int *
 
 }
 
-#ifdef CONFIG_WAPI_SUPPORT
-int rtw_get_wapi_ie(uint8_t *in_ie,uint in_len,uint8_t *wapi_ie,uint16_t *wapi_len)
-{
-	uint8_t authmode, i;
-	uint 	cnt;
-	uint8_t wapi_oui1[4]={0x0,0x14,0x72,0x01};
-	uint8_t wapi_oui2[4]={0x0,0x14,0x72,0x02};
-
-_func_enter_;
-	cnt = (_TIMESTAMP_ + _BEACON_ITERVAL_ + _CAPABILITY_);
-	while(cnt<in_len)
-	{
-		authmode=in_ie[cnt];
-
-		//if(authmode==_WAPI_IE_)
-		if(authmode==_WAPI_IE_ && (_rtw_memcmp(&in_ie[cnt+6], wapi_oui1,4)==_TRUE ||
-				       	_rtw_memcmp(&in_ie[cnt+6], wapi_oui2,4)==_TRUE))
-		{
-			if (wapi_ie) {
-				memcpy(wapi_ie, &in_ie[cnt],in_ie[cnt+1]+2);
-
-				for(i=0;i<(in_ie[cnt+1]+2);i=i+8){
-					RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("\n %2x,%2x,%2x,%2x,%2x,%2x,%2x,%2x\n",
-								wapi_ie[i],wapi_ie[i+1],wapi_ie[i+2],wapi_ie[i+3],wapi_ie[i+4],
-								wapi_ie[i+5],wapi_ie[i+6],wapi_ie[i+7]));
-				}
-			}
-
-			*wapi_len=in_ie[cnt+1]+2;
-			cnt+=in_ie[cnt+1]+2;  //get next
-		}
-		else
-		{
-			cnt+=in_ie[cnt+1]+2;   //get next
-		}
-	}
-
-	return *wapi_len;
-_func_exit_;
-
-
-}
-#endif
-
 int rtw_get_sec_ie(uint8_t *in_ie,uint in_len,uint8_t *rsn_ie,uint16_t *rsn_len,uint8_t *wpa_ie,uint16_t *wpa_len)
 {
 	uint8_t authmode, sec_idx, i;

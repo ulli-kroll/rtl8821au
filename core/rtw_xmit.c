@@ -627,11 +627,6 @@ static int32_t update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pat
 	{
 		GET_ENCRY_ALGO(psecuritypriv, psta, pattrib->encrypt, bmcast);
 
-#ifdef CONFIG_WAPI_SUPPORT
-		if(pattrib->ether_type == 0x88B4)
-			pattrib->encrypt=_NO_PRIVACY_;
-#endif
-
 		switch(psecuritypriv->dot11AuthAlgrthm)
 		{
 			case dot11AuthAlgrthm_Open:
@@ -697,13 +692,6 @@ static int32_t update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pat
 
 			break;
 
-#ifdef CONFIG_WAPI_SUPPORT
-		case _SMS4_:
-			pattrib->iv_len = 18;
-			pattrib->icv_len = 16;
-			rtw_wapi_get_iv(padapter,pattrib->ra,pattrib->iv);
-			break;
-#endif
 		default:
 			pattrib->iv_len = 0;
 			pattrib->icv_len = 0;
@@ -857,11 +845,7 @@ static int32_t update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *p
 
 #ifdef CONFIG_LPS
 	// If EAPOL , ARP , OR DHCP packet, driver must be in active mode.
-#ifdef CONFIG_WAPI_SUPPORT
-	if ( (pattrib->ether_type == 0x88B4) || (pattrib->ether_type == 0x0806) || (pattrib->ether_type == 0x888e) || (pattrib->dhcp_pkt == 1) )
-#else
 	if ( (pattrib->ether_type == 0x0806) || (pattrib->ether_type == 0x888e) || (pattrib->dhcp_pkt == 1) )
-#endif
 	{
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_SPECIAL_PACKET, 1);
 	}
@@ -961,12 +945,6 @@ static int32_t update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *p
 		pattrib->bswenc = _FALSE;
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("update_attrib: bswenc=_FALSE\n"));
 	}
-
-
-#ifdef CONFIG_WAPI_SUPPORT
-	if(pattrib->encrypt == _SMS4_)
-		pattrib->bswenc = _FALSE;
-#endif
 
 	rtw_set_tx_chksum_offload(pkt, pattrib);
 
@@ -1153,10 +1131,6 @@ _func_enter_;
 		case _AES_:
 			rtw_aes_encrypt(padapter, (uint8_t * )pxmitframe);
 			break;
-#ifdef CONFIG_WAPI_SUPPORT
-		case _SMS4_:
-			rtw_sms4_encrypt(padapter, (uint8_t * )pxmitframe);
-#endif
 		default:
 				break;
 		}
@@ -1892,11 +1866,6 @@ _func_enter_;
 						else
 							AES_IV(pattrib->iv, psta->dot11txpn, 0);
 						break;
-#ifdef CONFIG_WAPI_SUPPORT
-					case _SMS4_:
-						rtw_wapi_get_iv(padapter,pattrib->ra,pattrib->iv);
-						break;
-#endif
 				}
 			}
 */
@@ -3279,16 +3248,6 @@ int32_t rtw_xmit(_adapter *padapter, _pkt **ppkt)
 
 	res = update_attrib(padapter, *ppkt, &pxmitframe->attrib);
 
-#ifdef CONFIG_WAPI_SUPPORT
-	if(pxmitframe->attrib.ether_type != 0x88B4)
-	{
-		if(rtw_wapi_drop_for_key_absent(padapter, pxmitframe->attrib.ra))
-		{
-			WAPI_TRACE(WAPI_RX,"drop for key absend when tx \n");
-			res = _FAIL;
-		}
-	}
-#endif
 	if (res == _FAIL) {
 		RT_TRACE(_module_xmit_osdep_c_, _drv_err_, ("rtw_xmit: update attrib fail\n"));
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);

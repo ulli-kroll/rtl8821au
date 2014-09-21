@@ -180,23 +180,12 @@ static void request_wps_pbc_event(_adapter *padapter)
 
 void rtw_request_wps_pbc_event(_adapter *padapter)
 {
-#ifdef RTK_DMP_PLATFORM
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,12))
-	kobject_uevent(&padapter->ndev->ndev.kobj, KOBJ_NET_PBC);
-#else
-	kobject_hotplug(&padapter->ndev->class_dev.kobj, KOBJ_NET_PBC);
-#endif
-#else
-
 	if ( padapter->pid[0] == 0 )
 	{	//	0 is the default value and it means the application monitors the HW PBC doesn't privde its pid to driver.
 		return;
 	}
 
 	rtw_signal_process(padapter->pid[0], SIGUSR1);
-
-#endif
-
 	rtw_led_control(padapter, LED_CTL_START_WPS_BOTTON);
 }
 
@@ -11235,13 +11224,7 @@ static struct iw_statistics *rtw_get_wireless_stats(struct net_device *ndev)
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,14))
 	piwstats->qual.updated = IW_QUAL_ALL_UPDATED ;//|IW_QUAL_DBM;
 #else
-#ifdef RTK_DMP_PLATFORM
-	//IW_QUAL_DBM= 0x8, if driver use this flag, wireless extension will show value of dbm.
-	//remove this flag for show percentage 0~100
-	piwstats->qual.updated = 0x07;
-#else
 	piwstats->qual.updated = 0x0f;
-#endif
 #endif
 
 	#ifdef CONFIG_SIGNAL_DISPLAY_DBM

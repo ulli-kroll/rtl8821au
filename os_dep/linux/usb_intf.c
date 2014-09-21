@@ -107,10 +107,6 @@ static struct specific_device_id specific_device_id_tbl[] = {
 	{.idVendor=0x0b05, .idProduct=0x1791, .flags=SPEC_DEV_ID_DISABLE_HT},
 	{.idVendor=0x13D3, .idProduct=0x3311, .flags=SPEC_DEV_ID_DISABLE_HT},
 	{.idVendor=0x13D3, .idProduct=0x3359, .flags=SPEC_DEV_ID_DISABLE_HT},//Russian customer -Azwave (8188CE-VAU  g mode)
-#ifdef RTK_DMP_PLATFORM
-	{.idVendor=USB_VENDER_ID_REALTEK, .idProduct=0x8111, .flags=SPEC_DEV_ID_ASSIGN_IFNAME}, // Realtek 5G dongle for WiFi Display
-	{.idVendor=0x2019, .idProduct=0xAB2D, .flags=SPEC_DEV_ID_ASSIGN_IFNAME}, // PCI-Abocom 5G dongle for WiFi Display
-#endif /* RTK_DMP_PLATFORM */
 	{}
 };
 
@@ -586,22 +582,6 @@ static void process_spec_devid(const struct usb_device_id *pdid)
 			 rtw_ampdu_enable = 0;
 		}
 #endif
-
-#ifdef RTK_DMP_PLATFORM
-		/*
-		 *  Change the ifname to wlan10 when PC side WFD dongle plugin on DMP platform.
-		 *  It is used to distinguish between normal and PC-side wifi dongle/module.
-		 */
-		if ((pdid->idVendor==vid)
-		 && (pdid->idProduct==pid) && (flags&SPEC_DEV_ID_ASSIGN_IFNAME)) {
-			extern char* ifname;
-			strncpy(ifname, "wlan10", 6);
-			/*
-			 * DBG_871X("%s()-%d: ifname=%s, vid=%04X, pid=%04X\n", __FUNCTION__, __LINE__, ifname, vid, pid);
-			 */
-		}
-#endif
-
 	}
 }
 
@@ -1358,11 +1338,6 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 
 #ifdef CONFIG_HOSTAPD_MLME
 	hostapd_mode_init(if1);
-#endif
-
-
-#ifdef RTK_DMP_PLATFORM
-	rtw_proc_init_one(if1->ndev);
 #endif
 
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("-871x_drv - drv_init, success!\n"));

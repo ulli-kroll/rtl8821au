@@ -484,14 +484,6 @@ struct mlme_priv {
 
 #endif //#if defined (CONFIG_AP_MODE) && defined (CONFIG_NATIVEAP_MLME)
 
-#ifdef RTK_DMP_PLATFORM
-	// DMP kobject_hotplug function  signal need in passive level
-	_workitem	Linkup_workitem;
-	_workitem	Linkdown_workitem;
-#endif
-
-
-
 #ifdef CONFIG_FTP_PROTECT
 	uint8_t	ftp_lock_flag;
 #endif //CONFIG_FTP_PROTECT

@@ -1636,11 +1636,6 @@ int _netdev_open(struct net_device *ndev)
 		{
 			padapter->intf_start(padapter);
 		}
-
-#ifndef RTK_DMP_PLATFORM
-		rtw_proc_init_one(ndev);
-#endif
-
 #ifdef CONFIG_IOCTL_CFG80211
 		rtw_cfg80211_init_wiphy(padapter);
 #endif

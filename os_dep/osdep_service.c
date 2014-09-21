@@ -267,29 +267,6 @@ Caller must check if the list is empty before calling rtw_list_delete
 
 */
 
-void	_rtw_mutex_init(_mutex *pmutex)
-{
-#ifdef PLATFORM_LINUX
-
-	mutex_init(pmutex);
-
-#endif
-
-}
-
-void	_rtw_mutex_free(_mutex *pmutex);
-void	_rtw_mutex_free(_mutex *pmutex)
-{
-#ifdef PLATFORM_LINUX
-
-	mutex_destroy(pmutex);
-
-
-#endif
-
-
-}
-
 void	_rtw_spinlock_init(_lock *plock)
 {
 

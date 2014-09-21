@@ -134,8 +134,6 @@ extern void	rtw_list_insert_head(_list *plist, _list *phead);
 extern void	rtw_list_insert_tail(_list *plist, _list *phead);
 extern void	rtw_list_delete(_list *plist);
 
-extern void	_rtw_mutex_init(_mutex *pmutex);
-extern void	_rtw_mutex_free(_mutex *pmutex);
 extern void	_rtw_spinlock_init(_lock *plock);
 extern void	_rtw_spinlock_free(_lock *plock);
 extern void	_rtw_spinlock(_lock	*plock);

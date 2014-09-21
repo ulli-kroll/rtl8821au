@@ -108,7 +108,6 @@
 #endif
 
 	typedef	spinlock_t	_lock;
-	typedef struct mutex 		_mutex;
 	typedef struct timer_list _timer;
 
 	struct	__queue	{
@@ -211,28 +210,6 @@ __inline static void _enter_critical_bh(_lock *plock, _irqL *pirqL)
 __inline static void _exit_critical_bh(_lock *plock, _irqL *pirqL)
 {
 	spin_unlock_bh(plock);
-}
-
-__inline static int _enter_critical_mutex(_mutex *pmutex, _irqL *pirqL)
-{
-	int ret = 0;
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
-	//mutex_lock(pmutex);
-	ret = mutex_lock_interruptible(pmutex);
-#else
-	ret = down_interruptible(pmutex);
-#endif
-	return ret;
-}
-
-
-__inline static void _exit_critical_mutex(_mutex *pmutex, _irqL *pirqL)
-{
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
-		mutex_unlock(pmutex);
-#else
-		up(pmutex);
-#endif
 }
 
 __inline static void rtw_list_delete(_list *plist)

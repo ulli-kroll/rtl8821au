@@ -1341,14 +1341,6 @@ exit:
 
 }
 
-#ifdef CONFIG_WOWLAN
-void rtw_cancel_dynamic_chk_timer(_adapter *padapter)
-{
-	_cancel_timer_ex(&padapter->mlmepriv.dynamic_chk_timer);
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel dynamic_chk_timer! \n"));
-}
-#endif
-
 void rtw_cancel_all_timer(_adapter *padapter)
 {
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_cancel_all_timer\n"));

@@ -135,32 +135,6 @@ void rtl8812_set_p2p_ps_offload_cmd(PADAPTER padapter, uint8_t p2p_ps_state);
 void CheckFwRsvdPageContent(PADAPTER padapter);
 void rtl8812_set_FwMediaStatus_cmd(PADAPTER padapter, u16 mstatus_rpt );
 
-#ifdef CONFIG_WOWLAN
-typedef struct _SETWOWLAN_PARM{
-	uint8_t		mode;
-	uint8_t		gpio_index;
-	uint8_t		gpio_duration;
-	uint8_t		second_mode;
-	uint8_t		reserve;
-}SETWOWLAN_PARM, *PSETWOWLAN_PARM;
-
-#define FW_WOWLAN_FUN_EN				BIT(0)
-#define FW_WOWLAN_PATTERN_MATCH			BIT(1)
-#define FW_WOWLAN_MAGIC_PKT				BIT(2)
-#define FW_WOWLAN_UNICAST				BIT(3)
-#define FW_WOWLAN_ALL_PKT_DROP			BIT(4)
-#define FW_WOWLAN_GPIO_ACTIVE			BIT(5)
-#define FW_WOWLAN_REKEY_WAKEUP			BIT(6)
-#define FW_WOWLAN_DEAUTH_WAKEUP			BIT(7)
-
-#define FW_WOWLAN_GPIO_WAKEUP_EN		BIT(0)
-#define FW_FW_PARSE_MAGIC_PKT			BIT(1)
-
-#define FW_REMOTE_WAKE_CTRL_EN			BIT(0)
-#define FW_REALWOWLAN_EN				BIT(5)
-void rtl8812a_set_wowlan_cmd(_adapter* padapter, uint8_t enable);
-void SetFwRelatedForWoWLAN8812(_adapter* padapter, uint8_t bHostIsGoingtoSleep);
-#endif//CONFIG_WOWLAN
 #endif//__RTL8188E_CMD_H__
 
 

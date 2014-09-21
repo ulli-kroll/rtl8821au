@@ -117,10 +117,6 @@ typedef struct _RT_FIRMWARE_8812 {
 #endif
 	u32			ulFwLength;
 
-#ifdef CONFIG_WOWLAN
-	u8*			szWoWLANFwBuffer;
-	u32			ulWoWLANFwLength;
-#endif //CONFIG_WOWLAN
 } RT_FIRMWARE_8812, *PRT_FIRMWARE_8812;
 
 //
@@ -294,9 +290,6 @@ void	hal_ReadUsbType_8812AU(PADAPTER Adapter, uint8_t *PROMContent, BOOLEAN Auto
 
 BOOLEAN HalDetectPwrDownMode8812(PADAPTER Adapter);
 
-#ifdef CONFIG_WOWLAN
-void Hal_DetectWoWMode(PADAPTER pAdapter);
-#endif //CONFIG_WOWLAN
 
 void _InitBeaconParameters_8812A(PADAPTER padapter);
 void SetBeaconRelatedRegisters8812A(PADAPTER padapter);

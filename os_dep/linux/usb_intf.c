@@ -535,12 +535,6 @@ static void rtw_dev_unload(_adapter *padapter)
 		/* s5. */
 		if(padapter->bSurpriseRemoved == _FALSE) {
 			/* DBG_871X("r871x_dev_unload()->rtl871x_hal_deinit()\n"); */
-#ifdef CONFIG_WOWLAN
-			if((padapter->pwrctrlpriv.bSupportRemoteWakeup==_TRUE)&&(padapter->pwrctrlpriv.wowlan_mode==_TRUE)){
-				DBG_871X("%s bSupportWakeOnWlan==_TRUE  do not run rtw_hal_deinit()\n",__FUNCTION__);
-			}
-			else
-#endif
 			{
 				rtw_hal_deinit(padapter);
 			}
@@ -548,9 +542,6 @@ static void rtw_dev_unload(_adapter *padapter)
 		}
 
 		padapter->bup = _FALSE;
-#ifdef CONFIG_WOWLAN
-		padapter->hw_init_completed=_FALSE;
-#endif
 	}
 	else {
 		RT_TRACE(_module_hci_intfs_c_,_drv_err_,("r871x_dev_unload():padapter->bup == _FALSE\n" ));
@@ -713,21 +704,11 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	struct usb_device *usb_dev = interface_to_usbdev(pusb_intf);
-#ifdef CONFIG_WOWLAN
-	struct wowlan_ioctl_param poidparam;
-#endif
 
 	int ret = 0;
 	u32 start_time = rtw_get_current_time();
 
 	DBG_871X("==> %s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
-
-#ifdef CONFIG_WOWLAN
-	if (check_fwstate(pmlmepriv, _FW_LINKED))
-		padapter->pwrctrlpriv.wowlan_mode = _TRUE;
-	else
-		padapter->pwrctrlpriv.wowlan_mode = _FALSE;
-#endif
 
 	if((!padapter->bup) || (padapter->bDriverStopped)||(padapter->bSurpriseRemoved)) {
 		DBG_871X("padapter->bup=%d bDriverStopped=%d bSurpriseRemoved = %d\n",
@@ -764,19 +745,10 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 		rtw_netif_stop_queue(ndev);
 	}
 
-#ifdef CONFIG_WOWLAN
-	if(padapter->pwrctrlpriv.bSupportRemoteWakeup==_TRUE&&padapter->pwrctrlpriv.wowlan_mode==_TRUE){
-		/* set H2C command */
-		poidparam.subcode=WOWLAN_ENABLE;
-		padapter->HalFunc.SetHwRegHandler(padapter,HW_VAR_WOWLAN,(uint8_t *)&poidparam);
-	}
-	else
-#else
 		{
 		/* s2. */
 		rtw_disassoc_cmd(padapter, 0, _FALSE);
 	}
-#endif
 
 #ifdef CONFIG_LAYER2_ROAMING_RESUME
 	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)
@@ -837,9 +809,6 @@ static int rtw_resume(struct usb_interface *pusb_intf)
 		rtw_resume_in_workqueue(pwrpriv);
 #else
 		if (rtw_is_earlysuspend_registered(pwrpriv)
-#ifdef CONFIG_WOWLAN
-			&& !padapter->pwrctrlpriv.wowlan_mode
-#endif
 		) {
 			/* jeff: bypass resume here, do in late_resume */
 			rtw_set_do_late_resume(pwrpriv, _TRUE);
@@ -1156,11 +1125,6 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 	}
 
 	rtw_cancel_all_timer(if1);
-
-#ifdef CONFIG_WOWLAN
-	if1->pwrctrlpriv.wowlan_mode=_FALSE;
-#endif
-
 	rtw_dev_unload(if1);
 
 	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", if1->hw_init_completed);

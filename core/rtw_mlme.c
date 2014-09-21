@@ -1304,9 +1304,6 @@ void rtw_indicate_disconnect( struct _ADAPTER *padapter )
 #endif // CONFIG_P2P_PS
 
 #ifdef CONFIG_LPS
-#ifdef CONFIG_WOWLAN
-	if (padapter->pwrctrlpriv.wowlan_mode==_FALSE)
-#endif //CONFIG_WOWLAN
 	rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_DISCONNECT, 1);
 #endif
 
@@ -2508,9 +2505,6 @@ _func_enter_;
 
 	if (candidate == NULL) {
 		DBG_871X("%s: return _FAIL(candidate == NULL)\n", __FUNCTION__);
-#ifdef CONFIG_WOWLAN
-		_clr_fwstate_(pmlmepriv, _FW_LINKED|_FW_UNDER_LINKING);
-#endif
 		ret = _FAIL;
 		goto exit;
 	} else {

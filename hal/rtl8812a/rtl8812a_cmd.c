@@ -44,9 +44,6 @@ static uint8_t _is_fw_read_cmd_down(_adapter* padapter, uint8_t msgbox_num)
 		if(0 == valid ){
 			read_down = _TRUE;
 		}
-#ifdef CONFIG_WOWLAN
-		rtw_msleep_os(2);
-#endif
 	}while( (!read_down) && (retry_cnts--));
 
 	return read_down;
@@ -1092,17 +1089,6 @@ _func_enter_;
 			rtw_write8(padapter,  REG_CR+1, pHalData->RegCR_1);
 		}
 	}
-#ifdef CONFIG_WOWLAN
-	if (padapter->pwrctrlpriv.wowlan_mode){
-		uint16_t	media_status;
-
-		media_status = mstatus;
-		rtl8812_set_FwMediaStatus_cmd(padapter, media_status);
-		DBG_871X_LEVEL(_drv_info_, "%s wowlan_mode is on\n", __func__);
-	} else {
-		DBG_871X_LEVEL(_drv_info_, "%s wowlan_mode is off\n", __func__);
-	}
-#endif //CONFIG_WOWLAN
 _func_exit_;
 }
 
@@ -1201,94 +1187,4 @@ _func_exit_;
 
 }
 #endif //CONFIG_P2P
-
-#ifdef CONFIG_WOWLAN
-void rtl8812_set_wowlan_cmd(_adapter* padapter, uint8_t enable)
-{
-	uint8_t		res=_SUCCESS;
-	uint32_t		test=0;
-	struct recv_priv	*precvpriv = &padapter->recvpriv;
-	SETWOWLAN_PARM		pwowlan_parm;
-	struct pwrctrl_priv	*pwrpriv=&padapter->pwrctrlpriv;
-
-_func_enter_;
-		DBG_871X_LEVEL(_drv_always_, "+%s+\n", __func__);
-
-		pwowlan_parm.mode =0;
-		pwowlan_parm.gpio_index=0;
-		pwowlan_parm.gpio_duration=0;
-		pwowlan_parm.second_mode =0;
-		pwowlan_parm.reserve=0;
-
-		if(enable){
-
-			pwowlan_parm.mode |=FW_WOWLAN_FUN_EN;
-			pwrpriv->wowlan_magic =_TRUE;
-			pwrpriv->wowlan_unicast =_TRUE;
-
-			if(pwrpriv->wowlan_pattern ==_TRUE){
-				pwowlan_parm.mode |= FW_WOWLAN_PATTERN_MATCH;
-				DBG_871X_LEVEL(_drv_info_, "%s 2.pwowlan_parm.mode=0x%x \n",__FUNCTION__,pwowlan_parm.mode );
-			}
-			if(pwrpriv->wowlan_magic ==_TRUE){
-				pwowlan_parm.mode |=FW_WOWLAN_MAGIC_PKT;
-				DBG_871X_LEVEL(_drv_info_, "%s 3.pwowlan_parm.mode=0x%x \n",__FUNCTION__,pwowlan_parm.mode );
-			}
-			if(pwrpriv->wowlan_unicast ==_TRUE){
-				pwowlan_parm.mode |=FW_WOWLAN_UNICAST;
-				DBG_871X_LEVEL(_drv_info_, "%s 4.pwowlan_parm.mode=0x%x \n",__FUNCTION__,pwowlan_parm.mode );
-			}
-
-			if(!(padapter->pwrctrlpriv.wowlan_wake_reason & FWDecisionDisconnect))
-				rtl8812a_set_FwJoinBssReport_cmd(padapter, 1);
-			else
-				DBG_871X_LEVEL(_drv_always_, "%s, disconnected, no FwJoinBssReport\n",__FUNCTION__);
-			rtw_msleep_os(2);
-
-			//WOWLAN_GPIO_ACTIVE means GPIO high active
-			//pwowlan_parm.mode |=FW_WOWLAN_GPIO_ACTIVE;
-			//pwowlan_parm.mode |=FW_WOWLAN_REKEY_WAKEUP;
-			pwowlan_parm.mode |=FW_WOWLAN_DEAUTH_WAKEUP;
-			//pwowlan_parm.mode |=FW_WOWLAN_ALL_PKT_DROP;
-
-			//DataPinWakeUp
-			pwowlan_parm.gpio_index=0x80;
-
-			DBG_871X_LEVEL(_drv_info_, "%s 5.pwowlan_parm.mode=0x%x \n",__FUNCTION__,pwowlan_parm.mode);
-			DBG_871X_LEVEL(_drv_info_, "%s 6.pwowlan_parm.index=0x%x \n",__FUNCTION__,pwowlan_parm.gpio_index);
-
-			res = FillH2CCmd_8812(padapter, H2C_8812_WO_WLAN, 2, (uint8_t *)&pwowlan_parm);
-
-			rtw_msleep_os(2);
-
-			//disconnect decision
-			pwowlan_parm.mode =1;
-			pwowlan_parm.gpio_index=0;
-			pwowlan_parm.gpio_duration=0;
-			FillH2CCmd_8812(padapter, H2C_8812_DISCONNECT_DECISION, 3, (uint8_t *)&pwowlan_parm);
-
-			//keep alive period = 10 * 10 BCN interval
-			pwowlan_parm.mode =1;
-			pwowlan_parm.gpio_index=10;
-
-			res = FillH2CCmd_8812(padapter, H2C_8812_KEEP_ALIVE_CTRL, 2, (uint8_t *)&pwowlan_parm);
-
-			rtw_msleep_os(2);
-			//enable Remote wake ctrl
-			pwowlan_parm.mode = 1;
-			pwowlan_parm.gpio_index=0;
-			pwowlan_parm.gpio_duration=0;
-
-			res = FillH2CCmd_8812(padapter, H2C_8812_REMOTE_WAKE_CTRL, 3, (uint8_t *)&pwowlan_parm);
-		} else {
-			pwrpriv->wowlan_magic =_FALSE;
-			res = FillH2CCmd_8812(padapter, H2C_8812_WO_WLAN, 2, (uint8_t *)&pwowlan_parm);
-			rtw_msleep_os(2);
-			res = FillH2CCmd_8812(padapter, H2C_8812_REMOTE_WAKE_CTRL, 3, (uint8_t *)&pwowlan_parm);
-		}
-_func_exit_;
-		DBG_871X_LEVEL(_drv_always_, "-%s res:%d-\n", __func__, res);
-		return ;
-}
-#endif  //CONFIG_WOWLAN
 

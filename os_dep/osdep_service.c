@@ -560,17 +560,6 @@ inline void rtw_unlock_suspend()
 	#endif
 }
 
-#ifdef CONFIG_WOWLAN
-inline void rtw_lock_suspend_timeout(long timeout)
-{
-	#ifdef CONFIG_WAKELOCK
-	wake_lock_timeout(&rtw_suspend_lock, timeout);
-	#elif defined(CONFIG_ANDROID_POWER)
-	android_lock_suspend_auto_expire(&rtw_suspend_lock, timeout);
-	#endif
-}
-#endif //CONFIG_WOWLAN
-
 
 #ifdef PLATFORM_LINUX
 /*

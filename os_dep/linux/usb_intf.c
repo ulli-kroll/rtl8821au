@@ -48,61 +48,6 @@ int rtw_resume_process(_adapter *padapter);
 static int rtw_drv_init(struct usb_interface *pusb_intf,const struct usb_device_id *pdid);
 static void rtw_dev_remove(struct usb_interface *pusb_intf);
 
-#if (LINUX_VERSION_CODE<=KERNEL_VERSION(2,6,23))
-/* Some useful macros to use to create struct usb_device_id */
- #define USB_DEVICE_ID_MATCH_VENDOR 			 0x0001
- #define USB_DEVICE_ID_MATCH_PRODUCT			 0x0002
- #define USB_DEVICE_ID_MATCH_DEV_LO 			 0x0004
- #define USB_DEVICE_ID_MATCH_DEV_HI 			 0x0008
- #define USB_DEVICE_ID_MATCH_DEV_CLASS			 0x0010
- #define USB_DEVICE_ID_MATCH_DEV_SUBCLASS		 0x0020
- #define USB_DEVICE_ID_MATCH_DEV_PROTOCOL		 0x0040
- #define USB_DEVICE_ID_MATCH_INT_CLASS			 0x0080
- #define USB_DEVICE_ID_MATCH_INT_SUBCLASS		 0x0100
- #define USB_DEVICE_ID_MATCH_INT_PROTOCOL		 0x0200
- #define USB_DEVICE_ID_MATCH_INT_NUMBER 		 0x0400
-
-
-#define USB_DEVICE_ID_MATCH_INT_INFO \
-				 (USB_DEVICE_ID_MATCH_INT_CLASS | \
-				 USB_DEVICE_ID_MATCH_INT_SUBCLASS | \
-				 USB_DEVICE_ID_MATCH_INT_PROTOCOL)
-
-
-#define USB_DEVICE_AND_INTERFACE_INFO(vend, prod, cl, sc, pr) \
-		 .match_flags = USB_DEVICE_ID_MATCH_INT_INFO \
-				 | USB_DEVICE_ID_MATCH_DEVICE, \
-		 .idVendor = (vend), \
-		 .idProduct = (prod), \
-		 .bInterfaceClass = (cl), \
-		 .bInterfaceSubClass = (sc), \
-		 .bInterfaceProtocol = (pr)
-
- /**
-  * USB_VENDOR_AND_INTERFACE_INFO - describe a specific usb vendor with a class of usb interfaces
-  * @vend: the 16 bit USB Vendor ID
-  * @cl: bInterfaceClass value
-  * @sc: bInterfaceSubClass value
-  * @pr: bInterfaceProtocol value
-  *
-  * This macro is used to create a struct usb_device_id that matches a
-  * specific vendor with a specific class of interfaces.
-  *
-  * This is especially useful when explicitly matching devices that have
-  * vendor specific bDeviceClass values, but standards-compliant interfaces.
-  */
-#define USB_VENDOR_AND_INTERFACE_INFO(vend, cl, sc, pr) \
-		 .match_flags = USB_DEVICE_ID_MATCH_INT_INFO \
-				 | USB_DEVICE_ID_MATCH_VENDOR, \
-		 .idVendor = (vend), \
-		 .bInterfaceClass = (cl), \
-		 .bInterfaceSubClass = (sc), \
-		 .bInterfaceProtocol = (pr)
-
-/* ----------------------------------------------------------------------- */
-#endif
-
-
 #define USB_VENDER_ID_REALTEK		0x0BDA
 
 
@@ -182,9 +127,7 @@ struct rtw_usb_drv usb_drv = {
 	.usbdrv.id_table = rtw_usb_id_tbl,
 	.usbdrv.suspend =  rtw_suspend,
 	.usbdrv.resume = rtw_resume,
-	#if (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 22))
   	.usbdrv.reset_resume   = rtw_resume,
-	#endif
 	#ifdef CONFIG_AUTOSUSPEND
 	.usbdrv.supports_autosuspend = 1,
 	#endif
@@ -1055,25 +998,11 @@ void autosuspend_enter(_adapter* padapter)
 
 	if(rf_off == pwrpriv->change_rfpwrstate )
 	{
-		#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 		usb_enable_autosuspend(dvobj->pusbdev);
-		#else
-		dvobj->pusbdev->autosuspend_disabled = 0;//autosuspend disabled by the user
-		#endif
 
-		#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,33))
 			usb_autopm_put_interface(dvobj->pusbintf);
-		#elif (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,20))
-			usb_autopm_enable(dvobj->pusbintf);
-		#else
-			usb_autosuspend_device(dvobj->pusbdev, 1);
-		#endif
 	}
-	#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,32))
 	DBG_871X("...pm_usage_cnt(%d).....\n", atomic_read(&(dvobj->pusbintf->pm_usage_cnt)));
-	#else
-	DBG_871X("...pm_usage_cnt(%d).....\n", dvobj->pusbintf->pm_usage_cnt);
-	#endif
 
 }
 int autoresume_enter(_adapter* padapter)
@@ -1103,11 +1032,7 @@ int autoresume_enter(_adapter* padapter)
 			usb_autoresume_device(dvobj->pusbdev, 1);
 		#endif
 
-		#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,32))
 		DBG_871X("...pm_usage_cnt(%d).....\n", atomic_read(&(dvobj->pusbintf->pm_usage_cnt)));
-		#else
-		DBG_871X("...pm_usage_cnt(%d).....\n", dvobj->pusbintf->pm_usage_cnt);
-		#endif
 	}
 	DBG_871X("<==== autoresume_enter \n");
 error_exit:
@@ -1190,7 +1115,6 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	}
 
 #ifdef CONFIG_PM
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,18))
 	if(padapter->pwrctrlpriv.bSupportRemoteWakeup)
 	{
 		dvobj->pusbdev->do_remote_wakeup=1;
@@ -1200,42 +1124,26 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 		DBG_871X("\n  padapter->pwrctrlpriv.bSupportRemoteWakeup~~~[%d]~~~\n",device_may_wakeup(&pusb_intf->dev));
 	}
 #endif
-#endif
 
 #ifdef CONFIG_AUTOSUSPEND
 	if( padapter->registrypriv.power_mgnt != PS_MODE_ACTIVE )
 	{
 		if(padapter->registrypriv.usbss_enable ){ 	/* autosuspend (2s delay) */
-			#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,38))
 			dvobj->pusbdev->dev.power.autosuspend_delay = 0 * HZ;//15 * HZ; idle-delay time
-			#else
-			dvobj->pusbdev->autosuspend_delay = 0 * HZ;//15 * HZ; idle-delay time
-			#endif
 
-			#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 			usb_enable_autosuspend(dvobj->pusbdev);
-			#elif  (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,22) && LINUX_VERSION_CODE<=KERNEL_VERSION(2,6,34))
-			padapter->bDisableAutosuspend = dvobj->pusbdev->autosuspend_disabled ;
-			dvobj->pusbdev->autosuspend_disabled = 0;//autosuspend disabled by the user
-			#endif
 
 			//usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf );//init pm_usage_cnt ,let it start from 1
 
-			#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,32))
 			DBG_871X("%s...pm_usage_cnt(%d).....\n",__FUNCTION__,atomic_read(&(dvobj->pusbintf ->pm_usage_cnt)));
-			#else
-			DBG_871X("%s...pm_usage_cnt(%d).....\n",__FUNCTION__,dvobj->pusbintf ->pm_usage_cnt);
-			#endif
 		}
 	}
 #endif
 	//2012-07-11 Move here to prevent the 8723AS-VAU BT auto suspend influence
-	#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,33))
 			if (usb_autopm_get_interface(pusb_intf) < 0)
 				{
 					DBG_871X( "can't get autopm: \n");
 				}
-	#endif
 
 	// set mac addr
 	rtw_macaddr_cfg(padapter->eeprompriv.mac_addr);

@@ -560,7 +560,7 @@ struct	xmit_priv	{
 
 #ifdef CONFIG_XMIT_ACK
 	int	ack_tx;
-	_mutex ack_tx_mutex;
+	struck mutex ack_tx_mutex;
 	struct submit_ctx ack_tx_ops;
 #endif
 	_lock lock_sctx;

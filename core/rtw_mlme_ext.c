@@ -5797,7 +5797,7 @@ int32_t dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgnt
 		padapter->bDriverStopped == _TRUE)
 		return -1;
 
-	_enter_critical_mutex(&pxmitpriv->ack_tx_mutex, NULL);
+	mutex_lock_interruptible(&pxmitpriv->ack_tx_mutex);
 	pxmitpriv->ack_tx = _TRUE;
 
 	pmgntframe->ack_report = 1;
@@ -5806,7 +5806,7 @@ int32_t dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgnt
 	}
 
 	pxmitpriv->ack_tx = _FALSE;
-	_exit_critical_mutex(&pxmitpriv->ack_tx_mutex, NULL);
+	mutex_unlock(&pxmitpriv->ack_tx_mutex);
 
 	 return ret;
 #else //!CONFIG_XMIT_ACK

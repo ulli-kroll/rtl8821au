@@ -364,12 +364,10 @@ static struct dvobj_priv *usb_dvobj_init(struct usb_interface *usb_intf)
 		DBG_871X("USB_SPEED_HIGH\n");
 		pdvobjpriv->usb_speed = RTW_USB_SPEED_2;
 		break;
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
 	case USB_SPEED_SUPER:
 		DBG_871X("USB_SPEED_SUPER\n");
 		pdvobjpriv->usb_speed = RTW_USB_SPEED_3;
 		break;
-#endif
 	default:
 		DBG_871X("USB_SPEED_UNKNOWN(%x)\n",pusbd->speed);
 		pdvobjpriv->usb_speed = RTW_USB_SPEED_UNKNOWN;
@@ -1000,17 +998,11 @@ int autoresume_enter(_adapter* padapter)
 
 	if (rf_off == pwrpriv->rf_pwrstate) {
 		pwrpriv->ps_flag = _FALSE;
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,33))
 			if (usb_autopm_get_interface(dvobj->pusbintf) < 0) {
 				DBG_871X( "can't get autopm: %d\n", result);
 				result = _FAIL;
 				goto error_exit;
 			}
-#elif (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,20))
-			usb_autopm_disable(dvobj->pusbintf);
-#else
-			usb_autoresume_device(dvobj->pusbdev, 1);
-#endif
 
 		DBG_871X("...pm_usage_cnt(%d).....\n", atomic_read(&(dvobj->pusbintf->pm_usage_cnt)));
 	}
@@ -1445,9 +1437,7 @@ _func_exit_;
 	return;
 
 }
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 extern int console_suspend_enabled;
-#endif
 
 static int __init rtw_drv_entry(void)
 {
@@ -1457,9 +1447,7 @@ static int __init rtw_drv_entry(void)
 	DBG_871X(DRV_NAME " driver version=%s\n", DRIVERVERSION);
 	DBG_871X("build time: %s %s\n", __DATE__, __TIME__);
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 	/* console_suspend_enabled=0; */
-#endif
 
 	rtw_suspend_lock_init();
 

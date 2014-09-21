@@ -29,7 +29,7 @@ enum {
 };
 
 struct sreset_priv {
-	_mutex 	silentreset_mutex;
+	struct mutex silentreset_mutex;
 	uint8_t 	silent_reset_inprogress;
 	uint8_t	Wifi_Error_Status;
 	unsigned long last_tx_time;

@@ -28,7 +28,8 @@ void sreset_init_value(struct _ADAPTER *padapter)
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
-	_rtw_mutex_init(&psrtpriv->silentreset_mutex);
+	/* ULLI: No mutex_drestroy found for this mutex */
+	mutex_init(&psrtpriv->silentreset_mutex);
 	psrtpriv->silent_reset_inprogress = _FALSE;
 	psrtpriv->Wifi_Error_Status = WIFI_STATUS_SUCCESS;
 	psrtpriv->last_tx_time =0;
@@ -325,14 +326,14 @@ void sreset_reset(struct _ADAPTER *padapter)
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
-	_irqL irqL;
+
 	uint32_t	 start = rtw_get_current_time();
 
 	DBG_871X("%s\n", __FUNCTION__);
 
 	psrtpriv->Wifi_Error_Status = WIFI_STATUS_SUCCESS;
 
-	_enter_critical_mutex(&psrtpriv->silentreset_mutex, &irqL);
+	mutex_lock_interruptible(&psrtpriv->silentreset_mutex);
 	psrtpriv->silent_reset_inprogress = _TRUE;
 	pwrpriv->change_rfpwrstate = rf_off;
 
@@ -345,7 +346,7 @@ void sreset_reset(struct _ADAPTER *padapter)
 	sreset_startstruct _ADAPTER(padapter);
 
 	psrtpriv->silent_reset_inprogress = _FALSE;
-	_exit_critical_mutex(&psrtpriv->silentreset_mutex, &irqL);
+	mutex_unlock(&psrtpriv->silentreset_mutex);
 
 	DBG_871X("%s done in %d ms\n", __FUNCTION__, rtw_get_passing_time_ms(start));
 #endif

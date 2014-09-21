@@ -28,7 +28,6 @@
 #define _AES_				0x4
 #define _WEP104_			0x5
 #define _WEP_WPA_MIXED_	0x07  // WEP + WPA
-#define _SMS4_				0x06
 
 #define is_wep_enc(alg) (((alg) == _WEP40_) || ((alg) == _WEP104_))
 
@@ -232,10 +231,6 @@ do{\
 		case _AES_:\
 			iv_len = 8;\
 			icv_len = 8;\
-			break;\
-		case _SMS4_:\
-			iv_len = 18;\
-			icv_len = 16;\
 			break;\
 		default:\
 			iv_len = 0;\

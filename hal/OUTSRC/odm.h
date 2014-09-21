@@ -827,7 +827,6 @@ typedef enum tag_Security_Definition
 	ODM_SEC_AESCCMP 		= 4,
 	ODM_SEC_WEP104 		= 5,
 	ODM_WEP_WPA_MIXED    = 6, // WEP + WPA
-	ODM_SEC_SMS4 			= 7,
 }ODM_SECURITY_E;
 
 // ODM_CMNINFO_BW

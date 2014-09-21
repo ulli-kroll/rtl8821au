@@ -742,7 +742,6 @@ Default: 00b.
 #define CAM_TKIP				0x02
 #define CAM_AES					0x04
 #define CAM_WEP104				0x05
-#define CAM_SMS4				0x6
 
 #define TOTAL_CAM_ENTRY		32
 #define HALF_CAM_ENTRY			16

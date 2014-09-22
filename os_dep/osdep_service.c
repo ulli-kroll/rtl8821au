@@ -792,7 +792,7 @@ int rtw_store_to_file(char *path, u8* buf, u32 sz)
 }
 
 #ifdef PLATFORM_LINUX
-struct net_device *rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_priv)
+struct net_device *rtw_alloc_etherdev_with_old_priv(void *old_priv)
 {
 	struct net_device *ndev;
 	struct rtw_netdev_priv_indicator *pnpi;
@@ -803,7 +803,6 @@ struct net_device *rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_p
 
 	pnpi = netdev_priv(ndev);
 	pnpi->priv=old_priv;
-	pnpi->sizeof_priv=sizeof_priv;
 
 RETURN:
 	return ndev;
@@ -827,7 +826,6 @@ struct net_device *rtw_alloc_etherdev(int sizeof_priv)
 		goto RETURN;
 	}
 
-	pnpi->sizeof_priv=sizeof_priv;
 RETURN:
 	return ndev;
 }

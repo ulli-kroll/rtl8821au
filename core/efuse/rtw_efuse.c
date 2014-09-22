@@ -814,8 +814,8 @@ uint8_t rtw_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, uin
 	Efuse_PowerSwitch(padapter, _TRUE, _FALSE);
 
 exit:
-
-	rtw_mfree(map, mapLen);
+	/* ULLI check usage of mapLen */
+	rtw_mfree(map);
 
 	return ret;
 }
@@ -915,8 +915,8 @@ uint8_t rtw_BT_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, 
 	Efuse_PowerSwitch(padapter, _TRUE, _FALSE);
 
 exit:
-
-	rtw_mfree(map, mapLen);
+	/* ULLI check usage of mapLen */
+	rtw_mfree(map);
 
 	return ret;
 }

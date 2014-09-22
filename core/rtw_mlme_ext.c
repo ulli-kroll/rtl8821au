@@ -1150,7 +1150,7 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 					update_network(&(pmlmepriv->cur_network.network), pbss, padapter, _TRUE);
 					rtw_get_bcn_info(&(pmlmepriv->cur_network));
 				}
-				rtw_mfree((uint8_t *)pbss, sizeof(WLAN_BSSID_EX));
+				rtw_mfree((uint8_t *)pbss);
 			}
 
 			//check the vendor of the assoc AP
@@ -9223,7 +9223,7 @@ void report_survey_event(_adapter *padapter, union recv_frame *precv_frame)
 	cmdsz = (sizeof(struct survey_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj, sizeof(struct cmd_obj));
+		rtw_mfree((uint8_t *)pcmd_obj);
 		return;
 	}
 
@@ -9245,8 +9245,10 @@ void report_survey_event(_adapter *padapter, union recv_frame *precv_frame)
 
 	if (collect_bss_info(padapter, precv_frame, (WLAN_BSSID_EX *)&psurvey_evt->bss) == _FAIL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj, sizeof(struct cmd_obj));
-		rtw_mfree((uint8_t *)pevtcmd, cmdsz);
+		/* ULLI check usage of cmdsz */
+
+		rtw_mfree((uint8_t *)pcmd_obj);
+		rtw_mfree((uint8_t *)pevtcmd);
 		return;
 	}
 
@@ -9280,7 +9282,7 @@ void report_surveydone_event(_adapter *padapter)
 	cmdsz = (sizeof(struct surveydone_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj, sizeof(struct cmd_obj));
+		rtw_mfree((uint8_t *)pcmd_obj);
 		return;
 	}
 
@@ -9328,7 +9330,7 @@ void report_join_res(_adapter *padapter, int res)
 	cmdsz = (sizeof(struct joinbss_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj, sizeof(struct cmd_obj));
+		rtw_mfree((uint8_t *)pcmd_obj);
 		return;
 	}
 
@@ -9382,7 +9384,7 @@ void report_del_sta_event(_adapter *padapter, unsigned char* MacAddr, unsigned s
 	cmdsz = (sizeof(struct stadel_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj, sizeof(struct cmd_obj));
+		rtw_mfree((uint8_t *)pcmd_obj);
 		return;
 	}
 
@@ -9438,7 +9440,7 @@ void report_add_sta_event(_adapter *padapter, unsigned char* MacAddr, int cam_id
 	cmdsz = (sizeof(struct stassoc_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj, sizeof(struct cmd_obj));
+		rtw_mfree((uint8_t *)pcmd_obj);
 		return;
 	}
 
@@ -10031,7 +10033,7 @@ void survey_timer_hdl(_adapter *padapter)
 
 		if ((psurveyPara = (struct sitesurvey_parm*)rtw_zmalloc(sizeof(struct sitesurvey_parm))) == NULL)
 		{
-			rtw_mfree((unsigned char *)ph2c, sizeof(struct cmd_obj));
+			rtw_mfree((unsigned char *)ph2c);
 			goto exit_survey_timer_hdl;
 		}
 
@@ -11023,7 +11025,7 @@ _func_enter_;
 
 	if ((ptxBeacon_parm = (struct Tx_Beacon_param *)rtw_zmalloc(sizeof(struct Tx_Beacon_param))) == NULL)
 	{
-		rtw_mfree((unsigned char *)ph2c, sizeof(struct	cmd_obj));
+		rtw_mfree((unsigned char *)ph2c);
 		res= _FAIL;
 		goto exit;
 	}

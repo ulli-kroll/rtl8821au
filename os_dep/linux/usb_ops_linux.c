@@ -335,7 +335,7 @@ static void usb_bulkout_zero_complete(struct urb *purb, struct pt_regs *regs)
 	{
 		if(pcontext->pbuf)
 		{
-			rtw_mfree(pcontext->pbuf, sizeof(int));
+			rtw_mfree(pcontext->pbuf);
 		}
 
 		if(pcontext->purb && (pcontext->purb==purb))
@@ -344,7 +344,7 @@ static void usb_bulkout_zero_complete(struct urb *purb, struct pt_regs *regs)
 		}
 
 
-		rtw_mfree((uint8_t *)pcontext, sizeof(struct zero_bulkout_context));
+		rtw_mfree((uint8_t *)pcontext);
 	}
 
 

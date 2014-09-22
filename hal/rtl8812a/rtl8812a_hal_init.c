@@ -529,7 +529,7 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 Exit:
 
 	if (pFirmware)
-		rtw_mfree((uint8_t *)pFirmware, sizeof(RT_FIRMWARE_8812));
+		rtw_mfree((uint8_t *)pFirmware);
 
 	/*
 	 * RT_TRACE(COMP_INIT, DBG_LOUD, (" <=== FirmwareDownload91C()\n"));
@@ -554,7 +554,7 @@ void InitializeFirmwareVars8812(PADAPTER padapter)
 void rtl8812_free_hal_data(PADAPTER padapter)
 {
 	if (padapter->HalData) {
-			rtw_mfree(padapter->HalData, sizeof(HAL_DATA_TYPE));
+			rtw_mfree(padapter->HalData);
 		padapter->HalData = NULL;
 	}
 }
@@ -1719,7 +1719,7 @@ Hal_EfuseReadEFuse8812A(
 
 exit:
 	if(efuseTbl)
-		rtw_mfree(efuseTbl, EFUSE_MAP_LEN_JAGUAR);
+		rtw_mfree(efuseTbl);
 
 	if(eFuseWord)
 		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(uint16_t));

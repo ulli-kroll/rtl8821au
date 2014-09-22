@@ -235,7 +235,7 @@ _func_enter_;
 #endif
 
 		if(buff)
-		    rtw_mfree(buff, IW_CUSTOM_MAX);
+		    rtw_mfree(buff);
 
 	}
 

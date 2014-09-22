@@ -364,12 +364,12 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 	}
 
 	if(pxmitpriv->pallocated_frame_buf) {
-		rtw_vmfree(pxmitpriv->pallocated_frame_buf, NR_XMITFRAME * sizeof(struct xmit_frame) + 4);
+		rtw_vmfree(pxmitpriv->pallocated_frame_buf);
 	}
 
 
 	if(pxmitpriv->pallocated_xmitbuf) {
-		rtw_vmfree(pxmitpriv->pallocated_xmitbuf, NR_XMITBUFF * sizeof(struct xmit_buf) + 4);
+		rtw_vmfree(pxmitpriv->pallocated_xmitbuf);
 	}
 
 	/* free xframe_ext queue,  the same count as extbuf  */
@@ -380,7 +380,7 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 		}
 	}
 	if (pxmitpriv->xframe_ext_alloc_addr)
-		rtw_vmfree(pxmitpriv->xframe_ext_alloc_addr, num_xmit_extbuf * sizeof(struct xmit_frame) + 4);
+		rtw_vmfree(pxmitpriv->xframe_ext_alloc_addr);
 	_rtw_spinlock_free(&pxmitpriv->free_xframe_ext_queue.lock);
 
 	// free xmit extension buff
@@ -395,7 +395,7 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 	}
 
 	if(pxmitpriv->pallocated_xmit_extbuf) {
-		rtw_vmfree(pxmitpriv->pallocated_xmit_extbuf, num_xmit_extbuf * sizeof(struct xmit_buf) + 4);
+		rtw_vmfree(pxmitpriv->pallocated_xmit_extbuf);
 	}
 
 	pxmitbuf = &pxmitpriv->pcmd_xmitbuf;
@@ -2474,7 +2474,7 @@ _func_enter_;
 
 	if (pxmitframe->alloc_addr) {
 		DBG_871X("################## %s with alloc_addr ##################\n", __func__);
-		rtw_mfree(pxmitframe->alloc_addr, sizeof(struct xmit_frame) + 4);
+		rtw_mfree(pxmitframe->alloc_addr);
 		goto check_pkt_complete;
 	}
 
@@ -2931,7 +2931,7 @@ void rtw_free_hwxmits(_adapter *padapter)
 
 	hwxmits = pxmitpriv->hwxmits;
 	if(hwxmits)
-		rtw_mfree((uint8_t *)hwxmits, (sizeof (struct hw_xmit) * pxmitpriv->hwxmit_entry));
+		rtw_mfree((uint8_t *)hwxmits);
 }
 
 void rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry)

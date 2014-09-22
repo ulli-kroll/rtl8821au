@@ -97,10 +97,11 @@ static void rtw_mfree_mlme_priv_lock (struct mlme_priv *pmlmepriv)
 	_rtw_spinlock_free(&(pmlmepriv->scanned_queue.lock));
 }
 
+/* ULLI check usage of param *plen */
 static void rtw_free_mlme_ie_data(uint8_t **ppie, uint32_t *plen)
 {
 	if (*ppie) {
-		_rtw_mfree(*ppie, *plen);
+		_rtw_mfree(*ppie);
 		*plen = 0;
 		*ppie=NULL;
 	}
@@ -132,7 +133,7 @@ void _rtw_free_mlme_priv (struct mlme_priv *pmlmepriv)
 		rtw_mfree_mlme_priv_lock (pmlmepriv);
 
 		if (pmlmepriv->free_bss_buf) {
-			rtw_vmfree(pmlmepriv->free_bss_buf, MAX_BSS_CNT * sizeof(struct wlan_network));
+			rtw_vmfree(pmlmepriv->free_bss_buf);
 		}
 	}
 }
@@ -973,9 +974,11 @@ _func_enter_;
 	_enter_critical_bh(&pmlmepriv->lock, &irqL);
 
 	if (pmlmepriv->wps_probe_req_ie) {
+		/* ULLI check usage of free_len */
 		uint32_t	 free_len = pmlmepriv->wps_probe_req_ie_len;
+
 		pmlmepriv->wps_probe_req_ie_len = 0;
-		rtw_mfree(pmlmepriv->wps_probe_req_ie, free_len);
+		rtw_mfree(pmlmepriv->wps_probe_req_ie);
 		pmlmepriv->wps_probe_req_ie = NULL;
 	}
 
@@ -2569,7 +2572,7 @@ _func_enter_;
 
 	psetauthparm=(struct setauth_parm*)rtw_zmalloc(sizeof(struct setauth_parm));
 	if (psetauthparm==NULL){
-		rtw_mfree((unsigned char *)pcmd, sizeof(struct	cmd_obj));
+		rtw_mfree((unsigned char *)pcmd);
 		res= _FAIL;
 		goto exit;
 	}
@@ -2617,7 +2620,7 @@ _func_enter_;
 	}
 	psetkeyparm=(struct setkey_parm*)rtw_zmalloc(sizeof(struct setkey_parm));
 	if (psetkeyparm==NULL){
-		rtw_mfree((unsigned char *)pcmd, sizeof(struct	cmd_obj));
+		rtw_mfree((unsigned char *)pcmd);
 		res= _FAIL;
 		goto exit;
 	}

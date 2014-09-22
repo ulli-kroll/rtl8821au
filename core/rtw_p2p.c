@@ -138,7 +138,7 @@ static uint32_t	 go_add_group_info_attr(struct wifidirect_info *pwdinfo, uint8_t
 		len = rtw_set_p2p_attr_content(pbuf, P2P_ATTR_GROUP_INFO, attr_len, pdata_attr);
 	}
 
-	rtw_mfree(pdata_attr, MAX_P2P_IE_LEN);
+	rtw_mfree(pdata_attr);
 
 	return len;
 
@@ -1039,8 +1039,8 @@ uint32_t	 process_assoc_req_p2p_ie(struct wifidirect_info *pwdinfo, uint8_t *pfr
 
 					memcpy(psta->dev_name, pattr_content+4, psta->dev_name_len);
 				}
-
-				rtw_mfree(pbuf, attr_contentlen);
+				/* ULLI check usage of attr_contentlen */
+				rtw_mfree(pbuf);
 
 			}
 
@@ -2561,7 +2561,7 @@ _func_enter_;
 
 		pdrvextra_cmd_parm = (struct drvextra_cmd_parm*)rtw_zmalloc(sizeof(struct drvextra_cmd_parm));
 		if(pdrvextra_cmd_parm==NULL){
-			rtw_mfree((unsigned char *)ph2c, sizeof(struct cmd_obj));
+			rtw_mfree((unsigned char *)ph2c);
 			res= _FAIL;
 			goto exit;
 		}

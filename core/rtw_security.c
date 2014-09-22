@@ -2586,7 +2586,7 @@ static void gf_mulx(uint8_t *pad)
 static void aes_encrypt_deinit(void *ctx)
 {
 	memset(ctx, 0, AES_PRIV_SIZE);
-	rtw_mfree(ctx, AES_PRIV_SIZE);
+	rtw_mfree(ctx);
 }
 
 

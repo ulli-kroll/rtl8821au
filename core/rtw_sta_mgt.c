@@ -267,7 +267,7 @@ uint32_t _rtw_free_sta_priv(struct sta_priv *pstapriv)
 		rtw_mfree_sta_priv_lock(pstapriv);
 
 		if(pstapriv->pallocated_stainfo_buf) {
-			rtw_vmfree(pstapriv->pallocated_stainfo_buf, sizeof(struct sta_info)*NUM_STA+4);
+			rtw_vmfree(pstapriv->pallocated_stainfo_buf);
 		}
 	}
 

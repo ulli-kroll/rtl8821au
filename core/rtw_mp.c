@@ -250,7 +250,7 @@ int32_t init_mp_priv(struct _ADAPTER *padapter)
 void free_mp_priv(struct mp_priv *pmp_priv)
 {
 	if (pmp_priv->pallocated_mp_xmitframe_buf) {
-		rtw_mfree(pmp_priv->pallocated_mp_xmitframe_buf, 0);
+		rtw_mfree(pmp_priv->pallocated_mp_xmitframe_buf);
 		pmp_priv->pallocated_mp_xmitframe_buf = NULL;
 	}
 	pmp_priv->pmp_xmtframe_buf = NULL;
@@ -1007,7 +1007,8 @@ static thread_return mp_xmit_packet_thread(thread_context context)
 
 exit:
 	//DBG_871X("%s:pkTx Exit\n", __func__);
-	rtw_mfree(pmptx->pallocated_buf, pmptx->buf_size);
+	/* ULLI check usage of pmptx->buf_size */
+	rtw_mfree(pmptx->pallocated_buf);
 	pmptx->pallocated_buf = NULL;
 	pmptx->stop = 1;
 
@@ -1106,8 +1107,10 @@ void SetPacketTx(struct _ADAPTER *padapter)
 	//3 2. allocate xmit buffer
 	pkt_size = pattrib->last_txcmdsz;
 
-	if (pmp_priv->tx.pallocated_buf)
-		rtw_mfree(pmp_priv->tx.pallocated_buf, pmp_priv->tx.buf_size);
+	if (pmp_priv->tx.pallocated_buf) {
+		/* ULLI check usage of pmp_priv->tx.buf_size */
+		rtw_mfree(pmp_priv->tx.pallocated_buf);
+	}
 	pmp_priv->tx.write_size = pkt_size;
 	pmp_priv->tx.buf_size = pkt_size + XMITBUF_ALIGN_SZ;
 	pmp_priv->tx.pallocated_buf = rtw_zmalloc(pmp_priv->tx.buf_size);
@@ -1369,7 +1372,7 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 	}
 
 	if(pxmitpriv->pallocated_xmit_extbuf) {
-		rtw_vmfree(pxmitpriv->pallocated_xmit_extbuf, num_xmit_extbuf * sizeof(struct xmit_buf) + 4);
+		rtw_vmfree(pxmitpriv->pallocated_xmit_extbuf);
 	}
 
 	if(padapter->registrypriv.mp_mode ==0)

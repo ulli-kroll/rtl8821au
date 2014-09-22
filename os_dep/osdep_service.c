@@ -95,7 +95,7 @@ inline u8* _rtw_zvmalloc(u32 sz)
 	return pbuf;
 }
 
-inline void _rtw_vmfree(u8 *pbuf, u32 sz)
+inline void _rtw_vmfree(u8 *pbuf)
 {
 #ifdef	PLATFORM_LINUX
 	vfree(pbuf);
@@ -135,7 +135,7 @@ u8* _rtw_zmalloc(u32 sz)
 	return pbuf;
 }
 
-void	_rtw_mfree(u8 *pbuf, u32 sz)
+void	_rtw_mfree(u8 *pbuf)
 {
 
 #ifdef	PLATFORM_LINUX
@@ -166,7 +166,9 @@ void* rtw_malloc2d(int h, int w, int size)
 
 void rtw_mfree2d(void *pbuf, int h, int w, int size)
 {
-	rtw_mfree((u8 *)pbuf, h*sizeof(void*) + w*h*size);
+	/* ULLI check usage of param h, w, size */
+
+	rtw_mfree((u8 *)pbuf);
 }
 
 int	_rtw_memcmp(void *dst, void *src, u32 sz)
@@ -842,7 +844,8 @@ void rtw_free_netdev(struct net_device * netdev)
 	if(!pnpi->priv)
 		goto RETURN;
 
-	rtw_vmfree(pnpi->priv, pnpi->sizeof_priv);
+	/* ULLI check usage of pnpi->sizeof_priv */
+	rtw_vmfree(pnpi->priv);
 	free_netdev(netdev);
 
 RETURN:
@@ -951,7 +954,8 @@ void rtw_buf_free(u8 **buf, u32 *buf_len)
 
 	if (*buf) {
 		*buf_len = 0;
-		_rtw_mfree(*buf, *buf_len);
+		/* ULLI check usage of param *buf_len */
+		_rtw_mfree(*buf);
 		*buf = NULL;
 	}
 }
@@ -985,8 +989,10 @@ keep_ori:
 	*buf_len = dup_len;
 
 	/* free ori */
-	if (ori && ori_len > 0)
-		_rtw_mfree(ori, ori_len);
+	if (ori && ori_len > 0) {
+	/* ULLI check usage of param ori_len */
+		_rtw_mfree(ori);
+	}
 }
 
 
@@ -1080,6 +1086,7 @@ struct rtw_cbuf *rtw_cbuf_alloc(u32 size)
  */
 void rtw_cbuf_free(struct rtw_cbuf *cbuf)
 {
-	rtw_mfree((u8*)cbuf, sizeof(*cbuf) + sizeof(void*)*cbuf->size);
+	/* ULLI check usage of cbuf->size */
+	rtw_mfree((u8*)cbuf);
 }
 

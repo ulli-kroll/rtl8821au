@@ -228,7 +228,8 @@ ODM_FreeMemory(
 	)
 {
 #if (DM_ODM_SUPPORT_TYPE & ODM_CE )
-	rtw_vmfree(pPtr, length);
+	/* ULLI check usage of length */
+	rtw_vmfree(pPtr);
 #endif
 }
 

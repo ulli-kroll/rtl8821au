@@ -202,7 +202,8 @@ static void update_BCNTIM(_adapter *padapter)
 		if (pbackup_remainder_ie) {
 			memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
 
-			rtw_mfree(pbackup_remainder_ie, remainder_ielen);
+			/* ULLI check usage of remainder_ielen */
+			rtw_mfree(pbackup_remainder_ie);
 		}
 
 		offset =  (uint)(dst_ie - pie);
@@ -274,8 +275,8 @@ void rtw_add_bcn_ie(_adapter *padapter, WLAN_BSSID_EX *pnetwork, uint8_t index, 
 	/* copy remainder IE */
 	if (pbackup_remainder_ie) {
 		memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
-
-		rtw_mfree(pbackup_remainder_ie, remainder_ielen);
+		/* ULLI check usage of remainder_ielen  */
+		rtw_mfree(pbackup_remainder_ie);
 	}
 
 	offset =  (uint)(dst_ie - pie);
@@ -310,8 +311,8 @@ void rtw_remove_bcn_ie(_adapter *padapter, WLAN_BSSID_EX *pnetwork, uint8_t inde
 	/* copy remainder IE */
 	if (pbackup_remainder_ie) {
 		memcpy(dst_ie, pbackup_remainder_ie, remainder_ielen);
-
-		rtw_mfree(pbackup_remainder_ie, remainder_ielen);
+		/* ULLI check usage of remainder_ielen */
+		rtw_mfree(pbackup_remainder_ie);
 	}
 
 	offset =  (uint)(dst_ie - pie);
@@ -1795,7 +1796,7 @@ uint8_t rtw_ap_set_pairwise_key(_adapter *padapter, struct sta_info *psta)
 
 	psetstakey_para = (struct set_stakey_parm*)rtw_zmalloc(sizeof(struct set_stakey_parm));
 	if (psetstakey_para == NULL) {
-		rtw_mfree((uint8_t *) ph2c, sizeof(struct cmd_obj));
+		rtw_mfree((uint8_t *) ph2c);
 		res=_FAIL;
 		goto exit;
 	}
@@ -1835,7 +1836,7 @@ static int rtw_ap_set_key(_adapter *padapter, uint8_t *key, uint8_t alg, int key
 	}
 	psetkeyparm=(struct setkey_parm*)rtw_zmalloc(sizeof(struct setkey_parm));
 	if (psetkeyparm == NULL) {
-		rtw_mfree((unsigned char *)pcmd, sizeof(struct cmd_obj));
+		rtw_mfree((unsigned char *)pcmd);
 		res= _FAIL;
 		goto exit;
 	}
@@ -2031,8 +2032,10 @@ static void update_bcn_wps_ie(_adapter *padapter)
 		pnetwork->IELength = wps_offset + (wps_ielen+2) + remainder_ielen;
 	}
 
-	if (pbackup_remainder_ie)
-		rtw_mfree(pbackup_remainder_ie, remainder_ielen);
+	if (pbackup_remainder_ie) {
+		/* ULLI check usage of remainder_ielen */
+		rtw_mfree(pbackup_remainder_ie);
+	}
 
 }
 

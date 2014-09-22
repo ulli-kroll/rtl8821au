@@ -1615,11 +1615,11 @@ int rtw_check_bcn_info(ADAPTER *Adapter, uint8_t *pframe, uint32_t	 packet_len)
 		}
 	}
 
-	rtw_mfree((uint8_t *)bssid, sizeof(WLAN_BSSID_EX));
+	rtw_mfree((uint8_t *)bssid);
 	return _SUCCESS;
 
 _mismatch:
-	rtw_mfree((uint8_t *)bssid, sizeof(WLAN_BSSID_EX));
+	rtw_mfree((uint8_t *)bssid);
 	return _FAIL;
 
 	_func_exit_;

@@ -138,7 +138,7 @@ static void indicate_wx_custom_event(_adapter *padapter, char *msg)
 	wireless_send_event(padapter->ndev, IWEVCUSTOM, &wrqu, buff);
 #endif
 
-	rtw_mfree(buff, IW_CUSTOM_MAX+1);
+	rtw_mfree(buff);
 
 }
 
@@ -173,7 +173,7 @@ static void request_wps_pbc_event(_adapter *padapter)
 
 	if(buff)
 	{
-		rtw_mfree(buff, IW_CUSTOM_MAX);
+		rtw_mfree(buff);
 	}
 
 }
@@ -853,7 +853,8 @@ _func_enter_;
 exit:
 
 	if (pwep) {
-		rtw_mfree((uint8_t *)pwep, wep_total_len);
+		/* ULLI check usage of web_total_len  */
+		rtw_mfree((uint8_t *)pwep);
 	}
 
 _func_exit_;
@@ -1039,8 +1040,8 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 		  pairwise_cipher, padapter->securitypriv.ndisencryptstatus, padapter->securitypriv.ndisauthtype));
 
 exit:
-
-	if (buf) rtw_mfree(buf, ielen);
+	/* ULLI check usage of param ielen */
+	if (buf) rtw_mfree(buf);
 
 	return ret;
 }
@@ -2929,7 +2930,8 @@ static int rtw_wx_set_enc_ext(struct net_device *ndev,
 
 	if(param)
 	{
-		rtw_mfree((uint8_t *)param, param_len);
+		/* ULLI check usage of param_len */
+		rtw_mfree((uint8_t *)param);
 	}
 
 	return ret;
@@ -3023,7 +3025,8 @@ static int rtw_wx_read32(struct net_device *ndev,
 		return -ENOMEM;
 
 	if (copy_from_user(ptmp, p->pointer, len)) {
-		rtw_mfree(ptmp, len);
+		/* ULLI check usage len */
+		rtw_mfree(ptmp);
 		return -EFAULT;
 	}
 
@@ -3050,7 +3053,8 @@ static int rtw_wx_read32(struct net_device *ndev,
 	}
 	DBG_871X(KERN_INFO "%s: addr=0x%08X data=%s\n", __func__, addr, extra);
 
-	rtw_mfree(ptmp, len);
+	/* ULLI check usage of len */
+	rtw_mfree(ptmp);
 
 	return 0;
 }
@@ -3517,8 +3521,10 @@ else
 
 _rtw_mp_ioctl_hdl_exit:
 
-	if (pparmbuf)
-		rtw_mfree(pparmbuf, len);
+	if (pparmbuf) {
+	/* ULLI check usage of len */
+		rtw_mfree(pparmbuf);
+	}
 
 	//mutex_unlock(&ioctl_mutex);
 
@@ -5321,7 +5327,8 @@ static int rtw_p2p_get2(struct net_device *ndev,
 bad:
 	if (buffer)
 	{
-		_rtw_mfree(buffer, length);
+		/* ULLI check usage of length */
+		_rtw_mfree(buffer);
 	}
 
 #endif //CONFIG_P2P
@@ -6221,7 +6228,8 @@ static int wpa_supplicant_ioctl(struct net_device *ndev, struct iw_point *p)
 
 	if (copy_from_user(param, p->pointer, p->length))
 	{
-		rtw_mfree((uint8_t *)param, p->length);
+		/* ULLI check usage of p->length */
+		rtw_mfree((uint8_t *)param);
 		ret = -EFAULT;
 		goto out;
 	}
@@ -6255,7 +6263,8 @@ static int wpa_supplicant_ioctl(struct net_device *ndev, struct iw_point *p)
 	if (ret == 0 && copy_to_user(p->pointer, param, p->length))
 		ret = -EFAULT;
 
-	rtw_mfree((uint8_t *)param, p->length);
+	/* ULLI check usage of p->length */
+	rtw_mfree((uint8_t *)param);
 
 out:
 
@@ -6588,7 +6597,8 @@ exit:
 
 	if(pwep)
 	{
-		rtw_mfree((uint8_t *)pwep, wep_total_len);
+		/* ULLI check usage of wep_total_len */
+		rtw_mfree((uint8_t *)pwep);
 	}
 
 	return ret;
@@ -6951,7 +6961,8 @@ static int rtw_set_wps_beacon(struct net_device *ndev, struct ieee_param *param,
 
 	if(pmlmepriv->wps_beacon_ie)
 	{
-		rtw_mfree(pmlmepriv->wps_beacon_ie, pmlmepriv->wps_beacon_ie_len);
+		/* ULLI check usage of pmlmepriv->wps_beacon_ie_len */
+		rtw_mfree(pmlmepriv->wps_beacon_ie);
 		pmlmepriv->wps_beacon_ie = NULL;
 	}
 
@@ -6994,7 +7005,8 @@ static int rtw_set_wps_probe_resp(struct net_device *ndev, struct ieee_param *pa
 
 	if(pmlmepriv->wps_probe_resp_ie)
 	{
-		rtw_mfree(pmlmepriv->wps_probe_resp_ie, pmlmepriv->wps_probe_resp_ie_len);
+		/* ULLI check usage of pmlmepriv->wps_probe_resp_ie_len */
+		rtw_mfree(pmlmepriv->wps_probe_resp_ie);
 		pmlmepriv->wps_probe_resp_ie = NULL;
 	}
 
@@ -7031,7 +7043,8 @@ static int rtw_set_wps_assoc_resp(struct net_device *ndev, struct ieee_param *pa
 
 	if(pmlmepriv->wps_assoc_resp_ie)
 	{
-		rtw_mfree(pmlmepriv->wps_assoc_resp_ie, pmlmepriv->wps_assoc_resp_ie_len);
+		/* ULLI check usage of pmlmepriv->wps_assoc_resp_ie_len */
+		rtw_mfree(pmlmepriv->wps_assoc_resp_ie);
 		pmlmepriv->wps_assoc_resp_ie = NULL;
 	}
 
@@ -7198,7 +7211,8 @@ static int rtw_hostapd_ioctl(struct net_device *ndev, struct iw_point *p)
 
 	if (copy_from_user(param, p->pointer, p->length))
 	{
-		rtw_mfree((uint8_t *)param, p->length);
+		/* ULLI check usage of p->length */
+		rtw_mfree((uint8_t *)param);
 		ret = -EFAULT;
 		goto out;
 	}
@@ -7301,8 +7315,8 @@ static int rtw_hostapd_ioctl(struct net_device *ndev, struct iw_point *p)
 	if (ret == 0 && copy_to_user(p->pointer, param, p->length))
 		ret = -EFAULT;
 
-
-	rtw_mfree((uint8_t *)param, p->length);
+	/* ULLI check usage of p->length */
+	rtw_mfree((uint8_t *)param);
 
 out:
 
@@ -7338,7 +7352,8 @@ static int rtw_wx_set_priv(struct net_device *ndev,
 		return -ENOMEM;
 
 	if (copy_from_user(ext, dwrq->pointer, len)) {
-		rtw_vmfree(ext, len);
+		/* ULLI check usage of len */
+		rtw_vmfree(ext);
 		return -EFAULT;
 	}
 
@@ -7350,7 +7365,8 @@ static int rtw_wx_set_priv(struct net_device *ndev,
 	#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
 	if (!(ext_dbg = rtw_vmalloc(len)))
 	{
-		rtw_vmfree(ext, len);
+	/* ULLI check usage of len */
+		rtw_vmfree(ext);
 		return -ENOMEM;
 	}
 
@@ -7377,7 +7393,8 @@ static int rtw_wx_set_priv(struct net_device *ndev,
 			{
 				u32 free_len = pmlmepriv->wps_probe_req_ie_len;
 				pmlmepriv->wps_probe_req_ie_len = 0;
-				rtw_mfree(pmlmepriv->wps_probe_req_ie, free_len);
+				/* ULLI check usage of free_len */
+				rtw_mfree(pmlmepriv->wps_probe_req_ie);
 				pmlmepriv->wps_probe_req_ie = NULL;
 			}
 
@@ -7408,9 +7425,10 @@ static int rtw_wx_set_priv(struct net_device *ndev,
 
 
 FREE_EXT:
-
-	rtw_vmfree(ext, len);
+	/* ULLI check usage of len */
+	rtw_vmfree(ext);
 	#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
+	/* ULLI check usage of len */
 	rtw_vmfree(ext_dbg, len);
 	#endif
 
@@ -7905,9 +7923,9 @@ static int rtw_mp_efuse_get(struct net_device *ndev,
 
 exit:
 	if (data)
-		_rtw_mfree(data, EFUSE_BT_MAX_MAP_LEN);
+		_rtw_mfree(data);
 	if (rawdata)
-		_rtw_mfree(rawdata, EFUSE_BT_MAX_MAP_LEN);
+		_rtw_mfree(rawdata);
 	if (!err)
 		wrqu->length = strlen(extra);
 
@@ -8351,13 +8369,13 @@ static int rtw_mp_efuse_set(struct net_device *ndev,
 
 exit:
 	if (setdata)
-		_rtw_mfree(setdata, 1024);
+		_rtw_mfree(setdata);
 	if (ShadowMapBT)
-		_rtw_mfree(ShadowMapBT, EFUSE_BT_MAX_MAP_LEN);
+		_rtw_mfree(ShadowMapBT);
 	if (ShadowMapWiFi)
-		_rtw_mfree(ShadowMapWiFi, EFUSE_MAP_SIZE);
+		_rtw_mfree(ShadowMapWiFi);
 	if (setrawdata)
-		_rtw_mfree(setrawdata, EFUSE_MAX_SIZE);
+		_rtw_mfree(setrawdata);
 
 	#ifdef CONFIG_IPS
 	rtw_pm_set_ips(padapter, ips_mode);
@@ -10670,7 +10688,8 @@ static int rtw_test(
 	}
 
 	if (copy_from_user(pbuf, wrqu->data.pointer, len)) {
-		rtw_mfree(pbuf, len);
+		/* ULLI check usage of len */
+		rtw_mfree(pbuf);
 		DBG_871X("%s: copy from user fail!\n", __func__);
 		return -EFAULT;
 	}
@@ -10679,7 +10698,8 @@ static int rtw_test(
 	ptmp = (char*)pbuf;
 	pch = strsep(&ptmp, delim);
 	if ((pch == NULL) || (strlen(pch) == 0)) {
-		rtw_mfree(pbuf, len);
+	/* ULLI check usage of len */
+		rtw_mfree(pbuf);
 		DBG_871X("%s: parameter error(level 1)!\n", __func__);
 		return -EFAULT;
 	}
@@ -10713,13 +10733,14 @@ static int rtw_test(
 		loopbackTest(padapter, cnt, size, extra);
 		wrqu->data.length = strlen(extra) + 1;
 
-		rtw_mfree(pbuf, len);
+		/* ULLI check usage of len */
+		rtw_mfree(pbuf);
 		return 0;
 	}
 #endif
 
-
-	rtw_mfree(pbuf, len);
+	/* ULLI check usage of len */
+	rtw_mfree(pbuf);
 	return 0;
 }
 
@@ -11338,7 +11359,8 @@ static int rtw_ioctl_wext_private(struct net_device *ndev, union iwreq_data *wrq
 		}
 	}
 
-	rtw_mfree(input, input_len);
+	/* ULLI check usage of input_len */
+	rtw_mfree(input);
 	input = NULL;
 
 	extra_size = 0;
@@ -11363,7 +11385,7 @@ static int rtw_ioctl_wext_private(struct net_device *ndev, union iwreq_data *wrq
 
 	if (extra_size == 0) {
 		extra = (uint8_t *)&wdata;
-		rtw_mfree(buffer, 4096);
+		rtw_mfree(buffer);
 		buffer = NULL;
 	} else
 		extra = buffer;
@@ -11448,12 +11470,14 @@ static int rtw_ioctl_wext_private(struct net_device *ndev, union iwreq_data *wrq
 	}
 
 exit:
-	if (input)
-		rtw_mfree(input, input_len);
+	if (input) {
+		/* ULLI check usage of input_len */
+		rtw_mfree(input);
+	}
 	if (buffer)
-		rtw_mfree(buffer, 4096);
+		rtw_mfree(buffer);
 	if (output)
-		rtw_mfree(output, 4096);
+		rtw_mfree(output);
 
 	return err;
 }

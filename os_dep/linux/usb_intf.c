@@ -200,7 +200,7 @@ static uint8_t rtw_deinit_intf_priv(struct dvobj_priv *dvobj)
 
 	#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
 	if(dvobj->usb_vendor_req_buf)
-		rtw_mfree(dvobj->usb_alloc_vendor_req_buf, MAX_USB_IO_CTL_SIZE);
+		rtw_mfree(dvobj->usb_alloc_vendor_req_buf);
 	#endif
 
 	#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
@@ -396,7 +396,7 @@ free_dvobj:
 		mutex_destroy(&pdvobjpriv->h2c_fwcmd_mutex);
 		mutex_destroy(&pdvobjpriv->setch_mutex);
 		mutex_destroy(&pdvobjpriv->setbw_mutex);
-		rtw_mfree((uint8_t *)pdvobjpriv, sizeof(*pdvobjpriv));
+		rtw_mfree((uint8_t *)pdvobjpriv);
 		pdvobjpriv = NULL;
 	}
 exit:
@@ -427,7 +427,7 @@ static void usb_dvobj_deinit(struct usb_interface *usb_intf)
 		mutex_destroy(&dvobj->h2c_fwcmd_mutex);
 		mutex_destroy(&dvobj->setch_mutex);
 		mutex_destroy(&dvobj->setbw_mutex);
-		rtw_mfree((uint8_t *)dvobj, sizeof(*dvobj));
+		rtw_mfree((uint8_t *)dvobj);
 	}
 
 	/* DBG_871X("%s %d\n", __func__, atomic_read(&usb_intf->dev.kobj.kref.refcount)); */
@@ -1078,7 +1078,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 
 free_hal_data:
 	if(status != _SUCCESS && padapter->HalData)
-		rtw_mfree(padapter->HalData, sizeof(*(padapter->HalData)));
+		rtw_mfree(padapter->HalData);
 free_wdev:
 	if(status != _SUCCESS) {
 		#ifdef CONFIG_IOCTL_CFG80211
@@ -1094,7 +1094,7 @@ free_adapter:
 		if (ndev)
 			rtw_free_netdev(ndev);
 		else if (padapter)
-			rtw_vmfree((uint8_t *)padapter, sizeof(*padapter));
+			rtw_vmfree((uint8_t *)padapter);
 		padapter = NULL;
 	}
 exit:

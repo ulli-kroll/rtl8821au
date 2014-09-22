@@ -1408,7 +1408,7 @@ uint8_t rtw_free_drv_sw(_adapter *padapter)
 
 	rtw_free_pwrctrl_priv(padapter);
 
-	/* rtw_mfree((void *)padapter, sizeof (padapter)); */
+	/* rtw_mfree(padapter); */
 
 #ifdef CONFIG_DRVEXT_MODULE
 	free_drvext(&padapter->drvextpriv);
@@ -1818,7 +1818,7 @@ void rtw_ndev_destructor(struct net_device *ndev)
 
 #ifdef CONFIG_IOCTL_CFG80211
 	if (ndev->ieee80211_ptr)
-		rtw_mfree((uint8_t *)ndev->ieee80211_ptr, sizeof(struct wireless_dev));
+		rtw_mfree(ndev->ieee80211_ptr);
 #endif
 	free_netdev(ndev);
 }

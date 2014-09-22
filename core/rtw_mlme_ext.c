@@ -1150,7 +1150,7 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 					update_network(&(pmlmepriv->cur_network.network), pbss, padapter, _TRUE);
 					rtw_get_bcn_info(&(pmlmepriv->cur_network));
 				}
-				rtw_mfree((uint8_t *)pbss);
+				rtw_mfree(pbss);
 			}
 
 			//check the vendor of the assoc AP
@@ -2184,7 +2184,8 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 		_enter_critical_bh(&pstat->lock, &irqL);
 		if(pstat->passoc_req)
 		{
-			rtw_mfree(pstat->passoc_req, pstat->assoc_req_len);
+			/* ULLI damn one missed check value pstat->assoc_req_len */
+			rtw_mfree(pstat->passoc_req);
 			pstat->passoc_req = NULL;
 			pstat->assoc_req_len = 0;
 		}
@@ -9223,7 +9224,7 @@ void report_survey_event(_adapter *padapter, union recv_frame *precv_frame)
 	cmdsz = (sizeof(struct survey_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj);
+		rtw_mfree(pcmd_obj);
 		return;
 	}
 
@@ -9247,8 +9248,8 @@ void report_survey_event(_adapter *padapter, union recv_frame *precv_frame)
 	{
 		/* ULLI check usage of cmdsz */
 
-		rtw_mfree((uint8_t *)pcmd_obj);
-		rtw_mfree((uint8_t *)pevtcmd);
+		rtw_mfree(pcmd_obj);
+		rtw_mfree(pevtcmd);
 		return;
 	}
 
@@ -9282,7 +9283,7 @@ void report_surveydone_event(_adapter *padapter)
 	cmdsz = (sizeof(struct surveydone_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj);
+		rtw_mfree(pcmd_obj);
 		return;
 	}
 
@@ -9330,7 +9331,7 @@ void report_join_res(_adapter *padapter, int res)
 	cmdsz = (sizeof(struct joinbss_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj);
+		rtw_mfree(pcmd_obj);
 		return;
 	}
 
@@ -9384,7 +9385,7 @@ void report_del_sta_event(_adapter *padapter, unsigned char* MacAddr, unsigned s
 	cmdsz = (sizeof(struct stadel_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj);
+		rtw_mfree(pcmd_obj);
 		return;
 	}
 
@@ -9440,7 +9441,7 @@ void report_add_sta_event(_adapter *padapter, unsigned char* MacAddr, int cam_id
 	cmdsz = (sizeof(struct stassoc_event) + sizeof(struct C2HEvent_Header));
 	if ((pevtcmd = (uint8_t *)rtw_zmalloc(cmdsz)) == NULL)
 	{
-		rtw_mfree((uint8_t *)pcmd_obj);
+		rtw_mfree(pcmd_obj);
 		return;
 	}
 
@@ -10033,7 +10034,7 @@ void survey_timer_hdl(_adapter *padapter)
 
 		if ((psurveyPara = (struct sitesurvey_parm*)rtw_zmalloc(sizeof(struct sitesurvey_parm))) == NULL)
 		{
-			rtw_mfree((unsigned char *)ph2c);
+			rtw_mfree(ph2c);
 			goto exit_survey_timer_hdl;
 		}
 
@@ -10294,8 +10295,8 @@ static int rtw_auto_ap_start_beacon(_adapter *adapter)
 		ret = -EINVAL;
 	}
 
-
-	rtw_mfree(pbuf, len);
+	/* ULLI check usage of len */
+	rtw_mfree(pbuf);
 
 	return ret;
 
@@ -11025,7 +11026,7 @@ _func_enter_;
 
 	if ((ptxBeacon_parm = (struct Tx_Beacon_param *)rtw_zmalloc(sizeof(struct Tx_Beacon_param))) == NULL)
 	{
-		rtw_mfree((unsigned char *)ph2c);
+		rtw_mfree(ph2c);
 		res= _FAIL;
 		goto exit;
 	}

@@ -854,7 +854,7 @@ exit:
 
 	if (pwep) {
 		/* ULLI check usage of web_total_len  */
-		rtw_mfree((uint8_t *)pwep);
+		rtw_mfree(pwep);
 	}
 
 _func_exit_;
@@ -2931,7 +2931,7 @@ static int rtw_wx_set_enc_ext(struct net_device *ndev,
 	if(param)
 	{
 		/* ULLI check usage of param_len */
-		rtw_mfree((uint8_t *)param);
+		rtw_mfree(param);
 	}
 
 	return ret;
@@ -3246,7 +3246,8 @@ struct	iw_point
 	if(bset)//set info
 	{
 		if (copy_from_user(pparmbuf, p->pointer,len)) {
-			rtw_mfree(pparmbuf, len);
+			/* ULLI check usage of len */
+			rtw_mfree(pparmbuf);
 			ret = -EFAULT;
 			goto _rtw_drvext_hdl_exit;
 		}
@@ -6229,7 +6230,7 @@ static int wpa_supplicant_ioctl(struct net_device *ndev, struct iw_point *p)
 	if (copy_from_user(param, p->pointer, p->length))
 	{
 		/* ULLI check usage of p->length */
-		rtw_mfree((uint8_t *)param);
+		rtw_mfree(param);
 		ret = -EFAULT;
 		goto out;
 	}
@@ -6264,7 +6265,7 @@ static int wpa_supplicant_ioctl(struct net_device *ndev, struct iw_point *p)
 		ret = -EFAULT;
 
 	/* ULLI check usage of p->length */
-	rtw_mfree((uint8_t *)param);
+	rtw_mfree(param);
 
 out:
 
@@ -6598,7 +6599,7 @@ exit:
 	if(pwep)
 	{
 		/* ULLI check usage of wep_total_len */
-		rtw_mfree((uint8_t *)pwep);
+		rtw_mfree(pwep);
 	}
 
 	return ret;
@@ -7212,7 +7213,7 @@ static int rtw_hostapd_ioctl(struct net_device *ndev, struct iw_point *p)
 	if (copy_from_user(param, p->pointer, p->length))
 	{
 		/* ULLI check usage of p->length */
-		rtw_mfree((uint8_t *)param);
+		rtw_mfree(param);
 		ret = -EFAULT;
 		goto out;
 	}
@@ -7316,7 +7317,7 @@ static int rtw_hostapd_ioctl(struct net_device *ndev, struct iw_point *p)
 		ret = -EFAULT;
 
 	/* ULLI check usage of p->length */
-	rtw_mfree((uint8_t *)param);
+	rtw_mfree(param);
 
 out:
 
@@ -10183,7 +10184,7 @@ static void freeLoopback(PADAPTER padapter)
 
 	ploopback = padapter->ploopback;
 	if (ploopback) {
-		rtw_mfree((uint8_t *)ploopback, sizeof(LOOPBACKDATA));
+		rtw_mfree(ploopback);
 		padapter->ploopback = NULL;
 	}
 }
@@ -10712,7 +10713,7 @@ static int rtw_test(
 
 		pch = strsep(&ptmp, delim);
 		if ((pch == NULL) || (strlen(pch) == 0)) {
-			rtw_mfree(pbuf, len);
+			rtw_mfree(pbuf);
 			DBG_871X("%s: parameter error(level 2)!\n", __func__);
 			return -EFAULT;
 		}
@@ -10722,7 +10723,7 @@ static int rtw_test(
 
 		pch = strsep(&ptmp, delim);
 		if ((pch == NULL) || (strlen(pch) == 0)) {
-			rtw_mfree(pbuf, len);
+			rtw_mfree(pbuf);
 			DBG_871X("%s: parameter error(level 2)!\n", __func__);
 			return -EFAULT;
 		}

@@ -193,7 +193,7 @@ void rtl8812au_free_recv_priv (_adapter *padapter)
 #endif//PLATFORM_LINUX
 
 	if(precvpriv->int_in_buf)
-		rtw_mfree(precvpriv->int_in_buf, INTERRUPT_MSG_FORMAT_LEN);
+		rtw_mfree(precvpriv->int_in_buf);
 #endif//CONFIG_USB_INTERRUPT_IN_PIPE
 
 #ifdef PLATFORM_LINUX

@@ -106,10 +106,10 @@ enum {
 #define rtw_update_mem_stat(flag, sz) do {} while(0)
 extern u8*	_rtw_vmalloc(u32 sz);
 extern u8*	_rtw_zvmalloc(u32 sz);
-extern void	_rtw_vmfree(uint8_t *pbuf);
+extern void	_rtw_vmfree(void *pbuf);
 extern u8*	_rtw_zmalloc(u32 sz);
 extern u8*	_rtw_malloc(u32 sz);
-extern void	_rtw_mfree(uint8_t *pbuf);
+extern void	_rtw_mfree(void *pbuf);
 #ifdef CONFIG_USE_VMALLOC
 #define rtw_vmalloc(sz)		_rtw_vmalloc((sz))
 #define rtw_zvmalloc(sz)	_rtw_zvmalloc((sz))

@@ -529,7 +529,7 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 Exit:
 
 	if (pFirmware)
-		rtw_mfree((uint8_t *)pFirmware);
+		rtw_mfree(pFirmware);
 
 	/*
 	 * RT_TRACE(COMP_INIT, DBG_LOUD, (" <=== FirmwareDownload91C()\n"));

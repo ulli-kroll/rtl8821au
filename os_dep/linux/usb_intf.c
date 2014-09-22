@@ -396,7 +396,7 @@ free_dvobj:
 		mutex_destroy(&pdvobjpriv->h2c_fwcmd_mutex);
 		mutex_destroy(&pdvobjpriv->setch_mutex);
 		mutex_destroy(&pdvobjpriv->setbw_mutex);
-		rtw_mfree((uint8_t *)pdvobjpriv);
+		rtw_mfree(pdvobjpriv);
 		pdvobjpriv = NULL;
 	}
 exit:
@@ -427,7 +427,7 @@ static void usb_dvobj_deinit(struct usb_interface *usb_intf)
 		mutex_destroy(&dvobj->h2c_fwcmd_mutex);
 		mutex_destroy(&dvobj->setch_mutex);
 		mutex_destroy(&dvobj->setbw_mutex);
-		rtw_mfree((uint8_t *)dvobj);
+		rtw_mfree(dvobj);
 	}
 
 	/* DBG_871X("%s %d\n", __func__, atomic_read(&usb_intf->dev.kobj.kref.refcount)); */
@@ -1094,7 +1094,7 @@ free_adapter:
 		if (ndev)
 			rtw_free_netdev(ndev);
 		else if (padapter)
-			rtw_vmfree((uint8_t *)padapter);
+			rtw_vmfree(padapter);
 		padapter = NULL;
 	}
 exit:

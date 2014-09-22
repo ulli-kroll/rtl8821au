@@ -2931,7 +2931,7 @@ void rtw_free_hwxmits(_adapter *padapter)
 
 	hwxmits = pxmitpriv->hwxmits;
 	if(hwxmits)
-		rtw_mfree((uint8_t *)hwxmits);
+		rtw_mfree(hwxmits);
 }
 
 void rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry)

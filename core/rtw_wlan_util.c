@@ -1615,11 +1615,11 @@ int rtw_check_bcn_info(ADAPTER *Adapter, uint8_t *pframe, uint32_t	 packet_len)
 		}
 	}
 
-	rtw_mfree((uint8_t *)bssid);
+	rtw_mfree(bssid);
 	return _SUCCESS;
 
 _mismatch:
-	rtw_mfree((uint8_t *)bssid);
+	rtw_mfree(bssid);
 	return _FAIL;
 
 	_func_exit_;
@@ -2325,7 +2325,7 @@ void fire_write_MAC_cmd(_adapter *padapter, unsigned int addr, unsigned int valu
 
 	if ((pwriteMacPara = (struct reg_rw_parm*)rtw_malloc(sizeof(struct reg_rw_parm))) == NULL)
 	{
-		rtw_mfree((unsigned char *)ph2c, sizeof(struct cmd_obj));
+		rtw_mfree(ph2c);
 		return;
 	}
 

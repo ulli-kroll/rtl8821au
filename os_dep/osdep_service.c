@@ -95,7 +95,7 @@ inline u8* _rtw_zvmalloc(u32 sz)
 	return pbuf;
 }
 
-inline void _rtw_vmfree(u8 *pbuf)
+inline void _rtw_vmfree(void *pbuf)
 {
 #ifdef	PLATFORM_LINUX
 	vfree(pbuf);
@@ -135,7 +135,7 @@ u8* _rtw_zmalloc(u32 sz)
 	return pbuf;
 }
 
-void	_rtw_mfree(u8 *pbuf)
+void	_rtw_mfree(void *pbuf)
 {
 
 #ifdef	PLATFORM_LINUX
@@ -168,7 +168,7 @@ void rtw_mfree2d(void *pbuf, int h, int w, int size)
 {
 	/* ULLI check usage of param h, w, size */
 
-	rtw_mfree((u8 *)pbuf);
+	rtw_mfree(pbuf);
 }
 
 int	_rtw_memcmp(void *dst, void *src, u32 sz)
@@ -1087,6 +1087,6 @@ struct rtw_cbuf *rtw_cbuf_alloc(u32 size)
 void rtw_cbuf_free(struct rtw_cbuf *cbuf)
 {
 	/* ULLI check usage of cbuf->size */
-	rtw_mfree((u8*)cbuf);
+	rtw_mfree(cbuf);
 }
 

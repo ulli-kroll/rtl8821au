@@ -1796,7 +1796,7 @@ uint8_t rtw_ap_set_pairwise_key(_adapter *padapter, struct sta_info *psta)
 
 	psetstakey_para = (struct set_stakey_parm*)rtw_zmalloc(sizeof(struct set_stakey_parm));
 	if (psetstakey_para == NULL) {
-		rtw_mfree((uint8_t *) ph2c);
+		rtw_mfree(ph2c);
 		res=_FAIL;
 		goto exit;
 	}
@@ -1836,7 +1836,7 @@ static int rtw_ap_set_key(_adapter *padapter, uint8_t *key, uint8_t alg, int key
 	}
 	psetkeyparm=(struct setkey_parm*)rtw_zmalloc(sizeof(struct setkey_parm));
 	if (psetkeyparm == NULL) {
-		rtw_mfree((unsigned char *)pcmd);
+		rtw_mfree(pcmd);
 		res= _FAIL;
 		goto exit;
 	}

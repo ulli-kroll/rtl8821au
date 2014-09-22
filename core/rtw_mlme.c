@@ -2572,7 +2572,7 @@ _func_enter_;
 
 	psetauthparm=(struct setauth_parm*)rtw_zmalloc(sizeof(struct setauth_parm));
 	if (psetauthparm==NULL){
-		rtw_mfree((unsigned char *)pcmd);
+		rtw_mfree(pcmd);
 		res= _FAIL;
 		goto exit;
 	}
@@ -2620,7 +2620,7 @@ _func_enter_;
 	}
 	psetkeyparm=(struct setkey_parm*)rtw_zmalloc(sizeof(struct setkey_parm));
 	if (psetkeyparm==NULL){
-		rtw_mfree((unsigned char *)pcmd);
+		rtw_mfree(pcmd);
 		res= _FAIL;
 		goto exit;
 	}

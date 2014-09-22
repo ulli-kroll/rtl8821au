@@ -2783,7 +2783,7 @@ int wpa_tdls_ftie_mic(uint8_t *kck, uint8_t trans_seq,
 	pos += 2 + ftie[1];
 
 	ret = omac1_aes_128(kck, buf, pos - buf, mic);
-	rtw_mfree(buf, len);
+	rtw_mfree(buf);
 	return ret;
 
 }
@@ -2834,7 +2834,7 @@ int tdls_verify_mic(uint8_t *kck, uint8_t trans_seq,
 	pos += *(ftie+1);
 
 	ret = omac1_aes_128(kck, buf, pos - buf, mic);
-	rtw_mfree(buf, len);
+	rtw_mfree(buf);
 	if (ret)
 		return 0;
 	rx_ftie = ftie+4;

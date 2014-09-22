@@ -151,7 +151,8 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, uint16_t value
 
 	// release IO memory used by vendorreq
 	#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
-	rtw_mfree(tmp_buf, tmp_buflen);
+	/* ULLI check usage of tmp_buflen */
+	rtw_mfree(tmp_buf);
 	#endif
 
 release_mutex:
@@ -205,7 +206,7 @@ static int _usbctrl_vendorreq_async_write(struct usb_device *udev, uint8_t reque
 
 	urb = usb_alloc_urb(0, GFP_ATOMIC);
 	if (!urb) {
-		rtw_mfree((uint8_t *)buf, sizeof(*buf));
+		rtw_mfree(buf);
 		rc = -ENOMEM;
 		goto exit;
 	}
@@ -225,7 +226,7 @@ static int _usbctrl_vendorreq_async_write(struct usb_device *udev, uint8_t reque
 
 	rc = usb_submit_urb(urb, GFP_ATOMIC);
 	if (rc < 0) {
-		rtw_mfree((uint8_t *)buf, sizeof(*buf));
+		rtw_mfree(buf);
 		usb_free_urb(urb);
 	}
 
@@ -344,7 +345,7 @@ static void usb_bulkout_zero_complete(struct urb *purb, struct pt_regs *regs)
 		}
 
 
-		rtw_mfree((uint8_t *)pcontext);
+		rtw_mfree(pcontext);
 	}
 
 

@@ -2561,7 +2561,7 @@ _func_enter_;
 
 		pdrvextra_cmd_parm = (struct drvextra_cmd_parm*)rtw_zmalloc(sizeof(struct drvextra_cmd_parm));
 		if(pdrvextra_cmd_parm==NULL){
-			rtw_mfree((unsigned char *)ph2c);
+			rtw_mfree(ph2c);
 			res= _FAIL;
 			goto exit;
 		}

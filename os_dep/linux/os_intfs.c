@@ -323,11 +323,7 @@ void rtw_proc_init_one(struct net_device *ndev)
 			memcpy(rtw_proc_name, RTW_PROC_NAME, sizeof(RTW_PROC_NAME));
 		}
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 24))
-		rtw_proc = create_proc_entry(rtw_proc_name, S_IFDIR, proc_net);
-#else
 		rtw_proc = create_proc_entry(rtw_proc_name, S_IFDIR, init_net.proc_net);
-#endif
 		if (rtw_proc == NULL) {
 			DBG_871X(KERN_ERR "Unable to create rtw_proc directory\n");
 			return;
@@ -352,11 +348,7 @@ void rtw_proc_init_one(struct net_device *ndev)
 		if (dir_dev == NULL) {
 			if (rtw_proc_cnt == 0) {
 				if (rtw_proc) {
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 24))
-					remove_proc_entry(rtw_proc_name, proc_net);
-#else
 					remove_proc_entry(rtw_proc_name, init_net.proc_net);
-#endif
 					rtw_proc = NULL;
 				}
 			}
@@ -685,11 +677,7 @@ void rtw_proc_remove_one(struct net_device *ndev)
 	if (rtw_proc_cnt == 0) {
 		if (rtw_proc) {
 			remove_proc_entry("ver_info", rtw_proc);
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 24))
-			remove_proc_entry(rtw_proc_name, proc_net);
-#else
 			remove_proc_entry(rtw_proc_name, init_net.proc_net);
-#endif
 			rtw_proc = NULL;
 		}
 	}
@@ -1196,9 +1184,6 @@ uint8_t rtw_reset_drv_sw(_adapter *padapter)
 	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY | _FW_UNDER_LINKING);
 
 #ifdef CONFIG_AUTOSUSPEND
-	#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 22) && LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 34))
-		adapter_to_dvobj(padapter)->pusbdev->autosuspend_disabled = 1;	/*autosuspend disabled by the user */
-	#endif
 #endif
 
 #ifdef DBG_CONFIG_ERROR_DETECT
@@ -1460,26 +1445,14 @@ void netdev_br_init(struct net_device *netdev)
 	/* if (check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) == _TRUE) */
 	{
 		/* struct net_bridge	*br = netdev->br_port->br;//->dev->dev_addr; */
-#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-		if (netdev->br_port)
-#else
 		if (rcu_dereference(adapter->ndev->rx_handler_data))
-#endif
 		{
 			struct net_device *br_netdev;
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 24))
-			br_netdev = dev_get_by_name(CONFIG_BR_EXT_BRNAME);
-#else
 			struct net *devnet = NULL;
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 26))
-			devnet = netdev->nd_net;
-#else
 			devnet = dev_net(netdev);
-#endif
 
 			br_netdev = dev_get_by_name(devnet, CONFIG_BR_EXT_BRNAME);
-#endif
 
 			if (br_netdev) {
 				memcpy(adapter->br_mac, br_netdev->dev_addr, ETH_ALEN);

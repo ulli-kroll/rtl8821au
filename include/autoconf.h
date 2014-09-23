@@ -183,7 +183,6 @@
 
 #define CONFIG_PREALLOC_RECV_SKB	1
 //#define CONFIG_REDUCE_USB_TX_INT	1	// Trade-off: Improve performance, but may cause TX URBs blocked by USB Host/Bus driver on few platforms.
-//#define CONFIG_EASY_REPLACEMENT	1
 
 /*
  * CONFIG_USE_USB_BUFFER_ALLOC_XX uses Linux USB Buffer alloc API and is for Linux platform only now!

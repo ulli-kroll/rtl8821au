@@ -21,11 +21,6 @@
 
 #include <drv_types.h>
 
-#ifndef CONFIG_USB_HCI
-
-#error "CONFIG_USB_HCI shall be on!\n"
-
-#endif
 
 
 #ifdef CONFIG_80211N_HT

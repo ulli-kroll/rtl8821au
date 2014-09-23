@@ -188,7 +188,6 @@ phy_RFSerialWrite(
 	DataAndAddr = ((Offset<<20) | (Data&0x000fffff)) & 0x0fffffff;
 
 	//3 <Note> This is a workaround for 8812A test chips.
-#ifdef CONFIG_USB_HCI
 	// <20120427, Kordan> MAC first moves lower 16 bits and then upper 16 bits of a 32-bit data.
 	// BaseBand doesn't know the two actions is actually only one action to access 32-bit data,
 	// so that the lower 16 bits is overwritten by the upper 16 bits. (Asked by ynlin.)
@@ -207,7 +206,6 @@ phy_RFSerialWrite(
 		}
 	}
 	else // USB 3.0
-#endif
 	{
 		// Write Operation
 		// TODO: Dynamically determine whether using PI or SI to write RF registers.
@@ -2898,7 +2896,6 @@ PHY_GetTxPowerIndex_8812A(
 	}
 	else
 	{
-#ifdef CONFIG_USB_HCI
 		//
 		// 2013/01/29 MH For preventing VHT rate of 8812AU to be used in USB 2.0 mode
 		// and the current will be more than 500mA and card disappear. We need to limit
@@ -2910,7 +2907,6 @@ PHY_GetTxPowerIndex_8812A(
 		{
 			powerDiffByRate = 0;
 		}
-#endif // CONFIG_USB_HCI
 
 		txPower += powerDiffByRate;
 	}
@@ -3295,13 +3291,11 @@ PHY_SetTxPowerLevelByPath8812(
 			else					//ODM_RF_PATH_B
 				RegAddress = rTxAGC_B_CCK11_CCK1_JAguar;
 
-#ifdef CONFIG_USB_HCI
 			if(pMgntInfo->RegNByteAccess == 2)  //N Byte access
 			{
 				PlatformIOWriteNByte(Adapter,RegAddress,Length,PowerIndexArray);
 			}
 			else if(pMgntInfo->RegNByteAccess == 1) //DW access
-#endif
 			{
 				u1Byte i, j;
 				for(i = 0;i < Length;i+=4)
@@ -3334,13 +3328,11 @@ PHY_SetTxPowerLevelByPath8812(
 				else					// ODM_RF_PATH_B
 					RegAddress = rTxAGC_B_Nss1Index3_Nss1Index0_JAguar;
 
-#ifdef CONFIG_USB_HCI
 				if(pMgntInfo->RegNByteAccess == 2)
 				{
 					PlatformIOWriteNByte(Adapter,RegAddress,vhtRates1TSize,&PowerIndexArray[cckRatesSize + ofdmRatesSize + htRates1TSize + htRates2TSize]);
 				}
 				else if(pMgntInfo->RegNByteAccess == 1) //DW access
-#endif
 				{
 					u1Byte i, j;
 					for(i = 0;i < vhtRates1TSize;i+=4)
@@ -3373,13 +3365,11 @@ PHY_SetTxPowerLevelByPath8812(
 			else					// ODM_RF_PATH_B
 				RegAddress = rTxAGC_B_Ofdm18_Ofdm6_JAguar;
 
-#ifdef CONFIG_USB_HCI
 			if(pMgntInfo->RegNByteAccess == 2)
 			{
 				PlatformIOWriteNByte(Adapter,RegAddress,Length,&PowerIndexArray[cckRatesSize]);
 			}
 			else if(pMgntInfo->RegNByteAccess == 1) //DW
-#endif
 			{
 				u1Byte i, j;
 				for(i = 0;i < Length;i+=4)

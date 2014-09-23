@@ -21,13 +21,6 @@
 
 #include <rtl8812a_hal.h>
 
-#ifndef CONFIG_USB_HCI
-
-#error "CONFIG_USB_HCI shall be on!\n"
-
-#endif
-
-
 static void _dbg_dump_macreg(_adapter *padapter)
 {
 	uint32_t offset = 0;

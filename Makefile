@@ -21,8 +21,6 @@ EXTRA_CFLAGS += -I$(src)/include
 CONFIG_RTL8812A = y
 CONFIG_RTL8821A = y
 
-CONFIG_USB_HCI = y
-
 CONFIG_MP_INCLUDED = y
 CONFIG_POWER_SAVING = y
 CONFIG_USB_AUTOSUSPEND = n
@@ -34,10 +32,7 @@ CONFIG_DRVEXT_MODULE = n
 
 export TopDIR ?= $(shell pwd)
 
-########### COMMON  #################################
-ifeq ($(CONFIG_USB_HCI), y)
 HCI_NAME = usb
-endif
 
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/linux/os_intfs.o \
@@ -66,9 +61,7 @@ _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
 ifneq ($(CONFIG_RTL8812A)_$(CONFIG_RTL8821A), n_n)
 
 RTL871X = rtl8812a
-ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME = 8812au
-endif
 
 _HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
 					hal/$(RTL871X)/Hal8812PwrSeq.o \
@@ -106,9 +99,7 @@ endif
 ifeq ($(CONFIG_RTL8821A), y)
 
 ifeq ($(CONFIG_RTL8812A), n)
-ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME := 8821au
-endif
 endif
 
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
@@ -127,10 +118,8 @@ endif
 ########### END OF PATH  #################################
 
 
-ifeq ($(CONFIG_USB_HCI), y)
 ifeq ($(CONFIG_USB_AUTOSUSPEND), y)
 EXTRA_CFLAGS += -DCONFIG_USB_AUTOSUSPEND
-endif
 endif
 
 ifeq ($(CONFIG_MP_INCLUDED), y)
@@ -160,9 +149,7 @@ endif
 ifeq ($(CONFIG_MULTIDRV), y)
 
 
-ifeq ($(CONFIG_USB_HCI), y)
 MODULE_NAME := rtw_usb
-endif
 
 
 

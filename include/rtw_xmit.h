@@ -20,9 +20,6 @@
 #ifndef _RTW_XMIT_H_
 #define _RTW_XMIT_H_
 
-
-#if defined (CONFIG_USB_HCI)
-
 #ifdef CONFIG_USB_TX_AGGREGATION
 #define MAX_XMITBUF_SZ	(20480)	// 20k
 #else
@@ -34,7 +31,6 @@
 #else
 #define NR_XMITBUFF	(4)
 #endif //CONFIG_SINGLE_XMIT_BUF
-#endif
 
 #define XMITBUF_ALIGN_SZ 512
 
@@ -112,10 +108,8 @@ do{\
 
 
 
-#ifdef CONFIG_USB_HCI
 #define PACKET_OFFSET_SZ (8)
 #define TXDESC_OFFSET (TXDESC_SIZE + PACKET_OFFSET_SZ)
-#endif
 
 
 enum TXDESC_SC{
@@ -360,7 +354,6 @@ struct xmit_buf
 
 	struct submit_ctx *sctx;
 
-#ifdef CONFIG_USB_HCI
 
 	//u32 sz[8];
 	u32	ff_hwaddr;
@@ -376,7 +369,6 @@ struct xmit_buf
 
 	sint last[8];
 
-#endif
 
 
 
@@ -400,12 +392,10 @@ struct xmit_frame
 	struct xmit_buf *pxmitbuf;
 
 
-#ifdef CONFIG_USB_HCI
 #ifdef CONFIG_USB_TX_AGGREGATION
 	uint8_t	agg_num;
 #endif
 	s8	pkt_offset;
-#endif
 
 #ifdef CONFIG_XMIT_ACK
 	uint8_t ack_report;
@@ -520,7 +510,6 @@ struct	xmit_priv	{
 
 	uint8_t	wmm_para_seq[4];//sequence for wmm ac parameter strength from large to small. it's value is 0->vo, 1->vi, 2->be, 3->bk.
 
-#ifdef CONFIG_USB_HCI
 	struct semaphore	tx_retevt;//all tx return event;
 	uint8_t		txirp_cnt;//
 
@@ -533,7 +522,6 @@ struct	xmit_priv	{
 	int viq_cnt;
 	int voq_cnt;
 
-#endif
 
 
 

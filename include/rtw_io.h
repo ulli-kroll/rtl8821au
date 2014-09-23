@@ -24,7 +24,6 @@
 
 #ifdef PLATFORM_LINUX
 
-#ifdef CONFIG_USB_HCI
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
 #define rtw_usb_buffer_alloc(dev, size, dma) usb_alloc_coherent((dev), (size), (in_interrupt() ? GFP_ATOMIC : GFP_KERNEL), (dma))
@@ -35,7 +34,6 @@
 #endif
 
 
-#endif //CONFIG_USB_HCI
 
 #endif //PLATFORM_LINUX
 

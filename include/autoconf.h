@@ -33,10 +33,6 @@
 #define RTL871X_MODULE_NAME "8812AU"
 #define DRV_NAME "rtl8812au"
 
-
-#define CONFIG_USB_HCI	1
-
-
 #define PLATFORM_LINUX	1
 
 

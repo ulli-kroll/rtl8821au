@@ -269,7 +269,6 @@ struct recv_priv
 	uint  rx_smallpacket_crcerr;
 	uint  rx_middlepacket_crcerr;
 
-#ifdef CONFIG_USB_HCI
 	//uint8_t *pallocated_urb_buf;
 	struct semaphore allrxreturnevt;
 	uint	ff_hwaddr;
@@ -283,7 +282,6 @@ struct recv_priv
 	uint8_t	*int_in_buf;
 #endif //CONFIG_USB_INTERRUPT_IN_PIPE
 
-#endif
 #if defined(PLATFORM_LINUX)
 	struct tasklet_struct irq_prepare_beacon_tasklet;
 	struct tasklet_struct recv_tasklet;
@@ -371,7 +369,6 @@ struct recv_buf
 	uint8_t	*ptail;
 	uint8_t	*pend;
 
-#ifdef CONFIG_USB_HCI
 
 	#if defined(PLATFORM_LINUX)
 	PURB	purb;
@@ -383,7 +380,6 @@ struct recv_buf
 	uint8_t  irp_pending;
 	int  transfer_len;
 
-#endif
 
 #ifdef PLATFORM_LINUX
 	_pkt	*pskb;

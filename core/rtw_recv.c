@@ -103,13 +103,11 @@ sint _rtw_init_recv_priv(struct recv_priv *precvpriv, struct _ADAPTER *padapter)
 
 	}
 
-#ifdef CONFIG_USB_HCI
 
 	precvpriv->rx_pending_cnt=1;
 
 	sema_init(&precvpriv->allrxreturnevt, 0);
 
-#endif
 
 	res = rtw_hal_init_recv_priv(padapter);
 

@@ -743,9 +743,7 @@ _func_enter_;
 
 		if ((padapter->bSurpriseRemoved == _TRUE)
 			|| (padapter->hw_init_completed == _FALSE)
-#ifdef CONFIG_USB_HCI
 			|| (padapter->bDriverStopped== _TRUE)
-#endif
 			|| (pwrpriv->pwr_mode == PS_MODE_ACTIVE)
 			)
 		{
@@ -1300,9 +1298,7 @@ _func_exit_;
 }
 
 #ifdef CONFIG_RESUME_IN_WORKQUEUE
-#if defined(CONFIG_USB_HCI)
 extern int rtw_resume_process(struct _ADAPTER *padapter);
-#endif
 static void resume_workitem_callback(struct work_struct *work)
 {
 	struct pwrctrl_priv *pwrpriv = container_of(work, struct pwrctrl_priv, resume_work);
@@ -1310,9 +1306,7 @@ static void resume_workitem_callback(struct work_struct *work)
 
 	DBG_871X("%s\n",__FUNCTION__);
 
-#if defined(CONFIG_USB_HCI)
 	rtw_resume_process(adapter);
-#endif
 
 }
 
@@ -1347,9 +1341,7 @@ inline void rtw_set_do_late_resume(struct pwrctrl_priv *pwrpriv, bool enable)
 #endif
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
-#if defined(CONFIG_USB_HCI)
 extern int rtw_resume_process(struct _ADAPTER *padapter);
-#endif
 static void rtw_early_suspend(struct early_suspend *h)
 {
 	struct pwrctrl_priv *pwrpriv = container_of(h, struct pwrctrl_priv, early_suspend);
@@ -1365,10 +1357,8 @@ static void rtw_late_resume(struct early_suspend *h)
 
 	DBG_871X("%s\n",__FUNCTION__);
 	if(pwrpriv->do_late_resume) {
-#if defined(CONFIG_USB_HCI)
 		rtw_set_do_late_resume(pwrpriv, _FALSE);
 		rtw_resume_process(adapter);
-#endif
 	}
 }
 
@@ -1406,9 +1396,7 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv)
 #endif //CONFIG_HAS_EARLYSUSPEND
 
 #ifdef CONFIG_ANDROID_POWER
-#if defined(CONFIG_USB_HCI)
 extern int rtw_resume_process(PADAPTER padapter);
-#endif
 static void rtw_early_suspend(android_early_suspend_t *h)
 {
 	struct pwrctrl_priv *pwrpriv = container_of(h, struct pwrctrl_priv, early_suspend);
@@ -1424,10 +1412,8 @@ static void rtw_late_resume(android_early_suspend_t *h)
 
 	DBG_871X("%s\n",__FUNCTION__);
 	if (pwrpriv->do_late_resume) {
-		#if defined(CONFIG_USB_HCI)
 		rtw_set_do_late_resume(pwrpriv, _FALSE);
 		rtw_resume_process(adapter);
-		#endif
 	}
 }
 
@@ -1570,7 +1556,6 @@ int _rtw_pwr_wakeup(struct _ADAPTER *padapter, uint32_t	 ips_deffer_ms, const ch
 	}
 
 	if (rf_off == pwrpriv->rf_pwrstate ) {
-#ifdef CONFIG_USB_HCI
 #ifdef CONFIG_AUTOSUSPEND
 		if (pwrpriv->brfoffbyhw==_TRUE) {
 			DBG_8192C("hw still in rf_off state ...........\n");
@@ -1584,7 +1569,6 @@ int _rtw_pwr_wakeup(struct _ADAPTER *padapter, uint32_t	 ips_deffer_ms, const ch
 				goto exit;
 			}
 		} else
-#endif
 #endif
 		{
 #ifdef CONFIG_IPS

@@ -251,10 +251,8 @@ typedef struct hal_com_data
 	//
 	u16	EEPROMVID;
 	u16	EEPROMSVID;
-#ifdef CONFIG_USB_HCI
 	u16	EEPROMPID;
 	u16	EEPROMSDID;
-#endif
 
 	uint8_t	EEPROMCustomerID;
 	uint8_t	EEPROMSubCustomerID;
@@ -448,7 +446,6 @@ typedef struct hal_com_data
 	RT_AMPDU_BRUST		AMPDUBurstMode; //92C maybe not use, but for compile successfully
 
 
-#ifdef CONFIG_USB_HCI
 	u32	UsbBulkOutSize;
 	BOOLEAN		bSupportUSB3;
 
@@ -474,7 +471,6 @@ typedef struct hal_com_data
 	uint8_t	RegAcUsbDmaSize;
 	uint8_t	RegAcUsbDmaTime;
 	#endif//CONFIG_USB_RX_AGGREGATION
-#endif //CONFIG_USB_HCI
 
 
 

@@ -8173,7 +8173,6 @@ unsigned int send_beacon(_adapter *padapter)
 	int poll = 0;
 
 
-#if defined(CONFIG_USB_HCI)
 	uint32_t	 start = rtw_get_current_time();
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
@@ -8212,7 +8211,6 @@ unsigned int send_beacon(_adapter *padapter)
 		return _SUCCESS;
 	}
 
-#endif
 
 }
 

@@ -329,7 +329,6 @@ struct dvobj_priv
 
 /*-------- below is for USB INTERFACE --------*/
 
-#ifdef CONFIG_USB_HCI
 
 	uint8_t	usb_speed; // 1.1, 2.0 or 3.0
 	uint8_t	nr_endpoint;
@@ -356,7 +355,6 @@ struct dvobj_priv
 #endif//PLATFORM_LINUX
 
 	ATOMIC_T continual_urb_error;
-#endif//CONFIG_USB_HCI
 
 /*-------- below is for PCIE INTERFACE --------*/
 
@@ -369,9 +367,7 @@ static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 #ifdef RTW_DVOBJ_CHIP_HW_TYPE
 #endif
 
-#ifdef CONFIG_USB_HCI
 	return &dvobj->pusbintf->dev;
-#endif
 }
 #endif
 
@@ -579,11 +575,9 @@ __inline static uint8_t *myid(struct eeprom_priv *peepriv)
 }
 
 // HCI Related header file
-#ifdef CONFIG_USB_HCI
 #include <usb_osintf.h>
 #include <usb_ops.h>
 #include <usb_hal.h>
-#endif
 
 
 

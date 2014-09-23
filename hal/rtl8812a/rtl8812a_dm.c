@@ -70,7 +70,6 @@ static void dm_CheckPbcGPIO(_adapter *padapter)
 	if(!padapter->registrypriv.hw_wps_pbc)
 		return;
 
-#if defined(CONFIG_USB_HCI)
 	if (IS_HARDWARE_TYPE_8812(padapter)) {
 		tmp1byte = rtw_read8(padapter, GPIO_IO_SEL);
 		tmp1byte |= (HAL_8192C_HW_GPIO_WPS_BIT);
@@ -112,9 +111,6 @@ static void dm_CheckPbcGPIO(_adapter *padapter)
 			bPbcPressed = _TRUE;
 		}
 	}
-#else
-
-#endif
 	if( _TRUE == bPbcPressed) {
 		/*
 		 * Here we only set bPbcPressed to true
@@ -148,7 +144,6 @@ ODM_BOARD_TYPE_E boardType(uint8_t InterfaceSel)
 {
 	ODM_BOARD_TYPE_E        board	= ODM_BOARD_DEFAULT;
 
-#if defined(CONFIG_USB_HCI)
 	INTERFACE_SELECT_USB    usb 	= (INTERFACE_SELECT_USB)InterfaceSel;
 	switch (usb) {
 	case INTF_SEL1_USB_High_Power:
@@ -171,7 +166,6 @@ ODM_BOARD_TYPE_E boardType(uint8_t InterfaceSel)
 		break;
 	}
 
-#endif
 	/* DBG_871X("===> boardType(): (pHalData->InterfaceSel, pDM_Odm->BoardType) = (%d, %d)\n", InterfaceSel, board); */
 
 	return board;
@@ -226,7 +220,6 @@ static void Init_ODM_ComInfo_8812(PADAPTER Adapter)
 	ODM_CmnInfoInit(pDM_Odm,	ODM_CMNINFO_MP_TEST_CHIP,IS_NORMAL_CHIP(pHalData->VersionID));
 
 	/* 1 ======= BoardType: ODM_CMNINFO_BOARD_TYPE ======= */
-#if defined(CONFIG_USB_HCI)
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power)
 	{
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_PA, 1);
@@ -237,11 +230,6 @@ static void Init_ODM_ComInfo_8812(PADAPTER Adapter)
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_PA, pHalData->ExternalPA_2G);
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 0);
 	}
-#else
-	/* PCIE no external PA now??? */
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_PA, 0);
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 0);
-#endif
 
 	if (pHalData->ExternalLNA_2G != 0) {
 		BoardType |= ODM_BOARD_EXT_LNA;
@@ -379,9 +367,7 @@ void rtl8812_InitHalDm(PADAPTER	Adapter)
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 	uint8_t	i;
 
-#ifdef CONFIG_USB_HCI
 	dm_InitGPIOSetting(Adapter);
-#endif
 
 	pdmpriv->DM_Type = DM_Type_ByDriver;
 	pdmpriv->DMFlag = DYNAMIC_FUNC_DISABLE;

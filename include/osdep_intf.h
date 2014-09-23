@@ -49,7 +49,6 @@ The protection mechanism is through the pending queue.
 
 
 #ifdef PLATFORM_LINUX
-	#ifdef CONFIG_USB_HCI
 	// when in USB, IO is through interrupt in/out endpoints
 	struct usb_device 	*udev;
 	PURB	piorw_urb;
@@ -59,7 +58,6 @@ The protection mechanism is through the pending queue.
 	_timer	io_timer;
 	uint8_t bio_irp_timeout;
 	uint8_t bio_timer_cancel;
-	#endif
 #endif
 
 

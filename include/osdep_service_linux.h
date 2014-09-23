@@ -68,16 +68,12 @@
 	#include <linux/earlysuspend.h>
 #endif //CONFIG_HAS_EARLYSUSPEND
 
-#ifdef CONFIG_USB_HCI
 	#include <linux/usb.h>
 	#include <linux/usb/ch9.h>
-#endif
 
-#ifdef CONFIG_USB_HCI
 	typedef struct urb *  PURB;
 #ifdef CONFIG_USB_SUSPEND
 #define CONFIG_AUTOSUSPEND	1
-#endif
 #endif
 
 	typedef	spinlock_t	_lock;

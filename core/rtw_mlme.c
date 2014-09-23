@@ -3010,7 +3010,6 @@ void rtw_joinbss_reset(_adapter *padapter)
 
 	phtpriv->ampdu_enable = _FALSE;//reset to disabled
 
-#if defined( CONFIG_USB_HCI)
 	// TH=1 => means that invalidate usb rx aggregation
 	// TH=0 => means that validate usb rx aggregation, use init value.
 	if (phtpriv->ht_option)
@@ -3026,7 +3025,6 @@ void rtw_joinbss_reset(_adapter *padapter)
 		threshold = 1;
 		rtw_hal_set_hwreg(padapter, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
 	}
-#endif
 
 #endif
 

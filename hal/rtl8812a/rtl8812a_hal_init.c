@@ -198,9 +198,7 @@ static int _BlockWrite_8812(PADAPTER padapter, PVOID buffer, uint32_t buffSize)
 	uint8_t		*bufferPtr	= (uint8_t *)buffer;
 	uint32_t	i=0, offset=0;
 
-#ifdef CONFIG_USB_HCI
 	blockSize_p1 = MAX_REG_BOLCK_SIZE;
-#endif
 
 	/* 3 Phase #1 */
 	blockCount_p1 = buffSize / blockSize_p1;
@@ -213,11 +211,7 @@ static int _BlockWrite_8812(PADAPTER padapter, PVOID buffer, uint32_t buffSize)
 	}
 
 	for (i = 0; i < blockCount_p1; i++) {
-#ifdef CONFIG_USB_HCI
 		ret = rtw_writeN(padapter, (FW_START_ADDRESS + i * blockSize_p1), blockSize_p1, (bufferPtr + i * blockSize_p1));
-#else
-		ret = rtw_write32(padapter, (FW_START_ADDRESS + i * blockSize_p1), le32_to_cpu(*((u32*)(bufferPtr + i * blockSize_p1))));
-#endif
 
 		if(ret == _FAIL)
 			goto exit;
@@ -237,14 +231,12 @@ static int _BlockWrite_8812(PADAPTER padapter, PVOID buffer, uint32_t buffSize)
 						(buffSize-offset), blockSize_p2 ,blockCount_p2, remainSize_p2));
 		}
 
-#ifdef CONFIG_USB_HCI
 		for (i = 0; i < blockCount_p2; i++) {
 			ret = rtw_writeN(padapter, (FW_START_ADDRESS + offset + i*blockSize_p2), blockSize_p2, (bufferPtr + offset + i*blockSize_p2));
 
 			if(ret == _FAIL)
 				goto exit;
 		}
-#endif
 	}
 
 	/* 3 Phase #3 */

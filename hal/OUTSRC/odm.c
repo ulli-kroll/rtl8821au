@@ -3029,11 +3029,7 @@ odm_DynamicTxPowerInit(
 	#if (RTL8192C_SUPPORT==1)
 	#ifdef CONFIG_USB_HCI
 
-	#ifdef CONFIG_INTEL_PROXIM
-	if((pHalData->BoardType == BOARD_USB_High_PA)||(Adapter->proximity.proxim_support==_TRUE))
-	#else
 	if(pHalData->BoardType == BOARD_USB_High_PA)
-	#endif
 
 	{
 		//odm_SavePowerIndex(Adapter);

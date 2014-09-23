@@ -30,8 +30,5 @@ void rtw_set_hal_ops(_adapter *padapter);
 void rtl8812au_set_hal_ops(_adapter * padapter);
 #endif
 
-#ifdef CONFIG_INTEL_PROXIM
-extern _adapter  *rtw_usb_get_sw_pointer(void);
-#endif	//CONFIG_INTEL_PROXIM
 #endif //__USB_HAL_H__
 

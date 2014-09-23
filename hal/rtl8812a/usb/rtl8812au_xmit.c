@@ -222,14 +222,6 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 		}
 
 		SET_TX_DESC_USE_RATE_8812(ptxdesc, 1);
-
-#ifdef CONFIG_INTEL_PROXIM
-		if((padapter->proximity.proxim_on==_TRUE)&&(pattrib->intel_proxim==_TRUE)){
-			DBG_871X("\n %s pattrib->rate=%d\n",__FUNCTION__,pattrib->rate);
-			SET_TX_DESC_TX_RATE_8812(ptxdesc, pattrib->rate);
-		}
-		else
-#endif
 		{
 			SET_TX_DESC_TX_RATE_8812(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
 		}

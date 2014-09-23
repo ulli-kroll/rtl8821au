@@ -84,9 +84,6 @@
 	//#include "hal_com.h"
 	#include "HalPhyRf.h"
 	#if (RTL8192C_SUPPORT==1)
-	#ifdef CONFIG_INTEL_PROXIM
-	#include "../proxim/intel_proxim.h"
-	#endif
 	#include  "rtl8192c/HalDMOutSrc8192C_CE.h"
 	#include <rtl8192c_hal.h>
 	#endif

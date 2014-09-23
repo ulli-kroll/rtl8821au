@@ -714,10 +714,5 @@ uint8_t rtw_to_roaming(_adapter *adapter);
 
 void rtw_stassoc_hw_rpt(_adapter *adapter,struct sta_info *psta);
 
-#ifdef CONFIG_INTEL_PROXIM
-void rtw_proxim_enable(_adapter *padapter);
-void rtw_proxim_disable(_adapter *padapter);
-void rtw_proxim_send_packet(_adapter *padapter,uint8_t *pbuf,u16 len,uint8_t hw_rate);
-#endif //CONFIG_INTEL_PROXIM
 #endif //__RTL871X_MLME_H_
 

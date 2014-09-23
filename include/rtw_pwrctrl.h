@@ -233,10 +233,6 @@ struct pwrctrl_priv
 	android_early_suspend_t early_suspend;
 	uint8_t do_late_resume;
 	#endif
-
-	#ifdef CONFIG_INTEL_PROXIM
-	uint8_t	stored_power_mgnt;
-	#endif
 };
 
 #define rtw_get_ips_mode_req(pwrctrlpriv) \

@@ -174,13 +174,6 @@ bool rtw_pwr_unassociated_idle(struct _ADAPTER *adapter)
 	if (adapter->registrypriv.mp_mode == 1)
 		goto exit;
 #endif
-
-#ifdef CONFIG_INTEL_PROXIM
-	if(adapter->proximity.proxim_on==_TRUE){
-		return;
-	}
-#endif
-
 	if (pxmit_priv->free_xmitbuf_cnt != NR_XMITBUFF ||
 		pxmit_priv->free_xmit_extbuf_cnt != NR_XMIT_EXTBUFF) {
 		DBG_871X_LEVEL(_drv_always_, "There are some pkts to transmit\n");

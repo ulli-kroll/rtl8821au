@@ -253,8 +253,6 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 //Atomic integer operations
 #define ATOMIC_T atomic_t
 
-#define rtw_netdev_priv(netdev) ( ((struct rtw_netdev_priv_indicator *)netdev_priv(netdev))->priv )
-
 #define NDEV_FMT "%s"
 #define NDEV_ARG(ndev) ndev->name
 #define ADPT_FMT "%s"
@@ -265,9 +263,19 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 #define FUNC_ADPT_ARG(adapter) __func__, adapter->ndev->name
 
 struct rtw_netdev_priv_indicator {
-	void *priv;
+	struct _ADAPTER *priv;
 };
-struct net_device *rtw_alloc_etherdev_with_old_priv(void *old_priv);
+
+static inline struct _ADAPTER *rtw_netdev_priv(struct net_device *ndev)
+{
+	struct rtw_netdev_priv_indicator *pnpi;
+
+	pnpi = netdev_priv(ndev);
+
+	return pnpi->priv;
+}
+
+struct net_device *rtw_alloc_etherdev_with_old_priv(struct _ADAPTER *old_priv);
 extern struct net_device * rtw_alloc_etherdev(int sizeof_priv);
 
 #define STRUCT_PACKED __attribute__ ((packed))

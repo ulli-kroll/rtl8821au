@@ -737,6 +737,7 @@ static VOID _InitEDCA_8812AUsb(PADAPTER Adapter)
 
 static VOID _InitBeaconMaxError_8812A(PADAPTER Adapter, BOOLEAN	InfraMode)
 {
+	/* ULLI: looks here is some hacking done, wrong nams ?? */
 #ifdef RTL8192CU_ADHOC_WORKAROUND_SETTING
 	rtw_write8(Adapter, REG_BCN_MAX_ERR, 0xFF);
 #else

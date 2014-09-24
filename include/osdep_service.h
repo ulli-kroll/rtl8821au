@@ -40,8 +40,6 @@
 #define RTW_TIMER_HDL_NAME(name) rtw_##name##_timer_hdl
 #define RTW_DECLARE_TIMER_HDL(name) void RTW_TIMER_HDL_NAME(name)(RTW_TIMER_HDL_ARGS)
 
-//#include <rtw_byteorder.h>
-
 
 #define BIT0	0x00000001
 #define BIT1	0x00000002

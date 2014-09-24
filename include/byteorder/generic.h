@@ -98,7 +98,7 @@
  */
 
 
-#if defined(PLATFORM_LINUX) || defined(PLATFORM_WINDOWS) || defined(PLATFORM_MPIXEL)
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_MPIXEL)
 /*
  * inside the kernel, we can use nicknames;
  * outside of it, we must avoid POSIX namespace pollution...

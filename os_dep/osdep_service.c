@@ -190,7 +190,7 @@ int	_rtw_memcmp(void *dst, void *src, u32 sz)
 
 
 
-void _rtw_init_listhead(_list *list)
+void _rtw_init_listhead(struct list_head *list)
 {
 
 #ifdef PLATFORM_LINUX
@@ -208,7 +208,7 @@ For the following list_xxx operations,
 caller must guarantee the atomic context.
 Otherwise, there will be racing condition.
 */
-u32	rtw_is_list_empty(_list *phead)
+u32	rtw_is_list_empty(struct list_head *phead)
 {
 
 #ifdef PLATFORM_LINUX
@@ -224,7 +224,7 @@ u32	rtw_is_list_empty(_list *phead)
 
 }
 
-void rtw_list_insert_head(_list *plist, _list *phead)
+void rtw_list_insert_head(struct list_head *plist, struct list_head *phead)
 {
 
 #ifdef PLATFORM_LINUX
@@ -233,7 +233,7 @@ void rtw_list_insert_head(_list *plist, _list *phead)
 
 }
 
-void rtw_list_insert_tail(_list *plist, _list *phead)
+void rtw_list_insert_tail(struct list_head *plist, struct list_head *phead)
 {
 
 #ifdef PLATFORM_LINUX
@@ -336,7 +336,7 @@ u32	  _rtw_queue_empty(_queue	*pqueue)
 }
 
 
-u32 rtw_end_of_queue_search(_list *head, _list *plist)
+u32 rtw_end_of_queue_search(struct list_head *head, struct list_head *plist)
 {
 	if (head == plist)
 		return _TRUE;

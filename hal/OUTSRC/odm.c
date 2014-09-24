@@ -3361,7 +3361,7 @@ odm_RSSIMonitorCheckCE(
 		}
 		#else
 		_irqL irqL;
-		_list	*plist, *phead;
+		struct list_head	*plist, *phead;
 		struct sta_info *psta;
 		struct sta_priv *pstapriv = &Adapter->stapriv;
 		u8 bcast_addr[ETH_ALEN]= {0xff,0xff,0xff,0xff,0xff,0xff};

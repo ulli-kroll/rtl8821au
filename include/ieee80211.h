@@ -328,7 +328,7 @@ struct ieee_ibss_seq {
 	u16 seq_num;
 	u16 frag_num;
 	unsigned long packet_time;
-	_list	list;
+	struct list_head	list;
 };
 
 #if defined(PLATFORM_LINUX) || defined(CONFIG_RTL8711FW)

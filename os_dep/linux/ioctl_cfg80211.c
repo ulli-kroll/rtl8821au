@@ -1515,7 +1515,7 @@ void rtw_cfg80211_indicate_scan_done(struct rtw_wdev_priv *pwdev_priv, bool abor
 void rtw_cfg80211_surveydone_event_callback(_adapter *padapter)
 {
 	_irqL	irqL;
-	_list					*plist, *phead;
+	struct list_head					*plist, *phead;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	_queue				*queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
@@ -2252,7 +2252,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 {
 	int ret=0;
 	_irqL irqL;
-	_list *phead;
+	struct list_head *phead;
 	struct wlan_network *pnetwork = NULL;
 	NDIS_802_11_AUTHENTICATION_MODE authmode;
 	NDIS_802_11_SSID ndis_ssid;
@@ -3412,7 +3412,7 @@ static int	cfg80211_rtw_del_station(struct wiphy *wiphy, struct net_device *ndev
 {
 	int ret=0;
 	_irqL irqL;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	uint8_t updated;
 	struct sta_info *psta = NULL;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);

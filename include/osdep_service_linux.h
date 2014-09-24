@@ -88,7 +88,6 @@
 	typedef unsigned char	_buffer;
 
 	typedef struct	__queue	_queue;
-	typedef struct	list_head	_list;
 	typedef	int	_OS_STATUS;
 	//typedef u32	_irqL;
 	typedef unsigned long _irqL;
@@ -106,12 +105,12 @@
 	typedef struct work_struct _workitem;
 
 
-__inline static _list *get_next(_list	*list)
+__inline static struct list_head *get_next(struct list_head	*list)
 {
 	return list->next;
 }
 
-__inline static _list	*get_list_head(_queue	*queue)
+__inline static struct list_head	*get_list_head(_queue	*queue)
 {
 	return (&(queue->queue));
 }
@@ -151,7 +150,7 @@ __inline static void _exit_critical_bh(_lock *plock, _irqL *pirqL)
 	spin_unlock_bh(plock);
 }
 
-__inline static void rtw_list_delete(_list *plist)
+__inline static void rtw_list_delete(struct list_head *plist)
 {
 	list_del_init(plist);
 }

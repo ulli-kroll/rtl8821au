@@ -166,7 +166,7 @@ union recv_frame *_rtw_alloc_recvframe (_queue *pfree_recv_queue)
 {
 
 	union recv_frame  *precvframe;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	struct _ADAPTER *padapter;
 	struct recv_priv *precvpriv;
 
@@ -299,7 +299,7 @@ using spinlock to protect
 void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue)
 {
 	union	recv_frame 	*precvframe;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 
 	_rtw_spinlock(&pframequeue->lock);
 
@@ -370,7 +370,7 @@ struct recv_buf *rtw_dequeue_recvbuf (_queue *queue)
 {
 	_irqL irqL;
 	struct recv_buf *precvbuf;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 
 	_enter_critical_ex(&queue->lock, &irqL);
 
@@ -1436,7 +1436,7 @@ sint validate_recv_ctrl_frame(struct _ADAPTER *padapter, union recv_frame *precv
 		if ((psta->state&WIFI_SLEEP_STATE)
 		   && (pstapriv->sta_dz_bitmap&BIT(psta->aid))) {
 			_irqL irqL;
-			_list	*xmitframe_plist, *xmitframe_phead;
+			struct list_head	*xmitframe_plist, *xmitframe_phead;
 			struct xmit_frame *pxmitframe=NULL;
 			struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 
@@ -2093,7 +2093,7 @@ exit:
 union recv_frame *recvframe_defrag(struct _ADAPTER *adapter,_queue *defrag_q);
 union recv_frame *recvframe_defrag(struct _ADAPTER *adapter,_queue *defrag_q)
 {
-	_list	 *plist, *phead;
+	struct list_head	 *plist, *phead;
 	uint8_t	*data,wlanhdr_offset;
 	uint8_t	curfragnum;
 	struct recv_frame_hdr *pfhdr,*pnfhdr;
@@ -2189,7 +2189,7 @@ union recv_frame* recvframe_chk_defrag(PADAPTER padapter, union recv_frame *prec
 	struct recv_frame_hdr *pfhdr;
 	struct sta_info *psta;
 	struct sta_priv *pstapriv;
-	_list *phead;
+	struct list_head *phead;
 	union recv_frame *prtnframe = NULL;
 	_queue *pfree_recv_queue, *pdefrag_q;
 
@@ -2437,7 +2437,7 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, union rec
 {
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	union recv_frame *pnextrframe;
 	struct rx_pkt_attrib *pnextattrib;
 
@@ -2504,7 +2504,7 @@ int recv_indicatepkts_in_order(struct _ADAPTER *padapter, struct recv_reorder_ct
 {
 	/* _irqL irql; */
 	/* uint8_t bcancelled; */
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	union recv_frame *prframe;
 	struct rx_pkt_attrib *pattrib;
 	/* uint8_t index = 0; */

@@ -194,7 +194,7 @@ static void rtw_mfree_stainfo(struct sta_info *psta)
 static void rtw_mfree_all_stainfo(struct sta_priv *pstapriv )
 {
 	_irqL	 irqL;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	struct sta_info *psta = NULL;
 
 	_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
@@ -237,7 +237,7 @@ static void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv)
 uint32_t _rtw_free_sta_priv(struct sta_priv *pstapriv)
 {
 	_irqL 	irqL;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	struct sta_info *psta = NULL;
 	struct recv_reorder_ctrl *preorder_ctrl;
 	int 	index;
@@ -280,7 +280,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 	_irqL irqL, irqL2;
 	uint tmp_aid;
 	int32_t	index;
-	_list	*phash_list;
+	struct list_head	*phash_list;
 	struct sta_info	*psta;
 	_queue *pfree_sta_queue;
 	struct recv_reorder_ctrl *preorder_ctrl;
@@ -529,7 +529,7 @@ uint32_t rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 
 	for(i = 0; i < 16 ; i++) {
 		_irqL irqL;
-		_list	*phead, *plist;
+		struct list_head	*phead, *plist;
 		union recv_frame *prframe;
 		_queue *ppending_recvframe_queue;
 		_queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
@@ -633,7 +633,7 @@ exit:
 void rtw_free_all_stainfo(struct _ADAPTER *padapter)
 {
 	_irqL	 irqL;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	int32_t	index;
 	struct sta_info *psta = NULL;
 	struct sta_priv *pstapriv = &padapter->stapriv;
@@ -667,7 +667,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 {
 
 	_irqL	 irqL;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 
 	struct sta_info *psta = NULL;
 	uint32_t index;
@@ -761,7 +761,7 @@ uint8_t rtw_access_ctrl(struct _ADAPTER *padapter, uint8_t *mac_addr)
 	uint8_t res = _TRUE;
 #ifdef  CONFIG_AP_MODE
 	_irqL irqL;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	struct rtw_wlan_acl_node *paclnode;
 	uint8_t match = _FALSE;
 	struct sta_priv *pstapriv = &padapter->stapriv;

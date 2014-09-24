@@ -1545,7 +1545,7 @@ sint On_TDLS_Peer_Traffic_Rsp(_adapter *adapter, union recv_frame *precv_frame)
 		if(wmmps_ac && state)
 		{
 			_irqL irqL;
-			_list	*xmitframe_plist, *xmitframe_phead;
+			struct list_head	*xmitframe_plist, *xmitframe_phead;
 			struct xmit_frame *pxmitframe=NULL;
 
 			_enter_critical_bh(&ptdls_sta->sleep_q.lock, &irqL);

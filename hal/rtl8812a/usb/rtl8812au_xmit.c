@@ -434,7 +434,7 @@ int32_t rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmit
 	struct tx_servq *ptxservq = NULL;
 
 	_irqL irqL;
-	_list *xmitframe_plist = NULL, *xmitframe_phead = NULL;
+	struct list_head *xmitframe_plist = NULL, *xmitframe_phead = NULL;
 
 	uint32_t	pbuf;	// next pkt address
 	uint32_t	pbuf_tail;	// last pkt tail

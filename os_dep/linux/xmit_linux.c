@@ -282,7 +282,7 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	_irqL	irqL;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	struct sk_buff *newskb;
 	struct sta_info *psta = NULL;
 	uint8_t chk_alive_num = 0;

@@ -191,7 +191,7 @@ struct	wlan_network *_rtw_alloc_network(struct	mlme_priv *pmlmepriv )	/* (_queue
 	_irqL	irqL;
 	struct	wlan_network *pnetwork;
 	_queue *free_queue = &pmlmepriv->free_bss_pool;
-	_list* plist = NULL;
+	struct list_head* plist = NULL;
 
 	_enter_critical_bh(&free_queue->lock, &irqL);
 
@@ -296,7 +296,7 @@ struct wlan_network *_rtw_find_network(_queue *scanned_queue, uint8_t *addr)
 {
 
 	/* _irqL irqL; */
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	struct	wlan_network *pnetwork = NULL;
 	uint8_t zero_addr[ETH_ALEN] = {0,0,0,0,0,0};
 
@@ -333,7 +333,7 @@ exit:
 void _rtw_free_network_queue(struct _ADAPTER *padapter, uint8_t isfreeall)
 {
 	_irqL irqL;
-	_list *phead, *plist;
+	struct list_head *phead, *plist;
 	struct wlan_network *pnetwork;
 	struct mlme_priv* pmlmepriv = &padapter->mlmepriv;
 	_queue *scanned_queue = &pmlmepriv->scanned_queue;
@@ -543,7 +543,7 @@ int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst)
 
 struct wlan_network *rtw_get_oldest_wlan_network(_queue *scanned_queue)
 {
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 
 	struct	wlan_network	*pwlan = NULL;
 	struct	wlan_network	*oldest = NULL;
@@ -694,7 +694,7 @@ Caller must hold pmlmepriv->lock first.
 void rtw_update_scanned_network(struct _ADAPTER *adapter, WLAN_BSSID_EX *target)
 {
 	_irqL irqL;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	ULONG	bssid_ex_sz;
 	struct mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
@@ -1113,7 +1113,7 @@ static void free_scanqueue(struct	mlme_priv *pmlmepriv)
 	_irqL irqL, irqL0;
 	_queue *free_queue = &pmlmepriv->free_bss_pool;
 	_queue *scan_queue = &pmlmepriv->scanned_queue;
-	_list	*plist, *phead, *ptemp;
+	struct list_head	*plist, *phead, *ptemp;
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_notice_, ("+free_scanqueue\n"));
 	_enter_critical_bh(&scan_queue->lock, &irqL0);
@@ -2462,7 +2462,7 @@ int rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv )
 {
 	_irqL	irqL;
 	int ret;
-	_list	*phead;
+	struct list_head	*phead;
 	struct _ADAPTER *adapter;
 	_queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;

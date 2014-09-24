@@ -7747,7 +7747,7 @@ exit:
 void issue_action_spct_ch_switch(_adapter *padapter, uint8_t *ra, uint8_t new_ch, uint8_t ch_offset)
 {
 	_irqL	irqL;
-	_list		*plist, *phead;
+	struct list_head		*plist, *phead;
 	struct xmit_frame			*pmgntframe;
 	struct pkt_attrib			*pattrib;
 	unsigned char				*pframe;
@@ -7957,7 +7957,7 @@ void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char act
 static void issue_action_BSSCoexistPacket(_adapter *padapter)
 {
 	_irqL	irqL;
-	_list		*plist, *phead;
+	struct list_head		*plist, *phead;
 	unsigned char category, action;
 	struct xmit_frame			*pmgntframe;
 	struct pkt_attrib			*pattrib;
@@ -11135,7 +11135,7 @@ uint8_t tx_beacon_hdl(_adapter *padapter, unsigned char *pbuf)
 	{
 		_irqL irqL;
 		struct sta_info *psta_bmc;
-		_list	*xmitframe_plist, *xmitframe_phead;
+		struct list_head	*xmitframe_plist, *xmitframe_phead;
 		struct xmit_frame *pxmitframe=NULL;
 		struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 		struct sta_priv  *pstapriv = &padapter->stapriv;

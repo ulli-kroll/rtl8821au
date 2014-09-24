@@ -448,7 +448,7 @@ void rtw_set_ps_mode(struct _ADAPTER *padapter, uint8_t ps_mode, uint8_t smart_p
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	_irqL irqL;
 	int i, j;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	struct sta_info *ptdls_sta;
 #endif //CONFIG_TDLS
 

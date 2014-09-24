@@ -141,7 +141,7 @@ struct _io_ops
 };
 
 struct io_req {
-	_list	list;
+	struct list_head	list;
 	u32	addr;
 	volatile u32	val;
 	u32	command;
@@ -304,9 +304,9 @@ Below is the data structure used by _io_handler
 
 struct io_queue {
 	_lock	lock;
-	_list  	free_ioreqs;
-	_list		pending;		//The io_req list that will be served in the single protocol read/write.
-	_list		processing;
+	struct list_head  	free_ioreqs;
+	struct list_head		pending;		//The io_req list that will be served in the single protocol read/write.
+	struct list_head		processing;
 	uint8_t	*free_ioreqs_buf; // 4-byte aligned
 	uint8_t	*pallocated_free_ioreqs_buf;
 	struct	intf_hdl	intf;

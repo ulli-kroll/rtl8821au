@@ -42,7 +42,7 @@
 		uint8_t	*rsp;
 		u32	rspsz;
 		//struct semaphore 	cmd_sem;
-		_list	list;
+		struct list_head	list;
 	};
 
 	struct cmd_priv {
@@ -68,7 +68,7 @@
 		uint8_t	res;
 		uint8_t	*parmbuf;
 		u32	evtsz;
-		_list	list;
+		struct list_head	list;
 	};
 #endif
 

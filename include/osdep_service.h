@@ -126,11 +126,11 @@ extern void	rtw_mfree2d(void *pbuf, int h, int w, int size);
 
 extern int	_rtw_memcmp(void *dst, void *src, u32 sz);
 
-extern void	_rtw_init_listhead(_list *list);
-extern u32	rtw_is_list_empty(_list *phead);
-extern void	rtw_list_insert_head(_list *plist, _list *phead);
-extern void	rtw_list_insert_tail(_list *plist, _list *phead);
-extern void	rtw_list_delete(_list *plist);
+extern void	_rtw_init_listhead(struct list_head *list);
+extern u32	rtw_is_list_empty(struct list_head *phead);
+extern void	rtw_list_insert_head(struct list_head *plist, struct list_head *phead);
+extern void	rtw_list_insert_tail(struct list_head *plist, struct list_head *phead);
+extern void	rtw_list_delete(struct list_head *plist);
 
 extern void	_rtw_spinlock_init(_lock *plock);
 extern void	_rtw_spinlock_free(_lock *plock);
@@ -141,7 +141,7 @@ extern void	_rtw_spinunlock_ex(_lock	*plock);
 
 extern void	_rtw_init_queue(_queue	*pqueue);
 extern u32	_rtw_queue_empty(_queue	*pqueue);
-extern u32	rtw_end_of_queue_search(_list *queue, _list *pelement);
+extern u32	rtw_end_of_queue_search(struct list_head *queue, struct list_head *pelement);
 
 extern u32	rtw_get_current_time(void);
 extern u32	rtw_systime_to_ms(u32 systime);

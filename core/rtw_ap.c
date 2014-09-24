@@ -354,7 +354,7 @@ uint8_t chk_sta_is_alive(struct sta_info *psta)
 void	expire_timeout_chk(_adapter *padapter)
 {
 	_irqL irqL;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	uint8_t updated;
 	struct sta_info *psta = NULL;
 	struct sta_priv *pstapriv = &padapter->stapriv;
@@ -1671,7 +1671,7 @@ void rtw_set_macaddr_acl(_adapter *padapter, int mode)
 int rtw_acl_add_sta(_adapter *padapter, uint8_t *addr)
 {
 	_irqL irqL;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	uint8_t added = _FALSE;
 	int i, ret=0;
 	struct rtw_wlan_acl_node *paclnode;
@@ -1740,7 +1740,7 @@ int rtw_acl_add_sta(_adapter *padapter, uint8_t *addr)
 int rtw_acl_remove_sta(_adapter *padapter, uint8_t *addr)
 {
 	_irqL irqL;
-	_list	*plist, *phead;
+	struct list_head	*plist, *phead;
 	int i, ret=0;
 	struct rtw_wlan_acl_node *paclnode;
 	struct sta_priv *pstapriv = &padapter->stapriv;
@@ -2218,7 +2218,7 @@ void associated_clients_update(_adapter *padapter, uint8_t updated)
 	//update associcated stations cap.
 	if (updated == _TRUE) {
 		_irqL irqL;
-		_list	*phead, *plist;
+		struct list_head	*phead, *plist;
 		struct sta_info *psta=NULL;
 		struct sta_priv *pstapriv = &padapter->stapriv;
 
@@ -2568,7 +2568,7 @@ uint8_t ap_free_sta(_adapter *padapter, struct sta_info *psta, bool active, uint
 int rtw_ap_inform_ch_switch(_adapter *padapter, uint8_t new_ch, uint8_t ch_offset)
 {
 	_irqL irqL;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	int ret=0;
 	struct sta_info *psta = NULL;
 	struct sta_priv *pstapriv = &padapter->stapriv;
@@ -2604,7 +2604,7 @@ int rtw_ap_inform_ch_switch(_adapter *padapter, uint8_t new_ch, uint8_t ch_offse
 int rtw_sta_flush(_adapter *padapter)
 {
 	_irqL irqL;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	int ret=0;
 	struct sta_info *psta = NULL;
 	struct sta_priv *pstapriv = &padapter->stapriv;
@@ -2718,7 +2718,7 @@ void rtw_ap_restore_network(_adapter *padapter)
 	struct sta_info *psta;
 	struct security_priv* psecuritypriv= &(padapter->securitypriv);
 	_irqL irqL;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	uint8_t chk_alive_num = 0;
 	char chk_alive_list[NUM_STA];
 	int i;
@@ -2832,7 +2832,7 @@ void start_ap_mode(_adapter *padapter)
 void stop_ap_mode(_adapter *padapter)
 {
 	_irqL irqL;
-	_list	*phead, *plist;
+	struct list_head	*phead, *plist;
 	struct rtw_wlan_acl_node *paclnode;
 	struct sta_info *psta = NULL;
 	struct sta_priv *pstapriv = &padapter->stapriv;

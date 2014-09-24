@@ -834,11 +834,6 @@ ODM_DMWatchdog(
 	odm_RSSIMonitorCheck(pDM_Odm);
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-//#ifdef CONFIG_PLATFORM_SPRD
-	//For CE Platform(SPRD or Tablet)
-	//8723A or 8189ES platform
-	//NeilChen--2012--08--24--
-	//Fix Leave LPS issue
 	if( 	(pDM_Odm->Adapter->pwrctrlpriv.pwr_mode != PS_MODE_ACTIVE) &&// in LPS mode
 		(
 			(pDM_Odm->SupportICType & (ODM_RTL8188E) &&((pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)) )
@@ -850,7 +845,6 @@ ODM_DMWatchdog(
 			odm_DIGbyRSSI_LPS(pDM_Odm);
 	}
 	else
-//#endif
 #endif
 	{
 		odm_DIG(pDM_Odm);

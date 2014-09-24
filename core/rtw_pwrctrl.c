@@ -706,14 +706,6 @@ _func_enter_;
 			} else
 #endif
 			{
-#if defined(CONFIG_PLATFORM_SPRD) && defined(CONFIG_RTL8188E)
-				#ifdef CONFIG_IPS
-				if(_FALSE == ips_leave(Adapter))
-				{
-					DBG_871X("======> ips_leave fail.............\n");
-				}
-				#endif
-#endif //CONFIG_PLATFORM_SPRD && CONFIG_RTL8188E
 			}
 		}
 	}

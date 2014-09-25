@@ -295,19 +295,6 @@ struct wifidirect_info{
 	uint8_t						channel_list_attr[100];		//	This field will contain the body of P2P Channel List attribute of group negotitation response frame.
 														//	We will use the channel_cnt and channel_list fields when constructing the group negotitation confirm frame.
 	uint8_t						driver_interface;			//	Indicate DRIVER_WEXT or DRIVER_CFG80211
-
-#ifdef CONFIG_P2P_PS
-	enum P2P_PS_MODE		p2p_ps_mode; // indicate p2p ps mode
-	enum P2P_PS_STATE		p2p_ps_state; // indicate p2p ps state
-	uint8_t						noa_index; // Identifies and instance of Notice of Absence timing.
-	uint8_t						ctwindow; // Client traffic window. A period of time in TU after TBTT.
-	uint8_t						opp_ps; // opportunistic power save.
-	uint8_t						noa_num; // number of NoA descriptor in P2P IE.
-	uint8_t						noa_count[P2P_MAX_NOA_NUM]; // Count for owner, Type of client.
-	u32						noa_duration[P2P_MAX_NOA_NUM]; // Max duration for owner, preferred or min acceptable duration for client.
-	u32						noa_interval[P2P_MAX_NOA_NUM]; // Length of interval for owner, preferred or max acceptable interval of client.
-	u32						noa_start_time[P2P_MAX_NOA_NUM]; // schedule expressed in terms of the lower 4 bytes of the TSF timer.
-#endif // CONFIG_P2P_PS
 };
 
 struct tdls_ss_record{	//signal strength record
@@ -465,18 +452,6 @@ struct mlme_priv {
 	u32 p2p_probe_resp_ie_len;
 	u32 p2p_go_probe_resp_ie_len; //for GO
 	u32 p2p_assoc_req_ie_len;
-/*
-#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211)
-	//uint8_t *wps_p2p_beacon_ie;
-	uint8_t *p2p_beacon_ie;
-	uint8_t *wps_p2p_probe_resp_ie;
-	uint8_t *wps_p2p_assoc_resp_ie;
-	//u32 wps_p2p_beacon_ie_len;
-	u32 p2p_beacon_ie_len;
-	u32 wps_p2p_probe_resp_ie_len;
-	u32 wps_p2p_assoc_resp_ie_len;
-#endif
-*/
 
 	_lock	bcn_update_lock;
 	uint8_t		update_bcn;

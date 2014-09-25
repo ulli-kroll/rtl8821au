@@ -232,23 +232,6 @@ struct sta_info {
 	uint8_t has_legacy_ac;
 	unsigned int sleepq_ac_len;
 
-#ifdef CONFIG_P2P
-	//p2p priv data
-	uint8_t is_p2p_device;
-	uint8_t p2p_status_code;
-
-	//p2p client info
-	uint8_t dev_addr[ETH_ALEN];
-	//uint8_t iface_addr[ETH_ALEN];//= hwaddr[ETH_ALEN]
-	uint8_t dev_cap;
-	u16 config_methods;
-	uint8_t primary_dev_type[8];
-	uint8_t num_of_secdev_type;
-	uint8_t secdev_types_list[32];// 32/8 == 4;
-	u16 dev_name_len;
-	uint8_t dev_name[32];
-#endif //CONFIG_P2P
-
 #ifdef CONFIG_TX_MCAST2UNI
 	uint8_t under_exist_checking;
 #endif	// CONFIG_TX_MCAST2UNI

@@ -659,9 +659,6 @@ uint8_t rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid
 	struct sitesurvey_parm	*psurveyPara;
 	struct cmd_priv 	*pcmdpriv = &padapter->cmdpriv;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-#ifdef CONFIG_P2P
-	struct wifidirect_info *pwdinfo= &(padapter->wdinfo);
-#endif //CONFIG_P2P
 
 _func_enter_;
 
@@ -670,12 +667,6 @@ _func_enter_;
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_SCAN, 1);
 	}
 #endif
-
-#ifdef CONFIG_P2P_PS
-	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
-		p2p_ps_wk_cmd(padapter, P2P_PS_SCAN, 1);
-	}
-#endif //CONFIG_P2P_PS
 
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if (ph2c == NULL)
@@ -2317,52 +2308,6 @@ void power_saving_wk_hdl(_adapter *padapter, uint8_t *pbuf, int sz)
 	 rtw_ps_processor(padapter);
 }
 
-#ifdef CONFIG_P2P
-uint8_t p2p_protocol_wk_cmd(_adapter*padapter, int intCmdType )
-{
-	struct cmd_obj	*ph2c;
-	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
-	struct wifidirect_info	*pwdinfo= &(padapter->wdinfo);
-	struct cmd_priv	*pcmdpriv = &padapter->cmdpriv;
-	uint8_t	res = _SUCCESS;
-
-_func_enter_;
-
-	if(rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-	{
-		return res;
-	}
-
-	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-	if(ph2c==NULL){
-		res= _FAIL;
-		goto exit;
-	}
-
-	pdrvextra_cmd_parm = (struct drvextra_cmd_parm*)rtw_zmalloc(sizeof(struct drvextra_cmd_parm));
-	if(pdrvextra_cmd_parm==NULL){
-		rtw_mfree(ph2c);
-		res= _FAIL;
-		goto exit;
-	}
-
-	pdrvextra_cmd_parm->ec_id = P2P_PROTO_WK_CID;
-	pdrvextra_cmd_parm->type_size = intCmdType;	//	As the command tppe.
-	pdrvextra_cmd_parm->pbuf = NULL;		//	Must be NULL here
-
-	init_h2fwcmd_w_parm_no_rsp(ph2c, pdrvextra_cmd_parm, GEN_CMD_CODE(_Set_Drv_Extra));
-
-	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-
-exit:
-
-_func_exit_;
-
-	return res;
-
-}
-#endif //CONFIG_P2P
-
 uint8_t rtw_ps_cmd(_adapter*padapter)
 {
 	struct cmd_obj		*ppscmd;
@@ -2618,16 +2563,6 @@ uint8_t rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 			antenna_select_wk_hdl(padapter, pdrvextra_cmd->type_size);
 			break;
 #endif
-#ifdef CONFIG_P2P_PS
-		case P2P_PS_WK_CID:
-			p2p_ps_wk_hdl(padapter, pdrvextra_cmd->type_size);
-			break;
-#endif // CONFIG_P2P_PS
-		case P2P_PROTO_WK_CID:
-			//	Commented by Albert 2011/07/01
-			//	I used the type_size as the type command
-			p2p_protocol_wk_hdl( padapter, pdrvextra_cmd->type_size );
-			break;
 #ifdef CONFIG_AP_MODE
 		case CHECK_HIQ_WK_CID:
 			rtw_chk_hi_queue_hdl(padapter);

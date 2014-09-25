@@ -1060,7 +1060,6 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 
 	/*  set mac addr */
 	rtw_macaddr_cfg(padapter->eeprompriv.mac_addr);
-	rtw_init_wifidirect_addrs(padapter, padapter->eeprompriv.mac_addr, padapter->eeprompriv.mac_addr);
 
 	DBG_871X("bDriverStopped:%d, bSurpriseRemoved:%d, bup:%d, hw_init_completed:%d\n"
 		, padapter->bDriverStopped

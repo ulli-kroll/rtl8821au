@@ -811,10 +811,6 @@ _func_enter_;
 
 	//_enter_critical_bh(&queue->lock, &irqL);
 
-	#if defined(CONFIG_P2P) && defined(CONFIG_P2P_REMOVE_GROUP_INFO)
-	rtw_WLAN_BSSID_EX_remove_p2p_attr(pnetwork, P2P_ATTR_GROUP_INFO);
-	#endif
-
 	update_current_network(adapter, pnetwork);
 
 	rtw_update_scanned_network(adapter, pnetwork);
@@ -1069,12 +1065,6 @@ _func_enter_;
 
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
 
-#ifdef CONFIG_P2P_PS
-	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
-		p2p_ps_wk_cmd(adapter, P2P_PS_SCAN_DONE, 0);
-	}
-#endif // CONFIG_P2P_PS
-
 	rtw_os_xmit_schedule(adapter);
 
 #ifdef CONFIG_DRVEXT_MODULE_WSC
@@ -1291,10 +1281,6 @@ void rtw_indicate_disconnect( struct _ADAPTER *padapter )
 		rtw_clear_scan_deny(padapter);
 
 	}
-
-#ifdef CONFIG_P2P_PS
-	p2p_ps_wk_cmd(padapter, P2P_PS_DISABLE, 1);
-#endif // CONFIG_P2P_PS
 
 #ifdef CONFIG_LPS
 	rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_DISCONNECT, 1);
@@ -2248,10 +2234,6 @@ void rtw_dynamic_check_timer_handlder(struct _ADAPTER *adapter)
 
 	if (pregistrypriv->wifi_spec==1)
 	{
-#ifdef CONFIG_P2P
-		struct wifidirect_info *pwdinfo = &adapter->wdinfo;
-		if (rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-#endif
 		{
 			//auto site survey
 			rtw_auto_scan_handler(adapter);

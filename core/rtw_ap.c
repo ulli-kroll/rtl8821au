@@ -1061,9 +1061,6 @@ static void start_bss_network(_adapter *padapter, uint8_t *pbuf)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX *pnetwork_mlmeext = &(pmlmeinfo->network);
 	struct HT_info_element *pht_info=NULL;
-#ifdef CONFIG_P2P
-	struct wifidirect_info	*pwdinfo = &(padapter->wdinfo);
-#endif //CONFIG_P2P
 	uint8_t	cbw40_enable=0;
 	uint8_t	change_band = _FALSE;
 
@@ -1231,11 +1228,6 @@ static void start_bss_network(_adapter *padapter, uint8_t *pbuf)
 
 	//let pnetwork_mlmeext == pnetwork_mlme.
 	memcpy(pnetwork_mlmeext, pnetwork, pnetwork->Length);
-
-#ifdef CONFIG_P2P
-	memcpy(pwdinfo->p2p_group_ssid, pnetwork->Ssid.Ssid, pnetwork->Ssid.SsidLength);
-	pwdinfo->p2p_group_ssid_len = pnetwork->Ssid.SsidLength;
-#endif //CONFIG_P2P
 
 	if (_TRUE == pmlmeext->bstart_bss) {
 		update_beacon(padapter, _TIM_IE_, NULL, _FALSE);

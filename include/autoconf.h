@@ -122,14 +122,6 @@
 
 #endif
 
-#define CONFIG_P2P	1
-#ifdef CONFIG_P2P
-	//#define CONFIG_DBG_P2P
-
-	#define CONFIG_P2P_PS
-	//#define CONFIG_P2P_IPS
-#endif
-
 //	Added by Kurt 20110511
 //#define CONFIG_TDLS	1
 #ifdef CONFIG_TDLS

@@ -1125,9 +1125,6 @@ uint8_t rtw_init_default_value(_adapter *padapter)
 	padapter->bWritePortCancel = _FALSE;
 	padapter->bLinkInfoDump = 0;
 	padapter->bNotifyChannelChange = 0;
-#ifdef CONFIG_P2P
-	padapter->bShowGetP2PState = 1;
-#endif
 
 	return ret;
 }
@@ -1200,15 +1197,6 @@ uint8_t rtw_init_drv_sw(_adapter *padapter)
 		ret8 = _FAIL;
 		goto exit;
 	}
-
-#ifdef CONFIG_P2P
-	rtw_init_wifidirect_timers(padapter);
-	init_wifidirect_info(padapter, P2P_ROLE_DISABLE);
-	reset_global_wifidirect_info(padapter);
-#ifdef CONFIG_IOCTL_CFG80211
-	rtw_init_cfg80211_wifidirect_info(padapter);
-#endif
-#endif
 
 	if (init_mlme_ext_priv(padapter) == _FAIL) {
 		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("\n Can't init mlme_ext_priv\n"));
@@ -1306,12 +1294,6 @@ void rtw_cancel_all_timer(_adapter *padapter)
 
 	_cancel_timer_ex(&padapter->pwrctrlpriv.pwr_state_check_timer);
 
-#ifdef CONFIG_IOCTL_CFG80211
-#ifdef CONFIG_P2P
-	_cancel_timer_ex(&padapter->cfg80211_wdinfo.remain_on_ch_timer);
-#endif
-#endif
-
 #ifdef CONFIG_SET_SCAN_DENY_TIMER
 	_cancel_timer_ex(&padapter->mlmepriv.set_scan_deny_timer);
 	rtw_clear_scan_deny(padapter);
@@ -1337,18 +1319,6 @@ uint8_t rtw_free_drv_sw(_adapter *padapter)
 	 * 1. rtw_p2p_enable may have IO operation
 	 * 2. rtw_p2p_enable is bundled with wext interface
 	 */
-#ifdef CONFIG_P2P
-	{
-		struct wifidirect_info *pwdinfo = &padapter->wdinfo;
-		if (!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE)) {
-			_cancel_timer_ex(&pwdinfo->find_phase_timer);
-			_cancel_timer_ex(&pwdinfo->restore_p2p_state_timer);
-			_cancel_timer_ex(&pwdinfo->pre_tx_scan_timer);
-			rtw_p2p_set_state(pwdinfo, P2P_STATE_NONE);
-		}
-	}
-#endif
-
 
 #ifdef CONFIG_BR_EXT
 	_rtw_spinlock_free(&padapter->br_ext_lock);
@@ -1756,16 +1726,6 @@ static int netdev_close(struct net_device *ndev)
 		/* void nat25_db_cleanup(_adapter *priv); */
 		nat25_db_cleanup(padapter);
 	}
-#endif
-
-#ifdef CONFIG_P2P
-#ifdef CONFIG_IOCTL_CFG80211
-	if (padapter->wdinfo.driver_interface == DRIVER_CFG80211) {
-		if (wdev_to_priv(padapter->rtw_wdev)->p2p_enabled == _TRUE)
-			wdev_to_priv(padapter->rtw_wdev)->p2p_enabled = _FALSE;
-	}
-#endif
-	rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
 #endif
 
 #ifdef CONFIG_IOCTL_CFG80211

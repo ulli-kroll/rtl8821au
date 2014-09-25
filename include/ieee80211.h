@@ -1470,15 +1470,6 @@ uint8_t *rtw_get_wps_attr_content(uint8_t *wps_ie, uint wps_ielen, u16 target_at
 void dump_ies(uint8_t *buf, u32 buf_len);
 void dump_wps_ie(uint8_t *ie, u32 ie_len);
 
-#ifdef CONFIG_P2P
-void dump_p2p_ie(uint8_t *ie, u32 ie_len);
-uint8_t *rtw_get_p2p_ie(uint8_t *in_ie, int in_len, uint8_t *p2p_ie, uint *p2p_ielen);
-uint8_t *rtw_get_p2p_attr(uint8_t *p2p_ie, uint p2p_ielen, uint8_t target_attr_id ,uint8_t *buf_attr, u32 *len_attr);
-uint8_t *rtw_get_p2p_attr_content(uint8_t *p2p_ie, uint p2p_ielen, uint8_t target_attr_id ,uint8_t *buf_content, uint *len_content);
-u32 rtw_set_p2p_attr_content(uint8_t *pbuf, uint8_t attr_id, u16 attr_len, uint8_t *pdata_attr);
-void rtw_WLAN_BSSID_EX_remove_p2p_attr(WLAN_BSSID_EX *bss_ex, uint8_t attr_id);
-#endif
-
 uint	rtw_get_rateset_len(uint8_t	*rateset);
 
 struct registry_priv;

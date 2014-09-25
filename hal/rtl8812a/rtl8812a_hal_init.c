@@ -3723,12 +3723,6 @@ void SetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval)
 		rtl8812_set_FwJoinBssReport_cmd(padapter, *pval);
 		break;
 
-#ifdef CONFIG_P2P_PS
-	case HW_VAR_H2C_FW_P2P_PS_OFFLOAD:
-		rtl8812_set_p2p_ps_offload_cmd(padapter, *pval);
-		break;
-#endif
-
 #ifdef CONFIG_TDLS
 	case HW_VAR_TDLS_WRCR:
 		val32 = rtw_read32(padapter, REG_RCR);

@@ -2018,15 +2018,6 @@ void update_tx_basic_rate(_adapter *padapter, uint8_t wirelessmode)
 {
 	NDIS_802_11_RATES_EX	supported_rates;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
-#ifdef CONFIG_P2P
-	struct wifidirect_info*	pwdinfo = &padapter->wdinfo;
-
-	//	Added by Albert 2011/03/22
-	//	In the P2P mode, the driver should not support the b mode.
-	//	So, the Tx packet shouldn't use the CCK rate
-	if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
-		return;
-#endif //CONFIG_P2P
 
 	memset(supported_rates, 0, NDIS_802_11_LENGTH_RATES_EX);
 

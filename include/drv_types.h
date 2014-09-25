@@ -34,16 +34,6 @@
 #include <wifi.h>
 #include <ieee80211.h>
 
-enum _NIC_VERSION {
-
-	RTL8711_NIC,
-	RTL8712_NIC,
-	RTL8713_NIC,
-	RTL8716_NIC
-
-};
-
-
 typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 
 #include <rtw_debug.h>

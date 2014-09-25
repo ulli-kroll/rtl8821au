@@ -254,12 +254,6 @@ module_param(rtw_adaptor_info_caching_file_path, charp, 0644);
 MODULE_PARM_DESC(rtw_adaptor_info_caching_file_path, "The path of adapter info cache file");
 #endif
 
-#ifdef CONFIG_LAYER2_ROAMING
-uint rtw_max_roaming_times = 2;
-module_param(rtw_max_roaming_times, uint, 0644);
-MODULE_PARM_DESC(rtw_max_roaming_times, "The max roaming times to try");
-#endif
-
 
 #ifdef CONFIG_FILE_FWIMG
 char *rtw_fw_file_path = "";
@@ -785,10 +779,6 @@ uint loadparam(_adapter *padapter,  _nic_hdl ndev)
 #ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
 	snprintf(registry_par->adaptor_info_caching_file_path, PATH_LENGTH_MAX, "%s", rtw_adaptor_info_caching_file_path);
 	registry_par->adaptor_info_caching_file_path[PATH_LENGTH_MAX-1] = 0;
-#endif
-
-#ifdef CONFIG_LAYER2_ROAMING
-	registry_par->max_roaming_times = (uint8_t)rtw_max_roaming_times;
 #endif
 
 #ifdef CONFIG_80211D

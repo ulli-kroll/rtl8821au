@@ -1042,19 +1042,7 @@ _func_enter_;
 				_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 				rtw_indicate_connect(adapter);
 			} else 	{
-				DBG_871X("try_to_join, but select scanning queue fail, to_roaming:%d\n", rtw_to_roaming(adapter));
-#ifdef CONFIG_LAYER2_ROAMING
-				if (rtw_to_roaming(adapter) != 0) {
-					if ( --pmlmepriv->to_roaming == 0
-					   || _SUCCESS != rtw_sitesurvey_cmd(adapter, &pmlmepriv->assoc_ssid, 1, NULL, 0) ) {
-						rtw_set_roaming(adapter, 0);
-						rtw_free_assoc_resources(adapter, 1);
-						rtw_indicate_disconnect(adapter);
-					} else {
-						pmlmepriv->to_join = _TRUE;
-					}
-				}
-#endif
+				DBG_871X("try_to_join, but select scanning queue fail, to_roaming:%d\n", 0);
 				_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 			}
 		}
@@ -1237,8 +1225,6 @@ void rtw_indicate_connect(struct _ADAPTER *padapter)
 
 	}
 
-	rtw_set_roaming(padapter, 0);
-
 	rtw_set_scan_deny(padapter, 3000);
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_err_, ("-rtw_indicate_connect: fw_state=0x%08x\n", get_fwstate(pmlmepriv)));
@@ -1264,11 +1250,8 @@ void rtw_indicate_disconnect( struct _ADAPTER *padapter )
 
         //DBG_871X("clear wps when %s\n", __func__);
 
-	if (rtw_to_roaming(padapter) > 0)
-		_clr_fwstate_(pmlmepriv, _FW_LINKED);
-
 	if (check_fwstate(&padapter->mlmepriv, _FW_LINKED)
-	   || (rtw_to_roaming(padapter) <= 0)) {
+	   || (0 <= 0)) {
 		rtw_os_indicate_disconnect(padapter);
 
 		//set ips_deny_time to avoid enter IPS before LPS leave
@@ -1969,15 +1952,6 @@ _func_enter_;
 
 	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) )
 	{
-		#ifdef CONFIG_LAYER2_ROAMING
-		if (rtw_to_roaming(adapter) > 0)
-			pmlmepriv->to_roaming--; /* this stadel_event is caused by roaming, decrease to_roaming */
-		else if (rtw_to_roaming(adapter) == 0)
-			rtw_set_roaming(adapter, adapter->registrypriv.max_roaming_times);
-		if (*((unsigned short *)(pstadel->rsvd)) != WLAN_REASON_EXPIRATION_CHK)
-			rtw_set_roaming(adapter, 0); /* don't roam */
-		#endif
-
 		rtw_free_uc_swdec_pending_queue(adapter);
 
 		rtw_free_assoc_resources(adapter, 1);
@@ -1990,12 +1964,6 @@ _func_enter_;
 			rtw_free_network_nolock(pmlmepriv, pwlan);
 		}
 		_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
-
-		#ifdef CONFIG_LAYER2_ROAMING
-		_rtw_roaming(adapter, tgt_network);
-		#else
-		#endif //CONFIG_LAYER2_ROAMING
-
 	}
 
 	if ( check_fwstate(pmlmepriv,WIFI_ADHOC_MASTER_STATE) ||
@@ -2084,9 +2052,6 @@ void _rtw_join_timeout_handler (struct _ADAPTER *adapter)
 {
 	_irqL irqL;
 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
-#ifdef CONFIG_LAYER2_ROAMING
-	int do_join_r;
-#endif //CONFIG_LAYER2_ROAMING
 
 #if 0
 	if (adapter->bDriverStopped == _TRUE){
@@ -2106,26 +2071,6 @@ _func_enter_;
 
 	_enter_critical_bh(&pmlmepriv->lock, &irqL);
 
-	#ifdef CONFIG_LAYER2_ROAMING
-	if (rtw_to_roaming(adapter) > 0) { /* join timeout caused by roaming */
-		while(1) {
-			pmlmepriv->to_roaming--;
-			if (rtw_to_roaming(adapter) != 0) { /* try another */
-				DBG_871X("%s try another roaming\n", __FUNCTION__);
-				if ( _SUCCESS!=(do_join_r=rtw_do_join(adapter)) ) {
-					DBG_871X("%s roaming do_join return %d\n", __FUNCTION__ ,do_join_r);
-					continue;
-				}
-				break;
-			} else {
-				DBG_871X("%s We've try roaming but fail\n", __FUNCTION__);
-				rtw_indicate_disconnect(adapter);
-				break;
-			}
-		}
-
-	} else
-	#endif
 	{
 		rtw_indicate_disconnect(adapter);
 		free_scanqueue(pmlmepriv);//???
@@ -2317,14 +2262,6 @@ static int rtw_check_join_candidate(struct mlme_priv *pmlmepriv
 	if (rtw_is_desired_network(adapter, competitor)  == _FALSE)
 		goto exit;
 
-#ifdef  CONFIG_LAYER2_ROAMING
-	if (rtw_to_roaming(adapter) > 0) {
-		if (	rtw_get_passing_time_ms((uint32_t)competitor->last_scanned) >= RTW_SCAN_RESULT_EXPIRE
-			|| is_same_ess(&competitor->network, &pmlmepriv->cur_network.network) == _FALSE
-		)
-			goto exit;
-	}
-#endif
 
 	if (*candidate == NULL ||(*candidate)->network.Rssi<competitor->network.Rssi )
 	{
@@ -2346,20 +2283,6 @@ static int rtw_check_join_candidate(struct mlme_priv *pmlmepriv
 			updated = _TRUE;
 		}
 	} else
-#ifdef  CONFIG_LAYER2_ROAMING
-	if (rtw_to_roaming(adapter)) { // roaming
-		if (	(*candidate == NULL ||(*candidate)->network.Rssi<competitor->network.Rssi )
-			&& is_same_ess(&competitor->network, &pmlmepriv->cur_network.network)
-			//&&(!is_same_network(&competitor->network, &pmlmepriv->cur_network.network))
-			&& rtw_get_passing_time_ms((uint32_t)competitor->last_scanned) < RTW_SCAN_RESULT_EXPIRE
-			&& rtw_is_desired_network(adapter, competitor)
-		) {
-			*candidate = competitor;
-			updated = _TRUE;
-		}
-
-	} else
-#endif
 	{ // associate with ssid
 		if (	(*candidate == NULL ||(*candidate)->network.Rssi<competitor->network.Rssi )
 			&& (competitor->network.Ssid.SsidLength==pmlmepriv->assoc_ssid.SsidLength)
@@ -2374,15 +2297,9 @@ static int rtw_check_join_candidate(struct mlme_priv *pmlmepriv
 
 	if (updated){
 		DBG_871X("[by_bssid:%u][assoc_ssid:%s]"
-			#ifdef  CONFIG_LAYER2_ROAMING
-			"[to_roaming:%u] "
-			#endif
 			"new candidate: %s("MAC_FMT") rssi:%d\n",
 			pmlmepriv->assoc_by_bssid,
 			pmlmepriv->assoc_ssid.Ssid,
-			#ifdef  CONFIG_LAYER2_ROAMING
-			rtw_to_roaming(adapter),
-			#endif
 			(*candidate)->network.Ssid.Ssid,
 			MAC_ARG((*candidate)->network.MacAddress),
 			(int)(*candidate)->network.Rssi
@@ -3301,69 +3218,6 @@ void rtw_issue_addbareq_cmd(_adapter *padapter, struct xmit_frame *pxmitframe)
 
 }
 
-#endif
-
-#ifdef CONFIG_LAYER2_ROAMING
-inline void rtw_set_roaming(_adapter *adapter, uint8_t to_roaming)
-{
-	if (to_roaming == 0)
-		adapter->mlmepriv.to_join = _FALSE;
-	adapter->mlmepriv.to_roaming = to_roaming;
-}
-
-inline uint8_t rtw_to_roaming(_adapter *adapter)
-{
-	return adapter->mlmepriv.to_roaming;
-}
-
-void rtw_roaming(_adapter *padapter, struct wlan_network *tgt_network)
-{
-	_irqL irqL;
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-
-	_enter_critical_bh(&pmlmepriv->lock, &irqL);
-	_rtw_roaming(padapter, tgt_network);
-	_exit_critical_bh(&pmlmepriv->lock, &irqL);
-}
-void _rtw_roaming(_adapter *padapter, struct wlan_network *tgt_network)
-{
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	int do_join_r;
-
-	struct wlan_network *pnetwork;
-
-	if (tgt_network != NULL)
-		pnetwork = tgt_network;
-	else
-		pnetwork = &pmlmepriv->cur_network;
-
-	if (0 < rtw_to_roaming(padapter)) {
-		DBG_871X("roaming from %s("MAC_FMT"), length:%d\n",
-				pnetwork->network.Ssid.Ssid, MAC_ARG(pnetwork->network.MacAddress),
-				pnetwork->network.Ssid.SsidLength);
-		memcpy(&pmlmepriv->assoc_ssid, &pnetwork->network.Ssid, sizeof(NDIS_802_11_SSID));
-
-		pmlmepriv->assoc_by_bssid = _FALSE;
-
-		while(1) {
-			if ( _SUCCESS==(do_join_r=rtw_do_join(padapter)) ) {
-				break;
-			} else {
-				DBG_871X("roaming do_join return %d\n", do_join_r);
-				pmlmepriv->to_roaming--;
-
-				if (0< rtw_to_roaming(padapter)) {
-					continue;
-				} else {
-					DBG_871X("%s(%d) -to roaming fail, indicate_disconnect\n", __FUNCTION__,__LINE__);
-					rtw_indicate_disconnect(padapter);
-					break;
-				}
-			}
-		}
-	}
-
-}
 #endif
 
 sint rtw_linked_check(_adapter *padapter)

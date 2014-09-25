@@ -209,10 +209,6 @@ struct registry_priv
 	char	adaptor_info_caching_file_path[PATH_LENGTH_MAX];
 #endif
 
-#ifdef CONFIG_LAYER2_ROAMING
-	uint8_t	max_roaming_times; // the max number driver will try to roaming
-#endif
-
 #ifdef CONFIG_80211D
 	uint8_t enable80211d;
 #endif

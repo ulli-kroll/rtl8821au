@@ -95,9 +95,7 @@ _func_enter_;
 		//when set_ssid/set_bssid for rtw_do_join(), but scanning queue is empty
 		//we try to issue sitesurvey firstly
 
-		if (pmlmepriv->LinkDetectInfo.bBusyTraffic ==_FALSE
-			|| rtw_to_roaming(padapter) > 0
-		)
+		if (pmlmepriv->LinkDetectInfo.bBusyTraffic ==_FALSE)
 		{
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_info_,("rtw_do_join(): site survey if scanned_queue is empty\n."));
 			// submit site_survey_cmd
@@ -177,9 +175,7 @@ _func_enter_;
 
 				//when set_ssid/set_bssid for rtw_do_join(), but there are no desired bss in scanning queue
 				//we try to issue sitesurvey firstly
-				if(pmlmepriv->LinkDetectInfo.bBusyTraffic==_FALSE
-					|| rtw_to_roaming(padapter) > 0
-				)
+				if(pmlmepriv->LinkDetectInfo.bBusyTraffic==_FALSE)
 				{
 					//DBG_871X("rtw_do_join() when   no desired bss in scanning queue \n");
 					if( _SUCCESS!=(ret=rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0)) ){

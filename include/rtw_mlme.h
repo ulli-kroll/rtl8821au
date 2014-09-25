@@ -328,9 +328,6 @@ struct mlme_priv {
 	sint	fw_state;	//shall we protect this variable? maybe not necessarily...
 	uint8_t bScanInProcess;
 	uint8_t	to_join; //flag
-	#ifdef CONFIG_LAYER2_ROAMING
-	uint8_t to_roaming; // roaming trying times
-	#endif
 
 	uint8_t	*nic_hdl;
 
@@ -674,18 +671,6 @@ void rtw_issue_addbareq_cmd(_adapter *padapter, struct xmit_frame *pxmitframe);
 
 int rtw_is_same_ibss(_adapter *adapter, struct wlan_network *pnetwork);
 int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst);
-
-#ifdef CONFIG_LAYER2_ROAMING
-void _rtw_roaming(_adapter *adapter, struct wlan_network *tgt_network);
-void rtw_roaming(_adapter *adapter, struct wlan_network *tgt_network);
-void rtw_set_roaming(_adapter *adapter, uint8_t to_roaming);
-uint8_t rtw_to_roaming(_adapter *adapter);
-#else
-#define _rtw_roaming(adapter, tgt_network) do {} while(0)
-#define rtw_roaming(adapter, tgt_network) do {} while(0)
-#define rtw_set_roaming(adapter, to_roaming) do {} while(0)
-#define rtw_to_roaming(adapter) 0
-#endif
 
 void rtw_stassoc_hw_rpt(_adapter *adapter,struct sta_info *psta);
 

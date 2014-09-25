@@ -745,19 +745,6 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 		rtw_disassoc_cmd(padapter, 0, _FALSE);
 	}
 
-#ifdef CONFIG_LAYER2_ROAMING_RESUME
-	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)
-	 && check_fwstate(pmlmepriv, _FW_LINKED) ) {
-		/* DBG_871X("%s:%d assoc_ssid:%s\n", __FUNCTION__, __LINE__, pmlmepriv->assoc_ssid.Ssid); */
-		DBG_871X("%s:%d %s(" MAC_FMT "), length:%d assoc_ssid.length:%d\n",__FUNCTION__, __LINE__,
-				pmlmepriv->cur_network.network.Ssid.Ssid,
-				MAC_ARG(pmlmepriv->cur_network.network.MacAddress),
-				pmlmepriv->cur_network.network.Ssid.SsidLength,
-				pmlmepriv->assoc_ssid.SsidLength);
-
-		rtw_set_roaming(padapter, 1);
-	}
-#endif
 	/* s2-2.  indicate disconnect to os */
 	rtw_indicate_disconnect(padapter);
 	/* s2-3. */
@@ -890,10 +877,6 @@ int rtw_resume_process(_adapter *padapter)
 		DBG_871X("pid[1]:%d\n",padapter->pid[1]);
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}
-
-#ifdef CONFIG_LAYER2_ROAMING_RESUME
-	rtw_roaming(padapter, NULL);
-#endif
 
 	ret = 0;
 exit:

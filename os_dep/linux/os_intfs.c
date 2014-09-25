@@ -163,11 +163,7 @@ int rtw_enusbss = 0;	/* 0:disable,1:enable */
 
 int rtw_hwpdn_mode = 2;	/* 0:disable,1:enable,2: by EFUSE config */
 
-#ifdef CONFIG_HW_PWRP_DETECTION
-int rtw_hwpwrp_detect = 1;
-#else
 int rtw_hwpwrp_detect = 0; /* HW power  ping detect 0:disable , 1:enable */
-#endif
 
 /* ULLI: check var rtw_hw_wps_pbc */
 int rtw_hw_wps_pbc = 1;

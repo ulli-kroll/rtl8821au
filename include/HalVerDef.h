@@ -26,16 +26,9 @@
 // HAL_IC_TYPE_E
 typedef enum tag_HAL_IC_Type_Definition
 {
-	CHIP_8192S	=	0,
-	CHIP_8188C	=	1,
-	CHIP_8192C	=	2,
-	CHIP_8192D	=	3,
-//	CHIP_8723A	=	4,
-	CHIP_8188E	=	5,
 	CHIP_8812	=	6,
 	CHIP_8821	=	7,
 //	CHIP_8723B 	=	8,
-	CHIP_8192E 	=	9,
 }HAL_IC_TYPE_E;
 
 //HAL_CHIP_TYPE_E
@@ -105,10 +98,6 @@ typedef	struct tag_HAL_VERSION
 //HAL_VERSION VersionID
 
 // HAL_IC_TYPE_E
-#define IS_81XXC(version)				(((GET_CVID_IC_TYPE(version) == CHIP_8192C)||(GET_CVID_IC_TYPE(version) == CHIP_8188C))? TRUE : FALSE)
-#define IS_92D(version)					((GET_CVID_IC_TYPE(version) == CHIP_8192D)? TRUE : FALSE)
-#define IS_8188E(version)					((GET_CVID_IC_TYPE(version) == CHIP_8188E)? TRUE : FALSE)
-#define IS_8192E(version)					((GET_CVID_IC_TYPE(version) == CHIP_8192E)? TRUE : FALSE)
 #define IS_8812_SERIES(version)			((GET_CVID_IC_TYPE(version) == CHIP_8812)? TRUE : FALSE)
 #define IS_8821_SERIES(version)			((GET_CVID_IC_TYPE(version) == CHIP_8821)? TRUE : FALSE)
 

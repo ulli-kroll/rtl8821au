@@ -207,8 +207,6 @@ void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
 
-	if (!IS_92C_SERIAL(pHalData->VersionID))
-		return;
 #if 0
 	while(PlatformAtomicExchange(&Adapter->IntrCCKRefCount, TRUE) == TRUE)
 	{
@@ -786,7 +784,6 @@ void Hal_SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	PMPT_CONTEXT	pMptCtx = &pAdapter->mppriv.MptCtx;
-	BOOLEAN		is92C = IS_92C_SERIAL(pHalData->VersionID);
 
 	uint8_t rfPath;
 	uint32_t              reg58 = 0x0;
@@ -869,13 +866,7 @@ void Hal_SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart)
 		write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, 0x1);
 		write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, 0x1);
 		}
-		if (is92C) {
-			_write_rfreg(pAdapter, RF_PATH_A, 0x21, BIT19, 0x00);
-			rtw_usleep_os(100);
-			write_rfreg(pAdapter, RF_PATH_A, 0x00, 0x32d75); // PAD all on.
-			write_rfreg(pAdapter, RF_PATH_B, 0x00, 0x32d75); // PAD all on.
-			rtw_usleep_os(100);
-		} else {
+		{
 			write_rfreg(pAdapter, rfPath, 0x21, 0x54000);
 			rtw_usleep_os(100);
 			write_rfreg(pAdapter, rfPath, 0x00, 0x30000); // PAD all on.

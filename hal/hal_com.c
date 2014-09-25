@@ -29,20 +29,8 @@ void dump_chip_info(HAL_VERSION	ChipVersion)
 	int cnt = 0;
 	uint8_t buf[128];
 
-	if(IS_81XXC(ChipVersion)){
-		cnt += sprintf((buf+cnt), "Chip Version Info: %s_", IS_92C_SERIAL(ChipVersion)?"CHIP_8192C":"CHIP_8188C");
-	}
-	else if(IS_92D(ChipVersion)){
-		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8192D_");
-	}
-	else if(IS_8188E(ChipVersion)){
-		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8188E_");
-	}
-	else if(IS_8812_SERIES(ChipVersion)){
+	if(IS_8812_SERIES(ChipVersion)){
 		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8812_");
-	}
-    else if(IS_8192E(ChipVersion)){
-		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8192E_");
 	}
 	else if(IS_8821_SERIES(ChipVersion)){
 		cnt += sprintf((buf+cnt), "Chip Version Info: CHIP_8821_");

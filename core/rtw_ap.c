@@ -435,7 +435,6 @@ void	expire_timeout_chk(_adapter *padapter)
 			psta->expire_to--;
 		}
 
-#ifndef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 #ifdef CONFIG_TX_MCAST2UNI
 #ifdef CONFIG_80211N_HT
 		if ((psta->flags & WLAN_STA_HT) && (psta->htpriv.agg_enable_bitmap || psta->under_exist_checking)) {
@@ -463,46 +462,8 @@ void	expire_timeout_chk(_adapter *padapter)
 		}
 #endif //CONFIG_80211N_HT
 #endif // CONFIG_TX_MCAST2UNI
-#endif //CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 
 		if (psta->expire_to <= 0) {
-			#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
-			struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
-
-			if (padapter->registrypriv.wifi_spec == 1) {
-				psta->expire_to = pstapriv->expire_to;
-				continue;
-			}
-
-			if (psta->state & WIFI_SLEEP_STATE) {
-				if (!(psta->state & WIFI_STA_ALIVE_CHK_STATE)) {
-					//to check if alive by another methods if staion is at ps mode.
-					psta->expire_to = pstapriv->expire_to;
-					psta->state |= WIFI_STA_ALIVE_CHK_STATE;
-
-					//DBG_871X("alive chk, sta:" MAC_FMT " is at ps mode!\n", MAC_ARG(psta->hwaddr));
-
-					//to update bcn with tim_bitmap for this station
-					pstapriv->tim_bitmap |= BIT(psta->aid);
-					update_beacon(padapter, _TIM_IE_, NULL, _FALSE);
-
-					if (!pmlmeext->active_keep_alive_check)
-						continue;
-				}
-			}
-
-			if (pmlmeext->active_keep_alive_check) {
-				int stainfo_offset;
-
-				stainfo_offset = rtw_stainfo_offset(pstapriv, psta);
-				if (stainfo_offset_valid(stainfo_offset)) {
-					chk_alive_list[chk_alive_num++] = stainfo_offset;
-				}
-
-				continue;
-			}
-			#endif /* CONFIG_ACTIVE_KEEP_ALIVE_CHECK */
-
 			rtw_list_delete(&psta->asoc_list);
 			pstapriv->asoc_list_cnt--;
 
@@ -522,60 +483,6 @@ void	expire_timeout_chk(_adapter *padapter)
 	}
 
 	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
-
-#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
-if (chk_alive_num) {
-
-	uint8_t backup_oper_channel = 0;
-	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
-	/* switch to correct channel of current network  before issue keep-alive frames */
-	if (rtw_get_oper_ch(padapter) != pmlmeext->cur_channel) {
-		backup_oper_channel = rtw_get_oper_ch(padapter);
-		SelectChannel(padapter, pmlmeext->cur_channel);
-	}
-
-	/* issue null data to check sta alive*/
-	for (i = 0; i < chk_alive_num; i++) {
-		int ret = _FAIL;
-
-		psta = rtw_get_stainfo_by_offset(pstapriv, chk_alive_list[i]);
-		if (!(psta->state &_FW_LINKED))
-			continue;
-
-		if (psta->state & WIFI_SLEEP_STATE)
-			ret = issue_nulldata(padapter, psta->hwaddr, 0, 1, 50);
-		else
-			ret = issue_nulldata(padapter, psta->hwaddr, 0, 3, 50);
-
-		psta->keep_alive_trycnt++;
-		if (ret == _SUCCESS) {
-			DBG_871X("asoc check, sta(" MAC_FMT ") is alive\n", MAC_ARG(psta->hwaddr));
-			psta->expire_to = pstapriv->expire_to;
-			psta->keep_alive_trycnt = 0;
-			continue;
-		} else if (psta->keep_alive_trycnt <= 3) {
-			DBG_871X("ack check for asoc expire, keep_alive_trycnt=%d\n", psta->keep_alive_trycnt);
-			psta->expire_to = 1;
-			continue;
-		}
-
-		psta->keep_alive_trycnt = 0;
-
-		DBG_871X("asoc expire "MAC_FMT", state=0x%x\n", MAC_ARG(psta->hwaddr), psta->state);
-		_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
-		if (rtw_is_list_empty(&psta->asoc_list) == _FALSE) {
-			rtw_list_delete(&psta->asoc_list);
-			pstapriv->asoc_list_cnt--;
-			updated = ap_free_sta(padapter, psta, _FALSE, WLAN_REASON_DEAUTH_LEAVING);
-		}
-		_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
-
-	}
-
-	if (backup_oper_channel>0) /* back to the original operation channel */
-		SelectChannel(padapter, backup_oper_channel);
-}
-#endif /* CONFIG_ACTIVE_KEEP_ALIVE_CHECK */
 
 	associated_clients_update(padapter, updated);
 }

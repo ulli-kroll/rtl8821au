@@ -2240,14 +2240,12 @@ void rtw_dynamic_check_timer_handlder(struct _ADAPTER *adapter)
 		}
 	}
 
-#ifndef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 #ifdef CONFIG_AP_MODE
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
 	{
 		expire_timeout_chk(adapter);
 	}
 #endif
-#endif //!CONFIG_ACTIVE_KEEP_ALIVE_CHECK
 }
 
 

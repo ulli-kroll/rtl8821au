@@ -546,11 +546,6 @@ int	init_mlme_ext_priv(_adapter* padapter)
 	pmlmeext->chan_scan_time = SURVEY_TO;
 	pmlmeext->mlmeext_init = _TRUE;
 
-
-#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
-	pmlmeext->active_keep_alive_check = _TRUE;
-#endif
-
 #ifdef DBG_FIXED_CHAN
 	pmlmeext->fixed_chan = 0xFF;
 #endif
@@ -6502,8 +6497,6 @@ void linked_status_chk(_adapter *padapter)
 
 		#if defined(DBG_ROAMING_TEST)
 		rx_chk_limit = 1;
-		#elif defined(CONFIG_ACTIVE_KEEP_ALIVE_CHECK)
-		rx_chk_limit = 4;
 		#else
 		rx_chk_limit = 8;
 		#endif
@@ -6518,33 +6511,6 @@ void linked_status_chk(_adapter *padapter)
 			if (pxmitpriv->last_tx_pkts == pxmitpriv->tx_pkts)
 				tx_chk = _FAIL;
 
-			#ifdef CONFIG_ACTIVE_KEEP_ALIVE_CHECK
-			if (pmlmeext->active_keep_alive_check && (rx_chk == _FAIL || tx_chk == _FAIL)) {
-				uint8_t backup_oper_channel=0;
-
-				/* switch to correct channel of current network  before issue keep-alive frames */
-				if (rtw_get_oper_ch(padapter) != pmlmeext->cur_channel) {
-					backup_oper_channel = rtw_get_oper_ch(padapter);
-					SelectChannel(padapter, pmlmeext->cur_channel);
-				}
-
-				if (rx_chk != _SUCCESS)
-					issue_probereq_ex(padapter, &pmlmeinfo->network.Ssid, psta->hwaddr, 3, 1);
-
-				if ((tx_chk != _SUCCESS && pmlmeinfo->link_count++ == 0xf) || rx_chk != _SUCCESS) {
-					tx_chk = issue_nulldata(padapter, psta->hwaddr, 0, 3, 1);
-					/* if tx acked and p2p disabled, set rx_chk _SUCCESS to reset retry count */
-					if (tx_chk == _SUCCESS && !is_p2p_enable)
-						rx_chk = _SUCCESS;
-				}
-
-				/* back to the original operation channel */
-				if(backup_oper_channel>0)
-					SelectChannel(padapter, backup_oper_channel);
-
-			}
-			else
-			#endif /* CONFIG_ACTIVE_KEEP_ALIVE_CHECK */
 			{
 				if (rx_chk != _SUCCESS) {
 					if (pmlmeext->retry == 0) {

@@ -218,10 +218,6 @@ struct registry_priv
 
 	uint8_t notch_filter;
 
-#ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-	uint8_t force_ant;//0 normal,1 main,2 aux
-	uint8_t force_igi;//0 normal
-#endif
 	uint8_t regulatory_tid;
 
 	//define for tx power adjust

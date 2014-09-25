@@ -98,10 +98,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_mp.h>
 #endif // CONFIG_MP_INCLUDED
 
-#ifdef CONFIG_BR_EXT
-#include <rtw_br_ext.h>
-#endif // CONFIG_BR_EXT
-
 #ifdef CONFIG_IOCTL_CFG80211
 #include "ioctl_cfg80211.h"
 #endif //CONFIG_IOCTL_CFG80211
@@ -519,22 +515,6 @@ struct _ADAPTER{
        //IFACE_ID0 is equals to PRIMARY_ADAPTER
        //IFACE_ID1 is equals to SECONDARY_ADAPTER
 	uint8_t iface_id;
-
-
-#ifdef CONFIG_BR_EXT
-	_lock					br_ext_lock;
-	//unsigned int			macclone_completed;
-	struct nat25_network_db_entry	*nethash[NAT25_HASH_SIZE];
-	int				pppoe_connection_in_progress;
-	unsigned char			pppoe_addr[MACADDRLEN];
-	unsigned char			scdb_mac[MACADDRLEN];
-	unsigned char			scdb_ip[4];
-	struct nat25_network_db_entry	*scdb_entry;
-	unsigned char			br_mac[MACADDRLEN];
-	unsigned char			br_ip[4];
-
-	struct br_ext_info		ethBrExtInfo;
-#endif	// CONFIG_BR_EXT
 
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
 	PLOOPBACKDATA ploopback;

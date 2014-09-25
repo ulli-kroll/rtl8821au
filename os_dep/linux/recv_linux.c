@@ -287,9 +287,6 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, uint16_t nSubframe_Length
 void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib)
 {
 	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
-#ifdef CONFIG_BR_EXT
-	void *br_port = NULL;
-#endif
 
 	/* Indicat the packets to upper layer */
 	if (pkt) {
@@ -340,35 +337,6 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 				//DBG_871X("to APSelf\n");
 			}
 		}
-
-#ifdef CONFIG_BR_EXT
-		// Insert NAT2.5 RX here!
-#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-		br_port = padapter->ndev->br_port;
-#else   // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-		rcu_read_lock();
-		br_port = rcu_dereference(padapter->ndev->rx_handler_data);
-		rcu_read_unlock();
-#endif  // (LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 35))
-
-
-		if( br_port && (check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) == _TRUE) )
-		{
-			int nat25_handle_frame(_adapter *priv, struct sk_buff *skb);
-			if (nat25_handle_frame(padapter, pkt) == -1) {
-				//priv->ext_stats.rx_data_drops++;
-				//DEBUG_ERR("RX DROP: nat25_handle_frame fail!\n");
-				//return FAIL;
-
-#if 1
-				// bypass this frame to upper layer!!
-#else
-				dev_kfree_skb_any(sub_skb);
-				continue;
-#endif
-			}
-		}
-#endif	// CONFIG_BR_EXT
 
 		pkt->protocol = eth_type_trans(pkt, padapter->ndev);
 		pkt->dev = padapter->ndev;

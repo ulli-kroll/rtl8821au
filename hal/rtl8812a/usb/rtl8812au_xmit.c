@@ -59,7 +59,6 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	sint	bmcst = IS_MCAST(pattrib->ra);
 
-#ifndef CONFIG_USE_USB_BUFFER_ALLOC_TX
 	if (padapter->registrypriv.mp_mode == 0)
 	{
 		if((!bagg_pkt) &&(rtw_usb_bulk_size_boundary(padapter,TXDESC_SIZE+sz)==_FALSE))
@@ -69,7 +68,6 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 			pull = 1;
 		}
 	}
-#endif	// CONFIG_USE_USB_BUFFER_ALLOC_TX
 
 	memset(ptxdesc, 0, TXDESC_SIZE);
 
@@ -95,7 +93,6 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 		SET_TX_DESC_BMC_8812(ptxdesc, 1);
 	}
 
-#ifndef CONFIG_USE_USB_BUFFER_ALLOC_TX
 	if (padapter->registrypriv.mp_mode == 0)
 	{
 		if(!bagg_pkt){
@@ -104,7 +101,6 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 			}
 		}
 	}
-#endif
 
 	//DBG_8192C("%s, pkt_offset=0x%02x\n",__FUNCTION__,pxmitframe->pkt_offset);
 	// pkt_offset, unit:8 bytes padding
@@ -675,7 +671,6 @@ int32_t rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmit
 		rtw_issue_addbareq_cmd(padapter, pfirstframe);
 	}
 #endif //CONFIG_80211N_HT
-#ifndef CONFIG_USE_USB_BUFFER_ALLOC_TX
 	//3 3. update first frame txdesc
 	if ((pbuf_tail % bulkSize) == 0) {
 		// remove pkt_offset
@@ -684,7 +679,6 @@ int32_t rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmit
 		pfirstframe->pkt_offset--;
 		//DBG_8192C("$$$$$ buf size equal to USB block size $$$$$$\n");
 	}
-#endif	// CONFIG_USE_USB_BUFFER_ALLOC_TX
 
 	update_txdesc(pfirstframe, pfirstframe->buf_addr, pfirstframe->attrib.last_txcmdsz,_TRUE);
 

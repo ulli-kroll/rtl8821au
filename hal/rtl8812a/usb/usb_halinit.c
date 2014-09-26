@@ -1259,6 +1259,9 @@ uint32_t rtl8812au_hal_init(PADAPTER Adapter)
 	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
 
+	DBG_871X(" ULLI: Call rtl8812au_hal_init in usb_halinit.c\n");
+
+
 	rt_rf_power_state eRfPowerStateToSet;
 
 	uint32_t init_start_time = rtw_get_current_time();

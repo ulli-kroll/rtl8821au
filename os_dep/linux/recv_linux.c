@@ -78,16 +78,6 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, uin
 	}
 	else
 	{
-#ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
-		DBG_871X("%s:can not allocate memory for skb copy\n", __FUNCTION__);
-
-		precvframe->u.hdr.pkt = NULL;
-
-		//rtw_free_recvframe(precvframe, pfree_recv_queue);
-		//goto _exit_recvbuf2recvframe;
-
-		res = _FAIL;
-#else
 		if((pattrib->mfrag == 1)&&(pattrib->frag_num == 0))
 		{
 			DBG_871X("%s: alloc_skb fail , drop frag frame \n", __FUNCTION__);
@@ -115,7 +105,6 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, uin
 			//goto _exit_recvbuf2recvframe;
 			res = _FAIL;
 		}
-#endif
 	}
 
 exit_rtw_os_recv_resource_alloc:
@@ -184,14 +173,6 @@ int rtw_os_recvbuf_resource_alloc(_adapter *padapter, struct recv_buf *precvbuf)
 
 	precvbuf->len = 0;
 
-	#ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
-	precvbuf->pallocated_buf = rtw_usb_buffer_alloc(pusbd, (size_t)precvbuf->alloc_sz, &precvbuf->dma_transfer_addr);
-	precvbuf->pbuf = precvbuf->pallocated_buf;
-	if(precvbuf->pallocated_buf == NULL)
-		return _FAIL;
-	#endif //CONFIG_USE_USB_BUFFER_ALLOC_RX
-
-
 	return res;
 }
 
@@ -199,18 +180,6 @@ int rtw_os_recvbuf_resource_alloc(_adapter *padapter, struct recv_buf *precvbuf)
 int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	int ret = _SUCCESS;
-
-
-#ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
-
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
-	struct usb_device	*pusbd = pdvobjpriv->pusbdev;
-
-	rtw_usb_buffer_free(pusbd, (size_t)precvbuf->alloc_sz, precvbuf->pallocated_buf, precvbuf->dma_transfer_addr);
-	precvbuf->pallocated_buf =  NULL;
-	precvbuf->dma_transfer_addr = 0;
-
-#endif //CONFIG_USE_USB_BUFFER_ALLOC_RX
 
 	if(precvbuf->purb)
 	{

@@ -1068,10 +1068,6 @@ _func_enter_;
 	}
 #endif
 
-#ifdef CONFIG_IOCTL_CFG80211
-	rtw_cfg80211_surveydone_event_callback(adapter);
-#endif //CONFIG_IOCTL_CFG80211
-
 _func_exit_;
 
 }
@@ -1794,38 +1790,6 @@ _func_enter_;
 			rtw_stassoc_hw_rpt(adapter, psta);
 			goto exit;
 #else //CONFIG_AUTO_AP_MODE
-#ifdef CONFIG_IOCTL_CFG80211
-			#ifdef COMPAT_KERNEL_RELEASE
-
-			#elif (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)) || defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
-			uint8_t *passoc_req = NULL;
-			uint32_t	 assoc_req_len;
-
-			_enter_critical_bh(&psta->lock, &irqL);
-			if (psta->passoc_req && psta->assoc_req_len>0)
-			{
-				passoc_req = rtw_zmalloc(psta->assoc_req_len);
-				if (passoc_req)
-				{
-					assoc_req_len = psta->assoc_req_len;
-					memcpy(passoc_req, psta->passoc_req, assoc_req_len);
-
-					_rtw_mfree(psta->passoc_req , psta->assoc_req_len);
-					psta->passoc_req = NULL;
-					psta->assoc_req_len = 0;
-				}
-			}
-			_exit_critical_bh(&psta->lock, &irqL);
-
-			if (passoc_req && assoc_req_len>0)
-			{
-				rtw_cfg80211_indicate_sta_assoc(adapter, passoc_req, assoc_req_len);
-
-				_rtw_mfree(passoc_req, assoc_req_len);
-			}
-			#endif //(LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)) || defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
-#endif //CONFIG_IOCTL_CFG80211
-
 			//bss_cap_update_on_sta_join(adapter, psta);
 			//sta_info_update(adapter, psta);
 			ap_sta_info_defer_update(adapter, psta);
@@ -1934,14 +1898,6 @@ _func_enter_;
 
         if (check_fwstate(pmlmepriv, WIFI_AP_STATE))
         {
-#ifdef CONFIG_IOCTL_CFG80211
-		#ifdef COMPAT_KERNEL_RELEASE
-
-		#elif (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)) || defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
-		rtw_cfg80211_indicate_sta_disassoc(adapter, pstadel->macaddr, *(uint16_t *)pstadel->rsvd);
-		#endif //(LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)) || defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
-#endif //CONFIG_IOCTL_CFG80211
-
 		return;
         }
 
@@ -2074,11 +2030,6 @@ _func_enter_;
 	{
 		rtw_indicate_disconnect(adapter);
 		free_scanqueue(pmlmepriv);//???
-
-#ifdef CONFIG_IOCTL_CFG80211
-		//indicate disconnect for the case that join_timeout and check_fwstate != FW_LINKED
-		rtw_cfg80211_indicate_disconnect(adapter);
-#endif //CONFIG_IOCTL_CFG80211
 
  	}
 

@@ -2004,32 +2004,7 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 
 		//.2 - report to upper layer
 		DBG_871X("indicate_sta_join_event to upper layer - hostapd\n");
-#ifdef CONFIG_IOCTL_CFG80211
-		#ifdef COMPAT_KERNEL_RELEASE
-		rtw_cfg80211_indicate_sta_assoc(padapter, pframe, pkt_len);
-		#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)) && !defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
-		rtw_cfg80211_indicate_sta_assoc(padapter, pframe, pkt_len);
-		#else //(LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)) && !defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
-		_enter_critical_bh(&pstat->lock, &irqL);
-		if(pstat->passoc_req)
-		{
-			/* ULLI damn one missed check value pstat->assoc_req_len */
-			rtw_mfree(pstat->passoc_req);
-			pstat->passoc_req = NULL;
-			pstat->assoc_req_len = 0;
-		}
-
-		pstat->passoc_req =  rtw_zmalloc(pkt_len);
-		if(pstat->passoc_req)
-		{
-			memcpy(pstat->passoc_req, pframe, pkt_len);
-			pstat->assoc_req_len = pkt_len;
-		}
-		_exit_critical_bh(&pstat->lock, &irqL);
-		#endif //(LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)) && !defined(CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER)
-#else
 		rtw_indicate_sta_assoc_event(padapter, pstat);
-#endif //CONFIG_IOCTL_CFG80211
 
 		//.3-(1) report sta add event
 		report_add_sta_event(padapter, pstat->hwaddr, pstat->aid);
@@ -2633,11 +2608,6 @@ unsigned int on_action_public_default(union recv_frame *precv_frame, uint8_t act
 
 	if (rtw_action_public_decache(precv_frame, token) == _FAIL)
 		goto exit;
-
-	#ifdef CONFIG_IOCTL_CFG80211
-	cnt += sprintf((msg+cnt), "%s(token:%u)", action_public_str(action), token);
-	rtw_cfg80211_rx_action(adapter, pframe, frame_len, msg);
-	#endif
 
 	ret = _SUCCESS;
 

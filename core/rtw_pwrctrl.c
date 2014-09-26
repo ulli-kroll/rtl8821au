@@ -405,10 +405,6 @@ static uint8_t PS_RDY_CHECK(struct _ADAPTER *padapter)
 		DBG_871X("Group handshake still in progress !!!\n");
 		return _FALSE;
 	}
-#ifdef CONFIG_IOCTL_CFG80211
-	if (!rtw_cfg80211_pwr_mgmt(padapter))
-		return _FALSE;
-#endif
 
 	return _TRUE;
 }

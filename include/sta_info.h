@@ -245,11 +245,6 @@ struct sta_info {
 
 #endif	// CONFIG_AP_MODE
 
-#ifdef CONFIG_IOCTL_CFG80211
-	uint8_t *passoc_req;
-	u32 assoc_req_len;
-#endif
-
 	//for DM
 	RSSI_STA	 rssi_stat;
 

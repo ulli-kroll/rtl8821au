@@ -94,10 +94,6 @@ void rtw_os_indicate_connect(_adapter *adapter)
 
 _func_enter_;
 
-#ifdef CONFIG_IOCTL_CFG80211
-	rtw_cfg80211_indicate_connect(adapter);
-#endif //CONFIG_IOCTL_CFG80211
-
 	rtw_indicate_wx_assoc_event(adapter);
 	netif_carrier_on(adapter->ndev);
 
@@ -111,9 +107,6 @@ _func_exit_;
 extern void indicate_wx_scan_complete_event(_adapter *padapter);
 void rtw_os_indicate_scan_done( _adapter *padapter, bool aborted)
 {
-#ifdef CONFIG_IOCTL_CFG80211
-	rtw_cfg80211_indicate_scan_done(wdev_to_priv(padapter->rtw_wdev), aborted);
-#endif
 	indicate_wx_scan_complete_event(padapter);
 }
 
@@ -180,10 +173,6 @@ _func_enter_;
 
 	netif_carrier_off(adapter->ndev); // Do it first for tx broadcast pkt after disconnection issue!
 
-#ifdef CONFIG_IOCTL_CFG80211
-	rtw_cfg80211_indicate_disconnect(adapter);
-#endif //CONFIG_IOCTL_CFG80211
-
 	rtw_indicate_wx_disassoc_event(adapter);
 
 	 rtw_reset_securitypriv( adapter );
@@ -230,9 +219,7 @@ _func_enter_;
 
 		wrqu.data.length = (wrqu.data.length<IW_CUSTOM_MAX) ? wrqu.data.length:IW_CUSTOM_MAX;
 
-#ifndef CONFIG_IOCTL_CFG80211
 		wireless_send_event(adapter->ndev,IWEVCUSTOM,&wrqu,buff);
-#endif
 
 		if(buff)
 		    rtw_mfree(buff);
@@ -340,9 +327,7 @@ void rtw_indicate_sta_assoc_event(_adapter *padapter, struct sta_info *psta)
 
 	DBG_871X("+rtw_indicate_sta_assoc_event\n");
 
-#ifndef CONFIG_IOCTL_CFG80211
 	wireless_send_event(padapter->ndev, IWEVREGISTERED, &wrqu, NULL);
-#endif
 
 }
 
@@ -367,9 +352,7 @@ void rtw_indicate_sta_disassoc_event(_adapter *padapter, struct sta_info *psta)
 
 	DBG_871X("+rtw_indicate_sta_disassoc_event\n");
 
-#ifndef CONFIG_IOCTL_CFG80211
 	wireless_send_event(padapter->ndev, IWEVEXPIRED, &wrqu, NULL);
-#endif
 
 }
 

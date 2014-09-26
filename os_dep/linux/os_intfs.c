@@ -1458,10 +1458,6 @@ int _netdev_open(struct net_device *ndev)
 		if (padapter->intf_start) {
 			padapter->intf_start(padapter);
 		}
-#ifdef CONFIG_IOCTL_CFG80211
-		rtw_cfg80211_init_wiphy(padapter);
-#endif
-
 		rtw_led_control(padapter, LED_CTL_NO_LINK);
 
 		padapter->bup = _TRUE;
@@ -1660,11 +1656,6 @@ static int netdev_close(struct net_device *ndev)
 		rtw_led_control(padapter, LED_CTL_POWER_OFF);
 	}
 
-#ifdef CONFIG_IOCTL_CFG80211
-	rtw_scan_abort(padapter);
-	wdev_to_priv(padapter->rtw_wdev)->bandroid_scan = _FALSE;
-	padapter->rtw_wdev->iftype = NL80211_IFTYPE_MONITOR; /* set this at the end */
-#endif
 
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("-871x_drv - drv_close\n"));
 	DBG_871X("-871x_drv - drv_close, bup=%d\n", padapter->bup);
@@ -1677,10 +1668,6 @@ void rtw_ndev_destructor(struct net_device *ndev)
 {
 	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
-#ifdef CONFIG_IOCTL_CFG80211
-	if (ndev->ieee80211_ptr)
-		rtw_mfree(ndev->ieee80211_ptr);
-#endif
 	free_netdev(ndev);
 }
 

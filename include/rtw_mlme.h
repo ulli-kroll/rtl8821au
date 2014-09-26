@@ -214,17 +214,6 @@ struct scan_limit_info{
 	uint8_t					operation_ch[2];				//	Store the operation channel of invitation request frame
 };
 
-#ifdef CONFIG_IOCTL_CFG80211
-struct cfg80211_wifidirect_info{
-	_timer					remain_on_ch_timer;
-	uint8_t						restore_channel;
-	struct ieee80211_channel	remain_on_ch_channel;
-	enum nl80211_channel_type	remain_on_ch_type;
-	u64						remain_on_ch_cookie;
-	bool is_ro_ch;
-};
-#endif //CONFIG_IOCTL_CFG80211
-
 struct wifidirect_info{
 	_adapter*				padapter;
 	_timer					find_phase_timer;

@@ -88,10 +88,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_mp.h>
 #endif // CONFIG_MP_INCLUDED
 
-#ifdef CONFIG_IOCTL_CFG80211
-#include "ioctl_cfg80211.h"
-#endif //CONFIG_IOCTL_CFG80211
-
 #include <ip.h>
 #include <if_ether.h>
 #include <ethernet.h>
@@ -464,10 +460,6 @@ struct _ADAPTER{
 	struct net_device_stats stats;
 	struct iw_statistics iwstats;
 	struct proc_dir_entry *dir_dev;// for proc directory
-
-#ifdef CONFIG_IOCTL_CFG80211
-	struct wireless_dev *rtw_wdev;
-#endif //CONFIG_IOCTL_CFG80211
 
 #endif //end of PLATFORM_LINUX
 

@@ -35,11 +35,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, uint16_t value
 	uint8_t *pIo_buf;
 	int vendorreq_times = 0;
 
-	#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
-	uint8_t *tmp_buf;
-	#else // use stack memory
 	uint8_t tmp_buf[MAX_USB_IO_CTL_SIZE];
-	#endif
 
 	//DBG_871X("%s %s:%d\n",__FUNCTION__, current->comm, current->pid);
 
@@ -64,12 +60,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, uint16_t value
 #ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
 	pIo_buf = pdvobjpriv->usb_vendor_req_buf;
 #else
-	#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
-	tmp_buf = rtw_malloc( (u32) len + ALIGNMENT_UNIT);
-	tmp_buflen =  (u32)len + ALIGNMENT_UNIT;
-	#else // use stack memory
 	tmp_buflen = MAX_USB_IO_CTL_SIZE;
-	#endif
 
 	// Added by Albert 2010/02/09
 	// For mstar platform, mstar suggests the address for USB IO should be 16 bytes alignment.
@@ -150,10 +141,6 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, uint16_t value
 	}
 
 	// release IO memory used by vendorreq
-	#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
-	/* ULLI check usage of tmp_buflen */
-	rtw_mfree(tmp_buf);
-	#endif
 
 release_mutex:
 	#ifdef CONFIG_USB_VENDOR_REQ_MUTEX

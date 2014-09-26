@@ -163,19 +163,12 @@
 #endif
 
 #define CONFIG_PREALLOC_RECV_SKB	1
-//#define CONFIG_REDUCE_USB_TX_INT	1	// Trade-off: Improve performance, but may cause TX URBs blocked by USB Host/Bus driver on few platforms.
-
 /*
  * CONFIG_USE_USB_BUFFER_ALLOC_XX uses Linux USB Buffer alloc API and is for Linux platform only now!
  */
 //#define CONFIG_USE_USB_BUFFER_ALLOC_TX 1	// Trade-off: For TX path, improve stability on some platforms, but may cause performance degrade on other platforms.
 //#define CONFIG_USE_USB_BUFFER_ALLOC_RX 1	// For RX path
 
-/*
- * USB VENDOR REQ BUFFER ALLOCATION METHOD
- * if not set we'll use function local variable (stack memory)
- */
-//#define CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
 #define CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
 
 #define CONFIG_USB_VENDOR_REQ_MUTEX

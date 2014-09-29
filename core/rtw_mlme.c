@@ -3036,11 +3036,6 @@ void rtw_update_ht_cap(_adapter *padapter, uint8_t *pie, uint ie_len, uint8_t ch
 				pmlmeinfo->HT_caps.u.HT_cap_element.MCS_rate[i] &= MCS_rate_2R[i];
 				#endif //CONFIG_DISABLE_MCS13TO15
 			}
-			#ifdef RTL8192C_RECONFIG_TO_1T1R
-			{
-				pmlmeinfo->HT_caps.HT_cap_element.MCS_rate[i] &= MCS_rate_1R[i];
-			}
-			#endif
 		}
 		//switch to the 40M Hz mode accoring to the AP
 		pmlmeext->cur_bwmode = CHANNEL_WIDTH_40;

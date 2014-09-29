@@ -71,10 +71,6 @@
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	//#include "hal_com.h"
 	#include "HalPhyRf.h"
-	#if (RTL8192C_SUPPORT==1)
-	#include  "rtl8192c/HalDMOutSrc8192C_CE.h"
-	#include <rtl8192c_hal.h>
-	#endif
 
 	#if (RTL8192D_SUPPORT==1)
 	#include  "rtl8192d/HalDMOutSrc8192D_CE.h"
@@ -97,9 +93,6 @@
 #include "odm_interface.h"
 #include "odm_reg.h"
 
-#if (RTL8192C_SUPPORT==1)
-#include "rtl8192c/odm_RTL8192C.h"
-#endif
 #if (RTL8192D_SUPPORT==1)
 #include "rtl8192d/odm_RTL8192D.h"
 #endif

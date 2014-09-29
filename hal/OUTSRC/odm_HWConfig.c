@@ -1018,7 +1018,7 @@ odm_Process_RSSIForDM(
 	}
 	*/
 #if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-#if ((RTL8192C_SUPPORT == 1) ||(RTL8192D_SUPPORT == 1))
+#if ((RTL8192D_SUPPORT == 1))
 	if(pDM_Odm->SupportICType & ODM_RTL8192C|ODM_RTL8192D)
 	{
 			if(pPktinfo->bPacketToSelf || pPktinfo->bPacketBeacon)

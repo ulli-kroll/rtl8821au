@@ -2381,15 +2381,6 @@ odm_FalseAlarmCounterStatistics(
 		FalseAlmCnt->Cnt_Ofdm_fail = 	FalseAlmCnt->Cnt_Parity_Fail + FalseAlmCnt->Cnt_Rate_Illegal +
 									FalseAlmCnt->Cnt_Crc8_fail + FalseAlmCnt->Cnt_Mcs_fail +
 									FalseAlmCnt->Cnt_Fast_Fsync + FalseAlmCnt->Cnt_SB_Search_fail;
-
-
-#if (RTL8192D_SUPPORT==1)
-		if(pDM_Odm->SupportICType == ODM_RTL8192D)
-		{
-			odm_GetCCKFalseAlarm_92D(pDM_Odm);
-		}
-		else
-#endif
 		{
 			//hold cck counter
 				ODM_SetBBReg(pDM_Odm, ODM_REG_CCK_FA_RST_11N, BIT12, 1);
@@ -2413,11 +2404,6 @@ odm_FalseAlarmCounterStatistics(
 							FalseAlmCnt->Cnt_Cck_fail);
 
 		FalseAlmCnt->Cnt_CCA_all = FalseAlmCnt->Cnt_OFDM_CCA + FalseAlmCnt->Cnt_CCK_CCA;
-
-#if (RTL8192C_SUPPORT==1)
-		if(pDM_Odm->SupportICType == ODM_RTL8192C)
-			odm_ResetFACounter_92C(pDM_Odm);
-#endif
 
 #if (RTL8192D_SUPPORT==1)
 		if(pDM_Odm->SupportICType == ODM_RTL8192D)
@@ -3020,17 +3006,6 @@ odm_DynamicTxPowerInit(
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	pdmpriv->bDynamicTxPowerEnable = _FALSE;
 
-	#if (RTL8192C_SUPPORT==1)
-
-	if(pHalData->BoardType == BOARD_USB_High_PA)
-
-	{
-		//odm_SavePowerIndex(Adapter);
-		odm_DynamicTxPowerSavePowerIndex(pDM_Odm);
-		pdmpriv->bDynamicTxPowerEnable = _TRUE;
-	}
-	else
-	#endif
 
 	pdmpriv->LastDTPLvl = TxHighPwrLevel_Normal;
 	pdmpriv->DynamicTxHighPowerLvl = TxHighPwrLevel_Normal;
@@ -3422,13 +3397,6 @@ odm_RSSIMonitorCheckCE(
 					}
 					#endif
 
-
-					#if((RTL8192C_SUPPORT==1))
-					if((pDM_Odm->SupportICType == ODM_RTL8192C)||(pDM_Odm->SupportICType == ODM_RTL8723A)){
-						rtl8192c_set_rssi_cmd(Adapter, (u8*)&PWDB_rssi[i]);
-					}
-					#endif
-
 					#if((RTL8812A_SUPPORT==1)||(RTL8821A_SUPPORT==1))
 					if((pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821)){
 						PWDB_rssi[i] |= (UL_DL_STATE << 24);
@@ -3627,13 +3595,6 @@ odm_TXPowerTrackingCheckCE(
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PADAPTER	Adapter = pDM_Odm->Adapter;
-	#if( (RTL8192C_SUPPORT==1) )
-	if(IS_HARDWARE_TYPE_8192C(Adapter)){
-		rtl8192c_odm_CheckTXPowerTracking(Adapter);
-		return;
-	}
-	#endif
-
 	#if (RTL8192D_SUPPORT==1)
 	#endif
 

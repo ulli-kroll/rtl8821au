@@ -179,6 +179,7 @@
 
 #define ENABLE_USB_DROP_INCORRECT_OUT	0
 
+/* ULLI symbol used in usb_halinit.c */
 #define RTL8192CU_ADHOC_WORKAROUND_SETTING	1
 
 #define ENABLE_NEW_RFE_TYPE	0
@@ -208,9 +209,6 @@
  */
 
 #define TEST_CHIP_SUPPORT				0
-
-#define RTL8192CU_SUPPORT 				0
-#define RTL8192C_SUPPORT 				(|RTL8192CU_SUPPORT)
 
 #define RTL8192DE_SUPPORT 				0
 #define RTL8192DU_SUPPORT 				0

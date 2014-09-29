@@ -44,12 +44,6 @@
 
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	#if(RTL8192DE_SUPPORT ==1)
-	#include "rtl8192d/Hal8192DEFWImg_CE.h"
-	#include "rtl8192d/Hal8192DEPHYImg_CE.h"
-	#include "rtl8192d/Hal8192DEMACImg_CE.h"
-	#endif
-
 	#if(RTL8192DU_SUPPORT ==1)
 	#include "rtl8192d/Hal8192DUFWImg_CE.h"
 	#include "rtl8192d/Hal8192DUPHYImg_CE.h"

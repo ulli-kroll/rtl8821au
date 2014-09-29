@@ -791,7 +791,7 @@ ODM_DMInit(
 
 //#if (MP_DRIVER != 1)
 	if ( *(pDM_Odm->mp_mode) != 1) {
-		if(pDM_Odm->SupportICType & (ODM_RTL8192C|ODM_RTL8192D))
+		if(pDM_Odm->SupportICType & (ODM_RTL8192D))
 		{
 			if(pDM_Odm->AntDivType == HW_ANTDIV)
 			odm_InitHybridAntDiv(pDM_Odm);
@@ -875,7 +875,7 @@ ODM_DMWatchdog(
 
 //#if (MP_DRIVER != 1)
 if ( *(pDM_Odm->mp_mode) != 1) {
-	if(pDM_Odm->SupportICType & (ODM_RTL8192C|ODM_RTL8192D))
+	if(pDM_Odm->SupportICType & (ODM_RTL8192D))
 	{
 		if(pDM_Odm->AntDivType == HW_ANTDIV)
 			odm_HwAntDiv(pDM_Odm);
@@ -1340,7 +1340,7 @@ odm_CommonInfoSelfInit(
 #endif
 
 
-	if(pDM_Odm->SupportICType & (ODM_RTL8192C|ODM_RTL8192D))
+	if(pDM_Odm->SupportICType & (ODM_RTL8192D))
 	{
 #if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
 		pDM_Odm->AntDivType = HW_ANTDIV;
@@ -2025,15 +2025,6 @@ odm_DIG(
 	}
 
 	//1 Boundary Decision
-	if(pDM_Odm->SupportICType & (ODM_RTL8192C) &&(pDM_Odm->BoardType & (ODM_BOARD_EXT_LNA | ODM_BOARD_EXT_PA)))
-	{
-		{
-			dm_dig_max = DM_DIG_MAX_NIC_HP;
-			dm_dig_min = DM_DIG_MIN_NIC_HP;
-		}
-		DIG_MaxOfMin = DM_DIG_MAX_AP_HP;
-	}
-	else
 	{
 		{
 			if((pDM_Odm->SupportICType >= ODM_RTL8188E) && (pDM_Odm->SupportPlatform & (ODM_CE)))
@@ -2542,11 +2533,6 @@ odm_DynamicBBPowerSaving(
 	if(!(pDM_Odm->SupportPlatform & (ODM_CE)))
 		return;
 
-	//1 2.Power Saving for 92C
-	if((pDM_Odm->SupportICType == ODM_RTL8192C) &&(pDM_Odm->RFType == ODM_2T2R))
-	{
-		odm_1R_CCA(pDM_Odm);
-	}
 
 	// 20100628 Joseph: Turn off BB power save for 88CE because it makesthroughput unstable.
 	// 20100831 Joseph: Turn ON BB power save again after modifying AGC delay from 900ns ot 600ns.
@@ -3112,10 +3098,7 @@ odm_DynamicTxPowerNIC(
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 
-	if(pDM_Odm->SupportICType == ODM_RTL8192C)
-	{
-	}
-	else if(pDM_Odm->SupportICType == ODM_RTL8192D)
+	if(pDM_Odm->SupportICType == ODM_RTL8192D)
 	{
 	}
 	else if (pDM_Odm->SupportICType & ODM_RTL8188E)
@@ -3855,11 +3838,6 @@ odm_EdcaTurboCheckCE(
 			else
 			{
 				if(pDM_Odm->SupportInterface==ODM_ITRF_PCIE) {
-					if((ICType==ODM_RTL8192C)&&(pDM_Odm->RFType==ODM_2T2R)) {
-						EDCA_BE_UL = 0x60a42b;
-						EDCA_BE_DL = 0x60a42b;
-					}
-					else
 					{
 						EDCA_BE_UL = 0x6ea42b;
 						EDCA_BE_DL = 0x6ea42b;

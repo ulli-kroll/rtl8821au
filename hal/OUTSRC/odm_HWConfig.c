@@ -484,19 +484,6 @@ odm_RxPhyStatus92CSeries_Parsing(
 			//RT_DISP(FRX, RX_PHY_SS, ("RF-%d RXPWR=%x RSSI=%d\n", i, rx_pwr[i], RSSI));
 
 			//Modification for ext-LNA board
-			if(pDM_Odm->SupportICType&ODM_RTL8192C)
-			{
-				if(pDM_Odm->BoardType & (ODM_BOARD_EXT_LNA | ODM_BOARD_EXT_PA))
-				{
-					if((pPhyStaRpt->path_agc[i].trsw) == 1)
-						RSSI = (RSSI>94)?100:(RSSI +6);
-					else
-						RSSI = (RSSI<=16)?(RSSI>>3):(RSSI -16);
-
-					if((RSSI <= 34) && (RSSI >=4))
-						RSSI -= 4;
-				}
-			}
 
 			pPhyInfo->RxMIMOSignalStrength[i] =(u1Byte) RSSI;
 

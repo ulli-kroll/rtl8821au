@@ -1005,19 +1005,6 @@ odm_Process_RSSIForDM(
 	}
 	*/
 #if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-#if ((RTL8192D_SUPPORT == 1))
-	if(pDM_Odm->SupportICType & ODM_RTL8192C|ODM_RTL8192D)
-	{
-			if(pPktinfo->bPacketToSelf || pPktinfo->bPacketBeacon)
-			{
-				//if(pPktinfo->bPacketBeacon)
-				//{
-				//	DbgPrint("This is beacon, isCCKrate=%d\n", isCCKrate);
-				//}
-				ODM_AntselStatistics_88C(pDM_Odm, pPktinfo->StationID,  pPhyInfo->RxPWDBAll, isCCKrate);
-			}
-	}
-#endif
 	//-----------------Smart Antenna Debug Message------------------//
 #if (RTL8821A_SUPPORT == 1)
 	if(pDM_Odm->SupportICType == ODM_RTL8821)

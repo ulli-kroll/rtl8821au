@@ -44,12 +44,6 @@
 
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	#if(RTL8192DU_SUPPORT ==1)
-	#include "rtl8192d/Hal8192DUFWImg_CE.h"
-	#include "rtl8192d/Hal8192DUPHYImg_CE.h"
-	#include "rtl8192d/Hal8192DUMACImg_CE.h"
-	#endif
-
 #endif
 
 
@@ -66,11 +60,6 @@
 	//#include "hal_com.h"
 	#include "HalPhyRf.h"
 
-	#if (RTL8192D_SUPPORT==1)
-	#include  "rtl8192d/HalDMOutSrc8192D_CE.h"
-	#include  "rtl8192d_hal.h"
-	#endif
-
 	#if (RTL8812A_SUPPORT==1)
 		#include "rtl8812a/HalPhyRf_8812A.h"//for IQK,LCK,Power-tracking
 		#include "rtl8812a_hal.h"
@@ -86,13 +75,6 @@
 
 #include "odm_interface.h"
 #include "odm_reg.h"
-
-#if (RTL8192D_SUPPORT==1)
-#include "rtl8192d/odm_RTL8192D.h"
-#endif
-
-
-
 
 #if (RTL8812A_SUPPORT==1)
 #include "rtl8812a/HalHWImg8812A_MAC.h"

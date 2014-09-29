@@ -928,10 +928,6 @@ if ( *(pDM_Odm->mp_mode) != 1) {
 
 //2010.05.30 LukeLee: For CE platform, files in IC subfolders may not be included to be compiled,
 // so compile flags must be left here to prevent from compile errors
-#if (RTL8192D_SUPPORT == 1)
-        if(pDM_Odm->SupportICType==ODM_RTL8192D)
-                ODM_DynamicEarlyMode(pDM_Odm);
-#endif
         odm_DynamicBBPowerSaving(pDM_Odm);
 
 	}
@@ -2246,41 +2242,6 @@ odm_DIG(
 
 	//2 High power RSSI threshold
 
-#if (RTL8192D_SUPPORT==1)
-	if(pDM_Odm->SupportICType == ODM_RTL8192D)
-	{
-		//sherry  delete DualMacSmartConncurrent 20110517
-		if(*(pDM_Odm->pMacPhyMode) == ODM_DMSP)
-		{
-			ODM_Write_DIG_DMSP(pDM_Odm, (u1Byte)CurrentIGI);//ODM_Write_DIG_DMSP(pDM_Odm, pDM_DigTable->CurIGValue);
-			if(*(pDM_Odm->pbMasterOfDMSP))
-			{
-				pDM_DigTable->bMediaConnect_0 = pDM_Odm->bLinked;
-				pDM_DigTable->DIG_Dynamic_MIN_0 = DIG_Dynamic_MIN;
-			}
-			else
-			{
-				pDM_DigTable->bMediaConnect_1 = pDM_Odm->bLinked;
-				pDM_DigTable->DIG_Dynamic_MIN_1 = DIG_Dynamic_MIN;
-			}
-		}
-		else
-		{
-			ODM_Write_DIG(pDM_Odm, CurrentIGI);//ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue);
-			if(*(pDM_Odm->pBandType) == ODM_BAND_5G)
-			{
-				pDM_DigTable->bMediaConnect_0 = pDM_Odm->bLinked;
-				pDM_DigTable->DIG_Dynamic_MIN_0 = DIG_Dynamic_MIN;
-			}
-			else
-			{
-				pDM_DigTable->bMediaConnect_1 = pDM_Odm->bLinked;
-				pDM_DigTable->DIG_Dynamic_MIN_1 = DIG_Dynamic_MIN;
-			}
-		}
-	}
-	else
-#endif
 	{
 		if(pDM_Odm->bBtHsOperation)
 		{
@@ -2396,12 +2357,6 @@ odm_FalseAlarmCounterStatistics(
 
 		FalseAlmCnt->Cnt_CCA_all = FalseAlmCnt->Cnt_OFDM_CCA + FalseAlmCnt->Cnt_CCK_CCA;
 
-#if (RTL8192D_SUPPORT==1)
-		if(pDM_Odm->SupportICType == ODM_RTL8192D)
-			odm_ResetFACounter_92D(pDM_Odm);
-#endif
-
-
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Enter odm_FalseAlarmCounterStatistics\n"));
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Fast_Fsync=%d, Cnt_SB_Search_fail=%d\n",
 			FalseAlmCnt->Cnt_Fast_Fsync, FalseAlmCnt->Cnt_SB_Search_fail));
@@ -2477,11 +2432,6 @@ odm_CCKPacketDetectionThresh(
 			CurCCK_CCAThres = 0x40;
 	}
 
-#if (RTL8192D_SUPPORT==1)
-	if((pDM_Odm->SupportICType == ODM_RTL8192D)&&(*pDM_Odm->pBandType == ODM_BAND_2_4G))
-		ODM_Write_CCK_CCA_Thres_92D(pDM_Odm, CurCCK_CCAThres);
-	else
-#endif
 		ODM_Write_CCK_CCA_Thres(pDM_Odm, CurCCK_CCAThres);
 }
 
@@ -3352,11 +3302,7 @@ odm_RSSIMonitorCheckCE(
 
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)){
 						//printk("%s==> mac_id(%d),rssi(%d)\n",__FUNCTION__,psta->mac_id,psta->rssi_stat.UndecoratedSmoothedPWDB);
-						#if(RTL8192D_SUPPORT==1)
-						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) | ((Adapter->stapriv.asoc_sta_count+1) << 8));
-						#else
 						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
-						#endif
 					}
 				}
 
@@ -3374,12 +3320,6 @@ odm_RSSIMonitorCheckCE(
 			if(PWDB_rssi[i] != (0)){
 				if(pHalData->fw_ractrl == _TRUE)// Report every sta's RSSI to FW
 				{
-					#if(RTL8192D_SUPPORT==1)
-					if(pDM_Odm->SupportICType == ODM_RTL8192D){
-						FillH2CCmd92D(Adapter, H2C_RSSI_REPORT, 3, (u8 *)(&PWDB_rssi[i]));
-					}
-					#endif
-
 					#if((RTL8812A_SUPPORT==1)||(RTL8821A_SUPPORT==1))
 					if((pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821)){
 						PWDB_rssi[i] |= (UL_DL_STATE << 24);
@@ -3414,10 +3354,6 @@ odm_RSSIMonitorCheckCE(
 	}
 
 	FindMinimumRSSI(Adapter);//get pdmpriv->MinUndecoratedPWDBForDM
-
-	#if(RTL8192D_SUPPORT==1)
-	FindMinimumRSSI_Dmsp(Adapter);
-	#endif
 
 	ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
 #endif//if (DM_ODM_SUPPORT_TYPE == ODM_CE)
@@ -3578,8 +3514,6 @@ odm_TXPowerTrackingCheckCE(
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PADAPTER	Adapter = pDM_Odm->Adapter;
-	#if (RTL8192D_SUPPORT==1)
-	#endif
 
 	#if( ((RTL8812A_SUPPORT==1) ||  (RTL8821A_SUPPORT==1) ))
 	if(!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))

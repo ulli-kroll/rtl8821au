@@ -2624,34 +2624,6 @@ int rtw_handle_dualmac(_adapter *adapter, bool init)
 	int status = _SUCCESS;
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 
-	if(adapter->chip_type != RTL8192D)
-		goto exit;
-
-	if (init) {
-		#if 0
-		/* For SMSP on 92DU-VC, driver do not probe another Interface. */
-		if(dvobj->NumInterfaces == 2 && dvobj->InterfaceNumber != 0 &&
-			adapter->registrypriv.mac_phy_mode == 1) {
-			DBG_871X("%s(): Do not init another USB Interface because SMSP\n",__FUNCTION__);
-			status = _FAIL;
-			goto exit;
-		}
-		#endif
-
-		if (pbuddy_padapter == NULL) {
-			pbuddy_padapter = adapter;
-			DBG_871X("%s(): pbuddy_padapter == NULL, Set pbuddy_padapter\n",__FUNCTION__);
-		} else {
-			adapter->pbuddy_adapter = pbuddy_padapter;
-			pbuddy_padapter->pbuddy_adapter = adapter;
-			// clear global value
-			pbuddy_padapter = NULL;
-			DBG_871X("%s(): pbuddy_padapter exist, Exchange Information\n",__FUNCTION__);
-		}
-	}else {
-		pbuddy_padapter = NULL;
-	}
-exit:
 	return status;
 }
 

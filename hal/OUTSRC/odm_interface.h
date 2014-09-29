@@ -71,7 +71,6 @@ ODM_REG(DIG,_pDM_Odm)
 #define _cat(_name, _ic_type, _func)									\
 	( 															\
 		((_ic_type) & ODM_RTL8192C)? _func##_ic(_name, _8192C):		\
-		((_ic_type) & ODM_RTL8192D)? _func##_ic(_name, _8192D):		\
 		((_ic_type) & ODM_RTL8192S)? _func##_ic(_name, _8192S):		\
 		((_ic_type) & ODM_RTL8723A)? _func##_ic(_name, _8723A):		\
 		((_ic_type) & ODM_RTL8188E)? _func##_ic(_name, _8188E):		\

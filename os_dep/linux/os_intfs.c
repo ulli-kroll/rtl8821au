@@ -282,7 +282,6 @@ static int netdev_close(struct net_device *ndev);
 
 #ifdef CONFIG_PROC_DEBUG
 #define RTL8192C_PROC_NAME "rtl819xC"
-#define RTL8192D_PROC_NAME "rtl819xD"
 static char rtw_proc_name[IFNAMSIZ];
 static struct proc_dir_entry *rtw_proc;
 static int	rtw_proc_cnt;
@@ -300,8 +299,6 @@ void rtw_proc_init_one(struct net_device *ndev)
 	if (rtw_proc == NULL) {
 		if (padapter->chip_type == RTL8188C_8192C) {
 			memcpy(rtw_proc_name, RTL8192C_PROC_NAME, sizeof(RTL8192C_PROC_NAME));
-		} else if (padapter->chip_type == RTL8192D) {
-			memcpy(rtw_proc_name, RTL8192D_PROC_NAME, sizeof(RTL8192D_PROC_NAME));
 		} else if (padapter->chip_type == RTL8723A) {
 			memcpy(rtw_proc_name, RTW_PROC_NAME, sizeof(RTW_PROC_NAME));
 		} else if (padapter->chip_type == RTL8188E) {

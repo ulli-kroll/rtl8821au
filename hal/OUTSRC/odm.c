@@ -791,14 +791,6 @@ ODM_DMInit(
 
 //#if (MP_DRIVER != 1)
 	if ( *(pDM_Odm->mp_mode) != 1) {
-		if(pDM_Odm->SupportICType & (ODM_RTL8192D))
-		{
-			if(pDM_Odm->AntDivType == HW_ANTDIV)
-			odm_InitHybridAntDiv(pDM_Odm);
-			else
-			odm_SwAntDivInit(pDM_Odm);
-		}
-		else
 			odm_InitHybridAntDiv(pDM_Odm);
 	}
 //#endif
@@ -875,14 +867,6 @@ ODM_DMWatchdog(
 
 //#if (MP_DRIVER != 1)
 if ( *(pDM_Odm->mp_mode) != 1) {
-	if(pDM_Odm->SupportICType & (ODM_RTL8192D))
-	{
-		if(pDM_Odm->AntDivType == HW_ANTDIV)
-			odm_HwAntDiv(pDM_Odm);
-		else
-			odm_SwAntDivChkAntSwitch(pDM_Odm, SWAW_STEP_PEAK);
-	}
-	else
 		odm_HwAntDiv(pDM_Odm);
 }
 //#endif
@@ -1336,14 +1320,6 @@ odm_CommonInfoSelfInit(
 #endif
 
 
-	if(pDM_Odm->SupportICType & (ODM_RTL8192D))
-	{
-#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-		pDM_Odm->AntDivType = HW_ANTDIV;
-#elif (defined(CONFIG_SW_ANTENNA_DIVERSITY))
-		pDM_Odm->AntDivType = SW_ANTDIV;
-#endif
-	}
 	pDM_Odm->TxRate = 0xFF;
 	ODM_InitDebugSetting(pDM_Odm);
 }
@@ -1419,19 +1395,6 @@ odm_CmnInfoHook_Debug(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pBandWidth=%d\n",*(pDM_Odm->pBandWidth)) );
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pChannel=%d\n",*(pDM_Odm->pChannel)) );
 
-	if(pDM_Odm->SupportICType==ODM_RTL8192D)
-	{
-		if(pDM_Odm->pBandType)
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pBandType=%d\n",*(pDM_Odm->pBandType)) );
-		if(pDM_Odm->pMacPhyMode)
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pMacPhyMode=%d\n",*(pDM_Odm->pMacPhyMode)) );
-		if(pDM_Odm->pBuddyAdapter)
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbGetValueFromOtherMac=%d\n",*(pDM_Odm->pbGetValueFromOtherMac)) );
-		if(pDM_Odm->pBuddyAdapter)
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pBuddyAdapter=%p\n",*(pDM_Odm->pBuddyAdapter)) );
-		if(pDM_Odm->pbMasterOfDMSP)
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbMasterOfDMSP=%d\n",*(pDM_Odm->pbMasterOfDMSP)) );
-	}
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbScanInProcess=%d\n",*(pDM_Odm->pbScanInProcess)) );
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbPowerSaving=%d\n",*(pDM_Odm->pbPowerSaving)) );
 
@@ -1980,40 +1943,6 @@ odm_DIG(
 	}
 
 	//add by Neil Chen to avoid PSD is processing
-	if(pDM_Odm->SupportICType == ODM_RTL8192D)
-	{
-		if(*(pDM_Odm->pMacPhyMode) == ODM_DMSP)
-		{
-			if(*(pDM_Odm->pbMasterOfDMSP))
-			{
-				DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
-				FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == FALSE);
-				FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == TRUE);
-			}
-			else
-			{
-				DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_1;
-				FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_1 == FALSE);
-				FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_1 == TRUE);
-			}
-		}
-		else
-		{
-			if(*(pDM_Odm->pBandType) == ODM_BAND_5G)
-			{
-				DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
-				FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == FALSE);
-				FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == TRUE);
-			}
-			else
-			{
-				DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_1;
-				FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_1 == FALSE);
-				FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_1 == TRUE);
-			}
-		}
-	}
-	else
 	{
 		DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
 		FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == FALSE);
@@ -2173,16 +2102,6 @@ odm_DIG(
 		}
 		else
 		{
-			if(pDM_Odm->SupportICType == ODM_RTL8192D)
-			{
-				if(pFalseAlmCnt->Cnt_all > DM_DIG_FA_TH2_92D)
-					CurrentIGI = CurrentIGI + 4;//pDM_DigTable->CurIGValue = pDM_DigTable->PreIGValue+2;
-				else if (pFalseAlmCnt->Cnt_all > DM_DIG_FA_TH1_92D)
-					CurrentIGI = CurrentIGI + 2; //pDM_DigTable->CurIGValue = pDM_DigTable->PreIGValue+1;
-				else if(pFalseAlmCnt->Cnt_all < DM_DIG_FA_TH0_92D)
-					CurrentIGI = CurrentIGI - 2;//pDM_DigTable->CurIGValue =pDM_DigTable->PreIGValue-1;
-			}
-			else
 			{
 				//FA for Combo IC--NeilChen--2012--09--28
 				{
@@ -3048,10 +2967,7 @@ odm_DynamicTxPowerNIC(
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 
-	if(pDM_Odm->SupportICType == ODM_RTL8192D)
-	{
-	}
-	else if (pDM_Odm->SupportICType & ODM_RTL8188E)
+	if (pDM_Odm->SupportICType & ODM_RTL8188E)
 	{
 		// Add Later.
 	}
@@ -3257,9 +3173,7 @@ odm_RSSIMonitorCheckCE(
 
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
 
-						if(pDM_Odm->SupportICType == ODM_RTL8192D)
-							PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) | ((Adapter->stapriv.asoc_sta_count+1) << 8));
-						else if ((pDM_Odm->SupportICType == ODM_RTL8192E)||(pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821))
+						if ((pDM_Odm->SupportICType == ODM_RTL8192E)||(pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821))
 							PWDB_rssi[sta_cnt++] = (((u8)(psta->mac_id&0xFF)) | ((psta->rssi_stat.UndecoratedSmoothedPWDB&0x7F)<<16) );
 						else
 							PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
@@ -3755,21 +3669,6 @@ odm_EdcaTurboCheckCE(
 
 		if ((pDM_Odm->DM_EDCA_Table.prv_traffic_idx != trafficIndex) || (!pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA))
 		{
-			if(ICType==ODM_RTL8192D)
-			{
-				// Single PHY
-				if(pDM_Odm->RFType==ODM_2T2R)
-				{
-					EDCA_BE_UL = 0x60a42b;    //0x5ea42b;
-					EDCA_BE_DL = 0x60a42b;    //0x5ea42b;
-				}
-				else
-				{
-					EDCA_BE_UL = 0x6ea42b;
-					EDCA_BE_DL = 0x6ea42b;
-				}
-			}
-			else
 			{
 				if(pDM_Odm->SupportInterface==ODM_ITRF_PCIE) {
 					{
@@ -3779,14 +3678,8 @@ odm_EdcaTurboCheckCE(
 				}
 			}
 
-			//92D txop can't be set to 0x3e for cisco1250
-			if((ICType!=ODM_RTL8192D) && (IOTPeer== HT_IOT_PEER_CISCO) &&(WirelessMode==ODM_WM_N24G))
-			{
-				EDCA_BE_DL = edca_setting_DL[IOTPeer];
-				EDCA_BE_UL = edca_setting_UL[IOTPeer];
-			}
 			//merge from 92s_92c_merge temp brunch v2445    20120215
-			else if((IOTPeer == HT_IOT_PEER_CISCO) &&((WirelessMode==ODM_WM_G)||(WirelessMode==(ODM_WM_B|ODM_WM_G))||(WirelessMode==ODM_WM_A)||(WirelessMode==ODM_WM_B)))
+			if((IOTPeer == HT_IOT_PEER_CISCO) &&((WirelessMode==ODM_WM_G)||(WirelessMode==(ODM_WM_B|ODM_WM_G))||(WirelessMode==ODM_WM_A)||(WirelessMode==ODM_WM_B)))
 			{
 				EDCA_BE_DL = edca_setting_DL_GMode[IOTPeer];
 			}

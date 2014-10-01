@@ -376,7 +376,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 					("Temperature(%d) higher than PG value(%d)\n", ThermalValue, pHalData->EEPROMThermalMeter));
 
-				if (pDM_Odm->SupportICType == ODM_RTL8188E || pDM_Odm->SupportICType == ODM_RTL8192E)
+				if (pDM_Odm->SupportICType == ODM_RTL8192E)
 				{
 					for (p = ODM_RF_PATH_A; p < c.RfPathCount; p++)
 						(*c.ODM_TxPwrTrackSetPwr)(pDM_Odm, TXAGC, p, 0);

@@ -826,17 +826,6 @@ ODM_DMWatchdog(
 	odm_RSSIMonitorCheck(pDM_Odm);
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	if( 	(pDM_Odm->Adapter->pwrctrlpriv.pwr_mode != PS_MODE_ACTIVE) &&// in LPS mode
-		(
-			(pDM_Odm->SupportICType & (ODM_RTL8188E) &&((pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)) )
-	  	)
-	)
-	{
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("----Step1: odm_DIG is in LPS mode\n"));
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("---Step2: 8723AS is in LPS mode\n"));
-			odm_DIGbyRSSI_LPS(pDM_Odm);
-	}
-	else
 #endif
 	{
 		odm_DIG(pDM_Odm);
@@ -1952,9 +1941,6 @@ odm_DIG(
 	//1 Boundary Decision
 	{
 		{
-			if((pDM_Odm->SupportICType >= ODM_RTL8188E) && (pDM_Odm->SupportPlatform & (ODM_CE)))
-				dm_dig_max = 0x5A;
-			else
 				dm_dig_max = DM_DIG_MAX_NIC;
 
 			if(pDM_Odm->SupportICType != ODM_RTL8821)
@@ -2966,16 +2952,6 @@ odm_DynamicTxPowerNIC(
 		return;
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
-
-	if (pDM_Odm->SupportICType & ODM_RTL8188E)
-	{
-		// Add Later.
-	}
-	else if (pDM_Odm->SupportICType == ODM_RTL8188E)
-	{
-		// ???
-		// This part need to be redefined.
-	}
 #endif
 }
 
@@ -3366,8 +3342,7 @@ odm_TXPowerTrackingThermalMeterInit(
 	pDM_Odm->RFCalibrateInfo.ThermalValue_LCK = pHalData->EEPROMThermalMeter;
 
 	// The index of "0 dB" in SwingTable.
-	if (pDM_Odm->SupportICType == ODM_RTL8188E ||
-		pDM_Odm->SupportICType == ODM_RTL8192E)
+	if (pDM_Odm->SupportICType == ODM_RTL8192E)
 	{
 		pDM_Odm->DefaultOfdmIndex = 30;
 		pDM_Odm->DefaultCckIndex = 20;

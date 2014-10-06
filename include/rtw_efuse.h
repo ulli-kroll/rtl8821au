@@ -77,8 +77,6 @@ typedef struct PG_PKT_STRUCT_A{
 }PGPKT_STRUCT,*PPGPKT_STRUCT;
 
 /*------------------------------Define structure----------------------------*/
-typedef struct _EFUSE_HAL{
-}EFUSE_HAL, *PEFUSE_HAL;
 
 
 /*------------------------Export global variable----------------------------*/

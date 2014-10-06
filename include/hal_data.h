@@ -271,7 +271,6 @@ typedef struct hal_com_data
 	uint8_t				EfuseUsedPercentage;
 	u16				EfuseUsedBytes;
 	//uint8_t				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
-	EFUSE_HAL		EfuseHal;
 
 	//---------------------------------------------------------------------------------//
 	//3 [2.4G]

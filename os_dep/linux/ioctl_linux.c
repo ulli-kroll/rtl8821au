@@ -2947,9 +2947,6 @@ static int rtw_cta_test_start(struct net_device *ndev,
 	return ret;
 }
 
-
-extern int rtw_change_ifname(_adapter *padapter, const char *ifname);
-
 #if 0
 void mac_reg_dump(_adapter *padapter)
 {

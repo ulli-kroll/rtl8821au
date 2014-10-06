@@ -1456,8 +1456,15 @@ enum{
 		LDOE25_SHIFT						= 28 ,
 	};
 
-static VOID
-Hal_EfusePowerSwitch8812A(
+/*
+ * ULLI need to refactoring for rtlwifi-lib
+ * static bool _rt8812au_phy_set_rf_power_state(struct ieee80211_hw *hw,
+ * 					    enum rf_pwrstate rfpwr_state)
+ *
+ */
+
+VOID
+rtl8812_EfusePowerSwitch(
 	IN	PADAPTER	pAdapter,
 	IN	uint8_t		bWrite,
 	IN	uint8_t		PwrState)
@@ -1511,15 +1518,6 @@ Hal_EfusePowerSwitch8812A(
 			rtw_write8(pAdapter, EFUSE_TEST+3, (tempval & 0x7F));
 		}
 	}
-}
-
-VOID
-rtl8812_EfusePowerSwitch(
-	IN	PADAPTER	pAdapter,
-	IN	uint8_t		bWrite,
-	IN	uint8_t		PwrState)
-{
-	Hal_EfusePowerSwitch8812A(pAdapter, bWrite, PwrState);
 }
 
 static BOOLEAN

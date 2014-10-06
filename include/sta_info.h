@@ -207,11 +207,6 @@ struct sta_info {
 
 	uint8_t keep_alive_trycnt;
 
-#ifdef CONFIG_AUTO_AP_MODE
-	uint8_t isrc; //this device is rc
-	u16 pid; // pairing id
-#endif
-
 #endif	// CONFIG_AP_MODE
 
 	//for DM

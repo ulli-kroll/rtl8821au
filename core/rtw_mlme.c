@@ -1774,16 +1774,11 @@ _func_enter_;
 		psta = rtw_get_stainfo(&adapter->stapriv, pstassoc->macaddr);
 		if (psta)
 		{
-#ifdef CONFIG_AUTO_AP_MODE
-			rtw_stassoc_hw_rpt(adapter, psta);
-			goto exit;
-#else //CONFIG_AUTO_AP_MODE
 			//bss_cap_update_on_sta_join(adapter, psta);
 			//sta_info_update(adapter, psta);
 			ap_sta_info_defer_update(adapter, psta);
 
 			rtw_stassoc_hw_rpt(adapter,psta);
-#endif //CONFIG_AUTO_AP_MODE
 		}
 
 		goto exit;

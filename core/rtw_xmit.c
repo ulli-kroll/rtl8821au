@@ -585,10 +585,6 @@ static void update_attrib_phy_info(struct pkt_attrib *pattrib, struct sta_info *
 
 	pattrib->retry_ctrl = _FALSE;
 
-#ifdef CONFIG_AUTO_AP_MODE
-	if(psta->isrc && psta->pid>0)
-		pattrib->pctrl = _TRUE;
-#endif
 
 }
 

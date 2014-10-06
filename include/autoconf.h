@@ -105,7 +105,6 @@
 	#define CONFIG_FIND_BEST_CHANNEL	1
 	//#define CONFIG_NO_WIRELESS_HANDLERS	1
 
-	//#define	CONFIG_AUTO_AP_MODE
 
 #endif
 

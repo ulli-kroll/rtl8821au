@@ -141,9 +141,6 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 		    (pattrib->ether_type != 0x0806) &&
 		    (pattrib->ether_type != 0x88b4) &&
 		    (pattrib->dhcp_pkt != 1)
-#ifdef CONFIG_AUTO_AP_MODE
-		    && (pattrib->pctrl != _TRUE)
-#endif
 		)
 		{
 			//Non EAP & ARP & DHCP type data packet

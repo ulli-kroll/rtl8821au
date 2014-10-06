@@ -60,10 +60,6 @@ void start_ap_mode(_adapter *padapter);
 void stop_ap_mode(_adapter *padapter);
 #endif
 
-#ifdef CONFIG_AUTO_AP_MODE
-extern void rtw_start_auto_ap(_adapter *adapter);
-#endif //CONFIG_AUTO_AP_MODE
-
 #endif //end of CONFIG_AP_MODE
 
 #endif

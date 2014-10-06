@@ -286,8 +286,6 @@ typedef enum _HARDWARE_TYPE{
 	HARDWARE_TYPE_MAX,
 }HARDWARE_TYPE;
 
-#define IS_NEW_GENERATION_IC(_Adapter)	(((PADAPTER)_Adapter)->HardwareType >=HARDWARE_TYPE_RTL8192EE)
-
 // RTL8812 Series
 #define IS_HARDWARE_TYPE_8812E(_Adapter)		(((PADAPTER)_Adapter)->HardwareType==HARDWARE_TYPE_RTL8812E)
 #define IS_HARDWARE_TYPE_8812AU(_Adapter)	(((PADAPTER)_Adapter)->HardwareType==HARDWARE_TYPE_RTL8812AU)

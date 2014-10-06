@@ -387,7 +387,7 @@ struct _ADAPTER{
 
 	u32	setband;
 	PVOID			HalData;
-	struct hal_ops	HalFunc;
+	struct hal_ops	*HalFunc;
 
 	int32_t	bDriverStopped;
 	int32_t	bSurpriseRemoved;

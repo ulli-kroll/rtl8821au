@@ -7090,7 +7090,7 @@ uint8_t setkey_hdl(_adapter *padapter, uint8_t *pbuf)
 	write_cam(padapter, pparm->keyid, ctrl, null_sta, pparm->key);
 
 	//allow multicast packets to driver
-        padapter->HalFunc.SetHwRegHandler(padapter, HW_VAR_ON_RCR_AM, null_addr);
+        padapter->HalFunc->SetHwRegHandler(padapter, HW_VAR_ON_RCR_AM, null_addr);
 
 	return H2C_SUCCESS;
 }

@@ -117,7 +117,7 @@ Efuse_PowerSwitch(
 	IN	uint8_t		bWrite,
 	IN	uint8_t		PwrState)
 {
-	pAdapter->HalFunc.EfusePowerSwitch(pAdapter, bWrite, PwrState);
+	pAdapter->HalFunc->EfusePowerSwitch(pAdapter, bWrite, PwrState);
 }
 
 
@@ -144,7 +144,7 @@ Efuse_GetCurrentSize(
 {
 	uint16_t ret=0;
 
-	ret = pAdapter->HalFunc.EfuseGetCurrentSize(pAdapter, efuseType);
+	ret = pAdapter->HalFunc->EfuseGetCurrentSize(pAdapter, efuseType);
 
 	return ret;
 }
@@ -248,7 +248,7 @@ efuse_ReadEFuse(
 	uint8_t      	*pbuf
 	)
 {
-	Adapter->HalFunc.ReadEFuse(Adapter, efuseType, _offset, _size_byte, pbuf);
+	Adapter->HalFunc->ReadEFuse(Adapter, efuseType, _offset, _size_byte, pbuf);
 }
 
 VOID
@@ -259,7 +259,7 @@ EFUSE_GetEfuseDefinition(
 	OUT		void		*pOut
 	)
 {
-	pAdapter->HalFunc.EFUSEGetEfuseDefinition(pAdapter, efuseType, type, pOut);
+	pAdapter->HalFunc->EFUSEGetEfuseDefinition(pAdapter, efuseType, type, pOut);
 }
 
 /*-----------------------------------------------------------------------------
@@ -531,7 +531,7 @@ Efuse_PgPacketRead(	IN	PADAPTER	pAdapter,
 {
 	int	ret=0;
 
-	ret =  pAdapter->HalFunc.Efuse_PgPacketRead(pAdapter, offset, data);
+	ret =  pAdapter->HalFunc->Efuse_PgPacketRead(pAdapter, offset, data);
 
 	return ret;
 }
@@ -544,7 +544,7 @@ Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 {
 	int ret;
 
-	ret =  pAdapter->HalFunc.Efuse_PgPacketWrite(pAdapter, offset, word_en, data);
+	ret =  pAdapter->HalFunc->Efuse_PgPacketWrite(pAdapter, offset, word_en, data);
 
 	return ret;
 }
@@ -558,7 +558,7 @@ Efuse_PgPacketWrite_BT(IN	PADAPTER	pAdapter,
 {
 	int ret;
 
-	ret =  pAdapter->HalFunc.Efuse_PgPacketWrite_BT(pAdapter, offset, word_en, data);
+	ret =  pAdapter->HalFunc->Efuse_PgPacketWrite_BT(pAdapter, offset, word_en, data);
 
 	return ret;
 }
@@ -616,7 +616,7 @@ Efuse_WordEnableDataWrite(	IN	PADAPTER	pAdapter,
 {
 	uint8_t	ret=0;
 
-	ret =  pAdapter->HalFunc.Efuse_WordEnableDataWrite(pAdapter, efuse_addr, word_en, data);
+	ret =  pAdapter->HalFunc->Efuse_WordEnableDataWrite(pAdapter, efuse_addr, word_en, data);
 
 	return ret;
 }

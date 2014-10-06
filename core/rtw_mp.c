@@ -27,13 +27,6 @@
 
 #ifdef CONFIG_MP_INCLUDED
 
-
-uint32_t _read_rfreg(struct _ADAPTER *padapter, uint8_t rfpath, uint32_t addr,
-	uint32_t bitmask)
-{
-	return rtw_hal_read_rfreg(padapter, rfpath, addr, bitmask);
-}
-
 void _write_rfreg(struct _ADAPTER *padapter, uint8_t rfpath, uint32_t addr, uint32_t	 bitmask, uint32_t val)
 {
 	rtw_hal_write_rfreg(padapter, rfpath, addr, bitmask, val);
@@ -41,7 +34,7 @@ void _write_rfreg(struct _ADAPTER *padapter, uint8_t rfpath, uint32_t addr, uint
 
 uint32_t read_rfreg(struct _ADAPTER *padapter, uint8_t rfpath, uint32_t	addr)
 {
-	return _read_rfreg(padapter, rfpath, addr, bRFRegOffsetMask);
+	return rtw_hal_read_rfreg(padapter, rfpath, addr, bRFRegOffsetMask);
 }
 
 void write_rfreg(struct _ADAPTER *padapter, uint8_t rfpath, uint32_t addr, uint32_t	val)

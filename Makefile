@@ -30,12 +30,10 @@ CONFIG_DRVEXT_MODULE = n
 
 export TopDIR ?= $(shell pwd)
 
-HCI_NAME = usb
-
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/linux/os_intfs.o \
-			os_dep/linux/$(HCI_NAME)_intf.o \
-			os_dep/linux/$(HCI_NAME)_ops_linux.o \
+			os_dep/linux/usb_intf.o \
+			os_dep/linux/usb_ops_linux.o \
 			os_dep/linux/ioctl_linux.o \
 			os_dep/linux/xmit_linux.o \
 			os_dep/linux/mlme_linux.o \
@@ -46,7 +44,7 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com.o \
 			hal/hal_com_phycfg.o \
 			hal/hal_phy.o \
-			hal/led/hal_$(HCI_NAME)_led.o
+			hal/led/hal_usb_led.o
 
 _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
 		hal/OUTSRC/odm_interface.o\
@@ -73,12 +71,12 @@ _HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
 			hal/$(RTL871X)/$(RTL871X)_dm.o \
 			hal/$(RTL871X)/$(RTL871X)_rxdesc.o \
 			hal/$(RTL871X)/$(RTL871X)_cmd.o \
-			hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_halinit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_led.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_xmit.o \
-			hal/$(RTL871X)/$(HCI_NAME)/rtl$(MODULE_NAME)_recv.o
+			hal/$(RTL871X)/usb/usb_halinit.o \
+			hal/$(RTL871X)/usb/rtl$(MODULE_NAME)_led.o \
+			hal/$(RTL871X)/usb/rtl$(MODULE_NAME)_xmit.o \
+			hal/$(RTL871X)/usb/rtl$(MODULE_NAME)_recv.o
 
-_HAL_INTFS_FILES += hal/$(RTL871X)/$(HCI_NAME)/$(HCI_NAME)_ops_linux.o
+_HAL_INTFS_FILES += hal/$(RTL871X)/usb/usb_ops_linux.o
 
 ifeq ($(CONFIG_RTL8812A), y)
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
@@ -184,14 +182,6 @@ modules:
 
 strip:
 	$(CROSS_COMPILE)strip $(MODULE_NAME).ko --strip-unneeded
-
-install:
-	install -p -m 644 $(MODULE_NAME).ko  $(MODDESTDIR)
-	/sbin/depmod -a ${KVER}
-
-uninstall:
-	rm -f $(MODDESTDIR)/$(MODULE_NAME).ko
-	/sbin/depmod -a ${KVER}
 
 config_r:
 	@echo "make config"

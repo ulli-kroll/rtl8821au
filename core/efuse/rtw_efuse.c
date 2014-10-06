@@ -93,33 +93,6 @@ Efuse_Write1ByteToFakeContent(
 	return _TRUE;
 }
 
-/*-----------------------------------------------------------------------------
- * Function:	Efuse_PowerSwitch
- *
- * Overview:	When we want to enable write operation, we should change to
- *				pwr on state. When we stop write, we should switch to 500k mode
- *				and disable LDO 2.5V.
- *
- * Input:       NONE
- *
- * Output:      NONE
- *
- * Return:      NONE
- *
- * Revised History:
- * When			Who		Remark
- * 11/17/2008 	MHC		Create Version 0.
- *
- *---------------------------------------------------------------------------*/
-VOID
-Efuse_PowerSwitch(
-	IN	PADAPTER	pAdapter,
-	IN	uint8_t		bWrite,
-	IN	uint8_t		PwrState)
-{
-	pAdapter->HalFunc->EfusePowerSwitch(pAdapter, bWrite, PwrState);
-}
-
 
 /*-----------------------------------------------------------------------------
  * Function:	efuse_GetCurrentSize
@@ -654,7 +627,7 @@ uint8_t rtw_efuse_access(PADAPTER padapter, uint8_t bWrite, uint16_t start_addr,
 	} else
 		rw8 = &efuse_read8;
 
-	Efuse_PowerSwitch(padapter, bWrite, _TRUE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, bWrite, _TRUE);
 
 	// e-fuse one byte read / write
 	for (i = 0; i < cnts; i++) {
@@ -667,7 +640,7 @@ uint8_t rtw_efuse_access(PADAPTER padapter, uint8_t bWrite, uint16_t start_addr,
 		if (_FAIL == res) break;
 	}
 
-	Efuse_PowerSwitch(padapter, bWrite, _FALSE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, bWrite, _FALSE);
 
 	return res;
 }
@@ -681,9 +654,9 @@ uint16_t efuse_GetMaxSize(PADAPTER padapter)
 //------------------------------------------------------------------------------
 uint8_t efuse_GetCurrentSize(PADAPTER padapter, uint16_t *size)
 {
-	Efuse_PowerSwitch(padapter, _FALSE, _TRUE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
 	*size = Efuse_GetCurrentSize(padapter, EFUSE_WIFI);
-	Efuse_PowerSwitch(padapter, _FALSE, _FALSE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _FALSE);
 
 	return _SUCCESS;
 }
@@ -697,11 +670,11 @@ uint8_t rtw_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
 
-	Efuse_PowerSwitch(padapter, _FALSE, _TRUE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
 
 	efuse_ReadEFuse(padapter, EFUSE_WIFI, addr, cnts, data);
 
-	Efuse_PowerSwitch(padapter, _FALSE, _FALSE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _FALSE);
 
 	return _SUCCESS;
 }
@@ -715,11 +688,11 @@ uint8_t rtw_BT_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, u
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
 
-	Efuse_PowerSwitch(padapter, _FALSE, _TRUE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
 
 	efuse_ReadEFuse(padapter, EFUSE_BT, addr, cnts, data);
 
-	Efuse_PowerSwitch(padapter, _FALSE, _FALSE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _FALSE);
 
 	return _SUCCESS;
 }
@@ -746,7 +719,7 @@ uint8_t rtw_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, uin
 	ret = rtw_efuse_map_read(padapter, 0, mapLen, map);
 	if (ret == _FAIL) goto exit;
 
-	Efuse_PowerSwitch(padapter, _TRUE, _TRUE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _TRUE, _TRUE);
 
 	offset = (addr >> 3);
 	word_en = 0xF;
@@ -811,7 +784,7 @@ uint8_t rtw_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, uin
 		memset(newdata, 0xFF, PGPKT_DATA_SIZE);
 	} while (1);
 
-	Efuse_PowerSwitch(padapter, _TRUE, _FALSE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _TRUE, _FALSE);
 
 exit:
 	/* ULLI check usage of mapLen */
@@ -844,7 +817,7 @@ uint8_t rtw_BT_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, 
 	ret = rtw_BT_efuse_map_read(padapter, 0, mapLen, map);
 	if (ret == _FAIL) goto exit;
 
-	Efuse_PowerSwitch(padapter, _TRUE, _TRUE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _TRUE, _TRUE);
 
 	offset = (addr >> 3);
 	word_en = 0xF;
@@ -912,7 +885,7 @@ uint8_t rtw_BT_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, 
 		memset(newdata, 0xFF, PGPKT_DATA_SIZE);
 	} while (1);
 
-	Efuse_PowerSwitch(padapter, _TRUE, _FALSE);
+	padapter->HalFunc->EfusePowerSwitch(padapter, _TRUE, _FALSE);
 
 exit:
 	/* ULLI check usage of mapLen */
@@ -939,19 +912,19 @@ exit:
  *---------------------------------------------------------------------------*/
 static VOID
 Efuse_ReadAllMap(
-	IN		PADAPTER	pAdapter,
+	IN		PADAPTER	padapter,
 	IN		uint8_t		efuseType,
 	IN OUT	uint8_t		*Efuse)
 {
 	uint16_t	mapLen=0;
 
-	Efuse_PowerSwitch(pAdapter,_FALSE, _TRUE);
+	padapter->HalFunc->EfusePowerSwitch(padapter,_FALSE, _TRUE);
 
-	EFUSE_GetEfuseDefinition(pAdapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	EFUSE_GetEfuseDefinition(padapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
-	efuse_ReadEFuse(pAdapter, efuseType, 0, mapLen, Efuse);
+	efuse_ReadEFuse(padapter, efuseType, 0, mapLen, Efuse);
 
-	Efuse_PowerSwitch(pAdapter,_FALSE, _FALSE);
+	padapter->HalFunc->EfusePowerSwitch(padapter,_FALSE, _FALSE);
 }
 
 /*-----------------------------------------------------------------------------
@@ -974,11 +947,11 @@ Efuse_ReadAllMap(
  *---------------------------------------------------------------------------*/
 static VOID
 efuse_ShadowRead1Byte(
-	IN	PADAPTER	pAdapter,
+	IN	PADAPTER	padapter,
 	IN	uint16_t		Offset,
 	IN OUT	uint8_t		*Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
 
@@ -987,11 +960,11 @@ efuse_ShadowRead1Byte(
 //---------------Read Two Bytes
 static VOID
 efuse_ShadowRead2Byte(
-	IN	PADAPTER	pAdapter,
+	IN	PADAPTER	padapter,
 	IN	uint16_t		Offset,
 	IN OUT	uint16_t		*Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+1]<<8;
@@ -1001,11 +974,11 @@ efuse_ShadowRead2Byte(
 //---------------Read Four Bytes
 static VOID
 efuse_ShadowRead4Byte(
-	IN	PADAPTER	pAdapter,
+	IN	PADAPTER	padapter,
 	IN	uint16_t		Offset,
 	IN OUT	uint32_t		*Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+1]<<8;
@@ -1036,17 +1009,17 @@ efuse_ShadowRead4Byte(
 #ifdef PLATFORM
 static VOID
 efuse_ShadowWrite1Byte(
-	IN	PADAPTER	pAdapter,
+	IN	PADAPTER	padapter,
 	IN	uint16_t		Offset,
 	IN 	uint8_t		Value);
 #endif //PLATFORM
 static VOID
 efuse_ShadowWrite1Byte(
-	IN	PADAPTER	pAdapter,
+	IN	PADAPTER	padapter,
 	IN	uint16_t		Offset,
 	IN 	uint8_t		Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	pEEPROM->efuse_eeprom_data[Offset] = Value;
 
@@ -1055,11 +1028,11 @@ efuse_ShadowWrite1Byte(
 //---------------Write Two Bytes
 static VOID
 efuse_ShadowWrite2Byte(
-	IN	PADAPTER	pAdapter,
+	IN	PADAPTER	padapter,
 	IN	uint16_t		Offset,
 	IN 	uint16_t		Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	pEEPROM->efuse_eeprom_data[Offset] = Value&0x00FF;
 	pEEPROM->efuse_eeprom_data[Offset+1] = Value>>8;
@@ -1069,11 +1042,11 @@ efuse_ShadowWrite2Byte(
 //---------------Write Four Bytes
 static VOID
 efuse_ShadowWrite4Byte(
-	IN	PADAPTER	pAdapter,
+	IN	PADAPTER	padapter,
 	IN	uint16_t		Offset,
 	IN	uint32_t		Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	pEEPROM->efuse_eeprom_data[Offset] = (uint8_t)(Value&0x000000FF);
 	pEEPROM->efuse_eeprom_data[Offset+1] = (uint8_t)((Value>>8)&0x0000FF);
@@ -1099,13 +1072,13 @@ efuse_ShadowWrite4Byte(
  *
  *---------------------------------------------------------------------------*/
 void EFUSE_ShadowMapUpdate(
-	IN PADAPTER	pAdapter,
+	IN PADAPTER	padapter,
 	IN uint8_t		efuseType)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 	uint16_t	mapLen=0;
 
-	EFUSE_GetEfuseDefinition(pAdapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	EFUSE_GetEfuseDefinition(padapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
 	if (pEEPROM->bautoload_fail_flag == _TRUE)
 	{
@@ -1114,13 +1087,13 @@ void EFUSE_ShadowMapUpdate(
 	else
 	{
 		#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
-		if(_SUCCESS != retriveAdaptorInfoFile(pAdapter->registrypriv.adaptor_info_caching_file_path, pEEPROM)) {
+		if(_SUCCESS != retriveAdaptorInfoFile(padapter->registrypriv.adaptor_info_caching_file_path, pEEPROM)) {
 		#endif
 
-		Efuse_ReadAllMap(pAdapter, efuseType, pEEPROM->efuse_eeprom_data);
+		Efuse_ReadAllMap(padapter, efuseType, pEEPROM->efuse_eeprom_data);
 
 		#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
-			storeAdaptorInfoFile(pAdapter->registrypriv.adaptor_info_caching_file_path, pEEPROM);
+			storeAdaptorInfoFile(padapter->registrypriv.adaptor_info_caching_file_path, pEEPROM);
 		}
 		#endif
 	}
@@ -1148,17 +1121,17 @@ void EFUSE_ShadowMapUpdate(
  *---------------------------------------------------------------------------*/
 void
 EFUSE_ShadowRead(
-	IN		PADAPTER	pAdapter,
+	IN		PADAPTER	padapter,
 	IN		uint8_t		Type,
 	IN		uint16_t		Offset,
 	IN OUT	uint32_t		*Value	)
 {
 	if (Type == 1)
-		efuse_ShadowRead1Byte(pAdapter, Offset, (uint8_t *)Value);
+		efuse_ShadowRead1Byte(padapter, Offset, (uint8_t *)Value);
 	else if (Type == 2)
-		efuse_ShadowRead2Byte(pAdapter, Offset, (uint16_t *)Value);
+		efuse_ShadowRead2Byte(padapter, Offset, (uint16_t *)Value);
 	else if (Type == 4)
-		efuse_ShadowRead4Byte(pAdapter, Offset, (uint32_t *)Value);
+		efuse_ShadowRead4Byte(padapter, Offset, (uint32_t *)Value);
 
 }	// EFUSE_ShadowRead
 
@@ -1180,13 +1153,13 @@ EFUSE_ShadowRead(
  *---------------------------------------------------------------------------*/
 VOID
 EFUSE_ShadowWrite(
-	IN	PADAPTER	pAdapter,
+	IN	PADAPTER	padapter,
 	IN	uint8_t		Type,
 	IN	uint16_t		Offset,
 	IN OUT	uint32_t		Value);
 VOID
 EFUSE_ShadowWrite(
-	IN	PADAPTER	pAdapter,
+	IN	PADAPTER	padapter,
 	IN	uint8_t		Type,
 	IN	uint16_t		Offset,
 	IN OUT	uint32_t		Value)
@@ -1194,26 +1167,26 @@ EFUSE_ShadowWrite(
 #if (MP_DRIVER == 0)
 	return;
 #endif
-	if ( pAdapter->registrypriv.mp_mode == 0)
+	if ( padapter->registrypriv.mp_mode == 0)
 		return;
 
 
 	if (Type == 1)
-		efuse_ShadowWrite1Byte(pAdapter, Offset, (uint8_t)Value);
+		efuse_ShadowWrite1Byte(padapter, Offset, (uint8_t)Value);
 	else if (Type == 2)
-		efuse_ShadowWrite2Byte(pAdapter, Offset, (u16)Value);
+		efuse_ShadowWrite2Byte(padapter, Offset, (u16)Value);
 	else if (Type == 4)
-		efuse_ShadowWrite4Byte(pAdapter, Offset, (u32)Value);
+		efuse_ShadowWrite4Byte(padapter, Offset, (u32)Value);
 
 }	// EFUSE_ShadowWrite
 
 VOID
 Efuse_InitSomeVar(
-	IN		PADAPTER	pAdapter
+	IN		PADAPTER	padapter
 	);
 VOID
 Efuse_InitSomeVar(
-	IN		PADAPTER	pAdapter
+	IN		PADAPTER	padapter
 	)
 {
 	uint8_t i;

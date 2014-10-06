@@ -2910,60 +2910,6 @@ static int rtw_wx_get_nick(struct net_device *ndev,
 
 }
 
-static int rtw_wx_read32(struct net_device *ndev,
-                            struct iw_request_info *info,
-                            union iwreq_data *wrqu, char *extra)
-{
-	PADAPTER padapter;
-	struct iw_point *p;
-	uint16_t len;
-	u32 addr;
-	u32 data32;
-	u32 bytes;
-	uint8_t *ptmp;
-
-
-	padapter = (PADAPTER)rtw_netdev_priv(ndev);
-	p = &wrqu->data;
-	len = p->length;
-	ptmp = (uint8_t *)rtw_malloc(len);
-	if (NULL == ptmp)
-		return -ENOMEM;
-
-	if (copy_from_user(ptmp, p->pointer, len)) {
-		/* ULLI check usage len */
-		rtw_mfree(ptmp);
-		return -EFAULT;
-	}
-
-	bytes = 0;
-	addr = 0;
-	sscanf(ptmp, "%d,%x", &bytes, &addr);
-
-	switch (bytes) {
-		case 1:
-			data32 = rtw_read8(padapter, addr);
-			sprintf(extra, "0x%02X", data32);
-			break;
-		case 2:
-			data32 = rtw_read16(padapter, addr);
-			sprintf(extra, "0x%04X", data32);
-			break;
-		case 4:
-			data32 = rtw_read32(padapter, addr);
-			sprintf(extra, "0x%08X", data32);
-			break;
-		default:
-			DBG_871X(KERN_INFO "%s: usage> read [bytes],[address(hex)]\n", __func__);
-			return -EINVAL;
-	}
-	DBG_871X(KERN_INFO "%s: addr=0x%08X data=%s\n", __func__, addr, extra);
-
-	/* ULLI check usage of len */
-	rtw_mfree(ptmp);
-
-	return 0;
-}
 
 static int rtw_wx_read_rf(struct net_device *ndev,
                             struct iw_request_info *info,

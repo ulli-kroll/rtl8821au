@@ -2965,43 +2965,6 @@ static int rtw_wx_read32(struct net_device *ndev,
 	return 0;
 }
 
-static int rtw_wx_write32(struct net_device *ndev,
-                            struct iw_request_info *info,
-                            union iwreq_data *wrqu, char *extra)
-{
-	PADAPTER padapter = (PADAPTER)rtw_netdev_priv(ndev);
-
-	u32 addr;
-	u32 data32;
-	u32 bytes;
-
-
-	bytes = 0;
-	addr = 0;
-	data32 = 0;
-	sscanf(extra, "%d,%x,%x", &bytes, &addr, &data32);
-
-	switch (bytes) {
-		case 1:
-			rtw_write8(padapter, addr, (uint8_t)data32);
-			DBG_871X(KERN_INFO "%s: addr=0x%08X data=0x%02X\n", __func__, addr, (uint8_t)data32);
-			break;
-		case 2:
-			rtw_write16(padapter, addr, (uint16_t)data32);
-			DBG_871X(KERN_INFO "%s: addr=0x%08X data=0x%04X\n", __func__, addr, (uint16_t)data32);
-			break;
-		case 4:
-			rtw_write32(padapter, addr, data32);
-			DBG_871X(KERN_INFO "%s: addr=0x%08X data=0x%08X\n", __func__, addr, data32);
-			break;
-		default:
-			DBG_871X(KERN_INFO "%s: usage> write [bytes],[address(hex)],[data(hex)]\n", __func__);
-			return -EINVAL;
-	}
-
-	return 0;
-}
-
 static int rtw_wx_read_rf(struct net_device *ndev,
                             struct iw_request_info *info,
                             union iwreq_data *wrqu, char *extra)

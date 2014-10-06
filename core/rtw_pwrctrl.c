@@ -116,7 +116,6 @@ int rtw_hw_resume(struct _ADAPTER *padapter);
 
 bool rtw_pwr_unassociated_idle(struct _ADAPTER *adapter)
 {
-	struct _ADAPTER *buddy = adapter->pbuddy_adapter;
 	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
 	struct xmit_priv *pxmit_priv = &adapter->xmitpriv;
 
@@ -135,18 +134,6 @@ bool rtw_pwr_unassociated_idle(struct _ADAPTER *adapter)
 		goto exit;
 	}
 
-	/* consider buddy, if exist */
-	if (buddy) {
-		struct mlme_priv *b_pmlmepriv = &(buddy->mlmepriv);
-
-		if (check_fwstate(b_pmlmepriv, WIFI_ASOC_STATE|WIFI_SITE_MONITOR)
-			|| check_fwstate(b_pmlmepriv, WIFI_UNDER_LINKING|WIFI_UNDER_WPS)
-			|| check_fwstate(b_pmlmepriv, WIFI_AP_STATE)
-			|| check_fwstate(b_pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_ADHOC_STATE)
-		) {
-			goto exit;
-		}
-	}
 
 #if (MP_DRIVER == 1)
 	if (adapter->registrypriv.mp_mode == 1)
@@ -521,7 +508,6 @@ void LPS_Enter(PADAPTER padapter)
 {
 	struct pwrctrl_priv	*pwrpriv = &padapter->pwrctrlpriv;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	struct _ADAPTER *buddy = padapter->pbuddy_adapter;
 
 _func_enter_;
 

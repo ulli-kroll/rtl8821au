@@ -2590,8 +2590,6 @@ unsigned int setup_beacon_frame(_adapter *padapter, unsigned char *beacon_frame)
 }
 #endif
 
-static _adapter *pbuddy_padapter = NULL;
-
 int rtw_handle_dualmac(_adapter *adapter, bool init)
 {
 	int status = _SUCCESS;

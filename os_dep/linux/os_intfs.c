@@ -1321,11 +1321,6 @@ uint8_t rtw_free_drv_sw(_adapter *padapter)
 		padapter->rereg_nd_name_priv.old_ndev = NULL;
 	}
 
-	/* clear pbuddy_adapter to avoid access wrong pointer. */
-	if (padapter->pbuddy_adapter != NULL) {
-		padapter->pbuddy_adapter->pbuddy_adapter = NULL;
-	}
-
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("-rtw_free_drv_sw\n"));
 
 	return _SUCCESS;

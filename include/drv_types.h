@@ -447,15 +447,6 @@ struct _ADAPTER{
 #ifdef CONFIG_AUTOSUSPEND
 	uint8_t	bDisableAutosuspend;
 #endif
-
-	//pbuddy_adapter is used only in  two inteface case, (iface_nums=2 in struct dvobj_priv)
-	//PRIMARY_ADAPTER's buddy is SECONDARY_ADAPTER
-	//SECONDARY_ADAPTER's buddy is PRIMARY_ADAPTER
-	//for iface_id > SECONDARY_ADAPTER(IFACE_ID1), refer to padapters[iface_id]  in struct dvobj_priv
-	//and their pbuddy_adapter is PRIMARY_ADAPTER.
-	//for PRIMARY_ADAPTER(IFACE_ID0) can directly refer to if1 in struct dvobj_priv
-	_adapter *pbuddy_adapter;
-
 	//extend to support multi interface
        //IFACE_ID0 is equals to PRIMARY_ADAPTER
        //IFACE_ID1 is equals to SECONDARY_ADAPTER

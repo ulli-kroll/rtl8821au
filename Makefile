@@ -56,7 +56,7 @@ _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
 
 ifneq ($(CONFIG_RTL8812A)_$(CONFIG_RTL8821A), n_n)
 
-MODULE_NAME = 8812au
+MODULE_NAME = rtl8821au
 
 _HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
 					hal/rtl8812a/Hal8812PwrSeq.o \

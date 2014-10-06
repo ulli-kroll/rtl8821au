@@ -371,10 +371,6 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,uint8_t bgroup)
 	wireless_send_event( padapter->ndev, IWEVMICHAELMICFAILURE, &wrqu, (char*) &ev );
 }
 
-void rtw_hostapd_mlme_rx(_adapter *padapter, union recv_frame *precv_frame)
-{
-}
-
 
 int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 {

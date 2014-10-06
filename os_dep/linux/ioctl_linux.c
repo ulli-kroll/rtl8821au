@@ -2994,12 +2994,6 @@ static int rtw_wx_set_channel_plan(struct net_device *ndev,
 
 
 
-static int rtw_wx_set_mtk_wps_ie(struct net_device *ndev,
-				struct iw_request_info *info,
-				union iwreq_data *wrqu, char *extra)
-{
-	return 0;
-}
 
 /*
 typedef int (*iw_handler)(struct net_device *ndev, struct iw_request_info *info,

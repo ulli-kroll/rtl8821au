@@ -3112,41 +3112,6 @@ static void rtw_dbg_mode_hdl(_adapter *padapter, u32 id, uint8_t *pdata, u32 len
 
 }
 
-
-
-static int rtw_set_pid(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-
-	int ret = 0;
-	_adapter *padapter = rtw_netdev_priv(ndev);
-	int *pdata = (int *)wrqu;
-	int selector;
-
-	if((padapter->bDriverStopped) || (pdata==NULL))
-	{
-		ret= -EINVAL;
-		goto exit;
-	}
-
-	selector = *pdata;
-	if(selector < 3 && selector >=0) {
-		padapter->pid[selector] = *(pdata+1);
-		#ifdef CONFIG_GLOBAL_UI_PID
-		ui_pid[selector] = *(pdata+1);
-		#endif
-		DBG_871X("%s set pid[%d]=%d\n", __FUNCTION__, selector ,padapter->pid[selector]);
-	}
-	else
-		DBG_871X("%s selector %d error\n", __FUNCTION__, selector);
-
-exit:
-
-	return ret;
-
-}
-
 static int rtw_wps_start(struct net_device *ndev,
                                struct iw_request_info *info,
                                union iwreq_data *wrqu, char *extra)

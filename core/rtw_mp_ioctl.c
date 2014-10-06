@@ -79,7 +79,7 @@ _func_enter_;
 		  offset, value));
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	write_bbreg(Adapter, offset, 0xFFFFFFFF, value);
+	rtw_hal_write_bbreg(Adapter, offset, 0xFFFFFFFF, value);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;

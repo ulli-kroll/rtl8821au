@@ -188,9 +188,9 @@ void Hal_MPT_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 				(CCKSwingTable_Ch14[CCKSwingIndex][7]<<8) ;
 	}
 
-	write_bbreg(Adapter, rCCK0_TxFilter1, bMaskHWord, TempVal);
-	write_bbreg(Adapter, rCCK0_TxFilter2, bMaskDWord, TempVal2);
-	write_bbreg(Adapter, rCCK0_DebugPort, bMaskLWord, TempVal3);
+	rtw_hal_write_bbreg(Adapter, rCCK0_TxFilter1, bMaskHWord, TempVal);
+	rtw_hal_write_bbreg(Adapter, rCCK0_TxFilter2, bMaskDWord, TempVal2);
+	rtw_hal_write_bbreg(Adapter, rCCK0_DebugPort, bMaskLWord, TempVal3);
 }
 
 void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
@@ -363,14 +363,14 @@ void Hal_SetCCKTxPower(PADAPTER pAdapter, uint8_t *TxPower)
 
 
 	// rf-A cck tx power
-	write_bbreg(pAdapter, rTxAGC_A_CCK1_Mcs32, bMaskByte1, TxPower[RF_PATH_A]);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_A_CCK1_Mcs32, bMaskByte1, TxPower[RF_PATH_A]);
 	tmpval = (TxPower[RF_PATH_A]<<16) | (TxPower[RF_PATH_A]<<8) | TxPower[RF_PATH_A];
-	write_bbreg(pAdapter, rTxAGC_B_CCK11_A_CCK2_11, 0xffffff00, tmpval);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_B_CCK11_A_CCK2_11, 0xffffff00, tmpval);
 
 	// rf-B cck tx power
-	write_bbreg(pAdapter, rTxAGC_B_CCK11_A_CCK2_11, bMaskByte0, TxPower[RF_PATH_B]);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_B_CCK11_A_CCK2_11, bMaskByte0, TxPower[RF_PATH_B]);
 	tmpval = (TxPower[RF_PATH_B]<<16) | (TxPower[RF_PATH_B]<<8) | TxPower[RF_PATH_B];
-	write_bbreg(pAdapter, rTxAGC_B_CCK1_55_Mcs32, 0xffffff00, tmpval);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_B_CCK1_55_Mcs32, 0xffffff00, tmpval);
 
 	RT_TRACE(_module_mp_, _drv_notice_,
 		 ("-SetCCKTxPower: A[0x%02x] B[0x%02x]\n",
@@ -389,23 +389,23 @@ void Hal_SetOFDMTxPower(PADAPTER pAdapter, uint8_t *TxPower)
 	tmpval = TxPower[RF_PATH_A];
 	TxAGC = (tmpval<<24) | (tmpval<<16) | (tmpval<<8) | tmpval;
 
-	write_bbreg(pAdapter, rTxAGC_A_Rate18_06, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_A_Rate54_24, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_A_Mcs03_Mcs00, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_A_Mcs07_Mcs04, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_A_Mcs11_Mcs08, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_A_Mcs15_Mcs12, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_A_Rate18_06, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_A_Rate54_24, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_A_Mcs03_Mcs00, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_A_Mcs07_Mcs04, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_A_Mcs11_Mcs08, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_A_Mcs15_Mcs12, bMaskDWord, TxAGC);
 
 	// HT Tx-rf(B)
 	tmpval = TxPower[RF_PATH_B];
 	TxAGC = (tmpval<<24) | (tmpval<<16) | (tmpval<<8) | tmpval;
 
-	write_bbreg(pAdapter, rTxAGC_B_Rate18_06, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_B_Rate54_24, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_B_Mcs03_Mcs00, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_B_Mcs07_Mcs04, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_B_Mcs11_Mcs08, bMaskDWord, TxAGC);
-	write_bbreg(pAdapter, rTxAGC_B_Mcs15_Mcs12, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_B_Rate18_06, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_B_Rate54_24, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_B_Mcs03_Mcs00, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_B_Mcs07_Mcs04, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_B_Mcs11_Mcs08, bMaskDWord, TxAGC);
+	rtw_hal_write_bbreg(pAdapter, rTxAGC_B_Mcs15_Mcs12, bMaskDWord, TxAGC);
 
 }
 
@@ -575,7 +575,7 @@ void Hal_SetTxAGCOffset(PADAPTER pAdapter, uint32_t ulTxAGCOffset)
 	TxAGCOffset_D = ((ulTxAGCOffset&0x00ff0000)>>16);
 
 	tmpAGC = (TxAGCOffset_D<<8 | TxAGCOffset_C<<4 | TxAGCOffset_B);
-	write_bbreg(pAdapter, rFPGA0_TxGainStage,
+	rtw_hal_write_bbreg(pAdapter, rFPGA0_TxGainStage,
 			(bXBTxAGC|bXCTxAGC|bXDTxAGC), tmpAGC);
 }
 
@@ -738,12 +738,12 @@ void Hal_SetSingleCarrierTx(PADAPTER pAdapter, uint8_t bStart)
 		RT_TRACE(_module_mp_,_drv_alert_, ("SetSingleCarrierTx: test start\n"));
 		// 1. if OFDM block on?
 		if(!rtw_hal_read_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn))
-			write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, bEnable);//set OFDM block on
+			rtw_hal_write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, bEnable);//set OFDM block on
 
 		// 2. set CCK test mode off, set to CCK normal mode
-		write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, bDisable);
+		rtw_hal_write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, bDisable);
 		// 3. turn on scramble setting
-		write_bbreg(pAdapter, rCCK0_System, bCCKScramble, bEnable);
+		rtw_hal_write_bbreg(pAdapter, rCCK0_System, bCCKScramble, bEnable);
 
 		// 4. Turn On Continue Tx and turn off the other test modes.
 		if (IS_HARDWARE_TYPE_JAGUAR(pAdapter))
@@ -752,8 +752,8 @@ void Hal_SetSingleCarrierTx(PADAPTER pAdapter, uint8_t bStart)
 			PHY_SetBBReg(pAdapter, rOFDM1_LSTF, BIT30|BIT29|BIT28, OFDM_SingleCarrier);
 
 		//for dynamic set Power index.
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
 
 	}
 	else// Stop Single Carrier.
@@ -769,12 +769,12 @@ void Hal_SetSingleCarrierTx(PADAPTER pAdapter, uint8_t bStart)
 		rtw_msleep_os(10);
 
 		//BB Reset
-		write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
-		write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
+		rtw_hal_write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
+		rtw_hal_write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
 
 		//Stop for dynamic set Power index.
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
 
 	}
 }
@@ -853,8 +853,8 @@ void Hal_SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart)
 		}
 
 		//for dynamic set Power index.
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
 
 	}
 	else// Stop Single Tone.
@@ -863,8 +863,8 @@ void Hal_SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart)
 
 	 	{   // <20120326, Kordan> To amplify the power of tone for Xtal calibration. (asked by Edlu)
             // <20120326, Kordan> Only in single tone mode. (asked by Edlu)
-		write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, 0x1);
-		write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, 0x1);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, 0x1);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, 0x1);
 		}
 		{
 			write_rfreg(pAdapter, rfPath, 0x21, 0x54000);
@@ -874,8 +874,8 @@ void Hal_SetSingleToneTx(PADAPTER pAdapter, uint8_t bStart)
 		}
 
 		//Stop for dynamic set Power index.
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
 
 	}
 
@@ -894,7 +894,7 @@ void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, uint8_t bStart)
 		  {
 			// 1. if CCK block on?
 			if(!rtw_hal_read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
-				write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);//set CCK block on
+				rtw_hal_write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);//set CCK block on
 
 			//Turn Off All Test Mode
 			if (IS_HARDWARE_TYPE_JAGUAR(pAdapter))
@@ -910,8 +910,8 @@ void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, uint8_t bStart)
 		}
 
 		//for dynamic set Power index.
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
 
 	}
 	else// Stop Carrier Suppression.
@@ -928,8 +928,8 @@ void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, uint8_t bStart)
 		}
 
 		//Stop for dynamic set Power index.
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
 
 	}
 	//DbgPrint("\n MPT_ProSetCarrierSupp() is finished. \n");
@@ -946,7 +946,7 @@ void Hal_SetCCKContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 
 		// 1. if CCK block on?
 		if(!rtw_hal_read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
-			write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);//set CCK block on
+			rtw_hal_write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);//set CCK block on
 
 		//Turn Off All Test Mode
 		if (IS_HARDWARE_TYPE_JAGUAR(pAdapter))
@@ -1015,14 +1015,14 @@ void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 		RT_TRACE(_module_mp_, _drv_info_, ("SetOFDMContinuousTx: test start\n"));
 		// 1. if OFDM block on?
 		if(!rtw_hal_read_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn))
-			write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, bEnable);//set OFDM block on
+			rtw_hal_write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, bEnable);//set OFDM block on
 
 
 		// 2. set CCK test mode off, set to CCK normal mode
-		write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, bDisable);
+		rtw_hal_write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, bDisable);
 
 		// 3. turn on scramble setting
-		write_bbreg(pAdapter, rCCK0_System, bCCKScramble, bEnable);
+		rtw_hal_write_bbreg(pAdapter, rCCK0_System, bCCKScramble, bEnable);
 
 		// 4. Turn On Continue Tx and turn off the other test modes.
 		if (IS_HARDWARE_TYPE_JAGUAR(pAdapter))
@@ -1030,8 +1030,8 @@ void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 		else
 			PHY_SetBBReg(pAdapter, rOFDM1_LSTF, BIT30|BIT29|BIT28, OFDM_ContinuousTx);
 		//for dynamic set Power index.
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
 
 	} else {
 		RT_TRACE(_module_mp_,_drv_info_, ("SetOFDMContinuousTx: test stop\n"));
@@ -1043,12 +1043,12 @@ void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 
 		rtw_msleep_os(10);
 		//BB Reset
-		write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
-		write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
+		rtw_hal_write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
+		rtw_hal_write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
 
 		//Stop for dynamic set Power index.
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtw_hal_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
 	}
 
 	pAdapter->mppriv.MptCtx.bCckContTx = _FALSE;
@@ -1060,7 +1060,7 @@ void Hal_SetContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 #if 0
 	// ADC turn off [bit24-21] adc port0 ~ port1
 	if (bStart) {
-		write_bbreg(pAdapter, rRx_Wait_CCCA, rtw_hal_read_bbreg(pAdapter, rRx_Wait_CCCA) & 0xFE1FFFFF);
+		rtw_hal_write_bbreg(pAdapter, rRx_Wait_CCCA, rtw_hal_read_bbreg(pAdapter, rRx_Wait_CCCA) & 0xFE1FFFFF);
 		rtw_usleep_os(100);
 	}
 #endif
@@ -1080,7 +1080,7 @@ void Hal_SetContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 #if 0
 	// ADC turn on [bit24-21] adc port0 ~ port1
 	if (!bStart) {
-		write_bbreg(pAdapter, rRx_Wait_CCCA, read_bbreg(pAdapter, rRx_Wait_CCCA) | 0x01E00000);
+		rtw_hal_write_bbreg(pAdapter, rRx_Wait_CCCA, read_bbreg(pAdapter, rRx_Wait_CCCA) | 0x01E00000);
 	}
 #endif
 }

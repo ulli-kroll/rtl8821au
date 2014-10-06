@@ -3931,7 +3931,7 @@ static int rtw_dbg_port(struct net_device *ndev,
 			break;
 		case 0x73://write_bb
 			rtw_hal_write_bbreg(padapter, arg, 0xffffffff, extra_arg);
-			DBG_871X("write_bbreg(0x%x)=0x%x\n", arg, rtw_hal_read_bbreg(padapter, arg, 0xffffffff));
+			DBG_871X("rtw_hal_write_bbreg(0x%x)=0x%x\n", arg, rtw_hal_read_bbreg(padapter, arg, 0xffffffff));
 			break;
 		case 0x74://read_rf
 			DBG_871X("read RF_reg path(0x%02x),offset(0x%x),value(0x%08x)\n",minor_cmd,arg,rtw_hal_read_rfreg(padapter, minor_cmd, arg, 0xffffffff));
@@ -7653,9 +7653,9 @@ static int rtw_mp_reset_stats(struct net_device *ndev,
 	pmp_priv->rx_crcerrpktcount = 0;
 
 	//reset phy counter
-	write_bbreg(padapter,0xf14,BIT16,0x1);
+	rtw_hal_write_bbreg(padapter,0xf14,BIT16,0x1);
 	rtw_msleep_os(10);
-	write_bbreg(padapter,0xf14,BIT16,0x0);
+	rtw_hal_write_bbreg(padapter,0xf14,BIT16,0x0);
 
 	return 0;
 }

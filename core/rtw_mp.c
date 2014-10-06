@@ -27,11 +27,6 @@
 
 #ifdef CONFIG_MP_INCLUDED
 
-void write_bbreg(struct _ADAPTER *padapter, uint32_t addr, uint32_t bitmask,
-	uint32_t val)
-{
-	rtw_hal_write_bbreg(padapter, addr, bitmask, val);
-}
 
 uint32_t _read_rfreg(struct _ADAPTER *padapter, uint8_t rfpath, uint32_t addr,
 	uint32_t bitmask)
@@ -791,7 +786,7 @@ void SetTxAGCOffset(struct _ADAPTER *pAdapter, uint32_t	 ulTxAGCOffset)
 	TxAGCOffset_D = ((ulTxAGCOffset&0x00ff0000)>>16);
 
 	tmpAGC = (TxAGCOffset_D<<8 | TxAGCOffset_C<<4 | TxAGCOffset_B);
-	write_bbreg(pAdapter, rFPGA0_TxGainStage,
+	rtw_hal_write_bbreg(pAdapter, rFPGA0_TxGainStage,
 			(bXBTxAGC|bXCTxAGC|bXDTxAGC), tmpAGC);
 }
 

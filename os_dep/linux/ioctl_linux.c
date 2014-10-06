@@ -3112,50 +3112,6 @@ static void rtw_dbg_mode_hdl(_adapter *padapter, u32 id, uint8_t *pdata, u32 len
 
 }
 
-static int rtw_wps_start(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-
-	int ret = 0;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct iw_point *pdata = &wrqu->data;
-	u32   u32wps_start = 0;
-        unsigned int uintRet = 0;
-
-        uintRet = copy_from_user( ( void* ) &u32wps_start, pdata->pointer, 4 );
-
-	if((padapter->bDriverStopped) || (pdata==NULL))
-	{
-		ret= -EINVAL;
-		goto exit;
-	}
-
-	if ( u32wps_start == 0 )
-	{
-		u32wps_start = *extra;
-	}
-
-	DBG_871X( "[%s] wps_start = %d\n", __FUNCTION__, u32wps_start );
-
-	if ( u32wps_start == 1 ) // WPS Start
-	{
-		rtw_led_control(padapter, LED_CTL_START_WPS);
-	}
-	else if ( u32wps_start == 2 ) // WPS Stop because of wps success
-	{
-		rtw_led_control(padapter, LED_CTL_STOP_WPS);
-	}
-	else if ( u32wps_start == 3 ) // WPS Stop because of wps fail
-	{
-		rtw_led_control(padapter, LED_CTL_STOP_WPS_FAIL);
-	}
-
-exit:
-
-	return ret;
-
-}
 
 
 static int rtw_p2p_set(struct net_device *ndev,

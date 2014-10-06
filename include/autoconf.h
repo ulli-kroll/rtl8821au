@@ -30,8 +30,7 @@
  * Public  General Config
  */
 #define AUTOCONF_INCLUDED
-#define RTL871X_MODULE_NAME "8812AU"
-#define DRV_NAME "rtl8812au"
+#define DRV_NAME "rtl8821au"
 
 #define PLATFORM_LINUX	1
 

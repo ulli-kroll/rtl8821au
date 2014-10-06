@@ -3927,7 +3927,7 @@ static int rtw_dbg_port(struct net_device *ndev,
 			}
 			break;
 		case 0x72://read_bb
-			DBG_871X("read_bbreg(0x%x)=0x%x\n", arg, rtw_hal_read_bbreg(padapter, arg, 0xffffffff));
+			DBG_871X("rtw_hal_read_bbreg(0x%x)=0x%x\n", arg, rtw_hal_read_bbreg(padapter, arg, 0xffffffff));
 			break;
 		case 0x73://write_bb
 			rtw_hal_write_bbreg(padapter, arg, 0xffffffff, extra_arg);
@@ -7483,19 +7483,19 @@ static int rtw_mp_arx(struct net_device *ndev,
 		CCK FA
 		(RegA5B<<8) | RegA5C
 		*/
-		cckok = read_bbreg(padapter, 0xf88, 0xffffffff );
-		cckcrc = read_bbreg(padapter, 0xf84, 0xffffffff );
-		ofdmok = read_bbreg(padapter, 0xf94, 0x0000FFFF );
-		ofdmcrc = read_bbreg(padapter, 0xf94 , 0xFFFF0000 );
-		htok = read_bbreg(padapter, 0xf90, 0x0000FFFF );
-		htcrc = read_bbreg(padapter,0xf90, 0xFFFF0000 );
+		cckok = rtw_hal_read_bbreg(padapter, 0xf88, 0xffffffff );
+		cckcrc = rtw_hal_read_bbreg(padapter, 0xf84, 0xffffffff );
+		ofdmok = rtw_hal_read_bbreg(padapter, 0xf94, 0x0000FFFF );
+		ofdmcrc = rtw_hal_read_bbreg(padapter, 0xf94 , 0xFFFF0000 );
+		htok = rtw_hal_read_bbreg(padapter, 0xf90, 0x0000FFFF );
+		htcrc = rtw_hal_read_bbreg(padapter,0xf90, 0xFFFF0000 );
 
-		OFDM_FA=+read_bbreg(padapter, 0xcf0, 0x0000FFFF );
-		OFDM_FA=+read_bbreg(padapter, 0xcf2, 0xFFFF0000 );
-		OFDM_FA=+read_bbreg(padapter, 0xda0, 0xFFFF0000 );
-		OFDM_FA=+read_bbreg(padapter, 0xda4, 0x0000FFFF );
-		OFDM_FA=+read_bbreg(padapter, 0xda4, 0xFFFF0000 );
-		OFDM_FA=+read_bbreg(padapter, 0xda8, 0x0000FFFF );
+		OFDM_FA=+rtw_hal_read_bbreg(padapter, 0xcf0, 0x0000FFFF );
+		OFDM_FA=+rtw_hal_read_bbreg(padapter, 0xcf2, 0xFFFF0000 );
+		OFDM_FA=+rtw_hal_read_bbreg(padapter, 0xda0, 0xFFFF0000 );
+		OFDM_FA=+rtw_hal_read_bbreg(padapter, 0xda4, 0x0000FFFF );
+		OFDM_FA=+rtw_hal_read_bbreg(padapter, 0xda4, 0xFFFF0000 );
+		OFDM_FA=+rtw_hal_read_bbreg(padapter, 0xda8, 0x0000FFFF );
  		CCK_FA=(rtw_read8(padapter, 0xa5b )<<8 ) | (rtw_read8(padapter, 0xa5c));
 
 		sprintf( extra, "Phy Received packet OK:%d CRC error:%d FA Counter: %d",cckok+ofdmok+htok,cckcrc+ofdmcrc+htcrc,OFDM_FA+CCK_FA);

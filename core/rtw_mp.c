@@ -27,11 +27,6 @@
 
 #ifdef CONFIG_MP_INCLUDED
 
-uint32_t read_bbreg(struct _ADAPTER *padapter, uint32_t addr, uint32_t bitmask)
-{
-	return rtw_hal_read_bbreg(padapter, addr, bitmask);
-}
-
 void write_bbreg(struct _ADAPTER *padapter, uint32_t addr, uint32_t bitmask,
 	uint32_t val)
 {

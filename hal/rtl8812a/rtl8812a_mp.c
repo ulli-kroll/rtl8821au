@@ -122,7 +122,7 @@ void Hal_MPT_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 
 
 	// get current cck swing value and check 0xa22 & 0xa23 later to match the table.
-	CurrCCKSwingVal = read_bbreg(Adapter, rCCK0_TxFilter1, bMaskHWord);
+	CurrCCKSwingVal = rtw_hal_read_bbreg(Adapter, rCCK0_TxFilter1, bMaskHWord);
 
 	if (!bInCH14)
 	{
@@ -234,7 +234,7 @@ void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
 	if (Action != 0)
 	{
 		//Query CCK default setting From 0xa24
-		TempCCk = read_bbreg(pAdapter, rCCK0_TxFilter2, bMaskDWord) & bMaskCCK;
+		TempCCk = rtw_hal_read_bbreg(pAdapter, rCCK0_TxFilter2, bMaskDWord) & bMaskCCK;
 		for (i = 0; i < CCK_TABLE_SIZE; i++)
 		{
 			if (pDM_Odm->RFCalibrateInfo.bCCKinCH14)
@@ -737,7 +737,7 @@ void Hal_SetSingleCarrierTx(PADAPTER pAdapter, uint8_t bStart)
 	{
 		RT_TRACE(_module_mp_,_drv_alert_, ("SetSingleCarrierTx: test start\n"));
 		// 1. if OFDM block on?
-		if(!read_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn))
+		if(!rtw_hal_read_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn))
 			write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, bEnable);//set OFDM block on
 
 		// 2. set CCK test mode off, set to CCK normal mode
@@ -893,7 +893,7 @@ void Hal_SetCarrierSuppressionTx(PADAPTER pAdapter, uint8_t bStart)
 		if (pAdapter->mppriv.rateidx <= MPT_RATE_11M)
 		  {
 			// 1. if CCK block on?
-			if(!read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
+			if(!rtw_hal_read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
 				write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);//set CCK block on
 
 			//Turn Off All Test Mode
@@ -945,7 +945,7 @@ void Hal_SetCCKContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 			 ("SetCCKContinuousTx: test start\n"));
 
 		// 1. if CCK block on?
-		if(!read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
+		if(!rtw_hal_read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
 			write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);//set CCK block on
 
 		//Turn Off All Test Mode
@@ -1014,7 +1014,7 @@ void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 	if (bStart) {
 		RT_TRACE(_module_mp_, _drv_info_, ("SetOFDMContinuousTx: test start\n"));
 		// 1. if OFDM block on?
-		if(!read_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn))
+		if(!rtw_hal_read_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn))
 			write_bbreg(pAdapter, rFPGA0_RFMOD, bOFDMEn, bEnable);//set OFDM block on
 
 
@@ -1060,7 +1060,7 @@ void Hal_SetContinuousTx(PADAPTER pAdapter, uint8_t bStart)
 #if 0
 	// ADC turn off [bit24-21] adc port0 ~ port1
 	if (bStart) {
-		write_bbreg(pAdapter, rRx_Wait_CCCA, read_bbreg(pAdapter, rRx_Wait_CCCA) & 0xFE1FFFFF);
+		write_bbreg(pAdapter, rRx_Wait_CCCA, rtw_hal_read_bbreg(pAdapter, rRx_Wait_CCCA) & 0xFE1FFFFF);
 		rtw_usleep_os(100);
 	}
 #endif

@@ -111,7 +111,7 @@ _func_enter_;
 	if (offset < BB_REG_BASE_ADDR) offset |= BB_REG_BASE_ADDR;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	value = read_bbreg(Adapter, offset, 0xFFFFFFFF);
+	value = rtw_hal_read_bbreg(Adapter, offset, 0xFFFFFFFF);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	pbbreg->value = value;

@@ -112,37 +112,6 @@ ReadEFuseByte(
 
 }
 
-
-//
-//	Description:
-//		1. Execute E-Fuse read byte operation according as map offset and
-//		    save to E-Fuse table.
-//		2. Refered from SD1 Richard.
-//
-//	Assumption:
-//		1. Boot from E-Fuse and successfully auto-load.
-//		2. PASSIVE_LEVEL (USB interface)
-//
-//	Created by Roger, 2008.10.21.
-//
-//	2008/12/12 MH 	1. Reorganize code flow and reserve bytes. and add description.
-//					2. Add efuse utilization collect.
-//	2008/12/22 MH	Read Efuse must check if we write section 1 data again!!! Sec1
-//					write addr must be after sec5.
-//
-
-static VOID
-efuse_ReadEFuse(
-	PADAPTER	padapter,
-	uint8_t		efuseType,
-	uint16_t		_offset,
-	uint16_t 		_size_byte,
-	uint8_t      	*pbuf
-	)
-{
-	padapter->HalFunc->ReadEFuse(padapter, efuseType, _offset, _size_byte, pbuf);
-}
-
 VOID
 EFUSE_GetEfuseDefinition(
 			PADAPTER	padapter,
@@ -578,7 +547,7 @@ uint8_t rtw_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint
 
 	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
 
-	efuse_ReadEFuse(padapter, EFUSE_WIFI, addr, cnts, data);
+	padapter->HalFunc->ReadEFuse(padapter, EFUSE_WIFI, addr, cnts, data);
 
 	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _FALSE);
 
@@ -596,7 +565,7 @@ uint8_t rtw_BT_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, u
 
 	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
 
-	efuse_ReadEFuse(padapter, EFUSE_BT, addr, cnts, data);
+	padapter->HalFunc->ReadEFuse(padapter, EFUSE_BT, addr, cnts, data);
 
 	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _FALSE);
 
@@ -828,7 +797,7 @@ Efuse_ReadAllMap(
 
 	EFUSE_GetEfuseDefinition(padapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
-	efuse_ReadEFuse(padapter, efuseType, 0, mapLen, Efuse);
+	padapter->HalFunc->ReadEFuse(padapter, efuseType, 0, mapLen, Efuse);
 
 	padapter->HalFunc->EfusePowerSwitch(padapter,_FALSE, _FALSE);
 }

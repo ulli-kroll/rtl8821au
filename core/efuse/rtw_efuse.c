@@ -22,14 +22,6 @@
 #include <drv_types.h>
 
 
-
-/*------------------------Define local variable------------------------------*/
-uint32_t	BTEfuseUsedBytes=0;
-uint8_t	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-uint8_t	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
-uint8_t	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
-/*------------------------Define local variable------------------------------*/
-
 //------------------------------------------------------------------------------
 #define REG_EFUSE_CTRL		0x0030
 #define EFUSE_CTRL			REG_EFUSE_CTRL		// E-Fuse Control.
@@ -1002,15 +994,6 @@ Efuse_InitSomeVar(
 			PADAPTER	padapter
 	)
 {
-	uint8_t i;
-
-	for(i=0; i<EFUSE_MAX_BT_BANK; i++)
-	{
-		memset((PVOID)&BTEfuseContent[i][0], EFUSE_MAX_HW_SIZE, 0xff);
-	}
-	memset((PVOID)&BTEfuseInitMap[0], 0xff, EFUSE_BT_MAX_MAP_LEN);
-	memset((PVOID)&BTEfuseModifiedMap[0], 0xff, EFUSE_BT_MAX_MAP_LEN);
-
 }
 
 #ifdef PLATFORM_LINUX

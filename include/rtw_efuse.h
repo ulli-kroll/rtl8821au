@@ -78,19 +78,9 @@ typedef struct PG_PKT_STRUCT_A{
 
 /*------------------------------Define structure----------------------------*/
 typedef struct _EFUSE_HAL{
-	u16	BTEfuseUsedBytes;
-	uint8_t	BTEfuseUsedPercentage;
-	uint8_t	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-	uint8_t	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
-	uint8_t	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
 }EFUSE_HAL, *PEFUSE_HAL;
 
 
-/*------------------------Export global variable----------------------------*/
-extern u32 BTEfuseUsedBytes;
-extern uint8_t BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-extern uint8_t BTEfuseInitMap[];
-extern uint8_t BTEfuseModifiedMap[];
 /*------------------------Export global variable----------------------------*/
 
 uint8_t	efuse_GetCurrentSize(PADAPTER padapter, u16 *size);

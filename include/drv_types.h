@@ -351,22 +351,6 @@ typedef enum _DRIVER_STATE{
 	DRIVER_REPLACE_DONGLE = 2,
 }DRIVER_STATE;
 
-#ifdef CONFIG_MAC_LOOPBACK_DRIVER
-typedef struct loopbackdata
-{
-	struct semaphore	sema;
-	_thread_hdl_ lbkthread;
-	uint8_t bstop;
-	u32 cnt;
-	u16 size;
-	u16 txsize;
-	uint8_t txbuf[0x8000];
-	u16 rxsize;
-	uint8_t rxbuf[0x8000];
-	uint8_t msg[100];
-
-}LOOPBACKDATA, *PLOOPBACKDATA;
-#endif
 
 struct _ADAPTER{
 	int	DriverState;// for disable driver using module, use dongle to replace module.
@@ -476,10 +460,6 @@ struct _ADAPTER{
        //IFACE_ID0 is equals to PRIMARY_ADAPTER
        //IFACE_ID1 is equals to SECONDARY_ADAPTER
 	uint8_t iface_id;
-
-#ifdef CONFIG_MAC_LOOPBACK_DRIVER
-	PLOOPBACKDATA ploopback;
-#endif
 
         uint8_t    fix_rate;
 

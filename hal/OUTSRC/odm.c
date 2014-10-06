@@ -1552,12 +1552,6 @@ IN PDM_ODM_T pDM_Odm
 {
 	PADAPTER		pAdapter	= pDM_Odm->Adapter;
 
-	if(IS_HARDWARE_TYPE_8192EE(pAdapter))
-	{
-		pDM_Odm->TH_H = 0xf0; //-16dB
-		pDM_Odm->TH_L = 0xf3; //-13dB
-	}
-	else
 	{
 		pDM_Odm->TH_H = 0xfa; //-6dB
 		pDM_Odm->TH_L = 0xfd; //-3dB
@@ -1612,7 +1606,7 @@ odm_Write_CrystalCap(
 	}
 
 	//only for B-cut
-	if (IS_HARDWARE_TYPE_8192E(Adapter) || IS_HARDWARE_TYPE_8821(Adapter))
+	if (IS_HARDWARE_TYPE_8821(Adapter))
 	{
 		// 0x2C[23:18] = 0x2C[17:12] = CrystalCap
 		CrystalCap = CrystalCap & 0x3F;
@@ -3406,7 +3400,7 @@ odm_TXPowerTrackingCheckCE(
 	if(!pDM_Odm->RFCalibrateInfo.TM_Trigger)		//at least delay 1 sec
 	{
 		//pHalData->TxPowerCheckCnt++;	//cosa add for debug
-		if(IS_HARDWARE_TYPE_JAGUAR(Adapter) || IS_HARDWARE_TYPE_8192E(Adapter) )//||IS_HARDWARE_TYPE_8723B(Adapter))
+		if(IS_HARDWARE_TYPE_JAGUAR(Adapter) )//||IS_HARDWARE_TYPE_8723B(Adapter))
 			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 		else
 			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);

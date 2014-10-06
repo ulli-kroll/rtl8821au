@@ -71,9 +71,9 @@ _HAL_INTFS_FILES +=	hal/rtl8812a/rtl8812a_hal_init.o \
 			hal/rtl8812a/rtl8812a_rxdesc.o \
 			hal/rtl8812a/rtl8812a_cmd.o \
 			hal/rtl8812a/usb/usb_halinit.o \
-			hal/rtl8812a/usb/rtl$(MODULE_NAME)_led.o \
-			hal/rtl8812a/usb/rtl$(MODULE_NAME)_xmit.o \
-			hal/rtl8812a/usb/rtl$(MODULE_NAME)_recv.o
+			hal/rtl8812a/usb/rtl8812au_led.o \
+			hal/rtl8812a/usb/rtl8812au_xmit.o \
+			hal/rtl8812a/usb/rtl8812au_recv.o
 
 _HAL_INTFS_FILES += hal/rtl8812a/usb/usb_ops_linux.o
 
@@ -89,9 +89,6 @@ endif
 
 ifeq ($(CONFIG_RTL8821A), y)
 
-ifeq ($(CONFIG_RTL8812A), n)
-MODULE_NAME := 8821au
-endif
 
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
 _OUTSRC_FILES += hal/OUTSRC/rtl8821a/HalHWImg8821A_FW.o\
@@ -126,19 +123,6 @@ KVER  := $(shell uname -r)
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
-endif
-
-ifeq ($(CONFIG_MULTIDRV), y)
-
-
-MODULE_NAME := rtw_usb
-
-
-
-endif
-
-ifneq ($(USER_MODULE_NAME),)
-MODULE_NAME := $(USER_MODULE_NAME)
 endif
 
 ifneq ($(KERNELRELEASE),)

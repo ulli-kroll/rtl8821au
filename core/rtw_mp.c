@@ -27,28 +27,6 @@
 
 #ifdef CONFIG_MP_INCLUDED
 
-uint32_t read_macreg(struct _ADAPTER *padapter, uint32_t addr, uint32_t	sz)
-{
-	uint32_t	 val = 0;
-
-	switch(sz) {
-	case 1:
-		val = rtw_read8(padapter, addr);
-		break;
-	case 2:
-		val = rtw_read16(padapter, addr);
-		break;
-	case 4:
-		val = rtw_read32(padapter, addr);
-		break;
-	default:
-		val = 0xffffffff;
-		break;
-	}
-
-	return val;
-}
-
 void write_macreg(struct _ADAPTER *padapter, uint32_t addr, uint32_t val,
 	uint32_t sz)
 {

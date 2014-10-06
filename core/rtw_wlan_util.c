@@ -1393,23 +1393,6 @@ void VCS_update(_adapter *padapter, struct sta_info *psta)
 	}
 }
 
-#ifdef CONFIG_TDLS
-int check_ap_tdls_prohibited(uint8_t *pframe, uint8_t pkt_len)
-{
-	uint8_t tdls_prohibited_bit = 0x40; //bit(38); TDLS_prohibited
-
-	if(pkt_len < 5)
-	{
-		return _FALSE;
-	}
-
-	pframe += 4;
-	if( (*pframe) & tdls_prohibited_bit )
-		return _TRUE;
-
-	return _FALSE;
-}
-#endif //CONFIG_TDLS
 
 int rtw_check_bcn_info(ADAPTER *Adapter, uint8_t *pframe, uint32_t	 packet_len)
 {
@@ -1626,10 +1609,6 @@ void update_beacon_info(_adapter *padapter, uint8_t *pframe, uint pkt_len, struc
 	unsigned int len;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
 
-#ifdef CONFIG_TDLS
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	uint8_t tdls_prohibited[] = { 0x00, 0x00, 0x00, 0x00, 0x10 }; //bit(38): TDLS_prohibited
-#endif //CONFIG_TDLS
 
 	len = pkt_len - (_BEACON_IE_OFFSET_ + WLAN_HDR_A3_LEN);
 
@@ -1659,12 +1638,6 @@ void update_beacon_info(_adapter *padapter, uint8_t *pframe, uint pkt_len, struc
 				VCS_update(padapter, psta);
 				break;
 
-#ifdef CONFIG_TDLS
-			case _EXT_CAP_IE_:
-				if( check_ap_tdls_prohibited(pIE->data, pIE->Length) == _TRUE )
-					ptdlsinfo->ap_prohibited = _TRUE;
-				break;
-#endif //CONFIG_TDLS
 			default:
 				break;
 		}

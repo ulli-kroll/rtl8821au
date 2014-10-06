@@ -110,10 +110,6 @@
 
 #endif
 
-//	Added by Kurt 20110511
-//#define CONFIG_TDLS	1
-#ifdef CONFIG_TDLS
-#endif
 
 
 #define CONFIG_SKB_COPY	1//for amsdu

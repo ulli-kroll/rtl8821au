@@ -412,13 +412,6 @@ static uint8_t PS_RDY_CHECK(struct _ADAPTER *padapter)
 void rtw_set_ps_mode(struct _ADAPTER *padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
-#ifdef CONFIG_TDLS
-	struct sta_priv *pstapriv = &padapter->stapriv;
-	_irqL irqL;
-	int i, j;
-	struct list_head	*plist, *phead;
-	struct sta_info *ptdls_sta;
-#endif //CONFIG_TDLS
 
 _func_enter_;
 
@@ -451,24 +444,6 @@ _func_enter_;
 		{
 			DBG_871X("rtw_set_ps_mode: Leave 802.11 power save\n");
 
-#ifdef CONFIG_TDLS
-			_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-			for (i = 0; i < NUM_STA; i++) {
-				phead = &(pstapriv->sta_hash[i]);
-				plist = get_next(phead);
-
-				while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
-					ptdls_sta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
-
-					if( ptdls_sta->tdls_sta_state & TDLS_LINKED_STATE )
-						issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta, 0);
-					plist = get_next(plist);
-				}
-			}
-
-			_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-#endif //CONFIG_TDLS
 
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(padapter, PS_STATE_S4);
@@ -479,24 +454,6 @@ _func_enter_;
 		if (PS_RDY_CHECK(padapter)) {
 			DBG_871X("%s: Enter 802.11 power save\n", __FUNCTION__);
 
-#ifdef CONFIG_TDLS
-			_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-			for (i = 0; i < NUM_STA; i++) {
-				phead = &(pstapriv->sta_hash[i]);
-				plist = get_next(phead);
-
-				while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
-					ptdls_sta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
-
-					if( ptdls_sta->tdls_sta_state & TDLS_LINKED_STATE )
-						issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta, 1);
-					plist = get_next(plist);
-				}
-			}
-
-			_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-#endif //CONFIG_TDLS
 
 			pwrpriv->bFwCurrentInPSMode = _TRUE;
 			pwrpriv->pwr_mode = ps_mode;

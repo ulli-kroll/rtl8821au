@@ -1187,14 +1187,6 @@ uint8_t rtw_init_drv_sw(_adapter *padapter)
 		goto exit;
 	}
 
-#ifdef CONFIG_TDLS
-	if (rtw_init_tdls_info(padapter) == _FAIL) {
-		DBG_871X("Can't rtw_init_tdls_info\n");
-		ret8 = _FAIL;
-		goto exit;
-	}
-#endif
-
 	if (_rtw_init_xmit_priv(&padapter->xmitpriv, padapter) == _FAIL) 	{
 		DBG_871X("Can't _rtw_init_xmit_priv\n");
 		ret8 = _FAIL;
@@ -1296,9 +1288,6 @@ uint8_t rtw_free_drv_sw(_adapter *padapter)
 
 	free_mlme_ext_priv(&padapter->mlmeextpriv);
 
-#ifdef CONFIG_TDLS
-	/* rtw_free_tdls_info(&padapter->tdlsinfo); */
-#endif
 
 	rtw_free_cmd_priv(&padapter->cmdpriv);
 

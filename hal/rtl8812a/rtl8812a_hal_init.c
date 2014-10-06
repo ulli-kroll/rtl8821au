@@ -3222,13 +3222,6 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER Adapter, uint8_t variable, uint8
 	{
 		rcr_clear_bit = RCR_CBSSID_BCN;
 	}
-#ifdef CONFIG_TDLS
-	// TDLS will clear RCR_CBSSID_DATA bit for connection.
-	else if (Adapter->tdlsinfo.setup_state & TDLS_LINKED_STATE)
-	{
-		rcr_clear_bit = RCR_CBSSID_BCN;
-	}
-#endif // CONFIG_TDLS
 
 	value_rcr = rtw_read32(Adapter, REG_RCR);
 
@@ -3719,42 +3712,6 @@ void SetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval)
 		rtl8812_set_FwJoinBssReport_cmd(padapter, *pval);
 		break;
 
-#ifdef CONFIG_TDLS
-	case HW_VAR_TDLS_WRCR:
-		val32 = rtw_read32(padapter, REG_RCR);
-		val32 &= ~RCR_CBSSID_DATA;
-		rtw_write32(padapter, REG_RCR, val32);
-		break;
-
-	case HW_VAR_TDLS_INIT_CH_SEN:
-		val32 = rtw_read32(padapter, REG_RCR);
-		val32 &= (~RCR_CBSSID_DATA) & (~RCR_CBSSID_BCN);
-		rtw_write32(padapter, REG_RCR, val32);
-		rtw_write16(padapter, REG_RXFLTMAP2, 0xffff);
-
-		/*  disable update TSF */
-		val8 = rtw_read8(padapter, REG_BCN_CTRL);
-		val8 |= BIT(4);
-		rtw_write8(padapter, REG_BCN_CTRL, val8);
-		break;
-
-	case HW_VAR_TDLS_DONE_CH_SEN:
-		/*  enable update TSF */
-		val8 = rtw_read8(padapter, REG_BCN_CTRL);
-		val8 &= ~BIT(4);
-		rtw_write8(padapter, REG_BCN_CTRL, val8);
-
-		val32 = rtw_read32(padapter, REG_RCR);
-		val32 |= RCR_CBSSID_BCN;
-		rtw_write32(padapter, REG_RCR, val32);
-		break;
-
-	case HW_VAR_TDLS_RS_RCR:
-		val32 = rtw_read32(padapter, REG_RCR);
-		val32 |= RCR_CBSSID_DATA;
-		rtw_write32(padapter, REG_RCR, val32);
-		break;
-#endif
 	case HW_VAR_INITIAL_GAIN:
 		{
 			pDIG_T pDigTable = &podmpriv->DM_DigTable;

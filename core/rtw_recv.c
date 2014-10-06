@@ -800,10 +800,6 @@ void process_wmmps_data(struct _ADAPTER *padapter, union recv_frame *precv_frame
 	if (!psta)
 		return;
 
-#ifdef CONFIG_TDLS
-	if( !(psta->tdls_sta_state & TDLS_LINKED_STATE ) )
-	{
-#endif
 
 	if(!psta->qos_option)
 		return;
@@ -811,9 +807,6 @@ void process_wmmps_data(struct _ADAPTER *padapter, union recv_frame *precv_frame
 	if(!(psta->qos_info&0xf))
 		return;
 
-#ifdef CONFIG_TDLS
-	}
-#endif
 
 	if (psta->state & WIFI_SLEEP_STATE) {
 		uint8_t wmmps_ac=0;
@@ -855,74 +848,6 @@ void process_wmmps_data(struct _ADAPTER *padapter, union recv_frame *precv_frame
 
 }
 
-#ifdef CONFIG_TDLS
-sint OnTDLS(struct _ADAPTER *adapter, union recv_frame *precv_frame)
-{
-	struct rx_pkt_attrib	*pattrib = & precv_frame->u.hdr.attrib;
-	sint ret = _SUCCESS;
-	uint8_t *paction = get_recvframe_data(precv_frame);
-	uint8_t category_field = 1;
-	struct tdls_info *ptdlsinfo = &(adapter->tdlsinfo);
-
-	//point to action field
-	paction+=pattrib->hdrlen
-			+ pattrib->iv_len
-			+ SNAP_SIZE
-			+ ETH_TYPE_LEN
-			+ PAYLOAD_TYPE_LEN
-			+ category_field;
-
-	if(ptdlsinfo->enable == 0) {
-		DBG_871X("recv tdls frame, "
-				"but tdls haven't enabled\n");
-		ret = _FAIL;
-		return ret;
-	}
-
-	switch (*paction) {
-	case TDLS_SETUP_REQUEST:
-		DBG_871X("recv tdls setup request frame\n");
-		ret=On_TDLS_Setup_Req(adapter, precv_frame);
-		break;
-	case TDLS_SETUP_RESPONSE:
-		DBG_871X("recv tdls setup response frame\n");
-		ret=On_TDLS_Setup_Rsp(adapter, precv_frame);
-		break;
-	case TDLS_SETUP_CONFIRM:
-		DBG_871X("recv tdls setup confirm frame\n");
-		ret=On_TDLS_Setup_Cfm(adapter, precv_frame);
-		break;
-	case TDLS_TEARDOWN:
-		DBG_871X("recv tdls teardown, free sta_info\n");
-		ret=On_TDLS_Teardown(adapter, precv_frame);
-		break;
-	case TDLS_DISCOVERY_REQUEST:
-		DBG_871X("recv tdls discovery request frame\n");
-		ret=On_TDLS_Dis_Req(adapter, precv_frame);
-		break;
-	case TDLS_PEER_TRAFFIC_RESPONSE:
-		DBG_871X("recv tdls peer traffic response frame\n");
-		ret=On_TDLS_Peer_Traffic_Rsp(adapter, precv_frame);
-		break;
-	case TDLS_CHANNEL_SWITCH_REQUEST:
-		DBG_871X("recv tdls channel switch request frame\n");
-		ret=On_TDLS_Ch_Switch_Req(adapter, precv_frame);
-		break;
-	case TDLS_CHANNEL_SWITCH_RESPONSE:
-		DBG_871X("recv tdls channel switch response frame\n");
-		ret=On_TDLS_Ch_Switch_Rsp(adapter, precv_frame);
-		break;
-	default:
-		DBG_871X("receive TDLS frame but not supported\n");
-		ret=_FAIL;
-		break;
-	}
-
-exit:
-	return ret;
-
-}
-#endif
 
 void count_rx_stats(struct _ADAPTER *padapter, union recv_frame *prframe, struct sta_info*sta);
 void count_rx_stats(struct _ADAPTER *padapter, union recv_frame *prframe, struct sta_info*sta)
@@ -977,13 +902,6 @@ sint sta2sta_data_frame(
 	uint8_t * sta_addr = NULL;
 	sint bmcast = IS_MCAST(pattrib->dst);
 
-#ifdef CONFIG_TDLS
-	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
-	struct sta_info *ptdls_sta=NULL;
-	uint8_t *psnap_type=ptr+pattrib->hdrlen + pattrib->iv_len+SNAP_SIZE;
-	/* frame body located after [+2]: ether-type, [+1]: payload type */
-	uint8_t *pframe_body = psnap_type+2+1;
-#endif
 
 _func_enter_;
 
@@ -1014,80 +932,6 @@ _func_enter_;
 
 	} else if(check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE)
 	{
-#ifdef CONFIG_TDLS
-
-		//direct link data transfer
-		if(ptdlsinfo->setup_state == TDLS_LINKED_STATE){
-			ptdls_sta = rtw_get_stainfo(pstapriv, pattrib->src);
-			if(ptdls_sta==NULL) {
-				ret=_FAIL;
-				goto exit;
-			} else if(ptdls_sta->tdls_sta_state&TDLS_LINKED_STATE) {
-				//drop QoS-SubType Data, including QoS NULL, excluding QoS-Data
-				if( (GetFrameSubType(ptr) & WIFI_QOS_DATA_TYPE )== WIFI_QOS_DATA_TYPE) {
-					if(GetFrameSubType(ptr)&(BIT(4)|BIT(5)|BIT(6))) {
-						DBG_871X("drop QoS-Sybtype Data\n");
-						ret= _FAIL;
-						goto exit;
-					}
-				}
-				// filter packets that SA is myself or multicast or broadcast
-				if (_rtw_memcmp(myhwaddr, pattrib->src, ETH_ALEN)){
-					ret= _FAIL;
-					goto exit;
-				}
-				// da should be for me
-				if((!_rtw_memcmp(myhwaddr, pattrib->dst, ETH_ALEN))&& (!bmcast)) {
-					ret= _FAIL;
-					goto exit;
-				}
-				// check BSSID
-				if( _rtw_memcmp(pattrib->bssid, "\x0\x0\x0\x0\x0\x0", ETH_ALEN) ||
-				     _rtw_memcmp(mybssid, "\x0\x0\x0\x0\x0\x0", ETH_ALEN) ||
-				     (!_rtw_memcmp(pattrib->bssid, mybssid, ETH_ALEN)) )
-				{
-					ret= _FAIL;
-					goto exit;
-				}
-
-				//process UAPSD tdls sta
-				process_pwrbit_data(adapter, precv_frame);
-
-				// if NULL-frame, check pwrbit
-				if ((GetFrameSubType(ptr)) == WIFI_DATA_NULL) {
-					//NULL-frame with pwrbit=1, buffer_STA should buffer frames for sleep_STA
-					if(GetPwrMgt(ptr)) {
-						DBG_871X("TDLS: recv peer null frame with pwr bit 1\n");
-						ptdls_sta->tdls_sta_state|=TDLS_PEER_SLEEP_STATE;
-					// it would be triggered when we are off channel and receiving NULL DATA
-					// we can confirm that peer STA is at off channel
-					}
-					else if(ptdls_sta->tdls_sta_state&TDLS_CH_SWITCH_ON_STATE)
-					{
-						if((ptdls_sta->tdls_sta_state & TDLS_PEER_AT_OFF_STATE) != TDLS_PEER_AT_OFF_STATE)
-						{
-							issue_nulldata_to_TDLS_peer_STA(adapter, ptdls_sta, 0);
-							ptdls_sta->tdls_sta_state |= TDLS_PEER_AT_OFF_STATE;
-							On_TDLS_Peer_Traffic_Rsp(adapter, precv_frame);
-						}
-					}
-
-					ret= _FAIL;
-					goto exit;
-				}
-				//receive some of all TDLS management frames, process it at ON_TDLS
-				if((_rtw_memcmp(psnap_type, SNAP_ETH_TYPE_TDLS, 2))){
-					ret= OnTDLS(adapter, precv_frame);
-					goto exit;
-				}
-
-			}
-
-			sta_addr = pattrib->src;
-
-		}
-		else
-#endif //CONFIG_TDLS
 		{
 			// For Station mode, sa and bssid should always be BSSID, and DA is my mac-address
 			if(!_rtw_memcmp(pattrib->bssid, pattrib->src, ETH_ALEN) )
@@ -1137,10 +981,6 @@ _func_enter_;
 	else
 		*psta = rtw_get_stainfo(pstapriv, sta_addr); // get ap_info
 
-#ifdef CONFIG_TDLS
-	if(ptdls_sta != NULL)
-		*psta = ptdls_sta;
-#endif //CONFIG_TDLS
 
 	if (*psta == NULL) {
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,("can't get psta under sta2sta_data_frame ; drop pkt\n"));
@@ -1578,9 +1418,6 @@ sint validate_recv_data_frame(struct _ADAPTER *adapter, union recv_frame *precv_
 	struct sta_priv 	*pstapriv = &adapter->stapriv;
 	struct security_priv	*psecuritypriv = &adapter->securitypriv;
 	sint ret = _SUCCESS;
-#ifdef CONFIG_TDLS
-	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
-#endif
 
 	bretry = GetRetry(ptr);
 	pda = get_da(ptr);
@@ -1692,13 +1529,6 @@ sint validate_recv_data_frame(struct _ADAPTER *adapter, union recv_frame *precv_
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("validate_recv_data_frame:pattrib->privacy=%x\n", pattrib->privacy));
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("\n ^^^^^^^^^^^IS_MCAST(pattrib->ra(0x%02x))=%d^^^^^^^^^^^^^^^6\n", pattrib->ra[0],IS_MCAST(pattrib->ra)));
 
-#ifdef CONFIG_TDLS
-		if((psta->tdls_sta_state & TDLS_LINKED_STATE) && (psta->dot118021XPrivacy==_AES_))
-		{
-			pattrib->encrypt=psta->dot118021XPrivacy;
-		}
-		else
-#endif
 		GET_ENCRY_ALGO(psecuritypriv, psta, pattrib->encrypt, IS_MCAST(pattrib->ra));
 
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("\n pattrib->encrypt=%d\n",pattrib->encrypt));
@@ -1735,9 +1565,6 @@ sint validate_recv_frame(struct _ADAPTER *adapter, union recv_frame *precv_frame
 	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
 #endif
 
-#ifdef CONFIG_TDLS
-	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
-#endif
 
 _func_enter_;
 
@@ -1750,11 +1577,6 @@ _func_enter_;
 	}
 #endif
 
-#ifdef CONFIG_TDLS
-	if(ptdlsinfo->ch_sensing==1 && ptdlsinfo->cur_channel !=0){
-		ptdlsinfo->collect_pkt_num[ptdlsinfo->cur_channel-1]++;
-	}
-#endif
 
 	/* add version chk */
 	if (ver != 0){
@@ -2830,22 +2652,12 @@ int process_recv_indicatepkts(struct _ADAPTER *padapter, union recv_frame *prfra
 	//struct recv_priv *precvpriv = &padapter->recvpriv;
 	//struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-#ifdef CONFIG_TDLS
-	struct sta_info *psta = prframe->u.hdr.psta;
-#endif //CONFIG_TDLS
 
 #ifdef CONFIG_80211N_HT
 
 	struct ht_priv	*phtpriv = &pmlmepriv->htpriv;
 
-#ifdef CONFIG_TDLS
-	if( (phtpriv->ht_option==_TRUE) ||
-		((psta->tdls_sta_state & TDLS_LINKED_STATE) &&
-		 (psta->htpriv.ht_option==_TRUE) &&
-		 (psta->htpriv.ampdu_enable==_TRUE))) //B/G/N Mode
-#else
 	if(phtpriv->ht_option==_TRUE)  //B/G/N Mode
-#endif //CONFIG_TDLS
 	{
 		//prframe->u.hdr.preorder_ctrl = &precvpriv->recvreorder_ctrl[pattrib->priority];
 
@@ -2922,10 +2734,6 @@ int recv_func_posthandle(struct _ADAPTER *padapter, union recv_frame *prframe)
 	_queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
 
 
-#ifdef CONFIG_TDLS
-	uint8_t *psnap_type, *pcategory;
-	struct sta_info *ptdls_sta = NULL;
-#endif //CONFIG_TDLS
 
 
 	// DATA FRAME
@@ -2954,18 +2762,6 @@ int recv_func_posthandle(struct _ADAPTER *padapter, union recv_frame *prframe)
 	}
 #endif
 
-#ifdef CONFIG_TDLS
-	//check TDLS frame
-	psnap_type = get_recvframe_data(orig_prframe);
-	psnap_type+=pattrib->hdrlen + pattrib->iv_len+SNAP_SIZE;
-	pcategory = psnap_type + ETH_TYPE_LEN + PAYLOAD_TYPE_LEN;
-
-	if((_rtw_memcmp(psnap_type, SNAP_ETH_TYPE_TDLS, ETH_TYPE_LEN)) &&
-		((*pcategory==RTW_WLAN_CATEGORY_TDLS) || (*pcategory==RTW_WLAN_CATEGORY_P2P))){
-		ret = OnTDLS(padapter, prframe);	//all of functions will return _FAIL
-		goto _exit_recv_func;
-	}
-#endif //CONFIG_TDLS
 
 	prframe = recvframe_chk_defrag(padapter, prframe);
 	if(prframe==NULL)	{
@@ -2980,13 +2776,7 @@ int recv_func_posthandle(struct _ADAPTER *padapter, union recv_frame *prframe)
 		goto _recv_data_drop;
 	}
 
-#ifdef CONFIG_TDLS
-	if(padapter->tdlsinfo.setup_state == TDLS_LINKED_STATE)
-		ptdls_sta = rtw_get_stainfo(&padapter->stapriv, pattrib->src);
-	count_rx_stats(padapter, prframe, ptdls_sta);
-#else
 	count_rx_stats(padapter, prframe, NULL);
-#endif //CONFIG_TDLS
 
 #ifdef CONFIG_80211N_HT
 	ret = process_recv_indicatepkts(padapter, prframe);

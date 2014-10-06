@@ -4605,8 +4605,6 @@ static int rtw_wfd_tdls_enable(struct net_device *ndev,
 {
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-#endif //CONFIG_TDLS
 
 	return ret;
 }
@@ -4617,22 +4615,6 @@ static int rtw_tdls_weaksec(struct net_device *ndev,
 {
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-
-	uint8_t i, j;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	if ( extra[ 0 ] == '0' )
-	{
-		padapter->wdinfo.wfd_tdls_weaksec = 0;
-	}
-	else
-	{
-		padapter->wdinfo.wfd_tdls_weaksec = 1;
-	}
-#endif
 
 	return ret;
 }
@@ -4644,65 +4626,6 @@ static int rtw_tdls_enable(struct net_device *ndev,
 {
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct tdls_info	*ptdlsinfo = &padapter->tdlsinfo;
-	_irqL	 irqL;
-	struct list_head	*plist, *phead;
-	int32_t	index;
-	struct sta_info *psta = NULL;
-	struct	sta_priv *pstapriv = &padapter->stapriv;
-	uint8_t tdls_sta[NUM_STA][ETH_ALEN];
-	uint8_t empty_hwaddr[ETH_ALEN] = { 0x00 };
-
-	printk( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	memset(tdls_sta, 0x00, sizeof(tdls_sta));
-
-	if ( extra[ 0 ] == '0' )
-	{
-		ptdlsinfo->enable = 0;
-
-		if(pstapriv->asoc_sta_count==1)
-			return ret;
-
-		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-		for(index=0; index< NUM_STA; index++)
-		{
-			phead = &(pstapriv->sta_hash[index]);
-			plist = get_next(phead);
-
-			while ((rtw_end_of_queue_search(phead, plist)) == _FALSE)
-			{
-				psta = LIST_CONTAINOR(plist, struct sta_info ,hash_list);
-
-				plist = get_next(plist);
-
-				if(psta->tdls_sta_state != TDLS_STATE_NONE)
-				{
-					memcpy(tdls_sta[index], psta->hwaddr, ETH_ALEN);
-				}
-			}
-		}
-		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-		for(index=0; index< NUM_STA; index++)
-		{
-			if( !_rtw_memcmp(tdls_sta[index], empty_hwaddr, ETH_ALEN) )
-			{
-				printk("issue tear down to "MAC_FMT"\n", MAC_ARG(tdls_sta[index]));
-				issue_tdls_teardown(padapter, tdls_sta[index]);
-			}
-		}
-		rtw_tdls_cmd(padapter, myid(&(padapter->eeprompriv)), TDLS_RS_RCR);
-		rtw_reset_tdls_info(padapter);
-	}
-	else if ( extra[ 0 ] == '1' )
-	{
-		ptdlsinfo->enable = 1;
-	}
-#endif //CONFIG_TDLS
 
 	return ret;
 }
@@ -4713,23 +4636,6 @@ static int rtw_tdls_setup(struct net_device *ndev,
 {
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-
-	uint8_t i, j;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	uint8_t mac_addr[ETH_ALEN];
-
-
-	printk( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ){
-		mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
-	}
-
-	{
-		issue_tdls_setup_req(padapter, mac_addr);
-	}
-#endif
 
 	return ret;
 }
@@ -4740,29 +4646,6 @@ static int rtw_tdls_teardown(struct net_device *ndev,
 {
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-
-	uint8_t i,j;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct sta_info *ptdls_sta = NULL;
-	uint8_t mac_addr[ETH_ALEN];
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ){
-		mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
-	}
-
-	ptdls_sta = rtw_get_stainfo( &(padapter->stapriv), mac_addr);
-
-	if(ptdls_sta != NULL)
-	{
-		ptdls_sta->stat_code = _RSON_TDLS_TEAR_UN_RSN_;
-		issue_tdls_teardown(padapter, mac_addr);
-	}
-
-#endif //CONFIG_TDLS
-
 	return ret;
 }
 
@@ -4771,18 +4654,6 @@ static int rtw_tdls_discovery(struct net_device *ndev,
 				union iwreq_data *wrqu, char *extra)
 {
 	int ret = 0;
-
-#ifdef CONFIG_TDLS
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	issue_tdls_dis_req(padapter, NULL);
-
-#endif //CONFIG_TDLS
 
 	return ret;
 }
@@ -4793,28 +4664,6 @@ static int rtw_tdls_ch_switch(struct net_device *ndev,
 {
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct tdls_info	*ptdlsinfo = &padapter->tdlsinfo;
-	uint8_t i, j, mac_addr[ETH_ALEN];
-	struct sta_info *ptdls_sta = NULL;
-
-	DBG_8192C( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ){
-		mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
-	}
-
-	ptdls_sta = rtw_get_stainfo(&padapter->stapriv, mac_addr);
-	if( ptdls_sta == NULL )
-		return ret;
-	ptdlsinfo->ch_sensing=1;
-
-	rtw_tdls_cmd(padapter, ptdls_sta->hwaddr, TDLS_INIT_CH_SEN);
-
-#endif //CONFIG_TDLS
-
 		return ret;
 }
 
@@ -4823,26 +4672,6 @@ static int rtw_tdls_pson(struct net_device *ndev,
 				union iwreq_data *wrqu, char *extra)
 {
 	int ret = 0;
-
-#ifdef CONFIG_TDLS
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	uint8_t i, j, mac_addr[ETH_ALEN];
-	struct sta_info *ptdls_sta = NULL;
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ){
-		mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
-	}
-
-	ptdls_sta = rtw_get_stainfo(&padapter->stapriv, mac_addr);
-
-	issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta, 1);
-
-#endif //CONFIG_TDLS
 
 		return ret;
 }
@@ -4853,26 +4682,6 @@ static int rtw_tdls_psoff(struct net_device *ndev,
 {
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	uint8_t i, j, mac_addr[ETH_ALEN];
-	struct sta_info *ptdls_sta = NULL;
-
-	DBG_8192C( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ){
-		mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
-	}
-
-	ptdls_sta = rtw_get_stainfo(&padapter->stapriv, mac_addr);
-
-	issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta, 0);
-
-#endif //CONFIG_TDLS
-
 	return ret;
 }
 
@@ -4881,9 +4690,6 @@ static int rtw_tdls_setip(struct net_device *ndev,
 				union iwreq_data *wrqu, char *extra)
 {
 	int ret = 0;
-
-#ifdef CONFIG_TDLS
-#endif //CONFIG_TDLS
 
 	return ret;
 }
@@ -4894,9 +4700,6 @@ static int rtw_tdls_getip(struct net_device *ndev,
 {
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-#endif //CONFIG_TDLS
-
 	return ret;
 }
 
@@ -4906,9 +4709,6 @@ static int rtw_tdls_getport(struct net_device *ndev,
 {
 
 	int ret = 0;
-
-#ifdef CONFIG_TDLS
-#endif //CONFIG_TDLS
 
 	return ret;
 
@@ -4922,9 +4722,6 @@ static int rtw_tdls_dis_result(struct net_device *ndev,
 
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-#endif //CONFIG_TDLS
-
 	return ret;
 
 }
@@ -4937,9 +4734,6 @@ static int rtw_wfd_tdls_status(struct net_device *ndev,
 
 	int ret = 0;
 
-#ifdef CONFIG_TDLS
-#endif //CONFIG_TDLS
-
 	return ret;
 
 }
@@ -4949,31 +4743,6 @@ static int rtw_tdls_ch_switch_off(struct net_device *ndev,
 				union iwreq_data *wrqu, char *extra)
 {
 	int ret = 0;
-
-#ifdef CONFIG_TDLS
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	uint8_t i, j, mac_addr[ETH_ALEN];
-	struct sta_info *ptdls_sta = NULL;
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ){
-		mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
-	}
-
-	ptdls_sta = rtw_get_stainfo(&padapter->stapriv, mac_addr);
-
-	ptdls_sta->tdls_sta_state |= TDLS_SW_OFF_STATE;
-/*
-	if((ptdls_sta->tdls_sta_state & TDLS_AT_OFF_CH_STATE) && (ptdls_sta->tdls_sta_state & TDLS_PEER_AT_OFF_STATE)){
-		pmlmeinfo->tdls_candidate_ch= pmlmeext->cur_channel;
-		issue_tdls_ch_switch_req(padapter, mac_addr);
-		DBG_871X("issue tdls ch switch req back to base channel\n");
-	}
-*/
-
-#endif //CONFIG_TDLS
 
 	return ret;
 }

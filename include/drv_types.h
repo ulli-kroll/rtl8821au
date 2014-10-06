@@ -76,9 +76,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_efuse.h>
 #include <rtw_version.h>
 
-#ifdef CONFIG_TDLS
-#include <rtw_tdls.h>
-#endif // CONFIG_TDLS
 
 #ifdef CONFIG_DRVEXT_MODULE
 #include <drvext_api.h>
@@ -405,9 +402,6 @@ struct _ADAPTER{
 #endif
 
 	u32	setband;
-#ifdef CONFIG_TDLS
-	struct tdls_info	tdlsinfo;
-#endif //CONFIG_TDLS
 	PVOID			HalData;
 	struct hal_ops	HalFunc;
 

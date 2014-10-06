@@ -406,14 +406,6 @@ u32 rtw_aes_decrypt(_adapter *padapter, uint8_t  *precvframe);
 u32 rtw_tkip_decrypt(_adapter *padapter, uint8_t  *precvframe);
 void rtw_wep_decrypt(_adapter *padapter, uint8_t  *precvframe);
 
-#ifdef CONFIG_TDLS
-void wpa_tdls_generate_tpk(_adapter *padapter, struct sta_info *psta);
-int wpa_tdls_ftie_mic(uint8_t *kck, uint8_t trans_seq,
-						uint8_t *lnkid, uint8_t *rsnie, uint8_t *timeoutie, uint8_t *ftie,
-						uint8_t *mic);
-int tdls_verify_mic(uint8_t *kck, uint8_t trans_seq,
-						uint8_t *lnkid, uint8_t *rsnie, uint8_t *timeoutie, uint8_t *ftie);
-#endif //CONFIG_TDLS
 
 void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS);
 

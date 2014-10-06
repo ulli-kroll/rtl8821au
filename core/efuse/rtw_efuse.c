@@ -246,6 +246,12 @@ EFUSE_Write1Byte(
 }/* EFUSE_Write1Byte */
 
 
+/*
+ *
+ * ULLI need this rtlwifi-lib
+ * u8 efuse_read_1byte(struct ieee80211_hw *hw, u16 address)
+ */
+
 /*  11/16/2008 MH Read one byte from real Efuse. */
 uint8_t
 efuse_OneByteRead(
@@ -296,6 +302,11 @@ efuse_OneByteRead(
 	return bResult;
 }
 
+
+/*
+ * ULLI need this for rtlwifi-lib
+ * void efuse_write_1byte(struct ieee80211_hw *hw, u16 address, u8 value)
+ */
 /*  11/16/2008 MH Write one byte to reald Efuse. */
 uint8_t
 efuse_OneByteWrite(

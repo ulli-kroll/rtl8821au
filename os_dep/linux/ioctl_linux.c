@@ -2910,29 +2910,6 @@ static int rtw_wx_get_nick(struct net_device *ndev,
 
 }
 
-
-static int rtw_wx_read_rf(struct net_device *ndev,
-                            struct iw_request_info *info,
-                            union iwreq_data *wrqu, char *extra)
-{
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	u32 path, addr, data32;
-
-
-	path = *(u32*)extra;
-	addr = *((u32*)extra + 1);
-	data32 = rtw_hal_read_rfreg(padapter, path, addr, 0xFFFFF);
-//	DBG_871X("%s: path=%d addr=0x%02x data=0x%05x\n", __func__, path, addr, data32);
-	/*
-	 * IMPORTANT!!
-	 * Only when wireless private ioctl is at odd order,
-	 * "extra" would be copied to user space.
-	 */
-	sprintf(extra, "0x%05x", data32);
-
-	return 0;
-}
-
 static int rtw_wx_priv_null(struct net_device *ndev, struct iw_request_info *a,
 		 union iwreq_data *wrqu, char *b)
 {

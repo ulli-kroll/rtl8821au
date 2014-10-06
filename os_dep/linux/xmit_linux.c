@@ -329,7 +329,7 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 
 int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev)
 {
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
+	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 #ifdef CONFIG_TX_MCAST2UNI
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;

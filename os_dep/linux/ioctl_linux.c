@@ -2933,23 +2933,6 @@ static int rtw_wx_read_rf(struct net_device *ndev,
 	return 0;
 }
 
-static int rtw_wx_write_rf(struct net_device *ndev,
-                            struct iw_request_info *info,
-                            union iwreq_data *wrqu, char *extra)
-{
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	u32 path, addr, data32;
-
-
-	path = *(u32*)extra;
-	addr = *((u32*)extra + 1);
-	data32 = *((u32*)extra + 2);
-//	DBG_871X("%s: path=%d addr=0x%02x data=0x%05x\n", __func__, path, addr, data32);
-	rtw_hal_write_rfreg(padapter, path, addr, 0xFFFFF, data32);
-
-	return 0;
-}
-
 static int rtw_wx_priv_null(struct net_device *ndev, struct iw_request_info *a,
 		 union iwreq_data *wrqu, char *b)
 {

@@ -477,11 +477,6 @@ typedef struct hal_com_data
 #endif
 
 
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
-	// Interrupt relatd register information.
-	u32			SysIntrStatus;
-	u32			SysIntrMask;
-#endif //endif CONFIG_RTL8723A
 } HAL_DATA_COMMON, *PHAL_DATA_COMMON;
 
 

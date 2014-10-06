@@ -9174,11 +9174,6 @@ static const struct iw_priv_args rtw_private_args[] =
 		{ MP_SetRFPathSwh, IW_PRIV_TYPE_CHAR | 1024, 0, "mp_setrfpath" },
 	{ SIOCIWFIRSTPRIV + 0x02, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK , "test"},//set
 };
-static iw_handler rtw_private_handler[] =
-{
-	rtw_mp_set,
-	rtw_mp_get,
-};
 #else // not inlucde MP
 
 static const struct iw_priv_args rtw_private_args[] = {
@@ -9318,58 +9313,6 @@ static const struct iw_priv_args rtw_private_args[] = {
 		{ MP_GET_TXPOWER_INX, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "mp_get_txpower" },
 		{ CTA_TEST, IW_PRIV_TYPE_CHAR | 1024, 0, "cta_test"},
 #endif
-};
-
-static iw_handler rtw_private_handler[] =
-{
-	rtw_wx_write32,					//0x00
-	rtw_wx_read32,					//0x01
-	rtw_drvext_hdl,					//0x02
-	rtw_mp_ioctl_hdl,				//0x03
-
-// for MM DTV platform
-	rtw_get_ap_info,					//0x04
-
-	rtw_set_pid,						//0x05
-	rtw_wps_start,					//0x06
-
-// for PLATFORM_MT53XX
-	rtw_wx_get_sensitivity,			//0x07
-	rtw_wx_set_mtk_wps_probe_ie,	//0x08
-	rtw_wx_set_mtk_wps_ie,			//0x09
-
-// for RTK_DMP_PLATFORM
-// Set Channel depend on the country code
-	rtw_wx_set_channel_plan,		//0x0A
-
-	rtw_dbg_port,					//0x0B
-	rtw_wx_write_rf,					//0x0C
-	rtw_wx_read_rf,					//0x0D
-
-#ifndef CONFIG_MP_INCLUDED
-	rtw_wx_priv_null,				//0x0E
-	rtw_wx_priv_null,				//0x0F
-#else
-	rtw_mp_set,					//0x0E
-	rtw_mp_get,					//0x0F
-#endif
-	rtw_p2p_set,					//0x10
-	rtw_p2p_get,					//0x11
-	NULL,							//0x12
-	rtw_p2p_get2,					//0x13
-
-	rtw_tdls,						//0x14
-	rtw_tdls_get,					//0x15
-
-	rtw_pm_set,						//0x16
-	rtw_wx_priv_null,				//0x17
-	rtw_rereg_nd_name,				//0x18
-	rtw_wx_priv_null,				//0x19
-
-	rtw_mp_efuse_set,				//0x1A
-	rtw_mp_efuse_get,				//0x1B
-	NULL,							// 0x1C is reserved for hostapd
-	rtw_test,						// 0x1D
 };
 
 #endif // #if defined(CONFIG_MP_INCLUDED) && defined(CONFIG_MP_IWPRIV_SUPPORT)

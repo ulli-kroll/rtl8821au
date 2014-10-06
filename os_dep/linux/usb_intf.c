@@ -1181,7 +1181,7 @@ static void dump_usb_interface(struct usb_interface *usb_intf)
 
 static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
-	_adapter *if1 = NULL, *if2 = NULL;
+	_adapter *if1 = NULL;
 	int status;
 	struct dvobj_priv *dvobj;
 
@@ -1211,7 +1211,7 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 
 	/* dev_alloc_name && register_netdev */
 	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
-		goto free_if2;
+		goto free_if1;
 	}
 
 #ifdef CONFIG_HOSTAPD_MLME
@@ -1222,9 +1222,6 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 
 	status = _SUCCESS;
 
-free_if2:
-	if(status != _SUCCESS && if2) {
-	}
 free_if1:
 	if (status != _SUCCESS && if1) {
 		rtw_usb_if1_deinit(if1);

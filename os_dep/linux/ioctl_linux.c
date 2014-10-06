@@ -21,7 +21,6 @@
 
 #include <drv_types.h>
 
-#include <rtw_mp_ioctl.h>
 #include "../../hal/OUTSRC/odm_precomp.h"
 
 

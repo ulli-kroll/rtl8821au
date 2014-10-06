@@ -6698,63 +6698,6 @@ static int rtw_mp_antBdiff(struct net_device *ndev,
 
 
 
-static int rtw_mp_set(struct net_device *ndev,
-			struct iw_request_info *info,
-			union iwreq_data *wdata, char *extra)
-{
-	struct iw_point *wrqu = (struct iw_point *)wdata;
-	u32 subcmd = wrqu->flags;
-	PADAPTER padapter = rtw_netdev_priv(ndev);
-
-	if (padapter == NULL)
-	{
-		return -ENETDOWN;
-	}
-
-	//memset(extra, 0x00, IW_PRIV_SIZE_MASK);
-
-	if (extra == NULL)
-	{
-		wrqu->length = 0;
-		return -EIO;
-	}
-
-	switch(subcmd)
-	{
-	case MP_START:
-			DBG_871X("set case mp_start \n");
-			rtw_mp_start (ndev,info,wrqu,extra);
-			 break;
-
-	case MP_STOP:
-			DBG_871X("set case mp_stop \n");
-			rtw_mp_stop (ndev,info,wrqu,extra);
-			 break;
-
-	case MP_BANDWIDTH:
-			DBG_871X("set case mp_bandwidth \n");
-			rtw_mp_bandwidth (ndev,info,wrqu,extra);
-			break;
-
-	case MP_RESET_STATS:
-			DBG_871X("set case MP_RESET_STATS \n");
-			rtw_mp_reset_stats	(ndev,info,wrqu,extra);
-			break;
-
-
-	case MP_SetRFPathSwh:
-			DBG_871X("set MP_SetRFPathSwitch \n");
-			rtw_mp_SetRFPath  (ndev,info,wdata,extra);
-			break;
-	case CTA_TEST:
-			DBG_871X("set CTA_TEST\n");
-			rtw_cta_test_start (ndev, info, wdata, extra);
-			break;
-	}
-
-
-	return 0;
-}
 
 
 static int rtw_mp_get(struct net_device *ndev,

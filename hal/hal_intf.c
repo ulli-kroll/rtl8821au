@@ -374,15 +374,6 @@ void rtw_hal_antdiv_rssi_compared(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_B
 }
 #endif
 
-#ifdef CONFIG_HOSTAPD_MLME
-
-int32_t	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
-{
-	if (padapter->HalFunc->hostap_mgnt_xmit_entry)
-		return padapter->HalFunc->hostap_mgnt_xmit_entry(padapter, pkt);
-	return _FAIL;
-}
-#endif
 
 #ifdef DBG_CONFIG_ERROR_DETECT
 void rtw_hal_sreset_init(_adapter *padapter)

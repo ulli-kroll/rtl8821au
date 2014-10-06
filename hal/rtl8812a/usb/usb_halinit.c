@@ -2643,9 +2643,6 @@ static struct hal_ops rtl8812au_hal_ops = {
 	.mgnt_xmit = 		rtl8812au_mgnt_xmit,
 	.hal_xmitframe_enqueue = 	rtl8812au_hal_xmitframe_enqueue,
 
-#ifdef CONFIG_HOSTAPD_MLME
-	.hostap_mgnt_xmit_entry = 	rtl8812au_hostap_mgnt_xmit_entry,
-#endif
 	.interface_ps_func = 	rtl8812au_ps_func,
 #ifdef CONFIG_XMIT_THREAD_MODE
 	.xmit_thread_handler = 	rtl8812au_xmit_buf_handler

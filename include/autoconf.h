@@ -99,9 +99,6 @@
 	#endif
 
 	#define CONFIG_NATIVEAP_MLME
-	#ifndef CONFIG_NATIVEAP_MLME
-		#define CONFIG_HOSTAPD_MLME	1
-	#endif
 	#define CONFIG_FIND_BEST_CHANNEL	1
 	//#define CONFIG_NO_WIRELESS_HANDLERS	1
 

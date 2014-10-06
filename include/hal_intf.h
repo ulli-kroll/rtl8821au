@@ -225,10 +225,6 @@ struct hal_ops {
 	u32	(*read_rfreg)(_adapter *padapter, uint8_t eRFPath, u32 RegAddr, u32 BitMask);
 	void	(*write_rfreg)(_adapter *padapter, uint8_t eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 
-#ifdef CONFIG_HOSTAPD_MLME
-	int32_t	(*hostap_mgnt_xmit_entry)(_adapter *padapter, _pkt *pkt);
-#endif
-
 	void (*EfusePowerSwitch)(_adapter *padapter, uint8_t bWrite, uint8_t PwrState);
 	void (*ReadEFuse)(_adapter *padapter, uint8_t efuseType, u16 _offset, u16 _size_byte, uint8_t *pbuf);
 	void (*EFUSEGetEfuseDefinition)(_adapter *padapter, uint8_t efuseType, uint8_t type, void *pOut);
@@ -377,9 +373,6 @@ uint8_t	rtw_hal_antdiv_before_linked(_adapter *padapter);
 void	rtw_hal_antdiv_rssi_compared(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
 #endif
 
-#ifdef CONFIG_HOSTAPD_MLME
-int32_t	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt);
-#endif
 
 #ifdef DBG_CONFIG_ERROR_DETECT
 void rtw_hal_sreset_init(_adapter *padapter);

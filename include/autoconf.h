@@ -67,7 +67,6 @@
 //#define CONFIG_USB_INTERRUPT_IN_PIPE	1
 #endif
 
-//#ifndef CONFIG_MP_INCLUDED
 	#define CONFIG_IPS	1
 	#ifdef CONFIG_IPS
 	//#define CONFIG_IPS_LEVEL_2	1 //enable this to set default IPS mode to IPS_LEVEL_2
@@ -91,9 +90,6 @@
 	#define CONFIG_HW_ANTENNA_DIVERSITY
 	#endif
 
-//#else 	//#ifndef CONFIG_MP_INCLUDED
-
-//#endif 	//#ifndef CONFIG_MP_INCLUDED
 
 #define CONFIG_AP_MODE	1
 #ifdef CONFIG_AP_MODE
@@ -186,14 +182,7 @@
 
 #define DISABLE_BB_RF	0
 
-#ifdef CONFIG_MP_INCLUDED
-	#define MP_DRIVER 1
-	#define CONFIG_MP_IWPRIV_SUPPORT	1
-	//#undef CONFIG_USB_TX_AGGREGATION
-	//#undef CONFIG_USB_RX_AGGREGATION
-#else
 	#define MP_DRIVER 0
-#endif
 
 
 /*

@@ -84,10 +84,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <drvext_api.h>
 #endif // CONFIG_DRVEXT_MODULE
 
-#ifdef CONFIG_MP_INCLUDED
-#include <rtw_mp.h>
-#endif // CONFIG_MP_INCLUDED
-
 #include <ip.h>
 #include <if_ether.h>
 #include <ethernet.h>
@@ -399,9 +395,6 @@ struct _ADAPTER{
 	struct 	eeprom_priv eeprompriv;
 	struct	led_priv	ledpriv;
 
-#ifdef CONFIG_MP_INCLUDED
-       struct	mp_priv	mppriv;
-#endif
 
 #ifdef CONFIG_DRVEXT_MODULE
 	struct	drvext_priv	drvextpriv;

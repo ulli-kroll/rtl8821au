@@ -331,12 +331,6 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
 	uint32_t	 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
 	uint32_t	 num_xmit_extbuf = NR_XMIT_EXTBUFF;
-#if defined(CONFIG_MP_INCLUDED) && (defined(CONFIG_RTL8723A) ||defined(CONFIG_RTL8723B))
-	if (padapter->registrypriv.mp_mode) {
-		max_xmit_extbuf_size = 20000;
-		num_xmit_extbuf = 1;
-	}
-#endif
 
  _func_enter_;
 

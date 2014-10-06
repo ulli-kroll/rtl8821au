@@ -159,7 +159,7 @@
 #undef	_dbgdump
 	#define _dbgdump	printk
 
-#define DRIVER_PREFIX	"RTL871X: "
+#define DRIVER_PREFIX	"rtl8821au: "
 #define DEBUG_LEVEL	(_drv_err_)
 #if 	defined (_dbgdump)
 	#undef DBG_871X_LEVEL

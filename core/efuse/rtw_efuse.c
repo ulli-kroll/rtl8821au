@@ -59,7 +59,7 @@ Efuse_Read1ByteFromFakeContent(
 {
 	if(Offset >= EFUSE_MAX_HW_SIZE)
 	{
-		return _FALSE;
+		return 0;
 	}
 	//DbgPrint("Read fake content, offset = %d\n", Offset);
 	if(fakeEfuseBank == 0)
@@ -82,7 +82,7 @@ Efuse_Write1ByteToFakeContent(
 {
 	if(Offset >= EFUSE_MAX_HW_SIZE)
 	{
-		return _FALSE;
+		return 0;
 	}
 	if(fakeEfuseBank == 0)
 		fakeEfuseContent[Offset] = Value;
@@ -155,12 +155,6 @@ ReadEFuseByte(
 	uint8_t	readbyte;
 	uint16_t	retry;
 	//uint32_t start=rtw_get_current_time();
-
-	if(_FALSE)
-	{
-		Efuse_Read1ByteFromFakeContent(padapter, _offset, pbuf);
-		return;
-	}
 
 	//Write Address
 	rtw_write8(padapter, EFUSE_CTRL+1, (_offset & 0xff));
@@ -382,12 +376,6 @@ efuse_OneByteRead(
 	//DBG_871X("===> EFUSE_OneByteRead(), addr = %x\n", addr);
 	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
 
-	if(_FALSE)
-	{
-		bResult = Efuse_Read1ByteFromFakeContent(padapter, addr, data);
-		return bResult;
-	}
-
 	// <20130227, Kordan> 8192E MP chip A-cut had better not set 0x34[11] until B-Cut.
 /*
 	if ( IS_HARDWARE_TYPE_8723B(pAdapter))
@@ -419,7 +407,7 @@ efuse_OneByteRead(
 	else
 	{
 		*data = 0xff;
-		bResult = _FALSE;
+		bResult = 0;
 	}
 
 	return bResult;
@@ -433,18 +421,11 @@ efuse_OneByteWrite(
 		uint8_t			data)
 {
 	uint8_t	tmpidx = 0;
-	uint8_t	bResult=_FALSE;
+	uint8_t	bResult= 0;
 	uint32_t efuseValue = 0;
 
 	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
 	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
-
-	if(_FALSE)
-	{
-		bResult = Efuse_Write1ByteToFakeContent(padapter, addr, data);
-		return bResult;
-	}
-
 
 	// -----------------e-fuse reg ctrl ---------------------------------
 	//address
@@ -491,7 +472,7 @@ efuse_OneByteWrite(
 	}
 	else
 	{
-		bResult = _FALSE;
+		bResult = 0;
 	}
 
 	return bResult;

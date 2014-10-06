@@ -162,7 +162,6 @@ rtk_core :=	core/rtw_cmd.o \
 		core/rtw_sta_mgt.o \
 		core/rtw_ap.o \
 		core/rtw_xmit.o	\
-		core/rtw_tdls.o \
 		core/rtw_sreset.o\
 		core/efuse/rtw_efuse.o
 

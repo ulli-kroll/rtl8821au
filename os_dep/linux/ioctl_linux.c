@@ -9823,9 +9823,6 @@ int rtw_ioctl(struct net_device *ndev, struct ifreq *rq, int cmd)
 			break;
 #endif
 #endif // CONFIG_AP_MODE
-		case SIOCDEVPRIVATE:
-			ret = rtw_ioctl_wext_private(ndev, &wrq->u);
-			break;
 		default:
 			ret = -EOPNOTSUPP;
 			break;

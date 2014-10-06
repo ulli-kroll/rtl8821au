@@ -78,41 +78,19 @@ typedef struct PG_PKT_STRUCT_A{
 
 /*------------------------------Define structure----------------------------*/
 typedef struct _EFUSE_HAL{
-	uint8_t	fakeEfuseBank;
-	u32	fakeEfuseUsedBytes;
-	uint8_t	fakeEfuseContent[EFUSE_MAX_HW_SIZE];
-	uint8_t	fakeEfuseInitMap[EFUSE_MAX_MAP_LEN];
-	uint8_t	fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN];
-
 	u16	BTEfuseUsedBytes;
 	uint8_t	BTEfuseUsedPercentage;
 	uint8_t	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
 	uint8_t	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
 	uint8_t	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
-
-	u16	fakeBTEfuseUsedBytes;
-	uint8_t	fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-	uint8_t	fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
-	uint8_t	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
 }EFUSE_HAL, *PEFUSE_HAL;
 
 
 /*------------------------Export global variable----------------------------*/
-extern uint8_t fakeEfuseBank;
-extern u32 fakeEfuseUsedBytes;
-extern uint8_t fakeEfuseContent[];
-extern uint8_t fakeEfuseInitMap[];
-extern uint8_t fakeEfuseModifiedMap[];
-
 extern u32 BTEfuseUsedBytes;
 extern uint8_t BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
 extern uint8_t BTEfuseInitMap[];
 extern uint8_t BTEfuseModifiedMap[];
-
-extern u32 fakeBTEfuseUsedBytes;
-extern uint8_t fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-extern uint8_t fakeBTEfuseInitMap[];
-extern uint8_t fakeBTEfuseModifiedMap[];
 /*------------------------Export global variable----------------------------*/
 
 uint8_t	efuse_GetCurrentSize(PADAPTER padapter, u16 *size);

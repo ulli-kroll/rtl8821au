@@ -24,21 +24,10 @@
 
 
 /*------------------------Define local variable------------------------------*/
-uint8_t	fakeEfuseBank=0;
-uint32_t	fakeEfuseUsedBytes=0;
-uint8_t	fakeEfuseContent[EFUSE_MAX_HW_SIZE]={0};
-uint8_t	fakeEfuseInitMap[EFUSE_MAX_MAP_LEN]={0};
-uint8_t	fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN]={0};
-
 uint32_t	BTEfuseUsedBytes=0;
 uint8_t	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
 uint8_t	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
 uint8_t	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
-
-uint32_t	fakeBTEfuseUsedBytes=0;
-uint8_t	fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-uint8_t	fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN]={0};
-uint8_t	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
 /*------------------------Define local variable------------------------------*/
 
 //------------------------------------------------------------------------------
@@ -1015,10 +1004,6 @@ Efuse_InitSomeVar(
 {
 	uint8_t i;
 
-	memset((PVOID)&fakeEfuseContent[0], 0xff, EFUSE_MAX_HW_SIZE);
-	memset((PVOID)&fakeEfuseInitMap[0], 0xff, EFUSE_MAX_MAP_LEN);
-	memset((PVOID)&fakeEfuseModifiedMap[0], 0xff, EFUSE_MAX_MAP_LEN);
-
 	for(i=0; i<EFUSE_MAX_BT_BANK; i++)
 	{
 		memset((PVOID)&BTEfuseContent[i][0], EFUSE_MAX_HW_SIZE, 0xff);
@@ -1026,12 +1011,6 @@ Efuse_InitSomeVar(
 	memset((PVOID)&BTEfuseInitMap[0], 0xff, EFUSE_BT_MAX_MAP_LEN);
 	memset((PVOID)&BTEfuseModifiedMap[0], 0xff, EFUSE_BT_MAX_MAP_LEN);
 
-	for(i=0; i<EFUSE_MAX_BT_BANK; i++)
-	{
-		memset((PVOID)&fakeBTEfuseContent[i][0], 0xff, EFUSE_MAX_HW_SIZE);
-	}
-	memset((PVOID)&fakeBTEfuseInitMap[0], 0xff, EFUSE_BT_MAX_MAP_LEN);
-	memset((PVOID)&fakeBTEfuseModifiedMap[0], 0xff, EFUSE_BT_MAX_MAP_LEN);
 }
 
 #ifdef PLATFORM_LINUX

@@ -457,16 +457,6 @@ Efuse_WordEnableDataWrite(		PADAPTER	padapter,
 
 	return ret;
 }
-
-static uint8_t efuse_read8(PADAPTER padapter, uint16_t address, uint8_t *value)
-{
-	return efuse_OneByteRead(padapter,address, value);
-}
-
-static uint8_t efuse_write8(PADAPTER padapter, uint16_t address, uint8_t *value)
-{
-	return efuse_OneByteWrite(padapter,address, *value);
-}
 //------------------------------------------------------------------------------
 uint16_t efuse_GetMaxSize(PADAPTER padapter)
 {

@@ -512,16 +512,6 @@ void rtw_proc_init_one(struct net_device *ndev)
 	}
 #endif
 
-
-#ifdef CONFIG_FIND_BEST_CHANNEL
-	entry = create_proc_read_entry("best_channel", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_best_channel, dev);
-	if (!entry) {
-		DBG_871X("Unable to create_proc_read_entry!\n");
-		return;
-	}
-#endif
-
 	entry = create_proc_read_entry("rx_signal", S_IFREG | S_IRUGO,
 				   dir_dev, proc_get_rx_signal, dev);
 	if (!entry) {
@@ -624,11 +614,6 @@ void rtw_proc_remove_one(struct net_device *ndev)
 		}
 #ifdef CONFIG_AP_MODE
 		remove_proc_entry("all_sta_info", dir_dev);
-#endif
-
-
-#ifdef CONFIG_FIND_BEST_CHANNEL
-		remove_proc_entry("best_channel", dir_dev);
 #endif
 		remove_proc_entry("rx_signal", dir_dev);
 #ifdef CONFIG_80211N_HT

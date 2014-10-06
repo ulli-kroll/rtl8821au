@@ -7000,14 +7000,6 @@ uint8_t sitesurvey_cmd_hdl(_adapter *padapter, uint8_t *pbuf)
 
 	if ((pmlmeext->sitesurvey_res.state == SCAN_START) || (pmlmeext->sitesurvey_res.state == SCAN_TXNULL))
 	{
-#ifdef CONFIG_FIND_BEST_CHANNEL
-#if 0
-		for (i=0; pmlmeext->channel_set[i].ChannelNum !=0; i++) {
-			pmlmeext->channel_set[i].rx_count = 0;
-		}
-#endif
-#endif /* CONFIG_FIND_BEST_CHANNEL */
-
 		//disable dynamic functions, such as high power, DIG
 		Save_DM_Func_Flag(padapter);
 		Switch_DM_Func(padapter, DYNAMIC_FUNC_DISABLE, _FALSE);

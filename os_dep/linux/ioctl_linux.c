@@ -2968,31 +2968,6 @@ static int dummy(struct net_device *ndev, struct iw_request_info *a,
 
 }
 
-static int rtw_wx_set_channel_plan(struct net_device *ndev,
-                               struct iw_request_info *info,
-                               union iwreq_data *wrqu, char *extra)
-{
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
-	struct registry_priv *pregistrypriv = &padapter->registrypriv;
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	extern int rtw_channel_plan;
-	uint8_t channel_plan_req = (uint8_t) (*((int *)wrqu));
-
-	#if 0
-	rtw_channel_plan = (int)wrqu->data.pointer;
-	pregistrypriv->channel_plan = rtw_channel_plan;
-	pmlmepriv->ChannelPlan = pregistrypriv->channel_plan;
-	#endif
-
-	if( _SUCCESS == rtw_set_chplan_cmd(padapter, channel_plan_req, 1) ) {
-		DBG_871X("%s set channel_plan = 0x%02X\n", __func__, pmlmepriv->ChannelPlan);
-	} else
-		return -EPERM;
-
-	return 0;
-}
-
-
 
 
 /*

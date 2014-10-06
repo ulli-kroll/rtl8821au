@@ -985,17 +985,6 @@ EFUSE_ShadowWrite(
 
 }	// EFUSE_ShadowWrite
 
-VOID
-Efuse_InitSomeVar(
-			PADAPTER	padapter
-	);
-VOID
-Efuse_InitSomeVar(
-			PADAPTER	padapter
-	)
-{
-}
-
 #ifdef PLATFORM_LINUX
 #ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
 //#include <rtw_eeprom.h>

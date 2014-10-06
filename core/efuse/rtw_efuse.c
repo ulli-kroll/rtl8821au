@@ -47,34 +47,6 @@ uint8_t	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
 //------------------------------------------------------------------------------
 
 
-/*-----------------------------------------------------------------------------
- * Function:	efuse_GetCurrentSize
- *
- * Overview:	Get current efuse size!!!
- *
- * Input:       NONE
- *
- * Output:      NONE
- *
- * Return:      NONE
- *
- * Revised History:
- * When			Who		Remark
- * 11/16/2008 	MHC		Create Version 0.
- *
- *---------------------------------------------------------------------------*/
-u16
-Efuse_GetCurrentSize(
-	 PADAPTER		padapter,
-	 uint8_t			efuseType)
-{
-	uint16_t ret=0;
-
-	ret = padapter->HalFunc->EfuseGetCurrentSize(padapter, efuseType);
-
-	return ret;
-}
-
 /*  11/16/2008 MH Add description. Get current efuse area enabled word!!. */
 uint8_t
 Efuse_CalculateWordCnts( uint8_t	word_en)
@@ -589,7 +561,7 @@ uint16_t efuse_GetMaxSize(PADAPTER padapter)
 uint8_t efuse_GetCurrentSize(PADAPTER padapter, uint16_t *size)
 {
 	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
-	*size = Efuse_GetCurrentSize(padapter, EFUSE_WIFI);
+	*size = padapter->HalFunc->EfuseGetCurrentSize(padapter, EFUSE_WIFI);
 	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _FALSE);
 
 	return _SUCCESS;

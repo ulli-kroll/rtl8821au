@@ -117,7 +117,6 @@ extern uint8_t fakeBTEfuseModifiedMap[];
 
 uint8_t	efuse_GetCurrentSize(PADAPTER padapter, u16 *size);
 u16	efuse_GetMaxSize(PADAPTER padapter);
-uint8_t	rtw_efuse_access(PADAPTER padapter, uint8_t bRead, u16 start_addr, u16 cnts, uint8_t *data);
 uint8_t	rtw_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
 uint8_t	rtw_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
 uint8_t	rtw_BT_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);

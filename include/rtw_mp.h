@@ -565,8 +565,6 @@ extern void mp_stop_test(PADAPTER padapter);
 extern u32 _read_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr, u32 bitmask);
 extern void _write_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr, u32 bitmask, u32 val);
 
-extern u32 read_macreg(_adapter *padapter, u32 addr, u32 sz);
-extern void write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz);
 extern u32 read_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr);
 extern void write_rfreg(PADAPTER padapter, uint8_t rfpath, u32 addr, u32 val);
 

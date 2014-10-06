@@ -283,68 +283,6 @@ odm_RxPhyStatus92CSeries_Parsing(
 		//2011.11.28 LukeLee: 88E use different LNA & VGA gain table
 		//The RSSI formula should be modified according to the gain table
 		//In 88E, cck_highpwr is always set to 1
-		if(pDM_Odm->SupportICType & (ODM_RTL8192E))
-		{
-			LNA_idx = ((cck_agc_rpt & 0xE0) >>5);
-			VGA_idx = (cck_agc_rpt & 0x1F);
-			if(pDM_Odm->SupportICType & (ODM_RTL8192E))
-			{
-			switch(LNA_idx)
-			{
-				case 7:
-					if(VGA_idx <= 27)
-						rx_pwr_all = -100 + 2*(27-VGA_idx); //VGA_idx = 27~2
-					else
-						rx_pwr_all = -100;
-					break;
-				case 6:
-						rx_pwr_all = -48 + 2*(2-VGA_idx); //VGA_idx = 2~0
-					break;
-				case 5:
-						rx_pwr_all = -42 + 2*(7-VGA_idx); //VGA_idx = 7~5
-					break;
-				case 4:
-						rx_pwr_all = -36 + 2*(7-VGA_idx); //VGA_idx = 7~4
-					break;
-				case 3:
-						//rx_pwr_all = -28 + 2*(7-VGA_idx); //VGA_idx = 7~0
-						rx_pwr_all = -24 + 2*(7-VGA_idx); //VGA_idx = 7~0
-					break;
-				case 2:
-					if(cck_highpwr)
-						rx_pwr_all = -12 + 2*(5-VGA_idx); //VGA_idx = 5~0
-					else
-						rx_pwr_all = -6+ 2*(5-VGA_idx);
-					break;
-				case 1:
-						rx_pwr_all = 8-2*VGA_idx;
-					break;
-				case 0:
-						rx_pwr_all = 14-2*VGA_idx;
-					break;
-				default:
-					//DbgPrint("CCK Exception default\n");
-					break;
-			}
-			rx_pwr_all += 6;
-
-			//2012.10.08 LukeLee: Modify for 92E CCK RSSI
-			if(pDM_Odm->SupportICType == ODM_RTL8192E)
-				rx_pwr_all += 10;
-
-			PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-			if(cck_highpwr == FALSE)
-			{
-				if(PWDB_ALL >= 80)
-					PWDB_ALL = ((PWDB_ALL-80)<<1)+((PWDB_ALL-80)>>1)+80;
-				else if((PWDB_ALL <= 78) && (PWDB_ALL >= 20))
-					PWDB_ALL += 3;
-				if(PWDB_ALL>100)
-					PWDB_ALL = 100;
-			}
-		}
-		}
-		else
 		{
 			if(!cck_highpwr)
 			{

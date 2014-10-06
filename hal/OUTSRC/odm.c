@@ -851,9 +851,6 @@ ODM_DMWatchdog(
 #if 0
 #endif
 
-	 if(pDM_Odm->SupportICType == ODM_RTL8192E)
-	         return;
-
 //#if (MP_DRIVER != 1)
 if ( *(pDM_Odm->mp_mode) != 1) {
 		odm_HwAntDiv(pDM_Odm);
@@ -1956,7 +1953,7 @@ odm_DIG(
 	if(pDM_Odm->bLinked)
 	{
 		{
-			if((pDM_Odm->SupportICType & (ODM_RTL8192E|ODM_RTL8812|ODM_RTL8821)) && (pDM_Odm->bBtLimitedDig==1)){
+			if((pDM_Odm->SupportICType & (ODM_RTL8812|ODM_RTL8821)) && (pDM_Odm->bBtLimitedDig==1)){
 				//2 Modify DIG upper bound for 92E, 8723B, 8821 & 8812 BT
 				if((pDM_Odm->RSSI_Min + 10) > dm_dig_max )
 					pDM_DigTable->rx_gain_range_max = dm_dig_max;
@@ -3149,7 +3146,7 @@ odm_RSSIMonitorCheckCE(
 
 					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
 
-						if ((pDM_Odm->SupportICType == ODM_RTL8192E)||(pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821))
+						if ((pDM_Odm->SupportICType == ODM_RTL8812)||(pDM_Odm->SupportICType == ODM_RTL8821))
 							PWDB_rssi[sta_cnt++] = (((u8)(psta->mac_id&0xFF)) | ((psta->rssi_stat.UndecoratedSmoothedPWDB&0x7F)<<16) );
 						else
 							PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
@@ -3342,11 +3339,7 @@ odm_TXPowerTrackingThermalMeterInit(
 	pDM_Odm->RFCalibrateInfo.ThermalValue_LCK = pHalData->EEPROMThermalMeter;
 
 	// The index of "0 dB" in SwingTable.
-	if (pDM_Odm->SupportICType == ODM_RTL8192E)
 	{
-		pDM_Odm->DefaultOfdmIndex = 30;
-		pDM_Odm->DefaultCckIndex = 20;
-	} else {
 		u1Byte defaultSwingIndex = getSwingIndex(pDM_Odm);
 
 
@@ -3673,7 +3666,7 @@ odm_EdcaTurboCheckCE(
 				EDCA_BE_DL = edca_setting_DL[IOTPeer];
 			}
 
-			if((ICType==ODM_RTL8812)||(ICType==ODM_RTL8192E))           //add 8812AU/8812AE
+			if((ICType==ODM_RTL8812))           //add 8812AU/8812AE
 			{
 				EDCA_BE_UL = 0x5ea42b;
 				EDCA_BE_DL = 0x5ea42b;

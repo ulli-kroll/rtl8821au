@@ -46,53 +46,6 @@ uint8_t	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN]={0};
 #define EFUSE_CTRL			REG_EFUSE_CTRL		// E-Fuse Control.
 //------------------------------------------------------------------------------
 
-BOOLEAN
-Efuse_Read1ByteFromFakeContent(
-			PADAPTER	padapter,
-			uint16_t		Offset,
-	 	uint8_t		*Value	);
-BOOLEAN
-Efuse_Read1ByteFromFakeContent(
-			PADAPTER	padapter,
-			uint16_t		Offset,
-	 	uint8_t		*Value	)
-{
-	if(Offset >= EFUSE_MAX_HW_SIZE)
-	{
-		return 0;
-	}
-	//DbgPrint("Read fake content, offset = %d\n", Offset);
-	if(fakeEfuseBank == 0)
-		*Value = fakeEfuseContent[Offset];
-	else
-		*Value = fakeBTEfuseContent[fakeEfuseBank-1][Offset];
-	return _TRUE;
-}
-
-BOOLEAN
-Efuse_Write1ByteToFakeContent(
-			PADAPTER	padapter,
-			uint16_t		Offset,
-	 		uint8_t		Value	);
-BOOLEAN
-Efuse_Write1ByteToFakeContent(
-			PADAPTER	padapter,
-			uint16_t		Offset,
-	 		uint8_t		Value	)
-{
-	if(Offset >= EFUSE_MAX_HW_SIZE)
-	{
-		return 0;
-	}
-	if(fakeEfuseBank == 0)
-		fakeEfuseContent[Offset] = Value;
-	else
-	{
-		fakeBTEfuseContent[fakeEfuseBank-1][Offset] = Value;
-	}
-	return _TRUE;
-}
-
 
 /*-----------------------------------------------------------------------------
  * Function:	efuse_GetCurrentSize

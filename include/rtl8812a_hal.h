@@ -301,7 +301,6 @@ void SetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval);
 void GetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval);
 uint8_t SetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
 uint8_t GetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
-void rtl8812_set_hal_ops(struct hal_ops *pHalFunc);
 
 // register
 void SetBcnCtrlReg(PADAPTER padapter, uint8_t SetBits, uint8_t ClearBits);

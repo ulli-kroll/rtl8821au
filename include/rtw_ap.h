@@ -47,7 +47,6 @@ uint8_t rtw_ap_set_pairwise_key(_adapter *padapter, struct sta_info *psta);
 int rtw_ap_set_group_key(_adapter *padapter, uint8_t *key, uint8_t alg, int keyid);
 int rtw_ap_set_wep_key(_adapter *padapter, uint8_t *key, uint8_t keylen, int keyid, uint8_t set_tx);
 
-#ifdef CONFIG_NATIVEAP_MLME
 void associated_clients_update(_adapter *padapter, uint8_t updated);
 void bss_cap_update_on_sta_join(_adapter *padapter, struct sta_info *psta);
 uint8_t bss_cap_update_on_sta_leave(_adapter *padapter, struct sta_info *psta);
@@ -58,7 +57,6 @@ int rtw_sta_flush(_adapter *padapter);
 int rtw_ap_inform_ch_switch(_adapter *padapter, uint8_t new_ch, uint8_t ch_offset);
 void start_ap_mode(_adapter *padapter);
 void stop_ap_mode(_adapter *padapter);
-#endif
 
 #endif //end of CONFIG_AP_MODE
 

@@ -109,7 +109,7 @@ static void rtw_free_mlme_ie_data(uint8_t **ppie, uint32_t *plen)
 
 void rtw_free_mlme_priv_ie_data(struct mlme_priv *pmlmepriv)
 {
-#if defined (CONFIG_AP_MODE) && defined (CONFIG_NATIVEAP_MLME)
+#if defined (CONFIG_AP_MODE)
 	rtw_buf_free(&pmlmepriv->assoc_req, &pmlmepriv->assoc_req_len);
 	rtw_buf_free(&pmlmepriv->assoc_rsp, &pmlmepriv->assoc_rsp_len);
 	rtw_free_mlme_ie_data(&pmlmepriv->wps_beacon_ie, &pmlmepriv->wps_beacon_ie_len);
@@ -1686,7 +1686,7 @@ uint8_t search_max_mac_id(struct _ADAPTER *padapter)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct sta_priv *pstapriv = &padapter->stapriv;
 
-#if defined (CONFIG_AP_MODE) && defined (CONFIG_NATIVEAP_MLME)
+#if defined (CONFIG_AP_MODE)
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE)){
 
 #if 1
@@ -1768,7 +1768,7 @@ _func_enter_;
 	if (rtw_access_ctrl(adapter, pstassoc->macaddr) == _FALSE)
 		return;
 
-#if defined (CONFIG_AP_MODE) && defined (CONFIG_NATIVEAP_MLME)
+#if defined (CONFIG_AP_MODE)
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE))
 	{
 		psta = rtw_get_stainfo(&adapter->stapriv, pstassoc->macaddr);

@@ -1364,11 +1364,7 @@ sint validate_recv_mgnt_frame(PADAPTER padapter, union recv_frame *precv_frame)
 
 #if 0
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
-#ifdef CONFIG_NATIVEAP_MLME
 		mgt_dispatcher(padapter, precv_frame);
-#else
-		rtw_hostapd_mlme_rx(padapter, precv_frame);
-#endif
 	} else {
 		mgt_dispatcher(padapter, precv_frame);
 	}

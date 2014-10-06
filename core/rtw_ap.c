@@ -1801,8 +1801,6 @@ int rtw_ap_set_wep_key(_adapter *padapter, uint8_t *key, uint8_t keylen, int key
 	return rtw_ap_set_key(padapter, key, alg, keyid, set_tx);
 }
 
-#ifdef CONFIG_NATIVEAP_MLME
-
 static void update_bcn_fixed_ie(_adapter *padapter)
 {
 	DBG_871X("%s\n", __FUNCTION__);
@@ -2769,6 +2767,5 @@ void stop_ap_mode(_adapter *padapter)
 
 }
 
-#endif //CONFIG_NATIVEAP_MLME
 #endif //CONFIG_AP_MODE
 

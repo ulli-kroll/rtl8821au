@@ -1875,11 +1875,8 @@ static u16 hal_EfuseGetCurrentSize_8812A(PADAPTER pAdapter)
 	uint8_t	hoffset=0,hworden=0;
 	uint8_t	efuse_data,word_cnts=0;
 
-	if(_FALSE) {
-		efuse_addr = (uint16_t)(fakeEfuseUsedBytes);
-	} else {
-		rtw_hal_get_hwreg(pAdapter, HW_VAR_EFUSE_BYTES, (uint8_t *)&efuse_addr);
-	}
+	rtw_hal_get_hwreg(pAdapter, HW_VAR_EFUSE_BYTES, (uint8_t *)&efuse_addr);
+
 	//RTPRINT(FEEPROM, EFUSE_PG, ("hal_EfuseGetCurrentSize_8723A(), start_efuse_addr = %d\n", efuse_addr));
 
 	while (bContinual
@@ -1909,17 +1906,7 @@ static u16 hal_EfuseGetCurrentSize_8812A(PADAPTER pAdapter)
 		}
 	}
 
-	if (_FALSE) {
-		fakeEfuseUsedBytes = efuse_addr;
-		/*
-		 * RTPRINT(FEEPROM, EFUSE_PG, ("hal_EfuseGetCurrentSize_8723A(), return %d\n", fakeEfuseUsedBytes));
-		 */
-	} else {
-		rtw_hal_set_hwreg(pAdapter, HW_VAR_EFUSE_BYTES, (uint8_t *)&efuse_addr);
-		/*
-		 * RTPRINT(FEEPROM, EFUSE_PG, ("hal_EfuseGetCurrentSize_8723A(), return %d\n", efuse_addr));
-		 */
-	}
+	rtw_hal_set_hwreg(pAdapter, HW_VAR_EFUSE_BYTES, (uint8_t *)&efuse_addr);
 
 	return efuse_addr;
 }

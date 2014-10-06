@@ -56,36 +56,35 @@ _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
 
 ifneq ($(CONFIG_RTL8812A)_$(CONFIG_RTL8821A), n_n)
 
-RTL871X = rtl8812a
 MODULE_NAME = 8812au
 
 _HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
-					hal/$(RTL871X)/Hal8812PwrSeq.o \
-					hal/$(RTL871X)/Hal8821APwrSeq.o\
-					hal/$(RTL871X)/$(RTL871X)_xmit.o\
-					hal/$(RTL871X)/$(RTL871X)_sreset.o
+					hal/rtl8812a/Hal8812PwrSeq.o \
+					hal/rtl8812a/Hal8821APwrSeq.o\
+					hal/rtl8812a/rtl8812a_xmit.o\
+					hal/rtl8812a/rtl8812a_sreset.o
 
-_HAL_INTFS_FILES +=	hal/$(RTL871X)/$(RTL871X)_hal_init.o \
-			hal/$(RTL871X)/$(RTL871X)_phycfg.o \
-			hal/$(RTL871X)/$(RTL871X)_rf6052.o \
-			hal/$(RTL871X)/$(RTL871X)_dm.o \
-			hal/$(RTL871X)/$(RTL871X)_rxdesc.o \
-			hal/$(RTL871X)/$(RTL871X)_cmd.o \
-			hal/$(RTL871X)/usb/usb_halinit.o \
-			hal/$(RTL871X)/usb/rtl$(MODULE_NAME)_led.o \
-			hal/$(RTL871X)/usb/rtl$(MODULE_NAME)_xmit.o \
-			hal/$(RTL871X)/usb/rtl$(MODULE_NAME)_recv.o
+_HAL_INTFS_FILES +=	hal/rtl8812a/rtl8812a_hal_init.o \
+			hal/rtl8812a/rtl8812a_phycfg.o \
+			hal/rtl8812a/rtl8812a_rf6052.o \
+			hal/rtl8812a/rtl8812a_dm.o \
+			hal/rtl8812a/rtl8812a_rxdesc.o \
+			hal/rtl8812a/rtl8812a_cmd.o \
+			hal/rtl8812a/usb/usb_halinit.o \
+			hal/rtl8812a/usb/rtl$(MODULE_NAME)_led.o \
+			hal/rtl8812a/usb/rtl$(MODULE_NAME)_xmit.o \
+			hal/rtl8812a/usb/rtl$(MODULE_NAME)_recv.o
 
-_HAL_INTFS_FILES += hal/$(RTL871X)/usb/usb_ops_linux.o
+_HAL_INTFS_FILES += hal/rtl8812a/usb/usb_ops_linux.o
 
 ifeq ($(CONFIG_RTL8812A), y)
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
-_OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/HalHWImg8812A_FW.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_MAC.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_BB.o\
-		hal/OUTSRC/$(RTL871X)/HalHWImg8812A_RF.o\
-		hal/OUTSRC/$(RTL871X)/HalPhyRf_8812A.o\
-		hal/OUTSRC/$(RTL871X)/odm_RegConfig8812A.o
+_OUTSRC_FILES += hal/OUTSRC/rtl8812a/HalHWImg8812A_FW.o\
+		hal/OUTSRC/rtl8812a/HalHWImg8812A_MAC.o\
+		hal/OUTSRC/rtl8812a/HalHWImg8812A_BB.o\
+		hal/OUTSRC/rtl8812a/HalHWImg8812A_RF.o\
+		hal/OUTSRC/rtl8812a/HalPhyRf_8812A.o\
+		hal/OUTSRC/rtl8812a/odm_RegConfig8812A.o
 endif
 
 ifeq ($(CONFIG_RTL8821A), y)

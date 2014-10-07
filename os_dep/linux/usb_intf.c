@@ -1185,7 +1185,6 @@ _func_exit_;
 	return;
 
 }
-extern int console_suspend_enabled;
 
 static int __init rtw_drv_entry(void)
 {
@@ -1194,8 +1193,6 @@ static int __init rtw_drv_entry(void)
 
 	DBG_871X(DRV_NAME " driver version=%s\n", DRIVERVERSION);
 	DBG_871X("build time: %s %s\n", __DATE__, __TIME__);
-
-	/* console_suspend_enabled=0; */
 
 	rtw_suspend_lock_init();
 

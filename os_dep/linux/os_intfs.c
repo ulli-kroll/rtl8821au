@@ -745,10 +745,6 @@ uint loadparam(struct _ADAPTER *padapter,  _nic_hdl ndev)
 #ifdef CONFIG_AUTOSUSPEND
 	registry_par->usbss_enable = (uint8_t)rtw_enusbss;	/* 0:disable,1:enable */
 #endif
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-	registry_par->hwpdn_mode = (uint8_t)rtw_hwpdn_mode;	/* 0:disable,1:enable,2:by EFUSE config */
-	registry_par->hwpwrp_detect = (uint8_t)rtw_hwpwrp_detect;	/* 0:disable,1:enable */
-#endif
 
 	registry_par->hw_wps_pbc = (uint8_t)rtw_hw_wps_pbc;
 

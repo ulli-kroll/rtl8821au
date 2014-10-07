@@ -531,126 +531,6 @@ static void process_spec_devid(const struct usb_device_id *pdid)
 	}
 }
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-int rtw_hw_suspend(_adapter *padapter )
-{
-	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
-	struct usb_interface *pusb_intf = adapter_to_dvobj(padapter)->pusbintf;
-	struct net_device *ndev = padapter->ndev;
-
-
-	if ((!padapter->bup) || (padapter->bDriverStopped)||(padapter->bSurpriseRemoved)) {
-		DBG_871X("padapter->bup=%d bDriverStopped=%d bSurpriseRemoved = %d\n",
-			padapter->bup, padapter->bDriverStopped,padapter->bSurpriseRemoved);
-		goto error_exit;
-	}
-
-	if (padapter) {	/* system suspend */
-		LeaveAllPowerSaveMode(padapter);
-
-		DBG_871X("==> rtw_hw_suspend\n");
-		down(&pwrpriv->lock);
-		pwrpriv->bips_processing = _TRUE;
-		/*
-		 * padapter->net_closed = _TRUE;
-		 * s1.
-		 */
-		if(ndev) {
-			netif_carrier_off(ndev);
-			rtw_netif_stop_queue(ndev);
-		}
-
-		/* s2. */
-		rtw_disassoc_cmd(padapter, 500, _FALSE);
-
-		/*
-		 * s2-2.  indicate disconnect to os
-		 * rtw_indicate_disconnect(padapter);
-		 */
-		{
-			struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
-
-			if(check_fwstate(pmlmepriv, _FW_LINKED))
-			{
-				_clr_fwstate_(pmlmepriv, _FW_LINKED);
-
-				rtw_led_control(padapter, LED_CTL_NO_LINK);
-
-				rtw_os_indicate_disconnect(padapter);
-
-#ifdef CONFIG_LPS
-				/* donnot enqueue cmd */
-				rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_DISCONNECT, 0);
-#endif
-			}
-
-		}
-		/* s2-3. */
-		rtw_free_assoc_resources(padapter, 1);
-
-		/* s2-4. */
-		rtw_free_network_queue(padapter,_TRUE);
-#ifdef CONFIG_IPS
-		rtw_ips_dev_unload(padapter);
-#endif
-		pwrpriv->rf_pwrstate = rf_off;
-		pwrpriv->bips_processing = _FALSE;
-
-		up(&pwrpriv->lock);
-	} else
-		goto error_exit;
-
-	return 0;
-
-error_exit:
-	DBG_871X("%s, failed \n",__FUNCTION__);
-	return (-1);
-
-}
-
-int rtw_hw_resume(_adapter *padapter)
-{
-	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
-	struct usb_interface *pusb_intf = adapter_to_dvobj(padapter)->pusbintf;
-	struct net_device *ndev = padapter->ndev;
-
-	if(padapter) { 	/* system resume  */
-		DBG_871X("==> rtw_hw_resume\n");
-		down(&pwrpriv->lock);
-		pwrpriv->bips_processing = _TRUE;
-		rtw_reset_drv_sw(padapter);
-
-		if(pm_netdev_open(ndev,_FALSE) != 0) {
-			up(&pwrpriv->lock);
-			goto error_exit;
-		}
-
-		netif_device_attach(ndev);
-		netif_carrier_on(ndev);
-
-		if(!rtw_netif_queue_stopped(ndev))
-      			rtw_netif_start_queue(ndev);
-		else
-			rtw_netif_wake_queue(ndev);
-
-		pwrpriv->bkeepfwalive = _FALSE;
-		pwrpriv->brfoffbyhw = _FALSE;
-
-		pwrpriv->rf_pwrstate = rf_on;
-		pwrpriv->bips_processing = _FALSE;
-
-		up(&pwrpriv->lock);
-	} else {
-		goto error_exit;
-	}
-
-	return 0;
-error_exit:
-	DBG_871X("%s, Open net dev failed \n",__FUNCTION__);
-	return (-1);
-}
-#endif
-
 static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 {
 	struct dvobj_priv *dvobj = usb_get_intfdata(pusb_intf);
@@ -673,18 +553,6 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 
 	if(pwrpriv->bInternalAutoSuspend )
 	{
-#ifdef CONFIG_AUTOSUSPEND
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-		/* The FW command register update must after MAC and FW init ready. */
-		if ((padapter->bFWReady)
-		 && (padapter->pwrctrlpriv.bHWPwrPindetect )
-		 && (padapter->registrypriv.usbss_enable)) {
-			uint8_t bOpen = _TRUE;
-			rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
-			//rtl8192c_set_FwSelectSuspend_cmd(padapter,_TRUE ,500);//note fw to support hw power down ping detect
-		}
-#endif
-#endif
 	}
 	pwrpriv->bInSuspend = _TRUE;
 	rtw_cancel_all_timer(padapter);
@@ -796,19 +664,6 @@ int rtw_resume_process(_adapter *padapter)
 
 #ifdef CONFIG_AUTOSUSPEND
 	if (pwrpriv->bInternalAutoSuspend) {
-#ifdef CONFIG_AUTOSUSPEND
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-		/* The FW command register update must after MAC and FW init ready. */
-		if ((padapter->bFWReady)
-		 && (padapter->pwrctrlpriv.bHWPwrPindetect )
-		 && (padapter->registrypriv.usbss_enable)) {
-			/* rtl8192c_set_FwSelectSuspend_cmd(padapter,_FALSE ,500);//note fw to support hw power down ping detect */
-			uint8_t bOpen = _FALSE;
-
-			rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
-		}
-#endif
-#endif
 		pwrpriv->bInternalAutoSuspend = _FALSE;
 		pwrpriv->brfoffbyhw = _FALSE;
 		{

@@ -1875,14 +1875,6 @@ uint32_t rtl8812au_hal_deinit(PADAPTER Adapter)
 	rtw_write32(Adapter, REG_HIMR0_8812, IMR_DISABLED_8812);
 	rtw_write32(Adapter, REG_HIMR1_8812, IMR_DISABLED_8812);
 
- #ifdef SUPPORT_HW_RFOFF_DETECTED
- 	DBG_8192C("bkeepfwalive(%x)\n",Adapter->pwrctrlpriv.bkeepfwalive);
- 	if (Adapter->pwrctrlpriv.bkeepfwalive) {
-		_ps_close_RF(Adapter);
-		if ((Adapter->pwrctrlpriv.bHWPwrPindetect) && (Adapter->pwrctrlpriv.bHWPowerdown))
-			rtl8812au_hw_power_down(Adapter);
- 	} else
-#endif
 	{
 		if (Adapter->hw_init_completed == _TRUE){
 			CardDisableRTL8812AU(Adapter);
@@ -2555,15 +2547,6 @@ static uint8_t rtl8812au_ps_func(PADAPTER Adapter,HAL_INTF_PS_FUNC efunc_id, uin
 {
 	uint8_t bResult = _TRUE;
 	switch(efunc_id){
-
-		#if defined(CONFIG_AUTOSUSPEND) && defined(SUPPORT_HW_RFOFF_DETECTED)
-		case HAL_USB_SELECT_SUSPEND:
-			{
-				uint8_t bfwpoll = *(( u8*)val);
-				//rtl8188e_set_FwSelectSuspend_cmd(Adapter,bfwpoll ,500);//note fw to support hw power down ping detect
-			}
-			break;
-		#endif //CONFIG_AUTOSUSPEND && SUPPORT_HW_RFOFF_DETECTED
 
 		default:
 			break;

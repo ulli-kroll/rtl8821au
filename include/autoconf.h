@@ -70,7 +70,6 @@
 	#ifdef CONFIG_IPS
 	//#define CONFIG_IPS_LEVEL_2	1 //enable this to set default IPS mode to IPS_LEVEL_2
 	#endif
-	//#define SUPPORT_HW_RFOFF_DETECTED	1
 
 	#define CONFIG_LPS	1
 	#if defined(CONFIG_LPS) && defined(CONFIG_SUPPORT_USB_INT)

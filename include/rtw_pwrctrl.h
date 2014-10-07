@@ -281,10 +281,6 @@ void rtw_ps_processor(_adapter*padapter);
 #ifdef CONFIG_AUTOSUSPEND
 int autoresume_enter(_adapter* padapter);
 #endif
-#ifdef SUPPORT_HW_RFOFF_DETECTED
-rt_rf_power_state RfOnOffDetect(IN	PADAPTER pAdapter );
-#endif
-
 
 #ifdef CONFIG_LPS
 int32_t LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms);

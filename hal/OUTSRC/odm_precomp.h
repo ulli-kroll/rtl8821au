@@ -82,11 +82,6 @@
 #include "rtl8812a/HalHWImg8812A_BB.h"
 #include "rtl8812a/HalHWImg8812A_FW.h"
 #include "rtl8812a/odm_RegConfig8812A.h"
-#if (TEST_CHIP_SUPPORT == 1)
-#include "rtl8812a/HalHWImg8812A_TestChip_MAC.h"
-#include "rtl8812a/HalHWImg8812A_TestChip_RF.h"
-#include "rtl8812a/HalHWImg8812A_TestChip_BB.h"
-#endif
 #endif
 
 
@@ -96,11 +91,6 @@
 #include "rtl8821a/HalHWImg8821A_BB.h"
 #include "rtl8821a/HalHWImg8821A_FW.h"
 #include "rtl8821a/odm_RegConfig8821A.h"
-#if (TEST_CHIP_SUPPORT == 1)
-#include "rtl8821a/HalHWImg8821A_TestChip_MAC.h"
-#include "rtl8821a/HalHWImg8821A_TestChip_RF.h"
-#include "rtl8821a/HalHWImg8821A_TestChip_BB.h"
-#endif
 #endif
 
 #endif	// __ODM_PRECOMP_H__

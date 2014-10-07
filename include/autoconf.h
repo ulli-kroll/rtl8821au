@@ -182,8 +182,6 @@
  * Outsource  Related Config
  */
 
-#define TEST_CHIP_SUPPORT				0
-
 #define RTL8812E_SUPPORT				0
 #ifdef CONFIG_RTL8812A
 #define RTL8812AU_SUPPORT				1

@@ -61,15 +61,6 @@ if (adapter->registrypriv.mp_mode == 1)
 	_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);
 }
 
-#ifdef CONFIG_SET_SCAN_DENY_TIMER
-void _rtw_set_scan_deny_timer_hdl(void *FunctionContext)
-{
-	_adapter *adapter = (_adapter *)FunctionContext;
-	rtw_set_scan_deny_timer_hdl(adapter);
-}
-#endif
-
-
 void rtw_init_mlme_timer(_adapter *padapter)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -79,11 +70,6 @@ void rtw_init_mlme_timer(_adapter *padapter)
 	_init_timer(&(pmlmepriv->scan_to_timer), padapter->ndev, _rtw_scan_timeout_handler, padapter);
 
 	_init_timer(&(pmlmepriv->dynamic_chk_timer), padapter->ndev, _dynamic_check_timer_handlder, padapter);
-
-	#ifdef CONFIG_SET_SCAN_DENY_TIMER
-	_init_timer(&(pmlmepriv->set_scan_deny_timer), padapter->ndev, _rtw_set_scan_deny_timer_hdl, padapter);
-	#endif
-
 }
 
 extern void rtw_indicate_wx_assoc_event(_adapter *padapter);

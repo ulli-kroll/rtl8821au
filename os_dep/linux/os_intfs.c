@@ -1234,11 +1234,6 @@ void rtw_cancel_all_timer(struct _ADAPTER *padapter)
 
 	_cancel_timer_ex(&padapter->pwrctrlpriv.pwr_state_check_timer);
 
-#ifdef CONFIG_SET_SCAN_DENY_TIMER
-	_cancel_timer_ex(&padapter->mlmepriv.set_scan_deny_timer);
-	rtw_clear_scan_deny(padapter);
-	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtw_cancel_all_timer:cancel set_scan_deny_timer!\n"));
-#endif
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 	_cancel_timer_ex(&padapter->recvpriv.signal_stat_timer);

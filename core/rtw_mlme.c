@@ -2127,40 +2127,6 @@ void rtw_dynamic_check_timer_handlder(struct _ADAPTER *adapter)
 #endif
 }
 
-
-#ifdef CONFIG_SET_SCAN_DENY_TIMER
-inline bool rtw_is_scan_deny(struct _ADAPTER *adapter)
-{
-	struct mlme_priv *mlmepriv = &adapter->mlmepriv;
-	return (atomic_read(&mlmepriv->set_scan_deny) != 0) ? _TRUE : _FALSE;
-}
-
-inline void rtw_clear_scan_deny(struct _ADAPTER *adapter)
-{
-	struct mlme_priv *mlmepriv = &adapter->mlmepriv;
-	atomic_set(&mlmepriv->set_scan_deny, 0);
-	if (0)
-	DBG_871X(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(adapter));
-}
-
-void rtw_set_scan_deny_timer_hdl(struct _ADAPTER *adapter)
-{
-	rtw_clear_scan_deny(adapter);
-}
-
-void rtw_set_scan_deny(struct _ADAPTER *adapter, uint32_t	 ms)
-{
-	struct mlme_priv *mlmepriv = &adapter->mlmepriv;
-
-	if (0)
-	DBG_871X(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(adapter));
-	atomic_set(&mlmepriv->set_scan_deny, 1);
-	_set_timer(&mlmepriv->set_scan_deny_timer, ms);
-
-
-}
-#endif
-
 #if defined(IEEE80211_SCAN_RESULT_EXPIRE)
 #define RTW_SCAN_RESULT_EXPIRE IEEE80211_SCAN_RESULT_EXPIRE/HZ*1000 -1000 //3000 -1000
 #else

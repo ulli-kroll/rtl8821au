@@ -82,7 +82,6 @@ sint _rtw_init_mlme_priv (struct _ADAPTER *padapter)
 
 	/* allocate DMA-able/Non-Page memory for cmd_buf and rsp_buf */
 
-	rtw_clear_scan_deny(padapter);
 	rtw_init_mlme_timer(padapter);
 
 exit:
@@ -1209,8 +1208,6 @@ void rtw_indicate_connect(struct _ADAPTER *padapter)
 
 	}
 
-	rtw_set_scan_deny(padapter, 3000);
-
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_err_, ("-rtw_indicate_connect: fw_state=0x%08x\n", get_fwstate(pmlmepriv)));
 
 }
@@ -1244,9 +1241,6 @@ void rtw_indicate_disconnect( struct _ADAPTER *padapter )
 		_clr_fwstate_(pmlmepriv, _FW_LINKED);
 
 		rtw_led_control(padapter, LED_CTL_NO_LINK);
-
-		rtw_clear_scan_deny(padapter);
-
 	}
 
 #ifdef CONFIG_LPS

@@ -552,12 +552,6 @@ _func_enter_;
 			RT_TRACE(_module_rtl871x_ioctl_set_c_,_drv_err_,("\n###pmlmepriv->sitesurveyctrl.traffic_busy==_TRUE\n\n"));
 		}
 	} else {
-		if (rtw_is_scan_deny(padapter)) {
-			DBG_871X(FUNC_ADPT_FMT": scan deny\n", FUNC_ADPT_ARG(padapter));
-			indicate_wx_scan_complete_event(padapter);
-			return _SUCCESS;
-		}
-
 		_enter_critical_bh(&pmlmepriv->lock, &irqL);
 
 		res = rtw_sitesurvey_cmd(padapter, pssid, ssid_max_num, NULL, 0);

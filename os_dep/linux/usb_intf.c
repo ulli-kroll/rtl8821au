@@ -755,6 +755,68 @@ error_exit:
 }
 #endif
 
+/*
+ * ULLI messy but needed
+ */
+
+int netdev_open(struct net_device *ndev);
+int netdev_close(struct net_device *ndev);
+int rtw_net_set_mac_address(struct net_device *ndev, void *p);
+struct net_device_stats *rtw_net_get_stats(struct net_device *ndev);
+static uint loadparam(PADAPTER padapter, _nic_hdl ndev);
+
+static const struct net_device_ops rtw_netdev_ops = {
+	.ndo_open = netdev_open,
+	.ndo_stop = netdev_close,
+	.ndo_start_xmit = rtw_xmit_entry,
+	.ndo_set_mac_address = rtw_net_set_mac_address,
+	.ndo_get_stats = rtw_net_get_stats,
+	.ndo_do_ioctl = rtw_ioctl,
+};
+
+static struct net_device *rtw_init_netdev(struct _ADAPTER *padapter)
+{
+	struct net_device *ndev;
+	struct rtw_netdev_priv_indicator *pnpi;
+
+	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+init_net_dev\n"));
+
+	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
+	if (!ndev)
+		return NULL;
+
+	pnpi = netdev_priv(ndev);
+	pnpi->priv=padapter;
+
+	padapter->ndev = ndev;
+
+	/* ndev->init = NULL; */
+
+	DBG_871X("register rtw_netdev_ops to netdev_ops\n");
+	ndev->netdev_ops = &rtw_netdev_ops;
+
+#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
+	ndev->features |= NETIF_F_IP_CSUM;
+#endif
+	/* ndev->tx_timeout = NULL; */
+	ndev->watchdog_timeo = HZ*3; /* 3 second timeout */
+#ifdef CONFIG_WIRELESS_EXT
+	ndev->wireless_handlers = (struct iw_handler_def *)&rtw_handlers_def;
+#endif
+
+#ifdef WIRELESS_SPY
+	/*
+	 * priv->wireless_data.spy_data = &priv->spy_data;
+	 * ndev->wireless_data = &priv->wireless_data;
+	 */
+#endif
+
+	/* step 2. */
+	loadparam(padapter, ndev);
+
+	return ndev;
+
+}
 
 
 /*

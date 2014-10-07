@@ -269,10 +269,7 @@ uint rtw_notch_filter = RTW_NOTCH_FILTER;
 module_param(rtw_notch_filter, uint, 0644);
 MODULE_PARM_DESC(rtw_notch_filter, "0:Disable, 1:Enable, 2:Enable only for P2P");
 
-static uint loadparam(PADAPTER padapter, _nic_hdl ndev);
 int _netdev_open(struct net_device *ndev);
-int netdev_open(struct net_device *ndev);
-static int netdev_close(struct net_device *ndev);
 
 #ifdef CONFIG_PROC_DEBUG
 #define RTL8192C_PROC_NAME "rtl819xC"
@@ -770,7 +767,7 @@ _func_exit_;
 	return status;
 }
 
-static int rtw_net_set_mac_address(struct net_device *ndev, void *p)
+int rtw_net_set_mac_address(struct net_device *ndev, void *p)
 {
 	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
 	struct sockaddr *addr = p;
@@ -790,7 +787,7 @@ static int rtw_net_set_mac_address(struct net_device *ndev, void *p)
 	return 0;
 }
 
-static struct net_device_stats *rtw_net_get_stats(struct net_device *ndev)
+struct net_device_stats *rtw_net_get_stats(struct net_device *ndev)
 {
 	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
 	struct xmit_priv *pxmitpriv = &(padapter->xmitpriv);
@@ -868,16 +865,6 @@ uint16_t rtw_recv_select_queue(struct sk_buff *skb)
 
 }
 
-
-static const struct net_device_ops rtw_netdev_ops = {
-	.ndo_open = netdev_open,
-	.ndo_stop = netdev_close,
-	.ndo_start_xmit = rtw_xmit_entry,
-	.ndo_set_mac_address = rtw_net_set_mac_address,
-	.ndo_get_stats = rtw_net_get_stats,
-	.ndo_do_ioctl = rtw_ioctl,
-};
-
 int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 {
 	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
@@ -890,50 +877,6 @@ int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 	/* rtw_netif_stop_queue(ndev); */
 
 	return 0;
-}
-
-struct net_device *rtw_init_netdev(struct _ADAPTER *padapter)
-{
-	struct net_device *ndev;
-	struct rtw_netdev_priv_indicator *pnpi;
-
-	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+init_net_dev\n"));
-
-	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
-	if (!ndev)
-		return NULL;
-
-	pnpi = netdev_priv(ndev);
-	pnpi->priv=padapter;
-
-	padapter->ndev = ndev;
-
-	/* ndev->init = NULL; */
-
-	DBG_871X("register rtw_netdev_ops to netdev_ops\n");
-	ndev->netdev_ops = &rtw_netdev_ops;
-
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	ndev->features |= NETIF_F_IP_CSUM;
-#endif
-	/* ndev->tx_timeout = NULL; */
-	ndev->watchdog_timeo = HZ*3; /* 3 second timeout */
-#ifdef CONFIG_WIRELESS_EXT
-	ndev->wireless_handlers = (struct iw_handler_def *)&rtw_handlers_def;
-#endif
-
-#ifdef WIRELESS_SPY
-	/*
-	 * priv->wireless_data.spy_data = &priv->spy_data;
-	 * ndev->wireless_data = &priv->wireless_data;
-	 */
-#endif
-
-	/* step 2. */
-	loadparam(padapter, ndev);
-
-	return ndev;
-
 }
 
 u32 rtw_start_drv_threads(struct _ADAPTER *padapter)
@@ -1549,7 +1492,7 @@ int pm_netdev_open(struct net_device *ndev, uint8_t bnormal)
 	return status;
 }
 
-static int netdev_close(struct net_device *ndev)
+int netdev_close(struct net_device *ndev)
 {
 	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
 

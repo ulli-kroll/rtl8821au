@@ -792,22 +792,6 @@ int rtw_store_to_file(char *path, u8* buf, u32 sz)
 }
 
 #ifdef PLATFORM_LINUX
-struct net_device *rtw_alloc_etherdev_with_old_priv(struct _ADAPTER *old_priv)
-{
-	struct net_device *ndev;
-	struct rtw_netdev_priv_indicator *pnpi;
-
-	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
-	if (!ndev)
-		goto RETURN;
-
-	pnpi = netdev_priv(ndev);
-	pnpi->priv=old_priv;
-
-RETURN:
-	return ndev;
-}
-
 void rtw_free_netdev(struct net_device * netdev)
 {
 	struct rtw_netdev_priv_indicator *pnpi;

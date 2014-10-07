@@ -264,8 +264,6 @@ static inline struct _ADAPTER *rtw_netdev_priv(struct net_device *ndev)
 	return pnpi->priv;
 }
 
-struct net_device *rtw_alloc_etherdev_with_old_priv(struct _ADAPTER *old_priv);
-
 #define STRUCT_PACKED __attribute__ ((packed))
 
 

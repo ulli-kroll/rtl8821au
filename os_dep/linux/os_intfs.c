@@ -892,37 +892,23 @@ int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 	return 0;
 }
 
-static struct net_device *rtw_alloc_etherdev_with_old_priv(struct _ADAPTER *old_priv)
-{
-	struct net_device *ndev;
-	struct rtw_netdev_priv_indicator *pnpi;
-
-	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
-	if (!ndev)
-		goto RETURN;
-
-	pnpi = netdev_priv(ndev);
-	pnpi->priv=old_priv;
-
-RETURN:
-	return ndev;
-}
-
 struct net_device *rtw_init_netdev(struct _ADAPTER *old_padapter)
 {
 	struct _ADAPTER *padapter;
 	struct net_device *ndev;
+	struct rtw_netdev_priv_indicator *pnpi;
 
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+init_net_dev\n"));
 
-	ndev = rtw_alloc_etherdev_with_old_priv((void *)old_padapter);
-
+	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
 	if (!ndev)
 		return NULL;
 
+	pnpi = netdev_priv(ndev);
+	pnpi->priv=old_padapter;
+
 	padapter = rtw_netdev_priv(ndev);
 	padapter->ndev = ndev;
-
 
 	/* ndev->init = NULL; */
 

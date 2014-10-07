@@ -193,11 +193,6 @@ struct registry_priv
 	uint8_t	hwpwrp_detect;//0:disable,1:enable
 
 	uint8_t	hw_wps_pbc;//0:disable,1:enable
-
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
-	char	adaptor_info_caching_file_path[PATH_LENGTH_MAX];
-#endif
-
 #ifdef CONFIG_80211D
 	uint8_t enable80211d;
 #endif

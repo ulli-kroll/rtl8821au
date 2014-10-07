@@ -892,9 +892,8 @@ int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 	return 0;
 }
 
-struct net_device *rtw_init_netdev(struct _ADAPTER *old_padapter)
+struct net_device *rtw_init_netdev(struct _ADAPTER *padapter)
 {
-	struct _ADAPTER *padapter;
 	struct net_device *ndev;
 	struct rtw_netdev_priv_indicator *pnpi;
 
@@ -905,16 +904,14 @@ struct net_device *rtw_init_netdev(struct _ADAPTER *old_padapter)
 		return NULL;
 
 	pnpi = netdev_priv(ndev);
-	pnpi->priv=old_padapter;
+	pnpi->priv=padapter;
 
-	padapter = rtw_netdev_priv(ndev);
 	padapter->ndev = ndev;
 
 	/* ndev->init = NULL; */
 
 	DBG_871X("register rtw_netdev_ops to netdev_ops\n");
 	ndev->netdev_ops = &rtw_netdev_ops;
-
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
 	ndev->features |= NETIF_F_IP_CSUM;

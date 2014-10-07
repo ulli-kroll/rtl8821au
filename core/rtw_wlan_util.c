@@ -2590,11 +2590,4 @@ unsigned int setup_beacon_frame(_adapter *padapter, unsigned char *beacon_frame)
 }
 #endif
 
-int rtw_handle_dualmac(_adapter *adapter, bool init)
-{
-	int status = _SUCCESS;
-	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
-
-	return status;
-}
 

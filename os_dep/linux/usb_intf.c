@@ -788,11 +788,8 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	padapter->interface_type = RTW_USB;
 	rtw_decide_chip_type_by_usb_info(padapter, pdid);
 
-	if (rtw_handle_dualmac(padapter, 1) != _SUCCESS)
-		goto free_adapter;
-
 	if((ndev = rtw_init_netdev(padapter)) == NULL) {
-		goto handle_dualmac;
+		goto free_adapter;
 	}
 	SET_NETDEV_DEV(ndev, dvobj_to_dev(dvobj));
 	padapter = rtw_netdev_priv(ndev);
@@ -868,9 +865,6 @@ free_hal_data:
 free_wdev:
 	if(status != _SUCCESS) {
 	}
-handle_dualmac:
-	if (status != _SUCCESS)
-		rtw_handle_dualmac(padapter, 0);
 free_adapter:
 	if (status != _SUCCESS) {
 		if (ndev)
@@ -907,8 +901,6 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 	rtw_dev_unload(if1);
 
 	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", if1->hw_init_completed);
-
-	rtw_handle_dualmac(if1, 0);
 
 	rtw_free_drv_sw(if1);
 

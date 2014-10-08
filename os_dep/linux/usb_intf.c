@@ -774,16 +774,42 @@ static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_do_ioctl = rtw_ioctl,
 };
 
-static struct net_device *rtw_init_netdev(struct _ADAPTER *padapter)
-{
-	struct net_device *ndev;
-	struct rtw_netdev_priv_indicator *pnpi;
 
-	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+init_net_dev\n"));
+/*
+ * drv_init() - a device potentially for us
+ *
+ * notes: drv_init() is called when the bus driver has located a card for us to support.
+ *        We accept the new device by returning 0.
+*/
+
+_adapter  *rtw_sw_export = NULL;
+
+_adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
+	struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
+{
+	_adapter *padapter = NULL;
+	struct rtw_netdev_priv_indicator *pnpi;
+	struct net_device *ndev = NULL;
+	int status = _FAIL;
+
+	if ((padapter = (_adapter *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
+		goto exit;
+	}
+	padapter->dvobj = dvobj;
+	dvobj->if1 = padapter;
+
+	padapter->bDriverStopped=_TRUE;
+
+	dvobj->padapters[dvobj->iface_nums++] = padapter;
+	padapter->iface_id = IFACE_ID0;
+
+	/* step 1-1., decide the chip_type via driver_info */
+	padapter->interface_type = RTW_USB;
+	rtw_decide_chip_type_by_usb_info(padapter, pdid);
 
 	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
 	if (!ndev)
-		return NULL;
+		goto free_adapter;
 
 	pnpi = netdev_priv(ndev);
 	pnpi->priv=padapter;
@@ -814,45 +840,6 @@ static struct net_device *rtw_init_netdev(struct _ADAPTER *padapter)
 	/* step 2. */
 	loadparam(padapter, ndev);
 
-	return ndev;
-
-}
-
-
-/*
- * drv_init() - a device potentially for us
- *
- * notes: drv_init() is called when the bus driver has located a card for us to support.
- *        We accept the new device by returning 0.
-*/
-
-_adapter  *rtw_sw_export = NULL;
-
-_adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
-	struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
-{
-	_adapter *padapter = NULL;
-	struct net_device *ndev = NULL;
-	int status = _FAIL;
-
-	if ((padapter = (_adapter *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
-		goto exit;
-	}
-	padapter->dvobj = dvobj;
-	dvobj->if1 = padapter;
-
-	padapter->bDriverStopped=_TRUE;
-
-	dvobj->padapters[dvobj->iface_nums++] = padapter;
-	padapter->iface_id = IFACE_ID0;
-
-	/* step 1-1., decide the chip_type via driver_info */
-	padapter->interface_type = RTW_USB;
-	rtw_decide_chip_type_by_usb_info(padapter, pdid);
-
-	if((ndev = rtw_init_netdev(padapter)) == NULL) {
-		goto free_adapter;
-	}
 	SET_NETDEV_DEV(ndev, dvobj_to_dev(dvobj));
 	padapter = rtw_netdev_priv(ndev);
 

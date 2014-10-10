@@ -774,6 +774,25 @@ static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_do_ioctl = rtw_ioctl,
 };
 
+static void rtw_free_netdev(struct net_device * netdev)
+{
+	struct rtw_netdev_priv_indicator *pnpi;
+
+	if(!netdev)
+		goto RETURN;
+
+	pnpi = netdev_priv(netdev);
+
+	if(!pnpi->priv)
+		goto RETURN;
+
+	/* ULLI check usage of pnpi->sizeof_priv */
+	rtw_vmfree(pnpi->priv);
+	free_netdev(netdev);
+
+RETURN:
+	return;
+}
 
 /*
  * drv_init() - a device potentially for us
@@ -958,6 +977,84 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 
 
 }
+
+
+static int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
+{
+	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
+
+	if (dev_alloc_name(ndev, ifname) < 0) {
+		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("dev_alloc_name, fail!\n"));
+	}
+
+	netif_carrier_off(ndev);
+	/* rtw_netif_stop_queue(ndev); */
+
+	return 0;
+}
+
+static int _rtw_drv_register_netdev(struct _ADAPTER *padapter, char *name)
+{
+	int ret = _SUCCESS;
+	struct net_device *ndev = padapter->ndev;
+
+	/* alloc netdev name */
+	rtw_init_netdev_name(ndev, name);
+
+	memcpy(ndev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
+
+	/* Tell the network stack we exist */
+	if (register_netdev(ndev) != 0) {
+		DBG_871X(FUNC_NDEV_FMT "Failed!\n", FUNC_NDEV_ARG(ndev));
+		ret = _FAIL;
+		goto error_register_netdev;
+	}
+
+	DBG_871X("%s, MAC Address (if%d) = " MAC_FMT "\n", __FUNCTION__, (padapter->iface_id+1), MAC_ARG(ndev->dev_addr));
+
+	return ret;
+
+error_register_netdev:
+
+	if (padapter->iface_id > IFACE_ID0) {
+		rtw_free_drv_sw(padapter);
+
+		rtw_free_netdev(ndev);
+	}
+
+	return ret;
+}
+
+int rtw_drv_register_netdev(struct _ADAPTER *if1)
+{
+	int i, status = _SUCCESS;
+	struct dvobj_priv *dvobj = if1->dvobj;
+
+	if (dvobj->iface_nums < IFACE_ID_MAX) {
+		for (i = 0; i < dvobj->iface_nums; i++) {
+			struct _ADAPTER *padapter = dvobj->padapters[i];
+
+			if (padapter) {
+				char *name;
+
+				if (padapter->iface_id == IFACE_ID0)
+					name = if1->registrypriv.ifname;
+				else if (padapter->iface_id == IFACE_ID1)
+					name = if1->registrypriv.if2name;
+				else
+					name = "wlan%d";
+
+				status = _rtw_drv_register_netdev(padapter, name);
+				if (status != _SUCCESS) {
+					break;
+				}
+			}
+		}
+	}
+
+	return status;
+}
+
 
 static void dump_usb_interface(struct usb_interface *usb_intf)
 {

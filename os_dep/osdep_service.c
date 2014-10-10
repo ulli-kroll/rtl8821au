@@ -791,29 +791,6 @@ int rtw_store_to_file(char *path, u8* buf, u32 sz)
 #endif
 }
 
-#ifdef PLATFORM_LINUX
-void rtw_free_netdev(struct net_device * netdev)
-{
-	struct rtw_netdev_priv_indicator *pnpi;
-
-	if(!netdev)
-		goto RETURN;
-
-	pnpi = netdev_priv(netdev);
-
-	if(!pnpi->priv)
-		goto RETURN;
-
-	/* ULLI check usage of pnpi->sizeof_priv */
-	rtw_vmfree(pnpi->priv);
-	free_netdev(netdev);
-
-RETURN:
-	return;
-}
-
-#endif
-
 u64 rtw_modular64(u64 x, u64 y)
 {
 #ifdef PLATFORM_LINUX

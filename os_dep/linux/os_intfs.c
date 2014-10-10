@@ -865,20 +865,6 @@ uint16_t rtw_recv_select_queue(struct sk_buff *skb)
 
 }
 
-int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
-{
-	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
-
-	if (dev_alloc_name(ndev, ifname) < 0) {
-		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("dev_alloc_name, fail!\n"));
-	}
-
-	netif_carrier_off(ndev);
-	/* rtw_netif_stop_queue(ndev); */
-
-	return 0;
-}
-
 u32 rtw_start_drv_threads(struct _ADAPTER *padapter)
 {
 	u32 _status = _SUCCESS;
@@ -1229,68 +1215,6 @@ uint8_t rtw_free_drv_sw(struct _ADAPTER *padapter)
 
 	return _SUCCESS;
 
-}
-
-static int _rtw_drv_register_netdev(struct _ADAPTER *padapter, char *name)
-{
-	int ret = _SUCCESS;
-	struct net_device *ndev = padapter->ndev;
-
-	/* alloc netdev name */
-	rtw_init_netdev_name(ndev, name);
-
-	memcpy(ndev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
-
-	/* Tell the network stack we exist */
-	if (register_netdev(ndev) != 0) {
-		DBG_871X(FUNC_NDEV_FMT "Failed!\n", FUNC_NDEV_ARG(ndev));
-		ret = _FAIL;
-		goto error_register_netdev;
-	}
-
-	DBG_871X("%s, MAC Address (if%d) = " MAC_FMT "\n", __FUNCTION__, (padapter->iface_id+1), MAC_ARG(ndev->dev_addr));
-
-	return ret;
-
-error_register_netdev:
-
-	if (padapter->iface_id > IFACE_ID0) {
-		rtw_free_drv_sw(padapter);
-
-		rtw_free_netdev(ndev);
-	}
-
-	return ret;
-}
-
-int rtw_drv_register_netdev(struct _ADAPTER *if1)
-{
-	int i, status = _SUCCESS;
-	struct dvobj_priv *dvobj = if1->dvobj;
-
-	if (dvobj->iface_nums < IFACE_ID_MAX) {
-		for (i = 0; i < dvobj->iface_nums; i++) {
-			struct _ADAPTER *padapter = dvobj->padapters[i];
-
-			if (padapter) {
-				char *name;
-
-				if (padapter->iface_id == IFACE_ID0)
-					name = if1->registrypriv.ifname;
-				else if (padapter->iface_id == IFACE_ID1)
-					name = if1->registrypriv.if2name;
-				else
-					name = "wlan%d";
-
-				status = _rtw_drv_register_netdev(padapter, name);
-				if (status != _SUCCESS) {
-					break;
-				}
-			}
-		}
-	}
-
-	return status;
 }
 
 int _netdev_open(struct net_device *ndev)

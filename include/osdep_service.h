@@ -312,10 +312,6 @@ extern int rtw_is_file_readable(char *path);
 extern int rtw_retrive_from_file(char *path, u8* buf, u32 sz);
 extern int rtw_store_to_file(char *path, u8* buf, u32 sz);
 
-
-extern void rtw_free_netdev(struct net_device * netdev);
-
-
 extern u64 rtw_modular64(u64 x, u64 y);
 extern u64 rtw_division64(u64 x, u64 y);
 

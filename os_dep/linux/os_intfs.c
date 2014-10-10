@@ -191,14 +191,6 @@ module_param(rtw_force_ant, int, 0644);
 module_param(rtw_force_igi, int, 0644);
 #endif
 
-char *ifname = "wlan%d";
-module_param(ifname, charp, 0644);
-MODULE_PARM_DESC(ifname, "The default name to allocate for first interface");
-
-char *if2name = "wlan%d";
-module_param(if2name, charp, 0644);
-MODULE_PARM_DESC(if2name, "The default name to allocate for second interface");
-
 char *rtw_initmac = 0;  /* temp mac address if users want to use instead of the mac address in Efuse */
 
 
@@ -748,9 +740,6 @@ uint loadparam(struct _ADAPTER *padapter,  _nic_hdl ndev)
 #ifdef CONFIG_80211D
 	registry_par->enable80211d = (uint8_t)rtw_80211d;
 #endif
-
-	snprintf(registry_par->ifname, 16, "%s", ifname);
-	snprintf(registry_par->if2name, 16, "%s", if2name);
 
 	registry_par->notch_filter = (uint8_t)rtw_notch_filter;
 

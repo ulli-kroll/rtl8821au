@@ -410,14 +410,6 @@ struct _ADAPTER{
 #ifdef PLATFORM_LINUX
 	_nic_hdl ndev;
 
-	// used by rtw_rereg_nd_name related function
-	struct rereg_nd_name_data {
-		_nic_hdl old_ndev;
-		char old_ifname[IFNAMSIZ];
-		uint8_t old_ips_mode;
-		uint8_t old_bRegUseLed;
-	} rereg_nd_name_priv;
-
 	int bup;
 	struct net_device_stats stats;
 	struct iw_statistics iwstats;

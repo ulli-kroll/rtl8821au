@@ -1194,12 +1194,6 @@ uint8_t rtw_free_drv_sw(struct _ADAPTER *padapter)
 
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("<==rtw_free_drv_sw\n"));
 
-	/* free the old_ndev */
-	if (padapter->rereg_nd_name_priv.old_ndev) {
-		free_netdev(padapter->rereg_nd_name_priv.old_ndev);
-		padapter->rereg_nd_name_priv.old_ndev = NULL;
-	}
-
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("-rtw_free_drv_sw\n"));
 
 	return _SUCCESS;

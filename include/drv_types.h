@@ -232,11 +232,6 @@ struct registry_priv
 #define GET_PRIMARY_ADAPTER(padapter) (((_adapter *)padapter)->dvobj->if1)
 #define GET_IFACE_NUMS(padapter) (((_adapter *)padapter)->dvobj->iface_nums)
 
-enum _IFACE_ID {
-	IFACE_ID0, //maping to PRIMARY_ADAPTER
-	IFACE_ID_MAX,
-};
-
 struct dvobj_priv
 {
         _adapter *if1; //PRIMARY_ADAPTER
@@ -254,9 +249,6 @@ struct dvobj_priv
 	unsigned char	oper_channel; //saved channel info when call set_channel_bw
 	unsigned char	oper_bwmode;
 	unsigned char	oper_ch_offset;//PRIME_CHNL_OFFSET
-
-	uint8_t iface_nums; // total number of ifaces used runtime
-
 
 	//For 92D, DMDP have 2 interface.
 	uint8_t	InterfaceNumber;

@@ -105,8 +105,6 @@ int rtw_ips_pwr_up(_adapter *padapter);
 void rtw_ips_pwr_down(_adapter *padapter);
 #endif
 
-
-int rtw_drv_register_netdev(_adapter *padapter);
 void rtw_ndev_destructor(_nic_hdl ndev);
 
 #endif	//_OSDEP_INTF_H_

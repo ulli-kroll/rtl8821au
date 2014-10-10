@@ -1015,7 +1015,7 @@ error_register_netdev:
 	return ret;
 }
 
-int rtw_drv_register_netdev(struct _ADAPTER *if1)
+static int rtw_drv_register_netdev(struct _ADAPTER *if1)
 {
 	int i, status = _SUCCESS;
 	struct dvobj_priv *dvobj = if1->dvobj;

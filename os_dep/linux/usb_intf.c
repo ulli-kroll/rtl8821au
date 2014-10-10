@@ -942,32 +942,32 @@ exit:
 	return padapter;
 }
 
-static void rtw_usb_if1_deinit(_adapter *if1)
+static void rtw_usb_if1_deinit(_adapter *padapter)
 {
-	struct net_device *ndev = if1->ndev;
-	struct mlme_priv *pmlmepriv= &if1->mlmepriv;
+	struct net_device *ndev = padapter->ndev;
+	struct mlme_priv *pmlmepriv= &padapter->mlmepriv;
 
 	if(check_fwstate(pmlmepriv, _FW_LINKED))
-		rtw_disassoc_cmd(if1, 0, _FALSE);
+		rtw_disassoc_cmd(padapter, 0, _FALSE);
 
 
 #ifdef CONFIG_AP_MODE
-	free_mlme_ap_info(if1);
+	free_mlme_ap_info(padapter);
 #endif
 
-	if(if1->DriverState != DRIVER_DISAPPEAR) {
+	if(padapter->DriverState != DRIVER_DISAPPEAR) {
 		if(ndev) {
 			unregister_netdev(ndev); /* will call netdev_close() */
 			rtw_proc_remove_one(ndev);
 		}
 	}
 
-	rtw_cancel_all_timer(if1);
-	rtw_dev_unload(if1);
+	rtw_cancel_all_timer(padapter);
+	rtw_dev_unload(padapter);
 
-	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", if1->hw_init_completed);
+	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", padapter->hw_init_completed);
 
-	rtw_free_drv_sw(if1);
+	rtw_free_drv_sw(padapter);
 
 	if(ndev)
 		rtw_free_netdev(ndev);
@@ -1121,7 +1121,7 @@ static void dump_usb_interface(struct usb_interface *usb_intf)
 
 static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
-	_adapter *if1 = NULL;
+	_adapter *padapter = NULL;
 	int status;
 	struct dvobj_priv *dvobj;
 
@@ -1137,7 +1137,7 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 		goto exit;
 	}
 
-	if ((if1 = rtw_usb_if1_init(dvobj, pusb_intf, pdid)) == NULL) {
+	if ((padapter = rtw_usb_if1_init(dvobj, pusb_intf, pdid)) == NULL) {
 		DBG_871X("rtw_usb_if1_init Failed!\n");
 		goto free_dvobj;
 	}
@@ -1150,7 +1150,7 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 #endif
 
 	/* dev_alloc_name && register_netdev */
-	status = _rtw_drv_register_netdev(if1, "wlan%d");
+	status = _rtw_drv_register_netdev(padapter, "wlan%d");
 	if (status != _SUCCESS)
 		goto free_if1;
 
@@ -1159,8 +1159,8 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 	status = _SUCCESS;
 
 free_if1:
-	if (status != _SUCCESS && if1) {
-		rtw_usb_if1_deinit(if1);
+	if (status != _SUCCESS && padapter) {
+		rtw_usb_if1_deinit(padapter);
 	}
 free_dvobj:
 	if (status != _SUCCESS)

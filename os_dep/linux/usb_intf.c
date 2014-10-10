@@ -1022,12 +1022,7 @@ int rtw_drv_register_netdev(struct _ADAPTER *if1)
 	struct _ADAPTER *padapter = dvobj->padapters[0];
 
 	if (padapter) {
-		char *name;
-
-		if (padapter->iface_id == IFACE_ID0)
-			name = if1->registrypriv.ifname;
-		else
-			name = "wlan%d";
+		char *name = "wlan%d";
 
 		status = _rtw_drv_register_netdev(padapter, name);
 	}

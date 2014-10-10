@@ -1015,22 +1015,6 @@ error_register_netdev:
 	return ret;
 }
 
-static int rtw_drv_register_netdev(struct _ADAPTER *if1)
-{
-	int i, status = _SUCCESS;
-	struct dvobj_priv *dvobj = if1->dvobj;
-	struct _ADAPTER *padapter = dvobj->padapters[0];
-
-	if (padapter) {
-		char *name = "wlan%d";
-
-		status = _rtw_drv_register_netdev(padapter, name);
-	}
-
-	return status;
-}
-
-
 static void dump_usb_interface(struct usb_interface *usb_intf)
 {
 	int	i;
@@ -1175,9 +1159,9 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 #endif
 
 	/* dev_alloc_name && register_netdev */
-	if((status = rtw_drv_register_netdev(if1)) != _SUCCESS) {
+	status = _rtw_drv_register_netdev(if1, "wlan%d");
+	if (status != _SUCCESS)
 		goto free_if1;
-	}
 
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("-871x_drv - drv_init, success!\n"));
 

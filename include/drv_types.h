@@ -229,12 +229,10 @@ struct registry_priv
 #define MAX_CONTINUAL_URB_ERR 4
 
 
-#define GET_PRIMARY_ADAPTER(padapter) (((_adapter *)padapter)->dvobj->if1)
 #define GET_IFACE_NUMS(padapter) (((_adapter *)padapter)->dvobj->iface_nums)
 
-struct dvobj_priv
-{
-        _adapter *if1; //PRIMARY_ADAPTER
+struct dvobj_priv {
+        struct _ADAPTER *padapter;
 
 	//for local/global synchronization
 	//

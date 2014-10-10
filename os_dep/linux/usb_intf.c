@@ -534,7 +534,7 @@ static void process_spec_devid(const struct usb_device_id *pdid)
 static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 {
 	struct dvobj_priv *dvobj = usb_get_intfdata(pusb_intf);
-	_adapter *padapter = dvobj->if1;
+	_adapter *padapter = dvobj->padapter;
 	struct net_device *ndev = padapter->ndev;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
@@ -607,7 +607,7 @@ exit:
 static int rtw_resume(struct usb_interface *pusb_intf)
 {
 	struct dvobj_priv *dvobj = usb_get_intfdata(pusb_intf);
-	_adapter *padapter = dvobj->if1;
+	_adapter *padapter = dvobj->padapter;
 	struct net_device *ndev = padapter->ndev;
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	 int ret = 0;
@@ -815,7 +815,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 		goto exit;
 	}
 	padapter->dvobj = dvobj;
-	dvobj->if1 = padapter;
+	dvobj->padapter = padapter;
 
 	padapter->bDriverStopped=_TRUE;
 
@@ -1178,7 +1178,7 @@ exit:
 static void rtw_dev_remove(struct usb_interface *pusb_intf)
 {
 	struct dvobj_priv *dvobj = usb_get_intfdata(pusb_intf);
-	_adapter *padapter = dvobj->if1;
+	_adapter *padapter = dvobj->padapter;
 	struct net_device *ndev = padapter->ndev;
 	struct mlme_priv *pmlmepriv= &padapter->mlmepriv;
 

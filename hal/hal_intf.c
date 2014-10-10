@@ -384,8 +384,6 @@ void rtw_hal_sreset_init(_adapter *padapter)
 
 void rtw_hal_sreset_reset(_adapter *padapter)
 {
-	padapter = GET_PRIMARY_ADAPTER(padapter);
-
 	if (padapter->HalFunc->silentreset)
 		padapter->HalFunc->silentreset(padapter);
 }
@@ -419,8 +417,6 @@ uint8_t rtw_hal_sreset_get_wifi_status(_adapter *padapter)
 bool rtw_hal_sreset_inprogress(_adapter *padapter)
 {
 	bool inprogress = _FALSE;
-
-	padapter = GET_PRIMARY_ADAPTER(padapter);
 
 	if (padapter->HalFunc->sreset_inprogress)
 		inprogress = padapter->HalFunc->sreset_inprogress(padapter);

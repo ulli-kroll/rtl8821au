@@ -76,7 +76,6 @@ static int32_t FillH2CCmd_8812(PADAPTER padapter, uint8_t ElementID, uint32_t Cm
 
 _func_enter_;
 
-	padapter = GET_PRIMARY_ADAPTER(padapter);
 	pHalData = GET_HAL_DATA(padapter);
 
 

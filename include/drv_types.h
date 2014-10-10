@@ -430,11 +430,6 @@ struct _ADAPTER{
 #ifdef CONFIG_AUTOSUSPEND
 	uint8_t	bDisableAutosuspend;
 #endif
-	//extend to support multi interface
-       //IFACE_ID0 is equals to PRIMARY_ADAPTER
-       //IFACE_ID1 is equals to SECONDARY_ADAPTER
-	uint8_t iface_id;
-
         uint8_t    fix_rate;
 
 	unsigned char     in_cta_test;

@@ -820,7 +820,6 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	padapter->bDriverStopped=_TRUE;
 
 	dvobj->padapters[dvobj->iface_nums++] = padapter;
-	padapter->iface_id = IFACE_ID0;
 
 	/* step 1-1., decide the chip_type via driver_info */
 	padapter->interface_type = RTW_USB;
@@ -1000,17 +999,11 @@ static int _rtw_drv_register_netdev(struct _ADAPTER *padapter, char *name)
 		goto error_register_netdev;
 	}
 
-	DBG_871X("%s, MAC Address (if%d) = " MAC_FMT "\n", __FUNCTION__, (padapter->iface_id+1), MAC_ARG(ndev->dev_addr));
+	DBG_871X("%s, MAC Address  = " MAC_FMT "\n", __FUNCTION__, MAC_ARG(ndev->dev_addr));
 
 	return ret;
 
 error_register_netdev:
-
-	if (padapter->iface_id > IFACE_ID0) {
-		rtw_free_drv_sw(padapter);
-
-		rtw_free_netdev(ndev);
-	}
 
 	return ret;
 }

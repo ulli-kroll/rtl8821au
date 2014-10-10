@@ -231,7 +231,6 @@ struct registry_priv
 
 #define GET_PRIMARY_ADAPTER(padapter) (((_adapter *)padapter)->dvobj->if1)
 #define GET_IFACE_NUMS(padapter) (((_adapter *)padapter)->dvobj->iface_nums)
-#define GET_ADAPTER(padapter, iface_id) (((_adapter *)padapter)->dvobj->padapters[iface_id])
 
 enum _IFACE_ID {
 	IFACE_ID0, //maping to PRIMARY_ADAPTER
@@ -256,10 +255,6 @@ struct dvobj_priv
 	unsigned char	oper_bwmode;
 	unsigned char	oper_ch_offset;//PRIME_CHNL_OFFSET
 
-	//extend to support mulitu interface
-	//padapters[IFACE_ID0] == if1
-	//padapters[IFACE_ID1] == if2
-	_adapter *padapters[IFACE_ID_MAX];
 	uint8_t iface_nums; // total number of ifaces used runtime
 
 

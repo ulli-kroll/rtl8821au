@@ -819,8 +819,6 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 
 	padapter->bDriverStopped=_TRUE;
 
-	dvobj->padapters[dvobj->iface_nums++] = padapter;
-
 	/* step 1-1., decide the chip_type via driver_info */
 	padapter->interface_type = RTW_USB;
 	rtw_decide_chip_type_by_usb_info(padapter, pdid);

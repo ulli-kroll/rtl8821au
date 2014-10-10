@@ -1019,25 +1019,17 @@ int rtw_drv_register_netdev(struct _ADAPTER *if1)
 {
 	int i, status = _SUCCESS;
 	struct dvobj_priv *dvobj = if1->dvobj;
+	struct _ADAPTER *padapter = dvobj->padapters[0];
 
-	if (dvobj->iface_nums < IFACE_ID_MAX) {
-		for (i = 0; i < dvobj->iface_nums; i++) {
-			struct _ADAPTER *padapter = dvobj->padapters[i];
+	if (padapter) {
+		char *name;
 
-			if (padapter) {
-				char *name;
+		if (padapter->iface_id == IFACE_ID0)
+			name = if1->registrypriv.ifname;
+		else
+			name = "wlan%d";
 
-				if (padapter->iface_id == IFACE_ID0)
-					name = if1->registrypriv.ifname;
-				else
-					name = "wlan%d";
-
-				status = _rtw_drv_register_netdev(padapter, name);
-				if (status != _SUCCESS) {
-					break;
-				}
-			}
-		}
+		status = _rtw_drv_register_netdev(padapter, name);
 	}
 
 	return status;

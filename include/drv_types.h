@@ -235,16 +235,12 @@ struct registry_priv
 
 enum _IFACE_ID {
 	IFACE_ID0, //maping to PRIMARY_ADAPTER
-	IFACE_ID1, //maping to SECONDARY_ADAPTER
-	IFACE_ID2,
-	IFACE_ID3,
 	IFACE_ID_MAX,
 };
 
 struct dvobj_priv
 {
         _adapter *if1; //PRIMARY_ADAPTER
-	_adapter *if2; //SECONDARY_ADAPTER
 
 	//for local/global synchronization
 	//

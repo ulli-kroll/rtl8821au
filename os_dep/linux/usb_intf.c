@@ -1029,8 +1029,6 @@ int rtw_drv_register_netdev(struct _ADAPTER *if1)
 
 				if (padapter->iface_id == IFACE_ID0)
 					name = if1->registrypriv.ifname;
-				else if (padapter->iface_id == IFACE_ID1)
-					name = if1->registrypriv.if2name;
 				else
 					name = "wlan%d";
 

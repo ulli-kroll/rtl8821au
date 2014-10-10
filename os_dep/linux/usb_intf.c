@@ -978,28 +978,18 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 
 }
 
-
-static int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
-{
-	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
-
-	if (dev_alloc_name(ndev, ifname) < 0) {
-		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("dev_alloc_name, fail!\n"));
-	}
-
-	netif_carrier_off(ndev);
-	/* rtw_netif_stop_queue(ndev); */
-
-	return 0;
-}
-
 static int _rtw_drv_register_netdev(struct _ADAPTER *padapter, char *name)
 {
 	int ret = _SUCCESS;
 	struct net_device *ndev = padapter->ndev;
 
 	/* alloc netdev name */
-	rtw_init_netdev_name(ndev, name);
+	if (dev_alloc_name(ndev, name) < 0) {
+		RT_TRACE(_module_os_intfs_c_, _drv_err_, ("dev_alloc_name, fail!\n"));
+	}
+
+	netif_carrier_off(ndev);
+	/* rtw_netif_stop_queue(ndev); */
 
 	memcpy(ndev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
 

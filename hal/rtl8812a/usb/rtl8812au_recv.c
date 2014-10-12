@@ -108,7 +108,7 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 		precvbuf->adapter =padapter;
 
 
-		//rtw_list_insert_tail(&precvbuf->list, &(precvpriv->free_recv_buf_queue.queue));
+		//list_add_tail(&precvbuf->list, &(precvpriv->free_recv_buf_queue.queue));
 
 		precvbuf++;
 

@@ -103,7 +103,7 @@ uint32_t _rtw_init_sta_priv(struct sta_priv *pstapriv)
 
 		INIT_LIST_HEAD(&(pstapriv->sta_hash[i]));
 
-		rtw_list_insert_tail(&psta->list, get_list_head(&pstapriv->free_sta_queue));
+		list_add_tail(&psta->list, get_list_head(&pstapriv->free_sta_queue));
 
 		psta++;
 	}
@@ -327,7 +327,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		 * _enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
 		 */
 
-		rtw_list_insert_tail(&psta->hash_list, phash_list);
+		list_add_tail(&psta->hash_list, phash_list);
 
 		pstapriv->asoc_sta_count ++ ;
 
@@ -595,7 +595,7 @@ uint32_t rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 	 _rtw_spinlock_free(&psta->lock);
 
 	/*_enter_critical_bh(&(pfree_sta_queue->lock), &irqL0); */
-	rtw_list_insert_tail(&psta->list, get_list_head(pfree_sta_queue));
+	list_add_tail(&psta->list, get_list_head(pfree_sta_queue));
 	/* _exit_critical_bh(&(pfree_sta_queue->lock), &irqL0); */
 
 exit:
@@ -709,7 +709,7 @@ uint32_t rtw_init_bcmc_stainfo(_adapter* padapter)
 	 * _enter_critical(&pstapending->lock, &irqL0);
 	 *
 	 * if (list_empty(&ptxservq->tx_pending))
-	 * 	rtw_list_insert_tail(&ptxservq->tx_pending, get_list_head(pstapending));
+	 * 	list_add_tail(&ptxservq->tx_pending, get_list_head(pstapending));
 	 *
 	 * _exit_critical(&pstapending->lock, &irqL0);
 	 */

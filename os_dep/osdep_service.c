@@ -186,17 +186,6 @@ int	_rtw_memcmp(void *dst, void *src, u32 sz)
 
 }
 
-void rtw_list_insert_tail(struct list_head *plist, struct list_head *phead)
-{
-
-#ifdef PLATFORM_LINUX
-
-	list_add_tail(plist, phead);
-
-#endif
-
-}
-
 void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 {
 	_adapter *adapter = (_adapter *)padapter;

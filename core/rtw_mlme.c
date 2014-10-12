@@ -89,10 +89,6 @@ exit:
 	return res;
 }
 
-static void rtw_mfree_mlme_priv_lock (struct mlme_priv *pmlmepriv)
-{
-}
-
 /* ULLI check usage of param *plen */
 static void rtw_free_mlme_ie_data(uint8_t **ppie, uint32_t *plen)
 {
@@ -126,8 +122,6 @@ void _rtw_free_mlme_priv (struct mlme_priv *pmlmepriv)
 	rtw_free_mlme_priv_ie_data(pmlmepriv);
 
 	if (pmlmepriv){
-		rtw_mfree_mlme_priv_lock (pmlmepriv);
-
 		if (pmlmepriv->free_bss_buf) {
 			rtw_vmfree(pmlmepriv->free_bss_buf);
 		}

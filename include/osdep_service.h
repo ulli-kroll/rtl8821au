@@ -126,9 +126,6 @@ extern void	rtw_mfree2d(void *pbuf, int h, int w, int size);
 
 extern int	_rtw_memcmp(void *dst, void *src, u32 sz);
 
-extern void	_rtw_spinlock_ex(spinlock_t	*plock);
-extern void	_rtw_spinunlock_ex(spinlock_t	*plock);
-
 extern void	_rtw_init_queue(_queue	*pqueue);
 extern u32	_rtw_queue_empty(_queue	*pqueue);
 extern u32	rtw_end_of_queue_search(struct list_head *queue, struct list_head *pelement);

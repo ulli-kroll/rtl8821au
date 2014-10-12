@@ -195,35 +195,6 @@ void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 #endif
 }
 
-/*
-
-Caller must check if the list is empty before calling rtw_list_delete
-
-*/
-
-void	_rtw_spinlock_ex(spinlock_t	*plock)
-{
-
-#ifdef PLATFORM_LINUX
-
-	spin_lock(plock);
-
-#endif
-
-}
-
-void	_rtw_spinunlock_ex(spinlock_t *plock)
-{
-
-#ifdef PLATFORM_LINUX
-
-	spin_unlock(plock);
-
-#endif
-}
-
-
-
 void	_rtw_init_queue(_queue	*pqueue)
 {
 

@@ -27,7 +27,7 @@ static void _rtw_init_stainfo(struct sta_info *psta)
 {
 	memset((uint8_t *)psta, 0, sizeof (struct sta_info));
 
-	 _rtw_spinlock_init(&psta->lock);
+	 spin_lock_init(&psta->lock);
 	INIT_LIST_HEAD(&psta->list);
 	INIT_LIST_HEAD(&psta->hash_list);
 	/*
@@ -88,7 +88,7 @@ uint32_t _rtw_init_sta_priv(struct sta_priv *pstapriv)
 
 	_rtw_init_queue(&pstapriv->free_sta_queue);
 
-	_rtw_spinlock_init(&pstapriv->sta_hash_lock);
+	spin_lock_init(&pstapriv->sta_hash_lock);
 
 	/* _rtw_init_queue(&pstapriv->asoc_q); */
 	pstapriv->asoc_sta_count = 0;
@@ -117,8 +117,8 @@ uint32_t _rtw_init_sta_priv(struct sta_priv *pstapriv)
 
 	INIT_LIST_HEAD(&pstapriv->asoc_list);
 	INIT_LIST_HEAD(&pstapriv->auth_list);
-	_rtw_spinlock_init(&pstapriv->asoc_list_lock);
-	_rtw_spinlock_init(&pstapriv->auth_list_lock);
+	spin_lock_init(&pstapriv->asoc_list_lock);
+	spin_lock_init(&pstapriv->auth_list_lock);
 	pstapriv->asoc_list_cnt = 0;
 	pstapriv->auth_list_cnt = 0;
 
@@ -157,26 +157,14 @@ inline struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int 
 
 static void _rtw_free_sta_xmit_priv_lock(struct sta_xmit_priv *psta_xmitpriv)
 {
-	_rtw_spinlock_free(&psta_xmitpriv->lock);
-
-	_rtw_spinlock_free(&(psta_xmitpriv->be_q.sta_pending.lock));
-	_rtw_spinlock_free(&(psta_xmitpriv->bk_q.sta_pending.lock));
-	_rtw_spinlock_free(&(psta_xmitpriv->vi_q.sta_pending.lock));
-	_rtw_spinlock_free(&(psta_xmitpriv->vo_q.sta_pending.lock));
 }
 
 static void _rtw_free_sta_recv_priv_lock(struct sta_recv_priv *psta_recvpriv)
 {
-	_rtw_spinlock_free(&psta_recvpriv->lock);
-
-	_rtw_spinlock_free(&(psta_recvpriv->defrag_q.lock));
 }
 
 static void rtw_mfree_stainfo(struct sta_info *psta)
 {
-	if(&psta->lock != NULL)
-		 _rtw_spinlock_free(&psta->lock);
-
 	_rtw_free_sta_xmit_priv_lock(&psta->sta_xmitpriv);
 	_rtw_free_sta_recv_priv_lock(&psta->sta_recvpriv);
 }
@@ -213,19 +201,6 @@ static void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv)
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
 #endif
 	 rtw_mfree_all_stainfo(pstapriv); /* be done before free sta_hash_lock */
-
-	_rtw_spinlock_free(&pstapriv->free_sta_queue.lock);
-
-	_rtw_spinlock_free(&pstapriv->sta_hash_lock);
-	_rtw_spinlock_free(&pstapriv->wakeup_q.lock);
-	_rtw_spinlock_free(&pstapriv->sleep_q.lock);
-
-#ifdef CONFIG_AP_MODE
-	_rtw_spinlock_free(&pstapriv->asoc_list_lock);
-	_rtw_spinlock_free(&pstapriv->auth_list_lock);
-	_rtw_spinlock_free(&pacl_list->acl_node_q.lock);
-#endif
-
 }
 
 uint32_t _rtw_free_sta_priv(struct sta_priv *pstapriv)
@@ -591,8 +566,6 @@ uint32_t rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 #endif
 
 #endif
-
-	 _rtw_spinlock_free(&psta->lock);
 
 	/*_enter_critical_bh(&(pfree_sta_queue->lock), &irqL0); */
 	list_add_tail(&psta->list, get_list_head(pfree_sta_queue));

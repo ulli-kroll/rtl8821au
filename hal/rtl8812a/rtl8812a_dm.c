@@ -452,7 +452,7 @@ void rtl8812_init_dm_priv(IN PADAPTER Adapter)
 	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;
 	memset(pdmpriv, 0, sizeof(struct dm_priv));
 
-	/* _rtw_spinlock_init(&(pHalData->odm_stainfo_lock)); */
+	/* spin_lock_init(&(pHalData->odm_stainfo_lock)); */
 
 	Init_ODM_ComInfo_8812(Adapter);
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
@@ -479,7 +479,6 @@ void rtl8812_deinit_dm_priv(IN PADAPTER Adapter)
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;
-	/* _rtw_spinlock_free(&pHalData->odm_stainfo_lock); */
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
 	/* _cancel_timer_ex(&pdmpriv->SwAntennaSwitchTimer); */
 	ODM_CancelAllTimers(podmpriv);

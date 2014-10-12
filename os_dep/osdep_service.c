@@ -201,45 +201,6 @@ Caller must check if the list is empty before calling rtw_list_delete
 
 */
 
-void	_rtw_spinlock_init(spinlock_t *plock)
-{
-
-#ifdef PLATFORM_LINUX
-
-	spin_lock_init(plock);
-
-#endif
-
-}
-
-void	_rtw_spinlock_free(spinlock_t *plock)
-{
-
-
-}
-
-void	_rtw_spinlock(spinlock_t	*plock)
-{
-
-#ifdef PLATFORM_LINUX
-
-	spin_lock(plock);
-
-#endif
-
-}
-
-void	_rtw_spinunlock(spinlock_t *plock)
-{
-
-#ifdef PLATFORM_LINUX
-
-	spin_unlock(plock);
-
-#endif
-}
-
-
 void	_rtw_spinlock_ex(spinlock_t	*plock)
 {
 
@@ -268,7 +229,7 @@ void	_rtw_init_queue(_queue	*pqueue)
 
 	INIT_LIST_HEAD(&(pqueue->queue));
 
-	_rtw_spinlock_init(&(pqueue->lock));
+	spin_lock_init(&(pqueue->lock));
 
 }
 

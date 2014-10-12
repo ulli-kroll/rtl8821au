@@ -96,7 +96,7 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 	{
 		INIT_LIST_HEAD(&precvbuf->list);
 
-		_rtw_spinlock_init(&precvbuf->recvbuf_lock);
+		spin_lock_init(&precvbuf->recvbuf_lock);
 
 		precvbuf->alloc_sz = MAX_RECVBUF_SZ;
 

@@ -42,7 +42,7 @@ _func_enter_;
 
 	memset((unsigned char *)psta_xmitpriv, 0, sizeof (struct sta_xmit_priv));
 
-	_rtw_spinlock_init(&psta_xmitpriv->lock);
+	spin_lock_init(&psta_xmitpriv->lock);
 
 	//for(i = 0 ; i < MAX_NUMBLKS; i++)
 	//	_init_txservq(&(psta_xmitpriv->blk_q[i]));
@@ -72,8 +72,8 @@ _func_enter_;
 	// We don't need to memset padapter->XXX to zero, because adapter is allocated by rtw_zvmalloc().
 	//memset((unsigned char *)pxmitpriv, 0, sizeof(struct xmit_priv));
 
-	_rtw_spinlock_init(&pxmitpriv->lock);
-	_rtw_spinlock_init(&pxmitpriv->lock_sctx);
+	spin_lock_init(&pxmitpriv->lock);
+	spin_lock_init(&pxmitpriv->lock_sctx);
 	sema_init(&pxmitpriv->xmit_sema, 0);
 	sema_init(&pxmitpriv->terminate_xmitthread_sema, 0);
 
@@ -306,20 +306,6 @@ _func_exit_;
 void  rtw_mfree_xmit_priv_lock (struct xmit_priv *pxmitpriv);
 void  rtw_mfree_xmit_priv_lock (struct xmit_priv *pxmitpriv)
 {
-	_rtw_spinlock_free(&pxmitpriv->lock);
-
-	_rtw_spinlock_free(&pxmitpriv->be_pending.lock);
-	_rtw_spinlock_free(&pxmitpriv->bk_pending.lock);
-	_rtw_spinlock_free(&pxmitpriv->vi_pending.lock);
-	_rtw_spinlock_free(&pxmitpriv->vo_pending.lock);
-	_rtw_spinlock_free(&pxmitpriv->bm_pending.lock);
-
-	//_rtw_spinlock_free(&pxmitpriv->legacy_dz_queue.lock);
-	//_rtw_spinlock_free(&pxmitpriv->apsd_queue.lock);
-
-	_rtw_spinlock_free(&pxmitpriv->free_xmit_queue.lock);
-	_rtw_spinlock_free(&pxmitpriv->free_xmitbuf_queue.lock);
-	_rtw_spinlock_free(&pxmitpriv->pending_xmitbuf_queue.lock);
 }
 
 
@@ -373,10 +359,6 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 	}
 	if (pxmitpriv->xframe_ext_alloc_addr)
 		rtw_vmfree(pxmitpriv->xframe_ext_alloc_addr);
-	_rtw_spinlock_free(&pxmitpriv->free_xframe_ext_queue.lock);
-
-	// free xmit extension buff
-	_rtw_spinlock_free(&pxmitpriv->free_xmit_extbuf_queue.lock);
 
 	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmit_extbuf;
 	for(i=0; i<num_xmit_extbuf; i++)
@@ -2606,7 +2588,7 @@ void rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry)
 _func_enter_;
 	for(i = 0; i < entry; i++, phwxmit++)
 	{
-		//_rtw_spinlock_init(&phwxmit->xmit_lock);
+		//spin_lock_init(&phwxmit->xmit_lock);
 		//INIT_LIST_HEAD(&phwxmit->pending);
 		//phwxmit->txcmdcnt = 0;
 		phwxmit->accnt = 0;

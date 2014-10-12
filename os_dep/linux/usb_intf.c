@@ -229,7 +229,7 @@ static struct dvobj_priv *usb_dvobj_init(struct usb_interface *usb_intf)
 	mutex_init(&pdvobjpriv->setch_mutex);
 	mutex_init(&pdvobjpriv->setbw_mutex);
 
-	_rtw_spinlock_init(&pdvobjpriv->lock);
+	spin_lock_init(&pdvobjpriv->lock);
 
 	pdvobjpriv->macid[1] = _TRUE; 	/* macid=1 for bc/mc stainfo */
 
@@ -346,7 +346,6 @@ static struct dvobj_priv *usb_dvobj_init(struct usb_interface *usb_intf)
 free_dvobj:
 	if (status != _SUCCESS && pdvobjpriv) {
 		usb_set_intfdata(usb_intf, NULL);
-		_rtw_spinlock_free(&pdvobjpriv->lock);
 		mutex_destroy(&pdvobjpriv->hw_init_mutex);
 		mutex_destroy(&pdvobjpriv->h2c_fwcmd_mutex);
 		mutex_destroy(&pdvobjpriv->setch_mutex);
@@ -377,7 +376,6 @@ static void usb_dvobj_deinit(struct usb_interface *usb_intf)
 			}
 		}
 		rtw_deinit_intf_priv(dvobj);
-		_rtw_spinlock_free(&dvobj->lock);
 		mutex_destroy(&dvobj->hw_init_mutex);
 		mutex_destroy(&dvobj->h2c_fwcmd_mutex);
 		mutex_destroy(&dvobj->setch_mutex);

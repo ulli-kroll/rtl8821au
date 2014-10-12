@@ -126,8 +126,6 @@ extern void	rtw_mfree2d(void *pbuf, int h, int w, int size);
 
 extern int	_rtw_memcmp(void *dst, void *src, u32 sz);
 
-extern void	rtw_list_delete(struct list_head *plist);
-
 extern void	_rtw_spinlock_init(_lock *plock);
 extern void	_rtw_spinlock_free(_lock *plock);
 extern void	_rtw_spinlock(_lock	*plock);

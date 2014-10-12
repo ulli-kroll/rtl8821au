@@ -156,11 +156,6 @@ inline struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int 
 }
 
 
-static void rtw_mfree_stainfo(struct sta_info *psta)
-{
-}
-
-
 /*
  *  this function is used to free the memory of lock || sema for all stainfos
  */
@@ -178,8 +173,6 @@ static void rtw_mfree_all_stainfo(struct sta_priv *pstapriv )
 	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
 		psta = LIST_CONTAINOR(plist, struct sta_info ,list);
 		plist = get_next(plist);
-
-		rtw_mfree_stainfo(psta);
 	}
 
 	_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);

@@ -342,7 +342,7 @@ sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, _queue *queue)
 	_enter_critical_bh(&queue->lock, &irqL);
 
 	rtw_list_delete(&precvbuf->list);
-	rtw_list_insert_head(&precvbuf->list, get_list_head(queue));
+	list_add(&precvbuf->list, get_list_head(queue));
 
 	_exit_critical_bh(&queue->lock, &irqL);
 

@@ -186,16 +186,6 @@ int	_rtw_memcmp(void *dst, void *src, u32 sz)
 
 }
 
-
-void rtw_list_insert_head(struct list_head *plist, struct list_head *phead)
-{
-
-#ifdef PLATFORM_LINUX
-	list_add(plist, phead);
-#endif
-
-}
-
 void rtw_list_insert_tail(struct list_head *plist, struct list_head *phead)
 {
 

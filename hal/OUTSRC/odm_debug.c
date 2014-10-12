@@ -261,12 +261,8 @@ uint64_t GlobalDebugComponents	= 	\
 uint64_t GlobalDebugComponents	= 0;
 #endif
 
-#if (RT_PLATFORM==PLATFORM_LINUX)
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,0))
 EXPORT_SYMBOL(GlobalDebugComponents);
 EXPORT_SYMBOL(GlobalDebugLevel);
-#endif
-#endif
 
 /*------------------Declare variable-----------------------
 // Define debug flag array for common debug print macro. */

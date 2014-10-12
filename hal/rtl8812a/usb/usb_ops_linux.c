@@ -728,11 +728,7 @@ _func_enter_;
 		if((precvbuf->reuse == _FALSE) || (precvbuf->pskb == NULL))
 		{
 			//precvbuf->pskb = alloc_skb(MAX_RECVBUF_SZ, GFP_ATOMIC);//don't use this after v2.6.25
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,18)) // http://www.mail-archive.com/netdev@vger.kernel.org/msg17214.html
-			precvbuf->pskb = dev_alloc_skb(MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
-#else
 			precvbuf->pskb = netdev_alloc_skb(adapter->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
-#endif
 			if(precvbuf->pskb == NULL)
 			{
 				RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("init_recvbuf(): alloc_skb fail!\n"));

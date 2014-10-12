@@ -59,11 +59,7 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, uin
 		alloc_sz += 14;
 	}
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,18)) // http://www.mail-archive.com/netdev@vger.kernel.org/msg17214.html
-	pkt_copy = dev_alloc_skb(alloc_sz);
-#else
 	pkt_copy = netdev_alloc_skb(padapter->ndev, alloc_sz);
-#endif
 
 	if(pkt_copy)
 	{
@@ -288,9 +284,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 					//skb->ip_summed = CHECKSUM_NONE;
 					pkt->dev = ndev;
-#if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 					skb_set_queue_mapping(pkt, rtw_recv_select_queue(pkt));
-#endif //LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35)
 
 					rtw_xmit_entry(pkt, ndev);
 

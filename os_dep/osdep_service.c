@@ -187,27 +187,6 @@ int	_rtw_memcmp(void *dst, void *src, u32 sz)
 }
 
 
-/*
-For the following list_xxx operations,
-caller must guarantee the atomic context.
-Otherwise, there will be racing condition.
-*/
-u32	rtw_is_list_empty(struct list_head *phead)
-{
-
-#ifdef PLATFORM_LINUX
-
-	if (list_empty(phead))
-		return _TRUE;
-	else
-		return _FALSE;
-
-#endif
-
-
-
-}
-
 void rtw_list_insert_head(struct list_head *plist, struct list_head *phead)
 {
 
@@ -316,7 +295,7 @@ void	_rtw_init_queue(_queue	*pqueue)
 
 u32	  _rtw_queue_empty(_queue	*pqueue)
 {
-	return (rtw_is_list_empty(&(pqueue->queue)));
+	return (list_empty(&(pqueue->queue)));
 }
 
 

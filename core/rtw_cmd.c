@@ -214,7 +214,7 @@ _func_enter_;
 
 	//_enter_critical_bh(&(queue->lock), &irqL);
 	_enter_critical(&queue->lock, &irqL);
-	if (rtw_is_list_empty(&(queue->queue)))
+	if (list_empty(&(queue->queue)))
 		obj = NULL;
 	else
 	{
@@ -550,7 +550,7 @@ _func_enter_;
 
 	_enter_critical_bh(&queue->lock, &irqL);
 
-	if (rtw_is_list_empty(&(queue->queue)))
+	if (list_empty(&(queue->queue)))
 		pevtobj = NULL;
 	else
 	{

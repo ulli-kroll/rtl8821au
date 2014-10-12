@@ -1096,7 +1096,7 @@ unsigned int OnAuth(_adapter *padapter, union recv_frame *precv_frame)
 	else
 	{
 		_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
-		if(rtw_is_list_empty(&pstat->asoc_list)==_FALSE)
+		if(list_empty(&pstat->asoc_list)==_FALSE)
 		{
 			rtw_list_delete(&pstat->asoc_list);
 			pstapriv->asoc_list_cnt--;
@@ -1113,7 +1113,7 @@ unsigned int OnAuth(_adapter *padapter, union recv_frame *precv_frame)
 	}
 
 	_enter_critical_bh(&pstapriv->auth_list_lock, &irqL);
-	if (rtw_is_list_empty(&pstat->auth_list))
+	if (list_empty(&pstat->auth_list))
 	{
 		rtw_list_insert_tail(&pstat->auth_list, &pstapriv->auth_list);
 		pstapriv->auth_list_cnt++;
@@ -1831,7 +1831,7 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 	pstat->state |= WIFI_FW_ASSOC_SUCCESS;
 
 	_enter_critical_bh(&pstapriv->auth_list_lock, &irqL);
-	if (!rtw_is_list_empty(&pstat->auth_list))
+	if (!list_empty(&pstat->auth_list))
 	{
 		rtw_list_delete(&pstat->auth_list);
 		pstapriv->auth_list_cnt--;
@@ -1839,7 +1839,7 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 	_exit_critical_bh(&pstapriv->auth_list_lock, &irqL);
 
 	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
-	if (rtw_is_list_empty(&pstat->asoc_list))
+	if (list_empty(&pstat->asoc_list))
 	{
 		pstat->expire_to = pstapriv->expire_to;
 		rtw_list_insert_tail(&pstat->asoc_list, &pstapriv->asoc_list);
@@ -2046,7 +2046,7 @@ unsigned int OnDeAuth(_adapter *padapter, union recv_frame *precv_frame)
 			uint8_t updated;
 
 			_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
-			if(rtw_is_list_empty(&psta->asoc_list)==_FALSE)
+			if(list_empty(&psta->asoc_list)==_FALSE)
 			{
 				rtw_list_delete(&psta->asoc_list);
 				pstapriv->asoc_list_cnt--;
@@ -2111,7 +2111,7 @@ unsigned int OnDisassoc(_adapter *padapter, union recv_frame *precv_frame)
 			uint8_t updated;
 
 			_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
-			if(rtw_is_list_empty(&psta->asoc_list)==_FALSE)
+			if(list_empty(&psta->asoc_list)==_FALSE)
 			{
 				rtw_list_delete(&psta->asoc_list);
 				pstapriv->asoc_list_cnt--;

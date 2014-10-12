@@ -3767,7 +3767,7 @@ static int rtw_del_sta(struct net_device *ndev, struct ieee_param *param)
 		//DBG_871X("free psta=%p, aid=%d\n", psta, psta->aid);
 
 		_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
-		if(rtw_is_list_empty(&psta->asoc_list)==_FALSE)
+		if(list_empty(&psta->asoc_list)==_FALSE)
 		{
 			rtw_list_delete(&psta->asoc_list);
 			pstapriv->asoc_list_cnt--;

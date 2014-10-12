@@ -2290,7 +2290,7 @@ int recv_indicatepkts_in_order(struct _ADAPTER *padapter, struct recv_reorder_ct
 
 	/* Handling some condition for forced indicate case. */
 	if (bforced==_TRUE) {
-		if(rtw_is_list_empty(phead)) {
+		if(list_empty(phead)) {
 			/*
 			 * _exit_critical_ex(&ppending_recvframe_queue->lock, &irql);
 			 * _rtw_spinunlock_ex(&ppending_recvframe_queue->lock);
@@ -2308,7 +2308,7 @@ int recv_indicatepkts_in_order(struct _ADAPTER *padapter, struct recv_reorder_ct
 	 * Check if there is any packet need indicate.
 	 */
 
-	while (!rtw_is_list_empty(phead)) {
+	while (!list_empty(phead)) {
 
 		prframe = LIST_CONTAINOR(plist, union recv_frame, u);
 		pattrib = &prframe->u.hdr.attrib;

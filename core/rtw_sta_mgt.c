@@ -523,7 +523,7 @@ uint32_t rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 		phead = 	get_list_head(ppending_recvframe_queue);
 		plist = get_next(phead);
 
-		while(!rtw_is_list_empty(phead)) {
+		while(!list_empty(phead)) {
 			prframe = LIST_CONTAINOR(plist, union recv_frame, u);
 
 			plist = get_next(plist);
@@ -555,7 +555,7 @@ uint32_t rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 	 */
 
 	_enter_critical_bh(&pstapriv->auth_list_lock, &irqL0);
-	if (!rtw_is_list_empty(&psta->auth_list)) {
+	if (!list_empty(&psta->auth_list)) {
 		rtw_list_delete(&psta->auth_list);
 		pstapriv->auth_list_cnt--;
 	}
@@ -708,7 +708,7 @@ uint32_t rtw_init_bcmc_stainfo(_adapter* padapter)
 	/*
 	 * _enter_critical(&pstapending->lock, &irqL0);
 	 *
-	 * if (rtw_is_list_empty(&ptxservq->tx_pending))
+	 * if (list_empty(&ptxservq->tx_pending))
 	 * 	rtw_list_insert_tail(&ptxservq->tx_pending, get_list_head(pstapending));
 	 *
 	 * _exit_critical(&pstapending->lock, &irqL0);

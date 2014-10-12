@@ -868,7 +868,7 @@ static int32_t update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *p
 
 
 
-	//TODO:_lock
+	//TODO:spinlock_t
 	if(update_attrib_sec_info(padapter, pattrib, psta) == _FAIL)
 	{
 		res = _FAIL;

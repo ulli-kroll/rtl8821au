@@ -238,7 +238,7 @@ using enter_critical section to protect
 */
 struct recv_priv
 {
-	_lock	lock;
+	spinlock_t	lock;
 
 #ifdef CONFIG_RECV_THREAD_MODE
 	struct semaphore	recv_sema;
@@ -332,7 +332,7 @@ struct recv_priv
 
 struct sta_recv_priv {
 
-	_lock	lock;
+	spinlock_t	lock;
 	sint	option;
 
 	//_queue	blk_strms[MAX_RX_NUMBLKS];
@@ -351,7 +351,7 @@ struct recv_buf
 {
 	struct list_head list;
 
-	_lock recvbuf_lock;
+	spinlock_t recvbuf_lock;
 
 	u32	ref_cnt;
 

@@ -70,12 +70,11 @@
 #define CONFIG_AUTOSUSPEND	1
 #endif
 
-	typedef	spinlock_t	_lock;
 	typedef struct timer_list _timer;
 
 	struct	__queue	{
 		struct	list_head	queue;
-		_lock	lock;
+		spinlock_t	lock;
 	};
 
 	typedef	struct sk_buff	_pkt;
@@ -114,32 +113,32 @@ __inline static struct list_head	*get_list_head(_queue	*queue)
         ((type *)((char *)(ptr)-(SIZE_T)(&((type *)0)->member)))
 
 
-__inline static void _enter_critical(_lock *plock, _irqL *pirqL)
+__inline static void _enter_critical(spinlock_t *plock, _irqL *pirqL)
 {
 	spin_lock_irqsave(plock, *pirqL);
 }
 
-__inline static void _exit_critical(_lock *plock, _irqL *pirqL)
+__inline static void _exit_critical(spinlock_t *plock, _irqL *pirqL)
 {
 	spin_unlock_irqrestore(plock, *pirqL);
 }
 
-__inline static void _enter_critical_ex(_lock *plock, _irqL *pirqL)
+__inline static void _enter_critical_ex(spinlock_t *plock, _irqL *pirqL)
 {
 	spin_lock_irqsave(plock, *pirqL);
 }
 
-__inline static void _exit_critical_ex(_lock *plock, _irqL *pirqL)
+__inline static void _exit_critical_ex(spinlock_t *plock, _irqL *pirqL)
 {
 	spin_unlock_irqrestore(plock, *pirqL);
 }
 
-__inline static void _enter_critical_bh(_lock *plock, _irqL *pirqL)
+__inline static void _enter_critical_bh(spinlock_t *plock, _irqL *pirqL)
 {
 	spin_lock_bh(plock);
 }
 
-__inline static void _exit_critical_bh(_lock *plock, _irqL *pirqL)
+__inline static void _exit_critical_bh(spinlock_t *plock, _irqL *pirqL)
 {
 	spin_unlock_bh(plock);
 }

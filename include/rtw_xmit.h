@@ -162,7 +162,7 @@ union txdesc {
 
 
 struct	hw_xmit	{
-	//_lock xmit_lock;
+	//spinlock_t xmit_lock;
 	//struct list_head	pending;
 	_queue *sta_queue;
 	//struct hw_txqueue *phwtxqueue;
@@ -415,7 +415,7 @@ struct tx_servq {
 
 struct sta_xmit_priv
 {
-	_lock	lock;
+	spinlock_t	lock;
 	sint	option;
 	sint	apsd_setting;	//When bit mask is on, the associated edca queue supports APSD.
 
@@ -456,7 +456,7 @@ struct agg_pkt_info{
 
 struct	xmit_priv	{
 
-	_lock	lock;
+	spinlock_t	lock;
 
 	struct semaphore	xmit_sema;
 	struct semaphore	terminate_xmitthread_sema;
@@ -551,7 +551,7 @@ struct	xmit_priv	{
 	struck mutex ack_tx_mutex;
 	struct submit_ctx ack_tx_ops;
 #endif
-	_lock lock_sctx;
+	spinlock_t lock_sctx;
 };
 
 extern struct xmit_frame *rtw_alloc_cmdxmitframe(struct xmit_priv *pxmitpriv, u32 buffsize);

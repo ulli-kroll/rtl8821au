@@ -236,7 +236,7 @@ struct dvobj_priv {
 
 	//for local/global synchronization
 	//
-	_lock	lock;
+	spinlock_t	lock;
 	int macid[NUM_STA];
 
 	struct mutex hw_init_mutex;

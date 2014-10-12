@@ -84,7 +84,7 @@ struct	stainfo_stats	{
 
 struct sta_info {
 
-	_lock	lock;
+	spinlock_t	lock;
 	struct list_head	list; //free_sta_queue
 	struct list_head	hash_list; //sta_hash
 	//struct list_head asoc_list; //20061114
@@ -327,7 +327,7 @@ struct	sta_priv {
 	uint8_t *pstainfo_buf;
 	_queue	free_sta_queue;
 
-	_lock sta_hash_lock;
+	spinlock_t sta_hash_lock;
 	struct list_head   sta_hash[NUM_STA];
 	int asoc_sta_count;
 	_queue sleep_q;
@@ -339,8 +339,8 @@ struct	sta_priv {
 #ifdef CONFIG_AP_MODE
 	struct list_head asoc_list;
 	struct list_head auth_list;
-	_lock asoc_list_lock;
-	_lock auth_list_lock;
+	spinlock_t asoc_list_lock;
+	spinlock_t auth_list_lock;
 	uint8_t asoc_list_cnt;
 	uint8_t auth_list_cnt;
 

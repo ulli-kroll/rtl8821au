@@ -126,12 +126,12 @@ extern void	rtw_mfree2d(void *pbuf, int h, int w, int size);
 
 extern int	_rtw_memcmp(void *dst, void *src, u32 sz);
 
-extern void	_rtw_spinlock_init(_lock *plock);
-extern void	_rtw_spinlock_free(_lock *plock);
-extern void	_rtw_spinlock(_lock	*plock);
-extern void	_rtw_spinunlock(_lock	*plock);
-extern void	_rtw_spinlock_ex(_lock	*plock);
-extern void	_rtw_spinunlock_ex(_lock	*plock);
+extern void	_rtw_spinlock_init(spinlock_t *plock);
+extern void	_rtw_spinlock_free(spinlock_t *plock);
+extern void	_rtw_spinlock(spinlock_t	*plock);
+extern void	_rtw_spinunlock(spinlock_t	*plock);
+extern void	_rtw_spinlock_ex(spinlock_t	*plock);
+extern void	_rtw_spinunlock_ex(spinlock_t	*plock);
 
 extern void	_rtw_init_queue(_queue	*pqueue);
 extern u32	_rtw_queue_empty(_queue	*pqueue);

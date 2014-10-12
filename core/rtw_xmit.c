@@ -28,7 +28,7 @@ static uint8_t RFC1042_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0x00 };
 static void _init_txservq(struct tx_servq *ptxservq)
 {
 _func_enter_;
-	_rtw_init_listhead(&ptxservq->tx_pending);
+	INIT_LIST_HEAD(&ptxservq->tx_pending);
 	_rtw_init_queue(&ptxservq->sta_pending);
 	ptxservq->qcnt = 0;
 _func_exit_;
@@ -51,8 +51,8 @@ _func_enter_;
 	_init_txservq(&psta_xmitpriv->bk_q);
 	_init_txservq(&psta_xmitpriv->vi_q);
 	_init_txservq(&psta_xmitpriv->vo_q);
-	_rtw_init_listhead(&psta_xmitpriv->legacy_dz);
-	_rtw_init_listhead(&psta_xmitpriv->apsd);
+	INIT_LIST_HEAD(&psta_xmitpriv->legacy_dz);
+	INIT_LIST_HEAD(&psta_xmitpriv->apsd);
 
 _func_exit_;
 
@@ -119,7 +119,7 @@ _func_enter_;
 
 	for (i = 0; i < NR_XMITFRAME; i++)
 	{
-		_rtw_init_listhead(&(pxframe->list));
+		INIT_LIST_HEAD(&(pxframe->list));
 
 		pxframe->padapter = padapter;
 		pxframe->frame_tag = NULL_FRAMETAG;
@@ -159,7 +159,7 @@ _func_enter_;
 
 	for (i = 0; i < NR_XMITBUFF; i++)
 	{
-		_rtw_init_listhead(&pxmitbuf->list);
+		INIT_LIST_HEAD(&pxmitbuf->list);
 
 		pxmitbuf->priv_data = NULL;
 		pxmitbuf->padapter = padapter;
@@ -200,7 +200,7 @@ _func_enter_;
 	pxframe = (struct xmit_frame*)pxmitpriv->xframe_ext;
 
 	for (i = 0; i < num_xmit_extbuf; i++) {
-		_rtw_init_listhead(&(pxframe->list));
+		INIT_LIST_HEAD(&(pxframe->list));
 
 		pxframe->padapter = padapter;
 		pxframe->frame_tag = NULL_FRAMETAG;
@@ -235,7 +235,7 @@ _func_enter_;
 
 	for (i = 0; i < num_xmit_extbuf; i++)
 	{
-		_rtw_init_listhead(&pxmitbuf->list);
+		INIT_LIST_HEAD(&pxmitbuf->list);
 
 		pxmitbuf->priv_data = NULL;
 		pxmitbuf->padapter = padapter;
@@ -257,7 +257,7 @@ _func_enter_;
 
 	pxmitbuf = &pxmitpriv->pcmd_xmitbuf;
 	if (pxmitbuf) {
-		_rtw_init_listhead(&pxmitbuf->list);
+		INIT_LIST_HEAD(&pxmitbuf->list);
 
 		pxmitbuf->priv_data = NULL;
 		pxmitbuf->padapter = padapter;
@@ -2607,7 +2607,7 @@ _func_enter_;
 	for(i = 0; i < entry; i++, phwxmit++)
 	{
 		//_rtw_spinlock_init(&phwxmit->xmit_lock);
-		//_rtw_init_listhead(&phwxmit->pending);
+		//INIT_LIST_HEAD(&phwxmit->pending);
 		//phwxmit->txcmdcnt = 0;
 		phwxmit->accnt = 0;
 	}

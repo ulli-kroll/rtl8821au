@@ -94,7 +94,7 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 
 	for(i=0; i < NR_RECVBUFF ; i++)
 	{
-		_rtw_init_listhead(&precvbuf->list);
+		INIT_LIST_HEAD(&precvbuf->list);
 
 		_rtw_spinlock_init(&precvbuf->recvbuf_lock);
 

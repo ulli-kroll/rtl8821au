@@ -28,12 +28,12 @@ static void _rtw_init_stainfo(struct sta_info *psta)
 	memset((uint8_t *)psta, 0, sizeof (struct sta_info));
 
 	 _rtw_spinlock_init(&psta->lock);
-	_rtw_init_listhead(&psta->list);
-	_rtw_init_listhead(&psta->hash_list);
+	INIT_LIST_HEAD(&psta->list);
+	INIT_LIST_HEAD(&psta->hash_list);
 	/*
-	 * _rtw_init_listhead(&psta->asoc_list);
-	 * _rtw_init_listhead(&psta->sleep_list);
-	 * _rtw_init_listhead(&psta->wakeup_list);
+	 * INIT_LIST_HEAD(&psta->asoc_list);
+	 * INIT_LIST_HEAD(&psta->sleep_list);
+	 * INIT_LIST_HEAD(&psta->wakeup_list);
 	 */
 
 	_rtw_init_queue(&psta->sleep_q);
@@ -44,9 +44,9 @@ static void _rtw_init_stainfo(struct sta_info *psta)
 
 #ifdef CONFIG_AP_MODE
 
-	_rtw_init_listhead(&psta->asoc_list);
+	INIT_LIST_HEAD(&psta->asoc_list);
 
-	_rtw_init_listhead(&psta->auth_list);
+	INIT_LIST_HEAD(&psta->auth_list);
 
 	psta->expire_to = 0;
 
@@ -101,7 +101,7 @@ uint32_t _rtw_init_sta_priv(struct sta_priv *pstapriv)
 	for(i = 0; i < NUM_STA; i++) {
 		_rtw_init_stainfo(psta);
 
-		_rtw_init_listhead(&(pstapriv->sta_hash[i]));
+		INIT_LIST_HEAD(&(pstapriv->sta_hash[i]));
 
 		rtw_list_insert_tail(&psta->list, get_list_head(&pstapriv->free_sta_queue));
 
@@ -115,8 +115,8 @@ uint32_t _rtw_init_sta_priv(struct sta_priv *pstapriv)
 	pstapriv->sta_dz_bitmap = 0;
 	pstapriv->tim_bitmap = 0;
 
-	_rtw_init_listhead(&pstapriv->asoc_list);
-	_rtw_init_listhead(&pstapriv->auth_list);
+	INIT_LIST_HEAD(&pstapriv->asoc_list);
+	INIT_LIST_HEAD(&pstapriv->auth_list);
 	_rtw_spinlock_init(&pstapriv->asoc_list_lock);
 	_rtw_spinlock_init(&pstapriv->auth_list_lock);
 	pstapriv->asoc_list_cnt = 0;

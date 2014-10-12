@@ -187,22 +187,6 @@ int	_rtw_memcmp(void *dst, void *src, u32 sz)
 }
 
 
-
-
-
-void _rtw_init_listhead(struct list_head *list)
-{
-
-#ifdef PLATFORM_LINUX
-
-        INIT_LIST_HEAD(list);
-
-#endif
-
-
-}
-
-
 /*
 For the following list_xxx operations,
 caller must guarantee the atomic context.
@@ -324,7 +308,7 @@ void	_rtw_spinunlock_ex(_lock *plock)
 void	_rtw_init_queue(_queue	*pqueue)
 {
 
-	_rtw_init_listhead(&(pqueue->queue));
+	INIT_LIST_HEAD(&(pqueue->queue));
 
 	_rtw_spinlock_init(&(pqueue->lock));
 

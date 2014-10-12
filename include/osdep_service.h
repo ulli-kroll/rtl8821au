@@ -126,7 +126,6 @@ extern void	rtw_mfree2d(void *pbuf, int h, int w, int size);
 
 extern int	_rtw_memcmp(void *dst, void *src, u32 sz);
 
-extern void	_rtw_init_listhead(struct list_head *list);
 extern u32	rtw_is_list_empty(struct list_head *phead);
 extern void	rtw_list_insert_head(struct list_head *plist, struct list_head *phead);
 extern void	rtw_list_insert_tail(struct list_head *plist, struct list_head *phead);

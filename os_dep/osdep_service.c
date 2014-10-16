@@ -23,113 +23,88 @@
 
 #include <drv_types.h>
 
-#define RT_TAG	'1178'
+#define RT_TAG	('1178')
 
-
-
-#if defined(PLATFORM_LINUX)
 /*
 * Translate the OS dependent @param error_code to OS independent RTW_STATUS_CODE
 * @return: one of RTW_STATUS_CODE
 */
-inline int RTW_STATUS_CODE(int error_code){
-	if(error_code >=0)
+inline int RTW_STATUS_CODE(int error_code)
+{
+	if (error_code >= 0)
 		return _SUCCESS;
 
-	switch(error_code) {
-		//case -ETIMEDOUT:
-		//	return RTW_STATUS_TIMEDOUT;
-		default:
-			return _FAIL;
+	switch (error_code) {
+	/*
+	 * case -ETIMEDOUT:
+	 * 	return RTW_STATUS_TIMEDOUT;
+	 */
+	default:
+		return _FAIL;
 	}
 }
-#else
-inline int RTW_STATUS_CODE(int error_code){
-	return error_code;
-}
-#endif
 
-u32 rtw_atoi(u8* s)
+u32 rtw_atoi(u8 *s)
 {
-
-	int num=0,flag=0;
+	int num = 0, flag = 0;
 	int i;
-	for(i=0;i<=strlen(s);i++)
-	{
-	  if(s[i] >= '0' && s[i] <= '9')
-		 num = num * 10 + s[i] -'0';
-	  else if(s[0] == '-' && i==0)
-		 flag =1;
-	  else
-		  break;
+
+	for (i = 0; i <= strlen(s); i++) {
+		if (s[i] >= '0' && s[i] <= '9')
+			num = num * 10 + s[i] - '0';
+		else if (s[0] == '-' && i == 0)
+			flag = 1;
+		else
+			break;
 	 }
 
-	if(flag == 1)
-	   num = num * -1;
+		if (flag == 1)
+			num = num * -1;
 
-	 return(num);
+	 return num;
 
 }
 
-inline u8* _rtw_vmalloc(u32 sz)
+inline u8 *_rtw_vmalloc(u32 sz)
 {
 	u8 	*pbuf;
-#ifdef PLATFORM_LINUX
 	pbuf = vmalloc(sz);
-#endif
-
-
 
 	return pbuf;
 }
 
-inline u8* _rtw_zvmalloc(u32 sz)
+inline u8 *_rtw_zvmalloc(u32 sz)
 {
-	u8 	*pbuf;
-#ifdef PLATFORM_LINUX
+	u8 *pbuf;
+
 	pbuf = _rtw_vmalloc(sz);
 	if (pbuf != NULL)
 		memset(pbuf, 0, sz);
-#endif
 
 	return pbuf;
 }
 
 inline void _rtw_vmfree(void *pbuf)
 {
-#ifdef	PLATFORM_LINUX
 	vfree(pbuf);
-#endif
-
 }
 
-u8* _rtw_malloc(u32 sz)
+u8 *_rtw_malloc(u32 sz)
 {
+	u8 *pbuf = NULL;
 
-	u8 	*pbuf=NULL;
-
-#ifdef PLATFORM_LINUX
-		pbuf = kmalloc(sz,in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
-
-#endif
-
+	pbuf = kmalloc(sz, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
 
 	return pbuf;
-
 }
 
 
-u8* _rtw_zmalloc(u32 sz)
+u8 *_rtw_zmalloc(u32 sz)
 {
-	u8 	*pbuf = _rtw_malloc(sz);
+	u8 *pbuf = _rtw_malloc(sz);
 
 	if (pbuf != NULL) {
-
-#ifdef PLATFORM_LINUX
 		memset(pbuf, 0, sz);
-#endif
-
-
 	}
 
 	return pbuf;
@@ -137,65 +112,48 @@ u8* _rtw_zmalloc(u32 sz)
 
 void	_rtw_mfree(void *pbuf)
 {
-
-#ifdef	PLATFORM_LINUX
-		kfree(pbuf);
-
-#endif
-
-
+	kfree(pbuf);
 }
 
 
-void* rtw_malloc2d(int h, int w, int size)
+void *rtw_malloc2d(int h, int w, int size)
 {
 	int j;
 
-	void **a = (void **) rtw_zmalloc( h*sizeof(void *) + h*w*size );
-	if(a == NULL)
-	{
+	void **a = (void **) rtw_zmalloc(h*sizeof(void *) + h*w*size);
+
+	if (a == NULL) {
 		DBG_871X("%s: alloc memory fail!\n", __FUNCTION__);
 		return NULL;
 	}
 
-	for( j=0; j<h; j++ )
-		a[j] = ((char *)(a+h)) + j*w*size;
+	for (j = 0; j < h; j++)
+		a[j] = ((char *)(a+h)) + j * w * size;
 
 	return a;
 }
 
 void rtw_mfree2d(void *pbuf, int h, int w, int size)
 {
-	/* ULLI check usage of param h, w, size */
-
 	rtw_mfree(pbuf);
 }
 
-int	_rtw_memcmp(void *dst, void *src, u32 sz)
+int _rtw_memcmp(void *dst, void *src, u32 sz)
 {
-
-#if defined (PLATFORM_LINUX)
-//under Linux/GNU/GLibc, the return value of memcmp for two same mem. chunk is 0
-
 	if (!(memcmp(dst, src, sz)))
 		return _TRUE;
 	else
 		return _FALSE;
-#endif
-
-
 }
 
 void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 {
 	_adapter *adapter = (_adapter *)padapter;
 
-#ifdef PLATFORM_LINUX
 	_init_timer(ptimer, adapter->ndev, pfunc, adapter);
-#endif
 }
 
-void	_rtw_init_queue(_queue	*pqueue)
+void _rtw_init_queue(_queue *pqueue)
 {
 
 	INIT_LIST_HEAD(&(pqueue->queue));
@@ -204,11 +162,10 @@ void	_rtw_init_queue(_queue	*pqueue)
 
 }
 
-u32	  _rtw_queue_empty(_queue	*pqueue)
+u32 _rtw_queue_empty(_queue *pqueue)
 {
-	return (list_empty(&(pqueue->queue)));
+	return list_empty(&(pqueue->queue));
 }
-
 
 u32 rtw_end_of_queue_search(struct list_head *head, struct list_head *plist)
 {
@@ -219,167 +176,111 @@ u32 rtw_end_of_queue_search(struct list_head *head, struct list_head *plist)
 }
 
 
-u32	rtw_get_current_time(void)
+u32 rtw_get_current_time(void)
 {
-
-#ifdef PLATFORM_LINUX
 	return jiffies;
-#endif
 }
 
 inline u32 rtw_systime_to_ms(u32 systime)
 {
-#ifdef PLATFORM_LINUX
 	return systime * 1000 / HZ;
-#endif
 }
 
 inline u32 rtw_ms_to_systime(u32 ms)
 {
-#ifdef PLATFORM_LINUX
 	return ms * HZ / 1000;
-#endif
 }
 
-// the input parameter start use the same unit as returned by rtw_get_current_time
+/*
+ *  the input parameter start use the same unit as returned by rtw_get_current_time
+ */
 inline int32_t rtw_get_passing_time_ms(u32 start)
 {
-#ifdef PLATFORM_LINUX
 	return rtw_systime_to_ms(jiffies-start);
-#endif
 }
 
 inline int32_t rtw_get_time_interval_ms(u32 start, u32 end)
 {
-#ifdef PLATFORM_LINUX
 	return rtw_systime_to_ms(end-start);
-#endif
 }
 
 
 void rtw_sleep_schedulable(int ms)
 {
+	u32 delta;
 
-#ifdef PLATFORM_LINUX
-
-    u32 delta;
-
-    delta = (ms * HZ)/1000;//(ms)
-    if (delta == 0) {
-        delta = 1;// 1 ms
-    }
-    set_current_state(TASK_INTERRUPTIBLE);
-    if (schedule_timeout(delta) != 0) {
-        return ;
-    }
-    return;
-
-#endif
-
-
+	delta = (ms * HZ)/1000;	/* (ms) */
+	if (delta == 0) {
+		delta = 1;	/* 1 ms */
+	}
+	set_current_state(TASK_INTERRUPTIBLE);
+	if (schedule_timeout(delta) != 0) {
+		return;
+	}
+	return;
 }
 
 
 void rtw_msleep_os(int ms)
 {
-
-#ifdef PLATFORM_LINUX
-
-  	msleep((unsigned int)ms);
-
-#endif
-
-
+	msleep((unsigned int)ms);
 }
 void rtw_usleep_os(int us)
 {
-
-#ifdef PLATFORM_LINUX
-
-      // msleep((unsigned int)us);
-      if ( 1 < (us/1000) )
-                msleep(1);
-      else
-		msleep( (us/1000) + 1);
-
-#endif
-
-
+	if (1 < (us/1000))
+		msleep(1);
+	else
+		msleep((us/1000) + 1);
 }
 
 
 #ifdef DBG_DELAY_OS
 void _rtw_mdelay_os(int ms, const char *func, const int line)
 {
-	#if 0
-	if(ms>10)
+#if 0
+	if (ms > 10)
 		DBG_871X("%s:%d %s(%d)\n", func, line, __FUNCTION__, ms);
 		rtw_msleep_os(ms);
 	return;
-	#endif
+#endif
 
 
 	DBG_871X("%s:%d %s(%d)\n", func, line, __FUNCTION__, ms);
 
-#if defined(PLATFORM_LINUX)
-
-   	mdelay((unsigned long)ms);
-
-#endif
-
-
+	mdelay ((unsigned long)ms);
 }
+
 void _rtw_udelay_os(int us, const char *func, const int line)
 {
-
-	#if 0
-	if(us > 1000) {
-	DBG_871X("%s:%d %s(%d)\n", func, line, __FUNCTION__, us);
-		rtw_usleep_os(us);
-		return;
+#if 0
+	if (us > 1000) {
+		DBG_871X("%s:%d %s(%d)\n", func, line, __FUNCTION__, us);
+			rtw_usleep_os(us);
+			return;
 	}
-	#endif
-
-
-	DBG_871X("%s:%d %s(%d)\n", func, line, __FUNCTION__, us);
-
-
-#if defined(PLATFORM_LINUX)
-
-      udelay((unsigned long)us);
-
 #endif
 
+
+	DBG_871X("%s:%d %s(%d)\n", func, line, __FUNCTION__, us);
+
+	udelay((unsigned long)us);
 }
 #else
 void rtw_mdelay_os(int ms)
 {
-
-#ifdef PLATFORM_LINUX
-
-   	mdelay((unsigned long)ms);
-
-#endif
-
-
+	mdelay((unsigned long)ms);
 }
+
 void rtw_udelay_os(int us)
 {
-
-#ifdef PLATFORM_LINUX
-
-      udelay((unsigned long)us);
-
-#endif
-
+	udelay((unsigned long)us);
 }
+
 #endif
 
-void rtw_yield_os()
+void rtw_yield_os(void)
 {
-#ifdef PLATFORM_LINUX
 	yield();
-#endif
 }
 
 #define RTW_SUSPEND_LOCK_NAME "rtw_wifi"
@@ -387,57 +288,56 @@ void rtw_yield_os()
 #ifdef CONFIG_WAKELOCK
 static struct wake_lock rtw_suspend_lock;
 #elif defined(CONFIG_ANDROID_POWER)
-static android_suspend_lock_t rtw_suspend_lock ={
+static android_suspend_lock_t rtw_suspend_lock = {
 	.name = RTW_SUSPEND_LOCK_NAME
 };
 #endif
 
-inline void rtw_suspend_lock_init()
+inline void rtw_suspend_lock_init(void)
 {
-	#ifdef CONFIG_WAKELOCK
+#ifdef CONFIG_WAKELOCK
 	wake_lock_init(&rtw_suspend_lock, WAKE_LOCK_SUSPEND, RTW_SUSPEND_LOCK_NAME);
-	#elif defined(CONFIG_ANDROID_POWER)
+#elif defined(CONFIG_ANDROID_POWER)
 	android_init_suspend_lock(&rtw_suspend_lock);
-	#endif
+#endif
 }
 
-inline void rtw_suspend_lock_uninit()
+inline void rtw_suspend_lock_uninit(void)
 {
-	#ifdef CONFIG_WAKELOCK
+#ifdef CONFIG_WAKELOCK
 	wake_lock_destroy(&rtw_suspend_lock);
-	#elif defined(CONFIG_ANDROID_POWER)
+#elif defined(CONFIG_ANDROID_POWER)
 	android_uninit_suspend_lock(&rtw_suspend_lock);
-	#endif
+#endif
 }
 
-inline void rtw_lock_suspend()
+inline void rtw_lock_suspend(void)
 {
-	#ifdef CONFIG_WAKELOCK
+#ifdef CONFIG_WAKELOCK
 	wake_lock(&rtw_suspend_lock);
-	#elif defined(CONFIG_ANDROID_POWER)
+#elif defined(CONFIG_ANDROID_POWER)
 	android_lock_suspend(&rtw_suspend_lock);
-	#endif
+#endif
 
-	#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
-	//DBG_871X("####%s: suspend_lock_count:%d####\n", __FUNCTION__, rtw_suspend_lock.stat.count);
-	#endif
+#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+	/* DBG_871X("####%s: suspend_lock_count:%d####\n", __FUNCTION__, rtw_suspend_lock.stat.count); */
+#endif
 }
 
-inline void rtw_unlock_suspend()
+inline void rtw_unlock_suspend(void)
 {
-	#ifdef CONFIG_WAKELOCK
+#ifdef CONFIG_WAKELOCK
 	wake_unlock(&rtw_suspend_lock);
-	#elif defined(CONFIG_ANDROID_POWER)
+#elif defined(CONFIG_ANDROID_POWER)
 	android_unlock_suspend(&rtw_suspend_lock);
-	#endif
+#endif
 
-	#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
-	//DBG_871X("####%s: suspend_lock_count:%d####\n", __FUNCTION__, rtw_suspend_lock.stat.count);
-	#endif
+#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+	/* DBG_871X("####%s: suspend_lock_count:%d####\n", __FUNCTION__, rtw_suspend_lock.stat.count); */
+#endif
 }
 
 
-#ifdef PLATFORM_LINUX
 /*
 * Open a file with the specific @param path, @param flag, @param mode
 * @param fpp the pointer of struct file pointer to get struct file pointer while file opening is success
@@ -450,13 +350,12 @@ static int openFile(struct file **fpp, char *path, int flag, int mode)
 {
 	struct file *fp;
 
-	fp=filp_open(path, flag, mode);
-	if(IS_ERR(fp)) {
-		*fpp=NULL;
+	fp = filp_open(path, flag, mode);
+	if (IS_ERR(fp)) {
+		*fpp = NULL;
 		return PTR_ERR(fp);
-	}
-	else {
-		*fpp=fp;
+	} else {
+		*fpp = fp;
 		return 0;
 	}
 }
@@ -468,50 +367,48 @@ static int openFile(struct file **fpp, char *path, int flag, int mode)
 */
 static int closeFile(struct file *fp)
 {
-	filp_close(fp,NULL);
+	filp_close(fp, NULL);
 	return 0;
 }
 
-static int readFile(struct file *fp,char *buf,int len)
+static int readFile(struct file *fp, char *buf, int len)
 {
-	int rlen=0, sum=0;
+	int rlen = 0, sum = 0;
 
 	if (!fp->f_op || !fp->f_op->read)
 		return -EPERM;
 
-	while(sum<len) {
-		rlen=fp->f_op->read(fp,buf+sum,len-sum, &fp->f_pos);
-		if(rlen>0)
-			sum+=rlen;
-		else if(0 != rlen)
+	while (sum < len) {
+		rlen = fp->f_op->read(fp, buf+sum, len-sum, &fp->f_pos);
+		if (rlen > 0)
+			sum += rlen;
+		else if (0 != rlen)
 			return rlen;
 		else
 			break;
 	}
 
 	return  sum;
-
 }
 
-static int writeFile(struct file *fp,char *buf,int len)
+static int writeFile(struct file *fp, char *buf, int len)
 {
-	int wlen=0, sum=0;
+	int wlen = 0, sum = 0;
 
 	if (!fp->f_op || !fp->f_op->write)
 		return -EPERM;
 
-	while(sum<len) {
-		wlen=fp->f_op->write(fp,buf+sum,len-sum, &fp->f_pos);
-		if(wlen>0)
-			sum+=wlen;
-		else if(0 != wlen)
+	while (sum < len) {
+		wlen = fp->f_op->write(fp, buf+sum, len-sum, &fp->f_pos);
+		if (wlen > 0)
+			sum += wlen;
+		else if (0 != wlen)
 			return wlen;
 		else
 			break;
 	}
 
 	return sum;
-
 }
 
 /*
@@ -526,18 +423,17 @@ static int isFileReadable(char *path)
 	mm_segment_t oldfs;
 	char buf;
 
-	fp=filp_open(path, O_RDONLY, 0);
-	if(IS_ERR(fp)) {
+	fp = filp_open(path, O_RDONLY, 0);
+	if (IS_ERR(fp)) {
 		ret = PTR_ERR(fp);
-	}
-	else {
+	} else {
 		oldfs = get_fs(); set_fs(get_ds());
 
-		if(1!=readFile(fp, &buf, 1))
+		if (1 != readFile(fp, &buf, 1))
 			ret = PTR_ERR(fp);
 
 		set_fs(oldfs);
-		filp_close(fp,NULL);
+		filp_close(fp, NULL);
 	}
 	return ret;
 }
@@ -549,28 +445,27 @@ static int isFileReadable(char *path)
 * @param sz how many bytes to read at most
 * @return the byte we've read, or Linux specific error code
 */
-static int retriveFromFile(char *path, u8* buf, u32 sz)
+static int retriveFromFile(char *path, u8 *buf, u32 sz)
 {
-	int ret =-1;
+	int ret = -1;
 	mm_segment_t oldfs;
 	struct file *fp;
 
-	if(path && buf) {
-		if( 0 == (ret=openFile(&fp,path, O_RDONLY, 0)) ){
-			DBG_871X("%s openFile path:%s fp=%p\n",__FUNCTION__, path ,fp);
+	if (path && buf) {
+		if (0 == (ret = openFile(&fp, path, O_RDONLY, 0))) {
+			DBG_871X("%s openFile path:%s fp=%p\n", __FUNCTION__, path, fp);
 
 			oldfs = get_fs(); set_fs(get_ds());
-			ret=readFile(fp, buf, sz);
+			ret = readFile(fp, buf, sz);
 			set_fs(oldfs);
 			closeFile(fp);
 
-			DBG_871X("%s readFile, ret:%d\n",__FUNCTION__, ret);
-
+			DBG_871X("%s readFile, ret:%d\n", __FUNCTION__, ret);
 		} else {
-			DBG_871X("%s openFile path:%s Fail, ret:%d\n",__FUNCTION__, path, ret);
+			DBG_871X("%s openFile path:%s Fail, ret:%d\n", __FUNCTION__, path, ret);
 		}
 	} else {
-		DBG_871X("%s NULL pointer\n",__FUNCTION__);
+		DBG_871X("%s NULL pointer\n", __FUNCTION__);
 		ret =  -EINVAL;
 	}
 	return ret;
@@ -583,33 +478,31 @@ static int retriveFromFile(char *path, u8* buf, u32 sz)
 * @param sz how many bytes to write at most
 * @return the byte we've written, or Linux specific error code
 */
-static int storeToFile(char *path, u8* buf, u32 sz)
+static int storeToFile(char *path, u8 *buf, u32 sz)
 {
-	int ret =0;
+	int ret = 0;
 	mm_segment_t oldfs;
 	struct file *fp;
 
-	if(path && buf) {
-		if( 0 == (ret=openFile(&fp, path, O_CREAT|O_WRONLY, 0666)) ) {
-			DBG_871X("%s openFile path:%s fp=%p\n",__FUNCTION__, path ,fp);
+	if (path && buf) {
+		if (0 == (ret = openFile(&fp, path, O_CREAT|O_WRONLY, 0666))) {
+			DBG_871X("%s openFile path:%s fp=%p\n", __FUNCTION__, path , fp);
 
 			oldfs = get_fs(); set_fs(get_ds());
-			ret=writeFile(fp, buf, sz);
+			ret = writeFile(fp, buf, sz);
 			set_fs(oldfs);
 			closeFile(fp);
 
-			DBG_871X("%s writeFile, ret:%d\n",__FUNCTION__, ret);
-
+			DBG_871X("%s writeFile, ret:%d\n", __FUNCTION__, ret);
 		} else {
-			DBG_871X("%s openFile path:%s Fail, ret:%d\n",__FUNCTION__, path, ret);
+			DBG_871X("%s openFile path:%s Fail, ret:%d\n", __FUNCTION__, path, ret);
 		}
 	} else {
-		DBG_871X("%s NULL pointer\n",__FUNCTION__);
+		DBG_871X("%s NULL pointer\n", __FUNCTION__);
 		ret =  -EINVAL;
 	}
 	return ret;
 }
-#endif //PLATFORM_LINUX
 
 /*
 * Test if the specifi @param path is a file and readable
@@ -618,15 +511,10 @@ static int storeToFile(char *path, u8* buf, u32 sz)
 */
 int rtw_is_file_readable(char *path)
 {
-#ifdef PLATFORM_LINUX
-	if(isFileReadable(path) == 0)
+	if (isFileReadable(path) == 0)
 		return _TRUE;
 	else
 		return _FALSE;
-#else
-	//Todo...
-	return _FALSE;
-#endif
 }
 
 /*
@@ -636,15 +524,11 @@ int rtw_is_file_readable(char *path)
 * @param sz how many bytes to read at most
 * @return the byte we've read
 */
-int rtw_retrive_from_file(char *path, u8* buf, u32 sz)
+int rtw_retrive_from_file(char *path, u8 *buf, u32 sz)
 {
-#ifdef PLATFORM_LINUX
-	int ret =retriveFromFile(path, buf, sz);
-	return ret>=0?ret:0;
-#else
-	//Todo...
-	return 0;
-#endif
+	int ret = retriveFromFile(path, buf, sz);
+
+	return ret >= 0 ? ret : 0;
 }
 
 /*
@@ -654,30 +538,22 @@ int rtw_retrive_from_file(char *path, u8* buf, u32 sz)
 * @param sz how many bytes to write at most
 * @return the byte we've written
 */
-int rtw_store_to_file(char *path, u8* buf, u32 sz)
+int rtw_store_to_file(char *path, u8 *buf, u32 sz)
 {
-#ifdef PLATFORM_LINUX
-	int ret =storeToFile(path, buf, sz);
-	return ret>=0?ret:0;
-#else
-	//Todo...
-	return 0;
-#endif
+	int ret = storeToFile(path, buf, sz);
+
+	return ret >= 0 ? ret : 0;
 }
 
 u64 rtw_modular64(u64 x, u64 y)
 {
-#ifdef PLATFORM_LINUX
 	return do_div(x, y);
-#endif
 }
 
 u64 rtw_division64(u64 x, u64 y)
 {
-#ifdef PLATFORM_LINUX
 	do_div(x, y);
 	return x;
-#endif
 }
 
 void rtw_buf_free(u8 **buf, u32 *buf_len)
@@ -691,7 +567,6 @@ void rtw_buf_free(u8 **buf, u32 *buf_len)
 
 	if (*buf) {
 		*buf_len = 0;
-		/* ULLI check usage of param *buf_len */
 		_rtw_mfree(*buf);
 		*buf = NULL;
 	}
@@ -741,7 +616,7 @@ keep_ori:
  */
 inline bool rtw_cbuf_full(struct rtw_cbuf *cbuf)
 {
-	return (cbuf->write == cbuf->read-1)? _TRUE : _FALSE;
+	return (cbuf->write == cbuf->read-1) ? _TRUE : _FALSE;
 }
 
 /**
@@ -752,7 +627,7 @@ inline bool rtw_cbuf_full(struct rtw_cbuf *cbuf)
  */
 inline bool rtw_cbuf_empty(struct rtw_cbuf *cbuf)
 {
-	return (cbuf->write == cbuf->read)? _TRUE : _FALSE;
+	return (cbuf->write == cbuf->read) ? _TRUE : _FALSE;
 }
 
 /**
@@ -807,7 +682,7 @@ struct rtw_cbuf *rtw_cbuf_alloc(u32 size)
 {
 	struct rtw_cbuf *cbuf;
 
-	cbuf = (struct rtw_cbuf *)rtw_malloc(sizeof(*cbuf) + sizeof(void*)*size);
+	cbuf = (struct rtw_cbuf *)rtw_malloc(sizeof(*cbuf) + sizeof(void *) * size);
 
 	if (cbuf) {
 		cbuf->write = cbuf->read = 0;
@@ -823,7 +698,6 @@ struct rtw_cbuf *rtw_cbuf_alloc(u32 size)
  */
 void rtw_cbuf_free(struct rtw_cbuf *cbuf)
 {
-	/* ULLI check usage of cbuf->size */
 	rtw_mfree(cbuf);
 }
 

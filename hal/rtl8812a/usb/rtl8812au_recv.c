@@ -19,21 +19,15 @@
  ******************************************************************************/
 #define _RTL8812AU_RECV_C_
 
-//#include <drv_types.h>
 #include <rtl8812a_hal.h>
-
 
 void rtl8812au_init_recvbuf(_adapter *padapter, struct recv_buf *precvbuf)
 {
-
 	precvbuf->transfer_len = 0;
-
 	precvbuf->len = 0;
-
 	precvbuf->ref_cnt = 0;
 
-	if(precvbuf->pbuf)
-	{
+	if (precvbuf->pbuf) {
 		precvbuf->pdata = precvbuf->phead = precvbuf->ptail = precvbuf->pbuf;
 		precvbuf->pend = precvbuf->pdata + MAX_RECVBUF_SZ;
 	}
@@ -47,8 +41,8 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 	struct recv_buf *precvbuf;
 
 #ifdef CONFIG_RECV_THREAD_MODE
-	sema_init(&precvpriv->recv_sema, 0);//will be removed
-	sema_init(&precvpriv->terminate_recvthread_sema, 0);//will be removed
+	sema_init(&precvpriv->recv_sema, 0);			/* will be removed */
+	sema_init(&precvpriv->terminate_recvthread_sema, 0);	/* will be removed */
 #endif
 
 #ifdef PLATFORM_LINUX
@@ -60,40 +54,41 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 #ifdef CONFIG_USB_INTERRUPT_IN_PIPE
 #ifdef PLATFORM_LINUX
 	precvpriv->int_in_urb = usb_alloc_urb(0, GFP_KERNEL);
-	if(precvpriv->int_in_urb == NULL){
-		res= _FAIL;
+	if (precvpriv->int_in_urb == NULL) {
+		res = _FAIL;
 		DBG_8192C("alloc_urb for interrupt in endpoint fail !!!!\n");
 		goto exit;
 	}
 #endif
 	precvpriv->int_in_buf = rtw_zmalloc(INTERRUPT_MSG_FORMAT_LEN);
-	if(precvpriv->int_in_buf == NULL){
-		res= _FAIL;
+	if (precvpriv->int_in_buf == NULL) {
+		res = _FAIL;
 		DBG_8192C("alloc_mem for interrupt in endpoint fail !!!!\n");
 		goto exit;
 	}
 #endif
 
-	//init recv_buf
+	/* init recv_buf */
 	_rtw_init_queue(&precvpriv->free_recv_buf_queue);
 
-	precvpriv->pallocated_recv_buf = rtw_zmalloc(NR_RECVBUFF *sizeof(struct recv_buf) + 4);
-	if(precvpriv->pallocated_recv_buf==NULL){
-		res= _FAIL;
-		RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,("alloc recv_buf fail!\n"));
+	precvpriv->pallocated_recv_buf = rtw_zmalloc(NR_RECVBUFF * sizeof(struct recv_buf) + 4);
+	if (precvpriv->pallocated_recv_buf == NULL) {
+		res = _FAIL;
+		RT_TRACE(_module_rtl871x_recv_c_, _drv_err_, ("alloc recv_buf fail!\n"));
 		goto exit;
 	}
-	memset(precvpriv->pallocated_recv_buf, 0, NR_RECVBUFF *sizeof(struct recv_buf) + 4);
+	memset(precvpriv->pallocated_recv_buf, 0, NR_RECVBUFF * sizeof(struct recv_buf) + 4);
 
-	precvpriv->precv_buf = (uint8_t *)N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_recv_buf), 4);
-	//precvpriv->precv_buf = precvpriv->pallocated_recv_buf + 4 -
-	//						((uint) (precvpriv->pallocated_recv_buf) &(4-1));
+	precvpriv->precv_buf = (uint8_t *) N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_recv_buf), 4);
+	/*
+	 * precvpriv->precv_buf = precvpriv->pallocated_recv_buf + 4 -
+	 * 	((uint) (precvpriv->pallocated_recv_buf) &(4-1));
+	*/
 
 
-	precvbuf = (struct recv_buf*)precvpriv->precv_buf;
+	precvbuf = (struct recv_buf *) precvpriv->precv_buf;
 
-	for(i=0; i < NR_RECVBUFF ; i++)
-	{
+	for (i = 0; i < NR_RECVBUFF; i++) {
 		INIT_LIST_HEAD(&precvbuf->list);
 
 		spin_lock_init(&precvbuf->recvbuf_lock);
@@ -101,14 +96,13 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 		precvbuf->alloc_sz = MAX_RECVBUF_SZ;
 
 		res = rtw_os_recvbuf_resource_alloc(padapter, precvbuf);
-		if(res==_FAIL)
+		if (res == _FAIL)
 			break;
 
 		precvbuf->ref_cnt = 0;
-		precvbuf->adapter =padapter;
+		precvbuf->adapter = padapter;
 
-
-		//list_add_tail(&precvbuf->list, &(precvpriv->free_recv_buf_queue.queue));
+		/* list_add_tail(&precvbuf->list, &(precvpriv->free_recv_buf_queue.queue)); */
 
 		precvbuf++;
 
@@ -123,19 +117,17 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 #ifdef CONFIG_PREALLOC_RECV_SKB
 	{
 		int i;
-		SIZE_PTR tmpaddr=0;
-		SIZE_PTR alignment=0;
-		struct sk_buff *pskb=NULL;
+		SIZE_PTR tmpaddr = 0;
+		SIZE_PTR alignment = 0;
+		struct sk_buff *pskb = NULL;
 
 		skb_queue_head_init(&precvpriv->free_recv_skb_queue);
 
-		for(i=0; i<NR_PREALLOC_RECV_SKB; i++)
-		{
+		for (i = 0; i < NR_PREALLOC_RECV_SKB; i++) {
 
 			pskb = __netdev_alloc_skb(padapter->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ, GFP_KERNEL);
 
-			if(pskb)
-			{
+			if (pskb) {
 				pskb->dev = padapter->ndev;
 
 				tmpaddr = (SIZE_PTR)pskb->data;
@@ -145,18 +137,15 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 				skb_queue_tail(&precvpriv->free_recv_skb_queue, pskb);
 			}
 
-			pskb=NULL;
+			pskb = NULL;
 
 		}
 	}
 #endif
-
 #endif
 
 exit:
-
 	return res;
-
 }
 
 void rtl8812au_free_recv_priv (_adapter *padapter)
@@ -167,26 +156,24 @@ void rtl8812au_free_recv_priv (_adapter *padapter)
 
 	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
 
-	for(i=0; i < NR_RECVBUFF ; i++)
-	{
+	for (i = 0; i < NR_RECVBUFF ; i++) {
 		rtw_os_recvbuf_resource_free(padapter, precvbuf);
 		precvbuf++;
 	}
 
-	if(precvpriv->pallocated_recv_buf)
+	if (precvpriv->pallocated_recv_buf)
 		rtw_mfree(precvpriv->pallocated_recv_buf);
 
 #ifdef CONFIG_USB_INTERRUPT_IN_PIPE
 #ifdef PLATFORM_LINUX
-	if(precvpriv->int_in_urb)
-	{
+	if (precvpriv->int_in_urb) {
 		usb_free_urb(precvpriv->int_in_urb);
 	}
-#endif//PLATFORM_LINUX
+#endif
 
-	if(precvpriv->int_in_buf)
+	if (precvpriv->int_in_buf)
 		rtw_mfree(precvpriv->int_in_buf);
-#endif//CONFIG_USB_INTERRUPT_IN_PIPE
+#endif
 
 #ifdef PLATFORM_LINUX
 

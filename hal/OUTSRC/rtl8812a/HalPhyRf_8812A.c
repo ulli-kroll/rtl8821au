@@ -1821,36 +1821,6 @@ void PHY_LCCalibrate_8812A(PDM_ODM_T pDM_Odm)
 
 }
 
-/* ULLI function may not used, we may remove this */
-static void phy_SetRFPathSwitch_8812A(PADAPTER pAdapter,
-	BOOLEAN	 bMain, BOOLEAN	 is2T)
-{
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-#endif
-
-	if (IS_HARDWARE_TYPE_8821(pAdapter)) {
-		if (bMain)
-			ODM_SetBBReg(pDM_Odm, rA_RFE_Pinmux_Jaguar+4, BIT29|BIT28, 0x1);	/* Main */
-		else
-			ODM_SetBBReg(pDM_Odm, rA_RFE_Pinmux_Jaguar+4, BIT29|BIT28, 0x2);	/* Aux */
-	} else if (IS_HARDWARE_TYPE_8812(pAdapter)) {
-		if (pHalData->RFEType == 5) {
-			if (bMain) {
-				/* WiFi */
-				ODM_SetBBReg(pDM_Odm, r_ANTSEL_SW_Jaguar, BIT1|BIT0, 0x2);
-				ODM_SetBBReg(pDM_Odm, r_ANTSEL_SW_Jaguar, BIT9|BIT8, 0x3);
-			} else {
-				/* BT */
-				ODM_SetBBReg(pDM_Odm, r_ANTSEL_SW_Jaguar, BIT1|BIT0, 0x1);
-				ODM_SetBBReg(pDM_Odm, r_ANTSEL_SW_Jaguar, BIT9|BIT8, 0x3);
-			}
-		}
-	}
-
-}
-
 static void _DPK_parareload(PDM_ODM_T pDM_Odm,
 	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG,
 	uint32_t MACBB_NUM)

@@ -29,47 +29,35 @@ uint rtw_remainder_len(struct pkt_file *pfile)
 
 void _rtw_open_pktfile (_pkt *pktptr, struct pkt_file *pfile)
 {
-_func_enter_;
-
 	pfile->pkt = pktptr;
 	pfile->cur_addr = pfile->buf_start = pktptr->data;
 	pfile->pkt_len = pfile->buf_len = pktptr->len;
 
 	pfile->cur_buffer = pfile->buf_start ;
-
-_func_exit_;
 }
 
 uint _rtw_pktfile_read (struct pkt_file *pfile, uint8_t *rmem, uint rlen)
 {
 	uint	len = 0;
 
-_func_enter_;
+	len =  rtw_remainder_len(pfile);
+	len = (rlen > len)? len: rlen;
 
-       len =  rtw_remainder_len(pfile);
-      	len = (rlen > len)? len: rlen;
+	if(rmem)
+		skb_copy_bits(pfile->pkt, pfile->buf_len-pfile->pkt_len, rmem, len);
 
-       if(rmem)
-	  skb_copy_bits(pfile->pkt, pfile->buf_len-pfile->pkt_len, rmem, len);
-
-       pfile->cur_addr += len;
-       pfile->pkt_len -= len;
-
-_func_exit_;
+	pfile->cur_addr += len;
+	pfile->pkt_len -= len;
 
 	return len;
 }
 
 sint rtw_endofpktfile(struct pkt_file *pfile)
 {
-_func_enter_;
 
 	if (pfile->pkt_len == 0) {
-_func_exit_;
 		return _TRUE;
 	}
-
-_func_exit_;
 
 	return _FALSE;
 }
@@ -82,44 +70,40 @@ void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib)
 	pattrib->hw_tcp_csum = 0;
 
 	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-		if (skb_shinfo(skb)->nr_frags == 0)
-		{
-                        const struct iphdr *ip = ip_hdr(skb);
-                        if (ip->protocol == IPPROTO_TCP) {
-                                // TCP checksum offload by HW
-                                DBG_871X("CHECKSUM_PARTIAL TCP\n");
-                                pattrib->hw_tcp_csum = 1;
-                                //skb_checksum_help(skb);
-                        } else if (ip->protocol == IPPROTO_UDP) {
-                                //DBG_871X("CHECKSUM_PARTIAL UDP\n");
+		if (skb_shinfo(skb)->nr_frags == 0) {
+			const struct iphdr *ip = ip_hdr(skb);
+			if (ip->protocol == IPPROTO_TCP) {
+				/* TCP checksum offload by HW */
+				DBG_871X("CHECKSUM_PARTIAL TCP\n");
+				pattrib->hw_tcp_csum = 1;
+				/* skb_checksum_help(skb); */
+			} else if (ip->protocol == IPPROTO_UDP) {
+				/* DBG_871X("CHECKSUM_PARTIAL UDP\n"); */
 #if 1
-                                skb_checksum_help(skb);
+				skb_checksum_help(skb);
 #else
-                                // Set UDP checksum = 0 to skip checksum check
-                                struct udphdr *udp = skb_transport_header(skb);
-                                udp->check = 0;
+				/* Set UDP checksum = 0 to skip checksum check */
+				struct udphdr *udp = skb_transport_header(skb);
+				udp->check = 0;
 #endif
-                        } else {
+			} else {
 				DBG_871X("%s-%d TCP CSUM offload Error!!\n", __FUNCTION__, __LINE__);
-                                WARN_ON(1);     /* we need a WARN() */
-			    }
-		}
-		else { // IP fragmentation case
+				WARN_ON(1);     /* we need a WARN() */
+			}
+		} else {
+			/* IP fragmentation case */
 			DBG_871X("%s-%d nr_frags != 0, using skb_checksum_help(skb);!!\n", __FUNCTION__, __LINE__);
                 	skb_checksum_help(skb);
 		}
 	}
 #endif
-
 }
 
 int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag)
 {
 	if (alloc_sz > 0) {
-
 		pxmitbuf->pallocated_buf = rtw_zmalloc(alloc_sz);
-		if (pxmitbuf->pallocated_buf == NULL)
-		{
+		if (pxmitbuf->pallocated_buf == NULL) {
 			return _FAIL;
 		}
 
@@ -128,15 +112,13 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 
 	if (flag) {
 		int i;
-		for(i=0; i<8; i++)
-	      	{
-	      		pxmitbuf->pxmit_urb[i] = usb_alloc_urb(0, GFP_KERNEL);
-	             	if(pxmitbuf->pxmit_urb[i] == NULL)
-	             	{
-	             		DBG_871X("pxmitbuf->pxmit_urb[i]==NULL");
-		        	return _FAIL;
-	             	}
-	      	}
+		for (i = 0; i < 8; i++) {
+			pxmitbuf->pxmit_urb[i] = usb_alloc_urb(0, GFP_KERNEL);
+			if(pxmitbuf->pxmit_urb[i] == NULL) {
+				DBG_871X("pxmitbuf->pxmit_urb[i]==NULL");
+				return _FAIL;
+			}
+		}
 	}
 
 	return _SUCCESS;
@@ -147,11 +129,9 @@ void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32
 	if (flag) {
 		int i;
 
-		for(i=0; i<8; i++)
-		{
-			if(pxmitbuf->pxmit_urb[i])
-			{
-				//usb_kill_urb(pxmitbuf->pxmit_urb[i]);
+		for(i=0; i<8; i++) {
+			if(pxmitbuf->pxmit_urb[i]) {
+				/* usb_kill_urb(pxmitbuf->pxmit_urb[i]); */
 				usb_free_urb(pxmitbuf->pxmit_urb[i]);
 			}
 		}
@@ -159,7 +139,6 @@ void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32
 
 	if (free_sz > 0 ) {
 		if(pxmitbuf->pallocated_buf) {
-			/* ULLI check usage of free_sz */
 			rtw_mfree(pxmitbuf->pallocated_buf);
 		}
 	}
@@ -169,14 +148,13 @@ void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32
 
 void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 {
-	uint16_t	queue;
+	uint16_t queue;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 
 	queue = skb_get_queue_mapping(pkt);
 	if (padapter->registrypriv.wifi_spec) {
-		if(__netif_subqueue_stopped(padapter->ndev, queue) &&
-			(pxmitpriv->hwxmits[queue].accnt < WMM_XMIT_THRESHOLD))
-		{
+		if (__netif_subqueue_stopped(padapter->ndev, queue) &&
+		   (pxmitpriv->hwxmits[queue].accnt < WMM_XMIT_THRESHOLD)) {
 			netif_wake_subqueue(padapter->ndev, queue);
 		}
 	} else {
@@ -189,13 +167,13 @@ void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 
 void rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe)
 {
-	if(pxframe->pkt)
-	{
-		//RT_TRACE(_module_xmit_osdep_c_,_drv_err_,("linux : rtw_os_xmit_complete, dev_kfree_skb()\n"));
-
-		//dev_kfree_skb_any(pxframe->pkt);
+	if(pxframe->pkt) {
+		/*
+		 * RT_TRACE(_module_xmit_osdep_c_,_drv_err_,("linux : rtw_os_xmit_complete, dev_kfree_skb()\n"));
+		 *
+		 * dev_kfree_skb_any(pxframe->pkt);
+		 */
 		rtw_os_pkt_complete(padapter, pxframe->pkt);
-
 	}
 
 	pxframe->pkt = NULL;
@@ -215,8 +193,7 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 
 	_enter_critical_bh(&pxmitpriv->lock, &irqL);
 
-	if(rtw_txframes_pending(padapter))
-	{
+	if(rtw_txframes_pending(padapter)) {
 		tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
 	}
 
@@ -232,7 +209,7 @@ static void rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)
 	if (padapter->registrypriv.wifi_spec) {
 		/* No free space for Tx, tx_worker is too slow */
 		if (pxmitpriv->hwxmits[queue].accnt > WMM_XMIT_THRESHOLD) {
-			//DBG_871X("%s(): stop netif_subqueue[%d]\n", __FUNCTION__, queue);
+			/* DBG_871X("%s(): stop netif_subqueue[%d]\n", __FUNCTION__, queue); */
 			netif_stop_subqueue(padapter->ndev, queue);
 		}
 	} else {
@@ -264,7 +241,7 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
 
-	//free sta asoc_queue
+	/* free sta asoc_queue */
 	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
 		int stainfo_offset;
 		psta = LIST_CONTAINOR(plist, struct sta_info, asoc_list);
@@ -303,15 +280,15 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 		} else {
 			DBG_871X("%s-%d: skb_copy() failed!\n", __FUNCTION__, __LINE__);
 			pxmitpriv->tx_drop++;
-			//dev_kfree_skb_any(skb);
-			return _FALSE;	// Caller shall tx this multicast frame via normal way.
+			/* dev_kfree_skb_any(skb); */
+			return _FALSE;	/* Caller shall tx this multicast frame via normal way. */
 		}
 	}
 
 	dev_kfree_skb_any(skb);
 	return _TRUE;
 }
-#endif	// CONFIG_TX_MCAST2UNI
+#endif
 
 
 int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev)
@@ -321,11 +298,9 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev)
 #ifdef CONFIG_TX_MCAST2UNI
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	extern int rtw_mc2u_disable;
-#endif	// CONFIG_TX_MCAST2UNI
+#endif
 	int32_t res = 0;
 	uint16_t queue;
-
-_func_enter_;
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("+xmit_enry\n"));
 
@@ -350,11 +325,13 @@ _func_enter_;
 				goto exit;
 			}
 		} else {
-			//DBG_871X("Stop M2U(%d, %d)! ", pxmitpriv->free_xmitframe_cnt, pxmitpriv->free_xmitbuf_cnt);
-			//DBG_871X("!m2u );
+			/*
+			 * DBG_871X("Stop M2U(%d, %d)! ", pxmitpriv->free_xmitframe_cnt, pxmitpriv->free_xmitbuf_cnt);
+			 * DBG_871X("!m2u );
+			 */
 		}
 	}
-#endif	// CONFIG_TX_MCAST2UNI
+#endif
 
 	res = rtw_xmit(padapter, &pkt);
 	if (res < 0) {

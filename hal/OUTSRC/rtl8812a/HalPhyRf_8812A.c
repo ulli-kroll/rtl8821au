@@ -1768,21 +1768,6 @@ static void phy_LCCalibrate_8812A(PDM_ODM_T pDM_Odm, BOOLEAN	is2T)
 #define		DP_DPK_VALUE_NUM	2
 
 /* ULLI function not used, we may remove this */
-static void PHY_ResetIQKResult_8812A(PDM_ODM_T pDM_Odm)
-{
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
-	ODM_SetBBReg(pDM_Odm, 0xccc, 0x000007ff, 0x0);
-	ODM_SetBBReg(pDM_Odm, 0xcd4, 0x000007ff, 0x200);
-	ODM_SetBBReg(pDM_Odm, 0xecc, 0x000007ff, 0x0);
-	ODM_SetBBReg(pDM_Odm, 0xed4, 0x000007ff, 0x200);
-	ODM_Write4Byte(pDM_Odm, 0xce8, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xee8, 0x0);
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); 		/* [31] = 0 --> Page C */
-	ODM_SetBBReg(pDM_Odm, 0xc10, 0x000003ff, 0x100);
-	ODM_SetBBReg(pDM_Odm, 0xe10, 0x000003ff, 0x100);
-}
-
-/* ULLI function not used, we may remove this */
 static void phy_IQCalibrate_By_FW_8812A(PADAPTER pAdapter)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);

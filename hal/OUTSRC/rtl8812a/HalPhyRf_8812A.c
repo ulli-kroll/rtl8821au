@@ -36,7 +36,7 @@
  */
 
 
-void DoIQK_8812A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
+static void DoIQK_8812A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 	u1Byte 	ThermalValue, u1Byte Threshold)
 {
 	PADAPTER Adapter = pDM_Odm->Adapter;

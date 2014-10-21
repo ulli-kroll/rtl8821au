@@ -42,13 +42,6 @@ GetDeltaSwingTable_8812A(
 	OUT pu1Byte 			*TemperatureDOWN_B
 	);
 
-void DoIQK_8812A(
-	PDM_ODM_T	pDM_Odm,
-	u1Byte 		DeltaThermalIndex,
-	u1Byte		ThermalValue,
-	u1Byte 		Threshold
-	);
-
 VOID
 ODM_TxPwrTrackSetPwr8812A(
 	PDM_ODM_T			pDM_Odm,

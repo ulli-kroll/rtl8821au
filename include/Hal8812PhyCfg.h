@@ -182,12 +182,6 @@ PHY_SetSwChnlBWMode8812(
 //
 
 VOID
-PHY_SetRFPathSwitch_8812A(
-	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN		bMain
-);
-
-VOID
 storePwrIndexDiffRateOffset(
 	IN	PADAPTER	Adapter,
 	IN	u32		RegAddr,

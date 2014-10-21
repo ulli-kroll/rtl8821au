@@ -1851,16 +1851,6 @@ static void phy_SetRFPathSwitch_8812A(PADAPTER pAdapter,
 
 }
 
-/* ULLI function not used, we may remove this */
-void PHY_SetRFPathSwitch_8812A(PADAPTER pAdapter, BOOLEAN bMain)
-{
-
-#if DISABLE_BB_RF
-	return;
-#endif
-	phy_SetRFPathSwitch_8812A(pAdapter, bMain, TRUE);
-}
-
 static void _DPK_parareload(PDM_ODM_T pDM_Odm,
 	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG,
 	uint32_t MACBB_NUM)

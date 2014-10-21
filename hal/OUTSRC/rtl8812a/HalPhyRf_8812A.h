@@ -64,11 +64,6 @@ VOID
 PHY_DPCalibrate_8812A(
 	IN 	PDM_ODM_T	pDM_Odm
 );
-VOID PHY_SetRFPathSwitch_8812A(
-	IN	PADAPTER	pAdapter,
-	IN	BOOLEAN		bMain
-	);
-
 
 #endif	// #ifndef __HAL_PHY_RF_8812A_H__
 

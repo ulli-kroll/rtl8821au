@@ -524,11 +524,7 @@ static char *translate_scan(struct _ADAPTER *padapter,
 
 		iwe.u.qual.qual = (uint8_t)sq;	/* signal quality */
 
-#ifdef CONFIG_PLATFORM_ROCKCHIPS
-		iwe.u.qual.noise = -100;	/* noise level suggest by zhf@rockchips */
-#else
 		iwe.u.qual.noise = 0;		/* noise level */
-#endif
 
 		/* DBG_871X("iqual=%d, ilevel=%d, inoise=%d, iupdated=%d\n", iwe.u.qual.qual, iwe.u.qual.level , iwe.u.qual.noise, iwe.u.qual.updated); */
 
@@ -1206,21 +1202,6 @@ static int rtw_wx_set_pmkid(struct net_device *ndev, struct iw_request_info *a,
 static int rtw_wx_get_sens(struct net_device *ndev, struct iw_request_info *info,
 				union iwreq_data *wrqu, char *extra)
 {
-#ifdef CONFIG_PLATFORM_ROCKCHIPS
-	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-
-	/*
-	*  20110311 Commented by Jeff
-	*  For rockchip platform's wpa_driver_wext_get_rssi
-	*/
-	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
-		/* wrqu->sens.value =- padapter->recvpriv.signal_strength; */
-		wrqu->sens.value =- padapter->recvpriv.rssi;
-		/* DBG_871X("%s: %d\n", __FUNCTION__, wrqu->sens.value); */
-		wrqu->sens.fixed = 0; /* no auto select */
-	} else
-#endif
 	{
 		wrqu->sens.value = 0;
 		wrqu->sens.fixed = 0;	/* no auto select */

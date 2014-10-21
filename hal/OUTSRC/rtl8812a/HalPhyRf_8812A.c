@@ -575,7 +575,7 @@ static void _IQK_ConfigureMAC_8812A(PDM_ODM_T pDM_Odm)
 
 /* ULLI this function needs a complete rewrite (or we cantake code form rtlwifi-lib */
 
-void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	u1Byte chnlIdx)
 {
 	uint32_t 	TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;

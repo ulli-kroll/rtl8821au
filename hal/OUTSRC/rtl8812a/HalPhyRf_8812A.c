@@ -300,7 +300,6 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	}
 }
 
-/* ULLI function only used here, make is static */
 static void GetDeltaSwingTable_8812A(PDM_ODM_T pDM_Odm, pu1Byte *TemperatureUP_A,
 	pu1Byte *TemperatureDOWN_A, pu1Byte *TemperatureUP_B,
 	pu1Byte *TemperatureDOWN_B)
@@ -368,7 +367,7 @@ void ConfigureTxpowerTrack_8812A(PTXPWRTRACK_CFG pConfig)
  * 2011/07/26 MH Add an API for testing IQK fail case.
  * MP Already declare in odm.c
  */
-BOOLEAN ODM_CheckPowerStatus(IN	PADAPTER Adapter)
+static BOOLEAN ODM_CheckPowerStatus(IN	PADAPTER Adapter)
 {
 #if 0
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);

@@ -1768,34 +1768,6 @@ static void phy_LCCalibrate_8812A(PDM_ODM_T pDM_Odm, BOOLEAN	is2T)
 #define		DP_DPK_VALUE_NUM	2
 
 /* ULLI function not used, we may remove this */
-static void phy_ReloadIQKSetting_8812A(PDM_ODM_T pDM_Odm, u1Byte Channel)
-{
-	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-
-	u1Byte chnlIdx = ODM_GetRightChnlPlaceforIQK(Channel);
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
-	ODM_SetBBReg(pDM_Odm, 0xccc, 0x000007ff, pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][0]&0x7ff);
-	ODM_SetBBReg(pDM_Odm, 0xcd4, 0x000007ff, (pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][0]&0x7ff0000)>>16);
-	ODM_SetBBReg(pDM_Odm, 0xecc, 0x000007ff, pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][2]&0x7ff);
-	ODM_SetBBReg(pDM_Odm, 0xed4, 0x000007ff, (pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][2]&0x7ff0000)>>16);
-
-	if (*pDM_Odm->pBandWidth != 2) {
-		ODM_Write4Byte(pDM_Odm, 0xce8, 0x0);
-		ODM_Write4Byte(pDM_Odm, 0xee8, 0x0);
-	} else {
-		ODM_Write4Byte(pDM_Odm, 0xce8, pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][4]);
-		ODM_Write4Byte(pDM_Odm, 0xee8, pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][5]);
-	}
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-	ODM_SetBBReg(pDM_Odm, 0xc10, 0x000003ff, (pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][1]&0x7ff0000)>>17);
-	ODM_SetBBReg(pDM_Odm, 0xc10, 0x03ff0000, (pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][1]&0x7ff)>>1);
-	ODM_SetBBReg(pDM_Odm, 0xe10, 0x000003ff, (pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][3]&0x7ff0000)>>17);
-	ODM_SetBBReg(pDM_Odm, 0xe10, 0x03ff0000, (pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][3]&0x7ff)>>1);
-
-
-}
-
-/* ULLI function not used, we may remove this */
 static void PHY_ResetIQKResult_8812A(PDM_ODM_T pDM_Odm)
 {
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */

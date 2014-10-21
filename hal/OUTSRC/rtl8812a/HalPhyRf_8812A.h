@@ -33,23 +33,6 @@ void ConfigureTxpowerTrack_8812A(
 	PTXPWRTRACK_CFG	pConfig
 	);
 
-VOID
-GetDeltaSwingTable_8812A(
-	IN 	PDM_ODM_T			pDM_Odm,
-	OUT pu1Byte 			*TemperatureUP_A,
-	OUT pu1Byte 			*TemperatureDOWN_A,
-	OUT pu1Byte 			*TemperatureUP_B,
-	OUT pu1Byte 			*TemperatureDOWN_B
-	);
-
-VOID
-ODM_TxPwrTrackSetPwr8812A(
-	PDM_ODM_T			pDM_Odm,
-	PWRTRACK_METHOD 	Method,
-	u1Byte 				RFPath,
-	u1Byte 				ChannelMappedIndex
-	);
-
 //1 7.	IQK
 
 void

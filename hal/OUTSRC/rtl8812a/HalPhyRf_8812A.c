@@ -65,8 +65,7 @@ static void DoIQK_8812A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
  *	04/23/2012	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-/* ULLI function only used here, make is static */
-void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
+static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	u1Byte 	RFPath, u1Byte 	ChannelMappedIndex)
 {
 	uint32_t 	finalBbSwingIdx[2];
@@ -302,7 +301,7 @@ void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 }
 
 /* ULLI function only used here, make is static */
-void GetDeltaSwingTable_8812A(PDM_ODM_T pDM_Odm, pu1Byte *TemperatureUP_A,
+static void GetDeltaSwingTable_8812A(PDM_ODM_T pDM_Odm, pu1Byte *TemperatureUP_A,
 	pu1Byte *TemperatureDOWN_A, pu1Byte *TemperatureUP_B,
 	pu1Byte *TemperatureDOWN_B)
 {

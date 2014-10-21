@@ -560,7 +560,7 @@ static void _IQK_RestoreAFE_8812A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n"));
 }
 
-void _IQK_ConfigureMAC_8812A(PDM_ODM_T pDM_Odm)
+static void _IQK_ConfigureMAC_8812A(PDM_ODM_T pDM_Odm)
 {
 	/* ========MAC register setting======== */
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */

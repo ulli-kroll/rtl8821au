@@ -1767,38 +1767,6 @@ static void phy_LCCalibrate_8812A(PDM_ODM_T pDM_Odm, BOOLEAN	is2T)
 #define		DP_DPK_NUM			3
 #define		DP_DPK_VALUE_NUM	2
 
-/* ULLI function not used, we may remove this */
-static void phy_IQCalibrate_By_FW_8812A(PADAPTER pAdapter)
-{
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	u1Byte			IQKcmd[3] = {pHalData->CurrentChannel, 0x0, 0x0};
-	u1Byte			Buf1 = 0x0;
-	u1Byte			Buf2 = 0x0;
-
-	/* Byte 2, Bit 4 ~ Bit 5 : BandType */
-	if (pHalData->CurrentBandType)
-		Buf1 = 0x2<<4;
-	else
-		Buf1 = 0x1<<4;
-
-	/* Byte 2, Bit 0 ~ Bit 3 : Bandwidth */
-	if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_20)
-		Buf2 = 0x1;
-	else if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_40)
-		Buf2 = 0x1<<1;
-	else if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_80)
-		Buf2 = 0x1<<2;
-	else
-		Buf2 = 0x1<<3;
-
-	IQKcmd[1] = Buf1 | Buf2;
-	IQKcmd[2] = pHalData->ExternalPA_5G | pHalData->ExternalLNA_5G<<1;
-
-	RT_TRACE(COMP_MP, DBG_LOUD, ("== Start ==\n"));
-
-
-	/* FillH2CCmd_8812(pAdapter, 0x45, 3, IQKcmd); */
-}
 
 VOID PHY_IQCalibrate_8812A(PADAPTER pAdapter, BOOLEAN bReCovery)
 {

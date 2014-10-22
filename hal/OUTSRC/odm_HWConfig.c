@@ -63,17 +63,6 @@ odm_QueryRxPwrPercentage(
 //
 
 int32_t
-odm_SignalScaleMapping_92CSeries_patch_RT_CID_819x_Netcore(
-	IN OUT PDM_ODM_T pDM_Odm,
-	int32_t CurrSig
-)
-{
-	int32_t RetSig;
-	return RetSig;
-}
-
-
-int32_t
 odm_SignalScaleMapping_92CSeries(
 	IN OUT PDM_ODM_T pDM_Odm,
 	IN int32_t CurrSig

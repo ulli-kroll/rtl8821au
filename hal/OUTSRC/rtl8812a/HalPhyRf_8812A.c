@@ -369,29 +369,6 @@ void ConfigureTxpowerTrack_8812A(PTXPWRTRACK_CFG pConfig)
  */
 static BOOLEAN ODM_CheckPowerStatus(IN	PADAPTER Adapter)
 {
-#if 0
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
-	PDM_ODM_T			pDM_Odm = &pHalData->DM_OutSrc;
-	RT_RF_POWER_STATE 	rtState;
-	PMGNT_INFO			pMgntInfo	= &(Adapter->MgntInfo);
-
-	/* 2011/07/27 MH We are not testing ready~~!! We may fail to get correct value when init sequence. */
-	if (pMgntInfo->init_adpt_in_progress == TRUE) {
-		ODM_RT_TRACE(pDM_Odm, COMP_INIT, DBG_LOUD, ("ODM_CheckPowerStatus Return TRUE, due to initadapter"));
-		return	TRUE;
-	}
-
-	/*
-	 * 2011/07/19 MH We can not execute tx pwoer tracking/ LLC calibrate or IQK.
-	 */
-	Adapter->HalFunc.GetHwRegHandler(Adapter, HW_VAR_RF_STATE, (pu1Byte)(&rtState));
-	if (Adapter->bDriverStopped || Adapter->bDriverIsGoingToPnpSetPowerSleep
-	 || rtState == eRfOff) {
-		ODM_RT_TRACE(pDM_Odm, COMP_INIT, DBG_LOUD, ("ODM_CheckPowerStatus Return FALSE, due to %d/%d/%d\n",
-		Adapter->bDriverStopped, Adapter->bDriverIsGoingToPnpSetPowerSleep, rtState));
-		return	FALSE;
-	}
-#endif
 	return	TRUE;
 }
 

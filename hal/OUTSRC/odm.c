@@ -782,24 +782,6 @@ ODM_DMInit(
 		   odm_InitHybridAntDiv(pDM_Odm);
 //#endif
 	}
-	else if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
-	{
-		odm_DynamicBBPowerSavingInit(pDM_Odm);
-		odm_DynamicTxPowerInit(pDM_Odm);
-		odm_TXPowerTrackingInit(pDM_Odm);
-		//ODM_EdcaTurboInit(pDM_Odm);
-
-//#if (MP_DRIVER != 1)
-	if ( *(pDM_Odm->mp_mode) != 1) {
-			odm_InitHybridAntDiv(pDM_Odm);
-	}
-//#endif
-
-//2010.05.30 LukeLee: For CE platform, files in IC subfolders may not be included to be compiled,
-// so compile flags must be left here to prevent from compile errors
-
-//2010.05.30 LukeLee: Following are not incorporated into ODM structure yet.
-	}
 
 	odm_DynamicATCSwitch_init(pDM_Odm);
 
@@ -890,16 +872,6 @@ if ( *(pDM_Odm->mp_mode) != 1) {
 				pDM_Odm->LinkedInterval = 0;
 		}
 #endif
-	}
-	else if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
-	{
-		//odm_EdcaTurboCheck(pDM_Odm);
-		odm_DynamicTxPower(pDM_Odm);
-
-//2010.05.30 LukeLee: For CE platform, files in IC subfolders may not be included to be compiled,
-// so compile flags must be left here to prevent from compile errors
-        odm_DynamicBBPowerSaving(pDM_Odm);
-
 	}
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 
@@ -1736,12 +1708,6 @@ odm_Adaptivity(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("IGI=0x%x, TH_H_dmc=0x%x, TH_L_dmc=0x%x\n",
 		IGI, TH_H_dmc, TH_L_dmc));
 
-	if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
-	{
-		ODM_SetBBReg(pDM_Odm,rOFDM0_ECCAThreshold, bMaskByte0, TH_L_dmc);
-		ODM_SetBBReg(pDM_Odm,rOFDM0_ECCAThreshold, bMaskByte2, TH_H_dmc);
-	}
-	else
 		ODM_SetBBReg(pDM_Odm, rFPGA0_XB_LSSIReadBack, 0xFFFF, (TH_H_dmc<<8) | TH_L_dmc);
 }
 
@@ -2207,61 +2173,7 @@ odm_FalseAlarmCounterStatistics(
 	if(!(pDM_Odm->SupportAbility & ODM_BB_FA_CNT))
 		return;
 
-	if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
-	{
-
-	//hold ofdm counter
-		ODM_SetBBReg(pDM_Odm, ODM_REG_OFDM_FA_HOLDC_11N, BIT31, 1); //hold page C counter
-		ODM_SetBBReg(pDM_Odm, ODM_REG_OFDM_FA_RSTD_11N, BIT31, 1); //hold page D counter
-
-		ret_value = ODM_GetBBReg(pDM_Odm, ODM_REG_OFDM_FA_TYPE1_11N, bMaskDWord);
-		FalseAlmCnt->Cnt_Fast_Fsync = (ret_value&0xffff);
-		FalseAlmCnt->Cnt_SB_Search_fail = ((ret_value&0xffff0000)>>16);
-		ret_value = ODM_GetBBReg(pDM_Odm, ODM_REG_OFDM_FA_TYPE2_11N, bMaskDWord);
-		FalseAlmCnt->Cnt_OFDM_CCA = (ret_value&0xffff);
-		FalseAlmCnt->Cnt_Parity_Fail = ((ret_value&0xffff0000)>>16);
-		ret_value = ODM_GetBBReg(pDM_Odm, ODM_REG_OFDM_FA_TYPE3_11N, bMaskDWord);
-		FalseAlmCnt->Cnt_Rate_Illegal = (ret_value&0xffff);
-		FalseAlmCnt->Cnt_Crc8_fail = ((ret_value&0xffff0000)>>16);
-		ret_value = ODM_GetBBReg(pDM_Odm, ODM_REG_OFDM_FA_TYPE4_11N, bMaskDWord);
-		FalseAlmCnt->Cnt_Mcs_fail = (ret_value&0xffff);
-
-		FalseAlmCnt->Cnt_Ofdm_fail = 	FalseAlmCnt->Cnt_Parity_Fail + FalseAlmCnt->Cnt_Rate_Illegal +
-									FalseAlmCnt->Cnt_Crc8_fail + FalseAlmCnt->Cnt_Mcs_fail +
-									FalseAlmCnt->Cnt_Fast_Fsync + FalseAlmCnt->Cnt_SB_Search_fail;
-		{
-			//hold cck counter
-				ODM_SetBBReg(pDM_Odm, ODM_REG_CCK_FA_RST_11N, BIT12, 1);
-				ODM_SetBBReg(pDM_Odm, ODM_REG_CCK_FA_RST_11N, BIT14, 1);
-
-				ret_value = ODM_GetBBReg(pDM_Odm, ODM_REG_CCK_FA_LSB_11N, bMaskByte0);
-			FalseAlmCnt->Cnt_Cck_fail = ret_value;
-				ret_value = ODM_GetBBReg(pDM_Odm, ODM_REG_CCK_FA_MSB_11N, bMaskByte3);
-			FalseAlmCnt->Cnt_Cck_fail +=  (ret_value& 0xff)<<8;
-
-				ret_value = ODM_GetBBReg(pDM_Odm, ODM_REG_CCK_CCA_CNT_11N, bMaskDWord);
-			FalseAlmCnt->Cnt_CCK_CCA = ((ret_value&0xFF)<<8) |((ret_value&0xFF00)>>8);
-		}
-
-		FalseAlmCnt->Cnt_all = (	FalseAlmCnt->Cnt_Fast_Fsync +
-							FalseAlmCnt->Cnt_SB_Search_fail +
-							FalseAlmCnt->Cnt_Parity_Fail +
-							FalseAlmCnt->Cnt_Rate_Illegal +
-							FalseAlmCnt->Cnt_Crc8_fail +
-							FalseAlmCnt->Cnt_Mcs_fail +
-							FalseAlmCnt->Cnt_Cck_fail);
-
-		FalseAlmCnt->Cnt_CCA_all = FalseAlmCnt->Cnt_OFDM_CCA + FalseAlmCnt->Cnt_CCK_CCA;
-
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Enter odm_FalseAlarmCounterStatistics\n"));
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Fast_Fsync=%d, Cnt_SB_Search_fail=%d\n",
-			FalseAlmCnt->Cnt_Fast_Fsync, FalseAlmCnt->Cnt_SB_Search_fail));
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Parity_Fail=%d, Cnt_Rate_Illegal=%d\n",
-			FalseAlmCnt->Cnt_Parity_Fail, FalseAlmCnt->Cnt_Rate_Illegal));
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Crc8_fail=%d, Cnt_Mcs_fail=%d\n",
-			FalseAlmCnt->Cnt_Crc8_fail, FalseAlmCnt->Cnt_Mcs_fail));
-	}
-	else if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
+	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
 	{
 		uint32_t CCKenable;
 		//read OFDM FA counter

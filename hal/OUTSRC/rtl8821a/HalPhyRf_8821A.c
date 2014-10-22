@@ -1337,14 +1337,6 @@ PHY_IQCalibrate_8821A(
 	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
 #endif//(MP_DRIVER == 1)
 
-#if 0 //ODM_CheckPowerStatus always return TRUE currently!
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE) )
-	if (ODM_CheckPowerStatus(pAdapter) == FALSE)
-		return;
-#endif
-#endif //gtemp
-
-
 #if MP_DRIVER == 1
 	if( ! (pMptCtx->bSingleTone || pMptCtx->bCarrierSuppression) )
 #endif

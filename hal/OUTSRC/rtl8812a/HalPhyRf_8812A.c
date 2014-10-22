@@ -367,10 +367,6 @@ void ConfigureTxpowerTrack_8812A(PTXPWRTRACK_CFG pConfig)
  * 2011/07/26 MH Add an API for testing IQK fail case.
  * MP Already declare in odm.c
  */
-static BOOLEAN ODM_CheckPowerStatus(IN	PADAPTER Adapter)
-{
-	return	TRUE;
-}
 
 #define BW_20M 	0
 #define	BW_40M  1
@@ -1751,11 +1747,6 @@ VOID PHY_IQCalibrate_8812A(PADAPTER pAdapter, BOOLEAN bReCovery)
 
 #if (MP_DRIVER == 1)
 	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
-#endif
-
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
-	if (ODM_CheckPowerStatus(pAdapter) == FALSE)
-		return;
 #endif
 
 #if MP_DRIVER == 1

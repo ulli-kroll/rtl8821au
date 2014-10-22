@@ -33,8 +33,9 @@
 //3 ============================================================
 */
 
+static void PHY_LCCalibrate_8821A(PDM_ODM_T pDM_Odm);
 
-void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
+static void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 	u1Byte ThermalValue, u1Byte Threshold)
 {
 	PADAPTER Adapter = pDM_Odm->Adapter;
@@ -47,9 +48,8 @@ void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 }
 
 
-void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
-	u1Byte RFPath, u1Byte ChannelMappedIndex
-	)
+static void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
+	u1Byte RFPath, u1Byte ChannelMappedIndex)
 {
 	PADAPTER Adapter = pDM_Odm->Adapter;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
@@ -186,7 +186,7 @@ void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	}
 }
 
-void GetDeltaSwingTable_8821A(PDM_ODM_T pDM_Odm,
+static void GetDeltaSwingTable_8821A(PDM_ODM_T pDM_Odm,
 	pu1Byte *TemperatureUP_A, pu1Byte *TemperatureDOWN_A,
 	pu1Byte *TemperatureUP_B, pu1Byte *TemperatureDOWN_B)
 {
@@ -253,7 +253,7 @@ void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 #define MAX_TOLERANCE		5
 #define IQK_DELAY_TIME		1		/* ms */
 
-void _IQK_RX_FillIQC_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+static void _IQK_RX_FillIQC_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	unsigned int RX_X, unsigned int RX_Y)
 {
 	switch (Path) {
@@ -269,7 +269,7 @@ void _IQK_RX_FillIQC_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	};
 }
 
-void _IQK_TX_FillIQC_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+static void _IQK_TX_FillIQC_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	unsigned int TX_X, unsigned int TX_Y)
 {
 	switch (Path) {
@@ -288,7 +288,7 @@ void _IQK_TX_FillIQC_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	};
 }
 
-void _IQK_BackupMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
+static void _IQK_BackupMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
 	uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
@@ -302,7 +302,7 @@ void _IQK_BackupMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n"));
 }
 
-void _IQK_BackupRF_8821A(PDM_ODM_T pDM_Odm, uint32_t *RFA_backup,
+static void _IQK_BackupRF_8821A(PDM_ODM_T pDM_Odm, uint32_t *RFA_backup,
 	uint32_t *RFB_backup, uint32_t *Backup_RF_REG, uint32_t RF_NUM)
 {
 	uint32_t i;
@@ -315,7 +315,7 @@ void _IQK_BackupRF_8821A(PDM_ODM_T pDM_Odm, uint32_t *RFA_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n"));
 }
 
-void _IQK_BackupAFE_8821A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
+static void _IQK_BackupAFE_8821A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
 	uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
 	uint32_t i;
@@ -328,7 +328,7 @@ void _IQK_BackupAFE_8821A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n"));
 }
 
-void _IQK_RestoreMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t	 *MACBB_backup,
+static void _IQK_RestoreMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t	 *MACBB_backup,
 	uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
@@ -340,7 +340,7 @@ void _IQK_RestoreMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t	 *MACBB_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n"));
 }
 
-void _IQK_RestoreRF_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
+static void _IQK_RestoreRF_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
 	uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
 {
 	uint32_t i;
@@ -357,7 +357,8 @@ void _IQK_RestoreRF_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
 		break;
 	}
 }
-void _IQK_RestoreAFE_8821A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
+
+static void _IQK_RestoreAFE_8821A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
 	uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
 	uint32_t i;
@@ -376,7 +377,7 @@ void _IQK_RestoreAFE_8821A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
 }
 
 
-void _IQK_ConfigureMAC_8821A(PDM_ODM_T pDM_Odm)
+static void _IQK_ConfigureMAC_8821A(PDM_ODM_T pDM_Odm)
 {
 	/* ========MAC register setting======== */
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -390,7 +391,7 @@ void _IQK_ConfigureMAC_8821A(PDM_ODM_T pDM_Odm)
 
 #define cal_num 3
 
-void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
+static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 {
 	uint32_t TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int 	TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
@@ -1105,7 +1106,7 @@ void phy_IQCalibrate_By_FW_8821A(PADAPTER pAdapter)
 
 }
 
-void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
+static void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
 {
 	uint32_t	MACBB_backup[MACBB_REG_NUM], AFE_backup[AFE_REG_NUM], RFA_backup[RF_REG_NUM], RFB_backup[RF_REG_NUM];
 	uint32_t 	Backup_MACBB_REG[MACBB_REG_NUM] = {0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00, 0xc50, 0xe00, 0xe50, 0x838, 0x82c};
@@ -1167,7 +1168,7 @@ void PHY_IQCalibrate_8821A(PADAPTER pAdapter, BOOLEAN bReCovery)
 }
 
 
-void PHY_LCCalibrate_8821A(PDM_ODM_T pDM_Odm)
+static void PHY_LCCalibrate_8821A(PDM_ODM_T pDM_Odm)
 {
 	PHY_LCCalibrate_8812A(pDM_Odm);
 }

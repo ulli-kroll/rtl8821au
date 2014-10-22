@@ -33,58 +33,6 @@
 //3 ============================================================
 */
 
-void setIqkMatrix_8821A(PDM_ODM_T pDM_Odm, u1Byte OFDM_index,
-	u1Byte RFPath, int32_t IqkResult_X, int32_t IqkResult_Y)
-{
-	int32_t	ele_A = 0, ele_D, ele_C = 0, value32;
-
-	ele_D = (OFDMSwingTable_New[OFDM_index] & 0xFFC00000)>>22;
-
-	/* new element A = element D x X */
-	if ((IqkResult_X != 0) && (*(pDM_Odm->pBandType) == ODM_BAND_2_4G)) {
-		if ((IqkResult_X & 0x00000200) != 0)	/* consider minus */
-			IqkResult_X = IqkResult_X | 0xFFFFFC00;
-
-		ele_A = ((IqkResult_X * ele_D)>>8)&0x000003FF;
-
-		/* new element C = element D x Y */
-		if ((IqkResult_Y & 0x00000200) != 0)
-			IqkResult_Y = IqkResult_Y | 0xFFFFFC00;
-
-		ele_C = ((IqkResult_Y * ele_D)>>8)&0x000003FF;
-
-		if (RFPath == ODM_RF_PATH_A)
-			switch (RFPath) {
-			case ODM_RF_PATH_A:
-				/* wirte new elements A, C, D to regC80 and regC94, element B is always 0 */
-				value32 = (ele_D<<22)|((ele_C&0x3F)<<16)|ele_A;
-				ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord, value32);
-
-				value32 = (ele_C&0x000003C0)>>6;
-				ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskH4Bits, value32);
-
-				value32 = ((IqkResult_X * ele_D)>>7)&0x01;
-				ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, value32);
-				break;
-			default:
-				break;
-		}
-	} else {
-		switch (RFPath) {
-		case ODM_RF_PATH_A:
-			ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord, OFDMSwingTable_New[OFDM_index]);
-			ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskH4Bits, 0x00);
-			ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, 0x00);
-			break;
-
-		default:
-			break;
-		}
-	}
-
-    ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxPwrTracking path B: X = 0x%x, Y = 0x%x ele_A = 0x%x ele_C = 0x%x ele_D = 0x%x 0xeb4 = 0x%x 0xebc = 0x%x\n",
-    (uint32_t)IqkResult_X, (uint32_t)IqkResult_Y, (uint32_t)ele_A, (uint32_t)ele_C, (uint32_t)ele_D, (uint32_t)IqkResult_X, (uint32_t)IqkResult_Y));
-}
 
 void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 	u1Byte ThermalValue, u1Byte Threshold)

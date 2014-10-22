@@ -270,12 +270,6 @@ typedef struct _Phy_Status_Rpt_8812
 	u1Byte			resvd_1:2;
 } PHY_STATUS_RPT_8812_T,*PPHY_STATUS_RPT_8812_T;
 
-
-VOID
-odm_Init_RSSIForDM(
-	IN OUT	PDM_ODM_T	pDM_Odm
-	);
-
 VOID
 ODM_PhyStatusQuery(
 	IN OUT	PDM_ODM_T					pDM_Odm,
@@ -284,15 +278,6 @@ ODM_PhyStatusQuery(
 	IN		PODM_PACKET_INFO_T			pPktinfo
 	);
 
-VOID
-ODM_MacStatusQuery(
-	IN OUT	PDM_ODM_T					pDM_Odm,
-	IN 		pu1Byte						pMacStatus,
-	IN		u1Byte						MacID,
-	IN		BOOLEAN						bPacketMatchBSSID,
-	IN		BOOLEAN						bPacketToSelf,
-	IN		BOOLEAN						bPacketBeacon
-	);
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 
 HAL_STATUS

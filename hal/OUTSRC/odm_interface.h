@@ -240,12 +240,6 @@ int32_t ODM_CompareMemory(
 // ODM MISC-spin lock relative API.
 //
 VOID
-ODM_AcquireSpinLock(
-	IN 	PDM_ODM_T			pDM_Odm,
-	IN	RT_SPINLOCK_TYPE	type
-	);
-
-VOID
 ODM_ReleaseSpinLock(
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	RT_SPINLOCK_TYPE	type

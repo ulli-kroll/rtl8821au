@@ -34,7 +34,7 @@ odm_ConfigRFReg_8812A(
 	if(Addr == 0xfe || Addr == 0xffe)
 	{
 		#ifdef CONFIG_LONG_DELAY_ISSUE
-		ODM_sleep_ms(50);
+		msleep(50);
 		#else
 		mdelay(50);
 		#endif
@@ -115,7 +115,7 @@ odm_ConfigBB_PHY_REG_PG_8812A(
 {
 	if (Addr == 0xfe || Addr == 0xffe) {
 		#ifdef CONFIG_LONG_DELAY_ISSUE
-		ODM_sleep_ms(50);
+		msleep(50);
 		#else
 		mdelay(50);
 		#endif
@@ -137,7 +137,7 @@ odm_ConfigBB_PHY_8812A(
 {
 	if (Addr == 0xfe) {
 		#ifdef CONFIG_LONG_DELAY_ISSUE
-		ODM_sleep_ms(50);
+		msleep(50);
 		#else
 		mdelay(50);
 		#endif

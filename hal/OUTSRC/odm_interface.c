@@ -284,14 +284,6 @@ ODM_StallExecution(
 }
 
 VOID
-ODM_sleep_ms(IN uint32_t	ms)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	msleep(ms);
-#endif
-}
-
-VOID
 ODM_sleep_us(IN uint32_t	us)
 {
 #if(DM_ODM_SUPPORT_TYPE & ODM_CE)

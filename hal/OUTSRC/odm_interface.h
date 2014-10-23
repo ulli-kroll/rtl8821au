@@ -265,9 +265,6 @@ ODM_StallExecution(
 	);
 
 VOID
-ODM_sleep_ms(IN uint32_t	ms);
-
-VOID
 ODM_sleep_us(IN uint32_t	us);
 
 VOID

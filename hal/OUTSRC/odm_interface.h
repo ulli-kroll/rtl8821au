@@ -61,11 +61,7 @@ ODM_REG(DIG,_pDM_Odm)
 #define _bit_11AC(_name)		ODM_BIT_##_name##_11AC
 
 #if 1 //TODO: enable it if we need to support run-time to differentiate between 92C_SERIES and JAGUAR_SERIES.
-#define _cat(_name, _ic_type, _func)									\
-	( 															\
-		((_ic_type) & ODM_IC_11N_SERIES)? _func##_11N(_name):		\
-		_func##_11AC(_name)									\
-	)
+#define _cat(_name, _ic_type, _func)	_func##_11AC(_name)
 #endif
 #if 0 // only sample code
 #define _cat(_name, _ic_type, _func)									\

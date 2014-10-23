@@ -497,11 +497,6 @@ odm_RefreshRateAdaptiveMaskAPADSL(
 	);
 
 VOID
-odm_DynamicATCSwitch(
-	IN 		PDM_ODM_T 		pDM_Odm
-	);
-
-VOID
 odm_Write_CrystalCap(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			CrystalCap
@@ -812,7 +807,6 @@ ODM_DMWatchdog(
 	odm_DynamicBBPowerSaving(pDM_Odm);
 	odm_EdcaTurboCheck(pDM_Odm);
 	odm_PathDiversity(pDM_Odm);
-	odm_DynamicATCSwitch(pDM_Odm);
 
 #if 0
 #endif
@@ -1468,22 +1462,6 @@ IN PDM_ODM_T pDM_Odm
 	pDM_Odm->AdapEn_RSSI = 32;//45;
 }
 
-
-
-
-VOID
-odm_DynamicATCSwitch(
-	IN 		PDM_ODM_T 		pDM_Odm
-)
-{
-	PADAPTER		Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	u1Byte 			CrystalCap,ATC_status_temp = 0;
-	uint32_t			packet_count;
-	int				CFO_kHz_A,CFO_kHz_B,CFO_ave = 0, Adjust_Xtal = 0;
-	int				CFO_ave_diff;
-
-}
 
 VOID
 odm_Write_CrystalCap(

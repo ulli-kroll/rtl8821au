@@ -496,12 +496,6 @@ odm_DynamicTxPower(
 	);
 
 VOID
-odm_DynamicTxPowerAP(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-
-VOID
 odm_SwAntDivInit(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -2473,17 +2467,6 @@ odm_DynamicTxPowerNIC(
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 #endif
 }
-
-VOID
-odm_DynamicTxPowerAP(
-	IN		PDM_ODM_T		pDM_Odm
-
-	)
-{
-}
-
-
-
 
 
 //3============================================================

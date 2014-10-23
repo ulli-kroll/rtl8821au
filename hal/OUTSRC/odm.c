@@ -612,11 +612,6 @@ odm_GlobalAdapterCheck(
 	);
 
 VOID
-odm_RefreshBasicRateMask(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-VOID
 odm_RefreshRateAdaptiveMask(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -803,7 +798,6 @@ ODM_DMWatchdog(
 
 
 	odm_RefreshRateAdaptiveMask(pDM_Odm);
-	odm_RefreshBasicRateMask(pDM_Odm);
 	odm_DynamicBBPowerSaving(pDM_Odm);
 	odm_EdcaTurboCheck(pDM_Odm);
 	odm_PathDiversity(pDM_Odm);
@@ -2426,14 +2420,6 @@ uint32_t ODM_Get_Rate_Bitmap(
 
 }
 #endif
-
-
-VOID
-odm_RefreshBasicRateMask(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-}
 
 /*-----------------------------------------------------------------------------
  * Function:	odm_RefreshRateAdaptiveMask()

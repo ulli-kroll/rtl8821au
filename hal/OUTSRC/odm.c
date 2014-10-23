@@ -496,11 +496,6 @@ odm_DynamicTxPower(
 	);
 
 VOID
-odm_SwAntDivInit(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-VOID
 odm_SwAntDivInit_NIC(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -2924,7 +2919,6 @@ odm_TXPowerTrackingCheckCE(
 
 #else //#if(defined(CONFIG_SW_ANTENNA_DIVERSITY))
 
-VOID odm_SwAntDivInit(	IN		PDM_ODM_T		pDM_Odm	) {}
 VOID ODM_SwAntDivChkPerPktRssi(
 	IN PDM_ODM_T	pDM_Odm,
 	IN u1Byte		StationID,

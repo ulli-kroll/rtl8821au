@@ -503,10 +503,6 @@ odm_DynamicTxPowerNIC(
 	);
 
 #if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
-VOID
-odm_DynamicTxPowerSavePowerIndex(
-	IN		PDM_ODM_T		pDM_Odm
-	);
 
 VOID
 odm_DynamicTxPowerWritePowerIndex(
@@ -2512,23 +2508,6 @@ odm_DynamicTxPowerInit(
 
 #endif
 
-}
-
-VOID
-odm_DynamicTxPowerSavePowerIndex(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-	u1Byte		index;
-	uint32_t		Power_Index_REG[6] = {0xc90, 0xc91, 0xc92, 0xc98, 0xc99, 0xc9a};
-
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PADAPTER	Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	for(index = 0; index< 6; index++)
-		pdmpriv->PowerIndex_backup[index] = rtw_read8(Adapter, Power_Index_REG[index]);
-#endif
 }
 
 VOID

@@ -477,11 +477,6 @@ odm_RefreshRateAdaptiveMaskCE(
 	);
 
 VOID
-odm_DynamicTxPowerInit(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-VOID
 odm_DynamicTxPowerRestorePowerIndex(
 	IN	PDM_ODM_T	pDM_Odm
 	);
@@ -2436,24 +2431,6 @@ ODM_RAStateCheck(
 //3 Dynamic Tx Power
 //3============================================================
 
-VOID
-odm_DynamicTxPowerInit(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PADAPTER	Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	pdmpriv->bDynamicTxPowerEnable = _FALSE;
-
-
-	pdmpriv->LastDTPLvl = TxHighPwrLevel_Normal;
-	pdmpriv->DynamicTxHighPowerLvl = TxHighPwrLevel_Normal;
-
-#endif
-
-}
 
 VOID
 odm_DynamicTxPowerRestorePowerIndex(

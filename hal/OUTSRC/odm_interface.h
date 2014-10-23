@@ -256,15 +256,6 @@ ODM_ReleaseSpinLock(
 // ODM MISC-workitem relative API.
 //
 VOID
-ODM_InitializeWorkItem(
-	IN 	PDM_ODM_T					pDM_Odm,
-	IN	PRT_WORK_ITEM				pRtWorkItem,
-	IN	RT_WORKITEM_CALL_BACK		RtWorkItemCallback,
-	IN	PVOID						pContext,
-	IN	const char*					szID
-	);
-
-VOID
 ODM_StartWorkItem(
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	);

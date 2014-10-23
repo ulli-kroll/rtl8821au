@@ -274,20 +274,6 @@ ODM_ReleaseSpinLock(
 //
 // Work item relative API. FOr MP driver only~!
 //
-VOID
-ODM_InitializeWorkItem(
-	IN 	PDM_ODM_T					pDM_Odm,
-	IN	PRT_WORK_ITEM				pRtWorkItem,
-	IN	RT_WORKITEM_CALL_BACK		RtWorkItemCallback,
-	IN	PVOID						pContext,
-	IN	const char*					szID
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-
-#endif
-}
-
 
 VOID
 ODM_StartWorkItem(

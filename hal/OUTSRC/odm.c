@@ -3611,45 +3611,6 @@ dm_CheckEdcaTurbo_EXIT:
 // need to ODM CE Platform
 //move to here for ANT detection mechanism using
 
-#if ((DM_ODM_SUPPORT_TYPE == ODM_CE))
-
-uint32_t
-ConvertTo_dB(
-	uint32_t 	Value)
-{
-	u1Byte i;
-	u1Byte j;
-	uint32_t dB;
-
-	Value = Value & 0xFFFF;
-
-	for (i=0;i<8;i++)
-	{
-		if (Value <= dB_Invert_Table[i][11])
-		{
-			break;
-		}
-	}
-
-	if (i >= 8)
-	{
-		return (96);	// maximum 96 dB
-	}
-
-	for (j=0;j<12;j++)
-	{
-		if (Value <= dB_Invert_Table[i][j])
-		{
-			break;
-		}
-	}
-
-	dB = i*12 + j + 1;
-
-	return (dB);
-}
-
-#endif
 
 //
 // LukeLee:

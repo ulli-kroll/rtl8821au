@@ -1712,8 +1712,6 @@ VOID ODM_SwAntDivChkPerPktRssi(
 
 #if((DM_ODM_SUPPORT_TYPE==ODM_CE))
 
-uint32_t ConvertTo_dB(uint32_t Value);
-
 uint32_t
 GetPSDData(
 	PDM_ODM_T	pDM_Odm,

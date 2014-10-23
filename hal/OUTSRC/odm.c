@@ -477,11 +477,6 @@ odm_RefreshRateAdaptiveMaskCE(
 	);
 
 VOID
-odm_RefreshRateAdaptiveMaskAPADSL(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-VOID
 odm_Write_CrystalCap(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			CrystalCap
@@ -2406,13 +2401,6 @@ odm_RefreshRateAdaptiveMaskCE(
 	}
 
 #endif
-}
-
-VOID
-odm_RefreshRateAdaptiveMaskAPADSL(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
 }
 
 // Return Value: BOOLEAN

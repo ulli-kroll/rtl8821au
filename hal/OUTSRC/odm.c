@@ -2732,14 +2732,6 @@ odm_DynamicTxPowerAP(
 //3============================================================
 
 VOID
-odm_RSSIDumpToRegister(
-	IN	PDM_ODM_T	pDM_Odm
-	)
-{
-}
-
-
-VOID
 odm_RSSIMonitorInit(
 	IN	PDM_ODM_T	pDM_Odm
 	)

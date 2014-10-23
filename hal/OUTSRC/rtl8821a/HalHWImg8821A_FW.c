@@ -1058,7 +1058,7 @@ ODM_ReadFirmware_MP_8821A_FW_AP(
      OUT  uint32_t       *pFirmwareSize
 )
 {
-     ODM_MoveMemory(pDM_Odm, pFirmware, Array_MP_8821A_FW_AP, ArrayLength_MP_8821A_FW_AP);
+     memcpy(pDM_Odm, pFirmware, Array_MP_8821A_FW_AP, ArrayLength_MP_8821A_FW_AP);
      *pFirmwareSize = ArrayLength_MP_8821A_FW_AP;
 }
 
@@ -1612,7 +1612,7 @@ ODM_ReadFirmware_MP_8821A_FW_BT(
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	*((SIZE_PTR *)pFirmware) = (SIZE_PTR)Array_MP_8821A_FW_BT;
 #else
-	ODM_MoveMemory(pDM_Odm, pFirmware, Array_MP_8821A_FW_BT, ArrayLength_MP_8821A_FW_BT);
+	memcpy(pDM_Odm, pFirmware, Array_MP_8821A_FW_BT, ArrayLength_MP_8821A_FW_BT);
 #endif
 	*pFirmwareSize = ArrayLength_MP_8821A_FW_BT;
 }
@@ -3632,7 +3632,7 @@ ODM_ReadFirmware_MP_8821A_FW_NIC(
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	*((SIZE_PTR *)pFirmware) = (SIZE_PTR)Array_MP_8821A_FW_NIC;
 #else
-	ODM_MoveMemory(pDM_Odm, pFirmware, Array_MP_8821A_FW_NIC, ArrayLength_MP_8821A_FW_NIC);
+	memcpy(pDM_Odm, pFirmware, Array_MP_8821A_FW_NIC, ArrayLength_MP_8821A_FW_NIC);
 #endif
 	*pFirmwareSize = ArrayLength_MP_8821A_FW_NIC;
 }
@@ -4766,7 +4766,7 @@ ODM_ReadFirmware_MP_8821A_FW_WoWLAN(
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	*((SIZE_PTR *)pFirmware) = (SIZE_PTR)Array_MP_8821A_FW_WoWLAN;
 #else
-	ODM_MoveMemory(pDM_Odm, pFirmware, Array_MP_8821A_FW_WoWLAN, ArrayLength_MP_8821A_FW_WoWLAN);
+	memcpy(pDM_Odm, pFirmware, Array_MP_8821A_FW_WoWLAN, ArrayLength_MP_8821A_FW_WoWLAN);
 #endif
 	*pFirmwareSize = ArrayLength_MP_8821A_FW_WoWLAN;
 }

@@ -229,14 +229,6 @@ ODM_FreeMemory(
 	IN	uint32_t		length
 	);
 
-VOID
-ODM_MoveMemory(
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT PVOID		pDest,
-	IN  PVOID		pSrc,
-	IN  uint32_t		Length
-	);
-
 int32_t ODM_CompareMemory(
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	PVOID           pBuf1,

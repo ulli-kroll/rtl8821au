@@ -233,19 +233,6 @@ ODM_FreeMemory(
 #endif
 }
 
-VOID
-ODM_MoveMemory(
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT PVOID		pDest,
-	IN  PVOID		pSrc,
-	IN  uint32_t		Length
-	)
-{
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE )
-	memcpy(pDest, pSrc, Length);
-#endif
-}
-
 int32_t ODM_CompareMemory(
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	PVOID           pBuf1,

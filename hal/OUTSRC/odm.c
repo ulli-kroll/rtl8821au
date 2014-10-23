@@ -774,14 +774,11 @@ ODM_DMInit(
 //#endif
 	ODM_EdcaTurboInit(pDM_Odm);
 
-	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-	{
 		odm_TXPowerTrackingInit(pDM_Odm);
 //#if (MP_DRIVER != 1)
        if ( *(pDM_Odm->mp_mode) != 1)
 		   odm_InitHybridAntDiv(pDM_Odm);
 //#endif
-	}
 
 	odm_DynamicATCSwitch_init(pDM_Odm);
 
@@ -839,8 +836,6 @@ if ( *(pDM_Odm->mp_mode) != 1) {
 }
 //#endif
 
-	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-	{
 		if (pDM_Odm->SupportICType & (ODM_RTL8812|ODM_RTL8821))
 		//if (pDM_Odm->SupportICType & ODM_RTL8812)
 		{
@@ -872,7 +867,6 @@ if ( *(pDM_Odm->mp_mode) != 1) {
 				pDM_Odm->LinkedInterval = 0;
 		}
 #endif
-	}
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
@@ -1615,8 +1609,6 @@ odm_Adaptivity(
 	}
 	else
 	{
-		if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-		{
 			if(*pDM_Odm->pBandType == BAND_ON_5G)
 			{
 				pDM_Odm->TH_H = 0xf4;//0xf8;
@@ -1627,13 +1619,11 @@ odm_Adaptivity(
 				pDM_Odm->TH_H = 0xf4;//0xfa;
 				pDM_Odm->TH_L = 0xf7;//0xfd;
 			}
-		}
 	}
 
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG, ODM_DBG_LOUD, ("pDM_Odm->ForceEDCCA=%d, IGI_Base=0x%x, TH_H=0x%x, TH_L=0x%x, AdapEn_RSSI = %d\n",
 		pDM_Odm->ForceEDCCA, pDM_Odm->IGI_Base, pDM_Odm->TH_H, pDM_Odm->TH_L, pDM_Odm->AdapEn_RSSI));
 
-	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
 		ODM_SetBBReg(pDM_Odm, 0x800, BIT10, 0); //ADC_mask enable
 
 	if(!pDM_Odm->bLinked)
@@ -2173,7 +2163,6 @@ odm_FalseAlarmCounterStatistics(
 	if(!(pDM_Odm->SupportAbility & ODM_BB_FA_CNT))
 		return;
 
-	if(pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
 	{
 		uint32_t CCKenable;
 		//read OFDM FA counter

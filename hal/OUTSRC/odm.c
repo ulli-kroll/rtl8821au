@@ -547,12 +547,6 @@ odm_EdcaTurboCheckCE(
 #define 	RxDefaultAnt1		0x65a9
 #define	RxDefaultAnt2		0x569a
 
-
-VOID
-odm_HwAntDiv(
-	IN	PDM_ODM_T	pDM_Odm
-);
-
 VOID	odm_PathDiversityInit(IN	PDM_ODM_T	pDM_Odm);
 VOID	odm_PathDiversity(	IN	PDM_ODM_T	pDM_Odm);
 
@@ -636,9 +630,6 @@ ODM_DMWatchdog(
 #endif
 
 //#if (MP_DRIVER != 1)
-if ( *(pDM_Odm->mp_mode) != 1) {
-		odm_HwAntDiv(pDM_Odm);
-}
 //#endif
 
 		if (pDM_Odm->SupportICType & (ODM_RTL8812|ODM_RTL8821))
@@ -2825,14 +2816,6 @@ VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext){}
 //3============================================================
 //3 SW Antenna Diversity
 //3============================================================
-
-#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-#else //#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-
-VOID odm_HwAntDiv(	IN	PDM_ODM_T	pDM_Odm){}
-
-#endif //#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
-
 
 
 //============================================================

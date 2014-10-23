@@ -276,17 +276,6 @@ ODM_ReleaseSpinLock(
 //
 
 VOID
-ODM_StartWorkItem(
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-
-#endif
-}
-
-
-VOID
 ODM_StopWorkItem(
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	)

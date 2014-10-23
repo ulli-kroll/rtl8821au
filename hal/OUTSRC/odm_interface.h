@@ -255,10 +255,6 @@ ODM_ReleaseSpinLock(
 //
 // ODM MISC-workitem relative API.
 //
-VOID
-ODM_StartWorkItem(
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	);
 
 VOID
 ODM_StopWorkItem(

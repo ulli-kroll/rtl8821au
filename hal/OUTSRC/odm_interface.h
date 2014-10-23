@@ -280,11 +280,6 @@ ODM_FreeWorkItem(
 	);
 
 VOID
-ODM_ScheduleWorkItem(
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	);
-
-VOID
 ODM_IsWorkItemScheduled(
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	);

@@ -487,11 +487,6 @@ odm_1R_CCA(
 //END-------------------PSD-----------------------//
 
 VOID
-odm_RefreshRateAdaptiveMaskMP(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-VOID
 odm_RefreshRateAdaptiveMaskCE(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -2586,14 +2581,6 @@ odm_RefreshRateAdaptiveMask(
 	}
 
 }
-
-VOID
-odm_RefreshRateAdaptiveMaskMP(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-}
-
 
 VOID
 odm_RefreshRateAdaptiveMaskCE(

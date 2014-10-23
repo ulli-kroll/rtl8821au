@@ -496,11 +496,6 @@ odm_DynamicTxPower(
 	);
 
 VOID
-odm_SwAntDivInit_NIC(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-VOID
 odm_SwAntDivChkAntSwitch(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			Step

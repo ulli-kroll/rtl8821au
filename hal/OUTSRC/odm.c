@@ -495,12 +495,6 @@ odm_DynamicTxPower(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-VOID
-odm_SwAntDivChkAntSwitchNIC(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u1Byte		Step
-	);
-
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);

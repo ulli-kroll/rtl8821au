@@ -2274,15 +2274,6 @@ odm_DynamicBBPowerSaving(
 		return;
 	if(!(pDM_Odm->SupportPlatform & (ODM_CE)))
 		return;
-
-
-	// 20100628 Joseph: Turn off BB power save for 88CE because it makesthroughput unstable.
-	// 20100831 Joseph: Turn ON BB power save again after modifying AGC delay from 900ns ot 600ns.
-	//1 3.Power Saving for 88C
-	else
-	{
-		ODM_RF_Saving(pDM_Odm, FALSE);
-	}
 #endif
 
 }
@@ -2340,15 +2331,6 @@ odm_1R_CCA(
 	}
 	//ODM_RT_TRACE(pDM_Odm,	COMP_BB_POWERSAVING, DBG_LOUD, ("CCAStage = %s\n",(pDM_PSTable->CurCCAState==0)?"1RCCA":"2RCCA"));
 }
-
-void
-ODM_RF_Saving(
-	IN 	PDM_ODM_T	pDM_Odm,
-	IN	u1Byte		bForceInNormal
-	)
-{
-}
-
 
 //3============================================================
 //3 RATR MASK

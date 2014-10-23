@@ -1681,10 +1681,6 @@ ODM_SetAntenna(
 	IN	u1Byte		Antenna);
 
 
-#define dm_RF_Saving	ODM_RF_Saving
-void ODM_RF_Saving(	IN	PDM_ODM_T	pDM_Odm,
-							IN	u1Byte		bForceInNormal );
-
 #define SwAntDivRestAfterLink	ODM_SwAntDivRestAfterLink
 VOID ODM_SwAntDivRestAfterLink(	IN	PDM_ODM_T	pDM_Odm);
 

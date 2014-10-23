@@ -474,7 +474,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 			ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 			ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-			ODM_delay_ms(10); /* Delay 10ms */
+			mdelay(10); /* Delay 10ms */
 			ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 
 			ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -555,7 +555,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 						ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 						ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-						ODM_delay_ms(10); 	/* Delay 10ms */
+						mdelay(10); 	/* Delay 10ms */
 						ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 						delay_count = 0;
 						while (1) {
@@ -563,7 +563,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 							if ((~IQK_ready) || (delay_count > 20)) {
 								break;
 							} else {
-								ODM_delay_ms(1);
+								mdelay(1);
 								delay_count++;
 							}
 						}
@@ -612,7 +612,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10); /*  Delay 10ms */
+					mdelay(10); /*  Delay 10ms */
 					ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
@@ -620,7 +620,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 						if ((~IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -713,7 +713,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 						ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 						ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-						ODM_delay_ms(10); 	/* Delay 10ms */
+						mdelay(10); 	/* Delay 10ms */
 						ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 						delay_count = 0;
 						while (1) {
@@ -721,7 +721,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 							if ((~IQK_ready) || (delay_count > 20)) {
 								break;
 							} else {
-								ODM_delay_ms(1);
+								mdelay(1);
 								delay_count++;
 							}
 						}
@@ -794,7 +794,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 						ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 						ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-						ODM_delay_ms(10); /* Delay 10ms */
+						mdelay(10); /* Delay 10ms */
 						ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 						delay_count = 0;
 						while (1) {
@@ -802,7 +802,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 							if ((~IQK_ready) || (delay_count > 20)) {
 								break;
 							} else {
-								ODM_delay_ms(1);
+								mdelay(1);
 								delay_count++;
 							}
 						}
@@ -867,7 +867,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10); 	/* Delay 10ms */
+					mdelay(10); 	/* Delay 10ms */
 					ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
@@ -875,7 +875,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 						if ((~IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -944,7 +944,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10); /* Delay 10ms */
+					mdelay(10); /* Delay 10ms */
 					ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
@@ -952,7 +952,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 						if ((~IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}

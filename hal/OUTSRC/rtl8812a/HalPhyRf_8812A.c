@@ -689,7 +689,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10); /* Delay 10ms */
+					mdelay(10); /* Delay 10ms */
 					ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
@@ -697,7 +697,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -745,7 +745,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10); 				/* Delay 25ms */
+					mdelay(10); 				/* Delay 25ms */
 					ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
@@ -753,7 +753,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -874,7 +874,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10); /* Delay 10ms */
+					mdelay(10); /* Delay 10ms */
 					ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 					delay_count = 0;
 
@@ -883,7 +883,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -954,7 +954,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10);			/* Delay 10ms */
+					mdelay(10);			/* Delay 10ms */
 					ODM_Write4Byte(pDM_Odm, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
@@ -962,7 +962,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -1083,7 +1083,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10); /* Delay 10ms */
+					mdelay(10); /* Delay 10ms */
 					ODM_Write4Byte(pDM_Odm, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
@@ -1091,7 +1091,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -1140,7 +1140,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10); /* Delay 25ms */
+					mdelay(10); /* Delay 25ms */
 					ODM_Write4Byte(pDM_Odm, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
@@ -1148,7 +1148,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -1273,7 +1273,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10); /* Delay 10ms */
+					mdelay(10); /* Delay 10ms */
 					ODM_Write4Byte(pDM_Odm, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
@@ -1281,7 +1281,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -1355,7 +1355,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xfa000000);
 					ODM_Write4Byte(pDM_Odm, 0x980, 0xf8000000);
 
-					ODM_delay_ms(10);	/*Delay 10ms */
+					mdelay(10);	/*Delay 10ms */
 					ODM_Write4Byte(pDM_Odm, 0xeb8, 0x00000000);
 					delay_count = 0;
 
@@ -1364,7 +1364,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
-							ODM_delay_ms(1);
+							mdelay(1);
 							delay_count++;
 						}
 					}
@@ -1705,7 +1705,7 @@ static void phy_LCCalibrate_8812A(PDM_ODM_T pDM_Odm, BOOLEAN	is2T)
 	tmp = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_LCK, bRFRegOffsetMask);
 	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
 
-	ODM_delay_ms(100);
+	mdelay(100);
 
 	/* 3 Restore original situation */
 	if ((reg0x914 & 70000) != 0) {	/* Deal with contisuous TX case, 0x914[18:16] */
@@ -2177,7 +2177,7 @@ static void _DPK_pathABDPK(PDM_ODM_T pDM_Odm)
 
 
 	/* delay 100 ms */
-	ODM_delay_ms(100);
+	mdelay(100);
 
 
 	/* read back */
@@ -2285,7 +2285,7 @@ static void _DPK_pathABDPK(PDM_ODM_T pDM_Odm)
 	ODM_Write4Byte(pDM_Odm, 0xcc8+pagesel, 0x400c5599);
 
 	/* delay 100 ms */
-	ODM_delay_ms(100);
+	mdelay(100);
 
 	/* read back dp_fail report */
 	ODM_Write4Byte(pDM_Odm, 0xcb8+pagesel, 0x00000000);

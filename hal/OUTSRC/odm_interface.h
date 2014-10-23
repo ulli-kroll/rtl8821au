@@ -298,10 +298,6 @@ ODM_StallExecution(
 	);
 
 VOID
-ODM_delay_ms(IN uint32_t	ms);
-
-
-VOID
 ODM_delay_us(IN uint32_t	us);
 
 VOID

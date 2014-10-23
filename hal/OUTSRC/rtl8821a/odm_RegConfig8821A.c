@@ -37,16 +37,16 @@ odm_ConfigRFReg_8821A(
 		#ifdef CONFIG_LONG_DELAY_ISSUE
 		ODM_sleep_ms(50);
 		#else
-		ODM_delay_ms(50);
+		mdelay(50);
 		#endif
 	}
 	else if (Addr == 0xfd)
 	{
-		ODM_delay_ms(5);
+		mdelay(5);
 	}
 	else if (Addr == 0xfc)
 	{
-		ODM_delay_ms(1);
+		mdelay(1);
 	}
 	else if (Addr == 0xfb)
 	{
@@ -141,12 +141,12 @@ odm_ConfigBB_PHY_REG_PG_8821A(
 		#ifdef CONFIG_LONG_DELAY_ISSUE
 		ODM_sleep_ms(50);
 		#else
-		ODM_delay_ms(50);
+		mdelay(50);
 		#endif
 	else if (Addr == 0xfd)
-		ODM_delay_ms(5);
+		mdelay(5);
 	else if (Addr == 0xfc)
-		ODM_delay_ms(1);
+		mdelay(1);
 	else if (Addr == 0xfb)
 		ODM_delay_us(50);
 	else if (Addr == 0xfa)
@@ -172,12 +172,12 @@ odm_ConfigBB_PHY_8821A(
 		#ifdef CONFIG_LONG_DELAY_ISSUE
 		ODM_sleep_ms(50);
 		#else
-		ODM_delay_ms(50);
+		mdelay(50);
 		#endif
 	else if (Addr == 0xfd)
-		ODM_delay_ms(5);
+		mdelay(5);
 	else if (Addr == 0xfc)
-		ODM_delay_ms(1);
+		mdelay(1);
 	else if (Addr == 0xfb)
 		ODM_delay_us(50);
 	else if (Addr == 0xfa)

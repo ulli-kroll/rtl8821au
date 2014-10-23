@@ -545,12 +545,6 @@ VOID
 odm_RSSIMonitorCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	);
-VOID
-odm_RSSIMonitorCheckAP(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-
 
 VOID
 odm_RSSIMonitorCheck(
@@ -2975,18 +2969,6 @@ odm_RSSIMonitorCheckCE(
 	ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
 #endif//if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 }
-VOID
-odm_RSSIMonitorCheckAP(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-}
-
-
-
-
-
-
 
 //#endif
 //3============================================================

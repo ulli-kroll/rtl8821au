@@ -514,15 +514,6 @@ odm_DynamicTxPowerWritePowerIndex(
 	IN 	u1Byte		Value);
 
 
-VOID
-odm_MPT_DIGCallback(
-	PRT_TIMER		pTimer
-);
-
-VOID
-odm_MPT_DIGWorkItemCallback(
-    IN PVOID            pContext
-    );
 #endif
 
 

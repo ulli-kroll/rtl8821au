@@ -632,11 +632,6 @@ odm_TXPowerTrackingInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
-VOID
-odm_TXPowerTrackingCheckMP(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-
 
 VOID
 odm_TXPowerTrackingCheckCE(
@@ -3138,15 +3133,6 @@ odm_TXPowerTrackingCheckCE(
 
 #endif
 }
-
-VOID
-odm_TXPowerTrackingCheckMP(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-
-}
-
 
 VOID
 odm_TXPowerTrackingCheckAP(

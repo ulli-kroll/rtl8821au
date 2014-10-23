@@ -270,23 +270,6 @@ ODM_ReleaseSpinLock(
 
 #endif
 }
-
-//
-// Work item relative API. FOr MP driver only~!
-//
-
-VOID
-ODM_IsWorkItemScheduled(
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-
-#endif
-}
-
-
-
 //
 // ODM Timer relative API.
 //

@@ -256,12 +256,6 @@ ODM_ReleaseSpinLock(
 // ODM MISC-workitem relative API.
 //
 
-
-VOID
-ODM_IsWorkItemScheduled(
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	);
-
 //
 // ODM Timer relative API.
 //

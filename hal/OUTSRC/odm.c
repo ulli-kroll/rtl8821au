@@ -477,12 +477,6 @@ odm_RefreshRateAdaptiveMaskCE(
 	);
 
 VOID
-odm_Write_CrystalCap(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u1Byte			CrystalCap
-);
-
-VOID
 odm_DynamicTxPowerInit(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -1380,32 +1374,6 @@ IN PDM_ODM_T pDM_Odm
 }
 
 
-VOID
-odm_Write_CrystalCap(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u1Byte			CrystalCap
-)
-{
-	PADAPTER		Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-
-	if(IS_HARDWARE_TYPE_8812(Adapter))
-	{
-		// write 0x2C[30:25] = 0x2C[24:19] = CrystalCap
-		CrystalCap = CrystalCap & 0x3F;
-		PHY_SetBBReg(Adapter, REG_MAC_PHY_CTRL, 0x7FF80000, (CrystalCap | (CrystalCap << 6)));
-	}
-
-	//only for B-cut
-	if (IS_HARDWARE_TYPE_8821(Adapter))
-	{
-		// 0x2C[23:18] = 0x2C[17:12] = CrystalCap
-		CrystalCap = CrystalCap & 0x3F;
-		PHY_SetBBReg(Adapter, REG_MAC_PHY_CTRL, 0xFFF000, (CrystalCap | (CrystalCap << 6)));
-	}
-
-
-}
 
 VOID
 odm_Adaptivity(

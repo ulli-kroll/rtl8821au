@@ -496,12 +496,6 @@ odm_DynamicTxPower(
 	);
 
 VOID
-odm_SwAntDivChkAntSwitch(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u1Byte			Step
-	);
-
-VOID
 odm_SwAntDivChkAntSwitchNIC(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte		Step
@@ -2918,10 +2912,6 @@ VOID ODM_SwAntDivChkPerPktRssi(
 	IN PDM_ODM_T	pDM_Odm,
 	IN u1Byte		StationID,
 	IN PODM_PHY_INFO_T pPhyInfo
-	) {}
-VOID odm_SwAntDivChkAntSwitch(
-	IN		PDM_ODM_T		pDM_Odm,
-	IN		u1Byte			Step
 	) {}
 VOID ODM_SwAntDivResetBeforeLink(	IN		PDM_ODM_T		pDM_Odm	){}
 VOID ODM_SwAntDivRestAfterLink(	IN		PDM_ODM_T		pDM_Odm	){}

@@ -547,10 +547,6 @@ odm_EdcaTurboCheckCE(
 #define 	RxDefaultAnt1		0x65a9
 #define	RxDefaultAnt2		0x569a
 
-VOID
-odm_InitHybridAntDiv(
-	IN PDM_ODM_T	pDM_Odm
-	);
 
 BOOLEAN
 odm_StaDefAntSel(
@@ -612,8 +608,6 @@ ODM_DMInit(
 
 		odm_TXPowerTrackingInit(pDM_Odm);
 //#if (MP_DRIVER != 1)
-       if ( *(pDM_Odm->mp_mode) != 1)
-		   odm_InitHybridAntDiv(pDM_Odm);
 //#endif
 }
 
@@ -2854,7 +2848,6 @@ VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext){}
 #if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
 #else //#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))
 
-VOID odm_InitHybridAntDiv(	IN PDM_ODM_T	pDM_Odm 	){}
 VOID odm_HwAntDiv(	IN	PDM_ODM_T	pDM_Odm){}
 
 #endif //#if(defined(CONFIG_HW_ANTENNA_DIVERSITY))

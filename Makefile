@@ -24,8 +24,6 @@ CONFIG_RTL8821A = y
 CONFIG_POWER_SAVING = y
 CONFIG_PLATFORM_I386_PC = y
 
-CONFIG_DRVEXT_MODULE = n
-
 export TopDIR ?= $(shell pwd)
 
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \

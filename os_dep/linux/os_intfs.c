@@ -1182,10 +1182,6 @@ uint8_t rtw_free_drv_sw(struct _ADAPTER *padapter)
 
 	/* rtw_mfree(padapter); */
 
-#ifdef CONFIG_DRVEXT_MODULE
-	free_drvext(&padapter->drvextpriv);
-#endif
-
 	rtw_hal_free_data(padapter);
 
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("<==rtw_free_drv_sw\n"));
@@ -1233,10 +1229,6 @@ int _netdev_open(struct net_device *ndev)
 			DBG_871X("can't init mlme_ext_priv\n");
 			goto netdev_open_error;
 		}
-
-#ifdef CONFIG_DRVEXT_MODULE
-		init_drvext(padapter);
-#endif
 
 		if (padapter->intf_start) {
 			padapter->intf_start(padapter);

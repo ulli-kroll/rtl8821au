@@ -350,12 +350,6 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 	precvpriv = &(padapter->recvpriv);
 	pfree_recv_queue = &(precvpriv->free_recv_queue);
 
-#ifdef CONFIG_DRVEXT_MODULE
-	if (drvext_rx_handler(padapter, precv_frame->u.hdr.rx_data, precv_frame->u.hdr.len) == _SUCCESS) {
-		goto _recv_indicatepkt_drop;
-	}
-#endif
-
 	skb = precv_frame->u.hdr.pkt;
 	if (skb == NULL) {
 		RT_TRACE(_module_recv_osdep_c_,_drv_err_,("rtw_recv_indicatepkt():skb==NULL something wrong!!!!\n"));

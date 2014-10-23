@@ -257,11 +257,6 @@ ODM_ReleaseSpinLock(
 //
 
 VOID
-ODM_StopWorkItem(
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	);
-
-VOID
 ODM_FreeWorkItem(
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	);

@@ -490,11 +490,6 @@ VOID
 odm_RSSIMonitorCheck(
 	IN		PDM_ODM_T		pDM_Odm
 	);
-VOID
-odm_DynamicTxPower(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
@@ -2397,41 +2392,6 @@ ODM_RAStateCheck(
 //3============================================================
 //3 Dynamic Tx Power
 //3============================================================
-
-VOID
-odm_DynamicTxPower(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-	//
-	// For AP/ADSL use prtl8192cd_priv
-	// For CE/NIC use PADAPTER
-	//
-	//PADAPTER		pAdapter = pDM_Odm->Adapter;
-//	prtl8192cd_priv	priv		= pDM_Odm->priv;
-
-	if (!(pDM_Odm->SupportAbility & ODM_BB_DYNAMIC_TXPWR))
-		return;
-
-	// 2012/01/12 MH According to Luke's suggestion, only high power will support the feature.
-	if (pDM_Odm->ExtPA == FALSE)
-		return;
-
-
-	//
-	// 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
-	// at the same time. In the stage2/3, we need to prive universal interface and merge all
-	// HW dynamic mechanism.
-	//
-	switch	(pDM_Odm->SupportPlatform)
-	{
-		case	ODM_CE:
-			odm_DynamicTxPowerNIC(pDM_Odm);
-			break;
-	}
-
-
-}
 
 
 VOID

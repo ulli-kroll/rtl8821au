@@ -502,17 +502,6 @@ odm_DynamicTxPowerNIC(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
-
-VOID
-odm_DynamicTxPowerWritePowerIndex(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN 	u1Byte		Value);
-
-
-#endif
-
-
 VOID
 odm_RSSIMonitorCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
@@ -2528,22 +2517,6 @@ odm_DynamicTxPowerRestorePowerIndex(
 #endif
 #endif
 }
-
-VOID
-odm_DynamicTxPowerWritePowerIndex(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN 	u1Byte		Value)
-{
-
-	u1Byte			index;
-	uint32_t			Power_Index_REG[6] = {0xc90, 0xc91, 0xc92, 0xc98, 0xc99, 0xc9a};
-
-	for(index = 0; index< 6; index++)
-		//PlatformEFIOWrite1Byte(Adapter, Power_Index_REG[index], Value);
-		ODM_Write1Byte(pDM_Odm, Power_Index_REG[index], Value);
-
-}
-
 
 VOID
 odm_DynamicTxPower(

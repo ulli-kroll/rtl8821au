@@ -276,16 +276,6 @@ ODM_ReleaseSpinLock(
 //
 
 VOID
-ODM_FreeWorkItem(
-	IN	PRT_WORK_ITEM	pRtWorkItem
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-
-#endif
-}
-
-VOID
 ODM_IsWorkItemScheduled(
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	)

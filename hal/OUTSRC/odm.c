@@ -477,11 +477,6 @@ odm_RefreshRateAdaptiveMaskCE(
 	);
 
 VOID
-odm_DynamicTxPowerNIC(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-
-VOID
 odm_RSSIMonitorCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -2394,17 +2389,6 @@ ODM_RAStateCheck(
 //3============================================================
 
 
-VOID
-odm_DynamicTxPowerNIC(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-	if (!(pDM_Odm->SupportAbility & ODM_BB_DYNAMIC_TXPWR))
-		return;
-
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
-#endif
-}
 
 
 //3============================================================

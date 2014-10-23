@@ -606,17 +606,6 @@ ODM_TXPowerTrackingCheck(
 	);
 
 VOID
-odm_TXPowerTrackingCheckAP(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-
-
-
-
-
-
-VOID
 odm_RateAdaptiveMaskInit(
 	IN	PDM_ODM_T	pDM_Odm
 	);
@@ -3133,14 +3122,6 @@ odm_TXPowerTrackingCheckCE(
 
 #endif
 }
-
-VOID
-odm_TXPowerTrackingCheckAP(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-}
-
 
 
 //antenna mapping info

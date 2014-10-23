@@ -463,11 +463,6 @@ odm_Adaptivity(
 
 //START-------BB POWER SAVE-----------------------//
 VOID
-odm_DynamicBBPowerSavingInit(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-VOID
 odm_1R_CCA(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -2096,24 +2091,6 @@ ODM_Write_CCK_CCA_Thres(
 	pDM_DigTable->PreCCK_CCAThres = pDM_DigTable->CurCCK_CCAThres;
 	pDM_DigTable->CurCCK_CCAThres = CurCCK_CCAThres;
 
-}
-
-//3============================================================
-//3 BB Power Save
-//3============================================================
-VOID
-odm_DynamicBBPowerSavingInit(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-	pPS_T	pDM_PSTable = &pDM_Odm->DM_PSTable;
-
-	pDM_PSTable->PreCCAState = CCA_MAX;
-	pDM_PSTable->CurCCAState = CCA_MAX;
-	pDM_PSTable->PreRFState = RF_MAX;
-	pDM_PSTable->CurRFState = RF_MAX;
-	pDM_PSTable->Rssi_val_min = 0;
-	pDM_PSTable->initialize = 0;
 }
 
 VOID

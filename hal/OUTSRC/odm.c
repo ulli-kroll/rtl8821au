@@ -468,11 +468,6 @@ odm_DynamicBBPowerSavingInit(
 	);
 
 VOID
-odm_DynamicBBPowerSaving(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
-VOID
 odm_1R_CCA(
 	IN		PDM_ODM_T		pDM_Odm
 	);
@@ -761,7 +756,6 @@ ODM_DMWatchdog(
 
 
 	odm_RefreshRateAdaptiveMask(pDM_Odm);
-	odm_DynamicBBPowerSaving(pDM_Odm);
 	odm_EdcaTurboCheck(pDM_Odm);
 	odm_PathDiversity(pDM_Odm);
 
@@ -2120,22 +2114,6 @@ odm_DynamicBBPowerSavingInit(
 	pDM_PSTable->CurRFState = RF_MAX;
 	pDM_PSTable->Rssi_val_min = 0;
 	pDM_PSTable->initialize = 0;
-}
-
-
-VOID
-odm_DynamicBBPowerSaving(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
-
-	if(!(pDM_Odm->SupportAbility & ODM_BB_PWR_SAVE))
-		return;
-	if(!(pDM_Odm->SupportPlatform & (ODM_CE)))
-		return;
-#endif
-
 }
 
 VOID

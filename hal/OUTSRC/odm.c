@@ -444,11 +444,6 @@ odm_DIG(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
-BOOLEAN
-odm_DigAbort(
-	IN		PDM_ODM_T		pDM_Odm
-	);
-
 VOID
 odm_CCKPacketDetectionThresh(
 	IN		PDM_ODM_T		pDM_Odm
@@ -2004,16 +1999,6 @@ odm_DIG(
 			pDM_DigTable->DIG_Dynamic_MIN_0 = DIG_Dynamic_MIN;
 		}
 	}
-}
-
-
-BOOLEAN
-odm_DigAbort(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-
-
 }
 
 //3============================================================

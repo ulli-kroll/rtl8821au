@@ -245,21 +245,6 @@ int32_t ODM_CompareMemory(
 #endif
 }
 
-
-
-//
-// ODM MISC relative API.
-//
-VOID
-ODM_ReleaseSpinLock(
-	IN 	PDM_ODM_T			pDM_Odm,
-	IN	RT_SPINLOCK_TYPE	type
-	)
-{
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE )
-
-#endif
-}
 //
 // ODM Timer relative API.
 //

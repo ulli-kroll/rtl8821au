@@ -167,7 +167,7 @@ _func_enter_;
 
 		/* Tx buf allocation may fail sometimes, so sleep and retry. */
 		if((res=rtw_os_xmit_resource_alloc(padapter, pxmitbuf,(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ), _TRUE)) == _FAIL) {
-			rtw_msleep_os(10);
+			msleep(10);
 			res = rtw_os_xmit_resource_alloc(padapter, pxmitbuf,(MAX_XMITBUF_SZ + XMITBUF_ALIGN_SZ), _TRUE);
 			if (res == _FAIL) {
 				goto exit;
@@ -976,7 +976,7 @@ _func_enter_;
 			{
 				if(_rtw_memcmp(psecuritypriv->dot118021XGrptxmickey[psecuritypriv->dot118021XGrpKeyid].skey, null_key, 16)==_TRUE){
 					//DbgPrint("\nxmitframe_addmic:stainfo->dot11tkiptxmickey==0\n");
-					//rtw_msleep_os(10);
+					//msleep(10);
 					return _FAIL;
 				}
 				//start to calculate the mic code
@@ -986,7 +986,7 @@ _func_enter_;
 			{
 				if(_rtw_memcmp(&pattrib->dot11tkiptxmickey.skey[0],null_key, 16)==_TRUE){
 					//DbgPrint("\nxmitframe_addmic:stainfo->dot11tkiptxmickey==0\n");
-					//rtw_msleep_os(10);
+					//msleep(10);
 					return _FAIL;
 				}
 				//start to calculate the mic code
@@ -3470,7 +3470,7 @@ int rtw_ack_tx_polling(struct xmit_priv *pxmitpriv, uint32_t	 timeout_ms)
 			break;
 		}
 
-		rtw_msleep_os(10);
+		msleep(10);
 	} while (rtw_get_passing_time_ms(pack_tx_ops->submit_time) < timeout_ms);
 
 	if (pack_tx_ops->status == RTW_SCTX_SUBMITTED) {

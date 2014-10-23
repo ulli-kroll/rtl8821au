@@ -287,7 +287,7 @@ VOID
 ODM_sleep_ms(IN uint32_t	ms)
 {
 #if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_msleep_os(ms);
+	msleep(ms);
 #endif
 }
 

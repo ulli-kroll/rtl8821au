@@ -1725,7 +1725,7 @@ static int rtw_wx_get_scan(struct net_device *ndev, struct iw_request_info *a,
 	wait_status = _FW_UNDER_SURVEY | _FW_UNDER_LINKING;
 
 	while (check_fwstate(pmlmepriv, wait_status) == _TRUE) {
-		rtw_msleep_os(30);
+		msleep(30);
 		cnt++;
 		if (cnt > wait_for_surveydone)
 			break;

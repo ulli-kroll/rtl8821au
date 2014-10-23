@@ -2705,7 +2705,7 @@ int32_t dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgnt
 	 return ret;
 #else //!CONFIG_XMIT_ACK
 	dump_mgntframe(padapter, pmgntframe);
-	rtw_msleep_os(50);
+	msleep(50);
 	return _SUCCESS;
 #endif //!CONFIG_XMIT_ACK
 }
@@ -3256,7 +3256,7 @@ int issue_probereq_ex(_adapter *padapter, NDIS_802_11_SSID *pssid, uint8_t *da,
 			break;
 
 		if(i < try_cnt && wait_ms > 0 && ret==_FAIL)
-			rtw_msleep_os(wait_ms);
+			msleep(wait_ms);
 
 	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
@@ -4003,7 +4003,7 @@ int issue_nulldata(_adapter *padapter, unsigned char *da, unsigned int power_mod
 			break;
 
 		if(i < try_cnt && wait_ms > 0 && ret==_FAIL)
-			rtw_msleep_os(wait_ms);
+			msleep(wait_ms);
 
 	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
@@ -4137,7 +4137,7 @@ int issue_qos_nulldata(_adapter *padapter, unsigned char *da, uint16_t tid, int 
 			break;
 
 		if(i < try_cnt && wait_ms > 0 && ret==_FAIL)
-			rtw_msleep_os(wait_ms);
+			msleep(wait_ms);
 
 	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
@@ -4248,7 +4248,7 @@ int issue_deauth_ex(_adapter *padapter, uint8_t *da, unsigned short reason, int 
 			break;
 
 		if(i < try_cnt && wait_ms > 0 && ret==_FAIL)
-			rtw_msleep_os(wait_ms);
+			msleep(wait_ms);
 
 	}while((i<try_cnt) && ((ret==_FAIL)||(wait_ms==0)));
 
@@ -4816,7 +4816,7 @@ void site_survey(_adapter *padapter)
 					if(pmlmeext->sitesurvey_res.ssid[i].SsidLength) {
 						//todo: to issue two probe req???
 						issue_probereq(padapter, &(pmlmeext->sitesurvey_res.ssid[i]), NULL);
-						//rtw_msleep_os(SURVEY_TO>>1);
+						//msleep(SURVEY_TO>>1);
 						issue_probereq(padapter, &(pmlmeext->sitesurvey_res.ssid[i]), NULL);
 					}
 				}
@@ -4824,7 +4824,7 @@ void site_survey(_adapter *padapter)
 				if(pmlmeext->sitesurvey_res.scan_mode == SCAN_ACTIVE) {
 					//todo: to issue two probe req???
 					issue_probereq(padapter, NULL, NULL);
-					//rtw_msleep_os(SURVEY_TO>>1);
+					//msleep(SURVEY_TO>>1);
 					issue_probereq(padapter, NULL, NULL);
 				}
 			}
@@ -7323,7 +7323,7 @@ uint8_t tx_beacon_hdl(_adapter *padapter, unsigned char *pbuf)
 
 		if((pstapriv->tim_bitmap&BIT(0)) && (psta_bmc->sleepq_len>0))
 		{
-			rtw_msleep_os(10);// 10ms, ATIM(HIQ) Windows
+			msleep(10);// 10ms, ATIM(HIQ) Windows
 			//_enter_critical_bh(&psta_bmc->sleep_q.lock, &irqL);
 			_enter_critical_bh(&pxmitpriv->lock, &irqL);
 

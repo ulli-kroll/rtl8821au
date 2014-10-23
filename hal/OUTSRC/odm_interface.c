@@ -358,15 +358,6 @@ ODM_StallExecution(
 #endif
 }
 
-
-VOID
-ODM_delay_us(IN uint32_t	us)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	udelay(us);
-#endif
-}
-
 VOID
 ODM_sleep_ms(IN uint32_t	ms)
 {

@@ -53,8 +53,6 @@
 #include "odm_HWConfig.h"
 #include "odm_debug.h"
 #include "odm_RegDefine11AC.h"
-#include "odm_RegDefine11N.h"
-
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	//#include "hal_com.h"

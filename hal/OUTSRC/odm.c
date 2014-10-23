@@ -540,12 +540,6 @@ odm_MPT_DIGWorkItemCallback(
     );
 #endif
 
-
-VOID
-odm_RSSIMonitorInit(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-
 VOID
 odm_RSSIMonitorCheckMP(
 	IN	PDM_ODM_T	pDM_Odm
@@ -2730,13 +2724,6 @@ odm_DynamicTxPowerAP(
 //3============================================================
 //3 RSSI Monitor
 //3============================================================
-
-VOID
-odm_RSSIMonitorInit(
-	IN	PDM_ODM_T	pDM_Odm
-	)
-{
-}
 
 VOID
 odm_RSSIMonitorCheck(

@@ -547,7 +547,6 @@ odm_EdcaTurboCheckCE(
 #define 	RxDefaultAnt1		0x65a9
 #define	RxDefaultAnt2		0x569a
 
-VOID	odm_PathDiversityInit(IN	PDM_ODM_T	pDM_Odm);
 VOID	odm_PathDiversity(	IN	PDM_ODM_T	pDM_Odm);
 
 
@@ -576,8 +575,6 @@ ODM_DMInit(
 
 
 //#if (MP_DRIVER != 1)
-	if ( *(pDM_Odm->mp_mode) != 1)
-	    odm_PathDiversityInit(pDM_Odm);
 //#endif
 	ODM_EdcaTurboInit(pDM_Odm);
 
@@ -3035,24 +3032,6 @@ dm_CheckEdcaTurbo_EXIT:
 // PSD function will be moved to FW in future IC, but now is only implemented in MP platform
 // So PSD function will not be incorporated to common ODM
 //
-
-
-VOID
-odm_PathDiversityInit(
-	IN	PDM_ODM_T	pDM_Odm
-)
-{
-	if(!(pDM_Odm->SupportAbility & ODM_BB_PATH_DIV))
-	{
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_PATH_DIV,ODM_DBG_LOUD,("Return: Not Support PathDiv\n"));
-		return;
-	}
-#if (RTL8812A_SUPPORT == 1)
-//	if(pDM_Odm->SupportICType & ODM_RTL8812)
-//		ODM_PathDiversityInit_8812A(pDM_Odm);
-#endif
-}
-
 
 VOID
 odm_PathDiversity(

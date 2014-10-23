@@ -492,10 +492,6 @@ VOID odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
 
 
 
-VOID
-odm_GlobalAdapterCheck(
-	IN		VOID
-	);
 
 VOID
 odm_RefreshRateAdaptiveMask(

@@ -497,11 +497,6 @@ odm_RefreshRateAdaptiveMaskAPADSL(
 	);
 
 VOID
-odm_DynamicATCSwitch_init(
-	IN 		PDM_ODM_T 		pDM_Odm
-	);
-
-VOID
 odm_DynamicATCSwitch(
 	IN 		PDM_ODM_T 		pDM_Odm
 	);
@@ -774,9 +769,6 @@ ODM_DMInit(
        if ( *(pDM_Odm->mp_mode) != 1)
 		   odm_InitHybridAntDiv(pDM_Odm);
 //#endif
-
-	odm_DynamicATCSwitch_init(pDM_Odm);
-
 }
 
 //
@@ -1478,15 +1470,6 @@ IN PDM_ODM_T pDM_Odm
 
 
 
-VOID
-odm_DynamicATCSwitch_init(
-	IN 		PDM_ODM_T 		pDM_Odm
-)
-{
-	PADAPTER		Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-
-}
 
 VOID
 odm_DynamicATCSwitch(

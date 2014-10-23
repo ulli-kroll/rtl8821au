@@ -540,10 +540,6 @@ odm_MPT_DIGWorkItemCallback(
     );
 #endif
 
-VOID
-odm_RSSIMonitorCheckMP(
-	IN	PDM_ODM_T	pDM_Odm
-	);
 
 VOID
 odm_RSSIMonitorCheckCE(
@@ -2751,14 +2747,6 @@ odm_RSSIMonitorCheck(
 	}
 
 }	// odm_RSSIMonitorCheck
-
-
-VOID
-odm_RSSIMonitorCheckMP(
-	IN	PDM_ODM_T	pDM_Odm
-	)
-{
-}
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 //

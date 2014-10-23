@@ -138,7 +138,7 @@ phy_RFSerialRead(
 		PHY_SetBBReg(Adapter, pPhyReg->rfHSSIPara2, bMaskDWord, Offset|BIT8);
 
 	if (IS_VENDOR_8812A_C_CUT(Adapter) || IS_HARDWARE_TYPE_8821(Adapter))
-		rtw_udelay_os(20);
+		udelay(20);
 
 	if (bIsPIMode)
 	{
@@ -3810,7 +3810,7 @@ PHY_SwitchWirelessBand8812(
 		reg41A &= 0x30;
 		while((reg41A!= 0x30) && (count < 50))
 		{
-			rtw_udelay_os(50);
+			udelay(50);
 			//DBG_871X("Delay 50us \n");
 
 			reg41A = rtw_read16(Adapter, REG_TXPKT_EMPTY);

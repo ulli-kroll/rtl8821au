@@ -107,7 +107,7 @@ uint8_t HalPwrSeqCmdParsing(PADAPTER padapter, uint8_t CutVersion,
 					if (value == (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd)))
 						bPollingBit = _TRUE;
 					else
-						rtw_udelay_os(10);
+						udelay(10);
 
 					if (pollingCount++ > maxPollingCnt) {
 						DBG_871X("Fail to polling Offset[%#x]\n", offset);
@@ -120,9 +120,9 @@ uint8_t HalPwrSeqCmdParsing(PADAPTER padapter, uint8_t CutVersion,
 			case PWR_CMD_DELAY:
 				RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_DELAY\n"));
 				if (GET_PWR_CFG_VALUE(PwrCfgCmd) == PWRSEQ_DELAY_US)
-					rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd));
+					udelay(GET_PWR_CFG_OFFSET(PwrCfgCmd));
 				else
-					rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd)*1000);
+					udelay(GET_PWR_CFG_OFFSET(PwrCfgCmd)*1000);
 				break;
 
 			case PWR_CMD_END:

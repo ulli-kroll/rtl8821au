@@ -266,10 +266,6 @@ void _rtw_udelay_os(int us, const char *func, const int line)
 	udelay((unsigned long)us);
 }
 #else
-void rtw_udelay_os(int us)
-{
-	udelay((unsigned long)us);
-}
 
 #endif
 

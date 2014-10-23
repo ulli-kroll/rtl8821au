@@ -354,7 +354,7 @@ ODM_StallExecution(
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_udelay_os(usDelay);
+	udelay(usDelay);
 #endif
 }
 
@@ -363,7 +363,7 @@ VOID
 ODM_delay_us(IN uint32_t	us)
 {
 #if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_udelay_os(us);
+	udelay(us);
 #endif
 }
 

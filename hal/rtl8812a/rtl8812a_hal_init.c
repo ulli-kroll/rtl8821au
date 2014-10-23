@@ -390,7 +390,7 @@ static int32_t _FWFreeToGo8812(PADAPTER padapter)
 			DBG_871X("%s: Polling FW ready success!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 			return _SUCCESS;
 		}
-		rtw_udelay_os(5);
+		udelay(5);
 	} while (counter++ < 6000);
 
 	DBG_871X ("%s: Polling FW ready fail!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);

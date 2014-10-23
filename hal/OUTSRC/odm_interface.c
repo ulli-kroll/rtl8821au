@@ -362,7 +362,7 @@ VOID
 ODM_delay_ms(IN uint32_t	ms)
 {
 #if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_mdelay_os(ms);
+	mdelay(ms);
 #endif
 }
 

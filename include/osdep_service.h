@@ -149,7 +149,6 @@ extern u32 	rtw_atoi(u8* s);
 extern void _rtw_mdelay_os(int ms, const char *func, const int line);
 extern void _rtw_udelay_os(int us, const char *func, const int line);
 #else
-extern void	rtw_mdelay_os(int ms);
 extern void	rtw_udelay_os(int us);
 #endif
 

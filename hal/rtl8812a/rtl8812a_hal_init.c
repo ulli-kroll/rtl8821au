@@ -3659,7 +3659,7 @@ void SetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval)
 				/* RQPN Load 0 */
 				rtw_write16(padapter, REG_RQPN_NPQ, 0x0);
 				rtw_write32(padapter, REG_RQPN, 0x80000000);
-				rtw_mdelay_os(10);
+				mdelay(10);
 			}
 		}
 		break;

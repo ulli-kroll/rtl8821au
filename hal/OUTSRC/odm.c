@@ -540,16 +540,6 @@ VOID
 odm_EdcaTurboCheckCE(
 	IN		PDM_ODM_T		pDM_Odm
 	);
-#else
-VOID
-odm_IotEngine(
-	IN	PDM_ODM_T	pDM_Odm
-	);
-
-VOID
-odm_EdcaParaInit(
-	IN	PDM_ODM_T	pDM_Odm
-	);
 #endif
 
 

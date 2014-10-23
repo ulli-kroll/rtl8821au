@@ -96,7 +96,7 @@ do{\
 
 #define HWXMIT_ENTRY	4
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 #define TXDESC_SIZE 40
 #else
 #define TXDESC_SIZE 32
@@ -119,7 +119,7 @@ enum TXDESC_SC{
 	SC_DUPLICATE=0x03
 };
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 #define TXDESC_40_BYTES
 #endif
 

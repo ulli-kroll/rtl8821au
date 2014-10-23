@@ -1379,54 +1379,6 @@ odm_BasicDbgMessage
 }
 
 
-/*
-VOID
-odm_FindMinimumRSSI(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-	uint32_t	i;
-	u1Byte	RSSI_Min = 0xFF;
-
-	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
-	{
-//		if(pDM_Odm->pODM_StaInfo[i] != NULL)
-		if(IS_STA_VALID(pDM_Odm->pODM_StaInfo[i]) )
-		{
-			if(pDM_Odm->pODM_StaInfo[i]->RSSI_Ave < RSSI_Min)
-			{
-				RSSI_Min = pDM_Odm->pODM_StaInfo[i]->RSSI_Ave;
-			}
-		}
-	}
-
-	pDM_Odm->RSSI_Min = RSSI_Min;
-
-}
-
-VOID
-odm_IsLinked(
-	IN		PDM_ODM_T		pDM_Odm
-	)
-{
-	uint32_t i;
-	BOOLEAN Linked = FALSE;
-
-	for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++)
-	{
-			if(IS_STA_VALID(pDM_Odm->pODM_StaInfo[i]) )
-			{
-				Linked = TRUE;
-				break;
-			}
-
-	}
-
-	pDM_Odm->bLinked = Linked;
-}
-*/
-
-
 //3============================================================
 //3 DIG
 //3============================================================

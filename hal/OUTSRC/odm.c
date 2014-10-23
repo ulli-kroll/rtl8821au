@@ -548,25 +548,6 @@ odm_EdcaTurboCheckCE(
 #define	RxDefaultAnt2		0x569a
 
 
-BOOLEAN
-odm_StaDefAntSel(
-	IN PDM_ODM_T	pDM_Odm,
-	IN uint32_t		OFDM_Ant1_Cnt,
-	IN uint32_t		OFDM_Ant2_Cnt,
-	IN uint32_t		CCK_Ant1_Cnt,
-	IN uint32_t		CCK_Ant2_Cnt,
-	OUT u1Byte		*pDefAnt
-	);
-
-VOID
-odm_SetRxIdleAnt(
-	IN	PDM_ODM_T	pDM_Odm,
-	IN	u1Byte	Ant,
-	IN   BOOLEAN   bDualPath
-);
-
-
-
 VOID
 odm_HwAntDiv(
 	IN	PDM_ODM_T	pDM_Odm

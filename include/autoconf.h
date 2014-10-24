@@ -61,7 +61,6 @@
 
  //#define CONFIG_SUPPORT_USB_INT
  #ifdef	CONFIG_SUPPORT_USB_INT
-//#define CONFIG_USB_INTERRUPT_IN_PIPE	1
 #endif
 
 	#define CONFIG_IPS	1

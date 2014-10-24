@@ -51,23 +51,6 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 	     (unsigned long)padapter);
 #endif
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
-#ifdef PLATFORM_LINUX
-	precvpriv->int_in_urb = usb_alloc_urb(0, GFP_KERNEL);
-	if (precvpriv->int_in_urb == NULL) {
-		res = _FAIL;
-		DBG_8192C("alloc_urb for interrupt in endpoint fail !!!!\n");
-		goto exit;
-	}
-#endif
-	precvpriv->int_in_buf = rtw_zmalloc(INTERRUPT_MSG_FORMAT_LEN);
-	if (precvpriv->int_in_buf == NULL) {
-		res = _FAIL;
-		DBG_8192C("alloc_mem for interrupt in endpoint fail !!!!\n");
-		goto exit;
-	}
-#endif
-
 	/* init recv_buf */
 	_rtw_init_queue(&precvpriv->free_recv_buf_queue);
 
@@ -163,17 +146,6 @@ void rtl8812au_free_recv_priv (_adapter *padapter)
 
 	if (precvpriv->pallocated_recv_buf)
 		rtw_mfree(precvpriv->pallocated_recv_buf);
-
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
-#ifdef PLATFORM_LINUX
-	if (precvpriv->int_in_urb) {
-		usb_free_urb(precvpriv->int_in_urb);
-	}
-#endif
-
-	if (precvpriv->int_in_buf)
-		rtw_mfree(precvpriv->int_in_buf);
-#endif
 
 #ifdef PLATFORM_LINUX
 

@@ -1902,10 +1902,6 @@ unsigned int rtl8812au_inirp_init(PADAPTER Adapter)
 	struct intf_hdl *pintfhdl = &Adapter->iopriv.intf;
 	struct recv_priv *precvpriv = &(Adapter->recvpriv);
 	uint32_t (*_read_port)(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t cnt, uint8_t *pmem);
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
-	uint32_t (*_read_interrupt)(struct intf_hdl *pintfhdl, uint32_t addr);
-#endif
 
 	_read_port = pintfhdl->io_ops._read_port;
 
@@ -1927,19 +1923,6 @@ unsigned int rtl8812au_inirp_init(PADAPTER Adapter)
 		precvbuf++;
 		precvpriv->free_recv_buf_queue_cnt--;
 	}
-
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
-	if (pHalData->RtIntInPipe != 0x05) {
-		status = _FAIL;
-		DBG_871X("%s =>Warning !! Have not USB Int-IN pipe,  pHalData->RtIntInPipe(%d)!!!\n", __FUNCTION__, pHalData->RtIntInPipe);
-		goto exit;
-	}
-	_read_interrupt = pintfhdl->io_ops._read_interrupt;
-	if (_read_interrupt(pintfhdl, RECV_INT_IN_ADDR) == _FALSE) {
-		RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("usb_rx_init: usb_read_interrupt error \n"));
-		status = _FAIL;
-	}
-#endif
 
 exit:
 

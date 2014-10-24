@@ -274,13 +274,6 @@ struct recv_priv
 	uint	ff_hwaddr;
 	uint8_t	rx_pending_cnt;
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
-#ifdef PLATFORM_LINUX
-	PURB	int_in_urb;
-#endif
-
-	uint8_t	*int_in_buf;
-#endif //CONFIG_USB_INTERRUPT_IN_PIPE
 
 #if defined(PLATFORM_LINUX)
 	struct tasklet_struct irq_prepare_beacon_tasklet;

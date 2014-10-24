@@ -281,88 +281,6 @@ void interrupt_handler_8812au(_adapter *padapter, uint16_t pkt_len, uint8_t *pbu
 }
 #endif
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
-static void usb_read_interrupt_complete(struct urb *purb, struct pt_regs *regs)
-{
-	int	err;
-	_adapter *padapter = (_adapter	 *)purb->context;
-
-	if (padapter->bSurpriseRemoved || padapter->bDriverStopped
-	 || padapter->bReadPortCancel) {
-		DBG_8192C("%s() RX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d) bReadPortCancel(%d)\n",
-		__FUNCTION__, padapter->bDriverStopped, padapter->bSurpriseRemoved, padapter->bReadPortCancel);
-
-		return;
-	}
-
-	if (purb->status == 0) {
-		/* SUCCESS */
-		if (purb->actual_length > INTERRUPT_MSG_FORMAT_LEN) {
-			DBG_8192C("usb_read_interrupt_complete: purb->actual_length > INTERRUPT_MSG_FORMAT_LEN(%d)\n", INTERRUPT_MSG_FORMAT_LEN);
-		}
-
-		interrupt_handler_8188eu(padapter, purb->actual_length, purb->transfer_buffer);
-
-		err = usb_submit_urb(purb, GFP_ATOMIC);
-		if ((err) && (err != (-EPERM))) {
-			DBG_8192C("cannot submit interrupt in-token(err = 0x%08x),urb_status = %d\n", err, purb->status);
-		}
-	} else {
-		DBG_8192C("###=> usb_read_interrupt_complete => urb status(%d)\n", purb->status);
-
-		switch (purb->status) {
-		case -EINVAL:
-		case -EPIPE:
-		case -ENODEV:
-		case -ESHUTDOWN:
-			/* padapter->bSurpriseRemoved=_TRUE; */
-			RT_TRACE(_module_hci_ops_os_c_, _drv_err_, ("usb_read_port_complete:bSurpriseRemoved=TRUE\n"));
-		case -ENOENT:
-			padapter->bDriverStopped = _TRUE;
-			RT_TRACE(_module_hci_ops_os_c_, _drv_err_, ("usb_read_port_complete:bDriverStopped=TRUE\n"));
-			break;
-		case -EPROTO:
-			break;
-		case -EINPROGRESS:
-			DBG_8192C("ERROR: URB IS IN PROGRESS!/n");
-			break;
-		default:
-			break;
-		}
-	}
-
-}
-
-static uint32_t usb_read_interrupt(struct intf_hdl *pintfhdl, uint32_t addr)
-{
-	int	err;
-	unsigned int pipe;
-	uint32_t	ret = _SUCCESS;
-	_adapter		*adapter = pintfhdl->padapter;
-	struct dvobj_priv	*pdvobj = adapter_to_dvobj(adapter);
-	struct recv_priv	*precvpriv = &adapter->recvpriv;
-	struct usb_device	*pusbd = pdvobj->pusbdev;
-
-	/* translate DMA FIFO addr to pipehandle */
-	pipe = ffaddr2pipehdl(pdvobj, addr);
-
-	usb_fill_int_urb(precvpriv->int_in_urb, pusbd, pipe,
-					precvpriv->int_in_buf,
-					INTERRUPT_MSG_FORMAT_LEN,
-					usb_read_interrupt_complete,
-					adapter,
-					1);
-
-	err = usb_submit_urb(precvpriv->int_in_urb, GFP_ATOMIC);
-	if ((err) && (err != (-EPERM))) {
-		DBG_8192C("cannot submit interrupt in-token(err = 0x%08x),urb_status = %d\n", err, precvpriv->int_in_urb->status);
-		ret = _FAIL;
-	}
-
-	return ret;
-}
-#endif
-
 static int32_t pre_recv_entry(union recv_frame *precvframe, uint8_t *pphy_status)
 {
 	int32_t ret = _SUCCESS;
@@ -778,10 +696,6 @@ void rtl8812au_set_intf_ops(struct _io_ops	*pops)
 
 	pops->_read_port_cancel = &usb_read_port_cancel;
 	pops->_write_port_cancel = &usb_write_port_cancel;
-
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
-	pops->_read_interrupt = &usb_read_interrupt;
-#endif
 }
 
 void rtl8812au_set_hw_type(_adapter *padapter)

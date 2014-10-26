@@ -135,10 +135,6 @@ void getTxPowerWriteValByRegulatory8812(
 	//
 	// Index 0 & 1= legacy OFDM, 2-5=HT_MCS rate
 	//
-#if 0 // (INTEL_PROXIMITY_SUPPORT == 1)
-	if(pMgntInfo->IntelProximityModeInfo.PowerOutput > 0)
-		Regulatory = 2;
-#endif
 
 	for(rf=0; rf<2; rf++)
 	{

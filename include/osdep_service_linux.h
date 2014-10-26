@@ -223,10 +223,6 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 #define rtw_signal_process(pid, sig) kill_pid(find_vpid((pid)),(sig), 1)
 
 
-// Suspend lock prevent system from going suspend
-#ifdef CONFIG_WAKELOCK
-#include <linux/wakelock.h>
-#endif
 
 // limitation of path length
 #define PATH_LENGTH_MAX PATH_MAX

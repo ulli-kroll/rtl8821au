@@ -446,22 +446,6 @@ static void update_attrib_vcs_info(_adapter *padapter, struct xmit_frame *pxmitf
 	{
 		while (_TRUE)
 		{
-#if 0 //Todo
-			//check IOT action
-			if(pHTInfo->IOTAction & HT_IOT_ACT_FORCED_CTS2SELF)
-			{
-				pattrib->vcs_mode = CTS_TO_SELF;
-				pattrib->rts_rate = MGN_24M;
-				break;
-			}
-			else if(pHTInfo->IOTAction & (HT_IOT_ACT_FORCED_RTS|HT_IOT_ACT_PURE_N_MODE))
-			{
-				pattrib->vcs_mode = RTS_CTS;
-				pattrib->rts_rate = MGN_24M;
-				break;
-			}
-#endif
-
 			//IOT action
 			if((pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_ATHEROS) && (pattrib->ampdu_en==_TRUE) &&
 				(padapter->securitypriv.dot11PrivacyAlgrthm == _AES_ ))
@@ -2262,14 +2246,6 @@ _func_enter_;
 	if(pregpriv->wifi_spec==1)
 	{
 		int j, tmp, acirp_cnt[4];
-#if 0
-		if(flags<XMIT_QUEUE_ENTRY)
-		{
-			//priority exchange according to the completed xmitbuf flags.
-			inx[flags] = 0;
-			inx[0] = flags;
-		}
-#endif
 
 		for(j=0; j<4; j++)
 			inx[j] = pxmitpriv->wmm_para_seq[j];

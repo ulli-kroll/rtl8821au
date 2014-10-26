@@ -1187,10 +1187,6 @@ _func_enter_;
 		padapter->hw_init_completed = _FALSE;
 	}*/
 
-#if defined(CONFIG_HAS_EARLYSUSPEND)
-	rtw_unregister_early_suspend(&padapter->pwrctrlpriv);
-#endif
-
 	rtw_pm_set_ips(padapter, IPS_NONE);
 	rtw_pm_set_lps(padapter, PS_MODE_ACTIVE);
 

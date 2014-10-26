@@ -1072,12 +1072,6 @@ _func_enter_;
 
 	rtw_init_timer(&pwrctrlpriv->pwr_state_check_timer, padapter, pwr_state_check_handler);
 
-#if defined(CONFIG_HAS_EARLYSUSPEND)
-	pwrctrlpriv->early_suspend.suspend = NULL;
-	rtw_register_early_suspend(pwrctrlpriv);
-#endif //CONFIG_HAS_EARLYSUSPEND
-
-
 _func_exit_;
 
 }
@@ -1091,84 +1085,10 @@ _func_enter_;
 
 	//memset((unsigned char *)pwrctrlpriv, 0, sizeof(struct pwrctrl_priv));
 
-#if defined(CONFIG_HAS_EARLYSUSPEND)
-	rtw_unregister_early_suspend(pwrctrlpriv);
-#endif //CONFIG_HAS_EARLYSUSPEND
-
 _func_exit_;
 }
 
-#if defined(CONFIG_HAS_EARLYSUSPEND)
-inline bool rtw_is_earlysuspend_registered(struct pwrctrl_priv *pwrpriv)
-{
-	return (pwrpriv->early_suspend.suspend) ? _TRUE : _FALSE;
-}
 
-inline bool rtw_is_do_late_resume(struct pwrctrl_priv *pwrpriv)
-{
-	return (pwrpriv->do_late_resume) ? _TRUE : _FALSE;
-}
-
-inline void rtw_set_do_late_resume(struct pwrctrl_priv *pwrpriv, bool enable)
-{
-	pwrpriv->do_late_resume = enable;
-}
-#endif
-
-#ifdef CONFIG_HAS_EARLYSUSPEND
-extern int rtw_resume_process(struct _ADAPTER *padapter);
-static void rtw_early_suspend(struct early_suspend *h)
-{
-	struct pwrctrl_priv *pwrpriv = container_of(h, struct pwrctrl_priv, early_suspend);
-	DBG_871X("%s\n",__FUNCTION__);
-
-	rtw_set_do_late_resume(pwrpriv, _FALSE);
-}
-
-static void rtw_late_resume(struct early_suspend *h)
-{
-	struct pwrctrl_priv *pwrpriv = container_of(h, struct pwrctrl_priv, early_suspend);
-	struct _ADAPTER *adapter = container_of(pwrpriv, struct _ADAPTER, pwrctrlpriv);
-
-	DBG_871X("%s\n",__FUNCTION__);
-	if(pwrpriv->do_late_resume) {
-		rtw_set_do_late_resume(pwrpriv, _FALSE);
-		rtw_resume_process(adapter);
-	}
-}
-
-void rtw_register_early_suspend(struct pwrctrl_priv *pwrpriv)
-{
-	struct _ADAPTER *adapter = container_of(pwrpriv, struct _ADAPTER, pwrctrlpriv);
-
-
-	DBG_871X("%s\n", __FUNCTION__);
-
-	//jeff: set the early suspend level before blank screen, so we wll do late resume after scree is lit
-	pwrpriv->early_suspend.level = EARLY_SUSPEND_LEVEL_BLANK_SCREEN - 20;
-	pwrpriv->early_suspend.suspend = rtw_early_suspend;
-	pwrpriv->early_suspend.resume = rtw_late_resume;
-	register_early_suspend(&pwrpriv->early_suspend);
-
-
-}
-
-void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv)
-{
-	struct _ADAPTER *adapter = container_of(pwrpriv, struct _ADAPTER, pwrctrlpriv);
-
-
-	DBG_871X("%s\n", __FUNCTION__);
-
-	rtw_set_do_late_resume(pwrpriv, _FALSE);
-
-	if (pwrpriv->early_suspend.suspend)
-		unregister_early_suspend(&pwrpriv->early_suspend);
-
-	pwrpriv->early_suspend.suspend = NULL;
-	pwrpriv->early_suspend.resume = NULL;
-}
-#endif //CONFIG_HAS_EARLYSUSPEND
 
 uint8_t rtw_interface_ps_func(struct _ADAPTER *padapter,HAL_INTF_PS_FUNC efunc_id,uint8_t * val)
 {

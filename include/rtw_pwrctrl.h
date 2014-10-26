@@ -218,11 +218,6 @@ struct pwrctrl_priv
 	uint8_t		bkeepfwalive;
 	uint8_t		brfoffbyhw;
 	unsigned long PS_BBRegBackup[PSBBREG_TOTALCNT];
-
-	#ifdef CONFIG_HAS_EARLYSUSPEND
-	struct early_suspend early_suspend;
-	uint8_t do_late_resume;
-	#endif //CONFIG_HAS_EARLYSUSPEND
 };
 
 #define rtw_get_ips_mode_req(pwrctrlpriv) \
@@ -278,20 +273,13 @@ void LPS_Enter(PADAPTER padapter);
 void LPS_Leave(PADAPTER padapter);
 #endif
 
+/* ULLI resolve these #define's */
 
-#if defined(CONFIG_HAS_EARLYSUSPEND )
-bool rtw_is_earlysuspend_registered(struct pwrctrl_priv *pwrpriv);
-bool rtw_is_do_late_resume(struct pwrctrl_priv *pwrpriv);
-void rtw_set_do_late_resume(struct pwrctrl_priv *pwrpriv, bool enable);
-void rtw_register_early_suspend(struct pwrctrl_priv *pwrpriv);
-void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv);
-#else
 #define rtw_is_earlysuspend_registered(pwrpriv) _FALSE
 #define rtw_is_do_late_resume(pwrpriv) _FALSE
 #define rtw_set_do_late_resume(pwrpriv, enable) do {} while (0)
 #define rtw_register_early_suspend(pwrpriv) do {} while (0)
 #define rtw_unregister_early_suspend(pwrpriv) do {} while (0)
-#endif /* CONFIG_HAS_EARLYSUSPEND */
 
 uint8_t rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val);
 void rtw_set_ips_deny(_adapter *padapter, u32 ms);

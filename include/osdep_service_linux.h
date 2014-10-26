@@ -57,11 +57,6 @@
 	#include <linux/in.h>
 	#include <linux/udp.h>
 #endif
-
-#ifdef CONFIG_HAS_EARLYSUSPEND
-	#include <linux/earlysuspend.h>
-#endif //CONFIG_HAS_EARLYSUSPEND
-
 	#include <linux/usb.h>
 	#include <linux/usb/ch9.h>
 

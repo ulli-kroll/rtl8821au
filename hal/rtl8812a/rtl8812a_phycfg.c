@@ -435,24 +435,6 @@ phy_BB8812_Config_ParaFile(
 		goto phy_BB_Config_ParaFile_Fail;
 	}
 
-//f (MP_DRIVER == 1)
-#if 0
-	// Read PHY_REG_MP.TXT BB INIT!!
-#ifdef CONFIG_EMBEDDED_FWIMG
-	if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG))
-		rtStatus = _FAIL;
-#else
-	// No matter what kind of CHIP we always read PHY_REG.txt. We must copy different
-	// type of parameter files to phy_reg.txt at first.
-	rtStatus = phy_ConfigBBWithMpParaFile(Adapter,pszBBRegMpFile);
-#endif
-
-	if(rtStatus != _SUCCESS){
-		DBG_871X("phy_BB8812_Config_ParaFile():Write BB Reg MP Fail!!");
-		goto phy_BB_Config_ParaFile_Fail;
-	}
-#endif	// #if (MP_DRIVER == 1)
-
 	// If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt
 	//1 TODO
 	if (pEEPROM->bautoload_fail_flag == _FALSE)
@@ -2211,50 +2193,6 @@ phy_DbmToTxPwrIdx(
 	uint8_t	TxPwrIdx = 0;
 	int32_t	Offset = 0;
 
-#if 0
-	//
-	// Tested by MP, we found that CCK Index 0 equals to 8dbm, OFDM legacy equals to
-	// 3dbm, and OFDM HT equals to 0dbm repectively.
-	// Note:
-	//	The mapping may be different by different NICs. Do not use this formula for what needs accurate result.
-	// By Bruce, 2008-01-29.
-	//
-	switch(WirelessMode)
-	{
-	case WIRELESS_MODE_B:
-		//Offset = -7;
-		Offset = -6;	// For 88 RU test only
-		TxPwrIdx = (uint8_t)((pHalData->OriginalCckTxPwrIdx*( PowerInDbm-pHalData->MinCCKDbm))/(pHalData->MaxCCKDbm-pHalData->MinCCKDbm));
-		break;
-
-	case WIRELESS_MODE_G:
-	case WIRELESS_MODE_N_24G:
-		Offset = -8;
-		TxPwrIdx = (uint8_t)((pHalData->OriginalOfdm24GTxPwrIdx* (PowerInDbm-pHalData->MinHOFDMDbm))/(pHalData->MaxHOFDMDbm-pHalData->MinHOFDMDbm));
-		break;
-
-	default: //for MacOSX compiler warning
-		break;
-	}
-
-	if (PowerInDbm <= pHalData->MinCCKDbm ||
-		PowerInDbm <= pHalData->MinLOFDMDbm ||
-		PowerInDbm <= pHalData->MinHOFDMDbm)
-	{
-		TxPwrIdx = 0;
-	}
-
-	// Simple judge to prevent tx power exceed the limitation.
-	if (PowerInDbm >= pHalData->MaxCCKDbm ||
-		PowerInDbm >= pHalData->MaxLOFDMDbm ||
-		PowerInDbm >= pHalData->MaxHOFDMDbm)
-	{
-		if (WirelessMode == WIRELESS_MODE_B)
-			TxPwrIdx = pHalData->OriginalCckTxPwrIdx;
-		else
-			TxPwrIdx = pHalData->OriginalOfdm24GTxPwrIdx;
-	}
-#endif
 	return TxPwrIdx;
 }
 
@@ -2303,36 +2241,6 @@ PHY_GetTxPowerLevel8812(
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			TxPwrLevel = 0;
 	int			TxPwrDbm;
-#if 0
-	//
-	// Because the Tx power indexes are different, we report the maximum of them to
-	// meet the CCX TPC request. By Bruce, 2008-01-31.
-	//
-
-	// CCK
-	TxPwrLevel = pHalData->CurrentCckTxPwrIdx;
-	TxPwrDbm = phy_TxPwrIdxToDbm(Adapter, WIRELESS_MODE_B, TxPwrLevel);
-	pHalData->MaxCCKDbm = TxPwrDbm;
-
-	// Legacy OFDM
-	TxPwrLevel = pHalData->CurrentOfdm24GTxPwrIdx + pHalData->LegacyHTTxPowerDiff;
-
-	// Compare with Legacy OFDM Tx power.
-	pHalData->MaxLOFDMDbm = phy_TxPwrIdxToDbm(Adapter, WIRELESS_MODE_G, TxPwrLevel);
-	if(phy_TxPwrIdxToDbm(Adapter, WIRELESS_MODE_G, TxPwrLevel) > TxPwrDbm)
-		TxPwrDbm = phy_TxPwrIdxToDbm(Adapter, WIRELESS_MODE_G, TxPwrLevel);
-
-	// HT OFDM
-	TxPwrLevel = pHalData->CurrentOfdm24GTxPwrIdx;
-
-	// Compare with HT OFDM Tx power.
-	pHalData->MaxHOFDMDbm = phy_TxPwrIdxToDbm(Adapter, WIRELESS_MODE_G, TxPwrLevel);
-	if(phy_TxPwrIdxToDbm(Adapter, WIRELESS_MODE_N_24G, TxPwrLevel) > TxPwrDbm)
-		TxPwrDbm = phy_TxPwrIdxToDbm(Adapter, WIRELESS_MODE_N_24G, TxPwrLevel);
-	pHalData->MaxHOFDMDbm = TxPwrDbm;
-
-	*powerlevel = TxPwrDbm;
-#endif
 }
 
 void phy_PowerIndexCheck8812(
@@ -4222,15 +4130,6 @@ phy_SwChnl8812(
 	}
 
 	//<20130313, Kordan> Sample code to demonstrate how to configure AGC_TAB_DIFF.(Disabled by now)
-#if 0
-	if (36 <= channelToSW && channelToSW <= 48)
-		AGC_DIFF_CONFIG(8812A,LB);
-	else if (50 <= channelToSW && channelToSW <= 64)
-		AGC_DIFF_CONFIG(8812A,MB);
-	else if (100 <= channelToSW && channelToSW <= 116)
-		AGC_DIFF_CONFIG(8812A,HB);
-#endif
-
 	if(pHalData->rf_chip == RF_PSEUDO_11N)
 	{
 		DBG_871X("phy_SwChnl8812: return for PSEUDO \n");
@@ -4428,24 +4327,8 @@ PHY_HandleSwChnlAndSetBW8812(
 	if(pHalData->bSetChnlBW)
 	{
 		pHalData->CurrentChannelBW = ChnlWidth;
-#if 0
-		if(ExtChnlOffsetOf40MHz==EXTCHNL_OFFSET_LOWER)
-			pHalData->nCur40MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_UPPER;
-		else if(ExtChnlOffsetOf40MHz==EXTCHNL_OFFSET_UPPER)
-			pHalData->nCur40MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_LOWER;
-		else
-			pHalData->nCur40MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-
-		if(ExtChnlOffsetOf80MHz==EXTCHNL_OFFSET_LOWER)
-			pHalData->nCur80MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_UPPER;
-		else if(ExtChnlOffsetOf80MHz==EXTCHNL_OFFSET_UPPER)
-			pHalData->nCur80MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_LOWER;
-		else
-			pHalData->nCur80MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-#else
 		pHalData->nCur40MhzPrimeSC = ChnlOffsetOf40MHz;
 		pHalData->nCur80MhzPrimeSC = ChnlOffsetOf80MHz;
-#endif
 
 		pHalData->CurrentCenterFrequencyIndex1 = CenterFrequencyIndex1;
 	}

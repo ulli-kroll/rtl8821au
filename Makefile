@@ -42,7 +42,6 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/led/hal_usb_led.o
 
 _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
-		hal/OUTSRC/odm_interface.o\
 		hal/OUTSRC/odm_HWConfig.o\
 		hal/OUTSRC/odm.o\
 		hal/OUTSRC/HalPhyRf.o

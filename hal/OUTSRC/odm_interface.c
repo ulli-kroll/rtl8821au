@@ -46,15 +46,6 @@ ODM_StallExecution(
 #endif
 }
 
-VOID
-ODM_sleep_us(IN uint32_t	us)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_usleep_os(us);
-#endif
-}
-
-
 
 
 

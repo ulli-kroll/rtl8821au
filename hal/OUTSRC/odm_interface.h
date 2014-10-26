@@ -209,8 +209,5 @@ ODM_StallExecution(
 	IN	uint32_t	usDelay
 	);
 
-VOID
-ODM_sleep_us(IN uint32_t	us);
-
 #endif	// __ODM_INTERFACE_H__
 

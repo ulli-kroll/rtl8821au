@@ -54,59 +54,6 @@ ODM_sleep_us(IN uint32_t	us)
 #endif
 }
 
-VOID
-ODM_SetTimer(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PRT_TIMER 		pTimer,
-	IN	uint32_t 			msDelay
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	_set_timer(pTimer,msDelay ); //ms
-#endif
-
-}
-
-VOID
-ODM_InitializeTimer(
-	IN 	PDM_ODM_T			pDM_Odm,
-	IN	PRT_TIMER 			pTimer,
-	IN	RT_TIMER_CALL_BACK	CallBackFunc,
-	IN	PVOID				pContext,
-	IN	const char*			szID
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	PADAPTER Adapter = pDM_Odm->Adapter;
-	_init_timer(pTimer,Adapter->ndev,CallBackFunc,pDM_Odm);
-#endif
-}
-
-
-VOID
-ODM_CancelTimer(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PRT_TIMER		pTimer
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	_cancel_timer_ex(pTimer);
-#endif
-}
-
-
-VOID
-ODM_ReleaseTimer(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PRT_TIMER		pTimer
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-
-#endif
-}
-
-
 //
 // ODM FW relative API.
 //

@@ -212,35 +212,6 @@ ODM_StallExecution(
 VOID
 ODM_sleep_us(IN uint32_t	us);
 
-VOID
-ODM_SetTimer(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PRT_TIMER 		pTimer,
-	IN	uint32_t 			msDelay
-	);
-
-VOID
-ODM_InitializeTimer(
-	IN 	PDM_ODM_T			pDM_Odm,
-	IN	PRT_TIMER 			pTimer,
-	IN	RT_TIMER_CALL_BACK	CallBackFunc,
-	IN	PVOID				pContext,
-	IN	const char*			szID
-	);
-
-VOID
-ODM_CancelTimer(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PRT_TIMER		pTimer
-	);
-
-VOID
-ODM_ReleaseTimer(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	PRT_TIMER		pTimer
-	);
-
-
 //
 // ODM FW relative API.
 //

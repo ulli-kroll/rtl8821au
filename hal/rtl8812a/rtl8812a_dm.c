@@ -22,11 +22,6 @@
 
 #include <rtl8812a_hal.h>
 
-
-static VOID dm_CheckProtection(PADAPTER	Adapter)
-{
-}
-
 static VOID dm_CheckStatistics(PADAPTER	Adapter)
 {
 }
@@ -366,14 +361,6 @@ VOID rtl8812_HalDmWatchDog(PADAPTER Adapter)
 		 * Calculate Tx/Rx statistics.
 		 */
 		dm_CheckStatistics(Adapter);
-
-		/*
-		 * Dynamically switch RTS/CTS protection.
-		 *
-		 * dm_CheckProtection(Adapter);
-		 */
-
-
 	}
 
 	/* ODM */

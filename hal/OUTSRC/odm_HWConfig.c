@@ -25,17 +25,9 @@
 
 #include "odm_precomp.h"
 
-#define READ_AND_CONFIG_MP(ic, txt) (ODM_ReadAndConfig_MP_##ic##txt(pDM_Odm))
-#define READ_AND_CONFIG_TC(ic, txt) (ODM_ReadAndConfig_TC_##ic##txt(pDM_Odm))
+#define READ_AND_CONFIG(ic, txt) (ODM_ReadAndConfig_MP_##ic##txt(pDM_Odm))
+#define READ_FIRMWARE(ic, txt) 	(ODM_ReadFirmware_MP_##ic##txt(pDM_Odm, pFirmware, pSize))
 
-
-  #define READ_AND_CONFIG     READ_AND_CONFIG_MP
-
-
-#define READ_FIRMWARE_MP(ic, txt) 		(ODM_ReadFirmware_MP_##ic##txt(pDM_Odm, pFirmware, pSize))
-#define READ_FIRMWARE_TC(ic, txt) 		(ODM_ReadFirmware_TC_##ic##txt(pDM_Odm, pFirmware, pSize))
-
-#define READ_FIRMWARE     READ_FIRMWARE_MP
 
 u1Byte
 odm_QueryRxPwrPercentage(
@@ -868,7 +860,7 @@ ODM_ConfigRFWithTxPwrTrackHeaderFile(
 			READ_AND_CONFIG(8812A,_TxPowerTrack_PCIE);
 		else if (pDM_Odm->SupportInterface == ODM_ITRF_USB) {
 			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip)
-				READ_AND_CONFIG_MP(8812A,_TxPowerTrack_USB_RFE3);
+				READ_AND_CONFIG(8812A,_TxPowerTrack_USB_RFE3);
 			else
 				READ_AND_CONFIG(8812A,_TxPowerTrack_USB);
 		}
@@ -906,13 +898,13 @@ ODM_ConfigBBWithHeaderFile(
 		else if(ConfigType == CONFIG_BB_PHY_REG_PG)
 		{
 			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip)
-				READ_AND_CONFIG_MP(8812A,_PHY_REG_PG_ASUS);
+				READ_AND_CONFIG(8812A,_PHY_REG_PG_ASUS);
 			else
 				READ_AND_CONFIG(8812A,_PHY_REG_PG);
 		}
 		else if(ConfigType == CONFIG_BB_PHY_REG_MP)
 		{
-			READ_AND_CONFIG_MP(8812A,_PHY_REG_MP);
+			READ_AND_CONFIG(8812A,_PHY_REG_MP);
 		}
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() phy:Rtl8812AGCTABArray\n"));
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() agc:Rtl8812PHY_REGArray\n"));

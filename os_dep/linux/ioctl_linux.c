@@ -4165,11 +4165,6 @@ int rtw_ioctl(struct net_device *ndev, struct ifreq *rq, int cmd)
 	case RTL_IOCTL_HOSTAPD:
 		ret = rtw_hostapd_ioctl(ndev, &wrq->u.data);
 		break;
-#ifdef CONFIG_NO_WIRELESS_HANDLERS
-	case SIOCSIWMODE:
-		ret = rtw_wx_set_mode(ndev, NULL, &wrq->u, NULL);
-		break;
-#endif
 #endif
 	default:
 		ret = -EOPNOTSUPP;

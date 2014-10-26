@@ -243,10 +243,6 @@ struct hal_ops {
 	uint8_t (*sreset_get_wifi_status)(_adapter *padapter);
 	bool (*sreset_inprogress)(_adapter *padapter);
 #endif
-
-#ifdef CONFIG_XMIT_THREAD_MODE
-	int32_t (*xmit_thread_handler)(_adapter *padapter);
-#endif
 	void (*hal_notch_filter)(_adapter * adapter, bool enable);
 	void (*hal_reset_security_engine)(_adapter * adapter);
 	int32_t (*c2h_handler)(_adapter *padapter, struct c2h_evt_hdr *c2h_evt);
@@ -382,10 +378,6 @@ void rtw_hal_sreset_xmit_status_check(_adapter *padapter);
 void rtw_hal_sreset_linked_status_check (_adapter *padapter);
 uint8_t   rtw_hal_sreset_get_wifi_status(_adapter *padapter);
 bool rtw_hal_sreset_inprogress(_adapter *padapter);
-#endif
-
-#ifdef CONFIG_XMIT_THREAD_MODE
-int32_t rtw_hal_xmit_thread_handler(_adapter *padapter);
 #endif
 
 void rtw_hal_notch_filter(_adapter * adapter, bool enable);

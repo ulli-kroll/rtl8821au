@@ -73,10 +73,6 @@
 	//#define CONFIG_LPS_LCLK	1
 	#endif
 
-	#ifdef CONFIG_LPS_LCLK
-	#define CONFIG_XMIT_THREAD_MODE
-	#endif
-
 	//befor link
 	//#define CONFIG_ANTENNA_DIVERSITY
 

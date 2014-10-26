@@ -424,15 +424,6 @@ bool rtw_hal_sreset_inprogress(_adapter *padapter)
 }
 #endif
 
-#ifdef CONFIG_XMIT_THREAD_MODE
-int32_t rtw_hal_xmit_thread_handler(_adapter *padapter)
-{
-	if (padapter->HalFunc->xmit_thread_handler)
-		return padapter->HalFunc->xmit_thread_handler(padapter);
-	return _FAIL;
-}
-#endif
-
 void rtw_hal_notch_filter(_adapter *adapter, bool enable)
 {
 	if (adapter->HalFunc->hal_notch_filter)

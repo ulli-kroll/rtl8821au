@@ -611,14 +611,6 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta);
 
 uint8_t	qos_acm(uint8_t acm_mask, uint8_t priority);
 
-#ifdef CONFIG_XMIT_THREAD_MODE
-void	enqueue_pending_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
-struct xmit_buf*	dequeue_pending_xmitbuf(struct xmit_priv *pxmitpriv);
-struct xmit_buf*	dequeue_pending_xmitbuf_under_survey(struct xmit_priv *pxmitpriv);
-sint	check_pending_xmitbuf(struct xmit_priv *pxmitpriv);
-thread_return	rtw_xmit_thread(thread_context context);
-#endif
-
 u32	rtw_get_ff_hwaddr(struct xmit_frame	*pxmitframe);
 
 #ifdef CONFIG_XMIT_ACK

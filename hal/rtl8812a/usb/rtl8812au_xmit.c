@@ -228,55 +228,6 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 }
 
 
-#ifdef CONFIG_XMIT_THREAD_MODE
-/*
- * Description
- *	Transmit xmitbuf to hardware tx fifo
- *
- * Return
- *	_SUCCESS	ok
- *	_FAIL		something error
- */
-int32_t rtl8812au_xmit_buf_handler(PADAPTER padapter)
-{
-	PHAL_DATA_TYPE phal;
-	struct xmit_priv *pxmitpriv;
-	struct xmit_buf *pxmitbuf;
-	int32_t ret;
-
-	phal = GET_HAL_DATA(padapter);
-	pxmitpriv = &padapter->xmitpriv;
-
-	ret = _down_sema(&pxmitpriv->xmit_sema);
-	if (ret) {
-		RT_TRACE(_module_hal_xmit_c_, _drv_emerg_,
-				 ("%s: down SdioXmitBufSema fail!\n", __FUNCTION__));
-		return _FAIL;
-	}
-
-	ret = (padapter->bDriverStopped == _TRUE) || (padapter->bSurpriseRemoved == _TRUE);
-	if (ret) {
-		RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
-				 ("%s: bDriverStopped(%d) bSurpriseRemoved(%d)!\n",
-				  __FUNCTION__, padapter->bDriverStopped, padapter->bSurpriseRemoved));
-		return _FAIL;
-	}
-
-	if (check_pending_xmitbuf(pxmitpriv) == _FALSE)
-		return _SUCCESS;
-
-	do {
-		pxmitbuf = dequeue_pending_xmitbuf(pxmitpriv);
-		if (pxmitbuf == NULL)
-			break;
-
-		rtw_write_port(padapter, pxmitbuf->ff_hwaddr, pxmitbuf->len, (unsigned char *)pxmitbuf);
-
-	} while (1);
-
-	return _SUCCESS;
-}
-#endif
 
 
 /* for non-agg data frame or  management frame */
@@ -333,13 +284,8 @@ static int32_t rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe
 
 		ff_hwaddr = rtw_get_ff_hwaddr(pxmitframe);
 
-#ifdef CONFIG_XMIT_THREAD_MODE
-		pxmitbuf->len = w_sz;
-		pxmitbuf->ff_hwaddr = ff_hwaddr;
-		enqueue_pending_xmitbuf(pxmitpriv, pxmitbuf);
-#else
 		inner_ret = rtw_write_port(padapter, ff_hwaddr, w_sz, (unsigned char *)pxmitbuf);
-#endif
+
 		rtw_count_tx_stats(padapter, pxmitframe, sz);
 
 		RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("rtw_write_port, w_sz=%d\n", w_sz));

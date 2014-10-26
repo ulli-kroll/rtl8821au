@@ -610,41 +610,6 @@ void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src,
 	dst->PhyInfo.SignalStrength = ss_final;
 	dst->PhyInfo.SignalQuality = sq_final;
 	dst->Rssi = rssi_final;
-
-
-#if 0 // old codes, may be useful one day...
-//	DBG_871X("update_network: rssi=0x%lx dst->Rssi=%d ,dst->Rssi=0x%lx , src->Rssi=0x%lx",(dst->Rssi+src->Rssi)/2,dst->Rssi,dst->Rssi,src->Rssi);
-	if (check_fwstate(&padapter->mlmepriv, _FW_LINKED)
-	   && is_same_network(&(padapter->mlmepriv.cur_network.network), src)) {
-
-		//DBG_871X("b:ssid=%s update_network: src->rssi=0x%d padapter->recvpriv.ui_rssi=%d\n",src->Ssid.Ssid,src->Rssi,padapter->recvpriv.signal);
-		if (padapter->recvpriv.signal_qual_data.total_num++ >= PHY_LINKQUALITY_SLID_WIN_MAX) {
-			padapter->recvpriv.signal_qual_data.total_num = PHY_LINKQUALITY_SLID_WIN_MAX;
-			last_evm = padapter->recvpriv.signal_qual_data.elements[padapter->recvpriv.signal_qual_data.index];
-			padapter->recvpriv.signal_qual_data.total_val -= last_evm;
-	        }
-               	padapter->recvpriv.signal_qual_data.total_val += query_rx_pwr_percentage(src->Rssi);
-
-              	padapter->recvpriv.signal_qual_data.elements[padapter->recvpriv.signal_qual_data.index++] = query_rx_pwr_percentage(src->Rssi);
-                if (padapter->recvpriv.signal_qual_data.index >= PHY_LINKQUALITY_SLID_WIN_MAX)
-			padapter->recvpriv.signal_qual_data.index = 0;
-
-		//DBG_871X("Total SQ=%d  pattrib->signal_qual= %d\n", padapter->recvpriv.signal_qual_data.total_val, src->Rssi);
-
-		// <1> Showed on UI for user,in percentage.
-		tmpVal = padapter->recvpriv.signal_qual_data.total_val/padapter->recvpriv.signal_qual_data.total_num;
-                padapter->recvpriv.signal=(uint8_t)tmpVal;//Link quality
-
-		src->Rssi= translate_percentage_to_dbm(padapter->recvpriv.signal) ;
-	} else{
-//	DBG_871X("ELSE:ssid=%s update_network: src->rssi=0x%d dst->rssi=%d\n",src->Ssid.Ssid,src->Rssi,dst->Rssi);
-		src->Rssi=(src->Rssi +dst->Rssi)/2;//dBM
-	}
-
-//	DBG_871X("a:update_network: src->rssi=0x%d padapter->recvpriv.ui_rssi=%d\n",src->Rssi,padapter->recvpriv.signal);
-
-#endif
-
 }
 
 static void update_current_network(struct _ADAPTER *adapter, WLAN_BSSID_EX *pnetwork)
@@ -1282,9 +1247,6 @@ static struct sta_info *rtw_joinbss_update_stainfo(struct _ADAPTER *padapter, st
 
 		psta->aid  = pnetwork->join_res;
 
-#if 0 //alloc macid when call rtw_alloc_stainfo(), and release macid when call rtw_free_stainfo()
-		psta->mac_id=0;
-#endif //removed
 		//psta->raid = networktype_to_raid(pmlmeext->cur_wireless_mode);
 		psta->raid = rtw_hal_networktype_to_raid(padapter,pmlmeext->cur_wireless_mode);
 
@@ -1968,13 +1930,6 @@ void _rtw_join_timeout_handler (struct _ADAPTER *adapter)
 	_irqL irqL;
 	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
 
-#if 0
-	if (adapter->bDriverStopped == _TRUE){
-		up(&pmlmepriv->assoc_terminate);
-		return;
-	}
-#endif
-
 _func_enter_;
 
 
@@ -2138,32 +2093,6 @@ static int rtw_check_join_candidate(struct mlme_priv *pmlmepriv
 		*candidate = competitor;
 		updated = _TRUE;
 	}
-
-#if 0
-	if (pmlmepriv->assoc_by_bssid==_TRUE) { // associate with bssid
-		if (	(*candidate == NULL ||(*candidate)->network.Rssi<competitor->network.Rssi )
-			&& _rtw_memcmp(competitor->network.MacAddress, pmlmepriv->assoc_bssid, ETH_ALEN)==_TRUE
-		) {
-			*candidate = competitor;
-			updated = _TRUE;
-		}
-	} else  if (pmlmepriv->assoc_ssid.SsidLength == 0 ) { // associate with ssid, but ssidlength is 0
-		if (	(*candidate == NULL ||(*candidate)->network.Rssi<competitor->network.Rssi ) ) {
-			*candidate = competitor;
-			updated = _TRUE;
-		}
-	} else
-	{ // associate with ssid
-		if (	(*candidate == NULL ||(*candidate)->network.Rssi<competitor->network.Rssi )
-			&& (competitor->network.Ssid.SsidLength==pmlmepriv->assoc_ssid.SsidLength)
-			&&((_rtw_memcmp(competitor->network.Ssid.Ssid, pmlmepriv->assoc_ssid.Ssid, pmlmepriv->assoc_ssid.SsidLength)) == _TRUE)
-			&& rtw_is_desired_network(adapter, competitor)
-		) {
-			*candidate = competitor;
-			updated = _TRUE;
-		}
-	}
-#endif
 
 	if (updated){
 		DBG_871X("[by_bssid:%u][assoc_ssid:%s]"
@@ -2641,16 +2570,6 @@ void rtw_update_registrypriv_dev_network(struct _ADAPTER * adapter)
 
 _func_enter_;
 
-#if 0
-	pxmitpriv->vcs_setting = pregistrypriv->vrtl_carrier_sense;
-	pxmitpriv->vcs = pregistrypriv->vcs_type;
-	pxmitpriv->vcs_type = pregistrypriv->vcs_type;
-	//pxmitpriv->rts_thresh = pregistrypriv->rts_thresh;
-	pxmitpriv->frag_len = pregistrypriv->frag_thresh;
-
-	adapter->qospriv.qos_option = pregistrypriv->wmm_enable;
-#endif
-
 	pdev_network->Privacy = (psecuritypriv->dot11PrivacyAlgrthm > 0 ? 1 : 0) ; // adhoc no 802.1x
 
 	pdev_network->Rssi = 0;
@@ -2989,42 +2908,6 @@ void rtw_update_ht_cap(_adapter *padapter, uint8_t *pie, uint ie_len, uint8_t ch
 	// Config current HT Protection mode.
 	//
 	pmlmeinfo->HT_protection = pmlmeinfo->HT_info.infos[1] & 0x3;
-
-
-
-#if 0 //move to rtw_update_sta_info_client()
-	//for A-MPDU Rx reordering buffer control for bmc_sta & sta_info
-	//if A-MPDU Rx is enabled, reseting  rx_ordering_ctrl wstart_b(indicate_seq) to default value=0xffff
-	//todo: check if AP can send A-MPDU packets
-	bmc_sta = rtw_get_bcmc_stainfo(padapter);
-	if (bmc_sta)
-	{
-		for(i=0; i < 16 ; i++)
-		{
-			//preorder_ctrl = &precvpriv->recvreorder_ctrl[i];
-			preorder_ctrl = &bmc_sta->recvreorder_ctrl[i];
-			preorder_ctrl->enable = _FALSE;
-			preorder_ctrl->indicate_seq = 0xffff;
-			preorder_ctrl->wend_b= 0xffff;
-			preorder_ctrl->wsize_b = 64;//max_ampdu_sz;//ex. 32(kbytes) -> wsize_b=32
-		}
-	}
-
-	psta = rtw_get_stainfo(&padapter->stapriv, pcur_network->network.MacAddress);
-	if (psta)
-	{
-		for(i=0; i < 16 ; i++)
-		{
-			//preorder_ctrl = &precvpriv->recvreorder_ctrl[i];
-			preorder_ctrl = &psta->recvreorder_ctrl[i];
-			preorder_ctrl->enable = _FALSE;
-			preorder_ctrl->indicate_seq = 0xffff;
-			preorder_ctrl->wend_b= 0xffff;
-			preorder_ctrl->wsize_b = 64;//max_ampdu_sz;//ex. 32(kbytes) -> wsize_b=32
-		}
-	}
-#endif
-
 }
 
 void rtw_issue_addbareq_cmd(_adapter *padapter, struct xmit_frame *pxmitframe)

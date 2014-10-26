@@ -398,15 +398,6 @@ _func_enter_;
 			break;
 		}
 
-#ifdef CONFIG_LPS_LCLK
-		if (rtw_register_cmd_alive(padapter) != _SUCCESS)
-		{
-			RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
-					 ("%s: wait to leave LPS_LCLK\n", __FUNCTION__));
-			continue;
-		}
-#endif
-
 _next:
 		if ((padapter->bDriverStopped == _TRUE)||(padapter->bSurpriseRemoved== _TRUE))
 		{
@@ -416,9 +407,6 @@ _next:
 		}
 
 		if(!(pcmd = rtw_dequeue_cmd(pcmdpriv))) {
-#ifdef CONFIG_LPS_LCLK
-			rtw_unregister_cmd_alive(padapter);
-#endif
 			continue;
 		}
 
@@ -488,9 +476,6 @@ post_process:
 	do{
 		pcmd = rtw_dequeue_cmd(pcmdpriv);
 		if(pcmd==NULL){
-#ifdef CONFIG_LPS_LCLK
-			rtw_unregister_cmd_alive(padapter);
-#endif
 			break;
 		}
 

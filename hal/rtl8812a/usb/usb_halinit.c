@@ -2018,21 +2018,6 @@ void SetHwReg8812AU(PADAPTER Adapter, uint8_t variable, u8 *val)
 #endif
 		break;
 	case HW_VAR_SET_RPWM:
-#ifdef CONFIG_LPS_LCLK
-		{
-			uint8_t	ps_state = *((uint8_t *)val);
-			/*
-			 * rpwm value only use BIT0(clock bit) ,BIT6(Ack bit), and BIT7(Toggle bit) for 88e.
-			 * BIT0 value - 1: 32k, 0:40MHz.
-			 * BIT6 value - 1: report cpwm value after success set, 0:do not report.
-			 * BIT7 value - Toggle bit change.
-			 * modify by Thomas. 2012/4/2.
-			 */
-			ps_state = ps_state & 0xC1;
-			/* DBG_871X("##### Change RPWM value to = %x for switch clk #####\n",ps_state); */
-			rtw_write8(Adapter, REG_USB_HRPWM, ps_state);
-		}
-#endif
 		break;
 	case HW_VAR_USB_MODE:
 		if (*val == 1)

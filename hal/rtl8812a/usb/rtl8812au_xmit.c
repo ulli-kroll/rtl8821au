@@ -265,15 +265,6 @@ int32_t rtl8812au_xmit_buf_handler(PADAPTER padapter)
 	if (check_pending_xmitbuf(pxmitpriv) == _FALSE)
 		return _SUCCESS;
 
-#ifdef CONFIG_LPS_LCLK
-	ret = rtw_register_tx_alive(padapter);
-	if (ret != _SUCCESS) {
-		RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
-				 ("%s: wait to leave LPS_LCLK\n", __FUNCTION__));
-		return _SUCCESS;
-	}
-#endif
-
 	do {
 		pxmitbuf = dequeue_pending_xmitbuf(pxmitpriv);
 		if (pxmitbuf == NULL)
@@ -282,10 +273,6 @@ int32_t rtl8812au_xmit_buf_handler(PADAPTER padapter)
 		rtw_write_port(padapter, pxmitbuf->ff_hwaddr, pxmitbuf->len, (unsigned char *)pxmitbuf);
 
 	} while (1);
-
-#ifdef CONFIG_LPS_LCLK
-	rtw_unregister_tx_alive(padapter);
-#endif
 
 	return _SUCCESS;
 }

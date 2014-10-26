@@ -240,19 +240,6 @@ struct pwrctrl_priv
 extern void rtw_init_pwrctrl_priv(_adapter *adapter);
 extern void rtw_free_pwrctrl_priv(_adapter * adapter);
 
-#ifdef CONFIG_LPS_LCLK
-extern int32_t rtw_register_tx_alive(PADAPTER padapter);
-extern void rtw_unregister_tx_alive(PADAPTER padapter);
-extern int32_t rtw_register_rx_alive(PADAPTER padapter);
-extern void rtw_unregister_rx_alive(PADAPTER padapter);
-extern int32_t rtw_register_cmd_alive(PADAPTER padapter);
-extern void rtw_unregister_cmd_alive(PADAPTER padapter);
-extern int32_t rtw_register_evt_alive(PADAPTER padapter);
-extern void rtw_unregister_evt_alive(PADAPTER padapter);
-extern void cpwm_int_hdl(PADAPTER padapter, struct reportpwrstate_parm *preportpwrstate);
-extern void LPS_Leave_check(PADAPTER padapter);
-#endif
-
 extern void rtw_set_ps_mode(PADAPTER padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode);
 extern void rtw_set_rpwm(_adapter * padapter, uint8_t val8);
 extern void LeaveAllPowerSaveMode(PADAPTER Adapter);

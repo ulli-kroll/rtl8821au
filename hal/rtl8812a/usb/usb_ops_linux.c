@@ -203,21 +203,6 @@ void interrupt_handler_8812au(_adapter *padapter, uint16_t pkt_len, uint8_t *pbu
 	memcpy(&(pHalData->IntArray[0]), &(pbuf[USB_INTR_CONTENT_HISR_OFFSET]), 4);
 	memcpy(&(pHalData->IntArray[1]), &(pbuf[USB_INTR_CONTENT_HISRE_OFFSET]), 4);
 
-#if 0 /* DBG */
-	{
-		uint32_t hisr = 0, hisr_ex = 0;
-		memcpy(&hisr, &(pHalData->IntArray[0]), 4);
-		hisr = le32_to_cpu(hisr);
-
-		memcpy(&hisr_ex, &(pHalData->IntArray[1]), 4);
-		hisr_ex = le32_to_cpu(hisr_ex);
-
-		if ((hisr != 0) || (hisr_ex != 0))
-			DBG_871X("===> %s hisr:0x%08x ,hisr_ex:0x%08x \n", __FUNCTION__, hisr, hisr_ex);
-	}
-#endif
-
-
 #ifdef CONFIG_LPS_LCLK
 	if (pHalData->IntArray[0] & IMR_CPWM_88E) {
 		memcpy(&pwr_rpt.state, &(pbuf[USB_INTR_CONTENT_CPWM1_OFFSET]), 1);
@@ -239,14 +224,6 @@ void interrupt_handler_8812au(_adapter *padapter, uint16_t pkt_len, uint8_t *pbu
 #endif
 	{
 		struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-#if 0
-		if (pHalData->IntArray[0] & IMR_BCNDMAINT0_88E)
-			DBG_8192C("%s: HISR_BCNERLY_INT\n", __func__);
-		if (pHalData->IntArray[0] & IMR_TBDOK_88E)
-			DBG_8192C("%s: HISR_TXBCNOK\n", __func__);
-		if (pHalData->IntArray[0] & IMR_TBDER_88E)
-			DBG_8192C("%s: HISR_TXBCNERR\n", __func__);
-#endif
 
 		if (check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
 			/* send_beacon(padapter); */

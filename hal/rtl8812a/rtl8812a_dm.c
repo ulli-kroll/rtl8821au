@@ -22,10 +22,6 @@
 
 #include <rtl8812a_hal.h>
 
-static VOID dm_CheckStatistics(PADAPTER	Adapter)
-{
-}
-
 static void dm_CheckPbcGPIO(_adapter *padapter)
 {
 	uint8_t	tmp1byte;
@@ -355,14 +351,6 @@ VOID rtl8812_HalDmWatchDog(PADAPTER Adapter)
 		rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&bFwPSAwake));
 	}
 #endif
-
-	if ((hw_init_completed == _TRUE) && ((!bFwCurrentInPSMode) && bFwPSAwake)) {
-		/*
-		 * Calculate Tx/Rx statistics.
-		 */
-		dm_CheckStatistics(Adapter);
-	}
-
 	/* ODM */
 	if (hw_init_completed == _TRUE) {
 		uint8_t	bLinked=_FALSE;

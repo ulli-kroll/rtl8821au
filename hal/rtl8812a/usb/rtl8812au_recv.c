@@ -40,11 +40,6 @@ int	rtl8812au_init_recv_priv(_adapter *padapter)
 	int	i, res = _SUCCESS;
 	struct recv_buf *precvbuf;
 
-#ifdef CONFIG_RECV_THREAD_MODE
-	sema_init(&precvpriv->recv_sema, 0);			/* will be removed */
-	sema_init(&precvpriv->terminate_recvthread_sema, 0);	/* will be removed */
-#endif
-
 #ifdef PLATFORM_LINUX
 	tasklet_init(&precvpriv->recv_tasklet,
 	     (void(*)(unsigned long))rtl8812au_recv_tasklet,

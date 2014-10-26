@@ -125,93 +125,77 @@ typedef struct _RT_WORK_ITEM
 // =========== EXtern Function Prototype
 //
 
+static u1Byte ODM_Read1Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr)
+{
+	return rtw_read8(pDM_Odm->Adapter,RegAddr);
+}
 
-u1Byte
-ODM_Read1Byte(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	uint32_t			RegAddr
-	);
+static uint16_t ODM_Read2Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr)
+{
+	return rtw_read16(pDM_Odm->Adapter,RegAddr);
+}
 
-uint16_t
-ODM_Read2Byte(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	uint32_t			RegAddr
-	);
+static uint32_t ODM_Read4Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr)
+{
+	return rtw_read32(pDM_Odm->Adapter,RegAddr);
+}
 
-uint32_t
-ODM_Read4Byte(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	uint32_t			RegAddr
-	);
+static void ODM_Write1Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr, u1Byte Data)
+{
+	rtw_write8(pDM_Odm->Adapter,RegAddr, Data);
+}
 
-VOID
-ODM_Write1Byte(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	uint32_t			RegAddr,
-	IN	u1Byte			Data
-	);
+static void ODM_Write2Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr, uint16_t Data)
+{
+	rtw_write16(pDM_Odm->Adapter,RegAddr, Data);
+}
 
-VOID
-ODM_Write2Byte(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	uint32_t			RegAddr,
-	IN	uint16_t			Data
-	);
+static void ODM_Write4Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr, uint32_t Data)
+{
+	rtw_write32(pDM_Odm->Adapter,RegAddr, Data);
+}
 
-VOID
-ODM_Write4Byte(
-	IN 	PDM_ODM_T		pDM_Odm,
-	IN	uint32_t			RegAddr,
-	IN	uint32_t			Data
-	);
+/* ULLI : ODM_SetMACReg calls PHY_SetBBReg ?? */
 
-VOID
-ODM_SetMACReg(
-	IN 	PDM_ODM_T	pDM_Odm,
-	IN	uint32_t		RegAddr,
-	IN	uint32_t		BitMask,
-	IN	uint32_t		Data
-	);
+static void ODM_SetMACReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
+	uint32_t BitMask, uint32_t Data)
+{
+	PHY_SetBBReg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
+}
 
-uint32_t
-ODM_GetMACReg(
-	IN 	PDM_ODM_T	pDM_Odm,
-	IN	uint32_t		RegAddr,
-	IN	uint32_t		BitMask
-	);
+/* ULLI : ODM_GetMACReg calls PHY_QueryBBReg ?? */
 
-VOID
-ODM_SetBBReg(
-	IN 	PDM_ODM_T	pDM_Odm,
-	IN	uint32_t		RegAddr,
-	IN	uint32_t		BitMask,
-	IN	uint32_t		Data
-	);
+static uint32_t ODM_GetMACReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
+	uint32_t BitMask)
+{
+	return PHY_QueryBBReg(pDM_Odm->Adapter, RegAddr, BitMask);
+}
 
-uint32_t
-ODM_GetBBReg(
-	IN 	PDM_ODM_T	pDM_Odm,
-	IN	uint32_t		RegAddr,
-	IN	uint32_t		BitMask
-	);
 
-VOID
-ODM_SetRFReg(
-	IN 	PDM_ODM_T				pDM_Odm,
-	IN	ODM_RF_RADIO_PATH_E	eRFPath,
-	IN	uint32_t					RegAddr,
-	IN	uint32_t					BitMask,
-	IN	uint32_t					Data
-	);
+static void ODM_SetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
+	uint32_t BitMask, uint32_t Data)
+{
+	PADAPTER		Adapter = pDM_Odm->Adapter;
+	PHY_SetBBReg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
+}
 
-uint32_t
-ODM_GetRFReg(
-	IN 	PDM_ODM_T				pDM_Odm,
-	IN	ODM_RF_RADIO_PATH_E	eRFPath,
-	IN	uint32_t					RegAddr,
-	IN	uint32_t					BitMask
-	);
+static uint32_t ODM_GetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
+	uint32_t BitMask)
+{
+	return PHY_QueryBBReg(pDM_Odm->Adapter, RegAddr, BitMask);
+}
 
+static void ODM_SetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
+	uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
+{
+	PHY_SetRFReg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask, Data);
+}
+
+static uint32_t ODM_GetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
+	uint32_t RegAddr, uint32_t BitMask)
+{
+	return PHY_QueryRFReg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask);
+}
 
 //
 // Memory Relative Function.

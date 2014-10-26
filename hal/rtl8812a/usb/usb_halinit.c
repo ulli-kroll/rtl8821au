@@ -185,9 +185,6 @@ static VOID _InitBurstPktLen(IN PADAPTER Adapter)
 		provalue = rtw_read8(Adapter, REG_RXDMA_PRO_8812);
 		rtw_write8(Adapter, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
 		rtw_write16(Adapter, REG_RXDMA_PRO_8812, 0x0e);
-#if 0
-		PlatformEFIOWrite2Byte(Adapter, REG_RXDMA_AGG_PG_TH, 0x0a05); /* dmc agg th 20K */
-#endif
 		pHalData->bSupportUSB3 = _TRUE;
 
 		/*  set Reg 0xf008[3:4] to 2'00 to disable U1/U2 Mode to avoid 2.5G spur in USB3.0. added by page, 20120712 */
@@ -914,150 +911,10 @@ static VOID init_UsbAggregationSetting_8812A(PADAPTER Adapter)
  *---------------------------------------------------------------------------*/
 VOID USB_AggModeSwitch(PADAPTER	Adapter)
 {
-#if 0
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	PMGNT_INFO		pMgntInfo = &(Adapter->MgntInfo);
-
-	/*
-	 * pHalData->UsbRxHighSpeedMode = FALSE;
-	 * How to measure the RX speed? We assume that when traffic is more than
-	 */
-	if (pMgntInfo->bRegAggDMEnable == FALSE) {
-		return;	/* Inf not support. */
-	}
-
-
-	if (pMgntInfo->LinkDetectInfo.bHigherBusyRxTraffic == TRUE
-	 && pHalData->UsbRxHighSpeedMode == FALSE) {
-		pHalData->UsbRxHighSpeedMode = TRUE;
-		RT_TRACE(COMP_INIT, DBG_LOUD, ("UsbAggModeSwitchCheck to HIGH\n"));
-	} else if (pMgntInfo->LinkDetectInfo.bHigherBusyRxTraffic == FALSE
-		&& pHalData->UsbRxHighSpeedMode == TRUE) {
-			pHalData->UsbRxHighSpeedMode = FALSE;
-			RT_TRACE(COMP_INIT, DBG_LOUD, ("UsbAggModeSwitchCheck to LOW\n"));
-	} else {
-		return;
-	}
-
-
-#if USB_RX_AGGREGATION_92C
-	if (pHalData->UsbRxHighSpeedMode == TRUE) {
-		/*
-		 *  2010/12/10 MH The parameter is tested by SD1 engineer and SD3 channel emulator.
-		 *  USB mode
-		 */
-#if (RT_PLATFORM == PLATFORM_LINUX)
-		if (pMgntInfo->LinkDetectInfo.bTxBusyTraffic) {
-			pHalData->RxAggBlockCount	= 16;
-			pHalData->RxAggBlockTimeout	= 7;
-		} else
-#endif
-		{
-			pHalData->RxAggBlockCount	= 40;
-			pHalData->RxAggBlockTimeout	= 5;
-		}
-		/* Mix mode */
-		pHalData->RxAggPageCount	= 72;
-		pHalData->RxAggPageTimeout	= 6;
-	} else {
-		/* USB mode */
-		pHalData->RxAggBlockCount	= pMgntInfo->RegRxAggBlockCount;
-		pHalData->RxAggBlockTimeout	= pMgntInfo->RegRxAggBlockTimeout;
-		/* Mix mode */
-		pHalData->RxAggPageCount		= pMgntInfo->RegRxAggPageCount;
-		pHalData->RxAggPageTimeout	= pMgntInfo->RegRxAggPageTimeout;
-	}
-
-	if (pHalData->RxAggBlockCount > MAX_RX_AGG_BLKCNT)
-		pHalData->RxAggBlockCount = MAX_RX_AGG_BLKCNT;
-#if (OS_WIN_FROM_VISTA(OS_VERSION)) || (RT_PLATFORM == PLATFORM_LINUX)	/* do not support WINXP to prevent usbehci.sys BSOD */
-	if (IS_WIRELESS_MODE_N_24G(Adapter) || IS_WIRELESS_MODE_N_5G(Adapter)) {
-		/*
-		 * 2010/12/24 MH According to V1012 QC IOT test, XP BSOD happen when running chariot test
-		 * with the aggregation dynamic change!! We need to disable the function to prevent it is broken
-		 * in usbehci.sys.
-		 */
-		usb_AggSettingRxUpdate_8188E(Adapter);
-
-		/*
-		 *  2010/12/27 MH According to designer's suggstion, we can only modify Timeout value. Otheriwse
-		 * there might many HW incorrect behavior, the XP BSOD at usbehci.sys may be relative to the
-		 * issue. Base on the newest test, we can not enable block cnt > 30, otherwise XP usbehci.sys may
-		 * BSOD.
-		 */
-	}
-#endif
-
-#endif
-#endif
 }
 
 static VOID _InitOperationMode_8812A(PADAPTER Adapter)
 {
-#if 0	/* gtest */
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
-	u1Byte	regBwOpMode = 0;
-	uint32_t regRATR = 0, regRRSR = 0;
-
-
-	/*
-	 * 1 This part need to modified according to the rate set we filtered!!
-	 *
-	 * Set RRSR, RATR, and REG_BWOPMODE registers
-	 */
-
-	switch (Adapter->RegWirelessMode) {
-	case WIRELESS_MODE_B:
-		regBwOpMode = BW_OPMODE_20MHZ;
-		regRATR = RATE_ALL_CCK;
-		regRRSR = RATE_ALL_CCK;
-		break;
-	case WIRELESS_MODE_A:
-		regBwOpMode = BW_OPMODE_5G | BW_OPMODE_20MHZ;
-		regRATR = RATE_ALL_OFDM_AG;
-		regRRSR = RATE_ALL_OFDM_AG;
-		break;
-	case WIRELESS_MODE_G:
-		regBwOpMode = BW_OPMODE_20MHZ;
-		regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-		regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-		break;
-	case WIRELESS_MODE_AUTO:
-		if (Adapter->bInHctTest) {
-		    regBwOpMode = BW_OPMODE_20MHZ;
-		    regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-		    regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-		} else {
-		    regBwOpMode = BW_OPMODE_20MHZ;
-		    regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG | RATE_ALL_OFDM_1SS | RATE_ALL_OFDM_2SS;
-		    regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-		}
-		break;
-	case WIRELESS_MODE_N_24G:
-		/*
-		 * It support CCK rate by default.
-		 * CCK rate will be filtered out only when associated AP does not support it.
-		 */
-		regBwOpMode = BW_OPMODE_20MHZ;
-			regRATR = RATE_ALL_CCK | RATE_ALL_OFDM_AG | RATE_ALL_OFDM_1SS | RATE_ALL_OFDM_2SS;
-			regRRSR = RATE_ALL_CCK | RATE_ALL_OFDM_AG;
-		break;
-	case WIRELESS_MODE_N_5G:
-		regBwOpMode = BW_OPMODE_5G;
-		regRATR = RATE_ALL_OFDM_AG | RATE_ALL_OFDM_1SS | RATE_ALL_OFDM_2SS;
-		regRRSR = RATE_ALL_OFDM_AG;
-		break;
-
-	default:
-		break;
-	}
-
-	/*
-	 *  Ziv ????????
-	 * PlatformEFIOWrite4Byte(Adapter, REG_INIRTS_RATE_SEL, regRRSR);
-	 */
-	PlatformEFIOWrite1Byte(Adapter, REG_BWOPMODE, regBwOpMode);
-#endif
 }
 
 
@@ -1074,34 +931,6 @@ static VOID _BBTurnOnBlock(PADAPTER Adapter)
 
 static VOID _RfPowerSave(PADAPTER Adapter)
 {
-#if 0
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	PMGNT_INFO pMgntInfo	= &(Adapter->MgntInfo);
-	u1Byte	eRFPath;
-
-#if (DISABLE_BB_RF)
-	return;
-#endif
-
-	if (pMgntInfo->RegRfOff == TRUE) { /* User disable RF via registry. */
-		RT_TRACE((COMP_INIT|COMP_RF), DBG_LOUD, ("InitializeAdapter8192CUsb(): Turn off RF for RegRfOff.\n"));
-		MgntActSet_RF_State(Adapter, eRfOff, RF_CHANGE_BY_SW);
-		/*
-		 *  Those action will be discard in MgntActSet_RF_State because off the same state
-		 */
-		for (eRFPath = 0; eRFPath < pHalData->NumTotalRFPath; eRFPath++)
-			PHY_SetRFReg(Adapter, eRFPath, 0x4, 0xC00, 0x0);
-	} else if (pMgntInfo->RfOffReason > RF_CHANGE_BY_PS) { /* H/W or S/W RF OFF before sleep. */
-		RT_TRACE((COMP_INIT|COMP_RF), DBG_LOUD, ("InitializeAdapter8192CUsb(): Turn off RF for RfOffReason(%ld).\n", pMgntInfo->RfOffReason));
-		MgntActSet_RF_State(Adapter, eRfOff, pMgntInfo->RfOffReason);
-	} else {
-		pHalData->eRFPowerState = eRfOn;
-		pMgntInfo->RfOffReason = 0;
-		if (Adapter->bInSetPower || Adapter->bResetInProgress)
-			PlatformUsbEnableInPipes(Adapter);
-		RT_TRACE((COMP_INIT|COMP_RF), DBG_LOUD, ("InitializeAdapter8192CUsb(): RF is on.\n"));
-	}
-#endif
 }
 
 enum {
@@ -1137,39 +966,6 @@ static VOID _InitAntenna_Selection_8812A(PADAPTER Adapter)
  */
 static VOID HalDetectSelectiveSuspendMode(PADAPTER Adapter)
 {
-#if 0
-	uint8_t	tmpvalue;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(Adapter);
-
-	/*
-	 * If support HW radio detect, we need to enable WOL ability, otherwise, we
-	 * can not use FW to notify host the power state switch.
-	 */
-
-	EFUSE_ShadowRead(Adapter, 1, EEPROM_USB_OPTIONAL1, (uint32_t *)&tmpvalue);
-
-	DBG_8192C("HalDetectSelectiveSuspendMode(): SS ");
-	if (tmpvalue & BIT1) {
-		DBG_8192C("Enable\n");
-	} else {
-		DBG_8192C("Disable\n");
-		pdvobjpriv->RegUsbSS = _FALSE;
-	}
-
-	/* 2010/09/01 MH According to Dongle Selective Suspend INF. We can switch SS mode. */
-	if (pdvobjpriv->RegUsbSS && !SUPPORT_HW_RADIO_DETECT(pHalData)) {
-		/*
-		 * PMGNT_INFO pMgntInfo = &(Adapter->MgntInfo);
-		 *
-		 * if (!pMgntInfo->bRegDongleSS)
-		 * {
-		 * 	RT_TRACE(COMP_INIT, DBG_LOUD, ("Dongle disable SS\n"));
-		 * 	pdvobjpriv->RegUsbSS = _FALSE;
-		 * }
-		 */
-	}
-#endif
 }
 /*-----------------------------------------------------------------------------
  * Function:	HwSuspendModeEnable92Cu()
@@ -1602,99 +1398,6 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 		 * Added by tynli. 2010.03.30.
 		 */
 		pwrctrlpriv->rf_pwrstate = rf_on;
-
-#if 0  	/* to do */
-		RT_CLEAR_PS_LEVEL(pwrctrlpriv, RT_RF_OFF_LEVL_HALT_NIC);
-#if 1 	/* Todo */
-		/*
-		 * 20100326 Joseph: Copy from GPIOChangeRFWorkItemCallBack() function to check HW radio on/off.
-		 */
-		/*
-		 * 20100329 Joseph: Revise and integrate the HW/SW radio off code in initialization.
-		 */
-
-		eRfPowerStateToSet = (rt_rf_power_state) RfOnOffDetect(Adapter);
-		pwrctrlpriv->rfoff_reason |= eRfPowerStateToSet == rf_on ? RF_CHANGE_BY_INIT : RF_CHANGE_BY_HW;
-		pwrctrlpriv->rfoff_reason |= (pwrctrlpriv->reg_rfoff) ? RF_CHANGE_BY_SW : 0;
-
-		if (pwrctrlpriv->rfoff_reason&RF_CHANGE_BY_HW)
-			pwrctrlpriv->b_hw_radio_off = _TRUE;
-
-		DBG_8192C("eRfPowerStateToSet=%d\n", eRfPowerStateToSet);
-
-		if (pwrctrlpriv->reg_rfoff == _TRUE) {
-			/* User disable RF via registry. */
-			DBG_8192C("InitializeAdapter8192CU(): Turn off RF for RegRfOff.\n");
-			/* MgntActSet_RF_State(Adapter, rf_off, RF_CHANGE_BY_SW, _TRUE); */
-
-			/*
-			 * Those action will be discard in MgntActSet_RF_State because off the same state
-			 * for (eRFPath = 0; eRFPath <pHalData->NumTotalRFPath; eRFPath++)
-			 * 	PHY_SetRFReg(Adapter, eRFPath, 0x4, 0xC00, 0x0);
-			 */
-		} else if (pwrctrlpriv->rfoff_reason > RF_CHANGE_BY_PS) {
-			/* H/W or S/W RF OFF before sleep. */
-			DBG_8192C(" Turn off RF for RfOffReason(%x) ----------\n", pwrctrlpriv->rfoff_reason);
-			/* pwrctrlpriv->rfoff_reason = RF_CHANGE_BY_INIT; */
-			pwrctrlpriv->rf_pwrstate = rf_on;
-			/* MgntActSet_RF_State(Adapter, rf_off, pwrctrlpriv->rfoff_reason, _TRUE); */
-		} else {
-			/* Perform GPIO polling to find out current RF state. added by Roger, 2010.04.09. */
-			if (pHalData->BoardType == BOARD_MINICARD
-			/*&& (Adapter->MgntInfo.PowerSaveControl.bGpioRfSw)*/) {
-				DBG_8192C("InitializeAdapter8192CU(): RF=%d \n", eRfPowerStateToSet);
-				if (eRfPowerStateToSet == rf_off) {
-					/* MgntActSet_RF_State(Adapter, rf_off, RF_CHANGE_BY_HW, _TRUE); */
-					pwrctrlpriv->b_hw_radio_off = _TRUE;
-				} else {
-					pwrctrlpriv->rf_pwrstate = rf_off;
-					pwrctrlpriv->rfoff_reason = RF_CHANGE_BY_INIT;
-					pwrctrlpriv->b_hw_radio_off = _FALSE;
-					/* MgntActSet_RF_State(Adapter, rf_on, pwrctrlpriv->rfoff_reason, _TRUE); */
-				}
-			} else {
-				pwrctrlpriv->rf_pwrstate = rf_off;
-				pwrctrlpriv->rfoff_reason = RF_CHANGE_BY_INIT;
-				/* MgntActSet_RF_State(Adapter, rf_on, pwrctrlpriv->rfoff_reason, _TRUE); */
-			}
-
-			pwrctrlpriv->rfoff_reason = 0;
-			pwrctrlpriv->b_hw_radio_off = _FALSE;
-			pwrctrlpriv->rf_pwrstate = rf_on;
-			rtw_led_control(Adapter, LED_CTL_POWER_ON);
-
-		}
-
-		/*
-		 * 2010/-8/09 MH For power down module, we need to enable register block contrl reg at 0x1c.
-		 * Then enable power down control bit of register 0x04 BIT4 and BIT15 as 1.
-		 */
-		if (pHalData->pwrdown && eRfPowerStateToSet == rf_off) {
-			/* Enable register area 0x0-0xc. */
-			rtw_write8(Adapter, REG_RSV_CTRL, 0x0);
-
-			/*
-			 * <Roger_Notes> We should configure HW PDn source for WiFi ONLY, and then
-			 * our HW will be set in power-down mode if PDn source from all  functions are configured.
-			 * 2010.10.06.
-			 *
-			 * if (IS_HARDWARE_TYPE_8723AU(Adapter))
-			 * {
-			 * 	u1bTmp = rtw_read8(Adapter, REG_MULTI_FUNC_CTRL);
-			 * 	rtw_write8(Adapter, REG_MULTI_FUNC_CTRL, (u1bTmp|WL_HWPDN_EN));
-			 * }
-			 * else
-			 * {
-			 */
-				rtw_write16(Adapter, REG_APS_FSMCO, 0x8812);
-			/* } */
-		}
-		/*
-		 * DrvIFIndicateCurrentPhyStatus(Adapter);
-		 * 2010/08/17 MH Disable to prevent BSOD.
-		 */
-#endif
-#endif
 
 		/*
 		 * 0x4c6[3] 1: RTS BW = Data BW
@@ -2151,13 +1854,6 @@ static void hal_CustomizeByCustomerID_8812AU(PADAPTER pAdapter)
 
 VOID hal_ReadUsbModeSwitch_8812AU(PADAPTER Adapter, u8 *PROMContent, BOOLEAN AutoloadFail)
 {
-#if 0
-	if (AutoloadFail) {
-		UsbModeSwitch_SetUsbModeMechOn(Adapter, FALSE);
-	} else {
-		UsbModeSwitch_SetUsbModeMechOn(Adapter, ((PROMContent[8]&BIT1)>>1));
-	}
-#endif
 }
 
 static VOID ReadLEDSetting_8812AU(PADAPTER Adapter,
@@ -2240,13 +1936,6 @@ VOID hal_ReadRFType_8812A(PADAPTER Adapter)
 	pHalData->rf_chip = RF_6052;
 #endif
 
-#if 0
-	if (pHalData->rf_type == RF_1T1R) {
-		pHalData->bRFPathRxEnable[0] = _TRUE;
-	} else {	/* Default unknow type is 2T2r */
-		pHalData->bRFPathRxEnable[0] = pHalData->bRFPathRxEnable[1] = _TRUE;
-	}
-#endif
 
 	if (IsSupported24G(Adapter->registrypriv.wireless_mode) &&
 		IsSupported5G(Adapter->registrypriv.wireless_mode))
@@ -2264,20 +1953,6 @@ VOID hal_ReadRFType_8812A(PADAPTER Adapter)
 
 VOID hal_CustomizedBehavior_8812AUsb(PADAPTER  Adapter)
 {
-#if 0
-	PMGNT_INFO		pMgntInfo = &(Adapter->MgntInfo);
-
-	/* DTM test, we need to disable all power save mode. */
-	if (Adapter->bInHctTest) {
-		pMgntInfo->PowerSaveControl.bInactivePs = FALSE;
-		pMgntInfo->PowerSaveControl.bIPSModeBackup = FALSE;
-		pMgntInfo->PowerSaveControl.bLeisurePs = FALSE;
-		pMgntInfo->PowerSaveControl.bLeisurePsModeBackup = FALSE;
-		pMgntInfo->keepAliveLevel = 0;
-		pMgntInfo->dot11CurrentChannelNumber = 10;
-		pMgntInfo->Regdot11ChannelNumber = 10;
-	}
-#endif
 }
 
 void ReadAdapterInfo8812AU(PADAPTER Adapter)

@@ -1010,18 +1010,6 @@ void Hal_ReadTxPowerInfo8812A(PADAPTER Adapter, uint8_t *PROMContent,
 			pHalData->BW40_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW40_Diff[rfPath][TxCount];
 			pHalData->BW80_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW80_Diff[rfPath][TxCount];
 /* #if DBG */
-#if 0
-			DBG_871X("--------------------------------------- 2.4G ---------------------------------------\n");
-			DBG_871X("CCK_24G_Diff[%d][%d]= %d\n", rfPath, TxCount, pHalData->CCK_24G_Diff[rfPath][TxCount]);
-			DBG_871X("OFDM_24G_Diff[%d][%d]= %d\n", rfPath, TxCount, pHalData->OFDM_24G_Diff[rfPath][TxCount]);
-			DBG_871X("BW20_24G_Diff[%d][%d]= %d\n", rfPath, TxCount, pHalData->BW20_24G_Diff[rfPath][TxCount]);
-			DBG_871X("BW40_24G_Diff[%d][%d]= %d\n", rfPath, TxCount, pHalData->BW40_24G_Diff[rfPath][TxCount]);
-			DBG_871X("---------------------------------------- 5G ----------------------------------------\n");
-			DBG_871X("OFDM_5G_Diff[%d][%d]= %d\n", rfPath, TxCount, pHalData->OFDM_5G_Diff[rfPath][TxCount]);
-			DBG_871X("BW20_5G_Diff[%d][%d]= %d\n", rfPath, TxCount, pHalData->BW20_5G_Diff[rfPath][TxCount]);
-			DBG_871X("BW40_5G_Diff[%d][%d]= %d\n", rfPath, TxCount, pHalData->BW40_5G_Diff[rfPath][TxCount]);
-			DBG_871X("BW80_5G_Diff[%d][%d]= %d\n", rfPath, TxCount, pHalData->BW80_5G_Diff[rfPath][TxCount]);
-#endif
 		}
 	}
 
@@ -1998,10 +1986,6 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER pAdapter, uint8_t offset,
 	efuse_WordEnableDataRead(word_en, data, target_pkt.data);
 	target_word_cnts = Efuse_CalculateWordCnts(target_pkt.word_en);
 
-#if 0
-	efuse_reg_ctrl(pAdapter, _TRUE);		/* power on */
-	DBG_871X("EFUSE Power ON\n");
-#endif
 	/*
 	 * <Roger_Notes> Efuse has been pre-programmed dummy 5Bytes at the end of Efuse by CP.
 	 * So we have to prevent unexpected data string connection, which will cause
@@ -2304,9 +2288,6 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER pAdapter, uint8_t offset,
 
 					if (Efuse_PgPacketRead(pAdapter, tmp_pkt.offset, originaldata)) {
 						/* check if data exist */
-#if 0
-						efuse_reg_ctrl(pAdapter, _TRUE);	/* power on */
-#endif
 						badworden = Efuse_WordEnableDataWrite(pAdapter, efuse_addr+1, tmp_pkt.word_en, originaldata);
 						/* ############################ */
 						if (0x0F != (badworden & 0x0F)) {
@@ -2373,10 +2354,6 @@ hal_EfusePgPacketWrite_8812A(IN	PADAPTER pAdapter, uint8_t offset,
 	if (efuse_addr >= (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR)) {
 		DBG_871X("hal_EfusePgPacketWrite_8812A(): efuse_addr(%#x) Out of size!!\n", efuse_addr);
 	}
-#if 0
-	efuse_reg_ctrl(pAdapter, _FALSE);	/* power off */
-#endif
-
 	return _TRUE;
 }
 
@@ -2953,11 +2930,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, uint8_t variable, uint8_t *val)
 			rtw_write8(Adapter, REG_BCN_CTRL, 0x12);
 
 			/* Set RCR */
-#if 0
-			rtw_write32(padapter, REG_RCR, 0x70002a8e);	/* CBSSID_DATA must set to 0 */
-			rtw_write32(Adapter, REG_RCR, 0x7000228e);	/* CBSSID_DATA must set to 0 */
-#endif
-
 			rtw_write32(Adapter, REG_RCR, 0x7000208e);	/* CBSSID_DATA must set to 0,reject ICV_ERR packet */
 			/* enable to rx data frame */
 			rtw_write16(Adapter, REG_RXFLTMAP2, 0xFFFF);
@@ -3533,11 +3505,6 @@ void SetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval)
 			rtw_write32(padapter, REG_AMPDU_MAX_LENGTH_8812, AMPDULen);
 		}
 		break;
-#if 0
-	case HW_VAR_RXDMA_AGG_PG_TH:
-		rtw_write8(padapter, REG_RXDMA_AGG_PG_TH, *pval);
-		break;
-#endif
 	case HW_VAR_H2C_FW_PWRMODE:
 		{
 			uint8_t psmode = *pval;
@@ -3613,21 +3580,6 @@ void SetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval)
 	case HW_VAR_EFUSE_BYTES:
 		pHalData->EfuseUsedBytes = *(uint16_t *)pval;
 		break;
-#if 0
-	case HW_VAR_EFUSE_BT_USAGE:
-#ifdef HAL_EFUSE_MEMORY
-		pHalData->EfuseHal.BTEfuseUsedPercentage = *pval;
-#endif
-		break;
-
-	case HW_VAR_EFUSE_BT_BYTES:
-#ifdef HAL_EFUSE_MEMORY
-		pHalData->EfuseHal.BTEfuseUsedBytes = *(uint16_t *)pval;
-#else
-		BTEfuseUsedBytes = *(uint16_t *)pval;
-#endif
-		break;
-#endif
 	case HW_VAR_FIFO_CLEARN_UP:
 		{
 			struct pwrctrl_priv *pwrpriv;
@@ -3893,11 +3845,6 @@ uint8_t SetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pv
 				/* disable tx power tracking */
 				podmpriv->SupportAbility &= (~DYNAMIC_RF_CALIBRATION);
 				DBG_8192C("==> Disable tx power tracking...\n");
-#if 0
-			} else if (dm_func == 4) {
-				/* disable BT coexistence */
-				pdmpriv->DMFlag &= (~DYNAMIC_FUNC_BT);
-#endif
 			} else if (dm_func == 5) {
 				/* disable antenna diversity */
 				podmpriv->SupportAbility &= (~DYNAMIC_BB_ANT_DIV);

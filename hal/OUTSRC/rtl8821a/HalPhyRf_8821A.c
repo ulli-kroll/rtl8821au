@@ -63,11 +63,6 @@ static void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 
 
 #if 0 /* gtemp */
-#if (MP_DRIVER == 1)
-	/* PMPT_CONTEXT			pMptCtx = &(Adapter->MptCtx); */
-	PMPT_CONTEXT			pMptCtx = &Adapter->mppriv.MptCtx;
-	TxRate = MptToMgntRate(pMptCtx->MptRateIndex);
-#else
 	PMGNT_INFO      		pMgntInfo = &(Adapter->MgntInfo);
 
 	if (!pMgntInfo->ForcedDataRate) {
@@ -78,7 +73,6 @@ static void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 		/* force rate */
 		TxRate = (u1Byte) pMgntInfo->ForcedDataRate;
 	}
-#endif
 #endif
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8821A\n"));
@@ -1150,13 +1144,6 @@ void PHY_IQCalibrate_8821A(PADAPTER pAdapter, BOOLEAN bReCovery)
 
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
-#if (MP_DRIVER == 1)
-	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
-#endif
-
-#if MP_DRIVER == 1
-	if (!(pMptCtx->bSingleTone || pMptCtx->bCarrierSuppression))
-#endif
 	{
 		/*
 		 * if(pMgntInfo->RegIQKFWOffload)

@@ -4055,10 +4055,6 @@ uint8_t GetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pv
 			*(uint8_t *)pval = _FALSE;
 		else
 			*(uint8_t *)pval = _FALSE;
-#if (MP_DRIVER == 1)
-		if (padapter->registrypriv.mp_mode == 1)
-			*(uint8_t *)pval = _TRUE;
-#endif
 		break;
 
 	case HAL_DEF_TX_STBC:

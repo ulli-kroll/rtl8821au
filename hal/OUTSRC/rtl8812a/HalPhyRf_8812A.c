@@ -80,11 +80,6 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	u1Byte			i = 0;
 
 #if 0
-#if (MP_DRIVER == 1)
-		PMPT_CONTEXT			pMptCtx = &(Adapter->MptCtx);
-
-		TxRate = MptToMgntRate(pMptCtx->MptRateIndex);
-#else
 		uint16_t			rate	 = *(pDM_Odm->pForcedDataRate);
 
 		if (!rate) {
@@ -95,7 +90,6 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 			/* force rate */
 			TxRate = (u1Byte) rate;
 		}
-#endif
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8812A\n"));
 #endif
 	if (TxRate != 0xFF) {
@@ -1745,13 +1739,6 @@ VOID PHY_IQCalibrate_8812A(PADAPTER pAdapter, BOOLEAN bReCovery)
 
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
-#if (MP_DRIVER == 1)
-	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
-#endif
-
-#if MP_DRIVER == 1
-	if ((pMptCtx->bSingleTone || pMptCtx->bCarrierSuppression))
-#endif
 	{
 
 		/*
@@ -1771,19 +1758,7 @@ void PHY_LCCalibrate_8812A(PDM_ODM_T pDM_Odm)
 	PADAPTER 		pAdapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
-
-#if (MP_DRIVER == 1)
-	PMPT_CONTEXT	pMptCtx = &(pAdapter->mppriv.MptCtx);
-	bStartContTx = pMptCtx->bStartContTx;
-	bSingleTone = pMptCtx->bSingleTone;
-	bCarrierSuppression = pMptCtx->bCarrierSuppression;
-#endif
-
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_LCCalibrate_8812A\n"));
-
-#if (MP_DRIVER == 1)
-	phy_LCCalibrate_8812A(pDM_Odm, TRUE);
-#endif
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("<=== PHY_LCCalibrate_8812A\n"));
 

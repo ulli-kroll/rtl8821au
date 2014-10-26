@@ -314,14 +314,6 @@ static void Update_ODM_ComInfo_8812(PADAPTER Adapter)
 			;
 	if (pHalData->AntDivCfg)
 		pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
-
-#if (MP_DRIVER==1)
-	if (Adapter->registrypriv.mp_mode == 1) {
-		pdmpriv->InitODMFlag = 	ODM_RF_CALIBRATION	|
-					ODM_RF_TX_PWR_TRACK;
-		}
-#endif
-
 #endif
 	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 

@@ -1422,11 +1422,6 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_LLTT);
 	}
 
 HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_DOWNLOAD_FW);
-#if (MP_DRIVER == 1)
-	if (Adapter->registrypriv.mp_mode == 1) {
-		_InitRxSetting_8812AU(Adapter);
-	}
-#endif
 	{
 		status = FirmwareDownload8812(Adapter, _FALSE);
 		if (status != _SUCCESS) {
@@ -1595,12 +1590,6 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 
 	rtl8812_InitHalDm(Adapter);
 
-#if (MP_DRIVER == 1)
-	if (Adapter->registrypriv.mp_mode == 1) {
-		Adapter->mppriv.channel = pHalData->CurrentChannel;
-		MPT_InitializeAdapter(Adapter, Adapter->mppriv.channel);
-	} else
-#endif
 		{
 		/*
 		 * 2010/08/11 MH Merge from 8192SE for Minicard init. We need to confirm current radio status

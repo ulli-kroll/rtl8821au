@@ -52,10 +52,6 @@ void _dynamic_check_timer_handlder (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
 
-#if (MP_DRIVER == 1)
-if (adapter->registrypriv.mp_mode == 1)
-	return;
-#endif
 	rtw_dynamic_check_timer_handlder(adapter);
 
 	_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);

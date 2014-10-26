@@ -164,9 +164,6 @@
 
 #define DISABLE_BB_RF	0
 
-	#define MP_DRIVER 0
-
-
 /*
  * Platform  Related Config
  */

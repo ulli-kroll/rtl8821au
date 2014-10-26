@@ -3229,10 +3229,6 @@ PHY_SetTxPowerLevelByPath8812(
                             		MGN_VHT2SS_MCS5, MGN_VHT2SS_MCS6, MGN_VHT2SS_MCS7, MGN_VHT2SS_MCS8, MGN_VHT2SS_MCS9};
 
 	//DBG_871X("==>PHY_SetTxPowerLevelByPath8812()\n");
-#if(MP_DRIVER == 1)
-	if (pregistrypriv->mp_mode == 1)
-		return;
-#endif
 
 	//if(pMgntInfo->RegNByteAccess == 0)
 	{
@@ -4339,9 +4335,6 @@ phy_SwChnlAndSetBwMode8812(
 		phy_InitRssiTRSW(Adapter);
 
 	if ( (pHalData->bNeedIQK == _TRUE)
-#if (MP_DRIVER == 1)
-		|| (Adapter->registrypriv.mp_mode == 1)
-#endif
 		)
 	{
 		if(IS_HARDWARE_TYPE_8812(Adapter))

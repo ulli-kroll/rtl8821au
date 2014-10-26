@@ -129,11 +129,6 @@ bool rtw_pwr_unassociated_idle(struct _ADAPTER *adapter)
 		goto exit;
 	}
 
-
-#if (MP_DRIVER == 1)
-	if (adapter->registrypriv.mp_mode == 1)
-		goto exit;
-#endif
 	if (pxmit_priv->free_xmitbuf_cnt != NR_XMITBUFF ||
 		pxmit_priv->free_xmit_extbuf_cnt != NR_XMIT_EXTBUFF) {
 		DBG_871X_LEVEL(_drv_always_, "There are some pkts to transmit\n");

@@ -66,32 +66,32 @@ static void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	if (TxRate != 0xFF) {
 		/* 2 CCK */
 		if ((TxRate >= MGN_1M) && (TxRate <= MGN_11M))
-			PwrTrackingLimit = 32; /* +4dB */
+			PwrTrackingLimit = 32;				/* +4dB */
 		/* 2 OFDM */
 		else if ((TxRate >= MGN_6M) && (TxRate <= MGN_48M))
-			PwrTrackingLimit = 32; /* +4dB */
+			PwrTrackingLimit = 32;				/* +4dB */
 		else if (TxRate == MGN_54M)
-			PwrTrackingLimit = 30; /* +3dB */
+			PwrTrackingLimit = 30;				/* +3dB */
 		/* 2 HT */
-		else if ((TxRate >= MGN_MCS0) && (TxRate <= MGN_MCS2)) /* QPSK/BPSK */
-			PwrTrackingLimit = 34; /* +5dB */
-		else if ((TxRate >= MGN_MCS3) && (TxRate <= MGN_MCS4)) /* 16QAM */
-			PwrTrackingLimit = 32; /* +4dB */
-		else if ((TxRate >= MGN_MCS5) && (TxRate <= MGN_MCS7)) /* 64QAM */
-			PwrTrackingLimit = 30; /* +3dB */
+		else if ((TxRate >= MGN_MCS0) && (TxRate <= MGN_MCS2))  /* QPSK/BPSK */
+			PwrTrackingLimit = 34;				/* +5dB */
+		else if ((TxRate >= MGN_MCS3) && (TxRate <= MGN_MCS4))  /* 16QAM */
+			PwrTrackingLimit = 32;				/* +4dB */
+		else if ((TxRate >= MGN_MCS5) && (TxRate <= MGN_MCS7))  /* 64QAM */
+			PwrTrackingLimit = 30;				/* +3dB */
 		/* 2 VHT */
-		else if ((TxRate >= MGN_VHT1SS_MCS0) && (TxRate <= MGN_VHT1SS_MCS2)) /* QPSK/BPSK */
-			PwrTrackingLimit = 34; /* +5dB */
-		else if ((TxRate >= MGN_VHT1SS_MCS3) && (TxRate <= MGN_VHT1SS_MCS4)) /* 16QAM */
-			PwrTrackingLimit = 32; /* +4dB */
-		else if ((TxRate >= MGN_VHT1SS_MCS5) && (TxRate <= MGN_VHT1SS_MCS6)) /* 64QAM */
-			PwrTrackingLimit = 30; /* +3dB */
-		else if (TxRate == MGN_VHT1SS_MCS7) /* 64QAM */
-			PwrTrackingLimit = 28; /* +2dB */
-		else if (TxRate == MGN_VHT1SS_MCS8) /* 256QAM */
-			PwrTrackingLimit = 26; /* +1dB */
-		else if (TxRate == MGN_VHT1SS_MCS9) /* 256QAM */
-			PwrTrackingLimit = 24; /* +0dB */
+		else if ((TxRate >= MGN_VHT1SS_MCS0) && (TxRate <= MGN_VHT1SS_MCS2))    /* QPSK/BPSK */
+			PwrTrackingLimit = 34;						/* +5dB */
+		else if ((TxRate >= MGN_VHT1SS_MCS3) && (TxRate <= MGN_VHT1SS_MCS4))    /* 16QAM */
+			PwrTrackingLimit = 32;						/* +4dB */
+		else if ((TxRate >= MGN_VHT1SS_MCS5) && (TxRate <= MGN_VHT1SS_MCS6))    /* 64QAM */
+			PwrTrackingLimit = 30;						/* +3dB */
+		else if (TxRate == MGN_VHT1SS_MCS7)					/* 64QAM */
+			PwrTrackingLimit = 28;						/* +2dB */
+		else if (TxRate == MGN_VHT1SS_MCS8)					/* 256QAM */
+			PwrTrackingLimit = 26;						/* +1dB */
+		else if (TxRate == MGN_VHT1SS_MCS9)					/* 256QAM */
+			PwrTrackingLimit = 24;						/* +0dB */
 		else
 			PwrTrackingLimit = 24;
 	}
@@ -173,8 +173,8 @@ static void GetDeltaSwingTable_8821A(PDM_ODM_T pDM_Odm,
 	PADAPTER        Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	HAL_DATA_TYPE  	*pHalData = GET_HAL_DATA(Adapter);
-	/* uint16_t         	rate 	  	   	 = pMgntInfo->ForcedDataRate; */
-	uint16_t         	rate 	  	   	 = 0;
+	/* uint16_t     rate = pMgntInfo->ForcedDataRate; */
+	uint16_t	rate = 0;
 	u1Byte         	channel   		 = pHalData->CurrentChannel;
 
 	if (1 <= channel && channel <= 14) {
@@ -282,8 +282,9 @@ static void _IQK_BackupMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n"));
 }
 
-static void _IQK_BackupRF_8821A(PDM_ODM_T pDM_Odm, uint32_t *RFA_backup,
-	uint32_t *RFB_backup, uint32_t *Backup_RF_REG, uint32_t RF_NUM)
+static void _IQK_BackupRF_8821A(PDM_ODM_T pDM_Odm,
+	uint32_t *RFA_backup, uint32_t *RFB_backup, 
+	uint32_t *Backup_RF_REG, uint32_t RF_NUM)
 {
 	uint32_t i;
 
@@ -295,8 +296,8 @@ static void _IQK_BackupRF_8821A(PDM_ODM_T pDM_Odm, uint32_t *RFA_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n"));
 }
 
-static void _IQK_BackupAFE_8821A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
-	uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
+static void _IQK_BackupAFE_8821A(PDM_ODM_T pDM_Odm,
+	uint32_t *AFE_backup, uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
 	uint32_t i;
 
@@ -308,11 +309,11 @@ static void _IQK_BackupAFE_8821A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n"));
 }
 
-static void _IQK_RestoreMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t	 *MACBB_backup,
-	uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
+static void _IQK_RestoreMacBB_8821A(PDM_ODM_T pDM_Odm,
+	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);	/* [31] = 0 --> Page C */
+	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
 	/* Reload MacBB Parameters */
 	for (i = 0; i < MACBB_NUM; i++) {
 		ODM_Write4Byte(pDM_Odm, Backup_MACBB_REG[i], MACBB_backup[i]);
@@ -320,8 +321,8 @@ static void _IQK_RestoreMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t	 *MACBB_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n"));
 }
 
-static void _IQK_RestoreRF_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
-	uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
+static void _IQK_RestoreRF_8821A(PDM_ODM_T pDM_Odm,
+	ODM_RF_RADIO_PATH_E  Path,uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
 {
 	uint32_t i;
 
@@ -364,9 +365,9 @@ static void _IQK_ConfigureMAC_8821A(PDM_ODM_T pDM_Odm)
 	ODM_Write1Byte(pDM_Odm, 0x522, 0x3f);
 	ODM_SetBBReg(pDM_Odm, 0x550, BIT(3), 0x0);
 	ODM_SetBBReg(pDM_Odm, 0x551, BIT(3), 0x0);
-	ODM_SetBBReg(pDM_Odm, 0x808, BIT(28), 0x0);	/*		CCK Off */
-	ODM_Write1Byte(pDM_Odm, 0x808, 0x00);		/*		RX ante off */
-	ODM_SetBBReg(pDM_Odm, 0x838, 0xf, 0xc);		/*		CCA off */
+	ODM_SetBBReg(pDM_Odm, 0x808, BIT(28), 0x0);	/* CCK Off */
+	ODM_Write1Byte(pDM_Odm, 0x808, 0x00);		/* RX ante off */
+	ODM_SetBBReg(pDM_Odm, 0x838, 0xf, 0xc);		/* CCA off */
 }
 
 #define cal_num 3
@@ -1119,13 +1120,8 @@ static void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
 #define		DP_DPK_VALUE_NUM	2
 
 
-
-
-
 void PHY_IQCalibrate_8821A(PADAPTER pAdapter, BOOLEAN bReCovery)
 {
-
-
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;

@@ -73,31 +73,31 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 
-	u1Byte			PwrTrackingLimit = 26; /* +1.0dB */
-	u1Byte			TxRate = 0xFF;
-	s1Byte			Final_OFDM_Swing_Index = 0;
-	s1Byte			Final_CCK_Swing_Index = 0;
-	u1Byte			i = 0;
+	u1Byte PwrTrackingLimit = 26; /* +1.0dB */
+	u1Byte TxRate = 0xFF;
+	s1Byte Final_OFDM_Swing_Index = 0;
+	s1Byte Final_CCK_Swing_Index = 0;
+	u1Byte i = 0;
 
 	if (TxRate != 0xFF) {
 		/* Ulli better with switch case, see in rtlwifi-lib */
 		/* 2 CCK */
 		if ((TxRate >= MGN_1M) && (TxRate <= MGN_11M))
-			PwrTrackingLimit = 32; 				/* +4dB */
+			PwrTrackingLimit = 32;				/* +4dB */
 		/* 2 OFDM */
 		else if ((TxRate >= MGN_6M) && (TxRate <= MGN_48M))
-			PwrTrackingLimit = 32; 				/* +4dB */
+			PwrTrackingLimit = 32;				/* +4dB */
 		else if (TxRate == MGN_54M)
-			PwrTrackingLimit = 30; 				/* +3dB */
+			PwrTrackingLimit = 30;				/* +3dB */
 
 		/* ULLI 80211n */
 		/* 2 HT */
-		else if ((TxRate >= MGN_MCS0) && (TxRate <= MGN_MCS2)) 	/* QPSK/BPSK */
-			PwrTrackingLimit = 34; 				/* +5dB */
-		else if ((TxRate >= MGN_MCS3) && (TxRate <= MGN_MCS4)) 	/* 16QAM */
-			PwrTrackingLimit = 32; 				/* +4dB */
-		else if ((TxRate >= MGN_MCS5) && (TxRate <= MGN_MCS7)) 	/* 64QAM */
-			PwrTrackingLimit = 30; 				/* +3dB */
+		else if ((TxRate >= MGN_MCS0) && (TxRate <= MGN_MCS2))  /* QPSK/BPSK */
+			PwrTrackingLimit = 34;				/* +5dB */
+		else if ((TxRate >= MGN_MCS3) && (TxRate <= MGN_MCS4))  /* 16QAM */
+			PwrTrackingLimit = 32;				/* +4dB */
+		else if ((TxRate >= MGN_MCS5) && (TxRate <= MGN_MCS7))  /* 64QAM */
+			PwrTrackingLimit = 30;				/* +3dB */
 
 		else if ((TxRate >= MGN_MCS8) && (TxRate <= MGN_MCS10)) 	/* QPSK/BPSK */
 			PwrTrackingLimit = 34; 				/* +5dB */
@@ -108,18 +108,18 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 
 		/* Ulli 802.11ac */
 		/* 2 VHT */
-		else if ((TxRate >= MGN_VHT1SS_MCS0) && (TxRate <= MGN_VHT1SS_MCS2)) 	/* QPSK/BPSK */
-			PwrTrackingLimit = 34; 						/* +5dB */
-		else if ((TxRate >= MGN_VHT1SS_MCS3) && (TxRate <= MGN_VHT1SS_MCS4)) 	/* 16QAM */
-			PwrTrackingLimit = 32; 						/* +4dB */
-		else if ((TxRate >= MGN_VHT1SS_MCS5) && (TxRate <= MGN_VHT1SS_MCS6)) 	/* 64QAM */
-			PwrTrackingLimit = 30; 						/* +3dB */
-		else if (TxRate == MGN_VHT1SS_MCS7) 					/* 64QAM */
-			PwrTrackingLimit = 28; 						/* +2dB */
-		else if (TxRate == MGN_VHT1SS_MCS8) 					/* 256QAM */
-			PwrTrackingLimit = 26; 						/* +1dB */
-		else if (TxRate == MGN_VHT1SS_MCS9) 					/* 256QAM */
-			PwrTrackingLimit = 24; 						/* +0dB */
+		else if ((TxRate >= MGN_VHT1SS_MCS0) && (TxRate <= MGN_VHT1SS_MCS2))    /* QPSK/BPSK */
+			PwrTrackingLimit = 34;						/* +5dB */
+		else if ((TxRate >= MGN_VHT1SS_MCS3) && (TxRate <= MGN_VHT1SS_MCS4))    /* 16QAM */
+			PwrTrackingLimit = 32;						/* +4dB */
+		else if ((TxRate >= MGN_VHT1SS_MCS5) && (TxRate <= MGN_VHT1SS_MCS6))    /* 64QAM */
+			PwrTrackingLimit = 30;						/* +3dB */
+		else if (TxRate == MGN_VHT1SS_MCS7)					/* 64QAM */
+			PwrTrackingLimit = 28;						/* +2dB */
+		else if (TxRate == MGN_VHT1SS_MCS8)					/* 256QAM */
+			PwrTrackingLimit = 26;						/* +1dB */
+		else if (TxRate == MGN_VHT1SS_MCS9)					/* 256QAM */
+			PwrTrackingLimit = 24;						/* +0dB */
 
 		else if ((TxRate >= MGN_VHT2SS_MCS0) && (TxRate <= MGN_VHT2SS_MCS2)) 	/* QPSK/BPSK */
 			PwrTrackingLimit = 34; 						/* +5dB */
@@ -138,7 +138,6 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 			PwrTrackingLimit = 24;
 	}
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit));
-
 
 	if (Method == BBSWING) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8812A\n"));
@@ -254,14 +253,14 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	}
 }
 
-static void GetDeltaSwingTable_8812A(PDM_ODM_T pDM_Odm, pu1Byte *TemperatureUP_A,
-	pu1Byte *TemperatureDOWN_A, pu1Byte *TemperatureUP_B,
-	pu1Byte *TemperatureDOWN_B)
+static void GetDeltaSwingTable_8812A(PDM_ODM_T pDM_Odm,
+	pu1Byte *TemperatureUP_A, pu1Byte *TemperatureDOWN_A,
+	pu1Byte *TemperatureUP_B, pu1Byte *TemperatureDOWN_B)
 {
-	PADAPTER        Adapter   		 = pDM_Odm->Adapter;
+	PADAPTER        Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-	HAL_DATA_TYPE  	*pHalData  		 = GET_HAL_DATA(Adapter);
-	uint16_t			rate			 = *(pDM_Odm->pForcedDataRate);
+	HAL_DATA_TYPE  	*pHalData = GET_HAL_DATA(Adapter);
+	uint16_t	rate = *(pDM_Odm->pForcedDataRate);
 	u1Byte         	channel   		 = pHalData->CurrentChannel;
 
 	if (1 <= channel && channel <= 14) {
@@ -404,11 +403,11 @@ static void _IQK_BackupMacBB_8812A(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
 }
 
 static void _IQK_BackupRF_8812A(PDM_ODM_T pDM_Odm,
-	uint32_t *RFA_backup, uint32_t *RFB_backup, uint32_t *Backup_RF_REG,
-	uint32_t RF_NUM)
+	uint32_t *RFA_backup, uint32_t *RFB_backup, 
+	uint32_t *Backup_RF_REG, uint32_t RF_NUM)
 {
 	uint32_t i;
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
+	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save RF Parameters */
 	for (i = 0; i < RF_NUM; i++) {
 		RFA_backup[i] = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG[i], bMaskDWord);
@@ -417,8 +416,8 @@ static void _IQK_BackupRF_8812A(PDM_ODM_T pDM_Odm,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n"));
 }
 
-static void _IQK_BackupAFE_8812A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
-	uint32_t *Backup_AFE_REG, uint32_t	AFE_NUM)
+static void _IQK_BackupAFE_8812A(PDM_ODM_T pDM_Odm,
+	uint32_t *AFE_backup, uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
 	uint32_t i;
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -433,7 +432,7 @@ static void _IQK_RestoreMacBB_8812A(PDM_ODM_T pDM_Odm,
 	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
 	/* Reload MacBB Parameters */
 	for (i = 0; i < MACBB_NUM; i++) {
 		ODM_Write4Byte(pDM_Odm, Backup_MACBB_REG[i], MACBB_backup[i]);
@@ -441,8 +440,8 @@ static void _IQK_RestoreMacBB_8812A(PDM_ODM_T pDM_Odm,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n"));
 }
 
-static void _IQK_RestoreRF_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
-	uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
+static void _IQK_RestoreRF_8812A(PDM_ODM_T pDM_Odm,
+	ODM_RF_RADIO_PATH_E Path, uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
 {
 	uint32_t i;
 
@@ -1689,18 +1688,17 @@ static void phy_LCCalibrate_8812A(PDM_ODM_T pDM_Odm, BOOLEAN	is2T)
 #define		DP_RF_REG_NUM		1
 #define		DP_RETRY_LIMIT		10
 #define		DP_PATH_NUM		2
-#define		DP_DPK_NUM			3
+#define		DP_DPK_NUM		3
 #define		DP_DPK_VALUE_NUM	2
 
 
-VOID PHY_IQCalibrate_8812A(PADAPTER pAdapter, BOOLEAN bReCovery)
+void PHY_IQCalibrate_8812A(PADAPTER pAdapter, BOOLEAN bReCovery)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	{
-
 		/*
 		 * if(pMgntInfo->RegIQKFWOffload)
 		 * 	phy_IQCalibrate_By_FW_8812A(pAdapter);

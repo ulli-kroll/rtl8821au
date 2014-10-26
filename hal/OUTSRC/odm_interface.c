@@ -31,31 +31,8 @@
 //
 // ODM Memory relative API.
 //
-VOID
-ODM_AllocateMemory(
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	PVOID		*pPtr,
-	IN	uint32_t		length
-	)
-{
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE )
-	*pPtr = rtw_zvmalloc(length);
-#endif
-}
 
 // length could be ignored, used to detect memory leakage.
-VOID
-ODM_FreeMemory(
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	PVOID		pPtr,
-	IN	uint32_t		length
-	)
-{
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE )
-	/* ULLI check usage of length */
-	rtw_vmfree(pPtr);
-#endif
-}
 
 int32_t ODM_CompareMemory(
 	IN 	PDM_ODM_T	pDM_Odm,

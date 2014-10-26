@@ -200,18 +200,6 @@ static uint32_t ODM_GetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
 //
 // Memory Relative Function.
 //
-VOID
-ODM_AllocateMemory(
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	PVOID		*pPtr,
-	IN	uint32_t		length
-	);
-VOID
-ODM_FreeMemory(
-	IN 	PDM_ODM_T	pDM_Odm,
-	OUT	PVOID		pPtr,
-	IN	uint32_t		length
-	);
 
 int32_t ODM_CompareMemory(
 	IN 	PDM_ODM_T	pDM_Odm,

@@ -36,16 +36,5 @@
 //
 // ODM Timer relative API.
 //
-VOID
-ODM_StallExecution(
-	IN	uint32_t	usDelay
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	udelay(usDelay);
-#endif
-}
-
-
 
 

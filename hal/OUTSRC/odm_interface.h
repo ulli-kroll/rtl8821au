@@ -204,10 +204,5 @@ static uint32_t ODM_GetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
 //
 // ODM Timer relative API.
 //
-VOID
-ODM_StallExecution(
-	IN	uint32_t	usDelay
-	);
-
 #endif	// __ODM_INTERFACE_H__
 

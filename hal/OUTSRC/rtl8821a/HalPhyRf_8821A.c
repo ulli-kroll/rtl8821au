@@ -61,20 +61,6 @@ static void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	u1Byte i = 0;
 	uint32_t finalBbSwingIdx[1];
 
-
-#if 0 /* gtemp */
-	PMGNT_INFO      		pMgntInfo = &(Adapter->MgntInfo);
-
-	if (!pMgntInfo->ForcedDataRate) {
-		/* auto rate */
-		if (pDM_Odm->TxRate != 0xFF)
-			TxRate = HwRateToMRate8812(pDM_Odm->TxRate);
-	} else {
-		/* force rate */
-		TxRate = (u1Byte) pMgntInfo->ForcedDataRate;
-	}
-#endif
-
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8821A\n"));
 
 	if (TxRate != 0xFF) {

@@ -2254,61 +2254,6 @@ void phy_PowerIndexCheck8812(
 {
 
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
-#if 0//(CCX_SUPPORT == 1)
-	PMGNT_INFO			pMgntInfo = &(Adapter->MgntInfo);
-	PRT_CCX_INFO		pCcxInfo = GET_CCX_INFO(pMgntInfo);
-
-	//
-	// CCX 2 S31, AP control of client transmit power:
-	// 1. We shall not exceed Cell Power Limit as possible as we can.
-	// 2. Tolerance is +/- 5dB.
-	// 3. 802.11h Power Contraint takes higher precedence over CCX Cell Power Limit.
-	//
-	// TODO:
-	// 1. 802.11h power contraint
-	//
-	// 071011, by rcnjko.
-	//
-	if(	pMgntInfo->OpMode == RT_OP_MODE_INFRASTRUCTURE &&
-		pMgntInfo->mAssoc &&
-		pCcxInfo->bUpdateCcxPwr &&
-		pCcxInfo->bWithCcxCellPwr &&
-		channel == pMgntInfo->dot11CurrentChannelNumber)
-	{
-		u1Byte	CckCellPwrIdx = phy_DbmToTxPwrIdx(Adapter, WIRELESS_MODE_B, pCcxInfo->CcxCellPwr);
-		u1Byte	LegacyOfdmCellPwrIdx = phy_DbmToTxPwrIdx(Adapter, WIRELESS_MODE_G, pCcxInfo->CcxCellPwr);
-		u1Byte	OfdmCellPwrIdx = phy_DbmToTxPwrIdx(Adapter, WIRELESS_MODE_N_24G, pCcxInfo->CcxCellPwr);
-
-		RT_TRACE(COMP_TXAGC, DBG_LOUD,
-		("CCX Cell Limit: %d dbm => CCK Tx power index : %d, Legacy OFDM Tx power index : %d, OFDM Tx power index: %d\n",
-		pCcxInfo->CcxCellPwr, CckCellPwrIdx, LegacyOfdmCellPwrIdx, OfdmCellPwrIdx));
-		RT_TRACE(COMP_TXAGC, DBG_LOUD,
-		("EEPROM channel(%d) => CCK Tx power index: %d, Legacy OFDM Tx power index : %d, OFDM Tx power index: %d\n",
-		channel, cckPowerLevel[0], ofdmPowerLevel[0] + pHalData->LegacyHTTxPowerDiff, ofdmPowerLevel[0]));
-
-		// CCK
-		if(cckPowerLevel[0] > CckCellPwrIdx)
-			cckPowerLevel[0] = CckCellPwrIdx;
-		// Legacy OFDM, HT OFDM
-		if(ofdmPowerLevel[0] + pHalData->LegacyHTTxPowerDiff > LegacyOfdmCellPwrIdx)
-		{
-			if((OfdmCellPwrIdx - pHalData->LegacyHTTxPowerDiff) > 0)
-			{
-				ofdmPowerLevel[0] = OfdmCellPwrIdx - pHalData->LegacyHTTxPowerDiff;
-			}
-			else
-			{
-				ofdmPowerLevel[0] = 0;
-			}
-		}
-
-		RT_TRACE(COMP_TXAGC, DBG_LOUD,
-		("Altered CCK Tx power index : %d, Legacy OFDM Tx power index: %d, OFDM Tx power index: %d\n",
-		cckPowerLevel[0], ofdmPowerLevel[0] + pHalData->LegacyHTTxPowerDiff, ofdmPowerLevel[0]));
-	}
-#else
-	// Add or not ???
-#endif
 
 	pHalData->CurrentCckTxPwrIdx = cckPowerLevel[0];
 	pHalData->CurrentOfdm24GTxPwrIdx = ofdmPowerLevel[0];

@@ -201,13 +201,6 @@ static uint32_t ODM_GetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
 // Memory Relative Function.
 //
 
-int32_t ODM_CompareMemory(
-	IN 	PDM_ODM_T	pDM_Odm,
-	IN	PVOID           pBuf1,
-      IN	PVOID           pBuf2,
-      IN	uint32_t          length
-       );
-
 //
 // ODM Timer relative API.
 //

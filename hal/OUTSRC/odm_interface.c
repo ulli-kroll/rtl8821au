@@ -33,19 +33,6 @@
 //
 
 // length could be ignored, used to detect memory leakage.
-
-int32_t ODM_CompareMemory(
-	IN 	PDM_ODM_T	pDM_Odm,
-	IN	PVOID           pBuf1,
-      IN	PVOID           pBuf2,
-      IN	uint32_t          length
-       )
-{
-#if (DM_ODM_SUPPORT_TYPE & ODM_CE )
-	return _rtw_memcmp(pBuf1,pBuf2,length);
-#endif
-}
-
 //
 // ODM Timer relative API.
 //

@@ -143,9 +143,6 @@
 #define CONFIG_USB_VENDOR_REQ_MUTEX
 #define CONFIG_VENDOR_REQ_RETRY
 
-//#define CONFIG_USB_SUPPORT_ASYNC_VDN_REQ 1
-
-
 /*
  * HAL  Related Config
  */

@@ -219,11 +219,6 @@ struct pwrctrl_priv
 	uint8_t		brfoffbyhw;
 	unsigned long PS_BBRegBackup[PSBBREG_TOTALCNT];
 
-	#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	struct workqueue_struct *rtw_workqueue;
-	_workitem resume_work;
-	#endif
-
 	#ifdef CONFIG_HAS_EARLYSUSPEND
 	struct early_suspend early_suspend;
 	uint8_t do_late_resume;
@@ -288,9 +283,6 @@ void LPS_Enter(PADAPTER padapter);
 void LPS_Leave(PADAPTER padapter);
 #endif
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-void rtw_resume_in_workqueue(struct pwrctrl_priv *pwrpriv);
-#endif //CONFIG_RESUME_IN_WORKQUEUE
 
 #if defined(CONFIG_HAS_EARLYSUSPEND ) || defined(CONFIG_ANDROID_POWER)
 bool rtw_is_earlysuspend_registered(struct pwrctrl_priv *pwrpriv);

@@ -613,9 +613,6 @@ static int rtw_resume(struct usb_interface *pusb_intf)
 	if(pwrpriv->bInternalAutoSuspend ){
  		ret = rtw_resume_process(padapter);
 	} else {
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-		rtw_resume_in_workqueue(pwrpriv);
-#else
 		if (rtw_is_earlysuspend_registered(pwrpriv)
 		) {
 			/* jeff: bypass resume here, do in late_resume */
@@ -623,7 +620,6 @@ static int rtw_resume(struct usb_interface *pusb_intf)
 		} else {
 			ret = rtw_resume_process(padapter);
 		}
-#endif
 	}
 
 	return ret;
@@ -693,10 +689,6 @@ int rtw_resume_process(_adapter *padapter)
 
 	ret = 0;
 exit:
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	rtw_unlock_suspend();
-#endif
-
 	pwrpriv->bInSuspend = _FALSE;
 	DBG_871X("<===  %s return %d.............. in %dms\n", __FUNCTION__
 		, ret, rtw_get_passing_time_ms(start_time));

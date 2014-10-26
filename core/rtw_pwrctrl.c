@@ -1016,10 +1016,6 @@ _func_exit_;
 }
 #endif	/* CONFIG_LPS_LCLK */
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-static void resume_workitem_callback(struct work_struct *work);
-#endif //CONFIG_RESUME_IN_WORKQUEUE
-
 void rtw_init_pwrctrl_priv(PADAPTER padapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
@@ -1076,11 +1072,6 @@ _func_enter_;
 
 	rtw_init_timer(&pwrctrlpriv->pwr_state_check_timer, padapter, pwr_state_check_handler);
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	_init_workitem(&pwrctrlpriv->resume_work, resume_workitem_callback, NULL);
-	pwrctrlpriv->rtw_workqueue = create_singlethread_workqueue("rtw_workqueue");
-#endif //CONFIG_RESUME_IN_WORKQUEUE
-
 #if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
 	pwrctrlpriv->early_suspend.suspend = NULL;
 	rtw_register_early_suspend(pwrctrlpriv);
@@ -1100,47 +1091,12 @@ _func_enter_;
 
 	//memset((unsigned char *)pwrctrlpriv, 0, sizeof(struct pwrctrl_priv));
 
-
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	if (pwrctrlpriv->rtw_workqueue) {
-		flush_workqueue(pwrctrlpriv->rtw_workqueue);
-		destroy_workqueue(pwrctrlpriv->rtw_workqueue);
-	}
-#endif
-
-
 #if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
 	rtw_unregister_early_suspend(pwrctrlpriv);
 #endif //CONFIG_HAS_EARLYSUSPEND || CONFIG_ANDROID_POWER
 
 _func_exit_;
 }
-
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-extern int rtw_resume_process(struct _ADAPTER *padapter);
-static void resume_workitem_callback(struct work_struct *work)
-{
-	struct pwrctrl_priv *pwrpriv = container_of(work, struct pwrctrl_priv, resume_work);
-	struct _ADAPTER *adapter = container_of(pwrpriv, struct _ADAPTER, pwrctrlpriv);
-
-	DBG_871X("%s\n",__FUNCTION__);
-
-	rtw_resume_process(adapter);
-
-}
-
-void rtw_resume_in_workqueue(struct pwrctrl_priv *pwrpriv)
-{
-	// accquire system's suspend lock preventing from falliing asleep while resume in workqueue
-	rtw_lock_suspend();
-
-#if 1
-	queue_work(pwrpriv->rtw_workqueue, &pwrpriv->resume_work);
-#else
-	_set_workitem(&pwrpriv->resume_work);
-#endif
-}
-#endif //CONFIG_RESUME_IN_WORKQUEUE
 
 #if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
 inline bool rtw_is_earlysuspend_registered(struct pwrctrl_priv *pwrpriv)

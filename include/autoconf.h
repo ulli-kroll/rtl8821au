@@ -114,7 +114,6 @@
 #define USB_INTERFERENCE_ISSUE // this should be checked in all usb interface
 #define CONFIG_GLOBAL_UI_PID
 
-//#define CONFIG_RESUME_IN_WORKQUEUE
 #define CONFIG_LONG_DELAY_ISSUE
 #define CONFIG_NEW_SIGNAL_STAT_PROCESS
 //#define CONFIG_SIGNAL_DISPLAY_DBM //display RX signal with dbm

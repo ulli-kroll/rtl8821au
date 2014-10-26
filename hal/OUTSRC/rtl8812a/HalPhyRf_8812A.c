@@ -79,19 +79,6 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	s1Byte			Final_CCK_Swing_Index = 0;
 	u1Byte			i = 0;
 
-#if 0
-		uint16_t			rate	 = *(pDM_Odm->pForcedDataRate);
-
-		if (!rate) {
-			/* auto rate */
-			if (pDM_Odm->TxRate != 0xFF)
-				TxRate = HwRateToMRate8812(pDM_Odm->TxRate);
-		} else {
-			/* force rate */
-			TxRate = (u1Byte) rate;
-		}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8812A\n"));
-#endif
 	if (TxRate != 0xFF) {
 		/* Ulli better with switch case, see in rtlwifi-lib */
 		/* 2 CCK */
@@ -169,33 +156,6 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 
 			ODM_SetBBReg(pDM_Odm, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[ODM_RF_PATH_B]]);
 		}
-
-#if 0
-		/* <20121120> +2.5dB clipping, asked by Jerry Chang. */
-		pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_A] = (pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_A] > 29) ? 29 : pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_A];
-		pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_B] = (pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_B] > 29) ? 29 : pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_B];
-
-		/* 2013.01.28 LukeLee: This is for debug request by Joe, otherwise BbSwingOffsetA and BbSwingOffsetB is 0 in normal & MP driver */
-		if (pDM_Odm->IsBbSwingOffsetPositiveA) {
-			finalBbSwingIdx[ODM_RF_PATH_A] = pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_A] + pDM_Odm->BbSwingOffsetA;
-			finalBbSwingIdx[ODM_RF_PATH_A] = (finalBbSwingIdx[ODM_RF_PATH_A] > 29) ? 29 : finalBbSwingIdx[ODM_RF_PATH_A];
-		} else
-			finalBbSwingIdx[ODM_RF_PATH_A] =  pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_A] - pDM_Odm->BbSwingOffsetA;
-
-		if (pDM_Odm->IsBbSwingOffsetPositiveB) {
-			finalBbSwingIdx[ODM_RF_PATH_B] = pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_B] + pDM_Odm->BbSwingOffsetB;
-			finalBbSwingIdx[ODM_RF_PATH_B] = (finalBbSwingIdx[ODM_RF_PATH_B] > 29) ? 29 : finalBbSwingIdx[ODM_RF_PATH_B];
-		} else
-			finalBbSwingIdx[ODM_RF_PATH_B] = pDM_Odm->BbSwingIdxOfdm[ODM_RF_PATH_B] - pDM_Odm->BbSwingOffsetB;
-
-		/* Adjust BB swing by Tx scaling, no matter CCK or OFDM. */
-		if (RFPath == ODM_RF_PATH_A)
-			ODM_SetBBReg(pDM_Odm, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[ODM_RF_PATH_A]]);
-		else if (RFPath == ODM_RF_PATH_B)
-			ODM_SetBBReg(pDM_Odm, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[ODM_RF_PATH_B]]);
-
-#endif
-
 	} else if (Method == MIX_MODE) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
 				pDM_Odm->DefaultOfdmIndex, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath], RFPath));

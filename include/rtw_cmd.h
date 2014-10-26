@@ -60,23 +60,7 @@
 		_adapter *padapter;
 	};
 
-#ifdef CONFIG_EVENT_THREAD_MODE
-	struct evt_obj {
-		u16	evtcode;
-		uint8_t	res;
-		uint8_t	*parmbuf;
-		u32	evtsz;
-		struct list_head	list;
-	};
-#endif
-
 	struct	evt_priv {
-#ifdef CONFIG_EVENT_THREAD_MODE
-		struct semaphore	evt_notify;
-		struct semaphore	terminate_evtthread_sema;
-		_queue	evt_queue;
-#endif
-
 #define CONFIG_C2H_WK
 #ifdef CONFIG_C2H_WK
 		_workitem c2h_wk;
@@ -135,12 +119,6 @@ struct P2P_PS_CTWPeriod_t {
 extern u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *obj);
 extern struct cmd_obj *rtw_dequeue_cmd(struct cmd_priv *pcmdpriv);
 extern void rtw_free_cmd_obj(struct cmd_obj *pcmd);
-
-#ifdef CONFIG_EVENT_THREAD_MODE
-extern u32 rtw_enqueue_evt(struct evt_priv *pevtpriv, struct evt_obj *obj);
-extern struct evt_obj *rtw_dequeue_evt(_queue *queue);
-extern void rtw_free_evt_obj(struct evt_obj *pcmd);
-#endif
 
 thread_return rtw_cmd_thread(thread_context context);
 

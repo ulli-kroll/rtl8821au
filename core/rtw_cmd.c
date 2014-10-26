@@ -91,26 +91,6 @@ _func_enter_;
 	atomic_set(&pevtpriv->event_seq, 0);
 	pevtpriv->evt_done_cnt = 0;
 
-#ifdef CONFIG_EVENT_THREAD_MODE
-
-	sema_init(&(pevtpriv->evt_notify), 0);
-	sema_init(&(pevtpriv->terminate_evtthread_sema), 0);
-
-	pevtpriv->evt_allocated_buf = rtw_zmalloc(MAX_EVTSZ + 4);
-	if (pevtpriv->evt_allocated_buf == NULL){
-		res= _FAIL;
-		goto exit;
-		}
-	pevtpriv->evt_buf = pevtpriv->evt_allocated_buf  +  4 - ((unsigned int)(pevtpriv->evt_allocated_buf) & 3);
-
-
-
-	_rtw_init_queue(&(pevtpriv->evt_queue));
-
-exit:
-
-#endif //end of CONFIG_EVENT_THREAD_MODE
-
 #ifdef CONFIG_C2H_WK
 	_init_workitem(&pevtpriv->c2h_wk, c2h_wk_callback, NULL);
 	pevtpriv->c2h_wk_alive = _FALSE;
@@ -128,12 +108,6 @@ _func_enter_;
 
 	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("+_rtw_free_evt_priv \n"));
 
-#ifdef CONFIG_EVENT_THREAD_MODE
-
-
-	if (pevtpriv->evt_allocated_buf)
-		rtw_mfree(pevtpriv->evt_allocated_buf);
-#endif
 
 #ifdef CONFIG_C2H_WK
 	_cancel_workitem_sync(&pevtpriv->c2h_wk);
@@ -491,86 +465,6 @@ _func_exit_;
 	thread_exit();
 
 }
-
-
-#ifdef CONFIG_EVENT_THREAD_MODE
-uint32_t	 rtw_enqueue_evt(struct evt_priv *pevtpriv, struct evt_obj *obj)
-{
-	_irqL irqL;
-	int	res;
-	_queue *queue = &pevtpriv->evt_queue;
-
-_func_enter_;
-
-	res = _SUCCESS;
-
-	if (obj == NULL) {
-		res = _FAIL;
-		goto exit;
-	}
-
-	_enter_critical_bh(&queue->lock, &irqL);
-
-	list_add_tail(&obj->list, &queue->queue);
-
-	_exit_critical_bh(&queue->lock, &irqL);
-
-	//rtw_evt_notify_isr(pevtpriv);
-
-exit:
-
-_func_exit_;
-
-	return res;
-}
-
-struct evt_obj *rtw_dequeue_evt(_queue *queue)
-{
-	_irqL irqL;
-	struct	evt_obj	*pevtobj;
-
-_func_enter_;
-
-	_enter_critical_bh(&queue->lock, &irqL);
-
-	if (list_empty(&(queue->queue)))
-		pevtobj = NULL;
-	else
-	{
-		pevtobj = LIST_CONTAINOR(get_next(&(queue->queue)), struct evt_obj, list);
-		rtw_list_delete(&pevtobj->list);
-	}
-
-	_exit_critical_bh(&queue->lock, &irqL);
-
-_func_exit_;
-
-	return pevtobj;
-}
-
-void rtw_free_evt_obj(struct evt_obj *pevtobj)
-{
-_func_enter_;
-
-	if(pevtobj->parmbuf) {
-		/* ULLI check usage of pevtobj->evtsz */
-		rtw_mfree(pevtobj->parmbuf);
-	}
-
-	rtw_mfree(pevtobj);
-
-_func_exit_;
-}
-
-void rtw_evt_notify_isr(struct evt_priv *pevtpriv)
-{
-_func_enter_;
-	pevtpriv->evt_done_cnt++;
-	up(&(pevtpriv->evt_notify));
-_func_exit_;
-}
-#endif
-
 
 /*
 uint8_t rtw_setstandby_cmd(unsigned char  *adapter)

@@ -231,8 +231,6 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 // Suspend lock prevent system from going suspend
 #ifdef CONFIG_WAKELOCK
 #include <linux/wakelock.h>
-#elif defined(CONFIG_ANDROID_POWER)
-#include <linux/android_power.h>
 #endif
 
 // limitation of path length

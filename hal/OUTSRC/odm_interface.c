@@ -54,27 +54,6 @@ ODM_sleep_us(IN uint32_t	us)
 #endif
 }
 
-//
-// ODM FW relative API.
-//
-uint32_t
-ODM_FillH2CCmd(
-	IN	pu1Byte		pH2CBuffer,
-	IN	uint32_t		H2CBufferLen,
-	IN	uint32_t		CmdNum,
-	IN	uint32_t		*pElementID,
-	IN	uint32_t		*pCmdLen,
-	IN	pu1Byte*		pCmbBuffer,
-	IN	pu1Byte		CmdStartSeq
-	)
-{
-#if(DM_ODM_SUPPORT_TYPE & ODM_CE)
-
-#endif
-
-	return	TRUE;
-}
-
 
 
 

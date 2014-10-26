@@ -212,18 +212,5 @@ ODM_StallExecution(
 VOID
 ODM_sleep_us(IN uint32_t	us);
 
-//
-// ODM FW relative API.
-//
-uint32_t
-ODM_FillH2CCmd(
-	IN	pu1Byte		pH2CBuffer,
-	IN	uint32_t		H2CBufferLen,
-	IN	uint32_t		CmdNum,
-	IN	uint32_t		*pElementID,
-	IN	uint32_t		*pCmdLen,
-	IN	pu1Byte*		pCmbBuffer,
-	IN	pu1Byte		CmdStartSeq
-	);
 #endif	// __ODM_INTERFACE_H__
 

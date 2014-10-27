@@ -49,7 +49,7 @@ static int32_t odm_SignalScaleMapping_92CSeries(PDM_ODM_T pDM_Odm, int32_t CurrS
 	int32_t RetSig;
 
 #if ((DEV_BUS_TYPE == RT_USB_INTERFACE) || (DEV_BUS_TYPE == RT_SDIO_INTERFACE))
-	if ((pDM_Odm->SupportInterface  == ODM_ITRF_USB) || (pDM_Odm->SupportInterface  == ODM_ITRF_SDIO)) {
+	if ((pDM_Odm->SupportInterface  == ODM_ITRF_USB)) {
 		if (CurrSig >= 51 && CurrSig <= 100) {
 			RetSig = 100;
 		} else if (CurrSig >= 41 && CurrSig <= 50) {

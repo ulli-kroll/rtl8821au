@@ -25,7 +25,6 @@ enum RTL871X_HCI_TYPE {
 	RTW_PCIE	= BIT0,
 	RTW_USB 	= BIT1,
 	RTW_SDIO 	= BIT2,
-	RTW_GSPI	= BIT3,
 };
 
 enum _CHIP_TYPE {

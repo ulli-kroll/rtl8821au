@@ -2894,10 +2894,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, uint8_t variable, uint8_t *val)
 		if ((mode == _HW_STATE_STATION_) || (mode == _HW_STATE_NOLINK_)) {
 			{
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
-				rtw_write8(Adapter, REG_DRVERLYINT, 0x05);	/* restore early int time to 5ms */
-				UpdateInterruptMask8812AU(Adapter, _TRUE, 0, IMR_BCNDMAINT0_8812);
-#endif
 
 
 #endif
@@ -2911,9 +2907,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, uint8_t variable, uint8_t *val)
 			rtw_write8(Adapter, REG_BCN_CTRL, 0x1a);
 		} else if (mode == _HW_STATE_AP_) {
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
-			UpdateInterruptMask8812AU(Adapter, _TRUE , IMR_BCNDMAINT0_8812, 0);
-#endif
 
 
 #endif
@@ -3301,22 +3294,6 @@ void SetHwReg8812A(PADAPTER padapter, uint8_t variable, uint8_t *pval)
 
 	case HW_VAR_BEACON_INTERVAL:
 		rtw_write16(padapter, REG_BCN_INTERVAL, *(uint16_t *)pval);
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
-		{
-			struct mlme_ext_priv *pmlmeext;
-			struct mlme_ext_info *pmlmeinfo;
-			uint16_t bcn_interval;
-
-			pmlmeext = &padapter->mlmeextpriv;
-			pmlmeinfo = &pmlmeext->mlmext_info;
-			bcn_interval = *((uint16_t *)pval);
-
-			if ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE) {
-				DBG_8192C("%s==> bcn_interval:%d, eraly_int:%d\n", __FUNCTION__, bcn_interval, bcn_interval>>1);
-				rtw_write8(padapter, REG_DRVERLYINT, bcn_interval>>1);	/* 50ms for sdio */
-			}
-		}
-#endif
 		break;
 
 	case HW_VAR_SLOT_TIME:

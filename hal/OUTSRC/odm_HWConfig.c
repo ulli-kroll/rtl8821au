@@ -28,8 +28,6 @@
 #include "odm_precomp.h"
 
 #define READ_AND_CONFIG(ic, txt) (ODM_ReadAndConfig_MP_##ic##txt(pDM_Odm))
-#define READ_FIRMWARE(ic, txt) 	(ODM_ReadFirmware_MP_##ic##txt(pDM_Odm, pFirmware, pSize))
-
 
 u1Byte odm_QueryRxPwrPercentage(s1Byte AntPower)
 {
@@ -847,13 +845,13 @@ HAL_STATUS ODM_ConfigFWWithHeaderFile(PDM_ODM_T pDM_Odm,
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {
 		case CONFIG_FW_NIC:
-			READ_FIRMWARE(8812A, _FW_NIC);
+			ODM_ReadFirmware_MP_8812A_FW_NIC(pDM_Odm, pFirmware, pSize);
 			break;
 		case CONFIG_FW_WoWLAN:
-			READ_FIRMWARE(8812A, _FW_WoWLAN);
+			ODM_ReadFirmware_MP_8812A_FW_WoWLAN(pDM_Odm, pFirmware, pSize);
 			break;
 		case CONFIG_FW_BT:
-			READ_FIRMWARE(8812A, _FW_NIC_BT);
+			ODM_ReadFirmware_MP_8812A_FW_NIC_BT(pDM_Odm, pFirmware, pSize);
 			break;
 
 		default:
@@ -865,13 +863,13 @@ HAL_STATUS ODM_ConfigFWWithHeaderFile(PDM_ODM_T pDM_Odm,
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
 		switch (ConfigType) {
 		case CONFIG_FW_NIC:
-			READ_FIRMWARE(8821A, _FW_NIC);
+			ODM_ReadFirmware_MP_8821A_FW_NIC(pDM_Odm, pFirmware, pSize);
 			break;
 		case CONFIG_FW_WoWLAN:
-			READ_FIRMWARE(8821A, _FW_WoWLAN);
+			ODM_ReadFirmware_MP_8821A_FW_WoWLAN(pDM_Odm, pFirmware, pSize);
 			break;
 		case CONFIG_FW_BT:
-			READ_FIRMWARE(8821A, _FW_BT);
+			ODM_ReadFirmware_MP_8821A_FW_BT(pDM_Odm, pFirmware, pSize);
 			break;
 		default:
 			;

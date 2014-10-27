@@ -34,10 +34,6 @@
 // =========== Macro Define
 //
 
-#define _reg_all(_name)			ODM_##_name
-#define _reg_ic(_name, _ic)		ODM_##_name##_ic
-#define _bit_all(_name)			BIT_##_name
-#define _bit_ic(_name, _ic)		BIT_##_name##_ic
 
 // _cat: implemented by Token-Pasting Operator.
 #if 0

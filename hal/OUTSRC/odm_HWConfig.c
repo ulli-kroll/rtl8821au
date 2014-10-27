@@ -710,26 +710,37 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
 
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
-		if (ConfigType == CONFIG_RF_RADIO) {
+		switch (ConfigType) {
+		case CONFIG_RF_RADIO:
 			if (eRFPath == ODM_RF_PATH_A) {
 				READ_AND_CONFIG(8812A, _RadioA);
 			} else if (eRFPath == ODM_RF_PATH_B) {
 				READ_AND_CONFIG(8812A, _RadioB);
 			}
-		} else if (ConfigType == CONFIG_RF_TXPWR_LMT) {
+			break;
+		case CONFIG_RF_TXPWR_LMT:
 			READ_AND_CONFIG(8812A, _TXPWR_LMT);
+			break;
+
+		default:
+			;
 		}
 	}
 #endif
 
 #if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
-		if (ConfigType == CONFIG_RF_RADIO) {
+		switch (ConfigType) {
+		case CONFIG_RF_RADIO:
 			if (eRFPath == ODM_RF_PATH_A) {
 				READ_AND_CONFIG(8821A, _RadioA);
 			}
-		} else if (ConfigType == CONFIG_RF_TXPWR_LMT) {
+			break;
+		case CONFIG_RF_TXPWR_LMT:
 			READ_AND_CONFIG(8821A, _TXPWR_LMT);
+			break;
+		default:
+			;
 		}
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("<===8821_ODM_ConfigRFWithHeaderFile\n"));
 	}
@@ -746,22 +757,37 @@ HAL_STATUS ODM_ConfigRFWithTxPwrTrackHeaderFile(PDM_ODM_T pDM_Odm)
 		pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 #if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
-		if (pDM_Odm->SupportInterface == ODM_ITRF_PCIE)
+		switch (pDM_Odm->SupportInterface) {
+		case ODM_ITRF_PCIE:
 			READ_AND_CONFIG(8821A, _TxPowerTrack_PCIE);
-		else if (pDM_Odm->SupportInterface == ODM_ITRF_USB)
+			break;
+
+		case ODM_ITRF_USB:
 			READ_AND_CONFIG(8821A, _TxPowerTrack_USB);
+			break;
+
+		default:
+			;
+		}
 	}
 #endif
 
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
-		if (pDM_Odm->SupportInterface == ODM_ITRF_PCIE)
+		switch (pDM_Odm->SupportInterface) {
+		case ODM_ITRF_PCIE:
 			READ_AND_CONFIG(8812A, _TxPowerTrack_PCIE);
-		else if (pDM_Odm->SupportInterface == ODM_ITRF_USB) {
+			break;
+
+		case ODM_ITRF_USB:
 			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip)
 				READ_AND_CONFIG(8812A, _TxPowerTrack_USB_RFE3);
 			else
 				READ_AND_CONFIG(8812A, _TxPowerTrack_USB);
+			break;
+
+		default:
+			;
 		}
 
 	}
@@ -780,18 +806,28 @@ HAL_STATUS ODM_ConfigBBWithHeaderFile(PDM_ODM_T pDM_Odm, ODM_BB_Config_Type Conf
 
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
-		if (ConfigType == CONFIG_BB_PHY_REG) {
+		switch (ConfigType) {
+		case CONFIG_BB_PHY_REG:
 			READ_AND_CONFIG(8812A, _PHY_REG);
-		} else if (ConfigType == CONFIG_BB_AGC_TAB) {
+			break;
+
+		case CONFIG_BB_AGC_TAB:
 			READ_AND_CONFIG(8812A, _AGC_TAB);
-		} else if (ConfigType == CONFIG_BB_PHY_REG_PG) {
+			break;
+
+		case CONFIG_BB_PHY_REG_PG:
 			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip)
 				READ_AND_CONFIG(8812A, _PHY_REG_PG_ASUS);
 			else
 				READ_AND_CONFIG(8812A, _PHY_REG_PG);
+			break;
 
-		} else if (ConfigType == CONFIG_BB_PHY_REG_MP) {
+		case CONFIG_BB_PHY_REG_MP:
 			READ_AND_CONFIG(8812A, _PHY_REG_MP);
+			break;
+
+		default:
+			;
 		}
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() phy:Rtl8812AGCTABArray\n"));
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() agc:Rtl8812PHY_REGArray\n"));
@@ -800,12 +836,21 @@ HAL_STATUS ODM_ConfigBBWithHeaderFile(PDM_ODM_T pDM_Odm, ODM_BB_Config_Type Conf
 
 #if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
-		if (ConfigType == CONFIG_BB_PHY_REG) {
+		switch (ConfigType) {
+		case CONFIG_BB_PHY_REG:
 			READ_AND_CONFIG(8821A, _PHY_REG);
-		} else if (ConfigType == CONFIG_BB_AGC_TAB) {
+			break;
+
+		case CONFIG_BB_AGC_TAB:
 			READ_AND_CONFIG(8821A, _AGC_TAB);
-		} else if (ConfigType == CONFIG_BB_PHY_REG_PG) {
+			break;
+
+		case CONFIG_BB_PHY_REG_PG:
 			READ_AND_CONFIG(8821A, _PHY_REG_PG);
+			break;
+
+		default:
+			;
 		}
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() phy:Rtl8821AGCTABArray\n"));
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() agc:Rtl8821PHY_REGArray\n"));

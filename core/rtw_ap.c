@@ -1592,12 +1592,6 @@ int rtw_ap_set_wep_key(_adapter *padapter, uint8_t *key, uint8_t keylen, int key
 	return rtw_ap_set_key(padapter, key, alg, keyid, set_tx);
 }
 
-static void update_bcn_fixed_ie(_adapter *padapter)
-{
-	DBG_871X("%s\n", __FUNCTION__);
-
-}
-
 static void update_bcn_erpinfo_ie(_adapter *padapter)
 {
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
@@ -1764,10 +1758,6 @@ void update_beacon(_adapter *padapter, uint8_t ie_id, uint8_t *oui, uint8_t tx)
 	_enter_critical_bh(&pmlmepriv->bcn_update_lock, &irqL);
 
 	switch(ie_id) {
-	case 0xFF:
-		update_bcn_fixed_ie(padapter);//8: TimeStamp, 2: Beacon Interval 2:Capability
-		break;
-
 	case _TIM_IE_:
 		update_BCNTIM(padapter);
 		break;

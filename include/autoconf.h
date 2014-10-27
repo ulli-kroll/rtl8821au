@@ -56,18 +56,12 @@
 
 #define CONFIG_DFS	1
 
- //#define CONFIG_SUPPORT_USB_INT
- #ifdef	CONFIG_SUPPORT_USB_INT
-#endif
-
 	#define CONFIG_IPS	1
 	#ifdef CONFIG_IPS
 	//#define CONFIG_IPS_LEVEL_2	1 //enable this to set default IPS mode to IPS_LEVEL_2
 	#endif
 
 	#define CONFIG_LPS	1
-	#if defined(CONFIG_LPS) && defined(CONFIG_SUPPORT_USB_INT)
-	#endif
 
 	//befor link
 	//#define CONFIG_ANTENNA_DIVERSITY

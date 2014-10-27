@@ -188,41 +188,6 @@ static int usb_writeN(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t length,
 
 }
 
-#ifdef CONFIG_SUPPORT_USB_INT
-void interrupt_handler_8812au(_adapter *padapter, uint16_t pkt_len, uint8_t *pbuf)
-{
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
-	struct reportpwrstate_parm pwr_rpt;
-
-	if (pkt_len != INTERRUPT_MSG_FORMAT_LEN) {
-		DBG_8192C("%s Invalid interrupt content length (%d)!\n", __FUNCTION__, pkt_len);
-		return ;
-	}
-
-	/* HISR */
-	memcpy(&(pHalData->IntArray[0]), &(pbuf[USB_INTR_CONTENT_HISR_OFFSET]), 4);
-	memcpy(&(pHalData->IntArray[1]), &(pbuf[USB_INTR_CONTENT_HISRE_OFFSET]), 4);
-
-
-#ifdef DBG_CONFIG_ERROR_DETECT_INT
-	if (pHalData->IntArray[1]  & IMR_TXERR_88E)
-		DBG_871X("===> %s Tx Error Flag Interrupt Status \n", __FUNCTION__);
-	if (pHalData->IntArray[1]  & IMR_RXERR_88E)
-		DBG_871X("===> %s Rx Error Flag INT Status \n", __FUNCTION__);
-	if (pHalData->IntArray[1]  & IMR_TXFOVW_88E)
-		DBG_871X("===> %s Transmit FIFO Overflow \n", __FUNCTION__);
-	if (pHalData->IntArray[1]  & IMR_RXFOVW_88E)
-		DBG_871X("===> %s Receive FIFO Overflow \n", __FUNCTION__);
-#endif
-
-	/* C2H Event */
-	if (pbuf[0] != 0) {
-		memcpy(&(pHalData->C2hArray[0]), &(pbuf[USB_INTR_CONTENT_C2H_OFFSET]), 16);
-		/* rtw_c2h_wk_cmd(padapter); to do.. */
-	}
-
-}
-#endif
 
 static int32_t pre_recv_entry(union recv_frame *precvframe, uint8_t *pphy_status)
 {
@@ -324,9 +289,6 @@ static int recvbuf2recvframe(_adapter *padapter, _pkt *pskb)
 			/*else if(pattrib->pkt_rpt_type == HIS_REPORT)
 			{
 				//DBG_8192C("%s , rx USB HISR \n",__FUNCTION__);
-				#ifdef CONFIG_SUPPORT_USB_INT
-				interrupt_handler_8812au(padapter,pattrib->pkt_len,precvframe->u.hdr.rx_data);
-				#endif
 			}*/
 			rtw_free_recvframe(precvframe, pfree_recv_queue);
 

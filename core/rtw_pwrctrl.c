@@ -635,8 +635,8 @@ int _rtw_pwr_wakeup(struct _ADAPTER *padapter, uint32_t	 ips_deffer_ms, const ch
 	if (pwrpriv->bInternalAutoSuspend == _FALSE && pwrpriv->bInSuspend) {
 		DBG_871X("%s wait bInSuspend...\n", __func__);
 		while (pwrpriv->bInSuspend
-			&& ((rtw_get_passing_time_ms(start) <= 3000 && !_FALSE)
-				|| (rtw_get_passing_time_ms(start) <= 500 && !_FALSE))
+			&& ((rtw_get_passing_time_ms(start) <= 3000)
+				|| (rtw_get_passing_time_ms(start) <= 500))
 		) {
 			msleep(10);
 		}

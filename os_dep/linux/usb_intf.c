@@ -470,11 +470,6 @@ static void rtw_dev_unload(_adapter *padapter)
 		DBG_871X("===> rtw_dev_unload\n");
 
 		padapter->bDriverStopped = _TRUE;
-#ifdef CONFIG_XMIT_ACK
-		if (padapter->xmitpriv.ack_tx)
-			rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_DRV_STOP);
-#endif
-
 		/* s3. */
 		if(padapter->intf_stop) {
 			padapter->intf_stop(padapter);

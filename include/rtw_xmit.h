@@ -391,10 +391,6 @@ struct xmit_frame
 #endif
 	s8	pkt_offset;
 
-#ifdef CONFIG_XMIT_ACK
-	uint8_t ack_report;
-#endif
-
 	uint8_t *alloc_addr; /* the actual address this xmitframe allocated */
 	uint8_t ext_tag; /* 0:data, 1:mgmt */
 
@@ -534,11 +530,6 @@ struct	xmit_priv	{
 
 	u16	nqos_ssn;
 
-#ifdef CONFIG_XMIT_ACK
-	int	ack_tx;
-	struck mutex ack_tx_mutex;
-	struct submit_ctx ack_tx_ops;
-#endif
 	spinlock_t lock_sctx;
 };
 
@@ -600,12 +591,6 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta);
 uint8_t	qos_acm(uint8_t acm_mask, uint8_t priority);
 
 u32	rtw_get_ff_hwaddr(struct xmit_frame	*pxmitframe);
-
-#ifdef CONFIG_XMIT_ACK
-int rtw_ack_tx_wait(struct xmit_priv *pxmitpriv, u32 timeout_ms);
-void rtw_ack_tx_done(struct xmit_priv *pxmitpriv, int status);
-#endif //CONFIG_XMIT_ACK
-
 
 //include after declaring struct xmit_buf, in order to avoid warning
 #include <xmit_osdep.h>

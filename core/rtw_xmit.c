@@ -287,13 +287,6 @@ _func_enter_;
 	pxmitpriv->viq_cnt = 0;
 	pxmitpriv->voq_cnt = 0;
 
-
-#ifdef CONFIG_XMIT_ACK
-	pxmitpriv->ack_tx = _FALSE;
-	mutex_init(&pxmitpriv->ack_tx_mutex);
-	rtw_sctx_init(&pxmitpriv->ack_tx_ops, 0);
-#endif
-
 	rtw_hal_init_xmit_priv(padapter);
 
 exit:
@@ -370,10 +363,6 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 	rtw_os_xmit_resource_free(padapter, pxmitbuf, 0, _TRUE);
 
 	rtw_free_hwxmits(padapter);
-
-#ifdef CONFIG_XMIT_ACK
-	mutex_destroy(&pxmitpriv->ack_tx_mutex);
-#endif
 
 out:
 
@@ -1952,13 +1941,6 @@ void rtw_init_xmitframe(struct xmit_frame *pxframe)
 #ifdef CONFIG_USB_TX_AGGREGATION
 		pxframe->agg_num = 1;
 #endif
-
-
-
-#ifdef CONFIG_XMIT_ACK
-		pxframe->ack_report = 0;
-#endif
-
 	}
 }
 
@@ -3262,29 +3244,4 @@ void rtw_sctx_done(struct submit_ctx **sctx)
 {
 	rtw_sctx_done_err(sctx, RTW_SCTX_DONE_SUCCESS);
 }
-
-#ifdef CONFIG_XMIT_ACK
-
-int rtw_ack_tx_wait(struct xmit_priv *pxmitpriv, uint32_t	 timeout_ms)
-{
-	struct submit_ctx *pack_tx_ops = &pxmitpriv->ack_tx_ops;
-
-	pack_tx_ops->submit_time = rtw_get_current_time();
-	pack_tx_ops->timeout_ms = timeout_ms;
-	pack_tx_ops->status = RTW_SCTX_SUBMITTED;
-
-	return rtw_sctx_wait(pack_tx_ops);
-}
-
-void rtw_ack_tx_done(struct xmit_priv *pxmitpriv, int status)
-{
-	struct submit_ctx *pack_tx_ops = &pxmitpriv->ack_tx_ops;
-
-	if (pxmitpriv->ack_tx) {
-		rtw_sctx_done_err(&pack_tx_ops, status);
-	} else {
-		DBG_871X("%s ack_tx not set\n", __func__);
-	}
-}
-#endif //CONFIG_XMIT_ACK
 

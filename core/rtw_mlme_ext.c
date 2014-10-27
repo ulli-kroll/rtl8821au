@@ -2613,32 +2613,9 @@ int32_t dump_mgntframe_and_wait(_adapter *padapter, struct xmit_frame *pmgntfram
 
 int32_t dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntframe)
 {
-#ifdef CONFIG_XMIT_ACK
-	int32_t ret = _FAIL;
-	uint32_t	 timeout_ms = 500;//  500ms
-	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
-
-	if(padapter->bSurpriseRemoved == _TRUE ||
-		padapter->bDriverStopped == _TRUE)
-		return -1;
-
-	mutex_lock_interruptible(&pxmitpriv->ack_tx_mutex);
-	pxmitpriv->ack_tx = _TRUE;
-
-	pmgntframe->ack_report = 1;
-	if (rtw_hal_mgnt_xmit(padapter, pmgntframe) == _SUCCESS) {
-		ret = rtw_ack_tx_wait(pxmitpriv, timeout_ms);
-	}
-
-	pxmitpriv->ack_tx = _FALSE;
-	mutex_unlock(&pxmitpriv->ack_tx_mutex);
-
-	 return ret;
-#else //!CONFIG_XMIT_ACK
 	dump_mgntframe(padapter, pmgntframe);
 	msleep(50);
 	return _SUCCESS;
-#endif //!CONFIG_XMIT_ACK
 }
 
 int update_hidden_ssid(uint8_t *ies, uint32_t	 ies_len, uint8_t hidden_ssid_mode)

@@ -908,7 +908,6 @@ uint8_t rtw_chk_hi_queue_cmd(_adapter*padapter);
 uint8_t rtw_set_ch_cmd(_adapter*padapter, uint8_t ch, uint8_t bw, uint8_t ch_offset, uint8_t enqueue);
 extern uint8_t rtw_set_chplan_cmd(_adapter*padapter, uint8_t chplan, uint8_t enqueue);
 extern uint8_t rtw_set_csa_cmd(_adapter*padapter, uint8_t new_ch_no);
-extern uint8_t rtw_tdls_cmd(_adapter*padapter, uint8_t *addr, uint8_t option);
 
 extern uint8_t rtw_c2h_wk_cmd(PADAPTER padapter, uint8_t *c2h_evt);
 

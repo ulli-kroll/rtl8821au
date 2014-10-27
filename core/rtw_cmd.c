@@ -1704,26 +1704,6 @@ _func_exit_;
 	return res;
 }
 
-uint8_t rtw_tdls_cmd(_adapter *padapter, uint8_t *addr, uint8_t option)
-{
-	struct	cmd_obj*	pcmdobj;
-	struct	TDLSoption_param	*TDLSoption;
-	struct 	mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	struct	cmd_priv   *pcmdpriv = &padapter->cmdpriv;
-
-	uint8_t	res=_SUCCESS;
-
-_func_enter_;
-
-
-exit:
-
-
-_func_exit_;
-
-	return res;
-}
-
 static void traffic_status_watchdog(_adapter *padapter)
 {
 #ifdef CONFIG_LPS

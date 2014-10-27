@@ -69,12 +69,6 @@
 		#define C2H_QUEUE_MAX_LEN 10
 #endif
 
-#ifdef CONFIG_H2CLBK
-		struct semaphore	lbkevt_done;
-		uint8_t	lbkevt_limit;
-		uint8_t	lbkevt_num;
-		uint8_t	*cmdevt_parm;
-#endif
 		ATOMIC_T event_seq;
 		uint8_t	*evt_buf;	//shall be non-paged, and 4 bytes aligned
 		uint8_t	*evt_allocated_buf;
@@ -581,36 +575,6 @@ struct Tx_Beacon_param
 	event will be the same with the cmd's param.
 
 */
-
-#ifdef CONFIG_H2CLBK
-
-struct seth2clbk_parm {
-	uint8_t mac[6];
-	u16	s0;
-	u16	s1;
-	u32	w0;
-	uint8_t	b0;
-	u16  s2;
-	uint8_t	b1;
-	u32	w1;
-};
-
-struct geth2clbk_parm {
-	u32 rsv;
-};
-
-struct geth2clbk_rsp {
-	uint8_t	mac[6];
-	u16	s0;
-	u16	s1;
-	u32	w0;
-	uint8_t	b0;
-	u16	s2;
-	uint8_t	b1;
-	u32	w1;
-};
-
-#endif	/* CONFIG_H2CLBK */
 
 // CMD param Formart for driver extra cmd handler
 struct drvextra_cmd_parm {

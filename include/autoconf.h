@@ -41,7 +41,6 @@
  * Internal  General Config
  */
 //#define CONFIG_PWRCTRL
-//#define CONFIG_H2CLBK
 
 #define CONFIG_EMBEDDED_FWIMG	1
 //#define CONFIG_FILE_FWIMG

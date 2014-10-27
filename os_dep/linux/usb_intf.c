@@ -608,8 +608,7 @@ static int rtw_resume(struct usb_interface *pusb_intf)
 	if(pwrpriv->bInternalAutoSuspend ){
  		ret = rtw_resume_process(padapter);
 	} else {
-		if (rtw_is_earlysuspend_registered(pwrpriv)
-		) {
+		if (_FALSE) {
 			/* jeff: bypass resume here, do in late_resume */
 			rtw_set_do_late_resume(pwrpriv, _TRUE);
 		} else {

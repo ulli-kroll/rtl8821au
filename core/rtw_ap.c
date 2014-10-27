@@ -1626,12 +1626,6 @@ static void update_bcn_erpinfo_ie(_adapter *padapter)
 
 }
 
-static void update_bcn_htcap_ie(_adapter *padapter)
-{
-	DBG_871X("%s\n", __FUNCTION__);
-
-}
-
 static void update_bcn_htinfo_ie(_adapter *padapter)
 {
 	DBG_871X("%s\n", __FUNCTION__);
@@ -1764,10 +1758,6 @@ void update_beacon(_adapter *padapter, uint8_t ie_id, uint8_t *oui, uint8_t tx)
 
 	case _ERPINFO_IE_:
 		update_bcn_erpinfo_ie(padapter);
-		break;
-
-	case _HT_CAPABILITY_IE_:
-		update_bcn_htcap_ie(padapter);
 		break;
 
 	case _RSN_IE_2_:

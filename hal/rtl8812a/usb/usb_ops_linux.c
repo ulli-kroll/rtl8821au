@@ -208,9 +208,6 @@ void interrupt_handler_8812au(_adapter *padapter, uint16_t pkt_len, uint8_t *pbu
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
 	if (pHalData->IntArray[0] & IMR_BCNDMAINT0_88E)
 #endif
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
-	if (pHalData->IntArray[0] & (IMR_TBDER_88E|IMR_TBDOK_88E))
-#endif
 	{
 		struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 

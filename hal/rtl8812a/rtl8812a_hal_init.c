@@ -2899,9 +2899,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, uint8_t variable, uint8_t *val)
 				UpdateInterruptMask8812AU(Adapter, _TRUE, 0, IMR_BCNDMAINT0_8812);
 #endif
 
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
-				UpdateInterruptMask8812AU(Adapter, _TRUE , 0, (IMR_TXBCN0ERR_8812 | IMR_TXBCN0OK_8812));
-#endif
 
 #endif
 				StopTxBeacon(Adapter);
@@ -2918,9 +2915,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, uint8_t variable, uint8_t *val)
 			UpdateInterruptMask8812AU(Adapter, _TRUE , IMR_BCNDMAINT0_8812, 0);
 #endif
 
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
-			UpdateInterruptMask8812AU(Adapter, _TRUE , (IMR_TXBCN0ERR_8812 | IMR_TXBCN0OK_8812), 0);
-#endif
 
 #endif
 

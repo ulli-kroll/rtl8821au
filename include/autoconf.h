@@ -188,7 +188,6 @@
 
 #define DBG_CONFIG_ERROR_DETECT
 //#define DBG_CONFIG_ERROR_DETECT_INT
-//#define DBG_CONFIG_ERROR_RESET
 
 //#define DBG_IO
 

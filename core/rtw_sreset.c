@@ -105,12 +105,7 @@ void sreset_set_trigger_point(struct _ADAPTER *padapter, int32_t tgp)
 
 bool sreset_inprogress(struct _ADAPTER *padapter)
 {
-#if defined(DBG_CONFIG_ERROR_RESET)
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-	return pHalData->srestpriv.silent_reset_inprogress;
-#else
 	return _FALSE;
-#endif
 }
 
 void sreset_restore_security_station(struct _ADAPTER *padapter)
@@ -270,35 +265,5 @@ void sreset_start_adapter(struct _ADAPTER *padapter)
 
 void sreset_reset(struct _ADAPTER *padapter)
 {
-#ifdef DBG_CONFIG_ERROR_RESET
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
-	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
-	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
-
-	uint32_t	 start = rtw_get_current_time();
-
-	DBG_871X("%s\n", __FUNCTION__);
-
-	psrtpriv->Wifi_Error_Status = WIFI_STATUS_SUCCESS;
-
-	mutex_lock_interruptible(&psrtpriv->silentreset_mutex);
-	psrtpriv->silent_reset_inprogress = _TRUE;
-	pwrpriv->change_rfpwrstate = rf_off;
-
-	sreset_stop_adapter(padapter);
-#ifdef CONFIG_IPS
-	ips_enter(padapter);
-	ips_leave(padapter);
-#endif
-
-	sreset_startstruct _ADAPTER(padapter);
-
-	psrtpriv->silent_reset_inprogress = _FALSE;
-	mutex_unlock(&psrtpriv->silentreset_mutex);
-
-	DBG_871X("%s done in %d ms\n", __FUNCTION__, rtw_get_passing_time_ms(start));
-#endif
 }
 

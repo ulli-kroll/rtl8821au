@@ -1682,19 +1682,12 @@ static void update_bcn_wps_ie(_adapter *padapter)
 
 }
 
-static void update_bcn_p2p_ie(_adapter *padapter)
-{
-
-}
-
 static void update_bcn_vendor_spec_ie(_adapter *padapter, uint8_t *oui)
 {
 	DBG_871X("%s\n", __FUNCTION__);
 
 	if (_rtw_memcmp(WPS_OUI, oui, 4)) {
 		update_bcn_wps_ie(padapter);
-	} else if (_rtw_memcmp(P2P_OUI, oui, 4)) {
-		update_bcn_p2p_ie(padapter);
 	} else {
 		DBG_871X("unknown OUI type!\n");
  	}

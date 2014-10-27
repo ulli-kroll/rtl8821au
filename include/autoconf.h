@@ -67,7 +67,6 @@
 
 	#define CONFIG_LPS	1
 	#if defined(CONFIG_LPS) && defined(CONFIG_SUPPORT_USB_INT)
-	//#define CONFIG_LPS_LCLK	1
 	#endif
 
 	//befor link

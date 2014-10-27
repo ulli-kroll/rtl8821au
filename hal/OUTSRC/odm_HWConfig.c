@@ -756,10 +756,6 @@ HAL_STATUS ODM_ConfigRFWithTxPwrTrackHeaderFile(PDM_ODM_T pDM_Odm)
 #if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
 		switch (pDM_Odm->SupportInterface) {
-		case ODM_ITRF_PCIE:
-			ODM_ReadAndConfig_MP_8821A_TxPowerTrack_PCIE(pDM_Odm);
-			break;
-
 		case ODM_ITRF_USB:
 			ODM_ReadAndConfig_MP_8821A_TxPowerTrack_USB(pDM_Odm);
 			break;
@@ -773,10 +769,6 @@ HAL_STATUS ODM_ConfigRFWithTxPwrTrackHeaderFile(PDM_ODM_T pDM_Odm)
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (pDM_Odm->SupportInterface) {
-		case ODM_ITRF_PCIE:
-			ODM_ReadAndConfig_MP_8812A_TxPowerTrack_PCIE(pDM_Odm);
-			break;
-
 		case ODM_ITRF_USB:
 			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip)
 				ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB_RFE3(pDM_Odm);

@@ -2463,11 +2463,6 @@ VOID odm_EdcaTurboCheckCE(PDM_ODM_T pDM_Odm)
 		}
 
 		if ((pDM_Odm->DM_EDCA_Table.prv_traffic_idx != trafficIndex) || (!pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA)) {
-			if (pDM_Odm->SupportInterface == ODM_ITRF_PCIE) {
-				EDCA_BE_UL = 0x6ea42b;
-				EDCA_BE_DL = 0x6ea42b;
-			}
-
 			/* merge from 92s_92c_merge temp brunch v2445    20120215 */
 			if ((IOTPeer == HT_IOT_PEER_CISCO)
 			   && ((WirelessMode == ODM_WM_G) || (WirelessMode == (ODM_WM_B|ODM_WM_G)) || (WirelessMode == ODM_WM_A) || (WirelessMode == ODM_WM_B))) {

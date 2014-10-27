@@ -677,7 +677,6 @@ typedef enum _ODM_Support_Ability_Definition
 typedef enum tag_ODM_Support_Interface_Definition
 {
 	ODM_ITRF_USB 	=	0x2,
-	ODM_ITRF_ALL 	=	0x7,
 }ODM_INTERFACE_E;
 
 // ODM_CMNINFO_IC_TYPE

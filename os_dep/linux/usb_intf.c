@@ -601,19 +601,8 @@ static int rtw_resume(struct usb_interface *pusb_intf)
 {
 	struct dvobj_priv *dvobj = usb_get_intfdata(pusb_intf);
 	_adapter *padapter = dvobj->padapter;
-	struct net_device *ndev = padapter->ndev;
-	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
-	 int ret = 0;
 
-	if(pwrpriv->bInternalAutoSuspend ){
- 		ret = rtw_resume_process(padapter);
-	} else {
-		ret = rtw_resume_process(padapter);
-		}
-	}
-
-	return ret;
-
+	return rtw_resume_process(padapter);
 }
 
 int rtw_resume_process(_adapter *padapter)

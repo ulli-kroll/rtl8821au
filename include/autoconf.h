@@ -110,7 +110,6 @@
 /*
  * CONFIG_USE_USB_BUFFER_ALLOC_XX uses Linux USB Buffer alloc API and is for Linux platform only now!
  */
-//#define CONFIG_USE_USB_BUFFER_ALLOC_RX 1	// For RX path
 
 #define CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
 
@@ -187,7 +186,6 @@
 #define CONFIG_PROC_DEBUG
 
 #define DBG_CONFIG_ERROR_DETECT
-//#define DBG_CONFIG_ERROR_DETECT_INT
 
 //#define DBG_IO
 

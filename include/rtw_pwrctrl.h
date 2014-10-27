@@ -262,7 +262,6 @@ void LPS_Leave(PADAPTER padapter);
 
 /* ULLI resolve these #define's */
 
-#define rtw_is_do_late_resume(pwrpriv) _FALSE
 #define rtw_set_do_late_resume(pwrpriv, enable) do {} while (0)
 #define rtw_register_early_suspend(pwrpriv) do {} while (0)
 #define rtw_unregister_early_suspend(pwrpriv) do {} while (0)

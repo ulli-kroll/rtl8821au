@@ -27,8 +27,6 @@
 
 #include "odm_precomp.h"
 
-#define READ_AND_CONFIG(ic, txt) (ODM_ReadAndConfig_MP_##ic##txt(pDM_Odm))
-
 u1Byte odm_QueryRxPwrPercentage(s1Byte AntPower)
 {
 	if ((AntPower <= -100) || (AntPower >= 20)) {
@@ -713,13 +711,13 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
 			if (eRFPath == ODM_RF_PATH_A) {
-				READ_AND_CONFIG(8812A, _RadioA);
+				ODM_ReadAndConfig_MP_8812A_RadioA(pDM_Odm);
 			} else if (eRFPath == ODM_RF_PATH_B) {
-				READ_AND_CONFIG(8812A, _RadioB);
+				ODM_ReadAndConfig_MP_8812A_RadioB(pDM_Odm);
 			}
 			break;
 		case CONFIG_RF_TXPWR_LMT:
-			READ_AND_CONFIG(8812A, _TXPWR_LMT);
+			ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(pDM_Odm);
 			break;
 
 		default:
@@ -733,11 +731,11 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
 			if (eRFPath == ODM_RF_PATH_A) {
-				READ_AND_CONFIG(8821A, _RadioA);
+				ODM_ReadAndConfig_MP_8821A_RadioA(pDM_Odm);
 			}
 			break;
 		case CONFIG_RF_TXPWR_LMT:
-			READ_AND_CONFIG(8821A, _TXPWR_LMT);
+			ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(pDM_Odm);
 			break;
 		default:
 			;
@@ -759,11 +757,11 @@ HAL_STATUS ODM_ConfigRFWithTxPwrTrackHeaderFile(PDM_ODM_T pDM_Odm)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
 		switch (pDM_Odm->SupportInterface) {
 		case ODM_ITRF_PCIE:
-			READ_AND_CONFIG(8821A, _TxPowerTrack_PCIE);
+			ODM_ReadAndConfig_MP_8821A_TxPowerTrack_PCIE(pDM_Odm);
 			break;
 
 		case ODM_ITRF_USB:
-			READ_AND_CONFIG(8821A, _TxPowerTrack_USB);
+			ODM_ReadAndConfig_MP_8821A_TxPowerTrack_USB(pDM_Odm);
 			break;
 
 		default:
@@ -776,14 +774,14 @@ HAL_STATUS ODM_ConfigRFWithTxPwrTrackHeaderFile(PDM_ODM_T pDM_Odm)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (pDM_Odm->SupportInterface) {
 		case ODM_ITRF_PCIE:
-			READ_AND_CONFIG(8812A, _TxPowerTrack_PCIE);
+			ODM_ReadAndConfig_MP_8812A_TxPowerTrack_PCIE(pDM_Odm);
 			break;
 
 		case ODM_ITRF_USB:
 			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip)
-				READ_AND_CONFIG(8812A, _TxPowerTrack_USB_RFE3);
+				ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB_RFE3(pDM_Odm);
 			else
-				READ_AND_CONFIG(8812A, _TxPowerTrack_USB);
+				ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB(pDM_Odm);
 			break;
 
 		default:
@@ -808,22 +806,22 @@ HAL_STATUS ODM_ConfigBBWithHeaderFile(PDM_ODM_T pDM_Odm, ODM_BB_Config_Type Conf
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {
 		case CONFIG_BB_PHY_REG:
-			READ_AND_CONFIG(8812A, _PHY_REG);
+			ODM_ReadAndConfig_MP_8812A_PHY_REG(pDM_Odm);
 			break;
 
 		case CONFIG_BB_AGC_TAB:
-			READ_AND_CONFIG(8812A, _AGC_TAB);
+			ODM_ReadAndConfig_MP_8812A_AGC_TAB(pDM_Odm);
 			break;
 
 		case CONFIG_BB_PHY_REG_PG:
 			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip)
-				READ_AND_CONFIG(8812A, _PHY_REG_PG_ASUS);
+				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(pDM_Odm);
 			else
-				READ_AND_CONFIG(8812A, _PHY_REG_PG);
+				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(pDM_Odm);
 			break;
 
 		case CONFIG_BB_PHY_REG_MP:
-			READ_AND_CONFIG(8812A, _PHY_REG_MP);
+			ODM_ReadAndConfig_MP_8812A_PHY_REG_MP(pDM_Odm);
 			break;
 
 		default:
@@ -838,15 +836,15 @@ HAL_STATUS ODM_ConfigBBWithHeaderFile(PDM_ODM_T pDM_Odm, ODM_BB_Config_Type Conf
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
 		switch (ConfigType) {
 		case CONFIG_BB_PHY_REG:
-			READ_AND_CONFIG(8821A, _PHY_REG);
+			ODM_ReadAndConfig_MP_8821A_PHY_REG(pDM_Odm);
 			break;
 
 		case CONFIG_BB_AGC_TAB:
-			READ_AND_CONFIG(8821A, _AGC_TAB);
+			ODM_ReadAndConfig_MP_8821A_AGC_TAB(pDM_Odm);
 			break;
 
 		case CONFIG_BB_PHY_REG_PG:
-			READ_AND_CONFIG(8821A, _PHY_REG_PG);
+			ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(pDM_Odm);
 			break;
 
 		default:
@@ -871,12 +869,12 @@ HAL_STATUS ODM_ConfigMACWithHeaderFile(PDM_ODM_T pDM_Odm)
 
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
-		READ_AND_CONFIG(8812A, _MAC_REG);
+		ODM_ReadAndConfig_MP_8812A_MAC_REG(pDM_Odm);
 	}
 #endif
 #if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
-		READ_AND_CONFIG(8821A, _MAC_REG);
+		ODM_ReadAndConfig_MP_8821A_MAC_REG(pDM_Odm);
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("<===8821_ODM_ConfigMACwithHeaderFile\n"));
 	}
 #endif

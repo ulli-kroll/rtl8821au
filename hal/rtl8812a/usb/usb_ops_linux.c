@@ -203,23 +203,6 @@ void interrupt_handler_8812au(_adapter *padapter, uint16_t pkt_len, uint8_t *pbu
 	memcpy(&(pHalData->IntArray[0]), &(pbuf[USB_INTR_CONTENT_HISR_OFFSET]), 4);
 	memcpy(&(pHalData->IntArray[1]), &(pbuf[USB_INTR_CONTENT_HISRE_OFFSET]), 4);
 
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
-
-	{
-		struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-
-		if (check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
-			/* send_beacon(padapter); */
-			if (pmlmepriv->update_bcn == _TRUE) {
-				/* tx_beacon_hdl(padapter, NULL); */
-				set_tx_beacon_cmd(padapter);
-			}
-		}
-	}
-#endif
-
-
-
 
 #ifdef DBG_CONFIG_ERROR_DETECT_INT
 	if (pHalData->IntArray[1]  & IMR_TXERR_88E)

@@ -80,9 +80,6 @@
 
 #define CONFIG_AP_MODE	1
 #ifdef CONFIG_AP_MODE
-	//#define CONFIG_INTERRUPT_BASED_TXBCN // Tx Beacon when driver BCN_OK ,BCN_ERR interrupt occurs
-	#ifdef CONFIG_INTERRUPT_BASED_TXBCN
-	#endif
 #endif
 
 

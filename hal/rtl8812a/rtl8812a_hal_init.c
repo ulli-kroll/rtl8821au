@@ -2893,10 +2893,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, uint8_t variable, uint8_t *val)
 
 		if ((mode == _HW_STATE_STATION_) || (mode == _HW_STATE_NOLINK_)) {
 			{
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
-
-
-#endif
 				StopTxBeacon(Adapter);
 			}
 
@@ -2906,12 +2902,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, uint8_t variable, uint8_t *val)
 			ResumeTxBeacon(Adapter);
 			rtw_write8(Adapter, REG_BCN_CTRL, 0x1a);
 		} else if (mode == _HW_STATE_AP_) {
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
-
-
-#endif
-
-
 			ResumeTxBeacon(Adapter);
 
 			rtw_write8(Adapter, REG_BCN_CTRL, 0x12);

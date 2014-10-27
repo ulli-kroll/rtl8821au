@@ -845,23 +845,36 @@ HAL_STATUS ODM_ConfigFWWithHeaderFile(PDM_ODM_T pDM_Odm,
 {
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
-		if (ConfigType == CONFIG_FW_NIC) {
+		switch (ConfigType) {
+		case CONFIG_FW_NIC:
 			READ_FIRMWARE(8812A, _FW_NIC);
-		} else if (ConfigType == CONFIG_FW_WoWLAN) {
+			break;
+		case CONFIG_FW_WoWLAN:
 			READ_FIRMWARE(8812A, _FW_WoWLAN);
-		} else if (ConfigType == CONFIG_FW_BT) {
+			break;
+		case CONFIG_FW_BT:
 			READ_FIRMWARE(8812A, _FW_NIC_BT);
+			break;
+
+		default:
+			;
 		}
 	}
 #endif
 #if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
-		if (ConfigType == CONFIG_FW_NIC) {
+		switch (ConfigType) {
+		case CONFIG_FW_NIC:
 			READ_FIRMWARE(8821A, _FW_NIC);
-		} else if (ConfigType == CONFIG_FW_WoWLAN) {
+			break;
+		case CONFIG_FW_WoWLAN:
 			READ_FIRMWARE(8821A, _FW_WoWLAN);
-		} else if (ConfigType == CONFIG_FW_BT) {
+			break;
+		case CONFIG_FW_BT:
 			READ_FIRMWARE(8821A, _FW_BT);
+			break;
+		default:
+			;
 		}
 	}
 #endif

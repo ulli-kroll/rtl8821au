@@ -84,7 +84,6 @@
 #ifdef CONFIG_LED
 	#define CONFIG_SW_LED
 	#ifdef CONFIG_SW_LED
-		//#define CONFIG_LED_HANDLED_BY_CMD_THREAD
 	#endif
 #endif // CONFIG_LED
 

@@ -1626,12 +1626,6 @@ static void update_bcn_erpinfo_ie(_adapter *padapter)
 
 }
 
-static void update_bcn_wpa_ie(_adapter *padapter)
-{
-	DBG_871X("%s\n", __FUNCTION__);
-
-}
-
 static void update_bcn_wmm_ie(_adapter *padapter)
 {
 	DBG_871X("%s\n", __FUNCTION__);
@@ -1703,9 +1697,7 @@ static void update_bcn_vendor_spec_ie(_adapter *padapter, uint8_t *oui)
 {
 	DBG_871X("%s\n", __FUNCTION__);
 
-	if (_rtw_memcmp(RTW_WPA_OUI, oui, 4)) {
-		update_bcn_wpa_ie(padapter);
-	} else if (_rtw_memcmp(WMM_OUI, oui, 4)) {
+	if (_rtw_memcmp(WMM_OUI, oui, 4)) {
 		update_bcn_wmm_ie(padapter);
 	} else if (_rtw_memcmp(WPS_OUI, oui, 4)) {
 		update_bcn_wps_ie(padapter);

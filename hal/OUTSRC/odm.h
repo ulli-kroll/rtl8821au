@@ -682,13 +682,11 @@ typedef enum tag_ODM_Support_Interface_Definition
 // ODM_CMNINFO_IC_TYPE
 typedef enum tag_ODM_Support_IC_Type_Definition
 {
-	ODM_RTL8192S 	=	BIT0,
 	ODM_RTL8812 	=	BIT5,
 	ODM_RTL8821 	=	BIT6,
 	ODM_RTL8813A	=	BIT9
 }ODM_IC_TYPE_E;
 
-#define ODM_IC_11N_SERIES		(ODM_RTL8192S)
 #define ODM_IC_11AC_SERIES		(ODM_RTL8812 | ODM_RTL8821|ODM_RTL8813A)
 
 //ODM_CMNINFO_CUT_VER

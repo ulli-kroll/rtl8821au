@@ -32,7 +32,6 @@
 #define	ODM_ENDIAN_BIG	0
 #define	ODM_ENDIAN_LITTLE	1
 
-#define 	RT_PCI_INTERFACE				1
 #define 	RT_USB_INTERFACE				2
 
 typedef enum _HAL_STATUS{

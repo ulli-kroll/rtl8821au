@@ -176,11 +176,6 @@ struct rx_pkt_attrib	{
 
 	uint8_t	ack_policy;
 
-//#ifdef CONFIG_TCP_CSUM_OFFLOAD_RX
-	uint8_t	tcpchk_valid; // 0: invalid, 1: valid
-	uint8_t	ip_chkrpt; //0: incorrect, 1: correct
-	uint8_t	tcp_chkrpt; //0: incorrect, 1: correct
-//#endif
 	uint8_t 	key_index;
 
 	uint8_t	data_rate;

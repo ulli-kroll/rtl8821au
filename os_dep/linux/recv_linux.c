@@ -287,15 +287,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 		pkt->protocol = eth_type_trans(pkt, padapter->ndev);
 		pkt->dev = padapter->ndev;
 
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_RX
-		if ( (pattrib->tcpchk_valid == 1) && (pattrib->tcp_chkrpt == 1) ) {
-			pkt->ip_summed = CHECKSUM_UNNECESSARY;
-		} else {
-			pkt->ip_summed = CHECKSUM_NONE;
-		}
-#else
 		pkt->ip_summed = CHECKSUM_NONE;
-#endif
 		netif_rx(pkt);
 	}
 }

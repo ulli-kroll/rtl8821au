@@ -312,11 +312,7 @@ typedef struct txdescriptor_8812
 #define SET_EARLYMODE_LEN2_8812(__pAddr, __Value) 					SET_BITS_TO_LE_4BYTE(__pAddr+4, 2, 15,  __Value)
 #define SET_EARLYMODE_LEN3_8812(__pAddr, __Value) 					SET_BITS_TO_LE_4BYTE(__pAddr+4, 17, 15, __Value)
 
-#ifdef CONFIG_TX_EARLY_MODE
-#define USB_DUMMY_OFFSET		2
-#else
 #define USB_DUMMY_OFFSET		1
-#endif
 #define USB_DUMMY_LENGTH		(USB_DUMMY_OFFSET * PACKET_OFFSET_SZ)
 
 
@@ -334,11 +330,6 @@ int32_t	 rtl8812au_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *
 int32_t rtl8812au_xmit_buf_handler(PADAPTER padapter);
 void rtl8812au_xmit_tasklet(void *priv);
 int32_t rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
-
-
-#ifdef CONFIG_TX_EARLY_MODE
-void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitbuf );
-#endif
 
 void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag,u8 *ptxdesc);
 

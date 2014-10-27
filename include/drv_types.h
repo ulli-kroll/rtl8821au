@@ -126,9 +126,6 @@ struct registry_priv
 	uint8_t	mp_mode;
 	uint8_t	software_encrypt;
 	uint8_t	software_decrypt;
-	#ifdef CONFIG_TX_EARLY_MODE
-	uint8_t   early_mode;
-	#endif
 	uint8_t	acm_method;
 	  //UAPSD
 	uint8_t	wmm_enable;

@@ -61,9 +61,6 @@ int rtw_ips_mode = IPS_NONE;
 
 int rtw_smart_ps = 2;
 
-#ifdef CONFIG_TX_EARLY_MODE
-int rtw_early_mode = 1;
-#endif
 module_param(rtw_ips_mode, int, 0644);
 MODULE_PARM_DESC(rtw_ips_mode, "The default IPS mode");
 
@@ -231,11 +228,6 @@ module_param(rtw_hwpdn_mode, int, 0644);
 module_param(rtw_hwpwrp_detect, int, 0644);
 
 module_param(rtw_hw_wps_pbc, int, 0644);
-
-#ifdef CONFIG_TX_EARLY_MODE
-module_param(rtw_early_mode, int, 0644);
-#endif
-
 
 #ifdef CONFIG_FILE_FWIMG
 char *rtw_fw_file_path = "";
@@ -707,10 +699,6 @@ uint loadparam(struct _ADAPTER *padapter,  _nic_hdl ndev)
 	registry_par->ldpc_cap = (uint8_t)rtw_ldpc_cap;
 	registry_par->stbc_cap = (uint8_t)rtw_stbc_cap;
 	registry_par->beamform_cap = (uint8_t)rtw_beamform_cap;
-#endif
-
-#ifdef CONFIG_TX_EARLY_MODE
-	registry_par->early_mode = (uint8_t)rtw_early_mode;
 #endif
 	registry_par->lowrate_two_xmit = (uint8_t)rtw_lowrate_two_xmit;
 	registry_par->rf_config = (uint8_t)rtw_rf_config;

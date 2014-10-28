@@ -136,7 +136,6 @@
 #define	MGN_MCS14_SG		0xce
 #define	MGN_MCS15_SG		0xcf
 
-#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 #define AGC_DIFF_CONFIG_MP(ic, band) (ODM_ReadAndConfig_MP_##ic##_AGC_TAB_DIFF(pDM_Odm, Array_MP_##ic##_AGC_TAB_DIFF_##band, \
                                                                               sizeof(Array_MP_##ic##_AGC_TAB_DIFF_##band)/sizeof(uint32_t)))
 #define AGC_DIFF_CONFIG_TC(ic, band) (ODM_ReadAndConfig_TC_##ic##_AGC_TAB_DIFF(pDM_Odm, Array_TC_##ic##_AGC_TAB_DIFF_##band, \

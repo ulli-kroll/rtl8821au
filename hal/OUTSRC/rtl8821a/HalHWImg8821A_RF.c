@@ -21,6 +21,13 @@
 
 #include "../odm_precomp.h"
 
+#define READ_NEXT_PAIR(array_table, v1, v2, i) \
+	do { \
+		i += 2; \
+		v1 = array_table[i]; \
+		v2 = array_table[i+1]; \
+	} while (0)
+
 #if (RTL8821A_SUPPORT == 1)
 static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex)
 {
@@ -659,8 +666,6 @@ u32 RTL8821AU_RADIOA_ARRAY[] = {
 
 void ODM_ReadAndConfig_MP_8821A_RadioA(PDM_ODM_T pDM_Odm)
 {
-#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while (0)
-
 	uint32_t	hex         = 0;
 	uint32_t	i           = 0;
 	uint16_t	count       = 0;
@@ -690,25 +695,25 @@ void ODM_ReadAndConfig_MP_8821A_RadioA(PDM_ODM_T pDM_Odm)
 			/* This line is the start line of branch. */
 			if (!CheckCondition(Array[i], hex)) {
 				/* Discard the following (offset, data) pairs. */
-				READ_NEXT_PAIR(v1, v2, i);
+				READ_NEXT_PAIR(Array, v1, v2, i);
 				while (v2 != 0xDEAD &&
 				    v2 != 0xCDEF &&
 				    v2 != 0xCDCD && i < ArrayLen-2) {
-					READ_NEXT_PAIR(v1, v2, i);
+					READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 				i -= 2; /* prevent from for-loop += 2 */
 			} else {
 				/* Configure matched pairs and skip to end of if-else. */
-				READ_NEXT_PAIR(v1, v2, i);
+				READ_NEXT_PAIR(Array, v1, v2, i);
 				while (v2 != 0xDEAD &&
 				    v2 != 0xCDEF &&
 				    v2 != 0xCDCD && i < ArrayLen-2) {
 					odm_ConfigRF_RadioA_8821A(pDM_Odm, v1, v2);
-					READ_NEXT_PAIR(v1, v2, i);
+					READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
 				while (v2 != 0xDEAD && i < ArrayLen-2) {
-					READ_NEXT_PAIR(v1, v2, i);
+					READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 			}
 		}

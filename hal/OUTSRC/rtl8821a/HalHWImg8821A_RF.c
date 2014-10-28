@@ -18,38 +18,35 @@
 *
 ******************************************************************************/
 
-//#include "Mp_Precomp.h"
+
 #include "../odm_precomp.h"
 
 #if (RTL8821A_SUPPORT == 1)
-static BOOLEAN
-CheckCondition(
-    const uint32_t  Condition,
-    const uint32_t  Hex
-    )
+static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex)
 {
-    uint32_t _board     = (Hex & 0x000000FF);
-    uint32_t _interface = (Hex & 0x0000FF00) >> 8;
-    uint32_t _platform  = (Hex & 0x00FF0000) >> 16;
-    uint32_t cond = Condition;
+	uint32_t _board     = (Hex & 0x000000FF);
+	uint32_t _interface = (Hex & 0x0000FF00) >> 8;
+	uint32_t _platform  = (Hex & 0x00FF0000) >> 16;
+	uint32_t cond = Condition;
 
-    if ( Condition == 0xCDCDCDCD )
-        return TRUE;
+	if (Condition == 0xCDCDCDCD)
+		return TRUE;
 
-    cond = Condition & 0x000000FF;
-    if ( (_board != cond) && (cond != 0xFF) )
-        return FALSE;
+	cond = Condition & 0x000000FF;
+	if ((_board != cond) && (cond != 0xFF))
+		return FALSE;
 
-    cond = Condition & 0x0000FF00;
-    cond = cond >> 8;
-    if ( ((_interface & cond) == 0) && (cond != 0x07) )
-        return FALSE;
+	cond = Condition & 0x0000FF00;
+	cond = cond >> 8;
+	if (((_interface & cond) == 0) && (cond != 0x07))
+		return FALSE;
 
-    cond = Condition & 0x00FF0000;
-    cond = cond >> 16;
-    if ( ((_platform & cond) == 0) && (cond != 0x0F) )
-        return FALSE;
-    return TRUE;
+	cond = Condition & 0x00FF0000;
+	cond = cond >> 16;
+	if (((_platform & cond) == 0) && (cond != 0x0F))
+		return FALSE;
+
+	return TRUE;
 }
 
 
@@ -660,22 +657,19 @@ uint32_t Array_MP_8821A_RadioA[] = {
 
 };
 
-void
-ODM_ReadAndConfig_MP_8821A_RadioA(
- 	IN   PDM_ODM_T  pDM_Odm
- 	)
+void ODM_ReadAndConfig_MP_8821A_RadioA(PDM_ODM_T pDM_Odm)
 {
-	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
+#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while (0)
 
-	uint32_t     hex         = 0;
-	uint32_t     i           = 0;
-	uint16_t     count       = 0;
-	uint32_t    *ptr_array   = NULL;
-	u1Byte     platform    = pDM_Odm->SupportPlatform;
-	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;
-	uint32_t     ArrayLen    = sizeof(Array_MP_8821A_RadioA)/sizeof(uint32_t);
-	uint32_t    *Array       = Array_MP_8821A_RadioA;
+	uint32_t	hex         = 0;
+	uint32_t	i           = 0;
+	uint16_t	count       = 0;
+	uint32_t	*ptr_array   = NULL;
+	u1Byte		platform    = pDM_Odm->SupportPlatform;
+	u1Byte		_interface   = pDM_Odm->SupportInterface;
+	u1Byte		board       = pDM_Odm->BoardType;
+	uint32_t	ArrayLen    = sizeof(Array_MP_8821A_RadioA)/sizeof(uint32_t);
+	uint32_t	*Array       = Array_MP_8821A_RadioA;
 
 
 	hex += board;
@@ -684,47 +678,39 @@ ODM_ReadAndConfig_MP_8821A_RadioA(
 	hex += 0xFF000000;
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_RadioA, hex = 0x%X\n", hex));
 
-	for (i = 0; i < ArrayLen; i += 2 )
-	{
-	    uint32_t v1 = Array[i];
-	    uint32_t v2 = Array[i+1];
+	for (i = 0; i < ArrayLen; i += 2) {
+		uint32_t v1 = Array[i];
+		uint32_t v2 = Array[i+1];
 
-	    // This (offset, data) pair meets the condition.
-	    if ( v1 < 0xCDCDCDCD )
-	    {
-		    odm_ConfigRF_RadioA_8821A(pDM_Odm, v1, v2);
-		    continue;
-	 	}
-		else
-		{ // This line is the start line of branch.
-		    if ( !CheckCondition(Array[i], hex) )
-		    { // Discard the following (offset, data) pairs.
-		        READ_NEXT_PAIR(v1, v2, i);
-		        while (v2 != 0xDEAD &&
-		               v2 != 0xCDEF &&
-		               v2 != 0xCDCD && i < ArrayLen -2)
-		        {
-		            READ_NEXT_PAIR(v1, v2, i);
-		        }
-		        i -= 2; // prevent from for-loop += 2
-		    }
-		    else // Configure matched pairs and skip to end of if-else.
-		    {
-		        READ_NEXT_PAIR(v1, v2, i);
-		        while (v2 != 0xDEAD &&
-		               v2 != 0xCDEF &&
-		               v2 != 0xCDCD && i < ArrayLen -2)
-		        {
-		    		odm_ConfigRF_RadioA_8821A(pDM_Odm, v1, v2);
-		            READ_NEXT_PAIR(v1, v2, i);
-		        }
+		/* This (offset, data) pair meets the condition. */
+		if (v1 < 0xCDCDCDCD) {
+			odm_ConfigRF_RadioA_8821A(pDM_Odm, v1, v2);
+			continue;
+		} else {
+			/* This line is the start line of branch. */
+			if (!CheckCondition(Array[i], hex)) {
+				/* Discard the following (offset, data) pairs. */
+				READ_NEXT_PAIR(v1, v2, i);
+				while (v2 != 0xDEAD &&
+				    v2 != 0xCDEF &&
+				    v2 != 0xCDCD && i < ArrayLen-2) {
+					READ_NEXT_PAIR(v1, v2, i);
+				}
+				i -= 2; /* prevent from for-loop += 2 */
+			} else {
+				/* Configure matched pairs and skip to end of if-else. */
+				READ_NEXT_PAIR(v1, v2, i);
+				while (v2 != 0xDEAD &&
+				    v2 != 0xCDEF &&
+				    v2 != 0xCDCD && i < ArrayLen-2) {
+					odm_ConfigRF_RadioA_8821A(pDM_Odm, v1, v2);
+					READ_NEXT_PAIR(v1, v2, i);
+				}
 
-		        while (v2 != 0xDEAD && i < ArrayLen -2)
-		        {
-		            READ_NEXT_PAIR(v1, v2, i);
-		        }
-
-		    }
+				while (v2 != 0xDEAD && i < ArrayLen-2) {
+					READ_NEXT_PAIR(v1, v2, i);
+				}
+			}
 		}
 	}
 
@@ -763,15 +749,11 @@ u1Byte gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_AP_8821A[] = {0, 0, 1, 1, 2,
 u1Byte gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_AP_8821A[] = {0, 1, 1, 1, 2, 2, 2, 3, 3,  3,  4,  4,  5,  5,  5,  6,  6,  6,  7,  8,  8,  9,  9,  9, 10, 10, 10, 10, 11, 11};
 u1Byte gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_AP_8821A[] = {0, 0, 1, 1, 2, 2, 2, 2, 3,  3,  3,  4,  4,  5,  5,  6,  6,  6,  7,  7,  7,  8,  8,  8,  9,  9,  9,  9,  9,  9};
 
-void
-ODM_ReadAndConfig_MP_8821A_TxPowerTrack_AP(
- 	IN   PDM_ODM_T  pDM_Odm
- 	)
+void ODM_ReadAndConfig_MP_8821A_TxPowerTrack_AP(PDM_ODM_T pDM_Odm)
 {
 	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_MP_8821A\n"));
-
 
 	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P, gDeltaSwingTableIdx_MP_2GA_P_TxPowerTrack_AP_8821A, DELTA_SWINGIDX_SIZE);
 	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N, gDeltaSwingTableIdx_MP_2GA_N_TxPowerTrack_AP_8821A, DELTA_SWINGIDX_SIZE);
@@ -822,10 +804,7 @@ u1Byte gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2
 u1Byte gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10};
 u1Byte gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
 
-void
-ODM_ReadAndConfig_MP_8821A_TxPowerTrack_USB(
- 	IN   PDM_ODM_T  pDM_Odm
- 	)
+void ODM_ReadAndConfig_MP_8821A_TxPowerTrack_USB(PDM_ODM_T pDM_Odm)
 {
 	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
@@ -1419,32 +1398,27 @@ pu1Byte Array_MP_8821A_TXPWR_LMT[] = {
 	"MKK", "5G", "80M", "VHT", "2T", "155", "63"
 };
 
-void
-ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(
- 	IN   PDM_ODM_T  pDM_Odm
- 	)
+void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(PDM_ODM_T pDM_Odm)
 {
-	uint32_t     i           = 0;
-	uint32_t     ArrayLen    = sizeof(Array_MP_8821A_TXPWR_LMT)/sizeof(pu1Byte);
-	pu1Byte    *Array      = Array_MP_8821A_TXPWR_LMT;
-
+	uint32_t i		= 0;
+	uint32_t ArrayLen       = sizeof(Array_MP_8821A_TXPWR_LMT)/sizeof(pu1Byte);
+	pu1Byte *Array		= Array_MP_8821A_TXPWR_LMT;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_TXPWR_LMT\n"));
 
-	for (i = 0; i < ArrayLen; i += 7 )
-	{
-	    pu1Byte regulation = Array[i];
-	    pu1Byte band = Array[i+1];
-	    pu1Byte bandwidth = Array[i+2];
-	    pu1Byte rate = Array[i+3];
-	    pu1Byte rfPath = Array[i+4];
-	    pu1Byte chnl = Array[i+5];
-	    pu1Byte val = Array[i+6];
+	for (i = 0; i < ArrayLen; i += 7) {
+		pu1Byte regulation = Array[i];
+		pu1Byte band = Array[i+1];
+		pu1Byte bandwidth = Array[i+2];
+		pu1Byte rate = Array[i+3];
+		pu1Byte rfPath = Array[i+4];
+		pu1Byte chnl = Array[i+5];
+		pu1Byte val = Array[i+6];
 
-	 	 odm_ConfigBB_TXPWR_LMT_8821A(pDM_Odm, regulation, band, bandwidth, rate, rfPath, chnl, val);
+		odm_ConfigBB_TXPWR_LMT_8821A(pDM_Odm, regulation, band, bandwidth, rate, rfPath, chnl, val);
 	}
 
 }
 
-#endif // end of HWIMG_SUPPORT
+#endif
 

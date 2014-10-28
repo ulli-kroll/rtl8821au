@@ -1407,18 +1407,18 @@ void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(PDM_ODM_T pDM_Odm)
 {
 	uint32_t i		= 0;
 	uint32_t ArrayLen       = sizeof(RTL8821AU_TXPWR_LMT)/sizeof(pu1Byte);
-	pu1Byte *Array		= RTL8821AU_TXPWR_LMT;
+	u8 **Array		= RTL8821AU_TXPWR_LMT;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_TXPWR_LMT\n"));
 
 	for (i = 0; i < ArrayLen; i += 7) {
-		pu1Byte regulation = Array[i];
-		pu1Byte band = Array[i+1];
-		pu1Byte bandwidth = Array[i+2];
-		pu1Byte rate = Array[i+3];
-		pu1Byte rfPath = Array[i+4];
-		pu1Byte chnl = Array[i+5];
-		pu1Byte val = Array[i+6];
+		u8 *regulation = Array[i];
+		u8 *band = Array[i+1];
+		u8 *bandwidth = Array[i+2];
+		u8 *rate = Array[i+3];
+		u8 *rfPath = Array[i+4];
+		u8 *chnl = Array[i+5];
+		u8 *val = Array[i+6];
 
 		odm_ConfigBB_TXPWR_LMT_8821A(pDM_Odm, regulation, band, bandwidth, rate, rfPath, chnl, val);
 	}

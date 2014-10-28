@@ -53,8 +53,7 @@ static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex)
 /******************************************************************************
 *                           RadioA.TXT
 ******************************************************************************/
-
-uint32_t Array_MP_8812A_RadioA[] = {
+u32 RTL8812AU_RADIOA_ARRAY[] = {
 		0x000, 0x00010000,
 		0x018, 0x0001712A,
 		0x056, 0x00051CF2,
@@ -534,8 +533,8 @@ void ODM_ReadAndConfig_MP_8812A_RadioA(PDM_ODM_T pDM_Odm)
 	u1Byte		platform    = pDM_Odm->SupportPlatform;
 	u1Byte     	_interface   = pDM_Odm->SupportInterface;
 	u1Byte     	board       = pDM_Odm->BoardType;
-	uint32_t     	ArrayLen    = sizeof(Array_MP_8812A_RadioA)/sizeof(uint32_t);
-	uint32_t    	*Array       = Array_MP_8812A_RadioA;
+	uint32_t     	ArrayLen    = sizeof(RTL8812AU_RADIOA_ARRAY)/sizeof(uint32_t);
+	uint32_t    	*Array       = RTL8812AU_RADIOA_ARRAY;
 
 
 	hex += board;
@@ -585,7 +584,7 @@ void ODM_ReadAndConfig_MP_8812A_RadioA(PDM_ODM_T pDM_Odm)
 *                           RadioB.TXT
 ******************************************************************************/
 
-uint32_t Array_MP_8812A_RadioB[] = {
+u32 RTL8812AU_RADIOB_ARRAY[] = {
 		0x056, 0x00051CF2,
 		0x066, 0x00040000,
 		0x089, 0x00000080,
@@ -1051,8 +1050,8 @@ void ODM_ReadAndConfig_MP_8812A_RadioB(PDM_ODM_T pDM_Odm)
 	u1Byte		platform    = pDM_Odm->SupportPlatform;
 	u1Byte		_interface   = pDM_Odm->SupportInterface;
 	u1Byte		board       = pDM_Odm->BoardType;
-	uint32_t	ArrayLen    = sizeof(Array_MP_8812A_RadioB)/sizeof(uint32_t);
-	uint32_t	*Array       = Array_MP_8812A_RadioB;
+	uint32_t	ArrayLen    = sizeof(RTL8812AU_RADIOB_ARRAY)/sizeof(uint32_t);
+	uint32_t	*Array       = RTL8812AU_RADIOB_ARRAY;
 
 	hex += board;
 	hex += _interface << 8;
@@ -1267,8 +1266,7 @@ void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB_RFE3(PDM_ODM_T pDM_Odm)
 /******************************************************************************
 *                           TXPWR_LMT.TXT
 ******************************************************************************/
-
-pu1Byte Array_MP_8812A_TXPWR_LMT[] = {
+u8 *RTL8812AU_TXPWR_LMT[] = {
 	"FCC", "2.4G", "20M", "CCK", "1T", "01", "36",
 	"ETSI", "2.4G", "20M", "CCK", "1T", "01", "32",
 	"MKK", "2.4G", "20M", "CCK", "1T", "01", "32",
@@ -1838,8 +1836,8 @@ pu1Byte Array_MP_8812A_TXPWR_LMT[] = {
 void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(PDM_ODM_T pDM_Odm)
 {
 	uint32_t i		= 0;
-	uint32_t ArrayLen       = sizeof(Array_MP_8812A_TXPWR_LMT)/sizeof(pu1Byte);
-	pu1Byte *Array		= Array_MP_8812A_TXPWR_LMT;
+	uint32_t ArrayLen       = sizeof(*RTL8812AU_TXPWR_LMT)/sizeof(pu1Byte);
+	pu1Byte *Array		= *RTL8812AU_TXPWR_LMT;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_TXPWR_LMT\n"));
 

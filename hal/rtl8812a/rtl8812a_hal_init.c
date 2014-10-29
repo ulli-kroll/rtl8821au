@@ -404,8 +404,6 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 	uint32_t fwdl_start_time;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm;
-	ODM_FW_Config_Type ConfigType = CONFIG_FW_NIC;
-
 	uint8_t				*pFwImageFileName;
 	uint8_t				*pucMappedFile = NULL;
 	uint8_t				*pFwHdr = NULL;

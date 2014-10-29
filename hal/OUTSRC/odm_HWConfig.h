@@ -264,13 +264,6 @@ ODM_ConfigMACWithHeaderFile(
 	IN  	PDM_ODM_T	pDM_Odm
     );
 
-HAL_STATUS
-ODM_ConfigFWWithHeaderFile(
-	IN 	PDM_ODM_T			pDM_Odm,
-	IN 	ODM_FW_Config_Type 	ConfigType,
-	OUT u1Byte				*pFirmware,
-	OUT uint32_t				*pSize
-	);
 #endif
 
 

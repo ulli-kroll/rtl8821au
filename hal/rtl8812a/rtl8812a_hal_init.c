@@ -403,26 +403,58 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 	uint8_t	writeFW_retry = 0;
 	uint32_t fwdl_start_time;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	PDM_ODM_T		pDM_Odm;
+	ODM_FW_Config_Type ConfigType = CONFIG_FW_NIC;
 
 	uint8_t				*pFwImageFileName;
 	uint8_t				*pucMappedFile = NULL;
-	PRT_FIRMWARE_8812	pFirmware = NULL;
 	uint8_t				*pFwHdr = NULL;
 	uint8_t				*pFirmwareBuf;
 	uint32_t				FirmwareLen;
 
+	pDM_Odm = &pHalData->odmpriv;
 
 	RT_TRACE(_module_hal_init_c_, _drv_info_, ("+%s\n", __FUNCTION__));
-	pFirmware = (PRT_FIRMWARE_8812)rtw_zmalloc(sizeof(RT_FIRMWARE_8812));
-	if (!pFirmware) {
-		rtStatus = _FAIL;
-		goto Exit;
+
+#if (RTL8812A_SUPPORT == 1)
+	if (pDM_Odm->SupportICType == ODM_RTL8812) {
+		switch (ConfigType) {
+		case CONFIG_FW_NIC:
+			ODM_ReadFirmware_MP_8812A_FW_NIC(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
+			break;
+		case CONFIG_FW_WoWLAN:
+			ODM_ReadFirmware_MP_8812A_FW_WoWLAN(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
+			break;
+		case CONFIG_FW_BT:
+			ODM_ReadFirmware_MP_8812A_FW_NIC_BT(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
+			break;
+
+		default:
+			;
+		}
 	}
+#endif
+#if (RTL8821A_SUPPORT == 1)
+	if (pDM_Odm->SupportICType == ODM_RTL8821) {
+		switch (ConfigType) {
+		case CONFIG_FW_NIC:
+			ODM_ReadFirmware_MP_8821A_FW_NIC(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
+			break;
+		case CONFIG_FW_WoWLAN:
+			ODM_ReadFirmware_MP_8821A_FW_WoWLAN(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
+			break;
+		case CONFIG_FW_BT:
+			ODM_ReadFirmware_MP_8821A_FW_BT(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
+			break;
+		default:
+			;
+		}
+	}
+#endif
 
-	ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC, (uint8_t *)&(pFirmware->szFwBuffer), &(pFirmware->ulFwLength));
-	DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", pFirmware->ulFwLength);
+	DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", FirmwareLen);
 
-	if (pFirmware->ulFwLength > FW_SIZE_8812) {
+	if (FirmwareLen > FW_SIZE_8812) {
 			rtStatus = _FAIL;
 			RT_TRACE(_module_hal_init_c_, _drv_err_, ("Firmware size exceed 0x%X. Check it.\n", FW_SIZE_8812));
 			goto Exit;
@@ -430,11 +462,9 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 
 
 	{
-		pFirmwareBuf = pFirmware->szFwBuffer;
-		FirmwareLen = pFirmware->ulFwLength;
 		DBG_871X_LEVEL(_drv_info_, "+%s: !bUsedWoWLANFw, FmrmwareLen:%d+\n", __func__, FirmwareLen);
 		/* To Check Fw header. Added by tynli. 2009.12.04. */
-		pFwHdr = (uint8_t *)pFirmware->szFwBuffer;
+		pFwHdr = (uint8_t *) pFirmwareBuf;
 	}
 
 	pHalData->FirmwareVersion =  (uint16_t)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
@@ -489,9 +519,6 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 	RT_TRACE(_module_hal_init_c_, _drv_info_, ("Firmware is ready to run!\n"));
 
 Exit:
-
-	if (pFirmware)
-		rtw_mfree(pFirmware);
 
 	/*
 	 * RT_TRACE(COMP_INIT, DBG_LOUD, (" <=== FirmwareDownload91C()\n"));

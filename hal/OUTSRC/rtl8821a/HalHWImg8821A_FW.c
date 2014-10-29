@@ -25,7 +25,7 @@
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP))
 
 
-u1Byte Array_MP_8821A_FW_AP[] = {
+u8 Array_MP_8821A_FW_AP[] = {
 0x01, 0x21, 0x20, 0x00, 0x0B, 0x00, 0x00, 0x00, 0x04, 0x23, 0x15, 0x35, 0xA2, 0x3F, 0x00, 0x00,
 0x71, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 0x02, 0x49, 0x61, 0x02, 0x57, 0xE1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -1051,15 +1051,10 @@ u1Byte Array_MP_8821A_FW_AP[] = {
 uint32_t ArrayLength_MP_8821A_FW_AP = 16322;
 
 
-void
-ODM_ReadFirmware_MP_8821A_FW_AP(
-     IN   PDM_ODM_T    pDM_Odm,
-     OUT  u1Byte       *pFirmware,
-     OUT  uint32_t       *pFirmwareSize
-)
+void ODM_ReadFirmware_MP_8821A_FW_AP(u8 **pFirmware, uint32_t *pFirmwareSize)
 {
-     memcpy(pDM_Odm, pFirmware, Array_MP_8821A_FW_AP, ArrayLength_MP_8821A_FW_AP);
-     *pFirmwareSize = ArrayLength_MP_8821A_FW_AP;
+	*pFirmware) = Array_MP_8821A_FW_AP;
+	*pFirmwareSize = ArrayLength_MP_8821A_FW_AP;
 }
 
 
@@ -3070,18 +3065,9 @@ u1Byte Array_MP_8821A_FW_NIC[] = {
 uint32_t ArrayLength_MP_8821A_FW_NIC = 31972;
 
 
-void
-ODM_ReadFirmware_MP_8821A_FW_NIC(
-     IN   PDM_ODM_T    pDM_Odm,
-     OUT  u1Byte       *pFirmware,
-     OUT  uint32_t       *pFirmwareSize
-)
+void ODM_ReadFirmware_MP_8821A_FW_NIC(u8 **pFirmware, uint32_t *pFirmwareSize)
 {
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
-	*((SIZE_PTR *)pFirmware) = (SIZE_PTR)Array_MP_8821A_FW_NIC;
-#else
-	memcpy(pDM_Odm, pFirmware, Array_MP_8821A_FW_NIC, ArrayLength_MP_8821A_FW_NIC);
-#endif
+	*pFirmware = Array_MP_8821A_FW_NIC;
 	*pFirmwareSize = ArrayLength_MP_8821A_FW_NIC;
 }
 

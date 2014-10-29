@@ -404,8 +404,6 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 	uint32_t fwdl_start_time;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm;
-	uint8_t				*pFwImageFileName;
-	uint8_t				*pucMappedFile = NULL;
 	uint8_t				*pFwHdr = NULL;
 	uint8_t				*pFirmwareBuf;
 	uint32_t				FirmwareLen;
@@ -416,11 +414,11 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
-		ODM_ReadFirmware_MP_8812A_FW_NIC(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
+		ODM_ReadFirmware_MP_8812A_FW_NIC(&pFirmwareBuf, &FirmwareLen);
 #endif
 #if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821)
-			ODM_ReadFirmware_MP_8821A_FW_NIC(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
+			ODM_ReadFirmware_MP_8821A_FW_NIC(&pFirmwareBuf, &FirmwareLen);
 
 #endif
 

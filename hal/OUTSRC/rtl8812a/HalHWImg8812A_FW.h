@@ -27,12 +27,7 @@
 *                           FW_NIC.TXT
 ******************************************************************************/
 
-void
-ODM_ReadFirmware_MP_8812A_FW_NIC(
-     IN   PDM_ODM_T    pDM_Odm,
-     OUT  u1Byte       *pFirmware,
-     OUT  uint32_t       *pFirmwareSize
-);
+void ODM_ReadFirmware_MP_8812A_FW_NIC(u8 **pFirmware, uint32_t *pFirmwareSize);
 
 /******************************************************************************
 *                           FW_NIC_BT.TXT

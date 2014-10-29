@@ -1990,17 +1990,9 @@ uint32_t ArrayLength_MP_8812A_FW_NIC = 31396;
 
 
 void
-ODM_ReadFirmware_MP_8812A_FW_NIC(
-     IN   PDM_ODM_T    pDM_Odm,
-     OUT  u1Byte       *pFirmware,
-     OUT  uint32_t       *pFirmwareSize
-)
+ODM_ReadFirmware_MP_8812A_FW_NIC(u8 **pFirmware, uint32_t *pFirmwareSize)
 {
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
-	*((SIZE_PTR *)pFirmware) = (SIZE_PTR)Array_MP_8812A_FW_NIC;
-#else
-	memcpy(pFirmware, Array_MP_8812A_FW_NIC, ArrayLength_MP_8812A_FW_NIC);
-#endif
+	*pFirmware = Array_MP_8812A_FW_NIC;
 	*pFirmwareSize = ArrayLength_MP_8812A_FW_NIC;
 }
 

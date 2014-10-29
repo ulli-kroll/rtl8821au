@@ -229,12 +229,6 @@ module_param(rtw_hwpwrp_detect, int, 0644);
 
 module_param(rtw_hw_wps_pbc, int, 0644);
 
-#ifdef CONFIG_FILE_FWIMG
-char *rtw_fw_file_path = "";
-module_param(rtw_fw_file_path, charp, 0644);
-MODULE_PARM_DESC(rtw_fw_file_path, "The path of fw image");
-#endif
-
 #ifdef CONFIG_TX_MCAST2UNI
 module_param(rtw_mc2u_disable, int, 0644);
 #endif

@@ -43,8 +43,6 @@
 //#define CONFIG_PWRCTRL
 
 #define CONFIG_EMBEDDED_FWIMG	1
-//#define CONFIG_FILE_FWIMG
-
 
 #define CONFIG_80211N_HT	1
 

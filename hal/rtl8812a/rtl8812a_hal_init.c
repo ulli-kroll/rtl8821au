@@ -397,11 +397,6 @@ static int32_t _FWFreeToGo8812(PADAPTER padapter)
 	return _FAIL;
 }
 
-#ifdef CONFIG_FILE_FWIMG
-extern char *rtw_fw_file_path;
-uint8_t	FwBuffer8812[FW_SIZE_8812];
-#endif
-
 int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 {
 	int32_t	rtStatus = _SUCCESS;
@@ -423,13 +418,6 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 		rtStatus = _FAIL;
 		goto Exit;
 	}
-
-#ifdef CONFIG_FILE_FWIMG
-	if (rtw_is_file_readable(rtw_fw_file_path) == _TRUE) {
-		DBG_871X("%s accquire FW from file:%s\n", __FUNCTION__, rtw_fw_file_path);
-		pFirmware->eFWSource = FW_SOURCE_IMG_FILE;
-	} else
-#endif
 	{
 		pFirmware->eFWSource = FW_SOURCE_HEADER_FILE;
 	}
@@ -437,13 +425,6 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 	DBG_871X(" ===> FirmwareDownload8812() fw source from %s.\n", (pFirmware->eFWSource ? "Header" : "File"));
 
 	switch (pFirmware->eFWSource) {
-	case FW_SOURCE_IMG_FILE:
-#ifdef CONFIG_FILE_FWIMG
-		rtStatus = rtw_retrive_from_file(rtw_fw_file_path, FwBuffer8812, FW_SIZE_8812);
-		pFirmware->ulFwLength = rtStatus >= 0 ? rtStatus : 0;
-		pFirmware->szFwBuffer = FwBuffer8812;
-#endif
-		break;
 	case FW_SOURCE_HEADER_FILE:
 		ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC, (uint8_t *)&(pFirmware->szFwBuffer), &(pFirmware->ulFwLength));
 		DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", pFirmware->ulFwLength);

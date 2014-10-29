@@ -422,13 +422,6 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 		case CONFIG_FW_NIC:
 			ODM_ReadFirmware_MP_8812A_FW_NIC(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
 			break;
-		case CONFIG_FW_WoWLAN:
-			ODM_ReadFirmware_MP_8812A_FW_WoWLAN(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
-			break;
-		case CONFIG_FW_BT:
-			ODM_ReadFirmware_MP_8812A_FW_NIC_BT(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
-			break;
-
 		default:
 			;
 		}
@@ -439,12 +432,6 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 		switch (ConfigType) {
 		case CONFIG_FW_NIC:
 			ODM_ReadFirmware_MP_8821A_FW_NIC(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
-			break;
-		case CONFIG_FW_WoWLAN:
-			ODM_ReadFirmware_MP_8821A_FW_WoWLAN(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
-			break;
-		case CONFIG_FW_BT:
-			ODM_ReadFirmware_MP_8821A_FW_BT(pDM_Odm,(uint8_t *) &pFirmwareBuf, &FirmwareLen);
 			break;
 		default:
 			;

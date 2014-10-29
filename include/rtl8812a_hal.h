@@ -109,7 +109,6 @@
 
 
 typedef struct _RT_FIRMWARE_8812 {
-	FIRMWARE_SOURCE	eFWSource;
 #ifdef CONFIG_EMBEDDED_FWIMG
 	u8*			szFwBuffer;
 #else

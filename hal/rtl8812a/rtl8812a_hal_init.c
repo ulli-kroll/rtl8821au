@@ -418,24 +418,16 @@ int32_t FirmwareDownload8812(PADAPTER Adapter, BOOLEAN bUsedWoWLANFw)
 		rtStatus = _FAIL;
 		goto Exit;
 	}
-	{
-		pFirmware->eFWSource = FW_SOURCE_HEADER_FILE;
-	}
 
-	DBG_871X(" ===> FirmwareDownload8812() fw source from %s.\n", (pFirmware->eFWSource ? "Header" : "File"));
+	ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC, (uint8_t *)&(pFirmware->szFwBuffer), &(pFirmware->ulFwLength));
+	DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", pFirmware->ulFwLength);
 
-	switch (pFirmware->eFWSource) {
-	case FW_SOURCE_HEADER_FILE:
-		ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC, (uint8_t *)&(pFirmware->szFwBuffer), &(pFirmware->ulFwLength));
-		DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", pFirmware->ulFwLength);
-
-		if (pFirmware->ulFwLength > FW_SIZE_8812) {
+	if (pFirmware->ulFwLength > FW_SIZE_8812) {
 			rtStatus = _FAIL;
 			RT_TRACE(_module_hal_init_c_, _drv_err_, ("Firmware size exceed 0x%X. Check it.\n", FW_SIZE_8812));
 			goto Exit;
 		}
-		break;
-	}
+
 
 	{
 		pFirmwareBuf = pFirmware->szFwBuffer;

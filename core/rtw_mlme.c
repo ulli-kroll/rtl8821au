@@ -198,7 +198,7 @@ struct	wlan_network *_rtw_alloc_network(struct	mlme_priv *pmlmepriv )	/* (_queue
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("_rtw_alloc_network: ptr=%p\n", plist));
 	pnetwork->network_type = 0;
 	pnetwork->fixed = _FALSE;
-	pnetwork->last_scanned = rtw_get_current_time();
+	pnetwork->last_scanned = jiffies;
 	pnetwork->aid=0;
 	pnetwork->join_res=0;
 
@@ -363,7 +363,7 @@ sint rtw_if_up(struct _ADAPTER *padapter)
 
 void rtw_generate_random_ibss(uint8_t * pibss)
 {
-	uint32_t	curtime = rtw_get_current_time();
+	uint32_t	curtime = jiffies;
 
 	pibss[0] = 0x02;  //in ad-hoc mode bit1 must set to 1
 	pibss[1] = 0x11;
@@ -695,11 +695,11 @@ void rtw_update_scanned_network(struct _ADAPTER *adapter, WLAN_BSSID_EX *target)
 #endif
 			memcpy(&(pnetwork->network), target,  get_WLAN_BSSID_EX_sz(target));
 			/*
-			 * pnetwork->last_scanned = rtw_get_current_time();
+			 * pnetwork->last_scanned = jiffies;
 			 * variable initialize
 			 */
 			pnetwork->fixed = _FALSE;
-			pnetwork->last_scanned = rtw_get_current_time();
+			pnetwork->last_scanned = jiffies;
 
 			pnetwork->network_type = 0;
 			pnetwork->aid=0;
@@ -726,7 +726,7 @@ void rtw_update_scanned_network(struct _ADAPTER *adapter, WLAN_BSSID_EX *target)
 #endif
 			memcpy(&(pnetwork->network), target, bssid_ex_sz );
 
-			pnetwork->last_scanned = rtw_get_current_time();
+			pnetwork->last_scanned = jiffies;
 
 			/* bss info not receving from the right channel */
 			if (pnetwork->network.PhyInfo.SignalQuality == 101)
@@ -743,7 +743,7 @@ void rtw_update_scanned_network(struct _ADAPTER *adapter, WLAN_BSSID_EX *target)
 		 */
 		bool update_ie = _TRUE;
 
-		pnetwork->last_scanned = rtw_get_current_time();
+		pnetwork->last_scanned = jiffies;
 
 		//target.Reserved[0]==1, means that scaned network is a bcn frame.
 		if ((pnetwork->network.IELength>target->IELength) && (target->Reserved[0]==1))
@@ -1183,7 +1183,7 @@ void rtw_indicate_disconnect( struct _ADAPTER *padapter )
 		rtw_os_indicate_disconnect(padapter);
 
 		//set ips_deny_time to avoid enter IPS before LPS leave
-		padapter->pwrctrlpriv.ips_deny_time = rtw_get_current_time() + rtw_ms_to_systime(3000);
+		padapter->pwrctrlpriv.ips_deny_time = jiffies + rtw_ms_to_systime(3000);
 
 		_clr_fwstate_(pmlmepriv, _FW_LINKED);
 
@@ -1208,7 +1208,7 @@ void rtw_scan_abort(struct _ADAPTER *adapter)
 	struct mlme_priv	*pmlmepriv = &(adapter->mlmepriv);
 	struct mlme_ext_priv	*pmlmeext = &(adapter->mlmeextpriv);
 
-	start = rtw_get_current_time();
+	start = jiffies;
 	pmlmeext->scan_abort = _TRUE;
 	while (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY)
 		&& rtw_get_passing_time_ms(start) <= 200) {

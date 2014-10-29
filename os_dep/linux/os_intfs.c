@@ -1270,7 +1270,7 @@ netdev_open_error:
 int rtw_ips_pwr_up(struct _ADAPTER *padapter)
 {
 	int result;
-	u32 start_time = rtw_get_current_time();
+	u32 start_time = jiffies;
 
 	DBG_871X("===>  rtw_ips_pwr_up..............\n");
 	rtw_reset_drv_sw(padapter);
@@ -1286,7 +1286,7 @@ int rtw_ips_pwr_up(struct _ADAPTER *padapter)
 
 void rtw_ips_pwr_down(struct _ADAPTER *padapter)
 {
-	u32 start_time = rtw_get_current_time();
+	u32 start_time = jiffies;
 
 	DBG_871X("===> rtw_ips_pwr_down...................\n");
 

@@ -60,7 +60,7 @@ ReadEFuseByte(
 	uint32_t	value32;
 	uint8_t	readbyte;
 	uint16_t	retry;
-	//uint32_t start=rtw_get_current_time();
+	//uint32_t start=jiffies;
 
 	//Write Address
 	rtw_write8(padapter, EFUSE_CTRL+1, (_offset & 0xff));

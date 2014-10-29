@@ -301,16 +301,16 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,uint8_t bgroup)
 	u32 cur_time = 0;
 
 	if (psecuritypriv->last_mic_err_time == 0) {
-		psecuritypriv->last_mic_err_time = rtw_get_current_time();
+		psecuritypriv->last_mic_err_time = jiffies;
 	} else {
-		cur_time = rtw_get_current_time();
+		cur_time = jiffies;
 
 		if(cur_time - psecuritypriv->last_mic_err_time < 60*HZ) {
 			psecuritypriv->btkip_countermeasure = _TRUE;
 			psecuritypriv->last_mic_err_time = 0;
 			psecuritypriv->btkip_countermeasure_time = cur_time;
 		} else {
-			psecuritypriv->last_mic_err_time = rtw_get_current_time();
+			psecuritypriv->last_mic_err_time = jiffies;
 		}
 	}
 

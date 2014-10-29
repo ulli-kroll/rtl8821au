@@ -269,7 +269,7 @@ uint8_t rtw_handle_tkip_countermeasure(_adapter* padapter)
 	u32 cur_time = 0;
 
 	if (padapter->securitypriv.btkip_countermeasure == _TRUE) {
-		cur_time = rtw_get_current_time();
+		cur_time = jiffies;
 
 		if( (cur_time - padapter->securitypriv.btkip_countermeasure_time) > 60 * HZ )
 		{

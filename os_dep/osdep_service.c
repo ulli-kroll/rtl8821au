@@ -175,12 +175,6 @@ u32 rtw_end_of_queue_search(struct list_head *head, struct list_head *plist)
 		return _FALSE;
 }
 
-
-u32 rtw_get_current_time(void)
-{
-	return jiffies;
-}
-
 inline u32 rtw_systime_to_ms(u32 systime)
 {
 	return systime * 1000 / HZ;
@@ -192,7 +186,7 @@ inline u32 rtw_ms_to_systime(u32 ms)
 }
 
 /*
- *  the input parameter start use the same unit as returned by rtw_get_current_time
+ *  the input parameter start use the same unit as returned by jiffies
  */
 inline int32_t rtw_get_passing_time_ms(u32 start)
 {

@@ -407,7 +407,7 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 	#ifdef DBG_CONFIG_ERROR_DETECT
 	{
 		HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-		pHalData->srestpriv.last_tx_complete_time = rtw_get_current_time();
+		pHalData->srestpriv.last_tx_complete_time = jiffies;
 	}
 	#endif
 
@@ -512,7 +512,7 @@ u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 		#ifdef DBG_CONFIG_ERROR_DETECT
 		{
 			HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-			pHalData->srestpriv.last_tx_time = rtw_get_current_time();
+			pHalData->srestpriv.last_tx_time = jiffies;
 		}
 		#endif
 	} else {

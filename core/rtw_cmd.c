@@ -572,7 +572,7 @@ _func_enter_;
 
 	if(res == _SUCCESS) {
 
-		pmlmepriv->scan_start_time = rtw_get_current_time();
+		pmlmepriv->scan_start_time = jiffies;
 
 			_set_timer(&pmlmepriv->scan_to_timer, SCANNING_TIMEOUT);
 
@@ -1864,7 +1864,7 @@ _func_enter_;
 			break;
 		case LPS_CTRL_SPECIAL_PACKET:
 			//DBG_871X("LPS_CTRL_SPECIAL_PACKET \n");
-			pwrpriv->DelayLPSLastTimeStamp = rtw_get_current_time();
+			pwrpriv->DelayLPSLastTimeStamp = jiffies;
 			{
 				LPS_Leave(padapter);
 			}
@@ -2456,7 +2456,7 @@ _func_enter_;
 				_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
 				goto createbss_cmd_fail;
 			}
-			pwlan->last_scanned = rtw_get_current_time();
+			pwlan->last_scanned = jiffies;
 		}
 		else
 		{

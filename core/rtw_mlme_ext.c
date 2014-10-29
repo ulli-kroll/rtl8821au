@@ -3141,7 +3141,7 @@ int issue_probereq_ex(_adapter *padapter, NDIS_802_11_SSID *pssid, uint8_t *da,
 {
 	int ret;
 	int i = 0;
-	uint32_t	 start = rtw_get_current_time();
+	uint32_t	 start = jiffies;
 
 	do
 	{
@@ -3878,7 +3878,7 @@ int issue_nulldata(_adapter *padapter, unsigned char *da, unsigned int power_mod
 {
 	int ret;
 	int i = 0;
-	uint32_t	 start = rtw_get_current_time();
+	uint32_t	 start = jiffies;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -4012,7 +4012,7 @@ int issue_qos_nulldata(_adapter *padapter, unsigned char *da, uint16_t tid, int 
 {
 	int ret;
 	int i = 0;
-	uint32_t	 start = rtw_get_current_time();
+	uint32_t	 start = jiffies;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -4129,7 +4129,7 @@ int issue_deauth_ex(_adapter *padapter, uint8_t *da, unsigned short reason, int 
 {
 	int ret;
 	int i = 0;
-	uint32_t	 start = rtw_get_current_time();
+	uint32_t	 start = jiffies;
 
 	do
 	{
@@ -4595,7 +4595,7 @@ unsigned int send_beacon(_adapter *padapter)
 	int poll = 0;
 
 
-	uint32_t	 start = rtw_get_current_time();
+	uint32_t	 start = jiffies;
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
 	rtw_hal_set_hwreg(padapter, HW_VAR_DL_BCN_SEL, NULL);

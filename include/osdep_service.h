@@ -130,7 +130,6 @@ extern void	_rtw_init_queue(_queue	*pqueue);
 extern u32	_rtw_queue_empty(_queue	*pqueue);
 extern u32	rtw_end_of_queue_search(struct list_head *queue, struct list_head *pelement);
 
-extern u32	rtw_get_current_time(void);
 extern u32	rtw_systime_to_ms(u32 systime);
 extern u32	rtw_ms_to_systime(u32 ms);
 extern int32_t	rtw_get_passing_time_ms(u32 start);

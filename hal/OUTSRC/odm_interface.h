@@ -24,32 +24,6 @@
 
 
 
-//
-// =========== Constant/Structure/Enum/... Define
-//
-
-
-
-//
-// =========== Macro Define
-//
-
-
-// _cat: implemented by Token-Pasting Operator.
-#if 0
-#define _cat(_name, _ic_type, _func)								\
-	( 																		\
-		_func##_all(_name)										\
-	)
-#endif
-
-/*===================================
-
-#define ODM_REG_DIG_11N		0xC50
-#define ODM_REG_DIG_11AC	0xDDD
-
-ODM_REG(DIG,_pDM_Odm)
-=====================================*/
 
 #define _reg_11AC(_name)		ODM_REG_##_name##_11AC
 #define _bit_11AC(_name)		ODM_BIT_##_name##_11AC
@@ -81,34 +55,6 @@ typedef  void *PRT_WORK_ITEM ;
 typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
 typedef VOID (*RT_WORKITEM_CALL_BACK)(PVOID pContext);
 
-#if 0
-typedef struct tasklet_struct RT_WORKITEM_HANDLE, *PRT_WORKITEM_HANDLE;
-
-typedef struct _RT_WORK_ITEM
-{
-
-	RT_WORKITEM_HANDLE			Handle;			// Platform-dependent handle for this workitem, e.g. Ndis Workitem object.
-	PVOID						Adapter;		// Pointer to Adapter object.
-	PVOID						pContext;		// Parameter to passed to CallBackFunc().
-	RT_WORKITEM_CALL_BACK		CallbackFunc;	// Callback function of the workitem.
-	u1Byte						RefCount;		// 0: driver is going to unload, 1: No such workitem scheduled, 2: one workitem is schedueled.
-	PVOID						pPlatformExt;	// Pointer to platform-dependent extension.
-	BOOLEAN						bFree;
-	char						szID[36];		// An identity string of this workitem.
-}RT_WORK_ITEM, *PRT_WORK_ITEM;
-
-#endif
-
-
-
-//
-// =========== Extern Variable ??? It should be forbidden.
-//
-
-
-//
-// =========== EXtern Function Prototype
-//
 
 static u1Byte ODM_Read1Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr)
 {
@@ -182,12 +128,5 @@ static uint32_t ODM_GetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
 	return PHY_QueryRFReg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask);
 }
 
-//
-// Memory Relative Function.
-//
-
-//
-// ODM Timer relative API.
-//
 #endif	// __ODM_INTERFACE_H__
 

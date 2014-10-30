@@ -745,18 +745,9 @@ static const struct net_device_ops rtw_netdev_ops = {
 
 static void rtw_free_netdev(struct net_device * netdev)
 {
-	struct rtw_netdev_priv_indicator *pnpi;
-
 	if(!netdev)
 		goto RETURN;
 
-	pnpi = netdev_priv(netdev);
-
-	if(!pnpi->priv)
-		goto RETURN;
-
-	/* ULLI check usage of pnpi->sizeof_priv */
-	rtw_vmfree(pnpi->priv);
 	free_netdev(netdev);
 
 RETURN:
@@ -776,13 +767,16 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
 	_adapter *padapter = NULL;
-	struct rtw_netdev_priv_indicator *pnpi;
 	struct net_device *ndev = NULL;
 	int status = _FAIL;
 
-	if ((padapter = (_adapter *)rtw_zvmalloc(sizeof(*padapter))) == NULL) {
+	ndev = alloc_etherdev_mq(sizeof(*padapter), 4);
+	if (!ndev)
 		goto exit;
-	}
+
+	padapter = netdev_priv(ndev);
+	padapter->ndev = ndev;
+
 	padapter->dvobj = dvobj;
 	dvobj->padapter = padapter;
 
@@ -791,15 +785,6 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	/* step 1-1., decide the chip_type via driver_info */
 	padapter->interface_type = RTW_USB;
 	rtw_decide_chip_type_by_usb_info(padapter, pdid);
-
-	ndev = alloc_etherdev_mq(sizeof(struct rtw_netdev_priv_indicator), 4);
-	if (!ndev)
-		goto free_adapter;
-
-	pnpi = netdev_priv(ndev);
-	pnpi->priv=padapter;
-
-	padapter->ndev = ndev;
 
 	/* ndev->init = NULL; */
 
@@ -903,8 +888,7 @@ free_adapter:
 	if (status != _SUCCESS) {
 		if (ndev)
 			rtw_free_netdev(ndev);
-		else if (padapter)
-			rtw_vmfree(padapter);
+
 		padapter = NULL;
 	}
 exit:

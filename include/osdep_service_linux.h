@@ -239,17 +239,10 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 #define FUNC_ADPT_FMT "%s(%s)"
 #define FUNC_ADPT_ARG(adapter) __func__, adapter->ndev->name
 
-struct rtw_netdev_priv_indicator {
-	struct _ADAPTER *priv;
-};
 
 static inline struct _ADAPTER *rtw_netdev_priv(struct net_device *ndev)
 {
-	struct rtw_netdev_priv_indicator *pnpi;
-
-	pnpi = netdev_priv(ndev);
-
-	return pnpi->priv;
+	return netdev_priv(ndev);
 }
 
 #define STRUCT_PACKED __attribute__ ((packed))

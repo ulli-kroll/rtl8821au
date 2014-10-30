@@ -742,7 +742,6 @@ static VOID _InitBeaconMaxError_8812A(PADAPTER Adapter, BOOLEAN	InfraMode)
 }
 
 
-#ifdef CONFIG_LED
 static void _InitHWLed(PADAPTER Adapter)
 {
 	struct led_priv *pledpriv = &(Adapter->ledpriv);
@@ -757,7 +756,6 @@ static void _InitHWLed(PADAPTER Adapter)
  */
 
 }
-#endif
 
 static VOID _InitRDGSetting_8812A(PADAPTER Adapter)
 {
@@ -1314,9 +1312,8 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC02);
 #endif
 
 
-#ifdef CONFIG_LED
 	_InitHWLed(Adapter);
-#endif
+
 	/*
 	 * d. Initialize BB related configurations.
 	 */
@@ -1861,11 +1858,7 @@ static VOID ReadLEDSetting_8812AU(PADAPTER Adapter,
 {
 	struct led_priv *pledpriv = &(Adapter->ledpriv);
 
-#ifdef CONFIG_SW_LED
 	pledpriv->bRegUseLed = _TRUE;
-#else
-	pledpriv->LedStrategy = HW_LED;
-#endif
 }
 
 VOID InitAdapterVariablesByPROM_8812AU(PADAPTER	Adapter)
@@ -2237,14 +2230,8 @@ static struct hal_ops rtl8812au_hal_ops = {
 
 	.init_recv_priv =	rtl8812au_init_recv_priv,
 	.free_recv_priv =	rtl8812au_free_recv_priv,
-#ifdef CONFIG_SW_LED
 	.InitSwLeds = 		rtl8812au_InitSwLeds,
 	.DeInitSwLeds =		rtl8812au_DeInitSwLeds,
-#else
-	pHalFunc->InitSwLeds =		NULL,
-	pHalFunc->DeInitSwLeds	= NULL,
-#endif
-
 	.init_default_value =	rtl8812au_init_default_value,
 	.intf_chip_configure =	rtl8812au_interface_configure,
 	.read_adapter_info =	ReadAdapterInfo8812AU,

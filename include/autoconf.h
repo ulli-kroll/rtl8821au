@@ -78,13 +78,6 @@
 
 #define CONFIG_SKB_COPY	1//for amsdu
 
-#define CONFIG_LED
-#ifdef CONFIG_LED
-	#define CONFIG_SW_LED
-	#ifdef CONFIG_SW_LED
-	#endif
-#endif // CONFIG_LED
-
 #define USB_INTERFERENCE_ISSUE // this should be checked in all usb interface
 #define CONFIG_GLOBAL_UI_PID
 

@@ -161,18 +161,9 @@ config_r:
 .PHONY: modules clean
 
 clean:
-	cd hal/OUTSRC/ ; rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*.ko
-	cd hal/OUTSRC/ ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	cd hal/led ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	cd hal ; rm -fr */*/*.mod.c */*/*.mod */*/*.o */*/.*.cmd */*/*.ko
-	cd hal ; rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*.ko
-	cd hal ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	cd core/efuse ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	cd core ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	cd os_dep/linux ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	cd os_dep ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
-	rm -fr Module.symvers ; rm -fr Module.markers ; rm -fr modules.order
-	rm -fr *.mod.c *.mod *.o .*.cmd *.ko *~
+	rm -fr */*.mod.c */*.mod */*.o */.*.cmd */*/.*.cmd */*/*/.*cmd
+	rm -f *.mod.c *.o .*.cmd *.ko
+	rm -f Module.symvers Module.markers modules.order
 	rm -fr .tmp_versions
 endif
 

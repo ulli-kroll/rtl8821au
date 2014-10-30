@@ -1177,8 +1177,6 @@ static int __init rtw_drv_entry(void)
 	DBG_871X(DRV_NAME " driver version=%s\n", DRIVERVERSION);
 	DBG_871X("build time: %s %s\n", __DATE__, __TIME__);
 
-	rtw_suspend_lock_init();
-
 	usb_drv.drv_registered = _TRUE;
 	return usb_register(&usb_drv.usbdrv);
 }
@@ -1187,8 +1185,6 @@ static void __exit rtw_drv_halt(void)
 {
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("+rtw_drv_halt\n"));
 	DBG_871X("+rtw_drv_halt\n");
-
-	rtw_suspend_lock_uninit();
 
 	usb_drv.drv_registered = _FALSE;
 	usb_deregister(&usb_drv.usbdrv);

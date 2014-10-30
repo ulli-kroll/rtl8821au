@@ -271,13 +271,6 @@ __inline static u32 bitshift(u32 bitmask)
 #define MAC_ARG(x) ((u8*)(x))[0],((u8*)(x))[1],((u8*)(x))[2],((u8*)(x))[3],((u8*)(x))[4],((u8*)(x))[5]
 #endif
 
-
-extern void rtw_suspend_lock_init(void);
-extern void rtw_suspend_lock_uninit(void);
-extern void rtw_lock_suspend(void);
-extern void rtw_unlock_suspend(void);
-
-
 extern u64 rtw_modular64(u64 x, u64 y);
 extern u64 rtw_division64(u64 x, u64 y);
 

@@ -227,23 +227,6 @@ void rtw_yield_os(void)
 	yield();
 }
 
-inline void rtw_suspend_lock_init(void)
-{
-}
-
-inline void rtw_suspend_lock_uninit(void)
-{
-}
-
-inline void rtw_lock_suspend(void)
-{
-
-}
-
-inline void rtw_unlock_suspend(void)
-{
-}
-
 u64 rtw_modular64(u64 x, u64 y)
 {
 	return do_div(x, y);

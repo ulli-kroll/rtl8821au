@@ -20,15 +20,7 @@
 #ifndef __USB_HAL_H__
 #define __USB_HAL_H__
 
-void rtw_set_hal_ops(_adapter *padapter);
-
-
-
-
-
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 void rtl8812au_set_hal_ops(_adapter * padapter);
-#endif
 
 #endif //__USB_HAL_H__
 

@@ -408,16 +408,6 @@ static void rtw_decide_chip_type_by_usb_info(_adapter *padapter, const struct us
 		rtl8812au_set_hw_type(padapter);
 	#endif
 }
-void rtw_set_hal_ops(_adapter *padapter)
-{
-
-
-
-	#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
-	if(padapter->chip_type == RTL8812 || padapter->chip_type == RTL8821)
-		rtl8812au_set_hal_ops(padapter);
-	#endif
-}
 
 void usb_set_intf_ops(_adapter *padapter,struct _io_ops *pops)
 {
@@ -821,7 +811,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 
 	/* step 2. hook HalFunc, allocate HalData */
 	/* hal_set_hal_ops(padapter); */
-	rtw_set_hal_ops(padapter);
+	rtl8812au_set_hal_ops(padapter);
 
 	padapter->intf_start=&usb_intf_start;
 	padapter->intf_stop=&usb_intf_stop;

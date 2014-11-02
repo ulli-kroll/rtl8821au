@@ -160,10 +160,7 @@ void rtw_ps_processor(struct _ADAPTER *padapter)
 	if ((pwrpriv->rf_pwrstate == rf_on)
 	   && ((pwrpriv->pwr_state_check_cnts%4)==0)) {
 		DBG_871X("==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
-#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
-#else
 		pwrpriv->change_rfpwrstate = rf_off;
-#endif
 #ifdef CONFIG_AUTOSUSPEND
 		if (padapter->registrypriv.usbss_enable) {
 			if(pwrpriv->bHWPwrPindetect)
@@ -172,27 +169,13 @@ void rtw_ps_processor(struct _ADAPTER *padapter)
 			if(padapter->net_closed == _TRUE)
 				pwrpriv->ps_flag = _TRUE;
 
-#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
-			if (_TRUE==pwrpriv->bInternalAutoSuspend) {
-				DBG_871X("<==%s .pwrpriv->bInternalAutoSuspend)(%x)\n",__FUNCTION__,pwrpriv->bInternalAutoSuspend);
-			} else {
-				pwrpriv->change_rfpwrstate = rf_off;
-				padapter->bCardDisableWOHSM = _TRUE;
-				DBG_871X("<==%s .pwrpriv->bInternalAutoSuspend)(%x) call autosuspend_enter\n",__FUNCTION__,pwrpriv->bInternalAutoSuspend);
-				autosuspend_enter(padapter);
-			}
-#else
 			padapter->bCardDisableWOHSM = _TRUE;
 			autosuspend_enter(padapter);
-#endif	//if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
 		} else if(pwrpriv->bHWPwrPindetect) {
 		}
 		else
-#endif //CONFIG_AUTOSUSPEND
+#endif
 		{
-#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
-			pwrpriv->change_rfpwrstate = rf_off;
-#endif	//defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
 
 #ifdef CONFIG_IPS
 			ips_enter(padapter);
@@ -661,20 +644,8 @@ int _rtw_pwr_wakeup(struct _ADAPTER *padapter, uint32_t	 ips_deffer_ms, const ch
 
 	//I think this should be check in IPS, LPS, autosuspend functions...
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
-#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
-		if (_TRUE==pwrpriv->bInternalAutoSuspend){
-			if (0==pwrpriv->autopm_cnt){
-				if (usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf) < 0) {
-					DBG_871X( "can't get autopm: \n");
-				}
-			pwrpriv->autopm_cnt++;
-			}
-#endif	//#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
 		ret = _SUCCESS;
 		goto exit;
-#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
-		}
-#endif	//#if defined (CONFIG_BT_COEXIST)&& defined (CONFIG_AUTOSUSPEND)
 	}
 
 	if (rf_off == pwrpriv->rf_pwrstate ) {

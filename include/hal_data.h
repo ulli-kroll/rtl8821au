@@ -209,8 +209,7 @@ struct dm_priv
 };
 
 
-typedef struct hal_com_data
-{
+struct rtw_hal {
 	HAL_VERSION			VersionID;
 	RT_MULTI_FUNC		MultiFunc; // For multi-function consideration.
 	RT_POLARITY_CTL		PolarityCtl; // For Wifi PDn Polarity control.
@@ -477,10 +476,10 @@ typedef struct hal_com_data
 #endif
 
 
-} HAL_DATA_COMMON, *PHAL_DATA_COMMON;
+};
 
+typedef struct rtw_hal HAL_DATA_TYPE, *PHAL_DATA_TYPE;
 
-typedef struct hal_com_data HAL_DATA_TYPE, *PHAL_DATA_TYPE;
 #define GET_HAL_DATA(__pAdapter)	((HAL_DATA_TYPE *)((__pAdapter)->HalData))
 #define GET_HAL_RFPATH_NUM(__pAdapter) (((HAL_DATA_TYPE *)((__pAdapter)->HalData))->NumTotalRFPath )
 #define RT_GetInterfaceSelection(_Adapter) 	(GET_HAL_DATA(_Adapter)->InterfaceSel)

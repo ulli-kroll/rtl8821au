@@ -20,7 +20,5 @@
 #ifndef __USB_HAL_H__
 #define __USB_HAL_H__
 
-void rtl8812au_set_hal_ops(_adapter * padapter);
-
 #endif //__USB_HAL_H__
 

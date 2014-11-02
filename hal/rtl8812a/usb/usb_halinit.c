@@ -2215,7 +2215,7 @@ void rtl8812_SetHalODMVar(PADAPTER Adapter, HAL_ODM_VARIABLE eVariable,	PVOID 	p
 void hal_notch_filter_8812(_adapter *adapter, bool enable);
 
 
-static struct hal_ops rtl8812au_hal_ops = {
+struct hal_ops rtl8812au_hal_ops = {
 	.hal_power_on = 	_InitPowerOn8812AU,
 	.hal_init =	 	rtl8812au_hal_init,
 	.hal_deinit = 		rtl8812au_hal_deinit,
@@ -2309,18 +2309,4 @@ static struct hal_ops rtl8812au_hal_ops = {
 
 	.SetBeaconRelatedRegistersHandler =	SetBeaconRelatedRegisters8812A,
 };
-
-void rtl8812au_set_hal_ops(_adapter *padapter)
-{
-	struct hal_ops	*pHalFunc = &padapter->HalFunc;
-
-	{
-		padapter->HalData = rtw_zmalloc(sizeof(HAL_DATA_TYPE));
-		if (padapter->HalData == NULL) {
-			DBG_8192C("cant not alloc memory for HAL DATA \n");
-		}
-	}
-
-	padapter->HalFunc = &rtl8812au_hal_ops;
-}
 

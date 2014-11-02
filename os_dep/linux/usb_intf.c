@@ -20,8 +20,7 @@
 #define _HCI_INTF_C_
 
 #include <drv_types.h>
-
-
+#include <rtl8812a_hal.h>
 
 #ifdef CONFIG_80211N_HT
 extern int rtw_ht_enable;
@@ -758,6 +757,7 @@ RETURN:
 */
 
 _adapter  *rtw_sw_export = NULL;
+extern struct hal_ops rtl8812au_hal_ops;
 
 _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
@@ -811,7 +811,12 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 
 	/* step 2. hook HalFunc, allocate HalData */
 	/* hal_set_hal_ops(padapter); */
-	rtl8812au_set_hal_ops(padapter);
+	padapter->HalData = rtw_zmalloc(sizeof(HAL_DATA_TYPE));
+	if (padapter->HalData == NULL) {
+		DBG_8192C("cant not alloc memory for HAL DATA \n");
+	}
+
+	padapter->HalFunc = &rtl8812au_hal_ops;
 
 	padapter->intf_start=&usb_intf_start;
 	padapter->intf_stop=&usb_intf_stop;

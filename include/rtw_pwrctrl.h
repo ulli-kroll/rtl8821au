@@ -240,9 +240,9 @@ struct pwrctrl_priv
 extern void rtw_init_pwrctrl_priv(_adapter *adapter);
 extern void rtw_free_pwrctrl_priv(_adapter * adapter);
 
-extern void rtw_set_ps_mode(PADAPTER padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode);
+extern void rtw_set_ps_mode(struct _ADAPTER *padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode);
 extern void rtw_set_rpwm(_adapter * padapter, uint8_t val8);
-extern void LeaveAllPowerSaveMode(PADAPTER Adapter);
+extern void LeaveAllPowerSaveMode(struct _ADAPTER *Adapter);
 #ifdef CONFIG_IPS
 void ips_enter(_adapter * padapter);
 int ips_leave(_adapter * padapter);
@@ -255,9 +255,9 @@ int autoresume_enter(_adapter* padapter);
 #endif
 
 #ifdef CONFIG_LPS
-int32_t LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms);
-void LPS_Enter(PADAPTER padapter);
-void LPS_Leave(PADAPTER padapter);
+int32_t LPS_RF_ON_check(struct _ADAPTER *padapter, u32 delay_ms);
+void LPS_Enter(struct _ADAPTER *padapter);
+void LPS_Leave(struct _ADAPTER *padapter);
 #endif
 
 /* ULLI resolve these #define's */

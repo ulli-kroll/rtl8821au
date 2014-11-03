@@ -119,7 +119,7 @@ void dump_chip_info(HAL_VERSION	ChipVersion);
 
 uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
-	IN	PADAPTER	padapter,
+	IN	struct _ADAPTER *padapter,
 	IN	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
 	IN	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
 	IN	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
@@ -128,20 +128,20 @@ hal_com_get_channel_plan(
 
 BOOLEAN
 HAL_IsLegalChannel(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	u32			Channel
 	);
 
 uint8_t	MRateToHwRate(uint8_t rate);
 
 void	HalSetBrateCfg(
-	IN PADAPTER		Adapter,
+	IN struct _ADAPTER *	Adapter,
 	IN uint8_t			*mBratesOS,
 	OUT u16			*pBrateCfg);
 
 BOOLEAN
 Hal_MappingOutPipe(
-	IN	PADAPTER	pAdapter,
+	IN	struct _ADAPTER *pAdapter,
 	IN	uint8_t		NumOutPipe
 	);
 

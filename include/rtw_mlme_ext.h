@@ -543,13 +543,13 @@ void write_cam(_adapter *padapter, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_
 void clear_cam_entry(_adapter *padapter, uint8_t entry);
 
 void invalidate_cam_all(_adapter *padapter);
-void CAM_empty_entry(PADAPTER Adapter, uint8_t ucIndex);
+void CAM_empty_entry(struct _ADAPTER *Adapter, uint8_t ucIndex);
 
 
 int allocate_fw_sta_entry(_adapter *padapter);
 void flush_all_cam_entry(_adapter *padapter);
 
-BOOLEAN IsLegal5GChannel(PADAPTER Adapter, uint8_t channel);
+BOOLEAN IsLegal5GChannel(struct _ADAPTER *Adapter, uint8_t channel);
 
 void site_survey(_adapter *padapter);
 uint8_t collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSID_EX *bssid);
@@ -581,7 +581,7 @@ int rtw_check_bcn_info(ADAPTER *Adapter, uint8_t *pframe, u32 packet_len);
 void process_csa_ie(_adapter *padapter, uint8_t *pframe, uint len);
 #endif //CONFIG_DFS
 void update_IOT_info(_adapter *padapter);
-void update_capinfo(PADAPTER Adapter, u16 updateCap);
+void update_capinfo(struct _ADAPTER *Adapter, u16 updateCap);
 void update_wireless_mode(_adapter * padapter);
 void update_tx_basic_rate(_adapter *padapter, uint8_t modulation);
 void update_bmc_sta_support_rate(_adapter *padapter, u32 mac_id);

@@ -24,8 +24,8 @@
 //================================================================================
 // Interface to manipulate LED objects.
 //================================================================================
-void rtl8812au_InitSwLeds(PADAPTER padapter);
-void rtl8812au_DeInitSwLeds(PADAPTER padapter);
+void rtl8812au_InitSwLeds(struct _ADAPTER *padapter);
+void rtl8812au_DeInitSwLeds(struct _ADAPTER *padapter);
 
 #endif
 

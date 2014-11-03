@@ -338,7 +338,7 @@ struct recv_buf
 
 	u32	ref_cnt;
 
-	PADAPTER adapter;
+	struct _ADAPTER *adapter;
 
 	uint8_t	*pbuf;
 	uint8_t	*pallocated_buf;

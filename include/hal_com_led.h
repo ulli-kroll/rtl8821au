@@ -173,7 +173,7 @@ typedef	enum _LED_STRATEGY_USB{
 
 
 typedef struct _LED_USB{
-	PADAPTER			padapter;
+	struct _ADAPTER *		padapter;
 
 	LED_PIN				LedPin;	// Identify how to implement this SW led.
 
@@ -204,7 +204,7 @@ typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;
 
 VOID
 LedControlUSB(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	LED_CTL_MODE		LedAction
 	);
 

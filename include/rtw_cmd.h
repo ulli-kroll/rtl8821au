@@ -909,7 +909,7 @@ uint8_t rtw_set_ch_cmd(_adapter*padapter, uint8_t ch, uint8_t bw, uint8_t ch_off
 extern uint8_t rtw_set_chplan_cmd(_adapter*padapter, uint8_t chplan, uint8_t enqueue);
 extern uint8_t rtw_set_csa_cmd(_adapter*padapter, uint8_t new_ch_no);
 
-extern uint8_t rtw_c2h_wk_cmd(PADAPTER padapter, uint8_t *c2h_evt);
+extern uint8_t rtw_c2h_wk_cmd(struct _ADAPTER *padapter, uint8_t *c2h_evt);
 
 uint8_t rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf);
 

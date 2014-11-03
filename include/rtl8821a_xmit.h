@@ -143,14 +143,14 @@ typedef struct txdescriptor_8821a
 
 
 #if 0
-int32_t rtl8821au_init_xmit_priv(PADAPTER padapter);
-void rtl8821au_free_xmit_priv(PADAPTER padapter);
-int32_t rtl8821au_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);
-int32_t rtl8821au_mgnt_xmit(PADAPTER padapter, struct xmit_frame *pmgntframe);
-int32_t rtl8821au_hal_xmitframe_enqueue(PADAPTER padapter, struct xmit_frame *pxmitframe);
-int32_t rtl8821au_xmit_buf_handler(PADAPTER padapter);
+int32_t rtl8821au_init_xmit_priv(struct _ADAPTER *padapter);
+void rtl8821au_free_xmit_priv(struct _ADAPTER *padapter);
+int32_t rtl8821au_hal_xmit(struct _ADAPTER *padapter, struct xmit_frame *pxmitframe);
+int32_t rtl8821au_mgnt_xmit(struct _ADAPTER *padapter, struct xmit_frame *pmgntframe);
+int32_t rtl8821au_hal_xmitframe_enqueue(struct _ADAPTER *padapter, struct xmit_frame *pxmitframe);
+int32_t rtl8821au_xmit_buf_handler(struct _ADAPTER *padapter);
 void rtl8821au_xmit_tasklet(void *priv);
-int32_t rtl8821au_xmitframe_complete(PADAPTER padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
+int32_t rtl8821au_xmitframe_complete(struct _ADAPTER *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 
 #endif
 

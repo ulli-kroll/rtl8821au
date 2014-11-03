@@ -121,14 +121,14 @@ struct H2C_SS_RFOFF_PARAM{
 void	Set_RA_LDPC_8812(struct sta_info	*psta, BOOLEAN bLDPC);
 
 // host message to firmware cmd
-void rtl8812_set_FwPwrMode_cmd(PADAPTER padapter, uint8_t PSMode);
-void rtl8812_set_FwJoinBssReport_cmd(PADAPTER padapter, uint8_t mstatus);
-uint8_t rtl8812_set_rssi_cmd(PADAPTER padapter, uint8_t *param);
-void rtl8812_set_raid_cmd(PADAPTER padapter, u32 bitmap, u8* arg);
-void rtl8812_Add_RateATid(PADAPTER padapter, u32 bitmap, u8* arg, uint8_t rssi_level);
+void rtl8812_set_FwPwrMode_cmd(struct _ADAPTER *padapter, uint8_t PSMode);
+void rtl8812_set_FwJoinBssReport_cmd(struct _ADAPTER *padapter, uint8_t mstatus);
+uint8_t rtl8812_set_rssi_cmd(struct _ADAPTER *padapter, uint8_t *param);
+void rtl8812_set_raid_cmd(struct _ADAPTER *padapter, u32 bitmap, u8* arg);
+void rtl8812_Add_RateATid(struct _ADAPTER *padapter, u32 bitmap, u8* arg, uint8_t rssi_level);
 
-void CheckFwRsvdPageContent(PADAPTER padapter);
-void rtl8812_set_FwMediaStatus_cmd(PADAPTER padapter, u16 mstatus_rpt );
+void CheckFwRsvdPageContent(struct _ADAPTER *padapter);
+void rtl8812_set_FwMediaStatus_cmd(struct _ADAPTER *padapter, u16 mstatus_rpt );
 
 #endif//__RTL8188E_CMD_H__
 

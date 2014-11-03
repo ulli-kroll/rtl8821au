@@ -22,22 +22,22 @@
 
 VOID
 PHY_RF6052SetBandwidth8812(
-	IN	PADAPTER				Adapter,
+	IN	struct _ADAPTER *			Adapter,
 	IN	CHANNEL_WIDTH		Bandwidth);
 
 
 int
 PHY_RF6052_Config_8812(
-	IN	PADAPTER	Adapter	);
+	IN	struct _ADAPTER *Adapter	);
 
 VOID
 PHY_RF6052SetCckTxPower8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	u8*			pPowerlevel);
 
 VOID
 PHY_RF6052SetOFDMTxPower8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	u8*			pPowerLevelOFDM,
 	IN	u8*			pPowerLevelBW20,
 	IN	u8*			pPowerLevelBW40,

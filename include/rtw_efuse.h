@@ -81,25 +81,25 @@ typedef struct PG_PKT_STRUCT_A{
 
 /*------------------------Export global variable----------------------------*/
 
-uint8_t	efuse_GetCurrentSize(PADAPTER padapter, u16 *size);
-u16	efuse_GetMaxSize(PADAPTER padapter);
-uint8_t	rtw_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
-uint8_t	rtw_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
-uint8_t	rtw_BT_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
-uint8_t 	rtw_BT_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, uint8_t *data);
+uint8_t	efuse_GetCurrentSize(struct _ADAPTER *padapter, u16 *size);
+u16	efuse_GetMaxSize(struct _ADAPTER *padapter);
+uint8_t	rtw_efuse_map_read(struct _ADAPTER *padapter, u16 addr, u16 cnts, uint8_t *data);
+uint8_t	rtw_efuse_map_write(struct _ADAPTER *padapter, u16 addr, u16 cnts, uint8_t *data);
+uint8_t	rtw_BT_efuse_map_read(struct _ADAPTER *padapter, u16 addr, u16 cnts, uint8_t *data);
+uint8_t 	rtw_BT_efuse_map_write(struct _ADAPTER *padapter, u16 addr, u16 cnts, uint8_t *data);
 
 uint8_t	Efuse_CalculateWordCnts(uint8_t word_en);
-void	ReadEFuseByte(PADAPTER Adapter, u16 _offset, uint8_t *pbuf) ;
-uint8_t	efuse_OneByteRead(PADAPTER pAdapter, u16 addr, uint8_t *data);
-uint8_t	efuse_OneByteWrite(PADAPTER pAdapter, u16 addr, uint8_t data);
+void	ReadEFuseByte(struct _ADAPTER *Adapter, u16 _offset, uint8_t *pbuf) ;
+uint8_t	efuse_OneByteRead(struct _ADAPTER *pAdapter, u16 addr, uint8_t *data);
+uint8_t	efuse_OneByteWrite(struct _ADAPTER *pAdapter, u16 addr, uint8_t data);
 
-int 	Efuse_PgPacketRead(PADAPTER pAdapter, uint8_t offset, uint8_t *data);
-int 	Efuse_PgPacketWrite(PADAPTER pAdapter, uint8_t offset, uint8_t word_en, uint8_t *data);
+int 	Efuse_PgPacketRead(struct _ADAPTER *pAdapter, uint8_t offset, uint8_t *data);
+int 	Efuse_PgPacketWrite(struct _ADAPTER *pAdapter, uint8_t offset, uint8_t word_en, uint8_t *data);
 void	efuse_WordEnableDataRead(uint8_t word_en, uint8_t *sourdata, uint8_t *targetdata);
-uint8_t	Efuse_WordEnableDataWrite(PADAPTER pAdapter, u16 efuse_addr, uint8_t word_en, uint8_t *data);
+uint8_t	Efuse_WordEnableDataWrite(struct _ADAPTER *pAdapter, u16 efuse_addr, uint8_t word_en, uint8_t *data);
 
-uint8_t	EFUSE_Read1Byte(PADAPTER pAdapter, u16 Address);
-void	EFUSE_ShadowMapUpdate(PADAPTER pAdapter, uint8_t efuseType);
-void	EFUSE_ShadowRead(PADAPTER pAdapter, uint8_t Type, u16 Offset, u32 *Value);
+uint8_t	EFUSE_Read1Byte(struct _ADAPTER *pAdapter, u16 Address);
+void	EFUSE_ShadowMapUpdate(struct _ADAPTER *pAdapter, uint8_t efuseType);
+void	EFUSE_ShadowRead(struct _ADAPTER *pAdapter, uint8_t Type, u16 Offset, u32 *Value);
 #endif
 

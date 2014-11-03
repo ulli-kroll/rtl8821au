@@ -188,62 +188,62 @@ PHY_CalculateBitShift(
 
 u32
 PHY_RFShadowRead(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
 VOID
 PHY_RFShadowWrite(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
 	IN	u32				Data);
 
 BOOLEAN
 PHY_RFShadowCompare(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
 VOID
 PHY_RFShadowRecorver(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
 VOID
 PHY_RFShadowCompareAll(
-	IN	PADAPTER		Adapter);
+	IN	struct _ADAPTER *	Adapter);
 
 VOID
 PHY_RFShadowRecorverAll(
-	IN	PADAPTER		Adapter);
+	IN	struct _ADAPTER *	Adapter);
 
 VOID
 PHY_RFShadowCompareFlagSet(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
 	IN	uint8_t				Type);
 
 VOID
 PHY_RFShadowRecorverFlagSet(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
 	IN	uint8_t				Type);
 
 VOID
 PHY_RFShadowCompareFlagSetAll(
-	IN	PADAPTER		Adapter);
+	IN	struct _ADAPTER *	Adapter);
 
 VOID
 PHY_RFShadowRecorverFlagSetAll(
-	IN	PADAPTER		Adapter);
+	IN	struct _ADAPTER *	Adapter);
 
 VOID
 PHY_RFShadowRefresh(
-	IN	PADAPTER		Adapter);
+	IN	struct _ADAPTER *	Adapter);
 
 #endif //__HAL_COMMON_H__
 

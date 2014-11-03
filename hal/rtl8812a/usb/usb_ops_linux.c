@@ -196,7 +196,7 @@ static int32_t pre_recv_entry(union recv_frame *precvframe, uint8_t *pphy_status
 	return ret;
 }
 
-static int recvbuf2recvframe(_adapter *padapter, _pkt *pskb)
+static int recvbuf2recvframe(struct _ADAPTER *padapter, _pkt *pskb)
 {
 	uint8_t	*pbuf;
 	uint8_t	pkt_cnt = 0;
@@ -313,7 +313,7 @@ _exit_recvbuf2recvframe:
 void rtl8812au_recv_tasklet(void *priv)
 {
 	_pkt			*pskb;
-	_adapter		*padapter = (_adapter *)priv;
+	struct _ADAPTER		*padapter = (struct _ADAPTER *)priv;
 	struct recv_priv	*precvpriv = &padapter->recvpriv;
 
 	while (NULL != (pskb = skb_dequeue(&precvpriv->rx_skb_queue))) {
@@ -345,7 +345,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 	_irqL irqL;
 	uint isevt, *pbuf;
 	struct recv_buf	*precvbuf = (struct recv_buf *) purb->context;
-	_adapter 		*padapter = (_adapter *) precvbuf->adapter;
+	struct _ADAPTER 		*padapter = (struct _ADAPTER *) precvbuf->adapter;
 	struct recv_priv	*precvpriv = &padapter->recvpriv;
 
 	RT_TRACE(_module_hci_ops_os_c_, _drv_err_, ("usb_read_port_complete!!!\n"));
@@ -462,7 +462,7 @@ static uint32_t usb_read_port(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t
 	uint32_t ret = _SUCCESS;
 	PURB purb = NULL;
 	struct recv_buf	*precvbuf = (struct recv_buf *) rmem;
-	_adapter		*adapter = pintfhdl->padapter;
+	struct _ADAPTER		*adapter = pintfhdl->padapter;
 	struct dvobj_priv	*pdvobj = adapter_to_dvobj(adapter);
 	struct recv_priv	*precvpriv = &adapter->recvpriv;
 	struct usb_device	*pusbd = pdvobj->pusbdev;
@@ -551,7 +551,7 @@ static uint32_t usb_read_port(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t
 void rtl8812au_xmit_tasklet(void *priv)
 {
 	int ret = _FALSE;
-	_adapter *padapter = (_adapter *) priv;
+	struct _ADAPTER *padapter = (struct _ADAPTER *) priv;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 
 	if (check_fwstate(&padapter->mlmepriv, _FW_UNDER_SURVEY) == _TRUE)
@@ -598,7 +598,7 @@ void rtl8812au_set_intf_ops(struct _io_ops	*pops)
 	pops->_write_port_cancel = &usb_write_port_cancel;
 }
 
-void rtl8812au_set_hw_type(_adapter *padapter)
+void rtl8812au_set_hw_type(struct _ADAPTER *padapter)
 {
 	if (padapter->chip_type == RTL8812) {
 		padapter->HardwareType = HARDWARE_TYPE_RTL8812AU;

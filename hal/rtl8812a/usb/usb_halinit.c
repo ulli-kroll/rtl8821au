@@ -21,7 +21,7 @@
 
 #include <rtl8812a_hal.h>
 
-static void _dbg_dump_macreg(_adapter *padapter)
+static void _dbg_dump_macreg(struct _ADAPTER *padapter)
 {
 	uint32_t offset = 0;
 	uint32_t val32 = 0;
@@ -94,7 +94,7 @@ static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct _ADAPTER *pAdapter,
 
 }
 
-void rtl8812au_interface_configure(_adapter *padapter)
+void rtl8812au_interface_configure(struct _ADAPTER *padapter)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(padapter);
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
@@ -238,7 +238,7 @@ static VOID _InitBurstPktLen(IN struct _ADAPTER *Adapter)
 
 }
 
-static uint32_t _InitPowerOn8812AU(_adapter *padapter)
+static uint32_t _InitPowerOn8812AU(struct _ADAPTER *padapter)
 {
 	uint16_t	u2btmp = 0;
 	uint8_t	u1btmp = 0;
@@ -1035,7 +1035,7 @@ rt_rf_power_state RfOnOffDetect(struct _ADAPTER *pAdapter)
 	return rfpowerstate;
 }
 
-void _ps_open_RF(_adapter *padapter)
+void _ps_open_RF(struct _ADAPTER *padapter)
 {
 	/*
 	 * here call with bRegSSPwrLvl 1, bRegSSPwrLvl 2 needs to be verified
@@ -1043,7 +1043,7 @@ void _ps_open_RF(_adapter *padapter)
 	 */
 }
 
-void _ps_close_RF(_adapter *padapter)
+void _ps_close_RF(struct _ADAPTER *padapter)
 {
 	/*
 	 * here call with bRegSSPwrLvl 1, bRegSSPwrLvl 2 needs to be verified
@@ -1387,7 +1387,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 		/*
 		 * 2010/08/11 MH Merge from 8192SE for Minicard init. We need to confirm current radio status
 		 * and then decide to enable RF or not.!!!??? For Selective suspend mode. We may not
-		 * call init_adapter. May cause some problem??
+		 * call initstruct _ADAPTER. May cause some problem??
 		 *
 		 * Fix the bug that Hw/Sw radio off before S3/S4, the RF off action will not be executed
 		 * in MgntActSet_RF_State() after wake up, because the value of pHalData->eRFPowerState
@@ -1536,7 +1536,7 @@ VOID CardDisableRTL8812AU(struct _ADAPTER *Adapter)
 		HalPwrSeqCmdParsing(Adapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_DISABLE_FLOW);
 }
 
-static void rtl8812au_hw_power_down(_adapter *padapter)
+static void rtl8812au_hw_power_down(struct _ADAPTER *padapter)
 {
 	/*
 	 *  2010/-8/09 MH For power down module, we need to enable register block contrl reg at 0x1c.
@@ -2089,7 +2089,7 @@ u8 GetHalDefVar8812AUsb(struct _ADAPTER *Adapter, HAL_DEF_VARIABLE eVariable,
 	return bResult;
 }
 
-void _update_response_rate(_adapter *padapter, unsigned int mask)
+void _update_response_rate(struct _ADAPTER *padapter, unsigned int mask)
 {
 	uint8_t	RateIndex = 0;
 	/* Set RRSR rate table. */
@@ -2104,7 +2104,7 @@ void _update_response_rate(_adapter *padapter, unsigned int mask)
 	rtw_write8(padapter, REG_INIRTS_RATE_SEL, RateIndex);
 }
 
-static void rtl8812au_init_default_value(_adapter *padapter)
+static void rtl8812au_init_default_value(struct _ADAPTER *padapter)
 {
 	PHAL_DATA_TYPE pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
@@ -2212,7 +2212,7 @@ int rtl8812_Efuse_PgPacketWrite(struct _ADAPTER *pAdapter, uint8_t offset, uint8
 u8 rtl8812_Efuse_WordEnableDataWrite(struct _ADAPTER *pAdapter, uint16_t efuse_addr, uint8_t word_en, uint8_t *data);
 void rtl8812_GetHalODMVar(struct _ADAPTER *Adapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet);
 void rtl8812_SetHalODMVar(struct _ADAPTER *Adapter, HAL_ODM_VARIABLE eVariable,	PVOID 	pValue1, BOOLEAN bSet);
-void hal_notch_filter_8812(_adapter *adapter, bool enable);
+void hal_notch_filter_8812(struct _ADAPTER *adapter, bool enable);
 
 
 struct hal_ops rtl8812au_hal_ops = {

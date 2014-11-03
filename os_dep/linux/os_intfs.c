@@ -258,7 +258,7 @@ void rtw_proc_init_one(struct net_device *ndev)
 {
 	struct proc_dir_entry *dir_dev = NULL;
 	struct proc_dir_entry *entry = NULL;
-	struct rtl_priv	*padapter = rtw_netdev_priv(dev);
+	struct rtl_priv	*padapter = rtl_priv(dev);
 	uint8_t rf_type;
 
 	if (rtw_proc == NULL) {
@@ -544,7 +544,7 @@ void rtw_proc_init_one(struct net_device *ndev)
 void rtw_proc_remove_one(struct net_device *ndev)
 {
 	struct proc_dir_entry *dir_dev = NULL;
-	struct rtl_priv	*padapter = rtw_netdev_priv(dev);
+	struct rtl_priv	*padapter = rtl_priv(dev);
 	uint8_t rf_type;
 
 	dir_dev = padapter->dir_dev;
@@ -736,7 +736,7 @@ _func_exit_;
 
 int rtw_net_set_mac_address(struct net_device *ndev, void *p)
 {
-	struct rtl_priv *padapter = rtw_netdev_priv(ndev);
+	struct rtl_priv *padapter = rtl_priv(ndev);
 	struct sockaddr *addr = p;
 
 	if (padapter->bup == _FALSE) {
@@ -756,7 +756,7 @@ int rtw_net_set_mac_address(struct net_device *ndev, void *p)
 
 struct net_device_stats *rtw_net_get_stats(struct net_device *ndev)
 {
-	struct rtl_priv *padapter = rtw_netdev_priv(ndev);
+	struct rtl_priv *padapter = rtl_priv(ndev);
 	struct xmit_priv *pxmitpriv = &(padapter->xmitpriv);
 	struct recv_priv *precvpriv = &(padapter->recvpriv);
 
@@ -1134,7 +1134,7 @@ uint8_t rtw_free_drv_sw(struct rtl_priv *padapter)
 int _netdev_open(struct net_device *ndev)
 {
 	uint status;
-	struct rtl_priv *padapter =  rtw_netdev_priv(ndev);
+	struct rtl_priv *padapter =  rtl_priv(ndev);
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
 
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+871x_drv - dev_open\n"));
@@ -1215,7 +1215,7 @@ netdev_open_error:
 int netdev_open(struct net_device *ndev)
 {
 	int ret;
-	struct rtl_priv *padapter =  rtw_netdev_priv(ndev);
+	struct rtl_priv *padapter =  rtl_priv(ndev);
 
 	/* ULLI: orignal driver doesn't use the return value */
 	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->hw_init_mutex));
@@ -1320,7 +1320,7 @@ int pm_netdev_open(struct net_device *ndev, uint8_t bnormal)
 		status = netdev_open(ndev);
 #ifdef CONFIG_IPS
 	else
-		status =  (_SUCCESS == ips_netdrv_open(rtw_netdev_priv(ndev)))?(0):(-1);
+		status =  (_SUCCESS == ips_netdrv_open(rtl_priv(ndev)))?(0):(-1);
 #endif
 
 	return status;
@@ -1328,7 +1328,7 @@ int pm_netdev_open(struct net_device *ndev, uint8_t bnormal)
 
 int netdev_close(struct net_device *ndev)
 {
-	struct rtl_priv *padapter = rtw_netdev_priv(ndev);
+	struct rtl_priv *padapter = rtl_priv(ndev);
 
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+871x_drv - drv_close\n"));
 

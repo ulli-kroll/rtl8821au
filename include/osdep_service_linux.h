@@ -240,7 +240,7 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 #define FUNC_ADPT_ARG(adapter) __func__, adapter->ndev->name
 
 
-static inline struct rtl_priv *rtw_netdev_priv(struct net_device *ndev)
+static inline struct rtl_priv *rtl_priv(struct net_device *ndev)
 {
 	return netdev_priv(ndev);
 }

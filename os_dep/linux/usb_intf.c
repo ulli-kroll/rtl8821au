@@ -807,7 +807,7 @@ struct rtl_priv *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	loadparam(padapter, ndev);
 
 	SET_NETDEV_DEV(ndev, dvobj_to_dev(dvobj));
-	padapter = rtw_netdev_priv(ndev);
+	padapter = rtl_priv(ndev);
 
 	/* step 2. hook HalFunc, allocate HalData */
 	/* hal_set_hal_ops(padapter); */

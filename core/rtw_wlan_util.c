@@ -364,7 +364,7 @@ void get_rate_set(_adapter *padapter, unsigned char *pbssrate, int *bssrate_len)
 }
 
 void UpdateBrateTbl(
-	IN PADAPTER		Adapter,
+	IN struct _ADAPTER *	Adapter,
 	IN uint8_t			*mBratesOS
 )
 {
@@ -685,7 +685,7 @@ unsigned int decide_wait_for_beacon_timeout(unsigned int bcn_interval)
 }
 
 void CAM_empty_entry(
-	PADAPTER     	Adapter,
+	struct _ADAPTER *    	Adapter,
 	uint8_t 			ucIndex
 )
 {
@@ -2012,7 +2012,7 @@ void update_IOT_info(_adapter *padapter)
 
 }
 
-void update_capinfo(PADAPTER Adapter, uint16_t updateCap)
+void update_capinfo(struct _ADAPTER *Adapter, uint16_t updateCap)
 {
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);

@@ -1902,7 +1902,7 @@ _func_exit_;
 }
 
 
-void rtw_cpwm_event_callback(PADAPTER padapter, uint8_t *pbuf)
+void rtw_cpwm_event_callback(struct _ADAPTER *padapter, uint8_t *pbuf)
 {
 
 _func_enter_;

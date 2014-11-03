@@ -4643,7 +4643,7 @@ Following are some utitity fuctions for WiFi MLME
 *****************************************************************************/
 
 BOOLEAN IsLegal5GChannel(
-	IN PADAPTER			Adapter,
+	IN struct _ADAPTER *		Adapter,
 	IN uint8_t			channel)
 {
 
@@ -5187,7 +5187,7 @@ unsigned int receive_disconnect(_adapter *padapter, unsigned char *MacAddr, unsi
 }
 
 #ifdef CONFIG_80211D
-static void process_80211d(PADAPTER padapter, WLAN_BSSID_EX *bssid)
+static void process_80211d(struct _ADAPTER *padapter, WLAN_BSSID_EX *bssid)
 {
 	struct registry_priv *pregistrypriv;
 	struct mlme_ext_priv *pmlmeext;

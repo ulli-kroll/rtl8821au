@@ -1318,9 +1318,9 @@ sint validate_recv_ctrl_frame(struct _ADAPTER *padapter, union recv_frame *precv
 
 }
 
-union recv_frame* recvframe_chk_defrag(PADAPTER padapter, union recv_frame *precv_frame);
-sint validate_recv_mgnt_frame(PADAPTER padapter, union recv_frame *precv_frame);
-sint validate_recv_mgnt_frame(PADAPTER padapter, union recv_frame *precv_frame)
+union recv_frame* recvframe_chk_defrag(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+sint validate_recv_mgnt_frame(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+sint validate_recv_mgnt_frame(struct _ADAPTER *padapter, union recv_frame *precv_frame)
 {
 	/* struct mlme_priv *pmlmepriv = &adapter->mlmepriv; */
 
@@ -1890,7 +1890,7 @@ union recv_frame *recvframe_defrag(struct _ADAPTER *adapter,_queue *defrag_q)
 }
 
 /* check if need to defrag, if needed queue the frame to defrag_q */
-union recv_frame* recvframe_chk_defrag(PADAPTER padapter, union recv_frame *precv_frame)
+union recv_frame* recvframe_chk_defrag(struct _ADAPTER *padapter, union recv_frame *precv_frame)
 {
 	uint8_t	ismfrag;
 	uint8_t	fragnum;

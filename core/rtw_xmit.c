@@ -370,7 +370,7 @@ _func_exit_;
 
 }
 
-static void update_attrib_vcs_info(_adapter *padapter, struct xmit_frame *pxmitframe)
+static void update_attrib_vcs_info(struct _ADAPTER *padapter, struct xmit_frame *pxmitframe)
 {
 	uint32_t	sz;
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
@@ -1648,7 +1648,7 @@ _func_exit_;
 
 }
 
-void rtw_count_tx_stats(PADAPTER padapter, struct xmit_frame *pxmitframe, int sz)
+void rtw_count_tx_stats(struct _ADAPTER *padapter, struct xmit_frame *pxmitframe, int sz)
 {
 	struct sta_info *psta = NULL;
 	struct stainfo_stats *pstats = NULL;

@@ -367,7 +367,7 @@ _func_exit_;
  *	-1:	Timeout
  *	-2:	Other error
  */
-int32_t LPS_RF_ON_check(PADAPTER padapter, uint32_t	 delay_ms)
+int32_t LPS_RF_ON_check(struct _ADAPTER *padapter, uint32_t	 delay_ms)
 {
 	uint32_t	 start_time;
 	uint8_t bAwake = _FALSE;
@@ -401,7 +401,7 @@ int32_t LPS_RF_ON_check(PADAPTER padapter, uint32_t	 delay_ms)
 //	Description:
 //		Enter the leisure power save mode.
 //
-void LPS_Enter(PADAPTER padapter)
+void LPS_Enter(struct _ADAPTER *padapter)
 {
 	struct pwrctrl_priv	*pwrpriv = &padapter->pwrctrlpriv;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
@@ -434,7 +434,7 @@ _func_exit_;
 //	Description:
 //		Leave the leisure power save mode.
 //
-void LPS_Leave(PADAPTER padapter)
+void LPS_Leave(struct _ADAPTER *padapter)
 {
 #define LPS_LEAVE_TIMEOUT_MS 100
 
@@ -468,7 +468,7 @@ _func_exit_;
 // Description: Leave all power save mode: LPS, FwLPS, IPS if needed.
 // Move code to function by tynli. 2010.03.26.
 //
-void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
+void LeaveAllPowerSaveMode(IN struct _ADAPTER *Adapter)
 {
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	uint8_t	enqueue = 0;
@@ -497,7 +497,7 @@ _func_enter_;
 _func_exit_;
 }
 
-void rtw_init_pwrctrl_priv(PADAPTER padapter)
+void rtw_init_pwrctrl_priv(struct _ADAPTER *padapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
 
@@ -546,7 +546,7 @@ _func_exit_;
 }
 
 
-void rtw_free_pwrctrl_priv(PADAPTER adapter)
+void rtw_free_pwrctrl_priv(struct _ADAPTER *adapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = &adapter->pwrctrlpriv;
 

@@ -256,7 +256,7 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 uint32_t	 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 {
 	int res = _FAIL;
-	PADAPTER padapter = pcmdpriv->padapter;
+	struct _ADAPTER *padapter = pcmdpriv->padapter;
 
 _func_enter_;
 
@@ -337,7 +337,7 @@ thread_return rtw_cmd_thread(thread_context context)
 	uint8_t *pcmdbuf, *prspbuf;
 	uint8_t (*cmd_hdl)(_adapter *padapter, uint8_t * pbuf);
 	void (*pcmd_callback)(_adapter *dev, struct cmd_obj *pcmd);
-	PADAPTER padapter = (PADAPTER)context;
+	struct _ADAPTER *padapter = (struct _ADAPTER *) context;
 	struct cmd_priv *pcmdpriv = &(padapter->cmdpriv);
 
 _func_enter_;
@@ -2156,7 +2156,7 @@ exit:
 }
 #endif
 
-uint8_t rtw_c2h_wk_cmd(PADAPTER padapter, uint8_t *c2h_evt)
+uint8_t rtw_c2h_wk_cmd(struct _ADAPTER *padapter, uint8_t *c2h_evt)
 {
 	struct cmd_obj *ph2c;
 	struct drvextra_cmd_parm *pdrvextra_cmd_parm;

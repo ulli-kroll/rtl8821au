@@ -53,7 +53,7 @@ Efuse_CalculateWordCnts( uint8_t	word_en)
 //
 VOID
 ReadEFuseByte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t 			_offset,
 		uint8_t 			*pbuf)
 {
@@ -111,7 +111,7 @@ ReadEFuseByte(
  *---------------------------------------------------------------------------*/
 uint8_t
 EFUSE_Read1Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Address)
 {
 	uint8_t	data;
@@ -176,12 +176,12 @@ EFUSE_Read1Byte(
 
 void
 EFUSE_Write1Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Address,
 		uint8_t		Value);
 void
 EFUSE_Write1Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Address,
 		uint8_t		Value)
 {
@@ -236,7 +236,7 @@ EFUSE_Write1Byte(
 /*  11/16/2008 MH Read one byte from real Efuse. */
 uint8_t
 efuse_OneByteRead(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t			addr,
 		uint8_t			*data)
 {
@@ -291,7 +291,7 @@ efuse_OneByteRead(
 /*  11/16/2008 MH Write one byte to reald Efuse. */
 uint8_t
 efuse_OneByteWrite(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t			addr,
 		uint8_t			data)
 {
@@ -354,7 +354,7 @@ efuse_OneByteWrite(
 }
 
 int
-Efuse_PgPacketRead(		PADAPTER	padapter,
+Efuse_PgPacketRead(		struct _ADAPTER *padapter,
 						uint8_t			offset,
 						uint8_t			*data)
 {
@@ -366,7 +366,7 @@ Efuse_PgPacketRead(		PADAPTER	padapter,
 }
 
 int
-Efuse_PgPacketWrite(	PADAPTER	padapter,
+Efuse_PgPacketWrite(	struct _ADAPTER *padapter,
 						uint8_t 			offset,
 						uint8_t			word_en,
 						uint8_t			*data)
@@ -380,7 +380,7 @@ Efuse_PgPacketWrite(	PADAPTER	padapter,
 
 
 int
-Efuse_PgPacketWrite_BT(	PADAPTER	padapter,
+Efuse_PgPacketWrite_BT(	struct _ADAPTER *padapter,
 						uint8_t 			offset,
 						uint8_t			word_en,
 						uint8_t			*data)
@@ -438,7 +438,7 @@ efuse_WordEnableDataRead(	uint8_t	word_en,
 
 
 uint8_t
-Efuse_WordEnableDataWrite(		PADAPTER	padapter,
+Efuse_WordEnableDataWrite(		struct _ADAPTER *padapter,
 								uint16_t		efuse_addr,
 								uint8_t		word_en,
 								uint8_t		*data)
@@ -450,14 +450,14 @@ Efuse_WordEnableDataWrite(		PADAPTER	padapter,
 	return ret;
 }
 //------------------------------------------------------------------------------
-uint16_t efuse_GetMaxSize(PADAPTER padapter)
+uint16_t efuse_GetMaxSize(struct _ADAPTER *padapter)
 {
 	uint16_t	max_size;
 	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, EFUSE_WIFI , TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_size);
 	return max_size;
 }
 //------------------------------------------------------------------------------
-uint8_t efuse_GetCurrentSize(PADAPTER padapter, uint16_t *size)
+uint8_t efuse_GetCurrentSize(struct _ADAPTER *padapter, uint16_t *size)
 {
 	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
 	*size = padapter->HalFunc->EfuseGetCurrentSize(padapter, EFUSE_WIFI);
@@ -466,7 +466,7 @@ uint8_t efuse_GetCurrentSize(PADAPTER padapter, uint16_t *size)
 	return _SUCCESS;
 }
 //------------------------------------------------------------------------------
-uint8_t rtw_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
+uint8_t rtw_efuse_map_read(struct _ADAPTER *padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
 {
 	uint16_t	mapLen=0;
 
@@ -484,7 +484,7 @@ uint8_t rtw_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint
 	return _SUCCESS;
 }
 
-uint8_t rtw_BT_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
+uint8_t rtw_BT_efuse_map_read(struct _ADAPTER *padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
 {
 	uint16_t	mapLen=0;
 
@@ -502,7 +502,7 @@ uint8_t rtw_BT_efuse_map_read(PADAPTER padapter, uint16_t addr, uint16_t cnts, u
 	return _SUCCESS;
 }
 //------------------------------------------------------------------------------
-uint8_t rtw_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
+uint8_t rtw_efuse_map_write(struct _ADAPTER *padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
 {
 	uint8_t	offset, word_en;
 	uint8_t	*map;
@@ -600,7 +600,7 @@ exit:
 
 
 //------------------------------------------------------------------------------
-uint8_t rtw_BT_efuse_map_write(PADAPTER padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
+uint8_t rtw_BT_efuse_map_write(struct _ADAPTER *padapter, uint16_t addr, uint16_t cnts, uint8_t *data)
 {
 	uint8_t	offset, word_en;
 	uint8_t	*map;
@@ -717,7 +717,7 @@ exit:
  *---------------------------------------------------------------------------*/
 static VOID
 Efuse_ReadAllMap(
-			PADAPTER	padapter,
+			struct _ADAPTER *padapter,
 			uint8_t		efuseType,
 	 	uint8_t		*Efuse)
 {
@@ -752,7 +752,7 @@ Efuse_ReadAllMap(
  *---------------------------------------------------------------------------*/
 static VOID
 efuse_ShadowRead1Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Offset,
 	 	uint8_t		*Value)
 {
@@ -765,7 +765,7 @@ efuse_ShadowRead1Byte(
 //---------------Read Two Bytes
 static VOID
 efuse_ShadowRead2Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Offset,
 	 	uint16_t		*Value)
 {
@@ -779,7 +779,7 @@ efuse_ShadowRead2Byte(
 //---------------Read Four Bytes
 static VOID
 efuse_ShadowRead4Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Offset,
 	 	uint32_t		*Value)
 {
@@ -814,13 +814,13 @@ efuse_ShadowRead4Byte(
 #ifdef PLATFORM
 static VOID
 efuse_ShadowWrite1Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Offset,
 	 	uint8_t		Value);
 #endif //PLATFORM
 static VOID
 efuse_ShadowWrite1Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Offset,
 	 	uint8_t		Value)
 {
@@ -833,7 +833,7 @@ efuse_ShadowWrite1Byte(
 //---------------Write Two Bytes
 static VOID
 efuse_ShadowWrite2Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Offset,
 	 	uint16_t		Value)
 {
@@ -847,7 +847,7 @@ efuse_ShadowWrite2Byte(
 //---------------Write Four Bytes
 static VOID
 efuse_ShadowWrite4Byte(
-		PADAPTER	padapter,
+		struct _ADAPTER *padapter,
 		uint16_t		Offset,
 		uint32_t		Value)
 {
@@ -877,7 +877,7 @@ efuse_ShadowWrite4Byte(
  *
  *---------------------------------------------------------------------------*/
 void EFUSE_ShadowMapUpdate(
-	 PADAPTER	padapter,
+	 struct _ADAPTER *padapter,
 	 uint8_t		efuseType)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
@@ -918,7 +918,7 @@ void EFUSE_ShadowMapUpdate(
  *---------------------------------------------------------------------------*/
 void
 EFUSE_ShadowRead(
-			PADAPTER	padapter,
+			struct _ADAPTER *padapter,
 			uint8_t		Type,
 			uint16_t		Offset,
 	 	uint32_t		*Value	)

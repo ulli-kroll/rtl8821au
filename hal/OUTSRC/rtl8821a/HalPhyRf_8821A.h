@@ -36,13 +36,13 @@ void ConfigureTxpowerTrack_8821A(
 
 void
 PHY_IQCalibrate_8821A(
-	IN	PADAPTER	pAdapter,
+	IN	struct _ADAPTER *pAdapter,
 	IN	BOOLEAN 	bReCovery
 );
 
 
 VOID PHY_SetRFPathSwitch_8821A(
-	IN	PADAPTER	pAdapter,
+	IN	struct _ADAPTER *pAdapter,
 	IN	BOOLEAN		bMain
 	);
 

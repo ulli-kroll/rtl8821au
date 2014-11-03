@@ -1079,7 +1079,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	//
 	//	Add for different team use temporarily
 	//
-	struct _ADAPTER *	Adapter;		// For CE/NIC team
+	struct rtl_priv *	Adapter;		// For CE/NIC team
 	prtl8192cd_priv	priv;			// For AP/ADSL team
 	// WHen you use Adapter or priv pointer, you must make sure the pointer is ready.
 	BOOLEAN			odm_ready;
@@ -1165,7 +1165,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 
 	u1Byte			u1Byte_temp;
 	BOOLEAN			BOOLEAN_temp;
-	struct _ADAPTER *	ADAPTER_temp;
+	struct rtl_priv *	ADAPTER_temp;
 
 	// MAC PHY Mode SMSP/DMSP/DMDP = 0/1/2
 	u1Byte			*pMacPhyMode;
@@ -1188,7 +1188,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	// Common info for 92D DMSP
 
 	BOOLEAN			*pbGetValueFromOtherMac;
-	struct _ADAPTER *	*pBuddyAdapter;
+	struct rtl_priv *	*pBuddyAdapter;
 	BOOLEAN			*pbMasterOfDMSP; //MAC0: master, MAC1: slave
 	// Common info for Status
 	BOOLEAN			*pbScanInProcess;

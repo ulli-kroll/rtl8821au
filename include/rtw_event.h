@@ -85,7 +85,7 @@ struct addba_event
 
 struct fwevent {
 	u32	parmsize;
-	void (*event_callback)(struct _ADAPTER *dev, uint8_t *pbuf);
+	void (*event_callback)(struct rtl_priv *dev, uint8_t *pbuf);
 };
 
 

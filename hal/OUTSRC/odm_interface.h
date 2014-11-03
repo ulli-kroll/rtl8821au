@@ -106,7 +106,7 @@ static uint32_t ODM_GetMACReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 static void ODM_SetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
 {
-	struct _ADAPTER *	Adapter = pDM_Odm->Adapter;
+	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
 	PHY_SetBBReg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
 }
 

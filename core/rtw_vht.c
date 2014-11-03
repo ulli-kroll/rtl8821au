@@ -52,7 +52,7 @@ const uint16_t VHT_MCS_DATA_RATE[3][2][20] = {
 		}
 	} };
 
-uint8_t	rtw_get_vht_highest_rate(struct _ADAPTER *padapter, uint8_t *pvht_mcs_map)
+uint8_t	rtw_get_vht_highest_rate(struct rtl_priv *padapter, uint8_t *pvht_mcs_map)
 {
 	uint8_t	i, j;
 	uint8_t	bit_map;
@@ -86,7 +86,7 @@ uint16_t rtw_vht_data_rate(uint8_t bw, uint8_t short_GI, uint8_t vht_mcs_rate)
 	return VHT_MCS_DATA_RATE[bw][short_GI][((vht_mcs_rate - MGN_VHT1SS_MCS0)&0x3f)];
 }
 
-void rtw_vht_use_default_setting(struct _ADAPTER *padapter)
+void rtw_vht_use_default_setting(struct rtl_priv *padapter)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
@@ -199,7 +199,7 @@ uint32_t	rtw_vht_rate_to_bitmap(uint8_t *pVHTRate)
 	return RateBitmap;
 }
 
-void update_sta_vht_info_apmode(struct _ADAPTER *padapter, PVOID psta)
+void update_sta_vht_info_apmode(struct rtl_priv *padapter, PVOID psta)
 {
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct vht_priv *pvhtpriv_ap = &pmlmepriv->vhtpriv;
@@ -277,7 +277,7 @@ void update_sta_vht_info_apmode(struct _ADAPTER *padapter, PVOID psta)
 
 }
 
-void update_hw_vht_param(struct _ADAPTER *padapter)
+void update_hw_vht_param(struct rtl_priv *padapter)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
@@ -291,7 +291,7 @@ void update_hw_vht_param(struct _ADAPTER *padapter)
 		rtw_hal_set_hwreg(padapter, HW_VAR_AMPDU_FACTOR, (uint8_t *)(&pvhtpriv->ampdu_len));
 }
 
-void VHT_caps_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
+void VHT_caps_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
@@ -383,7 +383,7 @@ void VHT_caps_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	pvhtpriv->vht_highest_rate = rtw_get_vht_highest_rate(padapter, pvhtpriv->vht_mcs_map);
 }
 
-void VHT_operation_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
+void VHT_operation_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 {
 	struct mlme_priv  *pmlmepriv = &padapter->mlmepriv;
 	struct ht_priv *phtpriv = &pmlmepriv->htpriv;
@@ -405,7 +405,7 @@ void VHT_operation_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs 
 	}
 }
 
-uint32_t rtw_build_vht_operation_ie(struct _ADAPTER *padapter, uint8_t *pbuf, uint8_t channel)
+uint32_t rtw_build_vht_operation_ie(struct rtl_priv *padapter, uint8_t *pbuf, uint8_t channel)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
@@ -434,7 +434,7 @@ uint32_t rtw_build_vht_operation_ie(struct _ADAPTER *padapter, uint8_t *pbuf, ui
 	return len;
 }
 
-uint32_t rtw_build_vht_op_mode_notify_ie(struct _ADAPTER *padapter, uint8_t *pbuf)
+uint32_t rtw_build_vht_op_mode_notify_ie(struct rtl_priv *padapter, uint8_t *pbuf)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
@@ -460,7 +460,7 @@ uint32_t rtw_build_vht_op_mode_notify_ie(struct _ADAPTER *padapter, uint8_t *pbu
 	return len;
 }
 
-uint32_t rtw_build_vht_cap_ie(struct _ADAPTER *padapter, uint8_t *pbuf)
+uint32_t rtw_build_vht_cap_ie(struct rtl_priv *padapter, uint8_t *pbuf)
 {
 	uint8_t	bw, rf_type;
 	uint16_t HighestRate;
@@ -604,7 +604,7 @@ uint32_t rtw_build_vht_cap_ie(struct _ADAPTER *padapter, uint8_t *pbuf)
 	return len;
 }
 
-uint32_t rtw_restructure_vht_ie(struct _ADAPTER *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len)
+uint32_t rtw_restructure_vht_ie(struct rtl_priv *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len)
 {
 	uint32_t ielen, out_len;
 	uint8_t	cap_len, notify_len, operation_bw, supported_chnl_width;
@@ -670,7 +670,7 @@ uint32_t rtw_restructure_vht_ie(struct _ADAPTER *padapter, uint8_t *in_ie, uint8
 
 }
 
-void VHTOnAssocRsp(struct _ADAPTER *padapter)
+void VHTOnAssocRsp(struct rtl_priv *padapter)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;

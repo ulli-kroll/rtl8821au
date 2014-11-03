@@ -63,7 +63,7 @@ ODM_ClearTxPowerTrackingState(
 
 VOID
 ODM_TXPowerTrackingCallback_ThermalMeter(
-	IN struct _ADAPTER *Adapter
+	IN struct rtl_priv *Adapter
 	);
 
 

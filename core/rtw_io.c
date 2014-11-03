@@ -48,7 +48,7 @@ jackson@realtek.com.tw
 
 #include <drv_types.h>
 
-uint8_t _rtw_read8(struct _ADAPTER *adapter, uint32_t addr)
+uint8_t _rtw_read8(struct rtl_priv *adapter, uint32_t addr)
 {
 	uint8_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -59,7 +59,7 @@ uint8_t _rtw_read8(struct _ADAPTER *adapter, uint32_t addr)
 	return val;
 }
 
-uint16_t _rtw_read16(struct _ADAPTER *adapter, uint32_t addr)
+uint16_t _rtw_read16(struct rtl_priv *adapter, uint32_t addr)
 {
 	uint16_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -70,7 +70,7 @@ uint16_t _rtw_read16(struct _ADAPTER *adapter, uint32_t addr)
 	return le16_to_cpu(val);
 }
 
-uint32_t _rtw_read32(struct _ADAPTER *adapter, uint32_t addr)
+uint32_t _rtw_read32(struct rtl_priv *adapter, uint32_t addr)
 {
 	uint32_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -81,7 +81,7 @@ uint32_t _rtw_read32(struct _ADAPTER *adapter, uint32_t addr)
 	return le32_to_cpu(val);
 }
 
-int _rtw_write8(struct _ADAPTER *adapter, uint32_t addr, uint8_t val)
+int _rtw_write8(struct rtl_priv *adapter, uint32_t addr, uint8_t val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl *pintfhdl = &(pio_priv->intf);
@@ -92,7 +92,7 @@ int _rtw_write8(struct _ADAPTER *adapter, uint32_t addr, uint8_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_write16(struct _ADAPTER *adapter, uint32_t addr, uint16_t val)
+int _rtw_write16(struct rtl_priv *adapter, uint32_t addr, uint16_t val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl *pintfhdl = &pio_priv->intf;
@@ -105,7 +105,7 @@ int _rtw_write16(struct _ADAPTER *adapter, uint32_t addr, uint16_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_write32(struct _ADAPTER *adapter, uint32_t addr, uint32_t val)
+int _rtw_write32(struct rtl_priv *adapter, uint32_t addr, uint32_t val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct intf_hdl	*pintfhdl = &pio_priv->intf;
@@ -117,7 +117,7 @@ int _rtw_write32(struct _ADAPTER *adapter, uint32_t addr, uint32_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_writeN(struct _ADAPTER *adapter, uint32_t addr, uint32_t length,
+int _rtw_writeN(struct rtl_priv *adapter, uint32_t addr, uint32_t length,
 	uint8_t *pdata)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -129,7 +129,7 @@ int _rtw_writeN(struct _ADAPTER *adapter, uint32_t addr, uint32_t length,
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_write8_async(struct _ADAPTER *adapter, uint32_t addr, uint8_t val)
+int _rtw_write8_async(struct rtl_priv *adapter, uint32_t addr, uint8_t val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct intf_hdl	*pintfhdl = &(pio_priv->intf);
@@ -140,7 +140,7 @@ int _rtw_write8_async(struct _ADAPTER *adapter, uint32_t addr, uint8_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_write16_async(struct _ADAPTER *adapter, uint32_t addr, uint16_t val)
+int _rtw_write16_async(struct rtl_priv *adapter, uint32_t addr, uint16_t val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct intf_hdl	*pintfhdl = &pio_priv->intf;
@@ -152,7 +152,7 @@ int _rtw_write16_async(struct _ADAPTER *adapter, uint32_t addr, uint16_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_write32_async(struct _ADAPTER *adapter, uint32_t addr, uint32_t val)
+int _rtw_write32_async(struct rtl_priv *adapter, uint32_t addr, uint32_t val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct intf_hdl *pintfhdl = &pio_priv->intf;
@@ -164,7 +164,7 @@ int _rtw_write32_async(struct _ADAPTER *adapter, uint32_t addr, uint32_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-void _rtw_read_mem(struct _ADAPTER *adapter, uint32_t addr, uint32_t cnt,
+void _rtw_read_mem(struct rtl_priv *adapter, uint32_t addr, uint32_t cnt,
 	uint8_t *pmem)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -180,7 +180,7 @@ void _rtw_read_mem(struct _ADAPTER *adapter, uint32_t addr, uint32_t cnt,
 
 }
 
-void _rtw_write_mem(struct _ADAPTER *adapter, uint32_t addr, uint32_t cnt,
+void _rtw_write_mem(struct rtl_priv *adapter, uint32_t addr, uint32_t cnt,
 	uint8_t *pmem)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -189,7 +189,7 @@ void _rtw_write_mem(struct _ADAPTER *adapter, uint32_t addr, uint32_t cnt,
 	pintfhdl->io_ops._write_mem(pintfhdl, addr, cnt, pmem);
 }
 
-void _rtw_read_port(struct _ADAPTER *adapter, uint32_t addr, uint32_t cnt,
+void _rtw_read_port(struct rtl_priv *adapter, uint32_t addr, uint32_t cnt,
 	uint8_t *pmem)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -205,7 +205,7 @@ void _rtw_read_port(struct _ADAPTER *adapter, uint32_t addr, uint32_t cnt,
 
 }
 
-void _rtw_read_port_cancel(struct _ADAPTER *adapter)
+void _rtw_read_port_cancel(struct rtl_priv *adapter)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct intf_hdl *pintfhdl = &(pio_priv->intf);
@@ -214,7 +214,7 @@ void _rtw_read_port_cancel(struct _ADAPTER *adapter)
 		pintfhdl->io_ops._read_port_cancel(pintfhdl);
 }
 
-uint32_t _rtw_write_port(struct _ADAPTER *adapter, uint32_t addr,
+uint32_t _rtw_write_port(struct rtl_priv *adapter, uint32_t addr,
 	uint32_t cnt, uint8_t *pmem)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -226,7 +226,7 @@ uint32_t _rtw_write_port(struct _ADAPTER *adapter, uint32_t addr,
 	return ret;
 }
 
-uint32_t _rtw_write_port_and_wait(struct _ADAPTER *adapter, uint32_t addr,
+uint32_t _rtw_write_port_and_wait(struct rtl_priv *adapter, uint32_t addr,
 	uint32_t cnt, uint8_t *pmem, int timeout_ms)
 {
 	int ret = _SUCCESS;
@@ -244,7 +244,7 @@ uint32_t _rtw_write_port_and_wait(struct _ADAPTER *adapter, uint32_t addr,
 	 return ret;
 }
 
-void _rtw_write_port_cancel(struct _ADAPTER *adapter)
+void _rtw_write_port_cancel(struct rtl_priv *adapter)
 {
 	void (*_write_port_cancel)(struct intf_hdl *pintfhdl);
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -257,8 +257,8 @@ void _rtw_write_port_cancel(struct _ADAPTER *adapter)
 
 }
 
-int rtw_init_io_priv(struct _ADAPTER *padapter,
-	void (*set_intf_ops)(struct _ADAPTER *padapter, struct _io_ops *pops))
+int rtw_init_io_priv(struct rtl_priv *padapter,
+	void (*set_intf_ops)(struct rtl_priv *padapter, struct _io_ops *pops))
 {
 	struct io_priv	*piopriv = &padapter->iopriv;
 	struct intf_hdl *pintf = &piopriv->intf;
@@ -319,7 +319,7 @@ bool match_write_sniff_ranges(uint16_t addr, uint16_t len)
 	return _FALSE;
 }
 
-uint8_t dbg_rtw_read8(struct _ADAPTER *adapter, uint32_t addr,
+uint8_t dbg_rtw_read8(struct rtl_priv *adapter, uint32_t addr,
 	const char *caller, const int line)
 {
 	uint8_t val = _rtw_read8(adapter, addr);
@@ -330,7 +330,7 @@ uint8_t dbg_rtw_read8(struct _ADAPTER *adapter, uint32_t addr,
 	return val;
 }
 
-uint16_t dbg_rtw_read16(struct _ADAPTER *adapter, uint32_t addr,
+uint16_t dbg_rtw_read16(struct rtl_priv *adapter, uint32_t addr,
 	const char *caller, const int line)
 {
 	uint16_t val = _rtw_read16(adapter, addr);
@@ -341,7 +341,7 @@ uint16_t dbg_rtw_read16(struct _ADAPTER *adapter, uint32_t addr,
 	return val;
 }
 
-uint32_t dbg_rtw_read32(struct _ADAPTER *adapter, uint32_t addr,
+uint32_t dbg_rtw_read32(struct rtl_priv *adapter, uint32_t addr,
 	const char *caller, const int line)
 {
 	uint32_t val = _rtw_read32(adapter, addr);
@@ -352,7 +352,7 @@ uint32_t dbg_rtw_read32(struct _ADAPTER *adapter, uint32_t addr,
 	return val;
 }
 
-int dbg_rtw_write8(struct _ADAPTER *adapter, uint32_t addr, uint8_t val,
+int dbg_rtw_write8(struct rtl_priv *adapter, uint32_t addr, uint8_t val,
 	const char *caller, const int line)
 {
 	if (match_write_sniff_ranges(addr, 1))
@@ -361,7 +361,7 @@ int dbg_rtw_write8(struct _ADAPTER *adapter, uint32_t addr, uint8_t val,
 	return _rtw_write8(adapter, addr, val);
 }
 
-int dbg_rtw_write16(struct _ADAPTER *adapter, uint32_t	addr, uint16_t val,
+int dbg_rtw_write16(struct rtl_priv *adapter, uint32_t	addr, uint16_t val,
 	const char *caller, const int line)
 {
 	if (match_write_sniff_ranges(addr, 2))
@@ -370,7 +370,7 @@ int dbg_rtw_write16(struct _ADAPTER *adapter, uint32_t	addr, uint16_t val,
 	return _rtw_write16(adapter, addr, val);
 }
 
-int dbg_rtw_write32(struct _ADAPTER *adapter, uint32_t	addr, uint32_t val,
+int dbg_rtw_write32(struct rtl_priv *adapter, uint32_t	addr, uint32_t val,
 	const char *caller, const int line)
 {
 	if (match_write_sniff_ranges(addr, 4))
@@ -379,7 +379,7 @@ int dbg_rtw_write32(struct _ADAPTER *adapter, uint32_t	addr, uint32_t val,
 	return _rtw_write32(adapter, addr, val);
 }
 
-int dbg_rtw_writeN(struct _ADAPTER *adapter, uint32_t addr, uint32_t length,
+int dbg_rtw_writeN(struct rtl_priv *adapter, uint32_t addr, uint32_t length,
 	uint8_t *data, const char *caller, const int line)
 {
 	if (match_write_sniff_ranges(addr, length))

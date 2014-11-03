@@ -38,7 +38,7 @@ static void PHY_LCCalibrate_8821A(PDM_ODM_T pDM_Odm);
 static void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 	u1Byte ThermalValue, u1Byte Threshold)
 {
-	struct _ADAPTER *Adapter = pDM_Odm->Adapter;
+	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
 
 	ODM_ResetIQKResult(pDM_Odm);
@@ -51,7 +51,7 @@ static void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 static void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	u1Byte RFPath, u1Byte ChannelMappedIndex)
 {
-	struct _ADAPTER *Adapter = pDM_Odm->Adapter;
+	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 
 	u1Byte PwrTrackingLimit = 26; /* +1.0dB */
@@ -170,7 +170,7 @@ static void GetDeltaSwingTable_8821A(PDM_ODM_T pDM_Odm,
 	pu1Byte *TemperatureUP_A, pu1Byte *TemperatureDOWN_A,
 	pu1Byte *TemperatureUP_B, pu1Byte *TemperatureDOWN_B)
 {
-	struct _ADAPTER *       Adapter = pDM_Odm->Adapter;
+	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	HAL_DATA_TYPE  	*pHalData = GET_HAL_DATA(Adapter);
 	/* uint16_t     rate = pMgntInfo->ForcedDataRate; */
@@ -1054,7 +1054,7 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 #define AFE_REG_NUM 12
 #define RF_REG_NUM 3
 
-void phy_IQCalibrate_By_FW_8821A(struct _ADAPTER *pAdapter)
+void phy_IQCalibrate_By_FW_8821A(struct rtl_priv *pAdapter)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	u1Byte			IQKcmd[3] = {pHalData->CurrentChannel, 0x0, 0x0};
@@ -1120,7 +1120,7 @@ static void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
 #define		DP_DPK_VALUE_NUM	2
 
 
-void PHY_IQCalibrate_8821A(struct _ADAPTER *pAdapter, BOOLEAN bReCovery)
+void PHY_IQCalibrate_8821A(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 

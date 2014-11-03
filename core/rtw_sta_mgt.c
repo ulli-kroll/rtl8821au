@@ -353,7 +353,7 @@ exit:
 
 
 /* using pstapriv->sta_hash_lock to protect */
-uint32_t rtw_free_stainfo(struct _ADAPTER *padapter , struct sta_info *psta)
+uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
 {
 	int i;
 	_irqL irqL0;
@@ -562,7 +562,7 @@ exit:
 
 /* free all stainfo which in sta_hash[all] */
 
-void rtw_free_all_stainfo(struct _ADAPTER *padapter)
+void rtw_free_all_stainfo(struct rtl_priv *padapter)
 {
 	_irqL	 irqL;
 	struct list_head	*plist, *phead;
@@ -638,7 +638,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 	return psta;
 }
 
-uint32_t rtw_init_bcmc_stainfo(struct _ADAPTER* padapter)
+uint32_t rtw_init_bcmc_stainfo(struct rtl_priv* padapter)
 {
 
 	struct sta_info *psta;
@@ -677,7 +677,7 @@ exit:
 }
 
 
-struct sta_info* rtw_get_bcmc_stainfo(struct _ADAPTER *padapter)
+struct sta_info* rtw_get_bcmc_stainfo(struct rtl_priv *padapter)
 {
 	struct sta_info 	*psta;
 	struct sta_priv 	*pstapriv = &padapter->stapriv;
@@ -688,7 +688,7 @@ struct sta_info* rtw_get_bcmc_stainfo(struct _ADAPTER *padapter)
 	return psta;
 }
 
-uint8_t rtw_access_ctrl(struct _ADAPTER *padapter, uint8_t *mac_addr)
+uint8_t rtw_access_ctrl(struct rtl_priv *padapter, uint8_t *mac_addr)
 {
 	uint8_t res = _TRUE;
 #ifdef  CONFIG_AP_MODE

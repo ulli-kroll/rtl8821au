@@ -66,7 +66,7 @@ void dump_chip_info(HAL_VERSION	ChipVersion)
 
 uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
-	IN	struct _ADAPTER *padapter,
+	IN	struct rtl_priv *padapter,
 	IN	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
 	IN	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
 	IN	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
@@ -98,7 +98,7 @@ hal_com_get_channel_plan(
 
 BOOLEAN
 HAL_IsLegalChannel(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	uint32_t			Channel
 	)
 {
@@ -159,7 +159,7 @@ uint8_t	MRateToHwRate(uint8_t rate)
 }
 
 void	HalSetBrateCfg(
-	IN struct _ADAPTER *	Adapter,
+	IN struct rtl_priv *	Adapter,
 	IN uint8_t			*mBratesOS,
 	OUT u16			*pBrateCfg)
 {
@@ -193,7 +193,7 @@ void	HalSetBrateCfg(
 
 static VOID
 _OneOutPipeMapping(
-	IN	struct _ADAPTER *pAdapter
+	IN	struct rtl_priv *pAdapter
 	)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
@@ -211,7 +211,7 @@ _OneOutPipeMapping(
 
 static VOID
 _TwoOutPipeMapping(
-	IN	struct _ADAPTER *pAdapter,
+	IN	struct rtl_priv *pAdapter,
 	IN	BOOLEAN	 	bWIFICfg
 	)
 {
@@ -256,7 +256,7 @@ _TwoOutPipeMapping(
 }
 
 static VOID _ThreeOutPipeMapping(
-	IN	struct _ADAPTER *pAdapter,
+	IN	struct rtl_priv *pAdapter,
 	IN	BOOLEAN	 	bWIFICfg
 	)
 {
@@ -299,7 +299,7 @@ static VOID _ThreeOutPipeMapping(
 
 }
 static VOID _FourOutPipeMapping(
-	IN	struct _ADAPTER *pAdapter,
+	IN	struct rtl_priv *pAdapter,
 	IN	BOOLEAN	 	bWIFICfg
 	)
 {
@@ -343,7 +343,7 @@ static VOID _FourOutPipeMapping(
 }
 BOOLEAN
 Hal_MappingOutPipe(
-	IN	struct _ADAPTER *pAdapter,
+	IN	struct rtl_priv *pAdapter,
 	IN	uint8_t		NumOutPipe
 	)
 {
@@ -374,7 +374,7 @@ Hal_MappingOutPipe(
 
 }
 
-void hal_init_macaddr(struct _ADAPTER *adapter)
+void hal_init_macaddr(struct rtl_priv *adapter)
 {
 	rtw_hal_set_hwreg(adapter, HW_VAR_MAC_ADDR, adapter->eeprompriv.mac_addr);
 }
@@ -385,12 +385,12 @@ void hal_init_macaddr(struct _ADAPTER *adapter)
 * BITS	 [127:120]	[119:16]      [15:8]		  [7:4]	 	   [3:0]
 */
 
-void c2h_evt_clear(struct _ADAPTER *adapter)
+void c2h_evt_clear(struct rtl_priv *adapter)
 {
 	rtw_write8(adapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
 
-int32_t c2h_evt_read(struct _ADAPTER *adapter, uint8_t *buf)
+int32_t c2h_evt_read(struct rtl_priv *adapter, uint8_t *buf)
 {
 	int32_t ret = _FAIL;
 	struct c2h_evt_hdr *c2h_evt;
@@ -442,12 +442,12 @@ exit:
 	return ret;
 }
 
-uint8_t  rtw_hal_networktype_to_raid(struct _ADAPTER *adapter,unsigned char network_type)
+uint8_t  rtw_hal_networktype_to_raid(struct rtl_priv *adapter,unsigned char network_type)
 {
 	return networktype_to_raid_ex(adapter,network_type);
 }
 
-uint8_t rtw_get_mgntframe_raid(struct _ADAPTER *adapter,unsigned char network_type)
+uint8_t rtw_get_mgntframe_raid(struct rtl_priv *adapter,unsigned char network_type)
 {
 
 	uint8_t raid;

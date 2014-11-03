@@ -173,7 +173,7 @@ typedef	enum _LED_STRATEGY_USB{
 
 
 typedef struct _LED_USB{
-	struct _ADAPTER *		padapter;
+	struct rtl_priv *		padapter;
 
 	LED_PIN				LedPin;	// Identify how to implement this SW led.
 
@@ -204,7 +204,7 @@ typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;
 
 VOID
 LedControlUSB(
-	IN	struct _ADAPTER *	Adapter,
+	IN	struct rtl_priv *	Adapter,
 	IN	LED_CTL_MODE		LedAction
 	);
 
@@ -215,9 +215,9 @@ struct led_priv{
 	LED_DATA			SwLed2;
 	LED_STRATEGY		LedStrategy;
 	uint8_t					bRegUseLed;
-	void (*LedControlHandler)(struct _ADAPTER *padapter, LED_CTL_MODE LedAction);
-	void (*SwLedOn)(struct _ADAPTER *padapter, PLED_DATA pLed);
-	void (*SwLedOff)(struct _ADAPTER *padapter, PLED_DATA pLed);
+	void (*LedControlHandler)(struct rtl_priv *padapter, LED_CTL_MODE LedAction);
+	void (*SwLedOn)(struct rtl_priv *padapter, PLED_DATA pLed);
+	void (*SwLedOff)(struct rtl_priv *padapter, PLED_DATA pLed);
 	/* add for led controll */
 };
 
@@ -246,7 +246,7 @@ void ResetLedStatus(PLED_DATA pLed);
 
 void
 InitLed(
-	struct _ADAPTER			*padapter,
+	struct rtl_priv			*padapter,
 	PLED_DATA		pLed,
 	LED_PIN			LedPin
 	);

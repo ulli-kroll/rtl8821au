@@ -37,7 +37,7 @@ void ConfigureTxpowerTrack_8812A(
 
 void
 PHY_IQCalibrate_8812A(
-	IN	struct _ADAPTER *pAdapter,
+	IN	struct rtl_priv *pAdapter,
 	IN	BOOLEAN 	bReCovery
 );
 
@@ -55,10 +55,10 @@ PHY_LCCalibrate_8812A(
 //
 void
 PHY_APCalibrate_8812A(
-	IN	struct _ADAPTER *pAdapter,
+	IN	struct rtl_priv *pAdapter,
 							IN 	s1Byte		delta);
 void
-PHY_DigitalPredistortion_8812A(		IN	struct _ADAPTER *pAdapter);
+PHY_DigitalPredistortion_8812A(		IN	struct rtl_priv *pAdapter);
 
 VOID
 PHY_DPCalibrate_8812A(

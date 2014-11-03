@@ -23,21 +23,21 @@
 #include <osdep_service.h>
 #include <drv_types.h>
 
-void up_clk(struct _ADAPTER *padapter, uint16_t *x)
+void up_clk(struct rtl_priv *padapter, uint16_t *x)
 {
 	*x = *x | _EESK;
 	rtw_write8(padapter, EE_9346CR, (uint8_t)*x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
-void down_clk(struct _ADAPTER *padapter, uint16_t *x	)
+void down_clk(struct rtl_priv *padapter, uint16_t *x	)
 {
 	*x = *x & ~_EESK;
 	rtw_write8(padapter, EE_9346CR, (uint8_t)*x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
-void shift_out_bits(struct _ADAPTER *padapter, uint16_t data, uint16_t count)
+void shift_out_bits(struct rtl_priv *padapter, uint16_t data, uint16_t count)
 {
 	uint16_t x,mask;
 
@@ -78,7 +78,7 @@ void shift_out_bits(struct _ADAPTER *padapter, uint16_t data, uint16_t count)
 out:
 }
 
-uint16_t shift_in_bits (struct _ADAPTER *padapter)
+uint16_t shift_in_bits (struct rtl_priv *padapter)
 {
 	uint16_t x,d=0,i;
 
@@ -111,7 +111,7 @@ out:
 	return d;
 }
 
-void standby(struct _ADAPTER *padapter)
+void standby(struct rtl_priv *padapter)
 {
 	uint8_t   x;
 
@@ -126,7 +126,7 @@ void standby(struct _ADAPTER *padapter)
 	rtw_udelay_os(CLOCK_RATE);
 }
 
-uint16_t wait_eeprom_cmd_done(struct _ADAPTER* padapter)
+uint16_t wait_eeprom_cmd_done(struct rtl_priv* padapter)
 {
 	uint8_t 	x;
 	uint16_t	i,res=_FALSE;
@@ -146,7 +146,7 @@ exit:
 	return res;
 }
 
-void eeprom_clean(struct _ADAPTER *padapter)
+void eeprom_clean(struct rtl_priv *padapter)
 {
 	uint16_t x;
 
@@ -177,7 +177,7 @@ out:
 
 }
 
-void eeprom_write16(struct _ADAPTER * padapter, uint16_t reg, uint16_t data)
+void eeprom_write16(struct rtl_priv * padapter, uint16_t reg, uint16_t data)
 {
 	uint8_t x;
 #ifdef CONFIG_RTL8712
@@ -259,7 +259,7 @@ exit:
 	return;
 }
 
-uint16_t eeprom_read16(struct _ADAPTER * padapter, uint16_t reg) //ReadEEprom
+uint16_t eeprom_read16(struct rtl_priv * padapter, uint16_t reg) //ReadEEprom
 {
 
 	uint16_t x;
@@ -327,7 +327,7 @@ out:
 
 
 //From even offset
-void eeprom_read_sz(struct _ADAPTER * padapter, uint16_t reg, uint8_t * data, uint32_t	 sz)
+void eeprom_read_sz(struct rtl_priv * padapter, uint16_t reg, uint8_t * data, uint32_t	 sz)
 {
 
 	uint16_t x, data16;
@@ -367,7 +367,7 @@ out:
 
 
 //addr_off : address offset of the entry in eeprom (not the tuple number of eeprom (reg); that is addr_off !=reg)
-uint8_t eeprom_read(struct _ADAPTER *padapter, uint32_t	addr_off, uint8_t sz, uint8_t * rbuf)
+uint8_t eeprom_read(struct rtl_priv *padapter, uint32_t	addr_off, uint8_t sz, uint8_t * rbuf)
 {
 	uint8_t quotient, remainder, addr_2align_odd;
 	uint16_t reg, stmp , i=0, idx = 0;
@@ -401,7 +401,7 @@ _func_exit_;
 
 
 
-VOID read_eeprom_content(struct _ADAPTER *padapter)
+VOID read_eeprom_content(struct rtl_priv *padapter)
 {
 }
 

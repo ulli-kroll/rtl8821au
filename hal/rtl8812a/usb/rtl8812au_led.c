@@ -21,7 +21,7 @@
 
 #include <rtl8812a_hal.h>
 
-static void SwLedOn_8812AU(struct _ADAPTER *padapter, PLED_USB pLed)
+static void SwLedOn_8812AU(struct rtl_priv *padapter, PLED_USB pLed)
 {
 	uint8_t	LedCfg;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
@@ -94,7 +94,7 @@ static void SwLedOn_8812AU(struct _ADAPTER *padapter, PLED_USB pLed)
  * 	Turn off LED according to LedPin specified.
  */
 
-static void SwLedOff_8812AU(struct _ADAPTER *padapter, PLED_USB	pLed)
+static void SwLedOff_8812AU(struct rtl_priv *padapter, PLED_USB	pLed)
 {
 	uint8_t	LedCfg;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
@@ -185,7 +185,7 @@ static void SwLedOff_8812AU(struct _ADAPTER *padapter, PLED_USB	pLed)
  * Turn on LED according to LedPin specified.
  */
 
-static void SwLedOn_8821AU(struct _ADAPTER *Adapter, PLED_USB pLed)
+static void SwLedOn_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 {
 	uint8_t	LedCfg;
 
@@ -246,7 +246,7 @@ static void SwLedOn_8821AU(struct _ADAPTER *Adapter, PLED_USB pLed)
  * Turn off LED according to LedPin specified.
  */
 
-static void SwLedOff_8821AU(struct _ADAPTER *Adapter, PLED_USB pLed)
+static void SwLedOff_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	LedCfg;
@@ -322,7 +322,7 @@ static void SwLedOff_8821AU(struct _ADAPTER *Adapter, PLED_USB pLed)
  * Description:
  * Initialize all LED_871x objects.
  */
-void rtl8812au_InitSwLeds(struct _ADAPTER *padapter)
+void rtl8812au_InitSwLeds(struct rtl_priv *padapter)
 {
 	struct led_priv *pledpriv = &(padapter->ledpriv);
 
@@ -345,7 +345,7 @@ void rtl8812au_InitSwLeds(struct _ADAPTER *padapter)
  * Description:
  * DeInitialize all LED_819xUsb objects.
  */
-void rtl8812au_DeInitSwLeds(struct _ADAPTER *padapter)
+void rtl8812au_DeInitSwLeds(struct rtl_priv *padapter)
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
 

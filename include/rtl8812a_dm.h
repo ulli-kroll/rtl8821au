@@ -20,18 +20,18 @@
 #ifndef __RTL8812A_DM_H__
 #define __RTL8812A_DM_H__
 
-void rtl8812_init_dm_priv(IN struct _ADAPTER *Adapter);
-void rtl8812_deinit_dm_priv(IN struct _ADAPTER *Adapter);
-void rtl8812_InitHalDm(IN struct _ADAPTER *Adapter);
-void rtl8812_HalDmWatchDog(IN struct _ADAPTER *Adapter);
+void rtl8812_init_dm_priv(IN struct rtl_priv *Adapter);
+void rtl8812_deinit_dm_priv(IN struct rtl_priv *Adapter);
+void rtl8812_InitHalDm(IN struct rtl_priv *Adapter);
+void rtl8812_HalDmWatchDog(IN struct rtl_priv *Adapter);
 
-//VOID rtl8192c_dm_CheckTXPowerTracking(IN struct _ADAPTER *Adapter);
+//VOID rtl8192c_dm_CheckTXPowerTracking(IN struct rtl_priv *Adapter);
 
-//void rtl8192c_dm_RF_Saving(IN struct _ADAPTER *pAdapter, IN uint8_t bForceInNormal);
+//void rtl8192c_dm_RF_Saving(IN struct rtl_priv *pAdapter, IN uint8_t bForceInNormal);
 
 #ifdef CONFIG_ANTENNA_DIVERSITY
-void	AntDivCompare8812(struct _ADAPTER *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
-uint8_t AntDivBeforeLink8812(struct _ADAPTER *Adapter );
+void	AntDivCompare8812(struct rtl_priv *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
+uint8_t AntDivBeforeLink8812(struct rtl_priv *Adapter );
 #endif
 #endif
 

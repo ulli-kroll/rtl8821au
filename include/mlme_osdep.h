@@ -25,15 +25,15 @@
 extern int time_after(u32 now, u32 old);
 #endif
 
-extern void rtw_init_mlme_timer(struct _ADAPTER *padapter);
-extern void rtw_os_indicate_disconnect( struct _ADAPTER *adapter );
-extern void rtw_os_indicate_connect( struct _ADAPTER *adapter );
-void rtw_os_indicate_scan_done( struct _ADAPTER *padapter, bool aborted);
-extern void rtw_report_sec_ie(struct _ADAPTER *adapter,u8 authmode,u8 *sec_ie);
+extern void rtw_init_mlme_timer(struct rtl_priv *padapter);
+extern void rtw_os_indicate_disconnect( struct rtl_priv *adapter );
+extern void rtw_os_indicate_connect( struct rtl_priv *adapter );
+void rtw_os_indicate_scan_done( struct rtl_priv *padapter, bool aborted);
+extern void rtw_report_sec_ie(struct rtl_priv *adapter,u8 authmode,u8 *sec_ie);
 
-void rtw_reset_securitypriv( struct _ADAPTER *adapter );
+void rtw_reset_securitypriv( struct rtl_priv *adapter );
 
-u8 rtw_handle_tkip_countermeasure(struct _ADAPTER* padapter);
+u8 rtw_handle_tkip_countermeasure(struct rtl_priv* padapter);
 
 #endif	//_MLME_OSDEP_H_
 

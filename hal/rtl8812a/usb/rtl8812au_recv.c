@@ -21,7 +21,7 @@
 
 #include <rtl8812a_hal.h>
 
-void rtl8812au_init_recvbuf(struct _ADAPTER *padapter, struct recv_buf *precvbuf)
+void rtl8812au_init_recvbuf(struct rtl_priv *padapter, struct recv_buf *precvbuf)
 {
 	precvbuf->transfer_len = 0;
 	precvbuf->len = 0;
@@ -34,7 +34,7 @@ void rtl8812au_init_recvbuf(struct _ADAPTER *padapter, struct recv_buf *precvbuf
 
 }
 
-int	rtl8812au_init_recv_priv(struct _ADAPTER *padapter)
+int	rtl8812au_init_recv_priv(struct rtl_priv *padapter)
 {
 	struct recv_priv	*precvpriv = &padapter->recvpriv;
 	int	i, res = _SUCCESS;
@@ -126,7 +126,7 @@ exit:
 	return res;
 }
 
-void rtl8812au_free_recv_priv (struct _ADAPTER *padapter)
+void rtl8812au_free_recv_priv (struct rtl_priv *padapter)
 {
 	int	i;
 	struct recv_buf	*precvbuf;

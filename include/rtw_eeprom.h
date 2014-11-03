@@ -120,11 +120,11 @@ struct eeprom_priv
 };
 
 
-extern void eeprom_write16(struct _ADAPTER *padapter, u16 reg, u16 data);
-extern u16 eeprom_read16(struct _ADAPTER *padapter, u16 reg);
-extern void read_eeprom_content(struct _ADAPTER *padapter);
-extern void eeprom_read_sz(struct _ADAPTER * padapter, u16 reg,u8* data, u32 sz);
+extern void eeprom_write16(struct rtl_priv *padapter, u16 reg, u16 data);
+extern u16 eeprom_read16(struct rtl_priv *padapter, u16 reg);
+extern void read_eeprom_content(struct rtl_priv *padapter);
+extern void eeprom_read_sz(struct rtl_priv * padapter, u16 reg,u8* data, u32 sz);
 
-extern void read_eeprom_content_by_attrib(struct _ADAPTER *	padapter	);
+extern void read_eeprom_content_by_attrib(struct rtl_priv *	padapter	);
 #endif  //__RTL871X_EEPROM_H__
 

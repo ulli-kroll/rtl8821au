@@ -34,7 +34,7 @@
 #include <wifi.h>
 #include <ieee80211.h>
 
-struct _ADAPTER;
+struct rtl_priv;
 
 #include <rtw_debug.h>
 
@@ -221,10 +221,10 @@ struct registry_priv
 #define MAX_CONTINUAL_URB_ERR 4
 
 
-#define GET_IFACE_NUMS(padapter) (((struct _ADAPTER *)padapter)->dvobj->iface_nums)
+#define GET_IFACE_NUMS(padapter) (((struct rtl_priv *)padapter)->dvobj->iface_nums)
 
 struct dvobj_priv {
-        struct _ADAPTER *padapter;
+        struct rtl_priv *padapter;
 
 	//for local/global synchronization
 	//
@@ -320,7 +320,7 @@ typedef enum _DRIVER_STATE{
 }DRIVER_STATE;
 
 
-struct _ADAPTER{
+struct rtl_priv {
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
 	int	bDongle;//build-in module or external dongle
@@ -375,8 +375,8 @@ struct _ADAPTER{
 	void (*dvobj_deinit)(struct dvobj_priv *dvobj);
 #endif
 
-	void (*intf_start)(struct _ADAPTER * adapter);
-	void (*intf_stop)(struct _ADAPTER * adapter);
+	void (*intf_start)(struct rtl_priv * adapter);
+	void (*intf_stop)(struct rtl_priv * adapter);
 
 
 #ifdef PLATFORM_LINUX
@@ -410,7 +410,7 @@ struct _ADAPTER{
 
 #define adapter_to_dvobj(adapter) (adapter->dvobj)
 
-int rtw_handle_dualmac(struct _ADAPTER *adapter, bool init);
+int rtw_handle_dualmac(struct rtl_priv *adapter, bool init);
 
 __inline static uint8_t *myid(struct eeprom_priv *peepriv)
 {

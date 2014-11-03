@@ -46,10 +46,10 @@ extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev);
 
 #endif
 
-void rtw_os_xmit_schedule(struct _ADAPTER *padapter);
+void rtw_os_xmit_schedule(struct rtl_priv *padapter);
 
-int rtw_os_xmit_resource_alloc(struct _ADAPTER *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag);
-void rtw_os_xmit_resource_free(struct _ADAPTER *padapter, struct xmit_buf *pxmitbuf, u32 free_sz, uint8_t flag);
+int rtw_os_xmit_resource_alloc(struct rtl_priv *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag);
+void rtw_os_xmit_resource_free(struct rtl_priv *padapter, struct xmit_buf *pxmitbuf, u32 free_sz, uint8_t flag);
 
 extern void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib);
 
@@ -58,8 +58,8 @@ extern void _rtw_open_pktfile(_pkt *pkt, struct pkt_file *pfile);
 extern uint _rtw_pktfile_read (struct pkt_file *pfile, uint8_t *rmem, uint rlen);
 extern sint rtw_endofpktfile (struct pkt_file *pfile);
 
-extern void rtw_os_pkt_complete(struct _ADAPTER *padapter, _pkt *pkt);
-extern void rtw_os_xmit_complete(struct _ADAPTER *padapter, struct xmit_frame *pxframe);
+extern void rtw_os_pkt_complete(struct rtl_priv *padapter, _pkt *pkt);
+extern void rtw_os_xmit_complete(struct rtl_priv *padapter, struct xmit_frame *pxframe);
 
 #endif //__XMIT_OSDEP_H_
 

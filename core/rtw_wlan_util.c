@@ -99,7 +99,7 @@ int cckratesonly_included(unsigned char *rate, int ratelen)
 	return _TRUE;
 }
 
-uint8_t networktype_to_raid(struct _ADAPTER *adapter,unsigned char network_type)
+uint8_t networktype_to_raid(struct rtl_priv *adapter,unsigned char network_type)
 {
 	unsigned char raid;
 	switch(network_type)
@@ -134,7 +134,7 @@ uint8_t networktype_to_raid(struct _ADAPTER *adapter,unsigned char network_type)
 
 }
 
-uint8_t networktype_to_raid_ex(struct _ADAPTER *adapter,unsigned char network_type)
+uint8_t networktype_to_raid_ex(struct rtl_priv *adapter,unsigned char network_type)
 {
 	struct mlme_ext_priv	*pmlmeext = &adapter->mlmeextpriv;
 	uint8_t raid, rf_type;
@@ -194,7 +194,7 @@ uint8_t networktype_to_raid_ex(struct _ADAPTER *adapter,unsigned char network_ty
 
 }
 
-uint8_t judge_network_type(struct _ADAPTER *padapter, unsigned char *rate, int ratelen)
+uint8_t judge_network_type(struct rtl_priv *padapter, unsigned char *rate, int ratelen)
 {
 	uint8_t network_type = 0;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -295,8 +295,8 @@ unsigned char ratetbl_val_2wifirate(unsigned char rate)
 
 }
 
-int is_basicrate(struct _ADAPTER *padapter, unsigned char rate);
-int is_basicrate(struct _ADAPTER *padapter, unsigned char rate)
+int is_basicrate(struct rtl_priv *padapter, unsigned char rate);
+int is_basicrate(struct rtl_priv *padapter, unsigned char rate)
 {
 	int i;
 	unsigned char val;
@@ -318,8 +318,8 @@ int is_basicrate(struct _ADAPTER *padapter, unsigned char rate)
 	return _FALSE;
 }
 
-unsigned int ratetbl2rateset(struct _ADAPTER *padapter, unsigned char *rateset);
-unsigned int ratetbl2rateset(struct _ADAPTER *padapter, unsigned char *rateset)
+unsigned int ratetbl2rateset(struct rtl_priv *padapter, unsigned char *rateset);
+unsigned int ratetbl2rateset(struct rtl_priv *padapter, unsigned char *rateset)
 {
 	int i;
 	unsigned char rate;
@@ -354,7 +354,7 @@ unsigned int ratetbl2rateset(struct _ADAPTER *padapter, unsigned char *rateset)
 	return len;
 }
 
-void get_rate_set(struct _ADAPTER *padapter, unsigned char *pbssrate, int *bssrate_len)
+void get_rate_set(struct rtl_priv *padapter, unsigned char *pbssrate, int *bssrate_len)
 {
 	unsigned char supportedrates[NumRates];
 
@@ -364,7 +364,7 @@ void get_rate_set(struct _ADAPTER *padapter, unsigned char *pbssrate, int *bssra
 }
 
 void UpdateBrateTbl(
-	IN struct _ADAPTER *	Adapter,
+	IN struct rtl_priv *	Adapter,
 	IN uint8_t			*mBratesOS
 )
 {
@@ -412,7 +412,7 @@ void UpdateBrateTblForSoftAP(uint8_t *bssrateset, uint32_t	 bssratelen)
 
 }
 
-void Save_DM_Func_Flag(struct _ADAPTER *padapter)
+void Save_DM_Func_Flag(struct rtl_priv *padapter)
 {
 	uint8_t	bSaveFlag = _TRUE;
 
@@ -421,13 +421,13 @@ void Save_DM_Func_Flag(struct _ADAPTER *padapter)
 
 }
 
-void Restore_DM_Func_Flag(struct _ADAPTER *padapter)
+void Restore_DM_Func_Flag(struct rtl_priv *padapter)
 {
 	uint8_t	bSaveFlag = _FALSE;
 	rtw_hal_set_hwreg(padapter, HW_VAR_DM_FUNC_OP, (uint8_t *)(&bSaveFlag));
 }
 
-void Switch_DM_Func(struct _ADAPTER *padapter, uint32_t	 mode, uint8_t enable)
+void Switch_DM_Func(struct rtl_priv *padapter, uint32_t	 mode, uint8_t enable)
 {
 
 	if(enable == _TRUE)
@@ -440,49 +440,49 @@ void Switch_DM_Func(struct _ADAPTER *padapter, uint32_t	 mode, uint8_t enable)
 	}
 }
 
-static void Set_NETYPE1_MSR(struct _ADAPTER *padapter, uint8_t type)
+static void Set_NETYPE1_MSR(struct rtl_priv *padapter, uint8_t type)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_MEDIA_STATUS1, (uint8_t *)(&type));
 }
 
-static void Set_NETYPE0_MSR(struct _ADAPTER *padapter, uint8_t type)
+static void Set_NETYPE0_MSR(struct rtl_priv *padapter, uint8_t type)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_MEDIA_STATUS, (uint8_t *)(&type));
 }
 
-void Set_MSR(struct _ADAPTER *padapter, uint8_t type)
+void Set_MSR(struct rtl_priv *padapter, uint8_t type)
 {
 	{
 		Set_NETYPE0_MSR(padapter, type);
 	}
 }
 
-inline uint8_t rtw_get_oper_ch(struct _ADAPTER *adapter)
+inline uint8_t rtw_get_oper_ch(struct rtl_priv *adapter)
 {
 	return adapter_to_dvobj(adapter)->oper_channel;
 }
 
-inline void rtw_set_oper_ch(struct _ADAPTER *adapter, uint8_t ch)
+inline void rtw_set_oper_ch(struct rtl_priv *adapter, uint8_t ch)
 {
 	adapter_to_dvobj(adapter)->oper_channel = ch;
 }
 
-inline uint8_t rtw_get_oper_bw(struct _ADAPTER *adapter)
+inline uint8_t rtw_get_oper_bw(struct rtl_priv *adapter)
 {
 	return adapter_to_dvobj(adapter)->oper_bwmode;
 }
 
-inline void rtw_set_oper_bw(struct _ADAPTER *adapter, uint8_t bw)
+inline void rtw_set_oper_bw(struct rtl_priv *adapter, uint8_t bw)
 {
 	adapter_to_dvobj(adapter)->oper_bwmode = bw;
 }
 
-inline uint8_t rtw_get_oper_choffset(struct _ADAPTER *adapter)
+inline uint8_t rtw_get_oper_choffset(struct rtl_priv *adapter)
 {
 	return adapter_to_dvobj(adapter)->oper_ch_offset;
 }
 
-inline void rtw_set_oper_choffset(struct _ADAPTER *adapter, uint8_t offset)
+inline void rtw_set_oper_choffset(struct rtl_priv *adapter, uint8_t offset)
 {
 	adapter_to_dvobj(adapter)->oper_ch_offset = offset;
 }
@@ -519,7 +519,7 @@ uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset)
 	return center_ch;
 }
 
-void SelectChannel(struct _ADAPTER *padapter, unsigned char channel)
+void SelectChannel(struct rtl_priv *padapter, unsigned char channel)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
@@ -533,7 +533,7 @@ void SelectChannel(struct _ADAPTER *padapter, unsigned char channel)
 	mutex_unlock(&(adapter_to_dvobj(padapter)->setch_mutex));
 }
 
-void SetBWMode(struct _ADAPTER *padapter, unsigned short bwmode, unsigned char channel_offset)
+void SetBWMode(struct rtl_priv *padapter, unsigned short bwmode, unsigned char channel_offset)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
@@ -548,7 +548,7 @@ void SetBWMode(struct _ADAPTER *padapter, unsigned short bwmode, unsigned char c
 	mutex_unlock(&(adapter_to_dvobj(padapter)->setbw_mutex));
 }
 
-void set_channel_bwmode(struct _ADAPTER *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode)
+void set_channel_bwmode(struct rtl_priv *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode)
 {
 	uint8_t center_ch, chnl_offset80 = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
@@ -614,7 +614,7 @@ uint16_t get_beacon_interval(WLAN_BSSID_EX *bss)
 
 }
 
-int is_client_associated_to_ap(struct _ADAPTER *padapter)
+int is_client_associated_to_ap(struct rtl_priv *padapter)
 {
 	struct mlme_ext_priv	*pmlmeext;
 	struct mlme_ext_info	*pmlmeinfo;
@@ -635,7 +635,7 @@ int is_client_associated_to_ap(struct _ADAPTER *padapter)
 	}
 }
 
-int is_client_associated_to_ibss(struct _ADAPTER *padapter)
+int is_client_associated_to_ibss(struct rtl_priv *padapter)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -650,7 +650,7 @@ int is_client_associated_to_ibss(struct _ADAPTER *padapter)
 	}
 }
 
-int is_IBSS_empty(struct _ADAPTER *padapter)
+int is_IBSS_empty(struct rtl_priv *padapter)
 {
 	unsigned int i;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -685,19 +685,19 @@ unsigned int decide_wait_for_beacon_timeout(unsigned int bcn_interval)
 }
 
 void CAM_empty_entry(
-	struct _ADAPTER *    	Adapter,
+	struct rtl_priv *    	Adapter,
 	uint8_t 			ucIndex
 )
 {
 	rtw_hal_set_hwreg(Adapter, HW_VAR_CAM_EMPTY_ENTRY, (uint8_t *)(&ucIndex));
 }
 
-void invalidate_cam_all(struct _ADAPTER *padapter)
+void invalidate_cam_all(struct rtl_priv *padapter)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_CAM_INVALID_ALL, 0);
 }
 
-void write_cam(struct _ADAPTER *padapter, uint8_t entry, uint16_t ctrl, uint8_t *mac, uint8_t *key)
+void write_cam(struct rtl_priv *padapter, uint8_t entry, uint16_t ctrl, uint8_t *mac, uint8_t *key)
 {
 	unsigned int	i, val, addr;
 	//unsigned int    cmd;
@@ -741,7 +741,7 @@ void write_cam(struct _ADAPTER *padapter, uint8_t entry, uint16_t ctrl, uint8_t 
 
 }
 
-void clear_cam_entry(struct _ADAPTER *padapter, uint8_t entry)
+void clear_cam_entry(struct rtl_priv *padapter, uint8_t entry)
 {
 
 	unsigned char null_sta[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -751,7 +751,7 @@ void clear_cam_entry(struct _ADAPTER *padapter, uint8_t entry)
 	write_cam(padapter, entry, 0, null_sta, null_key);
 }
 
-int allocate_fw_sta_entry(struct _ADAPTER *padapter)
+int allocate_fw_sta_entry(struct rtl_priv *padapter)
 {
 	unsigned int mac_id;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -770,7 +770,7 @@ int allocate_fw_sta_entry(struct _ADAPTER *padapter)
 	return mac_id;
 }
 
-void flush_all_cam_entry(struct _ADAPTER *padapter)
+void flush_all_cam_entry(struct rtl_priv *padapter)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -783,7 +783,7 @@ void flush_all_cam_entry(struct _ADAPTER *padapter)
 
 }
 
-int WMM_param_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
+int WMM_param_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
 {
 	//struct registry_priv	*pregpriv = &padapter->registrypriv;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
@@ -822,7 +822,7 @@ int WMM_param_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs	pIE)
 
 }
 
-void WMMOnAssocRsp(struct _ADAPTER *padapter)
+void WMMOnAssocRsp(struct rtl_priv *padapter)
 {
 	uint8_t	ACI, ACM, AIFS, ECWMin, ECWMax, aSifsTime;
 	uint8_t	acm_mask;
@@ -965,7 +965,7 @@ void WMMOnAssocRsp(struct _ADAPTER *padapter)
 	}
 }
 
-static void bwmode_update_check(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
+static void bwmode_update_check(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 {
 #ifdef CONFIG_80211N_HT
 	unsigned char	 new_bwmode;
@@ -1075,7 +1075,7 @@ static void bwmode_update_check(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE
 #endif //CONFIG_80211N_HT
 }
 
-void HT_caps_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
+void HT_caps_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 {
 #ifdef CONFIG_80211N_HT
 	unsigned int	i;
@@ -1157,7 +1157,7 @@ void HT_caps_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	return;
 }
 
-void HT_info_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
+void HT_info_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 {
 #ifdef CONFIG_80211N_HT
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -1179,7 +1179,7 @@ void HT_info_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	return;
 }
 
-void HTOnAssocRsp(struct _ADAPTER *padapter)
+void HTOnAssocRsp(struct rtl_priv *padapter)
 {
 	unsigned char		max_AMPDU_len;
 	unsigned char		min_MPDU_spacing;
@@ -1216,7 +1216,7 @@ void HTOnAssocRsp(struct _ADAPTER *padapter)
 	//set_channel_bwmode(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
 }
 
-void ERP_IE_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
+void ERP_IE_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -1228,7 +1228,7 @@ void ERP_IE_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE)
 	memcpy(&(pmlmeinfo->ERP_IE), pIE->data, pIE->Length);
 }
 
-void VCS_update(struct _ADAPTER *padapter, struct sta_info *psta)
+void VCS_update(struct rtl_priv *padapter, struct sta_info *psta)
 {
 	struct registry_priv	 *pregpriv = &padapter->registrypriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -1279,7 +1279,7 @@ void VCS_update(struct _ADAPTER *padapter, struct sta_info *psta)
 }
 
 
-int rtw_check_bcn_info(struct _ADAPTER *Adapter, uint8_t *pframe, uint32_t	 packet_len)
+int rtw_check_bcn_info(struct rtl_priv *Adapter, uint8_t *pframe, uint32_t	 packet_len)
 {
 	unsigned int		len;
 	unsigned char		*p;
@@ -1488,7 +1488,7 @@ _mismatch:
 	_func_exit_;
 }
 
-void update_beacon_info(struct _ADAPTER *padapter, uint8_t *pframe, uint pkt_len, struct sta_info *psta)
+void update_beacon_info(struct rtl_priv *padapter, uint8_t *pframe, uint pkt_len, struct sta_info *psta)
 {
 	unsigned int i;
 	unsigned int len;
@@ -1522,7 +1522,7 @@ void update_beacon_info(struct _ADAPTER *padapter, uint8_t *pframe, uint pkt_len
 }
 
 #ifdef CONFIG_DFS
-void process_csa_ie(struct _ADAPTER *padapter, uint8_t *pframe, uint pkt_len)
+void process_csa_ie(struct rtl_priv *padapter, uint8_t *pframe, uint pkt_len)
 {
 	unsigned int i;
 	unsigned int len;
@@ -1551,7 +1551,7 @@ void process_csa_ie(struct _ADAPTER *padapter, uint8_t *pframe, uint pkt_len)
 }
 #endif //CONFIG_DFS
 
-unsigned int is_ap_in_tkip(struct _ADAPTER *padapter)
+unsigned int is_ap_in_tkip(struct rtl_priv *padapter)
 {
 	uint32_t	 i;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
@@ -1596,7 +1596,7 @@ unsigned int is_ap_in_tkip(struct _ADAPTER *padapter)
 
 }
 
-unsigned int should_forbid_n_rate(struct _ADAPTER * padapter)
+unsigned int should_forbid_n_rate(struct rtl_priv * padapter)
 {
 	uint32_t	 i;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
@@ -1640,7 +1640,7 @@ unsigned int should_forbid_n_rate(struct _ADAPTER * padapter)
 }
 
 
-unsigned int is_ap_in_wep(struct _ADAPTER *padapter)
+unsigned int is_ap_in_wep(struct rtl_priv *padapter)
 {
 	uint32_t	 i;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
@@ -1780,7 +1780,7 @@ unsigned int update_MCS_rate(struct HT_caps_element *pHT_caps)
 	return mask;
 }
 
-int support_short_GI(struct _ADAPTER *padapter, struct HT_caps_element *pHT_caps)
+int support_short_GI(struct rtl_priv *padapter, struct HT_caps_element *pHT_caps)
 {
 	unsigned char					bit_offset;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -1839,25 +1839,25 @@ unsigned char get_highest_mcs_rate(struct HT_caps_element *pHT_caps)
 	return i;
 }
 
-void Update_RA_Entry(struct _ADAPTER *padapter, struct sta_info *psta)
+void Update_RA_Entry(struct rtl_priv *padapter, struct sta_info *psta)
 {
 	rtw_hal_update_ra_mask(psta, 0);
 }
 
-void enable_rate_adaptive(struct _ADAPTER *padapter, struct sta_info *psta);
-void enable_rate_adaptive(struct _ADAPTER *padapter, struct sta_info *psta)
+void enable_rate_adaptive(struct rtl_priv *padapter, struct sta_info *psta);
+void enable_rate_adaptive(struct rtl_priv *padapter, struct sta_info *psta)
 {
 	Update_RA_Entry(padapter, psta);
 }
 
-void set_sta_rate(struct _ADAPTER *padapter, struct sta_info *psta)
+void set_sta_rate(struct rtl_priv *padapter, struct sta_info *psta)
 {
 	//rate adaptive
 	enable_rate_adaptive(padapter, psta);
 }
 
 // Update RRSR and Rate for USERATE
-void update_tx_basic_rate(struct _ADAPTER *padapter, uint8_t wirelessmode)
+void update_tx_basic_rate(struct rtl_priv *padapter, uint8_t wirelessmode)
 {
 	NDIS_802_11_RATES_EX	supported_rates;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -1980,7 +1980,7 @@ unsigned char check_assoc_AP(uint8_t *pframe, uint len)
 	return HT_IOT_PEER_UNKNOWN;
 }
 
-void update_IOT_info(struct _ADAPTER *padapter)
+void update_IOT_info(struct rtl_priv *padapter)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2012,7 +2012,7 @@ void update_IOT_info(struct _ADAPTER *padapter)
 
 }
 
-void update_capinfo(struct _ADAPTER *Adapter, uint16_t updateCap)
+void update_capinfo(struct rtl_priv *Adapter, uint16_t updateCap)
 {
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2076,7 +2076,7 @@ void update_capinfo(struct _ADAPTER *Adapter, uint16_t updateCap)
 
 }
 
-void update_wireless_mode(struct _ADAPTER *padapter)
+void update_wireless_mode(struct rtl_priv *padapter)
 {
 	int ratelen, network_type = 0;
 	uint32_t	 SIFS_Timer;
@@ -2144,12 +2144,12 @@ void update_wireless_mode(struct _ADAPTER *padapter)
 		update_mgnt_tx_rate(padapter, IEEE80211_OFDM_RATE_6MB);
 }
 
-void fire_write_MAC_cmd(struct _ADAPTER *padapter, unsigned int addr, unsigned int value);
-void fire_write_MAC_cmd(struct _ADAPTER *padapter, unsigned int addr, unsigned int value)
+void fire_write_MAC_cmd(struct rtl_priv *padapter, unsigned int addr, unsigned int value);
+void fire_write_MAC_cmd(struct rtl_priv *padapter, unsigned int addr, unsigned int value)
 {
 }
 
-void update_bmc_sta_support_rate(struct _ADAPTER *padapter, uint32_t	 mac_id)
+void update_bmc_sta_support_rate(struct rtl_priv *padapter, uint32_t	 mac_id)
 {
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2165,7 +2165,7 @@ void update_bmc_sta_support_rate(struct _ADAPTER *padapter, uint32_t	 mac_id)
 	}
 }
 
-int update_sta_support_rate(struct _ADAPTER *padapter, uint8_t * pvar_ie, uint var_ie_len, int cam_idx)
+int update_sta_support_rate(struct rtl_priv *padapter, uint8_t * pvar_ie, uint var_ie_len, int cam_idx)
 {
 	unsigned int	ie_len;
 	PNDIS_802_11_VARIABLE_IEs	pIE;
@@ -2192,7 +2192,7 @@ int update_sta_support_rate(struct _ADAPTER *padapter, uint8_t * pvar_ie, uint v
 
 }
 
-void process_addba_req(struct _ADAPTER *padapter, uint8_t *paddba_req, uint8_t *addr)
+void process_addba_req(struct rtl_priv *padapter, uint8_t *paddba_req, uint8_t *addr)
 {
 	struct sta_info *psta;
 	uint16_t tid, start_seq, param;
@@ -2239,12 +2239,12 @@ void update_TSF(struct mlme_ext_priv *pmlmeext, uint8_t *pframe, uint len)
 	pmlmeext->TSFValue |= le32_to_cpu(*pbuf);
 }
 
-void correct_TSF(struct _ADAPTER *padapter, struct mlme_ext_priv *pmlmeext)
+void correct_TSF(struct rtl_priv *padapter, struct mlme_ext_priv *pmlmeext)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_CORRECT_TSF, 0);
 }
 
-void beacon_timing_control(struct _ADAPTER *padapter)
+void beacon_timing_control(struct rtl_priv *padapter)
 {
 	rtw_hal_bcn_related_reg_setting(padapter);
 }
@@ -2268,7 +2268,7 @@ uint rtw_get_camid(uint macid)
 	return camid;
 }
 
-void rtw_alloc_macid(struct _ADAPTER *padapter, struct sta_info *psta)
+void rtw_alloc_macid(struct rtl_priv *padapter, struct sta_info *psta)
 {
 	int i;
 	_irqL	irqL;
@@ -2309,7 +2309,7 @@ void rtw_alloc_macid(struct _ADAPTER *padapter, struct sta_info *psta)
 
 }
 
-void rtw_release_macid(struct _ADAPTER *padapter, struct sta_info *psta)
+void rtw_release_macid(struct rtl_priv *padapter, struct sta_info *psta)
 {
 	int i;
 	_irqL	irqL;

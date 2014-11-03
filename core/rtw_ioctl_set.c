@@ -22,7 +22,7 @@
 #include <drv_types.h>
 
 
-extern void indicate_wx_scan_complete_event(struct _ADAPTER *padapter);
+extern void indicate_wx_scan_complete_event(struct rtl_priv *padapter);
 
 #define IS_MAC_ADDRESS_BROADCAST(addr) \
 ( \
@@ -61,8 +61,8 @@ _func_exit_;
 	return ret;
 }
 
-uint8_t rtw_do_join(struct _ADAPTER * padapter);
-uint8_t rtw_do_join(struct _ADAPTER * padapter)
+uint8_t rtw_do_join(struct rtl_priv * padapter);
+uint8_t rtw_do_join(struct rtl_priv * padapter)
 {
 	_irqL	irqL;
 	struct list_head	*plist, *phead;
@@ -202,7 +202,7 @@ _func_exit_;
 }
 
 
-uint8_t rtw_set_802_11_bssid(struct _ADAPTER* padapter, uint8_t *bssid)
+uint8_t rtw_set_802_11_bssid(struct rtl_priv* padapter, uint8_t *bssid)
 {
 	_irqL irqL;
 	uint8_t status=_SUCCESS;
@@ -284,7 +284,7 @@ _func_exit_;
 	return status;
 }
 
-uint8_t rtw_set_802_11_ssid(struct _ADAPTER* padapter, NDIS_802_11_SSID *ssid)
+uint8_t rtw_set_802_11_ssid(struct rtl_priv* padapter, NDIS_802_11_SSID *ssid)
 {
 	_irqL irqL;
 	uint8_t status = _SUCCESS;
@@ -409,7 +409,7 @@ _func_exit_;
 
 }
 
-uint8_t rtw_set_802_11_infrastructure_mode(struct _ADAPTER* padapter,
+uint8_t rtw_set_802_11_infrastructure_mode(struct rtl_priv* padapter,
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networktype)
 {
 	_irqL irqL;
@@ -493,7 +493,7 @@ _func_exit_;
 }
 
 
-uint8_t rtw_set_802_11_disassociate(struct _ADAPTER *padapter)
+uint8_t rtw_set_802_11_disassociate(struct rtl_priv *padapter)
 {
 	_irqL irqL;
 	struct mlme_priv * pmlmepriv = &padapter->mlmepriv;
@@ -519,7 +519,7 @@ _func_exit_;
 	return _TRUE;
 }
 
-uint8_t rtw_set_802_11_bssid_list_scan(struct _ADAPTER* padapter, NDIS_802_11_SSID *pssid, int ssid_max_num)
+uint8_t rtw_set_802_11_bssid_list_scan(struct rtl_priv* padapter, NDIS_802_11_SSID *pssid, int ssid_max_num)
 {
 	_irqL	irqL;
 	struct	mlme_priv		*pmlmepriv= &padapter->mlmepriv;
@@ -565,7 +565,7 @@ _func_exit_;
 	return res;
 }
 
-uint8_t rtw_set_802_11_authentication_mode(struct _ADAPTER* padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
+uint8_t rtw_set_802_11_authentication_mode(struct rtl_priv* padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
 {
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	int res;
@@ -594,7 +594,7 @@ _func_exit_;
 	return ret;
 }
 
-uint8_t rtw_set_802_11_add_wep(struct _ADAPTER* padapter, NDIS_802_11_WEP *wep){
+uint8_t rtw_set_802_11_add_wep(struct rtl_priv* padapter, NDIS_802_11_WEP *wep){
 
 	uint8_t		bdefaultkey;
 	uint8_t		btransmitkey;
@@ -658,7 +658,7 @@ _func_exit_;
 
 }
 
-uint8_t rtw_set_802_11_remove_wep(struct _ADAPTER* padapter, uint32_t	 keyindex){
+uint8_t rtw_set_802_11_remove_wep(struct rtl_priv* padapter, uint32_t	 keyindex){
 
 	uint8_t ret=_SUCCESS;
 
@@ -701,7 +701,7 @@ _func_exit_;
 
 }
 
-uint8_t rtw_set_802_11_add_key(struct _ADAPTER* padapter, NDIS_802_11_KEY *key){
+uint8_t rtw_set_802_11_add_key(struct rtl_priv* padapter, NDIS_802_11_KEY *key){
 
 	uint	encryptionalgo;
 	uint8_t * pbssid;
@@ -1066,7 +1066,7 @@ _func_exit_;
 	return ret;
 }
 
-uint8_t rtw_set_802_11_remove_key(struct _ADAPTER*	padapter, NDIS_802_11_REMOVE_KEY *key){
+uint8_t rtw_set_802_11_remove_key(struct rtl_priv*	padapter, NDIS_802_11_REMOVE_KEY *key){
 
 	uint				encryptionalgo;
 	uint8_t * pbssid;
@@ -1121,11 +1121,11 @@ _func_exit_;
 
 /*
 * rtw_get_cur_max_rate -
-* @adapter: pointer to struct _ADAPTER structure
+* @adapter: pointer to struct rtl_priv structure
 *
 * Return 0 or 100Kbps
 */
-uint16_t rtw_get_cur_max_rate(struct _ADAPTER *adapter)
+uint16_t rtw_get_cur_max_rate(struct rtl_priv *adapter)
 {
 	int	i = 0;
 	uint8_t	*p;
@@ -1210,12 +1210,12 @@ uint16_t rtw_get_cur_max_rate(struct _ADAPTER *adapter)
 
 /*
 * rtw_set_scan_mode -
-* @adapter: pointer to struct _ADAPTER structure
+* @adapter: pointer to struct rtl_priv structure
 * @scan_mode:
 *
 * Return _SUCCESS or _FAIL
 */
-int rtw_set_scan_mode(struct _ADAPTER *adapter, RT_SCAN_TYPE scan_mode)
+int rtw_set_scan_mode(struct rtl_priv *adapter, RT_SCAN_TYPE scan_mode)
 {
 	if(scan_mode != SCAN_ACTIVE && scan_mode != SCAN_PASSIVE)
 		return _FAIL;
@@ -1227,12 +1227,12 @@ int rtw_set_scan_mode(struct _ADAPTER *adapter, RT_SCAN_TYPE scan_mode)
 
 /*
 * rtw_set_channel_plan -
-* @adapter: pointer to struct _ADAPTER structure
+* @adapter: pointer to struct rtl_priv structure
 * @channel_plan:
 *
 * Return _SUCCESS or _FAIL
 */
-int rtw_set_channel_plan(struct _ADAPTER *adapter, uint8_t channel_plan)
+int rtw_set_channel_plan(struct rtl_priv *adapter, uint8_t channel_plan)
 {
 	struct registry_priv *pregistrypriv = &adapter->registrypriv;
 	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;
@@ -1243,12 +1243,12 @@ int rtw_set_channel_plan(struct _ADAPTER *adapter, uint8_t channel_plan)
 
 /*
 * rtw_set_country -
-* @adapter: pointer to struct _ADAPTER structure
+* @adapter: pointer to struct rtl_priv structure
 * @country_code: string of country code
 *
 * Return _SUCCESS or _FAIL
 */
-int rtw_set_country(struct _ADAPTER *adapter, const char *country_code)
+int rtw_set_country(struct rtl_priv *adapter, const char *country_code)
 {
 	int channel_plan = RT_CHANNEL_DOMAIN_WORLD_WIDE_5G;
 

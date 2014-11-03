@@ -43,7 +43,7 @@ void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv)
 
 }
 
-sint _rtw_init_recv_priv(struct recv_priv *precvpriv, struct _ADAPTER *padapter)
+sint _rtw_init_recv_priv(struct recv_priv *precvpriv, struct rtl_priv *padapter)
 {
 	sint i;
 
@@ -130,7 +130,7 @@ _func_exit_;
 
 void _rtw_free_recv_priv (struct recv_priv *precvpriv)
 {
-	struct _ADAPTER	*padapter = precvpriv->adapter;
+	struct rtl_priv	*padapter = precvpriv->adapter;
 
 	rtw_free_uc_swdec_pending_queue(padapter);
 
@@ -148,7 +148,7 @@ union recv_frame *_rtw_alloc_recvframe (_queue *pfree_recv_queue)
 
 	union recv_frame  *precvframe;
 	struct list_head	*plist, *phead;
-	struct _ADAPTER *padapter;
+	struct rtl_priv *padapter;
 	struct recv_priv *precvpriv;
 
 	if (_rtw_queue_empty(pfree_recv_queue) == _TRUE) {
@@ -197,7 +197,7 @@ void rtw_init_recvframe(union recv_frame *precvframe, struct recv_priv *precvpri
 int rtw_free_recvframe(union recv_frame *precvframe, _queue *pfree_recv_queue)
 {
 	_irqL irqL;
-	struct _ADAPTER *padapter=precvframe->u.hdr.adapter;
+	struct rtl_priv *padapter=precvframe->u.hdr.adapter;
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 
 _func_enter_;
@@ -228,7 +228,7 @@ _func_enter_;
 sint _rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue)
 {
 
-	struct _ADAPTER *padapter=precvframe->u.hdr.adapter;
+	struct rtl_priv *padapter=precvframe->u.hdr.adapter;
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 
 	/*INIT_LIST_HEAD(&(precvframe->u.hdr.list)); */
@@ -305,7 +305,7 @@ void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue)
 
 }
 
-uint32_t rtw_free_uc_swdec_pending_queue(struct _ADAPTER *adapter)
+uint32_t rtw_free_uc_swdec_pending_queue(struct rtl_priv *adapter)
 {
 	uint32_t cnt = 0;
 	union recv_frame *pending_frame;
@@ -374,8 +374,8 @@ struct recv_buf *rtw_dequeue_recvbuf (_queue *queue)
 
 }
 
-sint recvframe_chkmic(struct _ADAPTER *adapter,  union recv_frame *precvframe);
-sint recvframe_chkmic(struct _ADAPTER *adapter,  union recv_frame *precvframe){
+sint recvframe_chkmic(struct rtl_priv *adapter,  union recv_frame *precvframe);
+sint recvframe_chkmic(struct rtl_priv *adapter,  union recv_frame *precvframe){
 
 	sint	i,res=_SUCCESS;
 	uint32_t	datalen;
@@ -515,8 +515,8 @@ exit:
 }
 
 //decrypt and set the ivlen,icvlen of the recv_frame
-union recv_frame * decryptor(struct _ADAPTER *padapter,union recv_frame *precv_frame);
-union recv_frame * decryptor(struct _ADAPTER *padapter,union recv_frame *precv_frame)
+union recv_frame * decryptor(struct rtl_priv *padapter,union recv_frame *precv_frame);
+union recv_frame * decryptor(struct rtl_priv *padapter,union recv_frame *precv_frame)
 {
 
 	struct rx_pkt_attrib *prxattrib = &precv_frame->u.hdr.attrib;
@@ -601,8 +601,8 @@ union recv_frame * decryptor(struct _ADAPTER *padapter,union recv_frame *precv_f
 
 }
 //###set the security information in the recv_frame
-union recv_frame *portctrl(struct _ADAPTER *adapter,union recv_frame * precv_frame);
-union recv_frame * portctrl(struct _ADAPTER *adapter,union recv_frame * precv_frame)
+union recv_frame *portctrl(struct rtl_priv *adapter,union recv_frame * precv_frame);
+union recv_frame * portctrl(struct rtl_priv *adapter,union recv_frame * precv_frame)
 {
 	uint8_t   *psta_addr, *ptr;
 	uint  auth_alg;
@@ -711,8 +711,8 @@ sint recv_decache(union recv_frame *precv_frame, uint8_t bretry, struct stainfo_
 
 }
 
-void process_pwrbit_data(struct _ADAPTER *padapter, union recv_frame *precv_frame);
-void process_pwrbit_data(struct _ADAPTER *padapter, union recv_frame *precv_frame)
+void process_pwrbit_data(struct rtl_priv *padapter, union recv_frame *precv_frame);
+void process_pwrbit_data(struct rtl_priv *padapter, union recv_frame *precv_frame)
 {
 #ifdef CONFIG_AP_MODE
 	unsigned char pwrbit;
@@ -758,8 +758,8 @@ void process_pwrbit_data(struct _ADAPTER *padapter, union recv_frame *precv_fram
 #endif
 }
 
-void process_wmmps_data(struct _ADAPTER *padapter, union recv_frame *precv_frame);
-void process_wmmps_data(struct _ADAPTER *padapter, union recv_frame *precv_frame)
+void process_wmmps_data(struct rtl_priv *padapter, union recv_frame *precv_frame);
+void process_wmmps_data(struct rtl_priv *padapter, union recv_frame *precv_frame)
 {
 #ifdef CONFIG_AP_MODE
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
@@ -820,8 +820,8 @@ void process_wmmps_data(struct _ADAPTER *padapter, union recv_frame *precv_frame
 }
 
 
-void count_rx_stats(struct _ADAPTER *padapter, union recv_frame *prframe, struct sta_info*sta);
-void count_rx_stats(struct _ADAPTER *padapter, union recv_frame *prframe, struct sta_info*sta)
+void count_rx_stats(struct rtl_priv *padapter, union recv_frame *prframe, struct sta_info*sta);
+void count_rx_stats(struct rtl_priv *padapter, union recv_frame *prframe, struct sta_info*sta)
 {
 	int	sz;
 	struct sta_info		*psta = NULL;
@@ -853,13 +853,13 @@ void count_rx_stats(struct _ADAPTER *padapter, union recv_frame *prframe, struct
 }
 
 sint sta2sta_data_frame(
-	struct _ADAPTER *adapter,
+	struct rtl_priv *adapter,
 	union recv_frame *precv_frame,
 	struct sta_info**psta
 );
 
 sint sta2sta_data_frame(
-	struct _ADAPTER *adapter,
+	struct rtl_priv *adapter,
 	union recv_frame *precv_frame,
 	struct sta_info**psta)
 {
@@ -966,11 +966,11 @@ _func_exit_;
 }
 
 sint ap2sta_data_frame(
-	struct _ADAPTER *adapter,
+	struct rtl_priv *adapter,
 	union recv_frame *precv_frame,
 	struct sta_info**psta );
 sint ap2sta_data_frame(
-	struct _ADAPTER *adapter,
+	struct rtl_priv *adapter,
 	union recv_frame *precv_frame,
 	struct sta_info**psta )
 {
@@ -1094,11 +1094,11 @@ _func_exit_;
 }
 
 sint sta2ap_data_frame(
-	struct _ADAPTER *adapter,
+	struct rtl_priv *adapter,
 	union recv_frame *precv_frame,
 	struct sta_info**psta );
 sint sta2ap_data_frame(
-	struct _ADAPTER *adapter,
+	struct rtl_priv *adapter,
 	union recv_frame *precv_frame,
 	struct sta_info**psta )
 {
@@ -1165,8 +1165,8 @@ _func_exit_;
 
 }
 
-sint validate_recv_ctrl_frame(struct _ADAPTER *padapter, union recv_frame *precv_frame);
-sint validate_recv_ctrl_frame(struct _ADAPTER *padapter, union recv_frame *precv_frame)
+sint validate_recv_ctrl_frame(struct rtl_priv *padapter, union recv_frame *precv_frame);
+sint validate_recv_ctrl_frame(struct rtl_priv *padapter, union recv_frame *precv_frame)
 {
 #ifdef CONFIG_AP_MODE
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
@@ -1318,9 +1318,9 @@ sint validate_recv_ctrl_frame(struct _ADAPTER *padapter, union recv_frame *precv
 
 }
 
-union recv_frame* recvframe_chk_defrag(struct _ADAPTER *padapter, union recv_frame *precv_frame);
-sint validate_recv_mgnt_frame(struct _ADAPTER *padapter, union recv_frame *precv_frame);
-sint validate_recv_mgnt_frame(struct _ADAPTER *padapter, union recv_frame *precv_frame)
+union recv_frame* recvframe_chk_defrag(struct rtl_priv *padapter, union recv_frame *precv_frame);
+sint validate_recv_mgnt_frame(struct rtl_priv *padapter, union recv_frame *precv_frame);
+sint validate_recv_mgnt_frame(struct rtl_priv *padapter, union recv_frame *precv_frame)
 {
 	/* struct mlme_priv *pmlmepriv = &adapter->mlmepriv; */
 
@@ -1359,8 +1359,8 @@ sint validate_recv_mgnt_frame(struct _ADAPTER *padapter, union recv_frame *precv
 
 }
 
-sint validate_recv_data_frame(struct _ADAPTER *adapter, union recv_frame *precv_frame);
-sint validate_recv_data_frame(struct _ADAPTER *adapter, union recv_frame *precv_frame)
+sint validate_recv_data_frame(struct rtl_priv *adapter, union recv_frame *precv_frame);
+sint validate_recv_data_frame(struct rtl_priv *adapter, union recv_frame *precv_frame)
 {
 	uint8_t bretry;
 	uint8_t *psa, *pda, *pbssid;
@@ -1491,8 +1491,8 @@ exit:
 	return ret;
 }
 
-sint validate_recv_frame(struct _ADAPTER *adapter, union recv_frame *precv_frame);
-sint validate_recv_frame(struct _ADAPTER *adapter, union recv_frame *precv_frame)
+sint validate_recv_frame(struct rtl_priv *adapter, union recv_frame *precv_frame);
+sint validate_recv_frame(struct rtl_priv *adapter, union recv_frame *precv_frame)
 {
 	/* shall check frame subtype, to / from ds, da, bssid */
 
@@ -1620,7 +1620,7 @@ sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 	struct ieee80211_snap_hdr *psnap;
 
 	sint ret=_SUCCESS;
-	struct _ADAPTER *adapter =precvframe->u.hdr.adapter;
+	struct rtl_priv *adapter =precvframe->u.hdr.adapter;
 	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;
 
 	uint8_t	*ptr = get_recvframe_data(precvframe) ; /*  point to frame_ctrl field */
@@ -1696,7 +1696,7 @@ sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 	struct ieee80211_snap_hdr	*psnap;
 
 	sint ret=_SUCCESS;
-	struct _ADAPTER	*adapter =precvframe->u.hdr.adapter;
+	struct rtl_priv	*adapter =precvframe->u.hdr.adapter;
 	struct	mlme_priv	*pmlmepriv = &adapter->mlmepriv;
 
 	uint8_t * ptr = get_recvframe_data(precvframe) ; /* point to frame_ctrl field */
@@ -1799,8 +1799,8 @@ exit:
 
 /* perform defrag */
 
-union recv_frame *recvframe_defrag(struct _ADAPTER *adapter,_queue *defrag_q);
-union recv_frame *recvframe_defrag(struct _ADAPTER *adapter,_queue *defrag_q)
+union recv_frame *recvframe_defrag(struct rtl_priv *adapter,_queue *defrag_q);
+union recv_frame *recvframe_defrag(struct rtl_priv *adapter,_queue *defrag_q)
 {
 	struct list_head	 *plist, *phead;
 	uint8_t	*data,wlanhdr_offset;
@@ -1890,7 +1890,7 @@ union recv_frame *recvframe_defrag(struct _ADAPTER *adapter,_queue *defrag_q)
 }
 
 /* check if need to defrag, if needed queue the frame to defrag_q */
-union recv_frame* recvframe_chk_defrag(struct _ADAPTER *padapter, union recv_frame *precv_frame)
+union recv_frame* recvframe_chk_defrag(struct rtl_priv *padapter, union recv_frame *precv_frame)
 {
 	uint8_t	ismfrag;
 	uint8_t	fragnum;
@@ -2003,7 +2003,7 @@ union recv_frame* recvframe_chk_defrag(struct _ADAPTER *padapter, union recv_fra
 	return prtnframe;
 }
 
-int amsdu_to_msdu(struct _ADAPTER *padapter, union recv_frame *prframe)
+int amsdu_to_msdu(struct rtl_priv *padapter, union recv_frame *prframe)
 {
 	int	a_len, padding_len;
 	uint16_t	nSubframe_Length;
@@ -2208,8 +2208,8 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, union rec
 
 }
 
-int recv_indicatepkts_in_order(struct _ADAPTER *padapter, struct recv_reorder_ctrl *preorder_ctrl, int bforced);
-int recv_indicatepkts_in_order(struct _ADAPTER *padapter, struct recv_reorder_ctrl *preorder_ctrl, int bforced)
+int recv_indicatepkts_in_order(struct rtl_priv *padapter, struct recv_reorder_ctrl *preorder_ctrl, int bforced);
+int recv_indicatepkts_in_order(struct rtl_priv *padapter, struct recv_reorder_ctrl *preorder_ctrl, int bforced)
 {
 	/* _irqL irql; */
 	/* uint8_t bcancelled; */
@@ -2341,8 +2341,8 @@ int recv_indicatepkts_in_order(struct _ADAPTER *padapter, struct recv_reorder_ct
 
 }
 
-int recv_indicatepkt_reorder(struct _ADAPTER *padapter, union recv_frame *prframe);
-int recv_indicatepkt_reorder(struct _ADAPTER *padapter, union recv_frame *prframe)
+int recv_indicatepkt_reorder(struct rtl_priv *padapter, union recv_frame *prframe);
+int recv_indicatepkt_reorder(struct rtl_priv *padapter, union recv_frame *prframe)
 {
 	_irqL irql;
 	int retval = _SUCCESS;
@@ -2481,7 +2481,7 @@ void rtw_reordering_ctrl_timeout_handler(void *pcontext)
 {
 	_irqL irql;
 	struct recv_reorder_ctrl *preorder_ctrl = (struct recv_reorder_ctrl *)pcontext;
-	struct _ADAPTER *padapter = preorder_ctrl->padapter;
+	struct rtl_priv *padapter = preorder_ctrl->padapter;
 	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
 
 
@@ -2503,8 +2503,8 @@ void rtw_reordering_ctrl_timeout_handler(void *pcontext)
 
 }
 
-int process_recv_indicatepkts(struct _ADAPTER *padapter, union recv_frame *prframe);
-int process_recv_indicatepkts(struct _ADAPTER *padapter, union recv_frame *prframe)
+int process_recv_indicatepkts(struct rtl_priv *padapter, union recv_frame *prframe);
+int process_recv_indicatepkts(struct rtl_priv *padapter, union recv_frame *prframe)
 {
 	int retval = _SUCCESS;
 	//struct recv_priv *precvpriv = &padapter->recvpriv;
@@ -2563,7 +2563,7 @@ int process_recv_indicatepkts(struct _ADAPTER *padapter, union recv_frame *prfra
 
 }
 
-int recv_func_prehandle(struct _ADAPTER *padapter, union recv_frame *rframe)
+int recv_func_prehandle(struct rtl_priv *padapter, union recv_frame *rframe)
 {
 	int ret = _SUCCESS;
 	struct rx_pkt_attrib *pattrib = &rframe->u.hdr.attrib;
@@ -2583,7 +2583,7 @@ exit:
 	return ret;
 }
 
-int recv_func_posthandle(struct _ADAPTER *padapter, union recv_frame *prframe)
+int recv_func_posthandle(struct rtl_priv *padapter, union recv_frame *prframe)
 {
 	int ret = _SUCCESS;
 	union recv_frame *orig_prframe = prframe;
@@ -2682,8 +2682,8 @@ _recv_data_drop:
 }
 
 
-int recv_func(struct _ADAPTER *padapter, union recv_frame *rframe);
-int recv_func(struct _ADAPTER *padapter, union recv_frame *rframe)
+int recv_func(struct rtl_priv *padapter, union recv_frame *rframe);
+int recv_func(struct rtl_priv *padapter, union recv_frame *rframe)
 {
 	int ret;
 	struct rx_pkt_attrib *prxattrib = &rframe->u.hdr.attrib;
@@ -2728,7 +2728,7 @@ exit:
 
 int32_t rtw_recv_entry(union recv_frame *precvframe)
 {
-	struct _ADAPTER *padapter;
+	struct rtl_priv *padapter;
 	struct recv_priv *precvpriv;
 	int32_t ret=_SUCCESS;
 
@@ -2765,7 +2765,7 @@ _func_exit_;
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS){
-	struct _ADAPTER *adapter = (struct _ADAPTER *)FunctionContext;
+	struct rtl_priv *adapter = (struct rtl_priv *)FunctionContext;
 	struct recv_priv *recvpriv = &adapter->recvpriv;
 
 	uint32_t	 tmp_s, tmp_q;

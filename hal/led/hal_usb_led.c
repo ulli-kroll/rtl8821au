@@ -31,7 +31,7 @@ SwLedBlink(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER			*padapter = pLed->padapter;
+	struct rtl_priv			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	u8				bStopBlinking = _FALSE;
 
@@ -148,7 +148,7 @@ SwLedBlink1(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER				*padapter = pLed->padapter;
+	struct rtl_priv				*padapter = pLed->padapter;
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 	struct led_priv		*ledpriv = &(padapter->ledpriv);
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
@@ -380,7 +380,7 @@ SwLedBlink2(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER				*padapter = pLed->padapter;
+	struct rtl_priv				*padapter = pLed->padapter;
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
 	u8					bStopBlinking = _FALSE;
 
@@ -502,7 +502,7 @@ SwLedBlink3(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER			*padapter = pLed->padapter;
+	struct rtl_priv			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	u8				bStopBlinking = _FALSE;
 
@@ -673,7 +673,7 @@ SwLedBlink4(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER			*padapter = pLed->padapter;
+	struct rtl_priv			*padapter = pLed->padapter;
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	PLED_USB 		pLed1 = &(ledpriv->SwLed1);
@@ -919,7 +919,7 @@ SwLedBlink5(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER			*padapter = pLed->padapter;
+	struct rtl_priv			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	u8				bStopBlinking = _FALSE;
 
@@ -1037,7 +1037,7 @@ SwLedBlink6(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER			*padapter = pLed->padapter;
+	struct rtl_priv			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	u8				bStopBlinking = _FALSE;
 
@@ -1061,7 +1061,7 @@ SwLedBlink7(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER *Adapter = pLed->padapter;
+	struct rtl_priv *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1181,7 +1181,7 @@ SwLedBlink8(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER *Adapter = pLed->padapter;
+	struct rtl_priv *Adapter = pLed->padapter;
 
 	// Change LED according to BlinkingLedState specified.
 	if( pLed->BlinkingLedState == RTW_LED_ON )
@@ -1205,7 +1205,7 @@ SwLedBlink9(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER *Adapter = pLed->padapter;
+	struct rtl_priv *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1521,7 +1521,7 @@ SwLedBlink10(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER *Adapter = pLed->padapter;
+	struct rtl_priv *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1789,7 +1789,7 @@ SwLedBlink11(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER *Adapter = pLed->padapter;
+	struct rtl_priv *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1881,7 +1881,7 @@ SwLedBlink12(
 	PLED_USB			pLed
 	)
 {
-	struct _ADAPTER *Adapter = pLed->padapter;
+	struct rtl_priv *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1967,7 +1967,7 @@ SwLedBlink13(
 	IN PLED_USB			pLed
 	)
 {
-	struct _ADAPTER *Adapter = pLed->padapter;
+	struct rtl_priv *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 	static u8	LinkBlinkCnt=0;
@@ -2045,7 +2045,7 @@ SwLedBlink13(
 //
 void BlinkHandler(PLED_USB pLed)
 {
-	struct _ADAPTER		*padapter = pLed->padapter;
+	struct rtl_priv		*padapter = pLed->padapter;
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
 
 	//DBG_871X("%s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
@@ -2124,7 +2124,7 @@ void BlinkHandler(PLED_USB pLed)
 void BlinkTimerCallback(void *data)
 {
 	PLED_USB	 pLed = (PLED_USB)data;
-	struct _ADAPTER		*padapter = pLed->padapter;
+	struct rtl_priv		*padapter = pLed->padapter;
 
 	//DBG_871X("%s\n", __FUNCTION__);
 
@@ -2150,7 +2150,7 @@ void BlinkWorkItemCallback(_workitem *work)
 
 static void
 SwLedControlMode0(
-	struct _ADAPTER		*padapter,
+	struct rtl_priv		*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -2267,7 +2267,7 @@ SwLedControlMode0(
  //ALPHA, added by chiyoko, 20090106
 static void
 SwLedControlMode1(
-	struct _ADAPTER		*padapter,
+	struct rtl_priv		*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -2547,7 +2547,7 @@ SwLedControlMode1(
  //Arcadyan/Sitecom , added by chiyoko, 20090216
 static void
 SwLedControlMode2(
-	struct _ADAPTER				*padapter,
+	struct rtl_priv				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -2707,7 +2707,7 @@ SwLedControlMode2(
   //COREGA, added by chiyoko, 20090316
  static void
  SwLedControlMode3(
-	struct _ADAPTER				*padapter,
+	struct rtl_priv				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -2886,7 +2886,7 @@ SwLedControlMode2(
  //Edimax-Belkin, added by chiyoko, 20090413
 static void
 SwLedControlMode4(
-	struct _ADAPTER				*padapter,
+	struct rtl_priv				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -3236,7 +3236,7 @@ SwLedControlMode4(
  //Sercomm-Belkin, added by chiyoko, 20090415
 static void
 SwLedControlMode5(
-	struct _ADAPTER				*padapter,
+	struct rtl_priv				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -3323,7 +3323,7 @@ SwLedControlMode5(
  //WNC-Corega, added by chiyoko, 20090902
 static void
 SwLedControlMode6(
-	struct _ADAPTER				*padapter,
+	struct rtl_priv				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -3356,7 +3356,7 @@ SwLedControlMode6(
 //Netgear, added by sinda, 2011/11/11
  void
  SwLedControlMode7(
-	 struct _ADAPTER *		 Adapter,
+	 struct rtl_priv *		 Adapter,
 	 LED_CTL_MODE		 LedAction
  )
 {
@@ -3516,7 +3516,7 @@ SwLedControlMode6(
 
 void
 SwLedControlMode8(
-	struct _ADAPTER *		Adapter,
+	struct rtl_priv *		Adapter,
 	LED_CTL_MODE		LedAction
 	)
 {
@@ -3555,7 +3555,7 @@ SwLedControlMode8(
 //page added for Belkin AC950, 20120813
 void
 SwLedControlMode9(
-	IN	struct _ADAPTER *		Adapter,
+	IN	struct rtl_priv *		Adapter,
 	IN	LED_CTL_MODE		LedAction
 )
 {
@@ -3902,7 +3902,7 @@ SwLedControlMode9(
 //page added for Netgear A6200V2, 20120827
 void
 SwLedControlMode10(
-	struct _ADAPTER *		Adapter,
+	struct rtl_priv *		Adapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -4121,7 +4121,7 @@ SwLedControlMode10(
  //Edimax-ASUS, added by Page, 20121221
 void
 SwLedControlMode11(
-	struct _ADAPTER *		Adapter,
+	struct rtl_priv *		Adapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -4230,7 +4230,7 @@ SwLedControlMode11(
 
 VOID
 SwLedControlMode12(
-	struct _ADAPTER *		Adapter,
+	struct rtl_priv *		Adapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -4320,7 +4320,7 @@ SwLedControlMode12(
 
 VOID
 SwLedControlMode13(
-	IN	struct _ADAPTER *		Adapter,
+	IN	struct rtl_priv *		Adapter,
 	IN	LED_CTL_MODE		LedAction
 )
 {
@@ -4490,7 +4490,7 @@ SwLedControlMode13(
 
 void
 LedControlUSB(
-	struct _ADAPTER				*padapter,
+	struct rtl_priv				*padapter,
 	LED_CTL_MODE		LedAction
 	)
 {
@@ -4611,7 +4611,7 @@ void ResetLedStatus(PLED_USB pLed) {
 //
 void
 InitLed(
-	struct _ADAPTER			*padapter,
+	struct rtl_priv			*padapter,
 	PLED_USB		pLed,
 	LED_PIN			LedPin
 	)

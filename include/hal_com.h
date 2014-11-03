@@ -119,7 +119,7 @@ void dump_chip_info(HAL_VERSION	ChipVersion);
 
 uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
-	IN	struct _ADAPTER *padapter,
+	IN	struct rtl_priv *padapter,
 	IN	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
 	IN	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
 	IN	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
@@ -128,29 +128,29 @@ hal_com_get_channel_plan(
 
 BOOLEAN
 HAL_IsLegalChannel(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	u32			Channel
 	);
 
 uint8_t	MRateToHwRate(uint8_t rate);
 
 void	HalSetBrateCfg(
-	IN struct _ADAPTER *	Adapter,
+	IN struct rtl_priv *	Adapter,
 	IN uint8_t			*mBratesOS,
 	OUT u16			*pBrateCfg);
 
 BOOLEAN
 Hal_MappingOutPipe(
-	IN	struct _ADAPTER *pAdapter,
+	IN	struct rtl_priv *pAdapter,
 	IN	uint8_t		NumOutPipe
 	);
 
-void hal_init_macaddr(struct _ADAPTER *adapter);
+void hal_init_macaddr(struct rtl_priv *adapter);
 
-void c2h_evt_clear(struct _ADAPTER *adapter);
-int32_t c2h_evt_read(struct _ADAPTER *adapter, uint8_t *buf);
+void c2h_evt_clear(struct rtl_priv *adapter);
+int32_t c2h_evt_read(struct rtl_priv *adapter, uint8_t *buf);
 
-uint8_t rtw_hal_networktype_to_raid(struct _ADAPTER *adapter,unsigned char network_type);
-uint8_t rtw_get_mgntframe_raid(struct _ADAPTER *adapter,unsigned char network_type);
+uint8_t rtw_hal_networktype_to_raid(struct rtl_priv *adapter,unsigned char network_type);
+uint8_t rtw_get_mgntframe_raid(struct rtl_priv *adapter,unsigned char network_type);
 #endif //__HAL_COMMON_H__
 

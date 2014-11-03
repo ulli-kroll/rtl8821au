@@ -54,18 +54,18 @@
 //
 // BB and RF register read/write
 //
-u32	PHY_QueryBBReg8812(	IN	struct _ADAPTER *Adapter,
+u32	PHY_QueryBBReg8812(	IN	struct rtl_priv *Adapter,
 								IN	u32			RegAddr,
 								IN	u32			BitMask	);
-void	PHY_SetBBReg8812(	IN	struct _ADAPTER *	Adapter,
+void	PHY_SetBBReg8812(	IN	struct rtl_priv *	Adapter,
 								IN	u32			RegAddr,
 								IN	u32			BitMask,
 								IN	u32			Data	);
-u32	PHY_QueryRFReg8812(	IN	struct _ADAPTER *Adapter,
+u32	PHY_QueryRFReg8812(	IN	struct rtl_priv *Adapter,
 								IN	uint8_t			eRFPath,
 								IN	u32			RegAddr,
 								IN	u32			BitMask	);
-void	PHY_SetRFReg8812(	IN	struct _ADAPTER *	Adapter,
+void	PHY_SetRFReg8812(	IN	struct rtl_priv *	Adapter,
 								IN	uint8_t			eRFPath,
 								IN	u32			RegAddr,
 								IN	u32			BitMask,
@@ -75,10 +75,10 @@ void	PHY_SetRFReg8812(	IN	struct _ADAPTER *	Adapter,
 // Initialization related function
 //
 /* MAC/BB/RF HAL config */
-int	PHY_MACConfig8812(IN struct _ADAPTER *Adapter	);
-int	PHY_BBConfig8812(IN struct _ADAPTER *Adapter	);
-void	PHY_BB8812_Config_1T(IN struct _ADAPTER *Adapter );
-int	PHY_RFConfig8812(IN struct _ADAPTER *Adapter	);
+int	PHY_MACConfig8812(IN struct rtl_priv *Adapter	);
+int	PHY_BBConfig8812(IN struct rtl_priv *Adapter	);
+void	PHY_BB8812_Config_1T(IN struct rtl_priv *Adapter );
+int	PHY_RFConfig8812(IN struct rtl_priv *Adapter	);
 
 VOID
 PHY_InitPowerLimitTable(
@@ -87,7 +87,7 @@ PHY_InitPowerLimitTable(
 
 VOID
 PHY_ConvertPowerLimitToPowerIndex(
-	IN	struct _ADAPTER *		Adapter
+	IN	struct rtl_priv *		Adapter
 	);
 
 VOID
@@ -104,7 +104,7 @@ PHY_SetPowerLimitTableValue(
 
 u8
 PHY_GetPowerLimitValue(
-	IN	struct _ADAPTER *		Adapter,
+	IN	struct rtl_priv *		Adapter,
 	IN	u32					RegPwrTblSel,
 	IN	BAND_TYPE			Band,
 	IN	CHANNEL_WIDTH		Bandwidth,
@@ -117,18 +117,18 @@ PHY_GetPowerLimitValue(
 
 int32_t
 PHY_SwitchWirelessBand8812(
-	IN struct _ADAPTER *	Adapter,
+	IN struct rtl_priv *	Adapter,
 	IN uint8_t			Band
 );
 
 //
 // BB TX Power R/W
 //
-void	PHY_GetTxPowerLevel8812(	IN struct _ADAPTER *Adapter, OUT u32*	powerlevel	);
-void	PHY_SetTxPowerLevel8812(	IN struct _ADAPTER *Adapter, IN uint8_t	Channel	);
-BOOLEAN	PHY_UpdateTxPowerDbm8812( IN struct _ADAPTER *Adapter, IN int	powerInDbm	);
+void	PHY_GetTxPowerLevel8812(	IN struct rtl_priv *Adapter, OUT u32*	powerlevel	);
+void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *Adapter, IN uint8_t	Channel	);
+BOOLEAN	PHY_UpdateTxPowerDbm8812( IN struct rtl_priv *Adapter, IN int	powerInDbm	);
 u32 PHY_GetTxPowerIndex_8812A(
-	IN	struct _ADAPTER *		pAdapter,
+	IN	struct rtl_priv *		pAdapter,
 	IN	uint8_t					RFPath,
 	IN	uint8_t					Rate,
 	IN	CHANNEL_WIDTH		BandWidth,
@@ -136,14 +136,14 @@ u32 PHY_GetTxPowerIndex_8812A(
 	);
 
 u32 PHY_GetTxBBSwing_8812A(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	BAND_TYPE 	Band,
 	IN	uint8_t			RFPath
 	);
 
 VOID
 PHY_SetTxPowerIndex_8812A(
-	IN	struct _ADAPTER *		Adapter,
+	IN	struct rtl_priv *		Adapter,
 	IN	uint32_t				PowerIndex,
 	IN	u1Byte				RFPath,
 	IN	u1Byte				Rate
@@ -153,7 +153,7 @@ PHY_SetTxPowerIndex_8812A(
 //
 VOID
 PHY_SetBWMode8812(
-	IN	struct _ADAPTER *		pAdapter,
+	IN	struct rtl_priv *		pAdapter,
 	IN	CHANNEL_WIDTH		Bandwidth,
 	IN	uint8_t					Offset
 );
@@ -163,14 +163,14 @@ PHY_SetBWMode8812(
 //
 VOID
 PHY_SwChnl8812(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	uint8_t			channel
 );
 
 
 VOID
 PHY_SetSwChnlBWMode8812(
-	IN	struct _ADAPTER *		Adapter,
+	IN	struct rtl_priv *		Adapter,
 	IN	uint8_t					channel,
 	IN	CHANNEL_WIDTH		Bandwidth,
 	IN	uint8_t					Offset40,
@@ -183,7 +183,7 @@ PHY_SetSwChnlBWMode8812(
 
 VOID
 storePwrIndexDiffRateOffset(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	u32		RegAddr,
 	IN	u32		BitMask,
 	IN	u32		Data

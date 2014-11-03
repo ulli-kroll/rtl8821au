@@ -25,7 +25,7 @@
 
 #ifdef CONFIG_IPS
 
-void ips_enter(struct _ADAPTER *padapter)
+void ips_enter(struct rtl_priv *padapter)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 
@@ -54,7 +54,7 @@ void ips_enter(struct _ADAPTER *padapter)
 
 }
 
-int ips_leave(struct _ADAPTER * padapter)
+int ips_leave(struct rtl_priv * padapter)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	struct security_priv* psecuritypriv=&(padapter->securitypriv);
@@ -105,11 +105,11 @@ int ips_leave(struct _ADAPTER * padapter)
 #endif
 
 #ifdef CONFIG_AUTOSUSPEND
-extern void autosuspend_enter(struct _ADAPTER* padapter);
-extern int autoresume_enter(struct _ADAPTER* padapter);
+extern void autosuspend_enter(struct rtl_priv* padapter);
+extern int autoresume_enter(struct rtl_priv* padapter);
 #endif
 
-bool rtw_pwr_unassociated_idle(struct _ADAPTER *adapter)
+bool rtw_pwr_unassociated_idle(struct rtl_priv *adapter)
 {
 	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
 	struct xmit_priv *pxmit_priv = &adapter->xmitpriv;
@@ -143,7 +143,7 @@ exit:
 	return ret;
 }
 
-void rtw_ps_processor(struct _ADAPTER *padapter)
+void rtw_ps_processor(struct rtl_priv *padapter)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
@@ -191,7 +191,7 @@ exit:
 
 static void pwr_state_check_handler(RTW_TIMER_HDL_ARGS)
 {
-	struct _ADAPTER *padapter = (struct _ADAPTER *)FunctionContext;
+	struct rtl_priv *padapter = (struct rtl_priv *)FunctionContext;
 	rtw_ps_cmd(padapter);
 }
 
@@ -204,7 +204,7 @@ static void pwr_state_check_handler(RTW_TIMER_HDL_ARGS)
  *	pslv			power state level, only could be PS_STATE_S0 ~ PS_STATE_S4
  *
  */
-void rtw_set_rpwm(struct _ADAPTER *padapter, uint8_t pslv)
+void rtw_set_rpwm(struct rtl_priv *padapter, uint8_t pslv)
 {
 	uint8_t	rpwm;
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
@@ -275,7 +275,7 @@ _func_enter_;
 _func_exit_;
 }
 
-static uint8_t PS_RDY_CHECK(struct _ADAPTER *padapter)
+static uint8_t PS_RDY_CHECK(struct rtl_priv *padapter)
 {
 	uint32_t	 curr_time, delta_time;
 	struct pwrctrl_priv	*pwrpriv = &padapter->pwrctrlpriv;
@@ -306,7 +306,7 @@ static uint8_t PS_RDY_CHECK(struct _ADAPTER *padapter)
 	return _TRUE;
 }
 
-void rtw_set_ps_mode(struct _ADAPTER *padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode)
+void rtw_set_ps_mode(struct rtl_priv *padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 
@@ -367,7 +367,7 @@ _func_exit_;
  *	-1:	Timeout
  *	-2:	Other error
  */
-int32_t LPS_RF_ON_check(struct _ADAPTER *padapter, uint32_t	 delay_ms)
+int32_t LPS_RF_ON_check(struct rtl_priv *padapter, uint32_t	 delay_ms)
 {
 	uint32_t	 start_time;
 	uint8_t bAwake = _FALSE;
@@ -401,7 +401,7 @@ int32_t LPS_RF_ON_check(struct _ADAPTER *padapter, uint32_t	 delay_ms)
 //	Description:
 //		Enter the leisure power save mode.
 //
-void LPS_Enter(struct _ADAPTER *padapter)
+void LPS_Enter(struct rtl_priv *padapter)
 {
 	struct pwrctrl_priv	*pwrpriv = &padapter->pwrctrlpriv;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
@@ -434,7 +434,7 @@ _func_exit_;
 //	Description:
 //		Leave the leisure power save mode.
 //
-void LPS_Leave(struct _ADAPTER *padapter)
+void LPS_Leave(struct rtl_priv *padapter)
 {
 #define LPS_LEAVE_TIMEOUT_MS 100
 
@@ -468,7 +468,7 @@ _func_exit_;
 // Description: Leave all power save mode: LPS, FwLPS, IPS if needed.
 // Move code to function by tynli. 2010.03.26.
 //
-void LeaveAllPowerSaveMode(IN struct _ADAPTER *Adapter)
+void LeaveAllPowerSaveMode(IN struct rtl_priv *Adapter)
 {
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	uint8_t	enqueue = 0;
@@ -497,7 +497,7 @@ _func_enter_;
 _func_exit_;
 }
 
-void rtw_init_pwrctrl_priv(struct _ADAPTER *padapter)
+void rtw_init_pwrctrl_priv(struct rtl_priv *padapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
 
@@ -546,7 +546,7 @@ _func_exit_;
 }
 
 
-void rtw_free_pwrctrl_priv(struct _ADAPTER *adapter)
+void rtw_free_pwrctrl_priv(struct rtl_priv *adapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = &adapter->pwrctrlpriv;
 
@@ -559,7 +559,7 @@ _func_exit_;
 
 
 
-uint8_t rtw_interface_ps_func(struct _ADAPTER *padapter,HAL_INTF_PS_FUNC efunc_id,uint8_t * val)
+uint8_t rtw_interface_ps_func(struct rtl_priv *padapter,HAL_INTF_PS_FUNC efunc_id,uint8_t * val)
 {
 	uint8_t bResult = _TRUE;
 	rtw_hal_intf_ps_func(padapter,efunc_id,val);
@@ -568,7 +568,7 @@ uint8_t rtw_interface_ps_func(struct _ADAPTER *padapter,HAL_INTF_PS_FUNC efunc_i
 }
 
 
-inline void rtw_set_ips_deny(struct _ADAPTER *padapter, uint32_t	 ms)
+inline void rtw_set_ips_deny(struct rtl_priv *padapter, uint32_t	 ms)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	pwrpriv->ips_deny_time = jiffies + rtw_ms_to_systime(ms);
@@ -576,12 +576,12 @@ inline void rtw_set_ips_deny(struct _ADAPTER *padapter, uint32_t	 ms)
 
 /*
 * rtw_pwr_wakeup - Wake the NIC up from: 1)IPS. 2)USB autosuspend
-* @adapter: pointer to struct _ADAPTER structure
+* @adapter: pointer to struct rtl_priv structure
 * @ips_deffer_ms: the ms wiil prevent from falling into IPS after wakeup
 * Return _SUCCESS or _FAIL
 */
 
-int _rtw_pwr_wakeup(struct _ADAPTER *padapter, uint32_t	 ips_deffer_ms, const char *caller)
+int _rtw_pwr_wakeup(struct rtl_priv *padapter, uint32_t	 ips_deffer_ms, const char *caller)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -696,7 +696,7 @@ exit:
 
 }
 
-int rtw_pm_set_lps(struct _ADAPTER *padapter, uint8_t mode)
+int rtw_pm_set_lps(struct rtl_priv *padapter, uint8_t mode)
 {
 	int	ret = 0;
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
@@ -718,7 +718,7 @@ int rtw_pm_set_lps(struct _ADAPTER *padapter, uint8_t mode)
 	return ret;
 }
 
-int rtw_pm_set_ips(struct _ADAPTER *padapter, uint8_t mode)
+int rtw_pm_set_ips(struct rtl_priv *padapter, uint8_t mode)
 {
 	struct pwrctrl_priv *pwrctrlpriv = &padapter->pwrctrlpriv;
 

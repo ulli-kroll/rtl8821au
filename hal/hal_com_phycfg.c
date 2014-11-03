@@ -25,7 +25,7 @@
 #ifndef CONFIG_EMBEDDED_FWIMG
 int
 phy_ConfigMACWithParaFile(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	u8* 			pFileName
 )
 {
@@ -36,7 +36,7 @@ phy_ConfigMACWithParaFile(
 
 int
 PHY_ConfigBBWithPowerLimitTableParaFile(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	s8*	 		pFileName
 )
 {
@@ -47,7 +47,7 @@ PHY_ConfigBBWithPowerLimitTableParaFile(
 
 int
 phy_ConfigBBWithParaFile(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	u8* 			pFileName
 )
 {
@@ -58,7 +58,7 @@ phy_ConfigBBWithParaFile(
 
 int
 phy_ConfigBBWithPgParaFile(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	u8* 			pFileName)
 {
 	int		rtStatus = _SUCCESS;
@@ -68,7 +68,7 @@ phy_ConfigBBWithPgParaFile(
 
 int
 phy_ConfigBBWithMpParaFile(
-	IN	struct _ADAPTER *Adapter,
+	IN	struct rtl_priv *Adapter,
 	IN	u8* 			pFileName
 )
 {
@@ -79,7 +79,7 @@ phy_ConfigBBWithMpParaFile(
 
 int
 PHY_ConfigRFWithParaFile(
-	IN	struct _ADAPTER *	Adapter,
+	IN	struct rtl_priv *	Adapter,
 	IN	u8* 				pFileName,
 	IN	uint8_t				eRFPath
 )
@@ -91,7 +91,7 @@ PHY_ConfigRFWithParaFile(
 
 int
 PHY_ConfigRFWithTxPwrTrackParaFile(
-	IN	struct _ADAPTER *	Adapter,
+	IN	struct rtl_priv *	Adapter,
 	IN	u8*	 			pFileName
 )
 {

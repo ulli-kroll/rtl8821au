@@ -99,7 +99,7 @@ ODM_ClearTxPowerTrackingState(
 
 VOID
 ODM_TXPowerTrackingCallback_ThermalMeter(
-	IN struct _ADAPTER *Adapter
+	IN struct rtl_priv *Adapter
 	)
 {
 
@@ -429,7 +429,7 @@ ODM_ResetIQKResult(
 {
 	u1Byte		i;
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	struct _ADAPTER *Adapter = pDM_Odm->Adapter;
+	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 
 	return;
 #endif

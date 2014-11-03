@@ -322,7 +322,7 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
  * Description:
  * Initialize all LED_871x objects.
  */
-void rtl8812au_InitSwLeds(struct rtl_priv *padapter)
+void rtl8821au_init_sw_leds(struct rtl_priv *padapter)
 {
 	struct led_priv *pledpriv = &(padapter->ledpriv);
 

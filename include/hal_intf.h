@@ -158,6 +158,13 @@ typedef enum _HAL_INTF_PS_FUNC{
 typedef int32_t (*c2h_id_filter)(uint8_t id);
 
 struct hal_ops {
+	/*
+	 * New HAL functions with struct net_device  as first param
+	 * this can be (hopefully)switched to struct ieee80211_hw
+	 */
+
+	/* Old HAL functions */
+
 	u32	(*hal_init)(struct rtl_priv *padapter);
 	u32	(*hal_deinit)(struct rtl_priv *padapter);
 

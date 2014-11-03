@@ -353,7 +353,7 @@ exit:
 
 
 /* using pstapriv->sta_hash_lock to protect */
-uint32_t rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
+uint32_t rtw_free_stainfo(struct _ADAPTER *padapter , struct sta_info *psta)
 {
 	int i;
 	_irqL irqL0;
@@ -638,7 +638,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 	return psta;
 }
 
-uint32_t rtw_init_bcmc_stainfo(_adapter* padapter)
+uint32_t rtw_init_bcmc_stainfo(struct _ADAPTER* padapter)
 {
 
 	struct sta_info *psta;

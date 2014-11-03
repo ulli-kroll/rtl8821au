@@ -23,7 +23,7 @@
 
 
 extern void indicate_wx_scan_complete_event(struct _ADAPTER *padapter);
-extern uint8_t rtw_do_join(_adapter * padapter);
+extern uint8_t rtw_do_join(struct _ADAPTER * padapter);
 
 #ifdef CONFIG_DISABLE_MCS13TO15
 extern unsigned char	MCS_rate_2R_MCS13TO15_OFF[16];
@@ -561,7 +561,7 @@ struct wlan_network *rtw_get_oldest_wlan_network(_queue *scanned_queue)
 }
 
 void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src,
-	_adapter * padapter, bool update_ie)
+	struct _ADAPTER * padapter, bool update_ie)
 {
 	uint8_t ss_ori = dst->PhyInfo.SignalStrength;
 	uint8_t sq_ori = dst->PhyInfo.SignalQuality;
@@ -756,10 +756,10 @@ exit:
 	_exit_critical_bh(&queue->lock, &irqL);
 }
 
-static void rtw_add_network(_adapter *adapter, WLAN_BSSID_EX *pnetwork)
+static void rtw_add_network(struct _ADAPTER *adapter, WLAN_BSSID_EX *pnetwork)
 {
 	_irqL irqL;
-	struct	mlme_priv	*pmlmepriv = &(((_adapter *)adapter)->mlmepriv);
+	struct	mlme_priv	*pmlmepriv = &(((struct _ADAPTER *)adapter)->mlmepriv);
 	//_queue	*queue	= &(pmlmepriv->scanned_queue);
 
 _func_enter_;
@@ -781,7 +781,7 @@ _func_exit_;
 //			   (3) WMM
 //			   (4) HT
 //                     (5) others
-static int rtw_is_desired_network(_adapter *adapter, struct wlan_network *pnetwork)
+static int rtw_is_desired_network(struct _ADAPTER *adapter, struct wlan_network *pnetwork)
 {
 	struct security_priv *psecuritypriv = &adapter->securitypriv;
 	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;
@@ -1915,7 +1915,7 @@ _func_exit_;
 
 /*
 * _rtw_join_timeout_handler - Timeout/faliure handler for CMD JoinBss
-* @adapter: pointer to _adapter structure
+* @adapter: pointer to struct _ADAPTER structure
 */
 void _rtw_join_timeout_handler (struct _ADAPTER *adapter)
 {
@@ -1947,7 +1947,7 @@ _func_exit_;
 
 /*
 * rtw_scan_timeout_handler - Timeout/Faliure handler for CMD SiteSurvey
-* @adapter: pointer to _adapter structure
+* @adapter: pointer to struct _ADAPTER structure
 */
 void rtw_scan_timeout_handler (struct _ADAPTER *adapter)
 {
@@ -2628,7 +2628,7 @@ _func_exit_;
 }
 
 //the fucntion is at passive_level
-void rtw_joinbss_reset(_adapter *padapter)
+void rtw_joinbss_reset(struct _ADAPTER *padapter)
 {
 	uint8_t	threshold;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
@@ -2674,7 +2674,7 @@ void rtw_joinbss_reset(_adapter *padapter)
 #ifdef CONFIG_80211N_HT
 
 //the fucntion is >= passive_level
-unsigned int rtw_restructure_ht_ie(_adapter *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len)
+unsigned int rtw_restructure_ht_ie(struct _ADAPTER *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len)
 {
 	uint32_t	 ielen, out_len;
 	HT_CAP_AMPDU_FACTOR max_rx_ampdu_factor;
@@ -2757,7 +2757,7 @@ unsigned int rtw_restructure_ht_ie(_adapter *padapter, uint8_t *in_ie, uint8_t *
 }
 
 //the fucntion is > passive_level (in critical_section)
-void rtw_update_ht_cap(_adapter *padapter, uint8_t *pie, uint ie_len, uint8_t channel)
+void rtw_update_ht_cap(struct _ADAPTER *padapter, uint8_t *pie, uint ie_len, uint8_t channel)
 {
 	uint8_t *p, max_ampdu_sz;
 	int len;
@@ -2902,7 +2902,7 @@ void rtw_update_ht_cap(_adapter *padapter, uint8_t *pie, uint ie_len, uint8_t ch
 	pmlmeinfo->HT_protection = pmlmeinfo->HT_info.infos[1] & 0x3;
 }
 
-void rtw_issue_addbareq_cmd(_adapter *padapter, struct xmit_frame *pxmitframe)
+void rtw_issue_addbareq_cmd(struct _ADAPTER *padapter, struct xmit_frame *pxmitframe)
 {
 	uint8_t issued;
 	int priority;
@@ -2956,7 +2956,7 @@ void rtw_issue_addbareq_cmd(_adapter *padapter, struct xmit_frame *pxmitframe)
 
 #endif
 
-sint rtw_linked_check(_adapter *padapter)
+sint rtw_linked_check(struct _ADAPTER *padapter)
 {
 	if (	(check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == _TRUE) ||
 			(check_fwstate(&padapter->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE))

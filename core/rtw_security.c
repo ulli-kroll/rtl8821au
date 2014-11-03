@@ -156,7 +156,7 @@ _func_exit_;
 /*
 	Need to consider the fragment  situation
 */
-void rtw_wep_encrypt(_adapter *padapter, uint8_t *pxmitframe)
+void rtw_wep_encrypt(struct _ADAPTER *padapter, uint8_t *pxmitframe)
 {																	// exclude ICV
 
 	unsigned char	crc[4];
@@ -232,7 +232,7 @@ _func_exit_;
 
 }
 
-void rtw_wep_decrypt(_adapter  *padapter, uint8_t *precvframe)
+void rtw_wep_decrypt(struct _ADAPTER  *padapter, uint8_t *precvframe)
 {
 	// exclude ICV
 	uint8_t	crc[4];
@@ -640,7 +640,7 @@ _func_exit_;
 
 
 //The hlen isn't include the IV
-uint32_t	rtw_tkip_encrypt(_adapter *padapter, uint8_t *pxmitframe)
+uint32_t	rtw_tkip_encrypt(struct _ADAPTER *padapter, uint8_t *pxmitframe)
 {																	// exclude ICV
 	uint16_t	pnl;
 	uint32_t	pnh;
@@ -763,7 +763,7 @@ _func_exit_;
 
 
 //The hlen isn't include the IV
-uint32_t	 rtw_tkip_decrypt(_adapter *padapter, uint8_t *precvframe)
+uint32_t	 rtw_tkip_decrypt(struct _ADAPTER *padapter, uint8_t *precvframe)
 {																	// exclude ICV
 	uint16_t pnl;
 	uint32_t	 pnh;
@@ -1509,7 +1509,7 @@ _func_exit_;
 
 
 
-uint32_t	rtw_aes_encrypt(_adapter *padapter, uint8_t *pxmitframe)
+uint32_t	rtw_aes_encrypt(struct _ADAPTER *padapter, uint8_t *pxmitframe)
 {	// exclude ICV
 
 
@@ -1881,7 +1881,7 @@ _func_exit_;
 	return res;
 }
 
-uint32_t	rtw_aes_decrypt(_adapter *padapter, uint8_t *precvframe)
+uint32_t	rtw_aes_decrypt(struct _ADAPTER *padapter, uint8_t *precvframe)
 {	// exclude ICV
 
 
@@ -2661,7 +2661,7 @@ static int omac1_aes_128(uint8_t *key, uint8_t *data, size_t data_len, uint8_t *
 
 void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS)
 {
-        _adapter *padapter = (_adapter *)FunctionContext;
+        struct _ADAPTER *padapter = (struct _ADAPTER *)FunctionContext;
 
 _func_enter_;
 

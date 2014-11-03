@@ -34,7 +34,7 @@
 #include <wifi.h>
 #include <ieee80211.h>
 
-typedef struct _ADAPTER _adapter;
+struct _ADAPTER;
 
 #include <rtw_debug.h>
 
@@ -221,7 +221,7 @@ struct registry_priv
 #define MAX_CONTINUAL_URB_ERR 4
 
 
-#define GET_IFACE_NUMS(padapter) (((_adapter *)padapter)->dvobj->iface_nums)
+#define GET_IFACE_NUMS(padapter) (((struct _ADAPTER *)padapter)->dvobj->iface_nums)
 
 struct dvobj_priv {
         struct _ADAPTER *padapter;
@@ -375,8 +375,8 @@ struct _ADAPTER{
 	void (*dvobj_deinit)(struct dvobj_priv *dvobj);
 #endif
 
-	void (*intf_start)(_adapter * adapter);
-	void (*intf_stop)(_adapter * adapter);
+	void (*intf_start)(struct _ADAPTER * adapter);
+	void (*intf_stop)(struct _ADAPTER * adapter);
 
 
 #ifdef PLATFORM_LINUX
@@ -410,7 +410,7 @@ struct _ADAPTER{
 
 #define adapter_to_dvobj(adapter) (adapter->dvobj)
 
-int rtw_handle_dualmac(_adapter *adapter, bool init);
+int rtw_handle_dualmac(struct _ADAPTER *adapter, bool init);
 
 __inline static uint8_t *myid(struct eeprom_priv *peepriv)
 {

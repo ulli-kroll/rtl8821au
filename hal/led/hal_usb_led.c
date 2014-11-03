@@ -31,7 +31,7 @@ SwLedBlink(
 	PLED_USB			pLed
 	)
 {
-	_adapter			*padapter = pLed->padapter;
+	struct _ADAPTER			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	u8				bStopBlinking = _FALSE;
 
@@ -148,7 +148,7 @@ SwLedBlink1(
 	PLED_USB			pLed
 	)
 {
-	_adapter				*padapter = pLed->padapter;
+	struct _ADAPTER				*padapter = pLed->padapter;
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 	struct led_priv		*ledpriv = &(padapter->ledpriv);
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
@@ -380,7 +380,7 @@ SwLedBlink2(
 	PLED_USB			pLed
 	)
 {
-	_adapter				*padapter = pLed->padapter;
+	struct _ADAPTER				*padapter = pLed->padapter;
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
 	u8					bStopBlinking = _FALSE;
 
@@ -502,7 +502,7 @@ SwLedBlink3(
 	PLED_USB			pLed
 	)
 {
-	_adapter			*padapter = pLed->padapter;
+	struct _ADAPTER			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	u8				bStopBlinking = _FALSE;
 
@@ -673,7 +673,7 @@ SwLedBlink4(
 	PLED_USB			pLed
 	)
 {
-	_adapter			*padapter = pLed->padapter;
+	struct _ADAPTER			*padapter = pLed->padapter;
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	PLED_USB 		pLed1 = &(ledpriv->SwLed1);
@@ -919,7 +919,7 @@ SwLedBlink5(
 	PLED_USB			pLed
 	)
 {
-	_adapter			*padapter = pLed->padapter;
+	struct _ADAPTER			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	u8				bStopBlinking = _FALSE;
 
@@ -1037,7 +1037,7 @@ SwLedBlink6(
 	PLED_USB			pLed
 	)
 {
-	_adapter			*padapter = pLed->padapter;
+	struct _ADAPTER			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	u8				bStopBlinking = _FALSE;
 
@@ -2045,7 +2045,7 @@ SwLedBlink13(
 //
 void BlinkHandler(PLED_USB pLed)
 {
-	_adapter		*padapter = pLed->padapter;
+	struct _ADAPTER		*padapter = pLed->padapter;
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
 
 	//DBG_871X("%s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
@@ -2124,7 +2124,7 @@ void BlinkHandler(PLED_USB pLed)
 void BlinkTimerCallback(void *data)
 {
 	PLED_USB	 pLed = (PLED_USB)data;
-	_adapter		*padapter = pLed->padapter;
+	struct _ADAPTER		*padapter = pLed->padapter;
 
 	//DBG_871X("%s\n", __FUNCTION__);
 
@@ -2150,7 +2150,7 @@ void BlinkWorkItemCallback(_workitem *work)
 
 static void
 SwLedControlMode0(
-	_adapter		*padapter,
+	struct _ADAPTER		*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -2267,7 +2267,7 @@ SwLedControlMode0(
  //ALPHA, added by chiyoko, 20090106
 static void
 SwLedControlMode1(
-	_adapter		*padapter,
+	struct _ADAPTER		*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -2547,7 +2547,7 @@ SwLedControlMode1(
  //Arcadyan/Sitecom , added by chiyoko, 20090216
 static void
 SwLedControlMode2(
-	_adapter				*padapter,
+	struct _ADAPTER				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -2707,7 +2707,7 @@ SwLedControlMode2(
   //COREGA, added by chiyoko, 20090316
  static void
  SwLedControlMode3(
-	_adapter				*padapter,
+	struct _ADAPTER				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -2886,7 +2886,7 @@ SwLedControlMode2(
  //Edimax-Belkin, added by chiyoko, 20090413
 static void
 SwLedControlMode4(
-	_adapter				*padapter,
+	struct _ADAPTER				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -3236,7 +3236,7 @@ SwLedControlMode4(
  //Sercomm-Belkin, added by chiyoko, 20090415
 static void
 SwLedControlMode5(
-	_adapter				*padapter,
+	struct _ADAPTER				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -3323,7 +3323,7 @@ SwLedControlMode5(
  //WNC-Corega, added by chiyoko, 20090902
 static void
 SwLedControlMode6(
-	_adapter				*padapter,
+	struct _ADAPTER				*padapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -4490,7 +4490,7 @@ SwLedControlMode13(
 
 void
 LedControlUSB(
-	_adapter				*padapter,
+	struct _ADAPTER				*padapter,
 	LED_CTL_MODE		LedAction
 	)
 {
@@ -4611,7 +4611,7 @@ void ResetLedStatus(PLED_USB pLed) {
 //
 void
 InitLed(
-	_adapter			*padapter,
+	struct _ADAPTER			*padapter,
 	PLED_USB		pLed,
 	LED_PIN			LedPin
 	)

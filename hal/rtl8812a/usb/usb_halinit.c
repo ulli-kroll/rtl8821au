@@ -2216,7 +2216,6 @@ void hal_notch_filter_8812(struct rtl_priv *adapter, bool enable);
 
 
 struct hal_ops rtl8812au_hal_ops = {
-	.hal_power_on = 	_InitPowerOn8812AU,
 	.hal_init =	 	rtl8812au_hal_init,
 	.hal_deinit = 		rtl8812au_hal_deinit,
 

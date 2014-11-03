@@ -158,7 +158,6 @@ typedef enum _HAL_INTF_PS_FUNC{
 typedef int32_t (*c2h_id_filter)(uint8_t id);
 
 struct hal_ops {
-	u32	(*hal_power_on)(struct rtl_priv *padapter);
 	u32	(*hal_init)(struct rtl_priv *padapter);
 	u32	(*hal_deinit)(struct rtl_priv *padapter);
 
@@ -306,7 +305,6 @@ void rtw_hal_dm_deinit(struct rtl_priv *padapter);
 void rtw_hal_sw_led_init(struct rtl_priv *padapter);
 void rtw_hal_sw_led_deinit(struct rtl_priv *padapter);
 
-u32 rtw_hal_power_on(struct rtl_priv *padapter);
 uint rtw_hal_init(struct rtl_priv *padapter);
 uint rtw_hal_deinit(struct rtl_priv *padapter);
 void rtw_hal_stop(struct rtl_priv *padapter);

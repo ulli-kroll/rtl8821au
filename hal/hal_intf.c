@@ -74,12 +74,6 @@ void rtw_hal_sw_led_deinit(struct rtl_priv *padapter)
 		padapter->HalFunc->DeInitSwLeds(padapter);
 }
 
-uint32_t rtw_hal_power_on(struct rtl_priv *padapter)
-{
-	if (padapter->HalFunc->hal_power_on)
-		return padapter->HalFunc->hal_power_on(padapter);
-	return _FAIL;
-}
 
 
 uint rtw_hal_init(struct rtl_priv *padapter)

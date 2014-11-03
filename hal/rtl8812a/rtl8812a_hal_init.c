@@ -2428,7 +2428,7 @@ void rtl8812_SetHalODMVar(struct _ADAPTER *Adapter, HAL_ODM_VARIABLE eVariable,
 	}
 }
 
-void hal_notch_filter_8812(_adapter *adapter, bool enable)
+void hal_notch_filter_8812(struct _ADAPTER *adapter, bool enable)
 {
 	if (enable) {
 		DBG_871X("Enable notch filter\n");
@@ -2762,7 +2762,7 @@ static VOID _BeaconFunctionEnable(struct _ADAPTER *Adapter, BOOLEAN Enable,
 	rtw_write8(Adapter, REG_RD_CTRL+1, 0x6F);
 }
 
-static void ResumeTxBeacon(_adapter *padapter)
+static void ResumeTxBeacon(struct _ADAPTER *padapter)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
 
@@ -2778,7 +2778,7 @@ static void ResumeTxBeacon(_adapter *padapter)
 	rtw_write8(padapter, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
 }
 
-static void StopTxBeacon(_adapter *padapter)
+static void StopTxBeacon(struct _ADAPTER *padapter)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
 

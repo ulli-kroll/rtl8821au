@@ -35,7 +35,7 @@ static int32_t  translate2dbm(uint8_t signal_strength_idx)
 }
 
 
-static void process_rssi(_adapter *padapter,union recv_frame *prframe)
+static void process_rssi(struct _ADAPTER *padapter,union recv_frame *prframe)
 {
 	uint32_t	last_rssi, tmp_val;
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
@@ -91,7 +91,7 @@ static void process_rssi(_adapter *padapter,union recv_frame *prframe)
 
 
 
-static void process_link_qual(_adapter *padapter,union recv_frame *prframe)
+static void process_link_qual(struct _ADAPTER *padapter,union recv_frame *prframe)
 {
 	uint32_t	last_evm=0, tmpVal;
  	struct rx_pkt_attrib *pattrib;
@@ -154,7 +154,7 @@ static void process_link_qual(_adapter *padapter,union recv_frame *prframe)
 
 }
 
-static void process_phy_info(_adapter *padapter, void *prframe)
+static void process_phy_info(struct _ADAPTER *padapter, void *prframe)
 {
 	union recv_frame *precvframe = (union recv_frame *)prframe;
 

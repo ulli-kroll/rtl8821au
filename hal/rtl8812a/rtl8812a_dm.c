@@ -22,7 +22,7 @@
 
 #include <rtl8812a_hal.h>
 
-static void dm_CheckPbcGPIO(_adapter *padapter)
+static void dm_CheckPbcGPIO(struct _ADAPTER *padapter)
 {
 	uint8_t	tmp1byte;
 	uint8_t	bPbcPressed = _FALSE;

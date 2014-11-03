@@ -22,7 +22,7 @@
 //#include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag, uint8_t *ptxdesc)
+void _dbg_dump_tx_info(struct _ADAPTER	*padapter,int frame_tag, uint8_t *ptxdesc)
 {
 	uint8_t bDumpTxPkt;
 	uint8_t bDumpTxDesc = _FALSE;

@@ -23,7 +23,7 @@
 #include <rtl8812a_hal.h>
 
 #ifdef DBG_CONFIG_ERROR_DETECT
-void rtl8812_sreset_xmit_status_check(_adapter *padapter)
+void rtl8812_sreset_xmit_status_check(struct _ADAPTER *padapter)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
@@ -68,7 +68,7 @@ void rtl8812_sreset_xmit_status_check(_adapter *padapter)
 	}
 }
 
-void rtl8812_sreset_linked_status_check(_adapter *padapter)
+void rtl8812_sreset_linked_status_check(struct _ADAPTER *padapter)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;

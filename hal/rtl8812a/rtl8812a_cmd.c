@@ -30,7 +30,7 @@
 #define RTL8812_EX_MESSAGE_BOX_SIZE	4
 
 
-static uint8_t _is_fw_read_cmd_down(_adapter* padapter, uint8_t msgbox_num)
+static uint8_t _is_fw_read_cmd_down(struct _ADAPTER* padapter, uint8_t msgbox_num)
 {
 	uint8_t	read_down = _FALSE;
 	int 	retry_cnts = 100;
@@ -159,7 +159,7 @@ _func_exit_;
 	return ret;
 }
 
-uint8_t rtl8812_h2c_msg_hdl(_adapter *padapter, unsigned char *pbuf)
+uint8_t rtl8812_h2c_msg_hdl(struct _ADAPTER *padapter, unsigned char *pbuf)
 {
 	uint8_t ElementID, CmdLen;
 	uint8_t *pCmdBuffer;
@@ -178,7 +178,7 @@ uint8_t rtl8812_h2c_msg_hdl(_adapter *padapter, unsigned char *pbuf)
 	return H2C_SUCCESS;
 }
 
-uint8_t rtl8812_set_rssi_cmd(_adapter*padapter, uint8_t *param)
+uint8_t rtl8812_set_rssi_cmd(struct _ADAPTER*padapter, uint8_t *param)
 {
 	uint8_t	res=_SUCCESS;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
@@ -458,7 +458,7 @@ void rtl8812_set_FwMediaStatus_cmd(struct _ADAPTER *padapter, uint16_t mstatus_r
 	FillH2CCmd_8812(padapter, H2C_8812_MSRRPT, 3, u1JoinBssRptParm);
 }
 
-void ConstructBeacon(_adapter *padapter, uint8_t *pframe, uint32_t *pLength)
+void ConstructBeacon(struct _ADAPTER *padapter, uint8_t *pframe, uint32_t *pLength)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	uint16_t					*fctrl;
@@ -560,7 +560,7 @@ _ConstructBeacon:
 
 }
 
-void ConstructPSPoll(_adapter *padapter, uint8_t *pframe, uint32_t *pLength)
+void ConstructPSPoll(struct _ADAPTER *padapter, uint8_t *pframe, uint32_t *pLength)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	uint16_t					*fctrl;
@@ -663,7 +663,7 @@ void ConstructNullFunctionData(
 	*pLength = pktlen;
 }
 
-void ConstructProbeRsp(_adapter *padapter, uint8_t *pframe, uint32_t *pLength, uint8_t *StaAddr, BOOLEAN bHideSSID)
+void ConstructProbeRsp(struct _ADAPTER *padapter, uint8_t *pframe, uint32_t *pLength, uint8_t *StaAddr, BOOLEAN bHideSSID)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	uint16_t					*fctrl;

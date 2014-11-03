@@ -3879,7 +3879,7 @@ static int rtw_test(
 	uint8_t *pbuf, *pch;
 	char *ptmp;
 	uint8_t *delim = ",";
-	PADAPTER padapter = rtw_netdev_priv(ndev);
+	struct _ADAPTER *padapter = rtw_netdev_priv(ndev);
 
 
 	DBG_871X("+%s\n", __func__);

@@ -36,7 +36,7 @@ int ui_pid[3] = {0, 0, 0};
 extern int pm_netdev_open(struct net_device *ndev,uint8_t bnormal);
 static int rtw_suspend(struct usb_interface *intf, pm_message_t message);
 static int rtw_resume(struct usb_interface *intf);
-int rtw_resume_process(_adapter *padapter);
+int rtw_resume_process(struct _ADAPTER *padapter);
 
 
 static int rtw_drv_init(struct usb_interface *pusb_intf,const struct usb_device_id *pdid);
@@ -394,7 +394,7 @@ static void usb_dvobj_deinit(struct usb_interface *usb_intf)
 
 }
 
-static void rtw_decide_chip_type_by_usb_info(_adapter *padapter, const struct usb_device_id *pdid)
+static void rtw_decide_chip_type_by_usb_info(struct _ADAPTER *padapter, const struct usb_device_id *pdid)
 {
 	padapter->chip_type = pdid->driver_info;
 
@@ -408,7 +408,7 @@ static void rtw_decide_chip_type_by_usb_info(_adapter *padapter, const struct us
 	#endif
 }
 
-void usb_set_intf_ops(_adapter *padapter,struct _io_ops *pops)
+void usb_set_intf_ops(struct _ADAPTER *padapter,struct _io_ops *pops)
 {
 
 
@@ -420,7 +420,7 @@ void usb_set_intf_ops(_adapter *padapter,struct _io_ops *pops)
 }
 
 
-static void usb_intf_start(_adapter *padapter)
+static void usb_intf_start(struct _ADAPTER *padapter)
 {
 
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("+usb_intf_start\n"));
@@ -431,7 +431,7 @@ static void usb_intf_start(_adapter *padapter)
 
 }
 
-static void usb_intf_stop(_adapter *padapter)
+static void usb_intf_stop(struct _ADAPTER *padapter)
 {
 
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("+usb_intf_stop\n"));
@@ -455,7 +455,7 @@ static void usb_intf_stop(_adapter *padapter)
 
 }
 
-static void rtw_dev_unload(_adapter *padapter)
+static void rtw_dev_unload(struct _ADAPTER *padapter)
 {
 	struct net_device *ndev= (struct net_device*)padapter->ndev;
 	uint8_t val8;
@@ -522,7 +522,7 @@ static void process_spec_devid(const struct usb_device_id *pdid)
 static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 {
 	struct dvobj_priv *dvobj = usb_get_intfdata(pusb_intf);
-	_adapter *padapter = dvobj->padapter;
+	struct _ADAPTER *padapter = dvobj->padapter;
 	struct net_device *ndev = padapter->ndev;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
@@ -595,12 +595,12 @@ exit:
 static int rtw_resume(struct usb_interface *pusb_intf)
 {
 	struct dvobj_priv *dvobj = usb_get_intfdata(pusb_intf);
-	_adapter *padapter = dvobj->padapter;
+	struct _ADAPTER *padapter = dvobj->padapter;
 
 	return rtw_resume_process(padapter);
 }
 
-int rtw_resume_process(_adapter *padapter)
+int rtw_resume_process(struct _ADAPTER *padapter)
 {
 	struct net_device *ndev;
 	struct pwrctrl_priv *pwrpriv;
@@ -673,7 +673,7 @@ exit:
 }
 
 #ifdef CONFIG_AUTOSUSPEND
-void autosuspend_enter(_adapter* padapter)
+void autosuspend_enter(struct _ADAPTER* padapter)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	struct dvobj_priv *dvobj = adapter_to_dvobj(padapter);
@@ -691,7 +691,7 @@ void autosuspend_enter(_adapter* padapter)
 	DBG_871X("...pm_usage_cnt(%d).....\n", atomic_read(&(dvobj->pusbintf->pm_usage_cnt)));
 
 }
-int autoresume_enter(_adapter* padapter)
+int autoresume_enter(struct _ADAPTER* padapter)
 {
 	int result = _SUCCESS;
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
@@ -756,13 +756,13 @@ RETURN:
  *        We accept the new device by returning 0.
 */
 
-_adapter  *rtw_sw_export = NULL;
+struct _ADAPTER  *rtw_sw_export = NULL;
 extern struct hal_ops rtl8812au_hal_ops;
 
-_adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
+struct _ADAPTER *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
-	_adapter *padapter = NULL;
+	struct _ADAPTER *padapter = NULL;
 	struct net_device *ndev = NULL;
 	int status = _FAIL;
 
@@ -896,7 +896,7 @@ exit:
 	return padapter;
 }
 
-static void rtw_usb_if1_deinit(_adapter *padapter)
+static void rtw_usb_if1_deinit(struct _ADAPTER *padapter)
 {
 	struct net_device *ndev = padapter->ndev;
 	struct mlme_priv *pmlmepriv= &padapter->mlmepriv;
@@ -1075,7 +1075,7 @@ static void dump_usb_interface(struct usb_interface *usb_intf)
 
 static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
-	_adapter *padapter = NULL;
+	struct _ADAPTER *padapter = NULL;
 	int status;
 	struct dvobj_priv *dvobj;
 
@@ -1132,7 +1132,7 @@ exit:
 static void rtw_dev_remove(struct usb_interface *pusb_intf)
 {
 	struct dvobj_priv *dvobj = usb_get_intfdata(pusb_intf);
-	_adapter *padapter = dvobj->padapter;
+	struct _ADAPTER *padapter = dvobj->padapter;
 	struct net_device *ndev = padapter->ndev;
 	struct mlme_priv *pmlmepriv= &padapter->mlmepriv;
 

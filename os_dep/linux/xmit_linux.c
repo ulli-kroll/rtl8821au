@@ -99,7 +99,7 @@ void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib)
 #endif
 }
 
-int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag)
+int rtw_os_xmit_resource_alloc(struct _ADAPTER *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag)
 {
 	if (alloc_sz > 0) {
 		pxmitbuf->pallocated_buf = rtw_zmalloc(alloc_sz);
@@ -124,7 +124,7 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 	return _SUCCESS;
 }
 
-void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, uint8_t flag)
+void rtw_os_xmit_resource_free(struct _ADAPTER *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, uint8_t flag)
 {
 	if (flag) {
 		int i;
@@ -146,7 +146,7 @@ void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32
 
 #define WMM_XMIT_THRESHOLD	(NR_XMITFRAME*2/5)
 
-void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
+void rtw_os_pkt_complete(struct _ADAPTER *padapter, _pkt *pkt)
 {
 	uint16_t queue;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
@@ -165,7 +165,7 @@ void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 	dev_kfree_skb_any(pkt);
 }
 
-void rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe)
+void rtw_os_xmit_complete(struct _ADAPTER *padapter, struct xmit_frame *pxframe)
 {
 	if(pxframe->pkt) {
 		/*
@@ -179,9 +179,9 @@ void rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe)
 	pxframe->pkt = NULL;
 }
 
-void rtw_os_xmit_schedule(_adapter *padapter)
+void rtw_os_xmit_schedule(struct _ADAPTER *padapter)
 {
-	_adapter *pri_adapter = padapter;
+	struct _ADAPTER *pri_adapter = padapter;
 
 	_irqL  irqL;
 	struct xmit_priv *pxmitpriv;
@@ -200,7 +200,7 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 	_exit_critical_bh(&pxmitpriv->lock, &irqL);
 }
 
-static void rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)
+static void rtw_check_xmit_resource(struct _ADAPTER *padapter, _pkt *pkt)
 {
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	uint16_t	queue;
@@ -221,7 +221,7 @@ static void rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)
 }
 
 #ifdef CONFIG_TX_MCAST2UNI
-int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
+int rtw_mlcst2unicst(struct _ADAPTER *padapter, struct sk_buff *skb)
 {
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;

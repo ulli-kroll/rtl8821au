@@ -381,7 +381,7 @@ void rtw_proc_init_one(struct net_device *ndev)
 	}
 
 	entry = create_proc_read_entry("adapter_state", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_adapter_state, dev);
+				   dir_dev, proc_getstruct _ADAPTER_state, dev);
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;

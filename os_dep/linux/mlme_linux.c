@@ -26,7 +26,7 @@
 /*
 void sitesurvey_ctrl_handler(void *FunctionContext)
 {
-	_adapter *adapter = (_adapter *)FunctionContext;
+	struct _ADAPTER *adapter = (struct _ADAPTER *)FunctionContext;
 
 	_sitesurvey_ctrl_handler(adapter);
 
@@ -36,28 +36,28 @@ void sitesurvey_ctrl_handler(void *FunctionContext)
 
 void rtw_join_timeout_handler (void *FunctionContext)
 {
-	_adapter *adapter = (_adapter *)FunctionContext;
+	struct _ADAPTER *adapter = (struct _ADAPTER *)FunctionContext;
 	_rtw_join_timeout_handler(adapter);
 }
 
 
 void _rtw_scan_timeout_handler (void *FunctionContext)
 {
-	_adapter *adapter = (_adapter *)FunctionContext;
+	struct _ADAPTER *adapter = (struct _ADAPTER *)FunctionContext;
 	rtw_scan_timeout_handler(adapter);
 }
 
 
 void _dynamic_check_timer_handlder (void *FunctionContext)
 {
-	_adapter *adapter = (_adapter *)FunctionContext;
+	struct _ADAPTER *adapter = (struct _ADAPTER *)FunctionContext;
 
 	rtw_dynamic_check_timer_handlder(adapter);
 
 	_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);
 }
 
-void rtw_init_mlme_timer(_adapter *padapter)
+void rtw_init_mlme_timer(struct _ADAPTER *padapter)
 {
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -68,10 +68,10 @@ void rtw_init_mlme_timer(_adapter *padapter)
 	_init_timer(&(pmlmepriv->dynamic_chk_timer), padapter->ndev, _dynamic_check_timer_handlder, padapter);
 }
 
-extern void rtw_indicate_wx_assoc_event(_adapter *padapter);
-extern void rtw_indicate_wx_disassoc_event(_adapter *padapter);
+extern void rtw_indicate_wx_assoc_event(struct _ADAPTER *padapter);
+extern void rtw_indicate_wx_disassoc_event(struct _ADAPTER *padapter);
 
-void rtw_os_indicate_connect(_adapter *adapter)
+void rtw_os_indicate_connect(struct _ADAPTER *adapter)
 {
 
 _func_enter_;
@@ -86,14 +86,14 @@ _func_exit_;
 
 }
 
-extern void indicate_wx_scan_complete_event(_adapter *padapter);
-void rtw_os_indicate_scan_done( _adapter *padapter, bool aborted)
+extern void indicate_wx_scan_complete_event(struct _ADAPTER *padapter);
+void rtw_os_indicate_scan_done( struct _ADAPTER *padapter, bool aborted)
 {
 	indicate_wx_scan_complete_event(padapter);
 }
 
 static RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
-void rtw_reset_securitypriv( _adapter *adapter )
+void rtw_reset_securitypriv( struct _ADAPTER *adapter )
 {
 	uint8_t	backupPMKIDIndex = 0;
 	uint8_t	backupTKIPCountermeasure = 0x00;
@@ -147,7 +147,7 @@ void rtw_reset_securitypriv( _adapter *adapter )
 	}
 }
 
-void rtw_os_indicate_disconnect( _adapter *adapter )
+void rtw_os_indicate_disconnect( struct _ADAPTER *adapter )
 {
    //RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
 
@@ -163,7 +163,7 @@ _func_exit_;
 
 }
 
-void rtw_report_sec_ie(_adapter *adapter,uint8_t authmode,uint8_t *sec_ie)
+void rtw_report_sec_ie(struct _ADAPTER *adapter,uint8_t authmode,uint8_t *sec_ie)
 {
 	uint	len;
 	uint8_t	*buff,*p,i;
@@ -214,14 +214,14 @@ _func_exit_;
 
 void _survey_timer_hdl (void *FunctionContext)
 {
-	_adapter *padapter = (_adapter *)FunctionContext;
+	struct _ADAPTER *padapter = (struct _ADAPTER *)FunctionContext;
 
 	survey_timer_hdl(padapter);
 }
 
 void _link_timer_hdl (void *FunctionContext)
 {
-	_adapter *padapter = (_adapter *)FunctionContext;
+	struct _ADAPTER *padapter = (struct _ADAPTER *)FunctionContext;
 	link_timer_hdl(padapter);
 }
 
@@ -231,7 +231,7 @@ void _addba_timer_hdl(void *FunctionContext)
 	addba_timer_hdl(psta);
 }
 
-void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta)
+void init_addba_retry_timer(struct _ADAPTER *padapter, struct sta_info *psta)
 {
 
 	_init_timer(&psta->addba_retry_timer, padapter->ndev, _addba_timer_hdl, psta);
@@ -240,18 +240,18 @@ void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta)
 /*
 void _reauth_timer_hdl(void *FunctionContext)
 {
-	_adapter *padapter = (_adapter *)FunctionContext;
+	struct _ADAPTER *padapter = (struct _ADAPTER *)FunctionContext;
 	reauth_timer_hdl(padapter);
 }
 
 void _reassoc_timer_hdl(void *FunctionContext)
 {
-	_adapter *padapter = (_adapter *)FunctionContext;
+	struct _ADAPTER *padapter = (struct _ADAPTER *)FunctionContext;
 	reassoc_timer_hdl(padapter);
 }
 */
 
-void init_mlme_ext_timer(_adapter *padapter)
+void init_mlme_ext_timer(struct _ADAPTER *padapter)
 {
 	struct	mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 
@@ -263,7 +263,7 @@ void init_mlme_ext_timer(_adapter *padapter)
 	//_init_timer(&pmlmeext->reassoc_timer, padapter->ndev, _reassoc_timer_hdl, padapter);
 }
 
-uint8_t rtw_handle_tkip_countermeasure(_adapter* padapter)
+uint8_t rtw_handle_tkip_countermeasure(struct _ADAPTER* padapter)
 {
 	uint8_t status = _SUCCESS;
 	u32 cur_time = 0;
@@ -288,7 +288,7 @@ uint8_t rtw_handle_tkip_countermeasure(_adapter* padapter)
 
 #ifdef CONFIG_AP_MODE
 
-void rtw_indicate_sta_assoc_event(_adapter *padapter, struct sta_info *psta)
+void rtw_indicate_sta_assoc_event(struct _ADAPTER *padapter, struct sta_info *psta)
 {
 	union iwreq_data wrqu;
 	struct sta_priv *pstapriv = &padapter->stapriv;
@@ -313,7 +313,7 @@ void rtw_indicate_sta_assoc_event(_adapter *padapter, struct sta_info *psta)
 
 }
 
-void rtw_indicate_sta_disassoc_event(_adapter *padapter, struct sta_info *psta)
+void rtw_indicate_sta_disassoc_event(struct _ADAPTER *padapter, struct sta_info *psta)
 {
 	union iwreq_data wrqu;
 	struct sta_priv *pstapriv = &padapter->stapriv;

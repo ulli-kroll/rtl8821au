@@ -21,7 +21,7 @@
 
 #include <drv_types.h>
 
-int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, uint8_t *pdata, _pkt *pskb)
+int rtw_os_alloc_recvframe(struct _ADAPTER *padapter, union recv_frame *precvframe, uint8_t *pdata, _pkt *pskb)
 {
 	int res = _SUCCESS;
 	uint8_t	shift_sz = 0;
@@ -115,7 +115,7 @@ void rtw_os_free_recvframe(union recv_frame *precvframe)
 }
 
 /* init os related resource in struct recv_priv */
-int rtw_os_recv_resource_init(struct recv_priv *precvpriv, _adapter *padapter)
+int rtw_os_recv_resource_init(struct recv_priv *precvpriv, struct _ADAPTER *padapter)
 {
 	int	res=_SUCCESS;
 
@@ -123,7 +123,7 @@ int rtw_os_recv_resource_init(struct recv_priv *precvpriv, _adapter *padapter)
 }
 
 /* alloc os related resource in union recv_frame */
-int rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe)
+int rtw_os_recv_resource_alloc(struct _ADAPTER *padapter, union recv_frame *precvframe)
 {
 	int	res=_SUCCESS;
 
@@ -139,7 +139,7 @@ void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 }
 
 /* alloc os related resource in struct recv_buf */
-int rtw_os_recvbuf_resource_alloc(_adapter *padapter, struct recv_buf *precvbuf)
+int rtw_os_recvbuf_resource_alloc(struct _ADAPTER *padapter, struct recv_buf *precvbuf)
 {
 	int res=_SUCCESS;
 
@@ -168,7 +168,7 @@ int rtw_os_recvbuf_resource_alloc(_adapter *padapter, struct recv_buf *precvbuf)
 }
 
 /* free os related resource in struct recv_buf */
-int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
+int rtw_os_recvbuf_resource_free(struct _ADAPTER *padapter, struct recv_buf *precvbuf)
 {
 	int ret = _SUCCESS;
 
@@ -236,7 +236,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, uint16_t nSubframe_Length
 	return sub_skb;
 }
 
-void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib)
+void rtw_os_recv_indicate_pkt(struct _ADAPTER *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib)
 {
 	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
 
@@ -292,7 +292,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 	}
 }
 
-void rtw_handle_tkip_mic_err(_adapter *padapter,uint8_t bgroup)
+void rtw_handle_tkip_mic_err(struct _ADAPTER *padapter,uint8_t bgroup)
 {
 	union iwreq_data wrqu;
 	struct iw_michaelmicfailure    ev;
@@ -331,7 +331,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter,uint8_t bgroup)
 }
 
 
-int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
+int rtw_recv_indicatepkt(struct _ADAPTER *padapter, union recv_frame *precv_frame)
 {
 	struct recv_priv *precvpriv;
 	_queue	*pfree_recv_queue;
@@ -385,7 +385,7 @@ _func_exit_;
 
 }
 
-void rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf)
+void rtw_os_read_port(struct _ADAPTER *padapter, struct recv_buf *precvbuf)
 {
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 
@@ -413,7 +413,7 @@ void _rtw_reordering_ctrl_timeout_handler (void *FunctionContext)
 
 void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
 {
-	_adapter *padapter = preorder_ctrl->padapter;
+	struct _ADAPTER *padapter = preorder_ctrl->padapter;
 
 	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter->ndev, _rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
 

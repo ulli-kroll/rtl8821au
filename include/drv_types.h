@@ -34,7 +34,7 @@
 #include <wifi.h>
 #include <ieee80211.h>
 
-typedef struct _ADAPTER _adapter, ADAPTER;
+typedef struct _ADAPTER _adapter;
 
 #include <rtw_debug.h>
 

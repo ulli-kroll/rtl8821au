@@ -520,7 +520,7 @@ void ODM_DMWatchdog(PDM_ODM_T pDM_Odm)
 				pDM_Odm->LinkedInterval++;
 
 			if (pDM_Odm->LinkedInterval == 2) {
-				PADAPTER		pAdapter = pDM_Odm->Adapter;
+				struct _ADAPTER *	pAdapter = pDM_Odm->Adapter;
 
 				/*
 				 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
@@ -689,7 +689,7 @@ void ODM_CmnInfoHook(PDM_ODM_T pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue)
 		break;
 
 	case	ODM_CMNINFO_BUDDY_ADAPTOR:
-		pDM_Odm->pBuddyAdapter = (PADAPTER *)pValue;
+		pDM_Odm->pBuddyAdapter = (struct _ADAPTER **)pValue;
 		break;
 
 	case	ODM_CMNINFO_DMSP_IS_MASTER:
@@ -1070,7 +1070,7 @@ int getIGIForDiff(int value_IGI)
 
 void odm_AdaptivityInit(PDM_ODM_T pDM_Odm)
 {
-	PADAPTER pAdapter = pDM_Odm->Adapter;
+	struct _ADAPTER *pAdapter = pDM_Odm->Adapter;
 
 	pDM_Odm->TH_H = 0xfa; 		/* -6dB */
 	pDM_Odm->TH_L = 0xfd; 		/* -3dB */
@@ -1211,7 +1211,7 @@ void ODM_Write_DIG(PDM_ODM_T pDM_Odm, u1Byte CurrentIGI)
 
 void odm_DIGbyRSSI_LPS(PDM_ODM_T pDM_Odm)
 {
-	/* PADAPTER	pAdapter =pDM_Odm->Adapter; */
+	/* struct _ADAPTER *pAdapter =pDM_Odm->Adapter; */
 	/* pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable; */
 	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 
@@ -1847,7 +1847,7 @@ void odm_RefreshRateAdaptiveMaskCE(PDM_ODM_T pDM_Odm)
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	u1Byte	i;
-	PADAPTER pAdapter	=  pDM_Odm->Adapter;
+	struct _ADAPTER *pAdapter	=  pDM_Odm->Adapter;
 	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
 
 	if (pAdapter->bDriverStopped) {
@@ -1965,7 +1965,7 @@ void odm_RSSIMonitorCheck(PDM_ODM_T pDM_Odm)
 {
 	/*
 	 * For AP/ADSL use prtl8192cd_priv
-	 * For CE/NIC use PADAPTER
+	 * For CE/NIC use _ADAPTER
 	 */
 
 	if (!(pDM_Odm->SupportAbility & ODM_BB_RSSI_MONITOR))
@@ -1991,12 +1991,12 @@ void odm_RSSIMonitorCheck(PDM_ODM_T pDM_Odm)
  */
 static VOID
 FindMinimumRSSI_Dmsp(
-	IN	PADAPTER	pAdapter
+	IN	struct _ADAPTER *pAdapter
 )
 {
 }
 
-static void FindMinimumRSSI(PADAPTER pAdapter)
+static void FindMinimumRSSI(struct _ADAPTER *pAdapter)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -2019,7 +2019,7 @@ static void FindMinimumRSSI(PADAPTER pAdapter)
 void odm_RSSIMonitorCheckCE(PDM_ODM_T pDM_Odm)
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PADAPTER	Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
@@ -2161,7 +2161,7 @@ void odm_TXPowerTrackingInit(PDM_ODM_T pDM_Odm)
 
 u1Byte getSwingIndex(PDM_ODM_T pDM_Odm)
 {
-	PADAPTER		Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *	Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	u1Byte 			i = 0;
 	uint32_t 			bbSwing;
@@ -2180,7 +2180,7 @@ void odm_TXPowerTrackingThermalMeterInit(PDM_ODM_T pDM_Odm)
 {
 	u1Byte 		p = 0;
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PADAPTER	Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
 #if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
@@ -2243,7 +2243,7 @@ void ODM_TXPowerTrackingCheck(PDM_ODM_T	pDM_Odm)
 {
 	/*
 	 * For AP/ADSL use prtl8192cd_priv
-	 * For CE/NIC use PADAPTER
+	 * For CE/NIC use _ADAPTER
 	 */
 
 	/*
@@ -2267,7 +2267,7 @@ void ODM_TXPowerTrackingCheck(PDM_ODM_T	pDM_Odm)
 void odm_TXPowerTrackingCheckCE(PDM_ODM_T pDM_Odm)
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PADAPTER	Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *Adapter = pDM_Odm->Adapter;
 
 #if (((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1)))
 	if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK)) {
@@ -2355,7 +2355,7 @@ void ODM_EdcaTurboInit(PDM_ODM_T pDM_Odm)
 {
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PADAPTER	Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *Adapter = pDM_Odm->Adapter;
 	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = FALSE;
 	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = FALSE;
 	Adapter->recvpriv.bIsAnyNonBEPkts = FALSE;
@@ -2373,7 +2373,7 @@ void odm_EdcaTurboCheck(PDM_ODM_T pDM_Odm)
 {
 	/*
 	 * For AP/ADSL use prtl8192cd_priv
-	 * For CE/NIC use PADAPTER
+	 * For CE/NIC use _ADAPTER
 	 */
 
 	/*
@@ -2406,7 +2406,7 @@ VOID odm_EdcaTurboCheckCE(PDM_ODM_T pDM_Odm)
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 
-	PADAPTER	Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *Adapter = pDM_Odm->Adapter;
 	uint32_t	EDCA_BE_UL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_UL[pMgntInfo->IOTPeer]; */
 	uint32_t	EDCA_BE_DL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_DL[pMgntInfo->IOTPeer]; */
 	uint32_t	ICType = pDM_Odm->SupportICType;

@@ -86,7 +86,7 @@ static void dm_CheckPbcGPIO(_adapter *padapter)
  * Initialize GPIO setting registers
  */
 
-static void dm_InitGPIOSetting(PADAPTER	Adapter)
+static void dm_InitGPIOSetting(struct _ADAPTER *Adapter)
 {
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
 
@@ -137,7 +137,7 @@ ODM_BOARD_TYPE_E boardType(uint8_t InterfaceSel)
  * ============================================================
  */
 
-static void Init_ODM_ComInfo_8812(PADAPTER Adapter)
+static void Init_ODM_ComInfo_8812(struct _ADAPTER *Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
@@ -246,7 +246,7 @@ static void Init_ODM_ComInfo_8812(PADAPTER Adapter)
 	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 
 }
-static void Update_ODM_ComInfo_8812(PADAPTER Adapter)
+static void Update_ODM_ComInfo_8812(struct _ADAPTER *Adapter)
 {
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
@@ -291,7 +291,7 @@ static void Update_ODM_ComInfo_8812(PADAPTER Adapter)
 	 *
 	 * pHalData->CurrentBandType92D
 	 * ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_DMSP_GET_VALUE,&(pDM_Odm->u1Byte_temp));
-	 * ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_BUDDY_ADAPTOR,&(pDM_Odm->PADAPTER_temp));
+	 * ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_BUDDY_ADAPTOR,&(pDM_Odm->ADAPTER_temp));
 	 * ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_DMSP_IS_MASTER,&(pDM_Odm->u1Byte_temp));
 	 * ================= only for 8192D   =================
 	 * driver havn't those variable now
@@ -309,7 +309,7 @@ static void Update_ODM_ComInfo_8812(PADAPTER Adapter)
 	}
 }
 
-void rtl8812_InitHalDm(PADAPTER	Adapter)
+void rtl8812_InitHalDm(struct _ADAPTER *Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -328,7 +328,7 @@ void rtl8812_InitHalDm(PADAPTER	Adapter)
 }
 
 
-VOID rtl8812_HalDmWatchDog(PADAPTER Adapter)
+VOID rtl8812_HalDmWatchDog(struct _ADAPTER *Adapter)
 {
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
 	BOOLEAN		bFwPSAwake = _TRUE;
@@ -378,7 +378,7 @@ skip_dm:
 	return;
 }
 
-void rtl8812_init_dm_priv(IN PADAPTER Adapter)
+void rtl8812_init_dm_priv(IN struct _ADAPTER *Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -407,7 +407,7 @@ void rtl8812_init_dm_priv(IN PADAPTER Adapter)
 	pHalData->TxPwrInPercentage = TX_PWR_PERCENTAGE_3;
 }
 
-void rtl8812_deinit_dm_priv(IN PADAPTER Adapter)
+void rtl8812_deinit_dm_priv(IN struct _ADAPTER *Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -425,9 +425,9 @@ void rtl8812_deinit_dm_priv(IN PADAPTER Adapter)
  *
  * Compare RSSI for deciding antenna
  */
-void AntDivCompare8812(PADAPTER Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
+void AntDivCompare8812(struct _ADAPTER *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
 {
-	/* PADAPTER Adapter = pDM_Odm->Adapter ; */
+	/* struct _ADAPTER *Adapter = pDM_Odm->Adapter ; */
 
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	if (0 != pHalData->AntDivCfg ) {
@@ -445,7 +445,7 @@ void AntDivCompare8812(PADAPTER Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
 }
 
 /* Add new function to reset the state of antenna diversity before link. */
-uint8_t AntDivBeforeLink8812(PADAPTER Adapter )
+uint8_t AntDivBeforeLink8812(struct _ADAPTER *Adapter )
 {
 
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);

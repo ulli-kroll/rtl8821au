@@ -44,7 +44,7 @@ const char *const GLBwSrc[]={
 
 u32
 PHY_QueryBBReg8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint32_t			RegAddr,
 	IN	uint32_t			BitMask
 	)
@@ -69,7 +69,7 @@ PHY_QueryBBReg8812(
 
 VOID
 PHY_SetBBReg8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint32_t		RegAddr,
 	IN	uint32_t		BitMask,
 	IN	uint32_t		Data
@@ -99,7 +99,7 @@ PHY_SetBBReg8812(
 
 static	u32
 phy_RFSerialRead(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	uint32_t				Offset
 	)
@@ -162,7 +162,7 @@ phy_RFSerialRead(
 
 static	VOID
 phy_RFSerialWrite(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	uint32_t				Offset,
 	IN	uint32_t				Data
@@ -217,7 +217,7 @@ phy_RFSerialWrite(
 
 u32
 PHY_QueryRFReg8812(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	uint32_t				RegAddr,
 	IN	uint32_t				BitMask
@@ -239,7 +239,7 @@ PHY_QueryRFReg8812(
 
 VOID
 PHY_SetRFReg8812(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				eRFPath,
 	IN	uint32_t				RegAddr,
 	IN	uint32_t				BitMask,
@@ -269,7 +269,7 @@ PHY_SetRFReg8812(
 // 3. Initial MAC/BB/RF config by reading MAC/BB/RF txt.
 //
 
-int32_t PHY_MACConfig8812(PADAPTER Adapter)
+int32_t PHY_MACConfig8812(struct _ADAPTER *Adapter)
 {
 	int				rtStatus = _SUCCESS;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -297,7 +297,7 @@ int32_t PHY_MACConfig8812(PADAPTER Adapter)
 
 static	VOID
 phy_InitBBRFRegisterDefinition(
-	IN	PADAPTER		Adapter
+	IN	struct _ADAPTER *	Adapter
 )
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
@@ -331,7 +331,7 @@ phy_InitBBRFRegisterDefinition(
 
 VOID
 PHY_BB8812_Config_1T(
-	IN PADAPTER Adapter
+	IN struct _ADAPTER *Adapter
 	)
 {
 	// BB OFDM RX Path_A
@@ -354,7 +354,7 @@ PHY_BB8812_Config_1T(
 
 static	int
 phy_BB8812_Config_ParaFile(
-	IN	PADAPTER	Adapter
+	IN	struct _ADAPTER *Adapter
 	)
 {
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
@@ -479,7 +479,7 @@ phy_BB_Config_ParaFile_Fail:
 
 int
 PHY_BBConfig8812(
-	IN	PADAPTER	Adapter
+	IN	struct _ADAPTER *Adapter
 	)
 {
 	int	rtStatus = _SUCCESS;
@@ -537,7 +537,7 @@ PHY_BBConfig8812(
 
 int
 PHY_RFConfig8812(
-	IN	PADAPTER	Adapter
+	IN	struct _ADAPTER *Adapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -736,7 +736,7 @@ PHY_InitPowerLimitTable(
 	IN	PDM_ODM_T	pDM_Odm
 	)
 {
-	PADAPTER		Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *	Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t				i, j, k, l, m;
 
@@ -765,7 +765,7 @@ PHY_InitPowerLimitTable(
 
 VOID
 PHY_ConvertPowerLimitToPowerIndex(
-	IN	PADAPTER			Adapter
+	IN	struct _ADAPTER *		Adapter
 	)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
@@ -1096,7 +1096,7 @@ PHY_SetPowerLimitTableValue(
 	IN	s8*				PowerLimit
 	)
 {
-	PADAPTER			Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *		Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA( Adapter );
 	uint8_t					regulation=0, bandwidth=0, rateSection=0,
 						channel, powerLimit, channelGroup;
@@ -1159,7 +1159,7 @@ PHY_SetPowerLimitTableValue(
 
 u8
 PHY_GetPowerLimitValue(
-	IN	PADAPTER			Adapter,
+	IN	struct _ADAPTER *		Adapter,
 	IN	uint32_t					RegPwrTblSel,
 	IN	BAND_TYPE			Band,
 	IN	CHANNEL_WIDTH	Bandwidth,
@@ -1319,7 +1319,7 @@ PHY_GetPowerLimitValue(
 //
 VOID
 PHY_StorePwrByRateIndexVhtSeries(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint32_t			RegAddr,
 	IN	uint32_t			BitMask,
 	IN	uint32_t			Data
@@ -1434,7 +1434,7 @@ phy_ChangePGDataFromExactToRelativeValue(
 }
 
 VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint32_t			RegAddr,
 	IN	uint32_t			BitMask,
 	IN	u32*		pData
@@ -1571,7 +1571,7 @@ VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
 
 VOID
 phy_PreprocessPGDataFromExactToRelativeValue(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint32_t		RegAddr,
 	IN	uint32_t		BitMask,
 	IN	uint32_t		*pData
@@ -1748,7 +1748,7 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 
 VOID
 phy_StorePwrByRateIndexBase(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint32_t			RegAddr,
 	IN	uint32_t			Data
 	)
@@ -2045,7 +2045,7 @@ phy_StorePwrByRateIndexBase(
 
 VOID
 storePwrIndexDiffRateOffset(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint32_t		RegAddr,
 	IN	uint32_t		BitMask,
 	IN	uint32_t		Data
@@ -2184,7 +2184,7 @@ storePwrIndexDiffRateOffset(
 
 static u8
 phy_DbmToTxPwrIdx(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	WIRELESS_MODE	WirelessMode,
 	IN	int			PowerInDbm
 	)
@@ -2198,7 +2198,7 @@ phy_DbmToTxPwrIdx(
 
 static int
 phy_TxPwrIdxToDbm(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	WIRELESS_MODE	WirelessMode,
 	IN	uint8_t			TxPwrIdx
 	)
@@ -2234,7 +2234,7 @@ phy_TxPwrIdxToDbm(
 
 VOID
 PHY_GetTxPowerLevel8812(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	OUT u32*    		powerlevel
 	)
 {
@@ -2244,7 +2244,7 @@ PHY_GetTxPowerLevel8812(
 }
 
 void phy_PowerIndexCheck8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint8_t			channel,
 	IN OUT uint8_t *		cckPowerLevel,
 	IN OUT uint8_t *		ofdmPowerLevel,
@@ -2304,7 +2304,7 @@ phy_GetChnlIndex8812A(
 //
 u32
 phy_GetTxPwrByRateOffset_8812(
-	IN	PADAPTER	pAdapter,
+	IN	struct _ADAPTER *pAdapter,
 	IN	uint8_t			Band,
 	IN	uint8_t			Rf_Path,
 	IN	uint8_t			Rate_Section
@@ -2509,7 +2509,7 @@ phy_GetTxPwrByRateOffset_8812(
 //
 VOID
 phy_TxPwrAdjInPercentage(
-	IN		PADAPTER		Adapter,
+	IN		struct _ADAPTER *	Adapter,
 	OUT		uint8_t *				pTxPwrIdx)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -2551,7 +2551,7 @@ phy_TxPwrAdjInPercentage(
  **************************************************************************************************************/
 u32
 PHY_GetTxPowerIndex_8812A(
-	IN	PADAPTER			pAdapter,
+	IN	struct _ADAPTER *		pAdapter,
 	IN	uint8_t					RFPath,
 	IN	uint8_t					Rate,
 	IN	CHANNEL_WIDTH	BandWidth,
@@ -2793,7 +2793,7 @@ PHY_GetTxPowerIndex_8812A(
 
 VOID
 PHY_SetTxPowerIndex_8812A(
-	IN	PADAPTER			Adapter,
+	IN	struct _ADAPTER *		Adapter,
 	IN	uint32_t				PowerIndex,
 	IN	u1Byte				RFPath,
 	IN	u1Byte				Rate
@@ -2978,7 +2978,7 @@ PHY_SetTxPowerIndex_8812A(
 
 VOID
 phy_SetTxPowerIndexByRateArray(
-	IN	PADAPTER			pAdapter,
+	IN	struct _ADAPTER *		pAdapter,
 	IN 	uint8_t  					RFPath,
 	IN	CHANNEL_WIDTH	BandWidth,
 	IN	uint8_t					Channel,
@@ -3000,7 +3000,7 @@ phy_SetTxPowerIndexByRateArray(
 
 VOID
 PHY_GetTxPowerIndexByRateArray_8812A(
-	IN	PADAPTER			pAdapter,
+	IN	struct _ADAPTER *		pAdapter,
 	IN	uint8_t  					RFPath,
 	IN	CHANNEL_WIDTH	BandWidth,
 	IN	uint8_t					Channel,
@@ -3022,7 +3022,7 @@ PHY_GetTxPowerIndexByRateArray_8812A(
 
 VOID
 phy_TxPowerTrainingByPath_8812(
-	IN	PADAPTER			Adapter,
+	IN	struct _ADAPTER *		Adapter,
 	IN	CHANNEL_WIDTH		BandWidth,
 	IN	uint8_t					Channel,
 	IN	uint8_t					RfPath
@@ -3064,7 +3064,7 @@ phy_TxPowerTrainingByPath_8812(
 
 VOID
 PHY_SetTxPowerLevelByPath8812(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				channel,
 	IN	uint8_t				path
 	)
@@ -3246,7 +3246,7 @@ PHY_SetTxPowerLevelByPath8812(
 //the new way to set tx power by rate, NByte access, here N byte shall be 4 byte(DWord) or NByte(N>4) access. by page/YP, 20121106
 VOID
 PHY_SetTxPowerLevel8812(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	IN	uint8_t				Channel
 	)
 {
@@ -3266,7 +3266,7 @@ PHY_SetTxPowerLevel8812(
 
 BOOLEAN
 PHY_UpdateTxPowerDbm8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	int		powerInDbm
 	)
 {
@@ -3275,7 +3275,7 @@ PHY_UpdateTxPowerDbm8812(
 
 
 uint32_t PHY_GetTxBBSwing_8812A(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	BAND_TYPE 	Band,
 	IN	uint8_t			RFPath
 	)
@@ -3424,7 +3424,7 @@ uint32_t PHY_GetTxBBSwing_8812A(
 
 VOID
 phy_SetRFEReg8812(
-	IN PADAPTER		Adapter,
+	IN struct _ADAPTER *	Adapter,
 	IN uint8_t			Band
 )
 {
@@ -3552,7 +3552,7 @@ phy_SetRFEReg8812(
 
 int32_t
 PHY_SwitchWirelessBand8812(
-	IN PADAPTER		Adapter,
+	IN struct _ADAPTER *	Adapter,
 	IN uint8_t			Band
 )
 {
@@ -3772,7 +3772,7 @@ PHY_SwitchWirelessBand8812(
 
 BOOLEAN
 phy_SwBand8812(
-	IN	PADAPTER	pAdapter,
+	IN	struct _ADAPTER *pAdapter,
 	IN	uint8_t			channelToSW
 )
 {
@@ -3804,7 +3804,7 @@ phy_SwBand8812(
 
 u8
 phy_GetSecondaryChnl_8812(
-	IN	PADAPTER	Adapter
+	IN	struct _ADAPTER *Adapter
 )
 {
 	uint8_t					SCSettingOf40 = 0, SCSettingOf20 = 0;
@@ -3849,7 +3849,7 @@ phy_GetSecondaryChnl_8812(
 
 VOID
 phy_SetRegBW_8812(
-	IN	PADAPTER		Adapter,
+	IN	struct _ADAPTER *	Adapter,
 	CHANNEL_WIDTH 	CurrentBW
 )
 {
@@ -3881,7 +3881,7 @@ phy_SetRegBW_8812(
 
 void
 phy_FixSpur_8812A(
-	IN	PADAPTER	        pAdapter,
+	IN	struct _ADAPTER *        pAdapter,
 	IN  CHANNEL_WIDTH    Bandwidth,
 	IN  u1Byte 			    Channel
 )
@@ -3927,7 +3927,7 @@ phy_FixSpur_8812A(
 
 VOID
 phy_PostSetBwMode8812(
-	IN	PADAPTER	Adapter
+	IN	struct _ADAPTER *Adapter
 )
 {
 	uint8_t			SubChnlNum = 0;
@@ -4031,7 +4031,7 @@ phy_PostSetBwMode8812(
 
 //<20130207, Kordan> The variales initialized here are used in odm_LNAPowerControl().
 VOID phy_InitRssiTRSW(
-	IN	PADAPTER					pAdapter
+	IN	struct _ADAPTER *				pAdapter
 	)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -4060,7 +4060,7 @@ VOID phy_InitRssiTRSW(
 
 VOID
 phy_SwChnl8812(
-	IN	PADAPTER	pAdapter
+	IN	struct _ADAPTER *pAdapter
 	)
 {
 	uint8_t	eRFPath = 0;
@@ -4148,7 +4148,7 @@ phy_SwChnl8812(
 
 VOID
 phy_SwChnlAndSetBwMode8812(
-	IN  PADAPTER		Adapter
+	IN  struct _ADAPTER *	Adapter
 )
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
@@ -4199,7 +4199,7 @@ phy_SwChnlAndSetBwMode8812(
 
 VOID
 PHY_HandleSwChnlAndSetBW8812(
-	IN	PADAPTER			Adapter,
+	IN	struct _ADAPTER *		Adapter,
 	IN	BOOLEAN				bSwitchChannel,
 	IN	BOOLEAN				bSetBandWidth,
 	IN	uint8_t					ChannelNum,
@@ -4209,7 +4209,7 @@ PHY_HandleSwChnlAndSetBW8812(
 	IN	uint8_t					CenterFrequencyIndex1
 )
 {
-	PADAPTER  			pDefAdapter =  GetDefaultAdapter(Adapter);
+	struct _ADAPTER * 			pDefAdapter =  GetDefaultAdapter(Adapter);
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(pDefAdapter);
 	uint8_t					tmpChannel = pHalData->CurrentChannel;
 	CHANNEL_WIDTH		tmpBW= pHalData->CurrentChannelBW;
@@ -4309,7 +4309,7 @@ PHY_HandleSwChnlAndSetBW8812(
 
 VOID
 PHY_SetBWMode8812(
-	IN	PADAPTER			Adapter,
+	IN	struct _ADAPTER *		Adapter,
 	IN	CHANNEL_WIDTH	Bandwidth,	// 20M or 40M
 	IN	uint8_t					Offset		// Upper, Lower, or Don't care
 )
@@ -4325,7 +4325,7 @@ PHY_SetBWMode8812(
 
 VOID
 PHY_SwChnl8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint8_t			channel
 	)
 {
@@ -4338,7 +4338,7 @@ PHY_SwChnl8812(
 
 VOID
 PHY_SetSwChnlBWMode8812(
-	IN	PADAPTER			Adapter,
+	IN	struct _ADAPTER *		Adapter,
 	IN	uint8_t					channel,
 	IN	CHANNEL_WIDTH		Bandwidth,
 	IN	uint8_t					Offset40,

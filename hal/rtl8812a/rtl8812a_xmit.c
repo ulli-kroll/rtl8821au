@@ -105,7 +105,7 @@ void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
  *
 */
 
-void rtl8812a_fill_fake_txdesc(PADAPTER padapter, uint8_t *pDesc,
+void rtl8812a_fill_fake_txdesc(struct _ADAPTER *padapter, uint8_t *pDesc,
 	uint32_t BufferLen, uint8_t IsPsPoll, uint8_t IsBTQosNull)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -176,7 +176,7 @@ void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, uint8_t *ptxdesc)
 
 }
 
-void rtl8812a_fill_txdesc_vcs(PADAPTER padapter, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
+void rtl8812a_fill_txdesc_vcs(struct _ADAPTER *padapter, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -209,7 +209,7 @@ void rtl8812a_fill_txdesc_vcs(PADAPTER padapter, struct pkt_attrib *pattrib, uin
 	}
 }
 
-void rtl8812a_fill_txdesc_phy(PADAPTER padapter, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
+void rtl8812a_fill_txdesc_phy(struct _ADAPTER *padapter, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
 	/* DBG_8192C("bwmode=%d, ch_off=%d\n", pattrib->bwmode, pattrib->ch_offset); */
 
@@ -220,7 +220,7 @@ void rtl8812a_fill_txdesc_phy(PADAPTER padapter, struct pkt_attrib *pattrib, uin
 	}
 }
 
-u8 BWMapping_8812(PADAPTER Adapter, struct pkt_attrib *pattrib)
+u8 BWMapping_8812(struct _ADAPTER *Adapter, struct pkt_attrib *pattrib)
 {
 	uint8_t	BWSettingOfDesc = 0;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
@@ -247,7 +247,7 @@ u8 BWMapping_8812(PADAPTER Adapter, struct pkt_attrib *pattrib)
 	return BWSettingOfDesc;
 }
 
-u8 SCMapping_8812(PADAPTER Adapter, struct pkt_attrib *pattrib)
+u8 SCMapping_8812(struct _ADAPTER *Adapter, struct pkt_attrib *pattrib)
 {
 	uint8_t	SCSettingOfDesc = 0;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);

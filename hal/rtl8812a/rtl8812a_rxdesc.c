@@ -224,7 +224,7 @@ void rtl8812_query_rx_phy_status(
 	union recv_frame	*precvframe,
 	uint8_t 				*pphy_status)
 {
-	PADAPTER 			padapter = precvframe->u.hdr.adapter;
+	struct _ADAPTER *			padapter = precvframe->u.hdr.adapter;
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 	PODM_PHY_INFO_T 	pPHYInfo  = (PODM_PHY_INFO_T)(&pattrib->phy_info);

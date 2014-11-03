@@ -61,7 +61,7 @@ static uint8_t _is_fw_read_cmd_down(_adapter* padapter, uint8_t msgbox_num)
 *|31 - 0	  |
 *|ext_msg|
 ******************************************/
-static int32_t FillH2CCmd_8812(PADAPTER padapter, uint8_t ElementID, uint32_t CmdLen, uint8_t *pCmdBuffer)
+static int32_t FillH2CCmd_8812(struct _ADAPTER *padapter, uint8_t ElementID, uint32_t CmdLen, uint8_t *pCmdBuffer)
 {
 	uint8_t bcmd_down = _FALSE;
 	int32_t retry_cnts = 100;
@@ -218,7 +218,7 @@ uint8_t	Get_VHT_ENI(
 
 BOOLEAN
 Get_RA_ShortGI(
-	PADAPTER			Adapter,
+	struct _ADAPTER *		Adapter,
 	struct sta_info		*psta,
 	uint8_t					shortGIrate
 )
@@ -308,7 +308,7 @@ Get_RA_LDPC_8812(
 	return (bLDPC << 2);
 }
 
-void rtl8812_set_raid_cmd(PADAPTER padapter, uint32_t bitmap, uint8_t * arg)
+void rtl8812_set_raid_cmd(struct _ADAPTER *padapter, uint32_t bitmap, uint8_t * arg)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -359,7 +359,7 @@ _func_exit_;
 
 }
 
-void rtl8812_Add_RateATid(PADAPTER pAdapter, uint32_t bitmap, uint8_t * arg, uint8_t rssi_level)
+void rtl8812_Add_RateATid(struct _ADAPTER *pAdapter, uint32_t bitmap, uint8_t * arg, uint8_t rssi_level)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t	macid;
@@ -374,7 +374,7 @@ void rtl8812_Add_RateATid(PADAPTER pAdapter, uint32_t bitmap, uint8_t * arg, uin
 	rtl8812_set_raid_cmd(pAdapter, bitmap, arg);
 }
 
-void rtl8812_set_FwPwrMode_cmd(PADAPTER padapter, uint8_t PSMode)
+void rtl8812_set_FwPwrMode_cmd(struct _ADAPTER *padapter, uint8_t PSMode)
 {
 	uint8_t	u1H2CSetPwrMode[5]={0};
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
@@ -439,7 +439,7 @@ _func_enter_;
 _func_exit_;
 }
 
-void rtl8812_set_FwMediaStatus_cmd(PADAPTER padapter, uint16_t mstatus_rpt )
+void rtl8812_set_FwMediaStatus_cmd(struct _ADAPTER *padapter, uint16_t mstatus_rpt )
 {
 	uint8_t	u1JoinBssRptParm[3]={0};
 	uint8_t	mstatus, macId, macId_Ind = 0, macId_End = 0;
@@ -591,7 +591,7 @@ void ConstructPSPoll(_adapter *padapter, uint8_t *pframe, uint32_t *pLength)
 }
 
 void ConstructNullFunctionData(
-	PADAPTER padapter,
+	struct _ADAPTER *padapter,
 	uint8_t		*pframe,
 	uint32_t		*pLength,
 	uint8_t		*StaAddr,
@@ -707,7 +707,7 @@ void ConstructProbeRsp(_adapter *padapter, uint8_t *pframe, uint32_t *pLength, u
 // 2010.06.23. Added by tynli.
 VOID
 CheckFwRsvdPageContent(
-	IN	PADAPTER		Adapter
+	IN	struct _ADAPTER *	Adapter
 )
 {
 	HAL_DATA_TYPE*	pHalData = GET_HAL_DATA(Adapter);
@@ -730,7 +730,7 @@ CheckFwRsvdPageContent(
 //
 u8
 GetTxBufferRsvdPageNum8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	BOOLEAN		bWoWLANBoundary
 )
 {
@@ -762,7 +762,7 @@ GetTxBufferRsvdPageNum8812(
 //			      TRUE: At the second time, we should send the first packet (default:beacon)
 //						to Hw again and set the lengh in descriptor to the real beacon lengh.
 // 2009.10.15 by tynli.
-static void SetFwRsvdPagePkt_8812(PADAPTER padapter, BOOLEAN bDLFinished)
+static void SetFwRsvdPagePkt_8812(struct _ADAPTER *padapter, BOOLEAN bDLFinished)
 {
 	PHAL_DATA_TYPE pHalData;
 	struct xmit_frame	*pcmdframe;
@@ -938,7 +938,7 @@ error:
 	rtw_free_cmdxmitframe(pxmitpriv, pcmdframe);
 }
 
-void rtl8812_set_FwJoinBssReport_cmd(PADAPTER padapter, uint8_t mstatus)
+void rtl8812_set_FwJoinBssReport_cmd(struct _ADAPTER *padapter, uint8_t mstatus)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);

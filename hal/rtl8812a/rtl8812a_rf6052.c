@@ -28,7 +28,7 @@
  *
  * Overview:    This function is called by SetBWModeCallback8190Pci() only
  *
- * Input:       PADAPTER				Adapter
+ * Input:       struct _ADAPTER *			Adapter
  *			WIRELESS_BANDWIDTH_E	Bandwidth	//20M or 40M
  *
  * Output:      NONE
@@ -39,7 +39,7 @@
  *---------------------------------------------------------------------------*/
 VOID
 PHY_RF6052SetBandwidth8812(
-	IN	PADAPTER				Adapter,
+	IN	struct _ADAPTER *			Adapter,
 	IN	CHANNEL_WIDTH		Bandwidth)	//20M or 40M
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
@@ -75,7 +75,7 @@ PHY_RF6052SetBandwidth8812(
 // powerbase1 for HT MCS rates
 //
 void getPowerBase8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint8_t *			pPowerLevelOFDM,
 	IN	uint8_t *			pPowerLevelBW20,
 	IN	uint8_t *			pPowerLevelBW40,
@@ -116,7 +116,7 @@ void getPowerBase8812(
 }
 
 void getTxPowerWriteValByRegulatory8812(
-	IN		PADAPTER	Adapter,
+	IN		struct _ADAPTER *Adapter,
 	IN		uint8_t			Channel,
 	IN		uint8_t			index,
 	IN		u32*		powerBase0,
@@ -287,7 +287,7 @@ void getTxPowerWriteValByRegulatory8812(
 }
 
 static void writeOFDMPowerReg8812(
-	IN		PADAPTER	Adapter,
+	IN		struct _ADAPTER *Adapter,
 	IN		uint8_t		index,
 	IN 		u32*		pValue
 	)
@@ -337,7 +337,7 @@ static void writeOFDMPowerReg8812(
 
 VOID
 PHY_RF6052SetCckTxPower8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint8_t *			pPowerlevel)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
@@ -439,7 +439,7 @@ PHY_RF6052SetCckTxPower8812(
 
 VOID
 PHY_RF6052SetOFDMTxPower8812(
-	IN	PADAPTER	Adapter,
+	IN	struct _ADAPTER *Adapter,
 	IN	uint8_t *		pPowerLevelOFDM,
 	IN	uint8_t *		pPowerLevelBW20,
 	IN	uint8_t *		pPowerLevelBW40,
@@ -464,7 +464,7 @@ PHY_RF6052SetOFDMTxPower8812(
 
 static int
 phy_RF6052_Config_ParaFile_8812(
-	IN	PADAPTER		Adapter
+	IN	struct _ADAPTER *	Adapter
 	)
 {
 	uint8_t					eRFPath;
@@ -548,7 +548,7 @@ phy_RF6052_Config_ParaFile_Fail:
 
 int
 PHY_RF6052_Config_8812(
-	IN	PADAPTER		Adapter)
+	IN	struct _ADAPTER *	Adapter)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	int					rtStatus = _SUCCESS;

@@ -162,6 +162,8 @@ struct hal_ops {
 	 * New HAL functions with struct net_device  as first param
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
+	int (*init_sw_vars) (struct net_device *ndev);
+	void (*deinit_sw_vars) (struct net_device *ndev);
 
 	void	(*init_sw_leds)(struct rtl_priv *padapter);
 

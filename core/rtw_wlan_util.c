@@ -1279,7 +1279,7 @@ void VCS_update(_adapter *padapter, struct sta_info *psta)
 }
 
 
-int rtw_check_bcn_info(ADAPTER *Adapter, uint8_t *pframe, uint32_t	 packet_len)
+int rtw_check_bcn_info(struct _ADAPTER *Adapter, uint8_t *pframe, uint32_t	 packet_len)
 {
 	unsigned int		len;
 	unsigned char		*p;

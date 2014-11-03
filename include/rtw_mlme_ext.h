@@ -576,7 +576,7 @@ void ERP_IE_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
 void VCS_update(_adapter *padapter, struct sta_info *psta);
 
 void update_beacon_info(_adapter *padapter, uint8_t *pframe, uint len, struct sta_info *psta);
-int rtw_check_bcn_info(ADAPTER *Adapter, uint8_t *pframe, u32 packet_len);
+int rtw_check_bcn_info(struct _ADAPTER *Adapter, uint8_t *pframe, u32 packet_len);
 #ifdef CONFIG_DFS
 void process_csa_ie(_adapter *padapter, uint8_t *pframe, uint len);
 #endif //CONFIG_DFS

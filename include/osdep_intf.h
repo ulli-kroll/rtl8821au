@@ -69,7 +69,7 @@ int rtw_start_pseudo_adhoc(struct rtl_priv *padapter);
 int rtw_stop_pseudo_adhoc(struct rtl_priv *padapter);
 #endif
 
-uint8_t rtw_init_drv_sw(struct rtl_priv *padapter);
+uint8_t rtw_init_drv_sw(struct net_device *ndev);
 uint8_t rtw_free_drv_sw(struct rtl_priv *padapter);
 uint8_t rtw_reset_drv_sw(struct rtl_priv *padapter);
 

@@ -970,8 +970,9 @@ uint8_t rtw_reset_drv_sw(struct rtl_priv *padapter)
 }
 
 
-uint8_t rtw_init_drv_sw(struct rtl_priv *padapter)
+uint8_t rtw_init_drv_sw(struct net_device *ndev)
 {
+	struct rtl_priv *padapter = rtl_priv(ndev);
 
 	uint8_t	ret8 = _SUCCESS;
 

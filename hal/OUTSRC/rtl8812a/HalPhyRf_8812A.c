@@ -39,7 +39,7 @@
 static void DoIQK_8812A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 	u1Byte 	ThermalValue, u1Byte Threshold)
 {
-	PADAPTER Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *Adapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 
 	ODM_ResetIQKResult(pDM_Odm);
@@ -70,7 +70,7 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 {
 	uint32_t 	finalBbSwingIdx[2];
 
-	PADAPTER		Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *	Adapter = pDM_Odm->Adapter;
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 
 	u1Byte PwrTrackingLimit = 26; /* +1.0dB */
@@ -257,7 +257,7 @@ static void GetDeltaSwingTable_8812A(PDM_ODM_T pDM_Odm,
 	pu1Byte *TemperatureUP_A, pu1Byte *TemperatureDOWN_A,
 	pu1Byte *TemperatureUP_B, pu1Byte *TemperatureDOWN_B)
 {
-	PADAPTER        Adapter = pDM_Odm->Adapter;
+	struct _ADAPTER *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	HAL_DATA_TYPE  	*pHalData = GET_HAL_DATA(Adapter);
 	uint16_t	rate = *(pDM_Odm->pForcedDataRate);
@@ -403,7 +403,7 @@ static void _IQK_BackupMacBB_8812A(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
 }
 
 static void _IQK_BackupRF_8812A(PDM_ODM_T pDM_Odm,
-	uint32_t *RFA_backup, uint32_t *RFB_backup, 
+	uint32_t *RFA_backup, uint32_t *RFB_backup,
 	uint32_t *Backup_RF_REG, uint32_t RF_NUM)
 {
 	uint32_t i;
@@ -1692,7 +1692,7 @@ static void phy_LCCalibrate_8812A(PDM_ODM_T pDM_Odm, BOOLEAN	is2T)
 #define		DP_DPK_VALUE_NUM	2
 
 
-void PHY_IQCalibrate_8812A(PADAPTER pAdapter, BOOLEAN bReCovery)
+void PHY_IQCalibrate_8812A(struct _ADAPTER *pAdapter, BOOLEAN bReCovery)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
@@ -1713,7 +1713,7 @@ void PHY_LCCalibrate_8812A(PDM_ODM_T pDM_Odm)
 {
 	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
 
-	PADAPTER 		pAdapter = pDM_Odm->Adapter;
+	struct _ADAPTER *		pAdapter = pDM_Odm->Adapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_LCCalibrate_8812A\n"));

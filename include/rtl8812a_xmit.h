@@ -326,12 +326,12 @@ int32_t rtl8812au_init_xmit_priv(struct _ADAPTER *padapter);
 void rtl8812au_free_xmit_priv(struct _ADAPTER *padapter);
 int32_t rtl8812au_hal_xmit(struct _ADAPTER *padapter, struct xmit_frame *pxmitframe);
 int32_t rtl8812au_mgnt_xmit(struct _ADAPTER *padapter, struct xmit_frame *pmgntframe);
-int32_t	 rtl8812au_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
+int32_t	 rtl8812au_hal_xmitframe_enqueue(struct _ADAPTER *padapter, struct xmit_frame *pxmitframe);
 int32_t rtl8812au_xmit_buf_handler(struct _ADAPTER *padapter);
 void rtl8812au_xmit_tasklet(void *priv);
-int32_t rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
+int32_t rtl8812au_xmitframe_complete(struct _ADAPTER *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 
-void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag,u8 *ptxdesc);
+void _dbg_dump_tx_info(struct _ADAPTER	*padapter,int frame_tag,u8 *ptxdesc);
 
 u8	BWMapping_8812(struct _ADAPTER *Adapter, struct pkt_attrib *pattrib);
 

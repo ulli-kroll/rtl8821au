@@ -49,13 +49,13 @@ struct sreset_priv {
 #define	WIFI_RX_HANG				BIT5
 #define 	WIFI_IF_NOT_EXIST			BIT6
 
-void sreset_init_value(_adapter *padapter);
-void sreset_reset_value(_adapter *padapter);
-uint8_t sreset_get_wifi_status(_adapter *padapter);
-void sreset_set_wifi_error_status(_adapter *padapter, u32 status);
-void sreset_set_trigger_point(_adapter *padapter, int32_t tgp);
-bool sreset_inprogress(_adapter *padapter);
-void sreset_reset(_adapter *padapter);
+void sreset_init_value(struct _ADAPTER *padapter);
+void sreset_reset_value(struct _ADAPTER *padapter);
+uint8_t sreset_get_wifi_status(struct _ADAPTER *padapter);
+void sreset_set_wifi_error_status(struct _ADAPTER *padapter, u32 status);
+void sreset_set_trigger_point(struct _ADAPTER *padapter, int32_t tgp);
+bool sreset_inprogress(struct _ADAPTER *padapter);
+void sreset_reset(struct _ADAPTER *padapter);
 
 #endif
 

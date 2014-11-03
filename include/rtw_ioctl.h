@@ -164,7 +164,7 @@ struct oid_obj_priv {
 extern struct iw_handler_def  rtw_handlers_def;
 #endif
 
-extern void rtw_request_wps_pbc_event(_adapter *padapter);
+extern void rtw_request_wps_pbc_event(struct _ADAPTER *padapter);
 
 extern	NDIS_STATUS drv_query_info(
 	IN	_nic_hdl		MiniportAdapterContext,

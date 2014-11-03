@@ -65,17 +65,17 @@ The protection mechanism is through the pending queue.
 
 
 #ifdef CONFIG_R871X_TEST
-int rtw_start_pseudo_adhoc(_adapter *padapter);
-int rtw_stop_pseudo_adhoc(_adapter *padapter);
+int rtw_start_pseudo_adhoc(struct _ADAPTER *padapter);
+int rtw_stop_pseudo_adhoc(struct _ADAPTER *padapter);
 #endif
 
-uint8_t rtw_init_drv_sw(_adapter *padapter);
-uint8_t rtw_free_drv_sw(_adapter *padapter);
-uint8_t rtw_reset_drv_sw(_adapter *padapter);
+uint8_t rtw_init_drv_sw(struct _ADAPTER *padapter);
+uint8_t rtw_free_drv_sw(struct _ADAPTER *padapter);
+uint8_t rtw_reset_drv_sw(struct _ADAPTER *padapter);
 
-u32 rtw_start_drv_threads(_adapter *padapter);
-void rtw_stop_drv_threads (_adapter *padapter);
-void rtw_cancel_all_timer(_adapter *padapter);
+u32 rtw_start_drv_threads(struct _ADAPTER *padapter);
+void rtw_stop_drv_threads (struct _ADAPTER *padapter);
+void rtw_cancel_all_timer(struct _ADAPTER *padapter);
 
 #ifdef PLATFORM_LINUX
 int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
@@ -97,10 +97,10 @@ static void rtw_proc_remove_one(struct net_device *dev){}
 
 
 
-void rtw_ips_dev_unload(_adapter *padapter);
+void rtw_ips_dev_unload(struct _ADAPTER *padapter);
 #ifdef CONFIG_IPS
-int rtw_ips_pwr_up(_adapter *padapter);
-void rtw_ips_pwr_down(_adapter *padapter);
+int rtw_ips_pwr_up(struct _ADAPTER *padapter);
+void rtw_ips_pwr_down(struct _ADAPTER *padapter);
 #endif
 
 void rtw_ndev_destructor(_nic_hdl ndev);

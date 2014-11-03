@@ -215,9 +215,9 @@ struct led_priv{
 	LED_DATA			SwLed2;
 	LED_STRATEGY		LedStrategy;
 	uint8_t					bRegUseLed;
-	void (*LedControlHandler)(_adapter *padapter, LED_CTL_MODE LedAction);
-	void (*SwLedOn)(_adapter *padapter, PLED_DATA pLed);
-	void (*SwLedOff)(_adapter *padapter, PLED_DATA pLed);
+	void (*LedControlHandler)(struct _ADAPTER *padapter, LED_CTL_MODE LedAction);
+	void (*SwLedOn)(struct _ADAPTER *padapter, PLED_DATA pLed);
+	void (*SwLedOff)(struct _ADAPTER *padapter, PLED_DATA pLed);
 	/* add for led controll */
 };
 
@@ -246,7 +246,7 @@ void ResetLedStatus(PLED_DATA pLed);
 
 void
 InitLed(
-	_adapter			*padapter,
+	struct _ADAPTER			*padapter,
 	PLED_DATA		pLed,
 	LED_PIN			LedPin
 	);

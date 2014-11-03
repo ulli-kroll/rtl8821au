@@ -285,13 +285,13 @@ enum SCAN_STATE
 struct mlme_handler {
 	unsigned int   num;
 	char* str;
-	unsigned int (*func)(_adapter *padapter, union recv_frame *precv_frame);
+	unsigned int (*func)(struct _ADAPTER *padapter, union recv_frame *precv_frame);
 };
 
 struct action_handler {
 	unsigned int   num;
 	char* str;
-	unsigned int (*func)(_adapter *padapter, union recv_frame *precv_frame);
+	unsigned int (*func)(struct _ADAPTER *padapter, union recv_frame *precv_frame);
 };
 
 struct	ss_res
@@ -448,7 +448,7 @@ struct p2p_oper_class_map {
 
 struct mlme_ext_priv
 {
-	_adapter	*padapter;
+	struct _ADAPTER	*padapter;
 	uint8_t	mlmeext_init;
 	ATOMIC_T		event_seq;
 	u16	mgnt_seq;
@@ -498,186 +498,186 @@ struct mlme_ext_priv
 
 };
 
-int init_mlme_ext_priv(_adapter* padapter);
-int init_hw_mlme_ext(_adapter *padapter);
+int init_mlme_ext_priv(struct _ADAPTER* padapter);
+int init_hw_mlme_ext(struct _ADAPTER *padapter);
 void free_mlme_ext_priv (struct mlme_ext_priv *pmlmeext);
-extern void init_mlme_ext_timer(_adapter *padapter);
-extern void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta);
+extern void init_mlme_ext_timer(struct _ADAPTER *padapter);
+extern void init_addba_retry_timer(struct _ADAPTER *padapter, struct sta_info *psta);
 extern struct xmit_frame *alloc_mgtxmitframe(struct xmit_priv *pxmitpriv);
 struct xmit_frame *alloc_mgtxmitframe_once(struct xmit_priv *pxmitpriv);
 
-//void fill_fwpriv(_adapter * padapter, struct fw_priv *pfwpriv);
+//void fill_fwpriv(struct _ADAPTER * padapter, struct fw_priv *pfwpriv);
 
-unsigned char networktype_to_raid(_adapter *adapter,unsigned char network_type);
-unsigned char networktype_to_raid_ex(_adapter *adapter,unsigned char network_type);
+unsigned char networktype_to_raid(struct _ADAPTER *adapter,unsigned char network_type);
+unsigned char networktype_to_raid_ex(struct _ADAPTER *adapter,unsigned char network_type);
 
-uint8_t judge_network_type(_adapter *padapter, unsigned char *rate, int ratelen);
-void get_rate_set(_adapter *padapter, unsigned char *pbssrate, int *bssrate_len);
-void UpdateBrateTbl(_adapter *padapter,uint8_t *mBratesOS);
+uint8_t judge_network_type(struct _ADAPTER *padapter, unsigned char *rate, int ratelen);
+void get_rate_set(struct _ADAPTER *padapter, unsigned char *pbssrate, int *bssrate_len);
+void UpdateBrateTbl(struct _ADAPTER *padapter,uint8_t *mBratesOS);
 void UpdateBrateTblForSoftAP(uint8_t *bssrateset, u32 bssratelen);
-void change_band_update_ie(_adapter *padapter, WLAN_BSSID_EX *pnetwork);
+void change_band_update_ie(struct _ADAPTER *padapter, WLAN_BSSID_EX *pnetwork);
 
-void Save_DM_Func_Flag(_adapter *padapter);
-void Restore_DM_Func_Flag(_adapter *padapter);
-void Switch_DM_Func(_adapter *padapter, u32 mode, uint8_t enable);
+void Save_DM_Func_Flag(struct _ADAPTER *padapter);
+void Restore_DM_Func_Flag(struct _ADAPTER *padapter);
+void Switch_DM_Func(struct _ADAPTER *padapter, u32 mode, uint8_t enable);
 
-//void Set_NETYPE1_MSR(_adapter *padapter, uint8_t type);
-//void Set_NETYPE0_MSR(_adapter *padapter, uint8_t type);
-void Set_MSR(_adapter *padapter, uint8_t type);
+//void Set_NETYPE1_MSR(struct _ADAPTER *padapter, uint8_t type);
+//void Set_NETYPE0_MSR(struct _ADAPTER *padapter, uint8_t type);
+void Set_MSR(struct _ADAPTER *padapter, uint8_t type);
 
-uint8_t rtw_get_oper_ch(_adapter *adapter);
-void rtw_set_oper_ch(_adapter *adapter, uint8_t ch);
-uint8_t rtw_get_oper_bw(_adapter *adapter);
-void rtw_set_oper_bw(_adapter *adapter, uint8_t bw);
-uint8_t rtw_get_oper_choffset(_adapter *adapter);
-void rtw_set_oper_choffset(_adapter *adapter, uint8_t offset);
+uint8_t rtw_get_oper_ch(struct _ADAPTER *adapter);
+void rtw_set_oper_ch(struct _ADAPTER *adapter, uint8_t ch);
+uint8_t rtw_get_oper_bw(struct _ADAPTER *adapter);
+void rtw_set_oper_bw(struct _ADAPTER *adapter, uint8_t bw);
+uint8_t rtw_get_oper_choffset(struct _ADAPTER *adapter);
+void rtw_set_oper_choffset(struct _ADAPTER *adapter, uint8_t offset);
 uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset);
 
-void set_channel_bwmode(_adapter *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode);
-void SelectChannel(_adapter *padapter, unsigned char channel);
-void SetBWMode(_adapter *padapter, unsigned short bwmode, unsigned char channel_offset);
+void set_channel_bwmode(struct _ADAPTER *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode);
+void SelectChannel(struct _ADAPTER *padapter, unsigned char channel);
+void SetBWMode(struct _ADAPTER *padapter, unsigned short bwmode, unsigned char channel_offset);
 
 unsigned int decide_wait_for_beacon_timeout(unsigned int bcn_interval);
 
-void write_cam(_adapter *padapter, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key);
-void clear_cam_entry(_adapter *padapter, uint8_t entry);
+void write_cam(struct _ADAPTER *padapter, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key);
+void clear_cam_entry(struct _ADAPTER *padapter, uint8_t entry);
 
-void invalidate_cam_all(_adapter *padapter);
+void invalidate_cam_all(struct _ADAPTER *padapter);
 void CAM_empty_entry(struct _ADAPTER *Adapter, uint8_t ucIndex);
 
 
-int allocate_fw_sta_entry(_adapter *padapter);
-void flush_all_cam_entry(_adapter *padapter);
+int allocate_fw_sta_entry(struct _ADAPTER *padapter);
+void flush_all_cam_entry(struct _ADAPTER *padapter);
 
 BOOLEAN IsLegal5GChannel(struct _ADAPTER *Adapter, uint8_t channel);
 
-void site_survey(_adapter *padapter);
-uint8_t collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSID_EX *bssid);
-void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src, _adapter * padapter, bool update_ie);
+void site_survey(struct _ADAPTER *padapter);
+uint8_t collect_bss_info(struct _ADAPTER *padapter, union recv_frame *precv_frame, WLAN_BSSID_EX *bssid);
+void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src, struct _ADAPTER * padapter, bool update_ie);
 
 int get_bsstype(unsigned short capability);
 u8* get_my_bssid(WLAN_BSSID_EX *pnetwork);
 u16 get_beacon_interval(WLAN_BSSID_EX *bss);
 
-int is_client_associated_to_ap(_adapter *padapter);
-int is_client_associated_to_ibss(_adapter *padapter);
-int is_IBSS_empty(_adapter *padapter);
+int is_client_associated_to_ap(struct _ADAPTER *padapter);
+int is_client_associated_to_ibss(struct _ADAPTER *padapter);
+int is_IBSS_empty(struct _ADAPTER *padapter);
 
 unsigned char check_assoc_AP(uint8_t *pframe, uint len);
 
-int WMM_param_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs	pIE);
-void WMMOnAssocRsp(_adapter *padapter);
+int WMM_param_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs	pIE);
+void WMMOnAssocRsp(struct _ADAPTER *padapter);
 
-void HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-void HT_info_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-void HTOnAssocRsp(_adapter *padapter);
+void HT_caps_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
+void HT_info_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
+void HTOnAssocRsp(struct _ADAPTER *padapter);
 
-void ERP_IE_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-void VCS_update(_adapter *padapter, struct sta_info *psta);
+void ERP_IE_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
+void VCS_update(struct _ADAPTER *padapter, struct sta_info *psta);
 
-void update_beacon_info(_adapter *padapter, uint8_t *pframe, uint len, struct sta_info *psta);
+void update_beacon_info(struct _ADAPTER *padapter, uint8_t *pframe, uint len, struct sta_info *psta);
 int rtw_check_bcn_info(struct _ADAPTER *Adapter, uint8_t *pframe, u32 packet_len);
 #ifdef CONFIG_DFS
-void process_csa_ie(_adapter *padapter, uint8_t *pframe, uint len);
+void process_csa_ie(struct _ADAPTER *padapter, uint8_t *pframe, uint len);
 #endif //CONFIG_DFS
-void update_IOT_info(_adapter *padapter);
+void update_IOT_info(struct _ADAPTER *padapter);
 void update_capinfo(struct _ADAPTER *Adapter, u16 updateCap);
-void update_wireless_mode(_adapter * padapter);
-void update_tx_basic_rate(_adapter *padapter, uint8_t modulation);
-void update_bmc_sta_support_rate(_adapter *padapter, u32 mac_id);
-int update_sta_support_rate(_adapter *padapter, u8* pvar_ie, uint var_ie_len, int cam_idx);
+void update_wireless_mode(struct _ADAPTER * padapter);
+void update_tx_basic_rate(struct _ADAPTER *padapter, uint8_t modulation);
+void update_bmc_sta_support_rate(struct _ADAPTER *padapter, u32 mac_id);
+int update_sta_support_rate(struct _ADAPTER *padapter, u8* pvar_ie, uint var_ie_len, int cam_idx);
 
 //for sta/adhoc mode
-void update_sta_info(_adapter *padapter, struct sta_info *psta);
+void update_sta_info(struct _ADAPTER *padapter, struct sta_info *psta);
 unsigned int update_basic_rate(unsigned char *ptn, unsigned int ptn_sz);
 unsigned int update_supported_rate(unsigned char *ptn, unsigned int ptn_sz);
 unsigned int update_MCS_rate(struct HT_caps_element *pHT_caps);
-void Update_RA_Entry(_adapter *padapter, struct sta_info *psta);
-void set_sta_rate(_adapter *padapter, struct sta_info *psta);
+void Update_RA_Entry(struct _ADAPTER *padapter, struct sta_info *psta);
+void set_sta_rate(struct _ADAPTER *padapter, struct sta_info *psta);
 
-unsigned int receive_disconnect(_adapter *padapter, unsigned char *MacAddr, unsigned short reason);
+unsigned int receive_disconnect(struct _ADAPTER *padapter, unsigned char *MacAddr, unsigned short reason);
 
 unsigned char get_highest_rate_idx(u32 mask);
-int support_short_GI(_adapter *padapter, struct HT_caps_element *pHT_caps);
-unsigned int is_ap_in_tkip(_adapter *padapter);
-unsigned int is_ap_in_wep(_adapter *padapter);
-unsigned int should_forbid_n_rate(_adapter * padapter);
+int support_short_GI(struct _ADAPTER *padapter, struct HT_caps_element *pHT_caps);
+unsigned int is_ap_in_tkip(struct _ADAPTER *padapter);
+unsigned int is_ap_in_wep(struct _ADAPTER *padapter);
+unsigned int should_forbid_n_rate(struct _ADAPTER * padapter);
 
 extern uint rtw_get_camid(uint macid);
-extern void rtw_alloc_macid(_adapter *padapter, struct sta_info *psta);
-extern void rtw_release_macid(_adapter *padapter, struct sta_info *psta);
+extern void rtw_alloc_macid(struct _ADAPTER *padapter, struct sta_info *psta);
+extern void rtw_release_macid(struct _ADAPTER *padapter, struct sta_info *psta);
 
-void report_join_res(_adapter *padapter, int res);
-void report_survey_event(_adapter *padapter, union recv_frame *precv_frame);
-void report_surveydone_event(_adapter *padapter);
-void report_del_sta_event(_adapter *padapter, unsigned char* MacAddr, unsigned short reason);
-void report_add_sta_event(_adapter *padapter, unsigned char* MacAddr, int cam_idx);
+void report_join_res(struct _ADAPTER *padapter, int res);
+void report_survey_event(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+void report_surveydone_event(struct _ADAPTER *padapter);
+void report_del_sta_event(struct _ADAPTER *padapter, unsigned char* MacAddr, unsigned short reason);
+void report_add_sta_event(struct _ADAPTER *padapter, unsigned char* MacAddr, int cam_idx);
 
-void beacon_timing_control(_adapter *padapter);
-extern uint8_t set_tx_beacon_cmd(_adapter*padapter);
-unsigned int setup_beacon_frame(_adapter *padapter, unsigned char *beacon_frame);
-void update_mgnt_tx_rate(_adapter *padapter, uint8_t rate);
-void update_mgntframe_attrib(_adapter *padapter, struct pkt_attrib *pattrib);
-void update_mgntframe_attrib_addr(_adapter *padapter, struct xmit_frame *pmgntframe);
-void dump_mgntframe(_adapter *padapter, struct xmit_frame *pmgntframe);
-int32_t dump_mgntframe_and_wait(_adapter *padapter, struct xmit_frame *pmgntframe, int timeout_ms);
-int32_t dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntframe);
+void beacon_timing_control(struct _ADAPTER *padapter);
+extern uint8_t set_tx_beacon_cmd(struct _ADAPTER*padapter);
+unsigned int setup_beacon_frame(struct _ADAPTER *padapter, unsigned char *beacon_frame);
+void update_mgnt_tx_rate(struct _ADAPTER *padapter, uint8_t rate);
+void update_mgntframe_attrib(struct _ADAPTER *padapter, struct pkt_attrib *pattrib);
+void update_mgntframe_attrib_addr(struct _ADAPTER *padapter, struct xmit_frame *pmgntframe);
+void dump_mgntframe(struct _ADAPTER *padapter, struct xmit_frame *pmgntframe);
+int32_t dump_mgntframe_and_wait(struct _ADAPTER *padapter, struct xmit_frame *pmgntframe, int timeout_ms);
+int32_t dump_mgntframe_and_wait_ack(struct _ADAPTER *padapter, struct xmit_frame *pmgntframe);
 
-void issue_beacon(_adapter *padapter, int timeout_ms);
-void issue_probersp(_adapter *padapter, unsigned char *da, uint8_t is_valid_p2p_probereq);
-void issue_assocreq(_adapter *padapter);
-void issue_asocrsp(_adapter *padapter, unsigned short status, struct sta_info *pstat, int pkt_type);
-void issue_auth(_adapter *padapter, struct sta_info *psta, unsigned short status);
-void issue_probereq(_adapter *padapter, NDIS_802_11_SSID *pssid, uint8_t *da);
-int32_t issue_probereq_ex(_adapter *padapter, NDIS_802_11_SSID *pssid, u8* da, int try_cnt, int wait_ms);
-int issue_nulldata(_adapter *padapter, unsigned char *da, unsigned int power_mode, int try_cnt, int wait_ms);
-int issue_qos_nulldata(_adapter *padapter, unsigned char *da, u16 tid, int try_cnt, int wait_ms);
-int issue_deauth(_adapter *padapter, unsigned char *da, unsigned short reason);
-int issue_deauth_ex(_adapter *padapter, uint8_t *da, unsigned short reason, int try_cnt, int wait_ms);
-void issue_action_spct_ch_switch(_adapter *padapter, uint8_t *ra, uint8_t new_ch, uint8_t ch_offset);
-void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char action, unsigned short status);
-unsigned int send_delba(_adapter *padapter, uint8_t initiator, uint8_t *addr);
-unsigned int send_beacon(_adapter *padapter);
+void issue_beacon(struct _ADAPTER *padapter, int timeout_ms);
+void issue_probersp(struct _ADAPTER *padapter, unsigned char *da, uint8_t is_valid_p2p_probereq);
+void issue_assocreq(struct _ADAPTER *padapter);
+void issue_asocrsp(struct _ADAPTER *padapter, unsigned short status, struct sta_info *pstat, int pkt_type);
+void issue_auth(struct _ADAPTER *padapter, struct sta_info *psta, unsigned short status);
+void issue_probereq(struct _ADAPTER *padapter, NDIS_802_11_SSID *pssid, uint8_t *da);
+int32_t issue_probereq_ex(struct _ADAPTER *padapter, NDIS_802_11_SSID *pssid, u8* da, int try_cnt, int wait_ms);
+int issue_nulldata(struct _ADAPTER *padapter, unsigned char *da, unsigned int power_mode, int try_cnt, int wait_ms);
+int issue_qos_nulldata(struct _ADAPTER *padapter, unsigned char *da, u16 tid, int try_cnt, int wait_ms);
+int issue_deauth(struct _ADAPTER *padapter, unsigned char *da, unsigned short reason);
+int issue_deauth_ex(struct _ADAPTER *padapter, uint8_t *da, unsigned short reason, int try_cnt, int wait_ms);
+void issue_action_spct_ch_switch(struct _ADAPTER *padapter, uint8_t *ra, uint8_t new_ch, uint8_t ch_offset);
+void issue_action_BA(struct _ADAPTER *padapter, unsigned char *raddr, unsigned char action, unsigned short status);
+unsigned int send_delba(struct _ADAPTER *padapter, uint8_t initiator, uint8_t *addr);
+unsigned int send_beacon(struct _ADAPTER *padapter);
 
-void start_clnt_assoc(_adapter *padapter);
-void start_clnt_auth(_adapter* padapter);
-void start_clnt_join(_adapter* padapter);
-void start_create_ibss(_adapter* padapter);
+void start_clnt_assoc(struct _ADAPTER *padapter);
+void start_clnt_auth(struct _ADAPTER* padapter);
+void start_clnt_join(struct _ADAPTER* padapter);
+void start_create_ibss(struct _ADAPTER* padapter);
 
-unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnProbeReq(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnProbeRsp(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int DoReserved(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAtim(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnDisassoc(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAuth(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAuthClient(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnDeAuth(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction(_adapter *padapter, union recv_frame *precv_frame);
+unsigned int OnAssocReq(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAssocRsp(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnProbeReq(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnProbeRsp(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int DoReserved(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnBeacon(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAtim(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnDisassoc(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAuth(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAuthClient(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnDeAuth(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAction(struct _ADAPTER *padapter, union recv_frame *precv_frame);
 
-unsigned int on_action_spct(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_qos(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_dls(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int on_action_public(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_ht(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_wmm(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_p2p(_adapter *padapter, union recv_frame *precv_frame);
+unsigned int on_action_spct(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAction_qos(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAction_dls(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAction_back(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int on_action_public(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAction_ht(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAction_wmm(struct _ADAPTER *padapter, union recv_frame *precv_frame);
+unsigned int OnAction_p2p(struct _ADAPTER *padapter, union recv_frame *precv_frame);
 
 
-void mlmeext_joinbss_event_callback(_adapter *padapter, int join_res);
-void mlmeext_sta_del_event_callback(_adapter *padapter);
-void mlmeext_sta_add_event_callback(_adapter *padapter, struct sta_info *psta);
+void mlmeext_joinbss_event_callback(struct _ADAPTER *padapter, int join_res);
+void mlmeext_sta_del_event_callback(struct _ADAPTER *padapter);
+void mlmeext_sta_add_event_callback(struct _ADAPTER *padapter, struct sta_info *psta);
 
-void linked_status_chk(_adapter *padapter);
+void linked_status_chk(struct _ADAPTER *padapter);
 
-void survey_timer_hdl (_adapter *padapter);
-void link_timer_hdl (_adapter *padapter);
+void survey_timer_hdl (struct _ADAPTER *padapter);
+void link_timer_hdl (struct _ADAPTER *padapter);
 void addba_timer_hdl(struct sta_info *psta);
-//void reauth_timer_hdl(_adapter *padapter);
-//void reassoc_timer_hdl(_adapter *padapter);
+//void reauth_timer_hdl(struct _ADAPTER *padapter);
+//void reassoc_timer_hdl(struct _ADAPTER *padapter);
 
 #define set_survey_timer(mlmeext, ms) \
 	do { \
@@ -694,10 +694,10 @@ void addba_timer_hdl(struct sta_info *psta);
 extern int cckrates_included(unsigned char *rate, int ratelen);
 extern int cckratesonly_included(unsigned char *rate, int ratelen);
 
-extern void process_addba_req(_adapter *padapter, uint8_t *paddba_req, uint8_t *addr);
+extern void process_addba_req(struct _ADAPTER *padapter, uint8_t *paddba_req, uint8_t *addr);
 
 extern void update_TSF(struct mlme_ext_priv *pmlmeext, uint8_t *pframe, uint len);
-extern void correct_TSF(_adapter *padapter, struct mlme_ext_priv *pmlmeext);
+extern void correct_TSF(struct _ADAPTER *padapter, struct mlme_ext_priv *pmlmeext);
 
 struct cmd_hdl {
 	uint	parmsize;
@@ -705,35 +705,35 @@ struct cmd_hdl {
 };
 
 
-uint8_t read_macreg_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t write_macreg_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t read_bbreg_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t write_bbreg_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t read_rfreg_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t write_rfreg_hdl(_adapter *padapter, uint8_t *pbuf);
+uint8_t read_macreg_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t write_macreg_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t read_bbreg_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t write_bbreg_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t read_rfreg_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t write_rfreg_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
 
 
-uint8_t NULL_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t join_cmd_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t disconnect_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t createbss_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t setopmode_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t sitesurvey_cmd_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t setauth_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t setkey_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t set_stakey_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t set_assocsta_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t del_assocsta_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t add_ba_hdl(_adapter *padapter, unsigned char *pbuf);
+uint8_t NULL_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t join_cmd_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t disconnect_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t createbss_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t setopmode_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t sitesurvey_cmd_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t setauth_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t setkey_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t set_stakey_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t set_assocsta_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t del_assocsta_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t add_ba_hdl(struct _ADAPTER *padapter, unsigned char *pbuf);
 
-uint8_t mlme_evt_hdl(_adapter *padapter, unsigned char *pbuf);
-uint8_t h2c_msg_hdl(_adapter *padapter, unsigned char *pbuf);
-uint8_t tx_beacon_hdl(_adapter *padapter, unsigned char *pbuf);
-uint8_t set_ch_hdl(_adapter *padapter, uint8_t *pbuf);
-uint8_t set_chplan_hdl(_adapter *padapter, unsigned char *pbuf);
-uint8_t led_blink_hdl(_adapter *padapter, unsigned char *pbuf);
-uint8_t set_csa_hdl(_adapter *padapter, unsigned char *pbuf);	//Kurt: Handling DFS channel switch announcement ie.
-uint8_t tdls_hdl(_adapter *padapter, unsigned char *pbuf);
+uint8_t mlme_evt_hdl(struct _ADAPTER *padapter, unsigned char *pbuf);
+uint8_t h2c_msg_hdl(struct _ADAPTER *padapter, unsigned char *pbuf);
+uint8_t tx_beacon_hdl(struct _ADAPTER *padapter, unsigned char *pbuf);
+uint8_t set_ch_hdl(struct _ADAPTER *padapter, uint8_t *pbuf);
+uint8_t set_chplan_hdl(struct _ADAPTER *padapter, unsigned char *pbuf);
+uint8_t led_blink_hdl(struct _ADAPTER *padapter, unsigned char *pbuf);
+uint8_t set_csa_hdl(struct _ADAPTER *padapter, unsigned char *pbuf);	//Kurt: Handling DFS channel switch announcement ie.
+uint8_t tdls_hdl(struct _ADAPTER *padapter, unsigned char *pbuf);
 
 
 #define GEN_DRV_CMD_HANDLER(size, cmd)	{size, &cmd ## _hdl},
@@ -838,8 +838,8 @@ struct C2HEvent_Header
 
 };
 
-void rtw_dummy_event_callback(_adapter *adapter , uint8_t *pbuf);
-void rtw_fwdbg_event_callback(_adapter *adapter , uint8_t *pbuf);
+void rtw_dummy_event_callback(struct _ADAPTER *adapter , uint8_t *pbuf);
+void rtw_fwdbg_event_callback(struct _ADAPTER *adapter , uint8_t *pbuf);
 
 enum rtw_c2h_event
 {

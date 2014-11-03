@@ -108,19 +108,19 @@ struct vht_priv
 	uint8_t	vht_cap[32];
 };
 
-uint8_t	rtw_get_vht_highest_rate(_adapter *padapter, uint8_t *pvht_mcs_map);
+uint8_t	rtw_get_vht_highest_rate(struct _ADAPTER *padapter, uint8_t *pvht_mcs_map);
 u16	rtw_vht_data_rate(uint8_t bw, uint8_t short_GI, uint8_t vht_mcs_rate);
 u32	rtw_vht_rate_to_bitmap(uint8_t *pVHTRate);
-void	rtw_vht_use_default_setting(_adapter *padapter);
-u32	rtw_build_vht_operation_ie(_adapter *padapter, uint8_t *pbuf, uint8_t channel);
-u32	rtw_build_vht_op_mode_notify_ie(_adapter *padapter, uint8_t *pbuf);
-u32	rtw_build_vht_cap_ie(_adapter *padapter, uint8_t *pbuf);
-void	update_sta_vht_info_apmode(_adapter *padapter, PVOID psta);
-void	update_hw_vht_param(_adapter *padapter);
-void	VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-void	VHT_operation_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-u32	rtw_restructure_vht_ie(_adapter *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len);
-void	VHTOnAssocRsp(_adapter *padapter);
+void	rtw_vht_use_default_setting(struct _ADAPTER *padapter);
+u32	rtw_build_vht_operation_ie(struct _ADAPTER *padapter, uint8_t *pbuf, uint8_t channel);
+u32	rtw_build_vht_op_mode_notify_ie(struct _ADAPTER *padapter, uint8_t *pbuf);
+u32	rtw_build_vht_cap_ie(struct _ADAPTER *padapter, uint8_t *pbuf);
+void	update_sta_vht_info_apmode(struct _ADAPTER *padapter, PVOID psta);
+void	update_hw_vht_param(struct _ADAPTER *padapter);
+void	VHT_caps_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
+void	VHT_operation_handler(struct _ADAPTER *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
+u32	rtw_restructure_vht_ie(struct _ADAPTER *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len);
+void	VHTOnAssocRsp(struct _ADAPTER *padapter);
 
 #endif	//_RTW_VHT_H_
 

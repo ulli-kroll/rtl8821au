@@ -145,12 +145,12 @@ Hal_MappingOutPipe(
 	IN	uint8_t		NumOutPipe
 	);
 
-void hal_init_macaddr(_adapter *adapter);
+void hal_init_macaddr(struct _ADAPTER *adapter);
 
-void c2h_evt_clear(_adapter *adapter);
-int32_t c2h_evt_read(_adapter *adapter, uint8_t *buf);
+void c2h_evt_clear(struct _ADAPTER *adapter);
+int32_t c2h_evt_read(struct _ADAPTER *adapter, uint8_t *buf);
 
-uint8_t rtw_hal_networktype_to_raid(_adapter *adapter,unsigned char network_type);
-uint8_t rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type);
+uint8_t rtw_hal_networktype_to_raid(struct _ADAPTER *adapter,unsigned char network_type);
+uint8_t rtw_get_mgntframe_raid(struct _ADAPTER *adapter,unsigned char network_type);
 #endif //__HAL_COMMON_H__
 

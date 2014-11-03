@@ -32,7 +32,7 @@
 	#define CMDBUFF_ALIGN_SZ 512
 
 	struct cmd_obj {
-		_adapter *padapter;
+		struct _ADAPTER *padapter;
 		u16	cmdcode;
 		uint8_t	res;
 		uint8_t	*parmbuf;
@@ -57,7 +57,7 @@
 		u32	cmd_done_cnt;
 		u32	rsp_cnt;
 		uint8_t cmdthd_running;
-		_adapter *padapter;
+		struct _ADAPTER *padapter;
 	};
 
 	struct	evt_priv {
@@ -861,73 +861,73 @@ Result:
 #define H2C_CMD_OVERFLOW		0x06
 #define H2C_RESERVED			0x07
 
-extern uint8_t rtw_setassocsta_cmd(_adapter  *padapter, uint8_t *mac_addr);
-extern uint8_t rtw_setstandby_cmd(_adapter *padapter, uint action);
-uint8_t rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num, struct rtw_ieee80211_channel *ch, int ch_num);
-extern uint8_t rtw_createbss_cmd(_adapter  *padapter);
-extern uint8_t rtw_createbss_cmd_ex(_adapter  *padapter, unsigned char *pbss, unsigned int sz);
-extern uint8_t rtw_setphy_cmd(_adapter  *padapter, uint8_t modem, uint8_t ch);
-extern uint8_t rtw_setstakey_cmd(_adapter  *padapter, uint8_t *psta, uint8_t unicast_key);
-extern uint8_t rtw_clearstakey_cmd(_adapter *padapter, uint8_t *psta, uint8_t entry, uint8_t enqueue);
-extern uint8_t rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork);
-uint8_t rtw_disassoc_cmd(_adapter *padapter, u32 deauth_timeout_ms, bool enqueue);
-extern uint8_t rtw_setopmode_cmd(_adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype);
-extern uint8_t rtw_setdatarate_cmd(_adapter  *padapter, uint8_t *rateset);
-extern uint8_t rtw_setbasicrate_cmd(_adapter  *padapter, uint8_t *rateset);
-extern uint8_t rtw_setbbreg_cmd(_adapter * padapter, uint8_t offset, uint8_t val);
-extern uint8_t rtw_setrfreg_cmd(_adapter * padapter, uint8_t offset, u32 val);
-extern uint8_t rtw_getbbreg_cmd(_adapter * padapter, uint8_t offset, uint8_t * pval);
-extern uint8_t rtw_getrfreg_cmd(_adapter * padapter, uint8_t offset, uint8_t * pval);
-extern uint8_t rtw_setrfintfs_cmd(_adapter  *padapter, uint8_t mode);
-extern uint8_t rtw_setrttbl_cmd(_adapter  *padapter, struct setratable_parm *prate_table);
-extern uint8_t rtw_getrttbl_cmd(_adapter  *padapter, struct getratable_rsp *pval);
+extern uint8_t rtw_setassocsta_cmd(struct _ADAPTER  *padapter, uint8_t *mac_addr);
+extern uint8_t rtw_setstandby_cmd(struct _ADAPTER *padapter, uint action);
+uint8_t rtw_sitesurvey_cmd(struct _ADAPTER  *padapter, NDIS_802_11_SSID *ssid, int ssid_num, struct rtw_ieee80211_channel *ch, int ch_num);
+extern uint8_t rtw_createbss_cmd(struct _ADAPTER  *padapter);
+extern uint8_t rtw_createbss_cmd_ex(struct _ADAPTER  *padapter, unsigned char *pbss, unsigned int sz);
+extern uint8_t rtw_setphy_cmd(struct _ADAPTER  *padapter, uint8_t modem, uint8_t ch);
+extern uint8_t rtw_setstakey_cmd(struct _ADAPTER  *padapter, uint8_t *psta, uint8_t unicast_key);
+extern uint8_t rtw_clearstakey_cmd(struct _ADAPTER *padapter, uint8_t *psta, uint8_t entry, uint8_t enqueue);
+extern uint8_t rtw_joinbss_cmd(struct _ADAPTER  *padapter, struct wlan_network* pnetwork);
+uint8_t rtw_disassoc_cmd(struct _ADAPTER *padapter, u32 deauth_timeout_ms, bool enqueue);
+extern uint8_t rtw_setopmode_cmd(struct _ADAPTER  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype);
+extern uint8_t rtw_setdatarate_cmd(struct _ADAPTER  *padapter, uint8_t *rateset);
+extern uint8_t rtw_setbasicrate_cmd(struct _ADAPTER  *padapter, uint8_t *rateset);
+extern uint8_t rtw_setbbreg_cmd(struct _ADAPTER * padapter, uint8_t offset, uint8_t val);
+extern uint8_t rtw_setrfreg_cmd(struct _ADAPTER * padapter, uint8_t offset, u32 val);
+extern uint8_t rtw_getbbreg_cmd(struct _ADAPTER * padapter, uint8_t offset, uint8_t * pval);
+extern uint8_t rtw_getrfreg_cmd(struct _ADAPTER * padapter, uint8_t offset, uint8_t * pval);
+extern uint8_t rtw_setrfintfs_cmd(struct _ADAPTER  *padapter, uint8_t mode);
+extern uint8_t rtw_setrttbl_cmd(struct _ADAPTER  *padapter, struct setratable_parm *prate_table);
+extern uint8_t rtw_getrttbl_cmd(struct _ADAPTER  *padapter, struct getratable_rsp *pval);
 
-extern uint8_t rtw_gettssi_cmd(_adapter  *padapter, uint8_t offset,uint8_t *pval);
-extern uint8_t rtw_setfwdig_cmd(_adapter*padapter, uint8_t type);
-extern uint8_t rtw_setfwra_cmd(_adapter*padapter, uint8_t type);
+extern uint8_t rtw_gettssi_cmd(struct _ADAPTER  *padapter, uint8_t offset,uint8_t *pval);
+extern uint8_t rtw_setfwdig_cmd(struct _ADAPTER*padapter, uint8_t type);
+extern uint8_t rtw_setfwra_cmd(struct _ADAPTER*padapter, uint8_t type);
 
-extern uint8_t rtw_addbareq_cmd(_adapter*padapter, uint8_t tid, uint8_t *addr);
+extern uint8_t rtw_addbareq_cmd(struct _ADAPTER*padapter, uint8_t tid, uint8_t *addr);
 
-extern uint8_t rtw_dynamic_chk_wk_cmd(_adapter *adapter);
+extern uint8_t rtw_dynamic_chk_wk_cmd(struct _ADAPTER *adapter);
 
-uint8_t rtw_lps_ctrl_wk_cmd(_adapter*padapter, uint8_t lps_ctrl_type, uint8_t enqueue);
+uint8_t rtw_lps_ctrl_wk_cmd(struct _ADAPTER*padapter, uint8_t lps_ctrl_type, uint8_t enqueue);
 #if (RATE_ADAPTIVE_SUPPORT==1)
-uint8_t rtw_rpt_timer_cfg_cmd(_adapter*padapter, u16 minRptTime);
+uint8_t rtw_rpt_timer_cfg_cmd(struct _ADAPTER*padapter, u16 minRptTime);
 #endif
 
 #ifdef CONFIG_ANTENNA_DIVERSITY
-extern  uint8_t rtw_antenna_select_cmd(_adapter*padapter, uint8_t antenna,uint8_t enqueue);
+extern  uint8_t rtw_antenna_select_cmd(struct _ADAPTER*padapter, uint8_t antenna,uint8_t enqueue);
 #endif
 
-extern uint8_t rtw_ps_cmd(_adapter*padapter);
+extern uint8_t rtw_ps_cmd(struct _ADAPTER*padapter);
 
 #ifdef CONFIG_AP_MODE
-uint8_t rtw_chk_hi_queue_cmd(_adapter*padapter);
+uint8_t rtw_chk_hi_queue_cmd(struct _ADAPTER*padapter);
 #endif
 
-uint8_t rtw_set_ch_cmd(_adapter*padapter, uint8_t ch, uint8_t bw, uint8_t ch_offset, uint8_t enqueue);
-extern uint8_t rtw_set_chplan_cmd(_adapter*padapter, uint8_t chplan, uint8_t enqueue);
-extern uint8_t rtw_set_csa_cmd(_adapter*padapter, uint8_t new_ch_no);
+uint8_t rtw_set_ch_cmd(struct _ADAPTER*padapter, uint8_t ch, uint8_t bw, uint8_t ch_offset, uint8_t enqueue);
+extern uint8_t rtw_set_chplan_cmd(struct _ADAPTER*padapter, uint8_t chplan, uint8_t enqueue);
+extern uint8_t rtw_set_csa_cmd(struct _ADAPTER*padapter, uint8_t new_ch_no);
 
 extern uint8_t rtw_c2h_wk_cmd(struct _ADAPTER *padapter, uint8_t *c2h_evt);
 
-uint8_t rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf);
+uint8_t rtw_drvextra_cmd_hdl(struct _ADAPTER *padapter, unsigned char *pbuf);
 
-extern void rtw_survey_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
-extern void rtw_disassoc_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
-extern void rtw_joinbss_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
-extern void rtw_createbss_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
-extern void rtw_getbbrfreg_cmdrsp_callback(_adapter  *padapter, struct cmd_obj *pcmd);
-extern void rtw_readtssi_cmdrsp_callback(_adapter*	padapter,  struct cmd_obj *pcmd);
+extern void rtw_survey_cmd_callback(struct _ADAPTER  *padapter, struct cmd_obj *pcmd);
+extern void rtw_disassoc_cmd_callback(struct _ADAPTER  *padapter, struct cmd_obj *pcmd);
+extern void rtw_joinbss_cmd_callback(struct _ADAPTER  *padapter, struct cmd_obj *pcmd);
+extern void rtw_createbss_cmd_callback(struct _ADAPTER  *padapter, struct cmd_obj *pcmd);
+extern void rtw_getbbrfreg_cmdrsp_callback(struct _ADAPTER  *padapter, struct cmd_obj *pcmd);
+extern void rtw_readtssi_cmdrsp_callback(struct _ADAPTER*	padapter,  struct cmd_obj *pcmd);
 
-extern void rtw_setstaKey_cmdrsp_callback(_adapter  *padapter,  struct cmd_obj *pcmd);
-extern void rtw_setassocsta_cmdrsp_callback(_adapter  *padapter,  struct cmd_obj *pcmd);
-extern void rtw_getrttbl_cmdrsp_callback(_adapter  *padapter,  struct cmd_obj *pcmd);
+extern void rtw_setstaKey_cmdrsp_callback(struct _ADAPTER  *padapter,  struct cmd_obj *pcmd);
+extern void rtw_setassocsta_cmdrsp_callback(struct _ADAPTER  *padapter,  struct cmd_obj *pcmd);
+extern void rtw_getrttbl_cmdrsp_callback(struct _ADAPTER  *padapter,  struct cmd_obj *pcmd);
 
 
 struct _cmd_callback {
 	u32	cmd_code;
-	void (*callback)(_adapter  *padapter, struct cmd_obj *cmd);
+	void (*callback)(struct _ADAPTER  *padapter, struct cmd_obj *cmd);
 };
 
 enum rtw_h2c_cmd

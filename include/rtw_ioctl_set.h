@@ -31,24 +31,24 @@ typedef struct _BSSIDInfo {
 
 
 
-uint8_t rtw_set_802_11_add_key(_adapter * padapter, NDIS_802_11_KEY * key);
-uint8_t rtw_set_802_11_authentication_mode(_adapter *pdapter, NDIS_802_11_AUTHENTICATION_MODE authmode);
-uint8_t rtw_set_802_11_bssid(_adapter* padapter, uint8_t *bssid);
-uint8_t rtw_set_802_11_add_wep(_adapter * padapter, NDIS_802_11_WEP * wep);
-uint8_t rtw_set_802_11_disassociate(_adapter * padapter);
-uint8_t rtw_set_802_11_bssid_list_scan(_adapter* padapter, NDIS_802_11_SSID *pssid, int ssid_max_num);
-uint8_t rtw_set_802_11_infrastructure_mode(_adapter * padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype);
-uint8_t rtw_set_802_11_remove_wep(_adapter * padapter, u32 keyindex);
-uint8_t rtw_set_802_11_ssid(_adapter * padapter, NDIS_802_11_SSID * ssid);
-uint8_t rtw_set_802_11_remove_key(_adapter * padapter, NDIS_802_11_REMOVE_KEY * key);
+uint8_t rtw_set_802_11_add_key(struct _ADAPTER * padapter, NDIS_802_11_KEY * key);
+uint8_t rtw_set_802_11_authentication_mode(struct _ADAPTER *pdapter, NDIS_802_11_AUTHENTICATION_MODE authmode);
+uint8_t rtw_set_802_11_bssid(struct _ADAPTER* padapter, uint8_t *bssid);
+uint8_t rtw_set_802_11_add_wep(struct _ADAPTER * padapter, NDIS_802_11_WEP * wep);
+uint8_t rtw_set_802_11_disassociate(struct _ADAPTER * padapter);
+uint8_t rtw_set_802_11_bssid_list_scan(struct _ADAPTER* padapter, NDIS_802_11_SSID *pssid, int ssid_max_num);
+uint8_t rtw_set_802_11_infrastructure_mode(struct _ADAPTER * padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype);
+uint8_t rtw_set_802_11_remove_wep(struct _ADAPTER * padapter, u32 keyindex);
+uint8_t rtw_set_802_11_ssid(struct _ADAPTER * padapter, NDIS_802_11_SSID * ssid);
+uint8_t rtw_set_802_11_remove_key(struct _ADAPTER * padapter, NDIS_802_11_REMOVE_KEY * key);
 
 
 uint8_t rtw_validate_ssid(NDIS_802_11_SSID *ssid);
 
-u16 rtw_get_cur_max_rate(_adapter *adapter);
-int rtw_set_scan_mode(_adapter *adapter, RT_SCAN_TYPE scan_mode);
-int rtw_set_channel_plan(_adapter *adapter, uint8_t channel_plan);
-int rtw_set_country(_adapter *adapter, const char *country_code);
+u16 rtw_get_cur_max_rate(struct _ADAPTER *adapter);
+int rtw_set_scan_mode(struct _ADAPTER *adapter, RT_SCAN_TYPE scan_mode);
+int rtw_set_channel_plan(struct _ADAPTER *adapter, uint8_t channel_plan);
+int rtw_set_country(struct _ADAPTER *adapter, const char *country_code);
 
 #endif
 

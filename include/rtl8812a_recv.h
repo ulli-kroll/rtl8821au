@@ -107,7 +107,7 @@
 
 
 #define INTERRUPT_MSG_FORMAT_LEN 60
-void rtl8812au_init_recvbuf(_adapter *padapter, struct recv_buf *precvbuf);
+void rtl8812au_init_recvbuf(struct _ADAPTER *padapter, struct recv_buf *precvbuf);
 int32_t rtl8812au_init_recv_priv(struct _ADAPTER *padapter);
 void rtl8812au_free_recv_priv(struct _ADAPTER *padapter);
 void rtl8812au_recv_hdl(struct _ADAPTER *padapter, struct recv_buf *precvbuf);

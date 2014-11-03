@@ -237,21 +237,21 @@ struct pwrctrl_priv
 #define rtw_set_pwr_state_check_timer(pwrctrlpriv) \
 	_rtw_set_pwr_state_check_timer((pwrctrlpriv), (pwrctrlpriv)->pwr_state_check_interval)
 
-extern void rtw_init_pwrctrl_priv(_adapter *adapter);
-extern void rtw_free_pwrctrl_priv(_adapter * adapter);
+extern void rtw_init_pwrctrl_priv(struct _ADAPTER *adapter);
+extern void rtw_free_pwrctrl_priv(struct _ADAPTER * adapter);
 
 extern void rtw_set_ps_mode(struct _ADAPTER *padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode);
-extern void rtw_set_rpwm(_adapter * padapter, uint8_t val8);
+extern void rtw_set_rpwm(struct _ADAPTER * padapter, uint8_t val8);
 extern void LeaveAllPowerSaveMode(struct _ADAPTER *Adapter);
 #ifdef CONFIG_IPS
-void ips_enter(_adapter * padapter);
-int ips_leave(_adapter * padapter);
+void ips_enter(struct _ADAPTER * padapter);
+int ips_leave(struct _ADAPTER * padapter);
 #endif
 
-void rtw_ps_processor(_adapter*padapter);
+void rtw_ps_processor(struct _ADAPTER*padapter);
 
 #ifdef CONFIG_AUTOSUSPEND
-int autoresume_enter(_adapter* padapter);
+int autoresume_enter(struct _ADAPTER* padapter);
 #endif
 
 #ifdef CONFIG_LPS
@@ -266,13 +266,13 @@ void LPS_Leave(struct _ADAPTER *padapter);
 #define rtw_register_early_suspend(pwrpriv) do {} while (0)
 #define rtw_unregister_early_suspend(pwrpriv) do {} while (0)
 
-uint8_t rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val);
-void rtw_set_ips_deny(_adapter *padapter, u32 ms);
-int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller);
+uint8_t rtw_interface_ps_func(struct _ADAPTER *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val);
+void rtw_set_ips_deny(struct _ADAPTER *padapter, u32 ms);
+int _rtw_pwr_wakeup(struct _ADAPTER *padapter, u32 ips_deffer_ms, const char *caller);
 #define rtw_pwr_wakeup(adapter) _rtw_pwr_wakeup(adapter, RTW_PWR_STATE_CHK_INTERVAL, __FUNCTION__)
 #define rtw_pwr_wakeup_ex(adapter, ips_deffer_ms) _rtw_pwr_wakeup(adapter, ips_deffer_ms, __FUNCTION__)
-int rtw_pm_set_ips(_adapter *padapter, uint8_t mode);
-int rtw_pm_set_lps(_adapter *padapter, uint8_t mode);
+int rtw_pm_set_ips(struct _ADAPTER *padapter, uint8_t mode);
+int rtw_pm_set_lps(struct _ADAPTER *padapter, uint8_t mode);
 
 #endif  //__RTL871X_PWRCTRL_H_
 

@@ -64,8 +64,8 @@ void rtw_hal_dm_deinit(struct rtl_priv *padapter)
 }
 void	rtw_hal_sw_led_init(struct rtl_priv *padapter)
 {
-	if (padapter->HalFunc->InitSwLeds)
-		padapter->HalFunc->InitSwLeds(padapter);
+	if (padapter->HalFunc->init_sw_leds)
+		padapter->HalFunc->init_sw_leds(padapter);
 }
 
 void rtw_hal_sw_led_deinit(struct rtl_priv *padapter)

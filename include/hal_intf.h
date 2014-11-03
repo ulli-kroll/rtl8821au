@@ -163,7 +163,7 @@ struct hal_ops {
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
 
-	void	(*InitSwLeds)(struct rtl_priv *padapter);
+	void	(*init_sw_leds)(struct rtl_priv *padapter);
 
 	/* Old HAL functions */
 

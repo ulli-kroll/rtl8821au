@@ -2221,7 +2221,7 @@ struct hal_ops rtl8812au_hal_ops = {
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
 
-	.InitSwLeds = 		rtl8821au_init_sw_leds,
+	.init_sw_leds = 		rtl8821au_init_sw_leds,
 
 	/* Old HAL functions */
 

@@ -834,7 +834,7 @@ struct rtl_priv *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	rtw_hal_read_chip_info(padapter);
 
 	/* step 5. */
-	if(rtw_init_drv_sw(ndev) ==_FAIL) {
+	if(rtl8821au_init_sw_vars(ndev) ==_FAIL) {
 		RT_TRACE(_module_hci_intfs_c_,_drv_err_,("Initialize driver software resource Failed!\n"));
 		goto free_hal_data;
 	}

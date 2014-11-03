@@ -970,7 +970,7 @@ uint8_t rtw_reset_drv_sw(struct rtl_priv *padapter)
 }
 
 
-uint8_t rtw_init_drv_sw(struct net_device *ndev)
+int rtl8821au_init_sw_vars(struct net_device *ndev)
 {
 	struct rtl_priv *padapter = rtl_priv(ndev);
 

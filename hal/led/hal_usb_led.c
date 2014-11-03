@@ -1061,7 +1061,7 @@ SwLedBlink7(
 	PLED_USB			pLed
 	)
 {
-	PADAPTER Adapter = pLed->padapter;
+	struct _ADAPTER *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1181,7 +1181,7 @@ SwLedBlink8(
 	PLED_USB			pLed
 	)
 {
-	PADAPTER Adapter = pLed->padapter;
+	struct _ADAPTER *Adapter = pLed->padapter;
 
 	// Change LED according to BlinkingLedState specified.
 	if( pLed->BlinkingLedState == RTW_LED_ON )
@@ -1205,7 +1205,7 @@ SwLedBlink9(
 	PLED_USB			pLed
 	)
 {
-	PADAPTER Adapter = pLed->padapter;
+	struct _ADAPTER *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1521,7 +1521,7 @@ SwLedBlink10(
 	PLED_USB			pLed
 	)
 {
-	PADAPTER Adapter = pLed->padapter;
+	struct _ADAPTER *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1789,7 +1789,7 @@ SwLedBlink11(
 	PLED_USB			pLed
 	)
 {
-	PADAPTER Adapter = pLed->padapter;
+	struct _ADAPTER *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1881,7 +1881,7 @@ SwLedBlink12(
 	PLED_USB			pLed
 	)
 {
-	PADAPTER Adapter = pLed->padapter;
+	struct _ADAPTER *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1967,7 +1967,7 @@ SwLedBlink13(
 	IN PLED_USB			pLed
 	)
 {
-	PADAPTER Adapter = pLed->padapter;
+	struct _ADAPTER *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 	static u8	LinkBlinkCnt=0;
@@ -3356,7 +3356,7 @@ SwLedControlMode6(
 //Netgear, added by sinda, 2011/11/11
  void
  SwLedControlMode7(
-	 PADAPTER			 Adapter,
+	 struct _ADAPTER *		 Adapter,
 	 LED_CTL_MODE		 LedAction
  )
 {
@@ -3516,7 +3516,7 @@ SwLedControlMode6(
 
 void
 SwLedControlMode8(
-	PADAPTER			Adapter,
+	struct _ADAPTER *		Adapter,
 	LED_CTL_MODE		LedAction
 	)
 {
@@ -3555,7 +3555,7 @@ SwLedControlMode8(
 //page added for Belkin AC950, 20120813
 void
 SwLedControlMode9(
-	IN	PADAPTER			Adapter,
+	IN	struct _ADAPTER *		Adapter,
 	IN	LED_CTL_MODE		LedAction
 )
 {
@@ -3902,7 +3902,7 @@ SwLedControlMode9(
 //page added for Netgear A6200V2, 20120827
 void
 SwLedControlMode10(
-	PADAPTER			Adapter,
+	struct _ADAPTER *		Adapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -4121,7 +4121,7 @@ SwLedControlMode10(
  //Edimax-ASUS, added by Page, 20121221
 void
 SwLedControlMode11(
-	PADAPTER			Adapter,
+	struct _ADAPTER *		Adapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -4230,7 +4230,7 @@ SwLedControlMode11(
 
 VOID
 SwLedControlMode12(
-	PADAPTER			Adapter,
+	struct _ADAPTER *		Adapter,
 	LED_CTL_MODE		LedAction
 )
 {
@@ -4320,7 +4320,7 @@ SwLedControlMode12(
 
 VOID
 SwLedControlMode13(
-	IN	PADAPTER			Adapter,
+	IN	struct _ADAPTER *		Adapter,
 	IN	LED_CTL_MODE		LedAction
 )
 {

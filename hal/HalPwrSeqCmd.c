@@ -45,7 +45,7 @@ Major Change History:
 //
 //	2011.07.07, added by Roger.
 //
-uint8_t HalPwrSeqCmdParsing(PADAPTER padapter, uint8_t CutVersion,
+uint8_t HalPwrSeqCmdParsing(struct _ADAPTER *padapter, uint8_t CutVersion,
 	uint8_t FabVersion, uint8_t InterfaceType, WLAN_PWR_CFG	PwrSeqCmd[])
 {
 	WLAN_PWR_CFG 	PwrCfgCmd = {0};

@@ -2221,6 +2221,8 @@ struct hal_ops rtl8812au_hal_ops = {
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
 
+	.InitSwLeds = 		rtl8821au_init_sw_leds,
+
 	/* Old HAL functions */
 
 	.hal_init =	 	rtl8812au_hal_init,
@@ -2236,7 +2238,6 @@ struct hal_ops rtl8812au_hal_ops = {
 
 	.init_recv_priv =	rtl8812au_init_recv_priv,
 	.free_recv_priv =	rtl8812au_free_recv_priv,
-	.InitSwLeds = 		rtl8821au_init_sw_leds,
 	.DeInitSwLeds =		rtl8812au_DeInitSwLeds,
 	.init_default_value =	rtl8812au_init_default_value,
 	.intf_chip_configure =	rtl8812au_interface_configure,

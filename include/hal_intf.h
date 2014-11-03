@@ -163,6 +163,8 @@ struct hal_ops {
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
 
+	void	(*InitSwLeds)(struct rtl_priv *padapter);
+
 	/* Old HAL functions */
 
 	u32	(*hal_init)(struct rtl_priv *padapter);
@@ -179,7 +181,6 @@ struct hal_ops {
 	int32_t	(*init_recv_priv)(struct rtl_priv *padapter);
 	void	(*free_recv_priv)(struct rtl_priv *padapter);
 
-	void	(*InitSwLeds)(struct rtl_priv *padapter);
 	void	(*DeInitSwLeds)(struct rtl_priv *padapter);
 
 	void	(*dm_init)(struct rtl_priv *padapter);

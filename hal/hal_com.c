@@ -374,7 +374,7 @@ Hal_MappingOutPipe(
 
 }
 
-void hal_init_macaddr(_adapter *adapter)
+void hal_init_macaddr(struct _ADAPTER *adapter)
 {
 	rtw_hal_set_hwreg(adapter, HW_VAR_MAC_ADDR, adapter->eeprompriv.mac_addr);
 }
@@ -385,12 +385,12 @@ void hal_init_macaddr(_adapter *adapter)
 * BITS	 [127:120]	[119:16]      [15:8]		  [7:4]	 	   [3:0]
 */
 
-void c2h_evt_clear(_adapter *adapter)
+void c2h_evt_clear(struct _ADAPTER *adapter)
 {
 	rtw_write8(adapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
 
-int32_t c2h_evt_read(_adapter *adapter, uint8_t *buf)
+int32_t c2h_evt_read(struct _ADAPTER *adapter, uint8_t *buf)
 {
 	int32_t ret = _FAIL;
 	struct c2h_evt_hdr *c2h_evt;
@@ -442,12 +442,12 @@ exit:
 	return ret;
 }
 
-uint8_t  rtw_hal_networktype_to_raid(_adapter *adapter,unsigned char network_type)
+uint8_t  rtw_hal_networktype_to_raid(struct _ADAPTER *adapter,unsigned char network_type)
 {
 	return networktype_to_raid_ex(adapter,network_type);
 }
 
-uint8_t rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type)
+uint8_t rtw_get_mgntframe_raid(struct _ADAPTER *adapter,unsigned char network_type)
 {
 
 	uint8_t raid;

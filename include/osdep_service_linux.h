@@ -72,8 +72,6 @@
 		spinlock_t	lock;
 	};
 
-	typedef unsigned char	_buffer;
-
 	typedef struct	__queue	_queue;
 	typedef	int	_OS_STATUS;
 	//typedef u32	_irqL;

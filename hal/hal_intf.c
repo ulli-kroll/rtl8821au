@@ -286,18 +286,12 @@ void rtw_hal_add_ra_tid(struct rtl_priv *padapter, uint32_t bitmap, u8 *arg, uin
 
 u32 rtw_hal_get_bbreg(struct rtl_priv *padapter, uint32_t RegAddr, uint32_t BitMask)
 {
-	uint32_t data = 0;
-
-	if (padapter->HalFunc->read_bbreg)
-		 data = padapter->HalFunc->read_bbreg(padapter, RegAddr, BitMask);
-
-	return data;
+	return padapter->HalFunc->read_bbreg(padapter, RegAddr, BitMask);
 }
 
 void rtw_hal_set_bbreg(struct rtl_priv *padapter, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
-	if (padapter->HalFunc->write_bbreg)
-		padapter->HalFunc->write_bbreg(padapter, RegAddr, BitMask, Data);
+	padapter->HalFunc->write_bbreg(padapter, RegAddr, BitMask, Data);
 }
 
 uint32_t rtw_hal_read_rfreg(struct rtl_priv *padapter, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask)

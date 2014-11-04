@@ -327,18 +327,18 @@ extern void unregister_intf_hdl(struct intf_hdl *pintfhdl);
 extern void _rtw_attrib_read(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_attrib_write(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 
-extern uint8_t _rtw_read8(struct rtl_priv *adapter, u32 addr);
-extern u16 _rtw_read16(struct rtl_priv *adapter, u32 addr);
-extern u32 _rtw_read32(struct rtl_priv *adapter, u32 addr);
+extern uint8_t rtw_read8(struct rtl_priv *adapter, u32 addr);
+extern u16 rtw_read16(struct rtl_priv *adapter, u32 addr);
+extern u32 rtw_read32(struct rtl_priv *adapter, u32 addr);
 extern void _rtw_read_mem(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_read_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_read_port_cancel(struct rtl_priv *adapter);
 
 
-extern int _rtw_write8(struct rtl_priv *adapter, u32 addr, uint8_t val);
-extern int _rtw_write16(struct rtl_priv *adapter, u32 addr, u16 val);
-extern int _rtw_write32(struct rtl_priv *adapter, u32 addr, u32 val);
-extern int _rtw_writeN(struct rtl_priv *adapter, u32 addr, u32 length, uint8_t *pdata);
+extern int rtw_write8(struct rtl_priv *adapter, u32 addr, uint8_t val);
+extern int rtw_write16(struct rtl_priv *adapter, u32 addr, u16 val);
+extern int rtw_write32(struct rtl_priv *adapter, u32 addr, u32 val);
+extern int rtw_writeN(struct rtl_priv *adapter, u32 addr, u32 length, uint8_t *pdata);
 
 extern int _rtw_write8_async(struct rtl_priv *adapter, u32 addr, uint8_t val);
 extern int _rtw_write16_async(struct rtl_priv *adapter, u32 addr, u16 val);
@@ -349,17 +349,10 @@ extern u32 _rtw_write_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t 
 u32 _rtw_write_port_and_wait(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem, int timeout_ms);
 extern void _rtw_write_port_cancel(struct rtl_priv *adapter);
 
-#define rtw_read8(adapter, addr) _rtw_read8((adapter), (addr))
-#define rtw_read16(adapter, addr) _rtw_read16((adapter), (addr))
-#define rtw_read32(adapter, addr) _rtw_read32((adapter), (addr))
 #define rtw_read_mem(adapter, addr, cnt, mem) _rtw_read_mem((adapter), (addr), (cnt), (mem))
 #define rtw_read_port(adapter, addr, cnt, mem) _rtw_read_port((adapter), (addr), (cnt), (mem))
 #define rtw_read_port_cancel(adapter) _rtw_read_port_cancel((adapter))
 
-#define  rtw_write8(adapter, addr, val) _rtw_write8((adapter), (addr), (val))
-#define  rtw_write16(adapter, addr, val) _rtw_write16((adapter), (addr), (val))
-#define  rtw_write32(adapter, addr, val) _rtw_write32((adapter), (addr), (val))
-#define  rtw_writeN(adapter, addr, length, data) _rtw_writeN((adapter), (addr), (length), (data))
 
 #define rtw_write8_async(adapter, addr, val) _rtw_write8_async((adapter), (addr), (val))
 #define rtw_write16_async(adapter, addr, val) _rtw_write16_async((adapter), (addr), (val))

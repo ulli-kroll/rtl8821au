@@ -48,7 +48,7 @@ jackson@realtek.com.tw
 
 #include <drv_types.h>
 
-uint8_t _rtw_read8(struct rtl_priv *adapter, uint32_t addr)
+uint8_t rtw_read8(struct rtl_priv *adapter, uint32_t addr)
 {
 	uint8_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -59,7 +59,7 @@ uint8_t _rtw_read8(struct rtl_priv *adapter, uint32_t addr)
 	return val;
 }
 
-uint16_t _rtw_read16(struct rtl_priv *adapter, uint32_t addr)
+uint16_t rtw_read16(struct rtl_priv *adapter, uint32_t addr)
 {
 	uint16_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -70,7 +70,7 @@ uint16_t _rtw_read16(struct rtl_priv *adapter, uint32_t addr)
 	return le16_to_cpu(val);
 }
 
-uint32_t _rtw_read32(struct rtl_priv *adapter, uint32_t addr)
+uint32_t rtw_read32(struct rtl_priv *adapter, uint32_t addr)
 {
 	uint32_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -81,7 +81,7 @@ uint32_t _rtw_read32(struct rtl_priv *adapter, uint32_t addr)
 	return le32_to_cpu(val);
 }
 
-int _rtw_write8(struct rtl_priv *adapter, uint32_t addr, uint8_t val)
+int rtw_write8(struct rtl_priv *adapter, uint32_t addr, uint8_t val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl *pintfhdl = &(pio_priv->intf);
@@ -92,7 +92,7 @@ int _rtw_write8(struct rtl_priv *adapter, uint32_t addr, uint8_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_write16(struct rtl_priv *adapter, uint32_t addr, uint16_t val)
+int rtw_write16(struct rtl_priv *adapter, uint32_t addr, uint16_t val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl *pintfhdl = &pio_priv->intf;
@@ -105,7 +105,7 @@ int _rtw_write16(struct rtl_priv *adapter, uint32_t addr, uint16_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_write32(struct rtl_priv *adapter, uint32_t addr, uint32_t val)
+int rtw_write32(struct rtl_priv *adapter, uint32_t addr, uint32_t val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct intf_hdl	*pintfhdl = &pio_priv->intf;
@@ -117,7 +117,7 @@ int _rtw_write32(struct rtl_priv *adapter, uint32_t addr, uint32_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_writeN(struct rtl_priv *adapter, uint32_t addr, uint32_t length,
+int rtw_writeN(struct rtl_priv *adapter, uint32_t addr, uint32_t length,
 	uint8_t *pdata)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;

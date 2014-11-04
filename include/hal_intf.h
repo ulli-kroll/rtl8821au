@@ -167,6 +167,9 @@ struct hal_ops {
 
 	void	(*init_sw_leds)(struct rtl_priv *padapter);
 
+	u32	(*get_bbreg)(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask);
+	void	(*set_bbreg)(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask, u32 Data);
+
 	/* Old HAL functions */
 
 	u32	(*hal_init)(struct rtl_priv *padapter);
@@ -354,13 +357,13 @@ void	rtw_hal_add_ra_tid(struct rtl_priv *padapter, u32 bitmap, u8* arg, uint8_t 
 
 void rtw_hal_bcn_related_reg_setting(struct rtl_priv *padapter);
 
-u32	rtw_hal_read_bbreg(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask);
-void	rtw_hal_write_bbreg(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask, u32 Data);
+u32	rtw_hal_get_bbreg(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask);
+void	rtw_hal_set_bbreg(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask, u32 Data);
 u32	rtw_hal_read_rfreg(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask);
 void	rtw_hal_write_rfreg(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 
-#define PHY_QueryBBReg(Adapter, RegAddr, BitMask) rtw_hal_read_bbreg((Adapter), (RegAddr), (BitMask))
-#define PHY_SetBBReg(Adapter, RegAddr, BitMask, Data) rtw_hal_write_bbreg((Adapter), (RegAddr), (BitMask), (Data))
+#define PHY_QueryBBReg(Adapter, RegAddr, BitMask) rtw_hal_get_bbreg((Adapter), (RegAddr), (BitMask))
+#define PHY_SetBBReg(Adapter, RegAddr, BitMask, Data) rtw_hal_set_bbreg((Adapter), (RegAddr), (BitMask), (Data))
 #define PHY_QueryRFReg(Adapter, eRFPath, RegAddr, BitMask) rtw_hal_read_rfreg((Adapter), (eRFPath), (RegAddr), (BitMask))
 #define PHY_SetRFReg(Adapter, eRFPath, RegAddr, BitMask, Data) rtw_hal_write_rfreg((Adapter), (eRFPath), (RegAddr), (BitMask), (Data))
 

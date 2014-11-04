@@ -1,5 +1,5 @@
 #include <rtl8812a_hal.h>
-
+#include "phy.h"
 //
 // 1. BB register R/W API
 //

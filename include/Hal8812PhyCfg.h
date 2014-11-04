@@ -54,8 +54,6 @@
 //
 // BB and RF register read/write
 //
-u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask);
-void rtl8821au_phy_set_bb_reg(struct rtl_priv *	Adapter, u32 RegAddr, u32 BitMask, u32 Data);
 u32	PHY_QueryRFReg8812(	IN	struct rtl_priv *Adapter,
 								IN	uint8_t			eRFPath,
 								IN	u32			RegAddr,

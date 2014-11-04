@@ -20,6 +20,7 @@
 #define _HCI_HAL_INIT_C_
 
 #include <rtl8812a_hal.h>
+#include <../rtl8821au/phy.h>
 
 static void _dbg_dump_macreg(struct rtl_priv *padapter)
 {

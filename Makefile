@@ -26,6 +26,8 @@ CONFIG_PLATFORM_I386_PC = y
 
 export TopDIR ?= $(shell pwd)
 
+RTL8821AU_FILES	:=	rtl8821au/phy.o
+
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/linux/os_intfs.o \
 			os_dep/linux/usb_intf.o \
@@ -139,6 +141,9 @@ $(MODULE_NAME)-y += $(rtk_core)
 $(MODULE_NAME)-y += $(_OS_INTFS_FILES)
 $(MODULE_NAME)-y += $(_HAL_INTFS_FILES)
 $(MODULE_NAME)-y += $(_OUTSRC_FILES)
+
+$(MODULE_NAME)-y += $(RTL8821AU_FILES)
+
 
 obj-$(CONFIG_RTL8812AU_8821AU) := $(MODULE_NAME).o
 

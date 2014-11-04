@@ -619,7 +619,7 @@ void rtw_proc_remove_one(struct net_device *ndev)
 #endif
 #endif
 
-uint loadparam(struct rtl_priv *padapter,  _nic_hdl ndev)
+uint loadparam(struct rtl_priv *padapter, struct net_device *ndev)
 {
 
 	uint status = _SUCCESS;

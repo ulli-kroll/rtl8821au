@@ -291,7 +291,7 @@ int rtw_mlcst2unicst(struct rtl_priv *padapter, struct sk_buff *skb)
 #endif
 
 
-int rtw_xmit_entry(struct sk_buff *pkt, _nic_hdl ndev)
+int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 {
 	struct rtl_priv *padapter = rtl_priv(ndev);
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;

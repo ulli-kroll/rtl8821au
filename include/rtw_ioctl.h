@@ -167,7 +167,7 @@ extern struct iw_handler_def  rtw_handlers_def;
 extern void rtw_request_wps_pbc_event(struct rtl_priv *padapter);
 
 extern	NDIS_STATUS drv_query_info(
-	IN	_nic_hdl		MiniportAdapterContext,
+	IN	struct  net_device	*MiniportAdapterContext,
 	IN	NDIS_OID		Oid,
 	IN	void *			InformationBuffer,
 	IN	u32			InformationBufferLength,
@@ -176,7 +176,7 @@ extern	NDIS_STATUS drv_query_info(
 	);
 
 extern	NDIS_STATUS 	drv_set_info(
-	IN	_nic_hdl		MiniportAdapterContext,
+	IN	struct  net_device	*MiniportAdapterContext,
 	IN	NDIS_OID		Oid,
 	IN	void *			InformationBuffer,
 	IN	u32			InformationBufferLength,

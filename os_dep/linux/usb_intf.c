@@ -727,7 +727,7 @@ int netdev_open(struct net_device *ndev);
 int netdev_close(struct net_device *ndev);
 int rtw_net_set_mac_address(struct net_device *ndev, void *p);
 struct net_device_stats *rtw_net_get_stats(struct net_device *ndev);
-static uint loadparam(struct rtl_priv *padapter, _nic_hdl ndev);
+static uint loadparam(struct rtl_priv *padapter, struct net_device *ndev);
 
 static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_open = netdev_open,

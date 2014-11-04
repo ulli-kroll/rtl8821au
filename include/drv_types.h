@@ -380,7 +380,7 @@ struct rtl_priv {
 
 
 #ifdef PLATFORM_LINUX
-	_nic_hdl ndev;
+	struct net_device *ndev;
 
 	int bup;
 	struct net_device_stats stats;

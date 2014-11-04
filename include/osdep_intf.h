@@ -103,7 +103,7 @@ int rtw_ips_pwr_up(struct rtl_priv *padapter);
 void rtw_ips_pwr_down(struct rtl_priv *padapter);
 #endif
 
-void rtw_ndev_destructor(_nic_hdl ndev);
+void rtw_ndev_destructor(struct  net_device *ndev);
 
 #endif	//_OSDEP_INTF_H_
 

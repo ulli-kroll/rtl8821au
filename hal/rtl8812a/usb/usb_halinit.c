@@ -2222,6 +2222,8 @@ struct hal_ops rtl8812au_hal_ops = {
 	 */
 
 	.init_sw_leds = 		rtl8821au_init_sw_leds,
+	.read_bbreg = 	rtl8821au_phy_query_bb_reg,
+	.write_bbreg = 	rtl8821au_phy_set_bb_reg,
 
 	/* Old HAL functions */
 
@@ -2285,8 +2287,6 @@ struct hal_ops rtl8812au_hal_ops = {
 	.AntDivCompareHandler =		AntDivCompare8812,
 #endif
 
-	.read_bbreg = 	PHY_QueryBBReg8812,
-	.write_bbreg = 	PHY_SetBBReg8812,
 	.read_rfreg = 	PHY_QueryRFReg8812,
 	.write_rfreg = 	PHY_SetRFReg8812,
 

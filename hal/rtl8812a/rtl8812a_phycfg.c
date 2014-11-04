@@ -42,14 +42,9 @@ const char *const GLBwSrc[]={
 // 1. BB register R/W API
 //
 
-u32
-PHY_QueryBBReg8812(
-	IN	struct rtl_priv *Adapter,
-	IN	uint32_t			RegAddr,
-	IN	uint32_t			BitMask
-	)
+u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *Adapter, uint32_t RegAddr, uint32_t BitMask)
 {
-	uint32_t	ReturnValue = 0, OriginalValue, BitShift;
+	uint32_t ReturnValue = 0, OriginalValue, BitShift;
 
 #if (DISABLE_BB_RF == 1)
 	return 0;
@@ -67,15 +62,9 @@ PHY_QueryBBReg8812(
 }
 
 
-VOID
-PHY_SetBBReg8812(
-	IN	struct rtl_priv *Adapter,
-	IN	uint32_t		RegAddr,
-	IN	uint32_t		BitMask,
-	IN	uint32_t		Data
-	)
+void rtl8821au_phy_set_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask, u32 Data)
 {
-	uint32_t			OriginalValue, BitShift;
+	uint32_t OriginalValue, BitShift;
 
 #if (DISABLE_BB_RF == 1)
 	return;

@@ -21,12 +21,12 @@
 
 #include <drv_types.h>
 
-int rtw_os_alloc_recvframe(struct rtl_priv *padapter, union recv_frame *precvframe, uint8_t *pdata, _pkt *pskb)
+int rtw_os_alloc_recvframe(struct rtl_priv *padapter, union recv_frame *precvframe, uint8_t *pdata, struct sk_buff *pskb)
 {
 	int res = _SUCCESS;
 	uint8_t	shift_sz = 0;
 	u32	skb_len, alloc_sz;
-	_pkt	 *pkt_copy = NULL;
+	struct sk_buff *pkt_copy = NULL;
 	struct rx_pkt_attrib *pattrib = &precvframe->u.hdr.attrib;
 
 
@@ -185,11 +185,11 @@ int rtw_os_recvbuf_resource_free(struct rtl_priv *padapter, struct recv_buf *pre
 
 }
 
-_pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, uint16_t nSubframe_Length, uint8_t *pdata)
+struct sk_buff  *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, uint16_t nSubframe_Length, uint8_t *pdata)
 {
 	uint16_t	eth_type;
 	uint8_t	*data_ptr;
-	_pkt *sub_skb;
+	struct sk_buff  *sub_skb;
 	struct rx_pkt_attrib *pattrib;
 
 	pattrib = &prframe->u.hdr.attrib;
@@ -236,14 +236,14 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, uint16_t nSubframe_Length
 	return sub_skb;
 }
 
-void rtw_os_recv_indicate_pkt(struct rtl_priv *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib)
+void rtw_os_recv_indicate_pkt(struct rtl_priv *padapter, struct sk_buff  *pkt, struct rx_pkt_attrib *pattrib)
 {
 	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
 
 	/* Indicat the packets to upper layer */
 	if (pkt) {
 		if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
-		 	_pkt *pskb2=NULL;
+		 	struct sk_buff  *pskb2=NULL;
 		 	struct sta_info *psta = NULL;
 		 	struct sta_priv *pstapriv = &padapter->stapriv;
 			int bmcast = IS_MCAST(pattrib->dst);
@@ -335,7 +335,7 @@ int rtw_recv_indicatepkt(struct rtl_priv *padapter, union recv_frame *precv_fram
 {
 	struct recv_priv *precvpriv;
 	_queue	*pfree_recv_queue;
-	_pkt *skb;
+	struct sk_buff  *skb;
 	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
 	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
 

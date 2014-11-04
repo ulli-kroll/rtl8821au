@@ -362,7 +362,7 @@ struct recv_buf
 
 
 #ifdef PLATFORM_LINUX
-	_pkt	*pskb;
+	struct sk_buff *pskb;
 	uint8_t	reuse;
 #endif
 };
@@ -390,8 +390,8 @@ struct recv_frame_hdr
 	struct sk_buff	 *pkt;
 	struct sk_buff	 *pkt_newalloc;
 #else // CONFIG_BSD_RX_USE_MBUF
-	_pkt	*pkt;
-	_pkt *pkt_newalloc;
+	struct sk_buff *pkt;
+	struct sk_buff *pkt_newalloc;
 #endif // CONFIG_BSD_RX_USE_MBUF
 
 	struct rtl_priv  *adapter;
@@ -613,7 +613,7 @@ __inline static union recv_frame *rxmem_to_recvframe(uint8_t *rxmem)
 
 }
 
-__inline static union recv_frame *pkt_to_recvframe(_pkt *pkt)
+__inline static union recv_frame *pkt_to_recvframe(struct sk_buff *pkt)
 {
 
 	uint8_t * buf_star;
@@ -623,7 +623,7 @@ __inline static union recv_frame *pkt_to_recvframe(_pkt *pkt)
 	return precv_frame;
 }
 
-__inline static uint8_t *pkt_to_recvmem(_pkt *pkt)
+__inline static uint8_t *pkt_to_recvmem(struct sk_buff *pkt)
 {
 	// return the rx_head
 
@@ -633,7 +633,7 @@ __inline static uint8_t *pkt_to_recvmem(_pkt *pkt)
 
 }
 
-__inline static uint8_t *pkt_to_recvdata(_pkt *pkt)
+__inline static uint8_t *pkt_to_recvdata(struct sk_buff *pkt)
 {
 	// return the rx_data
 

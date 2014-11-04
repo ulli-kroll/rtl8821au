@@ -2009,7 +2009,7 @@ int amsdu_to_msdu(struct rtl_priv *padapter, union recv_frame *prframe)
 	uint16_t	nSubframe_Length;
 	uint8_t	nr_subframes, i;
 	uint8_t	*pdata;
-	_pkt *sub_pkt,*subframes[MAX_SUBFRAME_COUNT];
+	struct sk_buff *sub_pkt,*subframes[MAX_SUBFRAME_COUNT];
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 	_queue *pfree_recv_queue = &(precvpriv->free_recv_queue);
 	int	ret = _SUCCESS;

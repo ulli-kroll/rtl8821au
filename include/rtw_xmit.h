@@ -375,7 +375,7 @@ struct xmit_frame
 
 	struct pkt_attrib attrib;
 
-	_pkt *pkt;
+	struct sk_buff *pkt;
 
 	int	frame_tag;
 
@@ -561,7 +561,7 @@ extern struct xmit_frame* rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct
 extern int32_t rtw_xmit_classifier(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
 extern u32 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib);
 #define rtw_wlan_pkt_size(f) rtw_calculate_wlan_pkt_size_by_attribue(&f->attrib)
-extern int32_t rtw_xmitframe_coalesce(struct rtl_priv *padapter, _pkt *pkt, struct xmit_frame *pxmitframe);
+extern int32_t rtw_xmitframe_coalesce(struct rtl_priv *padapter, struct sk_buff *pkt, struct xmit_frame *pxmitframe);
 int32_t _rtw_init_hw_txqueue(struct hw_txqueue* phw_txqueue, uint8_t ac_tag);
 void _rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
 
@@ -579,7 +579,7 @@ void rtw_alloc_hwxmits(struct rtl_priv *padapter);
 void rtw_free_hwxmits(struct rtl_priv *padapter);
 
 
-int32_t rtw_xmit(struct rtl_priv *padapter, _pkt **pkt);
+int32_t rtw_xmit(struct rtl_priv *padapter, struct sk_buff **pkt);
 
 #if defined(CONFIG_AP_MODE)
 sint xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);

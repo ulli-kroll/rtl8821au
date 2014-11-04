@@ -27,7 +27,7 @@ uint rtw_remainder_len(struct pkt_file *pfile)
 	return (pfile->buf_len - ((SIZE_PTR)(pfile->cur_addr) - (SIZE_PTR)(pfile->buf_start)));
 }
 
-void _rtw_open_pktfile (_pkt *pktptr, struct pkt_file *pfile)
+void _rtw_open_pktfile (struct sk_buff *pktptr, struct pkt_file *pfile)
 {
 	pfile->pkt = pktptr;
 	pfile->cur_addr = pfile->buf_start = pktptr->data;
@@ -62,7 +62,7 @@ sint rtw_endofpktfile(struct pkt_file *pfile)
 	return _FALSE;
 }
 
-void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib)
+void rtw_set_tx_chksum_offload(struct sk_buff *pkt, struct pkt_attrib *pattrib)
 {
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
@@ -146,7 +146,7 @@ void rtw_os_xmit_resource_free(struct rtl_priv *padapter, struct xmit_buf *pxmit
 
 #define WMM_XMIT_THRESHOLD	(NR_XMITFRAME*2/5)
 
-void rtw_os_pkt_complete(struct rtl_priv *padapter, _pkt *pkt)
+void rtw_os_pkt_complete(struct rtl_priv *padapter, struct sk_buff *pkt)
 {
 	uint16_t queue;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
@@ -200,7 +200,7 @@ void rtw_os_xmit_schedule(struct rtl_priv *padapter)
 	_exit_critical_bh(&pxmitpriv->lock, &irqL);
 }
 
-static void rtw_check_xmit_resource(struct rtl_priv *padapter, _pkt *pkt)
+static void rtw_check_xmit_resource(struct rtl_priv *padapter, struct sk_buff *pkt)
 {
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	uint16_t	queue;
@@ -291,7 +291,7 @@ int rtw_mlcst2unicst(struct rtl_priv *padapter, struct sk_buff *skb)
 #endif
 
 
-int rtw_xmit_entry(_pkt *pkt, _nic_hdl ndev)
+int rtw_xmit_entry(struct sk_buff *pkt, _nic_hdl ndev)
 {
 	struct rtl_priv *padapter = rtl_priv(ndev);
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;

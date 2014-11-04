@@ -702,7 +702,7 @@ static void set_qos(struct pkt_file *ppktfile, struct pkt_attrib *pattrib)
 	pattrib->subtype = WIFI_QOS_DATA_TYPE;
 }
 
-static int32_t update_attrib(struct rtl_priv *padapter, _pkt *pkt, struct pkt_attrib *pattrib)
+static int32_t update_attrib(struct rtl_priv *padapter, struct sk_buff *pkt, struct pkt_attrib *pattrib)
 {
 	uint i;
 	struct pkt_file pktfile;
@@ -1361,7 +1361,7 @@ This sub-routine will perform all the following:
 6. apply sw-encrypt, if necessary.
 
 */
-int32_t rtw_xmitframe_coalesce(struct rtl_priv *padapter, _pkt *pkt, struct xmit_frame *pxmitframe)
+int32_t rtw_xmitframe_coalesce(struct rtl_priv *padapter, struct sk_buff *pkt, struct xmit_frame *pxmitframe)
 {
 	struct pkt_file pktfile;
 
@@ -2063,7 +2063,7 @@ int32_t rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmit
 	_irqL irqL;
 	_queue *queue;
 	struct rtl_priv *padapter = pxmitpriv->adapter;
-	_pkt *pndis_pkt = NULL;
+	struct sk_buff *pndis_pkt = NULL;
 
 _func_enter_;
 
@@ -2599,7 +2599,7 @@ static void do_queue_select(struct rtl_priv	*padapter, struct pkt_attrib *pattri
  *	0	success, hardware will handle this xmit frame(packet)
  *	<0	fail
  */
-int32_t rtw_xmit(struct rtl_priv *padapter, _pkt **ppkt)
+int32_t rtw_xmit(struct rtl_priv *padapter, struct sk_buff **ppkt)
 {
 	static uint32_t	 start = 0;
 	static uint32_t	 drop_cnt = 0;

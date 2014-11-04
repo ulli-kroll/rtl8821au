@@ -196,7 +196,7 @@ static int32_t pre_recv_entry(union recv_frame *precvframe, uint8_t *pphy_status
 	return ret;
 }
 
-static int recvbuf2recvframe(struct rtl_priv *padapter, _pkt *pskb)
+static int recvbuf2recvframe(struct rtl_priv *padapter, struct sk_buff *pskb)
 {
 	uint8_t	*pbuf;
 	uint8_t	pkt_cnt = 0;
@@ -312,7 +312,7 @@ _exit_recvbuf2recvframe:
 
 void rtl8812au_recv_tasklet(void *priv)
 {
-	_pkt			*pskb;
+	struct sk_buff 		*pskb;
 	struct rtl_priv		*padapter = (struct rtl_priv *)priv;
 	struct recv_priv	*precvpriv = &padapter->recvpriv;
 

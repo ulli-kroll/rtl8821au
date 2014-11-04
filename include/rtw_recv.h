@@ -590,19 +590,6 @@ __inline static uint8_t *recvframe_pull_tail(union recv_frame *precvframe, sint 
 
 }
 
-
-
-__inline static _buffer * get_rxbuf_desc(union recv_frame *precvframe)
-{
-	_buffer * buf_desc;
-
-	if(precvframe==NULL)
-		return NULL;
-
-	return buf_desc;
-}
-
-
 __inline static union recv_frame *rxmem_to_recvframe(uint8_t *rxmem)
 {
 	//due to the design of 2048 bytes alignment of recv_frame, we can reference the union recv_frame

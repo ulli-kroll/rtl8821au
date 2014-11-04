@@ -349,40 +349,6 @@ extern u32 _rtw_write_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t 
 u32 _rtw_write_port_and_wait(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem, int timeout_ms);
 extern void _rtw_write_port_cancel(struct rtl_priv *adapter);
 
-#ifdef DBG_IO
-bool match_read_sniff_ranges(u16 addr, u16 len);
-bool match_write_sniff_ranges(u16 addr, u16 len);
-
-extern uint8_t dbg_rtw_read8(struct rtl_priv *adapter, u32 addr, const char *caller, const int line);
-extern u16 dbg_rtw_read16(struct rtl_priv *adapter, u32 addr, const char *caller, const int line);
-extern u32 dbg_rtw_read32(struct rtl_priv *adapter, u32 addr, const char *caller, const int line);
-
-extern int dbg_rtw_write8(struct rtl_priv *adapter, u32 addr, uint8_t val, const char *caller, const int line);
-extern int dbg_rtw_write16(struct rtl_priv *adapter, u32 addr, u16 val, const char *caller, const int line);
-extern int dbg_rtw_write32(struct rtl_priv *adapter, u32 addr, u32 val, const char *caller, const int line);
-extern int dbg_rtw_writeN(struct rtl_priv *adapter, u32 addr ,u32 length , uint8_t *data, const char *caller, const int line);
-
-#define rtw_read8(adapter, addr) dbg_rtw_read8((adapter), (addr), __FUNCTION__, __LINE__)
-#define rtw_read16(adapter, addr) dbg_rtw_read16((adapter), (addr), __FUNCTION__, __LINE__)
-#define rtw_read32(adapter, addr) dbg_rtw_read32((adapter), (addr), __FUNCTION__, __LINE__)
-#define rtw_read_mem(adapter, addr, cnt, mem) _rtw_read_mem((adapter), (addr), (cnt), (mem))
-#define rtw_read_port(adapter, addr, cnt, mem) _rtw_read_port((adapter), (addr), (cnt), (mem))
-#define rtw_read_port_cancel(adapter) _rtw_read_port_cancel((adapter))
-
-#define  rtw_write8(adapter, addr, val) dbg_rtw_write8((adapter), (addr), (val), __FUNCTION__, __LINE__)
-#define  rtw_write16(adapter, addr, val) dbg_rtw_write16((adapter), (addr), (val), __FUNCTION__, __LINE__)
-#define  rtw_write32(adapter, addr, val) dbg_rtw_write32((adapter), (addr), (val), __FUNCTION__, __LINE__)
-#define  rtw_writeN(adapter, addr, length, data) dbg_rtw_writeN((adapter), (addr), (length), (data), __FUNCTION__, __LINE__)
-
-#define rtw_write8_async(adapter, addr, val) _rtw_write8_async((adapter), (addr), (val))
-#define rtw_write16_async(adapter, addr, val) _rtw_write16_async((adapter), (addr), (val))
-#define rtw_write32_async(adapter, addr, val) _rtw_write32_async((adapter), (addr), (val))
-
-#define rtw_write_mem(adapter, addr, cnt, mem) _rtw_write_mem((adapter), addr, cnt, mem)
-#define rtw_write_port(adapter, addr, cnt, mem) _rtw_write_port(adapter, addr, cnt, mem)
-#define rtw_write_port_and_wait(adapter, addr, cnt, mem, timeout_ms) _rtw_write_port_and_wait((adapter), (addr), (cnt), (mem), (timeout_ms))
-#define rtw_write_port_cancel(adapter) _rtw_write_port_cancel(adapter)
-#else //DBG_IO
 #define rtw_read8(adapter, addr) _rtw_read8((adapter), (addr))
 #define rtw_read16(adapter, addr) _rtw_read16((adapter), (addr))
 #define rtw_read32(adapter, addr) _rtw_read32((adapter), (addr))
@@ -403,7 +369,6 @@ extern int dbg_rtw_writeN(struct rtl_priv *adapter, u32 addr ,u32 length , uint8
 #define rtw_write_port(adapter, addr, cnt, mem) _rtw_write_port((adapter), (addr), (cnt), (mem))
 #define rtw_write_port_and_wait(adapter, addr, cnt, mem, timeout_ms) _rtw_write_port_and_wait((adapter), (addr), (cnt), (mem), (timeout_ms))
 #define rtw_write_port_cancel(adapter) _rtw_write_port_cancel((adapter))
-#endif //DBG_IO
 
 extern void rtw_write_scsi(struct rtl_priv *adapter, u32 cnt, uint8_t *pmem);
 

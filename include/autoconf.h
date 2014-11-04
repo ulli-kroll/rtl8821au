@@ -177,8 +177,6 @@
 
 #define DBG_CONFIG_ERROR_DETECT
 
-//#define DBG_IO
-
 //#define DBG_TX
 
 //#define DBG_RX_SIGNAL_DISPLAY_SSID_MONITORED "jeff-ap"

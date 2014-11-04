@@ -86,7 +86,6 @@ static void ODM_Write4Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr, uint32_t Data)
 	rtw_write32(pDM_Odm->Adapter,RegAddr, Data);
 }
 
-/* ULLI : ODM_SetMACReg calls PHY_SetBBReg ?? */
 
 static void ODM_SetMACReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
@@ -94,12 +93,11 @@ static void ODM_SetMACReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 	PHY_SetBBReg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
 }
 
-/* ULLI : ODM_GetMACReg calls PHY_QueryBBReg ?? */
 
 static uint32_t ODM_GetMACReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask)
 {
-	return PHY_QueryBBReg(pDM_Odm->Adapter, RegAddr, BitMask);
+	return rtl_get_bbreg(pDM_Odm->Adapter, RegAddr, BitMask);
 }
 
 
@@ -113,7 +111,7 @@ static void ODM_SetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 static uint32_t ODM_GetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask)
 {
-	return PHY_QueryBBReg(pDM_Odm->Adapter, RegAddr, BitMask);
+	return rtl_get_bbreg(pDM_Odm->Adapter, RegAddr, BitMask);
 }
 
 static void ODM_SetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,

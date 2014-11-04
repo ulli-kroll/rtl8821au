@@ -71,9 +71,9 @@ phy_RFSerialRead(
 	Offset &= 0xff;
 
 	if (eRFPath == RF_PATH_A)
-       	bIsPIMode = (BOOLEAN)PHY_QueryBBReg(Adapter, 0xC00, 0x4);
+       	bIsPIMode = (BOOLEAN)rtl_get_bbreg(Adapter, 0xC00, 0x4);
 	else if (eRFPath == RF_PATH_B)
-       	bIsPIMode = (BOOLEAN)PHY_QueryBBReg(Adapter, 0xE00, 0x4);
+       	bIsPIMode = (BOOLEAN)rtl_get_bbreg(Adapter, 0xE00, 0x4);
 
 	if(IS_VENDOR_8812A_TEST_CHIP(Adapter))
 		PHY_SetBBReg(Adapter, pPhyReg->rfHSSIPara2, bMaskDWord, 0);
@@ -88,12 +88,12 @@ phy_RFSerialRead(
 
 	if (bIsPIMode)
 	{
-		retValue = PHY_QueryBBReg(Adapter, pPhyReg->rfLSSIReadBackPi, rRead_data_Jaguar);
+		retValue = rtl_get_bbreg(Adapter, pPhyReg->rfLSSIReadBackPi, rRead_data_Jaguar);
 		//DBG_871X("[PI mode] RFR-%d Addr[0x%x]=0x%x\n", eRFPath, pPhyReg->rfLSSIReadBackPi, retValue);
 	}
 	else
 	{
-		retValue = PHY_QueryBBReg(Adapter, pPhyReg->rfLSSIReadBack, rRead_data_Jaguar);
+		retValue = rtl_get_bbreg(Adapter, pPhyReg->rfLSSIReadBack, rRead_data_Jaguar);
 		//DBG_871X("[SI mode] RFR-%d Addr[0x%x]=0x%x\n", eRFPath, pPhyReg->rfLSSIReadBack, retValue);
 	}
 
@@ -3969,7 +3969,7 @@ phy_PostSetBwMode8812(
 
 	//DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", rtw_read8(Adapter, 0x483));
 	//DBG_871X("phy_PostSetBwMode8812(): Reg668: %x\n", rtw_read32(Adapter, 0x668));
-	//DBG_871X("phy_PostSetBwMode8812(): Reg8AC: %x\n", PHY_QueryBBReg(Adapter, rRFMOD_Jaguar, 0xffffffff));
+	//DBG_871X("phy_PostSetBwMode8812(): Reg8AC: %x\n", rtl_get_bbreg(Adapter, rRFMOD_Jaguar, 0xffffffff));
 
 	//3 Set RF related register
 	PHY_RF6052SetBandwidth8812(Adapter, pHalData->CurrentChannelBW);

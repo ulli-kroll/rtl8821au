@@ -330,7 +330,7 @@ static void writeOFDMPowerReg8812(
 			RegOffset = RegOffset_A[index];
 		else
 			RegOffset = RegOffset_B[index];
-		PHY_SetBBReg(Adapter, RegOffset, bMaskDWord, writeVal);
+		rtl_set_bbreg(Adapter, RegOffset, bMaskDWord, writeVal);
 		//RTPRINT(FPHY, PHY_TXPWR, ("Set 0x%x = %08x\n", RegOffset, writeVal));
 	}
 }
@@ -421,18 +421,18 @@ PHY_RF6052SetCckTxPower8812(
 
 	// rf-A cck tx power
 	tmpval = TxAGC[RF_PATH_A]&0xff;
-	PHY_SetBBReg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, bMaskByte1, tmpval);
+	rtl_set_bbreg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, bMaskByte1, tmpval);
 	//RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 1M (rf-A) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_A_CCK1_Mcs32));
 	tmpval = TxAGC[RF_PATH_A]>>8;
-	PHY_SetBBReg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, 0xffffff00, tmpval);
+	rtl_set_bbreg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, 0xffffff00, tmpval);
 	//RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 2~11M (rf-A) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK11_A_CCK2_11));
 
 	// rf-B cck tx power
 	tmpval = TxAGC[RF_PATH_B]>>24;
-	PHY_SetBBReg(Adapter, rTxAGC_B_CCK11_CCK1_JAguar, bMaskByte0, tmpval);
+	rtl_set_bbreg(Adapter, rTxAGC_B_CCK11_CCK1_JAguar, bMaskByte0, tmpval);
 	//RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 11M (rf-B) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK11_A_CCK2_11));
 	tmpval = TxAGC[RF_PATH_B]&0x00ffffff;
-	PHY_SetBBReg(Adapter, rTxAGC_B_CCK11_CCK1_JAguar, 0xffffff00, tmpval);
+	rtl_set_bbreg(Adapter, rTxAGC_B_CCK11_CCK1_JAguar, 0xffffff00, tmpval);
 	//RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 1~5.5M (rf-B) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK1_55_Mcs32));
 
 }	/* PHY_RF6052SetCckTxPower */

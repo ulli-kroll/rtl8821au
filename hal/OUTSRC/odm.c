@@ -1641,14 +1641,14 @@ void odm_1R_CCA(PDM_ODM_T pDM_Odm)
 		if (pDM_PSTable->CurCCAState == CCA_1R) {
 			if (pDM_Odm->RFType == ODM_2T2R) {
 				ODM_SetBBReg(pDM_Odm, 0xc04  , bMaskByte0, 0x13);
-				/* PHY_SetBBReg(pAdapter, 0xe70, bMaskByte3, 0x20); */
+				/* rtl_set_bbreg(pAdapter, 0xe70, bMaskByte3, 0x20); */
 			} else {
 				ODM_SetBBReg(pDM_Odm, 0xc04  , bMaskByte0, 0x23);
-				/* PHY_SetBBReg(pAdapter, 0xe70, 0x7fc00000, 0x10c); */ /* Set RegE70[30:22] = 9b'100001100 */
+				/* rtl_set_bbreg(pAdapter, 0xe70, 0x7fc00000, 0x10c); */ /* Set RegE70[30:22] = 9b'100001100 */
 			}
 		} else {
 			ODM_SetBBReg(pDM_Odm, 0xc04  , bMaskByte0, 0x33);
-			/* PHY_SetBBReg(pAdapter,0xe70, bMaskByte3, 0x63); */
+			/* rtl_set_bbreg(pAdapter,0xe70, bMaskByte3, 0x63); */
 		}
 		pDM_PSTable->PreCCAState = pDM_PSTable->CurCCAState;
 	}

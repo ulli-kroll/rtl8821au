@@ -90,7 +90,7 @@ static void ODM_Write4Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr, uint32_t Data)
 static void ODM_SetMACReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
 {
-	PHY_SetBBReg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
+	rtl_set_bbreg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
 }
 
 
@@ -105,7 +105,7 @@ static void ODM_SetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
 {
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
-	PHY_SetBBReg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
+	rtl_set_bbreg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
 }
 
 static uint32_t ODM_GetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,

@@ -923,8 +923,8 @@ static VOID _BBTurnOnBlock(struct rtl_priv *Adapter)
 	return;
 #endif
 
-	PHY_SetBBReg(Adapter, rFPGA0_RFMOD, bCCKEn, 0x1);
-	PHY_SetBBReg(Adapter, rFPGA0_RFMOD, bOFDMEn, 0x1);
+	rtl_set_bbreg(Adapter, rFPGA0_RFMOD, bCCKEn, 0x1);
+	rtl_set_bbreg(Adapter, rFPGA0_RFMOD, bOFDMEn, 0x1);
 }
 
 static VOID _RfPowerSave(struct rtl_priv *Adapter)
@@ -946,7 +946,7 @@ static VOID _InitAntenna_Selection_8812A(struct rtl_priv *Adapter)
 
 	rtw_write8(Adapter, REG_LEDCFG2, 0x82);
 
-	PHY_SetBBReg(Adapter, rFPGA0_XAB_RFParameter, BIT13, 0x01);
+	rtl_set_bbreg(Adapter, rFPGA0_XAB_RFParameter, BIT13, 0x01);
 
 	if (rtl_get_bbreg(Adapter, rFPGA0_XA_RFInterfaceOE, 0x300) == MAIN_ANT)
 		pHalData->CurAntenna = MAIN_ANT;

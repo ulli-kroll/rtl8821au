@@ -2223,8 +2223,8 @@ struct hal_ops rtl8812au_hal_ops = {
 	 */
 
 	.init_sw_leds = 		rtl8821au_init_sw_leds,
-	.read_bbreg = 	rtl8821au_phy_query_bb_reg,
-	.write_bbreg = 	rtl8821au_phy_set_bb_reg,
+	.get_bbreg = 	rtl8821au_phy_query_bb_reg,
+	.set_bbreg = 	rtl8821au_phy_set_bb_reg,
 
 	/* Old HAL functions */
 

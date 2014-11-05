@@ -231,8 +231,6 @@ struct hal_ops {
 	int32_t (*mgnt_xmit)(struct rtl_priv *padapter, struct xmit_frame *pmgntframe);
 	int32_t	(*hal_xmitframe_enqueue)(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
 
-	u32	(*read_bbreg)(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask);
-	void	(*write_bbreg)(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask, u32 Data);
 	u32	(*read_rfreg)(struct rtl_priv *padapter, uint8_t eRFPath, u32 RegAddr, u32 BitMask);
 	void	(*write_rfreg)(struct rtl_priv *padapter, uint8_t eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 

@@ -823,7 +823,7 @@ static void _rtl8821au_iqk_backup_afe(PDM_ODM_T pDM_Odm,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n"));
 }
 
-static void _IQK_RestoreMacBB_8821A(PDM_ODM_T pDM_Odm,
+static void _rtl8821au_iqk_restore_macbb(PDM_ODM_T pDM_Odm,
 	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
@@ -932,7 +932,7 @@ static void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
 	_IQK_RestoreRF_8821A(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG, RFA_backup, RF_REG_NUM);
 
 	_IQK_RestoreAFE_8821A(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
-	_IQK_RestoreMacBB_8821A(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
+	_rtl8821au_iqk_restore_macbb(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 
 	/* _IQK_Exit_8821A(pDM_Odm); */
 	/* _IQK_TX_CheckResult_8821A */

@@ -102,7 +102,7 @@ static void _rtl8821au_iqk_configure_mac(PDM_ODM_T pDM_Odm)
 
 #define cal_num 3
 
-static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
+static void _rtl8821au_iqk_tx(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 {
 	uint32_t TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int 	TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
@@ -928,7 +928,7 @@ static void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
 	_IQK_BackupRF_8821A(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
 
 	_rtl8821au_iqk_configure_mac(pDM_Odm);
-	_IQK_Tx_8821A(pDM_Odm, ODM_RF_PATH_A);
+	_rtl8821au_iqk_tx(pDM_Odm, ODM_RF_PATH_A);
 	_IQK_RestoreRF_8821A(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG, RFA_backup, RF_REG_NUM);
 
 	_IQK_RestoreAFE_8821A(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);

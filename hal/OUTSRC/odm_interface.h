@@ -123,7 +123,7 @@ static void ODM_SetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
 static uint32_t ODM_GetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
 	uint32_t RegAddr, uint32_t BitMask)
 {
-	return PHY_QueryRFReg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask);
+	return rtw_hal_read_rfreg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask);
 }
 
 #endif	// __ODM_INTERFACE_H__

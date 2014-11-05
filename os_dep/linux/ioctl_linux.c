@@ -2629,7 +2629,7 @@ void rf_reg_dump(struct rtl_priv *padapter)
 	for (path = 0; path < path_nums; path++) {
 		printk("\nRF_Path(%x)\n", path);
 		for (i = 0; i < 0x100; i++) {
-			/* value = PHY_QueryRFReg(padapter, path,i, bMaskDWord); */
+			/* value = rtw_hal_read_rfreg(padapter, path,i, bMaskDWord); */
 			value = rtw_hal_read_rfreg(padapter, path, i, 0xffffffff);
 			if (j % 4 == 1)
 				printk("0x%02x ", i);

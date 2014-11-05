@@ -360,7 +360,6 @@ void	rtl_set_bbreg(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask, u32 Data
 u32	rtw_hal_read_rfreg(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask);
 void	rtw_hal_write_rfreg(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 
-#define PHY_QueryRFReg(Adapter, eRFPath, RegAddr, BitMask) rtw_hal_read_rfreg((Adapter), (eRFPath), (RegAddr), (BitMask))
 #define PHY_SetRFReg(Adapter, eRFPath, RegAddr, BitMask, Data) rtw_hal_write_rfreg((Adapter), (eRFPath), (RegAddr), (BitMask), (Data))
 
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *padapter);

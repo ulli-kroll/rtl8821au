@@ -916,7 +916,7 @@ static void _rtl8821ae_phy_iq_calibrate(struct ieee80211_hw *hw)
 #define RF_REG_NUM 3
 
 
-static void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
+static void _rtl8821au_phy_iq_calibrate(PDM_ODM_T pDM_Odm)
 {
 	uint32_t	MACBB_backup[MACBB_REG_NUM], AFE_backup[AFE_REG_NUM], RFA_backup[RF_REG_NUM], RFB_backup[RF_REG_NUM];
 	uint32_t 	Backup_MACBB_REG[MACBB_REG_NUM] = {0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00, 0xc50, 0xe00, 0xe50, 0x838, 0x82c};
@@ -950,7 +950,7 @@ void PHY_IQCalibrate_8821A(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 		 * 	phy_IQCalibrate_By_FW_8821A(pAdapter);
 		 * else
 		 */
-			phy_IQCalibrate_8821A(pDM_Odm);
+			_rtl8821au_phy_iq_calibrate(pDM_Odm);
 	}
 }
 

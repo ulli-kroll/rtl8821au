@@ -918,23 +918,37 @@ static void _rtl8821ae_phy_iq_calibrate(struct ieee80211_hw *hw)
 
 static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter)
 {
-	uint32_t	MACBB_backup[MACBB_REG_NUM], AFE_backup[AFE_REG_NUM], RFA_backup[RF_REG_NUM], RFB_backup[RF_REG_NUM];
-	uint32_t 	Backup_MACBB_REG[MACBB_REG_NUM] = {0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00, 0xc50, 0xe00, 0xe50, 0x838, 0x82c};
-	uint32_t 	Backup_AFE_REG[AFE_REG_NUM] = {0xc5c, 0xc60, 0xc64, 0xc68, 0xc6c, 0xc70, 0xc74, 0xc78, 0xc7c, 0xc80, 0xc84, 0xcb8};
-	uint32_t 	Backup_RF_REG[RF_REG_NUM] = {0x65, 0x8f, 0x0};
+	u32 macbb_backup[MACBB_REG_NUM];
+	u32 afe_backup[AFE_REG_NUM];
+	u32 rfa_backup[RF_REG_NUM];
+	u32 rfb_backup[RF_REG_NUM];
+	u32 backup_macbb_reg[MACBB_REG_NUM] = {
+		0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00, 0xc50,
+		0xe00, 0xe50, 0x838, 0x82c
+	};
+	u32 backup_afe_reg[AFE_REG_NUM] = {
+		0xc5c, 0xc60, 0xc64, 0xc68, 0xc6c, 0xc70, 0xc74,
+		0xc78, 0xc7c, 0xc80, 0xc84, 0xcb8
+	};
+	u32 backup_rf_reg[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
+
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 	PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
 
-	_rtl8821au_iqk_backup_macbb(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
-	_rtl8821au_iqk_backup_afe(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
-	_rtl8821au_iqk_backup_rf(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
+	_rtl8821au_iqk_backup_macbb(pDM_Odm, macbb_backup, backup_macbb_reg,
+				    MACBB_REG_NUM);
+	_rtl8821au_iqk_backup_afe(pDM_Odm, afe_backup, backup_afe_reg, AFE_REG_NUM);
+	_rtl8821au_iqk_backup_rf(pDM_Odm, rfa_backup, rfb_backup, backup_rf_reg,
+				 RF_REG_NUM);
 
 	_rtl8821au_iqk_configure_mac(pDM_Odm);
 	_rtl8821au_iqk_tx(pDM_Odm, ODM_RF_PATH_A);
-	_rtl8821au_iqk_restore_rf(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG, RFA_backup, RF_REG_NUM);
+	_rtl8821au_iqk_restore_rf(pDM_Odm, ODM_RF_PATH_A, backup_rf_reg, rfa_backup,
+				 RF_REG_NUM);
 
-	_rtl8821au_iqk_restore_afe(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
-	_rtl8821au_iqk_restore_macbb(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
+	_rtl8821au_iqk_restore_afe(pDM_Odm, afe_backup, backup_afe_reg, AFE_REG_NUM);
+	_rtl8821au_iqk_restore_macbb(pDM_Odm, macbb_backup, backup_macbb_reg,
+				     MACBB_REG_NUM);
 
 	/* _IQK_Exit_8821A(pDM_Odm); */
 	/* _IQK_TX_CheckResult_8821A */

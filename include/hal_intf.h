@@ -169,6 +169,8 @@ struct hal_ops {
 
 	u32	(*get_bbreg)(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask);
 	void	(*set_bbreg)(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask, u32 Data);
+	u32	(*get_rfreg)(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask);
+	void	(*set_rfreg)(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 
 	/* Old HAL functions */
 
@@ -230,9 +232,6 @@ struct hal_ops {
 	int32_t	(*hal_xmit)(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
 	int32_t (*mgnt_xmit)(struct rtl_priv *padapter, struct xmit_frame *pmgntframe);
 	int32_t	(*hal_xmitframe_enqueue)(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
-
-	u32	(*read_rfreg)(struct rtl_priv *padapter, uint8_t eRFPath, u32 RegAddr, u32 BitMask);
-	void	(*write_rfreg)(struct rtl_priv *padapter, uint8_t eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 
 	void (*EfusePowerSwitch)(struct rtl_priv *padapter, uint8_t bWrite, uint8_t PwrState);
 	void (*ReadEFuse)(struct rtl_priv *padapter, uint8_t efuseType, u16 _offset, u16 _size_byte, uint8_t *pbuf);

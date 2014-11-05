@@ -2225,6 +2225,8 @@ struct hal_ops rtl8812au_hal_ops = {
 	.init_sw_leds = 		rtl8821au_init_sw_leds,
 	.get_bbreg = 	rtl8821au_phy_query_bb_reg,
 	.set_bbreg = 	rtl8821au_phy_set_bb_reg,
+	.get_rfreg = 	PHY_QueryRFReg8812,
+	.set_rfreg = 	PHY_SetRFReg8812,
 
 	/* Old HAL functions */
 
@@ -2287,10 +2289,6 @@ struct hal_ops rtl8812au_hal_ops = {
 	.AntDivBeforeLinkHandler =	AntDivBeforeLink8812,
 	.AntDivCompareHandler =		AntDivCompare8812,
 #endif
-
-	.read_rfreg = 	PHY_QueryRFReg8812,
-	.write_rfreg = 	PHY_SetRFReg8812,
-
 
 	/* Efuse related function */
 	.EfusePowerSwitch =	rtl8812_EfusePowerSwitch,

@@ -853,7 +853,7 @@ static void _rtl8821au_iqk_restore_rf(PDM_ODM_T pDM_Odm,
 	}
 }
 
-static void _IQK_RestoreAFE_8821A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
+static void _rtl8821au_iqk_restore_afe(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
 	uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
 	uint32_t i;
@@ -931,7 +931,7 @@ static void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
 	_rtl8821au_iqk_tx(pDM_Odm, ODM_RF_PATH_A);
 	_rtl8821au_iqk_restore_rf(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG, RFA_backup, RF_REG_NUM);
 
-	_IQK_RestoreAFE_8821A(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
+	_rtl8821au_iqk_restore_afe(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
 	_rtl8821au_iqk_restore_macbb(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 
 	/* _IQK_Exit_8821A(pDM_Odm); */

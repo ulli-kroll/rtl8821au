@@ -782,7 +782,7 @@ static void _rtl8821au_iqk_tx(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 
 
 
-static void _IQK_BackupMacBB_8821A(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
+static void _rtl8821au_iqk_backup_macbb(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
 	uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
@@ -923,7 +923,7 @@ static void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
 	uint32_t 	Backup_AFE_REG[AFE_REG_NUM] = {0xc5c, 0xc60, 0xc64, 0xc68, 0xc6c, 0xc70, 0xc74, 0xc78, 0xc7c, 0xc80, 0xc84, 0xcb8};
 	uint32_t 	Backup_RF_REG[RF_REG_NUM] = {0x65, 0x8f, 0x0};
 
-	_IQK_BackupMacBB_8821A(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
+	_rtl8821au_iqk_backup_macbb(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 	_IQK_BackupAFE_8821A(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
 	_IQK_BackupRF_8821A(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
 

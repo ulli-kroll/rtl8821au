@@ -22,6 +22,7 @@
 //#include <drv_types.h>
 
 #include <rtl8812a_hal.h>
+#include <../rtl8821au/phy.h>
 
 
 const char *const GLBwSrc[]={
@@ -4136,7 +4137,7 @@ phy_SwChnlAndSetBwMode8812(
 		else if(IS_HARDWARE_TYPE_8821(Adapter))
 		{
 #if (RTL8821A_SUPPORT == 1)
-			PHY_IQCalibrate_8821A(Adapter, _FALSE);
+			rtl8821au_phy_iq_calibrate(Adapter, _FALSE);
 #endif
 		}
 		pHalData->bNeedIQK = _FALSE;

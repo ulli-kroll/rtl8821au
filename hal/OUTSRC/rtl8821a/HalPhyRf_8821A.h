@@ -34,13 +34,6 @@ void ConfigureTxpowerTrack_8821A(
 
 //1 7.	IQK
 
-void
-PHY_IQCalibrate_8821A(
-	IN	struct rtl_priv *pAdapter,
-	IN	BOOLEAN 	bReCovery
-);
-
-
 VOID PHY_SetRFPathSwitch_8821A(
 	IN	struct rtl_priv *pAdapter,
 	IN	BOOLEAN		bMain

@@ -524,7 +524,7 @@ void ODM_DMWatchdog(PDM_ODM_T pDM_Odm)
 
 				/*
 				 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
-				 * PHY_IQCalibrate_8821A(pAdapter, FALSE);
+				 * void rtl8821au_phy_iq_calibrate(pAdapter, FALSE);
 				 */
 			}
 		} else

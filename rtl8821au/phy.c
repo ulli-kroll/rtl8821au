@@ -938,19 +938,16 @@ static void _rtl8821au_phy_iq_calibrate(PDM_ODM_T pDM_Odm)
 	/* _IQK_TX_CheckResult_8821A */
 }
 
-void PHY_IQCalibrate_8821A(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
+/*
+ * from linux-master
+ * void rtl8821ae_phy_iq_calibrate(struct ieee80211_hw *hw, bool b_recovery);
+ */
+
+void rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
+	PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
 
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
-
-	{
-		/*
-		 * if(pMgntInfo->RegIQKFWOffload)
-		 * 	phy_IQCalibrate_By_FW_8821A(pAdapter);
-		 * else
-		 */
-			_rtl8821au_phy_iq_calibrate(pDM_Odm);
-	}
+	_rtl8821au_phy_iq_calibrate(pDM_Odm);
 }
 

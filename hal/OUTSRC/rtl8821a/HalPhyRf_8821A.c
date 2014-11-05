@@ -19,6 +19,7 @@
  ******************************************************************************/
 
 #include "../odm_precomp.h"
+#include <../rtl8821au/phy.h>
 
 /*---------------------------Define Local Constant---------------------------*/
 /* 2010/04/25 MH Define the max tx power tracking tx agc power. */
@@ -44,7 +45,7 @@ static void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 	ODM_ResetIQKResult(pDM_Odm);
 
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK = ThermalValue;
-	PHY_IQCalibrate_8821A(Adapter, FALSE);
+	rtl8821au_phy_iq_calibrate(Adapter, FALSE);
 }
 
 

@@ -88,7 +88,7 @@ static void _rtl8821au_iqk_tx_fill_iqc(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Pa
 
 
 
-static void _IQK_ConfigureMAC_8821A(PDM_ODM_T pDM_Odm)
+static void _rtl8821au_iqk_configure_mac(PDM_ODM_T pDM_Odm)
 {
 	/* ========MAC register setting======== */
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -927,7 +927,7 @@ static void phy_IQCalibrate_8821A(PDM_ODM_T pDM_Odm)
 	_IQK_BackupAFE_8821A(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
 	_IQK_BackupRF_8821A(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
 
-	_IQK_ConfigureMAC_8821A(pDM_Odm);
+	_rtl8821au_iqk_configure_mac(pDM_Odm);
 	_IQK_Tx_8821A(pDM_Odm, ODM_RF_PATH_A);
 	_IQK_RestoreRF_8821A(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG, RFA_backup, RF_REG_NUM);
 

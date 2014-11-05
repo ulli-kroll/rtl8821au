@@ -3576,11 +3576,11 @@ PHY_SwitchWirelessBand8812(
 		// SYN Setting
 		if(IS_VENDOR_8812A_TEST_CHIP(Adapter))
 		{
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x0001c);
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x16BFF);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x0001c);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x16BFF);
 		}
 
 		// CCK_CHECK_en
@@ -3675,11 +3675,11 @@ PHY_SwitchWirelessBand8812(
 		// SYN Setting
 		if(IS_VENDOR_8812A_TEST_CHIP(Adapter))
 		{
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x00017);
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
-			PHY_SetRFReg(Adapter, RF_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x04BFF);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x00017);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
+			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x04BFF);
 		}
 
 		//DBG_871X("==>PHY_SwitchWirelessBand8812() BAND_ON_5G settings OFDM index 0x%x\n", pHalData->OFDM_index[RF_PATH_A]);
@@ -4047,47 +4047,47 @@ phy_SwChnl8812(
 		if(IS_VENDOR_8812A_TEST_CHIP(pAdapter))
 		{
 			if (1 <= channelToSW && channelToSW <= 7)
-				PHY_SetRFReg(pAdapter, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0017e);
+				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0017e);
 			else if (8 <= channelToSW && channelToSW <= 14)
-				PHY_SetRFReg(pAdapter, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0013e);
+				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0013e);
 		}
 
 		// RF_MOD_AG
 		if (36 <= channelToSW && channelToSW <= 64)
-			PHY_SetRFReg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x101); //5'b00101);
+			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x101); //5'b00101);
 		else if (100 <= channelToSW && channelToSW <= 140)
-			PHY_SetRFReg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x301); //5'b01101);
+			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x301); //5'b01101);
 		else if (140 < channelToSW)
-			PHY_SetRFReg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x501); //5'b10101);
+			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x501); //5'b10101);
 		else
-			PHY_SetRFReg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x000); //5'b00000);
+			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x000); //5'b00000);
 
 		// <20121109, Kordan> A workaround for 8812A only.
 		phy_FixSpur_8812A(pAdapter, pHalData->CurrentChannelBW, channelToSW);
 
-		PHY_SetRFReg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, bMaskByte0, channelToSW);
+		rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, bMaskByte0, channelToSW);
 
 		// <20130104, Kordan> APK for MP chip is done on initialization from folder.
 		if (IS_HARDWARE_TYPE_8811AU(pAdapter) && ( !IS_NORMAL_CHIP(pHalData->VersionID)) && channelToSW > 14 )
 		{
 			// <20121116, Kordan> For better result of APK. Asked by AlexWang.
 			if (36 <= channelToSW && channelToSW <= 64)
-				PHY_SetRFReg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);
+				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);
 			else if (100 <= channelToSW && channelToSW <= 140)
-				PHY_SetRFReg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
+				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
 			else
-				PHY_SetRFReg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
+				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 		}
 		else if ((IS_HARDWARE_TYPE_8821E(pAdapter) || IS_HARDWARE_TYPE_8821S(pAdapter))
 			      && channelToSW > 14)
 		{
 			// <20130111, Kordan> For better result of APK. Asked by Willson.
 			if (36 <= channelToSW && channelToSW <= 64)
-				PHY_SetRFReg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
+				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 			else if (100 <= channelToSW && channelToSW <= 140)
-				PHY_SetRFReg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x110E9);
+				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x110E9);
 			else
-				PHY_SetRFReg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
+				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 		}
 	}
 }

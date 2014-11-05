@@ -117,7 +117,7 @@ static uint32_t ODM_GetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
 static void ODM_SetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
-	PHY_SetRFReg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask, Data);
+	rtw_hal_write_rfreg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask, Data);
 }
 
 static uint32_t ODM_GetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,

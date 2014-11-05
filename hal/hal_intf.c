@@ -296,17 +296,11 @@ void rtl_set_bbreg(struct rtl_priv *padapter, uint32_t RegAddr, uint32_t BitMask
 
 uint32_t rtw_hal_read_rfreg(struct rtl_priv *padapter, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask)
 {
-	uint32_t data = 0;
-
-	if (padapter->HalFunc->get_rfreg)
-		data = padapter->HalFunc->get_rfreg(padapter, eRFPath, RegAddr, BitMask);
-
-	return data;
+	return padapter->HalFunc->get_rfreg(padapter, eRFPath, RegAddr, BitMask);
 }
 void	rtw_hal_write_rfreg(struct rtl_priv *padapter, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
-	if (padapter->HalFunc->set_rfreg)
-		padapter->HalFunc->set_rfreg(padapter, eRFPath, RegAddr, BitMask, Data);
+	padapter->HalFunc->set_rfreg(padapter, eRFPath, RegAddr, BitMask, Data);
 }
 
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *padapter)

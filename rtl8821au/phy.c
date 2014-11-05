@@ -66,7 +66,7 @@ static void  _rtl8821au_iqk_rx_fill_iqc(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E P
 	};
 }
 
-static void _IQK_TX_FillIQC_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+static void _rtl8821au_iqk_tx_fill_iqc(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	unsigned int TX_X, unsigned int TX_Y)
 {
 	switch (Path) {
@@ -739,9 +739,9 @@ static void _IQK_Tx_8821A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 		}
 
 		if (TX_finish == 1) {
-			_IQK_TX_FillIQC_8821A(pDM_Odm, Path, TX_X, TX_Y);
+			_rtl8821au_iqk_tx_fill_iqc(pDM_Odm, Path, TX_X, TX_Y);
 		} else {
-			_IQK_TX_FillIQC_8821A(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8821au_iqk_tx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 		}
 
 		if (RX_Average == 0)

@@ -88,16 +88,16 @@ static void _rtl8821au_iqk_tx_fill_iqc(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Pa
 
 
 
-static void _rtl8821au_iqk_configure_mac(PDM_ODM_T pDM_Odm)
+static void _rtl8821au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 {
 	/* ========MAC register setting======== */
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-	ODM_Write1Byte(pDM_Odm, 0x522, 0x3f);
-	ODM_SetBBReg(pDM_Odm, 0x550, BIT(3), 0x0);
-	ODM_SetBBReg(pDM_Odm, 0x551, BIT(3), 0x0);
-	ODM_SetBBReg(pDM_Odm, 0x808, BIT(28), 0x0);	/* CCK Off */
-	ODM_Write1Byte(pDM_Odm, 0x808, 0x00);		/* RX ante off */
-	ODM_SetBBReg(pDM_Odm, 0x838, 0xf, 0xc);		/* CCA off */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	rtw_write8(rtlpriv, 0x522, 0x3f);
+	rtl_set_bbreg(rtlpriv, 0x550, BIT(3), 0x0);
+	rtl_set_bbreg(rtlpriv, 0x551, BIT(3), 0x0);
+	rtl_set_bbreg(rtlpriv, 0x808, BIT(28), 0x0);	/* CCK Off */
+	rtw_write8(rtlpriv, 0x808, 0x00);		/* RX ante off */
+	rtl_set_bbreg(rtlpriv, 0x838, 0xf, 0xc);		/* CCA off */
 }
 
 #define cal_num 3
@@ -780,95 +780,101 @@ static void _rtl8821au_iqk_tx(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 	}
 }
 
-
-
-static void _rtl8821au_iqk_backup_macbb(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
-	uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
+static void _rtl8821au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
+					u32 *macbb_backup,
+					u32 *backup_macbb_reg, u32 mac_bb_num)
 {
-	uint32_t i;
+	u32 i;
 
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* save MACBB default value */
-	for (i = 0; i < MACBB_NUM; i++) {
-		MACBB_backup[i] = ODM_Read4Byte(pDM_Odm, Backup_MACBB_REG[i]);
+	for (i = 0; i < mac_bb_num; i++) {
+		macbb_backup[i] = rtw_read32(rtlpriv, backup_macbb_reg[i]);
 	}
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n"));
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
 }
 
-static void _rtl8821au_iqk_backup_rf(PDM_ODM_T pDM_Odm,
-	uint32_t *RFA_backup, uint32_t *RFB_backup,
-	uint32_t *Backup_RF_REG, uint32_t RF_NUM)
+static void _rtl8821au_iqk_backup_rf(struct rtl_priv *rtlpriv, u32 *rfa_backup,
+				     u32 *rfb_backup, u32 *backup_rf_reg,
+				     u32 rf_num)
 {
-	uint32_t i;
+	u32 i;
 
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save RF Parameters */
-	for (i = 0; i < RF_NUM; i++) {
-		RFA_backup[i] = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG[i], bMaskDWord);
+	for (i = 0; i < rf_num; i++) {
+		rfa_backup[i] = rtw_hal_read_rfreg(rtlpriv, ODM_RF_PATH_A, backup_rf_reg[i], bMaskDWord);
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n"));
+
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n")); */
 }
 
-static void _rtl8821au_iqk_backup_afe(PDM_ODM_T pDM_Odm,
-	uint32_t *AFE_backup, uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
+static void _rtl8821au_iqk_backup_afe(struct rtl_priv *rtlpriv, u32 *afe_backup,
+				      u32 *backup_afe_REG, u32 afe_num)
 {
-	uint32_t i;
+	u32  i;
 
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save AFE Parameters */
-	for (i = 0; i < AFE_NUM; i++) {
-		AFE_backup[i] = ODM_Read4Byte(pDM_Odm, Backup_AFE_REG[i]);
+	for (i = 0; i < afe_num; i++) {
+		afe_backup[i] = rtw_read32(rtlpriv, backup_afe_REG[i]);
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n"));
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n")); */
 }
 
-static void _rtl8821au_iqk_restore_macbb(PDM_ODM_T pDM_Odm,
-	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
+static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
+					 u32 *macbb_backup,
+					 u32 *backup_macbb_reg,
+					 u32 macbb_num)
 {
-	uint32_t i;
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
+	u32 i;
+
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
 	/* Reload MacBB Parameters */
-	for (i = 0; i < MACBB_NUM; i++) {
-		ODM_Write4Byte(pDM_Odm, Backup_MACBB_REG[i], MACBB_backup[i]);
+	for (i = 0; i < macbb_num; i++) {
+		rtw_write32(rtlpriv, backup_macbb_reg[i], macbb_backup[i]);
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n"));
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
 }
 
-static void _rtl8821au_iqk_restore_rf(PDM_ODM_T pDM_Odm,
-	ODM_RF_RADIO_PATH_E  Path,uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
+static void _rtl8821au_iqk_restore_rf(struct rtl_priv *rtlpriv,
+				      ODM_RF_RADIO_PATH_E Path,
+				      u32 *backup_rf_reg,
+				      u32 *rf_backup, u32 rf_reg_num)
 {
-	uint32_t i;
+	u32 i;
 
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
-	for (i = 0; i < RF_REG_NUM; i++)
-		ODM_SetRFReg(pDM_Odm, Path, Backup_RF_REG[i], bRFRegOffsetMask, RF_backup[i]);
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
+	for (i = 0; i < rf_reg_num; i++)
+		rtw_hal_write_rfreg(rtlpriv, Path, backup_rf_reg[i], bRFRegOffsetMask, rf_backup[i]);
 
 	switch (Path) {
 	case ODM_RF_PATH_A:
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path A Success!!!!\n"));
+		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path A Success!!!!\n")); */
 		break;
 	default:
 		break;
 	}
 }
 
-static void _rtl8821au_iqk_restore_afe(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
-	uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
+static void _rtl8821au_iqk_restore_afe(struct rtl_priv *rtlpriv,
+				       u32 *afe_backup, u32 *backup_afe_reg,
+				       u32 afe_num)
 {
 	uint32_t i;
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Reload AFE Parameters */
-	for (i = 0; i < AFE_NUM; i++) {
-		ODM_Write4Byte(pDM_Odm, Backup_AFE_REG[i], AFE_backup[i]);
+	for (i = 0; i < afe_num; i++) {
+		rtw_write32(rtlpriv, backup_afe_reg[i], afe_backup[i]);
 	}
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
-	ODM_Write4Byte(pDM_Odm, 0xc80, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xc84, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xc88, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xc8c, 0x3c000000);
-	ODM_Write4Byte(pDM_Odm, 0xcb8, 0x0);
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n"));
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
+	rtw_write32(rtlpriv, 0xc80, 0x0);
+	rtw_write32(rtlpriv, 0xc84, 0x0);
+	rtw_write32(rtlpriv, 0xc88, 0x0);
+	rtw_write32(rtlpriv, 0xc8c, 0x3c000000);
+	rtw_write32(rtlpriv, 0xcb8, 0x0);
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
 }
 
 
@@ -935,19 +941,19 @@ static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter)
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 	PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
 
-	_rtl8821au_iqk_backup_macbb(pDM_Odm, macbb_backup, backup_macbb_reg,
+	_rtl8821au_iqk_backup_macbb(pAdapter, macbb_backup, backup_macbb_reg,
 				    MACBB_REG_NUM);
-	_rtl8821au_iqk_backup_afe(pDM_Odm, afe_backup, backup_afe_reg, AFE_REG_NUM);
-	_rtl8821au_iqk_backup_rf(pDM_Odm, rfa_backup, rfb_backup, backup_rf_reg,
+	_rtl8821au_iqk_backup_afe(pAdapter, afe_backup, backup_afe_reg, AFE_REG_NUM);
+	_rtl8821au_iqk_backup_rf(pAdapter, rfa_backup, rfb_backup, backup_rf_reg,
 				 RF_REG_NUM);
 
-	_rtl8821au_iqk_configure_mac(pDM_Odm);
+	_rtl8821au_iqk_configure_mac(pAdapter);
 	_rtl8821au_iqk_tx(pDM_Odm, ODM_RF_PATH_A);
-	_rtl8821au_iqk_restore_rf(pDM_Odm, ODM_RF_PATH_A, backup_rf_reg, rfa_backup,
+	_rtl8821au_iqk_restore_rf(pAdapter, ODM_RF_PATH_A, backup_rf_reg, rfa_backup,
 				 RF_REG_NUM);
 
-	_rtl8821au_iqk_restore_afe(pDM_Odm, afe_backup, backup_afe_reg, AFE_REG_NUM);
-	_rtl8821au_iqk_restore_macbb(pDM_Odm, macbb_backup, backup_macbb_reg,
+	_rtl8821au_iqk_restore_afe(pAdapter, afe_backup, backup_afe_reg, AFE_REG_NUM);
+	_rtl8821au_iqk_restore_macbb(pAdapter, macbb_backup, backup_macbb_reg,
 				     MACBB_REG_NUM);
 
 	/* _IQK_Exit_8821A(pDM_Odm); */

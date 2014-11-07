@@ -102,7 +102,7 @@ static void _rtl8821au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 
 #define cal_num 3
 
-static void _rtl8821au_iqk_tx(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
+static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path)
 {
 	uint32_t TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int 	TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
@@ -111,6 +111,8 @@ static void _rtl8821au_iqk_tx(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 	BOOLEAN VDF_enable = FALSE;
 	int 	i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0;
 
+	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(rtlpriv);
+	PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d\n", *pDM_Odm->pBandWidth));
 	if (*pDM_Odm->pBandWidth == 2) {
@@ -948,7 +950,7 @@ static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter)
 				 RF_REG_NUM);
 
 	_rtl8821au_iqk_configure_mac(pAdapter);
-	_rtl8821au_iqk_tx(pDM_Odm, ODM_RF_PATH_A);
+	_rtl8821au_iqk_tx(pAdapter, ODM_RF_PATH_A);
 	_rtl8821au_iqk_restore_rf(pAdapter, ODM_RF_PATH_A, backup_rf_reg, rfa_backup,
 				 RF_REG_NUM);
 

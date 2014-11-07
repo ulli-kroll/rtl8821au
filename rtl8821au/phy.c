@@ -272,7 +272,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 						rtw_write32(rtlpriv, 0xcb8, 0x00000000);
 						delay_count = 0;
 						while (1) {
-							IQK_ready = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(10));
+							IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 							if ((~IQK_ready) || (delay_count > 20)) {
 								break;
 							} else {
@@ -283,13 +283,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 
 						if (delay_count < 20) {			/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-							TX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(12));
+							TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 
 							if (~TX_fail) {
 								rtw_write32(rtlpriv, 0xcb8, 0x02000000);
-								VDF_X[k] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+								VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								rtw_write32(rtlpriv, 0xcb8, 0x04000000);
-								VDF_Y[k] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+								VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								TX0IQKOK = TRUE;
 								break;
 							} else {
@@ -329,7 +329,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 					rtw_write32(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 						if ((~IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -340,12 +340,12 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 
 					if (delay_count < 20) {		/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(12));
+						TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 						if (~TX_fail) {
 							rtw_write32(rtlpriv, 0xcb8, 0x02000000);
-							TX_X0[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+							TX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtw_write32(rtlpriv, 0xcb8, 0x04000000);
-							TX_Y0[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+							TX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							break;
 						} else {
@@ -430,7 +430,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 						rtw_write32(rtlpriv, 0xcb8, 0x00000000);
 						delay_count = 0;
 						while (1) {
-							IQK_ready = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(10));
+							IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 							if ((~IQK_ready) || (delay_count > 20)) {
 								break;
 							} else {
@@ -441,13 +441,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 
 						if (delay_count < 20) {		/* If 20ms No Result, then cal_retry++ */
 							/* ============TXIQK Check============== */
-							TX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(12));
+							TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 
 							if (~TX_fail) {
 								rtw_write32(rtlpriv, 0xcb8, 0x02000000);
-								TX_X0_RXK[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+								TX_X0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								rtw_write32(rtlpriv, 0xcb8, 0x04000000);
-								TX_Y0_RXK[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+								TX_Y0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								TX0IQKOK = TRUE;
 								break;
 							} else {
@@ -511,7 +511,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 						rtw_write32(rtlpriv, 0xcb8, 0x00000000);
 						delay_count = 0;
 						while (1) {
-							IQK_ready = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(10));
+							IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 							if ((~IQK_ready) || (delay_count > 20)) {
 								break;
 							} else {
@@ -522,12 +522,12 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 
 						if (delay_count < 20) {	/* If 20ms No Result, then cal_retry++ */
 							/* ============RXIQK Check============== */
-							RX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(11));
+							RX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(11));
 							if (RX_fail == 0) {
 								rtw_write32(rtlpriv, 0xcb8, 0x06000000);
-								VDF_X[k] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+								VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								rtw_write32(rtlpriv, 0xcb8, 0x08000000);
-								VDF_Y[k] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+								VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								RX0IQKOK = TRUE;
 								break;
 							} else {
@@ -584,7 +584,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 					rtw_write32(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 						if ((~IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -595,13 +595,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 
 					if (delay_count < 20) {							/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(12));
+						TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 
 						if (~TX_fail) {
 							rtw_write32(rtlpriv, 0xcb8, 0x02000000);
-							TX_X0_RXK[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+							TX_X0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtw_write32(rtlpriv, 0xcb8, 0x04000000);
-							TX_Y0_RXK[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+							TX_Y0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							break;
 						} else {
@@ -661,7 +661,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 					rtw_write32(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 						if ((~IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -672,12 +672,12 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 
 					if (delay_count < 20) {	/* If 20ms No Result, then cal_retry++ */
 						/* ============RXIQK Check============== */
-						RX_fail = ODM_GetBBReg(pDM_Odm, 0xd00, BIT(11));
+						RX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(11));
 						if (RX_fail == 0) {
 							rtw_write32(rtlpriv, 0xcb8, 0x06000000);
-							RX_X0[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+							RX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtw_write32(rtlpriv, 0xcb8, 0x08000000);
-							RX_Y0[cal] = ODM_GetBBReg(pDM_Odm, 0xd00, 0x07ff0000)<<21;
+							RX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							RX0IQKOK = TRUE;
 							break;
 						} else {

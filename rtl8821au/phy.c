@@ -123,7 +123,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 		switch (Path) {
 		case ODM_RF_PATH_A:
 		    {
-			temp_reg65 = ODM_GetRFReg(pDM_Odm, Path, 0x65, bMaskDWord);
+			temp_reg65 = rtw_hal_read_rfreg(rtlpriv, Path, 0x65, bMaskDWord);
 
 			if (pDM_Odm->ExtPA) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -191,7 +191,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 			rtw_write32(rtlpriv, 0xcb8, 0x00000000);
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x58, 0x7fe00, ODM_GetRFReg(pDM_Odm, Path, 0x8, 0xffc00)); /* Load LOK */
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
 			switch (*pDM_Odm->pBandWidth) {
 			case 1:
 				rtw_hal_write_rfreg(rtlpriv, Path, 0x18, 0x00c00, 0x1);

@@ -124,23 +124,5 @@ odm_ConfigBB_PHY_8812A(
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data));
 }
 
-void
-odm_ConfigBB_TXPWR_LMT_8812A(
-	IN 	PDM_ODM_T 	pDM_Odm,
-	IN	pu1Byte		Regulation,
-	IN	pu1Byte		Band,
-	IN	pu1Byte		Bandwidth,
-	IN	pu1Byte		RateSection,
-	IN	pu1Byte		RfPath,
-	IN	pu1Byte 	Channel,
-	IN	pu1Byte		PowerLimit
-    )
-{
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
-	PHY_SetPowerLimitTableValue(pDM_Odm, Regulation, Band,
-		Bandwidth, RateSection, RfPath, Channel, PowerLimit);
-#endif
-}
-
 #endif
 

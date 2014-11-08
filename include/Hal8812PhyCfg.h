@@ -83,29 +83,6 @@ PHY_ConvertPowerLimitToPowerIndex(
 	IN	struct rtl_priv *		Adapter
 	);
 
-VOID
-PHY_SetPowerLimitTableValue(
-	IN	PDM_ODM_T		pDM_Odm,
-	IN	s8*				Regulation,
-	IN	s8*				Band,
-	IN	s8*				Bandwidth,
-	IN	s8*				RateSection,
-	IN	s8*				RfPath,
-	IN	s8* 				Channel,
-	IN	s8*				PowerLimit
-	);
-
-u8
-PHY_GetPowerLimitValue(
-	IN	struct rtl_priv *		Adapter,
-	IN	u32					RegPwrTblSel,
-	IN	BAND_TYPE			Band,
-	IN	CHANNEL_WIDTH		Bandwidth,
-	IN	RF_PATH				RfPath,
-	IN	uint8_t					DataRate,
-	IN	uint8_t					Channel
-	);
-
 /* RF config */
 
 int32_t

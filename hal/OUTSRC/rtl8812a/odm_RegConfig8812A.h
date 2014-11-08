@@ -54,18 +54,6 @@ odm_ConfigBB_PHY_8812A(
     IN 	uint32_t 		Data
     );
 
-void
-odm_ConfigBB_TXPWR_LMT_8812A(
-	IN 	PDM_ODM_T 	pDM_Odm,
-	IN	pu1Byte		Regulation,
-	IN	pu1Byte		Band,
-	IN	pu1Byte		Bandwidth,
-	IN	pu1Byte		RateSection,
-	IN	pu1Byte		RfPath,
-	IN	pu1Byte 	Channel,
-	IN	pu1Byte		PowerLimit
-    );
-
 #endif
 #endif // end of SUPPORT
 

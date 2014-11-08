@@ -1420,7 +1420,6 @@ typedef enum _ODM_BB_Config_Type{
     CONFIG_BB_AGC_TAB_2G,
     CONFIG_BB_AGC_TAB_5G,
     CONFIG_BB_PHY_REG_PG,
-    CONFIG_BB_PHY_REG_MP,
 } ODM_BB_Config_Type, *PODM_BB_Config_Type;
 
 typedef enum _ODM_RF_Config_Type{

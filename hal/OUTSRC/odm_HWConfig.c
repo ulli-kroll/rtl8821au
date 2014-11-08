@@ -812,10 +812,6 @@ HAL_STATUS ODM_ConfigBBWithHeaderFile(PDM_ODM_T pDM_Odm, ODM_BB_Config_Type Conf
 				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(pDM_Odm);
 			break;
 
-		case CONFIG_BB_PHY_REG_MP:
-			ODM_ReadAndConfig_MP_8812A_PHY_REG_MP(pDM_Odm);
-			break;
-
 		default:
 			;
 		}

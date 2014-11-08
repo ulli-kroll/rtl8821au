@@ -1,5 +1,6 @@
 #include <rtl8812a_hal.h>
 #include "phy.h"
+#include "table.h"
 //
 // 1. BB register R/W API
 //
@@ -972,3 +973,64 @@ void rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 	_rtl8821au_phy_iq_calibrate(pAdapter);
 }
 
+
+/* ********************************************************** */
+
+/* OLD functions need complete ? rewrite */
+
+static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(PDM_ODM_T pDM_Odm)
+{
+	uint32_t i		= 0;
+	uint32_t ArrayLen       = RTL8812AU_TXPWR_LMT_ARRAY_LEN;
+	u8 **Array		= RTL8812AU_TXPWR_LMT;
+
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_TXPWR_LMT\n"));
+
+	for (i = 0; i < ArrayLen; i += 7) {
+		u8 *regulation = Array[i];
+		u8 *band = Array[i+1];
+		u8 *bandwidth = Array[i+2];
+		u8 *rate = Array[i+3];
+		u8 *rfPath = Array[i+4];
+		u8 *chnl = Array[i+5];
+		u8 *val = Array[i+6];
+
+		odm_ConfigBB_TXPWR_LMT_8812A(pDM_Odm, regulation, band, bandwidth, rate, rfPath, chnl, val);
+	}
+
+}
+
+
+static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(PDM_ODM_T pDM_Odm)
+{
+	uint32_t i		= 0;
+	uint32_t ArrayLen       = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
+	u8 **Array		= RTL8821AU_TXPWR_LMT;
+
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_TXPWR_LMT\n"));
+
+	for (i = 0; i < ArrayLen; i += 7) {
+		u8 *regulation = Array[i];
+		u8 *band = Array[i+1];
+		u8 *bandwidth = Array[i+2];
+		u8 *rate = Array[i+3];
+		u8 *rfPath = Array[i+4];
+		u8 *chnl = Array[i+5];
+		u8 *val = Array[i+6];
+
+		odm_ConfigBB_TXPWR_LMT_8821A(pDM_Odm, regulation, band, bandwidth, rate, rfPath, chnl, val);
+	}
+
+}
+
+
+
+HAL_STATUS _rtl8821au_phy_read_and_config_txpwr_lmt(PDM_ODM_T pDM_Odm)
+{
+	if (pDM_Odm->SupportICType == ODM_RTL8812)
+		ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(pDM_Odm);
+	if (pDM_Odm->SupportICType == ODM_RTL8821)
+		ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(pDM_Odm);
+
+	return HAL_STATUS_SUCCESS;
+}

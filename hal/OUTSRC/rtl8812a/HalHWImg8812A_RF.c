@@ -293,27 +293,6 @@ void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB_RFE3(PDM_ODM_T pDM_Odm)
 *                           TXPWR_LMT.TXT
 ******************************************************************************/
 
-void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(PDM_ODM_T pDM_Odm)
-{
-	uint32_t i		= 0;
-	uint32_t ArrayLen       = RTL8812AU_TXPWR_LMT_ARRAY_LEN;
-	u8 **Array		= RTL8812AU_TXPWR_LMT;
-
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_TXPWR_LMT\n"));
-
-	for (i = 0; i < ArrayLen; i += 7) {
-		u8 *regulation = Array[i];
-		u8 *band = Array[i+1];
-		u8 *bandwidth = Array[i+2];
-		u8 *rate = Array[i+3];
-		u8 *rfPath = Array[i+4];
-		u8 *chnl = Array[i+5];
-		u8 *val = Array[i+6];
-
-		odm_ConfigBB_TXPWR_LMT_8812A(pDM_Odm, regulation, band, bandwidth, rate, rfPath, chnl, val);
-	}
-
-}
 
 #endif
 

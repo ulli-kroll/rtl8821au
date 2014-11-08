@@ -114,13 +114,6 @@ void rtw_os_free_recvframe(union recv_frame *precvframe)
 	}
 }
 
-/* init os related resource in struct recv_priv */
-int rtw_os_recv_resource_init(struct recv_priv *precvpriv, struct rtl_priv *padapter)
-{
-	int	res=_SUCCESS;
-
-	return res;
-}
 
 /* alloc os related resource in union recv_frame */
 int rtw_os_recv_resource_alloc(struct rtl_priv *padapter, union recv_frame *precvframe)

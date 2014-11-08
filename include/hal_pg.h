@@ -166,38 +166,6 @@
 #define EEPROM_PID_92DU						0xE
 
 //====================================================
-//			EEPROM/Efuse PG Offset for 88EE/88EU/88ES
-//====================================================
-#define EEPROM_TX_PWR_INX_88E					0x10
-
-#define EEPROM_ChannelPlan_88E					0xB8
-#define EEPROM_XTAL_88E						0xB9
-#define EEPROM_THERMAL_METER_88E				0xBA
-#define EEPROM_IQK_LCK_88E						0xBB
-
-#define EEPROM_RF_BOARD_OPTION_88E			0xC1
-#define EEPROM_RF_FEATURE_OPTION_88E			0xC2
-#define EEPROM_RF_BT_SETTING_88E				0xC3
-#define EEPROM_VERSION_88E						0xC4
-#define EEPROM_CustomID_88E					0xC5
-#define EEPROM_RF_ANTENNA_OPT_88E			0xC9
-
-// RTL88EE
-#define EEPROM_MAC_ADDR_88EE					0xD0
-#define EEPROM_VID_88EE						0xD6
-#define EEPROM_DID_88EE						0xD8
-#define EEPROM_SVID_88EE						0xDA
-#define EEPROM_SMID_88EE						0xDC
-
-//RTL88EU
-#define EEPROM_MAC_ADDR_88EU					0xD7
-#define EEPROM_VID_88EU						0xD0
-#define EEPROM_PID_88EU						0xD2
-#define EEPROM_USB_OPTIONAL_FUNCTION0		0xD4
-
-// RTL88ES
-#define EEPROM_MAC_ADDR_88ES					0x11A
-//====================================================
 //			EEPROM/Efuse PG Offset for 8812AE/8812AU/8812AS
 //====================================================
 // 0x10 ~ 0x63 = TX power area.

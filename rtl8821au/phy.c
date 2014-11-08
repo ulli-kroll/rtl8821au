@@ -1073,15 +1073,6 @@ CheckCondition(
     return TRUE;
 }
 
-
-
-static void odm_ConfigMAC_8812A(PDM_ODM_T pDM_Odm, uint32_t Addr, u1Byte Data)
-{
-	ODM_Write1Byte(pDM_Odm, Addr, Data);
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigMACWithHeaderFile: [MAC_REG] %08X %08X\n", Addr, Data));
-}
-
-
 static void ODM_ReadAndConfig_MP_8812A_MAC_REG(PDM_ODM_T pDM_Odm)
 {
 	uint32_t     hex         = 0;
@@ -1109,7 +1100,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(PDM_ODM_T pDM_Odm)
 	    // This (offset, data) pair meets the condition.
 	    if ( v1 < 0xCDCDCDCD )
 	    {
-	 		odm_ConfigMAC_8812A(pDM_Odm, v1, (u1Byte)v2);
+	 		ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
 		    continue;
 	 	}
 		else
@@ -1132,7 +1123,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(PDM_ODM_T pDM_Odm)
 		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
-	 				odm_ConfigMAC_8812A(pDM_Odm, v1, (u1Byte)v2);
+	 				ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
 		            READ_NEXT_PAIR(Array, v1, v2, i);
 		        }
 

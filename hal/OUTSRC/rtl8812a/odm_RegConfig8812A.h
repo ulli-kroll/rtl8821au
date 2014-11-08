@@ -31,13 +31,6 @@ odm_ConfigRFReg_8812A(
 	IN	uint32_t				    RegAddr
 	);
 void
-odm_ConfigMAC_8812A(
- 	IN 	PDM_ODM_T 	pDM_Odm,
- 	IN 	uint32_t 		Addr,
- 	IN 	u1Byte 		Data
- 	);
-
-void
 odm_ConfigBB_AGC_8812A(
     IN 	PDM_ODM_T 	pDM_Odm,
     IN 	uint32_t 		Addr,

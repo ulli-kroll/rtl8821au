@@ -89,17 +89,6 @@ odm_ConfigRF_RadioB_8821A(
 */
 
 void
-odm_ConfigMAC_8821A(
- 	IN 	PDM_ODM_T 	pDM_Odm,
- 	IN 	uint32_t 		Addr,
- 	IN 	u1Byte 		Data
- 	)
-{
-	ODM_Write1Byte(pDM_Odm, Addr, Data);
-    ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigMACWithHeaderFile: [MAC_REG] %08X %08X\n", Addr, Data));
-}
-
-void
 odm_ConfigBB_AGC_8821A(
     IN 	PDM_ODM_T 	pDM_Odm,
     IN 	uint32_t 		Addr,

@@ -125,11 +125,6 @@ int rtw_os_recv_resource_alloc(struct rtl_priv *padapter, union recv_frame *prec
 	return res;
 }
 
-/* free os related resource in union recv_frame */
-void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
-{
-
-}
 
 /* alloc os related resource in struct recv_buf */
 int rtw_os_recvbuf_resource_alloc(struct rtl_priv *padapter, struct recv_buf *precvbuf)

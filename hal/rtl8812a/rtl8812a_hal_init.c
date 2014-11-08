@@ -1093,9 +1093,6 @@ VOID Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *pAdapter,
 			pHalData->AntDivCfg = registry_par->antdiv_cfg;
 		}
 
-		if (pHalData->EEPROMBluetoothCoexist != 0 && pHalData->EEPROMBluetoothAntNum == Ant_x1)
-			pHalData->AntDivCfg = 0;
-
 		pHalData->TRxAntDivType = PROMContent[EEPROM_RF_ANTENNA_OPT_8812];  /* todo by page */
 		if (pHalData->TRxAntDivType == 0xFF)
 			pHalData->TRxAntDivType = FIXED_HW_ANTDIV; /* For 88EE, 1Tx and 1RxCG are fixed.(1Ant, Tx and RxCG are both on aux port) */

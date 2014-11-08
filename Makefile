@@ -77,7 +77,6 @@ _HAL_INTFS_FILES += hal/rtl8812a/usb/usb_ops_linux.o
 ifeq ($(CONFIG_RTL8812A), y)
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
 _OUTSRC_FILES += hal/OUTSRC/rtl8812a/HalHWImg8812A_FW.o\
-		hal/OUTSRC/rtl8812a/HalHWImg8812A_MAC.o\
 		hal/OUTSRC/rtl8812a/HalHWImg8812A_BB.o\
 		hal/OUTSRC/rtl8812a/HalHWImg8812A_RF.o\
 		hal/OUTSRC/rtl8812a/HalPhyRf_8812A.o\
@@ -89,7 +88,6 @@ ifeq ($(CONFIG_RTL8821A), y)
 
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
 _OUTSRC_FILES += hal/OUTSRC/rtl8821a/HalHWImg8821A_FW.o\
-		hal/OUTSRC/rtl8821a/HalHWImg8821A_MAC.o\
 		hal/OUTSRC/rtl8821a/HalHWImg8821A_BB.o\
 		hal/OUTSRC/rtl8821a/HalHWImg8821A_RF.o\
 		hal/OUTSRC/rtl8812a/HalPhyRf_8812A.o\

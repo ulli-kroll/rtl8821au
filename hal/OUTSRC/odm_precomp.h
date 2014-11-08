@@ -75,7 +75,6 @@
 #include "odm_reg.h"
 
 #if (RTL8812A_SUPPORT==1)
-#include "rtl8812a/HalHWImg8812A_MAC.h"
 #include "rtl8812a/HalHWImg8812A_RF.h"
 #include "rtl8812a/HalHWImg8812A_BB.h"
 #include "rtl8812a/HalHWImg8812A_FW.h"
@@ -84,7 +83,6 @@
 
 
 #if (RTL8821A_SUPPORT==1)
-#include "rtl8821a/HalHWImg8821A_MAC.h"
 #include "rtl8821a/HalHWImg8821A_RF.h"
 #include "rtl8821a/HalHWImg8821A_BB.h"
 #include "rtl8821a/HalHWImg8821A_FW.h"

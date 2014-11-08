@@ -5,6 +5,14 @@
 // 1. BB register R/W API
 //
 
+#define READ_NEXT_PAIR(array_table, v1, v2, i) \
+	do { \
+		i += 2; \
+		v1 = array_table[i]; \
+		v2 = array_table[i+1]; \
+	} while (0)
+
+
 u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *Adapter, uint32_t RegAddr, uint32_t BitMask)
 {
 	uint32_t ReturnValue = 0, OriginalValue, BitShift;
@@ -1035,8 +1043,6 @@ HAL_STATUS _rtl8821au_phy_read_and_config_txpwr_lmt(PDM_ODM_T pDM_Odm)
 
 
 
-#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
-
 static BOOLEAN
 CheckCondition(
     const uint32_t  Condition,
@@ -1101,29 +1107,29 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(PDM_ODM_T pDM_Odm)
 		{ // This line is the start line of branch.
 		    if ( !CheckCondition(Array[i], hex) )
 		    { // Discard the following (offset, data) pairs.
-		        READ_NEXT_PAIR(v1, v2, i);
+		        READ_NEXT_PAIR(Array, v1, v2, i);
 		        while (v2 != 0xDEAD &&
 		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
-		            READ_NEXT_PAIR(v1, v2, i);
+		            READ_NEXT_PAIR(Array, v1, v2, i);
 		        }
 		        i -= 2; // prevent from for-loop += 2
 		    }
 		    else // Configure matched pairs and skip to end of if-else.
 		    {
-		        READ_NEXT_PAIR(v1, v2, i);
+		        READ_NEXT_PAIR(Array, v1, v2, i);
 		        while (v2 != 0xDEAD &&
 		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
 	 				odm_ConfigMAC_8812A(pDM_Odm, v1, (u1Byte)v2);
-		            READ_NEXT_PAIR(v1, v2, i);
+		            READ_NEXT_PAIR(Array, v1, v2, i);
 		        }
 
 		        while (v2 != 0xDEAD && i < ArrayLen -2)
 		        {
-		            READ_NEXT_PAIR(v1, v2, i);
+		            READ_NEXT_PAIR(Array, v1, v2, i);
 		        }
 
 		    }
@@ -1138,7 +1144,6 @@ ODM_ReadAndConfig_MP_8821A_MAC_REG(
  	IN   PDM_ODM_T  pDM_Odm
  	)
 {
-	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
@@ -1172,29 +1177,29 @@ ODM_ReadAndConfig_MP_8821A_MAC_REG(
 		{ // This line is the start line of branch.
 		    if ( !CheckCondition(Array[i], hex) )
 		    { // Discard the following (offset, data) pairs.
-		        READ_NEXT_PAIR(v1, v2, i);
+		        READ_NEXT_PAIR(Array, v1, v2, i);
 		        while (v2 != 0xDEAD &&
 		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
-		            READ_NEXT_PAIR(v1, v2, i);
+		            READ_NEXT_PAIR(Array, v1, v2, i);
 		        }
 		        i -= 2; // prevent from for-loop += 2
 		    }
 		    else // Configure matched pairs and skip to end of if-else.
 		    {
-		        READ_NEXT_PAIR(v1, v2, i);
+		        READ_NEXT_PAIR(Array, v1, v2, i);
 		        while (v2 != 0xDEAD &&
 		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
 	 				odm_ConfigMAC_8821A(pDM_Odm, v1, (u1Byte)v2);
-		            READ_NEXT_PAIR(v1, v2, i);
+		            READ_NEXT_PAIR(Array, v1, v2, i);
 		        }
 
 		        while (v2 != 0xDEAD && i < ArrayLen -2)
 		        {
-		            READ_NEXT_PAIR(v1, v2, i);
+		            READ_NEXT_PAIR(Array, v1, v2, i);
 		        }
 
 		    }

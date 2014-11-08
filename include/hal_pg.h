@@ -198,47 +198,6 @@
 // RTL88ES
 #define EEPROM_MAC_ADDR_88ES					0x11A
 //====================================================
-//			EEPROM/Efuse PG Offset for 8192EE/8192EU/8192ES
-//====================================================
-// 0x10 ~ 0x63 = TX power area.
-#define	EEPROM_TX_PWR_INX_8192E				0x10
-
-#define	EEPROM_ChannelPlan_8192E				0xB8
-#define	EEPROM_XTAL_8192E						0xB9
-#define	EEPROM_THERMAL_METER_8192E			0xBA
-#define	EEPROM_IQK_LCK_8192E					0xBB
-#define	EEPROM_2G_5G_PA_TYPE_8192E			0xBC
-#define	EEPROM_2G_LNA_TYPE_GAIN_SEL_8192E	0xBD
-#define	EEPROM_5G_LNA_TYPE_GAIN_SEL_8192E	0xBF
-
-#define	EEPROM_RF_BOARD_OPTION_8192E		0xC1
-#define	EEPROM_RF_FEATURE_OPTION_8192E		0xC2
-#define	EEPROM_RF_BT_SETTING_8192E			0xC3
-#define	EEPROM_VERSION_8192E					0xC4
-#define	EEPROM_CustomID_8192E				0xC5
-#define	EEPROM_TX_BBSWING_2G_8192E			0xC6
-#define	EEPROM_TX_BBSWING_5G_8192E			0xC7
-#define	EEPROM_TX_PWR_CALIBRATE_RATE_8192E	0xC8
-#define	EEPROM_RF_ANTENNA_OPT_8192E			0xC9
-
-// RTL8192EE
-#define	EEPROM_MAC_ADDR_8192EE				0xD0
-#define	EEPROM_VID_8192EE						0xD6
-#define	EEPROM_DID_8192EE						0xD8
-#define	EEPROM_SVID_8192EE					0xDA
-#define	EEPROM_SMID_8192EE					0xDC
-
-//RTL8192EU
-#define	EEPROM_MAC_ADDR_8192EU				0xD7
-#define	EEPROM_VID_8192EU						0xD0
-#define	EEPROM_PID_8192EU						0xD2
-#define 	EEPROM_PA_TYPE_8192EU               		0xBC
-#define 	EEPROM_LNA_TYPE_2G_8192EU           	0xBD
-#define 	EEPROM_LNA_TYPE_5G_8192EU           	0xBF
-
-// RTL8192ES
-#define	EEPROM_MAC_ADDR_8192ES				0x11B
-//====================================================
 //			EEPROM/Efuse PG Offset for 8812AE/8812AU/8812AS
 //====================================================
 // 0x10 ~ 0x63 = TX power area.

@@ -252,14 +252,12 @@ ODM_ConfigRFWithHeaderFile(
 	IN 	ODM_RF_Config_Type 		ConfigType,
 	IN 	ODM_RF_RADIO_PATH_E 	eRFPath
 	);
-HAL_STATUS _rtl8821au_phy_read_and_config_txpwr_lmt(PDM_ODM_T pDM_Odm);
+
 HAL_STATUS
 ODM_ConfigBBWithHeaderFile(
 	IN  	PDM_ODM_T	                pDM_Odm,
 	IN	ODM_BB_Config_Type		ConfigType
     );
-
-HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(PDM_ODM_T pDM_Odm);
 
 #endif
 

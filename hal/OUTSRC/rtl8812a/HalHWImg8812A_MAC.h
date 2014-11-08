@@ -22,16 +22,9 @@
 #ifndef __INC_MP_MAC_HW_IMG_8812A_H
 #define __INC_MP_MAC_HW_IMG_8812A_H
 
-static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex);
-
 /******************************************************************************
 *                           MAC_REG.TXT
 ******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8812A_MAC_REG( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
-);
 
 #endif
 #endif // end of HWIMG_SUPPORT

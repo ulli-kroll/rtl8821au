@@ -1424,7 +1424,6 @@ typedef enum _ODM_BB_Config_Type{
 
 typedef enum _ODM_RF_Config_Type{
 	CONFIG_RF_RADIO,
-    CONFIG_RF_TXPWR_LMT,
 } ODM_RF_Config_Type, *PODM_RF_Config_Type;
 
 // Status code

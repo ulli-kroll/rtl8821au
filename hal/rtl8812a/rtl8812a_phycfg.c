@@ -355,7 +355,7 @@ phy_BB8812_Config_ParaFile(
 		 pHalData->EEPROMRegulatory == 1 )
 	{
 #ifdef CONFIG_EMBEDDED_FWIMG
-		if (HAL_STATUS_SUCCESS != ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_TXPWR_LMT, 0))
+		if (HAL_STATUS_SUCCESS != _rtl8821au_phy_read_and_config_txpwr_lmt(&pHalData->odmpriv))
 			rtStatus = _FAIL;
 #else
 		rtStatus = PHY_ConfigBBWithPowerLimitTableParaFile( Adapter, pszRFTxPwrLmtFile );

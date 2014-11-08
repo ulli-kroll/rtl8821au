@@ -716,9 +716,6 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
 				ODM_ReadAndConfig_MP_8812A_RadioB(pDM_Odm);
 			}
 			break;
-		case CONFIG_RF_TXPWR_LMT:
-			ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(pDM_Odm);
-			break;
 
 		default:
 			;
@@ -734,15 +731,23 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
 				ODM_ReadAndConfig_MP_8821A_RadioA(pDM_Odm);
 			}
 			break;
-		case CONFIG_RF_TXPWR_LMT:
-			ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(pDM_Odm);
-			break;
 		default:
 			;
 		}
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("<===8821_ODM_ConfigRFWithHeaderFile\n"));
 	}
 #endif
+	return HAL_STATUS_SUCCESS;
+}
+
+
+HAL_STATUS _rtl8821au_phy_read_and_config_txpwr_lmt(PDM_ODM_T pDM_Odm)
+{
+	if (pDM_Odm->SupportICType == ODM_RTL8812)
+		ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(pDM_Odm);
+	if (pDM_Odm->SupportICType == ODM_RTL8821)
+		ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(pDM_Odm);
+
 	return HAL_STATUS_SUCCESS;
 }
 

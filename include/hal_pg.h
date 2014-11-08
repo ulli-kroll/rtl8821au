@@ -64,45 +64,6 @@
 #define EEPROM_EASY_REPLACEMENT				0x50//BIT0 1 for build-in module, 0 for external dongle
 
 //====================================================
-//			EEPROM/Efuse PG Offset for 8723AE/8723AU/8723AS
-//====================================================
-#define EEPROM_CCK_TX_PWR_INX_8723A			0x10
-#define EEPROM_HT40_1S_TX_PWR_INX_8723A		0x16
-#define EEPROM_HT20_TX_PWR_INX_DIFF_8723A	0x1C
-#define EEPROM_OFDM_TX_PWR_INX_DIFF_8723A	0x1F
-#define EEPROM_HT40_MAX_PWR_OFFSET_8723A	0x22
-#define EEPROM_HT20_MAX_PWR_OFFSET_8723A	0x25
-
-#define EEPROM_ChannelPlan_8723A				0x28
-#define EEPROM_TSSI_A_8723A					0x29
-#define EEPROM_THERMAL_METER_8723A			0x2A
-#define RF_OPTION1_8723A						0x2B
-#define RF_OPTION2_8723A						0x2C
-#define RF_OPTION3_8723A						0x2D
-#define RF_OPTION4_8723A						0x2E
-#define EEPROM_VERSION_8723A					0x30
-#define EEPROM_CustomID_8723A					0x31
-#define EEPROM_SubCustomID_8723A				0x32
-#define EEPROM_XTAL_K_8723A					0x33
-#define EEPROM_Chipset_8723A					0x34
-
-
-// RTL8723AE
-#define EEPROM_VID_8723AE						0x49
-#define EEPROM_DID_8723AE						0x4B
-#define EEPROM_SVID_8723AE						0x4D
-#define EEPROM_SMID_8723AE					0x4F
-#define EEPROM_MAC_ADDR_8723AE				0x67
-
-//RTL8723AU
-#define EEPROM_MAC_ADDR_8723AU				0xC6
-#define EEPROM_VID_8723AU						0xB7
-#define EEPROM_PID_8723AU						0xB9
-
-// RTL8723AS
-#define EEPROM_MAC_ADDR_8723AS				0xAA
-
-//====================================================
 //			EEPROM/Efuse PG Offset for 8192 DE/DU
 //====================================================
 // pcie

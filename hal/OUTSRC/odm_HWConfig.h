@@ -259,10 +259,7 @@ ODM_ConfigBBWithHeaderFile(
 	IN	ODM_BB_Config_Type		ConfigType
     );
 
-HAL_STATUS
-ODM_ConfigMACWithHeaderFile(
-	IN  	PDM_ODM_T	pDM_Odm
-    );
+HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(PDM_ODM_T pDM_Odm);
 
 #endif
 

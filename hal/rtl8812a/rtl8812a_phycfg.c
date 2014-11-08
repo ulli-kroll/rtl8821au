@@ -229,7 +229,7 @@ int32_t PHY_MACConfig8812(struct rtl_priv *Adapter)
 	// Config MAC
 	//
 #ifdef CONFIG_EMBEDDED_FWIMG
-	if(HAL_STATUS_SUCCESS != ODM_ConfigMACWithHeaderFile(&pHalData->odmpriv))
+	if(HAL_STATUS_SUCCESS != _rtl8821au_phy_config_mac_with_headerfile(&pHalData->odmpriv))
 		rtStatus = _FAIL;
 #else
 

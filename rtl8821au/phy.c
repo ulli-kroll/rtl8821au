@@ -1233,3 +1233,225 @@ HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(PDM_ODM_T pDM_Odm)
 	return result;
 }
 
+
+/* *****  */
+
+/******************************************************************************
+*                           RadioA.TXT
+******************************************************************************/
+
+
+static void odm_ConfigRF_RadioA_8812A(PDM_ODM_T pDM_Odm, uint32_t Addr,
+	uint32_t Data)
+{
+	uint32_t  content = 0x1000; // RF_Content: radioa_txt
+	uint32_t	maskforPhySet= (uint32_t)(content&0xE000);
+
+    odm_ConfigRFReg_8812A(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
+
+    ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
+}
+
+static void odm_ConfigRF_RadioB_8812A(PDM_ODM_T pDM_Odm, uint32_t Addr,
+	uint32_t Data)
+{
+	uint32_t  content = 0x1001; // RF_Content: radiob_txt
+	uint32_t	maskforPhySet= (uint32_t)(content&0xE000);
+
+    odm_ConfigRFReg_8812A(pDM_Odm, Addr, Data, ODM_RF_PATH_B, Addr|maskforPhySet);
+
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioB] %08X %08X\n", Addr, Data));
+
+}
+
+void ODM_ReadAndConfig_MP_8812A_RadioA(PDM_ODM_T pDM_Odm)
+{
+	uint32_t     	hex         = 0;
+	uint32_t     	i           = 0;
+	uint16_t     	count       = 0;
+	uint32_t    	*ptr_array   = NULL;
+	u1Byte		platform    = pDM_Odm->SupportPlatform;
+	u1Byte     	_interface   = pDM_Odm->SupportInterface;
+	u1Byte     	board       = pDM_Odm->BoardType;
+	uint32_t     	ArrayLen    =  RTL8812AU_RADIOA_1TARRAYLEN;
+	uint32_t    	*Array       = RTL8812AU_RADIOA_ARRAY;
+
+
+	hex += board;
+	hex += _interface << 8;
+	hex += platform << 16;
+	hex += 0xFF000000;
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_RadioA, hex = 0x%X\n", hex));
+
+	for (i = 0; i < ArrayLen; i += 2) {
+		uint32_t v1 = Array[i];
+		uint32_t v2 = Array[i+1];
+
+		/* This (offset, data) pair meets the condition. */
+		if (v1 < 0xCDCDCDCD) {
+			odm_ConfigRF_RadioA_8812A(pDM_Odm, v1, v2);
+			continue;
+		} else { /* This line is the start line of branch. */
+			if (!CheckCondition(Array[i], hex)) {
+				/* Discard the following (offset, data) pairs. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+				    v2 != 0xCDEF &&
+				    v2 != 0xCDCD && i < ArrayLen-2) {
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+				i -= 2; /* prevent from for-loop += 2 */
+			} else {
+				/* Configure matched pairs and skip to end of if-else. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+				    v2 != 0xCDEF &&
+				    v2 != 0xCDCD && i < ArrayLen-2) {
+					odm_ConfigRF_RadioA_8812A(pDM_Odm, v1, v2);
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+
+				while (v2 != 0xDEAD && i < ArrayLen-2) {
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+			}
+		}
+	}
+
+}
+
+/******************************************************************************
+*                           RadioB.TXT
+******************************************************************************/
+
+
+void ODM_ReadAndConfig_MP_8812A_RadioB(PDM_ODM_T pDM_Odm)
+{
+	uint32_t	hex         = 0;
+	uint32_t	i           = 0;
+	uint16_t	count       = 0;
+	uint32_t	*ptr_array   = NULL;
+	u1Byte		platform    = pDM_Odm->SupportPlatform;
+	u1Byte		_interface   = pDM_Odm->SupportInterface;
+	u1Byte		board       = pDM_Odm->BoardType;
+	uint32_t	ArrayLen    = RTL8812AU_RADIOB_1TARRAYLEN;
+	uint32_t	*Array       = RTL8812AU_RADIOB_ARRAY;
+
+	hex += board;
+	hex += _interface << 8;
+	hex += platform << 16;
+	hex += 0xFF000000;
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_RadioB, hex = 0x%X\n", hex));
+
+	for (i = 0; i < ArrayLen; i += 2) {
+		uint32_t v1 = Array[i];
+		uint32_t v2 = Array[i+1];
+
+		/* This (offset, data) pair meets the condition. */
+		if (v1 < 0xCDCDCDCD) {
+			odm_ConfigRF_RadioB_8812A(pDM_Odm, v1, v2);
+			continue;
+		} else {
+			/* This line is the start line of branch. */
+			if (!CheckCondition(Array[i], hex)) {
+				/* Discard the following (offset, data) pairs. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+				    v2 != 0xCDEF &&
+				    v2 != 0xCDCD && i < ArrayLen-2) {
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+				i -= 2; /* prevent from for-loop += 2 */
+			} else {
+				/* Configure matched pairs and skip to end of if-else. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+				    v2 != 0xCDEF &&
+				    v2 != 0xCDCD && i < ArrayLen-2) {
+					odm_ConfigRF_RadioB_8812A(pDM_Odm, v1, v2);
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+
+				while (v2 != 0xDEAD && i < ArrayLen-2) {
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+			}
+		}
+	}
+
+}
+
+
+/******************************************************************************
+*                           RadioA.TXT
+******************************************************************************/
+
+static void odm_ConfigRF_RadioA_8821A(PDM_ODM_T pDM_Odm, uint32_t Addr,
+	uint32_t Data)
+{
+	uint32_t  content = 0x1000; // RF_Content: radioa_txt
+	uint32_t	maskforPhySet= (uint32_t)(content&0xE000);
+
+    odm_ConfigRFReg_8821A(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
+
+    ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
+}
+
+
+void ODM_ReadAndConfig_MP_8821A_RadioA(PDM_ODM_T pDM_Odm)
+{
+	uint32_t	hex         = 0;
+	uint32_t	i           = 0;
+	uint16_t	count       = 0;
+	uint32_t	*ptr_array   = NULL;
+	u1Byte		platform    = pDM_Odm->SupportPlatform;
+	u1Byte		_interface   = pDM_Odm->SupportInterface;
+	u1Byte		board       = pDM_Odm->BoardType;
+	uint32_t	ArrayLen    =  RTL8821AU_RADIOA_1TARRAYLEN;
+	uint32_t	*Array       = RTL8821AU_RADIOA_ARRAY;
+
+
+	hex += board;
+	hex += _interface << 8;
+	hex += platform << 16;
+	hex += 0xFF000000;
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_RadioA, hex = 0x%X\n", hex));
+
+	for (i = 0; i < ArrayLen; i += 2) {
+		uint32_t v1 = Array[i];
+		uint32_t v2 = Array[i+1];
+
+		/* This (offset, data) pair meets the condition. */
+		if (v1 < 0xCDCDCDCD) {
+			odm_ConfigRF_RadioA_8821A(pDM_Odm, v1, v2);
+			continue;
+		} else {
+			/* This line is the start line of branch. */
+			if (!CheckCondition(Array[i], hex)) {
+				/* Discard the following (offset, data) pairs. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+				    v2 != 0xCDEF &&
+				    v2 != 0xCDCD && i < ArrayLen-2) {
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+				i -= 2; /* prevent from for-loop += 2 */
+			} else {
+				/* Configure matched pairs and skip to end of if-else. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+				    v2 != 0xCDEF &&
+				    v2 != 0xCDCD && i < ArrayLen-2) {
+					odm_ConfigRF_RadioA_8821A(pDM_Odm, v1, v2);
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+
+				while (v2 != 0xDEAD && i < ArrayLen-2) {
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+			}
+		}
+	}
+
+}
+

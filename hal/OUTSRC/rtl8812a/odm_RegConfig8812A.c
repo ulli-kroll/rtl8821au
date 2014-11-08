@@ -49,37 +49,6 @@ odm_ConfigRFReg_8812A(
 
 
 void
-odm_ConfigRF_RadioA_8812A(
-	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	uint32_t 					Addr,
-	IN 	uint32_t 					Data
-	)
-{
-	uint32_t  content = 0x1000; // RF_Content: radioa_txt
-	uint32_t	maskforPhySet= (uint32_t)(content&0xE000);
-
-    odm_ConfigRFReg_8812A(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
-
-    ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
-}
-
-void
-odm_ConfigRF_RadioB_8812A(
-	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	uint32_t 					Addr,
-	IN 	uint32_t 					Data
-	)
-{
-	uint32_t  content = 0x1001; // RF_Content: radiob_txt
-	uint32_t	maskforPhySet= (uint32_t)(content&0xE000);
-
-    odm_ConfigRFReg_8812A(pDM_Odm, Addr, Data, ODM_RF_PATH_B, Addr|maskforPhySet);
-
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioB] %08X %08X\n", Addr, Data));
-
-}
-
-void
 odm_ConfigMAC_8812A(
  	IN 	PDM_ODM_T 	pDM_Odm,
  	IN 	uint32_t 		Addr,

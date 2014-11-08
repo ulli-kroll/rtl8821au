@@ -30,21 +30,6 @@ odm_ConfigRFReg_8812A(
 	IN  ODM_RF_RADIO_PATH_E     RF_PATH,
 	IN	uint32_t				    RegAddr
 	);
-
-void
-odm_ConfigRF_RadioA_8812A(
-	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	uint32_t 					Addr,
-	IN 	uint32_t 					Data
-	);
-
-void
-odm_ConfigRF_RadioB_8812A(
-	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	uint32_t 					Addr,
-	IN 	uint32_t 					Data
-	);
-
 void
 odm_ConfigMAC_8812A(
  	IN 	PDM_ODM_T 	pDM_Odm,

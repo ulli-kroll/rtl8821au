@@ -32,20 +32,6 @@ odm_ConfigRFReg_8821A(
 	);
 
 void
-odm_ConfigRF_RadioA_8821A(
-	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	uint32_t 					Addr,
-	IN 	uint32_t 					Data
-	);
-
-void
-odm_ConfigRF_RadioB_8821A(
-	IN 	PDM_ODM_T 				pDM_Odm,
-	IN 	uint32_t 					Addr,
-	IN 	uint32_t 					Data
-	);
-
-void
 odm_ConfigMAC_8821A(
  	IN 	PDM_ODM_T 	pDM_Odm,
  	IN 	uint32_t 		Addr,

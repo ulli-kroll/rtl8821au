@@ -712,9 +712,9 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
 			if (eRFPath == ODM_RF_PATH_A) {
-				ODM_ReadAndConfig_MP_8812A_RadioA(pDM_Odm);
+				ODM_ReadAndConfig_MP_8812A_RadioA(pDM_Odm, ODM_RF_PATH_A);
 			} else if (eRFPath == ODM_RF_PATH_B) {
-				ODM_ReadAndConfig_MP_8812A_RadioB(pDM_Odm);
+				ODM_ReadAndConfig_MP_8812A_RadioB(pDM_Odm, ODM_RF_PATH_B);
 			}
 			break;
 
@@ -729,7 +729,7 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
 			if (eRFPath == ODM_RF_PATH_A) {
-				ODM_ReadAndConfig_MP_8821A_RadioA(pDM_Odm);
+				ODM_ReadAndConfig_MP_8821A_RadioA(pDM_Odm, ODM_RF_PATH_A);
 			}
 			break;
 		default:

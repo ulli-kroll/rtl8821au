@@ -2179,7 +2179,7 @@ static void _rtl8812au_config_rf_radio_b(PDM_ODM_T pDM_Odm, uint32_t Addr,
 
 }
 
-void ODM_ReadAndConfig_MP_8812A_RadioA(PDM_ODM_T pDM_Odm)
+void ODM_ReadAndConfig_MP_8812A_RadioA(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath)
 {
 	uint32_t     	hex         = 0;
 	uint32_t     	i           = 0;
@@ -2240,7 +2240,7 @@ void ODM_ReadAndConfig_MP_8812A_RadioA(PDM_ODM_T pDM_Odm)
 ******************************************************************************/
 
 
-void ODM_ReadAndConfig_MP_8812A_RadioB(PDM_ODM_T pDM_Odm)
+void ODM_ReadAndConfig_MP_8812A_RadioB(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath)
 {
 	uint32_t	hex         = 0;
 	uint32_t	i           = 0;
@@ -2313,7 +2313,7 @@ static void _rtl8821au_config_rf_radio_a(PDM_ODM_T pDM_Odm, uint32_t Addr,
 }
 
 
-void ODM_ReadAndConfig_MP_8821A_RadioA(PDM_ODM_T pDM_Odm)
+void ODM_ReadAndConfig_MP_8821A_RadioA(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath)
 {
 	uint32_t	hex         = 0;
 	uint32_t	i           = 0;

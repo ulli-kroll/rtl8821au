@@ -2179,121 +2179,134 @@ static void _rtl8812au_config_rf_radio_b(PDM_ODM_T pDM_Odm, uint32_t Addr,
 
 }
 
-void ODM_ReadAndConfig_MP_8812A_RadioA(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath)
+
+
+void rtl8812au_phy_config_rf_with_headerfile(PDM_ODM_T pDM_Odm,
+				ODM_RF_RADIO_PATH_E eRFPath)
 {
-	uint32_t     	hex         = 0;
-	uint32_t     	i           = 0;
-	uint16_t     	count       = 0;
-	uint32_t    	*ptr_array   = NULL;
-	u1Byte		platform    = pDM_Odm->SupportPlatform;
-	u1Byte     	_interface   = pDM_Odm->SupportInterface;
-	u1Byte     	board       = pDM_Odm->BoardType;
-	uint32_t     	ArrayLen    =  RTL8812AU_RADIOA_1TARRAYLEN;
-	uint32_t    	*Array       = RTL8812AU_RADIOA_ARRAY;
+	int i;
+	bool rtstatus = true;
+	u32 *radioa_array_table_a, *radioa_array_table_b;
+	u16 radioa_arraylen_a, radioa_arraylen_b;
+	u32 v1 = 0, v2 = 0;
 
-
-	hex += board;
-	hex += _interface << 8;
-	hex += platform << 16;
-	hex += 0xFF000000;
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_RadioA, hex = 0x%X\n", hex));
-
-	for (i = 0; i < ArrayLen; i += 2) {
-		uint32_t v1 = Array[i];
-		uint32_t v2 = Array[i+1];
-
-		/* This (offset, data) pair meets the condition. */
-		if (v1 < 0xCDCDCDCD) {
-			_rtl8812au_config_rf_radio_a(pDM_Odm, v1, v2);
-			continue;
-		} else { /* This line is the start line of branch. */
-			if (!CheckCondition(Array[i], hex)) {
-				/* Discard the following (offset, data) pairs. */
-				READ_NEXT_PAIR(Array, v1, v2, i);
-				while (v2 != 0xDEAD &&
-				    v2 != 0xCDEF &&
-				    v2 != 0xCDCD && i < ArrayLen-2) {
-					READ_NEXT_PAIR(Array, v1, v2, i);
-				}
-				i -= 2; /* prevent from for-loop += 2 */
-			} else {
-				/* Configure matched pairs and skip to end of if-else. */
-				READ_NEXT_PAIR(Array, v1, v2, i);
-				while (v2 != 0xDEAD &&
-				    v2 != 0xCDEF &&
-				    v2 != 0xCDCD && i < ArrayLen-2) {
-					_rtl8812au_config_rf_radio_a(pDM_Odm, v1, v2);
-					READ_NEXT_PAIR(Array, v1, v2, i);
-				}
-
-				while (v2 != 0xDEAD && i < ArrayLen-2) {
-					READ_NEXT_PAIR(Array, v1, v2, i);
-				}
-			}
-		}
-	}
-
-}
-
-/******************************************************************************
-*                           RadioB.TXT
-******************************************************************************/
-
-
-void ODM_ReadAndConfig_MP_8812A_RadioB(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath)
-{
 	uint32_t	hex         = 0;
-	uint32_t	i           = 0;
 	uint16_t	count       = 0;
 	uint32_t	*ptr_array   = NULL;
 	u1Byte		platform    = pDM_Odm->SupportPlatform;
 	u1Byte		_interface   = pDM_Odm->SupportInterface;
 	u1Byte		board       = pDM_Odm->BoardType;
-	uint32_t	ArrayLen    = RTL8812AU_RADIOB_1TARRAYLEN;
-	uint32_t	*Array       = RTL8812AU_RADIOB_ARRAY;
 
-	hex += board;
-	hex += _interface << 8;
-	hex += platform << 16;
-	hex += 0xFF000000;
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_RadioB, hex = 0x%X\n", hex));
+	radioa_arraylen_a = RTL8812AU_RADIOA_1TARRAYLEN;
+	radioa_array_table_a = RTL8812AU_RADIOA_ARRAY;
+	radioa_arraylen_b = RTL8812AU_RADIOB_1TARRAYLEN;
+	radioa_array_table_b = RTL8812AU_RADIOB_ARRAY;
+	/*
 
-	for (i = 0; i < ArrayLen; i += 2) {
-		uint32_t v1 = Array[i];
-		uint32_t v2 = Array[i+1];
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
+		 "Radio_A:RTL8821AE_RADIOA_ARRAY %d\n", radioa_arraylen_a);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Radio No %x\n", rfpath);
+	*/
+	rtstatus = true;
+	switch (eRFPath) {
+	case ODM_RF_PATH_A:
+		hex += board;
+		hex += _interface << 8;
+		hex += platform << 16;
+		hex += 0xFF000000;
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_RadioA, hex = 0x%X\n", hex));
 
-		/* This (offset, data) pair meets the condition. */
-		if (v1 < 0xCDCDCDCD) {
-			_rtl8812au_config_rf_radio_b(pDM_Odm, v1, v2);
-			continue;
-		} else {
-			/* This line is the start line of branch. */
-			if (!CheckCondition(Array[i], hex)) {
-				/* Discard the following (offset, data) pairs. */
-				READ_NEXT_PAIR(Array, v1, v2, i);
-				while (v2 != 0xDEAD &&
-				    v2 != 0xCDEF &&
-				    v2 != 0xCDCD && i < ArrayLen-2) {
-					READ_NEXT_PAIR(Array, v1, v2, i);
-				}
-				i -= 2; /* prevent from for-loop += 2 */
+		for (i = 0; i < radioa_arraylen_a; i += 2) {
+			uint32_t v1 = radioa_array_table_a[i];
+			uint32_t v2 = radioa_array_table_a[i+1];
+
+			/* This (offset, data) pair meets the condition. */
+			if (v1 < 0xCDCDCDCD) {
+				_rtl8812au_config_rf_radio_a(pDM_Odm, v1, v2);
+				continue;
 			} else {
-				/* Configure matched pairs and skip to end of if-else. */
-				READ_NEXT_PAIR(Array, v1, v2, i);
-				while (v2 != 0xDEAD &&
-				    v2 != 0xCDEF &&
-				    v2 != 0xCDCD && i < ArrayLen-2) {
-					_rtl8812au_config_rf_radio_b(pDM_Odm, v1, v2);
-					READ_NEXT_PAIR(Array, v1, v2, i);
-				}
+				/* This line is the start line of branch. */
+				if (!CheckCondition(radioa_array_table_a[i], hex)) {
+					/* Discard the following (offset, data) pairs. */
+					READ_NEXT_PAIR(radioa_array_table_a, v1, v2, i);
+					while (v2 != 0xDEAD &&
+					    v2 != 0xCDEF &&
+					    v2 != 0xCDCD && i < radioa_arraylen_a-2) {
+						READ_NEXT_PAIR(radioa_array_table_a, v1, v2, i);
+					}
+					i -= 2; /* prevent from for-loop += 2 */
+				} else {
+					/* Configure matched pairs and skip to end of if-else. */
+					READ_NEXT_PAIR(radioa_array_table_a, v1, v2, i);
+					while (v2 != 0xDEAD &&
+					    v2 != 0xCDEF &&
+					    v2 != 0xCDCD && i < radioa_arraylen_a-2) {
+						_rtl8812au_config_rf_radio_a(pDM_Odm, v1, v2);
+						READ_NEXT_PAIR(radioa_array_table_a, v1, v2, i);
+					}
 
-				while (v2 != 0xDEAD && i < ArrayLen-2) {
-					READ_NEXT_PAIR(Array, v1, v2, i);
+					while (v2 != 0xDEAD && i < radioa_arraylen_a-2) {
+						READ_NEXT_PAIR(radioa_array_table_a, v1, v2, i);
+					}
 				}
 			}
 		}
-	}
+	case ODM_RF_PATH_B:
+		hex += board;
+		hex += _interface << 8;
+		hex += platform << 16;
+		hex += 0xFF000000;
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_RadioB, hex = 0x%X\n", hex));
 
+		for (i = 0; i < radioa_arraylen_b; i += 2) {
+			uint32_t v1 = radioa_array_table_b[i];
+			uint32_t v2 = radioa_array_table_b[i+1];
+
+			/* This (offset, data) pair meets the condition. */
+			if (v1 < 0xCDCDCDCD) {
+				_rtl8812au_config_rf_radio_b(pDM_Odm, v1, v2);
+				continue;
+			} else {
+				/* This line is the start line of branch. */
+				if (!CheckCondition(radioa_array_table_b[i], hex)) {
+					/* Discard the following (offset, data) pairs. */
+					READ_NEXT_PAIR(radioa_array_table_b, v1, v2, i);
+					while (v2 != 0xDEAD &&
+					    v2 != 0xCDEF &&
+					    v2 != 0xCDCD && i < radioa_arraylen_b-2) {
+						READ_NEXT_PAIR(radioa_array_table_b, v1, v2, i);
+					}
+					i -= 2; /* prevent from for-loop += 2 */
+				} else {
+					/* Configure matched pairs and skip to end of if-else. */
+					READ_NEXT_PAIR(radioa_array_table_b, v1, v2, i);
+					while (v2 != 0xDEAD &&
+					    v2 != 0xCDEF &&
+					    v2 != 0xCDCD && i < radioa_arraylen_b-2) {
+						_rtl8812au_config_rf_radio_b(pDM_Odm, v1, v2);
+						READ_NEXT_PAIR(radioa_array_table_b, v1, v2, i);
+					}
+
+					while (v2 != 0xDEAD && i < radioa_arraylen_b-2) {
+						READ_NEXT_PAIR(radioa_array_table_b, v1, v2, i);
+					}
+				}
+			}
+		}
+
+	case ODM_RF_PATH_C:
+		/*
+		 * RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG,
+		 * 	 "switch case not process\n");
+		 */
+		break;
+	case ODM_RF_PATH_D:
+		/*
+		 * RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG,
+		 * 	 "switch case not process\n");
+		 */
+		break;
+	}
 }
 
 

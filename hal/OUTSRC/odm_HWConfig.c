@@ -711,11 +711,7 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
-			if (eRFPath == ODM_RF_PATH_A) {
-				ODM_ReadAndConfig_MP_8812A_RadioA(pDM_Odm, ODM_RF_PATH_A);
-			} else if (eRFPath == ODM_RF_PATH_B) {
-				ODM_ReadAndConfig_MP_8812A_RadioB(pDM_Odm, ODM_RF_PATH_B);
-			}
+			rtl8812au_phy_config_rf_with_headerfile(pDM_Odm, eRFPath);
 			break;
 
 		default:

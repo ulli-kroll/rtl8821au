@@ -1,9 +1,9 @@
 #include <rtl8812a_hal.h>
 #include "phy.h"
 #include "table.h"
-//
-// 1. BB register R/W API
-//
+/*
+ * 1. BB register R/W API
+ */
 
 #define READ_NEXT_PAIR(array_table, v1, v2, i) \
 	do { \
@@ -21,15 +21,15 @@ u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *Adapter, uint32_t RegAddr, uint3
 	return 0;
 #endif
 
-	//DBG_871X("--->PHY_QueryBBReg8812(): RegAddr(%#x), BitMask(%#x)\n", RegAddr, BitMask);
+	/* DBG_871X("--->PHY_QueryBBReg8812(): RegAddr(%#x), BitMask(%#x)\n", RegAddr, BitMask); */
 
 
 	OriginalValue = rtw_read32(Adapter, RegAddr);
 	BitShift = PHY_CalculateBitShift(BitMask);
 	ReturnValue = (OriginalValue & BitMask) >> BitShift;
 
-	//DBG_871X("BBR MASK=0x%x Addr[0x%x]=0x%x\n", BitMask, RegAddr, OriginalValue);
-	return (ReturnValue);
+	/* DBG_871X("BBR MASK=0x%x Addr[0x%x]=0x%x\n", BitMask, RegAddr, OriginalValue); */
+	return ReturnValue;
 }
 
 
@@ -41,16 +41,15 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask
 	return;
 #endif
 
-	if(BitMask!= bMaskDWord)
-	{//if not "double word" write
+	if (BitMask != bMaskDWord) {	/* if not "double word" write */
 		OriginalValue = rtw_read32(Adapter, RegAddr);
 		BitShift = PHY_CalculateBitShift(BitMask);
-		Data = ((OriginalValue) & (~BitMask)) |( ((Data << BitShift)) & BitMask);
+		Data = ((OriginalValue) & (~BitMask)) | (((Data << BitShift)) & BitMask);
 	}
 
 	rtw_write32(Adapter, RegAddr, Data);
 
-	//DBG_871X("BBW MASK=0x%x Addr[0x%x]=0x%x\n", BitMask, RegAddr, Data);
+	/* DBG_871X("BBW MASK=0x%x Addr[0x%x]=0x%x\n", BitMask, RegAddr, Data); */
 }
 
 /* ****************************************************************************** */
@@ -985,24 +984,16 @@ void rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 /* ********************************************************** */
 
 /* OLD functions need complete ? rewrite */
-BOOLEAN
-GetU1ByteIntegerFromStringInDecimal(
-	IN		s8*	Str,
-	IN OUT	uint8_t *	pInt
-	)
+BOOLEAN GetU1ByteIntegerFromStringInDecimal(s8 *Str, uint8_t *pInt)
 {
 	uint16_t i = 0;
 	*pInt = 0;
 
-	while ( Str[i] != '\0' )
-	{
-		if ( Str[i] >= '0' && Str[i] <= '9' )
-		{
+	while (Str[i] != '\0') {
+		if (Str[i] >= '0' && Str[i] <= '9') {
 			*pInt *= 10;
-			*pInt += ( Str[i] - '0' );
-		}
-		else
-		{
+			*pInt += (Str[i] - '0');
+		} else {
 			return _FALSE;
 		}
 		++i;
@@ -1012,207 +1003,246 @@ GetU1ByteIntegerFromStringInDecimal(
 }
 
 
-static BOOLEAN
-eqNByte(
-	uint8_t *	str1,
-	uint8_t *	str2,
-	uint32_t	num
-	)
+static BOOLEAN eqNByte(uint8_t *str1, uint8_t *str2, uint32_t num)
 {
-	if(num==0)
+	if (num == 0)
 		return _FALSE;
-	while(num>0)
-	{
+
+	while (num > 0) {
 		num--;
-		if(str1[num]!=str2[num])
+		if (str1[num] != str2[num])
 			return _FALSE;
 	}
+
 	return _TRUE;
 }
 
 
-static s8 phy_GetChannelGroup(
-	IN BAND_TYPE	Band,
-	IN uint8_t			Channel
-	)
+static s8 phy_GetChannelGroup(BAND_TYPE Band, uint8_t Channel)
 {
 	s8 channelGroup = -1;
-	if ( Channel <= 14 && Band == BAND_ON_2_4G )
-	{
-		if		( 1 <= Channel && Channel <= 2 )	channelGroup = 0;
-		else if ( 3  <= Channel && Channel <= 5 )   channelGroup = 1;
-		else if ( 6  <= Channel && Channel <= 8 )   channelGroup = 2;
-		else if ( 9  <= Channel && Channel <= 11 )  channelGroup = 3;
-		else if ( 12 <= Channel && Channel <= 14)   channelGroup = 4;
-		else
-		{
-			DBG_871X( "==> phy_GetChannelGroup() in 2.4 G, but Channel %d in Group not found \n", Channel );
+
+	if (Channel <= 14 && Band == BAND_ON_2_4G) {
+		if (1 <= Channel && Channel <= 2)
+			channelGroup = 0;
+		else if (3  <= Channel && Channel <= 5)
+			channelGroup = 1;
+		else if (6  <= Channel && Channel <= 8)
+			channelGroup = 2;
+		else if (9  <= Channel && Channel <= 11)
+			channelGroup = 3;
+		else if (12 <= Channel && Channel <= 14)
+			channelGroup = 4;
+		else {
+			DBG_871X("==> phy_GetChannelGroup() in 2.4 G, but Channel %d in Group not found \n", Channel);
 			channelGroup = -1;
 		}
-	}
-	else if( Band == BAND_ON_5G )
-	{
-		if      ( 36   <= Channel && Channel <=  42 )  channelGroup = 0;
-		else if ( 44   <= Channel && Channel <=  48 )  channelGroup = 1;
-		else if ( 50   <= Channel && Channel <=  58 )  channelGroup = 2;
-		else if ( 60   <= Channel && Channel <=  64 )  channelGroup = 3;
-		else if ( 100  <= Channel && Channel <= 106 )  channelGroup = 4;
-		else if ( 108  <= Channel && Channel <= 114 )  channelGroup = 5;
-		else if ( 116  <= Channel && Channel <= 122 )  channelGroup = 6;
-		else if ( 124  <= Channel && Channel <= 130 )  channelGroup = 7;
-		else if ( 132  <= Channel && Channel <= 138 )  channelGroup = 8;
-		else if ( 140  <= Channel && Channel <= 144 )  channelGroup = 9;
-		else if ( 149  <= Channel && Channel <= 155 )  channelGroup = 10;
-		else if ( 157  <= Channel && Channel <= 161 )  channelGroup = 11;
-		else if ( 165  <= Channel && Channel <= 171 )  channelGroup = 12;
-		else if ( 173  <= Channel && Channel <= 177 )  channelGroup = 13;
-		else
-		{
-			DBG_871X("==>phy_GetChannelGroup() in 5G, but Channel %d in Group not found \n", Channel );
+	} else if (Band == BAND_ON_5G) {
+		if (36 <= Channel && Channel <=  42)
+			channelGroup = 0;
+		else if (44 <= Channel && Channel <= 48)
+			channelGroup = 1;
+		else if (50 <= Channel && Channel <= 58)
+			channelGroup = 2;
+		else if (60 <= Channel && Channel <= 64)
+			channelGroup = 3;
+		else if (100 <= Channel && Channel <= 106)
+			channelGroup = 4;
+		else if (108 <= Channel && Channel <= 114)
+			channelGroup = 5;
+		else if (116 <= Channel && Channel <= 122)
+			channelGroup = 6;
+		else if (124 <= Channel && Channel <= 130)
+			channelGroup = 7;
+		else if (132 <= Channel && Channel <= 138)
+			channelGroup = 8;
+		else if (140 <= Channel && Channel <= 144)
+			channelGroup = 9;
+		else if (149 <= Channel && Channel <= 155)
+			channelGroup = 10;
+		else if (157 <= Channel && Channel <= 161)
+			channelGroup = 11;
+		else if (165 <= Channel && Channel <= 171)
+			channelGroup = 12;
+		else if (173 <= Channel && Channel <= 177)
+			channelGroup = 13;
+		else {
+			DBG_871X("==>phy_GetChannelGroup() in 5G, but Channel %d in Group not found \n", Channel);
 			channelGroup = -1;
 		}
-	}
-	else
-	{
-		DBG_871X("==>phy_GetChannelGroup() in unsupported band %d\n", Band );
+	} else {
+		DBG_871X("==>phy_GetChannelGroup() in unsupported band %d\n", Band);
 		channelGroup = -1;
 	}
 
 	return channelGroup;
 }
 
-static u8 PHY_GetPowerLimitValue(
-	IN	struct rtl_priv *		Adapter,
-	IN	uint32_t					RegPwrTblSel,
-	IN	BAND_TYPE			Band,
-	IN	CHANNEL_WIDTH	Bandwidth,
-	IN	RF_PATH				RfPath,
-	IN	uint8_t					DataRate,
-	IN	uint8_t					Channel
-	)
+static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel,
+	BAND_TYPE Band, CHANNEL_WIDTH Bandwidth, RF_PATH RfPath,
+	uint8_t DataRate, uint8_t Channel)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	s16				band = -1, regulation = -1, bandwidth = -1,
 					rfPath = -1, rateSection = -1, channelGroup = -1;
 	uint8_t				powerLimit = MAX_POWER_INDEX;
 
-	if ( ( Adapter->registrypriv.RegEnableTxPowerLimit == 0 && pHalData->EEPROMRegulatory != 1 ) ||
-		  pHalData->EEPROMRegulatory == 2 )
+	if ((Adapter->registrypriv.RegEnableTxPowerLimit == 0 && pHalData->EEPROMRegulatory != 1)
+	   || pHalData->EEPROMRegulatory == 2)
 		return MAX_POWER_INDEX;
 
-	switch( RegPwrTblSel )
-	{
-		case 1:
-				regulation = TXPWR_LMT_ETSI;
-				break;
-		case 2:
-				regulation = TXPWR_LMT_MKK;
-				break;
-		case 3:
-				regulation = TXPWR_LMT_FCC;
-				break;
-
-		default:
-				regulation = TXPWR_LMT_FCC;
-				break;
+	switch (RegPwrTblSel) {
+	case 1:
+		regulation = TXPWR_LMT_ETSI;
+		break;
+	case 2:
+		regulation = TXPWR_LMT_MKK;
+		break;
+	case 3:
+		regulation = TXPWR_LMT_FCC;
+		break;
+	default:
+		regulation = TXPWR_LMT_FCC;
+		break;
 	}
-	//DBG_871X("pregistrypriv->RegPwrTblSel %d\n", RegPwrTblSel);
+	/* DBG_871X("pregistrypriv->RegPwrTblSel %d\n", RegPwrTblSel); */
 
 
-	if ( Band == BAND_ON_2_4G ) band = 0;
-	else if ( Band == BAND_ON_5G ) band = 1;
+	if (Band == BAND_ON_2_4G)
+		band = 0;
+	else if (Band == BAND_ON_5G)
+		band = 1;
 
-	if ( Bandwidth == CHANNEL_WIDTH_20 ) bandwidth = 0;
-	else if ( Bandwidth == CHANNEL_WIDTH_40 ) bandwidth = 1;
-	else if ( Bandwidth == CHANNEL_WIDTH_80 ) bandwidth = 2;
-	else if ( Bandwidth == CHANNEL_WIDTH_160 ) bandwidth = 3;
+	if (Bandwidth == CHANNEL_WIDTH_20)
+		bandwidth = 0;
+	else if (Bandwidth == CHANNEL_WIDTH_40)
+		bandwidth = 1;
+	else if (Bandwidth == CHANNEL_WIDTH_80)
+		bandwidth = 2;
+	else if (Bandwidth == CHANNEL_WIDTH_160)
+		bandwidth = 3;
 
-	switch ( DataRate )
-	{
-		case MGN_1M: case MGN_2M: case MGN_5_5M: case MGN_11M:
-			rateSection = 0;
-			break;
+	switch (DataRate) {
+	case MGN_1M:
+	case MGN_2M:
+	case MGN_5_5M:
+	case MGN_11M:
+		rateSection = 0;
+		break;
 
-		case MGN_6M: case MGN_9M: case MGN_12M: case MGN_18M:
-		case MGN_24M: case MGN_36M: case MGN_48M: case MGN_54M:
-			rateSection = 1;
-			break;
+	case MGN_6M:
+	case MGN_9M:
+	case MGN_12M:
+	case MGN_18M:
+	case MGN_24M:
+	case MGN_36M:
+	case MGN_48M:
+	case MGN_54M:
+		rateSection = 1;
+		break;
 
-		case MGN_MCS0: case MGN_MCS1: case MGN_MCS2: case MGN_MCS3:
-		case MGN_MCS4: case MGN_MCS5: case MGN_MCS6: case MGN_MCS7:
-			rateSection = 2;
-			break;
+	case MGN_MCS0:
+	case MGN_MCS1:
+	case MGN_MCS2:
+	case MGN_MCS3:
+	case MGN_MCS4:
+	case MGN_MCS5:
+	case MGN_MCS6:
+	case MGN_MCS7:
+		rateSection = 2;
+		break;
 
-		case MGN_MCS8: case MGN_MCS9: case MGN_MCS10: case MGN_MCS11:
-		case MGN_MCS12: case MGN_MCS13: case MGN_MCS14: case MGN_MCS15:
-			rateSection = 3;
-			break;
+	case MGN_MCS8:
+	case MGN_MCS9:
+	case MGN_MCS10:
+	case MGN_MCS11:
+	case MGN_MCS12:
+	case MGN_MCS13:
+	case MGN_MCS14:
+	case MGN_MCS15:
+		rateSection = 3;
+		break;
 
-		case MGN_VHT1SS_MCS0: case MGN_VHT1SS_MCS1: case MGN_VHT1SS_MCS2:
-		case MGN_VHT1SS_MCS3: case MGN_VHT1SS_MCS4: case MGN_VHT1SS_MCS5:
-		case MGN_VHT1SS_MCS6: case MGN_VHT1SS_MCS7: case MGN_VHT1SS_MCS8:
-		case MGN_VHT1SS_MCS9:
-			rateSection = 4;
-			break;
+	case MGN_VHT1SS_MCS0:
+	case MGN_VHT1SS_MCS1:
+	case MGN_VHT1SS_MCS2:
+	case MGN_VHT1SS_MCS3:
+	case MGN_VHT1SS_MCS4:
+	case MGN_VHT1SS_MCS5:
+	case MGN_VHT1SS_MCS6:
+	case MGN_VHT1SS_MCS7:
+	case MGN_VHT1SS_MCS8:
+	case MGN_VHT1SS_MCS9:
+		rateSection = 4;
+		break;
 
-		case MGN_VHT2SS_MCS0: case MGN_VHT2SS_MCS1: case MGN_VHT2SS_MCS2:
-		case MGN_VHT2SS_MCS3: case MGN_VHT2SS_MCS4: case MGN_VHT2SS_MCS5:
-		case MGN_VHT2SS_MCS6: case MGN_VHT2SS_MCS7: case MGN_VHT2SS_MCS8:
-		case MGN_VHT2SS_MCS9:
-			rateSection = 5;
-			break;
+	case MGN_VHT2SS_MCS0:
+	case MGN_VHT2SS_MCS1:
+	case MGN_VHT2SS_MCS2:
+	case MGN_VHT2SS_MCS3:
+	case MGN_VHT2SS_MCS4:
+	case MGN_VHT2SS_MCS5:
+	case MGN_VHT2SS_MCS6:
+	case MGN_VHT2SS_MCS7:
+	case MGN_VHT2SS_MCS8:
+	case MGN_VHT2SS_MCS9:
+		rateSection = 5;
+		break;
 
-		default:
-			DBG_871X("Wrong rate 0x%x\n", DataRate );
-			break;
+	default:
+		DBG_871X("Wrong rate 0x%x\n", DataRate);
+		break;
 	}
 
-	if ( BAND_ON_2_4G  && rateSection > 3 )
-			DBG_871X("Wrong rate 0x%x: No VHT in 2.4G Band\n", DataRate );
-	if ( BAND_ON_5G  && rateSection == 0 )
-			DBG_871X("Wrong rate 0x%x: No CCK in 5G Band\n", DataRate );
+	if (BAND_ON_2_4G  && rateSection > 3)
+		DBG_871X("Wrong rate 0x%x: No VHT in 2.4G Band\n", DataRate);
+	if (BAND_ON_5G  && rateSection == 0)
+		DBG_871X("Wrong rate 0x%x: No CCK in 5G Band\n", DataRate);
 
-	// workaround for wrong index combination to obtain tx power limit,
-	// OFDM only exists in BW 20M
-	if ( rateSection == 1 )
+	/*
+	 * workaround for wrong index combination to obtain tx power limit,
+	 * OFDM only exists in BW 20M
+	 */
+	if (rateSection == 1)
 		bandwidth = 0;
 
-	// workaround for wrong indxe combination to obtain tx power limit,
-	// HT on 80M will reference to HT on 40M
-	if ( ( rateSection == 2 || rateSection == 3 ) && Band == BAND_ON_5G && bandwidth == 2 ) {
+	/*
+	 * workaround for wrong indxe combination to obtain tx power limit,
+	 * HT on 80M will reference to HT on 40M
+	 */
+	if ((rateSection == 2 || rateSection == 3) && Band == BAND_ON_5G && bandwidth == 2) {
 		bandwidth = 1;
 	}
 
-	if ( Band == BAND_ON_2_4G )
-		channelGroup = phy_GetChannelGroup( BAND_ON_2_4G, Channel );
-	else if ( Band == BAND_ON_5G )
-		channelGroup = phy_GetChannelGroup( BAND_ON_5G, Channel );
-	else if ( Band == BAND_ON_BOTH )
-	{
-		// BAND_ON_BOTH don't care temporarily
+	if (Band == BAND_ON_2_4G)
+		channelGroup = phy_GetChannelGroup(BAND_ON_2_4G, Channel);
+	else if (Band == BAND_ON_5G)
+		channelGroup = phy_GetChannelGroup(BAND_ON_5G, Channel);
+	else if (Band == BAND_ON_BOTH) {
+		/* BAND_ON_BOTH don't care temporarily */
 	}
 
-	if ( band == -1 || regulation == -1 || bandwidth == -1 ||
-	     rateSection == -1 || channelGroup == -1 )
-	{
+	if (band == -1 || regulation == -1 || bandwidth == -1 ||
+	     rateSection == -1 || channelGroup == -1) 	{
 		DBG_871X("Wrong index value to access power limit table \
 			  [band %d][regulation %d][bandwidth %d][rf_path %d][rate_section %d][chnlGroup %d]\n",
-			  band, regulation, bandwidth, RfPath, rateSection, channelGroup );
+			  band, regulation, bandwidth, RfPath, rateSection, channelGroup);
 
 		return 0xFF;
 	}
 
-	if ( Band == BAND_ON_2_4G )
+	if (Band == BAND_ON_2_4G)
 		powerLimit = pHalData->TxPwrLimit_2_4G[regulation]
 			[bandwidth][rateSection][channelGroup][RfPath];
-	else if ( Band == BAND_ON_5G )
+	else if (Band == BAND_ON_5G)
 		powerLimit = pHalData->TxPwrLimit_5G[regulation]
 			[bandwidth][rateSection][channelGroup][RfPath];
 	else
-		DBG_871X("No power limit table of the specified band\n" );
+		DBG_871X("No power limit table of the specified band\n");
 
-	// combine 5G VHT & HT rate
-	// 5G 20M and 40M HT and VHT can cross reference
+#if 0
+	/* combine 5G VHT & HT rate */
+	/*  5G 20M and 40M HT and VHT can cross reference */
 	/*if ( Band == BAND_ON_5G && powerLimit == MAX_POWER_INDEX ) {
 		if ( bandwidth == 0 || bandwidth == 1 ) {
 			if ( rateSection == 2 )
@@ -1230,37 +1260,34 @@ static u8 PHY_GetPowerLimitValue(
 		}
 	}*/
 
-	//DBG_871X("TxPwrLmt[Regulation %d][Band %d][BW %d][RFPath %d][Rate 0x%x][Chnl %d] = %d\n",
-	//								regulation, pHalData->CurrentBandType, Bandwidth, RfPath, DataRate, Channel, powerLimit);
-
+	/*
+	 * DBG_871X("TxPwrLmt[Regulation %d][Band %d][BW %d][RFPath %d][Rate 0x%x][Chnl %d] = %d\n",
+	 * regulation, pHalData->CurrentBandType, Bandwidth, RfPath, DataRate, Channel, powerLimit);
+	 */
+#endif
 	return powerLimit;
 }
 
-BOOLEAN
-phy_GetChnlIndex8812A(
-	IN	uint8_t 	Channel,
-	OUT uint8_t *	ChannelIdx
-	)
+BOOLEAN phy_GetChnlIndex8812A(uint8_t Channel, uint8_t *ChannelIdx)
 {
-	uint8_t 	channel5G[CHANNEL_MAX_NUMBER_5G] =
-				 {36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,100,102,104,106,108,110,112,
-				114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,149,151,
-				153,155,157,159,161,163,165,167,168,169,171,173,175,177};
+	uint8_t channel5G[CHANNEL_MAX_NUMBER_5G] = {
+		36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64,
+		100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120,
+		122, 124, 126, 128, 130, 132, 134, 136, 138, 140, 142,
+		144, 149, 151, 153, 155, 157, 159, 161, 163, 165, 167,
+		168, 169, 171, 173, 175, 177
+		};
 	uint8_t	i = 0;
-	BOOLEAN bIn24G=_TRUE;
+	BOOLEAN bIn24G = _TRUE;
 
-	if(Channel <= 14)
-	{
-		bIn24G=_TRUE;
-        	*ChannelIdx = Channel -1;
-	}
-	else
-	{
+	if (Channel <= 14) {
+		bIn24G = _TRUE;
+		*ChannelIdx = Channel - 1;
+	} else {
 		bIn24G = _FALSE;
 
-		for (i = 0; i < sizeof(channel5G)/sizeof(uint8_t); ++i)
-		{
-			if ( channel5G[i] == Channel) {
+		for (i = 0; i < sizeof(channel5G)/sizeof(uint8_t); ++i) {
+			if (channel5G[i] == Channel) {
 				*ChannelIdx = i;
 				return bIn24G;
 			}
@@ -1270,571 +1297,612 @@ phy_GetChnlIndex8812A(
 
 }
 
-//
-// For VHT series, we will use a new TX pwr by rate array to meet new spec.
-//
-u32
-phy_GetTxPwrByRateOffset_8812(
-	IN	struct rtl_priv *pAdapter,
-	IN	uint8_t			Band,
-	IN	uint8_t			Rf_Path,
-	IN	uint8_t			Rate_Section
-	)
+/*
+ * For VHT series, we will use a new TX pwr by rate array to meet new spec.
+ */
+
+u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *pAdapter,  uint8_t Band,
+	uint8_t	Rf_Path, uint8_t Rate_Section)
 {
 	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(pAdapter);
 	uint8_t			shift = 0, original_rate = Rate_Section;
 	uint32_t			tx_pwr_diff = 0;
 
-	//
-	// For VHT series TX power by rate table.
-	// VHT TX power by rate off setArray =
-	// Band:-2G&5G = 0 / 1
-	// RF: at most 4*4 = ABCD=0/1/2/3
-	// CCK=0 				11/5.5/2/1
-	// OFDM=1/2 			18/12/9/6     54/48/36/24
-	// HT=3/4/5/6 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
-	// VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
-	//
-	// #define		TX_PWR_BY_RATE_NUM_BAND			2
-	// #define		TX_PWR_BY_RATE_NUM_RF			4
-	// #define		TX_PWR_BY_RATE_NUM_SECTION		12
-	//
+	/*
+	 * For VHT series TX power by rate table.
+	 * VHT TX power by rate off setArray =
+	 * Band:-2G&5G = 0 / 1
+	 * RF: at most 4*4 = ABCD=0/1/2/3
+	 * CCK=0 				11/5.5/2/1
+	 * OFDM=1/2 			18/12/9/6     54/48/36/24
+	 * HT=3/4/5/6 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
+	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
+	 *
+	 * #define		TX_PWR_BY_RATE_NUM_BAND			2
+	 * #define		TX_PWR_BY_RATE_NUM_RF			4
+	 * #define		TX_PWR_BY_RATE_NUM_SECTION		12
+	 */
 
-	switch	(Rate_Section)
-	{
-		case	MGN_1M:
-		case	MGN_2M:
-		case	MGN_5_5M:
-		case	MGN_11M:
-			Rate_Section =0;
-			break;
+	switch (Rate_Section) {
+	case MGN_1M:
+	case MGN_2M:
+	case MGN_5_5M:
+	case MGN_11M:
+		Rate_Section = 0;
+		break;
 
-		case	MGN_6M:
-		case	MGN_9M:
-		case	MGN_12M:
-		case	MGN_18M:
-			Rate_Section =1;
-			break;
+	case MGN_6M:
+	case MGN_9M:
+	case MGN_12M:
+	case MGN_18M:
+		Rate_Section = 1;
+		break;
 
-		case	MGN_24M:
-		case	MGN_36M:
-		case	MGN_48M:
-		case	MGN_54M:
-			Rate_Section =2;
-			break;
+	case MGN_24M:
+	case MGN_36M:
+	case MGN_48M:
+	case MGN_54M:
+		Rate_Section = 2;
+		break;
 
-		case	MGN_MCS0:
-		case	MGN_MCS1:
-		case	MGN_MCS2:
-		case	MGN_MCS3:
-			Rate_Section =3;
-			break;
+	case MGN_MCS0:
+	case MGN_MCS1:
+	case MGN_MCS2:
+	case MGN_MCS3:
+		Rate_Section = 3;
+		break;
 
-		case	MGN_MCS4:
-		case	MGN_MCS5:
-		case	MGN_MCS6:
-		case	MGN_MCS7:
-			Rate_Section =4;
-			break;
+	case MGN_MCS4:
+	case MGN_MCS5:
+	case MGN_MCS6:
+	case MGN_MCS7:
+		Rate_Section = 4;
+		break;
 
-		case	MGN_MCS8:
-		case	MGN_MCS9:
-		case	MGN_MCS10:
-		case	MGN_MCS11:
-			Rate_Section =5;
-			break;
+	case MGN_MCS8:
+	case MGN_MCS9:
+	case MGN_MCS10:
+	case MGN_MCS11:
+		Rate_Section = 5;
+		break;
 
-		case	MGN_MCS12:
-		case	MGN_MCS13:
-		case	MGN_MCS14:
-		case	MGN_MCS15:
-			Rate_Section =6;
-			break;
+	case MGN_MCS12:
+	case MGN_MCS13:
+	case MGN_MCS14:
+	case MGN_MCS15:
+		Rate_Section = 6;
+		break;
 
-		case	MGN_VHT1SS_MCS0:
-		case	MGN_VHT1SS_MCS1:
-		case	MGN_VHT1SS_MCS2:
-		case	MGN_VHT1SS_MCS3:
-			Rate_Section =7;
-			break;
+	case MGN_VHT1SS_MCS0:
+	case MGN_VHT1SS_MCS1:
+	case MGN_VHT1SS_MCS2:
+	case MGN_VHT1SS_MCS3:
+		Rate_Section = 7;
+		break;
 
-		case	MGN_VHT1SS_MCS4:
-		case	MGN_VHT1SS_MCS5:
-		case	MGN_VHT1SS_MCS6:
-		case	MGN_VHT1SS_MCS7:
-			Rate_Section =8;
-			break;
+	case MGN_VHT1SS_MCS4:
+	case MGN_VHT1SS_MCS5:
+	case MGN_VHT1SS_MCS6:
+	case MGN_VHT1SS_MCS7:
+		Rate_Section = 8;
+		break;
 
-		case	MGN_VHT1SS_MCS8:
-		case	MGN_VHT1SS_MCS9:
-		case	MGN_VHT2SS_MCS0:
-		case	MGN_VHT2SS_MCS1:
-			Rate_Section =9;
-			break;
+	case MGN_VHT1SS_MCS8:
+	case MGN_VHT1SS_MCS9:
+	case MGN_VHT2SS_MCS0:
+	case MGN_VHT2SS_MCS1:
+		Rate_Section = 9;
+		break;
 
-		case	MGN_VHT2SS_MCS2:
-		case	MGN_VHT2SS_MCS3:
-		case	MGN_VHT2SS_MCS4:
-		case	MGN_VHT2SS_MCS5:
-			Rate_Section =10;
-			break;
+	case MGN_VHT2SS_MCS2:
+	case MGN_VHT2SS_MCS3:
+	case MGN_VHT2SS_MCS4:
+	case MGN_VHT2SS_MCS5:
+		Rate_Section = 10;
+		break;
 
-		case	MGN_VHT2SS_MCS6:
-		case	MGN_VHT2SS_MCS7:
-		case	MGN_VHT2SS_MCS8:
-		case	MGN_VHT2SS_MCS9:
-			Rate_Section =11;
-			break;
+	case MGN_VHT2SS_MCS6:
+	case MGN_VHT2SS_MCS7:
+	case MGN_VHT2SS_MCS8:
+	case MGN_VHT2SS_MCS9:
+		Rate_Section = 11;
+		break;
 
-		default:
-			DBG_871X("Rate_Section is Illegal\n");
-			break;
+	default:
+		DBG_871X("Rate_Section is Illegal\n");
+		break;
 	}
 
-	switch	(original_rate)
-	{
-		case	MGN_1M:		shift = 0;		break;
-		case	MGN_2M:		shift = 8;		break;
-		case	MGN_5_5M:	shift = 16;		break;
-		case	MGN_11M:	shift = 24;		break;
+	switch (original_rate) {
+	case MGN_1M:
+		shift = 0;
+		break;
+	case MGN_2M:
+		shift = 8;
+		break;
+	case MGN_5_5M:
+		shift = 16;
+		break;
+	case MGN_11M:
+		shift = 24;
+		break;
+	case MGN_6M:
+		shift = 0;
+		break;
+	case MGN_9M:
+		shift = 8;
+		break;
+	case MGN_12M:
+		shift = 16;
+		break;
+	case MGN_18M:
+		shift = 24;
+		break;
+	case MGN_24M:
+		shift = 0;
+		break;
+	case MGN_36M:
+		shift = 8;
+		break;
+	case MGN_48M:
+		shift = 16;
+		break;
+	case MGN_54M:
+		shift = 24;
+		break;
 
-		case	MGN_6M:		shift = 0;		break;
-		case	MGN_9M:		shift = 8;      break;
-		case	MGN_12M:	shift = 16;     break;
-		case	MGN_18M:	shift = 24;     break;
+	case MGN_MCS0:
+		shift = 0;
+		break;
+	case MGN_MCS1:
+		shift = 8;
+		break;
+	case MGN_MCS2:
+		shift = 16;
+		break;
+	case MGN_MCS3:
+		shift = 24;
+		break;
 
-		case	MGN_24M:	shift = 0;    	break;
-		case	MGN_36M:    shift = 8;      break;
-		case	MGN_48M:    shift = 16;     break;
-		case	MGN_54M:    shift = 24;     break;
+	case MGN_MCS4:
+		shift = 0;
+		break;
+	case MGN_MCS5:
+		shift = 8;
+		break;
+	case MGN_MCS6:
+		shift = 16;
+		break;
+	case MGN_MCS7:
+		shift = 24;
+		break;
 
-		case	MGN_MCS0:	shift = 0; 		break;
-		case	MGN_MCS1:   shift = 8;      break;
-		case	MGN_MCS2:   shift = 16;     break;
-		case	MGN_MCS3:   shift = 24;     break;
+	case MGN_MCS8:
+		shift = 0;
+		break;
+	case MGN_MCS9:
+		shift = 8;
+		break;
+	case MGN_MCS10:
+		shift = 16;
+		break;
+	case MGN_MCS11:
+		shift = 24;
+		break;
 
-		case	MGN_MCS4:	shift = 0; 		break;
-		case	MGN_MCS5:   shift = 8;      break;
-		case	MGN_MCS6:   shift = 16;     break;
-		case	MGN_MCS7:   shift = 24;     break;
+	case MGN_MCS12:
+		shift = 0;
+		break;
+	case MGN_MCS13:
+		shift = 8;
+		break;
+	case MGN_MCS14:
+		shift = 16;
+		break;
+	case MGN_MCS15:
+		shift = 24;
+		break;
 
-		case	MGN_MCS8:	shift = 0; 		break;
-		case	MGN_MCS9:   shift = 8;      break;
-		case	MGN_MCS10:  shift = 16;     break;
-		case	MGN_MCS11:  shift = 24;     break;
+	case MGN_VHT1SS_MCS0:
+		shift = 0;
+		break;
+	case MGN_VHT1SS_MCS1:
+		shift = 8;
+		break;
+	case MGN_VHT1SS_MCS2:
+		shift = 16;
+		break;
+	case MGN_VHT1SS_MCS3:
+		shift = 24;
+		break;
 
-		case	MGN_MCS12:	shift = 0; 		break;
-		case	MGN_MCS13:  shift = 8;      break;
-		case	MGN_MCS14:  shift = 16;     break;
-		case	MGN_MCS15:  shift = 24;     break;
+	case MGN_VHT1SS_MCS4:
+		shift = 0;
+		break;
+	case MGN_VHT1SS_MCS5:
+		shift = 8;
+		break;
+	case MGN_VHT1SS_MCS6:
+		shift = 16;
+		break;
+	case MGN_VHT1SS_MCS7:
+		shift = 24;
+		break;
 
-		case	MGN_VHT1SS_MCS0:	shift = 0; 		break;
-		case	MGN_VHT1SS_MCS1:    shift = 8;      break;
-		case	MGN_VHT1SS_MCS2:    shift = 16;     break;
-		case	MGN_VHT1SS_MCS3:    shift = 24;     break;
+	case MGN_VHT1SS_MCS8:
+		shift = 0;
+		break;
+	case MGN_VHT1SS_MCS9:
+		shift = 8;
+		break;
+	case MGN_VHT2SS_MCS0:
+		shift = 16;
+		break;
+	case MGN_VHT2SS_MCS1:
+		shift = 24;
+		break;
 
-		case	MGN_VHT1SS_MCS4:	shift = 0; 		break;
-		case	MGN_VHT1SS_MCS5:    shift = 8;      break;
-		case	MGN_VHT1SS_MCS6:    shift = 16;     break;
-		case	MGN_VHT1SS_MCS7:    shift = 24;     break;
+	case MGN_VHT2SS_MCS2:
+		shift = 0;
+		break;
+	case MGN_VHT2SS_MCS3:
+		shift = 8;
+		break;
+	case MGN_VHT2SS_MCS4:
+		shift = 16;
+		break;
+	case MGN_VHT2SS_MCS5:
+		shift = 24;
+		break;
 
-		case	MGN_VHT1SS_MCS8:	shift = 0; 		break;
-		case	MGN_VHT1SS_MCS9:    shift = 8;      break;
-		case	MGN_VHT2SS_MCS0:    shift = 16;     break;
-		case	MGN_VHT2SS_MCS1:    shift = 24;     break;
+	case MGN_VHT2SS_MCS6:
+		shift = 0;
+		break;
+	case MGN_VHT2SS_MCS7:
+		shift = 8;
+		break;
+	case MGN_VHT2SS_MCS8:
+		shift = 16;
+		break;
+	case MGN_VHT2SS_MCS9:
+		shift = 24;
+		break;
 
-		case	MGN_VHT2SS_MCS2:	shift = 0; 		break;
-		case	MGN_VHT2SS_MCS3:    shift = 8;      break;
-		case	MGN_VHT2SS_MCS4:    shift = 16;     break;
-		case	MGN_VHT2SS_MCS5:    shift = 24;     break;
-
-		case	MGN_VHT2SS_MCS6:	shift = 0; 		break;
-		case	MGN_VHT2SS_MCS7:    shift = 8;      break;
-		case	MGN_VHT2SS_MCS8:    shift = 16;     break;
-		case	MGN_VHT2SS_MCS9:    shift = 24;     break;
-
-		default:
-			DBG_871X("Rate_Section is Illegal\n");
-			break;
+	default:
+		DBG_871X("Rate_Section is Illegal\n");
+		break;
 	}
 
-	// Willis suggest to adopt 5G VHT power by rate for 2.4G
-	if ( Band == BAND_ON_2_4G && ( Rate_Section >= 7 && Rate_Section <= 11 ) )
+	/* Willis suggest to adopt 5G VHT power by rate for 2.4G */
+	if (Band == BAND_ON_2_4G && (Rate_Section >= 7 && Rate_Section <= 11))
 		Band = BAND_ON_5G;
 
 	tx_pwr_diff = (pHalData->TxPwrByRateOffset[Band][Rf_Path][Rate_Section] >> shift) & 0xff;
 
-	//DBG_871X("TxPwrByRateOffset-BAND(%d)-RF(%d)-RAS(%d)=%x tx_pwr_diff=%d shift=%d\n",
-	//Band, Rf_Path, Rate_Section, pHalData->TxPwrByRateOffset[Band][Rf_Path][Rate_Section], tx_pwr_diff, shift);
+	/*
+	 * DBG_871X("TxPwrByRateOffset-BAND(%d)-RF(%d)-RAS(%d)=%x tx_pwr_diff=%d shift=%d\n",
+	 * Band, Rf_Path, Rate_Section, pHalData->TxPwrByRateOffset[Band][Rf_Path][Rate_Section], tx_pwr_diff, shift);
+	 */
 
 	return	tx_pwr_diff;
 
-}	// phy_GetTxPwrByRateOffset_8812
+}
 
-
-
-//
-//	Description:
-//		Subtract number of TxPwr index from different advance settings.
-//
-//	2010.03.09, added by Roger.
-//
-VOID
-phy_TxPwrAdjInPercentage(
-	IN		struct rtl_priv *	Adapter,
-	OUT		uint8_t *				pTxPwrIdx)
+/*
+ * Description:
+ * 	Subtract number of TxPwr index from different advance settings.
+ *
+ * 	2010.03.09, added by Roger.
+ */
+VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	TxPwrInPercentage = 0;
 
-	// Retrieve default TxPwr index settings from registry.
+	/* Retrieve default TxPwr index settings from registry. */
 	TxPwrInPercentage = pHalData->TxPwrInPercentage;
 
-	if(*pTxPwrIdx > RF6052_MAX_TX_PWR)
+	if (*pTxPwrIdx > RF6052_MAX_TX_PWR)
 		*pTxPwrIdx = RF6052_MAX_TX_PWR;
 
-	//
-	// <Roger_Notes> NEC Spec: dB = 10*log(X/Y), X: target value, Y: default value.
-	// For example: TxPower 50%, 10*log(50/100)=(nearly)-3dB
-	// 2010.07.26.
-	//
-	if(TxPwrInPercentage & TX_PWR_PERCENTAGE_0)// 12.5% , -9dB
-	{
-		*pTxPwrIdx -=18;
-	}
-	else if(TxPwrInPercentage & TX_PWR_PERCENTAGE_1)// 25%, -6dB
-	{
-		*pTxPwrIdx -=12;
-	}
-	else if(TxPwrInPercentage & TX_PWR_PERCENTAGE_2)// 50%, -3dB
-	{
-		*pTxPwrIdx -=6;
+	/*
+	 * <Roger_Notes> NEC Spec: dB = 10*log(X/Y), X: target value, Y: default value.
+	 * For example: TxPower 50%, 10*log(50/100)=(nearly)-3dB
+	 * 2010.07.26.
+	 */
+
+	if (TxPwrInPercentage & TX_PWR_PERCENTAGE_0) {	/* 12.5% , -9dB */
+		*pTxPwrIdx -= 18;
+	} else if (TxPwrInPercentage & TX_PWR_PERCENTAGE_1) {	/* 25%, -6dB */
+		*pTxPwrIdx -= 12;
+	} else if (TxPwrInPercentage & TX_PWR_PERCENTAGE_2) {	/* 50%, -3dB */
+		*pTxPwrIdx -= 6;
 	}
 
-	if(*pTxPwrIdx > RF6052_MAX_TX_PWR) // Avoid underflow condition.
+	if (*pTxPwrIdx > RF6052_MAX_TX_PWR)	/* Avoid underflow condition. */
 		*pTxPwrIdx = RF6052_MAX_TX_PWR;
 }
 
-u32
-PHY_GetTxPowerIndex_8812A(
-	IN	struct rtl_priv *		pAdapter,
-	IN	uint8_t					RFPath,
-	IN	uint8_t					Rate,
-	IN	CHANNEL_WIDTH	BandWidth,
-	IN	uint8_t					Channel
-	)
+u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
+	uint8_t	Rate, CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(pAdapter);
 	PDM_ODM_T			pDM_Odm = &pHalData->odmpriv;
-	uint8_t					i = 0;	//default set to 1S
+	uint8_t					i = 0;	/* default set to 1S */
 	struct registry_priv	*pregistrypriv = &pAdapter->registrypriv;
 	uint32_t					powerDiffByRate = 0;
 	uint32_t					txPower = 0;
 	uint8_t					chnlIdx = (Channel-1);
 	BOOLEAN				bIn24G = _FALSE;
 
-	//DBG_871X("===> PHY_GetTxPowerIndex_8812A\n");
+	/* DBG_871X("===> PHY_GetTxPowerIndex_8812A\n"); */
 
-	if (HAL_IsLegalChannel(pAdapter, Channel) == _FALSE)
-	{
+	if (HAL_IsLegalChannel(pAdapter, Channel) == _FALSE) {
 		chnlIdx = 0;
 		DBG_871X("Illegal channel!!\n");
 	}
 
 	bIn24G = phy_GetChnlIndex8812A(Channel, &chnlIdx);
 
-	//DBG_871X("[%s] Channel Index: %d\n", (bIn24G?"2.4G":"5G"), chnlIdx);
+	/* DBG_871X("[%s] Channel Index: %d\n", (bIn24G?"2.4G":"5G"), chnlIdx); */
 
-	if (bIn24G) //3 ============================== 2.4 G ==============================
-	{
-		if ( IS_CCK_RATE(Rate) )
-		{
+	if (bIn24G) { /* 3 ============================== 2.4 G ============================== */
+		if (IS_CCK_RATE(Rate)) {
 			txPower = pHalData->Index24G_CCK_Base[RFPath][chnlIdx];
-		}
-		else if ( MGN_6M <= Rate )
-		{
+		} else if (MGN_6M <= Rate) {
 			txPower = pHalData->Index24G_BW40_Base[RFPath][chnlIdx];
-		}
-		else
-		{
+		} else {
 			DBG_871X("===> mpt_ProQueryCaltxPower_Jaguar: INVALID Rate.\n");
 		}
 
-		//DBG_871X("Base Tx power(RF-%c, Rate #%d, Channel Index %d) = 0x%X\n", ((RFPath==0)?'A':'B'), Rate, chnlIdx, txPower);
+		/* DBG_871X("Base Tx power(RF-%c, Rate #%d, Channel Index %d) = 0x%X\n", ((RFPath==0)?'A':'B'), Rate, chnlIdx, txPower); */
 
-		// OFDM-1T
-		if ( MGN_6M <= Rate && Rate <= MGN_54M && ! IS_CCK_RATE(Rate) )
-		{
+		/* OFDM-1T */
+		if (MGN_6M <= Rate && Rate <= MGN_54M && !IS_CCK_RATE(Rate)) {
 			txPower += pHalData->OFDM_24G_Diff[RFPath][TX_1S];
-			//DBG_871X("+PowerDiff 2.4G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_24G_Diff[RFPath][TX_1S]);
+			/* DBG_871X("+PowerDiff 2.4G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_24G_Diff[RFPath][TX_1S]); */
 		}
-		// BW20-1S, BW20-2S
-		if (BandWidth == CHANNEL_WIDTH_20)
-		{
-			if ( (MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+
+		if (BandWidth == CHANNEL_WIDTH_20) {	/* BW20-1S, BW20-2S */
+			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 				txPower += pHalData->BW20_24G_Diff[RFPath][TX_1S];
-			if ( (MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 				txPower += pHalData->BW20_24G_Diff[RFPath][TX_2S];
 
-			//DBG_871X("+PowerDiff 2.4G (RF-%c): (BW20-1S, BW20-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
-			//	pHalData->BW20_24G_Diff[RFPath][TX_1S], pHalData->BW20_24G_Diff[RFPath][TX_2S]);
-		}
-		// BW40-1S, BW40-2S
-		else if (BandWidth == CHANNEL_WIDTH_40)
-		{
-			if ( (MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			/*
+			 * DBG_871X("+PowerDiff 2.4G (RF-%c): (BW20-1S, BW20-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
+			 * 	pHalData->BW20_24G_Diff[RFPath][TX_1S], pHalData->BW20_24G_Diff[RFPath][TX_2S]);
+			 */
+		} else if (BandWidth == CHANNEL_WIDTH_40) {	/* BW40-1S, BW40-2S */
+			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 				txPower += pHalData->BW40_24G_Diff[RFPath][TX_1S];
-			if ( (MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 				txPower += pHalData->BW40_24G_Diff[RFPath][TX_2S];
 
-			//DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
-			//	pHalData->BW40_24G_Diff[RFPath][TX_1S], pHalData->BW40_24G_Diff[RFPath][TX_2S]);
-		}
-		// Willis suggest adopt BW 40M power index while in BW 80 mode
-		else if ( BandWidth == CHANNEL_WIDTH_80 )
-		{
-			if ( (MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			/*
+			 * DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
+			 *	pHalData->BW40_24G_Diff[RFPath][TX_1S], pHalData->BW40_24G_Diff[RFPath][TX_2S]);
+			 */
+		} else if (BandWidth == CHANNEL_WIDTH_80) {	/* Willis suggest adopt BW 40M power index while in BW 80 mode */
+			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 				txPower += pHalData->BW40_24G_Diff[RFPath][TX_1S];
-			if ( (MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 				txPower += pHalData->BW40_24G_Diff[RFPath][TX_2S];
 
-			//DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S) = (%d, %d) P.S. Current is in BW 80MHz\n", ((RFPath==0)?'A':'B'),
-			//	pHalData->BW40_24G_Diff[RFPath][TX_1S], pHalData->BW40_24G_Diff[RFPath][TX_2S]);
+			/*
+			 * DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S) = (%d, %d) P.S. Current is in BW 80MHz\n", ((RFPath==0)?'A':'B'),
+			 * 	pHalData->BW40_24G_Diff[RFPath][TX_1S], pHalData->BW40_24G_Diff[RFPath][TX_2S]);
+			 */
 		}
 
-		//
-		// 2012/09/26 MH Accordng to BB team's opinion, there might 40M VHT mode in the future.?
-		// We need to judge VHT mode by what?
-		//
-	}
-	else //3 ============================== 5 G ==============================
-	{
-		if ( MGN_6M <= Rate )
-		{
+		/*
+		 *  2012/09/26 MH Accordng to BB team's opinion, there might 40M VHT mode in the future.?
+		 *  We need to judge VHT mode by what?
+		 */
+	} else {	/* 3 ============================== 5 G ============================== */
+		if (MGN_6M <= Rate) {
 			txPower = pHalData->Index5G_BW40_Base[RFPath][chnlIdx];
-		}
-		else
-		{
+		} else {
 			DBG_871X("===> mpt_ProQueryCalTxPower_Jaguar: INVALID Rate.\n");
 		}
 
-		//DBG_871X("Base Tx power(RF-%c, Rate #%d, Channel Index %d) = 0x%X\n", ((RFPath==0)?'A':'B'), Rate, chnlIdx, txPower);
+		/* DBG_871X("Base Tx power(RF-%c, Rate #%d, Channel Index %d) = 0x%X\n", ((RFPath==0)?'A':'B'), Rate, chnlIdx, txPower); */
 
-		// OFDM-1T
-		if ( MGN_6M <= Rate && Rate <= MGN_54M && ! IS_CCK_RATE(Rate))
-		{
+		/* OFDM-1T */
+		if (MGN_6M <= Rate && Rate <= MGN_54M && !IS_CCK_RATE(Rate)) {
 			txPower += pHalData->OFDM_5G_Diff[RFPath][TX_1S];
-			//DBG_871X("+PowerDiff 5G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_5G_Diff[RFPath][TX_1S]);
+			/* DBG_871X("+PowerDiff 5G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_5G_Diff[RFPath][TX_1S]); */
 		}
 
-		// BW20-1S, BW20-2S
-		if (BandWidth == CHANNEL_WIDTH_20)
-		{
-			if ( (MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+		if (BandWidth == CHANNEL_WIDTH_20) {	/* BW20-1S, BW20-2S */
+			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 			    txPower += pHalData->BW20_5G_Diff[RFPath][TX_1S];
-			if ( (MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 			    txPower += pHalData->BW20_5G_Diff[RFPath][TX_2S];
 
-			//DBG_871X("+PowerDiff 5G (RF-%c): (BW20-1S, BW20-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
-			//	pHalData->BW20_5G_Diff[RFPath][TX_1S], pHalData->BW20_5G_Diff[RFPath][TX_2S]);
-		}
-		// BW40-1S, BW40-2S
-		else if (BandWidth == CHANNEL_WIDTH_40)
-		{
-			if ( (MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			/*
+			 * DBG_871X("+PowerDiff 5G (RF-%c): (BW20-1S, BW20-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
+			 * 	pHalData->BW20_5G_Diff[RFPath][TX_1S], pHalData->BW20_5G_Diff[RFPath][TX_2S]);
+			 */
+		} else if (BandWidth == CHANNEL_WIDTH_40) {	/* BW40-1S, BW40-2S */
+			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 			    txPower += pHalData->BW40_5G_Diff[RFPath][TX_1S];
-			if ( (MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 			    txPower += pHalData->BW40_5G_Diff[RFPath][TX_2S];
 
-			//DBG_871X("+PowerDiff 5G(RF-%c): (BW40-1S, BW40-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
-			//	pHalData->BW40_5G_Diff[RFPath][TX_1S], pHalData->BW40_5G_Diff[RFPath][TX_2S]);
-		}
-		// BW80-1S, BW80-2S
-		else if (BandWidth== CHANNEL_WIDTH_80)
-		{
-			// <20121220, Kordan> Get the index of array "Index5G_BW80_Base".
+			/*
+			 * DBG_871X("+PowerDiff 5G(RF-%c): (BW40-1S, BW40-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
+			 * 	pHalData->BW40_5G_Diff[RFPath][TX_1S], pHalData->BW40_5G_Diff[RFPath][TX_2S]);
+			 */
+		} else if (BandWidth == CHANNEL_WIDTH_80) {	/* BW80-1S, BW80-2S */
+			/* <20121220, Kordan> Get the index of array "Index5G_BW80_Base". */
 			uint8_t	channel5G_80M[CHANNEL_MAX_NUMBER_5G_80M] = {42, 58, 106, 122, 138, 155, 171};
 			for (i = 0; i < sizeof(channel5G_80M)/sizeof(uint8_t); ++i)
-				if ( channel5G_80M[i] == Channel)
+				if (channel5G_80M[i] == Channel)
 					chnlIdx = i;
 
-			if ( (MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 				txPower = pHalData->Index5G_BW80_Base[RFPath][chnlIdx] + pHalData->BW80_5G_Diff[RFPath][TX_1S];
-			if ( (MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
+			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
 				txPower = pHalData->Index5G_BW80_Base[RFPath][chnlIdx] + pHalData->BW80_5G_Diff[RFPath][TX_1S] + pHalData->BW80_5G_Diff[RFPath][TX_2S];
 
-			//DBG_871X("+PowerDiff 5G(RF-%c): (BW80-1S, BW80-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
-			//	pHalData->BW80_5G_Diff[RFPath][TX_1S], pHalData->BW80_5G_Diff[RFPath][TX_2S]);
+			/*
+			 * DBG_871X("+PowerDiff 5G(RF-%c): (BW80-1S, BW80-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
+			 * 	pHalData->BW80_5G_Diff[RFPath][TX_1S], pHalData->BW80_5G_Diff[RFPath][TX_2S]);
+			 */
 		}
 	}
 
-	// Band:-2G&5G = 0 / 1
-	// Becasue in the functionwe use the bIn24G = 1=2.4G. Then we need to convert the value.
-	// RF: at most 4*4 = ABCD=0/1/2/3
-	// CCK=0 				11/5.5/2/1
-	// OFDM=1/2 			18/12/9/6     54/48/36/24
-	// HT=3/4/5/6 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
-	// VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
-	if (pregistrypriv->RegPwrByRate == _FALSE && pHalData->EEPROMRegulatory != 2)
-	{
+	/*
+	 * Band:-2G&5G = 0 / 1
+	 * Becasue in the functionwe use the bIn24G = 1=2.4G. Then we need to convert the value.
+	 * RF: at most 4*4 = ABCD=0/1/2/3
+	 * CCK=0 				11/5.5/2/1
+	 * OFDM=1/2 			18/12/9/6     54/48/36/24
+	 * HT=3/4/5/6 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
+	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
+	 */
+	if (pregistrypriv->RegPwrByRate == _FALSE && pHalData->EEPROMRegulatory != 2) {
 		powerDiffByRate = phy_GetTxPwrByRateOffset_8812(pAdapter, (uint8_t)(!bIn24G), RFPath, Rate);
 
-		if ( ( pregistrypriv->RegEnableTxPowerLimit == 1 && pHalData->EEPROMRegulatory != 2 ) ||
-		 	  pHalData->EEPROMRegulatory == 1 )
-		{
+		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && pHalData->EEPROMRegulatory != 2)
+		||  pHalData->EEPROMRegulatory == 1) {
 			uint8_t limit = 0;
 			limit = PHY_GetPowerLimitValue(pAdapter, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (ODM_RF_RADIO_PATH_E)RFPath, Rate, Channel);
 
-			if ( Rate == MGN_VHT1SS_MCS8 || Rate == MGN_VHT1SS_MCS9  ||
-				 Rate == MGN_VHT2SS_MCS8 || Rate == MGN_VHT2SS_MCS9 )
-			{
-				if ( limit < 0 )
-				{
-					if ( powerDiffByRate < -limit )
+			if (Rate == MGN_VHT1SS_MCS8 || Rate == MGN_VHT1SS_MCS9  ||
+			    Rate == MGN_VHT2SS_MCS8 || Rate == MGN_VHT2SS_MCS9) {
+				if (limit < 0) {
+					if (powerDiffByRate < -limit)
 						powerDiffByRate = -limit;
 				}
-			}
-			else
-			{
-				if ( limit < 0 )
+			} else {
+				if (limit < 0)
 					powerDiffByRate = limit;
 				else
 					powerDiffByRate = powerDiffByRate > limit ? limit : powerDiffByRate;
 			}
-			//DBG_871X("Maximum power by rate %d, final power by rate %d\n", limit, powerDiffByRate );
+			/* DBG_871X("Maximum power by rate %d, final power by rate %d\n", limit, powerDiffByRate ); */
 		}
 	}
 
-	//DBG_871X("Rate-%x txPower=%x +PowerDiffByRate(RF-%c) = %d\n", Rate, txPower, ((RFPath==0)?'A':'B'), powerDiffByRate);
+	/* DBG_871X("Rate-%x txPower=%x +PowerDiffByRate(RF-%c) = %d\n", Rate, txPower, ((RFPath==0)?'A':'B'), powerDiffByRate); */
 
-	// We need to reduce power index for VHT MCS 8 & 9.
+	/*  We need to reduce power index for VHT MCS 8 & 9. */
 	if (Rate == MGN_VHT1SS_MCS8 || Rate == MGN_VHT1SS_MCS9 ||
-		Rate == MGN_VHT2SS_MCS8 || Rate == MGN_VHT2SS_MCS9)
-	{
+	    Rate == MGN_VHT2SS_MCS8 || Rate == MGN_VHT2SS_MCS9) {
 		txPower -= powerDiffByRate;
-	}
-	else
-	{
-		//
-		// 2013/01/29 MH For preventing VHT rate of 8812AU to be used in USB 2.0 mode
-		// and the current will be more than 500mA and card disappear. We need to limit
-		// TX power with any power by rate for VHT in U2.
-		// 2013/01/30 MH According to power current test compare with BCM AC NIC, we
-		// decide to use host hub = 2.0 mode to enable tx power limit behavior.
-		//
-		if (adapter_to_dvobj(pAdapter)->usb_speed <= RTW_USB_SPEED_2 && IS_HARDWARE_TYPE_8812AU(pAdapter))
-		{
+	} else {
+		/*
+		 * 2013/01/29 MH For preventing VHT rate of 8812AU to be used in USB 2.0 mode
+		 * and the current will be more than 500mA and card disappear. We need to limit
+		 * TX power with any power by rate for VHT in U2.
+		 * 2013/01/30 MH According to power current test compare with BCM AC NIC, we
+		 * decide to use host hub = 2.0 mode to enable tx power limit behavior.
+		 */
+		if (adapter_to_dvobj(pAdapter)->usb_speed <= RTW_USB_SPEED_2 && IS_HARDWARE_TYPE_8812AU(pAdapter)) {
 			powerDiffByRate = 0;
 		}
 
 		txPower += powerDiffByRate;
 	}
-	//DBG_871X("BASE ON HT MCS7\n");
-	//DBG_871X("Final Tx Power(RF-%c, Channel: %d) = %d(0x%X)\n", ((RFPath==0)?'A':'B'), chnlIdx+1, txPower, txPower);
+	/*
+	 * DBG_871X("BASE ON HT MCS7\n");
+	 * DBG_871X("Final Tx Power(RF-%c, Channel: %d) = %d(0x%X)\n", ((RFPath==0)?'A':'B'), chnlIdx+1, txPower, txPower);
+	 */
 
-	if(pDM_Odm->Modify_TxAGC_Flag_PathA || pDM_Odm->Modify_TxAGC_Flag_PathB)    //20130424 Mimic whether path A or B has to modify TxAGC
-	{
-		//DBG_871X("Before add Remanant_OFDMSwingIdx[rfpath %u] %d", txPower);
+	if (pDM_Odm->Modify_TxAGC_Flag_PathA || pDM_Odm->Modify_TxAGC_Flag_PathB) {
+		/* 20130424 Mimic whether path A or B has to modify TxAGC */
+
+		/* DBG_871X("Before add Remanant_OFDMSwingIdx[rfpath %u] %d", txPower); */
 		txPower += pDM_Odm->Remnant_OFDMSwingIdx[RFPath];
-		//DBG_871X("After add Remanant_OFDMSwingIdx[rfpath %u] %d => txPower %d", RFPath, pDM_Odm->Remnant_OFDMSwingIdx[RFPath], txPower);
+		/* DBG_871X("After add Remanant_OFDMSwingIdx[rfpath %u] %d => txPower %d", RFPath, pDM_Odm->Remnant_OFDMSwingIdx[RFPath], txPower); */
 	}
 
-	if(txPower > MAX_POWER_INDEX)
+	if (txPower > MAX_POWER_INDEX)
 		txPower = MAX_POWER_INDEX;
 
-	// 2012/09/26 MH We need to take care high power device limiation to prevent destroy EXT_PA.
-	// This case had ever happened in CU/SU high power module. THe limitation = 0x20.
-	// But for 8812, we still not know the value.
+	/*
+	 * 2012/09/26 MH We need to take care high power device limiation to prevent destroy EXT_PA.
+	 * This case had ever happened in CU/SU high power module. THe limitation = 0x20.
+	 * But for 8812, we still not know the value.
+	 */
 	phy_TxPwrAdjInPercentage(pAdapter, (uint8_t *)&txPower);
 
 	return txPower;
 }
 
-
-static VOID PHY_SetPowerLimitTableValue(
-	IN	PDM_ODM_T		pDM_Odm,
-	IN	s8*				Regulation,
-	IN	s8*				Band,
-	IN	s8*				Bandwidth,
-	IN	s8*				RateSection,
-	IN	s8*				RfPath,
-	IN	s8* 				Channel,
-	IN	s8*				PowerLimit
-	)
+static VOID PHY_SetPowerLimitTableValue(PDM_ODM_T pDM_Odm,
+	s8 *Regulation, s8 *Band, s8 *Bandwidth, s8 *RateSection,
+	s8 *RfPath, s8 *Channel, s8 *PowerLimit)
 {
-	struct rtl_priv *		Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA( Adapter );
-	uint8_t					regulation=0, bandwidth=0, rateSection=0,
-						channel, powerLimit, channelGroup;
+	struct rtl_priv *Adapter = pDM_Odm->Adapter;
+	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	uint8_t		regulation = 0, bandwidth = 0, rateSection = 0,
+			channel, powerLimit, channelGroup;
 
-	DBG_871X( "Index of power limit table \
+	DBG_871X("Index of power limit table \
 		  [band %s][regulation %s][bw %s][rate section %s][rf path %s][chnl %s][val %s]\n",
-		  Band, Regulation, Bandwidth, RateSection, RfPath, Channel, PowerLimit ) ;
+		  Band, Regulation, Bandwidth, RateSection, RfPath, Channel, PowerLimit);
 
-	if ( !GetU1ByteIntegerFromStringInDecimal( Channel, &channel ) ||
-		 !GetU1ByteIntegerFromStringInDecimal( PowerLimit, &powerLimit ) )
-	{
-		DBG_871X("Illegal index of power limit table [chnl %s][val %s]\n", Channel, PowerLimit );
+	if (!GetU1ByteIntegerFromStringInDecimal(Channel, &channel) ||
+		 !GetU1ByteIntegerFromStringInDecimal(PowerLimit, &powerLimit)) {
+		DBG_871X("Illegal index of power limit table [chnl %s][val %s]\n", Channel, PowerLimit);
 	}
 
 	powerLimit = powerLimit > MAX_POWER_INDEX ? MAX_POWER_INDEX : powerLimit;
 
-	if ( eqNByte( Regulation, "FCC", 3 ) ) regulation = 0;
-	else if ( eqNByte( Regulation, "MKK", 3 ) ) regulation = 1;
-	else if ( eqNByte( Regulation, "ETSI", 4 ) ) regulation = 2;
+	if (eqNByte(Regulation, "FCC", 3))
+		regulation = 0;
+	else if (eqNByte(Regulation, "MKK", 3))
+		regulation = 1;
+	else if (eqNByte(Regulation, "ETSI", 4))
+		regulation = 2;
 
-	if ( eqNByte( RateSection, "CCK", 3 ) )
+	if (eqNByte(RateSection, "CCK", 3))
 		rateSection = 0;
-	else if ( eqNByte( RateSection, "OFDM", 4 ) )
+	else if (eqNByte(RateSection, "OFDM", 4))
 		rateSection = 1;
-	else if ( eqNByte( RateSection, "HT", 2 ) && eqNByte( RfPath, "1T", 2 ) )
+	else if (eqNByte(RateSection, "HT", 2) && eqNByte(RfPath, "1T", 2))
 		rateSection = 2;
-	else if ( eqNByte( RateSection, "HT", 2 ) && eqNByte( RfPath, "2T", 2 ) )
+	else if (eqNByte(RateSection, "HT", 2) && eqNByte(RfPath, "2T", 2))
 		rateSection = 3;
-	else if ( eqNByte( RateSection, "VHT", 3 ) && eqNByte( RfPath, "1T", 2 ) )
+	else if (eqNByte(RateSection, "VHT", 3) && eqNByte(RfPath, "1T", 2))
 		rateSection = 4;
-	else if ( eqNByte( RateSection, "VHT", 3 ) && eqNByte( RfPath, "2T", 2 ) )
+	else if (eqNByte(RateSection, "VHT", 3) && eqNByte(RfPath, "2T", 2))
 		rateSection = 5;
 
 
-	if ( eqNByte( Bandwidth, "20M", 3 ) ) bandwidth = 0;
-	else if ( eqNByte( Bandwidth, "40M", 3 ) ) bandwidth = 1;
-	else if ( eqNByte( Bandwidth, "80M", 3 ) ) bandwidth = 2;
-	else if ( eqNByte( Bandwidth, "160M", 4 ) ) bandwidth = 3;
+	if (eqNByte(Bandwidth, "20M", 3))
+		bandwidth = 0;
+	else if (eqNByte(Bandwidth, "40M", 3))
+		bandwidth = 1;
+	else if (eqNByte(Bandwidth, "80M", 3))
+		bandwidth = 2;
+	else if (eqNByte(Bandwidth, "160M", 4))
+		bandwidth = 3;
 
-	if ( eqNByte( Band, "2.4G", 4 ) )
-	{
-		DBG_871X( "2.4G Band value : [regulation %d][bw %d][rate_section %d][chnl %d][val %d]\n",
-			regulation, bandwidth, rateSection, channel, powerLimit );
-		channelGroup = phy_GetChannelGroup( BAND_ON_2_4G, channel );
+	if (eqNByte(Band, "2.4G", 4)) {
+		DBG_871X("2.4G Band value : [regulation %d][bw %d][rate_section %d][chnl %d][val %d]\n",
+			regulation, bandwidth, rateSection, channel, powerLimit);
+		channelGroup = phy_GetChannelGroup(BAND_ON_2_4G, channel);
 		pHalData->TxPwrLimit_2_4G[regulation][bandwidth][rateSection][channelGroup][ODM_RF_PATH_A] = powerLimit;
-	}
-	else if ( eqNByte( Band, "5G", 2 ) )
-	{
+	} else if (eqNByte(Band, "5G", 2)) {
 		DBG_871X("5G Band value : [regulation %d][bw %d][rate_section %d][chnl %d][val %d]\n",
-			  regulation, bandwidth, rateSection, channel, powerLimit );
-		channelGroup = phy_GetChannelGroup( BAND_ON_5G, channel );
+			  regulation, bandwidth, rateSection, channel, powerLimit);
+		channelGroup = phy_GetChannelGroup(BAND_ON_5G, channel);
 		pHalData->TxPwrLimit_5G[regulation][bandwidth][rateSection][channelGroup][ODM_RF_PATH_A] = powerLimit;
-	}
-	else
-	{
-		DBG_871X("Cannot recognize the band info in %s\n", Band );
+	} else {
+		DBG_871X("Cannot recognize the band info in %s\n", Band);
 		return;
 	}
 }
 
 
-static void
-odm_ConfigBB_TXPWR_LMT_8812A(
-	IN 	PDM_ODM_T 	pDM_Odm,
-	IN	pu1Byte		Regulation,
-	IN	pu1Byte		Band,
-	IN	pu1Byte		Bandwidth,
-	IN	pu1Byte		RateSection,
-	IN	pu1Byte		RfPath,
-	IN	pu1Byte 	Channel,
-	IN	pu1Byte		PowerLimit
-    )
+static void odm_ConfigBB_TXPWR_LMT_8812A(PDM_ODM_T pDM_Odm,
+	pu1Byte Regulation, pu1Byte Band, pu1Byte Bandwidth,
+	pu1Byte	RateSection, pu1Byte RfPath, pu1Byte Channel,
+	pu1Byte	PowerLimit)
 {
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	PHY_SetPowerLimitTableValue(pDM_Odm, Regulation, Band,
@@ -1866,16 +1934,10 @@ static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(PDM_ODM_T pDM_Odm)
 }
 
 
-static void
-odm_ConfigBB_TXPWR_LMT_8821A(
-	IN 	PDM_ODM_T 	pDM_Odm,
-	IN	pu1Byte		Regulation,
-	IN	pu1Byte		Band,
-	IN	pu1Byte		Bandwidth,
-	IN	pu1Byte		RateSection,
-	IN	pu1Byte		RfPath,
-	IN	pu1Byte 	Channel,
-	IN	pu1Byte		PowerLimit
+static void odm_ConfigBB_TXPWR_LMT_8821A(PDM_ODM_T pDM_Odm,
+	pu1Byte	Regulation, pu1Byte Band, pu1Byte Bandwidth,
+	pu1Byte	 RateSection, pu1Byte RfPath, pu1Byte Channel,
+	pu1Byte	PowerLimit
     )
 {
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
@@ -1919,34 +1981,31 @@ HAL_STATUS _rtl8821au_phy_read_and_config_txpwr_lmt(PDM_ODM_T pDM_Odm)
 
 
 
-static BOOLEAN
-CheckCondition(
-    const uint32_t  Condition,
-    const uint32_t  Hex
-    )
+static BOOLEAN CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 {
-    uint32_t _board     = (Hex & 0x000000FF);
-    uint32_t _interface = (Hex & 0x0000FF00) >> 8;
-    uint32_t _platform  = (Hex & 0x00FF0000) >> 16;
-    uint32_t cond = Condition;
+	uint32_t _board     = (Hex & 0x000000FF);
+	uint32_t _interface = (Hex & 0x0000FF00) >> 8;
+	uint32_t _platform  = (Hex & 0x00FF0000) >> 16;
+	uint32_t cond = Condition;
 
-    if ( Condition == 0xCDCDCDCD )
-        return TRUE;
+	if (Condition == 0xCDCDCDCD)
+		return TRUE;
 
-    cond = Condition & 0x000000FF;
-    if ( (_board != cond) && (cond != 0xFF) )
-        return FALSE;
+	cond = Condition & 0x000000FF;
+	if ((_board != cond) && (cond != 0xFF))
+		return FALSE;
 
-    cond = Condition & 0x0000FF00;
-    cond = cond >> 8;
-    if ( ((_interface & cond) == 0) && (cond != 0x07) )
-        return FALSE;
+	cond = Condition & 0x0000FF00;
+	cond = cond >> 8;
+	if (((_interface & cond) == 0) && (cond != 0x07))
+		return FALSE;
 
-    cond = Condition & 0x00FF0000;
-    cond = cond >> 16;
-    if ( ((_platform & cond) == 0) && (cond != 0x0F) )
-        return FALSE;
-    return TRUE;
+	cond = Condition & 0x00FF0000;
+	cond = cond >> 16;
+	if (((_platform & cond) == 0) && (cond != 0x0F))
+		return FALSE;
+
+	return TRUE;
 }
 
 static void ODM_ReadAndConfig_MP_8812A_MAC_REG(PDM_ODM_T pDM_Odm)
@@ -1968,47 +2027,38 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(PDM_ODM_T pDM_Odm)
 	hex += 0xFF000000;
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_MAC_REG, hex = 0x%X\n", hex));
 
-	for (i = 0; i < ArrayLen; i += 2 )
-	{
-	    uint32_t v1 = Array[i];
-	    uint32_t v2 = Array[i+1];
+	for (i = 0; i < ArrayLen; i += 2) {
+		uint32_t v1 = Array[i];
+		uint32_t v2 = Array[i+1];
 
-	    // This (offset, data) pair meets the condition.
-	    if ( v1 < 0xCDCDCDCD )
-	    {
-	 		ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
-		    continue;
-	 	}
-		else
-		{ // This line is the start line of branch.
-		    if ( !CheckCondition(Array[i], hex) )
-		    { // Discard the following (offset, data) pairs.
-		        READ_NEXT_PAIR(Array, v1, v2, i);
-		        while (v2 != 0xDEAD &&
-		               v2 != 0xCDEF &&
-		               v2 != 0xCDCD && i < ArrayLen -2)
-		        {
-		            READ_NEXT_PAIR(Array, v1, v2, i);
-		        }
-		        i -= 2; // prevent from for-loop += 2
-		    }
-		    else // Configure matched pairs and skip to end of if-else.
-		    {
-		        READ_NEXT_PAIR(Array, v1, v2, i);
-		        while (v2 != 0xDEAD &&
-		               v2 != 0xCDEF &&
-		               v2 != 0xCDCD && i < ArrayLen -2)
-		        {
-	 				ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
-		            READ_NEXT_PAIR(Array, v1, v2, i);
-		        }
+		/* This (offset, data) pair meets the condition. */
+		if (v1 < 0xCDCDCDCD) {
+			ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
+			continue;
+		} else {
+			/* This line is the start line of branch. */
+			if (!CheckCondition(Array[i], hex)) {
+				/* Discard the following (offset, data) pairs. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+					v2 != 0xCDEF &&
+					v2 != 0xCDCD && i < ArrayLen - 2) {
+						READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+				i -= 2; /* prevent from for-loop += 2 */
+			} else { /* Configure matched pairs and skip to end of if-else. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+					v2 != 0xCDEF &&
+					v2 != 0xCDCD && i < ArrayLen - 2) {
+						ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
+						READ_NEXT_PAIR(Array, v1, v2, i);
+				}
 
-		        while (v2 != 0xDEAD && i < ArrayLen -2)
-		        {
-		            READ_NEXT_PAIR(Array, v1, v2, i);
-		        }
-
-		    }
+				while (v2 != 0xDEAD && i < ArrayLen - 2) {
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+			}
 		}
 	}
 
@@ -2034,47 +2084,40 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(PDM_ODM_T  pDM_Odm)
 	hex += 0xFF000000;
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_MAC_REG, hex = 0x%X\n", hex));
 
-	for (i = 0; i < ArrayLen; i += 2 )
-	{
-	    uint32_t v1 = Array[i];
-	    uint32_t v2 = Array[i+1];
+	for (i = 0; i < ArrayLen; i += 2) {
+		uint32_t v1 = Array[i];
+		uint32_t v2 = Array[i+1];
 
-	    // This (offset, data) pair meets the condition.
-	    if ( v1 < 0xCDCDCDCD )
-	    {
-	 		ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
-		    continue;
-	 	}
-		else
-		{ // This line is the start line of branch.
-		    if ( !CheckCondition(Array[i], hex) )
-		    { // Discard the following (offset, data) pairs.
-		        READ_NEXT_PAIR(Array, v1, v2, i);
-		        while (v2 != 0xDEAD &&
-		               v2 != 0xCDEF &&
-		               v2 != 0xCDCD && i < ArrayLen -2)
-		        {
-		            READ_NEXT_PAIR(Array, v1, v2, i);
-		        }
-		        i -= 2; // prevent from for-loop += 2
-		    }
-		    else // Configure matched pairs and skip to end of if-else.
-		    {
-		        READ_NEXT_PAIR(Array, v1, v2, i);
-		        while (v2 != 0xDEAD &&
-		               v2 != 0xCDEF &&
-		               v2 != 0xCDCD && i < ArrayLen -2)
-		        {
-	 				ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
-		            READ_NEXT_PAIR(Array, v1, v2, i);
-		        }
+		/* This (offset, data) pair meets the condition. */
+		if (v1 < 0xCDCDCDC) {
+			ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
+			continue;
+		} else {
+			/* This line is the start line of branch. */
+			if (!CheckCondition(Array[i], hex)) {
+				/* Discard the following (offset, data) pairs. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+					v2 != 0xCDEF &&
+					v2 != 0xCDCD && i < ArrayLen - 2) {
+						READ_NEXT_PAIR(Array, v1, v2, i);
+				}
+				i -= 2; /* prevent from for-loop += 2 */
+			} else {
+				/* Configure matched pairs and skip to end of if-else. */
+				READ_NEXT_PAIR(Array, v1, v2, i);
+				while (v2 != 0xDEAD &&
+					v2 != 0xCDEF &&
+					v2 != 0xCDCD && i < ArrayLen - 2) {
+						ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
+						READ_NEXT_PAIR(Array, v1, v2, i);
+				}
 
-		        while (v2 != 0xDEAD && i < ArrayLen -2)
-		        {
-		            READ_NEXT_PAIR(Array, v1, v2, i);
-		        }
+				while (v2 != 0xDEAD && i < ArrayLen - 2) {
+					READ_NEXT_PAIR(Array, v1, v2, i);
+				}
 
-		    }
+			}
 		}
 	}
 
@@ -2116,23 +2159,23 @@ HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(PDM_ODM_T pDM_Odm)
 static void _rtl8812au_config_rf_radio_a(PDM_ODM_T pDM_Odm, uint32_t Addr,
 	uint32_t Data)
 {
-	uint32_t  content = 0x1000; // RF_Content: radioa_txt
-	uint32_t	maskforPhySet= (uint32_t)(content&0xE000);
+	uint32_t content = 0x1000;		/* RF_Content: radioa_txt */
+	uint32_t maskforPhySet = (uint32_t)(content&0xE000);
 
-    odm_ConfigRFReg_8812A(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
+	odm_ConfigRFReg_8812A(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
 
-    ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
 }
 
 static void _rtl8812au_config_rf_radio_b(PDM_ODM_T pDM_Odm, uint32_t Addr,
 	uint32_t Data)
 {
-	uint32_t  content = 0x1001; // RF_Content: radiob_txt
-	uint32_t	maskforPhySet= (uint32_t)(content&0xE000);
+	uint32_t  content = 0x1001;		/* RF_Content: radiob_txt */
+	uint32_t maskforPhySet = (uint32_t)(content&0xE000);
 
-    odm_ConfigRFReg_8812A(pDM_Odm, Addr, Data, ODM_RF_PATH_B, Addr|maskforPhySet);
+	odm_ConfigRFReg_8812A(pDM_Odm, Addr, Data, ODM_RF_PATH_B, Addr|maskforPhySet);
 
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioB] %08X %08X\n", Addr, Data));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioB] %08X %08X\n", Addr, Data));
 
 }
 
@@ -2261,12 +2304,12 @@ void ODM_ReadAndConfig_MP_8812A_RadioB(PDM_ODM_T pDM_Odm)
 static void _rtl8821au_config_rf_radio_a(PDM_ODM_T pDM_Odm, uint32_t Addr,
 	uint32_t Data)
 {
-	uint32_t  content = 0x1000; // RF_Content: radioa_txt
-	uint32_t	maskforPhySet= (uint32_t)(content&0xE000);
+	uint32_t  content = 0x1000;		/* RF_Content: radioa_txt */
+	uint32_t maskforPhySet = (uint32_t)(content&0xE000);
 
-    odm_ConfigRFReg_8821A(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
+	odm_ConfigRFReg_8821A(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
 
-    ODM_RT_TRACE(pDM_Odm,ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
 }
 
 

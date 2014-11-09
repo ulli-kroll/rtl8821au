@@ -24,14 +24,6 @@
 
 static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex);
 
-/******************************************************************************
-*                           RadioA.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8821A_RadioA( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
-);
 
 /******************************************************************************
 *                           TxPowerTrack_AP.TXT

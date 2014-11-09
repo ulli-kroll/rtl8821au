@@ -26,6 +26,7 @@
 
 
 #include "odm_precomp.h"
+#include "../../rtl8821au/phy.h"
 
 u1Byte odm_QueryRxPwrPercentage(s1Byte AntPower)
 {

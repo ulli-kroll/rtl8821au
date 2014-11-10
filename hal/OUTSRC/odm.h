@@ -515,7 +515,7 @@ typedef		struct _ODM_STA_INFO{
 	//1 For 88E RA (don't redefine the naming)
 	u1Byte		rate_id;
 	u1Byte		rate_SGI;
-	u1Byte		rssi_sta_ra;
+	u1Byte		rssi_sta_ra;
 	u1Byte		SGI_enable;
 	u1Byte		Decision_rate;
 	u1Byte		Pre_rate;

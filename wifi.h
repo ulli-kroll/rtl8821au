@@ -1,3 +1,6 @@
+#ifndef __WIFI_H__
+#define __WIFI_H__
+
 struct rtl_priv {
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
@@ -85,3 +88,5 @@ struct rtl_priv {
 	unsigned char     in_cta_test;
 
 };
+
+#endif

@@ -103,7 +103,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	)
 {
 
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 #endif

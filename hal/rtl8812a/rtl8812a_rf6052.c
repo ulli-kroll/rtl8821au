@@ -42,7 +42,7 @@ PHY_RF6052SetBandwidth8812(
 	IN	struct rtl_priv *			Adapter,
 	IN	CHANNEL_WIDTH		Bandwidth)	//20M or 40M
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	switch(Bandwidth)
 	{
@@ -84,7 +84,7 @@ void getPowerBase8812(
 	IN OUT u32*		MCSBase
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint32_t			powerBase0, powerBase1;
 	uint8_t			i, powerlevel[2];
 
@@ -125,7 +125,7 @@ void getTxPowerWriteValByRegulatory8812(
 	)
 {
 
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	uint8_t			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
 	s8			pwr_diff=0;
@@ -292,7 +292,7 @@ static void writeOFDMPowerReg8812(
 	IN 		u32*		pValue
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	uint16_t RegOffset_A[6] = {
     	rTxAGC_A_Ofdm18_Ofdm6_JAguar,
@@ -340,7 +340,7 @@ PHY_RF6052SetCckTxPower8812(
 	IN	struct rtl_priv *Adapter,
 	IN	uint8_t *			pPowerlevel)
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv		*pdmpriv = &pHalData->dmpriv;
 	struct mlme_ext_priv 	*pmlmeext = &Adapter->mlmeextpriv;
 	uint32_t			TxAGC[2]={0, 0}, tmpval=0;
@@ -469,7 +469,7 @@ phy_RF6052_Config_ParaFile_8812(
 {
 	uint8_t					eRFPath;
 	int					rtStatus = _SUCCESS;
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	static char			sz8812RadioAFile[] = RTL8812_PHY_RADIO_A;
 	static char			sz8812RadioBFile[] = RTL8812_PHY_RADIO_B;
 	static char 			sz8812TxPwrTrack[] = RTL8812_TXPWR_TRACK;
@@ -550,7 +550,7 @@ int
 PHY_RF6052_Config_8812(
 	IN	struct rtl_priv *	Adapter)
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	int					rtStatus = _SUCCESS;
 
 	// Initialize general global value

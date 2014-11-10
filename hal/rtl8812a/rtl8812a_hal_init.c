@@ -83,7 +83,7 @@ int32_t InitLLTTable8812(struct rtl_priv *padapter, uint8_t txpktbuf_bndy)
 	int32_t	status = _FAIL;
 	uint32_t	i;
 	uint32_t	Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
-	HAL_DATA_TYPE *pHalData	= GET_HAL_DATA(padapter);
+	 struct rtw_hal *pHalData	= GET_HAL_DATA(padapter);
 
 	for (i = 0; i < (txpktbuf_bndy - 1); i++) {
 		status = _LLTWrite(padapter, i, i + 1);
@@ -122,7 +122,7 @@ int32_t InitLLTTable8812(struct rtl_priv *padapter, uint8_t txpktbuf_bndy)
 BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *Adapter)
 {
 	uint8_t tmpvalue = 0;
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
 
 	EFUSE_ShadowRead(Adapter, 1, EEPROM_RF_OPT3_92C, (uint32_t *)&tmpvalue);
@@ -589,7 +589,7 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *Adapter, PTxPowerInfo24G pwrInf
 	PTxPowerInfo5G	pwrInfo5G, uint8_t *PROMContent,
 	BOOLEAN	AutoLoadFail)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint32_t rfPath, eeAddr = EEPROM_TX_PWR_INX_8812, group, TxCount = 0;
 
 	memset(pwrInfo24G, 0, sizeof(TxPowerInfo24G));
@@ -889,7 +889,7 @@ void Hal_EfuseParseIDCode8812A(struct rtl_priv *padapter, uint8_t *hwinfo)
 VOID Hal_ReadPROMVersion8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN AutoloadFail)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (AutoloadFail) {
 		pHalData->EEPROMVersion = EEPROM_Default_Version;
@@ -904,7 +904,7 @@ VOID Hal_ReadPROMVersion8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	AutoLoadFail)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	TxPowerInfo24G	pwrInfo24G;
 	TxPowerInfo5G	pwrInfo5G;
 	uint8_t	rfPath, ch, group, TxCount;
@@ -1011,7 +1011,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 VOID Hal_ReadBoardType8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (!AutoloadFail) {
 		pHalData->InterfaceSel = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0xE0)>>5;
@@ -1027,7 +1027,7 @@ VOID Hal_ReadBoardType8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 VOID Hal_ReadThermalMeter_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	/* uint8_t	tempval; */
 
 	/*
@@ -1065,7 +1065,7 @@ VOID Hal_ReadChannelPlan8812A(struct rtl_priv *padapter, uint8_t *hwinfo,
 VOID Hal_EfuseParseXtal_8812A(struct rtl_priv *pAdapter, uint8_t *hwinfo,
 	BOOLEAN	AutoLoadFail)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 
 	if (!AutoLoadFail) {
 		pHalData->CrystalCap = hwinfo[EEPROM_XTAL_8812];
@@ -1080,7 +1080,7 @@ VOID Hal_EfuseParseXtal_8812A(struct rtl_priv *pAdapter, uint8_t *hwinfo,
 VOID Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *pAdapter,
 	uint8_t *PROMContent, BOOLEAN AutoLoadFail)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	struct registry_priv	*registry_par = &pAdapter->registrypriv;
 
 	if (!AutoLoadFail) {
@@ -1108,7 +1108,7 @@ VOID
 Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
 	if (!AutoloadFail) {
 		if (GetRegAmplifierType2G(Adapter) == 0) {
@@ -1173,7 +1173,7 @@ VOID
 Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	 AutoloadFail)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (!AutoloadFail) {
 		if (GetRegAmplifierType2G(Adapter) == 0) {
@@ -1239,7 +1239,7 @@ VOID
 Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (!AutoloadFail) {
 		if (GetRegRFEType(Adapter) != 64)
@@ -2378,7 +2378,7 @@ void ReadRFType8812A(struct rtl_priv *padapter)
 void rtl8812_GetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,
 	PVOID pValue1, BOOLEAN bSet)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T podmpriv = &pHalData->odmpriv;
 
 	switch (eVariable) {
@@ -2392,7 +2392,7 @@ void rtl8812_GetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,
 void rtl8812_SetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,
 	PVOID pValue1, BOOLEAN bSet)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T podmpriv = &pHalData->odmpriv;
 	/* _irqL irqL; */
 	switch (eVariable) {
@@ -2560,7 +2560,7 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 
 VOID Hal_PatchwithJaguar_8812(struct rtl_priv *Adapter, RT_MEDIA_STATUS	MediaStatus)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct mlme_ext_priv	*pmlmeext = &(Adapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -2595,7 +2595,7 @@ void UpdateHalRAMask8812A(struct rtl_priv *padapter, uint32_t mac_id, uint8_t rs
 	int	supportRateNum = 0;
 	uint8_t	arg[4] = {0};
 	struct sta_info	*psta;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	/* struct dm_priv	*pdmpriv = &pHalData->dmpriv; */
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2725,7 +2725,7 @@ void InitDefaultValue8821A(struct rtl_priv *padapter)
 
 VOID _InitBeaconParameters_8812A(struct rtl_priv *Adapter)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	rtw_write16(Adapter, REG_BCN_CTRL, 0x1010);
 
@@ -2761,7 +2761,7 @@ static VOID _BeaconFunctionEnable(struct rtl_priv *Adapter, BOOLEAN Enable,
 
 static void ResumeTxBeacon(struct rtl_priv *padapter)
 {
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(padapter);
 
 	/*
 	 * 2010.03.01. Marked by tynli. No need to call workitem beacause we record the value
@@ -2777,7 +2777,7 @@ static void ResumeTxBeacon(struct rtl_priv *padapter)
 
 static void StopTxBeacon(struct rtl_priv *padapter)
 {
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(padapter);
 
 	rtw_write8(padapter, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) & (~BIT6));
 	pHalData->RegFwHwTxQCtrl &= (~BIT6);
@@ -2791,7 +2791,7 @@ static void StopTxBeacon(struct rtl_priv *padapter)
 void SetBeaconRelatedRegisters8812A(struct rtl_priv *padapter)
 {
 	uint32_t	value32;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	uint32_t bcn_ctrl_reg 			= REG_BCN_CTRL;
@@ -2970,7 +2970,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *Adapter, uint8_t variabl
 {
 	uint32_t value_rcr, rcr_clear_bit, reg_bcn_ctl;
 	uint16_t value_rxfltmap2;
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
 
 		reg_bcn_ctl = REG_BCN_CTRL;

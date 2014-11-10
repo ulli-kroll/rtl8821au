@@ -429,7 +429,7 @@ void AntDivCompare8812(struct rtl_priv *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_
 {
 	/* struct rtl_priv *Adapter = pDM_Odm->Adapter ; */
 
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	if (0 != pHalData->AntDivCfg ) {
 		/*
 		 * DBG_8192C("update_network=> orgRSSI(%d)(%d),newRSSI(%d)(%d)\n",dst->Rssi,query_rx_pwr_percentage(dst->Rssi),
@@ -448,7 +448,7 @@ void AntDivCompare8812(struct rtl_priv *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_
 uint8_t AntDivBeforeLink8812(struct rtl_priv *Adapter )
 {
 
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T 	pDM_Odm =&pHalData->odmpriv;
 	SWAT_T		*pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);

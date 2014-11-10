@@ -119,7 +119,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 	BOOLEAN VDF_enable = FALSE;
 	int 	i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0;
 
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(rtlpriv);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d\n", *pDM_Odm->pBandWidth));
@@ -948,7 +948,7 @@ static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter)
 	};
 	u32 backup_rf_reg[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
 
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
 	PDM_ODM_T pDM_Odm = &pHalData->odmpriv;
 
 	_rtl8821au_iqk_backup_macbb(pAdapter, macbb_backup, backup_macbb_reg,
@@ -1082,7 +1082,7 @@ static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel
 	BAND_TYPE Band, CHANNEL_WIDTH Bandwidth, RF_PATH RfPath,
 	uint8_t DataRate, uint8_t Channel)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	s16				band = -1, regulation = -1, bandwidth = -1,
 					rfPath = -1, rateSection = -1, channelGroup = -1;
 	uint8_t				powerLimit = MAX_POWER_INDEX;
@@ -1304,7 +1304,7 @@ BOOLEAN phy_GetChnlIndex8812A(uint8_t Channel, uint8_t *ChannelIdx)
 u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *pAdapter,  uint8_t Band,
 	uint8_t	Rf_Path, uint8_t Rate_Section)
 {
-	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(pAdapter);
+	 struct rtw_hal	*pHalData	= GET_HAL_DATA(pAdapter);
 	uint8_t			shift = 0, original_rate = Rate_Section;
 	uint32_t			tx_pwr_diff = 0;
 
@@ -1596,7 +1596,7 @@ u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *pAdapter,  uint8_t Band,
  */
 VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	TxPwrInPercentage = 0;
 
 	/* Retrieve default TxPwr index settings from registry. */
@@ -1837,7 +1837,7 @@ static VOID PHY_SetPowerLimitTableValue(PDM_ODM_T pDM_Odm,
 	s8 *RfPath, s8 *Channel, s8 *PowerLimit)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t		regulation = 0, bandwidth = 0, rateSection = 0,
 			channel, powerLimit, channelGroup;
 

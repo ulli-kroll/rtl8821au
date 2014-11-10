@@ -1998,7 +1998,7 @@ FindMinimumRSSI_Dmsp(
 
 static void FindMinimumRSSI(struct rtl_priv *pAdapter)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
@@ -2020,7 +2020,7 @@ void odm_RSSIMonitorCheckCE(PDM_ODM_T pDM_Odm)
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
 	int	tmpEntryMaxPWDB = 0, tmpEntryMinPWDB = 0xff;
@@ -2162,7 +2162,7 @@ void odm_TXPowerTrackingInit(PDM_ODM_T pDM_Odm)
 u1Byte getSwingIndex(PDM_ODM_T pDM_Odm)
 {
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	u1Byte 			i = 0;
 	uint32_t 			bbSwing;
 #if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
@@ -2181,7 +2181,7 @@ void odm_TXPowerTrackingThermalMeterInit(PDM_ODM_T pDM_Odm)
 	u1Byte 		p = 0;
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 #if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
 	pDM_Odm->RFCalibrateInfo.bTXPowerTracking = _TRUE;
@@ -2417,7 +2417,7 @@ VOID odm_EdcaTurboCheckCE(PDM_ODM_T pDM_Odm)
 	u64		cur_tx_bytes = 0;
 	u64		cur_rx_bytes = 0;
 	u8		bbtchange = _FALSE;
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	struct xmit_priv		*pxmitpriv = &(Adapter->xmitpriv);
 	struct recv_priv		*precvpriv = &(Adapter->recvpriv);
 	struct registry_priv	*pregpriv = &Adapter->registrypriv;

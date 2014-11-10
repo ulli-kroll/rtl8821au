@@ -25,7 +25,7 @@
 void sreset_init_value(struct rtl_priv *padapter)
 {
 #if defined(DBG_CONFIG_ERROR_DETECT)
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
 	/* ULLI: No mutex_drestroy found for this mutex */
@@ -39,7 +39,7 @@ void sreset_init_value(struct rtl_priv *padapter)
 void sreset_reset_value(struct rtl_priv *padapter)
 {
 #if defined(DBG_CONFIG_ERROR_DETECT)
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
 	psrtpriv->silent_reset_inprogress = _FALSE;
@@ -52,7 +52,7 @@ void sreset_reset_value(struct rtl_priv *padapter)
 uint8_t sreset_get_wifi_status(struct rtl_priv *padapter)
 {
 #if defined(DBG_CONFIG_ERROR_DETECT)
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(padapter);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
 	uint8_t status = WIFI_STATUS_SUCCESS;
@@ -90,7 +90,7 @@ uint8_t sreset_get_wifi_status(struct rtl_priv *padapter)
 void sreset_set_wifi_error_status(struct rtl_priv *padapter, uint32_t	 status)
 {
 #if defined(DBG_CONFIG_ERROR_DETECT)
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	pHalData->srestpriv.Wifi_Error_Status = status;
 #endif
 }
@@ -98,7 +98,7 @@ void sreset_set_wifi_error_status(struct rtl_priv *padapter, uint32_t	 status)
 void sreset_set_trigger_point(struct rtl_priv *padapter, int32_t tgp)
 {
 #if defined(DBG_CONFIG_ERROR_DETECT)
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	pHalData->srestpriv.dbg_trigger_point = tgp;
 #endif
 }

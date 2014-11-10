@@ -107,7 +107,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, uint16_t value
 				} else {
 #ifdef DBG_CONFIG_ERROR_DETECT
 					{
-						HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+						 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 						pHalData->srestpriv.Wifi_Error_Status = USB_VEN_REQ_CMD_FAIL;
 					}
 #endif
@@ -406,7 +406,7 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 
 	#ifdef DBG_CONFIG_ERROR_DETECT
 	{
-		HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+		 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 		pHalData->srestpriv.last_tx_complete_time = jiffies;
 	}
 	#endif
@@ -511,7 +511,7 @@ u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 	if (!status) {
 		#ifdef DBG_CONFIG_ERROR_DETECT
 		{
-			HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
+			 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 			pHalData->srestpriv.last_tx_time = jiffies;
 		}
 		#endif

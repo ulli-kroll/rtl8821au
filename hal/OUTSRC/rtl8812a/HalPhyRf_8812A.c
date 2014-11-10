@@ -40,7 +40,7 @@ static void DoIQK_8812A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 	u1Byte 	ThermalValue, u1Byte Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	ODM_ResetIQKResult(pDM_Odm);
 
@@ -259,7 +259,7 @@ static void GetDeltaSwingTable_8812A(PDM_ODM_T pDM_Odm,
 {
 	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-	HAL_DATA_TYPE  	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
 	uint16_t	rate = *(pDM_Odm->pForcedDataRate);
 	u1Byte         	channel   		 = pHalData->CurrentChannel;
 
@@ -1694,7 +1694,7 @@ static void phy_LCCalibrate_8812A(PDM_ODM_T pDM_Odm, BOOLEAN	is2T)
 
 void PHY_IQCalibrate_8812A(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
@@ -1714,7 +1714,7 @@ void PHY_LCCalibrate_8812A(PDM_ODM_T pDM_Odm)
 	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
 
 	struct rtl_priv *		pAdapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_LCCalibrate_8812A\n"));
 

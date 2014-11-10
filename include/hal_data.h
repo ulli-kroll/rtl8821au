@@ -478,10 +478,10 @@ struct rtw_hal {
 
 };
 
-typedef struct rtw_hal HAL_DATA_TYPE, *PHAL_DATA_TYPE;
+typedef struct rtw_hal *PHAL_DATA_TYPE;
 
-#define GET_HAL_DATA(__pAdapter)	((HAL_DATA_TYPE *)((__pAdapter)->HalData))
-#define GET_HAL_RFPATH_NUM(__pAdapter) (((HAL_DATA_TYPE *)((__pAdapter)->HalData))->NumTotalRFPath )
+#define GET_HAL_DATA(__pAdapter)	(( struct rtw_hal *)((__pAdapter)->HalData))
+#define GET_HAL_RFPATH_NUM(__pAdapter) ((( struct rtw_hal *)((__pAdapter)->HalData))->NumTotalRFPath )
 #define RT_GetInterfaceSelection(_Adapter) 	(GET_HAL_DATA(_Adapter)->InterfaceSel)
 #endif
 

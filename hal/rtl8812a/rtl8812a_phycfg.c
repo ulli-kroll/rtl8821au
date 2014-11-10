@@ -52,7 +52,7 @@ phy_RFSerialRead(
 	)
 {
 	uint32_t							retValue = 0;
-	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal				*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 	BOOLEAN						bIsPIMode = _FALSE;
 
@@ -116,7 +116,7 @@ phy_RFSerialWrite(
 	)
 {
 	uint32_t							DataAndAddr = 0;
-	HAL_DATA_TYPE				*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal				*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 
 	// 2009/06/17 MH We can not execute IO for power save or other accident mode.
@@ -219,7 +219,7 @@ PHY_SetRFReg8812(
 int32_t PHY_MACConfig8812(struct rtl_priv *Adapter)
 {
 	int				rtStatus = _SUCCESS;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	s8				*pszMACRegFile;
 	s8				sz8812MACRegFile[] = RTL8812_PHY_MACREG;
 
@@ -247,7 +247,7 @@ phy_InitBBRFRegisterDefinition(
 	IN	struct rtl_priv *	Adapter
 )
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
 	// RF Interface Sowrtware Control
 	pHalData->PHYRegDef[RF_PATH_A].rfintfs = rFPGA0_XAB_RFInterfaceSW; // 16 LSBs if read 32-bit from 0x870
@@ -305,7 +305,7 @@ phy_BB8812_Config_ParaFile(
 	)
 {
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	int			rtStatus = _SUCCESS;
 
 	s8				sz8812BBRegFile[] = RTL8812_PHY_REG;
@@ -430,7 +430,7 @@ PHY_BBConfig8812(
 	)
 {
 	int	rtStatus = _SUCCESS;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	TmpU1B=0;
 	uint8_t	CrystalCap;
 
@@ -487,7 +487,7 @@ PHY_RFConfig8812(
 	IN	struct rtl_priv *Adapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	int		rtStatus = _SUCCESS;
 
 	if (Adapter->bSurpriseRemoved)
@@ -589,7 +589,7 @@ PHY_InitPowerLimitTable(
 	)
 {
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t				i, j, k, l, m;
 
 	//DBG_871X( "=====> PHY_InitPowerLimitTable()!\n" );
@@ -620,7 +620,7 @@ PHY_ConvertPowerLimitToPowerIndex(
 	IN	struct rtl_priv *		Adapter
 	)
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t 				BW40PwrBasedBm2_4G, BW40PwrBasedBm5G;
 	uint8_t 				regulation, bw, channel, rateSection, group;
 	uint8_t 				baseIndex2_4G;
@@ -949,7 +949,7 @@ PHY_StorePwrByRateIndexVhtSeries(
 	IN	uint32_t			Data
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			rf_path, rate_section;
 
 	//
@@ -1064,7 +1064,7 @@ VOID phy_PreprocessVHTPGDataFromExactToRelativeValue(
 	IN	u32*		pData
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			rf_path, rate_section, BaseValue = 0;
 	//
 	// For VHT series TX power by rate table.
@@ -1201,7 +1201,7 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 	IN	uint32_t		*pData
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	u1Byte			BaseValue = 0;
 
 	if ( RegAddr == rTxAGC_A_Rate54_24 )
@@ -1377,7 +1377,7 @@ phy_StorePwrByRateIndexBase(
 	IN	uint32_t			Data
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			Base = 0;
 
 
@@ -1675,7 +1675,7 @@ storePwrIndexDiffRateOffset(
 	IN	uint32_t		Data
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint32_t	tmpData = Data;
 
 	// If the pHalData->DM_OutSrc.PhyRegPgValueType == 1, which means that the data in PHY_REG_PG data are
@@ -1813,7 +1813,7 @@ phy_DbmToTxPwrIdx(
 	IN	int			PowerInDbm
 	)
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	TxPwrIdx = 0;
 	int32_t	Offset = 0;
 
@@ -1862,7 +1862,7 @@ PHY_GetTxPowerLevel8812(
 	OUT u32*    		powerlevel
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			TxPwrLevel = 0;
 	int			TxPwrDbm;
 }
@@ -1877,7 +1877,7 @@ void phy_PowerIndexCheck8812(
 	)
 {
 
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
 	pHalData->CurrentCckTxPwrIdx = cckPowerLevel[0];
 	pHalData->CurrentOfdm24GTxPwrIdx = ofdmPowerLevel[0];
@@ -1912,7 +1912,7 @@ PHY_SetTxPowerIndex_8812A(
 	IN	u1Byte				Rate
 	)
 {
-	HAL_DATA_TYPE		*pHalData	= GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData	= GET_HAL_DATA(Adapter);
 	BOOLEAN				Direction = FALSE;
 	uint32_t				TxagcOffset = 0;
 
@@ -2141,7 +2141,7 @@ phy_TxPowerTrainingByPath_8812(
 	IN	uint8_t					RfPath
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	uint8_t	i;
 	uint32_t	PowerLevel, writeData, writeOffset;
@@ -2393,7 +2393,7 @@ uint32_t PHY_GetTxBBSwing_8812A(
 	IN	uint8_t			RFPath
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
@@ -2542,7 +2542,7 @@ phy_SetRFEReg8812(
 )
 {
 	u1Byte			u1tmp = 0;
-	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 
 	if(Band == BAND_ON_2_4G)
 	{
@@ -2669,7 +2669,7 @@ PHY_SwitchWirelessBand8812(
 	IN uint8_t			Band
 )
 {
-	HAL_DATA_TYPE	*pHalData	= GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 	uint8_t				currentBand = pHalData->CurrentBandType;
 
 	//DBG_871X("==>PHY_SwitchWirelessBand8812() %s\n", ((Band==0)?"2.4G":"5G"));
@@ -2856,7 +2856,7 @@ PHY_SwitchWirelessBand8812(
 	if (IS_NORMAL_CHIP(pHalData->VersionID) || IS_HARDWARE_TYPE_8821(Adapter))
 	{
 		s8	BBDiffBetweenBand = 0;
-		HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
+		 struct rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
 		PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 		PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
@@ -3045,7 +3045,7 @@ phy_PostSetBwMode8812(
 {
 	uint8_t			SubChnlNum = 0;
 	uint8_t			L1pkVal = 0;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 
 	//3 Set Reg668 Reg440 BW
@@ -3147,7 +3147,7 @@ VOID phy_InitRssiTRSW(
 	IN	struct rtl_priv *				pAdapter
 	)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 	uint8_t 			channel = pHalData->CurrentChannel;
 
@@ -3177,7 +3177,7 @@ phy_SwChnl8812(
 	)
 {
 	uint8_t	eRFPath = 0;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t	channelToSW = pHalData->CurrentChannel;
 
 	if (pAdapter->registrypriv.mp_mode == 0) {
@@ -3264,7 +3264,7 @@ phy_SwChnlAndSetBwMode8812(
 	IN  struct rtl_priv *	Adapter
 )
 {
-	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
 	//DBG_871X("phy_SwChnlAndSetBwMode8812(): bSwChnl %d, bSetChnlBW %d \n", pHalData->bSwChnl, pHalData->bSetChnlBW);
 

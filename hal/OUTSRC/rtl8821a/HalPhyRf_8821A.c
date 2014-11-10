@@ -40,7 +40,7 @@ static void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 	u1Byte ThermalValue, u1Byte Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	ODM_ResetIQKResult(pDM_Odm);
 
@@ -173,7 +173,7 @@ static void GetDeltaSwingTable_8821A(PDM_ODM_T pDM_Odm,
 {
 	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-	HAL_DATA_TYPE  	*pHalData = GET_HAL_DATA(Adapter);
+	 struct rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
 	/* uint16_t     rate = pMgntInfo->ForcedDataRate; */
 	uint16_t	rate = 0;
 	u1Byte         	channel   		 = pHalData->CurrentChannel;
@@ -239,7 +239,7 @@ void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 
 void phy_IQCalibrate_By_FW_8821A(struct rtl_priv *pAdapter)
 {
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	u1Byte			IQKcmd[3] = {pHalData->CurrentChannel, 0x0, 0x0};
 	u1Byte			Buf1 = 0x0;
 	u1Byte			Buf2 = 0x0;

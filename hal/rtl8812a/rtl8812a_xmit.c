@@ -223,7 +223,7 @@ void rtl8812a_fill_txdesc_phy(struct rtl_priv *padapter, struct pkt_attrib *patt
 u8 BWMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
 {
 	uint8_t	BWSettingOfDesc = 0;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	/*
 	 * DBG_871X("BWMapping pHalData->CurrentChannelBW %d, pattrib->bwmode %d \n",pHalData->CurrentChannelBW,pattrib->bwmode);
@@ -250,7 +250,7 @@ u8 BWMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
 u8 SCMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
 {
 	uint8_t	SCSettingOfDesc = 0;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	/*
 	 * DBG_871X("SCMapping: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);

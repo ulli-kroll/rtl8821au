@@ -67,7 +67,7 @@ ODM_ClearTxPowerTrackingState(
 	IN PDM_ODM_T		pDM_Odm
 	)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
 	u1Byte p = 0;
 
 	pDM_Odm->BbSwingIdxCckBase = pDM_Odm->DefaultCckIndex;

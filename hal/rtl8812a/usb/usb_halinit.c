@@ -2107,7 +2107,7 @@ void _update_response_rate(struct rtl_priv *padapter, unsigned int mask)
 
 static void rtl8812au_init_default_value(struct rtl_priv *padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct rtw_hal *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct dm_priv *pdmpriv;
 	uint8_t i;

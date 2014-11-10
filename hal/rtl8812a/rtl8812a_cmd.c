@@ -764,7 +764,7 @@ GetTxBufferRsvdPageNum8812(
 // 2009.10.15 by tynli.
 static void SetFwRsvdPagePkt_8812(struct rtl_priv *padapter, BOOLEAN bDLFinished)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct rtw_hal *pHalData;
 	struct xmit_frame	*pcmdframe;
 	struct pkt_attrib	*pattrib;
 	struct xmit_priv	*pxmitpriv;

@@ -2122,7 +2122,7 @@ PHY_GetTxPowerIndexByRateArray_8812A(
 	IN	uint8_t					ArraySize
 	)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(pAdapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t i;
 	for(i=0 ; i<ArraySize; i++)
 	{
@@ -2183,7 +2183,7 @@ PHY_SetTxPowerLevelByPath8812(
 	)
 {
 
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct registry_priv	*pregistrypriv = &Adapter->registrypriv;
 	uint8_t			cckRates[]   = {MGN_1M, MGN_2M, MGN_5_5M, MGN_11M};
 	uint8_t			ofdmRates[]  = {MGN_6M, MGN_9M, MGN_12M, MGN_18M, MGN_24M, MGN_36M, MGN_48M, MGN_54M};
@@ -2364,7 +2364,7 @@ PHY_SetTxPowerLevel8812(
 	)
 {
 
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			path = 0;
 
 	//DBG_871X("==>PHY_SetTxPowerLevel8812()\n");
@@ -2921,7 +2921,7 @@ phy_GetSecondaryChnl_8812(
 )
 {
 	uint8_t					SCSettingOf40 = 0, SCSettingOf20 = 0;
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
 
 	//DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
 	if(pHalData->CurrentChannelBW== CHANNEL_WIDTH_80)
@@ -3323,7 +3323,7 @@ PHY_HandleSwChnlAndSetBW8812(
 )
 {
 	struct rtl_priv * 			pDefAdapter =  GetDefaultAdapter(Adapter);
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(pDefAdapter);
+	struct rtw_hal *	pHalData = GET_HAL_DATA(pDefAdapter);
 	uint8_t					tmpChannel = pHalData->CurrentChannel;
 	CHANNEL_WIDTH		tmpBW= pHalData->CurrentChannelBW;
 	uint8_t					tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
@@ -3427,7 +3427,7 @@ PHY_SetBWMode8812(
 	IN	uint8_t					Offset		// Upper, Lower, or Don't care
 )
 {
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
 
 	//DBG_871X("%s()===>\n",__FUNCTION__);
 

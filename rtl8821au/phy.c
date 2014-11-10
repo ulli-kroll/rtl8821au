@@ -1626,7 +1626,7 @@ VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
 u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 	uint8_t	Rate, CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(pAdapter);
+	struct rtw_hal *	pHalData = GET_HAL_DATA(pAdapter);
 	PDM_ODM_T			pDM_Odm = &pHalData->odmpriv;
 	uint8_t					i = 0;	/* default set to 1S */
 	struct registry_priv	*pregistrypriv = &pAdapter->registrypriv;

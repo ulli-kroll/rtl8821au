@@ -88,7 +88,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *padapter)
 
 static void dm_InitGPIOSetting(struct rtl_priv *Adapter)
 {
-	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
 
 	uint8_t	tmp1byte;
 
@@ -139,7 +139,7 @@ ODM_BOARD_TYPE_E boardType(uint8_t InterfaceSel)
 
 static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
@@ -251,7 +251,7 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int i;
@@ -311,7 +311,7 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 
 void rtl8812_InitHalDm(struct rtl_priv *Adapter)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 	uint8_t	i;
@@ -333,7 +333,7 @@ VOID rtl8812_HalDmWatchDog(struct rtl_priv *Adapter)
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
 	BOOLEAN		bFwPSAwake = _TRUE;
 	uint8_t hw_init_completed = _FALSE;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
@@ -380,7 +380,7 @@ skip_dm:
 
 void rtl8812_init_dm_priv(IN struct rtl_priv *Adapter)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;
 	memset(pdmpriv, 0, sizeof(struct dm_priv));
@@ -409,7 +409,7 @@ void rtl8812_init_dm_priv(IN struct rtl_priv *Adapter)
 
 void rtl8812_deinit_dm_priv(IN struct rtl_priv *Adapter)
 {
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY

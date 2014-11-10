@@ -53,7 +53,7 @@ static void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	u1Byte RFPath, u1Byte ChannelMappedIndex)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	u1Byte PwrTrackingLimit = 26; /* +1.0dB */
 	u1Byte TxRate = 0xFF;

@@ -152,7 +152,7 @@ BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *Adapter)
 
 void SetBcnCtrlReg(struct rtl_priv *padapter, uint8_t SetBits, uint8_t ClearBits)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct rtw_hal *pHalData;
 
 	pHalData = GET_HAL_DATA(padapter);
 
@@ -402,7 +402,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 	int32_t	rtStatus = _SUCCESS;
 	uint8_t	writeFW_retry = 0;
 	uint32_t fwdl_start_time;
-	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm;
 	uint8_t				*pFwHdr = NULL;
 	uint8_t				*pFirmwareBuf;
@@ -500,7 +500,7 @@ Exit:
 
 void InitializeFirmwareVars8812(struct rtl_priv *padapter)
 {
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(padapter);
 	struct pwrctrl_priv *pwrpriv;
 	pwrpriv = &padapter->pwrctrlpriv;
 
@@ -1292,7 +1292,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *Adapter, uint8_t *PROMContent,
 {
 	/* if (IS_HARDWARE_TYPE_8812AU(Adapter) && Adapter->UsbModeMechanism.RegForcedUsbMode == 5) */
 	{
-		PHAL_DATA_TYPE pHalData = GET_HAL_DATA(Adapter);
+		struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 		uint8_t	reg_tmp, i, j, antenna = 0, wmode = 0;
 		/* Read anenna type from EFUSE 1019/1018 */
 		for (i = 0; i < 2; i++) {
@@ -2344,7 +2344,7 @@ void InitRDGSetting8812A(struct rtl_priv *padapter)
 
 void ReadRFType8812A(struct rtl_priv *padapter)
 {
-	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(padapter);
 
 #if DISABLE_BB_RF
 	pHalData->rf_chip = RF_PSEUDO_11N;
@@ -2483,7 +2483,7 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 {
 	uint32_t	value32;
 	HAL_VERSION		ChipVersion;
-	PHAL_DATA_TYPE	pHalData;
+	struct rtw_hal *pHalData;
 
 
 	pHalData = GET_HAL_DATA(Adapter);
@@ -2698,7 +2698,7 @@ void UpdateHalRAMask8812A(struct rtl_priv *padapter, uint32_t mac_id, uint8_t rs
 
 void InitDefaultValue8821A(struct rtl_priv *padapter)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct rtw_hal *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct dm_priv *pdmpriv;
 	uint8_t i;
@@ -3030,7 +3030,7 @@ static void hw_var_set_mlme_join(struct rtl_priv *Adapter, uint8_t variable, uin
 
 void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct rtw_hal *pHalData;
 	struct dm_priv *pdmpriv;
 	PDM_ODM_T podmpriv;
 	uint8_t val8;
@@ -3653,7 +3653,7 @@ void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 
 void GetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct rtw_hal *pHalData;
 	PDM_ODM_T podmpriv;
 	uint8_t val8;
 	uint16_t val16;
@@ -3739,7 +3739,7 @@ _func_exit_;
  */
 uint8_t SetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, void *pval)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct rtw_hal *pHalData;
 	uint8_t bResult;
 
 
@@ -3845,7 +3845,7 @@ uint8_t SetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
  */
 uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, void *pval)
 {
-	PHAL_DATA_TYPE pHalData;
+	struct rtw_hal *pHalData;
 	uint8_t bResult;
 
 	pHalData = GET_HAL_DATA(padapter);

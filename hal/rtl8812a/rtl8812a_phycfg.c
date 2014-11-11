@@ -1202,7 +1202,7 @@ phy_PreprocessPGDataFromExactToRelativeValue(
 	)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	u1Byte			BaseValue = 0;
+	u8			BaseValue = 0;
 
 	if ( RegAddr == rTxAGC_A_Rate54_24 )
 	{
@@ -1908,8 +1908,8 @@ VOID
 PHY_SetTxPowerIndex_8812A(
 	IN	struct rtl_priv *		Adapter,
 	IN	uint32_t				PowerIndex,
-	IN	u1Byte				RFPath,
-	IN	u1Byte				Rate
+	IN	u8				RFPath,
+	IN	u8				Rate
 	)
 {
 	 struct rtw_hal		*pHalData	= GET_HAL_DATA(Adapter);
@@ -2200,34 +2200,34 @@ PHY_SetTxPowerLevelByPath8812(
 	{
 		if(pHalData->CurrentBandType == BAND_ON_2_4G)
 			phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-									  cckRates, sizeof(cckRates)/sizeof(u1Byte));
+									  cckRates, sizeof(cckRates)/sizeof(u8));
 
 		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-									  ofdmRates, sizeof(ofdmRates)/sizeof(u1Byte));
+									  ofdmRates, sizeof(ofdmRates)/sizeof(u8));
 		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-									  htRates1T, sizeof(htRates1T)/sizeof(u1Byte));
+									  htRates1T, sizeof(htRates1T)/sizeof(u8));
 		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-								  	  vhtRates1T, sizeof(vhtRates1T)/sizeof(u1Byte));
+								  	  vhtRates1T, sizeof(vhtRates1T)/sizeof(u8));
 
 		if(pHalData->NumTotalRFPath >= 2)
 		{
 			phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-								  htRates2T, sizeof(htRates2T)/sizeof(u1Byte));
+								  htRates2T, sizeof(htRates2T)/sizeof(u8));
 			phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-								  vhtRates2T, sizeof(vhtRates2T)/sizeof(u1Byte));
+								  vhtRates2T, sizeof(vhtRates2T)/sizeof(u8));
 		}
 	}
 	/*else
 	{
-		u1Byte cckRatesSize = sizeof(cckRates)/sizeof(u1Byte);
-		u1Byte ofdmRatesSize = sizeof(ofdmRates)/sizeof(u1Byte);
-		u1Byte htRates1TSize = sizeof(htRates1T)/sizeof(u1Byte);
-		u1Byte htRates2TSize = sizeof(htRates2T)/sizeof(u1Byte);
-		u1Byte vhtRates1TSize = sizeof(vhtRates1T)/sizeof(u1Byte);
-		u1Byte vhtRates2TSize = sizeof(vhtRates2T)/sizeof(u1Byte);
-		u1Byte PowerIndexArray[POWERINDEX_ARRAY_SIZE];
+		u8 cckRatesSize = sizeof(cckRates)/sizeof(u8);
+		u8 ofdmRatesSize = sizeof(ofdmRates)/sizeof(u8);
+		u8 htRates1TSize = sizeof(htRates1T)/sizeof(u8);
+		u8 htRates2TSize = sizeof(htRates2T)/sizeof(u8);
+		u8 vhtRates1TSize = sizeof(vhtRates1T)/sizeof(u8);
+		u8 vhtRates2TSize = sizeof(vhtRates2T)/sizeof(u8);
+		u8 PowerIndexArray[POWERINDEX_ARRAY_SIZE];
 
-		u1Byte Length;
+		u8 Length;
 		uint32_t RegAddress;
 
 
@@ -2259,7 +2259,7 @@ PHY_SetTxPowerLevelByPath8812(
 			}
 			else if(pMgntInfo->RegNByteAccess == 1) //DW access
 			{
-				u1Byte i, j;
+				u8 i, j;
 				for(i = 0;i < Length;i+=4)
 				{
 					uint32_t powerIndex = 0;
@@ -2296,7 +2296,7 @@ PHY_SetTxPowerLevelByPath8812(
 				}
 				else if(pMgntInfo->RegNByteAccess == 1) //DW access
 				{
-					u1Byte i, j;
+					u8 i, j;
 					for(i = 0;i < vhtRates1TSize;i+=4)
 					{
 						uint32_t powerIndex = 0;
@@ -2333,7 +2333,7 @@ PHY_SetTxPowerLevelByPath8812(
 			}
 			else if(pMgntInfo->RegNByteAccess == 1) //DW
 			{
-				u1Byte i, j;
+				u8 i, j;
 				for(i = 0;i < Length;i+=4)
 				{
 					uint32_t powerIndex = 0;
@@ -2541,7 +2541,7 @@ phy_SetRFEReg8812(
 	IN uint8_t			Band
 )
 {
-	u1Byte			u1tmp = 0;
+	u8			u1tmp = 0;
 	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 
 	if(Band == BAND_ON_2_4G)
@@ -2996,7 +2996,7 @@ void
 phy_FixSpur_8812A(
 	IN	struct rtl_priv *        pAdapter,
 	IN  CHANNEL_WIDTH    Bandwidth,
-	IN  u1Byte 			    Channel
+	IN  u8 			    Channel
 )
 {
 	// C cut Item12 ADC FIFO CLOCK

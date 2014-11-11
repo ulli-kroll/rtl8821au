@@ -467,9 +467,9 @@ ODM_ReadAndConfig_MP_8812A_AGC_TAB(
 	uint32_t     i           = 0;
 	uint16_t     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u1Byte     platform    = pDM_Odm->SupportPlatform;
-	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;
+	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     _interface   = pDM_Odm->SupportInterface;
+	u8     board       = pDM_Odm->BoardType;
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_AGC_TAB)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_AGC_TAB;
 
@@ -663,9 +663,9 @@ ODM_ReadAndConfig_MP_8812A_AGC_TAB_DIFF(
 	uint32_t     i           = 0;
 	uint16_t     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u1Byte     platform    = pDM_Odm->SupportPlatform;
-	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;
+	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     _interface   = pDM_Odm->SupportInterface;
+	u8     board       = pDM_Odm->BoardType;
 
 	hex += board;
 	hex += _interface << 8;
@@ -968,9 +968,9 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG(
 	uint32_t     i           = 0;
 	uint16_t     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u1Byte     platform    = pDM_Odm->SupportPlatform;
-	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;
+	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     _interface   = pDM_Odm->SupportInterface;
+	u8     board       = pDM_Odm->BoardType;
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG;
 
@@ -1082,9 +1082,9 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(
 	uint32_t     i           = 0;
 	uint16_t     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u1Byte     platform    = pDM_Odm->SupportPlatform;
-	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;
+	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     _interface   = pDM_Odm->SupportInterface;
+	u8     board       = pDM_Odm->BoardType;
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG_PG)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG_PG;
 
@@ -1182,9 +1182,9 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(
 	uint32_t     i           = 0;
 	uint16_t     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u1Byte     platform    = pDM_Odm->SupportPlatform;
-	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;
+	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     _interface   = pDM_Odm->SupportInterface;
+	u8     board       = pDM_Odm->BoardType;
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG_PG_ASUS)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG_PG_ASUS;
 
@@ -1296,9 +1296,9 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_NEC(
 	uint32_t     i           = 0;
 	uint16_t     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u1Byte     platform    = pDM_Odm->SupportPlatform;
-	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;
+	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     _interface   = pDM_Odm->SupportInterface;
+	u8     board       = pDM_Odm->BoardType;
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG_PG_NEC)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG_PG_NEC;
 

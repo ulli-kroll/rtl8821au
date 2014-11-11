@@ -115,8 +115,8 @@ VOID
 PHY_SetTxPowerIndex_8812A(
 	IN	struct rtl_priv *		Adapter,
 	IN	uint32_t				PowerIndex,
-	IN	u1Byte				RFPath,
-	IN	u1Byte				Rate
+	IN	u8				RFPath,
+	IN	u8				Rate
 	);
 //
 // Switch bandwidth for 8192S

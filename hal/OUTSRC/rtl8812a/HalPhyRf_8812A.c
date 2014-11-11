@@ -36,8 +36,8 @@
  */
 
 
-static void DoIQK_8812A(struct rtl_dm *pDM_Odm, u1Byte DeltaThermalIndex,
-	u1Byte 	ThermalValue, u1Byte Threshold)
+static void DoIQK_8812A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
+	u8 	ThermalValue, u8 Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -66,18 +66,18 @@ static void DoIQK_8812A(struct rtl_dm *pDM_Odm, u1Byte DeltaThermalIndex,
  *
  *---------------------------------------------------------------------------*/
 static void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
-	u1Byte 	RFPath, u1Byte 	ChannelMappedIndex)
+	u8 	RFPath, u8 	ChannelMappedIndex)
 {
 	uint32_t 	finalBbSwingIdx[2];
 
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
 	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
-	u1Byte PwrTrackingLimit = 26; /* +1.0dB */
-	u1Byte TxRate = 0xFF;
+	u8 PwrTrackingLimit = 26; /* +1.0dB */
+	u8 TxRate = 0xFF;
 	s1Byte Final_OFDM_Swing_Index = 0;
 	s1Byte Final_CCK_Swing_Index = 0;
-	u1Byte i = 0;
+	u8 i = 0;
 
 	if (TxRate != 0xFF) {
 		/* Ulli better with switch case, see in rtlwifi-lib */
@@ -261,7 +261,7 @@ static void GetDeltaSwingTable_8812A(struct rtl_dm *pDM_Odm,
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	 struct rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
 	uint16_t	rate = *(pDM_Odm->pForcedDataRate);
-	u1Byte         	channel   		 = pHalData->CurrentChannel;
+	u8         	channel   		 = pHalData->CurrentChannel;
 
 	if (1 <= channel && channel <= 14) {
 		if (IS_CCK_RATE(rate)) {
@@ -502,7 +502,7 @@ static void _IQK_ConfigureMAC_8812A(struct rtl_dm *pDM_Odm)
 /* ULLI this function needs a complete rewrite (or we cantake code form rtlwifi-lib */
 
 static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
-	u1Byte chnlIdx)
+	u8 chnlIdx)
 {
 	uint32_t 	TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int		TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
@@ -1584,14 +1584,14 @@ static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 #define RF_REG_NUM 3
 
 /* Maintained by BB James. */
-static void phy_IQCalibrate_8812A(struct rtl_dm *pDM_Odm, u1Byte Channel)
+static void phy_IQCalibrate_8812A(struct rtl_dm *pDM_Odm, u8 Channel)
 {
 	uint32_t MACBB_backup[MACBB_REG_NUM], AFE_backup[AFE_REG_NUM], RFA_backup[RF_REG_NUM], RFB_backup[RF_REG_NUM];
 	uint32_t Backup_MACBB_REG[MACBB_REG_NUM] = { 0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00, 0xe00, 0x8c4, 0x838, 0x82c };
 	uint32_t Backup_AFE_REG[AFE_REG_NUM] = { 0xc5c, 0xc60, 0xc64, 0xc68, 0xcb8, 0xcb0, 0xcb4,
 						 0xe5c, 0xe60, 0xe64, 0xe68, 0xeb8, 0xeb0, 0xeb4 };
 	uint32_t Backup_RF_REG[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
-	u1Byte 	chnlIdx = ODM_GetRightChnlPlaceforIQK(Channel);
+	u8 	chnlIdx = ODM_GetRightChnlPlaceforIQK(Channel);
 
 	_IQK_BackupMacBB_8812A(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 	_IQK_BackupAFE_8812A(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
@@ -1836,7 +1836,7 @@ static void _DPK_Globalparaset(struct rtl_dm *pDM_Odm)
 }
 
 
-static void _DPK_GetGainLoss(struct rtl_dm *pDM_Odm, u1Byte path)
+static void _DPK_GetGainLoss(struct rtl_dm *pDM_Odm, u8 path)
 {
 	uint32_t GL_I = 0, GL_Q = 0;
 	uint32_t GL_I_tmp = 0, GL_Q_tmp = 0;
@@ -1846,7 +1846,7 @@ static void _DPK_GetGainLoss(struct rtl_dm *pDM_Odm, u1Byte path)
 			      0x49ec, 0x4c19, 0x4e46, 0x5093, 0x52f2,  /* 10 */
 			      0x5560, 0x57cf, 0x5a7f, 0x5d0e, 0x5fbe
 			};
-	u1Byte sindex = 0;
+	u8 sindex = 0;
 	uint32_t pagesel = 0, regsel = 0;
 
 	if (path == 0) { /* pathA */
@@ -1929,20 +1929,20 @@ static void _DPK_GetGainLoss(struct rtl_dm *pDM_Odm, u1Byte path)
 }
 
 
-static void _DPK_EnableDP(struct rtl_dm *pDM_Odm, u1Byte path, uint32_t TXindex)
+static void _DPK_EnableDP(struct rtl_dm *pDM_Odm, u8 path, uint32_t TXindex)
 {
 	/* ************************************* */
 	/* Enable DP */
 	/* ************************************* */
 
 	/* PWSF[6] = 0x40 = 0dB, set the address represented TXindex as 0dB */
-	u1Byte PWSF[] = { 0xff, 0xca, 0xa1, 0x80, 0x65, 0x51, 0x40,  /* 6~0dB */
+	u8 PWSF[] = { 0xff, 0xca, 0xa1, 0x80, 0x65, 0x51, 0x40,  /* 6~0dB */
 			  0x33, 0x28, 0x20, 0x19, 0x14, 0x10, 0x0d,  /* -1~-7dB */
 			  0x0a, 0x08, 0x06, 0x05, 0x04, 0x03, 0x03,  /* -8~-14dB */
 			  0x02, 0x02, 0x01, 0x01,  };
-	u1Byte zeropoint;
-	u1Byte pwsf1, pwsf2;
-	u1Byte i;
+	u8 zeropoint;
+	u8 pwsf1, pwsf2;
+	u8 i;
 	uint32_t pagesel = 0, regsel = 0;
 
 	if (path == 0) {
@@ -2017,7 +2017,7 @@ static void _DPK_EnableDP(struct rtl_dm *pDM_Odm, u1Byte path, uint32_t TXindex)
 static void _DPK_pathABDPK(struct rtl_dm *pDM_Odm)
 {
 	uint32_t TXindex = 0;
-	u1Byte path = 0;
+	u8 path = 0;
 	uint32_t pagesel = 0, regsel = 0;
 	uint32_t i = 0, j = 0;
 

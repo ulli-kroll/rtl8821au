@@ -156,9 +156,9 @@
 typedef struct _Phy_Rx_AGC_Info
 {
 	#if (ODM_ENDIAN_TYPE == ODM_ENDIAN_LITTLE)
-		u1Byte	gain:7,trsw:1;
+		u8	gain:7,trsw:1;
 	#else
-		u1Byte	trsw:1,gain:7;
+		u8	trsw:1,gain:7;
 	#endif
 } PHY_RX_AGC_INFO_T,*pPHY_RX_AGC_INFO_T;
 
@@ -168,44 +168,44 @@ typedef struct _Phy_Status_Rpt_8812
 {
 #if 0
 	PHY_RX_AGC_INFO_T path_agc[2];
-	u1Byte 	ch_num[2];
-	u1Byte	cck_sig_qual_ofdm_pwdb_all;
-	u1Byte	cck_agc_rpt_ofdm_cfosho_a;
-	u1Byte	cck_bb_pwr_ofdm_cfosho_b;
-	u1Byte    cck_rx_path;	//CCK_RX_PATH [3:0] (with regA07[3:0] definition)
-	u1Byte 	rsvd_1;
-	u1Byte	path_cfotail[2];
-	u1Byte	pcts_mask[2];
+	u8 	ch_num[2];
+	u8	cck_sig_qual_ofdm_pwdb_all;
+	u8	cck_agc_rpt_ofdm_cfosho_a;
+	u8	cck_bb_pwr_ofdm_cfosho_b;
+	u8    cck_rx_path;	//CCK_RX_PATH [3:0] (with regA07[3:0] definition)
+	u8 	rsvd_1;
+	u8	path_cfotail[2];
+	u8	pcts_mask[2];
 	s1Byte	stream_rxevm[2];
-	u1Byte	path_rxsnr[2];
-	u1Byte	rsvd_2[2];
-	u1Byte 	stream_snr[2];
-	u1Byte 	stream_csi[2];
-	u1Byte	rsvd_3[2];
+	u8	path_rxsnr[2];
+	u8	rsvd_2[2];
+	u8 	stream_snr[2];
+	u8 	stream_csi[2];
+	u8	rsvd_3[2];
 	s1Byte 	sig_evm;
-	u1Byte 	rsvd_4;
+	u8 	rsvd_4;
 #if (ODM_ENDIAN_TYPE == ODM_ENDIAN_LITTLE)
-	u1Byte 	antidx_anta:3;
-	u1Byte 	antidx_antb:3;
-	u1Byte 	rsvd_5:2;
+	u8 	antidx_anta:3;
+	u8 	antidx_antb:3;
+	u8 	rsvd_5:2;
 #else	// _BIG_ENDIAN_
-	u1Byte 	rsvd_5:2;
-	u1Byte 	antidx_antb:3;
-	u1Byte 	antidx_anta:3;
+	u8 	rsvd_5:2;
+	u8 	antidx_antb:3;
+	u8 	antidx_anta:3;
 #endif
 #endif
 
 	//2012.05.24 LukeLee: This structure should take big/little endian in consideration later.....
 
 	//DWORD 0
-	u1Byte			gain_trsw[2];
+	u8			gain_trsw[2];
 	uint16_t			chl_num:10;
 	uint16_t			sub_chnl:4;
 	uint16_t			r_RFMOD:2;
 
 	//DWORD 1
-	u1Byte			pwdb_all;
-	u1Byte			cfosho[4];	// DW 1 byte 1 DW 2 byte 0
+	u8			pwdb_all;
+	u8			cfosho[4];	// DW 1 byte 1 DW 2 byte 0
 
 	//DWORD 2
 	s1Byte			cfotail[4];	// DW 2 byte 1 DW 3 byte 0
@@ -215,20 +215,20 @@ typedef struct _Phy_Status_Rpt_8812
 	s1Byte			rxsnr[2];	// DW 3 byte 3 DW 4 byte 0
 
 	//DWORD 4
-	u1Byte			PCTS_MSK_RPT[2];
-	u1Byte			pdsnr[2];	// DW 4 byte 3 DW 5 Byte 0
+	u8			PCTS_MSK_RPT[2];
+	u8			pdsnr[2];	// DW 4 byte 3 DW 5 Byte 0
 
 	//DWORD 5
-	u1Byte			csi_current[2];
-	u1Byte			rx_gain_c;
+	u8			csi_current[2];
+	u8			rx_gain_c;
 
 	//DWORD 6
-	u1Byte			rx_gain_d;
-	u1Byte			sigevm;
-	u1Byte			resvd_0;
-	u1Byte			antidx_anta:3;
-	u1Byte			antidx_antb:3;
-	u1Byte			resvd_1:2;
+	u8			rx_gain_d;
+	u8			sigevm;
+	u8			resvd_0;
+	u8			antidx_anta:3;
+	u8			antidx_antb:3;
+	u8			resvd_1:2;
 } PHY_STATUS_RPT_8812_T,*PPHY_STATUS_RPT_8812_T;
 
 VOID

@@ -984,7 +984,7 @@ void rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 /* ********************************************************** */
 
 /* OLD functions need complete ? rewrite */
-BOOLEAN GetU1ByteIntegerFromStringInDecimal(s8 *Str, uint8_t *pInt)
+BOOLEAN Getu8IntegerFromStringInDecimal(s8 *Str, uint8_t *pInt)
 {
 	uint16_t i = 0;
 	*pInt = 0;
@@ -1845,8 +1845,8 @@ static VOID PHY_SetPowerLimitTableValue(struct rtl_dm *pDM_Odm,
 		  [band %s][regulation %s][bw %s][rate section %s][rf path %s][chnl %s][val %s]\n",
 		  Band, Regulation, Bandwidth, RateSection, RfPath, Channel, PowerLimit);
 
-	if (!GetU1ByteIntegerFromStringInDecimal(Channel, &channel) ||
-		 !GetU1ByteIntegerFromStringInDecimal(PowerLimit, &powerLimit)) {
+	if (!Getu8IntegerFromStringInDecimal(Channel, &channel) ||
+		 !Getu8IntegerFromStringInDecimal(PowerLimit, &powerLimit)) {
 		DBG_871X("Illegal index of power limit table [chnl %s][val %s]\n", Channel, PowerLimit);
 	}
 
@@ -2014,9 +2014,9 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_dm *pDM_Odm)
 	uint32_t     i           = 0;
 	uint16_t     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u1Byte     platform    = pDM_Odm->SupportPlatform;
-	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;
+	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     _interface   = pDM_Odm->SupportInterface;
+	u8     board       = pDM_Odm->BoardType;
 	uint32_t     ArrayLen    = RTL8812AUMAC_1T_ARRAYLEN;
 	uint32_t    *Array       = RTL8812AU_MAC_REG_ARRAY;
 
@@ -2033,7 +2033,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_dm *pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDCD) {
-			ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
+			ODM_Write1Byte(pDM_Odm, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -2051,7 +2051,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_dm *pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
+						ODM_Write1Byte(pDM_Odm, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
@@ -2071,9 +2071,9 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
 	uint32_t     i           = 0;
 	uint16_t     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u1Byte     platform    = pDM_Odm->SupportPlatform;
-	u1Byte     _interface   = pDM_Odm->SupportInterface;
-	u1Byte     board       = pDM_Odm->BoardType;
+	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     _interface   = pDM_Odm->SupportInterface;
+	u8     board       = pDM_Odm->BoardType;
 	uint32_t     ArrayLen    = RTL8821AUMAC_1T_ARRAYLEN;
 	uint32_t    *Array       = RTL8821AU_MAC_REG_ARRAY;
 
@@ -2090,7 +2090,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDC) {
-			ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
+			ODM_Write1Byte(pDM_Odm, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -2109,7 +2109,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						ODM_Write1Byte(pDM_Odm, v1, (u1Byte)v2);
+						ODM_Write1Byte(pDM_Odm, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
@@ -2126,7 +2126,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
 
 HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(struct rtl_dm *pDM_Odm)
 {
-	u1Byte result = HAL_STATUS_SUCCESS;
+	u8 result = HAL_STATUS_SUCCESS;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigMACWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
@@ -2192,9 +2192,9 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_dm *pDM_Odm,
 	uint32_t	hex         = 0;
 	uint16_t	count       = 0;
 	uint32_t	*ptr_array   = NULL;
-	u1Byte		platform    = pDM_Odm->SupportPlatform;
-	u1Byte		_interface   = pDM_Odm->SupportInterface;
-	u1Byte		board       = pDM_Odm->BoardType;
+	u8		platform    = pDM_Odm->SupportPlatform;
+	u8		_interface   = pDM_Odm->SupportInterface;
+	u8		board       = pDM_Odm->BoardType;
 
 	radioa_arraylen_a = RTL8812AU_RADIOA_1TARRAYLEN;
 	radioa_array_table_a = RTL8812AU_RADIOA_ARRAY;
@@ -2331,9 +2331,9 @@ void ODM_ReadAndConfig_MP_8821A_RadioA(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH
 	uint32_t	i           = 0;
 	uint16_t	count       = 0;
 	uint32_t	*ptr_array   = NULL;
-	u1Byte		platform    = pDM_Odm->SupportPlatform;
-	u1Byte		_interface   = pDM_Odm->SupportInterface;
-	u1Byte		board       = pDM_Odm->BoardType;
+	u8		platform    = pDM_Odm->SupportPlatform;
+	u8		_interface   = pDM_Odm->SupportInterface;
+	u8		board       = pDM_Odm->BoardType;
 	uint32_t	ArrayLen    =  RTL8821AU_RADIOA_1TARRAYLEN;
 	uint32_t	*Array       = RTL8821AU_RADIOA_ARRAY;
 

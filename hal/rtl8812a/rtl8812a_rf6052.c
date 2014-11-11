@@ -235,7 +235,7 @@ void getTxPowerWriteValByRegulatory8812(
 
 				for (i=0; i<4; i++)
 				{
-					pwr_diff_limit[i] = (u1Byte)((pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]&(0x7f<<(i*8)))>>(i*8));
+					pwr_diff_limit[i] = (u8)((pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]&(0x7f<<(i*8)))>>(i*8));
 
 					if(pwr_diff_limit[i] > pwr_diff)
 						pwr_diff_limit[i] = pwr_diff;

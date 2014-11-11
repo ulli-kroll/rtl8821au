@@ -94,7 +94,7 @@ ODM_DBGP_HEAD_T	ODM_DBGP_Head;
  *---------------------------------------------------------------------------*/
 extern	void	ODM_DBGP_Flag_Init(void)
 {
-    u1Byte i;
+    u8 i;
 
 	for (i = 0; i < ODM_DBGP_TYPE_MAX; i++)
 	{
@@ -290,7 +290,7 @@ DBGP_HEAD_T		DBGP_Head;
  *---------------------------------------------------------------------------*/
 extern	void	DBGP_Flag_Init(void)
 {
-    u1Byte	i;
+    u8	i;
 
 	for (i = 0; i < DBGP_TYPE_MAX; i++)
 	{
@@ -415,7 +415,7 @@ extern	void	DBG_PrintAllFlag(void)
 
 extern	void	DBG_PrintAllComp(void)
 {
-	u1Byte	i;
+	u8	i;
 
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("GlobalDebugComponents Definition\n"));
 	ODM_RT_TRACE(pDM_Odm,COMP_CMD, DBG_LOUD, 	("BIT0    COMP_TRACE\n"));
@@ -494,7 +494,7 @@ extern	void	DBG_PrintAllComp(void)
  *  12/10/2008	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag)
+extern	void	DBG_PrintFlagEvent(u8	DbgFlag)
 {
 	switch(DbgFlag)
 	{
@@ -604,8 +604,8 @@ extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag)
 }	// DBG_PrintFlagEvent
 
 
-extern	void	DBG_DumpMem(const u1Byte DbgComp,
-							const u1Byte DbgLevel,
+extern	void	DBG_DumpMem(const u8 DbgComp,
+							const u8 DbgLevel,
 							u8 *pMem,
 							uint16_t Len)
 {

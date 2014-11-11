@@ -68,7 +68,7 @@ ODM_ClearTxPowerTrackingState(
 	)
 {
 	struct rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
-	u1Byte p = 0;
+	u8 p = 0;
 
 	pDM_Odm->BbSwingIdxCckBase = pDM_Odm->DefaultCckIndex;
 	pDM_Odm->BbSwingIdxCck = pDM_Odm->DefaultCckIndex;
@@ -108,12 +108,12 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 #endif
 
-	u1Byte			ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;
-	u1Byte			ThermalValue_AVG_count = 0;
+	u8			ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;
+	u8			ThermalValue_AVG_count = 0;
 	uint32_t			ThermalValue_AVG = 0;
 
-	u1Byte			OFDM_min_index = 0;  // OFDM BB Swing should be less than +3.0dB, which is required by Arthur
-	u1Byte			Indexforchannel = 0; // GetRightChnlPlaceforIQK(pHalData->CurrentChannel)
+	u8			OFDM_min_index = 0;  // OFDM BB Swing should be less than +3.0dB, which is required by Arthur
+	u8			Indexforchannel = 0; // GetRightChnlPlaceforIQK(pHalData->CurrentChannel)
 
 	TXPWRTRACK_CFG 	c;
 
@@ -139,7 +139,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 		 \n pDM_Odm->BbSwingIdxCckBase: %d, pDM_Odm->BbSwingIdxOfdmBase[A]: %d, pDM_Odm->DefaultOfdmIndex: %d\n",
 		pDM_Odm->BbSwingIdxCckBase, pDM_Odm->BbSwingIdxOfdmBase[ODM_RF_PATH_A], pDM_Odm->DefaultOfdmIndex));
 
-	ThermalValue = (u1Byte)ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, c.ThermalRegAddr, 0xfc00);	//0x42: RF Reg[15:10] 88E
+	ThermalValue = (u8)ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, c.ThermalRegAddr, 0xfc00);	//0x42: RF Reg[15:10] 88E
 	if( ! pDM_Odm->RFCalibrateInfo.TxPowerTrackControl || pHalData->EEPROMThermalMeter == 0 ||
 		pHalData->EEPROMThermalMeter == 0xFF)
         return;
@@ -170,7 +170,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 	if(ThermalValue_AVG_count)               //Calculate Average ThermalValue after average enough times
 	{
-		ThermalValue = (u1Byte)(ThermalValue_AVG / ThermalValue_AVG_count);
+		ThermalValue = (u8)(ThermalValue_AVG / ThermalValue_AVG_count);
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 			("AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", ThermalValue, pHalData->EEPROMThermalMeter));
 	}
@@ -427,7 +427,7 @@ ODM_ResetIQKResult(
 	IN struct rtl_dm *pDM_Odm
 )
 {
-	u1Byte		i;
+	u8		i;
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 
@@ -435,11 +435,11 @@ ODM_ResetIQKResult(
 #endif
 
 }
-u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
+u8 ODM_GetRightChnlPlaceforIQK(u8 chnl)
 {
-	u1Byte	channel_all[ODM_TARGET_CHNL_NUM_2G_5G] =
+	u8	channel_all[ODM_TARGET_CHNL_NUM_2G_5G] =
 	{1,2,3,4,5,6,7,8,9,10,11,12,13,14,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,149,151,153,155,157,159,161,163,165};
-	u1Byte	place = chnl;
+	u8	place = chnl;
 
 
 	if(chnl > 14)

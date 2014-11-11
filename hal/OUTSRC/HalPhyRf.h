@@ -32,17 +32,17 @@ typedef enum _PWRTRACK_CONTROL_METHOD {
 	MIX_MODE
 } PWRTRACK_METHOD;
 
-typedef VOID 	(*FuncSetPwr)(struct rtl_dm *,PWRTRACK_METHOD, u1Byte, u1Byte);
-typedef VOID 	(*FuncIQK)(struct rtl_dm *, u1Byte, u1Byte, u1Byte);
+typedef VOID 	(*FuncSetPwr)(struct rtl_dm *,PWRTRACK_METHOD, u8, u8);
+typedef VOID 	(*FuncIQK)(struct rtl_dm *, u8, u8, u8);
 typedef VOID 	(*FuncLCK)(struct rtl_dm *);
 typedef VOID  	(*FuncSwing)(struct rtl_dm *, u8 **, u8 **, u8 **, u8 **);
 
 typedef struct _TXPWRTRACK_CFG {
-	u1Byte 		SwingTableSize_CCK;
-	u1Byte 		SwingTableSize_OFDM;
-	u1Byte 		Threshold_IQK;
-	u1Byte 		AverageThermalNum;
-	u1Byte 		RfPathCount;
+	u8 		SwingTableSize_CCK;
+	u8 		SwingTableSize_OFDM;
+	u8 		Threshold_IQK;
+	u8 		AverageThermalNum;
+	u8 		RfPathCount;
 	uint32_t 		ThermalRegAddr;
 	FuncSetPwr 	ODM_TxPwrTrackSetPwr;
 	FuncIQK 	DoIQK;
@@ -75,9 +75,9 @@ VOID
 ODM_ResetIQKResult(
 	IN struct rtl_dm *pDM_Odm
 );
-u1Byte
+u8
 ODM_GetRightChnlPlaceforIQK(
-    IN u1Byte chnl
+    IN u8 chnl
 );
 
 

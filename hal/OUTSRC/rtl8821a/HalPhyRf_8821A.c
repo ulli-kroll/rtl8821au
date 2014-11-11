@@ -36,8 +36,8 @@
 
 static void PHY_LCCalibrate_8821A(struct rtl_dm *pDM_Odm);
 
-static void DoIQK_8821A(struct rtl_dm *pDM_Odm, u1Byte DeltaThermalIndex,
-	u1Byte ThermalValue, u1Byte Threshold)
+static void DoIQK_8821A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
+	u8 ThermalValue, u8 Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
@@ -50,16 +50,16 @@ static void DoIQK_8821A(struct rtl_dm *pDM_Odm, u1Byte DeltaThermalIndex,
 
 
 static void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
-	u1Byte RFPath, u1Byte ChannelMappedIndex)
+	u8 RFPath, u8 ChannelMappedIndex)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
-	u1Byte PwrTrackingLimit = 26; /* +1.0dB */
-	u1Byte TxRate = 0xFF;
+	u8 PwrTrackingLimit = 26; /* +1.0dB */
+	u8 TxRate = 0xFF;
 	s1Byte Final_OFDM_Swing_Index = 0;
 	s1Byte Final_CCK_Swing_Index = 0;
-	u1Byte i = 0;
+	u8 i = 0;
 	uint32_t finalBbSwingIdx[1];
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8821A\n"));
@@ -176,7 +176,7 @@ static void GetDeltaSwingTable_8821A(struct rtl_dm *pDM_Odm,
 	 struct rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
 	/* uint16_t     rate = pMgntInfo->ForcedDataRate; */
 	uint16_t	rate = 0;
-	u1Byte         	channel   		 = pHalData->CurrentChannel;
+	u8         	channel   		 = pHalData->CurrentChannel;
 
 	if (1 <= channel && channel <= 14) {
 		if (IS_CCK_RATE(rate)) {
@@ -240,9 +240,9 @@ void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 void phy_IQCalibrate_By_FW_8821A(struct rtl_priv *pAdapter)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
-	u1Byte			IQKcmd[3] = {pHalData->CurrentChannel, 0x0, 0x0};
-	u1Byte			Buf1 = 0x0;
-	u1Byte			Buf2 = 0x0;
+	u8			IQKcmd[3] = {pHalData->CurrentChannel, 0x0, 0x0};
+	u8			Buf1 = 0x0;
+	u8			Buf2 = 0x0;
 
 	/* Byte 2, Bit 4 ~ Bit 5 : BandType */
 	if (pHalData->CurrentBandType)

@@ -62,34 +62,34 @@ static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex)
 *                           TxPowerTrack_USB.TXT
 ******************************************************************************/
 
-u1Byte gDeltaSwingTableIdx_MP_5GB_N_TxPowerTrack_USB_8821A[][DELTA_SWINGIDX_SIZE] = {
+u8 gDeltaSwingTableIdx_MP_5GB_N_TxPowerTrack_USB_8821A[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 14, 14, 14, 14},
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9,  9, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
-u1Byte gDeltaSwingTableIdx_MP_5GB_P_TxPowerTrack_USB_8821A[][DELTA_SWINGIDX_SIZE] = {
+u8 gDeltaSwingTableIdx_MP_5GB_P_TxPowerTrack_USB_8821A[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 2, 3, 3, 4, 5,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9,  9, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
-u1Byte gDeltaSwingTableIdx_MP_5GA_N_TxPowerTrack_USB_8821A[][DELTA_SWINGIDX_SIZE] = {
+u8 gDeltaSwingTableIdx_MP_5GA_N_TxPowerTrack_USB_8821A[][DELTA_SWINGIDX_SIZE] = {
 	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15},
 	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15},
 	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15},
 };
-u1Byte gDeltaSwingTableIdx_MP_5GA_P_TxPowerTrack_USB_8821A[][DELTA_SWINGIDX_SIZE] = {
+u8 gDeltaSwingTableIdx_MP_5GA_P_TxPowerTrack_USB_8821A[][DELTA_SWINGIDX_SIZE] = {
 	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16},
 	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16},
 	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16},
 };
-u1Byte gDeltaSwingTableIdx_MP_2GB_N_TxPowerTrack_USB_8821A[]    = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11};
-u1Byte gDeltaSwingTableIdx_MP_2GB_P_TxPowerTrack_USB_8821A[]    = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
-u1Byte gDeltaSwingTableIdx_MP_2GA_N_TxPowerTrack_USB_8821A[]    = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10};
-u1Byte gDeltaSwingTableIdx_MP_2GA_P_TxPowerTrack_USB_8821A[]    = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
-u1Byte gDeltaSwingTableIdx_MP_2GCCKB_N_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11};
-u1Byte gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
-u1Byte gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10};
-u1Byte gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
+u8 gDeltaSwingTableIdx_MP_2GB_N_TxPowerTrack_USB_8821A[]    = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11};
+u8 gDeltaSwingTableIdx_MP_2GB_P_TxPowerTrack_USB_8821A[]    = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
+u8 gDeltaSwingTableIdx_MP_2GA_N_TxPowerTrack_USB_8821A[]    = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10};
+u8 gDeltaSwingTableIdx_MP_2GA_P_TxPowerTrack_USB_8821A[]    = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
+u8 gDeltaSwingTableIdx_MP_2GCCKB_N_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11};
+u8 gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
+u8 gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10};
+u8 gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_8821A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
 
 void ODM_ReadAndConfig_MP_8821A_TxPowerTrack_USB(struct rtl_dm *pDM_Odm)
 {

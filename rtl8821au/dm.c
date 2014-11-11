@@ -1,7 +1,7 @@
 #include "dm.h"
 #include "../hal/OUTSRC/odm_precomp.h"
 
-u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
+u8 CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01},	/*  0, -16.0dB */
 	{0x09, 0x09, 0x08, 0x06, 0x05, 0x03, 0x01, 0x01},	/*  1, -15.5dB */
 	{0x0a, 0x09, 0x08, 0x07, 0x05, 0x03, 0x02, 0x01},	/*  2, -15.0dB */
@@ -37,7 +37,7 @@ u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 	{0x36, 0x35, 0x2e, 0x25, 0x1c, 0x12, 0x09, 0x04} 	/* 32, +0dB */
 };
 
-u1Byte CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8] = {
+u8 CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x08, 0x07, 0x04, 0x00, 0x00, 0x00, 0x00},	/*  0, -16.0dB */
 	{0x09, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00},	/*  1, -15.5dB */
 	{0x0a, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00},	/*  2, -15.0dB */
@@ -74,7 +74,7 @@ u1Byte CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8] = {
 };
 
 
-u1Byte	CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
+u8	CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
 	{0x36, 0x35, 0x2e, 0x25, 0x1c, 0x12, 0x09, 0x04},	/* 0, +0dB */
 	{0x33, 0x32, 0x2b, 0x23, 0x1a, 0x11, 0x08, 0x04},	/* 1, -0.5dB */
 	{0x30, 0x2f, 0x29, 0x21, 0x19, 0x10, 0x08, 0x03},	/* 2, -1.0dB */
@@ -111,7 +111,7 @@ u1Byte	CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
 };
 
 
-u1Byte	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
+u8	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
 	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00},	/* 0, +0dB */
 	{0x33, 0x32, 0x2b, 0x19, 0x00, 0x00, 0x00, 0x00},	/* 1, -0.5dB */
 	{0x30, 0x2f, 0x29, 0x18, 0x00, 0x00, 0x00, 0x00},	/* 2, -1.0dB */
@@ -175,7 +175,7 @@ static void odm_CmnInfoInit_Debug(struct rtl_dm *pDM_Odm)
 static void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm)
 {
 	pDM_Odm->bCckHighPower = (BOOLEAN) ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
-	pDM_Odm->RFPathRxEnable = (u1Byte) ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
+	pDM_Odm->RFPathRxEnable = (u8) ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
 #if (DM_ODM_SUPPORT_TYPE != ODM_CE)
 	pDM_Odm->pbNet_closed = &pDM_Odm->BOOLEAN_temp;
 #endif
@@ -191,7 +191,7 @@ static void odm_DIGInit(struct rtl_dm *pDM_Odm)
 
 	/* pDM_DigTable->Dig_Enable_Flag = TRUE; */
 	/* pDM_DigTable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
-	pDM_DigTable->CurIGValue = (u1Byte) ODM_GetBBReg(pDM_Odm, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
+	pDM_DigTable->CurIGValue = (u8) ODM_GetBBReg(pDM_Odm, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
 	/* pDM_DigTable->PreIGValue = 0x0; */
 	/* pDM_DigTable->CurSTAConnectState = pDM_DigTable->PreSTAConnectState = DIG_STA_DISCONNECT; */
 	/* pDM_DigTable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */
@@ -277,11 +277,11 @@ static void ODM_EdcaTurboInit(struct rtl_dm *pDM_Odm)
 
 }
 
-static u1Byte getSwingIndex(struct rtl_dm *pDM_Odm)
+static u8 getSwingIndex(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	u1Byte 			i = 0;
+	u8 			i = 0;
 	uint32_t 			bbSwing;
 #if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
 	bbSwing = PHY_GetTxBBSwing_8812A(Adapter, pHalData->CurrentBandType, ODM_RF_PATH_A);
@@ -298,7 +298,7 @@ static u1Byte getSwingIndex(struct rtl_dm *pDM_Odm)
 
 static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 {
-	u1Byte 		p = 0;
+	u8 		p = 0;
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -340,7 +340,7 @@ static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 
 	/* The index of "0 dB" in SwingTable. */
 	{
-		u1Byte defaultSwingIndex = getSwingIndex(pDM_Odm);
+		u8 defaultSwingIndex = getSwingIndex(pDM_Odm);
 
 
 		pDM_Odm->DefaultOfdmIndex = (defaultSwingIndex == TXSCALE_TABLE_SIZE) ? 24 : defaultSwingIndex;

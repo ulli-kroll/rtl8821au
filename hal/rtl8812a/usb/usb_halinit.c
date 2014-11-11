@@ -136,7 +136,7 @@ void rtl8812au_interface_configure(struct rtl_priv *padapter)
 
 static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 {
-	u1Byte speedvalue, provalue, temp;
+	u8 speedvalue, provalue, temp;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	/*

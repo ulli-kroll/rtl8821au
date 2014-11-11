@@ -1430,7 +1430,7 @@ rtl8812_EfusePowerSwitch(struct rtl_priv *pAdapter, uint8_t bWrite, uint8_t PwrS
 }
 
 static BOOLEAN
-Hal_EfuseSwitchToBank8812A(struct rtl_priv *pAdapter, u1Byte bank)
+Hal_EfuseSwitchToBank8812A(struct rtl_priv *pAdapter, u8 bank)
 {
 	return _FALSE;
 }
@@ -1583,7 +1583,7 @@ Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, uint16_t _offset,
 	/*
 	 * 5. Calculate Efuse utilization.
 	 */
-	efuse_usage = (u1Byte)((eFuse_Addr*100)/EFUSE_REAL_CONTENT_LEN_JAGUAR);
+	efuse_usage = (u8)((eFuse_Addr*100)/EFUSE_REAL_CONTENT_LEN_JAGUAR);
 	rtw_hal_set_hwreg(Adapter, HW_VAR_EFUSE_BYTES, (uint8_t *)&eFuse_Addr);
 
 exit:
@@ -1603,7 +1603,7 @@ rtl8812_ReadEFuse(struct rtl_priv *Adapter, uint8_t efuseType, uint16_t	_offset,
 
 /* Do not support BT */
 static VOID Hal_EFUSEGetEfuseDefinition8812A(struct rtl_priv *pAdapter,
-	u1Byte efuseType, u1Byte type, PVOID pOut)
+	u8 efuseType, u8 type, PVOID pOut)
 {
 	switch (type) {
 	case TYPE_EFUSE_MAX_SECTION:

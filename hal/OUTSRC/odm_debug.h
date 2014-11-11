@@ -241,7 +241,7 @@ ODM_InitDebugSetting(
 			if(((_Comp) & ODM_GlobalDebugComponents) && (_Level <= ODM_GlobalDebugLevel))	\
 			{																		\
 				int		__i;															\
-				u1Byte	buffer[MAX_STR_LEN];											\
+				u8	buffer[MAX_STR_LEN];											\
 				int	length = (_Len<MAX_STR_LEN)? _Len : (MAX_STR_LEN-1) ;				\
 				PlatformZeroMemory( buffer, MAX_STR_LEN );							\
 				PlatformMoveMemory( buffer, (u8 *)_Ptr, length );						\
@@ -764,7 +764,7 @@ typedef enum tag_DBGP_Flag_Type_Definition
 			if(((_Comp) & GlobalDebugComponents) && (_Level <= GlobalDebugLevel))	\
 			{																		\
 				int		__i;															\
-				u1Byte	buffer[MAX_STR_LEN];											\
+				u8	buffer[MAX_STR_LEN];											\
 				int	length = (_Len<MAX_STR_LEN)? _Len : (MAX_STR_LEN-1) ;				\
 				PlatformZeroMemory( buffer, MAX_STR_LEN );							\
 				PlatformMoveMemory( buffer, (u8 *)_Ptr, length );						\
@@ -860,9 +860,9 @@ extern	DBGP_HEAD_T	DBGP_Head;
 extern	void	DBGP_Flag_Init(void);
 extern	void	DBG_PrintAllFlag(void);
 extern	void	DBG_PrintAllComp(void);
-extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag);
-extern	void	DBG_DumpMem(const u1Byte DbgComp,
-							const u1Byte DbgLevel,
+extern	void	DBG_PrintFlagEvent(u8	DbgFlag);
+extern	void	DBG_DumpMem(const u8 DbgComp,
+							const u8 DbgLevel,
 							u8 *pMem,
 							uint16_t Len);
 

@@ -28,7 +28,7 @@
 #include "odm_precomp.h"
 #include "../../rtl8821au/phy.h"
 
-u1Byte odm_QueryRxPwrPercentage(s1Byte AntPower)
+u8 odm_QueryRxPwrPercentage(s1Byte AntPower)
 {
 	if ((AntPower <= -100) || (AntPower >= 20)) {
 		return	0;
@@ -79,7 +79,7 @@ int32_t odm_SignalScaleMapping(struct rtl_dm *pDM_Odm, int32_t CurrSig)
 	return odm_SignalScaleMapping_92CSeries(pDM_Odm, CurrSig);
 }
 
-static u1Byte odm_EVMdbToPercentage(s1Byte Value)
+static u8 odm_EVMdbToPercentage(s1Byte Value)
 {
 	/*
 	 *  -33dB~0dB to 0%~99%
@@ -105,7 +105,7 @@ static u1Byte odm_EVMdbToPercentage(s1Byte Value)
 	return ret_val;
 }
 
-static u1Byte odm_EVMdbm_JaguarSeries(s1Byte Value)
+static u8 odm_EVMdbm_JaguarSeries(s1Byte Value)
 {
 	s1Byte ret_val = Value;
 
@@ -137,14 +137,14 @@ static uint16_t odm_Cfo(s1Byte Value)
 void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
-	u1Byte	i, Max_spatial_stream;
+	u8	i, Max_spatial_stream;
 	s1Byte	rx_pwr[4], rx_pwr_all = 0;
-	u1Byte	EVM, EVMdbm, PWDB_ALL = 0, PWDB_ALL_BT;
-	u1Byte	RSSI, total_rssi = 0;
-	u1Byte	isCCKrate = 0;
-	u1Byte	rf_rx_num = 0;
-	u1Byte	cck_highpwr = 0;
-	u1Byte	LNA_idx, VGA_idx;
+	u8	EVM, EVMdbm, PWDB_ALL = 0, PWDB_ALL_BT;
+	u8	RSSI, total_rssi = 0;
+	u8	isCCKrate = 0;
+	u8	rf_rx_num = 0;
+	u8	cck_highpwr = 0;
+	u8	LNA_idx, VGA_idx;
 
 	PPHY_STATUS_RPT_8812_T pPhyStaRpt = (PPHY_STATUS_RPT_8812_T)pPhyStatus;
 
@@ -182,7 +182,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 	pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_B] = -1;
 
 	if (isCCKrate) {
-		u1Byte cck_agc_rpt;
+		u8 cck_agc_rpt;
 
 		pDM_Odm->PhyDbgInfo.NumQryPhyStatusCCK++;
 		/*
@@ -293,7 +293,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 		 */
 
 		if (pPktinfo->bPacketMatchBSSID) {
-			u1Byte	SQ, SQ_rpt;
+			u8	SQ, SQ_rpt;
 
 			if (pPhyInfo->RxPWDBAll > 40 && !pDM_Odm->bInHctTest) {
 				SQ = 100;
@@ -355,7 +355,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 
 
 
-			pPhyInfo->RxMIMOSignalStrength[i] = (u1Byte) RSSI;
+			pPhyInfo->RxMIMOSignalStrength[i] = (u8) RSSI;
 
 #if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 			/* Get Rx snr value in DB */
@@ -468,11 +468,11 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 	 * It is assigned to the BSS List in GetValueFromBeaconOrProbeRsp().
 	 */
 	if (isCCKrate) {
-		pPhyInfo->SignalStrength = (u1Byte)(odm_SignalScaleMapping(pDM_Odm, PWDB_ALL));	/* PWDB_ALL; */
+		pPhyInfo->SignalStrength = (u8)(odm_SignalScaleMapping(pDM_Odm, PWDB_ALL));	/* PWDB_ALL; */
 	} else {
 		if (rf_rx_num != 0) {
 			/* ULLI crap inside this call */
-			pPhyInfo->SignalStrength = (u1Byte)(odm_SignalScaleMapping(pDM_Odm, total_rssi /= rf_rx_num));
+			pPhyInfo->SignalStrength = (u8)(odm_SignalScaleMapping(pDM_Odm, total_rssi /= rf_rx_num));
 		}
 	}
 #endif
@@ -501,8 +501,8 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	PODM_PACKET_INFO_T pPktinfo)
 {
 	int32_t		UndecoratedSmoothedPWDB, UndecoratedSmoothedCCK, UndecoratedSmoothedOFDM, RSSI_Ave;
-	u1Byte		isCCKrate = 0;
-	u1Byte		RSSI_max, RSSI_min, i;
+	u8		isCCKrate = 0;
+	u8		RSSI_max, RSSI_min, i;
 	uint32_t	OFDM_pkt = 0;
 	uint32_t	Weighting = 0;
 
@@ -617,7 +617,7 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 			pEntry->rssi_stat.PacketMap = (pEntry->rssi_stat.PacketMap<<1) | BIT0;
 		} else {
 			RSSI_Ave = pPhyInfo->RxPWDBAll;
-			pDM_Odm->RSSI_A = (u1Byte) pPhyInfo->RxPWDBAll;
+			pDM_Odm->RSSI_A = (u8) pPhyInfo->RxPWDBAll;
 			pDM_Odm->RSSI_B = 0xFF;
 
 			/* 1 Process CCK RSSI */
@@ -647,7 +647,7 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 				pEntry->rssi_stat.ValidBit++;
 
 			for (i = 0; i < pEntry->rssi_stat.ValidBit; i++)
-				OFDM_pkt += (u1Byte)(pEntry->rssi_stat.PacketMap>>i)&BIT0;
+				OFDM_pkt += (u8)(pEntry->rssi_stat.PacketMap>>i)&BIT0;
 
 			if (pEntry->rssi_stat.ValidBit == 64) {
 				Weighting = ((OFDM_pkt<<4) > 64)?64:(OFDM_pkt<<4);

@@ -56,10 +56,9 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#include <drv_types.h>
 
 #if 0
-	typedef s8					s1Byte,*ps1Byte;
 #else
 	#define s1Byte 		s8
-	#define	ps1Byte 	s8*
+
 
 #endif
 	/* ULLI check for DEV_BUS_TYPE */

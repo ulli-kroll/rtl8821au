@@ -1,4 +1,5 @@
 #include "dm.h"
+#include "../hal/OUTSRC/odm_precomp.h"
 
 u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01},	/*  0, -16.0dB */
@@ -145,3 +146,234 @@ u1Byte	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00},	/* 31, -15.5dB */
 	{0x09, 0x08, 0x07, 0x04, 0x00, 0x00, 0x00, 0x00}	/* 32, -16.0dB */
 };
+
+/*
+ * 2011/09/21 MH Add to describe different team necessary resource allocate??
+ */
+ 
+void odm_CmnInfoInit_Debug(PDM_ODM_T pDM_Odm)
+{
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_CmnInfoInit_Debug==>\n"));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportPlatform=%d\n", pDM_Odm->SupportPlatform));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportAbility=0x%x\n", pDM_Odm->SupportAbility));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportInterface=%d\n", pDM_Odm->SupportInterface));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportICType=0x%x\n", pDM_Odm->SupportICType));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("CutVersion=%d\n", pDM_Odm->CutVersion));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("FabVersion=%d\n", pDM_Odm->FabVersion));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("RFType=%d\n", pDM_Odm->RFType));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("BoardType=%d\n", pDM_Odm->BoardType));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("ExtLNA=%d\n", pDM_Odm->ExtLNA));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("ExtPA=%d\n", pDM_Odm->ExtPA));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("ExtTRSW=%d\n", pDM_Odm->ExtTRSW));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("PatchID=%d\n", pDM_Odm->PatchID));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("bInHctTest=%d\n", pDM_Odm->bInHctTest));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("bWIFITest=%d\n", pDM_Odm->bWIFITest));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("bDualMacSmartConcurrent=%d\n", pDM_Odm->bDualMacSmartConcurrent));
+
+}
+
+void odm_CommonInfoSelfInit(PDM_ODM_T pDM_Odm)
+{
+	pDM_Odm->bCckHighPower = (BOOLEAN) ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
+	pDM_Odm->RFPathRxEnable = (u1Byte) ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
+#if (DM_ODM_SUPPORT_TYPE != ODM_CE)
+	pDM_Odm->pbNet_closed = &pDM_Odm->BOOLEAN_temp;
+#endif
+
+
+	pDM_Odm->TxRate = 0xFF;
+	ODM_InitDebugSetting(pDM_Odm);
+}
+
+void odm_DIGInit(PDM_ODM_T pDM_Odm)
+{
+	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
+
+	/* pDM_DigTable->Dig_Enable_Flag = TRUE; */
+	/* pDM_DigTable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
+	pDM_DigTable->CurIGValue = (u1Byte) ODM_GetBBReg(pDM_Odm, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
+	/* pDM_DigTable->PreIGValue = 0x0; */
+	/* pDM_DigTable->CurSTAConnectState = pDM_DigTable->PreSTAConnectState = DIG_STA_DISCONNECT; */
+	/* pDM_DigTable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */
+	pDM_DigTable->RssiLowThresh 	= DM_DIG_THRESH_LOW;
+	pDM_DigTable->RssiHighThresh 	= DM_DIG_THRESH_HIGH;
+	pDM_DigTable->FALowThresh	= DM_FALSEALARM_THRESH_LOW;
+	pDM_DigTable->FAHighThresh	= DM_FALSEALARM_THRESH_HIGH;
+
+	if (pDM_Odm->BoardType & (ODM_BOARD_EXT_PA|ODM_BOARD_EXT_LNA)) {
+		pDM_DigTable->rx_gain_range_max = DM_DIG_MAX_NIC;
+		pDM_DigTable->rx_gain_range_min = DM_DIG_MIN_NIC;
+	} else {
+		pDM_DigTable->rx_gain_range_max = DM_DIG_MAX_NIC;
+		pDM_DigTable->rx_gain_range_min = DM_DIG_MIN_NIC;
+	}
+	pDM_DigTable->BackoffVal = DM_DIG_BACKOFF_DEFAULT;
+	pDM_DigTable->BackoffVal_range_max = DM_DIG_BACKOFF_MAX;
+	pDM_DigTable->BackoffVal_range_min = DM_DIG_BACKOFF_MIN;
+	pDM_DigTable->PreCCK_CCAThres = 0xFF;
+	pDM_DigTable->CurCCK_CCAThres = 0x83;
+	pDM_DigTable->ForbiddenIGI = DM_DIG_MIN_NIC;
+	pDM_DigTable->LargeFAHit = 0;
+	pDM_DigTable->Recover_cnt = 0;
+	pDM_DigTable->DIG_Dynamic_MIN_0 = DM_DIG_MIN_NIC;
+	pDM_DigTable->DIG_Dynamic_MIN_1 = DM_DIG_MIN_NIC;
+	pDM_DigTable->bMediaConnect_0 = FALSE;
+	pDM_DigTable->bMediaConnect_1 = FALSE;
+
+	/* To Initialize pDM_Odm->bDMInitialGainEnable == FALSE to avoid DIG error */
+	pDM_Odm->bDMInitialGainEnable = TRUE;
+
+	/* To Initi BT30 IGI */
+	pDM_DigTable->BT30_CurIGI = 0x32;
+
+}
+
+void odm_AdaptivityInit(PDM_ODM_T pDM_Odm)
+{
+	struct rtl_priv *pAdapter = pDM_Odm->Adapter;
+
+	pDM_Odm->TH_H = 0xfa; 		/* -6dB */
+	pDM_Odm->TH_L = 0xfd; 		/* -3dB */
+	pDM_Odm->IGI_Base = 0x32;
+	pDM_Odm->IGI_target = 0x1c;
+	pDM_Odm->ForceEDCCA = 0;
+	pDM_Odm->AdapEn_RSSI = 32;	/* 45; */
+}
+
+void odm_RateAdaptiveMaskInit(PDM_ODM_T	pDM_Odm)
+{
+	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
+
+#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
+	pOdmRA->Type = DM_Type_ByDriver;
+	if (pOdmRA->Type == DM_Type_ByDriver)
+		pDM_Odm->bUseRAMask = _TRUE;
+	else
+		pDM_Odm->bUseRAMask = _FALSE;
+#endif
+
+	pOdmRA->RATRState = DM_RATR_STA_INIT;
+	pOdmRA->LdpcThres = 35;
+	pOdmRA->bUseLdpc = FALSE;
+	pOdmRA->HighRSSIThresh = 50;
+	pOdmRA->LowRSSIThresh = 20;
+}
+
+void ODM_EdcaTurboInit(PDM_ODM_T pDM_Odm)
+{
+
+#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
+	struct rtl_priv *Adapter = pDM_Odm->Adapter;
+	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = FALSE;
+	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = FALSE;
+	Adapter->recvpriv.bIsAnyNonBEPkts = FALSE;
+
+#endif
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial VO PARAM: 0x%x\n", ODM_Read4Byte(pDM_Odm, ODM_EDCA_VO_PARAM)));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial VI PARAM: 0x%x\n", ODM_Read4Byte(pDM_Odm, ODM_EDCA_VI_PARAM)));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial BE PARAM: 0x%x\n", ODM_Read4Byte(pDM_Odm, ODM_EDCA_BE_PARAM)));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial BK PARAM: 0x%x\n", ODM_Read4Byte(pDM_Odm, ODM_EDCA_BK_PARAM)));
+
+
+}
+
+u1Byte getSwingIndex(PDM_ODM_T pDM_Odm)
+{
+	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	u1Byte 			i = 0;
+	uint32_t 			bbSwing;
+#if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
+	bbSwing = PHY_GetTxBBSwing_8812A(Adapter, pHalData->CurrentBandType, ODM_RF_PATH_A);
+#endif
+
+	for (i = 0; i < TXSCALE_TABLE_SIZE; ++i)
+		if (bbSwing == TxScalingTable_Jaguar[i])
+			break;
+
+	return i;
+}
+
+
+
+void odm_TXPowerTrackingThermalMeterInit(PDM_ODM_T pDM_Odm)
+{
+	u1Byte 		p = 0;
+#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
+	struct rtl_priv *Adapter = pDM_Odm->Adapter;
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+
+#if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
+	pDM_Odm->RFCalibrateInfo.bTXPowerTracking = _TRUE;
+	pDM_Odm->RFCalibrateInfo.TXPowercount = 0;
+	pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = _FALSE;
+	/* #if	(MP_DRIVER != 1) */		/* for mp driver, turn off txpwrtracking as default */
+	if (*(pDM_Odm->mp_mode) != 1)
+		pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = _TRUE;
+	/* #endif//#if	(MP_DRIVER != 1) */
+	MSG_8192C("pDM_Odm TxPowerTrackControl = %d\n", pDM_Odm->RFCalibrateInfo.TxPowerTrackControl);
+#else
+	{
+		struct dm_priv	*pdmpriv = &pHalData->dmpriv;
+
+		/* if (IS_HARDWARE_TYPE_8192C(pHalData)) */
+		{
+			pdmpriv->bTXPowerTracking = _TRUE;
+			pdmpriv->TXPowercount = 0;
+			pdmpriv->bTXPowerTrackingInit = _FALSE;
+			/* #if	(MP_DRIVER != 1) */	/* for mp driver, turn off txpwrtracking as default */
+
+			if (*(pDM_Odm->mp_mode) != 1)
+				pdmpriv->TxPowerTrackControl = _TRUE;
+			/* #endif//#if	(MP_DRIVER != 1) */
+		}
+		MSG_8192C("pdmpriv->TxPowerTrackControl = %d\n", pdmpriv->TxPowerTrackControl);
+
+	}
+#endif
+#endif
+
+	pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = TRUE;
+	pDM_Odm->RFCalibrateInfo.ThermalValue = pHalData->EEPROMThermalMeter;
+	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK = pHalData->EEPROMThermalMeter;
+	pDM_Odm->RFCalibrateInfo.ThermalValue_LCK = pHalData->EEPROMThermalMeter;
+
+	/* The index of "0 dB" in SwingTable. */
+	{
+		u1Byte defaultSwingIndex = getSwingIndex(pDM_Odm);
+
+
+		pDM_Odm->DefaultOfdmIndex = (defaultSwingIndex == TXSCALE_TABLE_SIZE) ? 24 : defaultSwingIndex;
+		pDM_Odm->DefaultCckIndex = 24;
+	}
+
+	pDM_Odm->BbSwingIdxCckBase = pDM_Odm->DefaultCckIndex;
+	pDM_Odm->RFCalibrateInfo.CCK_index = pDM_Odm->DefaultCckIndex;
+
+	for (p = ODM_RF_PATH_A; p < MAX_RF_PATH; ++p) {
+		pDM_Odm->BbSwingIdxOfdmBase[p] = pDM_Odm->DefaultOfdmIndex;
+		pDM_Odm->RFCalibrateInfo.OFDM_index[p] = pDM_Odm->DefaultOfdmIndex;
+		pDM_Odm->RFCalibrateInfo.DeltaPowerIndex[p] = 0;
+		pDM_Odm->RFCalibrateInfo.DeltaPowerIndexLast[p] = 0;
+		pDM_Odm->RFCalibrateInfo.PowerIndexOffset[p] = 0;
+	}
+}
+
+void odm_TXPowerTrackingInit(PDM_ODM_T pDM_Odm)
+{
+	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
+}
+
+void ODM_DMInit(PDM_ODM_T pDM_Odm)
+{
+	/* 2012.05.03 Luke: For all IC series */
+	odm_CommonInfoSelfInit(pDM_Odm);
+	odm_CmnInfoInit_Debug(pDM_Odm);
+	odm_DIGInit(pDM_Odm);
+	odm_AdaptivityInit(pDM_Odm);
+	odm_RateAdaptiveMaskInit(pDM_Odm);
+
+	ODM_EdcaTurboInit(pDM_Odm);
+
+	odm_TXPowerTrackingInit(pDM_Odm);
+}

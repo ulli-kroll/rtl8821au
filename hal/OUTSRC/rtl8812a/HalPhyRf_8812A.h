@@ -56,7 +56,7 @@ PHY_LCCalibrate_8812A(
 void
 PHY_APCalibrate_8812A(
 	IN	struct rtl_priv *pAdapter,
-							IN 	s1Byte		delta);
+							IN 	s8		delta);
 void
 PHY_DigitalPredistortion_8812A(		IN	struct rtl_priv *pAdapter);
 

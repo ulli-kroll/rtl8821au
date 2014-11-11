@@ -28,7 +28,7 @@
 #include "odm_precomp.h"
 #include "../../rtl8821au/phy.h"
 
-u8 odm_QueryRxPwrPercentage(s1Byte AntPower)
+u8 odm_QueryRxPwrPercentage(s8 AntPower)
 {
 	if ((AntPower <= -100) || (AntPower >= 20)) {
 		return	0;
@@ -79,12 +79,12 @@ int32_t odm_SignalScaleMapping(struct rtl_dm *pDM_Odm, int32_t CurrSig)
 	return odm_SignalScaleMapping_92CSeries(pDM_Odm, CurrSig);
 }
 
-static u8 odm_EVMdbToPercentage(s1Byte Value)
+static u8 odm_EVMdbToPercentage(s8 Value)
 {
 	/*
 	 *  -33dB~0dB to 0%~99%
 	 */
-	s1Byte ret_val;
+	s8 ret_val;
 
 	ret_val = Value;
 	/* ret_val /= 2; */
@@ -105,9 +105,9 @@ static u8 odm_EVMdbToPercentage(s1Byte Value)
 	return ret_val;
 }
 
-static u8 odm_EVMdbm_JaguarSeries(s1Byte Value)
+static u8 odm_EVMdbm_JaguarSeries(s8 Value)
 {
-	s1Byte ret_val = Value;
+	s8 ret_val = Value;
 
 	/* -33dB~0dB to 33dB ~ 0dB */
 	if (ret_val == -128)
@@ -119,7 +119,7 @@ static u8 odm_EVMdbm_JaguarSeries(s1Byte Value)
 	return ret_val;
 }
 
-static u16 odm_Cfo(s1Byte Value)
+static u16 odm_Cfo(s8 Value)
 {
 	s16  ret_val;
 
@@ -138,7 +138,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	u8	i, Max_spatial_stream;
-	s1Byte	rx_pwr[4], rx_pwr_all = 0;
+	s8	rx_pwr[4], rx_pwr_all = 0;
 	u8	EVM, EVMdbm, PWDB_ALL = 0, PWDB_ALL_BT;
 	u8	RSSI, total_rssi = 0;
 	u8	isCCKrate = 0;
@@ -255,7 +255,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 					PWDB_ALL = 100;
 			}
 		} else if (pDM_Odm->SupportICType == ODM_RTL8821) {
-			s1Byte Pout = -6;
+			s8 Pout = -6;
 
 			switch (LNA_idx) {
 			case 5:

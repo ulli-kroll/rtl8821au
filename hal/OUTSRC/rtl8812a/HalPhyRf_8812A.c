@@ -75,8 +75,8 @@ static void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Me
 
 	u8 PwrTrackingLimit = 26; /* +1.0dB */
 	u8 TxRate = 0xFF;
-	s1Byte Final_OFDM_Swing_Index = 0;
-	s1Byte Final_CCK_Swing_Index = 0;
+	s8 Final_OFDM_Swing_Index = 0;
+	s8 Final_CCK_Swing_Index = 0;
 	u8 i = 0;
 
 	if (TxRate != 0xFF) {

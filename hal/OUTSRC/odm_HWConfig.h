@@ -176,13 +176,13 @@ typedef struct _Phy_Status_Rpt_8812
 	u8 	rsvd_1;
 	u8	path_cfotail[2];
 	u8	pcts_mask[2];
-	s1Byte	stream_rxevm[2];
+	s8	stream_rxevm[2];
 	u8	path_rxsnr[2];
 	u8	rsvd_2[2];
 	u8 	stream_snr[2];
 	u8 	stream_csi[2];
 	u8	rsvd_3[2];
-	s1Byte 	sig_evm;
+	s8 	sig_evm;
 	u8 	rsvd_4;
 #if (ODM_ENDIAN_TYPE == ODM_ENDIAN_LITTLE)
 	u8 	antidx_anta:3;
@@ -208,11 +208,11 @@ typedef struct _Phy_Status_Rpt_8812
 	u8			cfosho[4];	// DW 1 byte 1 DW 2 byte 0
 
 	//DWORD 2
-	s1Byte			cfotail[4];	// DW 2 byte 1 DW 3 byte 0
+	s8			cfotail[4];	// DW 2 byte 1 DW 3 byte 0
 
 	//DWORD 3
-	s1Byte			rxevm[2];	// DW 3 byte 1 DW 3 byte 2
-	s1Byte			rxsnr[2];	// DW 3 byte 3 DW 4 byte 0
+	s8			rxevm[2];	// DW 3 byte 1 DW 3 byte 2
+	s8			rxsnr[2];	// DW 3 byte 3 DW 4 byte 0
 
 	//DWORD 4
 	u8			PCTS_MSK_RPT[2];

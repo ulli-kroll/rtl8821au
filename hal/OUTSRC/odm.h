@@ -162,9 +162,9 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 	u8		BT30_CurIGI;
 	u8		BackupIGValue;
 
-	s1Byte		BackoffVal;
-	s1Byte		BackoffVal_range_max;
-	s1Byte		BackoffVal_range_min;
+	s8		BackoffVal;
+	s8		BackoffVal_range_max;
+	s8		BackoffVal_range_min;
 	u8		rx_gain_range_max;
 	u8		rx_gain_range_min;
 	u8		Rssi_val_min;
@@ -398,7 +398,7 @@ typedef struct _ODM_Phy_Status_Info_
 	u8		RxPWDBAll;
 
 	u8		SignalQuality;	 		// in 0-100 index.
-	s1Byte		RxMIMOSignalQuality[4];	//per-path's EVM
+	s8		RxMIMOSignalQuality[4];	//per-path's EVM
 	u8		RxMIMOEVMdbm[4]; 		//per-path's EVM dbm
 
 	u8		RxMIMOSignalStrength[4];// in 0~100 index
@@ -407,8 +407,8 @@ typedef struct _ODM_Phy_Status_Info_
 	u16		Cfo_tail[4];			// per-path's Cfo_tail
 
 #if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
-	s1Byte		RxPower;				// in dBm Translate from PWdB
-	s1Byte		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
+	s8		RxPower;				// in dBm Translate from PWdB
+	s8		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
 	u8		BTRxRSSIPercentage;
 	u8		SignalStrength; 		// in 0-100 index.
 
@@ -434,7 +434,7 @@ typedef struct _ODM_Per_Pkt_Info_
 typedef struct _ODM_Phy_Dbg_Info_
 {
 	//ODM Write,debug info
-	s1Byte		RxSNRdB[4];
+	s8		RxSNRdB[4];
 	uint64_t		NumQryPhyStatus;
 	uint64_t		NumQryPhyStatusCCK;
 	uint64_t		NumQryPhyStatusOFDM;
@@ -939,9 +939,9 @@ typedef struct ODM_RF_Calibration_Structure
 	u8 	bCCKinCH14;
 	u8 	CCK_index;
 	u8 	OFDM_index[MAX_RF_PATH];
-	s1Byte	PowerIndexOffset[MAX_RF_PATH];
-	s1Byte	DeltaPowerIndex[MAX_RF_PATH];
-	s1Byte	DeltaPowerIndexLast[MAX_RF_PATH];
+	s8	PowerIndexOffset[MAX_RF_PATH];
+	s8	DeltaPowerIndex[MAX_RF_PATH];
+	s8	DeltaPowerIndexLast[MAX_RF_PATH];
 	BOOLEAN bTxPowerChanged;
 
 	u8 	ThermalValue_HP[HP_THERMAL_NUM];
@@ -950,7 +950,7 @@ typedef struct ODM_RF_Calibration_Structure
 	BOOLEAN	bNeedIQK;
 	u8	Delta_IQK;
 	u8	Delta_LCK;
-	s1Byte  BBSwingDiff2G, BBSwingDiff5G; // Unit: dB
+	s8  BBSwingDiff2G, BBSwingDiff5G; // Unit: dB
     	u8  DeltaSwingTableIdx_2GCCKA_P[DELTA_SWINGIDX_SIZE];
     	u8  DeltaSwingTableIdx_2GCCKA_N[DELTA_SWINGIDX_SIZE];
    	u8  DeltaSwingTableIdx_2GCCKB_P[DELTA_SWINGIDX_SIZE];
@@ -1355,10 +1355,10 @@ struct rtl_dm {
 	u8			DefaultCckIndex;
 	BOOLEAN			BbSwingFlagCck;
 
-	s1Byte			Aboslute_OFDMSwingIdx[MAX_RF_PATH];
-	s1Byte			Remnant_OFDMSwingIdx[MAX_RF_PATH];
-	s1Byte			Remnant_CCKSwingIdx;
-	s1Byte			Modify_TxAGC_Value;       //Remnat compensate value at TxAGC
+	s8			Aboslute_OFDMSwingIdx[MAX_RF_PATH];
+	s8			Remnant_OFDMSwingIdx[MAX_RF_PATH];
+	s8			Remnant_CCKSwingIdx;
+	s8			Modify_TxAGC_Value;       //Remnat compensate value at TxAGC
 	BOOLEAN			Modify_TxAGC_Flag_PathA;
 	BOOLEAN			Modify_TxAGC_Flag_PathB;
 

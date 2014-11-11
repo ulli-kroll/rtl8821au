@@ -36,7 +36,7 @@
  */
 
 
-static void DoIQK_8812A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
+static void DoIQK_8812A(struct rtl_dm *pDM_Odm, u1Byte DeltaThermalIndex,
 	u1Byte 	ThermalValue, u1Byte Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -65,7 +65,7 @@ static void DoIQK_8812A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
  *	04/23/2012	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
+static void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 	u1Byte 	RFPath, u1Byte 	ChannelMappedIndex)
 {
 	uint32_t 	finalBbSwingIdx[2];
@@ -253,7 +253,7 @@ static void ODM_TxPwrTrackSetPwr8812A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	}
 }
 
-static void GetDeltaSwingTable_8812A(PDM_ODM_T pDM_Odm,
+static void GetDeltaSwingTable_8812A(struct rtl_dm *pDM_Odm,
 	pu1Byte *TemperatureUP_A, pu1Byte *TemperatureDOWN_A,
 	pu1Byte *TemperatureUP_B, pu1Byte *TemperatureDOWN_B)
 {
@@ -325,7 +325,7 @@ void ConfigureTxpowerTrack_8812A(PTXPWRTRACK_CFG pConfig)
 #define	BW_40M  1
 #define	BW_80M	2
 
-static void _IQK_RX_FillIQC_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+static void _IQK_RX_FillIQC_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	unsigned int RX_X, unsigned int RX_Y)
 {
 	switch (Path) {
@@ -360,7 +360,7 @@ static void _IQK_RX_FillIQC_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	};
 }
 
-static void _IQK_TX_FillIQC_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
+static void _IQK_TX_FillIQC_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
 	unsigned int TX_X, unsigned int TX_Y)
 {
 	switch (Path) {
@@ -389,7 +389,7 @@ static void _IQK_TX_FillIQC_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
 	};
 }
 
-static void _IQK_BackupMacBB_8812A(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
+static void _IQK_BackupMacBB_8812A(struct rtl_dm *pDM_Odm, uint32_t *MACBB_backup,
 	uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
@@ -402,7 +402,7 @@ static void _IQK_BackupMacBB_8812A(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n"));
 }
 
-static void _IQK_BackupRF_8812A(PDM_ODM_T pDM_Odm,
+static void _IQK_BackupRF_8812A(struct rtl_dm *pDM_Odm,
 	uint32_t *RFA_backup, uint32_t *RFB_backup,
 	uint32_t *Backup_RF_REG, uint32_t RF_NUM)
 {
@@ -416,7 +416,7 @@ static void _IQK_BackupRF_8812A(PDM_ODM_T pDM_Odm,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n"));
 }
 
-static void _IQK_BackupAFE_8812A(PDM_ODM_T pDM_Odm,
+static void _IQK_BackupAFE_8812A(struct rtl_dm *pDM_Odm,
 	uint32_t *AFE_backup, uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
 	uint32_t i;
@@ -428,7 +428,7 @@ static void _IQK_BackupAFE_8812A(PDM_ODM_T pDM_Odm,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n"));
 }
 
-static void _IQK_RestoreMacBB_8812A(PDM_ODM_T pDM_Odm,
+static void _IQK_RestoreMacBB_8812A(struct rtl_dm *pDM_Odm,
 	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
@@ -440,7 +440,7 @@ static void _IQK_RestoreMacBB_8812A(PDM_ODM_T pDM_Odm,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n"));
 }
 
-static void _IQK_RestoreRF_8812A(PDM_ODM_T pDM_Odm,
+static void _IQK_RestoreRF_8812A(struct rtl_dm *pDM_Odm,
 	ODM_RF_RADIO_PATH_E Path, uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
 {
 	uint32_t i;
@@ -463,7 +463,7 @@ static void _IQK_RestoreRF_8812A(PDM_ODM_T pDM_Odm,
 	}
 }
 
-static void _IQK_RestoreAFE_8812A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
+static void _IQK_RestoreAFE_8812A(struct rtl_dm *pDM_Odm, uint32_t *AFE_backup,
 	uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
 	uint32_t i;
@@ -486,7 +486,7 @@ static void _IQK_RestoreAFE_8812A(PDM_ODM_T pDM_Odm, uint32_t *AFE_backup,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n"));
 }
 
-static void _IQK_ConfigureMAC_8812A(PDM_ODM_T pDM_Odm)
+static void _IQK_ConfigureMAC_8812A(struct rtl_dm *pDM_Odm)
 {
 	/* ========MAC register setting======== */
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */
@@ -501,7 +501,7 @@ static void _IQK_ConfigureMAC_8812A(PDM_ODM_T pDM_Odm)
 
 /* ULLI this function needs a complete rewrite (or we cantake code form rtlwifi-lib */
 
-static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	u1Byte chnlIdx)
 {
 	uint32_t 	TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
@@ -1584,7 +1584,7 @@ static void _IQK_Tx_8812A(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 #define RF_REG_NUM 3
 
 /* Maintained by BB James. */
-static void phy_IQCalibrate_8812A(PDM_ODM_T pDM_Odm, u1Byte Channel)
+static void phy_IQCalibrate_8812A(struct rtl_dm *pDM_Odm, u1Byte Channel)
 {
 	uint32_t MACBB_backup[MACBB_REG_NUM], AFE_backup[AFE_REG_NUM], RFA_backup[RF_REG_NUM], RFB_backup[RF_REG_NUM];
 	uint32_t Backup_MACBB_REG[MACBB_REG_NUM] = { 0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00, 0xe00, 0x8c4, 0x838, 0x82c };
@@ -1609,7 +1609,7 @@ static void phy_IQCalibrate_8812A(PDM_ODM_T pDM_Odm, u1Byte Channel)
 }
 
 
-static void phy_LCCalibrate_8812A(PDM_ODM_T pDM_Odm, BOOLEAN	is2T)
+static void phy_LCCalibrate_8812A(struct rtl_dm *pDM_Odm, BOOLEAN	is2T)
 {
 	uint32_t	/*RF_Amode=0, RF_Bmode=0,*/ LC_Cal = 0, tmp = 0;
 
@@ -1696,7 +1696,7 @@ void PHY_IQCalibrate_8812A(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	{
 		/*
@@ -1709,7 +1709,7 @@ void PHY_IQCalibrate_8812A(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 
 }
 
-void PHY_LCCalibrate_8812A(PDM_ODM_T pDM_Odm)
+void PHY_LCCalibrate_8812A(struct rtl_dm *pDM_Odm)
 {
 	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
 
@@ -1722,7 +1722,7 @@ void PHY_LCCalibrate_8812A(PDM_ODM_T pDM_Odm)
 
 }
 
-static void _DPK_parareload(PDM_ODM_T pDM_Odm,
+static void _DPK_parareload(struct rtl_dm *pDM_Odm,
 	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG,
 	uint32_t MACBB_NUM)
 {
@@ -1737,7 +1737,7 @@ static void _DPK_parareload(PDM_ODM_T pDM_Odm,
 }
 
 
-static void _DPK_parabackup(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
+static void _DPK_parabackup(struct rtl_dm *pDM_Odm, uint32_t *MACBB_backup,
 	uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
@@ -1750,7 +1750,7 @@ static void _DPK_parabackup(PDM_ODM_T pDM_Odm, uint32_t *MACBB_backup,
 	}
 }
 
-static void _DPK_Globalparaset(PDM_ODM_T pDM_Odm)
+static void _DPK_Globalparaset(struct rtl_dm *pDM_Odm)
 {
 
 	/* ************************************* */
@@ -1836,7 +1836,7 @@ static void _DPK_Globalparaset(PDM_ODM_T pDM_Odm)
 }
 
 
-static void _DPK_GetGainLoss(PDM_ODM_T pDM_Odm, u1Byte path)
+static void _DPK_GetGainLoss(struct rtl_dm *pDM_Odm, u1Byte path)
 {
 	uint32_t GL_I = 0, GL_Q = 0;
 	uint32_t GL_I_tmp = 0, GL_Q_tmp = 0;
@@ -1929,7 +1929,7 @@ static void _DPK_GetGainLoss(PDM_ODM_T pDM_Odm, u1Byte path)
 }
 
 
-static void _DPK_EnableDP(PDM_ODM_T pDM_Odm, u1Byte path, uint32_t TXindex)
+static void _DPK_EnableDP(struct rtl_dm *pDM_Odm, u1Byte path, uint32_t TXindex)
 {
 	/* ************************************* */
 	/* Enable DP */
@@ -2014,7 +2014,7 @@ static void _DPK_EnableDP(PDM_ODM_T pDM_Odm, u1Byte path, uint32_t TXindex)
 }
 
 
-static void _DPK_pathABDPK(PDM_ODM_T pDM_Odm)
+static void _DPK_pathABDPK(struct rtl_dm *pDM_Odm)
 {
 	uint32_t TXindex = 0;
 	u1Byte path = 0;
@@ -2267,7 +2267,7 @@ static void _DPK_pathABDPK(PDM_ODM_T pDM_Odm)
 
 
 
-static void phy_DPCalibrate_8812A(PDM_ODM_T pDM_Odm)
+static void phy_DPCalibrate_8812A(struct rtl_dm *pDM_Odm)
 {
 	uint32_t backupRegAddrs[] = {
 		0x970, 0xcb8, 0x838, 0xc00, 0x90c, 0xb00, 0xc94, 0x82c, 0x520, 0xc60, /* 10 */
@@ -2299,7 +2299,7 @@ static void phy_DPCalibrate_8812A(PDM_ODM_T pDM_Odm)
 
 }
 
-void PHY_DPCalibrate_8812A(PDM_ODM_T pDM_Odm)
+void PHY_DPCalibrate_8812A(struct rtl_dm *pDM_Odm)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_DPCalibrate_8812A\n"));
 	phy_DPCalibrate_8812A(pDM_Odm);

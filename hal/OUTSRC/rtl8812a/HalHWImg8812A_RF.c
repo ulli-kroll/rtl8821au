@@ -92,7 +92,7 @@ u1Byte gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_USB_8812A[] = {0, 1, 1, 2, 2
 u1Byte gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_USB_8812A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10};
 u1Byte gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_8812A[] = {0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7};
 
-void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB(PDM_ODM_T pDM_Odm)
+void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB(struct rtl_dm *pDM_Odm)
 {
 	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
@@ -147,7 +147,7 @@ u1Byte gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_USB_RFE3_8812A[] = {0, 1, 1,
 u1Byte gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_USB_RFE3_8812A[] = {0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  6,  7,  7,  8,  8,  9, 10, 10, 11, 11, 12, 12, 13, 13, 13, 13, 14, 14, 15, 15};
 u1Byte gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_RFE3_8812A[] = {0, 0, 1, 1, 1, 2, 2, 3, 3,  4,  4,  4,  5,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11};
 
-void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB_RFE3(PDM_ODM_T pDM_Odm)
+void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB_RFE3(struct rtl_dm *pDM_Odm)
 {
 	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 

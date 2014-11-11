@@ -47,7 +47,7 @@ PHY_IQCalibrate_8812A(
 //
 void
 PHY_LCCalibrate_8812A(
-	IN PDM_ODM_T		pDM_Odm
+	IN struct rtl_dm *	pDM_Odm
 );
 
 //
@@ -62,7 +62,7 @@ PHY_DigitalPredistortion_8812A(		IN	struct rtl_priv *pAdapter);
 
 VOID
 PHY_DPCalibrate_8812A(
-	IN 	PDM_ODM_T	pDM_Odm
+	IN 	struct rtl_dm *pDM_Odm
 );
 
 #endif	// #ifndef __HAL_PHY_RF_8812A_H__

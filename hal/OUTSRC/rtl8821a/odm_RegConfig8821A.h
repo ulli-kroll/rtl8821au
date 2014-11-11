@@ -24,7 +24,7 @@
 
 void
 odm_ConfigRFReg_8821A(
-	IN 	PDM_ODM_T 				pDM_Odm,
+	IN 	struct rtl_dm *				pDM_Odm,
 	IN 	uint32_t 					Addr,
 	IN 	uint32_t 					Data,
 	IN  ODM_RF_RADIO_PATH_E     RF_PATH,
@@ -33,7 +33,7 @@ odm_ConfigRFReg_8821A(
 
 void
 odm_ConfigBB_AGC_8821A(
-    IN 	PDM_ODM_T 	pDM_Odm,
+    IN 	struct rtl_dm *	pDM_Odm,
     IN 	uint32_t 		Addr,
     IN 	uint32_t 		Bitmask,
     IN 	uint32_t 		Data
@@ -41,7 +41,7 @@ odm_ConfigBB_AGC_8821A(
 
 void
 odm_ConfigBB_PHY_REG_PG_8821A(
-	IN 	PDM_ODM_T 	pDM_Odm,
+	IN 	struct rtl_dm *	pDM_Odm,
     IN 	uint32_t 		Addr,
     IN 	uint32_t 		Bitmask,
     IN 	uint32_t 		Data
@@ -49,7 +49,7 @@ odm_ConfigBB_PHY_REG_PG_8821A(
 
 void
 odm_ConfigBB_PHY_8821A(
-	IN 	PDM_ODM_T 	pDM_Odm,
+	IN 	struct rtl_dm *	pDM_Odm,
     IN 	uint32_t 		Addr,
     IN 	uint32_t 		Bitmask,
     IN 	uint32_t 		Data

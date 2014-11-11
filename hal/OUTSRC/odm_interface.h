@@ -56,71 +56,71 @@ typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
 typedef VOID (*RT_WORKITEM_CALL_BACK)(PVOID pContext);
 
 
-static u1Byte ODM_Read1Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr)
+static u1Byte ODM_Read1Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
 {
 	return rtw_read8(pDM_Odm->Adapter,RegAddr);
 }
 
-static uint16_t ODM_Read2Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr)
+static uint16_t ODM_Read2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
 {
 	return rtw_read16(pDM_Odm->Adapter,RegAddr);
 }
 
-static uint32_t ODM_Read4Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr)
+static uint32_t ODM_Read4Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
 {
 	return rtw_read32(pDM_Odm->Adapter,RegAddr);
 }
 
-static void ODM_Write1Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr, u1Byte Data)
+static void ODM_Write1Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, u1Byte Data)
 {
 	rtw_write8(pDM_Odm->Adapter,RegAddr, Data);
 }
 
-static void ODM_Write2Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr, uint16_t Data)
+static void ODM_Write2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, uint16_t Data)
 {
 	rtw_write16(pDM_Odm->Adapter,RegAddr, Data);
 }
 
-static void ODM_Write4Byte(PDM_ODM_T pDM_Odm, uint32_t RegAddr, uint32_t Data)
+static void ODM_Write4Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, uint32_t Data)
 {
 	rtw_write32(pDM_Odm->Adapter,RegAddr, Data);
 }
 
 
-static void ODM_SetMACReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
+static void ODM_SetMACReg(struct rtl_dm *pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
 {
 	rtl_set_bbreg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
 }
 
 
-static uint32_t ODM_GetMACReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
+static uint32_t ODM_GetMACReg(struct rtl_dm *pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask)
 {
 	return rtl_get_bbreg(pDM_Odm->Adapter, RegAddr, BitMask);
 }
 
 
-static void ODM_SetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
+static void ODM_SetBBReg(struct rtl_dm *pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
 {
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
 	rtl_set_bbreg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
 }
 
-static uint32_t ODM_GetBBReg(PDM_ODM_T pDM_Odm, uint32_t RegAddr,
+static uint32_t ODM_GetBBReg(struct rtl_dm *pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask)
 {
 	return rtl_get_bbreg(pDM_Odm->Adapter, RegAddr, BitMask);
 }
 
-static void ODM_SetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
+static void ODM_SetRFReg(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
 	rtw_hal_write_rfreg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask, Data);
 }
 
-static uint32_t ODM_GetRFReg(PDM_ODM_T pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
+static uint32_t ODM_GetRFReg(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
 	uint32_t RegAddr, uint32_t BitMask)
 {
 	return rtw_hal_read_rfreg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask);

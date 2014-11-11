@@ -151,7 +151,7 @@ u1Byte	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
  * 2011/09/21 MH Add to describe different team necessary resource allocate??
  */
  
-static void odm_CmnInfoInit_Debug(PDM_ODM_T pDM_Odm)
+static void odm_CmnInfoInit_Debug(struct rtl_dm *pDM_Odm)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_CmnInfoInit_Debug==>\n"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("SupportPlatform=%d\n", pDM_Odm->SupportPlatform));
@@ -172,7 +172,7 @@ static void odm_CmnInfoInit_Debug(PDM_ODM_T pDM_Odm)
 
 }
 
-static void odm_CommonInfoSelfInit(PDM_ODM_T pDM_Odm)
+static void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm)
 {
 	pDM_Odm->bCckHighPower = (BOOLEAN) ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
 	pDM_Odm->RFPathRxEnable = (u1Byte) ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
@@ -185,7 +185,7 @@ static void odm_CommonInfoSelfInit(PDM_ODM_T pDM_Odm)
 	ODM_InitDebugSetting(pDM_Odm);
 }
 
-static void odm_DIGInit(PDM_ODM_T pDM_Odm)
+static void odm_DIGInit(struct rtl_dm *pDM_Odm)
 {
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
@@ -228,7 +228,7 @@ static void odm_DIGInit(PDM_ODM_T pDM_Odm)
 
 }
 
-static void odm_AdaptivityInit(PDM_ODM_T pDM_Odm)
+static void odm_AdaptivityInit(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *pAdapter = pDM_Odm->Adapter;
 
@@ -240,7 +240,7 @@ static void odm_AdaptivityInit(PDM_ODM_T pDM_Odm)
 	pDM_Odm->AdapEn_RSSI = 32;	/* 45; */
 }
 
-static void odm_RateAdaptiveMaskInit(PDM_ODM_T	pDM_Odm)
+static void odm_RateAdaptiveMaskInit(struct rtl_dm *pDM_Odm)
 {
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
 
@@ -259,7 +259,7 @@ static void odm_RateAdaptiveMaskInit(PDM_ODM_T	pDM_Odm)
 	pOdmRA->LowRSSIThresh = 20;
 }
 
-static void ODM_EdcaTurboInit(PDM_ODM_T pDM_Odm)
+static void ODM_EdcaTurboInit(struct rtl_dm *pDM_Odm)
 {
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
@@ -277,7 +277,7 @@ static void ODM_EdcaTurboInit(PDM_ODM_T pDM_Odm)
 
 }
 
-static u1Byte getSwingIndex(PDM_ODM_T pDM_Odm)
+static u1Byte getSwingIndex(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -296,7 +296,7 @@ static u1Byte getSwingIndex(PDM_ODM_T pDM_Odm)
 
 
 
-static void odm_TXPowerTrackingThermalMeterInit(PDM_ODM_T pDM_Odm)
+static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 {
 	u1Byte 		p = 0;
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
@@ -359,12 +359,12 @@ static void odm_TXPowerTrackingThermalMeterInit(PDM_ODM_T pDM_Odm)
 	}
 }
 
-static void odm_TXPowerTrackingInit(PDM_ODM_T pDM_Odm)
+static void odm_TXPowerTrackingInit(struct rtl_dm *pDM_Odm)
 {
 	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
 }
 
-void ODM_DMInit(PDM_ODM_T pDM_Odm)
+void ODM_DMInit(struct rtl_dm *pDM_Odm)
 {
 	/* 2012.05.03 Luke: For all IC series */
 	odm_CommonInfoSelfInit(pDM_Odm);

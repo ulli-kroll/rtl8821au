@@ -34,9 +34,9 @@
 //3 ============================================================
 */
 
-static void PHY_LCCalibrate_8821A(PDM_ODM_T pDM_Odm);
+static void PHY_LCCalibrate_8821A(struct rtl_dm *pDM_Odm);
 
-static void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
+static void DoIQK_8821A(struct rtl_dm *pDM_Odm, u1Byte DeltaThermalIndex,
 	u1Byte ThermalValue, u1Byte Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -49,7 +49,7 @@ static void DoIQK_8821A(PDM_ODM_T pDM_Odm, u1Byte DeltaThermalIndex,
 }
 
 
-static void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
+static void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 	u1Byte RFPath, u1Byte ChannelMappedIndex)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -167,7 +167,7 @@ static void ODM_TxPwrTrackSetPwr8821A(PDM_ODM_T pDM_Odm, PWRTRACK_METHOD Method,
 	}
 }
 
-static void GetDeltaSwingTable_8821A(PDM_ODM_T pDM_Odm,
+static void GetDeltaSwingTable_8821A(struct rtl_dm *pDM_Odm,
 	pu1Byte *TemperatureUP_A, pu1Byte *TemperatureDOWN_A,
 	pu1Byte *TemperatureUP_B, pu1Byte *TemperatureDOWN_B)
 {
@@ -281,7 +281,7 @@ void phy_IQCalibrate_By_FW_8821A(struct rtl_priv *pAdapter)
 
 
 
-static void PHY_LCCalibrate_8821A(PDM_ODM_T pDM_Odm)
+static void PHY_LCCalibrate_8821A(struct rtl_dm *pDM_Odm)
 {
 	PHY_LCCalibrate_8812A(pDM_Odm);
 }

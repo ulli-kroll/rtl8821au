@@ -35,7 +35,7 @@ void ODM_ReadFirmware_MP_8812A_FW_NIC(u8 **pFirmware, uint32_t *pFirmwareSize);
 
 void
 ODM_ReadFirmware_MP_8812A_FW_NIC_BT(
-     IN   PDM_ODM_T    pDM_Odm,
+     IN   struct rtl_dm *   pDM_Odm,
      OUT  u1Byte       *pFirmware,
      OUT  uint32_t       *pFirmwareSize
 );
@@ -46,7 +46,7 @@ ODM_ReadFirmware_MP_8812A_FW_NIC_BT(
 
 void
 ODM_ReadFirmware_MP_8812A_FW_WoWLAN(
-     IN   PDM_ODM_T    pDM_Odm,
+     IN   struct rtl_dm *   pDM_Odm,
      OUT  u1Byte       *pFirmware,
      OUT  uint32_t       *pFirmwareSize
 );

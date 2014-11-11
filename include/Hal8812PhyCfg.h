@@ -75,7 +75,7 @@ int	PHY_RFConfig8812(IN struct rtl_priv *Adapter	);
 
 VOID
 PHY_InitPowerLimitTable(
-	IN	PDM_ODM_T	pDM_Odm
+	IN	struct rtl_dm *pDM_Odm
 	);
 
 VOID

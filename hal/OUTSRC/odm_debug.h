@@ -160,7 +160,7 @@
 
 VOID
 ODM_InitDebugSetting(
-	IN		PDM_ODM_T		pDM_Odm
+	IN		struct rtl_dm *	pDM_Odm
 	);
 
 

@@ -30,7 +30,7 @@ static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex);
 
 void
 ODM_ReadAndConfig_MP_8812A_AGC_TAB( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
+	IN   struct rtl_dm * pDM_Odm
 );
 
 /******************************************************************************
@@ -41,7 +41,7 @@ extern uint32_t Array_MP_8812A_AGC_TAB_DIFF_LB[116];
 extern uint32_t Array_MP_8812A_AGC_TAB_DIFF_HB[116];
 void
 ODM_ReadAndConfig_MP_8812A_AGC_TAB_DIFF(
-     IN   PDM_ODM_T    pDM_Odm,
+     IN   struct rtl_dm *   pDM_Odm,
  	 IN   uint32_t  	   Array[],
  	 IN   uint32_t  	   ArrayLen
 );
@@ -52,7 +52,7 @@ ODM_ReadAndConfig_MP_8812A_AGC_TAB_DIFF(
 
 void
 ODM_ReadAndConfig_MP_8812A_PHY_REG( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
+	IN   struct rtl_dm * pDM_Odm
 );
 
 /******************************************************************************
@@ -61,7 +61,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG( // TC: Test Chip, MP: MP Chip
 
 void
 ODM_ReadAndConfig_MP_8812A_PHY_REG_PG( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
+	IN   struct rtl_dm * pDM_Odm
 );
 
 /******************************************************************************
@@ -70,7 +70,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG( // TC: Test Chip, MP: MP Chip
 
 void
 ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
+	IN   struct rtl_dm * pDM_Odm
 );
 
 /******************************************************************************
@@ -79,7 +79,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS( // TC: Test Chip, MP: MP Chip
 
 void
 ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_NEC( // TC: Test Chip, MP: MP Chip
-	IN   PDM_ODM_T  pDM_Odm
+	IN   struct rtl_dm * pDM_Odm
 );
 
 #endif

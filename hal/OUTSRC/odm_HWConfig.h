@@ -233,7 +233,7 @@ typedef struct _Phy_Status_Rpt_8812
 
 VOID
 ODM_PhyStatusQuery(
-	IN OUT	PDM_ODM_T					pDM_Odm,
+	IN OUT	struct rtl_dm *				pDM_Odm,
 	OUT		PODM_PHY_INFO_T			pPhyInfo,
 	IN 		pu1Byte						pPhyStatus,
 	IN		PODM_PACKET_INFO_T			pPktinfo
@@ -243,19 +243,19 @@ ODM_PhyStatusQuery(
 
 HAL_STATUS
 ODM_ConfigRFWithTxPwrTrackHeaderFile(
-	IN 	PDM_ODM_T	        	pDM_Odm
+	IN 	struct rtl_dm *        	pDM_Odm
     );
 
 HAL_STATUS
 ODM_ConfigRFWithHeaderFile(
-	IN 	PDM_ODM_T	        	pDM_Odm,
+	IN 	struct rtl_dm *        	pDM_Odm,
 	IN 	ODM_RF_Config_Type 		ConfigType,
 	IN 	ODM_RF_RADIO_PATH_E 	eRFPath
 	);
 
 HAL_STATUS
 ODM_ConfigBBWithHeaderFile(
-	IN  	PDM_ODM_T	                pDM_Odm,
+	IN  	struct rtl_dm *                pDM_Odm,
 	IN	ODM_BB_Config_Type		ConfigType
     );
 

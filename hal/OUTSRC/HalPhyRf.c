@@ -39,7 +39,7 @@
 
 
 void ConfigureTxpowerTrack(
-	IN 	PDM_ODM_T		pDM_Odm,
+	IN 	struct rtl_dm *	pDM_Odm,
 	OUT	PTXPWRTRACK_CFG	pConfig
 	)
 {
@@ -64,7 +64,7 @@ void ConfigureTxpowerTrack(
 //======================================================================
 VOID
 ODM_ClearTxPowerTrackingState(
-	IN PDM_ODM_T		pDM_Odm
+	IN struct rtl_dm *	pDM_Odm
 	)
 {
 	struct rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
@@ -105,7 +105,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 #endif
 
 	u1Byte			ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;
@@ -424,7 +424,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 VOID
 ODM_ResetIQKResult(
-	IN PDM_ODM_T	pDM_Odm
+	IN struct rtl_dm *pDM_Odm
 )
 {
 	u1Byte		i;

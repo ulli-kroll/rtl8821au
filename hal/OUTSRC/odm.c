@@ -252,53 +252,53 @@ unsigned int TxPwrTrk_OFDM_SwingTbl[TxPwrTrk_OFDM_SwingTbl_Len] = {
  */
 
 /* START------------COMMON INFO RELATED--------------- */
-void odm_CommonInfoSelfInit(PDM_ODM_T pDM_Odm);
-void odm_CommonInfoSelfUpdate(PDM_ODM_T	 pDM_Odm);
-void odm_CmnInfoInit_Debug(PDM_ODM_T pDM_Odm);
-void odm_CmnInfoHook_Debug(PDM_ODM_T pDM_Odm);
-void odm_CmnInfoUpdate_Debug(PDM_ODM_T pDM_Odm);
-void odm_BasicDbgMessage(PDM_ODM_T pDM_Odm);
+void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm);
+void odm_CommonInfoSelfUpdate(struct rtl_dm * pDM_Odm);
+void odm_CmnInfoInit_Debug(struct rtl_dm *pDM_Odm);
+void odm_CmnInfoHook_Debug(struct rtl_dm *pDM_Odm);
+void odm_CmnInfoUpdate_Debug(struct rtl_dm *pDM_Odm);
+void odm_BasicDbgMessage(struct rtl_dm *pDM_Odm);
 /*
-void odm_FindMinimumRSSI(PDM_ODM_T pDM_Odm);
-void odm_IsLinked(PDM_ODM_T pDM_Odm);
+void odm_FindMinimumRSSI(struct rtl_dm *pDM_Odm);
+void odm_IsLinked(struct rtl_dm *pDM_Odm);
 */
 /* END------------COMMON INFO RELATED--------------- */
 
 /* START---------------DIG--------------------------- */
-void odm_FalseAlarmCounterStatistics(PDM_ODM_T pDM_Odm);
-void odm_DIGInit(PDM_ODM_T pDM_Odm);
-void odm_DIG(PDM_ODM_T pDM_Odm);
-void odm_CCKPacketDetectionThresh(PDM_ODM_T pDM_Odm);
-void odm_AdaptivityInit(PDM_ODM_T pDM_Odm);
-void odm_Adaptivity(PDM_ODM_T pDM_Odm, u1Byte IGI);
+void odm_FalseAlarmCounterStatistics(struct rtl_dm *pDM_Odm);
+void odm_DIGInit(struct rtl_dm *pDM_Odm);
+void odm_DIG(struct rtl_dm *pDM_Odm);
+void odm_CCKPacketDetectionThresh(struct rtl_dm *pDM_Odm);
+void odm_AdaptivityInit(struct rtl_dm *pDM_Odm);
+void odm_Adaptivity(struct rtl_dm *pDM_Odm, u1Byte IGI);
 /* END---------------DIG--------------------------- */
 
 /* START-------BB POWER SAVE----------------------- */
-void odm_1R_CCA(PDM_ODM_T pDM_Odm);
+void odm_1R_CCA(struct rtl_dm *pDM_Odm);
 /* END---------BB POWER SAVE----------------------- */
 
 /* START-----------------PSD----------------------- */
 /* END-------------------PSD----------------------- */
 
-void odm_RefreshRateAdaptiveMaskCE(PDM_ODM_T pDM_Odm);
-void odm_RSSIMonitorCheckCE(PDM_ODM_T pDM_Odm);
-void odm_RSSIMonitorCheck(PDM_ODM_T pDM_Odm);
+void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm);
+void odm_RSSIMonitorCheckCE(struct rtl_dm *pDM_Odm);
+void odm_RSSIMonitorCheck(struct rtl_dm *pDM_Odm);
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
 #endif
 
-void odm_RefreshRateAdaptiveMask(PDM_ODM_T pDM_Odm);
-void ODM_TXPowerTrackingCheck(PDM_ODM_T pDM_Odm);
-void odm_RateAdaptiveMaskInit(PDM_ODM_T pDM_Odm);
-void odm_TXPowerTrackingThermalMeterInit(PDM_ODM_T pDM_Odm);
-void odm_TXPowerTrackingInit(PDM_ODM_T pDM_Odm);
-void odm_TXPowerTrackingCheckCE(PDM_ODM_T pDM_Odm);
-void odm_EdcaTurboCheck(PDM_ODM_T pDM_Odm);
-void ODM_EdcaTurboInit(PDM_ODM_T pDM_Odm);
+void odm_RefreshRateAdaptiveMask(struct rtl_dm *pDM_Odm);
+void ODM_TXPowerTrackingCheck(struct rtl_dm *pDM_Odm);
+void odm_RateAdaptiveMaskInit(struct rtl_dm *pDM_Odm);
+void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm);
+void odm_TXPowerTrackingInit(struct rtl_dm *pDM_Odm);
+void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm);
+void odm_EdcaTurboCheck(struct rtl_dm *pDM_Odm);
+void ODM_EdcaTurboInit(struct rtl_dm *pDM_Odm);
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-void odm_EdcaTurboCheckCE(PDM_ODM_T pDM_Odm);
+void odm_EdcaTurboCheckCE(struct rtl_dm *pDM_Odm);
 #endif
 
 
@@ -318,7 +318,7 @@ void odm_EdcaTurboCheckCE(PDM_ODM_T pDM_Odm);
  * You can not add any dummy function here, be care, you can only use DM structure
  * to perform any new ODM_DM.
  */
-void ODM_DMWatchdog(PDM_ODM_T pDM_Odm)
+void ODM_DMWatchdog(struct rtl_dm *pDM_Odm)
 {
 	/* odm_CmnInfoHook_Debug(pDM_Odm); */
 	/* odm_CmnInfoUpdate_Debug(pDM_Odm); */
@@ -382,7 +382,7 @@ void ODM_DMWatchdog(PDM_ODM_T pDM_Odm)
  * Init /.. Fixed HW value. Only init time.
  */
 
-void ODM_CmnInfoInit(PDM_ODM_T pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Value)
+void ODM_CmnInfoInit(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Value)
 {
 	/* ODM_RT_TRACE(pDM_Odm,); */
 
@@ -478,7 +478,7 @@ void ODM_CmnInfoInit(PDM_ODM_T pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Value)
 }
 
 
-void ODM_CmnInfoHook(PDM_ODM_T pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue)
+void ODM_CmnInfoHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue)
 {
 	/*
 	 * Hook call by reference pointer.
@@ -605,7 +605,7 @@ void ODM_CmnInfoHook(PDM_ODM_T pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue)
 }
 
 
-void ODM_CmnInfoPtrArrayHook(PDM_ODM_T pDM_Odm, ODM_CMNINFO_E CmnInfo,
+void ODM_CmnInfoPtrArrayHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
 	uint16_t Index, PVOID pValue)
 {
 	/*
@@ -631,7 +631,7 @@ void ODM_CmnInfoPtrArrayHook(PDM_ODM_T pDM_Odm, ODM_CMNINFO_E CmnInfo,
 /*
  * Update Band/CHannel/.. The values are dynamic but non-per-packet.
  */
-void ODM_CmnInfoUpdate(PDM_ODM_T pDM_Odm, uint32_t CmnInfo, uint64_t Value)
+void ODM_CmnInfoUpdate(struct rtl_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value)
 {
 	/*
 	 * This init variable may be changed in run time.
@@ -742,7 +742,7 @@ void ODM_CmnInfoUpdate(PDM_ODM_T pDM_Odm, uint32_t CmnInfo, uint64_t Value)
 }
 
 
-void odm_CommonInfoSelfUpdate(PDM_ODM_T	 pDM_Odm)
+void odm_CommonInfoSelfUpdate(struct rtl_dm * pDM_Odm)
 {
 	u1Byte	EntryCnt = 0;
 	u1Byte	i;
@@ -768,7 +768,7 @@ void odm_CommonInfoSelfUpdate(PDM_ODM_T	 pDM_Odm)
 		pDM_Odm->bOneEntryOnly = FALSE;
 }
 
-void odm_CmnInfoHook_Debug(PDM_ODM_T pDM_Odm)
+void odm_CmnInfoHook_Debug(struct rtl_dm *pDM_Odm)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_CmnInfoHook_Debug==>\n"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pNumTxBytesUnicast=%llu\n", *(pDM_Odm->pNumTxBytesUnicast)));
@@ -784,7 +784,7 @@ void odm_CmnInfoHook_Debug(PDM_ODM_T pDM_Odm)
 
 }
 
-void odm_CmnInfoUpdate_Debug(PDM_ODM_T pDM_Odm)
+void odm_CmnInfoUpdate_Debug(struct rtl_dm *pDM_Odm)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_CmnInfoUpdate_Debug==>\n"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("bWIFI_Direct=%d\n", pDM_Odm->bWIFI_Direct));
@@ -793,7 +793,7 @@ void odm_CmnInfoUpdate_Debug(PDM_ODM_T pDM_Odm)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("RSSI_Min=%d\n", pDM_Odm->RSSI_Min));
 }
 
-void odm_BasicDbgMessage(PDM_ODM_T pDM_Odm)
+void odm_BasicDbgMessage(struct rtl_dm *pDM_Odm)
 {
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
@@ -830,7 +830,7 @@ void odm_BasicDbgMessage(PDM_ODM_T pDM_Odm)
  *	When		Who		Remark
  *
  *---------------------------------------------------------------------------*/
-void ODM_ChangeDynamicInitGainThresh(PDM_ODM_T	pDM_Odm, uint32_t DM_Type, uint32_t DM_Value)
+void ODM_ChangeDynamicInitGainThresh(struct rtl_dm *pDM_Odm, uint32_t DM_Type, uint32_t DM_Value)
 {
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
@@ -876,7 +876,7 @@ int getIGIForDiff(int value_IGI)
 
 
 
-void odm_Adaptivity(PDM_ODM_T pDM_Odm, u1Byte	IGI)
+void odm_Adaptivity(struct rtl_dm *pDM_Odm, u1Byte	IGI)
 {
 	int32_t TH_H_dmc, TH_L_dmc;
 	int32_t TH_H, TH_L, Diff, IGI_target;
@@ -976,7 +976,7 @@ void odm_Adaptivity(PDM_ODM_T pDM_Odm, u1Byte	IGI)
 }
 
 
-void ODM_Write_DIG(PDM_ODM_T pDM_Odm, u1Byte CurrentIGI)
+void ODM_Write_DIG(struct rtl_dm *pDM_Odm, u1Byte CurrentIGI)
 {
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
@@ -1003,7 +1003,7 @@ void ODM_Write_DIG(PDM_ODM_T pDM_Odm, u1Byte CurrentIGI)
 
 }
 
-void odm_DIGbyRSSI_LPS(PDM_ODM_T pDM_Odm)
+void odm_DIGbyRSSI_LPS(struct rtl_dm *pDM_Odm)
 {
 	/* struct rtl_priv *pAdapter =pDM_Odm->Adapter; */
 	/* pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable; */
@@ -1046,7 +1046,7 @@ void odm_DIGbyRSSI_LPS(PDM_ODM_T pDM_Odm)
 }
 
 
-void odm_DIG(PDM_ODM_T pDM_Odm)
+void odm_DIG(struct rtl_dm *pDM_Odm)
 {
 	pDIG_T						pDM_DigTable = &pDM_Odm->DM_DigTable;
 	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
@@ -1286,7 +1286,7 @@ void odm_DIG(PDM_ODM_T pDM_Odm)
  * 3============================================================
  */
 
-void odm_FalseAlarmCounterStatistics(PDM_ODM_T pDM_Odm)
+void odm_FalseAlarmCounterStatistics(struct rtl_dm *pDM_Odm)
 {
 	uint32_t ret_value;
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
@@ -1324,7 +1324,7 @@ void odm_FalseAlarmCounterStatistics(PDM_ODM_T pDM_Odm)
  * 3============================================================
  */
 
-void odm_CCKPacketDetectionThresh(PDM_ODM_T pDM_Odm)
+void odm_CCKPacketDetectionThresh(struct rtl_dm *pDM_Odm)
 {
 	u1Byte	CurCCK_CCAThres;
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
@@ -1356,7 +1356,7 @@ void odm_CCKPacketDetectionThresh(PDM_ODM_T pDM_Odm)
 		ODM_Write_CCK_CCA_Thres(pDM_Odm, CurCCK_CCAThres);
 }
 
-void ODM_Write_CCK_CCA_Thres(PDM_ODM_T pDM_Odm, u1Byte	 CurCCK_CCAThres)
+void ODM_Write_CCK_CCA_Thres(struct rtl_dm *pDM_Odm, u1Byte	 CurCCK_CCAThres)
 {
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
@@ -1368,7 +1368,7 @@ void ODM_Write_CCK_CCA_Thres(PDM_ODM_T pDM_Odm, u1Byte	 CurCCK_CCAThres)
 
 }
 
-void odm_1R_CCA(PDM_ODM_T pDM_Odm)
+void odm_1R_CCA(struct rtl_dm *pDM_Odm)
 {
 	pPS_T	pDM_PSTable = &pDM_Odm->DM_PSTable;
 
@@ -1419,7 +1419,7 @@ void odm_1R_CCA(PDM_ODM_T pDM_Odm)
 
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-uint32_t ODM_Get_Rate_Bitmap(PDM_ODM_T pDM_Odm, uint32_t macid,
+uint32_t ODM_Get_Rate_Bitmap(struct rtl_dm *pDM_Odm, uint32_t macid,
 	uint32_t ra_mask, u1Byte rssi_level)
 {
 	PSTA_INFO_T   	pEntry;
@@ -1556,7 +1556,7 @@ uint32_t ODM_Get_Rate_Bitmap(PDM_ODM_T pDM_Odm, uint32_t macid,
  *	05/27/2009	hpfan	Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-void odm_RefreshRateAdaptiveMask(PDM_ODM_T pDM_Odm)
+void odm_RefreshRateAdaptiveMask(struct rtl_dm *pDM_Odm)
 {
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("odm_RefreshRateAdaptiveMask()---------->\n"));
@@ -1577,7 +1577,7 @@ void odm_RefreshRateAdaptiveMask(PDM_ODM_T pDM_Odm)
 	}
 }
 
-void odm_RefreshRateAdaptiveMaskCE(PDM_ODM_T pDM_Odm)
+void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm)
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	u1Byte	i;
@@ -1631,7 +1631,7 @@ void odm_RefreshRateAdaptiveMaskCE(PDM_ODM_T pDM_Odm)
  * Return Value: BOOLEAN
  * - TRUE: RATRState is changed.
  */
-BOOLEAN ODM_RAStateCheck(PDM_ODM_T pDM_Odm, int32_t RSSI,
+BOOLEAN ODM_RAStateCheck(struct rtl_dm *pDM_Odm, int32_t RSSI,
 	BOOLEAN	 bForceUpdate, pu1Byte pRATRState)
 {
 	PODM_RATE_ADAPTIVE pRA = &pDM_Odm->RateAdaptive;
@@ -1695,7 +1695,7 @@ BOOLEAN ODM_RAStateCheck(PDM_ODM_T pDM_Odm, int32_t RSSI,
  * 3============================================================
  */
 
-void odm_RSSIMonitorCheck(PDM_ODM_T pDM_Odm)
+void odm_RSSIMonitorCheck(struct rtl_dm *pDM_Odm)
 {
 	/*
 	 * For AP/ADSL use prtl8192cd_priv
@@ -1734,7 +1734,7 @@ static void FindMinimumRSSI(struct rtl_priv *pAdapter)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
+	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
 
 	/* 1 1.Determine the minimum RSSI */
 
@@ -1750,7 +1750,7 @@ static void FindMinimumRSSI(struct rtl_priv *pAdapter)
 }
 #endif
 
-void odm_RSSIMonitorCheckCE(PDM_ODM_T pDM_Odm)
+void odm_RSSIMonitorCheckCE(struct rtl_dm *pDM_Odm)
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -1889,7 +1889,7 @@ void odm_RSSIMonitorCheckCE(PDM_ODM_T pDM_Odm)
  */
 
 
-void ODM_TXPowerTrackingCheck(PDM_ODM_T	pDM_Odm)
+void ODM_TXPowerTrackingCheck(struct rtl_dm *pDM_Odm)
 {
 	/*
 	 * For AP/ADSL use prtl8192cd_priv
@@ -1914,7 +1914,7 @@ void ODM_TXPowerTrackingCheck(PDM_ODM_T	pDM_Odm)
 	}
 }
 
-void odm_TXPowerTrackingCheckCE(PDM_ODM_T pDM_Odm)
+void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm)
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -1969,16 +1969,16 @@ void odm_TXPowerTrackingCheckCE(PDM_ODM_T pDM_Odm)
 
 #else
 
-void ODM_SwAntDivChkPerPktRssi(PDM_ODM_T pDM_Odm, u1Byte StationID,
+void ODM_SwAntDivChkPerPktRssi(struct rtl_dm *pDM_Odm, u1Byte StationID,
 	PODM_PHY_INFO_T pPhyInfo)
 {
 }
 
-void ODM_SwAntDivResetBeforeLink(PDM_ODM_T pDM_Odm)
+void ODM_SwAntDivResetBeforeLink(struct rtl_dm *pDM_Odm)
 {
 }
 
-void ODM_SwAntDivRestAfterLink(IN PDM_ODM_T pDM_Odm)
+void ODM_SwAntDivRestAfterLink(IN struct rtl_dm *pDM_Odm)
 {
 }
 
@@ -2002,7 +2002,7 @@ void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext)
  * ============================================================
  */
 
-void odm_EdcaTurboCheck(PDM_ODM_T pDM_Odm)
+void odm_EdcaTurboCheck(struct rtl_dm *pDM_Odm)
 {
 	/*
 	 * For AP/ADSL use prtl8192cd_priv
@@ -2035,7 +2035,7 @@ void odm_EdcaTurboCheck(PDM_ODM_T pDM_Odm)
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 
 
-VOID odm_EdcaTurboCheckCE(PDM_ODM_T pDM_Odm)
+VOID odm_EdcaTurboCheckCE(struct rtl_dm *pDM_Odm)
 {
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 
@@ -2167,7 +2167,7 @@ dm_CheckEdcaTurbo_EXIT:
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 /* Justin: According to the current RRSI to adjust Response Frame TX power, 2012/11/05 */
-void odm_dtc(PDM_ODM_T pDM_Odm)
+void odm_dtc(struct rtl_dm *pDM_Odm)
 {
 #ifdef CONFIG_DM_RESP_TXAGC
 	#define DTC_BASE            35	/* RSSI higher than this value, start to decade TX power */

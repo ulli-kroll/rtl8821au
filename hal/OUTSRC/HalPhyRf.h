@@ -32,10 +32,10 @@ typedef enum _PWRTRACK_CONTROL_METHOD {
 	MIX_MODE
 } PWRTRACK_METHOD;
 
-typedef VOID 	(*FuncSetPwr)(PDM_ODM_T, PWRTRACK_METHOD, u1Byte, u1Byte);
-typedef VOID 	(*FuncIQK)(PDM_ODM_T, u1Byte, u1Byte, u1Byte);
-typedef VOID 	(*FuncLCK)(PDM_ODM_T);
-typedef VOID  	(*FuncSwing)(PDM_ODM_T, pu1Byte*, pu1Byte*, pu1Byte*, pu1Byte*);
+typedef VOID 	(*FuncSetPwr)(struct rtl_dm *,PWRTRACK_METHOD, u1Byte, u1Byte);
+typedef VOID 	(*FuncIQK)(struct rtl_dm *, u1Byte, u1Byte, u1Byte);
+typedef VOID 	(*FuncLCK)(struct rtl_dm *);
+typedef VOID  	(*FuncSwing)(struct rtl_dm *, pu1Byte*, pu1Byte*, pu1Byte*, pu1Byte*);
 
 typedef struct _TXPWRTRACK_CFG {
 	u1Byte 		SwingTableSize_CCK;
@@ -51,14 +51,14 @@ typedef struct _TXPWRTRACK_CFG {
 } TXPWRTRACK_CFG, *PTXPWRTRACK_CFG;
 
 void ConfigureTxpowerTrack(
-	IN 	PDM_ODM_T		pDM_Odm,
+	IN 	struct rtl_dm *	pDM_Odm,
 	OUT	PTXPWRTRACK_CFG	pConfig
 	);
 
 
 VOID
 ODM_ClearTxPowerTrackingState(
-	IN PDM_ODM_T		pDM_Odm
+	IN struct rtl_dm *	pDM_Odm
 	);
 
 VOID
@@ -73,7 +73,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 VOID
 ODM_ResetIQKResult(
-	IN PDM_ODM_T	pDM_Odm
+	IN struct rtl_dm *pDM_Odm
 );
 u1Byte
 ODM_GetRightChnlPlaceforIQK(

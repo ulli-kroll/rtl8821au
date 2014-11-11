@@ -45,7 +45,7 @@ u1Byte odm_QueryRxPwrPercentage(s1Byte AntPower)
  * IF other SW team do not support the feature, remove this section.??
  */
 
-static int32_t odm_SignalScaleMapping_92CSeries(PDM_ODM_T pDM_Odm, int32_t CurrSig)
+static int32_t odm_SignalScaleMapping_92CSeries(struct rtl_dm *pDM_Odm, int32_t CurrSig)
 {
 	int32_t RetSig;
 
@@ -74,7 +74,7 @@ static int32_t odm_SignalScaleMapping_92CSeries(PDM_ODM_T pDM_Odm, int32_t CurrS
 	return RetSig;
 }
 
-int32_t odm_SignalScaleMapping(PDM_ODM_T pDM_Odm, int32_t CurrSig)
+int32_t odm_SignalScaleMapping(struct rtl_dm *pDM_Odm, int32_t CurrSig)
 {
 	return odm_SignalScaleMapping_92CSeries(pDM_Odm, CurrSig);
 }
@@ -134,7 +134,7 @@ static uint16_t odm_Cfo(s1Byte Value)
 	return ret_val;
 }
 
-void odm_RxPhyStatusJaguarSeries_Parsing(PDM_ODM_T pDM_Odm,
+void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 	PODM_PHY_INFO_T pPhyInfo, pu1Byte pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	u1Byte	i, Max_spatial_stream;
@@ -497,7 +497,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(PDM_ODM_T pDM_Odm,
 }
 
 
-void odm_Process_RSSIForDM(PDM_ODM_T pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	PODM_PACKET_INFO_T pPktinfo)
 {
 	int32_t		UndecoratedSmoothedPWDB, UndecoratedSmoothedCCK, UndecoratedSmoothedOFDM, RSSI_Ave;
@@ -678,7 +678,7 @@ void odm_Process_RSSIForDM(PDM_ODM_T pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
  * Endianness before calling this API
  */
 
-void ODM_PhyStatusQuery_JaguarSeries(PDM_ODM_T 	pDM_Odm,
+void ODM_PhyStatusQuery_JaguarSeries(struct rtl_dm *	pDM_Odm,
 	PODM_PHY_INFO_T pPhyInfo, pu1Byte pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	odm_RxPhyStatusJaguarSeries_Parsing(pDM_Odm, pPhyInfo,
@@ -687,7 +687,7 @@ void ODM_PhyStatusQuery_JaguarSeries(PDM_ODM_T 	pDM_Odm,
 	odm_Process_RSSIForDM(pDM_Odm, pPhyInfo, pPktinfo);
 }
 
-void ODM_PhyStatusQuery(PDM_ODM_T pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+void ODM_PhyStatusQuery(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	pu1Byte pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	ODM_PhyStatusQuery_JaguarSeries(pDM_Odm, pPhyInfo, pPhyStatus, pPktinfo);
@@ -698,7 +698,7 @@ void ODM_PhyStatusQuery(PDM_ODM_T pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
  * If you want to add a new IC, Please follow below template and generate a new one.
  */
 
-HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
+HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_dm *pDM_Odm,
 	ODM_RF_Config_Type ConfigType, ODM_RF_RADIO_PATH_E eRFPath)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
@@ -737,7 +737,7 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(PDM_ODM_T pDM_Odm,
 	return HAL_STATUS_SUCCESS;
 }
 
-HAL_STATUS ODM_ConfigRFWithTxPwrTrackHeaderFile(PDM_ODM_T pDM_Odm)
+HAL_STATUS ODM_ConfigRFWithTxPwrTrackHeaderFile(struct rtl_dm *pDM_Odm)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigRFWithTxPwrTrackHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
@@ -777,7 +777,7 @@ HAL_STATUS ODM_ConfigRFWithTxPwrTrackHeaderFile(PDM_ODM_T pDM_Odm)
 	return HAL_STATUS_SUCCESS;
 }
 
-HAL_STATUS ODM_ConfigBBWithHeaderFile(PDM_ODM_T pDM_Odm, ODM_BB_Config_Type ConfigType)
+HAL_STATUS ODM_ConfigBBWithHeaderFile(struct rtl_dm *pDM_Odm, ODM_BB_Config_Type ConfigType)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigBBWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));

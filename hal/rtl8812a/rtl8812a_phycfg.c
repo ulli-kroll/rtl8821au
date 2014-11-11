@@ -585,7 +585,7 @@ phy_getPowerByRateBaseIndex(
 
 VOID
 PHY_InitPowerLimitTable(
-	IN	PDM_ODM_T	pDM_Odm
+	IN	struct rtl_dm *pDM_Odm
 	)
 {
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
@@ -2394,7 +2394,7 @@ uint32_t PHY_GetTxBBSwing_8812A(
 	)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	s8	bbSwing_2G = -1 * GetRegTxBBSwing_2G(Adapter);
@@ -2857,7 +2857,7 @@ PHY_SwitchWirelessBand8812(
 	{
 		s8	BBDiffBetweenBand = 0;
 		 struct rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
-		PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
+		struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 		PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
 		rtl_set_bbreg(Adapter, rA_TxScale_Jaguar, 0xFFE00000,
@@ -3148,7 +3148,7 @@ VOID phy_InitRssiTRSW(
 	)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
-	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 	uint8_t 			channel = pHalData->CurrentChannel;
 
 	if (pHalData->RFEType == 3){

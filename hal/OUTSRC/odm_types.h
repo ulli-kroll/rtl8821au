@@ -57,13 +57,11 @@ typedef enum _RT_SPINLOCK_TYPE{
 
 #if 0
 	typedef s8					s1Byte,*ps1Byte;
-	typedef s16					s2Byte,*ps2Byte;
 	typedef s64					s8Byte,*ps8Byte;
 #else
 	#define s1Byte 		s8
 	#define	ps1Byte 	s8*
 
-	#define s2Byte 		s16
 	#define	ps2Byte 	s16*
 
 	#define s8Byte 		s64

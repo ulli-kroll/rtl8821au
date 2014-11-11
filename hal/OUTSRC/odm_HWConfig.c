@@ -121,7 +121,7 @@ static u8 odm_EVMdbm_JaguarSeries(s1Byte Value)
 
 static u16 odm_Cfo(s1Byte Value)
 {
-	s2Byte  ret_val;
+	s16  ret_val;
 
 	if (Value < 0) {
 		ret_val = 0 - Value;

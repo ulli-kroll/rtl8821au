@@ -568,7 +568,7 @@ void ODM_CmnInfoHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue
 		break;
 
 	case 	ODM_CMNINFO_FORCED_RATE:
-		pDM_Odm->pForcedDataRate = (puint16_t)pValue;
+		pDM_Odm->pForcedDataRate = (u16 *)pValue;
 		break;
 
 	case	ODM_CMNINFO_MP_MODE:

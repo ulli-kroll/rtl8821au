@@ -1199,7 +1199,7 @@ struct rtl_dm {
 	u8			*mp_mode;
 	//u8			*pAidMap;
 //--------- POINTER REFERENCE-----------//
-	puint16_t			pForcedDataRate;
+	u16			*pForcedDataRate;
 //------------CALL BY VALUE-------------//
 	BOOLEAN			bLinkInProcess;
 	BOOLEAN			bWIFI_Direct;

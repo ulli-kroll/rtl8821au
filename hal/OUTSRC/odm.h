@@ -68,7 +68,6 @@
 #define index_mapping_HP_NUM		15
 #define OFDM_TABLE_SIZE 			37
 #define OFDM_TABLE_SIZE_92D 		43
-#define CCK_TABLE_SIZE				33
 #define TXSCALE_TABLE_SIZE 			37
 #define DELTA_SWINGIDX_SIZE		30
 #define BAND_NUM 					3
@@ -1573,7 +1572,6 @@ typedef enum tag_DIG_Connect_Definition
 #if 0 //mask this, since these have been defined in typdef.h, vivi
 #define	OFDM_TABLE_SIZE 	37
 #define	OFDM_TABLE_SIZE_92D 	43
-#define	CCK_TABLE_SIZE		33
 #endif
 
 
@@ -1630,13 +1628,7 @@ typedef enum tag_SW_Antenna_Switch_Definition
 // Extern Global Variables.
 //
 extern	uint32_t OFDMSwingTable[OFDM_TABLE_SIZE_92D];
-extern	u1Byte CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8];
-extern	u1Byte CCKSwingTable_Ch14 [CCK_TABLE_SIZE][8];
-
 extern	uint32_t OFDMSwingTable_New[OFDM_TABLE_SIZE_92D];
-extern	u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8];
-extern	u1Byte CCKSwingTable_Ch14_New [CCK_TABLE_SIZE][8];
-
 extern  uint32_t TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE];
 
 // <20121018, Kordan> In case fail to read TxPowerTrack.txt, we use the table of 88E as the default table.

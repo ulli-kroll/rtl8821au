@@ -135,7 +135,7 @@ static uint16_t odm_Cfo(s1Byte Value)
 }
 
 void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
-	PODM_PHY_INFO_T pPhyInfo, pu1Byte pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
+	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	u1Byte	i, Max_spatial_stream;
 	s1Byte	rx_pwr[4], rx_pwr_all = 0;
@@ -679,7 +679,7 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
  */
 
 void ODM_PhyStatusQuery_JaguarSeries(struct rtl_dm *	pDM_Odm,
-	PODM_PHY_INFO_T pPhyInfo, pu1Byte pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
+	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	odm_RxPhyStatusJaguarSeries_Parsing(pDM_Odm, pPhyInfo,
 					pPhyStatus, pPktinfo);
@@ -688,7 +688,7 @@ void ODM_PhyStatusQuery_JaguarSeries(struct rtl_dm *	pDM_Odm,
 }
 
 void ODM_PhyStatusQuery(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
-	pu1Byte pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
+	u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	ODM_PhyStatusQuery_JaguarSeries(pDM_Odm, pPhyInfo, pPhyStatus, pPktinfo);
 }

@@ -139,7 +139,7 @@
 			if(((comp) & pDM_Odm->DebugComponents) && (level <= pDM_Odm->DebugLevel))	\
 			{																		\
 				int __i;																\
-				pu1Byte	__ptr = (pu1Byte)ptr;											\
+				u8 *__ptr = (u8 *)ptr;											\
 				DbgPrint("[ODM] ");													\
 				DbgPrint(title_str);													\
 				DbgPrint(" ");														\
@@ -172,7 +172,7 @@ ODM_InitDebugSetting(
 #define PRINT_DATA(_TitleString, _HexData, _HexDataLen)								\
 			{																		\
 				char			*szTitle = _TitleString;									\
-				pu1Byte		pbtHexData = _HexData;									\
+				u8 *	pbtHexData = _HexData;									\
 				uint32_t		u4bHexDataLen = _HexDataLen;							\
 				uint32_t		__i;														\
 				DbgPrint("%s", szTitle);													\
@@ -193,7 +193,7 @@ ODM_InitDebugSetting(
 			if(((_Comp) & ODM_GlobalDebugComponents) && (_Level <= ODM_GlobalDebugLevel))	\
 			{																		\
 				int __i;																\
-				pu1Byte	ptr = (pu1Byte)_HexData;										\
+				u8 *ptr = (u8 *)_HexData;										\
 				DbgPrint("Rtl819x: ");													\
 				DbgPrint(_TitleString);												\
 				for( __i=0; __i<(int)_HexDataLen; __i++ )								\
@@ -208,7 +208,7 @@ ODM_InitDebugSetting(
 			if(((_Comp) & ODM_GlobalDebugComponents) && (_Level <= ODM_GlobalDebugLevel))	\
 			{																		\
 				int __i;																\
-				pu1Byte	ptr = (pu1Byte)_Ptr;											\
+				u8 *ptr = (u8 *)_Ptr;											\
 				DbgPrint("Rtl819x: ");													\
 				DbgPrint(_TitleString);												\
 				DbgPrint(" ");															\
@@ -221,7 +221,7 @@ ODM_InitDebugSetting(
 			if(((_Comp) & ODM_GlobalDebugComponents) && (_Level <= ODM_GlobalDebugLevel))	\
 			{																		\
 				int __i, __j;															\
-				pu1Byte	ptr = (pu1Byte)_Ptr;											\
+				u8 *ptr = (u8 *)_Ptr;											\
 				DbgPrint("Rtl819x: ");													\
 				DbgPrint(_TitleString);												\
 				DbgPrint("\n");														\
@@ -244,7 +244,7 @@ ODM_InitDebugSetting(
 				u1Byte	buffer[MAX_STR_LEN];											\
 				int	length = (_Len<MAX_STR_LEN)? _Len : (MAX_STR_LEN-1) ;				\
 				PlatformZeroMemory( buffer, MAX_STR_LEN );							\
-				PlatformMoveMemory( buffer, (pu1Byte)_Ptr, length );						\
+				PlatformMoveMemory( buffer, (u8 *)_Ptr, length );						\
 				for( __i=0; __i<MAX_STR_LEN; __i++ )									\
 				{																	\
 					if( !PRINTABLE(buffer[__i]) )	buffer[__i] = '?';						\
@@ -695,7 +695,7 @@ typedef enum tag_DBGP_Flag_Type_Definition
 #define PRINT_DATA(_TitleString, _HexData, _HexDataLen)								\
 			{																		\
 				char			*szTitle = _TitleString;									\
-				pu1Byte		pbtHexData = _HexData;									\
+				u8 *	pbtHexData = _HexData;									\
 				uint32_t		u4bHexDataLen = _HexDataLen;							\
 				uint32_t		__i;														\
 				DbgPrint("%s", szTitle);													\
@@ -716,7 +716,7 @@ typedef enum tag_DBGP_Flag_Type_Definition
 			if(((_Comp) & GlobalDebugComponents) && (_Level <= GlobalDebugLevel))	\
 			{																		\
 				int __i;																\
-				pu1Byte	ptr = (pu1Byte)_HexData;										\
+				u8 *ptr = (u8 *)_HexData;										\
 				DbgPrint("Rtl819x: ");													\
 				DbgPrint(_TitleString);												\
 				for( __i=0; __i<(int)_HexDataLen; __i++ )								\
@@ -731,7 +731,7 @@ typedef enum tag_DBGP_Flag_Type_Definition
 			if(((_Comp) & GlobalDebugComponents) && (_Level <= GlobalDebugLevel))	\
 			{																		\
 				int __i;																\
-				pu1Byte	ptr = (pu1Byte)_Ptr;											\
+				u8 *ptr = (u8 *)_Ptr;											\
 				DbgPrint("Rtl819x: ");													\
 				DbgPrint(_TitleString);												\
 				DbgPrint(" ");															\
@@ -744,7 +744,7 @@ typedef enum tag_DBGP_Flag_Type_Definition
 			if(((_Comp) & GlobalDebugComponents) && (_Level <= GlobalDebugLevel))	\
 			{																		\
 				int __i, __j;															\
-				pu1Byte	ptr = (pu1Byte)_Ptr;											\
+				u8 *ptr = (u8 *)_Ptr;											\
 				DbgPrint("Rtl819x: ");													\
 				DbgPrint(_TitleString);												\
 				DbgPrint("\n");														\
@@ -767,7 +767,7 @@ typedef enum tag_DBGP_Flag_Type_Definition
 				u1Byte	buffer[MAX_STR_LEN];											\
 				int	length = (_Len<MAX_STR_LEN)? _Len : (MAX_STR_LEN-1) ;				\
 				PlatformZeroMemory( buffer, MAX_STR_LEN );							\
-				PlatformMoveMemory( buffer, (pu1Byte)_Ptr, length );						\
+				PlatformMoveMemory( buffer, (u8 *)_Ptr, length );						\
 				for( __i=0; __i<MAX_STR_LEN; __i++ )									\
 				{																	\
 					if( !PRINTABLE(buffer[__i]) )	buffer[__i] = '?';						\
@@ -808,7 +808,7 @@ typedef enum tag_DBGP_Flag_Type_Definition
 	if (DBGP_Type[dbgtype] & dbgflag)\
 	{\
 				int __i;						\
-				pu1Byte	ptr = (pu1Byte)_Ptr;	\
+				u8 *ptr = (u8 *)_Ptr;	\
 				DbgPrint printstr;				\
 				DbgPrint(" ");					\
 				for( __i=0; __i<6; __i++ )		\
@@ -822,7 +822,7 @@ typedef enum tag_DBGP_Flag_Type_Definition
 	if (DBGP_Type[dbgtype] & dbgflag)\
 	{\
 		int __i;									\
-		pu1Byte	ptr = (pu1Byte)_HexData;			\
+		u8 *ptr = (u8 *)_HexData;			\
 		DbgPrint(_TitleString);					\
 		for( __i=0; __i<(int)_HexDataLen; __i++ )	\
 		{										\
@@ -863,7 +863,7 @@ extern	void	DBG_PrintAllComp(void);
 extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag);
 extern	void	DBG_DumpMem(const u1Byte DbgComp,
 							const u1Byte DbgLevel,
-							pu1Byte pMem,
+							u8 *pMem,
 							uint16_t Len);
 
 /*--------------------------Exported Function prototype---------------------*/

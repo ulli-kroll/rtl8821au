@@ -1640,7 +1640,7 @@ unsigned int rtl8812au_inirp_deinit(struct rtl_priv *Adapter)
  *
  * -------------------------------------------------------------------
  */
-VOID hal_ReadIDs_8812AU(struct rtl_priv *Adapter, pu1Byte PROMContent,
+VOID hal_ReadIDs_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);

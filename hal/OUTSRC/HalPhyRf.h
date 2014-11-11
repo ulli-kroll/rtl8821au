@@ -35,7 +35,7 @@ typedef enum _PWRTRACK_CONTROL_METHOD {
 typedef VOID 	(*FuncSetPwr)(struct rtl_dm *,PWRTRACK_METHOD, u1Byte, u1Byte);
 typedef VOID 	(*FuncIQK)(struct rtl_dm *, u1Byte, u1Byte, u1Byte);
 typedef VOID 	(*FuncLCK)(struct rtl_dm *);
-typedef VOID  	(*FuncSwing)(struct rtl_dm *, pu1Byte*, pu1Byte*, pu1Byte*, pu1Byte*);
+typedef VOID  	(*FuncSwing)(struct rtl_dm *, u8 **, u8 **, u8 **, u8 **);
 
 typedef struct _TXPWRTRACK_CFG {
 	u1Byte 		SwingTableSize_CCK;

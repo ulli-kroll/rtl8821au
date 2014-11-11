@@ -1900,9 +1900,9 @@ static VOID PHY_SetPowerLimitTableValue(struct rtl_dm *pDM_Odm,
 
 
 static void odm_ConfigBB_TXPWR_LMT_8812A(struct rtl_dm *pDM_Odm,
-	pu1Byte Regulation, pu1Byte Band, pu1Byte Bandwidth,
-	pu1Byte	RateSection, pu1Byte RfPath, pu1Byte Channel,
-	pu1Byte	PowerLimit)
+	u8 *Regulation, u8 *Band, u8 *Bandwidth,
+	u8 *RateSection, u8 *RfPath, u8 *Channel,
+	u8 *PowerLimit)
 {
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	PHY_SetPowerLimitTableValue(pDM_Odm, Regulation, Band,
@@ -1935,9 +1935,9 @@ static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct rtl_dm *pDM_Odm)
 
 
 static void odm_ConfigBB_TXPWR_LMT_8821A(struct rtl_dm *pDM_Odm,
-	pu1Byte	Regulation, pu1Byte Band, pu1Byte Bandwidth,
-	pu1Byte	 RateSection, pu1Byte RfPath, pu1Byte Channel,
-	pu1Byte	PowerLimit
+	u8 *Regulation, u8 *Band, u8 *Bandwidth,
+	u8 * RateSection, u8 *RfPath, u8 *Channel,
+	u8 *PowerLimit
     )
 {
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))

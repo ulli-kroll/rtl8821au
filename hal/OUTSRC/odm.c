@@ -1632,7 +1632,7 @@ void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm)
  * - TRUE: RATRState is changed.
  */
 BOOLEAN ODM_RAStateCheck(struct rtl_dm *pDM_Odm, int32_t RSSI,
-	BOOLEAN	 bForceUpdate, pu1Byte pRATRState)
+	BOOLEAN	 bForceUpdate, u8 *pRATRState)
 {
 	PODM_RATE_ADAPTIVE pRA = &pDM_Odm->RateAdaptive;
 	const u1Byte GoUpGap = 5;

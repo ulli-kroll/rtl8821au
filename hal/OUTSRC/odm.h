@@ -1668,7 +1668,7 @@ ODM_RAStateCheck(
 	IN		struct rtl_dm *	pDM_Odm,
 	IN		int32_t			RSSI,
 	IN		BOOLEAN			bForceUpdate,
-	OUT		pu1Byte			pRATRState
+	OUT		u8 *		pRATRState
 	);
 
 

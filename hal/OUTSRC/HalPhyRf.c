@@ -119,17 +119,17 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 
 	//4 1. The following TWO tables decide the final index of OFDM/CCK swing table.
-	pu1Byte			deltaSwingTableIdx_TUP_A;
-	pu1Byte			deltaSwingTableIdx_TDOWN_A;
-	pu1Byte			deltaSwingTableIdx_TUP_B;
-	pu1Byte			deltaSwingTableIdx_TDOWN_B;
+	u8 *		deltaSwingTableIdx_TUP_A;
+	u8 *		deltaSwingTableIdx_TDOWN_A;
+	u8 *		deltaSwingTableIdx_TUP_B;
+	u8 *		deltaSwingTableIdx_TDOWN_B;
 
 	//4 2. Initilization ( 7 steps in total )
 
 	ConfigureTxpowerTrack(pDM_Odm, &c);
 
-	(*c.GetDeltaSwingTable)(pDM_Odm, (pu1Byte*)&deltaSwingTableIdx_TUP_A, (pu1Byte*)&deltaSwingTableIdx_TDOWN_A,
-									  (pu1Byte*)&deltaSwingTableIdx_TUP_B, (pu1Byte*)&deltaSwingTableIdx_TDOWN_B);
+	(*c.GetDeltaSwingTable)(pDM_Odm, (u8 **)&deltaSwingTableIdx_TUP_A, (u8 **)&deltaSwingTableIdx_TDOWN_A,
+									  (u8 **)&deltaSwingTableIdx_TUP_B, (u8 **)&deltaSwingTableIdx_TDOWN_B);
 
 	pDM_Odm->RFCalibrateInfo.TXPowerTrackingCallbackCnt++; //cosa add for debug
 	pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = TRUE;

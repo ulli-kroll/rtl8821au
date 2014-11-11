@@ -254,8 +254,8 @@ static void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Me
 }
 
 static void GetDeltaSwingTable_8812A(struct rtl_dm *pDM_Odm,
-	pu1Byte *TemperatureUP_A, pu1Byte *TemperatureDOWN_A,
-	pu1Byte *TemperatureUP_B, pu1Byte *TemperatureDOWN_B)
+	u8 **TemperatureUP_A, u8 **TemperatureDOWN_A,
+	u8 **TemperatureUP_B, u8 **TemperatureDOWN_B)
 {
 	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
@@ -291,10 +291,10 @@ static void GetDeltaSwingTable_8812A(struct rtl_dm *pDM_Odm,
 		*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[2];
 		*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[2];
 	} else {
-		*TemperatureUP_A   = (pu1Byte)DeltaSwingTableIdx_2GA_P_8188E;
-		*TemperatureDOWN_A = (pu1Byte)DeltaSwingTableIdx_2GA_N_8188E;
-		*TemperatureUP_B   = (pu1Byte)DeltaSwingTableIdx_2GA_P_8188E;
-		*TemperatureDOWN_B = (pu1Byte)DeltaSwingTableIdx_2GA_N_8188E;
+		*TemperatureUP_A   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+		*TemperatureDOWN_A = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+		*TemperatureUP_B   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+		*TemperatureDOWN_B = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
 	}
 
 	return;

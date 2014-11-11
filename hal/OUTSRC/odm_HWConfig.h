@@ -235,7 +235,7 @@ VOID
 ODM_PhyStatusQuery(
 	IN OUT	struct rtl_dm *				pDM_Odm,
 	OUT		PODM_PHY_INFO_T			pPhyInfo,
-	IN 		pu1Byte						pPhyStatus,
+	IN 		u8 *					pPhyStatus,
 	IN		PODM_PACKET_INFO_T			pPktinfo
 	);
 

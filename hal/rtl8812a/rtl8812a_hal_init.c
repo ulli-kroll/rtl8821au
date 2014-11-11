@@ -864,7 +864,7 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *Adapter, PTxPowerInfo24G pwrInf
 
 }
 
-VOID Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *Adapter, pu1Byte	hwinfo,
+VOID Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *Adapter, u8 *hwinfo,
 	BOOLEAN	AutoLoadFail)
 {
 }

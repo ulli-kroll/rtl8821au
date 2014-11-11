@@ -56,13 +56,11 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#include <drv_types.h>
 
 #if 0
-	typedef u8					u1Byte, *pu1Byte;
 	typedef s8					s1Byte,*ps1Byte;
 	typedef s16					s2Byte,*ps2Byte;
 	typedef s64					s8Byte,*ps8Byte;
 #else
 	#define u1Byte 		u8
-	#define	pu1Byte 	u8*
 
 	#define uint16_t 		u16
 	#define	puint16_t 	u16*

@@ -606,7 +606,7 @@ extern	void	DBG_PrintFlagEvent(u1Byte	DbgFlag)
 
 extern	void	DBG_DumpMem(const u1Byte DbgComp,
 							const u1Byte DbgLevel,
-							pu1Byte pMem,
+							u8 *pMem,
 							uint16_t Len)
 {
 	uint16_t i;

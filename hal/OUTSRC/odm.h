@@ -1073,8 +1073,7 @@ typedef struct _ANT_DETECTED_INFO{
 //
 // 2011/09/22 MH Copy from SD4 defined structure. We use to support PHY DM integration.
 //
-typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
-{
+struct DM_Out_Source_Dynamic_Mechanism_Structure {
 	//RT_TIMER 	FastAntTrainingTimer;
 	//
 	//	Add for different team use temporarily
@@ -1389,7 +1388,8 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 
 	// ODM relative workitem.
 
-} DM_ODM_T, *PDM_ODM_T;		// DM_Dynamic_Mechanism_Structure
+};
+typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure  DM_ODM_T, *PDM_ODM_T;		// DM_Dynamic_Mechanism_Structure
 
 
 

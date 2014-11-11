@@ -22,7 +22,7 @@
 #include <hal_data.h>
 #include <rtw_sreset.h>
 
-int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, uint16_t value, uint16_t index, void *pdata, uint16_t len, uint8_t requesttype)
+int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {
 	struct rtl_priv	*padapter = pintfhdl->padapter;
 	struct dvobj_priv  *pdvobjpriv = adapter_to_dvobj(padapter);

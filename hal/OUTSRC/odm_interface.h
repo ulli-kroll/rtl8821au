@@ -61,7 +61,7 @@ static u8 ODM_Read1Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
 	return rtw_read8(pDM_Odm->Adapter,RegAddr);
 }
 
-static uint16_t ODM_Read2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
+static u16 ODM_Read2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
 {
 	return rtw_read16(pDM_Odm->Adapter,RegAddr);
 }
@@ -76,7 +76,7 @@ static void ODM_Write1Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, u8 Data)
 	rtw_write8(pDM_Odm->Adapter,RegAddr, Data);
 }
 
-static void ODM_Write2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, uint16_t Data)
+static void ODM_Write2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, u16 Data)
 {
 	rtw_write16(pDM_Odm->Adapter,RegAddr, Data);
 }

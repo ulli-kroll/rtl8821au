@@ -148,7 +148,7 @@ void rtw_os_xmit_resource_free(struct rtl_priv *padapter, struct xmit_buf *pxmit
 
 void rtw_os_pkt_complete(struct rtl_priv *padapter, struct sk_buff *pkt)
 {
-	uint16_t queue;
+	u16 queue;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 
 	queue = skb_get_queue_mapping(pkt);
@@ -203,7 +203,7 @@ void rtw_os_xmit_schedule(struct rtl_priv *padapter)
 static void rtw_check_xmit_resource(struct rtl_priv *padapter, struct sk_buff *pkt)
 {
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
-	uint16_t	queue;
+	u16	queue;
 
 	queue = skb_get_queue_mapping(pkt);
 	if (padapter->registrypriv.wifi_spec) {
@@ -300,7 +300,7 @@ int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 	extern int rtw_mc2u_disable;
 #endif
 	int32_t res = 0;
-	uint16_t queue;
+	u16 queue;
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("+xmit_enry\n"));
 

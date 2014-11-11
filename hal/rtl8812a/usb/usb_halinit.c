@@ -241,7 +241,7 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 
 static uint32_t _InitPowerOn8812AU(struct rtl_priv *padapter)
 {
-	uint16_t	u2btmp = 0;
+	u16	u2btmp = 0;
 	uint8_t	u1btmp = 0;
 
 	if (IS_VENDOR_8821A_MP_CHIP(padapter)) {
@@ -459,8 +459,8 @@ static VOID _InitTxBufferBoundary_8812AUsb(struct rtl_priv *Adapter)
 static VOID _InitPageBoundary_8812AUsb(struct rtl_priv *Adapter)
 {
 	/*
-	 * uint16_t 			rxff_bndy;
-	 * uint16_t			Offset;
+	 * u16 			rxff_bndy;
+	 * u16			Offset;
 	 * BOOLEAN			bSupportRemoteWakeUp;
 	 */
 
@@ -484,10 +484,10 @@ static VOID _InitPageBoundary_8812AUsb(struct rtl_priv *Adapter)
 
 
 static VOID _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *Adapter,
-	uint16_t beQ, uint16_t bkQ, uint16_t viQ,
-	uint16_t voQ, uint16_t mgtQ, uint16_t hiQ)
+	u16 beQ, u16 bkQ, u16 viQ,
+	u16 voQ, u16 mgtQ, u16 hiQ)
 {
-	uint16_t value16 = (rtw_read16(Adapter, REG_TRXDMA_CTRL) & 0x7);
+	u16 value16 = (rtw_read16(Adapter, REG_TRXDMA_CTRL) & 0x7);
 
 	value16 |= _TXDMA_BEQ_MAP(beQ) 	| _TXDMA_BKQ_MAP(bkQ) |
 		   _TXDMA_VIQ_MAP(viQ) 	| _TXDMA_VOQ_MAP(voQ) |
@@ -500,10 +500,10 @@ static VOID _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *Adapter)
 {
 	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
-	uint16_t	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
+	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
-	uint16_t	valueHi = 0;
-	uint16_t	valueLow = 0;
+	u16	valueHi = 0;
+	u16	valueLow = 0;
 
 	switch (pHalData->OutEpQueueSel) {
 	case (TX_SELE_HQ | TX_SELE_LQ):
@@ -547,7 +547,7 @@ static VOID _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *Adapter)
 static VOID _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *Adapter)
 {
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
-	uint16_t	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
+	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
 	if (!pregistrypriv->wifi_spec) {	/* typical setting */
 		beQ	= QUEUE_LOW;
@@ -621,7 +621,7 @@ static VOID _InitDriverInfoSize_8812A(struct rtl_priv *Adapter, uint8_t	drvInfoS
 static VOID _InitWMACSetting_8812A(struct rtl_priv *Adapter)
 {
 	/* uint32_t			value32; */
-	/* uint16_t			value16; */
+	/* u16			value16; */
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	/*
@@ -678,7 +678,7 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *Adapter)
 
 static VOID _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *Adapter)
 {
-	uint16_t	value16;
+	u16	value16;
 	uint32_t	value32;
 
 	/* Response Rate Set */
@@ -856,7 +856,7 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *Adapter)
 		 * 2012/10/26 MH For TX throught start rate temp fix.
 		 */
 		{
-			uint16_t			temp;
+			u16			temp;
 
 			/* Adjust DMA page and thresh. */
 			temp = pHalData->RegAcUsbDmaSize | (pHalData->RegAcUsbDmaTime<<8);
@@ -984,7 +984,7 @@ static VOID HalDetectSelectiveSuspendMode(struct rtl_priv *Adapter)
 static VOID HwSuspendModeEnable_8812AU(struct rtl_priv *pAdapter, uint8_t Type)
 {
 	/* PRT_USB_DEVICE 		pDevice = GET_RT_USB_DEVICE(pAdapter); */
-	uint16_t	reg = rtw_read16(pAdapter, REG_GPIO_MUXCFG);
+	u16	reg = rtw_read16(pAdapter, REG_GPIO_MUXCFG);
 
 	/* if (!pDevice->RegUsbSS) */
 	{
@@ -1055,7 +1055,7 @@ void _ps_close_RF(struct rtl_priv *padapter)
 uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 {
 	uint8_t	value8 = 0, u1bRegCR;
-	uint16_t  value16;
+	u16  value16;
 	uint8_t	txpktbuf_bndy;
 	uint32_t	status = _SUCCESS;
 	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
@@ -1498,7 +1498,7 @@ VOID CardDisableRTL8812AU(struct rtl_priv *Adapter)
 {
 	uint8_t	u1bTmp;
 	uint8_t 	val8;
-	uint16_t	val16;
+	u16	val16;
 	uint32_t	val32;
 
 	/* DBG_871X("CardDisableRTL8188EU\n"); */
@@ -1649,11 +1649,11 @@ VOID hal_ReadIDs_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 	if (!AutoloadFail) {
 		/* VID, PID */
 		if (IS_HARDWARE_TYPE_8812AU(Adapter)) {
-			pHalData->EEPROMVID = EF2Byte(*(uint16_t *)&PROMContent[EEPROM_VID_8812AU]);
-			pHalData->EEPROMPID = EF2Byte(*(uint16_t *)&PROMContent[EEPROM_PID_8812AU]);
+			pHalData->EEPROMVID = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8812AU]);
+			pHalData->EEPROMPID = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8812AU]);
 		} else if (IS_HARDWARE_TYPE_8821U(Adapter)) {
-			pHalData->EEPROMVID = EF2Byte(*(uint16_t *)&PROMContent[EEPROM_VID_8821AU]);
-			pHalData->EEPROMPID = EF2Byte(*(uint16_t *)&PROMContent[EEPROM_PID_8821AU]);
+			pHalData->EEPROMVID = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8821AU]);
+			pHalData->EEPROMPID = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8821AU]);
 		}
 
 		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
@@ -1711,15 +1711,15 @@ VOID hal_InitPGData_8812A(struct rtl_priv *padapter, u8 *PROMContent)
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 	/*  struct rtw_hal	*pHalData = GET_HAL_DATA(padapter); */
 	uint32_t			i;
-	uint16_t			value16;
+	u16			value16;
 
 	if (_FALSE == pEEPROM->bautoload_fail_flag) { /* autoload OK. */
 		if (is_boot_from_eeprom(padapter)) {
 			/* Read all Content from EEPROM or EFUSE. */
 			for (i = 0; i < HWSET_MAX_SIZE_JAGUAR; i += 2) {
 				/*
-				 * value16 = EF2Byte(ReadEEprom(pAdapter, (uint16_t) (i>>1)));
-				 * *((uint16_t *)(&PROMContent[i])) = value16;
+				 * value16 = EF2Byte(ReadEEprom(pAdapter, (u16) (i>>1)));
+				 * *((u16 *)(&PROMContent[i])) = value16;
 				 */
 			}
 		} else {
@@ -2204,12 +2204,12 @@ void rtl8812_free_hal_data(struct rtl_priv *padapter);
 void UpdateHalRAMask8812A(struct rtl_priv *padapter, uint32_t mac_id, uint8_t rssi_level);
 void ReadChipVersion8812A(struct rtl_priv *Adapter);
 VOID rtl8812_EfusePowerSwitch(struct rtl_priv *pAdapter, uint8_t bWrite, uint8_t PwrState);
-VOID rtl8812_ReadEFuse(struct rtl_priv *Adapter, uint8_t efuseType, uint16_t _offset, uint16_t 	_size_byte, uint8_t *pbuf);
+VOID rtl8812_ReadEFuse(struct rtl_priv *Adapter, uint8_t efuseType, u16 _offset, u16 	_size_byte, uint8_t *pbuf);
 VOID rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *pAdapter, uint8_t efuseType, uint8_t type, void *pOut);
 u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *pAdapter, uint8_t efuseType);
 int rtl8812_Efuse_PgPacketRead(struct rtl_priv *pAdapter, uint8_t offset, uint8_t *data);
 int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *pAdapter, uint8_t offset, uint8_t word_en, uint8_t *data);
-u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *pAdapter, uint16_t efuse_addr, uint8_t word_en, uint8_t *data);
+u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *pAdapter, u16 efuse_addr, uint8_t word_en, uint8_t *data);
 void rtl8812_GetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet);
 void rtl8812_SetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,	PVOID 	pValue1, BOOLEAN bSet);
 void hal_notch_filter_8812(struct rtl_priv *adapter, bool enable);

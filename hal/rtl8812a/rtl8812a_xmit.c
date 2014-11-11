@@ -75,12 +75,12 @@ void _dbg_dump_tx_info(struct rtl_priv	*padapter,int frame_tag, uint8_t *ptxdesc
 
 void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 {
-	uint16_t *usPtr;
+	u16 *usPtr;
 	uint32_t count;
 	uint32_t index;
-	uint16_t checksum = 0;
+	u16 checksum = 0;
 
-	usPtr = (uint16_t *)ptxdesc;
+	usPtr = (u16 *)ptxdesc;
 	/*
 	 * checksume is always calculated by first 32 bytes,
 	 * and it doesn't depend on TX DESC length.

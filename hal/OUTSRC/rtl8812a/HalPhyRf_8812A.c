@@ -260,7 +260,7 @@ static void GetDeltaSwingTable_8812A(struct rtl_dm *pDM_Odm,
 	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	 struct rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
-	uint16_t	rate = *(pDM_Odm->pForcedDataRate);
+	u16	rate = *(pDM_Odm->pForcedDataRate);
 	u8         	channel   		 = pHalData->CurrentChannel;
 
 	if (1 <= channel && channel <= 14) {
@@ -1842,7 +1842,7 @@ static void _DPK_GetGainLoss(struct rtl_dm *pDM_Odm, u8 path)
 	uint32_t GL_I_tmp = 0, GL_Q_tmp = 0;
 
 	uint32_t Power_GL;
-	uint16_t Scaler[] = { 0x4000, 0x41db, 0x43c7, 0x45c3, 0x47cf,
+	u16 Scaler[] = { 0x4000, 0x41db, 0x43c7, 0x45c3, 0x47cf,
 			      0x49ec, 0x4c19, 0x4e46, 0x5093, 0x52f2,  /* 10 */
 			      0x5560, 0x57cf, 0x5a7f, 0x5d0e, 0x5fbe
 			};

@@ -986,7 +986,7 @@ void rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 /* OLD functions need complete ? rewrite */
 BOOLEAN Getu8IntegerFromStringInDecimal(s8 *Str, uint8_t *pInt)
 {
-	uint16_t i = 0;
+	u16 i = 0;
 	*pInt = 0;
 
 	while (Str[i] != '\0') {
@@ -2012,7 +2012,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_dm *pDM_Odm)
 {
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
-	uint16_t     count       = 0;
+	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
 	u8     platform    = pDM_Odm->SupportPlatform;
 	u8     _interface   = pDM_Odm->SupportInterface;
@@ -2069,7 +2069,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
-	uint16_t     count       = 0;
+	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
 	u8     platform    = pDM_Odm->SupportPlatform;
 	u8     _interface   = pDM_Odm->SupportInterface;
@@ -2190,7 +2190,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_dm *pDM_Odm,
 	u32 v1 = 0, v2 = 0;
 
 	uint32_t	hex         = 0;
-	uint16_t	count       = 0;
+	u16	count       = 0;
 	uint32_t	*ptr_array   = NULL;
 	u8		platform    = pDM_Odm->SupportPlatform;
 	u8		_interface   = pDM_Odm->SupportInterface;
@@ -2329,7 +2329,7 @@ void ODM_ReadAndConfig_MP_8821A_RadioA(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH
 {
 	uint32_t	hex         = 0;
 	uint32_t	i           = 0;
-	uint16_t	count       = 0;
+	u16	count       = 0;
 	uint32_t	*ptr_array   = NULL;
 	u8		platform    = pDM_Odm->SupportPlatform;
 	u8		_interface   = pDM_Odm->SupportInterface;

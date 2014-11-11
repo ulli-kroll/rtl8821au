@@ -29,7 +29,7 @@
 #include <linux/if.h>			/* for IFNAMSIZ and co... */
 #else
 #define __user
-//typedef uint16_t	__u16;
+//typedef u16	__u16;
 #include <sys/socket.h>			/* for "struct sockaddr" et al	*/
 #include <net/if.h>			/* for IFNAMSIZ and co... */
 #endif

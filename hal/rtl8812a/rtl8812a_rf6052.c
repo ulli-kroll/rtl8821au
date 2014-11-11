@@ -294,7 +294,7 @@ static void writeOFDMPowerReg8812(
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
-	uint16_t RegOffset_A[6] = {
+	u16 RegOffset_A[6] = {
     	rTxAGC_A_Ofdm18_Ofdm6_JAguar,
         rTxAGC_A_Ofdm54_Ofdm24_JAguar,
         rTxAGC_A_MCS3_MCS0_JAguar,
@@ -302,7 +302,7 @@ static void writeOFDMPowerReg8812(
         rTxAGC_A_MCS11_MCS8_JAguar,
         rTxAGC_A_MCS15_MCS12_JAguar
     };
-	uint16_t RegOffset_B[6] = {
+	u16 RegOffset_B[6] = {
         rTxAGC_B_Ofdm18_Ofdm6_JAguar,
         rTxAGC_B_Ofdm54_Ofdm24_JAguar,
         rTxAGC_B_MCS3_MCS0_JAguar,
@@ -313,7 +313,7 @@ static void writeOFDMPowerReg8812(
 
 	uint8_t	i, rf, pwr_val[4];
 	uint32_t	writeVal;
-	uint16_t	RegOffset;
+	u16	RegOffset;
 
 	for(rf=0; rf<2; rf++)
 	{

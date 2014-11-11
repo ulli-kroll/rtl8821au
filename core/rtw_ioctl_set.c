@@ -1125,11 +1125,11 @@ _func_exit_;
 *
 * Return 0 or 100Kbps
 */
-uint16_t rtw_get_cur_max_rate(struct rtl_priv *adapter)
+u16 rtw_get_cur_max_rate(struct rtl_priv *adapter)
 {
 	int	i = 0;
 	uint8_t	*p;
-	uint16_t	rate = 0, max_rate = 0;
+	u16	rate = 0, max_rate = 0;
 	struct mlme_ext_priv	*pmlmeext = &adapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct registry_priv *pregistrypriv = &adapter->registrypriv;
@@ -1139,7 +1139,7 @@ uint16_t rtw_get_cur_max_rate(struct rtl_priv *adapter)
 	struct rtw_ieee80211_ht_cap *pht_capie;
 	uint8_t	rf_type = 0;
 	uint8_t	bw_40MHz=0, short_GI_20=0, short_GI_40=0, cbw40_enable=0;
-	uint16_t	mcs_rate=0;
+	u16	mcs_rate=0;
 	uint32_t	ht_ielen = 0;
 #endif
 #ifdef CONFIG_80211AC_VHT

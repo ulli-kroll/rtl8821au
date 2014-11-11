@@ -59,9 +59,9 @@ uint8_t rtw_read8(struct rtl_priv *adapter, uint32_t addr)
 	return val;
 }
 
-uint16_t rtw_read16(struct rtl_priv *adapter, uint32_t addr)
+u16 rtw_read16(struct rtl_priv *adapter, uint32_t addr)
 {
-	uint16_t val;
+	u16 val;
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct intf_hdl	*pintfhdl = &pio_priv->intf;
 
@@ -92,7 +92,7 @@ int rtw_write8(struct rtl_priv *adapter, uint32_t addr, uint8_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int rtw_write16(struct rtl_priv *adapter, uint32_t addr, uint16_t val)
+int rtw_write16(struct rtl_priv *adapter, uint32_t addr, u16 val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl *pintfhdl = &pio_priv->intf;
@@ -140,7 +140,7 @@ int _rtw_write8_async(struct rtl_priv *adapter, uint32_t addr, uint8_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int _rtw_write16_async(struct rtl_priv *adapter, uint32_t addr, uint16_t val)
+int _rtw_write16_async(struct rtl_priv *adapter, uint32_t addr, u16 val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct intf_hdl	*pintfhdl = &pio_priv->intf;

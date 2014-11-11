@@ -261,7 +261,7 @@ ODM_ReadAndConfig_MP_8821A_AGC_TAB(
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
-	uint16_t     count       = 0;
+	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
 	u8     platform    = pDM_Odm->SupportPlatform;
 	u8     _interface   = pDM_Odm->SupportInterface;
@@ -506,7 +506,7 @@ ODM_ReadAndConfig_MP_8821A_PHY_REG(
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
-	uint16_t     count       = 0;
+	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
 	u8     platform    = pDM_Odm->SupportPlatform;
 	u8     _interface   = pDM_Odm->SupportInterface;
@@ -618,7 +618,7 @@ ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(
 {
 	uint32_t     hex = 0;
 	uint32_t     i           = 0;
-	uint16_t     count       = 0;
+	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
 	u8     platform    = pDM_Odm->SupportPlatform;
 	u8     _interface   = pDM_Odm->SupportInterface;

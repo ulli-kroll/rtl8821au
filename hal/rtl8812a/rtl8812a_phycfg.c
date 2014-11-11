@@ -2755,7 +2755,7 @@ PHY_SwitchWirelessBand8812(
 	}
 	else	//5G band
 	{
-		uint16_t	count = 0, reg41A = 0;
+		u16	count = 0, reg41A = 0;
 
 		if (IS_HARDWARE_TYPE_8821(Adapter))
 		{
@@ -2966,7 +2966,7 @@ phy_SetRegBW_8812(
 	CHANNEL_WIDTH 	CurrentBW
 )
 {
-	uint16_t	RegRfMod_BW, u2tmp = 0;
+	u16	RegRfMod_BW, u2tmp = 0;
 	RegRfMod_BW = rtw_read16(Adapter, REG_WMAC_TRXPTCL_CTL);
 
 	switch(CurrentBW)

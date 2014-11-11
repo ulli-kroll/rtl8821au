@@ -32,7 +32,7 @@ static int32_t _LLTWrite(struct rtl_priv *padapter, uint32_t address, uint32_t d
 	int32_t	status = _SUCCESS;
 	int32_t	count = 0;
 	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | _LLT_OP(_LLT_WRITE_ACCESS);
-	uint16_t	LLTReg = REG_LLT_INIT;
+	u16	LLTReg = REG_LLT_INIT;
 
 	rtw_write32(padapter, LLTReg, value);
 
@@ -57,7 +57,7 @@ uint8_t _LLTRead(struct rtl_priv *padapter, uint32_t address)
 {
 	int32_t	count = 0;
 	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_OP(_LLT_READ_ACCESS);
-	uint16_t	LLTReg = REG_LLT_INIT;
+	u16	LLTReg = REG_LLT_INIT;
 
 
 	rtw_write32(padapter, LLTReg, value);
@@ -437,9 +437,9 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 		pFwHdr = (uint8_t *) pFirmwareBuf;
 	}
 
-	pHalData->FirmwareVersion =  (uint16_t)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
-	pHalData->FirmwareSubVersion = (uint16_t)GET_FIRMWARE_HDR_SUB_VER_8812(pFwHdr);
-	pHalData->FirmwareSignature = (uint16_t)GET_FIRMWARE_HDR_SIGNATURE_8812(pFwHdr);
+	pHalData->FirmwareVersion =  (u16)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
+	pHalData->FirmwareSubVersion = (u16)GET_FIRMWARE_HDR_SUB_VER_8812(pFwHdr);
+	pHalData->FirmwareSignature = (u16)GET_FIRMWARE_HDR_SIGNATURE_8812(pFwHdr);
 
 	DBG_871X ("%s: fw_ver=%d fw_subver=%d sig=0x%x\n",
 		  __FUNCTION__, pHalData->FirmwareVersion, pHalData->FirmwareSubVersion, pHalData->FirmwareSignature);
@@ -872,10 +872,10 @@ VOID Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *Adapter, u8 *hwinfo,
 void Hal_EfuseParseIDCode8812A(struct rtl_priv *padapter, uint8_t *hwinfo)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	uint16_t			EEPROMId;
+	u16			EEPROMId;
 
 	/*  Checl 0x8129 again for making sure autoload status!! */
-	EEPROMId = le16_to_cpu(*((uint16_t *)hwinfo));
+	EEPROMId = le16_to_cpu(*((u16 *)hwinfo));
 	if (EEPROMId != RTL_EEPROM_ID) {
 		DBG_8192C("EEPROM ID(%#x) is invalid!!\n", EEPROMId);
 		pEEPROM->bautoload_fail_flag = _TRUE;
@@ -1384,7 +1384,7 @@ VOID
 rtl8812_EfusePowerSwitch(struct rtl_priv *pAdapter, uint8_t bWrite, uint8_t PwrState)
 {
 	uint8_t	tempval;
-	uint16_t	tmpV16;
+	u16	tmpV16;
 #define EFUSE_ACCESS_ON_JAGUAR 0x69
 #define EFUSE_ACCESS_OFF_JAGUAR 0x00
 	if (PwrState == _TRUE) {
@@ -1436,15 +1436,15 @@ Hal_EfuseSwitchToBank8812A(struct rtl_priv *pAdapter, u8 bank)
 }
 
 static VOID
-Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, uint16_t _offset,
-	uint16_t _size_byte, uint8_t *pbuf)
+Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, u16 _offset,
+	u16 _size_byte, uint8_t *pbuf)
 {
 	uint8_t	*efuseTbl = NULL;
-	uint16_t	eFuse_Addr = 0;
+	u16	eFuse_Addr = 0;
 	uint8_t	offset = 0, wden = 0;
-	uint16_t	i, j;
-	uint16_t	**eFuseWord = NULL;
-	uint16_t	efuse_utilized = 0;
+	u16	i, j;
+	u16	**eFuseWord = NULL;
+	u16	efuse_utilized = 0;
 	uint8_t	efuse_usage = 0;
 	uint8_t	offset_2_0 = 0;
 	uint8_t	efuseHeader = 0, efuseExtHdr = 0, efuseData = 0;
@@ -1464,7 +1464,7 @@ Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, uint16_t _offset,
 		goto exit;
 	}
 
-	eFuseWord = (uint16_t **) rtw_malloc2d(EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(uint16_t));
+	eFuseWord = (u16 **) rtw_malloc2d(EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
 	if (eFuseWord == NULL) {
 		DBG_871X("%s: alloc eFuseWord fail!\n", __FUNCTION__);
 		goto exit;
@@ -1544,7 +1544,7 @@ Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, uint16_t _offset,
 					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseData);
 					/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseData)); */
 					efuse_utilized++;
-					eFuseWord[offset][i] |= (((uint16_t)efuseData << 8) & 0xff00);
+					eFuseWord[offset][i] |= (((u16)efuseData << 8) & 0xff00);
 
 					if (!AVAILABLE_EFUSE_ADDR_8812(eFuse_Addr))
 						break;
@@ -1591,12 +1591,12 @@ exit:
 		rtw_mfree(efuseTbl);
 
 	if (eFuseWord)
-		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(uint16_t));
+		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
 }
 
 VOID
-rtl8812_ReadEFuse(struct rtl_priv *Adapter, uint8_t efuseType, uint16_t	_offset,
-	uint16_t _size_byte, uint8_t *pbuf)
+rtl8812_ReadEFuse(struct rtl_priv *Adapter, uint8_t efuseType, u16	_offset,
+	u16 _size_byte, uint8_t *pbuf)
 {
 	Hal_EfuseReadEFuse8812A(Adapter, _offset, _size_byte, pbuf);
 }
@@ -1616,36 +1616,36 @@ static VOID Hal_EFUSEGetEfuseDefinition8812A(struct rtl_priv *pAdapter,
 	case TYPE_EFUSE_REAL_CONTENT_LEN:
 		{
 			u16 *pu2Tmp;
-			pu2Tmp = (uint16_t *) pOut;
+			pu2Tmp = (u16 *) pOut;
 			*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
 		}
 		break;
 	case TYPE_EFUSE_CONTENT_LEN_BANK:
 		{
 			u16 *pu2Tmp;
-			pu2Tmp = (uint16_t *) pOut;
+			pu2Tmp = (u16 *) pOut;
 			*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
 		}
 		break;
 	case TYPE_AVAILABLE_EFUSE_BYTES_BANK:
 		{
 			u16 *pu2Tmp;
-			pu2Tmp = (uint16_t *) pOut;
-			*pu2Tmp = (uint16_t) (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
+			pu2Tmp = (u16 *) pOut;
+			*pu2Tmp = (u16) (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
 		}
 		break;
 	case TYPE_AVAILABLE_EFUSE_BYTES_TOTAL:
 		{
 			u16 *pu2Tmp;
-			pu2Tmp = (uint16_t *) pOut;
-			*pu2Tmp = (uint16_t) (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
+			pu2Tmp = (u16 *) pOut;
+			*pu2Tmp = (u16) (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
 		}
 		break;
 	case TYPE_EFUSE_MAP_LEN:
 		{
 			u16 *pu2Tmp;
-			pu2Tmp = (uint16_t *) pOut;
-			*pu2Tmp = (uint16_t) EFUSE_MAP_LEN_JAGUAR;
+			pu2Tmp = (u16 *) pOut;
+			*pu2Tmp = (u16) EFUSE_MAP_LEN_JAGUAR;
 		}
 		break;
 	case TYPE_EFUSE_PROTECT_BYTES_BANK:
@@ -1672,10 +1672,10 @@ VOID rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *pAdapter, uint8_t efuseTy
 }
 
 static u8 Hal_EfuseWordEnableDataWrite8812A(struct rtl_priv *pAdapter,
-	uint16_t efuse_addr, uint8_t word_en, uint8_t *data)
+	u16 efuse_addr, uint8_t word_en, uint8_t *data)
 {
-	uint16_t tmpaddr = 0;
-	uint16_t start_addr = efuse_addr;
+	u16 tmpaddr = 0;
+	u16 start_addr = efuse_addr;
 	uint8_t	badworden = 0x0F;
 	uint8_t	tmpdata[8];
 
@@ -1733,7 +1733,7 @@ static u8 Hal_EfuseWordEnableDataWrite8812A(struct rtl_priv *pAdapter,
 }
 
 u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *pAdapter,
-	uint16_t efuse_addr, uint8_t word_en, uint8_t *data)
+	u16 efuse_addr, uint8_t word_en, uint8_t *data)
 {
 	uint8_t	ret = 0;
 
@@ -1746,7 +1746,7 @@ u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *pAdapter,
 static u16 hal_EfuseGetCurrentSize_8812A(struct rtl_priv *pAdapter)
 {
 	int	bContinual = _TRUE;
-	uint16_t	efuse_addr = 0;
+	u16	efuse_addr = 0;
 	uint8_t	hoffset = 0, hworden = 0;
 	uint8_t	efuse_data, word_cnts = 0;
 
@@ -1787,7 +1787,7 @@ static u16 hal_EfuseGetCurrentSize_8812A(struct rtl_priv *pAdapter)
 
 u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *pAdapter, uint8_t efuseType)
 {
-	uint16_t ret = 0;
+	u16 ret = 0;
 
 	ret = hal_EfuseGetCurrentSize_8812A(pAdapter);
 
@@ -1804,7 +1804,7 @@ static int hal_EfusePgPacketRead_8812A(struct rtl_priv *pAdapter,
 	int	bDataEmpty = _TRUE ;
 
 	uint8_t	efuse_data, word_cnts = 0;
-	uint16_t efuse_addr = 0;
+	u16 efuse_addr = 0;
 	uint8_t	hoffset = 0, hworden = 0;
 	uint8_t	tmpidx = 0;
 	uint8_t	tmpdata[8];
@@ -1908,7 +1908,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *pAdapter, uint8_t offset,
 
 	int bContinual = _TRUE, bDataEmpty = _TRUE;
 	/* int bResult = _TRUE; */
-	uint16_t efuse_addr = 0;
+	u16 efuse_addr = 0;
 	uint8_t	efuse_data;
 
 	uint8_t	pg_header = 0, pg_header_temp = 0;
@@ -2472,7 +2472,7 @@ void InitPGData8812A(struct rtl_priv *padapter)
 {
 	PEEPROM_EFUSE_PRIV pEEPROM;
 	uint32_t i;
-	uint16_t val16;
+	u16 val16;
 
 
 	pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
@@ -2969,7 +2969,7 @@ static void hw_var_set_mlme_disconnect(struct rtl_priv *Adapter, uint8_t variabl
 static void hw_var_set_mlme_sitesurvey(struct rtl_priv *Adapter, uint8_t variable, uint8_t *val)
 {
 	uint32_t value_rcr, rcr_clear_bit, reg_bcn_ctl;
-	uint16_t value_rxfltmap2;
+	u16 value_rxfltmap2;
 	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
 
@@ -3034,7 +3034,7 @@ void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 	struct dm_priv *pdmpriv;
 	struct rtl_dm *podmpriv;
 	uint8_t val8;
-	uint16_t val16;
+	u16 val16;
 	uint32_t val32;
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -3068,7 +3068,7 @@ void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 
 	case HW_VAR_BASIC_RATE:
 		{
-			uint16_t BrateCfg = 0;
+			u16 BrateCfg = 0;
 			uint8_t RateIndex = 0;
 
 			/*
@@ -3250,7 +3250,7 @@ void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 		break;
 
 	case HW_VAR_BEACON_INTERVAL:
-		rtw_write16(padapter, REG_BCN_INTERVAL, *(uint16_t *)pval);
+		rtw_write16(padapter, REG_BCN_INTERVAL, *(u16 *)pval);
 		break;
 
 	case HW_VAR_SLOT_TIME:
@@ -3327,7 +3327,7 @@ void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 			for (i = 0; i < CAM_CONTENT_COUNT; i++) {
 				/* filled id in CAM config 2 byte */
 				if (i == 0) {
-					ulContent |= (ucIndex & 0x03) | ((uint16_t)(ulEncAlgo)<<2);
+					ulContent |= (ucIndex & 0x03) | ((u16)(ulEncAlgo)<<2);
 					/* ulContent |= CAM_VALID; */
 				} else 	{
 					ulContent = 0;
@@ -3467,7 +3467,7 @@ void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 #if (RATE_ADAPTIVE_SUPPORT == 1)
 	case HW_VAR_RPT_TIMER_SETTING:
 		{
-			val16 = *(uint16_t *)pval;
+			val16 = *(u16 *)pval;
 			ODM_RA_Set_TxRPT_Time(podmpriv, val16);
 		}
 		break;
@@ -3506,7 +3506,7 @@ void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 		break;
 
 	case HW_VAR_EFUSE_BYTES:
-		pHalData->EfuseUsedBytes = *(uint16_t *)pval;
+		pHalData->EfuseUsedBytes = *(u16 *)pval;
 		break;
 	case HW_VAR_FIFO_CLEARN_UP:
 		{
@@ -3558,9 +3558,9 @@ void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 	case HW_VAR_H2C_MEDIA_STATUS_RPT:
 		{
 			struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-			RT_MEDIA_STATUS	mstatus = *(uint16_t *)pval & 0xFF;
+			RT_MEDIA_STATUS	mstatus = *(u16 *)pval & 0xFF;
 
-			rtl8812_set_FwMediaStatus_cmd(padapter, *(uint16_t *)pval);
+			rtl8812_set_FwMediaStatus_cmd(padapter, *(u16 *)pval);
 
 			if (check_fwstate(pmlmepriv, WIFI_STATION_STATE))
 				Hal_PatchwithJaguar_8812(padapter, mstatus);
@@ -3656,7 +3656,7 @@ void GetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 	struct rtw_hal *pHalData;
 	struct rtl_dm *podmpriv;
 	uint8_t val8;
-	uint16_t val16;
+	u16 val16;
 	uint32_t val32;
 
 	pHalData = GET_HAL_DATA(padapter);
@@ -3664,7 +3664,7 @@ void GetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 
 	switch (variable) {
 	case HW_VAR_BASIC_RATE:
-		*(uint16_t *)pval = pHalData->BasicRateSet;
+		*(u16 *)pval = pHalData->BasicRateSet;
 		break;
 
 	case HW_VAR_TXPAUSE:
@@ -3713,7 +3713,7 @@ void GetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
 		break;
 #endif
 	case HW_VAR_EFUSE_BYTES: /*  To get EFUE total used bytes, added by Roger, 2008.12.22. */
-		*(uint16_t *)pval = pHalData->EfuseUsedBytes;
+		*(u16 *)pval = pHalData->EfuseUsedBytes;
 		break;
 
 	case HW_VAR_APFM_ON_MAC:

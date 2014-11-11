@@ -305,7 +305,7 @@ static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 
 	/* no consider fragement */
 	len = pattrib->hdrlen + pattrib->iv_len +
-		SNAP_SIZE + sizeof(uint16_t) +
+		SNAP_SIZE + sizeof(u16) +
 		pattrib->pktlen +
 		((pattrib->bswenc) ? pattrib->icv_len : 0);
 

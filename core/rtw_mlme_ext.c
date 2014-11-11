@@ -960,7 +960,7 @@ unsigned int OnAuth(struct rtl_priv *padapter, union recv_frame *precv_frame)
 	_irqL irqL;
 	unsigned int	auth_mode, seq, ie_len;
 	unsigned char	*sa, *p;
-	uint16_t	algorithm;
+	u16	algorithm;
 	int	status;
 	static struct sta_info stat;
 	struct	sta_info	*pstat=NULL;
@@ -1000,8 +1000,8 @@ unsigned int OnAuth(struct rtl_priv *padapter, union recv_frame *precv_frame)
 		offset = 4;
 	}
 
-	algorithm = le16_to_cpu(*(uint16_t *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset));
-	seq 	= le16_to_cpu(*(uint16_t *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 2));
+	algorithm = le16_to_cpu(*(u16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset));
+	seq 	= le16_to_cpu(*(u16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 2));
 
 	DBG_871X("auth alg=%x, seq=%X\n", algorithm, seq);
 
@@ -1287,7 +1287,7 @@ unsigned int OnAssocReq(struct rtl_priv *padapter, union recv_frame *precv_frame
 {
 #ifdef CONFIG_AP_MODE
 	_irqL irqL;
-	uint16_t capab_info, listen_interval;
+	u16 capab_info, listen_interval;
 	struct rtw_ieee802_11_elems elems;
 	struct sta_info	*pstat;
 	unsigned char		reassoc, *p, *pos, *wpa_ie;
@@ -2306,7 +2306,7 @@ int32_t rtw_action_public_decache(union recv_frame *recv_frame, int32_t token)
 	struct rtl_priv *adapter = recv_frame->u.hdr.adapter;
 	struct mlme_ext_priv *mlmeext = &(adapter->mlmeextpriv);
 	uint8_t *frame = recv_frame->u.hdr.rx_data;
-	uint16_t seq_ctrl = ( (recv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
+	u16 seq_ctrl = ( (recv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
 		(recv_frame->u.hdr.attrib.frag_num & 0xf);
 
 	if (GetRetry(frame)) {
@@ -3226,7 +3226,7 @@ void issue_auth(struct rtl_priv *padapter, struct sta_info *psta, unsigned short
 
 
 		// setting auth algo number
-		val16 = (uint16_t)psta->authalg;
+		val16 = (u16)psta->authalg;
 
 		if(status != _STATS_SUCCESSFUL_)
 			val16 = 0;
@@ -3239,7 +3239,7 @@ void issue_auth(struct rtl_priv *padapter, struct sta_info *psta, unsigned short
 		pframe = rtw_set_fixed_ie(pframe, _AUTH_ALGM_NUM_, (unsigned char *)&val16, &(pattrib->pktlen));
 
 		// setting auth seq number
-		val16 =(uint16_t)psta->auth_seq;
+		val16 =(u16)psta->auth_seq;
 		val16 = cpu_to_le16(val16);
 		pframe = rtw_set_fixed_ie(pframe, _AUTH_SEQ_NUM_, (unsigned char *)&val16, &(pattrib->pktlen));
 
@@ -3516,7 +3516,7 @@ void issue_assocreq(struct rtl_priv *padapter)
 	uint8_t	cbw40_enable = 0;
 
 #ifdef CONFIG_DFS
-	uint16_t	cap;
+	u16	cap;
 #endif //CONFIG_DFS
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
@@ -3922,7 +3922,7 @@ exit:
 }
 
 //when wait_ack is ture, this function shoule be called at process context
-static int _issue_qos_nulldata(struct rtl_priv *padapter, unsigned char *da, uint16_t tid, int wait_ack)
+static int _issue_qos_nulldata(struct rtl_priv *padapter, unsigned char *da, u16 tid, int wait_ack)
 {
 	int ret = _FAIL;
 	struct xmit_frame			*pmgntframe;
@@ -4008,7 +4008,7 @@ exit:
 
 //when wait_ms >0 , this function shoule be called at process context
 //da == NULL for station mode
-int issue_qos_nulldata(struct rtl_priv *padapter, unsigned char *da, uint16_t tid, int try_cnt, int wait_ms)
+int issue_qos_nulldata(struct rtl_priv *padapter, unsigned char *da, u16 tid, int try_cnt, int wait_ms)
 {
 	int ret;
 	int i = 0;
@@ -4233,17 +4233,17 @@ void issue_action_spct_ch_switch(struct rtl_priv *padapter, uint8_t *ra, uint8_t
 void issue_action_BA(struct rtl_priv *padapter, unsigned char *raddr, unsigned char action, unsigned short status)
 {
 	uint8_t	category = RTW_WLAN_CATEGORY_BACK;
-	uint16_t	start_seq;
-	uint16_t	BA_para_set;
-	uint16_t	reason_code;
-	uint16_t	BA_timeout_value;
-	uint16_t	BA_starting_seqctrl;
+	u16	start_seq;
+	u16	BA_para_set;
+	u16	reason_code;
+	u16	BA_timeout_value;
+	u16	BA_starting_seqctrl;
 	HT_CAP_AMPDU_FACTOR max_rx_ampdu_factor;
 	struct xmit_frame		*pmgntframe;
 	struct pkt_attrib		*pattrib;
 	uint8_t					*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
-	uint16_t					*fctrl;
+	u16					*fctrl;
 	struct xmit_priv		*pxmitpriv = &(padapter->xmitpriv);
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -4541,7 +4541,7 @@ unsigned int send_delba(struct rtl_priv *padapter, uint8_t initiator, uint8_t *a
 	//struct recv_reorder_ctrl *preorder_ctrl;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	uint16_t tid;
+	u16 tid;
 
 	if((pmlmeinfo->state&0x03) != WIFI_FW_AP_STATE)
 		if (!(pmlmeinfo->state & WIFI_FW_ASSOC_SUCCESS))
@@ -4805,7 +4805,7 @@ uint8_t collect_bss_info(struct rtl_priv *padapter, union recv_frame *precv_fram
 	int	i;
 	uint32_t	len;
 	uint8_t	*p;
-	uint16_t	val16, subtype;
+	u16	val16, subtype;
 	uint8_t	*pframe = precv_frame->u.hdr.rx_data;
 	uint32_t	packet_len = precv_frame->u.hdr.len;
 	struct registry_priv 	*pregistrypriv = &padapter->registrypriv;
@@ -5809,7 +5809,7 @@ void mlmeext_joinbss_event_callback(struct rtl_priv *padapter, int join_res)
 	WLAN_BSSID_EX 		*cur_network = &(pmlmeinfo->network);
 	struct sta_priv		*pstapriv = &padapter->stapriv;
 	uint8_t	join_type;
-	uint16_t media_status;
+	u16 media_status;
 
 	if(join_res < 0)
 	{
@@ -6841,7 +6841,7 @@ uint8_t setkey_hdl(struct rtl_priv *padapter, uint8_t *pbuf)
 
 uint8_t set_stakey_hdl(struct rtl_priv *padapter, uint8_t *pbuf)
 {
-	uint16_t ctrl=0;
+	u16 ctrl=0;
 	uint8_t cam_id = 0;//cam_entry
 	uint8_t ret = H2C_SUCCESS;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -6946,7 +6946,7 @@ uint8_t add_ba_hdl(struct rtl_priv *padapter, unsigned char *pbuf)
 		//pmlmeinfo->ADDBA_retry_count = 0;
 		//pmlmeinfo->candidate_tid_bitmap |= (0x1 << pparm->tid);
 		//psta->htpriv.candidate_tid_bitmap |= BIT(pparm->tid);
-		issue_action_BA(padapter, pparm->addr, RTW_WLAN_ACTION_ADDBA_REQ, (uint16_t)pparm->tid);
+		issue_action_BA(padapter, pparm->addr, RTW_WLAN_ACTION_ADDBA_REQ, (u16)pparm->tid);
 		//_set_timer(&pmlmeext->ADDBA_timer, ADDBA_TO);
 		_set_timer(&psta->addba_retry_timer, ADDBA_TO);
 	}
@@ -7008,13 +7008,13 @@ _func_exit_;
 uint8_t mlme_evt_hdl(struct rtl_priv *padapter, unsigned char *pbuf)
 {
 	uint8_t evt_code, evt_seq;
-	uint16_t evt_sz;
+	u16 evt_sz;
 	uint 	*peventbuf;
 	void (*event_callback)(struct rtl_priv *dev, uint8_t *pbuf);
 	struct evt_priv *pevt_priv = &(padapter->evtpriv);
 
 	peventbuf = (uint*)pbuf;
-	evt_sz = (uint16_t)(*peventbuf&0xffff);
+	evt_sz = (u16)(*peventbuf&0xffff);
 	evt_seq = (uint8_t)((*peventbuf>>24)&0x7f);
 	evt_code = (uint8_t)((*peventbuf>>16)&0xff);
 

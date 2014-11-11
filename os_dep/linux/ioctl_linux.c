@@ -266,16 +266,16 @@ static char *translate_scan(struct rtl_priv *padapter,
 				char *start, char *stop)
 {
 	struct iw_event iwe;
-	uint16_t cap;
+	u16 cap;
 	u32 ht_ielen = 0, vht_ielen = 0;
 	char custom[MAX_CUSTOM_LEN];
 	char *p;
-	uint16_t max_rate = 0, rate, ht_cap = _FALSE, vht_cap = _FALSE;
+	u16 max_rate = 0, rate, ht_cap = _FALSE, vht_cap = _FALSE;
 	u32 i = 0;
 	char	*current_val;
 	long rssi;
 	uint8_t bw_40MHz = 0, short_GI = 0, bw_160MHz = 0, vht_highest_rate = 0;
-	uint16_t mcs_rate = 0, vht_data_rate = 0;
+	u16 mcs_rate = 0, vht_data_rate = 0;
 	struct registry_priv *pregpriv = &padapter->registrypriv;
 
 	/*  AP MAC address  */
@@ -288,7 +288,7 @@ static char *translate_scan(struct rtl_priv *padapter,
 	/* Add the ESSID */
 	iwe.cmd = SIOCGIWESSID;
 	iwe.u.data.flags = 1;
-	iwe.u.data.length = min((uint16_t)pnetwork->network.Ssid.SsidLength, (uint16_t)32);
+	iwe.u.data.length = min((u16)pnetwork->network.Ssid.SsidLength, (u16)32);
 	start = iwe_stream_add_point(info, start, stop, &iwe, pnetwork->network.Ssid.Ssid);
 
 	/* parsing HT_CAP_IE */
@@ -429,7 +429,7 @@ static char *translate_scan(struct rtl_priv *padapter,
 	{
 		uint8_t buf[MAX_WPA_IE_LEN];
 		uint8_t wpa_ie[255], rsn_ie[255];
-		uint16_t wpa_len = 0, rsn_len = 0;
+		u16 wpa_len = 0, rsn_len = 0;
 		uint8_t *p;
 		sint out_len = 0;
 		out_len = rtw_get_sec_ie(pnetwork->network.IEs, pnetwork->network.IELength, rsn_ie, &rsn_len, wpa_ie, &wpa_len);
@@ -486,7 +486,7 @@ static char *translate_scan(struct rtl_priv *padapter,
 			if (rtw_is_wps_ie(&ie_ptr[cnt], &wps_ielen) && (wps_ielen > 2)) {
 				wpsie_ptr = &ie_ptr[cnt];
 				iwe.cmd = IWEVGENIE;
-				iwe.u.data.length = (uint16_t)wps_ielen;
+				iwe.u.data.length = (u16)wps_ielen;
 				start = iwe_stream_add_point(info, start, stop, &iwe, wpsie_ptr);
 			}
 			cnt += ie_ptr[cnt+1] + 2; /* goto next */
@@ -857,7 +857,7 @@ static int rtw_set_wpa_ie(struct rtl_priv *padapter, char *pie, unsigned short i
 		_clr_fwstate_(&padapter->mlmepriv, WIFI_UNDER_WPS);
 		{
 			/* set wps_ie */
-			uint16_t cnt = 0;
+			u16 cnt = 0;
 			uint8_t eid, wps_oui[4] = { 0x0, 0x50, 0xf2, 0x04};
 
 			while (cnt < ielen) {
@@ -907,7 +907,7 @@ static int rtw_wx_get_name(struct net_device *ndev,
 			     union iwreq_data *wrqu, char *extra)
 {
 	struct rtl_priv *padapter = rtl_priv(ndev);
-	uint16_t cap;
+	u16 cap;
 	u32 ht_ielen = 0;
 	char *p;
 	uint8_t ht_cap = _FALSE, vht_cap = _FALSE;
@@ -1184,7 +1184,7 @@ static int rtw_wx_get_range(struct net_device *ndev,
 	struct rtl_priv *padapter = rtl_priv(ndev);
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 
-	uint16_t val;
+	u16 val;
 	int i;
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("rtw_wx_get_range. cmd_code=%x\n", info->cmd));
@@ -1411,7 +1411,7 @@ static int rtw_wx_set_mlme(struct net_device *ndev,
 {
 
 	int ret = 0;
-	uint16_t reason;
+	u16 reason;
 	struct rtl_priv *padapter = rtl_priv(ndev);
 	struct iw_mlme *mlme = (struct iw_mlme *) extra;
 
@@ -1960,7 +1960,7 @@ static int rtw_wx_get_rate(struct net_device *ndev,
 			     struct iw_request_info *info,
 			     union iwreq_data *wrqu, char *extra)
 {
-	uint16_t max_rate = 0;
+	u16 max_rate = 0;
 
 	max_rate = rtw_get_cur_max_rate(rtl_priv(ndev));
 
@@ -2785,7 +2785,7 @@ static int wpa_supplicant_ioctl(struct net_device *ndev, struct iw_point *p)
 
 	case IEEE_CMD_SET_WPA_IE:
 		/* ret = wpa_set_wpa_ie(ndev, param, p->length); */
-		ret =  rtw_set_wpa_ie(rtl_priv(ndev), (char *)param->u.wpa_ie.data, (uint16_t)param->u.wpa_ie.len);
+		ret =  rtw_set_wpa_ie(rtl_priv(ndev), (char *)param->u.wpa_ie.data, (u16)param->u.wpa_ie.len);
 		break;
 
 	case IEEE_CMD_SET_ENCRYPTION:
@@ -3309,7 +3309,7 @@ static int rtw_ioctl_get_sta_data(struct net_device *ndev, struct ieee_param *pa
 
 	psta = rtw_get_stainfo(pstapriv, param_ex->sta_addr);
 	if (psta) {
-		psta_data->aid = (uint16_t)psta->aid;
+		psta_data->aid = (u16)psta->aid;
 		psta_data->capability = psta->capability;
 		psta_data->flags = psta->flags;
 
@@ -4128,7 +4128,7 @@ static const char iw_priv_type_size[] = {
 	0,                              /* Not defined */
 };
 
-static int get_priv_size(uint16_t args)
+static int get_priv_size(u16 args)
 {
 	int num = args & IW_PRIV_SIZE_MASK;
 	int type = (args & IW_PRIV_TYPE_MASK) >> 12;

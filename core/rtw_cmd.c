@@ -1709,7 +1709,7 @@ static void traffic_status_watchdog(struct rtl_priv *padapter)
 #ifdef CONFIG_LPS
 	uint8_t	bEnterPS;
 #endif
-	uint16_t	BusyThreshold = 100;
+	u16	BusyThreshold = 100;
 	uint8_t	bBusyTraffic = _FALSE, bTxBusyTraffic = _FALSE, bRxBusyTraffic = _FALSE;
 	uint8_t	bHigherBusyTraffic = _FALSE, bHigherBusyRxTraffic = _FALSE, bHigherBusyTxTraffic = _FALSE;
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
@@ -1935,12 +1935,12 @@ _func_exit_;
 #endif
 
 #if (RATE_ADAPTIVE_SUPPORT==1)
-void rpt_timer_setting_wk_hdl(struct rtl_priv *padapter, uint16_t minRptTime)
+void rpt_timer_setting_wk_hdl(struct rtl_priv *padapter, u16 minRptTime)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_RPT_TIMER_SETTING, (uint8_t *)(&minRptTime));
 }
 
-uint8_t rtw_rpt_timer_cfg_cmd(struct rtl_priv*padapter, uint16_t minRptTime)
+uint8_t rtw_rpt_timer_cfg_cmd(struct rtl_priv*padapter, u16 minRptTime)
 {
 	struct cmd_obj		*ph2c;
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;

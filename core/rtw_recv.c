@@ -606,8 +606,8 @@ union recv_frame * portctrl(struct rtl_priv *adapter,union recv_frame * precv_fr
 	struct sta_info *psta;
 	struct sta_priv *pstapriv ;
 	union recv_frame *prtnframe;
-	uint16_t	ether_type=0;
-	uint16_t  eapol_type = 0x888e;//for Funia BD's WPA issue
+	u16	ether_type=0;
+	u16  eapol_type = 0x888e;//for Funia BD's WPA issue
 	struct rx_pkt_attrib *pattrib;
 
 	pstapriv = &adapter->stapriv;
@@ -684,7 +684,7 @@ sint recv_decache(union recv_frame *precv_frame, uint8_t bretry, struct stainfo_
 {
 	sint tid = precv_frame->u.hdr.attrib.priority;
 
-	uint16_t seq_ctrl = ( (precv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
+	u16 seq_ctrl = ( (precv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
 		(precv_frame->u.hdr.attrib.frag_num & 0xf);
 
 	if (tid > 15) {
@@ -804,7 +804,7 @@ void process_wmmps_data(struct rtl_priv *padapter, union recv_frame *precv_frame
 				xmit_delivery_enabled_frames(padapter, psta);
 			} else {
 				/* issue one qos null frame with More data bit = 0 and the EOSP bit set (=1) */
-				issue_qos_nulldata(padapter, psta->hwaddr, (uint16_t)pattrib->priority, 0, 0);
+				issue_qos_nulldata(padapter, psta->hwaddr, (u16)pattrib->priority, 0, 0);
 			}
 		}
 
@@ -1187,7 +1187,7 @@ sint validate_recv_ctrl_frame(struct rtl_priv *padapter, union recv_frame *precv
 	/* only handle ps-poll */
 	if (GetFrameSubType(pframe) == WIFI_PSPOLL)
 	{
-		uint16_t aid;
+		u16 aid;
 		uint8_t wmmps_ac=0;
 		struct sta_info *psta=NULL;
 
@@ -1610,7 +1610,7 @@ sint wlanhdr_to_ethhdr ( union recv_frame *precvframe);
 sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 {
 	sint rmv_len;
-	uint16_t eth_type, len;
+	u16 eth_type, len;
 	uint8_t	bsnaphdr;
 	uint8_t	*psnap_type;
 	struct ieee80211_snap_hdr *psnap;
@@ -1686,7 +1686,7 @@ _func_exit_;
 sint wlanhdr_to_ethhdr ( union recv_frame *precvframe)
 {
 	sint rmv_len;
-	uint16_t eth_type;
+	u16 eth_type;
 	uint8_t	bsnaphdr;
 	uint8_t	*psnap_type;
 	struct ieee80211_snap_hdr	*psnap;
@@ -2002,7 +2002,7 @@ union recv_frame* recvframe_chk_defrag(struct rtl_priv *padapter, union recv_fra
 int amsdu_to_msdu(struct rtl_priv *padapter, union recv_frame *prframe)
 {
 	int	a_len, padding_len;
-	uint16_t	nSubframe_Length;
+	u16	nSubframe_Length;
 	uint8_t	nr_subframes, i;
 	uint8_t	*pdata;
 	struct sk_buff *sub_pkt,*subframes[MAX_SUBFRAME_COUNT];
@@ -2080,11 +2080,11 @@ int amsdu_to_msdu(struct rtl_priv *padapter, union recv_frame *prframe)
 	return ret;
 }
 
-int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, uint16_t seq_num);
-int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, uint16_t seq_num)
+int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num);
+int check_indicate_seq(struct recv_reorder_ctrl *preorder_ctrl, u16 seq_num)
 {
 	uint8_t	wsize = preorder_ctrl->wsize_b;
-	uint16_t	wend = (preorder_ctrl->indicate_seq + wsize -1) & 0xFFF;//% 4096;
+	u16	wend = (preorder_ctrl->indicate_seq + wsize -1) & 0xFFF;//% 4096;
 
 	/*  Rx Reorder initialize condition. */
 	if (preorder_ctrl->indicate_seq == 0xFFFF) {

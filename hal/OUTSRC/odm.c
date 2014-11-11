@@ -27,7 +27,7 @@
 #include "odm_precomp.h"
 
 
-const uint16_t dB_Invert_Table[8][12] = {
+const u16 dB_Invert_Table[8][12] = {
 	{	1,		1,		1,		2,		2,		2,		2,		3,		3,		3,		4,		4},
 	{	4,		5,		6,		6,		7,		8,		9,		10,		11,		13,		14,		16},
 	{	18,		20,		22,		25,		28,		32,		35,		40,		45,		50,		56,		63},
@@ -606,7 +606,7 @@ void ODM_CmnInfoHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue
 
 
 void ODM_CmnInfoPtrArrayHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
-	uint16_t Index, PVOID pValue)
+	u16 Index, PVOID pValue)
 {
 	/*
 	 * Hook call by reference pointer.

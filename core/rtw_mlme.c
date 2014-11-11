@@ -381,9 +381,9 @@ uint8_t *rtw_get_capability_from_ie(uint8_t *ie)
 }
 
 
-uint16_t rtw_get_capability(WLAN_BSSID_EX *bss)
+u16 rtw_get_capability(WLAN_BSSID_EX *bss)
 {
-	uint16_t	val;
+	u16	val;
 
 	memcpy((uint8_t *)&val, rtw_get_capability_from_ie(bss->IEs), 2);
 
@@ -508,7 +508,7 @@ inline int is_same_ess(WLAN_BSSID_EX *a, WLAN_BSSID_EX *b)
 
 int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst)
 {
-	 uint16_t s_cap, d_cap;
+	 u16 s_cap, d_cap;
 
 	if (rtw_bug_check(dst, src, &s_cap, &d_cap)==_FALSE)
 			return _FALSE;
@@ -1678,7 +1678,7 @@ uint8_t search_max_mac_id(struct rtl_priv *padapter)
 //FOR AP ,AD-HOC mode
 void rtw_stassoc_hw_rpt(struct rtl_priv *adapter,struct sta_info *psta)
 {
-	uint16_t media_status;
+	u16 media_status;
 
 	if (psta==NULL)	return;
 
@@ -1811,7 +1811,7 @@ _func_enter_;
 	DBG_871X("%s(mac_id=%d)=" MAC_FMT "\n", __func__, mac_id, MAC_ARG(pstadel->macaddr));
 
 	if (mac_id>=0){
-		uint16_t media_status;
+		u16 media_status;
 		media_status = (mac_id<<8)|0; //  MACID|OPMODE:0 means disconnect
 		//for STA,AP,ADHOC mode, report disconnect stauts to FW
 		rtw_hal_set_hwreg(adapter, HW_VAR_H2C_MEDIA_STATUS_RPT, (uint8_t *)&media_status);

@@ -119,7 +119,7 @@ static u8 odm_EVMdbm_JaguarSeries(s1Byte Value)
 	return ret_val;
 }
 
-static uint16_t odm_Cfo(s1Byte Value)
+static u16 odm_Cfo(s1Byte Value)
 {
 	s2Byte  ret_val;
 

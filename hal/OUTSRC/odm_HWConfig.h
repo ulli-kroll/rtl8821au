@@ -199,9 +199,9 @@ typedef struct _Phy_Status_Rpt_8812
 
 	//DWORD 0
 	u8			gain_trsw[2];
-	uint16_t			chl_num:10;
-	uint16_t			sub_chnl:4;
-	uint16_t			r_RFMOD:2;
+	u16			chl_num:10;
+	u16			sub_chnl:4;
+	u16			r_RFMOD:2;
 
 	//DWORD 1
 	u8			pwdb_all;

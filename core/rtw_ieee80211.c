@@ -23,7 +23,7 @@
 
 
 uint8_t RTW_WPA_OUI_TYPE[] = { 0x00, 0x50, 0xf2, 1 };
-uint16_t RTW_WPA_VERSION = 1;
+u16 RTW_WPA_VERSION = 1;
 uint8_t WPA_AUTH_KEY_MGMT_NONE[] = { 0x00, 0x50, 0xf2, 0 };
 uint8_t WPA_AUTH_KEY_MGMT_UNSPEC_802_1X[] = { 0x00, 0x50, 0xf2, 1 };
 uint8_t WPA_AUTH_KEY_MGMT_PSK_OVER_802_1X[] = { 0x00, 0x50, 0xf2, 2 };
@@ -34,7 +34,7 @@ uint8_t WPA_CIPHER_SUITE_WRAP[] = { 0x00, 0x50, 0xf2, 3 };
 uint8_t WPA_CIPHER_SUITE_CCMP[] = { 0x00, 0x50, 0xf2, 4 };
 uint8_t WPA_CIPHER_SUITE_WEP104[] = { 0x00, 0x50, 0xf2, 5 };
 
-uint16_t RSN_VERSION_BSD = 1;
+u16 RSN_VERSION_BSD = 1;
 uint8_t RSN_AUTH_KEY_MGMT_UNSPEC_802_1X[] = { 0x00, 0x0f, 0xac, 1 };
 uint8_t RSN_AUTH_KEY_MGMT_PSK_OVER_802_1X[] = { 0x00, 0x0f, 0xac, 2 };
 uint8_t RSN_CIPHER_SUITE_NONE[] = { 0x00, 0x0f, 0xac, 0 };
@@ -205,7 +205,7 @@ inline uint8_t *rtw_set_ie_secondary_ch_offset(uint8_t *buf, uint32_t	 *buf_len,
 }
 
 inline uint8_t *rtw_set_ie_mesh_ch_switch_parm(uint8_t *buf, uint32_t	 *buf_len, uint8_t ttl,
-	uint8_t flags, uint16_t reason, uint16_t precedence)
+	uint8_t flags, u16 reason, u16 precedence)
 {
 	uint8_t ie_data[6];
 
@@ -415,20 +415,20 @@ _func_enter_;
 	ie += sz;
 
 	//beacon interval : 2bytes
-	*(uint16_t *)ie = cpu_to_le16((uint16_t)pdev_network->Configuration.BeaconPeriod);//BCN_INTERVAL;
+	*(u16 *)ie = cpu_to_le16((u16)pdev_network->Configuration.BeaconPeriod);//BCN_INTERVAL;
 	sz += 2;
 	ie += 2;
 
 	//capability info
-	*(uint16_t *)ie = 0;
+	*(u16 *)ie = 0;
 
-	*(uint16_t *)ie |= cpu_to_le16(cap_IBSS);
+	*(u16 *)ie |= cpu_to_le16(cap_IBSS);
 
 	if(pregistrypriv->preamble == PREAMBLE_SHORT)
-		*(uint16_t *)ie |= cpu_to_le16(cap_ShortPremble);
+		*(u16 *)ie |= cpu_to_le16(cap_ShortPremble);
 
 	if (pdev_network->Privacy)
-		*(uint16_t *)ie |= cpu_to_le16(cap_Privacy);
+		*(u16 *)ie |= cpu_to_le16(cap_Privacy);
 
 	sz += 2;
 	ie += 2;
@@ -498,7 +498,7 @@ _func_exit_;
 unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit)
 {
 	int len;
-	uint16_t val16;
+	u16 val16;
 	unsigned char wpa_oui_type[] = {0x00, 0x50, 0xf2, 0x01};
 	uint8_t *pbuf = pie;
 	int limit_new = limit;
@@ -635,7 +635,7 @@ int rtw_parse_wpa_ie(uint8_t * wpa_ie, int wpa_ie_len, int *group_cipher, int *p
 	//pairwise_cipher
 	if (left >= 2)
 	{
-                //count = le16_to_cpu(*(uint16_t *)pos);
+                //count = le16_to_cpu(*(u16 *)pos);
 		count = RTW_GET_LE16(pos);
 		pos += 2;
 		left -= 2;
@@ -713,7 +713,7 @@ int rtw_parse_wpa2_ie(uint8_t * rsn_ie, int rsn_ie_len, int *group_cipher, int *
 	//pairwise_cipher
 	if (left >= 2)
 	{
-	        //count = le16_to_cpu(*(uint16_t *)pos);
+	        //count = le16_to_cpu(*(u16 *)pos);
 		count = RTW_GET_LE16(pos);
 		pos += 2;
 		left -= 2;
@@ -754,7 +754,7 @@ int rtw_parse_wpa2_ie(uint8_t * rsn_ie, int rsn_ie_len, int *group_cipher, int *
 
 }
 
-int rtw_get_sec_ie(uint8_t *in_ie,uint in_len,uint8_t *rsn_ie,uint16_t *rsn_len,uint8_t *wpa_ie,uint16_t *wpa_len)
+int rtw_get_sec_ie(uint8_t *in_ie,uint in_len,uint8_t *rsn_ie,u16 *rsn_len,uint8_t *wpa_ie,u16 *wpa_len)
 {
 	uint8_t authmode, sec_idx, i;
 	uint8_t wpa_oui[4]={0x0,0x50,0xf2,0x01};
@@ -901,7 +901,7 @@ uint8_t *rtw_get_wps_ie(uint8_t *in_ie, uint in_len, uint8_t *wps_ie, uint *wps_
  *
  * Returns: the address of the specific WPS attribute found, or NULL
  */
-uint8_t *rtw_get_wps_attr(uint8_t *wps_ie, uint wps_ielen, uint16_t target_attr_id ,uint8_t *buf_attr, uint32_t	 *len_attr)
+uint8_t *rtw_get_wps_attr(uint8_t *wps_ie, uint wps_ielen, u16 target_attr_id ,uint8_t *buf_attr, uint32_t	 *len_attr)
 {
 	uint8_t *attr_ptr = NULL;
 	uint8_t * target_attr_ptr = NULL;
@@ -922,9 +922,9 @@ uint8_t *rtw_get_wps_attr(uint8_t *wps_ie, uint wps_ielen, uint16_t target_attr_
 	while(attr_ptr - wps_ie < wps_ielen)
 	{
 		// 4 = 2(Attribute ID) + 2(Length)
-		uint16_t attr_id = RTW_GET_BE16(attr_ptr);
-		uint16_t attr_data_len = RTW_GET_BE16(attr_ptr + 2);
-		uint16_t attr_len = attr_data_len + 4;
+		u16 attr_id = RTW_GET_BE16(attr_ptr);
+		u16 attr_data_len = RTW_GET_BE16(attr_ptr + 2);
+		u16 attr_len = attr_data_len + 4;
 
 		//DBG_871X("%s attr_ptr:%p, id:%u, length:%u\n", __FUNCTION__, attr_ptr, attr_id, attr_data_len);
 		if( attr_id == target_attr_id )
@@ -959,7 +959,7 @@ uint8_t *rtw_get_wps_attr(uint8_t *wps_ie, uint wps_ielen, uint16_t target_attr_
  *
  * Returns: the address of the specific WPS attribute content found, or NULL
  */
-uint8_t *rtw_get_wps_attr_content(uint8_t *wps_ie, uint wps_ielen, uint16_t target_attr_id ,uint8_t *buf_content, uint *len_content)
+uint8_t *rtw_get_wps_attr_content(uint8_t *wps_ie, uint wps_ielen, u16 target_attr_id ,uint8_t *buf_content, uint *len_content)
 {
 	uint8_t *attr_ptr;
 	uint32_t	 attr_len;
@@ -1314,8 +1314,8 @@ void dump_ies(uint8_t *buf, uint32_t	 buf_len) {
 
 void dump_wps_ie(uint8_t *ie, uint32_t	 ie_len) {
 	uint8_t * pos = (uint8_t *)ie;
-	uint16_t id;
-	uint16_t len;
+	u16 id;
+	u16 len;
 
 	uint8_t *wps_ie;
 	uint wps_ielen;
@@ -1352,7 +1352,7 @@ int ieee80211_is_empty_essid(const char *essid, int essid_len)
 	return 1;
 }
 
-int ieee80211_get_hdrlen(uint16_t fc)
+int ieee80211_get_hdrlen(u16 fc)
 {
 	int hdrlen = 24;
 
@@ -1425,7 +1425,7 @@ void rtw_get_bcn_info(struct wlan_network *pnetwork)
 	unsigned short cap = 0;
 	uint8_t bencrypt = 0;
 	//uint8_t wpa_ie[255],rsn_ie[255];
-	uint16_t wpa_len=0,rsn_len=0;
+	u16 wpa_len=0,rsn_len=0;
 	struct HT_info_element *pht_info = NULL;
 	struct rtw_ieee80211_ht_cap *pht_cap = NULL;
 	unsigned int		len;
@@ -1479,9 +1479,9 @@ void rtw_get_bcn_info(struct wlan_network *pnetwork)
 }
 
 //show MCS rate, unit: 100Kbps
-uint16_t rtw_mcs_rate(uint8_t rf_type, uint8_t bw_40MHz, uint8_t short_GI_20, uint8_t short_GI_40, unsigned char * MCS_rate)
+u16 rtw_mcs_rate(uint8_t rf_type, uint8_t bw_40MHz, uint8_t short_GI_20, uint8_t short_GI_40, unsigned char * MCS_rate)
 {
-	uint16_t max_rate = 0;
+	u16 max_rate = 0;
 
 	if(rf_type == RF_1T1R)
 	{
@@ -1549,7 +1549,7 @@ uint16_t rtw_mcs_rate(uint8_t rf_type, uint8_t bw_40MHz, uint8_t short_GI_20, ui
 int rtw_action_frame_parse(const uint8_t *frame, uint32_t	 frame_len, uint8_t * category, uint8_t *action)
 {
 	const uint8_t *frame_body = frame + sizeof(struct rtw_ieee80211_hdr_3addr);
-	uint16_t fc;
+	u16 fc;
 	uint8_t c, a;
 
 	fc = le16_to_cpu(((struct rtw_ieee80211_hdr_3addr *)frame)->frame_ctl);

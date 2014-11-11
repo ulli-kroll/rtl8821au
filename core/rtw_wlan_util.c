@@ -605,7 +605,7 @@ __inline uint8_t *get_my_bssid(WLAN_BSSID_EX *pnetwork)
 	return (pnetwork->MacAddress);
 }
 
-uint16_t get_beacon_interval(WLAN_BSSID_EX *bss)
+u16 get_beacon_interval(WLAN_BSSID_EX *bss)
 {
 	unsigned short val;
 	memcpy((unsigned char *)&val, rtw_get_beacon_interval_from_ie(bss->IEs), 2);
@@ -697,7 +697,7 @@ void invalidate_cam_all(struct rtl_priv *padapter)
 	rtw_hal_set_hwreg(padapter, HW_VAR_CAM_INVALID_ALL, 0);
 }
 
-void write_cam(struct rtl_priv *padapter, uint8_t entry, uint16_t ctrl, uint8_t *mac, uint8_t *key)
+void write_cam(struct rtl_priv *padapter, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key)
 {
 	unsigned int	i, val, addr;
 	//unsigned int    cmd;
@@ -826,7 +826,7 @@ void WMMOnAssocRsp(struct rtl_priv *padapter)
 {
 	uint8_t	ACI, ACM, AIFS, ECWMin, ECWMax, aSifsTime;
 	uint8_t	acm_mask;
-	uint16_t	TXOP;
+	u16	TXOP;
 	uint32_t	acParm, i;
 	uint32_t	edca[4], inx[4];
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -1286,7 +1286,7 @@ int rtw_check_bcn_info(struct rtl_priv *Adapter, uint8_t *pframe, uint32_t	 pack
 	unsigned short	val16, subtype;
 	struct wlan_network *cur_network = &(Adapter->mlmepriv.cur_network);
 	//uint8_t wpa_ie[255],rsn_ie[255];
-	uint16_t wpa_len=0,rsn_len=0;
+	u16 wpa_len=0,rsn_len=0;
 	uint8_t encryp_protocol = 0;
 	WLAN_BSSID_EX *bssid;
 	int group_cipher = 0, pairwise_cipher = 0, is_8021x = 0;
@@ -2012,7 +2012,7 @@ void update_IOT_info(struct rtl_priv *padapter)
 
 }
 
-void update_capinfo(struct rtl_priv *Adapter, uint16_t updateCap)
+void update_capinfo(struct rtl_priv *Adapter, u16 updateCap)
 {
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2195,7 +2195,7 @@ int update_sta_support_rate(struct rtl_priv *padapter, uint8_t * pvar_ie, uint v
 void process_addba_req(struct rtl_priv *padapter, uint8_t *paddba_req, uint8_t *addr)
 {
 	struct sta_info *psta;
-	uint16_t tid, start_seq, param;
+	u16 tid, start_seq, param;
 	struct recv_reorder_ctrl *preorder_ctrl;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct ADDBA_request	*preq = (struct ADDBA_request*)paddba_req;

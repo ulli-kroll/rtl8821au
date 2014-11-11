@@ -435,9 +435,9 @@ _func_exit_;
 #define RotR1(v16)   ((((v16) >> 1) & 0x7FFF) ^ (((v16) & 1) << 15))
 #define   Lo8(v16)   ((uint8_t)( (v16)       & 0x00FF))
 #define   Hi8(v16)   ((uint8_t)(((v16) >> 8) & 0x00FF))
-#define  Lo16(v32)   ((uint16_t)( (v32)       & 0xFFFF))
-#define  Hi16(v32)   ((uint16_t)(((v32) >>16) & 0xFFFF))
-#define  Mk16(hi,lo) ((lo) ^ (((uint16_t)(hi)) << 8))
+#define  Lo16(v32)   ((u16)( (v32)       & 0xFFFF))
+#define  Hi16(v32)   ((u16)(((v32) >>16) & 0xFFFF))
+#define  Mk16(hi,lo) ((lo) ^ (((u16)(hi)) << 8))
 
 /* select the Nth 16-bit word of the temporal key unsigned char array TK[]   */
 #define  TK16(N)     Mk16(tk[2*(N)+1],tk[2*(N)])
@@ -544,7 +544,7 @@ static const unsigned short Sbox1[2][256]=       /* Sbox for hash (can be in ROM
 *
 **********************************************************************
 */
-static void phase1(uint16_t *p1k,const uint8_t *tk,const uint8_t *ta,uint32_t	 iv32)
+static void phase1(u16 *p1k,const uint8_t *tk,const uint8_t *ta,uint32_t	 iv32)
 {
 	sint  i;
 _func_enter_;
@@ -593,10 +593,10 @@ _func_exit_;
 *
 **********************************************************************
 */
-static void phase2(uint8_t *rc4key,const uint8_t *tk,const uint16_t *p1k,uint16_t iv16)
+static void phase2(uint8_t *rc4key,const uint8_t *tk,const u16 *p1k,u16 iv16)
 {
 	sint  i;
-	uint16_t PPK[6];                          /* temporary key for mixing    */
+	u16 PPK[6];                          /* temporary key for mixing    */
 _func_enter_;
 	/* Note: all adds in the PPK[] equations below are mod 2**16         */
 	for (i=0;i<5;i++) PPK[i]=p1k[i];      /* first, copy P1K to PPK      */
@@ -642,7 +642,7 @@ _func_exit_;
 //The hlen isn't include the IV
 uint32_t	rtw_tkip_encrypt(struct rtl_priv *padapter, uint8_t *pxmitframe)
 {																	// exclude ICV
-	uint16_t	pnl;
+	u16	pnl;
 	uint32_t	pnh;
 	uint8_t	rc4key[16];
 	uint8_t   ttkey[16];
@@ -715,12 +715,12 @@ _func_enter_;
 
 				GET_TKIP_PN(iv, dot11txpn);
 
-				pnl=(uint16_t)(dot11txpn.val);
+				pnl=(u16)(dot11txpn.val);
 				pnh=(uint32_t)(dot11txpn.val>>16);
 
-				phase1((uint16_t *)&ttkey[0],prwskey,&pattrib->ta[0],pnh);
+				phase1((u16 *)&ttkey[0],prwskey,&pattrib->ta[0],pnh);
 
-				phase2(&rc4key[0],prwskey,(uint16_t *)&ttkey[0],pnl);
+				phase2(&rc4key[0],prwskey,(u16 *)&ttkey[0],pnl);
 
 				if((curfragnum+1)==pattrib->nr_frags){	//4 the last fragment
 					length=pattrib->last_txcmdsz-pattrib->hdrlen-pattrib->iv_len- pattrib->icv_len;
@@ -765,7 +765,7 @@ _func_exit_;
 //The hlen isn't include the IV
 uint32_t	 rtw_tkip_decrypt(struct rtl_priv *padapter, uint8_t *precvframe)
 {																	// exclude ICV
-	uint16_t pnl;
+	u16 pnl;
 	uint32_t	 pnh;
 	uint8_t   rc4key[16];
 	uint8_t   ttkey[16];
@@ -818,10 +818,10 @@ _func_enter_;
 
 			GET_TKIP_PN(iv, dot11txpn);
 
-			pnl=(uint16_t)(dot11txpn.val);
+			pnl=(u16)(dot11txpn.val);
 			pnh=(uint32_t)(dot11txpn.val>>16);
 
-			phase1((uint16_t *)&ttkey[0],prwskey,&prxattrib->ta[0],pnh);
+			phase1((u16 *)&ttkey[0],prwskey,&prxattrib->ta[0],pnh);
 			phase2(&rc4key[0],prwskey,(unsigned short *)&ttkey[0],pnl);
 
 			//4 decrypt payload include icv
@@ -2231,7 +2231,7 @@ static void hmac_sha256_vector(uint8_t *key, size_t key_len, size_t num_elem,
 static void sha256_prf(uint8_t *key, size_t key_len, char *label,
 		uint8_t *data, size_t data_len, uint8_t *buf, size_t buf_len)
 {
-	uint16_t counter = 1;
+	u16 counter = 1;
 	size_t pos, plen;
 	uint8_t hash[SHA256_MAC_LEN];
 	uint8_t *addr[4];

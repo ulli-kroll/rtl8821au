@@ -173,9 +173,9 @@ int rtw_os_recvbuf_resource_free(struct rtl_priv *padapter, struct recv_buf *pre
 
 }
 
-struct sk_buff  *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, uint16_t nSubframe_Length, uint8_t *pdata)
+struct sk_buff  *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, uint8_t *pdata)
 {
-	uint16_t	eth_type;
+	u16	eth_type;
 	uint8_t	*data_ptr;
 	struct sk_buff  *sub_skb;
 	struct rx_pkt_attrib *pattrib;
@@ -213,7 +213,7 @@ struct sk_buff  *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, uint16_t nSubf
 		memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->src, ETH_ALEN);
 		memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->dst, ETH_ALEN);
 	} else {
-		uint16_t len;
+		u16 len;
 		/* Leave Ethernet header part of hdr and full payload */
 		len = htons(sub_skb->len);
 		memcpy(skb_push(sub_skb, 2), &len, 2);

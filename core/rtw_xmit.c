@@ -1023,7 +1023,7 @@ static int32_t xmitframe_swencrypt(struct rtl_priv *padapter, struct xmit_frame 
 
 int32_t rtw_make_wlanhdr (struct rtl_priv *padapter , uint8_t *hdr, struct pkt_attrib *pattrib)
 {
-	uint16_t *qc;
+	u16 *qc;
 
 	struct rtw_ieee80211_hdr *pwlanhdr = (struct rtw_ieee80211_hdr *)hdr;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -1031,7 +1031,7 @@ int32_t rtw_make_wlanhdr (struct rtl_priv *padapter , uint8_t *hdr, struct pkt_a
 	uint8_t qos_option = _FALSE;
 
 	sint res = _SUCCESS;
-	uint16_t *fctrl = &pwlanhdr->frame_ctl;
+	u16 *fctrl = &pwlanhdr->frame_ctl;
 
 	/* struct sta_info *psta; */
 
@@ -1158,7 +1158,7 @@ _func_enter_;
 
 				/* re-check if enable ampdu by BA_starting_seqctrl */
 				if (pattrib->ampdu_en == _TRUE) 	{
-					uint16_t tx_seq;
+					u16 tx_seq;
 
 					tx_seq = psta->BA_starting_seqctrl[pattrib->priority & 0x0f];
 
@@ -1266,7 +1266,7 @@ uint32_t	 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib)
 	uint32_t	len = 0;
 
 	len = pattrib->hdrlen + pattrib->iv_len;	/* WLAN Header and IV */
-	len += SNAP_SIZE + sizeof(uint16_t);		/* LLC */
+	len += SNAP_SIZE + sizeof(u16);		/* LLC */
 	len += pattrib->pktlen;
 	if (pattrib->encrypt == _TKIP_)
 		len += 8;	/* MIC */
@@ -1491,7 +1491,7 @@ exit:
  *	Organizationally Unique Identifier(OUI), 3 octets,
  *	type, defined by that organization, 2 octets.
  */
-int32_t rtw_put_snap(uint8_t *data, uint16_t h_proto)
+int32_t rtw_put_snap(uint8_t *data, u16 h_proto)
 {
 	struct ieee80211_snap_hdr *snap;
 	uint8_t *oui;
@@ -1510,9 +1510,9 @@ int32_t rtw_put_snap(uint8_t *data, uint16_t h_proto)
 	snap->oui[1] = oui[1];
 	snap->oui[2] = oui[2];
 
-	*(uint16_t *)(data + SNAP_SIZE) = htons(h_proto);
+	*(u16 *)(data + SNAP_SIZE) = htons(h_proto);
 
-	return SNAP_SIZE + sizeof(uint16_t);
+	return SNAP_SIZE + sizeof(u16);
 }
 
 void rtw_update_protection(struct rtl_priv *padapter, uint8_t *ie, uint ie_len)

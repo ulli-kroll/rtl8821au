@@ -23,23 +23,23 @@
 #include <osdep_service.h>
 #include <drv_types.h>
 
-void up_clk(struct rtl_priv *padapter, uint16_t *x)
+void up_clk(struct rtl_priv *padapter, u16 *x)
 {
 	*x = *x | _EESK;
 	rtw_write8(padapter, EE_9346CR, (uint8_t)*x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
-void down_clk(struct rtl_priv *padapter, uint16_t *x	)
+void down_clk(struct rtl_priv *padapter, u16 *x	)
 {
 	*x = *x & ~_EESK;
 	rtw_write8(padapter, EE_9346CR, (uint8_t)*x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
-void shift_out_bits(struct rtl_priv *padapter, uint16_t data, uint16_t count)
+void shift_out_bits(struct rtl_priv *padapter, u16 data, u16 count)
 {
-	uint16_t x,mask;
+	u16 x,mask;
 
 	if(padapter->bSurpriseRemoved==_TRUE){
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -78,9 +78,9 @@ void shift_out_bits(struct rtl_priv *padapter, uint16_t data, uint16_t count)
 out:
 }
 
-uint16_t shift_in_bits (struct rtl_priv *padapter)
+u16 shift_in_bits (struct rtl_priv *padapter)
 {
-	uint16_t x,d=0,i;
+	u16 x,d=0,i;
 
 	if (padapter->bSurpriseRemoved == _TRUE) {
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -126,10 +126,10 @@ void standby(struct rtl_priv *padapter)
 	rtw_udelay_os(CLOCK_RATE);
 }
 
-uint16_t wait_eeprom_cmd_done(struct rtl_priv* padapter)
+u16 wait_eeprom_cmd_done(struct rtl_priv* padapter)
 {
 	uint8_t 	x;
-	uint16_t	i,res=_FALSE;
+	u16	i,res=_FALSE;
 
 	standby(padapter );
 
@@ -148,7 +148,7 @@ exit:
 
 void eeprom_clean(struct rtl_priv *padapter)
 {
-	uint16_t x;
+	u16 x;
 
 	if (padapter->bSurpriseRemoved == _TRUE) {
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -177,7 +177,7 @@ out:
 
 }
 
-void eeprom_write16(struct rtl_priv * padapter, uint16_t reg, uint16_t data)
+void eeprom_write16(struct rtl_priv * padapter, u16 reg, u16 data)
 {
 	uint8_t x;
 #ifdef CONFIG_RTL8712
@@ -259,11 +259,11 @@ exit:
 	return;
 }
 
-uint16_t eeprom_read16(struct rtl_priv * padapter, uint16_t reg) //ReadEEprom
+u16 eeprom_read16(struct rtl_priv * padapter, u16 reg) //ReadEEprom
 {
 
-	uint16_t x;
-	uint16_t data=0;
+	u16 x;
+	u16 data=0;
 #ifdef CONFIG_RTL8712
 	uint8_t	tmp8_ori,tmp8_new,tmp8_clk_ori,tmp8_clk_new;
 
@@ -327,10 +327,10 @@ out:
 
 
 //From even offset
-void eeprom_read_sz(struct rtl_priv * padapter, uint16_t reg, uint8_t * data, uint32_t	 sz)
+void eeprom_read_sz(struct rtl_priv * padapter, u16 reg, uint8_t * data, uint32_t	 sz)
 {
 
-	uint16_t x, data16;
+	u16 x, data16;
 	uint32_t	 i;
 
 	if (padapter->bSurpriseRemoved == _TRUE) {
@@ -370,9 +370,9 @@ out:
 uint8_t eeprom_read(struct rtl_priv *padapter, uint32_t	addr_off, uint8_t sz, uint8_t * rbuf)
 {
 	uint8_t quotient, remainder, addr_2align_odd;
-	uint16_t reg, stmp , i=0, idx = 0;
+	u16 reg, stmp , i=0, idx = 0;
 
-	reg = (uint16_t)(addr_off >> 1);
+	reg = (u16)(addr_off >> 1);
 	addr_2align_odd = (uint8_t)(addr_off & 0x1);
 
 	if(addr_2align_odd) { /* read that start at high part: e.g  1,3,5,7,9,... */

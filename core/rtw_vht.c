@@ -26,7 +26,7 @@
  * 20/40/80,	ShortGI,	MCS Rate
  */
 
-const uint16_t VHT_MCS_DATA_RATE[3][2][20] = {
+const u16 VHT_MCS_DATA_RATE[3][2][20] = {
 	{ {		/* Long GI, 20MHz */
 			13, 26, 39, 52, 78, 104, 117, 130, 156, 156,
 			26, 52, 78, 104, 156, 208, 234, 260, 312, 312
@@ -78,7 +78,7 @@ uint8_t	rtw_get_vht_highest_rate(struct rtl_priv *padapter, uint8_t *pvht_mcs_ma
 	return vht_mcs_rate;
 }
 
-uint16_t rtw_vht_data_rate(uint8_t bw, uint8_t short_GI, uint8_t vht_mcs_rate)
+u16 rtw_vht_data_rate(uint8_t bw, uint8_t short_GI, uint8_t vht_mcs_rate)
 {
 	if (vht_mcs_rate > MGN_VHT2SS_MCS9)
 		vht_mcs_rate = MGN_VHT2SS_MCS9;
@@ -463,7 +463,7 @@ uint32_t rtw_build_vht_op_mode_notify_ie(struct rtl_priv *padapter, uint8_t *pbu
 uint32_t rtw_build_vht_cap_ie(struct rtl_priv *padapter, uint8_t *pbuf)
 {
 	uint8_t	bw, rf_type;
-	uint16_t HighestRate;
+	u16 HighestRate;
 	uint8_t	*pcap, *pcap_mcs;
 	uint32_t len = 0;
 	struct registry_priv *pregistrypriv = &padapter->registrypriv;

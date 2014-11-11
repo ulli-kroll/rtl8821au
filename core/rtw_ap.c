@@ -105,7 +105,7 @@ static void update_BCNTIM(struct rtl_priv *padapter)
 	/* if (pstapriv->tim_bitmap) */
 	if (_TRUE) {
 		uint8_t *p, *dst_ie, *premainder_ie = NULL, *pbackup_remainder_ie = NULL;
-		uint16_t tim_bitmap_le;
+		u16 tim_bitmap_le;
 		uint offset, tmp_len, tim_ielen, tim_ie_offset, remainder_ielen;
 
 		tim_bitmap_le = cpu_to_le16(pstapriv->tim_bitmap);
@@ -843,7 +843,7 @@ static void start_bss_network(struct rtl_priv *padapter, uint8_t *pbuf)
 {
 	uint8_t *p;
 	uint8_t val8, cur_channel, cur_bwmode, cur_ch_offset;
-	uint16_t bcn_interval;
+	u16 bcn_interval;
 	uint32_t	acparm;
 	int	ie_len;
 	struct registry_priv	 *pregpriv = &padapter->registrypriv;
@@ -859,7 +859,7 @@ static void start_bss_network(struct rtl_priv *padapter, uint8_t *pbuf)
 
 	//DBG_871X("%s\n", __FUNCTION__);
 
-	bcn_interval = (uint16_t)pnetwork->Configuration.BeaconPeriod;
+	bcn_interval = (u16)pnetwork->Configuration.BeaconPeriod;
 	cur_channel = pnetwork->Configuration.DSConfig;
 	cur_bwmode = CHANNEL_WIDTH_20;
 	cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
@@ -1048,7 +1048,7 @@ int rtw_check_beacon_data(struct rtl_priv *padapter, uint8_t *pbuf,  int len)
 	uint8_t *pHT_caps_ie=NULL;
 	uint8_t *pHT_info_ie=NULL;
 	struct sta_info *psta = NULL;
-	uint16_t cap, ht_cap=_FALSE;
+	u16 cap, ht_cap=_FALSE;
 	uint ie_len = 0;
 	int group_cipher, pairwise_cipher;
 	uint8_t	channel, network_type, supportRate[NDIS_802_11_LENGTH_RATES_EX];
@@ -1760,7 +1760,7 @@ Set to 3 (HT mixed mode) when one or more non-HT STAs are associated
 */
 static int rtw_ht_operation_update(struct rtl_priv *padapter)
 {
-	uint16_t cur_op_mode, new_op_mode;
+	u16 cur_op_mode, new_op_mode;
 	int op_mode_changes = 0;
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct ht_priv	*phtpriv_ap = &pmlmepriv->htpriv;
@@ -1951,7 +1951,7 @@ void bss_cap_update_on_sta_join(struct rtl_priv *padapter, struct sta_info *psta
 #ifdef CONFIG_80211N_HT
 
 	if (psta->flags & WLAN_STA_HT) {
-		uint16_t ht_capab = le16_to_cpu(psta->htpriv.ht_cap.cap_info);
+		u16 ht_capab = le16_to_cpu(psta->htpriv.ht_cap.cap_info);
 
 		DBG_871X("HT: STA " MAC_FMT " HT Capabilities "
 			   "Info: 0x%04x\n", MAC_ARG(psta->hwaddr), ht_capab);
@@ -2082,7 +2082,7 @@ uint8_t bss_cap_update_on_sta_leave(struct rtl_priv *padapter, struct sta_info *
 
 }
 
-uint8_t ap_free_sta(struct rtl_priv *padapter, struct sta_info *psta, bool active, uint16_t reason)
+uint8_t ap_free_sta(struct rtl_priv *padapter, struct sta_info *psta, bool active, u16 reason)
 {
 	_irqL irqL;
 	uint8_t beacon_updated = _FALSE;

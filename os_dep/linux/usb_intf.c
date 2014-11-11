@@ -498,7 +498,7 @@ static void rtw_dev_unload(struct rtl_priv *padapter)
 
 static void process_spec_devid(const struct usb_device_id *pdid)
 {
-	uint16_t vid, pid;
+	u16 vid, pid;
 	u32 flags;
 	int i;
 	int num = sizeof(specific_device_id_tbl)/sizeof(struct specific_device_id);

@@ -403,8 +403,8 @@ typedef struct _ODM_Phy_Status_Info_
 
 	u8		RxMIMOSignalStrength[4];// in 0~100 index
 
-	uint16_t		Cfo_short[4]; 			// per-path's Cfo_short
-	uint16_t		Cfo_tail[4];			// per-path's Cfo_tail
+	u16		Cfo_short[4]; 			// per-path's Cfo_short
+	u16		Cfo_tail[4];			// per-path's Cfo_tail
 
 #if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 	s1Byte		RxPower;				// in dBm Translate from PWdB
@@ -522,9 +522,9 @@ typedef		struct _ODM_STA_INFO{
 
 	// Driver write Wilson handle.
 	//1 TX_RPT (don't redefine the naming)
-	uint16_t		RTY[4];				// ???
-	uint16_t		TOTAL;				// ???
-	uint16_t		DROP;				// ???
+	u16		RTY[4];				// ???
+	u16		TOTAL;				// ???
+	u16		DROP;				// ???
 	//
 	// Please use compile flag to disabe the strcutrue for other IC except 88E.
 	//
@@ -872,11 +872,11 @@ typedef struct _ODM_RA_Info_
 	u8 LowestRate;
 	uint32_t NscUp;
 	uint32_t NscDown;
-	uint16_t RTY[5];
+	u16 RTY[5];
 	uint32_t TOTAL;
-	uint16_t DROP;
+	u16 DROP;
 	u8 Active;
-	uint16_t RptTime;
+	u16 RptTime;
 	u8 RAWaitingCounter;
 	u8 RAPendingCounter;
 #if 1 //POWER_TRAINING_ACTIVE == 1 // For compile  pass only~!
@@ -1256,7 +1256,7 @@ struct rtl_dm {
 	PSTA_INFO_T		pODM_StaInfo[ODM_ASSOCIATE_ENTRY_NUM];
 
 #if (RATE_ADAPTIVE_SUPPORT == 1)
-	uint16_t 			CurrminRptTime;
+	u16 			CurrminRptTime;
 	ODM_RA_INFO_T   RAInfo[ODM_ASSOCIATE_ENTRY_NUM]; //See HalMacID support
 #endif
 	//
@@ -1742,7 +1742,7 @@ VOID
 ODM_CmnInfoPtrArrayHook(
 	IN		struct rtl_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		uint16_t			Index,
+	IN		u16			Index,
 	IN		PVOID			pValue
 	);
 

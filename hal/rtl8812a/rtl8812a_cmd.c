@@ -439,7 +439,7 @@ _func_enter_;
 _func_exit_;
 }
 
-void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *padapter, uint16_t mstatus_rpt )
+void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *padapter, u16 mstatus_rpt )
 {
 	uint8_t	u1JoinBssRptParm[3]={0};
 	uint8_t	mstatus, macId, macId_Ind = 0, macId_End = 0;
@@ -461,7 +461,7 @@ void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *padapter, uint16_t mstatus_r
 void ConstructBeacon(struct rtl_priv *padapter, uint8_t *pframe, uint32_t *pLength)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
-	uint16_t					*fctrl;
+	u16					*fctrl;
 	uint32_t					rate_len, pktlen;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -563,7 +563,7 @@ _ConstructBeacon:
 void ConstructPSPoll(struct rtl_priv *padapter, uint8_t *pframe, uint32_t *pLength)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
-	uint16_t					*fctrl;
+	u16					*fctrl;
 	uint32_t					pktlen;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -601,7 +601,7 @@ void ConstructNullFunctionData(
 	uint8_t		bForcePowerSave)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
-	uint16_t						*fctrl;
+	u16						*fctrl;
 	uint32_t						pktlen;
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	struct wlan_network		*cur_network = &pmlmepriv->cur_network;
@@ -666,7 +666,7 @@ void ConstructNullFunctionData(
 void ConstructProbeRsp(struct rtl_priv *padapter, uint8_t *pframe, uint32_t *pLength, uint8_t *StaAddr, BOOLEAN bHideSSID)
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
-	uint16_t					*fctrl;
+	u16					*fctrl;
 	uint8_t					*mac, *bssid;
 	uint32_t					pktlen;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
@@ -775,7 +775,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *padapter, BOOLEAN bDLFinished
 	uint8_t	TotalPageNum=0, CurtPktPageNum=0, TxDescLen=0, RsvdPageNum=0;
 	uint8_t	*ReservedPagePacket;
 	uint8_t	RsvdPageLoc[5] = {0};
-	uint16_t	BufIndex=0, PageSize = 256;
+	u16	BufIndex=0, PageSize = 256;
 	uint32_t	TotalPacketLen, MaxRsvdPageBufSize=0;;
 
 

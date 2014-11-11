@@ -1388,7 +1388,7 @@ struct rtl_dm {
 	// ODM relative workitem.
 
 };
-typedef struct rtl_dm DM_ODM_T, *PDM_ODM_T;		// DM_Dynamic_Mechanism_Structure
+typedef struct rtl_dm *PDM_ODM_T;		// DM_Dynamic_Mechanism_Structure
 
 
 

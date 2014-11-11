@@ -3751,7 +3751,7 @@ uint8_t SetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 		{
 			uint8_t dm_func;
 			struct dm_priv *pdmpriv;
-			DM_ODM_T *podmpriv;
+			struct rtl_dm *podmpriv;
 
 
 			dm_func = *((uint8_t *)pval);

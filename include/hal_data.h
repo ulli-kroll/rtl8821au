@@ -469,7 +469,7 @@ struct rtw_hal {
 
 
 	struct dm_priv	dmpriv;
-	DM_ODM_T 		odmpriv;
+	struct rtl_dm odmpriv;
 
 #ifdef DBG_CONFIG_ERROR_DETECT
 	struct sreset_priv srestpriv;

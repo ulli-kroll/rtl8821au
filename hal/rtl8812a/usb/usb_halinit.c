@@ -1996,7 +1996,7 @@ void SetHwReg8812AU(struct rtl_priv *Adapter, uint8_t variable, u8 *val)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	DM_ODM_T 		*podmpriv = &pHalData->odmpriv;
+	struct rtl_dm *podmpriv = &pHalData->odmpriv;
 
 	switch (variable) {
 	case HW_VAR_RXDMA_AGG_PG_TH:
@@ -2041,15 +2041,14 @@ void SetHwReg8812AU(struct rtl_priv *Adapter, uint8_t variable, u8 *val)
 
 void GetHwReg8812AU(struct rtl_priv *Adapter, uint8_t variable, u8 *val)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	DM_ODM_T 		*podmpriv = &pHalData->odmpriv;
+		struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+		struct rtl_dm *podmpriv = &pHalData->odmpriv;
 
-	switch (variable) {
-	default:
-		GetHwReg8812A(Adapter, variable, val);
-		break;
-	}
-
+		switch (variable) {
+		default:
+			GetHwReg8812A(Adapter, variable, val);
+			break;
+		}
 }
 
 /*

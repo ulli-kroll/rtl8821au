@@ -75,10 +75,6 @@ VOID
 ODM_ResetIQKResult(
 	IN struct rtl_dm *pDM_Odm
 );
-u8
-ODM_GetRightChnlPlaceforIQK(
-    IN u8 chnl
-);
 
 
 #endif	// #ifndef __HAL_PHY_RF_H__

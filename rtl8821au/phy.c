@@ -152,8 +152,7 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH
 
 /* ULLI this function needs a complete rewrite (or we cantake code form rtlwifi-lib */
 
-static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
-	u8 chnlIdx)
+static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 {
 	uint32_t 	TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int		TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
@@ -1774,10 +1773,10 @@ static void _rtl8812au_phy_iq_calibrate(struct rtl_dm *pDM_Odm, u8 Channel)
 	_rtl8812au_iqk_backup_rf(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
 
 	_rtl8812au_iqk_configure_mac(pDM_Odm);
-	_rtl8812au_iqk_tx(pDM_Odm, ODM_RF_PATH_A, chnlIdx);
+	_rtl8812au_iqk_tx(pDM_Odm, ODM_RF_PATH_A);
 	_rtl8812au_iqk_restore_rf(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG, RFA_backup, RF_REG_NUM);
 
-	_rtl8812au_iqk_tx(pDM_Odm, ODM_RF_PATH_B, chnlIdx);
+	_rtl8812au_iqk_tx(pDM_Odm, ODM_RF_PATH_B);
 	_rtl8812au_iqk_restore_rf(pDM_Odm, ODM_RF_PATH_B, Backup_RF_REG, RFB_backup, RF_REG_NUM);
 
 	 _rtl8812au_iqk_restore_afe(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);

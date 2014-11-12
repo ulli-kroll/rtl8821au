@@ -35,11 +35,7 @@ void ConfigureTxpowerTrack_8812A(
 
 //1 7.	IQK
 
-void
-PHY_IQCalibrate_8812A(
-	IN	struct rtl_priv *pAdapter,
-	IN	BOOLEAN 	bReCovery
-);
+void rtl8812au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery);
 
 
 //

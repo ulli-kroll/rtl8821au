@@ -1427,9 +1427,9 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_IQK);
 #if (RTL8812A_SUPPORT == 1)
 				pHalData->odmpriv.RFCalibrateInfo.bNeedIQK = _TRUE;
 				if (pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized)
-					PHY_IQCalibrate_8812A(Adapter, _TRUE);
+					rtl8812au_phy_iq_calibrate(Adapter, _TRUE);
 				else {
-					PHY_IQCalibrate_8812A(Adapter, _FALSE);
+					rtl8812au_phy_iq_calibrate(Adapter, _FALSE);
 					pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized = _TRUE;
 				}
 #endif

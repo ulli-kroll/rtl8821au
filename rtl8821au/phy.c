@@ -1641,7 +1641,7 @@ static void _rtl8812au_phy_iq_calibrate(struct rtl_dm *pDM_Odm, u8 Channel)
 
 
 
-void PHY_IQCalibrate_8812A(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
+void rtl8812au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 

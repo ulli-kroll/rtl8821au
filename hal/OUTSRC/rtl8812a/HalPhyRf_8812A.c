@@ -45,7 +45,7 @@ static void DoIQK_8812A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
 	ODM_ResetIQKResult(pDM_Odm);
 
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK = ThermalValue;
-	PHY_IQCalibrate_8812A(Adapter, FALSE);
+	rtl8812au_phy_iq_calibrate(Adapter, FALSE);
 }
 
 /*-----------------------------------------------------------------------------

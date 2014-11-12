@@ -3297,7 +3297,7 @@ phy_SwChnlAndSetBwMode8812(
 		if(IS_HARDWARE_TYPE_8812(Adapter))
 		{
 #if (RTL8812A_SUPPORT == 1)
-			PHY_IQCalibrate_8812A(Adapter, _FALSE);
+			rtl8812au_phy_iq_calibrate(Adapter, _FALSE);
 #endif
 		}
 		else if(IS_HARDWARE_TYPE_8821(Adapter))

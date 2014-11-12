@@ -1114,12 +1114,9 @@ static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 
 		if (TX_finish && RX_finish) {
 			pRFCalibrateInfo->bNeedIQK = FALSE;
-			pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][0] = ((TX_X & 0x000007ff) << 16) + (TX_Y & 0x000007ff); 	/* Path A TX */
-			pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][1] = ((RX_X & 0x000007ff) << 16) + (RX_Y & 0x000007ff); 	/* Path A RX */
 
 			if (*pDM_Odm->pBandWidth == 2) {
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1); /* [31] = 0 --> Page C */
-				pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][4] = ODM_Read4Byte(pDM_Odm, 0xce8);	/* Path B VDF */
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			}
 		}
@@ -1213,12 +1210,9 @@ static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 		if (TX_finish && RX_finish) {
 /* pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].bIQKDone= TRUE; */
 			pRFCalibrateInfo->bNeedIQK = FALSE;
-			pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][2] = ((TX_X & 0x000007ff) << 16) + (TX_Y & 0x000007ff);	/* Path B TX */
-			pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][3] = ((RX_X & 0x000007ff) << 16) + (RX_Y & 0x000007ff); 	/* Path B RX */
 
 			if (*pDM_Odm->pBandWidth == 2) {
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1); /* [31] = 0 --> Page C */
-				pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].Value[*pDM_Odm->pBandWidth][5] = ODM_Read4Byte(pDM_Odm, 0xee8);			/* Path B VDF */
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			}
 		}

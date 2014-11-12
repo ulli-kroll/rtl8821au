@@ -946,7 +946,6 @@ typedef struct ODM_RF_Calibration_Structure
 
 	u8 	ThermalValue_HP[HP_THERMAL_NUM];
 	u8 	ThermalValue_HP_index;
-	IQK_MATRIX_REGS_SETTING IQKMatrixRegSetting[IQK_Matrix_Settings_NUM];
 	BOOLEAN	bNeedIQK;
 	u8	Delta_IQK;
 	u8	Delta_LCK;

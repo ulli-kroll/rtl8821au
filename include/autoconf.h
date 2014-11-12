@@ -123,8 +123,6 @@
 
 #define ENABLE_NEW_RFE_TYPE	0
 
-#define DISABLE_BB_RF	0
-
 /*
  * Platform  Related Config
  */

@@ -172,10 +172,6 @@ PHY_QueryRFReg8812(
 {
 	uint32_t				Original_Value, Readback_Value, BitShift;
 
-#if (DISABLE_BB_RF == 1)
-	return 0;
-#endif
-
 	Original_Value = phy_RFSerialRead(Adapter, eRFPath, RegAddr);
 
 	BitShift =  PHY_CalculateBitShift(BitMask);
@@ -193,9 +189,6 @@ PHY_SetRFReg8812(
 	IN	uint32_t				Data
 	)
 {
-#if (DISABLE_BB_RF == 1)
-	return;
-#endif
 
 	if(BitMask == 0)
 		return;

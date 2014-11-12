@@ -17,10 +17,6 @@ u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *Adapter, uint32_t RegAddr, uint3
 {
 	uint32_t ReturnValue = 0, OriginalValue, BitShift;
 
-#if (DISABLE_BB_RF == 1)
-	return 0;
-#endif
-
 	/* DBG_871X("--->PHY_QueryBBReg8812(): RegAddr(%#x), BitMask(%#x)\n", RegAddr, BitMask); */
 
 
@@ -36,10 +32,6 @@ u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *Adapter, uint32_t RegAddr, uint3
 void rtl8821au_phy_set_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask, u32 Data)
 {
 	uint32_t OriginalValue, BitShift;
-
-#if (DISABLE_BB_RF == 1)
-	return;
-#endif
 
 	if (BitMask != bMaskDWord) {	/* if not "double word" write */
 		OriginalValue = rtw_read32(Adapter, RegAddr);

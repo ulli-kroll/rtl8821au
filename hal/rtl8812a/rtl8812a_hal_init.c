@@ -2346,11 +2346,7 @@ void ReadRFType8812A(struct rtl_priv *padapter)
 {
 	struct rtw_hal *pHalData = GET_HAL_DATA(padapter);
 
-#if DISABLE_BB_RF
-	pHalData->rf_chip = RF_PSEUDO_11N;
-#else
 	pHalData->rf_chip = RF_6052;
-#endif
 
 	/*
 	 * if (pHalData->rf_type == RF_1T1R){

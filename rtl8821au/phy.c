@@ -1112,6 +1112,12 @@ static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 		}
 
+		/* 
+		 * ULLI check with rtl8821ae source, if we can remove this
+		 * look as the commit 5856f7384c22bf6364ecb77635e95b4858567080
+		 * from #if 1 
+		 */ 
+#if 1
 		if (TX_finish && RX_finish) {
 			pRFCalibrateInfo->bNeedIQK = FALSE;
 
@@ -1120,6 +1126,7 @@ static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			}
 		}
+#endif		
 
 	    }
 		break;
@@ -1207,6 +1214,13 @@ static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 		}
 
+
+		/* 
+		 * ULLI check with rtl8821ae source, if we can remove this
+		 * look as the commit 5856f7384c22bf6364ecb77635e95b4858567080
+		 * from #if 1 
+		 */ 
+#if 1		 
 		if (TX_finish && RX_finish) {
 /* pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].bIQKDone= TRUE; */
 			pRFCalibrateInfo->bNeedIQK = FALSE;
@@ -1216,6 +1230,7 @@ static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			}
 		}
+#endif		
 
 	    }
 		break;

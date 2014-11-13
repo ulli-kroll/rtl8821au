@@ -1405,23 +1405,23 @@ static void _rtl8812au_iqk_restore_afe(struct rtl_priv *rtlpriv, uint32_t *AFE_b
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 	
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Reload AFE Parameters */
 	for (i = 0; i < AFE_NUM; i++) {
-		ODM_Write4Byte(pDM_Odm, Backup_AFE_REG[i], AFE_backup[i]);
+		rtw_write32(rtlpriv, Backup_AFE_REG[i], AFE_backup[i]);
 	}
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1); /*  [31] = 1 --> Page C1 */
-	ODM_Write4Byte(pDM_Odm, 0xc80, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xc84, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xc88, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xc8c, 0x3c000000);
-	ODM_Write4Byte(pDM_Odm, 0xcb8, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xe80, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xe84, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xe88, 0x0);
-	ODM_Write4Byte(pDM_Odm, 0xe8c, 0x3c000000);
-	ODM_Write4Byte(pDM_Odm, 0xeb8, 0x0);
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n"));
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /*  [31] = 1 --> Page C1 */
+	rtw_write32(rtlpriv, 0xc80, 0x0);
+	rtw_write32(rtlpriv, 0xc84, 0x0);
+	rtw_write32(rtlpriv, 0xc88, 0x0);
+	rtw_write32(rtlpriv, 0xc8c, 0x3c000000);
+	rtw_write32(rtlpriv, 0xcb8, 0x0);
+	rtw_write32(rtlpriv, 0xe80, 0x0);
+	rtw_write32(rtlpriv, 0xe84, 0x0);
+	rtw_write32(rtlpriv, 0xe88, 0x0);
+	rtw_write32(rtlpriv, 0xe8c, 0x3c000000);
+	rtw_write32(rtlpriv, 0xeb8, 0x0);
+	/* cODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_restore_afe(struct rtl_priv *rtlpriv,

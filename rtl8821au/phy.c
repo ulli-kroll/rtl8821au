@@ -1332,13 +1332,12 @@ static void _rtl8812au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 	uint32_t i;
 	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
-	
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
 	/* Reload MacBB Parameters */
 	for (i = 0; i < MACBB_NUM; i++) {
-		ODM_Write4Byte(pDM_Odm, Backup_MACBB_REG[i], MACBB_backup[i]);
+		rtw_write32(rtlpriv, Backup_MACBB_REG[i], MACBB_backup[i]);
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n"));
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,

@@ -1398,10 +1398,13 @@ static void _rtl8821au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 	}
 }
 
-static void  _rtl8812au_iqk_restore_afe(struct rtl_dm *pDM_Odm, uint32_t *AFE_backup,
+static void _rtl8812au_iqk_restore_afe(struct rtl_priv *rtlpriv, uint32_t *AFE_backup,
 	uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
 	uint32_t i;
+	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Reload AFE Parameters */
 	for (i = 0; i < AFE_NUM; i++) {
@@ -1787,7 +1790,7 @@ static void _rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 	_rtl8812au_iqk_tx(pDM_Odm, ODM_RF_PATH_B);
 	_rtl8812au_iqk_restore_rf(pDM_Odm, ODM_RF_PATH_B, Backup_RF_REG, RFB_backup, RF_REG_NUM);
 
-	 _rtl8812au_iqk_restore_afe(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
+	_rtl8812au_iqk_restore_afe(rtlpriv, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
 	_rtl8812au_iqk_restore_macbb(rtlpriv, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 }
 

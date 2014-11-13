@@ -1240,15 +1240,16 @@ static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 
 
 
-static void _rtl8812au_iqk_backup_macbb(struct rtl_priv *rtlpriv, uint32_t *MACBB_backup,
-	uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
+static void _rtl8812au_iqk_backup_macbb(struct rtl_priv *rtlpriv, 
+					u32 *macbb_backup,
+					u32 *backup_macbb_reg, u32 mac_bb_num)
 {
-	uint32_t i;
+	u32 i;
 	
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* save MACBB default value */
-	for (i = 0; i < MACBB_NUM; i++) {
-		MACBB_backup[i] = rtw_read32(rtlpriv, Backup_MACBB_REG[i]);
+	for (i = 0; i < mac_bb_num; i++) {
+		macbb_backup[i] = rtw_read32(rtlpriv, backup_macbb_reg[i]);
 	}
 
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */

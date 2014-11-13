@@ -1737,16 +1737,13 @@ static void _DPK_EnableDP(struct rtl_dm *pDM_Odm, u8 path, uint32_t TXindex)
 
 static void _rtl8812au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 {
-	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
-	
 	/* ========MAC register setting======== */
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */
-	ODM_Write1Byte(pDM_Odm, 0x522, 0x3f);
-	ODM_SetBBReg(pDM_Odm, 0x550, BIT(11)|BIT(3), 0x0);
-	ODM_SetBBReg(pDM_Odm, 0x808, BIT(28), 0x0);	/* CCK Off */
-	ODM_Write1Byte(pDM_Odm, 0x808, 0x00);		/* RX ante off */
-	ODM_SetBBReg(pDM_Odm, 0x838, 0xf, 0xc);		/* CCA off */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */
+	rtw_write8(rtlpriv, 0x522, 0x3f);
+	rtl_set_bbreg(rtlpriv, 0x550, BIT(11)|BIT(3), 0x0);
+	rtl_set_bbreg(rtlpriv, 0x808, BIT(28), 0x0);	/* CCK Off */
+	rtw_write8(rtlpriv, 0x808, 0x00);		/* RX ante off */
+	rtl_set_bbreg(rtlpriv, 0x838, 0xf, 0xc);		/* CCA off */
 }
 
 static void _rtl8821au_iqk_configure_mac(struct rtl_priv *rtlpriv)

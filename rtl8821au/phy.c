@@ -1240,10 +1240,14 @@ static void _rtl8812au_iqk_tx(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path)
 
 
 
-static void _rtl8812au_iqk_backup_macbb(struct rtl_dm *pDM_Odm, uint32_t *MACBB_backup,
+static void _rtl8812au_iqk_backup_macbb(struct rtl_priv *rtlpriv, uint32_t *MACBB_backup,
 	uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
+	
+	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* save MACBB default value */
 	for (i = 0; i < MACBB_NUM; i++) {
@@ -1770,7 +1774,7 @@ static void _rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 
-	_rtl8812au_iqk_backup_macbb(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
+	_rtl8812au_iqk_backup_macbb(rtlpriv, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 	_rtl8812au_iqk_backup_afe(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
 	_rtl8812au_iqk_backup_rf(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
 

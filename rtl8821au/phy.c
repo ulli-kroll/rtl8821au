@@ -1735,8 +1735,11 @@ static void _DPK_EnableDP(struct rtl_dm *pDM_Odm, u8 path, uint32_t TXindex)
 
 }
 
-static void _rtl8812au_iqk_configure_mac(struct rtl_dm *pDM_Odm)
+static void _rtl8812au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 {
+	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
+	
 	/* ========MAC register setting======== */
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */
 	ODM_Write1Byte(pDM_Odm, 0x522, 0x3f);
@@ -1783,7 +1786,7 @@ static void _rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 	_rtl8812au_iqk_backup_afe(rtlpriv, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
 	_rtl8812au_iqk_backup_rf(rtlpriv, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
 
-	_rtl8812au_iqk_configure_mac(pDM_Odm);
+	_rtl8812au_iqk_configure_mac(rtlpriv);
 	_rtl8812au_iqk_tx(pDM_Odm, ODM_RF_PATH_A);
 	_rtl8812au_iqk_restore_rf(rtlpriv, ODM_RF_PATH_A, Backup_RF_REG, RFA_backup, RF_REG_NUM);
 

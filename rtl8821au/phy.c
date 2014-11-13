@@ -1759,7 +1759,7 @@ static void _rtl8821au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 
 
 /* Maintained by BB James. */
-static void _rtl8812au_phy_iq_calibrate(struct rtl_dm *pDM_Odm, u8 Channel)
+static void _rtl8812au_phy_iq_calibrate(struct rtl_dm *pDM_Odm)
 {
 	uint32_t MACBB_backup[MACBB_REG_NUM], AFE_backup[AFE_REG_NUM], RFA_backup[RF_REG_NUM], RFB_backup[RF_REG_NUM];
 	uint32_t Backup_MACBB_REG[MACBB_REG_NUM] = { 0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00, 0xe00, 0x8c4, 0x838, 0x82c };
@@ -1796,7 +1796,7 @@ void rtl8812au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 		 * 	phy_IQCalibrate_By_FW_8812A(pAdapter);
 		 * else
 		 */
-			_rtl8812au_phy_iq_calibrate(pDM_Odm, pHalData->CurrentChannel);
+			_rtl8812au_phy_iq_calibrate(pDM_Odm);
 	}
 
 }

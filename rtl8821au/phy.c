@@ -1359,21 +1359,19 @@ static void _rtl8812au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 	ODM_RF_RADIO_PATH_E Path, uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
 {
 	uint32_t i;
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
 	for (i = 0; i < RF_REG_NUM; i++)
-		ODM_SetRFReg(pDM_Odm, Path, Backup_RF_REG[i], bRFRegOffsetMask, RF_backup[i]);
+		rtw_hal_write_rfreg(rtlpriv, Path, Backup_RF_REG[i], bRFRegOffsetMask, RF_backup[i]);
 
-	ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x0);
+	rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x0);
 
 	switch (Path) {
 	case ODM_RF_PATH_A:
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path A Success!!!!\n"));
+		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path A Success!!!!\n")); */
 		break;
 	case ODM_RF_PATH_B:
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path B Success!!!!\n"));
+		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path B Success!!!!\n")); */
 		break;
 	default:
 		break;

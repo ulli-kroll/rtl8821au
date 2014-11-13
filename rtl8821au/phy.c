@@ -1275,16 +1275,14 @@ static void _rtl8812au_iqk_backup_rf(struct rtl_priv *rtlpriv,
 	uint32_t *Backup_RF_REG, uint32_t RF_NUM)
 {
 	uint32_t i;
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 	
-	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save RF Parameters */
 	for (i = 0; i < RF_NUM; i++) {
-		RFA_backup[i] = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG[i], bMaskDWord);
-		RFB_backup[i] = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, Backup_RF_REG[i], bMaskDWord);
+		RFA_backup[i] = rtw_hal_read_rfreg(rtlpriv, ODM_RF_PATH_A, Backup_RF_REG[i], bMaskDWord);
+		RFB_backup[i] = rtw_hal_read_rfreg(rtlpriv, ODM_RF_PATH_B, Backup_RF_REG[i], bMaskDWord);
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n"));
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_backup_rf(struct rtl_priv *rtlpriv, u32 *rfa_backup,

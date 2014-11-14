@@ -28,6 +28,7 @@ export TopDIR ?= $(shell pwd)
 
 RTL8821AU_FILES	:=	rtl8821au/dm.o \
 			rtl8821au/phy.o \
+			rtl8821au/rf.o \
 			rtl8821au/table.o
 
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \

@@ -1,6 +1,8 @@
 #ifndef __WIFI_H__
 #define __WIFI_H__
 
+struct rtl_hal_ops;
+
 struct rtl_priv {
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
@@ -31,7 +33,7 @@ struct rtl_priv {
 
 	u32	setband;
 	PVOID			HalData;
-	struct hal_ops	*HalFunc;
+	struct rtl_hal_ops	*HalFunc;
 
 	int32_t	bDriverStopped;
 	int32_t	bSurpriseRemoved;
@@ -89,7 +91,7 @@ struct rtl_priv {
 
 };
 
-struct hal_ops {
+struct rtl_hal_ops {
 	/*
 	 * New HAL functions with struct net_device  as first param
 	 * this can be (hopefully)switched to struct ieee80211_hw

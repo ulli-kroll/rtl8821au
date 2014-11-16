@@ -2206,7 +2206,7 @@ void rtl8812_SetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,	
 void hal_notch_filter_8812(struct rtl_priv *adapter, bool enable);
 
 
-struct hal_ops rtl8812au_hal_ops = {
+struct rtl_hal_ops rtl8812au_hal_ops = {
 	/*
 	 * New HAL functions with struct net_device  as first param
 	 * this can be (hopefully)switched to struct ieee80211_hw

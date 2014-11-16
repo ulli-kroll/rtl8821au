@@ -3654,6 +3654,32 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 /******************************************************************************
 *                           RadioA.TXT
 ******************************************************************************/
+static void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
+	uint32_t Data, ODM_RF_RADIO_PATH_E RF_PATH, uint32_t RegAddr)
+{
+	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	
+	if (Addr == 0xfe || Addr == 0xffe) {
+		msleep(50);
+	} else if (Addr == 0xfd) {
+		mdelay(5);
+	} else if (Addr == 0xfc) {
+		mdelay(1);
+	} else if (Addr == 0xfb) {
+		udelay(50);
+	} else if (Addr == 0xfa) {
+		udelay(5);
+	} else if (Addr == 0xf9) {
+		udelay(1);
+	} else {
+		rtw_hal_write_rfreg(rtlpriv, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
+		/* Add 1us delay between BB/RF register setting. */
+		udelay(1);
+	}
+}
+
+
 
 static void _rtl8821au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data)

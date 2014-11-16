@@ -45,7 +45,7 @@ void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	} else if (Addr == 0xf9) {
 		udelay(1);
 	} else {
-		ODM_SetRFReg(pDM_Odm, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
+		rtw_hal_write_rfreg(rtlpriv, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
 		/* Add 1us delay between BB/RF register setting. */
 		udelay(1);
 	}

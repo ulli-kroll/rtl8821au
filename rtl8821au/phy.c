@@ -49,9 +49,12 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask
 /*									*/
 /* ****************************************************************************** */
 
-static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path,
 	unsigned int RX_X, unsigned int RX_Y)
 {
+	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+
 	switch (Path) {
 	case ODM_RF_PATH_A:
 		ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -1074,7 +1077,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 		}
 
 		if (RX_Average == 0) {
-			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_rx_fill_iqc(rtlpriv, Path, 0x200, 0x0);
 			break;
 		}
 
@@ -1109,9 +1112,9 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 		}
 
 		if (RX_finish == 1) {
-			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, RX_X, RX_Y);
+			_rtl8812au_iqk_rx_fill_iqc(rtlpriv, Path, RX_X, RX_Y);
 		} else {
-			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_rx_fill_iqc(rtlpriv, Path, 0x200, 0x0);
 		}
 
 		/* 
@@ -1176,7 +1179,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 		}
 
 		if (RX_Average == 0) {
-			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_rx_fill_iqc(rtlpriv, Path, 0x200, 0x0);
 			break;
 		}
 
@@ -1211,9 +1214,9 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 		}
 
 		if (RX_finish == 1) {
-			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, RX_X, RX_Y);
+			_rtl8812au_iqk_rx_fill_iqc(rtlpriv, Path, RX_X, RX_Y);
 		} else{
-			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_rx_fill_iqc(rtlpriv, Path, 0x200, 0x0);
 		}
 
 

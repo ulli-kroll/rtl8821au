@@ -3498,9 +3498,12 @@ static void _rtl8812au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
 }
 
-static void _rtl8812au_config_rf_radio_b(struct rtl_dm *pDM_Odm, uint32_t Addr,
+static void _rtl8812au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data)
 {
+	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+
 	uint32_t  content = 0x1001;		/* RF_Content: radiob_txt */
 	uint32_t maskforPhySet = (uint32_t)(content&0xE000);
 
@@ -3598,7 +3601,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 
 			/* This (offset, data) pair meets the condition. */
 			if (v1 < 0xCDCDCDCD) {
-				_rtl8812au_config_rf_radio_b(pDM_Odm, v1, v2);
+				_rtl8812au_config_rf_radio_b(rtlpriv, v1, v2);
 				continue;
 			} else {
 				/* This line is the start line of branch. */
@@ -3617,7 +3620,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 					while (v2 != 0xDEAD &&
 					    v2 != 0xCDEF &&
 					    v2 != 0xCDCD && i < radioa_arraylen_b-2) {
-						_rtl8812au_config_rf_radio_b(pDM_Odm, v1, v2);
+						_rtl8812au_config_rf_radio_b(rtlpriv, v1, v2);
 						READ_NEXT_PAIR(radioa_array_table_b, v1, v2, i);
 					}
 

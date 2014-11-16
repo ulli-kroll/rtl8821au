@@ -132,9 +132,12 @@ static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PA
 	};
 }
 
-static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path,
 	unsigned int TX_X, unsigned int TX_Y)
 {
+	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
+
 	switch (Path) {
 	case ODM_RF_PATH_A:
 		ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
@@ -2172,9 +2175,9 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 		}
 
 		if (TX_finish == 1) {
-			_rtl8821au_iqk_tx_fill_iqc(pDM_Odm, Path, TX_X, TX_Y);
+			_rtl8821au_iqk_tx_fill_iqc(rtlpriv, Path, TX_X, TX_Y);
 		} else {
-			_rtl8821au_iqk_tx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8821au_iqk_tx_fill_iqc(rtlpriv, Path, 0x200, 0x0);
 		}
 
 		if (RX_Average == 0)

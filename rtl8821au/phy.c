@@ -3483,6 +3483,17 @@ HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(struct rtl_dm *pDM_Odm)
 /******************************************************************************
 *                           RadioA.TXT
 ******************************************************************************/
+static void odm_ConfigRFReg_8812A(struct rtl_priv *rtlpriv, uint32_t Addr,
+	uint32_t Data, ODM_RF_RADIO_PATH_E RF_PATH, uint32_t RegAddr)
+{
+	if (Addr == 0xfe || Addr == 0xffe) {
+		msleep(50);
+	} else {
+		rtw_hal_write_rfreg(rtlpriv, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
+		/* Add 1us delay between BB/RF register setting. */
+		udelay(1);
+	}
+}
 
 static void _rtl8812au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data)

@@ -22,17 +22,7 @@
 
 #if (RTL8812A_SUPPORT == 1)
 
-void odm_ConfigRFReg_8812A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Data, ODM_RF_RADIO_PATH_E RF_PATH, uint32_t RegAddr)
-{
-	if (Addr == 0xfe || Addr == 0xffe) {
-		msleep(50);
-	} else {
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
-		/* Add 1us delay between BB/RF register setting. */
-		udelay(1);
-	}
-}
+
 
 void odm_ConfigBB_AGC_8812A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)

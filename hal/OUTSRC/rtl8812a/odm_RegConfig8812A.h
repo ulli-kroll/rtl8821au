@@ -23,14 +23,6 @@
 #if (RTL8812A_SUPPORT == 1)
 
 void
-odm_ConfigRFReg_8812A(
-	IN 	struct rtl_priv *rtlpriv,
-	IN 	uint32_t 					Addr,
-	IN 	uint32_t 					Data,
-	IN  ODM_RF_RADIO_PATH_E     RF_PATH,
-	IN	uint32_t				    RegAddr
-	);
-void
 odm_ConfigBB_AGC_8812A(
     IN 	struct rtl_dm *	pDM_Odm,
     IN 	uint32_t 		Addr,

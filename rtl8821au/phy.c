@@ -3653,7 +3653,7 @@ static void _rtl8821au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr
 	uint32_t  content = 0x1000;		/* RF_Content: radioa_txt */
 	uint32_t maskforPhySet = (uint32_t)(content&0xE000);
 
-	odm_ConfigRFReg_8821A(pDM_Odm, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
+	odm_ConfigRFReg_8821A(rtlpriv, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
 }

@@ -24,7 +24,7 @@
 
 void
 odm_ConfigRFReg_8821A(
-	IN 	struct rtl_dm *				pDM_Odm,
+	IN 	struct rtl_priv *rtlpriv,
 	IN 	uint32_t 					Addr,
 	IN 	uint32_t 					Data,
 	IN  ODM_RF_RADIO_PATH_E     RF_PATH,

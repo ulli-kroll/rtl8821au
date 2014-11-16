@@ -168,19 +168,8 @@ static int phy_RF6052_Config_ParaFile_8812(struct rtl_priv *rtlpriv)
 	/* for(eRFPath = RF_PATH_A; eRFPath <pHalData->NumTotalRFPath; eRFPath++) */
 	for (eRFPath = 0; eRFPath < pHalData->NumTotalRFPath; eRFPath++) {
 		/* ----Initialize RF fom connfiguration file---- */
-		switch (eRFPath) {
-		case RF_PATH_A:
-			if (HAL_STATUS_FAILURE == ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
-				rtStatus = _FAIL;
-			break;
-		case RF_PATH_B:
-			if (HAL_STATUS_FAILURE == ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
-				rtStatus = _FAIL;
-			break;
-		default:
-			break;
-		}
-
+		if (HAL_STATUS_FAILURE == ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
+		
 		if (rtStatus != _SUCCESS) {
 			DBG_871X("%s():Radio[%d] Fail!!", __FUNCTION__, eRFPath);
 			goto phy_RF6052_Config_ParaFile_Fail;

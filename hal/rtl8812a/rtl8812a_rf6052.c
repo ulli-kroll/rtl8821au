@@ -159,7 +159,6 @@ static int phy_RF6052_Config_ParaFile_8812(struct rtl_priv *rtlpriv)
 	uint8_t	eRFPath;
 	int	rtStatus = _SUCCESS;
 	struct rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	char *pszRadioAFile = NULL, *pszRadioBFile = NULL, *pszTxPwrTrack = NULL;
 
 	/*
 	 * -----------------------------------------------------------------

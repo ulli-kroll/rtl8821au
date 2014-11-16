@@ -3484,9 +3484,12 @@ HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(struct rtl_dm *pDM_Odm)
 *                           RadioA.TXT
 ******************************************************************************/
 
-static void _rtl8812au_config_rf_radio_a(struct rtl_dm *pDM_Odm, uint32_t Addr,
+static void _rtl8812au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data)
 {
+	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+
 	uint32_t content = 0x1000;		/* RF_Content: radioa_txt */
 	uint32_t maskforPhySet = (uint32_t)(content&0xE000);
 
@@ -3553,7 +3556,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 
 			/* This (offset, data) pair meets the condition. */
 			if (v1 < 0xCDCDCDCD) {
-				_rtl8812au_config_rf_radio_a(pDM_Odm, v1, v2);
+				_rtl8812au_config_rf_radio_a(rtlpriv, v1, v2);
 				continue;
 			} else {
 				/* This line is the start line of branch. */
@@ -3572,7 +3575,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 					while (v2 != 0xDEAD &&
 					    v2 != 0xCDEF &&
 					    v2 != 0xCDCD && i < radioa_arraylen_a-2) {
-						_rtl8812au_config_rf_radio_a(pDM_Odm, v1, v2);
+						_rtl8812au_config_rf_radio_a(rtlpriv, v1, v2);
 						READ_NEXT_PAIR(radioa_array_table_a, v1, v2, i);
 					}
 

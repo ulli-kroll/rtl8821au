@@ -247,11 +247,8 @@ ODM_ConfigRFWithTxPwrTrackHeaderFile(
     );
 
 HAL_STATUS
-ODM_ConfigRFWithHeaderFile(
-	IN 	struct rtl_dm *        	pDM_Odm,
-	IN 	ODM_RF_Config_Type 		ConfigType,
-	IN 	ODM_RF_RADIO_PATH_E 	eRFPath
-	);
+ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
+	IN ODM_RF_Config_Type ConfigType, IN ODM_RF_RADIO_PATH_E eRFPath);
 
 HAL_STATUS
 ODM_ConfigBBWithHeaderFile(

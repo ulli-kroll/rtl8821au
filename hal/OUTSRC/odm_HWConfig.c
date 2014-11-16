@@ -698,9 +698,12 @@ void ODM_PhyStatusQuery(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
  * If you want to add a new IC, Please follow below template and generate a new one.
  */
 
-HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_dm *pDM_Odm,
+HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	ODM_RF_Config_Type ConfigType, ODM_RF_RADIO_PATH_E eRFPath)
 {
+	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,

@@ -52,34 +52,31 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask
 static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path,
 	unsigned int RX_X, unsigned int RX_Y)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
-
 	switch (Path) {
 	case ODM_RF_PATH_A:
-		ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 		if (RX_X>>1 == 0x112 || RX_Y>>1 == 0x3ee) {
-			ODM_SetBBReg(pDM_Odm, 0xc10, 0x000003ff, 0x100);
-			ODM_SetBBReg(pDM_Odm, 0xc10, 0x03ff0000, 0);
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff));
+			rtl_set_bbreg(rtlpriv, 0xc10, 0x000003ff, 0x100);
+			rtl_set_bbreg(rtlpriv, 0xc10, 0x03ff0000, 0);
+			/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff)); */
 		} else {
-			ODM_SetBBReg(pDM_Odm, 0xc10, 0x000003ff, RX_X>>1);
-			ODM_SetBBReg(pDM_Odm, 0xc10, 0x03ff0000, RX_Y>>1);
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff));
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xc10 = %x ====>fill to IQC\n", ODM_Read4Byte(pDM_Odm, 0xc10)));
+			rtl_set_bbreg(rtlpriv, 0xc10, 0x000003ff, RX_X>>1);
+			rtl_set_bbreg(rtlpriv, 0xc10, 0x03ff0000, RX_Y>>1);
+			/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff)); */
+			/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xc10 = %x ====>fill to IQC\n", ODM_Read4Byte(pDM_Odm, 0xc10))); */
 		}
 		break;
 	case ODM_RF_PATH_B:
-			ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
+			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
 			if (RX_X>>1 == 0x112 || RX_Y>>1 == 0x3ee) {
-				ODM_SetBBReg(pDM_Odm, 0xe10, 0x000003ff, 0x100);
-				ODM_SetBBReg(pDM_Odm, 0xe10, 0x03ff0000, 0);
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff));
+				rtl_set_bbreg(rtlpriv, 0xe10, 0x000003ff, 0x100);
+				rtl_set_bbreg(rtlpriv, 0xe10, 0x03ff0000, 0);
+				/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff)); */
 			} else {
-				ODM_SetBBReg(pDM_Odm, 0xe10, 0x000003ff, RX_X>>1);
-				ODM_SetBBReg(pDM_Odm, 0xe10, 0x03ff0000, RX_Y>>1);
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x====>fill to IQC\n ", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff));
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe10 = %x====>fill to IQC\n", ODM_Read4Byte(pDM_Odm, 0xe10)));
+				rtl_set_bbreg(rtlpriv, 0xe10, 0x000003ff, RX_X>>1);
+				rtl_set_bbreg(rtlpriv, 0xe10, 0x03ff0000, RX_Y>>1);
+				/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x====>fill to IQC\n ", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff)); */
+				/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe10 = %x====>fill to IQC\n", ODM_Read4Byte(pDM_Odm, 0xe10))); */
 			}
 		break;
 	default:

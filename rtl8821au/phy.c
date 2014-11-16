@@ -135,19 +135,16 @@ static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PA
 static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path,
 	unsigned int TX_X, unsigned int TX_Y)
 {
-	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
-
 	switch (Path) {
 	case ODM_RF_PATH_A:
-		ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
-		ODM_Write4Byte(pDM_Odm, 0xc90, 0x00000080);
-		ODM_Write4Byte(pDM_Odm, 0xcc4, 0x20040000);
-		ODM_Write4Byte(pDM_Odm, 0xcc8, 0x20000000);
-		ODM_SetBBReg(pDM_Odm, 0xccc, 0x000007ff, TX_Y);
-		ODM_SetBBReg(pDM_Odm, 0xcd4, 0x000007ff, TX_X);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X, TX_Y));
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", ODM_GetBBReg(pDM_Odm, 0xcd4, 0x000007ff), ODM_GetBBReg(pDM_Odm, 0xccc, 0x000007ff)));
+		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
+		rtw_write32(rtlpriv, 0xc90, 0x00000080);
+		rtw_write32(rtlpriv, 0xcc4, 0x20040000);
+		rtw_write32(rtlpriv, 0xcc8, 0x20000000);
+		rtl_set_bbreg(rtlpriv, 0xccc, 0x000007ff, TX_Y);
+		rtl_set_bbreg(rtlpriv, 0xcd4, 0x000007ff, TX_X);
+		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X, TX_Y)); */
+		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", ODM_GetBBReg(pDM_Odm, 0xcd4, 0x000007ff), ODM_GetBBReg(pDM_Odm, 0xccc, 0x000007ff))); */
 		break;
 	default:
 		break;

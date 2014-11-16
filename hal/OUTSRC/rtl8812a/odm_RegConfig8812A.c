@@ -26,11 +26,7 @@ void odm_ConfigRFReg_8812A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data, ODM_RF_RADIO_PATH_E RF_PATH, uint32_t RegAddr)
 {
 	if (Addr == 0xfe || Addr == 0xffe) {
-#ifdef CONFIG_LONG_DELAY_ISSUE
 		msleep(50);
-#else
-		mdelay(50);
-#endif
 	} else {
 		rtw_hal_write_rfreg(rtlpriv, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
 		/* Add 1us delay between BB/RF register setting. */
@@ -52,11 +48,7 @@ void odm_ConfigBB_PHY_REG_PG_8812A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe || Addr == 0xffe) {
-#ifdef CONFIG_LONG_DELAY_ISSUE
 		msleep(50);
-#else
-		mdelay(50);
-#endif
 	} else {
 		storePwrIndexDiffRateOffset(pDM_Odm->Adapter, Addr, Bitmask, Data);
 	}
@@ -67,11 +59,7 @@ void odm_ConfigBB_PHY_8812A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe) {
-#ifdef CONFIG_LONG_DELAY_ISSUE
 		msleep(50);
-#else
-		mdelay(50);
-#endif
 	} else if (Addr == 0xfd) {
 		mdelay(5);
 	} else if (Addr == 0xfc) {

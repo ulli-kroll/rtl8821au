@@ -29,11 +29,7 @@ void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	if (Addr == 0xfe || Addr == 0xffe) {
-#ifdef CONFIG_LONG_DELAY_ISSUE
 		msleep(50);
-#else
-		mdelay(50);
-#endif
 	} else if (Addr == 0xfd) {
 		mdelay(5);
 	} else if (Addr == 0xfc) {
@@ -66,11 +62,7 @@ void odm_ConfigBB_PHY_REG_PG_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe)
-#ifdef CONFIG_LONG_DELAY_ISSUE
 		msleep(50);
-#else
-		mdelay(50);
-#endif
 	else if (Addr == 0xfd)
 		mdelay(5);
 	else if (Addr == 0xfc)
@@ -92,11 +84,7 @@ void odm_ConfigBB_PHY_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe)
-#ifdef CONFIG_LONG_DELAY_ISSUE
 		msleep(50);
-#else
-		mdelay(50);
-#endif
 	else if (Addr == 0xfd)
 		mdelay(5);
 	else if (Addr == 0xfc)

@@ -1346,6 +1346,26 @@ static void  _rtl8812au_iqk_restore_afe(struct rtl_dm *pDM_Odm, uint32_t *AFE_ba
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n"));
 }
 
+static void _rtl8821au_iqk_restore_afe(struct rtl_priv *rtlpriv,
+				       u32 *afe_backup, u32 *backup_afe_reg,
+				       u32 afe_num)
+{
+	uint32_t i;
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	/* Reload AFE Parameters */
+	for (i = 0; i < afe_num; i++) {
+		rtw_write32(rtlpriv, backup_afe_reg[i], afe_backup[i]);
+	}
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
+	rtw_write32(rtlpriv, 0xc80, 0x0);
+	rtw_write32(rtlpriv, 0xc84, 0x0);
+	rtw_write32(rtlpriv, 0xc88, 0x0);
+	rtw_write32(rtlpriv, 0xc8c, 0x3c000000);
+	rtw_write32(rtlpriv, 0xcb8, 0x0);
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
+}
+
+
 static void _DPK_parareload(struct rtl_dm *pDM_Odm,
 	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG,
 	uint32_t MACBB_NUM)
@@ -2769,25 +2789,6 @@ static void _rtl8821au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 	default:
 		break;
 	}
-}
-
-static void _rtl8821au_iqk_restore_afe(struct rtl_priv *rtlpriv,
-				       u32 *afe_backup, u32 *backup_afe_reg,
-				       u32 afe_num)
-{
-	uint32_t i;
-	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-	/* Reload AFE Parameters */
-	for (i = 0; i < afe_num; i++) {
-		rtw_write32(rtlpriv, backup_afe_reg[i], afe_backup[i]);
-	}
-	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
-	rtw_write32(rtlpriv, 0xc80, 0x0);
-	rtw_write32(rtlpriv, 0xc84, 0x0);
-	rtw_write32(rtlpriv, 0xc88, 0x0);
-	rtw_write32(rtlpriv, 0xc8c, 0x3c000000);
-	rtw_write32(rtlpriv, 0xcb8, 0x0);
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
 }
 
 

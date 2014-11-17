@@ -3487,15 +3487,12 @@ HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(struct rtl_dm *pDM_Odm)
 static void _rtl8812au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
-
 	uint32_t content = 0x1000;		/* RF_Content: radioa_txt */
 	uint32_t maskforPhySet = (uint32_t)(content&0xE000);
 
 	odm_ConfigRFReg_8812A(rtlpriv, Addr, Data, ODM_RF_PATH_A, Addr|maskforPhySet);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data));
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data)); */
 }
 
 static void _rtl8812au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr,

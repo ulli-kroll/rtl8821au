@@ -714,7 +714,7 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
-			rtl8812au_phy_config_rf_with_headerfile(pDM_Odm, eRFPath);
+			rtl8812au_phy_config_rf_with_headerfile(rtlpriv, eRFPath);
 			break;
 
 		default:

@@ -4089,9 +4089,12 @@ static void _rtl8812au_config_rf_radio_b(struct rtl_dm *pDM_Odm, uint32_t Addr,
 
 
 
-void rtl8812au_phy_config_rf_with_headerfile(struct rtl_dm *pDM_Odm,
+void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 				ODM_RF_RADIO_PATH_E eRFPath)
 {
+	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
+	
 	int i;
 	bool rtstatus = true;
 	u32 *radioa_array_table_a, *radioa_array_table_b;

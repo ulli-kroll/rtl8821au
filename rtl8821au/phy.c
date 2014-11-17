@@ -1248,6 +1248,21 @@ static void _rtl8812au_iqk_backup_rf(struct rtl_dm *pDM_Odm,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n"));
 }
 
+static void _rtl8821au_iqk_backup_rf(struct rtl_priv *rtlpriv, u32 *rfa_backup,
+				     u32 *rfb_backup, u32 *backup_rf_reg,
+				     u32 rf_num)
+{
+	u32 i;
+
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	/* Save RF Parameters */
+	for (i = 0; i < rf_num; i++) {
+		rfa_backup[i] = rtw_hal_read_rfreg(rtlpriv, ODM_RF_PATH_A, backup_rf_reg[i], bMaskDWord);
+	}
+
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n")); */
+}
+
 static void _rtl8812au_iqk_backup_afe(struct rtl_dm *pDM_Odm,
 	uint32_t *AFE_backup, uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
@@ -2719,21 +2734,6 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 	default:
 		break;
 	}
-}
-
-static void _rtl8821au_iqk_backup_rf(struct rtl_priv *rtlpriv, u32 *rfa_backup,
-				     u32 *rfb_backup, u32 *backup_rf_reg,
-				     u32 rf_num)
-{
-	u32 i;
-
-	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-	/* Save RF Parameters */
-	for (i = 0; i < rf_num; i++) {
-		rfa_backup[i] = rtw_hal_read_rfreg(rtlpriv, ODM_RF_PATH_A, backup_rf_reg[i], bMaskDWord);
-	}
-
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,

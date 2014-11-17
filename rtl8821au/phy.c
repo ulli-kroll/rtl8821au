@@ -92,6 +92,22 @@ static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH
 	};
 }
 
+static void _rtl8821au_iqk_rx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+	unsigned int RX_X, unsigned int RX_Y)
+{
+	switch (Path) {
+	case ODM_RF_PATH_A:
+		ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+		ODM_SetBBReg(pDM_Odm, 0xc10, 0x000003ff, RX_X>>1);
+		ODM_SetBBReg(pDM_Odm, 0xc10, 0x03ff0000, RX_Y>>1);
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1, RX_Y>>1));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xc10 = %x ====>fill to IQC\n", ODM_Read4Byte(pDM_Odm, 0xc10)));
+		break;
+	default:
+		break;
+	};
+}
+
 static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
 	unsigned int TX_X, unsigned int TX_Y)
 {
@@ -1775,22 +1791,6 @@ void rtl8812au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
 /*  from HalPhyRf_8821A.c						*/
 /*									*/
 /* ****************************************************************************** */
-
-static void _rtl8821au_iqk_rx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
-	unsigned int RX_X, unsigned int RX_Y)
-{
-	switch (Path) {
-	case ODM_RF_PATH_A:
-		ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-		ODM_SetBBReg(pDM_Odm, 0xc10, 0x000003ff, RX_X>>1);
-		ODM_SetBBReg(pDM_Odm, 0xc10, 0x03ff0000, RX_Y>>1);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1, RX_Y>>1));
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xc10 = %x ====>fill to IQC\n", ODM_Read4Byte(pDM_Odm, 0xc10)));
-		break;
-	default:
-		break;
-	};
-}
 
 static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	unsigned int TX_X, unsigned int TX_Y)

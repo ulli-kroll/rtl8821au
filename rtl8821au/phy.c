@@ -1386,7 +1386,7 @@ void ODM_ReadAndConfig_MP_8812A_RadioB(PDM_ODM_T pDM_Odm)
 *                           RadioA.TXT
 ******************************************************************************/
 
-static void odm_ConfigRF_RadioA_8821A(PDM_ODM_T pDM_Odm, uint32_t Addr,
+static void _rtl8821au_config_rf_radio_a(PDM_ODM_T pDM_Odm, uint32_t Addr,
 	uint32_t Data)
 {
 	uint32_t  content = 0x1000; // RF_Content: radioa_txt
@@ -1423,7 +1423,7 @@ void ODM_ReadAndConfig_MP_8821A_RadioA(PDM_ODM_T pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDCD) {
-			odm_ConfigRF_RadioA_8821A(pDM_Odm, v1, v2);
+			_rtl8821au_config_rf_radio_a(pDM_Odm, v1, v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -1442,7 +1442,7 @@ void ODM_ReadAndConfig_MP_8821A_RadioA(PDM_ODM_T pDM_Odm)
 				while (v2 != 0xDEAD &&
 				    v2 != 0xCDEF &&
 				    v2 != 0xCDCD && i < ArrayLen-2) {
-					odm_ConfigRF_RadioA_8821A(pDM_Odm, v1, v2);
+					_rtl8821au_config_rf_radio_a(pDM_Odm, v1, v2);
 					READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 

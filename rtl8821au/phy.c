@@ -1219,7 +1219,7 @@ static void _rtl8812au_iqk_backup_macbb(struct rtl_dm *pDM_Odm, uint32_t *MACBB_
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n"));
 }
 
-static void _IQK_BackupRF_8812A(struct rtl_dm *pDM_Odm,
+static void _rtl8812au_iqk_backup_rf(struct rtl_dm *pDM_Odm,
 	uint32_t *RFA_backup, uint32_t *RFB_backup,
 	uint32_t *Backup_RF_REG, uint32_t RF_NUM)
 {
@@ -1626,7 +1626,7 @@ static void phy_IQCalibrate_8812A(struct rtl_dm *pDM_Odm, u8 Channel)
 
 	_rtl8812au_iqk_backup_macbb(pDM_Odm, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 	_IQK_BackupAFE_8812A(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
-	_IQK_BackupRF_8812A(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
+	_rtl8812au_iqk_backup_rf(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
 
 	_IQK_ConfigureMAC_8812A(pDM_Odm);
 	_rtl8812au_iqk_tx(pDM_Odm, ODM_RF_PATH_A, chnlIdx);

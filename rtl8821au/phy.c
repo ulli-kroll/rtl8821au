@@ -57,7 +57,7 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask
 /*									*/
 /* ****************************************************************************** */
 
-static void _IQK_RX_FillIQC_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
+static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	unsigned int RX_X, unsigned int RX_Y)
 {
 	switch (Path) {
@@ -1046,7 +1046,7 @@ static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 		}
 
 		if (RX_Average == 0) {
-			_IQK_RX_FillIQC_8812A(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 			break;
 		}
 
@@ -1081,9 +1081,9 @@ static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 		}
 
 		if (RX_finish == 1) {
-			_IQK_RX_FillIQC_8812A(pDM_Odm, Path, RX_X, RX_Y);
+			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, RX_X, RX_Y);
 		} else {
-			_IQK_RX_FillIQC_8812A(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 		}
 
 		if (TX_finish && RX_finish) {
@@ -1144,7 +1144,7 @@ static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 		}
 
 		if (RX_Average == 0) {
-			_IQK_RX_FillIQC_8812A(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 			break;
 		}
 
@@ -1179,9 +1179,9 @@ static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 		}
 
 		if (RX_finish == 1) {
-			_IQK_RX_FillIQC_8812A(pDM_Odm, Path, RX_X, RX_Y);
+			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, RX_X, RX_Y);
 		} else{
-			_IQK_RX_FillIQC_8812A(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_rx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 		}
 
 		if (TX_finish && RX_finish) {

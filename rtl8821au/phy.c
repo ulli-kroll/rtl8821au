@@ -2103,14 +2103,6 @@ static void phy_DPCalibrate_8812A(struct rtl_dm *pDM_Odm)
 
 }
 
-
-void PHY_DPCalibrate_8812A(struct rtl_dm *pDM_Odm)
-{
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_DPCalibrate_8812A\n"));
-	phy_DPCalibrate_8812A(pDM_Odm);
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("<=== PHY_DPCalibrate_8812A\n"));
-}
-
 #define cal_num 3
 
 static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path)

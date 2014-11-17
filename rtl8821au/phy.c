@@ -1648,6 +1648,18 @@ static void _rtl8812au_iqk_configure_mac(struct rtl_dm *pDM_Odm)
 	ODM_SetBBReg(pDM_Odm, 0x838, 0xf, 0xc);		/* CCA off */
 }
 
+static void _rtl8821au_iqk_configure_mac(struct rtl_priv *rtlpriv)
+{
+	/* ========MAC register setting======== */
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
+	rtw_write8(rtlpriv, 0x522, 0x3f);
+	rtl_set_bbreg(rtlpriv, 0x550, BIT(3), 0x0);
+	rtl_set_bbreg(rtlpriv, 0x551, BIT(3), 0x0);
+	rtl_set_bbreg(rtlpriv, 0x808, BIT(28), 0x0);	/* CCK Off */
+	rtw_write8(rtlpriv, 0x808, 0x00);		/* RX ante off */
+	rtl_set_bbreg(rtlpriv, 0x838, 0xf, 0xc);		/* CCA off */
+}
+
 
 #undef MACBB_REG_NUM
 #undef AFE_REG_NUM
@@ -2040,18 +2052,6 @@ void PHY_DPCalibrate_8812A(struct rtl_dm *pDM_Odm)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_DPCalibrate_8812A\n"));
 	phy_DPCalibrate_8812A(pDM_Odm);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("<=== PHY_DPCalibrate_8812A\n"));
-}
-
-static void _rtl8821au_iqk_configure_mac(struct rtl_priv *rtlpriv)
-{
-	/* ========MAC register setting======== */
-	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-	rtw_write8(rtlpriv, 0x522, 0x3f);
-	rtl_set_bbreg(rtlpriv, 0x550, BIT(3), 0x0);
-	rtl_set_bbreg(rtlpriv, 0x551, BIT(3), 0x0);
-	rtl_set_bbreg(rtlpriv, 0x808, BIT(28), 0x0);	/* CCK Off */
-	rtw_write8(rtlpriv, 0x808, 0x00);		/* RX ante off */
-	rtl_set_bbreg(rtlpriv, 0x838, 0xf, 0xc);		/* CCA off */
 }
 
 #define cal_num 3

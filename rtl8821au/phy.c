@@ -1594,7 +1594,7 @@ static void _DPK_EnableDP(struct rtl_dm *pDM_Odm, u8 path, uint32_t TXindex)
 
 }
 
-static void _IQK_ConfigureMAC_8812A(struct rtl_dm *pDM_Odm)
+static void _rtl8812au_iqk_configure_mac(struct rtl_dm *pDM_Odm)
 {
 	/* ========MAC register setting======== */
 	ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */
@@ -1628,7 +1628,7 @@ static void phy_IQCalibrate_8812A(struct rtl_dm *pDM_Odm, u8 Channel)
 	_rtl8812au_iqk_backup_afe(pDM_Odm, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
 	_rtl8812au_iqk_backup_rf(pDM_Odm, RFA_backup, RFB_backup, Backup_RF_REG, RF_REG_NUM);
 
-	_IQK_ConfigureMAC_8812A(pDM_Odm);
+	_rtl8812au_iqk_configure_mac(pDM_Odm);
 	_rtl8812au_iqk_tx(pDM_Odm, ODM_RF_PATH_A, chnlIdx);
 	_rtl8812au_iqk_restore_rf(pDM_Odm, ODM_RF_PATH_A, Backup_RF_REG, RFA_backup, RF_REG_NUM);
 

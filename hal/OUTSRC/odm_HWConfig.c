@@ -728,7 +728,7 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
 			if (eRFPath == ODM_RF_PATH_A) {
-				rtl8821au_phy_config_rf_with_headerfile(pDM_Odm, ODM_RF_PATH_A);
+				rtl8821au_phy_config_rf_with_headerfile(rtlpriv, ODM_RF_PATH_A);
 			}
 			break;
 		default:

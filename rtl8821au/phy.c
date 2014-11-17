@@ -92,7 +92,7 @@ static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH
 	};
 }
 
-static void _IQK_TX_FillIQC_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
+static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E  Path,
 	unsigned int TX_X, unsigned int TX_Y)
 {
 	switch (Path) {
@@ -1006,7 +1006,7 @@ static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	    {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("========Path_A =======\n"));
 		if (TX_Average == 0) {
-			_IQK_TX_FillIQC_8812A(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_tx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 			break;
 		}
 		for (i = 0; i < TX_Average; i++) {
@@ -1040,9 +1040,9 @@ static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 		}
 
 		if (TX_finish == 1) {
-			_IQK_TX_FillIQC_8812A(pDM_Odm, Path, TX_X, TX_Y);
+			_rtl8812au_iqk_tx_fill_iqc(pDM_Odm, Path, TX_X, TX_Y);
 		} else {
-			_IQK_TX_FillIQC_8812A(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_tx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 		}
 
 		if (RX_Average == 0) {
@@ -1104,7 +1104,7 @@ static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 	    {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("========Path_B =======\n"));
 		if (TX_Average == 0) {
-			_IQK_TX_FillIQC_8812A(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_tx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 			break;
 		}
 
@@ -1138,9 +1138,9 @@ static void _IQK_Tx_8812A(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E Path,
 			ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 		}
 		if (TX_finish == 1) {
-			_IQK_TX_FillIQC_8812A(pDM_Odm, Path, TX_X, TX_Y);
+			_rtl8812au_iqk_tx_fill_iqc(pDM_Odm, Path, TX_X, TX_Y);
 		} else {
-			_IQK_TX_FillIQC_8812A(pDM_Odm, Path, 0x200, 0x0);
+			_rtl8812au_iqk_tx_fill_iqc(pDM_Odm, Path, 0x200, 0x0);
 		}
 
 		if (RX_Average == 0) {

@@ -2069,40 +2069,6 @@ static void _DPK_pathABDPK(struct rtl_dm *pDM_Odm)
 
 }
 
-
-
-static void phy_DPCalibrate_8812A(struct rtl_dm *pDM_Odm)
-{
-	uint32_t backupRegAddrs[] = {
-		0x970, 0xcb8, 0x838, 0xc00, 0x90c, 0xb00, 0xc94, 0x82c, 0x520, 0xc60, /* 10 */
-		0xc64, 0xc68, 0xc6c, 0xc70, 0xc74, 0xc78, 0xc7c, 0xc80, 0xc84, 0xc50, /* 20 */
-		0xc20, 0xc24, 0xc28, 0xc2c, 0xc30, 0xc34, 0xc38, 0xc3c, 0xc40, 0xc44, /* 30 */
-		0xc48, 0xc4c, 0xe50, 0xe20, 0xe24, 0xe28, 0xe2c, 0xe30, 0xe34, 0xe38, /* 40 */
-		0xe3c, 0xe40, 0xe44, 0xe48, 0xe4c, 0xeb8, 0xe00, 0xe94, 0xe60, 0xe64, /* 50 */
-		0xe68, 0xe6c, 0xe70, 0xe74, 0xe78, 0xe7c, 0xe80, 0xe84
-	};
-
-	uint32_t backupRegData[sizeof(backupRegAddrs)/sizeof(uint32_t)];
-
-
-	/* backup BB&MAC default value */
-
-	_DPK_parabackup(pDM_Odm, backupRegAddrs, backupRegData, sizeof(backupRegAddrs)/sizeof(uint32_t));
-
-	/* set global parameters */
-	_DPK_Globalparaset(pDM_Odm);
-
-	/* DPK */
-	_DPK_pathABDPK(pDM_Odm);
-
-	/* TH_DPK=thermalmeter */
-
-
-	/* reload BB&MAC defaul value; */
-	_DPK_parareload(pDM_Odm, backupRegAddrs, backupRegData, sizeof(backupRegAddrs)/sizeof(uint32_t));
-
-}
-
 #define cal_num 3
 
 static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path)

@@ -4234,7 +4234,7 @@ static void _rtl8821au_config_rf_radio_a(struct rtl_dm *pDM_Odm, uint32_t Addr,
 }
 
 
-void ODM_ReadAndConfig_MP_8821A_RadioA(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath)
+void rtl8821au_phy_config_rf_with_headerfile(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath)
 {
 	uint32_t	hex         = 0;
 	uint32_t	i           = 0;

@@ -1300,6 +1300,21 @@ static void _rtl8812au_iqk_restore_macbb(struct rtl_dm *pDM_Odm,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n"));
 }
 
+static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
+					 u32 *macbb_backup,
+					 u32 *backup_macbb_reg,
+					 u32 macbb_num)
+{
+	u32 i;
+
+	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
+	/* Reload MacBB Parameters */
+	for (i = 0; i < macbb_num; i++) {
+		rtw_write32(rtlpriv, backup_macbb_reg[i], macbb_backup[i]);
+	}
+	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
+}
+
 static void _rtl8812au_iqk_restore_rf(struct rtl_dm *pDM_Odm,
 	ODM_RF_RADIO_PATH_E Path, uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
 {
@@ -2754,21 +2769,6 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path
 	default:
 		break;
 	}
-}
-
-static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
-					 u32 *macbb_backup,
-					 u32 *backup_macbb_reg,
-					 u32 macbb_num)
-{
-	u32 i;
-
-	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
-	/* Reload MacBB Parameters */
-	for (i = 0; i < macbb_num; i++) {
-		rtw_write32(rtlpriv, backup_macbb_reg[i], macbb_backup[i]);
-	}
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_restore_rf(struct rtl_priv *rtlpriv,

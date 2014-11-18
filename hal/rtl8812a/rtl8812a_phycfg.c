@@ -311,11 +311,8 @@ phy_BB8812_Config_ParaFile(
 	if ( ( Adapter->registrypriv.RegEnableTxPowerLimit == 1 && pHalData->EEPROMRegulatory != 2 ) ||
 		 pHalData->EEPROMRegulatory == 1 )
 	{
-#ifdef CONFIG_EMBEDDED_FWIMG
 		if (HAL_STATUS_SUCCESS != _rtl8821au_phy_read_and_config_txpwr_lmt(&pHalData->odmpriv))
 			rtStatus = _FAIL;
-#else
-#endif
 
 		if(rtStatus != _SUCCESS){
 			DBG_871X("phy_BB8812_Config_ParaFile():Write BB Reg Fail!!");
@@ -324,13 +321,8 @@ phy_BB8812_Config_ParaFile(
 	}
 
 	// Read PHY_REG.TXT BB INIT!!
-#ifdef CONFIG_EMBEDDED_FWIMG
 	if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG))
 		rtStatus = _FAIL;
-#else
-	// No matter what kind of CHIP we always read PHY_REG.txt. We must copy different
-	// type of parameter files to phy_reg.txt at first.
-#endif
 
 	if(rtStatus != _SUCCESS){
 		DBG_871X("phy_BB8812_Config_ParaFile():Write BB Reg Fail!!");
@@ -343,11 +335,8 @@ phy_BB8812_Config_ParaFile(
 	{
 		pHalData->pwrGroupCnt = 0;
 
-#ifdef CONFIG_EMBEDDED_FWIMG
 		if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG_PG))
 			rtStatus = _FAIL;
-#else
-#endif
 
 		if(rtStatus != _SUCCESS){
 			DBG_871X("phy_BB8812_Config_ParaFile():BB_PG Reg Fail!!");
@@ -361,11 +350,8 @@ phy_BB8812_Config_ParaFile(
 
 
 	// BB AGC table Initialization
-#ifdef CONFIG_EMBEDDED_FWIMG
 	if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_AGC_TAB))
 		rtStatus = _FAIL;
-#else
-#endif
 
 	if(rtStatus != _SUCCESS){
 		DBG_871X("phy_BB8812_Config_ParaFile():AGC Table Fail\n");

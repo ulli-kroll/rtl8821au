@@ -301,46 +301,10 @@ phy_BB8812_Config_ParaFile(
 	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	int			rtStatus = _SUCCESS;
 
-	s8				sz8812BBRegFile[] = RTL8812_PHY_REG;
-	s8				sz8812AGCTableFile[] = RTL8812_AGC_TAB;
-	s8				sz8812BBRegPgFile[] = RTL8812_PHY_REG_PG;
-	s8				sz8812BBRegMpFile[] = RTL8812_PHY_REG_MP;
-	s8				sz8812BBRegLimitFile[] = RTL8812_TXPWR_LMT;
-
-	s8				sz8821BBRegFile[] = RTL8821_PHY_REG;
-	s8				sz8821AGCTableFile[] = RTL8821_AGC_TAB;
-	s8				sz8821BBRegPgFile[] = RTL8821_PHY_REG_PG;
-	s8				sz8821BBRegMpFile[] = RTL8821_PHY_REG_MP;
-	s8				sz8821RFTxPwrLmtFile[] = RTL8821_TXPWR_LMT;
-	s8				*pszBBRegFile = NULL, *pszAGCTableFile = NULL,
-					*pszBBRegPgFile = NULL, *pszBBRegMpFile=NULL,
-					*pszRFTxPwrLmtFile = NULL;
-
-
 	//DBG_871X("==>phy_BB8812_Config_ParaFile\n");
-
-	if(IS_HARDWARE_TYPE_8812(Adapter))
-	{
-		pszBBRegFile=sz8812BBRegFile ;
-		pszAGCTableFile =sz8812AGCTableFile;
-		pszBBRegPgFile = sz8812BBRegPgFile;
-		pszBBRegMpFile = sz8812BBRegMpFile;
-		pszRFTxPwrLmtFile = sz8812BBRegLimitFile;
-	}
-	else
-	{
-		pszBBRegFile=sz8821BBRegFile ;
-		pszAGCTableFile =sz8821AGCTableFile;
-		pszBBRegPgFile = sz8821BBRegPgFile;
-		pszBBRegMpFile = sz8821BBRegMpFile;
-		pszRFTxPwrLmtFile = sz8821RFTxPwrLmtFile;
-	}
 
 	DBG_871X("===> phy_BB8812_Config_ParaFile() EEPROMRegulatory %d\n", pHalData->EEPROMRegulatory );
 
-	//DBG_871X(" ===> phy_BB8812_Config_ParaFile() phy_reg:%s\n",pszBBRegFile);
-	//DBG_871X(" ===> phy_BB8812_Config_ParaFile() phy_reg_pg:%s\n",pszBBRegPgFile);
-	//DBG_871X(" ===> phy_BB8812_Config_ParaFile() agc_table:%s\n",pszAGCTableFile);
 
 	PHY_InitPowerLimitTable( &(pHalData->odmpriv) );
 
@@ -351,7 +315,6 @@ phy_BB8812_Config_ParaFile(
 		if (HAL_STATUS_SUCCESS != _rtl8821au_phy_read_and_config_txpwr_lmt(&pHalData->odmpriv))
 			rtStatus = _FAIL;
 #else
-		rtStatus = PHY_ConfigBBWithPowerLimitTableParaFile( Adapter, pszRFTxPwrLmtFile );
 #endif
 
 		if(rtStatus != _SUCCESS){
@@ -367,7 +330,6 @@ phy_BB8812_Config_ParaFile(
 #else
 	// No matter what kind of CHIP we always read PHY_REG.txt. We must copy different
 	// type of parameter files to phy_reg.txt at first.
-	rtStatus = phy_ConfigBBWithParaFile(Adapter,pszBBRegFile);
 #endif
 
 	if(rtStatus != _SUCCESS){
@@ -385,7 +347,6 @@ phy_BB8812_Config_ParaFile(
 		if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG_PG))
 			rtStatus = _FAIL;
 #else
-		rtStatus = phy_ConfigBBWithPgParaFile(Adapter, pszBBRegPgFile);
 #endif
 
 		if(rtStatus != _SUCCESS){
@@ -404,7 +365,6 @@ phy_BB8812_Config_ParaFile(
 	if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_AGC_TAB))
 		rtStatus = _FAIL;
 #else
-	rtStatus = phy_ConfigBBWithParaFile(Adapter, pszAGCTableFile);
 #endif
 
 	if(rtStatus != _SUCCESS){

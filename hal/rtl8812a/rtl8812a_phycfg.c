@@ -37,6 +37,8 @@ const char *const GLBwSrc[]={
 
 /* ----------------------------Function Body---------------------------------- */
 
+static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter);
+static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm);
 
 /*
  * 2. RF register R/W API
@@ -400,7 +402,7 @@ int PHY_RFConfig8812(struct rtl_priv *Adapter)
 	return rtStatus;
 }
 
-u8 phy_getPowerByRateBaseIndex(BAND_TYPE Band, uint8_t Rate)
+static u8 phy_getPowerByRateBaseIndex(BAND_TYPE Band, uint8_t Rate)
 {
 	uint8_t	index = 0;
 	if (Band == BAND_ON_2_4G) {
@@ -519,7 +521,7 @@ u8 phy_getPowerByRateBaseIndex(BAND_TYPE Band, uint8_t Rate)
 	return index;
 }
 
-VOID PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
+static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -546,7 +548,7 @@ VOID PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
 	/* DBG_871X("<===== PHY_InitPowerLimitTable()!\n" ); */
 }
 
-VOID PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
+static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t 	BW40PwrBasedBm2_4G, BW40PwrBasedBm5G;
@@ -845,7 +847,7 @@ VOID PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 /*
  * 2012/10/18
  */
-void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *Adapter,
+static void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *Adapter,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -912,7 +914,7 @@ void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *Adapter,
 
 }
 
-void phy_ChangePGDataFromExactToRelativeValue(u32* pData, uint8_t Start,
+static void phy_ChangePGDataFromExactToRelativeValue(u32* pData, uint8_t Start,
 	uint8_t End, uint8_t BaseValue)
 {
 	s8	i = 0;
@@ -941,7 +943,7 @@ void phy_ChangePGDataFromExactToRelativeValue(u32* pData, uint8_t Start,
 	*pData = TempData;
 }
 
-void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *Adapter,
+static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *Adapter,
 	uint32_t RegAddr, uint32_t BitMask, u32 *pData)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -1081,7 +1083,7 @@ void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *Adapter,
 	}
 }
 
-void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *Adapter,
+static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *Adapter,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t *pData)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -1269,7 +1271,7 @@ void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *Adapter,
 
 }
 
-void phy_StorePwrByRateIndexBase(struct rtl_priv *Adapter, uint32_t RegAddr,
+static void phy_StorePwrByRateIndexBase(struct rtl_priv *Adapter, uint32_t RegAddr,
 	uint32_t Data)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -1620,6 +1622,8 @@ void phy_StorePwrByRateIndexBase(struct rtl_priv *Adapter, uint32_t RegAddr,
 	};
 }
 
+/* Ulli called in odm_RegConfig8812A.c and odm_RegConfig8821A.c */
+
 void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
 {
@@ -1769,6 +1773,8 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 	}
 }
 
+/* Ulli unused */
+
 static u8 phy_DbmToTxPwrIdx(struct rtl_priv *Adapter, WIRELESS_MODE WirelessMode,
 	int PowerInDbm)
 {
@@ -1778,6 +1784,8 @@ static u8 phy_DbmToTxPwrIdx(struct rtl_priv *Adapter, WIRELESS_MODE WirelessMode
 
 	return TxPwrIdx;
 }
+
+/* Ulli unused */
 
 static int phy_TxPwrIdxToDbm(struct rtl_priv *Adapter, WIRELESS_MODE WirelessMode,
 	uint8_t	TxPwrIdx)
@@ -1811,12 +1819,16 @@ static int phy_TxPwrIdxToDbm(struct rtl_priv *Adapter, WIRELESS_MODE WirelessMod
 	return PwrOutDbm;
 }
 
-void PHY_GetTxPowerLevel8812(struct rtl_priv *Adapter, u32 *powerlevel)
+/* Ulli unused */
+
+static void PHY_GetTxPowerLevel8812(struct rtl_priv *Adapter, u32 *powerlevel)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			TxPwrLevel = 0;
 	int			TxPwrDbm;
 }
+
+/* ULLI unsed */
 
 void phy_PowerIndexCheck8812(struct rtl_priv *Adapter, uint8_t channel,
 	uint8_t *cckPowerLevel, uint8_t *ofdmPowerLevel,
@@ -1852,7 +1864,7 @@ void phy_PowerIndexCheck8812(struct rtl_priv *Adapter, uint8_t channel,
  *                                                                                    <20120830, Kordan>
  **************************************************************************************************************/
 
-void PHY_SetTxPowerIndex_8812A(struct rtl_priv *Adapter, uint32_t PowerIndex,
+static void PHY_SetTxPowerIndex_8812A(struct rtl_priv *Adapter, uint32_t PowerIndex,
 	u8 RFPath, u8 Rate)
 {
 	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
@@ -1884,6 +1896,8 @@ void PHY_SetTxPowerIndex_8812A(struct rtl_priv *Adapter, uint32_t PowerIndex,
 		if (PowerIndex > 0x3F)
 			PowerIndex = 0x3F;
 	}
+
+	/* ULLI check register names as in rtlwifi-lib */
 
 	if (RFPath == RF_PATH_A) {
 		switch (Rate) {
@@ -2216,7 +2230,7 @@ void PHY_SetTxPowerIndex_8812A(struct rtl_priv *Adapter, uint32_t PowerIndex,
 	}
 }
 
-void phy_SetTxPowerIndexByRateArray(struct rtl_priv *pAdapter, uint8_t RFPath,
+static void phy_SetTxPowerIndexByRateArray(struct rtl_priv *pAdapter, uint8_t RFPath,
 	CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t *Rates,
 	uint8_t	RateArraySize)
 {
@@ -2230,7 +2244,7 @@ void phy_SetTxPowerIndexByRateArray(struct rtl_priv *pAdapter, uint8_t RFPath,
 
 }
 
-void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter, 
+static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter, 
 	uint8_t RFPath, CHANNEL_WIDTH BandWidth,
 	uint8_t Channel, uint8_t *Rate, uint8_t *PowerIndex,
 	uint8_t	ArraySize)
@@ -2245,7 +2259,7 @@ void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter,
 
 }
 
-void phy_TxPowerTrainingByPath_8812(struct rtl_priv *Adapter, 
+static void phy_TxPowerTrainingByPath_8812(struct rtl_priv *Adapter, 
 	CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t RfPath)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -2280,7 +2294,7 @@ void phy_TxPowerTrainingByPath_8812(struct rtl_priv *Adapter,
 	rtl_set_bbreg(Adapter, writeOffset, 0xffffff, writeData);
 }
 
-void PHY_SetTxPowerLevelByPath8812(struct rtl_priv *Adapter, 
+static void PHY_SetTxPowerLevelByPath8812(struct rtl_priv *Adapter, 
 	uint8_t	channel, uint8_t path)
 {
 
@@ -2459,6 +2473,9 @@ void PHY_SetTxPowerLevelByPath8812(struct rtl_priv *Adapter,
  * Page revised on 20121106
  * the new way to set tx power by rate, NByte access, here N byte shall be 4 byte(DWord) or NByte(N>4) access. by page/YP, 20121106
  */
+ 
+/* ULLI called in HalPhyRf8812A.c and HalPhyRf21A.c */
+ 
 void PHY_SetTxPowerLevel8812(struct rtl_priv *Adapter, uint8_t	Channel)
 {
 
@@ -2474,11 +2491,15 @@ void PHY_SetTxPowerLevel8812(struct rtl_priv *Adapter, uint8_t	Channel)
 	/* DBG_871X("<==PHY_SetTxPowerLevel8812()\n"); */
 }
 
+/* ULLI unused */
+
 BOOLEAN PHY_UpdateTxPowerDbm8812(struct rtl_priv *Adapter, int powerInDbm)
 {
 	return _TRUE;
 }
 
+
+/* ULLI used in rtl8821au/dm.c */
 
 uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,
 	uint8_t	RFPath)
@@ -2633,14 +2654,10 @@ uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,
 	return out;
 }
 
-VOID
-phy_SetRFEReg8812(
-	IN struct rtl_priv *	Adapter,
-	IN uint8_t			Band
-)
+static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 {
 	u8			u1tmp = 0;
-	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
+	struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 
 	if(Band == BAND_ON_2_4G) {
 		switch(pHalData->RFEType){
@@ -2964,8 +2981,7 @@ int32_t PHY_SwitchWirelessBand8812(struct rtl_priv *Adapter, uint8_t Band)
 	return _SUCCESS;
 }
 
-BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW
-)
+static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
 {
 	uint8_t			u1Btmp;
 	BOOLEAN		ret_value = _TRUE;
@@ -2990,8 +3006,7 @@ BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW
 	return ret_value;
 }
 
-u8 phy_GetSecondaryChnl_8812(struct rtl_priv *Adapter
-)
+static u8 phy_GetSecondaryChnl_8812(struct rtl_priv *Adapter)
 {
 	uint8_t					SCSettingOf40 = 0, SCSettingOf20 = 0;
 	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
@@ -3063,7 +3078,7 @@ VOID phy_SetRegBW_8812(struct rtl_priv *Adapter, CHANNEL_WIDTH 	CurrentBW)
 
 }
 
-void phy_FixSpur_8812A(struct rtl_priv *pAdapter, CHANNEL_WIDTH Bandwidth,
+static void phy_FixSpur_8812A(struct rtl_priv *pAdapter, CHANNEL_WIDTH Bandwidth,
 	u8 Channel)
 {
 	/* C cut Item12 ADC FIFO CLOCK */
@@ -3096,7 +3111,7 @@ void phy_FixSpur_8812A(struct rtl_priv *pAdapter, CHANNEL_WIDTH Bandwidth,
 
 }
 
-void phy_PostSetBwMode8812(struct rtl_priv *Adapter)
+static void phy_PostSetBwMode8812(struct rtl_priv *Adapter)
 {
 	uint8_t			SubChnlNum = 0;
 	uint8_t			L1pkVal = 0;
@@ -3195,7 +3210,7 @@ void phy_PostSetBwMode8812(struct rtl_priv *Adapter)
 }
 
 /* <20130207, Kordan> The variales initialized here are used in odm_LNAPowerControl(). */
-VOID phy_InitRssiTRSW(struct rtl_priv *pAdapter)
+static void phy_InitRssiTRSW(struct rtl_priv *pAdapter)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
@@ -3220,7 +3235,7 @@ VOID phy_InitRssiTRSW(struct rtl_priv *pAdapter)
 	}
 }
 
-void phy_SwChnl8812(struct rtl_priv *pAdapter)
+static void phy_SwChnl8812(struct rtl_priv *pAdapter)
 {
 	uint8_t	eRFPath = 0;
 	struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
@@ -3298,7 +3313,7 @@ void phy_SwChnl8812(struct rtl_priv *pAdapter)
 	}
 }
 
-void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
+static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 {
 	struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
@@ -3340,7 +3355,7 @@ void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 	}
 }
 
-void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
+static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 	BOOLEAN	bSwitchChannel, BOOLEAN	bSetBandWidth,
 	uint8_t	ChannelNum, CHANNEL_WIDTH ChnlWidth,
 	uint8_t	ChnlOffsetOf40MHz, uint8_t ChnlOffsetOf80MHz,

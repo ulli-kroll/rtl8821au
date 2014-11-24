@@ -73,15 +73,6 @@ int	PHY_BBConfig8812(IN struct rtl_priv *Adapter	);
 void	PHY_BB8812_Config_1T(IN struct rtl_priv *Adapter );
 int	PHY_RFConfig8812(IN struct rtl_priv *Adapter	);
 
-VOID
-PHY_InitPowerLimitTable(
-	IN	struct rtl_dm *pDM_Odm
-	);
-
-VOID
-PHY_ConvertPowerLimitToPowerIndex(
-	IN	struct rtl_priv *		Adapter
-	);
 
 /* RF config */
 
@@ -94,7 +85,7 @@ PHY_SwitchWirelessBand8812(
 //
 // BB TX Power R/W
 //
-void	PHY_GetTxPowerLevel8812(	IN struct rtl_priv *Adapter, OUT u32*	powerlevel	);
+
 void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *Adapter, IN uint8_t	Channel	);
 BOOLEAN	PHY_UpdateTxPowerDbm8812( IN struct rtl_priv *Adapter, IN int	powerInDbm	);
 u32 PHY_GetTxPowerIndex_8812A(
@@ -111,13 +102,6 @@ u32 PHY_GetTxBBSwing_8812A(
 	IN	uint8_t			RFPath
 	);
 
-VOID
-PHY_SetTxPowerIndex_8812A(
-	IN	struct rtl_priv *		Adapter,
-	IN	uint32_t				PowerIndex,
-	IN	u8				RFPath,
-	IN	u8				Rate
-	);
 //
 // Switch bandwidth for 8192S
 //

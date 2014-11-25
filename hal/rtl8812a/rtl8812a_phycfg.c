@@ -1775,18 +1775,6 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 
 /* Ulli unused */
 
-static u8 phy_DbmToTxPwrIdx(struct rtl_priv *Adapter, WIRELESS_MODE WirelessMode,
-	int PowerInDbm)
-{
-	struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
-	uint8_t	TxPwrIdx = 0;
-	int32_t	Offset = 0;
-
-	return TxPwrIdx;
-}
-
-/* Ulli unused */
-
 static int phy_TxPwrIdxToDbm(struct rtl_priv *Adapter, WIRELESS_MODE WirelessMode,
 	uint8_t	TxPwrIdx)
 {

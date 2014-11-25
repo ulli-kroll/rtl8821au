@@ -1774,14 +1774,6 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 }
 
 
-/* Ulli unused */
-
-static void PHY_GetTxPowerLevel8812(struct rtl_priv *Adapter, u32 *powerlevel)
-{
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	uint8_t			TxPwrLevel = 0;
-	int			TxPwrDbm;
-}
 
 /* ULLI unsed */
 

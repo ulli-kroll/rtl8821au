@@ -81,7 +81,6 @@ typedef struct PG_PKT_STRUCT_A{
 
 /*------------------------Export global variable----------------------------*/
 
-uint8_t	efuse_GetCurrentSize(struct rtl_priv *padapter, u16 *size);
 u16	efuse_GetMaxSize(struct rtl_priv *padapter);
 uint8_t	rtw_efuse_map_read(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8_t *data);
 uint8_t	rtw_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8_t *data);

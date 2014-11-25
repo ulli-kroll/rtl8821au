@@ -457,15 +457,6 @@ u16 efuse_GetMaxSize(struct rtl_priv *padapter)
 	return max_size;
 }
 //------------------------------------------------------------------------------
-uint8_t efuse_GetCurrentSize(struct rtl_priv *padapter, u16 *size)
-{
-	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
-	*size = padapter->HalFunc->EfuseGetCurrentSize(padapter, EFUSE_WIFI);
-	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _FALSE);
-
-	return _SUCCESS;
-}
-//------------------------------------------------------------------------------
 uint8_t rtw_efuse_map_read(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8_t *data)
 {
 	u16	mapLen=0;

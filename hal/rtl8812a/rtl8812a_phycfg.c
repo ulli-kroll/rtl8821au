@@ -1773,30 +1773,6 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 	}
 }
 
-
-
-/* ULLI unsed */
-
-void phy_PowerIndexCheck8812(struct rtl_priv *Adapter, uint8_t channel,
-	uint8_t *cckPowerLevel, uint8_t *ofdmPowerLevel,
-	uint8_t *BW20PowerLevel, uint8_t *BW40PowerLevel)
-{
-
-	struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
-
-	pHalData->CurrentCckTxPwrIdx = cckPowerLevel[0];
-	pHalData->CurrentOfdm24GTxPwrIdx = ofdmPowerLevel[0];
-	pHalData->CurrentBW2024GTxPwrIdx = BW20PowerLevel[0];
-	pHalData->CurrentBW4024GTxPwrIdx = BW40PowerLevel[0];
-
-	/*
-	 * RT_TRACE(COMP_TXAGC, DBG_LOUD,
-	 * 	("phy_PowerIndexCheck8812(): CurrentCckTxPwrIdx : 0x%x,CurrentOfdm24GTxPwrIdx: 0x%x, CurrentBW2024GTxPwrIdx: 0x%dx, CurrentBW4024GTxPwrIdx: 0x%x \n",
-	 * 	pHalData->CurrentCckTxPwrIdx, pHalData->CurrentOfdm24GTxPwrIdx, pHalData->CurrentBW2024GTxPwrIdx, pHalData->CurrentBW4024GTxPwrIdx));
-	 */
-}
-
-
 /**************************************************************************************************************
  *   Description:
  *       The low-level interface to get the FINAL Tx Power Index , called  by both MP and Normal Driver.

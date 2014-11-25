@@ -1787,7 +1787,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
  *                                                                                    <20120830, Kordan>
  **************************************************************************************************************/
 
-static void PHY_SetTxPowerIndex_8812A(struct rtl_priv *Adapter, uint32_t PowerIndex,
+static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t PowerIndex,
 	u8 RFPath, u8 Rate)
 {
 	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
@@ -2162,7 +2162,7 @@ static void phy_SetTxPowerIndexByRateArray(struct rtl_priv *pAdapter, uint8_t RF
 
 	for (i = 0; i < RateArraySize; ++i) {
 		powerIndex = PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rates[i], BandWidth, Channel);
-		PHY_SetTxPowerIndex_8812A(pAdapter, powerIndex, RFPath, Rates[i]);
+		_rtl8821au_phy_set_txpower_index(pAdapter, powerIndex, RFPath, Rates[i]);
 	}
 
 }

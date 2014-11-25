@@ -56,13 +56,6 @@ typedef	enum _RF_TYPE{
 	RF_TYPE_MAX
 }RF_TYPE_E,*PRF_TYPE_E;
 
-typedef enum _RF_PATH{
-	RF_PATH_A = 0,
-	RF_PATH_B,
-	RF_PATH_C,
-	RF_PATH_D
-}RF_PATH, *PRF_PATH;
-
 #define	TX_1S			0
 #define	TX_2S			1
 #define	TX_3S			2

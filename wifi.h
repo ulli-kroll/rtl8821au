@@ -1,6 +1,15 @@
 #ifndef __WIFI_H__
 #define __WIFI_H__
 
+
+typedef enum _RF_PATH{
+	RF_PATH_A = 0,
+	RF_PATH_B,
+	RF_PATH_C,
+	RF_PATH_D
+}RF_PATH, *PRF_PATH;
+
+
 struct rtl_hal_ops;
 
 struct rtl_priv {

@@ -87,7 +87,6 @@ PHY_SwitchWirelessBand8812(
 //
 
 void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *Adapter, IN uint8_t	Channel	);
-BOOLEAN	PHY_UpdateTxPowerDbm8812( IN struct rtl_priv *Adapter, IN int	powerInDbm	);
 u32 PHY_GetTxPowerIndex_8812A(
 	IN	struct rtl_priv *		pAdapter,
 	IN	uint8_t					RFPath,

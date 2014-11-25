@@ -2414,14 +2414,6 @@ void PHY_SetTxPowerLevel8812(struct rtl_priv *Adapter, uint8_t	Channel)
 	/* DBG_871X("<==PHY_SetTxPowerLevel8812()\n"); */
 }
 
-/* ULLI unused */
-
-BOOLEAN PHY_UpdateTxPowerDbm8812(struct rtl_priv *Adapter, int powerInDbm)
-{
-	return _TRUE;
-}
-
-
 /* ULLI used in rtl8821au/dm.c */
 
 uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,

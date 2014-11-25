@@ -1773,39 +1773,6 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 	}
 }
 
-/* Ulli unused */
-
-static int phy_TxPwrIdxToDbm(struct rtl_priv *Adapter, WIRELESS_MODE WirelessMode,
-	uint8_t	TxPwrIdx)
-{
-	int	Offset = 0;
-	int	PwrOutDbm = 0;
-
-	/*
-	 * Tested by MP, we found that CCK Index 0 equals to -7dbm, OFDM legacy equals to -8dbm.
-	 * Note:
-	 *   The mapping may be different by different NICs. Do not use this formula for what needs accurate result.
-	 * By Bruce, 2008-01-29.
-	 */
-
-	switch(WirelessMode) {
-	case WIRELESS_MODE_B:
-		Offset = -7;
-		break;
-
-	case WIRELESS_MODE_G:
-	case WIRELESS_MODE_N_24G:
-		Offset = -8;
-		break;
-
-	default:	/*for MacOSX compiler warning */
-		break;
-	}
-
-	PwrOutDbm = TxPwrIdx / 2 + Offset;	/* Discard the decimal part. */
-
-	return PwrOutDbm;
-}
 
 /* Ulli unused */
 

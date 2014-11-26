@@ -3,7 +3,8 @@
 
 
 // TX AGC 
-#define rTxAGC_A_CCK11_CCK1_JAguar				0xc20
+#define RTXAGC_A_CCK11_CCK1				0xc20
+
 #define rTxAGC_A_Ofdm18_Ofdm6_JAguar				0xc24
 #define rTxAGC_A_Ofdm54_Ofdm24_JAguar			0xc28
 #define rTxAGC_A_MCS3_MCS0_JAguar					0xc2c

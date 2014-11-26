@@ -137,10 +137,10 @@ void PHY_RF6052SetCckTxPower8812(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 
 	/* rf-A cck tx power */
 	tmpval = TxAGC[RF_PATH_A]&0xff;
-	rtl_set_bbreg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, bMaskByte1, tmpval);
+	rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, bMaskByte1, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 1M (rf-A) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_A_CCK1_Mcs32)); */
 	tmpval = TxAGC[RF_PATH_A]>>8;
-	rtl_set_bbreg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, 0xffffff00, tmpval);
+	rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, 0xffffff00, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 2~11M (rf-A) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK11_A_CCK2_11)); */
 
 	/* rf-B cck tx power */

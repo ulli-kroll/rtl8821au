@@ -1826,16 +1826,16 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 	if (path == RF_PATH_A) {
 		switch (rate) {
 		case MGN_1M:    
-			rtl_set_bbreg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, bMaskByte0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, bMaskByte0, PowerIndex);
 			break;
 		case MGN_2M:    
-			rtl_set_bbreg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, bMaskByte1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, bMaskByte1, PowerIndex);
 			break;
 		case MGN_5_5M:  
-			rtl_set_bbreg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, bMaskByte2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, bMaskByte2, PowerIndex);
 			break;
 		case MGN_11M:   
-			rtl_set_bbreg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, bMaskByte3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, bMaskByte3, PowerIndex);
 			break;
 
 		case MGN_6M:    

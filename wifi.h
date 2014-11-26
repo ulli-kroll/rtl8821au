@@ -155,9 +155,9 @@ struct rtl_hal_ops {
 	void	(*disable_interrupt)(struct rtl_priv *padapter);
 	int32_t	(*interrupt_handler)(struct rtl_priv *padapter);
 
-	void	(*set_bwmode_handler)(struct rtl_priv *padapter, CHANNEL_WIDTH Bandwidth, uint8_t Offset);
+	void	(*set_bwmode_handler)(struct rtl_priv *padapter, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset);
 	void	(*set_channel_handler)(struct rtl_priv *padapter, uint8_t channel);
-	void	(*set_chnl_bw_handler)(struct rtl_priv *padapter, uint8_t channel, CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
+	void	(*set_chnl_bw_handler)(struct rtl_priv *padapter, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
 
 	void	(*hal_dm_watchdog)(struct rtl_priv *padapter);
 

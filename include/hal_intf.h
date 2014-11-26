@@ -262,9 +262,9 @@ void	rtw_hal_write_rfreg(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u3
 
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *padapter);
 
-void	rtw_hal_set_bwmode(struct rtl_priv *padapter, CHANNEL_WIDTH Bandwidth, uint8_t Offset);
+void	rtw_hal_set_bwmode(struct rtl_priv *padapter, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset);
 void	rtw_hal_set_chan(struct rtl_priv *padapter, uint8_t channel);
-void	rtw_hal_set_chnl_bw(struct rtl_priv *padapter, uint8_t channel, CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
+void	rtw_hal_set_chnl_bw(struct rtl_priv *padapter, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
 void	rtw_hal_dm_watchdog(struct rtl_priv *padapter);
 
 #ifdef CONFIG_ANTENNA_DIVERSITY

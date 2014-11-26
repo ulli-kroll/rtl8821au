@@ -2360,7 +2360,7 @@ static s8 phy_GetChannelGroup(BAND_TYPE Band, uint8_t Channel)
 }
 
 static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel,
-	BAND_TYPE Band, CHANNEL_WIDTH Bandwidth, RF_PATH RfPath,
+	BAND_TYPE Band, enum CHANNEL_WIDTH Bandwidth, RF_PATH RfPath,
 	uint8_t DataRate, uint8_t Channel)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -2905,7 +2905,7 @@ VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
 }
 
 u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
-	uint8_t	Rate, CHANNEL_WIDTH BandWidth, uint8_t Channel)
+	uint8_t	Rate, enum CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
 	struct rtw_hal *	pHalData = GET_HAL_DATA(pAdapter);
 	struct rtl_dm *		pDM_Odm = &pHalData->odmpriv;

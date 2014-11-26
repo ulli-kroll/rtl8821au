@@ -543,7 +543,7 @@ void SetBWMode(struct rtl_priv *padapter, unsigned short bwmode, unsigned char c
 	rtw_set_oper_bw(padapter, bwmode);
 	rtw_set_oper_choffset(padapter, channel_offset);
 
-	rtw_hal_set_bwmode(padapter, (CHANNEL_WIDTH)bwmode, channel_offset);
+	rtw_hal_set_bwmode(padapter, (enum CHANNEL_WIDTH)bwmode, channel_offset);
 
 	mutex_unlock(&(adapter_to_dvobj(padapter)->setbw_mutex));
 }

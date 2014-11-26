@@ -310,7 +310,7 @@ int32_t	rtw_hal_interrupt_handler(struct rtl_priv *padapter)
 	return _FAIL;
 }
 
-void	rtw_hal_set_bwmode(struct rtl_priv *padapter, CHANNEL_WIDTH Bandwidth, uint8_t Offset)
+void	rtw_hal_set_bwmode(struct rtl_priv *padapter, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset)
 {
 	if (padapter->HalFunc->set_bwmode_handler)
 		padapter->HalFunc->set_bwmode_handler(padapter, Bandwidth, Offset);
@@ -322,7 +322,7 @@ void	rtw_hal_set_chan(struct rtl_priv *padapter, uint8_t channel)
 		padapter->HalFunc->set_channel_handler(padapter, channel);
 }
 
-void	rtw_hal_set_chnl_bw(struct rtl_priv *padapter, uint8_t channel, CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80)
+void	rtw_hal_set_chnl_bw(struct rtl_priv *padapter, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80)
 {
 	if (padapter->HalFunc->set_chnl_bw_handler)
 		padapter->HalFunc->set_chnl_bw_handler(padapter, channel, Bandwidth, Offset40, Offset80);

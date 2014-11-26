@@ -222,7 +222,7 @@ struct rtw_hal {
 
 	//current WIFI_PHY values
 	WIRELESS_MODE		CurrentWirelessMode;
-	CHANNEL_WIDTH	CurrentChannelBW;
+	enum CHANNEL_WIDTH	CurrentChannelBW;
 	BAND_TYPE			CurrentBandType;	//0:2.4G, 1:5G
 	BAND_TYPE			BandSet;
 	uint8_t	CurrentChannel;

@@ -2,7 +2,7 @@
 #include "rf.h"
 #include "reg.h"
 
-void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, CHANNEL_WIDTH	Bandwidth)	/* 20M or 40M */
+void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH	Bandwidth)	/* 20M or 40M */
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 

@@ -2149,7 +2149,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 }
 
 static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *pAdapter, uint8_t RFPath,
-	CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t *Rates,
+	enum CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t *Rates,
 	uint8_t	RateArraySize)
 {
 	uint32_t power_index = 0;
@@ -2163,7 +2163,7 @@ static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *pAdapter, 
 }
 
 static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter, 
-	uint8_t RFPath, CHANNEL_WIDTH BandWidth,
+	uint8_t RFPath, enum CHANNEL_WIDTH BandWidth,
 	uint8_t Channel, uint8_t *Rate, uint8_t *power_index,
 	uint8_t	ArraySize)
 {
@@ -2178,7 +2178,7 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter,
 }
 
 static void _rtl8821au_phy_txpower_training_by_path(struct rtl_priv *Adapter, 
-	CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t RfPath)
+	enum CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t RfPath)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
@@ -2828,7 +2828,7 @@ static u8 phy_GetSecondaryChnl_8812(struct rtl_priv *Adapter)
 	return  ( (SCSettingOf40 << 4) | SCSettingOf20);
 }
 
-VOID phy_SetRegBW_8812(struct rtl_priv *Adapter, CHANNEL_WIDTH 	CurrentBW)
+VOID phy_SetRegBW_8812(struct rtl_priv *Adapter, enum CHANNEL_WIDTH 	CurrentBW)
 {
 	u16	RegRfMod_BW, u2tmp = 0;
 	RegRfMod_BW = rtw_read16(Adapter, REG_WMAC_TRXPTCL_CTL);
@@ -2855,7 +2855,7 @@ VOID phy_SetRegBW_8812(struct rtl_priv *Adapter, CHANNEL_WIDTH 	CurrentBW)
 
 }
 
-static void phy_FixSpur_8812A(struct rtl_priv *pAdapter, CHANNEL_WIDTH Bandwidth,
+static void phy_FixSpur_8812A(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
 	u8 Channel)
 {
 	/* C cut Item12 ADC FIFO CLOCK */
@@ -3134,7 +3134,7 @@ static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 
 static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 	BOOLEAN	bSwitchChannel, BOOLEAN	bSetBandWidth,
-	uint8_t	ChannelNum, CHANNEL_WIDTH ChnlWidth,
+	uint8_t	ChannelNum, enum CHANNEL_WIDTH ChnlWidth,
 	uint8_t	ChnlOffsetOf40MHz, uint8_t ChnlOffsetOf80MHz,
 	uint8_t	CenterFrequencyIndex1
 )
@@ -3142,7 +3142,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 	struct rtl_priv * 			pDefAdapter =  GetDefaultAdapter(Adapter);
 	struct rtw_hal *	pHalData = GET_HAL_DATA(pDefAdapter);
 	uint8_t					tmpChannel = pHalData->CurrentChannel;
-	CHANNEL_WIDTH		tmpBW= pHalData->CurrentChannelBW;
+	enum CHANNEL_WIDTH		tmpBW= pHalData->CurrentChannelBW;
 	uint8_t					tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
 	uint8_t					tmpnCur80MhzPrimeSC = pHalData->nCur80MhzPrimeSC;
 	uint8_t					tmpCenterFrequencyIndex1 =pHalData->CurrentCenterFrequencyIndex1;
@@ -3228,7 +3228,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 }
 
 void PHY_SetBWMode8812(struct rtl_priv *Adapter,
-	CHANNEL_WIDTH	Bandwidth,	/* 20M or 40M */
+	enum CHANNEL_WIDTH	Bandwidth,	/* 20M or 40M */
 	uint8_t	Offset)		/* Upper, Lower, or Don't care */
 {
 	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
@@ -3250,7 +3250,7 @@ void PHY_SwChnl8812(struct rtl_priv *Adapter, uint8_t channel)
 }
 
 void PHY_SetSwChnlBWMode8812(struct rtl_priv *Adapter, uint8_t channel,
-	CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80)
+	enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80)
 {
 	/* DBG_871X("%s()===>\n",__FUNCTION__); */
 

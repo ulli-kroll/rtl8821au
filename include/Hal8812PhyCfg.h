@@ -91,7 +91,7 @@ u32 PHY_GetTxPowerIndex_8812A(
 	IN	struct rtl_priv *		pAdapter,
 	IN	uint8_t					RFPath,
 	IN	uint8_t					Rate,
-	IN	CHANNEL_WIDTH		BandWidth,
+	IN	enum CHANNEL_WIDTH		BandWidth,
 	IN	uint8_t					Channel
 	);
 
@@ -107,7 +107,7 @@ u32 PHY_GetTxBBSwing_8812A(
 VOID
 PHY_SetBWMode8812(
 	IN	struct rtl_priv *		pAdapter,
-	IN	CHANNEL_WIDTH		Bandwidth,
+	IN	enum CHANNEL_WIDTH		Bandwidth,
 	IN	uint8_t					Offset
 );
 
@@ -125,7 +125,7 @@ VOID
 PHY_SetSwChnlBWMode8812(
 	IN	struct rtl_priv *		Adapter,
 	IN	uint8_t					channel,
-	IN	CHANNEL_WIDTH		Bandwidth,
+	IN	enum CHANNEL_WIDTH		Bandwidth,
 	IN	uint8_t					Offset40,
 	IN	uint8_t					Offset80
 );

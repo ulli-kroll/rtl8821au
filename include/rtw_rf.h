@@ -115,14 +115,14 @@ typedef enum _RF90_RADIO_PATH{
 
 // Represent Channel Width in HT Capabilities
 //
-typedef enum _CHANNEL_WIDTH{
+enum CHANNEL_WIDTH{
 	CHANNEL_WIDTH_20 = 0,
 	CHANNEL_WIDTH_40 = 1,
 	CHANNEL_WIDTH_80 = 2,
 	CHANNEL_WIDTH_160 = 3,
 	CHANNEL_WIDTH_80_80 = 4,
 	CHANNEL_WIDTH_MAX = 5,
-}CHANNEL_WIDTH, *PCHANNEL_WIDTH;
+};
 
 //
 // Represent Extention Channel Offset in HT Capabilities

@@ -22,6 +22,7 @@
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/phy.h>
 #include <../rtl8821au/reg.h>
+#include <../rtl8821au/rf.h>
 
 
 const char *const GLBwSrc[]={
@@ -2982,7 +2983,7 @@ static void phy_PostSetBwMode8812(struct rtl_priv *Adapter)
 	 */
 
 	/* 3 Set RF related register */
-	PHY_RF6052SetBandwidth8812(Adapter, pHalData->CurrentChannelBW);
+	rtl8821au_phy_rf6052_set_bandwidth(Adapter, pHalData->CurrentChannelBW);
 }
 
 /* <20130207, Kordan> The variales initialized here are used in odm_LNAPowerControl(). */

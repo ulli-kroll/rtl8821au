@@ -20,12 +20,6 @@
 #ifndef __RTL8812A_RF_H__
 #define __RTL8812A_RF_H__
 
-VOID
-PHY_RF6052SetBandwidth8812(
-	IN	struct rtl_priv *			Adapter,
-	IN	CHANNEL_WIDTH		Bandwidth);
-
-
 int
 PHY_RF6052_Config_8812(
 	IN	struct rtl_priv *Adapter	);

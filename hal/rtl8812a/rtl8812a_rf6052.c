@@ -20,7 +20,7 @@
 #define _RTL8812A_RF6052_C_
 
 #include <rtl8812a_hal.h>
-
+#include <../rtl8821au/reg.h>
 
 /*-----------------------------------------------------------------------------
  * Function:    PHY_RF6052SetBandwidth()

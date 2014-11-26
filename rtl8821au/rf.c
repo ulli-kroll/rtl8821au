@@ -1,5 +1,7 @@
 #include <rtl8812a_hal.h>
 #include "rf.h"
+#include "reg.h"
+
 static void writeOFDMPowerReg8812(
 	IN		struct rtl_priv *Adapter,
 	IN		uint8_t		index,

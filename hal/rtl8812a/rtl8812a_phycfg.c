@@ -21,6 +21,7 @@
 
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/phy.h>
+#include <../rtl8821au/reg.h>
 
 
 const char *const GLBwSrc[]={

@@ -2183,7 +2183,7 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter,
 
 }
 
-static void phy_TxPowerTrainingByPath_8812(struct rtl_priv *Adapter, 
+static void _rtl8821au_phy_txpower_training_by_path(struct rtl_priv *Adapter, 
 	CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t RfPath)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -2254,7 +2254,7 @@ static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *Adapter,
 							  vhtRates2T, sizeof(vhtRates2T)/sizeof(u8));
 	}
 
-	phy_TxPowerTrainingByPath_8812(Adapter, pHalData->CurrentChannelBW, channel, path);
+	_rtl8821au_phy_txpower_training_by_path(Adapter, pHalData->CurrentChannelBW, channel, path);
 
 	/* DBG_871X("<==PHY_SetTxPowerLevelByPath8812()\n"); */
 }

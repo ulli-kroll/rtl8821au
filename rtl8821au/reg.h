@@ -14,8 +14,7 @@
 #define RTXAGC_A_NSS1INDEX7_NSS1INDEX4			0xc40
 #define RTXAGC_A_NSS2INDEX1_NSS1INDEX8			0xc44
 #define RTXAGC_A_NSS2INDEX5_NSS2INDEX2			0xc48
-
-#define rTxAGC_A_Nss2Index9_Nss2Index6_JAguar	0xc4c
+#define RTXAGC_A_NSS2INDEX9_NSS2INDEX6			0xc4c
 
 
 #define RTXAGC_B_CCK11_CCK1				0xe20
@@ -29,8 +28,8 @@
 #define RTXAGC_B_NSS1INDEX7_NSS1INDEX4			0xe40
 #define RTXAGC_B_NSS2INDEX1_NSS1INDEX8			0xe44
 #define RTXAGC_B_NSS2INDEX5_NSS2INDEX2			0xe48
+#define RTXAGC_B_NSS2INDEX9_NSS2INDEX6			0xe4c
 
-#define rTxAGC_B_Nss2Index9_Nss2Index6_JAguar		0xe4c
 #define bTxAGC_byte0_Jaguar							0xff
 #define bTxAGC_byte1_Jaguar							0xff00
 #define bTxAGC_byte2_Jaguar							0xff0000

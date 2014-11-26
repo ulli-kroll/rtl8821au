@@ -54,15 +54,10 @@
 //
 // BB and RF register read/write
 //
-u32	PHY_QueryRFReg8812(	IN	struct rtl_priv *Adapter,
-								IN	uint8_t			eRFPath,
-								IN	u32			RegAddr,
-								IN	u32			BitMask	);
-void	PHY_SetRFReg8812(	IN	struct rtl_priv *	Adapter,
-								IN	uint8_t			eRFPath,
-								IN	u32			RegAddr,
-								IN	u32			BitMask,
-								IN	u32			Data	);
+u32 PHY_QueryRFReg8812(struct rtl_priv *Adapter, u32 eRFPath, u32 RegAddr, 
+	u32 BitMask);
+void PHY_SetRFReg8812(struct rtl_priv *Adapter, u32 eRFPath, u32 RegAddr, 
+	u32 BitMask, u32 Data);
 
 //
 // Initialization related function

@@ -153,10 +153,10 @@ static void phy_RFSerialWrite(struct rtl_priv *Adapter, uint8_t eRFPath,
 
 }
 
-u32 PHY_QueryRFReg8812(struct rtl_priv *Adapter, uint8_t eRFPath,
-	uint32_t RegAddr, uint32_t BitMask)
+u32 PHY_QueryRFReg8812(struct rtl_priv *Adapter, u32 eRFPath, u32 RegAddr, 
+	u32 BitMask)
 {
-	uint32_t Original_Value, Readback_Value, BitShift;
+	u32 Original_Value, Readback_Value, BitShift;
 
 	Original_Value = phy_RFSerialRead(Adapter, eRFPath, RegAddr);
 
@@ -166,10 +166,10 @@ u32 PHY_QueryRFReg8812(struct rtl_priv *Adapter, uint8_t eRFPath,
 	return (Readback_Value);
 }
 
-void PHY_SetRFReg8812(struct rtl_priv *Adapter, uint8_t	eRFPath,
-	uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
+void PHY_SetRFReg8812(struct rtl_priv *Adapter, u32 eRFPath, u32 RegAddr, 
+	u32 BitMask, u32 Data)
 {
-	if(BitMask == 0)
+	if (BitMask == 0)
 		return;
 
 	/* RF data is 20 bits only */

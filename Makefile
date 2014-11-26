@@ -42,7 +42,6 @@ _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 
 _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com.o \
-			hal/hal_com_phycfg.o \
 			hal/hal_phy.o \
 			hal/led/hal_usb_led.o
 

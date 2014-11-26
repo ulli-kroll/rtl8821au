@@ -13,7 +13,7 @@ static void writeOFDMPowerReg8812(
 	u16 RegOffset_A[6] = {
     	RTXAGC_A_OFDM18_OFDM6,
         RTXAGC_A_OFDM54_OFDM24,
-        rTxAGC_A_MCS3_MCS0_JAguar,
+        RTXAGC_A_MCS03_MCS00,
         rTxAGC_A_MCS7_MCS4_JAguar,
         rTxAGC_A_MCS11_MCS8_JAguar,
         rTxAGC_A_MCS15_MCS12_JAguar
@@ -21,7 +21,7 @@ static void writeOFDMPowerReg8812(
 	u16 RegOffset_B[6] = {
         RTXAGC_B_OFDM18_OFDM6,
         RTXAGC_B_OFDM54_OFDM24,
-        rTxAGC_B_MCS3_MCS0_JAguar,
+        RTXAGC_B_MCS03_MCS00,
         rTxAGC_B_MCS7_MCS4_JAguar,
         rTxAGC_B_MCS11_MCS8_JAguar,
         rTxAGC_B_MCS15_MCS12_JAguar

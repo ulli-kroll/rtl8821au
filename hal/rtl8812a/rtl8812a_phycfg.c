@@ -2154,7 +2154,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 	}
 }
 
-static void phy_SetTxPowerIndexByRateArray(struct rtl_priv *pAdapter, uint8_t RFPath,
+static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *pAdapter, uint8_t RFPath,
 	CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t *Rates,
 	uint8_t	RateArraySize)
 {
@@ -2237,20 +2237,20 @@ static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *Adapter,
 
 	//if(pMgntInfo->RegNByteAccess == 0)
 	if(pHalData->CurrentBandType == BAND_ON_2_4G)
-		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+		_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
 								  cckRates, sizeof(cckRates)/sizeof(u8));
 
-	phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+	_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
 								  ofdmRates, sizeof(ofdmRates)/sizeof(u8));
-	phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+	_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
 								  htRates1T, sizeof(htRates1T)/sizeof(u8));
-	phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+	_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
 							  	  vhtRates1T, sizeof(vhtRates1T)/sizeof(u8));
 
 	if (pHalData->NumTotalRFPath >= 2) {
-		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+		_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
 							  htRates2T, sizeof(htRates2T)/sizeof(u8));
-		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+		_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
 							  vhtRates2T, sizeof(vhtRates2T)/sizeof(u8));
 	}
 

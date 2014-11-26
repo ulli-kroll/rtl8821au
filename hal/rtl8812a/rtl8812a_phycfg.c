@@ -2218,7 +2218,7 @@ static void phy_TxPowerTrainingByPath_8812(struct rtl_priv *Adapter,
 	rtl_set_bbreg(Adapter, writeOffset, 0xffffff, writeData);
 }
 
-static void PHY_SetTxPowerLevelByPath8812(struct rtl_priv *Adapter, 
+static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *Adapter, 
 	uint8_t	channel, uint8_t path)
 {
 
@@ -2236,156 +2236,23 @@ static void PHY_SetTxPowerLevelByPath8812(struct rtl_priv *Adapter,
 	//DBG_871X("==>PHY_SetTxPowerLevelByPath8812()\n");
 
 	//if(pMgntInfo->RegNByteAccess == 0)
-	{
-		if(pHalData->CurrentBandType == BAND_ON_2_4G)
-			phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-									  cckRates, sizeof(cckRates)/sizeof(u8));
+	if(pHalData->CurrentBandType == BAND_ON_2_4G)
+		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+								  cckRates, sizeof(cckRates)/sizeof(u8));
 
-		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-									  ofdmRates, sizeof(ofdmRates)/sizeof(u8));
-		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-									  htRates1T, sizeof(htRates1T)/sizeof(u8));
-		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-								  	  vhtRates1T, sizeof(vhtRates1T)/sizeof(u8));
+	phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+								  ofdmRates, sizeof(ofdmRates)/sizeof(u8));
+	phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+								  htRates1T, sizeof(htRates1T)/sizeof(u8));
+	phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+							  	  vhtRates1T, sizeof(vhtRates1T)/sizeof(u8));
 
-		if (pHalData->NumTotalRFPath >= 2) {
-			phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-								  htRates2T, sizeof(htRates2T)/sizeof(u8));
-			phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
-								  vhtRates2T, sizeof(vhtRates2T)/sizeof(u8));
-		}
+	if (pHalData->NumTotalRFPath >= 2) {
+		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+							  htRates2T, sizeof(htRates2T)/sizeof(u8));
+		phy_SetTxPowerIndexByRateArray(Adapter, path, pHalData->CurrentChannelBW, channel,
+							  vhtRates2T, sizeof(vhtRates2T)/sizeof(u8));
 	}
-	/*else
-	{
-		u8 cckRatesSize = sizeof(cckRates)/sizeof(u8);
-		u8 ofdmRatesSize = sizeof(ofdmRates)/sizeof(u8);
-		u8 htRates1TSize = sizeof(htRates1T)/sizeof(u8);
-		u8 htRates2TSize = sizeof(htRates2T)/sizeof(u8);
-		u8 vhtRates1TSize = sizeof(vhtRates1T)/sizeof(u8);
-		u8 vhtRates2TSize = sizeof(vhtRates2T)/sizeof(u8);
-		u8 PowerIndexArray[POWERINDEX_ARRAY_SIZE];
-
-		u8 Length;
-		uint32_t RegAddress;
-
-
-		RT_TRACE(COMP_SCAN, DBG_LOUD, ("PHY_SetTxPowerLevel8812ByPath(): path = %d.\n",path));
-
-		PHY_GetTxPowerIndexByRateArray_8812A(Adapter, path,pHalData->CurrentChannelBW, channel,ofdmRates,&PowerIndexArray[cckRatesSize],ofdmRatesSize);
-		PHY_GetTxPowerIndexByRateArray_8812A(Adapter, path,pHalData->CurrentChannelBW, channel,htRates1T,&PowerIndexArray[cckRatesSize+ofdmRatesSize],htRates1TSize);
-		if(pHalData->CurrentBandType == BAND_ON_2_4G)
-		{
-			PHY_GetTxPowerIndexByRateArray_8812A(Adapter, path,pHalData->CurrentChannelBW, channel,cckRates,&PowerIndexArray[0],cckRatesSize);
-			PHY_GetTxPowerIndexByRateArray_8812A(Adapter, path,pHalData->CurrentChannelBW, channel,vhtRates1T,&PowerIndexArray[cckRatesSize+ofdmRatesSize+htRates1TSize+htRates2TSize],vhtRates1TSize);
-			Length = cckRatesSize + ofdmRatesSize + htRates1TSize + htRates2TSize + vhtRates1TSize;
-
-			if(pHalData->NumTotalRFPath >= 2)
-			{
-				PHY_GetTxPowerIndexByRateArray_8812A(Adapter, path,pHalData->CurrentChannelBW, channel,htRates2T,&PowerIndexArray[cckRatesSize+ofdmRatesSize+htRates1TSize],htRates2TSize);
-				PHY_GetTxPowerIndexByRateArray_8812A(Adapter, path,pHalData->CurrentChannelBW, channel,vhtRates2T,&PowerIndexArray[cckRatesSize+ofdmRatesSize+htRates1TSize+htRates2TSize+vhtRates1TSize],vhtRates2TSize);
-				Length += vhtRates2TSize;
-			}
-
-			if(path == ODM_RF_PATH_A)
-				RegAddress = rTxAGC_A_CCK11_CCK1_JAguar;
-			else					//ODM_RF_PATH_B
-				RegAddress = rTxAGC_B_CCK11_CCK1_JAguar;
-
-			if(pMgntInfo->RegNByteAccess == 2)  //N Byte access
-			{
-				PlatformIOWriteNByte(Adapter,RegAddress,Length,PowerIndexArray);
-			}
-			else if(pMgntInfo->RegNByteAccess == 1) //DW access
-			{
-				u8 i, j;
-				for(i = 0;i < Length;i+=4)
-				{
-					uint32_t powerIndex = 0;
-					for(j = 0;j < 4; j++)
-					{
-						powerIndex |= (PowerIndexArray[i+j]<<(8*j));
-					}
-
-					rtl_set_bbreg(Adapter, RegAddress+i, bMaskDWord, powerIndex);
-				}
-			}
-		}
-		else if(pHalData->CurrentBandType == BAND_ON_5G)
-		{
-			PHY_GetTxPowerIndexByRateArray_8812A(Adapter, path,pHalData->CurrentChannelBW, channel,vhtRates1T,&PowerIndexArray[cckRatesSize+ofdmRatesSize+htRates1TSize+htRates2TSize],vhtRates1TSize);
-
-			if(pHalData->NumTotalRFPath >= 2)
-			{
-				PHY_GetTxPowerIndexByRateArray_8812A(Adapter, path,pHalData->CurrentChannelBW, channel,htRates2T,&PowerIndexArray[cckRatesSize+ofdmRatesSize+htRates1TSize],htRates2TSize);
-				PHY_GetTxPowerIndexByRateArray_8812A(Adapter, path,pHalData->CurrentChannelBW, channel,vhtRates2T,&PowerIndexArray[cckRatesSize+ofdmRatesSize+htRates1TSize+htRates2TSize+vhtRates1TSize],vhtRates2TSize);
-
-				Length = ofdmRatesSize + htRates1TSize + htRates2TSize + vhtRates1TSize + vhtRates2TSize;
-			}
-			else
-			{
-				if(path == ODM_RF_PATH_A)
-					RegAddress = rTxAGC_A_Nss1Index3_Nss1Index0_JAguar;
-				else					// ODM_RF_PATH_B
-					RegAddress = rTxAGC_B_Nss1Index3_Nss1Index0_JAguar;
-
-				if(pMgntInfo->RegNByteAccess == 2)
-				{
-					PlatformIOWriteNByte(Adapter,RegAddress,vhtRates1TSize,&PowerIndexArray[cckRatesSize + ofdmRatesSize + htRates1TSize + htRates2TSize]);
-				}
-				else if(pMgntInfo->RegNByteAccess == 1) //DW access
-				{
-					u8 i, j;
-					for(i = 0;i < vhtRates1TSize;i+=4)
-					{
-						uint32_t powerIndex = 0;
-						for(j = 0;j < 4; j++)
-						{
-							powerIndex |= (PowerIndexArray[cckRatesSize + ofdmRatesSize + htRates1TSize + htRates2TSize+i+j]<<(8*j));
-						}
-
-						rtl_set_bbreg(Adapter, RegAddress+i, bMaskDWord, powerIndex);
-					}
-
-					{
-						uint32_t powerIndex = 0;
-						//i+=4;
-						for(j = 0;j < vhtRates1TSize%4;j++)  // for Nss1 MCS8,9
-						{
-							powerIndex |= (PowerIndexArray[cckRatesSize + ofdmRatesSize + htRates1TSize + htRates2TSize+i+j]<<(8*j));
-						}
-						rtl_set_bbreg(Adapter, RegAddress+i, bMaskLWord, powerIndex);
-					}
-				}
-
-				Length = ofdmRatesSize + htRates1TSize;
-			}
-
-			if(path == ODM_RF_PATH_A)
-				RegAddress = rTxAGC_A_Ofdm18_Ofdm6_JAguar;
-			else					// ODM_RF_PATH_B
-				RegAddress = rTxAGC_B_Ofdm18_Ofdm6_JAguar;
-
-			if(pMgntInfo->RegNByteAccess == 2)
-			{
-				PlatformIOWriteNByte(Adapter,RegAddress,Length,&PowerIndexArray[cckRatesSize]);
-			}
-			else if(pMgntInfo->RegNByteAccess == 1) //DW
-			{
-				u8 i, j;
-				for(i = 0;i < Length;i+=4)
-				{
-					uint32_t powerIndex = 0;
-					for(j = 0;j < 4; j++)
-					{
-						powerIndex |= (PowerIndexArray[cckRatesSize+i+j]<<(8*j));
-					}
-
-					rtl_set_bbreg(Adapter, RegAddress+i, bMaskDWord, powerIndex);
-				}
-			}
-
-		}
-	}*/
 
 	phy_TxPowerTrainingByPath_8812(Adapter, pHalData->CurrentChannelBW, channel, path);
 
@@ -2409,7 +2276,7 @@ void PHY_SetTxPowerLevel8812(struct rtl_priv *Adapter, uint8_t	Channel)
 	/* DBG_871X("==>PHY_SetTxPowerLevel8812()\n"); */
 
 	for (path = ODM_RF_PATH_A; path < pHalData->NumTotalRFPath; ++path) {
-		PHY_SetTxPowerLevelByPath8812(Adapter, Channel, path);
+		rtl8821au_phy_set_txpower_level_by_path(Adapter, Channel, path);
 	}
 
 	/* DBG_871X("<==PHY_SetTxPowerLevel8812()\n"); */

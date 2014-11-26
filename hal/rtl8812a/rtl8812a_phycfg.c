@@ -1891,16 +1891,16 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 			break;
 		
 		case MGN_MCS8:  
-			rtl_set_bbreg(Adapter, rTxAGC_A_MCS11_MCS8_JAguar, bMaskByte0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, bMaskByte0, PowerIndex);
 			break;
 		case MGN_MCS9:  
-			rtl_set_bbreg(Adapter, rTxAGC_A_MCS11_MCS8_JAguar, bMaskByte1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, bMaskByte1, PowerIndex);
 			break;
 		case MGN_MCS10: 
-			rtl_set_bbreg(Adapter, rTxAGC_A_MCS11_MCS8_JAguar, bMaskByte2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, bMaskByte2, PowerIndex);
 			break;
 		case MGN_MCS11: 
-			rtl_set_bbreg(Adapter, rTxAGC_A_MCS11_MCS8_JAguar, bMaskByte3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, bMaskByte3, PowerIndex);
 			break;
 		
 		case MGN_MCS12: 
@@ -2053,16 +2053,16 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 			break;
 		
 		case MGN_MCS8:  
-			rtl_set_bbreg(Adapter, rTxAGC_B_MCS11_MCS8_JAguar, bMaskByte0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, bMaskByte0, PowerIndex);
 			break;
 		case MGN_MCS9:  
-			rtl_set_bbreg(Adapter, rTxAGC_B_MCS11_MCS8_JAguar, bMaskByte1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, bMaskByte1, PowerIndex);
 			break;
 		case MGN_MCS10: 
-			rtl_set_bbreg(Adapter, rTxAGC_B_MCS11_MCS8_JAguar, bMaskByte2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, bMaskByte2, PowerIndex);
 			break;
 		case MGN_MCS11: 
-			rtl_set_bbreg(Adapter, rTxAGC_B_MCS11_MCS8_JAguar, bMaskByte3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, bMaskByte3, PowerIndex);
 			break;
 		
 		case MGN_MCS12: 

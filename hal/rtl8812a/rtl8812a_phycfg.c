@@ -1852,16 +1852,16 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 			break;
 		
 		case MGN_24M:   
-			rtl_set_bbreg(Adapter, rTxAGC_A_Ofdm54_Ofdm24_JAguar, bMaskByte0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, bMaskByte0, PowerIndex); 
 			break;
 		case MGN_36M:   
-			rtl_set_bbreg(Adapter, rTxAGC_A_Ofdm54_Ofdm24_JAguar, bMaskByte1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, bMaskByte1, PowerIndex); 
 			break;
 		case MGN_48M:   
-			rtl_set_bbreg(Adapter, rTxAGC_A_Ofdm54_Ofdm24_JAguar, bMaskByte2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, bMaskByte2, PowerIndex); 
 			break;
 		case MGN_54M:   
-			rtl_set_bbreg(Adapter, rTxAGC_A_Ofdm54_Ofdm24_JAguar, bMaskByte3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, bMaskByte3, PowerIndex); 
 			break;
 		
 		case MGN_MCS0:  
@@ -2014,16 +2014,16 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 			break;
 		
 		case MGN_24M:   
-			rtl_set_bbreg(Adapter, rTxAGC_B_Ofdm54_Ofdm24_JAguar, bMaskByte0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, bMaskByte0, PowerIndex); 
 			break;
 		case MGN_36M:   
-			rtl_set_bbreg(Adapter, rTxAGC_B_Ofdm54_Ofdm24_JAguar, bMaskByte1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, bMaskByte1, PowerIndex); 
 			break;
 		case MGN_48M:   
-			rtl_set_bbreg(Adapter, rTxAGC_B_Ofdm54_Ofdm24_JAguar, bMaskByte2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, bMaskByte2, PowerIndex); 
 			break;
 		case MGN_54M:   
-			rtl_set_bbreg(Adapter, rTxAGC_B_Ofdm54_Ofdm24_JAguar, bMaskByte3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, bMaskByte3, PowerIndex); 
 			break;
 		
 		case MGN_MCS0:  

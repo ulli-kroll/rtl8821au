@@ -5,8 +5,8 @@
 // TX AGC 
 #define RTXAGC_A_CCK11_CCK1				0xc20
 #define RTXAGC_A_OFDM18_OFDM6				0xc24
+#define RTXAGC_A_OFDM54_OFDM24				0xc28
 
-#define rTxAGC_A_Ofdm54_Ofdm24_JAguar			0xc28
 #define rTxAGC_A_MCS3_MCS0_JAguar					0xc2c
 #define rTxAGC_A_MCS7_MCS4_JAguar					0xc30
 #define rTxAGC_A_MCS11_MCS8_JAguar				0xc34
@@ -20,8 +20,8 @@
 
 #define RTXAGC_B_CCK11_CCK1				0xe20
 #define RTXAGC_B_OFDM18_OFDM6				0xe24
+#define RTXAGC_B_OFDM54_OFDM24				0xe28
 
-#define rTxAGC_B_Ofdm54_Ofdm24_JAguar			0xe28
 #define rTxAGC_B_MCS3_MCS0_JAguar					0xe2c
 #define rTxAGC_B_MCS7_MCS4_JAguar					0xe30
 #define rTxAGC_B_MCS11_MCS8_JAguar				0xe34

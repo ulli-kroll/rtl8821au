@@ -16,7 +16,9 @@
 #define rTxAGC_A_Nss2Index1_Nss1Index8_JAguar	0xc44
 #define rTxAGC_A_Nss2Index5_Nss2Index2_JAguar	0xc48
 #define rTxAGC_A_Nss2Index9_Nss2Index6_JAguar	0xc4c
-#define rTxAGC_B_CCK11_CCK1_JAguar				0xe20
+
+
+#define RTXAGC_B_CCK11_CCK1				0xe20
 #define rTxAGC_B_Ofdm18_Ofdm6_JAguar				0xe24
 #define rTxAGC_B_Ofdm54_Ofdm24_JAguar			0xe28
 #define rTxAGC_B_MCS3_MCS0_JAguar					0xe2c

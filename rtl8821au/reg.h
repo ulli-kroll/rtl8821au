@@ -7,8 +7,8 @@
 #define RTXAGC_A_OFDM18_OFDM6				0xc24
 #define RTXAGC_A_OFDM54_OFDM24				0xc28
 #define RTXAGC_A_MCS03_MCS00				0xc2c
+#define RTXAGC_A_MCS07_MCS04				0xc30
 
-#define rTxAGC_A_MCS7_MCS4_JAguar					0xc30
 #define rTxAGC_A_MCS11_MCS8_JAguar				0xc34
 #define rTxAGC_A_MCS15_MCS12_JAguar				0xc38
 #define rTxAGC_A_Nss1Index3_Nss1Index0_JAguar	0xc3c
@@ -22,8 +22,8 @@
 #define RTXAGC_B_OFDM18_OFDM6				0xe24
 #define RTXAGC_B_OFDM54_OFDM24				0xe28
 #define RTXAGC_B_MCS03_MCS00				0xe2c
+#define RTXAGC_B_MCS07_MCS04				0xe30
 
-#define rTxAGC_B_MCS7_MCS4_JAguar					0xe30
 #define rTxAGC_B_MCS11_MCS8_JAguar				0xe34
 #define rTxAGC_B_MCS15_MCS12_JAguar				0xe38
 #define rTxAGC_B_Nss1Index3_Nss1Index0_JAguar		0xe3c

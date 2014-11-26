@@ -36,30 +36,6 @@
  *
  * Note:		For RF type 0222D
  *---------------------------------------------------------------------------*/
-void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, CHANNEL_WIDTH	Bandwidth)	/* 20M or 40M */
-{
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-
-	switch (Bandwidth) {
-	case CHANNEL_WIDTH_20:
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 3);
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 3);
-		break;
-	case CHANNEL_WIDTH_40:
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 1);
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 1);
-		break;
-
-	case CHANNEL_WIDTH_80:
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 0);
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 0);
-		break;
-
-	default:
-		DBG_871X("rtl8821au_phy_rf6052_set_bandwidth(): unknown Bandwidth: %#X\n", Bandwidth);
-		break;
-	}
-}
 
 
 void PHY_RF6052SetCckTxPower8812(struct rtl_priv *Adapter, uint8_t *pPowerlevel)

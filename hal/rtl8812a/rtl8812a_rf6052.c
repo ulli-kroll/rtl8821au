@@ -137,7 +137,7 @@ void PHY_RF6052SetCckTxPower8812(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 
 	/* rf-A cck tx power */
 	tmpval = TxAGC[RF_PATH_A]&0xff;
-	rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, bMaskByte1, tmpval);
+	rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE1, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 1M (rf-A) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_A_CCK1_Mcs32)); */
 	tmpval = TxAGC[RF_PATH_A]>>8;
 	rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, 0xffffff00, tmpval);
@@ -145,7 +145,7 @@ void PHY_RF6052SetCckTxPower8812(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 
 	/* rf-B cck tx power */
 	tmpval = TxAGC[RF_PATH_B]>>24;
-	rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, bMaskByte0, tmpval);
+	rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE0, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 11M (rf-B) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK11_A_CCK2_11)); */
 	tmpval = TxAGC[RF_PATH_B]&0x00ffffff;
 	rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, 0xffffff00, tmpval);

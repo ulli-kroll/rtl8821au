@@ -1788,7 +1788,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
  **************************************************************************************************************/
 
 static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t PowerIndex,
-	u8 RFPath, u8 Rate)
+	u8 path, u8 rate)
 {
 	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	BOOLEAN		Direction = FALSE;
@@ -1801,10 +1801,10 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 		PowerIndex -= 1;
 
 	/* 2013.01.18 LukeLee: Modify TXAGC by dcmd_Dynamic_Ctrl() */
-	if (RFPath == RF_PATH_A) {
+	if (path == RF_PATH_A) {
 		Direction = pHalData->odmpriv.IsTxagcOffsetPositiveA;
 		TxagcOffset = pHalData->odmpriv.TxagcOffsetValueA;
-	} else if (RFPath == RF_PATH_B) {
+	} else if (path == RF_PATH_B) {
 		Direction = pHalData->odmpriv.IsTxagcOffsetPositiveB;
 		TxagcOffset = pHalData->odmpriv.TxagcOffsetValueB;
 	}
@@ -1822,8 +1822,8 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 
 	/* ULLI check register names as in rtlwifi-lib */
 
-	if (RFPath == RF_PATH_A) {
-		switch (Rate) {
+	if (path == RF_PATH_A) {
+		switch (rate) {
 		case MGN_1M:    
 			rtl_set_bbreg(Adapter, rTxAGC_A_CCK11_CCK1_JAguar, bMaskByte0, PowerIndex); 
 			break;
@@ -1984,8 +1984,8 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 			DBG_871X("Invalid Rate!!\n");
 			break;
 		}
-	} else if (RFPath == RF_PATH_B) {
-		switch (Rate) {
+	} else if (path == RF_PATH_B) {
+		switch (rate) {
 		case MGN_1M:    
 			rtl_set_bbreg(Adapter, rTxAGC_B_CCK11_CCK1_JAguar, bMaskByte0, PowerIndex); 
 			break;

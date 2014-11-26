@@ -1788,7 +1788,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
  *                                                                                    <20120830, Kordan>
  **************************************************************************************************************/
 
-static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t PowerIndex,
+static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t power_index,
 	u8 path, u8 rate)
 {
 	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
@@ -1798,8 +1798,8 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 	/*
 	 *  <20120928, Kordan> A workaround in 8812A/8821A testchip, to fix the bug of odd Tx power indexes.
 	 */
-	if ((PowerIndex % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(Adapter) && IS_TEST_CHIP(pHalData->VersionID))
-		PowerIndex -= 1;
+	if ((power_index % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(Adapter) && IS_TEST_CHIP(pHalData->VersionID))
+		power_index -= 1;
 
 	/* 2013.01.18 LukeLee: Modify TXAGC by dcmd_Dynamic_Ctrl() */
 	if (path == RF_PATH_A) {
@@ -1811,14 +1811,14 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 	}
 	
 	if (Direction == FALSE) {
-		if(PowerIndex > TxagcOffset)
-			PowerIndex -= TxagcOffset;
+		if(power_index > TxagcOffset)
+			power_index -= TxagcOffset;
 		else
-			PowerIndex = 0;
+			power_index = 0;
 	} else {
-		PowerIndex += TxagcOffset;
-		if (PowerIndex > 0x3F)
-			PowerIndex = 0x3F;
+		power_index += TxagcOffset;
+		if (power_index > 0x3F)
+			power_index = 0x3F;
 	}
 
 	/* ULLI check register names as in rtlwifi-lib */
@@ -1826,159 +1826,159 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 	if (path == RF_PATH_A) {
 		switch (rate) {
 		case MGN_1M:    
-			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE0, power_index);
 			break;
 		case MGN_2M:    
-			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE1, power_index);
 			break;
 		case MGN_5_5M:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE2, power_index);
 			break;
 		case MGN_11M:   
-			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE3, power_index);
 			break;
 
 		case MGN_6M:    
-			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM18_OFDM6, MASKBYTE0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM18_OFDM6, MASKBYTE0, power_index);
 			break;
 		case MGN_9M:    
-			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM18_OFDM6, MASKBYTE1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM18_OFDM6, MASKBYTE1, power_index);
 			break;
 		case MGN_12M:   
-			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM18_OFDM6, MASKBYTE2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM18_OFDM6, MASKBYTE2, power_index);
 			break;
 		case MGN_18M:   
-			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM18_OFDM6, MASKBYTE3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM18_OFDM6, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_24M:   
-			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, MASKBYTE0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, MASKBYTE0, power_index);
 			break;
 		case MGN_36M:   
-			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, MASKBYTE1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, MASKBYTE1, power_index);
 			break;
 		case MGN_48M:   
-			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, MASKBYTE2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, MASKBYTE2, power_index);
 			break;
 		case MGN_54M:   
-			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, MASKBYTE3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_OFDM54_OFDM24, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_MCS0:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS03_MCS00, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS03_MCS00, MASKBYTE0, power_index);
 			break;
 		case MGN_MCS1:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS03_MCS00, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS03_MCS00, MASKBYTE1, power_index);
 			break;
 		case MGN_MCS2:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS03_MCS00, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS03_MCS00, MASKBYTE2, power_index);
 			break;
 		case MGN_MCS3:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS03_MCS00, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS03_MCS00, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_MCS4:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS07_MCS04, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS07_MCS04, MASKBYTE0, power_index);
 			break;
 		case MGN_MCS5:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS07_MCS04, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS07_MCS04, MASKBYTE1, power_index);
 			break;
 		case MGN_MCS6:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS07_MCS04, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS07_MCS04, MASKBYTE2, power_index);
 			break;
 		case MGN_MCS7:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS07_MCS04, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS07_MCS04, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_MCS8:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, MASKBYTE0, power_index);
 			break;
 		case MGN_MCS9:  
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, MASKBYTE1, power_index);
 			break;
 		case MGN_MCS10: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, MASKBYTE2, power_index);
 			break;
 		case MGN_MCS11: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS11_MCS08, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_MCS12: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS15_MCS12, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS15_MCS12, MASKBYTE0, power_index);
 			break;
 		case MGN_MCS13: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS15_MCS12, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS15_MCS12, MASKBYTE1, power_index);
 			break;
 		case MGN_MCS14: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS15_MCS12, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS15_MCS12, MASKBYTE2, power_index);
 			break;
 		case MGN_MCS15: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_MCS15_MCS12, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_MCS15_MCS12, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_VHT1SS_MCS0: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE0, power_index);
 			break;
 		case MGN_VHT1SS_MCS1: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE1, power_index);
 			break;
 		case MGN_VHT1SS_MCS2: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE2, power_index);
 			break;
 		case MGN_VHT1SS_MCS3: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_VHT1SS_MCS4: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE0, power_index);
 			break;
 		case MGN_VHT1SS_MCS5: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE1, power_index);
 			break;
 		case MGN_VHT1SS_MCS6: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE2, power_index);
 			break;
 		case MGN_VHT1SS_MCS7: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_VHT1SS_MCS8: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE0, power_index);
 			break;
 		case MGN_VHT1SS_MCS9: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE1, power_index);
 			break;
 		case MGN_VHT2SS_MCS0: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE2, power_index);
 			break;
 		case MGN_VHT2SS_MCS1: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_VHT2SS_MCS2: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE0, power_index);
 			break;
 		case MGN_VHT2SS_MCS3: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE1, power_index);
 			break;
 		case MGN_VHT2SS_MCS4: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE2, power_index);
 			break;
 		case MGN_VHT2SS_MCS5: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_VHT2SS_MCS6: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE0, power_index);
 			break;
 		case MGN_VHT2SS_MCS7: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE1, power_index);
 			break;
 		case MGN_VHT2SS_MCS8: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE2, power_index);
 			break;
 		case MGN_VHT2SS_MCS9: 
-			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE3, power_index);
 			break;
 	
 		default:
@@ -1988,159 +1988,159 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 	} else if (path == RF_PATH_B) {
 		switch (rate) {
 		case MGN_1M:    
-			rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE0, power_index); 
 			break;
 		case MGN_2M:    
-			rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE1, power_index); 
 			break;
 		case MGN_5_5M:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE2, power_index); 
 			break;
 		case MGN_11M:   
-			rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE3, power_index); 
 			break;
 		
 		case MGN_6M:    
-			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM18_OFDM6, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM18_OFDM6, MASKBYTE0, power_index);
 			break;
 		case MGN_9M:    
-			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM18_OFDM6, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM18_OFDM6, MASKBYTE1, power_index);
 			break;
 		case MGN_12M:   
-			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM18_OFDM6, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM18_OFDM6, MASKBYTE2, power_index);
 			break;
 		case MGN_18M:   
-			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM18_OFDM6, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM18_OFDM6, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_24M:   
-			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, MASKBYTE0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, MASKBYTE0, power_index); 
 			break;
 		case MGN_36M:   
-			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, MASKBYTE1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, MASKBYTE1, power_index); 
 			break;
 		case MGN_48M:   
-			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, MASKBYTE2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, MASKBYTE2, power_index); 
 			break;
 		case MGN_54M:   
-			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, MASKBYTE3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_OFDM54_OFDM24, MASKBYTE3, power_index); 
 			break;
 		
 		case MGN_MCS0:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS03_MCS00, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS03_MCS00, MASKBYTE0, power_index);
 			break;
 		case MGN_MCS1:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS03_MCS00, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS03_MCS00, MASKBYTE1, power_index);
 			break;
 		case MGN_MCS2:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS03_MCS00, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS03_MCS00, MASKBYTE2, power_index);
 			break;
 		case MGN_MCS3:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS03_MCS00, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS03_MCS00, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_MCS4:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS07_MCS04, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS07_MCS04, MASKBYTE0, power_index);
 			break;
 		case MGN_MCS5:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS07_MCS04, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS07_MCS04, MASKBYTE1, power_index);
 			break;
 		case MGN_MCS6:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS07_MCS04, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS07_MCS04, MASKBYTE2, power_index);
 			break;
 		case MGN_MCS7:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS07_MCS04, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS07_MCS04, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_MCS8:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, MASKBYTE0, power_index);
 			break;
 		case MGN_MCS9:  
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, MASKBYTE1, power_index);
 			break;
 		case MGN_MCS10: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, MASKBYTE2, power_index);
 			break;
 		case MGN_MCS11: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS11_MCS08, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_MCS12: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS15_MCS12, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS15_MCS12, MASKBYTE0, power_index);
 			break;
 		case MGN_MCS13: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS15_MCS12, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS15_MCS12, MASKBYTE1, power_index);
 			break;
 		case MGN_MCS14: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS15_MCS12, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS15_MCS12, MASKBYTE2, power_index);
 			break;
 		case MGN_MCS15:
-			rtl_set_bbreg(Adapter, RTXAGC_B_MCS15_MCS12, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_MCS15_MCS12, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_VHT1SS_MCS0: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE0, power_index); 
 			break;
 		case MGN_VHT1SS_MCS1: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE1, power_index); 
 			break;
 		case MGN_VHT1SS_MCS2: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE2, power_index); 
 			break;
 		case MGN_VHT1SS_MCS3: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE3, power_index); 
 			break;
 		
 		case MGN_VHT1SS_MCS4: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE0, power_index);
 			break;
 		case MGN_VHT1SS_MCS5: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE1, power_index);
 			break;
 		case MGN_VHT1SS_MCS6: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE2, power_index);
 			break;
 		case MGN_VHT1SS_MCS7: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_VHT1SS_MCS8: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE0, power_index);
 			break;
 		case MGN_VHT1SS_MCS9: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE1, power_index);
 			break;
 		case MGN_VHT2SS_MCS0: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE2, power_index);
 			break;
 		case MGN_VHT2SS_MCS1: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE3, power_index);
 			break;
 		
 		case MGN_VHT2SS_MCS2: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE0, power_index); 
 			break;
 		case MGN_VHT2SS_MCS3: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE1, power_index); 
 			break;
 		case MGN_VHT2SS_MCS4: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE2, power_index); 
 			break;
 		case MGN_VHT2SS_MCS5: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE3, power_index); 
 			break;
 		
 		case MGN_VHT2SS_MCS6: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE0, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE0, power_index);
 			break;
 		case MGN_VHT2SS_MCS7: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE1, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE1, power_index);
 			break;
 		case MGN_VHT2SS_MCS8: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE2, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE2, power_index);
 			break;
 		case MGN_VHT2SS_MCS9: 
-			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE3, PowerIndex);
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE3, power_index);
 			break;
 		
 		    default:
@@ -2158,27 +2158,27 @@ static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *pAdapter, 
 	CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t *Rates,
 	uint8_t	RateArraySize)
 {
-	uint32_t powerIndex = 0;
+	uint32_t power_index = 0;
 	int	i = 0;
 
 	for (i = 0; i < RateArraySize; ++i) {
-		powerIndex = PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rates[i], BandWidth, Channel);
-		_rtl8821au_phy_set_txpower_index(pAdapter, powerIndex, RFPath, Rates[i]);
+		power_index = PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rates[i], BandWidth, Channel);
+		_rtl8821au_phy_set_txpower_index(pAdapter, power_index, RFPath, Rates[i]);
 	}
 
 }
 
 static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter, 
 	uint8_t RFPath, CHANNEL_WIDTH BandWidth,
-	uint8_t Channel, uint8_t *Rate, uint8_t *PowerIndex,
+	uint8_t Channel, uint8_t *Rate, uint8_t *power_index,
 	uint8_t	ArraySize)
 {
 	struct rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t i;
 	for (i = 0; i < ArraySize; i++) {
-		PowerIndex[i] = (uint8_t)PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rate[i], BandWidth, Channel);
-		if ((PowerIndex[i] % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(pAdapter) && ! IS_NORMAL_CHIP(pHalData->VersionID))
-			PowerIndex[i] -= 1;
+		power_index[i] = (uint8_t)PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rate[i], BandWidth, Channel);
+		if ((power_index[i] % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(pAdapter) && ! IS_NORMAL_CHIP(pHalData->VersionID))
+			power_index[i] -= 1;
 	}
 
 }

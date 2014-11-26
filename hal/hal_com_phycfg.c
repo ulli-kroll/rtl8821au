@@ -22,7 +22,3 @@
 #include <drv_types.h>
 
 
-#ifndef CONFIG_EMBEDDED_FWIMG
-#endif
-
-

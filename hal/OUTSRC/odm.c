@@ -25,6 +25,7 @@
  */
 
 #include "odm_precomp.h"
+#include <../rtl8821au/reg.h>
 
 
 const u16 dB_Invert_Table[8][12] = {

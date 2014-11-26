@@ -30,6 +30,11 @@
 #define RTXAGC_B_NSS2INDEX5_NSS2INDEX2			0xe48
 #define RTXAGC_B_NSS2INDEX9_NSS2INDEX6			0xe4c
 
+#define MASKBYTE0                		0xff	// Reg 0xc50 rOFDM0_XAAGCCore~0xC6f
+#define MASKBYTE1                		0xff00
+#define MASKBYTE2                		0xff0000
+#define MASKBYTE3                		0xff000000
+
 #define bTxAGC_byte0_Jaguar							0xff
 #define bTxAGC_byte1_Jaguar							0xff00
 #define bTxAGC_byte2_Jaguar							0xff0000

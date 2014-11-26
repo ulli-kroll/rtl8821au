@@ -54,8 +54,6 @@ typedef struct _BB_REGISTER_DEFINITION{
 }BB_REGISTER_DEFINITION_T, *PBB_REGISTER_DEFINITION_T;
 
 #ifndef CONFIG_EMBEDDED_FWIMG
-int phy_ConfigMACWithParaFile(IN struct rtl_priv *Adapter, IN u8*	pFileName);
-
 int PHY_ConfigBBWithPowerLimitTableParaFile(IN struct rtl_priv *Adapter, IN s8*	pFileName);
 
 int phy_ConfigBBWithParaFile(IN struct rtl_priv *Adapter, IN u8*	pFileName);

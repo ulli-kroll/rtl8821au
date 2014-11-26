@@ -23,16 +23,6 @@
 
 
 #ifndef CONFIG_EMBEDDED_FWIMG
-int
-phy_ConfigMACWithParaFile(
-	IN	struct rtl_priv *Adapter,
-	IN	u8* 			pFileName
-)
-{
-	int	rtStatus = _FAIL;
-
-	return rtStatus;
-}
 
 int
 PHY_ConfigBBWithPowerLimitTableParaFile(

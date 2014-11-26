@@ -203,15 +203,8 @@ int32_t PHY_MACConfig8812(struct rtl_priv *Adapter)
 	/* ULLI strange only for rtl8821au ?? */
 	/* Ulli check for RTL8812_PHY_MACREG file */
 	 
-#ifdef CONFIG_EMBEDDED_FWIMG
 	if(HAL_STATUS_SUCCESS != _rtl8821au_phy_config_mac_with_headerfile(&pHalData->odmpriv))
 		rtStatus = _FAIL;
-#else
-
-	/*  Not make sure EEPROM, add later */
-	DBG_871X("Read MACREG.txt\n");
-	rtStatus = phy_ConfigMACWithParaFile(Adapter, pszMACRegFile);
-#endif
 
 	return rtStatus;
 }

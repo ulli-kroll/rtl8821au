@@ -1943,16 +1943,16 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 			break;
 		
 		case MGN_VHT1SS_MCS8: 
-			rtl_set_bbreg(Adapter, rTxAGC_A_Nss2Index1_Nss1Index8_JAguar, bMaskByte0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, bMaskByte0, PowerIndex);
 			break;
 		case MGN_VHT1SS_MCS9: 
-			rtl_set_bbreg(Adapter, rTxAGC_A_Nss2Index1_Nss1Index8_JAguar, bMaskByte1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, bMaskByte1, PowerIndex);
 			break;
 		case MGN_VHT2SS_MCS0: 
-			rtl_set_bbreg(Adapter, rTxAGC_A_Nss2Index1_Nss1Index8_JAguar, bMaskByte2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, bMaskByte2, PowerIndex);
 			break;
 		case MGN_VHT2SS_MCS1: 
-			rtl_set_bbreg(Adapter, rTxAGC_A_Nss2Index1_Nss1Index8_JAguar, bMaskByte3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, bMaskByte3, PowerIndex);
 			break;
 		
 		case MGN_VHT2SS_MCS2: 
@@ -2105,16 +2105,16 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 			break;
 		
 		case MGN_VHT1SS_MCS8: 
-			rtl_set_bbreg(Adapter, rTxAGC_B_Nss2Index1_Nss1Index8_JAguar, bMaskByte0, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, bMaskByte0, PowerIndex);
 			break;
 		case MGN_VHT1SS_MCS9: 
-			rtl_set_bbreg(Adapter, rTxAGC_B_Nss2Index1_Nss1Index8_JAguar, bMaskByte1, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, bMaskByte1, PowerIndex);
 			break;
 		case MGN_VHT2SS_MCS0: 
-			rtl_set_bbreg(Adapter, rTxAGC_B_Nss2Index1_Nss1Index8_JAguar, bMaskByte2, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, bMaskByte2, PowerIndex);
 			break;
 		case MGN_VHT2SS_MCS1: 
-			rtl_set_bbreg(Adapter, rTxAGC_B_Nss2Index1_Nss1Index8_JAguar, bMaskByte3, PowerIndex); 
+			rtl_set_bbreg(Adapter, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, bMaskByte3, PowerIndex);
 			break;
 		
 		case MGN_VHT2SS_MCS2: 

@@ -10,8 +10,8 @@
 #define RTXAGC_A_MCS07_MCS04				0xc30
 #define RTXAGC_A_MCS11_MCS08				0xc34
 #define RTXAGC_A_MCS15_MCS12				0xc38
+#define RTXAGC_A_NSS1INDEX3_NSS1INDEX0			0xc3c
 
-#define rTxAGC_A_Nss1Index3_Nss1Index0_JAguar	0xc3c
 #define rTxAGC_A_Nss1Index7_Nss1Index4_JAguar	0xc40
 #define rTxAGC_A_Nss2Index1_Nss1Index8_JAguar	0xc44
 #define rTxAGC_A_Nss2Index5_Nss2Index2_JAguar	0xc48
@@ -25,8 +25,8 @@
 #define RTXAGC_B_MCS07_MCS04				0xe30
 #define RTXAGC_B_MCS11_MCS08				0xe34
 #define RTXAGC_B_MCS15_MCS12				0xe38
+#define RTXAGC_B_NSS1INDEX3_NSS1INDEX0			0xe3c
 
-#define rTxAGC_B_Nss1Index3_Nss1Index0_JAguar		0xe3c
 #define rTxAGC_B_Nss1Index7_Nss1Index4_JAguar		0xe40
 #define rTxAGC_B_Nss2Index1_Nss1Index8_JAguar		0xe44
 #define rTxAGC_B_Nss2Index5_Nss2Index2_JAguar		0xe48

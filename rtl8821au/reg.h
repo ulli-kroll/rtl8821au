@@ -4,19 +4,20 @@
 //
 // 3. Page8(0x800)
 //
-#define RFPGA0_RFMOD				0x800
+#define RFPGA0_RFMOD			0x800
 
-#define rFPGA0_TxInfo				0x804	// Status report??
-#define rFPGA0_PSDFunction			0x808
-#define rFPGA0_TxGainStage			0x80c	// Set TX PWR init gain?
+#define RFPGA0_TXINFO			0x804
+#define RFPGA0_PSDFUNCTION		0x808
 
-#define rFPGA0_XA_HSSIParameter1	0x820	// RF 3 wire register
-#define rFPGA0_XA_HSSIParameter2	0x824
-#define rFPGA0_XB_HSSIParameter1	0x828
-#define rFPGA0_XB_HSSIParameter2	0x82c
+#define RFPGA0_TXGAINSTAGE		0x80c
 
-#define rFPGA0_XAB_SwitchControl	0x858	// RF Channel switch
-#define rFPGA0_XCD_SwitchControl	0x85c
+#define RFPGA0_XA_HSSIPARAMETER1	0x820
+#define RFPGA0_XA_HSSIPARAMETER2	0x824
+#define RFPGA0_XB_HSSIPARAMETER1	0x828
+#define RFPGA0_XB_HSSIPARAMETER2	0x82c
+
+#define RFPGA0_XAB_SWITCHCONTROL	0x858
+#define RFPGA0_XCD_SWITCHCONTROL	0x85c
 
 #define rFPGA0_XAB_RFParameter		0x878	// RF Parameter
 #define rFPGA0_XCD_RFParameter		0x87c

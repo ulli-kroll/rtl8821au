@@ -21,6 +21,8 @@
 
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/phy.h>
+#include <../rtl8821au/reg.h>
+
 
 static void _dbg_dump_macreg(struct rtl_priv *padapter)
 {

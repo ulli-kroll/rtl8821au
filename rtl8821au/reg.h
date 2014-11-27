@@ -4,7 +4,7 @@
 //
 // 3. Page8(0x800)
 //
-#define rFPGA0_RFMOD				0x800	//RF mode & CCK TxSC // RF BW Setting??
+#define RFPGA0_RFMOD				0x800
 
 #define rFPGA0_TxInfo				0x804	// Status report??
 #define rFPGA0_PSDFunction			0x808

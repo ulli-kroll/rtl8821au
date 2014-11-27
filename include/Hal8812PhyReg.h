@@ -363,7 +363,7 @@
 
 
 // 2. Page8(0x800)
-#define bRFMOD						0x1	// Reg 0x800 rFPGA0_RFMOD
+#define bRFMOD						0x1	// Reg 0x800 RFPGA0_RFMOD
 #define bJapanMode					0x2
 #define bCCKTxSC					0x30
 #define bCCKEn						0x1000000

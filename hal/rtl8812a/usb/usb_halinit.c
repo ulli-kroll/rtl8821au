@@ -922,8 +922,8 @@ static VOID _InitOperationMode_8812A(struct rtl_priv *Adapter)
 /* Set CCK and OFDM Block "ON" */
 static VOID _BBTurnOnBlock(struct rtl_priv *Adapter)
 {
-	rtl_set_bbreg(Adapter, rFPGA0_RFMOD, bCCKEn, 0x1);
-	rtl_set_bbreg(Adapter, rFPGA0_RFMOD, bOFDMEn, 0x1);
+	rtl_set_bbreg(Adapter, RFPGA0_RFMOD, bCCKEn, 0x1);
+	rtl_set_bbreg(Adapter, RFPGA0_RFMOD, bOFDMEn, 0x1);
 }
 
 static VOID _RfPowerSave(struct rtl_priv *Adapter)

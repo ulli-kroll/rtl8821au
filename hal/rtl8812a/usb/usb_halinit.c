@@ -945,7 +945,7 @@ static VOID _InitAntenna_Selection_8812A(struct rtl_priv *Adapter)
 
 	rtw_write8(Adapter, REG_LEDCFG2, 0x82);
 
-	rtl_set_bbreg(Adapter, rFPGA0_XAB_RFParameter, BIT13, 0x01);
+	rtl_set_bbreg(Adapter, RFPGA0_XAB_RFPARAMETER, BIT13, 0x01);
 
 	if (rtl_get_bbreg(Adapter, rFPGA0_XA_RFInterfaceOE, 0x300) == MAIN_ANT)
 		pHalData->CurAntenna = MAIN_ANT;

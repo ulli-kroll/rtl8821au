@@ -79,14 +79,14 @@
 #define rFPGA0_XAB_RFInterfaceSW		0x870	// RF Interface Software Control
 #define rFPGA0_XCD_RFInterfaceSW		0x874
 
-//#define rFPGA0_XAB_RFParameter		0x878	// RF Parameter
-//#define rFPGA0_XCD_RFParameter		0x87c
+//#define RFPGA0_XAB_RFPARAMETER		0x878	// RF Parameter
+//#define RFPGA0_XCD_RFPARAMETER		0x87c
 
-//#define rFPGA0_AnalogParameter1		0x880	// Crystal cap setting RF-R/W protection for parameter4??
-//#define rFPGA0_AnalogParameter2		0x884
-//#define rFPGA0_AnalogParameter3		0x888
+//#define RFPGA0_ANALOGPARAMETER1		0x880	// Crystal cap setting RF-R/W protection for parameter4??
+//#define RFPGA0_ANALOGPARAMETER2		0x884
+//#define RFPGA0_ANALOGPARAMETER3		0x888
 //#define rFPGA0_AdDaClockEn			0x888	// enable ad/da clock1 for dual-phy
-//#define rFPGA0_AnalogParameter4		0x88c
+//#define RFPGA0_ANALOGPARAMETER4		0x88c
 
 
 // CCK TX scaling
@@ -104,13 +104,13 @@
 
 
 // YN: mask the following register definition temporarily
-//#define rPdp_AntA      					0xb00  
-//#define rPdp_AntA_4    				0xb04
+//#define RPDP_ANTA      					0xb00  
+//#define RPDP_ANTA_4    				0xb04
 //#define rConfig_Pmpd_AntA 			0xb28
 //#define rConfig_AntA 					0xb68
 //#define rConfig_AntB 					0xb6c
-//#define rPdp_AntB 					0xb70
-//#define rPdp_AntB_4 					0xb74
+//#define RPDP_ANTB 					0xb70
+//#define RPDP_ANTB_4 					0xb74
 //#define rConfig_Pmpd_AntB			0xb98
 //#define rAPK							0xbd8
 
@@ -209,25 +209,6 @@
 #define rB_Rx2Rx_BT_Jaguar					0xe7c
 #define rB_sleep_nav_Jaguar 					0xe80
 #define rB_pmpd_Jaguar 						0xe84
-
-
-// YN: mask these registers temporaily
-//#define rTx_Power_Before_IQK_A		0xe94
-//#define rTx_Power_After_IQK_A			0xe9c
-
-//#define rRx_Power_Before_IQK_A		0xea0
-//#define rRx_Power_Before_IQK_A_2		0xea4
-//#define rRx_Power_After_IQK_A			0xea8
-//#define rRx_Power_After_IQK_A_2		0xeac
-
-//#define rTx_Power_Before_IQK_B		0xeb4
-//#define rTx_Power_After_IQK_B			0xebc
-
-//#define rRx_Power_Before_IQK_B		0xec0
-//#define rRx_Power_Before_IQK_B_2		0xec4
-//#define rRx_Power_After_IQK_B			0xec8
-//#define rRx_Power_After_IQK_B_2		0xecc
-
 
 // RSSI Dump
 #define rA_RSSIDump_Jaguar 			0xBF0

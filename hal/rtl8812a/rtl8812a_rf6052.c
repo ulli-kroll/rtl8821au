@@ -150,13 +150,6 @@ static int phy_RF6052_Config_ParaFile_8812(struct rtl_priv *rtlpriv)
 
 	}
 
-	/*
-	 * -----------------------------------------------------------------
-	 * 3 Configuration of Tx Power Tracking
-	 * -----------------------------------------------------------------
-	 */
-
-	ODM_ConfigRFWithTxPwrTrackHeaderFile(&pHalData->odmpriv);
 
 	/* RT_TRACE(COMP_INIT, DBG_LOUD, ("<---phy_RF6052_Config_ParaFile_8812()\n")); */
 

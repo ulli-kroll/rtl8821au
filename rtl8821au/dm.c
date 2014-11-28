@@ -810,7 +810,7 @@ void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB_RFE3(struct rtl_dm *pDM_Odm)
 
 /* END Copied from hal/OUTSRC/rtl8812a/HalHWImg8812A_RF.c */
 
-static void rtl8812ae_get_delta_swing_table(struct rtl_dm *pDM_Odm,
+static void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 					    u8 **up_a, u8 **down_a,
 					    u8 **up_b, u8 **down_b)
 {
@@ -905,7 +905,7 @@ void ConfigureTxpowerTrack_8812A(PTXPWRTRACK_CFG pConfig)
 	pConfig->ODM_TxPwrTrackSetPwr = ODM_TxPwrTrackSetPwr8812A;
 	pConfig->DoIQK = DoIQK_8812A;
 	pConfig->PHY_LCCalibrate = PHY_LCCalibrate_8812A;
-	pConfig->GetDeltaSwingTable = rtl8812ae_get_delta_swing_table;
+	pConfig->GetDeltaSwingTable = rtl8812au_get_delta_swing_table;
 }
 
 /* From hal/OUTSRC/rtl8821a/HalPhyRf_8821A.c */

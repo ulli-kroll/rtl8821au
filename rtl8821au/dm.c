@@ -1089,9 +1089,9 @@ static u8 rtl8821au_delta_swing_table_idx_24gccka_p[] = {
 
 /* END Copied from hal/OUTSRC/rtl8821a/HalHWImg8821A_RF.c */
 
-static void GetDeltaSwingTable_8821A(struct rtl_dm *pDM_Odm,
-	u8 **TemperatureUP_A, u8 **TemperatureDOWN_A,
-	u8 **TemperatureUP_B, u8 **TemperatureDOWN_B)
+static void rtl8821ae_get_delta_swing_table(struct rtl_dm *pDM_Odm,
+	u8 **up_a, u8 **down_a,
+	u8 **up_b, u8 **down_b)
 {
 	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
@@ -1102,36 +1102,36 @@ static void GetDeltaSwingTable_8821A(struct rtl_dm *pDM_Odm,
 
 	if (1 <= channel && channel <= 14) {
 		if (IS_CCK_RATE(rate)) {
-			*TemperatureUP_A   = rtl8821au_delta_swing_table_idx_24gccka_p;
-			*TemperatureDOWN_A = rtl8821au_delta_swing_table_idx_24gccka_n;
-			*TemperatureUP_B   = rtl8821au_delta_swing_table_idx_24gcckb_p;
-			*TemperatureDOWN_B = rtl8821au_delta_swing_table_idx_24gcckb_n;
+			*up_a   = rtl8821au_delta_swing_table_idx_24gccka_p;
+			*down_a = rtl8821au_delta_swing_table_idx_24gccka_n;
+			*up_b   = rtl8821au_delta_swing_table_idx_24gcckb_p;
+			*down_b = rtl8821au_delta_swing_table_idx_24gcckb_n;
 		} else {
-			*TemperatureUP_A   = rtl8821au_delta_swing_table_idx_24ga_p;
-			*TemperatureDOWN_A = rtl8821au_delta_swing_table_idx_24ga_n;
-			*TemperatureUP_B   = rtl8821au_delta_swing_table_idx_24gb_p;
-			*TemperatureDOWN_B = rtl8821au_delta_swing_table_idx_24gb_n;
+			*up_a   = rtl8821au_delta_swing_table_idx_24ga_p;
+			*down_a = rtl8821au_delta_swing_table_idx_24ga_n;
+			*up_b   = rtl8821au_delta_swing_table_idx_24gb_p;
+			*down_b = rtl8821au_delta_swing_table_idx_24gb_n;
 		}
 	} else if (36 <= channel && channel <= 64) {
-		*TemperatureUP_A   = rtl8821au_delta_swing_table_idx_5ga_p[0];
-		*TemperatureDOWN_A = rtl8821au_delta_swing_table_idx_5ga_n[0];
-		*TemperatureUP_B   = rtl8821au_delta_swing_table_idx_5gb_p[0];
-		*TemperatureDOWN_B = rtl8821au_delta_swing_table_idx_5gb_n[0];
+		*up_a   = rtl8821au_delta_swing_table_idx_5ga_p[0];
+		*down_a = rtl8821au_delta_swing_table_idx_5ga_n[0];
+		*up_b   = rtl8821au_delta_swing_table_idx_5gb_p[0];
+		*down_b = rtl8821au_delta_swing_table_idx_5gb_n[0];
 	} else if (100 <= channel && channel <= 140) {
-		*TemperatureUP_A   = rtl8821au_delta_swing_table_idx_5ga_p[1];
-		*TemperatureDOWN_A = rtl8821au_delta_swing_table_idx_5ga_n[1];
-		*TemperatureUP_B   = rtl8821au_delta_swing_table_idx_5gb_p[1];
-		*TemperatureDOWN_B = rtl8821au_delta_swing_table_idx_5gb_n[1];
+		*up_a   = rtl8821au_delta_swing_table_idx_5ga_p[1];
+		*down_a = rtl8821au_delta_swing_table_idx_5ga_n[1];
+		*up_b   = rtl8821au_delta_swing_table_idx_5gb_p[1];
+		*down_b = rtl8821au_delta_swing_table_idx_5gb_n[1];
 	} else if (149 <= channel && channel <= 173) {
-		*TemperatureUP_A   = rtl8821au_delta_swing_table_idx_5ga_p[2];
-		*TemperatureDOWN_A = rtl8821au_delta_swing_table_idx_5ga_n[2];
-		*TemperatureUP_B   = rtl8821au_delta_swing_table_idx_5gb_p[2];
-		*TemperatureDOWN_B = rtl8821au_delta_swing_table_idx_5gb_n[2];
+		*up_a   = rtl8821au_delta_swing_table_idx_5ga_p[2];
+		*down_a = rtl8821au_delta_swing_table_idx_5ga_n[2];
+		*up_b   = rtl8821au_delta_swing_table_idx_5gb_p[2];
+		*down_b = rtl8821au_delta_swing_table_idx_5gb_n[2];
 	} else {
-		*TemperatureUP_A   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
-		*TemperatureDOWN_A = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
-		*TemperatureUP_B   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
-		*TemperatureDOWN_B = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+		*up_a   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+		*down_a = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+		*up_b   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+		*down_b = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
 	}
 
 	return;
@@ -1154,5 +1154,5 @@ void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 	pConfig->ODM_TxPwrTrackSetPwr = ODM_TxPwrTrackSetPwr8821A;
 	pConfig->DoIQK = DoIQK_8821A;
 	pConfig->PHY_LCCalibrate = PHY_LCCalibrate_8821A;
-	pConfig->GetDeltaSwingTable = GetDeltaSwingTable_8821A;
+	pConfig->GetDeltaSwingTable = rtl8821ae_get_delta_swing_table;
 }

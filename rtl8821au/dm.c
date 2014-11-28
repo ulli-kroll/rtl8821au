@@ -1125,31 +1125,31 @@ static void GetDeltaSwingTable_8821A(struct rtl_dm *pDM_Odm,
 
 	if (1 <= channel && channel <= 14) {
 		if (IS_CCK_RATE(rate)) {
-			*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P;
-			*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N;
-			*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P;
-			*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N;
+			*TemperatureUP_A   = gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_8821A;
+			*TemperatureDOWN_A = gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_USB_8821A;
+			*TemperatureUP_B   = gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_USB_8821A;
+			*TemperatureDOWN_B = gDeltaSwingTableIdx_MP_2GCCKB_N_TxPowerTrack_USB_8821A;
 		} else {
-			*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P;
-			*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N;
-			*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P;
-			*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N;
+			*TemperatureUP_A   = gDeltaSwingTableIdx_MP_2GA_P_TxPowerTrack_USB_8821A;
+			*TemperatureDOWN_A = gDeltaSwingTableIdx_MP_2GA_N_TxPowerTrack_USB_8821A;
+			*TemperatureUP_B   = gDeltaSwingTableIdx_MP_2GB_P_TxPowerTrack_USB_8821A;
+			*TemperatureDOWN_B = gDeltaSwingTableIdx_MP_2GB_N_TxPowerTrack_USB_8821A;
 		}
 	} else if (36 <= channel && channel <= 64) {
-		*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[0];
-		*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[0];
-		*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[0];
-		*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[0];
+		*TemperatureUP_A   = gDeltaSwingTableIdx_MP_5GA_P_TxPowerTrack_USB_8821A[0];
+		*TemperatureDOWN_A = gDeltaSwingTableIdx_MP_5GA_N_TxPowerTrack_USB_8821A[0];
+		*TemperatureUP_B   = gDeltaSwingTableIdx_MP_5GB_P_TxPowerTrack_USB_8821A[0];
+		*TemperatureDOWN_B = gDeltaSwingTableIdx_MP_5GB_N_TxPowerTrack_USB_8821A[0];
 	} else if (100 <= channel && channel <= 140) {
-		*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[1];
-		*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[1];
-		*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[1];
-		*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[1];
+		*TemperatureUP_A   = gDeltaSwingTableIdx_MP_5GA_P_TxPowerTrack_USB_8821A[1];
+		*TemperatureDOWN_A = gDeltaSwingTableIdx_MP_5GA_N_TxPowerTrack_USB_8821A[1];
+		*TemperatureUP_B   = gDeltaSwingTableIdx_MP_5GB_P_TxPowerTrack_USB_8821A[1];
+		*TemperatureDOWN_B = gDeltaSwingTableIdx_MP_5GB_N_TxPowerTrack_USB_8821A[1];
 	} else if (149 <= channel && channel <= 173) {
-		*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[2];
-		*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[2];
-		*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[2];
-		*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[2];
+		*TemperatureUP_A   = gDeltaSwingTableIdx_MP_5GA_P_TxPowerTrack_USB_8821A[2];
+		*TemperatureDOWN_A = gDeltaSwingTableIdx_MP_5GA_N_TxPowerTrack_USB_8821A[2];
+		*TemperatureUP_B   = gDeltaSwingTableIdx_MP_5GB_P_TxPowerTrack_USB_8821A[2];
+		*TemperatureDOWN_B = gDeltaSwingTableIdx_MP_5GB_N_TxPowerTrack_USB_8821A[2];
 	} else {
 		*TemperatureUP_A   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
 		*TemperatureDOWN_A = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;

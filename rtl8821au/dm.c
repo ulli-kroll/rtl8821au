@@ -764,50 +764,6 @@ u8 gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_RFE3_8812A[] = {
 	6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11
 };
 
-void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB(struct rtl_dm *pDM_Odm)
-{
-	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_MP_8812A\n"));
-
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P, gDeltaSwingTableIdx_MP_2GA_P_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N, gDeltaSwingTableIdx_MP_2GA_N_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P, gDeltaSwingTableIdx_MP_2GB_P_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N, gDeltaSwingTableIdx_MP_2GB_N_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE);
-
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P, gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N, gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P, gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N, gDeltaSwingTableIdx_MP_2GCCKB_N_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE);
-
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P, gDeltaSwingTableIdx_MP_5GA_P_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE*3);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N, gDeltaSwingTableIdx_MP_5GA_N_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE*3);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P, gDeltaSwingTableIdx_MP_5GB_P_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE*3);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N, gDeltaSwingTableIdx_MP_5GB_N_TxPowerTrack_USB_8812A, DELTA_SWINGIDX_SIZE*3);
-}
-
-void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB_RFE3(struct rtl_dm *pDM_Odm)
-{
-	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_MP_8812A\n"));
-
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P, gDeltaSwingTableIdx_MP_2GA_P_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N, gDeltaSwingTableIdx_MP_2GA_N_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P, gDeltaSwingTableIdx_MP_2GB_P_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N, gDeltaSwingTableIdx_MP_2GB_N_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE);
-
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P, gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N, gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P, gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N, gDeltaSwingTableIdx_MP_2GCCKB_N_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE);
-
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P, gDeltaSwingTableIdx_MP_5GA_P_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE*3);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N, gDeltaSwingTableIdx_MP_5GA_N_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE*3);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P, gDeltaSwingTableIdx_MP_5GB_P_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE*3);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N, gDeltaSwingTableIdx_MP_5GB_N_TxPowerTrack_USB_RFE3_8812A, DELTA_SWINGIDX_SIZE*3);
-}
-
 /* END Copied from hal/OUTSRC/rtl8812a/HalHWImg8812A_RF.c */
 
 static void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,

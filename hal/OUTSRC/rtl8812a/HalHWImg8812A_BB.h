@@ -73,14 +73,6 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS( // TC: Test Chip, MP: MP Chip
 	IN   struct rtl_dm * pDM_Odm
 );
 
-/******************************************************************************
-*                           PHY_REG_PG_NEC.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_NEC( // TC: Test Chip, MP: MP Chip
-	IN   struct rtl_dm * pDM_Odm
-);
 
 #endif
 #endif // end of HWIMG_SUPPORT

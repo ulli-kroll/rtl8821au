@@ -1081,7 +1081,7 @@ static u8 rtl8821au_delta_swing_table_idx_24gccka_p[] = {
 
 /* END Copied from hal/OUTSRC/rtl8821a/HalHWImg8821A_RF.c */
 
-static void rtl8821ae_get_delta_swing_table(struct rtl_dm *pDM_Odm,
+static void rtl8821au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 	u8 **up_a, u8 **down_a,
 	u8 **up_b, u8 **down_b)
 {
@@ -1146,5 +1146,5 @@ void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 	pConfig->ODM_TxPwrTrackSetPwr = ODM_TxPwrTrackSetPwr8821A;
 	pConfig->DoIQK = DoIQK_8821A;
 	pConfig->PHY_LCCalibrate = PHY_LCCalibrate_8821A;
-	pConfig->GetDeltaSwingTable = rtl8821ae_get_delta_swing_table;
+	pConfig->GetDeltaSwingTable = rtl8821au_get_delta_swing_table;
 }

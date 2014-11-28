@@ -33,18 +33,6 @@ ODM_ReadAndConfig_MP_8812A_AGC_TAB( // TC: Test Chip, MP: MP Chip
 	IN   struct rtl_dm * pDM_Odm
 );
 
-/******************************************************************************
-*                           AGC_TAB_DIFF.TXT
-******************************************************************************/
-
-extern uint32_t Array_MP_8812A_AGC_TAB_DIFF_LB[116];
-extern uint32_t Array_MP_8812A_AGC_TAB_DIFF_HB[116];
-void
-ODM_ReadAndConfig_MP_8812A_AGC_TAB_DIFF(
-     IN   struct rtl_dm *   pDM_Odm,
- 	 IN   uint32_t  	   Array[],
- 	 IN   uint32_t  	   ArrayLen
-);
 
 /******************************************************************************
 *                           PHY_REG.TXT

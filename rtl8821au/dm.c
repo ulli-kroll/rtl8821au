@@ -820,38 +820,74 @@ static void rtl8812ae_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 	u16	rate = *(pDM_Odm->pForcedDataRate);
 	u8         	channel   		 = pHalData->CurrentChannel;
 
-	if (1 <= channel && channel <= 14) {
-		if (IS_CCK_RATE(rate)) {
-			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P;
-			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N;
-			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P;
-			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N;
+	if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip) {
+		if (1 <= channel && channel <= 14) {
+			if (IS_CCK_RATE(rate)) {
+				*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P;
+				*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N;
+				*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P;
+				*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N;
+			} else {
+				*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P;
+				*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N;
+				*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P;
+				*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N;
+			}
+		} else if (36 <= channel && channel <= 64) {
+			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[0];
+			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[0];
+			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[0];
+			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[0];
+		} else if (100 <= channel && channel <= 140) {
+			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[1];
+			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[1];
+			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[1];
+			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[1];
+		} else if (149 <= channel && channel <= 173) {
+			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[2];
+			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[2];
+			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[2];
+			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[2];
 		} else {
-			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P;
-			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N;
-			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P;
-			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N;
+			*up_a   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+			*down_a = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+			*up_b   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+			*down_b = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
 		}
-	} else if (36 <= channel && channel <= 64) {
-		*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[0];
-		*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[0];
-		*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[0];
-		*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[0];
-	} else if (100 <= channel && channel <= 140) {
-		*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[1];
-		*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[1];
-		*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[1];
-		*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[1];
-	} else if (149 <= channel && channel <= 173) {
-		*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[2];
-		*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[2];
-		*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[2];
-		*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[2];
 	} else {
-		*up_a   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
-		*down_a = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
-		*up_b   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
-		*down_b = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+		if (1 <= channel && channel <= 14) {
+			if (IS_CCK_RATE(rate)) {
+				*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P;
+				*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N;
+				*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P;
+				*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N;
+			} else {
+				*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P;
+				*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N;
+				*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P;
+				*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N;
+			}
+		} else if (36 <= channel && channel <= 64) {
+			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[0];
+			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[0];
+			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[0];
+			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[0];
+		} else if (100 <= channel && channel <= 140) {
+			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[1];
+			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[1];
+			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[1];
+			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[1];
+		} else if (149 <= channel && channel <= 173) {
+			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[2];
+			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[2];
+			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[2];
+			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[2];
+		} else {
+			*up_a   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+			*down_a = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+			*up_b   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+			*down_b = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+		}
 	}
 
 	return;

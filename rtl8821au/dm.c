@@ -610,7 +610,7 @@ static void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Me
 *                           TxPowerTrack_USB.TXT
 ******************************************************************************/
 
-u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 14, 14, 14, 14},
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
@@ -619,7 +619,7 @@ u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 2, 3, 3, 4, 5,  6,  7,  7,  8,  8,  9,  9, 
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
@@ -628,7 +628,7 @@ u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DELTA_SWINGIDX_SIZE] = {
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15, 15},
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 
@@ -636,7 +636,8 @@ u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15, 15},
 };
-u8 rtl8812ae_delta_swing_table_idx_5ga_p[][DELTA_SWINGIDX_SIZE] = {
+
+static u8 rtl8812ae_delta_swing_table_idx_5ga_p[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11, 
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11, 
@@ -645,42 +646,42 @@ u8 rtl8812ae_delta_swing_table_idx_5ga_p[][DELTA_SWINGIDX_SIZE] = {
 	11, 12, 12, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gb_n[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gb_n[] = {
 	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  
 	7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11
 };
 	
-u8 rtl8812au_delta_swing_table_idx_24gb_p[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gb_p[] = {
 	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
 	6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 	
-u8 rtl8812au_delta_swing_table_idx_24ga_n[] = {
+static u8 rtl8812au_delta_swing_table_idx_24ga_n[] = {
 	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
 	6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10
 };
 
-u8 rtl8812au_delta_swing_table_idx_24ga_p[] = {
+static u8 rtl8812au_delta_swing_table_idx_24ga_p[] = {
 	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
 	6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gcckb_n[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gcckb_n[] = {
 	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  
 	7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gcckb_p[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gcckb_p[] = {
 	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
 	6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gccka_n[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gccka_n[] = {
 	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
 	6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10
 };
 	
-u8 rtl8812au_delta_swing_table_idx_24gccka_p[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gccka_p[] = {
 	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
 	6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
@@ -689,7 +690,7 @@ u8 rtl8812au_delta_swing_table_idx_24gccka_p[] = {
 *                           TxPowerTrack_USB_RFE3.TXT
 ******************************************************************************/
 
-u8 rtl8812ae_delta_swing_table_idx_5gb_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5gb_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9, 
 	10, 10, 11, 12, 13, 13, 14, 15, 16, 16, 17, 17, 18, 18},
 	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  7,  8,  8,  9,  9, 
@@ -698,7 +699,7 @@ u8 rtl8812ae_delta_swing_table_idx_5gb_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-u8 rtl8812ae_delta_swing_table_idx_5gb_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5gb_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  9,  9, 10, 10, 
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  7,  8,  8,  9,  9, 
@@ -707,7 +708,7 @@ u8 rtl8812ae_delta_swing_table_idx_5gb_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-u8 rtl8812ae_delta_swing_table_idx_5ga_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5ga_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9, 
 	10, 10, 11, 11, 12, 13, 14, 15, 16, 16, 17, 17, 18, 18},
 	{0, 1, 1, 2, 3, 3, 4, 4, 5,  6,  6,  7,  7,  8,  9,  9, 
@@ -715,7 +716,8 @@ u8 rtl8812ae_delta_swing_table_idx_5ga_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 3, 3, 4, 4, 5,  6,  7,  7,  8,  8,  9,  9, 
 	10, 10, 11, 12, 13, 13, 14, 14, 15, 15, 16, 17, 18, 18},
 };
-u8 rtl8812ae_delta_swing_table_idx_5ga_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
+
+static u8 rtl8812ae_delta_swing_table_idx_5ga_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  7,  7,  8,  9,  9, 10, 10, 
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 2, 3, 4, 4, 5, 5, 6,  7,  7,  8,  9,  9, 10, 11, 
@@ -724,42 +726,42 @@ u8 rtl8812ae_delta_swing_table_idx_5ga_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gb_n_rfe3[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gb_n_rfe3[] = {
 	0, 1, 1, 2, 2, 3, 3, 4, 4,  4,  5,  5,  6,  6,  6,  7,  
 	7,  7,  8,  8,  9,  9, 10, 11, 12, 12, 13, 14, 15, 15
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gb_p_rfe3[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gb_p_rfe3[] = {
 	0, 1, 1, 2, 2, 2, 2, 3, 3,  3,  4,  4,  5,  5,  5,  6,  
 	6,  7,  7,  8,  9, 10, 10, 10, 10, 11, 11, 11, 11, 11
 };
 
-u8 rtl8812au_delta_swing_table_idx_24ga_n_rfe3[] = {
+static u8 rtl8812au_delta_swing_table_idx_24ga_n_rfe3[] = {
 	0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  6,  7,  7,  8,  8,  9, 
 	10, 10, 11, 11, 12, 12, 13, 13, 13, 13, 14, 14, 15, 15
 };
 
-u8 rtl8812au_delta_swing_table_idx_24ga_p_rfe3[] = {
+static u8 rtl8812au_delta_swing_table_idx_24ga_p_rfe3[] = {
 	0, 0, 1, 1, 1, 2, 2, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
 	6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gcckb_n_rfe3[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gcckb_n_rfe3[] = {
 	0, 1, 1, 2, 2, 3, 3, 4, 4,  4,  5,  5,  6,  6,  6,  7,  
 	7,  7,  8,  8,  9,  9, 10, 11, 12, 12, 13, 14, 15, 15
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gcckb_p_rfe3[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gcckb_p_rfe3[] = {
 	0, 1, 1, 2, 2, 2, 2, 3, 3,  3,  4,  4,  5,  5,  5,  6,  
 	6,  7,  7,  8,  9, 10, 10, 10, 10, 11, 11, 11, 11, 11
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gccka_n_rfe3[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gccka_n_rfe3[] = {
 	0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  6,  7,  7,  8,  8,  9, 
 	10, 10, 11, 11, 12, 12, 13, 13, 13, 13, 14, 14, 15, 15
 };
 
-u8 rtl8812au_delta_swing_table_idx_24gccka_p_rfe3[] = {
+static u8 rtl8812au_delta_swing_table_idx_24gccka_p_rfe3[] = {
 	0, 0, 1, 1, 1, 2, 2, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
 	6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11
 };

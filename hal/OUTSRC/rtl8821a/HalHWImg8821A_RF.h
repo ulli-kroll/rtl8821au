@@ -22,12 +22,6 @@
 #ifndef __INC_MP_RF_HW_IMG_8821A_H
 #define __INC_MP_RF_HW_IMG_8821A_H
 
-
-void
-ODM_ReadAndConfig_MP_8821A_TxPowerTrack_USB( // TC: Test Chip, MP: MP Chip
-	IN   struct rtl_dm * pDM_Odm
-);
-
 #endif
 #endif // end of HWIMG_SUPPORT
 

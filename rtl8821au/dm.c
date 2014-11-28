@@ -1088,29 +1088,6 @@ u8 gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_8821A[] = {
 
 
 /* END Copied from hal/OUTSRC/rtl8821a/HalHWImg8821A_RF.c */
-void ODM_ReadAndConfig_MP_8821A_TxPowerTrack_USB(struct rtl_dm *pDM_Odm)
-{
-	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_MP_8821A\n"));
-
-
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P, gDeltaSwingTableIdx_MP_2GA_P_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N, gDeltaSwingTableIdx_MP_2GA_N_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P, gDeltaSwingTableIdx_MP_2GB_P_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N, gDeltaSwingTableIdx_MP_2GB_N_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE);
-
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P, gDeltaSwingTableIdx_MP_2GCCKA_P_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N, gDeltaSwingTableIdx_MP_2GCCKA_N_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P, gDeltaSwingTableIdx_MP_2GCCKB_P_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N, gDeltaSwingTableIdx_MP_2GCCKB_N_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE);
-
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P, gDeltaSwingTableIdx_MP_5GA_P_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE*3);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N, gDeltaSwingTableIdx_MP_5GA_N_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE*3);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P, gDeltaSwingTableIdx_MP_5GB_P_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE*3);
-	memcpy(pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N, gDeltaSwingTableIdx_MP_5GB_N_TxPowerTrack_USB_8821A, DELTA_SWINGIDX_SIZE*3);
-}
-
 
 static void GetDeltaSwingTable_8821A(struct rtl_dm *pDM_Odm,
 	u8 **TemperatureUP_A, u8 **TemperatureDOWN_A,

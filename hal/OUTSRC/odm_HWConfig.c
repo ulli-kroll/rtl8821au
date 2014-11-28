@@ -747,19 +747,6 @@ HAL_STATUS ODM_ConfigRFWithTxPwrTrackHeaderFile(struct rtl_dm *pDM_Odm)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
-#if (RTL8821A_SUPPORT == 1)
-	if (pDM_Odm->SupportICType == ODM_RTL8821) {
-		switch (pDM_Odm->SupportInterface) {
-		case ODM_ITRF_USB:
-			ODM_ReadAndConfig_MP_8821A_TxPowerTrack_USB(pDM_Odm);
-			break;
-
-		default:
-			;
-		}
-	}
-#endif
-
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (pDM_Odm->SupportInterface) {

@@ -950,20 +950,6 @@ typedef struct ODM_RF_Calibration_Structure
 	u8	Delta_IQK;
 	u8	Delta_LCK;
 	s8  BBSwingDiff2G, BBSwingDiff5G; // Unit: dB
-    	u8  DeltaSwingTableIdx_2GCCKA_P[DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_2GCCKA_N[DELTA_SWINGIDX_SIZE];
-   	u8  DeltaSwingTableIdx_2GCCKB_P[DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_2GCCKB_N[DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_2GA_P[DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_2GA_N[DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_2GB_P[DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_2GB_N[DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_5GA_P[BAND_NUM][DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_5GA_N[BAND_NUM][DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_5GB_P[BAND_NUM][DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_5GB_N[BAND_NUM][DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_2GA_P_8188E[DELTA_SWINGIDX_SIZE];
-    	u8  DeltaSwingTableIdx_2GA_N_8188E[DELTA_SWINGIDX_SIZE];
 
 	//--------------------------------------------------------------------//
 

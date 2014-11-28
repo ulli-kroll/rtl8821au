@@ -720,9 +720,9 @@ void ODM_ReadAndConfig_MP_8812A_TxPowerTrack_USB_RFE3(struct rtl_dm *pDM_Odm)
 
 /* END Copied from hal/OUTSRC/rtl8812a/HalHWImg8812A_RF.c */
 
-static void GetDeltaSwingTable_8812A(struct rtl_dm *pDM_Odm,
-	u8 **TemperatureUP_A, u8 **TemperatureDOWN_A,
-	u8 **TemperatureUP_B, u8 **TemperatureDOWN_B)
+static void rtl8812ae_get_delta_swing_table(struct rtl_dm *pDM_Odm,
+					    u8 **up_a, u8 **down_a,
+					    u8 **up_b, u8 **down_b)
 {
 	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
@@ -732,36 +732,36 @@ static void GetDeltaSwingTable_8812A(struct rtl_dm *pDM_Odm,
 
 	if (1 <= channel && channel <= 14) {
 		if (IS_CCK_RATE(rate)) {
-			*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P;
-			*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N;
-			*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P;
-			*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N;
+			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_P;
+			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKA_N;
+			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_P;
+			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_2GCCKB_N;
 		} else {
-			*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P;
-			*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N;
-			*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P;
-			*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N;
+			*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_P;
+			*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_2GA_N;
+			*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_P;
+			*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_2GB_N;
 		}
 	} else if (36 <= channel && channel <= 64) {
-		*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[0];
-		*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[0];
-		*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[0];
-		*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[0];
+		*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[0];
+		*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[0];
+		*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[0];
+		*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[0];
 	} else if (100 <= channel && channel <= 140) {
-		*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[1];
-		*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[1];
-		*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[1];
-		*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[1];
+		*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[1];
+		*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[1];
+		*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[1];
+		*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[1];
 	} else if (149 <= channel && channel <= 173) {
-		*TemperatureUP_A   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[2];
-		*TemperatureDOWN_A = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[2];
-		*TemperatureUP_B   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[2];
-		*TemperatureDOWN_B = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[2];
+		*up_a   = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_P[2];
+		*down_a = pRFCalibrateInfo->DeltaSwingTableIdx_5GA_N[2];
+		*up_b   = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_P[2];
+		*down_b = pRFCalibrateInfo->DeltaSwingTableIdx_5GB_N[2];
 	} else {
-		*TemperatureUP_A   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
-		*TemperatureDOWN_A = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
-		*TemperatureUP_B   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
-		*TemperatureDOWN_B = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+		*up_a   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+		*down_a = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+		*up_b   = (u8 *)DeltaSwingTableIdx_2GA_P_8188E;
+		*down_b = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
 	}
 
 	return;
@@ -779,7 +779,7 @@ void ConfigureTxpowerTrack_8812A(PTXPWRTRACK_CFG pConfig)
 	pConfig->ODM_TxPwrTrackSetPwr = ODM_TxPwrTrackSetPwr8812A;
 	pConfig->DoIQK = DoIQK_8812A;
 	pConfig->PHY_LCCalibrate = PHY_LCCalibrate_8812A;
-	pConfig->GetDeltaSwingTable = GetDeltaSwingTable_8812A;
+	pConfig->GetDeltaSwingTable = rtl8812ae_get_delta_swing_table;
 }
 
 /* From hal/OUTSRC/rtl8821a/HalPhyRf_8821A.c */

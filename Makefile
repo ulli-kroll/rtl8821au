@@ -79,7 +79,6 @@ ifeq ($(CONFIG_RTL8812A), y)
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
 _OUTSRC_FILES += hal/OUTSRC/rtl8812a/HalHWImg8812A_FW.o\
 		hal/OUTSRC/rtl8812a/HalHWImg8812A_BB.o\
-		hal/OUTSRC/rtl8812a/HalHWImg8812A_RF.o\
 		hal/OUTSRC/rtl8812a/HalPhyRf_8812A.o\
 		hal/OUTSRC/rtl8812a/odm_RegConfig8812A.o
 endif

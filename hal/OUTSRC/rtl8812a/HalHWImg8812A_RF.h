@@ -22,25 +22,7 @@
 #ifndef __INC_MP_RF_HW_IMG_8812A_H
 #define __INC_MP_RF_HW_IMG_8812A_H
 
-static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex);
 
-/******************************************************************************
-*                           TxPowerTrack_AP.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8812A_TxPowerTrack_AP( // TC: Test Chip, MP: MP Chip
-	IN   struct rtl_dm * pDM_Odm
-);
-
-/******************************************************************************
-*                           TxPowerTrack_PCIE.TXT
-******************************************************************************/
-
-void
-ODM_ReadAndConfig_MP_8812A_TxPowerTrack_PCIE( // TC: Test Chip, MP: MP Chip
-	IN   struct rtl_dm * pDM_Odm
-);
 
 /******************************************************************************
 *                           TxPowerTrack_USB.TXT

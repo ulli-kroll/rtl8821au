@@ -23,7 +23,7 @@
 #if (RTL8821A_SUPPORT == 1)
 
 void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Data, ODM_RF_RADIO_PATH_E RF_PATH, uint32_t RegAddr)
+	uint32_t Data, ODM_RF_RADIO_PATH_E path, uint32_t RegAddr)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
@@ -41,7 +41,7 @@ void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	} else if (Addr == 0xf9) {
 		udelay(1);
 	} else {
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
+		rtw_hal_write_rfreg(rtlpriv, path, RegAddr, bRFRegOffsetMask, Data);
 		/* Add 1us delay between BB/RF register setting. */
 		udelay(1);
 	}

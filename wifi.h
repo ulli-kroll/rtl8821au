@@ -1,12 +1,11 @@
 #ifndef __WIFI_H__
 #define __WIFI_H__
 
-enum _RF90_RADIO_PATH{
-	RF90_PATH_A = 0,			//Radio Path A
-	RF90_PATH_B = 1,			//Radio Path B
-	RF90_PATH_C = 2,			//Radio Path C
-	RF90_PATH_D = 3 		//Radio Path D
-	//RF90_PATH_MAX 			//Max RF number 90 support
+enum radio_path {
+	RF90_PATH_A = 0,
+	RF90_PATH_B = 1,
+	RF90_PATH_C = 2,
+	RF90_PATH_D = 3,
 };
 
 typedef enum _RF_PATH{

@@ -8,15 +8,6 @@ enum radio_path {
 	RF90_PATH_D = 3,
 };
 
-enum _RF_PATH {
-	RF_PATH_A = 0,
-	RF_PATH_B,
-	RF_PATH_C,
-	RF_PATH_D
-};
-
-
-
 struct rtl_hal_ops;
 
 struct rtl_priv {

@@ -53,13 +53,13 @@ void PHY_RF6052SetCckTxPower8812(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 	TurboScanOff = _TRUE;
 
 	if (pmlmeext->sitesurvey_res.state == SCAN_PROCESS) {
-		TxAGC[RF_PATH_A] = 0x3f3f3f3f;
-		TxAGC[RF_PATH_B] = 0x3f3f3f3f;
+		TxAGC[RF90_PATH_A] = 0x3f3f3f3f;
+		TxAGC[RF90_PATH_B] = 0x3f3f3f3f;
 
 		TurboScanOff = _TRUE;	/* disable turbo scan */
 
 		if (TurboScanOff) {
-			for (idx1 = RF_PATH_A; idx1 <= RF_PATH_B; idx1++) {
+			for (idx1 = RF90_PATH_A; idx1 <= RF90_PATH_B; idx1++) {
 				TxAGC[idx1] =
 					pPowerlevel[idx1] | (pPowerlevel[idx1]<<8) |
 					(pPowerlevel[idx1]<<16) | (pPowerlevel[idx1]<<24);
@@ -75,13 +75,13 @@ void PHY_RF6052SetCckTxPower8812(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
  * In the future, two mechanism shall be separated from each other and maintained independantly. Thanks for Lanhsin's reminder.
  */
 		if (pdmpriv->DynamicTxHighPowerLvl == TxHighPwrLevel_Level1) {
-			TxAGC[RF_PATH_A] = 0x10101010;
-			TxAGC[RF_PATH_B] = 0x10101010;
+			TxAGC[RF90_PATH_A] = 0x10101010;
+			TxAGC[RF90_PATH_B] = 0x10101010;
 		} else if (pdmpriv->DynamicTxHighPowerLvl == TxHighPwrLevel_Level2) {
-			TxAGC[RF_PATH_A] = 0x00000000;
-			TxAGC[RF_PATH_B] = 0x00000000;
+			TxAGC[RF90_PATH_A] = 0x00000000;
+			TxAGC[RF90_PATH_B] = 0x00000000;
 		} else {
-			for (idx1 = RF_PATH_A; idx1 <= RF_PATH_B; idx1++) {
+			for (idx1 = RF90_PATH_A; idx1 <= RF90_PATH_B; idx1++) {
 				TxAGC[idx1] =
 					pPowerlevel[idx1] | (pPowerlevel[idx1]<<8) |
 					(pPowerlevel[idx1]<<16) | (pPowerlevel[idx1]<<24);
@@ -90,16 +90,16 @@ void PHY_RF6052SetCckTxPower8812(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 			if (pHalData->EEPROMRegulatory == 0) {
 				tmpval = (pHalData->MCSTxPowerLevelOriginalOffset[0][6]) +
 						(pHalData->MCSTxPowerLevelOriginalOffset[0][7]<<8);
-				TxAGC[RF_PATH_A] += tmpval;
+				TxAGC[RF90_PATH_A] += tmpval;
 
 				tmpval = (pHalData->MCSTxPowerLevelOriginalOffset[0][14]) +
 						(pHalData->MCSTxPowerLevelOriginalOffset[0][15]<<24);
-				TxAGC[RF_PATH_B] += tmpval;
+				TxAGC[RF90_PATH_B] += tmpval;
 			}
 		}
 	}
 
-	for (idx1 = RF_PATH_A; idx1 <= RF_PATH_B; idx1++) {
+	for (idx1 = RF90_PATH_A; idx1 <= RF90_PATH_B; idx1++) {
 		ptr = (uint8_t *)(&(TxAGC[idx1]));
 		for (idx2 = 0; idx2 < 4; idx2++) {
 			if (*ptr > RF6052_MAX_TX_PWR)
@@ -109,18 +109,18 @@ void PHY_RF6052SetCckTxPower8812(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 	}
 
 	/* rf-A cck tx power */
-	tmpval = TxAGC[RF_PATH_A]&0xff;
+	tmpval = TxAGC[RF90_PATH_A]&0xff;
 	rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE1, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 1M (rf-A) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_A_CCK1_Mcs32)); */
-	tmpval = TxAGC[RF_PATH_A]>>8;
+	tmpval = TxAGC[RF90_PATH_A]>>8;
 	rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, 0xffffff00, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 2~11M (rf-A) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK11_A_CCK2_11)); */
 
 	/* rf-B cck tx power */
-	tmpval = TxAGC[RF_PATH_B]>>24;
+	tmpval = TxAGC[RF90_PATH_B]>>24;
 	rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE0, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 11M (rf-B) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK11_A_CCK2_11)); */
-	tmpval = TxAGC[RF_PATH_B]&0x00ffffff;
+	tmpval = TxAGC[RF90_PATH_B]&0x00ffffff;
 	rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, 0xffffff00, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 1~5.5M (rf-B) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK1_55_Mcs32)); */
 
@@ -138,7 +138,7 @@ static int phy_RF6052_Config_ParaFile_8812(struct rtl_priv *rtlpriv)
 	 * <2> Initialize RF
 	 * -----------------------------------------------------------------
 	 */
-	/* for(eRFPath = RF_PATH_A; eRFPath <pHalData->NumTotalRFPath; eRFPath++) */
+	/* for(eRFPath = RF90_PATH_A; eRFPath <pHalData->NumTotalRFPath; eRFPath++) */
 	for (eRFPath = 0; eRFPath < pHalData->NumTotalRFPath; eRFPath++) {
 		/* ----Initialize RF fom connfiguration file---- */
 		if (HAL_STATUS_FAILURE == ODM_ConfigRFWithHeaderFile(rtlpriv, CONFIG_RF_RADIO, (enum radio_path)eRFPath))

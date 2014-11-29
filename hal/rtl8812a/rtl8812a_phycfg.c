@@ -70,9 +70,9 @@ static u32 phy_RFSerialRead(struct rtl_priv *Adapter, uint8_t eRFPath,
 
 	Offset &= 0xff;
 
-	if (eRFPath == RF_PATH_A)
+	if (eRFPath == RF90_PATH_A)
 		bIsPIMode = (BOOLEAN)rtl_get_bbreg(Adapter, 0xC00, 0x4);
-	else if (eRFPath == RF_PATH_B)
+	else if (eRFPath == RF90_PATH_B)
 		bIsPIMode = (BOOLEAN)rtl_get_bbreg(Adapter, 0xE00, 0x4);
 
 	if (IS_VENDOR_8812A_TEST_CHIP(Adapter))
@@ -138,7 +138,7 @@ static void phy_RFSerialWrite(struct rtl_priv *Adapter, uint8_t eRFPath,
 		/* if (IS_VENDOR_8812A_TEST_CHIP(Adapter) || IS_HARDWARE_TYPE_8821(Adapter) is) */
 		{
 			rtw_write32(Adapter, 0x1EC, DataAndAddr);
-			if (eRFPath == RF_PATH_A)
+			if (eRFPath == RF90_PATH_A)
 				rtw_write32(Adapter, 0x1E8, 0x4000F000|0xC90);
 			else
 				rtw_write32(Adapter, 0x1E8, 0x4000F000|0xE90);
@@ -216,28 +216,28 @@ static void phy_InitBBRFRegisterDefinition(struct rtl_priv *Adapter)
 	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
 	/* RF Interface Sowrtware Control */
-	pHalData->PHYRegDef[RF_PATH_A].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 LSBs if read 32-bit from 0x870 */
-	pHalData->PHYRegDef[RF_PATH_B].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 MSBs if read 32-bit from 0x870 (16-bit for 0x872) */
+	pHalData->PHYRegDef[RF90_PATH_A].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 LSBs if read 32-bit from 0x870 */
+	pHalData->PHYRegDef[RF90_PATH_B].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 MSBs if read 32-bit from 0x870 (16-bit for 0x872) */
 
 	/* RF Interface Output (and Enable) */
-	pHalData->PHYRegDef[RF_PATH_A].rfintfo = rFPGA0_XA_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x860 */
-	pHalData->PHYRegDef[RF_PATH_B].rfintfo = rFPGA0_XB_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x864 */
+	pHalData->PHYRegDef[RF90_PATH_A].rfintfo = rFPGA0_XA_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x860 */
+	pHalData->PHYRegDef[RF90_PATH_B].rfintfo = rFPGA0_XB_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x864 */
 
 	/* RF Interface (Output and)  Enable */
-	pHalData->PHYRegDef[RF_PATH_A].rfintfe = rFPGA0_XA_RFInterfaceOE;	/* 16 MSBs if read 32-bit from 0x860 (16-bit for 0x862) */
-	pHalData->PHYRegDef[RF_PATH_B].rfintfe = rFPGA0_XB_RFInterfaceOE; 	/* 16 MSBs if read 32-bit from 0x864 (16-bit for 0x866) */
+	pHalData->PHYRegDef[RF90_PATH_A].rfintfe = rFPGA0_XA_RFInterfaceOE;	/* 16 MSBs if read 32-bit from 0x860 (16-bit for 0x862) */
+	pHalData->PHYRegDef[RF90_PATH_B].rfintfe = rFPGA0_XB_RFInterfaceOE; 	/* 16 MSBs if read 32-bit from 0x864 (16-bit for 0x866) */
 
-	pHalData->PHYRegDef[RF_PATH_A].rf3wireOffset = rA_LSSIWrite_Jaguar; 	/* LSSI Parameter */
-	pHalData->PHYRegDef[RF_PATH_B].rf3wireOffset = rB_LSSIWrite_Jaguar;
+	pHalData->PHYRegDef[RF90_PATH_A].rf3wireOffset = rA_LSSIWrite_Jaguar; 	/* LSSI Parameter */
+	pHalData->PHYRegDef[RF90_PATH_B].rf3wireOffset = rB_LSSIWrite_Jaguar;
 
-	pHalData->PHYRegDef[RF_PATH_A].rfHSSIPara2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
-	pHalData->PHYRegDef[RF_PATH_B].rfHSSIPara2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
+	pHalData->PHYRegDef[RF90_PATH_A].rfHSSIPara2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
+	pHalData->PHYRegDef[RF90_PATH_B].rfHSSIPara2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
 
 	/* Tranceiver Readback LSSI/HSPI mode */
-	pHalData->PHYRegDef[RF_PATH_A].rfLSSIReadBack = rA_SIRead_Jaguar;
-	pHalData->PHYRegDef[RF_PATH_B].rfLSSIReadBack = rB_SIRead_Jaguar;
-	pHalData->PHYRegDef[RF_PATH_A].rfLSSIReadBackPi = rA_PIRead_Jaguar;
-	pHalData->PHYRegDef[RF_PATH_B].rfLSSIReadBackPi = rB_PIRead_Jaguar;
+	pHalData->PHYRegDef[RF90_PATH_A].rfLSSIReadBack = rA_SIRead_Jaguar;
+	pHalData->PHYRegDef[RF90_PATH_B].rfLSSIReadBack = rB_SIRead_Jaguar;
+	pHalData->PHYRegDef[RF90_PATH_A].rfLSSIReadBackPi = rA_PIRead_Jaguar;
+	pHalData->PHYRegDef[RF90_PATH_B].rfLSSIReadBackPi = rB_PIRead_Jaguar;
 
 	/* pHalData->bPhyValueInitReady=_TRUE; */
 }
@@ -1796,10 +1796,10 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 		power_index -= 1;
 
 	/* 2013.01.18 LukeLee: Modify TXAGC by dcmd_Dynamic_Ctrl() */
-	if (path == RF_PATH_A) {
+	if (path == RF90_PATH_A) {
 		Direction = pHalData->odmpriv.IsTxagcOffsetPositiveA;
 		TxagcOffset = pHalData->odmpriv.TxagcOffsetValueA;
-	} else if (path == RF_PATH_B) {
+	} else if (path == RF90_PATH_B) {
 		Direction = pHalData->odmpriv.IsTxagcOffsetPositiveB;
 		TxagcOffset = pHalData->odmpriv.TxagcOffsetValueB;
 	}
@@ -1817,7 +1817,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 
 	/* ULLI check register names as in rtlwifi-lib */
 
-	if (path == RF_PATH_A) {
+	if (path == RF90_PATH_A) {
 		switch (rate) {
 		case MGN_1M:    
 			rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE0, power_index);
@@ -1979,7 +1979,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 			DBG_871X("Invalid Rate!!\n");
 			break;
 		}
-	} else if (path == RF_PATH_B) {
+	} else if (path == RF90_PATH_B) {
 		switch (rate) {
 		case MGN_1M:    
 			rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE0, power_index); 
@@ -2625,11 +2625,11 @@ int32_t PHY_SwitchWirelessBand8812(struct rtl_priv *Adapter, uint8_t Band)
 
 		/* SYN Setting */
 		if(IS_VENDOR_8812A_TEST_CHIP(Adapter)) 	{
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x0001c);
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x16BFF);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x0001c);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x16BFF);
 		}
 
 		/* CCK_CHECK_en */
@@ -2717,14 +2717,14 @@ int32_t PHY_SwitchWirelessBand8812(struct rtl_priv *Adapter, uint8_t Band)
 
 		/* SYN Setting */
 		if(IS_VENDOR_8812A_TEST_CHIP(Adapter)) 	{
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x00017);
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
-			rtw_hal_write_rfreg(Adapter, RF_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x04BFF);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x00017);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
+			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x04BFF);
 		}
 
-		/* DBG_871X("==>PHY_SwitchWirelessBand8812() BAND_ON_5G settings OFDM index 0x%x\n", pHalData->OFDM_index[RF_PATH_A]); */
+		/* DBG_871X("==>PHY_SwitchWirelessBand8812() BAND_ON_5G settings OFDM index 0x%x\n", pHalData->OFDM_index[RF90_PATH_A]); */
 	}
 
 	/* <20120903, Kordan> Tx BB swing setting for RL6286, asked by Ynlin. */

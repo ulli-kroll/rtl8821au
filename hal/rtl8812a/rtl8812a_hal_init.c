@@ -2543,12 +2543,15 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 	if (IS_1T2R(ChipVersion)) {
 		pHalData->rf_type = RF_1T2R;
 		pHalData->NumTotalRFPath = 2;
+		DBG_8192C("==> RF_Type : 1T2R\n");
 	} else if (IS_2T2R(ChipVersion)) {
 		pHalData->rf_type = RF_2T2R;
 		pHalData->NumTotalRFPath = 2;
+		DBG_8192C("==> RF_Type : 2T2R\n");
 	} else {
 		pHalData->rf_type = RF_1T1R;
 		pHalData->NumTotalRFPath = 1;
+		DBG_8192C("==> RF_Type 1T1R\n");
 	}
 
 	DBG_8192C("RF_Type is %x!!\n", pHalData->rf_type);

@@ -99,15 +99,6 @@ enum _RTL8712_RF_MIMO_CONFIG_{
  RTL8712_RFCONFIG_2T2R=0x22
 };
 
-
-typedef enum _RF90_RADIO_PATH{
-	RF90_PATH_A = 0,			//Radio Path A
-	RF90_PATH_B = 1,			//Radio Path B
-	RF90_PATH_C = 2,			//Radio Path C
-	RF90_PATH_D = 3 		//Radio Path D
-	//RF90_PATH_MAX 			//Max RF number 90 support
-}RF90_RADIO_PATH_E, *PRF90_RADIO_PATH_E;
-
 // Bandwidth Offset
 #define HAL_PRIME_CHNL_OFFSET_DONT_CARE	0
 #define HAL_PRIME_CHNL_OFFSET_LOWER	1

@@ -3436,12 +3436,12 @@ HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(struct rtl_dm *pDM_Odm)
 *                           RadioA.TXT
 ******************************************************************************/
 static void odm_ConfigRFReg_8812A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Data, ODM_RF_RADIO_PATH_E RF_PATH, uint32_t RegAddr)
+	uint32_t Data, ODM_RF_RADIO_PATH_E path, uint32_t RegAddr)
 {
 	if (Addr == 0xfe || Addr == 0xffe) {
 		msleep(50);
 	} else {
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
+		rtw_hal_write_rfreg(rtlpriv, path, RegAddr, bRFRegOffsetMask, Data);
 		/* Add 1us delay between BB/RF register setting. */
 		udelay(1);
 	}
@@ -3607,7 +3607,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 *                           RadioA.TXT
 ******************************************************************************/
 static void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Data, ODM_RF_RADIO_PATH_E RF_PATH, uint32_t RegAddr)
+	uint32_t Data, ODM_RF_RADIO_PATH_E path, uint32_t RegAddr)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
@@ -3625,7 +3625,7 @@ static void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	} else if (Addr == 0xf9) {
 		udelay(1);
 	} else {
-		rtw_hal_write_rfreg(rtlpriv, RF_PATH, RegAddr, bRFRegOffsetMask, Data);
+		rtw_hal_write_rfreg(rtlpriv, path, RegAddr, bRFRegOffsetMask, Data);
 		/* Add 1us delay between BB/RF register setting. */
 		udelay(1);
 	}

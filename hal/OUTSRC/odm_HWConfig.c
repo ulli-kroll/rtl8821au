@@ -178,8 +178,8 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 	else
 		isCCKrate = FALSE;
 
-	pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_A] = -1;
-	pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_B] = -1;
+	pPhyInfo->RxMIMOSignalQuality[RF90_PATH_A] = -1;
+	pPhyInfo->RxMIMOSignalQuality[RF90_PATH_B] = -1;
 
 	if (isCCKrate) {
 		u8 cck_agc_rpt;
@@ -311,8 +311,8 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 
 			/* DbgPrint("cck SQ = %d\n", SQ); */
 			pPhyInfo->SignalQuality = SQ;
-			pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_A] = SQ;
-			pPhyInfo->RxMIMOSignalQuality[ODM_RF_PATH_B] = -1;
+			pPhyInfo->RxMIMOSignalQuality[RF90_PATH_A] = SQ;
+			pPhyInfo->RxMIMOSignalQuality[RF90_PATH_B] = -1;
 		}
 	} else {
 		/* is OFDM rate */
@@ -322,7 +322,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 		 * (1)Get RSSI for OFDM rate
 		 */
 
-		for (i = ODM_RF_PATH_A; i < ODM_RF_PATH_MAX; i++) {
+		for (i = RF90_PATH_A; i < ODM_RF_PATH_MAX; i++) {
 			/*
 			 *  2008/01/30 MH we will judge RF RX path now.
 			 * DbgPrint("pDM_Odm->RFPathRxEnable = %x\n", pDM_Odm->RFPathRxEnable);
@@ -431,7 +431,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 				 */
 
 				if (pPktinfo->bPacketMatchBSSID) {
-					if (i == ODM_RF_PATH_A) {	/* Fill value in RFD, Get the first spatial stream only */
+					if (i == RF90_PATH_A) {	/* Fill value in RFD, Get the first spatial stream only */
 						pPhyInfo->SignalQuality = EVM;
 					}
 					pPhyInfo->RxMIMOSignalQuality[i] = EVM;
@@ -443,7 +443,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 		if (pDM_Odm->SupportAbility & ODM_BB_DYNAMIC_ATC) {
 			if (pPktinfo->bPacketMatchBSSID) {
 				/* 3 Update CFO report for path-A & path-B */
-				for (i = ODM_RF_PATH_A; i < ODM_RF_PATH_MAX; i++) {
+				for (i = RF90_PATH_A; i < ODM_RF_PATH_MAX; i++) {
 					pDM_Odm->CFO_tail[i] = (int)pPhyStaRpt->cfotail[i];
 				}
 
@@ -554,7 +554,7 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 		{
 			if (pPktinfo->DataRate > DESC8812_RATE11M)
 				ODM_PathStatistics_8812A(pDM_Odm, pPktinfo->StationID,
-				pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A], pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B]);
+				pPhyInfo->RxMIMOSignalStrength[RF90_PATH_A], pPhyInfo->RxMIMOSignalStrength[RF90_PATH_B]);
 		}
 	}
 */
@@ -567,24 +567,24 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 
 	if (pPktinfo->bPacketToSelf || pPktinfo->bPacketBeacon) {
 		if (!isCCKrate) {	/* ofdm rate */
-			if (pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B] == 0) {
-				RSSI_Ave = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
-				pDM_Odm->RSSI_A = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
+			if (pPhyInfo->RxMIMOSignalStrength[RF90_PATH_B] == 0) {
+				RSSI_Ave = pPhyInfo->RxMIMOSignalStrength[RF90_PATH_A];
+				pDM_Odm->RSSI_A = pPhyInfo->RxMIMOSignalStrength[RF90_PATH_A];
 				pDM_Odm->RSSI_B = 0;
 			} else{
 				/*
 				 * DbgPrint("pRfd->Status.RxMIMOSignalStrength[0] = %d, pRfd->Status.RxMIMOSignalStrength[1] = %d \n",
 				 * 	pRfd->Status.RxMIMOSignalStrength[0], pRfd->Status.RxMIMOSignalStrength[1]);
 				 */
-				pDM_Odm->RSSI_A =  pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
-				pDM_Odm->RSSI_B = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B];
+				pDM_Odm->RSSI_A =  pPhyInfo->RxMIMOSignalStrength[RF90_PATH_A];
+				pDM_Odm->RSSI_B = pPhyInfo->RxMIMOSignalStrength[RF90_PATH_B];
 
-				if (pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A] > pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B]) {
-					RSSI_max = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
-					RSSI_min = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B];
+				if (pPhyInfo->RxMIMOSignalStrength[RF90_PATH_A] > pPhyInfo->RxMIMOSignalStrength[RF90_PATH_B]) {
+					RSSI_max = pPhyInfo->RxMIMOSignalStrength[RF90_PATH_A];
+					RSSI_min = pPhyInfo->RxMIMOSignalStrength[RF90_PATH_B];
 				} else {
-					RSSI_max = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_B];
-					RSSI_min = pPhyInfo->RxMIMOSignalStrength[ODM_RF_PATH_A];
+					RSSI_max = pPhyInfo->RxMIMOSignalStrength[RF90_PATH_B];
+					RSSI_min = pPhyInfo->RxMIMOSignalStrength[RF90_PATH_A];
 				}
 
 				if ((RSSI_max - RSSI_min) < 3)
@@ -699,7 +699,7 @@ void ODM_PhyStatusQuery(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
  */
 
 HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
-	ODM_RF_Config_Type ConfigType, enum _ODM_RF_RADIO_PATH eRFPath)
+	ODM_RF_Config_Type ConfigType, enum radio_path eRFPath)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
@@ -727,8 +727,8 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
-			if (eRFPath == ODM_RF_PATH_A) {
-				rtl8821au_phy_config_rf_with_headerfile(rtlpriv, ODM_RF_PATH_A);
+			if (eRFPath == RF90_PATH_A) {
+				rtl8821au_phy_config_rf_with_headerfile(rtlpriv, RF90_PATH_A);
 			}
 			break;
 		default:

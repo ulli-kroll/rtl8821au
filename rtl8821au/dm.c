@@ -285,7 +285,7 @@ static u8 getSwingIndex(struct rtl_dm *pDM_Odm)
 	u8 			i = 0;
 	uint32_t 			bbSwing;
 #if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
-	bbSwing = PHY_GetTxBBSwing_8812A(Adapter, pHalData->CurrentBandType, ODM_RF_PATH_A);
+	bbSwing = PHY_GetTxBBSwing_8812A(Adapter, pHalData->CurrentBandType, RF90_PATH_A);
 #endif
 
 	for (i = 0; i < TXSCALE_TABLE_SIZE; ++i)
@@ -351,7 +351,7 @@ static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 	pDM_Odm->BbSwingIdxCckBase = pDM_Odm->DefaultCckIndex;
 	pDM_Odm->RFCalibrateInfo.CCK_index = pDM_Odm->DefaultCckIndex;
 
-	for (p = ODM_RF_PATH_A; p < MAX_RF_PATH; ++p) {
+	for (p = RF90_PATH_A; p < MAX_RF_PATH; ++p) {
 		pDM_Odm->BbSwingIdxOfdmBase[p] = pDM_Odm->DefaultOfdmIndex;
 		pDM_Odm->RFCalibrateInfo.OFDM_index[p] = pDM_Odm->DefaultOfdmIndex;
 		pDM_Odm->RFCalibrateInfo.DeltaPowerIndex[p] = 0;
@@ -494,18 +494,18 @@ static void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Me
 	if (Method == BBSWING) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8812A\n"));
 
-		if (RFPath == ODM_RF_PATH_A) {
-			finalBbSwingIdx[ODM_RF_PATH_A] = (pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A];
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[ODM_RF_PATH_A]=%d\n",
-				pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A], finalBbSwingIdx[ODM_RF_PATH_A]));
+		if (RFPath == RF90_PATH_A) {
+			finalBbSwingIdx[RF90_PATH_A] = (pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A];
+			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
+				pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
 
-			ODM_SetBBReg(pDM_Odm, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[ODM_RF_PATH_A]]);
+			ODM_SetBBReg(pDM_Odm, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		} else {
-			finalBbSwingIdx[ODM_RF_PATH_B] = (pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_B] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_B];
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_B]=%d, pDM_Odm->RealBbSwingIdx[ODM_RF_PATH_B]=%d\n",
-				pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_B], finalBbSwingIdx[ODM_RF_PATH_B]));
+			finalBbSwingIdx[RF90_PATH_B] = (pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B];
+			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_B]=%d\n",
+				pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B], finalBbSwingIdx[RF90_PATH_B]));
 
-			ODM_SetBBReg(pDM_Odm, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[ODM_RF_PATH_B]]);
+			ODM_SetBBReg(pDM_Odm, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_B]]);
 		}
 	} else if (Method == MIX_MODE) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
@@ -514,7 +514,7 @@ static void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Me
 
 			Final_OFDM_Swing_Index = pDM_Odm->DefaultOfdmIndex + pDM_Odm->Aboslute_OFDMSwingIdx[RFPath];
 
-			if (RFPath == ODM_RF_PATH_A) {
+			if (RFPath == RF90_PATH_A) {
 				if (Final_OFDM_Swing_Index > PwrTrackingLimit) {    /* BBSwing higher then Limit */
 					pDM_Odm->Remnant_CCKSwingIdx = Final_OFDM_Swing_Index - PwrTrackingLimit;            /*  CCK Follow the same compensate value as Path A */
 					pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = Final_OFDM_Swing_Index - PwrTrackingLimit;
@@ -561,7 +561,7 @@ static void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Me
 				}
 			}
 
-			if (RFPath == ODM_RF_PATH_B) {
+			if (RFPath == RF90_PATH_B) {
 				if (Final_OFDM_Swing_Index > PwrTrackingLimit) {			/* BBSwing higher then Limit */
 					pDM_Odm->Remnant_OFDMSwingIdx[RFPath] = Final_OFDM_Swing_Index - PwrTrackingLimit;
 
@@ -931,12 +931,12 @@ static void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Me
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit));
 
 	if (Method == BBSWING) {
-		if (RFPath == ODM_RF_PATH_A) {
-			finalBbSwingIdx[ODM_RF_PATH_A] = (pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A];
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[ODM_RF_PATH_A]=%d\n",
-				pDM_Odm->RFCalibrateInfo.OFDM_index[ODM_RF_PATH_A], finalBbSwingIdx[ODM_RF_PATH_A]));
+		if (RFPath == RF90_PATH_A) {
+			finalBbSwingIdx[RF90_PATH_A] = (pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A];
+			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
+				pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
 
-			ODM_SetBBReg(pDM_Odm, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[ODM_RF_PATH_A]]);
+			ODM_SetBBReg(pDM_Odm, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		}
 	} else if (Method == MIX_MODE) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
@@ -945,7 +945,7 @@ static void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Me
 
 			Final_OFDM_Swing_Index = pDM_Odm->DefaultOfdmIndex + pDM_Odm->Aboslute_OFDMSwingIdx[RFPath];
 
-			if (RFPath == ODM_RF_PATH_A) {
+			if (RFPath == RF90_PATH_A) {
 				if (Final_OFDM_Swing_Index > PwrTrackingLimit) {
 					/* BBSwing higher then Limit */
 					pDM_Odm->Remnant_CCKSwingIdx = Final_OFDM_Swing_Index - PwrTrackingLimit;            /* CCK Follow the same compensate value as Path A */

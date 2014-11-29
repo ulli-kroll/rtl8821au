@@ -23,7 +23,7 @@
 #if (RTL8821A_SUPPORT == 1)
 
 void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Data, enum _ODM_RF_RADIO_PATH path, uint32_t RegAddr)
+	uint32_t Data, enum radio_path path, uint32_t RegAddr)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;

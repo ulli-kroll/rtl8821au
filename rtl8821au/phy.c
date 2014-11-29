@@ -2360,7 +2360,7 @@ static s8 phy_GetChannelGroup(BAND_TYPE Band, uint8_t Channel)
 }
 
 static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel,
-	BAND_TYPE Band, enum CHANNEL_WIDTH Bandwidth, RF_PATH RfPath,
+	BAND_TYPE Band, enum CHANNEL_WIDTH Bandwidth, enum _RF_PATH RfPath,
 	uint8_t DataRate, uint8_t Channel)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);

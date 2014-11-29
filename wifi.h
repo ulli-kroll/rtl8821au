@@ -8,12 +8,12 @@ enum radio_path {
 	RF90_PATH_D = 3,
 };
 
-typedef enum _RF_PATH{
+enum _RF_PATH {
 	RF_PATH_A = 0,
 	RF_PATH_B,
 	RF_PATH_C,
 	RF_PATH_D
-}RF_PATH, *PRF_PATH;
+};
 
 typedef enum _ODM_RF_RADIO_PATH {
     ODM_RF_PATH_A = 0,   //Radio Path A

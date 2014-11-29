@@ -114,13 +114,13 @@ static uint32_t ODM_GetBBReg(struct rtl_dm *pDM_Odm, uint32_t RegAddr,
 	return rtl_get_bbreg(pDM_Odm->Adapter, RegAddr, BitMask);
 }
 
-static void ODM_SetRFReg(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
+static void ODM_SetRFReg(struct rtl_dm *pDM_Odm, enum _ODM_RF_RADIO_PATH eRFPath,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
 	rtw_hal_write_rfreg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask, Data);
 }
 
-static uint32_t ODM_GetRFReg(struct rtl_dm *pDM_Odm, ODM_RF_RADIO_PATH_E eRFPath,
+static uint32_t ODM_GetRFReg(struct rtl_dm *pDM_Odm, enum _ODM_RF_RADIO_PATH eRFPath,
 	uint32_t RegAddr, uint32_t BitMask)
 {
 	return rtw_hal_read_rfreg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask);

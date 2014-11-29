@@ -49,7 +49,7 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask
 /*									*/
 /* ****************************************************************************** */
 
-static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path,
+static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, enum _ODM_RF_RADIO_PATH Path,
 	unsigned int RX_X, unsigned int RX_Y)
 {
 	switch (Path) {
@@ -84,7 +84,7 @@ static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PA
 	};
 }
 
-static void _rtl8821au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path,
+static void _rtl8821au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, enum _ODM_RF_RADIO_PATH Path,
 	unsigned int RX_X, unsigned int RX_Y)
 {
 	switch (Path) {
@@ -100,7 +100,7 @@ static void _rtl8821au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PA
 	};
 }
 
-static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E  Path,
+static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum _ODM_RF_RADIO_PATH  Path,
 	unsigned int TX_X, unsigned int TX_Y)
 {
 	switch (Path) {
@@ -129,7 +129,7 @@ static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PA
 	};
 }
 
-static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path,
+static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum _ODM_RF_RADIO_PATH Path,
 	unsigned int TX_X, unsigned int TX_Y)
 {
 	switch (Path) {
@@ -152,7 +152,7 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PA
 
 /* ULLI this function needs a complete rewrite (or we cantake code form rtlwifi-lib */
 
-static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path)
+static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum _ODM_RF_RADIO_PATH Path)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
@@ -1359,7 +1359,7 @@ static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 }
 
 static void _rtl8812au_iqk_restore_rf(struct rtl_priv *rtlpriv,
-	ODM_RF_RADIO_PATH_E Path, uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
+	enum _ODM_RF_RADIO_PATH Path, uint32_t *Backup_RF_REG, uint32_t *RF_backup, uint32_t RF_REG_NUM)
 {
 	uint32_t i;
 
@@ -1382,7 +1382,7 @@ static void _rtl8812au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 }
 
 static void _rtl8821au_iqk_restore_rf(struct rtl_priv *rtlpriv,
-				      ODM_RF_RADIO_PATH_E Path,
+				      enum _ODM_RF_RADIO_PATH Path,
 				      u32 *backup_rf_reg,
 				      u32 *rf_backup, u32 rf_reg_num)
 {
@@ -1530,7 +1530,7 @@ void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery)
 
 #define cal_num 3
 
-static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E Path)
+static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum _ODM_RF_RADIO_PATH Path)
 {
 	uint32_t TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int 	TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
@@ -3049,7 +3049,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && pHalData->EEPROMRegulatory != 2)
 		||  pHalData->EEPROMRegulatory == 1) {
 			uint8_t limit = 0;
-			limit = PHY_GetPowerLimitValue(pAdapter, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (ODM_RF_RADIO_PATH_E)RFPath, Rate, Channel);
+			limit = PHY_GetPowerLimitValue(pAdapter, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (enum _ODM_RF_RADIO_PATH)RFPath, Rate, Channel);
 
 			if (Rate == MGN_VHT1SS_MCS8 || Rate == MGN_VHT1SS_MCS9  ||
 			    Rate == MGN_VHT2SS_MCS8 || Rate == MGN_VHT2SS_MCS9) {
@@ -3436,7 +3436,7 @@ HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(struct rtl_dm *pDM_Odm)
 *                           RadioA.TXT
 ******************************************************************************/
 static void odm_ConfigRFReg_8812A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Data, ODM_RF_RADIO_PATH_E path, uint32_t RegAddr)
+	uint32_t Data, enum _ODM_RF_RADIO_PATH path, uint32_t RegAddr)
 {
 	if (Addr == 0xfe || Addr == 0xffe) {
 		msleep(50);
@@ -3472,7 +3472,7 @@ static void _rtl8812au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr
 
 
 void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
-				ODM_RF_RADIO_PATH_E eRFPath)
+				enum _ODM_RF_RADIO_PATH eRFPath)
 {
 	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
@@ -3607,7 +3607,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 *                           RadioA.TXT
 ******************************************************************************/
 static void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Data, ODM_RF_RADIO_PATH_E path, uint32_t RegAddr)
+	uint32_t Data, enum _ODM_RF_RADIO_PATH path, uint32_t RegAddr)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
@@ -3645,7 +3645,7 @@ static void _rtl8821au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr
 }
 
 
-void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, ODM_RF_RADIO_PATH_E eRFPath)
+void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum _ODM_RF_RADIO_PATH eRFPath)
 {
 	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;

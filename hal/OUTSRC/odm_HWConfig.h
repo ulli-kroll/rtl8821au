@@ -243,7 +243,7 @@ ODM_PhyStatusQuery(
 
 HAL_STATUS
 ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
-	IN ODM_RF_Config_Type ConfigType, IN ODM_RF_RADIO_PATH_E eRFPath);
+	IN ODM_RF_Config_Type ConfigType, IN enum _ODM_RF_RADIO_PATH eRFPath);
 
 HAL_STATUS
 ODM_ConfigBBWithHeaderFile(

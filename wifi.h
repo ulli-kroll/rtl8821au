@@ -15,13 +15,13 @@ enum _RF_PATH {
 	RF_PATH_D
 };
 
-typedef enum _ODM_RF_RADIO_PATH {
+enum _ODM_RF_RADIO_PATH {
     ODM_RF_PATH_A = 0,   //Radio Path A
     ODM_RF_PATH_B = 1,   //Radio Path B
     ODM_RF_PATH_C = 2,   //Radio Path C
     ODM_RF_PATH_D = 3,   //Radio Path D
   //  ODM_RF_PATH_MAX,    //Max RF number 90 support
-} ODM_RF_RADIO_PATH_E, *PODM_RF_RADIO_PATH_E;
+};
 
 
 struct rtl_hal_ops;

@@ -699,7 +699,7 @@ void ODM_PhyStatusQuery(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
  */
 
 HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
-	ODM_RF_Config_Type ConfigType, ODM_RF_RADIO_PATH_E eRFPath)
+	ODM_RF_Config_Type ConfigType, enum _ODM_RF_RADIO_PATH eRFPath)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;

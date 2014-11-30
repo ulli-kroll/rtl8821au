@@ -20,12 +20,6 @@
 #ifndef __RTL8812A_RF_H__
 #define __RTL8812A_RF_H__
 
-
-VOID
-PHY_RF6052SetCckTxPower8812(
-	IN	struct rtl_priv *Adapter,
-	IN	u8*			pPowerlevel);
-
 VOID
 PHY_RF6052SetOFDMTxPower8812(
 	IN	struct rtl_priv *Adapter,

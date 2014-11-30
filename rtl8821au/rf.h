@@ -3,5 +3,6 @@
 
 void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH	Bandwidth);
 int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv);
+void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *Adapter, uint8_t *pPowerlevel);
 
 #endif

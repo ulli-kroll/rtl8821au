@@ -2820,7 +2820,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter);
 void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
 	u8 Channel);
 
-static void phy_SwChnl8812(struct rtl_priv *pAdapter)
+static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 {
 	uint8_t	eRFPath = 0;
 	struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
@@ -2909,7 +2909,7 @@ static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 	}
 
 	if (pHalData->bSwChnl) {
-		phy_SwChnl8812(Adapter);
+		rtl8821au_phy_sw_chnl_callback(Adapter);
 		pHalData->bSwChnl = _FALSE;
 	}
 

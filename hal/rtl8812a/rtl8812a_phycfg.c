@@ -2851,7 +2851,7 @@ VOID _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH bw)
 	}
 }
 
-static void phy_FixSpur_8812A(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
+static void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
 	u8 Channel)
 {
 	/* C cut Item12 ADC FIFO CLOCK */
@@ -2970,7 +2970,7 @@ static void phy_PostSetBwMode8812(struct rtl_priv *Adapter)
 	}
 
 	/* <20121109, Kordan> A workaround for 8812A only. */
-	phy_FixSpur_8812A(Adapter, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+	rtl8812au_fixspur(Adapter, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 
 	/*
 	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", rtw_read8(Adapter, 0x483));
@@ -3060,7 +3060,7 @@ static void phy_SwChnl8812(struct rtl_priv *pAdapter)
 			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x000); //5'b00000);
 
 		/* <20121109, Kordan> A workaround for 8812A only. */
-		phy_FixSpur_8812A(pAdapter, pHalData->CurrentChannelBW, channelToSW);
+		rtl8812au_fixspur(pAdapter, pHalData->CurrentChannelBW, channelToSW);
 
 		rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, MASKBYTE0, channelToSW);
 

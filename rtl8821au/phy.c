@@ -1,6 +1,7 @@
 #include <rtl8812a_hal.h>
 #include "phy.h"
 #include "table.h"
+#include "rf.h"
 /*
  * 1. BB register R/W API
  */
@@ -3704,4 +3705,204 @@ void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radi
 	}
 
 }
+
+static void _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH bw)
+{
+	u16 reg_rf_mode_bw, tmp = 0;
+
+	reg_rf_mode_bw = rtw_read16(rtlpriv, REG_WMAC_TRXPTCL_CTL);
+	switch (bw) {
+	case CHANNEL_WIDTH_20:
+		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, reg_rf_mode_bw & 0xFE7F);
+		break;
+	case CHANNEL_WIDTH_40:
+		tmp = reg_rf_mode_bw | BIT(7);
+		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFEFF);
+		break;
+	case CHANNEL_WIDTH_80:
+		tmp = reg_rf_mode_bw | BIT(8);
+		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFF7F);
+		break;
+	default:
+		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n", bw);
+		break;
+	}
+}
+
+void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
+	u8 Channel)
+{
+	/* C cut Item12 ADC FIFO CLOCK */
+	if(IS_VENDOR_8812A_C_CUT(pAdapter)) {
+		if(Bandwidth == CHANNEL_WIDTH_40 && Channel == 11)
+			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0xC00, 0x3);		/* 0x8AC[11:10] = 2'b11 */
+		else
+			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0xC00, 0x2);		/* 0x8AC[11:10] = 2'b10 */
+
+		/*
+		 *  <20120914, Kordan> A workarould to resolve 2480Mhz spur by setting ADC clock as 160M. (Asked by Binson) 
+		 */
+		if (Bandwidth == CHANNEL_WIDTH_20 && (Channel == 13 || Channel == 14)) {
+			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0x300, 0x3);  		/* 0x8AC[9:8] = 2'b11 */
+			rtl_set_bbreg(pAdapter, rADC_Buf_Clk_Jaguar, BIT30, 1);  	/* 0x8C4[30] = 1 */
+		} else if (Bandwidth == CHANNEL_WIDTH_40 && Channel == 11) {
+			rtl_set_bbreg(pAdapter, rADC_Buf_Clk_Jaguar, BIT30, 1);  	/* 0x8C4[30] = 1 */
+		} else if (Bandwidth != CHANNEL_WIDTH_80) {
+			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0x300, 0x2);  		/* 0x8AC[9:8] = 2'b10 */
+			rtl_set_bbreg(pAdapter, rADC_Buf_Clk_Jaguar, BIT30, 0);  	/* 0x8C4[30] = 0 */
+
+		}
+	} else if (IS_HARDWARE_TYPE_8812(pAdapter)) {
+		/* <20120914, Kordan> A workarould to resolve 2480Mhz spur by setting ADC clock as 160M. (Asked by Binson) */
+		if (Bandwidth == CHANNEL_WIDTH_20 && (Channel == 13 || Channel == 14))
+			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0x300, 0x3);  /* 0x8AC[9:8] = 11 */
+		else if (Channel <= 14) /* 2.4G only */
+			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0x300, 0x2);  /* 0x8AC[9:8] = 10 */
+	}
+
+}
+static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *Adapter)
+{
+	uint8_t					SCSettingOf40 = 0, SCSettingOf20 = 0;
+	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
+
+	/*
+	 * DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
+	 */
+	if(pHalData->CurrentChannelBW== CHANNEL_WIDTH_80) {
+		if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
+			SCSettingOf40 = VHT_DATA_SC_40_LOWER_OF_80MHZ;
+		else if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
+			SCSettingOf40 = VHT_DATA_SC_40_UPPER_OF_80MHZ;
+		else
+			DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
+
+		if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
+			SCSettingOf20 = VHT_DATA_SC_20_LOWEST_OF_80MHZ;
+		else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
+			SCSettingOf20 = VHT_DATA_SC_20_LOWER_OF_80MHZ;
+		else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
+			SCSettingOf20 = VHT_DATA_SC_20_UPPER_OF_80MHZ;
+		else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
+			SCSettingOf20 = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
+		else
+			DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
+	} else if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_40) {
+		/*
+		 * DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur40MhzPrimeSC);
+		 */
+
+		if(pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
+			SCSettingOf20 = VHT_DATA_SC_20_UPPER_OF_80MHZ;
+		else if(pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
+			SCSettingOf20 = VHT_DATA_SC_20_LOWER_OF_80MHZ;
+		else
+			DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
+	}
+
+	/*
+	 * DBG_871X("SCMapping: SC Value %x \n", ( (SCSettingOf40 << 4) | SCSettingOf20));
+	 */
+	return  ( (SCSettingOf40 << 4) | SCSettingOf20);
+}
+
+
+void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
+{
+	uint8_t			SubChnlNum = 0;
+	uint8_t			L1pkVal = 0;
+	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+
+	/* 3 Set Reg668 Reg440 BW */
+	_rtl8821au_phy_set_reg_bw(Adapter, pHalData->CurrentChannelBW);
+
+	/* 3 Set Reg483 */
+	SubChnlNum = _rtl8821au_phy_get_secondary_chnl(Adapter);
+	rtw_write8(Adapter, REG_DATA_SC_8812, SubChnlNum);
+
+	if (pHalData->rf_chip == RF_PSEUDO_11N) {
+		DBG_871X("phy_PostSetBwMode8812: return for PSEUDO \n");
+		return;
+	}
+
+	/* DBG_871X("[BW:CHNL], phy_PostSetBwMode8812(), set BW=%s !!\n", GLBwSrc[pHalData->CurrentChannelBW]); */
+
+	/* 3 Set Reg848 Reg864 Reg8AC Reg8C4 RegA00 */
+	switch (pHalData->CurrentChannelBW) {
+	case CHANNEL_WIDTH_20:
+		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x003003C3, 0x00300200); /* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
+		rtl_set_bbreg(Adapter, rADC_Buf_Clk_Jaguar, BIT30, 0);			// 0x8c4[30] = 1'b0
+
+		rtl_set_bbreg(Adapter, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 4);	/* 0x864[20:18] = 3'b4 */
+
+		if(pHalData->rf_type == RF_2T2R)
+			rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, 7);	/* 2R 0x848[25:22] = 0x7 */
+		else
+			rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, 8);	/* 1R 0x848[25:22] = 0x8 */
+
+		break;
+
+	case CHANNEL_WIDTH_40:
+		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x003003C3, 0x00300201);	/* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
+		rtl_set_bbreg(Adapter, rADC_Buf_Clk_Jaguar, BIT30, 0);		/* 0x8c4[30] = 1'b0 */
+		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x3C, SubChnlNum);
+		rtl_set_bbreg(Adapter, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
+
+		rtl_set_bbreg(Adapter, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
+
+		if(pHalData->Reg837 & BIT2)
+			L1pkVal = 6;
+		else {
+			if(pHalData->rf_type == RF_2T2R)
+				L1pkVal = 7;
+			else
+				L1pkVal = 8;
+		}
+
+		rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, L1pkVal);	/* 0x848[25:22] = 0x6 */
+
+		if(SubChnlNum == VHT_DATA_SC_20_UPPER_OF_80MHZ)
+			rtl_set_bbreg(Adapter, rCCK_System_Jaguar, bCCK_System_Jaguar, 1);
+		else
+			rtl_set_bbreg(Adapter, rCCK_System_Jaguar, bCCK_System_Jaguar, 0);
+		break;
+
+	case CHANNEL_WIDTH_80:
+		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x003003C3, 0x00300202);	/* 0x8ac[21,20,9:6,1,0]=8'b11100010 */
+		rtl_set_bbreg(Adapter, rADC_Buf_Clk_Jaguar, BIT30, 1);		/* 0x8c4[30] = 1 */
+		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x3C, SubChnlNum);
+		rtl_set_bbreg(Adapter, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
+
+		rtl_set_bbreg(Adapter, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
+
+		if(pHalData->Reg837 & BIT2)
+			L1pkVal = 5;
+		else {
+			if(pHalData->rf_type == RF_2T2R)
+				L1pkVal = 6;
+			else
+				L1pkVal = 7;
+		}
+		rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, L1pkVal);	/* 0x848[25:22] = 0x5 */
+
+		break;
+
+	default:
+		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n",pHalData->CurrentChannelBW);
+		break;
+	}
+
+	/* <20121109, Kordan> A workaround for 8812A only. */
+	rtl8812au_fixspur(Adapter, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+
+	/*
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", rtw_read8(Adapter, 0x483));
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg668: %x\n", rtw_read32(Adapter, 0x668));
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg8AC: %x\n", rtl_get_bbreg(Adapter, rRFMOD_Jaguar, 0xffffffff));
+	 */
+
+	/* 3 Set RF related register */
+	rtl8821au_phy_rf6052_set_bandwidth(Adapter, pHalData->CurrentChannelBW);
+}
+
 

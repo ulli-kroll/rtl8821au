@@ -127,7 +127,7 @@ void PHY_RF6052SetCckTxPower8812(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 }	/* PHY_RF6052SetCckTxPower */
 
 
-static int phy_RF6052_Config_ParaFile_8812(struct rtl_priv *rtlpriv)
+static int _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 {
 	uint8_t	eRFPath;
 	int	rtStatus = _SUCCESS;
@@ -173,7 +173,7 @@ int PHY_RF6052_Config_8812(struct rtl_priv *rtlpriv)
 	 * Config BB and RF
 	 */
 
-	rtStatus = phy_RF6052_Config_ParaFile_8812(rtlpriv);
+	rtStatus = _rtl8821au_phy_rf6052_config_parafile(rtlpriv);
 
 	return rtStatus;
 

@@ -390,7 +390,7 @@ int PHY_RFConfig8812(struct rtl_priv *Adapter)
 		DBG_871X("%s(): RF_PSEUDO_11N\n",__FUNCTION__);
 		break;
 	default:
-		rtStatus = PHY_RF6052_Config_8812(Adapter);
+		rtStatus = rtl8821au_phy_rf6052_config(Adapter);
 		break;
 	}
 

@@ -2828,7 +2828,7 @@ static u8 phy_GetSecondaryChnl_8812(struct rtl_priv *Adapter)
 	return  ( (SCSettingOf40 << 4) | SCSettingOf20);
 }
 
-VOID phy_SetRegBW_8812(struct rtl_priv *Adapter, enum CHANNEL_WIDTH 	CurrentBW)
+VOID _rtl8821au_phy_set_reg_bw(struct rtl_priv *Adapter, enum CHANNEL_WIDTH 	CurrentBW)
 {
 	u16	RegRfMod_BW, u2tmp = 0;
 	RegRfMod_BW = rtw_read16(Adapter, REG_WMAC_TRXPTCL_CTL);
@@ -2895,7 +2895,7 @@ static void phy_PostSetBwMode8812(struct rtl_priv *Adapter)
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	/* 3 Set Reg668 Reg440 BW */
-	phy_SetRegBW_8812(Adapter, pHalData->CurrentChannelBW);
+	_rtl8821au_phy_set_reg_bw(Adapter, pHalData->CurrentChannelBW);
 
 	/* 3 Set Reg483 */
 	SubChnlNum = phy_GetSecondaryChnl_8812(Adapter);

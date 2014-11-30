@@ -71,12 +71,6 @@ int	PHY_RFConfig8812(IN struct rtl_priv *Adapter	);
 
 /* RF config */
 
-int32_t
-PHY_SwitchWirelessBand8812(
-	IN struct rtl_priv *	Adapter,
-	IN uint8_t			Band
-);
-
 //
 // BB TX Power R/W
 //

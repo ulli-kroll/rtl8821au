@@ -1343,9 +1343,9 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_RF);
 #endif
 
 	if (Adapter->registrypriv.channel <= 14)
-		PHY_SwitchWirelessBand8812(Adapter, BAND_ON_2_4G);
+		rtl8821au_phy_switch_wirelessband(Adapter, BAND_ON_2_4G);
 	else
-		PHY_SwitchWirelessBand8812(Adapter, BAND_ON_5G);
+		rtl8821au_phy_switch_wirelessband(Adapter, BAND_ON_5G);
 
 	rtw_hal_set_chnl_bw(Adapter, Adapter->registrypriv.channel,
 		CHANNEL_WIDTH_20, HAL_PRIME_CHNL_OFFSET_DONT_CARE, HAL_PRIME_CHNL_OFFSET_DONT_CARE);

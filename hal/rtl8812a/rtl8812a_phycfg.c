@@ -2556,12 +2556,12 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 	}
 }
 
-int32_t PHY_SwitchWirelessBand8812(struct rtl_priv *Adapter, uint8_t Band)
+void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 {
 	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 	uint8_t				currentBand = pHalData->CurrentBandType;
 
-	/* DBG_871X("==>PHY_SwitchWirelessBand8812() %s\n", ((Band==0)?"2.4G":"5G")); */
+	/* DBG_871X("==>rtl8821au_phy_switch_wirelessband() %s\n", ((Band==0)?"2.4G":"5G")); */
 
 	pHalData->CurrentBandType =(BAND_TYPE)Band;
 
@@ -2659,7 +2659,7 @@ int32_t PHY_SwitchWirelessBand8812(struct rtl_priv *Adapter, uint8_t Band)
 			/* DBG_871X("Reg41A value %d", reg41A); */
 		}
 		if(count != 0)
-			DBG_871X("PHY_SwitchWirelessBand8812(): Switch to 5G Band. Count = %d reg41A=0x%x\n", count, reg41A);
+			DBG_871X("rtl8821au_phy_switch_wirelessband(): Switch to 5G Band. Count = %d reg41A=0x%x\n", count, reg41A);
 
 		/* STOP Tx/Rx */
 		rtl_set_bbreg(Adapter, rOFDMCCKEN_Jaguar, bOFDMEN_Jaguar|bCCKEN_Jaguar, 0x00);
@@ -2724,7 +2724,7 @@ int32_t PHY_SwitchWirelessBand8812(struct rtl_priv *Adapter, uint8_t Band)
 			rtw_hal_write_rfreg(Adapter, RF90_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x04BFF);
 		}
 
-		/* DBG_871X("==>PHY_SwitchWirelessBand8812() BAND_ON_5G settings OFDM index 0x%x\n", pHalData->OFDM_index[RF90_PATH_A]); */
+		/* DBG_871X("==>rtl8821au_phy_switch_wirelessband() BAND_ON_5G settings OFDM index 0x%x\n", pHalData->OFDM_index[RF90_PATH_A]); */
 	}
 
 	/* <20120903, Kordan> Tx BB swing setting for RL6286, asked by Ynlin. */
@@ -2754,8 +2754,7 @@ int32_t PHY_SwitchWirelessBand8812(struct rtl_priv *Adapter, uint8_t Band)
 		}
 	}
 
-	/* DBG_871X("<==PHY_SwitchWirelessBand8812():Switch Band OK.\n"); */
-	return _SUCCESS;
+	/* DBG_871X("<==rtl8821au_phy_switch_wirelessband():Switch Band OK.\n"); */
 }
 
 static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
@@ -2778,7 +2777,7 @@ static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
 	}
 
 	if(BandToSW != Band)
-		PHY_SwitchWirelessBand8812(pAdapter,BandToSW);
+		rtl8821au_phy_switch_wirelessband(pAdapter,BandToSW);
 
 	return ret_value;
 }

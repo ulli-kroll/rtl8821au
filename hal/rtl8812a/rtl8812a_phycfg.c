@@ -2828,31 +2828,27 @@ static u8 phy_GetSecondaryChnl_8812(struct rtl_priv *Adapter)
 	return  ( (SCSettingOf40 << 4) | SCSettingOf20);
 }
 
-VOID _rtl8821au_phy_set_reg_bw(struct rtl_priv *Adapter, enum CHANNEL_WIDTH 	CurrentBW)
+VOID _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH bw)
 {
-	u16	RegRfMod_BW, u2tmp = 0;
-	RegRfMod_BW = rtw_read16(Adapter, REG_WMAC_TRXPTCL_CTL);
+	u16 reg_rf_mode_bw, tmp = 0;
 
-	switch(CurrentBW) {
+	reg_rf_mode_bw = rtw_read16(rtlpriv, REG_WMAC_TRXPTCL_CTL);
+	switch (bw) {
 	case CHANNEL_WIDTH_20:
-		rtw_write16(Adapter, REG_WMAC_TRXPTCL_CTL, (RegRfMod_BW & 0xFE7F)); // BIT 7 = 0, BIT 8 = 0
+		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, reg_rf_mode_bw & 0xFE7F);
 		break;
-
 	case CHANNEL_WIDTH_40:
-		u2tmp = RegRfMod_BW | BIT7;
-		rtw_write16(Adapter, REG_WMAC_TRXPTCL_CTL, (u2tmp & 0xFEFF)); // BIT 7 = 1, BIT 8 = 0
+		tmp = reg_rf_mode_bw | BIT(7);
+		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFEFF);
 		break;
-
 	case CHANNEL_WIDTH_80:
-		u2tmp = RegRfMod_BW | BIT8;
-		rtw_write16(Adapter, REG_WMAC_TRXPTCL_CTL, (u2tmp & 0xFF7F)); // BIT 7 = 0, BIT 8 = 1
+		tmp = reg_rf_mode_bw | BIT(8);
+		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFF7F);
 		break;
-
 	default:
-		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n",CurrentBW);
+		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n", bw);
 		break;
 	}
-
 }
 
 static void phy_FixSpur_8812A(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,

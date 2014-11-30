@@ -2884,7 +2884,7 @@ static void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Band
 
 }
 
-static void phy_PostSetBwMode8812(struct rtl_priv *Adapter)
+static void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 {
 	uint8_t			SubChnlNum = 0;
 	uint8_t			L1pkVal = 0;
@@ -3102,7 +3102,7 @@ static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 	}
 
 	if (pHalData->bSetChnlBW) {
-		phy_PostSetBwMode8812(Adapter);
+		rtl8821au_phy_set_bw_mode_callback(Adapter);
 		pHalData->bSetChnlBW = _FALSE;
 	}
 

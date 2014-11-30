@@ -2783,7 +2783,7 @@ static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
 	return ret_value;
 }
 
-static u8 phy_GetSecondaryChnl_8812(struct rtl_priv *Adapter)
+static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *Adapter)
 {
 	uint8_t					SCSettingOf40 = 0, SCSettingOf20 = 0;
 	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
@@ -2894,7 +2894,7 @@ static void phy_PostSetBwMode8812(struct rtl_priv *Adapter)
 	_rtl8821au_phy_set_reg_bw(Adapter, pHalData->CurrentChannelBW);
 
 	/* 3 Set Reg483 */
-	SubChnlNum = phy_GetSecondaryChnl_8812(Adapter);
+	SubChnlNum = _rtl8821au_phy_get_secondary_chnl(Adapter);
 	rtw_write8(Adapter, REG_DATA_SC_8812, SubChnlNum);
 
 	if (pHalData->rf_chip == RF_PSEUDO_11N) {

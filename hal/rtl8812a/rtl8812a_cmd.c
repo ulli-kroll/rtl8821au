@@ -21,6 +21,7 @@
 
 //#include <drv_types.h>
 #include <rtl8812a_hal.h>
+#include <../rtl8821au/trx.h>
 
 #define CONFIG_H2C_EF
 
@@ -836,7 +837,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *padapter, BOOLEAN bDLFinished
 
 		//(2) ps-poll
 		ConstructPSPoll(padapter, &ReservedPagePacket[BufIndex], &PSPollLength);
-		rtl8812a_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], PSPollLength, _TRUE, _FALSE);
+		rtl8821au_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], PSPollLength, _TRUE, _FALSE);
 
 		SET_8812_H2CCMD_RSVDPAGE_LOC_PSPOLL(RsvdPageLoc, TotalPageNum);
 
@@ -863,7 +864,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *padapter, BOOLEAN bDLFinished
 			&NullFunctionDataLength,
 			get_my_bssid(&pmlmeinfo->network),
 			_FALSE, 0, 0, _FALSE);
-		rtl8812a_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], NullFunctionDataLength, _FALSE, _FALSE);
+		rtl8821au_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], NullFunctionDataLength, _FALSE, _FALSE);
 
 		SET_8812_H2CCMD_RSVDPAGE_LOC_NULL_DATA(RsvdPageLoc, TotalPageNum);
 
@@ -890,7 +891,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *padapter, BOOLEAN bDLFinished
 			&QosNullLength,
 			get_my_bssid(&pmlmeinfo->network),
 			_TRUE, 0, 0, _FALSE);
-		rtl8812a_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], QosNullLength, _FALSE, _FALSE);
+		rtl8821au_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], QosNullLength, _FALSE, _FALSE);
 
 		SET_8812_H2CCMD_RSVDPAGE_LOC_QOS_NULL_DATA(RsvdPageLoc, TotalPageNum);
 

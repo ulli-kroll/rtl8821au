@@ -202,4 +202,12 @@ struct rtl_hal_ops {
 };
 
 
+static void rtw_hal_fill_fake_txdesc (struct rtl_priv *padapter, u8 *pDesc,
+	u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull)
+{
+	padapter->HalFunc->fill_fake_txdesc(padapter, pDesc, BufferLen, IsPsPoll, IsBTQosNull);
+}
+
+
+
 #endif

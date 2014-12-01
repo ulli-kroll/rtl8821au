@@ -20,6 +20,8 @@
 #define _HCI_OPS_OS_C_
 
 #include <rtl8812a_hal.h>
+#include <../rtl8821au/trx.h>
+
 
 static uint8_t usb_read8(struct intf_hdl *pintfhdl, uint32_t addr)
 {

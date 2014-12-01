@@ -21,6 +21,8 @@
 
 //#include <drv_types.h>
 #include <rtl8812a_hal.h>
+#include <../rtl8821au/trx.h>
+
 
 static int32_t  translate2dbm(uint8_t signal_strength_idx)
 {

@@ -108,6 +108,13 @@ struct rtl_hal_ops {
 
 	void	(*init_sw_leds)(struct rtl_priv *padapter);
 	
+/*
+ * 	ULLI from original rtlwifi-lib in wifi.h 
+ * 
+ * 	void (*fill_fake_txdesc) (struct ieee80211_hw *hw, u8 *pDesc,
+ *				  u32 buffer_len, bool bIsPsPoll);
+*/	
+	
 	void	(*fill_fake_txdesc) (struct rtl_priv *rtlpriv, u8 *pDesc,
 				     u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull);
 	

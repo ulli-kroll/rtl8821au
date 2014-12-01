@@ -109,7 +109,7 @@ void rtl8821au_fill_fake_txdesc(struct rtl_priv *padapter, uint8_t *pDesc,
 #define SET_EARLYMODE_LEN3_8812(__pAddr, __Value) 					SET_BITS_TO_LE_4BYTE(__pAddr+4, 17, 15, __Value)
 
 
-typedef struct txdescriptor_8812 {
+struct tx_desc_8821au {
 	// Offset 0
 	u32 pktlen:16;
 	u32 offset:8;
@@ -219,7 +219,7 @@ typedef struct txdescriptor_8812 {
 
 	// Offset 36
 	u32 rsvd36;
-}TXDESC_8812, *PTXDESC_8812;
+};
 
 
 

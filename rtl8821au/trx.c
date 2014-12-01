@@ -1,5 +1,6 @@
 #include <rtl8812a_hal.h>
 #include "trx.h"
+#include "def.h"
 
 void rtl8821au_fill_fake_txdesc(struct rtl_priv *padapter, uint8_t *pDesc,
 	uint32_t BufferLen, uint8_t IsPsPoll, uint8_t IsBTQosNull)

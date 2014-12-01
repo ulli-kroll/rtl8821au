@@ -90,13 +90,13 @@ void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 	count = 16;
 
 	/* Clear first */
-	SET_TX_DESC_TX_DESC_CHECKSUM_8812(ptxdesc, 0);
+	SET_TX_DESC_TX_DESC_CHECKSUM(ptxdesc, 0);
 
 	for (index = 0; index < count; index++) {
 		checksum = checksum ^ le16_to_cpu(*(usPtr + index));
 	}
 
-	SET_TX_DESC_TX_DESC_CHECKSUM_8812(ptxdesc, checksum);
+	SET_TX_DESC_TX_DESC_CHECKSUM(ptxdesc, checksum);
 }
 
 /*
@@ -116,14 +116,14 @@ void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, uint8_t *ptxdesc)
 		case _WEP104_:
 		case _TKIP_:
 		case _TKIP_WTMIC_:
-			SET_TX_DESC_SEC_TYPE_8812(ptxdesc, 0x1);
+			SET_TX_DESC_SEC_TYPE(ptxdesc, 0x1);
 			break;
 		case _AES_:
-			SET_TX_DESC_SEC_TYPE_8812(ptxdesc, 0x3);
+			SET_TX_DESC_SEC_TYPE(ptxdesc, 0x3);
 			break;
 		case _NO_PRIVACY_:
 		default:
-			SET_TX_DESC_SEC_TYPE_8812(ptxdesc, 0x0);
+			SET_TX_DESC_SEC_TYPE(ptxdesc, 0x0);
 			break;
 
 		}
@@ -142,25 +142,25 @@ void rtl8812a_fill_txdesc_vcs(struct rtl_priv *padapter, struct pkt_attrib *patt
 	if (pattrib->vcs_mode) {
 		switch(pattrib->vcs_mode) {
 		case RTS_CTS:
-			SET_TX_DESC_RTS_ENABLE_8812(ptxdesc, 1);
+			SET_TX_DESC_RTS_ENABLE(ptxdesc, 1);
 			break;
 		case CTS_TO_SELF:
-			SET_TX_DESC_CTS2SELF_8812(ptxdesc, 1);
+			SET_TX_DESC_CTS2SELF(ptxdesc, 1);
 			break;
 		case NONE_VCS:
 		default:
 			break;
 		}
 		if (pmlmeinfo->preamble_mode == PREAMBLE_SHORT)
-			SET_TX_DESC_RTS_SHORT_8812(ptxdesc, 1);
+			SET_TX_DESC_RTS_SHORT(ptxdesc, 1);
 
-		SET_TX_DESC_RTS_RATE_8812(ptxdesc, 0x8);	/*RTS Rate=24M */
+		SET_TX_DESC_RTS_RATE(ptxdesc, 0x8);	/*RTS Rate=24M */
 
-		SET_TX_DESC_RTS_RATE_FB_LIMIT_8812(ptxdesc, 0xf);
+		SET_TX_DESC_RTS_RATE_FB_LIMIT(ptxdesc, 0xf);
 
 		/*
 		 * Enable HW RTS
-		 * SET_TX_DESC_HW_RTS_ENABLE_8812(ptxdesc, 1);
+		 * SET_TX_DESC_HW_RTS_ENABLE(ptxdesc, 1);
 		 */
 	}
 }
@@ -171,8 +171,8 @@ void rtl8812a_fill_txdesc_phy(struct rtl_priv *padapter, struct pkt_attrib *patt
 
 	if (pattrib->ht_en) {
 		/*  Set Bandwidth and sub-channel settings. */
-		SET_TX_DESC_DATA_BW_8812(ptxdesc, BWMapping_8812(padapter,pattrib));
-		/* SET_TX_DESC_DATA_SC_8812(ptxdesc, SCMapping_8812(padapter,pattrib)); */
+		SET_TX_DESC_DATA_BW(ptxdesc, BWMapping_8812(padapter,pattrib));
+		/* SET_TX_DESC_DATA_SC(ptxdesc, SCMapping_8812(padapter,pattrib)); */
 	}
 }
 

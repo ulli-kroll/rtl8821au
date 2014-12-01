@@ -215,7 +215,7 @@ static int recvbuf2recvframe(struct rtl_priv *padapter, struct sk_buff *pskb)
 	pbuf = pskb->data;
 
 #ifdef CONFIG_USB_RX_AGGREGATION
-	pkt_cnt = GET_RX_STATUS_DESC_USB_AGG_PKTNUM_8812(pbuf);
+	pkt_cnt = GET_RX_STATUS_DESC_USB_AGG_PKTNUM(pbuf);
 #endif
 
 	do {

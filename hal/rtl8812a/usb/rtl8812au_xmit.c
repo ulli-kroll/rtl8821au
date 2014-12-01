@@ -68,20 +68,20 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	memset(ptxdesc, 0, TXDESC_SIZE);
 
 	/* 4 offset 0 */
-	SET_TX_DESC_FIRST_SEG_8812(ptxdesc, 1);
-	SET_TX_DESC_LAST_SEG_8812(ptxdesc, 1);
-	SET_TX_DESC_OWN_8812(ptxdesc, 1);
+	SET_TX_DESC_FIRST_SEG(ptxdesc, 1);
+	SET_TX_DESC_LAST_SEG(ptxdesc, 1);
+	SET_TX_DESC_OWN(ptxdesc, 1);
 
 	/* DBG_8192C("%s==> pkt_len=%d,bagg_pkt=%02x\n",__FUNCTION__,sz,bagg_pkt); */
-	SET_TX_DESC_PKT_SIZE_8812(ptxdesc, sz);
+	SET_TX_DESC_PKT_SIZE(ptxdesc, sz);
 
 	offset = TXDESC_SIZE + OFFSET_SZ;
 
 	/* DBG_8192C("%s==>offset(0x%02x)  \n",__FUNCTION__,offset); */
-	SET_TX_DESC_OFFSET_8812(ptxdesc, offset);
+	SET_TX_DESC_OFFSET(ptxdesc, offset);
 
 	if (bmcst) {
-		SET_TX_DESC_BMC_8812(ptxdesc, 1);
+		SET_TX_DESC_BMC(ptxdesc, 1);
 	}
 
 	if (padapter->registrypriv.mp_mode == 0) {
@@ -97,20 +97,20 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	 * pkt_offset, unit:8 bytes padding
 	 */
 	if (pxmitframe->pkt_offset > 0) {
-		SET_TX_DESC_PKT_OFFSET_8812(ptxdesc, pxmitframe->pkt_offset);
+		SET_TX_DESC_PKT_OFFSET(ptxdesc, pxmitframe->pkt_offset);
 	}
 
-	SET_TX_DESC_MACID_8812(ptxdesc, pattrib->mac_id);
-	SET_TX_DESC_RATE_ID_8812(ptxdesc, pattrib->raid);
+	SET_TX_DESC_MACID(ptxdesc, pattrib->mac_id);
+	SET_TX_DESC_RATE_ID(ptxdesc, pattrib->raid);
 
-	SET_TX_DESC_QUEUE_SEL_8812(ptxdesc,  pattrib->qsel);
+	SET_TX_DESC_QUEUE_SEL(ptxdesc,  pattrib->qsel);
 
 	/* offset 12 */
 
 	if (!pattrib->qos_en) {
-		SET_TX_DESC_HWSEQ_EN_8812(ptxdesc, 1); /* Hw set sequence number */
+		SET_TX_DESC_HWSEQ_EN(ptxdesc, 1); /* Hw set sequence number */
 	} else {
-		SET_TX_DESC_SEQ_8812(ptxdesc, pattrib->seqnum);
+		SET_TX_DESC_SEQ(ptxdesc, pattrib->seqnum);
 	}
 
 	if ((pxmitframe->frame_tag&0x0f) == DATA_FRAMETAG) {
@@ -122,7 +122,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 #ifdef CONFIG_USB_TX_AGGREGATION
 		if (pxmitframe->agg_num > 1) {
 			/* DBG_8192C("%s agg_num:%d\n",__FUNCTION__,pxmitframe->agg_num ); */
-			SET_TX_DESC_USB_TXAGG_NUM_8812(ptxdesc, pxmitframe->agg_num);
+			SET_TX_DESC_USB_TXAGG_NUM(ptxdesc, pxmitframe->agg_num);
 		}
 #endif
 
@@ -135,40 +135,40 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 			/* Non EAP & ARP & DHCP type data packet */
 
 			if (pattrib->ampdu_en == _TRUE) {
-				SET_TX_DESC_AGG_ENABLE_8812(ptxdesc, 1);
-				SET_TX_DESC_MAX_AGG_NUM_8812(ptxdesc, 0x1f);
+				SET_TX_DESC_AGG_ENABLE(ptxdesc, 1);
+				SET_TX_DESC_MAX_AGG_NUM(ptxdesc, 0x1f);
 				/* Set A-MPDU aggregation. */
-				SET_TX_DESC_AMPDU_DENSITY_8812(ptxdesc, pHalData->AMPDUDensity);
+				SET_TX_DESC_AMPDU_DENSITY(ptxdesc, pHalData->AMPDUDensity);
 			} else {
-				SET_TX_DESC_AGG_BREAK_8812(ptxdesc, 1);
+				SET_TX_DESC_AGG_BREAK(ptxdesc, 1);
 			}
 
 			rtl8812a_fill_txdesc_phy(padapter, pattrib, ptxdesc);
 
 			/* DATA  Rate FB LMT */
-			SET_TX_DESC_DATA_RATE_FB_LIMIT_8812(ptxdesc, 0x1f);
+			SET_TX_DESC_DATA_RATE_FB_LIMIT(ptxdesc, 0x1f);
 
 			if (pHalData->fw_ractrl == _FALSE) {
-				SET_TX_DESC_USE_RATE_8812(ptxdesc, 1);
+				SET_TX_DESC_USE_RATE(ptxdesc, 1);
 
 				if (pdmpriv->INIDATA_RATE[pattrib->mac_id] & BIT(7))
-					SET_TX_DESC_DATA_SHORT_8812(ptxdesc, 	1);
+					SET_TX_DESC_DATA_SHORT(ptxdesc, 	1);
 
-				SET_TX_DESC_TX_RATE_8812(ptxdesc, (pdmpriv->INIDATA_RATE[pattrib->mac_id] & 0x7F));
+				SET_TX_DESC_TX_RATE(ptxdesc, (pdmpriv->INIDATA_RATE[pattrib->mac_id] & 0x7F));
 			}
 
 			if (padapter->fix_rate != 0xFF) { 	/* modify data rate by iwpriv */
-				SET_TX_DESC_USE_RATE_8812(ptxdesc, 1);
+				SET_TX_DESC_USE_RATE(ptxdesc, 1);
 				if (padapter->fix_rate & BIT(7))
-					SET_TX_DESC_DATA_SHORT_8812(ptxdesc, 	1);
+					SET_TX_DESC_DATA_SHORT(ptxdesc, 	1);
 
-				SET_TX_DESC_TX_RATE_8812(ptxdesc, (padapter->fix_rate & 0x7F));
+				SET_TX_DESC_TX_RATE(ptxdesc, (padapter->fix_rate & 0x7F));
 			}
 
 			if (pattrib->ldpc)
-				SET_TX_DESC_DATA_LDPC_8812(ptxdesc, 1);
+				SET_TX_DESC_DATA_LDPC(ptxdesc, 1);
 			if (pattrib->stbc)
-				SET_TX_DESC_DATA_STBC_8812(ptxdesc, 1);
+				SET_TX_DESC_DATA_STBC(ptxdesc, 1);
 		} else {
 			/*
 			 *  EAP data packet and ARP packet and DHCP.
@@ -176,15 +176,15 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 			 *  This will maybe make the handshake smooth.
 			 */
 
-			SET_TX_DESC_USE_RATE_8812(ptxdesc, 1);
-			SET_TX_DESC_AGG_BREAK_8812(ptxdesc, 1);
+			SET_TX_DESC_USE_RATE(ptxdesc, 1);
+			SET_TX_DESC_AGG_BREAK(ptxdesc, 1);
 
 			/* HW will ignore this setting if the transmission rate is legacy OFDM. */
 			if (pmlmeinfo->preamble_mode == PREAMBLE_SHORT) {
-				SET_TX_DESC_DATA_SHORT_8812(ptxdesc, 1);
+				SET_TX_DESC_DATA_SHORT(ptxdesc, 1);
 			}
 
-			SET_TX_DESC_TX_RATE_8812(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
+			SET_TX_DESC_TX_RATE(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
 		}
 	} else if ((pxmitframe->frame_tag&0x0f) == MGNT_FRAMETAG) {
 		/* DBG_8192C("pxmitframe->frame_tag == MGNT_FRAMETAG\n"); */
@@ -193,25 +193,25 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 			SET_TX_DESC_MBSSID_8821(ptxdesc, pattrib->mbssid);
 
 		/* offset 20 */
-		SET_TX_DESC_RETRY_LIMIT_ENABLE_8812(ptxdesc, 1);
+		SET_TX_DESC_RETRY_LIMIT_ENABLE(ptxdesc, 1);
 
 		if (pattrib->retry_ctrl == _TRUE) {
-			SET_TX_DESC_DATA_RETRY_LIMIT_8812(ptxdesc, 6);
+			SET_TX_DESC_DATA_RETRY_LIMIT(ptxdesc, 6);
 		} else {
-			SET_TX_DESC_DATA_RETRY_LIMIT_8812(ptxdesc, 12);
+			SET_TX_DESC_DATA_RETRY_LIMIT(ptxdesc, 12);
 		}
 
-		SET_TX_DESC_USE_RATE_8812(ptxdesc, 1);
+		SET_TX_DESC_USE_RATE(ptxdesc, 1);
 		{
-			SET_TX_DESC_TX_RATE_8812(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
+			SET_TX_DESC_TX_RATE(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
 		}
 	} else if ((pxmitframe->frame_tag&0x0f) == TXAGG_FRAMETAG) {
 		DBG_8192C("pxmitframe->frame_tag == TXAGG_FRAMETAG\n");
 	} else {
 		DBG_8192C("pxmitframe->frame_tag = %d\n", pxmitframe->frame_tag);
 
-		SET_TX_DESC_USE_RATE_8812(ptxdesc, 1);
-		SET_TX_DESC_TX_RATE_8812(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
+		SET_TX_DESC_USE_RATE(ptxdesc, 1);
+		SET_TX_DESC_TX_RATE(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
 	}
 
 	rtl8812a_cal_txdesc_chksum(ptxdesc);

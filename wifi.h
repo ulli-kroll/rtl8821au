@@ -107,7 +107,10 @@ struct rtl_hal_ops {
 	void (*deinit_sw_vars) (struct net_device *ndev);
 
 	void	(*init_sw_leds)(struct rtl_priv *padapter);
-
+	
+	void	(*fill_fake_txdesc) (struct rtl_priv *rtlpriv, u8 *pDesc,
+				     u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull);
+	
 	u32	(*get_bbreg)(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask);
 	void	(*set_bbreg)(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask, u32 Data);
 	u32	(*get_rfreg)(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask);

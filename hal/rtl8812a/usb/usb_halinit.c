@@ -22,6 +22,7 @@
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/phy.h>
 #include <../rtl8821au/reg.h>
+#include <../rtl8821au/trx.h>
 
 
 static void _dbg_dump_macreg(struct rtl_priv *padapter)
@@ -2219,6 +2220,8 @@ struct rtl_hal_ops rtl8812au_hal_ops = {
 	.set_bbreg = 	rtl8821au_phy_set_bb_reg,
 	.get_rfreg = 	PHY_QueryRFReg8812,
 	.set_rfreg = 	PHY_SetRFReg8812,
+
+	.fill_fake_txdesc	= rtl8821au_fill_fake_txdesc,
 
 	/* Old HAL functions */
 

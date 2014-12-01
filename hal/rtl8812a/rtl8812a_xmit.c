@@ -21,6 +21,7 @@
 
 //#include <drv_types.h>
 #include <rtl8812a_hal.h>
+#include <../rtl8821au/trx.h>
 
 void _dbg_dump_tx_info(struct rtl_priv	*padapter,int frame_tag, uint8_t *ptxdesc)
 {

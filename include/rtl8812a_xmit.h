@@ -93,7 +93,6 @@
 
 
 void rtl8812a_cal_txdesc_chksum(u8 *ptxdesc);
-void rtl8812a_fill_fake_txdesc(struct rtl_priv *padapter,u8*pDesc,u32 BufferLen,u8 IsPsPoll,u8	IsBTQosNull);
 void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, u8 *ptxdesc);
 void rtl8812a_fill_txdesc_vcs(struct rtl_priv *padapter, struct pkt_attrib *pattrib, u8 *ptxdesc);
 void rtl8812a_fill_txdesc_phy(struct rtl_priv *padapter, struct pkt_attrib *pattrib, u8 *ptxdesc);

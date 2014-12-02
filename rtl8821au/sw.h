@@ -3,6 +3,6 @@
 
 #include <rtl8812a_hal.h>
 
-extern struct rtl_hal_ops rtl8812au_hal_ops;
+extern struct rtl_hal_ops rtl8821au_hal_ops;
 
 #endif

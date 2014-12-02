@@ -21,6 +21,7 @@
 
 #include <drv_types.h>
 #include <rtl8812a_hal.h>
+#include <../rtl8821au/sw.h>
 
 #ifdef CONFIG_80211N_HT
 extern int rtw_ht_enable;
@@ -727,7 +728,7 @@ int netdev_open(struct net_device *ndev);
 int netdev_close(struct net_device *ndev);
 int rtw_net_set_mac_address(struct net_device *ndev, void *p);
 struct net_device_stats *rtw_net_get_stats(struct net_device *ndev);
-static uint loadparam(struct rtl_priv *padapter, struct net_device *ndev);
+uint loadparam(struct rtl_priv *padapter, struct net_device *ndev);
 
 static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_open = netdev_open,
@@ -757,7 +758,6 @@ RETURN:
 */
 
 struct rtl_priv  *rtw_sw_export = NULL;
-extern struct hal_ops rtl8812au_hal_ops;
 
 struct rtl_priv *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
@@ -816,7 +816,7 @@ struct rtl_priv *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 		DBG_8192C("cant not alloc memory for HAL DATA \n");
 	}
 
-	padapter->HalFunc = &rtl8812au_hal_ops;
+	padapter->HalFunc = &rtl8821au_hal_ops;
 
 	padapter->intf_start=&usb_intf_start;
 	padapter->intf_stop=&usb_intf_stop;

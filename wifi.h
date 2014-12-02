@@ -217,4 +217,18 @@ static void rtw_hal_fill_fake_txdesc (struct rtl_priv *padapter, u8 *pDesc,
 
 
 
+
+/*Only for transition between old (RTW) and new (rtlwifi-lib) API */
+
+uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter);
+uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter);
+unsigned int rtl8812au_inirp_init(struct rtl_priv *Adapter);
+unsigned int rtl8812au_inirp_deinit(struct rtl_priv *Adapter);
+void rtl8812au_init_default_value(struct rtl_priv *padapter);
+void rtl8812au_interface_configure(struct rtl_priv *padapter);
+void ReadAdapterInfo8812AU(struct rtl_priv *Adapter);
+u8 GetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable, PVOID pValue);
+u8 SetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable, PVOID pValue);
+uint8_t rtl8812au_ps_func(struct rtl_priv *Adapter, HAL_INTF_PS_FUNC efunc_id, uint8_t *val);
+
 #endif

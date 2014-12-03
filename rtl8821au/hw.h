@@ -4,7 +4,7 @@
 
 #include <rtl8812a_hal.h>
 
-void SetHwReg8812AU(struct rtl_priv *Adapter, uint8_t variable, u8 *val);
-void GetHwReg8812AU(struct rtl_priv *Adapter, uint8_t variable, u8 *val);
+void rtl8821au_set_hw_reg(struct rtl_priv *Adapter, uint8_t variable, u8 *val);
+void rtl8821au_get_hw_reg(struct rtl_priv *Adapter, uint8_t variable, u8 *val);
 
 #endif

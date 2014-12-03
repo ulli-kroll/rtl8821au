@@ -285,13 +285,10 @@ BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *Adapter);
 
 
 void _InitBeaconParameters_8812A(struct rtl_priv *padapter);
-void SetBeaconRelatedRegisters8812A(struct rtl_priv *padapter);
 
 void ReadRFType8812A(struct rtl_priv *padapter);
 void InitDefaultValue8821A(struct rtl_priv *padapter);
 
-void SetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval);
-void GetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval);
 uint8_t SetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, void *pval);
 uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, void *pval);
 

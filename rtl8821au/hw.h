@@ -7,4 +7,8 @@
 void rtl8821au_set_hw_reg(struct rtl_priv *padapter, u8 variable,u8 *val);
 void rtl8821au_get_hw_reg(struct rtl_priv *padapter, u8 variable,u8 *val);
 
+void SetBeaconRelatedRegisters8812A(struct rtl_priv *padapter);
+
+
+
 #endif

@@ -122,14 +122,14 @@ uint rtw_hal_deinit(struct rtl_priv *padapter)
 
 void rtw_hal_set_hwreg(struct rtl_priv *padapter, uint8_t variable, uint8_t *val)
 {
-	if (padapter->HalFunc->SetHwRegHandler)
-		padapter->HalFunc->SetHwRegHandler(padapter, variable, val);
+	if (padapter->HalFunc->set_hw_reg)
+		padapter->HalFunc->set_hw_reg(padapter, variable, val);
 }
 
 void rtw_hal_get_hwreg(struct rtl_priv *padapter, uint8_t variable, uint8_t *val)
 {
-	if (padapter->HalFunc->GetHwRegHandler)
-		padapter->HalFunc->GetHwRegHandler(padapter, variable, val);
+	if (padapter->HalFunc->get_hw_reg)
+		padapter->HalFunc->get_hw_reg(padapter, variable, val);
 }
 
 uint8_t rtw_hal_set_def_var(struct rtl_priv *padapter, HAL_DEF_VARIABLE eVariable, PVOID pValue)

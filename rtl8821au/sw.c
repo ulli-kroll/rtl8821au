@@ -62,8 +62,8 @@ struct rtl_hal_ops rtl8821au_hal_ops = {
 	/* .hal_dm_watchdog = 	rtl8192c_HalDmWatchDog; */
 
 
-	.SetHwRegHandler = 	rtl8821au_set_hw_reg,
-	.GetHwRegHandler = 	rtl8821au_get_hw_reg,
+	.set_hw_reg =	 	rtl8821au_set_hw_reg,
+	.get_hw_reg = 		rtl8821au_get_hw_reg,
 	.GetHalDefVarHandler = 	GetHalDefVar8812AUsb,
 	.SetHalDefVarHandler = 	SetHalDefVar8812AUsb,
 

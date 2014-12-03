@@ -108,6 +108,8 @@ struct rtl_hal_ops {
 
 	void	(*init_sw_leds)(struct rtl_priv *padapter);
 	
+	void	(*set_hw_reg)(struct rtl_priv *padapter, u8 variable,u8 *val);
+	void	(*get_hw_reg)(struct rtl_priv *padapter, u8 variable,u8 *val);
 /*
  * 	ULLI from original rtlwifi-lib in wifi.h 
  * 
@@ -160,9 +162,6 @@ struct rtl_hal_ops {
 	void	(*set_chnl_bw_handler)(struct rtl_priv *padapter, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
 
 	void	(*hal_dm_watchdog)(struct rtl_priv *padapter);
-
-	void	(*SetHwRegHandler)(struct rtl_priv *padapter, uint8_t	variable,u8* val);
-	void	(*GetHwRegHandler)(struct rtl_priv *padapter, uint8_t	variable,u8* val);
 
 	uint8_t	(*GetHalDefVarHandler)(struct rtl_priv *padapter, HAL_DEF_VARIABLE eVariable, PVOID pValue);
 	uint8_t	(*SetHalDefVarHandler)(struct rtl_priv *padapter, HAL_DEF_VARIABLE eVariable, PVOID pValue);

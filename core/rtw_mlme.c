@@ -2840,7 +2840,7 @@ void rtw_update_ht_cap(struct rtl_priv *padapter, uint8_t *pie, uint ie_len, uin
 		int i;
 		uint8_t	rf_type;
 
-		padapter->HalFunc->GetHwRegHandler(padapter, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+		padapter->HalFunc->get_hw_reg(padapter, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 
 		//update the MCS rates
 		for (i = 0; i < 16; i++)

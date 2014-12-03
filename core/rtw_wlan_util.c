@@ -2134,9 +2134,9 @@ void update_wireless_mode(struct rtl_priv *padapter)
 	SIFS_Timer = 0x0a0a0808; //0x0808 -> for CCK, 0x0a0a -> for OFDM
                              //change this value if having IOT issues.
 
-	padapter->HalFunc->SetHwRegHandler( padapter, HW_VAR_RESP_SIFS,  (uint8_t *)&SIFS_Timer);
+	padapter->HalFunc->set_hw_reg( padapter, HW_VAR_RESP_SIFS,  (uint8_t *)&SIFS_Timer);
 
-	padapter->HalFunc->SetHwRegHandler( padapter, HW_VAR_WIRELESS_MODE,  (uint8_t *)&(pmlmeext->cur_wireless_mode));
+	padapter->HalFunc->set_hw_reg( padapter, HW_VAR_WIRELESS_MODE,  (uint8_t *)&(pmlmeext->cur_wireless_mode));
 
 	if (pmlmeext->cur_wireless_mode & WIRELESS_11B)
 		update_mgnt_tx_rate(padapter, IEEE80211_CCK_RATE_1MB);

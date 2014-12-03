@@ -1,7 +1,7 @@
 #include "hw.h"
 
 
-void rtl8821au_set_hw_reg(struct rtl_priv *Adapter, uint8_t variable, u8 *val)
+void rtl8821au_set_hw_reg(struct rtl_priv *Adapter, u8 variable,u8 *val)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -48,7 +48,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *Adapter, uint8_t variable, u8 *val)
 	}
 }
 
-void rtl8821au_get_hw_reg(struct rtl_priv *Adapter, uint8_t variable, u8 *val)
+void rtl8821au_get_hw_reg(struct rtl_priv *Adapter, u8 variable,u8 *val)
 {
 		struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 		struct rtl_dm *podmpriv = &pHalData->odmpriv;

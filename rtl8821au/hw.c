@@ -966,7 +966,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *Adapter, u8 variable,u8 *val)
 	}
 }
 
-static void GetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *pval)
+void rtl8821au_get_hw_reg(struct rtl_priv *padapter, u8 variable,u8 *pval)
 {
 	struct rtw_hal *pHalData;
 	struct rtl_dm *podmpriv;
@@ -1044,20 +1044,7 @@ static void GetHwReg8812A(struct rtl_priv *padapter, uint8_t variable, uint8_t *
 		DBG_8192C("%s: [WARNNING] variable(%d) not defined!\n", __FUNCTION__, variable);
 		break;
 	}
-
-_func_exit_;
 }
 
 
 
-void rtl8821au_get_hw_reg(struct rtl_priv *Adapter, u8 variable,u8 *val)
-{
-		struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-		struct rtl_dm *podmpriv = &pHalData->odmpriv;
-
-		switch (variable) {
-		default:
-			GetHwReg8812A(Adapter, variable, val);
-			break;
-		}
-}

@@ -164,36 +164,6 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 
 }
 
-static void hw_var_set_macaddr(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
-{
-	uint8_t idx = 0;
-	uint32_t reg_macid;
-
-	{
-		reg_macid = REG_MACID;
-	}
-
-	for (idx = 0 ; idx < 6; idx++) {
-		rtw_write8(rtlpriv, (reg_macid+idx), val[idx]);
-	}
-
-}
-
-static void hw_var_set_bssid(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
-{
-	uint8_t	idx = 0;
-	uint32_t reg_bssid;
-
-	{
-		reg_bssid = REG_BSSID;
-	}
-
-	for (idx = 0 ; idx < 6; idx++) {
-		rtw_write8(rtlpriv, (reg_bssid+idx), val[idx]);
-	}
-
-}
-
 static void hw_var_set_bcn_func(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
 	uint32_t bcn_ctrl_reg;
@@ -304,6 +274,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	uint8_t val8;
 	u16 val16;
 	uint32_t val32;
+	u8 idx;
 
 	pHalData = GET_HAL_DATA(rtlpriv);
 	pdmpriv = &pHalData->dmpriv;
@@ -364,11 +335,15 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_MAC_ADDR:
-		hw_var_set_macaddr(rtlpriv, variable, pval);
+		for (idx = 0 ; idx < 6; idx++) {
+			rtw_write8(rtlpriv, (REG_MACID + idx), pval[idx]);
+		}
 		break;
 
 	case HW_VAR_BSSID:
-		hw_var_set_bssid(rtlpriv, variable, pval);
+		for (idx = 0 ; idx < 6; idx++) {
+			rtw_write8(rtlpriv, (REG_BSSID + idx), pval[idx]);
+		}
 		break;
 
 	case HW_VAR_BASIC_RATE:

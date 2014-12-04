@@ -21,6 +21,7 @@
 #include <drv_types.h>
 #include <hal_data.h>
 #include <rtw_sreset.h>
+#include <../rtl8821au/hw.h>
 
 void sreset_init_value(struct rtl_priv *padapter)
 {

@@ -20,6 +20,7 @@
 #define _RTW_MLME_EXT_C_
 
 #include <drv_types.h>
+#include <../rtl8821au/hw.h>
 
 
 struct mlme_handler mlme_sta_tbl[]={

@@ -1037,5 +1037,21 @@ void rtl8821au_get_hw_reg(struct rtl_priv *padapter, u8 variable,u8 *pval)
 	}
 }
 
+/*
+ * These functions sets the media type register
+ * AP, STA, ADHOC
+ */
+
+static void Set_NETYPE0_MSR(struct rtl_priv *padapter, uint8_t type)
+{
+	rtw_hal_set_hwreg(padapter, HW_VAR_MEDIA_STATUS, (uint8_t *)(&type));
+}
+
+void Set_MSR(struct rtl_priv *padapter, uint8_t type)
+{
+	{
+		Set_NETYPE0_MSR(padapter, type);
+	}
+}
 
 

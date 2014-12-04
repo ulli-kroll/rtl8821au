@@ -445,17 +445,6 @@ static void Set_NETYPE1_MSR(struct rtl_priv *padapter, uint8_t type)
 	rtw_hal_set_hwreg(padapter, HW_VAR_MEDIA_STATUS1, (uint8_t *)(&type));
 }
 
-static void Set_NETYPE0_MSR(struct rtl_priv *padapter, uint8_t type)
-{
-	rtw_hal_set_hwreg(padapter, HW_VAR_MEDIA_STATUS, (uint8_t *)(&type));
-}
-
-void Set_MSR(struct rtl_priv *padapter, uint8_t type)
-{
-	{
-		Set_NETYPE0_MSR(padapter, type);
-	}
-}
 
 inline uint8_t rtw_get_oper_ch(struct rtl_priv *adapter)
 {

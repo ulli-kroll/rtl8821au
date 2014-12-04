@@ -523,7 +523,6 @@ void Switch_DM_Func(struct rtl_priv *padapter, u32 mode, uint8_t enable);
 
 //void Set_NETYPE1_MSR(struct rtl_priv *padapter, uint8_t type);
 //void Set_NETYPE0_MSR(struct rtl_priv *padapter, uint8_t type);
-void Set_MSR(struct rtl_priv *padapter, uint8_t type);
 
 uint8_t rtw_get_oper_ch(struct rtl_priv *adapter);
 void rtw_set_oper_ch(struct rtl_priv *adapter, uint8_t ch);

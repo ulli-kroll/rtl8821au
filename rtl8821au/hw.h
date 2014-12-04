@@ -11,4 +11,8 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *padapter);
 
 
 
+/* temporaly prototypes for transition */
+
+void Set_MSR(struct rtl_priv *padapter, uint8_t type);
+
 #endif

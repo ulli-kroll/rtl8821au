@@ -20,6 +20,7 @@
 #define _RTW_AP_C_
 
 #include <drv_types.h>
+#include <../rtl8821au/hw.h>
 
 
 #ifdef CONFIG_AP_MODE

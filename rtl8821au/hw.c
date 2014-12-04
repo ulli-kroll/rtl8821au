@@ -721,7 +721,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			 * Forece leave RF low power mode for 1T1R to prevent conficting setting in Fw power
 			 * saving sequence. 2010.06.07. Added by tynli. Suggested by SD3 yschang.
 			 */
-			rtl8812_set_FwPwrMode_cmd(rtlpriv, psmode);
+			rtl8812au_set_fw_pwrmode_cmd(rtlpriv, psmode);
 		}
 		break;
 

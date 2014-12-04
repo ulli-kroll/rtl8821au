@@ -121,7 +121,7 @@ struct H2C_SS_RFOFF_PARAM{
 void	Set_RA_LDPC_8812(struct sta_info	*psta, BOOLEAN bLDPC);
 
 // host message to firmware cmd
-void rtl8812_set_FwPwrMode_cmd(struct rtl_priv *padapter, uint8_t PSMode);
+void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *padapter, uint8_t PSMode);
 void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus);
 uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *padapter, uint8_t *param);
 void rtl8812_set_raid_cmd(struct rtl_priv *padapter, u32 bitmap, u8* arg);

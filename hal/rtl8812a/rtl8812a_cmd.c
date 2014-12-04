@@ -375,7 +375,7 @@ void rtl8812_Add_RateATid(struct rtl_priv *pAdapter, uint32_t bitmap, uint8_t * 
 	rtl8812_set_raid_cmd(pAdapter, bitmap, arg);
 }
 
-void rtl8812_set_FwPwrMode_cmd(struct rtl_priv *padapter, uint8_t PSMode)
+void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *padapter, uint8_t PSMode)
 {
 	uint8_t	u1H2CSetPwrMode[5]={0};
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;

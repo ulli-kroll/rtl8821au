@@ -155,7 +155,7 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 	/*  0x456 = 0x70, sugguested by Zhilin */
 	rtl_write_byte(Adapter, REG_AMPDU_MAX_TIME_8812, 0x70);
 
-	rtw_write32(Adapter, 0x458, 0xffffffff);
+	rtl_write_dword(Adapter, 0x458, 0xffffffff);
 	rtl_write_byte(Adapter, REG_USTIME_TSF, 0x50);
 	rtl_write_byte(Adapter, REG_USTIME_EDCA, 0x50);
 
@@ -215,7 +215,7 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 		rtl_write_word(Adapter, REG_MAX_AGGR_NUM, 0x0a0a);
 		rtl_write_byte(Adapter, REG_FWHW_TXQ_CTRL, 0x80);
 		rtl_write_byte(Adapter, REG_AMPDU_MAX_TIME_8812, 0x5e);
-		rtw_write32(Adapter, REG_FAST_EDCA_CTRL, 0x03087777);
+		rtl_write_dword(Adapter, REG_FAST_EDCA_CTRL, 0x03087777);
 	} else {
 		rtl_write_byte(Adapter, REG_MAX_AGGR_NUM, 0x1f);
 		rtl_write_byte(Adapter, REG_FWHW_TXQ_CTRL, rtl_read_byte(Adapter, REG_FWHW_TXQ_CTRL)&(~BIT(7)));
@@ -228,18 +228,18 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 	rtl_write_byte(Adapter, 0x1c, rtl_read_byte(Adapter, 0x1c) | BIT(5) | BIT(6));  /* to prevent mac is reseted by bus. 20111208, by Page */
 
 	/* ARFB table 9 for 11ac 5G 2SS */
-	rtw_write32(Adapter, REG_ARFR0, 0x00000010);
+	rtl_write_dword(Adapter, REG_ARFR0, 0x00000010);
 	if (IS_NORMAL_CHIP(pHalData->VersionID))
-		rtw_write32(Adapter, REG_ARFR0+4, 0xfffff000);
+		rtl_write_dword(Adapter, REG_ARFR0+4, 0xfffff000);
 	else
-		rtw_write32(Adapter, REG_ARFR0+4, 0x3e0ff000);
+		rtl_write_dword(Adapter, REG_ARFR0+4, 0x3e0ff000);
 
 	/* ARFB table 10 for 11ac 5G 1SS */
-	rtw_write32(Adapter, REG_ARFR1, 0x00000010);
+	rtl_write_dword(Adapter, REG_ARFR1, 0x00000010);
 	if (IS_VENDOR_8812A_TEST_CHIP(Adapter))
-		rtw_write32(Adapter, REG_ARFR1_8812+4, 0x000ff000);
+		rtl_write_dword(Adapter, REG_ARFR1_8812+4, 0x000ff000);
 	else
-		rtw_write32(Adapter, REG_ARFR1_8812+4, 0x003ff000);
+		rtl_write_dword(Adapter, REG_ARFR1_8812+4, 0x003ff000);
 
 }
 
@@ -310,8 +310,8 @@ static VOID _InitInterrupt_8812AU(struct rtl_priv *Adapter)
 	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	/* HIMR */
-	rtw_write32(Adapter, REG_HIMR0_8812, pHalData->IntrMask[0]&0xFFFFFFFF);
-	rtw_write32(Adapter, REG_HIMR1_8812, pHalData->IntrMask[1]&0xFFFFFFFF);
+	rtl_write_dword(Adapter, REG_HIMR0_8812, pHalData->IntrMask[0]&0xFFFFFFFF);
+	rtl_write_dword(Adapter, REG_HIMR1_8812, pHalData->IntrMask[1]&0xFFFFFFFF);
 }
 
 static VOID _InitQueueReservedPage_8821AUsb(struct rtl_priv *Adapter)
@@ -363,7 +363,7 @@ static VOID _InitQueueReservedPage_8821AUsb(struct rtl_priv *Adapter)
 
 	/* TX DMA */
 	value32 = _HPQ(numHQ) | _LPQ(numLQ) | _PUBQ(numPubQ) | LD_RQPN;
-	rtw_write32(Adapter, REG_RQPN, value32);
+	rtl_write_dword(Adapter, REG_RQPN, value32);
 }
 
 static VOID _InitQueueReservedPage_8812AUsb(struct rtl_priv *Adapter)
@@ -415,7 +415,7 @@ static VOID _InitQueueReservedPage_8812AUsb(struct rtl_priv *Adapter)
 
 	/* TX DMA */
 	value32 = _HPQ(numHQ) | _LPQ(numLQ) | _PUBQ(numPubQ) | LD_RQPN;
-	rtw_write32(Adapter, REG_RQPN, value32);
+	rtl_write_dword(Adapter, REG_RQPN, value32);
 }
 
 static void _InitID_8812A(IN  struct rtl_priv *Adapter)
@@ -595,7 +595,7 @@ static VOID _InitHardwareDropIncorrectBulkOut_8812A(struct rtl_priv *Adapter)
 {
 	uint32_t value32 = rtl_read_dword(Adapter, REG_TXDMA_OFFSET_CHK);
 	value32 |= DROP_DATA_EN;
-	rtw_write32(Adapter, REG_TXDMA_OFFSET_CHK, value32);
+	rtl_write_dword(Adapter, REG_TXDMA_OFFSET_CHK, value32);
 }
 
 static VOID _InitNetworkType_8812A(struct rtl_priv *Adapter)
@@ -606,7 +606,7 @@ static VOID _InitNetworkType_8812A(struct rtl_priv *Adapter)
 	/*  TODO: use the other function to set network type */
 	value32 = (value32 & ~MASK_NETTYPE) | _NETTYPE(NT_LINK_AP);
 
-	rtw_write32(Adapter, REG_CR, value32);
+	rtl_write_dword(Adapter, REG_CR, value32);
 }
 
 static VOID _InitTransferPageSize_8812AUsb(struct rtl_priv *Adapter)
@@ -646,11 +646,11 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *Adapter)
 	/*
 	 *  some REG_RCR will be modified later by phy_ConfigMACWithHeaderFile()
 	 */
-	rtw_write32(Adapter, REG_RCR, pHalData->ReceiveConfig);
+	rtl_write_dword(Adapter, REG_RCR, pHalData->ReceiveConfig);
 
 	/* Accept all multicast address */
-	rtw_write32(Adapter, REG_MAR, 0xFFFFFFFF);
-	rtw_write32(Adapter, REG_MAR + 4, 0xFFFFFFFF);
+	rtl_write_dword(Adapter, REG_MAR, 0xFFFFFFFF);
+	rtl_write_dword(Adapter, REG_MAR + 4, 0xFFFFFFFF);
 
 
 	/*
@@ -695,7 +695,7 @@ static VOID _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *Adapter)
 		value32 |= RATE_RRSR_WITHOUT_CCK;
 
 	value32 |= RATE_RRSR_CCK_ONLY_1M;
-	rtw_write32(Adapter, REG_RRSR, value32);
+	rtl_write_dword(Adapter, REG_RRSR, value32);
 
 	/*
 	 * CF-END Threshold
@@ -725,10 +725,10 @@ static VOID _InitEDCA_8812AUsb(struct rtl_priv *Adapter)
 	rtl_write_word(Adapter, REG_SIFS_TRX, 0x100a);
 
 	/* TXOP */
-	rtw_write32(Adapter, REG_EDCA_BE_PARAM, 0x005EA42B);
-	rtw_write32(Adapter, REG_EDCA_BK_PARAM, 0x0000A44F);
-	rtw_write32(Adapter, REG_EDCA_VI_PARAM, 0x005EA324);
-	rtw_write32(Adapter, REG_EDCA_VO_PARAM, 0x002FA226);
+	rtl_write_dword(Adapter, REG_EDCA_BE_PARAM, 0x005EA42B);
+	rtl_write_dword(Adapter, REG_EDCA_BK_PARAM, 0x0000A44F);
+	rtl_write_dword(Adapter, REG_EDCA_VI_PARAM, 0x005EA324);
+	rtl_write_dword(Adapter, REG_EDCA_VO_PARAM, 0x002FA226);
 
 	/* 0x50 for 80MHz clock */
 	rtl_write_byte(Adapter, REG_USTIME_TSF, 0x50);
@@ -771,9 +771,9 @@ static VOID _InitRDGSetting_8812A(struct rtl_priv *Adapter)
 
 static VOID _InitRxSetting_8812AU(struct rtl_priv *Adapter)
 {
-	rtw_write32(Adapter, REG_MACID, 0x87654321);
+	rtl_write_dword(Adapter, REG_MACID, 0x87654321);
 	/* ULLI unknown register */
-	rtw_write32(Adapter, 0x0700, 0x87654321);
+	rtl_write_dword(Adapter, 0x0700, 0x87654321);
 }
 
 static VOID _InitRetryFunction_8812A(IN  struct rtl_priv *Adapter)
@@ -820,7 +820,7 @@ static VOID usb_AggSettingTxUpdate_8812A(struct rtl_priv *Adapter)
 		value32 = value32 & ~(BLK_DESC_NUM_MASK << BLK_DESC_NUM_SHIFT);
 		value32 |= ((pHalData->UsbTxAggDescNum & BLK_DESC_NUM_MASK) << BLK_DESC_NUM_SHIFT);
 
-		rtw_write32(Adapter, REG_TDECTRL, value32);
+		rtl_write_dword(Adapter, REG_TDECTRL, value32);
 	}
 
 #endif
@@ -1372,7 +1372,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC11);
 	 * Disable BAR, suggested by Scott
 	 * 2010.04.09 add by hpfan
 	 */
-	rtw_write32(Adapter, REG_BAR_MODE_CTRL, 0x0201ffff);
+	rtl_write_dword(Adapter, REG_BAR_MODE_CTRL, 0x0201ffff);
 
 	if (pregistrypriv->wifi_spec)
 		rtl_write_word(Adapter, REG_FAST_EDCA_CTRL, 0);
@@ -1566,10 +1566,10 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter)
 		rtl_write_byte(Adapter, 0xf008, rtl_read_byte(Adapter, 0xf008)|0x18);
 	}
 
-	rtw_write32(Adapter, REG_HISR0_8812, 0xFFFFFFFF);
-	rtw_write32(Adapter, REG_HISR1_8812, 0xFFFFFFFF);
-	rtw_write32(Adapter, REG_HIMR0_8812, IMR_DISABLED_8812);
-	rtw_write32(Adapter, REG_HIMR1_8812, IMR_DISABLED_8812);
+	rtl_write_dword(Adapter, REG_HISR0_8812, 0xFFFFFFFF);
+	rtl_write_dword(Adapter, REG_HISR1_8812, 0xFFFFFFFF);
+	rtl_write_dword(Adapter, REG_HIMR0_8812, IMR_DISABLED_8812);
+	rtl_write_dword(Adapter, REG_HIMR1_8812, IMR_DISABLED_8812);
 
 	{
 		if (Adapter->hw_init_completed == _TRUE) {
@@ -1981,9 +1981,9 @@ void UpdateInterruptMask8812AU(struct rtl_priv *padapter, uint8_t bHIMR0, uint32
 		*himr &= (~RemoveMSR);
 
 	if (bHIMR0)
-		rtw_write32(padapter, REG_HIMR0_8812, *himr);
+		rtl_write_dword(padapter, REG_HIMR0_8812, *himr);
 	else
-		rtw_write32(padapter, REG_HIMR1_8812, *himr);
+		rtl_write_dword(padapter, REG_HIMR1_8812, *himr);
 
 }
 

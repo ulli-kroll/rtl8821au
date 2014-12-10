@@ -120,7 +120,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *padapter, uint8_t ElementID, uin
 			}
 #else
 			h2c_cmd_ex = le32_to_cpu(h2c_cmd_ex);
-			rtw_write32(padapter, msgbox_ex_addr, h2c_cmd_ex);
+			rtl_write_dword(padapter, msgbox_ex_addr, h2c_cmd_ex);
 #endif
 		}
 		/* Write command */
@@ -131,7 +131,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *padapter, uint8_t ElementID, uin
 		}
 #else
 		h2c_cmd = le32_to_cpu(h2c_cmd);
-		rtw_write32(padapter, msgbox_addr, h2c_cmd);
+		rtl_write_dword(padapter, msgbox_addr, h2c_cmd);
 #endif
 
 		bcmd_down = _TRUE;

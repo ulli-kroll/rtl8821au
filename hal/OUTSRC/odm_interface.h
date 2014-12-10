@@ -83,7 +83,7 @@ static void ODM_Write2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, u16 Data)
 
 static void ODM_Write4Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, uint32_t Data)
 {
-	rtw_write32(pDM_Odm->Adapter,RegAddr, Data);
+	rtl_write_dword(pDM_Odm->Adapter,RegAddr, Data);
 }
 
 

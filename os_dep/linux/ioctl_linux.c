@@ -2569,12 +2569,12 @@ static int rtw_cta_test_start(struct net_device *ndev,
 	if (padapter->in_cta_test) {
 		u32 v = rtl_read_dword(padapter, REG_RCR);
 		v &= ~(RCR_CBSSID_DATA | RCR_CBSSID_BCN);	/* | RCR_ADF */
-		rtw_write32(padapter, REG_RCR, v);
+		rtl_write_dword(padapter, REG_RCR, v);
 		DBG_871X("enable RCR_ADF\n");
 	} else {
 		u32 v = rtl_read_dword(padapter, REG_RCR);
 		v |= RCR_CBSSID_DATA | RCR_CBSSID_BCN ;		/* | RCR_ADF */
-		rtw_write32(padapter, REG_RCR, v);
+		rtl_write_dword(padapter, REG_RCR, v);
 		DBG_871X("disable RCR_ADF\n");
 	}
 	return ret;

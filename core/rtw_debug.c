@@ -115,7 +115,7 @@ int proc_set_write_reg(struct file *file, const char *buffer,
 				rtl_write_word(padapter, addr, (u16)val);
 				break;
 			case 4:
-				rtw_write32(padapter, addr, val);
+				rtl_write_dword(padapter, addr, val);
 				break;
 			default:
 				DBG_871X("error write length=%d", len);

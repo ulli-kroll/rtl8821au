@@ -302,7 +302,7 @@ efuse_OneByteWrite(
 	efuseValue |= ((addr<<8 | data) & 0x3FFFF);
 
 	{
-		rtw_write32(padapter, EFUSE_CTRL, efuseValue);
+		rtl_write_dword(padapter, EFUSE_CTRL, efuseValue);
 	}
 
 	while((0x80 &  rtl_read_byte(padapter, EFUSE_CTRL+3)) && (tmpidx<100) ){

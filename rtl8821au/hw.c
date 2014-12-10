@@ -72,10 +72,10 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 
 	value32 = rtl_read_dword(rtlpriv, REG_TCR);
 	value32 &= ~TSFRST;
-	rtw_write32(rtlpriv,  REG_TCR, value32);
+	rtl_write_dword(rtlpriv,  REG_TCR, value32);
 
 	value32 |= TSFRST;
-	rtw_write32(rtlpriv, REG_TCR, value32);
+	rtl_write_dword(rtlpriv, REG_TCR, value32);
 
 	/* NOTE: Fix test chip's bug (about contention windows's randomness) */
 	rtl_write_byte(rtlpriv,  REG_RXTSF_OFFSET_CCK, 0x50);
@@ -127,7 +127,7 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 			rtl_write_byte(rtlpriv, REG_BCN_CTRL, 0x12);
 
 			/* Set RCR */
-			rtw_write32(rtlpriv, REG_RCR, 0x7000208e);	/* CBSSID_DATA must set to 0,reject ICV_ERR packet */
+			rtl_write_dword(rtlpriv, REG_RCR, 0x7000208e);	/* CBSSID_DATA must set to 0,reject ICV_ERR packet */
 			/* enable to rx data frame */
 			rtl_write_word(rtlpriv, REG_RXFLTMAP2, 0xFFFF);
 			/* enable to rx ps-poll */
@@ -205,7 +205,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 		/* under sitesurvey */
 
 		value_rcr &= ~(rcr_clear_bit);
-		rtw_write32(rtlpriv, REG_RCR, value_rcr);
+		rtl_write_dword(rtlpriv, REG_RCR, value_rcr);
 
 		rtl_write_word(rtlpriv, REG_RXFLTMAP2, value_rxfltmap2);
 
@@ -231,7 +231,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 		}
 
 		value_rcr |= rcr_clear_bit;
-		rtw_write32(rtlpriv, REG_RCR, value_rcr);
+		rtl_write_dword(rtlpriv, REG_RCR, value_rcr);
 
 		/* Restore orignal RRSR setting. */
 		rtl_write_word(rtlpriv, REG_RRSR, pHalData->RegRRSR);
@@ -413,8 +413,8 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			/* disable related TSF function */
 			rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)&(~BIT(3)));
 
-			rtw_write32(rtlpriv, REG_TSFTR, tsf);
-			rtw_write32(rtlpriv, REG_TSFTR+4, tsf>>32);
+			rtl_write_dword(rtlpriv, REG_TSFTR, tsf);
+			rtl_write_dword(rtlpriv, REG_TSFTR+4, tsf>>32);
 
 			/* enable related TSF function */
 			rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(3));
@@ -437,7 +437,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			val32 |= RCR_CBSSID_DATA|RCR_CBSSID_BCN;
 		else
 			val32 &= ~(RCR_CBSSID_DATA|RCR_CBSSID_BCN);
-		rtw_write32(rtlpriv, REG_RCR, val32);
+		rtl_write_dword(rtlpriv, REG_RCR, val32);
 		break;
 
 	case HW_VAR_MLME_DISCONNECT:
@@ -445,7 +445,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			/* Set RCR to not to receive data frame when NO LINK state
 			 * val32 = rtl_read_dword(rtlpriv, REG_RCR);
 			 * val32 &= ~RCR_ADF;
-			 * rtw_write32(rtlpriv, REG_RCR, val32);
+			 * rtl_write_dword(rtlpriv, REG_RCR, val32);
 			 */
 
 			 /* reject all data frames */
@@ -477,7 +477,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			if (type == 0) { 	/* prepare to join  */
 				/*
 				 * enable to rx data frame.Accept all data frame
-				 * rtw_write32(rtlpriv, REG_RCR, rtl_read_dword(rtlpriv, REG_RCR)|RCR_ADF);
+				 * rtl_write_dword(rtlpriv, REG_RCR, rtl_read_dword(rtlpriv, REG_RCR)|RCR_ADF);
 				 */
 				rtl_write_word(rtlpriv, REG_RXFLTMAP2, 0xFFFF);
 
@@ -486,7 +486,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 					val32 &= ~(RCR_CBSSID_DATA | RCR_CBSSID_BCN);/* | RCR_ADF */
 				else
 					val32 |= RCR_CBSSID_DATA|RCR_CBSSID_BCN;
-				rtw_write32(rtlpriv, REG_RCR, val32);
+				rtl_write_dword(rtlpriv, REG_RCR, val32);
 
 				if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE) {
 					RetryLimit = (pEEPROM->CustomerID == RT_CID_CCX) ? 7 : 48;
@@ -518,14 +518,14 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	case HW_VAR_ON_RCR_AM:
 		val32 = rtl_read_dword(rtlpriv, REG_RCR);
 		val32 |= RCR_AM;
-		rtw_write32(rtlpriv, REG_RCR, val32);
+		rtl_write_dword(rtlpriv, REG_RCR, val32);
 		DBG_8192C("%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
 		break;
 
 	case HW_VAR_OFF_RCR_AM:
 		val32 = rtl_read_dword(rtlpriv, REG_RCR);
 		val32 &= ~RCR_AM;
-		rtw_write32(rtlpriv, REG_RCR, val32);
+		rtl_write_dword(rtlpriv, REG_RCR, val32);
 		DBG_8192C("%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
 		break;
 
@@ -616,15 +616,15 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				ulCommand = CAM_CONTENT_COUNT*ucIndex+i;
 				ulCommand = ulCommand | CAM_POLLINIG | CAM_WRITE;
 				/* write content 0 is equall to mark invalid */
-				rtw_write32(rtlpriv, WCAMI, ulContent);  /* delay_ms(40); */
-				rtw_write32(rtlpriv, RWCAM, ulCommand);  /* delay_ms(40); */
+				rtl_write_dword(rtlpriv, WCAMI, ulContent);  /* delay_ms(40); */
+				rtl_write_dword(rtlpriv, RWCAM, ulCommand);  /* delay_ms(40); */
 			}
 		}
 		break;
 
 	case HW_VAR_CAM_INVALID_ALL:
 		val32 = BIT(31) | BIT(30);
-		rtw_write32(rtlpriv, RWCAM, val32);
+		rtl_write_dword(rtlpriv, RWCAM, val32);
 		break;
 
 	case HW_VAR_CAM_WRITE:
@@ -632,10 +632,10 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			uint32_t cmd;
 			uint32_t *cam_val = (u32 *)pval;
 
-			rtw_write32(rtlpriv, WCAMI, cam_val[0]);
+			rtl_write_dword(rtlpriv, WCAMI, cam_val[0]);
 
 			cmd = CAM_POLLINIG | CAM_WRITE | cam_val[1];
-			rtw_write32(rtlpriv, RWCAM, cmd);
+			rtl_write_dword(rtlpriv, RWCAM, cmd);
 		}
 		break;
 
@@ -643,20 +643,20 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_AC_PARAM_VO:
-		rtw_write32(rtlpriv, REG_EDCA_VO_PARAM, *(u32 *)pval);
+		rtl_write_dword(rtlpriv, REG_EDCA_VO_PARAM, *(u32 *)pval);
 		break;
 
 	case HW_VAR_AC_PARAM_VI:
-		rtw_write32(rtlpriv, REG_EDCA_VI_PARAM, *(u32 *)pval);
+		rtl_write_dword(rtlpriv, REG_EDCA_VI_PARAM, *(u32 *)pval);
 		break;
 
 	case HW_VAR_AC_PARAM_BE:
 		pHalData->AcParam_BE = *(u32 *)pval;
-		rtw_write32(rtlpriv, REG_EDCA_BE_PARAM, *(u32 *)pval);
+		rtl_write_dword(rtlpriv, REG_EDCA_BE_PARAM, *(u32 *)pval);
 		break;
 
 	case HW_VAR_AC_PARAM_BK:
-		rtw_write32(rtlpriv, REG_EDCA_BK_PARAM, *(u32 *)pval);
+		rtl_write_dword(rtlpriv, REG_EDCA_BK_PARAM, *(u32 *)pval);
 		break;
 
 	case HW_VAR_ACM_CTRL:
@@ -710,7 +710,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 					AMPDULen = 0xffff;
 			}
 			AMPDULen |= BIT(31);
-			rtw_write32(rtlpriv, REG_AMPDU_MAX_LENGTH_8812, AMPDULen);
+			rtl_write_dword(rtlpriv, REG_AMPDU_MAX_LENGTH_8812, AMPDULen);
 		}
 		break;
 	case HW_VAR_H2C_FW_PWRMODE:
@@ -805,7 +805,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				/* RX DMA stop */
 				val32 = rtl_read_dword(rtlpriv, REG_RXPKT_NUM);
 				val32 |= RW_RELEASE_EN;
-				rtw_write32(rtlpriv, REG_RXPKT_NUM, val32);
+				rtl_write_dword(rtlpriv, REG_RXPKT_NUM, val32);
 				do {
 					val32 = rtl_read_dword(rtlpriv, REG_RXPKT_NUM);
 					val32 &= RXDMA_IDLE;
@@ -818,7 +818,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 				/* RQPN Load 0 */
 				rtl_write_word(rtlpriv, REG_RQPN_NPQ, 0x0);
-				rtw_write32(rtlpriv, REG_RQPN, 0x80000000);
+				rtl_write_dword(rtlpriv, REG_RQPN, 0x80000000);
 				mdelay(10);
 			}
 		}

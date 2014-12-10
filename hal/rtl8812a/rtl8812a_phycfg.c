@@ -137,11 +137,11 @@ static void phy_RFSerialWrite(struct rtl_priv *Adapter, uint8_t eRFPath,
 	if ((!pHalData->bSupportUSB3) && (IS_TEST_CHIP(pHalData->VersionID))) {	/* USB 2.0 or older */
 		/* if (IS_VENDOR_8812A_TEST_CHIP(Adapter) || IS_HARDWARE_TYPE_8821(Adapter) is) */
 		{
-			rtw_write32(Adapter, 0x1EC, DataAndAddr);
+			rtl_write_dword(Adapter, 0x1EC, DataAndAddr);
 			if (eRFPath == RF90_PATH_A)
-				rtw_write32(Adapter, 0x1E8, 0x4000F000|0xC90);
+				rtl_write_dword(Adapter, 0x1E8, 0x4000F000|0xC90);
 			else
-				rtw_write32(Adapter, 0x1E8, 0x4000F000|0xE90);
+				rtl_write_dword(Adapter, 0x1E8, 0x4000F000|0xE90);
 		}
 	} else {
 		/* USB 3.0 */

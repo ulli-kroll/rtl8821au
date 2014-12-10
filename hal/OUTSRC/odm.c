@@ -2123,7 +2123,7 @@ VOID odm_EdcaTurboCheckCE(struct rtl_dm *pDM_Odm)
 			else
 				edca_param = EDCA_BE_UL;
 
-			rtw_write32(Adapter, REG_EDCA_BE_PARAM, edca_param);
+			rtl_write_dword(Adapter, REG_EDCA_BE_PARAM, edca_param);
 
 			pDM_Odm->DM_EDCA_Table.prv_traffic_idx = trafficIndex;
 		}
@@ -2135,7 +2135,7 @@ VOID odm_EdcaTurboCheckCE(struct rtl_dm *pDM_Odm)
 		 * Restore original EDCA according to the declaration of AP.
 		 */
 		if (pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA) {
-			rtw_write32(Adapter, REG_EDCA_BE_PARAM, pHalData->AcParam_BE);
+			rtl_write_dword(Adapter, REG_EDCA_BE_PARAM, pHalData->AcParam_BE);
 			pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = _FALSE;
 		}
 	}

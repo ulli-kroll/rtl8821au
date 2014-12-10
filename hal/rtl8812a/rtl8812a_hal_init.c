@@ -34,7 +34,7 @@ static int32_t _LLTWrite(struct rtl_priv *padapter, uint32_t address, uint32_t d
 	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | _LLT_OP(_LLT_WRITE_ACCESS);
 	u16	LLTReg = REG_LLT_INIT;
 
-	rtw_write32(padapter, LLTReg, value);
+	rtl_write_dword(padapter, LLTReg, value);
 
 	/* polling */
 	do {
@@ -60,7 +60,7 @@ uint8_t _LLTRead(struct rtl_priv *padapter, uint32_t address)
 	u16	LLTReg = REG_LLT_INIT;
 
 
-	rtw_write32(padapter, LLTReg, value);
+	rtl_write_dword(padapter, LLTReg, value);
 
 	/* polling and get value */
 	do {
@@ -378,7 +378,7 @@ static int32_t _FWFreeToGo8812(struct rtl_priv *padapter)
 	value32 = rtl_read_dword(padapter, REG_MCUFWDL);
 	value32 |= MCUFWDL_RDY;
 	value32 &= ~WINTINI_RDY;
-	rtw_write32(padapter, REG_MCUFWDL, value32);
+	rtl_write_dword(padapter, REG_MCUFWDL, value32);
 
 	_8051Reset8812(padapter);
 
@@ -2955,7 +2955,7 @@ uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 			    && (check_fwstate(&padapter->mlmepriv, _FW_LINKED) == _TRUE)) {
 				DBG_8192C("============ RA status check  Mac_id:%d ===================\n", mac_id);
 
-				rtw_write32(padapter, REG_HMEBOX_E2_E3_8812, cmd);
+				rtl_write_dword(padapter, REG_HMEBOX_E2_E3_8812, cmd);
 				ra_info1 = rtl_read_dword(padapter, REG_RSVD5_8812);
 				ra_info2 = rtl_read_dword(padapter, REG_RSVD6_8812);
 				rate_mask1 = rtl_read_dword(padapter, REG_RSVD7_8812);

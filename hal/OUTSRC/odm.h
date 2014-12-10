@@ -1681,18 +1681,6 @@ uint32_t ODM_Get_Rate_Bitmap(
 #endif
 
 
-
-
-#if (BEAMFORMING_SUPPORT == 1)
-BEAMFORMING_CAP
-Beamforming_GetEntryBeamCapByMacId(
- IN PMGNT_INFO pMgntInfo,
- IN u8  MacId
- );
-#endif
-
-
-
 VOID ODM_DMInit( IN	struct rtl_dm *pDM_Odm);
 
 VOID

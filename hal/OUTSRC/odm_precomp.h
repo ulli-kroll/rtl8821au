@@ -36,7 +36,6 @@
 	//#include <drv_types.h>
 	//#include <rtw_byteorder.h>
 	//#include <hal_intf.h>
-#define BEAMFORMING_SUPPORT 0
 #endif
 
 

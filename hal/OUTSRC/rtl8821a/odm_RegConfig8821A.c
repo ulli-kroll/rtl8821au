@@ -51,7 +51,7 @@ void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 void odm_ConfigBB_AGC_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
-	ODM_SetBBReg(pDM_Odm, Addr, Bitmask, Data);
+	rtl_set_bbreg(pDM_Odm->Adapter, Addr, Bitmask, Data);
 	/* Add 1us delay between BB/RF register setting. */
 	udelay(1);
 
@@ -97,7 +97,7 @@ void odm_ConfigBB_PHY_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 		udelay(1);
 	else if (Addr == 0xa24)
 		pDM_Odm->RFCalibrateInfo.RegA24 = Data;
-	ODM_SetBBReg(pDM_Odm, Addr, Bitmask, Data);
+	rtl_set_bbreg(pDM_Odm->Adapter, Addr, Bitmask, Data);
 
 	/* Add 1us delay between BB/RF register setting. */
 	udelay(1);

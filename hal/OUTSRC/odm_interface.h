@@ -56,12 +56,6 @@ typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
 typedef VOID (*RT_WORKITEM_CALL_BACK)(PVOID pContext);
 
 
-static void ODM_SetBBReg(struct rtl_dm *pDM_Odm, uint32_t RegAddr,
-	uint32_t BitMask, uint32_t Data)
-{
-	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
-	rtl_set_bbreg(pDM_Odm->Adapter, RegAddr, BitMask, Data);
-}
 
 static uint32_t ODM_GetBBReg(struct rtl_dm *pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask)

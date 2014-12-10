@@ -907,7 +907,7 @@ void odm_Adaptivity(struct rtl_dm *pDM_Odm, u8	IGI)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("pDM_Odm->ForceEDCCA=%d, IGI_Base=0x%x, TH_H=0x%x, TH_L=0x%x, AdapEn_RSSI = %d\n",
 	pDM_Odm->ForceEDCCA, pDM_Odm->IGI_Base, pDM_Odm->TH_H, pDM_Odm->TH_L, pDM_Odm->AdapEn_RSSI));
 
-	ODM_SetBBReg(pDM_Odm, 0x800, BIT10, 0);		/* ADC_mask enable */
+	rtl_set_bbreg(pDM_Odm->Adapter, 0x800, BIT10, 0);		/* ADC_mask enable */
 
 	if (!pDM_Odm->bLinked) {
 		return;
@@ -973,7 +973,7 @@ void odm_Adaptivity(struct rtl_dm *pDM_Odm, u8	IGI)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("IGI=0x%x, TH_H_dmc=0x%x, TH_L_dmc=0x%x\n",
 		IGI, TH_H_dmc, TH_L_dmc));
 
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XB_LSSIReadBack, 0xFFFF, (TH_H_dmc<<8) | TH_L_dmc);
+	rtl_set_bbreg(pDM_Odm->Adapter, rFPGA0_XB_LSSIReadBack, 0xFFFF, (TH_H_dmc<<8) | TH_L_dmc);
 }
 
 
@@ -991,9 +991,9 @@ void ODM_Write_DIG(struct rtl_dm *pDM_Odm, u8 CurrentIGI)
 
 	if (pDM_DigTable->CurIGValue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
 		if (pDM_Odm->SupportPlatform & (ODM_CE)) {
-			ODM_SetBBReg(pDM_Odm, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
+			rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
 			if (pDM_Odm->RFType != ODM_1T1R)
-				ODM_SetBBReg(pDM_Odm, ODM_REG(IGI_B, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
+				rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_B, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
 		}
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("CurrentIGI(0x%02x). \n", CurrentIGI));
@@ -1308,11 +1308,11 @@ void odm_FalseAlarmCounterStatistics(struct rtl_dm *pDM_Odm)
 			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail;
 
 		/* reset OFDM FA coutner */
-		ODM_SetBBReg(pDM_Odm, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
-		ODM_SetBBReg(pDM_Odm, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
+		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
+		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
 		/* reset CCK FA counter */
-		ODM_SetBBReg(pDM_Odm, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
-		ODM_SetBBReg(pDM_Odm, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
+		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
+		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
 	}
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Cck_fail=%d\n", FalseAlmCnt->Cnt_Cck_fail));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Ofdm_fail=%d\n", FalseAlmCnt->Cnt_Ofdm_fail));
@@ -1393,14 +1393,14 @@ void odm_1R_CCA(struct rtl_dm *pDM_Odm)
 	if (pDM_PSTable->PreCCAState != pDM_PSTable->CurCCAState) {
 		if (pDM_PSTable->CurCCAState == CCA_1R) {
 			if (pDM_Odm->RFType == ODM_2T2R) {
-				ODM_SetBBReg(pDM_Odm, 0xc04  , MASKBYTE0, 0x13);
+				rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x13);
 				/* rtl_set_bbreg(pAdapter, 0xe70, MASKBYTE3, 0x20); */
 			} else {
-				ODM_SetBBReg(pDM_Odm, 0xc04  , MASKBYTE0, 0x23);
+				rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x23);
 				/* rtl_set_bbreg(pAdapter, 0xe70, 0x7fc00000, 0x10c); */ /* Set RegE70[30:22] = 9b'100001100 */
 			}
 		} else {
-			ODM_SetBBReg(pDM_Odm, 0xc04  , MASKBYTE0, 0x33);
+			rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x33);
 			/* rtl_set_bbreg(pAdapter,0xe70, MASKBYTE3, 0x63); */
 		}
 		pDM_PSTable->PreCCAState = pDM_PSTable->CurCCAState;

@@ -3315,7 +3315,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_dm *pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDCD) {
-			ODM_Write1Byte(pDM_Odm, v1, (u8)v2);
+			rtl_write_byte(pDM_Odm->Adapter, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -3333,7 +3333,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_dm *pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						ODM_Write1Byte(pDM_Odm, v1, (u8)v2);
+						rtl_write_byte(pDM_Odm->Adapter, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
@@ -3372,7 +3372,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDC) {
-			ODM_Write1Byte(pDM_Odm, v1, (u8)v2);
+			rtl_write_byte(pDM_Odm->Adapter, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -3391,7 +3391,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						ODM_Write1Byte(pDM_Odm, v1, (u8)v2);
+						rtl_write_byte(pDM_Odm->Adapter, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 

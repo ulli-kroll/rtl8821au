@@ -12,7 +12,6 @@ extern	u8 CCKSwingTable_Ch14 [CCK_TABLE_SIZE][8];
 extern	u8 CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8];
 extern	u8 CCKSwingTable_Ch14_New [CCK_TABLE_SIZE][8];
 
-void PHY_LCCalibrate_8821A(struct rtl_dm *pDM_Odm);
 void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 					    u8 **up_a, u8 **down_a,
 					    u8 **up_b, u8 **down_b);

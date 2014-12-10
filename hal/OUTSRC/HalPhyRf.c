@@ -60,7 +60,7 @@ static void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 
 	pConfig->ODM_TxPwrTrackSetPwr = ODM_TxPwrTrackSetPwr8821A;
 	pConfig->DoIQK = DoIQK_8821A;
-	pConfig->PHY_LCCalibrate = PHY_LCCalibrate_8821A;
+	pConfig->PHY_LCCalibrate = PHY_LCCalibrate_8812A;
 	pConfig->GetDeltaSwingTable = rtl8821au_get_delta_swing_table;
 }
 

@@ -1117,8 +1117,3 @@ void rtl8821au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 	return;
 }
 
-void PHY_LCCalibrate_8821A(struct rtl_dm *pDM_Odm)
-{
-	PHY_LCCalibrate_8812A(pDM_Odm);
-}
-

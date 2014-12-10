@@ -35,7 +35,7 @@ static VOID _BeaconFunctionEnable(struct rtl_priv *rtlpriv, BOOLEAN Enable,
 	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (BIT4 | BIT3 | BIT1));
 	/*
 	 * SetBcnCtrlReg(rtlpriv, (BIT4 | BIT3 | BIT1), 0x00);
-	 * RT_TRACE(COMP_BEACON, DBG_LOUD, ("_BeaconFunctionEnable 0x550 0x%x\n", PlatformEFIORead1Byte(rtlpriv, 0x550)));
+	 * RT_TRACE(COMP_BEACON, DBG_LOUD, ("_BeaconFunctionEnable 0x550 0x%x\n", rtl_read_byte(rtlpriv, 0x550)));
 	 */
 
 	rtl_write_byte(rtlpriv, REG_RD_CTRL+1, 0x6F);

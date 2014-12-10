@@ -1154,7 +1154,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_BEGIN);
 
 	/* Check if MAC has already power on. by tynli. 2011.05.27. */
 	value8 = rtl_read_byte(Adapter, REG_SYS_CLKR+1);
-	u1bRegCR = PlatformEFIORead1Byte(Adapter, REG_CR);
+	u1bRegCR = rtl_read_byte(Adapter, REG_CR);
 	DBG_871X(" power-on :REG_SYS_CLKR 0x09=0x%02x. REG_CR 0x100=0x%02x.\n", value8, u1bRegCR);
 	if ((value8&BIT3)  && (u1bRegCR != 0 && u1bRegCR != 0xEA)) {
 		/* pHalData->bMACFuncEnable = TRUE; */

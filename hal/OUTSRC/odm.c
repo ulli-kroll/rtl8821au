@@ -490,10 +490,6 @@ void ODM_CmnInfoHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue
 		pDM_Odm->pMacPhyMode = (u8 *)pValue;
 		break;
 
-	case	ODM_CMNINFO_RX_UNI:
-		pDM_Odm->pNumRxBytesUnicast = (uint64_t *)pValue;
-		break;
-
 	case	ODM_CMNINFO_WM_MODE:
 		pDM_Odm->pWirelessMode = (u8 *)pValue;
 		break;

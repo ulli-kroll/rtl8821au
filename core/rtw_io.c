@@ -48,7 +48,7 @@ jackson@realtek.com.tw
 
 #include <drv_types.h>
 
-uint8_t rtw_read8(struct rtl_priv *adapter, uint32_t addr)
+u8 rtw_read8(struct rtl_priv *adapter, u32 addr)
 {
 	uint8_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -59,7 +59,7 @@ uint8_t rtw_read8(struct rtl_priv *adapter, uint32_t addr)
 	return val;
 }
 
-u16 rtw_read16(struct rtl_priv *adapter, uint32_t addr)
+u16 rtw_read16(struct rtl_priv *adapter, u32 addr)
 {
 	u16 val;
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -70,7 +70,7 @@ u16 rtw_read16(struct rtl_priv *adapter, uint32_t addr)
 	return le16_to_cpu(val);
 }
 
-uint32_t rtw_read32(struct rtl_priv *adapter, uint32_t addr)
+u32 rtw_read32(struct rtl_priv *adapter, u32 addr)
 {
 	uint32_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -81,7 +81,7 @@ uint32_t rtw_read32(struct rtl_priv *adapter, uint32_t addr)
 	return le32_to_cpu(val);
 }
 
-int rtw_write8(struct rtl_priv *adapter, uint32_t addr, uint8_t val)
+int rtw_write8(struct rtl_priv *adapter, u32 addr, u8 val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl *pintfhdl = &(pio_priv->intf);
@@ -92,7 +92,7 @@ int rtw_write8(struct rtl_priv *adapter, uint32_t addr, uint8_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int rtw_write16(struct rtl_priv *adapter, uint32_t addr, u16 val)
+int rtw_write16(struct rtl_priv *adapter, u32 addr, u16 val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl *pintfhdl = &pio_priv->intf;
@@ -105,7 +105,7 @@ int rtw_write16(struct rtl_priv *adapter, uint32_t addr, u16 val)
 	return RTW_STATUS_CODE(ret);
 }
 
-int rtw_write32(struct rtl_priv *adapter, uint32_t addr, uint32_t val)
+int rtw_write32(struct rtl_priv *adapter, u32 addr, u32 val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct intf_hdl	*pintfhdl = &pio_priv->intf;

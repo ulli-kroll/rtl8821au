@@ -345,13 +345,13 @@ int PHY_BBConfig8812(struct rtl_priv *Adapter)
 	else  if(IS_HARDWARE_TYPE_8812E(Adapter) || IS_HARDWARE_TYPE_8821E(Adapter))
 		TmpU1B |= FEN_PCIEA;
 
-	rtw_write8(Adapter, REG_SYS_FUNC_EN, TmpU1B);
+	rtl_write_byte(Adapter, REG_SYS_FUNC_EN, TmpU1B);
 
-	rtw_write8(Adapter, REG_SYS_FUNC_EN, (TmpU1B|FEN_BB_GLB_RSTn|FEN_BBRSTB));	/* same with 8812 */
+	rtl_write_byte(Adapter, REG_SYS_FUNC_EN, (TmpU1B|FEN_BB_GLB_RSTn|FEN_BBRSTB));	/* same with 8812 */
 	/* 6. 0x1f[7:0] = 0x07 PathA RF Power On */
-	rtw_write8(Adapter, REG_RF_CTRL, 0x07);		/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
+	rtl_write_byte(Adapter, REG_RF_CTRL, 0x07);		/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
 	/* 7.  PathB RF Power On */
-	rtw_write8(Adapter, REG_OPT_CTRL_8812+2, 0x7);	/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
+	rtl_write_byte(Adapter, REG_OPT_CTRL_8812+2, 0x7);	/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
 	/* tangw check end 20120412 */
 
 	/*
@@ -2461,7 +2461,7 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 			/* if(BT_IsBtExist(Adapter)) */
 			{
 				/* rtw_write16(Adapter, rA_RFE_Pinmux_Jaguar, 0x7777); */
-				rtw_write8(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x77);
+				rtl_write_byte(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x77);
 			}
 			/* else */
 				/* rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777); */
@@ -2472,10 +2472,10 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 			{
 				/* 
 				 * u1tmp = rtl_read_byte(Adapter, rA_RFE_Inv_Jaguar+2);
-				 * rtw_write8(Adapter, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
+				 * rtl_write_byte(Adapter, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
 				 */
 				u1tmp = rtl_read_byte(Adapter, rA_RFE_Inv_Jaguar+3);
-				rtw_write8(Adapter, rA_RFE_Inv_Jaguar+3,  (u1tmp &= ~BIT0));
+				rtl_write_byte(Adapter, rA_RFE_Inv_Jaguar+3,  (u1tmp &= ~BIT0));
 			}
 			/* else */
 				/* rtl_set_bbreg(Adapter, rA_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x000); */
@@ -2540,10 +2540,10 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 			{
 				/*
 				 * u1tmp = rtl_read_byte(Adapter, rA_RFE_Inv_Jaguar+2);
-				 * rtw_write8(Adapter, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
+				 * rtl_write_byte(Adapter, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
 				 */
 				u1tmp = rtl_read_byte(Adapter, rA_RFE_Inv_Jaguar+3);
-				rtw_write8(Adapter, rA_RFE_Inv_Jaguar+3,  (u1tmp |= BIT0));
+				rtl_write_byte(Adapter, rA_RFE_Inv_Jaguar+3,  (u1tmp |= BIT0));
 			}
 			/* else */
 				/* rtl_set_bbreg(Adapter, rA_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x010); */
@@ -2633,7 +2633,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 		}
 
 		/* CCK_CHECK_en */
-		rtw_write8(Adapter, REG_CCK_CHECK_8812, 0x0);
+		rtl_write_byte(Adapter, REG_CCK_CHECK_8812, 0x0);
 	} else {		/* 5G band */
 		u16	count = 0, reg41A = 0;
 
@@ -2643,7 +2643,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 		}
 
 		/* CCK_CHECK_en */
-		rtw_write8(Adapter, REG_CCK_CHECK_8812, 0x80);
+		rtl_write_byte(Adapter, REG_CCK_CHECK_8812, 0x80);
 
 		count = 0;
 		reg41A = rtl_read_word(Adapter, REG_TXPKT_EMPTY);

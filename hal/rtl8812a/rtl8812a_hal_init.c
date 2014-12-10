@@ -159,7 +159,7 @@ void SetBcnCtrlReg(struct rtl_priv *padapter, uint8_t SetBits, uint8_t ClearBits
 	pHalData->RegBcnCtrlVal |= SetBits;
 	pHalData->RegBcnCtrlVal &= ~ClearBits;
 
-	rtw_write8(padapter, REG_BCN_CTRL, (uint8_t)pHalData->RegBcnCtrlVal);
+	rtl_write_byte(padapter, REG_BCN_CTRL, (uint8_t)pHalData->RegBcnCtrlVal);
 }
 
 static VOID _FWDownloadEnable_8812(struct rtl_priv *padapter, BOOLEAN enable)
@@ -169,16 +169,16 @@ static VOID _FWDownloadEnable_8812(struct rtl_priv *padapter, BOOLEAN enable)
 	if (enable) {
 		/* MCU firmware download enable. */
 		tmp = rtl_read_byte(padapter, REG_MCUFWDL);
-		rtw_write8(padapter, REG_MCUFWDL, tmp|0x01);
+		rtl_write_byte(padapter, REG_MCUFWDL, tmp|0x01);
 
 		/* 8051 reset */
 		tmp = rtl_read_byte(padapter, REG_MCUFWDL+2);
-		rtw_write8(padapter, REG_MCUFWDL+2, tmp&0xf7);
+		rtl_write_byte(padapter, REG_MCUFWDL+2, tmp&0xf7);
 	} else {
 
 		/* MCU firmware download disable. */
 		tmp = rtl_read_byte(padapter, REG_MCUFWDL);
-		rtw_write8(padapter, REG_MCUFWDL, tmp&0xfe);
+		rtl_write_byte(padapter, REG_MCUFWDL, tmp&0xfe);
 	}
 }
 #define MAX_REG_BOLCK_SIZE	196
@@ -247,7 +247,7 @@ static int _BlockWrite_8812(struct rtl_priv *padapter, PVOID buffer, uint32_t bu
 				(buffSize-offset), blockSize_p3, blockCount_p3));
 
 		for (i = 0 ; i < blockCount_p3; i++) {
-			ret = rtw_write8(padapter, (FW_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
+			ret = rtl_write_byte(padapter, (FW_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
 
 			if (ret == _FAIL)
 				goto exit;
@@ -265,7 +265,7 @@ static int _PageWrite_8812(struct rtl_priv *padapter, uint32_t page,
 	uint8_t u8Page = (uint8_t) (page & 0x07) ;
 
 	value8 = (rtl_read_byte(padapter, REG_MCUFWDL+2) & 0xF8) | u8Page ;
-	rtw_write8(padapter, REG_MCUFWDL+2, value8);
+	rtl_write_byte(padapter, REG_MCUFWDL+2, value8);
 
 	return _BlockWrite_8812(padapter, buffer, size);
 }
@@ -333,25 +333,25 @@ void _8051Reset8812(struct rtl_priv *padapter)
 	/* Reset MCU IO Wrapper- sugggest by SD1-Gimmy */
 	if (IS_HARDWARE_TYPE_8812(padapter)) {
 		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
-		rtw_write8(padapter, REG_RSV_CTRL + 1, u1bTmp2&(~BIT3));
+		rtl_write_byte(padapter, REG_RSV_CTRL + 1, u1bTmp2&(~BIT3));
 	} else if (IS_HARDWARE_TYPE_8821(padapter)) {
 		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
-		rtw_write8(padapter, REG_RSV_CTRL + 1, u1bTmp2&(~BIT0));
+		rtl_write_byte(padapter, REG_RSV_CTRL + 1, u1bTmp2&(~BIT0));
 	}
 
 	u1bTmp = rtl_read_byte(padapter, REG_SYS_FUNC_EN+1);
-	rtw_write8(padapter, REG_SYS_FUNC_EN+1, u1bTmp&(~BIT2));
+	rtl_write_byte(padapter, REG_SYS_FUNC_EN+1, u1bTmp&(~BIT2));
 
 	/* Enable MCU IO Wrapper */
 	if (IS_HARDWARE_TYPE_8812(padapter)) {
 		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
-		rtw_write8(padapter, REG_RSV_CTRL + 1, u1bTmp2 | (BIT3));
+		rtl_write_byte(padapter, REG_RSV_CTRL + 1, u1bTmp2 | (BIT3));
 	} else if (IS_HARDWARE_TYPE_8821(padapter)) {
 		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
-		rtw_write8(padapter, REG_RSV_CTRL + 1, u1bTmp2 | (BIT0));
+		rtl_write_byte(padapter, REG_RSV_CTRL + 1, u1bTmp2 | (BIT0));
 	}
 
-	rtw_write8(padapter, REG_SYS_FUNC_EN+1, u1bTmp|(BIT2));
+	rtl_write_byte(padapter, REG_SYS_FUNC_EN+1, u1bTmp|(BIT2));
 
 	DBG_871X("=====> _8051Reset8812(): 8051 reset success .\n");
 }
@@ -455,7 +455,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 	 * or it will cause download Fw fail. 2010.02.01. by tynli.
 	 */
 	if (rtl_read_byte(Adapter, REG_MCUFWDL) & BIT7) { /* 8051 RAM code */
-		rtw_write8(Adapter, REG_MCUFWDL, 0x00);
+		rtl_write_byte(Adapter, REG_MCUFWDL, 0x00);
 		_8051Reset8812(Adapter);
 	}
 
@@ -463,7 +463,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 	fwdl_start_time = jiffies;
 	while (1) {
 		/* reset the FWDL chksum */
-		rtw_write8(Adapter, REG_MCUFWDL, rtl_read_byte(Adapter, REG_MCUFWDL)|FWDL_ChkSum_rpt);
+		rtl_write_byte(Adapter, REG_MCUFWDL, rtl_read_byte(Adapter, REG_MCUFWDL)|FWDL_ChkSum_rpt);
 
 		rtStatus = _WriteFW_8812(Adapter, pFirmwareBuf, FirmwareLen);
 
@@ -1388,7 +1388,7 @@ rtl8812_EfusePowerSwitch(struct rtl_priv *pAdapter, uint8_t bWrite, uint8_t PwrS
 #define EFUSE_ACCESS_ON_JAGUAR 0x69
 #define EFUSE_ACCESS_OFF_JAGUAR 0x00
 	if (PwrState == _TRUE) {
-		rtw_write8(pAdapter, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_ON_JAGUAR);
+		rtl_write_byte(pAdapter, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_ON_JAGUAR);
 
 		/* 1.2V Power: From VDDON with Power Cut(0x0000h[15]), defualt valid */
 		tmpV16 = rtl_read_word(pAdapter, REG_SYS_ISO_CTRL);
@@ -1416,15 +1416,15 @@ rtl8812_EfusePowerSwitch(struct rtl_priv *pAdapter, uint8_t bWrite, uint8_t PwrS
 			tempval &= ~(BIT3|BIT4|BIT5|BIT6);
 			tempval |= (VOLTAGE_V25 << 3);
 			tempval |= BIT7;
-			rtw_write8(pAdapter, EFUSE_TEST + 3, tempval);
+			rtl_write_byte(pAdapter, EFUSE_TEST + 3, tempval);
 		}
 	} else {
-		rtw_write8(pAdapter, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_OFF_JAGUAR);
+		rtl_write_byte(pAdapter, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_OFF_JAGUAR);
 
 		if (bWrite == _TRUE) {
 			/* Disable LDO 2.5V after read/write action */
 			tempval = rtl_read_byte(pAdapter, EFUSE_TEST + 3);
-			rtw_write8(pAdapter, EFUSE_TEST + 3, (tempval & 0x7F));
+			rtl_write_byte(pAdapter, EFUSE_TEST + 3, (tempval & 0x7F));
 		}
 	}
 }
@@ -2337,9 +2337,9 @@ rtl8812_Efuse_PgPacketWrite(struct rtl_priv *pAdapter, uint8_t offset,
 
 void InitRDGSetting8812A(struct rtl_priv *padapter)
 {
-	rtw_write8(padapter, REG_RD_CTRL, 0xFF);
+	rtl_write_byte(padapter, REG_RD_CTRL, 0xFF);
 	rtw_write16(padapter, REG_RD_NAV_NXT, 0x200);
-	rtw_write8(padapter, REG_RD_RESP_PKT_TH, 0x05);
+	rtl_write_byte(padapter, REG_RD_RESP_PKT_TH, 0x05);
 }
 
 void ReadRFType8812A(struct rtl_priv *padapter)
@@ -2425,10 +2425,10 @@ void hal_notch_filter_8812(struct rtl_priv *adapter, bool enable)
 {
 	if (enable) {
 		DBG_871X("Enable notch filter\n");
-		/* rtw_write8(adapter, rOFDM0_RxDSP+1, rtl_read_byte(adapter, rOFDM0_RxDSP+1) | BIT1); */
+		/* rtl_write_byte(adapter, rOFDM0_RxDSP+1, rtl_read_byte(adapter, rOFDM0_RxDSP+1) | BIT1); */
 	} else {
 		DBG_871X("Disable notch filter\n");
-		/* rtw_write8(adapter, rOFDM0_RxDSP+1, rtl_read_byte(adapter, rOFDM0_RxDSP+1) & ~BIT1); */
+		/* rtl_write_byte(adapter, rOFDM0_RxDSP+1, rtl_read_byte(adapter, rOFDM0_RxDSP+1) & ~BIT1); */
 	}
 }
 
@@ -2704,8 +2704,8 @@ VOID _InitBeaconParameters_8812A(struct rtl_priv *Adapter)
 
 	/* TODO: Remove these magic number */
 	rtw_write16(Adapter, REG_TBTT_PROHIBIT, 0x6404);		/* ms */
-	rtw_write8(Adapter, REG_DRVERLYINT, DRIVER_EARLY_INT_TIME_8812);	/* 5ms */
-	rtw_write8(Adapter, REG_BCNDMATIM, BCN_DMA_ATIME_INT_TIME_8812); 	/* 2ms */
+	rtl_write_byte(Adapter, REG_DRVERLYINT, DRIVER_EARLY_INT_TIME_8812);	/* 5ms */
+	rtl_write_byte(Adapter, REG_BCNDMATIM, BCN_DMA_ATIME_INT_TIME_8812); 	/* 2ms */
 
 	/*
 	 *  Suggested by designer timchen. Change beacon AIFS to the largest number

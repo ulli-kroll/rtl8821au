@@ -387,7 +387,7 @@ void hal_init_macaddr(struct rtl_priv *adapter)
 
 void c2h_evt_clear(struct rtl_priv *adapter)
 {
-	rtw_write8(adapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
+	rtl_write_byte(adapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
 
 int32_t c2h_evt_read(struct rtl_priv *adapter, uint8_t *buf)

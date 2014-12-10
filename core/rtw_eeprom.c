@@ -26,14 +26,14 @@
 void up_clk(struct rtl_priv *padapter, u16 *x)
 {
 	*x = *x | _EESK;
-	rtw_write8(padapter, EE_9346CR, (uint8_t)*x);
+	rtl_write_byte(padapter, EE_9346CR, (uint8_t)*x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
 void down_clk(struct rtl_priv *padapter, u16 *x	)
 {
 	*x = *x & ~_EESK;
-	rtw_write8(padapter, EE_9346CR, (uint8_t)*x);
+	rtl_write_byte(padapter, EE_9346CR, (uint8_t)*x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
@@ -61,7 +61,7 @@ void shift_out_bits(struct rtl_priv *padapter, u16 data, u16 count)
 			goto out;
 		}
 
-		rtw_write8(padapter, EE_9346CR, (uint8_t)x);
+		rtl_write_byte(padapter, EE_9346CR, (uint8_t)x);
 		rtw_udelay_os(CLOCK_RATE);
 		up_clk(padapter, &x);
 		down_clk(padapter, &x);
@@ -74,7 +74,7 @@ void shift_out_bits(struct rtl_priv *padapter, u16 data, u16 count)
 	}
 
 	x &= ~_EEDI;
-	rtw_write8(padapter, EE_9346CR, (uint8_t)x);
+	rtl_write_byte(padapter, EE_9346CR, (uint8_t)x);
 out:
 }
 
@@ -118,11 +118,11 @@ void standby(struct rtl_priv *padapter)
 	x = rtl_read_byte(padapter, EE_9346CR);
 
 	x &= ~(_EECS | _EESK);
-	rtw_write8(padapter, EE_9346CR,x);
+	rtl_write_byte(padapter, EE_9346CR,x);
 
 	rtw_udelay_os(CLOCK_RATE);
 	x |= _EECS;
-	rtw_write8(padapter, EE_9346CR, x);
+	rtl_write_byte(padapter, EE_9346CR, x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
@@ -160,7 +160,7 @@ void eeprom_clean(struct rtl_priv *padapter)
 		goto out;
 	}
 	x &= ~(_EECS | _EEDI);
-	rtw_write8(padapter, EE_9346CR, (uint8_t)x);
+	rtl_write_byte(padapter, EE_9346CR, (uint8_t)x);
 
 	if (padapter->bSurpriseRemoved == _TRUE) {
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -187,14 +187,14 @@ void eeprom_write16(struct rtl_priv * padapter, u16 reg, u16 data)
 	tmp8_new = tmp8_ori & 0xf7;
 
 	if (tmp8_ori != tmp8_new) {
-		rtw_write8(padapter, 0x102502f1, tmp8_new);
+		rtl_write_byte(padapter, 0x102502f1, tmp8_new);
 		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x102502f1=====\n"));
 	}
 	tmp8_clk_ori=rtl_read_byte(padapter,0x10250003);
 	tmp8_clk_new=tmp8_clk_ori|0x20;
 	if (tmp8_clk_new != tmp8_clk_ori) {
 		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x10250003=====\n"));
-		rtw_write8(padapter, 0x10250003, tmp8_clk_new);
+		rtl_write_byte(padapter, 0x10250003, tmp8_clk_new);
 	}
 #endif
 
@@ -202,7 +202,7 @@ void eeprom_write16(struct rtl_priv * padapter, u16 reg, u16 data)
 
 	x &= ~(_EEDI | _EEDO | _EESK | _EEM0);
 	x |= _EEM1 | _EECS;
-	rtw_write8(padapter, EE_9346CR, x);
+	rtl_write_byte(padapter, EE_9346CR, x);
 
 	shift_out_bits(padapter, EEPROM_EWEN_OPCODE, 5);
 
@@ -251,9 +251,9 @@ void eeprom_write16(struct rtl_priv * padapter, u16 reg, u16 data)
 exit:
 #ifdef CONFIG_RTL8712
 	if(tmp8_clk_new!=tmp8_clk_ori)
-		rtw_write8(padapter, 0x10250003, tmp8_clk_ori);
+		rtl_write_byte(padapter, 0x10250003, tmp8_clk_ori);
 	if(tmp8_new!=tmp8_ori)
-		rtw_write8(padapter, 0x102502f1, tmp8_ori);
+		rtl_write_byte(padapter, 0x102502f1, tmp8_ori);
 
 #endif
 	return;
@@ -271,7 +271,7 @@ u16 eeprom_read16(struct rtl_priv * padapter, u16 reg) //ReadEEprom
 	tmp8_new = tmp8_ori & 0xf7;
 
 	if (tmp8_ori != tmp8_new) {
-		rtw_write8(padapter, 0x102502f1, tmp8_new);
+		rtl_write_byte(padapter, 0x102502f1, tmp8_new);
 		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x102502f1=====\n"));
 	}
 
@@ -279,7 +279,7 @@ u16 eeprom_read16(struct rtl_priv * padapter, u16 reg) //ReadEEprom
 	tmp8_clk_new=tmp8_clk_ori|0x20;
 	if (tmp8_clk_new != tmp8_clk_ori) {
 		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x10250003=====\n"));
-		rtw_write8(padapter, 0x10250003, tmp8_clk_new);
+		rtl_write_byte(padapter, 0x10250003, tmp8_clk_new);
 	}
 #endif
 
@@ -298,7 +298,7 @@ u16 eeprom_read16(struct rtl_priv * padapter, u16 reg) //ReadEEprom
 	x &= ~(_EEDI | _EEDO | _EESK | _EEM0);
 	x |= _EEM1 | _EECS;
 
-	rtw_write8(padapter, EE_9346CR, (unsigned char)x);
+	rtl_write_byte(padapter, EE_9346CR, (unsigned char)x);
 
 	// write the read opcode and register number in that order
 	// The opcode is 3bits in length, reg is 6 bits long
@@ -313,10 +313,10 @@ u16 eeprom_read16(struct rtl_priv * padapter, u16 reg) //ReadEEprom
 out:
 #ifdef CONFIG_RTL8712
 	if (tmp8_clk_new != tmp8_clk_ori)
-		rtw_write8(padapter, 0x10250003, tmp8_clk_ori);
+		rtl_write_byte(padapter, 0x10250003, tmp8_clk_ori);
 
 	if (tmp8_new != tmp8_ori)
-		rtw_write8(padapter, 0x102502f1, tmp8_ori);
+		rtl_write_byte(padapter, 0x102502f1, tmp8_ori);
 
 #endif
 
@@ -347,7 +347,7 @@ void eeprom_read_sz(struct rtl_priv * padapter, u16 reg, uint8_t * data, uint32_
 
 	x &= ~(_EEDI | _EEDO | _EESK | _EEM0);
 	x |= _EEM1 | _EECS;
-	rtw_write8(padapter, EE_9346CR, (unsigned char)x);
+	rtl_write_byte(padapter, EE_9346CR, (unsigned char)x);
 
 	// write the read opcode and register number in that order
 	// The opcode is 3bits in length, reg is 6 bits long

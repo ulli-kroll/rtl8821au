@@ -116,7 +116,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *padapter, uint8_t ElementID, uin
 			msgbox_ex_addr = REG_HMEBOX_EXT0_8812 + (h2c_box_num * RTL8812_EX_MESSAGE_BOX_SIZE);
 #ifdef CONFIG_H2C_EF
 			for (cmd_idx = 0; cmd_idx < ext_cmd_len; cmd_idx++) {
-				rtw_write8(padapter, msgbox_ex_addr+cmd_idx, *((uint8_t *)(&h2c_cmd_ex)+cmd_idx));
+				rtl_write_byte(padapter, msgbox_ex_addr+cmd_idx, *((uint8_t *)(&h2c_cmd_ex)+cmd_idx));
 			}
 #else
 			h2c_cmd_ex = le32_to_cpu(h2c_cmd_ex);
@@ -127,7 +127,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *padapter, uint8_t ElementID, uin
 		msgbox_addr = REG_HMEBOX_0 + (h2c_box_num * RTL8812_MESSAGE_BOX_SIZE);
 #ifdef CONFIG_H2C_EF
 		for (cmd_idx = 0; cmd_idx < RTL8812_MESSAGE_BOX_SIZE; cmd_idx++) {
-			rtw_write8(padapter, msgbox_addr+cmd_idx, *((uint8_t *)(&h2c_cmd)+cmd_idx));
+			rtl_write_byte(padapter, msgbox_addr+cmd_idx, *((uint8_t *)(&h2c_cmd)+cmd_idx));
 		}
 #else
 		h2c_cmd = le32_to_cpu(h2c_cmd);
@@ -738,12 +738,12 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		 *  correct_TSF(padapter, pmlmeext);
 		 *  Hw sequende enable by dedault. 2010.06.23. by tynli.
 		 * rtw_write16(padapter, REG_NQOS_SEQ, ((pmlmeext->mgnt_seq+100)&0xFFF));
-		 * rtw_write8(padapter, REG_HWSEQ_CTRL, 0xFF);
+		 * rtl_write_byte(padapter, REG_HWSEQ_CTRL, 0xFF);
 		 */
 
 		/* Set REG_CR bit 8. DMA beacon by SW. */
 		pHalData->RegCR_1 |= BIT0;
-		rtw_write8(padapter,  REG_CR+1, pHalData->RegCR_1);
+		rtl_write_byte(padapter,  REG_CR+1, pHalData->RegCR_1);
 
 		/*
 		 * Disable Hw protection for a time which revserd for Hw sending beacon.
@@ -752,8 +752,8 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		 * SetBcnCtrlReg(padapter, 0, BIT3);
 		 * SetBcnCtrlReg(padapter, BIT4, 0);
 		 */
-		rtw_write8(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)&(~BIT(3)));
-		rtw_write8(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)|BIT(4));
+		rtl_write_byte(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)&(~BIT(3)));
+		rtl_write_byte(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)|BIT(4));
 
 		if (pHalData->RegFwHwTxQCtrl&BIT6) {
 			DBG_871X("HalDownloadRSVDPage(): There is an Adapter is sending beacon.\n");
@@ -761,7 +761,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		}
 
 		/* Set FWHW_TXQ_CTRL 0x422[6]=0 to tell Hw the packet is not a real beacon frame. */
-		rtw_write8(padapter, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl&(~BIT6)));
+		rtl_write_byte(padapter, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl&(~BIT6)));
 		pHalData->RegFwHwTxQCtrl &= (~BIT6);
 
 		/* Clear beacon valid check bit. */
@@ -831,8 +831,8 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		/* Enable Bcn */
 		/* SetBcnCtrlReg(padapter, BIT3, 0); */
 		/* SetBcnCtrlReg(padapter, 0, BIT4); */
-		rtw_write8(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)|BIT(3));
-		rtw_write8(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)&(~BIT(4)));
+		rtl_write_byte(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)|BIT(3));
+		rtl_write_byte(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)&(~BIT(4)));
 
 		/*
 		 * To make sure that if there exists an adapter which would like to send beacon.
@@ -843,7 +843,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		 */
 
 		if (bSendBeacon) {
-			rtw_write8(padapter, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl|BIT6));
+			rtl_write_byte(padapter, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl|BIT6));
 			pHalData->RegFwHwTxQCtrl |= BIT6;
 		}
 
@@ -862,7 +862,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		{
 			/* Clear CR[8] or beacon packet will not be send to TxBuf anymore. */
 			pHalData->RegCR_1 &= (~BIT0);
-			rtw_write8(padapter,  REG_CR+1, pHalData->RegCR_1);
+			rtl_write_byte(padapter,  REG_CR+1, pHalData->RegCR_1);
 		}
 	}
 

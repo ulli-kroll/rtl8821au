@@ -91,7 +91,7 @@ uint8_t HalPwrSeqCmdParsing(struct rtl_priv *padapter, uint8_t CutVersion,
 					value=value|(GET_PWR_CFG_VALUE(PwrCfgCmd)&GET_PWR_CFG_MASK(PwrCfgCmd));
 
 					/* Write the value back to sytem register */
-					rtw_write8(padapter, offset, value);
+					rtl_write_byte(padapter, offset, value);
 				}
 				break;
 

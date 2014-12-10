@@ -4,11 +4,11 @@ static void StopTxBeacon(struct rtl_priv *rtlpriv)
 {
 	 struct rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
-	rtw_write8(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) & (~BIT6));
+	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) & (~BIT6));
 	pHalData->RegFwHwTxQCtrl &= (~BIT6);
-	rtw_write8(rtlpriv, REG_TBTT_PROHIBIT+1, 0x64);
+	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+1, 0x64);
 	pHalData->RegReg542 &= ~(BIT0);
-	rtw_write8(rtlpriv, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
+	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
 
 	 /* todo: CheckFwRsvdPageContent(rtlpriv);  // 2010.06.23. Added by tynli. */
 }
@@ -22,23 +22,23 @@ static void ResumeTxBeacon(struct rtl_priv *rtlpriv)
 	 * which should be read from register to a global variable.
 	 */
 
-	rtw_write8(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) | BIT6);
+	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) | BIT6);
 	pHalData->RegFwHwTxQCtrl |= BIT6;
-	rtw_write8(rtlpriv, REG_TBTT_PROHIBIT+1, 0xff);
+	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+1, 0xff);
 	pHalData->RegReg542 |= BIT0;
-	rtw_write8(rtlpriv, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
+	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
 }
 
 static VOID _BeaconFunctionEnable(struct rtl_priv *rtlpriv, BOOLEAN Enable,
 	BOOLEAN	Linked)
 {
-	rtw_write8(rtlpriv, REG_BCN_CTRL, (BIT4 | BIT3 | BIT1));
+	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (BIT4 | BIT3 | BIT1));
 	/*
 	 * SetBcnCtrlReg(rtlpriv, (BIT4 | BIT3 | BIT1), 0x00);
 	 * RT_TRACE(COMP_BEACON, DBG_LOUD, ("_BeaconFunctionEnable 0x550 0x%x\n", PlatformEFIORead1Byte(rtlpriv, 0x550)));
 	 */
 
-	rtw_write8(rtlpriv, REG_RD_CTRL+1, 0x6F);
+	rtl_write_byte(rtlpriv, REG_RD_CTRL+1, 0x6F);
 }
 
 void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
@@ -64,11 +64,11 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 
 	/* BCN interval */
 	rtw_write16(rtlpriv, REG_BCN_INTERVAL, pmlmeinfo->bcn_interval);
-	rtw_write8(rtlpriv, REG_ATIMWND, 0x02);	/* 2ms */
+	rtl_write_byte(rtlpriv, REG_ATIMWND, 0x02);	/* 2ms */
 
 	_InitBeaconParameters_8812A(rtlpriv);
 
-	rtw_write8(rtlpriv, REG_SLOT, 0x09);
+	rtl_write_byte(rtlpriv, REG_SLOT, 0x09);
 
 	value32 = rtl_read_dword(rtlpriv, REG_TCR);
 	value32 &= ~TSFRST;
@@ -78,20 +78,20 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 	rtw_write32(rtlpriv, REG_TCR, value32);
 
 	/* NOTE: Fix test chip's bug (about contention windows's randomness) */
-	rtw_write8(rtlpriv,  REG_RXTSF_OFFSET_CCK, 0x50);
-	rtw_write8(rtlpriv, REG_RXTSF_OFFSET_OFDM, 0x50);
+	rtl_write_byte(rtlpriv,  REG_RXTSF_OFFSET_CCK, 0x50);
+	rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_OFDM, 0x50);
 
 	_BeaconFunctionEnable(rtlpriv, _TRUE, _TRUE);
 
 	ResumeTxBeacon(rtlpriv);
 
-	/* rtw_write8(rtlpriv, 0x422, rtl_read_byte(rtlpriv, 0x422)|BIT(6)); */
+	/* rtl_write_byte(rtlpriv, 0x422, rtl_read_byte(rtlpriv, 0x422)|BIT(6)); */
 
-	/* rtw_write8(rtlpriv, 0x541, 0xff); */
+	/* rtl_write_byte(rtlpriv, 0x541, 0xff); */
 
-	/* rtw_write8(rtlpriv, 0x542, rtl_read_byte(rtlpriv, 0x541)|BIT(0)); */
+	/* rtl_write_byte(rtlpriv, 0x542, rtl_read_byte(rtlpriv, 0x541)|BIT(0)); */
 
-	rtw_write8(rtlpriv, bcn_ctrl_reg, rtl_read_byte(rtlpriv, bcn_ctrl_reg)|BIT(1));
+	rtl_write_byte(rtlpriv, bcn_ctrl_reg, rtl_read_byte(rtlpriv, bcn_ctrl_reg)|BIT(1));
 
 }
 
@@ -102,12 +102,12 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 
 	{
 		/* disable Port0 TSF update */
-		rtw_write8(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|DIS_TSF_UDT);
+		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|DIS_TSF_UDT);
 
 		/*  set net_type */
 		val8 = rtl_read_byte(rtlpriv, MSR)&0x0c;
 		val8 |= mode;
-		rtw_write8(rtlpriv, MSR, val8);
+		rtl_write_byte(rtlpriv, MSR, val8);
 
 		DBG_871X("%s()-%d mode = %d\n", __FUNCTION__, __LINE__, mode);
 
@@ -116,15 +116,15 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 				StopTxBeacon(rtlpriv);
 			}
 
-			rtw_write8(rtlpriv, REG_BCN_CTRL, 0x19);		/* disable atim wnd */
-			/* rtw_write8(rtlpriv,REG_BCN_CTRL, 0x18); */
+			rtl_write_byte(rtlpriv, REG_BCN_CTRL, 0x19);		/* disable atim wnd */
+			/* rtl_write_byte(rtlpriv,REG_BCN_CTRL, 0x18); */
 		} else if ((mode == _HW_STATE_ADHOC_) /*|| (mode == _HW_STATE_AP_)*/ ) {
 			ResumeTxBeacon(rtlpriv);
-			rtw_write8(rtlpriv, REG_BCN_CTRL, 0x1a);
+			rtl_write_byte(rtlpriv, REG_BCN_CTRL, 0x1a);
 		} else if (mode == _HW_STATE_AP_) {
 			ResumeTxBeacon(rtlpriv);
 
-			rtw_write8(rtlpriv, REG_BCN_CTRL, 0x12);
+			rtl_write_byte(rtlpriv, REG_BCN_CTRL, 0x12);
 
 			/* Set RCR */
 			rtw_write32(rtlpriv, REG_RCR, 0x7000208e);	/* CBSSID_DATA must set to 0,reject ICV_ERR packet */
@@ -134,31 +134,31 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 			rtw_write16(rtlpriv, REG_RXFLTMAP1, 0x0400);
 
 			/* Beacon Control related register for first time */
-			rtw_write8(rtlpriv, REG_BCNDMATIM, 0x02); /* 2ms */
+			rtl_write_byte(rtlpriv, REG_BCNDMATIM, 0x02); /* 2ms */
 
-			/* rtw_write8(rtlpriv, REG_BCN_MAX_ERR, 0xFF); */
-			rtw_write8(rtlpriv, REG_ATIMWND, 0x0a); 	/* 10ms */
+			/* rtl_write_byte(rtlpriv, REG_BCN_MAX_ERR, 0xFF); */
+			rtl_write_byte(rtlpriv, REG_ATIMWND, 0x0a); 	/* 10ms */
 			rtw_write16(rtlpriv, REG_BCNTCFG, 0x00);
 			rtw_write16(rtlpriv, REG_TBTT_PROHIBIT, 0xff04);
 			rtw_write16(rtlpriv, REG_TSFTR_SYN_OFFSET, 0x7fff);	/* +32767 (~32ms) */
 
 			/* reset TSF */
-			rtw_write8(rtlpriv, REG_DUAL_TSF_RST, BIT(0));
+			rtl_write_byte(rtlpriv, REG_DUAL_TSF_RST, BIT(0));
 
 			/*
 			 * enable BCN0 Function for if1
 			 * don't enable update TSF0 for if1 (due to TSF update when beacon/probe rsp are received)
 			 */
-			rtw_write8(rtlpriv, REG_BCN_CTRL, (DIS_TSF_UDT|EN_BCN_FUNCTION | EN_TXBCN_RPT|DIS_BCNQ_SUB));
+			rtl_write_byte(rtlpriv, REG_BCN_CTRL, (DIS_TSF_UDT|EN_BCN_FUNCTION | EN_TXBCN_RPT|DIS_BCNQ_SUB));
 
 			if (IS_HARDWARE_TYPE_8821(rtlpriv)) {
 				/*  select BCN on port 0 */
-				rtw_write8(rtlpriv, REG_CCK_CHECK_8812,	rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812)&(~BIT(5)));
+				rtl_write_byte(rtlpriv, REG_CCK_CHECK_8812,	rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812)&(~BIT(5)));
 			}
 
 
 			/* dis BCN1 ATIM  WND if if2 is station */
-			rtw_write8(rtlpriv, REG_BCN_CTRL_1, rtl_read_byte(rtlpriv, REG_BCN_CTRL_1)|DIS_ATIM);
+			rtl_write_byte(rtlpriv, REG_BCN_CTRL_1, rtl_read_byte(rtlpriv, REG_BCN_CTRL_1)|DIS_ATIM);
 		}
 	}
 
@@ -173,9 +173,9 @@ static void hw_var_set_bcn_func(struct rtl_priv *rtlpriv, uint8_t variable, uint
 	}
 
 	if (*((uint8_t *) val)) {
-		rtw_write8(rtlpriv, bcn_ctrl_reg, (EN_BCN_FUNCTION | EN_TXBCN_RPT));
+		rtl_write_byte(rtlpriv, bcn_ctrl_reg, (EN_BCN_FUNCTION | EN_TXBCN_RPT));
 	} else {
-		rtw_write8(rtlpriv, bcn_ctrl_reg, rtl_read_byte(rtlpriv, bcn_ctrl_reg)&(~(EN_BCN_FUNCTION | EN_TXBCN_RPT)));
+		rtl_write_byte(rtlpriv, bcn_ctrl_reg, rtl_read_byte(rtlpriv, bcn_ctrl_reg)&(~(EN_BCN_FUNCTION | EN_TXBCN_RPT)));
 	}
 
 
@@ -211,7 +211,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 
 		if (check_fwstate(pmlmepriv, WIFI_STATION_STATE | WIFI_ADHOC_STATE | WIFI_ADHOC_MASTER_STATE)) {
 			/* disable update TSF */
-			rtw_write8(rtlpriv, reg_bcn_ctl, rtl_read_byte(rtlpriv, reg_bcn_ctl)|DIS_TSF_UDT);
+			rtl_write_byte(rtlpriv, reg_bcn_ctl, rtl_read_byte(rtlpriv, reg_bcn_ctl)|DIS_TSF_UDT);
 		}
 
 		/* Save orignal RRSR setting. */
@@ -227,7 +227,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 
 		if (check_fwstate(pmlmepriv, WIFI_STATION_STATE | WIFI_ADHOC_STATE | WIFI_ADHOC_MASTER_STATE)) {
 			/* enable update TSF */
-			rtw_write8(rtlpriv, reg_bcn_ctl, rtl_read_byte(rtlpriv, reg_bcn_ctl)&(~(DIS_TSF_UDT)));
+			rtl_write_byte(rtlpriv, reg_bcn_ctl, rtl_read_byte(rtlpriv, reg_bcn_ctl)&(~(DIS_TSF_UDT)));
 		}
 
 		value_rcr |= rcr_clear_bit;
@@ -247,11 +247,11 @@ static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	M
 
 	if ((MediaStatus == RT_MEDIA_CONNECT)
 	  && (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_BCUTAP)) {
-		rtw_write8(rtlpriv, rVhtlen_Use_Lsig_Jaguar, 0x1);
-		rtw_write8(rtlpriv, REG_TCR+3, BIT2);
+		rtl_write_byte(rtlpriv, rVhtlen_Use_Lsig_Jaguar, 0x1);
+		rtl_write_byte(rtlpriv, REG_TCR+3, BIT2);
 	} else {
-		rtw_write8(rtlpriv, rVhtlen_Use_Lsig_Jaguar, 0x3F);
-		rtw_write8(rtlpriv, REG_TCR+3, BIT0|BIT1|BIT2);
+		rtl_write_byte(rtlpriv, rVhtlen_Use_Lsig_Jaguar, 0x3F);
+		rtl_write_byte(rtlpriv, REG_TCR+3, BIT0|BIT1|BIT2);
 	}
 
 
@@ -259,10 +259,10 @@ static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	M
 	   && ((pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_BCUTAP)
 	      || (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP))) {
 		pHalData->Reg837 |= BIT2;
-		rtw_write8(rtlpriv, rBWIndication_Jaguar+3, pHalData->Reg837);
+		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, pHalData->Reg837);
 	} else {
 		pHalData->Reg837 &= (~BIT2);
-		rtw_write8(rtlpriv, rBWIndication_Jaguar+3, pHalData->Reg837);
+		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, pHalData->Reg837);
 	}
 }
 
@@ -289,7 +289,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			{
 				threshold = pHalData->UsbRxAggPageCount;
 			}
-			rtw_write8(rtlpriv, REG_RXDMA_AGG_PG_TH, threshold);*/
+			rtl_write_byte(rtlpriv, REG_RXDMA_AGG_PG_TH, threshold);*/
 		}
 #endif
 		break;
@@ -297,12 +297,12 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 	case HW_VAR_USB_MODE:
 		if (*pval == 1)
-			rtw_write8(rtlpriv, REG_OPT_CTRL_8812, 0x4);
+			rtl_write_byte(rtlpriv, REG_OPT_CTRL_8812, 0x4);
 		else if (*pval == 2)
-			rtw_write8(rtlpriv, REG_OPT_CTRL_8812, 0x8);
+			rtl_write_byte(rtlpriv, REG_OPT_CTRL_8812, 0x8);
 
-		rtw_write8(rtlpriv, REG_SDIO_CTRL_8812, 0x2);
-		rtw_write8(rtlpriv, REG_ACLK_MON, 0x1);
+		rtl_write_byte(rtlpriv, REG_SDIO_CTRL_8812, 0x2);
+		rtl_write_byte(rtlpriv, REG_ACLK_MON, 0x1);
 		/*
 		 * 2013/01/29 MH Test with chunchu/cheng, in Alpha AMD platform. when
 		 * U2/U3 switch 8812AU will be recognized as another card and then
@@ -311,9 +311,9 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		 * Then OS can unload the previous U2 port card and load new U3 port card later.
 		 * The strange sympton can disappear.
 		 */
-		rtw_write8(rtlpriv, REG_CAL_TIMER+1, 0x40);
-		/* rtw_write8(rtlpriv, REG_CAL_TIMER+1, 0x3); */
-		rtw_write8(rtlpriv, REG_APS_FSMCO+1, 0x80);
+		rtl_write_byte(rtlpriv, REG_CAL_TIMER+1, 0x40);
+		/* rtl_write_byte(rtlpriv, REG_CAL_TIMER+1, 0x3); */
+		rtl_write_byte(rtlpriv, REG_APS_FSMCO+1, 0x80);
 		break;
 		
 		
@@ -321,13 +321,13 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	case HW_VAR_MEDIA_STATUS:
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x0c;
 		val8 |= *pval;
-		rtw_write8(rtlpriv, MSR, val8);
+		rtl_write_byte(rtlpriv, MSR, val8);
 		break;
 
 	case HW_VAR_MEDIA_STATUS1:
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x03;
 		val8 |= *pval << 2;
-		rtw_write8(rtlpriv, MSR, val8);
+		rtl_write_byte(rtlpriv, MSR, val8);
 		break;
 
 	case HW_VAR_SET_OPMODE:
@@ -336,13 +336,13 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 	case HW_VAR_MAC_ADDR:
 		for (idx = 0 ; idx < 6; idx++) {
-			rtw_write8(rtlpriv, (REG_MACID + idx), pval[idx]);
+			rtl_write_byte(rtlpriv, (REG_MACID + idx), pval[idx]);
 		}
 		break;
 
 	case HW_VAR_BSSID:
 		for (idx = 0 ; idx < 6; idx++) {
-			rtw_write8(rtlpriv, (REG_BSSID + idx), pval[idx]);
+			rtl_write_byte(rtlpriv, (REG_BSSID + idx), pval[idx]);
 		}
 		break;
 
@@ -376,14 +376,14 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			 */
 
 			/* Set RRSR rate table. */
-			rtw_write8(rtlpriv, REG_RRSR, BrateCfg&0xff);
-			rtw_write8(rtlpriv, REG_RRSR+1, (BrateCfg>>8)&0xff);
-			rtw_write8(rtlpriv, REG_RRSR+2, rtl_read_byte(rtlpriv, REG_RRSR+2)&0xf0);
+			rtl_write_byte(rtlpriv, REG_RRSR, BrateCfg&0xff);
+			rtl_write_byte(rtlpriv, REG_RRSR+1, (BrateCfg>>8)&0xff);
+			rtl_write_byte(rtlpriv, REG_RRSR+2, rtl_read_byte(rtlpriv, REG_RRSR+2)&0xf0);
 		}
 		break;
 
 	case HW_VAR_TXPAUSE:
-		rtw_write8(rtlpriv, REG_TXPAUSE, *pval);
+		rtl_write_byte(rtlpriv, REG_TXPAUSE, *pval);
 		break;
 
 	case HW_VAR_BCN_FUNC:
@@ -405,26 +405,26 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			   || ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)) {
 				/*
 				 * pHalData->RegTxPause |= STOP_BCNQ;BIT(6)
-				 * rtw_write8(rtlpriv, REG_TXPAUSE, (rtl_read_byte(rtlpriv, REG_TXPAUSE)|BIT(6)));
+				 * rtl_write_byte(rtlpriv, REG_TXPAUSE, (rtl_read_byte(rtlpriv, REG_TXPAUSE)|BIT(6)));
 				 */
 				StopTxBeacon(rtlpriv);
 			}
 
 			/* disable related TSF function */
-			rtw_write8(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)&(~BIT(3)));
+			rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)&(~BIT(3)));
 
 			rtw_write32(rtlpriv, REG_TSFTR, tsf);
 			rtw_write32(rtlpriv, REG_TSFTR+4, tsf>>32);
 
 			/* enable related TSF function */
-			rtw_write8(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(3));
+			rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(3));
 
 
 			if (((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
 			   || ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)) {
 				/*
 				 * pHalData->RegTxPause  &= (~STOP_BCNQ);
-				 * rtw_write8(rtlpriv, REG_TXPAUSE, (rtl_read_byte(rtlpriv, REG_TXPAUSE)&(~BIT(6))));
+				 * rtl_write_byte(rtlpriv, REG_TXPAUSE, (rtl_read_byte(rtlpriv, REG_TXPAUSE)&(~BIT(6))));
 				 */
 				ResumeTxBeacon(rtlpriv);
 			}
@@ -453,12 +453,12 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 			/* reset TSF */
 			val8 = BIT(0) | BIT(1);
-			rtw_write8(rtlpriv, REG_DUAL_TSF_RST, val8);
+			rtl_write_byte(rtlpriv, REG_DUAL_TSF_RST, val8);
 
 			/* disable update TSF */
 			val8 = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
 			val8 |= BIT(4);
-			rtw_write8(rtlpriv, REG_BCN_CTRL, val8);
+			rtl_write_byte(rtlpriv, REG_BCN_CTRL, val8);
 		}
 		break;
 
@@ -502,7 +502,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				/* enable update TSF */
 				val8 = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
 				val8 &= ~BIT(4);
-				rtw_write8(rtlpriv, REG_BCN_CTRL, val8);
+				rtl_write_byte(rtlpriv, REG_BCN_CTRL, val8);
 
 				if (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE)) {
 					RetryLimit = 0x7;
@@ -534,7 +534,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_SLOT_TIME:
-		rtw_write8(rtlpriv, REG_SLOT, *pval);
+		rtl_write_byte(rtlpriv, REG_SLOT, *pval);
 		break;
 
 	case HW_VAR_RESP_SIFS:
@@ -542,11 +542,11 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		 * SIFS_Timer = 0x0a0a0808;
 		 * RESP_SIFS for CCK
 		 */
-		rtw_write8(rtlpriv, REG_RESP_SIFS_CCK, pval[0]); 	/* SIFS_T2T_CCK (0x08) */
-		rtw_write8(rtlpriv, REG_RESP_SIFS_CCK+1, pval[1]); 	/* SIFS_R2T_CCK(0x08) */
+		rtl_write_byte(rtlpriv, REG_RESP_SIFS_CCK, pval[0]); 	/* SIFS_T2T_CCK (0x08) */
+		rtl_write_byte(rtlpriv, REG_RESP_SIFS_CCK+1, pval[1]); 	/* SIFS_R2T_CCK(0x08) */
 		/*  RESP_SIFS for OFDM */
-		rtw_write8(rtlpriv, REG_RESP_SIFS_OFDM, pval[2]); 	/* SIFS_T2T_OFDM (0x0a) */
-		rtw_write8(rtlpriv, REG_RESP_SIFS_OFDM+1, pval[3]); 	/* SIFS_R2T_OFDM(0x0a) */
+		rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM, pval[2]); 	/* SIFS_T2T_OFDM (0x0a) */
+		rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM+1, pval[3]); 	/* SIFS_R2T_OFDM(0x0a) */
 		break;
 
 	case HW_VAR_ACK_PREAMBLE:
@@ -557,13 +557,13 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			val8 = (pHalData->nCur40MhzPrimeSC) << 5;
 			if (bShortPreamble)
 				val8 |= 0x80;
-			rtw_write8(rtlpriv, REG_RRSR+2, val8);
+			rtl_write_byte(rtlpriv, REG_RRSR+2, val8);
 		}
 		break;
 
 	case HW_VAR_SEC_CFG:
 		val8 = *pval;
-		rtw_write8(rtlpriv, REG_SECCFG, val8);
+		rtl_write_byte(rtlpriv, REG_SECCFG, val8);
 		break;
 
 	case HW_VAR_DM_FLAG:
@@ -686,7 +686,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				AcmCtrl &= (~AcmHw_BeqEn);
 
 			DBG_8192C("[HW_VAR_ACM_CTRL] Write 0x%X\n", AcmCtrl);
-			rtw_write8(rtlpriv, REG_ACMHWCTRL, AcmCtrl);
+			rtl_write_byte(rtlpriv, REG_ACMHWCTRL, AcmCtrl);
 		}
 		break;
 
@@ -796,7 +796,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			pwrpriv = &rtlpriv->pwrctrlpriv;
 
 			/* pause tx */
-			rtw_write8(rtlpriv, REG_TXPAUSE, 0xff);
+			rtl_write_byte(rtlpriv, REG_TXPAUSE, 0xff);
 
 			/* keep sn */
 			rtlpriv->xmitpriv.nqos_ssn = rtl_read_word(rtlpriv, REG_NQOS_SEQ);
@@ -830,7 +830,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		{
 			uint8_t maxMacid = *pval;
 			DBG_8192C("### MacID(%d),Set Max Tx RPT MID(%d)\n", maxMacid, maxMacid+1);
-			rtw_write8(rtlpriv, REG_TX_RPT_CTRL+1, maxMacid+1);
+			rtl_write_byte(rtlpriv, REG_TX_RPT_CTRL+1, maxMacid+1);
 		}
 		break;
 #endif
@@ -867,7 +867,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			 * is getting the upper integer.
 			 */
 			usNavUpper = (usNavUpper + HAL_NAV_UPPER_UNIT - 1) / HAL_NAV_UPPER_UNIT;
-			rtw_write8(rtlpriv, REG_NAV_UPPER, (uint8_t)usNavUpper);
+			rtl_write_byte(rtlpriv, REG_NAV_UPPER, (uint8_t)usNavUpper);
 		}
 		break;
 
@@ -878,7 +878,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			 */
 			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL+2);
 			val8 |= BIT(0);
-			rtw_write8(rtlpriv, REG_TDECTRL+2, val8);
+			rtl_write_byte(rtlpriv, REG_TDECTRL+2, val8);
 		}
 		break;
 
@@ -887,7 +887,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			/* SW_BCN_SEL - Port0 */
 			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL1_8812+2);
 			val8 &= ~BIT(4);
-			rtw_write8(rtlpriv, REG_TDECTRL1_8812+2, val8);
+			rtl_write_byte(rtlpriv, REG_TDECTRL1_8812+2, val8);
 		}
 		break;
 
@@ -902,16 +902,16 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				SIFS_Timer = 0xe;
 
 			/* SIFS for OFDM Data ACK */
-			rtw_write8(rtlpriv, REG_SIFS_CTX+1, SIFS_Timer);
+			rtl_write_byte(rtlpriv, REG_SIFS_CTX+1, SIFS_Timer);
 			/* SIFS for OFDM consecutive tx like CTS data! */
-			rtw_write8(rtlpriv, REG_SIFS_TRX+1, SIFS_Timer);
+			rtl_write_byte(rtlpriv, REG_SIFS_TRX+1, SIFS_Timer);
 
-			rtw_write8(rtlpriv, REG_SPEC_SIFS+1, SIFS_Timer);
-			rtw_write8(rtlpriv, REG_MAC_SPEC_SIFS+1, SIFS_Timer);
+			rtl_write_byte(rtlpriv, REG_SPEC_SIFS+1, SIFS_Timer);
+			rtl_write_byte(rtlpriv, REG_MAC_SPEC_SIFS+1, SIFS_Timer);
 
 			/* 20100719 Joseph: Revise SIFS setting due to Hardware register definition change. */
-			rtw_write8(rtlpriv, REG_RESP_SIFS_OFDM+1, SIFS_Timer);
-			rtw_write8(rtlpriv, REG_RESP_SIFS_OFDM, SIFS_Timer);
+			rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM+1, SIFS_Timer);
+			rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM, SIFS_Timer);
 
 			/*
 			 * Adjust R2T SIFS for IOT issue. Add by hpfan 2013.01.25
@@ -921,7 +921,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			 */
 			R2T_SIFS = 0xa;
 
-			rtw_write8(rtlpriv, REG_RESP_SIFS_OFDM+1, R2T_SIFS);
+			rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM+1, R2T_SIFS);
 		}
 		break;
 

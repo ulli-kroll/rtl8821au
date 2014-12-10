@@ -63,13 +63,13 @@ ReadEFuseByte(
 	//uint32_t start=jiffies;
 
 	//Write Address
-	rtw_write8(padapter, EFUSE_CTRL+1, (_offset & 0xff));
+	rtl_write_byte(padapter, EFUSE_CTRL+1, (_offset & 0xff));
 	readbyte = rtl_read_byte(padapter, EFUSE_CTRL+2);
-	rtw_write8(padapter, EFUSE_CTRL+2, ((_offset >> 8) & 0x03) | (readbyte & 0xfc));
+	rtl_write_byte(padapter, EFUSE_CTRL+2, ((_offset >> 8) & 0x03) | (readbyte & 0xfc));
 
 	//Write bit 32 0
 	readbyte = rtl_read_byte(padapter, EFUSE_CTRL+3);
-	rtw_write8(padapter, EFUSE_CTRL+3, (readbyte & 0x7f));
+	rtl_write_byte(padapter, EFUSE_CTRL+3, (readbyte & 0x7f));
 
 	//Check bit 32 read-ready
 	retry = 0;
@@ -126,16 +126,16 @@ EFUSE_Read1Byte(
 	{
 		//Write E-fuse Register address bit0~7
 		temp = Address & 0xFF;
-		rtw_write8(padapter, EFUSE_CTRL+1, temp);
+		rtl_write_byte(padapter, EFUSE_CTRL+1, temp);
 		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+2);
 		//Write E-fuse Register address bit8~9
 		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
-		rtw_write8(padapter, EFUSE_CTRL+2, temp);
+		rtl_write_byte(padapter, EFUSE_CTRL+2, temp);
 
 		//Write 0x30[31]=0
 		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
 		temp = Bytetemp & 0x7F;
-		rtw_write8(padapter, EFUSE_CTRL+3, temp);
+		rtl_write_byte(padapter, EFUSE_CTRL+3, temp);
 
 		//Wait Write-ready (0x30[31]=1)
 		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
@@ -195,21 +195,21 @@ EFUSE_Write1Byte(
 
 	if( Address < contentLen)	//E-fuse 512Byte
 	{
-		rtw_write8(padapter, EFUSE_CTRL, Value);
+		rtl_write_byte(padapter, EFUSE_CTRL, Value);
 
 		//Write E-fuse Register address bit0~7
 		temp = Address & 0xFF;
-		rtw_write8(padapter, EFUSE_CTRL+1, temp);
+		rtl_write_byte(padapter, EFUSE_CTRL+1, temp);
 		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+2);
 
 		//Write E-fuse Register address bit8~9
 		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
-		rtw_write8(padapter, EFUSE_CTRL+2, temp);
+		rtl_write_byte(padapter, EFUSE_CTRL+2, temp);
 
 		//Write 0x30[31]=1
 		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
 		temp = Bytetemp | 0x80;
-		rtw_write8(padapter, EFUSE_CTRL+3, temp);
+		rtl_write_byte(padapter, EFUSE_CTRL+3, temp);
 
 		//Wait Write-ready (0x30[31]=0)
 		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
@@ -248,11 +248,11 @@ efuse_OneByteRead(
 
 	// -----------------e-fuse reg ctrl ---------------------------------
 	//address
-	rtw_write8(padapter, EFUSE_CTRL+1, (uint8_t)(addr&0xff));
-	rtw_write8(padapter, EFUSE_CTRL+2, ((uint8_t)((addr>>8) &0x03) ) |
+	rtl_write_byte(padapter, EFUSE_CTRL+1, (uint8_t)(addr&0xff));
+	rtl_write_byte(padapter, EFUSE_CTRL+2, ((uint8_t)((addr>>8) &0x03) ) |
 	(rtl_read_byte(padapter, EFUSE_CTRL+2)&0xFC ));
 
-	rtw_write8(padapter, EFUSE_CTRL+3,  0x72);//read cmd
+	rtl_write_byte(padapter, EFUSE_CTRL+3,  0x72);//read cmd
 
 	while(!(0x80 &rtl_read_byte(padapter, EFUSE_CTRL+3))&&(tmpidx<1000))
 	{

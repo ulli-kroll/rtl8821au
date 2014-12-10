@@ -147,17 +147,17 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 	 * rtw_write16(Adapter, REG_TRXDMA_CTRL_8195, 0xf5b0);
 	 * rtw_write16(Adapter, REG_TRXDMA_CTRL_8812, 0xf5b4);
 	 */
-	rtw_write8(Adapter, 0xf050, 0x01);		/* usb3 rx interval */
+	rtl_write_byte(Adapter, 0xf050, 0x01);		/* usb3 rx interval */
 	rtw_write16(Adapter, REG_RXDMA_STATUS, 0x7400);	/* burset lenght=4, set 0x3400 for burset length=2 */
-	rtw_write8(Adapter, 0x289, 0xf5);		/* for rxdma control */
-	/* rtw_write8(Adapter, 0x3a, 0x46); */
+	rtl_write_byte(Adapter, 0x289, 0xf5);		/* for rxdma control */
+	/* rtl_write_byte(Adapter, 0x3a, 0x46); */
 
 	/*  0x456 = 0x70, sugguested by Zhilin */
-	rtw_write8(Adapter, REG_AMPDU_MAX_TIME_8812, 0x70);
+	rtl_write_byte(Adapter, REG_AMPDU_MAX_TIME_8812, 0x70);
 
 	rtw_write32(Adapter, 0x458, 0xffffffff);
-	rtw_write8(Adapter, REG_USTIME_TSF, 0x50);
-	rtw_write8(Adapter, REG_USTIME_EDCA, 0x50);
+	rtl_write_byte(Adapter, REG_USTIME_TSF, 0x50);
+	rtl_write_byte(Adapter, REG_USTIME_EDCA, 0x50);
 
 	if (IS_HARDWARE_TYPE_8821U(Adapter))
 		speedvalue = BIT7;
@@ -169,18 +169,18 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 		if (((temp >> 4) & 0x03) == 0) {
 			pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;
 			provalue = rtl_read_byte(Adapter, REG_RXDMA_PRO_8812);
-			rtw_write8(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(4))&(~BIT(5)))); /* set burst pkt len=512B */
+			rtl_write_byte(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(4))&(~BIT(5)))); /* set burst pkt len=512B */
 			rtw_write16(Adapter, REG_RXDMA_PRO_8812, 0x1e);
 		} else {
 			pHalData->UsbBulkOutSize = 64;
 			provalue = rtl_read_byte(Adapter, REG_RXDMA_PRO_8812);
-			rtw_write8(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(5))&(~BIT(4)))); /* set burst pkt len=64B */
+			rtl_write_byte(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(5))&(~BIT(4)))); /* set burst pkt len=64B */
 		}
 
 		rtw_write16(Adapter, REG_RXDMA_AGG_PG_TH, 0x2005); /* dmc agg th 20K */
 
 		/*
-		 * rtw_write8(Adapter, 0x10c, 0xb4);
+		 * rtl_write_byte(Adapter, 0x10c, 0xb4);
 		 * hal_UphyUpdate8812AU(Adapter);
 		 */
 
@@ -188,44 +188,44 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 	} else {		/* USB3 Mode */
 		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;
 		provalue = rtl_read_byte(Adapter, REG_RXDMA_PRO_8812);
-		rtw_write8(Adapter, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
+		rtl_write_byte(Adapter, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
 		rtw_write16(Adapter, REG_RXDMA_PRO_8812, 0x0e);
 		pHalData->bSupportUSB3 = _TRUE;
 
 		/*  set Reg 0xf008[3:4] to 2'00 to disable U1/U2 Mode to avoid 2.5G spur in USB3.0. added by page, 20120712 */
-		rtw_write8(Adapter, 0xf008, rtl_read_byte(Adapter, 0xf008)&0xE7);
+		rtl_write_byte(Adapter, 0xf008, rtl_read_byte(Adapter, 0xf008)&0xE7);
 	}
 
 #ifdef CONFIG_USB_TX_AGGREGATION
-	/* rtw_write8(Adapter, REG_TDECTRL_8195, 0x30); */
+	/* rtl_write_byte(Adapter, REG_TDECTRL_8195, 0x30); */
 #else
-	rtw_write8(Adapter, REG_TDECTRL, 0x10);
+	rtl_write_byte(Adapter, REG_TDECTRL, 0x10);
 #endif
 
 	temp = rtl_read_byte(Adapter, REG_SYS_FUNC_EN);
-	rtw_write8(Adapter, REG_SYS_FUNC_EN, temp&(~BIT(10))); 	/* reset 8051 */
+	rtl_write_byte(Adapter, REG_SYS_FUNC_EN, temp&(~BIT(10))); 	/* reset 8051 */
 
-	rtw_write8(Adapter, REG_HT_SINGLE_AMPDU_8812, rtl_read_byte(Adapter, REG_HT_SINGLE_AMPDU_8812)|BIT(7));	/* enable single pkt ampdu */
-	rtw_write8(Adapter, REG_RX_PKT_LIMIT, 0x18);		/* for VHT packet length 11K */
+	rtl_write_byte(Adapter, REG_HT_SINGLE_AMPDU_8812, rtl_read_byte(Adapter, REG_HT_SINGLE_AMPDU_8812)|BIT(7));	/* enable single pkt ampdu */
+	rtl_write_byte(Adapter, REG_RX_PKT_LIMIT, 0x18);		/* for VHT packet length 11K */
 
-	rtw_write8(Adapter, REG_PIFS, 0x00);
+	rtl_write_byte(Adapter, REG_PIFS, 0x00);
 
 	/* Suggention by SD1 Jong and Pisa, by Maddest 20130107. */
 	if (IS_HARDWARE_TYPE_8821U(Adapter) && (Adapter->registrypriv.wifi_spec == _FALSE)) {
 		rtw_write16(Adapter, REG_MAX_AGGR_NUM, 0x0a0a);
-		rtw_write8(Adapter, REG_FWHW_TXQ_CTRL, 0x80);
-		rtw_write8(Adapter, REG_AMPDU_MAX_TIME_8812, 0x5e);
+		rtl_write_byte(Adapter, REG_FWHW_TXQ_CTRL, 0x80);
+		rtl_write_byte(Adapter, REG_AMPDU_MAX_TIME_8812, 0x5e);
 		rtw_write32(Adapter, REG_FAST_EDCA_CTRL, 0x03087777);
 	} else {
-		rtw_write8(Adapter, REG_MAX_AGGR_NUM, 0x1f);
-		rtw_write8(Adapter, REG_FWHW_TXQ_CTRL, rtl_read_byte(Adapter, REG_FWHW_TXQ_CTRL)&(~BIT(7)));
+		rtl_write_byte(Adapter, REG_MAX_AGGR_NUM, 0x1f);
+		rtl_write_byte(Adapter, REG_FWHW_TXQ_CTRL, rtl_read_byte(Adapter, REG_FWHW_TXQ_CTRL)&(~BIT(7)));
 	}
 
 	if (pHalData->AMPDUBurstMode) {
-		rtw_write8(Adapter, REG_AMPDU_BURST_MODE_8812, 0x5F);
+		rtl_write_byte(Adapter, REG_AMPDU_BURST_MODE_8812, 0x5F);
 	}
 
-	rtw_write8(Adapter, 0x1c, rtl_read_byte(Adapter, 0x1c) | BIT(5) | BIT(6));  /* to prevent mac is reseted by bus. 20111208, by Page */
+	rtl_write_byte(Adapter, 0x1c, rtl_read_byte(Adapter, 0x1c) | BIT(5) | BIT(6));  /* to prevent mac is reseted by bus. 20111208, by Page */
 
 	/* ARFB table 9 for 11ac 5G 2SS */
 	rtw_write32(Adapter, REG_ARFR0, 0x00000010);
@@ -285,7 +285,7 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *padapter)
 		if (u1btmp & BIT0) { 	/* LDO mode. */
 			u1btmp = rtl_read_byte(padapter, 0x7c);
 			/* ULLI unknown register */
-			rtw_write8(padapter, 0x7c, u1btmp | BIT6);
+			rtl_write_byte(padapter, 0x7c, u1btmp | BIT6);
 		}
 	}
 
@@ -359,7 +359,7 @@ static VOID _InitQueueReservedPage_8821AUsb(struct rtl_priv *Adapter)
 	}
 
 	value8 = (u8)_NPQ(numNQ);
-	rtw_write8(Adapter, REG_RQPN_NPQ, value8);
+	rtl_write_byte(Adapter, REG_RQPN_NPQ, value8);
 
 	/* TX DMA */
 	value32 = _HPQ(numHQ) | _LPQ(numLQ) | _PUBQ(numPubQ) | LD_RQPN;
@@ -411,7 +411,7 @@ static VOID _InitQueueReservedPage_8812AUsb(struct rtl_priv *Adapter)
 	}
 
 	value8 = (u8)_NPQ(numNQ);
-	rtw_write8(Adapter, REG_RQPN_NPQ, value8);
+	rtl_write_byte(Adapter, REG_RQPN_NPQ, value8);
 
 	/* TX DMA */
 	value32 = _HPQ(numHQ) | _LPQ(numLQ) | _PUBQ(numPubQ) | LD_RQPN;
@@ -434,11 +434,11 @@ static VOID _InitTxBufferBoundary_8821AUsb(struct rtl_priv *Adapter)
 		txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8821;
 	}
 
-	rtw_write8(Adapter, REG_BCNQ_BDNY, txpktbuf_bndy);
-	rtw_write8(Adapter, REG_MGQ_BDNY, txpktbuf_bndy);
-	rtw_write8(Adapter, REG_WMAC_LBK_BF_HD, txpktbuf_bndy);
-	rtw_write8(Adapter, REG_TRXFF_BNDY, txpktbuf_bndy);
-	rtw_write8(Adapter, REG_TDECTRL+1, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_BCNQ_BDNY, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_MGQ_BDNY, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_WMAC_LBK_BF_HD, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_TRXFF_BNDY, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_TDECTRL+1, txpktbuf_bndy);
 }
 
 static VOID _InitTxBufferBoundary_8812AUsb(struct rtl_priv *Adapter)
@@ -452,11 +452,11 @@ static VOID _InitTxBufferBoundary_8812AUsb(struct rtl_priv *Adapter)
 		txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8812;
 	}
 
-	rtw_write8(Adapter, REG_BCNQ_BDNY, txpktbuf_bndy);
-	rtw_write8(Adapter, REG_MGQ_BDNY, txpktbuf_bndy);
-	rtw_write8(Adapter, REG_WMAC_LBK_BF_HD, txpktbuf_bndy);
-	rtw_write8(Adapter, REG_TRXFF_BNDY, txpktbuf_bndy);
-	rtw_write8(Adapter, REG_TDECTRL+1, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_BCNQ_BDNY, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_MGQ_BDNY, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_WMAC_LBK_BF_HD, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_TRXFF_BNDY, txpktbuf_bndy);
+	rtl_write_byte(Adapter, REG_TDECTRL+1, txpktbuf_bndy);
 
 }
 
@@ -619,7 +619,7 @@ static VOID _InitTransferPageSize_8812AUsb(struct rtl_priv *Adapter)
 
 static VOID _InitDriverInfoSize_8812A(struct rtl_priv *Adapter, uint8_t	drvInfoSize)
 {
-	rtw_write8(Adapter, REG_RX_DRVINFO_SZ, drvInfoSize);
+	rtl_write_byte(Adapter, REG_RX_DRVINFO_SZ, drvInfoSize);
 }
 
 static VOID _InitWMACSetting_8812A(struct rtl_priv *Adapter)
@@ -675,7 +675,7 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *Adapter)
 
 	/*
 	 * enable RX_SHIFT bits
-	 * rtw_write8(Adapter, REG_TRXDMA_CTRL, rtl_read_byte(Adapter, REG_TRXDMA_CTRL)|BIT(1));
+	 * rtl_write_byte(Adapter, REG_TRXDMA_CTRL, rtl_read_byte(Adapter, REG_TRXDMA_CTRL)|BIT(1));
 	 */
 
 }
@@ -699,7 +699,7 @@ static VOID _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *Adapter)
 
 	/*
 	 * CF-END Threshold
-	 * m_spIoBase->rtw_write8(REG_CFEND_TH, 0x1);
+	 * m_spIoBase->rtl_write_byte(REG_CFEND_TH, 0x1);
 	 */
 
 	/* SIFS (used in NAV) */
@@ -731,8 +731,8 @@ static VOID _InitEDCA_8812AUsb(struct rtl_priv *Adapter)
 	rtw_write32(Adapter, REG_EDCA_VO_PARAM, 0x002FA226);
 
 	/* 0x50 for 80MHz clock */
-	rtw_write8(Adapter, REG_USTIME_TSF, 0x50);
-	rtw_write8(Adapter, REG_USTIME_EDCA, 0x50);
+	rtl_write_byte(Adapter, REG_USTIME_TSF, 0x50);
+	rtl_write_byte(Adapter, REG_USTIME_EDCA, 0x50);
 }
 
 
@@ -740,9 +740,9 @@ static VOID _InitBeaconMaxError_8812A(struct rtl_priv *Adapter, BOOLEAN	InfraMod
 {
 	/* ULLI: looks here is some hacking done, wrong nams ?? */
 #ifdef RTL8192CU_ADHOC_WORKAROUND_SETTING
-	rtw_write8(Adapter, REG_BCN_MAX_ERR, 0xFF);
+	rtl_write_byte(Adapter, REG_BCN_MAX_ERR, 0xFF);
 #else
-	/* rtw_write8(Adapter, REG_BCN_MAX_ERR, (InfraMode ? 0xFF : 0x10)); */
+	/* rtl_write_byte(Adapter, REG_BCN_MAX_ERR, (InfraMode ? 0xFF : 0x10)); */
 #endif
 }
 
@@ -764,9 +764,9 @@ static void _InitHWLed(struct rtl_priv *Adapter)
 
 static VOID _InitRDGSetting_8812A(struct rtl_priv *Adapter)
 {
-	rtw_write8(Adapter, REG_RD_CTRL, 0xFF);
+	rtl_write_byte(Adapter, REG_RD_CTRL, 0xFF);
 	rtw_write16(Adapter, REG_RD_NAV_NXT, 0x200);
-	rtw_write8(Adapter, REG_RD_RESP_PKT_TH, 0x05);
+	rtl_write_byte(Adapter, REG_RD_RESP_PKT_TH, 0x05);
 }
 
 static VOID _InitRxSetting_8812AU(struct rtl_priv *Adapter)
@@ -782,13 +782,13 @@ static VOID _InitRetryFunction_8812A(IN  struct rtl_priv *Adapter)
 
 	value8 = rtl_read_byte(Adapter, REG_FWHW_TXQ_CTRL);
 	value8 |= EN_AMPDU_RTY_NEW;
-	rtw_write8(Adapter, REG_FWHW_TXQ_CTRL, value8);
+	rtl_write_byte(Adapter, REG_FWHW_TXQ_CTRL, value8);
 
 	/*
 	 * Set ACK timeout
-	 * rtw_write8(Adapter, REG_ACKTO, 0x40);  //masked by page for BCM IOT issue temporally
+	 * rtl_write_byte(Adapter, REG_ACKTO, 0x40);  //masked by page for BCM IOT issue temporally
 	 */
-	rtw_write8(Adapter, REG_ACKTO, 0x80);
+	rtl_write_byte(Adapter, REG_ACKTO, 0x80);
 }
 
 /*-----------------------------------------------------------------------------
@@ -855,7 +855,7 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *Adapter)
 	case USB_RX_AGG_DMA:
 		valueDMA |= RXDMA_AGG_EN;
 
-		/* rtw_write8(Adapter, REG_RXDMA_AGG_PG_TH, 0x05); //dma agg mode, 20k
+		/* rtl_write_byte(Adapter, REG_RXDMA_AGG_PG_TH, 0x05); //dma agg mode, 20k
 		 *
 		 * 2012/10/26 MH For TX throught start rate temp fix.
 		 */
@@ -875,7 +875,7 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *Adapter)
 		break;
 	}
 
-	rtw_write8(Adapter, REG_TRXDMA_CTRL, valueDMA);
+	rtl_write_byte(Adapter, REG_TRXDMA_CTRL, valueDMA);
 #endif
 }
 
@@ -945,7 +945,7 @@ static VOID _InitAntenna_Selection_8812A(struct rtl_priv *Adapter)
 		return;
 	DBG_8192C("==>  %s ....\n", __FUNCTION__);
 
-	rtw_write8(Adapter, REG_LEDCFG2, 0x82);
+	rtl_write_byte(Adapter, REG_LEDCFG2, 0x82);
 
 	rtl_set_bbreg(Adapter, RFPGA0_XAB_RFPARAMETER, BIT13, 0x01);
 
@@ -1028,7 +1028,7 @@ rt_rf_power_state RfOnOffDetect(struct rtl_priv *pAdapter)
 		DBG_8192C("pwrdown, 0x5c(BIT7)=%02x\n", val8);
 		rfpowerstate = (val8 & BIT7) ? rf_off : rf_on;
 	} else { /* rf on/off */
-		rtw_write8(pAdapter, REG_MAC_PINMUX_CFG, rtl_read_byte(pAdapter, REG_MAC_PINMUX_CFG)&~(BIT3));
+		rtl_write_byte(pAdapter, REG_MAC_PINMUX_CFG, rtl_read_byte(pAdapter, REG_MAC_PINMUX_CFG)&~(BIT3));
 		val8 = rtl_read_byte(pAdapter, REG_GPIO_IO_SEL);
 		DBG_8192C("GPIO_IN=%02x\n", val8);
 		rfpowerstate = (val8 & BIT3) ? rf_on : rf_off;
@@ -1175,10 +1175,10 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_BEGIN);
 	 * R/W error. Is it a right method?
 	 */
 	if (!IS_HARDWARE_TYPE_8821(Adapter)) {
-		rtw_write8(Adapter, REG_RF_CTRL, 5);
-		rtw_write8(Adapter, REG_RF_CTRL, 7);
-		rtw_write8(Adapter, REG_RF_B_CTRL_8812, 5);
-		rtw_write8(Adapter, REG_RF_B_CTRL_8812, 7);
+		rtl_write_byte(Adapter, REG_RF_CTRL, 5);
+		rtl_write_byte(Adapter, REG_RF_CTRL, 7);
+		rtl_write_byte(Adapter, REG_RF_B_CTRL_8812, 5);
+		rtl_write_byte(Adapter, REG_RF_B_CTRL_8812, 7);
 	}
 
 HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_PW_ON);
@@ -1299,7 +1299,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC02);
 	 * 2011.08.05. by tynli.
 	 */
 	value8 = rtl_read_byte(Adapter, REG_CR);
-	rtw_write8(Adapter, REG_CR, (value8|MACTXEN|MACRXEN));
+	rtl_write_byte(Adapter, REG_CR, (value8|MACTXEN|MACRXEN));
 
 #if defined(CONFIG_TX_MCAST2UNI)
 
@@ -1366,7 +1366,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC11);
 	 * HW SEQ CTRL
 	 * set 0x0 to 0xFF by tynli. Default enable HW SEQ NUM.
 	 */
-	rtw_write8(Adapter, REG_HWSEQ_CTRL, 0xFF);
+	rtl_write_byte(Adapter, REG_HWSEQ_CTRL, 0xFF);
 
 	/*
 	 * Disable BAR, suggested by Scott
@@ -1378,7 +1378,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC11);
 		rtw_write16(Adapter, REG_FAST_EDCA_CTRL, 0);
 
 	/* Nav limit , suggest by scott */
-	rtw_write8(Adapter, 0x652, 0x0);
+	rtl_write_byte(Adapter, 0x652, 0x0);
 
 HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 
@@ -1401,20 +1401,20 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 		 * 0x4c6[3] 1: RTS BW = Data BW
 		 * 0: RTS BW depends on CCA / secondary CCA result.
 		 */
-		rtw_write8(Adapter, REG_QUEUE_CTRL, rtl_read_byte(Adapter, REG_QUEUE_CTRL)&0xF7);
+		rtl_write_byte(Adapter, REG_QUEUE_CTRL, rtl_read_byte(Adapter, REG_QUEUE_CTRL)&0xF7);
 
 		/* enable Tx report. */
-		rtw_write8(Adapter,  REG_FWHW_TXQ_CTRL+1, 0x0F);
+		rtl_write_byte(Adapter,  REG_FWHW_TXQ_CTRL+1, 0x0F);
 
 		/* Suggested by SD1 pisa. Added by tynli. 2011.10.21. */
-		rtw_write8(Adapter, REG_EARLY_MODE_CONTROL_8812+3, 0x01);/* Pretx_en, for WEP/TKIP SEC */
+		rtl_write_byte(Adapter, REG_EARLY_MODE_CONTROL_8812+3, 0x01);/* Pretx_en, for WEP/TKIP SEC */
 
 		/* tynli_test_tx_report. */
 		rtw_write16(Adapter, REG_TX_RPT_TIME, 0x3DF0);
 
 		/* Reset USB mode switch setting */
-		rtw_write8(Adapter, REG_SDIO_CTRL_8812, 0x0);
-		rtw_write8(Adapter, REG_ACLK_MON, 0x0);
+		rtl_write_byte(Adapter, REG_SDIO_CTRL_8812, 0x0);
+		rtl_write_byte(Adapter, REG_ACLK_MON, 0x0);
 
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("InitializeAdapter8188EUsb() <====\n"));
@@ -1460,7 +1460,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC21);
 
 HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC31);
 
-	rtw_write8(Adapter, REG_USB_HRPWM, 0);
+	rtl_write_byte(Adapter, REG_USB_HRPWM, 0);
 
 	/* misc */
 	{
@@ -1505,10 +1505,10 @@ VOID CardDisableRTL8812AU(struct rtl_priv *Adapter)
 
 	/* Stop Tx Report Timer. 0x4EC[Bit1]=b'0 */
 	u1bTmp = rtl_read_byte(Adapter, REG_TX_RPT_CTRL);
-	rtw_write8(Adapter, REG_TX_RPT_CTRL, val8&(~BIT1));
+	rtl_write_byte(Adapter, REG_TX_RPT_CTRL, val8&(~BIT1));
 
 	/* stop rx */
-	rtw_write8(Adapter, REG_CR, 0x0);
+	rtl_write_byte(Adapter, REG_CR, 0x0);
 
 	/* Run LPS WL RFOFF flow */
 	if (IS_HARDWARE_TYPE_8821U(Adapter))
@@ -1523,12 +1523,12 @@ VOID CardDisableRTL8812AU(struct rtl_priv *Adapter)
 
 	/* Reset MCU. Suggested by Filen. 2011.01.26. by tynli. */
 	u1bTmp = rtl_read_byte(Adapter, REG_SYS_FUNC_EN+1);
-	rtw_write8(Adapter, REG_SYS_FUNC_EN+1, (u1bTmp&(~BIT2)));
+	rtl_write_byte(Adapter, REG_SYS_FUNC_EN+1, (u1bTmp&(~BIT2)));
 
 	/* MCUFWDL 0x80[1:0]=0
 	 * reset MCU ready status
 	 */
-	rtw_write8(Adapter, REG_MCUFWDL, 0x00);
+	rtl_write_byte(Adapter, REG_MCUFWDL, 0x00);
 
 	/* Card disable power action flow */
 	if (IS_HARDWARE_TYPE_8821U(Adapter))
@@ -1545,7 +1545,7 @@ static void rtl8812au_hw_power_down(struct rtl_priv *padapter)
 	 */
 
 	/* Enable register area 0x0-0xc. */
-	rtw_write8(padapter, REG_RSV_CTRL, 0x0);
+	rtl_write_byte(padapter, REG_RSV_CTRL, 0x0);
 	rtw_write16(padapter, REG_APS_FSMCO, 0x8812);
 }
 
@@ -1563,7 +1563,7 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter)
 		/*
 		 * set Reg 0xf008[3:4] to 2'11 to eable U1/U2 Mode in USB3.0. added by page, 20120712
 		 */
-		rtw_write8(Adapter, 0xf008, rtl_read_byte(Adapter, 0xf008)|0x18);
+		rtl_write_byte(Adapter, 0xf008, rtl_read_byte(Adapter, 0xf008)|0x18);
 	}
 
 	rtw_write32(Adapter, REG_HISR0_8812, 0xFFFFFFFF);
@@ -2030,15 +2030,15 @@ void _update_response_rate(struct rtl_priv *padapter, unsigned int mask)
 {
 	uint8_t	RateIndex = 0;
 	/* Set RRSR rate table. */
-	rtw_write8(padapter, REG_RRSR, mask&0xff);
-	rtw_write8(padapter, REG_RRSR+1, (mask>>8)&0xff);
+	rtl_write_byte(padapter, REG_RRSR, mask&0xff);
+	rtl_write_byte(padapter, REG_RRSR+1, (mask>>8)&0xff);
 
 	/* Set RTS initial rate */
 	while (mask > 0x1) {
 		mask = (mask >> 1);
 		RateIndex++;
 	}
-	rtw_write8(padapter, REG_INIRTS_RATE_SEL, RateIndex);
+	rtl_write_byte(padapter, REG_INIRTS_RATE_SEL, RateIndex);
 }
 
 void rtl8812au_init_default_value(struct rtl_priv *padapter)

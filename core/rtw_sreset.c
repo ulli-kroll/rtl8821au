@@ -190,7 +190,7 @@ void sreset_restore_network_station(struct rtl_priv *padapter)
 
 	mlmeext_joinbss_event_callback(padapter, 1);
 	/* restore Sequence No. */
-	rtw_write8(padapter,0x4dc,padapter->xmitpriv.nqos_ssn);
+	rtl_write_byte(padapter,0x4dc,padapter->xmitpriv.nqos_ssn);
 
 	sreset_restore_security_station(padapter);
 }

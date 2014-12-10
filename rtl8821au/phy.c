@@ -1452,10 +1452,10 @@ static void _rtl8812au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 {
 	/* ========MAC register setting======== */
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */
-	rtw_write8(rtlpriv, 0x522, 0x3f);
+	rtl_write_byte(rtlpriv, 0x522, 0x3f);
 	rtl_set_bbreg(rtlpriv, 0x550, BIT(11)|BIT(3), 0x0);
 	rtl_set_bbreg(rtlpriv, 0x808, BIT(28), 0x0);	/* CCK Off */
-	rtw_write8(rtlpriv, 0x808, 0x00);		/* RX ante off */
+	rtl_write_byte(rtlpriv, 0x808, 0x00);		/* RX ante off */
 	rtl_set_bbreg(rtlpriv, 0x838, 0xf, 0xc);		/* CCA off */
 }
 
@@ -1463,11 +1463,11 @@ static void _rtl8821au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 {
 	/* ========MAC register setting======== */
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-	rtw_write8(rtlpriv, 0x522, 0x3f);
+	rtl_write_byte(rtlpriv, 0x522, 0x3f);
 	rtl_set_bbreg(rtlpriv, 0x550, BIT(3), 0x0);
 	rtl_set_bbreg(rtlpriv, 0x551, BIT(3), 0x0);
 	rtl_set_bbreg(rtlpriv, 0x808, BIT(28), 0x0);	/* CCK Off */
-	rtw_write8(rtlpriv, 0x808, 0x00);		/* RX ante off */
+	rtl_write_byte(rtlpriv, 0x808, 0x00);		/* RX ante off */
 	rtl_set_bbreg(rtlpriv, 0x838, 0xf, 0xc);		/* CCA off */
 }
 
@@ -3818,7 +3818,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 
 	/* 3 Set Reg483 */
 	SubChnlNum = _rtl8821au_phy_get_secondary_chnl(Adapter);
-	rtw_write8(Adapter, REG_DATA_SC_8812, SubChnlNum);
+	rtl_write_byte(Adapter, REG_DATA_SC_8812, SubChnlNum);
 
 	if (pHalData->rf_chip == RF_PSEUDO_11N) {
 		DBG_871X("phy_PostSetBwMode8812: return for PSEUDO \n");

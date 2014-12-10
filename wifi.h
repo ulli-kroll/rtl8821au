@@ -263,7 +263,7 @@ static u32 rtl_read_dword(struct rtl_priv *adapter, u32 addr)
 	return le32_to_cpu(val);
 }
 
-static int rtw_write8(struct rtl_priv *adapter, u32 addr, u8 val)
+static int rtl_write_byte(struct rtl_priv *adapter, u32 addr, u8 val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl *pintfhdl = &(pio_priv->intf);

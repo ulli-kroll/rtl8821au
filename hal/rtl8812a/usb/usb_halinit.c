@@ -271,7 +271,7 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *padapter)
 	 * Set CR bit10 to enable 32k calibration. Suggested by SD1 Gimmy. Added by tynli. 2011.08.31.
 	 */
 	rtw_write16(padapter, REG_CR, 0x00); 	/* suggseted by zhouzhou, by page, 20111230 */
-	u2btmp = rtw_read16(padapter, REG_CR);
+	u2btmp = rtl_read_word(padapter, REG_CR);
 	u2btmp |= (HCI_TXDMA_EN | HCI_RXDMA_EN | TXDMA_EN | RXDMA_EN
 				| PROTOCOL_EN | SCHEDULE_EN | ENSEC | CALTMR_EN);
 	rtw_write16(padapter, REG_CR, u2btmp);
@@ -491,7 +491,7 @@ static VOID _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *Adapter,
 	u16 beQ, u16 bkQ, u16 viQ,
 	u16 voQ, u16 mgtQ, u16 hiQ)
 {
-	u16 value16 = (rtw_read16(Adapter, REG_TRXDMA_CTRL) & 0x7);
+	u16 value16 = (rtl_read_word(Adapter, REG_TRXDMA_CTRL) & 0x7);
 
 	value16 |= _TXDMA_BEQ_MAP(beQ) 	| _TXDMA_BKQ_MAP(bkQ) |
 		   _TXDMA_VIQ_MAP(viQ) 	| _TXDMA_VOQ_MAP(voQ) |
@@ -984,7 +984,7 @@ static VOID HalDetectSelectiveSuspendMode(struct rtl_priv *Adapter)
 static VOID HwSuspendModeEnable_8812AU(struct rtl_priv *pAdapter, uint8_t Type)
 {
 	/* PRT_USB_DEVICE 		pDevice = GET_RT_USB_DEVICE(pAdapter); */
-	u16	reg = rtw_read16(pAdapter, REG_GPIO_MUXCFG);
+	u16	reg = rtl_read_word(pAdapter, REG_GPIO_MUXCFG);
 
 	/* if (!pDevice->RegUsbSS) */
 	{
@@ -1556,7 +1556,7 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter)
 	DBG_8192C("==> %s \n", __FUNCTION__);
 
 	{
-		rtw_write16(Adapter, REG_GPIO_MUXCFG, rtw_read16(Adapter, REG_GPIO_MUXCFG)&(~BIT12));
+		rtw_write16(Adapter, REG_GPIO_MUXCFG, rtl_read_word(Adapter, REG_GPIO_MUXCFG)&(~BIT12));
 	}
 
 	if (pHalData->bSupportUSB3 == _TRUE) {

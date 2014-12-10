@@ -401,7 +401,7 @@ extern void dev_power_down(struct rtl_priv * Adapter, uint8_t bpwrup);
 
 /*
 #define RTL_R8(reg)		rtw_read8(padapter, reg)
-#define RTL_R16(reg)            rtw_read16(padapter, reg)
+#define RTL_R16(reg)            rtl_read_word(padapter, reg)
 #define RTL_R32(reg)            rtw_read32(padapter, reg)
 #define RTL_W8(reg, val8)       rtw_write8(padapter, reg, val8)
 #define RTL_W16(reg, val16)     rtw_write16(padapter, reg, val16)
@@ -427,7 +427,7 @@ extern void dev_power_down(struct rtl_priv * Adapter, uint8_t bpwrup);
 #define PlatformEFIORead1Byte(_a,_b)		\
 		rtl_read_byte(_a,_b)
 #define PlatformEFIORead2Byte(_a,_b)		\
-		rtw_read16(_a,_b)
+		rtw_read_word(_a,_b)
 #define PlatformEFIORead4Byte(_a,_b)		\
 		rtw_read32(_a,_b)
 

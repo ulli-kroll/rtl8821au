@@ -215,7 +215,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 		}
 
 		/* Save orignal RRSR setting. */
-		pHalData->RegRRSR = rtw_read16(rtlpriv, REG_RRSR);
+		pHalData->RegRRSR = rtl_read_word(rtlpriv, REG_RRSR);
 
 	} else {
 		/* sitesurvey done */
@@ -799,7 +799,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			rtw_write8(rtlpriv, REG_TXPAUSE, 0xff);
 
 			/* keep sn */
-			rtlpriv->xmitpriv.nqos_ssn = rtw_read16(rtlpriv, REG_NQOS_SEQ);
+			rtlpriv->xmitpriv.nqos_ssn = rtl_read_word(rtlpriv, REG_NQOS_SEQ);
 
 			if (pwrpriv->bkeepfwalive != _TRUE) {
 				/* RX DMA stop */
@@ -1002,7 +1002,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 		break;
 
 	case HW_VAR_CHK_HI_QUEUE_EMPTY:
-		val16 = rtw_read16(rtlpriv, REG_TXPKT_EMPTY);
+		val16 = rtl_read_word(rtlpriv, REG_TXPKT_EMPTY);
 		*pval = (val16 & BIT(10)) ? _TRUE:_FALSE;
 		break;
 

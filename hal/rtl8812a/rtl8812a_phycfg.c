@@ -2646,14 +2646,14 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 		rtw_write8(Adapter, REG_CCK_CHECK_8812, 0x80);
 
 		count = 0;
-		reg41A = rtw_read16(Adapter, REG_TXPKT_EMPTY);
+		reg41A = rtl_read_word(Adapter, REG_TXPKT_EMPTY);
 		/* DBG_871X("Reg41A value %d", reg41A); */
 		reg41A &= 0x30;
 		while((reg41A!= 0x30) && (count < 50)) {
 			udelay(50);
 			/* DBG_871X("Delay 50us \n"); */
 
-			reg41A = rtw_read16(Adapter, REG_TXPKT_EMPTY);
+			reg41A = rtl_read_word(Adapter, REG_TXPKT_EMPTY);
 			reg41A &= 0x30;
 			count++;
 			/* DBG_871X("Reg41A value %d", reg41A); */

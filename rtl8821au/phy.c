@@ -3710,7 +3710,7 @@ static void _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WID
 {
 	u16 reg_rf_mode_bw, tmp = 0;
 
-	reg_rf_mode_bw = rtw_read16(rtlpriv, REG_WMAC_TRXPTCL_CTL);
+	reg_rf_mode_bw = rtl_read_word(rtlpriv, REG_WMAC_TRXPTCL_CTL);
 	switch (bw) {
 	case CHANNEL_WIDTH_20:
 		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, reg_rf_mode_bw & 0xFE7F);

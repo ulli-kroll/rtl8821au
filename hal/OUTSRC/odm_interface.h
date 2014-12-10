@@ -63,7 +63,7 @@ static u8 ODM_Read1Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
 
 static u16 ODM_Read2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
 {
-	return rtw_read16(pDM_Odm->Adapter,RegAddr);
+	return rtl_read_word(pDM_Odm->Adapter,RegAddr);
 }
 
 static uint32_t ODM_Read4Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)

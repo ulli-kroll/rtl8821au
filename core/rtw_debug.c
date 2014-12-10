@@ -152,7 +152,7 @@ int proc_get_read_reg(char *page, char **start,
 			len += snprintf(page + len, count - len, "rtl_read_byte(0x%x)=0x%x\n", proc_get_read_addr, rtl_read_byte(padapter, proc_get_read_addr));
 			break;
 		case 2:
-			len += snprintf(page + len, count - len, "rtw_read16(0x%x)=0x%x\n", proc_get_read_addr, rtw_read16(padapter, proc_get_read_addr));
+			len += snprintf(page + len, count - len, "rtl_read_word(0x%x)=0x%x\n", proc_get_read_addr, rtl_read_word(padapter, proc_get_read_addr));
 			break;
 		case 4:
 			len += snprintf(page + len, count - len, "rtw_read32(0x%x)=0x%x\n", proc_get_read_addr, rtw_read32(padapter, proc_get_read_addr));

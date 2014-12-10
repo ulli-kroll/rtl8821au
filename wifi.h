@@ -241,7 +241,7 @@ static u8 rtl_read_byte(struct rtl_priv *adapter, u32 addr)
 	return val;
 }
 
-static u16 rtw_read16(struct rtl_priv *adapter, u32 addr)
+static u16 rtl_read_word(struct rtl_priv *adapter, u32 addr)
 {
 	u16 val;
 	struct io_priv *pio_priv = &adapter->iopriv;

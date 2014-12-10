@@ -378,17 +378,4 @@ VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *Adapter)
  * if (============================================================
  */
 
-VOID
-ODM_ResetIQKResult(
-	IN struct rtl_dm *pDM_Odm
-)
-{
-	u8		i;
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-
-	return;
-#endif
-
-}
 

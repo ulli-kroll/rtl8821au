@@ -1733,12 +1733,6 @@ ODM_ReleaseAllTimers(
     );
 
 VOID
-ODM_ResetIQKResult(
-    IN struct rtl_dm *pDM_Odm
-    );
-
-
-VOID
 ODM_AntselStatistics_88C(
 	IN		struct rtl_dm *	pDM_Odm,
 	IN		u8			MacId,

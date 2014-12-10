@@ -70,12 +70,5 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 #define ODM_TARGET_CHNL_NUM_2G_5G	59
 
-
-VOID
-ODM_ResetIQKResult(
-	IN struct rtl_dm *pDM_Odm
-);
-
-
 #endif	// #ifndef __HAL_PHY_RF_H__
 

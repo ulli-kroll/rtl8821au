@@ -393,8 +393,6 @@ void DoIQK_8812A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
-	ODM_ResetIQKResult(pDM_Odm);
-
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK = ThermalValue;
 	rtl8812au_phy_iq_calibrate(Adapter, FALSE);
 }
@@ -859,8 +857,6 @@ void DoIQK_8821A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
-
-	ODM_ResetIQKResult(pDM_Odm);
 
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK = ThermalValue;
 	rtl8821au_phy_iq_calibrate(Adapter, FALSE);

@@ -34,7 +34,7 @@ static void _dbg_dump_macreg(struct rtl_priv *padapter)
 
 	for (index = 0; index < 64; index++) {
 		offset = index*4;
-		val32 = rtw_read32(padapter, offset);
+		val32 = rtl_read_dword(padapter, offset);
 		DBG_8192C("offset : 0x%02x ,val:0x%08x\n", offset, val32);
 	}
 }
@@ -593,7 +593,7 @@ static VOID _InitQueuePriority_8812AUsb(struct rtl_priv *Adapter)
 
 static VOID _InitHardwareDropIncorrectBulkOut_8812A(struct rtl_priv *Adapter)
 {
-	uint32_t value32 = rtw_read32(Adapter, REG_TXDMA_OFFSET_CHK);
+	uint32_t value32 = rtl_read_dword(Adapter, REG_TXDMA_OFFSET_CHK);
 	value32 |= DROP_DATA_EN;
 	rtw_write32(Adapter, REG_TXDMA_OFFSET_CHK, value32);
 }
@@ -602,7 +602,7 @@ static VOID _InitNetworkType_8812A(struct rtl_priv *Adapter)
 {
 	uint32_t	value32;
 
-	value32 = rtw_read32(Adapter, REG_CR);
+	value32 = rtl_read_dword(Adapter, REG_CR);
 	/*  TODO: use the other function to set network type */
 	value32 = (value32 & ~MASK_NETTYPE) | _NETTYPE(NT_LINK_AP);
 
@@ -686,7 +686,7 @@ static VOID _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *Adapter)
 	uint32_t	value32;
 
 	/* Response Rate Set */
-	value32 = rtw_read32(Adapter, REG_RRSR);
+	value32 = rtl_read_dword(Adapter, REG_RRSR);
 	value32 &= ~RATE_BITMAP_ALL;
 
 	if (Adapter->registrypriv.wireless_mode & WIRELESS_11B)
@@ -816,7 +816,7 @@ static VOID usb_AggSettingTxUpdate_8812A(struct rtl_priv *Adapter)
 		pHalData->UsbTxAggMode = _FALSE;
 
 	if (pHalData->UsbTxAggMode) {
-		value32 = rtw_read32(Adapter, REG_TDECTRL);
+		value32 = rtl_read_dword(Adapter, REG_TDECTRL);
 		value32 = value32 & ~(BLK_DESC_NUM_MASK << BLK_DESC_NUM_SHIFT);
 		value32 |= ((pHalData->UsbTxAggDescNum & BLK_DESC_NUM_MASK) << BLK_DESC_NUM_SHIFT);
 

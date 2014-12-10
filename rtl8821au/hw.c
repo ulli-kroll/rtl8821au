@@ -70,7 +70,7 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 
 	rtw_write8(rtlpriv, REG_SLOT, 0x09);
 
-	value32 = rtw_read32(rtlpriv, REG_TCR);
+	value32 = rtl_read_dword(rtlpriv, REG_TCR);
 	value32 &= ~TSFRST;
 	rtw_write32(rtlpriv,  REG_TCR, value32);
 
@@ -199,7 +199,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 		rcr_clear_bit = RCR_CBSSID_BCN;
 	}
 
-	value_rcr = rtw_read32(rtlpriv, REG_RCR);
+	value_rcr = rtl_read_dword(rtlpriv, REG_RCR);
 
 	if (*((uint8_t *) val)) {
 		/* under sitesurvey */
@@ -432,7 +432,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_CHECK_BSSID:
-		val32 = rtw_read32(rtlpriv, REG_RCR);
+		val32 = rtl_read_dword(rtlpriv, REG_RCR);
 		if (*pval)
 			val32 |= RCR_CBSSID_DATA|RCR_CBSSID_BCN;
 		else
@@ -443,7 +443,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	case HW_VAR_MLME_DISCONNECT:
 		{
 			/* Set RCR to not to receive data frame when NO LINK state
-			 * val32 = rtw_read32(rtlpriv, REG_RCR);
+			 * val32 = rtl_read_dword(rtlpriv, REG_RCR);
 			 * val32 &= ~RCR_ADF;
 			 * rtw_write32(rtlpriv, REG_RCR, val32);
 			 */
@@ -477,11 +477,11 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			if (type == 0) { 	/* prepare to join  */
 				/*
 				 * enable to rx data frame.Accept all data frame
-				 * rtw_write32(rtlpriv, REG_RCR, rtw_read32(rtlpriv, REG_RCR)|RCR_ADF);
+				 * rtw_write32(rtlpriv, REG_RCR, rtl_read_dword(rtlpriv, REG_RCR)|RCR_ADF);
 				 */
 				rtw_write16(rtlpriv, REG_RXFLTMAP2, 0xFFFF);
 
-				val32 = rtw_read32(rtlpriv, REG_RCR);
+				val32 = rtl_read_dword(rtlpriv, REG_RCR);
 				if (rtlpriv->in_cta_test)
 					val32 &= ~(RCR_CBSSID_DATA | RCR_CBSSID_BCN);/* | RCR_ADF */
 				else
@@ -516,17 +516,17 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_ON_RCR_AM:
-		val32 = rtw_read32(rtlpriv, REG_RCR);
+		val32 = rtl_read_dword(rtlpriv, REG_RCR);
 		val32 |= RCR_AM;
 		rtw_write32(rtlpriv, REG_RCR, val32);
-		DBG_8192C("%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtw_read32(rtlpriv, REG_RCR));
+		DBG_8192C("%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
 		break;
 
 	case HW_VAR_OFF_RCR_AM:
-		val32 = rtw_read32(rtlpriv, REG_RCR);
+		val32 = rtl_read_dword(rtlpriv, REG_RCR);
 		val32 &= ~RCR_AM;
 		rtw_write32(rtlpriv, REG_RCR, val32);
-		DBG_8192C("%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtw_read32(rtlpriv, REG_RCR));
+		DBG_8192C("%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
 		break;
 
 	case HW_VAR_BEACON_INTERVAL:
@@ -803,11 +803,11 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 			if (pwrpriv->bkeepfwalive != _TRUE) {
 				/* RX DMA stop */
-				val32 = rtw_read32(rtlpriv, REG_RXPKT_NUM);
+				val32 = rtl_read_dword(rtlpriv, REG_RXPKT_NUM);
 				val32 |= RW_RELEASE_EN;
 				rtw_write32(rtlpriv, REG_RXPKT_NUM, val32);
 				do {
-					val32 = rtw_read32(rtlpriv, REG_RXPKT_NUM);
+					val32 = rtl_read_dword(rtlpriv, REG_RXPKT_NUM);
 					val32 &= RXDMA_IDLE;
 					if (!val32)
 						break;
@@ -978,7 +978,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 			*pval = _TRUE;
 		} else {
 			uint32_t valRCR;
-			valRCR = rtw_read32(rtlpriv, REG_RCR);
+			valRCR = rtl_read_dword(rtlpriv, REG_RCR);
 			valRCR &= 0x00070000;
 			if (valRCR)
 				*pval = _FALSE;

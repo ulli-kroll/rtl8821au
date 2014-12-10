@@ -61,24 +61,24 @@ static void SwLedOn_8812AU(struct rtl_priv *padapter, PLED_USB pLed)
 			if (pHalData->AntDivCfg == 0) {
 				LedCfg = rtl_read_byte(padapter, REG_LEDCFG0);
 				rtw_write8(padapter, REG_LEDCFG0, (LedCfg&0x70)|BIT5); /* SW control led0 on. */
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED0 0x%x\n", rtw_read32(padapter, REG_LEDCFG0)));
+				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED0 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG0)));
 			} else {
 				LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
 				rtw_write8(padapter, REG_LEDCFG2, (LedCfg&0xe0)|BIT7|BIT6|BIT5); /* SW control led0 on. */
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED0 Addr 0x%x,  0x%x\n", REG_LEDCFG2, rtw_read32(padapter, REG_LEDCFG2)));
+				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED0 Addr 0x%x,  0x%x\n", REG_LEDCFG2, rtl_read_dword(padapter, REG_LEDCFG2)));
 			}
 			break;
 
 		case LED_PIN_LED1:
 			LedCfg = rtl_read_byte(padapter, (REG_LEDCFG1));
 			rtw_write8(padapter, (REG_LEDCFG1), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED1 0x%x\n", rtw_read32(padapter, REG_LEDCFG1)));
+			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED1 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG1)));
 			break;
 
 		case LED_PIN_LED2:
 			LedCfg = rtl_read_byte(padapter, (REG_LEDCFG2));
 			rtw_write8(padapter, (REG_LEDCFG2), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED2 0x%x\n", rtw_read32(padapter, REG_LEDCFG2)));
+			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED2 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG2)));
 			break;
 
 		default:
@@ -149,12 +149,12 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, PLED_USB	pLed)
 				LedCfg = rtl_read_byte(padapter, REG_LEDCFG0);
 				LedCfg &= 0x70; 	/* Set to software control. */
 				rtw_write8(padapter, REG_LEDCFG0, (LedCfg|BIT3|BIT5));
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED0 0x%x\n", rtw_read32(padapter, REG_LEDCFG0)));
+				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED0 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG0)));
 			} else {
 				LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
 				LedCfg &= 0xe0; 	/* Set to software control. */
 				rtw_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT6|BIT5));
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED0 0x%x\n", rtw_read32(padapter, REG_LEDCFG2)));
+				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED0 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG2)));
 			}
 			break;
 
@@ -162,14 +162,14 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, PLED_USB	pLed)
 			LedCfg = rtl_read_byte(padapter, REG_LEDCFG1);
 			LedCfg &= 0x70; 	/* Set to software control. */
 			rtw_write8(padapter, REG_LEDCFG1, (LedCfg|BIT3|BIT5));
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED1 0x%x\n", rtw_read32(padapter, REG_LEDCFG1)));
+			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED1 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG1)));
 			break;
 
 		case LED_PIN_LED2:
 			LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
 			LedCfg &= 0x70; 	/* Set to software control. */
 			rtw_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED1 0x%x\n", rtw_read32(padapter, REG_LEDCFG2)));
+			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED1 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG2)));
 			break;
 
 		default:
@@ -228,7 +228,7 @@ static void SwLedOn_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 			if (IS_HARDWARE_TYPE_8821U(Adapter)) {
 				LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
 				rtw_write8(Adapter, REG_LEDCFG2, ((LedCfg&0x20) & (~BIT3))|BIT5); /* SW control led0 on. */
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("8821 SwLedOn LED2 0x%x\n", rtw_read32(Adapter, REG_LEDCFG0)));
+				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("8821 SwLedOn LED2 0x%x\n", rtl_read_dword(Adapter, REG_LEDCFG0)));
 			}
 
 			break;
@@ -304,7 +304,7 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 				LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
 				LedCfg &= 0x20; 	/* Set to software control. */
 				rtw_write8(Adapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("8821  SwLedOff LED2 0x%x\n", rtw_read32(Adapter, REG_LEDCFG0)));
+				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("8821  SwLedOff LED2 0x%x\n", rtl_read_dword(Adapter, REG_LEDCFG0)));
 			 }
 
 			break;

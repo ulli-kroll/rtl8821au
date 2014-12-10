@@ -2567,12 +2567,12 @@ static int rtw_cta_test_start(struct net_device *ndev,
 		padapter->in_cta_test = 0;
 
 	if (padapter->in_cta_test) {
-		u32 v = rtw_read32(padapter, REG_RCR);
+		u32 v = rtl_read_dword(padapter, REG_RCR);
 		v &= ~(RCR_CBSSID_DATA | RCR_CBSSID_BCN);	/* | RCR_ADF */
 		rtw_write32(padapter, REG_RCR, v);
 		DBG_871X("enable RCR_ADF\n");
 	} else {
-		u32 v = rtw_read32(padapter, REG_RCR);
+		u32 v = rtl_read_dword(padapter, REG_RCR);
 		v |= RCR_CBSSID_DATA | RCR_CBSSID_BCN ;		/* | RCR_ADF */
 		rtw_write32(padapter, REG_RCR, v);
 		DBG_871X("disable RCR_ADF\n");
@@ -2588,14 +2588,14 @@ void mac_reg_dump(struct rtl_priv *padapter)
 	for (i = 0x0; i < 0x300; i += 4) {
 		if (j % 4 == 1)
 			printk("0x%02x", i);
-		printk(" 0x%08x ", rtw_read32(padapter, i));
+		printk(" 0x%08x ", rtl_read_dword(padapter, i));
 		if ((j++) % 4 == 0)
 			printk("\n");
 	}
 	for (i = 0x400; i < 0x800; i += 4) {
 		if (j % 4 == 1)
 			printk("0x%02x", i);
-		printk(" 0x%08x ", rtw_read32(padapter, i));
+		printk(" 0x%08x ", rtl_read_dword(padapter, i));
 		if ((j++) % 4 == 0)
 			printk("\n");
 	}
@@ -2608,7 +2608,7 @@ void bb_reg_dump(struct rtl_priv *padapter)
 		if (j % 4 == 1)
 			printk("0x%02x", i);
 
-		printk(" 0x%08x ", rtw_read32(padapter, i));
+		printk(" 0x%08x ", rtl_read_dword(padapter, i));
 		if ((j++)%4 == 0)
 			printk("\n");
 	}

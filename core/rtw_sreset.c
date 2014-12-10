@@ -63,7 +63,7 @@ uint8_t sreset_get_wifi_status(struct rtl_priv *padapter)
 	if(psrtpriv->silent_reset_inprogress == _TRUE)
 		return status;
 
-	val32 =rtw_read32(padapter,REG_TXDMA_STATUS);
+	val32 =rtl_read_dword(padapter,REG_TXDMA_STATUS);
 
 	if(val32==0xeaeaeaea)
 		psrtpriv->Wifi_Error_Status = WIFI_IF_NOT_EXIST;

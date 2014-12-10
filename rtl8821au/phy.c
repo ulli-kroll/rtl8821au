@@ -21,7 +21,7 @@ u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *Adapter, uint32_t RegAddr, uint3
 	/* DBG_871X("--->PHY_QueryBBReg8812(): RegAddr(%#x), BitMask(%#x)\n", RegAddr, BitMask); */
 
 
-	OriginalValue = rtw_read32(Adapter, RegAddr);
+	OriginalValue = rtl_read_dword(Adapter, RegAddr);
 	BitShift = PHY_CalculateBitShift(BitMask);
 	ReturnValue = (OriginalValue & BitMask) >> BitShift;
 
@@ -35,7 +35,7 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask
 	uint32_t OriginalValue, BitShift;
 
 	if (BitMask != bMaskDWord) {	/* if not "double word" write */
-		OriginalValue = rtw_read32(Adapter, RegAddr);
+		OriginalValue = rtl_read_dword(Adapter, RegAddr);
 		BitShift = PHY_CalculateBitShift(BitMask);
 		Data = ((OriginalValue) & (~BitMask)) | (((Data << BitShift)) & BitMask);
 	}
@@ -1253,7 +1253,7 @@ static void _rtl8812au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* save MACBB default value */
 	for (i = 0; i < mac_bb_num; i++) {
-		macbb_backup[i] = rtw_read32(rtlpriv, backup_macbb_reg[i]);
+		macbb_backup[i] = rtl_read_dword(rtlpriv, backup_macbb_reg[i]);
 	}
 
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
@@ -1268,7 +1268,7 @@ static void _rtl8821au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* save MACBB default value */
 	for (i = 0; i < mac_bb_num; i++) {
-		macbb_backup[i] = rtw_read32(rtlpriv, backup_macbb_reg[i]);
+		macbb_backup[i] = rtl_read_dword(rtlpriv, backup_macbb_reg[i]);
 	}
 
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
@@ -1312,7 +1312,7 @@ static void _rtl8812au_iqk_backup_afe(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save AFE Parameters */
 	for (i = 0; i < AFE_NUM; i++) {
-		AFE_backup[i] = rtw_read32(rtlpriv, Backup_AFE_REG[i]);
+		AFE_backup[i] = rtl_read_dword(rtlpriv, Backup_AFE_REG[i]);
 	}
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n")); */
 }
@@ -1325,7 +1325,7 @@ static void _rtl8821au_iqk_backup_afe(struct rtl_priv *rtlpriv, u32 *afe_backup,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save AFE Parameters */
 	for (i = 0; i < afe_num; i++) {
-		afe_backup[i] = rtw_read32(rtlpriv, backup_afe_REG[i]);
+		afe_backup[i] = rtl_read_dword(rtlpriv, backup_afe_REG[i]);
 	}
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n")); */
 }
@@ -3897,7 +3897,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 
 	/*
 	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", rtl_read_byte(Adapter, 0x483));
-	 * DBG_871X("phy_PostSetBwMode8812(): Reg668: %x\n", rtw_read32(Adapter, 0x668));
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg668: %x\n", rtl_read_dword(Adapter, 0x668));
 	 * DBG_871X("phy_PostSetBwMode8812(): Reg8AC: %x\n", rtl_get_bbreg(Adapter, rRFMOD_Jaguar, 0xffffffff));
 	 */
 

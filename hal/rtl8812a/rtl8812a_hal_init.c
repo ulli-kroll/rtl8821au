@@ -38,7 +38,7 @@ static int32_t _LLTWrite(struct rtl_priv *padapter, uint32_t address, uint32_t d
 
 	/* polling */
 	do {
-		value = rtw_read32(padapter, LLTReg);
+		value = rtl_read_dword(padapter, LLTReg);
 		if (_LLT_NO_ACTIVE == _LLT_OP_VALUE(value)) {
 			break;
 		}
@@ -64,7 +64,7 @@ uint8_t _LLTRead(struct rtl_priv *padapter, uint32_t address)
 
 	/* polling and get value */
 	do {
-		value = rtw_read32(padapter, LLTReg);
+		value = rtl_read_dword(padapter, LLTReg);
 		if (_LLT_NO_ACTIVE == _LLT_OP_VALUE(value)) {
 			return (uint8_t)value;
 		}
@@ -364,7 +364,7 @@ static int32_t _FWFreeToGo8812(struct rtl_priv *padapter)
 
 	/* polling CheckSum report */
 	do {
-		value32 = rtw_read32(padapter, REG_MCUFWDL);
+		value32 = rtl_read_dword(padapter, REG_MCUFWDL);
 		if (value32 & FWDL_ChkSum_rpt)
 			break;
 	} while (counter++ < 6000);
@@ -375,7 +375,7 @@ static int32_t _FWFreeToGo8812(struct rtl_priv *padapter)
 	}
 	DBG_871X("%s: Checksum report OK! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 
-	value32 = rtw_read32(padapter, REG_MCUFWDL);
+	value32 = rtl_read_dword(padapter, REG_MCUFWDL);
 	value32 |= MCUFWDL_RDY;
 	value32 &= ~WINTINI_RDY;
 	rtw_write32(padapter, REG_MCUFWDL, value32);
@@ -385,7 +385,7 @@ static int32_t _FWFreeToGo8812(struct rtl_priv *padapter)
 	/* polling for FW ready */
 	counter = 0;
 	do {
-		value32 = rtw_read32(padapter, REG_MCUFWDL);
+		value32 = rtl_read_dword(padapter, REG_MCUFWDL);
 		if (value32 & WINTINI_RDY) {
 			DBG_871X("%s: Polling FW ready success!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 			return _SUCCESS;
@@ -2484,7 +2484,7 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 
 	pHalData = GET_HAL_DATA(Adapter);
 
-	value32 = rtw_read32(Adapter, REG_SYS_CFG);
+	value32 = rtl_read_dword(Adapter, REG_SYS_CFG);
 	DBG_8192C("%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);
 
 	if (IS_HARDWARE_TYPE_8812(Adapter))
@@ -2524,12 +2524,12 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 	if (IS_HARDWARE_TYPE_8812(Adapter))
 		ChipVersion.CUTVersion += 1;
 
-	/* value32 = rtw_read32(Adapter, REG_GPIO_OUTSTS); */
+	/* value32 = rtl_read_dword(Adapter, REG_GPIO_OUTSTS); */
 	ChipVersion.ROMVer = 0;	/* ROM code version. */
 
 	/* For multi-function consideration. Added by Roger, 2010.10.06. */
 	pHalData->MultiFunc = RT_MULTI_FUNC_NONE;
-	value32 = rtw_read32(Adapter, REG_MULTI_FUNC_CTRL);
+	value32 = rtl_read_dword(Adapter, REG_MULTI_FUNC_CTRL);
 	pHalData->MultiFunc |= ((value32 & WL_FUNC_EN) ? RT_MULTI_FUNC_WIFI : 0);
 	pHalData->MultiFunc |= ((value32 & BT_FUNC_EN) ? RT_MULTI_FUNC_BT : 0);
 	pHalData->PolarityCtl = ((value32 & WL_HWPDN_SL) ? RT_POLARITY_HIGH_ACT : RT_POLARITY_LOW_ACT);
@@ -2956,10 +2956,10 @@ uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 				DBG_8192C("============ RA status check  Mac_id:%d ===================\n", mac_id);
 
 				rtw_write32(padapter, REG_HMEBOX_E2_E3_8812, cmd);
-				ra_info1 = rtw_read32(padapter, REG_RSVD5_8812);
-				ra_info2 = rtw_read32(padapter, REG_RSVD6_8812);
-				rate_mask1 = rtw_read32(padapter, REG_RSVD7_8812);
-				rate_mask2 = rtw_read32(padapter, REG_RSVD8_8812);
+				ra_info1 = rtl_read_dword(padapter, REG_RSVD5_8812);
+				ra_info2 = rtl_read_dword(padapter, REG_RSVD6_8812);
+				rate_mask1 = rtl_read_dword(padapter, REG_RSVD7_8812);
+				rate_mask2 = rtl_read_dword(padapter, REG_RSVD8_8812);
 
 				DBG_8192C("[ ra_info1:0x%08x ] =>RSSI=%d, BW_setting=0x%02x, DISRA=0x%02x, VHT_EN=0x%02x\n",
 					ra_info1,

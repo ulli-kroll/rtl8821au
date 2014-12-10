@@ -252,7 +252,7 @@ static u16 rtl_read_word(struct rtl_priv *adapter, u32 addr)
 	return le16_to_cpu(val);
 }
 
-static u32 rtw_read32(struct rtl_priv *adapter, u32 addr)
+static u32 rtl_read_dword(struct rtl_priv *adapter, u32 addr)
 {
 	uint32_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;

@@ -73,11 +73,11 @@ ReadEFuseByte(
 
 	//Check bit 32 read-ready
 	retry = 0;
-	value32 = rtw_read32(padapter, EFUSE_CTRL);
+	value32 = rtl_read_dword(padapter, EFUSE_CTRL);
 	//while(!(((value32 >> 24) & 0xff) & 0x80)  && (retry<10))
 	while(!(((value32 >> 24) & 0xff) & 0x80)  && (retry<10000))
 	{
-		value32 = rtw_read32(padapter, EFUSE_CTRL);
+		value32 = rtl_read_dword(padapter, EFUSE_CTRL);
 		retry++;
 	}
 
@@ -86,7 +86,7 @@ ReadEFuseByte(
 	// Designer says that there shall be some delay after ready bit is set, or the
 	// result will always stay on last data we read.
 	udelay(50);
-	value32 = rtw_read32(padapter, EFUSE_CTRL);
+	value32 = rtl_read_dword(padapter, EFUSE_CTRL);
 
 	*pbuf = (uint8_t)(value32 & 0xff);
 	//DBG_871X("ReadEFuseByte _offset:%08u, in %d ms\n",_offset ,rtw_get_passing_time_ms(start));
@@ -244,7 +244,7 @@ efuse_OneByteRead(
 	uint8_t	bResult;
 
 	//DBG_871X("===> EFUSE_OneByteRead(), addr = %x\n", addr);
-	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
+	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtl_read_dword(pAdapter, EFUSE_TEST));
 
 	// -----------------e-fuse reg ctrl ---------------------------------
 	//address
@@ -290,13 +290,13 @@ efuse_OneByteWrite(
 	uint32_t efuseValue = 0;
 
 	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
-	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtw_read32(pAdapter, EFUSE_TEST));
+	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtl_read_dword(pAdapter, EFUSE_TEST));
 
 	// -----------------e-fuse reg ctrl ---------------------------------
 	//address
 
 
-	efuseValue = rtw_read32(padapter, EFUSE_CTRL);
+	efuseValue = rtl_read_dword(padapter, EFUSE_CTRL);
 	efuseValue |= (BIT21|BIT31);
 	efuseValue &= ~(0x3FFFF);
 	efuseValue |= ((addr<<8 | data) & 0x3FFFF);

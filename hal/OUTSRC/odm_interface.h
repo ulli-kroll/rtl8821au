@@ -56,36 +56,6 @@ typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
 typedef VOID (*RT_WORKITEM_CALL_BACK)(PVOID pContext);
 
 
-static u8 ODM_Read1Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
-{
-	return rtl_read_byte(pDM_Odm->Adapter,RegAddr);
-}
-
-static u16 ODM_Read2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
-{
-	return rtl_read_word(pDM_Odm->Adapter,RegAddr);
-}
-
-static uint32_t ODM_Read4Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr)
-{
-	return rtl_read_dword(pDM_Odm->Adapter,RegAddr);
-}
-
-static void ODM_Write1Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, u8 Data)
-{
-	rtl_write_byte(pDM_Odm->Adapter,RegAddr, Data);
-}
-
-static void ODM_Write2Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, u16 Data)
-{
-	rtl_write_word(pDM_Odm->Adapter,RegAddr, Data);
-}
-
-static void ODM_Write4Byte(struct rtl_dm *pDM_Odm, uint32_t RegAddr, uint32_t Data)
-{
-	rtl_write_dword(pDM_Odm->Adapter,RegAddr, Data);
-}
-
 
 static void ODM_SetMACReg(struct rtl_dm *pDM_Odm, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)

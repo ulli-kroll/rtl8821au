@@ -175,8 +175,8 @@ static void odm_CmnInfoInit_Debug(struct rtl_dm *pDM_Odm)
 
 static void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm)
 {
-	pDM_Odm->bCckHighPower = (BOOLEAN) ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
-	pDM_Odm->RFPathRxEnable = (u8) ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
+	pDM_Odm->bCckHighPower = (BOOLEAN) rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
+	pDM_Odm->RFPathRxEnable = (u8) rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
 #if (DM_ODM_SUPPORT_TYPE != ODM_CE)
 	pDM_Odm->pbNet_closed = &pDM_Odm->BOOLEAN_temp;
 #endif
@@ -192,7 +192,7 @@ static void odm_DIGInit(struct rtl_dm *pDM_Odm)
 
 	/* pDM_DigTable->Dig_Enable_Flag = TRUE; */
 	/* pDM_DigTable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
-	pDM_DigTable->CurIGValue = (u8) ODM_GetBBReg(pDM_Odm, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
+	pDM_DigTable->CurIGValue = (u8) rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
 	/* pDM_DigTable->PreIGValue = 0x0; */
 	/* pDM_DigTable->CurSTAConnectState = pDM_DigTable->PreSTAConnectState = DIG_STA_DISCONNECT; */
 	/* pDM_DigTable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */

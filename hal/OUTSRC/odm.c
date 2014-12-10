@@ -1298,10 +1298,10 @@ void odm_FalseAlarmCounterStatistics(struct rtl_dm *pDM_Odm)
 	{
 		uint32_t CCKenable;
 		/* read OFDM FA counter */
-		FalseAlmCnt->Cnt_Ofdm_fail = ODM_GetBBReg(pDM_Odm, ODM_REG_OFDM_FA_11AC, bMaskLWord);
-		FalseAlmCnt->Cnt_Cck_fail = ODM_GetBBReg(pDM_Odm, ODM_REG_CCK_FA_11AC, bMaskLWord);
+		FalseAlmCnt->Cnt_Ofdm_fail = rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG_OFDM_FA_11AC, bMaskLWord);
+		FalseAlmCnt->Cnt_Cck_fail = rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG_CCK_FA_11AC, bMaskLWord);
 
-		CCKenable =  ODM_GetBBReg(pDM_Odm, ODM_REG_BB_RX_PATH_11AC, BIT28);
+		CCKenable =  rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG_BB_RX_PATH_11AC, BIT28);
 		if (CCKenable)		/* if (*pDM_Odm->pBandType == ODM_BAND_2_4G) */
 			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail + FalseAlmCnt->Cnt_Cck_fail;
 		else

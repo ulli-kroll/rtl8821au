@@ -2,7 +2,6 @@
 #define __RTL8821AU_DM_H__
 
 #include "../hal/OUTSRC/odm_types.h"
-#include "../hal/OUTSRC/odm_precomp.h"
 #include "../hal/OUTSRC/odm.h"
 #include "../hal/OUTSRC/HalPhyRf.h"
 

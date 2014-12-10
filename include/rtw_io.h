@@ -417,11 +417,6 @@ extern void dev_power_down(struct rtl_priv * Adapter, uint8_t bpwrup);
 #define RTL_READ_BB(reg)	phy_QueryUsbBBReg(padapter, reg)
 */
 
-#define PlatformEFIOWrite2Byte(_a,_b,_c)		\
-	rtl_write_word(_a,_b,_c)
-#define PlatformEFIOWrite4Byte(_a,_b,_c)		\
-	rtl_write_dword(_a,_b,_c)
-
 #define PlatformEFIORead1Byte(_a,_b)		\
 		rtl_read_byte(_a,_b)
 #define PlatformEFIORead2Byte(_a,_b)		\

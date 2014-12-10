@@ -2517,9 +2517,9 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 			{
 				//rtl_write_word(Adapter, rA_RFE_Pinmux_Jaguar, 0x7777);
 				if(pHalData->ExternalPA_5G)
-					PlatformEFIOWrite1Byte(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x33);
+					rtl_write_byte(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x33);
 				else
-					PlatformEFIOWrite1Byte(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x73);
+					rtl_write_byte(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x73);
 			}
 #if 0
 			else

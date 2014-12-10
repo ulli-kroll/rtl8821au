@@ -614,7 +614,7 @@ static VOID _InitTransferPageSize_8812AUsb(struct rtl_priv *Adapter)
 	uint8_t	value8;
 	value8 = _PSTX(PBP_512);
 
-	PlatformEFIOWrite1Byte(Adapter, REG_PBP, value8);
+	rtl_write_byte(Adapter, REG_PBP, value8);
 }
 
 static VOID _InitDriverInfoSize_8812A(struct rtl_priv *Adapter, uint8_t	drvInfoSize)

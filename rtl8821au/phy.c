@@ -226,12 +226,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	    {
 		/* ====== TX IQK ====== */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
-		ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x80002);
-		ODM_SetRFReg(pDM_Odm, Path, 0x30, bRFRegOffsetMask, 0x20000);
-		ODM_SetRFReg(pDM_Odm, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
-		ODM_SetRFReg(pDM_Odm, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
-		ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-		ODM_SetRFReg(pDM_Odm, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80002);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x20000);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 		rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
 		rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xc94, BIT(0), 0x1);
@@ -411,7 +411,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-		ODM_SetRFReg(pDM_Odm, Path, 0x58, 0x7fe00, ODM_GetRFReg(pDM_Odm, Path, 0x8, 0xffc00)); /* Load LOK */
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x58, 0x7fe00, ODM_GetRFReg(pDM_Odm, Path, 0x8, 0xffc00)); /* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 
 		if (TX0IQKOK == FALSE)
@@ -423,13 +423,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			ODM_SetRFReg(pDM_Odm, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			ODM_SetRFReg(pDM_Odm, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			ODM_SetRFReg(pDM_Odm, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			ODM_SetRFReg(pDM_Odm, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x00000);
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
 			rtl_write_dword(rtlpriv, 0x984, 0x0046a911);
@@ -529,13 +529,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			/*  1. RX RF Setting */
-			ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			ODM_SetRFReg(pDM_Odm, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			ODM_SetRFReg(pDM_Odm, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			ODM_SetRFReg(pDM_Odm, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			ODM_SetRFReg(pDM_Odm, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -626,12 +626,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	    {
 		/* Path-B TX/RX IQK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x80002);
-		ODM_SetRFReg(pDM_Odm, Path, 0x30, bRFRegOffsetMask, 0x20000);
-		ODM_SetRFReg(pDM_Odm, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
-		ODM_SetRFReg(pDM_Odm, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
-		ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-		ODM_SetRFReg(pDM_Odm, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80002);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x20000);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 		rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
 		rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xe94, BIT(0), 0x1);
@@ -807,7 +807,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		ODM_SetRFReg(pDM_Odm, Path, 0x58, 0x7fe00, ODM_GetRFReg(pDM_Odm, Path, 0x8, 0xffc00));	/* Load LOK */
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x58, 0x7fe00, ODM_GetRFReg(pDM_Odm, Path, 0x8, 0xffc00));	/* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
 
 		if (TX1IQKOK == FALSE)
@@ -819,13 +819,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-			ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			ODM_SetRFReg(pDM_Odm, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			ODM_SetRFReg(pDM_Odm, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			ODM_SetRFReg(pDM_Odm, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			ODM_SetRFReg(pDM_Odm, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -929,13 +929,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		} else {
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			ODM_SetRFReg(pDM_Odm, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			ODM_SetRFReg(pDM_Odm, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			ODM_SetRFReg(pDM_Odm, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			ODM_SetRFReg(pDM_Odm, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			ODM_SetRFReg(pDM_Odm, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			ODM_SetRFReg(pDM_Odm, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);

@@ -70,24 +70,24 @@ static void phy_LCCalibrate_8812A(struct rtl_dm *pDM_Odm, BOOLEAN	is2T)
 
 
 	//3 2. Set RF mode = standby mode
-	ODM_SetRFReg(pDM_Odm, RF90_PATH_A, RF_AC, bRFRegOffsetMask, (RF_Amode&0x8FFFF)|0x10000);
+	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_AC, bRFRegOffsetMask, (RF_Amode&0x8FFFF)|0x10000);
 	if(is2T)
-		ODM_SetRFReg(pDM_Odm, RF90_PATH_B, RF_AC, bRFRegOffsetMask, (RF_Bmode&0x8FFFF)|0x10000);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_B, RF_AC, bRFRegOffsetMask, (RF_Bmode&0x8FFFF)|0x10000);
 */
 
 	/* Enter LCK mode */
 	tmp = ODM_GetRFReg(pDM_Odm, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	ODM_SetRFReg(pDM_Odm, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
+	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
 
 	/* 3 3. Read RF reg18 */
 	LC_Cal = ODM_GetRFReg(pDM_Odm, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	/* 3 4. Set LC calibration begin bit15 */
-	ODM_SetRFReg(pDM_Odm, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
+	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
 
 	/* Leave LCK mode */
 	tmp = ODM_GetRFReg(pDM_Odm, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	ODM_SetRFReg(pDM_Odm, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
+	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
 
 	mdelay(100);
 
@@ -105,12 +105,12 @@ static void phy_LCCalibrate_8812A(struct rtl_dm *pDM_Odm, BOOLEAN	is2T)
 	}
 
 	/* Recover channel number */
-	ODM_SetRFReg(pDM_Odm, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);
+	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);
 
 	/*
-	ODM_SetRFReg(pDM_Odm, RF90_PATH_A, RF_AC, bRFRegOffsetMask, RF_Amode);
+	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_AC, bRFRegOffsetMask, RF_Amode);
 	if(is2T)
-		ODM_SetRFReg(pDM_Odm, RF90_PATH_B, RF_AC, bRFRegOffsetMask, RF_Bmode);
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_B, RF_AC, bRFRegOffsetMask, RF_Bmode);
 		*/
 
 }

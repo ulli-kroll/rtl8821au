@@ -1928,9 +1928,9 @@ void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm)
 	if (!pDM_Odm->RFCalibrateInfo.TM_Trigger) {		/* at least delay 1 sec */
 		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
 		if (IS_HARDWARE_TYPE_JAGUAR(Adapter))
-			ODM_SetRFReg(pDM_Odm, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 		else
-			ODM_SetRFReg(pDM_Odm, RF90_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);
+			rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);
 
 		/* DBG_871X("Trigger Thermal Meter!!\n"); */
 

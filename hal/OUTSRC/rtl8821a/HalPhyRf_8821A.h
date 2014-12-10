@@ -27,11 +27,6 @@
 #define AVG_THERMAL_NUM_8821A	4
 #define RF_T_METER_8821A 		0x42
 
-
-void ConfigureTxpowerTrack_8821A(
-	PTXPWRTRACK_CFG	pConfig
-	);
-
 //1 7.	IQK
 
 VOID PHY_SetRFPathSwitch_8821A(

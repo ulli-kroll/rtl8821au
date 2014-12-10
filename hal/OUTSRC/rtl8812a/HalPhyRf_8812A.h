@@ -28,11 +28,6 @@
 #define AVG_THERMAL_NUM_8812A	4
 #define RF_T_METER_8812A 		0x42
 
-
-void ConfigureTxpowerTrack_8812A(
-	PTXPWRTRACK_CFG	pConfig
-	);
-
 //1 7.	IQK
 
 void rtl8812au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery);

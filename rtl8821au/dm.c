@@ -387,7 +387,7 @@ void ODM_DMInit(struct rtl_dm *pDM_Odm)
  * ============================================================
  */
 
-static void DoIQK_8812A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
+void DoIQK_8812A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 	ThermalValue, u8 Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -417,7 +417,7 @@ static void DoIQK_8812A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
  *
  *---------------------------------------------------------------------------*/
 
-static void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
+void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 	u8 	RFPath, u8 	ChannelMappedIndex)
 {
 	uint32_t 	finalBbSwingIdx[2];
@@ -768,7 +768,7 @@ static u8 rtl8812au_delta_swing_table_idx_24gccka_p_rfe3[] = {
 
 /* END Copied from hal/OUTSRC/rtl8812a/HalHWImg8812A_RF.c */
 
-static void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
+void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 					    u8 **up_a, u8 **down_a,
 					    u8 **up_b, u8 **down_b)
 {
@@ -851,24 +851,10 @@ static void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 	return;
 }
 
-void ConfigureTxpowerTrack_8812A(PTXPWRTRACK_CFG pConfig)
-{
-	pConfig->SwingTableSize_CCK = TXSCALE_TABLE_SIZE;
-	pConfig->SwingTableSize_OFDM = TXSCALE_TABLE_SIZE;
-	pConfig->Threshold_IQK = IQK_THRESHOLD;
-	pConfig->AverageThermalNum = AVG_THERMAL_NUM_8812A;
-	pConfig->RfPathCount = MAX_PATH_NUM_8812A;
-	pConfig->ThermalRegAddr = RF_T_METER_8812A;
-
-	pConfig->ODM_TxPwrTrackSetPwr = ODM_TxPwrTrackSetPwr8812A;
-	pConfig->DoIQK = DoIQK_8812A;
-	pConfig->PHY_LCCalibrate = PHY_LCCalibrate_8812A;
-	pConfig->GetDeltaSwingTable = rtl8812au_get_delta_swing_table;
-}
 
 /* From hal/OUTSRC/rtl8821a/HalPhyRf_8821A.c */
 
-static void DoIQK_8821A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
+void DoIQK_8821A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 ThermalValue, u8 Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -881,7 +867,7 @@ static void DoIQK_8821A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
 }
 
 
-static void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
+void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 	u8 RFPath, u8 ChannelMappedIndex)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -1083,7 +1069,7 @@ static u8 rtl8821au_delta_swing_table_idx_24gccka_p[] = {
 
 /* END Copied from hal/OUTSRC/rtl8821a/HalHWImg8821A_RF.c */
 
-static void rtl8821au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
+void rtl8821au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 	u8 **up_a, u8 **down_a,
 	u8 **up_b, u8 **down_b)
 {
@@ -1131,22 +1117,8 @@ static void rtl8821au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 	return;
 }
 
-static void PHY_LCCalibrate_8821A(struct rtl_dm *pDM_Odm)
+void PHY_LCCalibrate_8821A(struct rtl_dm *pDM_Odm)
 {
 	PHY_LCCalibrate_8812A(pDM_Odm);
 }
 
-void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
-{
-	pConfig->SwingTableSize_CCK = TXSCALE_TABLE_SIZE;
-	pConfig->SwingTableSize_OFDM = TXSCALE_TABLE_SIZE;
-	pConfig->Threshold_IQK = IQK_THRESHOLD;
-	pConfig->AverageThermalNum = AVG_THERMAL_NUM_8812A;
-	pConfig->RfPathCount = MAX_PATH_NUM_8821A;
-	pConfig->ThermalRegAddr = RF_T_METER_8812A;
-
-	pConfig->ODM_TxPwrTrackSetPwr = ODM_TxPwrTrackSetPwr8821A;
-	pConfig->DoIQK = DoIQK_8821A;
-	pConfig->PHY_LCCalibrate = PHY_LCCalibrate_8821A;
-	pConfig->GetDeltaSwingTable = rtl8821au_get_delta_swing_table;
-}

@@ -577,7 +577,6 @@ typedef enum _ODM_Common_Info_Definition
 	//
 //--------- POINTER REFERENCE-----------//
 	ODM_CMNINFO_MAC_PHY_MODE,			// ODM_MAC_PHY_MODE_E
-	ODM_CMNINFO_TX_UNI,
 	ODM_CMNINFO_RX_UNI,
 	ODM_CMNINFO_WM_MODE,				// ODM_WIRELESS_MODE_E
 	ODM_CMNINFO_BAND,					// ODM_BAND_TYPE_E
@@ -1151,8 +1150,6 @@ struct rtl_dm {
 
 	// MAC PHY Mode SMSP/DMSP/DMDP = 0/1/2
 	u8			*pMacPhyMode;
-	//TX Unicast byte count
-	uint64_t			*pNumTxBytesUnicast;
 	//RX Unicast byte count
 	uint64_t			*pNumRxBytesUnicast;
 	// Wireless mode B/G/A/N = BIT0/BIT1/BIT2/BIT3

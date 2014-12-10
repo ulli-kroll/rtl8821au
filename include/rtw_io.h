@@ -387,10 +387,6 @@ extern void async_write32(struct rtl_priv *adapter, u32 addr, u32 val,
 extern void async_write_mem(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void async_write_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 
-
-int rtw_init_io_priv(struct rtl_priv *padapter, void (*set_intf_ops)(struct rtl_priv *padapter,struct rtl_io *pops));
-
-
 extern uint alloc_io_queue(struct rtl_priv *adapter);
 extern void free_io_queue(struct rtl_priv *adapter);
 extern void async_bus_io(struct io_queue *pio_q);

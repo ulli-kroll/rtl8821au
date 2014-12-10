@@ -750,6 +750,24 @@ RETURN:
 	return;
 }
 
+static int rtw_init_io_priv(struct rtl_priv *padapter,
+	void (*set_intf_ops)(struct rtl_priv *padapter, struct rtl_io *pops))
+{
+	struct io_priv	*piopriv = &padapter->iopriv;
+	struct intf_hdl *pintf = &piopriv->intf;
+
+	if (set_intf_ops == NULL)
+		return _FAIL;
+
+	piopriv->padapter = padapter;
+	pintf->padapter = padapter;
+	pintf->pintf_dev = adapter_to_dvobj(padapter);
+
+	set_intf_ops(padapter, &pintf->io_ops);
+
+	return _SUCCESS;
+}
+
 /*
  * drv_init() - a device potentially for us
  *

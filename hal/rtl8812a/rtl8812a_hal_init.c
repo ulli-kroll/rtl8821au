@@ -1394,20 +1394,20 @@ rtl8812_EfusePowerSwitch(struct rtl_priv *pAdapter, uint8_t bWrite, uint8_t PwrS
 		tmpV16 = rtl_read_word(pAdapter, REG_SYS_ISO_CTRL);
 		if (!(tmpV16 & PWC_EV12V)) {
 			tmpV16 |= PWC_EV12V ;
-			/* rtw_write16(pAdapter,REG_SYS_ISO_CTRL,tmpV16); */
+			/* rtl_write_word(pAdapter,REG_SYS_ISO_CTRL,tmpV16); */
 		}
 		/* Reset: 0x0000h[28], default valid */
 		tmpV16 =  rtl_read_word(pAdapter, REG_SYS_FUNC_EN);
 		if (!(tmpV16 & FEN_ELDR)) {
 			tmpV16 |= FEN_ELDR ;
-			rtw_write16(pAdapter, REG_SYS_FUNC_EN, tmpV16);
+			rtl_write_word(pAdapter, REG_SYS_FUNC_EN, tmpV16);
 		}
 
 		/* Clock: Gated(0x0008h[5]) 8M(0x0008h[1]) clock from ANA, default valid */
 		tmpV16 = rtl_read_word(pAdapter, REG_SYS_CLKR);
 		if ((!(tmpV16 & LOADER_CLK_EN)) || (!(tmpV16 & ANA8M))) {
 			tmpV16 |= (LOADER_CLK_EN | ANA8M);
-			rtw_write16(pAdapter, REG_SYS_CLKR, tmpV16);
+			rtl_write_word(pAdapter, REG_SYS_CLKR, tmpV16);
 		}
 
 		if (bWrite == _TRUE) {
@@ -2338,7 +2338,7 @@ rtl8812_Efuse_PgPacketWrite(struct rtl_priv *pAdapter, uint8_t offset,
 void InitRDGSetting8812A(struct rtl_priv *padapter)
 {
 	rtl_write_byte(padapter, REG_RD_CTRL, 0xFF);
-	rtw_write16(padapter, REG_RD_NAV_NXT, 0x200);
+	rtl_write_word(padapter, REG_RD_NAV_NXT, 0x200);
 	rtl_write_byte(padapter, REG_RD_RESP_PKT_TH, 0x05);
 }
 
@@ -2700,10 +2700,10 @@ VOID _InitBeaconParameters_8812A(struct rtl_priv *Adapter)
 {
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
-	rtw_write16(Adapter, REG_BCN_CTRL, 0x1010);
+	rtl_write_word(Adapter, REG_BCN_CTRL, 0x1010);
 
 	/* TODO: Remove these magic number */
-	rtw_write16(Adapter, REG_TBTT_PROHIBIT, 0x6404);		/* ms */
+	rtl_write_word(Adapter, REG_TBTT_PROHIBIT, 0x6404);		/* ms */
 	rtl_write_byte(Adapter, REG_DRVERLYINT, DRIVER_EARLY_INT_TIME_8812);	/* 5ms */
 	rtl_write_byte(Adapter, REG_BCNDMATIM, BCN_DMA_ATIME_INT_TIME_8812); 	/* 2ms */
 
@@ -2711,7 +2711,7 @@ VOID _InitBeaconParameters_8812A(struct rtl_priv *Adapter)
 	 *  Suggested by designer timchen. Change beacon AIFS to the largest number
 	 *  beacause test chip does not contension before sending beacon. by tynli. 2009.11.03
 	 */
-	rtw_write16(Adapter, REG_BCNTCFG, 0x660F);
+	rtl_write_word(Adapter, REG_BCNTCFG, 0x660F);
 
 	pHalData->RegBcnCtrlVal = rtl_read_byte(Adapter, REG_BCN_CTRL);
 	pHalData->RegTxPause = rtl_read_byte(Adapter, REG_TXPAUSE);

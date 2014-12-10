@@ -2460,7 +2460,7 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 		case 5:
 			/* if(BT_IsBtExist(Adapter)) */
 			{
-				/* rtw_write16(Adapter, rA_RFE_Pinmux_Jaguar, 0x7777); */
+				/* rtl_write_word(Adapter, rA_RFE_Pinmux_Jaguar, 0x7777); */
 				rtl_write_byte(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x77);
 			}
 			/* else */
@@ -2515,7 +2515,7 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 		case 5:
 			//if(BT_IsBtExist(Adapter))
 			{
-				//rtw_write16(Adapter, rA_RFE_Pinmux_Jaguar, 0x7777);
+				//rtl_write_word(Adapter, rA_RFE_Pinmux_Jaguar, 0x7777);
 				if(pHalData->ExternalPA_5G)
 					PlatformEFIOWrite1Byte(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x33);
 				else

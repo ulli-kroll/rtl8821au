@@ -63,7 +63,7 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 	 */
 
 	/* BCN interval */
-	rtw_write16(rtlpriv, REG_BCN_INTERVAL, pmlmeinfo->bcn_interval);
+	rtl_write_word(rtlpriv, REG_BCN_INTERVAL, pmlmeinfo->bcn_interval);
 	rtl_write_byte(rtlpriv, REG_ATIMWND, 0x02);	/* 2ms */
 
 	_InitBeaconParameters_8812A(rtlpriv);
@@ -129,18 +129,18 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 			/* Set RCR */
 			rtw_write32(rtlpriv, REG_RCR, 0x7000208e);	/* CBSSID_DATA must set to 0,reject ICV_ERR packet */
 			/* enable to rx data frame */
-			rtw_write16(rtlpriv, REG_RXFLTMAP2, 0xFFFF);
+			rtl_write_word(rtlpriv, REG_RXFLTMAP2, 0xFFFF);
 			/* enable to rx ps-poll */
-			rtw_write16(rtlpriv, REG_RXFLTMAP1, 0x0400);
+			rtl_write_word(rtlpriv, REG_RXFLTMAP1, 0x0400);
 
 			/* Beacon Control related register for first time */
 			rtl_write_byte(rtlpriv, REG_BCNDMATIM, 0x02); /* 2ms */
 
 			/* rtl_write_byte(rtlpriv, REG_BCN_MAX_ERR, 0xFF); */
 			rtl_write_byte(rtlpriv, REG_ATIMWND, 0x0a); 	/* 10ms */
-			rtw_write16(rtlpriv, REG_BCNTCFG, 0x00);
-			rtw_write16(rtlpriv, REG_TBTT_PROHIBIT, 0xff04);
-			rtw_write16(rtlpriv, REG_TSFTR_SYN_OFFSET, 0x7fff);	/* +32767 (~32ms) */
+			rtl_write_word(rtlpriv, REG_BCNTCFG, 0x00);
+			rtl_write_word(rtlpriv, REG_TBTT_PROHIBIT, 0xff04);
+			rtl_write_word(rtlpriv, REG_TSFTR_SYN_OFFSET, 0x7fff);	/* +32767 (~32ms) */
 
 			/* reset TSF */
 			rtl_write_byte(rtlpriv, REG_DUAL_TSF_RST, BIT(0));
@@ -207,7 +207,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 		value_rcr &= ~(rcr_clear_bit);
 		rtw_write32(rtlpriv, REG_RCR, value_rcr);
 
-		rtw_write16(rtlpriv, REG_RXFLTMAP2, value_rxfltmap2);
+		rtl_write_word(rtlpriv, REG_RXFLTMAP2, value_rxfltmap2);
 
 		if (check_fwstate(pmlmepriv, WIFI_STATION_STATE | WIFI_ADHOC_STATE | WIFI_ADHOC_MASTER_STATE)) {
 			/* disable update TSF */
@@ -222,7 +222,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 
 		if (check_fwstate(pmlmepriv, (_FW_LINKED | WIFI_AP_STATE))) {
 			/* enable to rx data frame */
-			rtw_write16(rtlpriv, REG_RXFLTMAP2, 0xFFFF);
+			rtl_write_word(rtlpriv, REG_RXFLTMAP2, 0xFFFF);
 		}
 
 		if (check_fwstate(pmlmepriv, WIFI_STATION_STATE | WIFI_ADHOC_STATE | WIFI_ADHOC_MASTER_STATE)) {
@@ -234,7 +234,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 		rtw_write32(rtlpriv, REG_RCR, value_rcr);
 
 		/* Restore orignal RRSR setting. */
-		rtw_write16(rtlpriv, REG_RRSR, pHalData->RegRRSR);
+		rtl_write_word(rtlpriv, REG_RRSR, pHalData->RegRRSR);
 
 	}
 }
@@ -449,7 +449,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			 */
 
 			 /* reject all data frames */
-			rtw_write16(rtlpriv, REG_RXFLTMAP2, 0x00);
+			rtl_write_word(rtlpriv, REG_RXFLTMAP2, 0x00);
 
 			/* reset TSF */
 			val8 = BIT(0) | BIT(1);
@@ -479,7 +479,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				 * enable to rx data frame.Accept all data frame
 				 * rtw_write32(rtlpriv, REG_RCR, rtl_read_dword(rtlpriv, REG_RCR)|RCR_ADF);
 				 */
-				rtw_write16(rtlpriv, REG_RXFLTMAP2, 0xFFFF);
+				rtl_write_word(rtlpriv, REG_RXFLTMAP2, 0xFFFF);
 
 				val32 = rtl_read_dword(rtlpriv, REG_RCR);
 				if (rtlpriv->in_cta_test)
@@ -497,7 +497,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				pHalData->bNeedIQK = _TRUE;
 			} else if (type == 1) { /* joinbss_event call back when join res < 0  */
 
-				rtw_write16(rtlpriv, REG_RXFLTMAP2, 0x00);
+				rtl_write_word(rtlpriv, REG_RXFLTMAP2, 0x00);
 			} else if (type == 2) { /* sta add event call back */
 				/* enable update TSF */
 				val8 = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
@@ -510,7 +510,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			}
 
 			val16 = RetryLimit << RETRY_LIMIT_SHORT_SHIFT | RetryLimit << RETRY_LIMIT_LONG_SHIFT;
-			rtw_write16(rtlpriv, REG_RL, val16);
+			rtl_write_word(rtlpriv, REG_RL, val16);
 		}
 
 		break;
@@ -530,7 +530,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_BEACON_INTERVAL:
-		rtw_write16(rtlpriv, REG_BCN_INTERVAL, *(u16 *)pval);
+		rtl_write_word(rtlpriv, REG_BCN_INTERVAL, *(u16 *)pval);
 		break;
 
 	case HW_VAR_SLOT_TIME:
@@ -817,7 +817,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				}
 
 				/* RQPN Load 0 */
-				rtw_write16(rtlpriv, REG_RQPN_NPQ, 0x0);
+				rtl_write_word(rtlpriv, REG_RQPN_NPQ, 0x0);
 				rtw_write32(rtlpriv, REG_RQPN, 0x80000000);
 				mdelay(10);
 			}

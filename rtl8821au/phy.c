@@ -3713,15 +3713,15 @@ static void _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WID
 	reg_rf_mode_bw = rtl_read_word(rtlpriv, REG_WMAC_TRXPTCL_CTL);
 	switch (bw) {
 	case CHANNEL_WIDTH_20:
-		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, reg_rf_mode_bw & 0xFE7F);
+		rtl_write_word(rtlpriv, REG_WMAC_TRXPTCL_CTL, reg_rf_mode_bw & 0xFE7F);
 		break;
 	case CHANNEL_WIDTH_40:
 		tmp = reg_rf_mode_bw | BIT(7);
-		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFEFF);
+		rtl_write_word(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFEFF);
 		break;
 	case CHANNEL_WIDTH_80:
 		tmp = reg_rf_mode_bw | BIT(8);
-		rtw_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFF7F);
+		rtl_write_word(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFF7F);
 		break;
 	default:
 		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n", bw);

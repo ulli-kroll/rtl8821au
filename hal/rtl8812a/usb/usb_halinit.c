@@ -144,11 +144,11 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	/*
-	 * rtw_write16(Adapter, REG_TRXDMA_CTRL_8195, 0xf5b0);
-	 * rtw_write16(Adapter, REG_TRXDMA_CTRL_8812, 0xf5b4);
+	 * rtl_write_word(Adapter, REG_TRXDMA_CTRL_8195, 0xf5b0);
+	 * rtl_write_word(Adapter, REG_TRXDMA_CTRL_8812, 0xf5b4);
 	 */
 	rtl_write_byte(Adapter, 0xf050, 0x01);		/* usb3 rx interval */
-	rtw_write16(Adapter, REG_RXDMA_STATUS, 0x7400);	/* burset lenght=4, set 0x3400 for burset length=2 */
+	rtl_write_word(Adapter, REG_RXDMA_STATUS, 0x7400);	/* burset lenght=4, set 0x3400 for burset length=2 */
 	rtl_write_byte(Adapter, 0x289, 0xf5);		/* for rxdma control */
 	/* rtl_write_byte(Adapter, 0x3a, 0x46); */
 
@@ -170,14 +170,14 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 			pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;
 			provalue = rtl_read_byte(Adapter, REG_RXDMA_PRO_8812);
 			rtl_write_byte(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(4))&(~BIT(5)))); /* set burst pkt len=512B */
-			rtw_write16(Adapter, REG_RXDMA_PRO_8812, 0x1e);
+			rtl_write_word(Adapter, REG_RXDMA_PRO_8812, 0x1e);
 		} else {
 			pHalData->UsbBulkOutSize = 64;
 			provalue = rtl_read_byte(Adapter, REG_RXDMA_PRO_8812);
 			rtl_write_byte(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(5))&(~BIT(4)))); /* set burst pkt len=64B */
 		}
 
-		rtw_write16(Adapter, REG_RXDMA_AGG_PG_TH, 0x2005); /* dmc agg th 20K */
+		rtl_write_word(Adapter, REG_RXDMA_AGG_PG_TH, 0x2005); /* dmc agg th 20K */
 
 		/*
 		 * rtl_write_byte(Adapter, 0x10c, 0xb4);
@@ -189,7 +189,7 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;
 		provalue = rtl_read_byte(Adapter, REG_RXDMA_PRO_8812);
 		rtl_write_byte(Adapter, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
-		rtw_write16(Adapter, REG_RXDMA_PRO_8812, 0x0e);
+		rtl_write_word(Adapter, REG_RXDMA_PRO_8812, 0x0e);
 		pHalData->bSupportUSB3 = _TRUE;
 
 		/*  set Reg 0xf008[3:4] to 2'00 to disable U1/U2 Mode to avoid 2.5G spur in USB3.0. added by page, 20120712 */
@@ -212,7 +212,7 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 
 	/* Suggention by SD1 Jong and Pisa, by Maddest 20130107. */
 	if (IS_HARDWARE_TYPE_8821U(Adapter) && (Adapter->registrypriv.wifi_spec == _FALSE)) {
-		rtw_write16(Adapter, REG_MAX_AGGR_NUM, 0x0a0a);
+		rtl_write_word(Adapter, REG_MAX_AGGR_NUM, 0x0a0a);
 		rtl_write_byte(Adapter, REG_FWHW_TXQ_CTRL, 0x80);
 		rtl_write_byte(Adapter, REG_AMPDU_MAX_TIME_8812, 0x5e);
 		rtw_write32(Adapter, REG_FAST_EDCA_CTRL, 0x03087777);
@@ -270,11 +270,11 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *padapter)
 	 *  Enable MAC DMA/WMAC/SCHEDULE/SEC block
 	 * Set CR bit10 to enable 32k calibration. Suggested by SD1 Gimmy. Added by tynli. 2011.08.31.
 	 */
-	rtw_write16(padapter, REG_CR, 0x00); 	/* suggseted by zhouzhou, by page, 20111230 */
+	rtl_write_word(padapter, REG_CR, 0x00); 	/* suggseted by zhouzhou, by page, 20111230 */
 	u2btmp = rtl_read_word(padapter, REG_CR);
 	u2btmp |= (HCI_TXDMA_EN | HCI_RXDMA_EN | TXDMA_EN | RXDMA_EN
 				| PROTOCOL_EN | SCHEDULE_EN | ENSEC | CALTMR_EN);
-	rtw_write16(padapter, REG_CR, u2btmp);
+	rtl_write_word(padapter, REG_CR, u2btmp);
 
 	/*
 	 * Need remove below furture, suggest by Jackie.
@@ -480,9 +480,9 @@ static VOID _InitPageBoundary_8812AUsb(struct rtl_priv *Adapter)
 	 */
 
 	if (IS_HARDWARE_TYPE_8812(Adapter))
-		rtw_write16(Adapter, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8812-1);
+		rtl_write_word(Adapter, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8812-1);
 	else
-		rtw_write16(Adapter, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8821-1);
+		rtl_write_word(Adapter, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8821-1);
 
 }
 
@@ -497,7 +497,7 @@ static VOID _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *Adapter,
 		   _TXDMA_VIQ_MAP(viQ) 	| _TXDMA_VOQ_MAP(voQ) |
 		   _TXDMA_MGQ_MAP(mgtQ) | _TXDMA_HIQ_MAP(hiQ);
 
-	rtw_write16(Adapter, REG_TRXDMA_CTRL, value16);
+	rtl_write_word(Adapter, REG_TRXDMA_CTRL, value16);
 }
 
 static VOID _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *Adapter)
@@ -656,7 +656,7 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *Adapter)
 	/*
 	 *  Accept all data frames
 	 * value16 = 0xFFFF;
-	 * rtw_write16(Adapter, REG_RXFLTMAP2, value16);
+	 * rtl_write_word(Adapter, REG_RXFLTMAP2, value16);
 	 */
 
 	/*
@@ -664,13 +664,13 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *Adapter)
 	 * Since ADF is removed from RCR, ps-poll will not be indicate to driver,
 	 * RxFilterMap should mask ps-poll to gurantee AP mode can rx ps-poll.
 	 * value16 = 0x400;
-	 * rtw_write16(Adapter, REG_RXFLTMAP1, value16);
+	 * rtl_write_word(Adapter, REG_RXFLTMAP1, value16);
 	 */
 
 	/*
 	 *  Accept all management frames
 	 * value16 = 0xFFFF;
-	 * rtw_write16(Adapter, REG_RXFLTMAP0, value16);
+	 * rtl_write_word(Adapter, REG_RXFLTMAP0, value16);
 	 */
 
 	/*
@@ -704,25 +704,25 @@ static VOID _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *Adapter)
 
 	/* SIFS (used in NAV) */
 	value16 = _SPEC_SIFS_CCK(0x10) | _SPEC_SIFS_OFDM(0x10);
-	rtw_write16(Adapter, REG_SPEC_SIFS, value16);
+	rtl_write_word(Adapter, REG_SPEC_SIFS, value16);
 
 	/* Retry Limit */
 	value16 = _LRL(0x30) | _SRL(0x30);
-	rtw_write16(Adapter, REG_RL, value16);
+	rtl_write_word(Adapter, REG_RL, value16);
 
 }
 
 static VOID _InitEDCA_8812AUsb(struct rtl_priv *Adapter)
 {
 	/* Set Spec SIFS (used in NAV) */
-	rtw_write16(Adapter, REG_SPEC_SIFS, 0x100a);
-	rtw_write16(Adapter, REG_MAC_SPEC_SIFS, 0x100a);
+	rtl_write_word(Adapter, REG_SPEC_SIFS, 0x100a);
+	rtl_write_word(Adapter, REG_MAC_SPEC_SIFS, 0x100a);
 
 	/* Set SIFS for CCK */
-	rtw_write16(Adapter, REG_SIFS_CTX, 0x100a);
+	rtl_write_word(Adapter, REG_SIFS_CTX, 0x100a);
 
 	/* Set SIFS for OFDM */
-	rtw_write16(Adapter, REG_SIFS_TRX, 0x100a);
+	rtl_write_word(Adapter, REG_SIFS_TRX, 0x100a);
 
 	/* TXOP */
 	rtw_write32(Adapter, REG_EDCA_BE_PARAM, 0x005EA42B);
@@ -765,7 +765,7 @@ static void _InitHWLed(struct rtl_priv *Adapter)
 static VOID _InitRDGSetting_8812A(struct rtl_priv *Adapter)
 {
 	rtl_write_byte(Adapter, REG_RD_CTRL, 0xFF);
-	rtw_write16(Adapter, REG_RD_NAV_NXT, 0x200);
+	rtl_write_word(Adapter, REG_RD_NAV_NXT, 0x200);
 	rtl_write_byte(Adapter, REG_RD_RESP_PKT_TH, 0x05);
 }
 
@@ -864,7 +864,7 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *Adapter)
 
 			/* Adjust DMA page and thresh. */
 			temp = pHalData->RegAcUsbDmaSize | (pHalData->RegAcUsbDmaTime<<8);
-			rtw_write16(Adapter, REG_RXDMA_AGG_PG_TH, temp);
+			rtl_write_word(Adapter, REG_RXDMA_AGG_PG_TH, temp);
 		}
 		break;
 	case USB_RX_AGG_USB:
@@ -1005,15 +1005,15 @@ static VOID HwSuspendModeEnable_8812AU(struct rtl_priv *pAdapter, uint8_t Type)
 	if (Type == _FALSE) {
 		reg |= BIT14;
 		/* RT_TRACE(COMP_RF, DBG_LOUD, ("REG_GPIO_MUXCFG = %x\n", reg)); */
-		rtw_write16(pAdapter, REG_GPIO_MUXCFG, reg);
+		rtl_write_word(pAdapter, REG_GPIO_MUXCFG, reg);
 		reg |= BIT12;
 		/* RT_TRACE(COMP_RF, DBG_LOUD, ("REG_GPIO_MUXCFG = %x\n", reg)); */
-		rtw_write16(pAdapter, REG_GPIO_MUXCFG, reg);
+		rtl_write_word(pAdapter, REG_GPIO_MUXCFG, reg);
 	} else {
 		reg &= (~BIT12);
-		rtw_write16(pAdapter, REG_GPIO_MUXCFG, reg);
+		rtl_write_word(pAdapter, REG_GPIO_MUXCFG, reg);
 		reg &= (~BIT14);
-		rtw_write16(pAdapter, REG_GPIO_MUXCFG, reg);
+		rtl_write_word(pAdapter, REG_GPIO_MUXCFG, reg);
 	}
 }
 
@@ -1304,11 +1304,11 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC02);
 #if defined(CONFIG_TX_MCAST2UNI)
 
 #ifdef CONFIG_TX_MCAST2UNI
-	rtw_write16(Adapter, REG_PKT_VO_VI_LIFE_TIME, 0x0400);	/* unit: 256us. 256ms */
-	rtw_write16(Adapter, REG_PKT_BE_BK_LIFE_TIME, 0x0400);	/* unit: 256us. 256ms */
+	rtl_write_word(Adapter, REG_PKT_VO_VI_LIFE_TIME, 0x0400);	/* unit: 256us. 256ms */
+	rtl_write_word(Adapter, REG_PKT_BE_BK_LIFE_TIME, 0x0400);	/* unit: 256us. 256ms */
 #else
-	rtw_write16(Adapter, REG_PKT_VO_VI_LIFE_TIME, 0x3000);	/* unit: 256us. 3s */
-	rtw_write16(Adapter, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	/* unit: 256us. 3s */
+	rtl_write_word(Adapter, REG_PKT_VO_VI_LIFE_TIME, 0x3000);	/* unit: 256us. 3s */
+	rtl_write_word(Adapter, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	/* unit: 256us. 3s */
 #endif
 #endif
 
@@ -1375,7 +1375,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC11);
 	rtw_write32(Adapter, REG_BAR_MODE_CTRL, 0x0201ffff);
 
 	if (pregistrypriv->wifi_spec)
-		rtw_write16(Adapter, REG_FAST_EDCA_CTRL, 0);
+		rtl_write_word(Adapter, REG_FAST_EDCA_CTRL, 0);
 
 	/* Nav limit , suggest by scott */
 	rtl_write_byte(Adapter, 0x652, 0x0);
@@ -1410,7 +1410,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 		rtl_write_byte(Adapter, REG_EARLY_MODE_CONTROL_8812+3, 0x01);/* Pretx_en, for WEP/TKIP SEC */
 
 		/* tynli_test_tx_report. */
-		rtw_write16(Adapter, REG_TX_RPT_TIME, 0x3DF0);
+		rtl_write_word(Adapter, REG_TX_RPT_TIME, 0x3DF0);
 
 		/* Reset USB mode switch setting */
 		rtl_write_byte(Adapter, REG_SDIO_CTRL_8812, 0x0);
@@ -1546,7 +1546,7 @@ static void rtl8812au_hw_power_down(struct rtl_priv *padapter)
 
 	/* Enable register area 0x0-0xc. */
 	rtl_write_byte(padapter, REG_RSV_CTRL, 0x0);
-	rtw_write16(padapter, REG_APS_FSMCO, 0x8812);
+	rtl_write_word(padapter, REG_APS_FSMCO, 0x8812);
 }
 
 uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter)
@@ -1556,7 +1556,7 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter)
 	DBG_8192C("==> %s \n", __FUNCTION__);
 
 	{
-		rtw_write16(Adapter, REG_GPIO_MUXCFG, rtl_read_word(Adapter, REG_GPIO_MUXCFG)&(~BIT12));
+		rtl_write_word(Adapter, REG_GPIO_MUXCFG, rtl_read_word(Adapter, REG_GPIO_MUXCFG)&(~BIT12));
 	}
 
 	if (pHalData->bSupportUSB3 == _TRUE) {

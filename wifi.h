@@ -274,7 +274,7 @@ static int rtl_write_byte(struct rtl_priv *adapter, u32 addr, u8 val)
 	return RTW_STATUS_CODE(ret);
 }
 
-static int rtw_write16(struct rtl_priv *adapter, u32 addr, u16 val)
+static int rtl_write_word(struct rtl_priv *adapter, u32 addr, u16 val)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
 	struct	intf_hdl *pintfhdl = &pio_priv->intf;

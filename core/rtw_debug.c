@@ -112,7 +112,7 @@ int proc_set_write_reg(struct file *file, const char *buffer,
 				rtl_write_byte(padapter, addr, (uint8_t)val);
 				break;
 			case 2:
-				rtw_write16(padapter, addr, (u16)val);
+				rtl_write_word(padapter, addr, (u16)val);
 				break;
 			case 4:
 				rtw_write32(padapter, addr, val);

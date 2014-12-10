@@ -409,7 +409,7 @@ static void rtw_decide_chip_type_by_usb_info(struct rtl_priv *padapter, const st
 	#endif
 }
 
-void usb_set_intf_ops(struct rtl_priv *padapter,struct _io_ops *pops)
+void usb_set_intf_ops(struct rtl_priv *padapter,struct rtl_io *pops)
 {
 
 

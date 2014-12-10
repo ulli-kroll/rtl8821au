@@ -101,8 +101,7 @@ struct intf_priv;
 struct intf_hdl;
 struct io_queue;
 
-struct _io_ops
-{
+struct rtl_io {
 		uint8_t (*_read8)(struct intf_hdl *pintfhdl, u32 addr);
 		u16 (*_read16)(struct intf_hdl *pintfhdl, u32 addr);
 		u32 (*_read32)(struct intf_hdl *pintfhdl, u32 addr);
@@ -172,7 +171,7 @@ struct	intf_hdl {
 	struct rtl_priv *padapter;
 	struct dvobj_priv *pintf_dev;//	pointer to &(padapter->dvobjpriv);
 
-	struct _io_ops	io_ops;
+	struct rtl_io	io_ops;
 
 };
 
@@ -389,7 +388,7 @@ extern void async_write_mem(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t
 extern void async_write_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 
 
-int rtw_init_io_priv(struct rtl_priv *padapter, void (*set_intf_ops)(struct rtl_priv *padapter,struct _io_ops *pops));
+int rtw_init_io_priv(struct rtl_priv *padapter, void (*set_intf_ops)(struct rtl_priv *padapter,struct rtl_io *pops));
 
 
 extern uint alloc_io_queue(struct rtl_priv *adapter);

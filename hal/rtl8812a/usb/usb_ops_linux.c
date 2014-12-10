@@ -578,9 +578,9 @@ void rtl8812au_xmit_tasklet(void *priv)
 
 /* ULLI USB interface ops */
 
-void rtl8812au_set_intf_ops(struct _io_ops	*pops)
+void rtl8812au_set_intf_ops(struct rtl_io *pops)
 {
-	memset((uint8_t *)pops, 0, sizeof(struct _io_ops));
+	memset((uint8_t *)pops, 0, sizeof(struct rtl_io));
 
 	pops->_read8 = &usb_read8;
 	pops->_read16 = &usb_read16;

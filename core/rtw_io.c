@@ -190,7 +190,7 @@ void _rtw_write_port_cancel(struct rtl_priv *adapter)
 }
 
 int rtw_init_io_priv(struct rtl_priv *padapter,
-	void (*set_intf_ops)(struct rtl_priv *padapter, struct _io_ops *pops))
+	void (*set_intf_ops)(struct rtl_priv *padapter, struct rtl_io *pops))
 {
 	struct io_priv	*piopriv = &padapter->iopriv;
 	struct intf_hdl *pintf = &piopriv->intf;

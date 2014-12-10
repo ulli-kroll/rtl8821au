@@ -256,7 +256,6 @@ unsigned int TxPwrTrk_OFDM_SwingTbl[TxPwrTrk_OFDM_SwingTbl_Len] = {
 void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm);
 void odm_CommonInfoSelfUpdate(struct rtl_dm * pDM_Odm);
 void odm_CmnInfoInit_Debug(struct rtl_dm *pDM_Odm);
-void odm_CmnInfoHook_Debug(struct rtl_dm *pDM_Odm);
 void odm_CmnInfoUpdate_Debug(struct rtl_dm *pDM_Odm);
 void odm_BasicDbgMessage(struct rtl_dm *pDM_Odm);
 /*
@@ -321,7 +320,6 @@ void odm_EdcaTurboCheckCE(struct rtl_dm *pDM_Odm);
  */
 void ODM_DMWatchdog(struct rtl_dm *pDM_Odm)
 {
-	/* odm_CmnInfoHook_Debug(pDM_Odm); */
 	/* odm_CmnInfoUpdate_Debug(pDM_Odm); */
 
 	odm_CommonInfoSelfUpdate(pDM_Odm);
@@ -765,21 +763,6 @@ void odm_CommonInfoSelfUpdate(struct rtl_dm * pDM_Odm)
 		pDM_Odm->bOneEntryOnly = FALSE;
 }
 
-void odm_CmnInfoHook_Debug(struct rtl_dm *pDM_Odm)
-{
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_CmnInfoHook_Debug==>\n"));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pNumTxBytesUnicast=%llu\n", *(pDM_Odm->pNumTxBytesUnicast)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pNumRxBytesUnicast=%llu\n", *(pDM_Odm->pNumRxBytesUnicast)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pWirelessMode=0x%x\n", *(pDM_Odm->pWirelessMode)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pSecChOffset=%d\n", *(pDM_Odm->pSecChOffset)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pSecurity=%d\n", *(pDM_Odm->pSecurity)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pBandWidth=%d\n", *(pDM_Odm->pBandWidth)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pChannel=%d\n", *(pDM_Odm->pChannel)));
-
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbScanInProcess=%d\n", *(pDM_Odm->pbScanInProcess)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pbPowerSaving=%d\n", *(pDM_Odm->pbPowerSaving)));
-
-}
 
 void odm_CmnInfoUpdate_Debug(struct rtl_dm *pDM_Odm)
 {

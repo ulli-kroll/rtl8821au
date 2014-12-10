@@ -638,10 +638,6 @@ void ODM_CmnInfoUpdate(struct rtl_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value)
 	 * This init variable may be changed in run time.
 	 */
 	switch	(CmnInfo) {
-	case ODM_CMNINFO_LINK_IN_PROGRESS:
-		pDM_Odm->bLinkInProcess = (BOOLEAN)Value;
-		break;
-
 	case	ODM_CMNINFO_ABILITY:
 		pDM_Odm->SupportAbility = (uint32_t)Value;
 		break;

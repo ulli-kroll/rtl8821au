@@ -230,4 +230,74 @@ u8 GetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable, PV
 u8 SetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable, PVOID pValue);
 uint8_t rtl8812au_ps_func(struct rtl_priv *Adapter, HAL_INTF_PS_FUNC efunc_id, uint8_t *val);
 
+static u8 rtw_read8(struct rtl_priv *adapter, u32 addr)
+{
+	uint8_t val;
+	struct io_priv *pio_priv = &adapter->iopriv;
+	struct intf_hdl *pintfhdl = &pio_priv->intf;
+
+	val = pintfhdl->io_ops._read8(pintfhdl, addr);
+
+	return val;
+}
+
+static u16 rtw_read16(struct rtl_priv *adapter, u32 addr)
+{
+	u16 val;
+	struct io_priv *pio_priv = &adapter->iopriv;
+	struct intf_hdl	*pintfhdl = &pio_priv->intf;
+
+	val = pintfhdl->io_ops._read16(pintfhdl, addr);
+
+	return le16_to_cpu(val);
+}
+
+static u32 rtw_read32(struct rtl_priv *adapter, u32 addr)
+{
+	uint32_t val;
+	struct io_priv *pio_priv = &adapter->iopriv;
+	struct intf_hdl	*pintfhdl = &pio_priv->intf;
+
+	val = pintfhdl->io_ops._read32(pintfhdl, addr);
+
+	return le32_to_cpu(val);
+}
+
+static int rtw_write8(struct rtl_priv *adapter, u32 addr, u8 val)
+{
+	struct io_priv *pio_priv = &adapter->iopriv;
+	struct	intf_hdl *pintfhdl = &(pio_priv->intf);
+	int ret;
+
+	ret = pintfhdl->io_ops._write8(pintfhdl, addr, val);
+
+	return RTW_STATUS_CODE(ret);
+}
+
+static int rtw_write16(struct rtl_priv *adapter, u32 addr, u16 val)
+{
+	struct io_priv *pio_priv = &adapter->iopriv;
+	struct	intf_hdl *pintfhdl = &pio_priv->intf;
+	int ret;
+
+	val = cpu_to_le16(val);
+
+	ret = pintfhdl->io_ops._write16(pintfhdl, addr, val);
+
+	return RTW_STATUS_CODE(ret);
+}
+
+static int rtw_write32(struct rtl_priv *adapter, u32 addr, u32 val)
+{
+	struct io_priv *pio_priv = &adapter->iopriv;
+	struct intf_hdl	*pintfhdl = &pio_priv->intf;
+	int ret;
+
+	val = cpu_to_le32(val);
+	ret = pintfhdl->io_ops._write32(pintfhdl, addr, val);
+
+	return RTW_STATUS_CODE(ret);
+}
+
+
 #endif

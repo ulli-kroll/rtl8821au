@@ -327,17 +327,11 @@ extern void unregister_intf_hdl(struct intf_hdl *pintfhdl);
 extern void _rtw_attrib_read(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_attrib_write(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 
-extern u8 rtw_read8(struct rtl_priv *adapter, u32 addr);
-extern u16 rtw_read16(struct rtl_priv *adapter, u32 addr);
-extern u32 rtw_read32(struct rtl_priv *adapter, u32 addr);
 extern void _rtw_read_mem(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_read_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_read_port_cancel(struct rtl_priv *adapter);
 
 
-extern int rtw_write8(struct rtl_priv *adapter, u32 addr, u8 val);
-extern int rtw_write16(struct rtl_priv *adapter, u32 addr, u16 val);
-extern int rtw_write32(struct rtl_priv *adapter, u32 addr, u32 val);
 extern int rtw_writeN(struct rtl_priv *adapter, u32 addr, u32 length, uint8_t *pdata);
 
 extern int _rtw_write8_async(struct rtl_priv *adapter, u32 addr, uint8_t val);

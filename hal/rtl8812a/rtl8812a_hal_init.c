@@ -168,16 +168,16 @@ static VOID _FWDownloadEnable_8812(struct rtl_priv *padapter, BOOLEAN enable)
 
 	if (enable) {
 		/* MCU firmware download enable. */
-		tmp = rtw_read8(padapter, REG_MCUFWDL);
+		tmp = rtl_read_byte(padapter, REG_MCUFWDL);
 		rtw_write8(padapter, REG_MCUFWDL, tmp|0x01);
 
 		/* 8051 reset */
-		tmp = rtw_read8(padapter, REG_MCUFWDL+2);
+		tmp = rtl_read_byte(padapter, REG_MCUFWDL+2);
 		rtw_write8(padapter, REG_MCUFWDL+2, tmp&0xf7);
 	} else {
 
 		/* MCU firmware download disable. */
-		tmp = rtw_read8(padapter, REG_MCUFWDL);
+		tmp = rtl_read_byte(padapter, REG_MCUFWDL);
 		rtw_write8(padapter, REG_MCUFWDL, tmp&0xfe);
 	}
 }
@@ -264,7 +264,7 @@ static int _PageWrite_8812(struct rtl_priv *padapter, uint32_t page,
 	uint8_t value8;
 	uint8_t u8Page = (uint8_t) (page & 0x07) ;
 
-	value8 = (rtw_read8(padapter, REG_MCUFWDL+2) & 0xF8) | u8Page ;
+	value8 = (rtl_read_byte(padapter, REG_MCUFWDL+2) & 0xF8) | u8Page ;
 	rtw_write8(padapter, REG_MCUFWDL+2, value8);
 
 	return _BlockWrite_8812(padapter, buffer, size);
@@ -332,22 +332,22 @@ void _8051Reset8812(struct rtl_priv *padapter)
 
 	/* Reset MCU IO Wrapper- sugggest by SD1-Gimmy */
 	if (IS_HARDWARE_TYPE_8812(padapter)) {
-		u1bTmp2 = rtw_read8(padapter, REG_RSV_CTRL+1);
+		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
 		rtw_write8(padapter, REG_RSV_CTRL + 1, u1bTmp2&(~BIT3));
 	} else if (IS_HARDWARE_TYPE_8821(padapter)) {
-		u1bTmp2 = rtw_read8(padapter, REG_RSV_CTRL+1);
+		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
 		rtw_write8(padapter, REG_RSV_CTRL + 1, u1bTmp2&(~BIT0));
 	}
 
-	u1bTmp = rtw_read8(padapter, REG_SYS_FUNC_EN+1);
+	u1bTmp = rtl_read_byte(padapter, REG_SYS_FUNC_EN+1);
 	rtw_write8(padapter, REG_SYS_FUNC_EN+1, u1bTmp&(~BIT2));
 
 	/* Enable MCU IO Wrapper */
 	if (IS_HARDWARE_TYPE_8812(padapter)) {
-		u1bTmp2 = rtw_read8(padapter, REG_RSV_CTRL+1);
+		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
 		rtw_write8(padapter, REG_RSV_CTRL + 1, u1bTmp2 | (BIT3));
 	} else if (IS_HARDWARE_TYPE_8821(padapter)) {
-		u1bTmp2 = rtw_read8(padapter, REG_RSV_CTRL+1);
+		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
 		rtw_write8(padapter, REG_RSV_CTRL + 1, u1bTmp2 | (BIT0));
 	}
 
@@ -454,7 +454,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 	 * Suggested by Filen. If 8051 is running in RAM code, driver should inform Fw to reset by itself,
 	 * or it will cause download Fw fail. 2010.02.01. by tynli.
 	 */
-	if (rtw_read8(Adapter, REG_MCUFWDL) & BIT7) { /* 8051 RAM code */
+	if (rtl_read_byte(Adapter, REG_MCUFWDL) & BIT7) { /* 8051 RAM code */
 		rtw_write8(Adapter, REG_MCUFWDL, 0x00);
 		_8051Reset8812(Adapter);
 	}
@@ -463,7 +463,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 	fwdl_start_time = jiffies;
 	while (1) {
 		/* reset the FWDL chksum */
-		rtw_write8(Adapter, REG_MCUFWDL, rtw_read8(Adapter, REG_MCUFWDL)|FWDL_ChkSum_rpt);
+		rtw_write8(Adapter, REG_MCUFWDL, rtl_read_byte(Adapter, REG_MCUFWDL)|FWDL_ChkSum_rpt);
 
 		rtStatus = _WriteFW_8812(Adapter, pFirmwareBuf, FirmwareLen);
 
@@ -1412,7 +1412,7 @@ rtl8812_EfusePowerSwitch(struct rtl_priv *pAdapter, uint8_t bWrite, uint8_t PwrS
 
 		if (bWrite == _TRUE) {
 			/* Enable LDO 2.5V before read/write action */
-			tempval = rtw_read8(pAdapter, EFUSE_TEST+3);
+			tempval = rtl_read_byte(pAdapter, EFUSE_TEST+3);
 			tempval &= ~(BIT3|BIT4|BIT5|BIT6);
 			tempval |= (VOLTAGE_V25 << 3);
 			tempval |= BIT7;
@@ -1423,7 +1423,7 @@ rtl8812_EfusePowerSwitch(struct rtl_priv *pAdapter, uint8_t bWrite, uint8_t PwrS
 
 		if (bWrite == _TRUE) {
 			/* Disable LDO 2.5V after read/write action */
-			tempval = rtw_read8(pAdapter, EFUSE_TEST + 3);
+			tempval = rtl_read_byte(pAdapter, EFUSE_TEST + 3);
 			rtw_write8(pAdapter, EFUSE_TEST + 3, (tempval & 0x7F));
 		}
 	}
@@ -2425,10 +2425,10 @@ void hal_notch_filter_8812(struct rtl_priv *adapter, bool enable)
 {
 	if (enable) {
 		DBG_871X("Enable notch filter\n");
-		/* rtw_write8(adapter, rOFDM0_RxDSP+1, rtw_read8(adapter, rOFDM0_RxDSP+1) | BIT1); */
+		/* rtw_write8(adapter, rOFDM0_RxDSP+1, rtl_read_byte(adapter, rOFDM0_RxDSP+1) | BIT1); */
 	} else {
 		DBG_871X("Disable notch filter\n");
-		/* rtw_write8(adapter, rOFDM0_RxDSP+1, rtw_read8(adapter, rOFDM0_RxDSP+1) & ~BIT1); */
+		/* rtw_write8(adapter, rOFDM0_RxDSP+1, rtl_read_byte(adapter, rOFDM0_RxDSP+1) & ~BIT1); */
 	}
 }
 
@@ -2454,7 +2454,7 @@ void CheckAutoloadState8812A(struct rtl_priv *padapter)
 	pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	/* check system boot selection */
-	val8 = rtw_read8(padapter, REG_9346CR);
+	val8 = rtl_read_byte(padapter, REG_9346CR);
 	pEEPROM->EepromOrEfuse = (val8 & BOOT_FROM_EEPROM) ? _TRUE : _FALSE;
 	pEEPROM->bautoload_fail_flag = (val8 & EEPROM_EN) ? _FALSE : _TRUE;
 
@@ -2713,11 +2713,11 @@ VOID _InitBeaconParameters_8812A(struct rtl_priv *Adapter)
 	 */
 	rtw_write16(Adapter, REG_BCNTCFG, 0x660F);
 
-	pHalData->RegBcnCtrlVal = rtw_read8(Adapter, REG_BCN_CTRL);
-	pHalData->RegTxPause = rtw_read8(Adapter, REG_TXPAUSE);
-	pHalData->RegFwHwTxQCtrl = rtw_read8(Adapter, REG_FWHW_TXQ_CTRL+2);
-	pHalData->RegReg542 = rtw_read8(Adapter, REG_TBTT_PROHIBIT+2);
-	pHalData->RegCR_1 = rtw_read8(Adapter, REG_CR+1);
+	pHalData->RegBcnCtrlVal = rtl_read_byte(Adapter, REG_BCN_CTRL);
+	pHalData->RegTxPause = rtl_read_byte(Adapter, REG_TXPAUSE);
+	pHalData->RegFwHwTxQCtrl = rtl_read_byte(Adapter, REG_FWHW_TXQ_CTRL+2);
+	pHalData->RegReg542 = rtl_read_byte(Adapter, REG_TBTT_PROHIBIT+2);
+	pHalData->RegCR_1 = rtl_read_byte(Adapter, REG_CR+1);
 }
 
 static void hw_var_set_correct_tsf(struct rtl_priv *Adapter, uint8_t variable, uint8_t *val)
@@ -2781,7 +2781,7 @@ uint8_t SetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 				/* turn on all dynamic func */
 				if (!(podmpriv->SupportAbility & DYNAMIC_BB_DIG)) {
 					pDIG_T pDigTable = &podmpriv->DM_DigTable;
-					pDigTable->CurIGValue = rtw_read8(padapter, 0xc50);
+					pDigTable->CurIGValue = rtl_read_byte(padapter, 0xc50);
 				}
 				/* pdmpriv->DMFlag |= DYNAMIC_FUNC_BT; */
 				podmpriv->SupportAbility = DYNAMIC_ALL_FUNC_ENABLE;

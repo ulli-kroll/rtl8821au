@@ -425,7 +425,7 @@ extern void dev_power_down(struct rtl_priv * Adapter, uint8_t bpwrup);
 	rtw_write32(_a,_b,_c)
 
 #define PlatformEFIORead1Byte(_a,_b)		\
-		rtw_read8(_a,_b)
+		rtl_read_byte(_a,_b)
 #define PlatformEFIORead2Byte(_a,_b)		\
 		rtw_read16(_a,_b)
 #define PlatformEFIORead4Byte(_a,_b)		\

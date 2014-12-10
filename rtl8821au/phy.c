@@ -3896,7 +3896,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 	rtl8812au_fixspur(Adapter, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 
 	/*
-	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", rtw_read8(Adapter, 0x483));
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", rtl_read_byte(Adapter, 0x483));
 	 * DBG_871X("phy_PostSetBwMode8812(): Reg668: %x\n", rtw_read32(Adapter, 0x668));
 	 * DBG_871X("phy_PostSetBwMode8812(): Reg8AC: %x\n", rtl_get_bbreg(Adapter, rRFMOD_Jaguar, 0xffffffff));
 	 */

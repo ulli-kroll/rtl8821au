@@ -6014,11 +6014,11 @@ void _linked_info_dump(struct rtl_priv *padapter)
 	}
 	DBG_871X("============ linked status check ===================\n");
 	DBG_871X("============ RX GAIN / FALSE ALARM  ===================\n");
-	DBG_871X(" DIG PATH-A(0x%02x), PATH-B(0x%02x)\n",rtw_read8(padapter,0xc50),rtw_read8(padapter,0xc58));
+	DBG_871X(" DIG PATH-A(0x%02x), PATH-B(0x%02x)\n",rtl_read_byte(padapter,0xc50),rtl_read_byte(padapter,0xc58));
 	DBG_871X(" OFDM -Alarm DA2(0x%04x),DA4(0x%04x),DA6(0x%04x),DA8(0x%04x)\n",
 		rtw_read16(padapter,0xDA2),rtw_read16(padapter,0xDA4),rtw_read16(padapter,0xDA6),rtw_read16(padapter,0xDA8));
 
-	DBG_871X(" CCK -Alarm A5B(0x%02x),A5C(0x%02x)\n",rtw_read8(padapter,0xA5B),rtw_read8(padapter,0xA5C));
+	DBG_871X(" CCK -Alarm A5B(0x%02x),A5C(0x%02x)\n",rtl_read_byte(padapter,0xA5B),rtl_read_byte(padapter,0xA5C));
 	#endif
 
 	if((pmlmeinfo->state&0x03) == WIFI_FW_STATION_STATE)

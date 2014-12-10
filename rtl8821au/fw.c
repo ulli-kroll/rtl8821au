@@ -36,10 +36,10 @@ static uint8_t _is_fw_read_cmd_down(struct rtl_priv *padapter, uint8_t msgbox_nu
 
 	uint8_t valid;
 
-	/* DBG_8192C(" _is_fw_read_cmd_down ,reg_1cc(%x),msg_box(%d)...\n",rtw_read8(padapter,REG_HMETFR),msgbox_num); */
+	/* DBG_8192C(" _is_fw_read_cmd_down ,reg_1cc(%x),msg_box(%d)...\n",rtl_read_byte(padapter,REG_HMETFR),msgbox_num); */
 
 	do {
-		valid = rtw_read8(padapter, REG_HMETFR) & BIT(msgbox_num);
+		valid = rtl_read_byte(padapter, REG_HMETFR) & BIT(msgbox_num);
 		if (0 == valid) {
 			read_down = _TRUE;
 		}
@@ -752,8 +752,8 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		 * SetBcnCtrlReg(padapter, 0, BIT3);
 		 * SetBcnCtrlReg(padapter, BIT4, 0);
 		 */
-		rtw_write8(padapter, REG_BCN_CTRL, rtw_read8(padapter, REG_BCN_CTRL)&(~BIT(3)));
-		rtw_write8(padapter, REG_BCN_CTRL, rtw_read8(padapter, REG_BCN_CTRL)|BIT(4));
+		rtw_write8(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)&(~BIT(3)));
+		rtw_write8(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)|BIT(4));
 
 		if (pHalData->RegFwHwTxQCtrl&BIT6) {
 			DBG_871X("HalDownloadRSVDPage(): There is an Adapter is sending beacon.\n");
@@ -831,8 +831,8 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		/* Enable Bcn */
 		/* SetBcnCtrlReg(padapter, BIT3, 0); */
 		/* SetBcnCtrlReg(padapter, 0, BIT4); */
-		rtw_write8(padapter, REG_BCN_CTRL, rtw_read8(padapter, REG_BCN_CTRL)|BIT(3));
-		rtw_write8(padapter, REG_BCN_CTRL, rtw_read8(padapter, REG_BCN_CTRL)&(~BIT(4)));
+		rtw_write8(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)|BIT(3));
+		rtw_write8(padapter, REG_BCN_CTRL, rtl_read_byte(padapter, REG_BCN_CTRL)&(~BIT(4)));
 
 		/*
 		 * To make sure that if there exists an adapter which would like to send beacon.

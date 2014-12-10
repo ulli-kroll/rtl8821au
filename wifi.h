@@ -230,7 +230,7 @@ u8 GetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable, PV
 u8 SetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable, PVOID pValue);
 uint8_t rtl8812au_ps_func(struct rtl_priv *Adapter, HAL_INTF_PS_FUNC efunc_id, uint8_t *val);
 
-static u8 rtw_read8(struct rtl_priv *adapter, u32 addr)
+static u8 rtl_read_byte(struct rtl_priv *adapter, u32 addr)
 {
 	uint8_t val;
 	struct io_priv *pio_priv = &adapter->iopriv;

@@ -162,18 +162,18 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 	if (IS_HARDWARE_TYPE_8821U(Adapter))
 		speedvalue = BIT7;
 	else
-		speedvalue = rtw_read8(Adapter, 0xff); /* check device operation speed: SS 0xff bit7 */
+		speedvalue = rtl_read_byte(Adapter, 0xff); /* check device operation speed: SS 0xff bit7 */
 
 	if (speedvalue & BIT7) {		/* USB2/1.1 Mode */
-		temp = rtw_read8(Adapter, 0xfe17);
+		temp = rtl_read_byte(Adapter, 0xfe17);
 		if (((temp >> 4) & 0x03) == 0) {
 			pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;
-			provalue = rtw_read8(Adapter, REG_RXDMA_PRO_8812);
+			provalue = rtl_read_byte(Adapter, REG_RXDMA_PRO_8812);
 			rtw_write8(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(4))&(~BIT(5)))); /* set burst pkt len=512B */
 			rtw_write16(Adapter, REG_RXDMA_PRO_8812, 0x1e);
 		} else {
 			pHalData->UsbBulkOutSize = 64;
-			provalue = rtw_read8(Adapter, REG_RXDMA_PRO_8812);
+			provalue = rtl_read_byte(Adapter, REG_RXDMA_PRO_8812);
 			rtw_write8(Adapter, REG_RXDMA_PRO_8812, ((provalue|BIT(5))&(~BIT(4)))); /* set burst pkt len=64B */
 		}
 
@@ -187,13 +187,13 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 		pHalData->bSupportUSB3 = _FALSE;
 	} else {		/* USB3 Mode */
 		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;
-		provalue = rtw_read8(Adapter, REG_RXDMA_PRO_8812);
+		provalue = rtl_read_byte(Adapter, REG_RXDMA_PRO_8812);
 		rtw_write8(Adapter, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
 		rtw_write16(Adapter, REG_RXDMA_PRO_8812, 0x0e);
 		pHalData->bSupportUSB3 = _TRUE;
 
 		/*  set Reg 0xf008[3:4] to 2'00 to disable U1/U2 Mode to avoid 2.5G spur in USB3.0. added by page, 20120712 */
-		rtw_write8(Adapter, 0xf008, rtw_read8(Adapter, 0xf008)&0xE7);
+		rtw_write8(Adapter, 0xf008, rtl_read_byte(Adapter, 0xf008)&0xE7);
 	}
 
 #ifdef CONFIG_USB_TX_AGGREGATION
@@ -202,10 +202,10 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 	rtw_write8(Adapter, REG_TDECTRL, 0x10);
 #endif
 
-	temp = rtw_read8(Adapter, REG_SYS_FUNC_EN);
+	temp = rtl_read_byte(Adapter, REG_SYS_FUNC_EN);
 	rtw_write8(Adapter, REG_SYS_FUNC_EN, temp&(~BIT(10))); 	/* reset 8051 */
 
-	rtw_write8(Adapter, REG_HT_SINGLE_AMPDU_8812, rtw_read8(Adapter, REG_HT_SINGLE_AMPDU_8812)|BIT(7));	/* enable single pkt ampdu */
+	rtw_write8(Adapter, REG_HT_SINGLE_AMPDU_8812, rtl_read_byte(Adapter, REG_HT_SINGLE_AMPDU_8812)|BIT(7));	/* enable single pkt ampdu */
 	rtw_write8(Adapter, REG_RX_PKT_LIMIT, 0x18);		/* for VHT packet length 11K */
 
 	rtw_write8(Adapter, REG_PIFS, 0x00);
@@ -218,14 +218,14 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 		rtw_write32(Adapter, REG_FAST_EDCA_CTRL, 0x03087777);
 	} else {
 		rtw_write8(Adapter, REG_MAX_AGGR_NUM, 0x1f);
-		rtw_write8(Adapter, REG_FWHW_TXQ_CTRL, rtw_read8(Adapter, REG_FWHW_TXQ_CTRL)&(~BIT(7)));
+		rtw_write8(Adapter, REG_FWHW_TXQ_CTRL, rtl_read_byte(Adapter, REG_FWHW_TXQ_CTRL)&(~BIT(7)));
 	}
 
 	if (pHalData->AMPDUBurstMode) {
 		rtw_write8(Adapter, REG_AMPDU_BURST_MODE_8812, 0x5F);
 	}
 
-	rtw_write8(Adapter, 0x1c, rtw_read8(Adapter, 0x1c) | BIT(5) | BIT(6));  /* to prevent mac is reseted by bus. 20111208, by Page */
+	rtw_write8(Adapter, 0x1c, rtl_read_byte(Adapter, 0x1c) | BIT(5) | BIT(6));  /* to prevent mac is reseted by bus. 20111208, by Page */
 
 	/* ARFB table 9 for 11ac 5G 2SS */
 	rtw_write32(Adapter, REG_ARFR0, 0x00000010);
@@ -281,9 +281,9 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *padapter)
 	 * if 0xF0[24] =1 (LDO), need to set the 0x7C[6] to 1.
 	 */
 	if (IS_HARDWARE_TYPE_8821U(padapter)) {
-		u1btmp = rtw_read8(padapter, REG_SYS_CFG+3);
+		u1btmp = rtl_read_byte(padapter, REG_SYS_CFG+3);
 		if (u1btmp & BIT0) { 	/* LDO mode. */
-			u1btmp = rtw_read8(padapter, 0x7c);
+			u1btmp = rtl_read_byte(padapter, 0x7c);
 			/* ULLI unknown register */
 			rtw_write8(padapter, 0x7c, u1btmp | BIT6);
 		}
@@ -675,7 +675,7 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *Adapter)
 
 	/*
 	 * enable RX_SHIFT bits
-	 * rtw_write8(Adapter, REG_TRXDMA_CTRL, rtw_read8(Adapter, REG_TRXDMA_CTRL)|BIT(1));
+	 * rtw_write8(Adapter, REG_TRXDMA_CTRL, rtl_read_byte(Adapter, REG_TRXDMA_CTRL)|BIT(1));
 	 */
 
 }
@@ -780,7 +780,7 @@ static VOID _InitRetryFunction_8812A(IN  struct rtl_priv *Adapter)
 {
 	uint8_t	value8;
 
-	value8 = rtw_read8(Adapter, REG_FWHW_TXQ_CTRL);
+	value8 = rtl_read_byte(Adapter, REG_FWHW_TXQ_CTRL);
 	value8 |= EN_AMPDU_RTY_NEW;
 	rtw_write8(Adapter, REG_FWHW_TXQ_CTRL, value8);
 
@@ -849,7 +849,7 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *Adapter)
 	uint8_t			valueDMA;
 	uint8_t			valueUSB;
 
-	valueDMA = rtw_read8(Adapter, REG_TRXDMA_CTRL);
+	valueDMA = rtl_read_byte(Adapter, REG_TRXDMA_CTRL);
 
 	switch (pHalData->UsbRxAggMode) {
 	case USB_RX_AGG_DMA:
@@ -1024,12 +1024,12 @@ rt_rf_power_state RfOnOffDetect(struct rtl_priv *pAdapter)
 	rt_rf_power_state rfpowerstate = rf_off;
 
 	if (pAdapter->pwrctrlpriv.bHWPowerdown) {
-		val8 = rtw_read8(pAdapter, REG_HSISR);
+		val8 = rtl_read_byte(pAdapter, REG_HSISR);
 		DBG_8192C("pwrdown, 0x5c(BIT7)=%02x\n", val8);
 		rfpowerstate = (val8 & BIT7) ? rf_off : rf_on;
 	} else { /* rf on/off */
-		rtw_write8(pAdapter, REG_MAC_PINMUX_CFG, rtw_read8(pAdapter, REG_MAC_PINMUX_CFG)&~(BIT3));
-		val8 = rtw_read8(pAdapter, REG_GPIO_IO_SEL);
+		rtw_write8(pAdapter, REG_MAC_PINMUX_CFG, rtl_read_byte(pAdapter, REG_MAC_PINMUX_CFG)&~(BIT3));
+		val8 = rtl_read_byte(pAdapter, REG_GPIO_IO_SEL);
 		DBG_8192C("GPIO_IN=%02x\n", val8);
 		rfpowerstate = (val8 & BIT3) ? rf_on : rf_off;
 	}
@@ -1153,7 +1153,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_BEGIN);
 	}
 
 	/* Check if MAC has already power on. by tynli. 2011.05.27. */
-	value8 = rtw_read8(Adapter, REG_SYS_CLKR+1);
+	value8 = rtl_read_byte(Adapter, REG_SYS_CLKR+1);
 	u1bRegCR = PlatformEFIORead1Byte(Adapter, REG_CR);
 	DBG_871X(" power-on :REG_SYS_CLKR 0x09=0x%02x. REG_CR 0x100=0x%02x.\n", value8, u1bRegCR);
 	if ((value8&BIT3)  && (u1bRegCR != 0 && u1bRegCR != 0xEA)) {
@@ -1298,7 +1298,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC02);
 	 * Hw bug which Hw initials RxFF boundry size to a value which is larger than the real Rx buffer size in 88E.
 	 * 2011.08.05. by tynli.
 	 */
-	value8 = rtw_read8(Adapter, REG_CR);
+	value8 = rtl_read_byte(Adapter, REG_CR);
 	rtw_write8(Adapter, REG_CR, (value8|MACTXEN|MACRXEN));
 
 #if defined(CONFIG_TX_MCAST2UNI)
@@ -1401,7 +1401,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_HAL_DM);
 		 * 0x4c6[3] 1: RTS BW = Data BW
 		 * 0: RTS BW depends on CCA / secondary CCA result.
 		 */
-		rtw_write8(Adapter, REG_QUEUE_CTRL, rtw_read8(Adapter, REG_QUEUE_CTRL)&0xF7);
+		rtw_write8(Adapter, REG_QUEUE_CTRL, rtl_read_byte(Adapter, REG_QUEUE_CTRL)&0xF7);
 
 		/* enable Tx report. */
 		rtw_write8(Adapter,  REG_FWHW_TXQ_CTRL+1, 0x0F);
@@ -1467,7 +1467,7 @@ HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC31);
 		int i;
 		uint8_t mac_addr[6];
 		for (i = 0; i < 6; i++) {
-			mac_addr[i] = rtw_read8(Adapter, REG_MACID+i);
+			mac_addr[i] = rtl_read_byte(Adapter, REG_MACID+i);
 		}
 
 		DBG_8192C("MAC Address from REG_MACID = "MAC_FMT"\n", MAC_ARG(mac_addr));
@@ -1504,7 +1504,7 @@ VOID CardDisableRTL8812AU(struct rtl_priv *Adapter)
 	/* DBG_871X("CardDisableRTL8188EU\n"); */
 
 	/* Stop Tx Report Timer. 0x4EC[Bit1]=b'0 */
-	u1bTmp = rtw_read8(Adapter, REG_TX_RPT_CTRL);
+	u1bTmp = rtl_read_byte(Adapter, REG_TX_RPT_CTRL);
 	rtw_write8(Adapter, REG_TX_RPT_CTRL, val8&(~BIT1));
 
 	/* stop rx */
@@ -1516,13 +1516,13 @@ VOID CardDisableRTL8812AU(struct rtl_priv *Adapter)
 	else
 		HalPwrSeqCmdParsing(Adapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_LPS_ENTER_FLOW);
 
-	if ((rtw_read8(Adapter, REG_MCUFWDL)&RAM_DL_SEL) && Adapter->bFWReady) {
+	if ((rtl_read_byte(Adapter, REG_MCUFWDL)&RAM_DL_SEL) && Adapter->bFWReady) {
 		  /* 8051 RAM code */
 		_8051Reset8812(Adapter);
 	}
 
 	/* Reset MCU. Suggested by Filen. 2011.01.26. by tynli. */
-	u1bTmp = rtw_read8(Adapter, REG_SYS_FUNC_EN+1);
+	u1bTmp = rtl_read_byte(Adapter, REG_SYS_FUNC_EN+1);
 	rtw_write8(Adapter, REG_SYS_FUNC_EN+1, (u1bTmp&(~BIT2)));
 
 	/* MCUFWDL 0x80[1:0]=0
@@ -1563,7 +1563,7 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter)
 		/*
 		 * set Reg 0xf008[3:4] to 2'11 to eable U1/U2 Mode in USB3.0. added by page, 20120712
 		 */
-		rtw_write8(Adapter, 0xf008, rtw_read8(Adapter, 0xf008)|0x18);
+		rtw_write8(Adapter, 0xf008, rtl_read_byte(Adapter, 0xf008)|0x18);
 	}
 
 	rtw_write32(Adapter, REG_HISR0_8812, 0xFFFFFFFF);
@@ -1908,7 +1908,7 @@ static void Hal_ReadPROMContent_8812A(struct rtl_priv *Adapter)
 	uint8_t			eeValue;
 
 	/* check system boot selection */
-	eeValue = rtw_read8(Adapter, REG_9346CR);
+	eeValue = rtl_read_byte(Adapter, REG_9346CR);
 	pEEPROM->EepromOrEfuse		= (eeValue & BOOT_FROM_EEPROM) ? _TRUE : _FALSE;
 	pEEPROM->bautoload_fail_flag	= (eeValue & EEPROM_EN) ? _FALSE : _TRUE;
 

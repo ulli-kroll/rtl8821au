@@ -85,13 +85,13 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 
 	ResumeTxBeacon(rtlpriv);
 
-	/* rtw_write8(rtlpriv, 0x422, rtw_read8(rtlpriv, 0x422)|BIT(6)); */
+	/* rtw_write8(rtlpriv, 0x422, rtl_read_byte(rtlpriv, 0x422)|BIT(6)); */
 
 	/* rtw_write8(rtlpriv, 0x541, 0xff); */
 
-	/* rtw_write8(rtlpriv, 0x542, rtw_read8(rtlpriv, 0x541)|BIT(0)); */
+	/* rtw_write8(rtlpriv, 0x542, rtl_read_byte(rtlpriv, 0x541)|BIT(0)); */
 
-	rtw_write8(rtlpriv, bcn_ctrl_reg, rtw_read8(rtlpriv, bcn_ctrl_reg)|BIT(1));
+	rtw_write8(rtlpriv, bcn_ctrl_reg, rtl_read_byte(rtlpriv, bcn_ctrl_reg)|BIT(1));
 
 }
 
@@ -102,10 +102,10 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 
 	{
 		/* disable Port0 TSF update */
-		rtw_write8(rtlpriv, REG_BCN_CTRL, rtw_read8(rtlpriv, REG_BCN_CTRL)|DIS_TSF_UDT);
+		rtw_write8(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|DIS_TSF_UDT);
 
 		/*  set net_type */
-		val8 = rtw_read8(rtlpriv, MSR)&0x0c;
+		val8 = rtl_read_byte(rtlpriv, MSR)&0x0c;
 		val8 |= mode;
 		rtw_write8(rtlpriv, MSR, val8);
 
@@ -153,12 +153,12 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 
 			if (IS_HARDWARE_TYPE_8821(rtlpriv)) {
 				/*  select BCN on port 0 */
-				rtw_write8(rtlpriv, REG_CCK_CHECK_8812,	rtw_read8(rtlpriv, REG_CCK_CHECK_8812)&(~BIT(5)));
+				rtw_write8(rtlpriv, REG_CCK_CHECK_8812,	rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812)&(~BIT(5)));
 			}
 
 
 			/* dis BCN1 ATIM  WND if if2 is station */
-			rtw_write8(rtlpriv, REG_BCN_CTRL_1, rtw_read8(rtlpriv, REG_BCN_CTRL_1)|DIS_ATIM);
+			rtw_write8(rtlpriv, REG_BCN_CTRL_1, rtl_read_byte(rtlpriv, REG_BCN_CTRL_1)|DIS_ATIM);
 		}
 	}
 
@@ -175,7 +175,7 @@ static void hw_var_set_bcn_func(struct rtl_priv *rtlpriv, uint8_t variable, uint
 	if (*((uint8_t *) val)) {
 		rtw_write8(rtlpriv, bcn_ctrl_reg, (EN_BCN_FUNCTION | EN_TXBCN_RPT));
 	} else {
-		rtw_write8(rtlpriv, bcn_ctrl_reg, rtw_read8(rtlpriv, bcn_ctrl_reg)&(~(EN_BCN_FUNCTION | EN_TXBCN_RPT)));
+		rtw_write8(rtlpriv, bcn_ctrl_reg, rtl_read_byte(rtlpriv, bcn_ctrl_reg)&(~(EN_BCN_FUNCTION | EN_TXBCN_RPT)));
 	}
 
 
@@ -211,7 +211,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 
 		if (check_fwstate(pmlmepriv, WIFI_STATION_STATE | WIFI_ADHOC_STATE | WIFI_ADHOC_MASTER_STATE)) {
 			/* disable update TSF */
-			rtw_write8(rtlpriv, reg_bcn_ctl, rtw_read8(rtlpriv, reg_bcn_ctl)|DIS_TSF_UDT);
+			rtw_write8(rtlpriv, reg_bcn_ctl, rtl_read_byte(rtlpriv, reg_bcn_ctl)|DIS_TSF_UDT);
 		}
 
 		/* Save orignal RRSR setting. */
@@ -227,7 +227,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 
 		if (check_fwstate(pmlmepriv, WIFI_STATION_STATE | WIFI_ADHOC_STATE | WIFI_ADHOC_MASTER_STATE)) {
 			/* enable update TSF */
-			rtw_write8(rtlpriv, reg_bcn_ctl, rtw_read8(rtlpriv, reg_bcn_ctl)&(~(DIS_TSF_UDT)));
+			rtw_write8(rtlpriv, reg_bcn_ctl, rtl_read_byte(rtlpriv, reg_bcn_ctl)&(~(DIS_TSF_UDT)));
 		}
 
 		value_rcr |= rcr_clear_bit;
@@ -319,13 +319,13 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		
 		
 	case HW_VAR_MEDIA_STATUS:
-		val8 = rtw_read8(rtlpriv, MSR) & 0x0c;
+		val8 = rtl_read_byte(rtlpriv, MSR) & 0x0c;
 		val8 |= *pval;
 		rtw_write8(rtlpriv, MSR, val8);
 		break;
 
 	case HW_VAR_MEDIA_STATUS1:
-		val8 = rtw_read8(rtlpriv, MSR) & 0x03;
+		val8 = rtl_read_byte(rtlpriv, MSR) & 0x03;
 		val8 |= *pval << 2;
 		rtw_write8(rtlpriv, MSR, val8);
 		break;
@@ -378,7 +378,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			/* Set RRSR rate table. */
 			rtw_write8(rtlpriv, REG_RRSR, BrateCfg&0xff);
 			rtw_write8(rtlpriv, REG_RRSR+1, (BrateCfg>>8)&0xff);
-			rtw_write8(rtlpriv, REG_RRSR+2, rtw_read8(rtlpriv, REG_RRSR+2)&0xf0);
+			rtw_write8(rtlpriv, REG_RRSR+2, rtl_read_byte(rtlpriv, REG_RRSR+2)&0xf0);
 		}
 		break;
 
@@ -405,26 +405,26 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			   || ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)) {
 				/*
 				 * pHalData->RegTxPause |= STOP_BCNQ;BIT(6)
-				 * rtw_write8(rtlpriv, REG_TXPAUSE, (rtw_read8(rtlpriv, REG_TXPAUSE)|BIT(6)));
+				 * rtw_write8(rtlpriv, REG_TXPAUSE, (rtl_read_byte(rtlpriv, REG_TXPAUSE)|BIT(6)));
 				 */
 				StopTxBeacon(rtlpriv);
 			}
 
 			/* disable related TSF function */
-			rtw_write8(rtlpriv, REG_BCN_CTRL, rtw_read8(rtlpriv, REG_BCN_CTRL)&(~BIT(3)));
+			rtw_write8(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)&(~BIT(3)));
 
 			rtw_write32(rtlpriv, REG_TSFTR, tsf);
 			rtw_write32(rtlpriv, REG_TSFTR+4, tsf>>32);
 
 			/* enable related TSF function */
-			rtw_write8(rtlpriv, REG_BCN_CTRL, rtw_read8(rtlpriv, REG_BCN_CTRL)|BIT(3));
+			rtw_write8(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(3));
 
 
 			if (((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
 			   || ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)) {
 				/*
 				 * pHalData->RegTxPause  &= (~STOP_BCNQ);
-				 * rtw_write8(rtlpriv, REG_TXPAUSE, (rtw_read8(rtlpriv, REG_TXPAUSE)&(~BIT(6))));
+				 * rtw_write8(rtlpriv, REG_TXPAUSE, (rtl_read_byte(rtlpriv, REG_TXPAUSE)&(~BIT(6))));
 				 */
 				ResumeTxBeacon(rtlpriv);
 			}
@@ -456,7 +456,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			rtw_write8(rtlpriv, REG_DUAL_TSF_RST, val8);
 
 			/* disable update TSF */
-			val8 = rtw_read8(rtlpriv, REG_BCN_CTRL);
+			val8 = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
 			val8 |= BIT(4);
 			rtw_write8(rtlpriv, REG_BCN_CTRL, val8);
 		}
@@ -500,7 +500,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				rtw_write16(rtlpriv, REG_RXFLTMAP2, 0x00);
 			} else if (type == 2) { /* sta add event call back */
 				/* enable update TSF */
-				val8 = rtw_read8(rtlpriv, REG_BCN_CTRL);
+				val8 = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
 				val8 &= ~BIT(4);
 				rtw_write8(rtlpriv, REG_BCN_CTRL, val8);
 
@@ -665,7 +665,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			uint8_t AcmCtrl;
 
 			acm_ctrl = *(uint8_t *)pval;
-			AcmCtrl = rtw_read8(rtlpriv, REG_ACMHWCTRL);
+			AcmCtrl = rtl_read_byte(rtlpriv, REG_ACMHWCTRL);
 
 			if (acm_ctrl > 1)
 				AcmCtrl = AcmCtrl | 0x1;
@@ -876,7 +876,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			/*
 			 * BCN_VALID, BIT16 of REG_TDECTRL = BIT0 of REG_TDECTRL+2, write 1 to clear, Clear by sw
 			 */
-			val8 = rtw_read8(rtlpriv, REG_TDECTRL+2);
+			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL+2);
 			val8 |= BIT(0);
 			rtw_write8(rtlpriv, REG_TDECTRL+2, val8);
 		}
@@ -885,7 +885,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	case HW_VAR_DL_BCN_SEL:
 		{
 			/* SW_BCN_SEL - Port0 */
-			val8 = rtw_read8(rtlpriv, REG_TDECTRL1_8812+2);
+			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL1_8812+2);
 			val8 &= ~BIT(4);
 			rtw_write8(rtlpriv, REG_TDECTRL1_8812+2, val8);
 		}
@@ -949,13 +949,13 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 		break;
 
 	case HW_VAR_TXPAUSE:
-		*pval = rtw_read8(rtlpriv, REG_TXPAUSE);
+		*pval = rtl_read_byte(rtlpriv, REG_TXPAUSE);
 		break;
 
 	case HW_VAR_BCN_VALID:
 		{
 			/* BCN_VALID, BIT16 of REG_TDECTRL = BIT0 of REG_TDECTRL+2 */
-			val8 = rtw_read8(rtlpriv, REG_TDECTRL+2);
+			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL+2);
 			*pval = (BIT(0) & val8) ? _TRUE:_FALSE;
 		}
 		break;

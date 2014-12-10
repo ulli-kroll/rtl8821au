@@ -337,8 +337,8 @@ int PHY_BBConfig8812(struct rtl_priv *Adapter)
 	phy_InitBBRFRegisterDefinition(Adapter);
 
     	/* tangw check start 20120412 */
-    	/* . APLL_EN,,APLL_320_GATEB,APLL_320BIAS,  auto config by hw fsm after pfsm_go (0x4 bit 8) set */
-    	TmpU1B = rtw_read8(Adapter, REG_SYS_FUNC_EN);
+	/* . APLL_EN,,APLL_320_GATEB,APLL_320BIAS,  auto config by hw fsm after pfsm_go (0x4 bit 8) set */
+	TmpU1B = rtl_read_byte(Adapter, REG_SYS_FUNC_EN);
 
 	if(IS_HARDWARE_TYPE_8812AU(Adapter) || IS_HARDWARE_TYPE_8821U(Adapter))
 		TmpU1B |= FEN_USBA;
@@ -370,7 +370,7 @@ int PHY_BBConfig8812(struct rtl_priv *Adapter)
 	}
 
 	if(IS_HARDWARE_TYPE_JAGUAR(Adapter)) {
-		pHalData->Reg837 = rtw_read8(Adapter, 0x837);
+		pHalData->Reg837 = rtl_read_byte(Adapter, 0x837);
 	}
 
 	return rtStatus;
@@ -2471,10 +2471,10 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 			/* if(BT_IsBtExist(Adapter)) */
 			{
 				/* 
-				 * u1tmp = rtw_read8(Adapter, rA_RFE_Inv_Jaguar+2);
+				 * u1tmp = rtl_read_byte(Adapter, rA_RFE_Inv_Jaguar+2);
 				 * rtw_write8(Adapter, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
 				 */
-				u1tmp = rtw_read8(Adapter, rA_RFE_Inv_Jaguar+3);
+				u1tmp = rtl_read_byte(Adapter, rA_RFE_Inv_Jaguar+3);
 				rtw_write8(Adapter, rA_RFE_Inv_Jaguar+3,  (u1tmp &= ~BIT0));
 			}
 			/* else */
@@ -2539,10 +2539,10 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 			/* if(BT_IsBtExist(Adapter)) */
 			{
 				/*
-				 * u1tmp = rtw_read8(Adapter, rA_RFE_Inv_Jaguar+2);
+				 * u1tmp = rtl_read_byte(Adapter, rA_RFE_Inv_Jaguar+2);
 				 * rtw_write8(Adapter, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
 				 */
-				u1tmp = rtw_read8(Adapter, rA_RFE_Inv_Jaguar+3);
+				u1tmp = rtl_read_byte(Adapter, rA_RFE_Inv_Jaguar+3);
 				rtw_write8(Adapter, rA_RFE_Inv_Jaguar+3,  (u1tmp |= BIT0));
 			}
 			/* else */
@@ -2763,7 +2763,7 @@ static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
 	BOOLEAN		ret_value = _TRUE;
 	uint8_t			Band = BAND_ON_5G, BandToSW;
 
-	u1Btmp = rtw_read8(pAdapter, REG_CCK_CHECK_8812);
+	u1Btmp = rtl_read_byte(pAdapter, REG_CCK_CHECK_8812);
 	if(u1Btmp & BIT7)
 		Band = BAND_ON_5G;
 	else

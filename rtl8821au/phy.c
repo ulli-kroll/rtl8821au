@@ -172,7 +172,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		VDF_enable = TRUE;
 	}
 	VDF_enable = FALSE;
-	temp_reg65 = ODM_GetRFReg(pDM_Odm, Path, 0x65, bMaskDWord);
+	temp_reg65 = rtw_hal_read_rfreg(pDM_Odm->Adapter, Path, 0x65, bMaskDWord);
 
 	switch (Path) {
 	case RF90_PATH_A:
@@ -411,7 +411,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x58, 0x7fe00, ODM_GetRFReg(pDM_Odm, Path, 0x8, 0xffc00)); /* Load LOK */
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(pDM_Odm->Adapter, Path, 0x8, 0xffc00)); /* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 
 		if (TX0IQKOK == FALSE)
@@ -807,7 +807,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x58, 0x7fe00, ODM_GetRFReg(pDM_Odm, Path, 0x8, 0xffc00));	/* Load LOK */
+		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(pDM_Odm->Adapter, Path, 0x8, 0xffc00));	/* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
 
 		if (TX1IQKOK == FALSE)

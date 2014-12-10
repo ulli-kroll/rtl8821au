@@ -55,11 +55,6 @@ typedef  void *PRT_WORK_ITEM ;
 typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
 typedef VOID (*RT_WORKITEM_CALL_BACK)(PVOID pContext);
 
-static uint32_t ODM_GetRFReg(struct rtl_dm *pDM_Odm, enum radio_path eRFPath,
-	uint32_t RegAddr, uint32_t BitMask)
-{
-	return rtw_hal_read_rfreg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask);
-}
 
 #endif	// __ODM_INTERFACE_H__
 

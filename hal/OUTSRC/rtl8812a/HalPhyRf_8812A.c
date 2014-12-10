@@ -48,7 +48,7 @@ static void phy_LCCalibrate_8812A(struct rtl_dm *pDM_Odm, BOOLEAN	is2T)
 	uint32_t	reg0x914 = rtl_read_dword(pDM_Odm->Adapter, rSingleTone_ContTx_Jaguar);;
 
 	/* Backup RF reg18. */
-	LC_Cal = ODM_GetRFReg(pDM_Odm, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	LC_Cal = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	if ((reg0x914 & 0x70000) != 0)	/* If contTx, disable all continuous TX. 0x914[18:16] */
 		/*
@@ -64,9 +64,9 @@ static void phy_LCCalibrate_8812A(struct rtl_dm *pDM_Odm, BOOLEAN	is2T)
 
 /*
 	//3 1. Read original RF mode
-	RF_Amode = ODM_GetRFReg(pDM_Odm, RF90_PATH_A, RF_AC, bRFRegOffsetMask);
+	RF_Amode = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_AC, bRFRegOffsetMask);
 	if(is2T)
-		RF_Bmode = ODM_GetRFReg(pDM_Odm, RF90_PATH_B, RF_AC, bRFRegOffsetMask);
+		RF_Bmode = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_B, RF_AC, bRFRegOffsetMask);
 
 
 	//3 2. Set RF mode = standby mode
@@ -76,17 +76,17 @@ static void phy_LCCalibrate_8812A(struct rtl_dm *pDM_Odm, BOOLEAN	is2T)
 */
 
 	/* Enter LCK mode */
-	tmp = ODM_GetRFReg(pDM_Odm, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	tmp = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
 	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
 
 	/* 3 3. Read RF reg18 */
-	LC_Cal = ODM_GetRFReg(pDM_Odm, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	LC_Cal = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	/* 3 4. Set LC calibration begin bit15 */
 	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
 
 	/* Leave LCK mode */
-	tmp = ODM_GetRFReg(pDM_Odm, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	tmp = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
 	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
 
 	mdelay(100);

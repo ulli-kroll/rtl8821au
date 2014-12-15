@@ -541,7 +541,6 @@ typedef enum _ODM_Common_Info_Definition
 //-------------REMOVED CASE-----------//
 	//ODM_CMNINFO_CCK_HP,
 	//ODM_CMNINFO_RFPATH_ENABLE,		// Define as ODM write???
-	//ODM_CMNINFO_BT_COEXIST,				// ODM_BT_COEXIST_E
 	//ODM_CMNINFO_OP_MODE,				// ODM_OPERATION_MODE_E
 //-------------REMOVED CASE-----------//
 

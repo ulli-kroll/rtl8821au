@@ -597,7 +597,6 @@ typedef enum _ODM_Common_Info_Definition
 	ODM_CMNINFO_ANT_TEST,
 	ODM_CMNINFO_NET_CLOSED,
 	ODM_CMNINFO_MP_MODE,
-	//ODM_CMNINFO_RTSTA_AID,				// For win driver only?
 //--------- POINTER REFERENCE-----------//
 
 //------------CALL BY VALUE-------------//

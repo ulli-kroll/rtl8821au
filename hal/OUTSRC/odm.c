@@ -566,10 +566,6 @@ void ODM_CmnInfoHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue
 		pDM_Odm->mp_mode = (u8 *)pValue;
 		break;
 /*
-	case	ODM_CMNINFO_RTSTA_AID:
-		pDM_Odm->pAidMap =  (u8 *)pValue;
-		break;
-
 	case	ODM_CMNINFO_BT_COEXIST:
 		pDM_Odm->BTCoexist = (BOOLEAN *)pValue;
 

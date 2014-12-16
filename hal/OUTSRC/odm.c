@@ -256,7 +256,6 @@ unsigned int TxPwrTrk_OFDM_SwingTbl[TxPwrTrk_OFDM_SwingTbl_Len] = {
 void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm);
 void odm_CommonInfoSelfUpdate(struct rtl_dm * pDM_Odm);
 void odm_CmnInfoInit_Debug(struct rtl_dm *pDM_Odm);
-void odm_CmnInfoUpdate_Debug(struct rtl_dm *pDM_Odm);
 /*
 void odm_FindMinimumRSSI(struct rtl_dm *pDM_Odm);
 void odm_IsLinked(struct rtl_dm *pDM_Odm);
@@ -319,8 +318,6 @@ void odm_EdcaTurboCheckCE(struct rtl_dm *pDM_Odm);
  */
 void ODM_DMWatchdog(struct rtl_dm *pDM_Odm)
 {
-	/* odm_CmnInfoUpdate_Debug(pDM_Odm); */
-
 	odm_CommonInfoSelfUpdate(pDM_Odm);
 	odm_FalseAlarmCounterStatistics(pDM_Odm);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
@@ -746,15 +743,6 @@ void odm_CommonInfoSelfUpdate(struct rtl_dm * pDM_Odm)
 		pDM_Odm->bOneEntryOnly = FALSE;
 }
 
-
-void odm_CmnInfoUpdate_Debug(struct rtl_dm *pDM_Odm)
-{
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_CmnInfoUpdate_Debug==>\n"));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("bWIFI_Direct=%d\n", pDM_Odm->bWIFI_Direct));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("bWIFI_Display=%d\n", pDM_Odm->bWIFI_Display));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("bLinked=%d\n", pDM_Odm->bLinked));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("RSSI_Min=%d\n", pDM_Odm->RSSI_Min));
-}
 
 
 

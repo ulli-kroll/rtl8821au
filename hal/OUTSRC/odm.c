@@ -257,7 +257,6 @@ void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm);
 void odm_CommonInfoSelfUpdate(struct rtl_dm * pDM_Odm);
 void odm_CmnInfoInit_Debug(struct rtl_dm *pDM_Odm);
 void odm_CmnInfoUpdate_Debug(struct rtl_dm *pDM_Odm);
-void odm_BasicDbgMessage(struct rtl_dm *pDM_Odm);
 /*
 void odm_FindMinimumRSSI(struct rtl_dm *pDM_Odm);
 void odm_IsLinked(struct rtl_dm *pDM_Odm);
@@ -323,7 +322,6 @@ void ODM_DMWatchdog(struct rtl_dm *pDM_Odm)
 	/* odm_CmnInfoUpdate_Debug(pDM_Odm); */
 
 	odm_CommonInfoSelfUpdate(pDM_Odm);
-	odm_BasicDbgMessage(pDM_Odm);
 	odm_FalseAlarmCounterStatistics(pDM_Odm);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
 
@@ -758,20 +756,6 @@ void odm_CmnInfoUpdate_Debug(struct rtl_dm *pDM_Odm)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("RSSI_Min=%d\n", pDM_Odm->RSSI_Min));
 }
 
-void odm_BasicDbgMessage(struct rtl_dm *pDM_Odm)
-{
-	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
-
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_BasicDbgMsg==>\n"));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("bLinked = %d, RSSI_Min = %d, CurrentIGI = 0x%x \n",
-		pDM_Odm->bLinked, pDM_Odm->RSSI_Min, pDM_DigTable->CurIGValue));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("Cnt_Cck_fail = %d, Cnt_Ofdm_fail = %d, Total False Alarm = %d\n",
-		FalseAlmCnt->Cnt_Cck_fail, FalseAlmCnt->Cnt_Ofdm_fail, FalseAlmCnt->Cnt_all));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("RxRate = 0x%x, RSSI_A = %d, RSSI_B = %d\n",
-		pDM_Odm->RxRate, pDM_Odm->RSSI_A, pDM_Odm->RSSI_B));
-
-}
 
 
 /*

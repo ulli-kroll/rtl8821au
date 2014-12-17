@@ -1952,8 +1952,6 @@ void odm_EdcaTurboCheck(struct rtl_dm *pDM_Odm)
 	 * HW dynamic mechanism.
 	 */
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("odm_EdcaTurboCheck========================>\n"));
-
 	if (!(pDM_Odm->SupportAbility & ODM_MAC_EDCA_TURBO))
 		return;
 
@@ -1964,8 +1962,6 @@ void odm_EdcaTurboCheck(struct rtl_dm *pDM_Odm)
 #endif
 		break;
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("<========================odm_EdcaTurboCheck\n"));
-
 }
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)

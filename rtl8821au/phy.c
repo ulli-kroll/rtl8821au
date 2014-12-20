@@ -3296,7 +3296,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_dm *pDM_Odm)
 	uint32_t     i           = 0;
 	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     platform    = ODM_CE;
 	u8     _interface   = pDM_Odm->SupportInterface;
 	u8     board       = pDM_Odm->BoardType;
 	uint32_t     ArrayLen    = RTL8812AUMAC_1T_ARRAYLEN;
@@ -3353,7 +3353,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
 	uint32_t     i           = 0;
 	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u8     platform    = pDM_Odm->SupportPlatform;
+	u8     platform    = ODM_CE;
 	u8     _interface   = pDM_Odm->SupportInterface;
 	u8     board       = pDM_Odm->BoardType;
 	uint32_t     ArrayLen    = RTL8821AUMAC_1T_ARRAYLEN;
@@ -3413,8 +3413,8 @@ HAL_STATUS _rtl8821au_phy_config_mac_with_headerfile(struct rtl_dm *pDM_Odm)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigMACWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
-		("pDM_Odm->SupportPlatform: 0x%X, pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		pDM_Odm->SupportPlatform, pDM_Odm->SupportInterface, pDM_Odm->BoardType));
+		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
+		pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
 #if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
@@ -3487,7 +3487,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 	uint32_t	hex         = 0;
 	u16	count       = 0;
 	uint32_t	*ptr_array   = NULL;
-	u8		platform    = pDM_Odm->SupportPlatform;
+	u8     platform    = ODM_CE;
 	u8		_interface   = pDM_Odm->SupportInterface;
 	u8		board       = pDM_Odm->BoardType;
 
@@ -3655,7 +3655,7 @@ void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radi
 	uint32_t	i           = 0;
 	u16	count       = 0;
 	uint32_t	*ptr_array   = NULL;
-	u8		platform    = pDM_Odm->SupportPlatform;
+	u8     platform    = ODM_CE;
 	u8		_interface   = pDM_Odm->SupportInterface;
 	u8		board       = pDM_Odm->BoardType;
 	uint32_t	ArrayLen    =  RTL8821AU_RADIOA_1TARRAYLEN;

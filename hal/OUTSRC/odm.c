@@ -394,10 +394,6 @@ void ODM_CmnInfoInit(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Val
 		pDM_Odm->RFType = (u8)Value;
 		break;
 
-	case	ODM_CMNINFO_PLATFORM:
-		pDM_Odm->SupportPlatform = (u8)Value;
-		break;
-
 	case	ODM_CMNINFO_INTERFACE:
 		pDM_Odm->SupportInterface = (u8)Value;
 		break;
@@ -925,11 +921,9 @@ void ODM_Write_DIG(struct rtl_dm *pDM_Odm, u8 CurrentIGI)
 		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm)));
 
 	if (pDM_DigTable->CurIGValue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
-		if (pDM_Odm->SupportPlatform & (ODM_CE)) {
-			rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
-			if (pDM_Odm->RFType != ODM_1T1R)
-				rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_B, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
-		}
+		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
+		if (pDM_Odm->RFType != ODM_1T1R)
+			rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_B, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("CurrentIGI(0x%02x). \n", CurrentIGI));
 		/* pDM_DigTable->PreIGValue = pDM_DigTable->CurIGValue; */
@@ -1125,7 +1119,7 @@ void odm_DIG(struct rtl_dm *pDM_Odm)
 	}
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): pDM_DigTable->LargeFAHit=%d\n", pDM_DigTable->LargeFAHit));
 
-	if ((pDM_Odm->SupportPlatform&(ODM_CE)) && (pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10))
+	if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10))
 		pDM_DigTable->rx_gain_range_min = dm_dig_min;
 
 	if (pDM_DigTable->rx_gain_range_min > pDM_DigTable->rx_gain_range_max)
@@ -1149,7 +1143,7 @@ void odm_DIG(struct rtl_dm *pDM_Odm)
 			else if (pFalseAlmCnt->Cnt_all < DM_DIG_FA_TH0)
 				CurrentIGI = CurrentIGI - 2;	/* pDM_DigTable->CurIGValue =pDM_DigTable->PreIGValue-1; */
 
-			if ((pDM_Odm->SupportPlatform&(ODM_CE)) && (pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10)
+			if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10)
 			 && (pFalseAlmCnt->Cnt_all < DM_DIG_FA_TH1))
 				CurrentIGI = pDM_DigTable->rx_gain_range_min;
 		}
@@ -1506,11 +1500,7 @@ void odm_RefreshRateAdaptiveMask(struct rtl_dm *pDM_Odm)
 	 * HW dynamic mechanism.
 	 */
 
-	switch (pDM_Odm->SupportPlatform) {
-	case	ODM_CE:
-		odm_RefreshRateAdaptiveMaskCE(pDM_Odm);
-		break;
-	}
+	odm_RefreshRateAdaptiveMaskCE(pDM_Odm);
 }
 
 void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm)
@@ -1647,12 +1637,7 @@ void odm_RSSIMonitorCheck(struct rtl_dm *pDM_Odm)
 	 * HW dynamic mechanism.
 	 */
 
-	switch	(pDM_Odm->SupportPlatform) {
-	case	ODM_CE:
-		odm_RSSIMonitorCheckCE(pDM_Odm);
-		break;
-	}
-
+	odm_RSSIMonitorCheckCE(pDM_Odm);
 }
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
@@ -1843,11 +1828,7 @@ void ODM_TXPowerTrackingCheck(struct rtl_dm *pDM_Odm)
 	 * HW dynamic mechanism.
 	 */
 
-	switch	(pDM_Odm->SupportPlatform) {
-	case	ODM_CE:
-		odm_TXPowerTrackingCheckCE(pDM_Odm);
-		break;
-	}
+	odm_TXPowerTrackingCheckCE(pDM_Odm);
 }
 
 void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm)
@@ -1955,13 +1936,7 @@ void odm_EdcaTurboCheck(struct rtl_dm *pDM_Odm)
 	if (!(pDM_Odm->SupportAbility & ODM_MAC_EDCA_TURBO))
 		return;
 
-	switch (pDM_Odm->SupportPlatform) {
-	case	ODM_CE:
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-		odm_EdcaTurboCheckCE(pDM_Odm);
-#endif
-		break;
-	}
+	odm_EdcaTurboCheckCE(pDM_Odm);
 }
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)

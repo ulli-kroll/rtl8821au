@@ -154,8 +154,6 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 
 	pDM_Odm->Adapter = Adapter;
 
-	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_PLATFORM,ODM_CE);
-
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_INTERFACE,Adapter->interface_type);
 
 

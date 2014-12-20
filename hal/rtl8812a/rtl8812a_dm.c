@@ -230,16 +230,12 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 
  	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RF_ANTENNA_TYPE, pHalData->TRxAntDivType);
 
-#ifdef CONFIG_DISABLE_ODM
-	pdmpriv->InitODMFlag = 0;
-#else
 	pdmpriv->InitODMFlag =	ODM_RF_CALIBRATION		|
 							ODM_RF_TX_PWR_TRACK	//|
 							;
 	/* if(pHalData->AntDivCfg)
 	 *	pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
 	 */
-#endif
 
 	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 
@@ -254,10 +250,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int i;
 
-#ifdef CONFIG_DISABLE_ODM
-	pdmpriv->InitODMFlag = 0;
-#else
-
 	pdmpriv->InitODMFlag =	ODM_BB_DIG |
 #ifdef	CONFIG_ODM_REFRESH_RAMASK
 				ODM_BB_RA_MASK		|
@@ -269,7 +261,7 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 			;
 	if (pHalData->AntDivCfg)
 		pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
-#endif
+
 	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_WM_MODE,&(pmlmeext->cur_wireless_mode));
@@ -347,10 +339,6 @@ VOID rtl8812_HalDmWatchDog(struct rtl_priv *Adapter)
 	/* ODM */
 	if (hw_init_completed == _TRUE) {
 		uint8_t	bLinked=_FALSE;
-
-#ifdef CONFIG_DISABLE_ODM
-		pHalData->odmpriv.SupportAbility = 0;
-#endif
 
 		if(rtw_linked_check(Adapter))
 			bLinked = _TRUE;

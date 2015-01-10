@@ -739,17 +739,6 @@ static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_do_ioctl = rtw_ioctl,
 };
 
-static void rtw_free_netdev(struct net_device * netdev)
-{
-	if(!netdev)
-		goto RETURN;
-
-	free_netdev(netdev);
-
-RETURN:
-	return;
-}
-
 static int rtw_init_io_priv(struct rtl_priv *padapter,
 	void (*set_intf_ops)(struct rtl_priv *padapter, struct rtl_io *pops))
 {
@@ -906,7 +895,7 @@ free_wdev:
 free_adapter:
 	if (status != _SUCCESS) {
 		if (ndev)
-			rtw_free_netdev(ndev);
+			free_netdev(ndev);
 
 		padapter = NULL;
 	}
@@ -942,7 +931,7 @@ static void rtw_usb_if1_deinit(struct rtl_priv *padapter)
 	rtw_free_drv_sw(padapter);
 
 	if(ndev)
-		rtw_free_netdev(ndev);
+		free_netdev(ndev);
 
 
 }

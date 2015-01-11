@@ -1590,7 +1590,6 @@ typedef enum tag_SW_Antenna_Switch_Definition
 // Extern Global Variables.
 //
 extern	uint32_t OFDMSwingTable[OFDM_TABLE_SIZE_92D];
-extern	uint32_t OFDMSwingTable_New[OFDM_TABLE_SIZE_92D];
 extern  uint32_t TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE];
 
 // <20121018, Kordan> In case fail to read TxPowerTrack.txt, we use the table of 88E as the default table.

@@ -101,8 +101,7 @@ typedef enum _PWRSEQ_CMD_DELAY_UNIT_
 	PWRSEQ_DELAY_MS,
 } PWRSEQ_DELAY_UNIT;
 
-typedef struct _WL_PWR_CFG_
-{
+struct wlan_pwr_cfg {
 	u16 offset;
 	uint8_t cut_msk;
 	uint8_t fab_msk:4;
@@ -111,7 +110,7 @@ typedef struct _WL_PWR_CFG_
 	uint8_t cmd:4;
 	uint8_t msk;
 	uint8_t value;
-} WLAN_PWR_CFG, *PWLAN_PWR_CFG;
+};
 
 
 #define GET_PWR_CFG_OFFSET(__PWR_CMD)		__PWR_CMD.offset
@@ -129,10 +128,10 @@ typedef struct _WL_PWR_CFG_
 //================================================================================
 uint8_t HalPwrSeqCmdParsing(
 	struct rtl_priv		*padapter,
-	uint8_t				CutVersion,
-	uint8_t				FabVersion,
-	uint8_t				InterfaceType,
-	WLAN_PWR_CFG	PwrCfgCmd[]);
+	uint8_t			CutVersion,
+	uint8_t			FabVersion,
+	uint8_t			InterfaceType,
+	struct wlan_pwr_cfg	PwrCfgCmd[]);
 
 #endif
 

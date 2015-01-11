@@ -46,9 +46,9 @@ Major Change History:
 //	2011.07.07, added by Roger.
 //
 uint8_t HalPwrSeqCmdParsing(struct rtl_priv *padapter, uint8_t CutVersion,
-	uint8_t FabVersion, uint8_t InterfaceType, WLAN_PWR_CFG	PwrSeqCmd[])
+	uint8_t FabVersion, uint8_t InterfaceType, struct wlan_pwr_cfg PwrSeqCmd[])
 {
-	WLAN_PWR_CFG 	PwrCfgCmd = {0};
+	struct wlan_pwr_cfg PwrCfgCmd = {0};
 	uint8_t	bPollingBit = _FALSE;
 	uint32_t AryIdx = 0;
 	uint8_t value = 0;

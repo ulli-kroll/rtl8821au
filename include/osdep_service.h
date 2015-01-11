@@ -272,7 +272,6 @@ __inline static u32 bitshift(u32 bitmask)
 #endif
 
 extern u64 rtw_modular64(u64 x, u64 y);
-extern u64 rtw_division64(u64 x, u64 y);
 
 
 /* Macros for handling unaligned memory accesses */

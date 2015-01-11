@@ -23,11 +23,9 @@
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/sw.h>
 
-#ifdef CONFIG_80211N_HT
 extern int rtw_ht_enable;
 extern int rtw_bw_mode;
 extern int rtw_ampdu_enable;	/* for enable tx_ampdu */
-#endif
 
 #ifdef CONFIG_GLOBAL_UI_PID
 int ui_pid[3] = {0, 0, 0};
@@ -190,14 +188,14 @@ static uint8_t rtw_deinit_intf_priv(struct dvobj_priv *dvobj)
 {
 	uint8_t rst = _SUCCESS;
 
-	#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
+#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
 	if(dvobj->usb_vendor_req_buf)
 		rtw_mfree(dvobj->usb_alloc_vendor_req_buf);
-	#endif
+#endif
 
-	#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
+#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
 	mutex_destroy(&dvobj->usb_vendor_req_mutex);
-	#endif
+#endif
 
 	return rst;
 }
@@ -402,19 +400,14 @@ static void rtw_decide_chip_type_by_usb_info(struct rtl_priv *padapter, const st
 
 void usb_set_intf_ops(struct rtl_priv *padapter,struct rtl_io *pops)
 {
-
-
-
-	#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 	if(padapter->chip_type == RTL8812 || padapter->chip_type == RTL8821)
 		rtl8812au_set_intf_ops(pops);
-	#endif
+
 }
 
 
 static void usb_intf_start(struct rtl_priv *padapter)
 {
-
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("+usb_intf_start\n"));
 
 	rtw_hal_inirp_init(padapter);
@@ -425,7 +418,6 @@ static void usb_intf_start(struct rtl_priv *padapter)
 
 static void usb_intf_stop(struct rtl_priv *padapter)
 {
-
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("+usb_intf_stop\n"));
 
 	/* disabel_hw_interrupt */
@@ -458,9 +450,8 @@ static void rtw_dev_unload(struct rtl_priv *padapter)
 
 		padapter->bDriverStopped = _TRUE;
 		/* s3. */
-		if(padapter->intf_stop) {
+		if(padapter->intf_stop)
 			padapter->intf_stop(padapter);
-		}
 
 		/* s4. */
 		if(!padapter->pwrctrlpriv.bInternalAutoSuspend )
@@ -469,16 +460,12 @@ static void rtw_dev_unload(struct rtl_priv *padapter)
 
 		/* s5. */
 		if(padapter->bSurpriseRemoved == _FALSE) {
-			/* DBG_871X("r871x_dev_unload()->rtl871x_hal_deinit()\n"); */
-			{
-				rtw_hal_deinit(padapter);
-			}
+			rtw_hal_deinit(padapter);
 			padapter->bSurpriseRemoved = _TRUE;
 		}
 
 		padapter->bup = _FALSE;
-	}
-	else {
+	} else {
 		RT_TRACE(_module_hci_intfs_c_,_drv_err_,("r871x_dev_unload():padapter->bup == _FALSE\n" ));
 	}
 
@@ -526,10 +513,8 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 		rtw_netif_stop_queue(ndev);
 	}
 
-		{
-		/* s2. */
-		rtw_disassoc_cmd(padapter, 0, _FALSE);
-	}
+	/* s2. */
+	rtw_disassoc_cmd(padapter, 0, _FALSE);
 
 	/* s2-2.  indicate disconnect to os */
 	rtw_indicate_disconnect(padapter);
@@ -548,17 +533,16 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 #endif
 	up(&pwrpriv->lock);
 
-	if(check_fwstate(pmlmepriv, _FW_UNDER_SURVEY))
+	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY))
 		rtw_indicate_scan_done(padapter, 1);
 
-	if(check_fwstate(pmlmepriv, _FW_UNDER_LINKING))
+	if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING))
 		rtw_indicate_disconnect(padapter);
 
 exit:
 	DBG_871X("<===  %s return %d.............. in %dms\n", __FUNCTION__
 		, ret, rtw_get_passing_time_ms(start_time));
 
-	_func_exit_;
 	return ret;
 }
 
@@ -576,16 +560,14 @@ int rtw_resume_process(struct rtl_priv *padapter)
 	struct pwrctrl_priv *pwrpriv;
 	int ret = -1;
 	u32 start_time = jiffies;
-	_func_enter_;
 
 	DBG_871X("==> %s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
 
 	if(padapter) {
 		ndev= padapter->ndev;
 		pwrpriv = &padapter->pwrctrlpriv;
-	} else {
+	} else
 		goto exit;
-	}
 
 	down(&pwrpriv->lock);
 	rtw_reset_drv_sw(padapter);
@@ -604,21 +586,18 @@ int rtw_resume_process(struct rtl_priv *padapter)
 	if (pwrpriv->bInternalAutoSuspend) {
 		pwrpriv->bInternalAutoSuspend = _FALSE;
 		pwrpriv->brfoffbyhw = _FALSE;
-		{
-			DBG_871X("enc_algorithm(%x),wepkeymask(%x)\n",
-				padapter->securitypriv.dot11PrivacyAlgrthm,pwrpriv->wepkeymask);
-			if(	(_WEP40_ == padapter->securitypriv.dot11PrivacyAlgrthm) ||
-				(_WEP104_ == padapter->securitypriv.dot11PrivacyAlgrthm))
-			{
-				sint keyid;
+		DBG_871X("enc_algorithm(%x),wepkeymask(%x)\n",
+			padapter->securitypriv.dot11PrivacyAlgrthm,pwrpriv->wepkeymask);
+		if  ((_WEP40_ == padapter->securitypriv.dot11PrivacyAlgrthm) ||
+			(_WEP104_ == padapter->securitypriv.dot11PrivacyAlgrthm)) {
+			sint keyid;
 
-				for(keyid=0;keyid<4;keyid++){
-					if(pwrpriv->wepkeymask & BIT(keyid)) {
-						if(keyid == padapter->securitypriv.dot11PrivacyKeyIndex)
-							rtw_set_key(padapter,&padapter->securitypriv, keyid, 1);
-						else
-							rtw_set_key(padapter,&padapter->securitypriv, keyid, 0);
-					}
+			for (keyid = 0; keyid < 4; keyid++) {
+				if (pwrpriv->wepkeymask & BIT(keyid)) {
+					if (keyid == padapter->securitypriv.dot11PrivacyKeyIndex)
+						rtw_set_key(padapter,&padapter->securitypriv, keyid, 1);
+					else
+						rtw_set_key(padapter,&padapter->securitypriv, keyid, 0);
 				}
 			}
 		}
@@ -636,8 +615,6 @@ exit:
 	pwrpriv->bInSuspend = _FALSE;
 	DBG_871X("<===  %s return %d.............. in %dms\n", __FUNCTION__
 		, ret, rtw_get_passing_time_ms(start_time));
-
-	_func_exit_;
 
 	return ret;
 }
@@ -661,6 +638,7 @@ void autosuspend_enter(struct rtl_priv* padapter)
 	DBG_871X("...pm_usage_cnt(%d).....\n", atomic_read(&(dvobj->pusbintf->pm_usage_cnt)));
 
 }
+
 int autoresume_enter(struct rtl_priv* padapter)
 {
 	int result = _SUCCESS;
@@ -772,12 +750,6 @@ struct rtl_priv *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	ndev->wireless_handlers = (struct iw_handler_def *)&rtw_handlers_def;
 #endif
 
-#ifdef WIRELESS_SPY
-	/*
-	 * priv->wireless_data.spy_data = &priv->spy_data;
-	 * ndev->wireless_data = &priv->wireless_data;
-	 */
-#endif
 
 	/* step 2. */
 	loadparam(padapter, ndev);
@@ -856,11 +828,9 @@ struct rtl_priv *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	status = _SUCCESS;
 
 free_hal_data:
-	if(status != _SUCCESS && padapter->HalData)
+	if (status != _SUCCESS && padapter->HalData)
 		rtw_mfree(padapter->HalData);
-free_wdev:
-	if(status != _SUCCESS) {
-	}
+
 free_adapter:
 	if (status != _SUCCESS) {
 		if (ndev)
@@ -885,8 +855,8 @@ static void rtw_usb_if1_deinit(struct rtl_priv *padapter)
 	free_mlme_ap_info(padapter);
 #endif
 
-	if(padapter->DriverState != DRIVER_DISAPPEAR) {
-		if(ndev) {
+	if (padapter->DriverState != DRIVER_DISAPPEAR) {
+		if (ndev) {
 			unregister_netdev(ndev); /* will call netdev_close() */
 			rtw_proc_remove_one(ndev);
 		}
@@ -901,8 +871,6 @@ static void rtw_usb_if1_deinit(struct rtl_priv *padapter)
 
 	if(ndev)
 		free_netdev(ndev);
-
-
 }
 
 static int _rtw_drv_register_netdev(struct rtl_priv *padapter, char *name)
@@ -1070,7 +1038,7 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 	}
 
 #ifdef CONFIG_GLOBAL_UI_PID
-	if(ui_pid[1]!=0) {
+	if (ui_pid[1]!=0) {
 		DBG_871X("ui_pid[1]:%d\n",ui_pid[1]);
 		rtw_signal_process(ui_pid[1], SIGUSR2);
 	}
@@ -1109,8 +1077,6 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
 	struct net_device *ndev = padapter->ndev;
 	struct mlme_priv *pmlmepriv= &padapter->mlmepriv;
 
-_func_enter_;
-
 	DBG_871X("+rtw_dev_remove\n");
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("+dev_remove()\n"));
 
@@ -1136,11 +1102,7 @@ _func_enter_;
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("-dev_remove()\n"));
 	DBG_871X("-r871xu_dev_remove, done\n");
 
-
-_func_exit_;
-
 	return;
-
 }
 
 static int __init rtw_drv_entry(void)

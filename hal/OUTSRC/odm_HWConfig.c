@@ -678,19 +678,13 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
  * Endianness before calling this API
  */
 
-void ODM_PhyStatusQuery_JaguarSeries(struct rtl_dm *	pDM_Odm,
-	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
+void ODM_PhyStatusQuery(struct rtl_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+	u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	odm_RxPhyStatusJaguarSeries_Parsing(pDM_Odm, pPhyInfo,
 					pPhyStatus, pPktinfo);
 
 	odm_Process_RSSIForDM(pDM_Odm, pPhyInfo, pPktinfo);
-}
-
-void ODM_PhyStatusQuery(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
-	u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
-{
-	ODM_PhyStatusQuery_JaguarSeries(pDM_Odm, pPhyInfo, pPhyStatus, pPktinfo);
 }
 
 

@@ -1,6 +1,8 @@
 #ifndef __WIFI_H__
 #define __WIFI_H__
 
+#include <linux/types.h>
+
 enum radio_path {
 	RF90_PATH_A = 0,
 	RF90_PATH_B = 1,

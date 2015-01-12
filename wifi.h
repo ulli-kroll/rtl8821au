@@ -299,5 +299,34 @@ static int rtl_write_dword(struct rtl_priv *adapter, u32 addr, u32 val)
 	return RTW_STATUS_CODE(ret);
 }
 
+enum hardware_type {
+	HARDWARE_TYPE_RTL8812E,
+	HARDWARE_TYPE_RTL8812AU,
+	HARDWARE_TYPE_RTL8811AU,
+	HARDWARE_TYPE_RTL8821E,
+	HARDWARE_TYPE_RTL8821U,
+	HARDWARE_TYPE_RTL8821S,
+
+	HARDWARE_TYPE_MAX,
+};
+
+// RTL8812 Series
+#define IS_HARDWARE_TYPE_8812E(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8812E)
+#define IS_HARDWARE_TYPE_8812AU(_Adapter)	((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8812AU)
+#define IS_HARDWARE_TYPE_8812(_Adapter)			\
+(IS_HARDWARE_TYPE_8812E(_Adapter) || IS_HARDWARE_TYPE_8812AU(_Adapter))
+
+// RTL8821 Series
+#define IS_HARDWARE_TYPE_8821E(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8821E)
+#define IS_HARDWARE_TYPE_8811AU(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8811AU)
+#define IS_HARDWARE_TYPE_8821U(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8821U ||\
+	              								 (_Adapter)->HardwareType==HARDWARE_TYPE_RTL8811AU)
+#define IS_HARDWARE_TYPE_8821S(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8821S)
+#define IS_HARDWARE_TYPE_8821(_Adapter)			\
+(IS_HARDWARE_TYPE_8821E(_Adapter) || IS_HARDWARE_TYPE_8821U(_Adapter)|| IS_HARDWARE_TYPE_8821S(_Adapter))
+
+#define IS_HARDWARE_TYPE_JAGUAR(_Adapter)		\
+(IS_HARDWARE_TYPE_8812(_Adapter) || IS_HARDWARE_TYPE_8821(_Adapter))
+
 
 #endif

@@ -172,35 +172,6 @@ typedef	enum _RT_EEPROM_TYPE{
 #define RF_CHANGE_BY_HW 	BIT30
 #define RF_CHANGE_BY_SW 	BIT31
 
-typedef enum _HARDWARE_TYPE{
-//	NEW_GENERATION_IC
-	HARDWARE_TYPE_RTL8812E,
-	HARDWARE_TYPE_RTL8812AU,
-	HARDWARE_TYPE_RTL8811AU,
-	HARDWARE_TYPE_RTL8821E,
-	HARDWARE_TYPE_RTL8821U,
-	HARDWARE_TYPE_RTL8821S,
-
-	HARDWARE_TYPE_MAX,
-}HARDWARE_TYPE;
-
-// RTL8812 Series
-#define IS_HARDWARE_TYPE_8812E(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8812E)
-#define IS_HARDWARE_TYPE_8812AU(_Adapter)	((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8812AU)
-#define IS_HARDWARE_TYPE_8812(_Adapter)			\
-(IS_HARDWARE_TYPE_8812E(_Adapter) || IS_HARDWARE_TYPE_8812AU(_Adapter))
-
-// RTL8821 Series
-#define IS_HARDWARE_TYPE_8821E(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8821E)
-#define IS_HARDWARE_TYPE_8811AU(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8811AU)
-#define IS_HARDWARE_TYPE_8821U(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8821U ||\
-	              								 (_Adapter)->HardwareType==HARDWARE_TYPE_RTL8811AU)
-#define IS_HARDWARE_TYPE_8821S(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8821S)
-#define IS_HARDWARE_TYPE_8821(_Adapter)			\
-(IS_HARDWARE_TYPE_8821E(_Adapter) || IS_HARDWARE_TYPE_8821U(_Adapter)|| IS_HARDWARE_TYPE_8821S(_Adapter))
-
-#define IS_HARDWARE_TYPE_JAGUAR(_Adapter)		\
-(IS_HARDWARE_TYPE_8812(_Adapter) || IS_HARDWARE_TYPE_8821(_Adapter))
 
 typedef struct eeprom_priv EEPROM_EFUSE_PRIV, *PEEPROM_EFUSE_PRIV;
 #define GET_EEPROM_EFUSE_PRIV(adapter) (&adapter->eeprompriv)

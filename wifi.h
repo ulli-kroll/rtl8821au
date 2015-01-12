@@ -330,5 +330,101 @@ enum hardware_type {
 #define IS_HARDWARE_TYPE_JAGUAR(_Adapter)		\
 (IS_HARDWARE_TYPE_8812(_Adapter) || IS_HARDWARE_TYPE_8821(_Adapter))
 
+//###### duplicate code,will move to ODM #########
+#define IQK_MAC_REG_NUM		4
+#define IQK_ADDA_REG_NUM		16
+
+#define IQK_BB_REG_NUM			10
+#define IQK_BB_REG_NUM_92C	9
+#define IQK_BB_REG_NUM_92D	10
+#define IQK_BB_REG_NUM_test	6
+
+#define IQK_Matrix_Settings_NUM_92D	1+24+21
+
+#define HP_THERMAL_NUM		8
+
+struct dm_priv {
+	uint8_t	DM_Type;
+	uint8_t	DMFlag;
+	uint8_t	InitDMFlag;
+	//uint8_t   RSVD_1;
+
+	u32	InitODMFlag;
+	//* Upper and Lower Signal threshold for Rate Adaptive*/
+	int	UndecoratedSmoothedPWDB;
+	int	UndecoratedSmoothedCCK;
+	int	EntryMinUndecoratedSmoothedPWDB;
+	int	EntryMaxUndecoratedSmoothedPWDB;
+	int	MinUndecoratedPWDBForDM;
+	int	LastMinUndecoratedPWDBForDM;
+
+	int32_t	UndecoratedSmoothedBeacon;
+
+//###### duplicate code,will move to ODM #########
+	//for High Power
+	uint8_t 	bDynamicTxPowerEnable;
+	uint8_t 	LastDTPLvl;
+	uint8_t	DynamicTxHighPowerLvl;//Add by Jacken Tx Power Control for Near/Far Range 2008/03/06
+
+	//for tx power tracking
+	uint8_t	bTXPowerTracking;
+	uint8_t	TXPowercount;
+	uint8_t	bTXPowerTrackingInit;
+	uint8_t	TxPowerTrackControl;	//for mp mode, turn off txpwrtracking as default
+	uint8_t	TM_Trigger;
+
+	uint8_t	ThermalMeter[2];				// ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
+	uint8_t	ThermalValue;
+	uint8_t	ThermalValue_LCK;
+	uint8_t	ThermalValue_IQK;
+	uint8_t	ThermalValue_DPK;
+	uint8_t	bRfPiEnable;
+	//uint8_t   RSVD_2;
+
+	//for APK
+	u32	APKoutput[2][2];	//path A/B; output1_1a/output1_2a
+	uint8_t	bAPKdone;
+	uint8_t	bAPKThermalMeterIgnore;
+	uint8_t	bDPdone;
+	uint8_t	bDPPathAOK;
+	uint8_t	bDPPathBOK;
+	//uint8_t   RSVD_3;
+	//uint8_t   RSVD_4;
+	//uint8_t   RSVD_5;
+
+	//for IQK
+	u32	ADDA_backup[IQK_ADDA_REG_NUM];
+	u32	IQK_MAC_backup[IQK_MAC_REG_NUM];
+	u32	IQK_BB_backup_recover[9];
+	u32	IQK_BB_backup[IQK_BB_REG_NUM];
+
+	uint8_t	PowerIndex_backup[6];
+	uint8_t	OFDM_index[2];
+
+	uint8_t	bCCKinCH14;
+	uint8_t	CCK_index;
+	uint8_t	bDoneTxpower;
+	uint8_t	CCK_index_HP;
+
+	uint8_t	OFDM_index_HP[2];
+	uint8_t	ThermalValue_HP[HP_THERMAL_NUM];
+	uint8_t	ThermalValue_HP_index;
+	//uint8_t   RSVD_6;
+
+	//for TxPwrTracking2
+	int32_t	RegE94;
+	int32_t  RegE9C;
+	int32_t	RegEB4;
+	int32_t	RegEBC;
+
+	u32	TXPowerTrackingCallbackCnt;	//cosa add for debug
+
+	u32	prv_traffic_idx; // edca turbo
+//###### duplicate code,will move to ODM #########
+
+	// Add for Reading Initial Data Rate SEL Register 0x484 during watchdog. Using for fill tx desc. 2011.3.21 by Thomas
+	uint8_t	INIDATA_RATE[32];
+};
+
 
 #endif

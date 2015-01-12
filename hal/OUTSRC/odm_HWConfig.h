@@ -242,10 +242,6 @@ ODM_PhyStatusQuery(
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 
 HAL_STATUS
-ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
-	IN ODM_RF_Config_Type ConfigType, IN enum radio_path eRFPath);
-
-HAL_STATUS
 ODM_ConfigBBWithHeaderFile(
 	IN  	struct rtl_dm *                pDM_Odm,
 	IN	ODM_BB_Config_Type		ConfigType

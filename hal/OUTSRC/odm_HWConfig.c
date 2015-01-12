@@ -694,51 +694,6 @@ void ODM_PhyStatusQuery(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 }
 
 
-/*
- * If you want to add a new IC, Please follow below template and generate a new one.
- */
-
-HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
-	ODM_RF_Config_Type ConfigType, enum radio_path eRFPath)
-{
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
-
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
-		("===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
-		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		pDM_Odm->SupportInterface, pDM_Odm->BoardType));
-
-#if (RTL8812A_SUPPORT == 1)
-	if (pDM_Odm->SupportICType == ODM_RTL8812) {
-		switch (ConfigType) {
-		case CONFIG_RF_RADIO:
-			rtl8812au_phy_config_rf_with_headerfile(rtlpriv, eRFPath);
-			break;
-
-		default:
-			;
-		}
-	}
-#endif
-
-#if (RTL8821A_SUPPORT == 1)
-	if (pDM_Odm->SupportICType == ODM_RTL8821) {
-		switch (ConfigType) {
-		case CONFIG_RF_RADIO:
-			if (eRFPath == RF90_PATH_A) {
-				rtl8821au_phy_config_rf_with_headerfile(rtlpriv, RF90_PATH_A);
-			}
-			break;
-		default:
-			;
-		}
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("<===8821_ODM_ConfigRFWithHeaderFile\n"));
-	}
-#endif
-	return HAL_STATUS_SUCCESS;
-}
 
 HAL_STATUS ODM_ConfigBBWithHeaderFile(struct rtl_dm *pDM_Odm, ODM_BB_Config_Type ConfigType)
 {

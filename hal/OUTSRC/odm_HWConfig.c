@@ -284,10 +284,8 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 		 * 		LNA_idx, VGA_idx, pPhyInfo->RxPWDBAll);
 		 * }
 		 */
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
-#endif
 		/*
 		 * (3) Get Signal Quality (EVM)
 		 */
@@ -343,9 +341,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 			 * 	rx_pwr[i] = ((pPhyStaRpt->gain_trsw[i]& 0x3F)*2) - 110;  //OLD FORMULA
 			 */
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 			pPhyInfo->RxPwr[i] = rx_pwr[i];
-#endif
 
 			/* Translate DBM to percentage. */
 			RSSI = odm_QueryRxPwrPercentage(rx_pwr[i]);
@@ -357,10 +353,8 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 
 			pPhyInfo->RxMIMOSignalStrength[i] = (u8) RSSI;
 
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 			/* Get Rx snr value in DB */
 			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = pPhyStaRpt->rxsnr[i]/2;
-#endif
 
 			/*
 			 *  (2) CFO_short  & CFO_tail
@@ -391,11 +385,9 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
 		/* ODM_RT_TRACE(pDM_Odm,ODM_COMP_RSSI_MONITOR, ODM_DBG_LOUD, ("ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll)); */
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL_BT;
 		pPhyInfo->RxPower = rx_pwr_all;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
-#endif
 
 		/*
 		 * DbgPrint("OFDM: pPhyInfo->RxPWDBAll = %d, pPhyInfo->RxMIMOSignalStrength[0] = %d, pPhyInfo->RxMIMOSignalStrength[1] = %d\n",
@@ -462,7 +454,6 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 	}
 	/* DbgPrint("isCCKrate= %d, pPhyInfo->SignalStrength=%d % PWDB_AL=%d rf_rx_num=%d\n", isCCKrate, pPhyInfo->SignalStrength, PWDB_ALL, rf_rx_num); */
 
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 	/*
 	 * UI BSS List signal strength(in percentage), make it good looking, from 0~100.
 	 * It is assigned to the BSS List in GetValueFromBeaconOrProbeRsp().
@@ -475,7 +466,6 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 			pPhyInfo->SignalStrength = (u8)(odm_SignalScaleMapping(pDM_Odm, total_rssi /= rf_rx_num));
 		}
 	}
-#endif
 	pDM_Odm->RxPWDBAve = pDM_Odm->RxPWDBAve + pPhyInfo->RxPWDBAll;
 
 	pDM_Odm->DM_FatTable.antsel_rx_keep_0 = pPhyStaRpt->antidx_anta;

@@ -3186,10 +3186,8 @@ static void odm_ConfigBB_TXPWR_LMT_8812A(struct rtl_dm *pDM_Odm,
 	u8 *RateSection, u8 *RfPath, u8 *Channel,
 	u8 *PowerLimit)
 {
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	PHY_SetPowerLimitTableValue(pDM_Odm, Regulation, Band,
 		Bandwidth, RateSection, RfPath, Channel, PowerLimit);
-#endif
 }
 
 
@@ -3222,10 +3220,8 @@ static void odm_ConfigBB_TXPWR_LMT_8821A(struct rtl_dm *pDM_Odm,
 	u8 *PowerLimit
     )
 {
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	PHY_SetPowerLimitTableValue(pDM_Odm, Regulation, Band,
 		Bandwidth, RateSection, RfPath, Channel, PowerLimit);
-#endif
 }
 
 

@@ -45,7 +45,6 @@ const u16 dB_Invert_Table[8][12] = {
  * RT_WLAN_BSS	tmpbssDesc[MAX_BSS_DESC];
  */
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 static uint32_t edca_setting_UL[HT_IOT_PEER_MAX] =
 /* UNKNOWN		REALTEK_90	REALTEK_92SE	BROADCOM		RALINK		ATHEROS		CISCO		MERU        MARVELL	92U_AP		SELF_AP(DownLink/Tx) */
 { 0x5e4322, 		0xa44f, 		0x5e4322,		0x5ea32b,  		0x5ea422, 	0x5ea322,	0x3ea430,	0x5ea42b, 0x5ea44f,	0x5e4322,	0x5e4322};
@@ -65,7 +64,6 @@ static uint32_t edca_setting_DL_GMode[HT_IOT_PEER_MAX] =
  * EDCA Paramter for AP/ADSL   by Mingzhi 2011-11-22
  * ============================================================
  */
-#endif
 
 /*
  * ============================================================
@@ -192,9 +190,7 @@ void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm);
 void odm_RSSIMonitorCheckCE(struct rtl_dm *pDM_Odm);
 void odm_RSSIMonitorCheck(struct rtl_dm *pDM_Odm);
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
-#endif
 
 void odm_RefreshRateAdaptiveMask(struct rtl_dm *pDM_Odm);
 void ODM_TXPowerTrackingCheck(struct rtl_dm *pDM_Odm);
@@ -205,9 +201,7 @@ void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm);
 void odm_EdcaTurboCheck(struct rtl_dm *pDM_Odm);
 void ODM_EdcaTurboInit(struct rtl_dm *pDM_Odm);
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 void odm_EdcaTurboCheckCE(struct rtl_dm *pDM_Odm);
-#endif
 
 
 
@@ -276,9 +270,7 @@ void ODM_DMWatchdog(struct rtl_dm *pDM_Odm)
 #endif
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	odm_dtc(pDM_Odm);
-#endif
 }
 
 
@@ -898,14 +890,12 @@ void odm_DIG(struct rtl_dm *pDM_Odm)
 	u8						dm_dig_max, dm_dig_min, offset;
 	u8						CurrentIGI = pDM_DigTable->CurIGValue;
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 #ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
 	if ((pDM_Odm->bLinked) && (pDM_Odm->Adapter->registrypriv.force_igi != 0)) {
 		printk("pDM_Odm->RSSI_Min=%d \n", pDM_Odm->RSSI_Min);
 		ODM_Write_DIG(pDM_Odm, pDM_Odm->Adapter->registrypriv.force_igi);
 		return;
 	}
-#endif
 #endif
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG()==>\n"));
@@ -1259,7 +1249,6 @@ void odm_1R_CCA(struct rtl_dm *pDM_Odm)
 
 
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 uint32_t ODM_Get_Rate_Bitmap(struct rtl_dm *pDM_Odm, uint32_t macid,
 	uint32_t ra_mask, u8 rssi_level)
 {
@@ -1379,7 +1368,6 @@ uint32_t ODM_Get_Rate_Bitmap(struct rtl_dm *pDM_Odm, uint32_t macid,
 	return (ra_mask&rate_bitmap);
 
 }
-#endif
 
 /*-----------------------------------------------------------------------------
  * Function:	odm_RefreshRateAdaptiveMask()
@@ -1416,7 +1404,6 @@ void odm_RefreshRateAdaptiveMask(struct rtl_dm *pDM_Odm)
 
 void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm)
 {
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	u8	i;
 	struct rtl_priv *pAdapter	=  pDM_Odm->Adapter;
 	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
@@ -1461,7 +1448,6 @@ void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm)
 		}
 	}
 
-#endif
 }
 
 /*
@@ -1551,7 +1537,6 @@ void odm_RSSIMonitorCheck(struct rtl_dm *pDM_Odm)
 	odm_RSSIMonitorCheckCE(pDM_Odm);
 }
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 /*
  * sherry move from DUSC to here 20110517
  */
@@ -1580,11 +1565,9 @@ static void FindMinimumRSSI(struct rtl_priv *pAdapter)
 	/* DBG_8192C("%s=>MinUndecoratedPWDBForDM(%d)\n",__FUNCTION__,pdmpriv->MinUndecoratedPWDBForDM); */
 	/* ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM)); */
 }
-#endif
 
 void odm_RSSIMonitorCheckCE(struct rtl_dm *pDM_Odm)
 {
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -1709,7 +1692,6 @@ void odm_RSSIMonitorCheckCE(struct rtl_dm *pDM_Odm)
 	FindMinimumRSSI(Adapter);	/* get pdmpriv->MinUndecoratedPWDBForDM */
 
 	ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
-#endif
 }
 
 /* #endif */
@@ -1744,7 +1726,6 @@ void ODM_TXPowerTrackingCheck(struct rtl_dm *pDM_Odm)
 
 void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm)
 {
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 
 #if (((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1)))
@@ -1770,7 +1751,6 @@ void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm)
 	}
 #endif
 
-#endif
 }
 
 
@@ -1810,11 +1790,9 @@ void ODM_SwAntDivRestAfterLink(IN struct rtl_dm *pDM_Odm)
 {
 }
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext)
 {
 }
-#endif
 
 #endif
 
@@ -1850,12 +1828,10 @@ void odm_EdcaTurboCheck(struct rtl_dm *pDM_Odm)
 	odm_EdcaTurboCheckCE(pDM_Odm);
 }
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 
 
 VOID odm_EdcaTurboCheckCE(struct rtl_dm *pDM_Odm)
 {
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	uint32_t	EDCA_BE_UL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_UL[pMgntInfo->IOTPeer]; */
@@ -1962,10 +1938,8 @@ dm_CheckEdcaTurbo_EXIT:
 	precvpriv->bIsAnyNonBEPkts = _FALSE;
 	pxmitpriv->last_tx_bytes = pxmitpriv->tx_bytes;
 	precvpriv->last_rx_bytes = precvpriv->rx_bytes;
-#endif
 }
 
-#endif
 
 
 /*
@@ -1983,7 +1957,6 @@ dm_CheckEdcaTurbo_EXIT:
  * 2011/12/02 MH Copy from MP oursrc for temporarily test.
  */
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 /* Justin: According to the current RRSI to adjust Response Frame TX power, 2012/11/05 */
 void odm_dtc(struct rtl_dm *pDM_Odm)
 {
@@ -2045,5 +2018,4 @@ void odm_dtc(struct rtl_dm *pDM_Odm)
 #endif
 }
 
-#endif
 

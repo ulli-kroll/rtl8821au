@@ -26,7 +26,6 @@
 #define	ODM_AP		 	0x01	//BIT0
 #define	ODM_CE		 	0x04	//BIT2
 
-#define	DM_ODM_SUPPORT_TYPE			ODM_CE
 
 // Deifne HW endian support
 #define	ODM_ENDIAN_BIG	0
@@ -45,14 +44,11 @@ typedef enum _HAL_STATUS{
 	RT_STATUS_OS_API_FAILED,*/
 }HAL_STATUS,*PHAL_STATUS;
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 typedef enum _RT_SPINLOCK_TYPE{
 	RT_TEMP =1,
 }RT_SPINLOCK_TYPE;
-#endif
 
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	#include <drv_types.h>
 
 	/* ULLI check for DEV_BUS_TYPE */
@@ -85,7 +81,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#define 	FOR_BRAZIL_PRETEST 0
 	#define	BT_30_SUPPORT			0
 	#define   FPGA_TWO_MAC_VERIFICATION	0
-#endif
 
 
 #endif // __ODM_TYPES_H__

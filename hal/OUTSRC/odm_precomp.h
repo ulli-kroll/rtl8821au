@@ -29,21 +29,11 @@
 
 //2 Config Flags and Structs - defined by each ODM Type
 
-#if (DM_ODM_SUPPORT_TYPE ==ODM_CE)
-	//#include <drv_conf.h>
-	//#include <basic_types.h>
-	//#include <osdep_service.h>
-	//#include <drv_types.h>
-	//#include <rtw_byteorder.h>
-	//#include <hal_intf.h>
-#endif
 
 
 //2 Hardware Parameter Files
 
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-#endif
 
 
 //2 OutSrc Header Files
@@ -53,7 +43,6 @@
 #include "odm_debug.h"
 #include "odm_RegDefine11AC.h"
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	//#include "hal_com.h"
 	#include "HalPhyRf.h"
 
@@ -68,7 +57,6 @@
 		#include "rtl8812a_hal.h"
 	#endif
 
-#endif
 
 #include "odm_interface.h"
 #include "odm_reg.h"

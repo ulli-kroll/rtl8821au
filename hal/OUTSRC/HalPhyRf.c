@@ -122,9 +122,7 @@ VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *Adapter)
 {
 
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_dm *pDM_Odm = &pHalData->odmpriv;
-#endif
 
 	u8	ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;
 	u8	ThermalValue_AVG_count = 0;
@@ -204,21 +202,13 @@ VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *Adapter)
 
 	if (delta > 0 && pDM_Odm->RFCalibrateInfo.TxPowerTrackControl) {
 		/* "delta" here is used to record the absolute value of differrence. */
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	    delta = ThermalValue > pHalData->EEPROMThermalMeter?(ThermalValue - pHalData->EEPROMThermalMeter):(pHalData->EEPROMThermalMeter - ThermalValue);
-#else
-	    delta = (ThermalValue > pDM_Odm->priv->pmib->dot11RFEntry.ther)?(ThermalValue - pDM_Odm->priv->pmib->dot11RFEntry.ther):(pDM_Odm->priv->pmib->dot11RFEntry.ther - ThermalValue);
-#endif
 		if (delta >= TXSCALE_TABLE_SIZE)
 			delta = TXSCALE_TABLE_SIZE - 1;
 
 		/* 4 7.1 The Final Power Index = BaseIndex + PowerIndexOffset */
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 		if (ThermalValue > pHalData->EEPROMThermalMeter) {
-#else
-		if (ThermalValue > pDM_Odm->priv->pmib->dot11RFEntry.ther) {
-#endif
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TUP_A[%d] = %d\n", delta, up_a[delta]));
 			pDM_Odm->RFCalibrateInfo.DeltaPowerIndexLast[RF90_PATH_A] = pDM_Odm->RFCalibrateInfo.DeltaPowerIndex[RF90_PATH_A];
 			pDM_Odm->RFCalibrateInfo.DeltaPowerIndex[RF90_PATH_A] = up_a[delta];

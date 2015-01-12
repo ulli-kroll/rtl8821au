@@ -135,12 +135,10 @@
 // 2011/09/20 MH Add for AP/ADSLpseudo DM structuer requirement.
 // We need to remove to other position???
 //
-#if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
 typedef		struct rtl8192cd_priv {
 	u8		temp;
 
 }rtl8192cd_priv, *prtl8192cd_priv;
-#endif
 
 typedef struct _Dynamic_Initial_Gain_Threshold_
 {
@@ -245,17 +243,9 @@ typedef struct _RX_High_Power_
 
 }RXHP_T, *pRXHP_T;
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
 #define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
 #define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
 
-#else
-//
-// 2012/01/12 MH Revise for compatiable with other SW team.
-// 0 is for STA 1-n is for AP clients.
-//
-#define ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM+1// Default port only one
-#endif
 
 //#ifdef CONFIG_ANTENNA_DIVERSITY
 // This indicates two different the steps.
@@ -340,9 +330,7 @@ typedef struct _EDCA_TURBO_
 	BOOLEAN bCurrentTurboEDCA;
 	BOOLEAN bIsCurRDLState;
 
-	#if(DM_ODM_SUPPORT_TYPE == ODM_CE	)
 	uint32_t	prv_traffic_idx; // edca turbo
-	#endif
 
 }EDCA_T,*pEDCA_T;
 
@@ -406,14 +394,12 @@ typedef struct _ODM_Phy_Status_Info_
 	u16		Cfo_short[4]; 			// per-path's Cfo_short
 	u16		Cfo_tail[4];			// per-path's Cfo_tail
 
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 	s8		RxPower;				// in dBm Translate from PWdB
 	s8		RecvSignalPower;		// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
 	u8		BTRxRSSIPercentage;
 	u8		SignalStrength; 		// in 0-100 index.
 
 	u8		RxPwr[4];				//per-path's pwdb
-#endif
 	u8		RxSNR[4];				//per-path's SNR
 	u8		BandWidth;
 	u8		btCoexPwrAdjust;
@@ -1061,9 +1047,7 @@ struct rtl_dm {
 	// WHen you use Adapter or priv pointer, you must make sure the pointer is ready.
 	BOOLEAN			odm_ready;
 
-#if(DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	rtl8192cd_priv		fake_priv;
-#endif
 
 	PHY_REG_PG_TYPE		PhyRegPgValueType;
 
@@ -1641,7 +1625,6 @@ VOID ODM_SwAntDivChkPerPktRssi(
 	IN PODM_PHY_INFO_T pPhyInfo
 	);
 
-#if((DM_ODM_SUPPORT_TYPE==ODM_CE))
 
 uint32_t
 GetPSDData(
@@ -1649,9 +1632,7 @@ GetPSDData(
 	unsigned int 	point,
 	u8 initial_gain_psd);
 
-#endif
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 
 VOID
 odm_DIGbyRSSI_LPS(
@@ -1664,7 +1645,6 @@ uint32_t ODM_Get_Rate_Bitmap(
 	IN	uint32_t 		ra_mask,
 	IN	u8 		rssi_level);
 
-#endif
 
 
 VOID ODM_DMInit( IN	struct rtl_dm *pDM_Odm);
@@ -1726,19 +1706,13 @@ ODM_AntselStatistics_88C(
 	IN		BOOLEAN			isCCKrate
 );
 
-#if( DM_ODM_SUPPORT_TYPE & (ODM_CE))
-
-
-#endif	// #if((DM_ODM_SUPPORT_TYPE==ODM_CE))
 
 VOID
 ODM_UpdateInitRate(
 	IN	struct rtl_dm *pDM_Odm,
 	IN	u8		Rate
 	);
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 void odm_dtc(struct rtl_dm *pDM_Odm);
-#endif /* #if (DM_ODM_SUPPORT_TYPE == ODM_CE) */
 
 #endif
 

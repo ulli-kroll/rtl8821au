@@ -156,9 +156,7 @@ static void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm)
 {
 	pDM_Odm->bCckHighPower = (BOOLEAN) rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
 	pDM_Odm->RFPathRxEnable = (u8) rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
-#if (DM_ODM_SUPPORT_TYPE != ODM_CE)
 	pDM_Odm->pbNet_closed = &pDM_Odm->BOOLEAN_temp;
-#endif
 
 
 	pDM_Odm->TxRate = 0xFF;
@@ -224,13 +222,11 @@ static void odm_RateAdaptiveMaskInit(struct rtl_dm *pDM_Odm)
 {
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	pOdmRA->Type = DM_Type_ByDriver;
 	if (pOdmRA->Type == DM_Type_ByDriver)
 		pDM_Odm->bUseRAMask = _TRUE;
 	else
 		pDM_Odm->bUseRAMask = _FALSE;
-#endif
 
 	pOdmRA->RATRState = DM_RATR_STA_INIT;
 	pOdmRA->LdpcThres = 35;
@@ -242,13 +238,11 @@ static void odm_RateAdaptiveMaskInit(struct rtl_dm *pDM_Odm)
 static void ODM_EdcaTurboInit(struct rtl_dm *pDM_Odm)
 {
 
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = FALSE;
 	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = FALSE;
 	Adapter->recvpriv.bIsAnyNonBEPkts = FALSE;
 
-#endif
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial VO PARAM: 0x%x\n", rtl_read_dword(pDM_Odm->Adapter, ODM_EDCA_VO_PARAM)));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial VI PARAM: 0x%x\n", rtl_read_dword(pDM_Odm->Adapter, ODM_EDCA_VI_PARAM)));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial BE PARAM: 0x%x\n", rtl_read_dword(pDM_Odm->Adapter, ODM_EDCA_BE_PARAM)));
@@ -279,7 +273,6 @@ static u8 getSwingIndex(struct rtl_dm *pDM_Odm)
 static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 {
 	u8 		p = 0;
-#if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
@@ -310,7 +303,6 @@ static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 		MSG_8192C("pdmpriv->TxPowerTrackControl = %d\n", pdmpriv->TxPowerTrackControl);
 
 	}
-#endif
 #endif
 
 	pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = TRUE;

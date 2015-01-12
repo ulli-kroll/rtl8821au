@@ -239,7 +239,6 @@ ODM_PhyStatusQuery(
 	IN		PODM_PACKET_INFO_T			pPktinfo
 	);
 
-#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 
 HAL_STATUS
 ODM_ConfigBBWithHeaderFile(
@@ -247,7 +246,6 @@ ODM_ConfigBBWithHeaderFile(
 	IN	ODM_BB_Config_Type		ConfigType
     );
 
-#endif
 
 
 #endif

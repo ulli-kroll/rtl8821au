@@ -13,6 +13,11 @@ enum radio_path {
 struct rtl_hal_ops;
 
 struct rtl_priv {
+	struct net_device *ndev;
+	struct rtw_hal *HalData;
+	
+	
+	
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
 	int	bDongle;//build-in module or external dongle
@@ -41,7 +46,6 @@ struct rtl_priv {
 #endif
 
 	u32	setband;
-	struct rtw_hal *HalData;
 	struct rtl_hal_ops	*HalFunc;
 
 	int32_t	bDriverStopped;
@@ -72,8 +76,6 @@ struct rtl_priv {
 
 
 #ifdef PLATFORM_LINUX
-	struct net_device *ndev;
-
 	int bup;
 	struct net_device_stats stats;
 	struct iw_statistics iwstats;

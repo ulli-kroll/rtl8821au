@@ -1124,7 +1124,6 @@ struct rtl_dm {
 
 	u8			u8_temp;
 	BOOLEAN			BOOLEAN_temp;
-	struct rtl_priv *	ADAPTER_temp;
 
 	// MAC PHY Mode SMSP/DMSP/DMDP = 0/1/2
 	u8			*pMacPhyMode;

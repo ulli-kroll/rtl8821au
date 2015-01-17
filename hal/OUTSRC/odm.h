@@ -1047,8 +1047,6 @@ struct rtl_dm {
 	// WHen you use Adapter or priv pointer, you must make sure the pointer is ready.
 	BOOLEAN			odm_ready;
 
-	rtl8192cd_priv		fake_priv;
-
 	PHY_REG_PG_TYPE		PhyRegPgValueType;
 
 	uint64_t			DebugComponents;

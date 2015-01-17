@@ -320,7 +320,7 @@ void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *Adapter,
  * If you want to add a new IC, Please follow below template and generate a new one.
  */
 
-HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
+void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	ODM_RF_Config_Type ConfigType, enum radio_path eRFPath)
 {
 	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -355,7 +355,6 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		}
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("<===8821_ODM_ConfigRFWithHeaderFile\n"));
 	}
-	return HAL_STATUS_SUCCESS;
 }
 
 
@@ -374,19 +373,13 @@ static int _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 	/* for(eRFPath = RF90_PATH_A; eRFPath <pHalData->NumTotalRFPath; eRFPath++) */
 	for (eRFPath = 0; eRFPath < pHalData->NumTotalRFPath; eRFPath++) {
 		/* ----Initialize RF fom connfiguration file---- */
-		if (HAL_STATUS_FAILURE == ODM_ConfigRFWithHeaderFile(rtlpriv, CONFIG_RF_RADIO, (enum radio_path)eRFPath))
-		
-		if (rtStatus != _SUCCESS) {
-			DBG_871X("%s():Radio[%d] Fail!!", __FUNCTION__, eRFPath);
-			goto phy_RF6052_Config_ParaFile_Fail;
-		}
+		ODM_ConfigRFWithHeaderFile(rtlpriv, CONFIG_RF_RADIO, (enum radio_path)eRFPath);
 
 	}
 
 
 	/* RT_TRACE(COMP_INIT, DBG_LOUD, ("<---phy_RF6052_Config_ParaFile_8812()\n")); */
 
-phy_RF6052_Config_ParaFile_Fail:
 	return rtStatus;
 }
 

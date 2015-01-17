@@ -135,10 +135,6 @@
 // 2011/09/20 MH Add for AP/ADSLpseudo DM structuer requirement.
 // We need to remove to other position???
 //
-typedef		struct rtl8192cd_priv {
-	u8		temp;
-
-}rtl8192cd_priv, *prtl8192cd_priv;
 
 typedef struct _Dynamic_Initial_Gain_Threshold_
 {

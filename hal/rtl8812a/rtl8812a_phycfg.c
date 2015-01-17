@@ -276,26 +276,14 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *Adapter)
 	}
 
 	/* Read PHY_REG.TXT BB INIT!! */
-	if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG))
-		rtStatus = _FAIL;
-
-	if(rtStatus != _SUCCESS){
-		DBG_871X("phy_BB8812_Config_ParaFile():Write BB Reg Fail!!");
-		goto phy_BB_Config_ParaFile_Fail;
-	}
+	ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG);
 
 	/* If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
 	/* 1 TODO */
 	if (pEEPROM->bautoload_fail_flag == _FALSE) {
 		pHalData->pwrGroupCnt = 0;
 
-		if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG_PG))
-			rtStatus = _FAIL;
-
-		if(rtStatus != _SUCCESS){
-			DBG_871X("phy_BB8812_Config_ParaFile():BB_PG Reg Fail!!");
-			goto phy_BB_Config_ParaFile_Fail;
-		}
+		ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG_PG);
 
 		if ((Adapter->registrypriv.RegEnableTxPowerLimit == 1 && pHalData->EEPROMRegulatory != 2) ||
 		 	 pHalData->EEPROMRegulatory == 1 )
@@ -304,15 +292,7 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *Adapter)
 
 
 	/* BB AGC table Initialization */
-	if (HAL_STATUS_SUCCESS != ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_AGC_TAB))
-		rtStatus = _FAIL;
-
-	if(rtStatus != _SUCCESS){
-		DBG_871X("phy_BB8812_Config_ParaFile():AGC Table Fail\n");
-		goto phy_BB_Config_ParaFile_Fail;
-	}
-
-phy_BB_Config_ParaFile_Fail:
+	ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_AGC_TAB);
 
 	return rtStatus;
 }

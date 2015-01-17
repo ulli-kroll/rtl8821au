@@ -240,11 +240,7 @@ ODM_PhyStatusQuery(
 	);
 
 
-HAL_STATUS
-ODM_ConfigBBWithHeaderFile(
-	IN  	struct rtl_dm *                pDM_Odm,
-	IN	ODM_BB_Config_Type		ConfigType
-    );
+void ODM_ConfigBBWithHeaderFile(struct rtl_dm *pDM_Odm, ODM_BB_Config_Type ConfigType);
 
 
 

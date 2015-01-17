@@ -31,8 +31,6 @@
 #define	ODM_ENDIAN_BIG	0
 #define	ODM_ENDIAN_LITTLE	1
 
-#define 	RT_USB_INTERFACE				2
-
 typedef enum _HAL_STATUS{
 	HAL_STATUS_SUCCESS,
 	HAL_STATUS_FAILURE,
@@ -45,10 +43,6 @@ typedef enum _HAL_STATUS{
 }HAL_STATUS,*PHAL_STATUS;
 
 	#include <drv_types.h>
-
-	/* ULLI check for DEV_BUS_TYPE */
-		#define DEV_BUS_TYPE  	RT_USB_INTERFACE
-
 
 	#if defined(CONFIG_LITTLE_ENDIAN)
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_LITTLE

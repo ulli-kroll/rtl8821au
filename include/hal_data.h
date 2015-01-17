@@ -20,8 +20,6 @@
 #ifndef __HAL_DATA_H__
 #define __HAL_DATA_H__
 
-#if 1//def  CONFIG_SINGLE_IMG
-
 #include "../hal/OUTSRC/odm_precomp.h"
 
 //
@@ -386,7 +384,6 @@ struct rtw_hal {
 #define GET_HAL_DATA(__pAdapter)	(( struct rtw_hal *)((__pAdapter)->HalData))
 #define GET_HAL_RFPATH_NUM(__pAdapter) ((( struct rtw_hal *)((__pAdapter)->HalData))->NumTotalRFPath )
 #define RT_GetInterfaceSelection(_Adapter) 	(GET_HAL_DATA(_Adapter)->InterfaceSel)
-#endif
 
 
 #endif //__HAL_DATA_H__

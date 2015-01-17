@@ -61,11 +61,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_BIG
 	#endif
 
-	#define	STA_INFO_T			struct sta_info
-
-
-
-
 	#define TRUE 	_TRUE
 	#define FALSE	_FALSE
 

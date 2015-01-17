@@ -18,7 +18,6 @@
 *
 ******************************************************************************/
 
-#if (RTL8821A_SUPPORT == 1)
 #ifndef __INC_MP_FW_HW_IMG_8821A_H
 #define __INC_MP_FW_HW_IMG_8821A_H
 
@@ -58,5 +57,4 @@ ODM_ReadFirmware_MP_8821A_FW_WoWLAN(
 );
 
 #endif
-#endif // end of HWIMG_SUPPORT
 

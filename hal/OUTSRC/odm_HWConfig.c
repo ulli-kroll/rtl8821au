@@ -523,7 +523,6 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	*/
 #if (defined(CONFIG_HW_ANTENNA_DIVERSITY))
 	/* -----------------Smart Antenna Debug Message------------------ */
-#if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
 		pFAT_T	pDM_FatTable = &pDM_Odm->DM_FatTable;
 
@@ -532,10 +531,8 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 				ODM_AntselStatistics_8821A(pDM_Odm, pDM_FatTable->antsel_rx_keep_0, pPktinfo->StationID, pPhyInfo->RxPWDBAll);
 		}
 	}
-#endif
 
 #endif
-#if (RTL8812A_SUPPORT == 1)
 /*
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
 	{
@@ -548,7 +545,6 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 		}
 	}
 */
-#endif
 	/* -----------------Smart Antenna Debug Message------------------ */
 
 	UndecoratedSmoothedCCK =  pEntry->rssi_stat.UndecoratedSmoothedCCK;
@@ -687,7 +683,6 @@ HAL_STATUS ODM_ConfigBBWithHeaderFile(struct rtl_dm *pDM_Odm, ODM_BB_Config_Type
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
-#if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {
 		case CONFIG_BB_PHY_REG:
@@ -711,9 +706,7 @@ HAL_STATUS ODM_ConfigBBWithHeaderFile(struct rtl_dm *pDM_Odm, ODM_BB_Config_Type
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() phy:Rtl8812AGCTABArray\n"));
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() agc:Rtl8812PHY_REGArray\n"));
 	}
-#endif
 
-#if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
 		switch (ConfigType) {
 		case CONFIG_BB_PHY_REG:
@@ -734,7 +727,6 @@ HAL_STATUS ODM_ConfigBBWithHeaderFile(struct rtl_dm *pDM_Odm, ODM_BB_Config_Type
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() phy:Rtl8821AGCTABArray\n"));
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() agc:Rtl8821PHY_REGArray\n"));
 	}
-#endif
 	return HAL_STATUS_SUCCESS;
 }
 

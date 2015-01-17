@@ -20,7 +20,6 @@
 #ifndef __INC_ODM_REGCONFIG_H_8812A
 #define __INC_ODM_REGCONFIG_H_8812A
 
-#if (RTL8812A_SUPPORT == 1)
 
 void
 odm_ConfigBB_AGC_8812A(
@@ -47,5 +46,4 @@ odm_ConfigBB_PHY_8812A(
     );
 
 #endif
-#endif // end of SUPPORT
 

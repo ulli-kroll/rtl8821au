@@ -20,7 +20,6 @@
 
 #include "../odm_precomp.h"
 
-#if (RTL8821A_SUPPORT == 1)
 
 void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data, enum radio_path path, uint32_t RegAddr)
@@ -104,5 +103,4 @@ void odm_ConfigBB_PHY_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data));
 }
 
-#endif
 

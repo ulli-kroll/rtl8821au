@@ -133,21 +133,6 @@
  * Outsource  Related Config
  */
 
-#define RTL8812E_SUPPORT				0
-#ifdef CONFIG_RTL8812A
-#define RTL8812AU_SUPPORT				1
-#else
-#define RTL8812AU_SUPPORT				0
-#endif
-#define RTL8812A_SUPPORT				(RTL8812E_SUPPORT|RTL8812AU_SUPPORT)
-
-
-#ifdef CONFIG_RTL8821A
-#define RTL8821A_SUPPORT				1
-#else
-#define RTL8821A_SUPPORT				0
-#endif
-
 #define RATE_ADAPTIVE_SUPPORT 		0
 #define POWER_TRAINING_ACTIVE			0
 

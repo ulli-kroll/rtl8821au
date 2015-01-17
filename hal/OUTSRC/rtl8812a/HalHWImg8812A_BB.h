@@ -18,7 +18,6 @@
 *
 ******************************************************************************/
 
-#if (RTL8812A_SUPPORT == 1)
 #ifndef __INC_MP_BB_HW_IMG_8812A_H
 #define __INC_MP_BB_HW_IMG_8812A_H
 
@@ -63,5 +62,4 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS( // TC: Test Chip, MP: MP Chip
 
 
 #endif
-#endif // end of HWIMG_SUPPORT
 

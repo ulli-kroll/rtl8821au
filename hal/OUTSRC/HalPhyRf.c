@@ -66,15 +66,10 @@ static void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 
 void ConfigureTxpowerTrack(struct rtl_dm *pDM_Odm, PTXPWRTRACK_CFG pConfig)
 {
-#if RTL8821A_SUPPORT
 	if (pDM_Odm->SupportICType == ODM_RTL8821)
 		ConfigureTxpowerTrack_8821A(pConfig);
-#endif
-#if RTL8812A_SUPPORT
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
 		ConfigureTxpowerTrack_8812A(pConfig);
-#endif
-
 }
 
 /*

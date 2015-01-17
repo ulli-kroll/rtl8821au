@@ -332,7 +332,6 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		pDM_Odm->SupportInterface, pDM_Odm->BoardType));
 
-#if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
@@ -343,9 +342,7 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 			;
 		}
 	}
-#endif
 
-#if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821) {
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
@@ -358,7 +355,6 @@ HAL_STATUS ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		}
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("<===8821_ODM_ConfigRFWithHeaderFile\n"));
 	}
-#endif
 	return HAL_STATUS_SUCCESS;
 }
 

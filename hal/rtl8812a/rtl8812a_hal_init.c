@@ -412,15 +412,10 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 
 	RT_TRACE(_module_hal_init_c_, _drv_info_, ("+%s\n", __FUNCTION__));
 
-#if (RTL8812A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
 		ODM_ReadFirmware_MP_8812A_FW_NIC(&pFirmwareBuf, &FirmwareLen);
-#endif
-#if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType == ODM_RTL8821)
 			ODM_ReadFirmware_MP_8821A_FW_NIC(&pFirmwareBuf, &FirmwareLen);
-
-#endif
 
 	DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", FirmwareLen);
 

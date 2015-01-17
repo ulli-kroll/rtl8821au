@@ -257,9 +257,8 @@ static u8 getSwingIndex(struct rtl_dm *pDM_Odm)
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	u8 			i = 0;
 	uint32_t 			bbSwing;
-#if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
+
 	bbSwing = PHY_GetTxBBSwing_8812A(Adapter, pHalData->CurrentBandType, RF90_PATH_A);
-#endif
 
 	for (i = 0; i < TXSCALE_TABLE_SIZE; ++i)
 		if (bbSwing == TxScalingTable_Jaguar[i])
@@ -276,7 +275,6 @@ static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
-#if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
 	pDM_Odm->RFCalibrateInfo.bTXPowerTracking = _TRUE;
 	pDM_Odm->RFCalibrateInfo.TXPowercount = 0;
 	pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = _FALSE;
@@ -285,25 +283,6 @@ static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 		pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = _TRUE;
 	/* #endif//#if	(MP_DRIVER != 1) */
 	MSG_8192C("pDM_Odm TxPowerTrackControl = %d\n", pDM_Odm->RFCalibrateInfo.TxPowerTrackControl);
-#else
-	{
-		struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-
-		/* if (IS_HARDWARE_TYPE_8192C(pHalData)) */
-		{
-			pdmpriv->bTXPowerTracking = _TRUE;
-			pdmpriv->TXPowercount = 0;
-			pdmpriv->bTXPowerTrackingInit = _FALSE;
-			/* #if	(MP_DRIVER != 1) */	/* for mp driver, turn off txpwrtracking as default */
-
-			if (*(pDM_Odm->mp_mode) != 1)
-				pdmpriv->TxPowerTrackControl = _TRUE;
-			/* #endif//#if	(MP_DRIVER != 1) */
-		}
-		MSG_8192C("pdmpriv->TxPowerTrackControl = %d\n", pdmpriv->TxPowerTrackControl);
-
-	}
-#endif
 
 	pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = TRUE;
 	pDM_Odm->RFCalibrateInfo.ThermalValue = pHalData->EEPROMThermalMeter;

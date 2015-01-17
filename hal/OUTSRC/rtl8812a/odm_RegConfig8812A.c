@@ -20,7 +20,6 @@
 
 #include "../odm_precomp.h"
 
-#if (RTL8812A_SUPPORT == 1)
 
 
 
@@ -69,5 +68,4 @@ void odm_ConfigBB_PHY_8812A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data));
 }
 
-#endif
 

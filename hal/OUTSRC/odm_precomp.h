@@ -46,33 +46,24 @@
 	//#include "hal_com.h"
 	#include "HalPhyRf.h"
 
-	#if (RTL8812A_SUPPORT==1)
 		#include "rtl8812a/HalPhyRf_8812A.h"//for IQK,LCK,Power-tracking
 		#include "rtl8812a_hal.h"
-	#endif
-
-	#if (RTL8821A_SUPPORT==1)
 		#include "rtl8821a/HalPhyRf_8821A.h"//for IQK,LCK,Power-tracking
 		#include "rtl8812a/HalPhyRf_8812A.h"//for IQK,LCK,Power-tracking
 		#include "rtl8812a_hal.h"
-	#endif
 
 
 #include "odm_interface.h"
 #include "odm_reg.h"
 
-#if (RTL8812A_SUPPORT==1)
 #include "rtl8812a/HalHWImg8812A_BB.h"
 #include "rtl8812a/HalHWImg8812A_FW.h"
 #include "rtl8812a/odm_RegConfig8812A.h"
-#endif
 
 
-#if (RTL8821A_SUPPORT==1)
 #include "rtl8821a/HalHWImg8821A_BB.h"
 #include "rtl8821a/HalHWImg8821A_FW.h"
 #include "rtl8821a/odm_RegConfig8821A.h"
-#endif
 
 #endif	// __ODM_PRECOMP_H__
 

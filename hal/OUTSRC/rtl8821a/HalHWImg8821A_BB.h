@@ -18,7 +18,6 @@
 *
 ******************************************************************************/
 
-#if (RTL8821A_SUPPORT == 1)
 #ifndef __INC_MP_BB_HW_IMG_8821A_H
 #define __INC_MP_BB_HW_IMG_8821A_H
 
@@ -52,5 +51,4 @@ ODM_ReadAndConfig_MP_8821A_PHY_REG_PG( // TC: Test Chip, MP: MP Chip
 );
 
 #endif
-#endif // end of HWIMG_SUPPORT
 

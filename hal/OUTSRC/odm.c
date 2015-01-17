@@ -245,7 +245,6 @@ void ODM_DMWatchdog(struct rtl_dm *pDM_Odm)
 		/* if (pDM_Odm->SupportICType & ODM_RTL8812) */
 		ODM_TXPowerTrackingCheck(pDM_Odm);
 	}
-#if (RTL8821A_SUPPORT == 1)
 	if (pDM_Odm->SupportICType & ODM_RTL8821) {
 		if (pDM_Odm->bLinked) {
 			if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess)) {
@@ -267,7 +266,6 @@ void ODM_DMWatchdog(struct rtl_dm *pDM_Odm)
 		} else
 			pDM_Odm->LinkedInterval = 0;
 	}
-#endif
 	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 
 	odm_dtc(pDM_Odm);
@@ -1423,7 +1421,6 @@ void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm)
 	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
 		PSTA_INFO_T pstat = pDM_Odm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pstat)) {
-#if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
 			if ((pDM_Odm->SupportICType == ODM_RTL8812)
 			 || (pDM_Odm->SupportICType == ODM_RTL8821)) {
 				if (pstat->rssi_stat.UndecoratedSmoothedPWDB < pRA->LdpcThres) {
@@ -1438,7 +1435,6 @@ void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm)
 					/* DbgPrint("RSSI=%d, bUseLdpc = FALSE\n", pHalData->UndecoratedSmoothedPWDB); */
 				}
 			}
-#endif
 
 			if (TRUE == ODM_RAStateCheck(pDM_Odm, pstat->rssi_stat.UndecoratedSmoothedPWDB, FALSE , &pstat->rssi_level)) {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level));
@@ -1580,7 +1576,6 @@ void odm_RSSIMonitorCheckCE(struct rtl_dm *pDM_Odm)
 	if (pDM_Odm->bLinked != _TRUE)
 		return;
 
-#if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
 	if ((pDM_Odm->SupportICType == ODM_RTL8812) || (pDM_Odm->SupportICType == ODM_RTL8821)) {
 		u64	curTxOkCnt = Adapter->xmitpriv.tx_bytes - Adapter->xmitpriv.last_tx_bytes;
 		u64	curRxOkCnt = Adapter->recvpriv.rx_bytes - Adapter->recvpriv.last_rx_bytes;
@@ -1590,7 +1585,6 @@ void odm_RSSIMonitorCheckCE(struct rtl_dm *pDM_Odm)
 		else
 			UL_DL_STATE = 0;
 	}
-#endif
 
 
 	/* if (check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE) */
@@ -1663,12 +1657,10 @@ void odm_RSSIMonitorCheckCE(struct rtl_dm *pDM_Odm)
 		for (i = 0; i < sta_cnt; i++) {
 			if (PWDB_rssi[i] != (0)) {
 				if (pHalData->fw_ractrl == _TRUE) {	/* Report every sta's RSSI to FW */
-#if ((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1))
 					if ((pDM_Odm->SupportICType == ODM_RTL8812) || (pDM_Odm->SupportICType == ODM_RTL8821)) {
 						PWDB_rssi[i] |= (UL_DL_STATE << 24);
 						rtl8812_set_rssi_cmd(Adapter, (u8 *)(&PWDB_rssi[i]));
 					}
-#endif
 				} else {
 				}
 			}
@@ -1728,7 +1720,6 @@ void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 
-#if (((RTL8812A_SUPPORT == 1) || (RTL8821A_SUPPORT == 1)))
 	if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK)) {
 		return;
 	}
@@ -1749,7 +1740,6 @@ void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm)
 		ODM_TXPowerTrackingCallback_ThermalMeter(Adapter);
 		pDM_Odm->RFCalibrateInfo.TM_Trigger = 0;
 	}
-#endif
 
 }
 

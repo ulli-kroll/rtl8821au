@@ -20,7 +20,6 @@
 
 #include "../odm_precomp.h"
 
-#if (RTL8812A_SUPPORT == 1)
 static BOOLEAN
 CheckCondition(
     const uint32_t  Condition,
@@ -1048,5 +1047,4 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(
 
 }
 
-#endif // end of HWIMG_SUPPORT
 

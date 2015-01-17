@@ -2925,15 +2925,11 @@ static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 
 	if ((pHalData->bNeedIQK == _TRUE)) {
 		if(IS_HARDWARE_TYPE_8812(Adapter)) {
-#if (RTL8812A_SUPPORT == 1)
 			rtl8812au_phy_iq_calibrate(Adapter, _FALSE);
-#endif
 		}
 		else if(IS_HARDWARE_TYPE_8821(Adapter))
 		{
-#if (RTL8821A_SUPPORT == 1)
 			rtl8821au_phy_iq_calibrate(Adapter, _FALSE);
-#endif
 		}
 		pHalData->bNeedIQK = _FALSE;
 	}

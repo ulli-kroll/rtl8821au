@@ -1345,7 +1345,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 		/* 2010/08/26 MH Merge from 8192CE. */
 		if (pwrctrlpriv->rf_pwrstate == rf_on) {
 			if (IS_HARDWARE_TYPE_8812AU(Adapter)) {
-#if (RTL8812A_SUPPORT == 1)
 				pHalData->odmpriv.RFCalibrateInfo.bNeedIQK = _TRUE;
 				if (pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized)
 					rtl8812au_phy_iq_calibrate(Adapter, _TRUE);
@@ -1353,7 +1352,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 					rtl8812au_phy_iq_calibrate(Adapter, _FALSE);
 					pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized = _TRUE;
 				}
-#endif
 			}
 
 

@@ -32,7 +32,7 @@
 
 void rtl8812_Add_RateATid(struct rtl_priv *pAdapter, uint32_t bitmap, uint8_t * arg, uint8_t rssi_level)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t	macid;
 
 	macid = arg[0];
@@ -95,7 +95,7 @@ CheckFwRsvdPageContent(
 	IN	struct rtl_priv *	Adapter
 )
 {
-	 struct rtw_hal*	pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal*	pHalData = GET_HAL_DATA(Adapter);
 	uint32_t	MaxBcnPageNum;
 
  	if(pHalData->FwRsvdPageStartOffset != 0)

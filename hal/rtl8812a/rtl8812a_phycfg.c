@@ -52,7 +52,7 @@ static u32 phy_RFSerialRead(struct rtl_priv *Adapter, uint8_t eRFPath,
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	
 	uint32_t			retValue = 0;
-	 struct rtw_hal			*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal			*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 	BOOLEAN				bIsPIMode = _FALSE;
 
@@ -108,7 +108,7 @@ static void phy_RFSerialWrite(struct rtl_priv *Adapter, uint8_t eRFPath,
 	uint32_t Offset, uint32_t Data)
 {
 	uint32_t		DataAndAddr = 0;
-	struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 
 	/*
@@ -192,7 +192,7 @@ void PHY_SetRFReg8812(struct rtl_priv *Adapter, u32 eRFPath, u32 RegAddr,
 
 void PHY_MACConfig8812(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	s8				*pszMACRegFile;
 	s8				sz8812MACRegFile[] = RTL8812_PHY_MACREG;
 
@@ -211,7 +211,7 @@ void PHY_MACConfig8812(struct rtl_priv *Adapter)
 
 static void phy_InitBBRFRegisterDefinition(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
 	/* RF Interface Sowrtware Control */
 	pHalData->PHYRegDef[RF90_PATH_A].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 LSBs if read 32-bit from 0x870 */
@@ -263,7 +263,7 @@ void PHY_BB8812_Config_1T(struct rtl_priv *Adapter)
 static int phy_BB8812_Config_ParaFile(struct rtl_priv *Adapter)
 {
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
-	struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	int			rtStatus = _SUCCESS;
 
 	/* DBG_871X("==>phy_BB8812_Config_ParaFile\n"); */
@@ -303,7 +303,7 @@ int PHY_BBConfig8812(struct rtl_priv *Adapter)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	int	rtStatus = _SUCCESS;
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	TmpU1B=0;
 	uint8_t	CrystalCap;
 
@@ -354,7 +354,7 @@ int PHY_BBConfig8812(struct rtl_priv *Adapter)
 
 int PHY_RFConfig8812(struct rtl_priv *Adapter)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	int		rtStatus = _SUCCESS;
 
 	if (Adapter->bSurpriseRemoved)
@@ -494,7 +494,7 @@ static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_TYPE Band, uint8_t 
 static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t		i, j, k, l, m;
 
 	/* DBG_871X( "=====> PHY_InitPowerLimitTable()!\n" ); */
@@ -521,7 +521,7 @@ static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
 static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t 	BW40PwrBasedBm2_4G, BW40PwrBasedBm5G;
 	uint8_t 	regulation, bw, channel, rateSection, group;
 	uint8_t 	baseIndex2_4G;
@@ -821,7 +821,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 static void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *Adapter,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			rf_path, rate_section;
 
 	/*
@@ -917,7 +917,7 @@ static void phy_ChangePGDataFromExactToRelativeValue(u32* pData, uint8_t Start,
 static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *Adapter,
 	uint32_t RegAddr, uint32_t BitMask, u32 *pData)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t		rf_path, rate_section, BaseValue = 0;
 	/*
 	 * For VHT series TX power by rate table.
@@ -1058,7 +1058,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *Adapte
 	uint32_t RegAddr, uint32_t BitMask, uint32_t *pData)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	u8			BaseValue = 0;
 
 	if (RegAddr == rTxAGC_A_Rate54_24) {
@@ -1246,7 +1246,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *Adapte
 static void phy_StorePwrByRateIndexBase(struct rtl_priv *Adapter, uint32_t RegAddr,
 	uint32_t Data)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t		Base = 0;
 
 
@@ -1600,7 +1600,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint32_t	tmpData = Data;
 
 	/*
@@ -1764,7 +1764,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 	u8 path, u8 rate)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	BOOLEAN		Direction = FALSE;
 	uint32_t	TxagcOffset = 0;
 
@@ -2147,7 +2147,7 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter,
 	uint8_t	ArraySize)
 {
 	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
-	struct rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t i;
 	for (i = 0; i < ArraySize; i++) {
 		power_index[i] = (uint8_t)PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rate[i], BandWidth, Channel);
@@ -2160,7 +2160,7 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter,
 static void _rtl8821au_phy_txpower_training_by_path(struct rtl_priv *Adapter, 
 	enum CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t RfPath)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	uint8_t	i;
 	uint32_t	PowerLevel, writeData, writeOffset;
@@ -2196,7 +2196,7 @@ static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *Adapter,
 	uint8_t	channel, uint8_t path)
 {
 
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct registry_priv	*pregistrypriv = &Adapter->registrypriv;
 	uint8_t	cckRates[]   = {MGN_1M, MGN_2M, MGN_5_5M, MGN_11M};
 	uint8_t	ofdmRates[]  = {MGN_6M, MGN_9M, MGN_12M, MGN_18M, MGN_24M, MGN_36M, MGN_48M, MGN_54M};
@@ -2244,7 +2244,7 @@ static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *Adapter,
 void PHY_SetTxPowerLevel8812(struct rtl_priv *Adapter, uint8_t	Channel)
 {
 
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	path = 0;
 
 	/* DBG_871X("==>PHY_SetTxPowerLevel8812()\n"); */
@@ -2261,7 +2261,7 @@ void PHY_SetTxPowerLevel8812(struct rtl_priv *Adapter, uint8_t	Channel)
 uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,
 	uint8_t	RFPath)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
@@ -2414,7 +2414,7 @@ uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,
 static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 {
 	u8			u1tmp = 0;
-	struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 
 	if(Band == BAND_ON_2_4G) {
 		switch(pHalData->RFEType){
@@ -2539,7 +2539,7 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t				currentBand = pHalData->CurrentBandType;
 
 	/* DBG_871X("==>rtl8821au_phy_switch_wirelessband() %s\n", ((Band==0)?"2.4G":"5G")); */
@@ -2711,7 +2711,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 	/* <20120903, Kordan> Tx BB swing setting for RL6286, asked by Ynlin. */
 	if (IS_NORMAL_CHIP(pHalData->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		s8	BBDiffBetweenBand = 0;
-		 struct rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
+		 struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
 		struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 		PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
@@ -2769,7 +2769,7 @@ static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
 /* <20130207, Kordan> The variales initialized here are used in odm_LNAPowerControl(). */
 static void phy_InitRssiTRSW(struct rtl_priv *pAdapter)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 	uint8_t 			channel = pHalData->CurrentChannel;
 
@@ -2805,7 +2805,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
 	
 	uint8_t	eRFPath = 0;
-	struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t	channelToSW = pHalData->CurrentChannel;
 
 	if (pAdapter->registrypriv.mp_mode == 0) {
@@ -2883,7 +2883,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
 	/* DBG_871X("phy_SwChnlAndSetBwMode8812(): bSwChnl %d, bSetChnlBW %d \n", pHalData->bSwChnl, pHalData->bSetChnlBW); */
 
@@ -2927,7 +2927,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 )
 {
 	struct rtl_priv * 			pDefAdapter =  GetDefaultAdapter(Adapter);
-	struct rtw_hal *	pHalData = GET_HAL_DATA(pDefAdapter);
+	struct _rtw_hal *	pHalData = GET_HAL_DATA(pDefAdapter);
 	uint8_t					tmpChannel = pHalData->CurrentChannel;
 	enum CHANNEL_WIDTH		tmpBW= pHalData->CurrentChannelBW;
 	uint8_t					tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
@@ -3018,7 +3018,7 @@ void PHY_SetBWMode8812(struct rtl_priv *Adapter,
 	enum CHANNEL_WIDTH	Bandwidth,	/* 20M or 40M */
 	uint8_t	Offset)		/* Upper, Lower, or Don't care */
 {
-	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
 
 	/* DBG_871X("%s()===>\n",__FUNCTION__); */
 

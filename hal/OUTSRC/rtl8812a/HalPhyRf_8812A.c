@@ -127,7 +127,7 @@ void PHY_LCCalibrate_8812A(struct rtl_dm *pDM_Odm)
 	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
 
 	struct rtl_priv *		pAdapter = pDM_Odm->Adapter;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_LCCalibrate_8812A\n"));
 

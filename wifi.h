@@ -27,7 +27,7 @@ struct rtl_priv {
 	
 	
 	
-	struct rtw_hal *HalData;
+	struct _rtw_hal *HalData;
 	
 	
 	
@@ -1195,7 +1195,7 @@ struct rtl_dm {
 
 };
 
-struct rtw_hal {
+struct _rtw_hal {
 	HAL_VERSION			VersionID;
 	RT_MULTI_FUNC		MultiFunc; // For multi-function consideration.
 	RT_POLARITY_CTL		PolarityCtl; // For Wifi PDn Polarity control.
@@ -1464,11 +1464,11 @@ struct rtw_hal {
 
 };
 
-static inline struct rtw_hal *GET_HAL_DATA(struct rtl_priv *priv)
+static inline struct _rtw_hal *GET_HAL_DATA(struct rtl_priv *priv)
 {
 	return priv->HalData;
 }
-#define GET_HAL_RFPATH_NUM(__pAdapter) ((( struct rtw_hal *)((__pAdapter)->HalData))->NumTotalRFPath )
+#define GET_HAL_RFPATH_NUM(__pAdapter) ((( struct _rtw_hal *)((__pAdapter)->HalData))->NumTotalRFPath )
 #define RT_GetInterfaceSelection(_Adapter) 	(GET_HAL_DATA(_Adapter)->InterfaceSel)
 
 

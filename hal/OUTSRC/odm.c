@@ -1541,7 +1541,7 @@ FindMinimumRSSI_Dmsp(
 
 static void FindMinimumRSSI(struct rtl_priv *pAdapter)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
 
@@ -1561,7 +1561,7 @@ static void FindMinimumRSSI(struct rtl_priv *pAdapter)
 void odm_RSSIMonitorCheckCE(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
 	int	tmpEntryMaxPWDB = 0, tmpEntryMinPWDB = 0xff;
@@ -1831,7 +1831,7 @@ VOID odm_EdcaTurboCheckCE(struct rtl_dm *pDM_Odm)
 	u64		cur_tx_bytes = 0;
 	u64		cur_rx_bytes = 0;
 	u8		bbtchange = _FALSE;
-	 struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	struct xmit_priv		*pxmitpriv = &(Adapter->xmitpriv);
 	struct recv_priv		*precvpriv = &(Adapter->recvpriv);
 	struct registry_priv	*pregpriv = &Adapter->registrypriv;

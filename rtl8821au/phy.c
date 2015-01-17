@@ -155,7 +155,7 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 
 static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	uint32_t 	TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
@@ -1334,7 +1334,7 @@ static void _rtl8812au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 	uint32_t *MACBB_backup, uint32_t *Backup_MACBB_REG, uint32_t MACBB_NUM)
 {
 	uint32_t i;
-	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
 	/* Reload MacBB Parameters */
@@ -1406,7 +1406,7 @@ static void _rtl8812au_iqk_restore_afe(struct rtl_priv *rtlpriv, uint32_t *AFE_b
 	uint32_t *Backup_AFE_REG, uint32_t AFE_NUM)
 {
 	uint32_t i;
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 	
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -1489,7 +1489,7 @@ static void _rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 						 0xe5c, 0xe60, 0xe64, 0xe68, 0xeb8, 0xeb0, 0xeb4 };
 	uint32_t Backup_RF_REG[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
 
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	_rtl8812au_iqk_backup_macbb(rtlpriv, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
@@ -1540,7 +1540,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	BOOLEAN VDF_enable = FALSE;
 	int 	i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0;
 
-	 struct rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d\n", *pDM_Odm->pBandWidth));
@@ -2235,7 +2235,7 @@ static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter)
 	};
 	u32 backup_rf_reg[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
 
-	 struct rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
 	struct rtl_dm *pDM_Odm = &pHalData->odmpriv;
 
 	_rtl8821au_iqk_backup_macbb(pAdapter, macbb_backup, backup_macbb_reg,
@@ -2364,7 +2364,7 @@ static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel
 	BAND_TYPE Band, enum CHANNEL_WIDTH Bandwidth, enum radio_path RfPath,
 	uint8_t DataRate, uint8_t Channel)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	s16				band = -1, regulation = -1, bandwidth = -1,
 					rfPath = -1, rateSection = -1, channelGroup = -1;
 	uint8_t				powerLimit = MAX_POWER_INDEX;
@@ -2586,7 +2586,7 @@ BOOLEAN phy_GetChnlIndex8812A(uint8_t Channel, uint8_t *ChannelIdx)
 u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *pAdapter,  uint8_t Band,
 	uint8_t	Rf_Path, uint8_t Rate_Section)
 {
-	 struct rtw_hal	*pHalData	= GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(pAdapter);
 	uint8_t			shift = 0, original_rate = Rate_Section;
 	uint32_t			tx_pwr_diff = 0;
 
@@ -2878,7 +2878,7 @@ u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *pAdapter,  uint8_t Band,
  */
 VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	TxPwrInPercentage = 0;
 
 	/* Retrieve default TxPwr index settings from registry. */
@@ -2909,7 +2909,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 	uint8_t	Rate, enum CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
 	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
-	struct rtw_hal *	pHalData = GET_HAL_DATA(pAdapter);
+	struct _rtw_hal *	pHalData = GET_HAL_DATA(pAdapter);
 	struct rtl_dm *		pDM_Odm = &pHalData->odmpriv;
 	uint8_t					i = 0;	/* default set to 1S */
 	struct registry_priv	*pregistrypriv = &pAdapter->registrypriv;
@@ -3120,7 +3120,7 @@ static VOID PHY_SetPowerLimitTableValue(struct rtl_dm *pDM_Odm,
 	s8 *RfPath, s8 *Channel, s8 *PowerLimit)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t		regulation = 0, bandwidth = 0, rateSection = 0,
 			channel, powerLimit, channelGroup;
 
@@ -3463,7 +3463,7 @@ static void _rtl8812au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr
 void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 				enum radio_path eRFPath)
 {
-	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
 	
 	int i;
@@ -3598,7 +3598,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 static void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data, enum radio_path path, uint32_t RegAddr)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 	
 	if (Addr == 0xfe || Addr == 0xffe) {
@@ -3636,7 +3636,7 @@ static void _rtl8821au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr
 
 void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radio_path eRFPath)
 {
-	struct rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
 
 	uint32_t	hex         = 0;
@@ -3754,7 +3754,7 @@ void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
 static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *Adapter)
 {
 	uint8_t					SCSettingOf40 = 0, SCSettingOf20 = 0;
-	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
 
 	/*
 	 * DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
@@ -3801,7 +3801,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 {
 	uint8_t			SubChnlNum = 0;
 	uint8_t			L1pkVal = 0;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	/* 3 Set Reg668 Reg440 BW */
 	_rtl8821au_phy_set_reg_bw(Adapter, pHalData->CurrentChannelBW);

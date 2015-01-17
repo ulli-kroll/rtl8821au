@@ -84,7 +84,7 @@ void ConfigureTxpowerTrack(struct rtl_dm *pDM_Odm, PTXPWRTRACK_CFG pConfig)
  */
 VOID ODM_ClearTxPowerTrackingState(struct rtl_dm *pDM_Odm)
 {
-	struct rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
 	u8 p = 0;
 
 	pDM_Odm->BbSwingIdxCckBase = pDM_Odm->DefaultCckIndex;
@@ -116,7 +116,7 @@ VOID ODM_ClearTxPowerTrackingState(struct rtl_dm *pDM_Odm)
 VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *Adapter)
 {
 
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct rtl_dm *pDM_Odm = &pHalData->odmpriv;
 
 	u8	ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;

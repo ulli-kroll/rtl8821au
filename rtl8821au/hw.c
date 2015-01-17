@@ -2,7 +2,7 @@
 
 static void StopTxBeacon(struct rtl_priv *rtlpriv)
 {
-	 struct rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) & (~BIT6));
 	pHalData->RegFwHwTxQCtrl &= (~BIT6);
@@ -15,7 +15,7 @@ static void StopTxBeacon(struct rtl_priv *rtlpriv)
 
 static void ResumeTxBeacon(struct rtl_priv *rtlpriv)
 {
-	 struct rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 * 2010.03.01. Marked by tynli. No need to call workitem beacause we record the value
@@ -44,7 +44,7 @@ static VOID _BeaconFunctionEnable(struct rtl_priv *rtlpriv, BOOLEAN Enable,
 void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 {
 	uint32_t	value32;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	uint32_t bcn_ctrl_reg 			= REG_BCN_CTRL;
@@ -186,7 +186,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 {
 	uint32_t value_rcr, rcr_clear_bit, reg_bcn_ctl;
 	u16 value_rxfltmap2;
-	 struct rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 
 		reg_bcn_ctl = REG_BCN_CTRL;
@@ -242,7 +242,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 
 static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	MediaStatus)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -270,7 +270,7 @@ static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	M
 void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct rtw_hal *pHalData;
+	struct _rtw_hal *pHalData;
 	struct dm_priv *pdmpriv;
 	struct rtl_dm *podmpriv;
 	uint8_t val8;
@@ -936,7 +936,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 {
-	struct rtw_hal *pHalData;
+	struct _rtw_hal *pHalData;
 	struct rtl_dm *podmpriv;
 	uint8_t val8;
 	u16 val16;

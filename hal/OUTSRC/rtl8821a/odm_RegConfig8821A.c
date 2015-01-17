@@ -24,7 +24,7 @@
 void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data, enum radio_path path, uint32_t RegAddr)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	if (Addr == 0xfe || Addr == 0xffe) {

@@ -254,7 +254,7 @@ static void ODM_EdcaTurboInit(struct rtl_dm *pDM_Odm)
 static u8 getSwingIndex(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	u8 			i = 0;
 	uint32_t 			bbSwing;
 
@@ -273,7 +273,7 @@ static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 {
 	u8 		p = 0;
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	pDM_Odm->RFCalibrateInfo.bTXPowerTracking = _TRUE;
 	pDM_Odm->RFCalibrateInfo.TXPowercount = 0;
@@ -340,7 +340,7 @@ void DoIQK_8812A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 	ThermalValue, u8 Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK = ThermalValue;
 	rtl8812au_phy_iq_calibrate(Adapter, FALSE);
@@ -370,7 +370,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 	uint32_t 	finalBbSwingIdx[2];
 
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	u8 PwrTrackingLimit = 26; /* +1.0dB */
 	u8 TxRate = 0xFF;
@@ -721,7 +721,7 @@ void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 {
 	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-	 struct rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
 	u16	rate = *(pDM_Odm->pForcedDataRate);
 	u8         	channel   		 = pHalData->CurrentChannel;
 
@@ -805,7 +805,7 @@ void DoIQK_8821A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 ThermalValue, u8 Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	pDM_Odm->RFCalibrateInfo.ThermalValue_IQK = ThermalValue;
 	rtl8821au_phy_iq_calibrate(Adapter, FALSE);
@@ -816,7 +816,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 	u8 RFPath, u8 ChannelMappedIndex)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	u8 PwrTrackingLimit = 26; /* +1.0dB */
 	u8 TxRate = 0xFF;
@@ -1020,7 +1020,7 @@ void rtl8821au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 {
 	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
-	 struct rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
 	/* u16     rate = pMgntInfo->ForcedDataRate; */
 	u16	rate = 0;
 	u8         	channel   		 = pHalData->CurrentChannel;

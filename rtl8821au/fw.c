@@ -68,7 +68,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *padapter, uint8_t ElementID, uin
 	uint8_t h2c_box_num;
 	uint32_t msgbox_addr;
 	uint32_t msgbox_ex_addr;
-	struct rtw_hal *pHalData = GET_HAL_DATA(padapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(padapter);
 	uint8_t cmd_idx, ext_cmd_len;
 	uint32_t h2c_cmd = 0;
 	uint32_t h2c_cmd_ex = 0;
@@ -176,7 +176,7 @@ uint8_t rtl8812_h2c_msg_hdl(struct rtl_priv *padapter, unsigned char *pbuf)
 uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *padapter, uint8_t *param)
 {
 	uint8_t	res = _SUCCESS;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 
 	*((u32 *) param) = cpu_to_le32(*((u32 *) param));
 
@@ -260,7 +260,7 @@ u8 Get_RA_LDPC_8812(struct sta_info *psta)
 
 void rtl8812_set_raid_cmd(struct rtl_priv *padapter, uint32_t bitmap, uint8_t *arg)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -311,7 +311,7 @@ void rtl8812_set_raid_cmd(struct rtl_priv *padapter, uint32_t bitmap, uint8_t *a
  */
 u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *Adapter, BOOLEAN	bWoWLANBoundary)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	RsvdPageNum = 0;
 	uint8_t	TxPageBndy = LAST_ENTRY_OF_TX_PKT_BUFFER_8812; /* default reseved 1 page for the IC type which is undefined. */
 
@@ -542,7 +542,7 @@ void ConstructNullFunctionData(
 static void SetFwRsvdPagePkt_8812(struct rtl_priv *padapter, BOOLEAN bDLFinished)
 {
 	struct rtl_hal *rtlhal = rtl_hal(padapter);
-	struct rtw_hal *pHalData;
+	struct _rtw_hal *pHalData;
 	struct xmit_frame	*pcmdframe;
 	struct pkt_attrib	*pattrib;
 	struct xmit_priv	*pxmitpriv;
@@ -718,7 +718,7 @@ error:
 
 void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	BOOLEAN		bSendBeacon = _FALSE;

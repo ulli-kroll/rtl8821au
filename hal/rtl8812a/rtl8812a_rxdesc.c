@@ -228,7 +228,7 @@ void rtl8812_query_rx_phy_status(
 {
 	struct rtl_priv *			padapter = precvframe->u.hdr.adapter;
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
-	 struct rtw_hal		*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal		*pHalData = GET_HAL_DATA(padapter);
 	PODM_PHY_INFO_T 	pPHYInfo  = (PODM_PHY_INFO_T)(&pattrib->phy_info);
 	uint8_t					*wlanhdr;
 	ODM_PACKET_INFO_T	pkt_info;

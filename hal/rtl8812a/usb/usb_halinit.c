@@ -41,7 +41,7 @@ static void _dbg_dump_macreg(struct rtl_priv *padapter)
 
 static VOID _ConfigChipOutEP_8812(struct rtl_priv *pAdapter, uint8_t NumOutPipe)
 {
-	 struct rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
 
 	pHalData->OutEpQueueSel = 0;
 	pHalData->OutEpNumber = 0;
@@ -74,7 +74,7 @@ static VOID _ConfigChipOutEP_8812(struct rtl_priv *pAdapter, uint8_t NumOutPipe)
 static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *pAdapter,
 	uint8_t	NumInPipe, uint8_t NumOutPipe)
 {
-	 struct rtw_hal	*pHalData	= GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(pAdapter);
 	BOOLEAN		result		= _FALSE;
 
 	_ConfigChipOutEP_8812(pAdapter, NumOutPipe);
@@ -102,7 +102,7 @@ static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *pAdapter,
 void rtl8812au_interface_configure(struct rtl_priv *padapter)
 {
 	struct rtl_hal *rtlhal = rtl_hal(padapter);
-	struct rtw_hal	*pHalData	= GET_HAL_DATA(padapter);
+	struct _rtw_hal	*pHalData	= GET_HAL_DATA(padapter);
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 
 	if (IS_SUPER_SPEED_USB(padapter)) {
@@ -143,7 +143,7 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	u8 speedvalue, provalue, temp;
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	/*
 	 * rtl_write_word(Adapter, REG_TRXDMA_CTRL_8195, 0xf5b0);
@@ -310,7 +310,7 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *padapter)
 /* Shall USB interface init this? */
 static VOID _InitInterrupt_8812AU(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	/* HIMR */
 	rtl_write_dword(Adapter, REG_HIMR0_8812, pHalData->IntrMask[0]&0xFFFFFFFF);
@@ -319,7 +319,7 @@ static VOID _InitInterrupt_8812AU(struct rtl_priv *Adapter)
 
 static VOID _InitQueueReservedPage_8821AUsb(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
 	uint32_t numHQ = 0;
 	uint32_t numLQ = 0;
@@ -371,7 +371,7 @@ static VOID _InitQueueReservedPage_8821AUsb(struct rtl_priv *Adapter)
 
 static VOID _InitQueueReservedPage_8812AUsb(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct registry_priv	*pregistrypriv = &Adapter->registrypriv;
 	uint32_t numHQ		= 0;
 	uint32_t numLQ		= 0;
@@ -506,7 +506,7 @@ static VOID _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *Adapter,
 
 static VOID _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
 	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
@@ -577,7 +577,7 @@ static VOID _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *Adapter)
 
 static VOID _InitQueuePriority_8812AUsb(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 
 	switch (pHalData->OutEpNumber) {
 	case 2:
@@ -631,7 +631,7 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *Adapter)
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	/* uint32_t			value32; */
 	/* u16			value16; */
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	/*
 	 * pHalData->ReceiveConfig = AAP | APM | AM | AB | APP_ICV | ADF | AMF | APP_FCS | HTC_LOC_CTRL | APP_MIC | APP_PHYSTS;
@@ -814,7 +814,7 @@ static VOID _InitRetryFunction_8812A(IN  struct rtl_priv *Adapter)
 static VOID usb_AggSettingTxUpdate_8812A(struct rtl_priv *Adapter)
 {
 #ifdef CONFIG_USB_TX_AGGREGATION
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint32_t			value32;
 
 	if (Adapter->registrypriv.wifi_spec)
@@ -850,7 +850,7 @@ static VOID usb_AggSettingTxUpdate_8812A(struct rtl_priv *Adapter)
 static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *Adapter)
 {
 #ifdef CONFIG_USB_RX_AGGREGATION
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			valueDMA;
 	uint8_t			valueUSB;
 
@@ -886,7 +886,7 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *Adapter)
 
 static VOID init_UsbAggregationSetting_8812A(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	/* Tx aggregation setting */
 	usb_AggSettingTxUpdate_8812A(Adapter);
@@ -944,7 +944,7 @@ enum {
 
 static VOID _InitAntenna_Selection_8812A(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 
 	if (pHalData->AntDivCfg == 0)
 		return;
@@ -1024,7 +1024,7 @@ static VOID HwSuspendModeEnable_8812AU(struct rtl_priv *pAdapter, uint8_t Type)
 
 rt_rf_power_state RfOnOffDetect(struct rtl_priv *pAdapter)
 {
-	 struct rtw_hal		*pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal		*pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t	val8;
 	rt_rf_power_state rfpowerstate = rf_off;
 
@@ -1064,7 +1064,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 	u16  value16;
 	uint8_t	txpktbuf_bndy;
 	uint32_t	status = _SUCCESS;
-	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
 
@@ -1458,7 +1458,7 @@ static void rtl8812au_hw_power_down(struct rtl_priv *padapter)
 uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter)
  {
 
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	DBG_8192C("==> %s \n", __FUNCTION__);
 
 	{
@@ -1550,7 +1550,7 @@ VOID hal_ReadIDs_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 
 	if (!AutoloadFail) {
@@ -1617,7 +1617,7 @@ VOID hal_ReadMACAddress_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 VOID hal_InitPGData_8812A(struct rtl_priv *padapter, u8 *PROMContent)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	/*  struct rtw_hal	*pHalData = GET_HAL_DATA(padapter); */
+	/*  struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter); */
 	uint32_t			i;
 	u16			value16;
 
@@ -1647,7 +1647,7 @@ VOID hal_InitPGData_8812A(struct rtl_priv *padapter, u8 *PROMContent)
 
 VOID hal_CustomizedBehavior_8812AU(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	struct led_priv	*pledpriv = &(Adapter->ledpriv);
 
@@ -1698,7 +1698,7 @@ VOID hal_CustomizedBehavior_8812AU(struct rtl_priv *Adapter)
 
 static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *pAdapter)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
 
 	/* For customized behavior. */
@@ -1832,7 +1832,7 @@ static void Hal_ReadPROMContent_8812A(struct rtl_priv *Adapter)
 
 VOID hal_ReadRFType_8812A(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	pHalData->rf_chip = RF_6052;
 
@@ -1856,7 +1856,7 @@ VOID hal_CustomizedBehavior_8812AUsb(struct rtl_priv * Adapter)
 
 void ReadAdapterInfo8812AU(struct rtl_priv *Adapter)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	DBG_871X("====> ReadAdapterInfo8812AU\n");
 
@@ -1874,7 +1874,7 @@ void ReadAdapterInfo8812AU(struct rtl_priv *Adapter)
 
 void UpdateInterruptMask8812AU(struct rtl_priv *padapter, uint8_t bHIMR0, uint32_t AddMSR, uint32_t RemoveMSR)
 {
-	 struct rtw_hal *pHalData;
+	 struct _rtw_hal *pHalData;
 
 	uint32_t *himr;
 	pHalData = GET_HAL_DATA(padapter);
@@ -1905,7 +1905,7 @@ void UpdateInterruptMask8812AU(struct rtl_priv *padapter, uint8_t bHIMR0, uint32
 u8 SetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable,
 	PVOID pValue)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			bResult = _SUCCESS;
 
 	switch (eVariable) {
@@ -1924,7 +1924,7 @@ u8 SetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable,
 u8 GetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable,
 	PVOID pValue)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t			bResult = _SUCCESS;
 
 	switch (eVariable) {
@@ -1953,7 +1953,7 @@ void _update_response_rate(struct rtl_priv *padapter, unsigned int mask)
 
 void rtl8812au_init_default_value(struct rtl_priv *padapter)
 {
-	struct rtw_hal *pHalData;
+	struct _rtw_hal *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct dm_priv *pdmpriv;
 	uint8_t i;

@@ -89,7 +89,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *padapter)
 
 static void dm_InitGPIOSetting(struct rtl_priv *Adapter)
 {
-	struct rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
 
 	uint8_t	tmp1byte;
 
@@ -141,7 +141,7 @@ ODM_BOARD_TYPE_E boardType(uint8_t InterfaceSel)
 static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
@@ -247,7 +247,7 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int i;
@@ -288,7 +288,7 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 
 void rtl8812_InitHalDm(struct rtl_priv *Adapter)
 {
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
 	uint8_t	i;
@@ -310,7 +310,7 @@ VOID rtl8812_HalDmWatchDog(struct rtl_priv *Adapter)
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
 	BOOLEAN		bFwPSAwake = _TRUE;
 	uint8_t hw_init_completed = _FALSE;
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
 
@@ -353,7 +353,7 @@ skip_dm:
 
 void rtl8812_init_dm_priv(IN struct rtl_priv *Adapter)
 {
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct rtl_dm *		podmpriv = &pHalData->odmpriv;
 	memset(pdmpriv, 0, sizeof(struct dm_priv));
@@ -382,7 +382,7 @@ void rtl8812_init_dm_priv(IN struct rtl_priv *Adapter)
 
 void rtl8812_deinit_dm_priv(IN struct rtl_priv *Adapter)
 {
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct rtl_dm *		podmpriv = &pHalData->odmpriv;
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
@@ -402,7 +402,7 @@ void AntDivCompare8812(struct rtl_priv *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_
 {
 	/* struct rtl_priv *Adapter = pDM_Odm->Adapter ; */
 
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	if (0 != pHalData->AntDivCfg ) {
 		/*
 		 * DBG_8192C("update_network=> orgRSSI(%d)(%d),newRSSI(%d)(%d)\n",dst->Rssi,query_rx_pwr_percentage(dst->Rssi),
@@ -421,7 +421,7 @@ void AntDivCompare8812(struct rtl_priv *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_
 uint8_t AntDivBeforeLink8812(struct rtl_priv *Adapter )
 {
 
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct rtl_dm *	pDM_Odm =&pHalData->odmpriv;
 	SWAT_T		*pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);

@@ -759,7 +759,7 @@ struct rtl_priv *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 
 	/* step 2. hook HalFunc, allocate HalData */
 	/* hal_set_hal_ops(padapter); */
-	padapter->HalData = rtw_zmalloc(sizeof( struct rtw_hal));
+	padapter->HalData = rtw_zmalloc(sizeof( struct _rtw_hal));
 	if (padapter->HalData == NULL) {
 		DBG_8192C("cant not alloc memory for HAL DATA \n");
 	}

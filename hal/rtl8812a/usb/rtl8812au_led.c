@@ -24,7 +24,7 @@
 static void SwLedOn_8812AU(struct rtl_priv *padapter, PLED_USB pLed)
 {
 	uint8_t	LedCfg;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 
 	if ((padapter->bSurpriseRemoved == _TRUE) || (padapter->bDriverStopped == _TRUE)) {
 		return;
@@ -97,7 +97,7 @@ static void SwLedOn_8812AU(struct rtl_priv *padapter, PLED_USB pLed)
 static void SwLedOff_8812AU(struct rtl_priv *padapter, PLED_USB	pLed)
 {
 	uint8_t	LedCfg;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 
 	if (padapter->bSurpriseRemoved == _TRUE) {
 		return;
@@ -250,7 +250,7 @@ static void SwLedOn_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 static void SwLedOff_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	LedCfg;
 
 	if (Adapter->bSurpriseRemoved == _TRUE) {

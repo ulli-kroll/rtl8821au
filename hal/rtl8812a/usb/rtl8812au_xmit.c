@@ -25,7 +25,7 @@
 int32_t	rtl8812au_init_xmit_priv(struct rtl_priv *padapter)
 {
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 
 #ifdef PLATFORM_LINUX
 	tasklet_init(&pxmitpriv->xmit_tasklet,

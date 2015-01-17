@@ -25,7 +25,7 @@
 #ifdef DBG_CONFIG_ERROR_DETECT
 void rtl8812_sreset_xmit_status_check(struct rtl_priv *padapter)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
 	unsigned long current_time;
@@ -70,7 +70,7 @@ void rtl8812_sreset_xmit_status_check(struct rtl_priv *padapter)
 
 void rtl8812_sreset_linked_status_check(struct rtl_priv *padapter)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
 	uint32_t rx_dma_status = 0;

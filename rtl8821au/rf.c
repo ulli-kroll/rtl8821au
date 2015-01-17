@@ -5,7 +5,7 @@
 
 void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH	Bandwidth)	/* 20M or 40M */
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	switch (Bandwidth) {
 	case CHANNEL_WIDTH_20:
@@ -34,7 +34,7 @@ static void writeOFDMPowerReg8812(
 	IN 		u32*		pValue
 	)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	u16 RegOffset_A[6] = {
     	RTXAGC_A_OFDM18_OFDM6,
@@ -91,7 +91,7 @@ void getPowerBase8812(
 	IN OUT u32*		MCSBase
 	)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint32_t			powerBase0, powerBase1;
 	uint8_t			i, powerlevel[2];
 
@@ -132,7 +132,7 @@ void getTxPowerWriteValByRegulatory8812(
 	)
 {
 
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	uint8_t			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
 	s8			pwr_diff=0;
@@ -323,7 +323,7 @@ void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *Adapter,
 void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	ODM_RF_Config_Type ConfigType, enum radio_path eRFPath)
 {
-	struct rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
@@ -363,7 +363,7 @@ static int _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 {
 	uint8_t	eRFPath;
 	int	rtStatus = _SUCCESS;
-	struct rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 * -----------------------------------------------------------------
@@ -385,7 +385,7 @@ static int _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 
 int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 {
-	struct rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	int		rtStatus = _SUCCESS;
 
 	/* Initialize general global value */
@@ -408,7 +408,7 @@ int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 
 void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 {
-	struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv		*pdmpriv = &pHalData->dmpriv;
 	struct mlme_ext_priv 	*pmlmeext = &Adapter->mlmeextpriv;
 	uint32_t		TxAGC[2] = {0, 0},

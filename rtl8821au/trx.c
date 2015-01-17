@@ -59,7 +59,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	struct rtl_hal *rtlhal = rtl_hal(padapter);
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	uint8_t	*ptxdesc =  pmem;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -328,7 +328,7 @@ static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 #define IDEA_CONDITION 1	/* check all packets before enqueue */
 int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
-	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	struct xmit_frame *pxmitframe = NULL;
 	struct xmit_frame *pfirstframe = NULL;
 

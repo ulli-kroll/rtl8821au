@@ -204,8 +204,7 @@ int32_t PHY_MACConfig8812(struct rtl_priv *Adapter)
 	/* ULLI strange only for rtl8821au ?? */
 	/* Ulli check for RTL8812_PHY_MACREG file */
 	 
-	if(HAL_STATUS_SUCCESS != _rtl8821au_phy_config_mac_with_headerfile(&pHalData->odmpriv))
-		rtStatus = _FAIL;
+	_rtl8821au_phy_config_mac_with_headerfile(&pHalData->odmpriv);
 
 	return rtStatus;
 }

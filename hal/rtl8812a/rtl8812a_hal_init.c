@@ -400,27 +400,26 @@ static int32_t _FWFreeToGo8812(struct rtl_priv *padapter)
 
 int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	int32_t	rtStatus = _SUCCESS;
 	uint8_t	writeFW_retry = 0;
 	uint32_t fwdl_start_time;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct rtl_dm *	pDM_Odm;
 	uint8_t				*pFwHdr = NULL;
-	uint8_t				*pFirmwareBuf;
-	uint32_t				FirmwareLen;
 
 	pDM_Odm = &pHalData->odmpriv;
 
 	RT_TRACE(_module_hal_init_c_, _drv_info_, ("+%s\n", __FUNCTION__));
 
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
-		ODM_ReadFirmware_MP_8812A_FW_NIC(&pFirmwareBuf, &FirmwareLen);
+		ODM_ReadFirmware_MP_8812A_FW_NIC(&rtlhal->pfirmware, &rtlhal->fwsize);
 	if (pDM_Odm->SupportICType == ODM_RTL8821)
-			ODM_ReadFirmware_MP_8821A_FW_NIC(&pFirmwareBuf, &FirmwareLen);
+			ODM_ReadFirmware_MP_8821A_FW_NIC(&rtlhal->pfirmware, &rtlhal->fwsize);
 
-	DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", FirmwareLen);
+	DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", rtlhal->fwsize);
 
-	if (FirmwareLen > FW_SIZE_8812) {
+	if (rtlhal->fwsize > FW_SIZE_8812) {
 			rtStatus = _FAIL;
 			RT_TRACE(_module_hal_init_c_, _drv_err_, ("Firmware size exceed 0x%X. Check it.\n", FW_SIZE_8812));
 			goto Exit;
@@ -428,22 +427,27 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 
 
 	{
-		DBG_871X_LEVEL(_drv_info_, "+%s: !bUsedWoWLANFw, FmrmwareLen:%d+\n", __func__, FirmwareLen);
+		DBG_871X_LEVEL(_drv_info_, "+%s: !bUsedWoWLANFw, FmrmwareLen:%d+\n", __func__, rtlhal->fwsize);
 		/* To Check Fw header. Added by tynli. 2009.12.04. */
-		pFwHdr = (uint8_t *) pFirmwareBuf;
+		pFwHdr = (uint8_t *) rtlhal->pfirmware;
 	}
 
-	pHalData->FirmwareVersion =  (u16)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
-	pHalData->FirmwareSubVersion = (u16)GET_FIRMWARE_HDR_SUB_VER_8812(pFwHdr);
+	rtlhal->fw_version =  (u16)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
+	rtlhal->fw_subversion = (u16)GET_FIRMWARE_HDR_SUB_VER_8812(pFwHdr);
+/*	
 	pHalData->FirmwareSignature = (u16)GET_FIRMWARE_HDR_SIGNATURE_8812(pFwHdr);
 
 	DBG_871X ("%s: fw_ver=%d fw_subver=%d sig=0x%x\n",
 		  __FUNCTION__, pHalData->FirmwareVersion, pHalData->FirmwareSubVersion, pHalData->FirmwareSignature);
+*/
+	DBG_871X ("%s: fw_ver=%d fw_subver=%d\n",
+		  __FUNCTION__, rtlhal->fw_version, rtlhal->fw_subversion);
+
 
 	if (IS_FW_HEADER_EXIST_8812(pFwHdr) || IS_FW_HEADER_EXIST_8821(pFwHdr)) {
 		/* Shift 32 bytes for FW header */
-		pFirmwareBuf = pFirmwareBuf + 32;
-		FirmwareLen = FirmwareLen - 32;
+		rtlhal->pfirmware += 32;
+		rtlhal->fwsize -= 32;
 	}
 
 	/*
@@ -461,7 +465,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 		/* reset the FWDL chksum */
 		rtl_write_byte(Adapter, REG_MCUFWDL, rtl_read_byte(Adapter, REG_MCUFWDL)|FWDL_ChkSum_rpt);
 
-		rtStatus = _WriteFW_8812(Adapter, pFirmwareBuf, FirmwareLen);
+		rtStatus = _WriteFW_8812(Adapter, rtlhal->pfirmware, rtlhal->fwsize);
 
 		if (rtStatus == _SUCCESS
 		   || (rtw_get_passing_time_ms(fwdl_start_time) > 500 && writeFW_retry++ >= 3))

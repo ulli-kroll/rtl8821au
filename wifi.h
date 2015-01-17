@@ -17,6 +17,15 @@ struct rtl_hal_ops;
 
 struct rtl_hal {
 	u16	hw_type;
+
+	/*firmware */
+	u32 fwsize;
+	u8 *pfirmware;
+	u16 fw_version;
+	u16 fw_subversion;
+	bool h2c_setinprogress;
+	u8 last_hmeboxnum;
+	bool fw_ready;
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
@@ -1200,11 +1209,6 @@ struct _rtw_hal {
 	RT_MULTI_FUNC		MultiFunc; // For multi-function consideration.
 	RT_POLARITY_CTL		PolarityCtl; // For Wifi PDn Polarity control.
 	RT_REGULATOR_MODE	RegulatorMode; // switching regulator or LDO
-
-	u16	FirmwareVersion;
-	u16	FirmwareVersionRev;
-	u16	FirmwareSubVersion;
-	u16	FirmwareSignature;
 
 	//current WIFI_PHY values
 	WIRELESS_MODE		CurrentWirelessMode;

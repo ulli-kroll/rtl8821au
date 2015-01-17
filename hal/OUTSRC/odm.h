@@ -1210,7 +1210,7 @@ struct rtl_dm {
 	//2 Define STA info.
 	// _ODM_STA_INFO
 	// 2012/01/12 MH For MP, we need to reduce one array pointer for default port.??
-	PSTA_INFO_T		pODM_StaInfo[ODM_ASSOCIATE_ENTRY_NUM];
+	struct sta_info *pODM_StaInfo[ODM_ASSOCIATE_ENTRY_NUM];
 
 #if (RATE_ADAPTIVE_SUPPORT == 1)
 	u16 			CurrminRptTime;
@@ -1272,7 +1272,7 @@ struct rtl_dm {
 	//u8		binitialized; // for dm_initial_gain_Multi_STA use.
 	//for Antenna diversity
 	//u8	AntDivCfg;// 0:OFF , 1:ON, 2:by efuse
-	//PSTA_INFO_T RSSI_target;
+	//struct sta_info *RSSI_target;
 
 	BOOLEAN			*pbDriverStopped;
 	BOOLEAN			*pbDriverIsGoingToPnpSetPowerSleep;

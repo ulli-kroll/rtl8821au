@@ -496,7 +496,7 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	uint32_t	OFDM_pkt = 0;
 	uint32_t	Weighting = 0;
 
-	PSTA_INFO_T   	pEntry;
+	struct sta_info *pEntry;
 
 	if (pPktinfo->StationID == 0xFF)
 		return;

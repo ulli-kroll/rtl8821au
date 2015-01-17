@@ -62,7 +62,7 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#endif
 
 	#define	STA_INFO_T			struct sta_info
-	#define	PSTA_INFO_T		struct sta_info *
+
 
 
 

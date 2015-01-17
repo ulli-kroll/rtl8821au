@@ -458,7 +458,7 @@ void ODM_CmnInfoHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue
 		break;
 /*
 	case	ODM_CMNINFO_STA_STATUS:
-		pDM_Odm->pODM_StaInfo[] = (PSTA_INFO_T)pValue;
+		pDM_Odm->pODM_StaInfo[] = (struct sta_info *)pValue;
 		break;
 
 	case	ODM_CMNINFO_PHY_STATUS:
@@ -492,7 +492,7 @@ void ODM_CmnInfoPtrArrayHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
 		 * Dynamic call by reference pointer.
 		 */
 	case	ODM_CMNINFO_STA_STATUS:
-		pDM_Odm->pODM_StaInfo[Index] = (PSTA_INFO_T)pValue;
+		pDM_Odm->pODM_StaInfo[Index] = (struct sta_info *)pValue;
 		break;
 	/* To remove the compiler warning, must add an empty default statement to handle the other values. */
 	default:
@@ -617,7 +617,7 @@ void odm_CommonInfoSelfUpdate(struct rtl_dm * pDM_Odm)
 {
 	u8	EntryCnt = 0;
 	u8	i;
-	PSTA_INFO_T   	pEntry;
+	struct sta_info *pEntry;
 
 	if (*(pDM_Odm->pBandWidth) == ODM_BW40M) {
 		if (*(pDM_Odm->pSecChOffset) == 1)
@@ -1250,7 +1250,7 @@ void odm_1R_CCA(struct rtl_dm *pDM_Odm)
 uint32_t ODM_Get_Rate_Bitmap(struct rtl_dm *pDM_Odm, uint32_t macid,
 	uint32_t ra_mask, u8 rssi_level)
 {
-	PSTA_INFO_T   	pEntry;
+	struct sta_info *pEntry;
 	uint32_t 	rate_bitmap = 0;
 	u8 	WirelessMode;
 	/* u8 	WirelessMode =*(pDM_Odm->pWirelessMode); */
@@ -1419,7 +1419,7 @@ void odm_RefreshRateAdaptiveMaskCE(struct rtl_dm *pDM_Odm)
 	/* printk("==> %s \n",__FUNCTION__); */
 
 	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
-		PSTA_INFO_T pstat = pDM_Odm->pODM_StaInfo[i];
+		struct sta_info *pstat = pDM_Odm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pstat)) {
 			if ((pDM_Odm->SupportICType == ODM_RTL8812)
 			 || (pDM_Odm->SupportICType == ODM_RTL8821)) {

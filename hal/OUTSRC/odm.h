@@ -1043,7 +1043,6 @@ struct rtl_dm {
 	//	Add for different team use temporarily
 	//
 	struct rtl_priv *	Adapter;		// For CE/NIC team
-	prtl8192cd_priv	priv;			// For AP/ADSL team
 	// WHen you use Adapter or priv pointer, you must make sure the pointer is ready.
 	BOOLEAN			odm_ready;
 

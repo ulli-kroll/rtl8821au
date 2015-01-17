@@ -41,7 +41,7 @@ struct rtl_priv {
 #endif
 
 	u32	setband;
-	PVOID			HalData;
+	struct rtw_hal *HalData;
 	struct rtl_hal_ops	*HalFunc;
 
 	int32_t	bDriverStopped;
@@ -1438,7 +1438,10 @@ struct rtw_hal {
 
 };
 
-#define GET_HAL_DATA(__pAdapter)	(( struct rtw_hal *)((__pAdapter)->HalData))
+static inline struct rtw_hal *GET_HAL_DATA(struct rtl_priv *priv)
+{
+	return priv->HalData;
+}
 #define GET_HAL_RFPATH_NUM(__pAdapter) ((( struct rtw_hal *)((__pAdapter)->HalData))->NumTotalRFPath )
 #define RT_GetInterfaceSelection(_Adapter) 	(GET_HAL_DATA(_Adapter)->InterfaceSel)
 

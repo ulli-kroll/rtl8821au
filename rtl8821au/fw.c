@@ -541,6 +541,7 @@ void ConstructNullFunctionData(
  */
 static void SetFwRsvdPagePkt_8812(struct rtl_priv *padapter, BOOLEAN bDLFinished)
 {
+	struct rtl_hal *rtlhal = rtl_hal(padapter);
 	struct rtw_hal *pHalData;
 	struct xmit_frame	*pcmdframe;
 	struct pkt_attrib	*pattrib;
@@ -563,9 +564,9 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *padapter, BOOLEAN bDLFinished
 	pmlmeext = &padapter->mlmeextpriv;
 	pmlmeinfo = &pmlmeext->mlmext_info;
 
-	if (IS_HARDWARE_TYPE_8812(padapter))
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		PageSize = 512;
-	else if (IS_HARDWARE_TYPE_8821(padapter))
+	else if (IS_HARDWARE_TYPE_8821(rtlhal))
 		PageSize = PAGE_SIZE_TX_8821A;
 
 	/*

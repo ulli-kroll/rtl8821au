@@ -97,6 +97,7 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 
 static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	val8;
 	uint8_t	mode = *((uint8_t *)val);
 
@@ -151,7 +152,7 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 			 */
 			rtl_write_byte(rtlpriv, REG_BCN_CTRL, (DIS_TSF_UDT|EN_BCN_FUNCTION | EN_TXBCN_RPT|DIS_BCNQ_SUB));
 
-			if (IS_HARDWARE_TYPE_8821(rtlpriv)) {
+			if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 				/*  select BCN on port 0 */
 				rtl_write_byte(rtlpriv, REG_CCK_CHECK_8812,	rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812)&(~BIT(5)));
 			}
@@ -268,6 +269,7 @@ static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	M
 
 void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 {
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtw_hal *pHalData;
 	struct dm_priv *pdmpriv;
 	struct rtl_dm *podmpriv;
@@ -698,12 +700,12 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		{
 			uint32_t	AMPDULen = *(uint8_t *)pval;
 
-			if (IS_HARDWARE_TYPE_8812(rtlpriv)) {
+			if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 				if (AMPDULen < VHT_AGG_SIZE_128K)
 					AMPDULen = (0x2000 << *(uint8_t *)pval) - 1;
 				else
 					AMPDULen = 0x1ffff;
-			} else if (IS_HARDWARE_TYPE_8821(rtlpriv)) {
+			} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 				if (AMPDULen < HT_AGG_SIZE_64K)
 					AMPDULen = (0x2000 << *(uint8_t *)pval) - 1;
 				else

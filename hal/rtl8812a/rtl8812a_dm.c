@@ -24,13 +24,14 @@
 
 static void dm_CheckPbcGPIO(struct rtl_priv *padapter)
 {
+	struct rtl_hal *rtlhal = rtl_hal(padapter);
 	uint8_t	tmp1byte;
 	uint8_t	bPbcPressed = _FALSE;
 
 	if(!padapter->registrypriv.hw_wps_pbc)
 		return;
 
-	if (IS_HARDWARE_TYPE_8812(padapter)) {
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		tmp1byte = rtl_read_byte(padapter, GPIO_IO_SEL);
 		tmp1byte |= (HAL_8192C_HW_GPIO_WPS_BIT);
 		rtl_write_byte(padapter, GPIO_IO_SEL, tmp1byte);	/* enable GPIO[2] as output mode */
@@ -50,7 +51,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *padapter)
 		if (tmp1byte&HAL_8192C_HW_GPIO_WPS_BIT) {
 			bPbcPressed = _TRUE;
 		}
-	} else if (IS_HARDWARE_TYPE_8821(padapter)) {
+	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 		tmp1byte = rtl_read_byte(padapter, GPIO_IO_SEL_8811A);
 		tmp1byte |= (BIT4);
 		rtl_write_byte(padapter, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as output mode */
@@ -139,6 +140,7 @@ ODM_BOARD_TYPE_E boardType(uint8_t InterfaceSel)
 
 static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -157,9 +159,9 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_INTERFACE,Adapter->interface_type);
 
 
-	if (IS_HARDWARE_TYPE_8812(Adapter))
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_IC_TYPE, ODM_RTL8812);
-	else if (IS_HARDWARE_TYPE_8821(Adapter))
+	else if (IS_HARDWARE_TYPE_8821(rtlhal))
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_IC_TYPE, ODM_RTL8821);
 
 

@@ -1715,6 +1715,7 @@ void ODM_TXPowerTrackingCheck(struct rtl_dm *pDM_Odm)
 void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 
 	if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK)) {
 		return;
@@ -1722,7 +1723,7 @@ void odm_TXPowerTrackingCheckCE(struct rtl_dm *pDM_Odm)
 
 	if (!pDM_Odm->RFCalibrateInfo.TM_Trigger) {		/* at least delay 1 sec */
 		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
-		if (IS_HARDWARE_TYPE_JAGUAR(Adapter))
+		if (IS_HARDWARE_TYPE_JAGUAR(rtlhal))
 			rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 		else
 			rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);

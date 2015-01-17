@@ -188,6 +188,7 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, PLED_USB	pLed)
 static void SwLedOn_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 {
 	uint8_t	LedCfg;
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 
 	if ((Adapter->bSurpriseRemoved == _TRUE) || (Adapter->bDriverStopped == _TRUE)) {
 		return;
@@ -225,7 +226,7 @@ static void SwLedOn_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 		case LED_PIN_LED0:
 		case LED_PIN_LED1:
 		case LED_PIN_LED2:
-			if (IS_HARDWARE_TYPE_8821U(Adapter)) {
+			if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 				LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
 				rtl_write_byte(Adapter, REG_LEDCFG2, ((LedCfg&0x20) & (~BIT3))|BIT5); /* SW control led0 on. */
 				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("8821 SwLedOn LED2 0x%x\n", rtl_read_dword(Adapter, REG_LEDCFG0)));
@@ -248,7 +249,8 @@ static void SwLedOn_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 
 static void SwLedOff_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 {
-	 struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
+	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	LedCfg;
 
 	if (Adapter->bSurpriseRemoved == _TRUE) {
@@ -300,7 +302,7 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
 		case LED_PIN_LED0:
 		case LED_PIN_LED1:
 		case LED_PIN_LED2:
-			 if (IS_HARDWARE_TYPE_8821U(Adapter)) {
+			 if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 				LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
 				LedCfg &= 0x20; 	/* Set to software control. */
 				rtl_write_byte(Adapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
@@ -324,11 +326,12 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
  */
 void rtl8821au_init_sw_leds(struct rtl_priv *padapter)
 {
+	struct rtl_hal *rtlhal = rtl_hal(padapter);
 	struct led_priv *pledpriv = &(padapter->ledpriv);
 
 	pledpriv->LedControlHandler = LedControlUSB;
 
-	if (IS_HARDWARE_TYPE_8812(padapter)) {
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		pledpriv->SwLedOn = SwLedOn_8812AU;
 		pledpriv->SwLedOff = SwLedOff_8812AU;
 	} else {

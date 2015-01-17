@@ -603,11 +603,11 @@ void rtl8812au_set_intf_ops(struct rtl_io *pops)
 void rtl8812au_set_hw_type(struct rtl_priv *padapter)
 {
 	if (padapter->chip_type == RTL8812) {
-		padapter->HardwareType = HARDWARE_TYPE_RTL8812AU;
+		padapter->rtlhal.hw_type = HARDWARE_TYPE_RTL8812AU;
 		DBG_871X("CHIP TYPE: RTL8812\n");
 	} else if (padapter->chip_type == RTL8821) {
 		/* padapter->HardwareType = HARDWARE_TYPE_RTL8811AU; */
-		padapter->HardwareType = HARDWARE_TYPE_RTL8821U;
+		padapter->rtlhal.hw_type = HARDWARE_TYPE_RTL8821U;
 		DBG_871X("CHIP TYPE: RTL8811AU or RTL8821U\n");
 	}
 }

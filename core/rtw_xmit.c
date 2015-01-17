@@ -366,6 +366,7 @@ out:
 
 static void update_attrib_vcs_info(struct rtl_priv *padapter, struct xmit_frame *pxmitframe)
 {
+	struct rtl_hal *rtlhal = rtl_hal(padapter);
 	uint32_t	sz;
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
 	/* struct sta_info	*psta = pattrib->psta; */
@@ -453,7 +454,7 @@ static void update_attrib_vcs_info(struct rtl_priv *padapter, struct xmit_frame 
 			/* to do list: check MIMO power save condition. */
 
 			/* check AMPDU aggregation for TXOP */
-			if ((pattrib->ampdu_en == _TRUE) && (!IS_HARDWARE_TYPE_JAGUAR(padapter))) {
+			if ((pattrib->ampdu_en == _TRUE) && (!IS_HARDWARE_TYPE_JAGUAR(rtlhal))) {
 				pattrib->vcs_mode = RTS_CTS;
 				break;
 			}

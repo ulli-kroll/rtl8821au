@@ -2908,6 +2908,7 @@ VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
 u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 	uint8_t	Rate, enum CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
+	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
 	struct rtw_hal *	pHalData = GET_HAL_DATA(pAdapter);
 	struct rtl_dm *		pDM_Odm = &pHalData->odmpriv;
 	uint8_t					i = 0;	/* default set to 1S */
@@ -3082,7 +3083,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 		 * 2013/01/30 MH According to power current test compare with BCM AC NIC, we
 		 * decide to use host hub = 2.0 mode to enable tx power limit behavior.
 		 */
-		if (adapter_to_dvobj(pAdapter)->usb_speed <= RTW_USB_SPEED_2 && IS_HARDWARE_TYPE_8812AU(pAdapter)) {
+		if (adapter_to_dvobj(pAdapter)->usb_speed <= RTW_USB_SPEED_2 && IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			powerDiffByRate = 0;
 		}
 
@@ -3719,6 +3720,8 @@ static void _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WID
 void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
 	u8 Channel)
 {
+	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
+	
 	/* C cut Item12 ADC FIFO CLOCK */
 	if(IS_VENDOR_8812A_C_CUT(pAdapter)) {
 		if(Bandwidth == CHANNEL_WIDTH_40 && Channel == 11)
@@ -3739,7 +3742,7 @@ void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
 			rtl_set_bbreg(pAdapter, rADC_Buf_Clk_Jaguar, BIT30, 0);  	/* 0x8C4[30] = 0 */
 
 		}
-	} else if (IS_HARDWARE_TYPE_8812(pAdapter)) {
+	} else if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		/* <20120914, Kordan> A workarould to resolve 2480Mhz spur by setting ADC clock as 160M. (Asked by Binson) */
 		if (Bandwidth == CHANNEL_WIDTH_20 && (Channel == 13 || Channel == 14))
 			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0x300, 0x3);  /* 0x8AC[9:8] = 11 */

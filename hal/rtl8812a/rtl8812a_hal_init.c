@@ -328,13 +328,14 @@ exit:
 
 void _8051Reset8812(struct rtl_priv *padapter)
 {
+	struct rtl_hal *rtlhal = rtl_hal(padapter);
 	uint8_t u1bTmp, u1bTmp2;
 
 	/* Reset MCU IO Wrapper- sugggest by SD1-Gimmy */
-	if (IS_HARDWARE_TYPE_8812(padapter)) {
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
 		rtl_write_byte(padapter, REG_RSV_CTRL + 1, u1bTmp2&(~BIT3));
-	} else if (IS_HARDWARE_TYPE_8821(padapter)) {
+	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
 		rtl_write_byte(padapter, REG_RSV_CTRL + 1, u1bTmp2&(~BIT0));
 	}
@@ -343,10 +344,10 @@ void _8051Reset8812(struct rtl_priv *padapter)
 	rtl_write_byte(padapter, REG_SYS_FUNC_EN+1, u1bTmp&(~BIT2));
 
 	/* Enable MCU IO Wrapper */
-	if (IS_HARDWARE_TYPE_8812(padapter)) {
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
 		rtl_write_byte(padapter, REG_RSV_CTRL + 1, u1bTmp2 | (BIT3));
-	} else if (IS_HARDWARE_TYPE_8821(padapter)) {
+	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(padapter, REG_RSV_CTRL+1);
 		rtl_write_byte(padapter, REG_RSV_CTRL + 1, u1bTmp2 | (BIT0));
 	}
@@ -1234,6 +1235,7 @@ VOID
 Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (!AutoloadFail) {
@@ -1262,9 +1264,9 @@ Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			if (pHalData->RFEType == 4 &&
 			   (pHalData->ExternalPA_5G == _TRUE || pHalData->ExternalPA_2G == _TRUE ||
 			    pHalData->ExternalLNA_5G == _TRUE || pHalData->ExternalLNA_2G == _TRUE)) {
-				if (IS_HARDWARE_TYPE_8812AU(Adapter))
+				if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 					pHalData->RFEType = 0;
-				else if (IS_HARDWARE_TYPE_8812E(Adapter))
+				else if (IS_HARDWARE_TYPE_8812E(rtlhal))
 					pHalData->RFEType = 2;
 			}
 		}
@@ -2475,14 +2477,14 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 	uint32_t	value32;
 	HAL_VERSION		ChipVersion;
 	struct rtw_hal *pHalData;
-
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 
 	pHalData = GET_HAL_DATA(Adapter);
 
 	value32 = rtl_read_dword(Adapter, REG_SYS_CFG);
 	DBG_8192C("%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);
 
-	if (IS_HARDWARE_TYPE_8812(Adapter))
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		ChipVersion.ICType = CHIP_8812;
 	else
 		ChipVersion.ICType = CHIP_8821;
@@ -2490,13 +2492,13 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 	ChipVersion.ChipType = ((value32 & RTL_ID) ? TEST_CHIP : NORMAL_CHIP);
 
 	if (Adapter->registrypriv.rf_config == RF_MAX_TYPE) {
-		if (IS_HARDWARE_TYPE_8812(Adapter))
+		if (IS_HARDWARE_TYPE_8812(rtlhal))
 			ChipVersion.RFType = RF_TYPE_2T2R;	/* RF_2T2R; */
 		else
 			ChipVersion.RFType = RF_TYPE_1T1R;	/*RF_1T1R; */
 	}
 
-	if (IS_HARDWARE_TYPE_8812(Adapter))
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		ChipVersion.VendorType = ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : CHIP_VENDOR_TSMC);
 	else {
 		uint32_t vendor;
@@ -2516,7 +2518,7 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 		ChipVersion.VendorType = vendor;
 	}
 	ChipVersion.CUTVersion = (value32 & CHIP_VER_RTL_MASK)>>CHIP_VER_RTL_SHIFT; /* IC version (CUT) */
-	if (IS_HARDWARE_TYPE_8812(Adapter))
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		ChipVersion.CUTVersion += 1;
 
 	/* value32 = rtl_read_dword(Adapter, REG_GPIO_OUTSTS); */
@@ -2843,8 +2845,10 @@ uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 {
 	struct rtw_hal *pHalData;
 	uint8_t bResult;
+	struct rtl_hal *rtlhal = rtl_hal(padapter);
 
 	pHalData = GET_HAL_DATA(padapter);
+	
 	bResult = _SUCCESS;
 
 	switch (variable) {
@@ -2922,7 +2926,7 @@ uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 	case HAL_DEF_LDPC:
 		if (IS_VENDOR_8812A_C_CUT(padapter))
 			*(uint8_t *)pval = _TRUE;
-		else if (IS_HARDWARE_TYPE_8821(padapter))
+		else if (IS_HARDWARE_TYPE_8821(rtlhal))
 			*(uint8_t *)pval = _FALSE;
 		else
 			*(uint8_t *)pval = _FALSE;
@@ -2997,12 +3001,12 @@ uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 
 	case HAL_DEF_TX_PAGE_BOUNDARY:
 		if (!padapter->registrypriv.wifi_spec) 	{
-			if (IS_HARDWARE_TYPE_8812(padapter))
+			if (IS_HARDWARE_TYPE_8812(rtlhal))
 				*(uint8_t *)pval = TX_PAGE_BOUNDARY_8812;
 			else
 				*(uint8_t *)pval = TX_PAGE_BOUNDARY_8821;
 		} else 	{
-			if (IS_HARDWARE_TYPE_8812(padapter))
+			if (IS_HARDWARE_TYPE_8812(rtlhal))
 				*(uint8_t *)pval = WMM_NORMAL_TX_PAGE_BOUNDARY_8812;
 			else
 				*(uint8_t *)pval = WMM_NORMAL_TX_PAGE_BOUNDARY_8821;

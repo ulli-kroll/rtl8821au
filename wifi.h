@@ -16,8 +16,10 @@ struct rtl_hal_ops;
 /* Here will go the new Halinterface data */
 
 struct rtl_hal {
+	u16	hw_type;
 };
 
+#define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
 
 struct rtl_priv {
 	struct net_device *ndev;
@@ -33,7 +35,6 @@ struct rtl_priv {
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
 	int	bDongle;//build-in module or external dongle
 	u16 	chip_type;
-	u16	HardwareType;
 	u16	interface_type;//USB,SDIO,SPI,PCI
 
 	struct dvobj_priv *dvobj;
@@ -112,6 +113,9 @@ struct rtl_priv {
 	unsigned char     in_cta_test;
 
 };
+
+
+
 
 struct rtl_hal_ops {
 	/*
@@ -326,22 +330,31 @@ enum hardware_type {
 };
 
 // RTL8812 Series
-#define IS_HARDWARE_TYPE_8812E(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8812E)
-#define IS_HARDWARE_TYPE_8812AU(_Adapter)	((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8812AU)
-#define IS_HARDWARE_TYPE_8812(_Adapter)			\
-(IS_HARDWARE_TYPE_8812E(_Adapter) || IS_HARDWARE_TYPE_8812AU(_Adapter))
+#define IS_HARDWARE_TYPE_8812E(rtlhal)	\
+	(rtlhal->hw_type == HARDWARE_TYPE_RTL8812E)
+#define IS_HARDWARE_TYPE_8812AU(rtlhal)	\
+	(rtlhal->hw_type == HARDWARE_TYPE_RTL8812AU)
+#define IS_HARDWARE_TYPE_8812(rtlhal)	\
+	(IS_HARDWARE_TYPE_8812E(rtlhal) || IS_HARDWARE_TYPE_8812AU(rtlhal))
 
 // RTL8821 Series
-#define IS_HARDWARE_TYPE_8821E(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8821E)
-#define IS_HARDWARE_TYPE_8811AU(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8811AU)
-#define IS_HARDWARE_TYPE_8821U(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8821U ||\
-	              								 (_Adapter)->HardwareType==HARDWARE_TYPE_RTL8811AU)
-#define IS_HARDWARE_TYPE_8821S(_Adapter)		((_Adapter)->HardwareType==HARDWARE_TYPE_RTL8821S)
-#define IS_HARDWARE_TYPE_8821(_Adapter)			\
-(IS_HARDWARE_TYPE_8821E(_Adapter) || IS_HARDWARE_TYPE_8821U(_Adapter)|| IS_HARDWARE_TYPE_8821S(_Adapter))
-
-#define IS_HARDWARE_TYPE_JAGUAR(_Adapter)		\
-(IS_HARDWARE_TYPE_8812(_Adapter) || IS_HARDWARE_TYPE_8821(_Adapter))
+#define IS_HARDWARE_TYPE_8821E(rtlhal)	\
+	(rtlhal->hw_type == HARDWARE_TYPE_RTL8821E)
+#define IS_HARDWARE_TYPE_8811AU(rtlhal)	\
+	(rtlhal->hw_type == HARDWARE_TYPE_RTL8811AU)
+#define IS_HARDWARE_TYPE_8821U(rtlhal)	\
+	((rtlhal->hw_type == HARDWARE_TYPE_RTL8821U) || \
+       	(rtlhal->hw_type == HARDWARE_TYPE_RTL8811AU))
+#define IS_HARDWARE_TYPE_8821S(rtlhal)	\
+	(rtlhal->hw_type == HARDWARE_TYPE_RTL8821S)
+#define IS_HARDWARE_TYPE_8821(rtlhal)		\
+	(IS_HARDWARE_TYPE_8821E(rtlhal) || \
+	 IS_HARDWARE_TYPE_8821U(rtlhal) || \
+	 IS_HARDWARE_TYPE_8821S(rtlhal))
+	 
+#define IS_HARDWARE_TYPE_JAGUAR(rtlhal)	\
+	(IS_HARDWARE_TYPE_8812(rtlhal) || \
+	 IS_HARDWARE_TYPE_8821(rtlhal))
 
 //###### duplicate code,will move to ODM #########
 #define IQK_MAC_REG_NUM		4

@@ -56,6 +56,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	uint	qsel;
 	uint8_t data_rate, pwr_status, offset;
 	struct rtl_priv *padapter = pxmitframe->padapter;
+	struct rtl_hal *rtlhal = rtl_hal(padapter);
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(padapter);
@@ -197,7 +198,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	} else if ((pxmitframe->frame_tag&0x0f) == MGNT_FRAMETAG) {
 		/* DBG_8192C("pxmitframe->frame_tag == MGNT_FRAMETAG\n"); */
 
-		if (IS_HARDWARE_TYPE_8821(padapter))
+		if (IS_HARDWARE_TYPE_8821(rtlhal))
 			SET_TX_DESC_MBSSID_8821(ptxdesc, pattrib->mbssid);
 
 		/* offset 20 */

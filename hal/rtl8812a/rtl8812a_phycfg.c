@@ -49,6 +49,8 @@ static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm);
 static u32 phy_RFSerialRead(struct rtl_priv *Adapter, uint8_t eRFPath,
 	uint32_t Offset)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
+	
 	uint32_t			retValue = 0;
 	 struct rtw_hal			*pHalData = GET_HAL_DATA(Adapter);
 	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
@@ -65,7 +67,7 @@ static u32 phy_RFSerialRead(struct rtl_priv *Adapter, uint8_t eRFPath,
 
 	/* <20120809, Kordan> CCA OFF(when entering), asked by James to avoid reading the wrong value. */
 	/* <20120828, Kordan> Toggling CCA would affect RF 0x0, skip it! */
-	if (Offset != 0x0 &&  !(IS_VENDOR_8812A_C_CUT(Adapter) || IS_HARDWARE_TYPE_8821(Adapter)))
+	if (Offset != 0x0 &&  !(IS_VENDOR_8812A_C_CUT(Adapter) || IS_HARDWARE_TYPE_8821(rtlhal)))
 		rtl_set_bbreg(Adapter, rCCAonSec_Jaguar, 0x8, 1);
 
 	Offset &= 0xff;
@@ -83,7 +85,7 @@ static u32 phy_RFSerialRead(struct rtl_priv *Adapter, uint8_t eRFPath,
 	if (IS_VENDOR_8812A_TEST_CHIP(Adapter) )
 		rtl_set_bbreg(Adapter, pPhyReg->rfHSSIPara2, bMaskDWord, Offset|BIT8);
 
-	if (IS_VENDOR_8812A_C_CUT(Adapter) || IS_HARDWARE_TYPE_8821(Adapter))
+	if (IS_VENDOR_8812A_C_CUT(Adapter) || IS_HARDWARE_TYPE_8821(rtlhal))
 		udelay(20);
 
 	if (bIsPIMode) {
@@ -96,7 +98,7 @@ static u32 phy_RFSerialRead(struct rtl_priv *Adapter, uint8_t eRFPath,
 
 	/* <20120809, Kordan> CCA ON(when exiting), asked by James to avoid reading the wrong value. */
 	/* <20120828, Kordan> Toggling CCA would affect RF 0x0, skip it! */
-	if (Offset != 0x0 &&  ! (IS_VENDOR_8812A_C_CUT(Adapter) || IS_HARDWARE_TYPE_8821(Adapter)))
+	if (Offset != 0x0 &&  ! (IS_VENDOR_8812A_C_CUT(Adapter) || IS_HARDWARE_TYPE_8821(rtlhal)))
 		rtl_set_bbreg(Adapter, rCCAonSec_Jaguar, 0x8, 0);
 
 	return retValue;
@@ -299,6 +301,7 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *Adapter)
 
 int PHY_BBConfig8812(struct rtl_priv *Adapter)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	int	rtStatus = _SUCCESS;
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t	TmpU1B=0;
@@ -310,9 +313,11 @@ int PHY_BBConfig8812(struct rtl_priv *Adapter)
 	/* . APLL_EN,,APLL_320_GATEB,APLL_320BIAS,  auto config by hw fsm after pfsm_go (0x4 bit 8) set */
 	TmpU1B = rtl_read_byte(Adapter, REG_SYS_FUNC_EN);
 
-	if(IS_HARDWARE_TYPE_8812AU(Adapter) || IS_HARDWARE_TYPE_8821U(Adapter))
+	/* ULLI some PCIe code ?? */
+
+	if(IS_HARDWARE_TYPE_8812AU(rtlhal) || IS_HARDWARE_TYPE_8821U(rtlhal))
 		TmpU1B |= FEN_USBA;
-	else  if(IS_HARDWARE_TYPE_8812E(Adapter) || IS_HARDWARE_TYPE_8821E(Adapter))
+	else  if(IS_HARDWARE_TYPE_8812E(rtlhal) || IS_HARDWARE_TYPE_8821E(rtlhal))
 		TmpU1B |= FEN_PCIEA;
 
 	rtl_write_byte(Adapter, REG_SYS_FUNC_EN, TmpU1B);
@@ -329,17 +334,17 @@ int PHY_BBConfig8812(struct rtl_priv *Adapter)
 	 */
 	rtStatus = phy_BB8812_Config_ParaFile(Adapter);
 
-	if (IS_HARDWARE_TYPE_8812(Adapter)) {
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		/* write 0x2C[30:25] = 0x2C[24:19] = CrystalCap */
 		CrystalCap = pHalData->CrystalCap & 0x3F;
 		rtl_set_bbreg(Adapter, REG_MAC_PHY_CTRL, 0x7FF80000, (CrystalCap | (CrystalCap << 6)));
-	} else if (IS_HARDWARE_TYPE_8821(Adapter)) {
+	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 		/* 0x2C[23:18] = 0x2C[17:12] = CrystalCap */
 		CrystalCap = pHalData->CrystalCap & 0x3F;
 		rtl_set_bbreg(Adapter, REG_MAC_PHY_CTRL, 0xFFF000, (CrystalCap | (CrystalCap << 6)));
 	}
 
-	if(IS_HARDWARE_TYPE_JAGUAR(Adapter)) {
+	if(IS_HARDWARE_TYPE_JAGUAR(rtlhal)) {
 		pHalData->Reg837 = rtl_read_byte(Adapter, 0x837);
 	}
 
@@ -515,6 +520,7 @@ static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
 
 static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t 	BW40PwrBasedBm2_4G, BW40PwrBasedBm5G;
 	uint8_t 	regulation, bw, channel, rateSection, group;
@@ -586,7 +592,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 		}
 	}
 
-	if (IS_HARDWARE_TYPE_8812( Adapter ) || IS_HARDWARE_TYPE_8821( Adapter )) {
+	if (IS_HARDWARE_TYPE_8812(rtlhal) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		for (regulation = 0; regulation < MAX_REGULATION_NUM; ++regulation) {
 			for (bw = 0; bw < MAX_5G_BANDWITH_NUM; ++bw) {
 				for (group = 0; group < MAX_5G_CHANNEL_NUM; ++group) {
@@ -1051,6 +1057,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *Ada
 static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *Adapter,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t *pData)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	u8			BaseValue = 0;
 
@@ -1229,7 +1236,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *Adapte
 	 */
 	/* if(RegAddr == rTxAGC_A_CCK11_CCK1_JAguar || RegAddr == rTxAGC_B_CCK11_CCK1_JAguar) */
 
-	if (IS_HARDWARE_TYPE_8812(Adapter) || IS_HARDWARE_TYPE_8821(Adapter)) {
+	if (IS_HARDWARE_TYPE_8812(rtlhal) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		phy_PreprocessVHTPGDataFromExactToRelativeValue(Adapter, RegAddr,
 			BitMask, pData);
 	}
@@ -1592,6 +1599,7 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *Adapter, uint32_t RegAd
 void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint32_t	tmpData = Data;
 
@@ -1611,7 +1619,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 	 * for 11 n series. T
 	 */
 
-	if (IS_HARDWARE_TYPE_8812(Adapter) || IS_HARDWARE_TYPE_8821(Adapter)) {
+	if (IS_HARDWARE_TYPE_8812(rtlhal) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		PHY_StorePwrByRateIndexVhtSeries(Adapter, RegAddr, BitMask, Data);
 	}
 
@@ -1755,6 +1763,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t power_index,
 	u8 path, u8 rate)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	BOOLEAN		Direction = FALSE;
 	uint32_t	TxagcOffset = 0;
@@ -1762,7 +1771,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 	/*
 	 *  <20120928, Kordan> A workaround in 8812A/8821A testchip, to fix the bug of odd Tx power indexes.
 	 */
-	if ((power_index % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(Adapter) && IS_TEST_CHIP(pHalData->VersionID))
+	if ((power_index % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(rtlhal) && IS_TEST_CHIP(pHalData->VersionID))
 		power_index -= 1;
 
 	/* 2013.01.18 LukeLee: Modify TXAGC by dcmd_Dynamic_Ctrl() */
@@ -2137,11 +2146,12 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter,
 	uint8_t Channel, uint8_t *Rate, uint8_t *power_index,
 	uint8_t	ArraySize)
 {
+	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
 	struct rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t i;
 	for (i = 0; i < ArraySize; i++) {
 		power_index[i] = (uint8_t)PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rate[i], BandWidth, Channel);
-		if ((power_index[i] % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(pAdapter) && ! IS_NORMAL_CHIP(pHalData->VersionID))
+		if ((power_index[i] % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(rtlhal) && ! IS_NORMAL_CHIP(pHalData->VersionID))
 			power_index[i] -= 1;
 	}
 
@@ -2528,7 +2538,8 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 
 void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 {
-	 struct rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
+	struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t				currentBand = pHalData->CurrentBandType;
 
 	/* DBG_871X("==>rtl8821au_phy_switch_wirelessband() %s\n", ((Band==0)?"2.4G":"5G")); */
@@ -2540,7 +2551,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 		/* STOP Tx/Rx */
 		rtl_set_bbreg(Adapter, rOFDMCCKEN_Jaguar, bOFDMEN_Jaguar|bCCKEN_Jaguar, 0x00);
 
-		if (IS_HARDWARE_TYPE_8821(Adapter)) {
+		if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 			/* Turn off RF PA and LNA */
 			rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar, 0xF000, 0x7);	/* 0xCB0[15:12] = 0x7 (LNA_On) */
 			rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar, 0xF0, 0x7);	/* 0xCB0[7:4] = 0x7 (PAPE_A) */
@@ -2607,7 +2618,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 	} else {		/* 5G band */
 		u16	count = 0, reg41A = 0;
 
-		if (IS_HARDWARE_TYPE_8821(Adapter)) {
+		if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 			rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar, 0xF000, 0x5);	/* 0xCB0[15:12] = 0x5 (LNA_On) */
 			rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar, 0xF0, 0x4);	/* 0xCB0[7:4] = 0x4 (PAPE_A) */
 		}
@@ -2698,7 +2709,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 	}
 
 	/* <20120903, Kordan> Tx BB swing setting for RL6286, asked by Ynlin. */
-	if (IS_NORMAL_CHIP(pHalData->VersionID) || IS_HARDWARE_TYPE_8821(Adapter)) {
+	if (IS_NORMAL_CHIP(pHalData->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		s8	BBDiffBetweenBand = 0;
 		 struct rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
 		struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
@@ -2791,6 +2802,8 @@ void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
 
 static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 {
+	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
+	
 	uint8_t	eRFPath = 0;
 	struct rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	uint8_t	channelToSW = pHalData->CurrentChannel;
@@ -2846,7 +2859,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 		rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, MASKBYTE0, channelToSW);
 
 		/* <20130104, Kordan> APK for MP chip is done on initialization from folder. */
-		if (IS_HARDWARE_TYPE_8811AU(pAdapter) && ( !IS_NORMAL_CHIP(pHalData->VersionID)) && channelToSW > 14 ) {
+		if (IS_HARDWARE_TYPE_8811AU(rtlhal) && ( !IS_NORMAL_CHIP(pHalData->VersionID)) && channelToSW > 14 ) {
 			/* <20121116, Kordan> For better result of APK. Asked by AlexWang. */
 			if (36 <= channelToSW && channelToSW <= 64)
 				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);
@@ -2854,7 +2867,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
 			else
 				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
-		} else if ((IS_HARDWARE_TYPE_8821E(pAdapter) || IS_HARDWARE_TYPE_8821S(pAdapter))
+		} else if ((IS_HARDWARE_TYPE_8821E(rtlhal) || IS_HARDWARE_TYPE_8821S(rtlhal))
 			      && channelToSW > 14) {
 			/* <20130111, Kordan> For better result of APK. Asked by Willson. */
 			if (36 <= channelToSW && channelToSW <= 64)
@@ -2869,6 +2882,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 
 static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
 	/* DBG_871X("phy_SwChnlAndSetBwMode8812(): bSwChnl %d, bSetChnlBW %d \n", pHalData->bSwChnl, pHalData->bSetChnlBW); */
@@ -2890,14 +2904,14 @@ static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 	ODM_ClearTxPowerTrackingState(&pHalData->odmpriv);
 	PHY_SetTxPowerLevel8812(Adapter, pHalData->CurrentChannel);
 
-	if (IS_HARDWARE_TYPE_8812(Adapter)) 
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) 
 		phy_InitRssiTRSW(Adapter);
 
 	if ((pHalData->bNeedIQK == _TRUE)) {
-		if(IS_HARDWARE_TYPE_8812(Adapter)) {
+		if(IS_HARDWARE_TYPE_8812(rtlhal)) {
 			rtl8812au_phy_iq_calibrate(Adapter, _FALSE);
 		}
-		else if(IS_HARDWARE_TYPE_8821(Adapter))
+		else if(IS_HARDWARE_TYPE_8821(rtlhal))
 		{
 			rtl8821au_phy_iq_calibrate(Adapter, _FALSE);
 		}

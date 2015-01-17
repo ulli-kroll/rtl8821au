@@ -1206,6 +1206,7 @@ SwLedBlink9(
 	)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1425,7 +1426,7 @@ SwLedBlink9(
 				}
 				else
 				{
-					if(IS_HARDWARE_TYPE_8812AU(Adapter))
+					if(IS_HARDWARE_TYPE_8812AU(rtlhal))
 					{
 						pLed->BlinkingLedState = RTW_LED_ON;
 						pLed->CurrLedState = LED_BLINK_ALWAYS_ON;
@@ -1452,7 +1453,7 @@ SwLedBlink9(
 				}
 				else
 				{
-					if(IS_HARDWARE_TYPE_8812AU(Adapter))
+					if(IS_HARDWARE_TYPE_8812AU(rtlhal))
 					{
 						pLed->BlinkingLedState = RTW_LED_ON;
 					}
@@ -1522,6 +1523,7 @@ SwLedBlink10(
 	)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -1693,7 +1695,7 @@ SwLedBlink10(
 				}
 				else
 				{
-					if(IS_HARDWARE_TYPE_8812AU(Adapter))
+					if(IS_HARDWARE_TYPE_8812AU(rtlhal))
 					{
 						pLed->BlinkingLedState = RTW_LED_ON;
 						pLed->CurrLedState = LED_BLINK_ALWAYS_ON;
@@ -1720,7 +1722,7 @@ SwLedBlink10(
 				}
 				else
 				{
-					if(IS_HARDWARE_TYPE_8812AU(Adapter))
+					if(IS_HARDWARE_TYPE_8812AU(rtlhal))
 					{
 						pLed->BlinkingLedState = RTW_LED_ON;
 					}
@@ -3559,6 +3561,7 @@ SwLedControlMode9(
 	IN	LED_CTL_MODE		LedAction
 )
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct led_priv	*ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	PLED_USB	pLed = &(ledpriv->SwLed0);
@@ -3661,7 +3664,7 @@ SwLedControlMode9(
 	 			}
 
 				pLed->bLedNoLinkBlinkInProgress = _TRUE;
-				if(IS_HARDWARE_TYPE_8812AU(Adapter))
+				if(IS_HARDWARE_TYPE_8812AU(rtlhal))
 				{
 					if(LedAction == LED_CTL_LINK)
 					{

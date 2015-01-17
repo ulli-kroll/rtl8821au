@@ -409,10 +409,6 @@ void ODM_CmnInfoHook(struct rtl_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue
 		pDM_Odm->pbGetValueFromOtherMac = (BOOLEAN *)pValue;
 		break;
 
-	case	ODM_CMNINFO_BUDDY_ADAPTOR:
-		pDM_Odm->pBuddyAdapter = (struct rtl_priv **)pValue;
-		break;
-
 	case	ODM_CMNINFO_DMSP_IS_MASTER:
 		pDM_Odm->pbMasterOfDMSP = (BOOLEAN *)pValue;
 		break;

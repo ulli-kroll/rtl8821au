@@ -566,7 +566,6 @@ typedef enum _ODM_Common_Info_Definition
 	ODM_CMNINFO_FORCED_RATE,
 
 	ODM_CMNINFO_DMSP_GET_VALUE,
-	ODM_CMNINFO_BUDDY_ADAPTOR,
 	ODM_CMNINFO_DMSP_IS_MASTER,
 	ODM_CMNINFO_SCAN,
 	ODM_CMNINFO_POWER_SAVING,
@@ -1135,7 +1134,6 @@ struct rtl_dm {
 	// Common info for 92D DMSP
 
 	BOOLEAN			*pbGetValueFromOtherMac;
-	struct rtl_priv *	*pBuddyAdapter;
 	BOOLEAN			*pbMasterOfDMSP; //MAC0: master, MAC1: slave
 	// Common info for Status
 	BOOLEAN			*pbScanInProcess;

@@ -12,8 +12,19 @@ enum radio_path {
 
 struct rtl_hal_ops;
 
+
+/* Here will go the new Halinterface data */
+
+struct rtl_hal {
+};
+
+
 struct rtl_priv {
 	struct net_device *ndev;
+	struct rtl_hal rtlhal;		/* Caution new Hal data */
+	
+	
+	
 	struct rtw_hal *HalData;
 	
 	

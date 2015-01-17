@@ -44,11 +44,6 @@ typedef enum _HAL_STATUS{
 	RT_STATUS_OS_API_FAILED,*/
 }HAL_STATUS,*PHAL_STATUS;
 
-typedef enum _RT_SPINLOCK_TYPE{
-	RT_TEMP =1,
-}RT_SPINLOCK_TYPE;
-
-
 	#include <drv_types.h>
 
 	/* ULLI check for DEV_BUS_TYPE */

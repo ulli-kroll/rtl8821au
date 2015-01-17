@@ -1184,10 +1184,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 	pHalData->CurrentChannel = 0;	/* set 0 to trigger switch correct channel */
 
 #if (HAL_MAC_ENABLE == 1)
-	status = PHY_MACConfig8812(Adapter);
-	if (status == _FAIL) {
-		goto exit;
-	}
+	PHY_MACConfig8812(Adapter);
 #endif
 
 	if (IS_HARDWARE_TYPE_8812(Adapter)) {

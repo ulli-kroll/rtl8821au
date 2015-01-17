@@ -188,9 +188,8 @@ void PHY_SetRFReg8812(struct rtl_priv *Adapter, u32 eRFPath, u32 RegAddr,
  * 3. Initial MAC/BB/RF config by reading MAC/BB/RF txt.
  */
 
-int32_t PHY_MACConfig8812(struct rtl_priv *Adapter)
+void PHY_MACConfig8812(struct rtl_priv *Adapter)
 {
-	int				rtStatus = _SUCCESS;
 	 struct rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	s8				*pszMACRegFile;
 	s8				sz8812MACRegFile[] = RTL8812_PHY_MACREG;
@@ -205,8 +204,6 @@ int32_t PHY_MACConfig8812(struct rtl_priv *Adapter)
 	/* Ulli check for RTL8812_PHY_MACREG file */
 	 
 	_rtl8821au_phy_config_mac_with_headerfile(&pHalData->odmpriv);
-
-	return rtStatus;
 }
 
 

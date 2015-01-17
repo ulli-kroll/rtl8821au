@@ -63,7 +63,7 @@ void PHY_SetRFReg8812(struct rtl_priv *Adapter, u32 eRFPath, u32 RegAddr,
 // Initialization related function
 //
 /* MAC/BB/RF HAL config */
-int	PHY_MACConfig8812(IN struct rtl_priv *Adapter	);
+void	PHY_MACConfig8812(IN struct rtl_priv *Adapter	);
 int	PHY_BBConfig8812(IN struct rtl_priv *Adapter	);
 void	PHY_BB8812_Config_1T(IN struct rtl_priv *Adapter );
 int	PHY_RFConfig8812(IN struct rtl_priv *Adapter	);

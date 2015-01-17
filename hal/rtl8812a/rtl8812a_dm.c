@@ -152,7 +152,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	 * Init Value
 	 */
 
-	memset(pDM_Odm,0,sizeof(pDM_Odm));
+	memset(pDM_Odm,0,sizeof(*pDM_Odm));
 
 	pDM_Odm->Adapter = Adapter;
 

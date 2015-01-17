@@ -239,7 +239,7 @@ typedef struct _RX_High_Power_
 	BOOLEAN		First_time_enter;
 	BOOLEAN		RXHP_enable;
 	u8		TP_Mode;
-	RT_TIMER	PSDTimer;
+	struct timer_list	PSDTimer;
 
 }RXHP_T, *pRXHP_T;
 
@@ -290,7 +290,7 @@ typedef struct _SW_Antenna_Switch_
 	uint64_t 		RXByteCnt_A;
 	uint64_t 		RXByteCnt_B;
 	u8 		TrafficLoad;
-	RT_TIMER 	SwAntennaSwitchTimer;
+	struct timer_list 	SwAntennaSwitchTimer;
 /* CE Platform use
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
 	_timer SwAntennaSwitchTimer;
@@ -1038,7 +1038,7 @@ typedef struct _ANT_DETECTED_INFO{
 // 2011/09/22 MH Copy from SD4 defined structure. We use to support PHY DM integration.
 //
 struct rtl_dm {
-	//RT_TIMER 	FastAntTrainingTimer;
+	//struct timer_list 	FastAntTrainingTimer;
 	//
 	//	Add for different team use temporarily
 	//
@@ -1280,14 +1280,14 @@ struct rtl_dm {
 
 	//PSD
 	BOOLEAN			bUserAssignLevel;
-	RT_TIMER 		PSDTimer;
+	struct timer_list 		PSDTimer;
 	u8			RSSI_BT;			//come from BT
 	BOOLEAN			bPSDinProcess;
 	BOOLEAN			bPSDactive;
 	BOOLEAN			bDMInitialGainEnable;
 
 	//MPT DIG
-	RT_TIMER 		MPT_DIGTimer;
+	struct timer_list 		MPT_DIGTimer;
 
 	//for rate adaptive, in fact,  88c/92c fw will handle this
 	u8			bUseRAMask;
@@ -1337,10 +1337,10 @@ struct rtl_dm {
 	//
 
 	// ODM relative time.
-	RT_TIMER 				PathDivSwitchTimer;
+	struct timer_list 				PathDivSwitchTimer;
 	//2011.09.27 add for Path Diversity
-	RT_TIMER				CCKPathDiversityTimer;
-	RT_TIMER 	FastAntTrainingTimer;
+	struct timer_list				CCKPathDiversityTimer;
+	struct timer_list 	FastAntTrainingTimer;
 
 	// ODM relative workitem.
 

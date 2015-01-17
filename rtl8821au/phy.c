@@ -3247,14 +3247,12 @@ static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct rtl_dm *pDM_Odm)
 
 }
 
-HAL_STATUS _rtl8821au_phy_read_and_config_txpwr_lmt(struct rtl_dm *pDM_Odm)
+_rtl8821au_phy_read_and_config_txpwr_lmt(struct rtl_dm *pDM_Odm)
 {
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
 		ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(pDM_Odm);
 	if (pDM_Odm->SupportICType == ODM_RTL8821)
 		ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(pDM_Odm);
-
-	return HAL_STATUS_SUCCESS;
 }
 
 

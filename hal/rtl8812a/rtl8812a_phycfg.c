@@ -272,13 +272,7 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *Adapter)
 
 	if ((Adapter->registrypriv.RegEnableTxPowerLimit == 1 && pHalData->EEPROMRegulatory != 2) ||
 	     pHalData->EEPROMRegulatory == 1) {
-		if (HAL_STATUS_SUCCESS != _rtl8821au_phy_read_and_config_txpwr_lmt(&pHalData->odmpriv))
-			rtStatus = _FAIL;
-
-		if(rtStatus != _SUCCESS){
-			DBG_871X("phy_BB8812_Config_ParaFile():Write BB Reg Fail!!");
-			goto phy_BB_Config_ParaFile_Fail;
-		}
+		_rtl8821au_phy_read_and_config_txpwr_lmt(&pHalData->odmpriv);
 	}
 
 	/* Read PHY_REG.TXT BB INIT!! */

@@ -3883,7 +3883,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 	}
 
 	/* <20121109, Kordan> A workaround for 8812A only. */
-	rtl8812au_fixspur(Adapter, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+	rtl8812au_fixspur(Adapter, pHalData->CurrentChannelBW, Adapter->phy.current_channel);
 
 	/*
 	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", rtl_read_byte(Adapter, 0x483));

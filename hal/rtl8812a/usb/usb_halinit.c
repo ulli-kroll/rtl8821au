@@ -1185,7 +1185,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 	 * Save target channel
 	 * <Roger_Notes> Current Channel will be updated again later.
 	 */
-	pHalData->CurrentChannel = 0;	/* set 0 to trigger switch correct channel */
+	Adapter->phy.current_channel = 0;	/* set 0 to trigger switch correct channel */
 
 #if (HAL_MAC_ENABLE == 1)
 	PHY_MACConfig8812(Adapter);

@@ -472,7 +472,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 
 					/* et TxAGC Page C{}; */
 					/* Adapter->HalFunc.SetTxPowerLevelHandler(Adapter, pHalData->CurrentChannel); */
-					PHY_SetTxPowerLevel8812(Adapter, pHalData->CurrentChannel);
+					PHY_SetTxPowerLevel8812(Adapter, Adapter->phy.current_channel);
 
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, pDM_Odm->Remnant_OFDMSwingIdx[RFPath]));
 				} else if (Final_OFDM_Swing_Index < 0) {
@@ -485,7 +485,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 
 					/* Set TxAGC Page C{}; */
 					/* Adapter->HalFunc.SetTxPowerLevelHandler(Adapter, pHalData->CurrentChannel);*/
-					PHY_SetTxPowerLevel8812(Adapter, pHalData->CurrentChannel);
+					PHY_SetTxPowerLevel8812(Adapter, Adapter->phy.current_channel);
 
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", pDM_Odm->Remnant_OFDMSwingIdx[RFPath]));
 				} else 	{
@@ -499,7 +499,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 
 						/* Set TxAGC Page C{}; */
 						/* Adapter->HalFunc.SetTxPowerLevelHandler(Adapter, pHalData->CurrentChannel); */
-						PHY_SetTxPowerLevel8812(Adapter, pHalData->CurrentChannel);
+						PHY_SetTxPowerLevel8812(Adapter, Adapter->phy.current_channel);
 
 						pDM_Odm->Modify_TxAGC_Flag_PathA = FALSE;
 
@@ -723,7 +723,7 @@ void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	 struct _rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
 	u16	rate = *(pDM_Odm->pForcedDataRate);
-	u8         	channel   		 = pHalData->CurrentChannel;
+	u8         	channel   		 = Adapter->phy.current_channel;
 
 	if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip) {
 		if (1 <= channel && channel <= 14) {
@@ -888,7 +888,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 
 					/* Set TxAGC Page C{}; */
 					/* Adapter->HalFunc.SetTxPowerLevelHandler(Adapter, pHalData->CurrentChannel); */
-					PHY_SetTxPowerLevel8812(Adapter, pHalData->CurrentChannel);
+					PHY_SetTxPowerLevel8812(Adapter, Adapter->phy.current_channel);
 
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, pDM_Odm->Remnant_OFDMSwingIdx[RFPath]));
 				} else if (Final_OFDM_Swing_Index < 0) {
@@ -901,7 +901,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 
 					/* Set TxAGC Page C{}; */
 					/* Adapter->HalFunc.SetTxPowerLevelHandler(Adapter, pHalData->CurrentChannel); */
-					PHY_SetTxPowerLevel8812(Adapter, pHalData->CurrentChannel);
+					PHY_SetTxPowerLevel8812(Adapter, Adapter->phy.current_channel);
 
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", pDM_Odm->Remnant_OFDMSwingIdx[RFPath]));
 				} else {
@@ -916,7 +916,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
 
 						/* Set TxAGC Page C{}; */
 						/* Adapter->HalFunc.SetTxPowerLevelHandler(Adapter, pHalData->CurrentChannel); */
-						PHY_SetTxPowerLevel8812(Adapter, pHalData->CurrentChannel);
+						PHY_SetTxPowerLevel8812(Adapter, Adapter->phy.current_channel);
 
 						pDM_Odm->Modify_TxAGC_Flag_PathA = FALSE;
 
@@ -1023,7 +1023,7 @@ void rtl8821au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 	 struct _rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
 	/* u16     rate = pMgntInfo->ForcedDataRate; */
 	u16	rate = 0;
-	u8         	channel   		 = pHalData->CurrentChannel;
+	u8         	channel   		 = Adapter->phy.current_channel;
 
 	if (1 <= channel && channel <= 14) {
 		if (IS_CCK_RATE(rate)) {

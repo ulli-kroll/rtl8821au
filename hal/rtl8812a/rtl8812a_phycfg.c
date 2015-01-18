@@ -2771,7 +2771,7 @@ static void phy_InitRssiTRSW(struct rtl_priv *pAdapter)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
-	uint8_t 			channel = pHalData->CurrentChannel;
+	uint8_t 			channel = pAdapter->phy.current_channel;
 
 	if (pHalData->RFEType == 3){
 		if (channel <= 14) {
@@ -2806,7 +2806,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 	
 	uint8_t	eRFPath = 0;
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
-	uint8_t	channelToSW = pHalData->CurrentChannel;
+	uint8_t	channelToSW = pAdapter->phy.current_channel;
 
 	if (pAdapter->registrypriv.mp_mode == 0) {
 		if(phy_SwBand8812(pAdapter, channelToSW) == _FALSE) {
@@ -2902,7 +2902,7 @@ static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *Adapter)
 	}
 
 	ODM_ClearTxPowerTrackingState(&pHalData->odmpriv);
-	PHY_SetTxPowerLevel8812(Adapter, pHalData->CurrentChannel);
+	PHY_SetTxPowerLevel8812(Adapter, Adapter->phy.current_channel);
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) 
 		phy_InitRssiTRSW(Adapter);
@@ -2926,13 +2926,13 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 	uint8_t	CenterFrequencyIndex1
 )
 {
-	struct rtl_priv * 			pDefAdapter =  GetDefaultAdapter(Adapter);
+	struct rtl_priv * 	pDefAdapter =  GetDefaultAdapter(Adapter);
 	struct _rtw_hal *	pHalData = GET_HAL_DATA(pDefAdapter);
-	uint8_t					tmpChannel = pHalData->CurrentChannel;
-	enum CHANNEL_WIDTH		tmpBW= pHalData->CurrentChannelBW;
-	uint8_t					tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
-	uint8_t					tmpnCur80MhzPrimeSC = pHalData->nCur80MhzPrimeSC;
-	uint8_t					tmpCenterFrequencyIndex1 =pHalData->CurrentCenterFrequencyIndex1;
+	uint8_t			tmpChannel = Adapter->phy.current_channel;
+	enum CHANNEL_WIDTH	tmpBW= pHalData->CurrentChannelBW;
+	uint8_t			tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
+	uint8_t			tmpnCur80MhzPrimeSC = pHalData->nCur80MhzPrimeSC;
+	uint8_t			tmpCenterFrequencyIndex1 =pHalData->CurrentCenterFrequencyIndex1;
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 
 	/* DBG_871X("=> PHY_HandleSwChnlAndSetBW8812: bSwitchChannel %d, bSetBandWidth %d \n",bSwitchChannel,bSetBandWidth); */
@@ -2945,7 +2945,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 
 	/* skip change for channel or bandwidth is the same */
 	if(bSwitchChannel) {
-		if(pHalData->CurrentChannel != ChannelNum) {
+		if(Adapter->phy.current_channel != ChannelNum) {
 			if (HAL_IsLegalChannel(Adapter, ChannelNum))
 				pHalData->bSwChnl = _TRUE;
 			else
@@ -2973,7 +2973,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 
 
 	if(pHalData->bSwChnl) {
-		pHalData->CurrentChannel=ChannelNum;
+		Adapter->phy.current_channel = ChannelNum;
 		pHalData->CurrentCenterFrequencyIndex1 = ChannelNum;
 	}
 
@@ -2991,7 +2991,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 		phy_SwChnlAndSetBwMode8812(Adapter);
 	} else {
 		if(pHalData->bSwChnl) {
-			pHalData->CurrentChannel = tmpChannel;
+			Adapter->phy.current_channel = tmpChannel;
 			pHalData->CurrentCenterFrequencyIndex1 = tmpChannel;
 		}
 		if(pHalData->bSetChnlBW) {
@@ -3022,7 +3022,7 @@ void PHY_SetBWMode8812(struct rtl_priv *Adapter,
 
 	/* DBG_871X("%s()===>\n",__FUNCTION__); */
 
-	PHY_HandleSwChnlAndSetBW8812(Adapter, _FALSE, _TRUE, pHalData->CurrentChannel, Bandwidth, Offset, Offset, pHalData->CurrentChannel);
+	PHY_HandleSwChnlAndSetBW8812(Adapter, _FALSE, _TRUE, Adapter->phy.current_channel, Bandwidth, Offset, Offset, Adapter->phy.current_channel);
 
 	//DBG_871X("<==%s()\n",__FUNCTION__);
 }

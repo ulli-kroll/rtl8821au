@@ -192,7 +192,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 		BoardType |= ODM_BOARD_EXT_LNA;
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 1);
 	}
-	if (pHalData->ExternalLNA_5G != 0) {
+	if (rtlhal->external_lna_5g != 0) {
 		BoardType |= ODM_BOARD_EXT_LNA_5G;
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_5G_EXT_LNA, 1);
 	}

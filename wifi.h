@@ -28,11 +28,15 @@ struct rtl_hal {
 	bool fw_ready;
 };
 
+struct rtl_phy {
+};
+
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
 
 struct rtl_priv {
 	struct net_device *ndev;
 	struct rtl_hal rtlhal;		/* Caution new Hal data */
+	struct rtl_phy phy;
 	
 	
 	

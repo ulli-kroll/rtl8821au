@@ -19,14 +19,14 @@ struct rtl_efuse {
 	//
 	// EEPROM setting.
 	//
-	u16	EEPROMVID;
-	u16	EEPROMSVID;
+	u16	eeprom_vid;
+	u16	eeprom_svid;
 	u16	EEPROMPID;
 	u16	EEPROMSDID;
 
 	uint8_t	EEPROMCustomerID;
 	uint8_t	EEPROMSubCustomerID;
-	uint8_t	EEPROMVersion;
+	uint8_t	eeprom_version;
 	uint8_t	EEPROMRegulatory;
 	uint8_t	EEPROMThermalMeter;
 	uint8_t	EEPROMBluetoothCoexist;

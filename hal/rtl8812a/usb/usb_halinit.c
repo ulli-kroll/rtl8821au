@@ -1555,10 +1555,10 @@ VOID hal_ReadIDs_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 	if (!AutoloadFail) {
 		/* VID, PID */
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-			efuse->EEPROMVID = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8812AU]);
+			efuse->eeprom_vid = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8812AU]);
 			efuse->EEPROMPID = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8812AU]);
 		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-			efuse->EEPROMVID = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8821AU]);
+			efuse->eeprom_vid = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8821AU]);
 			efuse->EEPROMPID = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8821AU]);
 		}
 
@@ -1567,7 +1567,7 @@ VOID hal_ReadIDs_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 		efuse->EEPROMSubCustomerID = EEPROM_Default_SubCustomerID;
 
 	} else {
-		efuse->EEPROMVID = EEPROM_Default_VID;
+		efuse->eeprom_vid = EEPROM_Default_VID;
 		efuse->EEPROMPID = EEPROM_Default_PID;
 
 		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
@@ -1576,16 +1576,16 @@ VOID hal_ReadIDs_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 
 	}
 
-	if ((efuse->EEPROMVID == 0x050D) && (efuse->EEPROMPID == 0x1106))		/* SerComm for Belkin. */
+	if ((efuse->eeprom_vid == 0x050D) && (efuse->EEPROMPID == 0x1106))		/* SerComm for Belkin. */
 		pEEPROM->CustomerID = RT_CID_819x_Sercomm_Belkin;
-	else if ((efuse->EEPROMVID == 0x0846) && (efuse->EEPROMPID == 0x9051))	/* SerComm for Netgear. */
+	else if ((efuse->eeprom_vid == 0x0846) && (efuse->EEPROMPID == 0x9051))	/* SerComm for Netgear. */
 		pEEPROM->CustomerID = RT_CID_819x_Sercomm_Netgear;
-	else if ((efuse->EEPROMVID == 0x2001) && (efuse->EEPROMPID == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
+	else if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
 		pEEPROM->CustomerID = RT_CID_819x_ALPHA_Dlink;
-	else if ((efuse->EEPROMVID == 0x0B05) && (efuse->EEPROMPID == 0x17D2))	/* Edimax for ASUS */
+	else if ((efuse->eeprom_vid == 0x0B05) && (efuse->EEPROMPID == 0x17D2))	/* Edimax for ASUS */
 		pEEPROM->CustomerID = RT_CID_819x_Edimax_ASUS;
 
-	DBG_871X("VID = 0x%04X, PID = 0x%04X\n", efuse->EEPROMVID, efuse->EEPROMPID);
+	DBG_871X("VID = 0x%04X, PID = 0x%04X\n", efuse->eeprom_vid, efuse->EEPROMPID);
 	DBG_871X("Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->EEPROMCustomerID, efuse->EEPROMSubCustomerID);
 }
 
@@ -1702,35 +1702,35 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *pAdapter)
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
 
 	/* For customized behavior. */
-	if ((efuse->EEPROMVID == 0x103C) && (efuse->EEPROMPID == 0x1629))/* HP Lite-On for RTL8188CUS Slim Combo. */
+	if ((efuse->eeprom_vid == 0x103C) && (efuse->EEPROMPID == 0x1629))/* HP Lite-On for RTL8188CUS Slim Combo. */
 		pEEPROM->CustomerID = RT_CID_819x_HP;
-	else if ((efuse->EEPROMVID == 0x9846) && (efuse->EEPROMPID == 0x9041))
+	else if ((efuse->eeprom_vid == 0x9846) && (efuse->EEPROMPID == 0x9041))
 		pEEPROM->CustomerID = RT_CID_NETGEAR;
-	else if ((efuse->EEPROMVID == 0x2019) && (efuse->EEPROMPID == 0x1201))
+	else if ((efuse->eeprom_vid == 0x2019) && (efuse->EEPROMPID == 0x1201))
 		pEEPROM->CustomerID = RT_CID_PLANEX;
-	else if ((efuse->EEPROMVID == 0x0BDA) && (efuse->EEPROMPID == 0x5088))
+	else if ((efuse->eeprom_vid == 0x0BDA) && (efuse->EEPROMPID == 0x5088))
 		pEEPROM->CustomerID = RT_CID_CC_C;
 
-	DBG_871X("PID= 0x%x, VID=  %x\n", efuse->EEPROMPID, efuse->EEPROMVID);
+	DBG_871X("PID= 0x%x, VID=  %x\n", efuse->EEPROMPID, efuse->eeprom_vid);
 
 	/* Decide CustomerID according to VID/DID or EEPROM */
 	switch (efuse->EEPROMCustomerID) {
 	case EEPROM_CID_DEFAULT:
-		if ((efuse->EEPROMVID == 0x2001) && (efuse->EEPROMPID == 0x3308))
+		if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x3308))
 			pEEPROM->CustomerID = RT_CID_DLINK;
-		else if ((efuse->EEPROMVID == 0x2001) && (efuse->EEPROMPID == 0x3309))
+		else if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x3309))
 			pEEPROM->CustomerID = RT_CID_DLINK;
-		else if ((efuse->EEPROMVID == 0x2001) && (efuse->EEPROMPID == 0x330a))
+		else if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x330a))
 			pEEPROM->CustomerID = RT_CID_DLINK;
-		else if ((efuse->EEPROMVID == 0x0BFF) && (efuse->EEPROMPID == 0x8160)) {
+		else if ((efuse->eeprom_vid == 0x0BFF) && (efuse->EEPROMPID == 0x8160)) {
 			/* pHalData->bAutoConnectEnable = _FALSE; */
 			pEEPROM->CustomerID = RT_CID_CHINA_MOBILE;
-		} else if ((efuse->EEPROMVID == 0x0BDA) && (efuse->EEPROMPID == 0x5088))
+		} else if ((efuse->eeprom_vid == 0x0BDA) && (efuse->EEPROMPID == 0x5088))
 			pEEPROM->CustomerID = RT_CID_CC_C;
-		else if ((efuse->EEPROMVID == 0x0846) && (efuse->EEPROMPID == 0x9052))
+		else if ((efuse->eeprom_vid == 0x0846) && (efuse->EEPROMPID == 0x9052))
 			pEEPROM->CustomerID = RT_CID_NETGEAR;
 
-		DBG_871X("PID= 0x%x, VID=  %x\n", efuse->EEPROMPID, efuse->EEPROMVID);
+		DBG_871X("PID= 0x%x, VID=  %x\n", efuse->EEPROMPID, efuse->eeprom_vid);
 		break;
 	case EEPROM_CID_WHQL:
 		/*

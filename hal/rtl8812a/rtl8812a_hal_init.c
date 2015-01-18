@@ -879,13 +879,13 @@ VOID Hal_ReadPROMVersion8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (AutoloadFail) {
-		efuse->EEPROMVersion = EEPROM_Default_Version;
+		efuse->eeprom_version = EEPROM_Default_Version;
 	} else{
-		efuse->EEPROMVersion = *(uint8_t *)&PROMContent[EEPROM_VERSION_8812];
-		if (efuse->EEPROMVersion == 0xFF)
-			efuse->EEPROMVersion = EEPROM_Default_Version;
+		efuse->eeprom_version = *(uint8_t *)&PROMContent[EEPROM_VERSION_8812];
+		if (efuse->eeprom_version == 0xFF)
+			efuse->eeprom_version = EEPROM_Default_Version;
 	}
-	/* DBG_871X("pHalData->EEPROMVersion is 0x%x\n", pHalData->EEPROMVersion); */
+	/* DBG_871X("pHalData->eeprom_version is 0x%x\n", pHalData->eeprom_version); */
 }
 
 void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,

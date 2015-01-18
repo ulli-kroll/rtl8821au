@@ -875,14 +875,15 @@ void Hal_EfuseParseIDCode8812A(struct rtl_priv *padapter, uint8_t *hwinfo)
 VOID Hal_ReadPROMVersion8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN AutoloadFail)
 {
+	struct rtl_efuse *efuse = rtl_efuse(Adapter);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (AutoloadFail) {
-		pHalData->EEPROMVersion = EEPROM_Default_Version;
+		efuse->EEPROMVersion = EEPROM_Default_Version;
 	} else{
-		pHalData->EEPROMVersion = *(uint8_t *)&PROMContent[EEPROM_VERSION_8812];
-		if (pHalData->EEPROMVersion == 0xFF)
-			pHalData->EEPROMVersion = EEPROM_Default_Version;
+		efuse->EEPROMVersion = *(uint8_t *)&PROMContent[EEPROM_VERSION_8812];
+		if (efuse->EEPROMVersion == 0xFF)
+			efuse->EEPROMVersion = EEPROM_Default_Version;
 	}
 	/* DBG_871X("pHalData->EEPROMVersion is 0x%x\n", pHalData->EEPROMVersion); */
 }
@@ -890,6 +891,7 @@ VOID Hal_ReadPROMVersion8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	AutoLoadFail)
 {
+	struct rtl_efuse *efuse = rtl_efuse(Adapter);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	TxPowerInfo24G	pwrInfo24G;
 	TxPowerInfo5G	pwrInfo5G;
@@ -976,21 +978,21 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		if (registry_par->regulatory_tid == 0xff) {
 
 			if (PROMContent[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
-				pHalData->EEPROMRegulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* bit0~2 */
+				efuse->EEPROMRegulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* bit0~2 */
 			else
-				pHalData->EEPROMRegulatory = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* bit0~2 */
+				efuse->EEPROMRegulatory = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* bit0~2 */
 		} else{
-			pHalData->EEPROMRegulatory = registry_par->regulatory_tid;
+			efuse->EEPROMRegulatory = registry_par->regulatory_tid;
 		}
 
 		/* 2012/09/26 MH Add for TX power calibrate rate. */
 		pHalData->TxPwrCalibrateRate = PROMContent[EEPROM_TX_PWR_CALIBRATE_RATE_8812];
 	} else {
-		pHalData->EEPROMRegulatory = 0;
+		efuse->EEPROMRegulatory = 0;
 		/* 2012/09/26 MH Add for TX power calibrate rate. */
 		pHalData->TxPwrCalibrateRate = EEPROM_DEFAULT_TX_CALIBRATE_RATE;
 	}
-	DBG_871X("EEPROMRegulatory = 0x%x TxPwrCalibrateRate=0x%x\n", pHalData->EEPROMRegulatory, pHalData->TxPwrCalibrateRate);
+	DBG_871X("EEPROMRegulatory = 0x%x TxPwrCalibrateRate=0x%x\n", efuse->EEPROMRegulatory, pHalData->TxPwrCalibrateRate);
 
 }
 
@@ -1013,6 +1015,7 @@ VOID Hal_ReadBoardType8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 VOID Hal_ReadThermalMeter_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
+	struct rtl_efuse *efuse = rtl_efuse(Adapter);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	/* uint8_t	tempval; */
 
@@ -1020,18 +1023,18 @@ VOID Hal_ReadThermalMeter_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	 * ThermalMeter from EEPROM
 	 */
 	if (!AutoloadFail)
-		pHalData->EEPROMThermalMeter = PROMContent[EEPROM_THERMAL_METER_8812];
+		efuse->EEPROMThermalMeter = PROMContent[EEPROM_THERMAL_METER_8812];
 	else
-		pHalData->EEPROMThermalMeter = EEPROM_Default_ThermalMeter_8812;
+		efuse->EEPROMThermalMeter = EEPROM_Default_ThermalMeter_8812;
 	/* pHalData->EEPROMThermalMeter = (tempval&0x1f);	//[4:0] */
 
-	if (pHalData->EEPROMThermalMeter == 0xff || AutoloadFail) {
+	if (efuse->EEPROMThermalMeter == 0xff || AutoloadFail) {
 		pHalData->bAPKThermalMeterIgnore = _TRUE;
-		pHalData->EEPROMThermalMeter = 0xFF;
+		efuse->EEPROMThermalMeter = 0xFF;
 	}
 
 	/* pHalData->ThermalMeter[0] = pHalData->EEPROMThermalMeter; */
-	DBG_871X("ThermalMeter = 0x%x\n", pHalData->EEPROMThermalMeter);
+	DBG_871X("ThermalMeter = 0x%x\n", efuse->EEPROMThermalMeter);
 }
 
 VOID Hal_ReadChannelPlan8812A(struct rtl_priv *padapter, uint8_t *hwinfo,

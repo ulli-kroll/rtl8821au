@@ -16,6 +16,24 @@ struct rtl_hal_ops;
 /* Here will go the new Halinterface data */
 
 struct rtl_efuse {
+	//
+	// EEPROM setting.
+	//
+	u16	EEPROMVID;
+	u16	EEPROMSVID;
+	u16	EEPROMPID;
+	u16	EEPROMSDID;
+
+	uint8_t	EEPROMCustomerID;
+	uint8_t	EEPROMSubCustomerID;
+	uint8_t	EEPROMVersion;
+	uint8_t	EEPROMRegulatory;
+	uint8_t	EEPROMThermalMeter;
+	uint8_t	EEPROMBluetoothCoexist;
+	uint8_t	EEPROMBluetoothType;
+	uint8_t	EEPROMBluetoothAntNum;
+	uint8_t	EEPROMBluetoothAntIsolation;
+	uint8_t	EEPROMBluetoothRadioShared;
 };
 
 
@@ -51,7 +69,7 @@ struct rtl_phy {
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
-#define rtl_efuse(priv)		(&(priv)->efuse))
+#define rtl_efuse(rtlpriv)	(&((rtlpriv)->efuse))
 
 struct rtl_priv {
 	struct net_device *ndev;
@@ -1258,24 +1276,7 @@ struct _rtw_hal {
 	u32	framesyncC34;
 	uint8_t	framesyncMonitor;
 	uint8_t	DefaultInitialGain[4];
-	//
-	// EEPROM setting.
-	//
-	u16	EEPROMVID;
-	u16	EEPROMSVID;
-	u16	EEPROMPID;
-	u16	EEPROMSDID;
 
-	uint8_t	EEPROMCustomerID;
-	uint8_t	EEPROMSubCustomerID;
-	uint8_t	EEPROMVersion;
-	uint8_t	EEPROMRegulatory;
-	uint8_t	EEPROMThermalMeter;
-	uint8_t	EEPROMBluetoothCoexist;
-	uint8_t	EEPROMBluetoothType;
-	uint8_t	EEPROMBluetoothAntNum;
-	uint8_t	EEPROMBluetoothAntIsolation;
-	uint8_t	EEPROMBluetoothRadioShared;
 	uint8_t	bTXPowerDataReadFromEEPORM;
 	uint8_t	bAPKThermalMeterIgnore;
 

@@ -2364,13 +2364,14 @@ static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel
 	BAND_TYPE Band, enum CHANNEL_WIDTH Bandwidth, enum radio_path RfPath,
 	uint8_t DataRate, uint8_t Channel)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_efuse *efuse = rtl_efuse(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	s16				band = -1, regulation = -1, bandwidth = -1,
 					rfPath = -1, rateSection = -1, channelGroup = -1;
 	uint8_t				powerLimit = MAX_POWER_INDEX;
 
-	if ((Adapter->registrypriv.RegEnableTxPowerLimit == 0 && pHalData->EEPROMRegulatory != 1)
-	   || pHalData->EEPROMRegulatory == 2)
+	if ((Adapter->registrypriv.RegEnableTxPowerLimit == 0 && efuse->EEPROMRegulatory != 1)
+	   || efuse->EEPROMRegulatory == 2)
 		return MAX_POWER_INDEX;
 
 	switch (RegPwrTblSel) {
@@ -2908,6 +2909,7 @@ VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
 u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 	uint8_t	Rate, enum CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
+	struct rtl_efuse *efuse = rtl_efuse(pAdapter);
 	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
 	struct _rtw_hal *	pHalData = GET_HAL_DATA(pAdapter);
 	struct rtl_dm *		pDM_Odm = &pHalData->odmpriv;
@@ -3045,11 +3047,11 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 	 * HT=3/4/5/6 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
 	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
 	 */
-	if (pregistrypriv->RegPwrByRate == _FALSE && pHalData->EEPROMRegulatory != 2) {
+	if (pregistrypriv->RegPwrByRate == _FALSE && efuse->EEPROMRegulatory != 2) {
 		powerDiffByRate = phy_GetTxPwrByRateOffset_8812(pAdapter, (uint8_t)(!bIn24G), RFPath, Rate);
 
-		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && pHalData->EEPROMRegulatory != 2)
-		||  pHalData->EEPROMRegulatory == 1) {
+		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && efuse->EEPROMRegulatory != 2)
+		||  efuse->EEPROMRegulatory == 1) {
 			uint8_t limit = 0;
 			limit = PHY_GetPowerLimitValue(pAdapter, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (enum radio_path)RFPath, Rate, Channel);
 

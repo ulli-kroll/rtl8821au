@@ -131,13 +131,13 @@ void getTxPowerWriteValByRegulatory8812(
 	OUT		u32*		pOutWriteVal
 	)
 {
-
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_efuse *efuse = rtl_efuse(Adapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	uint8_t			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
 	s8			pwr_diff=0;
 	uint32_t 			writeVal, customer_limit, rf;
-	uint8_t			Regulatory = pHalData->EEPROMRegulatory;
+	uint8_t			Regulatory = efuse->EEPROMRegulatory;
 
 	//
 	// Index 0 & 1= legacy OFDM, 2-5=HT_MCS rate
@@ -408,6 +408,7 @@ int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 
 void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 {
+	struct rtl_efuse *efuse = rtl_efuse(Adapter);
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv		*pdmpriv = &pHalData->dmpriv;
@@ -456,7 +457,7 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *Adapter, uint8_t *pPo
 					(pPowerlevel[idx1]<<16) | (pPowerlevel[idx1]<<24);
 			}
 
-			if (pHalData->EEPROMRegulatory == 0) {
+			if (efuse->EEPROMRegulatory == 0) {
 				tmpval = (pHalData->MCSTxPowerLevelOriginalOffset[0][6]) +
 						(pHalData->MCSTxPowerLevelOriginalOffset[0][7]<<8);
 				TxAGC[RF90_PATH_A] += tmpval;

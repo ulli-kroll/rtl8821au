@@ -14,6 +14,12 @@ struct rtl_hal_ops;
 
 
 /* Here will go the new Halinterface data */
+#define CHANNEL_MAX_NUMBER			14+24+21	// 14 is the max channel number
+#define CHANNEL_MAX_NUMBER_2G		14
+#define CHANNEL_MAX_NUMBER_5G		54			// Please refer to "phy_GetChnlGroup8812A" and "Hal_ReadTxPowerInfo8812A"
+#define CHANNEL_MAX_NUMBER_5G_80M	7
+#define CHANNEL_GROUP_MAX				3+9	// ch1~3, ch4~9, ch10~14 total three groups
+#define MAX_PG_GROUP					13
 
 struct rtl_efuse {
 	//
@@ -34,6 +40,24 @@ struct rtl_efuse {
 	uint8_t	EEPROMBluetoothAntNum;
 	uint8_t	EEPROMBluetoothAntIsolation;
 	uint8_t	EEPROMBluetoothRadioShared;
+	
+	//---------------------------------------------------------------------------------//
+	//3 [2.4G]
+	uint8_t	Index24G_CCK_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	uint8_t	Index24G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	//If only one tx, only BW20 and OFDM are used.
+	s8	CCK_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	OFDM_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	BW20_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	BW40_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
+	//3 [5G]
+	uint8_t	Index5G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	uint8_t	Index5G_BW80_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER_5G_80M];
+	s8	OFDM_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	BW20_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	BW40_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	BW80_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
+	
 };
 
 
@@ -558,12 +582,6 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 	RT_AMPDU_BRUST_8723B	 	= 7,
 }RT_AMPDU_BRUST,*PRT_AMPDU_BRUST_MODE;
 
-#define CHANNEL_MAX_NUMBER			14+24+21	// 14 is the max channel number
-#define CHANNEL_MAX_NUMBER_2G		14
-#define CHANNEL_MAX_NUMBER_5G		54			// Please refer to "phy_GetChnlGroup8812A" and "Hal_ReadTxPowerInfo8812A"
-#define CHANNEL_MAX_NUMBER_5G_80M	7
-#define CHANNEL_GROUP_MAX				3+9	// ch1~3, ch4~9, ch10~14 total three groups
-#define MAX_PG_GROUP					13
 
 #define MAX_REGULATION_NUM						3
 #define MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE	4
@@ -1285,22 +1303,6 @@ struct _rtw_hal {
 	u16				EfuseUsedBytes;
 	//uint8_t				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
 
-	//---------------------------------------------------------------------------------//
-	//3 [2.4G]
-	uint8_t	Index24G_CCK_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
-	uint8_t	Index24G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
-	//If only one tx, only BW20 and OFDM are used.
-	s8	CCK_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	OFDM_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW20_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW40_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	//3 [5G]
-	uint8_t	Index5G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
-	uint8_t	Index5G_BW80_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER_5G_80M];
-	s8	OFDM_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW20_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW40_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW80_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 
 	uint8_t	Regulation2_4G;
 	uint8_t	Regulation5G;

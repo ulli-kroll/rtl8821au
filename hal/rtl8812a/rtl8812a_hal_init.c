@@ -918,11 +918,11 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			Hal_GetChnlGroup8812A(ch+1, &group);
 
 			if (ch == 14-1) {
-				pHalData->Index24G_CCK_Base[rfPath][ch] = pwrInfo24G.IndexCCK_Base[rfPath][5];
-				pHalData->Index24G_BW40_Base[rfPath][ch] = pwrInfo24G.IndexBW40_Base[rfPath][group];
+				efuse->Index24G_CCK_Base[rfPath][ch] = pwrInfo24G.IndexCCK_Base[rfPath][5];
+				efuse->Index24G_BW40_Base[rfPath][ch] = pwrInfo24G.IndexBW40_Base[rfPath][group];
 			} else {
-				pHalData->Index24G_CCK_Base[rfPath][ch] = pwrInfo24G.IndexCCK_Base[rfPath][group];
-				pHalData->Index24G_BW40_Base[rfPath][ch] = pwrInfo24G.IndexBW40_Base[rfPath][group];
+				efuse->Index24G_CCK_Base[rfPath][ch] = pwrInfo24G.IndexCCK_Base[rfPath][group];
+				efuse->Index24G_BW40_Base[rfPath][ch] = pwrInfo24G.IndexBW40_Base[rfPath][group];
 			}
 
 			/*
@@ -935,7 +935,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G; ch++) {
 			Hal_GetChnlGroup8812A(channel5G[ch], &group);
 
-			pHalData->Index5G_BW40_Base[rfPath][ch] = pwrInfo5G.IndexBW40_Base[rfPath][group];
+			efuse->Index5G_BW40_Base[rfPath][ch] = pwrInfo5G.IndexBW40_Base[rfPath][group];
 
 			/*
 			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);
@@ -949,7 +949,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			upper = pwrInfo5G.IndexBW40_Base[rfPath][group];
 			lower = pwrInfo5G.IndexBW40_Base[rfPath][group+1];
 
-			pHalData->Index5G_BW80_Base[rfPath][ch] = (upper + lower) / 2;
+			efuse->Index5G_BW80_Base[rfPath][ch] = (upper + lower) / 2;
 
 			/*
 			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);
@@ -958,15 +958,15 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		}
 
 		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
-			pHalData->CCK_24G_Diff[rfPath][TxCount]  = pwrInfo24G.CCK_Diff[rfPath][TxCount];
-			pHalData->OFDM_24G_Diff[rfPath][TxCount] = pwrInfo24G.OFDM_Diff[rfPath][TxCount];
-			pHalData->BW20_24G_Diff[rfPath][TxCount] = pwrInfo24G.BW20_Diff[rfPath][TxCount];
-			pHalData->BW40_24G_Diff[rfPath][TxCount] = pwrInfo24G.BW40_Diff[rfPath][TxCount];
+			efuse->CCK_24G_Diff[rfPath][TxCount]  = pwrInfo24G.CCK_Diff[rfPath][TxCount];
+			efuse->OFDM_24G_Diff[rfPath][TxCount] = pwrInfo24G.OFDM_Diff[rfPath][TxCount];
+			efuse->BW20_24G_Diff[rfPath][TxCount] = pwrInfo24G.BW20_Diff[rfPath][TxCount];
+			efuse->BW40_24G_Diff[rfPath][TxCount] = pwrInfo24G.BW40_Diff[rfPath][TxCount];
 
-			pHalData->OFDM_5G_Diff[rfPath][TxCount] = pwrInfo5G.OFDM_Diff[rfPath][TxCount];
-			pHalData->BW20_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW20_Diff[rfPath][TxCount];
-			pHalData->BW40_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW40_Diff[rfPath][TxCount];
-			pHalData->BW80_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW80_Diff[rfPath][TxCount];
+			efuse->OFDM_5G_Diff[rfPath][TxCount] = pwrInfo5G.OFDM_Diff[rfPath][TxCount];
+			efuse->BW20_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW20_Diff[rfPath][TxCount];
+			efuse->BW40_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW40_Diff[rfPath][TxCount];
+			efuse->BW80_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW80_Diff[rfPath][TxCount];
 /* #if DBG */
 		}
 	}

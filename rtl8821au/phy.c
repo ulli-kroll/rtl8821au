@@ -2933,9 +2933,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 
 	if (bIn24G) { /* 3 ============================== 2.4 G ============================== */
 		if (IS_CCK_RATE(Rate)) {
-			txPower = pHalData->Index24G_CCK_Base[RFPath][chnlIdx];
+			txPower = efuse->Index24G_CCK_Base[RFPath][chnlIdx];
 		} else if (MGN_6M <= Rate) {
-			txPower = pHalData->Index24G_BW40_Base[RFPath][chnlIdx];
+			txPower = efuse->Index24G_BW40_Base[RFPath][chnlIdx];
 		} else {
 			DBG_871X("===> mpt_ProQueryCaltxPower_Jaguar: INVALID Rate.\n");
 		}
@@ -2944,15 +2944,15 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 
 		/* OFDM-1T */
 		if (MGN_6M <= Rate && Rate <= MGN_54M && !IS_CCK_RATE(Rate)) {
-			txPower += pHalData->OFDM_24G_Diff[RFPath][TX_1S];
+			txPower += efuse->OFDM_24G_Diff[RFPath][TX_1S];
 			/* DBG_871X("+PowerDiff 2.4G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_24G_Diff[RFPath][TX_1S]); */
 		}
 
 		if (BandWidth == CHANNEL_WIDTH_20) {	/* BW20-1S, BW20-2S */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += pHalData->BW20_24G_Diff[RFPath][TX_1S];
+				txPower += efuse->BW20_24G_Diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += pHalData->BW20_24G_Diff[RFPath][TX_2S];
+				txPower += efuse->BW20_24G_Diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 2.4G (RF-%c): (BW20-1S, BW20-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
@@ -2960,9 +2960,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 			 */
 		} else if (BandWidth == CHANNEL_WIDTH_40) {	/* BW40-1S, BW40-2S */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += pHalData->BW40_24G_Diff[RFPath][TX_1S];
+				txPower += efuse->BW40_24G_Diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += pHalData->BW40_24G_Diff[RFPath][TX_2S];
+				txPower += efuse->BW40_24G_Diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
@@ -2970,9 +2970,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 			 */
 		} else if (BandWidth == CHANNEL_WIDTH_80) {	/* Willis suggest adopt BW 40M power index while in BW 80 mode */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += pHalData->BW40_24G_Diff[RFPath][TX_1S];
+				txPower += efuse->BW40_24G_Diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += pHalData->BW40_24G_Diff[RFPath][TX_2S];
+				txPower += efuse->BW40_24G_Diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S) = (%d, %d) P.S. Current is in BW 80MHz\n", ((RFPath==0)?'A':'B'),
@@ -2986,7 +2986,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 		 */
 	} else {	/* 3 ============================== 5 G ============================== */
 		if (MGN_6M <= Rate) {
-			txPower = pHalData->Index5G_BW40_Base[RFPath][chnlIdx];
+			txPower = efuse->Index5G_BW40_Base[RFPath][chnlIdx];
 		} else {
 			DBG_871X("===> mpt_ProQueryCalTxPower_Jaguar: INVALID Rate.\n");
 		}
@@ -2995,15 +2995,15 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 
 		/* OFDM-1T */
 		if (MGN_6M <= Rate && Rate <= MGN_54M && !IS_CCK_RATE(Rate)) {
-			txPower += pHalData->OFDM_5G_Diff[RFPath][TX_1S];
+			txPower += efuse->OFDM_5G_Diff[RFPath][TX_1S];
 			/* DBG_871X("+PowerDiff 5G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_5G_Diff[RFPath][TX_1S]); */
 		}
 
 		if (BandWidth == CHANNEL_WIDTH_20) {	/* BW20-1S, BW20-2S */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-			    txPower += pHalData->BW20_5G_Diff[RFPath][TX_1S];
+			    txPower += efuse->BW20_5G_Diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-			    txPower += pHalData->BW20_5G_Diff[RFPath][TX_2S];
+			    txPower += efuse->BW20_5G_Diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 5G (RF-%c): (BW20-1S, BW20-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
@@ -3011,9 +3011,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 			 */
 		} else if (BandWidth == CHANNEL_WIDTH_40) {	/* BW40-1S, BW40-2S */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-			    txPower += pHalData->BW40_5G_Diff[RFPath][TX_1S];
+			    txPower += efuse->BW40_5G_Diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-			    txPower += pHalData->BW40_5G_Diff[RFPath][TX_2S];
+			    txPower += efuse->BW40_5G_Diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 5G(RF-%c): (BW40-1S, BW40-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
@@ -3027,9 +3027,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 					chnlIdx = i;
 
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower = pHalData->Index5G_BW80_Base[RFPath][chnlIdx] + pHalData->BW80_5G_Diff[RFPath][TX_1S];
+				txPower = efuse->Index5G_BW80_Base[RFPath][chnlIdx] + efuse->BW80_5G_Diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower = pHalData->Index5G_BW80_Base[RFPath][chnlIdx] + pHalData->BW80_5G_Diff[RFPath][TX_1S] + pHalData->BW80_5G_Diff[RFPath][TX_2S];
+				txPower = efuse->Index5G_BW80_Base[RFPath][chnlIdx] + efuse->BW80_5G_Diff[RFPath][TX_1S] + efuse->BW80_5G_Diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 5G(RF-%c): (BW80-1S, BW80-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),

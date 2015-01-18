@@ -963,10 +963,10 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			efuse->BW20_24G_Diff[rfPath][TxCount] = pwrInfo24G.BW20_Diff[rfPath][TxCount];
 			efuse->BW40_24G_Diff[rfPath][TxCount] = pwrInfo24G.BW40_Diff[rfPath][TxCount];
 
-			efuse->OFDM_5G_Diff[rfPath][TxCount] = pwrInfo5G.OFDM_Diff[rfPath][TxCount];
-			efuse->BW20_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW20_Diff[rfPath][TxCount];
-			efuse->BW40_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW40_Diff[rfPath][TxCount];
-			efuse->BW80_5G_Diff[rfPath][TxCount] = pwrInfo5G.BW80_Diff[rfPath][TxCount];
+			efuse->txpwr_5g_ofdmdiff[rfPath][TxCount] = pwrInfo5G.OFDM_Diff[rfPath][TxCount];
+			efuse->txpwr_5g_bw20diff[rfPath][TxCount] = pwrInfo5G.BW20_Diff[rfPath][TxCount];
+			efuse->txpwr_5g_bw40diff[rfPath][TxCount] = pwrInfo5G.BW40_Diff[rfPath][TxCount];
+			efuse->txpwr_5g_bw80diff[rfPath][TxCount] = pwrInfo5G.BW80_Diff[rfPath][TxCount];
 /* #if DBG */
 		}
 	}

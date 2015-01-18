@@ -2995,15 +2995,15 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 
 		/* OFDM-1T */
 		if (MGN_6M <= Rate && Rate <= MGN_54M && !IS_CCK_RATE(Rate)) {
-			txPower += efuse->OFDM_5G_Diff[RFPath][TX_1S];
+			txPower += efuse->txpwr_5g_ofdmdiff[RFPath][TX_1S];
 			/* DBG_871X("+PowerDiff 5G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_5G_Diff[RFPath][TX_1S]); */
 		}
 
 		if (BandWidth == CHANNEL_WIDTH_20) {	/* BW20-1S, BW20-2S */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-			    txPower += efuse->BW20_5G_Diff[RFPath][TX_1S];
+			    txPower += efuse->txpwr_5g_bw20diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-			    txPower += efuse->BW20_5G_Diff[RFPath][TX_2S];
+			    txPower += efuse->txpwr_5g_bw20diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 5G (RF-%c): (BW20-1S, BW20-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
@@ -3011,9 +3011,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 			 */
 		} else if (BandWidth == CHANNEL_WIDTH_40) {	/* BW40-1S, BW40-2S */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-			    txPower += efuse->BW40_5G_Diff[RFPath][TX_1S];
+			    txPower += efuse->txpwr_5g_bw40diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-			    txPower += efuse->BW40_5G_Diff[RFPath][TX_2S];
+			    txPower += efuse->txpwr_5g_bw40diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 5G(RF-%c): (BW40-1S, BW40-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
@@ -3027,9 +3027,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 					chnlIdx = i;
 
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15)  || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower = efuse->Index5G_BW80_Base[RFPath][chnlIdx] + efuse->BW80_5G_Diff[RFPath][TX_1S];
+				txPower = efuse->txpwr_5g_bw80diff[RFPath][chnlIdx] + efuse->txpwr_5g_bw80diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower = efuse->Index5G_BW80_Base[RFPath][chnlIdx] + efuse->BW80_5G_Diff[RFPath][TX_1S] + efuse->BW80_5G_Diff[RFPath][TX_2S];
+				txPower = efuse->txpwr_5g_bw80diff[RFPath][chnlIdx] + efuse->txpwr_5g_bw80diff[RFPath][TX_1S] + efuse->txpwr_5g_bw80diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 5G(RF-%c): (BW80-1S, BW80-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),

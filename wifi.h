@@ -53,10 +53,10 @@ struct rtl_efuse {
 	//3 [5G]
 	uint8_t	Index5G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
 	uint8_t	Index5G_BW80_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER_5G_80M];
-	s8	OFDM_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW20_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW40_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW80_5G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	txpwr_5g_ofdmdiff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	txpwr_5g_bw20diff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	txpwr_5g_bw40diff[MAX_RF_PATH][MAX_TX_COUNT];
+	s8	txpwr_5g_bw80diff[MAX_RF_PATH][MAX_TX_COUNT];
 	
 };
 

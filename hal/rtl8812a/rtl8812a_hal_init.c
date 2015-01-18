@@ -935,7 +935,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G; ch++) {
 			Hal_GetChnlGroup8812A(channel5G[ch], &group);
 
-			efuse->Index5G_BW40_Base[rfPath][ch] = pwrInfo5G.IndexBW40_Base[rfPath][group];
+			efuse->txpwr_5g_bw40base[rfPath][ch] = pwrInfo5G.IndexBW40_Base[rfPath][group];
 
 			/*
 			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);
@@ -949,7 +949,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			upper = pwrInfo5G.IndexBW40_Base[rfPath][group];
 			lower = pwrInfo5G.IndexBW40_Base[rfPath][group+1];
 
-			efuse->Index5G_BW80_Base[rfPath][ch] = (upper + lower) / 2;
+			efuse->txpwr_5g_bw80base[rfPath][ch] = (upper + lower) / 2;
 
 			/*
 			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);

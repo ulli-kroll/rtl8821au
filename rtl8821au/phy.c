@@ -2986,7 +2986,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 		 */
 	} else {	/* 3 ============================== 5 G ============================== */
 		if (MGN_6M <= Rate) {
-			txPower = efuse->Index5G_BW40_Base[RFPath][chnlIdx];
+			txPower = efuse->txpwr_5g_bw40base[RFPath][chnlIdx];
 		} else {
 			DBG_871X("===> mpt_ProQueryCalTxPower_Jaguar: INVALID Rate.\n");
 		}

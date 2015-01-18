@@ -107,7 +107,7 @@ void getPowerBase8812(
 	for(i=0; i<pHalData->NumTotalRFPath; i++)
 	{
 		//Check HT20 to HT40 diff
-		if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_20)
+		if(Adapter->phy.current_chan_bw == CHANNEL_WIDTH_20)
 		{
 			powerlevel[i] = pPowerLevelBW20[i];
 		}
@@ -223,12 +223,12 @@ void getTxPowerWriteValByRegulatory8812(
 
 				if(index < 2)
 					pwr_diff = pHalData->TxPwrLegacyHtDiff[rf][Channel-1];
-				else if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_20)
+				else if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_20)
 					pwr_diff = pHalData->TxPwrHt20Diff[rf][Channel-1];
 
 				//RTPRINT(FPHY, PHY_TXPWR, ("power diff rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), pwr_diff));
 
-				if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_40)
+				if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_40)
 					customer_pwr_limit = pHalData->PwrGroupHT40[rf][Channel-1];
 				else
 					customer_pwr_limit = pHalData->PwrGroupHT20[rf][Channel-1];

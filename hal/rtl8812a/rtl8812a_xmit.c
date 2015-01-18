@@ -185,14 +185,14 @@ u8 BWMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
 	 * DBG_871X("BWMapping pHalData->CurrentChannelBW %d, pattrib->bwmode %d \n",pHalData->CurrentChannelBW,pattrib->bwmode);
 	 */
 
-	if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_80) {
+	if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_80) {
 		if (pattrib->bwmode == CHANNEL_WIDTH_80)
 			BWSettingOfDesc= 2;
 		else if (pattrib->bwmode == CHANNEL_WIDTH_40)
 			BWSettingOfDesc = 1;
 		else
 			BWSettingOfDesc = 0;
-	} else if(pHalData->CurrentChannelBW== CHANNEL_WIDTH_40) {
+	} else if(Adapter->phy.current_chan_bw == CHANNEL_WIDTH_40) {
 		if((pattrib->bwmode == CHANNEL_WIDTH_40) || (pattrib->bwmode == CHANNEL_WIDTH_80))
 			BWSettingOfDesc = 1;
 		else
@@ -212,7 +212,7 @@ u8 SCMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
 	 * DBG_871X("SCMapping: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
 	 */
 
-	if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_80) {
+	if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_80) {
 		if(pattrib->bwmode == CHANNEL_WIDTH_80) {
 			SCSettingOfDesc = VHT_DATA_SC_DONOT_CARE;
 		} else if(pattrib->bwmode == CHANNEL_WIDTH_40) {
@@ -234,7 +234,7 @@ u8 SCMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
 			else
 				DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
 		}
-	} else if(pHalData->CurrentChannelBW== CHANNEL_WIDTH_40) {
+	} else if(Adapter->phy.current_chan_bw== CHANNEL_WIDTH_40) {
 		/*
 		 * DBG_871X("SCMapping: HT Case: pHalData->CurrentChannelBW %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur40MhzPrimeSC);
 		 */

@@ -3759,7 +3759,7 @@ static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *Adapter)
 	/*
 	 * DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
 	 */
-	if(pHalData->CurrentChannelBW== CHANNEL_WIDTH_80) {
+	if(Adapter->phy.current_chan_bw== CHANNEL_WIDTH_80) {
 		if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
 			SCSettingOf40 = VHT_DATA_SC_40_LOWER_OF_80MHZ;
 		else if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
@@ -3777,7 +3777,7 @@ static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *Adapter)
 			SCSettingOf20 = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
 		else
 			DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
-	} else if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_40) {
+	} else if(Adapter->phy.current_chan_bw == CHANNEL_WIDTH_40) {
 		/*
 		 * DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur40MhzPrimeSC);
 		 */
@@ -3804,7 +3804,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	/* 3 Set Reg668 Reg440 BW */
-	_rtl8821au_phy_set_reg_bw(Adapter, pHalData->CurrentChannelBW);
+	_rtl8821au_phy_set_reg_bw(Adapter, Adapter->phy.current_chan_bw);
 
 	/* 3 Set Reg483 */
 	SubChnlNum = _rtl8821au_phy_get_secondary_chnl(Adapter);
@@ -3818,7 +3818,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 	/* DBG_871X("[BW:CHNL], phy_PostSetBwMode8812(), set BW=%s !!\n", GLBwSrc[pHalData->CurrentChannelBW]); */
 
 	/* 3 Set Reg848 Reg864 Reg8AC Reg8C4 RegA00 */
-	switch (pHalData->CurrentChannelBW) {
+	switch (Adapter->phy.current_chan_bw) {
 	case CHANNEL_WIDTH_20:
 		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x003003C3, 0x00300200); /* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
 		rtl_set_bbreg(Adapter, rADC_Buf_Clk_Jaguar, BIT30, 0);			// 0x8c4[30] = 1'b0
@@ -3878,12 +3878,12 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 		break;
 
 	default:
-		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n",pHalData->CurrentChannelBW);
+		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n",Adapter->phy.current_chan_bw);
 		break;
 	}
 
 	/* <20121109, Kordan> A workaround for 8812A only. */
-	rtl8812au_fixspur(Adapter, pHalData->CurrentChannelBW, Adapter->phy.current_channel);
+	rtl8812au_fixspur(Adapter, Adapter->phy.current_chan_bw, Adapter->phy.current_channel);
 
 	/*
 	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", rtl_read_byte(Adapter, 0x483));
@@ -3892,7 +3892,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 	 */
 
 	/* 3 Set RF related register */
-	rtl8821au_phy_rf6052_set_bandwidth(Adapter, pHalData->CurrentChannelBW);
+	rtl8821au_phy_rf6052_set_bandwidth(Adapter, Adapter->phy.current_chan_bw);
 }
 
 

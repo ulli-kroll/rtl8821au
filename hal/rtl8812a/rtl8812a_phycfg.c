@@ -2211,24 +2211,24 @@ static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *Adapter,
 
 	//if(pMgntInfo->RegNByteAccess == 0)
 	if(pHalData->CurrentBandType == BAND_ON_2_4G)
-		_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
+		_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, Adapter->phy.current_chan_bw, channel,
 								  cckRates, sizeof(cckRates)/sizeof(u8));
 
-	_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
+	_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, Adapter->phy.current_chan_bw, channel,
 								  ofdmRates, sizeof(ofdmRates)/sizeof(u8));
-	_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
+	_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, Adapter->phy.current_chan_bw, channel,
 								  htRates1T, sizeof(htRates1T)/sizeof(u8));
-	_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
+	_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, Adapter->phy.current_chan_bw, channel,
 							  	  vhtRates1T, sizeof(vhtRates1T)/sizeof(u8));
 
 	if (pHalData->NumTotalRFPath >= 2) {
-		_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
+		_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, Adapter->phy.current_chan_bw, channel,
 							  htRates2T, sizeof(htRates2T)/sizeof(u8));
-		_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, pHalData->CurrentChannelBW, channel,
+		_rtl8821au_phy_set_txpower_level_by_path(Adapter, path, Adapter->phy.current_chan_bw, channel,
 							  vhtRates2T, sizeof(vhtRates2T)/sizeof(u8));
 	}
 
-	_rtl8821au_phy_txpower_training_by_path(Adapter, pHalData->CurrentChannelBW, channel, path);
+	_rtl8821au_phy_txpower_training_by_path(Adapter, Adapter->phy.current_chan_bw, channel, path);
 
 	/* DBG_871X("<==PHY_SetTxPowerLevelByPath8812()\n"); */
 }
@@ -2854,7 +2854,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x000); //5'b00000);
 
 		/* <20121109, Kordan> A workaround for 8812A only. */
-		rtl8812au_fixspur(pAdapter, pHalData->CurrentChannelBW, channelToSW);
+		rtl8812au_fixspur(pAdapter, pAdapter->phy.current_chan_bw, channelToSW);
 
 		rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, MASKBYTE0, channelToSW);
 
@@ -2929,7 +2929,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 	struct rtl_priv * 	pDefAdapter =  GetDefaultAdapter(Adapter);
 	struct _rtw_hal *	pHalData = GET_HAL_DATA(pDefAdapter);
 	uint8_t			tmpChannel = Adapter->phy.current_channel;
-	enum CHANNEL_WIDTH	tmpBW= pHalData->CurrentChannelBW;
+	enum CHANNEL_WIDTH	tmpBW= Adapter->phy.current_chan_bw;
 	uint8_t			tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
 	uint8_t			tmpnCur80MhzPrimeSC = pHalData->nCur80MhzPrimeSC;
 	uint8_t			tmpCenterFrequencyIndex1 =pHalData->CurrentCenterFrequencyIndex1;
@@ -2957,7 +2957,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 		if(pHalData->bChnlBWInitialzed == _FALSE) {
 			pHalData->bChnlBWInitialzed = _TRUE;
 			pHalData->bSetChnlBW = _TRUE;
-		} else if((pHalData->CurrentChannelBW != ChnlWidth) ||
+		} else if((Adapter->phy.current_chan_bw != ChnlWidth) ||
 			(pHalData->nCur40MhzPrimeSC != ChnlOffsetOf40MHz) ||
 			(pHalData->nCur80MhzPrimeSC != ChnlOffsetOf80MHz) ||
 			(pHalData->CurrentCenterFrequencyIndex1!= CenterFrequencyIndex1)) {
@@ -2979,7 +2979,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 
 
 	if(pHalData->bSetChnlBW) {
-		pHalData->CurrentChannelBW = ChnlWidth;
+		Adapter->phy.current_chan_bw = ChnlWidth;
 		pHalData->nCur40MhzPrimeSC = ChnlOffsetOf40MHz;
 		pHalData->nCur80MhzPrimeSC = ChnlOffsetOf80MHz;
 
@@ -2995,7 +2995,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *Adapter,
 			pHalData->CurrentCenterFrequencyIndex1 = tmpChannel;
 		}
 		if(pHalData->bSetChnlBW) {
-			pHalData->CurrentChannelBW = tmpBW;
+			Adapter->phy.current_chan_bw = tmpBW;
 			pHalData->nCur40MhzPrimeSC = tmpnCur40MhzPrimeSC;
 			pHalData->nCur80MhzPrimeSC = tmpnCur80MhzPrimeSC;
 			pHalData->CurrentCenterFrequencyIndex1 = tmpCenterFrequencyIndex1;

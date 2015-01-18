@@ -1095,7 +1095,6 @@ Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 
 	if (!AutoloadFail) {
 		if (GetRegAmplifierType2G(Adapter) == 0) {
@@ -1161,7 +1160,6 @@ Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	BOOLEAN	 AutoloadFail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	if (!AutoloadFail) {
 		if (GetRegAmplifierType2G(Adapter) == 0) {

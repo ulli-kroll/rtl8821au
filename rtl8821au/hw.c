@@ -967,7 +967,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 		break;
 
 	case HW_VAR_RF_TYPE:
-		*pval = pHalData->rf_type;
+		*pval = rtlpriv->phy.rf_type;
 		break;
 
 	case HW_VAR_FWLPS_RF_ON:

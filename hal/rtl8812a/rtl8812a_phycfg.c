@@ -1681,7 +1681,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][5] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][5]));
 		 */
-		if(pHalData->rf_type== RF_1T1R) {
+		if(Adapter->phy.rf_type== RF_1T1R) {
 			pHalData->pwrGroupCnt++;
 			/* RT_TRACE(COMP_INIT, DBG_TRACE, ("pwrGroupCnt = %d\n", pHalData->pwrGroupCnt)); */
 		}
@@ -1741,7 +1741,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *Adapter, uint32_t RegAddr,
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][13] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][13]));
 		 */
-		if(pHalData->rf_type != RF_1T1R)
+		if(Adapter->phy.rf_type != RF_1T1R)
 			pHalData->pwrGroupCnt++;
 	}
 }

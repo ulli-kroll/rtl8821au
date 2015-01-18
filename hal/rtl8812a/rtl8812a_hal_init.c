@@ -1321,7 +1321,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		/* Antenna == 1 WMODE = 3 RTL8812AU-VL 11AC + USB2.0 Mode */
 		if (antenna == 1) {
 			/* Config 8812AU as 1*1 mode AC mode. */
-			pHalData->rf_type = RF_1T1R;
+			Adapter->phy.rf_type = RF_1T1R;
 			/* UsbModeSwitch_SetUsbModeMechOn(Adapter, FALSE); */
 			/* pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VL; */
 			DBG_871X("%s(): EFUSE_HIDDEN_812AU_VL\n", __FUNCTION__);
@@ -2528,20 +2528,20 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 	memcpy(&pHalData->VersionID, &ChipVersion, sizeof(HAL_VERSION));
 
 	if (IS_1T2R(ChipVersion)) {
-		pHalData->rf_type = RF_1T2R;
+		Adapter->phy.rf_type = RF_1T2R;
 		pHalData->NumTotalRFPath = 2;
 		DBG_8192C("==> RF_Type : 1T2R\n");
 	} else if (IS_2T2R(ChipVersion)) {
-		pHalData->rf_type = RF_2T2R;
+		Adapter->phy.rf_type = RF_2T2R;
 		pHalData->NumTotalRFPath = 2;
 		DBG_8192C("==> RF_Type : 2T2R\n");
 	} else {
-		pHalData->rf_type = RF_1T1R;
+		Adapter->phy.rf_type = RF_1T1R;
 		pHalData->NumTotalRFPath = 1;
 		DBG_8192C("==> RF_Type 1T1R\n");
 	}
 
-	DBG_8192C("RF_Type is %x!!\n", pHalData->rf_type);
+	DBG_8192C("RF_Type is %x!!\n", Adapter->phy.rf_type);
 }
 
 
@@ -2923,7 +2923,7 @@ uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 		break;
 
 	case HAL_DEF_TX_STBC:
-		if (pHalData->rf_type == RF_2T2R)
+		if (padapter->phy.rf_type == RF_2T2R)
 			*(uint8_t *)pval = 1;
 		else
 			*(uint8_t *)pval = 0;

@@ -389,7 +389,7 @@ int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 	int		rtStatus = _SUCCESS;
 
 	/* Initialize general global value */
-	if (pHalData->rf_type == RF_1T1R)
+	if (rtlpriv->phy.rf_type == RF_1T1R)
 		pHalData->NumTotalRFPath = 1;
 	else
 		pHalData->NumTotalRFPath = 2;

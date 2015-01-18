@@ -1067,11 +1067,9 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
+	rt_rf_power_state eRfPowerStateToSet;
 
 	DBG_871X(" ULLI: Call rtl8812au_hal_init in usb_halinit.c\n");
-
-
-	rt_rf_power_state eRfPowerStateToSet;
 
 	uint32_t init_start_time = jiffies;
 
@@ -1270,7 +1268,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 		goto exit;
 	}
 
-	if (pHalData->rf_type == RF_1T1R && IS_HARDWARE_TYPE_8812AU(rtlhal))
+	if (Adapter->phy.rf_type == RF_1T1R && IS_HARDWARE_TYPE_8812AU(rtlhal))
 		PHY_BB8812_Config_1T(Adapter);
 #endif
 

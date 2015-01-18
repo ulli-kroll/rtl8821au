@@ -29,6 +29,8 @@ struct rtl_hal {
 };
 
 struct rtl_phy {
+	u8	rf_type;
+
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
@@ -1231,7 +1233,6 @@ struct _rtw_hal {
 
 	//rf_ctrl
 	uint8_t	rf_chip;
-	uint8_t	rf_type;
 	uint8_t	NumTotalRFPath;
 
 	uint8_t	InterfaceSel;

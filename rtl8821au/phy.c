@@ -3825,7 +3825,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 
 		rtl_set_bbreg(Adapter, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 4);	/* 0x864[20:18] = 3'b4 */
 
-		if(pHalData->rf_type == RF_2T2R)
+		if(Adapter->phy.rf_type == RF_2T2R)
 			rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, 7);	/* 2R 0x848[25:22] = 0x7 */
 		else
 			rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, 8);	/* 1R 0x848[25:22] = 0x8 */
@@ -3843,7 +3843,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 		if(pHalData->Reg837 & BIT2)
 			L1pkVal = 6;
 		else {
-			if(pHalData->rf_type == RF_2T2R)
+			if(Adapter->phy.rf_type == RF_2T2R)
 				L1pkVal = 7;
 			else
 				L1pkVal = 8;
@@ -3868,7 +3868,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 		if(pHalData->Reg837 & BIT2)
 			L1pkVal = 5;
 		else {
-			if(pHalData->rf_type == RF_2T2R)
+			if(Adapter->phy.rf_type == RF_2T2R)
 				L1pkVal = 6;
 			else
 				L1pkVal = 7;

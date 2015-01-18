@@ -2591,7 +2591,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 				}
 
 				/* TRSW bypass RFE moudle in 2G */
-				if (pHalData->ExternalLNA_2G) {
+				if (rtlhal->external_lna_2g) {
 					rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar, MASKBYTE2, 0x54);
 					rtl_set_bbreg(Adapter, rB_RFE_Pinmux_Jaguar, MASKBYTE2, 0x54);
 				} else {

@@ -188,7 +188,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 0);
 	}
 
-	if (pHalData->ExternalLNA_2G != 0) {
+	if (rtlhal->external_lna_2g != 0) {
 		BoardType |= ODM_BOARD_EXT_LNA;
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 1);
 	}

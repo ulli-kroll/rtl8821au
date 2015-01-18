@@ -22,7 +22,8 @@ struct rtl_hal {
 	u8 pa_type_5g;
 	u8 lna_type_2g;
 	u8 lna_type_5g;
-
+	u8 external_pa_2g;
+	
 
 	/*firmware */
 	u32 fwsize;
@@ -1364,7 +1365,6 @@ struct _rtw_hal {
 	u32	AntennaTxPath;					// Antenna path Tx
 	u32	AntennaRxPath;					// Antenna path Rx
 
-	uint8_t	ExternalPA_2G;
 	uint8_t	ExternalLNA_2G;
 	uint8_t	ExternalPA_5G;
 	uint8_t	ExternalLNA_5G;

@@ -1106,10 +1106,10 @@ Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 				rtlhal->pa_type_2g = 0;
 				rtlhal->lna_type_2g = 0;
 			}
-			pHalData->ExternalPA_2G = ((rtlhal->pa_type_2g & BIT5) && (rtlhal->pa_type_2g & BIT4)) ? 1 : 0;
+			rtlhal->external_pa_2g = ((rtlhal->pa_type_2g & BIT5) && (rtlhal->pa_type_2g & BIT4)) ? 1 : 0;
 			pHalData->ExternalLNA_2G = ((rtlhal->lna_type_2g & BIT7) && (rtlhal->lna_type_2g & BIT3)) ? 1 : 0;
 		} else 	{
-			pHalData->ExternalPA_2G  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
+			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
 			pHalData->ExternalLNA_2G = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_LNA) ? 1 : 0;
 		}
 
@@ -1128,17 +1128,17 @@ Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			pHalData->ExternalLNA_5G = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	} else {
-		pHalData->ExternalPA_2G  = EEPROM_Default_PAType;
+		rtlhal->external_pa_2g  = EEPROM_Default_PAType;
 		pHalData->ExternalPA_5G  = 0xFF;
 		pHalData->ExternalLNA_2G = EEPROM_Default_LNAType;
 		pHalData->ExternalLNA_5G = 0xFF;
 
 		if (GetRegAmplifierType2G(Adapter) == 0) {
 			/* AUTO */
-			pHalData->ExternalPA_2G  = 0;
+			rtlhal->external_pa_2g  = 0;
 			pHalData->ExternalLNA_2G = 0;
 		} else {
-			pHalData->ExternalPA_2G  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
+			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
 			pHalData->ExternalLNA_2G = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_LNA) ? 1 : 0;
 		}
 		if (GetRegAmplifierType5G(Adapter) == 0) {
@@ -1150,7 +1150,7 @@ Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			pHalData->ExternalLNA_5G = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	}
-	DBG_871X("pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, pHalData->ExternalPA_2G);
+	DBG_871X("pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, rtlhal->external_pa_2g);
 	DBG_871X("pHalData->PAType_5G is 0x%x, pHalData->ExternalPA_5G = %d\n", rtlhal->pa_type_5g, pHalData->ExternalPA_5G);
 	DBG_871X("pHalData->LNAType_2G is 0x%x, pHalData->ExternalLNA_2G = %d\n", rtlhal->lna_type_2g, pHalData->ExternalLNA_2G);
 	DBG_871X("pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, pHalData->ExternalLNA_5G);
@@ -1173,10 +1173,10 @@ Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 				rtlhal->pa_type_2g = 0;
 				rtlhal->lna_type_2g = 0;
 			}
-			pHalData->ExternalPA_2G = (rtlhal->pa_type_2g & BIT4) ? 1 : 0;
+			rtlhal->external_pa_2g = (rtlhal->pa_type_2g & BIT4) ? 1 : 0;
 			pHalData->ExternalLNA_2G = (rtlhal->lna_type_2g & BIT3) ? 1 : 0;
 		} else {
-			pHalData->ExternalPA_2G  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
+			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
 			pHalData->ExternalLNA_2G = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_LNA) ? 1 : 0;
 		}
 
@@ -1195,17 +1195,17 @@ Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			pHalData->ExternalLNA_5G = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	} else {
-		pHalData->ExternalPA_2G  = EEPROM_Default_PAType;
+		rtlhal->external_pa_2g  = EEPROM_Default_PAType;
 		pHalData->ExternalPA_5G  = 0xFF;
 		pHalData->ExternalLNA_2G = EEPROM_Default_LNAType;
 		pHalData->ExternalLNA_5G = 0xFF;
 
 		if (GetRegAmplifierType2G(Adapter) == 0) {
 			/* AUTO */
-			pHalData->ExternalPA_2G  = 0;
+			rtlhal->external_pa_2g  = 0;
 			pHalData->ExternalLNA_2G = 0;
 		} else {
-			pHalData->ExternalPA_2G  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
+			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
 			pHalData->ExternalLNA_2G = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_LNA) ? 1 : 0;
 		}
 		if (GetRegAmplifierType5G(Adapter) == 0) {
@@ -1217,7 +1217,7 @@ Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			pHalData->ExternalLNA_5G = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	}
-	DBG_871X("pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, pHalData->ExternalPA_2G);
+	DBG_871X("pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, rtlhal->external_pa_2g);
 	DBG_871X("pHalData->PAType_5G is 0x%x, pHalData->ExternalPA_5G = %d\n", rtlhal->pa_type_5g, pHalData->ExternalPA_5G);
 	DBG_871X("pHalData->LNAType_2G is 0x%x, pHalData->ExternalLNA_2G = %d\n", rtlhal->lna_type_2g, pHalData->ExternalLNA_2G);
 	DBG_871X("pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, pHalData->ExternalLNA_5G);
@@ -1236,7 +1236,7 @@ Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		else if (PROMContent[EEPROM_RFE_OPTION_8812] & BIT7) {
 			if (pHalData->ExternalLNA_5G) {
 				if (pHalData->ExternalPA_5G) {
-					if (pHalData->ExternalLNA_2G && pHalData->ExternalPA_2G)
+					if (pHalData->ExternalLNA_2G && rtlhal->external_pa_2g)
 						pHalData->RFEType = 3;
 					else
 						pHalData->RFEType = 0;
@@ -1254,7 +1254,7 @@ Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			 * discussing with Willis an YN, revise driver code to prevent.
 			 */
 			if (pHalData->RFEType == 4 &&
-			   (pHalData->ExternalPA_5G == _TRUE || pHalData->ExternalPA_2G == _TRUE ||
+			   (pHalData->ExternalPA_5G == _TRUE || rtlhal->external_pa_2g == _TRUE ||
 			    pHalData->ExternalLNA_5G == _TRUE || pHalData->ExternalLNA_2G == _TRUE)) {
 				if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 					pHalData->RFEType = 0;

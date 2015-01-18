@@ -2261,6 +2261,7 @@ void PHY_SetTxPowerLevel8812(struct rtl_priv *Adapter, uint8_t	Channel)
 uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,
 	uint8_t	RFPath)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
 	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
@@ -2283,7 +2284,7 @@ uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,
 		        else if (bbSwing_2G == -9) 
 				out = 0x0B6; /* -9 dB */
 		        else {
-				if (pHalData->ExternalPA_2G) {
+				if (rtlhal->external_pa_2g) {
 					pRFCalibrateInfo->BBSwingDiff2G = -3;
 					out = 0x16A;
 				} else  {
@@ -2580,7 +2581,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 				rtl_set_bbreg(Adapter, rB_RFE_Pinmux_Jaguar, 0x000000F0, 0x7);
 
 				/* PAPE_G (bypass RFE module in 5G) */
-				if (pHalData->ExternalPA_2G) {
+				if (rtlhal->external_pa_2g) {
 					rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar, 0x0000000F, 0x0);
 					rtl_set_bbreg(Adapter, rB_RFE_Pinmux_Jaguar, 0x0000000F, 0x0);
 				} else {

@@ -2303,7 +2303,7 @@ uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,
 			else if (bbSwing_5G == -9) 
 				out = 0x0B6; /* -9 dB */
 			else {
-				if ( pHalData->ExternalPA_5G ) {
+				if (rtlhal->external_pa_5g) {
 					pRFCalibrateInfo->BBSwingDiff5G = -3;
 					out = 0x16A;
 				} else  {
@@ -2414,6 +2414,7 @@ uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,
 
 static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	u8			u1tmp = 0;
 	struct _rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 
@@ -2497,7 +2498,7 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 			//if(BT_IsBtExist(Adapter))
 			{
 				//rtl_write_word(Adapter, rA_RFE_Pinmux_Jaguar, 0x7777);
-				if(pHalData->ExternalPA_5G)
+				if(rtlhal->external_pa_5g)
 					rtl_write_byte(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x33);
 				else
 					rtl_write_byte(Adapter, rA_RFE_Pinmux_Jaguar+2, 0x73);
@@ -2505,14 +2506,14 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 #if 0
 			else
 			{
-				if (pHalData->ExternalPA_5G)
+				if (rtlhal->external_pa_5g)
 					rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337777);
 				else
 					rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77737777);
 			}
 #endif
 
-			if (pHalData->ExternalPA_5G)
+			if (rtlhal->external_pa_5g)
 				rtl_set_bbreg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337777);
 			else
 				rtl_set_bbreg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77737777);
@@ -2665,7 +2666,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 				phy_SetRFEReg8812(Adapter, Band);
 			else {
 				/* PAPE_A (bypass RFE module in 2G) */
-				if (pHalData->ExternalPA_5G) {
+				if (rtlhal->external_pa_5g) {
 					rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar, 0x000000F0, 0x1);
 					rtl_set_bbreg(Adapter, rB_RFE_Pinmux_Jaguar, 0x000000F0, 0x1);
 				} else {

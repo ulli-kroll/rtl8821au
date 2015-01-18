@@ -408,6 +408,7 @@ int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 
 void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
 {
+	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv		*pdmpriv = &pHalData->dmpriv;
 	struct mlme_ext_priv 	*pmlmeext = &Adapter->mlmeextpriv;
@@ -432,7 +433,7 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *Adapter, uint8_t *pPo
 					pPowerlevel[idx1] | (pPowerlevel[idx1]<<8) |
 					(pPowerlevel[idx1]<<16) | (pPowerlevel[idx1]<<24);
 				/* 2010/10/18 MH For external PA module. We need to limit power index to be less than 0x20. */
-				if (TxAGC[idx1] > 0x20 && pHalData->ExternalPA_5G)
+				if (TxAGC[idx1] > 0x20 && rtlhal->external_pa_5g)
 					TxAGC[idx1] = 0x20;
 			}
 		}

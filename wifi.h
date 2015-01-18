@@ -15,6 +15,10 @@ struct rtl_hal_ops;
 
 /* Here will go the new Halinterface data */
 
+struct rtl_efuse {
+};
+
+
 struct rtl_hal {
 	u16	hw_type;
 
@@ -47,11 +51,14 @@ struct rtl_phy {
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
+#define rtl_efuse(priv)		(&(priv)->efuse))
 
 struct rtl_priv {
 	struct net_device *ndev;
+
 	struct rtl_hal rtlhal;		/* Caution new Hal data */
 	struct rtl_phy phy;
+	struct rtl_efuse efuse;
 	
 	
 	

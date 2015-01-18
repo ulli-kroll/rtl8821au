@@ -270,20 +270,6 @@ static int _PageWrite_8812(struct rtl_priv *padapter, uint32_t page,
 	return _BlockWrite_8812(padapter, buffer, size);
 }
 
-static VOID _FillDummy_8812(uint8_t *pFwBuf, u32 *pFwLen)
-{
-	uint32_t FwLen = *pFwLen;
-	uint8_t	remain = (uint8_t)(FwLen%4);
-	remain = (remain == 0) ? 0 : (4-remain);
-
-	while (remain > 0) {
-		pFwBuf[FwLen] = 0;
-		FwLen++;
-		remain--;
-	}
-
-	*pFwLen = FwLen;
-}
 
 static int _WriteFW_8812(struct rtl_priv *padapter, PVOID buffer, uint32_t size)
 {

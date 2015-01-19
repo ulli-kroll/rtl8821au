@@ -51,6 +51,10 @@ struct rtl_efuse {
 	uint8_t	EEPROMBluetoothAntIsolation;
 	uint8_t	EEPROMBluetoothRadioShared;
 	
+	// For power group
+	uint8_t	PwrGroupHT20[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
+	uint8_t	PwrGroupHT40[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
+	
 	//---------------------------------------------------------------------------------//
 	//3 [2.4G]
 	uint8_t	Index24G_CCK_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
@@ -1361,10 +1365,6 @@ struct _rtw_hal {
 						[MAX_BASE_NUM_IN_PHY_REG_PG_2_4G];
 	uint8_t	TxPwrByRateBase5G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
 						[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
-
-	// For power group
-	uint8_t	PwrGroupHT20[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
-	uint8_t	PwrGroupHT40[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
 
 
 

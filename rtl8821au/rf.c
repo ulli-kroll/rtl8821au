@@ -229,9 +229,9 @@ void getTxPowerWriteValByRegulatory8812(
 				//RTPRINT(FPHY, PHY_TXPWR, ("power diff rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), pwr_diff));
 
 				if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_40)
-					customer_pwr_limit = pHalData->PwrGroupHT40[rf][Channel-1];
+					customer_pwr_limit = efuse->PwrGroupHT40[rf][Channel-1];
 				else
-					customer_pwr_limit = pHalData->PwrGroupHT20[rf][Channel-1];
+					customer_pwr_limit = efuse->PwrGroupHT20[rf][Channel-1];
 
 				//RTPRINT(FPHY, PHY_TXPWR, ("customer pwr limit  rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), customer_pwr_limit));
 

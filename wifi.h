@@ -30,6 +30,19 @@ struct rtl_hal_ops;
 #define MAX_5G_RATE_SECTION_NUM					4
 #define MAX_5G_CHANNEL_NUM						14 // adopt channel group instead of individual channel
 
+/*
+ * ULLI : big remark
+ * ULLI : in rtl8821ae there is no use of external_pa_2g or
+ * ULLI : external_pa_5g in the phy.c file.
+ * ULLI : But we need to configure the external_pa* here, because
+ * ULLI : it is used here in the original source, and we don't want to 
+ * ULLI : drop this.
+ * ULLI :
+ * ULLI : Thus we do transmit some values use in rtl_dm (now _rtw_dm) and
+ * ULLI : dm_priv into appreciate struct's (rtl_phy, rtl_hal, rtl_efuse)
+ * ULLI : and use them, to select features.
+ */
+
 
 struct rtl_efuse {
 	//
@@ -74,7 +87,6 @@ struct rtl_efuse {
 	s8	txpwr_5g_bw80diff[MAX_RF_PATH][MAX_TX_COUNT];
 	
 };
-
 
 struct rtl_hal {
 	u16	hw_type;

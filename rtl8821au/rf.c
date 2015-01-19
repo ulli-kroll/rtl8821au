@@ -213,12 +213,12 @@ void getTxPowerWriteValByRegulatory8812(
 				if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_40)
 				{
 					RTPRINT(FPHY, PHY_TXPWR, ("customer's limit, 40MHz rf(%c) = 0x%x\n",
-						((rf==0)?'A':'B'), pHalData->PwrGroupHT40[rf][Channel-1]));
+						((rf==0)?'A':'B'), efuse->pwrgroup_ht40[rf][Channel-1]));
 				}
 				else
 				{
 					RTPRINT(FPHY, PHY_TXPWR, ("customer's limit, 20MHz rf(%c) = 0x%x\n",
-						((rf==0)?'A':'B'), pHalData->PwrGroupHT20[rf][Channel-1]));
+						((rf==0)?'A':'B'), efuse->pwrgroup_ht40[rf][Channel-1]));
 				}*/
 
 				if(index < 2)
@@ -229,9 +229,9 @@ void getTxPowerWriteValByRegulatory8812(
 				//RTPRINT(FPHY, PHY_TXPWR, ("power diff rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), pwr_diff));
 
 				if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_40)
-					customer_pwr_limit = efuse->PwrGroupHT40[rf][Channel-1];
+					customer_pwr_limit = efuse->pwrgroup_ht40[rf][Channel-1];
 				else
-					customer_pwr_limit = efuse->PwrGroupHT20[rf][Channel-1];
+					customer_pwr_limit = efuse->pwrgroup_ht40[rf][Channel-1];
 
 				//RTPRINT(FPHY, PHY_TXPWR, ("customer pwr limit  rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), customer_pwr_limit));
 

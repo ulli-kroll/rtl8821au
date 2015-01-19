@@ -52,8 +52,9 @@ struct rtl_efuse {
 	uint8_t	EEPROMBluetoothRadioShared;
 	
 	// For power group
-	uint8_t	PwrGroupHT20[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
-	uint8_t	PwrGroupHT40[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
+	/* ULLI both vars are only read ??? */
+	uint8_t	pwrgroup_ht20[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
+	uint8_t	pwrgroup_ht40[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
 	
 	//---------------------------------------------------------------------------------//
 	//3 [2.4G]

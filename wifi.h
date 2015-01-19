@@ -127,9 +127,14 @@ struct rtl_phy {
 				[MAX_RF_PATH_NUM];
 };
 
+
+struct rtl_dm {
+};
+
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
 #define rtl_efuse(rtlpriv)	(&((rtlpriv)->efuse))
 #define rtl_phy(rtlpriv)	(&((rtlpriv)->phy))
+#define rtl_dm(rtlpriv)		(%((rtlpriv)->dm))
 
 struct rtl_priv {
 	struct net_device *ndev;
@@ -137,10 +142,11 @@ struct rtl_priv {
 	struct rtl_hal rtlhal;		/* Caution new Hal data */
 	struct rtl_phy phy;
 	struct rtl_efuse efuse;
-	
+	struct rtl_dm dm;		/* Caution new dm data */
 	
 	
 	struct _rtw_hal *HalData;
+
 	
 	
 	

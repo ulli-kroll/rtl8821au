@@ -144,7 +144,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
+	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	uint8_t	cut_ver,fab_ver;
 	uint8_t	BoardType = ODM_BOARD_DEFAULT;
 
@@ -248,7 +248,7 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
-	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
+	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int i;
 
@@ -290,7 +290,7 @@ void rtl8812_InitHalDm(struct rtl_priv *Adapter)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
+	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	uint8_t	i;
 
 	dm_InitGPIOSetting(Adapter);
@@ -312,7 +312,7 @@ VOID rtl8812_HalDmWatchDog(struct rtl_priv *Adapter)
 	uint8_t hw_init_completed = _FALSE;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct rtl_dm *	pDM_Odm = &(pHalData->odmpriv);
+	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
 	hw_init_completed = Adapter->hw_init_completed;
 
@@ -355,7 +355,7 @@ void rtl8812_init_dm_priv(IN struct rtl_priv *Adapter)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct rtl_dm *		podmpriv = &pHalData->odmpriv;
+	struct _rtw_dm *		podmpriv = &pHalData->odmpriv;
 	memset(pdmpriv, 0, sizeof(struct dm_priv));
 
 	/* spin_lock_init(&(pHalData->odm_stainfo_lock)); */
@@ -384,7 +384,7 @@ void rtl8812_deinit_dm_priv(IN struct rtl_priv *Adapter)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct rtl_dm *		podmpriv = &pHalData->odmpriv;
+	struct _rtw_dm *		podmpriv = &pHalData->odmpriv;
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
 	/* _cancel_timer_ex(&pdmpriv->SwAntennaSwitchTimer); */
 	ODM_CancelAllTimers(podmpriv);
@@ -422,7 +422,7 @@ uint8_t AntDivBeforeLink8812(struct rtl_priv *Adapter )
 {
 
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	struct rtl_dm *	pDM_Odm =&pHalData->odmpriv;
+	struct _rtw_dm *	pDM_Odm =&pHalData->odmpriv;
 	SWAT_T		*pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
 

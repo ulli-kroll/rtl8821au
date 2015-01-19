@@ -34,7 +34,7 @@ void ODM_ReadFirmware_MP_8821A_FW_AP(u8 **pFirmware, uint32_t *pFirmwareSize);
 
 void
 ODM_ReadFirmware_MP_8821A_FW_BT(
-     IN   struct rtl_dm *   pDM_Odm,
+     IN   struct _rtw_dm *   pDM_Odm,
      OUT  u8       *pFirmware,
      OUT  uint32_t       *pFirmwareSize
 );
@@ -51,7 +51,7 @@ void ODM_ReadFirmware_MP_8821A_FW_NIC(u8 **pFirmware, uint32_t *pFirmwareSize);
 
 void
 ODM_ReadFirmware_MP_8821A_FW_WoWLAN(
-     IN   struct rtl_dm *   pDM_Odm,
+     IN   struct _rtw_dm *   pDM_Odm,
      OUT  u8       *pFirmware,
      OUT  uint32_t       *pFirmwareSize
 );

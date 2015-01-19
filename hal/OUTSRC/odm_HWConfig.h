@@ -233,14 +233,14 @@ typedef struct _Phy_Status_Rpt_8812
 
 VOID
 ODM_PhyStatusQuery(
-	IN OUT	struct rtl_dm *				pDM_Odm,
+	IN OUT	struct _rtw_dm *				pDM_Odm,
 	OUT		PODM_PHY_INFO_T			pPhyInfo,
 	IN 		u8 *					pPhyStatus,
 	IN		PODM_PACKET_INFO_T			pPktinfo
 	);
 
 
-void ODM_ConfigBBWithHeaderFile(struct rtl_dm *pDM_Odm, ODM_BB_Config_Type ConfigType);
+void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type ConfigType);
 
 
 

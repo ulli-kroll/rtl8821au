@@ -40,7 +40,7 @@ const char *const GLBwSrc[]={
 /* ----------------------------Function Body---------------------------------- */
 
 static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter);
-static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm);
+static void PHY_InitPowerLimitTable(struct _rtw_dm *pDM_Odm);
 
 /*
  * 2. RF register R/W API
@@ -493,7 +493,7 @@ static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_TYPE Band, uint8_t 
 	return index;
 }
 
-static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
+static void PHY_InitPowerLimitTable(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	struct rtl_phy *rtlphy = rtl_phy(Adapter);
@@ -2267,7 +2267,7 @@ uint32_t PHY_GetTxBBSwing_8812A(struct rtl_priv *Adapter, BAND_TYPE Band,
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	s8	bbSwing_2G = -1 * GetRegTxBBSwing_2G(Adapter);
@@ -2718,7 +2718,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 	if (IS_NORMAL_CHIP(pHalData->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		s8	BBDiffBetweenBand = 0;
 		 struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
-		struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+		struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 		PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
 		rtl_set_bbreg(Adapter, rA_TxScale_Jaguar, 0xFFE00000,
@@ -2776,7 +2776,7 @@ static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
 static void phy_InitRssiTRSW(struct rtl_priv *pAdapter)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 	uint8_t 			channel = pAdapter->phy.current_channel;
 
 	if (pHalData->RFEType == 3){

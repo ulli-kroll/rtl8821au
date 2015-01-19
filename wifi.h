@@ -988,7 +988,7 @@ typedef struct _ANT_DETECTED_INFO{
 //
 // 2011/09/22 MH Copy from SD4 defined structure. We use to support PHY DM integration.
 //
-struct rtl_dm {
+struct _rtw_dm {
 	//struct timer_list 	FastAntTrainingTimer;
 	//
 	//	Add for different team use temporarily
@@ -1481,7 +1481,7 @@ struct _rtw_hal {
 
 
 	struct dm_priv	dmpriv;
-	struct rtl_dm odmpriv;
+	struct _rtw_dm odmpriv;
 
 #ifdef DBG_CONFIG_ERROR_DETECT
 	struct sreset_priv srestpriv;

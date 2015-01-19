@@ -25,7 +25,7 @@ void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data, enum radio_path path, uint32_t RegAddr)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	if (Addr == 0xfe || Addr == 0xffe) {
 		msleep(50);
@@ -47,7 +47,7 @@ void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 }
 
 
-void odm_ConfigBB_AGC_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
+void odm_ConfigBB_AGC_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	rtl_set_bbreg(pDM_Odm->Adapter, Addr, Bitmask, Data);
@@ -57,7 +57,7 @@ void odm_ConfigBB_AGC_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data));
 }
 
-void odm_ConfigBB_PHY_REG_PG_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
+void odm_ConfigBB_PHY_REG_PG_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe)
@@ -79,7 +79,7 @@ void odm_ConfigBB_PHY_REG_PG_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 
 }
 
-void odm_ConfigBB_PHY_8821A(struct rtl_dm *pDM_Odm, uint32_t Addr,
+void odm_ConfigBB_PHY_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe)

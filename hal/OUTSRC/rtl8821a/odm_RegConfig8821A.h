@@ -23,7 +23,7 @@
 
 void
 odm_ConfigBB_AGC_8821A(
-    IN 	struct rtl_dm *	pDM_Odm,
+    IN 	struct _rtw_dm *	pDM_Odm,
     IN 	uint32_t 		Addr,
     IN 	uint32_t 		Bitmask,
     IN 	uint32_t 		Data
@@ -31,7 +31,7 @@ odm_ConfigBB_AGC_8821A(
 
 void
 odm_ConfigBB_PHY_REG_PG_8821A(
-	IN 	struct rtl_dm *	pDM_Odm,
+	IN 	struct _rtw_dm *	pDM_Odm,
     IN 	uint32_t 		Addr,
     IN 	uint32_t 		Bitmask,
     IN 	uint32_t 		Data
@@ -39,7 +39,7 @@ odm_ConfigBB_PHY_REG_PG_8821A(
 
 void
 odm_ConfigBB_PHY_8821A(
-	IN 	struct rtl_dm *	pDM_Odm,
+	IN 	struct _rtw_dm *	pDM_Odm,
     IN 	uint32_t 		Addr,
     IN 	uint32_t 		Bitmask,
     IN 	uint32_t 		Data

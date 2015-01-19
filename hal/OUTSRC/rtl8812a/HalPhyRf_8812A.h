@@ -38,7 +38,7 @@ void rtl8812au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery);
 //
 void
 PHY_LCCalibrate_8812A(
-	IN struct rtl_dm *	pDM_Odm
+	IN struct _rtw_dm *	pDM_Odm
 );
 
 //
@@ -53,7 +53,7 @@ PHY_DigitalPredistortion_8812A(		IN	struct rtl_priv *pAdapter);
 
 VOID
 PHY_DPCalibrate_8812A(
-	IN 	struct rtl_dm *pDM_Odm
+	IN 	struct _rtw_dm *pDM_Odm
 );
 
 #endif	// #ifndef __HAL_PHY_RF_8812A_H__

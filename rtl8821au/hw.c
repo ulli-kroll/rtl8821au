@@ -272,7 +272,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData;
 	struct dm_priv *pdmpriv;
-	struct rtl_dm *podmpriv;
+	struct _rtw_dm *podmpriv;
 	uint8_t val8;
 	u16 val16;
 	uint32_t val32;
@@ -937,7 +937,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 {
 	struct _rtw_hal *pHalData;
-	struct rtl_dm *podmpriv;
+	struct _rtw_dm *podmpriv;
 	uint8_t val8;
 	u16 val16;
 	uint32_t val32;

@@ -391,7 +391,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 	uint8_t	writeFW_retry = 0;
 	uint32_t fwdl_start_time;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
-	struct rtl_dm *	pDM_Odm;
+	struct _rtw_dm *	pDM_Odm;
 	uint8_t				*pFwHdr = NULL;
 
 	pDM_Odm = &pHalData->odmpriv;
@@ -2365,7 +2365,7 @@ void rtl8812_GetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,
 	PVOID pValue1, BOOLEAN bSet)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	struct rtl_dm *podmpriv = &pHalData->odmpriv;
+	struct _rtw_dm *podmpriv = &pHalData->odmpriv;
 
 	switch (eVariable) {
 	case HAL_ODM_STA_INFO:
@@ -2379,7 +2379,7 @@ void rtl8812_SetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,
 	PVOID pValue1, BOOLEAN bSet)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	struct rtl_dm *podmpriv = &pHalData->odmpriv;
+	struct _rtw_dm *podmpriv = &pHalData->odmpriv;
 	/* _irqL irqL; */
 	switch (eVariable) {
 	case HAL_ODM_STA_INFO:
@@ -2742,7 +2742,7 @@ uint8_t SetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 		{
 			uint8_t dm_func;
 			struct dm_priv *pdmpriv;
-			struct rtl_dm *podmpriv;
+			struct _rtw_dm *podmpriv;
 
 
 			dm_func = *((uint8_t *)pval);
@@ -2791,7 +2791,7 @@ uint8_t SetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 	case HW_DEF_FA_CNT_DUMP:
 		{
 			uint8_t mac_id;
-			struct rtl_dm *pDM_Odm;
+			struct _rtw_dm *pDM_Odm;
 
 
 			mac_id = *(uint8_t *)pval;
@@ -2812,7 +2812,7 @@ uint8_t SetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 	case HW_DEF_ODM_DBG_FLAG:
 		{
 			u64 DebugComponents;
-			struct rtl_dm *pDM_Odm;
+			struct _rtw_dm *pDM_Odm;
 
 
 			DebugComponents = *((u64 *)pval);
@@ -2983,7 +2983,7 @@ uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, 
 	case HW_DEF_ODM_DBG_FLAG:
 		{
 			u64	DebugComponents;
-			struct rtl_dm *pDM_Odm;
+			struct _rtw_dm *pDM_Odm;
 
 			pDM_Odm = &pHalData->odmpriv;
 			DebugComponents = pDM_Odm->DebugComponents;

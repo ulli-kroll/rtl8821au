@@ -32,10 +32,10 @@ typedef enum _PWRTRACK_CONTROL_METHOD {
 	MIX_MODE
 } PWRTRACK_METHOD;
 
-typedef VOID 	(*FuncSetPwr)(struct rtl_dm *,PWRTRACK_METHOD, u8, u8);
-typedef VOID 	(*FuncIQK)(struct rtl_dm *, u8, u8, u8);
-typedef VOID 	(*FuncLCK)(struct rtl_dm *);
-typedef VOID  	(*FuncSwing)(struct rtl_dm *, u8 **, u8 **, u8 **, u8 **);
+typedef VOID 	(*FuncSetPwr)(struct _rtw_dm *,PWRTRACK_METHOD, u8, u8);
+typedef VOID 	(*FuncIQK)(struct _rtw_dm *, u8, u8, u8);
+typedef VOID 	(*FuncLCK)(struct _rtw_dm *);
+typedef VOID  	(*FuncSwing)(struct _rtw_dm *, u8 **, u8 **, u8 **, u8 **);
 
 typedef struct _TXPWRTRACK_CFG {
 	u8 		SwingTableSize_CCK;
@@ -51,14 +51,14 @@ typedef struct _TXPWRTRACK_CFG {
 } TXPWRTRACK_CFG, *PTXPWRTRACK_CFG;
 
 void ConfigureTxpowerTrack(
-	IN 	struct rtl_dm *	pDM_Odm,
+	IN 	struct _rtw_dm *	pDM_Odm,
 	OUT	PTXPWRTRACK_CFG	pConfig
 	);
 
 
 VOID
 ODM_ClearTxPowerTrackingState(
-	IN struct rtl_dm *	pDM_Odm
+	IN struct _rtw_dm *	pDM_Odm
 	);
 
 VOID

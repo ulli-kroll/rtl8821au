@@ -324,7 +324,7 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	ODM_RF_Config_Type ConfigType, enum radio_path eRFPath)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));

@@ -152,7 +152,7 @@ u8	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
  * 2011/09/21 MH Add to describe different team necessary resource allocate??
  */
 
-static void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm)
+static void odm_CommonInfoSelfInit(struct _rtw_dm *pDM_Odm)
 {
 	pDM_Odm->bCckHighPower = (BOOLEAN) rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
 	pDM_Odm->RFPathRxEnable = (u8) rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
@@ -163,7 +163,7 @@ static void odm_CommonInfoSelfInit(struct rtl_dm *pDM_Odm)
 	ODM_InitDebugSetting(pDM_Odm);
 }
 
-static void odm_DIGInit(struct rtl_dm *pDM_Odm)
+static void odm_DIGInit(struct _rtw_dm *pDM_Odm)
 {
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
@@ -206,7 +206,7 @@ static void odm_DIGInit(struct rtl_dm *pDM_Odm)
 
 }
 
-static void odm_AdaptivityInit(struct rtl_dm *pDM_Odm)
+static void odm_AdaptivityInit(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *pAdapter = pDM_Odm->Adapter;
 
@@ -218,7 +218,7 @@ static void odm_AdaptivityInit(struct rtl_dm *pDM_Odm)
 	pDM_Odm->AdapEn_RSSI = 32;	/* 45; */
 }
 
-static void odm_RateAdaptiveMaskInit(struct rtl_dm *pDM_Odm)
+static void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm)
 {
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
 
@@ -235,7 +235,7 @@ static void odm_RateAdaptiveMaskInit(struct rtl_dm *pDM_Odm)
 	pOdmRA->LowRSSIThresh = 20;
 }
 
-static void ODM_EdcaTurboInit(struct rtl_dm *pDM_Odm)
+static void ODM_EdcaTurboInit(struct _rtw_dm *pDM_Odm)
 {
 
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -251,7 +251,7 @@ static void ODM_EdcaTurboInit(struct rtl_dm *pDM_Odm)
 
 }
 
-static u8 getSwingIndex(struct rtl_dm *pDM_Odm)
+static u8 getSwingIndex(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *	Adapter = pDM_Odm->Adapter;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -269,7 +269,7 @@ static u8 getSwingIndex(struct rtl_dm *pDM_Odm)
 
 
 
-static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
+static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 {
 	u8 		p = 0;
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -311,12 +311,12 @@ static void odm_TXPowerTrackingThermalMeterInit(struct rtl_dm *pDM_Odm)
 	}
 }
 
-static void odm_TXPowerTrackingInit(struct rtl_dm *pDM_Odm)
+static void odm_TXPowerTrackingInit(struct _rtw_dm *pDM_Odm)
 {
 	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
 }
 
-void ODM_DMInit(struct rtl_dm *pDM_Odm)
+void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 {
 	/* 2012.05.03 Luke: For all IC series */
 	odm_CommonInfoSelfInit(pDM_Odm);
@@ -337,7 +337,7 @@ void ODM_DMInit(struct rtl_dm *pDM_Odm)
  * ============================================================
  */
 
-void DoIQK_8812A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
+void DoIQK_8812A(struct _rtw_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 	ThermalValue, u8 Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -365,7 +365,7 @@ void DoIQK_8812A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
  *
  *---------------------------------------------------------------------------*/
 
-void ODM_TxPwrTrackSetPwr8812A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
+void ODM_TxPwrTrackSetPwr8812A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 	u8 	RFPath, u8 	ChannelMappedIndex)
 {
 	uint32_t 	finalBbSwingIdx[2];
@@ -716,7 +716,7 @@ static u8 rtl8812au_delta_swing_table_idx_24gccka_p_rfe3[] = {
 
 /* END Copied from hal/OUTSRC/rtl8812a/HalHWImg8812A_RF.c */
 
-void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
+void rtl8812au_get_delta_swing_table(struct _rtw_dm *pDM_Odm,
 					    u8 **up_a, u8 **down_a,
 					    u8 **up_b, u8 **down_b)
 {
@@ -802,7 +802,7 @@ void rtl8812au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
 
 /* From hal/OUTSRC/rtl8821a/HalPhyRf_8821A.c */
 
-void DoIQK_8821A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
+void DoIQK_8821A(struct _rtw_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 ThermalValue, u8 Threshold)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -813,7 +813,7 @@ void DoIQK_8821A(struct rtl_dm *pDM_Odm, u8 DeltaThermalIndex,
 }
 
 
-void ODM_TxPwrTrackSetPwr8821A(struct rtl_dm *pDM_Odm, PWRTRACK_METHOD Method,
+void ODM_TxPwrTrackSetPwr8821A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 	u8 RFPath, u8 ChannelMappedIndex)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
@@ -1015,7 +1015,7 @@ static u8 rtl8821au_delta_swing_table_idx_24gccka_p[] = {
 
 /* END Copied from hal/OUTSRC/rtl8821a/HalHWImg8821A_RF.c */
 
-void rtl8821au_get_delta_swing_table(struct rtl_dm *pDM_Odm,
+void rtl8821au_get_delta_swing_table(struct _rtw_dm *pDM_Odm,
 	u8 **up_a, u8 **down_a,
 	u8 **up_b, u8 **down_b)
 {

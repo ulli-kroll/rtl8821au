@@ -40,7 +40,7 @@
 #define	BW_40M  1
 #define	BW_80M	2
 
-static void phy_LCCalibrate_8812A(struct rtl_dm *pDM_Odm, BOOLEAN	is2T)
+static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 {
 	uint32_t	/*RF_Amode=0, RF_Bmode=0,*/ LC_Cal = 0, tmp = 0;
 
@@ -122,7 +122,7 @@ static void phy_LCCalibrate_8812A(struct rtl_dm *pDM_Odm, BOOLEAN	is2T)
 #define		DP_DPK_NUM		3
 #define		DP_DPK_VALUE_NUM	2
 
-void PHY_LCCalibrate_8812A(struct rtl_dm *pDM_Odm)
+void PHY_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm)
 {
 	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
 

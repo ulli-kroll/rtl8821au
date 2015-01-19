@@ -156,7 +156,7 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	uint32_t 	TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int		TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
@@ -1335,7 +1335,7 @@ static void _rtl8812au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 {
 	uint32_t i;
 	struct _rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm * pDM_Odm = &pHalData->odmpriv;
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
 	/* Reload MacBB Parameters */
 	for (i = 0; i < MACBB_NUM; i++) {
@@ -1407,7 +1407,7 @@ static void _rtl8812au_iqk_restore_afe(struct rtl_priv *rtlpriv, uint32_t *AFE_b
 {
 	uint32_t i;
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 	
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Reload AFE Parameters */
@@ -1490,7 +1490,7 @@ static void _rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 	uint32_t Backup_RF_REG[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
 
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	_rtl8812au_iqk_backup_macbb(rtlpriv, MACBB_backup, Backup_MACBB_REG, MACBB_REG_NUM);
 	_rtl8812au_iqk_backup_afe(rtlpriv, AFE_backup, Backup_AFE_REG, AFE_REG_NUM);
@@ -1541,7 +1541,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	int 	i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0;
 
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d\n", *pDM_Odm->pBandWidth));
 	if (*pDM_Odm->pBandWidth == 2) {
@@ -2236,7 +2236,7 @@ static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter)
 	u32 backup_rf_reg[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
 
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
-	struct rtl_dm *pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
 	_rtl8821au_iqk_backup_macbb(pAdapter, macbb_backup, backup_macbb_reg,
 				    MACBB_REG_NUM);
@@ -2913,7 +2913,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 	struct rtl_efuse *efuse = rtl_efuse(pAdapter);
 	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
 	struct _rtw_hal *	pHalData = GET_HAL_DATA(pAdapter);
-	struct rtl_dm *		pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *		pDM_Odm = &pHalData->odmpriv;
 	uint8_t					i = 0;	/* default set to 1S */
 	struct registry_priv	*pregistrypriv = &pAdapter->registrypriv;
 	uint32_t					powerDiffByRate = 0;
@@ -3118,7 +3118,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 	return txPower;
 }
 
-static VOID PHY_SetPowerLimitTableValue(struct rtl_dm *pDM_Odm,
+static VOID PHY_SetPowerLimitTableValue(struct _rtw_dm *pDM_Odm,
 	s8 *Regulation, s8 *Band, s8 *Bandwidth, s8 *RateSection,
 	s8 *RfPath, s8 *Channel, s8 *PowerLimit)
 {
@@ -3186,7 +3186,7 @@ static VOID PHY_SetPowerLimitTableValue(struct rtl_dm *pDM_Odm,
 }
 
 
-static void odm_ConfigBB_TXPWR_LMT_8812A(struct rtl_dm *pDM_Odm,
+static void odm_ConfigBB_TXPWR_LMT_8812A(struct _rtw_dm *pDM_Odm,
 	u8 *Regulation, u8 *Band, u8 *Bandwidth,
 	u8 *RateSection, u8 *RfPath, u8 *Channel,
 	u8 *PowerLimit)
@@ -3196,7 +3196,7 @@ static void odm_ConfigBB_TXPWR_LMT_8812A(struct rtl_dm *pDM_Odm,
 }
 
 
-static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct rtl_dm *pDM_Odm)
+static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct _rtw_dm *pDM_Odm)
 {
 	uint32_t i		= 0;
 	uint32_t ArrayLen       = RTL8812AU_TXPWR_LMT_ARRAY_LEN;
@@ -3219,7 +3219,7 @@ static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct rtl_dm *pDM_Odm)
 }
 
 
-static void odm_ConfigBB_TXPWR_LMT_8821A(struct rtl_dm *pDM_Odm,
+static void odm_ConfigBB_TXPWR_LMT_8821A(struct _rtw_dm *pDM_Odm,
 	u8 *Regulation, u8 *Band, u8 *Bandwidth,
 	u8 * RateSection, u8 *RfPath, u8 *Channel,
 	u8 *PowerLimit
@@ -3230,7 +3230,7 @@ static void odm_ConfigBB_TXPWR_LMT_8821A(struct rtl_dm *pDM_Odm,
 }
 
 
-static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct rtl_dm *pDM_Odm)
+static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct _rtw_dm *pDM_Odm)
 {
 	uint32_t i		= 0;
 	uint32_t ArrayLen       = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
@@ -3252,7 +3252,7 @@ static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct rtl_dm *pDM_Odm)
 
 }
 
-void _rtl8821au_phy_read_and_config_txpwr_lmt(struct rtl_dm *pDM_Odm)
+void _rtl8821au_phy_read_and_config_txpwr_lmt(struct _rtw_dm *pDM_Odm)
 {
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
 		ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(pDM_Odm);
@@ -3289,7 +3289,7 @@ static BOOLEAN CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 	return TRUE;
 }
 
-static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_dm *pDM_Odm)
+static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 {
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
@@ -3345,7 +3345,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_dm *pDM_Odm)
 
 }
 
-static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
+static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 {
 
 	uint32_t     hex         = 0;
@@ -3405,7 +3405,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_dm * pDM_Odm)
 }
 
 
-void _rtl8821au_phy_config_mac_with_headerfile(struct rtl_dm *pDM_Odm)
+void _rtl8821au_phy_config_mac_with_headerfile(struct _rtw_dm *pDM_Odm)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigMACWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
@@ -3468,7 +3468,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 				enum radio_path eRFPath)
 {
 	struct _rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm * pDM_Odm = &pHalData->odmpriv;
 	
 	int i;
 	bool rtstatus = true;
@@ -3603,7 +3603,7 @@ static void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data, enum radio_path path, uint32_t RegAddr)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm *	pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 	
 	if (Addr == 0xfe || Addr == 0xffe) {
 		msleep(50);
@@ -3641,7 +3641,7 @@ static void _rtl8821au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr
 void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radio_path eRFPath)
 {
 	struct _rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
-	struct rtl_dm * pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm * pDM_Odm = &pHalData->odmpriv;
 
 	uint32_t	hex         = 0;
 	uint32_t	i           = 0;

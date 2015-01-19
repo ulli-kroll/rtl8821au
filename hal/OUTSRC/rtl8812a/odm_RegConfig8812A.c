@@ -23,7 +23,7 @@
 
 
 
-void odm_ConfigBB_AGC_8812A(struct rtl_dm *pDM_Odm, uint32_t Addr,
+void odm_ConfigBB_AGC_8812A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	rtl_set_bbreg(pDM_Odm->Adapter, Addr, Bitmask, Data);
@@ -33,7 +33,7 @@ void odm_ConfigBB_AGC_8812A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data));
 }
 
-void odm_ConfigBB_PHY_REG_PG_8812A(struct rtl_dm *pDM_Odm, uint32_t Addr,
+void odm_ConfigBB_PHY_REG_PG_8812A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe || Addr == 0xffe) {
@@ -44,7 +44,7 @@ void odm_ConfigBB_PHY_REG_PG_8812A(struct rtl_dm *pDM_Odm, uint32_t Addr,
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X %08X\n", Addr, Bitmask, Data));
 }
 
-void odm_ConfigBB_PHY_8812A(struct rtl_dm *pDM_Odm, uint32_t Addr,
+void odm_ConfigBB_PHY_8812A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe) {

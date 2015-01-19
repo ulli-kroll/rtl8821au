@@ -34,7 +34,7 @@
 //3 ============================================================
 */
 
-static void PHY_LCCalibrate_8821A(struct rtl_dm *pDM_Odm);
+static void PHY_LCCalibrate_8821A(struct _rtw_dm *pDM_Odm);
 
 
 /* 1 7.	IQK */

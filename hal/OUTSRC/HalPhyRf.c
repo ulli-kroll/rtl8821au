@@ -64,7 +64,7 @@ static void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 	pConfig->GetDeltaSwingTable = rtl8821au_get_delta_swing_table;
 }
 
-void ConfigureTxpowerTrack(struct rtl_dm *pDM_Odm, PTXPWRTRACK_CFG pConfig)
+void ConfigureTxpowerTrack(struct _rtw_dm *pDM_Odm, PTXPWRTRACK_CFG pConfig)
 {
 	if (pDM_Odm->SupportICType == ODM_RTL8821)
 		ConfigureTxpowerTrack_8821A(pConfig);
@@ -82,7 +82,7 @@ void ConfigureTxpowerTrack(struct rtl_dm *pDM_Odm, PTXPWRTRACK_CFG pConfig)
  *        need to call this function.
  * ======================================================================
  */
-VOID ODM_ClearTxPowerTrackingState(struct rtl_dm *pDM_Odm)
+VOID ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_efuse *efuse = rtl_efuse(pDM_Odm->Adapter);
 	struct _rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
@@ -118,7 +118,7 @@ VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *Adapter)
 {
 	struct rtl_efuse *efuse = rtl_efuse(Adapter);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	struct rtl_dm *pDM_Odm = &pHalData->odmpriv;
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
 	u8	ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;
 	u8	ThermalValue_AVG_count = 0;

@@ -27,7 +27,7 @@
 
 VOID
 ODM_InitDebugSetting(
-	IN		struct rtl_dm *	pDM_Odm
+	IN		struct _rtw_dm *	pDM_Odm
 	)
 {
 pDM_Odm->DebugLevel				= 	ODM_DBG_LOUD;

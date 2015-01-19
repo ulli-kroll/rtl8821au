@@ -45,7 +45,7 @@ u8 odm_QueryRxPwrPercentage(s8 AntPower)
  * IF other SW team do not support the feature, remove this section.??
  */
 
-static int32_t odm_SignalScaleMapping_92CSeries(struct rtl_dm *pDM_Odm, int32_t CurrSig)
+static int32_t odm_SignalScaleMapping_92CSeries(struct _rtw_dm *pDM_Odm, int32_t CurrSig)
 {
 	int32_t RetSig;
 
@@ -72,7 +72,7 @@ static int32_t odm_SignalScaleMapping_92CSeries(struct rtl_dm *pDM_Odm, int32_t 
 	return RetSig;
 }
 
-int32_t odm_SignalScaleMapping(struct rtl_dm *pDM_Odm, int32_t CurrSig)
+int32_t odm_SignalScaleMapping(struct _rtw_dm *pDM_Odm, int32_t CurrSig)
 {
 	return odm_SignalScaleMapping_92CSeries(pDM_Odm, CurrSig);
 }
@@ -132,7 +132,7 @@ static u16 odm_Cfo(s8 Value)
 	return ret_val;
 }
 
-void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
+void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	u8	i, Max_spatial_stream;
@@ -485,7 +485,7 @@ void odm_RxPhyStatusJaguarSeries_Parsing(struct rtl_dm *pDM_Odm,
 }
 
 
-void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	PODM_PACKET_INFO_T pPktinfo)
 {
 	int32_t		UndecoratedSmoothedPWDB, UndecoratedSmoothedCCK, UndecoratedSmoothedOFDM, RSSI_Ave;
@@ -662,7 +662,7 @@ void odm_Process_RSSIForDM(struct rtl_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
  * Endianness before calling this API
  */
 
-void ODM_PhyStatusQuery(struct rtl_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+void ODM_PhyStatusQuery(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	odm_RxPhyStatusJaguarSeries_Parsing(pDM_Odm, pPhyInfo,
@@ -673,7 +673,7 @@ void ODM_PhyStatusQuery(struct rtl_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 
 
 
-void ODM_ConfigBBWithHeaderFile(struct rtl_dm *pDM_Odm, ODM_BB_Config_Type ConfigType)
+void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type ConfigType)
 {
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigBBWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));

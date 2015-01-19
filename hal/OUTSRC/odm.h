@@ -933,27 +933,27 @@ static u8 DeltaSwingTableIdx_2GA_N_8188E[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 4, 5
 #define SWAW_STEP_PEAK		0
 #define SWAW_STEP_DETERMINE	1
 
-VOID ODM_Write_DIG(IN	struct rtl_dm *pDM_Odm, 	IN	u8	CurrentIGI);
-VOID ODM_Write_CCK_CCA_Thres(IN	struct rtl_dm *pDM_Odm, IN	u8	CurCCK_CCAThres);
+VOID ODM_Write_DIG(IN	struct _rtw_dm *pDM_Odm, 	IN	u8	CurrentIGI);
+VOID ODM_Write_CCK_CCA_Thres(IN	struct _rtw_dm *pDM_Odm, IN	u8	CurCCK_CCAThres);
 
 VOID
 ODM_SetAntenna(
-	IN 	struct rtl_dm *pDM_Odm,
+	IN 	struct _rtw_dm *pDM_Odm,
 	IN	u8		Antenna);
 
 
 #define SwAntDivRestAfterLink	ODM_SwAntDivRestAfterLink
-VOID ODM_SwAntDivRestAfterLink(	IN	struct rtl_dm *pDM_Odm);
+VOID ODM_SwAntDivRestAfterLink(	IN	struct _rtw_dm *pDM_Odm);
 
 #define dm_CheckTXPowerTracking 	ODM_TXPowerTrackingCheck
 VOID
 ODM_TXPowerTrackingCheck(
-	IN		struct rtl_dm *	pDM_Odm
+	IN		struct _rtw_dm *	pDM_Odm
 	);
 
 BOOLEAN
 ODM_RAStateCheck(
-	IN		struct rtl_dm *	pDM_Odm,
+	IN		struct _rtw_dm *	pDM_Odm,
 	IN		int32_t			RSSI,
 	IN		BOOLEAN			bForceUpdate,
 	OUT		u8 *		pRATRState
@@ -962,7 +962,7 @@ ODM_RAStateCheck(
 
 #define dm_SWAW_RSSI_Check	ODM_SwAntDivChkPerPktRssi
 VOID ODM_SwAntDivChkPerPktRssi(
-	IN struct rtl_dm *	pDM_Odm,
+	IN struct _rtw_dm *	pDM_Odm,
 	IN u8			StationID,
 	IN PODM_PHY_INFO_T pPhyInfo
 	);
@@ -970,7 +970,7 @@ VOID ODM_SwAntDivChkPerPktRssi(
 
 uint32_t
 GetPSDData(
-	struct rtl_dm *pDM_Odm,
+	struct _rtw_dm *pDM_Odm,
 	unsigned int 	point,
 	u8 initial_gain_psd);
 
@@ -978,41 +978,41 @@ GetPSDData(
 
 VOID
 odm_DIGbyRSSI_LPS(
-	IN		struct rtl_dm *	pDM_Odm
+	IN		struct _rtw_dm *	pDM_Odm
 	);
 
 uint32_t ODM_Get_Rate_Bitmap(
-	IN	struct rtl_dm *pDM_Odm,
+	IN	struct _rtw_dm *pDM_Odm,
 	IN	uint32_t		macid,
 	IN	uint32_t 		ra_mask,
 	IN	u8 		rssi_level);
 
 
 
-VOID ODM_DMInit( IN	struct rtl_dm *pDM_Odm);
+VOID ODM_DMInit( IN	struct _rtw_dm *pDM_Odm);
 
 VOID
 ODM_DMWatchdog(
-	IN		struct rtl_dm *		pDM_Odm			// For common use in the future
+	IN		struct _rtw_dm *		pDM_Odm			// For common use in the future
 	);
 
 VOID
 ODM_CmnInfoInit(
-	IN		struct rtl_dm *	pDM_Odm,
+	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		uint32_t			Value
 	);
 
 VOID
 ODM_CmnInfoHook(
-	IN		struct rtl_dm *	pDM_Odm,
+	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		PVOID			pValue
 	);
 
 VOID
 ODM_CmnInfoPtrArrayHook(
-	IN		struct rtl_dm *	pDM_Odm,
+	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		u16			Index,
 	IN		PVOID			pValue
@@ -1020,29 +1020,29 @@ ODM_CmnInfoPtrArrayHook(
 
 VOID
 ODM_CmnInfoUpdate(
-	IN		struct rtl_dm *	pDM_Odm,
+	IN		struct _rtw_dm *	pDM_Odm,
 	IN		uint32_t			CmnInfo,
 	IN		uint64_t			Value
 	);
 
 VOID
 ODM_InitAllTimers(
-    IN struct rtl_dm *pDM_Odm
+    IN struct _rtw_dm *pDM_Odm
     );
 
 VOID
 ODM_CancelAllTimers(
-    IN struct rtl_dm *   pDM_Odm
+    IN struct _rtw_dm *   pDM_Odm
     );
 
 VOID
 ODM_ReleaseAllTimers(
-    IN struct rtl_dm *pDM_Odm
+    IN struct _rtw_dm *pDM_Odm
     );
 
 VOID
 ODM_AntselStatistics_88C(
-	IN		struct rtl_dm *	pDM_Odm,
+	IN		struct _rtw_dm *	pDM_Odm,
 	IN		u8			MacId,
 	IN		uint32_t			PWDBAll,
 	IN		BOOLEAN			isCCKrate
@@ -1051,10 +1051,10 @@ ODM_AntselStatistics_88C(
 
 VOID
 ODM_UpdateInitRate(
-	IN	struct rtl_dm *pDM_Odm,
+	IN	struct _rtw_dm *pDM_Odm,
 	IN	u8		Rate
 	);
-void odm_dtc(struct rtl_dm *pDM_Odm);
+void odm_dtc(struct _rtw_dm *pDM_Odm);
 
 #endif
 

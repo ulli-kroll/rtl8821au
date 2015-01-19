@@ -23,7 +23,7 @@
 #include <../rtl8821au/phy.h>
 #include <../rtl8821au/reg.h>
 #include <../rtl8821au/rf.h>
-
+#include <../wifi.h>
 
 const char *const GLBwSrc[]={
 	"CHANNEL_WIDTH_20",
@@ -496,6 +496,7 @@ static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_TYPE Band, uint8_t 
 static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
+	struct rtl_phy *rtlphy = rtl_phy(Adapter);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t		i, j, k, l, m;
 
@@ -506,7 +507,7 @@ static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
 			for (k = 0; k < MAX_2_4G_RATE_SECTION_NUM; ++k)
 				for (m = 0; m < MAX_2_4G_CHANNEL_NUM; ++m)
 					for (l = 0; l < GET_HAL_RFPATH_NUM(Adapter) ;++l)
-						pHalData->TxPwrLimit_2_4G[i][j][k][m][l] = MAX_POWER_INDEX;
+						rtlphy->TxPwrLimit_2_4G[i][j][k][m][l] = MAX_POWER_INDEX;
 	}
 
 	for (i = 0; i < MAX_REGULATION_NUM; ++i) {
@@ -514,7 +515,7 @@ static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
 			for (k = 0; k < MAX_5G_RATE_SECTION_NUM; ++k)
 				for (m = 0; m < MAX_5G_CHANNEL_NUM; ++m)
 					for (l = 0; l <  GET_HAL_RFPATH_NUM(Adapter) ; ++l)
-						pHalData->TxPwrLimit_5G[i][j][k][m][l] = MAX_POWER_INDEX;
+						rtlphy->TxPwrLimit_5G[i][j][k][m][l] = MAX_POWER_INDEX;
 	}
 
 	/* DBG_871X("<===== PHY_InitPowerLimitTable()!\n" ); */
@@ -523,6 +524,7 @@ static void PHY_InitPowerLimitTable(struct rtl_dm *pDM_Odm)
 static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
+	struct rtl_phy *rtlphy = rtl_phy(Adapter);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t 	BW40PwrBasedBm2_4G, BW40PwrBasedBm5G;
 	uint8_t 	regulation, bw, channel, rateSection, group;
@@ -571,7 +573,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 					 * power limit value by using index rf path A and use it to calculate all the value of
 					 * all the path
 					 */
-					tempPwrLmt = pHalData->TxPwrLimit_2_4G[regulation][bw][rateSection][group][RF90_PATH_A];
+					tempPwrLmt = rtlphy->TxPwrLimit_2_4G[regulation][bw][rateSection][group][RF90_PATH_A];
 					/* process RF90_PATH_A later */
 					for (rfPath = 0; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
 						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
@@ -581,12 +583,12 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 
 						if (tempPwrLmt != MAX_POWER_INDEX) {
 							tempValue = tempPwrLmt - BW40PwrBasedBm2_4G;
-							pHalData->TxPwrLimit_2_4G[regulation][bw][rateSection][group][rfPath] = tempValue;
+							rtlphy->TxPwrLimit_2_4G[regulation][bw][rateSection][group][rfPath] = tempValue;
 						}
 
 						DBG_871X("TxPwrLimit_2_4G[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
 							(TxPwrLimit in dBm %d - BW40PwrLmt2_4G[channel %d][rfPath %d] %d) \n",
-							regulation, bw, rateSection, group, pHalData->TxPwrLimit_2_4G[regulation][bw][rateSection][group][rfPath],
+							regulation, bw, rateSection, group, rtlphy->TxPwrLimit_2_4G[regulation][bw][rateSection][group][rfPath],
 							tempPwrLmt, channel, rfPath, BW40PwrBasedBm2_4G );
 					}
 				}
@@ -665,32 +667,32 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 						 * power limit value by using index rf path A and use it to calculate all the value of
 						 * all the path
 						 */
-						tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][rateSection][group][RF90_PATH_A];
+						tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][rateSection][group][RF90_PATH_A];
 						if (tempPwrLmt == MAX_POWER_INDEX) {
 							if (bw == 0 || bw == 1) {	/* 5G VHT and HT can cross reference */
 								DBG_871X( "No power limit table of the specified band %d, bandwidth %d, ratesection %d, group %d, rf path %d\n",
 											1, bw, rateSection, group, RF90_PATH_A );
 								if (rateSection == 2) {
-									pHalData->TxPwrLimit_5G[regulation][bw][2][group][RF90_PATH_A] =
-										pHalData->TxPwrLimit_5G[regulation][bw][4][group][RF90_PATH_A];
+									rtlphy->TxPwrLimit_5G[regulation][bw][2][group][RF90_PATH_A] =
+										rtlphy->TxPwrLimit_5G[regulation][bw][4][group][RF90_PATH_A];
 										
-									tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][4][group][RF90_PATH_A];
+									tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][4][group][RF90_PATH_A];
 								} else if (rateSection == 4) {
-									pHalData->TxPwrLimit_5G[regulation][bw][4][group][RF90_PATH_A] =
-										pHalData->TxPwrLimit_5G[regulation][bw][2][group][RF90_PATH_A];
+									rtlphy->TxPwrLimit_5G[regulation][bw][4][group][RF90_PATH_A] =
+										rtlphy->TxPwrLimit_5G[regulation][bw][2][group][RF90_PATH_A];
 
-									tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][2][group][RF90_PATH_A];
+									tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][2][group][RF90_PATH_A];
 								} else if ( rateSection == 3 ) {
-									pHalData->TxPwrLimit_5G[regulation][bw][3][group][RF90_PATH_A] =
-										pHalData->TxPwrLimit_5G[regulation][bw][5][group][RF90_PATH_A];
+									rtlphy->TxPwrLimit_5G[regulation][bw][3][group][RF90_PATH_A] =
+										rtlphy->TxPwrLimit_5G[regulation][bw][5][group][RF90_PATH_A];
 
-									tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][5][group][RF90_PATH_A];
+									tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][5][group][RF90_PATH_A];
 								}
 								else if ( rateSection == 5 ) {
-									pHalData->TxPwrLimit_5G[regulation][bw][5][group][RF90_PATH_A] =
-										pHalData->TxPwrLimit_5G[regulation][bw][3][group][RF90_PATH_A];
+									rtlphy->TxPwrLimit_5G[regulation][bw][5][group][RF90_PATH_A] =
+										rtlphy->TxPwrLimit_5G[regulation][bw][3][group][RF90_PATH_A];
 										
-									tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][3][group][RF90_PATH_A];
+									tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][3][group][RF90_PATH_A];
 								}
 
 								DBG_871X("use other value %d", tempPwrLmt);
@@ -706,12 +708,12 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 
 							if (tempPwrLmt != MAX_POWER_INDEX) {
 								tempValue = tempPwrLmt - BW40PwrBasedBm5G;
-								pHalData->TxPwrLimit_5G[regulation][bw][rateSection][group][rfPath] = tempValue;
+								rtlphy->TxPwrLimit_5G[regulation][bw][rateSection][group][rfPath] = tempValue;
 							}
 
 							DBG_871X("TxPwrLimit_5G[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
 								(TxPwrLimit in dBm %d - BW40PwrLmt5G[channel %d][rfPath %d] %d) \n",
-								regulation, bw, rateSection, group, pHalData->TxPwrLimit_5G[regulation][bw][rateSection][group][rfPath],
+								regulation, bw, rateSection, group, rtlphy->TxPwrLimit_5G[regulation][bw][rateSection][group][rfPath],
 								tempPwrLmt, channel, rfPath, BW40PwrBasedBm5G );
 						}
 
@@ -774,19 +776,19 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 							}
 						}
 
-						tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][rateSection][group][RF90_PATH_A];
+						tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][rateSection][group][RF90_PATH_A];
 						if (tempPwrLmt == MAX_POWER_INDEX) {
 							if (bw == 0 || bw == 1) { /* 5G VHT and HT can cross reference */
 								DBG_871X("No power limit table of the specified band %d, bandwidth %d, ratesection %d, group %d, rf path %d\n",
 											1, bw, rateSection, group, RF90_PATH_A );
 								if (rateSection == 2)
-									tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][4][group][RF90_PATH_A];
+									tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][4][group][RF90_PATH_A];
 								else if (rateSection == 4)
-									tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][2][group][RF90_PATH_A];
+									tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][2][group][RF90_PATH_A];
 								else if (rateSection == 3)
-									tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][5][group][RF90_PATH_A];
+									tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][5][group][RF90_PATH_A];
 								else if (rateSection == 5)
-									tempPwrLmt = pHalData->TxPwrLimit_5G[regulation][bw][3][group][RF90_PATH_A];
+									tempPwrLmt = rtlphy->TxPwrLimit_5G[regulation][bw][3][group][RF90_PATH_A];
 
 								DBG_871X("use other value %d", tempPwrLmt );
 							}
@@ -800,12 +802,12 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *Adapter)
 
 						if (tempPwrLmt != MAX_POWER_INDEX) {
 							tempValue = tempPwrLmt - BW40PwrBasedBm5G;
-							pHalData->TxPwrLimit_5G[regulation][bw][rateSection][group][RF90_PATH_A] = tempValue;
+							rtlphy->TxPwrLimit_5G[regulation][bw][rateSection][group][RF90_PATH_A] = tempValue;
 						}
 
 						DBG_871X("TxPwrLimit_5G[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
 							(TxPwrLimit in dBm %d - BW40PwrLmt5G[channel %d][rfPath %d] %d) \n",
-							regulation, bw, rateSection, group, pHalData->TxPwrLimit_5G[regulation][bw][rateSection][group][RF90_PATH_A],
+							regulation, bw, rateSection, group, rtlphy->TxPwrLimit_5G[regulation][bw][rateSection][group][RF90_PATH_A],
 							tempPwrLmt, channel, RF90_PATH_A, BW40PwrBasedBm5G );
 					}
 				}

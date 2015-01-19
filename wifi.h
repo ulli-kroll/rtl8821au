@@ -21,6 +21,16 @@ struct rtl_hal_ops;
 #define CHANNEL_GROUP_MAX				3+9	// ch1~3, ch4~9, ch10~14 total three groups
 #define MAX_PG_GROUP					13
 
+#define MAX_REGULATION_NUM						3
+#define MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE	4
+#define MAX_2_4G_BANDWITH_NUM					2
+#define MAX_2_4G_RATE_SECTION_NUM				3
+#define MAX_2_4G_CHANNEL_NUM						5 // adopt channel group instead of individual channel
+#define MAX_5G_BANDWITH_NUM						4
+#define MAX_5G_RATE_SECTION_NUM					4
+#define MAX_5G_CHANNEL_NUM						14 // adopt channel group instead of individual channel
+
+
 struct rtl_efuse {
 	//
 	// EEPROM setting.
@@ -90,10 +100,24 @@ struct rtl_phy {
 	u8	current_chan_bw;
 	
 	u8	current_channel;
+
+	uint8_t	TxPwrLimit_2_4G[MAX_REGULATION_NUM]
+				[MAX_2_4G_BANDWITH_NUM]
+	                        [MAX_2_4G_RATE_SECTION_NUM]
+	                        [MAX_2_4G_CHANNEL_NUM]
+				[MAX_RF_PATH_NUM];
+
+	// Power Limit Table for 5G
+	uint8_t	TxPwrLimit_5G[MAX_REGULATION_NUM]
+				[MAX_5G_BANDWITH_NUM]
+				[MAX_5G_RATE_SECTION_NUM]
+				[MAX_5G_CHANNEL_NUM]
+				[MAX_RF_PATH_NUM];
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
 #define rtl_efuse(rtlpriv)	(&((rtlpriv)->efuse))
+#define rtl_phy(rtlpriv)	(&((rtlpriv)->phy))
 
 struct rtl_priv {
 	struct net_device *ndev;
@@ -581,16 +605,6 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 	RT_AMPDU_BRUST_8812_15	= 6,
 	RT_AMPDU_BRUST_8723B	 	= 7,
 }RT_AMPDU_BRUST,*PRT_AMPDU_BRUST_MODE;
-
-
-#define MAX_REGULATION_NUM						3
-#define MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE	4
-#define MAX_2_4G_BANDWITH_NUM					2
-#define MAX_2_4G_RATE_SECTION_NUM				3
-#define MAX_2_4G_CHANNEL_NUM						5 // adopt channel group instead of individual channel
-#define MAX_5G_BANDWITH_NUM						4
-#define MAX_5G_RATE_SECTION_NUM					4
-#define MAX_5G_CHANNEL_NUM						14 // adopt channel group instead of individual channel
 
 #define MAX_BASE_NUM_IN_PHY_REG_PG_2_4G			4 //  CCK:1,OFDM:2, HT:2
 #define MAX_BASE_NUM_IN_PHY_REG_PG_5G			5 // OFDM:1, HT:2, VHT:2
@@ -1334,19 +1348,6 @@ struct _rtw_hal {
 	uint8_t	TxPwrLegacyHtDiff[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];// For HT<->legacy pwr diff
 
 	// Power Limit Table for 2.4G
-	uint8_t	TxPwrLimit_2_4G[MAX_REGULATION_NUM]
-						[MAX_2_4G_BANDWITH_NUM]
-	                                [MAX_2_4G_RATE_SECTION_NUM]
-	                                [MAX_2_4G_CHANNEL_NUM]
-						[MAX_RF_PATH_NUM];
-
-	// Power Limit Table for 5G
-	uint8_t	TxPwrLimit_5G[MAX_REGULATION_NUM]
-						[MAX_5G_BANDWITH_NUM]
-						[MAX_5G_RATE_SECTION_NUM]
-						[MAX_5G_CHANNEL_NUM]
-						[MAX_RF_PATH_NUM];
-
 
 	// Store the original power by rate value of the base of each rate section of rf path A & B
 	uint8_t	TxPwrByRateBase2_4G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]

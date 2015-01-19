@@ -2364,6 +2364,7 @@ static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel
 	BAND_TYPE Band, enum CHANNEL_WIDTH Bandwidth, enum radio_path RfPath,
 	uint8_t DataRate, uint8_t Channel)
 {
+	struct rtl_phy *rtlphy = rtl_phy(Adapter);
 	struct rtl_efuse *efuse = rtl_efuse(Adapter);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	s16				band = -1, regulation = -1, bandwidth = -1,
@@ -2515,10 +2516,10 @@ static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel
 	}
 
 	if (Band == BAND_ON_2_4G)
-		powerLimit = pHalData->TxPwrLimit_2_4G[regulation]
+		powerLimit = rtlphy->TxPwrLimit_2_4G[regulation]
 			[bandwidth][rateSection][channelGroup][RfPath];
 	else if (Band == BAND_ON_5G)
-		powerLimit = pHalData->TxPwrLimit_5G[regulation]
+		powerLimit = rtlphy->TxPwrLimit_5G[regulation]
 			[bandwidth][rateSection][channelGroup][RfPath];
 	else
 		DBG_871X("No power limit table of the specified band\n");
@@ -3122,6 +3123,7 @@ static VOID PHY_SetPowerLimitTableValue(struct rtl_dm *pDM_Odm,
 	s8 *RfPath, s8 *Channel, s8 *PowerLimit)
 {
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
+	struct rtl_phy *rtlphy = rtl_phy(Adapter);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	uint8_t		regulation = 0, bandwidth = 0, rateSection = 0,
 			channel, powerLimit, channelGroup;
@@ -3171,12 +3173,12 @@ static VOID PHY_SetPowerLimitTableValue(struct rtl_dm *pDM_Odm,
 		DBG_871X("2.4G Band value : [regulation %d][bw %d][rate_section %d][chnl %d][val %d]\n",
 			regulation, bandwidth, rateSection, channel, powerLimit);
 		channelGroup = phy_GetChannelGroup(BAND_ON_2_4G, channel);
-		pHalData->TxPwrLimit_2_4G[regulation][bandwidth][rateSection][channelGroup][RF90_PATH_A] = powerLimit;
+		rtlphy->TxPwrLimit_2_4G[regulation][bandwidth][rateSection][channelGroup][RF90_PATH_A] = powerLimit;
 	} else if (eqNByte(Band, "5G", 2)) {
 		DBG_871X("5G Band value : [regulation %d][bw %d][rate_section %d][chnl %d][val %d]\n",
 			  regulation, bandwidth, rateSection, channel, powerLimit);
 		channelGroup = phy_GetChannelGroup(BAND_ON_5G, channel);
-		pHalData->TxPwrLimit_5G[regulation][bandwidth][rateSection][channelGroup][RF90_PATH_A] = powerLimit;
+		rtlphy->TxPwrLimit_5G[regulation][bandwidth][rateSection][channelGroup][RF90_PATH_A] = powerLimit;
 	} else {
 		DBG_871X("Cannot recognize the band info in %s\n", Band);
 		return;

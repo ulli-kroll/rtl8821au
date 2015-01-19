@@ -103,10 +103,10 @@ struct rtl_phy {
 
 	// The current Tx Power Level 
 	/* ULLI vars currently not used */
-	uint8_t	CurrentCckTxPwrIdx;
-	uint8_t	CurrentOfdm24GTxPwrIdx;
-	uint8_t	CurrentBW2024GTxPwrIdx;
-	uint8_t	CurrentBW4024GTxPwrIdx;
+	uint8_t	cur_cck_txpwridx;
+	uint8_t	cur_ofdm2g_txpwridx;
+	uint8_t	cur_bw20_txpwridx;
+	uint8_t	cur_bw40_txpwridx;
 
 	uint8_t	txpwr_limit_2_4g[MAX_REGULATION_NUM]
 				[MAX_2_4G_BANDWITH_NUM]

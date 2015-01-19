@@ -101,6 +101,13 @@ struct rtl_phy {
 	
 	u8	current_channel;
 
+	// The current Tx Power Level 
+	/* ULLI vars currently not used */
+	uint8_t	CurrentCckTxPwrIdx;
+	uint8_t	CurrentOfdm24GTxPwrIdx;
+	uint8_t	CurrentBW2024GTxPwrIdx;
+	uint8_t	CurrentBW4024GTxPwrIdx;
+
 	uint8_t	txpwr_limit_2_4g[MAX_REGULATION_NUM]
 				[MAX_2_4G_BANDWITH_NUM]
 	                        [MAX_2_4G_RATE_SECTION_NUM]
@@ -1364,11 +1371,6 @@ struct _rtw_hal {
 
 	uint8_t	PGMaxGroup;
 	uint8_t	LegacyHTTxPowerDiff;// Legacy to HT rate power diff
-	// The current Tx Power Level
-	uint8_t	CurrentCckTxPwrIdx;
-	uint8_t	CurrentOfdm24GTxPwrIdx;
-	uint8_t	CurrentBW2024GTxPwrIdx;
-	uint8_t	CurrentBW4024GTxPwrIdx;
 
 	// Read/write are allow for following hardware information variables
 	uint8_t	pwrGroupCnt;

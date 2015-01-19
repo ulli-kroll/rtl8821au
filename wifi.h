@@ -101,14 +101,14 @@ struct rtl_phy {
 	
 	u8	current_channel;
 
-	uint8_t	TxPwrLimit_2_4G[MAX_REGULATION_NUM]
+	uint8_t	txpwr_limit_2_4g[MAX_REGULATION_NUM]
 				[MAX_2_4G_BANDWITH_NUM]
 	                        [MAX_2_4G_RATE_SECTION_NUM]
 	                        [MAX_2_4G_CHANNEL_NUM]
 				[MAX_RF_PATH_NUM];
 
 	// Power Limit Table for 5G
-	uint8_t	TxPwrLimit_5G[MAX_REGULATION_NUM]
+	uint8_t	txpwr_limit_5g[MAX_REGULATION_NUM]
 				[MAX_5G_BANDWITH_NUM]
 				[MAX_5G_RATE_SECTION_NUM]
 				[MAX_5G_CHANNEL_NUM]

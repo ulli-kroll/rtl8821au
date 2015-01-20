@@ -111,6 +111,16 @@ struct rtl_hal {
 	bool fw_ready;
 };
 
+//###### duplicate code,will move to ODM #########
+#define IQK_MAC_REG_NUM		4
+#define IQK_ADDA_REG_NUM		16
+
+#define IQK_BB_REG_NUM			10
+#define IQK_BB_REG_NUM_92C	9
+#define IQK_BB_REG_NUM_92D	10
+#define IQK_BB_REG_NUM_test	6
+
+
 struct rtl_phy {
 	u8	rf_type;
 	
@@ -123,6 +133,12 @@ struct rtl_phy {
 	int32_t  RegE9C;
 	int32_t	RegEB4;
 	int32_t	RegEBC;
+
+	//for IQK
+	u32	ADDA_backup[IQK_ADDA_REG_NUM];
+	u32	IQK_MAC_backup[IQK_MAC_REG_NUM];
+	u32	IQK_BB_backup_recover[9];
+	u32	IQK_BB_backup[IQK_BB_REG_NUM];
 
 	uint8_t	bRfPiEnable;
 
@@ -495,14 +511,6 @@ enum hardware_type {
 	(IS_HARDWARE_TYPE_8812(rtlhal) || \
 	 IS_HARDWARE_TYPE_8821(rtlhal))
 
-//###### duplicate code,will move to ODM #########
-#define IQK_MAC_REG_NUM		4
-#define IQK_ADDA_REG_NUM		16
-
-#define IQK_BB_REG_NUM			10
-#define IQK_BB_REG_NUM_92C	9
-#define IQK_BB_REG_NUM_92D	10
-#define IQK_BB_REG_NUM_test	6
 
 #define IQK_Matrix_Settings_NUM_92D	1+24+21
 
@@ -555,12 +563,6 @@ struct dm_priv {
 	//uint8_t   RSVD_3;
 	//uint8_t   RSVD_4;
 	//uint8_t   RSVD_5;
-
-	//for IQK
-	u32	ADDA_backup[IQK_ADDA_REG_NUM];
-	u32	IQK_MAC_backup[IQK_MAC_REG_NUM];
-	u32	IQK_BB_backup_recover[9];
-	u32	IQK_BB_backup[IQK_BB_REG_NUM];
 
 	uint8_t	PowerIndex_backup[6];
 	uint8_t	OFDM_index[2];

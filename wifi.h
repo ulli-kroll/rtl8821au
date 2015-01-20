@@ -546,11 +546,6 @@ struct dm_priv {
 	uint8_t	TxPowerTrackControl;	//for mp mode, turn off txpwrtracking as default
 	uint8_t	TM_Trigger;
 
-	uint8_t	ThermalMeter[2];				// ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
-	uint8_t	ThermalValue;
-	uint8_t	ThermalValue_LCK;
-	uint8_t	ThermalValue_IQK;
-	uint8_t	ThermalValue_DPK;
 	//uint8_t   RSVD_2;
 
 	//for APK

@@ -53,7 +53,7 @@ Efuse_CalculateWordCnts( uint8_t	word_en)
 //
 VOID
 ReadEFuseByte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16 			_offset,
 		uint8_t 			*pbuf)
 {
@@ -63,21 +63,21 @@ ReadEFuseByte(
 	//uint32_t start=jiffies;
 
 	//Write Address
-	rtl_write_byte(padapter, EFUSE_CTRL+1, (_offset & 0xff));
-	readbyte = rtl_read_byte(padapter, EFUSE_CTRL+2);
-	rtl_write_byte(padapter, EFUSE_CTRL+2, ((_offset >> 8) & 0x03) | (readbyte & 0xfc));
+	rtl_write_byte(rtlpriv, EFUSE_CTRL+1, (_offset & 0xff));
+	readbyte = rtl_read_byte(rtlpriv, EFUSE_CTRL+2);
+	rtl_write_byte(rtlpriv, EFUSE_CTRL+2, ((_offset >> 8) & 0x03) | (readbyte & 0xfc));
 
 	//Write bit 32 0
-	readbyte = rtl_read_byte(padapter, EFUSE_CTRL+3);
-	rtl_write_byte(padapter, EFUSE_CTRL+3, (readbyte & 0x7f));
+	readbyte = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
+	rtl_write_byte(rtlpriv, EFUSE_CTRL+3, (readbyte & 0x7f));
 
 	//Check bit 32 read-ready
 	retry = 0;
-	value32 = rtl_read_dword(padapter, EFUSE_CTRL);
+	value32 = rtl_read_dword(rtlpriv, EFUSE_CTRL);
 	//while(!(((value32 >> 24) & 0xff) & 0x80)  && (retry<10))
 	while(!(((value32 >> 24) & 0xff) & 0x80)  && (retry<10000))
 	{
-		value32 = rtl_read_dword(padapter, EFUSE_CTRL);
+		value32 = rtl_read_dword(rtlpriv, EFUSE_CTRL);
 		retry++;
 	}
 
@@ -86,7 +86,7 @@ ReadEFuseByte(
 	// Designer says that there shall be some delay after ready bit is set, or the
 	// result will always stay on last data we read.
 	udelay(50);
-	value32 = rtl_read_dword(padapter, EFUSE_CTRL);
+	value32 = rtl_read_dword(rtlpriv, EFUSE_CTRL);
 
 	*pbuf = (uint8_t)(value32 & 0xff);
 	//DBG_871X("ReadEFuseByte _offset:%08u, in %d ms\n",_offset ,rtw_get_passing_time_ms(start));
@@ -111,7 +111,7 @@ ReadEFuseByte(
  *---------------------------------------------------------------------------*/
 uint8_t
 EFUSE_Read1Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Address)
 {
 	uint8_t	data;
@@ -120,28 +120,28 @@ EFUSE_Read1Byte(
 	uint32_t	k=0;
 	u16	contentLen=0;
 
-	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen);
+	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen);
 
 	if (Address < contentLen)	//E-fuse 512Byte
 	{
 		//Write E-fuse Register address bit0~7
 		temp = Address & 0xFF;
-		rtl_write_byte(padapter, EFUSE_CTRL+1, temp);
-		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+2);
+		rtl_write_byte(rtlpriv, EFUSE_CTRL+1, temp);
+		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+2);
 		//Write E-fuse Register address bit8~9
 		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
-		rtl_write_byte(padapter, EFUSE_CTRL+2, temp);
+		rtl_write_byte(rtlpriv, EFUSE_CTRL+2, temp);
 
 		//Write 0x30[31]=0
-		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
+		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
 		temp = Bytetemp & 0x7F;
-		rtl_write_byte(padapter, EFUSE_CTRL+3, temp);
+		rtl_write_byte(rtlpriv, EFUSE_CTRL+3, temp);
 
 		//Wait Write-ready (0x30[31]=1)
-		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
+		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
 		while(!(Bytetemp & 0x80))
 		{
-			Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
+			Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
 			k++;
 			if(k==1000)
 			{
@@ -149,7 +149,7 @@ EFUSE_Read1Byte(
 				break;
 			}
 		}
-		data=rtl_read_byte(padapter, EFUSE_CTRL);
+		data=rtl_read_byte(rtlpriv, EFUSE_CTRL);
 		return data;
 	}
 	else
@@ -176,12 +176,12 @@ EFUSE_Read1Byte(
 
 void
 EFUSE_Write1Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Address,
 		uint8_t		Value);
 void
 EFUSE_Write1Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Address,
 		uint8_t		Value)
 {
@@ -191,31 +191,31 @@ EFUSE_Write1Byte(
 	u16	contentLen=0;
 
 	//RT_TRACE(COMP_EFUSE, DBG_LOUD, ("Addr=%x Data =%x\n", Address, Value));
-	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen);
+	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen);
 
 	if( Address < contentLen)	//E-fuse 512Byte
 	{
-		rtl_write_byte(padapter, EFUSE_CTRL, Value);
+		rtl_write_byte(rtlpriv, EFUSE_CTRL, Value);
 
 		//Write E-fuse Register address bit0~7
 		temp = Address & 0xFF;
-		rtl_write_byte(padapter, EFUSE_CTRL+1, temp);
-		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+2);
+		rtl_write_byte(rtlpriv, EFUSE_CTRL+1, temp);
+		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+2);
 
 		//Write E-fuse Register address bit8~9
 		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
-		rtl_write_byte(padapter, EFUSE_CTRL+2, temp);
+		rtl_write_byte(rtlpriv, EFUSE_CTRL+2, temp);
 
 		//Write 0x30[31]=1
-		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
+		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
 		temp = Bytetemp | 0x80;
-		rtl_write_byte(padapter, EFUSE_CTRL+3, temp);
+		rtl_write_byte(rtlpriv, EFUSE_CTRL+3, temp);
 
 		//Wait Write-ready (0x30[31]=0)
-		Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
+		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
 		while(Bytetemp & 0x80)
 		{
-			Bytetemp = rtl_read_byte(padapter, EFUSE_CTRL+3);
+			Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
 			k++;
 			if(k==100)
 			{
@@ -236,7 +236,7 @@ EFUSE_Write1Byte(
 /*  11/16/2008 MH Read one byte from real Efuse. */
 uint8_t
 efuse_OneByteRead(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16			addr,
 		uint8_t			*data)
 {
@@ -244,24 +244,24 @@ efuse_OneByteRead(
 	uint8_t	bResult;
 
 	//DBG_871X("===> EFUSE_OneByteRead(), addr = %x\n", addr);
-	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtl_read_dword(pAdapter, EFUSE_TEST));
+	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtl_read_dword(rtlpriv, EFUSE_TEST));
 
 	// -----------------e-fuse reg ctrl ---------------------------------
 	//address
-	rtl_write_byte(padapter, EFUSE_CTRL+1, (uint8_t)(addr&0xff));
-	rtl_write_byte(padapter, EFUSE_CTRL+2, ((uint8_t)((addr>>8) &0x03) ) |
-	(rtl_read_byte(padapter, EFUSE_CTRL+2)&0xFC ));
+	rtl_write_byte(rtlpriv, EFUSE_CTRL+1, (uint8_t)(addr&0xff));
+	rtl_write_byte(rtlpriv, EFUSE_CTRL+2, ((uint8_t)((addr>>8) &0x03) ) |
+	(rtl_read_byte(rtlpriv, EFUSE_CTRL+2)&0xFC ));
 
-	rtl_write_byte(padapter, EFUSE_CTRL+3,  0x72);//read cmd
+	rtl_write_byte(rtlpriv, EFUSE_CTRL+3,  0x72);//read cmd
 
-	while(!(0x80 &rtl_read_byte(padapter, EFUSE_CTRL+3))&&(tmpidx<1000))
+	while(!(0x80 &rtl_read_byte(rtlpriv, EFUSE_CTRL+3))&&(tmpidx<1000))
 	{
 		mdelay(1);
 		tmpidx++;
 	}
 	if(tmpidx<1000)
 	{
-		*data=rtl_read_byte(padapter, EFUSE_CTRL);
+		*data=rtl_read_byte(rtlpriv, EFUSE_CTRL);
 		bResult = _TRUE;
 	}
 	else
@@ -281,7 +281,7 @@ efuse_OneByteRead(
 /*  11/16/2008 MH Write one byte to reald Efuse. */
 uint8_t
 efuse_OneByteWrite(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16			addr,
 		uint8_t			data)
 {
@@ -290,22 +290,22 @@ efuse_OneByteWrite(
 	uint32_t efuseValue = 0;
 
 	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
-	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtl_read_dword(pAdapter, EFUSE_TEST));
+	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtl_read_dword(rtlpriv, EFUSE_TEST));
 
 	// -----------------e-fuse reg ctrl ---------------------------------
 	//address
 
 
-	efuseValue = rtl_read_dword(padapter, EFUSE_CTRL);
+	efuseValue = rtl_read_dword(rtlpriv, EFUSE_CTRL);
 	efuseValue |= (BIT21|BIT31);
 	efuseValue &= ~(0x3FFFF);
 	efuseValue |= ((addr<<8 | data) & 0x3FFFF);
 
 	{
-		rtl_write_dword(padapter, EFUSE_CTRL, efuseValue);
+		rtl_write_dword(rtlpriv, EFUSE_CTRL, efuseValue);
 	}
 
-	while((0x80 &  rtl_read_byte(padapter, EFUSE_CTRL+3)) && (tmpidx<100) ){
+	while((0x80 &  rtl_read_byte(rtlpriv, EFUSE_CTRL+3)) && (tmpidx<100) ){
 		mdelay(1);
 		tmpidx++;
 	}
@@ -323,40 +323,40 @@ efuse_OneByteWrite(
 }
 
 int
-Efuse_PgPacketRead(		struct rtl_priv *padapter,
+Efuse_PgPacketRead(		struct rtl_priv *rtlpriv,
 						uint8_t			offset,
 						uint8_t			*data)
 {
 	int	ret=0;
 
-	ret =  padapter->HalFunc->Efuse_PgPacketRead(padapter, offset, data);
+	ret =  rtlpriv->HalFunc->Efuse_PgPacketRead(rtlpriv, offset, data);
 
 	return ret;
 }
 
 int
-Efuse_PgPacketWrite(	struct rtl_priv *padapter,
+Efuse_PgPacketWrite(	struct rtl_priv *rtlpriv,
 						uint8_t 			offset,
 						uint8_t			word_en,
 						uint8_t			*data)
 {
 	int ret;
 
-	ret =  padapter->HalFunc->Efuse_PgPacketWrite(padapter, offset, word_en, data);
+	ret =  rtlpriv->HalFunc->Efuse_PgPacketWrite(rtlpriv, offset, word_en, data);
 
 	return ret;
 }
 
 
 int
-Efuse_PgPacketWrite_BT(	struct rtl_priv *padapter,
+Efuse_PgPacketWrite_BT(	struct rtl_priv *rtlpriv,
 						uint8_t 			offset,
 						uint8_t			word_en,
 						uint8_t			*data)
 {
 	int ret;
 
-	ret =  padapter->HalFunc->Efuse_PgPacketWrite_BT(padapter, offset, word_en, data);
+	ret =  rtlpriv->HalFunc->Efuse_PgPacketWrite_BT(rtlpriv, offset, word_en, data);
 
 	return ret;
 }
@@ -407,62 +407,62 @@ efuse_WordEnableDataRead(	uint8_t	word_en,
 
 
 uint8_t
-Efuse_WordEnableDataWrite(		struct rtl_priv *padapter,
+Efuse_WordEnableDataWrite(		struct rtl_priv *rtlpriv,
 								u16		efuse_addr,
 								uint8_t		word_en,
 								uint8_t		*data)
 {
 	uint8_t	ret=0;
 
-	ret =  padapter->HalFunc->Efuse_WordEnableDataWrite(padapter, efuse_addr, word_en, data);
+	ret =  rtlpriv->HalFunc->Efuse_WordEnableDataWrite(rtlpriv, efuse_addr, word_en, data);
 
 	return ret;
 }
 //------------------------------------------------------------------------------
-u16 efuse_GetMaxSize(struct rtl_priv *padapter)
+u16 efuse_GetMaxSize(struct rtl_priv *rtlpriv)
 {
 	u16	max_size;
-	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, EFUSE_WIFI , TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_size);
+	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_size);
 	return max_size;
 }
 //------------------------------------------------------------------------------
-uint8_t rtw_efuse_map_read(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8_t *data)
+uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
 {
 	u16	mapLen=0;
 
-	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
 
-	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv, _FALSE, _TRUE);
 
-	padapter->HalFunc->ReadEFuse(padapter, EFUSE_WIFI, addr, cnts, data);
+	rtlpriv->HalFunc->ReadEFuse(rtlpriv, EFUSE_WIFI, addr, cnts, data);
 
-	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _FALSE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv, _FALSE, _FALSE);
 
 	return _SUCCESS;
 }
 
-uint8_t rtw_BT_efuse_map_read(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8_t *data)
+uint8_t rtw_BT_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
 {
 	u16	mapLen=0;
 
-	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
 
-	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _TRUE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv, _FALSE, _TRUE);
 
-	padapter->HalFunc->ReadEFuse(padapter, EFUSE_BT, addr, cnts, data);
+	rtlpriv->HalFunc->ReadEFuse(rtlpriv, EFUSE_BT, addr, cnts, data);
 
-	padapter->HalFunc->EfusePowerSwitch(padapter, _FALSE, _FALSE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv, _FALSE, _FALSE);
 
 	return _SUCCESS;
 }
 //------------------------------------------------------------------------------
-uint8_t rtw_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8_t *data)
+uint8_t rtw_efuse_map_write(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
 {
 	uint8_t	offset, word_en;
 	uint8_t	*map;
@@ -471,7 +471,7 @@ uint8_t rtw_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8
 	uint8_t	ret = _SUCCESS;
 	u16	mapLen=0;
 
-	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
@@ -481,10 +481,10 @@ uint8_t rtw_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8
 		return _FAIL;
 	}
 
-	ret = rtw_efuse_map_read(padapter, 0, mapLen, map);
+	ret = rtw_efuse_map_read(rtlpriv, 0, mapLen, map);
 	if (ret == _FAIL) goto exit;
 
-	padapter->HalFunc->EfusePowerSwitch(padapter, _TRUE, _TRUE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv, _TRUE, _TRUE);
 
 	offset = (addr >> 3);
 	word_en = 0xF;
@@ -529,7 +529,7 @@ uint8_t rtw_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8
 		}
 
 		if (word_en != 0xF) {
-			ret = Efuse_PgPacketWrite(padapter, offset, word_en, newdata);
+			ret = Efuse_PgPacketWrite(rtlpriv, offset, word_en, newdata);
 			DBG_871X("offset=%x \n",offset);
 			DBG_871X("word_en=%x \n",word_en);
 
@@ -549,7 +549,7 @@ uint8_t rtw_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8
 		memset(newdata, 0xFF, PGPKT_DATA_SIZE);
 	} while (1);
 
-	padapter->HalFunc->EfusePowerSwitch(padapter, _TRUE, _FALSE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv, _TRUE, _FALSE);
 
 exit:
 	/* ULLI check usage of mapLen */
@@ -560,7 +560,7 @@ exit:
 
 
 //------------------------------------------------------------------------------
-uint8_t rtw_BT_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, uint8_t *data)
+uint8_t rtw_BT_efuse_map_write(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
 {
 	uint8_t	offset, word_en;
 	uint8_t	*map;
@@ -569,7 +569,7 @@ uint8_t rtw_BT_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, ui
 	uint8_t	ret = _SUCCESS;
 	u16	mapLen=0;
 
-	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
@@ -579,10 +579,10 @@ uint8_t rtw_BT_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, ui
 		return _FAIL;
 	}
 
-	ret = rtw_BT_efuse_map_read(padapter, 0, mapLen, map);
+	ret = rtw_BT_efuse_map_read(rtlpriv, 0, mapLen, map);
 	if (ret == _FAIL) goto exit;
 
-	padapter->HalFunc->EfusePowerSwitch(padapter, _TRUE, _TRUE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv, _TRUE, _TRUE);
 
 	offset = (addr >> 3);
 	word_en = 0xF;
@@ -637,7 +637,7 @@ uint8_t rtw_BT_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, ui
 			}
 			DBG_871X("\n");
 
-			ret = Efuse_PgPacketWrite_BT(padapter, offset, word_en, newdata);
+			ret = Efuse_PgPacketWrite_BT(rtlpriv, offset, word_en, newdata);
 			if (ret == _FAIL) break;
 		}
 
@@ -650,7 +650,7 @@ uint8_t rtw_BT_efuse_map_write(struct rtl_priv *padapter, u16 addr, u16 cnts, ui
 		memset(newdata, 0xFF, PGPKT_DATA_SIZE);
 	} while (1);
 
-	padapter->HalFunc->EfusePowerSwitch(padapter, _TRUE, _FALSE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv, _TRUE, _FALSE);
 
 exit:
 	/* ULLI check usage of mapLen */
@@ -677,19 +677,19 @@ exit:
  *---------------------------------------------------------------------------*/
 static VOID
 Efuse_ReadAllMap(
-			struct rtl_priv *padapter,
+			struct rtl_priv *rtlpriv,
 			uint8_t		efuseType,
 	 	uint8_t		*Efuse)
 {
 	u16	mapLen=0;
 
-	padapter->HalFunc->EfusePowerSwitch(padapter,_FALSE, _TRUE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv,_FALSE, _TRUE);
 
-	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
-	padapter->HalFunc->ReadEFuse(padapter, efuseType, 0, mapLen, Efuse);
+	rtlpriv->HalFunc->ReadEFuse(rtlpriv, efuseType, 0, mapLen, Efuse);
 
-	padapter->HalFunc->EfusePowerSwitch(padapter,_FALSE, _FALSE);
+	rtlpriv->HalFunc->EfusePowerSwitch(rtlpriv,_FALSE, _FALSE);
 }
 
 /*-----------------------------------------------------------------------------
@@ -712,11 +712,11 @@ Efuse_ReadAllMap(
  *---------------------------------------------------------------------------*/
 static VOID
 efuse_ShadowRead1Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Offset,
 	 	uint8_t		*Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
 
@@ -725,11 +725,11 @@ efuse_ShadowRead1Byte(
 //---------------Read Two Bytes
 static VOID
 efuse_ShadowRead2Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Offset,
 	 	u16		*Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+1]<<8;
@@ -739,11 +739,11 @@ efuse_ShadowRead2Byte(
 //---------------Read Four Bytes
 static VOID
 efuse_ShadowRead4Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Offset,
 	 	uint32_t		*Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	*Value = pEEPROM->efuse_eeprom_data[Offset];
 	*Value |= pEEPROM->efuse_eeprom_data[Offset+1]<<8;
@@ -774,17 +774,17 @@ efuse_ShadowRead4Byte(
 #ifdef PLATFORM
 static VOID
 efuse_ShadowWrite1Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Offset,
 	 	uint8_t		Value);
 #endif //PLATFORM
 static VOID
 efuse_ShadowWrite1Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Offset,
 	 	uint8_t		Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	pEEPROM->efuse_eeprom_data[Offset] = Value;
 
@@ -793,11 +793,11 @@ efuse_ShadowWrite1Byte(
 //---------------Write Two Bytes
 static VOID
 efuse_ShadowWrite2Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Offset,
 	 	u16		Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	pEEPROM->efuse_eeprom_data[Offset] = Value&0x00FF;
 	pEEPROM->efuse_eeprom_data[Offset+1] = Value>>8;
@@ -807,11 +807,11 @@ efuse_ShadowWrite2Byte(
 //---------------Write Four Bytes
 static VOID
 efuse_ShadowWrite4Byte(
-		struct rtl_priv *padapter,
+		struct rtl_priv *rtlpriv,
 		u16		Offset,
 		uint32_t		Value)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	pEEPROM->efuse_eeprom_data[Offset] = (uint8_t)(Value&0x000000FF);
 	pEEPROM->efuse_eeprom_data[Offset+1] = (uint8_t)((Value>>8)&0x0000FF);
@@ -837,13 +837,13 @@ efuse_ShadowWrite4Byte(
  *
  *---------------------------------------------------------------------------*/
 void EFUSE_ShadowMapUpdate(
-	 struct rtl_priv *padapter,
+	 struct rtl_priv *rtlpriv,
 	 uint8_t		efuseType)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	u16	mapLen=0;
 
-	padapter->HalFunc->EFUSEGetEfuseDefinition(padapter, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
 
 	if (pEEPROM->bautoload_fail_flag == _TRUE)
 	{
@@ -851,7 +851,7 @@ void EFUSE_ShadowMapUpdate(
 	}
 	else
 	{
-		Efuse_ReadAllMap(padapter, efuseType, pEEPROM->efuse_eeprom_data);
+		Efuse_ReadAllMap(rtlpriv, efuseType, pEEPROM->efuse_eeprom_data);
 
 	}
 
@@ -878,17 +878,17 @@ void EFUSE_ShadowMapUpdate(
  *---------------------------------------------------------------------------*/
 void
 EFUSE_ShadowRead(
-			struct rtl_priv *padapter,
+			struct rtl_priv *rtlpriv,
 			uint8_t		Type,
 			u16		Offset,
 	 	uint32_t		*Value	)
 {
 	if (Type == 1)
-		efuse_ShadowRead1Byte(padapter, Offset, (uint8_t *)Value);
+		efuse_ShadowRead1Byte(rtlpriv, Offset, (uint8_t *)Value);
 	else if (Type == 2)
-		efuse_ShadowRead2Byte(padapter, Offset, (u16 *)Value);
+		efuse_ShadowRead2Byte(rtlpriv, Offset, (u16 *)Value);
 	else if (Type == 4)
-		efuse_ShadowRead4Byte(padapter, Offset, (uint32_t *)Value);
+		efuse_ShadowRead4Byte(rtlpriv, Offset, (uint32_t *)Value);
 
 }	// EFUSE_ShadowRead
 

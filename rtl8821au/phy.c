@@ -2219,7 +2219,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 #define RF_REG_NUM 3
 
 
-static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter)
+static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 {
 	u32 macbb_backup[MACBB_REG_NUM];
 	u32 afe_backup[AFE_REG_NUM];
@@ -2235,31 +2235,31 @@ static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter)
 	};
 	u32 backup_rf_reg[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
 
-	 struct _rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
-	_rtl8821au_iqk_backup_macbb(pAdapter, macbb_backup, backup_macbb_reg,
+	_rtl8821au_iqk_backup_macbb(rtlpriv, macbb_backup, backup_macbb_reg,
 				    MACBB_REG_NUM);
-	_rtl8821au_iqk_backup_afe(pAdapter, afe_backup, backup_afe_reg, AFE_REG_NUM);
-	_rtl8821au_iqk_backup_rf(pAdapter, rfa_backup, rfb_backup, backup_rf_reg,
+	_rtl8821au_iqk_backup_afe(rtlpriv, afe_backup, backup_afe_reg, AFE_REG_NUM);
+	_rtl8821au_iqk_backup_rf(rtlpriv, rfa_backup, rfb_backup, backup_rf_reg,
 				 RF_REG_NUM);
 
-	_rtl8821au_iqk_configure_mac(pAdapter);
-	_rtl8821au_iqk_tx(pAdapter, RF90_PATH_A);
-	_rtl8821au_iqk_restore_rf(pAdapter, RF90_PATH_A, backup_rf_reg, rfa_backup,
+	_rtl8821au_iqk_configure_mac(rtlpriv);
+	_rtl8821au_iqk_tx(rtlpriv, RF90_PATH_A);
+	_rtl8821au_iqk_restore_rf(rtlpriv, RF90_PATH_A, backup_rf_reg, rfa_backup,
 				 RF_REG_NUM);
 
-	_rtl8821au_iqk_restore_afe(pAdapter, afe_backup, backup_afe_reg, AFE_REG_NUM);
-	_rtl8821au_iqk_restore_macbb(pAdapter, macbb_backup, backup_macbb_reg,
+	_rtl8821au_iqk_restore_afe(rtlpriv, afe_backup, backup_afe_reg, AFE_REG_NUM);
+	_rtl8821au_iqk_restore_macbb(rtlpriv, macbb_backup, backup_macbb_reg,
 				     MACBB_REG_NUM);
 
 	/* _IQK_Exit_8821A(pDM_Odm); */
 	/* _IQK_TX_CheckResult_8821A */
 }
 
-void rtl8821au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery)
+void rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery)
 {
-	_rtl8821au_phy_iq_calibrate(pAdapter);
+	_rtl8821au_phy_iq_calibrate(rtlpriv);
 }
 
 
@@ -2585,10 +2585,10 @@ BOOLEAN phy_GetChnlIndex8812A(uint8_t Channel, uint8_t *ChannelIdx)
  * For VHT series, we will use a new TX pwr by rate array to meet new spec.
  */
 
-u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *pAdapter,  uint8_t Band,
+u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *rtlpriv,  uint8_t Band,
 	uint8_t	Rf_Path, uint8_t Rate_Section)
 {
-	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	uint8_t			shift = 0, original_rate = Rate_Section;
 	uint32_t			tx_pwr_diff = 0;
 
@@ -2907,15 +2907,15 @@ VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
 		*pTxPwrIdx = RF6052_MAX_TX_PWR;
 }
 
-u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
+u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	uint8_t	Rate, enum CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
-	struct rtl_efuse *efuse = rtl_efuse(pAdapter);
-	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
-	struct _rtw_hal *	pHalData = GET_HAL_DATA(pAdapter);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *		pDM_Odm = &pHalData->odmpriv;
 	uint8_t					i = 0;	/* default set to 1S */
-	struct registry_priv	*pregistrypriv = &pAdapter->registrypriv;
+	struct registry_priv	*pregistrypriv = &rtlpriv->registrypriv;
 	uint32_t					powerDiffByRate = 0;
 	uint32_t					txPower = 0;
 	uint8_t					chnlIdx = (Channel-1);
@@ -2923,7 +2923,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 
 	/* DBG_871X("===> PHY_GetTxPowerIndex_8812A\n"); */
 
-	if (HAL_IsLegalChannel(pAdapter, Channel) == _FALSE) {
+	if (HAL_IsLegalChannel(rtlpriv, Channel) == _FALSE) {
 		chnlIdx = 0;
 		DBG_871X("Illegal channel!!\n");
 	}
@@ -3049,12 +3049,12 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
 	 */
 	if (pregistrypriv->RegPwrByRate == _FALSE && efuse->EEPROMRegulatory != 2) {
-		powerDiffByRate = phy_GetTxPwrByRateOffset_8812(pAdapter, (uint8_t)(!bIn24G), RFPath, Rate);
+		powerDiffByRate = phy_GetTxPwrByRateOffset_8812(rtlpriv, (uint8_t)(!bIn24G), RFPath, Rate);
 
 		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && efuse->EEPROMRegulatory != 2)
 		||  efuse->EEPROMRegulatory == 1) {
 			uint8_t limit = 0;
-			limit = PHY_GetPowerLimitValue(pAdapter, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (enum radio_path)RFPath, Rate, Channel);
+			limit = PHY_GetPowerLimitValue(rtlpriv, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (enum radio_path)RFPath, Rate, Channel);
 
 			if (Rate == MGN_VHT1SS_MCS8 || Rate == MGN_VHT1SS_MCS9  ||
 			    Rate == MGN_VHT2SS_MCS8 || Rate == MGN_VHT2SS_MCS9) {
@@ -3086,7 +3086,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 		 * 2013/01/30 MH According to power current test compare with BCM AC NIC, we
 		 * decide to use host hub = 2.0 mode to enable tx power limit behavior.
 		 */
-		if (adapter_to_dvobj(pAdapter)->usb_speed <= RTW_USB_SPEED_2 && IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+		if (adapter_to_dvobj(rtlpriv)->usb_speed <= RTW_USB_SPEED_2 && IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			powerDiffByRate = 0;
 		}
 
@@ -3113,7 +3113,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *pAdapter, uint8_t RFPath,
 	 * This case had ever happened in CU/SU high power module. THe limitation = 0x20.
 	 * But for 8812, we still not know the value.
 	 */
-	phy_TxPwrAdjInPercentage(pAdapter, (uint8_t *)&txPower);
+	phy_TxPwrAdjInPercentage(rtlpriv, (uint8_t *)&txPower);
 
 	return txPower;
 }
@@ -3721,37 +3721,37 @@ static void _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WID
 	}
 }
 
-void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
+void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 	u8 Channel)
 {
-	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	
 	/* C cut Item12 ADC FIFO CLOCK */
-	if(IS_VENDOR_8812A_C_CUT(pAdapter)) {
+	if(IS_VENDOR_8812A_C_CUT(rtlpriv)) {
 		if(Bandwidth == CHANNEL_WIDTH_40 && Channel == 11)
-			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0xC00, 0x3);		/* 0x8AC[11:10] = 2'b11 */
+			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0xC00, 0x3);		/* 0x8AC[11:10] = 2'b11 */
 		else
-			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0xC00, 0x2);		/* 0x8AC[11:10] = 2'b10 */
+			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0xC00, 0x2);		/* 0x8AC[11:10] = 2'b10 */
 
 		/*
 		 *  <20120914, Kordan> A workarould to resolve 2480Mhz spur by setting ADC clock as 160M. (Asked by Binson) 
 		 */
 		if (Bandwidth == CHANNEL_WIDTH_20 && (Channel == 13 || Channel == 14)) {
-			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0x300, 0x3);  		/* 0x8AC[9:8] = 2'b11 */
-			rtl_set_bbreg(pAdapter, rADC_Buf_Clk_Jaguar, BIT30, 1);  	/* 0x8C4[30] = 1 */
+			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x3);  		/* 0x8AC[9:8] = 2'b11 */
+			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 1);  	/* 0x8C4[30] = 1 */
 		} else if (Bandwidth == CHANNEL_WIDTH_40 && Channel == 11) {
-			rtl_set_bbreg(pAdapter, rADC_Buf_Clk_Jaguar, BIT30, 1);  	/* 0x8C4[30] = 1 */
+			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 1);  	/* 0x8C4[30] = 1 */
 		} else if (Bandwidth != CHANNEL_WIDTH_80) {
-			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0x300, 0x2);  		/* 0x8AC[9:8] = 2'b10 */
-			rtl_set_bbreg(pAdapter, rADC_Buf_Clk_Jaguar, BIT30, 0);  	/* 0x8C4[30] = 0 */
+			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x2);  		/* 0x8AC[9:8] = 2'b10 */
+			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 0);  	/* 0x8C4[30] = 0 */
 
 		}
 	} else if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		/* <20120914, Kordan> A workarould to resolve 2480Mhz spur by setting ADC clock as 160M. (Asked by Binson) */
 		if (Bandwidth == CHANNEL_WIDTH_20 && (Channel == 13 || Channel == 14))
-			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0x300, 0x3);  /* 0x8AC[9:8] = 11 */
+			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x3);  /* 0x8AC[9:8] = 11 */
 		else if (Channel <= 14) /* 2.4G only */
-			rtl_set_bbreg(pAdapter, rRFMOD_Jaguar, 0x300, 0x2);  /* 0x8AC[9:8] = 10 */
+			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x2);  /* 0x8AC[9:8] = 10 */
 	}
 
 }

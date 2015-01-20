@@ -208,7 +208,7 @@ static void odm_DIGInit(struct _rtw_dm *pDM_Odm)
 
 static void odm_AdaptivityInit(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_priv *pAdapter = pDM_Odm->Adapter;
+	struct rtl_priv *rtlpriv = pDM_Odm->Adapter;
 
 	pDM_Odm->TH_H = 0xfa; 		/* -6dB */
 	pDM_Odm->TH_L = 0xfd; 		/* -3dB */

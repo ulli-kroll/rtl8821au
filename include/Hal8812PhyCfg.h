@@ -77,7 +77,7 @@ int	PHY_RFConfig8812(IN struct rtl_priv *Adapter	);
 
 void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *Adapter, IN uint8_t	Channel	);
 u32 PHY_GetTxPowerIndex_8812A(
-	IN	struct rtl_priv *		pAdapter,
+	IN	struct rtl_priv *		rtlpriv,
 	IN	uint8_t					RFPath,
 	IN	uint8_t					Rate,
 	IN	enum CHANNEL_WIDTH		BandWidth,
@@ -95,7 +95,7 @@ u32 PHY_GetTxBBSwing_8812A(
 //
 VOID
 PHY_SetBWMode8812(
-	IN	struct rtl_priv *		pAdapter,
+	IN	struct rtl_priv *		rtlpriv,
 	IN	enum CHANNEL_WIDTH		Bandwidth,
 	IN	uint8_t					Offset
 );

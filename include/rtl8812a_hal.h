@@ -239,9 +239,9 @@ typedef enum _TX_PWR_PERCENTAGE{
 #define INCLUDE_MULTI_FUNC_BT(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_BT)
 #define INCLUDE_MULTI_FUNC_GPS(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_GPS)
 
-//#define IS_MULTI_FUNC_CHIP(_Adapter)	(((((PHAL_DATA_TYPE)(_Adapter->HalData))->MultiFunc) & (RT_MULTI_FUNC_BT|RT_MULTI_FUNC_GPS)) ? _TRUE : _FALSE)
+//#define IS_MULTI_FUNC_CHIP(rtlpriv)	(((((PHAL_DATA_TYPE)(rtlpriv->HalData))->MultiFunc) & (RT_MULTI_FUNC_BT|RT_MULTI_FUNC_GPS)) ? _TRUE : _FALSE)
 
-//#define RT_IS_FUNC_DISABLED(__pAdapter, __FuncBits) ( (__pAdapter)->DisabledFunctions & (__FuncBits) )
+//#define RT_IS_FUNC_DISABLED(rtlpriv, __FuncBits) ( (rtlpriv)->DisabledFunctions & (__FuncBits) )
 
 #define GetRegTxBBSwing_2G(_Adapter)	(_Adapter->registrypriv.TxBBSwing_2G)
 #define GetRegTxBBSwing_5G(_Adapter)	(_Adapter->registrypriv.TxBBSwing_5G)
@@ -252,29 +252,29 @@ typedef enum _TX_PWR_PERCENTAGE{
 #define GetRegbENRFEType(_Adapter)	(_Adapter->registrypriv.bEn_RFE)
 #define GetRegRFEType(_Adapter)	(_Adapter->registrypriv.RFE_Type)
 
-#define GetDefaultAdapter(padapter)	padapter
+#define GetDefaultAdapter(rtlpriv)	rtlpriv
 
 // rtl8812_hal_init.c
-void	_8051Reset8812(struct rtl_priv *padapter);
+void	_8051Reset8812(struct rtl_priv *rtlpriv);
 int32_t	FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw);
-void	InitializeFirmwareVars8812(struct rtl_priv *padapter);
+void	InitializeFirmwareVars8812(struct rtl_priv *rtlpriv);
 
-int32_t	InitLLTTable8812(struct rtl_priv *padapter, uint8_t txpktbuf_bndy);
-void InitRDGSetting8812A(struct rtl_priv *padapter);
+int32_t	InitLLTTable8812(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy);
+void InitRDGSetting8812A(struct rtl_priv *rtlpriv);
 
-void CheckAutoloadState8812A(struct rtl_priv *padapter);
+void CheckAutoloadState8812A(struct rtl_priv *rtlpriv);
 
 // EFuse
-uint8_t	GetEEPROMSize8812A(struct rtl_priv *padapter);
-void InitPGData8812A(struct rtl_priv *padapter);
-void	Hal_EfuseParseIDCode8812A(struct rtl_priv *padapter, uint8_t *hwinfo);
-void	Hal_ReadPROMVersion8812A(struct rtl_priv *padapter, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
-void	Hal_ReadTxPowerInfo8812A(struct rtl_priv *padapter,u8* hwinfo,BOOLEAN	AutoLoadFail);
-void	Hal_ReadBoardType8812A(struct rtl_priv *pAdapter,u8* hwinfo,BOOLEAN AutoLoadFail);
+uint8_t	GetEEPROMSize8812A(struct rtl_priv *rtlpriv);
+void InitPGData8812A(struct rtl_priv *rtlpriv);
+void	Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo);
+void	Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
+void	Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN	AutoLoadFail);
+void	Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN AutoLoadFail);
 void	Hal_ReadThermalMeter_8812A(struct rtl_priv *Adapter,u8* PROMContent,BOOLEAN 	AutoloadFail);
-void	Hal_ReadChannelPlan8812A(struct rtl_priv *padapter, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
-void	Hal_EfuseParseXtal_8812A(struct rtl_priv *pAdapter,u8* hwinfo,BOOLEAN AutoLoadFail);
-void	Hal_ReadAntennaDiversity8812A(struct rtl_priv *pAdapter,u8* PROMContent,BOOLEAN AutoLoadFail);
+void	Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
+void	Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN AutoLoadFail);
+void	Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv,u8* PROMContent,BOOLEAN AutoLoadFail);
 void	Hal_ReadPAType_8812A(struct rtl_priv *Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
 void	Hal_ReadPAType_8821A(struct rtl_priv *Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
 void	Hal_ReadRFEType_8812A(struct rtl_priv *Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
@@ -284,15 +284,15 @@ void	hal_ReadUsbType_8812AU(struct rtl_priv *Adapter, uint8_t *PROMContent, BOOL
 BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *Adapter);
 
 
-void _InitBeaconParameters_8812A(struct rtl_priv *padapter);
+void _InitBeaconParameters_8812A(struct rtl_priv *rtlpriv);
 
-void ReadRFType8812A(struct rtl_priv *padapter);
-void InitDefaultValue8821A(struct rtl_priv *padapter);
+void ReadRFType8812A(struct rtl_priv *rtlpriv);
+void InitDefaultValue8821A(struct rtl_priv *rtlpriv);
 
-uint8_t SetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, void *pval);
-uint8_t GetHalDefVar8812A(struct rtl_priv *padapter, HAL_DEF_VARIABLE variable, void *pval);
+uint8_t SetHalDefVar8812A(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval);
+uint8_t GetHalDefVar8812A(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval);
 
 // register
-void SetBcnCtrlReg(struct rtl_priv *padapter, uint8_t SetBits, uint8_t ClearBits);
+void SetBcnCtrlReg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8_t ClearBits);
 #endif //__RTL8188E_HAL_H__
 

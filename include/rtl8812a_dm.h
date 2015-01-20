@@ -27,7 +27,7 @@ void rtl8812_HalDmWatchDog(IN struct rtl_priv *Adapter);
 
 //VOID rtl8192c_dm_CheckTXPowerTracking(IN struct rtl_priv *Adapter);
 
-//void rtl8192c_dm_RF_Saving(IN struct rtl_priv *pAdapter, IN uint8_t bForceInNormal);
+//void rtl8192c_dm_RF_Saving(IN struct rtl_priv *rtlpriv, IN uint8_t bForceInNormal);
 
 #ifdef CONFIG_ANTENNA_DIVERSITY
 void	AntDivCompare8812(struct rtl_priv *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);

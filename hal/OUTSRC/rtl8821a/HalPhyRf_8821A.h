@@ -30,7 +30,7 @@
 //1 7.	IQK
 
 VOID PHY_SetRFPathSwitch_8821A(
-	IN	struct rtl_priv *pAdapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	BOOLEAN		bMain
 	);
 

@@ -256,11 +256,11 @@ void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 				pDM_Odm->LinkedInterval++;
 
 			if (pDM_Odm->LinkedInterval == 2) {
-				struct rtl_priv *	pAdapter = pDM_Odm->Adapter;
+				struct rtl_priv *	rtlpriv = pDM_Odm->Adapter;
 
 				/*
 				 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
-				 * void rtl8821au_phy_iq_calibrate(pAdapter, FALSE);
+				 * void rtl8821au_phy_iq_calibrate(rtlpriv, FALSE);
 				 */
 			}
 		} else
@@ -832,7 +832,7 @@ void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 
 void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 {
-	/* struct rtl_priv *pAdapter =pDM_Odm->Adapter; */
+	/* struct rtl_priv *rtlpriv =pDM_Odm->Adapter; */
 	/* pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable; */
 	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 
@@ -1218,14 +1218,14 @@ void odm_1R_CCA(struct _rtw_dm *pDM_Odm)
 		if (pDM_PSTable->CurCCAState == CCA_1R) {
 			if (pDM_Odm->RFType == ODM_2T2R) {
 				rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x13);
-				/* rtl_set_bbreg(pAdapter, 0xe70, MASKBYTE3, 0x20); */
+				/* rtl_set_bbreg(rtlpriv, 0xe70, MASKBYTE3, 0x20); */
 			} else {
 				rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x23);
-				/* rtl_set_bbreg(pAdapter, 0xe70, 0x7fc00000, 0x10c); */ /* Set RegE70[30:22] = 9b'100001100 */
+				/* rtl_set_bbreg(rtlpriv, 0xe70, 0x7fc00000, 0x10c); */ /* Set RegE70[30:22] = 9b'100001100 */
 			}
 		} else {
 			rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x33);
-			/* rtl_set_bbreg(pAdapter,0xe70, MASKBYTE3, 0x63); */
+			/* rtl_set_bbreg(rtlpriv,0xe70, MASKBYTE3, 0x63); */
 		}
 		pDM_PSTable->PreCCAState = pDM_PSTable->CurCCAState;
 	}
@@ -1399,10 +1399,10 @@ void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm)
 void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 {
 	u8	i;
-	struct rtl_priv *pAdapter	=  pDM_Odm->Adapter;
+	struct rtl_priv *rtlpriv	=  pDM_Odm->Adapter;
 	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
 
-	if (pAdapter->bDriverStopped) {
+	if (rtlpriv->bDriverStopped) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("<---- odm_RefreshRateAdaptiveMask(): driver is going to unload\n"));
 		return;
 	}
@@ -1534,14 +1534,14 @@ void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm)
  */
 static VOID
 FindMinimumRSSI_Dmsp(
-	IN	struct rtl_priv *pAdapter
+	IN	struct rtl_priv *rtlpriv
 )
 {
 }
 
-static void FindMinimumRSSI(struct rtl_priv *pAdapter)
+static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 

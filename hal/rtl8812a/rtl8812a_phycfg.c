@@ -2131,7 +2131,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *Adapter, uint32_t 
 	}
 }
 
-static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *pAdapter, uint8_t RFPath,
+static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	enum CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t *Rates,
 	uint8_t	RateArraySize)
 {
@@ -2139,22 +2139,22 @@ static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *pAdapter, 
 	int	i = 0;
 
 	for (i = 0; i < RateArraySize; ++i) {
-		power_index = PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rates[i], BandWidth, Channel);
-		_rtl8821au_phy_set_txpower_index(pAdapter, power_index, RFPath, Rates[i]);
+		power_index = PHY_GetTxPowerIndex_8812A(rtlpriv, RFPath, Rates[i], BandWidth, Channel);
+		_rtl8821au_phy_set_txpower_index(rtlpriv, power_index, RFPath, Rates[i]);
 	}
 
 }
 
-static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *pAdapter, 
+static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv, 
 	uint8_t RFPath, enum CHANNEL_WIDTH BandWidth,
 	uint8_t Channel, uint8_t *Rate, uint8_t *power_index,
 	uint8_t	ArraySize)
 {
-	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t i;
 	for (i = 0; i < ArraySize; i++) {
-		power_index[i] = (uint8_t)PHY_GetTxPowerIndex_8812A(pAdapter, RFPath, Rate[i], BandWidth, Channel);
+		power_index[i] = (uint8_t)PHY_GetTxPowerIndex_8812A(rtlpriv, RFPath, Rate[i], BandWidth, Channel);
 		if ((power_index[i] % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(rtlhal) && ! IS_NORMAL_CHIP(pHalData->VersionID))
 			power_index[i] -= 1;
 	}
@@ -2744,13 +2744,13 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 	/* DBG_871X("<==rtl8821au_phy_switch_wirelessband():Switch Band OK.\n"); */
 }
 
-static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
+static BOOLEAN phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW)
 {
 	uint8_t			u1Btmp;
 	BOOLEAN		ret_value = _TRUE;
 	uint8_t			Band = BAND_ON_5G, BandToSW;
 
-	u1Btmp = rtl_read_byte(pAdapter, REG_CCK_CHECK_8812);
+	u1Btmp = rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812);
 	if(u1Btmp & BIT7)
 		Band = BAND_ON_5G;
 	else
@@ -2764,7 +2764,7 @@ static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
 	}
 
 	if(BandToSW != Band)
-		rtl8821au_phy_switch_wirelessband(pAdapter,BandToSW);
+		rtl8821au_phy_switch_wirelessband(rtlpriv,BandToSW);
 
 	return ret_value;
 }
@@ -2773,11 +2773,11 @@ static BOOLEAN phy_SwBand8812(struct rtl_priv *pAdapter, uint8_t channelToSW)
 
 
 /* <20130207, Kordan> The variales initialized here are used in odm_LNAPowerControl(). */
-static void phy_InitRssiTRSW(struct rtl_priv *pAdapter)
+static void phy_InitRssiTRSW(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
-	uint8_t 			channel = pAdapter->phy.current_channel;
+	uint8_t 			channel = rtlpriv->phy.current_channel;
 
 	if (pHalData->RFEType == 3){
 		if (channel <= 14) {
@@ -2803,19 +2803,19 @@ static void phy_InitRssiTRSW(struct rtl_priv *pAdapter)
  */
 
 void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter);
-void rtl8812au_fixspur(struct rtl_priv *pAdapter, enum CHANNEL_WIDTH Bandwidth,
+void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 	u8 Channel);
 
-static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
+static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(pAdapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	
 	uint8_t	eRFPath = 0;
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
-	uint8_t	channelToSW = pAdapter->phy.current_channel;
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	uint8_t	channelToSW = rtlpriv->phy.current_channel;
 
-	if (pAdapter->registrypriv.mp_mode == 0) {
-		if(phy_SwBand8812(pAdapter, channelToSW) == _FALSE) {
+	if (rtlpriv->registrypriv.mp_mode == 0) {
+		if(phy_SwBand8812(rtlpriv, channelToSW) == _FALSE) {
 			DBG_871X("error Chnl %d !\n", channelToSW);
 		}
 	}
@@ -2830,58 +2830,58 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *pAdapter)
 
 	/* fc_area */
 	if (36 <= channelToSW && channelToSW <= 48)
-		rtl_set_bbreg(pAdapter, rFc_area_Jaguar, 0x1ffe0000, 0x494);
+		rtl_set_bbreg(rtlpriv, rFc_area_Jaguar, 0x1ffe0000, 0x494);
 	else if (50 <= channelToSW && channelToSW <= 64)
-		rtl_set_bbreg(pAdapter, rFc_area_Jaguar, 0x1ffe0000, 0x453);
+		rtl_set_bbreg(rtlpriv, rFc_area_Jaguar, 0x1ffe0000, 0x453);
 	else if (100 <= channelToSW && channelToSW <= 116)
-		rtl_set_bbreg(pAdapter, rFc_area_Jaguar, 0x1ffe0000, 0x452);
+		rtl_set_bbreg(rtlpriv, rFc_area_Jaguar, 0x1ffe0000, 0x452);
 	else if (118 <= channelToSW)
-		rtl_set_bbreg(pAdapter, rFc_area_Jaguar, 0x1ffe0000, 0x412);
+		rtl_set_bbreg(rtlpriv, rFc_area_Jaguar, 0x1ffe0000, 0x412);
 	else
-		rtl_set_bbreg(pAdapter, rFc_area_Jaguar, 0x1ffe0000, 0x96a);
+		rtl_set_bbreg(rtlpriv, rFc_area_Jaguar, 0x1ffe0000, 0x96a);
 
 	for (eRFPath = 0; eRFPath < pHalData->NumTotalRFPath; eRFPath++) {
 		/* [2.4G] LC Tank */
-		if (IS_VENDOR_8812A_TEST_CHIP(pAdapter)) {
+		if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv)) {
 			if (1 <= channelToSW && channelToSW <= 7)
-				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0017e);
+				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0017e);
 			else if (8 <= channelToSW && channelToSW <= 14)
-				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0013e);
+				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0013e);
 		}
 
 		/* RF_MOD_AG */
 		if (36 <= channelToSW && channelToSW <= 64)
-			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x101); //5'b00101);
+			rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x101); //5'b00101);
 		else if (100 <= channelToSW && channelToSW <= 140)
-			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x301); //5'b01101);
+			rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x301); //5'b01101);
 		else if (140 < channelToSW)
-			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x501); //5'b10101);
+			rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x501); //5'b10101);
 		else
-			rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x000); //5'b00000);
+			rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x000); //5'b00000);
 
 		/* <20121109, Kordan> A workaround for 8812A only. */
-		rtl8812au_fixspur(pAdapter, pAdapter->phy.current_chan_bw, channelToSW);
+		rtl8812au_fixspur(rtlpriv, rtlpriv->phy.current_chan_bw, channelToSW);
 
-		rtw_hal_write_rfreg(pAdapter, eRFPath, RF_CHNLBW_Jaguar, MASKBYTE0, channelToSW);
+		rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, MASKBYTE0, channelToSW);
 
 		/* <20130104, Kordan> APK for MP chip is done on initialization from folder. */
 		if (IS_HARDWARE_TYPE_8811AU(rtlhal) && ( !IS_NORMAL_CHIP(pHalData->VersionID)) && channelToSW > 14 ) {
 			/* <20121116, Kordan> For better result of APK. Asked by AlexWang. */
 			if (36 <= channelToSW && channelToSW <= 64)
-				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);
+				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);
 			else if (100 <= channelToSW && channelToSW <= 140)
-				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
+				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
 			else
-				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
+				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 		} else if ((IS_HARDWARE_TYPE_8821E(rtlhal) || IS_HARDWARE_TYPE_8821S(rtlhal))
 			      && channelToSW > 14) {
 			/* <20130111, Kordan> For better result of APK. Asked by Willson. */
 			if (36 <= channelToSW && channelToSW <= 64)
-				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
+				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 			else if (100 <= channelToSW && channelToSW <= 140)
-				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x110E9);
+				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x110E9);
 			else
-				rtw_hal_write_rfreg(pAdapter, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
+				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 		}
 	}
 }

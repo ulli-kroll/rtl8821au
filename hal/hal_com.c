@@ -66,7 +66,7 @@ void dump_chip_info(HAL_VERSION	ChipVersion)
 
 uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
-	IN	struct rtl_priv *padapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
 	IN	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
 	IN	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
@@ -193,10 +193,10 @@ void	HalSetBrateCfg(
 
 static VOID
 _OneOutPipeMapping(
-	IN	struct rtl_priv *pAdapter
+	IN	struct rtl_priv *rtlpriv
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
+	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
 
 	pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
 	pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];//VI
@@ -211,11 +211,11 @@ _OneOutPipeMapping(
 
 static VOID
 _TwoOutPipeMapping(
-	IN	struct rtl_priv *pAdapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	BOOLEAN	 	bWIFICfg
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
+	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
 
 	if(bWIFICfg){ //WMM
 
@@ -256,11 +256,11 @@ _TwoOutPipeMapping(
 }
 
 static VOID _ThreeOutPipeMapping(
-	IN	struct rtl_priv *pAdapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	BOOLEAN	 	bWIFICfg
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
+	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
 
 	if(bWIFICfg){//for WMM
 
@@ -299,11 +299,11 @@ static VOID _ThreeOutPipeMapping(
 
 }
 static VOID _FourOutPipeMapping(
-	IN	struct rtl_priv *pAdapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	BOOLEAN	 	bWIFICfg
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(pAdapter);
+	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
 
 	if(bWIFICfg){//for WMM
 
@@ -343,11 +343,11 @@ static VOID _FourOutPipeMapping(
 }
 BOOLEAN
 Hal_MappingOutPipe(
-	IN	struct rtl_priv *pAdapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	uint8_t		NumOutPipe
 	)
 {
-	struct registry_priv *pregistrypriv = &pAdapter->registrypriv;
+	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 
 	BOOLEAN	 bWIFICfg = (pregistrypriv->wifi_spec) ?_TRUE:_FALSE;
 
@@ -356,14 +356,14 @@ Hal_MappingOutPipe(
 	switch(NumOutPipe)
 	{
 		case 2:
-			_TwoOutPipeMapping(pAdapter, bWIFICfg);
+			_TwoOutPipeMapping(rtlpriv, bWIFICfg);
 			break;
 		case 3:
 		case 4:
-			_ThreeOutPipeMapping(pAdapter, bWIFICfg);
+			_ThreeOutPipeMapping(rtlpriv, bWIFICfg);
 			break;
 		case 1:
-			_OneOutPipeMapping(pAdapter);
+			_OneOutPipeMapping(rtlpriv);
 			break;
 		default:
 			result = _FALSE;

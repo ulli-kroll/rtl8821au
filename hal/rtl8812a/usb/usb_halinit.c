@@ -26,7 +26,7 @@
 #include <../rtl8821au/hw.h>
 
 
-static void _dbg_dump_macreg(struct rtl_priv *padapter)
+static void _dbg_dump_macreg(struct rtl_priv *rtlpriv)
 {
 	uint32_t offset = 0;
 	uint32_t val32 = 0;
@@ -34,14 +34,14 @@ static void _dbg_dump_macreg(struct rtl_priv *padapter)
 
 	for (index = 0; index < 64; index++) {
 		offset = index*4;
-		val32 = rtl_read_dword(padapter, offset);
+		val32 = rtl_read_dword(rtlpriv, offset);
 		DBG_8192C("offset : 0x%02x ,val:0x%08x\n", offset, val32);
 	}
 }
 
-static VOID _ConfigChipOutEP_8812(struct rtl_priv *pAdapter, uint8_t NumOutPipe)
+static VOID _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 {
-	 struct _rtw_hal *pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	pHalData->OutEpQueueSel = 0;
 	pHalData->OutEpNumber = 0;
@@ -71,13 +71,13 @@ static VOID _ConfigChipOutEP_8812(struct rtl_priv *pAdapter, uint8_t NumOutPipe)
 
 }
 
-static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *pAdapter,
+static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *rtlpriv,
 	uint8_t	NumInPipe, uint8_t NumOutPipe)
 {
-	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	BOOLEAN		result		= _FALSE;
 
-	_ConfigChipOutEP_8812(pAdapter, NumOutPipe);
+	_ConfigChipOutEP_8812(rtlpriv, NumOutPipe);
 
 	/* Normal chip with one IN and one OUT doesn't have interrupt IN EP. */
 	if (1 == pHalData->OutEpNumber) {
@@ -93,21 +93,21 @@ static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *pAdapter,
 	 * }
 	 */
 
-	result = Hal_MappingOutPipe(pAdapter, NumOutPipe);
+	result = Hal_MappingOutPipe(rtlpriv, NumOutPipe);
 
 	return result;
 
 }
 
-void rtl8812au_interface_configure(struct rtl_priv *padapter)
+void rtl8812au_interface_configure(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(padapter);
-	struct _rtw_hal	*pHalData	= GET_HAL_DATA(padapter);
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
+	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
 
-	if (IS_SUPER_SPEED_USB(padapter)) {
+	if (IS_SUPER_SPEED_USB(rtlpriv)) {
 		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;	/* 1024 bytes */
-	} else if (IS_HIGH_SPEED_USB(padapter)) {
+	} else if (IS_HIGH_SPEED_USB(rtlpriv)) {
 		pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;	/* 512 bytes */
 	} else {
 		pHalData->UsbBulkOutSize = USB_FULL_SPEED_BULK_SIZE; 	/*64 bytes */
@@ -134,7 +134,7 @@ void rtl8812au_interface_configure(struct rtl_priv *padapter)
 	pHalData->RegAcUsbDmaTime = 8;
 #endif
 
-	HalUsbSetQueuePipeMapping8812AUsb(padapter,
+	HalUsbSetQueuePipeMapping8812AUsb(rtlpriv,
 				pdvobjpriv->RtNumInPipes, pdvobjpriv->RtNumOutPipes);
 
 }
@@ -245,25 +245,25 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *Adapter)
 
 }
 
-static uint32_t _InitPowerOn8812AU(struct rtl_priv *padapter)
+static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 {
 	u16	u2btmp = 0;
 	uint8_t	u1btmp = 0;
-	struct rtl_hal *rtlhal = rtl_hal(padapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
-	if (IS_VENDOR_8821A_MP_CHIP(padapter)) {
+	if (IS_VENDOR_8821A_MP_CHIP(rtlpriv)) {
 		/* HW Power on sequence */
-		if (!HalPwrSeqCmdParsing(padapter, PWR_CUT_A_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
+		if (!HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_A_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
 			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
 			return _FAIL;
 		}
 	} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		if (!HalPwrSeqCmdParsing(padapter, PWR_CUT_TESTCHIP_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
+		if (!HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_TESTCHIP_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
 			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
 			return _FAIL;
 		}
 	} else {
-		if (!HalPwrSeqCmdParsing(padapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_ENABLE_FLOW)) {
+		if (!HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_ENABLE_FLOW)) {
 			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
 			return _FAIL;
 		}
@@ -273,22 +273,22 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *padapter)
 	 *  Enable MAC DMA/WMAC/SCHEDULE/SEC block
 	 * Set CR bit10 to enable 32k calibration. Suggested by SD1 Gimmy. Added by tynli. 2011.08.31.
 	 */
-	rtl_write_word(padapter, REG_CR, 0x00); 	/* suggseted by zhouzhou, by page, 20111230 */
-	u2btmp = rtl_read_word(padapter, REG_CR);
+	rtl_write_word(rtlpriv, REG_CR, 0x00); 	/* suggseted by zhouzhou, by page, 20111230 */
+	u2btmp = rtl_read_word(rtlpriv, REG_CR);
 	u2btmp |= (HCI_TXDMA_EN | HCI_RXDMA_EN | TXDMA_EN | RXDMA_EN
 				| PROTOCOL_EN | SCHEDULE_EN | ENSEC | CALTMR_EN);
-	rtl_write_word(padapter, REG_CR, u2btmp);
+	rtl_write_word(rtlpriv, REG_CR, u2btmp);
 
 	/*
 	 * Need remove below furture, suggest by Jackie.
 	 * if 0xF0[24] =1 (LDO), need to set the 0x7C[6] to 1.
 	 */
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		u1btmp = rtl_read_byte(padapter, REG_SYS_CFG+3);
+		u1btmp = rtl_read_byte(rtlpriv, REG_SYS_CFG+3);
 		if (u1btmp & BIT0) { 	/* LDO mode. */
-			u1btmp = rtl_read_byte(padapter, 0x7c);
+			u1btmp = rtl_read_byte(rtlpriv, 0x7c);
 			/* ULLI unknown register */
-			rtl_write_byte(padapter, 0x7c, u1btmp | BIT6);
+			rtl_write_byte(rtlpriv, 0x7c, u1btmp | BIT6);
 		}
 	}
 
@@ -986,10 +986,10 @@ static VOID HalDetectSelectiveSuspendMode(struct rtl_priv *Adapter)
  *	When		Who		Remark
  *	08/23/2010	MHC		HW suspend mode switch test..
  *---------------------------------------------------------------------------*/
-static VOID HwSuspendModeEnable_8812AU(struct rtl_priv *pAdapter, uint8_t Type)
+static VOID HwSuspendModeEnable_8812AU(struct rtl_priv *rtlpriv, uint8_t Type)
 {
-	/* PRT_USB_DEVICE 		pDevice = GET_RT_USB_DEVICE(pAdapter); */
-	u16	reg = rtl_read_word(pAdapter, REG_GPIO_MUXCFG);
+	/* PRT_USB_DEVICE 		pDevice = GET_RT_USB_DEVICE(rtlpriv); */
+	u16	reg = rtl_read_word(rtlpriv, REG_GPIO_MUXCFG);
 
 	/* if (!pDevice->RegUsbSS) */
 	{
@@ -1010,50 +1010,50 @@ static VOID HwSuspendModeEnable_8812AU(struct rtl_priv *pAdapter, uint8_t Type)
 	if (Type == _FALSE) {
 		reg |= BIT14;
 		/* RT_TRACE(COMP_RF, DBG_LOUD, ("REG_GPIO_MUXCFG = %x\n", reg)); */
-		rtl_write_word(pAdapter, REG_GPIO_MUXCFG, reg);
+		rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, reg);
 		reg |= BIT12;
 		/* RT_TRACE(COMP_RF, DBG_LOUD, ("REG_GPIO_MUXCFG = %x\n", reg)); */
-		rtl_write_word(pAdapter, REG_GPIO_MUXCFG, reg);
+		rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, reg);
 	} else {
 		reg &= (~BIT12);
-		rtl_write_word(pAdapter, REG_GPIO_MUXCFG, reg);
+		rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, reg);
 		reg &= (~BIT14);
-		rtl_write_word(pAdapter, REG_GPIO_MUXCFG, reg);
+		rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, reg);
 	}
 }
 
-rt_rf_power_state RfOnOffDetect(struct rtl_priv *pAdapter)
+rt_rf_power_state RfOnOffDetect(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal		*pHalData = GET_HAL_DATA(pAdapter);
+	 struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	val8;
 	rt_rf_power_state rfpowerstate = rf_off;
 
-	if (pAdapter->pwrctrlpriv.bHWPowerdown) {
-		val8 = rtl_read_byte(pAdapter, REG_HSISR);
+	if (rtlpriv->pwrctrlpriv.bHWPowerdown) {
+		val8 = rtl_read_byte(rtlpriv, REG_HSISR);
 		DBG_8192C("pwrdown, 0x5c(BIT7)=%02x\n", val8);
 		rfpowerstate = (val8 & BIT7) ? rf_off : rf_on;
 	} else { /* rf on/off */
-		rtl_write_byte(pAdapter, REG_MAC_PINMUX_CFG, rtl_read_byte(pAdapter, REG_MAC_PINMUX_CFG)&~(BIT3));
-		val8 = rtl_read_byte(pAdapter, REG_GPIO_IO_SEL);
+		rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG)&~(BIT3));
+		val8 = rtl_read_byte(rtlpriv, REG_GPIO_IO_SEL);
 		DBG_8192C("GPIO_IN=%02x\n", val8);
 		rfpowerstate = (val8 & BIT3) ? rf_on : rf_off;
 	}
 	return rfpowerstate;
 }
 
-void _ps_open_RF(struct rtl_priv *padapter)
+void _ps_open_RF(struct rtl_priv *rtlpriv)
 {
 	/*
 	 * here call with bRegSSPwrLvl 1, bRegSSPwrLvl 2 needs to be verified
-	 * phy_SsPwrSwitch92CU(padapter, rf_on, 1);
+	 * phy_SsPwrSwitch92CU(rtlpriv, rf_on, 1);
 	 */
 }
 
-void _ps_close_RF(struct rtl_priv *padapter)
+void _ps_close_RF(struct rtl_priv *rtlpriv)
 {
 	/*
 	 * here call with bRegSSPwrLvl 1, bRegSSPwrLvl 2 needs to be verified
-	 * phy_SsPwrSwitch92CU(padapter, rf_off, 1);
+	 * phy_SsPwrSwitch92CU(rtlpriv, rf_off, 1);
 	 */
 }
 
@@ -1441,7 +1441,7 @@ VOID CardDisableRTL8812AU(struct rtl_priv *Adapter)
 		HalPwrSeqCmdParsing(Adapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_DISABLE_FLOW);
 }
 
-static void rtl8812au_hw_power_down(struct rtl_priv *padapter)
+static void rtl8812au_hw_power_down(struct rtl_priv *rtlpriv)
 {
 	/*
 	 *  2010/-8/09 MH For power down module, we need to enable register block contrl reg at 0x1c.
@@ -1449,8 +1449,8 @@ static void rtl8812au_hw_power_down(struct rtl_priv *padapter)
 	 */
 
 	/* Enable register area 0x0-0xc. */
-	rtl_write_byte(padapter, REG_RSV_CTRL, 0x0);
-	rtl_write_word(padapter, REG_APS_FSMCO, 0x8812);
+	rtl_write_byte(rtlpriv, REG_RSV_CTRL, 0x0);
+	rtl_write_word(rtlpriv, REG_APS_FSMCO, 0x8812);
 }
 
 uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter)
@@ -1613,25 +1613,25 @@ VOID hal_ReadMACAddress_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 	DBG_8192C("%s MAC Address from EFUSE = "MAC_FMT"\n", __FUNCTION__, MAC_ARG(pEEPROM->mac_addr));
 }
 
-VOID hal_InitPGData_8812A(struct rtl_priv *padapter, u8 *PROMContent)
+VOID hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	/*  struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter); */
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+	/*  struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv); */
 	uint32_t			i;
 	u16			value16;
 
 	if (_FALSE == pEEPROM->bautoload_fail_flag) { /* autoload OK. */
-		if (is_boot_from_eeprom(padapter)) {
+		if (is_boot_from_eeprom(rtlpriv)) {
 			/* Read all Content from EEPROM or EFUSE. */
 			for (i = 0; i < HWSET_MAX_SIZE_JAGUAR; i += 2) {
 				/*
-				 * value16 = EF2Byte(ReadEEprom(pAdapter, (u16) (i>>1)));
+				 * value16 = EF2Byte(ReadEEprom(rtlpriv, (u16) (i>>1)));
 				 * *((u16 *)(&PROMContent[i])) = value16;
 				 */
 			}
 		} else {
 			/* Read EFUSE real map to shadow. */
-			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI);
+			EFUSE_ShadowMapUpdate(rtlpriv, EFUSE_WIFI);
 		}
 	} else {	/* autoload fail */
 		RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("AutoLoad Fail reported from CR9346!!\n"));
@@ -1639,8 +1639,8 @@ VOID hal_InitPGData_8812A(struct rtl_priv *padapter, u8 *PROMContent)
 		 * pHalData->AutoloadFailFlag = _TRUE;
 		 * update to default value 0xFF
 		 */
-		if (!is_boot_from_eeprom(padapter))
-			EFUSE_ShadowMapUpdate(padapter, EFUSE_WIFI);
+		if (!is_boot_from_eeprom(rtlpriv))
+			EFUSE_ShadowMapUpdate(rtlpriv, EFUSE_WIFI);
 	}
 }
 
@@ -1695,11 +1695,11 @@ VOID hal_CustomizedBehavior_8812AU(struct rtl_priv *Adapter)
 	pHalData->bLedOpenDrain = _TRUE;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
 }
 
-static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *pAdapter)
+static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 {
-	struct rtl_efuse *efuse = rtl_efuse(pAdapter);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(pAdapter);
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(pAdapter);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	/* For customized behavior. */
 	if ((efuse->eeprom_vid == 0x103C) && (efuse->EEPROMPID == 0x1629))/* HP Lite-On for RTL8188CUS Slim Combo. */
@@ -1734,7 +1734,7 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *pAdapter)
 		break;
 	case EEPROM_CID_WHQL:
 		/*
-		 * padapter->bInHctTest = TRUE;
+		 * rtlpriv->bInHctTest = TRUE;
 		 *
 		 * pMgntInfo->bSupportTurboMode = FALSE;
 		 * pMgntInfo->bAutoTurboBy8186 = FALSE;
@@ -1745,7 +1745,7 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *pAdapter)
 		 * pMgntInfo->PowerSaveControl.bLeisurePsModeBackup = FALSE;
 		 * pMgntInfo->keepAliveLevel = 0;
 		 *
-		 * padapter->bUnloadDriverwhenS3S4 = FALSE;
+		 * rtlpriv->bUnloadDriverwhenS3S4 = FALSE;
 		 */
 		break;
 	default:
@@ -1755,7 +1755,7 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *pAdapter)
 	}
 	DBG_871X("Customer ID: 0x%2x\n", pEEPROM->CustomerID);
 
-	hal_CustomizedBehavior_8812AU(pAdapter);
+	hal_CustomizedBehavior_8812AU(rtlpriv);
 }
 
 VOID hal_ReadUsbModeSwitch_8812AU(struct rtl_priv *Adapter, u8 *PROMContent, BOOLEAN AutoloadFail)
@@ -1872,12 +1872,12 @@ void ReadAdapterInfo8812AU(struct rtl_priv *Adapter)
 	DBG_871X("ReadAdapterInfo8812AU <====\n");
 }
 
-void UpdateInterruptMask8812AU(struct rtl_priv *padapter, uint8_t bHIMR0, uint32_t AddMSR, uint32_t RemoveMSR)
+void UpdateInterruptMask8812AU(struct rtl_priv *rtlpriv, uint8_t bHIMR0, uint32_t AddMSR, uint32_t RemoveMSR)
 {
 	 struct _rtw_hal *pHalData;
 
 	uint32_t *himr;
-	pHalData = GET_HAL_DATA(padapter);
+	pHalData = GET_HAL_DATA(rtlpriv);
 
 	if (bHIMR0)
 		himr = &(pHalData->IntrMask[0]);
@@ -1891,9 +1891,9 @@ void UpdateInterruptMask8812AU(struct rtl_priv *padapter, uint8_t bHIMR0, uint32
 		*himr &= (~RemoveMSR);
 
 	if (bHIMR0)
-		rtl_write_dword(padapter, REG_HIMR0_8812, *himr);
+		rtl_write_dword(rtlpriv, REG_HIMR0_8812, *himr);
 	else
-		rtl_write_dword(padapter, REG_HIMR1_8812, *himr);
+		rtl_write_dword(rtlpriv, REG_HIMR1_8812, *himr);
 
 }
 
@@ -1936,30 +1936,30 @@ u8 GetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable,
 	return bResult;
 }
 
-void _update_response_rate(struct rtl_priv *padapter, unsigned int mask)
+void _update_response_rate(struct rtl_priv *rtlpriv, unsigned int mask)
 {
 	uint8_t	RateIndex = 0;
 	/* Set RRSR rate table. */
-	rtl_write_byte(padapter, REG_RRSR, mask&0xff);
-	rtl_write_byte(padapter, REG_RRSR+1, (mask>>8)&0xff);
+	rtl_write_byte(rtlpriv, REG_RRSR, mask&0xff);
+	rtl_write_byte(rtlpriv, REG_RRSR+1, (mask>>8)&0xff);
 
 	/* Set RTS initial rate */
 	while (mask > 0x1) {
 		mask = (mask >> 1);
 		RateIndex++;
 	}
-	rtl_write_byte(padapter, REG_INIRTS_RATE_SEL, RateIndex);
+	rtl_write_byte(rtlpriv, REG_INIRTS_RATE_SEL, RateIndex);
 }
 
-void rtl8812au_init_default_value(struct rtl_priv *padapter)
+void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct dm_priv *pdmpriv;
 	uint8_t i;
 
-	pHalData = GET_HAL_DATA(padapter);
-	pwrctrlpriv = &padapter->pwrctrlpriv;
+	pHalData = GET_HAL_DATA(rtlpriv);
+	pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 	pdmpriv = &pHalData->dmpriv;
 
 

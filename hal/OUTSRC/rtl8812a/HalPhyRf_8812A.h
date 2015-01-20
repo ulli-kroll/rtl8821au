@@ -30,7 +30,7 @@
 
 //1 7.	IQK
 
-void rtl8812au_phy_iq_calibrate(struct rtl_priv *pAdapter, BOOLEAN bReCovery);
+void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery);
 
 
 //
@@ -46,10 +46,10 @@ PHY_LCCalibrate_8812A(
 //
 void
 PHY_APCalibrate_8812A(
-	IN	struct rtl_priv *pAdapter,
+	IN	struct rtl_priv *rtlpriv,
 							IN 	s8		delta);
 void
-PHY_DigitalPredistortion_8812A(		IN	struct rtl_priv *pAdapter);
+PHY_DigitalPredistortion_8812A(		IN	struct rtl_priv *rtlpriv);
 
 VOID
 PHY_DPCalibrate_8812A(

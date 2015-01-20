@@ -118,6 +118,14 @@ struct rtl_phy {
 	
 	u8	current_channel;
 
+	//for TxPwrTracking2
+	int32_t	RegE94;
+	int32_t  RegE9C;
+	int32_t	RegEB4;
+	int32_t	RegEBC;
+
+	uint8_t	bRfPiEnable;
+
 	// The current Tx Power Level 
 	/* ULLI vars currently not used */
 	uint8_t	cur_cck_txpwridx;
@@ -535,7 +543,6 @@ struct dm_priv {
 	uint8_t	ThermalValue_LCK;
 	uint8_t	ThermalValue_IQK;
 	uint8_t	ThermalValue_DPK;
-	uint8_t	bRfPiEnable;
 	//uint8_t   RSVD_2;
 
 	//for APK
@@ -567,12 +574,6 @@ struct dm_priv {
 	uint8_t	ThermalValue_HP[HP_THERMAL_NUM];
 	uint8_t	ThermalValue_HP_index;
 	//uint8_t   RSVD_6;
-
-	//for TxPwrTracking2
-	int32_t	RegE94;
-	int32_t  RegE9C;
-	int32_t	RegEB4;
-	int32_t	RegEBC;
 
 	u32	TXPowerTrackingCallbackCnt;	//cosa add for debug
 

@@ -146,7 +146,7 @@ struct rtl_dm {
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
 #define rtl_efuse(rtlpriv)	(&((rtlpriv)->efuse))
 #define rtl_phy(rtlpriv)	(&((rtlpriv)->phy))
-#define rtl_dm(rtlpriv)		(%((rtlpriv)->dm))
+#define rtl_dm(rtlpriv)		(&((rtlpriv)->dm))
 
 struct rtl_priv {
 	struct net_device *ndev;

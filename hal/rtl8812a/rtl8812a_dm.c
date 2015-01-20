@@ -22,28 +22,28 @@
 
 #include <rtl8812a_hal.h>
 
-static void dm_CheckPbcGPIO(struct rtl_priv *padapter)
+static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(padapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	tmp1byte;
 	uint8_t	bPbcPressed = _FALSE;
 
-	if(!padapter->registrypriv.hw_wps_pbc)
+	if(!rtlpriv->registrypriv.hw_wps_pbc)
 		return;
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
-		tmp1byte = rtl_read_byte(padapter, GPIO_IO_SEL);
+		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL);
 		tmp1byte |= (HAL_8192C_HW_GPIO_WPS_BIT);
-		rtl_write_byte(padapter, GPIO_IO_SEL, tmp1byte);	/* enable GPIO[2] as output mode */
+		rtl_write_byte(rtlpriv, GPIO_IO_SEL, tmp1byte);	/* enable GPIO[2] as output mode */
 
 		tmp1byte &= ~(HAL_8192C_HW_GPIO_WPS_BIT);
-		rtl_write_byte(padapter,  GPIO_IN, tmp1byte);	/* reset the floating voltage level */
+		rtl_write_byte(rtlpriv,  GPIO_IN, tmp1byte);	/* reset the floating voltage level */
 
-		tmp1byte = rtl_read_byte(padapter, GPIO_IO_SEL);
+		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL);
 		tmp1byte &= ~(HAL_8192C_HW_GPIO_WPS_BIT);
-		rtl_write_byte(padapter, GPIO_IO_SEL, tmp1byte);	/* enable GPIO[2] as input mode */
+		rtl_write_byte(rtlpriv, GPIO_IO_SEL, tmp1byte);	/* enable GPIO[2] as input mode */
 
-		tmp1byte =rtl_read_byte(padapter, GPIO_IN);
+		tmp1byte =rtl_read_byte(rtlpriv, GPIO_IN);
 
 		if (tmp1byte == 0xff)
 			return ;
@@ -52,18 +52,18 @@ static void dm_CheckPbcGPIO(struct rtl_priv *padapter)
 			bPbcPressed = _TRUE;
 		}
 	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
-		tmp1byte = rtl_read_byte(padapter, GPIO_IO_SEL_8811A);
+		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL_8811A);
 		tmp1byte |= (BIT4);
-		rtl_write_byte(padapter, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as output mode */
+		rtl_write_byte(rtlpriv, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as output mode */
 
 		tmp1byte &= ~(BIT4);
-		rtl_write_byte(padapter,  GPIO_IN_8811A, tmp1byte);		/* reset the floating voltage level */
+		rtl_write_byte(rtlpriv,  GPIO_IN_8811A, tmp1byte);		/* reset the floating voltage level */
 
-		tmp1byte = rtl_read_byte(padapter, GPIO_IO_SEL_8811A);
+		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL_8811A);
 		tmp1byte &= ~(BIT4);
-		rtl_write_byte(padapter, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as input mode */
+		rtl_write_byte(rtlpriv, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as input mode */
 
-		tmp1byte =rtl_read_byte(padapter, GPIO_IN_8811A);
+		tmp1byte =rtl_read_byte(rtlpriv, GPIO_IN_8811A);
 
 		if (tmp1byte == 0xff)
 			return ;
@@ -79,7 +79,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *padapter)
 		 */
 		DBG_8192C("CheckPbcGPIO - PBC is pressed\n");
 
-		rtw_request_wps_pbc_event(padapter);
+		rtw_request_wps_pbc_event(rtlpriv);
 	}
 }
 

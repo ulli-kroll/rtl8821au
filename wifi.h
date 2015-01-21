@@ -691,17 +691,6 @@ typedef struct ODM_RF_Calibration_Structure
 	u8  	TM_Trigger;
     	u8  	InternalPA5G[2];	//pathA / pathB
 
-	u8  	ThermalMeter[2];    // ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
-	u8  	ThermalValue;
-	u8  	ThermalValue_LCK;
-	u8  	ThermalValue_IQK;
-	u8	ThermalValue_DPK;
-	u8	ThermalValue_AVG[AVG_THERMAL_NUM];
-	u8	ThermalValue_AVG_index;
-	u8	ThermalValue_RxGain;
-	u8	ThermalValue_Crystal;
-	u8	ThermalValue_DPKstore;
-	u8	ThermalValue_DPKtrack;
 	BOOLEAN	TxPowerTrackingInProgress;
 	BOOLEAN	bDPKenable;
 
@@ -1242,6 +1231,21 @@ struct _rtw_dm {
 
 	// ODM relative workitem.
 
+	/* Vars moved out of
+	 * typedef struct ODM_RF_Calibration_Structure {
+	 * }ODM_RF_CAL_T,*PODM_RF_CAL_T;
+	 */
+	u8  	ThermalMeter[2];    // ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
+	u8  	ThermalValue;
+	u8  	ThermalValue_LCK;
+	u8  	ThermalValue_IQK;
+	u8	ThermalValue_DPK;
+	u8	ThermalValue_AVG[AVG_THERMAL_NUM];
+	u8	ThermalValue_AVG_index;
+	u8	ThermalValue_RxGain;
+	u8	ThermalValue_Crystal;
+	u8	ThermalValue_DPKstore;
+	u8	ThermalValue_DPKtrack;
 };
 
 struct _rtw_hal {

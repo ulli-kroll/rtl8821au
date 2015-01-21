@@ -663,9 +663,6 @@ typedef struct _EDCA_TURBO_
 }EDCA_T,*pEDCA_T;
 
 
-typedef struct _SW_Antenna_Switch_
-{
-}SWAT_T, *pSWAT_T;
 //#endif
 
 typedef enum _BASEBAND_CONFIG_PHY_REG_PG_VALUE_TYPE{
@@ -1152,7 +1149,6 @@ struct _rtw_dm {
 	FALSE_ALARM_STATISTICS	FalseAlmCnt;
 	FALSE_ALARM_STATISTICS	FlaseAlmCntBuddyAdapter;
 	//#ifdef CONFIG_ANTENNA_DIVERSITY
-	SWAT_T		DM_SWAT_Table;
 	BOOLEAN		RSSI_test;
 	//#endif
 

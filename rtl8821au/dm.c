@@ -337,16 +337,14 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
  *  Tx Power Tracking
  * ============================================================
  */
-
+/* From hal/OUTSRC/rtl8812a/HalPhyRf_8812A.c, caution function pointer */
 void DoIQK_8812A(struct _rtw_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 	ThermalValue, u8 Threshold)
 {
 	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->Adapter);
-	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
 	rtldm->ThermalValue_IQK = ThermalValue;
-	rtl8812au_phy_iq_calibrate(Adapter, FALSE);
+	rtl8812au_phy_iq_calibrate(pDM_Odm->Adapter, FALSE);
 }
 
 /*-----------------------------------------------------------------------------
@@ -802,17 +800,15 @@ void rtl8812au_get_delta_swing_table(struct _rtw_dm *pDM_Odm,
 }
 
 
-/* From hal/OUTSRC/rtl8821a/HalPhyRf_8821A.c */
+/* From hal/OUTSRC/rtl8821a/HalPhyRf_8821A.c, caution function pointer */
 
 void DoIQK_8821A(struct _rtw_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 ThermalValue, u8 Threshold)
 {
 	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->Adapter);
-	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	 struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
 	rtldm->ThermalValue_IQK = ThermalValue;
-	rtl8821au_phy_iq_calibrate(Adapter, FALSE);
+	rtl8821au_phy_iq_calibrate(pDM_Odm->Adapter, FALSE);
 }
 
 

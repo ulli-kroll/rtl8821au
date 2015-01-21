@@ -287,9 +287,9 @@ static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 	MSG_8192C("pDM_Odm TxPowerTrackControl = %d\n", pDM_Odm->RFCalibrateInfo.TxPowerTrackControl);
 
 	pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = TRUE;
-	rtldm->ThermalValue = efuse->EEPROMThermalMeter;
-	rtldm->ThermalValue_IQK = efuse->EEPROMThermalMeter;
-	rtldm->ThermalValue_LCK = efuse->EEPROMThermalMeter;
+	rtldm->thermalvalue = efuse->EEPROMThermalMeter;
+	rtldm->thermalvalue_iqk = efuse->EEPROMThermalMeter;
+	rtldm->thermalvalue_lck = efuse->EEPROMThermalMeter;
 
 	/* The index of "0 dB" in SwingTable. */
 	{
@@ -343,7 +343,7 @@ void DoIQK_8812A(struct _rtw_dm *pDM_Odm, u8 DeltaThermalIndex,
 {
 	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->Adapter);
 
-	rtldm->ThermalValue_IQK = ThermalValue;
+	rtldm->thermalvalue_iqk = ThermalValue;
 	rtl8812au_phy_iq_calibrate(pDM_Odm->Adapter, FALSE);
 }
 
@@ -807,7 +807,7 @@ void DoIQK_8821A(struct _rtw_dm *pDM_Odm, u8 DeltaThermalIndex,
 {
 	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->Adapter);
 
-	rtldm->ThermalValue_IQK = ThermalValue;
+	rtldm->thermalvalue_iqk = ThermalValue;
 	rtl8821au_phy_iq_calibrate(pDM_Odm->Adapter, FALSE);
 }
 

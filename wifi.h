@@ -169,13 +169,13 @@ struct rtl_phy {
 
 struct rtl_dm {
 	u8  	ThermalMeter[2];    // ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
-	u8  	ThermalValue;
-	u8  	ThermalValue_LCK;
-	u8  	ThermalValue_IQK;
+	u8  	thermalvalue;
+	u8  	thermalvalue_lck;
+	u8  	thermalvalue_iqk;
 	u8	ThermalValue_DPK;
-	u8	ThermalValue_AVG[AVG_THERMAL_NUM];
-	u8	ThermalValue_AVG_index;
-	u8	ThermalValue_RxGain;
+	u8	thermalvalue_avg[AVG_THERMAL_NUM];
+	u8	thermalvalue_avg_index;
+	u8	thermalvalue_rxgain;
 	u8	ThermalValue_Crystal;
 	u8	ThermalValue_DPKstore;
 	u8	ThermalValue_DPKtrack;

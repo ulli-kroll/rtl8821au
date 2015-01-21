@@ -695,10 +695,6 @@ typedef struct ODM_RF_Calibration_Structure
 	int32_t	RegEB4;
 	int32_t	RegEBC;
 
-	u8  	TXPowercount;
-	BOOLEAN bTXPowerTrackingInit;
-	BOOLEAN bTXPowerTracking;
-	u8  	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
 	u8  	TM_Trigger;
     	u8  	InternalPA5G[2];	//pathA / pathB
 
@@ -707,17 +703,12 @@ typedef struct ODM_RF_Calibration_Structure
 
 	BOOLEAN	bReloadtxpowerindex;
 	u8 	bRfPiEnable;
-	uint32_t 	TXPowerTrackingCallbackCnt; //cosa add for debug
 
 
 	//------------------------- Tx power Tracking -------------------------//
 	u8 	bCCKinCH14;
 	u8 	CCK_index;
-	u8 	OFDM_index[MAX_RF_PATH];
-	s8	PowerIndexOffset[MAX_RF_PATH];
-	s8	DeltaPowerIndex[MAX_RF_PATH];
-	s8	DeltaPowerIndexLast[MAX_RF_PATH];
-	BOOLEAN bTxPowerChanged;
+
 
 	u8 	ThermalValue_HP[HP_THERMAL_NUM];
 	u8 	ThermalValue_HP_index;
@@ -1246,6 +1237,17 @@ struct _rtw_dm {
 	 * typedef struct ODM_RF_Calibration_Structure {
 	 * }ODM_RF_CAL_T,*PODM_RF_CAL_T;
 	 */
+	uint32_t 	TXPowerTrackingCallbackCnt; //cosa add for debug
+	BOOLEAN bTXPowerTrackingInit;
+	BOOLEAN bTXPowerTracking;
+	u8  	TXPowercount;
+	BOOLEAN bTxPowerChanged;
+	u8 	CCK_index;
+	u8  	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
+	u8 	OFDM_index[MAX_RF_PATH];
+	s8	PowerIndexOffset[MAX_RF_PATH];
+	s8	DeltaPowerIndex[MAX_RF_PATH];
+	s8	DeltaPowerIndexLast[MAX_RF_PATH];
 };
 
 struct _rtw_hal {

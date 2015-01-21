@@ -277,16 +277,16 @@ static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 	struct rtl_efuse *efuse = rtl_efuse(Adapter);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
-	pDM_Odm->RFCalibrateInfo.bTXPowerTracking = _TRUE;
-	pDM_Odm->RFCalibrateInfo.TXPowercount = 0;
-	pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = _FALSE;
+	pDM_Odm->bTXPowerTracking = _TRUE;
+	pDM_Odm->TXPowercount = 0;
+	pDM_Odm->bTXPowerTrackingInit = _FALSE;
 	/* #if	(MP_DRIVER != 1) */		/* for mp driver, turn off txpwrtracking as default */
 	if (*(pDM_Odm->mp_mode) != 1)
-		pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = _TRUE;
+		pDM_Odm->TxPowerTrackControl = _TRUE;
 	/* #endif//#if	(MP_DRIVER != 1) */
-	MSG_8192C("pDM_Odm TxPowerTrackControl = %d\n", pDM_Odm->RFCalibrateInfo.TxPowerTrackControl);
+	MSG_8192C("pDM_Odm TxPowerTrackControl = %d\n", pDM_Odm->TxPowerTrackControl);
 
-	pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = TRUE;
+	pDM_Odm->TxPowerTrackControl = TRUE;
 	rtldm->thermalvalue = efuse->EEPROMThermalMeter;
 	rtldm->thermalvalue_iqk = efuse->EEPROMThermalMeter;
 	rtldm->thermalvalue_lck = efuse->EEPROMThermalMeter;
@@ -305,10 +305,10 @@ static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 
 	for (p = RF90_PATH_A; p < MAX_RF_PATH; ++p) {
 		pDM_Odm->BbSwingIdxOfdmBase[p] = pDM_Odm->DefaultOfdmIndex;
-		pDM_Odm->RFCalibrateInfo.OFDM_index[p] = pDM_Odm->DefaultOfdmIndex;
-		pDM_Odm->RFCalibrateInfo.DeltaPowerIndex[p] = 0;
-		pDM_Odm->RFCalibrateInfo.DeltaPowerIndexLast[p] = 0;
-		pDM_Odm->RFCalibrateInfo.PowerIndexOffset[p] = 0;
+		pDM_Odm->OFDM_index[p] = pDM_Odm->DefaultOfdmIndex;
+		pDM_Odm->DeltaPowerIndex[p] = 0;
+		pDM_Odm->DeltaPowerIndexLast[p] = 0;
+		pDM_Odm->PowerIndexOffset[p] = 0;
 	}
 }
 
@@ -443,15 +443,15 @@ void ODM_TxPwrTrackSetPwr8812A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8812A\n"));
 
 		if (RFPath == RF90_PATH_A) {
-			finalBbSwingIdx[RF90_PATH_A] = (pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A];
+			finalBbSwingIdx[RF90_PATH_A] = (pDM_Odm->OFDM_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->OFDM_index[RF90_PATH_A];
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
-				pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
+				pDM_Odm->OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
 
 			rtl_set_bbreg(pDM_Odm->Adapter, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		} else {
-			finalBbSwingIdx[RF90_PATH_B] = (pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B];
+			finalBbSwingIdx[RF90_PATH_B] = (pDM_Odm->OFDM_index[RF90_PATH_B] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->OFDM_index[RF90_PATH_B];
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_B]=%d\n",
-				pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B], finalBbSwingIdx[RF90_PATH_B]));
+				pDM_Odm->OFDM_index[RF90_PATH_B], finalBbSwingIdx[RF90_PATH_B]));
 
 			rtl_set_bbreg(pDM_Odm->Adapter, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_B]]);
 		}
@@ -863,9 +863,9 @@ void ODM_TxPwrTrackSetPwr8821A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 
 	if (Method == BBSWING) {
 		if (RFPath == RF90_PATH_A) {
-			finalBbSwingIdx[RF90_PATH_A] = (pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A];
+			finalBbSwingIdx[RF90_PATH_A] = (pDM_Odm->OFDM_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : pDM_Odm->OFDM_index[RF90_PATH_A];
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
-				pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
+				pDM_Odm->OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
 
 			rtl_set_bbreg(pDM_Odm->Adapter, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		}

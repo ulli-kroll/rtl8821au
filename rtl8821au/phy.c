@@ -2910,6 +2910,7 @@ VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
 u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	uint8_t	Rate, enum CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
@@ -3097,11 +3098,11 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	 * DBG_871X("Final Tx Power(RF-%c, Channel: %d) = %d(0x%X)\n", ((RFPath==0)?'A':'B'), chnlIdx+1, txPower, txPower);
 	 */
 
-	if (pDM_Odm->Modify_TxAGC_Flag_PathA || pDM_Odm->Modify_TxAGC_Flag_PathB) {
+	if (rtldm->Modify_TxAGC_Flag_PathA || rtldm->Modify_TxAGC_Flag_PathB) {
 		/* 20130424 Mimic whether path A or B has to modify TxAGC */
 
 		/* DBG_871X("Before add Remanant_OFDMSwingIdx[rfpath %u] %d", txPower); */
-		txPower += pDM_Odm->Remnant_OFDMSwingIdx[RFPath];
+		txPower += rtldm->Remnant_OFDMSwingIdx[RFPath];
 		/* DBG_871X("After add Remanant_OFDMSwingIdx[rfpath %u] %d => txPower %d", RFPath, pDM_Odm->Remnant_OFDMSwingIdx[RFPath], txPower); */
 	}
 

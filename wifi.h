@@ -179,6 +179,40 @@ struct rtl_dm {
 	u8	ThermalValue_Crystal;
 	u8	ThermalValue_DPKstore;
 	u8	ThermalValue_DPKtrack;
+	
+	BOOLEAN	bReloadtxpowerindex;
+	
+	s8			Aboslute_OFDMSwingIdx[MAX_RF_PATH];
+	s8			Remnant_OFDMSwingIdx[MAX_RF_PATH];
+	s8			Remnant_CCKSwingIdx;
+	s8			Modify_TxAGC_Value;       //Remnat compensate value at TxAGC
+	BOOLEAN			Modify_TxAGC_Flag_PathA;
+	BOOLEAN			Modify_TxAGC_Flag_PathB;
+
+	u8			BbSwingIdxOfdm[MAX_RF_PATH];
+	u8			BbSwingIdxOfdmCurrent;
+	u8			BbSwingIdxOfdmBase[MAX_RF_PATH];
+	BOOLEAN			BbSwingFlagOfdm;
+	u8			BbSwingIdxCck;
+	u8			BbSwingIdxCckCurrent;
+	u8			BbSwingIdxCckBase;
+	u8			DefaultOfdmIndex;
+	u8			DefaultCckIndex;
+	BOOLEAN			BbSwingFlagCck;
+	
+	uint32_t 	TXPowerTrackingCallbackCnt; //cosa add for debug
+	BOOLEAN bTXPowerTrackingInit;
+	BOOLEAN bTXPowerTracking;
+	u8  	TXPowercount;
+	BOOLEAN bTxPowerChanged;
+	u8 	CCK_index;
+	u8  	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
+	u8 	OFDM_index[MAX_RF_PATH];
+	s8	PowerIndexOffset[MAX_RF_PATH];
+	s8	DeltaPowerIndex[MAX_RF_PATH];
+	s8	DeltaPowerIndexLast[MAX_RF_PATH];
+	
+	
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
@@ -701,7 +735,6 @@ typedef struct ODM_RF_Calibration_Structure
 	BOOLEAN	TxPowerTrackingInProgress;
 	BOOLEAN	bDPKenable;
 
-	BOOLEAN	bReloadtxpowerindex;
 	u8 	bRfPiEnable;
 
 
@@ -1190,23 +1223,6 @@ struct _rtw_dm {
 	//
 	// TX power tracking
 	//
-	u8			BbSwingIdxOfdm[MAX_RF_PATH];
-	u8			BbSwingIdxOfdmCurrent;
-	u8			BbSwingIdxOfdmBase[MAX_RF_PATH];
-	BOOLEAN			BbSwingFlagOfdm;
-	u8			BbSwingIdxCck;
-	u8			BbSwingIdxCckCurrent;
-	u8			BbSwingIdxCckBase;
-	u8			DefaultOfdmIndex;
-	u8			DefaultCckIndex;
-	BOOLEAN			BbSwingFlagCck;
-
-	s8			Aboslute_OFDMSwingIdx[MAX_RF_PATH];
-	s8			Remnant_OFDMSwingIdx[MAX_RF_PATH];
-	s8			Remnant_CCKSwingIdx;
-	s8			Modify_TxAGC_Value;       //Remnat compensate value at TxAGC
-	BOOLEAN			Modify_TxAGC_Flag_PathA;
-	BOOLEAN			Modify_TxAGC_Flag_PathB;
 
 	//
 	// Dynamic ATC switch
@@ -1237,17 +1253,6 @@ struct _rtw_dm {
 	 * typedef struct ODM_RF_Calibration_Structure {
 	 * }ODM_RF_CAL_T,*PODM_RF_CAL_T;
 	 */
-	uint32_t 	TXPowerTrackingCallbackCnt; //cosa add for debug
-	BOOLEAN bTXPowerTrackingInit;
-	BOOLEAN bTXPowerTracking;
-	u8  	TXPowercount;
-	BOOLEAN bTxPowerChanged;
-	u8 	CCK_index;
-	u8  	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
-	u8 	OFDM_index[MAX_RF_PATH];
-	s8	PowerIndexOffset[MAX_RF_PATH];
-	s8	DeltaPowerIndex[MAX_RF_PATH];
-	s8	DeltaPowerIndexLast[MAX_RF_PATH];
 };
 
 struct _rtw_hal {

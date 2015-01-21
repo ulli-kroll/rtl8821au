@@ -2717,8 +2717,9 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 	/* <20120903, Kordan> Tx BB swing setting for RL6286, asked by Ynlin. */
 	if (IS_NORMAL_CHIP(pHalData->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		s8	BBDiffBetweenBand = 0;
-		 struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
-		struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
+		struct rtl_dm	*rtldm = rtl_dm(Adapter);
+		struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(Adapter));
+	 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 		PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
 		rtl_set_bbreg(Adapter, rA_TxScale_Jaguar, 0xFFE00000,
@@ -2734,7 +2735,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *Adapter, u8 Band)
 			if (Band != currentBand) {
 				BBDiffBetweenBand = (pRFCalibrateInfo->BBSwingDiff2G - pRFCalibrateInfo->BBSwingDiff5G);
 				BBDiffBetweenBand = (Band == BAND_ON_2_4G) ? BBDiffBetweenBand : (-1 * BBDiffBetweenBand);
-				pDM_Odm->DefaultOfdmIndex += BBDiffBetweenBand*2;
+				rtldm->DefaultOfdmIndex += BBDiffBetweenBand*2;
 			}
 
 			ODM_ClearTxPowerTrackingState(pDM_Odm);

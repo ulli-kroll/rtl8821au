@@ -272,6 +272,7 @@ static u8 getSwingIndex(struct _rtw_dm *pDM_Odm)
 static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 {
 	u8 		p = 0;
+	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->Adapter);
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	struct rtl_efuse *efuse = rtl_efuse(Adapter);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -286,9 +287,9 @@ static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 	MSG_8192C("pDM_Odm TxPowerTrackControl = %d\n", pDM_Odm->RFCalibrateInfo.TxPowerTrackControl);
 
 	pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = TRUE;
-	pDM_Odm->ThermalValue = efuse->EEPROMThermalMeter;
-	pDM_Odm->ThermalValue_IQK = efuse->EEPROMThermalMeter;
-	pDM_Odm->ThermalValue_LCK = efuse->EEPROMThermalMeter;
+	rtldm->ThermalValue = efuse->EEPROMThermalMeter;
+	rtldm->ThermalValue_IQK = efuse->EEPROMThermalMeter;
+	rtldm->ThermalValue_LCK = efuse->EEPROMThermalMeter;
 
 	/* The index of "0 dB" in SwingTable. */
 	{
@@ -340,10 +341,11 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 void DoIQK_8812A(struct _rtw_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 	ThermalValue, u8 Threshold)
 {
+	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->Adapter);
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 
-	pDM_Odm->ThermalValue_IQK = ThermalValue;
+	rtldm->ThermalValue_IQK = ThermalValue;
 	rtl8812au_phy_iq_calibrate(Adapter, FALSE);
 }
 
@@ -805,10 +807,11 @@ void rtl8812au_get_delta_swing_table(struct _rtw_dm *pDM_Odm,
 void DoIQK_8821A(struct _rtw_dm *pDM_Odm, u8 DeltaThermalIndex,
 	u8 ThermalValue, u8 Threshold)
 {
+	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->Adapter);
 	struct rtl_priv *Adapter = pDM_Odm->Adapter;
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
 
-	pDM_Odm->ThermalValue_IQK = ThermalValue;
+	rtldm->ThermalValue_IQK = ThermalValue;
 	rtl8821au_phy_iq_calibrate(Adapter, FALSE);
 }
 

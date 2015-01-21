@@ -163,8 +163,22 @@ struct rtl_phy {
 				[MAX_RF_PATH_NUM];
 };
 
+#define AVG_THERMAL_NUM		8
+#define IQK_Matrix_REG_NUM		8
+#define IQK_Matrix_Settings_NUM	14+24+21 // Channels_2_4G_NUM + Channels_5G_20M_NUM + Channels_5G
 
 struct rtl_dm {
+	u8  	ThermalMeter[2];    // ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
+	u8  	ThermalValue;
+	u8  	ThermalValue_LCK;
+	u8  	ThermalValue_IQK;
+	u8	ThermalValue_DPK;
+	u8	ThermalValue_AVG[AVG_THERMAL_NUM];
+	u8	ThermalValue_AVG_index;
+	u8	ThermalValue_RxGain;
+	u8	ThermalValue_Crystal;
+	u8	ThermalValue_DPKstore;
+	u8	ThermalValue_DPKtrack;
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
@@ -669,9 +683,6 @@ typedef enum _BASEBAND_CONFIG_PHY_REG_PG_VALUE_TYPE{
 	PHY_REG_PG_RELATIVE_VALUE = 0,
 	PHY_REG_PG_EXACT_VALUE = 1
 } PHY_REG_PG_TYPE;
-#define AVG_THERMAL_NUM		8
-#define IQK_Matrix_REG_NUM		8
-#define IQK_Matrix_Settings_NUM	14+24+21 // Channels_2_4G_NUM + Channels_5G_20M_NUM + Channels_5G
 
 
 typedef struct ODM_RF_Calibration_Structure
@@ -1235,17 +1246,6 @@ struct _rtw_dm {
 	 * typedef struct ODM_RF_Calibration_Structure {
 	 * }ODM_RF_CAL_T,*PODM_RF_CAL_T;
 	 */
-	u8  	ThermalMeter[2];    // ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
-	u8  	ThermalValue;
-	u8  	ThermalValue_LCK;
-	u8  	ThermalValue_IQK;
-	u8	ThermalValue_DPK;
-	u8	ThermalValue_AVG[AVG_THERMAL_NUM];
-	u8	ThermalValue_AVG_index;
-	u8	ThermalValue_RxGain;
-	u8	ThermalValue_Crystal;
-	u8	ThermalValue_DPKstore;
-	u8	ThermalValue_DPKtrack;
 };
 
 struct _rtw_hal {

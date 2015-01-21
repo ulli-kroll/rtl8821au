@@ -665,66 +665,6 @@ typedef struct _EDCA_TURBO_
 
 typedef struct _SW_Antenna_Switch_
 {
-	u8		try_flag;
-	int32_t		PreRSSI;
-	u8		CurAntenna;
-	u8		PreAntenna;
-	u8		RSSI_Trying;
-	u8		TestMode;
-	u8		bTriggerAntennaSwitch;
-	u8		SelectAntennaMap;
-	u8		RSSI_target;
-
-	// Before link Antenna Switch check
-	u8		SWAS_NoLink_State;
-	uint32_t		SWAS_NoLink_BK_Reg860;
-	BOOLEAN		ANTA_ON;	//To indicate Ant A is or not
-	BOOLEAN		ANTB_ON;	//To indicate Ant B is on or not
-
-	int32_t		RSSI_sum_A;
-	int32_t		RSSI_sum_B;
-	int32_t		RSSI_cnt_A;
-	int32_t		RSSI_cnt_B;
-
-	uint64_t		lastTxOkCnt;
-	uint64_t		lastRxOkCnt;
-	uint64_t 		TXByteCnt_A;
-	uint64_t 		TXByteCnt_B;
-	uint64_t 		RXByteCnt_A;
-	uint64_t 		RXByteCnt_B;
-	u8 		TrafficLoad;
-	struct timer_list 	SwAntennaSwitchTimer;
-/* CE Platform use
-#ifdef CONFIG_SW_ANTENNA_DIVERSITY
-	_timer SwAntennaSwitchTimer;
-	uint64_t lastTxOkCnt;
-	uint64_t lastRxOkCnt;
-	uint64_t TXByteCnt_A;
-	uint64_t TXByteCnt_B;
-	uint64_t RXByteCnt_A;
-	uint64_t RXByteCnt_B;
-	u8 DoubleComfirm;
-	u8 TrafficLoad;
-	//SW Antenna Switch
-
-
-#endif
-*/
-#ifdef CONFIG_HW_ANTENNA_DIVERSITY
-	//Hybrid Antenna Diversity
-	uint32_t		CCK_Ant1_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	uint32_t		CCK_Ant2_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	uint32_t		OFDM_Ant1_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	uint32_t		OFDM_Ant2_Cnt[ASSOCIATE_ENTRY_NUM+1];
-	uint32_t		RSSI_Ant1_Sum[ASSOCIATE_ENTRY_NUM+1];
-	uint32_t		RSSI_Ant2_Sum[ASSOCIATE_ENTRY_NUM+1];
-	u8		TxAnt[ASSOCIATE_ENTRY_NUM+1];
-	u8		TargetSTA;
-	u8		antsel;
-	u8		RxIdleAnt;
-
-#endif
-
 }SWAT_T, *pSWAT_T;
 //#endif
 

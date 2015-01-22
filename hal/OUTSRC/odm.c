@@ -318,7 +318,7 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		break;
 
 	case	ODM_CMNINFO_RFE_TYPE:
-		rtlhal->RFEType = (u8)Value;
+		rtlhal->rfe_type = (u8)Value;
 		break;
 
 	case    ODM_CMNINFO_RF_ANTENNA_TYPE:
@@ -326,7 +326,7 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		break;
 
 	case	ODM_CMNINFO_BOARD_TYPE:
-		rtlhal->BoardType = (u8)Value;
+		rtlhal->board_type = (u8)Value;
 		break;
 
 	case	ODM_CMNINFO_EXT_LNA:

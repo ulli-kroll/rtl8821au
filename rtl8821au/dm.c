@@ -180,7 +180,7 @@ static void odm_DIGInit(struct _rtw_dm *pDM_Odm)
 	pDM_DigTable->FALowThresh	= DM_FALSEALARM_THRESH_LOW;
 	pDM_DigTable->FAHighThresh	= DM_FALSEALARM_THRESH_HIGH;
 
-	if (rtlhal->BoardType & (ODM_BOARD_EXT_PA|ODM_BOARD_EXT_LNA)) {
+	if (rtlhal->board_type & (ODM_BOARD_EXT_PA|ODM_BOARD_EXT_LNA)) {
 		pDM_DigTable->rx_gain_range_max = DM_DIG_MAX_NIC;
 		pDM_DigTable->rx_gain_range_min = DM_DIG_MIN_NIC;
 	} else {
@@ -731,7 +731,7 @@ void rtl8812au_get_delta_swing_table(struct _rtw_dm *pDM_Odm,
 	u16	rate = *(pDM_Odm->pForcedDataRate);
 	u8         	channel   		 = Adapter->phy.current_channel;
 
-	if (rtlhal->RFEType == 3 && pDM_Odm->bIsMPChip) {
+	if (rtlhal->rfe_type == 3 && pDM_Odm->bIsMPChip) {
 		if (1 <= channel && channel <= 14) {
 			if (IS_CCK_RATE(rate)) {
 				*up_a   = rtl8812au_delta_swing_table_idx_24gccka_p_rfe3;

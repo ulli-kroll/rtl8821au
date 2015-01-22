@@ -681,7 +681,7 @@ void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type Conf
 		("===>ODM_ConfigBBWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		rtlhal->SupportInterface, rtlhal->BoardType));
+		rtlhal->SupportInterface, rtlhal->board_type));
 
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {
@@ -694,7 +694,7 @@ void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type Conf
 			break;
 
 		case CONFIG_BB_PHY_REG_PG:
-			if (rtlhal->RFEType == 3 && pDM_Odm->bIsMPChip)
+			if (rtlhal->rfe_type == 3 && pDM_Odm->bIsMPChip)
 				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(pDM_Odm);
 			else
 				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(pDM_Odm);

@@ -113,7 +113,7 @@ struct rtl_hal {
 	u16 hw_type;
 
 	// Board Type Normal/HighPower/MiniCard/SLIM/Combo/... = 0/1/2/3/4/...
-	u8 BoardType;
+	u8 board_type;
 
 
 	u8 pa_type_2g;
@@ -124,7 +124,7 @@ struct rtl_hal {
 	u8 external_lna_2g;
 	u8 external_pa_5g;
 	u8 external_lna_5g;
-	u8 RFEType;
+	u8 rfe_type;
 
 	/*firmware */
 	u32 fwsize;

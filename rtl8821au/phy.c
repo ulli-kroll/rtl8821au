@@ -252,7 +252,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			rtl_write_dword(rtlpriv, 0xc8c, 0x68163e96);
 		else {
 			rtl_write_dword(rtlpriv, 0xc8c, 0x28163e96);
-			if (rtlhal->RFEType == 3) {
+			if (rtlhal->rfe_type == 3) {
 				if (pDM_Odm->ExtPA)
 					rtl_write_dword(rtlpriv, 0xc88, 0x821403e3);
 				else
@@ -3304,7 +3304,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
 	u8 _interface = rtlhal->SupportInterface;
-	u8 board = rtlhal->BoardType;
+	u8 board = rtlhal->board_type;
 
 	uint32_t     ArrayLen    = RTL8812AUMAC_1T_ARRAYLEN;
 	uint32_t    *Array       = RTL8812AU_MAC_REG_ARRAY;
@@ -3365,7 +3365,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
 	u8 _interface = rtlhal->SupportInterface;
-	u8 board = rtlhal->BoardType;
+	u8 board = rtlhal->board_type;
 	
 	uint32_t     ArrayLen    = RTL8821AUMAC_1T_ARRAYLEN;
 	uint32_t    *Array       = RTL8821AU_MAC_REG_ARRAY;
@@ -3425,7 +3425,7 @@ void _rtl8821au_phy_config_mac_with_headerfile(struct _rtw_dm *pDM_Odm)
 		("===>ODM_ConfigMACWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		rtlhal->SupportInterface, rtlhal->BoardType));
+		rtlhal->SupportInterface, rtlhal->board_type));
 
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		ODM_ReadAndConfig_MP_8812A_MAC_REG(pDM_Odm);
@@ -3499,7 +3499,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
 	u8 _interface = rtlhal->SupportInterface;
-	u8 board = rtlhal->BoardType;
+	u8 board = rtlhal->board_type;
 	
 	radioa_arraylen_a = RTL8812AU_RADIOA_1TARRAYLEN;
 	radioa_array_table_a = RTL8812AU_RADIOA_ARRAY;
@@ -3671,7 +3671,7 @@ void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radi
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
 	u8 _interface = rtlhal->SupportInterface;
-	u8 board = rtlhal->BoardType;
+	u8 board = rtlhal->board_type;
 
 	uint32_t	ArrayLen    =  RTL8821AU_RADIOA_1TARRAYLEN;
 	uint32_t	*Array       = RTL8821AU_RADIOA_ARRAY;

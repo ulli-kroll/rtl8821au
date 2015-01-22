@@ -332,7 +332,7 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		("===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		rtlhal->SupportInterface, rtlhal->BoardType));
+		rtlhal->SupportInterface, rtlhal->board_type));
 
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {

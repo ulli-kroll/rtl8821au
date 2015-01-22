@@ -209,7 +209,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 
 	/* 1 ============== End of BoardType ============== */
 
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RFE_TYPE, pHalData->RFEType);
+	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RFE_TYPE, rtlhal->rfe_type);
 
 	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_TRSW, 0);
 
@@ -228,7 +228,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 		ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_RF_TYPE,ODM_1T2R);
 	}
 
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RFE_TYPE, pHalData->RFEType);
+	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RFE_TYPE, rtlhal->rfe_type);
 
  	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RF_ANTENNA_TYPE, pHalData->TRxAntDivType);
 

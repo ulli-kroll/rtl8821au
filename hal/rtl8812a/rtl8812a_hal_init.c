@@ -1233,20 +1233,20 @@ Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 
 	if (!AutoloadFail) {
 		if (GetRegRFEType(Adapter) != 64)
-			pHalData->RFEType = GetRegRFEType(Adapter);
+			rtlhal->rfe_type = GetRegRFEType(Adapter);
 		else if (PROMContent[EEPROM_RFE_OPTION_8812] & BIT7) {
 			if (rtlhal->external_lna_5g) {
 				if (rtlhal->external_pa_5g) {
 					if (rtlhal->external_lna_2g && rtlhal->external_pa_2g)
-						pHalData->RFEType = 3;
+						rtlhal->rfe_type = 3;
 					else
-						pHalData->RFEType = 0;
+						rtlhal->rfe_type = 0;
 				} else
-					pHalData->RFEType = 2;
+					rtlhal->rfe_type = 2;
 			} else
-				pHalData->RFEType = 4;
+				rtlhal->rfe_type = 4;
 		} else {
-			pHalData->RFEType = PROMContent[EEPROM_RFE_OPTION_8812]&0x3F;
+			rtlhal->rfe_type= PROMContent[EEPROM_RFE_OPTION_8812]&0x3F;
 
 			/*
 			 * 2013/03/19 MH Due to othe customer already use incorrect EFUSE map
@@ -1254,23 +1254,23 @@ Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			 * spec and notify all customer to revise the IC 0xca content. After
 			 * discussing with Willis an YN, revise driver code to prevent.
 			 */
-			if (pHalData->RFEType == 4 &&
+			if (rtlhal->rfe_type == 4 &&
 			   (rtlhal->external_pa_5g == _TRUE || rtlhal->external_pa_2g == _TRUE ||
 			    rtlhal->external_lna_5g == _TRUE || rtlhal->external_lna_2g == _TRUE)) {
 				if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-					pHalData->RFEType = 0;
+					rtlhal->rfe_type = 0;
 				else if (IS_HARDWARE_TYPE_8812E(rtlhal))
-					pHalData->RFEType = 2;
+					rtlhal->rfe_type = 2;
 			}
 		}
 	} else {
 		if (GetRegRFEType(Adapter) != 64)
-			pHalData->RFEType = GetRegRFEType(Adapter);
+			rtlhal->rfe_type = GetRegRFEType(Adapter);
 		else
-			pHalData->RFEType = EEPROM_DEFAULT_RFE_OPTION;
+			rtlhal->rfe_type = EEPROM_DEFAULT_RFE_OPTION;
 	}
 
-	DBG_871X("RFE Type: 0x%2x\n", pHalData->RFEType);
+	DBG_871X("RFE Type: 0x%2x\n", rtlhal->rfe_type);
 }
 
 /*

@@ -1368,7 +1368,6 @@ struct _rtw_hal {
 	u32	AntennaTxPath;					// Antenna path Tx
 	u32	AntennaRxPath;					// Antenna path Rx
 
-	uint8_t	RFEType;
 	uint8_t	BoardType;
 	uint8_t	ExternalPA;
 	uint8_t	bIQKInitialized;

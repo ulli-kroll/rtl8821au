@@ -2423,7 +2423,7 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 	struct _rtw_hal	*pHalData	= GET_HAL_DATA(Adapter);
 
 	if(Band == BAND_ON_2_4G) {
-		switch(pHalData->RFEType){
+		switch(rtlhal->rfe_type){
 		case 0: case 1: case 2:
 			rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
 			rtl_set_bbreg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
@@ -2472,7 +2472,7 @@ static void phy_SetRFEReg8812(struct rtl_priv *Adapter,uint8_t Band)
 			break;
 		}
 	} else {
-		switch(pHalData->RFEType){
+		switch(rtlhal->rfe_type){
 		case 0:
 			rtl_set_bbreg(Adapter, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);
 			rtl_set_bbreg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);
@@ -2776,11 +2776,13 @@ static BOOLEAN phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW)
 /* <20130207, Kordan> The variales initialized here are used in odm_LNAPowerControl(). */
 static void phy_InitRssiTRSW(struct rtl_priv *rtlpriv)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 	uint8_t 			channel = rtlpriv->phy.current_channel;
 
-	if (pHalData->RFEType == 3){
+	if (rtlhal->rfe_type == 3){
 		if (channel <= 14) {
 			pDM_Odm->RSSI_TRSW_H    = 70;		/* Unit: percentage(%) */
 			pDM_Odm->RSSI_TRSW_iso  = 25;

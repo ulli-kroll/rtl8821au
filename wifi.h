@@ -584,6 +584,18 @@ enum hardware_type {
 	(IS_HARDWARE_TYPE_8812(rtlhal) || \
 	 IS_HARDWARE_TYPE_8821(rtlhal))
 
+static inline u8 get_rf_type(struct rtl_phy *rtlphy)
+{
+	return rtlphy->rf_type;
+}
+
+
+
+/* ULLI : Hope this is an border, for old code  */
+
+
+
+
 
 #define IQK_Matrix_Settings_NUM_92D	1+24+21
 

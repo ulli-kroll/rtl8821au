@@ -323,6 +323,8 @@ void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *Adapter,
 void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	ODM_RF_Config_Type ConfigType, enum radio_path eRFPath)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
@@ -330,7 +332,7 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		("===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		pDM_Odm->SupportInterface, pDM_Odm->BoardType));
+		rtlhal->SupportInterface, rtlhal->BoardType));
 
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {

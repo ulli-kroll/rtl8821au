@@ -155,6 +155,8 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 
 static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
@@ -250,7 +252,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			rtl_write_dword(rtlpriv, 0xc8c, 0x68163e96);
 		else {
 			rtl_write_dword(rtlpriv, 0xc8c, 0x28163e96);
-			if (pDM_Odm->RFEType == 3) {
+			if (rtlhal->RFEType == 3) {
 				if (pDM_Odm->ExtPA)
 					rtl_write_dword(rtlpriv, 0xc88, 0x821403e3);
 				else
@@ -3292,13 +3294,18 @@ static BOOLEAN CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 
 static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
 	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u8     platform    = ODM_CE;
-	u8     _interface   = pDM_Odm->SupportInterface;
-	u8     board       = pDM_Odm->BoardType;
+	
+	/* ULLI : fixed values ?? */
+	u8  platform = ODM_CE;
+	u8 _interface = rtlhal->SupportInterface;
+	u8 board = rtlhal->BoardType;
+
 	uint32_t     ArrayLen    = RTL8812AUMAC_1T_ARRAYLEN;
 	uint32_t    *Array       = RTL8812AU_MAC_REG_ARRAY;
 
@@ -3348,14 +3355,18 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 
 static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
 	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u8     platform    = ODM_CE;
-	u8     _interface   = pDM_Odm->SupportInterface;
-	u8     board       = pDM_Odm->BoardType;
+	
+	/* ULLI : fixed values ?? */
+	u8  platform = ODM_CE;
+	u8 _interface = rtlhal->SupportInterface;
+	u8 board = rtlhal->BoardType;
+	
 	uint32_t     ArrayLen    = RTL8821AUMAC_1T_ARRAYLEN;
 	uint32_t    *Array       = RTL8821AU_MAC_REG_ARRAY;
 
@@ -3408,11 +3419,13 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 
 void _rtl8821au_phy_config_mac_with_headerfile(struct _rtw_dm *pDM_Odm)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigMACWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		pDM_Odm->SupportInterface, pDM_Odm->BoardType));
+		rtlhal->SupportInterface, rtlhal->BoardType));
 
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		ODM_ReadAndConfig_MP_8812A_MAC_REG(pDM_Odm);
@@ -3468,6 +3481,8 @@ static void _rtl8812au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr
 void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 				enum radio_path eRFPath)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	
 	struct _rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm * pDM_Odm = &pHalData->odmpriv;
 	
@@ -3480,10 +3495,12 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 	uint32_t	hex         = 0;
 	u16	count       = 0;
 	uint32_t	*ptr_array   = NULL;
-	u8     platform    = ODM_CE;
-	u8		_interface   = pDM_Odm->SupportInterface;
-	u8		board       = pDM_Odm->BoardType;
 
+	/* ULLI : fixed values ?? */
+	u8  platform = ODM_CE;
+	u8 _interface = rtlhal->SupportInterface;
+	u8 board = rtlhal->BoardType;
+	
 	radioa_arraylen_a = RTL8812AU_RADIOA_1TARRAYLEN;
 	radioa_array_table_a = RTL8812AU_RADIOA_ARRAY;
 	radioa_arraylen_b = RTL8812AU_RADIOB_1TARRAYLEN;
@@ -3641,6 +3658,8 @@ static void _rtl8821au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr
 
 void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radio_path eRFPath)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	
 	struct _rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm * pDM_Odm = &pHalData->odmpriv;
 
@@ -3648,9 +3667,12 @@ void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radi
 	uint32_t	i           = 0;
 	u16	count       = 0;
 	uint32_t	*ptr_array   = NULL;
-	u8     platform    = ODM_CE;
-	u8		_interface   = pDM_Odm->SupportInterface;
-	u8		board       = pDM_Odm->BoardType;
+	
+	/* ULLI : fixed values ?? */
+	u8  platform = ODM_CE;
+	u8 _interface = rtlhal->SupportInterface;
+	u8 board = rtlhal->BoardType;
+
 	uint32_t	ArrayLen    =  RTL8821AU_RADIOA_1TARRAYLEN;
 	uint32_t	*Array       = RTL8821AU_RADIOA_ARRAY;
 

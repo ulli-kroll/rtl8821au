@@ -460,15 +460,21 @@ ODM_ReadAndConfig_MP_8812A_AGC_TAB(
  	IN   struct _rtw_dm * pDM_Odm
  	)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
 	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u8     platform    = ODM_CE;
-	u8     _interface   = pDM_Odm->SupportInterface;
-	u8     board       = pDM_Odm->BoardType;
+	
+	/* ULLI : fixed values ?? */
+	u8 platform    = ODM_CE;
+	u8 _interface = rtlhal->SupportInterface;
+	u8 board = rtlhal->BoardType;
+	
+	
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_AGC_TAB)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_AGC_TAB;
 
@@ -768,15 +774,19 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG(
  	IN   struct _rtw_dm * pDM_Odm
  	)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
 	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u8     platform    = ODM_CE;
-	u8     _interface   = pDM_Odm->SupportInterface;
-	u8     board       = pDM_Odm->BoardType;
+
+	/* ULLI : fixed values ?? */
+	u8 platform = ODM_CE;
+	u8 _interface = rtlhal->SupportInterface;
+	u8  board = rtlhal->BoardType;
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG;
 
@@ -884,13 +894,18 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(
  	IN   struct _rtw_dm * pDM_Odm
  	)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	uint32_t     hex = 0;
 	uint32_t     i           = 0;
 	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u8     platform    = ODM_CE;
-	u8     _interface   = pDM_Odm->SupportInterface;
-	u8     board       = pDM_Odm->BoardType;
+
+	/* ULLI : fixed values ?? */
+	u8  platform = ODM_CE;
+	u8 _interface = rtlhal->SupportInterface;
+	u8 board = rtlhal->BoardType;
+	
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG_PG)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG_PG;
 
@@ -982,15 +997,20 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(
  	IN   struct _rtw_dm * pDM_Odm
  	)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
 	u16     count       = 0;
 	uint32_t    *ptr_array   = NULL;
-	u8     platform    = ODM_CE;
-	u8     _interface   = pDM_Odm->SupportInterface;
-	u8     board       = pDM_Odm->BoardType;
+
+	/* ULLI : fixed values ?? */
+	u8  platform = ODM_CE;
+	u8 _interface = rtlhal->SupportInterface;
+	u8 board = rtlhal->BoardType;
+
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG_PG_ASUS)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG_PG_ASUS;
 

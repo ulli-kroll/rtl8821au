@@ -88,8 +88,33 @@ struct rtl_efuse {
 	
 };
 
+// ODM_CMNINFO_BOARD_TYPE
+// For non-AC-series IC , ODM_BOARD_5G_EXT_PA and ODM_BOARD_5G_EXT_LNA are ignored
+// For AC-series IC, external PA & LNA can be indivisuallly added on 2.4G and/or 5G
+typedef enum tag_Board_Definition
+{
+    ODM_BOARD_DEFAULT  	= 0, 	  // The DEFAULT case.
+    ODM_BOARD_MINICARD  = BIT(0), // 0 = non-mini card, 1= mini card.
+    ODM_BOARD_SLIM      = BIT(1), // 0 = non-slim card, 1 = slim card
+    ODM_BOARD_BT        = BIT(2), // 0 = without BT card, 1 = with BT
+    ODM_BOARD_EXT_PA    = BIT(3), // 0 = no 2G ext-PA, 1 = existing 2G ext-PA
+    ODM_BOARD_EXT_LNA   = BIT(4), // 0 = no 2G ext-LNA, 1 = existing 2G ext-LNA
+    ODM_BOARD_EXT_TRSW  = BIT(5), // 0 = no ext-TRSW, 1 = existing ext-TRSW
+    ODM_BOARD_EXT_PA_5G    = BIT(6), // 0 = no 5G ext-PA, 1 = existing 5G ext-PA
+    ODM_BOARD_EXT_LNA_5G   = BIT(7), // 0 = no 5G ext-LNA, 1 = existing 5G ext-LNA
+}ODM_BOARD_TYPE_E;
+
+
 struct rtl_hal {
-	u16	hw_type;
+	u16 interface_type;//USB,SDIO,SPI,PCI
+	// ODM PCIE/USB/SDIO = 1/2/3
+	u8 SupportInterface;
+
+	u16 hw_type;
+
+	// Board Type Normal/HighPower/MiniCard/SLIM/Combo/... = 0/1/2/3/4/...
+	u8 BoardType;
+
 
 	u8 pa_type_2g;
 	u8 pa_type_5g;
@@ -99,7 +124,7 @@ struct rtl_hal {
 	u8 external_lna_2g;
 	u8 external_pa_5g;
 	u8 external_lna_5g;
-	
+	u8 RFEType;
 
 	/*firmware */
 	u32 fwsize;
@@ -1022,9 +1047,7 @@ struct _rtw_dm {
 	u8			FabVersion;
 	// RF Type 4T4R/3T3R/2T2R/1T2R/1T1R/...
 	u8			RFType;
-	u8			RFEType;
-	// Board Type Normal/HighPower/MiniCard/SLIM/Combo/... = 0/1/2/3/4/...
-	u8			BoardType;
+
 	// with external LNA  NO/Yes = 0/1
 	u8			ExtLNA;
 	u8			ExtLNA5G;

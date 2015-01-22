@@ -278,6 +278,8 @@ void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 
 void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Value)
 {
+	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	/* ODM_RT_TRACE(pDM_Odm,); */
 
 	/*
@@ -316,7 +318,7 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		break;
 
 	case	ODM_CMNINFO_RFE_TYPE:
-		pDM_Odm->RFEType = (u8)Value;
+		rtlhal->RFEType = (u8)Value;
 		break;
 
 	case    ODM_CMNINFO_RF_ANTENNA_TYPE:
@@ -324,7 +326,7 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		break;
 
 	case	ODM_CMNINFO_BOARD_TYPE:
-		pDM_Odm->BoardType = (u8)Value;
+		rtlhal->BoardType = (u8)Value;
 		break;
 
 	case	ODM_CMNINFO_EXT_LNA:

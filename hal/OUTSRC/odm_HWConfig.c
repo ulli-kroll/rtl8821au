@@ -675,11 +675,13 @@ void ODM_PhyStatusQuery(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 
 void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type ConfigType)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigBBWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		pDM_Odm->SupportInterface, pDM_Odm->BoardType));
+		rtlhal->SupportInterface, rtlhal->BoardType));
 
 	if (pDM_Odm->SupportICType == ODM_RTL8812) {
 		switch (ConfigType) {
@@ -692,7 +694,7 @@ void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type Conf
 			break;
 
 		case CONFIG_BB_PHY_REG_PG:
-			if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip)
+			if (rtlhal->RFEType == 3 && pDM_Odm->bIsMPChip)
 				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(pDM_Odm);
 			else
 				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(pDM_Odm);

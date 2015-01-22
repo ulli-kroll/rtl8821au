@@ -165,6 +165,8 @@ static void odm_CommonInfoSelfInit(struct _rtw_dm *pDM_Odm)
 
 static void odm_DIGInit(struct _rtw_dm *pDM_Odm)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
 	/* pDM_DigTable->Dig_Enable_Flag = TRUE; */
@@ -178,7 +180,7 @@ static void odm_DIGInit(struct _rtw_dm *pDM_Odm)
 	pDM_DigTable->FALowThresh	= DM_FALSEALARM_THRESH_LOW;
 	pDM_DigTable->FAHighThresh	= DM_FALSEALARM_THRESH_HIGH;
 
-	if (pDM_Odm->BoardType & (ODM_BOARD_EXT_PA|ODM_BOARD_EXT_LNA)) {
+	if (rtlhal->BoardType & (ODM_BOARD_EXT_PA|ODM_BOARD_EXT_LNA)) {
 		pDM_DigTable->rx_gain_range_max = DM_DIG_MAX_NIC;
 		pDM_DigTable->rx_gain_range_min = DM_DIG_MIN_NIC;
 	} else {
@@ -722,12 +724,14 @@ void rtl8812au_get_delta_swing_table(struct _rtw_dm *pDM_Odm,
 					    u8 **up_b, u8 **down_b)
 {
 	struct rtl_priv *       Adapter = pDM_Odm->Adapter;
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	 struct _rtw_hal  	*pHalData = GET_HAL_DATA(Adapter);
 	u16	rate = *(pDM_Odm->pForcedDataRate);
 	u8         	channel   		 = Adapter->phy.current_channel;
 
-	if (pDM_Odm->RFEType == 3 && pDM_Odm->bIsMPChip) {
+	if (rtlhal->RFEType == 3 && pDM_Odm->bIsMPChip) {
 		if (1 <= channel && channel <= 14) {
 			if (IS_CCK_RATE(rate)) {
 				*up_a   = rtl8812au_delta_swing_table_idx_24gccka_p_rfe3;

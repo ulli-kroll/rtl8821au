@@ -293,10 +293,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		pDM_Odm->SupportAbility = (uint32_t)Value;
 		break;
 
-	case	ODM_CMNINFO_RF_TYPE:
-		pDM_Odm->Adapter->phy.rf_type = (u8)Value;
-		break;
-
 	case	ODM_CMNINFO_INTERFACE:
 		pDM_Odm->SupportInterface = (u8)Value;
 		break;
@@ -508,10 +504,6 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 	switch	(CmnInfo) {
 	case	ODM_CMNINFO_ABILITY:
 		pDM_Odm->SupportAbility = (uint32_t)Value;
-		break;
-
-	case	ODM_CMNINFO_RF_TYPE:
-		pDM_Odm->Adapter->phy.rf_type = (u8)Value;
 		break;
 
 	case	ODM_CMNINFO_WIFI_DIRECT:

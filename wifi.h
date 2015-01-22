@@ -1057,8 +1057,6 @@ struct _rtw_dm {
 	u8			CutVersion;
 	// Fab Version TSMC/UMC = 0/1
 	u8			FabVersion;
-	// RF Type 4T4R/3T3R/2T2R/1T2R/1T1R/...
-	u8			RFType;
 
 	// with external LNA  NO/Yes = 0/1
 	u8			ExtLNA;

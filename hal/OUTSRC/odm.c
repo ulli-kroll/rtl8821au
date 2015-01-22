@@ -294,7 +294,7 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		break;
 
 	case	ODM_CMNINFO_RF_TYPE:
-		pDM_Odm->RFType = (u8)Value;
+		pDM_Odm->Adapter->phy.rf_type = (u8)Value;
 		break;
 
 	case	ODM_CMNINFO_INTERFACE:
@@ -511,7 +511,7 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 		break;
 
 	case	ODM_CMNINFO_RF_TYPE:
-		pDM_Odm->RFType = (u8)Value;
+		pDM_Odm->Adapter->phy.rf_type = (u8)Value;
 		break;
 
 	case	ODM_CMNINFO_WIFI_DIRECT:
@@ -817,7 +817,7 @@ void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 
 	if (pDM_DigTable->CurIGValue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
 		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
-		if (pDM_Odm->RFType != ODM_1T1R)
+		if (pDM_Odm->Adapter->phy.rf_type != ODM_1T1R)
 			rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_B, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("CurrentIGI(0x%02x). \n", CurrentIGI));
@@ -1214,7 +1214,7 @@ void odm_1R_CCA(struct _rtw_dm *pDM_Odm)
 
 	if (pDM_PSTable->PreCCAState != pDM_PSTable->CurCCAState) {
 		if (pDM_PSTable->CurCCAState == CCA_1R) {
-			if (pDM_Odm->RFType == ODM_2T2R) {
+			if (pDM_Odm->Adapter->phy.rf_type == ODM_2T2R) {
 				rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x13);
 				/* rtl_set_bbreg(rtlpriv, 0xe70, MASKBYTE3, 0x20); */
 			} else {
@@ -1283,7 +1283,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	case (ODM_WM_B|ODM_WM_G|ODM_WM_N24G):
 	case (ODM_WM_B|ODM_WM_N24G):
 	case (ODM_WM_A|ODM_WM_N5G):
-		if (pDM_Odm->RFType == ODM_1T2R || pDM_Odm->RFType == ODM_1T1R) {
+		if (pDM_Odm->Adapter->phy.rf_type == ODM_1T2R || pDM_Odm->Adapter->phy.rf_type == ODM_1T1R) {
 			if (rssi_level == DM_RATR_STA_HIGH) {
 				rate_bitmap = 0x000f0000;
 			} else if (rssi_level == DM_RATR_STA_MIDDLE) {
@@ -1309,7 +1309,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 		break;
 	case (ODM_WM_AC|ODM_WM_A):
 	case (ODM_WM_AC|ODM_WM_G):
-		if (pDM_Odm->RFType == RF_1T1R) {
+		if (pDM_Odm->Adapter->phy.rf_type == RF_1T1R) {
 			if ((pDM_Odm->SupportICType == ODM_RTL8821) ||
 				(pDM_Odm->SupportICType == ODM_RTL8812 && pDM_Odm->bIsMPChip)) {
 				if ((pDM_Odm->SupportICType == ODM_RTL8821)
@@ -1346,7 +1346,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 		break;
 
 	default:
-		if (pDM_Odm->RFType == RF_1T2R)
+		if (pDM_Odm->Adapter->phy.rf_type == RF_1T2R)
 			rate_bitmap = 0x000fffff;
 		else
 			rate_bitmap = 0x0fffffff;

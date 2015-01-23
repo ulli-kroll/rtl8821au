@@ -169,7 +169,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	int 			i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0, dt = 0;
 	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d, ExtPA5G = %d, ExtPA2G = %d\n", *pDM_Odm->pBandWidth, pDM_Odm->ExtPA5G, pDM_Odm->ExtPA));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d, ExtPA5G = %d, ExtPA2G = %d\n", *pDM_Odm->pBandWidth, rtlhal->external_pa_5g, rtlhal->external_pa_2g));
 	if (*pDM_Odm->pBandWidth == 2) {
 		VDF_enable = TRUE;
 	}
@@ -243,7 +243,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);	/* [31] = 1 --> Page C1 */
 
-		if (pDM_Odm->ExtPA5G)
+		if (rtlhal->external_pa_5g)
 			rtl_write_dword(rtlpriv, 0xc88, 0x821403f7);
 		else
 			rtl_write_dword(rtlpriv, 0xc88, 0x821403f1);
@@ -253,7 +253,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		else {
 			rtl_write_dword(rtlpriv, 0xc8c, 0x28163e96);
 			if (rtlhal->rfe_type == 3) {
-				if (pDM_Odm->ExtPA)
+				if (rtlhal->external_pa_2g)
 					rtl_write_dword(rtlpriv, 0xc88, 0x821403e3);
 				else
 					rtl_write_dword(rtlpriv, 0xc88, 0x821403f7);
@@ -643,7 +643,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
 
-		if (pDM_Odm->ExtPA5G)
+		if (rtlhal->external_pa_5g)
 			rtl_write_dword(rtlpriv, 0xe88, 0x821403f7);
 		else
 			rtl_write_dword(rtlpriv, 0xe88, 0x821403f1);
@@ -1535,6 +1535,8 @@ void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery)
 
 static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 {
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+
 	uint32_t TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int 	TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
 	int 	TX_X0[cal_num], TX_Y0[cal_num], TX_X0_RXK[cal_num], TX_Y0_RXK[cal_num], RX_X0[cal_num], RX_Y0[cal_num];
@@ -1556,7 +1558,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		    {
 			temp_reg65 = rtw_hal_read_rfreg(rtlpriv, Path, 0x65, bMaskDWord);
 
-			if (pDM_Odm->ExtPA) {
+			if (rtlhal->external_pa_2g) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 				rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
 			}
@@ -1602,7 +1604,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); 	/* [31] = 1 --> Page C1 */
 
-			if (pDM_Odm->ExtPA)
+			if (rtlhal->external_pa_2g)
 				rtl_write_dword(rtlpriv, 0xc88, 0x821403f7);
 			else
 				rtl_write_dword(rtlpriv, 0xc88, 0x821403f4);
@@ -1654,7 +1656,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 
-			if (pDM_Odm->ExtPA)
+			if (rtlhal->external_pa_2g)
 				rtl_write_dword(rtlpriv, 0xc88, 0x821403f7);
 			else
 				rtl_write_dword(rtlpriv, 0xc88, 0x821403f1);

@@ -179,12 +179,11 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	/* 1 ======= BoardType: ODM_CMNINFO_BOARD_TYPE ======= */
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power)
 	{
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_PA, 1);
+		rtlhal->external_pa_2g = 1;
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 1);
 	}
 	else
 	{
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_PA, rtlhal->external_pa_2g);
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 0);
 	}
 
@@ -198,11 +197,9 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	}
 	if (rtlhal->external_pa_2g != 0) {
 		BoardType |= ODM_BOARD_EXT_PA;
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_PA, 1);
 	}
 	if (rtlhal->external_pa_5g != 0) {
 		BoardType |= ODM_BOARD_EXT_PA_5G;
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_5G_EXT_PA, 1);
 	}
 
 	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_BOARD_TYPE, BoardType);

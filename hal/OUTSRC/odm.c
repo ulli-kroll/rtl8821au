@@ -329,14 +329,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		pDM_Odm->ExtLNA5G = (u8)Value;
 		break;
 
-	case	ODM_CMNINFO_EXT_PA:
-		pDM_Odm->ExtPA = (u8)Value;
-		break;
-
-	case	ODM_CMNINFO_5G_EXT_PA:
-		pDM_Odm->ExtPA5G = (u8)Value;
-		break;
-
 	case	ODM_CMNINFO_EXT_TRSW:
 		pDM_Odm->ExtTRSW = (u8)Value;
 		break;

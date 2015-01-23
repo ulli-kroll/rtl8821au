@@ -536,30 +536,6 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 	case	ODM_CMNINFO_RA_THRESHOLD_LOW:
 		pDM_Odm->RateAdaptive.LowRSSIThresh = (u8)Value;
 		break;
-	/* The following is for BT HS mode and BT coexist mechanism. */
-	case ODM_CMNINFO_BT_DISABLED:
-		pDM_Odm->bBtDisabled = (BOOLEAN)Value;
-		break;
-
-	case ODM_CMNINFO_BT_HS_CONNECT_PROCESS:
-		pDM_Odm->bBtConnectProcess = (BOOLEAN)Value;
-		break;
-
-	case ODM_CMNINFO_BT_HS_RSSI:
-		pDM_Odm->btHsRssi = (u8)Value;
-		break;
-
-	case	ODM_CMNINFO_BT_OPERATION:
-		pDM_Odm->bBtHsOperation = (BOOLEAN)Value;
-		break;
-
-	case	ODM_CMNINFO_BT_LIMITED_DIG:
-		pDM_Odm->bBtLimitedDig = (BOOLEAN)Value;
-		break;
-
-	case	ODM_CMNINFO_BT_DISABLE_EDCA:
-		pDM_Odm->bBtDisableEdcaTurbo = (BOOLEAN)Value;
-		break;
 
 /*
 	case	ODM_CMNINFO_OP_MODE:
@@ -911,16 +887,7 @@ void odm_DIG(struct _rtw_dm *pDM_Odm)
 	DIG_MaxOfMin = DM_DIG_MAX_AP;
 
 	if (pDM_Odm->bLinked) {
-		if ((pDM_Odm->SupportICType & (ODM_RTL8812|ODM_RTL8821)) && (pDM_Odm->bBtLimitedDig == 1)) {
-			/* 2 Modify DIG upper bound for 92E, 8723B, 8821 & 8812 BT */
-			if ((pDM_Odm->RSSI_Min + 10) > dm_dig_max)
-				pDM_DigTable->rx_gain_range_max = dm_dig_max;
-			else if ((pDM_Odm->RSSI_Min + 10) < dm_dig_min)
-				pDM_DigTable->rx_gain_range_max = dm_dig_min;
-			else
-				pDM_DigTable->rx_gain_range_max = pDM_Odm->RSSI_Min + 10;
-		} else {
-
+		{
 			/* 2 Modify DIG upper bound */
 			/* 2013.03.19 Luke: Modified upper bound for Netgear rental house test */
 			if (pDM_Odm->SupportICType != ODM_RTL8821)
@@ -1069,26 +1036,7 @@ void odm_DIG(struct _rtw_dm *pDM_Odm)
 
 	/* 2 High power RSSI threshold */
 
-	if (pDM_Odm->bBtHsOperation) {
-		if (pDM_Odm->bLinked) {
-			if (pDM_DigTable->BT30_CurIGI > (CurrentIGI)) {
-				ODM_Write_DIG(pDM_Odm, CurrentIGI);
-
-			} else {
-				ODM_Write_DIG(pDM_Odm, pDM_DigTable->BT30_CurIGI);
-			}
-			pDM_DigTable->bMediaConnect_0 = pDM_Odm->bLinked;
-			pDM_DigTable->DIG_Dynamic_MIN_0 = DIG_Dynamic_MIN;
-		} else {
-			if (pDM_Odm->bLinkInProcess) {
-				ODM_Write_DIG(pDM_Odm, 0x1c);
-			} else if (pDM_Odm->bBtConnectProcess) {
-				ODM_Write_DIG(pDM_Odm, 0x28);
-			} else {
-				ODM_Write_DIG(pDM_Odm, pDM_DigTable->BT30_CurIGI);	/* ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue); */
-			}
-		}
-	} else {		/* BT is not using */
+	{		/* BT is not using */
 		ODM_Write_DIG(pDM_Odm, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue); */
 		pDM_DigTable->bMediaConnect_0 = pDM_Odm->bLinked;
 		pDM_DigTable->DIG_Dynamic_MIN_0 = DIG_Dynamic_MIN;

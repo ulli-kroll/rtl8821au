@@ -1123,12 +1123,6 @@ struct _rtw_dm {
 	BOOLEAN         bIsMPChip;
 	BOOLEAN			bOneEntryOnly;
 	// Common info for BTDM
-	BOOLEAN			bBtDisabled;			// BT is disabled
-	BOOLEAN			bBtConnectProcess;	// BT HS is under connection progress.
-	u8			btHsRssi;				// BT HS mode wifi rssi value.
-	BOOLEAN			bBtHsOperation;		// BT HS mode is under progress
-	BOOLEAN			bBtDisableEdcaTurbo;	// Under some condition, don't enable the EDCA Turbo
-	BOOLEAN			bBtLimitedDig;   		// BT is busy.
 //------------CALL BY VALUE-------------//
 	u8			RSSI_A;
 	u8			RSSI_B;

@@ -1087,8 +1087,6 @@ struct _rtw_dm {
 	u8			*pSecChOffset;
 	// Security mode Open/WEP/AES/TKIP = 0/1/2/3
 	u8			*pSecurity;
-	// BW info 20M/40M/80M = 0/1/2
-	u8			*pBandWidth;
  	// Central channel location Ch1/Ch2/....
 	u8			*pChannel;	//central channel number
 	// Common info for 92D DMSP

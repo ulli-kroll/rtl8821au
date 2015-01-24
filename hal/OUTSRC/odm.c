@@ -375,10 +375,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValu
 		pDM_Odm->pSecurity = (u8 *)pValue;
 		break;
 
-	case	ODM_CMNINFO_BW:
-		pDM_Odm->pBandWidth = (u8 *)pValue;
-		break;
-
 	case	ODM_CMNINFO_CHNL:
 		pDM_Odm->pChannel = (u8 *)pValue;
 		break;
@@ -519,11 +515,12 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 
 void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->Adapter;
 	u8	EntryCnt = 0;
 	u8	i;
 	struct sta_info *pEntry;
 
-	if (*(pDM_Odm->pBandWidth) == ODM_BW40M) {
+	if (rtlpriv->phy.current_chan_bw == ODM_BW40M) {
 		if (*(pDM_Odm->pSecChOffset) == 1)
 			pDM_Odm->ControlChannel = *(pDM_Odm->pChannel)-2;
 		else if (*(pDM_Odm->pSecChOffset) == 2)
@@ -615,6 +612,8 @@ int getIGIForDiff(int value_IGI)
 
 void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->Adapter;
+
 	int32_t TH_H_dmc, TH_L_dmc;
 	int32_t TH_H, TH_L, Diff, IGI_target;
 	uint32_t value32;
@@ -662,11 +661,11 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	 * else
 	 */
 
-	if (*pDM_Odm->pBandWidth == ODM_BW20M)	/*CHANNEL_WIDTH_20 */
+	if (rtlpriv->phy.current_chan_bw == ODM_BW20M)	/*CHANNEL_WIDTH_20 */
 		IGI_target = pDM_Odm->IGI_Base;
-	else if (*pDM_Odm->pBandWidth == ODM_BW40M)
+	else if (rtlpriv->phy.current_chan_bw == ODM_BW40M)
 		IGI_target = pDM_Odm->IGI_Base + 2;
-	else if (*pDM_Odm->pBandWidth == ODM_BW80M)
+	else if (rtlpriv->phy.current_chan_bw == ODM_BW80M)
 		IGI_target = pDM_Odm->IGI_Base + 6;
 	else
 		IGI_target = pDM_Odm->IGI_Base;
@@ -684,7 +683,7 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 		TH_L = pDM_Odm->TH_L;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("BandWidth=%s, IGI_target=0x%x, EDCCA_State=%d\n",
-		(*pDM_Odm->pBandWidth == ODM_BW80M) ? "80M" : ((*pDM_Odm->pBandWidth == ODM_BW40M) ? "40M" : "20M"), IGI_target, EDCCA_State));
+		(rtlpriv->phy.current_chan_bw == ODM_BW80M) ? "80M" : ((rtlpriv->phy.current_chan_bw == ODM_BW40M) ? "40M" : "20M"), IGI_target, EDCCA_State));
 
 	if (EDCCA_State == 1) {
 		if (IGI < IGI_target) {
@@ -1128,6 +1127,8 @@ void odm_1R_CCA(struct _rtw_dm *pDM_Odm)
 uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	uint32_t ra_mask, u8 rssi_level)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->Adapter;
+
 	struct sta_info *pEntry;
 	uint32_t 	rate_bitmap = 0;
 	u8 	WirelessMode;
@@ -1173,7 +1174,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 			} else if (rssi_level == DM_RATR_STA_MIDDLE) {
 				rate_bitmap = 0x000ff000;
 			} else {
-				if (*(pDM_Odm->pBandWidth) == ODM_BW40M)
+				if (rtlpriv->phy.current_chan_bw == ODM_BW40M)
 					rate_bitmap = 0x000ff015;
 				else
 					rate_bitmap = 0x000ff005;
@@ -1184,7 +1185,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 			} else if (rssi_level == DM_RATR_STA_MIDDLE) {
 				rate_bitmap = 0x0f8ff000;
 			} else {
-				if (*(pDM_Odm->pBandWidth) == ODM_BW40M)
+				if (rtlpriv->phy.current_chan_bw == ODM_BW40M)
 					rate_bitmap = 0x0f8ff015;
 				else
 					rate_bitmap = 0x0f8ff005;

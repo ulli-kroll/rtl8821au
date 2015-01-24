@@ -169,8 +169,8 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	int 			i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0, dt = 0;
 	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d, ExtPA5G = %d, ExtPA2G = %d\n", *pDM_Odm->pBandWidth, rtlhal->external_pa_5g, rtlhal->external_pa_2g));
-	if (*pDM_Odm->pBandWidth == 2) {
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d, ExtPA5G = %d, ExtPA2G = %d\n", rtlpriv->phy.current_chan_bw, rtlhal->external_pa_5g, rtlhal->external_pa_2g));
+	if (rtlpriv->phy.current_chan_bw == 2) {
 		VDF_enable = TRUE;
 	}
 	VDF_enable = FALSE;
@@ -1052,7 +1052,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					if (dy < 4 && dy > -4) {
 						TX_X = ((TX_X0[i]>>21) + (TX_X0[ii]>>21))/2;
 						TX_Y = ((TX_Y0[i]>>21) + (TX_Y0[ii]>>21))/2;
-						if (*pDM_Odm->pBandWidth == 2) {
+						if (rtlpriv->phy.current_chan_bw == 2) {
 							Tx_dt[0] = (Tx_dt[i] + Tx_dt[ii])/2;
 						}
 						TX_finish = 1;
@@ -1064,7 +1064,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				break;
 		}
 
-		if (*pDM_Odm->pBandWidth == 2) {
+		if (rtlpriv->phy.current_chan_bw == 2) {
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 0 --> Page C */
 			rtl_set_bbreg(rtlpriv, 0xce8, 0x3fff0000, Tx_dt[0] & 0x00003fff);
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
@@ -1093,7 +1093,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					if (dy < 4 && dy > -4) {
 						RX_X = ((RX_X0[i]>>21) + (RX_X0[ii]>>21))/2;
 						RX_Y = ((RX_Y0[i]>>21) + (RX_Y0[ii]>>21))/2;
-						if (*pDM_Odm->pBandWidth == 2) {
+						if (rtlpriv->phy.current_chan_bw == 2) {
 							Rx_dt[0] = (Rx_dt[i] + Rx_dt[ii])/2;
 						}
 						RX_finish = 1;
@@ -1105,7 +1105,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				break;
 		}
 
-		if (*pDM_Odm->pBandWidth == 2) {
+		if (rtlpriv->phy.current_chan_bw == 2) {
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 0 --> Page C */
 			rtl_set_bbreg(rtlpriv, 0xce8, 0x00003fff, Rx_dt[0] & 0x00003fff);
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -1126,7 +1126,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		if (TX_finish && RX_finish) {
 			pRFCalibrateInfo->bNeedIQK = FALSE;
 
-			if (*pDM_Odm->pBandWidth == 2) {
+			if (rtlpriv->phy.current_chan_bw == 2) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 0 --> Page C */
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			}
@@ -1155,7 +1155,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					if (dy < 4 && dy > -4) {
 						TX_X = ((TX_X1[i]>>21) + (TX_X1[ii]>>21))/2;
 						TX_Y = ((TX_Y1[i]>>21) + (TX_Y1[ii]>>21))/2;
-						if (*pDM_Odm->pBandWidth == 2) {
+						if (rtlpriv->phy.current_chan_bw == 2) {
 							Tx_dt[0] = (Tx_dt[i] + Tx_dt[ii])/2;
 						}
 						TX_finish = 1;
@@ -1167,7 +1167,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				break;
 		}
 
-		if (*pDM_Odm->pBandWidth == 2) {
+		if (rtlpriv->phy.current_chan_bw == 2) {
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 0 --> Page C */
 			rtl_set_bbreg(rtlpriv, 0xee8, 0x3fff0000, Tx_dt[0] & 0x00003fff);
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -1195,7 +1195,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					if (dy < 4 && dy > -4) {
 						RX_X = ((RX_X1[i]>>21) + (RX_X1[ii]>>21))/2;
 						RX_Y = ((RX_Y1[i]>>21) + (RX_Y1[ii]>>21))/2;
-						if (*pDM_Odm->pBandWidth == 2) {
+						if (rtlpriv->phy.current_chan_bw == 2) {
 							Rx_dt[0] = (Rx_dt[i] + Rx_dt[ii])/2;
 						}
 						RX_finish = 1;
@@ -1207,7 +1207,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				break;
 		}
 
-		if (*pDM_Odm->pBandWidth == 2) {
+		if (rtlpriv->phy.current_chan_bw == 2) {
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 0 --> Page C */
 			rtl_set_bbreg(rtlpriv, 0xee8, 0x00003fff, Rx_dt[0] & 0x00003fff);
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -1230,7 +1230,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 /* pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].bIQKDone= TRUE; */
 			pRFCalibrateInfo->bNeedIQK = FALSE;
 
-			if (*pDM_Odm->pBandWidth == 2) {
+			if (rtlpriv->phy.current_chan_bw == 2) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 0 --> Page C */
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			}
@@ -1547,8 +1547,8 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d\n", *pDM_Odm->pBandWidth));
-	if (*pDM_Odm->pBandWidth == 2) {
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d\n", rtlpriv->phy.current_chan_bw));
+	if (rtlpriv->phy.current_chan_bw == 2) {
 		VDF_enable = TRUE;
 	}
 
@@ -1625,7 +1625,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			rtw_hal_write_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
-			switch (*pDM_Odm->pBandWidth) {
+			switch (rtlpriv->phy.current_chan_bw) {
 			case 1:
 				rtw_hal_write_rfreg(rtlpriv, Path, 0x18, 0x00c00, 0x1);
 				break;

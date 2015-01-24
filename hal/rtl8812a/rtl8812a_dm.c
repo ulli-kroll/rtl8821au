@@ -252,7 +252,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SEC_CHNL_OFFSET,&(pHalData->nCur40MhzPrimeSC));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SEC_MODE,&(Adapter->securitypriv.dot11PrivacyAlgrthm));
-	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_BW,&(Adapter->phy.current_chan_bw ));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_CHNL,&( Adapter->phy.current_channel));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_NET_CLOSED,&( Adapter->net_closed));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_MP_MODE,&(Adapter->registrypriv.mp_mode));

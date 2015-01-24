@@ -430,19 +430,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValu
 	case	ODM_CMNINFO_MP_MODE:
 		pDM_Odm->mp_mode = (u8 *)pValue;
 		break;
-/*
-	case	ODM_CMNINFO_STA_STATUS:
-		pDM_Odm->pODM_StaInfo[] = (struct sta_info *)pValue;
-		break;
-
-	case	ODM_CMNINFO_PHY_STATUS:
-		pDM_Odm->pPhyInfo = (ODM_PHY_INFO *)pValue;
-		break;
-
-	case	ODM_CMNINFO_MAC_STATUS:
-		pDM_Odm->pMacInfo = (ODM_MAC_INFO *)pValue;
-		break;
-*/
 	/* To remove the compiler warning, must add an empty default statement to handle the other values. */
 	default:
 		/* do nothing */
@@ -521,35 +508,6 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 		pDM_Odm->RateAdaptive.LowRSSIThresh = (u8)Value;
 		break;
 
-/*
-	case	ODM_CMNINFO_OP_MODE:
-		pDM_Odm->OPMode = (u8)Value;
-		break;
-
-	case	ODM_CMNINFO_WM_MODE:
-		pDM_Odm->WirelessMode = (u8)Value;
-		break;
-
-	case	ODM_CMNINFO_BAND:
-		pDM_Odm->BandType = (u8)Value;
-		break;
-
-	case	ODM_CMNINFO_SEC_CHNL_OFFSET:
-		pDM_Odm->SecChOffset = (u8)Value;
-		break;
-
-	case	ODM_CMNINFO_SEC_MODE:
-		pDM_Odm->Security = (u8)Value;
-		break;
-
-	case	ODM_CMNINFO_BW:
-		pDM_Odm->BandWidth = (u8)Value;
-		break;
-
-	case	ODM_CMNINFO_CHNL:
-		pDM_Odm->Channel = (u8)Value;
-		break;
-*/
 	default:
 		/* do nothing */
 		break;

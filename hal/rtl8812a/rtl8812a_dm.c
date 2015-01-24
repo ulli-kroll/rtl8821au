@@ -180,20 +180,18 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power)
 	{
 		rtlhal->external_pa_2g = 1;
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 1);
+		rtlhal->external_lna_2g = 1;
 	}
 	else
 	{
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 0);
+		rtlhal->external_lna_2g = 0;
 	}
 
 	if (rtlhal->external_lna_2g != 0) {
 		BoardType |= ODM_BOARD_EXT_LNA;
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_LNA, 1);
 	}
 	if (rtlhal->external_lna_5g != 0) {
 		BoardType |= ODM_BOARD_EXT_LNA_5G;
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_5G_EXT_LNA, 1);
 	}
 	if (rtlhal->external_pa_2g != 0) {
 		BoardType |= ODM_BOARD_EXT_PA;

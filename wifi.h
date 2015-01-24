@@ -1058,9 +1058,6 @@ struct _rtw_dm {
 	// Fab Version TSMC/UMC = 0/1
 	u8			FabVersion;
 
-	// with external LNA  NO/Yes = 0/1
-	u8			ExtLNA;
-	u8			ExtLNA5G;
 	// with external TRSW  NO/Yes = 0/1
 	u8			ExtTRSW;
 	u8			PatchID; //Customer ID

@@ -321,14 +321,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		rtlhal->board_type = (u8)Value;
 		break;
 
-	case	ODM_CMNINFO_EXT_LNA:
-		pDM_Odm->ExtLNA = (u8)Value;
-		break;
-
-	case	ODM_CMNINFO_5G_EXT_LNA:
-		pDM_Odm->ExtLNA5G = (u8)Value;
-		break;
-
 	case	ODM_CMNINFO_EXT_TRSW:
 		pDM_Odm->ExtTRSW = (u8)Value;
 		break;
@@ -1081,13 +1073,15 @@ void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm)
 
 void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 {
+	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->Adapter);
+	
 	u8	CurCCK_CCAThres;
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
 
 	if (!(pDM_Odm->SupportAbility & (ODM_BB_CCK_PD|ODM_BB_FA_CNT)))
 		return;
 
-	if (pDM_Odm->ExtLNA)
+	if (rtlhal->external_lna_2g)
 		return;
 
 	if (pDM_Odm->bLinked) {

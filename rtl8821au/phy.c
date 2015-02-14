@@ -3305,7 +3305,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 	
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
-	u8 _interface = rtlhal->SupportInterface;
+	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 
 	uint32_t     ArrayLen    = RTL8812AUMAC_1T_ARRAYLEN;
@@ -3317,6 +3317,8 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 	hex += platform << 16;
 	hex += 0xFF000000;
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_MAC_REG, hex = 0x%X\n", hex));
+
+	printk("rtl8821au:ULLI function %s value hex : %08lx\n", __func__, (long) hex);
 
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];
@@ -3366,7 +3368,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 	
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
-	u8 _interface = rtlhal->SupportInterface;
+	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 	
 	uint32_t     ArrayLen    = RTL8821AUMAC_1T_ARRAYLEN;
@@ -3378,6 +3380,8 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 	hex += platform << 16;
 	hex += 0xFF000000;
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_MAC_REG, hex = 0x%X\n", hex));
+
+	printk("rtl8821au:ULLI function %s value hex : %08lx\n", __func__, (long) hex);
 
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];
@@ -3500,7 +3504,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
-	u8 _interface = rtlhal->SupportInterface;
+	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 	
 	radioa_arraylen_a = RTL8812AU_RADIOA_1TARRAYLEN;
@@ -3673,7 +3677,7 @@ void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radi
 	
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
-	u8 _interface = rtlhal->SupportInterface;
+	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 
 	uint32_t	ArrayLen    =  RTL8821AU_RADIOA_1TARRAYLEN;

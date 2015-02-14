@@ -471,7 +471,7 @@ ODM_ReadAndConfig_MP_8812A_AGC_TAB(
 	
 	/* ULLI : fixed values ?? */
 	u8 platform    = ODM_CE;
-	u8 _interface = rtlhal->SupportInterface;
+	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 	
 	
@@ -785,7 +785,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG(
 
 	/* ULLI : fixed values ?? */
 	u8 platform = ODM_CE;
-	u8 _interface = rtlhal->SupportInterface;
+	u8 _interface = RTW_USB;
 	u8  board = rtlhal->board_type;
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG;
@@ -903,9 +903,9 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(
 
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
-	u8 _interface = rtlhal->SupportInterface;
+	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
-	
+
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG_PG)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG_PG;
 
@@ -914,6 +914,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(
 	hex += _interface << 8;
 	hex += platform << 16;
 	hex += 0xFF000000;
+
 	for (i = 0; i < ArrayLen; i += 3 )
 	{
 	    uint32_t v1 = Array[i];
@@ -1008,7 +1009,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(
 
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
-	u8 _interface = rtlhal->SupportInterface;
+	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG_PG_ASUS)/sizeof(uint32_t);

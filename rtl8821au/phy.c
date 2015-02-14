@@ -3557,6 +3557,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 				}
 			}
 		}
+		break;
 	case RF90_PATH_B:
 		hex += board;
 		hex += _interface << 8;

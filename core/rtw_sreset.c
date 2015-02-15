@@ -50,43 +50,6 @@ void sreset_reset_value(struct rtl_priv *padapter)
 #endif
 }
 
-uint8_t sreset_get_wifi_status(struct rtl_priv *padapter)
-{
-#if defined(DBG_CONFIG_ERROR_DETECT)
-	 struct _rtw_hal *pHalData = GET_HAL_DATA(padapter);
-	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
-
-	uint8_t status = WIFI_STATUS_SUCCESS;
-	uint32_t val32 = 0;
-	_irqL irqL;
-
-	if(psrtpriv->silent_reset_inprogress == _TRUE)
-		return status;
-
-	val32 =rtl_read_dword(padapter,REG_TXDMA_STATUS);
-
-	if(val32==0xeaeaeaea)
-		psrtpriv->Wifi_Error_Status = WIFI_IF_NOT_EXIST;
-	else if(val32!=0){
-		DBG_8192C("txdmastatu(%x)\n",val32);
-		psrtpriv->Wifi_Error_Status = WIFI_MAC_TXDMA_ERROR;
-	}
-
-	if(WIFI_STATUS_SUCCESS !=psrtpriv->Wifi_Error_Status) {
-		DBG_8192C("==>%s error_status(0x%x) \n",__FUNCTION__,psrtpriv->Wifi_Error_Status);
-		status = (psrtpriv->Wifi_Error_Status &( ~(USB_READ_PORT_FAIL|USB_WRITE_PORT_FAIL)));
-	}
-
-	DBG_8192C("==> %s wifi_status(0x%x)\n",__FUNCTION__,status);
-
-	/* status restore */
-	psrtpriv->Wifi_Error_Status = WIFI_STATUS_SUCCESS;
-
-	return status;
-#else
-	return WIFI_STATUS_SUCCESS;
-#endif
-}
 
 void sreset_set_wifi_error_status(struct rtl_priv *padapter, uint32_t	 status)
 {

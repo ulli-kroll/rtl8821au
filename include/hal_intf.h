@@ -250,7 +250,6 @@ void rtw_hal_sreset_reset(struct rtl_priv *padapter);
 void rtw_hal_sreset_reset_value(struct rtl_priv *padapter);
 void rtw_hal_sreset_xmit_status_check(struct rtl_priv *padapter);
 void rtw_hal_sreset_linked_status_check (struct rtl_priv *padapter);
-bool rtw_hal_sreset_inprogress(struct rtl_priv *padapter);
 #endif
 
 void rtw_hal_notch_filter(struct rtl_priv * adapter, bool enable);

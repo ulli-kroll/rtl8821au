@@ -387,14 +387,6 @@ void rtw_hal_sreset_linked_status_check(struct rtl_priv *padapter)
 		padapter->HalFunc->sreset_linked_status_check(padapter);
 }
 
-bool rtw_hal_sreset_inprogress(struct rtl_priv *padapter)
-{
-	bool inprogress = _FALSE;
-
-	if (padapter->HalFunc->sreset_inprogress)
-		inprogress = padapter->HalFunc->sreset_inprogress(padapter);
-	return inprogress;
-}
 #endif
 
 void rtw_hal_notch_filter(struct rtl_priv *adapter, bool enable)

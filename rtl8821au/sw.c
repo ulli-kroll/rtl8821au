@@ -113,7 +113,6 @@ struct rtl_hal_ops rtl8821au_hal_ops = {
 	.silentreset =		sreset_reset,
 	.sreset_xmit_status_check =	rtl8812_sreset_xmit_status_check,
 	.sreset_linked_status_check =	rtl8812_sreset_linked_status_check,
-	.sreset_inprogress =		sreset_inprogress,
 #endif
 
 	.GetHalODMVarHandler = rtl8812_GetHalODMVar,

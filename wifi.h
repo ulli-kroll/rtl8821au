@@ -445,7 +445,6 @@ struct rtl_hal_ops {
 	void (*silentreset)(struct rtl_priv *rtlpriv);
 	void (*sreset_xmit_status_check)(struct rtl_priv *rtlpriv);
 	void (*sreset_linked_status_check) (struct rtl_priv *rtlpriv);
-	bool (*sreset_inprogress)(struct rtl_priv *rtlpriv);
 #endif
 	void (*hal_notch_filter)(struct rtl_priv * adapter, bool enable);
 	void (*hal_reset_security_engine)(struct rtl_priv * adapter);

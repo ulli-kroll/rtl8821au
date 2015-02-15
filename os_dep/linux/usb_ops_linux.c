@@ -105,12 +105,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16
 				if(status == (-ESHUTDOWN) || status == -ENODEV) {
 					padapter->bSurpriseRemoved = _TRUE;
 				} else {
-#ifdef DBG_CONFIG_ERROR_DETECT
-					{
-						 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
-						pHalData->srestpriv.Wifi_Error_Status = USB_VEN_REQ_CMD_FAIL;
-					}
-#endif
+					;
 				}
 			} else {
 				/* status != len && status >= 0 */
@@ -373,7 +368,6 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 			 * usb_clear_halt(pusbdev, purb->pipe);
 			 * msleep(10);
 			 */
-			sreset_set_wifi_error_status(padapter, USB_WRITE_PORT_FAIL);
 		} else if (purb->status == -EINPROGRESS) {
 			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete: EINPROGESS\n"));
 			goto check_completion;

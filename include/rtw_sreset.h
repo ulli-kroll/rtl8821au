@@ -31,7 +31,6 @@ enum {
 struct sreset_priv {
 	struct mutex silentreset_mutex;
 	uint8_t 	silent_reset_inprogress;
-	uint8_t	Wifi_Error_Status;
 	unsigned long last_tx_time;
 	unsigned long last_tx_complete_time;
 
@@ -51,7 +50,6 @@ struct sreset_priv {
 
 void sreset_init_value(struct rtl_priv *padapter);
 void sreset_reset_value(struct rtl_priv *padapter);
-void sreset_set_wifi_error_status(struct rtl_priv *padapter, u32 status);
 void sreset_set_trigger_point(struct rtl_priv *padapter, int32_t tgp);
 bool sreset_inprogress(struct rtl_priv *padapter);
 void sreset_reset(struct rtl_priv *padapter);

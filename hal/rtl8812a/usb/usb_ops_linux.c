@@ -432,12 +432,6 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 		case -ETIME:
 		case -ECOMM:
 		case -EOVERFLOW:
-#ifdef DBG_CONFIG_ERROR_DETECT
-			{
-				 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
-				pHalData->srestpriv.Wifi_Error_Status = USB_READ_PORT_FAIL;
-			}
-#endif
 			precvbuf->reuse = _TRUE;
 			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 			break;

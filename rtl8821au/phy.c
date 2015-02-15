@@ -3318,8 +3318,6 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 	hex += 0xFF000000;
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_MAC_REG, hex = 0x%X\n", hex));
 
-	printk("rtl8821au:ULLI function %s value hex : %08lx\n", __func__, (long) hex);
-
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];
 		uint32_t v2 = Array[i+1];
@@ -3380,8 +3378,6 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 	hex += platform << 16;
 	hex += 0xFF000000;
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_MAC_REG, hex = 0x%X\n", hex));
-
-	printk("rtl8821au:ULLI function %s value hex : %08lx\n", __func__, (long) hex);
 
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];

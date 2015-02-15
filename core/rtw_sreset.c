@@ -56,11 +56,6 @@ void sreset_set_trigger_point(struct rtl_priv *padapter, int32_t tgp)
 #endif
 }
 
-bool sreset_inprogress(struct rtl_priv *padapter)
-{
-	return _FALSE;
-}
-
 void sreset_restore_security_station(struct rtl_priv *padapter)
 {
 	uint8_t EntryId = 0;

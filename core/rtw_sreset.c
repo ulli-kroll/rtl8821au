@@ -31,7 +31,6 @@ void sreset_init_value(struct rtl_priv *padapter)
 
 	/* ULLI: No mutex_drestroy found for this mutex */
 	mutex_init(&psrtpriv->silentreset_mutex);
-	psrtpriv->silent_reset_inprogress = _FALSE;
 	psrtpriv->last_tx_time =0;
 	psrtpriv->last_tx_complete_time =0;
 #endif
@@ -42,7 +41,6 @@ void sreset_reset_value(struct rtl_priv *padapter)
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 
-	psrtpriv->silent_reset_inprogress = _FALSE;
 	psrtpriv->last_tx_time =0;
 	psrtpriv->last_tx_complete_time =0;
 #endif

@@ -30,7 +30,6 @@ enum {
 
 struct sreset_priv {
 	struct mutex silentreset_mutex;
-	uint8_t 	silent_reset_inprogress;
 	unsigned long last_tx_time;
 	unsigned long last_tx_complete_time;
 

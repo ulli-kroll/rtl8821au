@@ -56,7 +56,6 @@ struct rtl_priv;
 #include <rtw_recv.h>
 #include <recv_osdep.h>
 #include <rtw_efuse.h>
-#include <rtw_sreset.h>
 #include <hal_intf.h>
 #include <hal_com.h>
 #include <hal_com_led.h>

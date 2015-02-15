@@ -20,7 +20,6 @@
 
 #include <drv_types.h>
 #include <hal_data.h>
-#include <rtw_sreset.h>
 
 int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {

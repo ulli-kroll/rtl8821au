@@ -387,15 +387,6 @@ void rtw_hal_sreset_linked_status_check(struct rtl_priv *padapter)
 		padapter->HalFunc->sreset_linked_status_check(padapter);
 }
 
-uint8_t rtw_hal_sreset_get_wifi_status(struct rtl_priv *padapter)
-{
-	uint8_t status = 0;
-
-	if (padapter->HalFunc->sreset_get_wifi_status)
-		status = padapter->HalFunc->sreset_get_wifi_status(padapter);
-	return status;
-}
-
 bool rtw_hal_sreset_inprogress(struct rtl_priv *padapter)
 {
 	bool inprogress = _FALSE;

@@ -603,18 +603,6 @@ int _rtw_pwr_wakeup(struct rtl_priv *padapter, uint32_t	 ips_deffer_ms, const ch
 			DBG_871X("%s wait ps_processing done\n", __func__);
 	}
 
-#ifdef DBG_CONFIG_ERROR_DETECT
-	if (_FALSE) {
-		DBG_871X("%s wait sreset_inprogress...\n", __func__);
-		while (_FALSE && rtw_get_passing_time_ms(start) <= 4000)
-			msleep(10);
-		if (_FALSE)
-			DBG_871X("%s wait sreset_inprogress timeout\n", __func__);
-		else
-			DBG_871X("%s wait sreset_inprogress done\n", __func__);
-	}
-#endif
-
 	if (pwrpriv->bInternalAutoSuspend == _FALSE && pwrpriv->bInSuspend) {
 		DBG_871X("%s wait bInSuspend...\n", __func__);
 		while (pwrpriv->bInSuspend

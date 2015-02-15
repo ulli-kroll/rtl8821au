@@ -20,37 +20,5 @@
 #ifndef _RTW_SRESET_H_
 #define _RTW_SRESET_H_
 
-//#include <drv_types.h>
-
-enum {
-	SRESET_TGP_NULL = 0,
-	SRESET_TGP_XMIT_STATUS = 1,
-	SRESET_TGP_LINK_STATUS = 2,
-};
-
-struct sreset_priv {
-	struct mutex silentreset_mutex;
-	unsigned long last_tx_time;
-	unsigned long last_tx_complete_time;
-
-	int32_t dbg_trigger_point;
-};
-
-
-
-#define	WIFI_STATUS_SUCCESS 		0
-#define	USB_VEN_REQ_CMD_FAIL 	BIT0
-#define	USB_READ_PORT_FAIL 		BIT1
-#define	USB_WRITE_PORT_FAIL		BIT2
-#define	WIFI_MAC_TXDMA_ERROR 	BIT3
-#define   WIFI_TX_HANG				BIT4
-#define	WIFI_RX_HANG				BIT5
-#define 	WIFI_IF_NOT_EXIST			BIT6
-
-void sreset_init_value(struct rtl_priv *padapter);
-void sreset_reset_value(struct rtl_priv *padapter);
-void sreset_set_trigger_point(struct rtl_priv *padapter, int32_t tgp);
-void sreset_reset(struct rtl_priv *padapter);
-
 #endif
 

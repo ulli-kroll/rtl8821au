@@ -1799,10 +1799,6 @@ void dynamic_chk_wk_hdl(struct rtl_priv *padapter, uint8_t *pbuf, int sz)
 	padapter = (struct rtl_priv *)pbuf;
 	pmlmepriv = &(padapter->mlmepriv);
 
-	#ifdef DBG_CONFIG_ERROR_DETECT
-	rtw_hal_sreset_xmit_status_check(padapter);
-	#endif
-
 	//if(check_fwstate(pmlmepriv, _FW_UNDER_LINKING|_FW_UNDER_SURVEY)==_FALSE)
 	{
 		linked_status_chk(padapter);

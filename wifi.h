@@ -439,13 +439,6 @@ struct rtl_hal_ops {
 	uint8_t	(*Efuse_WordEnableDataWrite)(struct rtl_priv *rtlpriv, u16 efuse_addr, uint8_t word_en, uint8_t *data);
 	BOOLEAN	(*Efuse_PgPacketWrite_BT)(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t word_en, uint8_t *data);
 
-#ifdef DBG_CONFIG_ERROR_DETECT
-	void (*sreset_init_value)(struct rtl_priv *rtlpriv);
-	void (*sreset_reset_value)(struct rtl_priv *rtlpriv);
-	void (*silentreset)(struct rtl_priv *rtlpriv);
-	void (*sreset_xmit_status_check)(struct rtl_priv *rtlpriv);
-	void (*sreset_linked_status_check) (struct rtl_priv *rtlpriv);
-#endif
 	void (*hal_notch_filter)(struct rtl_priv * adapter, bool enable);
 	void (*hal_reset_security_engine)(struct rtl_priv * adapter);
 	int32_t (*c2h_handler)(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt);
@@ -1461,12 +1454,6 @@ struct _rtw_hal {
 
 	struct dm_priv	dmpriv;
 	struct _rtw_dm odmpriv;
-
-#ifdef DBG_CONFIG_ERROR_DETECT
-	struct sreset_priv srestpriv;
-#endif
-
-
 };
 
 static inline struct _rtw_hal *GET_HAL_DATA(struct rtl_priv *priv)

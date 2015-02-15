@@ -954,9 +954,6 @@ uint8_t rtw_reset_drv_sw(struct rtl_priv *padapter)
 #ifdef CONFIG_AUTOSUSPEND
 #endif
 
-#ifdef DBG_CONFIG_ERROR_DETECT
-	rtw_hal_sreset_reset_value(padapter);
-#endif
 	pwrctrlpriv->pwr_state_check_cnts = 0;
 
 	/* mlmeextpriv */
@@ -1043,10 +1040,6 @@ int rtl8821au_init_sw_vars(struct net_device *ndev)
 
 	rtw_hal_dm_init(padapter);
 	rtw_hal_sw_led_init(padapter);
-
-#ifdef DBG_CONFIG_ERROR_DETECT
-	rtw_hal_sreset_init(padapter);
-#endif
 
 exit:
 

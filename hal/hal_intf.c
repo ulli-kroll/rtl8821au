@@ -356,39 +356,6 @@ void rtw_hal_antdiv_rssi_compared(struct rtl_priv *padapter, WLAN_BSSID_EX *dst,
 }
 #endif
 
-
-#ifdef DBG_CONFIG_ERROR_DETECT
-void rtw_hal_sreset_init(struct rtl_priv *padapter)
-{
-	if (padapter->HalFunc->sreset_init_value)
-		padapter->HalFunc->sreset_init_value(padapter);
-}
-
-void rtw_hal_sreset_reset(struct rtl_priv *padapter)
-{
-	if (padapter->HalFunc->silentreset)
-		padapter->HalFunc->silentreset(padapter);
-}
-
-void rtw_hal_sreset_reset_value(struct rtl_priv *padapter)
-{
-	if (padapter->HalFunc->sreset_reset_value)
-		padapter->HalFunc->sreset_reset_value(padapter);
-}
-
-void rtw_hal_sreset_xmit_status_check(struct rtl_priv *padapter)
-{
-	if (padapter->HalFunc->sreset_xmit_status_check)
-		padapter->HalFunc->sreset_xmit_status_check(padapter);
-}
-void rtw_hal_sreset_linked_status_check(struct rtl_priv *padapter)
-{
-	if (padapter->HalFunc->sreset_linked_status_check)
-		padapter->HalFunc->sreset_linked_status_check(padapter);
-}
-
-#endif
-
 void rtw_hal_notch_filter(struct rtl_priv *adapter, bool enable)
 {
 	if (adapter->HalFunc->hal_notch_filter)

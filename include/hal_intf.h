@@ -243,15 +243,6 @@ uint8_t	rtw_hal_antdiv_before_linked(struct rtl_priv *padapter);
 void	rtw_hal_antdiv_rssi_compared(struct rtl_priv *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
 #endif
 
-
-#ifdef DBG_CONFIG_ERROR_DETECT
-void rtw_hal_sreset_init(struct rtl_priv *padapter);
-void rtw_hal_sreset_reset(struct rtl_priv *padapter);
-void rtw_hal_sreset_reset_value(struct rtl_priv *padapter);
-void rtw_hal_sreset_xmit_status_check(struct rtl_priv *padapter);
-void rtw_hal_sreset_linked_status_check (struct rtl_priv *padapter);
-#endif
-
 void rtw_hal_notch_filter(struct rtl_priv * adapter, bool enable);
 void rtw_hal_reset_security_engine(struct rtl_priv * adapter);
 

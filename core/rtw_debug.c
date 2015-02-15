@@ -1039,43 +1039,5 @@ int proc_get_all_sta_info(char *page, char **start,
 
 #endif
 
-#if defined(DBG_CONFIG_ERROR_DETECT)
-int proc_get_sreset(char *page, char **start, off_t offset, int count, int *eof, void *data)
-{
-	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-
-	int len = 0;
-
-	*eof = 1;
-	return len;
-}
-
-int proc_set_sreset(struct file *file, const char *buffer, unsigned long count, void *data)
-{
-	struct net_device *ndev = (struct net_device *)data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	char tmp[32];
-	int32_t trigger_point;
-
-	if (count < 1)
-		return -EFAULT;
-
-	if (buffer && !copy_from_user(tmp, buffer, sizeof(tmp))) {
-
-		int num = sscanf(tmp, "%d", &trigger_point);
-
-		if (trigger_point == SRESET_TGP_NULL)
-			rtw_hal_sreset_reset(padapter);
-		else
-			sreset_set_trigger_point(padapter, trigger_point);
-	}
-
-	return count;
-
-}
-#endif /* DBG_CONFIG_ERROR_DETECT */
-
 #endif
 

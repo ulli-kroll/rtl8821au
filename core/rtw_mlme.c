@@ -1010,15 +1010,6 @@ _func_enter_;
 
 	rtw_os_xmit_schedule(adapter);
 
-#ifdef DBG_CONFIG_ERROR_DETECT
-	{
-		struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
-		if (pmlmeext->sitesurvey_res.bss_cnt == 0){
-			rtw_hal_sreset_reset(adapter);
-		}
-	}
-#endif
-
 _func_exit_;
 
 }

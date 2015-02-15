@@ -6100,10 +6100,6 @@ void linked_status_chk(struct rtl_priv *padapter)
 
 	 _linked_info_dump(padapter);
 
-	#ifdef DBG_CONFIG_ERROR_DETECT
-	rtw_hal_sreset_linked_status_check(padapter);
-	#endif
-
 	if (is_client_associated_to_ap(padapter))
 	{
 		//linked infrastructure client mode

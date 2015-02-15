@@ -107,14 +107,6 @@ struct rtl_hal_ops rtl8821au_hal_ops = {
 	.Efuse_PgPacketWrite =	rtl8812_Efuse_PgPacketWrite,
 	.Efuse_WordEnableDataWrite = &rtl8812_Efuse_WordEnableDataWrite,
 
-#ifdef DBG_CONFIG_ERROR_DETECT
-	.sreset_init_value =	sreset_init_value,
-	.sreset_reset_value =	sreset_reset_value,
-	.silentreset =		sreset_reset,
-	.sreset_xmit_status_check =	rtl8812_sreset_xmit_status_check,
-	.sreset_linked_status_check =	rtl8812_sreset_linked_status_check,
-#endif
-
 	.GetHalODMVarHandler = rtl8812_GetHalODMVar,
 	.SetHalODMVarHandler = rtl8812_SetHalODMVar,
 	.hal_notch_filter = hal_notch_filter_8812,

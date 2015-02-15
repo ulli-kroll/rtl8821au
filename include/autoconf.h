@@ -156,7 +156,6 @@
 
 #define CONFIG_PROC_DEBUG
 
-#define DBG_CONFIG_ERROR_DETECT
 
 //#define DBG_TX
 

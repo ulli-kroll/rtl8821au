@@ -88,7 +88,7 @@
 // LED object.
 //================================================================================
 
-typedef enum _LED_CTL_MODE{
+enum led_ctl_mode {
 	LED_CTL_POWER_ON = 1,
 	LED_CTL_LINK = 2,
 	LED_CTL_NO_LINK = 3,
@@ -103,7 +103,7 @@ typedef enum _LED_CTL_MODE{
 	LED_CTL_STOP_WPS_FAIL = 12, //added for ALPHA
 	LED_CTL_STOP_WPS_FAIL_OVERLAP = 13, //added for BELKIN
 	LED_CTL_CONNECTION_NO_TRANSFER = 14,
-}LED_CTL_MODE;
+};
 
 typedef	enum _LED_STATE{
 	LED_UNKNOWN = 0,
@@ -202,10 +202,7 @@ typedef struct _LED_USB{
 typedef struct _LED_USB	LED_DATA, *PLED_DATA;
 typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;
 
-VOID
-LedControlUSB(
-	IN	struct rtl_priv *	Adapter,
-	IN	LED_CTL_MODE		LedAction
+void LedControlUSB(struct rtl_priv *Adapter, enum led_ctl_mode LedAction
 	);
 
 struct led_priv{
@@ -215,7 +212,7 @@ struct led_priv{
 	LED_DATA			SwLed2;
 	LED_STRATEGY		LedStrategy;
 	uint8_t					bRegUseLed;
-	void (*LedControlHandler)(struct rtl_priv *padapter, LED_CTL_MODE LedAction);
+	void (*LedControlHandler)(struct rtl_priv *padapter, enum led_ctl_mode LedAction);
 	void (*SwLedOn)(struct rtl_priv *padapter, PLED_DATA pLed);
 	void (*SwLedOff)(struct rtl_priv *padapter, PLED_DATA pLed);
 	/* add for led controll */

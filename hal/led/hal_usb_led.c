@@ -26,13 +26,10 @@
 //		Implementation of LED blinking behavior.
 //		It toggle off LED and schedule corresponding timer if necessary.
 //
-void
-SwLedBlink(
-	PLED_USB			pLed
-	)
+void SwLedBlink(struct rtl_led *pLed)
 {
-	struct rtl_priv			*padapter = pLed->padapter;
-	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
+	struct rtl_priv	*padapter = pLed->padapter;
+	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	u8				bStopBlinking = _FALSE;
 
 	// Change LED according to BlinkingLedState specified.
@@ -143,16 +140,13 @@ SwLedBlink(
 	}
 }
 
-void
-SwLedBlink1(
-	PLED_USB			pLed
-	)
+void SwLedBlink1(struct rtl_led *pLed)
 {
 	struct rtl_priv				*padapter = pLed->padapter;
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 	struct led_priv		*ledpriv = &(padapter->ledpriv);
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
-	PLED_USB 			pLed1 = &(ledpriv->SwLed1);
+	struct rtl_led * 			pLed1 = &(ledpriv->SwLed1);
 	u8					bStopBlinking = _FALSE;
 
 	u32 uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA; //add by ylb 20121012 for customer led for alpha
@@ -375,14 +369,11 @@ SwLedBlink1(
 
 }
 
-void
-SwLedBlink2(
-	PLED_USB			pLed
-	)
+void SwLedBlink2(struct rtl_led *pLed)
 {
-	struct rtl_priv				*padapter = pLed->padapter;
-	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
-	u8					bStopBlinking = _FALSE;
+	struct rtl_priv	*padapter = pLed->padapter;
+	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	u8		bStopBlinking = _FALSE;
 
 	// Change LED according to BlinkingLedState specified.
 	if( pLed->BlinkingLedState == RTW_LED_ON)
@@ -497,14 +488,11 @@ SwLedBlink2(
 
 }
 
-void
-SwLedBlink3(
-	PLED_USB			pLed
-	)
+void SwLedBlink3(struct rtl_led *pLed)
 {
-	struct rtl_priv			*padapter = pLed->padapter;
-	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	u8				bStopBlinking = _FALSE;
+	struct rtl_priv	*padapter = pLed->padapter;
+	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	u8		bStopBlinking = _FALSE;
 
 	// Change LED according to BlinkingLedState specified.
 	if( pLed->BlinkingLedState == RTW_LED_ON )
@@ -668,16 +656,13 @@ SwLedBlink3(
 }
 
 
-void
-SwLedBlink4(
-	PLED_USB			pLed
-	)
+void SwLedBlink4(struct rtl_led *pLed)
 {
-	struct rtl_priv			*padapter = pLed->padapter;
+	struct rtl_priv	*padapter = pLed->padapter;
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
-	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	PLED_USB 		pLed1 = &(ledpriv->SwLed1);
-	u8				bStopBlinking = _FALSE;
+	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	struct rtl_led *pLed1 = &(ledpriv->SwLed1);
+	u8		bStopBlinking = _FALSE;
 
 	// Change LED according to BlinkingLedState specified.
 	if( pLed->BlinkingLedState == RTW_LED_ON )
@@ -914,10 +899,7 @@ SwLedBlink4(
 
 }
 
-void
-SwLedBlink5(
-	PLED_USB			pLed
-	)
+void SwLedBlink5(struct rtl_led *pLed)
 {
 	struct rtl_priv			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
@@ -1032,10 +1014,7 @@ SwLedBlink5(
 
 }
 
-void
-SwLedBlink6(
-	PLED_USB			pLed
-	)
+void SwLedBlink6(struct rtl_led *pLed)
 {
 	struct rtl_priv			*padapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
@@ -1056,10 +1035,7 @@ SwLedBlink6(
 	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("<==== blink6\n"));
 }
 
-void
-SwLedBlink7(
-	PLED_USB			pLed
-	)
+void SwLedBlink7(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
 	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
@@ -1176,10 +1152,7 @@ SwLedBlink7(
 
 }
 
-void
-SwLedBlink8(
-	PLED_USB			pLed
-	)
+void SwLedBlink8(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
 
@@ -1200,14 +1173,11 @@ SwLedBlink8(
 }
 
 //page added for Belkin AC950. 20120813
-void
-SwLedBlink9(
-	PLED_USB			pLed
-	)
+void SwLedBlink9(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
+	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
 	// Change LED according to BlinkingLedState specified.
@@ -1517,14 +1487,11 @@ SwLedBlink9(
 }
 
 //page added for Netgear A6200V2. 20120827
-void
-SwLedBlink10(
-	PLED_USB			pLed
-	)
+void SwLedBlink10(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
+	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
 	// Change LED according to BlinkingLedState specified.
@@ -1786,13 +1753,10 @@ SwLedBlink10(
 
 }
 
-void
-SwLedBlink11(
-	PLED_USB			pLed
-	)
+void SwLedBlink11(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
-	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
+	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
 	// Change LED according to BlinkingLedState specified.
@@ -1878,13 +1842,10 @@ SwLedBlink11(
 	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink5 CurrLedState %d\n", pLed->CurrLedState));
 }
 
-void
-SwLedBlink12(
-	PLED_USB			pLed
-	)
+void SwLedBlink12(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
-	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
+	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
 	// Change LED according to BlinkingLedState specified.
@@ -1964,13 +1925,10 @@ SwLedBlink12(
 
 }
 
-VOID
-SwLedBlink13(
-	IN PLED_USB			pLed
-	)
+VOID SwLedBlink13(IN struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
-	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
+	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 	static u8	LinkBlinkCnt=0;
 
@@ -2045,9 +2003,9 @@ SwLedBlink13(
 //		Handler function of LED Blinking.
 //		We dispatch acture LED blink action according to LedStrategy.
 //
-void BlinkHandler(PLED_USB pLed)
+void BlinkHandler(struct rtl_led * pLed)
 {
-	struct rtl_priv		*padapter = pLed->padapter;
+	struct rtl_priv	*padapter = pLed->padapter;
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
 
 	//DBG_871X("%s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
@@ -2125,8 +2083,8 @@ void BlinkHandler(PLED_USB pLed)
 //
 void BlinkTimerCallback(void *data)
 {
-	PLED_USB	 pLed = (PLED_USB)data;
-	struct rtl_priv		*padapter = pLed->padapter;
+	struct rtl_led *pLed = (struct rtl_led *)data;
+	struct rtl_priv	*padapter = pLed->padapter;
 
 	//DBG_871X("%s\n", __FUNCTION__);
 
@@ -2146,18 +2104,14 @@ void BlinkTimerCallback(void *data)
 //
 void BlinkWorkItemCallback(_workitem *work)
 {
-	PLED_USB	 pLed = container_of(work, LED_USB, BlinkWorkItem);
+	struct rtl_led *pLed = container_of(work, struct rtl_led, BlinkWorkItem);
 	BlinkHandler(pLed);
 }
 
-static void
-SwLedControlMode0(
-	struct rtl_priv		*padapter,
-	enum led_ctl_mode		LedAction
-)
+static void SwLedControlMode0(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
-	PLED_USB	pLed = &(ledpriv->SwLed1);
+	struct rtl_led *pLed = &(ledpriv->SwLed1);
 
 	// Decide led state
 	switch(LedAction)
@@ -2267,16 +2221,12 @@ SwLedControlMode0(
 }
 
  //ALPHA, added by chiyoko, 20090106
-static void
-SwLedControlMode1(
-	struct rtl_priv		*padapter,
-	enum led_ctl_mode		LedAction
-)
+static void SwLedControlMode1(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv		*ledpriv = &(padapter->ledpriv);
-	PLED_USB			pLed = &(ledpriv->SwLed0);
-	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
+	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	u32 uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA; //add by ylb 20121012 for customer led for alpha
 	if(pEEPROM->CustomerID == RT_CID_819x_ALPHA_Dlink)
@@ -2547,15 +2497,11 @@ SwLedControlMode1(
 }
 
  //Arcadyan/Sitecom , added by chiyoko, 20090216
-static void
-SwLedControlMode2(
-	struct rtl_priv				*padapter,
-	enum led_ctl_mode		LedAction
-)
+static void SwLedControlMode2(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	PLED_USB 		pLed = &(ledpriv->SwLed0);
+	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
 	switch(LedAction)
 	{
@@ -2707,15 +2653,11 @@ SwLedControlMode2(
 }
 
   //COREGA, added by chiyoko, 20090316
- static void
- SwLedControlMode3(
-	struct rtl_priv				*padapter,
-	enum led_ctl_mode		LedAction
-)
+static void  SwLedControlMode3(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	PLED_USB		pLed = &(ledpriv->SwLed0);
+	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
 	switch(LedAction)
 	{
@@ -2886,16 +2828,12 @@ SwLedControlMode2(
 
 
  //Edimax-Belkin, added by chiyoko, 20090413
-static void
-SwLedControlMode4(
-	struct rtl_priv				*padapter,
-	enum led_ctl_mode		LedAction
-)
+static void SwLedControlMode4(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	PLED_USB		pLed = &(ledpriv->SwLed0);
-	PLED_USB		pLed1 = &(ledpriv->SwLed1);
+	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
+	struct rtl_led *pLed1 = &(ledpriv->SwLed1);
 
 	switch(LedAction)
 	{
@@ -3236,16 +3174,12 @@ SwLedControlMode4(
 
 
  //Sercomm-Belkin, added by chiyoko, 20090415
-static void
-SwLedControlMode5(
-	struct rtl_priv				*padapter,
-	enum led_ctl_mode		LedAction
-)
+static void SwLedControlMode5(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	PLED_USB		pLed = &(ledpriv->SwLed0);
+	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
 	if(pEEPROM->CustomerID == RT_CID_819x_CAMEO)
 		pLed = &(ledpriv->SwLed1);
@@ -3323,15 +3257,11 @@ SwLedControlMode5(
 }
 
  //WNC-Corega, added by chiyoko, 20090902
-static void
-SwLedControlMode6(
-	struct rtl_priv				*padapter,
-	enum led_ctl_mode		LedAction
-)
+static void SwLedControlMode6(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	PLED_USB	pLed0 = &(ledpriv->SwLed0);
+	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	struct rtl_led *pLed0 = &(ledpriv->SwLed0);
 
 	switch(LedAction)
 	{
@@ -3356,15 +3286,11 @@ SwLedControlMode6(
 }
 
 //Netgear, added by sinda, 2011/11/11
- void
- SwLedControlMode7(
-	 struct rtl_priv *		 Adapter,
-	 enum led_ctl_mode		 LedAction
- )
+void SwLedControlMode7(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(Adapter->ledpriv);
-	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
-	PLED_USB	pLed = &(ledpriv->SwLed0);
+	struct mlme_priv *pmlmepriv = &Adapter->mlmepriv;
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
 	switch(LedAction)
 	{
@@ -3516,15 +3442,11 @@ SwLedControlMode6(
 	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("LEd control mode 7 CurrLedState %d\n", pLed->CurrLedState));
 }
 
-void
-SwLedControlMode8(
-	struct rtl_priv *		Adapter,
-	enum led_ctl_mode		LedAction
-	)
+void SwLedControlMode8(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
-	PLED_USB	pLed0 = &(ledpriv->SwLed0);
+	struct rtl_led *pLed0 = &(ledpriv->SwLed0);
 
 	switch(LedAction)
 	{
@@ -3555,18 +3477,14 @@ SwLedControlMode8(
 }
 
 //page added for Belkin AC950, 20120813
-void
-SwLedControlMode9(
-	IN	struct rtl_priv *		Adapter,
-	IN	enum led_ctl_mode		LedAction
-)
+void SwLedControlMode9(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct led_priv	*ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
-	PLED_USB	pLed = &(ledpriv->SwLed0);
-	PLED_USB	pLed1 = &(ledpriv->SwLed1);
-	PLED_USB	pLed2 = &(ledpriv->SwLed2);
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
+	struct rtl_led *pLed1 = &(ledpriv->SwLed1);
+	struct rtl_led *pLed2 = &(ledpriv->SwLed2);
 	BOOLEAN  bWPSOverLap = _FALSE;
 
 	switch(LedAction)
@@ -3903,17 +3821,13 @@ SwLedControlMode9(
 }
 
 //page added for Netgear A6200V2, 20120827
-void
-SwLedControlMode10(
-	struct rtl_priv *		Adapter,
-	enum led_ctl_mode		LedAction
-)
+void SwLedControlMode10(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	struct led_priv	*ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
-	PLED_USB	pLed = &(ledpriv->SwLed0);
-	PLED_USB	pLed1 = &(ledpriv->SwLed1);
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
+	struct rtl_led *pLed1 = &(ledpriv->SwLed1);
 
 	switch(LedAction)
 	{
@@ -4122,15 +4036,11 @@ SwLedControlMode10(
 }
 
  //Edimax-ASUS, added by Page, 20121221
-void
-SwLedControlMode11(
-	struct rtl_priv *		Adapter,
-	enum led_ctl_mode		LedAction
-)
+void SwLedControlMode11(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
-	PLED_USB	pLed = &(ledpriv->SwLed0);
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
 	switch(LedAction)
 	{
@@ -4231,15 +4141,11 @@ SwLedControlMode11(
 
 // page added for NEC
 
-VOID
-SwLedControlMode12(
-	struct rtl_priv *		Adapter,
-	enum led_ctl_mode		LedAction
-)
+VOID SwLedControlMode12(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
-	PLED_USB	pLed = &(ledpriv->SwLed0);
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
 	switch(LedAction)
 	{
@@ -4321,15 +4227,11 @@ SwLedControlMode12(
 
 // Maddest add for NETGEAR R6100
 
-VOID
-SwLedControlMode13(
-	IN	struct rtl_priv *		Adapter,
-	IN	enum led_ctl_mode		LedAction
-)
+VOID SwLedControlMode13(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
-	PLED_USB	pLed = &(ledpriv->SwLed0);
+	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
 	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Led control mode 13 CurrLedState %d, LedAction %d\n", pLed->CurrLedState,LedAction));
 	switch(LedAction)
@@ -4491,11 +4393,7 @@ SwLedControlMode13(
 
 }
 
-void
-LedControlUSB(
-	struct rtl_priv				*padapter,
-	enum led_ctl_mode		LedAction
-	)
+void LedControlUSB(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
 
@@ -4590,7 +4488,7 @@ LedControlUSB(
 //	Description:
 //		Reset status of LED_871x object.
 //
-void ResetLedStatus(PLED_USB pLed) {
+void ResetLedStatus(struct rtl_led *pLed) {
 
 	pLed->CurrLedState = RTW_LED_OFF; // Current LED state.
 	pLed->bLedOn = _FALSE; // true if LED is ON, false if LED is OFF.
@@ -4612,7 +4510,7 @@ void ResetLedStatus(PLED_USB pLed) {
 //	Description:
 //		Initialize an LED_871x object.
 //
-void InitLed(struct rtl_priv *padapter,	PLED_USB pLed, enum rtl_led_pin LedPin)
+void InitLed(struct rtl_priv *padapter,	struct rtl_led *pLed, enum rtl_led_pin LedPin)
 {
 	pLed->padapter = padapter;
 	pLed->LedPin = LedPin;
@@ -4629,7 +4527,7 @@ void InitLed(struct rtl_priv *padapter,	PLED_USB pLed, enum rtl_led_pin LedPin)
 //	Description:
 //		DeInitialize an LED_871x object.
 //
-void DeInitLed(PLED_USB	pLed)
+void DeInitLed(struct rtl_led *pLed)
 {
 	_cancel_workitem_sync(&(pLed->BlinkWorkItem));
 	_cancel_timer_ex(&(pLed->BlinkTimer));

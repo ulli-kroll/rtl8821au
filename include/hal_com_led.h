@@ -145,12 +145,12 @@ enum rtl_led_pin {
 // PCIE LED Definition.
 //================================================================================
 
-#define IS_LED_WPS_BLINKING(_LED_USB)	(((PLED_USB)_LED_USB)->CurrLedState==LED_BLINK_WPS \
-					|| ((PLED_USB)_LED_USB)->CurrLedState==LED_BLINK_WPS_STOP \
-					|| ((PLED_USB)_LED_USB)->bLedWPSBlinkInProgress)
+#define IS_LED_WPS_BLINKING(_LED)	((_LED)->CurrLedState==LED_BLINK_WPS \
+					|| (_LED)->CurrLedState==LED_BLINK_WPS_STOP \
+					|| (_LED)->bLedWPSBlinkInProgress)
 
-#define IS_LED_BLINKING(_LED_USB) 	(((PLED_USB)_LED_USB)->bLedWPSBlinkInProgress \
-					||((PLED_USB)_LED_USB)->bLedScanBlinkInProgress)
+#define IS_LED_BLINKING(_LED) 	((_LED)->bLedWPSBlinkInProgress \
+				||(_LED)->bLedScanBlinkInProgress)
 
 
 typedef	enum _LED_STRATEGY_USB{
@@ -172,7 +172,7 @@ typedef	enum _LED_STRATEGY_USB{
 }LED_STRATEGY_USB, *PLED_STRATEGY_USB;
 
 
-typedef struct _LED_USB{
+struct rtl_led {
 	struct rtl_priv *		padapter;
 
 	enum rtl_led_pin		LedPin;	// Identify how to implement this SW led.
@@ -197,9 +197,8 @@ typedef struct _LED_USB{
 	_timer				BlinkTimer; // Timer object for led blinking.
 
 	_workitem			BlinkWorkItem; // Workitem used by BlinkTimer to manipulate H/W to blink LED.
-} LED_USB, *PLED_USB;
+};
 
-typedef struct _LED_USB	LED_DATA, *PLED_DATA;
 typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;
 
 void LedControlUSB(struct rtl_priv *Adapter, enum led_ctl_mode LedAction
@@ -207,14 +206,14 @@ void LedControlUSB(struct rtl_priv *Adapter, enum led_ctl_mode LedAction
 
 struct led_priv{
 	/* add for led controll */
-	LED_DATA			SwLed0;
-	LED_DATA			SwLed1;
-	LED_DATA			SwLed2;
+	struct rtl_led SwLed0;
+	struct rtl_led SwLed1;
+	struct rtl_led SwLed2;
 	LED_STRATEGY		LedStrategy;
 	uint8_t					bRegUseLed;
 	void (*LedControlHandler)(struct rtl_priv *padapter, enum led_ctl_mode LedAction);
-	void (*SwLedOn)(struct rtl_priv *padapter, PLED_DATA pLed);
-	void (*SwLedOff)(struct rtl_priv *padapter, PLED_DATA pLed);
+	void (*SwLedOn)(struct rtl_priv *padapter, struct rtl_led *pLed);
+	void (*SwLedOff)(struct rtl_priv *padapter, struct rtl_led *pLed);
 	/* add for led controll */
 };
 
@@ -239,13 +238,13 @@ struct led_priv{
 void BlinkTimerCallback(void *data);
 void BlinkWorkItemCallback(_workitem *work);
 
-void ResetLedStatus(PLED_DATA pLed);
+void ResetLedStatus(struct rtl_led *pLed);
 
-void InitLed(struct rtl_priv *padapter, PLED_DATA pLed, enum rtl_led_pin LedPin);
-void DeInitLed(PLED_DATA pLed);
+void InitLed(struct rtl_priv *padapter, struct rtl_led *pLed, enum rtl_led_pin LedPin);
+void DeInitLed(struct rtl_led *pLed);
 
 //hal...
-extern void BlinkHandler(PLED_DATA	pLed);
+extern void BlinkHandler(struct rtl_led *pLed);
 
 #endif //__RTW_LED_H_
 

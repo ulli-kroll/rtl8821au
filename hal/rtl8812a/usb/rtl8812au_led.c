@@ -21,7 +21,7 @@
 
 #include <rtl8812a_hal.h>
 
-static void SwLedOn_8812AU(struct rtl_priv *padapter, PLED_USB pLed)
+static void SwLedOn_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 {
 	uint8_t	LedCfg;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
@@ -94,7 +94,7 @@ static void SwLedOn_8812AU(struct rtl_priv *padapter, PLED_USB pLed)
  * 	Turn off LED according to LedPin specified.
  */
 
-static void SwLedOff_8812AU(struct rtl_priv *padapter, PLED_USB	pLed)
+static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 {
 	uint8_t	LedCfg;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
@@ -185,7 +185,7 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, PLED_USB	pLed)
  * Turn on LED according to LedPin specified.
  */
 
-static void SwLedOn_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
+static void SwLedOn_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 {
 	uint8_t	LedCfg;
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
@@ -247,7 +247,7 @@ static void SwLedOn_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
  * Turn off LED according to LedPin specified.
  */
 
-static void SwLedOff_8821AU(struct rtl_priv *Adapter, PLED_USB pLed)
+static void SwLedOff_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
 	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);

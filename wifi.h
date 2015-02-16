@@ -35,7 +35,7 @@ struct rtl_hal_ops;
  * ULLI : in rtl8821ae there is no use of external_pa_2g or
  * ULLI : external_pa_5g in the phy.c file.
  * ULLI : But we need to configure the external_pa* here, because
- * ULLI : it is used here in the original source, and we don't want to 
+ * ULLI : it is used here in the original source, and we don't want to
  * ULLI : drop this.
  * ULLI :
  * ULLI : Thus we do transmit some values use in rtl_dm (now _rtw_dm) and
@@ -63,12 +63,12 @@ struct rtl_efuse {
 	uint8_t	EEPROMBluetoothAntNum;
 	uint8_t	EEPROMBluetoothAntIsolation;
 	uint8_t	EEPROMBluetoothRadioShared;
-	
+
 	// For power group
 	/* ULLI both vars are only read ??? */
 	uint8_t	pwrgroup_ht20[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
 	uint8_t	pwrgroup_ht40[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
-	
+
 	//---------------------------------------------------------------------------------//
 	//3 [2.4G]
 	uint8_t	Index24G_CCK_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
@@ -85,7 +85,7 @@ struct rtl_efuse {
 	s8	txpwr_5g_bw20diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8	txpwr_5g_bw40diff[MAX_RF_PATH][MAX_TX_COUNT];
 	s8	txpwr_5g_bw80diff[MAX_RF_PATH][MAX_TX_COUNT];
-	
+
 };
 
 // ODM_CMNINFO_BOARD_TYPE
@@ -148,9 +148,9 @@ struct rtl_hal {
 
 struct rtl_phy {
 	u8	rf_type;
-	
+
 	u8	current_chan_bw;
-	
+
 	u8	current_channel;
 
 	//for TxPwrTracking2
@@ -167,7 +167,7 @@ struct rtl_phy {
 
 	uint8_t	bRfPiEnable;
 
-	// The current Tx Power Level 
+	// The current Tx Power Level
 	/* ULLI vars currently not used */
 	uint8_t	cur_cck_txpwridx;
 	uint8_t	cur_ofdm2g_txpwridx;
@@ -204,9 +204,9 @@ struct rtl_dm {
 	u8	ThermalValue_Crystal;
 	u8	ThermalValue_DPKstore;
 	u8	ThermalValue_DPKtrack;
-	
+
 	BOOLEAN	bReloadtxpowerindex;
-	
+
 	s8			Aboslute_OFDMSwingIdx[MAX_RF_PATH];
 	s8			Remnant_OFDMSwingIdx[MAX_RF_PATH];
 	s8			Remnant_CCKSwingIdx;
@@ -224,7 +224,7 @@ struct rtl_dm {
 	u8			DefaultOfdmIndex;
 	u8			DefaultCckIndex;
 	BOOLEAN			BbSwingFlagCck;
-	
+
 	uint32_t 	TXPowerTrackingCallbackCnt; //cosa add for debug
 	BOOLEAN bTXPowerTrackingInit;
 	BOOLEAN bTXPowerTracking;
@@ -236,8 +236,8 @@ struct rtl_dm {
 	s8	PowerIndexOffset[MAX_RF_PATH];
 	s8	DeltaPowerIndex[MAX_RF_PATH];
 	s8	DeltaPowerIndexLast[MAX_RF_PATH];
-	
-	
+
+
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
@@ -252,13 +252,13 @@ struct rtl_priv {
 	struct rtl_phy phy;
 	struct rtl_efuse efuse;
 	struct rtl_dm dm;		/* Caution new dm data */
-	
-	
+
+
 	struct _rtw_hal *HalData;
 
-	
-	
-	
+
+
+
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
 	int	bDongle;//build-in module or external dongle
@@ -279,7 +279,7 @@ struct rtl_priv {
 	struct	registry_priv	registrypriv;
 	struct	pwrctrl_priv	pwrctrlpriv;
 	struct 	eeprom_priv eeprompriv;
-	struct	led_priv	ledpriv;
+	struct	rtl_led_ctl	ledpriv;
 
 #ifdef CONFIG_AP_MODE
 	struct	hostapd_priv	*phostapdpriv;
@@ -356,15 +356,15 @@ struct rtl_hal_ops {
 	void	(*set_hw_reg)(struct rtl_priv *rtlpriv, u8 variable,u8 *val);
 	void	(*get_hw_reg)(struct rtl_priv *rtlpriv, u8 variable,u8 *val);
 /*
- * 	ULLI from original rtlwifi-lib in wifi.h 
- * 
+ * 	ULLI from original rtlwifi-lib in wifi.h
+ *
  * 	void (*fill_fake_txdesc) (struct ieee80211_hw *hw, u8 *pDesc,
  *				  u32 buffer_len, bool bIsPsPoll);
-*/	
-	
+*/
+
 	void	(*fill_fake_txdesc) (struct rtl_priv *rtlpriv, u8 *pDesc,
 				     u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull);
-	
+
 	u32	(*get_bbreg)(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask);
 	void	(*set_bbreg)(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask, u32 Data);
 	u32	(*get_rfreg)(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, u32 BitMask);
@@ -569,7 +569,7 @@ enum hardware_type {
 	(IS_HARDWARE_TYPE_8821E(rtlhal) || \
 	 IS_HARDWARE_TYPE_8821U(rtlhal) || \
 	 IS_HARDWARE_TYPE_8821S(rtlhal))
-	 
+
 #define IS_HARDWARE_TYPE_JAGUAR(rtlhal)	\
 	(IS_HARDWARE_TYPE_8812(rtlhal) || \
 	 IS_HARDWARE_TYPE_8821(rtlhal))

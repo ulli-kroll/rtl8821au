@@ -204,7 +204,7 @@ typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;
 void LedControlUSB(struct rtl_priv *Adapter, enum led_ctl_mode LedAction
 	);
 
-struct led_priv{
+struct rtl_led_ctl {
 	/* add for led controll */
 	struct rtl_led SwLed0;
 	struct rtl_led SwLed1;

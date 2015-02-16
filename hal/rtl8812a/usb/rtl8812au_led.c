@@ -327,7 +327,7 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 void rtl8821au_init_sw_leds(struct rtl_priv *padapter)
 {
 	struct rtl_hal *rtlhal = rtl_hal(padapter);
-	struct led_priv *pledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *pledpriv = &(padapter->ledpriv);
 
 	pledpriv->LedControlHandler = LedControlUSB;
 
@@ -350,7 +350,7 @@ void rtl8821au_init_sw_leds(struct rtl_priv *padapter)
  */
 void rtl8812au_deinit_sw_leds(struct rtl_priv *padapter)
 {
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 
 	DeInitLed(&(ledpriv->SwLed0));
 	DeInitLed(&(ledpriv->SwLed1));

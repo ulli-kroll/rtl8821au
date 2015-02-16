@@ -144,7 +144,7 @@ void SwLedBlink1(struct rtl_led *pLed)
 {
 	struct rtl_priv				*padapter = pLed->padapter;
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	struct led_priv		*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
 	struct rtl_led * 			pLed1 = &(ledpriv->SwLed1);
 	u8					bStopBlinking = _FALSE;
@@ -659,7 +659,7 @@ void SwLedBlink3(struct rtl_led *pLed)
 void SwLedBlink4(struct rtl_led *pLed)
 {
 	struct rtl_priv	*padapter = pLed->padapter;
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct rtl_led *pLed1 = &(ledpriv->SwLed1);
 	u8		bStopBlinking = _FALSE;
@@ -2006,7 +2006,7 @@ VOID SwLedBlink13(IN struct rtl_led *pLed)
 void BlinkHandler(struct rtl_led * pLed)
 {
 	struct rtl_priv	*padapter = pLed->padapter;
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 
 	//DBG_871X("%s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
 
@@ -2110,7 +2110,7 @@ void BlinkWorkItemCallback(_workitem *work)
 
 static void SwLedControlMode0(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 	struct rtl_led *pLed = &(ledpriv->SwLed1);
 
 	// Decide led state
@@ -2223,7 +2223,7 @@ static void SwLedControlMode0(struct rtl_priv *padapter, enum led_ctl_mode LedAc
  //ALPHA, added by chiyoko, 20090106
 static void SwLedControlMode1(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
@@ -2499,7 +2499,7 @@ static void SwLedControlMode1(struct rtl_priv *padapter, enum led_ctl_mode LedAc
  //Arcadyan/Sitecom , added by chiyoko, 20090216
 static void SwLedControlMode2(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
@@ -2655,7 +2655,7 @@ static void SwLedControlMode2(struct rtl_priv *padapter, enum led_ctl_mode LedAc
   //COREGA, added by chiyoko, 20090316
 static void  SwLedControlMode3(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
@@ -2830,7 +2830,7 @@ static void  SwLedControlMode3(struct rtl_priv *padapter, enum led_ctl_mode LedA
  //Edimax-Belkin, added by chiyoko, 20090413
 static void SwLedControlMode4(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 	struct rtl_led *pLed1 = &(ledpriv->SwLed1);
@@ -3176,7 +3176,7 @@ static void SwLedControlMode4(struct rtl_priv *padapter, enum led_ctl_mode LedAc
  //Sercomm-Belkin, added by chiyoko, 20090415
 static void SwLedControlMode5(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
@@ -3259,7 +3259,7 @@ static void SwLedControlMode5(struct rtl_priv *padapter, enum led_ctl_mode LedAc
  //WNC-Corega, added by chiyoko, 20090902
 static void SwLedControlMode6(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct rtl_led *pLed0 = &(ledpriv->SwLed0);
 
@@ -3288,7 +3288,7 @@ static void SwLedControlMode6(struct rtl_priv *padapter, enum led_ctl_mode LedAc
 //Netgear, added by sinda, 2011/11/11
 void SwLedControlMode7(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv *pmlmepriv = &Adapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
@@ -3444,7 +3444,7 @@ void SwLedControlMode7(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 
 void SwLedControlMode8(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct rtl_led *pLed0 = &(ledpriv->SwLed0);
 
@@ -3480,7 +3480,7 @@ void SwLedControlMode8(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 void SwLedControlMode9(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct led_priv	*ledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 	struct rtl_led *pLed1 = &(ledpriv->SwLed1);
@@ -3824,7 +3824,7 @@ void SwLedControlMode9(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 void SwLedControlMode10(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	struct led_priv	*ledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 	struct rtl_led *pLed1 = &(ledpriv->SwLed1);
@@ -4038,7 +4038,7 @@ void SwLedControlMode10(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
  //Edimax-ASUS, added by Page, 20121221
 void SwLedControlMode11(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
@@ -4143,7 +4143,7 @@ void SwLedControlMode11(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 
 VOID SwLedControlMode12(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
@@ -4229,7 +4229,7 @@ VOID SwLedControlMode12(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 
 VOID SwLedControlMode13(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(Adapter->ledpriv);
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
@@ -4395,7 +4395,7 @@ VOID SwLedControlMode13(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 
 void LedControlUSB(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
-	struct led_priv	*ledpriv = &(padapter->ledpriv);
+	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 
        if( (padapter->bSurpriseRemoved == _TRUE) ||(padapter->hw_init_completed == _FALSE) )
        {

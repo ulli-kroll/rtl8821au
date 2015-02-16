@@ -754,7 +754,7 @@ static VOID _InitBeaconMaxError_8812A(struct rtl_priv *Adapter, BOOLEAN	InfraMod
 
 static void _InitHWLed(struct rtl_priv *Adapter)
 {
-	struct led_priv *pledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *pledpriv = &(Adapter->ledpriv);
 
 	if (pledpriv->LedStrategy != HW_LED)
 		return;
@@ -1648,7 +1648,7 @@ VOID hal_CustomizedBehavior_8812AU(struct rtl_priv *Adapter)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
-	struct led_priv	*pledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *pledpriv = &(Adapter->ledpriv);
 
 	/* Led mode */
 	switch (pEEPROM->CustomerID) {
@@ -1765,7 +1765,7 @@ VOID hal_ReadUsbModeSwitch_8812AU(struct rtl_priv *Adapter, u8 *PROMContent, BOO
 static VOID ReadLEDSetting_8812AU(struct rtl_priv *Adapter,
 	u8 *PROMContent, BOOLEAN AutoloadFail)
 {
-	struct led_priv *pledpriv = &(Adapter->ledpriv);
+	struct rtl_led_ctl *pledpriv = &(Adapter->ledpriv);
 
 	pledpriv->bRegUseLed = _TRUE;
 }
@@ -1774,7 +1774,7 @@ VOID InitAdapterVariablesByPROM_8812AU(struct rtl_priv *Adapter)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	
+
 
 	hal_InitPGData_8812A(Adapter, pEEPROM->efuse_eeprom_data);
 	Hal_EfuseParseIDCode8812A(Adapter, pEEPROM->efuse_eeprom_data);

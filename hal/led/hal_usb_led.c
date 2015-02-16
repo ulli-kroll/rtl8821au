@@ -4612,12 +4612,7 @@ void ResetLedStatus(PLED_USB pLed) {
 //	Description:
 //		Initialize an LED_871x object.
 //
-void
-InitLed(
-	struct rtl_priv			*padapter,
-	PLED_USB		pLed,
-	LED_PIN			LedPin
-	)
+void InitLed(struct rtl_priv *padapter,	PLED_USB pLed, enum rtl_led_pin LedPin)
 {
 	pLed->padapter = padapter;
 	pLed->LedPin = LedPin;
@@ -4634,10 +4629,7 @@ InitLed(
 //	Description:
 //		DeInitialize an LED_871x object.
 //
-void
-DeInitLed(
-	PLED_USB		pLed
-	)
+void DeInitLed(PLED_USB	pLed)
 {
 	_cancel_workitem_sync(&(pLed->BlinkWorkItem));
 	_cancel_timer_ex(&(pLed->BlinkTimer));

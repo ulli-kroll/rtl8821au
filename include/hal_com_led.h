@@ -133,12 +133,12 @@ typedef	enum _LED_STATE{
 	LED_BLINK_Azurewave_MAXMbps = 24,
 }LED_STATE;
 
-typedef enum _LED_PIN{
+enum rtl_led_pin {
 	LED_PIN_GPIO0,
 	LED_PIN_LED0,
 	LED_PIN_LED1,
 	LED_PIN_LED2
-}LED_PIN;
+};
 
 
 //================================================================================
@@ -175,7 +175,7 @@ typedef	enum _LED_STRATEGY_USB{
 typedef struct _LED_USB{
 	struct rtl_priv *		padapter;
 
-	LED_PIN				LedPin;	// Identify how to implement this SW led.
+	enum rtl_led_pin		LedPin;	// Identify how to implement this SW led.
 
 	LED_STATE			CurrLedState; // Current LED state.
 	BOOLEAN				bLedOn; // TRUE if LED is ON, FALSE if LED is OFF.
@@ -241,17 +241,8 @@ void BlinkWorkItemCallback(_workitem *work);
 
 void ResetLedStatus(PLED_DATA pLed);
 
-void
-InitLed(
-	struct rtl_priv			*padapter,
-	PLED_DATA		pLed,
-	LED_PIN			LedPin
-	);
-
-void
-DeInitLed(
-	PLED_DATA		pLed
-	);
+void InitLed(struct rtl_priv *padapter, PLED_DATA pLed, enum rtl_led_pin LedPin);
+void DeInitLed(PLED_DATA pLed);
 
 //hal...
 extern void BlinkHandler(PLED_DATA	pLed);

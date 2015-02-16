@@ -65,7 +65,7 @@ u32 rtw_atoi(u8 *s)
 
 }
 
-inline u8 *_rtw_vmalloc(u32 sz)
+void *_rtw_vmalloc(u32 sz)
 {
 	u8 	*pbuf;
 	pbuf = vmalloc(sz);
@@ -73,7 +73,7 @@ inline u8 *_rtw_vmalloc(u32 sz)
 	return pbuf;
 }
 
-inline u8 *_rtw_zvmalloc(u32 sz)
+void *_rtw_zvmalloc(u32 sz)
 {
 	u8 *pbuf;
 
@@ -89,7 +89,7 @@ inline void _rtw_vmfree(void *pbuf)
 	vfree(pbuf);
 }
 
-u8 *_rtw_malloc(u32 sz)
+void *_rtw_malloc(u32 sz)
 {
 	u8 *pbuf = NULL;
 
@@ -99,7 +99,7 @@ u8 *_rtw_malloc(u32 sz)
 }
 
 
-u8 *_rtw_zmalloc(u32 sz)
+void *_rtw_zmalloc(u32 sz)
 {
 	u8 *pbuf = _rtw_malloc(sz);
 

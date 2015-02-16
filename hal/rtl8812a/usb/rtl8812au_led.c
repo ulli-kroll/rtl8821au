@@ -348,7 +348,7 @@ void rtl8821au_init_sw_leds(struct rtl_priv *padapter)
  * Description:
  * DeInitialize all LED_819xUsb objects.
  */
-void rtl8812au_DeInitSwLeds(struct rtl_priv *padapter)
+void rtl8812au_deinit_sw_leds(struct rtl_priv *padapter)
 {
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
 

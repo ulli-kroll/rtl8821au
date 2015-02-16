@@ -353,8 +353,6 @@ struct rtl_hal_ops {
 	int (*init_sw_vars) (struct net_device *ndev);
 	void (*deinit_sw_vars) (struct net_device *ndev);
 
-	void	(*init_sw_leds)(struct rtl_priv *rtlpriv);
-	
 	void	(*set_hw_reg)(struct rtl_priv *rtlpriv, u8 variable,u8 *val);
 	void	(*get_hw_reg)(struct rtl_priv *rtlpriv, u8 variable,u8 *val);
 /*
@@ -372,6 +370,9 @@ struct rtl_hal_ops {
 	u32	(*get_rfreg)(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, u32 BitMask);
 	void	(*set_rfreg)(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 
+	void	(*init_sw_leds)(struct rtl_priv *rtlpriv);
+	void	(*deinit_sw_leds)(struct rtl_priv *rtlpriv);
+
 	/* Old HAL functions */
 
 	u32	(*hal_init)(struct rtl_priv *rtlpriv);
@@ -387,8 +388,6 @@ struct rtl_hal_ops {
 
 	int32_t	(*init_recv_priv)(struct rtl_priv *rtlpriv);
 	void	(*free_recv_priv)(struct rtl_priv *rtlpriv);
-
-	void	(*DeInitSwLeds)(struct rtl_priv *rtlpriv);
 
 	void	(*dm_init)(struct rtl_priv *rtlpriv);
 	void	(*dm_deinit)(struct rtl_priv *rtlpriv);

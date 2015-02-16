@@ -28,11 +28,16 @@ struct rtl_hal_ops rtl8821au_hal_ops = {
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
 
-	.init_sw_leds = 		rtl8821au_init_sw_leds,
 	.get_bbreg = 	rtl8821au_phy_query_bb_reg,
 	.set_bbreg = 	rtl8821au_phy_set_bb_reg,
 	.get_rfreg = 	PHY_QueryRFReg8812,
 	.set_rfreg = 	PHY_SetRFReg8812,
+	
+	.init_sw_leds = rtl8821au_init_sw_leds,
+	.deinit_sw_leds = rtl8812au_deinit_sw_leds,
+
+
+	/** ** */
 
 	.fill_fake_txdesc	= rtl8821au_fill_fake_txdesc,
 
@@ -51,7 +56,6 @@ struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	.init_recv_priv =	rtl8812au_init_recv_priv,
 	.free_recv_priv =	rtl8812au_free_recv_priv,
-	.DeInitSwLeds =		rtl8812au_DeInitSwLeds,
 	.init_default_value =	rtl8812au_init_default_value,
 	.intf_chip_configure =	rtl8812au_interface_configure,
 	.read_adapter_info =	ReadAdapterInfo8812AU,

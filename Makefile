@@ -63,8 +63,7 @@ MODULE_NAME = rtl8821au
 _HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
 					hal/rtl8812a/Hal8812PwrSeq.o \
 					hal/rtl8812a/Hal8821APwrSeq.o\
-					hal/rtl8812a/rtl8812a_xmit.o\
-					hal/rtl8812a/rtl8812a_sreset.o
+					hal/rtl8812a/rtl8812a_xmit.o
 
 _HAL_INTFS_FILES +=	hal/rtl8812a/rtl8812a_hal_init.o \
 			hal/rtl8812a/rtl8812a_phycfg.o \

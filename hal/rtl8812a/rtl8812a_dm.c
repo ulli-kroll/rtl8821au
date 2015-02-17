@@ -100,38 +100,6 @@ static void dm_InitGPIOSetting(struct rtl_priv *Adapter)
 
 }
 
-/* A mapping from HalData to ODM. */
-ODM_BOARD_TYPE_E boardType(uint8_t InterfaceSel)
-{
-	ODM_BOARD_TYPE_E        board	= ODM_BOARD_DEFAULT;
-
-	INTERFACE_SELECT_USB    usb 	= (INTERFACE_SELECT_USB)InterfaceSel;
-	switch (usb) {
-	case INTF_SEL1_USB_High_Power:
-		board |= ODM_BOARD_EXT_LNA;
-		board |= ODM_BOARD_EXT_PA;
-		break;
-	case INTF_SEL2_MINICARD:
-		board |= ODM_BOARD_MINICARD;
-		break;
-	case INTF_SEL4_USB_Combo:
-		board |= ODM_BOARD_BT;
-		break;
-	case INTF_SEL5_USB_Combo_MF:
-		board |= ODM_BOARD_BT;
-		break;
-	case INTF_SEL0_USB:
-	case INTF_SEL3_USB_Solo:
-	default:
-		board = ODM_BOARD_DEFAULT;
-		break;
-	}
-
-	/* DBG_871X("===> boardType(): (pHalData->InterfaceSel, pDM_Odm->BoardType) = (%d, %d)\n", InterfaceSel, board); */
-
-	return board;
-}
-
 /*
  * ============================================================
  * functions

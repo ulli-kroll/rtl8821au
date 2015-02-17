@@ -1014,27 +1014,6 @@ void SwLedBlink5(struct rtl_led *pLed)
 
 }
 
-void SwLedBlink6(struct rtl_led *pLed)
-{
-	struct rtl_priv			*padapter = pLed->padapter;
-	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	u8				bStopBlinking = _FALSE;
-
-	// Change LED according to BlinkingLedState specified.
-	if( pLed->BlinkingLedState == RTW_LED_ON )
-	{
-		SwLedOn(padapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn on\n", pLed->BlinkTimes));
-	}
-	else
-	{
-		SwLedOff(padapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn off\n", pLed->BlinkTimes));
-	}
-
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("<==== blink6\n"));
-}
-
 void SwLedBlink7(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
@@ -2020,10 +1999,6 @@ void BlinkHandler(struct rtl_led * pLed)
 	{
 		case SW_LED_MODE1:
 			SwLedBlink1(pLed);
-			break;
-
-		case SW_LED_MODE6:
-			SwLedBlink6(pLed);
 			break;
 
 		case SW_LED_MODE9:
@@ -3228,35 +3203,6 @@ static void SwLedControlMode5(struct rtl_priv *padapter, enum led_ctl_mode LedAc
 	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Led %d\n", pLed->CurrLedState));
 }
 
- //WNC-Corega, added by chiyoko, 20090902
-static void SwLedControlMode6(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
-{
-	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	struct rtl_led *pLed0 = &(ledpriv->SwLed0);
-
-	switch(LedAction)
-	{
-		case LED_CTL_POWER_ON:
-		case LED_CTL_LINK:
-		case LED_CTL_NO_LINK:
-			_cancel_timer_ex(&(pLed0->BlinkTimer));
-			pLed0->CurrLedState = RTW_LED_ON;
-			pLed0->BlinkingLedState = RTW_LED_ON;
-			_set_timer(&(pLed0->BlinkTimer), 0);
-			break;
-
-		case LED_CTL_POWER_OFF:
-			SwLedOff(padapter, pLed0);
-			break;
-
-		default:
-			break;
-	}
-
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("ledcontrol 6 Led %d\n", pLed0->CurrLedState));
-}
-
 //Netgear, added by sinda, 2011/11/11
 void SwLedControlMode7(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
@@ -4395,10 +4341,6 @@ void LedControlUSB(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 	{
 		case SW_LED_MODE1:
 			SwLedControlMode1(padapter, LedAction);
-			break;
-
-		case SW_LED_MODE6:
-			SwLedControlMode6(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE9:

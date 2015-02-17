@@ -155,7 +155,6 @@ enum rtl_led_pin {
 
 typedef	enum _LED_STRATEGY_USB{
 	SW_LED_MODE1 = 1, // 2 LEDs, through LED0 and LED1. For ALPHA.
-	SW_LED_MODE6 = 6,	//for 88CU minicard, porting from ce SW_LED_MODE7
 	SW_LED_MODE9 = 9, //for Belkin AC950
 	SW_LED_MODE10 = 10, //for Netgear A6200V2
 	SW_LED_MODE11 = 11, //for Edimax / ASUS

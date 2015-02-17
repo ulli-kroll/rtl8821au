@@ -83,26 +83,11 @@
 #define USB_DUMMY_OFFSET		1
 #define USB_DUMMY_LENGTH		(USB_DUMMY_OFFSET * PACKET_OFFSET_SZ)
 
-
-void rtl8812a_cal_txdesc_chksum(u8 *ptxdesc);
-void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, u8 *ptxdesc);
-void rtl8812a_fill_txdesc_vcs(struct rtl_priv *padapter, struct pkt_attrib *pattrib, u8 *ptxdesc);
-void rtl8812a_fill_txdesc_phy(struct rtl_priv *padapter, struct pkt_attrib *pattrib, u8 *ptxdesc);
-
 int32_t rtl8812au_init_xmit_priv(struct rtl_priv *padapter);
 void rtl8812au_free_xmit_priv(struct rtl_priv *padapter);
-int32_t rtl8812au_hal_xmit(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
-int32_t rtl8812au_mgnt_xmit(struct rtl_priv *padapter, struct xmit_frame *pmgntframe);
-int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
-int32_t rtl8812au_xmit_buf_handler(struct rtl_priv *padapter);
 void rtl8812au_xmit_tasklet(void *priv);
-int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
-
-void _dbg_dump_tx_info(struct rtl_priv	*padapter,int frame_tag,u8 *ptxdesc);
 
 u8	BWMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib);
-
-u8	SCMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib	*pattrib);
 
 #endif //__RTL8812_XMIT_H__
 

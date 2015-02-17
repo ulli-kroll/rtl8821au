@@ -154,21 +154,14 @@ enum rtl_led_pin {
 
 
 typedef	enum _LED_STRATEGY_USB{
-	SW_LED_MODE0, // SW control 1 LED via GPIO0. It is default option.
-	SW_LED_MODE1, // 2 LEDs, through LED0 and LED1. For ALPHA.
-	SW_LED_MODE2, // SW control 1 LED via GPIO0, customized for AzWave 8187 minicard.
-	SW_LED_MODE3, // SW control 1 LED via GPIO0, customized for Sercomm Printer Server case.
-	SW_LED_MODE4, //for Edimax / Belkin
-	SW_LED_MODE5, //for Sercomm / Belkin
-	SW_LED_MODE6,	//for 88CU minicard, porting from ce SW_LED_MODE7
-	SW_LED_MODE7,	//for Netgear special requirement
-	SW_LED_MODE8, //for LC
-	SW_LED_MODE9, //for Belkin AC950
-	SW_LED_MODE10, //for Netgear A6200V2
-	SW_LED_MODE11, //for Edimax / ASUS
-	SW_LED_MODE12, //for WNC/NEC
-	SW_LED_MODE13, //for Netgear A6100, 8811Au
-	HW_LED, // HW control 2 LEDs, LED0 and LED1 (there are 4 different control modes, see MAC.CONFIG1 for details.)
+	SW_LED_MODE1 = 1, // 2 LEDs, through LED0 and LED1. For ALPHA.
+	SW_LED_MODE6 = 6,	//for 88CU minicard, porting from ce SW_LED_MODE7
+	SW_LED_MODE9 = 9, //for Belkin AC950
+	SW_LED_MODE10 = 10, //for Netgear A6200V2
+	SW_LED_MODE11 = 11, //for Edimax / ASUS
+	SW_LED_MODE12 = 12, //for WNC/NEC
+	SW_LED_MODE13 = 13, //for Netgear A6100, 8811Au
+	HW_LED = 14, // HW control 2 LEDs, LED0 and LED1 (there are 4 different control modes, see MAC.CONFIG1 for details.)
 }LED_STRATEGY_USB, *PLED_STRATEGY_USB;
 
 

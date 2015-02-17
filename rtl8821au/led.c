@@ -2018,40 +2018,12 @@ void BlinkHandler(struct rtl_led * pLed)
 
 	switch(ledpriv->LedStrategy)
 	{
-		case SW_LED_MODE0:
-			SwLedBlink(pLed);
-			break;
-
 		case SW_LED_MODE1:
 			SwLedBlink1(pLed);
 			break;
 
-		case SW_LED_MODE2:
-			SwLedBlink2(pLed);
-			break;
-
-		case SW_LED_MODE3:
-			SwLedBlink3(pLed);
-			break;
-
-		case SW_LED_MODE4:
-			SwLedBlink4(pLed);
-			break;
-
-		case SW_LED_MODE5:
-			SwLedBlink5(pLed);
-			break;
-
 		case SW_LED_MODE6:
 			SwLedBlink6(pLed);
-			break;
-
-		case SW_LED_MODE7:
-			SwLedBlink7(pLed);
-			break;
-
-		case SW_LED_MODE8:
-			SwLedBlink8(pLed);
 			break;
 
 		case SW_LED_MODE9:
@@ -4421,40 +4393,12 @@ void LedControlUSB(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 
 	switch(ledpriv->LedStrategy)
 	{
-		case SW_LED_MODE0:
-			SwLedControlMode0(padapter, LedAction);
-			break;
-
 		case SW_LED_MODE1:
 			SwLedControlMode1(padapter, LedAction);
 			break;
 
-		case SW_LED_MODE2:
-			SwLedControlMode2(padapter, LedAction);
-                	break;
-
-		case SW_LED_MODE3:
-			SwLedControlMode3(padapter, LedAction);
-			break;
-
-		case SW_LED_MODE4:
-			SwLedControlMode4(padapter, LedAction);
-			break;
-
-		case SW_LED_MODE5:
-			SwLedControlMode5(padapter, LedAction);
-			break;
-
 		case SW_LED_MODE6:
 			SwLedControlMode6(padapter, LedAction);
-			break;
-
-		case SW_LED_MODE7:
-			SwLedControlMode7(padapter, LedAction);
-			break;
-
-		case SW_LED_MODE8:
-			SwLedControlMode8(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE9:

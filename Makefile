@@ -29,6 +29,7 @@ export TopDIR ?= $(shell pwd)
 RTL8821AU_FILES	:=	rtl8821au/dm.o \
 			rtl8821au/fw.o \
 			rtl8821au/hw.o \
+			rtl8821au/led.o \
 			rtl8821au/phy.o \
 			rtl8821au/rf.o \
 			rtl8821au/sw.o \
@@ -46,8 +47,7 @@ _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 
 _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com.o \
-			hal/hal_phy.o \
-			hal/led/hal_usb_led.o
+			hal/hal_phy.o
 
 _OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
 		hal/OUTSRC/odm_HWConfig.o\
@@ -71,7 +71,6 @@ _HAL_INTFS_FILES +=	hal/rtl8812a/rtl8812a_hal_init.o \
 			hal/rtl8812a/rtl8812a_rxdesc.o \
 			hal/rtl8812a/rtl8812a_cmd.o \
 			hal/rtl8812a/usb/usb_halinit.o \
-			hal/rtl8812a/usb/rtl8812au_led.o \
 			hal/rtl8812a/usb/rtl8812au_xmit.o \
 			hal/rtl8812a/usb/rtl8812au_recv.o
 

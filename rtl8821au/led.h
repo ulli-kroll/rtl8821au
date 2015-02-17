@@ -17,9 +17,9 @@
  *
  *
  ******************************************************************************/
-#ifndef __HAL_COMMON_LED_H_
-#define __HAL_COMMON_LED_H_
 
+#ifndef __RTL8821AU_LED_H__
+#define __RTL8821AU_LED_H__
 
 #define MSECS(t)        (HZ * ((t) / 1000) + (HZ * ((t) % 1000)) / 1000)
 
@@ -246,5 +246,10 @@ void DeInitLed(struct rtl_led *pLed);
 //hal...
 extern void BlinkHandler(struct rtl_led *pLed);
 
-#endif //__RTW_LED_H_
+//================================================================================
+// Interface to manipulate LED objects.
+//================================================================================
+void rtl8821au_init_sw_leds(struct rtl_priv *padapter);
+void rtl8812au_deinit_sw_leds(struct rtl_priv *padapter);
 
+#endif

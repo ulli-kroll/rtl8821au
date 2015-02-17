@@ -34,7 +34,6 @@
 #include "rtl8812a_recv.h"
 #include "rtl8812a_xmit.h"
 #include "rtl8812a_cmd.h"
-#include "rtl8812a_led.h"
 #include "Hal8812PwrSeq.h"
 #include "Hal8821APwrSeq.h" //for 8821A/8811A
 #include "Hal8812PhyReg.h"

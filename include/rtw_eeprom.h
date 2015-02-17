@@ -69,7 +69,6 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_Nettronix = 11,
 	RT_CID_PRONET = 13,
 	RT_CID_COREGA = 14,
-	RT_CID_CHINA_MOBILE = 15,
 	RT_CID_819x_ALPHA = 16,
 	RT_CID_819x_Sitecom = 17,
 	RT_CID_CCX = 18, // It's set under CCX logo test and isn't demanded for CCX functions, but for test behavior like retry limit and tx report. By Bruce, 2009-02-17.

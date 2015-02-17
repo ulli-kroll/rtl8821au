@@ -886,7 +886,11 @@ static int _rtw_drv_register_netdev(struct rtl_priv *padapter, char *name)
 	netif_carrier_off(ndev);
 	/* rtw_netif_stop_queue(ndev); */
 
-	ether_addr_copy(ndev->dev_addr, padapter->eeprompriv.mac_addr);
+/*
+ * 	ULLI : for support older kernel < 3.14,
+ *	ether_addr_copy(ndev->dev_addr, padapter->eeprompriv.mac_addr);
+ */
+	memcpy(ndev->dev_addr,  padapter->eeprompriv.mac_addr, ETH_ALEN);
 
 	/* Tell the network stack we exist */
 	if (register_netdev(ndev) != 0) {

@@ -83,7 +83,6 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_819x_Acer = 25,
 	RT_CID_819x_AzWave_ASUS = 26,
 	RT_CID_819x_AzWave = 27, // For AzWave in PCIe, The ID is AzWave use and not only Asus
-	RT_CID_819x_HP = 28,
 	RT_CID_819x_WNC_COREGA = 29,
 	RT_CID_819x_Arcadyan_Belkin = 30,
 	RT_CID_819x_SAMSUNG = 31,
@@ -92,7 +91,6 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_819x_PRONETS = 34,
 	RT_CID_819x_Edimax_ASUS = 35,
 	RT_CID_NETGEAR = 36,
-	RT_CID_PLANEX = 37,
 	RT_CID_CC_C = 38,
 	RT_CID_819x_Xavi = 39,
 	RT_CID_LENOVO_CHINA = 40,

@@ -1657,10 +1657,6 @@ VOID hal_CustomizedBehavior_8812AU(struct rtl_priv *Adapter)
 		pledpriv->bRegUseLed = _TRUE;
 		break;
 
-	case RT_CID_819x_HP:
-		pledpriv->LedStrategy = SW_LED_MODE6; /* Customize Led mode */
-		break;
-
 	/* ULLI check RT_CID_819x values */
 
 	case RT_CID_819x_Sercomm_Belkin:
@@ -1702,14 +1698,6 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	/* For customized behavior. */
-	if ((efuse->eeprom_vid == 0x103C) && (efuse->EEPROMPID == 0x1629))/* HP Lite-On for RTL8188CUS Slim Combo. */
-		pEEPROM->CustomerID = RT_CID_819x_HP;
-	else if ((efuse->eeprom_vid == 0x9846) && (efuse->EEPROMPID == 0x9041))
-		pEEPROM->CustomerID = RT_CID_NETGEAR;
-	else if ((efuse->eeprom_vid == 0x2019) && (efuse->EEPROMPID == 0x1201))
-		pEEPROM->CustomerID = RT_CID_PLANEX;
-	else if ((efuse->eeprom_vid == 0x0BDA) && (efuse->EEPROMPID == 0x5088))
-		pEEPROM->CustomerID = RT_CID_CC_C;
 
 	DBG_871X("PID= 0x%x, VID=  %x\n", efuse->EEPROMPID, efuse->eeprom_vid);
 

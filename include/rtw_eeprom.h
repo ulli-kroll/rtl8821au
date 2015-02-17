@@ -67,7 +67,6 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_TOSHIBA = 9,	// Merge by Jacken, 2008/01/31.
 	RT_CID_819x_Netcore = 10,
 	RT_CID_Nettronix = 11,
-	RT_CID_DLINK = 12,
 	RT_CID_PRONET = 13,
 	RT_CID_COREGA = 14,
 	RT_CID_CHINA_MOBILE = 15,
@@ -91,7 +90,6 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_819x_PRONETS = 34,
 	RT_CID_819x_Edimax_ASUS = 35,
 	RT_CID_NETGEAR = 36,
-	RT_CID_CC_C = 38,
 	RT_CID_819x_Xavi = 39,
 	RT_CID_LENOVO_CHINA = 40,
 	RT_CID_INTEL_CHINA = 41,

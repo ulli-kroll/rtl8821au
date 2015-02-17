@@ -1704,18 +1704,9 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	/* Decide CustomerID according to VID/DID or EEPROM */
 	switch (efuse->EEPROMCustomerID) {
 	case EEPROM_CID_DEFAULT:
-		if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x3308))
-			pEEPROM->CustomerID = RT_CID_DLINK;
-		else if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x3309))
-			pEEPROM->CustomerID = RT_CID_DLINK;
-		else if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x330a))
-			pEEPROM->CustomerID = RT_CID_DLINK;
-		else if ((efuse->eeprom_vid == 0x0BFF) && (efuse->EEPROMPID == 0x8160)) {
-			/* pHalData->bAutoConnectEnable = _FALSE; */
+		if ((efuse->eeprom_vid == 0x0BFF) && (efuse->EEPROMPID == 0x8160)) {
 			pEEPROM->CustomerID = RT_CID_CHINA_MOBILE;
-		} else if ((efuse->eeprom_vid == 0x0BDA) && (efuse->EEPROMPID == 0x5088))
-			pEEPROM->CustomerID = RT_CID_CC_C;
-		else if ((efuse->eeprom_vid == 0x0846) && (efuse->EEPROMPID == 0x9052))
+		} else if ((efuse->eeprom_vid == 0x0846) && (efuse->EEPROMPID == 0x9052))
 			pEEPROM->CustomerID = RT_CID_NETGEAR;
 
 		DBG_871X("PID= 0x%x, VID=  %x\n", efuse->EEPROMPID, efuse->eeprom_vid);

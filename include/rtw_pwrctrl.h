@@ -238,7 +238,6 @@ struct pwrctrl_priv
 	_rtw_set_pwr_state_check_timer((pwrctrlpriv), (pwrctrlpriv)->pwr_state_check_interval)
 
 extern void rtw_init_pwrctrl_priv(struct rtl_priv *adapter);
-extern void rtw_free_pwrctrl_priv(struct rtl_priv * adapter);
 
 extern void rtw_set_ps_mode(struct rtl_priv *padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode);
 extern void rtw_set_rpwm(struct rtl_priv * padapter, uint8_t val8);

@@ -1111,8 +1111,6 @@ uint8_t rtw_free_drv_sw(struct rtl_priv *padapter)
 
 	_rtw_free_recv_priv(&padapter->recvpriv);
 
-	rtw_free_pwrctrl_priv(padapter);
-
 	/* rtw_mfree(padapter); */
 
 	rtw_hal_free_data(padapter);

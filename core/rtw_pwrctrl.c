@@ -545,18 +545,6 @@ _func_exit_;
 
 }
 
-
-void rtw_free_pwrctrl_priv(struct rtl_priv *adapter)
-{
-	struct pwrctrl_priv *pwrctrlpriv = &adapter->pwrctrlpriv;
-
-_func_enter_;
-
-	//memset((unsigned char *)pwrctrlpriv, 0, sizeof(struct pwrctrl_priv));
-
-_func_exit_;
-}
-
 /*
 * rtw_pwr_wakeup - Wake the NIC up from: 1)IPS. 2)USB autosuspend
 * @adapter: pointer to struct rtl_priv structure

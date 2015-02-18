@@ -900,14 +900,6 @@ static VOID _InitAntenna_Selection_8812A(struct rtl_priv *Adapter)
 
 }
 
-/*
- * 2010/08/26 MH Add for selective suspend mode check.
- * If Efuse 0x0e bit1 is not enabled, we can not support selective suspend for Minicard and
- * slim card.
- */
-static VOID HalDetectSelectiveSuspendMode(struct rtl_priv *Adapter)
-{
-}
 /*-----------------------------------------------------------------------------
  * Function:	HwSuspendModeEnable92Cu()
  *

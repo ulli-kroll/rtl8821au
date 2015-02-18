@@ -1559,7 +1559,7 @@ VOID hal_ReadIDs_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 
 	if ((efuse->eeprom_vid == 0x050D) && (efuse->EEPROMPID == 0x1106))		/* SerComm for Belkin. */
 		pEEPROM->CustomerID = RT_CID_Sercomm_Belkin;	/* ULLI : RTL8812 */
-	else if ((efuse->eeprom_vid == 0x0846) && (efuse->EEPROMPID == 0x9051))	/* SerComm for Netgear. */
+	else if ((efuse->eeprom_vid == 0x0846) && (efuse->EEPROMPID == 0x9052))	/* SerComm for Netgear. */
 		pEEPROM->CustomerID = RT_CID_Sercomm_Netgear;	/* ULLI :  posible typo for pid maybe 0x9052 */
 	else if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
 		pEEPROM->CustomerID = RT_CID_ALPHA_Dlink;	/* ULLI : RTL8812 */

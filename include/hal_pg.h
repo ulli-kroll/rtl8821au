@@ -333,28 +333,4 @@ typedef struct _TxPowerInfo5G{
 	s8 BW160_Diff[MAX_RF_PATH][MAX_TX_COUNT];
 }TxPowerInfo5G, *PTxPowerInfo5G;
 
-
-typedef	enum _BT_Ant_NUM{
-	Ant_x2	= 0,
-	Ant_x1	= 1
-} BT_Ant_NUM, *PBT_Ant_NUM;
-
-typedef	enum _BT_CoType{
-	BT_2Wire		= 0,
-	BT_ISSC_3Wire	= 1,
-	BT_ACCEL		= 2,
-	BT_CSR_BC4		= 3,
-	BT_CSR_BC8		= 4,
-	BT_RTL8756		= 5,
-	BT_RTL8723A		= 6,
-	BT_RTL8821		= 7,
-	BT_RTL8723B		= 8,
-} BT_CoType, *PBT_CoType;
-
-typedef	enum _BT_RadioShared{
-	BT_Radio_Shared 	= 0,
-	BT_Radio_Individual	= 1,
-} BT_RadioShared, *PBT_RadioShared;
-
-
 #endif

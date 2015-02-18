@@ -266,7 +266,6 @@ void LPS_Leave(struct rtl_priv *padapter);
 #define rtw_register_early_suspend(pwrpriv) do {} while (0)
 #define rtw_unregister_early_suspend(pwrpriv) do {} while (0)
 
-uint8_t rtw_interface_ps_func(struct rtl_priv *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val);
 void rtw_set_ips_deny(struct rtl_priv *padapter, u32 ms);
 int _rtw_pwr_wakeup(struct rtl_priv *padapter, u32 ips_deffer_ms, const char *caller);
 #define rtw_pwr_wakeup(adapter) _rtw_pwr_wakeup(adapter, RTW_PWR_STATE_CHK_INTERVAL, __FUNCTION__)

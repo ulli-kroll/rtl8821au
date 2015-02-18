@@ -559,13 +559,6 @@ _func_exit_;
 
 
 
-uint8_t rtw_interface_ps_func(struct rtl_priv *padapter,HAL_INTF_PS_FUNC efunc_id,uint8_t * val)
-{
-	uint8_t bResult = _TRUE;
-
-	return bResult;
-}
-
 
 inline void rtw_set_ips_deny(struct rtl_priv *padapter, uint32_t	 ms)
 {

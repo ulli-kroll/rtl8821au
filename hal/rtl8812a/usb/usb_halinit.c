@@ -1625,54 +1625,14 @@ VOID hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 	}
 }
 
-VOID hal_CustomizedBehavior_8812AU(struct rtl_priv *Adapter)
-{
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
-	struct rtl_led_ctl *pledpriv = &(Adapter->ledpriv);
 
-	/* Led mode */
-	switch (pEEPROM->CustomerID) {
-	case RT_CID_DEFAULT:
-		pledpriv->LedStrategy = SW_LED_MODE9;
-		pledpriv->bRegUseLed = _TRUE;
-		break;
-
-	/* ULLI check RT_CID_819x values */
-
-	case RT_CID_Sercomm_Belkin:
-		pledpriv->LedStrategy = SW_LED_MODE9;
-		break;
-
-	case RT_CID_Sercomm_Netgear:
-		pledpriv->LedStrategy = SW_LED_MODE10;
-		break;
-
-	case RT_CID_ALPHA_Dlink:	/* add by ylb 20121012 for customer led for alpha */
-		pledpriv->LedStrategy = SW_LED_MODE1;
-		break;
-
-	case RT_CID_Edimax_ASUS:
-		pledpriv->LedStrategy = SW_LED_MODE11;
-		break;
-
-	case RT_CID_NETGEAR:
-		pledpriv->LedStrategy = SW_LED_MODE13;
-		break;
-
-	default:
-		pledpriv->LedStrategy = SW_LED_MODE9;
-		break;
-	}
-
-	pHalData->bLedOpenDrain = _TRUE;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
-}
 
 static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+	struct rtl_led_ctl *pledpriv = &(rtlpriv->ledpriv);
 
 	/* For customized behavior. */
 
@@ -1709,7 +1669,41 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	}
 	DBG_871X("Customer ID: 0x%2x\n", pEEPROM->CustomerID);
 
-	hal_CustomizedBehavior_8812AU(rtlpriv);
+	/* Led mode */
+	switch (pEEPROM->CustomerID) {
+	case RT_CID_DEFAULT:
+		pledpriv->LedStrategy = SW_LED_MODE9;
+		pledpriv->bRegUseLed = _TRUE;
+		break;
+
+	/* ULLI check RT_CID_819x values */
+
+	case RT_CID_Sercomm_Belkin:
+		pledpriv->LedStrategy = SW_LED_MODE9;
+		break;
+
+	case RT_CID_Sercomm_Netgear:
+		pledpriv->LedStrategy = SW_LED_MODE10;
+		break;
+
+	case RT_CID_ALPHA_Dlink:	/* add by ylb 20121012 for customer led for alpha */
+		pledpriv->LedStrategy = SW_LED_MODE1;
+		break;
+
+	case RT_CID_Edimax_ASUS:
+		pledpriv->LedStrategy = SW_LED_MODE11;
+		break;
+
+	case RT_CID_NETGEAR:
+		pledpriv->LedStrategy = SW_LED_MODE13;
+		break;
+
+	default:
+		pledpriv->LedStrategy = SW_LED_MODE9;
+		break;
+	}
+
+	pHalData->bLedOpenDrain = _TRUE;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
 }
 
 VOID hal_ReadUsbModeSwitch_8812AU(struct rtl_priv *Adapter, u8 *PROMContent, BOOLEAN AutoloadFail)

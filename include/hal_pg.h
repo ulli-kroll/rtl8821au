@@ -243,30 +243,6 @@
 #define EEPROM_VID_8821AU						0x100
 #define EEPROM_PID_8821AU						0x102
 
-
-//====================================================
-//			EEPROM/Efuse PG Offset for 8192 SE/SU
-//====================================================
-#define EEPROM_VID_92SE						0x0A
-#define EEPROM_DID_92SE						0x0C
-#define EEPROM_SVID_92SE						0x0E
-#define EEPROM_SMID_92SE						0x10
-
-#define EEPROM_MAC_ADDR_92S					0x12
-
-#define EEPROM_TSSI_A_92SE						0x74
-#define EEPROM_TSSI_B_92SE						0x75
-
-#define EEPROM_Version_92SE					0x7C
-
-
-#define EEPROM_VID_92SU						0x08
-#define EEPROM_PID_92SU						0x0A
-
-#define EEPROM_Version_92SU					0x50
-#define EEPROM_TSSI_A_92SU						0x6b
-#define EEPROM_TSSI_B_92SU						0x6c
-
 //====================================================
 //			EEPROM/Efuse PG Offset for 8723BE/8723BU/8723BS
 //====================================================

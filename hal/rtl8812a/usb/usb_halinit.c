@@ -867,11 +867,6 @@ static VOID init_UsbAggregationSetting_8812A(struct rtl_priv *Adapter)
 	pHalData->UsbRxHighSpeedMode = _FALSE;
 }
 
-static VOID _InitOperationMode_8812A(struct rtl_priv *Adapter)
-{
-}
-
-
 /* Set CCK and OFDM Block "ON" */
 static VOID _BBTurnOnBlock(struct rtl_priv *Adapter)
 {
@@ -1142,7 +1137,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 
 	_InitRetryFunction_8812A(Adapter);
 	init_UsbAggregationSetting_8812A(Adapter);
-	_InitOperationMode_8812A(Adapter);	/* todo */
 	_InitBeaconParameters_8812A(Adapter);
 	_InitBeaconMaxError_8812A(Adapter, _TRUE);
 

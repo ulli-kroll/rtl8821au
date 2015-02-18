@@ -203,8 +203,6 @@ void rtw_hal_disable_interrupt(struct rtl_priv *padapter);
 u32	rtw_hal_inirp_init(struct rtl_priv *padapter);
 u32	rtw_hal_inirp_deinit(struct rtl_priv *padapter);
 
-uint8_t	rtw_hal_intf_ps_func(struct rtl_priv *padapter,HAL_INTF_PS_FUNC efunc_id, u8* val);
-
 int32_t	rtw_hal_xmitframe_enqueue(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
 int32_t	rtw_hal_xmit(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
 int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *padapter, struct xmit_frame *pmgntframe);

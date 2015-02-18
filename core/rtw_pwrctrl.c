@@ -562,7 +562,6 @@ _func_exit_;
 uint8_t rtw_interface_ps_func(struct rtl_priv *padapter,HAL_INTF_PS_FUNC efunc_id,uint8_t * val)
 {
 	uint8_t bResult = _TRUE;
-	rtw_hal_intf_ps_func(padapter,efunc_id,val);
 
 	return bResult;
 }

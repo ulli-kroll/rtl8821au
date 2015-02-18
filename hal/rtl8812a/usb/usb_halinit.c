@@ -1803,20 +1803,3 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 					0);
 }
 
-uint8_t rtl8812au_ps_func(struct rtl_priv *Adapter, HAL_INTF_PS_FUNC efunc_id, uint8_t *val)
-{
-	uint8_t bResult = _TRUE;
-	switch (efunc_id) {
-	default:
-		break;
-	}
-	return bResult;
-}
-
-/*
- *
- * ULLI
- * It's messy but we need here some prototypes
- */
-
-

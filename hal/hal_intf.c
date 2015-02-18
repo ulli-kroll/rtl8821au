@@ -195,13 +195,6 @@ uint32_t	rtw_hal_inirp_deinit(struct rtl_priv *padapter)
 
 }
 
-uint8_t	rtw_hal_intf_ps_func(struct rtl_priv *padapter, HAL_INTF_PS_FUNC efunc_id, u8 *val)
-{
-	if (padapter->HalFunc->interface_ps_func)
-		return padapter->HalFunc->interface_ps_func(padapter, efunc_id, val);
-	return _FAIL;
-}
-
 int32_t	rtw_hal_xmitframe_enqueue(struct rtl_priv *padapter, struct xmit_frame *pxmitframe)
 {
 	if (padapter->HalFunc->hal_xmitframe_enqueue)

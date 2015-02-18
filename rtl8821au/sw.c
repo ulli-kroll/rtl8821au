@@ -79,8 +79,6 @@ struct rtl_hal_ops rtl8821au_hal_ops = {
 	.mgnt_xmit = 		rtl8812au_mgnt_xmit,
 	.hal_xmitframe_enqueue = 	rtl8812au_hal_xmitframe_enqueue,
 
-	.interface_ps_func = 	rtl8812au_ps_func,
-
 	.free_hal_data =	rtl8812_free_hal_data,
 
 	.dm_init =		rtl8812_init_dm_priv,

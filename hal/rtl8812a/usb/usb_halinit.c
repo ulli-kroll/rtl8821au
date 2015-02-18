@@ -1025,22 +1025,6 @@ rt_rf_power_state RfOnOffDetect(struct rtl_priv *rtlpriv)
 	return rfpowerstate;
 }
 
-void _ps_open_RF(struct rtl_priv *rtlpriv)
-{
-	/*
-	 * here call with bRegSSPwrLvl 1, bRegSSPwrLvl 2 needs to be verified
-	 * phy_SsPwrSwitch92CU(rtlpriv, rf_on, 1);
-	 */
-}
-
-void _ps_close_RF(struct rtl_priv *rtlpriv)
-{
-	/*
-	 * here call with bRegSSPwrLvl 1, bRegSSPwrLvl 2 needs to be verified
-	 * phy_SsPwrSwitch92CU(rtlpriv, rf_off, 1);
-	 */
-}
-
 uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 {
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
@@ -1058,8 +1042,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 	uint32_t init_start_time = jiffies;
 
 	if (Adapter->pwrctrlpriv.bkeepfwalive) {
-		_ps_open_RF(Adapter);
-
 		if (pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized) {
 			/* PHY_IQCalibrate_8812A(Adapter,_TRUE); */
 		} else {

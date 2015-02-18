@@ -1706,10 +1706,6 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	pHalData->bLedOpenDrain = _TRUE;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
 }
 
-VOID hal_ReadUsbModeSwitch_8812AU(struct rtl_priv *Adapter, u8 *PROMContent, BOOLEAN AutoloadFail)
-{
-}
-
 static VOID ReadLEDSetting_8812AU(struct rtl_priv *Adapter,
 	u8 *PROMContent, BOOLEAN AutoloadFail)
 {
@@ -1751,7 +1747,6 @@ VOID InitAdapterVariablesByPROM_8812AU(struct rtl_priv *Adapter)
 		Hal_ReadRFEType_8812A(Adapter, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
 	}
 
-	hal_ReadUsbModeSwitch_8812AU(Adapter, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
 	hal_CustomizeByCustomerID_8812AU(Adapter);
 
 	ReadLEDSetting_8812AU(Adapter, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);

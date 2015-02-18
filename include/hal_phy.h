@@ -21,11 +21,6 @@
 #define __HAL_PHY_H__
 
 
-#define 	HAL_FW_ENABLE				1
-#define	HAL_MAC_ENABLE			1
-#define	HAL_BB_ENABLE				1
-#define	HAL_RF_ENABLE				1
-
 #define	RF6052_MAX_TX_PWR			0x3F
 #define	RF6052_MAX_REG_88E			0xFF
 #define	RF6052_MAX_REG_92C			0x7F

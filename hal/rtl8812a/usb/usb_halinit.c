@@ -1042,9 +1042,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 	 */
 	Adapter->phy.current_channel = 0;	/* set 0 to trigger switch correct channel */
 
-#if (HAL_MAC_ENABLE == 1)
 	PHY_MACConfig8812(Adapter);
-#endif
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		_InitQueueReservedPage_8812AUsb(Adapter);
@@ -1101,26 +1099,21 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 	 */
 
 
-#if (HAL_BB_ENABLE == 1)
 	status = PHY_BBConfig8812(Adapter);
 	if (status == _FAIL)
 		goto exit;
-
-#endif
 
 	/*
 	 * 92CU use 3-wire to r/w RF
 	 * pHalData->Rf_Mode = RF_OP_By_SW_3wire;
 	 */
 
-#if (HAL_RF_ENABLE == 1)
 	status = PHY_RFConfig8812(Adapter);
 	if (status == _FAIL)
 		goto exit;
 
 	if (Adapter->phy.rf_type == RF_1T1R && IS_HARDWARE_TYPE_8812AU(rtlhal))
 		PHY_BB8812_Config_1T(Adapter);
-#endif
 
 	if (Adapter->registrypriv.channel <= 14)
 		rtl8821au_phy_switch_wirelessband(Adapter, BAND_ON_2_4G);

@@ -1036,10 +1036,9 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
 	struct registry_priv *pregistrypriv = &Adapter->registrypriv;
 	rt_rf_power_state eRfPowerStateToSet;
+	uint32_t init_start_time = jiffies;
 
 	DBG_871X(" ULLI: Call rtl8812au_hal_init in usb_halinit.c\n");
-
-	uint32_t init_start_time = jiffies;
 
 	if (Adapter->pwrctrlpriv.bkeepfwalive) {
 		if (pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized) {

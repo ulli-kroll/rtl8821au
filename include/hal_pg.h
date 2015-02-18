@@ -321,7 +321,6 @@
 #define EEPROM_CID_TOSHIBA						0x4
 #define EEPROM_CID_CCX							0x10
 #define EEPROM_CID_QMI							0x0D
-#define EEPROM_CID_WHQL 						0xFE
 
 #define EEPROM_CHANNEL_PLAN_FCC				0x0
 #define EEPROM_CHANNEL_PLAN_IC				0x1

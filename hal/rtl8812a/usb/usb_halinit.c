@@ -1498,22 +1498,6 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 
 		DBG_871X("PID= 0x%x, VID=  %x\n", efuse->EEPROMPID, efuse->eeprom_vid);
 		break;
-	case EEPROM_CID_WHQL:
-		/*
-		 * rtlpriv->bInHctTest = TRUE;
-		 *
-		 * pMgntInfo->bSupportTurboMode = FALSE;
-		 * pMgntInfo->bAutoTurboBy8186 = FALSE;
-		 *
-		 * pMgntInfo->PowerSaveControl.bInactivePs = FALSE;
-		 * pMgntInfo->PowerSaveControl.bIPSModeBackup = FALSE;
-		 * pMgntInfo->PowerSaveControl.bLeisurePs = FALSE;
-		 * pMgntInfo->PowerSaveControl.bLeisurePsModeBackup = FALSE;
-		 * pMgntInfo->keepAliveLevel = 0;
-		 *
-		 * rtlpriv->bUnloadDriverwhenS3S4 = FALSE;
-		 */
-		break;
 	default:
 		pEEPROM->CustomerID = RT_CID_DEFAULT;
 		break;

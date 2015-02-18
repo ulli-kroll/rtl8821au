@@ -56,19 +56,11 @@
 typedef enum _RT_CUSTOMER_ID
 {
 	RT_CID_DEFAULT = 0,
-	RT_CID_WHQL = 5,
 	RT_CID_819x_CAMEO  = 6,
-	RT_CID_TOSHIBA = 9,	// Merge by Jacken, 2008/01/31.
-	RT_CID_Nettronix = 11,
-	RT_CID_PRONET = 13,
-	RT_CID_COREGA = 14,
 	RT_CID_CCX = 18, // It's set under CCX logo test and isn't demanded for CCX functions, but for test behavior like retry limit and tx report. By Bruce, 2009-02-17.
 	RT_CID_Sercomm_Belkin = 22,
 	RT_CID_Edimax_ASUS = 35,
 	RT_CID_NETGEAR = 36,
-	RT_CID_LENOVO_CHINA = 40,
-	RT_CID_INTEL_CHINA = 41,
-	RT_CID_TPLINK_HPWR = 42,
 	RT_CID_Sercomm_Netgear = 43,
 	RT_CID_ALPHA_Dlink = 44,//add by ylb 20121012 for customer led for alpha
 	RT_CID_WNC_NEC = 45,//add by page for NEC

@@ -1675,10 +1675,6 @@ VOID hal_CustomizedBehavior_8812AU(struct rtl_priv *Adapter)
 		pledpriv->LedStrategy = SW_LED_MODE11;
 		break;
 
-	case RT_CID_WNC_NEC:
-		pledpriv->LedStrategy = SW_LED_MODE12;
-		break;
-
 	case RT_CID_NETGEAR:
 		pledpriv->LedStrategy = SW_LED_MODE13;
 		break;

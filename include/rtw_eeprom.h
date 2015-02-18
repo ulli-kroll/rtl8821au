@@ -62,7 +62,6 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_NETGEAR = 36,
 	RT_CID_Sercomm_Netgear = 43,
 	RT_CID_ALPHA_Dlink = 44,//add by ylb 20121012 for customer led for alpha
-	RT_CID_WNC_NEC = 45,//add by page for NEC
 }RT_CUSTOMER_ID, *PRT_CUSTOMER_ID;
 
 struct eeprom_priv

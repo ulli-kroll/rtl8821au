@@ -2834,7 +2834,7 @@ uint8_t SetHalDefVar8812A(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, v
  *	Description:
  *		Query setting of specified variable.
  */
-uint8_t GetHalDefVar8812A(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval)
+uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval)
 {
 	struct _rtw_hal *pHalData;
 	uint8_t bResult;

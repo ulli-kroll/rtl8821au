@@ -491,7 +491,11 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				rtl_write_dword(rtlpriv, REG_RCR, val32);
 
 				if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE) {
-					RetryLimit = (pEEPROM->CustomerID == RT_CID_CCX) ? 7 : 48;
+					/* ULLI removed 
+					 * RetryLimit = (pEEPROM->CustomerID == RT_CID_CCX) ? 7 : 48;
+					 */
+					
+					RetryLimit = 48;
 				} else { /* Ad-hoc Mode */
 					RetryLimit = 0x7;
 				}

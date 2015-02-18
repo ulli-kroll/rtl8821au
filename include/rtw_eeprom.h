@@ -56,7 +56,6 @@
 typedef enum _RT_CUSTOMER_ID
 {
 	RT_CID_DEFAULT = 0,
-	RT_CID_CCX = 18, // It's set under CCX logo test and isn't demanded for CCX functions, but for test behavior like retry limit and tx report. By Bruce, 2009-02-17.
 	RT_CID_Sercomm_Belkin = 22,
 	RT_CID_Edimax_ASUS = 35,
 	RT_CID_NETGEAR = 36,

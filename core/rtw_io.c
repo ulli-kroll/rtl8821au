@@ -96,22 +96,6 @@ int _rtw_write32_async(struct rtl_priv *adapter, uint32_t addr, uint32_t val)
 	return RTW_STATUS_CODE(ret);
 }
 
-void _rtw_read_mem(struct rtl_priv *adapter, uint32_t addr, uint32_t cnt,
-	uint8_t *pmem)
-{
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct intf_hdl *pintfhdl = &pio_priv->intf;
-
-	if ((adapter->bDriverStopped == _TRUE)
-	   || (adapter->bSurpriseRemoved == _TRUE)) {
-		RT_TRACE(_module_rtl871x_io_c_, _drv_info_, ("rtw_read_mem:bDriverStopped(%d) OR bSurpriseRemoved(%d)", adapter->bDriverStopped, adapter->bSurpriseRemoved));
-		return;
-	}
-
-	pintfhdl->io_ops._read_mem(pintfhdl, addr, cnt, pmem);
-
-}
-
 void _rtw_write_mem(struct rtl_priv *adapter, uint32_t addr, uint32_t cnt,
 	uint8_t *pmem)
 {

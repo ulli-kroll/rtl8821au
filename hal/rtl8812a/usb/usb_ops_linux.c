@@ -579,7 +579,6 @@ void rtl8812au_set_intf_ops(struct rtl_io *pops)
 	pops->_read8 = &usb_read8;
 	pops->_read16 = &usb_read16;
 	pops->_read32 = &usb_read32;
-	pops->_read_mem = &usb_read_mem;
 	pops->_read_port = &usb_read_port;
 
 	pops->_write8 = &usb_write8;

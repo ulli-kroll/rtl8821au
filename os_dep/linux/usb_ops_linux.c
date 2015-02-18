@@ -239,11 +239,6 @@ static u32 usb_bulkout_zero(struct intf_hdl *pintfhdl, u32 addr)
 
 }
 
-void usb_read_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *rmem)
-{
-
-}
-
 void usb_write_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 {
 

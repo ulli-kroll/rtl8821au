@@ -115,7 +115,6 @@ struct rtl_io {
 		int (*_write16_async)(struct intf_hdl *pintfhdl, u32 addr, u16 val);
 		int (*_write32_async)(struct intf_hdl *pintfhdl, u32 addr, u32 val);
 
-		void (*_read_mem)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *pmem);
 		void (*_write_mem)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *pmem);
 
 		void (*_sync_irp_protocol_rw)(struct io_queue *pio_q);
@@ -326,7 +325,6 @@ extern void unregister_intf_hdl(struct intf_hdl *pintfhdl);
 extern void _rtw_attrib_read(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_attrib_write(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 
-extern void _rtw_read_mem(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_read_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_read_port_cancel(struct rtl_priv *adapter);
 
@@ -342,7 +340,6 @@ extern u32 _rtw_write_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t 
 u32 _rtw_write_port_and_wait(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem, int timeout_ms);
 extern void _rtw_write_port_cancel(struct rtl_priv *adapter);
 
-#define rtw_read_mem(adapter, addr, cnt, mem) _rtw_read_mem((adapter), (addr), (cnt), (mem))
 #define rtw_read_port(adapter, addr, cnt, mem) _rtw_read_port((adapter), (addr), (cnt), (mem))
 #define rtw_read_port_cancel(adapter) _rtw_read_port_cancel((adapter))
 

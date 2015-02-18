@@ -867,29 +867,6 @@ static VOID init_UsbAggregationSetting_8812A(struct rtl_priv *Adapter)
 	pHalData->UsbRxHighSpeedMode = _FALSE;
 }
 
-/*-----------------------------------------------------------------------------
- * Function:	USB_AggModeSwitch()
- *
- * Overview:	When RX traffic is more than 40M, we need to adjust some parameters to increase
- *			RX speed by increasing batch indication size. This will decrease TCP ACK speed, we
- *			need to monitor the influence of FTP/network share.
- *			For TX mode, we are still ubder investigation.
- *
- * Input:		_ADAPTER
- *
- * Output:		NONE
- *
- * Return:		NONE
- *
- * Revised History:
- *	When		Who		Remark
- *	12/10/2010	MHC		Create Version 0.
- *
- *---------------------------------------------------------------------------*/
-VOID USB_AggModeSwitch(struct rtl_priv *Adapter)
-{
-}
-
 static VOID _InitOperationMode_8812A(struct rtl_priv *Adapter)
 {
 }

@@ -69,7 +69,7 @@ struct rtl_hal_ops rtl8821au_hal_ops = {
 	.set_hw_reg =	 	rtl8821au_set_hw_reg,
 	.get_hw_reg = 		rtl8821au_get_hw_reg,
 	.GetHalDefVarHandler = 	rtl8821au_get_hal_def_var,
-	.SetHalDefVarHandler = 	SetHalDefVar8812AUsb,
+	.SetHalDefVarHandler = 	rtl8821au_set_hal_def_var,
 
 	.SetBeaconRelatedRegistersHandler = 	SetBeaconRelatedRegisters8812A,
 

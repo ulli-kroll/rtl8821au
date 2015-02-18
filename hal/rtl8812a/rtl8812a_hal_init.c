@@ -2728,7 +2728,7 @@ static void hw_var_set_mlme_join(struct rtl_priv *Adapter, uint8_t variable, uin
  *	Description:
  *		Change default setting of specified variable.
  */
-uint8_t SetHalDefVar8812A(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval)
+uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval)
 {
 	struct _rtw_hal *pHalData;
 	uint8_t bResult;

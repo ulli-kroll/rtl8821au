@@ -1669,26 +1669,6 @@ void UpdateInterruptMask8812AU(struct rtl_priv *rtlpriv, uint8_t bHIMR0, uint32_
 
 }
 
-
-/*
- * 	Description:
- *		Change default setting of specified variable.
- */
-u8 SetHalDefVar8812AUsb(struct rtl_priv *Adapter, HAL_DEF_VARIABLE eVariable,
-	PVOID pValue)
-{
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	uint8_t			bResult = _SUCCESS;
-
-	switch (eVariable) {
-	default:
-		SetHalDefVar8812A(Adapter, eVariable, pValue);
-		break;
-	}
-
-	return bResult;
-}
-
 void _update_response_rate(struct rtl_priv *rtlpriv, unsigned int mask)
 {
 	uint8_t	RateIndex = 0;

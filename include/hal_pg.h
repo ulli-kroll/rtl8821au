@@ -142,48 +142,6 @@
 #define EEPROM_PID_8821AU						0x102
 
 //====================================================
-//			EEPROM/Efuse PG Offset for 8723BE/8723BU/8723BS
-//====================================================
-// 0x10 ~ 0x63 = TX power area.
-#define	EEPROM_TX_PWR_INX_8723B				0x10
-
-#define	EEPROM_ChannelPlan_8723B				0xB8
-#define	EEPROM_XTAL_8723B						0xB9
-#define	EEPROM_THERMAL_METER_8723B			0xBA
-#define	EEPROM_IQK_LCK_8723B					0xBB
-#define	EEPROM_2G_5G_PA_TYPE_8723B			0xBC
-#define	EEPROM_2G_LNA_TYPE_GAIN_SEL_8723B	0xBD
-#define	EEPROM_5G_LNA_TYPE_GAIN_SEL_8723B	0xBF
-
-#define	EEPROM_RF_BOARD_OPTION_8723B		0xC1
-#define	EEPROM_FEATURE_OPTION_8723B			0xC2
-#define	EEPROM_RF_BT_SETTING_8723B			0xC3
-#define	EEPROM_VERSION_8723B					0xC4
-#define	EEPROM_CustomID_8723B				0xC5
-#define	EEPROM_TX_BBSWING_2G_8723B			0xC6
-#define	EEPROM_TX_PWR_CALIBRATE_RATE_8723B	0xC8
-#define	EEPROM_RF_ANTENNA_OPT_8723B		0xC9
-#define	EEPROM_RFE_OPTION_8723B				0xCA
-
-// RTL8723BE
-#define EEPROM_MAC_ADDR_8723BE				0xD0
-#define EEPROM_VID_8723BE						0xD6
-#define EEPROM_DID_8723BE						0xD8
-#define EEPROM_SVID_8723BE						0xDA
-#define EEPROM_SMID_8723BE						0xDC
-
-//RTL8723BU
-#define EEPROM_MAC_ADDR_8723BU				0xD7
-#define EEPROM_VID_8723BU						0xD0
-#define EEPROM_PID_8723BU						0xD2
-#define EEPROM_PA_TYPE_8723BU					0xBC
-#define EEPROM_LNA_TYPE_2G_8723BU				0xBD
-
-//RTL8723BS
-#define	EEPROM_MAC_ADDR_8723BS				0x11A
-
-
-//====================================================
 //			EEPROM/Efuse Value Type
 //====================================================
 #define EETYPE_TX_PWR							0x0

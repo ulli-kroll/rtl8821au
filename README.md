@@ -38,12 +38,15 @@ Currently the firmware is built in the driver.
 
 STATUS:
 
-This driver works with the old Wireless Extension WE or Wext API
+This driver works with the old Wireless Extension WE or Wext API *ONLY*
 see on
 http://wireless.kernel.org/en/developers/Documentation/Wireless-Extensions
 
-The new API is ieee80211 framework.
+FUTURE
+-------
 
+To be more precisely :
+The new API *will* be ieee80211 framework.
 So no support for the iw tool, thus no support for other modes as STA and AP
 
 I'm currently rewriting the hal layer, the met with the hal layer in

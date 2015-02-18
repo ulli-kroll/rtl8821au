@@ -874,10 +874,6 @@ static VOID _BBTurnOnBlock(struct rtl_priv *Adapter)
 	rtl_set_bbreg(Adapter, RFPGA0_RFMOD, bOFDMEn, 0x1);
 }
 
-static VOID _RfPowerSave(struct rtl_priv *Adapter)
-{
-}
-
 enum {
 	Antenna_Lfet = 1,
 	Antenna_Right = 2,

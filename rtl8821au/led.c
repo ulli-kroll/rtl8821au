@@ -1145,6 +1145,10 @@ void BlinkHandler(struct rtl_led * pLed)
 			SwLedBlink11(pLed);
 			break;
 
+		case SW_LED_MODE13:
+			SwLedBlink13(pLed);
+			break;
+
 		default:
 			//RT_TRACE(COMP_LED, DBG_LOUD, ("BlinkWorkItemCallback 0x%x \n", pHalData->LedStrategy));
 			//SwLedBlink(pLed);

@@ -557,15 +557,6 @@ _func_enter_;
 _func_exit_;
 }
 
-
-
-
-inline void rtw_set_ips_deny(struct rtl_priv *padapter, uint32_t	 ms)
-{
-	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
-	pwrpriv->ips_deny_time = jiffies + rtw_ms_to_systime(ms);
-}
-
 /*
 * rtw_pwr_wakeup - Wake the NIC up from: 1)IPS. 2)USB autosuspend
 * @adapter: pointer to struct rtl_priv structure

@@ -900,59 +900,6 @@ static VOID _InitAntenna_Selection_8812A(struct rtl_priv *Adapter)
 
 }
 
-/*-----------------------------------------------------------------------------
- * Function:	HwSuspendModeEnable92Cu()
- *
- * Overview:	HW suspend mode switch.
- *
- * Input:		NONE
- *
- * Output:	NONE
- *
- * Return:	NONE
- *
- * Revised History:
- *	When		Who		Remark
- *	08/23/2010	MHC		HW suspend mode switch test..
- *---------------------------------------------------------------------------*/
-static VOID HwSuspendModeEnable_8812AU(struct rtl_priv *rtlpriv, uint8_t Type)
-{
-	/* PRT_USB_DEVICE 		pDevice = GET_RT_USB_DEVICE(rtlpriv); */
-	u16	reg = rtl_read_word(rtlpriv, REG_GPIO_MUXCFG);
-
-	/* ULLI WTF ??? */
-
-	/* if (!pDevice->RegUsbSS) */
-	{
-		return;
-	}
-
-	/*
-	 * 2010/08/23 MH According to Alfred's suggestion, we need to to prevent HW
-	 * to enter suspend mode automatically. Otherwise, it will shut down major power
-	 * domain and 8051 will stop. When we try to enter selective suspend mode, we
-	 * need to prevent HW to enter D2 mode aumotmatically. Another way, Host will
-	 * issue a S10 signal to power domain. Then it will cleat SIC setting(from Yngli).
-	 * We need to enable HW suspend mode when enter S3/S4 or disable. We need
-	 * to disable HW suspend mode for IPS/radio_off.
-	 *
-	 * RT_TRACE(COMP_RF, DBG_LOUD, ("HwSuspendModeEnable92Cu = %d\n", Type));
-	 */
-	if (Type == _FALSE) {
-		reg |= BIT14;
-		/* RT_TRACE(COMP_RF, DBG_LOUD, ("REG_GPIO_MUXCFG = %x\n", reg)); */
-		rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, reg);
-		reg |= BIT12;
-		/* RT_TRACE(COMP_RF, DBG_LOUD, ("REG_GPIO_MUXCFG = %x\n", reg)); */
-		rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, reg);
-	} else {
-		reg &= (~BIT12);
-		rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, reg);
-		reg &= (~BIT14);
-		rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, reg);
-	}
-}
-
 rt_rf_power_state RfOnOffDetect(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);

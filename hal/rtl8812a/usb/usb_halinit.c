@@ -1577,13 +1577,13 @@ VOID hal_ReadIDs_8812AU(struct rtl_priv *Adapter, u8 *PROMContent,
 	}
 
 	if ((efuse->eeprom_vid == 0x050D) && (efuse->EEPROMPID == 0x1106))		/* SerComm for Belkin. */
-		pEEPROM->CustomerID = RT_CID_819x_Sercomm_Belkin;	/* ULLI : RTL8812 */
+		pEEPROM->CustomerID = RT_CID_Sercomm_Belkin;	/* ULLI : RTL8812 */
 	else if ((efuse->eeprom_vid == 0x0846) && (efuse->EEPROMPID == 0x9051))	/* SerComm for Netgear. */
-		pEEPROM->CustomerID = RT_CID_819x_Sercomm_Netgear;	/* ULLI :  posible typo for pid maybe 0x9052 */
+		pEEPROM->CustomerID = RT_CID_Sercomm_Netgear;	/* ULLI :  posible typo for pid maybe 0x9052 */
 	else if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
-		pEEPROM->CustomerID = RT_CID_819x_ALPHA_Dlink;		/* ULLI : RTL8812 */
+		pEEPROM->CustomerID = RT_CID_ALPHA_Dlink;	/* ULLI : RTL8812 */
 	else if ((efuse->eeprom_vid == 0x0B05) && (efuse->EEPROMPID == 0x17D2))	/* Edimax for ASUS */
-		pEEPROM->CustomerID = RT_CID_819x_Edimax_ASUS;		/* ULLI : RTL8812 */
+		pEEPROM->CustomerID = RT_CID_Edimax_ASUS;	/* ULLI : RTL8812 */
 
 	DBG_871X("VID = 0x%04X, PID = 0x%04X\n", efuse->eeprom_vid, efuse->EEPROMPID);
 	DBG_871X("Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->EEPROMCustomerID, efuse->EEPROMSubCustomerID);
@@ -1659,19 +1659,19 @@ VOID hal_CustomizedBehavior_8812AU(struct rtl_priv *Adapter)
 
 	/* ULLI check RT_CID_819x values */
 
-	case RT_CID_819x_Sercomm_Belkin:
+	case RT_CID_Sercomm_Belkin:
 		pledpriv->LedStrategy = SW_LED_MODE9;
 		break;
 
-	case RT_CID_819x_Sercomm_Netgear:
+	case RT_CID_Sercomm_Netgear:
 		pledpriv->LedStrategy = SW_LED_MODE10;
 		break;
 
-	case RT_CID_819x_ALPHA_Dlink:	/* add by ylb 20121012 for customer led for alpha */
+	case RT_CID_ALPHA_Dlink:	/* add by ylb 20121012 for customer led for alpha */
 		pledpriv->LedStrategy = SW_LED_MODE1;
 		break;
 
-	case RT_CID_819x_Edimax_ASUS:
+	case RT_CID_Edimax_ASUS:
 		pledpriv->LedStrategy = SW_LED_MODE11;
 		break;
 

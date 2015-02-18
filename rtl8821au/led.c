@@ -150,7 +150,7 @@ void SwLedBlink1(struct rtl_led *pLed)
 	u8					bStopBlinking = _FALSE;
 
 	u32 uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA; //add by ylb 20121012 for customer led for alpha
-	if(pEEPROM->CustomerID == RT_CID_819x_ALPHA_Dlink)
+	if(pEEPROM->CustomerID == RT_CID_ALPHA_Dlink)
 		uLedBlinkNoLinkInterval= LED_BLINK_NO_LINK_INTERVAL_ALPHA_500MS;
 
 	if(pEEPROM->CustomerID == RT_CID_819x_CAMEO)
@@ -2176,7 +2176,7 @@ static void SwLedControlMode1(struct rtl_priv *padapter, enum led_ctl_mode LedAc
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
 	u32 uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA; //add by ylb 20121012 for customer led for alpha
-	if(pEEPROM->CustomerID == RT_CID_819x_ALPHA_Dlink)
+	if(pEEPROM->CustomerID == RT_CID_ALPHA_Dlink)
 		uLedBlinkNoLinkInterval= LED_BLINK_NO_LINK_INTERVAL_ALPHA_500MS;
 
 	if(pEEPROM->CustomerID == RT_CID_819x_CAMEO)

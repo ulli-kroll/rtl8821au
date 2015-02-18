@@ -75,7 +75,7 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_819x_Lenovo = 19,
 	RT_CID_819x_QMI = 20,
 	RT_CID_819x_Edimax_Belkin = 21,
-	RT_CID_819x_Sercomm_Belkin = 22,
+	RT_CID_Sercomm_Belkin = 22,
 	RT_CID_819x_CAMEO1 = 23,
 	RT_CID_819x_MSI = 24,
 	RT_CID_819x_Acer = 25,
@@ -87,14 +87,14 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_819x_CLEVO = 32,
 	RT_CID_819x_DELL = 33,
 	RT_CID_819x_PRONETS = 34,
-	RT_CID_819x_Edimax_ASUS = 35,
+	RT_CID_Edimax_ASUS = 35,
 	RT_CID_NETGEAR = 36,
 	RT_CID_819x_Xavi = 39,
 	RT_CID_LENOVO_CHINA = 40,
 	RT_CID_INTEL_CHINA = 41,
 	RT_CID_TPLINK_HPWR = 42,
-	RT_CID_819x_Sercomm_Netgear = 43,
-	RT_CID_819x_ALPHA_Dlink = 44,//add by ylb 20121012 for customer led for alpha
+	RT_CID_Sercomm_Netgear = 43,
+	RT_CID_ALPHA_Dlink = 44,//add by ylb 20121012 for customer led for alpha
 	RT_CID_WNC_NEC = 45,//add by page for NEC
 }RT_CUSTOMER_ID, *PRT_CUSTOMER_ID;
 

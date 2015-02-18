@@ -153,9 +153,6 @@ void SwLedBlink1(struct rtl_led *pLed)
 	if(pEEPROM->CustomerID == RT_CID_ALPHA_Dlink)
 		uLedBlinkNoLinkInterval= LED_BLINK_NO_LINK_INTERVAL_ALPHA_500MS;
 
-	if(pEEPROM->CustomerID == RT_CID_819x_CAMEO)
-		pLed = &(ledpriv->SwLed1);
-
 	// Change LED according to BlinkingLedState specified.
 	if( pLed->BlinkingLedState == RTW_LED_ON )
 	{
@@ -2179,9 +2176,6 @@ static void SwLedControlMode1(struct rtl_priv *padapter, enum led_ctl_mode LedAc
 	if(pEEPROM->CustomerID == RT_CID_ALPHA_Dlink)
 		uLedBlinkNoLinkInterval= LED_BLINK_NO_LINK_INTERVAL_ALPHA_500MS;
 
-	if(pEEPROM->CustomerID == RT_CID_819x_CAMEO)
-		pLed = &(ledpriv->SwLed1);
-
 	switch(LedAction)
 	{
 		case LED_CTL_POWER_ON:
@@ -3127,9 +3121,6 @@ static void SwLedControlMode5(struct rtl_priv *padapter, enum led_ctl_mode LedAc
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
-
-	if(pEEPROM->CustomerID == RT_CID_819x_CAMEO)
-		pLed = &(ledpriv->SwLed1);
 
 	switch(LedAction)
 	{

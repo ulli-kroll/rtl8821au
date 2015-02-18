@@ -46,7 +46,7 @@ FUTURE
 -------
 
 To be more precisely :
-The new API *will* be ieee80211 framework.
+The new API *will* be mac80211/cfg80211 framework.
 So no support for the iw tool, thus no support for other modes as STA and AP
 
 I'm currently rewriting the hal layer, the met with the hal layer in

@@ -159,7 +159,6 @@ typedef	enum _LED_STRATEGY_USB{
 	SW_LED_MODE10 = 10, //for Netgear A6200V2
 	SW_LED_MODE11 = 11, //for Edimax / ASUS
 	SW_LED_MODE13 = 13, //for Netgear A6100, 8811Au
-	HW_LED = 14, // HW control 2 LEDs, LED0 and LED1 (there are 4 different control modes, see MAC.CONFIG1 for details.)
 }LED_STRATEGY_USB, *PLED_STRATEGY_USB;
 
 

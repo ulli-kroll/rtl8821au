@@ -751,22 +751,6 @@ static VOID _InitBeaconMaxError_8812A(struct rtl_priv *Adapter, BOOLEAN	InfraMod
 #endif
 }
 
-
-static void _InitHWLed(struct rtl_priv *Adapter)
-{
-	struct rtl_led_ctl *pledpriv = &(Adapter->ledpriv);
-
-	if (pledpriv->LedStrategy != HW_LED)
-		return;
-
-/*
- * HW led control
- * to do ....
- * must consider cases of antenna diversity/ commbo card/solo card/mini card
- */
-
-}
-
 static VOID _InitRDGSetting_8812A(struct rtl_priv *Adapter)
 {
 	rtl_write_byte(Adapter, REG_RD_CTRL, 0xFF);
@@ -1241,9 +1225,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 	rtl_write_word(Adapter, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	/* unit: 256us. 3s */
 #endif
 #endif
-
-
-	_InitHWLed(Adapter);
 
 	/*
 	 * d. Initialize BB related configurations.

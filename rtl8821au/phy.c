@@ -2482,9 +2482,9 @@ static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel
 		break;
 	}
 
-	if (BAND_ON_2_4G  && rateSection > 3)
+	if (Band == BAND_ON_2_4G  && rateSection > 3)
 		DBG_871X("Wrong rate 0x%x: No VHT in 2.4G Band\n", DataRate);
-	if (BAND_ON_5G  && rateSection == 0)
+	if (Band == BAND_ON_5G  && rateSection == 0)
 		DBG_871X("Wrong rate 0x%x: No CCK in 5G Band\n", DataRate);
 
 	/*

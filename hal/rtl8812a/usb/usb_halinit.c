@@ -1804,10 +1804,6 @@ VOID hal_ReadRFType_8812A(struct rtl_priv *Adapter)
 	 */
 }
 
-VOID hal_CustomizedBehavior_8812AUsb(struct rtl_priv * Adapter)
-{
-}
-
 void ReadAdapterInfo8812AU(struct rtl_priv *Adapter)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
@@ -1819,9 +1815,6 @@ void ReadAdapterInfo8812AU(struct rtl_priv *Adapter)
 
 	/* We need to define the RF type after all PROM value is recognized. */
 	hal_ReadRFType_8812A(Adapter);
-
-	/* 2011/02/09 MH We gather the same value for all USB series IC. */
-	hal_CustomizedBehavior_8812AUsb(Adapter);
 
 	DBG_871X("ReadAdapterInfo8812AU <====\n");
 }

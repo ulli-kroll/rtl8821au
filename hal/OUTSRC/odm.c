@@ -222,6 +222,8 @@ void odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm);
  */
 void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 {
+	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
+
 	odm_CommonInfoSelfUpdate(pDM_Odm);
 	odm_FalseAlarmCounterStatistics(pDM_Odm);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
@@ -230,7 +232,6 @@ void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 
 	odm_DIG(pDM_Odm);
 
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 	odm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
 
 	odm_CCKPacketDetectionThresh(pDM_Odm);

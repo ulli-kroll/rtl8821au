@@ -73,6 +73,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *padapter, uint8_t ElementID, uin
 	uint32_t h2c_cmd = 0;
 	uint32_t h2c_cmd_ex = 0;
 	int32_t ret = _FAIL;
+	int _unused;
 
 	pHalData = GET_HAL_DATA(padapter);
 
@@ -82,7 +83,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *padapter, uint8_t ElementID, uin
 		return ret;
 	}
 
-	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex));
+	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex));
 
 	if (!pCmdBuffer) {
 		goto exit;

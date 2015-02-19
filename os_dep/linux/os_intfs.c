@@ -835,6 +835,7 @@ u16 rtw_recv_select_queue(struct sk_buff *skb)
 u32 rtw_start_drv_threads(struct rtl_priv *padapter)
 {
 	u32 _status = _SUCCESS;
+	int _unused;
 
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+rtw_start_drv_threads\n"));
 
@@ -843,7 +844,7 @@ u32 rtw_start_drv_threads(struct rtl_priv *padapter)
 		if (IS_ERR(padapter->cmdThread))
 			_status = _FAIL;
 		else
-			down_interruptible(&padapter->cmdpriv.terminate_cmdthread_sema); /* wait for cmd_thread to run */
+			_unused = down_interruptible(&padapter->cmdpriv.terminate_cmdthread_sema); /* wait for cmd_thread to run */
 	}
 	return _status;
 
@@ -851,13 +852,15 @@ u32 rtw_start_drv_threads(struct rtl_priv *padapter)
 
 void rtw_stop_drv_threads(struct rtl_priv *padapter)
 {
+	int _unused;
+	
 	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("+rtw_stop_drv_threads\n"));
 
 	/* Below is to termindate rtw_cmd_thread & event_thread... */
 	up(&padapter->cmdpriv.cmd_queue_sema);
 	/* up(&padapter->cmdpriv.cmd_done_sema); */
 	if (padapter->cmdThread) {
-		down_interruptible(&padapter->cmdpriv.terminate_cmdthread_sema);
+		_unused = down_interruptible(&padapter->cmdpriv.terminate_cmdthread_sema);
 	}
 }
 
@@ -1207,10 +1210,12 @@ netdev_open_error:
 int netdev_open(struct net_device *ndev)
 {
 	int ret;
+	int _unused;
+	
 	struct rtl_priv *padapter =  rtl_priv(ndev);
 
 	/* ULLI: orignal driver doesn't use the return value */
-	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->hw_init_mutex));
+	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->hw_init_mutex));
 	ret = _netdev_open(ndev);
 	mutex_unlock(&(adapter_to_dvobj(padapter)->hw_init_mutex));
 

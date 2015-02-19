@@ -511,8 +511,9 @@ uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset)
 void SelectChannel(struct rtl_priv *padapter, unsigned char channel)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+	int _unused;
 
-	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
+	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
 
 	//saved channel info
 	rtw_set_oper_ch(padapter, channel);
@@ -525,8 +526,9 @@ void SelectChannel(struct rtl_priv *padapter, unsigned char channel)
 void SetBWMode(struct rtl_priv *padapter, unsigned short bwmode, unsigned char channel_offset)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+	int _unused;
 
-	mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setbw_mutex));
+	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setbw_mutex));
 
 	//saved bw info
 	rtw_set_oper_bw(padapter, bwmode);
@@ -541,6 +543,7 @@ void set_channel_bwmode(struct rtl_priv *padapter, unsigned char channel, unsign
 {
 	uint8_t center_ch, chnl_offset80 = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+	int _unused;
 
 	if ( padapter->bNotifyChannelChange )
 	{
@@ -561,7 +564,7 @@ void set_channel_bwmode(struct rtl_priv *padapter, unsigned char channel, unsign
 
 	//set Channel
 
-	 mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
+	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
 
 	//saved channel/bw info
 	rtw_set_oper_ch(padapter, channel);

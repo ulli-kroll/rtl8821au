@@ -26,6 +26,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16
 	struct rtl_priv	*padapter = pintfhdl->padapter;
 	struct dvobj_priv  *pdvobjpriv = adapter_to_dvobj(padapter);
 	struct usb_device *udev=pdvobjpriv->pusbdev;
+	int _unused;
 
 	unsigned int pipe;
 	int status = 0;
@@ -51,7 +52,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16
 	}
 
 #ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	mutex_lock_interruptible(&pdvobjpriv->usb_vendor_req_mutex);
+	_unused = mutex_lock_interruptible(&pdvobjpriv->usb_vendor_req_mutex);
 #endif
 
 

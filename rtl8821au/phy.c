@@ -2364,18 +2364,23 @@ static s8 phy_GetChannelGroup(BAND_TYPE Band, uint8_t Channel)
 	return channelGroup;
 }
 
-static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *Adapter, uint32_t RegPwrTblSel,
-	BAND_TYPE Band, enum CHANNEL_WIDTH Bandwidth, enum radio_path RfPath,
-	uint8_t DataRate, uint8_t Channel)
+static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
+					   uint32_t RegPwrTblSel,	/* var not in rtlwifi */
+					   BAND_TYPE Band,
+					   enum CHANNEL_WIDTH Bandwidth,
+					   enum radio_path RfPath,
+					   uint8_t DataRate, uint8_t Channel)
 {
-	struct rtl_phy *rtlphy = rtl_phy(Adapter);
-	struct rtl_efuse *efuse = rtl_efuse(Adapter);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
-	s16				band = -1, regulation = -1, bandwidth = -1,
-					rfPath = -1, rateSection = -1, channelGroup = -1;
-	uint8_t				powerLimit = MAX_POWER_INDEX;
+	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 
-	if ((Adapter->registrypriv.RegEnableTxPowerLimit == 0 && efuse->EEPROMRegulatory != 1)
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);	/* get rid of this */
+
+	short band = -1, regulation = -1, bandwidth = -1,
+		rfPath = -1, rateSection = -1, channelGroup = -1;
+	uint8_t	powerLimit = MAX_POWER_INDEX;
+
+	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 0 && efuse->EEPROMRegulatory != 1)
 	   || efuse->EEPROMRegulatory == 2)
 		return MAX_POWER_INDEX;
 

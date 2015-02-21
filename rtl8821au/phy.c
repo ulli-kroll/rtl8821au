@@ -2364,7 +2364,7 @@ static s8 phy_GetChannelGroup(BAND_TYPE Band, uint8_t Channel)
 	return channelGroup;
 }
 
-static u8 PHY_GetPowerLimitValue(struct rtl_priv *Adapter, uint32_t RegPwrTblSel,
+static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *Adapter, uint32_t RegPwrTblSel,
 	BAND_TYPE Band, enum CHANNEL_WIDTH Bandwidth, enum radio_path RfPath,
 	uint8_t DataRate, uint8_t Channel)
 {
@@ -3059,7 +3059,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && efuse->EEPROMRegulatory != 2)
 		||  efuse->EEPROMRegulatory == 1) {
 			uint8_t limit = 0;
-			limit = PHY_GetPowerLimitValue(rtlpriv, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (enum radio_path)RFPath, Rate, Channel);
+			limit = _rtl8821au_phy_get_txpower_limit(rtlpriv, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (enum radio_path)RFPath, Rate, Channel);
 
 			if (Rate == MGN_VHT1SS_MCS8 || Rate == MGN_VHT1SS_MCS9  ||
 			    Rate == MGN_VHT2SS_MCS8 || Rate == MGN_VHT2SS_MCS9) {

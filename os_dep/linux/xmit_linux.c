@@ -302,10 +302,7 @@ int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 	int32_t res = 0;
 	u16 queue;
 
-	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("+xmit_enry\n"));
-
 	if (rtw_if_up(padapter) == _FALSE) {
-		RT_TRACE(_module_xmit_osdep_c_, _drv_err_, ("rtw_xmit_entry: rtw_if_up fail\n"));
 		goto drop_packet;
 	}
 
@@ -339,13 +336,11 @@ int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 	}
 
 	pxmitpriv->tx_pkts++;
-	RT_TRACE(_module_xmit_osdep_c_, _drv_info_, ("rtw_xmit_entry: tx_pkts=%d\n", (u32)pxmitpriv->tx_pkts));
 	goto exit;
 
 drop_packet:
 	pxmitpriv->tx_drop++;
 	dev_kfree_skb_any(pkt);
-	RT_TRACE(_module_xmit_osdep_c_, _drv_notice_, ("rtw_xmit_entry: drop, tx_drop=%d\n", (u32)pxmitpriv->tx_drop));
 
 exit:
 

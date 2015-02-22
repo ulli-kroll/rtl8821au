@@ -44,7 +44,6 @@ static int32_t _LLTWrite(struct rtl_priv *rtlpriv, uint32_t address, uint32_t da
 		}
 
 		if (count > POLLING_LLT_THRESHOLD) {
-			RT_TRACE(_module_hal_init_c_, _drv_err_, ("Failed to polling write LLT done at address %d!\n", address));
 			status = _FAIL;
 			break;
 		}
@@ -70,7 +69,6 @@ uint8_t _LLTRead(struct rtl_priv *rtlpriv, uint32_t address)
 		}
 
 		if (count > POLLING_LLT_THRESHOLD) {
-			RT_TRACE(_module_hal_init_c_, _drv_err_, ("Failed to polling read LLT done at address %d!\n", address));
 			break;
 		}
 	} while (count++);
@@ -202,9 +200,7 @@ static int _BlockWrite_8812(struct rtl_priv *rtlpriv, PVOID buffer, uint32_t buf
 	remainSize_p1 = buffSize % blockSize_p1;
 
 	if (blockCount_p1) {
-		RT_TRACE(_module_hal_init_c_, _drv_notice_,
-				("_BlockWrite: [P1] buffSize(%d) blockSize_p1(%d) blockCount_p1(%d) remainSize_p1(%d)\n",
-				buffSize, blockSize_p1, blockCount_p1, remainSize_p1));
+		;
 	}
 
 	for (i = 0; i < blockCount_p1; i++) {
@@ -223,9 +219,7 @@ static int _BlockWrite_8812(struct rtl_priv *rtlpriv, PVOID buffer, uint32_t buf
 		remainSize_p2 = remainSize_p1%blockSize_p2;
 
 		if (blockCount_p2) {
-				RT_TRACE(_module_hal_init_c_, _drv_notice_,
-						("_BlockWrite: [P2] buffSize_p2(%d) blockSize_p2(%d) blockCount_p2(%d) remainSize_p2(%d)\n",
-						(buffSize-offset), blockSize_p2, blockCount_p2, remainSize_p2));
+			;
 		}
 
 		for (i = 0; i < blockCount_p2; i++) {
@@ -241,10 +235,6 @@ static int _BlockWrite_8812(struct rtl_priv *rtlpriv, PVOID buffer, uint32_t buf
 		offset = (blockCount_p1 * blockSize_p1) + (blockCount_p2 * blockSize_p2);
 
 		blockCount_p3 = remainSize_p2 / blockSize_p3;
-
-		RT_TRACE(_module_hal_init_c_, _drv_notice_,
-				("_BlockWrite: [P3] buffSize_p3(%d) blockSize_p3(%d) blockCount_p3(%d)\n",
-				(buffSize-offset), blockSize_p3, blockCount_p3));
 
 		for (i = 0 ; i < blockCount_p3; i++) {
 			ret = rtl_write_byte(rtlpriv, (FW_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
@@ -306,7 +296,6 @@ static int _WriteFW_8812(struct rtl_priv *rtlpriv, PVOID buffer, uint32_t size)
 			goto exit;
 
 	}
-	RT_TRACE(_module_hal_init_c_, _drv_info_, ("_WriteFW Done- for Normal chip.\n"));
 
 exit:
 	return ret;
@@ -396,8 +385,6 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 
 	pDM_Odm = &pHalData->odmpriv;
 
-	RT_TRACE(_module_hal_init_c_, _drv_info_, ("+%s\n", __FUNCTION__));
-
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
 		ODM_ReadFirmware_MP_8812A_FW_NIC(&rtlhal->pfirmware, &rtlhal->fwsize);
 	if (pDM_Odm->SupportICType == ODM_RTL8821)
@@ -407,7 +394,6 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 
 	if (rtlhal->fwsize > FW_SIZE_8812) {
 			rtStatus = _FAIL;
-			RT_TRACE(_module_hal_init_c_, _drv_err_, ("Firmware size exceed 0x%X. Check it.\n", FW_SIZE_8812));
 			goto Exit;
 		}
 
@@ -472,7 +458,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 		DBG_871X("DL Firmware failed!\n");
 		goto Exit;
 	}
-	RT_TRACE(_module_hal_init_c_, _drv_info_, ("Firmware is ready to run!\n"));
+
 
 Exit:
 

@@ -104,7 +104,6 @@ void _rtw_read_port(struct rtl_priv *adapter, uint32_t addr, uint32_t cnt,
 
 	if ((adapter->bDriverStopped == _TRUE)
 	   || (adapter->bSurpriseRemoved == _TRUE)) {
-		RT_TRACE(_module_rtl871x_io_c_, _drv_info_, ("rtw_read_port:bDriverStopped(%d) OR bSurpriseRemoved(%d)", adapter->bDriverStopped, adapter->bSurpriseRemoved));
 		return;
 	}
 

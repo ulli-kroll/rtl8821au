@@ -190,7 +190,6 @@ EFUSE_Write1Byte(
 	uint32_t	k=0;
 	u16	contentLen=0;
 
-	//RT_TRACE(COMP_EFUSE, DBG_LOUD, ("Addr=%x Data =%x\n", Address, Value));
 	rtlpriv->HalFunc->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen);
 
 	if( Address < contentLen)	//E-fuse 512Byte

@@ -44,12 +44,10 @@ void SwLedBlink1(struct rtl_led *pLed)
 	if( pLed->BlinkingLedState == RTW_LED_ON )
 	{
 		SwLedOn(padapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,( "Blinktimes (%d): turn on\n", pLed->BlinkTimes));
 	}
 	else
 	{
 		SwLedOff(padapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn off\n", pLed->BlinkTimes));
 	}
 
 
@@ -64,7 +62,6 @@ void SwLedBlink1(struct rtl_led *pLed)
 			}
 			else if(!pLed1->bLedOn)
 				SwLedOn(padapter, pLed1);
-			RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (): turn on pLed1\n"));
 		}
 		else
 		{
@@ -75,7 +72,6 @@ void SwLedBlink1(struct rtl_led *pLed)
 			}
 			else if(pLed1->bLedOn)
 				SwLedOff(padapter, pLed1);
-			RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (): turn off pLed1\n"));
 		}
 	}
 
@@ -119,7 +115,6 @@ void SwLedBlink1(struct rtl_led *pLed)
 					else
 						pLed->BlinkingLedState = RTW_LED_ON;
 					_set_timer(&(pLed->BlinkTimer), LED_BLINK_LINK_INTERVAL_ALPHA);
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("CurrLedState %d\n", pLed->CurrLedState));
 
 				}
 				else if(check_fwstate(pmlmepriv, _FW_LINKED)== _FALSE)
@@ -131,7 +126,6 @@ void SwLedBlink1(struct rtl_led *pLed)
 					else
 						pLed->BlinkingLedState = RTW_LED_ON;
 					_set_timer(&(pLed->BlinkTimer), uLedBlinkNoLinkInterval);
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("CurrLedState %d\n", pLed->CurrLedState));
 				}
 				pLed->bLedScanBlinkInProgress = _FALSE;
 			}
@@ -173,7 +167,6 @@ void SwLedBlink1(struct rtl_led *pLed)
 					else
 						pLed->BlinkingLedState = RTW_LED_ON;
 					_set_timer(&(pLed->BlinkTimer), LED_BLINK_LINK_INTERVAL_ALPHA);
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("CurrLedState %d\n", pLed->CurrLedState));
 				}
 				else if(check_fwstate(pmlmepriv, _FW_LINKED)== _FALSE)
 				{
@@ -184,7 +177,6 @@ void SwLedBlink1(struct rtl_led *pLed)
 					else
 						pLed->BlinkingLedState = RTW_LED_ON;
 					_set_timer(&(pLed->BlinkTimer), uLedBlinkNoLinkInterval);
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("CurrLedState %d\n", pLed->CurrLedState));
 				}
 				pLed->BlinkTimes = 0;
 				pLed->bLedBlinkInProgress = _FALSE;
@@ -241,7 +233,6 @@ void SwLedBlink1(struct rtl_led *pLed)
 					else
 						pLed->BlinkingLedState = RTW_LED_ON;
 					_set_timer(&(pLed->BlinkTimer), LED_BLINK_LINK_INTERVAL_ALPHA);
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("CurrLedState %d\n", pLed->CurrLedState));
 				}
 				pLed->bLedWPSBlinkInProgress = _FALSE;
 			}
@@ -265,12 +256,10 @@ void SwLedBlink9(struct rtl_led *pLed)
 	if( pLed->BlinkingLedState == RTW_LED_ON )
 	{
 		SwLedOn(Adapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn on\n", pLed->BlinkTimes));
 	}
 	else
 	{
 		SwLedOff(Adapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn off\n", pLed->BlinkTimes));
 	}
 
 
@@ -324,7 +313,6 @@ void SwLedBlink9(struct rtl_led *pLed)
 					pLed->CurrLedState = LED_BLINK_ALWAYS_ON;
 
 					_set_timer(&(pLed->BlinkTimer), LED_BLINK_LINK_INTERVAL_ALPHA);
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("CurrLedState %d\n", pLed->CurrLedState));
 				}
 				else if(check_fwstate(pmlmepriv, _FW_LINKED)== _FALSE)
 				{
@@ -335,7 +323,6 @@ void SwLedBlink9(struct rtl_led *pLed)
 					else
 						pLed->BlinkingLedState = RTW_LED_ON;
 					_set_timer(&(pLed->BlinkTimer), LED_BLINK_NO_LINK_INTERVAL_ALPHA);
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("CurrLedState %d\n", pLed->CurrLedState));
 				}
 				pLed->BlinkTimes = 0;
 				pLed->bLedBlinkInProgress = _FALSE;
@@ -499,7 +486,6 @@ void SwLedBlink9(struct rtl_led *pLed)
 			{
 				if( Adapter->pwrctrlpriv.rf_pwrstate != rf_on && Adapter->pwrctrlpriv.rfoff_reason > RF_CHANGE_BY_PS)
 				{
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("RFOff Status \n"));
 					SwLedOff(Adapter, pLed);
 				}
 				else
@@ -564,7 +550,6 @@ void SwLedBlink9(struct rtl_led *pLed)
 			break;
 	}
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink9 CurrLedState %d\n", pLed->CurrLedState));
 }
 
 //page added for Netgear A6200V2. 20120827
@@ -579,12 +564,10 @@ void SwLedBlink10(struct rtl_led *pLed)
 	if( pLed->BlinkingLedState == RTW_LED_ON )
 	{
 		SwLedOn(Adapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn on\n", pLed->BlinkTimes));
 	}
 	else
 	{
 		SwLedOff(Adapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn off\n", pLed->BlinkTimes));
 	}
 
 
@@ -639,7 +622,6 @@ void SwLedBlink10(struct rtl_led *pLed)
 					pLed->BlinkingLedState = RTW_LED_OFF;
 
 					_set_timer(&(pLed->BlinkTimer), LED_BLINK_NO_LINK_INTERVAL_ALPHA);
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("CurrLedState %d\n", pLed->CurrLedState));
 				}
 				pLed->BlinkTimes = 0;
 				pLed->bLedBlinkInProgress = _FALSE;
@@ -765,7 +747,6 @@ void SwLedBlink10(struct rtl_led *pLed)
 			{
 				if( Adapter->pwrctrlpriv.rf_pwrstate != rf_on && Adapter->pwrctrlpriv.rfoff_reason > RF_CHANGE_BY_PS)
 				{
-					RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("RFOff Status \n"));
 					SwLedOff(Adapter, pLed);
 				}
 				else
@@ -829,9 +810,6 @@ void SwLedBlink10(struct rtl_led *pLed)
 		default:
 			break;
 	}
-
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink10 CurrLedState %d\n", pLed->CurrLedState));
-
 }
 
 void SwLedBlink11(struct rtl_led *pLed)
@@ -844,12 +822,10 @@ void SwLedBlink11(struct rtl_led *pLed)
 	if( pLed->BlinkingLedState == RTW_LED_ON )
 	{
 		SwLedOn(Adapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn on\n", pLed->BlinkTimes));
 	}
 	else
 	{
 		SwLedOff(Adapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn off\n", pLed->BlinkTimes));
 	}
 
 	switch(pLed->CurrLedState)
@@ -920,7 +896,6 @@ void SwLedBlink11(struct rtl_led *pLed)
 			break;
 	}
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink5 CurrLedState %d\n", pLed->CurrLedState));
 }
 
 VOID SwLedBlink13(IN struct rtl_led *pLed)
@@ -934,15 +909,12 @@ VOID SwLedBlink13(IN struct rtl_led *pLed)
 	if( pLed->BlinkingLedState == RTW_LED_ON )
 	{
 		SwLedOn(Adapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn on\n", pLed->BlinkTimes));
 	}
 	else
 	{
 		if(pLed->CurrLedState != LED_BLINK_WPS_STOP)
 			SwLedOff(Adapter, pLed);
-		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn off\n", pLed->BlinkTimes));
 	}
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("!!! SwLedBlink13 CurrLedState %d, bLedWPSBlinkInProgress %d, bLedBlinkInProgress %d\n", pLed->CurrLedState,pLed->bLedWPSBlinkInProgress,pLed->bLedBlinkInProgress));
 	switch(pLed->CurrLedState)
 	{
 		case LED_BLINK_LINK_IN_PROCESS:
@@ -992,7 +964,6 @@ VOID SwLedBlink13(IN struct rtl_led *pLed)
 			break;
 	}
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("<==== blink13\n"));
 
 }
 
@@ -1344,8 +1315,6 @@ static void SwLedControlMode1(struct rtl_priv *padapter, enum led_ctl_mode LedAc
 			break;
 
 	}
-
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Led %d\n", pLed->CurrLedState));
 }
 
 
@@ -1689,8 +1658,6 @@ void SwLedControlMode9(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 			break;
 
 	}
-
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Led control mode 9 Led %d\n", pLed->CurrLedState));
 }
 
 //page added for Netgear A6200V2, 20120827
@@ -1904,8 +1871,6 @@ void SwLedControlMode10(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 			break;
 
 	}
-
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Led control mode 10 Led %d\n", pLed->CurrLedState));
 }
 
  //Edimax-ASUS, added by Page, 20121221
@@ -2008,8 +1973,6 @@ void SwLedControlMode11(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 			break;
 
 	}
-
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Led mode 1 CurrLedState %d\n", pLed->CurrLedState));
 }
 
 
@@ -2021,7 +1984,6 @@ VOID SwLedControlMode13(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Led control mode 13 CurrLedState %d, LedAction %d\n", pLed->CurrLedState,LedAction));
 	switch(LedAction)
 	{
 		case LED_CTL_LINK:
@@ -2232,8 +2194,6 @@ void LedControlUSB(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 		default:
 			break;
 	}
-
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("LedStrategy:%d, LedAction %d\n", ledpriv->LedStrategy,LedAction));
 }
 
 //
@@ -2299,13 +2259,11 @@ static void SwLedOn_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 	 || RT_GetInterfaceSelection(padapter) == INTF_SEL3_USB_Solo
 	 || RT_GetInterfaceSelection(padapter) == INTF_SEL4_USB_Combo) {
 		LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
-		RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("In SwLedON,LedAddr:%X LEDPIN=%d\n", REG_LEDCFG2, pLed->LedPin));
 		switch (pLed->LedPin) {
 		case LED_PIN_GPIO0:
 			break;
 
 		case LED_PIN_LED0:
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("In SwLedOn,LedAddr:%X LEDPIN=%d\n", REG_LEDCFG2, pLed->LedPin));
 			LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
 			rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
 			break;
@@ -2326,24 +2284,20 @@ static void SwLedOn_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 			if (pHalData->AntDivCfg == 0) {
 				LedCfg = rtl_read_byte(padapter, REG_LEDCFG0);
 				rtl_write_byte(padapter, REG_LEDCFG0, (LedCfg&0x70)|BIT5); /* SW control led0 on. */
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED0 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG0)));
 			} else {
 				LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
 				rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg&0xe0)|BIT7|BIT6|BIT5); /* SW control led0 on. */
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED0 Addr 0x%x,  0x%x\n", REG_LEDCFG2, rtl_read_dword(padapter, REG_LEDCFG2)));
 			}
 			break;
 
 		case LED_PIN_LED1:
 			LedCfg = rtl_read_byte(padapter, (REG_LEDCFG1));
 			rtl_write_byte(padapter, (REG_LEDCFG1), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED1 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG1)));
 			break;
 
 		case LED_PIN_LED2:
 			LedCfg = rtl_read_byte(padapter, (REG_LEDCFG2));
 			rtl_write_byte(padapter, (REG_LEDCFG2), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOn LED2 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG2)));
 			break;
 
 		default:
@@ -2371,7 +2325,6 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 	if (RT_GetInterfaceSelection(padapter) == INTF_SEL2_MINICARD
 	 || RT_GetInterfaceSelection(padapter) == INTF_SEL3_USB_Solo
 	 || RT_GetInterfaceSelection(padapter) == INTF_SEL4_USB_Combo) {
-		RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("In SwLedOff,LedAddr:%X LEDPIN=%d\n", REG_LEDCFG2, pLed->LedPin));
 		LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
 
 		/*
@@ -2414,12 +2367,10 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 				LedCfg = rtl_read_byte(padapter, REG_LEDCFG0);
 				LedCfg &= 0x70; 	/* Set to software control. */
 				rtl_write_byte(padapter, REG_LEDCFG0, (LedCfg|BIT3|BIT5));
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED0 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG0)));
 			} else {
 				LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
 				LedCfg &= 0xe0; 	/* Set to software control. */
 				rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT6|BIT5));
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED0 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG2)));
 			}
 			break;
 
@@ -2427,14 +2378,12 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 			LedCfg = rtl_read_byte(padapter, REG_LEDCFG1);
 			LedCfg &= 0x70; 	/* Set to software control. */
 			rtl_write_byte(padapter, REG_LEDCFG1, (LedCfg|BIT3|BIT5));
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED1 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG1)));
 			break;
 
 		case LED_PIN_LED2:
 			LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
 			LedCfg &= 0x70; 	/* Set to software control. */
 			rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("SwLedOff LED1 0x%x\n", rtl_read_dword(padapter, REG_LEDCFG2)));
 			break;
 
 		default:
@@ -2463,14 +2412,12 @@ static void SwLedOn_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 	 || RT_GetInterfaceSelection(Adapter) == INTF_SEL3_USB_Solo
 	 || RT_GetInterfaceSelection(Adapter) == INTF_SEL4_USB_Combo) {
 		LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
-		RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("In SwLedON,LedAddr:%X LEDPIN=%d\n", REG_LEDCFG2, pLed->LedPin));
 		switch (pLed->LedPin) {
 		case LED_PIN_GPIO0:
 			break;
 
 		case LED_PIN_LED0:
 
-			RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("In SwLedOn,LedAddr:%X LEDPIN=%d\n", REG_LEDCFG2, pLed->LedPin));
 			LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
 			rtl_write_byte(Adapter, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
 			break;
@@ -2494,7 +2441,6 @@ static void SwLedOn_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 			if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 				LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
 				rtl_write_byte(Adapter, REG_LEDCFG2, ((LedCfg&0x20) & (~BIT3))|BIT5); /* SW control led0 on. */
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("8821 SwLedOn LED2 0x%x\n", rtl_read_dword(Adapter, REG_LEDCFG0)));
 			}
 
 			break;
@@ -2525,7 +2471,6 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 	if (RT_GetInterfaceSelection(Adapter) == INTF_SEL2_MINICARD
 	 || RT_GetInterfaceSelection(Adapter) == INTF_SEL3_USB_Solo
 	 || RT_GetInterfaceSelection(Adapter) == INTF_SEL4_USB_Combo) {
-		RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("In SwLedOff,LedAddr:%X LEDPIN=%d\n", REG_LEDCFG2, pLed->LedPin));
 		LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
 
 		/*
@@ -2571,7 +2516,6 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 				LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
 				LedCfg &= 0x20; 	/* Set to software control. */
 				rtl_write_byte(Adapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
-				RT_TRACE(_module_rtl8712_led_c_, _drv_info_, ("8821  SwLedOff LED2 0x%x\n", rtl_read_dword(Adapter, REG_LEDCFG0)));
 			 }
 
 			break;

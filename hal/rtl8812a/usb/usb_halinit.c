@@ -981,7 +981,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 
 	status = _InitPowerOn8812AU(Adapter);
 	if (status == _FAIL) {
-		RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("Failed to init power on!\n"));
 		goto exit;
 	}
 
@@ -1000,7 +999,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter)
 
 	status =  InitLLTTable8812(Adapter, txpktbuf_bndy);
 	if (status == _FAIL) {
-		RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("Failed to init LLT table\n"));
 		goto exit;
 	}
 
@@ -1334,15 +1332,12 @@ unsigned int rtl8812au_inirp_init(struct rtl_priv *Adapter)
 
 	status = _SUCCESS;
 
-	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("===> usb_inirp_init \n"));
-
 	precvpriv->ff_hwaddr = RECV_BULK_IN_ADDR;
 
 	/* issue Rx irp to receive data */
 	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
 	for (i = 0; i < NR_RECVBUFF; i++) {
 		if (_read_port(pintfhdl, precvpriv->ff_hwaddr, 0, (unsigned char *) precvbuf) == _FALSE) {
-			RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("usb_rx_init: usb_read_port error \n"));
 			status = _FAIL;
 			goto exit;
 		}
@@ -1353,20 +1348,13 @@ unsigned int rtl8812au_inirp_init(struct rtl_priv *Adapter)
 
 exit:
 
-	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("<=== usb_inirp_init \n"));
-
 	return status;
 
 }
 
 unsigned int rtl8812au_inirp_deinit(struct rtl_priv *Adapter)
 {
-	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("\n ===> usb_rx_deinit \n"));
-
 	rtw_read_port_cancel(Adapter);
-
-	RT_TRACE(_module_hci_hal_init_c_, _drv_info_, ("\n <=== usb_rx_deinit \n"));
-
 	return _SUCCESS;
 }
 
@@ -1458,7 +1446,6 @@ VOID hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 			EFUSE_ShadowMapUpdate(rtlpriv, EFUSE_WIFI);
 		}
 	} else {	/* autoload fail */
-		RT_TRACE(_module_hci_hal_init_c_, _drv_notice_, ("AutoLoad Fail reported from CR9346!!\n"));
 		/*
 		 * pHalData->AutoloadFailFlag = _TRUE;
 		 * update to default value 0xFF

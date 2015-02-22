@@ -146,7 +146,6 @@
 #endif
 
 
-#define RT_TRACE(_Comp, _Level, Fmt) do{}while(0)
 #define _func_enter_ do{}while(0)
 #define _func_exit_ do{}while(0)
 #define RT_PRINT_DATA(_Comp, _Level, _TitleString, _HexData, _HexDataLen) do{}while(0)

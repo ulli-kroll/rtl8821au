@@ -354,15 +354,11 @@ static int32_t rtw_dump_xframe(struct rtl_priv *padapter, struct xmit_frame *pxm
 #endif
 	mem_addr = pxmitframe->buf_addr;
 
-	RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("rtw_dump_xframe()\n"));
-
 	for (t = 0; t < pattrib->nr_frags; t++) {
 		if (inner_ret != _SUCCESS && ret == _SUCCESS)
 			ret = _FAIL;
 
 		if (t != (pattrib->nr_frags - 1)) {
-			RT_TRACE(_module_rtl871x_xmit_c_, _drv_err_, ("pattrib->nr_frags=%d\n", pattrib->nr_frags));
-
 			sz = pxmitpriv->frag_len;
 			sz = sz - 4 - (psecuritypriv->sw_encrypt ? 0 : pattrib->icv_len);
 		} else {
@@ -389,7 +385,6 @@ static int32_t rtw_dump_xframe(struct rtl_priv *padapter, struct xmit_frame *pxm
 
 		rtw_count_tx_stats(padapter, pxmitframe, sz);
 
-		RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("rtw_write_port, w_sz=%d\n", w_sz));
 		/* DBG_8192C("rtw_write_port, w_sz=%d, sz=%d, txdesc_sz=%d, tid=%d\n", w_sz, sz, w_sz-sz, pattrib->priority); */
 
 		mem_addr += w_sz;
@@ -455,9 +450,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 	int res = _SUCCESS;
 #endif
 
-	RT_TRACE(_module_rtl8192c_xmit_c_, _drv_info_, ("+xmitframe_complete\n"));
-
-
 	/* check xmitbuffer is ok */
 	if (pxmitbuf == NULL) {
 		pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv);
@@ -484,9 +476,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 
 #ifndef IDEA_CONDITION
 		if (pxmitframe->frame_tag != DATA_FRAMETAG) {
-			RT_TRACE(_module_rtl8192c_xmit_c_, _drv_err_,
-				 ("xmitframe_complete: frame tag(%d) is not DATA_FRAMETAG(%d)!\n",
-				  pxmitframe->frame_tag, DATA_FRAMETAG));
 			/* rtw_free_xmitframe(pxmitpriv, pxmitframe); */
 			continue;
 		}
@@ -494,9 +483,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 		/* TID 0~15 */
 		if ((pxmitframe->attrib.priority < 0) ||
 		    (pxmitframe->attrib.priority > 15)) {
-			RT_TRACE(_module_rtl8192c_xmit_c_, _drv_err_,
-				 ("xmitframe_complete: TID(%d) should be 0~15!\n",
-				  pxmitframe->attrib.priority));
 			/* rtw_free_xmitframe(pxmitpriv, pxmitframe); */
 			continue;
 		}
@@ -599,9 +585,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 #ifndef IDEA_CONDITION
 		/*  suppose only data frames would be in queue */
 		if (pxmitframe->frame_tag != DATA_FRAMETAG) {
-			RT_TRACE(_module_rtl8192c_xmit_c_, _drv_err_,
-				 ("xmitframe_complete: frame tag(%d) is not DATA_FRAMETAG(%d)!\n",
-				  pxmitframe->frame_tag, DATA_FRAMETAG));
 			rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			continue;
 		}
@@ -609,9 +592,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 		/* TID 0~15 */
 		if ((pxmitframe->attrib.priority < 0) ||
 		    (pxmitframe->attrib.priority > 15)) {
-			RT_TRACE(_module_rtl8192c_xmit_c_, _drv_err_,
-				 ("xmitframe_complete: TID(%d) should be 0~15!\n",
-				  pxmitframe->attrib.priority));
 			rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			continue;
 		}
@@ -713,8 +693,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 	phwxmits = pxmitpriv->hwxmits;
 	hwentry = pxmitpriv->hwxmit_entry;
 
-	RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("xmitframe_complete()\n"));
-
 	if (pxmitbuf == NULL) {
 		pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv);
 		if (!pxmitbuf) {
@@ -741,8 +719,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 				/* DBG_8192C("==> pxmitframe->attrib.priority:%d\n",pxmitframe->attrib.priority); */
 				rtw_os_xmit_complete(padapter, pxmitframe);	/* always return ndis_packet after rtw_xmitframe_coalesce */
 			}
-
-			RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("xmitframe_complete(): rtw_dump_xframe\n"));
 
 			if (res == _SUCCESS) {
 				rtw_dump_xframe(padapter, pxmitframe);
@@ -833,7 +809,6 @@ enqueue:
 	_exit_critical_bh(&pxmitpriv->lock, &irqL);
 
 	if (res != _SUCCESS) {
-		RT_TRACE(_module_xmit_osdep_c_, _drv_err_, ("pre_xmitframe: enqueue xmitframe fail\n"));
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
 		/* Trick, make the statistics correct */

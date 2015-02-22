@@ -98,9 +98,6 @@ void _rtw_free_evt_priv (struct	evt_priv *pevtpriv)
 {
 _func_enter_;
 
-	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("+_rtw_free_evt_priv \n"));
-
-
 #ifdef CONFIG_C2H_WK
 	_cancel_workitem_sync(&pevtpriv->c2h_wk);
 	while(pevtpriv->c2h_wk_alive)
@@ -115,10 +112,7 @@ _func_enter_;
 	}
 #endif
 
-	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("-_rtw_free_evt_priv \n"));
-
 _func_exit_;
-
 }
 
 void _rtw_free_cmd_priv (struct	cmd_priv *pcmdpriv)
@@ -215,7 +209,6 @@ _func_exit_;
 void rtw_free_evt_priv (struct	evt_priv *pevtpriv)
 {
 _func_enter_;
-	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("rtw_free_evt_priv\n"));
 	_rtw_free_evt_priv(pevtpriv);
 _func_exit_;
 }
@@ -223,7 +216,6 @@ _func_exit_;
 void rtw_free_cmd_priv (struct	cmd_priv *pcmdpriv)
 {
 _func_enter_;
-	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("rtw_free_cmd_priv\n"));
 	_rtw_free_cmd_priv(pcmdpriv);
 _func_exit_;
 }
@@ -350,8 +342,6 @@ _func_enter_;
 	pcmdpriv->cmdthd_running=_TRUE;
 	up(&pcmdpriv->terminate_cmdthread_sema);
 
-	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("start r871x rtw_cmd_thread !!!!\n"));
-
 	while(1)
 	{
 		if (down_interruptible(&pcmdpriv->cmd_queue_sema))
@@ -415,7 +405,6 @@ post_process:
 			pcmd_callback = rtw_cmd_callback[pcmd->cmdcode].callback;
 			if(pcmd_callback == NULL)
 			{
-				RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("mlme_cmd_hdl(): pcmd_callback=0x%p, cmdcode=0x%x\n", pcmd_callback, pcmd->cmdcode));
 				rtw_free_cmd_obj(pcmd);
 			}
 			else
@@ -426,7 +415,6 @@ post_process:
 		}
 		else
 		{
-			RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("%s: cmdcode=0x%x callback not defined!\n", __FUNCTION__, pcmd->cmdcode));
 			rtw_free_cmd_obj(pcmd);
 		}
 
@@ -530,8 +518,6 @@ _func_enter_;
 	}
 
 	rtw_free_network_queue(padapter, _FALSE);
-
-	RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("%s: flush network queue\n", __FUNCTION__));
 
 	init_h2fwcmd_w_parm_no_rsp(ph2c, psurveyPara, GEN_CMD_CODE(_SiteSurvey));
 
@@ -693,8 +679,6 @@ _func_enter_;
 	}
 
 	init_h2fwcmd_w_parm_no_rsp(ph2c, psetphypara, _SetPhy_CMD_);
-
-	RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,("CH=%d, modem=%d", ch, modem));
 
 	psetphypara->modem = modem;
 	psetphypara->rfchannel = ch;
@@ -878,9 +862,9 @@ _func_enter_;
 	rtw_led_control(padapter, LED_CTL_START_TO_LINK);
 
 	if (pmlmepriv->assoc_ssid.SsidLength == 0){
-		RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,(" createbss for Any SSid:%s\n",pmlmepriv->assoc_ssid.Ssid));
+		;
 	} else {
-		RT_TRACE(_module_rtl871x_cmd_c_,_drv_info_,(" createbss for SSid:%s\n", pmlmepriv->assoc_ssid.Ssid));
+		;
 	}
 
 	pcmd = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
@@ -970,15 +954,14 @@ _func_enter_;
 	rtw_led_control(padapter, LED_CTL_START_TO_LINK);
 
 	if (pmlmepriv->assoc_ssid.SsidLength == 0){
-		RT_TRACE(_module_rtl871x_cmd_c_, _drv_info_, ("+Join cmd: Any SSid\n"));
+		;
 	} else {
-		RT_TRACE(_module_rtl871x_cmd_c_, _drv_notice_, ("+Join cmd: SSid=[%s]\n", pmlmepriv->assoc_ssid.Ssid));
+		;
 	}
 
 	pcmd = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if(pcmd==NULL){
 		res=_FAIL;
-		RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("rtw_joinbss_cmd: memory allocate for cmd_obj fail!!!\n"));
 		goto exit;
 	}
 	/* // for IEs is pointer
@@ -1021,8 +1004,6 @@ _func_enter_;
 			rtw_mfree(pcmd);
 
 		res=_FAIL;
-
-		RT_TRACE(_module_rtl871x_cmd_c_, _drv_err_, ("rtw_joinbss_cmd :psecnetwork==NULL!!!\n"));
 
 		goto exit;
 	}
@@ -1159,8 +1140,6 @@ uint8_t rtw_disassoc_cmd(struct rtl_priv*padapter, uint32_t	 deauth_timeout_ms, 
 	uint8_t res = _SUCCESS;
 
 _func_enter_;
-
-	RT_TRACE(_module_rtl871x_cmd_c_, _drv_notice_, ("+rtw_disassoc_cmd\n"));
 
 	/* prepare cmd parameter */
 	param = (struct disconnect_parm *)rtw_zmalloc(sizeof(*param));
@@ -1617,8 +1596,6 @@ uint8_t rtw_set_chplan_cmd(struct rtl_priv*padapter, uint8_t chplan, uint8_t enq
 
 _func_enter_;
 
-	RT_TRACE(_module_rtl871x_cmd_c_, _drv_notice_, ("+rtw_set_chplan_cmd\n"));
-
 	//check input parameter
 	if(!rtw_is_channel_plan_valid(chplan)) {
 		res = _FAIL;
@@ -1676,8 +1653,6 @@ uint8_t rtw_set_csa_cmd(struct rtl_priv*padapter, uint8_t new_ch_no)
 	uint8_t	res=_SUCCESS;
 
 _func_enter_;
-
-	RT_TRACE(_module_rtl871x_cmd_c_, _drv_notice_, ("+rtw_set_csa_cmd\n"));
 
 	pcmdobj = (struct	cmd_obj*)rtw_zmalloc(sizeof(struct	cmd_obj));
 	if(pcmdobj == NULL){
@@ -2322,7 +2297,6 @@ _func_enter_;
 	}
 	else if (pcmd->res != H2C_SUCCESS) {
 		_set_timer(&pmlmepriv->scan_to_timer, 1);
-		RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("\n ********Error: MgntActrtw_set_802_11_bssid_LIST_SCAN Fail ************\n\n."));
 	}
 
 	// free cmd
@@ -2342,8 +2316,6 @@ _func_enter_;
 		_enter_critical_bh(&pmlmepriv->lock, &irqL);
 		set_fwstate(pmlmepriv, _FW_LINKED);
 		_exit_critical_bh(&pmlmepriv->lock, &irqL);
-
-		RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("\n ***Error: disconnect_cmd_callback Fail ***\n."));
 
 		goto exit;
 	}
@@ -2371,7 +2343,6 @@ _func_enter_;
 	}
 	else if(pcmd->res != H2C_SUCCESS)
 	{
-		RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("********Error:rtw_select_and_join_from_scanned_queue Wait Sema  Fail ************\n"));
 		_set_timer(&pmlmepriv->assoc_timer, 1);
 	}
 
@@ -2394,7 +2365,6 @@ _func_enter_;
 
 	if((pcmd->res != H2C_SUCCESS))
 	{
-		RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("\n ********Error: rtw_createbss_cmd_callback  Fail ************\n\n."));
 		_set_timer(&pmlmepriv->assoc_timer, 1 );
 	}
 
@@ -2430,7 +2400,6 @@ _func_enter_;
 		psta = rtw_alloc_stainfo(&padapter->stapriv, pnetwork->MacAddress);
 		if (psta == NULL)
 		{
-			RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("\nCan't alloc sta_info when createbss_cmd_callback\n"));
 			goto createbss_cmd_fail ;
 		}
 		}
@@ -2448,7 +2417,6 @@ _func_enter_;
 			pwlan = rtw_get_oldest_wlan_network(&pmlmepriv->scanned_queue);
 			if( pwlan == NULL)
 			{
-				RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("\n Error:  can't get pwlan in rtw_joinbss_event_callback \n"));
 				_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
 				goto createbss_cmd_fail;
 			}
@@ -2501,7 +2469,6 @@ _func_enter_;
 
 	if(psta==NULL)
 	{
-		RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("\nERROR: rtw_setstaKey_cmdrsp_callback => can't get sta_info \n\n"));
 		goto exit;
 	}
 
@@ -2527,7 +2494,6 @@ _func_enter_;
 
 	if(psta==NULL)
 	{
-		RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("\nERROR: setassocsta_cmdrsp_callbac => can't get sta_info \n\n"));
 		goto exit;
 	}
 

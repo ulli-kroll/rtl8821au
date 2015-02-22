@@ -40,7 +40,6 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16
 	/* DBG_871X("%s %s:%d\n",__FUNCTION__, current->comm, current->pid); */
 
 	if((padapter->bSurpriseRemoved) ||(padapter->pwrctrlpriv.pnp_bstop_trx)){
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usbctrl_vendorreq:(padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n"));
 		status = -EPERM;
 		goto exit;
 	}
@@ -339,7 +338,6 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
         /* rtw_free_xmitframe(pxmitpriv, pxmitframe); */
 
 	if (padapter->bSurpriseRemoved || padapter->bDriverStopped ||padapter->bWritePortCancel) {
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete:bDriverStopped(%d) OR bSurpriseRemoved(%d)", padapter->bDriverStopped, padapter->bSurpriseRemoved));
 		DBG_8192C("%s(): TX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d) bWritePortCancel(%d) pxmitbuf->buf_tag(%x) \n",
 		__FUNCTION__,padapter->bDriverStopped, padapter->bSurpriseRemoved,padapter->bReadPortCancel,pxmitbuf->buf_tag);
 
@@ -350,7 +348,6 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 	if (purb->status==0) {
 
 	} else {
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete : purb->status(%d) != 0 \n", purb->status));
 		DBG_871X("###=> urb_write_port_complete status(%d)\n",purb->status);
 		if((purb->status==-EPIPE)||(purb->status==-EPROTO)) {
 			/*
@@ -358,7 +355,6 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 			 * msleep(10);
 			 */
 		} else if (purb->status == -EINPROGRESS) {
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete: EINPROGESS\n"));
 			goto check_completion;
 
 		} else if (purb->status == -ENOENT) {
@@ -370,9 +366,7 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 			goto check_completion;
 
 		} else if (purb->status == -ESHUTDOWN) {
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete: ESHUTDOWN\n"));
 			padapter->bDriverStopped=_TRUE;
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete:bDriverStopped=TRUE\n"));
 
 			goto check_completion;
 		}
@@ -381,7 +375,6 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 			padapter->bSurpriseRemoved=_TRUE;
 			DBG_8192C("bSurpriseRemoved=TRUE\n");
 			/* rtl8192cu_trigger_gpio_0(padapter); */
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete:bSurpriseRemoved=TRUE\n"));
 
 			goto check_completion;
 		}
@@ -416,14 +409,11 @@ u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 	struct usb_device *pusbd = pdvobj->pusbdev;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 
-	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("+usb_write_port\n"));
-
 	if ((padapter->bDriverStopped) || (padapter->bSurpriseRemoved) ||(padapter->pwrctrlpriv.pnp_bstop_trx)) {
 		#ifdef DBG_TX
 		DBG_871X(" DBG_TX %s:%d bDriverStopped%d, bSurpriseRemoved:%d, pnp_bstop_trx:%d\n",__FUNCTION__, __LINE__
 			,padapter->bDriverStopped, padapter->bSurpriseRemoved, padapter->pwrctrlpriv.pnp_bstop_trx );
 		#endif
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port:( padapter->bDriverStopped ||padapter->bSurpriseRemoved ||adapter->pwrctrlpriv.pnp_bstop_trx)!!!\n"));
 		rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_TX_DENY);
 		goto exit;
 	}
@@ -488,8 +478,6 @@ u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 	} else {
 		rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_WRITE_PORT_ERR);
 		DBG_871X("usb_write_port, status=%d\n", status);
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port(): usb_submit_urb, status=%x\n", status));
-
 		switch (status) {
 		case -ENODEV:
 			padapter->bDriverStopped=_TRUE;
@@ -512,8 +500,6 @@ u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 		usb_bulkout_zero(pintfhdl, addr);
 	}
 */
-
-	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("-usb_write_port\n"));
 
 exit:
 	if (ret != _SUCCESS)

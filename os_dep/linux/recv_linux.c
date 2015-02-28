@@ -21,7 +21,7 @@
 
 #include <drv_types.h>
 
-int rtw_os_alloc_recvframe(struct rtl_priv *padapter, union recv_frame *precvframe, uint8_t *pdata, struct sk_buff *pskb)
+int rtw_os_alloc_recvframe(struct rtl_priv *padapter, struct recv_frame *precvframe, uint8_t *pdata, struct sk_buff *pskb)
 {
 	int res = _SUCCESS;
 	uint8_t	shift_sz = 0;
@@ -105,7 +105,7 @@ exit_rtw_os_recv_resource_alloc:
 
 }
 
-void rtw_os_free_recvframe(union recv_frame *precvframe)
+void rtw_os_free_recvframe(struct recv_frame *precvframe)
 {
 	if(precvframe->u.hdr.pkt) {
 		dev_kfree_skb_any(precvframe->u.hdr.pkt);	/* free skb by driver */
@@ -115,8 +115,8 @@ void rtw_os_free_recvframe(union recv_frame *precvframe)
 }
 
 
-/* alloc os related resource in union recv_frame */
-int rtw_os_recv_resource_alloc(struct rtl_priv *padapter, union recv_frame *precvframe)
+/* alloc os related resource in struct recv_frame */
+int rtw_os_recv_resource_alloc(struct rtl_priv *padapter, struct recv_frame *precvframe)
 {
 	int	res=_SUCCESS;
 
@@ -173,7 +173,7 @@ int rtw_os_recvbuf_resource_free(struct rtl_priv *padapter, struct recv_buf *pre
 
 }
 
-struct sk_buff  *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, uint8_t *pdata)
+struct sk_buff  *rtw_os_alloc_msdu_pkt(struct recv_frame *prframe, u16 nSubframe_Length, uint8_t *pdata)
 {
 	u16	eth_type;
 	uint8_t	*data_ptr;
@@ -319,7 +319,7 @@ void rtw_handle_tkip_mic_err(struct rtl_priv *padapter,uint8_t bgroup)
 }
 
 
-int rtw_recv_indicatepkt(struct rtl_priv *padapter, union recv_frame *precv_frame)
+int rtw_recv_indicatepkt(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	struct recv_priv *precvpriv;
 	struct __queue	*pfree_recv_queue;

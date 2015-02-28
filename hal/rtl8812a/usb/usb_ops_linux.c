@@ -191,7 +191,7 @@ static int usb_writeN(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t length,
 }
 
 
-static int32_t pre_recv_entry(union recv_frame *precvframe, uint8_t *pphy_status)
+static int32_t pre_recv_entry(struct recv_frame *precvframe, uint8_t *pphy_status)
 {
 	int32_t ret = _SUCCESS;
 
@@ -205,7 +205,7 @@ static int recvbuf2recvframe(struct rtl_priv *padapter, struct sk_buff *pskb)
 	uint32_t	pkt_offset;
 	int32_t	transfer_len;
 	uint8_t				*pphy_status = NULL;
-	union recv_frame	*precvframe = NULL;
+	struct recv_frame	*precvframe = NULL;
 	struct rx_pkt_attrib	*pattrib = NULL;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	struct recv_priv	*precvpriv = &padapter->recvpriv;

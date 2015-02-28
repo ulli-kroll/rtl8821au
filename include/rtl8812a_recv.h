@@ -43,8 +43,8 @@ void rtl8812au_recv_tasklet(void *priv);
 
 
 
-void rtl8812_query_rx_desc_status(union recv_frame *precvframe, uint8_t *pdesc);
-void rtl8812_query_rx_phy_status(union recv_frame *prframe, uint8_t *pphy_stat);
+void rtl8812_query_rx_desc_status(struct recv_frame *precvframe, uint8_t *pdesc);
+void rtl8812_query_rx_phy_status(struct recv_frame *prframe, uint8_t *pphy_stat);
 
 #endif
 

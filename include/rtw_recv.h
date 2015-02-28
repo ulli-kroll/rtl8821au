@@ -419,7 +419,7 @@ struct recv_frame_hdr
 };
 
 
-union recv_frame{
+struct recv_frame{
 
 	union{
 		struct list_head list;
@@ -428,7 +428,6 @@ union recv_frame{
 	}u;
 
 	//uint mem[MAX_RXSZ>>2];
-
 };
 
 typedef enum _RX_PACKET_TYPE{
@@ -439,14 +438,14 @@ typedef enum _RX_PACKET_TYPE{
 	C2H_PACKET
 }RX_PACKET_TYPE, *PRX_PACKET_TYPE;
 
-extern union recv_frame *_rtw_alloc_recvframe (struct __queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
-extern union recv_frame *rtw_alloc_recvframe (struct __queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
-extern void rtw_init_recvframe(union recv_frame *precvframe ,struct recv_priv *precvpriv);
-extern int	 rtw_free_recvframe(union recv_frame *precvframe, struct __queue *pfree_recv_queue);
+extern struct recv_frame *_rtw_alloc_recvframe (struct __queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
+extern struct recv_frame *rtw_alloc_recvframe (struct __queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
+extern void rtw_init_recvframe(struct recv_frame *precvframe ,struct recv_priv *precvpriv);
+extern int	 rtw_free_recvframe(struct recv_frame *precvframe, struct __queue *pfree_recv_queue);
 
 #define rtw_dequeue_recvframe(queue) rtw_alloc_recvframe(queue)
-extern int _rtw_enqueue_recvframe(union recv_frame *precvframe, struct __queue *queue);
-extern int rtw_enqueue_recvframe(union recv_frame *precvframe, struct __queue *queue);
+extern int _rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue);
+extern int rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue);
 
 extern void rtw_free_recvframe_queue(struct __queue *pframequeue,  struct __queue *pfree_recv_queue);
 u32 rtw_free_uc_swdec_pending_queue(struct rtl_priv *adapter);
@@ -457,7 +456,7 @@ struct recv_buf *rtw_dequeue_recvbuf (struct __queue *queue);
 
 void rtw_reordering_ctrl_timeout_handler(void *pcontext);
 
-__inline static uint8_t *get_rxmem(union recv_frame *precvframe)
+__inline static uint8_t *get_rxmem(struct recv_frame *precvframe)
 {
 	//always return rx_head...
 	if(precvframe==NULL)
@@ -466,14 +465,14 @@ __inline static uint8_t *get_rxmem(union recv_frame *precvframe)
 	return precvframe->u.hdr.rx_head;
 }
 
-__inline static uint8_t *get_rx_status(union recv_frame *precvframe)
+__inline static uint8_t *get_rx_status(struct recv_frame *precvframe)
 {
 
 	return get_rxmem(precvframe);
 
 }
 
-__inline static uint8_t *get_recvframe_data(union recv_frame *precvframe)
+__inline static uint8_t *get_recvframe_data(struct recv_frame *precvframe)
 {
 
 	//alwasy return rx_data
@@ -484,7 +483,7 @@ __inline static uint8_t *get_recvframe_data(union recv_frame *precvframe)
 
 }
 
-__inline static uint8_t *recvframe_push(union recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_push(struct recv_frame *precvframe, sint sz)
 {
 	// append data before rx_data
 
@@ -512,7 +511,7 @@ __inline static uint8_t *recvframe_push(union recv_frame *precvframe, sint sz)
 }
 
 
-__inline static uint8_t *recvframe_pull(union recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_pull(struct recv_frame *precvframe, sint sz)
 {
 	// rx_data += sz; move rx_data sz bytes  hereafter
 
@@ -537,7 +536,7 @@ __inline static uint8_t *recvframe_pull(union recv_frame *precvframe, sint sz)
 
 }
 
-__inline static uint8_t *recvframe_put(union recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_put(struct recv_frame *precvframe, sint sz)
 {
 	// rx_tai += sz; move rx_tail sz bytes  hereafter
 
@@ -566,7 +565,7 @@ __inline static uint8_t *recvframe_put(union recv_frame *precvframe, sint sz)
 
 
 
-__inline static uint8_t *recvframe_pull_tail(union recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_pull_tail(struct recv_frame *precvframe, sint sz)
 {
 	// rmv data from rx_tail (by yitsen)
 
@@ -590,21 +589,21 @@ __inline static uint8_t *recvframe_pull_tail(union recv_frame *precvframe, sint 
 
 }
 
-__inline static union recv_frame *rxmem_to_recvframe(uint8_t *rxmem)
+__inline static struct recv_frame *rxmem_to_recvframe(uint8_t *rxmem)
 {
-	//due to the design of 2048 bytes alignment of recv_frame, we can reference the union recv_frame
+	//due to the design of 2048 bytes alignment of recv_frame, we can reference the struct recv_frame
 	//from any given member of recv_frame.
 	// rxmem indicates the any member/address in recv_frame
 
-	return (union recv_frame*)(((SIZE_PTR)rxmem >> RXFRAME_ALIGN) << RXFRAME_ALIGN);
+	return (struct recv_frame*)(((SIZE_PTR)rxmem >> RXFRAME_ALIGN) << RXFRAME_ALIGN);
 
 }
 
-__inline static union recv_frame *pkt_to_recvframe(struct sk_buff *pkt)
+__inline static struct recv_frame *pkt_to_recvframe(struct sk_buff *pkt)
 {
 
 	uint8_t * buf_star;
-	union recv_frame * precv_frame;
+	struct recv_frame * precv_frame;
 	precv_frame = rxmem_to_recvframe((unsigned char*)buf_star);
 
 	return precv_frame;
@@ -614,7 +613,7 @@ __inline static uint8_t *pkt_to_recvmem(struct sk_buff *pkt)
 {
 	// return the rx_head
 
-	union recv_frame * precv_frame = pkt_to_recvframe(pkt);
+	struct recv_frame * precv_frame = pkt_to_recvframe(pkt);
 
 	return 	precv_frame->u.hdr.rx_head;
 
@@ -624,14 +623,14 @@ __inline static uint8_t *pkt_to_recvdata(struct sk_buff *pkt)
 {
 	// return the rx_data
 
-	union recv_frame * precv_frame =pkt_to_recvframe(pkt);
+	struct recv_frame * precv_frame =pkt_to_recvframe(pkt);
 
 	return 	precv_frame->u.hdr.rx_data;
 
 }
 
 
-__inline static sint get_recvframe_len(union recv_frame *precvframe)
+__inline static sint get_recvframe_len(struct recv_frame *precvframe)
 {
 	return precvframe->u.hdr.len;
 }
@@ -653,7 +652,7 @@ struct sta_info;
 
 extern void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv);
 
-extern void  mgt_dispatcher(struct rtl_priv *padapter, union recv_frame *precv_frame);
+extern void  mgt_dispatcher(struct rtl_priv *padapter, struct recv_frame *precv_frame);
 
 #endif
 

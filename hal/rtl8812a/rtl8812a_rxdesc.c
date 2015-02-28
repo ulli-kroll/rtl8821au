@@ -37,7 +37,7 @@ static int32_t  translate2dbm(uint8_t signal_strength_idx)
 }
 
 
-static void process_rssi(struct rtl_priv *padapter,union recv_frame *prframe)
+static void process_rssi(struct rtl_priv *padapter,struct recv_frame *prframe)
 {
 	uint32_t	last_rssi, tmp_val;
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
@@ -93,7 +93,7 @@ static void process_rssi(struct rtl_priv *padapter,union recv_frame *prframe)
 
 
 
-static void process_link_qual(struct rtl_priv *padapter,union recv_frame *prframe)
+static void process_link_qual(struct rtl_priv *padapter,struct recv_frame *prframe)
 {
 	uint32_t	last_evm=0, tmpVal;
  	struct rx_pkt_attrib *pattrib;
@@ -158,7 +158,7 @@ static void process_link_qual(struct rtl_priv *padapter,union recv_frame *prfram
 
 static void process_phy_info(struct rtl_priv *padapter, void *prframe)
 {
-	union recv_frame *precvframe = (union recv_frame *)prframe;
+	struct recv_frame *precvframe = (struct recv_frame *)prframe;
 
 	//
 	// Check RSSI
@@ -177,7 +177,7 @@ static void process_phy_info(struct rtl_priv *padapter, void *prframe)
 
 }
 
-void rtl8812_query_rx_desc_status(union recv_frame *precvframe, uint8_t *pdesc)
+void rtl8812_query_rx_desc_status(struct recv_frame *precvframe, uint8_t *pdesc)
 {
 	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
 
@@ -223,7 +223,7 @@ void rtl8812_query_rx_desc_status(union recv_frame *precvframe, uint8_t *pdesc)
  *	precvframe->u.hdr.rx_data should be ready!
  */
 void rtl8812_query_rx_phy_status(
-	union recv_frame	*precvframe,
+	struct recv_frame	*precvframe,
 	uint8_t 				*pphy_status)
 {
 	struct rtl_priv *			padapter = precvframe->u.hdr.adapter;

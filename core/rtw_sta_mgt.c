@@ -459,7 +459,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
 	for(i = 0; i < 16 ; i++) {
 		_irqL irqL;
 		struct list_head	*phead, *plist;
-		union recv_frame *prframe;
+		struct recv_frame *prframe;
 		struct __queue *ppending_recvframe_queue;
 		struct __queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
 
@@ -476,7 +476,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
 		plist = get_next(phead);
 
 		while(!list_empty(phead)) {
-			prframe = LIST_CONTAINOR(plist, union recv_frame, u);
+			prframe = LIST_CONTAINOR(plist, struct recv_frame, u);
 
 			plist = get_next(plist);
 

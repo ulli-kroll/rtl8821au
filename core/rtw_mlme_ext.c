@@ -587,7 +587,7 @@ static uint8_t cmp_pkt_chnl_diff(struct rtl_priv *padapter,uint8_t * pframe,uint
 	}
 }
 
-static void _mgt_dispatcher(struct rtl_priv *padapter, struct mlme_handler *ptable, union recv_frame *precv_frame)
+static void _mgt_dispatcher(struct rtl_priv *padapter, struct mlme_handler *ptable, struct recv_frame *precv_frame)
 {
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 	uint8_t *pframe = precv_frame->u.hdr.rx_data;
@@ -606,7 +606,7 @@ static void _mgt_dispatcher(struct rtl_priv *padapter, struct mlme_handler *ptab
 
 }
 
-void mgt_dispatcher(struct rtl_priv *padapter, union recv_frame *precv_frame)
+void mgt_dispatcher(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	int index;
 	struct mlme_handler *ptable;
@@ -710,7 +710,7 @@ Following are the callback functions for each subtype of the management frames
 
 *****************************************************************************/
 
-unsigned int OnProbeReq(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnProbeReq(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	unsigned int	ielen;
 	unsigned char	*p;
@@ -772,7 +772,7 @@ _issue_probersp:
 
 }
 
-unsigned int OnProbeRsp(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnProbeRsp(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	struct sta_info		*psta;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
@@ -806,7 +806,7 @@ unsigned int OnProbeRsp(struct rtl_priv *padapter, union recv_frame *precv_frame
 
 }
 
-unsigned int OnBeacon(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnBeacon(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	int cam_idx;
 	struct sta_info	*psta;
@@ -950,7 +950,7 @@ _END_ONBEACON_:
 
 }
 
-unsigned int OnAuth(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 #ifdef CONFIG_AP_MODE
 	_irqL irqL;
@@ -1178,7 +1178,7 @@ auth_fail:
 
 }
 
-unsigned int OnAuthClient(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAuthClient(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	unsigned int	seq, len, status, algthm, offset;
 	unsigned char	*p;
@@ -1279,7 +1279,7 @@ authclnt_fail:
 
 }
 
-unsigned int OnAssocReq(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAssocReq(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 #ifdef CONFIG_AP_MODE
 	_irqL irqL;
@@ -1828,7 +1828,7 @@ OnAssocReqFail:
 
 }
 
-unsigned int OnAssocRsp(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAssocRsp(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	uint i;
 	int res;
@@ -1936,7 +1936,7 @@ report_assoc_result:
 	return _SUCCESS;
 }
 
-unsigned int OnDeAuth(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnDeAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	unsigned short	reason;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -2001,7 +2001,7 @@ unsigned int OnDeAuth(struct rtl_priv *padapter, union recv_frame *precv_frame)
 
 }
 
-unsigned int OnDisassoc(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnDisassoc(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	unsigned short	reason;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -2065,7 +2065,7 @@ unsigned int OnDisassoc(struct rtl_priv *padapter, union recv_frame *precv_frame
 
 }
 
-unsigned int OnAtim(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAtim(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	DBG_871X("%s\n", __FUNCTION__);
 	return _SUCCESS;
@@ -2129,7 +2129,7 @@ exit:
 	return ret;
 }
 
-unsigned int on_action_spct(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int on_action_spct(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	unsigned int ret = _FAIL;
 	struct sta_info *psta = NULL;
@@ -2172,17 +2172,17 @@ exit:
 	return ret;
 }
 
-unsigned int OnAction_qos(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAction_qos(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	return _SUCCESS;
 }
 
-unsigned int OnAction_dls(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAction_dls(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	return _SUCCESS;
 }
 
-unsigned int OnAction_back(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAction_back(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	uint8_t *addr;
 	struct sta_info *psta=NULL;
@@ -2297,7 +2297,7 @@ unsigned int OnAction_back(struct rtl_priv *padapter, union recv_frame *precv_fr
 	return _SUCCESS;
 }
 
-int32_t rtw_action_public_decache(union recv_frame *recv_frame, int32_t token)
+int32_t rtw_action_public_decache(struct recv_frame *recv_frame, int32_t token)
 {
 	struct rtl_priv *adapter = recv_frame->u.hdr.adapter;
 	struct mlme_ext_priv *mlmeext = &(adapter->mlmeextpriv);
@@ -2331,7 +2331,7 @@ int32_t rtw_action_public_decache(union recv_frame *recv_frame, int32_t token)
 	return _SUCCESS;
 }
 
-unsigned int on_action_public_p2p(union recv_frame *precv_frame)
+unsigned int on_action_public_p2p(struct recv_frame *precv_frame)
 {
 	struct rtl_priv *padapter = precv_frame->u.hdr.adapter;
 	uint8_t *pframe = precv_frame->u.hdr.rx_data;
@@ -2350,7 +2350,7 @@ unsigned int on_action_public_p2p(union recv_frame *precv_frame)
 	return _SUCCESS;
 }
 
-unsigned int on_action_public_vendor(union recv_frame *precv_frame)
+unsigned int on_action_public_vendor(struct recv_frame *precv_frame)
 {
 	unsigned int ret = _FAIL;
 	uint8_t *pframe = precv_frame->u.hdr.rx_data;
@@ -2364,7 +2364,7 @@ unsigned int on_action_public_vendor(union recv_frame *precv_frame)
 	return ret;
 }
 
-unsigned int on_action_public_default(union recv_frame *precv_frame, uint8_t action)
+unsigned int on_action_public_default(struct recv_frame *precv_frame, uint8_t action)
 {
 	unsigned int ret = _FAIL;
 	uint8_t *pframe = precv_frame->u.hdr.rx_data;
@@ -2386,7 +2386,7 @@ exit:
 	return ret;
 }
 
-unsigned int on_action_public(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int on_action_public(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	unsigned int ret = _FAIL;
 	uint8_t *pframe = precv_frame->u.hdr.rx_data;
@@ -2416,24 +2416,24 @@ exit:
 	return ret;
 }
 
-unsigned int OnAction_ht(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAction_ht(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	return _SUCCESS;
 }
 
-unsigned int OnAction_wmm(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAction_wmm(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	return _SUCCESS;
 }
 
-unsigned int OnAction_p2p(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAction_p2p(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 
 	return _SUCCESS;
 
 }
 
-unsigned int OnAction(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int OnAction(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	int i;
 	unsigned char	category;
@@ -2458,7 +2458,7 @@ unsigned int OnAction(struct rtl_priv *padapter, union recv_frame *precv_frame)
 
 }
 
-unsigned int DoReserved(struct rtl_priv *padapter, union recv_frame *precv_frame)
+unsigned int DoReserved(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 
 	//DBG_871X("rcvd mgt frame(%x, %x)\n", (GetFrameSubType(pframe) >> 4), *(unsigned int *)GetAddr1Ptr(pframe));
@@ -4792,7 +4792,7 @@ void site_survey(struct rtl_priv *padapter)
 }
 
 //collect bss info from Beacon and Probe response frames.
-uint8_t collect_bss_info(struct rtl_priv *padapter, union recv_frame *precv_frame, WLAN_BSSID_EX *bssid)
+uint8_t collect_bss_info(struct rtl_priv *padapter, struct recv_frame *precv_frame, WLAN_BSSID_EX *bssid)
 {
 	int	i;
 	uint32_t	len;
@@ -5444,7 +5444,7 @@ Following are the functions to report events
 
 *****************************************************************************/
 
-void report_survey_event(struct rtl_priv *padapter, union recv_frame *precv_frame)
+void report_survey_event(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	struct cmd_obj *pcmd_obj;
 	uint8_t	*pevtcmd;

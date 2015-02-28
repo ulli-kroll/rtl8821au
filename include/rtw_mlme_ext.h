@@ -285,13 +285,13 @@ enum SCAN_STATE
 struct mlme_handler {
 	unsigned int   num;
 	char* str;
-	unsigned int (*func)(struct rtl_priv *padapter, union recv_frame *precv_frame);
+	unsigned int (*func)(struct rtl_priv *padapter, struct recv_frame *precv_frame);
 };
 
 struct action_handler {
 	unsigned int   num;
 	char* str;
-	unsigned int (*func)(struct rtl_priv *padapter, union recv_frame *precv_frame);
+	unsigned int (*func)(struct rtl_priv *padapter, struct recv_frame *precv_frame);
 };
 
 struct	ss_res
@@ -551,7 +551,7 @@ void flush_all_cam_entry(struct rtl_priv *padapter);
 BOOLEAN IsLegal5GChannel(struct rtl_priv *Adapter, uint8_t channel);
 
 void site_survey(struct rtl_priv *padapter);
-uint8_t collect_bss_info(struct rtl_priv *padapter, union recv_frame *precv_frame, WLAN_BSSID_EX *bssid);
+uint8_t collect_bss_info(struct rtl_priv *padapter, struct recv_frame *precv_frame, WLAN_BSSID_EX *bssid);
 void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src, struct rtl_priv * padapter, bool update_ie);
 
 int get_bsstype(unsigned short capability);
@@ -607,7 +607,7 @@ extern void rtw_alloc_macid(struct rtl_priv *padapter, struct sta_info *psta);
 extern void rtw_release_macid(struct rtl_priv *padapter, struct sta_info *psta);
 
 void report_join_res(struct rtl_priv *padapter, int res);
-void report_survey_event(struct rtl_priv *padapter, union recv_frame *precv_frame);
+void report_survey_event(struct rtl_priv *padapter, struct recv_frame *precv_frame);
 void report_surveydone_event(struct rtl_priv *padapter);
 void report_del_sta_event(struct rtl_priv *padapter, unsigned char* MacAddr, unsigned short reason);
 void report_add_sta_event(struct rtl_priv *padapter, unsigned char* MacAddr, int cam_idx);
@@ -643,27 +643,27 @@ void start_clnt_auth(struct rtl_priv* padapter);
 void start_clnt_join(struct rtl_priv* padapter);
 void start_create_ibss(struct rtl_priv* padapter);
 
-unsigned int OnAssocReq(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAssocRsp(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnProbeReq(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnProbeRsp(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int DoReserved(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnBeacon(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAtim(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnDisassoc(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAuth(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAuthClient(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnDeAuth(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAction(struct rtl_priv *padapter, union recv_frame *precv_frame);
+unsigned int OnAssocReq(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAssocRsp(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnProbeReq(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnProbeRsp(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int DoReserved(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnBeacon(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAtim(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnDisassoc(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAuthClient(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnDeAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAction(struct rtl_priv *padapter, struct recv_frame *precv_frame);
 
-unsigned int on_action_spct(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_qos(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_dls(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_back(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int on_action_public(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_ht(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_wmm(struct rtl_priv *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_p2p(struct rtl_priv *padapter, union recv_frame *precv_frame);
+unsigned int on_action_spct(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAction_qos(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAction_dls(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAction_back(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int on_action_public(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAction_ht(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAction_wmm(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAction_p2p(struct rtl_priv *padapter, struct recv_frame *precv_frame);
 
 
 void mlmeext_joinbss_event_callback(struct rtl_priv *padapter, int join_res);

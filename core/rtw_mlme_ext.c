@@ -4383,7 +4383,7 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *padapter)
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	_queue		*queue	= &(pmlmepriv->scanned_queue);
+	struct __queue		*queue	= &(pmlmepriv->scanned_queue);
 	uint8_t InfoContent[16] = {0};
 	uint8_t ICS[8][15];
 #ifdef CONFIG_80211N_HT

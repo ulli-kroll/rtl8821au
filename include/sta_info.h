@@ -41,7 +41,7 @@ struct wlan_acl_pool {
 	int mode;
 	int num;
 	struct rtw_wlan_acl_node aclnode[NUM_ACL];
-	_queue	acl_node_q;
+	struct __queue	acl_node_q;
 };
 
 typedef struct _RSSI_STA{
@@ -95,7 +95,7 @@ struct sta_info {
 	struct sta_xmit_priv sta_xmitpriv;
 	struct sta_recv_priv sta_recvpriv;
 
-	_queue sleep_q;
+	struct __queue sleep_q;
 	unsigned int sleepq_len;
 
 	uint state;
@@ -325,13 +325,13 @@ struct	sta_priv {
 
 	uint8_t *pallocated_stainfo_buf;
 	uint8_t *pstainfo_buf;
-	_queue	free_sta_queue;
+	struct __queue	free_sta_queue;
 
 	spinlock_t sta_hash_lock;
 	struct list_head   sta_hash[NUM_STA];
 	int asoc_sta_count;
-	_queue sleep_q;
-	_queue wakeup_q;
+	struct __queue sleep_q;
+	struct __queue wakeup_q;
 
 	struct rtl_priv *padapter;
 

@@ -66,7 +66,7 @@ uint8_t rtw_do_join(struct rtl_priv * padapter)
 	struct list_head	*plist, *phead;
 	uint8_t * pibss = NULL;
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	_queue	*queue	= &(pmlmepriv->scanned_queue);
+	struct __queue	*queue	= &(pmlmepriv->scanned_queue);
 	uint8_t ret=_SUCCESS;
 
 _func_enter_;

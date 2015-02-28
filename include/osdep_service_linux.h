@@ -72,7 +72,6 @@
 		spinlock_t	lock;
 	};
 
-	typedef struct	__queue	_queue;
 	typedef	int	_OS_STATUS;
 	//typedef u32	_irqL;
 	typedef unsigned long _irqL;
@@ -93,7 +92,7 @@ __inline static struct list_head *get_next(struct list_head	*list)
 	return list->next;
 }
 
-__inline static struct list_head	*get_list_head(_queue	*queue)
+__inline static struct list_head	*get_list_head(struct __queue	*queue)
 {
 	return (&(queue->queue));
 }

@@ -130,7 +130,7 @@ since mlme_priv is a shared resource between many threads,
 like ISR/Call-Back functions, the OID handlers, and even timer functions.
 
 
-Each _queue has its own locks, already.
+Each struct __queue has its own locks, already.
 Other items are protected by mlme_priv.lock.
 
 To avoid possible dead lock, any thread trying to modifiying mlme_priv
@@ -322,8 +322,8 @@ struct mlme_priv {
 
 	uint8_t	not_indic_disco;
 	struct list_head		*pscanned;
-	_queue	free_bss_pool;
-	_queue	scanned_queue;
+	struct __queue	free_bss_pool;
+	struct __queue	scanned_queue;
 	uint8_t		*free_bss_buf;
 	u32	num_of_scanned;
 
@@ -575,8 +575,8 @@ extern u16 rtw_get_capability(WLAN_BSSID_EX *bss);
 extern void rtw_update_scanned_network(struct rtl_priv *adapter, WLAN_BSSID_EX *target);
 extern void rtw_disconnect_hdl_under_linked(struct rtl_priv* adapter, struct sta_info *psta, uint8_t free_assoc);
 extern void rtw_generate_random_ibss(uint8_t *pibss);
-extern struct wlan_network* rtw_find_network(_queue *scanned_queue, uint8_t *addr);
-extern struct wlan_network* rtw_get_oldest_wlan_network(_queue *scanned_queue);
+extern struct wlan_network* rtw_find_network(struct __queue *scanned_queue, uint8_t *addr);
+extern struct wlan_network* rtw_get_oldest_wlan_network(struct __queue *scanned_queue);
 
 extern void rtw_free_assoc_resources(struct rtl_priv* adapter, int lock_scanned_queue);
 extern void rtw_indicate_disconnect(struct rtl_priv* adapter);
@@ -603,9 +603,9 @@ void rtw_free_mlme_priv_ie_data(struct mlme_priv *pmlmepriv);
 
 extern void _rtw_free_mlme_priv(struct mlme_priv *pmlmepriv);
 
-extern int _rtw_enqueue_network(_queue *queue, struct wlan_network *pnetwork);
+extern int _rtw_enqueue_network(struct __queue *queue, struct wlan_network *pnetwork);
 
-//extern struct wlan_network* _rtw_dequeue_network(_queue *queue);
+//extern struct wlan_network* _rtw_dequeue_network(struct __queue *queue);
 
 extern struct wlan_network* _rtw_alloc_network(struct mlme_priv *pmlmepriv);
 
@@ -614,7 +614,7 @@ extern void _rtw_free_network(struct mlme_priv *pmlmepriv, struct wlan_network *
 extern void _rtw_free_network_nolock(struct mlme_priv *pmlmepriv, struct wlan_network *pnetwork);
 
 
-extern struct wlan_network* _rtw_find_network(_queue *scanned_queue, uint8_t *addr);
+extern struct wlan_network* _rtw_find_network(struct __queue *scanned_queue, uint8_t *addr);
 
 extern void _rtw_free_network_queue(struct rtl_priv* padapter, uint8_t isfreeall);
 

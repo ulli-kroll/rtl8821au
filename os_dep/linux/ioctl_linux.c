@@ -1293,7 +1293,7 @@ static int rtw_wx_set_wap(struct net_device *ndev,
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	struct list_head	*phead;
 	uint8_t *dst_bssid, *src_bssid;
-	_queue	*queue	= &(pmlmepriv->scanned_queue);
+	struct __queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
 	NDIS_802_11_AUTHENTICATION_MODE	authmode;
 
@@ -1610,7 +1610,7 @@ static int rtw_wx_get_scan(struct net_device *ndev, struct iw_request_info *a,
 	struct list_head					*plist, *phead;
 	struct rtl_priv *padapter = rtl_priv(ndev);
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-	_queue				*queue	= &(pmlmepriv->scanned_queue);
+	struct __queue				*queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
 	char *ev = extra;
 	char *stop = ev + wrqu->data.length;
@@ -1690,7 +1690,7 @@ static int rtw_wx_set_essid(struct net_device *ndev,
 	_irqL irqL;
 	struct rtl_priv *padapter = rtl_priv(ndev);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	_queue *queue = &pmlmepriv->scanned_queue;
+	struct __queue *queue = &pmlmepriv->scanned_queue;
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
 	struct list_head *phead;
 	s8 status = _TRUE;

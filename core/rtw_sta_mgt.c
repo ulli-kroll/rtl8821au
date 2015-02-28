@@ -235,7 +235,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 	int32_t	index;
 	struct list_head	*phash_list;
 	struct sta_info	*psta;
-	_queue *pfree_sta_queue;
+	struct __queue *pfree_sta_queue;
 	struct recv_reorder_ctrl *preorder_ctrl;
 	int i = 0;
 	u16  wRxSeqInitialValue = 0xffff;
@@ -351,7 +351,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
 {
 	int i;
 	_irqL irqL0;
-	_queue *pfree_sta_queue;
+	struct __queue *pfree_sta_queue;
 	struct recv_reorder_ctrl *preorder_ctrl;
 	struct	sta_xmit_priv	*pstaxmitpriv;
 	struct	xmit_priv	*pxmitpriv= &padapter->xmitpriv;
@@ -460,8 +460,8 @@ uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
 		_irqL irqL;
 		struct list_head	*phead, *plist;
 		union recv_frame *prframe;
-		_queue *ppending_recvframe_queue;
-		_queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
+		struct __queue *ppending_recvframe_queue;
+		struct __queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
 
 		preorder_ctrl = &psta->recvreorder_ctrl[i];
 
@@ -640,7 +640,7 @@ uint32_t rtw_init_bcmc_stainfo(struct rtl_priv* padapter)
 	NDIS_802_11_MAC_ADDRESS	bcast_addr= {0xff,0xff,0xff,0xff,0xff,0xff};
 
 	struct	sta_priv *pstapriv = &padapter->stapriv;
-	/* _queue	*pstapending = &padapter->xmitpriv.bm_pending; */
+	/* struct __queue	*pstapending = &padapter->xmitpriv.bm_pending; */
 
 	psta = rtw_alloc_stainfo(pstapriv, bcast_addr);
 
@@ -690,7 +690,7 @@ uint8_t rtw_access_ctrl(struct rtl_priv *padapter, uint8_t *mac_addr)
 	uint8_t match = _FALSE;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
-	_queue	*pacl_node_q =&pacl_list->acl_node_q;
+	struct __queue	*pacl_node_q =&pacl_list->acl_node_q;
 
 	_enter_critical_bh(&(pacl_node_q->lock), &irqL);
 	phead = get_list_head(pacl_node_q);

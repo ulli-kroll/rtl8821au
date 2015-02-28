@@ -209,7 +209,7 @@ static int recvbuf2recvframe(struct rtl_priv *padapter, struct sk_buff *pskb)
 	struct rx_pkt_attrib	*pattrib = NULL;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
 	struct recv_priv	*precvpriv = &padapter->recvpriv;
-	_queue			*pfree_recv_queue = &precvpriv->free_recv_queue;
+	struct __queue			*pfree_recv_queue = &precvpriv->free_recv_queue;
 
 	transfer_len = (int32_t)pskb->len;
 	pbuf = pskb->data;

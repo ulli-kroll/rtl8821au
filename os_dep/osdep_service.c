@@ -153,7 +153,7 @@ void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 	_init_timer(ptimer, adapter->ndev, pfunc, adapter);
 }
 
-void _rtw_init_queue(_queue *pqueue)
+void _rtw_init_queue(struct __queue *pqueue)
 {
 
 	INIT_LIST_HEAD(&(pqueue->queue));
@@ -162,7 +162,7 @@ void _rtw_init_queue(_queue *pqueue)
 
 }
 
-u32 _rtw_queue_empty(_queue *pqueue)
+u32 _rtw_queue_empty(struct __queue *pqueue)
 {
 	return list_empty(&(pqueue->queue));
 }

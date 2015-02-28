@@ -47,7 +47,7 @@
 		struct semaphore	cmd_queue_sema;
 		//struct semaphore	cmd_done_sema;
 		struct semaphore	terminate_cmdthread_sema;
-		_queue	cmd_queue;
+		struct __queue	cmd_queue;
 		uint8_t	cmd_seq;
 		uint8_t	*cmd_buf;	//shall be non-paged, and 4 bytes aligned
 		uint8_t	*cmd_allocated_buf;

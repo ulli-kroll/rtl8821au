@@ -20,6 +20,7 @@
 #ifndef __USB_OPS_H_
 #define __USB_OPS_H_
 
+#include <../usb.h>
 
 #define REALTEK_USB_VENQT_READ		0xC0
 #define REALTEK_USB_VENQT_WRITE		0x40

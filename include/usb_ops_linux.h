@@ -27,7 +27,6 @@
 #define RTW_USB_CONTROL_MSG_TIMEOUT	500//ms
 
 #define RECV_BULK_IN_ADDR		0x80//assign by drv,not real address
-#define RECV_INT_IN_ADDR		0x81//assign by drv,not real address
 
 
 #if defined(CONFIG_VENDOR_REQ_RETRY) && defined(CONFIG_USB_VENDOR_REQ_MUTEX)

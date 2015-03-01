@@ -68,7 +68,6 @@ _HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
 _HAL_INTFS_FILES +=	hal/rtl8812a/rtl8812a_hal_init.o \
 			hal/rtl8812a/rtl8812a_phycfg.o \
 			hal/rtl8812a/rtl8812a_dm.o \
-			hal/rtl8812a/rtl8812a_rxdesc.o \
 			hal/rtl8812a/rtl8812a_cmd.o \
 			hal/rtl8812a/usb/usb_halinit.o \
 			hal/rtl8812a/usb/rtl8812au_xmit.o \

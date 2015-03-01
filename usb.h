@@ -71,7 +71,7 @@ struct rtl_usb {
 struct rtl_usb_priv {
 };
 
-#define adapter_to_dvobj(adapter) (adapter->priv)
+#define adapter_to_dvobj(adapter) (&(adapter->priv))
 
 static inline struct device *dvobj_to_dev(struct rtl_usb *dvobj)
 {

@@ -200,12 +200,11 @@ static uint8_t rtw_deinit_intf_priv(struct rtl_usb *dvobj)
 	return rst;
 }
 
-static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf)
+static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl_usb *pdvobjpriv)
 {
 	int	i;
 	uint8_t	val8;
 	int	status = _FAIL;
-	struct rtl_usb *pdvobjpriv;
 	struct usb_device_descriptor 	*pdev_desc;
 	struct usb_host_config		*phost_conf;
 	struct usb_config_descriptor	*pconf_desc;
@@ -214,10 +213,6 @@ static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf)
 	struct usb_host_endpoint	*phost_endp;
 	struct usb_endpoint_descriptor	*pendp_desc;
 	struct usb_device			*pusbd;
-
-	if ((pdvobjpriv = (struct rtl_usb *)rtw_zmalloc(sizeof(*pdvobjpriv))) == NULL) {
-		goto exit;
-	}
 
 	mutex_init(&pdvobjpriv->hw_init_mutex);
 	mutex_init(&pdvobjpriv->h2c_fwcmd_mutex);
@@ -344,7 +339,6 @@ free_dvobj:
 		mutex_destroy(&pdvobjpriv->h2c_fwcmd_mutex);
 		mutex_destroy(&pdvobjpriv->setch_mutex);
 		mutex_destroy(&pdvobjpriv->setbw_mutex);
-		rtw_mfree(pdvobjpriv);
 		pdvobjpriv = NULL;
 	}
 exit:
@@ -374,7 +368,6 @@ static void usb_dvobj_deinit(struct usb_interface *usb_intf)
 		mutex_destroy(&dvobj->h2c_fwcmd_mutex);
 		mutex_destroy(&dvobj->setch_mutex);
 		mutex_destroy(&dvobj->setbw_mutex);
-		rtw_mfree(dvobj);
 	}
 
 	/* DBG_871X("%s %d\n", __func__, atomic_read(&usb_intf->dev.kobj.kref.refcount)); */
@@ -709,14 +702,15 @@ static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const 
 	if (!ndev)
 		goto exit;
 
-	dvobj = usb_dvobj_init(pusb_intf);
+	padapter = netdev_priv(ndev);
+	dvobj = &(padapter->priv);
+	usb_dvobj_init(pusb_intf, dvobj);
 	if (dvobj == NULL)
 		goto free_adapter;
 
 	padapter = netdev_priv(ndev);
 	padapter->ndev = ndev;
 
-	padapter->priv = dvobj;
 	dvobj->padapter = padapter;
 
 	padapter->bDriverStopped=_TRUE;

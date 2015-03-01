@@ -266,7 +266,7 @@ struct rtl_priv {
 	u16 	chip_type;
 	u16	interface_type;//USB,SDIO,SPI,PCI
 
-	struct rtl_usb *priv;
+	struct rtl_usb priv;
 	struct	mlme_priv mlmepriv;
 	struct	mlme_ext_priv mlmeextpriv;
 	struct	cmd_priv	cmdpriv;

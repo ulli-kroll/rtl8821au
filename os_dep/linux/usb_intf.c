@@ -698,9 +698,9 @@ static int rtw_init_io_priv(struct rtl_priv *padapter,
 
 struct rtl_priv  *rtw_sw_export = NULL;
 
-struct rtl_priv *rtw_usb_if1_init(struct rtl_usb *dvobj,
-	struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
+static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
+	struct rtl_usb *dvobj;
 	struct rtl_priv *padapter = NULL;
 	struct net_device *ndev = NULL;
 	int status = _FAIL;
@@ -708,6 +708,10 @@ struct rtl_priv *rtw_usb_if1_init(struct rtl_usb *dvobj,
 	ndev = alloc_etherdev_mq(sizeof(*padapter), 4);
 	if (!ndev)
 		goto exit;
+
+	dvobj = usb_dvobj_init(pusb_intf);
+	if (dvobj == NULL)
+		goto free_adapter;
 
 	padapter = netdev_priv(ndev);
 	padapter->ndev = ndev;
@@ -1014,11 +1018,7 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 	/* DBG_871X("+rtw_drv_init\n"); */
 
 	/* Initialize dvobj_priv */
-	if ((dvobj = usb_dvobj_init(pusb_intf)) == NULL) {
-		goto exit;
-	}
-
-	if ((padapter = rtw_usb_if1_init(dvobj, pusb_intf, pdid)) == NULL) {
+	if ((padapter = rtw_usb_if1_init(pusb_intf, pdid)) == NULL) {
 		DBG_871X("rtw_usb_if1_init Failed!\n");
 		goto free_dvobj;
 	}

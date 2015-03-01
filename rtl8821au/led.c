@@ -2143,12 +2143,11 @@ VOID SwLedControlMode13(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 
 }
 
-void LedControlUSB(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
+void rtl8821au_led_control(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 {
 	struct rtl_led_ctl *ledpriv = &(padapter->ledpriv);
 
-       if( (padapter->bSurpriseRemoved == _TRUE) ||(padapter->hw_init_completed == _FALSE) )
-       {
+       if( (padapter->bSurpriseRemoved == _TRUE) ||(padapter->hw_init_completed == _FALSE)) {
              return;
        }
 
@@ -2161,35 +2160,33 @@ void LedControlUSB(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
 		 LedAction == LED_CTL_SITE_SURVEY ||
 		 LedAction == LED_CTL_LINK ||
 		 LedAction == LED_CTL_NO_LINK ||
-		 LedAction == LED_CTL_POWER_ON) )
-	{
+		 LedAction == LED_CTL_POWER_ON) ) {
 		return;
 	}
 
-	switch(ledpriv->LedStrategy)
-	{
-		case SW_LED_MODE1:
-			SwLedControlMode1(padapter, LedAction);
-			break;
+	switch(ledpriv->LedStrategy) {
+	case SW_LED_MODE1:
+		SwLedControlMode1(padapter, LedAction);
+		break;
 
-		case SW_LED_MODE9:
-			SwLedControlMode9(padapter, LedAction);
-			break;
+	case SW_LED_MODE9:
+		SwLedControlMode9(padapter, LedAction);
+		break;
 
-		case SW_LED_MODE10:
-			SwLedControlMode10(padapter, LedAction);
-			break;
+	case SW_LED_MODE10:
+		SwLedControlMode10(padapter, LedAction);
+		break;
 
-		case SW_LED_MODE11:
-			SwLedControlMode11(padapter, LedAction);
-			break;
+	case SW_LED_MODE11:
+		SwLedControlMode11(padapter, LedAction);
+		break;
 
-		case SW_LED_MODE13:
-			SwLedControlMode13(padapter, LedAction);
-			break;
+	case SW_LED_MODE13:
+		SwLedControlMode13(padapter, LedAction);
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -2535,7 +2532,7 @@ void rtl8821au_init_sw_leds(struct rtl_priv *padapter)
 	struct rtl_hal *rtlhal = rtl_hal(padapter);
 	struct rtl_led_ctl *pledpriv = &(padapter->ledpriv);
 
-	pledpriv->LedControlHandler = LedControlUSB;
+	pledpriv->LedControlHandler = rtl8821au_led_control;
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		pledpriv->SwLedOn = SwLedOn_8812AU;

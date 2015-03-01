@@ -191,8 +191,7 @@ struct rtl_led {
 
 typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;
 
-void LedControlUSB(struct rtl_priv *Adapter, enum led_ctl_mode LedAction
-	);
+void rtl8821au_led_control(struct rtl_priv *Adapter, enum led_ctl_mode LedAction);
 
 struct rtl_led_ctl {
 	/* add for led controll */

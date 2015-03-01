@@ -40,7 +40,7 @@ static int32_t  translate2dbm(uint8_t signal_strength_idx)
 static void process_rssi(struct rtl_priv *padapter,struct recv_frame *prframe)
 {
 	uint32_t	last_rssi, tmp_val;
-	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
+	struct rx_pkt_attrib *pattrib = &prframe->attrib;
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 	struct signal_stat * signal_stat = &padapter->recvpriv.signal_strength_data;
 #endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
@@ -105,7 +105,7 @@ static void process_link_qual(struct rtl_priv *padapter,struct recv_frame *prfra
 		return;
 	}
 
-	pattrib = &prframe->u.hdr.attrib;
+	pattrib = &prframe->attrib;
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 	signal_stat = &padapter->recvpriv.signal_qual_data;
 #endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
@@ -179,7 +179,7 @@ static void process_phy_info(struct rtl_priv *padapter, void *prframe)
 
 void rtl8812_query_rx_desc_status(struct recv_frame *precvframe, uint8_t *pdesc)
 {
-	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
+	struct rx_pkt_attrib	*pattrib = &precvframe->attrib;
 
 	memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
 
@@ -226,8 +226,8 @@ void rtl8812_query_rx_phy_status(
 	struct recv_frame	*precvframe,
 	uint8_t 				*pphy_status)
 {
-	struct rtl_priv *			padapter = precvframe->u.hdr.adapter;
-	struct rx_pkt_attrib	*pattrib = &precvframe->u.hdr.attrib;
+	struct rtl_priv *			padapter = precvframe->adapter;
+	struct rx_pkt_attrib	*pattrib = &precvframe->attrib;
 	 struct _rtw_hal		*pHalData = GET_HAL_DATA(padapter);
 	PODM_PHY_INFO_T 	pPHYInfo  = (PODM_PHY_INFO_T)(&pattrib->phy_info);
 	uint8_t					*wlanhdr;
@@ -282,13 +282,13 @@ void rtl8812_query_rx_phy_status(
 	ODM_PhyStatusQuery(&pHalData->odmpriv,pPHYInfo,pphy_status,&(pkt_info));
 	//_exit_critical_bh(&pHalData->odm_stainfo_lock, &irqL);
 
-	precvframe->u.hdr.psta = NULL;
+	precvframe->psta = NULL;
 	if (pkt_info.bPacketMatchBSSID &&
 		(check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == _TRUE))
 	{
 		if (psta)
 		{
-			precvframe->u.hdr.psta = psta;
+			precvframe->psta = psta;
 			process_phy_info(padapter, precvframe);
 
 		}
@@ -299,7 +299,7 @@ void rtl8812_query_rx_phy_status(
 		{
 			if (psta)
 			{
-				precvframe->u.hdr.psta = psta;
+				precvframe->psta = psta;
 			}
 		}
 		process_phy_info(padapter, precvframe);

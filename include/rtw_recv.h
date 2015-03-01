@@ -383,8 +383,7 @@ struct recv_buf
 	len = (unsigned int )(tail - data);
 
 */
-struct recv_frame_hdr
-{
+struct recv_frame {
 	struct list_head	list;
 #ifndef CONFIG_BSD_RX_USE_MBUF
 	struct sk_buff	 *pkt;
@@ -416,18 +415,6 @@ struct recv_frame_hdr
 
 	//for A-MPDU Rx reordering buffer control
 	struct recv_reorder_ctrl *preorder_ctrl;
-};
-
-
-struct recv_frame{
-
-	union{
-		struct list_head list;
-		struct recv_frame_hdr hdr;
-		uint mem[RECVFRAME_HDR_ALIGN>>2];
-	}u;
-
-	//uint mem[MAX_RXSZ>>2];
 };
 
 typedef enum _RX_PACKET_TYPE{
@@ -462,7 +449,7 @@ __inline static uint8_t *get_rxmem(struct recv_frame *precvframe)
 	if(precvframe==NULL)
 		return NULL;
 
-	return precvframe->u.hdr.rx_head;
+	return precvframe->rx_head;
 }
 
 __inline static uint8_t *get_rx_status(struct recv_frame *precvframe)
@@ -479,7 +466,7 @@ __inline static uint8_t *get_recvframe_data(struct recv_frame *precvframe)
 	if(precvframe==NULL)
 		return NULL;
 
-	return precvframe->u.hdr.rx_data;
+	return precvframe->rx_data;
 
 }
 
@@ -497,16 +484,16 @@ __inline static uint8_t *recvframe_push(struct recv_frame *precvframe, sint sz)
 		return NULL;
 
 
-	precvframe->u.hdr.rx_data -= sz ;
-	if( precvframe->u.hdr.rx_data < precvframe->u.hdr.rx_head )
+	precvframe->rx_data -= sz ;
+	if( precvframe->rx_data < precvframe->rx_head )
 	{
-		precvframe->u.hdr.rx_data += sz ;
+		precvframe->rx_data += sz ;
 		return NULL;
 	}
 
-	precvframe->u.hdr.len +=sz;
+	precvframe->len +=sz;
 
-	return precvframe->u.hdr.rx_data;
+	return precvframe->rx_data;
 
 }
 
@@ -522,17 +509,17 @@ __inline static uint8_t *recvframe_pull(struct recv_frame *precvframe, sint sz)
 		return NULL;
 
 
-	precvframe->u.hdr.rx_data += sz;
+	precvframe->rx_data += sz;
 
-	if(precvframe->u.hdr.rx_data > precvframe->u.hdr.rx_tail)
+	if(precvframe->rx_data > precvframe->rx_tail)
 	{
-		precvframe->u.hdr.rx_data -= sz;
+		precvframe->rx_data -= sz;
 		return NULL;
 	}
 
-	precvframe->u.hdr.len -=sz;
+	precvframe->len -=sz;
 
-	return precvframe->u.hdr.rx_data;
+	return precvframe->rx_data;
 
 }
 
@@ -547,19 +534,19 @@ __inline static uint8_t *recvframe_put(struct recv_frame *precvframe, sint sz)
 	if(precvframe==NULL)
 		return NULL;
 
-	prev_rx_tail = precvframe->u.hdr.rx_tail;
+	prev_rx_tail = precvframe->rx_tail;
 
-	precvframe->u.hdr.rx_tail += sz;
+	precvframe->rx_tail += sz;
 
-	if(precvframe->u.hdr.rx_tail > precvframe->u.hdr.rx_end)
+	if(precvframe->rx_tail > precvframe->rx_end)
 	{
-		precvframe->u.hdr.rx_tail -= sz;
+		precvframe->rx_tail -= sz;
 		return NULL;
 	}
 
-	precvframe->u.hdr.len +=sz;
+	precvframe->len +=sz;
 
-	return precvframe->u.hdr.rx_tail;
+	return precvframe->rx_tail;
 
 }
 
@@ -575,17 +562,17 @@ __inline static uint8_t *recvframe_pull_tail(struct recv_frame *precvframe, sint
 	if(precvframe==NULL)
 		return NULL;
 
-	precvframe->u.hdr.rx_tail -= sz;
+	precvframe->rx_tail -= sz;
 
-	if(precvframe->u.hdr.rx_tail < precvframe->u.hdr.rx_data)
+	if(precvframe->rx_tail < precvframe->rx_data)
 	{
-		precvframe->u.hdr.rx_tail += sz;
+		precvframe->rx_tail += sz;
 		return NULL;
 	}
 
-	precvframe->u.hdr.len -=sz;
+	precvframe->len -=sz;
 
-	return precvframe->u.hdr.rx_tail;
+	return precvframe->rx_tail;
 
 }
 
@@ -615,7 +602,7 @@ __inline static uint8_t *pkt_to_recvmem(struct sk_buff *pkt)
 
 	struct recv_frame * precv_frame = pkt_to_recvframe(pkt);
 
-	return 	precv_frame->u.hdr.rx_head;
+	return 	precv_frame->rx_head;
 
 }
 
@@ -625,14 +612,14 @@ __inline static uint8_t *pkt_to_recvdata(struct sk_buff *pkt)
 
 	struct recv_frame * precv_frame =pkt_to_recvframe(pkt);
 
-	return 	precv_frame->u.hdr.rx_data;
+	return 	precv_frame->rx_data;
 
 }
 
 
 __inline static sint get_recvframe_len(struct recv_frame *precvframe)
 {
-	return precvframe->u.hdr.len;
+	return precvframe->len;
 }
 
 

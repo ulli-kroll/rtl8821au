@@ -476,11 +476,11 @@ uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
 		plist = get_next(phead);
 
 		while(!list_empty(phead)) {
-			prframe = LIST_CONTAINOR(plist, struct recv_frame, u);
+			prframe = container_of(plist, struct recv_frame, list);
 
 			plist = get_next(plist);
 
-			rtw_list_delete(&(prframe->u.hdr.list));
+			rtw_list_delete(&(prframe->list));
 
 			rtw_free_recvframe(prframe, pfree_recv_queue);
 		}

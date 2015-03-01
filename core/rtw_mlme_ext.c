@@ -590,7 +590,7 @@ static uint8_t cmp_pkt_chnl_diff(struct rtl_priv *padapter,uint8_t * pframe,uint
 static void _mgt_dispatcher(struct rtl_priv *padapter, struct mlme_handler *ptable, struct recv_frame *precv_frame)
 {
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
+	uint8_t *pframe = precv_frame->rx_data;
 
 	  if(ptable->func)
         {
@@ -614,7 +614,7 @@ void mgt_dispatcher(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 #endif //CONFIG_AP_MODE
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
+	uint8_t *pframe = precv_frame->rx_data;
 	struct sta_info *psta = rtw_get_stainfo(&padapter->stapriv, GetAddr2Ptr(pframe));
 
 
@@ -646,14 +646,14 @@ void mgt_dispatcher(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 	{
 		if (GetRetry(pframe))
 		{
-			if (precv_frame->u.hdr.attrib.seq_num == psta->RxMgmtFrameSeqNum)
+			if (precv_frame->attrib.seq_num == psta->RxMgmtFrameSeqNum)
 			{
 				/* drop the duplicate management frame */
-				DBG_871X("Drop duplicate management frame with seq_num = %d.\n", precv_frame->u.hdr.attrib.seq_num);
+				DBG_871X("Drop duplicate management frame with seq_num = %d.\n", precv_frame->attrib.seq_num);
 				return;
 			}
 		}
-		psta->RxMgmtFrameSeqNum = precv_frame->u.hdr.attrib.seq_num;
+		psta->RxMgmtFrameSeqNum = precv_frame->attrib.seq_num;
 	}
 #else
 
@@ -718,8 +718,8 @@ unsigned int OnProbeReq(struct rtl_priv *padapter, struct recv_frame *precv_fram
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX 	*cur = &(pmlmeinfo->network);
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint len = precv_frame->len;
 	uint8_t is_valid_p2p_probereq = _FALSE;
 
 
@@ -778,7 +778,7 @@ unsigned int OnProbeRsp(struct rtl_priv *padapter, struct recv_frame *precv_fram
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct sta_priv		*pstapriv = &padapter->stapriv;
-	uint8_t	*pframe = precv_frame->u.hdr.rx_data;
+	uint8_t	*pframe = precv_frame->rx_data;
 
 
 
@@ -814,15 +814,15 @@ unsigned int OnBeacon(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct sta_priv	*pstapriv = &padapter->stapriv;
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint len = precv_frame->len;
 	WLAN_BSSID_EX *pbss;
 	int ret = _SUCCESS;
 	uint8_t *p = NULL;
 	uint32_t	 ielen = 0;
 
 #ifdef CONFIG_ATTEMPT_TO_FIX_AP_BEACON_ERROR
-	p = rtw_get_ie(pframe + sizeof(struct rtw_ieee80211_hdr_3addr) + _BEACON_IE_OFFSET_, _EXT_SUPPORTEDRATES_IE_, &ielen, precv_frame->u.hdr.len -sizeof(struct rtw_ieee80211_hdr_3addr) - _BEACON_IE_OFFSET_);
+	p = rtw_get_ie(pframe + sizeof(struct rtw_ieee80211_hdr_3addr) + _BEACON_IE_OFFSET_, _EXT_SUPPORTEDRATES_IE_, &ielen, precv_frame->len -sizeof(struct rtw_ieee80211_hdr_3addr) - _BEACON_IE_OFFSET_);
 	if ((p != NULL) && (ielen > 0))
 	{
 		if ((*(p + 1 + ielen) == 0x2D) && (*(p + 2 + ielen) != 0x2D))
@@ -964,8 +964,8 @@ unsigned int OnAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 	struct security_priv *psecuritypriv = &padapter->securitypriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint len = precv_frame->len;
 	uint8_t	offset = 0;
 
 	if((pmlmeinfo->state&0x03) != WIFI_FW_AP_STATE)
@@ -980,7 +980,7 @@ unsigned int OnAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 	if (GetPrivacy(pframe))
 	{
 		uint8_t	*iv;
-		struct rx_pkt_attrib	 *prxattrib = &(precv_frame->u.hdr.attrib);
+		struct rx_pkt_attrib	 *prxattrib = &(precv_frame->attrib);
 
 		prxattrib->hdrlen = WLAN_HDR_A3_LEN;
 		prxattrib->encrypt = _WEP40_;
@@ -991,7 +991,7 @@ unsigned int OnAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 		prxattrib->iv_len = 4;
 		prxattrib->icv_len = 4;
 
-		rtw_wep_decrypt(padapter, (uint8_t *)precv_frame);
+		rtw_wep_decrypt(padapter, precv_frame);
 
 		offset = 4;
 	}
@@ -1185,8 +1185,8 @@ unsigned int OnAuthClient(struct rtl_priv *padapter, struct recv_frame *precv_fr
 	unsigned int	go2asoc = 0;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint pkt_len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint pkt_len = precv_frame->len;
 
 	DBG_871X("%s\n", __FUNCTION__);
 
@@ -1299,8 +1299,8 @@ unsigned int OnAssocReq(struct rtl_priv *padapter, struct recv_frame *precv_fram
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX 	*cur = &(pmlmeinfo->network);
 	struct sta_priv *pstapriv = &padapter->stapriv;
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint pkt_len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint pkt_len = precv_frame->len;
 
 	if((pmlmeinfo->state&0x03) != WIFI_FW_AP_STATE)
 		return _FAIL;
@@ -1838,8 +1838,8 @@ unsigned int OnAssocRsp(struct rtl_priv *padapter, struct recv_frame *precv_fram
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	//WLAN_BSSID_EX 		*cur_network = &(pmlmeinfo->network);
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint pkt_len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint pkt_len = precv_frame->len;
 	PNDIS_802_11_VARIABLE_IEs	pWapiIE = NULL;
 
 	DBG_871X("%s\n", __FUNCTION__);
@@ -1942,7 +1942,7 @@ unsigned int OnDeAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
+	uint8_t *pframe = precv_frame->rx_data;
 
 	//check A3
 	if (!(_rtw_memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN)))
@@ -2007,7 +2007,7 @@ unsigned int OnDisassoc(struct rtl_priv *padapter, struct recv_frame *precv_fram
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
+	uint8_t *pframe = precv_frame->rx_data;
 
 	//check A3
 	if (!(_rtw_memcmp(GetAddr3Ptr(pframe), get_my_bssid(&pmlmeinfo->network), ETH_ALEN)))
@@ -2134,8 +2134,8 @@ unsigned int on_action_spct(struct rtl_priv *padapter, struct recv_frame *precv_
 	unsigned int ret = _FAIL;
 	struct sta_info *psta = NULL;
 	struct sta_priv *pstapriv = &padapter->stapriv;
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint frame_len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint frame_len = precv_frame->len;
 	uint8_t *frame_body = (uint8_t *)(pframe + sizeof(struct rtw_ieee80211_hdr_3addr));
 	uint8_t category;
 	uint8_t action;
@@ -2192,7 +2192,7 @@ unsigned int OnAction_back(struct rtl_priv *padapter, struct recv_frame *precv_f
 	unsigned short	tid, status, reason_code = 0;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
+	uint8_t *pframe = precv_frame->rx_data;
 	struct sta_priv *pstapriv = &padapter->stapriv;
 #ifdef CONFIG_80211N_HT
 	//check RA matches or not
@@ -2299,11 +2299,11 @@ unsigned int OnAction_back(struct rtl_priv *padapter, struct recv_frame *precv_f
 
 int32_t rtw_action_public_decache(struct recv_frame *recv_frame, int32_t token)
 {
-	struct rtl_priv *adapter = recv_frame->u.hdr.adapter;
+	struct rtl_priv *adapter = recv_frame->adapter;
 	struct mlme_ext_priv *mlmeext = &(adapter->mlmeextpriv);
-	uint8_t *frame = recv_frame->u.hdr.rx_data;
-	u16 seq_ctrl = ( (recv_frame->u.hdr.attrib.seq_num&0xffff) << 4) |
-		(recv_frame->u.hdr.attrib.frag_num & 0xf);
+	uint8_t *frame = recv_frame->rx_data;
+	u16 seq_ctrl = ( (recv_frame->attrib.seq_num&0xffff) << 4) |
+		(recv_frame->attrib.frag_num & 0xf);
 
 	if (GetRetry(frame)) {
 		if (token >= 0) {
@@ -2333,9 +2333,9 @@ int32_t rtw_action_public_decache(struct recv_frame *recv_frame, int32_t token)
 
 unsigned int on_action_public_p2p(struct recv_frame *precv_frame)
 {
-	struct rtl_priv *padapter = precv_frame->u.hdr.adapter;
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint len = precv_frame->u.hdr.len;
+	struct rtl_priv *padapter = precv_frame->adapter;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint len = precv_frame->len;
 	uint8_t *frame_body;
 	uint8_t dialogToken=0;
 
@@ -2353,8 +2353,8 @@ unsigned int on_action_public_p2p(struct recv_frame *precv_frame)
 unsigned int on_action_public_vendor(struct recv_frame *precv_frame)
 {
 	unsigned int ret = _FAIL;
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint frame_len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint frame_len = precv_frame->len;
 	uint8_t *frame_body = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
 
 	if (_rtw_memcmp(frame_body + 2, P2P_OUI, 4) == _TRUE) {
@@ -2367,11 +2367,11 @@ unsigned int on_action_public_vendor(struct recv_frame *precv_frame)
 unsigned int on_action_public_default(struct recv_frame *precv_frame, uint8_t action)
 {
 	unsigned int ret = _FAIL;
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint frame_len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint frame_len = precv_frame->len;
 	uint8_t *frame_body = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
 	uint8_t token;
-	struct rtl_priv *adapter = precv_frame->u.hdr.adapter;
+	struct rtl_priv *adapter = precv_frame->adapter;
 	int cnt = 0;
 	char msg[64];
 
@@ -2389,8 +2389,8 @@ exit:
 unsigned int on_action_public(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 {
 	unsigned int ret = _FAIL;
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
-	uint frame_len = precv_frame->u.hdr.len;
+	uint8_t *pframe = precv_frame->rx_data;
+	uint frame_len = precv_frame->len;
 	uint8_t *frame_body = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
 	uint8_t category, action;
 
@@ -2439,7 +2439,7 @@ unsigned int OnAction(struct rtl_priv *padapter, struct recv_frame *precv_frame)
 	unsigned char	category;
 	struct action_handler *ptable;
 	unsigned char	*frame_body;
-	uint8_t *pframe = precv_frame->u.hdr.rx_data;
+	uint8_t *pframe = precv_frame->rx_data;
 
 	frame_body = (unsigned char *)(pframe + sizeof(struct rtw_ieee80211_hdr_3addr));
 
@@ -4798,8 +4798,8 @@ uint8_t collect_bss_info(struct rtl_priv *padapter, struct recv_frame *precv_fra
 	uint32_t	len;
 	uint8_t	*p;
 	u16	val16, subtype;
-	uint8_t	*pframe = precv_frame->u.hdr.rx_data;
-	uint32_t	packet_len = precv_frame->u.hdr.len;
+	uint8_t	*pframe = precv_frame->rx_data;
+	uint32_t	packet_len = precv_frame->len;
 	struct registry_priv 	*pregistrypriv = &padapter->registrypriv;
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -4829,9 +4829,9 @@ uint8_t collect_bss_info(struct rtl_priv *padapter, struct recv_frame *precv_fra
 
 	//get the signal strength
 	//bssid->Rssi = precv_frame->u.hdr.attrib.SignalStrength; // 0-100 index.
-	bssid->Rssi = precv_frame->u.hdr.attrib.phy_info.RecvSignalPower; // in dBM.raw data
-	bssid->PhyInfo.SignalQuality = precv_frame->u.hdr.attrib.phy_info.SignalQuality;//in percentage
-	bssid->PhyInfo.SignalStrength = precv_frame->u.hdr.attrib.phy_info.SignalStrength;//in percentage
+	bssid->Rssi = precv_frame->attrib.phy_info.RecvSignalPower; // in dBM.raw data
+	bssid->PhyInfo.SignalQuality = precv_frame->attrib.phy_info.SignalQuality;//in percentage
+	bssid->PhyInfo.SignalStrength = precv_frame->attrib.phy_info.SignalStrength;//in percentage
 #ifdef CONFIG_ANTENNA_DIVERSITY
 	//rtw_hal_get_hwreg(padapter, HW_VAR_CURRENT_ANTENNA, (uint8_t *)(&bssid->PhyInfo.Optimum_antenna));
 	rtw_hal_get_def_var(padapter, HAL_DEF_CURRENT_ANTENNA,  &bssid->PhyInfo.Optimum_antenna);

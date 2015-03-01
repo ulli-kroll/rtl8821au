@@ -27,11 +27,11 @@ int rtw_os_alloc_recvframe(struct rtl_priv *padapter, struct recv_frame *precvfr
 	uint8_t	shift_sz = 0;
 	u32	skb_len, alloc_sz;
 	struct sk_buff *pkt_copy = NULL;
-	struct rx_pkt_attrib *pattrib = &precvframe->u.hdr.attrib;
+	struct rx_pkt_attrib *pattrib = &precvframe->attrib;
 
 
 	if(pdata == NULL) {
-		precvframe->u.hdr.pkt = NULL;
+		precvframe->pkt = NULL;
 		res = _FAIL;
 		return res;
 	}
@@ -65,13 +65,13 @@ int rtw_os_alloc_recvframe(struct rtl_priv *padapter, struct recv_frame *precvfr
 
 	if(pkt_copy) {
 		pkt_copy->dev = padapter->ndev;
-		precvframe->u.hdr.pkt = pkt_copy;
-		precvframe->u.hdr.rx_head = pkt_copy->data;
-		precvframe->u.hdr.rx_end = pkt_copy->data + alloc_sz;
+		precvframe->pkt = pkt_copy;
+		precvframe->rx_head = pkt_copy->data;
+		precvframe->rx_end = pkt_copy->data + alloc_sz;
 		skb_reserve(pkt_copy, 8 - ((SIZE_PTR)( pkt_copy->data) & 7 ));	/* force pkt_copy->data at 8-byte alignment address */
 		skb_reserve(pkt_copy, shift_sz);				/* force ip_hdr at 8-byte alignment address according to shift_sz. */
 		memcpy(pkt_copy->data, pdata, skb_len);
-		precvframe->u.hdr.rx_data = precvframe->u.hdr.rx_tail = pkt_copy->data;
+		precvframe->rx_data = precvframe->rx_tail = pkt_copy->data;
 	} else 	{
 		if((pattrib->mfrag == 1)&&(pattrib->frag_num == 0)) {
 			DBG_871X("%s: alloc_skb fail , drop frag frame \n", __FUNCTION__);
@@ -85,10 +85,10 @@ int rtw_os_alloc_recvframe(struct rtl_priv *padapter, struct recv_frame *precvfr
 			goto exit_rtw_os_recv_resource_alloc;
 		}
 
-		precvframe->u.hdr.pkt = skb_clone(pskb, GFP_ATOMIC);
-		if(precvframe->u.hdr.pkt) {
-			precvframe->u.hdr.rx_head = precvframe->u.hdr.rx_data = precvframe->u.hdr.rx_tail = pdata;
-			precvframe->u.hdr.rx_end =  pdata + alloc_sz;
+		precvframe->pkt = skb_clone(pskb, GFP_ATOMIC);
+		if(precvframe->pkt) {
+			precvframe->rx_head = precvframe->rx_data = precvframe->rx_tail = pdata;
+			precvframe->rx_end =  pdata + alloc_sz;
 		} else 	{
 			DBG_871X("%s: skb_clone fail\n", __FUNCTION__);
 			/*
@@ -107,10 +107,10 @@ exit_rtw_os_recv_resource_alloc:
 
 void rtw_os_free_recvframe(struct recv_frame *precvframe)
 {
-	if(precvframe->u.hdr.pkt) {
-		dev_kfree_skb_any(precvframe->u.hdr.pkt);	/* free skb by driver */
+	if(precvframe->pkt) {
+		dev_kfree_skb_any(precvframe->pkt);	/* free skb by driver */
 
-		precvframe->u.hdr.pkt = NULL;
+		precvframe->pkt = NULL;
 	}
 }
 
@@ -120,7 +120,7 @@ int rtw_os_recv_resource_alloc(struct rtl_priv *padapter, struct recv_frame *pre
 {
 	int	res=_SUCCESS;
 
-	precvframe->u.hdr.pkt_newalloc = precvframe->u.hdr.pkt = NULL;
+	precvframe->pkt_newalloc = precvframe->pkt = NULL;
 
 	return res;
 }
@@ -180,7 +180,7 @@ struct sk_buff  *rtw_os_alloc_msdu_pkt(struct recv_frame *prframe, u16 nSubframe
 	struct sk_buff  *sub_skb;
 	struct rx_pkt_attrib *pattrib;
 
-	pattrib = &prframe->u.hdr.attrib;
+	pattrib = &prframe->attrib;
 
 #ifdef CONFIG_SKB_COPY
 	sub_skb = dev_alloc_skb(nSubframe_Length + 12);
@@ -191,7 +191,7 @@ struct sk_buff  *rtw_os_alloc_msdu_pkt(struct recv_frame *prframe, u16 nSubframe
 	} else
 #endif
 	{
-		sub_skb = skb_clone(prframe->u.hdr.pkt, GFP_ATOMIC);
+		sub_skb = skb_clone(prframe->pkt, GFP_ATOMIC);
 		if(sub_skb) {
 			sub_skb->data = pdata + ETH_HLEN;
 			sub_skb->len = nSubframe_Length;
@@ -325,27 +325,27 @@ int rtw_recv_indicatepkt(struct rtl_priv *padapter, struct recv_frame *precv_fra
 	struct __queue	*pfree_recv_queue;
 	struct sk_buff  *skb;
 	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
-	struct rx_pkt_attrib *pattrib = &precv_frame->u.hdr.attrib;
+	struct rx_pkt_attrib *pattrib = &precv_frame->attrib;
 
 	precvpriv = &(padapter->recvpriv);
 	pfree_recv_queue = &(precvpriv->free_recv_queue);
 
-	skb = precv_frame->u.hdr.pkt;
+	skb = precv_frame->pkt;
 	if (skb == NULL) {
 		goto _recv_indicatepkt_drop;
 	}
 
-	skb->data = precv_frame->u.hdr.rx_data;
+	skb->data = precv_frame->rx_data;
 
-	skb_set_tail_pointer(skb, precv_frame->u.hdr.len);
+	skb_set_tail_pointer(skb, precv_frame->len);
 
-	skb->len = precv_frame->u.hdr.len;
+	skb->len = precv_frame->len;
 
 	rtw_os_recv_indicate_pkt(padapter, skb, pattrib);
 
 _recv_indicatepkt_end:
 
-	precv_frame->u.hdr.pkt = NULL; 		/* pointers to NULL before rtw_free_recvframe() */
+	precv_frame->pkt = NULL; 		/* pointers to NULL before rtw_free_recvframe() */
 
 	rtw_free_recvframe(precv_frame, pfree_recv_queue);
 

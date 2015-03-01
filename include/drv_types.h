@@ -50,10 +50,10 @@ struct rtl_priv;
 #include <rtw_rf.h>
 #include <rtw_cmd.h>
 #include <cmd_osdep.h>
-#include <rtw_security.h>
-#include <rtw_xmit.h>
 #include <xmit_osdep.h>
 #include <rtw_recv.h>
+#include <rtw_security.h>
+#include <rtw_xmit.h>
 #include <recv_osdep.h>
 #include <rtw_efuse.h>
 #include <hal_intf.h>

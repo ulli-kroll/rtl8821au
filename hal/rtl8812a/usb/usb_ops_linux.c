@@ -225,13 +225,13 @@ static int recvbuf2recvframe(struct rtl_priv *padapter, struct sk_buff *pskb)
 			goto _exit_recvbuf2recvframe;
 		}
 
-		INIT_LIST_HEAD(&precvframe->u.hdr.list);
-		precvframe->u.hdr.precvbuf = NULL;	/* can't access the precvbuf for new arch. */
-		precvframe->u.hdr.len = 0;
+		INIT_LIST_HEAD(&precvframe->list);
+		precvframe->precvbuf = NULL;	/* can't access the precvbuf for new arch. */
+		precvframe->len = 0;
 
 		rtl8812_query_rx_desc_status(precvframe, pbuf);
 
-		pattrib = &precvframe->u.hdr.attrib;
+		pattrib = &precvframe->attrib;
 
 		if ((pattrib->crc_err) || (pattrib->icv_err)) {
 			DBG_8192C("%s: RX Warning! crc_err=%d icv_err=%d, skip!\n", __FUNCTION__, pattrib->crc_err, pattrib->icv_err);

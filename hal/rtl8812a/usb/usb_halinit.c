@@ -1496,7 +1496,6 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	switch (pEEPROM->CustomerID) {
 	case RT_CID_DEFAULT:
 		pledpriv->LedStrategy = SW_LED_MODE9;
-		pledpriv->bRegUseLed = _TRUE;
 		break;
 
 	/* ULLI check RT_CID_819x values */
@@ -1533,8 +1532,6 @@ static VOID ReadLEDSetting_8812AU(struct rtl_priv *Adapter,
 	u8 *PROMContent, BOOLEAN AutoloadFail)
 {
 	struct rtl_led_ctl *pledpriv = &(Adapter->ledpriv);
-
-	pledpriv->bRegUseLed = _TRUE;
 }
 
 VOID InitAdapterVariablesByPROM_8812AU(struct rtl_priv *Adapter)

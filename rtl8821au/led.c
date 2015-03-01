@@ -2152,9 +2152,6 @@ void LedControlUSB(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
              return;
        }
 
-	if( ledpriv->bRegUseLed == _FALSE)
-		return;
-
 	//if(priv->bInHctTest)
 	//	return;
 

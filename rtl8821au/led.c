@@ -21,6 +21,25 @@
 #include <drv_types.h>
 #include <hal_data.h>
 
+/*
+ * ULLI led.c is a mess, we have two different paths for
+ * rtl8812au and rtl8821au why ?? 
+ * 
+ * And up too three leds ...
+ */
+ 
+
+
+static void SwLedOn(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
+{
+	rtlpriv->ledpriv.SwLedOn(rtlpriv, pLed);
+}
+
+static void SwLedOff(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
+{
+	rtlpriv->ledpriv.SwLedOff(rtlpriv, pLed);
+}
+
 //
 //	Description:
 //		Implementation of LED blinking behavior.

@@ -204,18 +204,6 @@ struct rtl_led_ctl {
 	/* add for led controll */
 };
 
-#define SwLedOn(adapter, pLed) \
-	do { \
-		if((adapter)->ledpriv.SwLedOn) \
-			(adapter)->ledpriv.SwLedOn((adapter), (pLed)); \
-	} while(0)
-
-#define SwLedOff(adapter, pLed) \
-	do { \
-		if((adapter)->ledpriv.SwLedOff) \
-			(adapter)->ledpriv.SwLedOff((adapter), (pLed)); \
-	} while(0)
-
 void BlinkTimerCallback(void *data);
 void BlinkWorkItemCallback(_workitem *work);
 

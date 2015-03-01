@@ -166,7 +166,7 @@ struct	intf_hdl {
 	u16 done_len;
 */
 	struct rtl_priv *padapter;
-	struct dvobj_priv *pintf_dev;//	pointer to &(padapter->dvobjpriv);
+	struct rtl_usb *pintf_dev;//	pointer to &(padapter->dvobjpriv);
 
 	struct rtl_io	io_ops;
 

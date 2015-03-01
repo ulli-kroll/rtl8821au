@@ -200,7 +200,7 @@ static uint8_t rtw_deinit_intf_priv(struct rtl_usb *dvobj)
 	return rst;
 }
 
-static struct dvobj_priv *usb_dvobj_init(struct usb_interface *usb_intf)
+static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf)
 {
 	int	i;
 	uint8_t	val8;

@@ -156,9 +156,8 @@ static void process_link_qual(struct rtl_priv *padapter,struct recv_frame *prfra
 
 }
 
-static void process_phy_info(struct rtl_priv *padapter, void *prframe)
+static void process_phy_info(struct rtl_priv *padapter, struct recv_frame *precvframe)
 {
-	struct recv_frame *precvframe = (struct recv_frame *)prframe;
 
 	//
 	// Check RSSI

@@ -470,7 +470,7 @@ _func_enter_;
 		if(Adapter->pwrctrlpriv.rf_pwrstate== rf_off) {
 #ifdef CONFIG_AUTOSUSPEND
 			if(Adapter->registrypriv.usbss_enable) 	{
-				usb_disable_autosuspend(adapter_to_dvobj(Adapter)->pusbdev);
+				usb_disable_autosuspend(rtl_usbdev(Adapter)->pusbdev);
 			} else
 #endif
 			{

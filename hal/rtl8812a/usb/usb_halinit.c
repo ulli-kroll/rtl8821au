@@ -103,7 +103,7 @@ void rtl8812au_interface_configure(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-	struct rtl_usb	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
+	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
 
 	if (IS_SUPER_SPEED_USB(rtlpriv))
 		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;	/* 1024 bytes */
@@ -1323,7 +1323,7 @@ unsigned int rtl8812au_inirp_init(struct rtl_priv *Adapter)
 	uint8_t i;
 	struct recv_buf *precvbuf;
 	uint	status;
-	struct rtl_usb *pdev = adapter_to_dvobj(Adapter);
+	struct rtl_usb *pdev = rtl_usbdev(Adapter);
 	struct intf_hdl *pintfhdl = &Adapter->iopriv.intf;
 	struct recv_priv *precvpriv = &(Adapter->recvpriv);
 	uint32_t (*_read_port)(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t cnt, uint8_t *pmem);

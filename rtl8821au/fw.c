@@ -83,7 +83,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *padapter, uint8_t ElementID, uin
 		return ret;
 	}
 
-	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex));
+	_unused = mutex_lock_interruptible(&(rtl_usbdev(padapter)->h2c_fwcmd_mutex));
 
 	if (!pCmdBuffer) {
 		goto exit;
@@ -150,7 +150,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *padapter, uint8_t ElementID, uin
 
 exit:
 
-	mutex_unlock(&(adapter_to_dvobj(padapter)->h2c_fwcmd_mutex));
+	mutex_unlock(&(rtl_usbdev(padapter)->h2c_fwcmd_mutex));
 
 	return ret;
 }

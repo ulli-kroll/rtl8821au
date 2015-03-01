@@ -3096,7 +3096,7 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 		 * 2013/01/30 MH According to power current test compare with BCM AC NIC, we
 		 * decide to use host hub = 2.0 mode to enable tx power limit behavior.
 		 */
-		if (adapter_to_dvobj(rtlpriv)->usb_speed <= RTW_USB_SPEED_2 && IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+		if (rtl_usbdev(rtlpriv)->usb_speed <= RTW_USB_SPEED_2 && IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			powerDiffByRate = 0;
 		}
 

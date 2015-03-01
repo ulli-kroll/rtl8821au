@@ -253,11 +253,16 @@ struct rtl_priv {
 	struct rtl_phy phy;
 	struct rtl_efuse efuse;
 	struct rtl_dm dm;		/* Caution new dm data */
+	
+
+	struct rtl_usb_priv priv;
+
 
 
 	struct _rtw_hal *HalData;
 
 
+	/* Border */
 
 
 	int	DriverState;// for disable driver using module, use dongle to replace module.
@@ -266,7 +271,6 @@ struct rtl_priv {
 	u16 	chip_type;
 	u16	interface_type;//USB,SDIO,SPI,PCI
 
-	struct rtl_usb priv;
 	struct	mlme_priv mlmepriv;
 	struct	mlme_ext_priv mlmeextpriv;
 	struct	cmd_priv	cmdpriv;
@@ -577,7 +581,8 @@ static inline u8 get_rf_type(struct rtl_phy *rtlphy)
 	return rtlphy->rf_type;
 }
 
-
+/* Not fully compatible */
+#define rtl_usbdev(adapter) (&(adapter->priv.dev))
 
 /* ULLI : Hope this is an border, for old code  */
 

@@ -1579,7 +1579,7 @@ uint8_t search_max_mac_id(struct rtl_priv *padapter)
 
 #if 1
 		_irqL irqL;
-		struct rtl_usb *pdvobj = adapter_to_dvobj(padapter);
+		struct rtl_usb *pdvobj = rtl_usbdev(padapter);
 
 		_enter_critical_bh(&pdvobj->lock, &irqL);
 		for(mac_id=(NUM_STA-1); mac_id>0; mac_id--)

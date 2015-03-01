@@ -448,32 +448,32 @@ static void Set_NETYPE1_MSR(struct rtl_priv *padapter, uint8_t type)
 
 inline uint8_t rtw_get_oper_ch(struct rtl_priv *adapter)
 {
-	return adapter_to_dvobj(adapter)->oper_channel;
+	return rtl_usbdev(adapter)->oper_channel;
 }
 
 inline void rtw_set_oper_ch(struct rtl_priv *adapter, uint8_t ch)
 {
-	adapter_to_dvobj(adapter)->oper_channel = ch;
+	rtl_usbdev(adapter)->oper_channel = ch;
 }
 
 inline uint8_t rtw_get_oper_bw(struct rtl_priv *adapter)
 {
-	return adapter_to_dvobj(adapter)->oper_bwmode;
+	return rtl_usbdev(adapter)->oper_bwmode;
 }
 
 inline void rtw_set_oper_bw(struct rtl_priv *adapter, uint8_t bw)
 {
-	adapter_to_dvobj(adapter)->oper_bwmode = bw;
+	rtl_usbdev(adapter)->oper_bwmode = bw;
 }
 
 inline uint8_t rtw_get_oper_choffset(struct rtl_priv *adapter)
 {
-	return adapter_to_dvobj(adapter)->oper_ch_offset;
+	return rtl_usbdev(adapter)->oper_ch_offset;
 }
 
 inline void rtw_set_oper_choffset(struct rtl_priv *adapter, uint8_t offset)
 {
-	adapter_to_dvobj(adapter)->oper_ch_offset = offset;
+	rtl_usbdev(adapter)->oper_ch_offset = offset;
 }
 
 uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset)
@@ -513,14 +513,14 @@ void SelectChannel(struct rtl_priv *padapter, unsigned char channel)
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	int _unused;
 
-	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
+	_unused = mutex_lock_interruptible(&(rtl_usbdev(padapter)->setch_mutex));
 
 	//saved channel info
 	rtw_set_oper_ch(padapter, channel);
 
 	rtw_hal_set_chan(padapter, channel);
 
-	mutex_unlock(&(adapter_to_dvobj(padapter)->setch_mutex));
+	mutex_unlock(&(rtl_usbdev(padapter)->setch_mutex));
 }
 
 void SetBWMode(struct rtl_priv *padapter, unsigned short bwmode, unsigned char channel_offset)
@@ -528,7 +528,7 @@ void SetBWMode(struct rtl_priv *padapter, unsigned short bwmode, unsigned char c
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	int _unused;
 
-	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setbw_mutex));
+	_unused = mutex_lock_interruptible(&(rtl_usbdev(padapter)->setbw_mutex));
 
 	//saved bw info
 	rtw_set_oper_bw(padapter, bwmode);
@@ -536,7 +536,7 @@ void SetBWMode(struct rtl_priv *padapter, unsigned short bwmode, unsigned char c
 
 	rtw_hal_set_bwmode(padapter, (enum CHANNEL_WIDTH)bwmode, channel_offset);
 
-	mutex_unlock(&(adapter_to_dvobj(padapter)->setbw_mutex));
+	mutex_unlock(&(rtl_usbdev(padapter)->setbw_mutex));
 }
 
 void set_channel_bwmode(struct rtl_priv *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode)
@@ -564,7 +564,7 @@ void set_channel_bwmode(struct rtl_priv *padapter, unsigned char channel, unsign
 
 	//set Channel
 
-	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->setch_mutex));
+	_unused = mutex_lock_interruptible(&(rtl_usbdev(padapter)->setch_mutex));
 
 	//saved channel/bw info
 	rtw_set_oper_ch(padapter, channel);
@@ -573,7 +573,7 @@ void set_channel_bwmode(struct rtl_priv *padapter, unsigned char channel, unsign
 
 	rtw_hal_set_chnl_bw(padapter, center_ch, bwmode, channel_offset, chnl_offset80); // set center channel
 
-	mutex_unlock(&(adapter_to_dvobj(padapter)->setch_mutex));
+	mutex_unlock(&(rtl_usbdev(padapter)->setch_mutex));
 }
 
 int get_bsstype(unsigned short capability)
@@ -2249,7 +2249,7 @@ void rtw_alloc_macid(struct rtl_priv *padapter, struct sta_info *psta)
 	int i;
 	_irqL	irqL;
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-	struct rtl_usb *pdvobj = adapter_to_dvobj(padapter);
+	struct rtl_usb *pdvobj = rtl_usbdev(padapter);
 
 
 	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
@@ -2290,7 +2290,7 @@ void rtw_release_macid(struct rtl_priv *padapter, struct sta_info *psta)
 	int i;
 	_irqL	irqL;
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-	struct rtl_usb *pdvobj = adapter_to_dvobj(padapter);
+	struct rtl_usb *pdvobj = rtl_usbdev(padapter);
 
 
 	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))

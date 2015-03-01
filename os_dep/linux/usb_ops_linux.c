@@ -402,7 +402,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 			DBG_8192C("%s()-%d: RX Warning!\n", __FUNCTION__, __LINE__);
 		} else {
-			rtw_reset_continual_urb_error(adapter_to_dvobj(padapter));
+			rtw_reset_continual_urb_error(rtl_usbdev(padapter));
 
 			precvbuf->transfer_len = purb->actual_length;
 			skb_put(precvbuf->pskb, purb->actual_length);
@@ -418,7 +418,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 	} else {
 		DBG_8192C("###=> usb_read_port_complete => urb status(%d)\n", purb->status);
 
-		if (rtw_inc_and_chk_continual_urb_error(adapter_to_dvobj(padapter)) == _TRUE) {
+		if (rtw_inc_and_chk_continual_urb_error(rtl_usbdev(padapter)) == _TRUE) {
 			padapter->bSurpriseRemoved = _TRUE;
 		}
 
@@ -463,7 +463,7 @@ static uint32_t usb_read_port(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t
 	PURB purb = NULL;
 	struct recv_buf	*precvbuf = (struct recv_buf *) rmem;
 	struct rtl_priv		*adapter = pintfhdl->padapter;
-	struct rtl_usb	*pdvobj = adapter_to_dvobj(adapter);
+	struct rtl_usb	*pdvobj = rtl_usbdev(adapter);
 	struct recv_priv	*precvpriv = &adapter->recvpriv;
 	struct usb_device	*pusbd = pdvobj->pusbdev;
 
@@ -609,7 +609,7 @@ void rtl8812au_set_hw_type(struct rtl_priv *padapter)
 int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {
 	struct rtl_priv	*padapter = pintfhdl->padapter;
-	struct rtl_usb  *pdvobjpriv = adapter_to_dvobj(padapter);
+	struct rtl_usb  *pdvobjpriv = rtl_usbdev(padapter);
 	struct usb_device *udev=pdvobjpriv->pusbdev;
 	int _unused;
 
@@ -761,7 +761,7 @@ static u32 usb_bulkout_zero(struct intf_hdl *pintfhdl, u32 addr)
 	struct zero_bulkout_context *pcontext;
 	PURB	purb = NULL;
 	struct rtl_priv *padapter = (struct rtl_priv *)pintfhdl->padapter;
-	struct rtl_usb *pdvobj = adapter_to_dvobj(padapter);
+	struct rtl_usb *pdvobj = rtl_usbdev(padapter);
 	struct usb_device *pusbd = pdvobj->pusbdev;
 
 	/* DBG_871X("%s\n", __func__); */
@@ -969,7 +969,7 @@ u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 	u32 ret = _FAIL, bwritezero = _FALSE;
 	PURB	purb = NULL;
 	struct rtl_priv *padapter = (struct rtl_priv *)pintfhdl->padapter;
-	struct rtl_usb	*pdvobj = adapter_to_dvobj(padapter);
+	struct rtl_usb	*pdvobj = rtl_usbdev(padapter);
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)wmem;
 	struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data;

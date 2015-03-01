@@ -601,7 +601,7 @@ exit:
 void autosuspend_enter(struct rtl_priv* padapter)
 {
 	struct pwrctrl_priv *pwrpriv = &padapter->pwrctrlpriv;
-	struct rtl_usb *dvobj = adapter_to_dvobj(padapter);
+	struct rtl_usb *dvobj = rtl_usbdev(padapter);
 
 	DBG_871X("==>autosuspend_enter...........\n");
 
@@ -624,7 +624,7 @@ int autoresume_enter(struct rtl_priv* padapter)
 	struct security_priv* psecuritypriv=&(padapter->securitypriv);
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	struct rtl_usb *dvobj = adapter_to_dvobj(padapter);
+	struct rtl_usb *dvobj = rtl_usbdev(padapter);
 
 	DBG_871X("====> autoresume_enter \n");
 
@@ -675,7 +675,7 @@ static int rtw_init_io_priv(struct rtl_priv *padapter,
 
 	piopriv->padapter = padapter;
 	pintf->padapter = padapter;
-	pintf->pintf_dev = adapter_to_dvobj(padapter);
+	pintf->pintf_dev = rtl_usbdev(padapter);
 
 	set_intf_ops(padapter, &pintf->io_ops);
 
@@ -786,7 +786,7 @@ static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const 
 
 			usb_enable_autosuspend(dvobj->pusbdev);
 
-			/* usb_autopm_get_interface(adapter_to_dvobj(padapter)->pusbintf );//init pm_usage_cnt ,let it start from 1 */
+			/* usb_autopm_get_interface(rtl_usbdev(padapter)->pusbintf );//init pm_usage_cnt ,let it start from 1 */
 
 			DBG_871X("%s...pm_usage_cnt(%d).....\n",__FUNCTION__,atomic_read(&(dvobj->pusbintf ->pm_usage_cnt)));
 		}

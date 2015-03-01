@@ -131,7 +131,7 @@ int rtw_os_recvbuf_resource_alloc(struct rtl_priv *padapter, struct recv_buf *pr
 {
 	int res=_SUCCESS;
 
-	struct rtl_usb	*pdvobjpriv = adapter_to_dvobj(padapter);
+	struct rtl_usb	*pdvobjpriv = rtl_usbdev(padapter);
 	struct usb_device	*pusbd = pdvobjpriv->pusbdev;
 
 	precvbuf->irp_pending = _FALSE;

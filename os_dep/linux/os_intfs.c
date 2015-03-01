@@ -1186,9 +1186,9 @@ int netdev_open(struct net_device *ndev)
 	struct rtl_priv *padapter =  rtl_priv(ndev);
 
 	/* ULLI: orignal driver doesn't use the return value */
-	_unused = mutex_lock_interruptible(&(adapter_to_dvobj(padapter)->hw_init_mutex));
+	_unused = mutex_lock_interruptible(&(rtl_usbdev(padapter)->hw_init_mutex));
 	ret = _netdev_open(ndev);
-	mutex_unlock(&(adapter_to_dvobj(padapter)->hw_init_mutex));
+	mutex_unlock(&(rtl_usbdev(padapter)->hw_init_mutex));
 
 	return ret;
 }

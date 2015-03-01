@@ -1012,7 +1012,7 @@ static u8 odm_QueryRxPwrPercentage(s8 AntPower)
  * IF other SW team do not support the feature, remove this section.??
  */
 
-static int32_t odm_SignalScaleMapping_92CSeries(struct _rtw_dm *pDM_Odm, int32_t CurrSig)
+static int32_t odm_SignalScaleMapping(struct _rtw_dm *pDM_Odm, int32_t CurrSig)
 {
 	int32_t RetSig;
 
@@ -1037,11 +1037,6 @@ static int32_t odm_SignalScaleMapping_92CSeries(struct _rtw_dm *pDM_Odm, int32_t
 	}
 
 	return RetSig;
-}
-
-static int32_t odm_SignalScaleMapping(struct _rtw_dm *pDM_Odm, int32_t CurrSig)
-{
-	return odm_SignalScaleMapping_92CSeries(pDM_Odm, CurrSig);
 }
 
 static u8 odm_EVMdbToPercentage(s8 Value)

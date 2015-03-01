@@ -866,11 +866,6 @@ static int _rtw_drv_register_netdev(struct rtl_priv *padapter, char *name)
 	int ret = _SUCCESS;
 	struct net_device *ndev = padapter->ndev;
 
-	/* alloc netdev name */
-	if (dev_alloc_name(ndev, name) < 0) {
-		;
-	}
-
 	netif_carrier_off(ndev);
 	/* rtw_netif_stop_queue(ndev); */
 
@@ -886,8 +881,6 @@ static int _rtw_drv_register_netdev(struct rtl_priv *padapter, char *name)
 		ret = _FAIL;
 		goto error_register_netdev;
 	}
-
-	DBG_871X("%s, MAC Address  = " MAC_FMT "\n", __FUNCTION__, MAC_ARG(ndev->dev_addr));
 
 	return ret;
 

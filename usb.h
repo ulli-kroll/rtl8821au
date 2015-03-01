@@ -56,10 +56,8 @@ struct dvobj_priv {
 	uint8_t * usb_vendor_req_buf;
 #endif
 
-#ifdef PLATFORM_LINUX
 	struct usb_interface *pusbintf;
 	struct usb_device *pusbdev;
-#endif//PLATFORM_LINUX
 
 	ATOMIC_T continual_urb_error;
 
@@ -67,14 +65,9 @@ struct dvobj_priv {
 
 };
 
-#ifdef PLATFORM_LINUX
-static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
+static inline struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 {
 	/* todo: get interface type from dvobj and the return the dev accordingly */
-#ifdef RTW_DVOBJ_CHIP_HW_TYPE
-#endif
-
 	return &dvobj->pusbintf->dev;
 }
-#endif
 

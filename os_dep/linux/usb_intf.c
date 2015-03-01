@@ -703,7 +703,7 @@ static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const 
 		goto exit;
 
 	padapter = netdev_priv(ndev);
-	dvobj = &(padapter->priv);
+	dvobj = rtl_usbdev(padapter);
 	usb_dvobj_init(pusb_intf, dvobj);
 	if (dvobj == NULL)
 		goto free_adapter;

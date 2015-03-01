@@ -712,7 +712,7 @@ struct rtl_priv *rtw_usb_if1_init(struct rtl_usb *dvobj,
 	padapter = netdev_priv(ndev);
 	padapter->ndev = ndev;
 
-	padapter->dvobj = dvobj;
+	padapter->priv = dvobj;
 	dvobj->padapter = padapter;
 
 	padapter->bDriverStopped=_TRUE;

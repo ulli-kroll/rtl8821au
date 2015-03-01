@@ -18,12 +18,26 @@ Why this name, look in the
 driver/net/wireless/rtlwifi
 and you will see ;-)
 
-I tested this driver with kernel version 3.18.7 on my main laptop and 
-crosscompiled on Carambola (RT3052).
-Build test done with v3.10 !
+ISSUES:
+- With low traffic (150kBit/s), the driver will go into low power mode.
 
-To build this do a simple
+TESTED DEVICES:
+D-Link DWA 171
+TP-Link T4U AC 1200
+with kernel 3.19
 
+
+STATUS:
+Firmware is build into the driver.
+Currently driver works with old wireless extension *only*
+No support for iw 
+
+INFO:
+If you have a Belkin AC950 please contact me.
+I need some information about the leds (how many)
+This device will work, but the driver uses three leds.
+
+BUILD:
 make
 
 to build this driver and install this with
@@ -33,37 +47,6 @@ For crosscompiling your need the right toolchain !
 i.e. for  Carambola with RT3052 (MIPS) and OpenWRT do
 
 make ARCH="mips" CROSS_COMPILE=mipsel-softfloat-linux-uclibc- KSRC=/home/user/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/linux-ramips_rt305x/linux-3.18.7/ modules
-
-Currently the firmware is built in the driver.
-
-STATUS:
-
-This driver works with the old Wireless Extension WE or Wext API *ONLY*
-see on
-http://wireless.kernel.org/en/developers/Documentation/Wireless-Extensions
-
-FUTURE
--------
-
-To be more precisely :
-The new API *will* be mac80211/cfg80211 framework.
-So no support for the iw tool, thus no support for other modes as STA and AP
-
-I'm currently rewriting the hal layer, the met with the hal layer in
-drivers/net/wireless/rtlwifi
-
-
-TESTED DEVICES:
-This driver is tested with
-D-Link DWA 171
-TP-Link T4U AC 1200
-
-FUTURE PLAN:
-
-The new driver is located in
-rtl8821au
-You see the same layout as in linux sources
-drivers/net(wireless/rtlwifi/rtl8821ae
 
 TOTO:
 - checkpatch fixes, code rewriting

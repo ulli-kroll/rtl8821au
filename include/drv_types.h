@@ -242,7 +242,7 @@ typedef enum _DRIVER_STATE{
 
 #include "../wifi.h"
 
-#define adapter_to_dvobj(adapter) (adapter->dvobj)
+
 
 int rtw_handle_dualmac(struct rtl_priv *adapter, bool init);
 

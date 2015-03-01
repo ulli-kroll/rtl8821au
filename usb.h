@@ -65,6 +65,8 @@ struct dvobj_priv {
 
 };
 
+#define adapter_to_dvobj(adapter) (adapter->dvobj)
+
 static inline struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 {
 	/* todo: get interface type from dvobj and the return the dev accordingly */

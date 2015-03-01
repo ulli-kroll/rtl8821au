@@ -693,7 +693,7 @@ struct rtl_priv  *rtw_sw_export = NULL;
 
 static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
-	struct rtl_usb *dvobj;
+	struct rtl_usb *rtlusb;
 	struct rtl_priv *padapter = NULL;
 	struct net_device *ndev = NULL;
 	int status = _FAIL;
@@ -703,15 +703,13 @@ static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const 
 		goto exit;
 
 	padapter = netdev_priv(ndev);
-	dvobj = rtl_usbdev(padapter);
-	usb_dvobj_init(pusb_intf, dvobj);
-	if (dvobj == NULL)
-		goto free_adapter;
+	rtlusb = rtl_usbdev(padapter);
+	usb_dvobj_init(pusb_intf, rtlusb);
 
 	padapter = netdev_priv(ndev);
 	padapter->ndev = ndev;
 
-	dvobj->padapter = padapter;
+	rtlusb->padapter = padapter;
 
 	padapter->bDriverStopped=_TRUE;
 
@@ -737,7 +735,7 @@ static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const 
 	/* step 2. */
 	loadparam(padapter, ndev);
 
-	SET_NETDEV_DEV(ndev, dvobj_to_dev(dvobj));
+	SET_NETDEV_DEV(ndev, dvobj_to_dev(rtlusb));
 	padapter = rtl_priv(ndev);
 
 	/* step 2. hook HalFunc, allocate HalData */
@@ -771,7 +769,7 @@ static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const 
 
 #ifdef CONFIG_PM
 	if (padapter->pwrctrlpriv.bSupportRemoteWakeup) {
-		dvobj->pusbdev->do_remote_wakeup=1;
+		rtlusb->pusbdev->do_remote_wakeup=1;
 		pusb_intf->needs_remote_wakeup = 1;
 		device_init_wakeup(&pusb_intf->dev, 1);
 		DBG_871X("\n  padapter->pwrctrlpriv.bSupportRemoteWakeup~~~~~~\n");

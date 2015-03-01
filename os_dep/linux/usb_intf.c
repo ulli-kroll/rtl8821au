@@ -815,6 +815,22 @@ static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const 
 
 	status = _SUCCESS;
 
+	netif_carrier_off(padapter->ndev);
+	/* rtw_netif_stop_queue(ndev); */
+
+/*
+ * 	ULLI : for support older kernel < 3.14,
+ *	ether_addr_copy(ndev->dev_addr, padapter->eeprompriv.mac_addr);
+ */
+	memcpy(ndev->dev_addr,  padapter->eeprompriv.mac_addr, ETH_ALEN);
+
+	/* Tell the network stack we exist */
+	if (register_netdev(padapter->ndev) != 0) {
+		DBG_871X(FUNC_NDEV_FMT "Failed!\n", FUNC_NDEV_ARG(ndev));
+		status = _FAIL;
+		goto free_hal_data;
+	}
+
 free_hal_data:
 	if (status != _SUCCESS && padapter->HalData)
 		rtw_mfree(padapter->HalData);
@@ -861,33 +877,6 @@ static void rtw_usb_if1_deinit(struct rtl_priv *padapter)
 		free_netdev(ndev);
 }
 
-static int _rtw_drv_register_netdev(struct rtl_priv *padapter, char *name)
-{
-	int ret = _SUCCESS;
-	struct net_device *ndev = padapter->ndev;
-
-	netif_carrier_off(ndev);
-	/* rtw_netif_stop_queue(ndev); */
-
-/*
- * 	ULLI : for support older kernel < 3.14,
- *	ether_addr_copy(ndev->dev_addr, padapter->eeprompriv.mac_addr);
- */
-	memcpy(ndev->dev_addr,  padapter->eeprompriv.mac_addr, ETH_ALEN);
-
-	/* Tell the network stack we exist */
-	if (register_netdev(ndev) != 0) {
-		DBG_871X(FUNC_NDEV_FMT "Failed!\n", FUNC_NDEV_ARG(ndev));
-		ret = _FAIL;
-		goto error_register_netdev;
-	}
-
-	return ret;
-
-error_register_netdev:
-
-	return ret;
-}
 
 static void dump_usb_interface(struct usb_interface *usb_intf)
 {
@@ -1022,11 +1011,6 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 		rtw_signal_process(ui_pid[1], SIGUSR2);
 	}
 #endif
-
-	/* dev_alloc_name && register_netdev */
-	status = _rtw_drv_register_netdev(padapter, "wlan%d");
-	if (status != _SUCCESS)
-		goto free_if1;
 
 	status = _SUCCESS;
 

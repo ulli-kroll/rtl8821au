@@ -196,7 +196,7 @@ _OneOutPipeMapping(
 	IN	struct rtl_priv *rtlpriv
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
+	struct rtl_usb *pdvobjpriv = adapter_to_dvobj(rtlpriv);
 
 	pdvobjpriv->Queue2Pipe[0] = pdvobjpriv->RtOutPipe[0];//VO
 	pdvobjpriv->Queue2Pipe[1] = pdvobjpriv->RtOutPipe[0];//VI
@@ -215,7 +215,7 @@ _TwoOutPipeMapping(
 	IN	BOOLEAN	 	bWIFICfg
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
+	struct rtl_usb	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
 
 	if(bWIFICfg){ //WMM
 
@@ -260,7 +260,7 @@ static VOID _ThreeOutPipeMapping(
 	IN	BOOLEAN	 	bWIFICfg
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
+	struct rtl_usb	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
 
 	if(bWIFICfg){//for WMM
 
@@ -303,7 +303,7 @@ static VOID _FourOutPipeMapping(
 	IN	BOOLEAN	 	bWIFICfg
 	)
 {
-	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
+	struct rtl_usb	*pdvobjpriv = adapter_to_dvobj(rtlpriv);
 
 	if(bWIFICfg){//for WMM
 

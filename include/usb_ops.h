@@ -58,7 +58,7 @@ void rtl8812au_set_intf_ops(struct rtl_io *pops);
 * @return _TRUE:
 * @return _FALSE:
 */
-static inline int rtw_inc_and_chk_continual_urb_error(struct dvobj_priv *dvobj)
+static inline int rtw_inc_and_chk_continual_urb_error(struct rtl_usb *dvobj)
 {
 	int ret = _FALSE;
 	int value;
@@ -74,7 +74,7 @@ static inline int rtw_inc_and_chk_continual_urb_error(struct dvobj_priv *dvobj)
 /*
 * Set the continual_urb_error of this @param dvobjprive to 0
 */
-static inline void rtw_reset_continual_urb_error(struct dvobj_priv *dvobj)
+static inline void rtw_reset_continual_urb_error(struct rtl_usb *dvobj)
 {
 	atomic_set(&dvobj->continual_urb_error, 0);
 }

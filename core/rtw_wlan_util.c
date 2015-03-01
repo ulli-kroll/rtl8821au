@@ -2249,7 +2249,7 @@ void rtw_alloc_macid(struct rtl_priv *padapter, struct sta_info *psta)
 	int i;
 	_irqL	irqL;
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
+	struct rtl_usb *pdvobj = adapter_to_dvobj(padapter);
 
 
 	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
@@ -2290,7 +2290,7 @@ void rtw_release_macid(struct rtl_priv *padapter, struct sta_info *psta)
 	int i;
 	_irqL	irqL;
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-	struct dvobj_priv *pdvobj = adapter_to_dvobj(padapter);
+	struct rtl_usb *pdvobj = adapter_to_dvobj(padapter);
 
 
 	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))

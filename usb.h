@@ -1,6 +1,6 @@
 #include <linux/usb.h>
 
-struct dvobj_priv {
+struct rtl_usb {
         struct rtl_priv *padapter;
 
 	//for local/global synchronization
@@ -67,7 +67,7 @@ struct dvobj_priv {
 
 #define adapter_to_dvobj(adapter) (adapter->dvobj)
 
-static inline struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
+static inline struct device *dvobj_to_dev(struct rtl_usb *dvobj)
 {
 	/* todo: get interface type from dvobj and the return the dev accordingly */
 	return &dvobj->pusbintf->dev;

@@ -73,8 +73,6 @@ _HAL_INTFS_FILES +=	hal/rtl8812a/rtl8812a_hal_init.o \
 			hal/rtl8812a/usb/rtl8812au_xmit.o \
 			hal/rtl8812a/usb/rtl8812au_recv.o
 
-_HAL_INTFS_FILES += hal/rtl8812a/usb/usb_ops_linux.o
-
 ifeq ($(CONFIG_RTL8812A), y)
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
 _OUTSRC_FILES += hal/OUTSRC/rtl8812a/HalHWImg8812A_FW.o\

@@ -2532,8 +2532,6 @@ void rtl8821au_init_sw_leds(struct rtl_priv *padapter)
 	struct rtl_hal *rtlhal = rtl_hal(padapter);
 	struct rtl_led_ctl *pledpriv = &(padapter->ledpriv);
 
-	pledpriv->LedControlHandler = rtl8821au_led_control;
-
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		pledpriv->SwLedOn = SwLedOn_8812AU;
 		pledpriv->SwLedOff = SwLedOff_8812AU;

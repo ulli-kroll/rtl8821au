@@ -74,6 +74,10 @@ void rtw_hal_sw_led_deinit(struct rtl_priv *padapter)
 		padapter->HalFunc->deinit_sw_leds(padapter);
 }
 
+void rtw_hal_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
+{
+	rtlpriv->HalFunc->led_control(rtlpriv, LedAction);
+}
 
 
 uint rtw_hal_init(struct rtl_priv *padapter)
@@ -92,7 +96,7 @@ uint rtw_hal_init(struct rtl_priv *padapter)
 
 		rtw_hal_reset_security_engine(padapter);
 
-		rtw_led_control(padapter, LED_CTL_POWER_ON);
+		rtw_hal_led_control(padapter, LED_CTL_POWER_ON);
 	} else {
 		padapter->hw_init_completed = _FALSE;
 		DBG_871X("rtw_hal_init: hal__init fail\n");
@@ -109,7 +113,7 @@ uint rtw_hal_deinit(struct rtl_priv *padapter)
 	status = padapter->HalFunc->hal_deinit(padapter);
 
 	if (status == _SUCCESS) {
-		rtw_led_control(padapter, LED_CTL_POWER_OFF);
+		rtw_hal_led_control(padapter, LED_CTL_POWER_OFF);
 		padapter->hw_init_completed = _FALSE;
 	} else {
 		DBG_871X("\n rtw_hal_deinit: hal_init fail\n");

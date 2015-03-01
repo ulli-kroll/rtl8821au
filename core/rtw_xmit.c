@@ -2402,7 +2402,7 @@ int32_t rtw_xmit(struct rtl_priv *padapter, struct sk_buff **ppkt)
 	}
 	pxmitframe->pkt = *ppkt;
 
-	rtw_led_control(padapter, LED_CTL_TX);
+	rtw_hal_led_control(padapter, LED_CTL_TX);
 
 	do_queue_select(padapter, &pxmitframe->attrib);
 

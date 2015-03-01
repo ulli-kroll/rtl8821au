@@ -377,6 +377,8 @@ struct rtl_hal_ops {
 
 	void	(*init_sw_leds)(struct rtl_priv *rtlpriv);
 	void	(*deinit_sw_leds)(struct rtl_priv *rtlpriv);
+	void	(*led_control) (struct rtl_priv *rtlpriv, enum led_ctl_mode ledcation);
+
 
 	/* Old HAL functions */
 

@@ -180,6 +180,7 @@ void rtw_hal_dm_init(struct rtl_priv *padapter);
 void rtw_hal_dm_deinit(struct rtl_priv *padapter);
 void rtw_hal_sw_led_init(struct rtl_priv *padapter);
 void rtw_hal_sw_led_deinit(struct rtl_priv *padapter);
+void rtw_hal_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction);
 
 uint rtw_hal_init(struct rtl_priv *padapter);
 uint rtw_hal_deinit(struct rtl_priv *padapter);

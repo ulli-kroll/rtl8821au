@@ -4,6 +4,7 @@
 #include "reg.h"
 #include "trx.h"
 #include "hw.h"
+#include "led.h"
 
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
@@ -35,7 +36,7 @@ struct rtl_hal_ops rtl8821au_hal_ops = {
 	
 	.init_sw_leds = rtl8821au_init_sw_leds,
 	.deinit_sw_leds = rtl8812au_deinit_sw_leds,
-
+	.led_control	= rtl8821au_led_control,
 
 	/** ** */
 

@@ -199,17 +199,10 @@ struct rtl_led_ctl {
 	struct rtl_led SwLed1;
 	struct rtl_led SwLed2;
 	LED_STRATEGY		LedStrategy;
-	void (*LedControlHandler)(struct rtl_priv *padapter, enum led_ctl_mode LedAction);
 	void (*SwLedOn)(struct rtl_priv *padapter, struct rtl_led *pLed);
 	void (*SwLedOff)(struct rtl_priv *padapter, struct rtl_led *pLed);
 	/* add for led controll */
 };
-
-#define rtw_led_control(adapter, LedAction) \
-	do { \
-		if((adapter)->ledpriv.LedControlHandler) \
-			(adapter)->ledpriv.LedControlHandler((adapter), (LedAction)); \
-	} while(0)
 
 #define SwLedOn(adapter, pLed) \
 	do { \

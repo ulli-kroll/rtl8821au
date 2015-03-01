@@ -186,7 +186,7 @@ void rtw_request_wps_pbc_event(struct rtl_priv *padapter)
 	}
 
 	rtw_signal_process(padapter->pid[0], SIGUSR1);
-	rtw_led_control(padapter, LED_CTL_START_WPS_BOTTON);
+	rtw_hal_led_control(padapter, LED_CTL_START_WPS_BOTTON);
 }
 
 void indicate_wx_scan_complete_event(struct rtl_priv *padapter)

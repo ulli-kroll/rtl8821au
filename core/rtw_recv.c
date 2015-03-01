@@ -2484,7 +2484,7 @@ int recv_func_posthandle(struct rtl_priv *padapter, struct recv_frame *prframe)
 
 
 	// DATA FRAME
-	rtw_led_control(padapter, LED_CTL_RX);
+	rtw_hal_led_control(padapter, LED_CTL_RX);
 
 	prframe = decryptor(padapter, prframe);
 	if (prframe == NULL) {

@@ -1140,7 +1140,7 @@ int _netdev_open(struct net_device *ndev)
 		if (padapter->intf_start) {
 			padapter->intf_start(padapter);
 		}
-		rtw_led_control(padapter, LED_CTL_NO_LINK);
+		rtw_hal_led_control(padapter, LED_CTL_NO_LINK);
 
 		padapter->bup = _TRUE;
 	}
@@ -1238,7 +1238,7 @@ int rtw_ips_pwr_up(struct rtl_priv *padapter)
 
 	result = ips_netdrv_open(padapter);
 
-	rtw_led_control(padapter, LED_CTL_NO_LINK);
+	rtw_hal_led_control(padapter, LED_CTL_NO_LINK);
 
 	DBG_871X("<===  rtw_ips_pwr_up.............. in %dms\n", rtw_get_passing_time_ms(start_time));
 	return result;
@@ -1332,7 +1332,7 @@ int netdev_close(struct net_device *ndev)
 		/* s2-4. */
 		rtw_free_network_queue(padapter, _TRUE);
 		/* Close LED */
-		rtw_led_control(padapter, LED_CTL_POWER_OFF);
+		rtw_hal_led_control(padapter, LED_CTL_POWER_OFF);
 	}
 
 

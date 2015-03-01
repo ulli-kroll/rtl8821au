@@ -1118,7 +1118,7 @@ void rtw_indicate_connect(struct rtl_priv *padapter)
 
 		set_fwstate(pmlmepriv, _FW_LINKED);
 
-		rtw_led_control(padapter, LED_CTL_LINK);
+		rtw_hal_led_control(padapter, LED_CTL_LINK);
 
 
 		{
@@ -1154,7 +1154,7 @@ void rtw_indicate_disconnect( struct rtl_priv *padapter )
 
 		_clr_fwstate_(pmlmepriv, _FW_LINKED);
 
-		rtw_led_control(padapter, LED_CTL_NO_LINK);
+		rtw_hal_led_control(padapter, LED_CTL_NO_LINK);
 	}
 
 #ifdef CONFIG_LPS

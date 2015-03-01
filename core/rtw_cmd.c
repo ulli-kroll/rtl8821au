@@ -562,7 +562,7 @@ _func_enter_;
 
 			_set_timer(&pmlmepriv->scan_to_timer, SCANNING_TIMEOUT);
 
-		rtw_led_control(padapter, LED_CTL_SITE_SURVEY);
+		rtw_hal_led_control(padapter, LED_CTL_SITE_SURVEY);
 
 		pmlmepriv->scan_interval = SCAN_INTERVAL;// 30*2 sec = 60sec
 	} else {
@@ -859,7 +859,7 @@ uint8_t rtw_createbss_cmd(struct rtl_priv  *padapter)
 
 _func_enter_;
 
-	rtw_led_control(padapter, LED_CTL_START_TO_LINK);
+	rtw_hal_led_control(padapter, LED_CTL_START_TO_LINK);
 
 	if (pmlmepriv->assoc_ssid.SsidLength == 0){
 		;
@@ -951,7 +951,7 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *padapter, struct wlan_network* pnetwor
 
 _func_enter_;
 
-	rtw_led_control(padapter, LED_CTL_START_TO_LINK);
+	rtw_hal_led_control(padapter, LED_CTL_START_TO_LINK);
 
 	if (pmlmepriv->assoc_ssid.SsidLength == 0){
 		;

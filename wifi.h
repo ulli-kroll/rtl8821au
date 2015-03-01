@@ -2,6 +2,7 @@
 #define __WIFI_H__
 
 #include <linux/types.h>
+#include "usb.h"
 
 enum radio_path {
 	RF90_PATH_A = 0,

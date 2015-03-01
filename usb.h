@@ -1,3 +1,6 @@
+#ifndef __RTL_USB_H__
+#define __RTL_USB_H__
+
 #include <linux/usb.h>
 
 struct rtl_usb {
@@ -76,3 +79,4 @@ static inline struct device *dvobj_to_dev(struct rtl_usb *dvobj)
 	return &dvobj->pusbintf->dev;
 }
 
+#endif

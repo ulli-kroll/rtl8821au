@@ -333,7 +333,7 @@ extern int _rtw_write8_async(struct rtl_priv *adapter, u32 addr, uint8_t val);
 extern int _rtw_write16_async(struct rtl_priv *adapter, u32 addr, u16 val);
 extern int _rtw_write32_async(struct rtl_priv *adapter, u32 addr, u32 val);
 
-extern u32 _rtw_write_port(struct rtl_priv *adapter, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf);
+extern u32 rtw_write_port(struct rtl_priv *adapter, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf);
 u32 _rtw_write_port_and_wait(struct rtl_priv *adapter, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf, int timeout_ms);
 extern void _rtw_write_port_cancel(struct rtl_priv *adapter);
 
@@ -345,7 +345,6 @@ extern void _rtw_write_port_cancel(struct rtl_priv *adapter);
 #define rtw_write16_async(adapter, addr, val) _rtw_write16_async((adapter), (addr), (val))
 #define rtw_write32_async(adapter, addr, val) _rtw_write32_async((adapter), (addr), (val))
 
-#define rtw_write_port(adapter, addr, cnt, mem) _rtw_write_port((adapter), (addr), (cnt), (mem))
 #define rtw_write_port_and_wait(adapter, addr, cnt, mem, timeout_ms) _rtw_write_port_and_wait((adapter), (addr), (cnt), (mem), (timeout_ms))
 #define rtw_write_port_cancel(adapter) _rtw_write_port_cancel((adapter))
 

@@ -120,7 +120,7 @@ void _rtw_read_port_cancel(struct rtl_priv *adapter)
 		pintfhdl->io_ops._read_port_cancel(pintfhdl);
 }
 
-uint32_t _rtw_write_port(struct rtl_priv *adapter, uint32_t addr,
+uint32_t rtw_write_port(struct rtl_priv *adapter, uint32_t addr,
 	uint32_t cnt, struct xmit_buf *pxmitbuf)
 {
 	struct io_priv *pio_priv = &adapter->iopriv;
@@ -141,7 +141,7 @@ uint32_t _rtw_write_port_and_wait(struct rtl_priv *adapter, uint32_t addr,
 	rtw_sctx_init(&sctx, timeout_ms);
 	pxmitbuf->sctx = &sctx;
 
-	ret = _rtw_write_port(adapter, addr, cnt, pxmitbuf);
+	ret = rtw_write_port(adapter, addr, cnt, pxmitbuf);
 
 	if (ret == _SUCCESS)
 		ret = rtw_sctx_wait(&sctx);

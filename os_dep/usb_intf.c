@@ -982,7 +982,6 @@ static void dump_usb_interface(struct usb_interface *usb_intf)
 
 }
 
-
 static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
 	struct rtl_priv *padapter = NULL;
@@ -1056,27 +1055,12 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
 	return;
 }
 
-static int __init rtw_drv_entry(void)
-{
-	DBG_871X(DRV_NAME " driver version=%s\n", DRIVERVERSION);
-	DBG_871X("build time: %s %s\n", __DATE__, __TIME__);
+static struct usb_driver rtl8821au_usb_drv = {
+	.name = "rtl8821au",
+	.probe = rtw_drv_init,
+	.disconnect = rtw_dev_remove,
+	.id_table = rtw_usb_id_tbl,
+};
 
-	usb_drv.drv_registered = _TRUE;
-	return usb_register(&usb_drv.usbdrv);
-}
-
-static void __exit rtw_drv_halt(void)
-{
-	DBG_871X("+rtw_drv_halt\n");
-
-	usb_drv.drv_registered = _FALSE;
-	usb_deregister(&usb_drv.usbdrv);
-
-
-	DBG_871X("-rtw_drv_halt\n");
-}
-
-
-module_init(rtw_drv_entry);
-module_exit(rtw_drv_halt);
+module_usb_driver(rtl8821au_usb_drv)
 

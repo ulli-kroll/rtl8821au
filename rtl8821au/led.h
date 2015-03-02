@@ -202,16 +202,7 @@ struct rtl_led_ctl {
 	/* add for led controll */
 };
 
-void BlinkTimerCallback(void *data);
-void BlinkWorkItemCallback(_workitem *work);
-
-void ResetLedStatus(struct rtl_led *pLed);
-
-void InitLed(struct rtl_priv *padapter, struct rtl_led *pLed, enum rtl_led_pin LedPin);
-void DeInitLed(struct rtl_led *pLed);
-
 //hal...
-extern void BlinkHandler(struct rtl_led *pLed);
 
 //================================================================================
 // Interface to manipulate LED objects.

@@ -50,7 +50,7 @@ static void SwLedOff(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
  *		It toggle off LED and schedule corresponding timer if necessary.
  */
 
-void SwLedBlink1(struct rtl_led *pLed)
+static void SwLedBlink1(struct rtl_led *pLed)
 {
 	struct rtl_priv	 *padapter = pLed->padapter;
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
@@ -226,7 +226,7 @@ void SwLedBlink1(struct rtl_led *pLed)
 }
 
 /* page added for Belkin AC950. 20120813 */
-void SwLedBlink9(struct rtl_led *pLed)
+static void SwLedBlink9(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
@@ -465,7 +465,7 @@ void SwLedBlink9(struct rtl_led *pLed)
 }
 
 /* page added for Netgear A6200V2. 20120827 */
-void SwLedBlink10(struct rtl_led *pLed)
+static void SwLedBlink10(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
 	struct rtl_hal *rtlhal = rtl_hal(Adapter);
@@ -664,7 +664,7 @@ void SwLedBlink10(struct rtl_led *pLed)
 	}
 }
 
-void SwLedBlink11(struct rtl_led *pLed)
+static void SwLedBlink11(struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
 	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
@@ -733,7 +733,7 @@ void SwLedBlink11(struct rtl_led *pLed)
 
 }
 
-VOID SwLedBlink13(IN struct rtl_led *pLed)
+static void SwLedBlink13(IN struct rtl_led *pLed)
 {
 	struct rtl_priv *Adapter = pLed->padapter;
 	struct mlme_priv *pmlmepriv = &(Adapter->mlmepriv);
@@ -796,7 +796,7 @@ VOID SwLedBlink13(IN struct rtl_led *pLed)
  * 		We dispatch acture LED blink action according to LedStrategy.
  */
 
-void BlinkHandler(struct rtl_led *pLed)
+static void BlinkHandler(struct rtl_led *pLed)
 {
 	struct rtl_priv	*padapter = pLed->padapter;
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(padapter);
@@ -844,7 +844,7 @@ void BlinkHandler(struct rtl_led *pLed)
  * 		Callback function of LED BlinkTimer,
  * 		it just schedules to corresponding BlinkWorkItem/led_blink_hdl
  */
-void BlinkTimerCallback(void *data)
+static void BlinkTimerCallback(void *data)
 {
 	struct rtl_led *pLed = (struct rtl_led *)data;
 	struct rtl_priv	*padapter = pLed->padapter;
@@ -864,7 +864,7 @@ void BlinkTimerCallback(void *data)
  * 		Callback function of LED BlinkWorkItem.
  * 		We dispatch acture LED blink action according to LedStrategy.
  */
-void BlinkWorkItemCallback(_workitem *work)
+static void BlinkWorkItemCallback(_workitem *work)
 {
 	struct rtl_led *pLed = container_of(work, struct rtl_led, BlinkWorkItem);
 	BlinkHandler(pLed);
@@ -1683,7 +1683,7 @@ void SwLedControlMode11(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 
 /* Maddest add for NETGEAR R6100 */
 
-VOID SwLedControlMode13(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
+static void SwLedControlMode13(struct rtl_priv *Adapter, enum led_ctl_mode LedAction)
 {
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(Adapter);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
@@ -1879,7 +1879,7 @@ void rtl8821au_led_control(struct rtl_priv *padapter, enum led_ctl_mode LedActio
  * 	Description:
  * 		Reset status of LED_871x object.
  */
-void ResetLedStatus(struct rtl_led *pLed)
+static void ResetLedStatus(struct rtl_led *pLed)
 {
 	pLed->CurrLedState = RTW_LED_OFF;	/* Current LED state. */
 	pLed->bLedOn = _FALSE; 			/* true if LED is ON, false if LED is OFF. */
@@ -1901,7 +1901,7 @@ void ResetLedStatus(struct rtl_led *pLed)
  * 	Description:
  * 		Initialize an LED_871x object.
  */
-void InitLed(struct rtl_priv *padapter,	struct rtl_led *pLed, enum rtl_led_pin LedPin)
+static void InitLed(struct rtl_priv *padapter,	struct rtl_led *pLed, enum rtl_led_pin LedPin)
 {
 	pLed->padapter = padapter;
 	pLed->LedPin = LedPin;
@@ -1918,7 +1918,7 @@ void InitLed(struct rtl_priv *padapter,	struct rtl_led *pLed, enum rtl_led_pin L
  * 	Description:
  * 		DeInitialize an LED_871x object.
  */
-void DeInitLed(struct rtl_led *pLed)
+static void DeInitLed(struct rtl_led *pLed)
 {
 	_cancel_workitem_sync(&(pLed->BlinkWorkItem));
 	_cancel_timer_ex(&(pLed->BlinkTimer));

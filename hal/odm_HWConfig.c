@@ -26,7 +26,7 @@
 
 
 #include "odm_precomp.h"
-#include "../../rtl8821au/phy.h"
+#include "../rtl8821au/phy.h"
 
 void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type ConfigType)
 {

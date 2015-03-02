@@ -37,22 +37,23 @@ RTL8821AU_FILES	:=	rtl8821au/dm.o \
 			rtl8821au/trx.o
 
 _OS_INTFS_FILES :=	os_dep/osdep_service.o \
-			os_dep/linux/os_intfs.o \
-			os_dep/linux/usb_intf.o \
-			os_dep/linux/usb_ops_linux.o \
-			os_dep/linux/ioctl_linux.o \
-			os_dep/linux/xmit_linux.o \
-			os_dep/linux/mlme_linux.o \
-			os_dep/linux/recv_linux.o
+			os_dep/os_intfs.o \
+			os_dep/usb_intf.o \
+			os_dep/usb_ops_linux.o \
+			os_dep/ioctl_linux.o \
+			os_dep/xmit_linux.o \
+			os_dep/mlme_linux.o \
+			os_dep/recv_linux.o \
+			os_dep/usb_halinit.o 
 
 _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com.o \
 			hal/hal_phy.o
 
-_OUTSRC_FILES := hal/OUTSRC/odm_debug.o	\
-		hal/OUTSRC/odm_HWConfig.o\
-		hal/OUTSRC/odm.o\
-		hal/OUTSRC/HalPhyRf.o
+_OUTSRC_FILES := hal/odm_debug.o	\
+		hal/odm_HWConfig.o\
+		hal/odm.o\
+		hal/HalPhyRf.o
 
 ########### HAL_RTL8812A_RTL8821A #################################
 
@@ -61,35 +62,34 @@ ifneq ($(CONFIG_RTL8812A)_$(CONFIG_RTL8821A), n_n)
 MODULE_NAME = rtl8821au
 
 _HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
-					hal/rtl8812a/Hal8812PwrSeq.o \
-					hal/rtl8812a/Hal8821APwrSeq.o\
-					hal/rtl8812a/rtl8812a_xmit.o
+			hal/Hal8812PwrSeq.o \
+			hal/Hal8821APwrSeq.o\
+			hal/rtl8812a_xmit.o
 
-_HAL_INTFS_FILES +=	hal/rtl8812a/rtl8812a_hal_init.o \
-			hal/rtl8812a/rtl8812a_phycfg.o \
-			hal/rtl8812a/rtl8812a_dm.o \
-			hal/rtl8812a/rtl8812a_cmd.o \
-			hal/rtl8812a/usb/usb_halinit.o \
-			hal/rtl8812a/usb/rtl8812au_xmit.o \
-			hal/rtl8812a/usb/rtl8812au_recv.o
+_HAL_INTFS_FILES +=	hal/rtl8812a_hal_init.o \
+			hal/rtl8812a_phycfg.o \
+			hal/rtl8812a_dm.o \
+			hal/rtl8812a_cmd.o \
+			hal/rtl8812au_xmit.o \
+			hal/rtl8812au_recv.o
 
 ifeq ($(CONFIG_RTL8812A), y)
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
-_OUTSRC_FILES += hal/OUTSRC/rtl8812a/HalHWImg8812A_FW.o\
-		hal/OUTSRC/rtl8812a/HalHWImg8812A_BB.o\
-		hal/OUTSRC/rtl8812a/HalPhyRf_8812A.o\
-		hal/OUTSRC/rtl8812a/odm_RegConfig8812A.o
+_OUTSRC_FILES += hal/HalHWImg8812A_FW.o\
+		hal/HalHWImg8812A_BB.o\
+		hal/HalPhyRf_8812A.o\
+		hal/odm_RegConfig8812A.o
 endif
 
 ifeq ($(CONFIG_RTL8821A), y)
 
 
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
-_OUTSRC_FILES += hal/OUTSRC/rtl8821a/HalHWImg8821A_FW.o\
-		hal/OUTSRC/rtl8821a/HalHWImg8821A_BB.o\
-		hal/OUTSRC/rtl8812a/HalPhyRf_8812A.o\
-		hal/OUTSRC/rtl8821a/HalPhyRf_8821A.o\
-		hal/OUTSRC/rtl8821a/odm_RegConfig8821A.o
+_OUTSRC_FILES += hal/HalHWImg8821A_FW.o\
+		hal/HalHWImg8821A_BB.o\
+		hal/HalPhyRf_8812A.o\
+		hal/HalPhyRf_8821A.o\
+		hal/odm_RegConfig8821A.o
 endif
 
 

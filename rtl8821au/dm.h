@@ -1,9 +1,9 @@
 #ifndef	__RTL8821AU_DM_H__
 #define __RTL8821AU_DM_H__
 
-#include "../hal/OUTSRC/odm_types.h"
-#include "../hal/OUTSRC/odm.h"
-#include "../hal/OUTSRC/HalPhyRf.h"
+#include <odm_types.h>
+#include <odm.h>
+#include <HalPhyRf.h>
 
 #define CCK_TABLE_SIZE				33
 

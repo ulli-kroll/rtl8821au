@@ -20,7 +20,7 @@
 #ifndef __HAL_DATA_H__
 #define __HAL_DATA_H__
 
-#include "../hal/OUTSRC/odm_precomp.h"
+#include <odm_precomp.h>
 
 
 #endif //__HAL_DATA_H__

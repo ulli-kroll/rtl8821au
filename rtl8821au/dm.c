@@ -1,6 +1,6 @@
 #include "dm.h"
 #include "phy.h"
-#include "../hal/OUTSRC/odm_precomp.h"
+#include <odm_precomp.h>
 
 u8 CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01},	/*  0, -16.0dB */

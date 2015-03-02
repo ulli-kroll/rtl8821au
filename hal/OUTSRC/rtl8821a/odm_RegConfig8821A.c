@@ -18,7 +18,7 @@
  *
  ******************************************************************************/
 
-#include "../odm_precomp.h"
+#include <odm_precomp.h>
 
 
 void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,

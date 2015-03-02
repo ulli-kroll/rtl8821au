@@ -21,7 +21,7 @@
 #ifndef	__ODM_PRECOMP_H__
 #define __ODM_PRECOMP_H__
 
-#include "odm_types.h"
+#include <odm_types.h>
 
 
 #define		TEST_FALG___		1
@@ -38,32 +38,32 @@
 
 //2 OutSrc Header Files
 
-#include "odm.h"
-#include "odm_HWConfig.h"
-#include "odm_debug.h"
-#include "odm_RegDefine11AC.h"
+#include <odm.h>
+#include <odm_HWConfig.h>
+#include <odm_debug.h>
+#include <odm_RegDefine11AC.h>
 
 	//#include "hal_com.h"
-	#include "HalPhyRf.h"
+	#include <HalPhyRf.h>
 
-		#include "rtl8812a/HalPhyRf_8812A.h"//for IQK,LCK,Power-tracking
-		#include "rtl8812a_hal.h"
-		#include "rtl8821a/HalPhyRf_8821A.h"//for IQK,LCK,Power-tracking
-		#include "rtl8812a/HalPhyRf_8812A.h"//for IQK,LCK,Power-tracking
-		#include "rtl8812a_hal.h"
-
-
-#include "odm_interface.h"
-#include "odm_reg.h"
-
-#include "rtl8812a/HalHWImg8812A_BB.h"
-#include "rtl8812a/HalHWImg8812A_FW.h"
-#include "rtl8812a/odm_RegConfig8812A.h"
+		#include <HalPhyRf_8812A.h>//for IQK,LCK,Power-tracking
+		#include <rtl8812a_hal.h>
+		#include <HalPhyRf_8821A.h>//for IQK,LCK,Power-tracking
+		#include <HalPhyRf_8812A.h>//for IQK,LCK,Power-tracking
+		#include <rtl8812a_hal.h>
 
 
-#include "rtl8821a/HalHWImg8821A_BB.h"
-#include "rtl8821a/HalHWImg8821A_FW.h"
-#include "rtl8821a/odm_RegConfig8821A.h"
+#include <odm_interface.h>
+#include <odm_reg.h>
+
+#include <HalHWImg8812A_BB.h>
+#include <HalHWImg8812A_FW.h>
+#include <odm_RegConfig8812A.h>
+
+
+#include <HalHWImg8821A_BB.h>
+#include <HalHWImg8821A_FW.h>
+#include <odm_RegConfig8821A.h>
 
 #endif	// __ODM_PRECOMP_H__
 

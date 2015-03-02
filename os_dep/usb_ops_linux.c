@@ -961,7 +961,7 @@ check_completion:
 	}
 }
 
-u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
+u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf)
 {
 	_irqL irqL;
 	unsigned int pipe;
@@ -971,7 +971,6 @@ u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem)
 	struct rtl_priv *padapter = (struct rtl_priv *)pintfhdl->padapter;
 	struct rtl_usb	*pdvobj = rtl_usbdev(padapter);
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
-	struct xmit_buf *pxmitbuf = (struct xmit_buf *)wmem;
 	struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data;
 	struct usb_device *pusbd = pdvobj->pusbdev;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;

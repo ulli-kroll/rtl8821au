@@ -53,7 +53,7 @@
 
 void usb_read_port_cancel(struct intf_hdl *pintfhdl);
 
-u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *wmem);
+u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, struct xmit_buf *pxmitbu);
 void usb_write_port_cancel(struct intf_hdl *pintfhdl);
 
 int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype);

@@ -381,7 +381,7 @@ static int32_t rtw_dump_xframe(struct rtl_priv *padapter, struct xmit_frame *pxm
 
 		ff_hwaddr = rtw_get_ff_hwaddr(pxmitframe);
 
-		inner_ret = rtw_write_port(padapter, ff_hwaddr, w_sz, (unsigned char *)pxmitbuf);
+		inner_ret = rtw_write_port(padapter, ff_hwaddr, w_sz, pxmitbuf);
 
 		rtw_count_tx_stats(padapter, pxmitframe, sz);
 
@@ -665,7 +665,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 	ff_hwaddr = rtw_get_ff_hwaddr(pfirstframe);
 /* DBG_8192C("%s ===================================== write port,buf_size(%d) \n",__FUNCTION__,pbuf_tail); */
 	/* xmit address == ((xmit_frame*)pxmitbuf->priv_data)->buf_addr */
-	rtw_write_port(padapter, ff_hwaddr, pbuf_tail, (u8 *)pxmitbuf);
+	rtw_write_port(padapter, ff_hwaddr, pbuf_tail, pxmitbuf);
 
 
 	/* 3 5. update statisitc */

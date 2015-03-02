@@ -132,23 +132,6 @@ uint32_t rtw_write_port(struct rtl_priv *adapter, uint32_t addr,
 	return ret;
 }
 
-uint32_t _rtw_write_port_and_wait(struct rtl_priv *adapter, uint32_t addr,
-	uint32_t cnt, struct xmit_buf *pxmitbuf, int timeout_ms)
-{
-	int ret = _SUCCESS;
-	struct submit_ctx sctx;
-
-	rtw_sctx_init(&sctx, timeout_ms);
-	pxmitbuf->sctx = &sctx;
-
-	ret = rtw_write_port(adapter, addr, cnt, pxmitbuf);
-
-	if (ret == _SUCCESS)
-		ret = rtw_sctx_wait(&sctx);
-
-	 return ret;
-}
-
 void _rtw_write_port_cancel(struct rtl_priv *adapter)
 {
 	void (*_write_port_cancel)(struct intf_hdl *pintfhdl);

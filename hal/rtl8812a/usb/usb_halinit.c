@@ -1462,7 +1462,8 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-	struct rtl_led_ctl *pledpriv = &(rtlpriv->ledpriv);
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
+	struct rtl_led_ctl *pledpriv = &(usbpriv->ledpriv);
 
 	/* For customized behavior. */
 
@@ -1531,7 +1532,6 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 static VOID ReadLEDSetting_8812AU(struct rtl_priv *Adapter,
 	u8 *PROMContent, BOOLEAN AutoloadFail)
 {
-	struct rtl_led_ctl *pledpriv = &(Adapter->ledpriv);
 }
 
 VOID InitAdapterVariablesByPROM_8812AU(struct rtl_priv *Adapter)

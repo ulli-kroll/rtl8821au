@@ -191,8 +191,6 @@ struct rtl_led {
 
 typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;
 
-void rtl8821au_led_control(struct rtl_priv *Adapter, enum led_ctl_mode LedAction);
-
 struct rtl_led_ctl {
 	/* add for led controll */
 	struct rtl_led SwLed0;
@@ -218,7 +216,9 @@ extern void BlinkHandler(struct rtl_led *pLed);
 //================================================================================
 // Interface to manipulate LED objects.
 //================================================================================
+
 void rtl8821au_init_sw_leds(struct rtl_priv *padapter);
 void rtl8812au_deinit_sw_leds(struct rtl_priv *padapter);
+void rtl8821au_led_control(struct rtl_priv *Adapter, enum led_ctl_mode LedAction);
 
 #endif

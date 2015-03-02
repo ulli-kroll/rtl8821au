@@ -70,7 +70,10 @@ struct rtl_usb {
 
 struct rtl_usb_priv {
 	struct rtl_usb	dev;
+	struct	rtl_led_ctl	ledpriv;
 };
+
+#define rtl_usbpriv(rtl)       (&(rtl->priv))
 
 static inline struct device *dvobj_to_dev(struct rtl_usb *dvobj)
 {

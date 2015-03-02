@@ -284,7 +284,6 @@ struct rtl_priv {
 	struct	registry_priv	registrypriv;
 	struct	pwrctrl_priv	pwrctrlpriv;
 	struct 	eeprom_priv eeprompriv;
-	struct	rtl_led_ctl	ledpriv;
 
 #ifdef CONFIG_AP_MODE
 	struct	hostapd_priv	*phostapdpriv;

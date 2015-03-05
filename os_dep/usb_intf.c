@@ -149,11 +149,6 @@ static inline int RT_usb_endpoint_is_bulk_out(const struct usb_endpoint_descript
 	return (RT_usb_endpoint_xfer_bulk(epd) && RT_usb_endpoint_dir_out(epd));
 }
 
-static inline int RT_usb_endpoint_is_int_in(const struct usb_endpoint_descriptor *epd)
-{
-	return (RT_usb_endpoint_xfer_int(epd) && RT_usb_endpoint_dir_in(epd));
-}
-
 static inline int RT_usb_endpoint_num(const struct usb_endpoint_descriptor *epd)
 {
 	return epd->bEndpointAddress & USB_ENDPOINT_NUMBER_MASK;
@@ -275,10 +270,6 @@ static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl
 
 			if (RT_usb_endpoint_is_bulk_in(pendp_desc)) {
 				DBG_871X("RT_usb_endpoint_is_bulk_in = %x\n", RT_usb_endpoint_num(pendp_desc));
-				pdvobjpriv->RtInPipe[pdvobjpriv->RtNumInPipes] = RT_usb_endpoint_num(pendp_desc);
-				pdvobjpriv->RtNumInPipes++;
-			} else if (RT_usb_endpoint_is_int_in(pendp_desc)) {
-				DBG_871X("RT_usb_endpoint_is_int_in = %x, Interval = %x\n", RT_usb_endpoint_num(pendp_desc),pendp_desc->bInterval);
 				pdvobjpriv->RtInPipe[pdvobjpriv->RtNumInPipes] = RT_usb_endpoint_num(pendp_desc);
 				pdvobjpriv->RtNumInPipes++;
 			} else if (RT_usb_endpoint_is_bulk_out(pendp_desc)) {
@@ -931,9 +922,6 @@ static void dump_usb_interface(struct usb_interface *usb_intf)
 
 			if (RT_usb_endpoint_is_bulk_in(endp_desc)) {
 				DBG_871X("RT_usb_endpoint_is_bulk_in = %x\n", RT_usb_endpoint_num(endp_desc));
-				/* pdvobjpriv->RtNumInPipes++; */
-			} else if (RT_usb_endpoint_is_int_in(endp_desc)) {
-				DBG_871X("RT_usb_endpoint_is_int_in = %x, Interval = %x\n", RT_usb_endpoint_num(endp_desc),endp_desc->bInterval);
 				/* pdvobjpriv->RtNumInPipes++; */
 			} else if (RT_usb_endpoint_is_bulk_out(endp_desc)) {
 				DBG_871X("RT_usb_endpoint_is_bulk_out = %x\n", RT_usb_endpoint_num(endp_desc));

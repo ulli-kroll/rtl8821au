@@ -117,7 +117,6 @@ ifneq ($(KERNELRELEASE),)
 rtk_core :=	core/rtw_cmd.o \
 		core/rtw_security.o \
 		core/rtw_debug.o \
-		core/rtw_io.o \
 		core/rtw_ioctl_set.o \
 		core/rtw_ieee80211.o \
 		core/rtw_mlme.o \

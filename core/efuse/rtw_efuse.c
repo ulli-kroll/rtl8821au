@@ -63,21 +63,21 @@ ReadEFuseByte(
 	//uint32_t start=jiffies;
 
 	//Write Address
-	rtl_write_byte(rtlpriv, EFUSE_CTRL+1, (_offset & 0xff));
-	readbyte = rtl_read_byte(rtlpriv, EFUSE_CTRL+2);
-	rtl_write_byte(rtlpriv, EFUSE_CTRL+2, ((_offset >> 8) & 0x03) | (readbyte & 0xfc));
+	usb_write8(rtlpriv, EFUSE_CTRL+1, (_offset & 0xff));
+	readbyte = usb_read8(rtlpriv, EFUSE_CTRL+2);
+	usb_write8(rtlpriv, EFUSE_CTRL+2, ((_offset >> 8) & 0x03) | (readbyte & 0xfc));
 
 	//Write bit 32 0
-	readbyte = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
-	rtl_write_byte(rtlpriv, EFUSE_CTRL+3, (readbyte & 0x7f));
+	readbyte = usb_read8(rtlpriv, EFUSE_CTRL+3);
+	usb_write8(rtlpriv, EFUSE_CTRL+3, (readbyte & 0x7f));
 
 	//Check bit 32 read-ready
 	retry = 0;
-	value32 = rtl_read_dword(rtlpriv, EFUSE_CTRL);
+	value32 = usb_read32(rtlpriv, EFUSE_CTRL);
 	//while(!(((value32 >> 24) & 0xff) & 0x80)  && (retry<10))
 	while(!(((value32 >> 24) & 0xff) & 0x80)  && (retry<10000))
 	{
-		value32 = rtl_read_dword(rtlpriv, EFUSE_CTRL);
+		value32 = usb_read32(rtlpriv, EFUSE_CTRL);
 		retry++;
 	}
 
@@ -86,7 +86,7 @@ ReadEFuseByte(
 	// Designer says that there shall be some delay after ready bit is set, or the
 	// result will always stay on last data we read.
 	udelay(50);
-	value32 = rtl_read_dword(rtlpriv, EFUSE_CTRL);
+	value32 = usb_read32(rtlpriv, EFUSE_CTRL);
 
 	*pbuf = (uint8_t)(value32 & 0xff);
 	//DBG_871X("ReadEFuseByte _offset:%08u, in %d ms\n",_offset ,rtw_get_passing_time_ms(start));
@@ -126,22 +126,22 @@ EFUSE_Read1Byte(
 	{
 		//Write E-fuse Register address bit0~7
 		temp = Address & 0xFF;
-		rtl_write_byte(rtlpriv, EFUSE_CTRL+1, temp);
-		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+2);
+		usb_write8(rtlpriv, EFUSE_CTRL+1, temp);
+		Bytetemp = usb_read8(rtlpriv, EFUSE_CTRL+2);
 		//Write E-fuse Register address bit8~9
 		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
-		rtl_write_byte(rtlpriv, EFUSE_CTRL+2, temp);
+		usb_write8(rtlpriv, EFUSE_CTRL+2, temp);
 
 		//Write 0x30[31]=0
-		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
+		Bytetemp = usb_read8(rtlpriv, EFUSE_CTRL+3);
 		temp = Bytetemp & 0x7F;
-		rtl_write_byte(rtlpriv, EFUSE_CTRL+3, temp);
+		usb_write8(rtlpriv, EFUSE_CTRL+3, temp);
 
 		//Wait Write-ready (0x30[31]=1)
-		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
+		Bytetemp = usb_read8(rtlpriv, EFUSE_CTRL+3);
 		while(!(Bytetemp & 0x80))
 		{
-			Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
+			Bytetemp = usb_read8(rtlpriv, EFUSE_CTRL+3);
 			k++;
 			if(k==1000)
 			{
@@ -149,7 +149,7 @@ EFUSE_Read1Byte(
 				break;
 			}
 		}
-		data=rtl_read_byte(rtlpriv, EFUSE_CTRL);
+		data=usb_read8(rtlpriv, EFUSE_CTRL);
 		return data;
 	}
 	else
@@ -194,27 +194,27 @@ EFUSE_Write1Byte(
 
 	if( Address < contentLen)	//E-fuse 512Byte
 	{
-		rtl_write_byte(rtlpriv, EFUSE_CTRL, Value);
+		usb_write8(rtlpriv, EFUSE_CTRL, Value);
 
 		//Write E-fuse Register address bit0~7
 		temp = Address & 0xFF;
-		rtl_write_byte(rtlpriv, EFUSE_CTRL+1, temp);
-		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+2);
+		usb_write8(rtlpriv, EFUSE_CTRL+1, temp);
+		Bytetemp = usb_read8(rtlpriv, EFUSE_CTRL+2);
 
 		//Write E-fuse Register address bit8~9
 		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
-		rtl_write_byte(rtlpriv, EFUSE_CTRL+2, temp);
+		usb_write8(rtlpriv, EFUSE_CTRL+2, temp);
 
 		//Write 0x30[31]=1
-		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
+		Bytetemp = usb_read8(rtlpriv, EFUSE_CTRL+3);
 		temp = Bytetemp | 0x80;
-		rtl_write_byte(rtlpriv, EFUSE_CTRL+3, temp);
+		usb_write8(rtlpriv, EFUSE_CTRL+3, temp);
 
 		//Wait Write-ready (0x30[31]=0)
-		Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
+		Bytetemp = usb_read8(rtlpriv, EFUSE_CTRL+3);
 		while(Bytetemp & 0x80)
 		{
-			Bytetemp = rtl_read_byte(rtlpriv, EFUSE_CTRL+3);
+			Bytetemp = usb_read8(rtlpriv, EFUSE_CTRL+3);
 			k++;
 			if(k==100)
 			{
@@ -243,24 +243,24 @@ efuse_OneByteRead(
 	uint8_t	bResult;
 
 	//DBG_871X("===> EFUSE_OneByteRead(), addr = %x\n", addr);
-	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtl_read_dword(rtlpriv, EFUSE_TEST));
+	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", usb_read32(rtlpriv, EFUSE_TEST));
 
 	// -----------------e-fuse reg ctrl ---------------------------------
 	//address
-	rtl_write_byte(rtlpriv, EFUSE_CTRL+1, (uint8_t)(addr&0xff));
-	rtl_write_byte(rtlpriv, EFUSE_CTRL+2, ((uint8_t)((addr>>8) &0x03) ) |
-	(rtl_read_byte(rtlpriv, EFUSE_CTRL+2)&0xFC ));
+	usb_write8(rtlpriv, EFUSE_CTRL+1, (uint8_t)(addr&0xff));
+	usb_write8(rtlpriv, EFUSE_CTRL+2, ((uint8_t)((addr>>8) &0x03) ) |
+	(usb_read8(rtlpriv, EFUSE_CTRL+2)&0xFC ));
 
-	rtl_write_byte(rtlpriv, EFUSE_CTRL+3,  0x72);//read cmd
+	usb_write8(rtlpriv, EFUSE_CTRL+3,  0x72);//read cmd
 
-	while(!(0x80 &rtl_read_byte(rtlpriv, EFUSE_CTRL+3))&&(tmpidx<1000))
+	while(!(0x80 &usb_read8(rtlpriv, EFUSE_CTRL+3))&&(tmpidx<1000))
 	{
 		mdelay(1);
 		tmpidx++;
 	}
 	if(tmpidx<1000)
 	{
-		*data=rtl_read_byte(rtlpriv, EFUSE_CTRL);
+		*data=usb_read8(rtlpriv, EFUSE_CTRL);
 		bResult = _TRUE;
 	}
 	else
@@ -289,22 +289,22 @@ efuse_OneByteWrite(
 	uint32_t efuseValue = 0;
 
 	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
-	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtl_read_dword(rtlpriv, EFUSE_TEST));
+	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", usb_read32(rtlpriv, EFUSE_TEST));
 
 	// -----------------e-fuse reg ctrl ---------------------------------
 	//address
 
 
-	efuseValue = rtl_read_dword(rtlpriv, EFUSE_CTRL);
+	efuseValue = usb_read32(rtlpriv, EFUSE_CTRL);
 	efuseValue |= (BIT21|BIT31);
 	efuseValue &= ~(0x3FFFF);
 	efuseValue |= ((addr<<8 | data) & 0x3FFFF);
 
 	{
-		rtl_write_dword(rtlpriv, EFUSE_CTRL, efuseValue);
+		usb_write32(rtlpriv, EFUSE_CTRL, efuseValue);
 	}
 
-	while((0x80 &  rtl_read_byte(rtlpriv, EFUSE_CTRL+3)) && (tmpidx<100) ){
+	while((0x80 &  usb_read8(rtlpriv, EFUSE_CTRL+3)) && (tmpidx<100) ){
 		mdelay(1);
 		tmpidx++;
 	}

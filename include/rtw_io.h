@@ -101,34 +101,6 @@ struct intf_priv;
 struct intf_hdl;
 struct io_queue;
 
-struct rtl_io {
-		uint8_t (*_read8)(struct intf_hdl *pintfhdl, u32 addr);
-		u16 (*_read16)(struct intf_hdl *pintfhdl, u32 addr);
-		u32 (*_read32)(struct intf_hdl *pintfhdl, u32 addr);
-
-		int (*_write8)(struct intf_hdl *pintfhdl, u32 addr, uint8_t val);
-		int (*_write16)(struct intf_hdl *pintfhdl, u32 addr, u16 val);
-		int (*_write32)(struct intf_hdl *pintfhdl, u32 addr, u32 val);
-		int (*_writeN)(struct intf_hdl *pintfhdl, u32 addr, u32 length, uint8_t *pdata);
-
-		int (*_write8_async)(struct intf_hdl *pintfhdl, u32 addr, uint8_t val);
-		int (*_write16_async)(struct intf_hdl *pintfhdl, u32 addr, u16 val);
-		int (*_write32_async)(struct intf_hdl *pintfhdl, u32 addr, u32 val);
-
-		void (*_sync_irp_protocol_rw)(struct io_queue *pio_q);
-
-		u32 (*_read_interrupt)(struct intf_hdl *pintfhdl, u32 addr);
-
-		u32 (*_read_port)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, uint8_t *pmem);
-		u32 (*_write_port)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf);
-
-		u32 (*_write_scsi)(struct intf_hdl *pintfhdl,u32 cnt, uint8_t *pmem);
-
-		void (*_read_port_cancel)(struct intf_hdl *pintfhdl);
-		void (*_write_port_cancel)(struct intf_hdl *pintfhdl);
-
-};
-
 struct io_req {
 	struct list_head	list;
 	u32	addr;
@@ -143,32 +115,6 @@ struct io_req {
 	uint8_t *cnxt;
 
 
-
-};
-
-struct	intf_hdl {
-
-/*
-	u32	intf_option;
-	u32	bus_status;
-	u32	do_flush;
-	uint8_t	*adapter;
-	uint8_t	*intf_dev;
-	struct intf_priv	*pintfpriv;
-	uint8_t	cnt;
-	void (*intf_hdl_init)(uint8_t *priv);
-	void (*intf_hdl_unload)(uint8_t *priv);
-	void (*intf_hdl_open)(uint8_t *priv);
-	void (*intf_hdl_close)(uint8_t *priv);
-	struct	_io_ops	io_ops;
-	//uint8_t intf_status;//moved to struct intf_priv
-	u16 len;
-	u16 done_len;
-*/
-	struct rtl_priv *padapter;
-	struct rtl_usb *pintf_dev;//	pointer to &(padapter->dvobjpriv);
-
-	struct rtl_io	io_ops;
 
 };
 
@@ -291,24 +237,6 @@ Below is the data structure used by _io_handler
 
 */
 
-struct io_queue {
-	spinlock_t	lock;
-	struct list_head  	free_ioreqs;
-	struct list_head		pending;		//The io_req list that will be served in the single protocol read/write.
-	struct list_head		processing;
-	uint8_t	*free_ioreqs_buf; // 4-byte aligned
-	uint8_t	*pallocated_free_ioreqs_buf;
-	struct	intf_hdl	intf;
-};
-
-struct io_priv{
-
-	struct rtl_priv *padapter;
-
-	struct intf_hdl intf;
-
-};
-
 extern uint ioreq_flush(struct rtl_priv *adapter, struct io_queue *ioqueue);
 extern void sync_ioreq_enqueue(struct io_req *preq,struct io_queue *ioqueue);
 extern uint sync_ioreq_flush(struct rtl_priv *adapter, struct io_queue *ioqueue);
@@ -322,29 +250,6 @@ extern void unregister_intf_hdl(struct intf_hdl *pintfhdl);
 
 extern void _rtw_attrib_read(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
 extern void _rtw_attrib_write(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
-
-extern void _rtw_read_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
-extern void _rtw_read_port_cancel(struct rtl_priv *adapter);
-
-
-extern int rtw_writeN(struct rtl_priv *adapter, u32 addr, u32 length, uint8_t *pdata);
-
-extern int _rtw_write8_async(struct rtl_priv *adapter, u32 addr, uint8_t val);
-extern int _rtw_write16_async(struct rtl_priv *adapter, u32 addr, u16 val);
-extern int _rtw_write32_async(struct rtl_priv *adapter, u32 addr, u32 val);
-
-extern u32 rtw_write_port(struct rtl_priv *adapter, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf);
-extern void _rtw_write_port_cancel(struct rtl_priv *adapter);
-
-#define rtw_read_port(adapter, addr, cnt, mem) _rtw_read_port((adapter), (addr), (cnt), (mem))
-#define rtw_read_port_cancel(adapter) _rtw_read_port_cancel((adapter))
-
-
-#define rtw_write8_async(adapter, addr, val) _rtw_write8_async((adapter), (addr), (val))
-#define rtw_write16_async(adapter, addr, val) _rtw_write16_async((adapter), (addr), (val))
-#define rtw_write32_async(adapter, addr, val) _rtw_write32_async((adapter), (addr), (val))
-
-#define rtw_write_port_cancel(adapter) _rtw_write_port_cancel((adapter))
 
 extern void rtw_write_scsi(struct rtl_priv *adapter, u32 cnt, uint8_t *pmem);
 
@@ -386,11 +291,11 @@ extern void dev_power_down(struct rtl_priv * Adapter, uint8_t bpwrup);
 
 /*
 #define RTL_R8(reg)		rtw_read8(padapter, reg)
-#define RTL_R16(reg)            rtl_read_word(padapter, reg)
-#define RTL_R32(reg)            rtl_read_dword(padapter, reg)
-#define RTL_W8(reg, val8)       rtl_write_byte(padapter, reg, val8)
-#define RTL_W16(reg, val16)     rtl_write_word(padapter, reg, val16)
-#define RTL_W32(reg, val32)     rtl_write_dword(padapter, reg, val32)
+#define RTL_R16(reg)            usb_read16(padapter, reg)
+#define RTL_R32(reg)            usb_read32(padapter, reg)
+#define RTL_W8(reg, val8)       usb_write8(padapter, reg, val8)
+#define RTL_W16(reg, val16)     usb_write16(padapter, reg, val16)
+#define RTL_W32(reg, val32)     usb_write32(padapter, reg, val32)
 */
 
 /*

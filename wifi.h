@@ -276,7 +276,6 @@ struct rtl_priv {
 	struct	cmd_priv	cmdpriv;
 	struct	evt_priv	evtpriv;
 	//struct	io_queue	*pio_queue;
-	struct 	io_priv	iopriv;
 	struct	xmit_priv	xmitpriv;
 	struct	recv_priv	recvpriv;
 	struct	sta_priv	stapriv;
@@ -469,75 +468,6 @@ unsigned int rtl8812au_inirp_deinit(struct rtl_priv *Adapter);
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv);
 void rtl8812au_interface_configure(struct rtl_priv *rtlpriv);
 void ReadAdapterInfo8812AU(struct rtl_priv *Adapter);
-
-static u8 rtl_read_byte(struct rtl_priv *adapter, u32 addr)
-{
-	uint8_t val;
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct intf_hdl *pintfhdl = &pio_priv->intf;
-
-	val = pintfhdl->io_ops._read8(pintfhdl, addr);
-
-	return val;
-}
-
-static u16 rtl_read_word(struct rtl_priv *adapter, u32 addr)
-{
-	u16 val;
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct intf_hdl	*pintfhdl = &pio_priv->intf;
-
-	val = pintfhdl->io_ops._read16(pintfhdl, addr);
-
-	return le16_to_cpu(val);
-}
-
-static u32 rtl_read_dword(struct rtl_priv *adapter, u32 addr)
-{
-	uint32_t val;
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct intf_hdl	*pintfhdl = &pio_priv->intf;
-
-	val = pintfhdl->io_ops._read32(pintfhdl, addr);
-
-	return le32_to_cpu(val);
-}
-
-static int rtl_write_byte(struct rtl_priv *adapter, u32 addr, u8 val)
-{
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct	intf_hdl *pintfhdl = &(pio_priv->intf);
-	int ret;
-
-	ret = pintfhdl->io_ops._write8(pintfhdl, addr, val);
-
-	return RTW_STATUS_CODE(ret);
-}
-
-static int rtl_write_word(struct rtl_priv *adapter, u32 addr, u16 val)
-{
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct	intf_hdl *pintfhdl = &pio_priv->intf;
-	int ret;
-
-	val = cpu_to_le16(val);
-
-	ret = pintfhdl->io_ops._write16(pintfhdl, addr, val);
-
-	return RTW_STATUS_CODE(ret);
-}
-
-static int rtl_write_dword(struct rtl_priv *adapter, u32 addr, u32 val)
-{
-	struct io_priv *pio_priv = &adapter->iopriv;
-	struct intf_hdl	*pintfhdl = &pio_priv->intf;
-	int ret;
-
-	val = cpu_to_le32(val);
-	ret = pintfhdl->io_ops._write32(pintfhdl, addr, val);
-
-	return RTW_STATUS_CODE(ret);
-}
 
 enum hardware_type {
 	HARDWARE_TYPE_RTL8812E,

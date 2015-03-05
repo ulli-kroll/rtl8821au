@@ -238,14 +238,13 @@ static void usb_bulkout_zero_complete(struct urb *purb, struct pt_regs *regs)
 
 }
 
-static u32 usb_bulkout_zero(struct intf_hdl *pintfhdl, u32 addr)
+static u32 usb_bulkout_zero(struct rtl_priv *padapter, u32 addr)
 {
 	int pipe, status, len;
 	u32 ret;
 	unsigned char *pbuf;
 	struct zero_bulkout_context *pcontext;
 	PURB	purb = NULL;
-	struct rtl_priv *padapter = (struct rtl_priv *)pintfhdl->padapter;
 	struct rtl_usb *pdvobj = rtl_usbdev(padapter);
 	struct usb_device *pusbd = pdvobj->pusbdev;
 
@@ -291,11 +290,10 @@ static u32 usb_bulkout_zero(struct intf_hdl *pintfhdl, u32 addr)
 
 }
 
-void usb_read_port_cancel(struct intf_hdl *pintfhdl)
+void usb_read_port_cancel(struct rtl_priv *padapter)
 {
 	int i;
 	struct recv_buf *precvbuf;
-	struct rtl_priv	*padapter = pintfhdl->padapter;
 	precvbuf = (struct recv_buf *)padapter->recvpriv.precv_buf;
 
 	DBG_871X("%s\n", __func__);

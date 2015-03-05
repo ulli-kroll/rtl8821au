@@ -1068,7 +1068,7 @@ void ODM_Write_CCK_CCA_Thres(struct _rtw_dm *pDM_Odm, u8	 CurCCK_CCAThres)
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
 	if (pDM_DigTable->CurCCK_CCAThres != CurCCK_CCAThres) {	/* modify by Guo.Mingzhi 2012-01-03 */
-		rtl_write_byte(pDM_Odm->Adapter, ODM_REG(CCK_CCA, pDM_Odm), CurCCK_CCAThres);
+		usb_write8(pDM_Odm->Adapter, ODM_REG(CCK_CCA, pDM_Odm), CurCCK_CCAThres);
 	}
 	pDM_DigTable->PreCCK_CCAThres = pDM_DigTable->CurCCK_CCAThres;
 	pDM_DigTable->CurCCK_CCAThres = CurCCK_CCAThres;
@@ -1787,7 +1787,7 @@ VOID odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
 			else
 				edca_param = EDCA_BE_UL;
 
-			rtl_write_dword(Adapter, REG_EDCA_BE_PARAM, edca_param);
+			usb_write32(Adapter, REG_EDCA_BE_PARAM, edca_param);
 
 			pDM_Odm->DM_EDCA_Table.prv_traffic_idx = trafficIndex;
 		}
@@ -1799,7 +1799,7 @@ VOID odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
 		 * Restore original EDCA according to the declaration of AP.
 		 */
 		if (pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA) {
-			rtl_write_dword(Adapter, REG_EDCA_BE_PARAM, pHalData->AcParam_BE);
+			usb_write32(Adapter, REG_EDCA_BE_PARAM, pHalData->AcParam_BE);
 			pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = _FALSE;
 		}
 	}

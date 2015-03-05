@@ -72,13 +72,13 @@ uint8_t HalPwrSeqCmdParsing(struct rtl_priv *padapter, uint8_t CutVersion,
 
 				{
 					/* Read the value from system register */
-					value = rtl_read_byte(padapter, offset);
+					value = usb_read8(padapter, offset);
 
 					value=value&(~(GET_PWR_CFG_MASK(PwrCfgCmd)));
 					value=value|(GET_PWR_CFG_VALUE(PwrCfgCmd)&GET_PWR_CFG_MASK(PwrCfgCmd));
 
 					/* Write the value back to sytem register */
-					rtl_write_byte(padapter, offset, value);
+					usb_write8(padapter, offset, value);
 				}
 				break;
 
@@ -86,7 +86,7 @@ uint8_t HalPwrSeqCmdParsing(struct rtl_priv *padapter, uint8_t CutVersion,
 				bPollingBit = _FALSE;
 				offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
 				do {
-						value = rtl_read_byte(padapter, offset);
+						value = usb_read8(padapter, offset);
 
 					value=value&GET_PWR_CFG_MASK(PwrCfgCmd);
 					if (value == (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd)))

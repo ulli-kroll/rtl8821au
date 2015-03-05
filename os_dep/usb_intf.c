@@ -390,13 +390,6 @@ static void rtw_decide_chip_type_by_usb_info(struct rtl_priv *padapter, const st
 	#endif
 }
 
-void usb_set_intf_ops(struct rtl_priv *padapter,struct rtl_io *pops)
-{
-	if(padapter->chip_type == RTL8812 || padapter->chip_type == RTL8821)
-		rtl8812au_set_intf_ops(pops);
-
-}
-
 
 static void usb_intf_start(struct rtl_priv *padapter)
 {
@@ -415,7 +408,7 @@ static void usb_intf_stop(struct rtl_priv *padapter)
 	rtw_hal_inirp_deinit(padapter);
 
 	/* cancel out irp */
-	rtw_write_port_cancel(padapter);
+	usb_write_port_cancel(padapter);
 
 	/* todo:cancel other irps */
 
@@ -664,23 +657,6 @@ static const struct net_device_ops rtw_netdev_ops = {
 	.ndo_do_ioctl = rtw_ioctl,
 };
 
-static int rtw_init_io_priv(struct rtl_priv *padapter,
-	void (*set_intf_ops)(struct rtl_priv *padapter, struct rtl_io *pops))
-{
-	struct io_priv	*piopriv = &padapter->iopriv;
-	struct intf_hdl *pintf = &piopriv->intf;
-
-	if (set_intf_ops == NULL)
-		return _FAIL;
-
-	piopriv->padapter = padapter;
-	pintf->padapter = padapter;
-	pintf->pintf_dev = rtl_usbdev(padapter);
-
-	set_intf_ops(padapter, &pintf->io_ops);
-
-	return _SUCCESS;
-}
 
 /*
  * drv_init() - a device potentially for us
@@ -749,9 +725,6 @@ static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const 
 
 	padapter->intf_start=&usb_intf_start;
 	padapter->intf_stop=&usb_intf_stop;
-
-	/* step init_io_priv */
-	rtw_init_io_priv(padapter,usb_set_intf_ops);
 
 	/* step read_chip_version */
 	rtw_hal_read_chip_version(padapter);

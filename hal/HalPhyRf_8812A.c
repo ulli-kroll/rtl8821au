@@ -45,7 +45,7 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 	uint32_t	/*RF_Amode=0, RF_Bmode=0,*/ LC_Cal = 0, tmp = 0;
 
 	/* Check continuous TX and Packet TX */
-	uint32_t	reg0x914 = rtl_read_dword(pDM_Odm->Adapter, rSingleTone_ContTx_Jaguar);;
+	uint32_t	reg0x914 = usb_read32(pDM_Odm->Adapter, rSingleTone_ContTx_Jaguar);;
 
 	/* Backup RF reg18. */
 	LC_Cal = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
@@ -59,7 +59,7 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 
 		;
 	else		/* If packet Tx-ing, pause Tx. */
-		rtl_write_byte(pDM_Odm->Adapter, REG_TXPAUSE, 0xFF);
+		usb_write8(pDM_Odm->Adapter, REG_TXPAUSE, 0xFF);
 
 
 /*
@@ -101,7 +101,7 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 		;
 	} else {
 		/* Deal with Packet TX case */
-		rtl_write_byte(pDM_Odm->Adapter, REG_TXPAUSE, 0x00);
+		usb_write8(pDM_Odm->Adapter, REG_TXPAUSE, 0x00);
 	}
 
 	/* Recover channel number */

@@ -19,10 +19,9 @@ static int ffaddr2pipehdl(struct rtl_usb *pdvobj, u32 addr)
 }
 
 
-static int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
+static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {
-	struct rtl_priv	*padapter = pintfhdl->padapter;
-	struct rtl_usb  *pdvobjpriv = rtl_usbdev(padapter);
+	struct rtl_usb  *pdvobjpriv = rtl_usbdev(rtlpriv);
 	struct usb_device *udev=pdvobjpriv->pusbdev;
 	int _unused;
 
@@ -37,7 +36,7 @@ static int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 val
 
 	/* DBG_871X("%s %s:%d\n",__FUNCTION__, current->comm, current->pid); */
 
-	if((padapter->bSurpriseRemoved) ||(padapter->pwrctrlpriv.pnp_bstop_trx)){
+	if((rtlpriv->bSurpriseRemoved) ||(rtlpriv->pwrctrlpriv.pnp_bstop_trx)){
 		status = -EPERM;
 		goto exit;
 	}
@@ -100,7 +99,7 @@ static int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 val
 
 			if (status < 0) {
 				if(status == (-ESHUTDOWN) || status == -ENODEV) {
-					padapter->bSurpriseRemoved = _TRUE;
+					rtlpriv->bSurpriseRemoved = _TRUE;
 				} else {
 					;
 				}
@@ -116,7 +115,7 @@ static int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 val
 			}
 
 			if(rtw_inc_and_chk_continual_urb_error(pdvobjpriv) == _TRUE ){
-				padapter->bSurpriseRemoved = _TRUE;
+				rtlpriv->bSurpriseRemoved = _TRUE;
 				break;
 			}
 
@@ -141,7 +140,7 @@ exit:
 
 
 
-static uint8_t usb_read8(struct intf_hdl *pintfhdl, uint32_t addr)
+uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -157,13 +156,13 @@ static uint8_t usb_read8(struct intf_hdl *pintfhdl, uint32_t addr)
 	wvalue = (u16) (addr&0x0000ffff);
 	len = 1;
 
-	usbctrl_vendorreq(pintfhdl, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 
 	return data;
 
 }
 
-static u16 usb_read16(struct intf_hdl *pintfhdl, uint32_t addr)
+u16 usb_read16(struct rtl_priv *rtlpriv, uint32_t addr)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -179,13 +178,13 @@ static u16 usb_read16(struct intf_hdl *pintfhdl, uint32_t addr)
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 2;
 
-	usbctrl_vendorreq(pintfhdl, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 
 	return data;
 
 }
 
-static uint32_t usb_read32(struct intf_hdl *pintfhdl, uint32_t addr)
+uint32_t usb_read32(struct rtl_priv *rtlpriv, uint32_t addr)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -201,14 +200,14 @@ static uint32_t usb_read32(struct intf_hdl *pintfhdl, uint32_t addr)
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 4;
 
-	usbctrl_vendorreq(pintfhdl, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 
 
 	return data;
 
 }
 
-static int usb_write8(struct intf_hdl *pintfhdl, uint32_t addr, uint8_t val)
+int usb_write8(struct rtl_priv *rtlpriv, uint32_t addr, uint8_t val)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -227,13 +226,13 @@ static int usb_write8(struct intf_hdl *pintfhdl, uint32_t addr, uint8_t val)
 
 	data = val;
 
-	 ret = usbctrl_vendorreq(pintfhdl, request, wvalue, index, &data, len, requesttype);
+	 ret = usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 
 	return ret;
 
 }
 
-static int usb_write16(struct intf_hdl *pintfhdl, uint32_t addr, u16 val)
+int usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -252,13 +251,13 @@ static int usb_write16(struct intf_hdl *pintfhdl, uint32_t addr, u16 val)
 
 	data = val;
 
-	ret = usbctrl_vendorreq(pintfhdl, request, wvalue, index, &data, len, requesttype);
+	ret = usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 
 	return ret;
 
 }
 
-static int usb_write32(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t val)
+int usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -276,13 +275,13 @@ static int usb_write32(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t val)
 	len = 4;
 	data = val;
 
-	ret = usbctrl_vendorreq(pintfhdl, request, wvalue, index, &data, len, requesttype);
+	ret = usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 
 	return ret;
 
 }
 
-static int usb_writeN(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t length, uint8_t *pdata)
+int usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t length, uint8_t *pdata)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -300,7 +299,7 @@ static int usb_writeN(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t length,
 	len = length;
 	memcpy(buf, pdata, len);
 
-	ret = usbctrl_vendorreq(pintfhdl, request, wvalue, index, buf, len, requesttype);
+	ret = usbctrl_vendorreq(rtlpriv, request, wvalue, index, buf, len, requesttype);
 
 	_func_exit_;
 
@@ -443,14 +442,13 @@ check_completion:
 
 
 
-u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf)
+u32 usb_write_port(struct rtl_priv *padapter, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf)
 {
 	_irqL irqL;
 	unsigned int pipe;
 	int status;
 	u32 ret = _FAIL, bwritezero = _FALSE;
 	PURB	purb = NULL;
-	struct rtl_priv *padapter = (struct rtl_priv *)pintfhdl->padapter;
 	struct rtl_usb	*pdvobj = rtl_usbdev(padapter);
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
 	struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data;
@@ -556,15 +554,14 @@ exit:
 	return ret;
 }
 
-void usb_write_port_cancel(struct intf_hdl *pintfhdl)
+void usb_write_port_cancel(struct rtl_priv *rtlpriv)
 {
 	int i, j;
-	struct rtl_priv	*padapter = pintfhdl->padapter;
-	struct xmit_buf *pxmitbuf = (struct xmit_buf *)padapter->xmitpriv.pxmitbuf;
+	struct xmit_buf *pxmitbuf = (struct xmit_buf *)rtlpriv->xmitpriv.pxmitbuf;
 
 	DBG_871X("%s \n", __func__);
 
-	padapter->bWritePortCancel = _TRUE;
+	rtlpriv->bWritePortCancel = _TRUE;
 
 	for (i=0; i<NR_XMITBUFF; i++) {
 		for (j=0; j<8; j++) {
@@ -575,7 +572,7 @@ void usb_write_port_cancel(struct intf_hdl *pintfhdl)
 		pxmitbuf++;
 	}
 
-	pxmitbuf = (struct xmit_buf*)padapter->xmitpriv.pxmit_extbuf;
+	pxmitbuf = (struct xmit_buf*)rtlpriv->xmitpriv.pxmit_extbuf;
 	for (i = 0; i < NR_XMIT_EXTBUFF; i++) {
 		for (j=0; j<8; j++) {
 			if(pxmitbuf->pxmit_urb[j]) {
@@ -632,7 +629,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 		if ((purb->actual_length > MAX_RECVBUF_SZ)
 		 || (purb->actual_length < RXDESC_SIZE)) {
 			precvbuf->reuse = _TRUE;
-			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
+			usb_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 			DBG_8192C("%s()-%d: RX Warning!\n", __FUNCTION__, __LINE__);
 		} else {
 			rtw_reset_continual_urb_error(rtl_usbdev(padapter));
@@ -646,7 +643,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 
 			precvbuf->pskb = NULL;
 			precvbuf->reuse = _FALSE;
-			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
+			usb_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 		}
 	} else {
 		DBG_8192C("###=> usb_read_port_complete => urb status(%d)\n", purb->status);
@@ -670,7 +667,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 		case -ECOMM:
 		case -EOVERFLOW:
 			precvbuf->reuse = _TRUE;
-			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
+			usb_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 			break;
 		case -EINPROGRESS:
 			DBG_8192C("ERROR: URB IS IN PROGRESS!/n");
@@ -685,7 +682,7 @@ exit:
 	;
 }
 
-static uint32_t usb_read_port(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t cnt, uint8_t *rmem)
+uint32_t usb_read_port(struct rtl_priv *adapter, uint32_t addr, uint32_t cnt, uint8_t *rmem)
 {
 	_irqL irqL;
 	int err;
@@ -695,7 +692,6 @@ static uint32_t usb_read_port(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t
 	uint32_t ret = _SUCCESS;
 	PURB purb = NULL;
 	struct recv_buf	*precvbuf = (struct recv_buf *) rmem;
-	struct rtl_priv		*adapter = pintfhdl->padapter;
 	struct rtl_usb	*pdvobj = rtl_usbdev(adapter);
 	struct recv_priv	*precvpriv = &adapter->recvpriv;
 	struct usb_device	*pusbd = pdvobj->pusbdev;
@@ -777,20 +773,4 @@ static uint32_t usb_read_port(struct intf_hdl *pintfhdl, uint32_t addr, uint32_t
 	return ret;
 }
 
-/* ULLI USB interface ops */
 
-void rtl8812au_set_intf_ops(struct rtl_io *pops)
-{
-	memset((uint8_t *)pops, 0, sizeof(struct rtl_io));
-
-	pops->_read8 = &usb_read8;
-	pops->_read16 = &usb_read16;
-	pops->_read32 = &usb_read32;
-	pops->_write8 = &usb_write8;
-	pops->_write16 = &usb_write16;
-	pops->_write32 = &usb_write32;
-	pops->_writeN = &usb_writeN;
-
-	pops->_read_port_cancel = &usb_read_port_cancel;
-	pops->_write_port_cancel = &usb_write_port_cancel;
-}

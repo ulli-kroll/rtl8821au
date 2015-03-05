@@ -1937,18 +1937,18 @@ static void SwLedOn_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 	if (RT_GetInterfaceSelection(padapter) == INTF_SEL2_MINICARD
 	 || RT_GetInterfaceSelection(padapter) == INTF_SEL3_USB_Solo
 	 || RT_GetInterfaceSelection(padapter) == INTF_SEL4_USB_Combo) {
-		LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
+		LedCfg = usb_read8(padapter, REG_LEDCFG2);
 		switch (pLed->LedPin) {
 		case LED_PIN_GPIO0:
 			break;
 
 		case LED_PIN_LED0:
-			LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
-			rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
+			LedCfg = usb_read8(padapter, REG_LEDCFG2);
+			usb_write8(padapter, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
 			break;
 
 		case LED_PIN_LED1:
-			rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg&0x0f)|BIT5); /* SW control led1 on. */
+			usb_write8(padapter, REG_LEDCFG2, (LedCfg&0x0f)|BIT5); /* SW control led1 on. */
 			break;
 
 		default:
@@ -1961,22 +1961,22 @@ static void SwLedOn_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 
 		case LED_PIN_LED0:
 			if (pHalData->AntDivCfg == 0) {
-				LedCfg = rtl_read_byte(padapter, REG_LEDCFG0);
-				rtl_write_byte(padapter, REG_LEDCFG0, (LedCfg&0x70)|BIT5); /* SW control led0 on. */
+				LedCfg = usb_read8(padapter, REG_LEDCFG0);
+				usb_write8(padapter, REG_LEDCFG0, (LedCfg&0x70)|BIT5); /* SW control led0 on. */
 			} else {
-				LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
-				rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg&0xe0)|BIT7|BIT6|BIT5); /* SW control led0 on. */
+				LedCfg = usb_read8(padapter, REG_LEDCFG2);
+				usb_write8(padapter, REG_LEDCFG2, (LedCfg&0xe0)|BIT7|BIT6|BIT5); /* SW control led0 on. */
 			}
 			break;
 
 		case LED_PIN_LED1:
-			LedCfg = rtl_read_byte(padapter, (REG_LEDCFG1));
-			rtl_write_byte(padapter, (REG_LEDCFG1), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
+			LedCfg = usb_read8(padapter, (REG_LEDCFG1));
+			usb_write8(padapter, (REG_LEDCFG1), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
 			break;
 
 		case LED_PIN_LED2:
-			LedCfg = rtl_read_byte(padapter, (REG_LEDCFG2));
-			rtl_write_byte(padapter, (REG_LEDCFG2), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
+			LedCfg = usb_read8(padapter, (REG_LEDCFG2));
+			usb_write8(padapter, (REG_LEDCFG2), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
 			break;
 
 		default:
@@ -2004,7 +2004,7 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 	if (RT_GetInterfaceSelection(padapter) == INTF_SEL2_MINICARD
 	 || RT_GetInterfaceSelection(padapter) == INTF_SEL3_USB_Solo
 	 || RT_GetInterfaceSelection(padapter) == INTF_SEL4_USB_Combo) {
-		LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
+		LedCfg = usb_read8(padapter, REG_LEDCFG2);
 
 		/*
 		 * 2009/10/23 MH Issau eed to move the LED GPIO from bit  0 to bit3.
@@ -2019,18 +2019,18 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 		case LED_PIN_LED0:
 			if (pHalData->bLedOpenDrain == _TRUE) {
 				LedCfg &= 0x90; 	/* Set to software control. */
-				rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg|BIT3));
-				LedCfg = rtl_read_byte(padapter, REG_MAC_PINMUX_CFG);
+				usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3));
+				LedCfg = usb_read8(padapter, REG_MAC_PINMUX_CFG);
 				LedCfg &= 0xFE;
-				rtl_write_byte(padapter, REG_MAC_PINMUX_CFG, LedCfg);
+				usb_write8(padapter, REG_MAC_PINMUX_CFG, LedCfg);
 			} else {
-				rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5|BIT6));
+				usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5|BIT6));
 			}
 			break;
 
 		case LED_PIN_LED1:
 			LedCfg &= 0x0f; 	/* Set to software control. */
-			rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg|BIT3));
+			usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3));
 			break;
 
 		default:
@@ -2043,26 +2043,26 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 
 		case LED_PIN_LED0:
 			 if (pHalData->AntDivCfg == 0) {
-				LedCfg = rtl_read_byte(padapter, REG_LEDCFG0);
+				LedCfg = usb_read8(padapter, REG_LEDCFG0);
 				LedCfg &= 0x70; 	/* Set to software control. */
-				rtl_write_byte(padapter, REG_LEDCFG0, (LedCfg|BIT3|BIT5));
+				usb_write8(padapter, REG_LEDCFG0, (LedCfg|BIT3|BIT5));
 			} else {
-				LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
+				LedCfg = usb_read8(padapter, REG_LEDCFG2);
 				LedCfg &= 0xe0; 	/* Set to software control. */
-				rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT6|BIT5));
+				usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT6|BIT5));
 			}
 			break;
 
 		case LED_PIN_LED1:
-			LedCfg = rtl_read_byte(padapter, REG_LEDCFG1);
+			LedCfg = usb_read8(padapter, REG_LEDCFG1);
 			LedCfg &= 0x70; 	/* Set to software control. */
-			rtl_write_byte(padapter, REG_LEDCFG1, (LedCfg|BIT3|BIT5));
+			usb_write8(padapter, REG_LEDCFG1, (LedCfg|BIT3|BIT5));
 			break;
 
 		case LED_PIN_LED2:
-			LedCfg = rtl_read_byte(padapter, REG_LEDCFG2);
+			LedCfg = usb_read8(padapter, REG_LEDCFG2);
 			LedCfg &= 0x70; 	/* Set to software control. */
-			rtl_write_byte(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
+			usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
 			break;
 
 		default:
@@ -2090,19 +2090,19 @@ static void SwLedOn_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 	if (RT_GetInterfaceSelection(Adapter) == INTF_SEL2_MINICARD
 	 || RT_GetInterfaceSelection(Adapter) == INTF_SEL3_USB_Solo
 	 || RT_GetInterfaceSelection(Adapter) == INTF_SEL4_USB_Combo) {
-		LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
+		LedCfg = usb_read8(Adapter, REG_LEDCFG2);
 		switch (pLed->LedPin) {
 		case LED_PIN_GPIO0:
 			break;
 
 		case LED_PIN_LED0:
 
-			LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
-			rtl_write_byte(Adapter, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
+			LedCfg = usb_read8(Adapter, REG_LEDCFG2);
+			usb_write8(Adapter, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
 			break;
 
 		case LED_PIN_LED1:
-			rtl_write_byte(Adapter, REG_LEDCFG2, (LedCfg&0x0f)|BIT5); /* SW control led1 on. */
+			usb_write8(Adapter, REG_LEDCFG2, (LedCfg&0x0f)|BIT5); /* SW control led1 on. */
 			break;
 
 		default:
@@ -2118,8 +2118,8 @@ static void SwLedOn_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 		case LED_PIN_LED1:
 		case LED_PIN_LED2:
 			if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-				LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
-				rtl_write_byte(Adapter, REG_LEDCFG2, ((LedCfg&0x20) & (~BIT3))|BIT5); /* SW control led0 on. */
+				LedCfg = usb_read8(Adapter, REG_LEDCFG2);
+				usb_write8(Adapter, REG_LEDCFG2, ((LedCfg&0x20) & (~BIT3))|BIT5); /* SW control led0 on. */
 			}
 
 			break;
@@ -2150,7 +2150,7 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 	if (RT_GetInterfaceSelection(Adapter) == INTF_SEL2_MINICARD
 	 || RT_GetInterfaceSelection(Adapter) == INTF_SEL3_USB_Solo
 	 || RT_GetInterfaceSelection(Adapter) == INTF_SEL4_USB_Combo) {
-		LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
+		LedCfg = usb_read8(Adapter, REG_LEDCFG2);
 
 		/*
 		 * 2009/10/23 MH Issau eed to move the LED GPIO from bit  0 to bit3.
@@ -2166,18 +2166,18 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 		case LED_PIN_LED0:
 			if (pHalData->bLedOpenDrain == _TRUE) {
 				LedCfg &= 0x90; /* Set to software control. */
-				rtl_write_byte(Adapter, REG_LEDCFG2, (LedCfg|BIT3));
-				LedCfg = rtl_read_byte(Adapter, REG_MAC_PINMUX_CFG);
+				usb_write8(Adapter, REG_LEDCFG2, (LedCfg|BIT3));
+				LedCfg = usb_read8(Adapter, REG_MAC_PINMUX_CFG);
 				LedCfg &= 0xFE;
-				rtl_write_byte(Adapter, REG_MAC_PINMUX_CFG, LedCfg);
+				usb_write8(Adapter, REG_MAC_PINMUX_CFG, LedCfg);
 			} else {
-				rtl_write_byte(Adapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5|BIT6));
+				usb_write8(Adapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5|BIT6));
 			}
 			break;
 
 		case LED_PIN_LED1:
 			LedCfg &= 0x0f; /* Set to software control. */
-			rtl_write_byte(Adapter, REG_LEDCFG2, (LedCfg|BIT3));
+			usb_write8(Adapter, REG_LEDCFG2, (LedCfg|BIT3));
 			break;
 
 		default:
@@ -2192,9 +2192,9 @@ static void SwLedOff_8821AU(struct rtl_priv *Adapter, struct rtl_led *pLed)
 		case LED_PIN_LED1:
 		case LED_PIN_LED2:
 			 if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-				LedCfg = rtl_read_byte(Adapter, REG_LEDCFG2);
+				LedCfg = usb_read8(Adapter, REG_LEDCFG2);
 				LedCfg &= 0x20; 	/* Set to software control. */
-				rtl_write_byte(Adapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
+				usb_write8(Adapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
 			 }
 
 			break;

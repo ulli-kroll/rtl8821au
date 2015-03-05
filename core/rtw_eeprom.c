@@ -26,14 +26,14 @@
 void up_clk(struct rtl_priv *padapter, u16 *x)
 {
 	*x = *x | _EESK;
-	rtl_write_byte(padapter, EE_9346CR, (uint8_t)*x);
+	usb_write8(padapter, EE_9346CR, (uint8_t)*x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
 void down_clk(struct rtl_priv *padapter, u16 *x	)
 {
 	*x = *x & ~_EESK;
-	rtl_write_byte(padapter, EE_9346CR, (uint8_t)*x);
+	usb_write8(padapter, EE_9346CR, (uint8_t)*x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
@@ -47,7 +47,7 @@ void shift_out_bits(struct rtl_priv *padapter, u16 data, u16 count)
 	}
 
 	mask = 0x01 << (count - 1);
-	x = rtl_read_byte(padapter, EE_9346CR);
+	x = usb_read8(padapter, EE_9346CR);
 
 	x &= ~(_EEDO | _EEDI);
 
@@ -61,7 +61,7 @@ void shift_out_bits(struct rtl_priv *padapter, u16 data, u16 count)
 			goto out;
 		}
 
-		rtl_write_byte(padapter, EE_9346CR, (uint8_t)x);
+		usb_write8(padapter, EE_9346CR, (uint8_t)x);
 		rtw_udelay_os(CLOCK_RATE);
 		up_clk(padapter, &x);
 		down_clk(padapter, &x);
@@ -74,7 +74,7 @@ void shift_out_bits(struct rtl_priv *padapter, u16 data, u16 count)
 	}
 
 	x &= ~_EEDI;
-	rtl_write_byte(padapter, EE_9346CR, (uint8_t)x);
+	usb_write8(padapter, EE_9346CR, (uint8_t)x);
 out:
 }
 
@@ -86,7 +86,7 @@ u16 shift_in_bits (struct rtl_priv *padapter)
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
 		goto out;
 	}
-	x = rtl_read_byte(padapter, EE_9346CR);
+	x = usb_read8(padapter, EE_9346CR);
 
 	x &= ~( _EEDO | _EEDI);
 	d = 0;
@@ -99,7 +99,7 @@ u16 shift_in_bits (struct rtl_priv *padapter)
 			goto out;
 		}
 
-		x = rtl_read_byte(padapter, EE_9346CR);
+		x = usb_read8(padapter, EE_9346CR);
 
 		x &= ~(_EEDI);
 		if(x & _EEDO)
@@ -115,14 +115,14 @@ void standby(struct rtl_priv *padapter)
 {
 	uint8_t   x;
 
-	x = rtl_read_byte(padapter, EE_9346CR);
+	x = usb_read8(padapter, EE_9346CR);
 
 	x &= ~(_EECS | _EESK);
-	rtl_write_byte(padapter, EE_9346CR,x);
+	usb_write8(padapter, EE_9346CR,x);
 
 	rtw_udelay_os(CLOCK_RATE);
 	x |= _EECS;
-	rtl_write_byte(padapter, EE_9346CR, x);
+	usb_write8(padapter, EE_9346CR, x);
 	rtw_udelay_os(CLOCK_RATE);
 }
 
@@ -134,7 +134,7 @@ u16 wait_eeprom_cmd_done(struct rtl_priv* padapter)
 	standby(padapter );
 
 	for (i = 0; i < 200; i++) {
-		x = rtl_read_byte(padapter, EE_9346CR);
+		x = usb_read8(padapter, EE_9346CR);
 		if (x & _EEDO){
 			res=_TRUE;
 			goto exit;
@@ -154,13 +154,13 @@ void eeprom_clean(struct rtl_priv *padapter)
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
 		goto out;
 	}
-	x = rtl_read_byte(padapter, EE_9346CR);
+	x = usb_read8(padapter, EE_9346CR);
 	if (padapter->bSurpriseRemoved == _TRUE) {
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
 		goto out;
 	}
 	x &= ~(_EECS | _EEDI);
-	rtl_write_byte(padapter, EE_9346CR, (uint8_t)x);
+	usb_write8(padapter, EE_9346CR, (uint8_t)x);
 
 	if (padapter->bSurpriseRemoved == _TRUE) {
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -183,26 +183,26 @@ void eeprom_write16(struct rtl_priv * padapter, u16 reg, u16 data)
 #ifdef CONFIG_RTL8712
 	uint8_t	tmp8_ori,tmp8_new,tmp8_clk_ori,tmp8_clk_new;
 
-	tmp8_ori = rtl_read_byte(padapter, 0x102502f1);
+	tmp8_ori = usb_read8(padapter, 0x102502f1);
 	tmp8_new = tmp8_ori & 0xf7;
 
 	if (tmp8_ori != tmp8_new) {
-		rtl_write_byte(padapter, 0x102502f1, tmp8_new);
+		usb_write8(padapter, 0x102502f1, tmp8_new);
 		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x102502f1=====\n"));
 	}
-	tmp8_clk_ori=rtl_read_byte(padapter,0x10250003);
+	tmp8_clk_ori=usb_read8(padapter,0x10250003);
 	tmp8_clk_new=tmp8_clk_ori|0x20;
 	if (tmp8_clk_new != tmp8_clk_ori) {
 		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x10250003=====\n"));
-		rtl_write_byte(padapter, 0x10250003, tmp8_clk_new);
+		usb_write8(padapter, 0x10250003, tmp8_clk_new);
 	}
 #endif
 
-	x = rtl_read_byte(padapter, EE_9346CR);
+	x = usb_read8(padapter, EE_9346CR);
 
 	x &= ~(_EEDI | _EEDO | _EESK | _EEM0);
 	x |= _EEM1 | _EECS;
-	rtl_write_byte(padapter, EE_9346CR, x);
+	usb_write8(padapter, EE_9346CR, x);
 
 	shift_out_bits(padapter, EEPROM_EWEN_OPCODE, 5);
 
@@ -251,9 +251,9 @@ void eeprom_write16(struct rtl_priv * padapter, u16 reg, u16 data)
 exit:
 #ifdef CONFIG_RTL8712
 	if(tmp8_clk_new!=tmp8_clk_ori)
-		rtl_write_byte(padapter, 0x10250003, tmp8_clk_ori);
+		usb_write8(padapter, 0x10250003, tmp8_clk_ori);
 	if(tmp8_new!=tmp8_ori)
-		rtl_write_byte(padapter, 0x102502f1, tmp8_ori);
+		usb_write8(padapter, 0x102502f1, tmp8_ori);
 
 #endif
 	return;
@@ -267,19 +267,19 @@ u16 eeprom_read16(struct rtl_priv * padapter, u16 reg) //ReadEEprom
 #ifdef CONFIG_RTL8712
 	uint8_t	tmp8_ori,tmp8_new,tmp8_clk_ori,tmp8_clk_new;
 
-	tmp8_ori = rtl_read_byte(padapter, 0x102502f1);
+	tmp8_ori = usb_read8(padapter, 0x102502f1);
 	tmp8_new = tmp8_ori & 0xf7;
 
 	if (tmp8_ori != tmp8_new) {
-		rtl_write_byte(padapter, 0x102502f1, tmp8_new);
+		usb_write8(padapter, 0x102502f1, tmp8_new);
 		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x102502f1=====\n"));
 	}
 
-	tmp8_clk_ori=rtl_read_byte(padapter,0x10250003);
+	tmp8_clk_ori=usb_read8(padapter,0x10250003);
 	tmp8_clk_new=tmp8_clk_ori|0x20;
 	if (tmp8_clk_new != tmp8_clk_ori) {
 		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x10250003=====\n"));
-		rtl_write_byte(padapter, 0x10250003, tmp8_clk_new);
+		usb_write8(padapter, 0x10250003, tmp8_clk_new);
 	}
 #endif
 
@@ -288,7 +288,7 @@ u16 eeprom_read16(struct rtl_priv * padapter, u16 reg) //ReadEEprom
 		goto out;
 	}
 	// select EEPROM, reset bits, set _EECS
-	x = rtl_read_byte(padapter, EE_9346CR);
+	x = usb_read8(padapter, EE_9346CR);
 
 	if (padapter->bSurpriseRemoved == _TRUE) {
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -298,7 +298,7 @@ u16 eeprom_read16(struct rtl_priv * padapter, u16 reg) //ReadEEprom
 	x &= ~(_EEDI | _EEDO | _EESK | _EEM0);
 	x |= _EEM1 | _EECS;
 
-	rtl_write_byte(padapter, EE_9346CR, (unsigned char)x);
+	usb_write8(padapter, EE_9346CR, (unsigned char)x);
 
 	// write the read opcode and register number in that order
 	// The opcode is 3bits in length, reg is 6 bits long
@@ -313,10 +313,10 @@ u16 eeprom_read16(struct rtl_priv * padapter, u16 reg) //ReadEEprom
 out:
 #ifdef CONFIG_RTL8712
 	if (tmp8_clk_new != tmp8_clk_ori)
-		rtl_write_byte(padapter, 0x10250003, tmp8_clk_ori);
+		usb_write8(padapter, 0x10250003, tmp8_clk_ori);
 
 	if (tmp8_new != tmp8_ori)
-		rtl_write_byte(padapter, 0x102502f1, tmp8_ori);
+		usb_write8(padapter, 0x102502f1, tmp8_ori);
 
 #endif
 
@@ -338,7 +338,7 @@ void eeprom_read_sz(struct rtl_priv * padapter, u16 reg, uint8_t * data, uint32_
 		goto out;
 	}
 	// select EEPROM, reset bits, set _EECS
-	x = rtl_read_byte(padapter, EE_9346CR);
+	x = usb_read8(padapter, EE_9346CR);
 
 	if (padapter->bSurpriseRemoved == _TRUE) {
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("padapter->bSurpriseRemoved==_TRUE"));
@@ -347,7 +347,7 @@ void eeprom_read_sz(struct rtl_priv * padapter, u16 reg, uint8_t * data, uint32_
 
 	x &= ~(_EEDI | _EEDO | _EESK | _EEM0);
 	x |= _EEM1 | _EECS;
-	rtl_write_byte(padapter, EE_9346CR, (unsigned char)x);
+	usb_write8(padapter, EE_9346CR, (unsigned char)x);
 
 	// write the read opcode and register number in that order
 	// The opcode is 3bits in length, reg is 6 bits long

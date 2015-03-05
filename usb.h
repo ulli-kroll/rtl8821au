@@ -92,7 +92,7 @@ int usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val);
 void usb_write_port_cancel(struct rtl_priv *rtlpriv);
 void usb_read_port_cancel(struct rtl_priv *rtlprivl);
 
-uint32_t usb_read_port(struct rtl_priv *padapter, uint32_t addr, uint32_t cnt, uint8_t *rmem);
+uint32_t usb_read_port(struct rtl_priv *padapter, uint32_t cnt, uint8_t *rmem);
 u32 usb_write_port(struct rtl_priv *padapter, u32 addr, u32 cnt, struct xmit_buf *pxmitbu);
 int usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t length, uint8_t *pdata);
 

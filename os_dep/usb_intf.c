@@ -658,6 +658,19 @@ static const struct net_device_ops rtw_netdev_ops = {
 
 struct rtl_priv  *rtw_sw_export = NULL;
 
+static char *ifname = "wlan%d";
+
+static int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
+{
+	if (dev_alloc_name(ndev, ifname) < 0)
+		/*
+		 * RT_TRACE(_module_os_intfs_c_, _drv_err_, ("dev_alloc_name, fail!\n"));
+		 */
+
+	netif_carrier_off(ndev);
+	return 0;
+}
+
 static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
 	struct rtl_usb *rtlusb;
@@ -760,6 +773,7 @@ static struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const 
 	}
 
 	/*  set mac addr */
+	rtw_init_netdev_name(ndev, ifname);
 	rtw_macaddr_cfg(padapter->eeprompriv.mac_addr);
 
 	DBG_871X("bDriverStopped:%d, bSurpriseRemoved:%d, bup:%d, hw_init_completed:%d\n"

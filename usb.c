@@ -2,20 +2,6 @@
 #include <hal_data.h>
 #include <../rtl8821au/trx.h>
 
-static int ffaddr2pipehdl(struct rtl_usb *pdvobj, u32 addr)
-{
-	unsigned int pipe=0, ep_num=0;
-	struct usb_device *pusbd = pdvobj->pusbdev;
-
-	if (addr < HW_QUEUE_ENTRY) {
-		ep_num = pdvobj->Queue2Pipe[addr];
-		pipe = usb_sndbulkpipe(pusbd, ep_num);
-	}
-
-	return pipe;
-}
-
-
 static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {
 	struct rtl_usb  *pdvobjpriv = rtl_usbdev(rtlpriv);
@@ -446,10 +432,10 @@ u32 usb_write_port(struct rtl_priv *padapter, u32 addr, u32 cnt, struct xmit_buf
 	int status;
 	u32 ret = _FAIL, bwritezero = _FALSE;
 	PURB	purb = NULL;
-	struct rtl_usb	*pdvobj = rtl_usbdev(padapter);
-	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
+	struct rtl_usb	*rtlusb = rtl_usbdev(padapter);
+	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 	struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data;
-	struct usb_device *pusbd = pdvobj->pusbdev;
+	struct usb_device *pusbd = rtlusb->pusbdev;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 
 	if ((padapter->bDriverStopped) || (padapter->bSurpriseRemoved) ||(padapter->pwrctrlpriv.pnp_bstop_trx)) {
@@ -493,7 +479,7 @@ u32 usb_write_port(struct rtl_priv *padapter, u32 addr, u32 cnt, struct xmit_buf
 	purb	= pxmitbuf->pxmit_urb[0];
 
 	/* translate DMA FIFO addr to pipehandle */
-	pipe = ffaddr2pipehdl(pdvobj, addr);
+	pipe = usb_sndbulkpipe(pusbd, rtlusb->Queue2Pipe[addr]);	
 
 #ifdef CONFIG_REDUCE_USB_TX_INT
 	if ((pxmitpriv->free_xmitbuf_cnt%NR_XMITBUFF == 0) ||

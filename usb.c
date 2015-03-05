@@ -7,10 +7,7 @@ static int ffaddr2pipehdl(struct rtl_usb *pdvobj, u32 addr)
 	unsigned int pipe=0, ep_num=0;
 	struct usb_device *pusbd = pdvobj->pusbdev;
 
-	if (addr == RECV_BULK_IN_ADDR) {
-		pipe=usb_rcvbulkpipe(pusbd, pdvobj->RtInPipe[0]);
-
-	} else if (addr < HW_QUEUE_ENTRY) {
+	if (addr < HW_QUEUE_ENTRY) {
 		ep_num = pdvobj->Queue2Pipe[addr];
 		pipe = usb_sndbulkpipe(pusbd, ep_num);
 	}
@@ -692,9 +689,9 @@ uint32_t usb_read_port(struct rtl_priv *adapter, uint32_t cnt, uint8_t *rmem)
 	uint32_t ret = _SUCCESS;
 	PURB purb = NULL;
 	struct recv_buf	*precvbuf = (struct recv_buf *) rmem;
-	struct rtl_usb	*pdvobj = rtl_usbdev(adapter);
+	struct rtl_usb	*rtlusb = rtl_usbdev(adapter);
 	struct recv_priv	*precvpriv = &adapter->recvpriv;
-	struct usb_device	*pusbd = pdvobj->pusbdev;
+	struct usb_device	*pusbd = rtlusb->pusbdev;
 	uint32_t addr = RECV_BULK_IN_ADDR;
 
 	if (adapter->bDriverStopped || adapter->bSurpriseRemoved
@@ -754,7 +751,7 @@ uint32_t usb_read_port(struct rtl_priv *adapter, uint32_t cnt, uint8_t *rmem)
 		purb = precvbuf->purb;
 
 		/* translate DMA FIFO addr to pipehandle */
-		pipe = ffaddr2pipehdl(pdvobj, addr);
+		pipe = usb_rcvbulkpipe(pusbd, rtlusb->RtInPipe[0]);
 
 		usb_fill_bulk_urb(purb, pusbd, pipe,
 						precvbuf->pbuf,

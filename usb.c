@@ -19,6 +19,128 @@ static int ffaddr2pipehdl(struct rtl_usb *pdvobj, u32 addr)
 }
 
 
+static int usbctrl_vendorreq(struct intf_hdl *pintfhdl, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
+{
+	struct rtl_priv	*padapter = pintfhdl->padapter;
+	struct rtl_usb  *pdvobjpriv = rtl_usbdev(padapter);
+	struct usb_device *udev=pdvobjpriv->pusbdev;
+	int _unused;
+
+	unsigned int pipe;
+	int status = 0;
+	u32 tmp_buflen=0;
+	uint8_t reqtype;
+	uint8_t *pIo_buf;
+	int vendorreq_times = 0;
+
+	uint8_t tmp_buf[MAX_USB_IO_CTL_SIZE];
+
+	/* DBG_871X("%s %s:%d\n",__FUNCTION__, current->comm, current->pid); */
+
+	if((padapter->bSurpriseRemoved) ||(padapter->pwrctrlpriv.pnp_bstop_trx)){
+		status = -EPERM;
+		goto exit;
+	}
+
+	if(len>MAX_VENDOR_REQ_CMD_SIZE){
+		DBG_8192C( "[%s] Buffer len error ,vendor request failed\n", __FUNCTION__ );
+		status = -EINVAL;
+		goto exit;
+	}
+
+#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
+	_unused = mutex_lock_interruptible(&pdvobjpriv->usb_vendor_req_mutex);
+#endif
+
+
+	/* Acquire IO memory for vendorreq */
+#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
+	pIo_buf = pdvobjpriv->usb_vendor_req_buf;
+#else
+	tmp_buflen = MAX_USB_IO_CTL_SIZE;
+
+	/*
+	 * Added by Albert 2010/02/09
+	 * For mstar platform, mstar suggests the address for USB IO should be 16 bytes alignment.
+	 * Trying to fix it here.
+	 */
+	pIo_buf = (tmp_buf==NULL)?NULL:tmp_buf + ALIGNMENT_UNIT -((SIZE_PTR)(tmp_buf) & 0x0f );
+#endif
+
+	if ( pIo_buf== NULL) {
+		DBG_8192C( "[%s] pIo_buf == NULL \n", __FUNCTION__ );
+		status = -ENOMEM;
+		goto release_mutex;
+	}
+
+	while (++vendorreq_times<= MAX_USBCTRL_VENDORREQ_TIMES) {
+		memset(pIo_buf, 0, len);
+
+		if (requesttype == 0x01) {
+			pipe = usb_rcvctrlpipe(udev, 0);	/* read_in */
+			reqtype =  REALTEK_USB_VENQT_READ;
+		} else {
+			pipe = usb_sndctrlpipe(udev, 0);	/* write_out */
+			reqtype =  REALTEK_USB_VENQT_WRITE;
+			memcpy( pIo_buf, pdata, len);
+		}
+
+		status = rtw_usb_control_msg(udev, pipe, request, reqtype, value, index, pIo_buf, len, RTW_USB_CONTROL_MSG_TIMEOUT);
+
+		if (status == len) {   // Success this control transfer. */
+			rtw_reset_continual_urb_error(pdvobjpriv);
+			if (requesttype == 0x01) {
+				/* For Control read transfer, we have to copy the read data from pIo_buf to pdata. */
+				memcpy(pdata, pIo_buf,  len);
+			}
+		} else {
+			/* error cases */
+			DBG_8192C("reg 0x%x, usb %s %u fail, status:%d value=0x%x, vendorreq_times:%d\n"
+				, value,(requesttype == 0x01)?"read":"write" , len, status, *(u32*)pdata, vendorreq_times);
+
+			if (status < 0) {
+				if(status == (-ESHUTDOWN) || status == -ENODEV) {
+					padapter->bSurpriseRemoved = _TRUE;
+				} else {
+					;
+				}
+			} else {
+				/* status != len && status >= 0 */
+
+				if(status > 0) {
+					if ( requesttype == 0x01 ) {
+						/* For Control read transfer, we have to copy the read data from pIo_buf to pdata. */
+						memcpy( pdata, pIo_buf,  len );
+					}
+				}
+			}
+
+			if(rtw_inc_and_chk_continual_urb_error(pdvobjpriv) == _TRUE ){
+				padapter->bSurpriseRemoved = _TRUE;
+				break;
+			}
+
+		}
+
+		/* firmware download is checksumed, don't retry */
+		if( (value >= FW_START_ADDRESS ) || status == len )
+			break;
+
+	}
+
+	/* release IO memory used by vendorreq */
+
+release_mutex:
+#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
+	mutex_unlock(&pdvobjpriv->usb_vendor_req_mutex);
+#endif
+exit:
+	return status;
+
+}
+
+
+
 static uint8_t usb_read8(struct intf_hdl *pintfhdl, uint32_t addr)
 {
 	uint8_t request;
@@ -668,8 +790,6 @@ void rtl8812au_set_intf_ops(struct rtl_io *pops)
 	pops->_write16 = &usb_write16;
 	pops->_write32 = &usb_write32;
 	pops->_writeN = &usb_writeN;
-
-	pops->_write_port = &usb_write_port;
 
 	pops->_read_port_cancel = &usb_read_port_cancel;
 	pops->_write_port_cancel = &usb_write_port_cancel;

@@ -377,7 +377,7 @@ void rtw_os_read_port(struct rtl_priv *padapter, struct recv_buf *precvbuf)
 	precvbuf->reuse = _FALSE;
 
 	if (precvbuf->irp_pending == _FALSE) {
-		usb_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
+		usb_read_port(padapter, RECV_BULK_IN_ADDR, 0, (unsigned char *)precvbuf);
 	}
 
 

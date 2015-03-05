@@ -261,7 +261,6 @@ struct recv_priv
 
 	//uint8_t *pallocated_urb_buf;
 	struct semaphore allrxreturnevt;
-	uint	ff_hwaddr;
 	uint8_t	rx_pending_cnt;
 
 

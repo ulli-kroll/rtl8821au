@@ -1328,12 +1328,10 @@ unsigned int rtl8812au_inirp_init(struct rtl_priv *Adapter)
 
 	status = _SUCCESS;
 
-	precvpriv->ff_hwaddr = RECV_BULK_IN_ADDR;
-
 	/* issue Rx irp to receive data */
 	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
 	for (i = 0; i < NR_RECVBUFF; i++) {
-		if (usb_read_port(Adapter, precvpriv->ff_hwaddr, 0, (unsigned char *) precvbuf) == _FALSE) {
+		if (usb_read_port(Adapter, RECV_BULK_IN_ADDR, 0, (unsigned char *) precvbuf) == _FALSE) {
 			status = _FAIL;
 			goto exit;
 		}

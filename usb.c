@@ -629,7 +629,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 		if ((purb->actual_length > MAX_RECVBUF_SZ)
 		 || (purb->actual_length < RXDESC_SIZE)) {
 			precvbuf->reuse = _TRUE;
-			usb_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
+			usb_read_port(padapter, RECV_BULK_IN_ADDR, 0, (unsigned char *)precvbuf);
 			DBG_8192C("%s()-%d: RX Warning!\n", __FUNCTION__, __LINE__);
 		} else {
 			rtw_reset_continual_urb_error(rtl_usbdev(padapter));
@@ -643,7 +643,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 
 			precvbuf->pskb = NULL;
 			precvbuf->reuse = _FALSE;
-			usb_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
+			usb_read_port(padapter, RECV_BULK_IN_ADDR, 0, (unsigned char *)precvbuf);
 		}
 	} else {
 		DBG_8192C("###=> usb_read_port_complete => urb status(%d)\n", purb->status);
@@ -667,7 +667,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 		case -ECOMM:
 		case -EOVERFLOW:
 			precvbuf->reuse = _TRUE;
-			usb_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
+			usb_read_port(padapter, RECV_BULK_IN_ADDR, 0, (unsigned char *)precvbuf);
 			break;
 		case -EINPROGRESS:
 			DBG_8192C("ERROR: URB IS IN PROGRESS!/n");

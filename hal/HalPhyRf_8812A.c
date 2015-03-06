@@ -45,10 +45,10 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 	uint32_t	/*RF_Amode=0, RF_Bmode=0,*/ LC_Cal = 0, tmp = 0;
 
 	/* Check continuous TX and Packet TX */
-	uint32_t	reg0x914 = usb_read32(pDM_Odm->Adapter, rSingleTone_ContTx_Jaguar);;
+	uint32_t	reg0x914 = usb_read32(pDM_Odm->rtlpriv, rSingleTone_ContTx_Jaguar);;
 
 	/* Backup RF reg18. */
-	LC_Cal = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	LC_Cal = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	if ((reg0x914 & 0x70000) != 0)	/* If contTx, disable all continuous TX. 0x914[18:16] */
 		/*
@@ -59,35 +59,35 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 
 		;
 	else		/* If packet Tx-ing, pause Tx. */
-		usb_write8(pDM_Odm->Adapter, REG_TXPAUSE, 0xFF);
+		usb_write8(pDM_Odm->rtlpriv, REG_TXPAUSE, 0xFF);
 
 
 /*
 	//3 1. Read original RF mode
-	RF_Amode = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_AC, bRFRegOffsetMask);
+	RF_Amode = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask);
 	if(is2T)
-		RF_Bmode = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_B, RF_AC, bRFRegOffsetMask);
+		RF_Bmode = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask);
 
 
 	//3 2. Set RF mode = standby mode
-	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_AC, bRFRegOffsetMask, (RF_Amode&0x8FFFF)|0x10000);
+	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask, (RF_Amode&0x8FFFF)|0x10000);
 	if(is2T)
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_B, RF_AC, bRFRegOffsetMask, (RF_Bmode&0x8FFFF)|0x10000);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask, (RF_Bmode&0x8FFFF)|0x10000);
 */
 
 	/* Enter LCK mode */
-	tmp = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
+	tmp = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
 
 	/* 3 3. Read RF reg18 */
-	LC_Cal = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	LC_Cal = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	/* 3 4. Set LC calibration begin bit15 */
-	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
+	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
 
 	/* Leave LCK mode */
-	tmp = rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
+	tmp = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
 
 	mdelay(100);
 
@@ -101,16 +101,16 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 		;
 	} else {
 		/* Deal with Packet TX case */
-		usb_write8(pDM_Odm->Adapter, REG_TXPAUSE, 0x00);
+		usb_write8(pDM_Odm->rtlpriv, REG_TXPAUSE, 0x00);
 	}
 
 	/* Recover channel number */
-	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);
+	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);
 
 	/*
-	rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_AC, bRFRegOffsetMask, RF_Amode);
+	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask, RF_Amode);
 	if(is2T)
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_B, RF_AC, bRFRegOffsetMask, RF_Bmode);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask, RF_Bmode);
 		*/
 
 }
@@ -126,7 +126,7 @@ void PHY_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm)
 {
 	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
 
-	struct rtl_priv *		rtlpriv = pDM_Odm->Adapter;
+	struct rtl_priv *		rtlpriv = pDM_Odm->rtlpriv;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_LCCalibrate_8812A\n"));

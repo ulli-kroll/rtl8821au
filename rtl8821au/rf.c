@@ -29,12 +29,12 @@ void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_W
 }
 
 static void writeOFDMPowerReg8812(
-	IN		struct rtl_priv *Adapter,
+	IN		struct rtl_priv *rtlpriv,
 	IN		uint8_t		index,
 	IN 		u32*		pValue
 	)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	u16 RegOffset_A[6] = {
     	RTXAGC_A_OFDM18_OFDM6,
@@ -72,7 +72,7 @@ static void writeOFDMPowerReg8812(
 			RegOffset = RegOffset_A[index];
 		else
 			RegOffset = RegOffset_B[index];
-		rtl_set_bbreg(Adapter, RegOffset, bMaskDWord, writeVal);
+		rtl_set_bbreg(rtlpriv, RegOffset, bMaskDWord, writeVal);
 		//RTPRINT(FPHY, PHY_TXPWR, ("Set 0x%x = %08x\n", RegOffset, writeVal));
 	}
 }
@@ -82,7 +82,7 @@ static void writeOFDMPowerReg8812(
 // powerbase1 for HT MCS rates
 //
 void getPowerBase8812(
-	IN	struct rtl_priv *Adapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	uint8_t *			pPowerLevelOFDM,
 	IN	uint8_t *			pPowerLevelBW20,
 	IN	uint8_t *			pPowerLevelBW40,
@@ -91,7 +91,7 @@ void getPowerBase8812(
 	IN OUT u32*		MCSBase
 	)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t			powerBase0, powerBase1;
 	uint8_t			i, powerlevel[2];
 
@@ -107,7 +107,7 @@ void getPowerBase8812(
 	for(i=0; i<pHalData->NumTotalRFPath; i++)
 	{
 		//Check HT20 to HT40 diff
-		if(Adapter->phy.current_chan_bw == CHANNEL_WIDTH_20)
+		if(rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_20)
 		{
 			powerlevel[i] = pPowerLevelBW20[i];
 		}
@@ -123,7 +123,7 @@ void getPowerBase8812(
 }
 
 void getTxPowerWriteValByRegulatory8812(
-	IN		struct rtl_priv *Adapter,
+	IN		struct rtl_priv *rtlpriv,
 	IN		uint8_t			Channel,
 	IN		uint8_t			index,
 	IN		u32*		powerBase0,
@@ -131,8 +131,8 @@ void getTxPowerWriteValByRegulatory8812(
 	OUT		u32*		pOutWriteVal
 	)
 {
-	struct rtl_efuse *efuse = rtl_efuse(Adapter);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	uint8_t			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
 	s8			pwr_diff=0;
@@ -223,12 +223,12 @@ void getTxPowerWriteValByRegulatory8812(
 
 				if(index < 2)
 					pwr_diff = pHalData->TxPwrLegacyHtDiff[rf][Channel-1];
-				else if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_20)
+				else if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_20)
 					pwr_diff = pHalData->TxPwrHt20Diff[rf][Channel-1];
 
 				//RTPRINT(FPHY, PHY_TXPWR, ("power diff rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), pwr_diff));
 
-				if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_40)
+				if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_40)
 					customer_pwr_limit = efuse->pwrgroup_ht40[rf][Channel-1];
 				else
 					customer_pwr_limit = efuse->pwrgroup_ht40[rf][Channel-1];
@@ -293,7 +293,7 @@ void getTxPowerWriteValByRegulatory8812(
 	}
 }
 
-void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *Adapter,
+void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *rtlpriv,
 	IN	uint8_t *		pPowerLevelOFDM,
 	IN	uint8_t *		pPowerLevelBW20,
 	IN	uint8_t *		pPowerLevelBW40,
@@ -305,14 +305,14 @@ void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *Adapter,
 
 	//DBG_871X("PHY_RF6052SetOFDMTxPower, channel(%d) \n", Channel);
 
-	getPowerBase8812(Adapter, pPowerLevelOFDM,pPowerLevelBW20,pPowerLevelBW40, Channel, &powerBase0[0], &powerBase1[0]);
+	getPowerBase8812(rtlpriv, pPowerLevelOFDM,pPowerLevelBW20,pPowerLevelBW40, Channel, &powerBase0[0], &powerBase1[0]);
 
 	for(index=0; index<6; index++)
 	{
-		getTxPowerWriteValByRegulatory8812(Adapter, Channel, index,
+		getTxPowerWriteValByRegulatory8812(rtlpriv, Channel, index,
 			&powerBase0[0], &powerBase1[0], &writeVal[0]);
 
-		writeOFDMPowerReg8812(Adapter, index, &writeVal[0]);
+		writeOFDMPowerReg8812(rtlpriv, index, &writeVal[0]);
 	}
 }
 
@@ -408,13 +408,13 @@ int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 
 /* currently noz used, as in rtl8821ae */
 
-void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *Adapter, uint8_t *pPowerlevel)
+void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *rtlpriv, uint8_t *pPowerlevel)
 {
-	struct rtl_efuse *efuse = rtl_efuse(Adapter);
-	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv		*pdmpriv = &pHalData->dmpriv;
-	struct mlme_ext_priv 	*pmlmeext = &Adapter->mlmeextpriv;
+	struct mlme_ext_priv 	*pmlmeext = &rtlpriv->mlmeextpriv;
 	uint32_t		TxAGC[2] = {0, 0},
 				tmpval = 0;
 	BOOLEAN	TurboScanOff = _FALSE;
@@ -482,18 +482,18 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *Adapter, uint8_t *pPo
 
 	/* rf-A cck tx power */
 	tmpval = TxAGC[RF90_PATH_A]&0xff;
-	rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, MASKBYTE1, tmpval);
+	rtl_set_bbreg(rtlpriv, RTXAGC_A_CCK11_CCK1, MASKBYTE1, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 1M (rf-A) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_A_CCK1_Mcs32)); */
 	tmpval = TxAGC[RF90_PATH_A]>>8;
-	rtl_set_bbreg(Adapter, RTXAGC_A_CCK11_CCK1, 0xffffff00, tmpval);
+	rtl_set_bbreg(rtlpriv, RTXAGC_A_CCK11_CCK1, 0xffffff00, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 2~11M (rf-A) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK11_A_CCK2_11)); */
 
 	/* rf-B cck tx power */
 	tmpval = TxAGC[RF90_PATH_B]>>24;
-	rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, MASKBYTE0, tmpval);
+	rtl_set_bbreg(rtlpriv, RTXAGC_B_CCK11_CCK1, MASKBYTE0, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 11M (rf-B) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK11_A_CCK2_11)); */
 	tmpval = TxAGC[RF90_PATH_B]&0x00ffffff;
-	rtl_set_bbreg(Adapter, RTXAGC_B_CCK11_CCK1, 0xffffff00, tmpval);
+	rtl_set_bbreg(rtlpriv, RTXAGC_B_CCK11_CCK1, 0xffffff00, tmpval);
 	/* RT_DISP(FPHY, PHY_TXPWR, ("CCK PWR 1~5.5M (rf-B) = 0x%x (reg 0x%x)\n", tmpval, rTxAGC_B_CCK1_55_Mcs32)); */
 
 }	/* PHY_RF6052SetCckTxPower */

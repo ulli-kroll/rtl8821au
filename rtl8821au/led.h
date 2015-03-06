@@ -210,6 +210,6 @@ struct rtl_led_ctl {
 
 void rtl8821au_init_sw_leds(struct rtl_priv *padapter);
 void rtl8812au_deinit_sw_leds(struct rtl_priv *padapter);
-void rtl8821au_led_control(struct rtl_priv *Adapter, enum led_ctl_mode LedAction);
+void rtl8821au_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction);
 
 #endif

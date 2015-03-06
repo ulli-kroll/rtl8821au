@@ -84,9 +84,9 @@ void ConfigureTxpowerTrack(struct _rtw_dm *pDM_Odm, PTXPWRTRACK_CFG pConfig)
  */
 VOID ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_efuse *efuse = rtl_efuse(pDM_Odm->Adapter);
-	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->Adapter);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->Adapter);
+	struct rtl_efuse *efuse = rtl_efuse(pDM_Odm->rtlpriv);
+	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->rtlpriv);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->rtlpriv);
 	u8 p = 0;
 
 	rtldm->BbSwingIdxCckBase = rtldm->DefaultCckIndex;
@@ -115,12 +115,12 @@ VOID ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
 	rtldm->thermalvalue_lck = efuse->EEPROMThermalMeter;
 }
 
-VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *Adapter)
+VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 {
-	struct rtl_efuse *efuse = rtl_efuse(Adapter);
-	struct rtl_dm	*rtldm = rtl_dm(Adapter);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 	
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
 	u8	ThermalValue = 0, delta, delta_LCK, delta_IQK, p = 0, i = 0;
@@ -148,7 +148,7 @@ VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *Adapter)
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n", rtldm->BbSwingIdxCckBase, rtldm->BbSwingIdxOfdmBase[RF90_PATH_A], rtldm->DefaultOfdmIndex));
 
-	ThermalValue = (u8)rtw_hal_read_rfreg(pDM_Odm->Adapter, RF90_PATH_A, c.ThermalRegAddr, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
+	ThermalValue = (u8)rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, c.ThermalRegAddr, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
 	if (!rtldm->TxPowerTrackControl
 	 || efuse->EEPROMThermalMeter == 0
 	 || efuse->EEPROMThermalMeter == 0xFF)

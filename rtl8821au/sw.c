@@ -9,16 +9,16 @@
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
 void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rssi_level);
-void ReadChipVersion8812A(struct rtl_priv *Adapter);
+void ReadChipVersion8812A(struct rtl_priv *rtlpriv);
 VOID rtl8812_EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t PwrState);
-VOID rtl8812_ReadEFuse(struct rtl_priv *Adapter, uint8_t efuseType, u16 _offset, u16 	_size_byte, uint8_t *pbuf);
+VOID rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, uint8_t efuseType, u16 _offset, u16 	_size_byte, uint8_t *pbuf);
 VOID rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv, uint8_t efuseType, uint8_t type, void *pOut);
 u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv, uint8_t efuseType);
 int rtl8812_Efuse_PgPacketRead(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t *data);
 int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t word_en, uint8_t *data);
 u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv, u16 efuse_addr, uint8_t word_en, uint8_t *data);
-void rtl8812_GetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet);
-void rtl8812_SetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,	PVOID 	pValue1, BOOLEAN bSet);
+void rtl8812_GetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet);
+void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,	PVOID 	pValue1, BOOLEAN bSet);
 void hal_notch_filter_8812(struct rtl_priv *adapter, bool enable);
 
 

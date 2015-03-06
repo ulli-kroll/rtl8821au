@@ -87,16 +87,16 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
  * Initialize GPIO setting registers
  */
 
-static void dm_InitGPIOSetting(struct rtl_priv *Adapter)
+static void dm_InitGPIOSetting(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
 
 	uint8_t	tmp1byte;
 
-	tmp1byte = usb_read8(Adapter, REG_GPIO_MUXCFG);
+	tmp1byte = usb_read8(rtlpriv, REG_GPIO_MUXCFG);
 	tmp1byte &= (GPIOSEL_GPIO | ~GPIOSEL_ENBT);
 
-	usb_write8(Adapter, REG_GPIO_MUXCFG, tmp1byte);
+	usb_write8(rtlpriv, REG_GPIO_MUXCFG, tmp1byte);
 
 }
 
@@ -106,11 +106,11 @@ static void dm_InitGPIOSetting(struct rtl_priv *Adapter)
  * ============================================================
  */
 
-static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
+static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	uint8_t	cut_ver,fab_ver;
@@ -122,9 +122,9 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 
 	memset(pDM_Odm,0,sizeof(*pDM_Odm));
 
-	pDM_Odm->Adapter = Adapter;
+	pDM_Odm->rtlpriv = rtlpriv;
 
-	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_INTERFACE,Adapter->interface_type);
+	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_INTERFACE,rtlpriv->interface_type);
 
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
@@ -134,7 +134,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 
 
 	fab_ver = ODM_TSMC;
-	if (IS_VENDOR_8812A_C_CUT(Adapter))
+	if (IS_VENDOR_8812A_C_CUT(rtlpriv))
 		cut_ver = ODM_CUT_C;
 	else
 		cut_ver = ODM_CUT_A;
@@ -176,7 +176,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_PATCH_ID,pEEPROM->CustomerID);
 	/* 	ODM_CMNINFO_BINHCT_TEST only for MP Team */
-	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_BWIFI_TEST,Adapter->registrypriv.wifi_spec);
+	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_BWIFI_TEST,rtlpriv->registrypriv.wifi_spec);
 
  	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RF_ANTENNA_TYPE, pHalData->TRxAntDivType);
 
@@ -190,12 +190,12 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 
 }
-static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
+static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 {
-	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
-	struct mlme_priv	*pmlmepriv = &Adapter->mlmepriv;
-	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
+	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
+	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int i;
@@ -219,10 +219,10 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_FORCED_RATE,&(pHalData->ForcedDataRate));
 
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SEC_CHNL_OFFSET,&(pHalData->nCur40MhzPrimeSC));
-	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SEC_MODE,&(Adapter->securitypriv.dot11PrivacyAlgrthm));
-	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_CHNL,&( Adapter->phy.current_channel));
-	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_NET_CLOSED,&( Adapter->net_closed));
-	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_MP_MODE,&(Adapter->registrypriv.mp_mode));
+	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SEC_MODE,&(rtlpriv->securitypriv.dot11PrivacyAlgrthm));
+	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_CHNL,&( rtlpriv->phy.current_channel));
+	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_NET_CLOSED,&( rtlpriv->net_closed));
+	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_MP_MODE,&(rtlpriv->registrypriv.mp_mode));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SCAN,&(pmlmepriv->bScanInProcess));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_POWER_SAVING,&(pwrctrlpriv->bpower_saving));
 	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RF_ANTENNA_TYPE, pHalData->TRxAntDivType);
@@ -233,50 +233,50 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *Adapter)
 	}
 }
 
-void rtl8812_InitHalDm(struct rtl_priv *Adapter)
+void rtl8812_InitHalDm(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	uint8_t	i;
 
-	dm_InitGPIOSetting(Adapter);
+	dm_InitGPIOSetting(rtlpriv);
 
 	pdmpriv->DM_Type = DM_Type_ByDriver;
 	pdmpriv->DMFlag = DYNAMIC_FUNC_DISABLE;
 
-	Update_ODM_ComInfo_8812(Adapter);
+	Update_ODM_ComInfo_8812(rtlpriv);
 	ODM_DMInit(pDM_Odm);
 
-	Adapter->fix_rate = 0xFF;
+	rtlpriv->fix_rate = 0xFF;
 }
 
 
-VOID rtl8812_HalDmWatchDog(struct rtl_priv *Adapter)
+VOID rtl8812_HalDmWatchDog(struct rtl_priv *rtlpriv)
 {
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
 	BOOLEAN		bFwPSAwake = _TRUE;
 	uint8_t hw_init_completed = _FALSE;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
-	hw_init_completed = Adapter->hw_init_completed;
+	hw_init_completed = rtlpriv->hw_init_completed;
 
 	if (hw_init_completed == _FALSE)
 		goto skip_dm;
 
 #ifdef CONFIG_LPS
 	{
-		bFwCurrentInPSMode = Adapter->pwrctrlpriv.bFwCurrentInPSMode;
-		rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&bFwPSAwake));
+		bFwCurrentInPSMode = rtlpriv->pwrctrlpriv.bFwCurrentInPSMode;
+		rtw_hal_get_hwreg(rtlpriv, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&bFwPSAwake));
 	}
 #endif
 	/* ODM */
 	if (hw_init_completed == _TRUE) {
 		uint8_t	bLinked=_FALSE;
 
-		if(rtw_linked_check(Adapter))
+		if(rtw_linked_check(rtlpriv))
 			bLinked = _TRUE;
 
 
@@ -293,43 +293,43 @@ skip_dm:
 	 */
 	{
 		/* temp removed */
-		dm_CheckPbcGPIO(Adapter);
+		dm_CheckPbcGPIO(rtlpriv);
 	}
 	return;
 }
 
-void rtl8812_init_dm_priv(IN struct rtl_priv *Adapter)
+void rtl8812_init_dm_priv(IN struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *		podmpriv = &pHalData->odmpriv;
 	memset(pdmpriv, 0, sizeof(struct dm_priv));
 
 	/* spin_lock_init(&(pHalData->odm_stainfo_lock)); */
 
-	Init_ODM_ComInfo_8812(Adapter);
+	Init_ODM_ComInfo_8812(rtlpriv);
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
 	/*
-	 * _init_timer(&(pdmpriv->SwAntennaSwitchTimer),  Adapter->ndev , odm_SW_AntennaSwitchCallback, Adapter);
+	 * _init_timer(&(pdmpriv->SwAntennaSwitchTimer),  rtlpriv->ndev , odm_SW_AntennaSwitchCallback, rtlpriv);
 	 */
 	ODM_InitAllTimers(podmpriv );
 #endif
 	ODM_InitDebugSetting(podmpriv);
 
-	Adapter->registrypriv.RegEnableTxPowerLimit = 0;
-	Adapter->registrypriv.RegPowerBase = 14;
-	Adapter->registrypriv.RegTxPwrLimit = 0xFFFFFFFF;
-	Adapter->registrypriv.TxBBSwing_2G = 0xFF;
-	Adapter->registrypriv.TxBBSwing_5G = 0xFF;
-	Adapter->registrypriv.bEn_RFE = 0;
-	Adapter->registrypriv.RFE_Type = 64;
+	rtlpriv->registrypriv.RegEnableTxPowerLimit = 0;
+	rtlpriv->registrypriv.RegPowerBase = 14;
+	rtlpriv->registrypriv.RegTxPwrLimit = 0xFFFFFFFF;
+	rtlpriv->registrypriv.TxBBSwing_2G = 0xFF;
+	rtlpriv->registrypriv.TxBBSwing_5G = 0xFF;
+	rtlpriv->registrypriv.bEn_RFE = 0;
+	rtlpriv->registrypriv.RFE_Type = 64;
 	pHalData->RegRFPathS1 = 0;
 	pHalData->TxPwrInPercentage = TX_PWR_PERCENTAGE_3;
 }
 
-void rtl8812_deinit_dm_priv(IN struct rtl_priv *Adapter)
+void rtl8812_deinit_dm_priv(IN struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *		podmpriv = &pHalData->odmpriv;
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
@@ -345,11 +345,11 @@ void rtl8812_deinit_dm_priv(IN struct rtl_priv *Adapter)
  *
  * Compare RSSI for deciding antenna
  */
-void AntDivCompare8812(struct rtl_priv *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
+void AntDivCompare8812(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
 {
-	/* struct rtl_priv *Adapter = pDM_Odm->Adapter ; */
+	/* struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv ; */
 
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	if (0 != pHalData->AntDivCfg ) {
 		/*
 		 * DBG_8192C("update_network=> orgRSSI(%d)(%d),newRSSI(%d)(%d)\n",dst->Rssi,query_rx_pwr_percentage(dst->Rssi),
@@ -365,13 +365,13 @@ void AntDivCompare8812(struct rtl_priv *Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_
 }
 
 /* Add new function to reset the state of antenna diversity before link. */
-uint8_t AntDivBeforeLink8812(struct rtl_priv *Adapter )
+uint8_t AntDivBeforeLink8812(struct rtl_priv *rtlpriv )
 {
 
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm =&pHalData->odmpriv;
 	SWAT_T		*pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
-	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
+	struct mlme_priv	*pmlmepriv = &(rtlpriv->mlmepriv);
 
 	/* Condition that does not need to use antenna diversity. */
 	if (pHalData->AntDivCfg==0) {
@@ -390,9 +390,9 @@ uint8_t AntDivBeforeLink8812(struct rtl_priv *Adapter )
 		pDM_SWAT_Table->CurAntenna = (pDM_SWAT_Table->CurAntenna==MAIN_ANT)?AUX_ANT:MAIN_ANT;
 
 		/*
-		 * rtl_set_bbreg(Adapter, rFPGA0_XA_RFInterfaceOE, 0x300, pDM_SWAT_Table->CurAntenna);
+		 * rtl_set_bbreg(rtlpriv, rFPGA0_XA_RFInterfaceOE, 0x300, pDM_SWAT_Table->CurAntenna);
 		*/
-		rtw_antenna_select_cmd(Adapter, pDM_SWAT_Table->CurAntenna, _FALSE);
+		rtw_antenna_select_cmd(rtlpriv, pDM_SWAT_Table->CurAntenna, _FALSE);
 		/*
 		 * DBG_8192C("%s change antenna to ANT_( %s ).....\n",__FUNCTION__, (pDM_SWAT_Table->CurAntenna==MAIN_ANT)?"MAIN":"AUX");
 		 */

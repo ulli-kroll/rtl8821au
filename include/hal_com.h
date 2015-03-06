@@ -128,14 +128,14 @@ hal_com_get_channel_plan(
 
 BOOLEAN
 HAL_IsLegalChannel(
-	IN	struct rtl_priv *Adapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	u32			Channel
 	);
 
 uint8_t	MRateToHwRate(uint8_t rate);
 
 void	HalSetBrateCfg(
-	IN struct rtl_priv *	Adapter,
+	IN struct rtl_priv *	rtlpriv,
 	IN uint8_t			*mBratesOS,
 	OUT u16			*pBrateCfg);
 

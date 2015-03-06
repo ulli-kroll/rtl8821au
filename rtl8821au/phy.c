@@ -14,14 +14,14 @@
 	} while (0)
 
 
-u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *Adapter, uint32_t RegAddr, uint32_t BitMask)
+u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint32_t BitMask)
 {
 	uint32_t ReturnValue = 0, OriginalValue, BitShift;
 
 	/* DBG_871X("--->PHY_QueryBBReg8812(): RegAddr(%#x), BitMask(%#x)\n", RegAddr, BitMask); */
 
 
-	OriginalValue = usb_read32(Adapter, RegAddr);
+	OriginalValue = usb_read32(rtlpriv, RegAddr);
 	BitShift = PHY_CalculateBitShift(BitMask);
 	ReturnValue = (OriginalValue & BitMask) >> BitShift;
 
@@ -30,17 +30,17 @@ u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *Adapter, uint32_t RegAddr, uint3
 }
 
 
-void rtl8821au_phy_set_bb_reg(struct rtl_priv *Adapter, u32 RegAddr, u32 BitMask, u32 Data)
+void rtl8821au_phy_set_bb_reg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask, u32 Data)
 {
 	uint32_t OriginalValue, BitShift;
 
 	if (BitMask != bMaskDWord) {	/* if not "double word" write */
-		OriginalValue = usb_read32(Adapter, RegAddr);
+		OriginalValue = usb_read32(rtlpriv, RegAddr);
 		BitShift = PHY_CalculateBitShift(BitMask);
 		Data = ((OriginalValue) & (~BitMask)) | (((Data << BitShift)) & BitMask);
 	}
 
-	usb_write32(Adapter, RegAddr, Data);
+	usb_write32(rtlpriv, RegAddr, Data);
 
 	/* DBG_871X("BBW MASK=0x%x Addr[0x%x]=0x%x\n", BitMask, RegAddr, Data); */
 }
@@ -113,7 +113,7 @@ static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 		rtl_set_bbreg(rtlpriv, 0xccc, 0x000007ff, TX_Y);
 		rtl_set_bbreg(rtlpriv, 0xcd4, 0x000007ff, TX_X);
 		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X&0x000007ff, TX_Y&0x000007ff)); */
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", rtl_get_bbreg(pDM_Odm->Adapter, 0xcd4, 0x000007ff), rtl_get_bbreg(pDM_Odm->Adapter, 0xccc, 0x000007ff))); */
+		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", rtl_get_bbreg(pDM_Odm->rtlpriv, 0xcd4, 0x000007ff), rtl_get_bbreg(pDM_Odm->rtlpriv, 0xccc, 0x000007ff))); */
 		break;
 	case RF90_PATH_B:
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
@@ -123,7 +123,7 @@ static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 		rtl_set_bbreg(rtlpriv, 0xecc, 0x000007ff, TX_Y);
 		rtl_set_bbreg(rtlpriv, 0xed4, 0x000007ff, TX_X);
 		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X&0x000007ff, TX_Y&0x000007ff)); */
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xed4 = %x;;0xecc = %x ====>fill to IQC\n", rtl_get_bbreg(pDM_Odm->Adapter, 0xed4, 0x000007ff), rtl_get_bbreg(pDM_Odm->Adapter, 0xecc, 0x000007ff))); */
+		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xed4 = %x;;0xecc = %x ====>fill to IQC\n", rtl_get_bbreg(pDM_Odm->rtlpriv, 0xed4, 0x000007ff), rtl_get_bbreg(pDM_Odm->rtlpriv, 0xecc, 0x000007ff))); */
 		break;
 	default:
 		break;
@@ -142,7 +142,7 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 		rtl_set_bbreg(rtlpriv, 0xccc, 0x000007ff, TX_Y);
 		rtl_set_bbreg(rtlpriv, 0xcd4, 0x000007ff, TX_X);
 		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X, TX_Y)); */
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", rtl_get_bbreg(pDM_Odm->Adapter, 0xcd4, 0x000007ff), rtl_get_bbreg(pDM_Odm->Adapter, 0xccc, 0x000007ff))); */
+		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", rtl_get_bbreg(pDM_Odm->rtlpriv, 0xcd4, 0x000007ff), rtl_get_bbreg(pDM_Odm->rtlpriv, 0xccc, 0x000007ff))); */
 		break;
 	default:
 		break;
@@ -174,7 +174,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		VDF_enable = TRUE;
 	}
 	VDF_enable = FALSE;
-	temp_reg65 = rtw_hal_read_rfreg(pDM_Odm->Adapter, Path, 0x65, bMaskDWord);
+	temp_reg65 = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bMaskDWord);
 
 	switch (Path) {
 	case RF90_PATH_A:
@@ -228,12 +228,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	    {
 		/* ====== TX IQK ====== */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80002);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x20000);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 		usb_write32(rtlpriv, 0x90c, 0x00008000);
 		usb_write32(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xc94, BIT(0), 0x1);
@@ -302,7 +302,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					usb_write32(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -313,13 +313,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {							/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, BIT(12));
+						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(12));
 
 						if (~TX_fail) {
 							usb_write32(rtlpriv, 0xcb8, 0x02000000);
-							VDF_X[k] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x07ff0000)<<21;
+							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 							usb_write32(rtlpriv, 0xcb8, 0x04000000);
-							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x07ff0000)<<21;
+							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							break;
 						} else {
@@ -358,7 +358,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					usb_write32(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -369,25 +369,25 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {				/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, BIT(12));
+						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(12));
 
 						if (~TX_fail) {
 							usb_write32(rtlpriv, 0xcb8, 0x02000000);
-							TX_X0[cal] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x07ff0000)<<21;
+							TX_X0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 							usb_write32(rtlpriv, 0xcb8, 0x04000000);
-							TX_Y0[cal] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x07ff0000)<<21;
+							TX_Y0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							/*
 							usb_write32(rtlpriv, 0xcb8, 0x01000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0xffffffff);
+							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
 							usb_write32(rtlpriv, 0xcb8, 0x02000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x0000001f);
+							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("Before PW = %d\n", Image_Power);
 							usb_write32(rtlpriv, 0xcb8, 0x03000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0xffffffff);
+							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
 							usb_write32(rtlpriv, 0xcb8, 0x04000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x0000001f);
+							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("After PW = %d\n", Image_Power);
 							*/
@@ -413,7 +413,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(pDM_Odm->Adapter, Path, 0x8, 0xffc00)); /* Load LOK */
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(pDM_Odm->rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 
 		if (TX0IQKOK == FALSE)
@@ -425,13 +425,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
 			usb_write32(rtlpriv, 0x984, 0x0046a911);
@@ -488,7 +488,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					delay_count = 0;
 
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -499,12 +499,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {	/* If 20ms No Result, then cal_retry++ */
 						/* ============RXIQK Check============== */
-						RX_fail = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, BIT(11));
+						RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(11));
 						if (RX_fail == 0) {
 							usb_write32(rtlpriv, 0xcb8, 0x06000000);
-							VDF_X[k] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x07ff0000)<<21;
+							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 							usb_write32(rtlpriv, 0xcb8, 0x08000000);
-							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x07ff0000)<<21;
+							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 							RX0IQKOK = TRUE;
 							break;
 						} else {
@@ -531,13 +531,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			/*  1. RX RF Setting */
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -567,7 +567,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					usb_write32(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -578,25 +578,25 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 				if (delay_count < 20) {	/* If 20ms No Result, then cal_retry++ */
 					/* ============RXIQK Check============== */
-					RX_fail = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, BIT(11));
+					RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(11));
 					if (RX_fail == 0) {
 						usb_write32(rtlpriv, 0xcb8, 0x06000000);
-						RX_X0[cal] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x07ff0000)<<21;
+						RX_X0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 						usb_write32(rtlpriv, 0xcb8, 0x08000000);
-						RX_Y0[cal] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x07ff0000)<<21;
+						RX_Y0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 						RX0IQKOK = TRUE;
 						/*
 						usb_write32(rtlpriv, 0xcb8, 0x05000000);
-						reg1 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0xffffffff);
+						reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
 						usb_write32(rtlpriv, 0xcb8, 0x06000000);
-						reg2 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x0000001f);
+						reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
 						DbgPrint("reg1 = %d, reg2 = %d", reg1, reg2);
 						Image_Power = (reg2<<32)+reg1;
 						DbgPrint("Before PW = %d\n", Image_Power);
 						usb_write32(rtlpriv, 0xcb8, 0x07000000);
-						reg1 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0xffffffff);
+						reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
 						usb_write32(rtlpriv, 0xcb8, 0x08000000);
-						reg2 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd00, 0x0000001f);
+						reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
 						Image_Power = (reg2<<32)+reg1;
 						DbgPrint("After PW = %d\n", Image_Power);
 						*/
@@ -628,12 +628,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	    {
 		/* Path-B TX/RX IQK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80002);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x20000);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 		usb_write32(rtlpriv, 0x90c, 0x00008000);
 		usb_write32(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xe94, BIT(0), 0x1);
@@ -696,7 +696,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					usb_write32(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, BIT(10));
+						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -707,13 +707,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {		/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, BIT(12));
+						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(12));
 
 						if (~TX_fail) {
 							usb_write32(rtlpriv, 0xeb8, 0x02000000);
-							VDF_X[k] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x07ff0000)<<21;
+							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							usb_write32(rtlpriv, 0xeb8, 0x04000000);
-							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x07ff0000)<<21;
+							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							TX1IQKOK = TRUE;
 							break;
 						} else {
@@ -753,7 +753,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					usb_write32(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, BIT(10));
+						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -764,25 +764,25 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {							/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, BIT(12));
+						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(12));
 						if (~TX_fail) {
 							usb_write32(rtlpriv, 0xeb8, 0x02000000);
-							TX_X1[cal] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x07ff0000)<<21;
+							TX_X1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							usb_write32(rtlpriv, 0xeb8, 0x04000000);
-							TX_Y1[cal] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x07ff0000)<<21;
+							TX_Y1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							TX1IQKOK = TRUE;
 							/*
 							int			reg1 = 0, reg2 = 0, Image_Power = 0;
 							usb_write32(rtlpriv, 0xeb8, 0x01000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0xffffffff);
+							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
 							usb_write32(rtlpriv, 0xeb8, 0x02000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x0000001f);
+							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("Before PW = %d\n", Image_Power);
 							usb_write32(rtlpriv, 0xeb8, 0x03000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0xffffffff);
+							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
 							usb_write32(rtlpriv, 0xeb8, 0x04000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x0000001f);
+							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("After PW = %d\n", Image_Power);
 							*/
@@ -809,7 +809,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(pDM_Odm->Adapter, Path, 0x8, 0xffc00));	/* Load LOK */
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(pDM_Odm->rtlpriv, Path, 0x8, 0xffc00));	/* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
 
 		if (TX1IQKOK == FALSE)
@@ -821,13 +821,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -886,7 +886,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					usb_write32(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, BIT(10));
+						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -897,12 +897,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {	/* If 20ms No Result, then cal_retry++ */
 						/* ============RXIQK Check============== */
-						RX_fail = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, BIT(11));
+						RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(11));
 						if (RX_fail == 0) {
 							usb_write32(rtlpriv, 0xeb8, 0x06000000);
-							VDF_X[k] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x07ff0000)<<21;
+							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							usb_write32(rtlpriv, 0xeb8, 0x08000000);
-							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x07ff0000)<<21;
+							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							RX1IQKOK = TRUE;
 							break;
 						} else {
@@ -931,13 +931,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		} else {
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -969,7 +969,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					delay_count = 0;
 
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, BIT(10));
+						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -980,25 +980,25 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {				/* If 20ms No Result, then cal_retry++ */
 						/* ============RXIQK Check============== */
-						RX_fail = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, BIT(11));
+						RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(11));
 						if (RX_fail == 0) {
 							usb_write32(rtlpriv, 0xeb8, 0x06000000);
-							RX_X1[cal] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x07ff0000)<<21;
+							RX_X1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							usb_write32(rtlpriv, 0xeb8, 0x08000000);
-							RX_Y1[cal] = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x07ff0000)<<21;
+							RX_Y1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							RX1IQKOK = TRUE;
 							/*
 							usb_write32(rtlpriv, 0xeb8, 0x05000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0xffffffff);
+							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
 							usb_write32(rtlpriv, 0xeb8, 0x06000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x0000001f);
+							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
 							DbgPrint("reg1 = %d, reg2 = %d", reg1, reg2);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("Before PW = %d\n", Image_Power);
 							usb_write32(rtlpriv, 0xeb8, 0x07000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0xffffffff);
+							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
 							usb_write32(rtlpriv, 0xeb8, 0x08000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->Adapter, 0xd40, 0x0000001f);
+							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("After PW = %d\n", Image_Power);
 							*/
@@ -2887,9 +2887,9 @@ u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *rtlpriv,  uint8_t Band,
  *
  * 	2010.03.09, added by Roger.
  */
-VOID phy_TxPwrAdjInPercentage(struct rtl_priv *Adapter, uint8_t *pTxPwrIdx)
+VOID phy_TxPwrAdjInPercentage(struct rtl_priv *rtlpriv, uint8_t *pTxPwrIdx)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	TxPwrInPercentage = 0;
 
 	/* Retrieve default TxPwr index settings from registry. */
@@ -3132,9 +3132,9 @@ static VOID PHY_SetPowerLimitTableValue(struct _rtw_dm *pDM_Odm,
 	s8 *Regulation, s8 *Band, s8 *Bandwidth, s8 *RateSection,
 	s8 *RfPath, s8 *Channel, s8 *PowerLimit)
 {
-	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	struct rtl_phy *rtlphy = rtl_phy(Adapter);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t		regulation = 0, bandwidth = 0, rateSection = 0,
 			channel, powerLimit, channelGroup;
 
@@ -3301,7 +3301,7 @@ static BOOLEAN CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 
 static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 	
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
@@ -3329,7 +3329,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDCD) {
-			usb_write8(pDM_Odm->Adapter, v1, (u8)v2);
+			usb_write8(pDM_Odm->rtlpriv, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -3347,7 +3347,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						usb_write8(pDM_Odm->Adapter, v1, (u8)v2);
+						usb_write8(pDM_Odm->rtlpriv, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
@@ -3362,7 +3362,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 
 static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
@@ -3390,7 +3390,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDC) {
-			usb_write8(pDM_Odm->Adapter, v1, (u8)v2);
+			usb_write8(pDM_Odm->rtlpriv, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -3409,7 +3409,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						usb_write8(pDM_Odm->Adapter, v1, (u8)v2);
+						usb_write8(pDM_Odm->rtlpriv, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
@@ -3426,7 +3426,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 
 void _rtl8821au_phy_config_mac_with_headerfile(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 	
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigMACWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
@@ -3786,15 +3786,15 @@ void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 	}
 
 }
-static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *Adapter)
+static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *rtlpriv)
 {
 	uint8_t					SCSettingOf40 = 0, SCSettingOf20 = 0;
-	struct _rtw_hal *	pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 * DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
 	 */
-	if(Adapter->phy.current_chan_bw== CHANNEL_WIDTH_80) {
+	if(rtlpriv->phy.current_chan_bw== CHANNEL_WIDTH_80) {
 		if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER)
 			SCSettingOf40 = VHT_DATA_SC_40_LOWER_OF_80MHZ;
 		else if(pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER)
@@ -3812,7 +3812,7 @@ static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *Adapter)
 			SCSettingOf20 = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
 		else
 			DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
-	} else if(Adapter->phy.current_chan_bw == CHANNEL_WIDTH_40) {
+	} else if(rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_40) {
 		/*
 		 * DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur40MhzPrimeSC);
 		 */
@@ -3832,18 +3832,18 @@ static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *Adapter)
 }
 
 
-void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
+void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 {
 	uint8_t			SubChnlNum = 0;
 	uint8_t			L1pkVal = 0;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	/* 3 Set Reg668 Reg440 BW */
-	_rtl8821au_phy_set_reg_bw(Adapter, Adapter->phy.current_chan_bw);
+	_rtl8821au_phy_set_reg_bw(rtlpriv, rtlpriv->phy.current_chan_bw);
 
 	/* 3 Set Reg483 */
-	SubChnlNum = _rtl8821au_phy_get_secondary_chnl(Adapter);
-	usb_write8(Adapter, REG_DATA_SC_8812, SubChnlNum);
+	SubChnlNum = _rtl8821au_phy_get_secondary_chnl(rtlpriv);
+	usb_write8(rtlpriv, REG_DATA_SC_8812, SubChnlNum);
 
 	if (pHalData->rf_chip == RF_PSEUDO_11N) {
 		DBG_871X("phy_PostSetBwMode8812: return for PSEUDO \n");
@@ -3853,81 +3853,81 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *Adapter)
 	/* DBG_871X("[BW:CHNL], phy_PostSetBwMode8812(), set BW=%s !!\n", GLBwSrc[pHalData->CurrentChannelBW]); */
 
 	/* 3 Set Reg848 Reg864 Reg8AC Reg8C4 RegA00 */
-	switch (Adapter->phy.current_chan_bw) {
+	switch (rtlpriv->phy.current_chan_bw) {
 	case CHANNEL_WIDTH_20:
-		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x003003C3, 0x00300200); /* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
-		rtl_set_bbreg(Adapter, rADC_Buf_Clk_Jaguar, BIT30, 0);			// 0x8c4[30] = 1'b0
+		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x003003C3, 0x00300200); /* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
+		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 0);			// 0x8c4[30] = 1'b0
 
-		rtl_set_bbreg(Adapter, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 4);	/* 0x864[20:18] = 3'b4 */
+		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 4);	/* 0x864[20:18] = 3'b4 */
 
-		if(Adapter->phy.rf_type == RF_2T2R)
-			rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, 7);	/* 2R 0x848[25:22] = 0x7 */
+		if(rtlpriv->phy.rf_type == RF_2T2R)
+			rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, 7);	/* 2R 0x848[25:22] = 0x7 */
 		else
-			rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, 8);	/* 1R 0x848[25:22] = 0x8 */
+			rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, 8);	/* 1R 0x848[25:22] = 0x8 */
 
 		break;
 
 	case CHANNEL_WIDTH_40:
-		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x003003C3, 0x00300201);	/* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
-		rtl_set_bbreg(Adapter, rADC_Buf_Clk_Jaguar, BIT30, 0);		/* 0x8c4[30] = 1'b0 */
-		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x3C, SubChnlNum);
-		rtl_set_bbreg(Adapter, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
+		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x003003C3, 0x00300201);	/* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
+		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 0);		/* 0x8c4[30] = 1'b0 */
+		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x3C, SubChnlNum);
+		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
 
-		rtl_set_bbreg(Adapter, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
+		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
 
 		if(pHalData->Reg837 & BIT2)
 			L1pkVal = 6;
 		else {
-			if(Adapter->phy.rf_type == RF_2T2R)
+			if(rtlpriv->phy.rf_type == RF_2T2R)
 				L1pkVal = 7;
 			else
 				L1pkVal = 8;
 		}
 
-		rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, L1pkVal);	/* 0x848[25:22] = 0x6 */
+		rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, L1pkVal);	/* 0x848[25:22] = 0x6 */
 
 		if(SubChnlNum == VHT_DATA_SC_20_UPPER_OF_80MHZ)
-			rtl_set_bbreg(Adapter, rCCK_System_Jaguar, bCCK_System_Jaguar, 1);
+			rtl_set_bbreg(rtlpriv, rCCK_System_Jaguar, bCCK_System_Jaguar, 1);
 		else
-			rtl_set_bbreg(Adapter, rCCK_System_Jaguar, bCCK_System_Jaguar, 0);
+			rtl_set_bbreg(rtlpriv, rCCK_System_Jaguar, bCCK_System_Jaguar, 0);
 		break;
 
 	case CHANNEL_WIDTH_80:
-		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x003003C3, 0x00300202);	/* 0x8ac[21,20,9:6,1,0]=8'b11100010 */
-		rtl_set_bbreg(Adapter, rADC_Buf_Clk_Jaguar, BIT30, 1);		/* 0x8c4[30] = 1 */
-		rtl_set_bbreg(Adapter, rRFMOD_Jaguar, 0x3C, SubChnlNum);
-		rtl_set_bbreg(Adapter, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
+		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x003003C3, 0x00300202);	/* 0x8ac[21,20,9:6,1,0]=8'b11100010 */
+		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 1);		/* 0x8c4[30] = 1 */
+		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x3C, SubChnlNum);
+		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
 
-		rtl_set_bbreg(Adapter, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
+		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
 
 		if(pHalData->Reg837 & BIT2)
 			L1pkVal = 5;
 		else {
-			if(Adapter->phy.rf_type == RF_2T2R)
+			if(rtlpriv->phy.rf_type == RF_2T2R)
 				L1pkVal = 6;
 			else
 				L1pkVal = 7;
 		}
-		rtl_set_bbreg(Adapter, rL1PeakTH_Jaguar, 0x03C00000, L1pkVal);	/* 0x848[25:22] = 0x5 */
+		rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, L1pkVal);	/* 0x848[25:22] = 0x5 */
 
 		break;
 
 	default:
-		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n",Adapter->phy.current_chan_bw);
+		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n",rtlpriv->phy.current_chan_bw);
 		break;
 	}
 
 	/* <20121109, Kordan> A workaround for 8812A only. */
-	rtl8812au_fixspur(Adapter, Adapter->phy.current_chan_bw, Adapter->phy.current_channel);
+	rtl8812au_fixspur(rtlpriv, rtlpriv->phy.current_chan_bw, rtlpriv->phy.current_channel);
 
 	/*
-	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", usb_read8(Adapter, 0x483));
-	 * DBG_871X("phy_PostSetBwMode8812(): Reg668: %x\n", usb_read32(Adapter, 0x668));
-	 * DBG_871X("phy_PostSetBwMode8812(): Reg8AC: %x\n", rtl_get_bbreg(Adapter, rRFMOD_Jaguar, 0xffffffff));
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", usb_read8(rtlpriv, 0x483));
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg668: %x\n", usb_read32(rtlpriv, 0x668));
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg8AC: %x\n", rtl_get_bbreg(rtlpriv, rRFMOD_Jaguar, 0xffffffff));
 	 */
 
 	/* 3 Set RF related register */
-	rtl8821au_phy_rf6052_set_bandwidth(Adapter, Adapter->phy.current_chan_bw);
+	rtl8821au_phy_rf6052_set_bandwidth(rtlpriv, rtlpriv->phy.current_chan_bw);
 }
 
 

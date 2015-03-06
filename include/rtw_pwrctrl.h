@@ -241,7 +241,7 @@ extern void rtw_init_pwrctrl_priv(struct rtl_priv *adapter);
 
 extern void rtw_set_ps_mode(struct rtl_priv *padapter, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode);
 extern void rtw_set_rpwm(struct rtl_priv * padapter, uint8_t val8);
-extern void LeaveAllPowerSaveMode(struct rtl_priv *Adapter);
+extern void LeaveAllPowerSaveMode(struct rtl_priv *rtlpriv);
 #ifdef CONFIG_IPS
 void ips_enter(struct rtl_priv * padapter);
 int ips_leave(struct rtl_priv * padapter);

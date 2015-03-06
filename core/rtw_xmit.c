@@ -724,7 +724,7 @@ static int32_t update_attrib(struct rtl_priv *padapter, struct sk_buff *pkt, str
 					 * 	tcb_desc->DataRate = MgntQuery_TxRateExcludeCCKRates(ieee);//0xc;//ofdm 6m
 					 * 	tcb_desc->bTxDisableRateFallBack = false;
 					 * } else
-					 * 	pTcb->DataRate = Adapter->MgntInfo.LowestBasicRate;
+					 * 	pTcb->DataRate = rtlpriv->MgntInfo.LowestBasicRate;
 					 * RTPRINT(FDM, WA_IOT, ("DHCP TranslateHeader(), pTcb->DataRate = 0x%x\n", pTcb->DataRate));
 					 */
 					pattrib->dhcp_pkt = 1;

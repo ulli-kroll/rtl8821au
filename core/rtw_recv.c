@@ -2226,7 +2226,7 @@ int recv_indicatepkts_in_order(struct rtl_priv *padapter, struct recv_reorder_ct
 	{
 		// Set new pending timer.
 		//pTS->RxIndicateState = RXTS_INDICATE_REORDER;
-		//PlatformSetTimer(Adapter, &pTS->RxPktPendingTimer, pHTInfo->RxReorderPendingTime);
+		//PlatformSetTimer(rtlpriv, &pTS->RxPktPendingTimer, pHTInfo->RxReorderPendingTime);
 		//DBG_871X("_set_timer(&preorder_ctrl->reordering_ctrl_timer, REORDER_WAIT_TIME)\n");
 		_set_timer(&preorder_ctrl->reordering_ctrl_timer, REORDER_WAIT_TIME);
 	}
@@ -2318,7 +2318,7 @@ int recv_indicatepkt_reorder(struct rtl_priv *padapter, struct recv_frame *prfra
 	if(!check_indicate_seq(preorder_ctrl, pattrib->seq_num))
 	{
 		//pHTInfo->RxReorderDropCounter++;
-		//ReturnRFDList(Adapter, pRfd);
+		//ReturnRFDList(rtlpriv, pRfd);
 		//RT_TRACE(COMP_RX_REORDER, DBG_TRACE, ("RxReorderIndicatePacket() ==> Packet Drop!!\n"));
 		//_exit_critical_ex(&ppending_recvframe_queue->lock, &irql);
 		//return _FAIL;

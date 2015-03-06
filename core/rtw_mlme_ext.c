@@ -4635,7 +4635,7 @@ Following are some utitity fuctions for WiFi MLME
 *****************************************************************************/
 
 BOOLEAN IsLegal5GChannel(
-	IN struct rtl_priv *		Adapter,
+	IN struct rtl_priv *		rtlpriv,
 	IN uint8_t			channel)
 {
 

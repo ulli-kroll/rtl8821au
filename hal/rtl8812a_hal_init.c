@@ -117,13 +117,13 @@ int32_t InitLLTTable8812(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy)
 	return status;
 }
 
-BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *Adapter)
+BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *rtlpriv)
 {
 	uint8_t tmpvalue = 0;
-	 struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
-	struct pwrctrl_priv *pwrctrlpriv = &Adapter->pwrctrlpriv;
+	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 
-	EFUSE_ShadowRead(Adapter, 1, EEPROM_RF_OPT3_92C, (uint32_t *)&tmpvalue);
+	EFUSE_ShadowRead(rtlpriv, 1, EEPROM_RF_OPT3_92C, (uint32_t *)&tmpvalue);
 
 	/* 2010/08/25 MH INF priority > PDN Efuse value. */
 	if (tmpvalue & BIT(4) && pwrctrlpriv->reg_pdnmode)
@@ -373,13 +373,13 @@ static int32_t _FWFreeToGo8812(struct rtl_priv *rtlpriv)
 	return _FAIL;
 }
 
-int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
+int32_t FirmwareDownload8812(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 {
-	struct rtl_hal *rtlhal = rtl_hal(Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	int32_t	rtStatus = _SUCCESS;
 	uint8_t	writeFW_retry = 0;
 	uint32_t fwdl_start_time;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm;
 	uint8_t				*pFwHdr = NULL;
 
@@ -426,18 +426,18 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 	 * Suggested by Filen. If 8051 is running in RAM code, driver should inform Fw to reset by itself,
 	 * or it will cause download Fw fail. 2010.02.01. by tynli.
 	 */
-	if (usb_read8(Adapter, REG_MCUFWDL) & BIT7) { /* 8051 RAM code */
-		usb_write8(Adapter, REG_MCUFWDL, 0x00);
-		_8051Reset8812(Adapter);
+	if (usb_read8(rtlpriv, REG_MCUFWDL) & BIT7) { /* 8051 RAM code */
+		usb_write8(rtlpriv, REG_MCUFWDL, 0x00);
+		_8051Reset8812(rtlpriv);
 	}
 
-	_FWDownloadEnable_8812(Adapter, _TRUE);
+	_FWDownloadEnable_8812(rtlpriv, _TRUE);
 	fwdl_start_time = jiffies;
 	while (1) {
 		/* reset the FWDL chksum */
-		usb_write8(Adapter, REG_MCUFWDL, usb_read8(Adapter, REG_MCUFWDL)|FWDL_ChkSum_rpt);
+		usb_write8(rtlpriv, REG_MCUFWDL, usb_read8(rtlpriv, REG_MCUFWDL)|FWDL_ChkSum_rpt);
 
-		rtStatus = _WriteFW_8812(Adapter, rtlhal->pfirmware, rtlhal->fwsize);
+		rtStatus = _WriteFW_8812(rtlpriv, rtlhal->pfirmware, rtlhal->fwsize);
 
 		if (rtStatus == _SUCCESS
 		   || (rtw_get_passing_time_ms(fwdl_start_time) > 500 && writeFW_retry++ >= 3))
@@ -447,13 +447,13 @@ int32_t FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw)
 			, writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
 		);
 	}
-	_FWDownloadEnable_8812(Adapter, _FALSE);
+	_FWDownloadEnable_8812(rtlpriv, _FALSE);
 	if (_SUCCESS != rtStatus) {
 		DBG_871X("DL Firmware failed!\n");
 		goto Exit;
 	}
 
-	rtStatus = _FWFreeToGo8812(Adapter);
+	rtStatus = _FWFreeToGo8812(rtlpriv);
 	if (_SUCCESS != rtStatus) {
 		DBG_871X("DL Firmware failed!\n");
 		goto Exit;
@@ -557,11 +557,11 @@ BOOLEAN Hal_GetChnlGroup8812A(uint8_t Channel, uint8_t *pGroup)
 }
 
 static void
-hal_ReadPowerValueFromPROM8812A(struct rtl_priv *Adapter, PTxPowerInfo24G pwrInfo24G,
+hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, PTxPowerInfo24G pwrInfo24G,
 	PTxPowerInfo5G	pwrInfo5G, uint8_t *PROMContent,
 	BOOLEAN	AutoLoadFail)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t rfPath, eeAddr = EEPROM_TX_PWR_INX_8812, group, TxCount = 0;
 
 	memset(pwrInfo24G, 0, sizeof(TxPowerInfo24G));
@@ -836,7 +836,7 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *Adapter, PTxPowerInfo24G pwrInf
 
 }
 
-VOID Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *Adapter, u8 *hwinfo,
+VOID Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	BOOLEAN	AutoLoadFail)
 {
 }
@@ -858,11 +858,11 @@ void Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo)
 	DBG_8192C("EEPROM ID=0x%04x\n", EEPROMId);
 }
 
-VOID Hal_ReadPROMVersion8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
+VOID Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN AutoloadFail)
 {
-	struct rtl_efuse *efuse = rtl_efuse(Adapter);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	if (AutoloadFail) {
 		efuse->eeprom_version = EEPROM_Default_Version;
@@ -874,11 +874,11 @@ VOID Hal_ReadPROMVersion8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	/* DBG_871X("pHalData->eeprom_version is 0x%x\n", pHalData->eeprom_version); */
 }
 
-void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
+void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoLoadFail)
 {
-	struct rtl_efuse *efuse = rtl_efuse(Adapter);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	TxPowerInfo24G	pwrInfo24G;
 	TxPowerInfo5G	pwrInfo5G;
 	uint8_t	rfPath, ch, group, TxCount;
@@ -892,7 +892,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 	uint8_t	channel5G_80M[CHANNEL_MAX_NUMBER_5G_80M] = {
 		42, 58, 106, 122, 138, 155, 171};
 
-	hal_ReadPowerValueFromPROM8812A(Adapter, &pwrInfo24G, &pwrInfo5G, PROMContent, AutoLoadFail);
+	hal_ReadPowerValueFromPROM8812A(rtlpriv, &pwrInfo24G, &pwrInfo5G, PROMContent, AutoLoadFail);
 
 	/*
 	 * if(!AutoLoadFail)
@@ -960,7 +960,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 
 	/* 2010/10/19 MH Add Regulator recognize for CU. */
 	if (!AutoLoadFail) {
-		struct registry_priv  *registry_par = &Adapter->registrypriv;
+		struct registry_priv  *registry_par = &rtlpriv->registrypriv;
 		if (registry_par->regulatory_tid == 0xff) {
 
 			if (PROMContent[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
@@ -982,10 +982,10 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 
 }
 
-VOID Hal_ReadBoardType8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
+VOID Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	if (!AutoloadFail) {
 		pHalData->InterfaceSel = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0xE0)>>5;
@@ -998,11 +998,11 @@ VOID Hal_ReadBoardType8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 
 }
 
-VOID Hal_ReadThermalMeter_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
+VOID Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
-	struct rtl_efuse *efuse = rtl_efuse(Adapter);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	/* uint8_t	tempval; */
 
 	/*
@@ -1080,13 +1080,13 @@ VOID Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
 }
 
 VOID
-Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
+Hal_ReadPAType_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
-	struct rtl_hal *rtlhal = rtl_hal(Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	if (!AutoloadFail) {
-		if (GetRegAmplifierType2G(Adapter) == 0) {
+		if (GetRegAmplifierType2G(rtlpriv) == 0) {
 			/* AUTO */
 			rtlhal->pa_type_2g = EF1Byte(*(uint8_t *)&PROMContent[EEPROM_PA_TYPE_8812AU]);
 			rtlhal->lna_type_2g = EF1Byte(*(uint8_t *)&PROMContent[EEPROM_LNA_TYPE_2G_8812AU]);
@@ -1097,11 +1097,11 @@ Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			rtlhal->external_pa_2g = ((rtlhal->pa_type_2g & BIT5) && (rtlhal->pa_type_2g & BIT4)) ? 1 : 0;
 			rtlhal->external_lna_2g = ((rtlhal->lna_type_2g & BIT7) && (rtlhal->lna_type_2g & BIT3)) ? 1 : 0;
 		} else 	{
-			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
-			rtlhal->external_lna_2g = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_LNA) ? 1 : 0;
+			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_PA)  ? 1 : 0;
+			rtlhal->external_lna_2g = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_LNA) ? 1 : 0;
 		}
 
-		if (GetRegAmplifierType5G(Adapter) == 0) {
+		if (GetRegAmplifierType5G(rtlpriv) == 0) {
 			/* AUTO */
 			rtlhal->pa_type_5g = EF1Byte(*(uint8_t *)&PROMContent[EEPROM_PA_TYPE_8812AU]);
 			rtlhal->lna_type_5g = EF1Byte(*(uint8_t *)&PROMContent[EEPROM_LNA_TYPE_5G_8812AU]);
@@ -1112,8 +1112,8 @@ Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			rtlhal->external_pa_5g = ((rtlhal->pa_type_5g & BIT1) && (rtlhal->pa_type_5g & BIT0)) ? 1 : 0;
 			rtlhal->external_lna_5g = ((rtlhal->lna_type_5g & BIT7) && (rtlhal->lna_type_5g & BIT3)) ? 1 : 0;
 		} else {
-			rtlhal->external_pa_5g  = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_PA_5G)  ? 1 : 0;
-			rtlhal->external_lna_5g = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
+			rtlhal->external_pa_5g  = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_PA_5G)  ? 1 : 0;
+			rtlhal->external_lna_5g = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	} else {
 		rtlhal->external_pa_2g  = EEPROM_Default_PAType;
@@ -1121,21 +1121,21 @@ Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		rtlhal->external_lna_2g = EEPROM_Default_LNAType;
 		rtlhal->external_lna_5g = 0xFF;
 
-		if (GetRegAmplifierType2G(Adapter) == 0) {
+		if (GetRegAmplifierType2G(rtlpriv) == 0) {
 			/* AUTO */
 			rtlhal->external_pa_2g  = 0;
 			rtlhal->external_lna_2g = 0;
 		} else {
-			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
-			rtlhal->external_lna_2g = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_LNA) ? 1 : 0;
+			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_PA)  ? 1 : 0;
+			rtlhal->external_lna_2g = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_LNA) ? 1 : 0;
 		}
-		if (GetRegAmplifierType5G(Adapter) == 0) {
+		if (GetRegAmplifierType5G(rtlpriv) == 0) {
 			/* AUTO */
 			rtlhal->external_pa_5g  = 0;
 			rtlhal->external_lna_5g = 0;
 		} else 	{
-			rtlhal->external_pa_5g  = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_PA_5G)  ? 1 : 0;
-			rtlhal->external_lna_5g = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
+			rtlhal->external_pa_5g  = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_PA_5G)  ? 1 : 0;
+			rtlhal->external_lna_5g = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	}
 	DBG_871X("pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, rtlhal->external_pa_2g);
@@ -1145,13 +1145,13 @@ Hal_ReadPAType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 }
 
 VOID
-Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
+Hal_ReadPAType_8821A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	 AutoloadFail)
 {
-	struct rtl_hal *rtlhal = rtl_hal(Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	if (!AutoloadFail) {
-		if (GetRegAmplifierType2G(Adapter) == 0) {
+		if (GetRegAmplifierType2G(rtlpriv) == 0) {
 			/* AUTO */
 
 			rtlhal->pa_type_2g = EF1Byte(*(uint8_t *) &PROMContent[EEPROM_PA_TYPE_8812AU]);
@@ -1163,11 +1163,11 @@ Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			rtlhal->external_pa_2g = (rtlhal->pa_type_2g & BIT4) ? 1 : 0;
 			rtlhal->external_lna_2g = (rtlhal->lna_type_2g & BIT3) ? 1 : 0;
 		} else {
-			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
-			rtlhal->external_lna_2g = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_LNA) ? 1 : 0;
+			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_PA)  ? 1 : 0;
+			rtlhal->external_lna_2g = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_LNA) ? 1 : 0;
 		}
 
-		if (GetRegAmplifierType5G(Adapter) == 0) {
+		if (GetRegAmplifierType5G(rtlpriv) == 0) {
 			/* AUTO */
 			rtlhal->pa_type_5g = EF1Byte(*(uint8_t *) &PROMContent[EEPROM_PA_TYPE_8812AU]);
 			rtlhal->lna_type_5g = EF1Byte(*(uint8_t *) &PROMContent[EEPROM_LNA_TYPE_5G_8812AU]);
@@ -1178,8 +1178,8 @@ Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			rtlhal->external_pa_5g = (rtlhal->pa_type_5g & BIT0) ? 1 : 0;
 			rtlhal->external_lna_5g = (rtlhal->lna_type_5g & BIT3) ? 1 : 0;
 		} else {
-			rtlhal->external_pa_5g  = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_PA_5G)  ? 1 : 0;
-			rtlhal->external_lna_5g = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
+			rtlhal->external_pa_5g  = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_PA_5G)  ? 1 : 0;
+			rtlhal->external_lna_5g = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	} else {
 		rtlhal->external_pa_2g  = EEPROM_Default_PAType;
@@ -1187,21 +1187,21 @@ Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		rtlhal->external_lna_2g = EEPROM_Default_LNAType;
 		rtlhal->external_lna_5g = 0xFF;
 
-		if (GetRegAmplifierType2G(Adapter) == 0) {
+		if (GetRegAmplifierType2G(rtlpriv) == 0) {
 			/* AUTO */
 			rtlhal->external_pa_2g  = 0;
 			rtlhal->external_lna_2g = 0;
 		} else {
-			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_PA)  ? 1 : 0;
-			rtlhal->external_lna_2g = (GetRegAmplifierType2G(Adapter)&ODM_BOARD_EXT_LNA) ? 1 : 0;
+			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_PA)  ? 1 : 0;
+			rtlhal->external_lna_2g = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_LNA) ? 1 : 0;
 		}
-		if (GetRegAmplifierType5G(Adapter) == 0) {
+		if (GetRegAmplifierType5G(rtlpriv) == 0) {
 			/* AUTO */
 			rtlhal->external_pa_5g  = 0;
 			rtlhal->external_lna_5g = 0;
 		} else {
-			rtlhal->external_pa_5g  = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_PA_5G)  ? 1 : 0;
-			rtlhal->external_lna_5g = (GetRegAmplifierType5G(Adapter)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
+			rtlhal->external_pa_5g  = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_PA_5G)  ? 1 : 0;
+			rtlhal->external_lna_5g = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	}
 	DBG_871X("pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, rtlhal->external_pa_2g);
@@ -1211,15 +1211,15 @@ Hal_ReadPAType_8821A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 }
 
 VOID
-Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
+Hal_ReadRFEType_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
-	struct rtl_hal *rtlhal = rtl_hal(Adapter);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	if (!AutoloadFail) {
-		if (GetRegRFEType(Adapter) != 64)
-			rtlhal->rfe_type = GetRegRFEType(Adapter);
+		if (GetRegRFEType(rtlpriv) != 64)
+			rtlhal->rfe_type = GetRegRFEType(rtlpriv);
 		else if (PROMContent[EEPROM_RFE_OPTION_8812] & BIT7) {
 			if (rtlhal->external_lna_5g) {
 				if (rtlhal->external_pa_5g) {
@@ -1250,8 +1250,8 @@ Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
 			}
 		}
 	} else {
-		if (GetRegRFEType(Adapter) != 64)
-			rtlhal->rfe_type = GetRegRFEType(Adapter);
+		if (GetRegRFEType(rtlpriv) != 64)
+			rtlhal->rfe_type = GetRegRFEType(rtlpriv);
 		else
 			rtlhal->rfe_type = EEPROM_DEFAULT_RFE_OPTION;
 	}
@@ -1263,18 +1263,18 @@ Hal_ReadRFEType_8812A(struct rtl_priv *Adapter, uint8_t *PROMContent,
  * 2013/04/15 MH Add 8812AU- VL/VS/VN for different board type.
  */
 VOID
-hal_ReadUsbType_8812AU(struct rtl_priv *Adapter, uint8_t *PROMContent,
+hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN AutoloadFail)
 {
-	/* if (IS_HARDWARE_TYPE_8812AU(Adapter) && Adapter->UsbModeMechanism.RegForcedUsbMode == 5) */
+	/* if (IS_HARDWARE_TYPE_8812AU(rtlpriv) && rtlpriv->UsbModeMechanism.RegForcedUsbMode == 5) */
 	{
-		struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+		struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 		uint8_t	reg_tmp, i, j, antenna = 0, wmode = 0;
 		/* Read anenna type from EFUSE 1019/1018 */
 		for (i = 0; i < 2; i++) {
 			/* Check efuse address 1019 */
 			/* Check efuse address 1018 */
-			efuse_OneByteRead(Adapter, 1019-i, &reg_tmp);
+			efuse_OneByteRead(rtlpriv, 1019-i, &reg_tmp);
 
 			for (j = 0; j < 2; j++) {
 				/* CHeck bit 7-5 */
@@ -1292,7 +1292,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		for (i = 0; i < 2; i++) {
 			/* Check efuse address 1019 */
 			/* Check efuse address 1018 */
-			efuse_OneByteRead(Adapter, 1021-i, &reg_tmp);
+			efuse_OneByteRead(rtlpriv, 1021-i, &reg_tmp);
 
 			for (j = 0; j < 2; j++) {
 				/* CHeck bit 3-2 */
@@ -1310,8 +1310,8 @@ hal_ReadUsbType_8812AU(struct rtl_priv *Adapter, uint8_t *PROMContent,
 		/* Antenna == 1 WMODE = 3 RTL8812AU-VL 11AC + USB2.0 Mode */
 		if (antenna == 1) {
 			/* Config 8812AU as 1*1 mode AC mode. */
-			Adapter->phy.rf_type = RF_1T1R;
-			/* UsbModeSwitch_SetUsbModeMechOn(Adapter, FALSE); */
+			rtlpriv->phy.rf_type = RF_1T1R;
+			/* UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE); */
 			/* pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VL; */
 			DBG_871X("%s(): EFUSE_HIDDEN_812AU_VL\n", __FUNCTION__);
 		} else if (antenna == 2) {
@@ -1326,7 +1326,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *Adapter, uint8_t *PROMContent,
 					/*
 					 * Antenna == 2 WMODE = 3 RTL8812AU-VS 11AC + USB2.0 Mode
 					 * Driver will not support USB automatic switch
-					 * UsbModeSwitch_SetUsbModeMechOn(Adapter, FALSE);
+					 * UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE);
 					 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VS;
 					 */
 					DBG_871X("%s(): EFUSE_HIDDEN_812AU_VS\n", __FUNCTION__);
@@ -1335,7 +1335,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *Adapter, uint8_t *PROMContent,
 				if (wmode == 2) {
 				/*
 				 * Antenna == 2 WMODE = 2 RTL8812AU-VN 11N only + USB2.0 Mode
-				 * UsbModeSwitch_SetUsbModeMechOn(Adapter, FALSE);
+				 * UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE);
 				 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VN;
 				 */
 				DBG_871X("%s(): EFUSE_HIDDEN_812AU_VN\n", __FUNCTION__);
@@ -1412,7 +1412,7 @@ Hal_EfuseSwitchToBank8812A(struct rtl_priv *rtlpriv, u8 bank)
 }
 
 static VOID
-Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, u16 _offset,
+Hal_EfuseReadEFuse8812A(struct rtl_priv *rtlpriv, u16 _offset,
 	u16 _size_byte, uint8_t *pbuf)
 {
 	uint8_t	*efuseTbl = NULL;
@@ -1454,7 +1454,7 @@ Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, u16 _offset,
 	/*
 	 * 1. Read the first byte to check if efuse is empty!!!
 	 */
-	efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseHeader);
+	efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseHeader);
 
 	if (efuseHeader != 0xFF) {
 		efuse_utilized++;
@@ -1476,14 +1476,14 @@ Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, u16 _offset,
 			offset_2_0 = GET_HDR_OFFSET_2_0(efuseHeader);
 			/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("extended header offset_2_0=%X\n", offset_2_0)); */
 
-			efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseExtHdr);
+			efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseExtHdr);
 
 			/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseExtHdr)); */
 
 			if (efuseExtHdr != 0xff) {
 				efuse_utilized++;
 				if (ALL_WORDS_DISABLED(efuseExtHdr)) {
-					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseHeader);
+					efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseHeader);
 					if (efuseHeader != 0xff) {
 						efuse_utilized++;
 					}
@@ -1509,7 +1509,7 @@ Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, u16 _offset,
 			for (i = 0; i < EFUSE_MAX_WORD_UNIT; i++) {
 				/* Check word enable condition in the section */
 				if (!(wden & (0x01 << i))) {
-					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseData);
+					efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseData);
 					/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseData)); */
 					efuse_utilized++;
 					eFuseWord[offset][i] = (efuseData & 0xff);
@@ -1517,7 +1517,7 @@ Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, u16 _offset,
 					if (!AVAILABLE_EFUSE_ADDR_8812(eFuse_Addr))
 						break;
 
-					efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseData);
+					efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseData);
 					/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseData)); */
 					efuse_utilized++;
 					eFuseWord[offset][i] |= (((u16)efuseData << 8) & 0xff00);
@@ -1529,7 +1529,7 @@ Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, u16 _offset,
 		}
 
 		/* Read next PG header */
-		efuse_OneByteRead(Adapter, eFuse_Addr++, &efuseHeader);
+		efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseHeader);
 		/* RTPRINT(FEEPROM, EFUSE_READ_ALL, ("Addr=%d rtemp 0x%x\n", eFuse_Addr, *rtemp8)); */
 
 		if (efuseHeader != 0xFF) {
@@ -1560,7 +1560,7 @@ Hal_EfuseReadEFuse8812A(struct rtl_priv *Adapter, u16 _offset,
 	 * 5. Calculate Efuse utilization.
 	 */
 	efuse_usage = (u8)((eFuse_Addr*100)/EFUSE_REAL_CONTENT_LEN_JAGUAR);
-	rtw_hal_set_hwreg(Adapter, HW_VAR_EFUSE_BYTES, (uint8_t *)&eFuse_Addr);
+	rtw_hal_set_hwreg(rtlpriv, HW_VAR_EFUSE_BYTES, (uint8_t *)&eFuse_Addr);
 
 exit:
 	if (efuseTbl)
@@ -1571,10 +1571,10 @@ exit:
 }
 
 VOID
-rtl8812_ReadEFuse(struct rtl_priv *Adapter, uint8_t efuseType, u16	_offset,
+rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, uint8_t efuseType, u16	_offset,
 	u16 _size_byte, uint8_t *pbuf)
 {
-	Hal_EfuseReadEFuse8812A(Adapter, _offset, _size_byte, pbuf);
+	Hal_EfuseReadEFuse8812A(rtlpriv, _offset, _size_byte, pbuf);
 }
 
 /* Do not support BT */
@@ -2347,10 +2347,10 @@ void ReadRFType8812A(struct rtl_priv *rtlpriv)
 	 */
 }
 
-void rtl8812_GetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,
+void rtl8812_GetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
 	PVOID pValue1, BOOLEAN bSet)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *podmpriv = &pHalData->odmpriv;
 
 	switch (eVariable) {
@@ -2361,10 +2361,10 @@ void rtl8812_GetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,
 	}
 }
 
-void rtl8812_SetHalODMVar(struct rtl_priv *Adapter, HAL_ODM_VARIABLE eVariable,
+void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
 	PVOID pValue1, BOOLEAN bSet)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *podmpriv = &pHalData->odmpriv;
 	/* _irqL irqL; */
 	switch (eVariable) {
@@ -2408,12 +2408,12 @@ void hal_notch_filter_8812(struct rtl_priv *adapter, bool enable)
 	}
 }
 
-u8 GetEEPROMSize8812A(struct rtl_priv *Adapter)
+u8 GetEEPROMSize8812A(struct rtl_priv *rtlpriv)
 {
 	uint8_t	size = 0;
 	uint32_t	curRCR;
 
-	curRCR = usb_read16(Adapter, REG_SYS_EEPROM_CTRL);
+	curRCR = usb_read16(rtlpriv, REG_SYS_EEPROM_CTRL);
 	size = (curRCR & EEPROMSEL) ? 6 : 4; /* 6: EEPROM used is 93C46, 4: boot from E-Fuse. */
 
 	DBG_871X("EEPROM type is %s\n", size == 4 ? "E-FUSE" : "93C46");
@@ -2451,16 +2451,16 @@ void InitPGData8812A(struct rtl_priv *rtlpriv)
 
 }
 
-void ReadChipVersion8812A(struct rtl_priv *Adapter)
+void ReadChipVersion8812A(struct rtl_priv *rtlpriv)
 {
 	uint32_t	value32;
 	HAL_VERSION		ChipVersion;
 	struct _rtw_hal *pHalData;
-	struct rtl_hal *rtlhal = rtl_hal(Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
-	pHalData = GET_HAL_DATA(Adapter);
+	pHalData = GET_HAL_DATA(rtlpriv);
 
-	value32 = usb_read32(Adapter, REG_SYS_CFG);
+	value32 = usb_read32(rtlpriv, REG_SYS_CFG);
 	DBG_8192C("%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
@@ -2470,7 +2470,7 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 
 	ChipVersion.ChipType = ((value32 & RTL_ID) ? TEST_CHIP : NORMAL_CHIP);
 
-	if (Adapter->registrypriv.rf_config == RF_MAX_TYPE) {
+	if (rtlpriv->registrypriv.rf_config == RF_MAX_TYPE) {
 		if (IS_HARDWARE_TYPE_8812(rtlhal))
 			ChipVersion.RFType = RF_TYPE_2T2R;	/* RF_2T2R; */
 		else
@@ -2500,12 +2500,12 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		ChipVersion.CUTVersion += 1;
 
-	/* value32 = usb_read32(Adapter, REG_GPIO_OUTSTS); */
+	/* value32 = usb_read32(rtlpriv, REG_GPIO_OUTSTS); */
 	ChipVersion.ROMVer = 0;	/* ROM code version. */
 
 	/* For multi-function consideration. Added by Roger, 2010.10.06. */
 	pHalData->MultiFunc = RT_MULTI_FUNC_NONE;
-	value32 = usb_read32(Adapter, REG_MULTI_FUNC_CTRL);
+	value32 = usb_read32(rtlpriv, REG_MULTI_FUNC_CTRL);
 	pHalData->MultiFunc |= ((value32 & WL_FUNC_EN) ? RT_MULTI_FUNC_WIFI : 0);
 	pHalData->MultiFunc |= ((value32 & BT_FUNC_EN) ? RT_MULTI_FUNC_BT : 0);
 	pHalData->PolarityCtl = ((value32 & WL_HWPDN_SL) ? RT_POLARITY_HIGH_ACT : RT_POLARITY_LOW_ACT);
@@ -2517,20 +2517,20 @@ void ReadChipVersion8812A(struct rtl_priv *Adapter)
 	memcpy(&pHalData->VersionID, &ChipVersion, sizeof(HAL_VERSION));
 
 	if (IS_1T2R(ChipVersion)) {
-		Adapter->phy.rf_type = RF_1T2R;
+		rtlpriv->phy.rf_type = RF_1T2R;
 		pHalData->NumTotalRFPath = 2;
 		DBG_8192C("==> RF_Type : 1T2R\n");
 	} else if (IS_2T2R(ChipVersion)) {
-		Adapter->phy.rf_type = RF_2T2R;
+		rtlpriv->phy.rf_type = RF_2T2R;
 		pHalData->NumTotalRFPath = 2;
 		DBG_8192C("==> RF_Type : 2T2R\n");
 	} else {
-		Adapter->phy.rf_type = RF_1T1R;
+		rtlpriv->phy.rf_type = RF_1T1R;
 		pHalData->NumTotalRFPath = 1;
 		DBG_8192C("==> RF_Type 1T1R\n");
 	}
 
-	DBG_8192C("RF_Type is %x!!\n", Adapter->phy.rf_type);
+	DBG_8192C("RF_Type is %x!!\n", rtlpriv->phy.rf_type);
 }
 
 
@@ -2672,40 +2672,40 @@ void InitDefaultValue8821A(struct rtl_priv *rtlpriv)
 		pHalData->odmpriv.RFCalibrateInfo.ThermalValue_HP[i] = 0;
 }
 
-VOID _InitBeaconParameters_8812A(struct rtl_priv *Adapter)
+VOID _InitBeaconParameters_8812A(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
-	usb_write16(Adapter, REG_BCN_CTRL, 0x1010);
+	usb_write16(rtlpriv, REG_BCN_CTRL, 0x1010);
 
 	/* TODO: Remove these magic number */
-	usb_write16(Adapter, REG_TBTT_PROHIBIT, 0x6404);		/* ms */
-	usb_write8(Adapter, REG_DRVERLYINT, DRIVER_EARLY_INT_TIME_8812);	/* 5ms */
-	usb_write8(Adapter, REG_BCNDMATIM, BCN_DMA_ATIME_INT_TIME_8812); 	/* 2ms */
+	usb_write16(rtlpriv, REG_TBTT_PROHIBIT, 0x6404);		/* ms */
+	usb_write8(rtlpriv, REG_DRVERLYINT, DRIVER_EARLY_INT_TIME_8812);	/* 5ms */
+	usb_write8(rtlpriv, REG_BCNDMATIM, BCN_DMA_ATIME_INT_TIME_8812); 	/* 2ms */
 
 	/*
 	 *  Suggested by designer timchen. Change beacon AIFS to the largest number
 	 *  beacause test chip does not contension before sending beacon. by tynli. 2009.11.03
 	 */
-	usb_write16(Adapter, REG_BCNTCFG, 0x660F);
+	usb_write16(rtlpriv, REG_BCNTCFG, 0x660F);
 
-	pHalData->RegBcnCtrlVal = usb_read8(Adapter, REG_BCN_CTRL);
-	pHalData->RegTxPause = usb_read8(Adapter, REG_TXPAUSE);
-	pHalData->RegFwHwTxQCtrl = usb_read8(Adapter, REG_FWHW_TXQ_CTRL+2);
-	pHalData->RegReg542 = usb_read8(Adapter, REG_TBTT_PROHIBIT+2);
-	pHalData->RegCR_1 = usb_read8(Adapter, REG_CR+1);
+	pHalData->RegBcnCtrlVal = usb_read8(rtlpriv, REG_BCN_CTRL);
+	pHalData->RegTxPause = usb_read8(rtlpriv, REG_TXPAUSE);
+	pHalData->RegFwHwTxQCtrl = usb_read8(rtlpriv, REG_FWHW_TXQ_CTRL+2);
+	pHalData->RegReg542 = usb_read8(rtlpriv, REG_TBTT_PROHIBIT+2);
+	pHalData->RegCR_1 = usb_read8(rtlpriv, REG_CR+1);
 }
 
-static void hw_var_set_correct_tsf(struct rtl_priv *Adapter, uint8_t variable, uint8_t *val)
+static void hw_var_set_correct_tsf(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
 }
 
-static void hw_var_set_mlme_disconnect(struct rtl_priv *Adapter, uint8_t variable, uint8_t *val)
+static void hw_var_set_mlme_disconnect(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
 }
 
 
-static void hw_var_set_mlme_join(struct rtl_priv *Adapter, uint8_t variable, uint8_t *val)
+static void hw_var_set_mlme_join(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
 }
 

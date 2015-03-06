@@ -460,7 +460,7 @@ ODM_ReadAndConfig_MP_8812A_AGC_TAB(
  	IN   struct _rtw_dm * pDM_Odm
  	)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 	
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
@@ -774,7 +774,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG(
  	IN   struct _rtw_dm * pDM_Odm
  	)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 	
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
@@ -894,7 +894,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(
  	IN   struct _rtw_dm * pDM_Odm
  	)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 	
 	uint32_t     hex = 0;
 	uint32_t     i           = 0;
@@ -998,7 +998,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(
  	IN   struct _rtw_dm * pDM_Odm
  	)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 	
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 

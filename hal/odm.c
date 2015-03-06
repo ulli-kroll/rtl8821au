@@ -257,7 +257,7 @@ void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 				pDM_Odm->LinkedInterval++;
 
 			if (pDM_Odm->LinkedInterval == 2) {
-				struct rtl_priv *	rtlpriv = pDM_Odm->Adapter;
+				struct rtl_priv *	rtlpriv = pDM_Odm->rtlpriv;
 
 				/*
 				 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
@@ -279,7 +279,7 @@ void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 
 void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Value)
 {
-	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 	
 	/* ODM_RT_TRACE(pDM_Odm,); */
 
@@ -516,7 +516,7 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 
 void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->Adapter;
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	u8	EntryCnt = 0;
 	u8	i;
 	struct sta_info *pEntry;
@@ -613,7 +613,7 @@ int getIGIForDiff(int value_IGI)
 
 void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->Adapter;
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 
 	int32_t TH_H_dmc, TH_L_dmc;
 	int32_t TH_H, TH_L, Diff, IGI_target;
@@ -643,7 +643,7 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("pDM_Odm->ForceEDCCA=%d, IGI_Base=0x%x, TH_H=0x%x, TH_L=0x%x, AdapEn_RSSI = %d\n",
 	pDM_Odm->ForceEDCCA, pDM_Odm->IGI_Base, pDM_Odm->TH_H, pDM_Odm->TH_L, pDM_Odm->AdapEn_RSSI));
 
-	rtl_set_bbreg(pDM_Odm->Adapter, 0x800, BIT10, 0);		/* ADC_mask enable */
+	rtl_set_bbreg(pDM_Odm->rtlpriv, 0x800, BIT10, 0);		/* ADC_mask enable */
 
 	if (!pDM_Odm->bLinked) {
 		return;
@@ -709,7 +709,7 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("IGI=0x%x, TH_H_dmc=0x%x, TH_L_dmc=0x%x\n",
 		IGI, TH_H_dmc, TH_L_dmc));
 
-	rtl_set_bbreg(pDM_Odm->Adapter, rFPGA0_XB_LSSIReadBack, 0xFFFF, (TH_H_dmc<<8) | TH_L_dmc);
+	rtl_set_bbreg(pDM_Odm->rtlpriv, rFPGA0_XB_LSSIReadBack, 0xFFFF, (TH_H_dmc<<8) | TH_L_dmc);
 }
 
 
@@ -726,9 +726,9 @@ void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm)));
 
 	if (pDM_DigTable->CurIGValue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
-		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
-		if (pDM_Odm->Adapter->phy.rf_type != ODM_1T1R)
-			rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG(IGI_B, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
+		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
+		if (pDM_Odm->rtlpriv->phy.rf_type != ODM_1T1R)
+			rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_B, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("CurrentIGI(0x%02x). \n", CurrentIGI));
 		/* pDM_DigTable->PreIGValue = pDM_DigTable->CurIGValue; */
@@ -740,7 +740,7 @@ void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 
 void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 {
-	/* struct rtl_priv *rtlpriv =pDM_Odm->Adapter; */
+	/* struct rtl_priv *rtlpriv =pDM_Odm->rtlpriv; */
 	/* pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable; */
 	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 
@@ -793,9 +793,9 @@ void odm_DIG(struct _rtw_dm *pDM_Odm)
 	u8						CurrentIGI = pDM_DigTable->CurIGValue;
 
 #ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-	if ((pDM_Odm->bLinked) && (pDM_Odm->Adapter->registrypriv.force_igi != 0)) {
+	if ((pDM_Odm->bLinked) && (pDM_Odm->rtlpriv->registrypriv.force_igi != 0)) {
 		printk("pDM_Odm->RSSI_Min=%d \n", pDM_Odm->RSSI_Min);
-		ODM_Write_DIG(pDM_Odm, pDM_Odm->Adapter->registrypriv.force_igi);
+		ODM_Write_DIG(pDM_Odm, pDM_Odm->rtlpriv->registrypriv.force_igi);
 		return;
 	}
 #endif
@@ -1002,21 +1002,21 @@ void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm)
 	{
 		uint32_t CCKenable;
 		/* read OFDM FA counter */
-		FalseAlmCnt->Cnt_Ofdm_fail = rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG_OFDM_FA_11AC, bMaskLWord);
-		FalseAlmCnt->Cnt_Cck_fail = rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG_CCK_FA_11AC, bMaskLWord);
+		FalseAlmCnt->Cnt_Ofdm_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
+		FalseAlmCnt->Cnt_Cck_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
 
-		CCKenable =  rtl_get_bbreg(pDM_Odm->Adapter, ODM_REG_BB_RX_PATH_11AC, BIT28);
+		CCKenable =  rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_BB_RX_PATH_11AC, BIT28);
 		if (CCKenable)		/* if (*pDM_Odm->pBandType == ODM_BAND_2_4G) */
 			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail + FalseAlmCnt->Cnt_Cck_fail;
 		else
 			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail;
 
 		/* reset OFDM FA coutner */
-		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
-		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
+		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
+		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
 		/* reset CCK FA counter */
-		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
-		rtl_set_bbreg(pDM_Odm->Adapter, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
+		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
+		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
 	}
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Cck_fail=%d\n", FalseAlmCnt->Cnt_Cck_fail));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Ofdm_fail=%d\n", FalseAlmCnt->Cnt_Ofdm_fail));
@@ -1031,7 +1031,7 @@ void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm)
 
 void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 	
 	u8	CurCCK_CCAThres;
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
@@ -1068,7 +1068,7 @@ void ODM_Write_CCK_CCA_Thres(struct _rtw_dm *pDM_Odm, u8	 CurCCK_CCAThres)
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
 	if (pDM_DigTable->CurCCK_CCAThres != CurCCK_CCAThres) {	/* modify by Guo.Mingzhi 2012-01-03 */
-		usb_write8(pDM_Odm->Adapter, ODM_REG(CCK_CCA, pDM_Odm), CurCCK_CCAThres);
+		usb_write8(pDM_Odm->rtlpriv, ODM_REG(CCK_CCA, pDM_Odm), CurCCK_CCAThres);
 	}
 	pDM_DigTable->PreCCK_CCAThres = pDM_DigTable->CurCCK_CCAThres;
 	pDM_DigTable->CurCCK_CCAThres = CurCCK_CCAThres;
@@ -1098,15 +1098,15 @@ void odm_1R_CCA(struct _rtw_dm *pDM_Odm)
 
 	if (pDM_PSTable->PreCCAState != pDM_PSTable->CurCCAState) {
 		if (pDM_PSTable->CurCCAState == CCA_1R) {
-			if (pDM_Odm->Adapter->phy.rf_type == ODM_2T2R) {
-				rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x13);
+			if (pDM_Odm->rtlpriv->phy.rf_type == ODM_2T2R) {
+				rtl_set_bbreg(pDM_Odm->rtlpriv, 0xc04  , MASKBYTE0, 0x13);
 				/* rtl_set_bbreg(rtlpriv, 0xe70, MASKBYTE3, 0x20); */
 			} else {
-				rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x23);
+				rtl_set_bbreg(pDM_Odm->rtlpriv, 0xc04  , MASKBYTE0, 0x23);
 				/* rtl_set_bbreg(rtlpriv, 0xe70, 0x7fc00000, 0x10c); */ /* Set RegE70[30:22] = 9b'100001100 */
 			}
 		} else {
-			rtl_set_bbreg(pDM_Odm->Adapter, 0xc04  , MASKBYTE0, 0x33);
+			rtl_set_bbreg(pDM_Odm->rtlpriv, 0xc04  , MASKBYTE0, 0x33);
 			/* rtl_set_bbreg(rtlpriv,0xe70, MASKBYTE3, 0x63); */
 		}
 		pDM_PSTable->PreCCAState = pDM_PSTable->CurCCAState;
@@ -1128,7 +1128,7 @@ void odm_1R_CCA(struct _rtw_dm *pDM_Odm)
 uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	uint32_t ra_mask, u8 rssi_level)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->Adapter;
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 
 	struct sta_info *pEntry;
 	uint32_t 	rate_bitmap = 0;
@@ -1169,7 +1169,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	case (ODM_WM_B|ODM_WM_G|ODM_WM_N24G):
 	case (ODM_WM_B|ODM_WM_N24G):
 	case (ODM_WM_A|ODM_WM_N5G):
-		if (pDM_Odm->Adapter->phy.rf_type == ODM_1T2R || pDM_Odm->Adapter->phy.rf_type == ODM_1T1R) {
+		if (pDM_Odm->rtlpriv->phy.rf_type == ODM_1T2R || pDM_Odm->rtlpriv->phy.rf_type == ODM_1T1R) {
 			if (rssi_level == DM_RATR_STA_HIGH) {
 				rate_bitmap = 0x000f0000;
 			} else if (rssi_level == DM_RATR_STA_MIDDLE) {
@@ -1195,7 +1195,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 		break;
 	case (ODM_WM_AC|ODM_WM_A):
 	case (ODM_WM_AC|ODM_WM_G):
-		if (pDM_Odm->Adapter->phy.rf_type == RF_1T1R) {
+		if (pDM_Odm->rtlpriv->phy.rf_type == RF_1T1R) {
 			if ((pDM_Odm->SupportICType == ODM_RTL8821) ||
 				(pDM_Odm->SupportICType == ODM_RTL8812 && pDM_Odm->bIsMPChip)) {
 				if ((pDM_Odm->SupportICType == ODM_RTL8821)
@@ -1232,7 +1232,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 		break;
 
 	default:
-		if (pDM_Odm->Adapter->phy.rf_type == RF_1T2R)
+		if (pDM_Odm->rtlpriv->phy.rf_type == RF_1T2R)
 			rate_bitmap = 0x000fffff;
 		else
 			rate_bitmap = 0x0fffffff;
@@ -1283,7 +1283,7 @@ void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm)
 void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 {
 	u8	i;
-	struct rtl_priv *rtlpriv	=  pDM_Odm->Adapter;
+	struct rtl_priv *rtlpriv	=  pDM_Odm->rtlpriv;
 	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
 
 	if (rtlpriv->bDriverStopped) {
@@ -1444,8 +1444,8 @@ static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 
 void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
 	int	tmpEntryMaxPWDB = 0, tmpEntryMinPWDB = 0xff;
@@ -1457,8 +1457,8 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 		return;
 
 	if ((pDM_Odm->SupportICType == ODM_RTL8812) || (pDM_Odm->SupportICType == ODM_RTL8821)) {
-		u64	curTxOkCnt = Adapter->xmitpriv.tx_bytes - Adapter->xmitpriv.last_tx_bytes;
-		u64	curRxOkCnt = Adapter->recvpriv.rx_bytes - Adapter->recvpriv.last_rx_bytes;
+		u64	curTxOkCnt = rtlpriv->xmitpriv.tx_bytes - rtlpriv->xmitpriv.last_tx_bytes;
+		u64	curRxOkCnt = rtlpriv->recvpriv.rx_bytes - rtlpriv->recvpriv.last_rx_bytes;
 
 		if (curRxOkCnt > (curTxOkCnt*6))
 			UL_DL_STATE = 1;
@@ -1467,7 +1467,7 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 	}
 
 
-	/* if (check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE) */
+	/* if (check_fwstate(&rtlpriv->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE) */
 	{
 #if 1
 		struct sta_info *psta;
@@ -1494,7 +1494,7 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 		_irqL irqL;
 		struct list_head	*plist, *phead;
 		struct sta_info *psta;
-		struct sta_priv *pstapriv = &Adapter->stapriv;
+		struct sta_priv *pstapriv = &rtlpriv->stapriv;
 		u8 bcast_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
@@ -1509,7 +1509,7 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 				plist = get_next(plist);
 
 				if (_rtw_memcmp(psta->hwaddr, bcast_addr, ETH_ALEN)
-				 || _rtw_memcmp(psta->hwaddr, myid(&Adapter->eeprompriv), ETH_ALEN))
+				 || _rtw_memcmp(psta->hwaddr, myid(&rtlpriv->eeprompriv), ETH_ALEN))
 					continue;
 
 				if (psta->state & WIFI_ASOC_STATE) {
@@ -1539,7 +1539,7 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 				if (pHalData->fw_ractrl == _TRUE) {	/* Report every sta's RSSI to FW */
 					if ((pDM_Odm->SupportICType == ODM_RTL8812) || (pDM_Odm->SupportICType == ODM_RTL8821)) {
 						PWDB_rssi[i] |= (UL_DL_STATE << 24);
-						rtl8812_set_rssi_cmd(Adapter, (u8 *)(&PWDB_rssi[i]));
+						rtl8812_set_rssi_cmd(rtlpriv, (u8 *)(&PWDB_rssi[i]));
 					}
 				} else {
 				}
@@ -1561,7 +1561,7 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 		pdmpriv->EntryMinUndecoratedSmoothedPWDB = 0;
 	}
 
-	FindMinimumRSSI(Adapter);	/* get pdmpriv->MinUndecoratedPWDBForDM */
+	FindMinimumRSSI(rtlpriv);	/* get pdmpriv->MinUndecoratedPWDBForDM */
 
 	ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
 }
@@ -1598,8 +1598,8 @@ void ODM_TXPowerTrackingCheck(struct _rtw_dm *pDM_Odm)
 
 void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_priv *Adapter = pDM_Odm->Adapter;
-	struct rtl_hal *rtlhal = rtl_hal(Adapter);
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK)) {
 		return;
@@ -1608,9 +1608,9 @@ void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm)
 	if (!pDM_Odm->RFCalibrateInfo.TM_Trigger) {		/* at least delay 1 sec */
 		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
 		if (IS_HARDWARE_TYPE_JAGUAR(rtlhal))
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 		else
-			rtw_hal_write_rfreg(pDM_Odm->Adapter, RF90_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);
+			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);
 
 		/* DBG_871X("Trigger Thermal Meter!!\n"); */
 
@@ -1618,7 +1618,7 @@ void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm)
 		return;
 	} else {
 		/* DBG_871X("Schedule TxPowerTracking direct call!!\n"); */
-		ODM_TXPowerTrackingCallback_ThermalMeter(Adapter);
+		ODM_TXPowerTrackingCallback_ThermalMeter(rtlpriv);
 		pDM_Odm->RFCalibrateInfo.TM_Trigger = 0;
 	}
 
@@ -1704,7 +1704,7 @@ void odm_EdcaTurboCheck(struct _rtw_dm *pDM_Odm)
 VOID odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
 {
 
-	struct rtl_priv *Adapter = pDM_Odm->Adapter;
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	uint32_t	EDCA_BE_UL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_UL[pMgntInfo->IOTPeer]; */
 	uint32_t	EDCA_BE_DL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_DL[pMgntInfo->IOTPeer]; */
 	uint32_t	ICType = pDM_Odm->SupportICType;
@@ -1715,11 +1715,11 @@ VOID odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
 	u64		cur_tx_bytes = 0;
 	u64		cur_rx_bytes = 0;
 	u8		bbtchange = _FALSE;
-	 struct _rtw_hal		*pHalData = GET_HAL_DATA(Adapter);
-	struct xmit_priv		*pxmitpriv = &(Adapter->xmitpriv);
-	struct recv_priv		*precvpriv = &(Adapter->recvpriv);
-	struct registry_priv	*pregpriv = &Adapter->registrypriv;
-	struct mlme_ext_priv	*pmlmeext = &(Adapter->mlmeextpriv);
+	 struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
+	struct xmit_priv		*pxmitpriv = &(rtlpriv->xmitpriv);
+	struct recv_priv		*precvpriv = &(rtlpriv->recvpriv);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
+	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
 
@@ -1787,7 +1787,7 @@ VOID odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
 			else
 				edca_param = EDCA_BE_UL;
 
-			usb_write32(Adapter, REG_EDCA_BE_PARAM, edca_param);
+			usb_write32(rtlpriv, REG_EDCA_BE_PARAM, edca_param);
 
 			pDM_Odm->DM_EDCA_Table.prv_traffic_idx = trafficIndex;
 		}
@@ -1799,7 +1799,7 @@ VOID odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
 		 * Restore original EDCA according to the declaration of AP.
 		 */
 		if (pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA) {
-			usb_write32(Adapter, REG_EDCA_BE_PARAM, pHalData->AcParam_BE);
+			usb_write32(rtlpriv, REG_EDCA_BE_PARAM, pHalData->AcParam_BE);
 			pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = _FALSE;
 		}
 	}

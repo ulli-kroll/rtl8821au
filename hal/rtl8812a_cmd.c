@@ -92,10 +92,10 @@ void ConstructProbeRsp(struct rtl_priv *rtlpriv, uint8_t *pframe, uint32_t *pLen
 // 2010.06.23. Added by tynli.
 VOID
 CheckFwRsvdPageContent(
-	IN	struct rtl_priv *	Adapter
+	IN	struct rtl_priv *	rtlpriv
 )
 {
-	 struct _rtw_hal*	pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal*	pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t	MaxBcnPageNum;
 
  	if(pHalData->FwRsvdPageStartOffset != 0)

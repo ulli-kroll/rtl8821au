@@ -364,7 +364,7 @@ void get_rate_set(struct rtl_priv *padapter, unsigned char *pbssrate, int *bssra
 }
 
 void UpdateBrateTbl(
-	IN struct rtl_priv *	Adapter,
+	IN struct rtl_priv *	rtlpriv,
 	IN uint8_t			*mBratesOS
 )
 {
@@ -677,11 +677,11 @@ unsigned int decide_wait_for_beacon_timeout(unsigned int bcn_interval)
 }
 
 void CAM_empty_entry(
-	struct rtl_priv *    	Adapter,
+	struct rtl_priv *    	rtlpriv,
 	uint8_t 			ucIndex
 )
 {
-	rtw_hal_set_hwreg(Adapter, HW_VAR_CAM_EMPTY_ENTRY, (uint8_t *)(&ucIndex));
+	rtw_hal_set_hwreg(rtlpriv, HW_VAR_CAM_EMPTY_ENTRY, (uint8_t *)(&ucIndex));
 }
 
 void invalidate_cam_all(struct rtl_priv *padapter)
@@ -1271,12 +1271,12 @@ void VCS_update(struct rtl_priv *padapter, struct sta_info *psta)
 }
 
 
-int rtw_check_bcn_info(struct rtl_priv *Adapter, uint8_t *pframe, uint32_t	 packet_len)
+int rtw_check_bcn_info(struct rtl_priv *rtlpriv, uint8_t *pframe, uint32_t	 packet_len)
 {
 	unsigned int		len;
 	unsigned char		*p;
 	unsigned short	val16, subtype;
-	struct wlan_network *cur_network = &(Adapter->mlmepriv.cur_network);
+	struct wlan_network *cur_network = &(rtlpriv->mlmepriv.cur_network);
 	//uint8_t wpa_ie[255],rsn_ie[255];
 	u16 wpa_len=0,rsn_len=0;
 	uint8_t encryp_protocol = 0;
@@ -1293,7 +1293,7 @@ int rtw_check_bcn_info(struct rtl_priv *Adapter, uint8_t *pframe, uint32_t	 pack
 	unsigned short 	ht_cap_info;
 	unsigned char	ht_info_infos_0;
 
-	if (is_client_associated_to_ap(Adapter) == _FALSE)
+	if (is_client_associated_to_ap(rtlpriv) == _FALSE)
 		return _TRUE;
 
 	len = packet_len - sizeof(struct rtw_ieee80211_hdr_3addr);
@@ -1365,12 +1365,12 @@ int rtw_check_bcn_info(struct rtl_priv *Adapter, uint8_t *pframe, uint32_t	 pack
 					bcn_channel = pht_info->primary_channel;
 			} else { /* we don't find channel IE, so don't check it */
 					//DBG_871X("Oops: %s we don't find channel IE, so don't check it \n", __func__);
-					bcn_channel = Adapter->mlmeextpriv.cur_channel;
+					bcn_channel = rtlpriv->mlmeextpriv.cur_channel;
 			}
 	}
-	if (bcn_channel != Adapter->mlmeextpriv.cur_channel) {
+	if (bcn_channel != rtlpriv->mlmeextpriv.cur_channel) {
 			DBG_871X("%s beacon channel:%d cur channel:%d disconnect\n", __func__,
-						   bcn_channel, Adapter->mlmeextpriv.cur_channel);
+						   bcn_channel, rtlpriv->mlmeextpriv.cur_channel);
 			goto _mismatch;
 	}
 
@@ -1988,9 +1988,9 @@ void update_IOT_info(struct rtl_priv *padapter)
 
 }
 
-void update_capinfo(struct rtl_priv *Adapter, u16 updateCap)
+void update_capinfo(struct rtl_priv *rtlpriv, u16 updateCap)
 {
-	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	BOOLEAN		ShortPreamble;
 
@@ -2005,7 +2005,7 @@ void update_capinfo(struct rtl_priv *Adapter, u16 updateCap)
 			{
 				ShortPreamble = _TRUE;
 				pmlmeinfo->preamble_mode = PREAMBLE_SHORT;
-				rtw_hal_set_hwreg( Adapter, HW_VAR_ACK_PREAMBLE, (uint8_t *)&ShortPreamble );
+				rtw_hal_set_hwreg( rtlpriv, HW_VAR_ACK_PREAMBLE, (uint8_t *)&ShortPreamble );
 			}
 		}
 		else
@@ -2014,7 +2014,7 @@ void update_capinfo(struct rtl_priv *Adapter, u16 updateCap)
 			{
 				ShortPreamble = _FALSE;
 				pmlmeinfo->preamble_mode = PREAMBLE_LONG;
-				rtw_hal_set_hwreg( Adapter, HW_VAR_ACK_PREAMBLE, (uint8_t *)&ShortPreamble );
+				rtw_hal_set_hwreg( rtlpriv, HW_VAR_ACK_PREAMBLE, (uint8_t *)&ShortPreamble );
 			}
 		}
 	}
@@ -2048,7 +2048,7 @@ void update_capinfo(struct rtl_priv *Adapter, u16 updateCap)
 		}
  	}
 
-	rtw_hal_set_hwreg( Adapter, HW_VAR_SLOT_TIME, &pmlmeinfo->slotTime );
+	rtw_hal_set_hwreg( rtlpriv, HW_VAR_SLOT_TIME, &pmlmeinfo->slotTime );
 
 }
 

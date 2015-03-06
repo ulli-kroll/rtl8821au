@@ -542,13 +542,13 @@ void write_cam(struct rtl_priv *padapter, uint8_t entry, u16 ctrl, uint8_t *mac,
 void clear_cam_entry(struct rtl_priv *padapter, uint8_t entry);
 
 void invalidate_cam_all(struct rtl_priv *padapter);
-void CAM_empty_entry(struct rtl_priv *Adapter, uint8_t ucIndex);
+void CAM_empty_entry(struct rtl_priv *rtlpriv, uint8_t ucIndex);
 
 
 int allocate_fw_sta_entry(struct rtl_priv *padapter);
 void flush_all_cam_entry(struct rtl_priv *padapter);
 
-BOOLEAN IsLegal5GChannel(struct rtl_priv *Adapter, uint8_t channel);
+BOOLEAN IsLegal5GChannel(struct rtl_priv *rtlpriv, uint8_t channel);
 
 void site_survey(struct rtl_priv *padapter);
 uint8_t collect_bss_info(struct rtl_priv *padapter, struct recv_frame *precv_frame, WLAN_BSSID_EX *bssid);
@@ -575,12 +575,12 @@ void ERP_IE_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
 void VCS_update(struct rtl_priv *padapter, struct sta_info *psta);
 
 void update_beacon_info(struct rtl_priv *padapter, uint8_t *pframe, uint len, struct sta_info *psta);
-int rtw_check_bcn_info(struct rtl_priv *Adapter, uint8_t *pframe, u32 packet_len);
+int rtw_check_bcn_info(struct rtl_priv *rtlpriv, uint8_t *pframe, u32 packet_len);
 #ifdef CONFIG_DFS
 void process_csa_ie(struct rtl_priv *padapter, uint8_t *pframe, uint len);
 #endif //CONFIG_DFS
 void update_IOT_info(struct rtl_priv *padapter);
-void update_capinfo(struct rtl_priv *Adapter, u16 updateCap);
+void update_capinfo(struct rtl_priv *rtlpriv, u16 updateCap);
 void update_wireless_mode(struct rtl_priv * padapter);
 void update_tx_basic_rate(struct rtl_priv *padapter, uint8_t modulation);
 void update_bmc_sta_support_rate(struct rtl_priv *padapter, u32 mac_id);

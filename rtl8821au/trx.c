@@ -910,23 +910,23 @@ void _dbg_dump_tx_info(struct rtl_priv	*padapter,int frame_tag, uint8_t *ptxdesc
 
 
 
-u8 BWMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
+u8 BWMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 {
 	uint8_t	BWSettingOfDesc = 0;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 * DBG_871X("BWMapping pHalData->CurrentChannelBW %d, pattrib->bwmode %d \n",pHalData->CurrentChannelBW,pattrib->bwmode);
 	 */
 
-	if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_80) {
+	if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_80) {
 		if (pattrib->bwmode == CHANNEL_WIDTH_80)
 			BWSettingOfDesc= 2;
 		else if (pattrib->bwmode == CHANNEL_WIDTH_40)
 			BWSettingOfDesc = 1;
 		else
 			BWSettingOfDesc = 0;
-	} else if(Adapter->phy.current_chan_bw == CHANNEL_WIDTH_40) {
+	} else if(rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_40) {
 		if((pattrib->bwmode == CHANNEL_WIDTH_40) || (pattrib->bwmode == CHANNEL_WIDTH_80))
 			BWSettingOfDesc = 1;
 		else
@@ -937,16 +937,16 @@ u8 BWMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
 	return BWSettingOfDesc;
 }
 
-u8 SCMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
+u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 {
 	uint8_t	SCSettingOfDesc = 0;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(Adapter);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 * DBG_871X("SCMapping: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
 	 */
 
-	if (Adapter->phy.current_chan_bw == CHANNEL_WIDTH_80) {
+	if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_80) {
 		if(pattrib->bwmode == CHANNEL_WIDTH_80) {
 			SCSettingOfDesc = VHT_DATA_SC_DONOT_CARE;
 		} else if(pattrib->bwmode == CHANNEL_WIDTH_40) {
@@ -968,7 +968,7 @@ u8 SCMapping_8812(struct rtl_priv *Adapter, struct pkt_attrib *pattrib)
 			else
 				DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
 		}
-	} else if(Adapter->phy.current_chan_bw== CHANNEL_WIDTH_40) {
+	} else if(rtlpriv->phy.current_chan_bw== CHANNEL_WIDTH_40) {
 		/*
 		 * DBG_871X("SCMapping: HT Case: pHalData->CurrentChannelBW %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur40MhzPrimeSC);
 		 */
@@ -1672,7 +1672,7 @@ static void process_rssi(struct rtl_priv *padapter,struct recv_frame *prframe)
 		signal_stat->avg_val = signal_stat->total_val / signal_stat->total_num;
 	#else //CONFIG_NEW_SIGNAL_STAT_PROCESS
 
-		//Adapter->RxStats.RssiCalculateCnt++;	//For antenna Test
+		//rtlpriv->RxStats.RssiCalculateCnt++;	//For antenna Test
 		if(padapter->recvpriv.signal_strength_data.total_num++ >= PHY_RSSI_SLID_WIN_MAX)
 		{
 			padapter->recvpriv.signal_strength_data.total_num = PHY_RSSI_SLID_WIN_MAX;
@@ -1779,7 +1779,7 @@ static void process_phy_info(struct rtl_priv *padapter, struct recv_frame *precv
 	//
 	//process_PWDB(padapter, precvframe);
 
-	//UpdateRxSignalStatistics8192C(Adapter, pRfd);
+	//UpdateRxSignalStatistics8192C(rtlpriv, pRfd);
 	//
 	// Check EVM
 	//

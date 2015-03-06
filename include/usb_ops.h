@@ -83,9 +83,9 @@ enum RTW_USB_SPEED {
 	RTW_USB_SPEED_3		= 3,
 };
 
-#define IS_FULL_SPEED_USB(Adapter)	(rtl_usbdev(Adapter)->usb_speed == RTW_USB_SPEED_1_1)
-#define IS_HIGH_SPEED_USB(Adapter)	(rtl_usbdev(Adapter)->usb_speed == RTW_USB_SPEED_2)
-#define IS_SUPER_SPEED_USB(Adapter)	(rtl_usbdev(Adapter)->usb_speed == RTW_USB_SPEED_3)
+#define IS_FULL_SPEED_USB(rtlpriv)	(rtl_usbdev(rtlpriv)->usb_speed == RTW_USB_SPEED_1_1)
+#define IS_HIGH_SPEED_USB(rtlpriv)	(rtl_usbdev(rtlpriv)->usb_speed == RTW_USB_SPEED_2)
+#define IS_SUPER_SPEED_USB(rtlpriv)	(rtl_usbdev(rtlpriv)->usb_speed == RTW_USB_SPEED_3)
 
 #define USB_SUPER_SPEED_BULK_SIZE	1024	// usb 3.0
 #define USB_HIGH_SPEED_BULK_SIZE	512		// usb 2.0

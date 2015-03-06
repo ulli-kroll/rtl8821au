@@ -8,11 +8,11 @@
 #define RTL8812_EX_MESSAGE_BOX_SIZE	4
 
 
-static BOOLEAN Get_RA_ShortGI(struct rtl_priv *Adapter, struct sta_info	*psta,
+static BOOLEAN Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
 	uint8_t	shortGIrate)
 {
 	BOOLEAN		bShortGI;
-	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
 	bShortGI = shortGIrate;
@@ -310,16 +310,16 @@ void rtl8812_set_raid_cmd(struct rtl_priv *padapter, uint32_t bitmap, uint8_t *a
  * Retrun value: the page number.
  * 2012.08.09, by tynli.
  */
-u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *Adapter, BOOLEAN	bWoWLANBoundary)
+u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *rtlpriv, BOOLEAN	bWoWLANBoundary)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(Adapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	RsvdPageNum = 0;
 	uint8_t	TxPageBndy = LAST_ENTRY_OF_TX_PKT_BUFFER_8812; /* default reseved 1 page for the IC type which is undefined. */
 
 	if (bWoWLANBoundary) {
-		rtw_hal_get_def_var(Adapter, HAL_DEF_TX_PAGE_BOUNDARY_WOWLAN, (uint8_t *)&TxPageBndy);
+		rtw_hal_get_def_var(rtlpriv, HAL_DEF_TX_PAGE_BOUNDARY_WOWLAN, (uint8_t *)&TxPageBndy);
 	} else {
-		rtw_hal_get_def_var(Adapter, HAL_DEF_TX_PAGE_BOUNDARY, (uint8_t *)&TxPageBndy);
+		rtw_hal_get_def_var(rtlpriv, HAL_DEF_TX_PAGE_BOUNDARY, (uint8_t *)&TxPageBndy);
 	}
 
 	RsvdPageNum = LAST_ENTRY_OF_TX_PKT_BUFFER_8812 - TxPageBndy + 1;
@@ -758,7 +758,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		usb_write8(padapter, REG_BCN_CTRL, usb_read8(padapter, REG_BCN_CTRL)|BIT(4));
 
 		if (pHalData->RegFwHwTxQCtrl&BIT6) {
-			DBG_871X("HalDownloadRSVDPage(): There is an Adapter is sending beacon.\n");
+			DBG_871X("HalDownloadRSVDPage(): There is an rtlpriv is sending beacon.\n");
 			bSendBeacon = _TRUE;
 		}
 
@@ -856,7 +856,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus)
 		if (bcn_valid) {
 			rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
 			DBG_871X("Set RSVD page location to Fw.\n");
-			/* FillH2CCmd88E(Adapter, H2C_88E_RSVDPAGE, H2C_RSVDPAGE_LOC_LENGTH, pMgntInfo->u1RsvdPageLoc); */
+			/* FillH2CCmd88E(rtlpriv, H2C_88E_RSVDPAGE, H2C_RSVDPAGE_LOC_LENGTH, pMgntInfo->u1RsvdPageLoc); */
 		}
 
 		/*  Do not enable HW DMA BCN or it will cause Pcie interface hang by timing issue. 2011.11.24. by tynli. */

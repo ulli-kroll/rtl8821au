@@ -169,62 +169,62 @@ PHY_CalculateBitShift(
 
 u32
 PHY_RFShadowRead(
-	IN	struct rtl_priv *	Adapter,
+	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
 VOID
 PHY_RFShadowWrite(
-	IN	struct rtl_priv *	Adapter,
+	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
 	IN	u32				Data);
 
 BOOLEAN
 PHY_RFShadowCompare(
-	IN	struct rtl_priv *	Adapter,
+	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
 VOID
 PHY_RFShadowRecorver(
-	IN	struct rtl_priv *	Adapter,
+	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
 VOID
 PHY_RFShadowCompareAll(
-	IN	struct rtl_priv *	Adapter);
+	IN	struct rtl_priv *	rtlpriv);
 
 VOID
 PHY_RFShadowRecorverAll(
-	IN	struct rtl_priv *	Adapter);
+	IN	struct rtl_priv *	rtlpriv);
 
 VOID
 PHY_RFShadowCompareFlagSet(
-	IN	struct rtl_priv *	Adapter,
+	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
 	IN	uint8_t				Type);
 
 VOID
 PHY_RFShadowRecorverFlagSet(
-	IN	struct rtl_priv *	Adapter,
+	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
 	IN	uint8_t				Type);
 
 VOID
 PHY_RFShadowCompareFlagSetAll(
-	IN	struct rtl_priv *	Adapter);
+	IN	struct rtl_priv *	rtlpriv);
 
 VOID
 PHY_RFShadowRecorverFlagSetAll(
-	IN	struct rtl_priv *	Adapter);
+	IN	struct rtl_priv *	rtlpriv);
 
 VOID
 PHY_RFShadowRefresh(
-	IN	struct rtl_priv *	Adapter);
+	IN	struct rtl_priv *	rtlpriv);
 
 #endif //__HAL_COMMON_H__
 

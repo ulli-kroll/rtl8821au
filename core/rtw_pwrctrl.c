@@ -452,9 +452,9 @@ _func_exit_;
 // Description: Leave all power save mode: LPS, FwLPS, IPS if needed.
 // Move code to function by tynli. 2010.03.26.
 //
-void LeaveAllPowerSaveMode(IN struct rtl_priv *Adapter)
+void LeaveAllPowerSaveMode(IN struct rtl_priv *rtlpriv)
 {
-	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
+	struct mlme_priv	*pmlmepriv = &(rtlpriv->mlmepriv);
 	uint8_t	enqueue = 0;
 
 _func_enter_;
@@ -463,14 +463,14 @@ _func_enter_;
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
 	{ //connect
 #ifdef CONFIG_LPS
-		rtw_lps_ctrl_wk_cmd(Adapter, LPS_CTRL_LEAVE, enqueue);
+		rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_LEAVE, enqueue);
 #endif
 
 	} else {
-		if(Adapter->pwrctrlpriv.rf_pwrstate== rf_off) {
+		if(rtlpriv->pwrctrlpriv.rf_pwrstate== rf_off) {
 #ifdef CONFIG_AUTOSUSPEND
-			if(Adapter->registrypriv.usbss_enable) 	{
-				usb_disable_autosuspend(rtl_usbdev(Adapter)->pusbdev);
+			if(rtlpriv->registrypriv.usbss_enable) 	{
+				usb_disable_autosuspend(rtl_usbdev(rtlpriv)->pusbdev);
 			} else
 #endif
 			{

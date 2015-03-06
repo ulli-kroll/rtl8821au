@@ -24,7 +24,7 @@
 /*--------------------------Define Parameters-------------------------------*/
 #define LOOP_LIMIT				5
 #define MAX_STALL_TIME			50		//us
-#define AntennaDiversityValue	0x80	//(Adapter->bSoftwareAntennaDiversity ? 0x00:0x80)
+#define AntennaDiversityValue	0x80	//(rtlpriv->bSoftwareAntennaDiversity ? 0x00:0x80)
 #define MAX_TXPWR_IDX_NMODE_92S	63
 #define Reset_Cnt_Limit			3
 
@@ -54,19 +54,19 @@
 //
 // BB and RF register read/write
 //
-u32 PHY_QueryRFReg8812(struct rtl_priv *Adapter, u32 eRFPath, u32 RegAddr, 
+u32 PHY_QueryRFReg8812(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, 
 	u32 BitMask);
-void PHY_SetRFReg8812(struct rtl_priv *Adapter, u32 eRFPath, u32 RegAddr, 
+void PHY_SetRFReg8812(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, 
 	u32 BitMask, u32 Data);
 
 //
 // Initialization related function
 //
 /* MAC/BB/RF HAL config */
-void	PHY_MACConfig8812(IN struct rtl_priv *Adapter	);
-int	PHY_BBConfig8812(IN struct rtl_priv *Adapter	);
-void	PHY_BB8812_Config_1T(IN struct rtl_priv *Adapter );
-int	PHY_RFConfig8812(IN struct rtl_priv *Adapter	);
+void	PHY_MACConfig8812(IN struct rtl_priv *rtlpriv	);
+int	PHY_BBConfig8812(IN struct rtl_priv *rtlpriv	);
+void	PHY_BB8812_Config_1T(IN struct rtl_priv *rtlpriv );
+int	PHY_RFConfig8812(IN struct rtl_priv *rtlpriv	);
 
 
 /* RF config */
@@ -75,7 +75,7 @@ int	PHY_RFConfig8812(IN struct rtl_priv *Adapter	);
 // BB TX Power R/W
 //
 
-void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *Adapter, IN uint8_t	Channel	);
+void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *rtlpriv, IN uint8_t	Channel	);
 u32 PHY_GetTxPowerIndex_8812A(
 	IN	struct rtl_priv *		rtlpriv,
 	IN	uint8_t					RFPath,
@@ -85,7 +85,7 @@ u32 PHY_GetTxPowerIndex_8812A(
 	);
 
 u32 PHY_GetTxBBSwing_8812A(
-	IN	struct rtl_priv *Adapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	BAND_TYPE 	Band,
 	IN	uint8_t			RFPath
 	);
@@ -105,14 +105,14 @@ PHY_SetBWMode8812(
 //
 VOID
 PHY_SwChnl8812(
-	IN	struct rtl_priv *Adapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	uint8_t			channel
 );
 
 
 VOID
 PHY_SetSwChnlBWMode8812(
-	IN	struct rtl_priv *		Adapter,
+	IN	struct rtl_priv *		rtlpriv,
 	IN	uint8_t					channel,
 	IN	enum CHANNEL_WIDTH		Bandwidth,
 	IN	uint8_t					Offset40,
@@ -125,7 +125,7 @@ PHY_SetSwChnlBWMode8812(
 
 VOID
 storePwrIndexDiffRateOffset(
-	IN	struct rtl_priv *Adapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	u32		RegAddr,
 	IN	u32		BitMask,
 	IN	u32		Data

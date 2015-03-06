@@ -949,8 +949,8 @@ _func_enter_;
 	if (bgroup == _TRUE) {
 		encryptionalgo= padapter->securitypriv.dot118021XGrpPrivacy;
 		// clear group key by index
-		//NdisZeroMemory(Adapter->MgntInfo.SecurityInfo.KeyBuf[keyIndex], MAX_WEP_KEY_LEN);
-		//Adapter->MgntInfo.SecurityInfo.KeyLen[keyIndex] = 0;
+		//NdisZeroMemory(rtlpriv->MgntInfo.SecurityInfo.KeyBuf[keyIndex], MAX_WEP_KEY_LEN);
+		//rtlpriv->MgntInfo.SecurityInfo.KeyLen[keyIndex] = 0;
 
 		memset(&padapter->securitypriv.dot118021XGrpKey[keyIndex], 0, 16);
 

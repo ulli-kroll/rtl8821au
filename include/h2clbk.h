@@ -22,11 +22,11 @@
 #define _H2CLBK_H_
 
 
-void _lbk_cmd(struct rtl_priv *Adapter);
+void _lbk_cmd(struct rtl_priv *rtlpriv);
 
-void _lbk_rsp(struct rtl_priv *Adapter);
+void _lbk_rsp(struct rtl_priv *rtlpriv);
 
-void _lbk_evt(IN struct rtl_priv *Adapter);
+void _lbk_evt(IN struct rtl_priv *rtlpriv);
 
 void h2c_event_callback(unsigned char *dev, unsigned char *pbuf);
 

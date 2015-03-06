@@ -22,7 +22,7 @@
 
 VOID
 PHY_RF6052SetOFDMTxPower8812(
-	IN	struct rtl_priv *Adapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	u8*			pPowerLevelOFDM,
 	IN	u8*			pPowerLevelBW20,
 	IN	u8*			pPowerLevelBW40,

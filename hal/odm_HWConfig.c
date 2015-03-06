@@ -30,7 +30,7 @@
 
 void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type ConfigType)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->Adapter);
+	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigBBWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));

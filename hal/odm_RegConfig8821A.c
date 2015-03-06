@@ -50,7 +50,7 @@ void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 void odm_ConfigBB_AGC_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
-	rtl_set_bbreg(pDM_Odm->Adapter, Addr, Bitmask, Data);
+	rtl_set_bbreg(pDM_Odm->rtlpriv, Addr, Bitmask, Data);
 	/* Add 1us delay between BB/RF register setting. */
 	udelay(1);
 
@@ -75,7 +75,7 @@ void odm_ConfigBB_PHY_REG_PG_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("===> @@@@@@@ ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X %08X\n", Addr, Bitmask, Data));
 
-	storePwrIndexDiffRateOffset(pDM_Odm->Adapter, Addr, Bitmask, Data);
+	storePwrIndexDiffRateOffset(pDM_Odm->rtlpriv, Addr, Bitmask, Data);
 
 }
 
@@ -96,7 +96,7 @@ void odm_ConfigBB_PHY_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 		udelay(1);
 	else if (Addr == 0xa24)
 		pDM_Odm->RFCalibrateInfo.RegA24 = Data;
-	rtl_set_bbreg(pDM_Odm->Adapter, Addr, Bitmask, Data);
+	rtl_set_bbreg(pDM_Odm->rtlpriv, Addr, Bitmask, Data);
 
 	/* Add 1us delay between BB/RF register setting. */
 	udelay(1);

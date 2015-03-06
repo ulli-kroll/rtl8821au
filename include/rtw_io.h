@@ -287,7 +287,7 @@ extern void free_io_queue(struct rtl_priv *adapter);
 extern void async_bus_io(struct io_queue *pio_q);
 extern void bus_sync_io(struct io_queue *pio_q);
 extern u32 _ioreq2rwmem(struct io_queue *pio_q);
-extern void dev_power_down(struct rtl_priv * Adapter, uint8_t bpwrup);
+extern void dev_power_down(struct rtl_priv * rtlpriv, uint8_t bpwrup);
 
 /*
 #define RTL_R8(reg)		rtw_read8(padapter, reg)

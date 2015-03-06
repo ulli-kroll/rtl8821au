@@ -216,10 +216,10 @@ void eeprom_write16(struct rtl_priv * padapter, u16 reg, u16 data)
 // Commented out by rcnjko, 2004.0
 //	// Erase this particular word.  Write the erase opcode and register
 //	// number in that order. The opcode is 3bits in length; reg is 6 bits long.
-//	shift_out_bits(Adapter, EEPROM_ERASE_OPCODE, 3);
-//	shift_out_bits(Adapter, reg, Adapter->EepromAddressSize);
+//	shift_out_bits(rtlpriv, EEPROM_ERASE_OPCODE, 3);
+//	shift_out_bits(rtlpriv, reg, rtlpriv->EepromAddressSize);
 //
-//	if (wait_eeprom_cmd_done(Adapter ) == FALSE)
+//	if (wait_eeprom_cmd_done(rtlpriv ) == FALSE)
 //	{
 //		return;
 //	}

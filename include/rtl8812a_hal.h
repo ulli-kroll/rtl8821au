@@ -255,7 +255,7 @@ typedef enum _TX_PWR_PERCENTAGE{
 
 // rtl8812_hal_init.c
 void	_8051Reset8812(struct rtl_priv *rtlpriv);
-int32_t	FirmwareDownload8812(struct rtl_priv *Adapter, BOOLEAN bUsedWoWLANFw);
+int32_t	FirmwareDownload8812(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw);
 void	InitializeFirmwareVars8812(struct rtl_priv *rtlpriv);
 
 int32_t	InitLLTTable8812(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy);
@@ -270,17 +270,17 @@ void	Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo);
 void	Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
 void	Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN	AutoLoadFail);
 void	Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN AutoLoadFail);
-void	Hal_ReadThermalMeter_8812A(struct rtl_priv *Adapter,u8* PROMContent,BOOLEAN 	AutoloadFail);
+void	Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv,u8* PROMContent,BOOLEAN 	AutoloadFail);
 void	Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
 void	Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN AutoLoadFail);
 void	Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv,u8* PROMContent,BOOLEAN AutoLoadFail);
-void	Hal_ReadPAType_8812A(struct rtl_priv *Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
-void	Hal_ReadPAType_8821A(struct rtl_priv *Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
-void	Hal_ReadRFEType_8812A(struct rtl_priv *Adapter,u8* PROMContent, BOOLEAN AutoloadFail);
-void	Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *Adapter, u8* hwinfo, BOOLEAN AutoLoadFail);
-void	hal_ReadUsbType_8812AU(struct rtl_priv *Adapter, uint8_t *PROMContent, BOOLEAN AutoloadFail);
+void	Hal_ReadPAType_8812A(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
+void	Hal_ReadPAType_8821A(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
+void	Hal_ReadRFEType_8812A(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
+void	Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *rtlpriv, u8* hwinfo, BOOLEAN AutoLoadFail);
+void	hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent, BOOLEAN AutoloadFail);
 
-BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *Adapter);
+BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *rtlpriv);
 
 
 void _InitBeaconParameters_8812A(struct rtl_priv *rtlpriv);

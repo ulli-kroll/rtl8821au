@@ -98,19 +98,19 @@ hal_com_get_channel_plan(
 
 BOOLEAN
 HAL_IsLegalChannel(
-	IN	struct rtl_priv *Adapter,
+	IN	struct rtl_priv *rtlpriv,
 	IN	uint32_t			Channel
 	)
 {
 	BOOLEAN bLegalChannel = _TRUE;
 
 	if (Channel > 14) {
-		if(IsSupported5G(Adapter->registrypriv.wireless_mode) == _FALSE) {
+		if(IsSupported5G(rtlpriv->registrypriv.wireless_mode) == _FALSE) {
 			bLegalChannel = _FALSE;
 			DBG_871X("Channel > 14 but wireless_mode do not support 5G\n");
 		}
 	} else if ((Channel <= 14) && (Channel >=1)){
-		if(IsSupported24G(Adapter->registrypriv.wireless_mode) == _FALSE) {
+		if(IsSupported24G(rtlpriv->registrypriv.wireless_mode) == _FALSE) {
 			bLegalChannel = _FALSE;
 			DBG_871X("(Channel <= 14) && (Channel >=1) but wireless_mode do not support 2.4G\n");
 		}
@@ -159,7 +159,7 @@ uint8_t	MRateToHwRate(uint8_t rate)
 }
 
 void	HalSetBrateCfg(
-	IN struct rtl_priv *	Adapter,
+	IN struct rtl_priv *	rtlpriv,
 	IN uint8_t			*mBratesOS,
 	OUT u16			*pBrateCfg)
 {

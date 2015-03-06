@@ -461,13 +461,13 @@ static void rtw_hal_fill_fake_txdesc (struct rtl_priv *rtlpriv, u8 *pDesc,
 
 /*Only for transition between old (RTW) and new (rtlwifi-lib) API */
 
-uint32_t rtl8812au_hal_init(struct rtl_priv *Adapter);
-uint32_t rtl8812au_hal_deinit(struct rtl_priv *Adapter);
-unsigned int rtl8812au_inirp_init(struct rtl_priv *Adapter);
-unsigned int rtl8812au_inirp_deinit(struct rtl_priv *Adapter);
+uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv);
+uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv);
+unsigned int rtl8812au_inirp_init(struct rtl_priv *rtlpriv);
+unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv);
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv);
 void rtl8812au_interface_configure(struct rtl_priv *rtlpriv);
-void ReadAdapterInfo8812AU(struct rtl_priv *Adapter);
+void ReadAdapterInfo8812AU(struct rtl_priv *rtlpriv);
 
 enum hardware_type {
 	HARDWARE_TYPE_RTL8812E,
@@ -931,8 +931,8 @@ struct _rtw_dm {
 	//
 	//	Add for different team use temporarily
 	//
-	struct rtl_priv *	Adapter;		// For CE/NIC team
-	// WHen you use Adapter or priv pointer, you must make sure the pointer is ready.
+	struct rtl_priv *	rtlpriv;		// For CE/NIC team
+	// WHen you use rtlpriv or priv pointer, you must make sure the pointer is ready.
 	BOOLEAN			odm_ready;
 
 	PHY_REG_PG_TYPE		PhyRegPgValueType;

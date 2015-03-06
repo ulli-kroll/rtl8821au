@@ -48,7 +48,7 @@ enum{
 
 
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
-void rtl8812au_set_hw_type(struct rtl_priv *padapter);
+void rtl8812au_set_hw_type(struct rtl_priv *rtlpriv);
 #endif
 /*
 * Increase and check if the continual_urb_error of this @param dvobjprive is larger than MAX_CONTINUAL_URB_ERR
@@ -91,13 +91,13 @@ enum RTW_USB_SPEED {
 #define USB_HIGH_SPEED_BULK_SIZE	512		// usb 2.0
 #define USB_FULL_SPEED_BULK_SIZE	64		// usb 1.1
 
-static inline uint8_t rtw_usb_bulk_size_boundary(struct rtl_priv * padapter,int buf_len)
+static inline uint8_t rtw_usb_bulk_size_boundary(struct rtl_priv * rtlpriv,int buf_len)
 {
 	uint8_t rst = _TRUE;
 
-	if (IS_SUPER_SPEED_USB(padapter))
+	if (IS_SUPER_SPEED_USB(rtlpriv))
 		rst = (0 == (buf_len) % USB_SUPER_SPEED_BULK_SIZE)?_TRUE:_FALSE;
-	if (IS_HIGH_SPEED_USB(padapter))
+	if (IS_HIGH_SPEED_USB(rtlpriv))
 		rst = (0 == (buf_len) % USB_HIGH_SPEED_BULK_SIZE)?_TRUE:_FALSE;
 	else
 		rst = (0 == (buf_len) % USB_FULL_SPEED_BULK_SIZE)?_TRUE:_FALSE;

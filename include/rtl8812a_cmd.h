@@ -89,14 +89,14 @@ struct H2C_SS_RFOFF_PARAM{
 void	Set_RA_LDPC_8812(struct sta_info	*psta, BOOLEAN bLDPC);
 
 // host message to firmware cmd
-void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *padapter, uint8_t PSMode);
-void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *padapter, uint8_t mstatus);
-uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *padapter, uint8_t *param);
-void rtl8812_set_raid_cmd(struct rtl_priv *padapter, u32 bitmap, u8* arg);
-void rtl8812_Add_RateATid(struct rtl_priv *padapter, u32 bitmap, u8* arg, uint8_t rssi_level);
+void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode);
+void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus);
+uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param);
+void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg);
+void rtl8812_Add_RateATid(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);
 
-void CheckFwRsvdPageContent(struct rtl_priv *padapter);
-void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *padapter, u16 mstatus_rpt );
+void CheckFwRsvdPageContent(struct rtl_priv *rtlpriv);
+void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *rtlpriv, u16 mstatus_rpt );
 
 #endif//__RTL8188E_CMD_H__
 

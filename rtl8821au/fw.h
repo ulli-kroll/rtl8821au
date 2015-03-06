@@ -38,6 +38,6 @@
 #define SET_8812_H2CCMD_P2P_PS_OFFLOAD_DISCOVERY(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE(__pH2CCmd, 6, 1, __Value)
 
 
-void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *padapter, uint8_t PSMode);
+void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode);
 
 #endif

@@ -143,7 +143,7 @@ extern u32 	rtw_atoi(u8* s);
 extern void rtw_yield_os(void);
 
 
-extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc);
+extern void rtw_init_timer(_timer *ptimer, void *rtlpriv, void *pfunc);
 
 
 __inline static unsigned char _cancel_timer_ex(_timer *ptimer)

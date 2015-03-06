@@ -127,7 +127,7 @@ struct wlan_pwr_cfg {
 //	Prototype of protected function.
 //================================================================================
 uint8_t HalPwrSeqCmdParsing(
-	struct rtl_priv		*padapter,
+	struct rtl_priv		*rtlpriv,
 	uint8_t			CutVersion,
 	uint8_t			FabVersion,
 	uint8_t			InterfaceType,

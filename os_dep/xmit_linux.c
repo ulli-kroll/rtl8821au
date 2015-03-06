@@ -99,7 +99,7 @@ void rtw_set_tx_chksum_offload(struct sk_buff *pkt, struct pkt_attrib *pattrib)
 #endif
 }
 
-int rtw_os_xmit_resource_alloc(struct rtl_priv *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag)
+int rtw_os_xmit_resource_alloc(struct rtl_priv *rtlpriv, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag)
 {
 	if (alloc_sz > 0) {
 		pxmitbuf->pallocated_buf = rtw_zmalloc(alloc_sz);
@@ -124,7 +124,7 @@ int rtw_os_xmit_resource_alloc(struct rtl_priv *padapter, struct xmit_buf *pxmit
 	return _SUCCESS;
 }
 
-void rtw_os_xmit_resource_free(struct rtl_priv *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, uint8_t flag)
+void rtw_os_xmit_resource_free(struct rtl_priv *rtlpriv, struct xmit_buf *pxmitbuf,u32 free_sz, uint8_t flag)
 {
 	if (flag) {
 		int i;
@@ -146,26 +146,26 @@ void rtw_os_xmit_resource_free(struct rtl_priv *padapter, struct xmit_buf *pxmit
 
 #define WMM_XMIT_THRESHOLD	(NR_XMITFRAME*2/5)
 
-void rtw_os_pkt_complete(struct rtl_priv *padapter, struct sk_buff *pkt)
+void rtw_os_pkt_complete(struct rtl_priv *rtlpriv, struct sk_buff *pkt)
 {
 	u16 queue;
-	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 
 	queue = skb_get_queue_mapping(pkt);
-	if (padapter->registrypriv.wifi_spec) {
-		if (__netif_subqueue_stopped(padapter->ndev, queue) &&
+	if (rtlpriv->registrypriv.wifi_spec) {
+		if (__netif_subqueue_stopped(rtlpriv->ndev, queue) &&
 		   (pxmitpriv->hwxmits[queue].accnt < WMM_XMIT_THRESHOLD)) {
-			netif_wake_subqueue(padapter->ndev, queue);
+			netif_wake_subqueue(rtlpriv->ndev, queue);
 		}
 	} else {
-		if(__netif_subqueue_stopped(padapter->ndev, queue))
-			netif_wake_subqueue(padapter->ndev, queue);
+		if(__netif_subqueue_stopped(rtlpriv->ndev, queue))
+			netif_wake_subqueue(rtlpriv->ndev, queue);
 	}
 
 	dev_kfree_skb_any(pkt);
 }
 
-void rtw_os_xmit_complete(struct rtl_priv *padapter, struct xmit_frame *pxframe)
+void rtw_os_xmit_complete(struct rtl_priv *rtlpriv, struct xmit_frame *pxframe)
 {
 	if(pxframe->pkt) {
 		/*
@@ -173,58 +173,58 @@ void rtw_os_xmit_complete(struct rtl_priv *padapter, struct xmit_frame *pxframe)
 		 *
 		 * dev_kfree_skb_any(pxframe->pkt);
 		 */
-		rtw_os_pkt_complete(padapter, pxframe->pkt);
+		rtw_os_pkt_complete(rtlpriv, pxframe->pkt);
 	}
 
 	pxframe->pkt = NULL;
 }
 
-void rtw_os_xmit_schedule(struct rtl_priv *padapter)
+void rtw_os_xmit_schedule(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *pri_adapter = padapter;
+	struct rtl_priv *pri_adapter = rtlpriv;
 
 	_irqL  irqL;
 	struct xmit_priv *pxmitpriv;
 
-	if(!padapter)
+	if(!rtlpriv)
 		return;
 
-	pxmitpriv = &padapter->xmitpriv;
+	pxmitpriv = &rtlpriv->xmitpriv;
 
 	_enter_critical_bh(&pxmitpriv->lock, &irqL);
 
-	if(rtw_txframes_pending(padapter)) {
+	if(rtw_txframes_pending(rtlpriv)) {
 		tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
 	}
 
 	_exit_critical_bh(&pxmitpriv->lock, &irqL);
 }
 
-static void rtw_check_xmit_resource(struct rtl_priv *padapter, struct sk_buff *pkt)
+static void rtw_check_xmit_resource(struct rtl_priv *rtlpriv, struct sk_buff *pkt)
 {
-	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	u16	queue;
 
 	queue = skb_get_queue_mapping(pkt);
-	if (padapter->registrypriv.wifi_spec) {
+	if (rtlpriv->registrypriv.wifi_spec) {
 		/* No free space for Tx, tx_worker is too slow */
 		if (pxmitpriv->hwxmits[queue].accnt > WMM_XMIT_THRESHOLD) {
 			/* DBG_871X("%s(): stop netif_subqueue[%d]\n", __FUNCTION__, queue); */
-			netif_stop_subqueue(padapter->ndev, queue);
+			netif_stop_subqueue(rtlpriv->ndev, queue);
 		}
 	} else {
 		if(pxmitpriv->free_xmitframe_cnt<=4) {
-			if (!netif_tx_queue_stopped(netdev_get_tx_queue(padapter->ndev, queue)))
-				netif_stop_subqueue(padapter->ndev, queue);
+			if (!netif_tx_queue_stopped(netdev_get_tx_queue(rtlpriv->ndev, queue)))
+				netif_stop_subqueue(rtlpriv->ndev, queue);
 		}
 	}
 }
 
 #ifdef CONFIG_TX_MCAST2UNI
-int rtw_mlcst2unicst(struct rtl_priv *padapter, struct sk_buff *skb)
+int rtw_mlcst2unicst(struct rtl_priv *rtlpriv, struct sk_buff *skb)
 {
-	struct	sta_priv *pstapriv = &padapter->stapriv;
-	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
+	struct	sta_priv *pstapriv = &rtlpriv->stapriv;
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	_irqL	irqL;
 	struct list_head	*phead, *plist;
 	struct sk_buff *newskb;
@@ -270,7 +270,7 @@ int rtw_mlcst2unicst(struct rtl_priv *padapter, struct sk_buff *skb)
 
 		if (newskb) {
 			memcpy(newskb->data, psta->hwaddr, 6);
-			res = rtw_xmit(padapter, &newskb);
+			res = rtw_xmit(rtlpriv, &newskb);
 			if (res < 0) {
 				DBG_871X("%s()-%d: rtw_xmit() return error!\n", __FUNCTION__, __LINE__);
 				pxmitpriv->tx_drop++;
@@ -293,31 +293,31 @@ int rtw_mlcst2unicst(struct rtl_priv *padapter, struct sk_buff *skb)
 
 int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 {
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 #ifdef CONFIG_TX_MCAST2UNI
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
+	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	extern int rtw_mc2u_disable;
 #endif
 	int32_t res = 0;
 	u16 queue;
 
-	if (rtw_if_up(padapter) == _FALSE) {
+	if (rtw_if_up(rtlpriv) == _FALSE) {
 		goto drop_packet;
 	}
 
-	rtw_check_xmit_resource(padapter, pkt);
+	rtw_check_xmit_resource(rtlpriv, pkt);
 
 #ifdef CONFIG_TX_MCAST2UNI
 	if ( !rtw_mc2u_disable
 		&& check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE
 		&& ( IP_MCAST_MAC(pkt->data)
 			|| ICMPV6_MCAST_MAC(pkt->data) )
-		&& (padapter->registrypriv.wifi_spec == 0)
+		&& (rtlpriv->registrypriv.wifi_spec == 0)
 		)
 	{
 		if ( pxmitpriv->free_xmitframe_cnt > (NR_XMITFRAME/4) ) {
-			res = rtw_mlcst2unicst(padapter, pkt);
+			res = rtw_mlcst2unicst(rtlpriv, pkt);
 			if (res == _TRUE) {
 				goto exit;
 			}
@@ -330,7 +330,7 @@ int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 	}
 #endif
 
-	res = rtw_xmit(padapter, &pkt);
+	res = rtw_xmit(rtlpriv, &pkt);
 	if (res < 0) {
 		goto drop_packet;
 	}

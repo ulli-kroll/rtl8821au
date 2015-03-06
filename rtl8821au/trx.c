@@ -27,10 +27,10 @@ static void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 	SET_TX_DESC_TX_DESC_CHECKSUM(ptxdesc, checksum);
 }
 
-void rtl8821au_fill_fake_txdesc(struct rtl_priv *padapter, uint8_t *pDesc,
+void rtl8821au_fill_fake_txdesc(struct rtl_priv *rtlpriv, uint8_t *pDesc,
 	uint32_t BufferLen, uint8_t IsPsPoll, uint8_t IsBTQosNull)
 {
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 
 	/* Clear all status */
 	memset(pDesc, 0, TXDESC_SIZE);
@@ -106,20 +106,20 @@ static void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, uint8_t *pt
 }
 
 
-static void rtl8812a_fill_txdesc_phy(struct rtl_priv *padapter, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
+static void rtl8812a_fill_txdesc_phy(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
 	/* DBG_8192C("bwmode=%d, ch_off=%d\n", pattrib->bwmode, pattrib->ch_offset); */
 
 	if (pattrib->ht_en) {
 		/*  Set Bandwidth and sub-channel settings. */
-		SET_TX_DESC_DATA_BW(ptxdesc, BWMapping_8812(padapter,pattrib));
-		/* SET_TX_DESC_DATA_SC(ptxdesc, SCMapping_8812(padapter,pattrib)); */
+		SET_TX_DESC_DATA_BW(ptxdesc, BWMapping_8812(rtlpriv,pattrib));
+		/* SET_TX_DESC_DATA_SC(ptxdesc, SCMapping_8812(rtlpriv,pattrib)); */
 	}
 }
 
-static void rtl8812a_fill_txdesc_vcs(struct rtl_priv *padapter, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
+static void rtl8812a_fill_txdesc_vcs(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
 	//DBG_8192C("vcs_mode=%d\n", pattrib->vcs_mode);
@@ -155,19 +155,19 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	int	pull = 0;
 	uint	qsel;
 	uint8_t data_rate, pwr_status, offset;
-	struct rtl_priv *padapter = pxmitframe->padapter;
-	struct rtl_hal *rtlhal = rtl_hal(padapter);
-	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
+	struct rtl_priv *rtlpriv = pxmitframe->rtlpriv;
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	uint8_t	*ptxdesc =  pmem;
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	sint	bmcst = IS_MCAST(pattrib->ra);
 
-	if (padapter->registrypriv.mp_mode == 0) {
-		if ((!bagg_pkt) && (rtw_usb_bulk_size_boundary(padapter, TXDESC_SIZE+sz) == _FALSE)) {
+	if (rtlpriv->registrypriv.mp_mode == 0) {
+		if ((!bagg_pkt) && (rtw_usb_bulk_size_boundary(rtlpriv, TXDESC_SIZE+sz) == _FALSE)) {
 			ptxdesc = (pmem+PACKET_OFFSET_SZ);
 			/* DBG_8192C("==> non-agg-pkt,shift pointer...\n"); */
 			pull = 1;
@@ -193,7 +193,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 		SET_TX_DESC_BMC(ptxdesc, 1);
 	}
 
-	if (padapter->registrypriv.mp_mode == 0) {
+	if (rtlpriv->registrypriv.mp_mode == 0) {
 		if (!bagg_pkt) {
 			if ((pull) && (pxmitframe->pkt_offset > 0)) {
 				pxmitframe->pkt_offset = pxmitframe->pkt_offset - 1;
@@ -235,7 +235,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 		}
 #endif
 
-		rtl8812a_fill_txdesc_vcs(padapter, pattrib, ptxdesc);
+		rtl8812a_fill_txdesc_vcs(rtlpriv, pattrib, ptxdesc);
 
 		if ((pattrib->ether_type != 0x888e) &&
 		    (pattrib->ether_type != 0x0806) &&
@@ -252,7 +252,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 				SET_TX_DESC_AGG_BREAK(ptxdesc, 1);
 			}
 
-			rtl8812a_fill_txdesc_phy(padapter, pattrib, ptxdesc);
+			rtl8812a_fill_txdesc_phy(rtlpriv, pattrib, ptxdesc);
 
 			/* DATA  Rate FB LMT */
 			SET_TX_DESC_DATA_RATE_FB_LIMIT(ptxdesc, 0x1f);
@@ -266,12 +266,12 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 				SET_TX_DESC_TX_RATE(ptxdesc, (pdmpriv->INIDATA_RATE[pattrib->mac_id] & 0x7F));
 			}
 
-			if (padapter->fix_rate != 0xFF) { 	/* modify data rate by iwpriv */
+			if (rtlpriv->fix_rate != 0xFF) { 	/* modify data rate by iwpriv */
 				SET_TX_DESC_USE_RATE(ptxdesc, 1);
-				if (padapter->fix_rate & BIT(7))
+				if (rtlpriv->fix_rate & BIT(7))
 					SET_TX_DESC_DATA_SHORT(ptxdesc, 	1);
 
-				SET_TX_DESC_TX_RATE(ptxdesc, (padapter->fix_rate & 0x7F));
+				SET_TX_DESC_TX_RATE(ptxdesc, (rtlpriv->fix_rate & 0x7F));
 			}
 
 			if (pattrib->ldpc)
@@ -324,7 +324,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	}
 
 	rtl8812a_cal_txdesc_chksum(ptxdesc);
-	_dbg_dump_tx_info(padapter, pxmitframe->frame_tag, ptxdesc);
+	_dbg_dump_tx_info(rtlpriv, pxmitframe->frame_tag, ptxdesc);
 	return pull;
 }
 
@@ -332,7 +332,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 
 
 /* for non-agg data frame or  management frame */
-static int32_t rtw_dump_xframe(struct rtl_priv *padapter, struct xmit_frame *pxmitframe)
+static int32_t rtw_dump_xframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
 	int32_t ret = _SUCCESS;
 	int32_t inner_ret = _SUCCESS;
@@ -341,15 +341,15 @@ static int32_t rtw_dump_xframe(struct rtl_priv *padapter, struct xmit_frame *pxm
 	uint32_t ff_hwaddr;
 	struct xmit_buf *pxmitbuf = pxmitframe->pxmitbuf;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
-	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
-	struct security_priv *psecuritypriv = &padapter->securitypriv;
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
+	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
 #ifdef CONFIG_80211N_HT
 	if ((pxmitframe->frame_tag == DATA_FRAMETAG) &&
 	    (pxmitframe->attrib.ether_type != 0x0806) &&
 	    (pxmitframe->attrib.ether_type != 0x888e) &&
 	    (pxmitframe->attrib.ether_type != 0x88b4) &&
 	    (pxmitframe->attrib.dhcp_pkt != 1)) {
-		rtw_issue_addbareq_cmd(padapter, pxmitframe);
+		rtw_issue_addbareq_cmd(rtlpriv, pxmitframe);
 	}
 #endif
 	mem_addr = pxmitframe->buf_addr;
@@ -381,9 +381,9 @@ static int32_t rtw_dump_xframe(struct rtl_priv *padapter, struct xmit_frame *pxm
 
 		ff_hwaddr = rtw_get_ff_hwaddr(pxmitframe);
 
-		inner_ret = usb_write_port(padapter, ff_hwaddr, w_sz, pxmitbuf);
+		inner_ret = usb_write_port(rtlpriv, ff_hwaddr, w_sz, pxmitbuf);
 
-		rtw_count_tx_stats(padapter, pxmitframe, sz);
+		rtw_count_tx_stats(rtlpriv, pxmitframe, sz);
 
 		/* DBG_8192C("rtw_write_port, w_sz=%d, sz=%d, txdesc_sz=%d, tid=%d\n", w_sz, sz, w_sz-sz, pattrib->priority); */
 
@@ -421,9 +421,9 @@ static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 }
 
 #define IDEA_CONDITION 1	/* check all packets before enqueue */
-int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
+int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct xmit_frame *pxmitframe = NULL;
 	struct xmit_frame *pfirstframe = NULL;
 
@@ -495,14 +495,14 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 		pxmitframe->agg_num = 1; 	/* alloc xmitframe should assign to 1. */
 		pxmitframe->pkt_offset = 1; 	/* first frame of aggregation, reserve offset */
 
-		if (rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe) == _FALSE) {
+		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe) == _FALSE) {
 			DBG_871X("%s coalesce 1st xmitframe failed \n", __FUNCTION__);
 			continue;
 		}
 
 
 		/* always return ndis_packet after rtw_xmitframe_coalesce */
-		rtw_os_xmit_complete(padapter, pxmitframe);
+		rtw_os_xmit_complete(rtlpriv, pxmitframe);
 
 		break;
 	} while (1);
@@ -600,7 +600,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 		/* pxmitframe->pxmitbuf = pxmitbuf; */
 		pxmitframe->buf_addr = pxmitbuf->pbuf + pbuf;
 
-		if (rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe) == _FALSE) {
+		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe) == _FALSE) {
 			DBG_871X("%s coalesce failed \n", __FUNCTION__);
 			rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			continue;
@@ -610,7 +610,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 		 * DBG_8192C("==> pxmitframe->attrib.priority:%d\n",pxmitframe->attrib.priority);
 		 * always return ndis_packet after rtw_xmitframe_coalesce
 		 */
-		rtw_os_xmit_complete(padapter, pxmitframe);
+		rtw_os_xmit_complete(rtlpriv, pxmitframe);
 
 		/* (len - TXDESC_SIZE) == pxmitframe->attrib.last_txcmdsz */
 		update_txdesc(pxmitframe, pxmitframe->buf_addr, pxmitframe->attrib.last_txcmdsz, _TRUE);
@@ -647,7 +647,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 	    (pfirstframe->attrib.ether_type != 0x888e) &&
 	    (pfirstframe->attrib.ether_type != 0x88b4) &&
 	    (pfirstframe->attrib.dhcp_pkt != 1)) {
-		rtw_issue_addbareq_cmd(padapter, pfirstframe);
+		rtw_issue_addbareq_cmd(rtlpriv, pfirstframe);
 	}
 #endif
 	/* 3 3. update first frame txdesc */
@@ -665,7 +665,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 	ff_hwaddr = rtw_get_ff_hwaddr(pfirstframe);
 /* DBG_8192C("%s ===================================== write port,buf_size(%d) \n",__FUNCTION__,pbuf_tail); */
 	/* xmit address == ((xmit_frame*)pxmitbuf->priv_data)->buf_addr */
-	usb_write_port(padapter, ff_hwaddr, pbuf_tail, pxmitbuf);
+	usb_write_port(rtlpriv, ff_hwaddr, pbuf_tail, pxmitbuf);
 
 
 	/* 3 5. update statisitc */
@@ -673,7 +673,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 	pbuf_tail -= (pfirstframe->pkt_offset * PACKET_OFFSET_SZ);
 
 
-	rtw_count_tx_stats(padapter, pfirstframe, pbuf_tail);
+	rtw_count_tx_stats(rtlpriv, pfirstframe, pbuf_tail);
 
 	rtw_free_xmitframe(pxmitpriv, pfirstframe);
 
@@ -682,7 +682,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 
 #else
 
-int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
+int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
 
 	struct hw_xmit *phwxmits;
@@ -714,14 +714,14 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 			if ((pxmitframe->frame_tag&0x0f) == DATA_FRAMETAG) {
 				if (pxmitframe->attrib.priority <= 15) {
 					/* TID0~15 */
-					res = rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe);
+					res = rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe);
 				}
 				/* DBG_8192C("==> pxmitframe->attrib.priority:%d\n",pxmitframe->attrib.priority); */
-				rtw_os_xmit_complete(padapter, pxmitframe);	/* always return ndis_packet after rtw_xmitframe_coalesce */
+				rtw_os_xmit_complete(rtlpriv, pxmitframe);	/* always return ndis_packet after rtw_xmitframe_coalesce */
 			}
 
 			if (res == _SUCCESS) {
-				rtw_dump_xframe(padapter, pxmitframe);
+				rtw_dump_xframe(rtlpriv, pxmitframe);
 			} else {
 				rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 				rtw_free_xmitframe(pxmitpriv, pxmitframe);
@@ -745,14 +745,14 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv
 
 
 
-static int32_t xmitframe_direct(struct rtl_priv *padapter, struct xmit_frame *pxmitframe)
+static int32_t xmitframe_direct(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
 	int32_t res = _SUCCESS;
 	/* DBG_8192C("==> %s \n",__FUNCTION__); */
 
-	res = rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe);
+	res = rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe);
 	if (res == _SUCCESS) {
-		rtw_dump_xframe(padapter, pxmitframe);
+		rtw_dump_xframe(rtlpriv, pxmitframe);
 	} else {
 		DBG_8192C("==> %s xmitframe_coalsece failed\n", __FUNCTION__);
 	}
@@ -765,20 +765,20 @@ static int32_t xmitframe_direct(struct rtl_priv *padapter, struct xmit_frame *px
  *	_TRUE	dump packet directly
  *	_FALSE	enqueue packet
  */
-static int32_t pre_xmitframe(struct rtl_priv *padapter, struct xmit_frame *pxmitframe)
+static int32_t pre_xmitframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
 	_irqL irqL;
 	int32_t res;
 	struct xmit_buf *pxmitbuf = NULL;
-	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
 	_enter_critical_bh(&pxmitpriv->lock, &irqL);
 
 	/* DBG_8192C("==> %s \n",__FUNCTION__); */
 
-	if (rtw_txframes_sta_ac_pending(padapter, pattrib) > 0) {
+	if (rtw_txframes_sta_ac_pending(rtlpriv, pattrib) > 0) {
 		/* DBG_8192C("enqueue AC(%d)\n",pattrib->priority); */
 		goto enqueue;
 	}
@@ -797,7 +797,7 @@ static int32_t pre_xmitframe(struct rtl_priv *padapter, struct xmit_frame *pxmit
 	pxmitframe->buf_addr = pxmitbuf->pbuf;
 	pxmitbuf->priv_data = pxmitframe;
 
-	if (xmitframe_direct(padapter, pxmitframe) != _SUCCESS) {
+	if (xmitframe_direct(rtlpriv, pxmitframe) != _SUCCESS) {
 		rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
 	}
@@ -805,7 +805,7 @@ static int32_t pre_xmitframe(struct rtl_priv *padapter, struct xmit_frame *pxmit
 	return _TRUE;
 
 enqueue:
-	res = rtw_xmitframe_enqueue(padapter, pxmitframe);
+	res = rtw_xmitframe_enqueue(rtlpriv, pxmitframe);
 	_exit_critical_bh(&pxmitpriv->lock, &irqL);
 
 	if (res != _SUCCESS) {
@@ -820,9 +820,9 @@ enqueue:
 	return _FALSE;
 }
 
-int32_t rtl8812au_mgnt_xmit(struct rtl_priv *padapter, struct xmit_frame *pmgntframe)
+int32_t rtl8812au_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe)
 {
-	return rtw_dump_xframe(padapter, pmgntframe);
+	return rtw_dump_xframe(rtlpriv, pmgntframe);
 }
 
 /*
@@ -830,17 +830,17 @@ int32_t rtl8812au_mgnt_xmit(struct rtl_priv *padapter, struct xmit_frame *pmgntf
  *	_TRUE	dump packet directly ok
  *	_FALSE	temporary can't transmit packets to hardware
  */
-int32_t rtl8812au_hal_xmit(struct rtl_priv *padapter, struct xmit_frame *pxmitframe)
+int32_t rtl8812au_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
-	return pre_xmitframe(padapter, pxmitframe);
+	return pre_xmitframe(rtlpriv, pxmitframe);
 }
 
-int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *padapter, struct xmit_frame *pxmitframe)
+int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
-	struct xmit_priv 	*pxmitpriv = &padapter->xmitpriv;
+	struct xmit_priv 	*pxmitpriv = &rtlpriv->xmitpriv;
 	int32_t err;
 
-	err = rtw_xmitframe_enqueue(padapter, pxmitframe);
+	err = rtw_xmitframe_enqueue(rtlpriv, pxmitframe);
 	if (err != _SUCCESS) {
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
@@ -857,11 +857,11 @@ int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *padapter, struct xmit_
 
 }
 
-void _dbg_dump_tx_info(struct rtl_priv	*padapter,int frame_tag, uint8_t *ptxdesc)
+void _dbg_dump_tx_info(struct rtl_priv	*rtlpriv,int frame_tag, uint8_t *ptxdesc)
 {
 	uint8_t bDumpTxPkt;
 	uint8_t bDumpTxDesc = _FALSE;
-	rtw_hal_get_def_var(padapter, HAL_DEF_DBG_DUMP_TXPKT, &(bDumpTxPkt));
+	rtw_hal_get_def_var(rtlpriv, HAL_DEF_DBG_DUMP_TXPKT, &(bDumpTxPkt));
 
 	if(bDumpTxPkt ==1){		/* dump txdesc for data frame */
 		DBG_871X("dump tx_desc for data frame\n");
@@ -1648,12 +1648,12 @@ static int32_t  translate2dbm(uint8_t signal_strength_idx)
 }
 
 
-static void process_rssi(struct rtl_priv *padapter,struct recv_frame *prframe)
+static void process_rssi(struct rtl_priv *rtlpriv,struct recv_frame *prframe)
 {
 	uint32_t	last_rssi, tmp_val;
 	struct rx_pkt_attrib *pattrib = &prframe->attrib;
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
-	struct signal_stat * signal_stat = &padapter->recvpriv.signal_strength_data;
+	struct signal_stat * signal_stat = &rtlpriv->recvpriv.signal_strength_data;
 #endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
 
 	//DBG_8192C("process_rssi=> pattrib->rssil(%d) signal_strength(%d)\n ",pattrib->RecvSignalPower,pattrib->signal_strength);
@@ -1673,30 +1673,30 @@ static void process_rssi(struct rtl_priv *padapter,struct recv_frame *prframe)
 	#else //CONFIG_NEW_SIGNAL_STAT_PROCESS
 
 		//rtlpriv->RxStats.RssiCalculateCnt++;	//For antenna Test
-		if(padapter->recvpriv.signal_strength_data.total_num++ >= PHY_RSSI_SLID_WIN_MAX)
+		if(rtlpriv->recvpriv.signal_strength_data.total_num++ >= PHY_RSSI_SLID_WIN_MAX)
 		{
-			padapter->recvpriv.signal_strength_data.total_num = PHY_RSSI_SLID_WIN_MAX;
-			last_rssi = padapter->recvpriv.signal_strength_data.elements[padapter->recvpriv.signal_strength_data.index];
-			padapter->recvpriv.signal_strength_data.total_val -= last_rssi;
+			rtlpriv->recvpriv.signal_strength_data.total_num = PHY_RSSI_SLID_WIN_MAX;
+			last_rssi = rtlpriv->recvpriv.signal_strength_data.elements[rtlpriv->recvpriv.signal_strength_data.index];
+			rtlpriv->recvpriv.signal_strength_data.total_val -= last_rssi;
 		}
-		padapter->recvpriv.signal_strength_data.total_val  +=pattrib->phy_info.SignalStrength;
+		rtlpriv->recvpriv.signal_strength_data.total_val  +=pattrib->phy_info.SignalStrength;
 
-		padapter->recvpriv.signal_strength_data.elements[padapter->recvpriv.signal_strength_data.index++] = pattrib->phy_info.SignalStrength;
-		if(padapter->recvpriv.signal_strength_data.index >= PHY_RSSI_SLID_WIN_MAX)
-			padapter->recvpriv.signal_strength_data.index = 0;
+		rtlpriv->recvpriv.signal_strength_data.elements[rtlpriv->recvpriv.signal_strength_data.index++] = pattrib->phy_info.SignalStrength;
+		if(rtlpriv->recvpriv.signal_strength_data.index >= PHY_RSSI_SLID_WIN_MAX)
+			rtlpriv->recvpriv.signal_strength_data.index = 0;
 
 
-		tmp_val = padapter->recvpriv.signal_strength_data.total_val/padapter->recvpriv.signal_strength_data.total_num;
+		tmp_val = rtlpriv->recvpriv.signal_strength_data.total_val/rtlpriv->recvpriv.signal_strength_data.total_num;
 
-		if(padapter->recvpriv.is_signal_dbg) {
-			padapter->recvpriv.signal_strength= padapter->recvpriv.signal_strength_dbg;
-			padapter->recvpriv.rssi=(s8)translate2dbm((uint8_t)padapter->recvpriv.signal_strength_dbg);
+		if(rtlpriv->recvpriv.is_signal_dbg) {
+			rtlpriv->recvpriv.signal_strength= rtlpriv->recvpriv.signal_strength_dbg;
+			rtlpriv->recvpriv.rssi=(s8)translate2dbm((uint8_t)rtlpriv->recvpriv.signal_strength_dbg);
 		} else {
-			padapter->recvpriv.signal_strength= tmp_val;
-			padapter->recvpriv.rssi=(s8)translate2dbm((uint8_t)tmp_val);
+			rtlpriv->recvpriv.signal_strength= tmp_val;
+			rtlpriv->recvpriv.rssi=(s8)translate2dbm((uint8_t)tmp_val);
 		}
 
-		RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("UI RSSI = %d, ui_rssi.TotalVal = %d, ui_rssi.TotalNum = %d\n", tmp_val, padapter->recvpriv.signal_strength_data.total_val,padapter->recvpriv.signal_strength_data.total_num));
+		RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("UI RSSI = %d, ui_rssi.TotalVal = %d, ui_rssi.TotalNum = %d\n", tmp_val, rtlpriv->recvpriv.signal_strength_data.total_val,rtlpriv->recvpriv.signal_strength_data.total_num));
 	#endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
 	}
 
@@ -1704,7 +1704,7 @@ static void process_rssi(struct rtl_priv *padapter,struct recv_frame *prframe)
 
 
 
-static void process_link_qual(struct rtl_priv *padapter,struct recv_frame *prframe)
+static void process_link_qual(struct rtl_priv *rtlpriv,struct recv_frame *prframe)
 {
 	uint32_t	last_evm=0, tmpVal;
  	struct rx_pkt_attrib *pattrib;
@@ -1712,13 +1712,13 @@ static void process_link_qual(struct rtl_priv *padapter,struct recv_frame *prfra
 	struct signal_stat * signal_stat;
 #endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
 
-	if(prframe == NULL || padapter==NULL){
+	if(prframe == NULL || rtlpriv==NULL){
 		return;
 	}
 
 	pattrib = &prframe->attrib;
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
-	signal_stat = &padapter->recvpriv.signal_qual_data;
+	signal_stat = &rtlpriv->recvpriv.signal_qual_data;
 #endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
 
 	//DBG_8192C("process_link_qual=> pattrib->signal_qual(%d)\n ",pattrib->signal_qual);
@@ -1740,23 +1740,23 @@ static void process_link_qual(struct rtl_priv *padapter,struct recv_frame *prfra
 			//
 			// 1. Record the general EVM to the sliding window.
 			//
-			if(padapter->recvpriv.signal_qual_data.total_num++ >= PHY_LINKQUALITY_SLID_WIN_MAX)
+			if(rtlpriv->recvpriv.signal_qual_data.total_num++ >= PHY_LINKQUALITY_SLID_WIN_MAX)
 			{
-				padapter->recvpriv.signal_qual_data.total_num = PHY_LINKQUALITY_SLID_WIN_MAX;
-				last_evm = padapter->recvpriv.signal_qual_data.elements[padapter->recvpriv.signal_qual_data.index];
-				padapter->recvpriv.signal_qual_data.total_val -= last_evm;
+				rtlpriv->recvpriv.signal_qual_data.total_num = PHY_LINKQUALITY_SLID_WIN_MAX;
+				last_evm = rtlpriv->recvpriv.signal_qual_data.elements[rtlpriv->recvpriv.signal_qual_data.index];
+				rtlpriv->recvpriv.signal_qual_data.total_val -= last_evm;
 			}
-			padapter->recvpriv.signal_qual_data.total_val += pattrib->phy_info.SignalQuality;
+			rtlpriv->recvpriv.signal_qual_data.total_val += pattrib->phy_info.SignalQuality;
 
-			padapter->recvpriv.signal_qual_data.elements[padapter->recvpriv.signal_qual_data.index++] = pattrib->phy_info.SignalQuality;
-			if(padapter->recvpriv.signal_qual_data.index >= PHY_LINKQUALITY_SLID_WIN_MAX)
-				padapter->recvpriv.signal_qual_data.index = 0;
+			rtlpriv->recvpriv.signal_qual_data.elements[rtlpriv->recvpriv.signal_qual_data.index++] = pattrib->phy_info.SignalQuality;
+			if(rtlpriv->recvpriv.signal_qual_data.index >= PHY_LINKQUALITY_SLID_WIN_MAX)
+				rtlpriv->recvpriv.signal_qual_data.index = 0;
 
-			RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("Total SQ=%d  pattrib->signal_qual= %d\n", padapter->recvpriv.signal_qual_data.total_val, pattrib->phy_info.SignalQuality));
+			RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("Total SQ=%d  pattrib->signal_qual= %d\n", rtlpriv->recvpriv.signal_qual_data.total_val, pattrib->phy_info.SignalQuality));
 
 			// <1> Showed on UI for user, in percentage.
-			tmpVal = padapter->recvpriv.signal_qual_data.total_val/padapter->recvpriv.signal_qual_data.total_num;
-			padapter->recvpriv.signal_qual=(uint8_t)tmpVal;
+			tmpVal = rtlpriv->recvpriv.signal_qual_data.total_val/rtlpriv->recvpriv.signal_qual_data.total_num;
+			rtlpriv->recvpriv.signal_qual=(uint8_t)tmpVal;
 
 	}
 	else
@@ -1767,23 +1767,23 @@ static void process_link_qual(struct rtl_priv *padapter,struct recv_frame *prfra
 
 }
 
-static void process_phy_info(struct rtl_priv *padapter, struct recv_frame *precvframe)
+static void process_phy_info(struct rtl_priv *rtlpriv, struct recv_frame *precvframe)
 {
 
 	//
 	// Check RSSI
 	//
-	process_rssi(padapter, precvframe);
+	process_rssi(rtlpriv, precvframe);
 	//
 	// Check PWDB.
 	//
-	//process_PWDB(padapter, precvframe);
+	//process_PWDB(rtlpriv, precvframe);
 
 	//UpdateRxSignalStatistics8192C(rtlpriv, pRfd);
 	//
 	// Check EVM
 	//
-	process_link_qual(padapter,  precvframe);
+	process_link_qual(rtlpriv,  precvframe);
 
 }
 
@@ -1836,9 +1836,9 @@ void rtl8812_query_rx_phy_status(
 	struct recv_frame	*precvframe,
 	uint8_t 				*pphy_status)
 {
-	struct rtl_priv *			padapter = precvframe->adapter;
+	struct rtl_priv *			rtlpriv = precvframe->adapter;
 	struct rx_pkt_attrib	*pattrib = &precvframe->attrib;
-	 struct _rtw_hal		*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 	PODM_PHY_INFO_T 	pPHYInfo  = (PODM_PHY_INFO_T)(&pattrib->phy_info);
 	uint8_t					*wlanhdr;
 	ODM_PACKET_INFO_T	pkt_info;
@@ -1855,15 +1855,15 @@ void rtl8812_query_rx_phy_status(
 
 	pkt_info.bPacketMatchBSSID = ((!IsFrameTypeCtrl(wlanhdr)) &&
 		!pattrib->icv_err && !pattrib->crc_err &&
-		_rtw_memcmp(get_hdr_bssid(wlanhdr), get_bssid(&padapter->mlmepriv), ETH_ALEN));
+		_rtw_memcmp(get_hdr_bssid(wlanhdr), get_bssid(&rtlpriv->mlmepriv), ETH_ALEN));
 
-	pkt_info.bPacketToSelf = pkt_info.bPacketMatchBSSID && (_rtw_memcmp(get_da(wlanhdr), myid(&padapter->eeprompriv), ETH_ALEN));
+	pkt_info.bPacketToSelf = pkt_info.bPacketMatchBSSID && (_rtw_memcmp(get_da(wlanhdr), myid(&rtlpriv->eeprompriv), ETH_ALEN));
 
 	pkt_info.bPacketBeacon = pkt_info.bPacketMatchBSSID && (GetFrameSubType(wlanhdr) == WIFI_BEACON);
 
 	if(pkt_info.bPacketBeacon){
-		if(check_fwstate(&padapter->mlmepriv, WIFI_STATION_STATE) == _TRUE){
-			sa = padapter->mlmepriv.cur_network.network.MacAddress;
+		if(check_fwstate(&rtlpriv->mlmepriv, WIFI_STATION_STATE) == _TRUE){
+			sa = rtlpriv->mlmepriv.cur_network.network.MacAddress;
 			#if 0
 			{
 				DBG_8192C("==> rx beacon from AP[%02x:%02x:%02x:%02x:%02x:%02x]\n",
@@ -1877,7 +1877,7 @@ void rtl8812_query_rx_phy_status(
 		sa = get_sa(wlanhdr);
 	}
 
-	pstapriv = &padapter->stapriv;
+	pstapriv = &rtlpriv->stapriv;
 	pkt_info.StationID = 0xFF;
 	psta = rtw_get_stainfo(pstapriv, sa);
 	if (psta)
@@ -1894,25 +1894,25 @@ void rtl8812_query_rx_phy_status(
 
 	precvframe->psta = NULL;
 	if (pkt_info.bPacketMatchBSSID &&
-		(check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == _TRUE))
+		(check_fwstate(&rtlpriv->mlmepriv, WIFI_AP_STATE) == _TRUE))
 	{
 		if (psta)
 		{
 			precvframe->psta = psta;
-			process_phy_info(padapter, precvframe);
+			process_phy_info(rtlpriv, precvframe);
 
 		}
 	}
 	else if (pkt_info.bPacketToSelf || pkt_info.bPacketBeacon)
 	{
-		if (check_fwstate(&padapter->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE)
+		if (check_fwstate(&rtlpriv->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE)
 		{
 			if (psta)
 			{
 				precvframe->psta = psta;
 			}
 		}
-		process_phy_info(padapter, precvframe);
+		process_phy_info(rtlpriv, precvframe);
 	}
 }
 

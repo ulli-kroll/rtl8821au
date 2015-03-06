@@ -285,13 +285,13 @@ enum SCAN_STATE
 struct mlme_handler {
 	unsigned int   num;
 	char* str;
-	unsigned int (*func)(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+	unsigned int (*func)(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
 };
 
 struct action_handler {
 	unsigned int   num;
 	char* str;
-	unsigned int (*func)(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+	unsigned int (*func)(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
 };
 
 struct	ss_res
@@ -448,7 +448,7 @@ struct p2p_oper_class_map {
 
 struct mlme_ext_priv
 {
-	struct rtl_priv	*padapter;
+	struct rtl_priv	*rtlpriv;
 	uint8_t	mlmeext_init;
 	ATOMIC_T		event_seq;
 	u16	mgnt_seq;
@@ -498,31 +498,31 @@ struct mlme_ext_priv
 
 };
 
-int init_mlme_ext_priv(struct rtl_priv* padapter);
-int init_hw_mlme_ext(struct rtl_priv *padapter);
+int init_mlme_ext_priv(struct rtl_priv* rtlpriv);
+int init_hw_mlme_ext(struct rtl_priv *rtlpriv);
 void free_mlme_ext_priv (struct mlme_ext_priv *pmlmeext);
-extern void init_mlme_ext_timer(struct rtl_priv *padapter);
-extern void init_addba_retry_timer(struct rtl_priv *padapter, struct sta_info *psta);
+extern void init_mlme_ext_timer(struct rtl_priv *rtlpriv);
+extern void init_addba_retry_timer(struct rtl_priv *rtlpriv, struct sta_info *psta);
 extern struct xmit_frame *alloc_mgtxmitframe(struct xmit_priv *pxmitpriv);
 struct xmit_frame *alloc_mgtxmitframe_once(struct xmit_priv *pxmitpriv);
 
-//void fill_fwpriv(struct rtl_priv * padapter, struct fw_priv *pfwpriv);
+//void fill_fwpriv(struct rtl_priv * rtlpriv, struct fw_priv *pfwpriv);
 
 unsigned char networktype_to_raid(struct rtl_priv *adapter,unsigned char network_type);
 unsigned char networktype_to_raid_ex(struct rtl_priv *adapter,unsigned char network_type);
 
-uint8_t judge_network_type(struct rtl_priv *padapter, unsigned char *rate, int ratelen);
-void get_rate_set(struct rtl_priv *padapter, unsigned char *pbssrate, int *bssrate_len);
-void UpdateBrateTbl(struct rtl_priv *padapter,uint8_t *mBratesOS);
+uint8_t judge_network_type(struct rtl_priv *rtlpriv, unsigned char *rate, int ratelen);
+void get_rate_set(struct rtl_priv *rtlpriv, unsigned char *pbssrate, int *bssrate_len);
+void UpdateBrateTbl(struct rtl_priv *rtlpriv,uint8_t *mBratesOS);
 void UpdateBrateTblForSoftAP(uint8_t *bssrateset, u32 bssratelen);
-void change_band_update_ie(struct rtl_priv *padapter, WLAN_BSSID_EX *pnetwork);
+void change_band_update_ie(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *pnetwork);
 
-void Save_DM_Func_Flag(struct rtl_priv *padapter);
-void Restore_DM_Func_Flag(struct rtl_priv *padapter);
-void Switch_DM_Func(struct rtl_priv *padapter, u32 mode, uint8_t enable);
+void Save_DM_Func_Flag(struct rtl_priv *rtlpriv);
+void Restore_DM_Func_Flag(struct rtl_priv *rtlpriv);
+void Switch_DM_Func(struct rtl_priv *rtlpriv, u32 mode, uint8_t enable);
 
-//void Set_NETYPE1_MSR(struct rtl_priv *padapter, uint8_t type);
-//void Set_NETYPE0_MSR(struct rtl_priv *padapter, uint8_t type);
+//void Set_NETYPE1_MSR(struct rtl_priv *rtlpriv, uint8_t type);
+//void Set_NETYPE0_MSR(struct rtl_priv *rtlpriv, uint8_t type);
 
 uint8_t rtw_get_oper_ch(struct rtl_priv *adapter);
 void rtw_set_oper_ch(struct rtl_priv *adapter, uint8_t ch);
@@ -532,151 +532,151 @@ uint8_t rtw_get_oper_choffset(struct rtl_priv *adapter);
 void rtw_set_oper_choffset(struct rtl_priv *adapter, uint8_t offset);
 uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset);
 
-void set_channel_bwmode(struct rtl_priv *padapter, unsigned char channel, unsigned char channel_offset, unsigned short bwmode);
-void SelectChannel(struct rtl_priv *padapter, unsigned char channel);
-void SetBWMode(struct rtl_priv *padapter, unsigned short bwmode, unsigned char channel_offset);
+void set_channel_bwmode(struct rtl_priv *rtlpriv, unsigned char channel, unsigned char channel_offset, unsigned short bwmode);
+void SelectChannel(struct rtl_priv *rtlpriv, unsigned char channel);
+void SetBWMode(struct rtl_priv *rtlpriv, unsigned short bwmode, unsigned char channel_offset);
 
 unsigned int decide_wait_for_beacon_timeout(unsigned int bcn_interval);
 
-void write_cam(struct rtl_priv *padapter, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key);
-void clear_cam_entry(struct rtl_priv *padapter, uint8_t entry);
+void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key);
+void clear_cam_entry(struct rtl_priv *rtlpriv, uint8_t entry);
 
-void invalidate_cam_all(struct rtl_priv *padapter);
+void invalidate_cam_all(struct rtl_priv *rtlpriv);
 void CAM_empty_entry(struct rtl_priv *rtlpriv, uint8_t ucIndex);
 
 
-int allocate_fw_sta_entry(struct rtl_priv *padapter);
-void flush_all_cam_entry(struct rtl_priv *padapter);
+int allocate_fw_sta_entry(struct rtl_priv *rtlpriv);
+void flush_all_cam_entry(struct rtl_priv *rtlpriv);
 
 BOOLEAN IsLegal5GChannel(struct rtl_priv *rtlpriv, uint8_t channel);
 
-void site_survey(struct rtl_priv *padapter);
-uint8_t collect_bss_info(struct rtl_priv *padapter, struct recv_frame *precv_frame, WLAN_BSSID_EX *bssid);
-void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src, struct rtl_priv * padapter, bool update_ie);
+void site_survey(struct rtl_priv *rtlpriv);
+uint8_t collect_bss_info(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame, WLAN_BSSID_EX *bssid);
+void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src, struct rtl_priv * rtlpriv, bool update_ie);
 
 int get_bsstype(unsigned short capability);
 u8* get_my_bssid(WLAN_BSSID_EX *pnetwork);
 u16 get_beacon_interval(WLAN_BSSID_EX *bss);
 
-int is_client_associated_to_ap(struct rtl_priv *padapter);
-int is_client_associated_to_ibss(struct rtl_priv *padapter);
-int is_IBSS_empty(struct rtl_priv *padapter);
+int is_client_associated_to_ap(struct rtl_priv *rtlpriv);
+int is_client_associated_to_ibss(struct rtl_priv *rtlpriv);
+int is_IBSS_empty(struct rtl_priv *rtlpriv);
 
 unsigned char check_assoc_AP(uint8_t *pframe, uint len);
 
-int WMM_param_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs	pIE);
-void WMMOnAssocRsp(struct rtl_priv *padapter);
+int WMM_param_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs	pIE);
+void WMMOnAssocRsp(struct rtl_priv *rtlpriv);
 
-void HT_caps_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-void HT_info_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-void HTOnAssocRsp(struct rtl_priv *padapter);
+void HT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE);
+void HT_info_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE);
+void HTOnAssocRsp(struct rtl_priv *rtlpriv);
 
-void ERP_IE_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-void VCS_update(struct rtl_priv *padapter, struct sta_info *psta);
+void ERP_IE_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE);
+void VCS_update(struct rtl_priv *rtlpriv, struct sta_info *psta);
 
-void update_beacon_info(struct rtl_priv *padapter, uint8_t *pframe, uint len, struct sta_info *psta);
+void update_beacon_info(struct rtl_priv *rtlpriv, uint8_t *pframe, uint len, struct sta_info *psta);
 int rtw_check_bcn_info(struct rtl_priv *rtlpriv, uint8_t *pframe, u32 packet_len);
 #ifdef CONFIG_DFS
-void process_csa_ie(struct rtl_priv *padapter, uint8_t *pframe, uint len);
+void process_csa_ie(struct rtl_priv *rtlpriv, uint8_t *pframe, uint len);
 #endif //CONFIG_DFS
-void update_IOT_info(struct rtl_priv *padapter);
+void update_IOT_info(struct rtl_priv *rtlpriv);
 void update_capinfo(struct rtl_priv *rtlpriv, u16 updateCap);
-void update_wireless_mode(struct rtl_priv * padapter);
-void update_tx_basic_rate(struct rtl_priv *padapter, uint8_t modulation);
-void update_bmc_sta_support_rate(struct rtl_priv *padapter, u32 mac_id);
-int update_sta_support_rate(struct rtl_priv *padapter, u8* pvar_ie, uint var_ie_len, int cam_idx);
+void update_wireless_mode(struct rtl_priv * rtlpriv);
+void update_tx_basic_rate(struct rtl_priv *rtlpriv, uint8_t modulation);
+void update_bmc_sta_support_rate(struct rtl_priv *rtlpriv, u32 mac_id);
+int update_sta_support_rate(struct rtl_priv *rtlpriv, u8* pvar_ie, uint var_ie_len, int cam_idx);
 
 //for sta/adhoc mode
-void update_sta_info(struct rtl_priv *padapter, struct sta_info *psta);
+void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta);
 unsigned int update_basic_rate(unsigned char *ptn, unsigned int ptn_sz);
 unsigned int update_supported_rate(unsigned char *ptn, unsigned int ptn_sz);
 unsigned int update_MCS_rate(struct HT_caps_element *pHT_caps);
-void Update_RA_Entry(struct rtl_priv *padapter, struct sta_info *psta);
-void set_sta_rate(struct rtl_priv *padapter, struct sta_info *psta);
+void Update_RA_Entry(struct rtl_priv *rtlpriv, struct sta_info *psta);
+void set_sta_rate(struct rtl_priv *rtlpriv, struct sta_info *psta);
 
-unsigned int receive_disconnect(struct rtl_priv *padapter, unsigned char *MacAddr, unsigned short reason);
+unsigned int receive_disconnect(struct rtl_priv *rtlpriv, unsigned char *MacAddr, unsigned short reason);
 
 unsigned char get_highest_rate_idx(u32 mask);
-int support_short_GI(struct rtl_priv *padapter, struct HT_caps_element *pHT_caps);
-unsigned int is_ap_in_tkip(struct rtl_priv *padapter);
-unsigned int is_ap_in_wep(struct rtl_priv *padapter);
-unsigned int should_forbid_n_rate(struct rtl_priv * padapter);
+int support_short_GI(struct rtl_priv *rtlpriv, struct HT_caps_element *pHT_caps);
+unsigned int is_ap_in_tkip(struct rtl_priv *rtlpriv);
+unsigned int is_ap_in_wep(struct rtl_priv *rtlpriv);
+unsigned int should_forbid_n_rate(struct rtl_priv * rtlpriv);
 
 extern uint rtw_get_camid(uint macid);
-extern void rtw_alloc_macid(struct rtl_priv *padapter, struct sta_info *psta);
-extern void rtw_release_macid(struct rtl_priv *padapter, struct sta_info *psta);
+extern void rtw_alloc_macid(struct rtl_priv *rtlpriv, struct sta_info *psta);
+extern void rtw_release_macid(struct rtl_priv *rtlpriv, struct sta_info *psta);
 
-void report_join_res(struct rtl_priv *padapter, int res);
-void report_survey_event(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-void report_surveydone_event(struct rtl_priv *padapter);
-void report_del_sta_event(struct rtl_priv *padapter, unsigned char* MacAddr, unsigned short reason);
-void report_add_sta_event(struct rtl_priv *padapter, unsigned char* MacAddr, int cam_idx);
+void report_join_res(struct rtl_priv *rtlpriv, int res);
+void report_survey_event(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+void report_surveydone_event(struct rtl_priv *rtlpriv);
+void report_del_sta_event(struct rtl_priv *rtlpriv, unsigned char* MacAddr, unsigned short reason);
+void report_add_sta_event(struct rtl_priv *rtlpriv, unsigned char* MacAddr, int cam_idx);
 
-void beacon_timing_control(struct rtl_priv *padapter);
-extern uint8_t set_tx_beacon_cmd(struct rtl_priv*padapter);
-unsigned int setup_beacon_frame(struct rtl_priv *padapter, unsigned char *beacon_frame);
-void update_mgnt_tx_rate(struct rtl_priv *padapter, uint8_t rate);
-void update_mgntframe_attrib(struct rtl_priv *padapter, struct pkt_attrib *pattrib);
-void update_mgntframe_attrib_addr(struct rtl_priv *padapter, struct xmit_frame *pmgntframe);
-void dump_mgntframe(struct rtl_priv *padapter, struct xmit_frame *pmgntframe);
-int32_t dump_mgntframe_and_wait(struct rtl_priv *padapter, struct xmit_frame *pmgntframe, int timeout_ms);
-int32_t dump_mgntframe_and_wait_ack(struct rtl_priv *padapter, struct xmit_frame *pmgntframe);
+void beacon_timing_control(struct rtl_priv *rtlpriv);
+extern uint8_t set_tx_beacon_cmd(struct rtl_priv*rtlpriv);
+unsigned int setup_beacon_frame(struct rtl_priv *rtlpriv, unsigned char *beacon_frame);
+void update_mgnt_tx_rate(struct rtl_priv *rtlpriv, uint8_t rate);
+void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib);
+void update_mgntframe_attrib_addr(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
+void dump_mgntframe(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
+int32_t dump_mgntframe_and_wait(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe, int timeout_ms);
+int32_t dump_mgntframe_and_wait_ack(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
 
-void issue_beacon(struct rtl_priv *padapter, int timeout_ms);
-void issue_probersp(struct rtl_priv *padapter, unsigned char *da, uint8_t is_valid_p2p_probereq);
-void issue_assocreq(struct rtl_priv *padapter);
-void issue_asocrsp(struct rtl_priv *padapter, unsigned short status, struct sta_info *pstat, int pkt_type);
-void issue_auth(struct rtl_priv *padapter, struct sta_info *psta, unsigned short status);
-void issue_probereq(struct rtl_priv *padapter, NDIS_802_11_SSID *pssid, uint8_t *da);
-int32_t issue_probereq_ex(struct rtl_priv *padapter, NDIS_802_11_SSID *pssid, u8* da, int try_cnt, int wait_ms);
-int issue_nulldata(struct rtl_priv *padapter, unsigned char *da, unsigned int power_mode, int try_cnt, int wait_ms);
-int issue_qos_nulldata(struct rtl_priv *padapter, unsigned char *da, u16 tid, int try_cnt, int wait_ms);
-int issue_deauth(struct rtl_priv *padapter, unsigned char *da, unsigned short reason);
-int issue_deauth_ex(struct rtl_priv *padapter, uint8_t *da, unsigned short reason, int try_cnt, int wait_ms);
-void issue_action_spct_ch_switch(struct rtl_priv *padapter, uint8_t *ra, uint8_t new_ch, uint8_t ch_offset);
-void issue_action_BA(struct rtl_priv *padapter, unsigned char *raddr, unsigned char action, unsigned short status);
-unsigned int send_delba(struct rtl_priv *padapter, uint8_t initiator, uint8_t *addr);
-unsigned int send_beacon(struct rtl_priv *padapter);
+void issue_beacon(struct rtl_priv *rtlpriv, int timeout_ms);
+void issue_probersp(struct rtl_priv *rtlpriv, unsigned char *da, uint8_t is_valid_p2p_probereq);
+void issue_assocreq(struct rtl_priv *rtlpriv);
+void issue_asocrsp(struct rtl_priv *rtlpriv, unsigned short status, struct sta_info *pstat, int pkt_type);
+void issue_auth(struct rtl_priv *rtlpriv, struct sta_info *psta, unsigned short status);
+void issue_probereq(struct rtl_priv *rtlpriv, NDIS_802_11_SSID *pssid, uint8_t *da);
+int32_t issue_probereq_ex(struct rtl_priv *rtlpriv, NDIS_802_11_SSID *pssid, u8* da, int try_cnt, int wait_ms);
+int issue_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, unsigned int power_mode, int try_cnt, int wait_ms);
+int issue_qos_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, u16 tid, int try_cnt, int wait_ms);
+int issue_deauth(struct rtl_priv *rtlpriv, unsigned char *da, unsigned short reason);
+int issue_deauth_ex(struct rtl_priv *rtlpriv, uint8_t *da, unsigned short reason, int try_cnt, int wait_ms);
+void issue_action_spct_ch_switch(struct rtl_priv *rtlpriv, uint8_t *ra, uint8_t new_ch, uint8_t ch_offset);
+void issue_action_BA(struct rtl_priv *rtlpriv, unsigned char *raddr, unsigned char action, unsigned short status);
+unsigned int send_delba(struct rtl_priv *rtlpriv, uint8_t initiator, uint8_t *addr);
+unsigned int send_beacon(struct rtl_priv *rtlpriv);
 
-void start_clnt_assoc(struct rtl_priv *padapter);
-void start_clnt_auth(struct rtl_priv* padapter);
-void start_clnt_join(struct rtl_priv* padapter);
-void start_create_ibss(struct rtl_priv* padapter);
+void start_clnt_assoc(struct rtl_priv *rtlpriv);
+void start_clnt_auth(struct rtl_priv* rtlpriv);
+void start_clnt_join(struct rtl_priv* rtlpriv);
+void start_create_ibss(struct rtl_priv* rtlpriv);
 
-unsigned int OnAssocReq(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAssocRsp(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnProbeReq(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnProbeRsp(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int DoReserved(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnBeacon(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAtim(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnDisassoc(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAuthClient(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnDeAuth(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAction(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAssocRsp(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnProbeReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnProbeRsp(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int DoReserved(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnBeacon(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAtim(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnDisassoc(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAuthClient(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnDeAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAction(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
 
-unsigned int on_action_spct(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAction_qos(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAction_dls(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAction_back(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int on_action_public(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAction_ht(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAction_wmm(struct rtl_priv *padapter, struct recv_frame *precv_frame);
-unsigned int OnAction_p2p(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+unsigned int on_action_spct(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAction_qos(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAction_dls(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAction_back(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int on_action_public(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAction_ht(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAction_wmm(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+unsigned int OnAction_p2p(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
 
 
-void mlmeext_joinbss_event_callback(struct rtl_priv *padapter, int join_res);
-void mlmeext_sta_del_event_callback(struct rtl_priv *padapter);
-void mlmeext_sta_add_event_callback(struct rtl_priv *padapter, struct sta_info *psta);
+void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res);
+void mlmeext_sta_del_event_callback(struct rtl_priv *rtlpriv);
+void mlmeext_sta_add_event_callback(struct rtl_priv *rtlpriv, struct sta_info *psta);
 
-void linked_status_chk(struct rtl_priv *padapter);
+void linked_status_chk(struct rtl_priv *rtlpriv);
 
-void survey_timer_hdl (struct rtl_priv *padapter);
-void link_timer_hdl (struct rtl_priv *padapter);
+void survey_timer_hdl (struct rtl_priv *rtlpriv);
+void link_timer_hdl (struct rtl_priv *rtlpriv);
 void addba_timer_hdl(struct sta_info *psta);
-//void reauth_timer_hdl(struct rtl_priv *padapter);
-//void reassoc_timer_hdl(struct rtl_priv *padapter);
+//void reauth_timer_hdl(struct rtl_priv *rtlpriv);
+//void reassoc_timer_hdl(struct rtl_priv *rtlpriv);
 
 #define set_survey_timer(mlmeext, ms) \
 	do { \
@@ -693,46 +693,46 @@ void addba_timer_hdl(struct sta_info *psta);
 extern int cckrates_included(unsigned char *rate, int ratelen);
 extern int cckratesonly_included(unsigned char *rate, int ratelen);
 
-extern void process_addba_req(struct rtl_priv *padapter, uint8_t *paddba_req, uint8_t *addr);
+extern void process_addba_req(struct rtl_priv *rtlpriv, uint8_t *paddba_req, uint8_t *addr);
 
 extern void update_TSF(struct mlme_ext_priv *pmlmeext, uint8_t *pframe, uint len);
-extern void correct_TSF(struct rtl_priv *padapter, struct mlme_ext_priv *pmlmeext);
+extern void correct_TSF(struct rtl_priv *rtlpriv, struct mlme_ext_priv *pmlmeext);
 
 struct cmd_hdl {
 	uint	parmsize;
-	uint8_t (*h2cfuns)(struct rtl_priv *padapter, uint8_t *pbuf);
+	uint8_t (*h2cfuns)(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 };
 
 
-uint8_t read_macreg_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t write_macreg_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t read_bbreg_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t write_bbreg_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t read_rfreg_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t write_rfreg_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
+uint8_t read_macreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t write_macreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t read_bbreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t write_bbreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t read_rfreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t write_rfreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 
 
-uint8_t NULL_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t join_cmd_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t disconnect_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t createbss_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t setopmode_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t sitesurvey_cmd_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t setauth_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t setkey_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t set_stakey_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t set_assocsta_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t del_assocsta_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t add_ba_hdl(struct rtl_priv *padapter, unsigned char *pbuf);
+uint8_t NULL_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t disconnect_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t createbss_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t setopmode_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t sitesurvey_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t setauth_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t setkey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t set_stakey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t set_assocsta_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t del_assocsta_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t add_ba_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 
-uint8_t mlme_evt_hdl(struct rtl_priv *padapter, unsigned char *pbuf);
-uint8_t h2c_msg_hdl(struct rtl_priv *padapter, unsigned char *pbuf);
-uint8_t tx_beacon_hdl(struct rtl_priv *padapter, unsigned char *pbuf);
-uint8_t set_ch_hdl(struct rtl_priv *padapter, uint8_t *pbuf);
-uint8_t set_chplan_hdl(struct rtl_priv *padapter, unsigned char *pbuf);
-uint8_t led_blink_hdl(struct rtl_priv *padapter, unsigned char *pbuf);
-uint8_t set_csa_hdl(struct rtl_priv *padapter, unsigned char *pbuf);	//Kurt: Handling DFS channel switch announcement ie.
-uint8_t tdls_hdl(struct rtl_priv *padapter, unsigned char *pbuf);
+uint8_t mlme_evt_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
+uint8_t h2c_msg_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
+uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
+uint8_t set_ch_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+uint8_t set_chplan_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
+uint8_t led_blink_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
+uint8_t set_csa_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);	//Kurt: Handling DFS channel switch announcement ie.
+uint8_t tdls_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 
 
 #define GEN_DRV_CMD_HANDLER(size, cmd)	{size, &cmd ## _hdl},

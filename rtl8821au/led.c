@@ -52,11 +52,11 @@ static void SwLedOff(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 
 static void SwLedBlink1(struct rtl_led *pLed)
 {
-	struct rtl_priv	 *padapter = pLed->padapter;
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
-	struct rtl_usb_priv *usbpriv = rtl_usbpriv(padapter);
+	struct rtl_priv	 *rtlpriv = pLed->rtlpriv;
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	struct rtl_led *pLed1 = &(ledpriv->SwLed1);
 	u8		bStopBlinking = _FALSE;
 
@@ -66,25 +66,25 @@ static void SwLedBlink1(struct rtl_led *pLed)
 
 	/* Change LED according to BlinkingLedState specified. */
 	if (pLed->BlinkingLedState == RTW_LED_ON) {
-		SwLedOn(padapter, pLed);
+		SwLedOn(rtlpriv, pLed);
 	} else {
-		SwLedOff(padapter, pLed);
+		SwLedOff(rtlpriv, pLed);
 	}
 
 
 	if (pEEPROM->CustomerID == RT_CID_DEFAULT) {
 		if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
 			if (!pLed1->bSWLedCtrl) {
-				SwLedOn(padapter, pLed1);
+				SwLedOn(rtlpriv, pLed1);
 				pLed1->bSWLedCtrl = _TRUE;
 			} else if (!pLed1->bLedOn)
-				SwLedOn(padapter, pLed1);
+				SwLedOn(rtlpriv, pLed1);
 		} else {
 			if (!pLed1->bSWLedCtrl) {
-				SwLedOff(padapter, pLed1);
+				SwLedOff(rtlpriv, pLed1);
 				pLed1->bSWLedCtrl = _TRUE;
 			} else if (pLed1->bLedOn)
-				SwLedOff(padapter, pLed1);
+				SwLedOff(rtlpriv, pLed1);
 		}
 	}
 
@@ -112,8 +112,8 @@ static void SwLedBlink1(struct rtl_led *pLed)
 		}
 
 		if (bStopBlinking) {
-			if (padapter->pwrctrlpriv.rf_pwrstate != rf_on) {
-				SwLedOff(padapter, pLed);
+			if (rtlpriv->pwrctrlpriv.rf_pwrstate != rf_on) {
+				SwLedOff(rtlpriv, pLed);
 			} else if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
 				pLed->bLedLinkBlinkInProgress = _TRUE;
 				pLed->CurrLedState = LED_BLINK_NORMAL;
@@ -133,8 +133,8 @@ static void SwLedBlink1(struct rtl_led *pLed)
 			}
 			pLed->bLedScanBlinkInProgress = _FALSE;
 		} else {
-			if (padapter->pwrctrlpriv.rf_pwrstate != rf_on) {
-				SwLedOff(padapter, pLed);
+			if (rtlpriv->pwrctrlpriv.rf_pwrstate != rf_on) {
+				SwLedOff(rtlpriv, pLed);
 			} else {
 				if (pLed->bLedOn)
 					pLed->BlinkingLedState = RTW_LED_OFF;
@@ -152,8 +152,8 @@ static void SwLedBlink1(struct rtl_led *pLed)
 		}
 
 		if (bStopBlinking) {
-			if (padapter->pwrctrlpriv.rf_pwrstate != rf_on) {
-				SwLedOff(padapter, pLed);
+			if (rtlpriv->pwrctrlpriv.rf_pwrstate != rf_on) {
+				SwLedOff(rtlpriv, pLed);
 			} else if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
 				pLed->bLedLinkBlinkInProgress = _TRUE;
 				pLed->CurrLedState = LED_BLINK_NORMAL;
@@ -174,8 +174,8 @@ static void SwLedBlink1(struct rtl_led *pLed)
 			pLed->BlinkTimes = 0;
 			pLed->bLedBlinkInProgress = _FALSE;
 		} else {
-			if (padapter->pwrctrlpriv.rf_pwrstate != rf_on) {
-				SwLedOff(padapter, pLed);
+			if (rtlpriv->pwrctrlpriv.rf_pwrstate != rf_on) {
+				SwLedOff(rtlpriv, pLed);
 			} else {
 				if (pLed->bLedOn)
 					pLed->BlinkingLedState = RTW_LED_OFF;
@@ -204,8 +204,8 @@ static void SwLedBlink1(struct rtl_led *pLed)
 		}
 
 		if (bStopBlinking) {
-			if (padapter->pwrctrlpriv.rf_pwrstate != rf_on) {
-				SwLedOff(padapter, pLed);
+			if (rtlpriv->pwrctrlpriv.rf_pwrstate != rf_on) {
+				SwLedOff(rtlpriv, pLed);
 			} else {
 				pLed->bLedLinkBlinkInProgress = _TRUE;
 				pLed->CurrLedState = LED_BLINK_NORMAL;
@@ -228,7 +228,7 @@ static void SwLedBlink1(struct rtl_led *pLed)
 /* page added for Belkin AC950. 20120813 */
 static void SwLedBlink9(struct rtl_led *pLed)
 {
-	struct rtl_priv *rtlpriv = pLed->padapter;
+	struct rtl_priv *rtlpriv = pLed->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
@@ -467,7 +467,7 @@ static void SwLedBlink9(struct rtl_led *pLed)
 /* page added for Netgear A6200V2. 20120827 */
 static void SwLedBlink10(struct rtl_led *pLed)
 {
-	struct rtl_priv *rtlpriv = pLed->padapter;
+	struct rtl_priv *rtlpriv = pLed->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
@@ -666,7 +666,7 @@ static void SwLedBlink10(struct rtl_led *pLed)
 
 static void SwLedBlink11(struct rtl_led *pLed)
 {
-	struct rtl_priv *rtlpriv = pLed->padapter;
+	struct rtl_priv *rtlpriv = pLed->rtlpriv;
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 
@@ -735,7 +735,7 @@ static void SwLedBlink11(struct rtl_led *pLed)
 
 static void SwLedBlink13(IN struct rtl_led *pLed)
 {
-	struct rtl_priv *rtlpriv = pLed->padapter;
+	struct rtl_priv *rtlpriv = pLed->rtlpriv;
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	BOOLEAN bStopBlinking = _FALSE;
 	static u8 LinkBlinkCnt = 0;
@@ -798,14 +798,14 @@ static void SwLedBlink13(IN struct rtl_led *pLed)
 
 static void BlinkHandler(struct rtl_led *pLed)
 {
-	struct rtl_priv	*padapter = pLed->padapter;
-	struct rtl_usb_priv *usbpriv = rtl_usbpriv(padapter);
+	struct rtl_priv	*rtlpriv = pLed->rtlpriv;
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
 
 	/* DBG_871X("%s (%s:%d)\n",__FUNCTION__, current->comm, current->pid); */
 
-	if ((padapter->bSurpriseRemoved == _TRUE) || (padapter->bDriverStopped == _TRUE)) {
-		/* DBG_871X("%s bSurpriseRemoved:%d, bDriverStopped:%d\n", __FUNCTION__, padapter->bSurpriseRemoved, padapter->bDriverStopped); */
+	if ((rtlpriv->bSurpriseRemoved == _TRUE) || (rtlpriv->bDriverStopped == _TRUE)) {
+		/* DBG_871X("%s bSurpriseRemoved:%d, bDriverStopped:%d\n", __FUNCTION__, rtlpriv->bSurpriseRemoved, rtlpriv->bDriverStopped); */
 		return;
 	}
 
@@ -847,12 +847,12 @@ static void BlinkHandler(struct rtl_led *pLed)
 static void BlinkTimerCallback(void *data)
 {
 	struct rtl_led *pLed = (struct rtl_led *)data;
-	struct rtl_priv	*padapter = pLed->padapter;
+	struct rtl_priv	*rtlpriv = pLed->rtlpriv;
 
 	/* DBG_871X("%s\n", __FUNCTION__); */
 
-	if ((padapter->bSurpriseRemoved == _TRUE) || (padapter->bDriverStopped == _TRUE)) {
-		/* DBG_871X("%s bSurpriseRemoved:%d, bDriverStopped:%d\n", __FUNCTION__, padapter->bSurpriseRemoved, padapter->bDriverStopped); */
+	if ((rtlpriv->bSurpriseRemoved == _TRUE) || (rtlpriv->bDriverStopped == _TRUE)) {
+		/* DBG_871X("%s bSurpriseRemoved:%d, bDriverStopped:%d\n", __FUNCTION__, rtlpriv->bSurpriseRemoved, rtlpriv->bDriverStopped); */
 		return;
 	}
 
@@ -871,13 +871,13 @@ static void BlinkWorkItemCallback(_workitem *work)
 }
 
 /* ALPHA, added by chiyoko, 20090106 */
-static void SwLedControlMode1(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
+static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 {
-	struct rtl_usb_priv *usbpriv = rtl_usbpriv(padapter);
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
+	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	u32 uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA; /* add by ylb 20121012 for customer led for alpha */
 	if (pEEPROM->CustomerID == RT_CID_ALPHA_Dlink)
@@ -960,7 +960,7 @@ static void SwLedControlMode1(struct rtl_priv *padapter, enum led_ctl_mode LedAc
 			else
 				pLed->BlinkingLedState = RTW_LED_ON;
 
-			if (padapter->pwrctrlpriv.rf_pwrstate != rf_on && padapter->pwrctrlpriv.rfoff_reason == RF_CHANGE_BY_IPS)
+			if (rtlpriv->pwrctrlpriv.rf_pwrstate != rf_on && rtlpriv->pwrctrlpriv.rfoff_reason == RF_CHANGE_BY_IPS)
 				_set_timer(&(pLed->BlinkTimer), LED_INITIAL_INTERVAL);
 			else
 				_set_timer(&(pLed->BlinkTimer), LED_BLINK_SCAN_INTERVAL_ALPHA);
@@ -1095,7 +1095,7 @@ static void SwLedControlMode1(struct rtl_priv *padapter, enum led_ctl_mode LedAc
 			pLed->bLedScanBlinkInProgress = _FALSE;
 		}
 
-		SwLedOff(padapter, pLed);
+		SwLedOff(rtlpriv, pLed);
 		break;
 
 	default:
@@ -1826,12 +1826,12 @@ static void SwLedControlMode13(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAc
 
 }
 
-void rtl8821au_led_control(struct rtl_priv *padapter, enum led_ctl_mode LedAction)
+void rtl8821au_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 {
-	struct rtl_usb_priv *usbpriv = rtl_usbpriv(padapter);
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
 
-	if ((padapter->bSurpriseRemoved == _TRUE) || (padapter->hw_init_completed == _FALSE)) {
+	if ((rtlpriv->bSurpriseRemoved == _TRUE) || (rtlpriv->hw_init_completed == _FALSE)) {
 		return;
 	}
 
@@ -1839,8 +1839,8 @@ void rtl8821au_led_control(struct rtl_priv *padapter, enum led_ctl_mode LedActio
 	 * 	return;
 	 */
 
-	if ((padapter->pwrctrlpriv.rf_pwrstate != rf_on &&
-		padapter->pwrctrlpriv.rfoff_reason > RF_CHANGE_BY_PS) &&
+	if ((rtlpriv->pwrctrlpriv.rf_pwrstate != rf_on &&
+		rtlpriv->pwrctrlpriv.rfoff_reason > RF_CHANGE_BY_PS) &&
 		(LedAction == LED_CTL_TX || LedAction == LED_CTL_RX ||
 		 LedAction == LED_CTL_SITE_SURVEY ||
 		 LedAction == LED_CTL_LINK ||
@@ -1851,23 +1851,23 @@ void rtl8821au_led_control(struct rtl_priv *padapter, enum led_ctl_mode LedActio
 
 	switch (ledpriv->LedStrategy) {
 	case SW_LED_MODE1:
-		SwLedControlMode1(padapter, LedAction);
+		SwLedControlMode1(rtlpriv, LedAction);
 		break;
 
 	case SW_LED_MODE9:
-		SwLedControlMode9(padapter, LedAction);
+		SwLedControlMode9(rtlpriv, LedAction);
 		break;
 
 	case SW_LED_MODE10:
-		SwLedControlMode10(padapter, LedAction);
+		SwLedControlMode10(rtlpriv, LedAction);
 		break;
 
 	case SW_LED_MODE11:
-		SwLedControlMode11(padapter, LedAction);
+		SwLedControlMode11(rtlpriv, LedAction);
 		break;
 
 	case SW_LED_MODE13:
-		SwLedControlMode13(padapter, LedAction);
+		SwLedControlMode13(rtlpriv, LedAction);
 		break;
 
 	default:
@@ -1901,14 +1901,14 @@ static void ResetLedStatus(struct rtl_led *pLed)
  * 	Description:
  * 		Initialize an LED_871x object.
  */
-static void InitLed(struct rtl_priv *padapter,	struct rtl_led *pLed, enum rtl_led_pin LedPin)
+static void InitLed(struct rtl_priv *rtlpriv,	struct rtl_led *pLed, enum rtl_led_pin LedPin)
 {
-	pLed->padapter = padapter;
+	pLed->rtlpriv = rtlpriv;
 	pLed->LedPin = LedPin;
 
 	ResetLedStatus(pLed);
 
-	_init_timer(&(pLed->BlinkTimer), padapter->ndev, BlinkTimerCallback, pLed);
+	_init_timer(&(pLed->BlinkTimer), rtlpriv->ndev, BlinkTimerCallback, pLed);
 
 	_init_workitem(&(pLed->BlinkWorkItem), BlinkWorkItemCallback, pLed);
 }
@@ -1925,30 +1925,30 @@ static void DeInitLed(struct rtl_led *pLed)
 	ResetLedStatus(pLed);
 }
 
-static void SwLedOn_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
+static void SwLedOn_8812AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 {
 	uint8_t	LedCfg;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
-	if ((padapter->bSurpriseRemoved == _TRUE) || (padapter->bDriverStopped == _TRUE)) {
+	if ((rtlpriv->bSurpriseRemoved == _TRUE) || (rtlpriv->bDriverStopped == _TRUE)) {
 		return;
 	}
 
-	if (RT_GetInterfaceSelection(padapter) == INTF_SEL2_MINICARD
-	 || RT_GetInterfaceSelection(padapter) == INTF_SEL3_USB_Solo
-	 || RT_GetInterfaceSelection(padapter) == INTF_SEL4_USB_Combo) {
-		LedCfg = usb_read8(padapter, REG_LEDCFG2);
+	if (RT_GetInterfaceSelection(rtlpriv) == INTF_SEL2_MINICARD
+	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL3_USB_Solo
+	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL4_USB_Combo) {
+		LedCfg = usb_read8(rtlpriv, REG_LEDCFG2);
 		switch (pLed->LedPin) {
 		case LED_PIN_GPIO0:
 			break;
 
 		case LED_PIN_LED0:
-			LedCfg = usb_read8(padapter, REG_LEDCFG2);
-			usb_write8(padapter, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
+			LedCfg = usb_read8(rtlpriv, REG_LEDCFG2);
+			usb_write8(rtlpriv, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
 			break;
 
 		case LED_PIN_LED1:
-			usb_write8(padapter, REG_LEDCFG2, (LedCfg&0x0f)|BIT5); /* SW control led1 on. */
+			usb_write8(rtlpriv, REG_LEDCFG2, (LedCfg&0x0f)|BIT5); /* SW control led1 on. */
 			break;
 
 		default:
@@ -1961,22 +1961,22 @@ static void SwLedOn_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 
 		case LED_PIN_LED0:
 			if (pHalData->AntDivCfg == 0) {
-				LedCfg = usb_read8(padapter, REG_LEDCFG0);
-				usb_write8(padapter, REG_LEDCFG0, (LedCfg&0x70)|BIT5); /* SW control led0 on. */
+				LedCfg = usb_read8(rtlpriv, REG_LEDCFG0);
+				usb_write8(rtlpriv, REG_LEDCFG0, (LedCfg&0x70)|BIT5); /* SW control led0 on. */
 			} else {
-				LedCfg = usb_read8(padapter, REG_LEDCFG2);
-				usb_write8(padapter, REG_LEDCFG2, (LedCfg&0xe0)|BIT7|BIT6|BIT5); /* SW control led0 on. */
+				LedCfg = usb_read8(rtlpriv, REG_LEDCFG2);
+				usb_write8(rtlpriv, REG_LEDCFG2, (LedCfg&0xe0)|BIT7|BIT6|BIT5); /* SW control led0 on. */
 			}
 			break;
 
 		case LED_PIN_LED1:
-			LedCfg = usb_read8(padapter, (REG_LEDCFG1));
-			usb_write8(padapter, (REG_LEDCFG1), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
+			LedCfg = usb_read8(rtlpriv, (REG_LEDCFG1));
+			usb_write8(rtlpriv, (REG_LEDCFG1), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
 			break;
 
 		case LED_PIN_LED2:
-			LedCfg = usb_read8(padapter, (REG_LEDCFG2));
-			usb_write8(padapter, (REG_LEDCFG2), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
+			LedCfg = usb_read8(rtlpriv, (REG_LEDCFG2));
+			usb_write8(rtlpriv, (REG_LEDCFG2), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
 			break;
 
 		default:
@@ -1992,19 +1992,19 @@ static void SwLedOn_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
  * 	Turn off LED according to LedPin specified.
  */
 
-static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
+static void SwLedOff_8812AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 {
 	uint8_t	LedCfg;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
-	if (padapter->bSurpriseRemoved == _TRUE) {
+	if (rtlpriv->bSurpriseRemoved == _TRUE) {
 		return;
 	}
 
-	if (RT_GetInterfaceSelection(padapter) == INTF_SEL2_MINICARD
-	 || RT_GetInterfaceSelection(padapter) == INTF_SEL3_USB_Solo
-	 || RT_GetInterfaceSelection(padapter) == INTF_SEL4_USB_Combo) {
-		LedCfg = usb_read8(padapter, REG_LEDCFG2);
+	if (RT_GetInterfaceSelection(rtlpriv) == INTF_SEL2_MINICARD
+	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL3_USB_Solo
+	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL4_USB_Combo) {
+		LedCfg = usb_read8(rtlpriv, REG_LEDCFG2);
 
 		/*
 		 * 2009/10/23 MH Issau eed to move the LED GPIO from bit  0 to bit3.
@@ -2019,18 +2019,18 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 		case LED_PIN_LED0:
 			if (pHalData->bLedOpenDrain == _TRUE) {
 				LedCfg &= 0x90; 	/* Set to software control. */
-				usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3));
-				LedCfg = usb_read8(padapter, REG_MAC_PINMUX_CFG);
+				usb_write8(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3));
+				LedCfg = usb_read8(rtlpriv, REG_MAC_PINMUX_CFG);
 				LedCfg &= 0xFE;
-				usb_write8(padapter, REG_MAC_PINMUX_CFG, LedCfg);
+				usb_write8(rtlpriv, REG_MAC_PINMUX_CFG, LedCfg);
 			} else {
-				usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5|BIT6));
+				usb_write8(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3|BIT5|BIT6));
 			}
 			break;
 
 		case LED_PIN_LED1:
 			LedCfg &= 0x0f; 	/* Set to software control. */
-			usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3));
+			usb_write8(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3));
 			break;
 
 		default:
@@ -2043,26 +2043,26 @@ static void SwLedOff_8812AU(struct rtl_priv *padapter, struct rtl_led *pLed)
 
 		case LED_PIN_LED0:
 			 if (pHalData->AntDivCfg == 0) {
-				LedCfg = usb_read8(padapter, REG_LEDCFG0);
+				LedCfg = usb_read8(rtlpriv, REG_LEDCFG0);
 				LedCfg &= 0x70; 	/* Set to software control. */
-				usb_write8(padapter, REG_LEDCFG0, (LedCfg|BIT3|BIT5));
+				usb_write8(rtlpriv, REG_LEDCFG0, (LedCfg|BIT3|BIT5));
 			} else {
-				LedCfg = usb_read8(padapter, REG_LEDCFG2);
+				LedCfg = usb_read8(rtlpriv, REG_LEDCFG2);
 				LedCfg &= 0xe0; 	/* Set to software control. */
-				usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT6|BIT5));
+				usb_write8(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT6|BIT5));
 			}
 			break;
 
 		case LED_PIN_LED1:
-			LedCfg = usb_read8(padapter, REG_LEDCFG1);
+			LedCfg = usb_read8(rtlpriv, REG_LEDCFG1);
 			LedCfg &= 0x70; 	/* Set to software control. */
-			usb_write8(padapter, REG_LEDCFG1, (LedCfg|BIT3|BIT5));
+			usb_write8(rtlpriv, REG_LEDCFG1, (LedCfg|BIT3|BIT5));
 			break;
 
 		case LED_PIN_LED2:
-			LedCfg = usb_read8(padapter, REG_LEDCFG2);
+			LedCfg = usb_read8(rtlpriv, REG_LEDCFG2);
 			LedCfg &= 0x70; 	/* Set to software control. */
-			usb_write8(padapter, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
+			usb_write8(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
 			break;
 
 		default:
@@ -2212,10 +2212,10 @@ static void SwLedOff_8821AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
  * Description:
  * Initialize all LED_871x objects.
  */
-void rtl8821au_init_sw_leds(struct rtl_priv *padapter)
+void rtl8821au_init_sw_leds(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(padapter);
-	struct rtl_usb_priv *usbpriv = rtl_usbpriv(padapter);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
@@ -2226,18 +2226,18 @@ void rtl8821au_init_sw_leds(struct rtl_priv *padapter)
 		ledpriv->SwLedOff = SwLedOff_8821AU;
 	}
 
-	InitLed(padapter, &(ledpriv->SwLed0), LED_PIN_LED0);
-	InitLed(padapter, &(ledpriv->SwLed1), LED_PIN_LED1);
-	InitLed(padapter, &(ledpriv->SwLed2), LED_PIN_LED2);
+	InitLed(rtlpriv, &(ledpriv->SwLed0), LED_PIN_LED0);
+	InitLed(rtlpriv, &(ledpriv->SwLed1), LED_PIN_LED1);
+	InitLed(rtlpriv, &(ledpriv->SwLed2), LED_PIN_LED2);
 }
 
 /*
  * Description:
  * DeInitialize all LED_819xUsb objects.
  */
-void rtl8812au_deinit_sw_leds(struct rtl_priv *padapter)
+void rtl8812au_deinit_sw_leds(struct rtl_priv *rtlpriv)
 {
-	struct rtl_usb_priv *usbpriv = rtl_usbpriv(padapter);
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
 
 	DeInitLed(&(ledpriv->SwLed0));

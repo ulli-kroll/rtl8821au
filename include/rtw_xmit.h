@@ -332,7 +332,7 @@ struct xmit_buf
 {
 	struct list_head	list;
 
-	struct rtl_priv *padapter;
+	struct rtl_priv *rtlpriv;
 
 	uint8_t *pallocated_buf;
 
@@ -379,7 +379,7 @@ struct xmit_frame
 
 	int	frame_tag;
 
-	struct rtl_priv *padapter;
+	struct rtl_priv *rtlpriv;
 
 	uint8_t	*buf_addr;
 
@@ -544,9 +544,9 @@ extern int32_t rtw_free_xmitbuf_ext(struct xmit_priv *pxmitpriv, struct xmit_buf
 extern struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv);
 extern int32_t rtw_free_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 
-void rtw_count_tx_stats(struct rtl_priv *padapter, struct xmit_frame *pxmitframe, int sz);
-extern void rtw_update_protection(struct rtl_priv *padapter, uint8_t *ie, uint ie_len);
-extern int32_t rtw_make_wlanhdr(struct rtl_priv *padapter, uint8_t *hdr, struct pkt_attrib *pattrib);
+void rtw_count_tx_stats(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe, int sz);
+extern void rtw_update_protection(struct rtl_priv *rtlpriv, uint8_t *ie, uint ie_len);
+extern int32_t rtw_make_wlanhdr(struct rtl_priv *rtlpriv, uint8_t *hdr, struct pkt_attrib *pattrib);
 extern int32_t rtw_put_snap(uint8_t *data, u16 h_proto);
 
 extern struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv);
@@ -554,38 +554,38 @@ struct xmit_frame *rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv);
 struct xmit_frame *rtw_alloc_xmitframe_once(struct xmit_priv *pxmitpriv);
 extern int32_t rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitframe);
 extern void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, struct __queue *pframequeue);
-struct tx_servq *rtw_get_sta_pending(struct rtl_priv *padapter, struct sta_info *psta, sint up, uint8_t *ac);
-extern int32_t rtw_xmitframe_enqueue(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
+struct tx_servq *rtw_get_sta_pending(struct rtl_priv *rtlpriv, struct sta_info *psta, sint up, uint8_t *ac);
+extern int32_t rtw_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 extern struct xmit_frame* rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmit *phwxmit_i, sint entry);
 
-extern int32_t rtw_xmit_classifier(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
+extern int32_t rtw_xmit_classifier(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 extern u32 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib);
 #define rtw_wlan_pkt_size(f) rtw_calculate_wlan_pkt_size_by_attribue(&f->attrib)
-extern int32_t rtw_xmitframe_coalesce(struct rtl_priv *padapter, struct sk_buff *pkt, struct xmit_frame *pxmitframe);
+extern int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, struct xmit_frame *pxmitframe);
 int32_t _rtw_init_hw_txqueue(struct hw_txqueue* phw_txqueue, uint8_t ac_tag);
 void _rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
 
 
-int32_t rtw_txframes_pending(struct rtl_priv *padapter);
-int32_t rtw_txframes_sta_ac_pending(struct rtl_priv *padapter, struct pkt_attrib *pattrib);
+int32_t rtw_txframes_pending(struct rtl_priv *rtlpriv);
+int32_t rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib);
 void rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry);
 
 
-int32_t _rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *padapter);
+int32_t _rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpriv);
 void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv);
 
 
-void rtw_alloc_hwxmits(struct rtl_priv *padapter);
-void rtw_free_hwxmits(struct rtl_priv *padapter);
+void rtw_alloc_hwxmits(struct rtl_priv *rtlpriv);
+void rtw_free_hwxmits(struct rtl_priv *rtlpriv);
 
 
-int32_t rtw_xmit(struct rtl_priv *padapter, struct sk_buff **pkt);
+int32_t rtw_xmit(struct rtl_priv *rtlpriv, struct sk_buff **pkt);
 
 #if defined(CONFIG_AP_MODE)
-sint xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
-void stop_sta_xmit(struct rtl_priv *padapter, struct sta_info *psta);
-void wakeup_sta_to_xmit(struct rtl_priv *padapter, struct sta_info *psta);
-void xmit_delivery_enabled_frames(struct rtl_priv *padapter, struct sta_info *psta);
+sint xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
+void stop_sta_xmit(struct rtl_priv *rtlpriv, struct sta_info *psta);
+void wakeup_sta_to_xmit(struct rtl_priv *rtlpriv, struct sta_info *psta);
+void xmit_delivery_enabled_frames(struct rtl_priv *rtlpriv, struct sta_info *psta);
 #endif
 
 uint8_t	qos_acm(uint8_t acm_mask, uint8_t priority);

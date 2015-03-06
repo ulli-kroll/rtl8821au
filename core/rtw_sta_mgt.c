@@ -267,7 +267,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 
 		_rtw_init_stainfo(psta);
 
-		psta->padapter = pstapriv->padapter;
+		psta->rtlpriv = pstapriv->rtlpriv;
 
 		memcpy(psta->hwaddr, hwaddr, ETH_ALEN);
 
@@ -302,14 +302,14 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
                      memcpy( &psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2 );
 		}
 
-		init_addba_retry_timer(pstapriv->padapter, psta);
+		init_addba_retry_timer(pstapriv->rtlpriv, psta);
 
 
 		/* for A-MPDU Rx reordering buffer control */
 		for(i = 0; i < 16; i++) {
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
 
-			preorder_ctrl->padapter = pstapriv->padapter;
+			preorder_ctrl->rtlpriv = pstapriv->rtlpriv;
 
 			preorder_ctrl->enable = _FALSE;
 
@@ -332,7 +332,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		psta->RxMgmtFrameSeqNum = 0xffff;
 
 		//alloc mac id for non-bc/mc station,
-		rtw_alloc_macid(pstapriv->padapter, psta);
+		rtw_alloc_macid(pstapriv->rtlpriv, psta);
 
 	}
 
@@ -347,15 +347,15 @@ exit:
 
 
 /* using pstapriv->sta_hash_lock to protect */
-uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
+uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 {
 	int i;
 	_irqL irqL0;
 	struct __queue *pfree_sta_queue;
 	struct recv_reorder_ctrl *preorder_ctrl;
 	struct	sta_xmit_priv	*pstaxmitpriv;
-	struct	xmit_priv	*pxmitpriv= &padapter->xmitpriv;
-	struct	sta_priv *pstapriv = &padapter->stapriv;
+	struct	xmit_priv	*pxmitpriv= &rtlpriv->xmitpriv;
+	struct	sta_priv *pstapriv = &rtlpriv->stapriv;
 	struct hw_xmit *phwxmit;
 
 	if (psta == NULL)
@@ -461,7 +461,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
 		struct list_head	*phead, *plist;
 		struct recv_frame *prframe;
 		struct __queue *ppending_recvframe_queue;
-		struct __queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
+		struct __queue *pfree_recv_queue = &rtlpriv->recvpriv.free_recv_queue;
 
 		preorder_ctrl = &psta->recvreorder_ctrl[i];
 
@@ -490,13 +490,13 @@ uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
 	}
 
 	if (!(psta->state & WIFI_AP_STATE))
-		rtw_hal_set_odm_var(padapter, HAL_ODM_STA_INFO, psta, _FALSE);
+		rtw_hal_set_odm_var(rtlpriv, HAL_ODM_STA_INFO, psta, _FALSE);
 
 	/*
 	 * release mac id for non-bc/mc station,
 	 */
 
-	rtw_release_macid(pstapriv->padapter, psta);
+	rtw_release_macid(pstapriv->rtlpriv, psta);
 
 #ifdef CONFIG_AP_MODE
 
@@ -530,7 +530,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *padapter , struct sta_info *psta)
 	pstapriv->sta_dz_bitmap &=~BIT(psta->aid);
 	pstapriv->tim_bitmap &=~BIT(psta->aid);
 
-	/* rtw_indicate_sta_disassoc_event(padapter, psta); */
+	/* rtw_indicate_sta_disassoc_event(rtlpriv, psta); */
 
 	if ((psta->aid >0)&&(pstapriv->sta_aid[psta->aid - 1] == psta)) {
 		pstapriv->sta_aid[psta->aid - 1] = NULL;
@@ -555,14 +555,14 @@ exit:
 
 /* free all stainfo which in sta_hash[all] */
 
-void rtw_free_all_stainfo(struct rtl_priv *padapter)
+void rtw_free_all_stainfo(struct rtl_priv *rtlpriv)
 {
 	_irqL	 irqL;
 	struct list_head	*plist, *phead;
 	int32_t	index;
 	struct sta_info *psta = NULL;
-	struct sta_priv *pstapriv = &padapter->stapriv;
-	struct sta_info* pbcmc_stainfo =rtw_get_bcmc_stainfo( padapter);
+	struct sta_priv *pstapriv = &rtlpriv->stapriv;
+	struct sta_info* pbcmc_stainfo =rtw_get_bcmc_stainfo( rtlpriv);
 
 	if(pstapriv->asoc_sta_count==1)
 		return;
@@ -579,7 +579,7 @@ void rtw_free_all_stainfo(struct rtl_priv *padapter)
 			plist = get_next(plist);
 
 			if(pbcmc_stainfo!=psta)
-				rtw_free_stainfo(padapter , psta);
+				rtw_free_stainfo(rtlpriv , psta);
 
 		}
 	}
@@ -631,7 +631,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 	return psta;
 }
 
-uint32_t rtw_init_bcmc_stainfo(struct rtl_priv* padapter)
+uint32_t rtw_init_bcmc_stainfo(struct rtl_priv* rtlpriv)
 {
 
 	struct sta_info *psta;
@@ -639,8 +639,8 @@ uint32_t rtw_init_bcmc_stainfo(struct rtl_priv* padapter)
 	uint32_t res=_SUCCESS;
 	NDIS_802_11_MAC_ADDRESS	bcast_addr= {0xff,0xff,0xff,0xff,0xff,0xff};
 
-	struct	sta_priv *pstapriv = &padapter->stapriv;
-	/* struct __queue	*pstapending = &padapter->xmitpriv.bm_pending; */
+	struct	sta_priv *pstapriv = &rtlpriv->stapriv;
+	/* struct __queue	*pstapending = &rtlpriv->xmitpriv.bm_pending; */
 
 	psta = rtw_alloc_stainfo(pstapriv, bcast_addr);
 
@@ -669,10 +669,10 @@ exit:
 }
 
 
-struct sta_info* rtw_get_bcmc_stainfo(struct rtl_priv *padapter)
+struct sta_info* rtw_get_bcmc_stainfo(struct rtl_priv *rtlpriv)
 {
 	struct sta_info 	*psta;
-	struct sta_priv 	*pstapriv = &padapter->stapriv;
+	struct sta_priv 	*pstapriv = &rtlpriv->stapriv;
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 
 	 psta = rtw_get_stainfo(pstapriv, bc_addr);
@@ -680,7 +680,7 @@ struct sta_info* rtw_get_bcmc_stainfo(struct rtl_priv *padapter)
 	return psta;
 }
 
-uint8_t rtw_access_ctrl(struct rtl_priv *padapter, uint8_t *mac_addr)
+uint8_t rtw_access_ctrl(struct rtl_priv *rtlpriv, uint8_t *mac_addr)
 {
 	uint8_t res = _TRUE;
 #ifdef  CONFIG_AP_MODE
@@ -688,7 +688,7 @@ uint8_t rtw_access_ctrl(struct rtl_priv *padapter, uint8_t *mac_addr)
 	struct list_head	*plist, *phead;
 	struct rtw_wlan_acl_node *paclnode;
 	uint8_t match = _FALSE;
-	struct sta_priv *pstapriv = &padapter->stapriv;
+	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
 	struct __queue	*pacl_node_q =&pacl_list->acl_node_q;
 

@@ -21,7 +21,7 @@
 
 #include <drv_types.h>
 
-int rtw_os_alloc_recvframe(struct rtl_priv *padapter, struct recv_frame *precvframe, uint8_t *pdata, struct sk_buff *pskb)
+int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvframe, uint8_t *pdata, struct sk_buff *pskb)
 {
 	int res = _SUCCESS;
 	uint8_t	shift_sz = 0;
@@ -61,10 +61,10 @@ int rtw_os_alloc_recvframe(struct rtl_priv *padapter, struct recv_frame *precvfr
 		alloc_sz += 14;
 	}
 
-	pkt_copy = netdev_alloc_skb(padapter->ndev, alloc_sz);
+	pkt_copy = netdev_alloc_skb(rtlpriv->ndev, alloc_sz);
 
 	if(pkt_copy) {
-		pkt_copy->dev = padapter->ndev;
+		pkt_copy->dev = rtlpriv->ndev;
 		precvframe->pkt = pkt_copy;
 		precvframe->rx_head = pkt_copy->data;
 		precvframe->rx_end = pkt_copy->data + alloc_sz;
@@ -116,7 +116,7 @@ void rtw_os_free_recvframe(struct recv_frame *precvframe)
 
 
 /* alloc os related resource in struct recv_frame */
-int rtw_os_recv_resource_alloc(struct rtl_priv *padapter, struct recv_frame *precvframe)
+int rtw_os_recv_resource_alloc(struct rtl_priv *rtlpriv, struct recv_frame *precvframe)
 {
 	int	res=_SUCCESS;
 
@@ -127,11 +127,11 @@ int rtw_os_recv_resource_alloc(struct rtl_priv *padapter, struct recv_frame *pre
 
 
 /* alloc os related resource in struct recv_buf */
-int rtw_os_recvbuf_resource_alloc(struct rtl_priv *padapter, struct recv_buf *precvbuf)
+int rtw_os_recvbuf_resource_alloc(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
 {
 	int res=_SUCCESS;
 
-	struct rtl_usb	*pdvobjpriv = rtl_usbdev(padapter);
+	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
 	struct usb_device	*pusbd = pdvobjpriv->pusbdev;
 
 	precvbuf->irp_pending = _FALSE;
@@ -156,7 +156,7 @@ int rtw_os_recvbuf_resource_alloc(struct rtl_priv *padapter, struct recv_buf *pr
 }
 
 /* free os related resource in struct recv_buf */
-int rtw_os_recvbuf_resource_free(struct rtl_priv *padapter, struct recv_buf *precvbuf)
+int rtw_os_recvbuf_resource_free(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
 {
 	int ret = _SUCCESS;
 
@@ -224,32 +224,32 @@ struct sk_buff  *rtw_os_alloc_msdu_pkt(struct recv_frame *prframe, u16 nSubframe
 	return sub_skb;
 }
 
-void rtw_os_recv_indicate_pkt(struct rtl_priv *padapter, struct sk_buff  *pkt, struct rx_pkt_attrib *pattrib)
+void rtw_os_recv_indicate_pkt(struct rtl_priv *rtlpriv, struct sk_buff  *pkt, struct rx_pkt_attrib *pattrib)
 {
-	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
+	struct mlme_priv*pmlmepriv = &rtlpriv->mlmepriv;
 
 	/* Indicat the packets to upper layer */
 	if (pkt) {
 		if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
 		 	struct sk_buff  *pskb2=NULL;
 		 	struct sta_info *psta = NULL;
-		 	struct sta_priv *pstapriv = &padapter->stapriv;
+		 	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 			int bmcast = IS_MCAST(pattrib->dst);
 
 			/* DBG_871X("bmcast=%d\n", bmcast); */
 
-			if(_rtw_memcmp(pattrib->dst, myid(&padapter->eeprompriv), ETH_ALEN)==_FALSE) {
+			if(_rtw_memcmp(pattrib->dst, myid(&rtlpriv->eeprompriv), ETH_ALEN)==_FALSE) {
 				/* DBG_871X("not ap psta=%p, addr=%pM\n", psta, pattrib->dst); */
 
 				if(bmcast) {
-					psta = rtw_get_bcmc_stainfo(padapter);
+					psta = rtw_get_bcmc_stainfo(rtlpriv);
 					pskb2 = skb_clone(pkt, GFP_ATOMIC);
 				} else {
 					psta = rtw_get_stainfo(pstapriv, pattrib->dst);
 				}
 
 				if(psta) {
-					struct net_device *ndev= (struct net_device*)padapter->ndev;
+					struct net_device *ndev= (struct net_device*)rtlpriv->ndev;
 
 					/* DBG_871X("directly forwarding to the rtw_xmit_entry\n"); */
 
@@ -272,20 +272,20 @@ void rtw_os_recv_indicate_pkt(struct rtl_priv *padapter, struct sk_buff  *pkt, s
 			}
 		}
 
-		pkt->protocol = eth_type_trans(pkt, padapter->ndev);
-		pkt->dev = padapter->ndev;
+		pkt->protocol = eth_type_trans(pkt, rtlpriv->ndev);
+		pkt->dev = rtlpriv->ndev;
 
 		pkt->ip_summed = CHECKSUM_NONE;
 		netif_rx(pkt);
 	}
 }
 
-void rtw_handle_tkip_mic_err(struct rtl_priv *padapter,uint8_t bgroup)
+void rtw_handle_tkip_mic_err(struct rtl_priv *rtlpriv,uint8_t bgroup)
 {
 	union iwreq_data wrqu;
 	struct iw_michaelmicfailure    ev;
-	struct mlme_priv*              pmlmepriv  = &padapter->mlmepriv;
-	struct security_priv	*psecuritypriv = &padapter->securitypriv;
+	struct mlme_priv*              pmlmepriv  = &rtlpriv->mlmepriv;
+	struct security_priv	*psecuritypriv = &rtlpriv->securitypriv;
 	u32 cur_time = 0;
 
 	if (psecuritypriv->last_mic_err_time == 0) {
@@ -315,19 +315,19 @@ void rtw_handle_tkip_mic_err(struct rtl_priv *padapter,uint8_t bgroup)
 	memset( &wrqu, 0x00, sizeof( wrqu ) );
 	wrqu.data.length = sizeof( ev );
 
-	wireless_send_event( padapter->ndev, IWEVMICHAELMICFAILURE, &wrqu, (char*) &ev );
+	wireless_send_event( rtlpriv->ndev, IWEVMICHAELMICFAILURE, &wrqu, (char*) &ev );
 }
 
 
-int rtw_recv_indicatepkt(struct rtl_priv *padapter, struct recv_frame *precv_frame)
+int rtw_recv_indicatepkt(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 {
 	struct recv_priv *precvpriv;
 	struct __queue	*pfree_recv_queue;
 	struct sk_buff  *skb;
-	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
+	struct mlme_priv*pmlmepriv = &rtlpriv->mlmepriv;
 	struct rx_pkt_attrib *pattrib = &precv_frame->attrib;
 
-	precvpriv = &(padapter->recvpriv);
+	precvpriv = &(rtlpriv->recvpriv);
 	pfree_recv_queue = &(precvpriv->free_recv_queue);
 
 	skb = precv_frame->pkt;
@@ -341,7 +341,7 @@ int rtw_recv_indicatepkt(struct rtl_priv *padapter, struct recv_frame *precv_fra
 
 	skb->len = precv_frame->len;
 
-	rtw_os_recv_indicate_pkt(padapter, skb, pattrib);
+	rtw_os_recv_indicate_pkt(rtlpriv, skb, pattrib);
 
 _recv_indicatepkt_end:
 
@@ -364,9 +364,9 @@ _func_exit_;
 
 }
 
-void rtw_os_read_port(struct rtl_priv *padapter, struct recv_buf *precvbuf)
+void rtw_os_read_port(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
 {
-	struct recv_priv *precvpriv = &padapter->recvpriv;
+	struct recv_priv *precvpriv = &rtlpriv->recvpriv;
 
 	precvbuf->ref_cnt--;
 
@@ -377,7 +377,7 @@ void rtw_os_read_port(struct rtl_priv *padapter, struct recv_buf *precvbuf)
 	precvbuf->reuse = _FALSE;
 
 	if (precvbuf->irp_pending == _FALSE) {
-		usb_read_port(padapter, 0, (unsigned char *)precvbuf);
+		usb_read_port(rtlpriv, 0, (unsigned char *)precvbuf);
 	}
 
 
@@ -392,9 +392,9 @@ void _rtw_reordering_ctrl_timeout_handler (void *FunctionContext)
 
 void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
 {
-	struct rtl_priv *padapter = preorder_ctrl->padapter;
+	struct rtl_priv *rtlpriv = preorder_ctrl->rtlpriv;
 
-	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter->ndev, _rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
+	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), rtlpriv->ndev, _rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
 
 }
 

@@ -172,68 +172,68 @@ typedef struct eeprom_priv EEPROM_EFUSE_PRIV, *PEEPROM_EFUSE_PRIV;
 #define is_boot_from_eeprom(adapter) (adapter->eeprompriv.EepromOrEfuse)
 
 
-void rtw_hal_def_value_init(struct rtl_priv *padapter);
+void rtw_hal_def_value_init(struct rtl_priv *rtlpriv);
 
-void	rtw_hal_free_data(struct rtl_priv *padapter);
+void	rtw_hal_free_data(struct rtl_priv *rtlpriv);
 
-void rtw_hal_dm_init(struct rtl_priv *padapter);
-void rtw_hal_dm_deinit(struct rtl_priv *padapter);
-void rtw_hal_sw_led_init(struct rtl_priv *padapter);
-void rtw_hal_sw_led_deinit(struct rtl_priv *padapter);
+void rtw_hal_dm_init(struct rtl_priv *rtlpriv);
+void rtw_hal_dm_deinit(struct rtl_priv *rtlpriv);
+void rtw_hal_sw_led_init(struct rtl_priv *rtlpriv);
+void rtw_hal_sw_led_deinit(struct rtl_priv *rtlpriv);
 void rtw_hal_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction);
 
-uint rtw_hal_init(struct rtl_priv *padapter);
-uint rtw_hal_deinit(struct rtl_priv *padapter);
-void rtw_hal_stop(struct rtl_priv *padapter);
-void rtw_hal_set_hwreg(struct rtl_priv *padapter, uint8_t variable, uint8_t *val);
-void rtw_hal_get_hwreg(struct rtl_priv *padapter, uint8_t variable, uint8_t *val);
+uint rtw_hal_init(struct rtl_priv *rtlpriv);
+uint rtw_hal_deinit(struct rtl_priv *rtlpriv);
+void rtw_hal_stop(struct rtl_priv *rtlpriv);
+void rtw_hal_set_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val);
+void rtw_hal_get_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val);
 
-void rtw_hal_chip_configure(struct rtl_priv *padapter);
-void rtw_hal_read_chip_info(struct rtl_priv *padapter);
-void rtw_hal_read_chip_version(struct rtl_priv *padapter);
+void rtw_hal_chip_configure(struct rtl_priv *rtlpriv);
+void rtw_hal_read_chip_info(struct rtl_priv *rtlpriv);
+void rtw_hal_read_chip_version(struct rtl_priv *rtlpriv);
 
-uint8_t rtw_hal_set_def_var(struct rtl_priv *padapter, HAL_DEF_VARIABLE eVariable, PVOID pValue);
-uint8_t rtw_hal_get_def_var(struct rtl_priv *padapter, HAL_DEF_VARIABLE eVariable, PVOID pValue);
+uint8_t rtw_hal_set_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, PVOID pValue);
+uint8_t rtw_hal_get_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, PVOID pValue);
 
-void rtw_hal_set_odm_var(struct rtl_priv *padapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1,BOOLEAN bSet);
-void	rtw_hal_get_odm_var(struct rtl_priv *padapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1,BOOLEAN bSet);
+void rtw_hal_set_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1,BOOLEAN bSet);
+void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1,BOOLEAN bSet);
 
-void rtw_hal_enable_interrupt(struct rtl_priv *padapter);
-void rtw_hal_disable_interrupt(struct rtl_priv *padapter);
+void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv);
+void rtw_hal_disable_interrupt(struct rtl_priv *rtlpriv);
 
-u32	rtw_hal_inirp_init(struct rtl_priv *padapter);
-u32	rtw_hal_inirp_deinit(struct rtl_priv *padapter);
+u32	rtw_hal_inirp_init(struct rtl_priv *rtlpriv);
+u32	rtw_hal_inirp_deinit(struct rtl_priv *rtlpriv);
 
-int32_t	rtw_hal_xmitframe_enqueue(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
-int32_t	rtw_hal_xmit(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
-int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *padapter, struct xmit_frame *pmgntframe);
+int32_t	rtw_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
+int32_t	rtw_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
+int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
 
-int32_t	rtw_hal_init_xmit_priv(struct rtl_priv *padapter);
-void	rtw_hal_free_xmit_priv(struct rtl_priv *padapter);
+int32_t	rtw_hal_init_xmit_priv(struct rtl_priv *rtlpriv);
+void	rtw_hal_free_xmit_priv(struct rtl_priv *rtlpriv);
 
-int32_t	rtw_hal_init_recv_priv(struct rtl_priv *padapter);
-void	rtw_hal_free_recv_priv(struct rtl_priv *padapter);
+int32_t	rtw_hal_init_recv_priv(struct rtl_priv *rtlpriv);
+void	rtw_hal_free_recv_priv(struct rtl_priv *rtlpriv);
 
 void rtw_hal_update_ra_mask(struct sta_info *psta, uint8_t rssi_level);
-void	rtw_hal_add_ra_tid(struct rtl_priv *padapter, u32 bitmap, u8* arg, uint8_t rssi_level);
+void	rtw_hal_add_ra_tid(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);
 
-void rtw_hal_bcn_related_reg_setting(struct rtl_priv *padapter);
+void rtw_hal_bcn_related_reg_setting(struct rtl_priv *rtlpriv);
 
-u32	rtl_get_bbreg(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask);
-void	rtl_set_bbreg(struct rtl_priv *padapter, u32 RegAddr, u32 BitMask, u32 Data);
-u32	rtw_hal_read_rfreg(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask);
-void	rtw_hal_write_rfreg(struct rtl_priv *padapter, u32 eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
+u32	rtl_get_bbreg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask);
+void	rtl_set_bbreg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask, u32 Data);
+u32	rtw_hal_read_rfreg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, u32 BitMask);
+void	rtw_hal_write_rfreg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 
-int32_t	rtw_hal_interrupt_handler(struct rtl_priv *padapter);
+int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv);
 
-void	rtw_hal_set_bwmode(struct rtl_priv *padapter, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset);
-void	rtw_hal_set_chan(struct rtl_priv *padapter, uint8_t channel);
-void	rtw_hal_set_chnl_bw(struct rtl_priv *padapter, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
-void	rtw_hal_dm_watchdog(struct rtl_priv *padapter);
+void	rtw_hal_set_bwmode(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset);
+void	rtw_hal_set_chan(struct rtl_priv *rtlpriv, uint8_t channel);
+void	rtw_hal_set_chnl_bw(struct rtl_priv *rtlpriv, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
+void	rtw_hal_dm_watchdog(struct rtl_priv *rtlpriv);
 
 #ifdef CONFIG_ANTENNA_DIVERSITY
-uint8_t	rtw_hal_antdiv_before_linked(struct rtl_priv *padapter);
-void	rtw_hal_antdiv_rssi_compared(struct rtl_priv *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
+uint8_t	rtw_hal_antdiv_before_linked(struct rtl_priv *rtlpriv);
+void	rtw_hal_antdiv_rssi_compared(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
 #endif
 
 void rtw_hal_notch_filter(struct rtl_priv * adapter, bool enable);

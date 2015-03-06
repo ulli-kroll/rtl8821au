@@ -156,7 +156,7 @@ _func_exit_;
 /*
 	Need to consider the fragment  situation
 */
-void rtw_wep_encrypt(struct rtl_priv *padapter, uint8_t *pxmitframe)
+void rtw_wep_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 {																	// exclude ICV
 
 	unsigned char	crc[4];
@@ -169,8 +169,8 @@ void rtw_wep_encrypt(struct rtl_priv *padapter, uint8_t *pxmitframe)
 	uint8_t	wepkey[16];
 	uint8_t   hw_hdr_offset=0;
 	struct	pkt_attrib	 *pattrib = &((struct xmit_frame*)pxmitframe)->attrib;
-	struct 	security_priv	*psecuritypriv=&padapter->securitypriv;
-	struct	xmit_priv		*pxmitpriv=&padapter->xmitpriv;
+	struct 	security_priv	*psecuritypriv=&rtlpriv->securitypriv;
+	struct	xmit_priv		*pxmitpriv=&rtlpriv->xmitpriv;
 
 _func_enter_;
 
@@ -232,7 +232,7 @@ _func_exit_;
 
 }
 
-void rtw_wep_decrypt(struct rtl_priv  *padapter, struct recv_frame *precvframe)
+void rtw_wep_decrypt(struct rtl_priv  *rtlpriv, struct recv_frame *precvframe)
 {
 	// exclude ICV
 	uint8_t	crc[4];
@@ -242,7 +242,7 @@ void rtw_wep_decrypt(struct rtl_priv  *padapter, struct recv_frame *precvframe)
 	uint8_t	*pframe, *payload,*iv,wepkey[16];
 	uint8_t	 keyindex;
 	struct	rx_pkt_attrib	 *prxattrib = &(precvframe->attrib);
-	struct 	security_priv	*psecuritypriv=&padapter->securitypriv;
+	struct 	security_priv	*psecuritypriv=&rtlpriv->securitypriv;
 
 _func_enter_;
 
@@ -639,7 +639,7 @@ _func_exit_;
 
 
 //The hlen isn't include the IV
-uint32_t	rtw_tkip_encrypt(struct rtl_priv *padapter, uint8_t *pxmitframe)
+uint32_t	rtw_tkip_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 {																	// exclude ICV
 	u16	pnl;
 	uint32_t	pnh;
@@ -655,8 +655,8 @@ uint32_t	rtw_tkip_encrypt(struct rtl_priv *padapter, uint8_t *pxmitframe)
 	union pn48 dot11txpn;
 	//struct	sta_info		*stainfo;
 	struct	pkt_attrib	 *pattrib = &((struct xmit_frame *)pxmitframe)->attrib;
-	struct 	security_priv	*psecuritypriv=&padapter->securitypriv;
-	struct	xmit_priv		*pxmitpriv=&padapter->xmitpriv;
+	struct 	security_priv	*psecuritypriv=&rtlpriv->securitypriv;
+	struct	xmit_priv		*pxmitpriv=&rtlpriv->xmitpriv;
 	uint32_t	res=_SUCCESS;
 _func_enter_;
 
@@ -682,7 +682,7 @@ _func_enter_;
 		else
 		{
 			DBG_871X("%s, call rtw_get_stainfo()\n", __func__);
-			stainfo=rtw_get_stainfo(&padapter->stapriv ,&pattrib->ra[0] );
+			stainfo=rtw_get_stainfo(&rtlpriv->stapriv ,&pattrib->ra[0] );
 		}
 */
 		//if (stainfo!=NULL)
@@ -760,7 +760,7 @@ _func_exit_;
 
 
 //The hlen isn't include the IV
-uint32_t	 rtw_tkip_decrypt(struct rtl_priv *padapter, struct recv_frame  *precvframe)
+uint32_t	 rtw_tkip_decrypt(struct rtl_priv *rtlpriv, struct recv_frame  *precvframe)
 {																	// exclude ICV
 	u16 pnl;
 	uint32_t	 pnh;
@@ -775,8 +775,8 @@ uint32_t	 rtw_tkip_decrypt(struct rtl_priv *padapter, struct recv_frame  *precvf
 	union pn48 dot11txpn;
 	struct	sta_info		*stainfo;
 	struct	rx_pkt_attrib	 *prxattrib = &precvframe->attrib;
-	struct 	security_priv	*psecuritypriv=&padapter->securitypriv;
-//	struct	recv_priv		*precvpriv=&padapter->recvpriv;
+	struct 	security_priv	*psecuritypriv=&rtlpriv->securitypriv;
+//	struct	recv_priv		*precvpriv=&rtlpriv->recvpriv;
 	uint32_t		res=_SUCCESS;
 
 _func_enter_;
@@ -786,7 +786,7 @@ _func_enter_;
 	//4 start to decrypt recvframe
 	if(prxattrib->encrypt==_TKIP_){
 
-		stainfo=rtw_get_stainfo(&padapter->stapriv ,&prxattrib->ta[0] );
+		stainfo=rtw_get_stainfo(&rtlpriv->stapriv ,&prxattrib->ta[0] );
 		if (stainfo!=NULL){
 
 			if(IS_MCAST(prxattrib->ra))
@@ -1502,7 +1502,7 @@ _func_exit_;
 
 
 
-uint32_t	rtw_aes_encrypt(struct rtl_priv *padapter, uint8_t *pxmitframe)
+uint32_t	rtw_aes_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 {	// exclude ICV
 
 
@@ -1516,8 +1516,8 @@ uint32_t	rtw_aes_encrypt(struct rtl_priv *padapter, uint8_t *pxmitframe)
 	uint8_t   hw_hdr_offset = 0;
 	//struct	sta_info		*stainfo;
 	struct	pkt_attrib	 *pattrib = &((struct xmit_frame *)pxmitframe)->attrib;
-	struct 	security_priv	*psecuritypriv=&padapter->securitypriv;
-	struct	xmit_priv		*pxmitpriv=&padapter->xmitpriv;
+	struct 	security_priv	*psecuritypriv=&rtlpriv->securitypriv;
+	struct	xmit_priv		*pxmitpriv=&rtlpriv->xmitpriv;
 
 //	uint	offset = 0;
 	uint32_t	 res=_SUCCESS;
@@ -1545,7 +1545,7 @@ _func_enter_;
 		else
 		{
 			DBG_871X("%s, call rtw_get_stainfo()\n", __func__);
-			stainfo=rtw_get_stainfo(&padapter->stapriv ,&pattrib->ra[0] );
+			stainfo=rtw_get_stainfo(&rtlpriv->stapriv ,&pattrib->ra[0] );
 		}
 */
 		//if (stainfo!=NULL)
@@ -1871,7 +1871,7 @@ _func_exit_;
 	return res;
 }
 
-uint32_t	rtw_aes_decrypt(struct rtl_priv *padapter, struct recv_frame *precvframe)
+uint32_t	rtw_aes_decrypt(struct rtl_priv *rtlpriv, struct recv_frame *precvframe)
 {	// exclude ICV
 
 
@@ -1887,15 +1887,15 @@ uint32_t	rtw_aes_decrypt(struct rtl_priv *padapter, struct recv_frame *precvfram
 	uint8_t	*pframe,*prwskey;	//, *payload,*iv
 	struct	sta_info		*stainfo;
 	struct	rx_pkt_attrib	 *prxattrib = &precvframe->attrib;
-	struct 	security_priv	*psecuritypriv=&padapter->securitypriv;
-//	struct	recv_priv		*precvpriv=&padapter->recvpriv;
+	struct 	security_priv	*psecuritypriv=&rtlpriv->securitypriv;
+//	struct	recv_priv		*precvpriv=&rtlpriv->recvpriv;
 	uint32_t	res=_SUCCESS;
 _func_enter_;
 	pframe= precvframe->rx_data;
 	//4 start to encrypt each fragment
 	if((prxattrib->encrypt==_AES_)){
 
-		stainfo=rtw_get_stainfo(&padapter->stapriv ,&prxattrib->ta[0] );
+		stainfo=rtw_get_stainfo(&rtlpriv->stapriv ,&prxattrib->ta[0] );
 		if (stainfo!=NULL){
 			if(IS_MCAST(prxattrib->ra))
 			{
@@ -2648,20 +2648,20 @@ static int omac1_aes_128(uint8_t *key, uint8_t *data, size_t data_len, uint8_t *
 
 void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS)
 {
-        struct rtl_priv *padapter = (struct rtl_priv *)FunctionContext;
+        struct rtl_priv *rtlpriv = (struct rtl_priv *)FunctionContext;
 
 _func_enter_;
 
 
 /*
-	if(padapter->bDriverStopped ||padapter->bSurpriseRemoved){
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtw_use_tkipkey_handler (padapter->bDriverStopped %d)(padapter->bSurpriseRemoved %d)^^^\n",padapter->bDriverStopped,padapter->bSurpriseRemoved));
+	if(rtlpriv->bDriverStopped ||rtlpriv->bSurpriseRemoved){
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtw_use_tkipkey_handler (rtlpriv->bDriverStopped %d)(rtlpriv->bSurpriseRemoved %d)^^^\n",rtlpriv->bDriverStopped,rtlpriv->bSurpriseRemoved));
 
 		return;
 	}
 	*/
 
-	padapter->securitypriv.busetkipkey=_TRUE;
+	rtlpriv->securitypriv.busetkipkey=_TRUE;
 
 
 _func_exit_;

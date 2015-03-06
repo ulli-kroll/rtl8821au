@@ -57,19 +57,19 @@ void _dynamic_check_timer_handlder (void *FunctionContext)
 	_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);
 }
 
-void rtw_init_mlme_timer(struct rtl_priv *padapter)
+void rtw_init_mlme_timer(struct rtl_priv *rtlpriv)
 {
-	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	struct	mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
-	_init_timer(&(pmlmepriv->assoc_timer), padapter->ndev, rtw_join_timeout_handler, padapter);
-	//_init_timer(&(pmlmepriv->sitesurveyctrl.sitesurvey_ctrl_timer), padapter->ndev, sitesurvey_ctrl_handler, padapter);
-	_init_timer(&(pmlmepriv->scan_to_timer), padapter->ndev, _rtw_scan_timeout_handler, padapter);
+	_init_timer(&(pmlmepriv->assoc_timer), rtlpriv->ndev, rtw_join_timeout_handler, rtlpriv);
+	//_init_timer(&(pmlmepriv->sitesurveyctrl.sitesurvey_ctrl_timer), rtlpriv->ndev, sitesurvey_ctrl_handler, rtlpriv);
+	_init_timer(&(pmlmepriv->scan_to_timer), rtlpriv->ndev, _rtw_scan_timeout_handler, rtlpriv);
 
-	_init_timer(&(pmlmepriv->dynamic_chk_timer), padapter->ndev, _dynamic_check_timer_handlder, padapter);
+	_init_timer(&(pmlmepriv->dynamic_chk_timer), rtlpriv->ndev, _dynamic_check_timer_handlder, rtlpriv);
 }
 
-extern void rtw_indicate_wx_assoc_event(struct rtl_priv *padapter);
-extern void rtw_indicate_wx_disassoc_event(struct rtl_priv *padapter);
+extern void rtw_indicate_wx_assoc_event(struct rtl_priv *rtlpriv);
+extern void rtw_indicate_wx_disassoc_event(struct rtl_priv *rtlpriv);
 
 void rtw_os_indicate_connect(struct rtl_priv *adapter)
 {
@@ -86,10 +86,10 @@ _func_exit_;
 
 }
 
-extern void indicate_wx_scan_complete_event(struct rtl_priv *padapter);
-void rtw_os_indicate_scan_done( struct rtl_priv *padapter, bool aborted)
+extern void indicate_wx_scan_complete_event(struct rtl_priv *rtlpriv);
+void rtw_os_indicate_scan_done( struct rtl_priv *rtlpriv, bool aborted)
 {
-	indicate_wx_scan_complete_event(padapter);
+	indicate_wx_scan_complete_event(rtlpriv);
 }
 
 static RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
@@ -210,15 +210,15 @@ _func_exit_;
 
 void _survey_timer_hdl (void *FunctionContext)
 {
-	struct rtl_priv *padapter = (struct rtl_priv *)FunctionContext;
+	struct rtl_priv *rtlpriv = (struct rtl_priv *)FunctionContext;
 
-	survey_timer_hdl(padapter);
+	survey_timer_hdl(rtlpriv);
 }
 
 void _link_timer_hdl (void *FunctionContext)
 {
-	struct rtl_priv *padapter = (struct rtl_priv *)FunctionContext;
-	link_timer_hdl(padapter);
+	struct rtl_priv *rtlpriv = (struct rtl_priv *)FunctionContext;
+	link_timer_hdl(rtlpriv);
 }
 
 void _addba_timer_hdl(void *FunctionContext)
@@ -227,50 +227,50 @@ void _addba_timer_hdl(void *FunctionContext)
 	addba_timer_hdl(psta);
 }
 
-void init_addba_retry_timer(struct rtl_priv *padapter, struct sta_info *psta)
+void init_addba_retry_timer(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
 
-	_init_timer(&psta->addba_retry_timer, padapter->ndev, _addba_timer_hdl, psta);
+	_init_timer(&psta->addba_retry_timer, rtlpriv->ndev, _addba_timer_hdl, psta);
 }
 
 /*
 void _reauth_timer_hdl(void *FunctionContext)
 {
-	struct rtl_priv *padapter = (struct rtl_priv *)FunctionContext;
-	reauth_timer_hdl(padapter);
+	struct rtl_priv *rtlpriv = (struct rtl_priv *)FunctionContext;
+	reauth_timer_hdl(rtlpriv);
 }
 
 void _reassoc_timer_hdl(void *FunctionContext)
 {
-	struct rtl_priv *padapter = (struct rtl_priv *)FunctionContext;
-	reassoc_timer_hdl(padapter);
+	struct rtl_priv *rtlpriv = (struct rtl_priv *)FunctionContext;
+	reassoc_timer_hdl(rtlpriv);
 }
 */
 
-void init_mlme_ext_timer(struct rtl_priv *padapter)
+void init_mlme_ext_timer(struct rtl_priv *rtlpriv)
 {
-	struct	mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+	struct	mlme_ext_priv *pmlmeext = &rtlpriv->mlmeextpriv;
 
-	_init_timer(&pmlmeext->survey_timer, padapter->ndev, _survey_timer_hdl, padapter);
-	_init_timer(&pmlmeext->link_timer, padapter->ndev, _link_timer_hdl, padapter);
-	//_init_timer(&pmlmeext->ADDBA_timer, padapter->ndev, _addba_timer_hdl, padapter);
+	_init_timer(&pmlmeext->survey_timer, rtlpriv->ndev, _survey_timer_hdl, rtlpriv);
+	_init_timer(&pmlmeext->link_timer, rtlpriv->ndev, _link_timer_hdl, rtlpriv);
+	//_init_timer(&pmlmeext->ADDBA_timer, rtlpriv->ndev, _addba_timer_hdl, rtlpriv);
 
-	//_init_timer(&pmlmeext->reauth_timer, padapter->ndev, _reauth_timer_hdl, padapter);
-	//_init_timer(&pmlmeext->reassoc_timer, padapter->ndev, _reassoc_timer_hdl, padapter);
+	//_init_timer(&pmlmeext->reauth_timer, rtlpriv->ndev, _reauth_timer_hdl, rtlpriv);
+	//_init_timer(&pmlmeext->reassoc_timer, rtlpriv->ndev, _reassoc_timer_hdl, rtlpriv);
 }
 
-uint8_t rtw_handle_tkip_countermeasure(struct rtl_priv* padapter)
+uint8_t rtw_handle_tkip_countermeasure(struct rtl_priv* rtlpriv)
 {
 	uint8_t status = _SUCCESS;
 	u32 cur_time = 0;
 
-	if (padapter->securitypriv.btkip_countermeasure == _TRUE) {
+	if (rtlpriv->securitypriv.btkip_countermeasure == _TRUE) {
 		cur_time = jiffies;
 
-		if( (cur_time - padapter->securitypriv.btkip_countermeasure_time) > 60 * HZ )
+		if( (cur_time - rtlpriv->securitypriv.btkip_countermeasure_time) > 60 * HZ )
 		{
-			padapter->securitypriv.btkip_countermeasure = _FALSE;
-			padapter->securitypriv.btkip_countermeasure_time = 0;
+			rtlpriv->securitypriv.btkip_countermeasure = _FALSE;
+			rtlpriv->securitypriv.btkip_countermeasure_time = 0;
 		}
 		else
 		{
@@ -284,10 +284,10 @@ uint8_t rtw_handle_tkip_countermeasure(struct rtl_priv* padapter)
 
 #ifdef CONFIG_AP_MODE
 
-void rtw_indicate_sta_assoc_event(struct rtl_priv *padapter, struct sta_info *psta)
+void rtw_indicate_sta_assoc_event(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
 	union iwreq_data wrqu;
-	struct sta_priv *pstapriv = &padapter->stapriv;
+	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 
 	if(psta==NULL)
 		return;
@@ -305,14 +305,14 @@ void rtw_indicate_sta_assoc_event(struct rtl_priv *padapter, struct sta_info *ps
 
 	DBG_871X("+rtw_indicate_sta_assoc_event\n");
 
-	wireless_send_event(padapter->ndev, IWEVREGISTERED, &wrqu, NULL);
+	wireless_send_event(rtlpriv->ndev, IWEVREGISTERED, &wrqu, NULL);
 
 }
 
-void rtw_indicate_sta_disassoc_event(struct rtl_priv *padapter, struct sta_info *psta)
+void rtw_indicate_sta_disassoc_event(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
 	union iwreq_data wrqu;
-	struct sta_priv *pstapriv = &padapter->stapriv;
+	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 
 	if(psta==NULL)
 		return;
@@ -330,7 +330,7 @@ void rtw_indicate_sta_disassoc_event(struct rtl_priv *padapter, struct sta_info 
 
 	DBG_871X("+rtw_indicate_sta_disassoc_event\n");
 
-	wireless_send_event(padapter->ndev, IWEVEXPIRED, &wrqu, NULL);
+	wireless_send_event(rtlpriv->ndev, IWEVEXPIRED, &wrqu, NULL);
 
 }
 

@@ -22,7 +22,7 @@
 #include <drv_types.h>
 
 
-extern void indicate_wx_scan_complete_event(struct rtl_priv *padapter);
+extern void indicate_wx_scan_complete_event(struct rtl_priv *rtlpriv);
 
 #define IS_MAC_ADDRESS_BROADCAST(addr) \
 ( \
@@ -59,13 +59,13 @@ _func_exit_;
 	return ret;
 }
 
-uint8_t rtw_do_join(struct rtl_priv * padapter);
-uint8_t rtw_do_join(struct rtl_priv * padapter)
+uint8_t rtw_do_join(struct rtl_priv * rtlpriv);
+uint8_t rtw_do_join(struct rtl_priv * rtlpriv)
 {
 	_irqL	irqL;
 	struct list_head	*plist, *phead;
 	uint8_t * pibss = NULL;
-	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
+	struct	mlme_priv	*pmlmepriv = &(rtlpriv->mlmepriv);
 	struct __queue	*queue	= &(pmlmepriv->scanned_queue);
 	uint8_t ret=_SUCCESS;
 
@@ -94,7 +94,7 @@ _func_enter_;
 		if (pmlmepriv->LinkDetectInfo.bBusyTraffic ==_FALSE)
 		{
 			// submit site_survey_cmd
-			if(_SUCCESS!=(ret=rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0)) ) {
+			if(_SUCCESS!=(ret=rtw_sitesurvey_cmd(rtlpriv, &pmlmepriv->assoc_ssid, 1, NULL, 0)) ) {
 				pmlmepriv->to_join = _FALSE;
 			}
 		}
@@ -122,20 +122,20 @@ _func_enter_;
 				// submit createbss_cmd to change to a ADHOC_MASTER
 
  				//pmlmepriv->lock has been acquired by caller...
-				WLAN_BSSID_EX    *pdev_network = &(padapter->registrypriv.dev_network);
+				WLAN_BSSID_EX    *pdev_network = &(rtlpriv->registrypriv.dev_network);
 
 				pmlmepriv->fw_state = WIFI_ADHOC_MASTER_STATE;
 
-				pibss = padapter->registrypriv.dev_network.MacAddress;
+				pibss = rtlpriv->registrypriv.dev_network.MacAddress;
 
 				memset(&pdev_network->Ssid, 0, sizeof(NDIS_802_11_SSID));
 				memcpy(&pdev_network->Ssid, &pmlmepriv->assoc_ssid, sizeof(NDIS_802_11_SSID));
 
-				rtw_update_registrypriv_dev_network(padapter);
+				rtw_update_registrypriv_dev_network(rtlpriv);
 
 				rtw_generate_random_ibss(pibss);
 
-				if(rtw_createbss_cmd(padapter)!=_SUCCESS)
+				if(rtw_createbss_cmd(rtlpriv)!=_SUCCESS)
 				{
 					ret =  _FALSE;
 					goto exit;
@@ -157,7 +157,7 @@ _func_enter_;
 						// for funk to do roaming
 						// funk will reconnect, but funk will not sitesurvey before reconnect
 						if(pmlmepriv->sitesurveyctrl.traffic_busy==_FALSE)
-							rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0);
+							rtw_sitesurvey_cmd(rtlpriv, &pmlmepriv->assoc_ssid, 1, NULL, 0);
 					}
 
 				}
@@ -168,7 +168,7 @@ _func_enter_;
 				if(pmlmepriv->LinkDetectInfo.bBusyTraffic==_FALSE)
 				{
 					//DBG_871X("rtw_do_join() when   no desired bss in scanning queue \n");
-					if( _SUCCESS!=(ret=rtw_sitesurvey_cmd(padapter, &pmlmepriv->assoc_ssid, 1, NULL, 0)) ){
+					if( _SUCCESS!=(ret=rtw_sitesurvey_cmd(rtlpriv, &pmlmepriv->assoc_ssid, 1, NULL, 0)) ){
 						pmlmepriv->to_join = _FALSE;
 					}
 				}
@@ -191,12 +191,12 @@ _func_exit_;
 }
 
 
-uint8_t rtw_set_802_11_bssid(struct rtl_priv* padapter, uint8_t *bssid)
+uint8_t rtw_set_802_11_bssid(struct rtl_priv* rtlpriv, uint8_t *bssid)
 {
 	_irqL irqL;
 	uint8_t status=_SUCCESS;
 
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
 _func_enter_;
 
@@ -227,12 +227,12 @@ _func_enter_;
 			if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _FALSE)
 				goto release_mlme_lock;//it means driver is in WIFI_ADHOC_MASTER_STATE, we needn't create bss again.
 		} else {
-			rtw_disassoc_cmd(padapter, 0, _TRUE);
+			rtw_disassoc_cmd(rtlpriv, 0, _TRUE);
 
 			if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
-				rtw_indicate_disconnect(padapter);
+				rtw_indicate_disconnect(rtlpriv);
 
-			rtw_free_assoc_resources(padapter, 1);
+			rtw_free_assoc_resources(rtlpriv, 1);
 
 			if ((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == _TRUE)) {
 				_clr_fwstate_(pmlmepriv, WIFI_ADHOC_MASTER_STATE);
@@ -243,7 +243,7 @@ _func_enter_;
 
 handle_tkip_countermeasure:
 	//should we add something here...?
-	if((status=rtw_handle_tkip_countermeasure(padapter)) == _FAIL)
+	if((status=rtw_handle_tkip_countermeasure(rtlpriv)) == _FAIL)
 		goto release_mlme_lock;
 
 	memcpy(&pmlmepriv->assoc_bssid, bssid, ETH_ALEN);
@@ -253,7 +253,7 @@ handle_tkip_countermeasure:
 		pmlmepriv->to_join = _TRUE;
 	}
 	else {
-		status = rtw_do_join(padapter);
+		status = rtw_do_join(rtlpriv);
 	}
 
 release_mlme_lock:
@@ -266,13 +266,13 @@ _func_exit_;
 	return status;
 }
 
-uint8_t rtw_set_802_11_ssid(struct rtl_priv* padapter, NDIS_802_11_SSID *ssid)
+uint8_t rtw_set_802_11_ssid(struct rtl_priv* rtlpriv, NDIS_802_11_SSID *ssid)
 {
 	_irqL irqL;
 	uint8_t status = _SUCCESS;
 	uint32_t	 cur_time = 0;
 
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
+	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct wlan_network *pnetwork = &pmlmepriv->cur_network;
 
 _func_enter_;
@@ -280,7 +280,7 @@ _func_enter_;
 	DBG_871X_LEVEL(_drv_always_, "set ssid [%s] fw_state=0x%08x\n",
 		       	ssid->Ssid, get_fwstate(pmlmepriv));
 
-	if(padapter->hw_init_completed==_FALSE){
+	if(rtlpriv->hw_init_completed==_FALSE){
 		status = _FAIL;
 		goto exit;
 	}
@@ -302,15 +302,15 @@ _func_enter_;
 		{
 			if((check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _FALSE))
 			{
-				if(rtw_is_same_ibss(padapter, pnetwork) == _FALSE)
+				if(rtw_is_same_ibss(rtlpriv, pnetwork) == _FALSE)
 				{
 					//if in WIFI_ADHOC_MASTER_STATE | WIFI_ADHOC_STATE, create bss or rejoin again
-					rtw_disassoc_cmd(padapter, 0, _TRUE);
+					rtw_disassoc_cmd(rtlpriv, 0, _TRUE);
 
 					if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
-						rtw_indicate_disconnect(padapter);
+						rtw_indicate_disconnect(rtlpriv);
 
-					rtw_free_assoc_resources(padapter, 1);
+					rtw_free_assoc_resources(rtlpriv, 1);
 
 					if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == _TRUE) {
 						_clr_fwstate_(pmlmepriv, WIFI_ADHOC_MASTER_STATE);
@@ -324,18 +324,18 @@ _func_enter_;
 			}
 #ifdef CONFIG_LPS
 			else {
-				rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_JOINBSS, 1);
+				rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_JOINBSS, 1);
 			}
 #endif
 		}
 		else
 		{
-			rtw_disassoc_cmd(padapter, 0, _TRUE);
+			rtw_disassoc_cmd(rtlpriv, 0, _TRUE);
 
 			if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
-				rtw_indicate_disconnect(padapter);
+				rtw_indicate_disconnect(rtlpriv);
 
-			rtw_free_assoc_resources(padapter, 1);
+			rtw_free_assoc_resources(rtlpriv, 1);
 
 			if (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == _TRUE) {
 				_clr_fwstate_(pmlmepriv, WIFI_ADHOC_MASTER_STATE);
@@ -346,7 +346,7 @@ _func_enter_;
 
 handle_tkip_countermeasure:
 
-	if((status=rtw_handle_tkip_countermeasure(padapter)) == _FAIL)
+	if((status=rtw_handle_tkip_countermeasure(rtlpriv)) == _FAIL)
 		goto release_mlme_lock;
 
 	#ifdef CONFIG_VALIDATE_SSID
@@ -363,7 +363,7 @@ handle_tkip_countermeasure:
 		pmlmepriv->to_join = _TRUE;
 	}
 	else {
-		status = rtw_do_join(padapter);
+		status = rtw_do_join(rtlpriv);
 	}
 
 release_mlme_lock:
@@ -377,11 +377,11 @@ _func_exit_;
 
 }
 
-uint8_t rtw_set_802_11_infrastructure_mode(struct rtl_priv* padapter,
+uint8_t rtw_set_802_11_infrastructure_mode(struct rtl_priv* rtlpriv,
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networktype)
 {
 	_irqL irqL;
-	struct	mlme_priv	*pmlmepriv = &padapter->mlmepriv;
+	struct	mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct	wlan_network	*cur_network = &pmlmepriv->cur_network;
 	NDIS_802_11_NETWORK_INFRASTRUCTURE* pold_state = &(cur_network->network.InfrastructureMode);
 
@@ -398,21 +398,21 @@ _func_enter_;
 			//change to other mode from Ndis802_11APMode
 			cur_network->join_res = -1;
 
-			stop_ap_mode(padapter);
+			stop_ap_mode(rtlpriv);
 		}
 
 		if((check_fwstate(pmlmepriv, _FW_LINKED)== _TRUE) ||(*pold_state==Ndis802_11IBSS))
-			rtw_disassoc_cmd(padapter, 0, _TRUE);
+			rtw_disassoc_cmd(rtlpriv, 0, _TRUE);
 
 		if((check_fwstate(pmlmepriv, _FW_LINKED)== _TRUE) ||
 			(check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)== _TRUE) )
-			rtw_free_assoc_resources(padapter, 1);
+			rtw_free_assoc_resources(rtlpriv, 1);
 
 		if((*pold_state == Ndis802_11Infrastructure) ||(*pold_state == Ndis802_11IBSS))
 	       {
 			if(check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
 			{
-				rtw_indicate_disconnect(padapter); //will clr Linked_state; before this function, we must have chked whether  issue dis-assoc_cmd or not
+				rtw_indicate_disconnect(rtlpriv); //will clr Linked_state; before this function, we must have chked whether  issue dis-assoc_cmd or not
 			}
 	       }
 
@@ -432,8 +432,8 @@ _func_enter_;
 
 			case Ndis802_11APMode:
 				set_fwstate(pmlmepriv, WIFI_AP_STATE);
-				start_ap_mode(padapter);
-				//rtw_indicate_connect(padapter);
+				start_ap_mode(rtlpriv);
+				//rtw_indicate_connect(rtlpriv);
 
 				break;
 
@@ -456,10 +456,10 @@ _func_exit_;
 }
 
 
-uint8_t rtw_set_802_11_disassociate(struct rtl_priv *padapter)
+uint8_t rtw_set_802_11_disassociate(struct rtl_priv *rtlpriv)
 {
 	_irqL irqL;
-	struct mlme_priv * pmlmepriv = &padapter->mlmepriv;
+	struct mlme_priv * pmlmepriv = &rtlpriv->mlmepriv;
 
 _func_enter_;
 
@@ -467,10 +467,10 @@ _func_enter_;
 
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
 	{
-		rtw_disassoc_cmd(padapter, 0, _TRUE);
-		rtw_indicate_disconnect(padapter);
-		rtw_free_assoc_resources(padapter, 1);
-		rtw_pwr_wakeup(padapter);
+		rtw_disassoc_cmd(rtlpriv, 0, _TRUE);
+		rtw_indicate_disconnect(rtlpriv);
+		rtw_free_assoc_resources(rtlpriv, 1);
+		rtw_pwr_wakeup(rtlpriv);
 	}
 
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
@@ -480,19 +480,19 @@ _func_exit_;
 	return _TRUE;
 }
 
-uint8_t rtw_set_802_11_bssid_list_scan(struct rtl_priv* padapter, NDIS_802_11_SSID *pssid, int ssid_max_num)
+uint8_t rtw_set_802_11_bssid_list_scan(struct rtl_priv* rtlpriv, NDIS_802_11_SSID *pssid, int ssid_max_num)
 {
 	_irqL	irqL;
-	struct	mlme_priv		*pmlmepriv= &padapter->mlmepriv;
+	struct	mlme_priv		*pmlmepriv= &rtlpriv->mlmepriv;
 	uint8_t	res=_TRUE;
 
 _func_enter_;
 
-	if (padapter == NULL) {
+	if (rtlpriv == NULL) {
 		res=_FALSE;
 		goto exit;
 	}
-	if (padapter->hw_init_completed==_FALSE){
+	if (rtlpriv->hw_init_completed==_FALSE){
 		res = _FALSE;
 		goto exit;
 	}
@@ -511,7 +511,7 @@ _func_enter_;
 	} else {
 		_enter_critical_bh(&pmlmepriv->lock, &irqL);
 
-		res = rtw_sitesurvey_cmd(padapter, pssid, ssid_max_num, NULL, 0);
+		res = rtw_sitesurvey_cmd(rtlpriv, pssid, ssid_max_num, NULL, 0);
 
 		_exit_critical_bh(&pmlmepriv->lock, &irqL);
 	}
@@ -522,9 +522,9 @@ _func_exit_;
 	return res;
 }
 
-uint8_t rtw_set_802_11_authentication_mode(struct rtl_priv* padapter, NDIS_802_11_AUTHENTICATION_MODE authmode)
+uint8_t rtw_set_802_11_authentication_mode(struct rtl_priv* rtlpriv, NDIS_802_11_AUTHENTICATION_MODE authmode)
 {
-	struct security_priv *psecuritypriv = &padapter->securitypriv;
+	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
 	int res;
 	uint8_t ret;
 
@@ -535,7 +535,7 @@ _func_enter_;
 	if(psecuritypriv->ndisauthtype>3)
 		psecuritypriv->dot11AuthAlgrthm=dot11AuthAlgrthm_8021X;
 
-	res=rtw_set_auth(padapter,psecuritypriv);
+	res=rtw_set_auth(rtlpriv,psecuritypriv);
 
 	if(res==_SUCCESS)
 		ret=_TRUE;
@@ -547,12 +547,12 @@ _func_exit_;
 	return ret;
 }
 
-uint8_t rtw_set_802_11_add_wep(struct rtl_priv* padapter, NDIS_802_11_WEP *wep){
+uint8_t rtw_set_802_11_add_wep(struct rtl_priv* rtlpriv, NDIS_802_11_WEP *wep){
 
 	uint8_t		bdefaultkey;
 	uint8_t		btransmitkey;
 	sint		keyid,res;
-	struct security_priv* psecuritypriv=&(padapter->securitypriv);
+	struct security_priv* psecuritypriv=&(rtlpriv->securitypriv);
 	uint8_t		ret=_SUCCESS;
 
 _func_enter_;
@@ -586,7 +586,7 @@ _func_enter_;
 
 	psecuritypriv->dot11PrivacyKeyIndex=keyid;
 
-	res=rtw_set_key(padapter,psecuritypriv, keyid, 1);
+	res=rtw_set_key(rtlpriv,psecuritypriv, keyid, 1);
 
 	if(res==_FAIL)
 		ret= _FALSE;
@@ -598,13 +598,13 @@ _func_exit_;
 
 }
 
-uint8_t rtw_set_802_11_remove_wep(struct rtl_priv* padapter, uint32_t	 keyindex){
+uint8_t rtw_set_802_11_remove_wep(struct rtl_priv* rtlpriv, uint32_t	 keyindex){
 
 	uint8_t ret=_SUCCESS;
 
 _func_enter_;
 
-	if (keyindex >= 0x80000000 || padapter == NULL){
+	if (keyindex >= 0x80000000 || rtlpriv == NULL){
 
 		ret=_FALSE;
 		goto exit;
@@ -613,12 +613,12 @@ _func_enter_;
 	else
 	{
 		int res;
-		struct security_priv* psecuritypriv=&(padapter->securitypriv);
+		struct security_priv* psecuritypriv=&(rtlpriv->securitypriv);
 		if( keyindex < 4 ){
 
 			memset(&psecuritypriv->dot11DefKey[keyindex], 0, 16);
 
-			res=rtw_set_key(padapter,psecuritypriv,keyindex, 0);
+			res=rtw_set_key(rtlpriv,psecuritypriv,keyindex, 0);
 
 			psecuritypriv->dot11DefKeylen[keyindex]=0;
 
@@ -641,7 +641,7 @@ _func_exit_;
 
 }
 
-uint8_t rtw_set_802_11_add_key(struct rtl_priv* padapter, NDIS_802_11_KEY *key){
+uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 
 	uint	encryptionalgo;
 	uint8_t * pbssid;
@@ -664,14 +664,14 @@ _func_enter_;
 	{
 		// Pairwise key
 
-		pbssid=get_bssid(&padapter->mlmepriv);
-		stainfo=rtw_get_stainfo(&padapter->stapriv, pbssid);
+		pbssid=get_bssid(&rtlpriv->mlmepriv);
+		stainfo=rtw_get_stainfo(&rtlpriv->stapriv, pbssid);
 
-		if((stainfo!=NULL)&&(padapter->securitypriv.dot11AuthAlgrthm==dot11AuthAlgrthm_8021X)){
+		if((stainfo!=NULL)&&(rtlpriv->securitypriv.dot11AuthAlgrthm==dot11AuthAlgrthm_8021X)){
 			encryptionalgo=stainfo->dot118021XPrivacy;
 		}
 		else{
-			encryptionalgo=padapter->securitypriv.dot11PrivacyAlgrthm;
+			encryptionalgo=rtlpriv->securitypriv.dot11PrivacyAlgrthm;
 		}
 
 		if((stainfo!=NULL)){
@@ -724,30 +724,30 @@ _func_enter_;
 	{
 
 		// when add wep key through add key and didn't assigned encryption type before
-		if((padapter->securitypriv.ndisauthtype<=3)&&(padapter->securitypriv.dot118021XGrpPrivacy==0))
+		if((rtlpriv->securitypriv.ndisauthtype<=3)&&(rtlpriv->securitypriv.dot118021XGrpPrivacy==0))
 		{
 			switch(key->KeyLength)
 			{
 				case 5:
-					padapter->securitypriv.dot11PrivacyAlgrthm=_WEP40_;
+					rtlpriv->securitypriv.dot11PrivacyAlgrthm=_WEP40_;
 					break;
 				case 13:
-					padapter->securitypriv.dot11PrivacyAlgrthm=_WEP104_;
+					rtlpriv->securitypriv.dot11PrivacyAlgrthm=_WEP104_;
 					break;
 				default:
-					padapter->securitypriv.dot11PrivacyAlgrthm=_NO_PRIVACY_;
+					rtlpriv->securitypriv.dot11PrivacyAlgrthm=_NO_PRIVACY_;
 					break;
 			}
 
-			encryptionalgo=padapter->securitypriv.dot11PrivacyAlgrthm;
+			encryptionalgo=rtlpriv->securitypriv.dot11PrivacyAlgrthm;
 		}
 		else
 		{
-			encryptionalgo=padapter->securitypriv.dot118021XGrpPrivacy;
+			encryptionalgo=rtlpriv->securitypriv.dot118021XGrpPrivacy;
 
 		}
 
-		if((check_fwstate(&padapter->mlmepriv, WIFI_ADHOC_STATE)==_TRUE) && (IS_MAC_ADDRESS_BROADCAST(key->BSSID) == _FALSE)) {
+		if((check_fwstate(&rtlpriv->mlmepriv, WIFI_ADHOC_STATE)==_TRUE) && (IS_MAC_ADDRESS_BROADCAST(key->BSSID) == _FALSE)) {
 			ret= _FAIL;
 			goto exit;
 		}
@@ -774,7 +774,7 @@ _func_enter_;
 			bgrouptkey = _TRUE;
 		}
 
-		if((check_fwstate(&padapter->mlmepriv, WIFI_ADHOC_STATE)==_TRUE)&&(check_fwstate(&padapter->mlmepriv, _FW_LINKED)==_TRUE))
+		if((check_fwstate(&rtlpriv->mlmepriv, WIFI_ADHOC_STATE)==_TRUE)&&(check_fwstate(&rtlpriv->mlmepriv, _FW_LINKED)==_TRUE))
 		{
 			bgrouptkey = _TRUE;
 		}
@@ -783,12 +783,12 @@ _func_enter_;
 	}
 
 	// If WEP encryption algorithm, just call rtw_set_802_11_add_wep().
-	if((padapter->securitypriv.dot11AuthAlgrthm !=dot11AuthAlgrthm_8021X)&&(encryptionalgo== _WEP40_  || encryptionalgo== _WEP104_))
+	if((rtlpriv->securitypriv.dot11AuthAlgrthm !=dot11AuthAlgrthm_8021X)&&(encryptionalgo== _WEP40_  || encryptionalgo== _WEP104_))
 	{
 		uint8_t ret;
 		uint32_t	 keyindex;
 		uint32_t	 len = FIELD_OFFSET(NDIS_802_11_KEY, KeyMaterial) + key->KeyLength;
-		NDIS_802_11_WEP *wep = &padapter->securitypriv.ndiswep;
+		NDIS_802_11_WEP *wep = &rtlpriv->securitypriv.ndiswep;
 
 		wep->Length = len;
 		keyindex = key->KeyIndex&0x7fffffff;
@@ -796,12 +796,12 @@ _func_enter_;
 		wep->KeyLength = key->KeyLength;
 
 		memcpy(wep->KeyMaterial, key->KeyMaterial, key->KeyLength);
-		memcpy(&(padapter->securitypriv.dot11DefKey[keyindex].skey[0]), key->KeyMaterial, key->KeyLength);
+		memcpy(&(rtlpriv->securitypriv.dot11DefKey[keyindex].skey[0]), key->KeyMaterial, key->KeyLength);
 
-		padapter->securitypriv.dot11DefKeylen[keyindex]=key->KeyLength;
-		padapter->securitypriv.dot11PrivacyKeyIndex=keyindex;
+		rtlpriv->securitypriv.dot11DefKeylen[keyindex]=key->KeyLength;
+		rtlpriv->securitypriv.dot11PrivacyKeyIndex=keyindex;
 
-		ret = rtw_set_802_11_add_wep(padapter, wep);
+		ret = rtw_set_802_11_add_wep(rtlpriv, wep);
 
 		goto exit;
 
@@ -812,12 +812,12 @@ _func_enter_;
 		if(bgroup == _TRUE)
 		{
 			NDIS_802_11_KEY_RSC keysrc=key->KeyRSC & 0x00FFFFFFFFFFFFULL;
-			memcpy(&padapter->securitypriv.dot11Grprxpn, &keysrc, 8);
+			memcpy(&rtlpriv->securitypriv.dot11Grprxpn, &keysrc, 8);
 		}
 		else
 		{
 			NDIS_802_11_KEY_RSC keysrc=key->KeyRSC & 0x00FFFFFFFFFFFFULL;
-			memcpy(&padapter->securitypriv.dot11Grptxpn, &keysrc, 8);
+			memcpy(&rtlpriv->securitypriv.dot11Grptxpn, &keysrc, 8);
 		}
 
 	}
@@ -830,7 +830,7 @@ _func_enter_;
 
 		if(bgrouptkey == _TRUE)
 		{
-			padapter->securitypriv.dot118021XGrpKeyid=(uint8_t)key->KeyIndex;
+			rtlpriv->securitypriv.dot118021XGrpKeyid=(uint8_t)key->KeyIndex;
 		}
 
 		if((key->KeyIndex&0x3) == 0){
@@ -838,31 +838,31 @@ _func_enter_;
 			goto exit;
 		}
 
-		memset(&padapter->securitypriv.dot118021XGrpKey[(uint8_t)((key->KeyIndex) & 0x03)], 0, 16);
-		memset(&padapter->securitypriv.dot118021XGrptxmickey[(uint8_t)((key->KeyIndex) & 0x03)], 0, 16);
-		memset(&padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)], 0, 16);
+		memset(&rtlpriv->securitypriv.dot118021XGrpKey[(uint8_t)((key->KeyIndex) & 0x03)], 0, 16);
+		memset(&rtlpriv->securitypriv.dot118021XGrptxmickey[(uint8_t)((key->KeyIndex) & 0x03)], 0, 16);
+		memset(&rtlpriv->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)], 0, 16);
 
 		if((key->KeyIndex & 0x10000000))
 		{
-			memcpy(&padapter->securitypriv.dot118021XGrptxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 16, 8);
-			memcpy(&padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 24, 8);
+			memcpy(&rtlpriv->securitypriv.dot118021XGrptxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 16, 8);
+			memcpy(&rtlpriv->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 24, 8);
 		}
 		else
 		{
-			memcpy(&padapter->securitypriv.dot118021XGrptxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 24, 8);
-			memcpy(&padapter->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 16, 8);
+			memcpy(&rtlpriv->securitypriv.dot118021XGrptxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 24, 8);
+			memcpy(&rtlpriv->securitypriv.dot118021XGrprxmickey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial + 16, 8);
 		}
 
 		//set group key by index
-		memcpy(&padapter->securitypriv.dot118021XGrpKey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial, key->KeyLength);
+		memcpy(&rtlpriv->securitypriv.dot118021XGrpKey[(uint8_t)((key->KeyIndex) & 0x03)], key->KeyMaterial, key->KeyLength);
 
 		key->KeyIndex=key->KeyIndex & 0x03;
 
-		padapter->securitypriv.binstallGrpkey=_TRUE;
+		rtlpriv->securitypriv.binstallGrpkey=_TRUE;
 
-		padapter->securitypriv.bcheck_grpkey=_FALSE;
+		rtlpriv->securitypriv.bcheck_grpkey=_FALSE;
 
-		res=rtw_set_key(padapter,&padapter->securitypriv, key->KeyIndex, 1);
+		res=rtw_set_key(rtlpriv,&rtlpriv->securitypriv, key->KeyIndex, 1);
 
 		if(res==_FAIL)
 			ret= _FAIL;
@@ -874,8 +874,8 @@ _func_enter_;
 	{
 		uint8_t res;
 
-		pbssid=get_bssid(&padapter->mlmepriv);
-		stainfo=rtw_get_stainfo(&padapter->stapriv , pbssid );
+		pbssid=get_bssid(&rtlpriv->mlmepriv);
+		stainfo=rtw_get_stainfo(&rtlpriv->stapriv , pbssid );
 
 		if(stainfo!=NULL)
 		{
@@ -885,9 +885,9 @@ _func_enter_;
 
 			if(encryptionalgo== _TKIP_)
 			{
-				padapter->securitypriv.busetkipkey=_FALSE;
+				rtlpriv->securitypriv.busetkipkey=_FALSE;
 
-				//_set_timer(&padapter->securitypriv.tkip_timer, 50);
+				//_set_timer(&rtlpriv->securitypriv.tkip_timer, 50);
 
 				// if TKIP, save the Receive/Transmit MIC key in KeyMaterial[128-255]
 				if((key->KeyIndex & 0x10000000)){
@@ -910,10 +910,10 @@ _func_enter_;
 			//Set key to CAM through H2C command
 			if(bgrouptkey)//never go to here
 			{
-				res=rtw_setstakey_cmd(padapter, (unsigned char *)stainfo, _FALSE);
+				res=rtw_setstakey_cmd(rtlpriv, (unsigned char *)stainfo, _FALSE);
 			}
 			else{
-				res=rtw_setstakey_cmd(padapter, (unsigned char *)stainfo, _TRUE);
+				res=rtw_setstakey_cmd(rtlpriv, (unsigned char *)stainfo, _TRUE);
 			}
 
 			if(res ==_FALSE)
@@ -930,7 +930,7 @@ _func_exit_;
 	return ret;
 }
 
-uint8_t rtw_set_802_11_remove_key(struct rtl_priv*	padapter, NDIS_802_11_REMOVE_KEY *key){
+uint8_t rtw_set_802_11_remove_key(struct rtl_priv*	rtlpriv, NDIS_802_11_REMOVE_KEY *key){
 
 	uint				encryptionalgo;
 	uint8_t * pbssid;
@@ -947,19 +947,19 @@ _func_enter_;
 	}
 
 	if (bgroup == _TRUE) {
-		encryptionalgo= padapter->securitypriv.dot118021XGrpPrivacy;
+		encryptionalgo= rtlpriv->securitypriv.dot118021XGrpPrivacy;
 		// clear group key by index
 		//NdisZeroMemory(rtlpriv->MgntInfo.SecurityInfo.KeyBuf[keyIndex], MAX_WEP_KEY_LEN);
 		//rtlpriv->MgntInfo.SecurityInfo.KeyLen[keyIndex] = 0;
 
-		memset(&padapter->securitypriv.dot118021XGrpKey[keyIndex], 0, 16);
+		memset(&rtlpriv->securitypriv.dot118021XGrpKey[keyIndex], 0, 16);
 
 		//! \todo Send a H2C Command to Firmware for removing this Key in CAM Entry.
 
 	} else {
 
-		pbssid=get_bssid(&padapter->mlmepriv);
-		stainfo=rtw_get_stainfo(&padapter->stapriv , pbssid );
+		pbssid=get_bssid(&rtlpriv->mlmepriv);
+		stainfo=rtw_get_stainfo(&rtlpriv->stapriv , pbssid );
 		if(stainfo !=NULL){
 			encryptionalgo=stainfo->dot118021XPrivacy;
 

@@ -296,9 +296,9 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 	int i;
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)purb->context;
 	/* struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data; */
-	/* struct rtl_priv			*padapter = pxmitframe->padapter; */
-	struct rtl_priv	*padapter = pxmitbuf->padapter;
-	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
+	/* struct rtl_priv			*rtlpriv = pxmitframe->rtlpriv; */
+	struct rtl_priv	*rtlpriv = pxmitbuf->rtlpriv;
+	struct xmit_priv	*pxmitpriv = &rtlpriv->xmitpriv;
 	/* struct pkt_attrib *pattrib = &pxmitframe->attrib; */
 
 	switch(pxmitbuf->flags) {
@@ -316,7 +316,7 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 			break;
 		case HIGH_QUEUE_INX:
 #ifdef CONFIG_AP_MODE
-			rtw_chk_hi_queue_cmd(padapter);
+			rtw_chk_hi_queue_cmd(rtlpriv);
 #endif
 			break;
 		default:
@@ -366,9 +366,9 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 */
         /* rtw_free_xmitframe(pxmitpriv, pxmitframe); */
 
-	if (padapter->bSurpriseRemoved || padapter->bDriverStopped ||padapter->bWritePortCancel) {
+	if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped ||rtlpriv->bWritePortCancel) {
 		DBG_8192C("%s(): TX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d) bWritePortCancel(%d) pxmitbuf->buf_tag(%x) \n",
-		__FUNCTION__,padapter->bDriverStopped, padapter->bSurpriseRemoved,padapter->bReadPortCancel,pxmitbuf->buf_tag);
+		__FUNCTION__,rtlpriv->bDriverStopped, rtlpriv->bSurpriseRemoved,rtlpriv->bReadPortCancel,pxmitbuf->buf_tag);
 
 		goto check_completion;
 	}
@@ -395,15 +395,15 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 			goto check_completion;
 
 		} else if (purb->status == -ESHUTDOWN) {
-			padapter->bDriverStopped=_TRUE;
+			rtlpriv->bDriverStopped=_TRUE;
 
 			goto check_completion;
 		}
 		else
 		{
-			padapter->bSurpriseRemoved=_TRUE;
+			rtlpriv->bSurpriseRemoved=_TRUE;
 			DBG_8192C("bSurpriseRemoved=TRUE\n");
-			/* rtl8192cu_trigger_gpio_0(padapter); */
+			/* rtl8192cu_trigger_gpio_0(rtlpriv); */
 
 			goto check_completion;
 		}
@@ -417,7 +417,7 @@ check_completion:
 
 	rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 
-	/* if(rtw_txframes_pending(padapter)) */
+	/* if(rtw_txframes_pending(rtlpriv)) */
 	{
 		tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
 	}
@@ -425,23 +425,23 @@ check_completion:
 
 
 
-u32 usb_write_port(struct rtl_priv *padapter, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf)
+u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf)
 {
 	_irqL irqL;
 	unsigned int pipe;
 	int status;
 	u32 ret = _FAIL, bwritezero = _FALSE;
 	PURB	purb = NULL;
-	struct rtl_usb	*rtlusb = rtl_usbdev(padapter);
-	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data;
 	struct usb_device *pusbd = rtlusb->pusbdev;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 
-	if ((padapter->bDriverStopped) || (padapter->bSurpriseRemoved) ||(padapter->pwrctrlpriv.pnp_bstop_trx)) {
+	if ((rtlpriv->bDriverStopped) || (rtlpriv->bSurpriseRemoved) ||(rtlpriv->pwrctrlpriv.pnp_bstop_trx)) {
 		#ifdef DBG_TX
 		DBG_871X(" DBG_TX %s:%d bDriverStopped%d, bSurpriseRemoved:%d, pnp_bstop_trx:%d\n",__FUNCTION__, __LINE__
-			,padapter->bDriverStopped, padapter->bSurpriseRemoved, padapter->pwrctrlpriv.pnp_bstop_trx );
+			,rtlpriv->bDriverStopped, rtlpriv->bSurpriseRemoved, rtlpriv->pwrctrlpriv.pnp_bstop_trx );
 		#endif
 		rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_TX_DENY);
 		goto exit;
@@ -509,7 +509,7 @@ u32 usb_write_port(struct rtl_priv *padapter, u32 addr, u32 cnt, struct xmit_buf
 		DBG_871X("usb_write_port, status=%d\n", status);
 		switch (status) {
 		case -ENODEV:
-			padapter->bDriverStopped=_TRUE;
+			rtlpriv->bDriverStopped=_TRUE;
 			break;
 		default:
 			break;
@@ -573,8 +573,8 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 	_irqL irqL;
 	uint isevt, *pbuf;
 	struct recv_buf	*precvbuf = (struct recv_buf *) purb->context;
-	struct rtl_priv 		*padapter = (struct rtl_priv *) precvbuf->adapter;
-	struct recv_priv	*precvpriv = &padapter->recvpriv;
+	struct rtl_priv 		*rtlpriv = (struct rtl_priv *) precvbuf->adapter;
+	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 
 	/*
 	 * _enter_critical(&precvpriv->lock, &irqL);
@@ -592,8 +592,8 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 	 * }
 	 */
 
-	if (padapter->bSurpriseRemoved || padapter->bDriverStopped
-	|| padapter->bReadPortCancel) {
+	if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped
+	|| rtlpriv->bReadPortCancel) {
 #ifdef CONFIG_PREALLOC_RECV_SKB
 		precvbuf->reuse = _TRUE;
 #else
@@ -603,7 +603,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 		}
 #endif
 		DBG_8192C("%s() RX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d) bReadPortCancel(%d)\n",
-		__FUNCTION__, padapter->bDriverStopped, padapter->bSurpriseRemoved, padapter->bReadPortCancel);
+		__FUNCTION__, rtlpriv->bDriverStopped, rtlpriv->bSurpriseRemoved, rtlpriv->bReadPortCancel);
 		goto exit;
 	}
 
@@ -612,10 +612,10 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 		if ((purb->actual_length > MAX_RECVBUF_SZ)
 		 || (purb->actual_length < RXDESC_SIZE)) {
 			precvbuf->reuse = _TRUE;
-			usb_read_port(padapter, 0, (unsigned char *)precvbuf);
+			usb_read_port(rtlpriv, 0, (unsigned char *)precvbuf);
 			DBG_8192C("%s()-%d: RX Warning!\n", __FUNCTION__, __LINE__);
 		} else {
-			rtw_reset_continual_urb_error(rtl_usbdev(padapter));
+			rtw_reset_continual_urb_error(rtl_usbdev(rtlpriv));
 
 			precvbuf->transfer_len = purb->actual_length;
 			skb_put(precvbuf->pskb, purb->actual_length);
@@ -626,13 +626,13 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 
 			precvbuf->pskb = NULL;
 			precvbuf->reuse = _FALSE;
-			usb_read_port(padapter, 0, (unsigned char *)precvbuf);
+			usb_read_port(rtlpriv, 0, (unsigned char *)precvbuf);
 		}
 	} else {
 		DBG_8192C("###=> usb_read_port_complete => urb status(%d)\n", purb->status);
 
-		if (rtw_inc_and_chk_continual_urb_error(rtl_usbdev(padapter)) == _TRUE) {
-			padapter->bSurpriseRemoved = _TRUE;
+		if (rtw_inc_and_chk_continual_urb_error(rtl_usbdev(rtlpriv)) == _TRUE) {
+			rtlpriv->bSurpriseRemoved = _TRUE;
 		}
 
 		switch (purb->status) {
@@ -640,9 +640,9 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 		case -EPIPE:
 		case -ENODEV:
 		case -ESHUTDOWN:
-			/* padapter->bSurpriseRemoved=_TRUE; */
+			/* rtlpriv->bSurpriseRemoved=_TRUE; */
 		case -ENOENT:
-			padapter->bDriverStopped = _TRUE;
+			rtlpriv->bDriverStopped = _TRUE;
 			break;
 		case -EPROTO:
 		case -EILSEQ:
@@ -650,7 +650,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 		case -ECOMM:
 		case -EOVERFLOW:
 			precvbuf->reuse = _TRUE;
-			usb_read_port(padapter, 0, (unsigned char *)precvbuf);
+			usb_read_port(rtlpriv, 0, (unsigned char *)precvbuf);
 			break;
 		case -EINPROGRESS:
 			DBG_8192C("ERROR: URB IS IN PROGRESS!/n");

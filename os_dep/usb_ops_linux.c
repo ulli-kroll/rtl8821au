@@ -30,7 +30,7 @@ static int32_t pre_recv_entry(struct recv_frame *precvframe, uint8_t *pphy_statu
 	return ret;
 }
 
-static int recvbuf2recvframe(struct rtl_priv *padapter, struct sk_buff *pskb)
+static int recvbuf2recvframe(struct rtl_priv *rtlpriv, struct sk_buff *pskb)
 {
 	uint8_t	*pbuf;
 	uint8_t	pkt_cnt = 0;
@@ -39,8 +39,8 @@ static int recvbuf2recvframe(struct rtl_priv *padapter, struct sk_buff *pskb)
 	uint8_t				*pphy_status = NULL;
 	struct recv_frame	*precvframe = NULL;
 	struct rx_pkt_attrib	*pattrib = NULL;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(padapter);
-	struct recv_priv	*precvpriv = &padapter->recvpriv;
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 	struct __queue			*pfree_recv_queue = &precvpriv->free_recv_queue;
 
 	transfer_len = (int32_t)pskb->len;
@@ -80,7 +80,7 @@ static int recvbuf2recvframe(struct rtl_priv *padapter, struct sk_buff *pskb)
 			goto _exit_recvbuf2recvframe;
 		}
 
-		if (rtw_os_alloc_recvframe(padapter, precvframe,
+		if (rtw_os_alloc_recvframe(rtlpriv, precvframe,
 		    (pbuf+pattrib->shift_sz + pattrib->drvinfo_sz + RXDESC_SIZE),
 		     pskb) == _FAIL) {
 			rtw_free_recvframe(precvframe, pfree_recv_queue);
@@ -108,7 +108,7 @@ static int recvbuf2recvframe(struct rtl_priv *padapter, struct sk_buff *pskb)
 
 			if (pattrib->pkt_rpt_type == C2H_PACKET) {
 				/* DBG_8192C("rx C2H_PACKET \n"); */
-				/* C2HPacketHandler_8812A(padapter,precvframe->u.hdr.rx_data,pattrib->pkt_len); */
+				/* C2HPacketHandler_8812A(rtlpriv,precvframe->u.hdr.rx_data,pattrib->pkt_len); */
 			}
 			/* enqueue recvframe to txrtp queue */
 			else if (pattrib->pkt_rpt_type == TX_REPORT1) {
@@ -144,18 +144,18 @@ _exit_recvbuf2recvframe:
 void rtl8812au_recv_tasklet(void *priv)
 {
 	struct sk_buff 		*pskb;
-	struct rtl_priv		*padapter = (struct rtl_priv *)priv;
-	struct recv_priv	*precvpriv = &padapter->recvpriv;
+	struct rtl_priv		*rtlpriv = (struct rtl_priv *)priv;
+	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 
 	while (NULL != (pskb = skb_dequeue(&precvpriv->rx_skb_queue))) {
-		if ((padapter->bDriverStopped == _TRUE)
-		|| (padapter->bSurpriseRemoved == _TRUE)) {
+		if ((rtlpriv->bDriverStopped == _TRUE)
+		|| (rtlpriv->bSurpriseRemoved == _TRUE)) {
 			DBG_8192C("recv_tasklet => bDriverStopped or bSurpriseRemoved \n");
 			dev_kfree_skb_any(pskb);
 			break;
 		}
 
-		recvbuf2recvframe(padapter, pskb);
+		recvbuf2recvframe(rtlpriv, pskb);
 
 #ifdef CONFIG_PREALLOC_RECV_SKB
 
@@ -173,21 +173,21 @@ void rtl8812au_recv_tasklet(void *priv)
 void rtl8812au_xmit_tasklet(void *priv)
 {
 	int ret = _FALSE;
-	struct rtl_priv *padapter = (struct rtl_priv *) priv;
-	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
+	struct rtl_priv *rtlpriv = (struct rtl_priv *) priv;
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 
-	if (check_fwstate(&padapter->mlmepriv, _FW_UNDER_SURVEY) == _TRUE)
+	if (check_fwstate(&rtlpriv->mlmepriv, _FW_UNDER_SURVEY) == _TRUE)
 		return;
 
 	while (1) {
-		if ((padapter->bDriverStopped == _TRUE)
-		 || (padapter->bSurpriseRemoved == _TRUE)
-		 || (padapter->bWritePortCancel == _TRUE)) {
+		if ((rtlpriv->bDriverStopped == _TRUE)
+		 || (rtlpriv->bSurpriseRemoved == _TRUE)
+		 || (rtlpriv->bWritePortCancel == _TRUE)) {
 			DBG_8192C("xmit_tasklet => bDriverStopped or bSurpriseRemoved or bWritePortCancel\n");
 			break;
 		}
 
-		ret = rtl8812au_xmitframe_complete(padapter, pxmitpriv, NULL);
+		ret = rtl8812au_xmitframe_complete(rtlpriv, pxmitpriv, NULL);
 
 		if (ret == _FALSE)
 			break;
@@ -197,14 +197,14 @@ void rtl8812au_xmit_tasklet(void *priv)
 }
 
 
-void rtl8812au_set_hw_type(struct rtl_priv *padapter)
+void rtl8812au_set_hw_type(struct rtl_priv *rtlpriv)
 {
-	if (padapter->chip_type == RTL8812) {
-		padapter->rtlhal.hw_type = HARDWARE_TYPE_RTL8812AU;
+	if (rtlpriv->chip_type == RTL8812) {
+		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8812AU;
 		DBG_871X("CHIP TYPE: RTL8812\n");
-	} else if (padapter->chip_type == RTL8821) {
-		/* padapter->HardwareType = HARDWARE_TYPE_RTL8811AU; */
-		padapter->rtlhal.hw_type = HARDWARE_TYPE_RTL8821U;
+	} else if (rtlpriv->chip_type == RTL8821) {
+		/* rtlpriv->HardwareType = HARDWARE_TYPE_RTL8811AU; */
+		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8821U;
 		DBG_871X("CHIP TYPE: RTL8811AU or RTL8821U\n");
 	}
 }
@@ -216,7 +216,7 @@ struct zero_bulkout_context{
 	void *pbuf;
 	void *purb;
 	void *pirp;
-	void *padapter;
+	void *rtlpriv;
 };
 
 static void usb_bulkout_zero_complete(struct urb *purb, struct pt_regs *regs)
@@ -238,20 +238,20 @@ static void usb_bulkout_zero_complete(struct urb *purb, struct pt_regs *regs)
 
 }
 
-static u32 usb_bulkout_zero(struct rtl_priv *padapter, u32 addr)
+static u32 usb_bulkout_zero(struct rtl_priv *rtlpriv, u32 addr)
 {
 	int pipe, status, len;
 	u32 ret;
 	unsigned char *pbuf;
 	struct zero_bulkout_context *pcontext;
 	PURB	purb = NULL;
-	struct rtl_usb *pdvobj = rtl_usbdev(padapter);
+	struct rtl_usb *pdvobj = rtl_usbdev(rtlpriv);
 	struct usb_device *pusbd = pdvobj->pusbdev;
 
 	/* DBG_871X("%s\n", __func__); */
 
 
-	if((padapter->bDriverStopped) || (padapter->bSurpriseRemoved) ||(padapter->pwrctrlpriv.pnp_bstop_trx)) {
+	if((rtlpriv->bDriverStopped) || (rtlpriv->bSurpriseRemoved) ||(rtlpriv->pwrctrlpriv.pnp_bstop_trx)) {
 		return _FAIL;
 	}
 
@@ -264,7 +264,7 @@ static u32 usb_bulkout_zero(struct rtl_priv *padapter, u32 addr)
 	pcontext->pbuf = pbuf;
 	pcontext->purb = purb;
 	pcontext->pirp = NULL;
-	pcontext->padapter = padapter;
+	pcontext->rtlpriv = rtlpriv;
 
 	/*
 	 * translate DMA FIFO addr to pipehandle
@@ -290,15 +290,15 @@ static u32 usb_bulkout_zero(struct rtl_priv *padapter, u32 addr)
 
 }
 
-void usb_read_port_cancel(struct rtl_priv *padapter)
+void usb_read_port_cancel(struct rtl_priv *rtlpriv)
 {
 	int i;
 	struct recv_buf *precvbuf;
-	precvbuf = (struct recv_buf *)padapter->recvpriv.precv_buf;
+	precvbuf = (struct recv_buf *)rtlpriv->recvpriv.precv_buf;
 
 	DBG_871X("%s\n", __func__);
 
-	padapter->bReadPortCancel = _TRUE;
+	rtlpriv->bReadPortCancel = _TRUE;
 
 	for (i=0; i < NR_RECVBUFF ; i++) {
 

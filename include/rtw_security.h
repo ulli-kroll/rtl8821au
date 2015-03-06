@@ -398,13 +398,13 @@ void rtw_seccalctkipmic(
 	uint8_t *Miccode,
 	uint8_t   priority);
 
-u32 rtw_aes_encrypt(struct rtl_priv *padapter, uint8_t *pxmitframe);
-u32 rtw_tkip_encrypt(struct rtl_priv *padapter, uint8_t *pxmitframe);
-void rtw_wep_encrypt(struct rtl_priv *padapter, uint8_t  *pxmitframe);
+u32 rtw_aes_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe);
+u32 rtw_tkip_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe);
+void rtw_wep_encrypt(struct rtl_priv *rtlpriv, uint8_t  *pxmitframe);
 
-u32 rtw_aes_decrypt(struct rtl_priv *padapter, struct recv_frame *precvframe);
-u32 rtw_tkip_decrypt(struct rtl_priv *padapter, struct recv_frame *precvframe);
-void rtw_wep_decrypt(struct rtl_priv *padapter, struct recv_frame *precvframe);
+u32 rtw_aes_decrypt(struct rtl_priv *rtlpriv, struct recv_frame *precvframe);
+u32 rtw_tkip_decrypt(struct rtl_priv *rtlpriv, struct recv_frame *precvframe);
+void rtw_wep_decrypt(struct rtl_priv *rtlpriv, struct recv_frame *precvframe);
 
 
 void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS);

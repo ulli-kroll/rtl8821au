@@ -1,15 +1,15 @@
 #ifndef __RTL8821AU_TRX_H__
 #define __RTL8821AU_TRX_H__
 
-void rtl8821au_fill_fake_txdesc(struct rtl_priv *padapter, uint8_t *pDesc,
+void rtl8821au_fill_fake_txdesc(struct rtl_priv *rtlpriv, uint8_t *pDesc,
 	uint32_t BufferLen, uint8_t IsPsPoll, uint8_t IsBTQosNull);
 
-int32_t rtl8812au_mgnt_xmit(struct rtl_priv *padapter, struct xmit_frame *pmgntframe);
-int32_t rtl8812au_hal_xmit(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
-int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
-int32_t rtl8812au_xmitframe_complete(struct rtl_priv *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
+int32_t rtl8812au_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
+int32_t rtl8812au_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
+int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
+int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 
-void _dbg_dump_tx_info(struct rtl_priv	*padapter,int frame_tag,u8 *ptxdesc);
+void _dbg_dump_tx_info(struct rtl_priv	*rtlpriv,int frame_tag,u8 *ptxdesc);
 
 
 /* TX desc macros */

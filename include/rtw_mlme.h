@@ -215,7 +215,7 @@ struct scan_limit_info{
 };
 
 struct wifidirect_info{
-	struct rtl_priv*				padapter;
+	struct rtl_priv*				rtlpriv;
 	_timer					find_phase_timer;
 	_timer					restore_p2p_state_timer;
 
@@ -445,11 +445,11 @@ struct mlme_priv {
 
 struct hostapd_priv
 {
-	struct rtl_priv *padapter;
+	struct rtl_priv *rtlpriv;
 };
 
-extern int hostapd_mode_init(struct rtl_priv *padapter);
-extern void hostapd_mode_unload(struct rtl_priv *padapter);
+extern int hostapd_mode_init(struct rtl_priv *rtlpriv);
+extern void hostapd_mode_unload(struct rtl_priv *rtlpriv);
 #endif
 
 
@@ -581,7 +581,7 @@ extern struct wlan_network* rtw_get_oldest_wlan_network(struct __queue *scanned_
 extern void rtw_free_assoc_resources(struct rtl_priv* adapter, int lock_scanned_queue);
 extern void rtw_indicate_disconnect(struct rtl_priv* adapter);
 extern void rtw_indicate_connect(struct rtl_priv* adapter);
-void rtw_indicate_scan_done( struct rtl_priv *padapter, bool aborted);
+void rtw_indicate_scan_done( struct rtl_priv *rtlpriv, bool aborted);
 void rtw_scan_abort(struct rtl_priv *adapter);
 
 extern int rtw_restruct_sec_ie(struct rtl_priv *adapter,uint8_t *in_ie,uint8_t *out_ie,uint in_len);
@@ -597,7 +597,7 @@ extern void rtw_scan_timeout_handler(struct rtl_priv *adapter);
 
 extern void rtw_dynamic_check_timer_handlder(struct rtl_priv *adapter);
 
-extern int _rtw_init_mlme_priv(struct rtl_priv *padapter);
+extern int _rtw_init_mlme_priv(struct rtl_priv *rtlpriv);
 
 void rtw_free_mlme_priv_ie_data(struct mlme_priv *pmlmepriv);
 
@@ -616,23 +616,23 @@ extern void _rtw_free_network_nolock(struct mlme_priv *pmlmepriv, struct wlan_ne
 
 extern struct wlan_network* _rtw_find_network(struct __queue *scanned_queue, uint8_t *addr);
 
-extern void _rtw_free_network_queue(struct rtl_priv* padapter, uint8_t isfreeall);
+extern void _rtw_free_network_queue(struct rtl_priv* rtlpriv, uint8_t isfreeall);
 
-extern sint rtw_if_up(struct rtl_priv *padapter);
+extern sint rtw_if_up(struct rtl_priv *rtlpriv);
 
-sint rtw_linked_check(struct rtl_priv *padapter);
+sint rtw_linked_check(struct rtl_priv *rtlpriv);
 
 uint8_t *rtw_get_capability_from_ie(uint8_t *ie);
 uint8_t *rtw_get_timestampe_from_ie(uint8_t *ie);
 uint8_t *rtw_get_beacon_interval_from_ie(uint8_t *ie);
 
 
-void rtw_joinbss_reset(struct rtl_priv *padapter);
+void rtw_joinbss_reset(struct rtl_priv *rtlpriv);
 
 #ifdef CONFIG_80211N_HT
-unsigned int rtw_restructure_ht_ie(struct rtl_priv *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len);
-void rtw_update_ht_cap(struct rtl_priv *padapter, uint8_t *pie, uint ie_len, uint8_t channel);
-void rtw_issue_addbareq_cmd(struct rtl_priv *padapter, struct xmit_frame *pxmitframe);
+unsigned int rtw_restructure_ht_ie(struct rtl_priv *rtlpriv, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len);
+void rtw_update_ht_cap(struct rtl_priv *rtlpriv, uint8_t *pie, uint ie_len, uint8_t channel);
+void rtw_issue_addbareq_cmd(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 #endif
 
 int rtw_is_same_ibss(struct rtl_priv *adapter, struct wlan_network *pnetwork);

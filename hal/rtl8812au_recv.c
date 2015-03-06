@@ -21,7 +21,7 @@
 
 #include <rtl8812a_hal.h>
 
-void rtl8812au_init_recvbuf(struct rtl_priv *padapter, struct recv_buf *precvbuf)
+void rtl8812au_init_recvbuf(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
 {
 	precvbuf->transfer_len = 0;
 	precvbuf->len = 0;
@@ -34,16 +34,16 @@ void rtl8812au_init_recvbuf(struct rtl_priv *padapter, struct recv_buf *precvbuf
 
 }
 
-int	rtl8812au_init_recv_priv(struct rtl_priv *padapter)
+int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 {
-	struct recv_priv	*precvpriv = &padapter->recvpriv;
+	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 	int	i, res = _SUCCESS;
 	struct recv_buf *precvbuf;
 
 #ifdef PLATFORM_LINUX
 	tasklet_init(&precvpriv->recv_tasklet,
 	     (void(*)(unsigned long))rtl8812au_recv_tasklet,
-	     (unsigned long)padapter);
+	     (unsigned long)rtlpriv);
 #endif
 
 	/* init recv_buf */
@@ -72,12 +72,12 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *padapter)
 
 		precvbuf->alloc_sz = MAX_RECVBUF_SZ;
 
-		res = rtw_os_recvbuf_resource_alloc(padapter, precvbuf);
+		res = rtw_os_recvbuf_resource_alloc(rtlpriv, precvbuf);
 		if (res == _FAIL)
 			break;
 
 		precvbuf->ref_cnt = 0;
-		precvbuf->adapter = padapter;
+		precvbuf->adapter = rtlpriv;
 
 		/* list_add_tail(&precvbuf->list, &(precvpriv->free_recv_buf_queue.queue)); */
 
@@ -102,10 +102,10 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *padapter)
 
 		for (i = 0; i < NR_PREALLOC_RECV_SKB; i++) {
 
-			pskb = __netdev_alloc_skb(padapter->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ, GFP_KERNEL);
+			pskb = __netdev_alloc_skb(rtlpriv->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ, GFP_KERNEL);
 
 			if (pskb) {
-				pskb->dev = padapter->ndev;
+				pskb->dev = rtlpriv->ndev;
 
 				tmpaddr = (SIZE_PTR)pskb->data;
 				alignment = tmpaddr & (RECVBUFF_ALIGN_SZ-1);
@@ -125,16 +125,16 @@ exit:
 	return res;
 }
 
-void rtl8812au_free_recv_priv (struct rtl_priv *padapter)
+void rtl8812au_free_recv_priv (struct rtl_priv *rtlpriv)
 {
 	int	i;
 	struct recv_buf	*precvbuf;
-	struct recv_priv	*precvpriv = &padapter->recvpriv;
+	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 
 	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
 
 	for (i = 0; i < NR_RECVBUFF ; i++) {
-		rtw_os_recvbuf_resource_free(padapter, precvbuf);
+		rtw_os_recvbuf_resource_free(rtlpriv, precvbuf);
 		precvbuf++;
 	}
 

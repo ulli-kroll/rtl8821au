@@ -146,9 +146,9 @@ int _rtw_memcmp(void *dst, void *src, u32 sz)
 		return _FALSE;
 }
 
-void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
+void rtw_init_timer(_timer *ptimer, void *rtlpriv, void *pfunc)
 {
-	struct rtl_priv *adapter = (struct rtl_priv *)padapter;
+	struct rtl_priv *adapter = (struct rtl_priv *)rtlpriv;
 
 	_init_timer(ptimer, adapter->ndev, pfunc, adapter);
 }

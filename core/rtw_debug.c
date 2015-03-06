@@ -87,7 +87,7 @@ int proc_set_write_reg(struct file *file, const char *buffer,
 		unsigned long count, void *data)
 {
 	struct net_device *ndev = (struct net_device *)data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	char tmp[32];
 	uint32_t	 addr, val, len;
 
@@ -109,13 +109,13 @@ int proc_set_write_reg(struct file *file, const char *buffer,
 		switch(len)
 		{
 			case 1:
-				usb_write8(padapter, addr, (uint8_t)val);
+				usb_write8(rtlpriv, addr, (uint8_t)val);
 				break;
 			case 2:
-				usb_write16(padapter, addr, (u16)val);
+				usb_write16(rtlpriv, addr, (u16)val);
 				break;
 			case 4:
-				usb_write32(padapter, addr, val);
+				usb_write32(rtlpriv, addr, val);
 				break;
 			default:
 				DBG_871X("error write length=%d", len);
@@ -136,7 +136,7 @@ int proc_get_read_reg(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 
 	int len = 0;
 
@@ -149,13 +149,13 @@ int proc_get_read_reg(char *page, char **start,
 	switch(proc_get_read_len)
 	{
 		case 1:
-			len += snprintf(page + len, count - len, "usb_read8(0x%x)=0x%x\n", proc_get_read_addr, usb_read8(padapter, proc_get_read_addr));
+			len += snprintf(page + len, count - len, "usb_read8(0x%x)=0x%x\n", proc_get_read_addr, usb_read8(rtlpriv, proc_get_read_addr));
 			break;
 		case 2:
-			len += snprintf(page + len, count - len, "usb_read16(0x%x)=0x%x\n", proc_get_read_addr, usb_read16(padapter, proc_get_read_addr));
+			len += snprintf(page + len, count - len, "usb_read16(0x%x)=0x%x\n", proc_get_read_addr, usb_read16(rtlpriv, proc_get_read_addr));
 			break;
 		case 4:
-			len += snprintf(page + len, count - len, "usb_read32(0x%x)=0x%x\n", proc_get_read_addr, usb_read32(padapter, proc_get_read_addr));
+			len += snprintf(page + len, count - len, "usb_read32(0x%x)=0x%x\n", proc_get_read_addr, usb_read32(rtlpriv, proc_get_read_addr));
 			break;
 		default:
 			len += snprintf(page + len, count - len, "error read length=%d\n", proc_get_read_len);
@@ -202,8 +202,8 @@ int proc_get_fwstate(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 
 	int len = 0;
 
@@ -218,8 +218,8 @@ int proc_get_sec_info(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct security_priv *psecuritypriv = &padapter->securitypriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
 
 	int len = 0;
 
@@ -236,8 +236,8 @@ int proc_get_mlmext_state(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
 	int len = 0;
@@ -253,8 +253,8 @@ int proc_get_qos_option(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 
 	int len = 0;
 
@@ -270,8 +270,8 @@ int proc_get_ht_option(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 
 	int len = 0;
 #ifdef CONFIG_80211N_HT
@@ -286,15 +286,15 @@ int proc_get_rf_info(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	int len = 0;
 
 	len += snprintf(page + len, count - len, "cur_ch=%d, cur_bw=%d, cur_ch_offet=%d\n",
 					pmlmeext->cur_channel, pmlmeext->cur_bwmode, pmlmeext->cur_ch_offset);
 
 	len += snprintf(page + len, count - len, "oper_ch=%d, oper_bw=%d, oper_ch_offet=%d\n",
-					rtw_get_oper_ch(padapter), rtw_get_oper_bw(padapter),  rtw_get_oper_choffset(padapter));
+					rtw_get_oper_ch(rtlpriv), rtw_get_oper_bw(rtlpriv),  rtw_get_oper_choffset(rtlpriv));
 
 	*eof = 1;
 	return len;
@@ -307,11 +307,11 @@ int proc_get_ap_info(char *page, char **start,
 {
 	struct sta_info *psta;
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
+	struct mlme_ext_priv *pmlmeext = &rtlpriv->mlmeextpriv;
 	struct wlan_network *cur_network = &(pmlmepriv->cur_network);
-	struct sta_priv *pstapriv = &padapter->stapriv;
+	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 	int len = 0;
 
 	psta = rtw_get_stainfo(pstapriv, cur_network->network.MacAddress);
@@ -357,11 +357,11 @@ int proc_get_adapter_state(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 
 	len += snprintf(page + len, count - len, "bSurpriseRemoved=%d, bDriverStopped=%d\n",
-						padapter->bSurpriseRemoved, padapter->bDriverStopped);
+						rtlpriv->bSurpriseRemoved, rtlpriv->bDriverStopped);
 
 	*eof = 1;
 	return len;
@@ -374,9 +374,9 @@ int proc_get_trx_info(char *page, char **start,
 {
 	int i;
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
-	struct recv_priv  *precvpriv = &padapter->recvpriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
+	struct recv_priv  *precvpriv = &rtlpriv->recvpriv;
 	struct hw_xmit *phwxmit;
 	int len = 0;
 
@@ -405,7 +405,7 @@ int proc_get_mac_reg_dump1(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1;
 
@@ -414,7 +414,7 @@ int proc_get_mac_reg_dump1(char *page, char **start,
 	for(i=0x0;i<0x300;i+=4)
 	{
 		if(j%4==1)	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(padapter,i));
+		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 
@@ -428,7 +428,7 @@ int proc_get_mac_reg_dump2(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1;
 
@@ -437,7 +437,7 @@ int proc_get_mac_reg_dump2(char *page, char **start,
 	for(i=0x300;i<0x600;i+=4)
 	{
 		if(j%4==1)	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(padapter,i));
+		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 
@@ -451,7 +451,7 @@ int proc_get_mac_reg_dump3(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1;
 
@@ -460,7 +460,7 @@ int proc_get_mac_reg_dump3(char *page, char **start,
 	for(i=0x600;i<0x800;i+=4)
 	{
 		if(j%4==1)	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(padapter,i));
+		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 
@@ -474,7 +474,7 @@ int proc_get_bb_reg_dump1(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1;
 
@@ -482,7 +482,7 @@ int proc_get_bb_reg_dump1(char *page, char **start,
 	for(i=0x800;i<0xB00;i+=4)
 	{
 		if(j%4==1) 	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(padapter,i));
+		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 	*eof = 1;
@@ -494,7 +494,7 @@ int proc_get_bb_reg_dump2(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1;
 
@@ -502,7 +502,7 @@ int proc_get_bb_reg_dump2(char *page, char **start,
 	for(i=0xB00;i<0xE00;i+=4)
 	{
 		if(j%4==1) 	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(padapter,i));
+		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 	*eof = 1;
@@ -514,7 +514,7 @@ int proc_get_bb_reg_dump3(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1;
 
@@ -522,7 +522,7 @@ int proc_get_bb_reg_dump3(char *page, char **start,
 	for(i=0xE00;i<0x1000;i+=4)
 	{
 		if(j%4==1) 	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(padapter,i));
+		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 	*eof = 1;
@@ -534,7 +534,7 @@ int proc_get_rf_reg_dump1(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1,path;
 	uint32_t	 value;
@@ -544,8 +544,8 @@ int proc_get_rf_reg_dump1(char *page, char **start,
 	len += snprintf(page + len, count - len, "\nRF_Path(%x)\n",path);
 	for(i=0;i<0xC0;i++)
 	{
-		//value = rtw_hal_read_rfreg(padapter, enum radio_path path,i, bMaskDWord);
-		value = rtw_hal_read_rfreg(padapter, path, i, 0xffffffff);
+		//value = rtw_hal_read_rfreg(rtlpriv, enum radio_path path,i, bMaskDWord);
+		value = rtw_hal_read_rfreg(rtlpriv, path, i, 0xffffffff);
 		if(j%4==1)	len += snprintf(page + len, count - len, "0x%02x ",i);
 		len += snprintf(page + len, count - len, " 0x%08x ",value);
 		if((j++)%4==0)	len += snprintf(page + len, count - len, "\n");
@@ -561,7 +561,7 @@ int proc_get_rf_reg_dump2(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1,path;
 	uint32_t	 value;
@@ -571,8 +571,8 @@ int proc_get_rf_reg_dump2(char *page, char **start,
 	len += snprintf(page + len, count - len, "\nRF_Path(%x)\n",path);
 	for(i=0xC0;i<0x100;i++)
 	{
-		//value = rtw_hal_read_rfreg(padapter, enum radio_path path,i, bMaskDWord);
-		value = rtw_hal_read_rfreg(padapter, path, i, 0xffffffff);
+		//value = rtw_hal_read_rfreg(rtlpriv, enum radio_path path,i, bMaskDWord);
+		value = rtw_hal_read_rfreg(rtlpriv, path, i, 0xffffffff);
 		if(j%4==1)	len += snprintf(page + len, count - len, "0x%02x ",i);
 		len += snprintf(page + len, count - len, " 0x%08x ",value);
 		if((j++)%4==0)	len += snprintf(page + len, count - len, "\n");
@@ -587,7 +587,7 @@ int proc_get_rf_reg_dump3(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1,path;
 	uint32_t	 value;
@@ -597,8 +597,8 @@ int proc_get_rf_reg_dump3(char *page, char **start,
 	len += snprintf(page + len, count - len, "\nRF_Path(%x)\n",path);
 	for(i=0;i<0xC0;i++)
 	{
-		//value = rtw_hal_read_rfreg(padapter, enum radio_path path,i, bMaskDWord);
-		value = rtw_hal_read_rfreg(padapter, path, i, 0xffffffff);
+		//value = rtw_hal_read_rfreg(rtlpriv, enum radio_path path,i, bMaskDWord);
+		value = rtw_hal_read_rfreg(rtlpriv, path, i, 0xffffffff);
 		if(j%4==1)	len += snprintf(page + len, count - len, "0x%02x ",i);
 		len += snprintf(page + len, count - len, " 0x%08x ",value);
 		if((j++)%4==0)	len += snprintf(page + len, count - len, "\n");
@@ -614,7 +614,7 @@ int proc_get_rf_reg_dump4(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int len = 0;
 	int i,j=1,path;
 	uint32_t	 value;
@@ -624,8 +624,8 @@ int proc_get_rf_reg_dump4(char *page, char **start,
 	len += snprintf(page + len, count - len, "\nRF_Path(%x)\n",path);
 	for(i=0xC0;i<0x100;i++)
 	{
-		//value = rtw_hal_read_rfreg(padapter, enum radio_path path,i, bMaskDWord);
-		value = rtw_hal_read_rfreg(padapter, path, i, 0xffffffff);
+		//value = rtw_hal_read_rfreg(rtlpriv, enum radio_path path,i, bMaskDWord);
+		value = rtw_hal_read_rfreg(rtlpriv, path, i, 0xffffffff);
 		if(j%4==1)	len += snprintf(page + len, count - len, "0x%02x ",i);
 		len += snprintf(page + len, count - len, " 0x%08x ",value);
 		if((j++)%4==0)	len += snprintf(page + len, count - len, "\n");
@@ -641,8 +641,8 @@ int proc_get_rx_signal(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 
 	int len = 0;
 
@@ -652,11 +652,11 @@ int proc_get_rx_signal(char *page, char **start,
 		"signal_strength:%u\n"
 		"signal_qual:%u\n"
 		"noise:%u\n",
-		padapter->recvpriv.rssi,
-		padapter->recvpriv.rxpwdb,
-		padapter->recvpriv.signal_strength,
-		padapter->recvpriv.signal_qual,
-		padapter->recvpriv.noise
+		rtlpriv->recvpriv.rssi,
+		rtlpriv->recvpriv.rxpwdb,
+		rtlpriv->recvpriv.signal_strength,
+		rtlpriv->recvpriv.signal_qual,
+		rtlpriv->recvpriv.noise
 		);
 
 	*eof = 1;
@@ -667,7 +667,7 @@ int proc_set_rx_signal(struct file *file, const char *buffer,
 		unsigned long count, void *data)
 {
 	struct net_device *ndev = (struct net_device *)data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	char tmp[32];
 	uint32_t	 is_signal_dbg, signal_strength;
 
@@ -686,8 +686,8 @@ int proc_set_rx_signal(struct file *file, const char *buffer,
 		signal_strength = signal_strength>100?100:signal_strength;
 		signal_strength = signal_strength<0?0:signal_strength;
 
-		padapter->recvpriv.is_signal_dbg = is_signal_dbg;
-		padapter->recvpriv.signal_strength_dbg=signal_strength;
+		rtlpriv->recvpriv.is_signal_dbg = is_signal_dbg;
+		rtlpriv->recvpriv.signal_strength_dbg=signal_strength;
 
 		if(is_signal_dbg)
 			DBG_871X("set %s %u\n", "DBG_SIGNAL_STRENGTH", signal_strength);
@@ -706,8 +706,8 @@ int proc_get_ht_enable(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 
 	int len = 0;
 
@@ -725,8 +725,8 @@ int proc_set_ht_enable(struct file *file, const char *buffer,
 		unsigned long count, void *data)
 {
 	struct net_device *ndev = (struct net_device *)data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 	char tmp[32];
 	uint32_t	 mode;
 
@@ -753,8 +753,8 @@ int proc_get_bw_mode(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 
 	int len = 0;
 
@@ -772,8 +772,8 @@ int proc_set_bw_mode(struct file *file, const char *buffer,
 		unsigned long count, void *data)
 {
 	struct net_device *ndev = (struct net_device *)data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 	char tmp[32];
 	uint32_t	 mode;
 
@@ -802,8 +802,8 @@ int proc_get_ampdu_enable(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 
 	int len = 0;
 
@@ -821,8 +821,8 @@ int proc_set_ampdu_enable(struct file *file, const char *buffer,
 		unsigned long count, void *data)
 {
 	struct net_device *ndev = (struct net_device *)data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 	char tmp[32];
 	uint32_t	 mode;
 
@@ -851,15 +851,15 @@ int proc_get_two_path_rssi(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 
 	int len = 0;
 
-	if(padapter)
+	if(rtlpriv)
 		len += snprintf(page + len, count - len,
 			"%d %d\n",
-			padapter->recvpriv.RxRssi[0],
-			padapter->recvpriv.RxRssi[1]
+			rtlpriv->recvpriv.RxRssi[0],
+			rtlpriv->recvpriv.RxRssi[1]
 			);
 
 	*eof = 1;
@@ -871,8 +871,8 @@ int proc_get_rx_stbc(char *page, char **start,
 			  int *eof, void *data)
 {
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 
 	int len = 0;
 
@@ -890,8 +890,8 @@ int proc_set_rx_stbc(struct file *file, const char *buffer,
 		unsigned long count, void *data)
 {
 	struct net_device *ndev = (struct net_device *)data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct registry_priv	*pregpriv = &padapter->registrypriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 	char tmp[32];
 	uint32_t	 mode;
 
@@ -926,7 +926,7 @@ int proc_set_rssi_disp(struct file *file, const char *buffer,
 		unsigned long count, void *data)
 {
 	struct net_device *ndev = (struct net_device *)data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	char tmp[32];
 	uint32_t	 enable=0;
 
@@ -948,12 +948,12 @@ int proc_set_rssi_disp(struct file *file, const char *buffer,
 		if(enable)
 		{
 			DBG_8192C("Linked info Function Enable\n");
-			padapter->bLinkInfoDump = enable ;
+			rtlpriv->bLinkInfoDump = enable ;
 		}
 		else
 		{
 			DBG_8192C("Linked info Function Disable\n");
-			padapter->bLinkInfoDump = 0 ;
+			rtlpriv->bLinkInfoDump = 0 ;
 		}
 
 	}
@@ -972,8 +972,8 @@ int proc_get_all_sta_info(char *page, char **start,
 	_irqL irqL;
 	struct sta_info *psta;
 	struct net_device *ndev = data;
-	struct rtl_priv *padapter = rtl_priv(ndev);
-	struct sta_priv *pstapriv = &padapter->stapriv;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 	int i, j;
 	struct list_head	*plist, *phead;
 	struct recv_reorder_ctrl *preorder_ctrl;

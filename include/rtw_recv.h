@@ -71,7 +71,7 @@ static uint8_t rtw_bridge_tunnel_header[] =
 //for Rx reordering buffer control
 struct recv_reorder_ctrl
 {
-	struct rtl_priv	*padapter;
+	struct rtl_priv	*rtlpriv;
 	uint8_t enable;
 	u16 indicate_seq;//=wstart_b, init_value=0xffff
 	u16 wend_b;
@@ -638,7 +638,7 @@ struct sta_info;
 
 extern void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv);
 
-extern void  mgt_dispatcher(struct rtl_priv *padapter, struct recv_frame *precv_frame);
+extern void  mgt_dispatcher(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
 
 #endif
 

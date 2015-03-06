@@ -163,7 +163,7 @@ typedef	enum _LED_STRATEGY_USB{
 
 
 struct rtl_led {
-	struct rtl_priv *		padapter;
+	struct rtl_priv *		rtlpriv;
 
 	enum rtl_led_pin		LedPin;	// Identify how to implement this SW led.
 
@@ -197,8 +197,8 @@ struct rtl_led_ctl {
 	struct rtl_led SwLed1;
 	struct rtl_led SwLed2;
 	LED_STRATEGY		LedStrategy;
-	void (*SwLedOn)(struct rtl_priv *padapter, struct rtl_led *pLed);
-	void (*SwLedOff)(struct rtl_priv *padapter, struct rtl_led *pLed);
+	void (*SwLedOn)(struct rtl_priv *rtlpriv, struct rtl_led *pLed);
+	void (*SwLedOff)(struct rtl_priv *rtlpriv, struct rtl_led *pLed);
 	/* add for led controll */
 };
 
@@ -208,8 +208,8 @@ struct rtl_led_ctl {
 // Interface to manipulate LED objects.
 //================================================================================
 
-void rtl8821au_init_sw_leds(struct rtl_priv *padapter);
-void rtl8812au_deinit_sw_leds(struct rtl_priv *padapter);
+void rtl8821au_init_sw_leds(struct rtl_priv *rtlpriv);
+void rtl8812au_deinit_sw_leds(struct rtl_priv *rtlpriv);
 void rtl8821au_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction);
 
 #endif

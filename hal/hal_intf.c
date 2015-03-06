@@ -23,55 +23,55 @@
 #include <drv_types.h>
 
 
-void rtw_hal_chip_configure(struct rtl_priv *padapter)
+void rtw_hal_chip_configure(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->intf_chip_configure)
-		padapter->HalFunc->intf_chip_configure(padapter);
+	if (rtlpriv->HalFunc->intf_chip_configure)
+		rtlpriv->HalFunc->intf_chip_configure(rtlpriv);
 }
 
-void rtw_hal_read_chip_info(struct rtl_priv *padapter)
+void rtw_hal_read_chip_info(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->read_adapter_info)
-		padapter->HalFunc->read_adapter_info(padapter);
+	if (rtlpriv->HalFunc->read_adapter_info)
+		rtlpriv->HalFunc->read_adapter_info(rtlpriv);
 }
 
-void rtw_hal_read_chip_version(struct rtl_priv *padapter)
+void rtw_hal_read_chip_version(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->read_chip_version)
-		padapter->HalFunc->read_chip_version(padapter);
+	if (rtlpriv->HalFunc->read_chip_version)
+		rtlpriv->HalFunc->read_chip_version(rtlpriv);
 }
 
-void rtw_hal_def_value_init(struct rtl_priv *padapter)
+void rtw_hal_def_value_init(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->init_default_value)
-		padapter->HalFunc->init_default_value(padapter);
+	if (rtlpriv->HalFunc->init_default_value)
+		rtlpriv->HalFunc->init_default_value(rtlpriv);
 }
-void	rtw_hal_free_data(struct rtl_priv *padapter)
+void	rtw_hal_free_data(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->free_hal_data)
-		padapter->HalFunc->free_hal_data(padapter);
+	if (rtlpriv->HalFunc->free_hal_data)
+		rtlpriv->HalFunc->free_hal_data(rtlpriv);
 }
-void	rtw_hal_dm_init(struct rtl_priv *padapter)
+void	rtw_hal_dm_init(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->dm_init)
-		padapter->HalFunc->dm_init(padapter);
+	if (rtlpriv->HalFunc->dm_init)
+		rtlpriv->HalFunc->dm_init(rtlpriv);
 }
-void rtw_hal_dm_deinit(struct rtl_priv *padapter)
+void rtw_hal_dm_deinit(struct rtl_priv *rtlpriv)
 {
 	/* cancel dm  timer */
-	if (padapter->HalFunc->dm_deinit)
-		padapter->HalFunc->dm_deinit(padapter);
+	if (rtlpriv->HalFunc->dm_deinit)
+		rtlpriv->HalFunc->dm_deinit(rtlpriv);
 }
-void rtw_hal_sw_led_init(struct rtl_priv *padapter)
+void rtw_hal_sw_led_init(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->init_sw_leds)
-		padapter->HalFunc->init_sw_leds(padapter);
+	if (rtlpriv->HalFunc->init_sw_leds)
+		rtlpriv->HalFunc->init_sw_leds(rtlpriv);
 }
 
-void rtw_hal_sw_led_deinit(struct rtl_priv *padapter)
+void rtw_hal_sw_led_deinit(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->deinit_sw_leds)
-		padapter->HalFunc->deinit_sw_leds(padapter);
+	if (rtlpriv->HalFunc->deinit_sw_leds)
+		rtlpriv->HalFunc->deinit_sw_leds(rtlpriv);
 }
 
 void rtw_hal_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
@@ -80,25 +80,25 @@ void rtw_hal_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 }
 
 
-uint rtw_hal_init(struct rtl_priv *padapter)
+uint rtw_hal_init(struct rtl_priv *rtlpriv)
 {
 	uint status = _SUCCESS;
 
-	padapter->hw_init_completed = _FALSE;
+	rtlpriv->hw_init_completed = _FALSE;
 
-	status = padapter->HalFunc->hal_init(padapter);
+	status = rtlpriv->HalFunc->hal_init(rtlpriv);
 
 	if (status == _SUCCESS) {
-		padapter->hw_init_completed = _TRUE;
+		rtlpriv->hw_init_completed = _TRUE;
 
-		if (padapter->registrypriv.notch_filter == 1)
-			rtw_hal_notch_filter(padapter, 1);
+		if (rtlpriv->registrypriv.notch_filter == 1)
+			rtw_hal_notch_filter(rtlpriv, 1);
 
-		rtw_hal_reset_security_engine(padapter);
+		rtw_hal_reset_security_engine(rtlpriv);
 
-		rtw_hal_led_control(padapter, LED_CTL_POWER_ON);
+		rtw_hal_led_control(rtlpriv, LED_CTL_POWER_ON);
 	} else {
-		padapter->hw_init_completed = _FALSE;
+		rtlpriv->hw_init_completed = _FALSE;
 		DBG_871X("rtw_hal_init: hal__init fail\n");
 	}
 
@@ -106,15 +106,15 @@ uint rtw_hal_init(struct rtl_priv *padapter)
 
 }
 
-uint rtw_hal_deinit(struct rtl_priv *padapter)
+uint rtw_hal_deinit(struct rtl_priv *rtlpriv)
 {
 	uint	status = _SUCCESS;
 
-	status = padapter->HalFunc->hal_deinit(padapter);
+	status = rtlpriv->HalFunc->hal_deinit(rtlpriv);
 
 	if (status == _SUCCESS) {
-		rtw_hal_led_control(padapter, LED_CTL_POWER_OFF);
-		padapter->hw_init_completed = _FALSE;
+		rtw_hal_led_control(rtlpriv, LED_CTL_POWER_OFF);
+		rtlpriv->hw_init_completed = _FALSE;
 	} else {
 		DBG_871X("\n rtw_hal_deinit: hal_init fail\n");
 	}
@@ -122,232 +122,232 @@ uint rtw_hal_deinit(struct rtl_priv *padapter)
 	return status;
 }
 
-void rtw_hal_set_hwreg(struct rtl_priv *padapter, uint8_t variable, uint8_t *val)
+void rtw_hal_set_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
-	if (padapter->HalFunc->set_hw_reg)
-		padapter->HalFunc->set_hw_reg(padapter, variable, val);
+	if (rtlpriv->HalFunc->set_hw_reg)
+		rtlpriv->HalFunc->set_hw_reg(rtlpriv, variable, val);
 }
 
-void rtw_hal_get_hwreg(struct rtl_priv *padapter, uint8_t variable, uint8_t *val)
+void rtw_hal_get_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
-	if (padapter->HalFunc->get_hw_reg)
-		padapter->HalFunc->get_hw_reg(padapter, variable, val);
+	if (rtlpriv->HalFunc->get_hw_reg)
+		rtlpriv->HalFunc->get_hw_reg(rtlpriv, variable, val);
 }
 
-uint8_t rtw_hal_set_def_var(struct rtl_priv *padapter, HAL_DEF_VARIABLE eVariable, PVOID pValue)
+uint8_t rtw_hal_set_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, PVOID pValue)
 {
-	if (padapter->HalFunc->SetHalDefVarHandler)
-		return padapter->HalFunc->SetHalDefVarHandler(padapter, eVariable, pValue);
+	if (rtlpriv->HalFunc->SetHalDefVarHandler)
+		return rtlpriv->HalFunc->SetHalDefVarHandler(rtlpriv, eVariable, pValue);
 	return _FAIL;
 }
-uint8_t rtw_hal_get_def_var(struct rtl_priv *padapter, HAL_DEF_VARIABLE eVariable, PVOID pValue)
+uint8_t rtw_hal_get_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, PVOID pValue)
 {
-	if (padapter->HalFunc->GetHalDefVarHandler)
-		return padapter->HalFunc->GetHalDefVarHandler(padapter, eVariable, pValue);
+	if (rtlpriv->HalFunc->GetHalDefVarHandler)
+		return rtlpriv->HalFunc->GetHalDefVarHandler(rtlpriv, eVariable, pValue);
 	return _FAIL;
 }
 
-void rtw_hal_set_odm_var(struct rtl_priv *padapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet)
+void rtw_hal_set_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet)
 {
-	if (padapter->HalFunc->SetHalODMVarHandler)
-		padapter->HalFunc->SetHalODMVarHandler(padapter, eVariable, pValue1, bSet);
+	if (rtlpriv->HalFunc->SetHalODMVarHandler)
+		rtlpriv->HalFunc->SetHalODMVarHandler(rtlpriv, eVariable, pValue1, bSet);
 }
 
-void	rtw_hal_get_odm_var(struct rtl_priv *padapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet)
+void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet)
 {
-	if (padapter->HalFunc->GetHalODMVarHandler)
-		padapter->HalFunc->GetHalODMVarHandler(padapter, eVariable, pValue1, bSet);
+	if (rtlpriv->HalFunc->GetHalODMVarHandler)
+		rtlpriv->HalFunc->GetHalODMVarHandler(rtlpriv, eVariable, pValue1, bSet);
 }
 
-void rtw_hal_enable_interrupt(struct rtl_priv *padapter)
+void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->enable_interrupt)
-		padapter->HalFunc->enable_interrupt(padapter);
+	if (rtlpriv->HalFunc->enable_interrupt)
+		rtlpriv->HalFunc->enable_interrupt(rtlpriv);
 	else
 		DBG_871X("%s: HalFunc.enable_interrupt is NULL!\n", __func__);
 
 }
-void rtw_hal_disable_interrupt(struct rtl_priv *padapter)
+void rtw_hal_disable_interrupt(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->disable_interrupt)
-		padapter->HalFunc->disable_interrupt(padapter);
+	if (rtlpriv->HalFunc->disable_interrupt)
+		rtlpriv->HalFunc->disable_interrupt(rtlpriv);
 	else
 		DBG_871X("%s: HalFunc.disable_interrupt is NULL!\n", __func__);
 }
 
 
-uint32_t	rtw_hal_inirp_init(struct rtl_priv *padapter)
+uint32_t	rtw_hal_inirp_init(struct rtl_priv *rtlpriv)
 {
 	uint32_t rst = _FAIL;
 
-	if (padapter->HalFunc->inirp_init)
-		rst = padapter->HalFunc->inirp_init(padapter);
+	if (rtlpriv->HalFunc->inirp_init)
+		rst = rtlpriv->HalFunc->inirp_init(rtlpriv);
 	else
 		DBG_871X(" %s HalFunc.inirp_init is NULL!!!\n", __func__);
 
 	return rst;
 }
 
-uint32_t	rtw_hal_inirp_deinit(struct rtl_priv *padapter)
+uint32_t	rtw_hal_inirp_deinit(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->inirp_deinit)
-		return padapter->HalFunc->inirp_deinit(padapter);
+	if (rtlpriv->HalFunc->inirp_deinit)
+		return rtlpriv->HalFunc->inirp_deinit(rtlpriv);
 
 	return _FAIL;
 
 }
 
-int32_t	rtw_hal_xmitframe_enqueue(struct rtl_priv *padapter, struct xmit_frame *pxmitframe)
+int32_t	rtw_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
-	if (padapter->HalFunc->hal_xmitframe_enqueue)
-		return padapter->HalFunc->hal_xmitframe_enqueue(padapter, pxmitframe);
+	if (rtlpriv->HalFunc->hal_xmitframe_enqueue)
+		return rtlpriv->HalFunc->hal_xmitframe_enqueue(rtlpriv, pxmitframe);
 
 	return _FALSE;
 }
 
-int32_t	rtw_hal_xmit(struct rtl_priv *padapter, struct xmit_frame *pxmitframe)
+int32_t	rtw_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
-	if (padapter->HalFunc->hal_xmit)
-		return padapter->HalFunc->hal_xmit(padapter, pxmitframe);
+	if (rtlpriv->HalFunc->hal_xmit)
+		return rtlpriv->HalFunc->hal_xmit(rtlpriv, pxmitframe);
 
 	return _FALSE;
 }
 
-int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *padapter, struct xmit_frame *pmgntframe)
+int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe)
 {
 	int32_t ret = _FAIL;
 
-	update_mgntframe_attrib_addr(padapter, pmgntframe);
+	update_mgntframe_attrib_addr(rtlpriv, pmgntframe);
 
-	if (padapter->HalFunc->mgnt_xmit)
-		ret = padapter->HalFunc->mgnt_xmit(padapter, pmgntframe);
+	if (rtlpriv->HalFunc->mgnt_xmit)
+		ret = rtlpriv->HalFunc->mgnt_xmit(rtlpriv, pmgntframe);
 	return ret;
 }
 
-int32_t	rtw_hal_init_xmit_priv(struct rtl_priv *padapter)
+int32_t	rtw_hal_init_xmit_priv(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->init_xmit_priv != NULL)
-		return padapter->HalFunc->init_xmit_priv(padapter);
+	if (rtlpriv->HalFunc->init_xmit_priv != NULL)
+		return rtlpriv->HalFunc->init_xmit_priv(rtlpriv);
 	return _FAIL;
 }
 
-void	rtw_hal_free_xmit_priv(struct rtl_priv *padapter)
+void	rtw_hal_free_xmit_priv(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->free_xmit_priv != NULL)
-		padapter->HalFunc->free_xmit_priv(padapter);
+	if (rtlpriv->HalFunc->free_xmit_priv != NULL)
+		rtlpriv->HalFunc->free_xmit_priv(rtlpriv);
 }
 
-int32_t	rtw_hal_init_recv_priv(struct rtl_priv *padapter)
+int32_t	rtw_hal_init_recv_priv(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->init_recv_priv)
-		return padapter->HalFunc->init_recv_priv(padapter);
+	if (rtlpriv->HalFunc->init_recv_priv)
+		return rtlpriv->HalFunc->init_recv_priv(rtlpriv);
 
 	return _FAIL;
 }
 
-void	rtw_hal_free_recv_priv(struct rtl_priv *padapter)
+void	rtw_hal_free_recv_priv(struct rtl_priv *rtlpriv)
 {
 
-	if (padapter->HalFunc->free_recv_priv)
-		padapter->HalFunc->free_recv_priv(padapter);
+	if (rtlpriv->HalFunc->free_recv_priv)
+		rtlpriv->HalFunc->free_recv_priv(rtlpriv);
 }
 
 void rtw_hal_update_ra_mask(struct sta_info *psta, uint8_t rssi_level)
 {
-	struct rtl_priv *padapter;
+	struct rtl_priv *rtlpriv;
 	struct mlme_priv *pmlmepriv;
 
 	if (!psta)
 		return;
 
-	padapter = psta->padapter;
+	rtlpriv = psta->rtlpriv;
 
-	pmlmepriv = &(padapter->mlmepriv);
+	pmlmepriv = &(rtlpriv->mlmepriv);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
-		add_RATid(padapter, psta, rssi_level);
+		add_RATid(rtlpriv, psta, rssi_level);
 	} else {
-		if (padapter->HalFunc->UpdateRAMaskHandler)
-			padapter->HalFunc->UpdateRAMaskHandler(padapter, psta->mac_id, rssi_level);
+		if (rtlpriv->HalFunc->UpdateRAMaskHandler)
+			rtlpriv->HalFunc->UpdateRAMaskHandler(rtlpriv, psta->mac_id, rssi_level);
 	}
 }
 
-void rtw_hal_add_ra_tid(struct rtl_priv *padapter, uint32_t bitmap, u8 *arg, uint8_t rssi_level)
+void rtw_hal_add_ra_tid(struct rtl_priv *rtlpriv, uint32_t bitmap, u8 *arg, uint8_t rssi_level)
 {
-	if (padapter->HalFunc->Add_RateATid)
-		padapter->HalFunc->Add_RateATid(padapter, bitmap, arg, rssi_level);
+	if (rtlpriv->HalFunc->Add_RateATid)
+		rtlpriv->HalFunc->Add_RateATid(rtlpriv, bitmap, arg, rssi_level);
 }
 
 
-u32 rtl_get_bbreg(struct rtl_priv *padapter, uint32_t RegAddr, uint32_t BitMask)
+u32 rtl_get_bbreg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint32_t BitMask)
 {
-	return padapter->HalFunc->get_bbreg(padapter, RegAddr, BitMask);
+	return rtlpriv->HalFunc->get_bbreg(rtlpriv, RegAddr, BitMask);
 }
 
-void rtl_set_bbreg(struct rtl_priv *padapter, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
+void rtl_set_bbreg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
-	padapter->HalFunc->set_bbreg(padapter, RegAddr, BitMask, Data);
+	rtlpriv->HalFunc->set_bbreg(rtlpriv, RegAddr, BitMask, Data);
 }
 
-uint32_t rtw_hal_read_rfreg(struct rtl_priv *padapter, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask)
+uint32_t rtw_hal_read_rfreg(struct rtl_priv *rtlpriv, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask)
 {
-	return padapter->HalFunc->get_rfreg(padapter, eRFPath, RegAddr, BitMask);
+	return rtlpriv->HalFunc->get_rfreg(rtlpriv, eRFPath, RegAddr, BitMask);
 }
-void	rtw_hal_write_rfreg(struct rtl_priv *padapter, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
+void	rtw_hal_write_rfreg(struct rtl_priv *rtlpriv, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
-	padapter->HalFunc->set_rfreg(padapter, eRFPath, RegAddr, BitMask, Data);
+	rtlpriv->HalFunc->set_rfreg(rtlpriv, eRFPath, RegAddr, BitMask, Data);
 }
 
-int32_t	rtw_hal_interrupt_handler(struct rtl_priv *padapter)
+int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->interrupt_handler)
-		return padapter->HalFunc->interrupt_handler(padapter);
+	if (rtlpriv->HalFunc->interrupt_handler)
+		return rtlpriv->HalFunc->interrupt_handler(rtlpriv);
 	return _FAIL;
 }
 
-void	rtw_hal_set_bwmode(struct rtl_priv *padapter, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset)
+void	rtw_hal_set_bwmode(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset)
 {
-	if (padapter->HalFunc->set_bwmode_handler)
-		padapter->HalFunc->set_bwmode_handler(padapter, Bandwidth, Offset);
+	if (rtlpriv->HalFunc->set_bwmode_handler)
+		rtlpriv->HalFunc->set_bwmode_handler(rtlpriv, Bandwidth, Offset);
 }
 
-void	rtw_hal_set_chan(struct rtl_priv *padapter, uint8_t channel)
+void	rtw_hal_set_chan(struct rtl_priv *rtlpriv, uint8_t channel)
 {
-	if (padapter->HalFunc->set_channel_handler)
-		padapter->HalFunc->set_channel_handler(padapter, channel);
+	if (rtlpriv->HalFunc->set_channel_handler)
+		rtlpriv->HalFunc->set_channel_handler(rtlpriv, channel);
 }
 
-void	rtw_hal_set_chnl_bw(struct rtl_priv *padapter, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80)
+void	rtw_hal_set_chnl_bw(struct rtl_priv *rtlpriv, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80)
 {
-	if (padapter->HalFunc->set_chnl_bw_handler)
-		padapter->HalFunc->set_chnl_bw_handler(padapter, channel, Bandwidth, Offset40, Offset80);
+	if (rtlpriv->HalFunc->set_chnl_bw_handler)
+		rtlpriv->HalFunc->set_chnl_bw_handler(rtlpriv, channel, Bandwidth, Offset40, Offset80);
 }
 
-void	rtw_hal_dm_watchdog(struct rtl_priv *padapter)
+void	rtw_hal_dm_watchdog(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->hal_dm_watchdog)
-		padapter->HalFunc->hal_dm_watchdog(padapter);
+	if (rtlpriv->HalFunc->hal_dm_watchdog)
+		rtlpriv->HalFunc->hal_dm_watchdog(rtlpriv);
 }
 
-void rtw_hal_bcn_related_reg_setting(struct rtl_priv *padapter)
+void rtw_hal_bcn_related_reg_setting(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->SetBeaconRelatedRegistersHandler)
-		padapter->HalFunc->SetBeaconRelatedRegistersHandler(padapter);
+	if (rtlpriv->HalFunc->SetBeaconRelatedRegistersHandler)
+		rtlpriv->HalFunc->SetBeaconRelatedRegistersHandler(rtlpriv);
 }
 
 
 #ifdef CONFIG_ANTENNA_DIVERSITY
-uint8_t	rtw_hal_antdiv_before_linked(struct rtl_priv *padapter)
+uint8_t	rtw_hal_antdiv_before_linked(struct rtl_priv *rtlpriv)
 {
-	if (padapter->HalFunc->AntDivBeforeLinkHandler)
-		return padapter->HalFunc->AntDivBeforeLinkHandler(padapter);
+	if (rtlpriv->HalFunc->AntDivBeforeLinkHandler)
+		return rtlpriv->HalFunc->AntDivBeforeLinkHandler(rtlpriv);
 	return _FALSE;
 }
 
-void rtw_hal_antdiv_rssi_compared(struct rtl_priv *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
+void rtw_hal_antdiv_rssi_compared(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
 {
-	if (padapter->HalFunc->AntDivCompareHandler)
-		padapter->HalFunc->AntDivCompareHandler(padapter, dst, src);
+	if (rtlpriv->HalFunc->AntDivCompareHandler)
+		rtlpriv->HalFunc->AntDivCompareHandler(rtlpriv, dst, src);
 }
 #endif
 

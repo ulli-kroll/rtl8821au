@@ -219,7 +219,7 @@ struct registry_priv
 #define MAX_CONTINUAL_URB_ERR 4
 
 
-#define GET_IFACE_NUMS(padapter) (((struct rtl_priv *)padapter)->dvobj->iface_nums)
+#define GET_IFACE_NUMS(rtlpriv) (((struct rtl_priv *)rtlpriv)->dvobj->iface_nums)
 
 enum _IFACE_TYPE {
 	IFACE_PORT0, //mapping to port0 for C/D series chips

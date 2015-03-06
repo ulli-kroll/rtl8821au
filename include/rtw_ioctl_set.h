@@ -31,16 +31,16 @@ typedef struct _BSSIDInfo {
 
 
 
-uint8_t rtw_set_802_11_add_key(struct rtl_priv * padapter, NDIS_802_11_KEY * key);
+uint8_t rtw_set_802_11_add_key(struct rtl_priv * rtlpriv, NDIS_802_11_KEY * key);
 uint8_t rtw_set_802_11_authentication_mode(struct rtl_priv *pdapter, NDIS_802_11_AUTHENTICATION_MODE authmode);
-uint8_t rtw_set_802_11_bssid(struct rtl_priv* padapter, uint8_t *bssid);
-uint8_t rtw_set_802_11_add_wep(struct rtl_priv * padapter, NDIS_802_11_WEP * wep);
-uint8_t rtw_set_802_11_disassociate(struct rtl_priv * padapter);
-uint8_t rtw_set_802_11_bssid_list_scan(struct rtl_priv* padapter, NDIS_802_11_SSID *pssid, int ssid_max_num);
-uint8_t rtw_set_802_11_infrastructure_mode(struct rtl_priv * padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype);
-uint8_t rtw_set_802_11_remove_wep(struct rtl_priv * padapter, u32 keyindex);
-uint8_t rtw_set_802_11_ssid(struct rtl_priv * padapter, NDIS_802_11_SSID * ssid);
-uint8_t rtw_set_802_11_remove_key(struct rtl_priv * padapter, NDIS_802_11_REMOVE_KEY * key);
+uint8_t rtw_set_802_11_bssid(struct rtl_priv* rtlpriv, uint8_t *bssid);
+uint8_t rtw_set_802_11_add_wep(struct rtl_priv * rtlpriv, NDIS_802_11_WEP * wep);
+uint8_t rtw_set_802_11_disassociate(struct rtl_priv * rtlpriv);
+uint8_t rtw_set_802_11_bssid_list_scan(struct rtl_priv* rtlpriv, NDIS_802_11_SSID *pssid, int ssid_max_num);
+uint8_t rtw_set_802_11_infrastructure_mode(struct rtl_priv * rtlpriv, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype);
+uint8_t rtw_set_802_11_remove_wep(struct rtl_priv * rtlpriv, u32 keyindex);
+uint8_t rtw_set_802_11_ssid(struct rtl_priv * rtlpriv, NDIS_802_11_SSID * ssid);
+uint8_t rtw_set_802_11_remove_key(struct rtl_priv * rtlpriv, NDIS_802_11_REMOVE_KEY * key);
 
 
 uint8_t rtw_validate_ssid(NDIS_802_11_SSID *ssid);

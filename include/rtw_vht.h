@@ -108,19 +108,19 @@ struct vht_priv
 	uint8_t	vht_cap[32];
 };
 
-uint8_t	rtw_get_vht_highest_rate(struct rtl_priv *padapter, uint8_t *pvht_mcs_map);
+uint8_t	rtw_get_vht_highest_rate(struct rtl_priv *rtlpriv, uint8_t *pvht_mcs_map);
 u16	rtw_vht_data_rate(uint8_t bw, uint8_t short_GI, uint8_t vht_mcs_rate);
 u32	rtw_vht_rate_to_bitmap(uint8_t *pVHTRate);
-void	rtw_vht_use_default_setting(struct rtl_priv *padapter);
-u32	rtw_build_vht_operation_ie(struct rtl_priv *padapter, uint8_t *pbuf, uint8_t channel);
-u32	rtw_build_vht_op_mode_notify_ie(struct rtl_priv *padapter, uint8_t *pbuf);
-u32	rtw_build_vht_cap_ie(struct rtl_priv *padapter, uint8_t *pbuf);
-void	update_sta_vht_info_apmode(struct rtl_priv *padapter, PVOID psta);
-void	update_hw_vht_param(struct rtl_priv *padapter);
-void	VHT_caps_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-void	VHT_operation_handler(struct rtl_priv *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
-u32	rtw_restructure_vht_ie(struct rtl_priv *padapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len);
-void	VHTOnAssocRsp(struct rtl_priv *padapter);
+void	rtw_vht_use_default_setting(struct rtl_priv *rtlpriv);
+u32	rtw_build_vht_operation_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf, uint8_t channel);
+u32	rtw_build_vht_op_mode_notify_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+u32	rtw_build_vht_cap_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+void	update_sta_vht_info_apmode(struct rtl_priv *rtlpriv, PVOID psta);
+void	update_hw_vht_param(struct rtl_priv *rtlpriv);
+void	VHT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE);
+void	VHT_operation_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE);
+u32	rtw_restructure_vht_ie(struct rtl_priv *rtlpriv, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len);
+void	VHTOnAssocRsp(struct rtl_priv *rtlpriv);
 
 #endif	//_RTW_VHT_H_
 

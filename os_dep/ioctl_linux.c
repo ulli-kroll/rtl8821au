@@ -3467,9 +3467,9 @@ static int rtw_set_wps_assoc_resp(struct net_device *ndev, struct ieee_param *pa
 static int rtw_set_hidden_ssid(struct net_device *ndev, struct ieee_param *param, int len)
 {
 	int ret = 0;
-	struct rtl_priv *adapter = rtl_priv(ndev);
-	struct mlme_priv *mlmepriv = &(adapter->mlmepriv);
-	struct mlme_ext_priv	*mlmeext = &(adapter->mlmeextpriv);
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct mlme_priv *mlmepriv = &(rtlpriv->mlmepriv);
+	struct mlme_ext_priv	*mlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*mlmeinfo = &(mlmeext->mlmext_info);
 	int ie_len;
 	uint8_t *ssid_ie;
@@ -3496,7 +3496,7 @@ static int rtw_set_hidden_ssid(struct net_device *ndev, struct ieee_param *param
 		ssid[ssid_len > NDIS_802_11_LENGTH_SSID ? NDIS_802_11_LENGTH_SSID : ssid_len] = 0x0;
 
 		if (0)
-		DBG_871X(FUNC_ADPT_FMT" ssid:(%s,%d), from ie:(%s,%d), (%s,%d)\n", FUNC_ADPT_ARG(adapter),
+		DBG_871X(FUNC_ADPT_FMT" ssid:(%s,%d), from ie:(%s,%d), (%s,%d)\n", FUNC_ADPT_ARG(rtlpriv),
 			ssid, ssid_len,
 			pbss_network->Ssid.Ssid, pbss_network->Ssid.SsidLength,
 			pbss_network_ext->Ssid.Ssid, pbss_network_ext->Ssid.SsidLength);
@@ -3507,12 +3507,12 @@ static int rtw_set_hidden_ssid(struct net_device *ndev, struct ieee_param *param
 		pbss_network_ext->Ssid.SsidLength = ssid_len;
 
 		if (0)
-		DBG_871X(FUNC_ADPT_FMT" after ssid:(%s,%d), (%s,%d)\n", FUNC_ADPT_ARG(adapter),
+		DBG_871X(FUNC_ADPT_FMT" after ssid:(%s,%d), (%s,%d)\n", FUNC_ADPT_ARG(rtlpriv),
 			pbss_network->Ssid.Ssid, pbss_network->Ssid.SsidLength,
 			pbss_network_ext->Ssid.Ssid, pbss_network_ext->Ssid.SsidLength);
 	}
 
-	DBG_871X(FUNC_ADPT_FMT" ignore_broadcast_ssid:%d, %s,%d\n", FUNC_ADPT_ARG(adapter),
+	DBG_871X(FUNC_ADPT_FMT" ignore_broadcast_ssid:%d, %s,%d\n", FUNC_ADPT_ARG(rtlpriv),
 		ignore_broadcast_ssid, ssid, ssid_len);
 
 	return ret;

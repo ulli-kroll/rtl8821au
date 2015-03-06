@@ -99,7 +99,7 @@ int cckratesonly_included(unsigned char *rate, int ratelen)
 	return _TRUE;
 }
 
-uint8_t networktype_to_raid(struct rtl_priv *adapter,unsigned char network_type)
+uint8_t networktype_to_raid(struct rtl_priv *rtlpriv,unsigned char network_type)
 {
 	unsigned char raid;
 	switch(network_type)
@@ -134,12 +134,12 @@ uint8_t networktype_to_raid(struct rtl_priv *adapter,unsigned char network_type)
 
 }
 
-uint8_t networktype_to_raid_ex(struct rtl_priv *adapter,unsigned char network_type)
+uint8_t networktype_to_raid_ex(struct rtl_priv *rtlpriv,unsigned char network_type)
 {
-	struct mlme_ext_priv	*pmlmeext = &adapter->mlmeextpriv;
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	uint8_t raid, rf_type;
 
-	rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+	rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 
 	switch(network_type)
 	{
@@ -179,7 +179,7 @@ uint8_t networktype_to_raid_ex(struct rtl_priv *adapter,unsigned char network_ty
 #ifdef CONFIG_80211AC_VHT
 		case WIRELESS_11_5AC:
 		case WIRELESS_11_24AC:
-			if ((rf_type == RF_1T1R) || (adapter->mlmepriv.vhtpriv.vht_highest_rate <= MGN_VHT1SS_MCS9))
+			if ((rf_type == RF_1T1R) || (rtlpriv->mlmepriv.vhtpriv.vht_highest_rate <= MGN_VHT1SS_MCS9))
 				raid = RATEID_IDX_VHT_1SS;
 			else
 				raid = RATEID_IDX_VHT_2SS;
@@ -446,34 +446,34 @@ static void Set_NETYPE1_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 }
 
 
-inline uint8_t rtw_get_oper_ch(struct rtl_priv *adapter)
+inline uint8_t rtw_get_oper_ch(struct rtl_priv *rtlpriv)
 {
-	return rtl_usbdev(adapter)->oper_channel;
+	return rtl_usbdev(rtlpriv)->oper_channel;
 }
 
-inline void rtw_set_oper_ch(struct rtl_priv *adapter, uint8_t ch)
+inline void rtw_set_oper_ch(struct rtl_priv *rtlpriv, uint8_t ch)
 {
-	rtl_usbdev(adapter)->oper_channel = ch;
+	rtl_usbdev(rtlpriv)->oper_channel = ch;
 }
 
-inline uint8_t rtw_get_oper_bw(struct rtl_priv *adapter)
+inline uint8_t rtw_get_oper_bw(struct rtl_priv *rtlpriv)
 {
-	return rtl_usbdev(adapter)->oper_bwmode;
+	return rtl_usbdev(rtlpriv)->oper_bwmode;
 }
 
-inline void rtw_set_oper_bw(struct rtl_priv *adapter, uint8_t bw)
+inline void rtw_set_oper_bw(struct rtl_priv *rtlpriv, uint8_t bw)
 {
-	rtl_usbdev(adapter)->oper_bwmode = bw;
+	rtl_usbdev(rtlpriv)->oper_bwmode = bw;
 }
 
-inline uint8_t rtw_get_oper_choffset(struct rtl_priv *adapter)
+inline uint8_t rtw_get_oper_choffset(struct rtl_priv *rtlpriv)
 {
-	return rtl_usbdev(adapter)->oper_ch_offset;
+	return rtl_usbdev(rtlpriv)->oper_ch_offset;
 }
 
-inline void rtw_set_oper_choffset(struct rtl_priv *adapter, uint8_t offset)
+inline void rtw_set_oper_choffset(struct rtl_priv *rtlpriv, uint8_t offset)
 {
-	rtl_usbdev(adapter)->oper_ch_offset = offset;
+	rtl_usbdev(rtlpriv)->oper_ch_offset = offset;
 }
 
 uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset)

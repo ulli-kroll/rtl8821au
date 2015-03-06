@@ -573,7 +573,7 @@ static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 	_irqL irqL;
 	uint isevt, *pbuf;
 	struct recv_buf	*precvbuf = (struct recv_buf *) purb->context;
-	struct rtl_priv 		*rtlpriv = (struct rtl_priv *) precvbuf->adapter;
+	struct rtl_priv 		*rtlpriv = (struct rtl_priv *) precvbuf->rtlpriv;
 	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 
 	/*
@@ -665,7 +665,7 @@ exit:
 	;
 }
 
-uint32_t usb_read_port(struct rtl_priv *adapter, uint32_t cnt, uint8_t *rmem)
+uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 {
 	_irqL irqL;
 	int err;
@@ -675,13 +675,13 @@ uint32_t usb_read_port(struct rtl_priv *adapter, uint32_t cnt, uint8_t *rmem)
 	uint32_t ret = _SUCCESS;
 	PURB purb = NULL;
 	struct recv_buf	*precvbuf = (struct recv_buf *) rmem;
-	struct rtl_usb	*rtlusb = rtl_usbdev(adapter);
-	struct recv_priv	*precvpriv = &adapter->recvpriv;
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
+	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 	struct usb_device	*pusbd = rtlusb->pusbdev;
 	uint32_t addr = RECV_BULK_IN_ADDR;
 
-	if (adapter->bDriverStopped || adapter->bSurpriseRemoved
-	 || adapter->pwrctrlpriv.pnp_bstop_trx) {
+	if (rtlpriv->bDriverStopped || rtlpriv->bSurpriseRemoved
+	 || rtlpriv->pwrctrlpriv.pnp_bstop_trx) {
 		return _FAIL;
 	}
 
@@ -695,12 +695,12 @@ uint32_t usb_read_port(struct rtl_priv *adapter, uint32_t cnt, uint8_t *rmem)
 #endif
 
 	if (precvbuf != NULL) {
-		rtl8812au_init_recvbuf(adapter, precvbuf);
+		rtl8812au_init_recvbuf(rtlpriv, precvbuf);
 
 		/* re-assign for linux based on skb */
 		if ((precvbuf->reuse == _FALSE) || (precvbuf->pskb == NULL)) {
 			/* precvbuf->pskb = alloc_skb(MAX_RECVBUF_SZ, GFP_ATOMIC);//don't use this after v2.6.25 */
-			precvbuf->pskb = netdev_alloc_skb(adapter->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
+			precvbuf->pskb = netdev_alloc_skb(rtlpriv->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
 			if (precvbuf->pskb == NULL) {
 				DBG_8192C("#### usb_read_port() alloc_skb fail!#####\n");
 				return _FAIL;

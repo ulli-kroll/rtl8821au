@@ -26,35 +26,35 @@
 /*
 void sitesurvey_ctrl_handler(void *FunctionContext)
 {
-	struct rtl_priv *adapter = (struct rtl_priv *)FunctionContext;
+	struct rtl_priv *rtlpriv = (struct rtl_priv *)FunctionContext;
 
-	_sitesurvey_ctrl_handler(adapter);
+	_sitesurvey_ctrl_handler(rtlpriv);
 
-	_set_timer(&adapter->mlmepriv.sitesurveyctrl.sitesurvey_ctrl_timer, 3000);
+	_set_timer(&rtlpriv->mlmepriv.sitesurveyctrl.sitesurvey_ctrl_timer, 3000);
 }
 */
 
 void rtw_join_timeout_handler (void *FunctionContext)
 {
-	struct rtl_priv *adapter = (struct rtl_priv *)FunctionContext;
-	_rtw_join_timeout_handler(adapter);
+	struct rtl_priv *rtlpriv = (struct rtl_priv *)FunctionContext;
+	_rtw_join_timeout_handler(rtlpriv);
 }
 
 
 void _rtw_scan_timeout_handler (void *FunctionContext)
 {
-	struct rtl_priv *adapter = (struct rtl_priv *)FunctionContext;
-	rtw_scan_timeout_handler(adapter);
+	struct rtl_priv *rtlpriv = (struct rtl_priv *)FunctionContext;
+	rtw_scan_timeout_handler(rtlpriv);
 }
 
 
 void _dynamic_check_timer_handlder (void *FunctionContext)
 {
-	struct rtl_priv *adapter = (struct rtl_priv *)FunctionContext;
+	struct rtl_priv *rtlpriv = (struct rtl_priv *)FunctionContext;
 
-	rtw_dynamic_check_timer_handlder(adapter);
+	rtw_dynamic_check_timer_handlder(rtlpriv);
 
-	_set_timer(&adapter->mlmepriv.dynamic_chk_timer, 2000);
+	_set_timer(&rtlpriv->mlmepriv.dynamic_chk_timer, 2000);
 }
 
 void rtw_init_mlme_timer(struct rtl_priv *rtlpriv)
@@ -71,16 +71,16 @@ void rtw_init_mlme_timer(struct rtl_priv *rtlpriv)
 extern void rtw_indicate_wx_assoc_event(struct rtl_priv *rtlpriv);
 extern void rtw_indicate_wx_disassoc_event(struct rtl_priv *rtlpriv);
 
-void rtw_os_indicate_connect(struct rtl_priv *adapter)
+void rtw_os_indicate_connect(struct rtl_priv *rtlpriv)
 {
 
 _func_enter_;
 
-	rtw_indicate_wx_assoc_event(adapter);
-	netif_carrier_on(adapter->ndev);
+	rtw_indicate_wx_assoc_event(rtlpriv);
+	netif_carrier_on(rtlpriv->ndev);
 
-	if(adapter->pid[2] !=0)
-		rtw_signal_process(adapter->pid[2], SIGALRM);
+	if(rtlpriv->pid[2] !=0)
+		rtw_signal_process(rtlpriv->pid[2], SIGALRM);
 
 _func_exit_;
 
@@ -93,13 +93,13 @@ void rtw_os_indicate_scan_done( struct rtl_priv *rtlpriv, bool aborted)
 }
 
 static RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
-void rtw_reset_securitypriv( struct rtl_priv *adapter )
+void rtw_reset_securitypriv( struct rtl_priv *rtlpriv )
 {
 	uint8_t	backupPMKIDIndex = 0;
 	uint8_t	backupTKIPCountermeasure = 0x00;
 	u32	backupTKIPcountermeasure_time = 0;
 
-	if(adapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)//802.1x
+	if(rtlpriv->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)//802.1x
 	{
 		// Added by Albert 2009/02/18
 		// We have to backup the PMK information for WiFi PMK Caching test item.
@@ -109,30 +109,30 @@ void rtw_reset_securitypriv( struct rtl_priv *adapter )
 
 		memset( &backupPMKIDList[ 0 ], 0x00, sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
 
-		memcpy( &backupPMKIDList[ 0 ], &adapter->securitypriv.PMKIDList[ 0 ], sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
-		backupPMKIDIndex = adapter->securitypriv.PMKIDIndex;
-		backupTKIPCountermeasure = adapter->securitypriv.btkip_countermeasure;
-		backupTKIPcountermeasure_time = adapter->securitypriv.btkip_countermeasure_time;
+		memcpy( &backupPMKIDList[ 0 ], &rtlpriv->securitypriv.PMKIDList[ 0 ], sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
+		backupPMKIDIndex = rtlpriv->securitypriv.PMKIDIndex;
+		backupTKIPCountermeasure = rtlpriv->securitypriv.btkip_countermeasure;
+		backupTKIPcountermeasure_time = rtlpriv->securitypriv.btkip_countermeasure_time;
 
-		memset((unsigned char *)&adapter->securitypriv, 0, sizeof (struct security_priv));
-		//_init_timer(&(adapter->securitypriv.tkip_timer),adapter->ndev, rtw_use_tkipkey_handler, adapter);
+		memset((unsigned char *)&rtlpriv->securitypriv, 0, sizeof (struct security_priv));
+		//_init_timer(&(rtlpriv->securitypriv.tkip_timer),rtlpriv->ndev, rtw_use_tkipkey_handler, rtlpriv);
 
 		// Added by Albert 2009/02/18
 		// Restore the PMK information to securitypriv structure for the following connection.
-		memcpy( &adapter->securitypriv.PMKIDList[ 0 ], &backupPMKIDList[ 0 ], sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
-		adapter->securitypriv.PMKIDIndex = backupPMKIDIndex;
-		adapter->securitypriv.btkip_countermeasure = backupTKIPCountermeasure;
-		adapter->securitypriv.btkip_countermeasure_time = backupTKIPcountermeasure_time;
+		memcpy( &rtlpriv->securitypriv.PMKIDList[ 0 ], &backupPMKIDList[ 0 ], sizeof( RT_PMKID_LIST ) * NUM_PMKID_CACHE );
+		rtlpriv->securitypriv.PMKIDIndex = backupPMKIDIndex;
+		rtlpriv->securitypriv.btkip_countermeasure = backupTKIPCountermeasure;
+		rtlpriv->securitypriv.btkip_countermeasure_time = backupTKIPcountermeasure_time;
 
-		adapter->securitypriv.ndisauthtype = Ndis802_11AuthModeOpen;
-		adapter->securitypriv.ndisencryptstatus = Ndis802_11WEPDisabled;
+		rtlpriv->securitypriv.ndisauthtype = Ndis802_11AuthModeOpen;
+		rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11WEPDisabled;
 
 	}
 	else //reset values in securitypriv
 	{
-		//if(adapter->mlmepriv.fw_state & WIFI_STATION_STATE)
+		//if(rtlpriv->mlmepriv.fw_state & WIFI_STATION_STATE)
 		//{
-		struct security_priv *psec_priv=&adapter->securitypriv;
+		struct security_priv *psec_priv=&rtlpriv->securitypriv;
 
 		psec_priv->dot11AuthAlgrthm =dot11AuthAlgrthm_Open;  //open system
 		psec_priv->dot11PrivacyAlgrthm = _NO_PRIVACY_;
@@ -147,23 +147,23 @@ void rtw_reset_securitypriv( struct rtl_priv *adapter )
 	}
 }
 
-void rtw_os_indicate_disconnect( struct rtl_priv *adapter )
+void rtw_os_indicate_disconnect( struct rtl_priv *rtlpriv )
 {
    //RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
 
 _func_enter_;
 
-	netif_carrier_off(adapter->ndev); // Do it first for tx broadcast pkt after disconnection issue!
+	netif_carrier_off(rtlpriv->ndev); // Do it first for tx broadcast pkt after disconnection issue!
 
-	rtw_indicate_wx_disassoc_event(adapter);
+	rtw_indicate_wx_disassoc_event(rtlpriv);
 
-	 rtw_reset_securitypriv( adapter );
+	 rtw_reset_securitypriv( rtlpriv );
 
 _func_exit_;
 
 }
 
-void rtw_report_sec_ie(struct rtl_priv *adapter,uint8_t authmode,uint8_t *sec_ie)
+void rtw_report_sec_ie(struct rtl_priv *rtlpriv,uint8_t authmode,uint8_t *sec_ie)
 {
 	uint	len;
 	uint8_t	*buff,*p,i;
@@ -197,7 +197,7 @@ _func_enter_;
 
 		wrqu.data.length = (wrqu.data.length<IW_CUSTOM_MAX) ? wrqu.data.length:IW_CUSTOM_MAX;
 
-		wireless_send_event(adapter->ndev,IWEVCUSTOM,&wrqu,buff);
+		wireless_send_event(rtlpriv->ndev,IWEVCUSTOM,&wrqu,buff);
 
 		if(buff)
 		    rtw_mfree(buff);

@@ -482,7 +482,7 @@ struct	xmit_priv	{
 
 	uint	frag_len;
 
-	struct rtl_priv	*adapter;
+	struct rtl_priv	*rtlpriv;
 
 	uint8_t   vcs_setting;
 	uint8_t	vcs;

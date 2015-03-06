@@ -374,9 +374,9 @@ Hal_MappingOutPipe(
 
 }
 
-void hal_init_macaddr(struct rtl_priv *adapter)
+void hal_init_macaddr(struct rtl_priv *rtlpriv)
 {
-	rtw_hal_set_hwreg(adapter, HW_VAR_MAC_ADDR, adapter->eeprompriv.mac_addr);
+	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MAC_ADDR, rtlpriv->eeprompriv.mac_addr);
 }
 
 /*
@@ -385,12 +385,12 @@ void hal_init_macaddr(struct rtl_priv *adapter)
 * BITS	 [127:120]	[119:16]      [15:8]		  [7:4]	 	   [3:0]
 */
 
-void c2h_evt_clear(struct rtl_priv *adapter)
+void c2h_evt_clear(struct rtl_priv *rtlpriv)
 {
-	usb_write8(adapter, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
+	usb_write8(rtlpriv, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
 
-int32_t c2h_evt_read(struct rtl_priv *adapter, uint8_t *buf)
+int32_t c2h_evt_read(struct rtl_priv *rtlpriv, uint8_t *buf)
 {
 	int32_t ret = _FAIL;
 	struct c2h_evt_hdr *c2h_evt;
@@ -400,7 +400,7 @@ int32_t c2h_evt_read(struct rtl_priv *adapter, uint8_t *buf)
 	if (buf == NULL)
 		goto exit;
 
-	trigger = usb_read8(adapter, REG_C2HEVT_CLEAR);
+	trigger = usb_read8(rtlpriv, REG_C2HEVT_CLEAR);
 
 	if (trigger == C2H_EVT_HOST_CLOSE) {
 		goto exit; /* Not ready */
@@ -412,8 +412,8 @@ int32_t c2h_evt_read(struct rtl_priv *adapter, uint8_t *buf)
 
 	memset(c2h_evt, 0, 16);
 
-	*buf = usb_read8(adapter, REG_C2HEVT_MSG_NORMAL);
-	*(buf+1) = usb_read8(adapter, REG_C2HEVT_MSG_NORMAL + 1);
+	*buf = usb_read8(rtlpriv, REG_C2HEVT_MSG_NORMAL);
+	*(buf+1) = usb_read8(rtlpriv, REG_C2HEVT_MSG_NORMAL + 1);
 
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): ",
 		&c2h_evt , sizeof(c2h_evt));
@@ -425,7 +425,7 @@ int32_t c2h_evt_read(struct rtl_priv *adapter, uint8_t *buf)
 
 	/* Read the content */
 	for (i = 0; i < c2h_evt->plen; i++)
-		c2h_evt->payload[i] = usb_read8(adapter, REG_C2HEVT_MSG_NORMAL + sizeof(*c2h_evt) + i);
+		c2h_evt->payload[i] = usb_read8(rtlpriv, REG_C2HEVT_MSG_NORMAL + sizeof(*c2h_evt) + i);
 
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): Command Content:\n",
 		c2h_evt->payload, c2h_evt->plen);
@@ -437,17 +437,17 @@ clear_evt:
 	* Clear event to notify FW we have read the command.
 	* If this field isn't clear, the FW won't update the next command message.
 	*/
-	c2h_evt_clear(adapter);
+	c2h_evt_clear(rtlpriv);
 exit:
 	return ret;
 }
 
-uint8_t  rtw_hal_networktype_to_raid(struct rtl_priv *adapter,unsigned char network_type)
+uint8_t  rtw_hal_networktype_to_raid(struct rtl_priv *rtlpriv,unsigned char network_type)
 {
-	return networktype_to_raid_ex(adapter,network_type);
+	return networktype_to_raid_ex(rtlpriv,network_type);
 }
 
-uint8_t rtw_get_mgntframe_raid(struct rtl_priv *adapter,unsigned char network_type)
+uint8_t rtw_get_mgntframe_raid(struct rtl_priv *rtlpriv,unsigned char network_type)
 {
 
 	uint8_t raid;

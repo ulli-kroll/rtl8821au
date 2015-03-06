@@ -145,12 +145,12 @@ Hal_MappingOutPipe(
 	IN	uint8_t		NumOutPipe
 	);
 
-void hal_init_macaddr(struct rtl_priv *adapter);
+void hal_init_macaddr(struct rtl_priv *rtlpriv);
 
-void c2h_evt_clear(struct rtl_priv *adapter);
-int32_t c2h_evt_read(struct rtl_priv *adapter, uint8_t *buf);
+void c2h_evt_clear(struct rtl_priv *rtlpriv);
+int32_t c2h_evt_read(struct rtl_priv *rtlpriv, uint8_t *buf);
 
-uint8_t rtw_hal_networktype_to_raid(struct rtl_priv *adapter,unsigned char network_type);
-uint8_t rtw_get_mgntframe_raid(struct rtl_priv *adapter,unsigned char network_type);
+uint8_t rtw_hal_networktype_to_raid(struct rtl_priv *rtlpriv,unsigned char network_type);
+uint8_t rtw_get_mgntframe_raid(struct rtl_priv *rtlpriv,unsigned char network_type);
 #endif //__HAL_COMMON_H__
 

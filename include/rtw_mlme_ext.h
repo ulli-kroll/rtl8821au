@@ -508,8 +508,8 @@ struct xmit_frame *alloc_mgtxmitframe_once(struct xmit_priv *pxmitpriv);
 
 //void fill_fwpriv(struct rtl_priv * rtlpriv, struct fw_priv *pfwpriv);
 
-unsigned char networktype_to_raid(struct rtl_priv *adapter,unsigned char network_type);
-unsigned char networktype_to_raid_ex(struct rtl_priv *adapter,unsigned char network_type);
+unsigned char networktype_to_raid(struct rtl_priv *rtlpriv,unsigned char network_type);
+unsigned char networktype_to_raid_ex(struct rtl_priv *rtlpriv,unsigned char network_type);
 
 uint8_t judge_network_type(struct rtl_priv *rtlpriv, unsigned char *rate, int ratelen);
 void get_rate_set(struct rtl_priv *rtlpriv, unsigned char *pbssrate, int *bssrate_len);
@@ -524,12 +524,12 @@ void Switch_DM_Func(struct rtl_priv *rtlpriv, u32 mode, uint8_t enable);
 //void Set_NETYPE1_MSR(struct rtl_priv *rtlpriv, uint8_t type);
 //void Set_NETYPE0_MSR(struct rtl_priv *rtlpriv, uint8_t type);
 
-uint8_t rtw_get_oper_ch(struct rtl_priv *adapter);
-void rtw_set_oper_ch(struct rtl_priv *adapter, uint8_t ch);
-uint8_t rtw_get_oper_bw(struct rtl_priv *adapter);
-void rtw_set_oper_bw(struct rtl_priv *adapter, uint8_t bw);
-uint8_t rtw_get_oper_choffset(struct rtl_priv *adapter);
-void rtw_set_oper_choffset(struct rtl_priv *adapter, uint8_t offset);
+uint8_t rtw_get_oper_ch(struct rtl_priv *rtlpriv);
+void rtw_set_oper_ch(struct rtl_priv *rtlpriv, uint8_t ch);
+uint8_t rtw_get_oper_bw(struct rtl_priv *rtlpriv);
+void rtw_set_oper_bw(struct rtl_priv *rtlpriv, uint8_t bw);
+uint8_t rtw_get_oper_choffset(struct rtl_priv *rtlpriv);
+void rtw_set_oper_choffset(struct rtl_priv *rtlpriv, uint8_t offset);
 uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset);
 
 void set_channel_bwmode(struct rtl_priv *rtlpriv, unsigned char channel, unsigned char channel_offset, unsigned short bwmode);
@@ -837,8 +837,8 @@ struct C2HEvent_Header
 
 };
 
-void rtw_dummy_event_callback(struct rtl_priv *adapter , uint8_t *pbuf);
-void rtw_fwdbg_event_callback(struct rtl_priv *adapter , uint8_t *pbuf);
+void rtw_dummy_event_callback(struct rtl_priv *rtlpriv , uint8_t *pbuf);
+void rtw_fwdbg_event_callback(struct rtl_priv *rtlpriv , uint8_t *pbuf);
 
 enum rtw_c2h_event
 {

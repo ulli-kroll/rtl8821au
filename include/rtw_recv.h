@@ -246,7 +246,7 @@ struct recv_priv
 
 	uint free_recvframe_cnt;
 
-	struct rtl_priv	*adapter;
+	struct rtl_priv	*rtlpriv;
 
 	u32	bIsAnyNonBEPkts;
 	u64	rx_bytes;
@@ -337,7 +337,7 @@ struct recv_buf
 
 	u32	ref_cnt;
 
-	struct rtl_priv *adapter;
+	struct rtl_priv *rtlpriv;
 
 	uint8_t	*pbuf;
 	uint8_t	*pallocated_buf;
@@ -392,7 +392,7 @@ struct recv_frame {
 	struct sk_buff *pkt_newalloc;
 #endif // CONFIG_BSD_RX_USE_MBUF
 
-	struct rtl_priv  *adapter;
+	struct rtl_priv  *rtlpriv;
 
 	uint8_t fragcnt;
 
@@ -434,7 +434,7 @@ extern int _rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue 
 extern int rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue);
 
 extern void rtw_free_recvframe_queue(struct __queue *pframequeue,  struct __queue *pfree_recv_queue);
-u32 rtw_free_uc_swdec_pending_queue(struct rtl_priv *adapter);
+u32 rtw_free_uc_swdec_pending_queue(struct rtl_priv *rtlpriv);
 
 sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, struct __queue *queue);
 sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, struct __queue *queue);

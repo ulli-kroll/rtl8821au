@@ -109,14 +109,14 @@ extern void autosuspend_enter(struct rtl_priv* rtlpriv);
 extern int autoresume_enter(struct rtl_priv* rtlpriv);
 #endif
 
-bool rtw_pwr_unassociated_idle(struct rtl_priv *adapter)
+bool rtw_pwr_unassociated_idle(struct rtl_priv *rtlpriv)
 {
-	struct mlme_priv *pmlmepriv = &(adapter->mlmepriv);
-	struct xmit_priv *pxmit_priv = &adapter->xmitpriv;
+	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
+	struct xmit_priv *pxmit_priv = &rtlpriv->xmitpriv;
 
 	bool ret = _FALSE;
 
-	if (adapter->pwrctrlpriv.ips_deny_time >= jiffies) {
+	if (rtlpriv->pwrctrlpriv.ips_deny_time >= jiffies) {
 		//DBG_871X("%s ips_deny_time\n", __func__);
 		goto exit;
 	}
@@ -531,7 +531,7 @@ _func_exit_;
 
 /*
 * rtw_pwr_wakeup - Wake the NIC up from: 1)IPS. 2)USB autosuspend
-* @adapter: pointer to struct rtl_priv structure
+* @rtlpriv: pointer to struct rtl_priv structure
 * @ips_deffer_ms: the ms wiil prevent from falling into IPS after wakeup
 * Return _SUCCESS or _FAIL
 */

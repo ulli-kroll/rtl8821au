@@ -453,29 +453,29 @@ extern void hostapd_mode_unload(struct rtl_priv *rtlpriv);
 #endif
 
 
-extern void rtw_joinbss_event_prehandle(struct rtl_priv *adapter, uint8_t *pbuf);
-extern void rtw_survey_event_callback(struct rtl_priv *adapter, uint8_t *pbuf);
-extern void rtw_surveydone_event_callback(struct rtl_priv *adapter, uint8_t *pbuf);
-extern void rtw_joinbss_event_callback(struct rtl_priv *adapter, uint8_t *pbuf);
-extern void rtw_stassoc_event_callback(struct rtl_priv *adapter, uint8_t *pbuf);
-extern void rtw_stadel_event_callback(struct rtl_priv *adapter, uint8_t *pbuf);
-extern void rtw_atimdone_event_callback(struct rtl_priv *adapter, uint8_t *pbuf);
-extern void rtw_cpwm_event_callback(struct rtl_priv *adapter, uint8_t *pbuf);
+extern void rtw_joinbss_event_prehandle(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+extern void rtw_survey_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+extern void rtw_surveydone_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+extern void rtw_joinbss_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+extern void rtw_stassoc_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+extern void rtw_stadel_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+extern void rtw_atimdone_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf);
+extern void rtw_cpwm_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 
 extern void rtw_join_timeout_handler(RTW_TIMER_HDL_ARGS);
 extern void _rtw_scan_timeout_handler(RTW_TIMER_HDL_ARGS);
 
 thread_return event_thread(thread_context context);
 
-extern void rtw_free_network_queue(struct rtl_priv *adapter,uint8_t isfreeall);
-extern int rtw_init_mlme_priv(struct rtl_priv *adapter);// (struct mlme_priv *pmlmepriv);
+extern void rtw_free_network_queue(struct rtl_priv *rtlpriv,uint8_t isfreeall);
+extern int rtw_init_mlme_priv(struct rtl_priv *rtlpriv);// (struct mlme_priv *pmlmepriv);
 
 extern void rtw_free_mlme_priv (struct mlme_priv *pmlmepriv);
 
 
 extern sint rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv);
-extern sint rtw_set_key(struct rtl_priv *adapter,struct security_priv *psecuritypriv,sint keyid, uint8_t set_tx);
-extern sint rtw_set_auth(struct rtl_priv *adapter,struct security_priv *psecuritypriv);
+extern sint rtw_set_key(struct rtl_priv *rtlpriv,struct security_priv *psecuritypriv,sint keyid, uint8_t set_tx);
+extern sint rtw_set_auth(struct rtl_priv *rtlpriv,struct security_priv *psecuritypriv);
 
 __inline static uint8_t *get_bssid(struct mlme_priv *pmlmepriv)
 {	//if sta_mode:pmlmepriv->cur_network.network.MacAddress=> bssid
@@ -572,30 +572,30 @@ __inline static void set_scanned_network_val(struct mlme_priv *pmlmepriv, sint v
 }
 
 extern u16 rtw_get_capability(WLAN_BSSID_EX *bss);
-extern void rtw_update_scanned_network(struct rtl_priv *adapter, WLAN_BSSID_EX *target);
-extern void rtw_disconnect_hdl_under_linked(struct rtl_priv* adapter, struct sta_info *psta, uint8_t free_assoc);
+extern void rtw_update_scanned_network(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *target);
+extern void rtw_disconnect_hdl_under_linked(struct rtl_priv* rtlpriv, struct sta_info *psta, uint8_t free_assoc);
 extern void rtw_generate_random_ibss(uint8_t *pibss);
 extern struct wlan_network* rtw_find_network(struct __queue *scanned_queue, uint8_t *addr);
 extern struct wlan_network* rtw_get_oldest_wlan_network(struct __queue *scanned_queue);
 
-extern void rtw_free_assoc_resources(struct rtl_priv* adapter, int lock_scanned_queue);
-extern void rtw_indicate_disconnect(struct rtl_priv* adapter);
-extern void rtw_indicate_connect(struct rtl_priv* adapter);
+extern void rtw_free_assoc_resources(struct rtl_priv* rtlpriv, int lock_scanned_queue);
+extern void rtw_indicate_disconnect(struct rtl_priv* rtlpriv);
+extern void rtw_indicate_connect(struct rtl_priv* rtlpriv);
 void rtw_indicate_scan_done( struct rtl_priv *rtlpriv, bool aborted);
-void rtw_scan_abort(struct rtl_priv *adapter);
+void rtw_scan_abort(struct rtl_priv *rtlpriv);
 
-extern int rtw_restruct_sec_ie(struct rtl_priv *adapter,uint8_t *in_ie,uint8_t *out_ie,uint in_len);
-extern int rtw_restruct_wmm_ie(struct rtl_priv *adapter, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint initial_out_len);
-extern void rtw_init_registrypriv_dev_network(struct rtl_priv *adapter);
+extern int rtw_restruct_sec_ie(struct rtl_priv *rtlpriv,uint8_t *in_ie,uint8_t *out_ie,uint in_len);
+extern int rtw_restruct_wmm_ie(struct rtl_priv *rtlpriv, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint initial_out_len);
+extern void rtw_init_registrypriv_dev_network(struct rtl_priv *rtlpriv);
 
-extern void rtw_update_registrypriv_dev_network(struct rtl_priv *adapter);
+extern void rtw_update_registrypriv_dev_network(struct rtl_priv *rtlpriv);
 
-extern void rtw_get_encrypt_decrypt_from_registrypriv(struct rtl_priv *adapter);
+extern void rtw_get_encrypt_decrypt_from_registrypriv(struct rtl_priv *rtlpriv);
 
-extern void _rtw_join_timeout_handler(struct rtl_priv *adapter);
-extern void rtw_scan_timeout_handler(struct rtl_priv *adapter);
+extern void _rtw_join_timeout_handler(struct rtl_priv *rtlpriv);
+extern void rtw_scan_timeout_handler(struct rtl_priv *rtlpriv);
 
-extern void rtw_dynamic_check_timer_handlder(struct rtl_priv *adapter);
+extern void rtw_dynamic_check_timer_handlder(struct rtl_priv *rtlpriv);
 
 extern int _rtw_init_mlme_priv(struct rtl_priv *rtlpriv);
 
@@ -635,10 +635,10 @@ void rtw_update_ht_cap(struct rtl_priv *rtlpriv, uint8_t *pie, uint ie_len, uint
 void rtw_issue_addbareq_cmd(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 #endif
 
-int rtw_is_same_ibss(struct rtl_priv *adapter, struct wlan_network *pnetwork);
+int rtw_is_same_ibss(struct rtl_priv *rtlpriv, struct wlan_network *pnetwork);
 int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst);
 
-void rtw_stassoc_hw_rpt(struct rtl_priv *adapter,struct sta_info *psta);
+void rtw_stassoc_hw_rpt(struct rtl_priv *rtlpriv,struct sta_info *psta);
 
 #endif //__RTL871X_MLME_H_
 

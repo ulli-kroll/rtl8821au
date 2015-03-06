@@ -837,7 +837,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		usb_write8(rtlpriv, REG_BCN_CTRL, usb_read8(rtlpriv, REG_BCN_CTRL)&(~BIT(4)));
 
 		/*
-		 * To make sure that if there exists an adapter which would like to send beacon.
+		 * To make sure that if there exists an rtlpriv which would like to send beacon.
 		 * If exists, the origianl value of 0x422[6] will be 1, we should check this to
 		 * prevent from setting 0x422[6] to 0 after download reserved page, or it will cause
 		 * the beacon cannot be sent by HW.

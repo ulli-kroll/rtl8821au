@@ -314,8 +314,8 @@ struct rtl_priv {
 	void (*dvobj_deinit)(struct rtl_usb *dvobj);
 #endif
 
-	void (*intf_start)(struct rtl_priv * adapter);
-	void (*intf_stop)(struct rtl_priv * adapter);
+	void (*intf_start)(struct rtl_priv * rtlpriv);
+	void (*intf_stop)(struct rtl_priv * rtlpriv);
 
 
 #ifdef PLATFORM_LINUX
@@ -443,8 +443,8 @@ struct rtl_hal_ops {
 	uint8_t	(*Efuse_WordEnableDataWrite)(struct rtl_priv *rtlpriv, u16 efuse_addr, uint8_t word_en, uint8_t *data);
 	BOOLEAN	(*Efuse_PgPacketWrite_BT)(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t word_en, uint8_t *data);
 
-	void (*hal_notch_filter)(struct rtl_priv * adapter, bool enable);
-	void (*hal_reset_security_engine)(struct rtl_priv * adapter);
+	void (*hal_notch_filter)(struct rtl_priv * rtlpriv, bool enable);
+	void (*hal_reset_security_engine)(struct rtl_priv * rtlpriv);
 	int32_t (*c2h_handler)(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt);
 	c2h_id_filter c2h_id_filter_ccx;
 };
@@ -513,7 +513,7 @@ static inline u8 get_rf_type(struct rtl_phy *rtlphy)
 }
 
 /* Not fully compatible */
-#define rtl_usbdev(adapter) (&(adapter->priv.dev))
+#define rtl_usbdev(rtlpriv) (&(rtlpriv->priv.dev))
 
 /* ULLI : Hope this is an border, for old code  */
 

@@ -19,7 +19,7 @@ int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset, uint8_
 u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv, u16 efuse_addr, uint8_t word_en, uint8_t *data);
 void rtl8812_GetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet);
 void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,	PVOID 	pValue1, BOOLEAN bSet);
-void hal_notch_filter_8812(struct rtl_priv *adapter, bool enable);
+void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable);
 
 
 

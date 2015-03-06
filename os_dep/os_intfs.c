@@ -1010,7 +1010,7 @@ int rtl8821au_init_sw_vars(struct net_device *ndev)
 	}
 
 	/*
-	 * We don't need to memset rtlpriv->XXX to zero, because adapter is allocated by rtw_zvmalloc().
+	 * We don't need to memset rtlpriv->XXX to zero, because rtlpriv is allocated by rtw_zvmalloc().
 	 * memset((unsigned char *)&rtlpriv->securitypriv, 0, sizeof (struct security_priv));
 	 */
 

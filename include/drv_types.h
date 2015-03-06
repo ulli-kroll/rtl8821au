@@ -243,7 +243,7 @@ typedef enum _DRIVER_STATE{
 
 
 
-int rtw_handle_dualmac(struct rtl_priv *adapter, bool init);
+int rtw_handle_dualmac(struct rtl_priv *rtlpriv, bool init);
 
 __inline static uint8_t *myid(struct eeprom_priv *peepriv)
 {

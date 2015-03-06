@@ -237,9 +237,9 @@ Below is the data structure used by _io_handler
 
 */
 
-extern uint ioreq_flush(struct rtl_priv *adapter, struct io_queue *ioqueue);
+extern uint ioreq_flush(struct rtl_priv *rtlpriv, struct io_queue *ioqueue);
 extern void sync_ioreq_enqueue(struct io_req *preq,struct io_queue *ioqueue);
-extern uint sync_ioreq_flush(struct rtl_priv *adapter, struct io_queue *ioqueue);
+extern uint sync_ioreq_flush(struct rtl_priv *rtlpriv, struct io_queue *ioqueue);
 
 
 extern uint free_ioreq(struct io_req *preq, struct io_queue *pio_queue);
@@ -248,42 +248,42 @@ extern struct io_req *alloc_ioreq(struct io_queue *pio_q);
 extern uint register_intf_hdl(uint8_t *dev, struct intf_hdl *pintfhdl);
 extern void unregister_intf_hdl(struct intf_hdl *pintfhdl);
 
-extern void _rtw_attrib_read(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
-extern void _rtw_attrib_write(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
+extern void _rtw_attrib_read(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, uint8_t *pmem);
+extern void _rtw_attrib_write(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, uint8_t *pmem);
 
-extern void rtw_write_scsi(struct rtl_priv *adapter, u32 cnt, uint8_t *pmem);
+extern void rtw_write_scsi(struct rtl_priv *rtlpriv, u32 cnt, uint8_t *pmem);
 
 //ioreq
-extern void ioreq_read8(struct rtl_priv *adapter, u32 addr, uint8_t *pval);
-extern void ioreq_read16(struct rtl_priv *adapter, u32 addr, u16 *pval);
-extern void ioreq_read32(struct rtl_priv *adapter, u32 addr, u32 *pval);
-extern void ioreq_write8(struct rtl_priv *adapter, u32 addr, uint8_t val);
-extern void ioreq_write16(struct rtl_priv *adapter, u32 addr, u16 val);
-extern void ioreq_write32(struct rtl_priv *adapter, u32 addr, u32 val);
+extern void ioreq_read8(struct rtl_priv *rtlpriv, u32 addr, uint8_t *pval);
+extern void ioreq_read16(struct rtl_priv *rtlpriv, u32 addr, u16 *pval);
+extern void ioreq_read32(struct rtl_priv *rtlpriv, u32 addr, u32 *pval);
+extern void ioreq_write8(struct rtl_priv *rtlpriv, u32 addr, uint8_t val);
+extern void ioreq_write16(struct rtl_priv *rtlpriv, u32 addr, u16 val);
+extern void ioreq_write32(struct rtl_priv *rtlpriv, u32 addr, u32 val);
 
 
-extern uint async_read8(struct rtl_priv *adapter, u32 addr, uint8_t *pbuff,
+extern uint async_read8(struct rtl_priv *rtlpriv, u32 addr, uint8_t *pbuff,
 	void (*_async_io_callback)(struct rtl_priv *padater, struct io_req *pio_req, uint8_t *cnxt), uint8_t *cnxt);
-extern uint async_read16(struct rtl_priv *adapter, u32 addr,  uint8_t *pbuff,
+extern uint async_read16(struct rtl_priv *rtlpriv, u32 addr,  uint8_t *pbuff,
 	void (*_async_io_callback)(struct rtl_priv *padater, struct io_req *pio_req, uint8_t *cnxt), uint8_t *cnxt);
-extern uint async_read32(struct rtl_priv *adapter, u32 addr,  uint8_t *pbuff,
-	void (*_async_io_callback)(struct rtl_priv *padater, struct io_req *pio_req, uint8_t *cnxt), uint8_t *cnxt);
-
-extern void async_read_mem(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
-extern void async_read_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
-
-extern void async_write8(struct rtl_priv *adapter, u32 addr, uint8_t val,
-	void (*_async_io_callback)(struct rtl_priv *padater, struct io_req *pio_req, uint8_t *cnxt), uint8_t *cnxt);
-extern void async_write16(struct rtl_priv *adapter, u32 addr, u16 val,
-	void (*_async_io_callback)(struct rtl_priv *padater, struct io_req *pio_req, uint8_t *cnxt), uint8_t *cnxt);
-extern void async_write32(struct rtl_priv *adapter, u32 addr, u32 val,
+extern uint async_read32(struct rtl_priv *rtlpriv, u32 addr,  uint8_t *pbuff,
 	void (*_async_io_callback)(struct rtl_priv *padater, struct io_req *pio_req, uint8_t *cnxt), uint8_t *cnxt);
 
-extern void async_write_mem(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
-extern void async_write_port(struct rtl_priv *adapter, u32 addr, u32 cnt, uint8_t *pmem);
+extern void async_read_mem(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, uint8_t *pmem);
+extern void async_read_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, uint8_t *pmem);
 
-extern uint alloc_io_queue(struct rtl_priv *adapter);
-extern void free_io_queue(struct rtl_priv *adapter);
+extern void async_write8(struct rtl_priv *rtlpriv, u32 addr, uint8_t val,
+	void (*_async_io_callback)(struct rtl_priv *padater, struct io_req *pio_req, uint8_t *cnxt), uint8_t *cnxt);
+extern void async_write16(struct rtl_priv *rtlpriv, u32 addr, u16 val,
+	void (*_async_io_callback)(struct rtl_priv *padater, struct io_req *pio_req, uint8_t *cnxt), uint8_t *cnxt);
+extern void async_write32(struct rtl_priv *rtlpriv, u32 addr, u32 val,
+	void (*_async_io_callback)(struct rtl_priv *padater, struct io_req *pio_req, uint8_t *cnxt), uint8_t *cnxt);
+
+extern void async_write_mem(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, uint8_t *pmem);
+extern void async_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, uint8_t *pmem);
+
+extern uint alloc_io_queue(struct rtl_priv *rtlpriv);
+extern void free_io_queue(struct rtl_priv *rtlpriv);
 extern void async_bus_io(struct io_queue *pio_q);
 extern void bus_sync_io(struct io_queue *pio_q);
 extern u32 _ioreq2rwmem(struct io_queue *pio_q);

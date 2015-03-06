@@ -62,7 +62,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 	uint32_t	 num_xmit_extbuf = NR_XMIT_EXTBUFF;
 
 	/*
-	 * We don't need to memset rtlpriv->XXX to zero, because adapter is allocated by rtw_zvmalloc().
+	 * We don't need to memset rtlpriv->XXX to zero, because rtlpriv is allocated by rtw_zvmalloc().
 	 * memset((unsigned char *)pxmitpriv, 0, sizeof(struct xmit_priv));
 	 */
 
@@ -75,7 +75,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 	Please insert all the queue initializaiton using _rtw_init_queue below
 	*/
 
-	pxmitpriv->adapter = rtlpriv;
+	pxmitpriv->rtlpriv = rtlpriv;
 
 	/*
 	 * for(i = 0 ; i < MAX_NUMBLKS; i++)
@@ -296,7 +296,7 @@ exit:
 void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 {
 	int i;
-	struct rtl_priv *rtlpriv = pxmitpriv->adapter;
+	struct rtl_priv *rtlpriv = pxmitpriv->rtlpriv;
 	struct xmit_frame *pxmitframe = (struct xmit_frame *) pxmitpriv->pxmit_frame_buf;
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmitbuf;
 	uint32_t	 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
@@ -1551,7 +1551,7 @@ struct xmit_buf *rtw_alloc_cmd_xmitbuf(struct xmit_priv *pxmitpriv, uint32_t	 bu
 	pxmitbuf = &pxmitpriv->pcmd_xmitbuf;
 
 	if (pxmitbuf !=  NULL) {
-		if (rtw_os_xmit_resource_alloc(pxmitpriv->adapter, pxmitbuf, (buffsize + XMITBUF_ALIGN_SZ), _FALSE) == _FAIL) {
+		if (rtw_os_xmit_resource_alloc(pxmitpriv->rtlpriv, pxmitbuf, (buffsize + XMITBUF_ALIGN_SZ), _FALSE) == _FAIL) {
 			return NULL;
 		}
 
@@ -1867,7 +1867,7 @@ struct xmit_frame *rtw_alloc_xmitframe_once(struct xmit_priv *pxmitpriv)
 	pxframe = (struct xmit_frame *)N_BYTE_ALIGMENT((SIZE_PTR)(alloc_addr), 4);
 	pxframe->alloc_addr = alloc_addr;
 
-	pxframe->rtlpriv = pxmitpriv->adapter;
+	pxframe->rtlpriv = pxmitpriv->rtlpriv;
 	pxframe->frame_tag = NULL_FRAMETAG;
 
 	pxframe->pkt = NULL;
@@ -1887,7 +1887,7 @@ int32_t rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmit
 {
 	_irqL irqL;
 	struct __queue *queue;
-	struct rtl_priv *rtlpriv = pxmitpriv->adapter;
+	struct rtl_priv *rtlpriv = pxmitpriv->rtlpriv;
 	struct sk_buff *pndis_pkt = NULL;
 
 	if (pxmitframe == NULL) {
@@ -2023,7 +2023,7 @@ struct xmit_frame *rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmi
 	struct tx_servq *ptxservq = NULL;
 	struct __queue *pframe_queue = NULL;
 	struct xmit_frame *pxmitframe = NULL;
-	struct rtl_priv *rtlpriv = pxmitpriv->adapter;
+	struct rtl_priv *rtlpriv = pxmitpriv->rtlpriv;
 	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 	int i, inx[4];
 

@@ -168,8 +168,8 @@ typedef	enum _RT_EEPROM_TYPE{
 
 
 typedef struct eeprom_priv EEPROM_EFUSE_PRIV, *PEEPROM_EFUSE_PRIV;
-#define GET_EEPROM_EFUSE_PRIV(adapter) (&adapter->eeprompriv)
-#define is_boot_from_eeprom(adapter) (adapter->eeprompriv.EepromOrEfuse)
+#define GET_EEPROM_EFUSE_PRIV(rtlpriv) (&rtlpriv->eeprompriv)
+#define is_boot_from_eeprom(rtlpriv) (rtlpriv->eeprompriv.EepromOrEfuse)
 
 
 void rtw_hal_def_value_init(struct rtl_priv *rtlpriv);
@@ -236,11 +236,11 @@ uint8_t	rtw_hal_antdiv_before_linked(struct rtl_priv *rtlpriv);
 void	rtw_hal_antdiv_rssi_compared(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
 #endif
 
-void rtw_hal_notch_filter(struct rtl_priv * adapter, bool enable);
-void rtw_hal_reset_security_engine(struct rtl_priv * adapter);
+void rtw_hal_notch_filter(struct rtl_priv * rtlpriv, bool enable);
+void rtw_hal_reset_security_engine(struct rtl_priv * rtlpriv);
 
-int32_t rtw_hal_c2h_handler(struct rtl_priv *adapter, struct c2h_evt_hdr *c2h_evt);
-c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *adapter);
+int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt);
+c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *rtlpriv);
 
 #endif //__HAL_INTF_H__
 

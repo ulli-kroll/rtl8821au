@@ -1836,7 +1836,7 @@ void rtl8812_query_rx_phy_status(
 	struct recv_frame	*precvframe,
 	uint8_t 				*pphy_status)
 {
-	struct rtl_priv *			rtlpriv = precvframe->adapter;
+	struct rtl_priv *			rtlpriv = precvframe->rtlpriv;
 	struct rx_pkt_attrib	*pattrib = &precvframe->attrib;
 	 struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 	PODM_PHY_INFO_T 	pPHYInfo  = (PODM_PHY_INFO_T)(&pattrib->phy_info);

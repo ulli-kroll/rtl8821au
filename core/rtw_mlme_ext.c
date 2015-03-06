@@ -518,7 +518,7 @@ int	init_mlme_ext_priv(struct rtl_priv* rtlpriv)
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	// We don't need to memset rtlpriv->XXX to zero, because adapter is allocated by rtw_zvmalloc().
+	// We don't need to memset rtlpriv->XXX to zero, because rtlpriv is allocated by rtw_zvmalloc().
 	//memset((uint8_t *)pmlmeext, 0, sizeof(struct mlme_ext_priv));
 
 	pmlmeext->rtlpriv = rtlpriv;
@@ -2299,8 +2299,8 @@ unsigned int OnAction_back(struct rtl_priv *rtlpriv, struct recv_frame *precv_fr
 
 int32_t rtw_action_public_decache(struct recv_frame *recv_frame, int32_t token)
 {
-	struct rtl_priv *adapter = recv_frame->adapter;
-	struct mlme_ext_priv *mlmeext = &(adapter->mlmeextpriv);
+	struct rtl_priv *rtlpriv = recv_frame->rtlpriv;
+	struct mlme_ext_priv *mlmeext = &(rtlpriv->mlmeextpriv);
 	uint8_t *frame = recv_frame->rx_data;
 	u16 seq_ctrl = ( (recv_frame->attrib.seq_num&0xffff) << 4) |
 		(recv_frame->attrib.frag_num & 0xf);
@@ -2311,13 +2311,13 @@ int32_t rtw_action_public_decache(struct recv_frame *recv_frame, int32_t token)
 				&& (token == mlmeext->action_public_dialog_token))
 			{
 				DBG_871X(FUNC_ADPT_FMT" seq_ctrl=0x%x, rxseq=0x%x, token:%d\n",
-					FUNC_ADPT_ARG(adapter), seq_ctrl, mlmeext->action_public_rxseq, token);
+					FUNC_ADPT_ARG(rtlpriv), seq_ctrl, mlmeext->action_public_rxseq, token);
 				return _FAIL;
 			}
 		} else {
 			if (seq_ctrl == mlmeext->action_public_rxseq) {
 				DBG_871X(FUNC_ADPT_FMT" seq_ctrl=0x%x, rxseq=0x%x\n",
-					FUNC_ADPT_ARG(adapter), seq_ctrl, mlmeext->action_public_rxseq);
+					FUNC_ADPT_ARG(rtlpriv), seq_ctrl, mlmeext->action_public_rxseq);
 				return _FAIL;
 			}
 		}
@@ -2333,7 +2333,7 @@ int32_t rtw_action_public_decache(struct recv_frame *recv_frame, int32_t token)
 
 unsigned int on_action_public_p2p(struct recv_frame *precv_frame)
 {
-	struct rtl_priv *rtlpriv = precv_frame->adapter;
+	struct rtl_priv *rtlpriv = precv_frame->rtlpriv;
 	uint8_t *pframe = precv_frame->rx_data;
 	uint len = precv_frame->len;
 	uint8_t *frame_body;
@@ -2371,7 +2371,7 @@ unsigned int on_action_public_default(struct recv_frame *precv_frame, uint8_t ac
 	uint frame_len = precv_frame->len;
 	uint8_t *frame_body = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
 	uint8_t token;
-	struct rtl_priv *adapter = precv_frame->adapter;
+	struct rtl_priv *rtlpriv = precv_frame->rtlpriv;
 	int cnt = 0;
 	char msg[64];
 
@@ -2476,12 +2476,12 @@ struct xmit_frame *_alloc_mgtxmitframe(struct xmit_priv *pxmitpriv, bool once)
 		pmgntframe = rtw_alloc_xmitframe_ext(pxmitpriv);
 
 	if (pmgntframe == NULL) {
-		DBG_871X(FUNC_ADPT_FMT" alloc xmitframe fail, once:%d\n", FUNC_ADPT_ARG(pxmitpriv->adapter), once);
+		DBG_871X(FUNC_ADPT_FMT" alloc xmitframe fail, once:%d\n", FUNC_ADPT_ARG(pxmitpriv->rtlpriv), once);
 		goto exit;
 	}
 
 	if ((pxmitbuf = rtw_alloc_xmitbuf_ext(pxmitpriv)) == NULL) {
-		DBG_871X(FUNC_ADPT_FMT" alloc xmitbuf fail\n", FUNC_ADPT_ARG(pxmitpriv->adapter));
+		DBG_871X(FUNC_ADPT_FMT" alloc xmitbuf fail\n", FUNC_ADPT_ARG(pxmitpriv->rtlpriv));
 		rtw_free_xmitframe(pxmitpriv, pmgntframe);
 		pmgntframe = NULL;
 		goto exit;

@@ -442,7 +442,7 @@ _func_enter_;
 				break;
 		}
 
-		//SecClearAllKeys(adapter);
+		//SecClearAllKeys(rtlpriv);
 
 		//RT_TRACE(COMP_OID_SET, DBG_LOUD, ("set_infrastructure: fw_state:%x after changing mode\n",
 		//									get_fwstate(pmlmepriv) ));
@@ -985,19 +985,19 @@ _func_exit_;
 
 /*
 * rtw_get_cur_max_rate -
-* @adapter: pointer to struct rtl_priv structure
+* @rtlpriv: pointer to struct rtl_priv structure
 *
 * Return 0 or 100Kbps
 */
-u16 rtw_get_cur_max_rate(struct rtl_priv *adapter)
+u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv)
 {
 	int	i = 0;
 	uint8_t	*p;
 	u16	rate = 0, max_rate = 0;
-	struct mlme_ext_priv	*pmlmeext = &adapter->mlmeextpriv;
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	struct registry_priv *pregistrypriv = &adapter->registrypriv;
-	struct mlme_priv	*pmlmepriv = &adapter->mlmepriv;
+	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
+	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	WLAN_BSSID_EX  *pcur_bss = &pmlmepriv->cur_network.network;
 #ifdef CONFIG_80211N_HT
 	struct rtw_ieee80211_ht_cap *pht_capie;
@@ -1031,7 +1031,7 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *adapter)
 			short_GI_20 = (pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info&IEEE80211_HT_CAP_SGI_20) ? 1:0;
 			short_GI_40 = (pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info&IEEE80211_HT_CAP_SGI_40) ? 1:0;
 
-			rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+			rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 
 			if (pmlmeext->cur_channel > 14) {
 				if ((pregistrypriv->bw_mode & 0xf0) > 0)
@@ -1074,45 +1074,45 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *adapter)
 
 /*
 * rtw_set_scan_mode -
-* @adapter: pointer to struct rtl_priv structure
+* @rtlpriv: pointer to struct rtl_priv structure
 * @scan_mode:
 *
 * Return _SUCCESS or _FAIL
 */
-int rtw_set_scan_mode(struct rtl_priv *adapter, RT_SCAN_TYPE scan_mode)
+int rtw_set_scan_mode(struct rtl_priv *rtlpriv, RT_SCAN_TYPE scan_mode)
 {
 	if(scan_mode != SCAN_ACTIVE && scan_mode != SCAN_PASSIVE)
 		return _FAIL;
 
-	adapter->mlmepriv.scan_mode = scan_mode;
+	rtlpriv->mlmepriv.scan_mode = scan_mode;
 
 	return _SUCCESS;
 }
 
 /*
 * rtw_set_channel_plan -
-* @adapter: pointer to struct rtl_priv structure
+* @rtlpriv: pointer to struct rtl_priv structure
 * @channel_plan:
 *
 * Return _SUCCESS or _FAIL
 */
-int rtw_set_channel_plan(struct rtl_priv *adapter, uint8_t channel_plan)
+int rtw_set_channel_plan(struct rtl_priv *rtlpriv, uint8_t channel_plan)
 {
-	struct registry_priv *pregistrypriv = &adapter->registrypriv;
-	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;
+	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
+	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
 	//handle by cmd_thread to sync with scan operation
-	return rtw_set_chplan_cmd(adapter, channel_plan, 1);
+	return rtw_set_chplan_cmd(rtlpriv, channel_plan, 1);
 }
 
 /*
 * rtw_set_country -
-* @adapter: pointer to struct rtl_priv structure
+* @rtlpriv: pointer to struct rtl_priv structure
 * @country_code: string of country code
 *
 * Return _SUCCESS or _FAIL
 */
-int rtw_set_country(struct rtl_priv *adapter, const char *country_code)
+int rtw_set_country(struct rtl_priv *rtlpriv, const char *country_code)
 {
 	int channel_plan = RT_CHANNEL_DOMAIN_WORLD_WIDE_5G;
 
@@ -1131,6 +1131,6 @@ int rtw_set_country(struct rtl_priv *adapter, const char *country_code)
 	else
 		DBG_871X("%s unknown country_code:%s\n", __FUNCTION__, country_code);
 
-	return rtw_set_channel_plan(adapter, channel_plan);
+	return rtw_set_channel_plan(rtlpriv, channel_plan);
 }
 

@@ -2397,14 +2397,14 @@ void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
 	}
 }
 
-void hal_notch_filter_8812(struct rtl_priv *adapter, bool enable)
+void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable)
 {
 	if (enable) {
 		DBG_871X("Enable notch filter\n");
-		/* usb_write8(adapter, rOFDM0_RxDSP+1, usb_read8(adapter, rOFDM0_RxDSP+1) | BIT1); */
+		/* usb_write8(rtlpriv, rOFDM0_RxDSP+1, usb_read8(rtlpriv, rOFDM0_RxDSP+1) | BIT1); */
 	} else {
 		DBG_871X("Disable notch filter\n");
-		/* usb_write8(adapter, rOFDM0_RxDSP+1, usb_read8(adapter, rOFDM0_RxDSP+1) & ~BIT1); */
+		/* usb_write8(rtlpriv, rOFDM0_RxDSP+1, usb_read8(rtlpriv, rOFDM0_RxDSP+1) & ~BIT1); */
 	}
 }
 

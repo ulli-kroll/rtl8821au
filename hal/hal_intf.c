@@ -351,29 +351,29 @@ void rtw_hal_antdiv_rssi_compared(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *dst, 
 }
 #endif
 
-void rtw_hal_notch_filter(struct rtl_priv *adapter, bool enable)
+void rtw_hal_notch_filter(struct rtl_priv *rtlpriv, bool enable)
 {
-	if (adapter->HalFunc->hal_notch_filter)
-		adapter->HalFunc->hal_notch_filter(adapter, enable);
+	if (rtlpriv->HalFunc->hal_notch_filter)
+		rtlpriv->HalFunc->hal_notch_filter(rtlpriv, enable);
 }
 
-void rtw_hal_reset_security_engine(struct rtl_priv *adapter)
+void rtw_hal_reset_security_engine(struct rtl_priv *rtlpriv)
 {
-	if (adapter->HalFunc->hal_reset_security_engine)
-		adapter->HalFunc->hal_reset_security_engine(adapter);
+	if (rtlpriv->HalFunc->hal_reset_security_engine)
+		rtlpriv->HalFunc->hal_reset_security_engine(rtlpriv);
 }
 
-int32_t rtw_hal_c2h_handler(struct rtl_priv *adapter, struct c2h_evt_hdr *c2h_evt)
+int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt)
 {
 	int32_t ret = _FAIL;
 
-	if (adapter->HalFunc->c2h_handler)
-		ret = adapter->HalFunc->c2h_handler(adapter, c2h_evt);
+	if (rtlpriv->HalFunc->c2h_handler)
+		ret = rtlpriv->HalFunc->c2h_handler(rtlpriv, c2h_evt);
 	return ret;
 }
 
-c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *adapter)
+c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *rtlpriv)
 {
-	return adapter->HalFunc->c2h_id_filter_ccx;
+	return rtlpriv->HalFunc->c2h_id_filter_ccx;
 }
 

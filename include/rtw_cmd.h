@@ -888,7 +888,7 @@ extern uint8_t rtw_setfwra_cmd(struct rtl_priv*rtlpriv, uint8_t type);
 
 extern uint8_t rtw_addbareq_cmd(struct rtl_priv*rtlpriv, uint8_t tid, uint8_t *addr);
 
-extern uint8_t rtw_dynamic_chk_wk_cmd(struct rtl_priv *adapter);
+extern uint8_t rtw_dynamic_chk_wk_cmd(struct rtl_priv *rtlpriv);
 
 uint8_t rtw_lps_ctrl_wk_cmd(struct rtl_priv*rtlpriv, uint8_t lps_ctrl_type, uint8_t enqueue);
 #if (RATE_ADAPTIVE_SUPPORT==1)

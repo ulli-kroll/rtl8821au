@@ -227,11 +227,11 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 #define NDEV_FMT "%s"
 #define NDEV_ARG(ndev) ndev->name
 #define ADPT_FMT "%s"
-#define ADPT_ARG(adapter) adapter->ndev->name
+#define ADPT_ARG(rtlpriv) rtlpriv->ndev->name
 #define FUNC_NDEV_FMT "%s(%s)"
 #define FUNC_NDEV_ARG(ndev) __func__, ndev->name
 #define FUNC_ADPT_FMT "%s(%s)"
-#define FUNC_ADPT_ARG(adapter) __func__, adapter->ndev->name
+#define FUNC_ADPT_ARG(rtlpriv) __func__, rtlpriv->ndev->name
 
 
 static inline struct rtl_priv *rtl_priv(struct net_device *ndev)

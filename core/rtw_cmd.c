@@ -447,7 +447,7 @@ _func_exit_;
 }
 
 /*
-uint8_t rtw_setstandby_cmd(unsigned char  *adapter)
+uint8_t rtw_setstandby_cmd(unsigned char  *rtlpriv)
 */
 uint8_t rtw_setstandby_cmd(struct rtl_priv *rtlpriv, uint action)
 {
@@ -648,7 +648,7 @@ _func_exit_;
 
 
 /*
-unsigned char rtw_setphy_cmd(unsigned char  *adapter)
+unsigned char rtw_setphy_cmd(unsigned char  *rtlpriv)
 
 1.  be called only after rtw_update_registrypriv_dev_network( ~) or mp testing program
 2.  for AdHoc/Ap mode or mp mode?
@@ -2160,27 +2160,27 @@ exit:
 	return res;
 }
 
-int32_t c2h_evt_hdl(struct rtl_priv *adapter, struct c2h_evt_hdr *c2h_evt, c2h_id_filter filter)
+int32_t c2h_evt_hdl(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt, c2h_id_filter filter)
 {
 	int32_t ret = _FAIL;
 	uint8_t buf[16];
 
 	if (!c2h_evt) {
 		/* No c2h event in cmd_obj, read c2h event before handling*/
-		if (c2h_evt_read(adapter, buf) == _SUCCESS) {
+		if (c2h_evt_read(rtlpriv, buf) == _SUCCESS) {
 			c2h_evt = (struct c2h_evt_hdr *)buf;
 
 			if (filter && filter(c2h_evt->id) == _FALSE)
 				goto exit;
 
-			ret = rtw_hal_c2h_handler(adapter, c2h_evt);
+			ret = rtw_hal_c2h_handler(rtlpriv, c2h_evt);
 		}
 	} else {
 
 		if (filter && filter(c2h_evt->id) == _FALSE)
 			goto exit;
 
-		ret = rtw_hal_c2h_handler(adapter, c2h_evt);
+		ret = rtw_hal_c2h_handler(rtlpriv, c2h_evt);
 	}
 exit:
 	return ret;
@@ -2190,19 +2190,19 @@ exit:
 static void c2h_wk_callback(_workitem *work)
 {
 	struct evt_priv *evtpriv = container_of(work, struct evt_priv, c2h_wk);
-	struct rtl_priv *adapter = container_of(evtpriv, struct rtl_priv, evtpriv);
+	struct rtl_priv *rtlpriv = container_of(evtpriv, struct rtl_priv, evtpriv);
 	struct c2h_evt_hdr *c2h_evt;
-	c2h_id_filter ccx_id_filter = rtw_hal_c2h_id_filter_ccx(adapter);
+	c2h_id_filter ccx_id_filter = rtw_hal_c2h_id_filter_ccx(rtlpriv);
 
 	evtpriv->c2h_wk_alive = _TRUE;
 
 	while (!rtw_cbuf_empty(evtpriv->c2h_queue)) {
 		if ((c2h_evt = (struct c2h_evt_hdr *)rtw_cbuf_pop(evtpriv->c2h_queue)) != NULL) {
 			/* This C2H event is read, clear it */
-			c2h_evt_clear(adapter);
+			c2h_evt_clear(rtlpriv);
 		} else if ((c2h_evt = (struct c2h_evt_hdr *)rtw_malloc(16)) != NULL) {
 			/* This C2H event is not read, read & clear now */
-			if (c2h_evt_read(adapter, (uint8_t *)c2h_evt) != _SUCCESS)
+			if (c2h_evt_read(rtlpriv, (uint8_t *)c2h_evt) != _SUCCESS)
 				continue;
 		}
 
@@ -2217,11 +2217,11 @@ static void c2h_wk_callback(_workitem *work)
 
 		if (ccx_id_filter(c2h_evt->id) == _TRUE) {
 			/* Handle CCX report here */
-			rtw_hal_c2h_handler(adapter, c2h_evt);
+			rtw_hal_c2h_handler(rtlpriv, c2h_evt);
 			rtw_mfree(c2h_evt);
 		} else {
 			/* Enqueue into cmd_thread for others */
-			rtw_c2h_wk_cmd(adapter, (uint8_t *)c2h_evt);
+			rtw_c2h_wk_cmd(rtlpriv, (uint8_t *)c2h_evt);
 		}
 	}
 

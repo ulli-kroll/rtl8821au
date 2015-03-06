@@ -237,7 +237,7 @@ struct pwrctrl_priv
 #define rtw_set_pwr_state_check_timer(pwrctrlpriv) \
 	_rtw_set_pwr_state_check_timer((pwrctrlpriv), (pwrctrlpriv)->pwr_state_check_interval)
 
-extern void rtw_init_pwrctrl_priv(struct rtl_priv *adapter);
+extern void rtw_init_pwrctrl_priv(struct rtl_priv *rtlpriv);
 
 extern void rtw_set_ps_mode(struct rtl_priv *rtlpriv, uint8_t ps_mode, uint8_t smart_ps, uint8_t bcn_ant_mode);
 extern void rtw_set_rpwm(struct rtl_priv * rtlpriv, uint8_t val8);
@@ -266,8 +266,8 @@ void LPS_Leave(struct rtl_priv *rtlpriv);
 #define rtw_unregister_early_suspend(pwrpriv) do {} while (0)
 
 int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, u32 ips_deffer_ms, const char *caller);
-#define rtw_pwr_wakeup(adapter) _rtw_pwr_wakeup(adapter, RTW_PWR_STATE_CHK_INTERVAL, __FUNCTION__)
-#define rtw_pwr_wakeup_ex(adapter, ips_deffer_ms) _rtw_pwr_wakeup(adapter, ips_deffer_ms, __FUNCTION__)
+#define rtw_pwr_wakeup(rtlpriv) _rtw_pwr_wakeup(rtlpriv, RTW_PWR_STATE_CHK_INTERVAL, __FUNCTION__)
+#define rtw_pwr_wakeup_ex(rtlpriv, ips_deffer_ms) _rtw_pwr_wakeup(rtlpriv, ips_deffer_ms, __FUNCTION__)
 int rtw_pm_set_ips(struct rtl_priv *rtlpriv, uint8_t mode);
 int rtw_pm_set_lps(struct rtl_priv *rtlpriv, uint8_t mode);
 

@@ -77,7 +77,7 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 			break;
 
 		precvbuf->ref_cnt = 0;
-		precvbuf->adapter = rtlpriv;
+		precvbuf->rtlpriv = rtlpriv;
 
 		/* list_add_tail(&precvbuf->list, &(precvpriv->free_recv_buf_queue.queue)); */
 

@@ -123,8 +123,6 @@ extern int rtw_bw_mode;
 extern int rtw_ampdu_enable;	/* for enable tx_ampdu */
 
 extern int pm_netdev_open(struct net_device *ndev,uint8_t bnormal);
-static int rtw_suspend(struct usb_interface *intf, pm_message_t message);
-static int rtw_resume(struct usb_interface *intf);
 int rtw_resume_process(struct rtl_priv *rtlpriv);
 
 
@@ -509,7 +507,7 @@ static void rtw_dev_unload(struct rtl_priv *rtlpriv)
 }
 
 
-static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
+static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 {
 	struct rtl_usb *dvobj = usb_get_intfdata(pusb_intf);
 	struct rtl_priv *rtlpriv = dvobj->rtlpriv;
@@ -579,7 +577,7 @@ exit:
 	return ret;
 }
 
-static int rtw_resume(struct usb_interface *pusb_intf)
+static int rtl8821au_resume(struct usb_interface *pusb_intf)
 {
 	struct rtl_usb *dvobj = usb_get_intfdata(pusb_intf);
 	struct rtl_priv *rtlpriv = dvobj->rtlpriv;
@@ -1028,7 +1026,7 @@ static void dump_usb_interface(struct usb_interface *usb_intf)
 
 }
 
-static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
+static int rtl8821au_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
 	struct rtl_priv *rtlpriv = NULL;
 	int status;
@@ -1061,7 +1059,7 @@ exit:
 /*
  * rmmod module & unplug(SurpriseRemoved) will call r871xu_dev_remove() => how to recognize both
  */
-static void rtw_dev_remove(struct usb_interface *pusb_intf)
+static void rtl8821au_disconnect(struct usb_interface *pusb_intf)
 {
 	struct rtl_usb *dvobj = usb_get_intfdata(pusb_intf);
 	struct rtl_priv *rtlpriv = dvobj->rtlpriv;
@@ -1087,12 +1085,12 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
 
 static struct usb_driver rtl8821au_usb_drv = {
 	.name = "rtl8821au",
-	.probe = rtw_drv_init,
-	.disconnect = rtw_dev_remove,
+	.probe = rtl8821au_probe,
+	.disconnect = rtl8821au_disconnect,
 	.id_table = rtw_usb_id_tbl,
-	.suspend =  rtw_suspend,
-	.resume = rtw_resume,
-  	.reset_resume   = rtw_resume,
+	.suspend =  rtl8821au_suspend,
+	.resume = rtl8821au_resume,
+  	.reset_resume   = rtl8821au_resume,
 #ifdef CONFIG_AUTOSUSPEND
 	.supports_autosuspend = 1,
 #endif

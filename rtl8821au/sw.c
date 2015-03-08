@@ -190,25 +190,6 @@ MODULE_DEVICE_TABLE(usb, rtw_usb_id_tbl);
 
 int const rtw_usb_id_len = sizeof(rtw_usb_id_tbl) / sizeof(struct usb_device_id);
 
-struct rtw_usb_drv {
-	struct usb_driver usbdrv;
-	int drv_registered;
-	uint8_t hw_type;
-};
-
-struct rtw_usb_drv usb_drv = {
-	.usbdrv.name =(char*)DRV_NAME,
-	.usbdrv.probe = rtw_drv_init,
-	.usbdrv.disconnect = rtw_dev_remove,
-	.usbdrv.id_table = rtw_usb_id_tbl,
-	.usbdrv.suspend =  rtw_suspend,
-	.usbdrv.resume = rtw_resume,
-  	.usbdrv.reset_resume   = rtw_resume,
-#ifdef CONFIG_AUTOSUSPEND
-	.usbdrv.supports_autosuspend = 1,
-#endif
-};
-
 static inline int RT_usb_endpoint_dir_in(const struct usb_endpoint_descriptor *epd)
 {
 	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_IN);
@@ -1089,15 +1070,6 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
 
 	DBG_871X("+rtw_dev_remove\n");
 
-	if(usb_drv.drv_registered == _TRUE) {
-		/* DBG_871X("r871xu_dev_remove():rtlpriv->bSurpriseRemoved == _TRUE\n");*/
-		rtlpriv->bSurpriseRemoved = _TRUE;
-	}
-	/*else
-	{
-		//DBG_871X("r871xu_dev_remove():module removed\n");
-		rtlpriv->hw_init_completed = _FALSE;
-	}*/
 
 	rtw_pm_set_ips(rtlpriv, IPS_NONE);
 	rtw_pm_set_lps(rtlpriv, PS_MODE_ACTIVE);
@@ -1118,6 +1090,13 @@ static struct usb_driver rtl8821au_usb_drv = {
 	.probe = rtw_drv_init,
 	.disconnect = rtw_dev_remove,
 	.id_table = rtw_usb_id_tbl,
+	.suspend =  rtw_suspend,
+	.resume = rtw_resume,
+  	.reset_resume   = rtw_resume,
+#ifdef CONFIG_AUTOSUSPEND
+	.supports_autosuspend = 1,
+#endif
+	
 };
 
 module_usb_driver(rtl8821au_usb_drv)

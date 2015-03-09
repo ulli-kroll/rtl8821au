@@ -21,8 +21,6 @@ struct rtl_usb {
 	unsigned char	oper_ch_offset;//PRIME_CHNL_OFFSET
 
 	//For 92D, DMDP have 2 interface.
-	uint8_t	InterfaceNumber;
-	uint8_t	NumInterfaces;
 
 	//In /Out Pipe information
 	int	RtInPipe[2];

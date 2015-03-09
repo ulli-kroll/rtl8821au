@@ -1353,9 +1353,6 @@ struct _rtw_hal {
 	// 2010/08/09 MH Add CU power down mode.
 	BOOLEAN		pwrdown;
 
-	// Add for dual MAC  0--Mac0 1--Mac1
-	u32	interfaceIndex;
-
 	uint8_t	OutEpQueueSel;
 	uint8_t	OutEpNumber;
 

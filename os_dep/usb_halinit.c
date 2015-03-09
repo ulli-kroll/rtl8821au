@@ -112,8 +112,6 @@ void rtl8812au_interface_configure(struct rtl_priv *rtlpriv)
 	else
 		pHalData->UsbBulkOutSize = USB_FULL_SPEED_BULK_SIZE; 	/*64 bytes */
 
-	pHalData->interfaceIndex = pdvobjpriv->InterfaceNumber;
-
 #ifdef CONFIG_USB_TX_AGGREGATION
 	pHalData->UsbTxAggMode		= 1;
 	pHalData->UsbTxAggDescNum	= 6;	/* only 4 bits */

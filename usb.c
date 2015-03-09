@@ -889,8 +889,6 @@ static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl
 	piface_desc = &phost_iface->desc;
 
 
-	pdvobjpriv->NumInterfaces = pconf_desc->bNumInterfaces;
-	pdvobjpriv->InterfaceNumber = piface_desc->bInterfaceNumber;
 	pdvobjpriv->nr_endpoint = piface_desc->bNumEndpoints;
 
 	/* DBG_871X("\ndump usb_endpoint_descriptor:\n"); */
@@ -983,17 +981,13 @@ void usb_dvobj_deinit(struct usb_interface *usb_intf)
 
 	usb_set_intfdata(usb_intf, NULL);
 	if (dvobj) {
-		/* Modify condition for 92DU DMDP 2010.11.18, by Thomas */
-		if ((dvobj->NumInterfaces != 2 && dvobj->NumInterfaces != 3)
-			|| (dvobj->InterfaceNumber == 1)) {
-			if (interface_to_usbdev(usb_intf)->state != USB_STATE_NOTATTACHED) {
-				/*
-				 * If we didn't unplug usb dongle and remove/insert modlue, driver fails on sitesurvey for the first time when device is up .
-				 * Reset usb port for sitesurvey fail issue. 2009.8.13, by Thomas
-				 */
-				DBG_871X("usb attached..., try to reset usb device\n");
-				usb_reset_device(interface_to_usbdev(usb_intf));
-			}
+		if (interface_to_usbdev(usb_intf)->state != USB_STATE_NOTATTACHED) {
+			/*
+			 * If we didn't unplug usb dongle and remove/insert modlue, driver fails on sitesurvey for the first time when device is up .
+			 * Reset usb port for sitesurvey fail issue. 2009.8.13, by Thomas
+			 */
+			DBG_871X("usb attached..., try to reset usb device\n");
+			usb_reset_device(interface_to_usbdev(usb_intf));
 		}
 		rtw_deinit_intf_priv(dvobj);
 		mutex_destroy(&dvobj->hw_init_mutex);

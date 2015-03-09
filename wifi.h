@@ -307,7 +307,6 @@ struct rtl_priv {
 #endif
 
 	u32	setband;
-	struct rtl_hal_ops	*HalFunc;
 
 	int32_t	bDriverStopped;
 	int32_t	bSurpriseRemoved;
@@ -471,7 +470,7 @@ struct rtl_hal_ops {
 static void rtw_hal_fill_fake_txdesc (struct rtl_priv *rtlpriv, u8 *pDesc,
 	u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull)
 {
-	rtlpriv->HalFunc->fill_fake_txdesc(rtlpriv, pDesc, BufferLen, IsPsPoll, IsBTQosNull);
+	rtlpriv->cfg->ops->fill_fake_txdesc(rtlpriv, pDesc, BufferLen, IsPsPoll, IsBTQosNull);
 }
 
 

@@ -6815,7 +6815,7 @@ uint8_t setkey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	write_cam(rtlpriv, pparm->keyid, ctrl, null_sta, pparm->key);
 
 	//allow multicast packets to driver
-        rtlpriv->HalFunc->set_hw_reg(rtlpriv, HW_VAR_ON_RCR_AM, null_addr);
+        rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ON_RCR_AM, null_addr);
 
 	return H2C_SUCCESS;
 }

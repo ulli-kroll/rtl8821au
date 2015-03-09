@@ -475,7 +475,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 					rtldm->Modify_TxAGC_Flag_PathA = TRUE;
 
 					/* et TxAGC Page C{}; */
-					/* rtlpriv->HalFunc.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
+					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
@@ -488,7 +488,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 					rtldm->Modify_TxAGC_Flag_PathA = TRUE;
 
 					/* Set TxAGC Page C{}; */
-					/* rtlpriv->HalFunc.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel);*/
+					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel);*/
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
@@ -502,7 +502,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 						rtldm->Remnant_OFDMSwingIdx[RFPath] = 0;
 
 						/* Set TxAGC Page C{}; */
-						/* rtlpriv->HalFunc.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
+						/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 						PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 						rtldm->Modify_TxAGC_Flag_PathA = FALSE;
@@ -893,7 +893,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 					rtldm->Modify_TxAGC_Flag_PathA = TRUE;
 
 					/* Set TxAGC Page C{}; */
-					/* rtlpriv->HalFunc.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
+					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
@@ -906,7 +906,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 					rtldm->Modify_TxAGC_Flag_PathA = TRUE;
 
 					/* Set TxAGC Page C{}; */
-					/* rtlpriv->HalFunc.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
+					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
@@ -921,7 +921,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct _rtw_dm *pDM_Odm, PWRTRACK_METHOD Method,
 						rtldm->Remnant_OFDMSwingIdx[RFPath] = 0;
 
 						/* Set TxAGC Page C{}; */
-						/* rtlpriv->HalFunc.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
+						/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 						PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 						rtldm->Modify_TxAGC_Flag_PathA = FALSE;

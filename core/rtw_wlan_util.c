@@ -2110,9 +2110,9 @@ void update_wireless_mode(struct rtl_priv *rtlpriv)
 	SIFS_Timer = 0x0a0a0808; //0x0808 -> for CCK, 0x0a0a -> for OFDM
                              //change this value if having IOT issues.
 
-	rtlpriv->HalFunc->set_hw_reg( rtlpriv, HW_VAR_RESP_SIFS,  (uint8_t *)&SIFS_Timer);
+	rtlpriv->cfg->ops->set_hw_reg( rtlpriv, HW_VAR_RESP_SIFS,  (uint8_t *)&SIFS_Timer);
 
-	rtlpriv->HalFunc->set_hw_reg( rtlpriv, HW_VAR_WIRELESS_MODE,  (uint8_t *)&(pmlmeext->cur_wireless_mode));
+	rtlpriv->cfg->ops->set_hw_reg( rtlpriv, HW_VAR_WIRELESS_MODE,  (uint8_t *)&(pmlmeext->cur_wireless_mode));
 
 	if (pmlmeext->cur_wireless_mode & WIRELESS_11B)
 		update_mgnt_tx_rate(rtlpriv, IEEE80211_CCK_RATE_1MB);

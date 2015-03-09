@@ -2772,7 +2772,7 @@ void rtw_update_ht_cap(struct rtl_priv *rtlpriv, uint8_t *pie, uint ie_len, uint
 		int i;
 		uint8_t	rf_type;
 
-		rtlpriv->HalFunc->get_hw_reg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+		rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 
 		//update the MCS rates
 		for (i = 0; i < 16; i++)

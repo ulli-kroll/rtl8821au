@@ -457,7 +457,7 @@ static VOID _InitPageBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 	 */
 
 	/*
-	 * rtlpriv->HalFunc.GetHalDefVarHandler(rtlpriv, HAL_DEF_WOWLAN , &bSupportRemoteWakeUp);
+	 * rtlpriv->cfg->ops.GetHalDefVarHandler(rtlpriv, HAL_DEF_WOWLAN , &bSupportRemoteWakeUp);
 	 * RX Page Boundary
 	 * srand(static_cast<unsigned int>(time(NULL)) );
 	 */

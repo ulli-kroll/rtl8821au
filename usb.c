@@ -2,7 +2,6 @@
 #include <hal_data.h>
 #include <../rtl8821au/trx.h>
 
-extern struct rtl_hal_ops rtl8821au_hal_ops;
 extern int pm_netdev_open(struct net_device *ndev,uint8_t bnormal);
 int rtw_resume_process(struct rtl_priv *rtlpriv);
 
@@ -1362,14 +1361,14 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	SET_NETDEV_DEV(ndev, dvobj_to_dev(rtlusb));
 	rtlpriv = rtl_priv(ndev);
 
-	/* step 2. hook HalFunc, allocate HalData */
+	/* step 2. hook cfg->ops, allocate HalData */
 	/* hal_set_hal_ops(rtlpriv); */
 	rtlpriv->HalData = rtw_zmalloc(sizeof( struct _rtw_hal));
 	if (rtlpriv->HalData == NULL) {
 		DBG_8192C("cant not alloc memory for HAL DATA \n");
 	}
 
-	rtlpriv->HalFunc = &rtl8821au_hal_ops;
+	rtlpriv->cfg = rtl_hal_cfg;
 
 	rtlpriv->intf_start=&usb_intf_start;
 	rtlpriv->intf_stop=&usb_intf_stop;

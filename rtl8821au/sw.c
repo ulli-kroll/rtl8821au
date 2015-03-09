@@ -219,40 +219,11 @@ exit:
 	return status == _SUCCESS?0:-ENODEV;
 }
 
-/*
- * dev_remove() - our device is being removed
-*/
-/*
- * rmmod module & unplug(SurpriseRemoved) will call r871xu_dev_remove() => how to recognize both
- */
-static void rtl8821au_disconnect(struct usb_interface *pusb_intf)
-{
-	struct rtl_usb *dvobj = usb_get_intfdata(pusb_intf);
-	struct rtl_priv *rtlpriv = dvobj->rtlpriv;
-	struct net_device *ndev = rtlpriv->ndev;
-	struct mlme_priv *pmlmepriv= &rtlpriv->mlmepriv;
-
-	DBG_871X("+rtw_dev_remove\n");
-
-
-	rtw_pm_set_ips(rtlpriv, IPS_NONE);
-	rtw_pm_set_lps(rtlpriv, PS_MODE_ACTIVE);
-
-	LeaveAllPowerSaveMode(rtlpriv);
-
-	rtw_usb_if1_deinit(rtlpriv);
-
-	usb_dvobj_deinit(pusb_intf);
-
-	DBG_871X("-r871xu_dev_remove, done\n");
-
-	return;
-}
 
 static struct usb_driver rtl8821au_usb_drv = {
 	.name = "rtl8821au",
 	.probe = rtl8821au_probe,
-	.disconnect = rtl8821au_disconnect,
+	.disconnect = rtw_usb_disconnect,
 	.id_table = rtw_usb_id_tbl,
 #if 0 	
 	.suspend =  rtl8821au_suspend,

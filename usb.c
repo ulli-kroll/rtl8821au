@@ -1600,3 +1600,33 @@ static void dump_usb_interface(struct usb_interface *usb_intf)
 
 }
 
+/*
+ * dev_remove() - our device is being removed
+*/
+/*
+ * rmmod module & unplug(SurpriseRemoved) will call r871xu_dev_remove() => how to recognize both
+ */
+void rtw_usb_disconnect(struct usb_interface *pusb_intf)
+{
+	struct rtl_usb *dvobj = usb_get_intfdata(pusb_intf);
+	struct rtl_priv *rtlpriv = dvobj->rtlpriv;
+	struct net_device *ndev = rtlpriv->ndev;
+	struct mlme_priv *pmlmepriv= &rtlpriv->mlmepriv;
+
+	DBG_871X("+rtw_dev_remove\n");
+
+
+	rtw_pm_set_ips(rtlpriv, IPS_NONE);
+	rtw_pm_set_lps(rtlpriv, PS_MODE_ACTIVE);
+
+	LeaveAllPowerSaveMode(rtlpriv);
+
+	rtw_usb_if1_deinit(rtlpriv);
+
+	usb_dvobj_deinit(pusb_intf);
+
+	DBG_871X("-r871xu_dev_remove, done\n");
+
+	return;
+}
+

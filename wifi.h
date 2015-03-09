@@ -246,6 +246,23 @@ struct rtl_dm {
 #define rtl_phy(rtlpriv)	(&((rtlpriv)->phy))
 #define rtl_dm(rtlpriv)		(&((rtlpriv)->dm))
 
+struct rtl_hal_cfg {
+	u8 bar_id;
+	bool write_readback;
+	char *name;
+	char *fw_name;
+	char *alt_fw_name;
+	struct rtl_hal_ops *ops;
+#if 0 		/* ULLI currently not defined */
+	struct rtl_mod_params *mod_params;
+	struct rtl_hal_usbint_cfg *usb_interface_cfg;
+
+	/*this map used for some registers or vars
+	   defined int HAL but used in MAIN */
+	u32 maps[RTL_VAR_MAP_MAX];
+#endif
+};
+
 struct rtl_priv {
 	struct net_device *ndev;
 

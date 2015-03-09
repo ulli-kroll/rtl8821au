@@ -1446,7 +1446,10 @@ int rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct usb_device_id
 
 
 	return 0;
-
+	
+free_dvobj:
+	usb_dvobj_deinit(pusb_intf);
+	
 free_hal_data:
 	if (status != _SUCCESS && rtlpriv->HalData)
 		rtw_mfree(rtlpriv->HalData);

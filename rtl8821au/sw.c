@@ -193,24 +193,7 @@ extern void usb_dvobj_deinit(struct usb_interface *usb_intf);
 
 static int rtl8821au_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
-	int status;
-	struct rtl_usb *dvobj;
-
-	/* DBG_871X("+rtw_drv_init\n"); */
-
-	/* Initialize dvobj_priv */
-	if (rtw_usb_if1_init(pusb_intf, pdid) < 0) {
-		DBG_871X("rtw_usb_if1_init Failed!\n");
-		goto free_dvobj;
-	}
-
-	status = _SUCCESS;
-
-free_dvobj:
-	if (status != _SUCCESS)
-		usb_dvobj_deinit(pusb_intf);
-exit:
-	return status == _SUCCESS?0:-ENODEV;
+	return rtw_usb_if1_init(pusb_intf, pdid);
 }
 
 

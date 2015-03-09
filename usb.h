@@ -98,7 +98,7 @@ int usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t length, uint8_t
 
 
 
-int rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid);
+int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid);
 /* ULLI : we use here rtw_usb_* because interface is not complete */
 
 void rtw_usb_disconnect(struct usb_interface *pusb_intf);

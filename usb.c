@@ -1314,7 +1314,7 @@ static int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 	return 0;
 }
 
-int rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
+int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
 	struct rtl_usb *rtlusb;
 	struct rtl_priv *rtlpriv = NULL;

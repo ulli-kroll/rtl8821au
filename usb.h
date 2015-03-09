@@ -97,10 +97,10 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf 
 int usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t length, uint8_t *pdata);
 
 
-
-int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid);
 /* ULLI : we use here rtw_usb_* because interface is not complete */
-
+struct rtl_hal_cfg;
+int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid, 
+		struct rtl_hal_cfg *rtl_hal_cfg);
 void rtw_usb_disconnect(struct usb_interface *pusb_intf);
 
 #endif

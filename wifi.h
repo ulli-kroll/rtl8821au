@@ -270,6 +270,7 @@ struct rtl_priv {
 	struct rtl_phy phy;
 	struct rtl_efuse efuse;
 	struct rtl_dm dm;		/* Caution new dm data */
+	struct rtl_hal_cfg *cfg;
 	
 
 	struct rtl_usb_priv priv;

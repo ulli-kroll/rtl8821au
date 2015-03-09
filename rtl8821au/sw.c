@@ -21,8 +21,6 @@ void rtl8812_GetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, 
 void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,	PVOID 	pValue1, BOOLEAN bSet);
 void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable);
 
-
-
 struct rtl_hal_ops rtl8821au_hal_ops = {
 	/*
 	 * New HAL functions with struct net_device  as first param
@@ -116,6 +114,13 @@ struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	.SetBeaconRelatedRegistersHandler =	SetBeaconRelatedRegisters8812A,
 };
+
+static struct rtl_hal_cfg rtl8821au_hal_cfg = {
+	.name = "rtl8821au",
+	.fw_name = "rtlwifi/rtl8821aufw.bin",	/* ULLI note two files */
+	.ops = &rtl8821au_hal_ops,
+};
+
 
 
 extern int rtw_ht_enable;

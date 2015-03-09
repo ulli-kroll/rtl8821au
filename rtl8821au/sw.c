@@ -186,8 +186,6 @@ static struct usb_device_id rtw_usb_id_tbl[] ={
 
 MODULE_DEVICE_TABLE(usb, rtw_usb_id_tbl);
 
-int const rtw_usb_id_len = sizeof(rtw_usb_id_tbl) / sizeof(struct usb_device_id);
-
 static inline int RT_usb_endpoint_dir_in(const struct usb_endpoint_descriptor *epd)
 {
 	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_IN);

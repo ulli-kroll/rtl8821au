@@ -1314,7 +1314,7 @@ static int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 	return 0;
 }
 
-struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
+int rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
 	struct rtl_usb *rtlusb;
 	struct rtl_priv *rtlpriv = NULL;
@@ -1444,6 +1444,9 @@ struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct 
 		goto free_hal_data;
 	}
 
+
+	return 0;
+
 free_hal_data:
 	if (status != _SUCCESS && rtlpriv->HalData)
 		rtw_mfree(rtlpriv->HalData);
@@ -1456,7 +1459,7 @@ free_adapter:
 		rtlpriv = NULL;
 	}
 exit:
-	return rtlpriv;
+	return -ENODEV;
 }
 
 void rtw_usb_if1_deinit(struct rtl_priv *rtlpriv)

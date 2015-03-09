@@ -187,31 +187,25 @@ static struct usb_device_id rtw_usb_id_tbl[] ={
 
 MODULE_DEVICE_TABLE(usb, rtw_usb_id_tbl);
 
-extern struct rtl_priv *rtw_usb_if1_init(struct usb_interface *pusb_intf, const struct usb_device_id *pdid);
 extern void rtw_usb_if1_deinit(struct rtl_priv *rtlpriv);
 extern void usb_dvobj_deinit(struct usb_interface *usb_intf);
 
 
 static int rtl8821au_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
-	struct rtl_priv *rtlpriv = NULL;
 	int status;
 	struct rtl_usb *dvobj;
 
 	/* DBG_871X("+rtw_drv_init\n"); */
 
 	/* Initialize dvobj_priv */
-	if ((rtlpriv = rtw_usb_if1_init(pusb_intf, pdid)) == NULL) {
+	if (rtw_usb_if1_init(pusb_intf, pdid) < 0) {
 		DBG_871X("rtw_usb_if1_init Failed!\n");
 		goto free_dvobj;
 	}
 
 	status = _SUCCESS;
 
-free_if1:
-	if (status != _SUCCESS && rtlpriv) {
-		rtw_usb_if1_deinit(rtlpriv);
-	}
 free_dvobj:
 	if (status != _SUCCESS)
 		usb_dvobj_deinit(pusb_intf);

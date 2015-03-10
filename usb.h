@@ -91,7 +91,7 @@ void usb_read_port_cancel(struct rtl_priv *rtlprivl);
 
 uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem);
 u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf *pxmitbu);
-void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t length, uint8_t *pdata);
+void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, void *pdata, u16 len);
 
 
 /* ULLI : we use here rtw_usb_* because interface is not complete */

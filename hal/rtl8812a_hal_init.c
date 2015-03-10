@@ -204,7 +204,7 @@ static int _BlockWrite_8812(struct rtl_priv *rtlpriv, PVOID buffer, uint32_t buf
 	}
 
 	for (i = 0; i < blockCount_p1; i++) {
-		usb_writeN(rtlpriv, (FW_START_ADDRESS + i * blockSize_p1), blockSize_p1, (bufferPtr + i * blockSize_p1));
+		usb_writeN(rtlpriv, (FW_START_ADDRESS + i * blockSize_p1), (bufferPtr + i * blockSize_p1), blockSize_p1);
 	}
 
 
@@ -220,7 +220,7 @@ static int _BlockWrite_8812(struct rtl_priv *rtlpriv, PVOID buffer, uint32_t buf
 		}
 
 		for (i = 0; i < blockCount_p2; i++) {
-			usb_writeN(rtlpriv, (FW_START_ADDRESS + offset + i*blockSize_p2), blockSize_p2, (bufferPtr + offset + i*blockSize_p2));
+			usb_writeN(rtlpriv, (FW_START_ADDRESS + offset + i*blockSize_p2), (bufferPtr + offset + i*blockSize_p2), blockSize_p2);
 		}
 	}
 

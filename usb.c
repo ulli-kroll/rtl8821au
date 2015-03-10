@@ -255,7 +255,7 @@ void usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val)
 	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 }
 
-void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t length, uint8_t *pdata)
+void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, void *pdata, u16 length)
 {
 	uint8_t request;
 	uint8_t requesttype;

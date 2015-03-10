@@ -5998,11 +5998,11 @@ void _linked_info_dump(struct rtl_priv *rtlpriv)
 	}
 	DBG_871X("============ linked status check ===================\n");
 	DBG_871X("============ RX GAIN / FALSE ALARM  ===================\n");
-	DBG_871X(" DIG PATH-A(0x%02x), PATH-B(0x%02x)\n",usb_read8(rtlpriv,0xc50),usb_read8(rtlpriv,0xc58));
+	DBG_871X(" DIG PATH-A(0x%02x), PATH-B(0x%02x)\n",rtl_read_byte(rtlpriv,0xc50),rtl_read_byte(rtlpriv,0xc58));
 	DBG_871X(" OFDM -Alarm DA2(0x%04x),DA4(0x%04x),DA6(0x%04x),DA8(0x%04x)\n",
-		usb_read16(rtlpriv,0xDA2),usb_read16(rtlpriv,0xDA4),usb_read16(rtlpriv,0xDA6),usb_read16(rtlpriv,0xDA8));
+		rtl_read_word(rtlpriv,0xDA2),rtl_read_word(rtlpriv,0xDA4),rtl_read_word(rtlpriv,0xDA6),rtl_read_word(rtlpriv,0xDA8));
 
-	DBG_871X(" CCK -Alarm A5B(0x%02x),A5C(0x%02x)\n",usb_read8(rtlpriv,0xA5B),usb_read8(rtlpriv,0xA5C));
+	DBG_871X(" CCK -Alarm A5B(0x%02x),A5C(0x%02x)\n",rtl_read_byte(rtlpriv,0xA5B),rtl_read_byte(rtlpriv,0xA5C));
 	#endif
 
 	if((pmlmeinfo->state&0x03) == WIFI_FW_STATION_STATE)

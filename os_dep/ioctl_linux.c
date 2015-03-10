@@ -2518,14 +2518,14 @@ static int rtw_cta_test_start(struct net_device *ndev,
 		rtlpriv->in_cta_test = 0;
 
 	if (rtlpriv->in_cta_test) {
-		u32 v = usb_read32(rtlpriv, REG_RCR);
+		u32 v = rtl_read_dword(rtlpriv, REG_RCR);
 		v &= ~(RCR_CBSSID_DATA | RCR_CBSSID_BCN);	/* | RCR_ADF */
-		usb_write32(rtlpriv, REG_RCR, v);
+		rtl_write_dword(rtlpriv, REG_RCR, v);
 		DBG_871X("enable RCR_ADF\n");
 	} else {
-		u32 v = usb_read32(rtlpriv, REG_RCR);
+		u32 v = rtl_read_dword(rtlpriv, REG_RCR);
 		v |= RCR_CBSSID_DATA | RCR_CBSSID_BCN ;		/* | RCR_ADF */
-		usb_write32(rtlpriv, REG_RCR, v);
+		rtl_write_dword(rtlpriv, REG_RCR, v);
 		DBG_871X("disable RCR_ADF\n");
 	}
 	return ret;
@@ -2539,14 +2539,14 @@ void mac_reg_dump(struct rtl_priv *rtlpriv)
 	for (i = 0x0; i < 0x300; i += 4) {
 		if (j % 4 == 1)
 			printk("0x%02x", i);
-		printk(" 0x%08x ", usb_read32(rtlpriv, i));
+		printk(" 0x%08x ", rtl_read_dword(rtlpriv, i));
 		if ((j++) % 4 == 0)
 			printk("\n");
 	}
 	for (i = 0x400; i < 0x800; i += 4) {
 		if (j % 4 == 1)
 			printk("0x%02x", i);
-		printk(" 0x%08x ", usb_read32(rtlpriv, i));
+		printk(" 0x%08x ", rtl_read_dword(rtlpriv, i));
 		if ((j++) % 4 == 0)
 			printk("\n");
 	}
@@ -2559,7 +2559,7 @@ void bb_reg_dump(struct rtl_priv *rtlpriv)
 		if (j % 4 == 1)
 			printk("0x%02x", i);
 
-		printk(" 0x%08x ", usb_read32(rtlpriv, i));
+		printk(" 0x%08x ", rtl_read_dword(rtlpriv, i));
 		if ((j++)%4 == 0)
 			printk("\n");
 	}

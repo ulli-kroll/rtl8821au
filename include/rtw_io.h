@@ -291,11 +291,11 @@ extern void dev_power_down(struct rtl_priv * rtlpriv, uint8_t bpwrup);
 
 /*
 #define RTL_R8(reg)		rtw_read8(rtlpriv, reg)
-#define RTL_R16(reg)            usb_read16(rtlpriv, reg)
-#define RTL_R32(reg)            usb_read32(rtlpriv, reg)
-#define RTL_W8(reg, val8)       usb_write8(rtlpriv, reg, val8)
-#define RTL_W16(reg, val16)     usb_write16(rtlpriv, reg, val16)
-#define RTL_W32(reg, val32)     usb_write32(rtlpriv, reg, val32)
+#define RTL_R16(reg)            rtl_read_word(rtlpriv, reg)
+#define RTL_R32(reg)            rtl_read_dword(rtlpriv, reg)
+#define RTL_W8(reg, val8)       rtl_write_byte(rtlpriv, reg, val8)
+#define RTL_W16(reg, val16)     rtl_write_word(rtlpriv, reg, val16)
+#define RTL_W32(reg, val32)     rtl_write_dword(rtlpriv, reg, val32)
 */
 
 /*

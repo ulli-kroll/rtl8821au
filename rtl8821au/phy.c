@@ -21,7 +21,7 @@ u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint3
 	/* DBG_871X("--->PHY_QueryBBReg8812(): RegAddr(%#x), BitMask(%#x)\n", RegAddr, BitMask); */
 
 
-	OriginalValue = usb_read32(rtlpriv, RegAddr);
+	OriginalValue = rtl_read_dword(rtlpriv, RegAddr);
 	BitShift = PHY_CalculateBitShift(BitMask);
 	ReturnValue = (OriginalValue & BitMask) >> BitShift;
 
@@ -35,12 +35,12 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask
 	uint32_t OriginalValue, BitShift;
 
 	if (BitMask != bMaskDWord) {	/* if not "double word" write */
-		OriginalValue = usb_read32(rtlpriv, RegAddr);
+		OriginalValue = rtl_read_dword(rtlpriv, RegAddr);
 		BitShift = PHY_CalculateBitShift(BitMask);
 		Data = ((OriginalValue) & (~BitMask)) | (((Data << BitShift)) & BitMask);
 	}
 
-	usb_write32(rtlpriv, RegAddr, Data);
+	rtl_write_dword(rtlpriv, RegAddr, Data);
 
 	/* DBG_871X("BBW MASK=0x%x Addr[0x%x]=0x%x\n", BitMask, RegAddr, Data); */
 }
@@ -107,9 +107,9 @@ static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 	switch (Path) {
 	case RF90_PATH_A:
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
-		usb_write32(rtlpriv, 0xc90, 0x00000080);
-		usb_write32(rtlpriv, 0xcc4, 0x20040000);
-		usb_write32(rtlpriv, 0xcc8, 0x20000000);
+		rtl_write_dword(rtlpriv, 0xc90, 0x00000080);
+		rtl_write_dword(rtlpriv, 0xcc4, 0x20040000);
+		rtl_write_dword(rtlpriv, 0xcc8, 0x20000000);
 		rtl_set_bbreg(rtlpriv, 0xccc, 0x000007ff, TX_Y);
 		rtl_set_bbreg(rtlpriv, 0xcd4, 0x000007ff, TX_X);
 		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X&0x000007ff, TX_Y&0x000007ff)); */
@@ -117,9 +117,9 @@ static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 		break;
 	case RF90_PATH_B:
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
-		usb_write32(rtlpriv, 0xe90, 0x00000080);
-		usb_write32(rtlpriv, 0xec4, 0x20040000);
-		usb_write32(rtlpriv, 0xec8, 0x20000000);
+		rtl_write_dword(rtlpriv, 0xe90, 0x00000080);
+		rtl_write_dword(rtlpriv, 0xec4, 0x20040000);
+		rtl_write_dword(rtlpriv, 0xec8, 0x20000000);
 		rtl_set_bbreg(rtlpriv, 0xecc, 0x000007ff, TX_Y);
 		rtl_set_bbreg(rtlpriv, 0xed4, 0x000007ff, TX_X);
 		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X&0x000007ff, TX_Y&0x000007ff)); */
@@ -136,9 +136,9 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 	switch (Path) {
 	case RF90_PATH_A:
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
-		usb_write32(rtlpriv, 0xc90, 0x00000080);
-		usb_write32(rtlpriv, 0xcc4, 0x20040000);
-		usb_write32(rtlpriv, 0xcc8, 0x20000000);
+		rtl_write_dword(rtlpriv, 0xc90, 0x00000080);
+		rtl_write_dword(rtlpriv, 0xcc4, 0x20040000);
+		rtl_write_dword(rtlpriv, 0xcc8, 0x20000000);
 		rtl_set_bbreg(rtlpriv, 0xccc, 0x000007ff, TX_Y);
 		rtl_set_bbreg(rtlpriv, 0xcd4, 0x000007ff, TX_X);
 		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X, TX_Y)); */
@@ -181,14 +181,14 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);	/* [31] = 0 --> Page C */
 		/*  ========Path-A AFE all on======== */
 		/* Port 0 DAC/ADC on */
-		usb_write32(rtlpriv, 0xc60, 0x77777777);
-		usb_write32(rtlpriv, 0xc64, 0x77777777);
+		rtl_write_dword(rtlpriv, 0xc60, 0x77777777);
+		rtl_write_dword(rtlpriv, 0xc64, 0x77777777);
 
 		/* Port 1 DAC/ADC off */
-		usb_write32(rtlpriv, 0xe60, 0x00000000);
-		usb_write32(rtlpriv, 0xe64, 0x00000000);
+		rtl_write_dword(rtlpriv, 0xe60, 0x00000000);
+		rtl_write_dword(rtlpriv, 0xe64, 0x00000000);
 
-		usb_write32(rtlpriv, 0xc68, 0x19791979);
+		rtl_write_dword(rtlpriv, 0xc68, 0x19791979);
 
 		rtl_set_bbreg(rtlpriv, 0xc00, 0xf, 0x4);		/* hardware 3-wire off */
 
@@ -202,14 +202,14 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 		/* ========Path-B AFE all on======== */
 		/* Port 0 DAC/ADC off */
-		usb_write32(rtlpriv, 0xc60, 0x00000000);
-		usb_write32(rtlpriv, 0xc64, 0x00000000);
+		rtl_write_dword(rtlpriv, 0xc60, 0x00000000);
+		rtl_write_dword(rtlpriv, 0xc64, 0x00000000);
 
 		/* Port 1 DAC/ADC on */
-		usb_write32(rtlpriv, 0xe60, 0x77777777);
-		usb_write32(rtlpriv, 0xe64, 0x77777777);
+		rtl_write_dword(rtlpriv, 0xe60, 0x77777777);
+		rtl_write_dword(rtlpriv, 0xe64, 0x77777777);
 
-		usb_write32(rtlpriv, 0xe68, 0x19791979);
+		rtl_write_dword(rtlpriv, 0xe68, 0x19791979);
 
 		rtl_set_bbreg(rtlpriv, 0xe00, 0xf, 0x4);		/* hardware 3-wire off */
 
@@ -234,29 +234,29 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
 		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
 		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
-		usb_write32(rtlpriv, 0x90c, 0x00008000);
-		usb_write32(rtlpriv, 0xb00, 0x03000100);
+		rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+		rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xc94, BIT(0), 0x1);
-		usb_write32(rtlpriv, 0x978, 0x29002000);	/* TX (X,Y) */
-		usb_write32(rtlpriv, 0x97c, 0xa9002000);	/* RX (X,Y) */
-		usb_write32(rtlpriv, 0x984, 0x00462910);	/* [0]:AGC_en, [15]:idac_K_Mask */
+		rtl_write_dword(rtlpriv, 0x978, 0x29002000);	/* TX (X,Y) */
+		rtl_write_dword(rtlpriv, 0x97c, 0xa9002000);	/* RX (X,Y) */
+		rtl_write_dword(rtlpriv, 0x984, 0x00462910);	/* [0]:AGC_en, [15]:idac_K_Mask */
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);	/* [31] = 1 --> Page C1 */
 
 		if (rtlhal->external_pa_5g)
-			usb_write32(rtlpriv, 0xc88, 0x821403f7);
+			rtl_write_dword(rtlpriv, 0xc88, 0x821403f7);
 		else
-			usb_write32(rtlpriv, 0xc88, 0x821403f1);
+			rtl_write_dword(rtlpriv, 0xc88, 0x821403f1);
 
 		if (*pDM_Odm->pBandType)
-			usb_write32(rtlpriv, 0xc8c, 0x68163e96);
+			rtl_write_dword(rtlpriv, 0xc8c, 0x68163e96);
 		else {
-			usb_write32(rtlpriv, 0xc8c, 0x28163e96);
+			rtl_write_dword(rtlpriv, 0xc8c, 0x28163e96);
 			if (rtlhal->rfe_type == 3) {
 				if (rtlhal->external_pa_2g)
-					usb_write32(rtlpriv, 0xc88, 0x821403e3);
+					rtl_write_dword(rtlpriv, 0xc88, 0x821403e3);
 				else
-					usb_write32(rtlpriv, 0xc88, 0x821403f7);
+					rtl_write_dword(rtlpriv, 0xc88, 0x821403f7);
 			}
 
 		}
@@ -266,15 +266,15 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			for (k = 0; k <= 2; k++) {
 				switch (k) {
 				case 0:
-					usb_write32(rtlpriv, 0xc80, 0x18008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xc84, 0x38008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
-					usb_write32(rtlpriv, 0x984, 0x00462910);	/* [0]:AGC_en, [15]:idac_K_Mask */
+					rtl_write_dword(rtlpriv, 0xc80, 0x18008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xc84, 0x38008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0x984, 0x00462910);	/* [0]:AGC_en, [15]:idac_K_Mask */
 					rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x0);
 					break;
 				case 1:
 					rtl_set_bbreg(rtlpriv, 0xc80, BIT(28), 0x0);
 					rtl_set_bbreg(rtlpriv, 0xc84, BIT(28), 0x0);
-					usb_write32(rtlpriv, 0x984, 0x0046a910);	/* [0]:AGC_en, [15]:idac_K_Mask */
+					rtl_write_dword(rtlpriv, 0x984, 0x0046a910);	/* [0]:AGC_en, [15]:idac_K_Mask */
 					break;
 				case 2:
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff));
@@ -283,23 +283,23 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Tx_dt = %d\n", Tx_dt[cal]));
 					Tx_dt[cal] = ((16*Tx_dt[cal])*10000/15708);
 					Tx_dt[cal] = (Tx_dt[cal] >> 1) + (Tx_dt[cal] & BIT(0));
-					usb_write32(rtlpriv, 0xc80, 0x18008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xc84, 0x38008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0xc80, 0x18008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xc84, 0x38008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 					rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x1);
 					rtl_set_bbreg(rtlpriv, 0xce8, 0x3fff0000, Tx_dt[cal] & 0x00003fff);
 					break;
 				default:
 					break;
 				}
-				usb_write32(rtlpriv, 0xcb8, 0x00100000);		/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+				rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);		/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 				cal_retry = 0;
 				while (1) {
 					/* one shot */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10); /* Delay 10ms */
-					usb_write32(rtlpriv, 0xcb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
 						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
@@ -316,9 +316,9 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(12));
 
 						if (~TX_fail) {
-							usb_write32(rtlpriv, 0xcb8, 0x02000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
 							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xcb8, 0x04000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							break;
@@ -342,20 +342,20 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			TX_X0[cal] = VDF_X[k-1] ;
 			TX_Y0[cal] = VDF_Y[k-1];
 		} else {
-			usb_write32(rtlpriv, 0xc80, 0x18008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-			usb_write32(rtlpriv, 0xc84, 0x38008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
-			usb_write32(rtlpriv, 0xce8, 0x00000000);
+			rtl_write_dword(rtlpriv, 0xc80, 0x18008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+			rtl_write_dword(rtlpriv, 0xc84, 0x38008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+			rtl_write_dword(rtlpriv, 0xce8, 0x00000000);
 
 			for (cal = 0; cal < cal_num; cal++) {
 				cal_retry = 0;
 				while (1) {
 					/* one shot */
-					usb_write32(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10); 				/* Delay 25ms */
-					usb_write32(rtlpriv, 0xcb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
 						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
@@ -372,21 +372,21 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(12));
 
 						if (~TX_fail) {
-							usb_write32(rtlpriv, 0xcb8, 0x02000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
 							TX_X0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xcb8, 0x04000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 							TX_Y0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							/*
-							usb_write32(rtlpriv, 0xcb8, 0x01000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x01000000);
 							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
-							usb_write32(rtlpriv, 0xcb8, 0x02000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
 							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("Before PW = %d\n", Image_Power);
-							usb_write32(rtlpriv, 0xcb8, 0x03000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x03000000);
 							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
-							usb_write32(rtlpriv, 0xcb8, 0x04000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("After PW = %d\n", Image_Power);
@@ -434,11 +434,11 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
-			usb_write32(rtlpriv, 0x984, 0x0046a911);
+			rtl_write_dword(rtlpriv, 0x984, 0x0046a911);
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
-			usb_write32(rtlpriv, 0xc88, 0x02140119);
-			usb_write32(rtlpriv, 0xc8c, 0x28161420);
+			rtl_write_dword(rtlpriv, 0xc88, 0x02140119);
+			rtl_write_dword(rtlpriv, 0xc8c, 0x28161420);
 
 			for (k = 0; k <= 2; k++) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */
@@ -448,13 +448,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); 	/* [31] = 1 --> Page C1 */
 				switch (k) {
 				case 0:
-					usb_write32(rtlpriv, 0xc80, 0x38008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xc84, 0x18008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0xc80, 0x38008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xc84, 0x18008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 					rtl_set_bbreg(rtlpriv, 0xce8, BIT(30), 0x0);
 					break;
 				case 1:
-					usb_write32(rtlpriv, 0xc80, 0x28008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xc84, 0x08008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0xc80, 0x28008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xc84, 0x08008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 					break;
 				case 2:
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff));
@@ -463,8 +463,8 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Rx_dt = %d\n", Rx_dt[cal]));
 					Rx_dt[cal] = ((16*Rx_dt[cal])*10000/13823);
 					Rx_dt[cal] = (Rx_dt[cal] >> 1) + (Rx_dt[cal] & BIT(0));
-					usb_write32(rtlpriv, 0xc80, 0x38008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xc84, 0x18008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0xc80, 0x38008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xc84, 0x18008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 					rtl_set_bbreg(rtlpriv, 0xce8, 0x00003fff, Rx_dt[cal] & 0x00003fff);
 					break;
 				default:
@@ -475,16 +475,16 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				if (k == 2) {
 					rtl_set_bbreg(rtlpriv, 0xce8, BIT(30), 0x1);  /* RX VDF Enable */
 				}
-				usb_write32(rtlpriv, 0xcb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+				rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 
 				cal_retry = 0;
 				while (1) {
 					/* one shot */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10); /* Delay 10ms */
-					usb_write32(rtlpriv, 0xcb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 
 					while (1) {
@@ -501,9 +501,9 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						/* ============RXIQK Check============== */
 						RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(11));
 						if (RX_fail == 0) {
-							usb_write32(rtlpriv, 0xcb8, 0x06000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x06000000);
 							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xcb8, 0x08000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
 							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 							RX0IQKOK = TRUE;
 							break;
@@ -541,15 +541,15 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
-			usb_write32(rtlpriv, 0x90c, 0x00008000);
-			/* usb_write32(rtlpriv, 0x984, 0x0046a911); */
-			usb_write32(rtlpriv, 0x984, 0x0046a891);
+			rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+			/* rtl_write_dword(rtlpriv, 0x984, 0x0046a911); */
+			rtl_write_dword(rtlpriv, 0x984, 0x0046a891);
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); 	/* [31] = 1 --> Page C1 */
-			usb_write32(rtlpriv, 0xc80, 0x38008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-			usb_write32(rtlpriv, 0xc84, 0x18008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
-			usb_write32(rtlpriv, 0xc88, 0x02140119);
-			usb_write32(rtlpriv, 0xc8c, 0x28160d40);
+			rtl_write_dword(rtlpriv, 0xc80, 0x38008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+			rtl_write_dword(rtlpriv, 0xc84, 0x18008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+			rtl_write_dword(rtlpriv, 0xc88, 0x02140119);
+			rtl_write_dword(rtlpriv, 0xc8c, 0x28160d40);
 
 			for (cal = 0; cal < cal_num; cal++) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
@@ -559,12 +559,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				cal_retry = 0;
 				while (1) {
 					/*  one shot */
-					usb_write32(rtlpriv, 0xcb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10);			/* Delay 10ms */
-					usb_write32(rtlpriv, 0xcb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
 						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
@@ -580,22 +580,22 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					/* ============RXIQK Check============== */
 					RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(11));
 					if (RX_fail == 0) {
-						usb_write32(rtlpriv, 0xcb8, 0x06000000);
+						rtl_write_dword(rtlpriv, 0xcb8, 0x06000000);
 						RX_X0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
-						usb_write32(rtlpriv, 0xcb8, 0x08000000);
+						rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
 						RX_Y0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
 						RX0IQKOK = TRUE;
 						/*
-						usb_write32(rtlpriv, 0xcb8, 0x05000000);
+						rtl_write_dword(rtlpriv, 0xcb8, 0x05000000);
 						reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
-						usb_write32(rtlpriv, 0xcb8, 0x06000000);
+						rtl_write_dword(rtlpriv, 0xcb8, 0x06000000);
 						reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
 						DbgPrint("reg1 = %d, reg2 = %d", reg1, reg2);
 						Image_Power = (reg2<<32)+reg1;
 						DbgPrint("Before PW = %d\n", Image_Power);
-						usb_write32(rtlpriv, 0xcb8, 0x07000000);
+						rtl_write_dword(rtlpriv, 0xcb8, 0x07000000);
 						reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
-						usb_write32(rtlpriv, 0xcb8, 0x08000000);
+						rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
 						reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
 						Image_Power = (reg2<<32)+reg1;
 						DbgPrint("After PW = %d\n", Image_Power);
@@ -634,38 +634,38 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
 		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
 		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
-		usb_write32(rtlpriv, 0x90c, 0x00008000);
-		usb_write32(rtlpriv, 0xb00, 0x03000100);
+		rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+		rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xe94, BIT(0), 0x1);
-		usb_write32(rtlpriv, 0x978, 0x29002000);		/* TX (X,Y) */
-		usb_write32(rtlpriv, 0x97c, 0xa9002000);		/* RX (X,Y) */
-		usb_write32(rtlpriv, 0x984, 0x00462910);		/* [0]:AGC_en, [15]:idac_K_Mask */
+		rtl_write_dword(rtlpriv, 0x978, 0x29002000);		/* TX (X,Y) */
+		rtl_write_dword(rtlpriv, 0x97c, 0xa9002000);		/* RX (X,Y) */
+		rtl_write_dword(rtlpriv, 0x984, 0x00462910);		/* [0]:AGC_en, [15]:idac_K_Mask */
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
 
 		if (rtlhal->external_pa_5g)
-			usb_write32(rtlpriv, 0xe88, 0x821403f7);
+			rtl_write_dword(rtlpriv, 0xe88, 0x821403f7);
 		else
-			usb_write32(rtlpriv, 0xe88, 0x821403f1);
+			rtl_write_dword(rtlpriv, 0xe88, 0x821403f1);
 
 		if (*pDM_Odm->pBandType)
-			usb_write32(rtlpriv, 0xe8c, 0x68163e96);
+			rtl_write_dword(rtlpriv, 0xe8c, 0x68163e96);
 		else
-			usb_write32(rtlpriv, 0xe8c, 0x28163e96);
+			rtl_write_dword(rtlpriv, 0xe8c, 0x28163e96);
 
 		if (VDF_enable == 1) {
 			for (k = 0; k <= 2; k++) {
 				switch (k) {
 				case 0:
-					usb_write32(rtlpriv, 0xe80, 0x18008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xe84, 0x38008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
-					usb_write32(rtlpriv, 0x984, 0x00462910);
+					rtl_write_dword(rtlpriv, 0xe80, 0x18008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xe84, 0x38008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0x984, 0x00462910);
 					rtl_set_bbreg(rtlpriv, 0xee8, BIT(31), 0x0);
 					break;
 				case 1:
 					rtl_set_bbreg(rtlpriv, 0xe80, BIT(28), 0x0);
 					rtl_set_bbreg(rtlpriv, 0xe84, BIT(28), 0x0);
-					usb_write32(rtlpriv, 0x984, 0x0046a910);
+					rtl_write_dword(rtlpriv, 0x984, 0x0046a910);
 					rtl_set_bbreg(rtlpriv, 0xee8, BIT(31), 0x0);
 					break;
 				case 2:
@@ -675,8 +675,8 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Tx_dt = %d\n", Tx_dt[cal]));
 					Tx_dt[cal] = ((16*Tx_dt[cal])*10000/15708);
 					Tx_dt[cal] = (Tx_dt[cal] >> 1) + (Tx_dt[cal] & BIT(0));
-					usb_write32(rtlpriv, 0xe80, 0x18008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xe84, 0x38008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0xe80, 0x18008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xe84, 0x38008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 					rtl_set_bbreg(rtlpriv, 0xee8, BIT(31), 0x1);
 					rtl_set_bbreg(rtlpriv, 0xee8, 0x3fff0000, Tx_dt[cal] & 0x00003fff);
 					break;
@@ -685,15 +685,15 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				}
 
 
-				usb_write32(rtlpriv, 0xeb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+				rtl_write_dword(rtlpriv, 0xeb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 				cal_retry = 0;
 				while (1) {
 					/*  one shot */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10); /* Delay 10ms */
-					usb_write32(rtlpriv, 0xeb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
 						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
@@ -710,9 +710,9 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(12));
 
 						if (~TX_fail) {
-							usb_write32(rtlpriv, 0xeb8, 0x02000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x02000000);
 							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xeb8, 0x04000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x04000000);
 							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							TX1IQKOK = TRUE;
 							break;
@@ -736,21 +736,21 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			TX_X1[cal] = VDF_X[k-1] ;
 			TX_Y1[cal] = VDF_Y[k-1];
 		} else {
-			usb_write32(rtlpriv, 0xe80, 0x18008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-			usb_write32(rtlpriv, 0xe84, 0x38008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
-			usb_write32(rtlpriv, 0xee8, 0x00000000);
+			rtl_write_dword(rtlpriv, 0xe80, 0x18008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+			rtl_write_dword(rtlpriv, 0xe84, 0x38008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+			rtl_write_dword(rtlpriv, 0xee8, 0x00000000);
 
 			for (cal = 0; cal < cal_num; cal++) {
 				cal_retry = 0;
 
 				while (1) {
 					/* one shot */
-					usb_write32(rtlpriv, 0xeb8, 0x00100000);/*  cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0xeb8, 0x00100000);/*  cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10); /* Delay 25ms */
-					usb_write32(rtlpriv, 0xeb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
 						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
@@ -766,22 +766,22 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						/* ============TXIQK Check============== */
 						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(12));
 						if (~TX_fail) {
-							usb_write32(rtlpriv, 0xeb8, 0x02000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x02000000);
 							TX_X1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xeb8, 0x04000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x04000000);
 							TX_Y1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							TX1IQKOK = TRUE;
 							/*
 							int			reg1 = 0, reg2 = 0, Image_Power = 0;
-							usb_write32(rtlpriv, 0xeb8, 0x01000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x01000000);
 							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
-							usb_write32(rtlpriv, 0xeb8, 0x02000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x02000000);
 							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("Before PW = %d\n", Image_Power);
-							usb_write32(rtlpriv, 0xeb8, 0x03000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x03000000);
 							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
-							usb_write32(rtlpriv, 0xeb8, 0x04000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x04000000);
 							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("After PW = %d\n", Image_Power);
@@ -831,10 +831,10 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
-			usb_write32(rtlpriv, 0x984, 0x0046a911);
+			rtl_write_dword(rtlpriv, 0x984, 0x0046a911);
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
-			usb_write32(rtlpriv, 0xe88, 0x02140119);
-			usb_write32(rtlpriv, 0xe8c, 0x28161420);
+			rtl_write_dword(rtlpriv, 0xe88, 0x02140119);
+			rtl_write_dword(rtlpriv, 0xe8c, 0x28161420);
 
 			for (k = 0; k <= 2; k++) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
@@ -844,13 +844,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 				switch (k) {
 				case 0:
-					usb_write32(rtlpriv, 0xe80, 0x38008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xe84, 0x18008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0xe80, 0x38008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xe84, 0x18008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 					rtl_set_bbreg(rtlpriv, 0xee8, BIT(30), 0x0);
 					break;
 				case 1:
-					usb_write32(rtlpriv, 0xe80, 0x28008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xe84, 0x08008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0xe80, 0x28008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xe84, 0x08008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 					rtl_set_bbreg(rtlpriv, 0xee8, BIT(30), 0x0);
 					break;
 				case 2:
@@ -860,8 +860,8 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Rx_dt = %d\n", Rx_dt[cal]));
 					Rx_dt[cal] = ((16*Rx_dt[cal])*10000/13823);
 					Rx_dt[cal] = (Rx_dt[cal] >> 1) + (Rx_dt[cal] & BIT(0));
-					usb_write32(rtlpriv, 0xe80, 0x38008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-					usb_write32(rtlpriv, 0xe84, 0x18008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+					rtl_write_dword(rtlpriv, 0xe80, 0x38008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+					rtl_write_dword(rtlpriv, 0xe84, 0x18008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 					rtl_set_bbreg(rtlpriv, 0xee8, 0x00003fff, Rx_dt[cal] & 0x00003fff);
 					break;
 				default:
@@ -873,17 +873,17 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_set_bbreg(rtlpriv, 0xee8, BIT(30), 0x1);	/* RX VDF Enable */
 				}
 
-				usb_write32(rtlpriv, 0xeb8, 0x00100000);		/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+				rtl_write_dword(rtlpriv, 0xeb8, 0x00100000);		/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 
 				cal_retry = 0;
 
 				while (1) {
 					/* one shot */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10); /* Delay 10ms */
-					usb_write32(rtlpriv, 0xeb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
 						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
@@ -899,9 +899,9 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						/* ============RXIQK Check============== */
 						RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(11));
 						if (RX_fail == 0) {
-							usb_write32(rtlpriv, 0xeb8, 0x06000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x06000000);
 							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xeb8, 0x08000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x08000000);
 							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							RX1IQKOK = TRUE;
 							break;
@@ -941,15 +941,15 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
-			usb_write32(rtlpriv, 0x90c, 0x00008000);
-			/* usb_write32(rtlpriv, 0x984, 0x0046a911); */
-			usb_write32(rtlpriv, 0x984, 0x0046a891);
+			rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+			/* rtl_write_dword(rtlpriv, 0x984, 0x0046a911); */
+			rtl_write_dword(rtlpriv, 0x984, 0x0046a891);
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);	/* [31] = 1 --> Page C1 */
-			usb_write32(rtlpriv, 0xe80, 0x38008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-			usb_write32(rtlpriv, 0xe84, 0x18008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
-			usb_write32(rtlpriv, 0xe88, 0x02140119);
-			usb_write32(rtlpriv, 0xe8c, 0x28161180);
+			rtl_write_dword(rtlpriv, 0xe80, 0x38008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+			rtl_write_dword(rtlpriv, 0xe84, 0x18008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+			rtl_write_dword(rtlpriv, 0xe88, 0x02140119);
+			rtl_write_dword(rtlpriv, 0xe8c, 0x28161180);
 
 			for (cal = 0; cal < cal_num; cal++) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
@@ -960,12 +960,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 				while (1) {
 					/* one shot */
-					usb_write32(rtlpriv, 0xeb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0xeb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10);	/*Delay 10ms */
-					usb_write32(rtlpriv, 0xeb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 
 					while (1) {
@@ -982,22 +982,22 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						/* ============RXIQK Check============== */
 						RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(11));
 						if (RX_fail == 0) {
-							usb_write32(rtlpriv, 0xeb8, 0x06000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x06000000);
 							RX_X1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xeb8, 0x08000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x08000000);
 							RX_Y1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
 							RX1IQKOK = TRUE;
 							/*
-							usb_write32(rtlpriv, 0xeb8, 0x05000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x05000000);
 							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
-							usb_write32(rtlpriv, 0xeb8, 0x06000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x06000000);
 							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
 							DbgPrint("reg1 = %d, reg2 = %d", reg1, reg2);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("Before PW = %d\n", Image_Power);
-							usb_write32(rtlpriv, 0xeb8, 0x07000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x07000000);
 							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
-							usb_write32(rtlpriv, 0xeb8, 0x08000000);
+							rtl_write_dword(rtlpriv, 0xeb8, 0x08000000);
 							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("After PW = %d\n", Image_Power);
@@ -1255,7 +1255,7 @@ static void _rtl8812au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* save MACBB default value */
 	for (i = 0; i < mac_bb_num; i++) {
-		macbb_backup[i] = usb_read32(rtlpriv, backup_macbb_reg[i]);
+		macbb_backup[i] = rtl_read_dword(rtlpriv, backup_macbb_reg[i]);
 	}
 
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
@@ -1270,7 +1270,7 @@ static void _rtl8821au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* save MACBB default value */
 	for (i = 0; i < mac_bb_num; i++) {
-		macbb_backup[i] = usb_read32(rtlpriv, backup_macbb_reg[i]);
+		macbb_backup[i] = rtl_read_dword(rtlpriv, backup_macbb_reg[i]);
 	}
 
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
@@ -1314,7 +1314,7 @@ static void _rtl8812au_iqk_backup_afe(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save AFE Parameters */
 	for (i = 0; i < AFE_NUM; i++) {
-		AFE_backup[i] = usb_read32(rtlpriv, Backup_AFE_REG[i]);
+		AFE_backup[i] = rtl_read_dword(rtlpriv, Backup_AFE_REG[i]);
 	}
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n")); */
 }
@@ -1327,7 +1327,7 @@ static void _rtl8821au_iqk_backup_afe(struct rtl_priv *rtlpriv, u32 *afe_backup,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save AFE Parameters */
 	for (i = 0; i < afe_num; i++) {
-		afe_backup[i] = usb_read32(rtlpriv, backup_afe_REG[i]);
+		afe_backup[i] = rtl_read_dword(rtlpriv, backup_afe_REG[i]);
 	}
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n")); */
 }
@@ -1341,7 +1341,7 @@ static void _rtl8812au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
 	/* Reload MacBB Parameters */
 	for (i = 0; i < MACBB_NUM; i++) {
-		usb_write32(rtlpriv, Backup_MACBB_REG[i], MACBB_backup[i]);
+		rtl_write_dword(rtlpriv, Backup_MACBB_REG[i], MACBB_backup[i]);
 	}
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
 }
@@ -1356,7 +1356,7 @@ static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);     /* [31] = 0 --> Page C */
 	/* Reload MacBB Parameters */
 	for (i = 0; i < macbb_num; i++) {
-		usb_write32(rtlpriv, backup_macbb_reg[i], macbb_backup[i]);
+		rtl_write_dword(rtlpriv, backup_macbb_reg[i], macbb_backup[i]);
 	}
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
 }
@@ -1414,19 +1414,19 @@ static void _rtl8812au_iqk_restore_afe(struct rtl_priv *rtlpriv, uint32_t *AFE_b
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Reload AFE Parameters */
 	for (i = 0; i < AFE_NUM; i++) {
-		usb_write32(rtlpriv, Backup_AFE_REG[i], AFE_backup[i]);
+		rtl_write_dword(rtlpriv, Backup_AFE_REG[i], AFE_backup[i]);
 	}
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /*  [31] = 1 --> Page C1 */
-	usb_write32(rtlpriv, 0xc80, 0x0);
-	usb_write32(rtlpriv, 0xc84, 0x0);
-	usb_write32(rtlpriv, 0xc88, 0x0);
-	usb_write32(rtlpriv, 0xc8c, 0x3c000000);
-	usb_write32(rtlpriv, 0xcb8, 0x0);
-	usb_write32(rtlpriv, 0xe80, 0x0);
-	usb_write32(rtlpriv, 0xe84, 0x0);
-	usb_write32(rtlpriv, 0xe88, 0x0);
-	usb_write32(rtlpriv, 0xe8c, 0x3c000000);
-	usb_write32(rtlpriv, 0xeb8, 0x0);
+	rtl_write_dword(rtlpriv, 0xc80, 0x0);
+	rtl_write_dword(rtlpriv, 0xc84, 0x0);
+	rtl_write_dword(rtlpriv, 0xc88, 0x0);
+	rtl_write_dword(rtlpriv, 0xc8c, 0x3c000000);
+	rtl_write_dword(rtlpriv, 0xcb8, 0x0);
+	rtl_write_dword(rtlpriv, 0xe80, 0x0);
+	rtl_write_dword(rtlpriv, 0xe84, 0x0);
+	rtl_write_dword(rtlpriv, 0xe88, 0x0);
+	rtl_write_dword(rtlpriv, 0xe8c, 0x3c000000);
+	rtl_write_dword(rtlpriv, 0xeb8, 0x0);
 	/* cODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
 }
 
@@ -1438,14 +1438,14 @@ static void _rtl8821au_iqk_restore_afe(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Reload AFE Parameters */
 	for (i = 0; i < afe_num; i++) {
-		usb_write32(rtlpriv, backup_afe_reg[i], afe_backup[i]);
+		rtl_write_dword(rtlpriv, backup_afe_reg[i], afe_backup[i]);
 	}
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
-	usb_write32(rtlpriv, 0xc80, 0x0);
-	usb_write32(rtlpriv, 0xc84, 0x0);
-	usb_write32(rtlpriv, 0xc88, 0x0);
-	usb_write32(rtlpriv, 0xc8c, 0x3c000000);
-	usb_write32(rtlpriv, 0xcb8, 0x0);
+	rtl_write_dword(rtlpriv, 0xc80, 0x0);
+	rtl_write_dword(rtlpriv, 0xc84, 0x0);
+	rtl_write_dword(rtlpriv, 0xc88, 0x0);
+	rtl_write_dword(rtlpriv, 0xc8c, 0x3c000000);
+	rtl_write_dword(rtlpriv, 0xcb8, 0x0);
 	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
 }
 
@@ -1454,10 +1454,10 @@ static void _rtl8812au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 {
 	/* ========MAC register setting======== */
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */
-	usb_write8(rtlpriv, 0x522, 0x3f);
+	rtl_write_byte(rtlpriv, 0x522, 0x3f);
 	rtl_set_bbreg(rtlpriv, 0x550, BIT(11)|BIT(3), 0x0);
 	rtl_set_bbreg(rtlpriv, 0x808, BIT(28), 0x0);	/* CCK Off */
-	usb_write8(rtlpriv, 0x808, 0x00);		/* RX ante off */
+	rtl_write_byte(rtlpriv, 0x808, 0x00);		/* RX ante off */
 	rtl_set_bbreg(rtlpriv, 0x838, 0xf, 0xc);		/* CCA off */
 }
 
@@ -1465,11 +1465,11 @@ static void _rtl8821au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 {
 	/* ========MAC register setting======== */
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-	usb_write8(rtlpriv, 0x522, 0x3f);
+	rtl_write_byte(rtlpriv, 0x522, 0x3f);
 	rtl_set_bbreg(rtlpriv, 0x550, BIT(3), 0x0);
 	rtl_set_bbreg(rtlpriv, 0x551, BIT(3), 0x0);
 	rtl_set_bbreg(rtlpriv, 0x808, BIT(28), 0x0);	/* CCK Off */
-	usb_write8(rtlpriv, 0x808, 0x00);		/* RX ante off */
+	rtl_write_byte(rtlpriv, 0x808, 0x00);		/* RX ante off */
 	rtl_set_bbreg(rtlpriv, 0x838, 0xf, 0xc);		/* CCA off */
 }
 
@@ -1567,17 +1567,17 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			/* ========Path-A AFE all on======== */
 			/* Port 0 DAC/ADC on */
-			usb_write32(rtlpriv, 0xc60, 0x77777777);
-			usb_write32(rtlpriv, 0xc64, 0x77777777);
+			rtl_write_dword(rtlpriv, 0xc60, 0x77777777);
+			rtl_write_dword(rtlpriv, 0xc64, 0x77777777);
 
-			usb_write32(rtlpriv, 0xc68, 0x19791979);
-			usb_write32(rtlpriv, 0xc6c, 0x19791979);
-			usb_write32(rtlpriv, 0xc70, 0x19791979);
-			usb_write32(rtlpriv, 0xc74, 0x19791979);
-			usb_write32(rtlpriv, 0xc78, 0x19791979);
-			usb_write32(rtlpriv, 0xc7c, 0x19791979);
-			usb_write32(rtlpriv, 0xc80, 0x19791979);
-			usb_write32(rtlpriv, 0xc84, 0x19791979);
+			rtl_write_dword(rtlpriv, 0xc68, 0x19791979);
+			rtl_write_dword(rtlpriv, 0xc6c, 0x19791979);
+			rtl_write_dword(rtlpriv, 0xc70, 0x19791979);
+			rtl_write_dword(rtlpriv, 0xc74, 0x19791979);
+			rtl_write_dword(rtlpriv, 0xc78, 0x19791979);
+			rtl_write_dword(rtlpriv, 0xc7c, 0x19791979);
+			rtl_write_dword(rtlpriv, 0xc80, 0x19791979);
+			rtl_write_dword(rtlpriv, 0xc84, 0x19791979);
 
 			rtl_set_bbreg(rtlpriv, 0xc00, 0xf, 0x4);	/* 	hardware 3-wire off */
 
@@ -1595,33 +1595,33 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
 			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 			rtl_set_bbreg(rtlpriv, 0xcb8, 0xf, 0xd);
-			usb_write32(rtlpriv, 0x90c, 0x00008000);
-			usb_write32(rtlpriv, 0xb00, 0x03000100);
+			rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+			rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 			rtl_set_bbreg(rtlpriv, 0xc94, BIT(0), 0x1);
-			usb_write32(rtlpriv, 0x978, 0x29002000);	/* TX (X,Y) */
-			usb_write32(rtlpriv, 0x97c, 0xa9002000);	/* RX (X,Y) */
-			usb_write32(rtlpriv, 0x984, 0x00462910);	/* [0]:AGC_en, [15]:idac_K_Mask */
+			rtl_write_dword(rtlpriv, 0x978, 0x29002000);	/* TX (X,Y) */
+			rtl_write_dword(rtlpriv, 0x97c, 0xa9002000);	/* RX (X,Y) */
+			rtl_write_dword(rtlpriv, 0x984, 0x00462910);	/* [0]:AGC_en, [15]:idac_K_Mask */
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); 	/* [31] = 1 --> Page C1 */
 
 			if (rtlhal->external_pa_2g)
-				usb_write32(rtlpriv, 0xc88, 0x821403f7);
+				rtl_write_dword(rtlpriv, 0xc88, 0x821403f7);
 			else
-				usb_write32(rtlpriv, 0xc88, 0x821403f4);
+				rtl_write_dword(rtlpriv, 0xc88, 0x821403f4);
 
 			if (*pDM_Odm->pBandType)
-				usb_write32(rtlpriv, 0xc8c, 0x68163e96);
+				rtl_write_dword(rtlpriv, 0xc8c, 0x68163e96);
 			else
-				usb_write32(rtlpriv, 0xc8c, 0x28163e96);
+				rtl_write_dword(rtlpriv, 0xc8c, 0x28163e96);
 
-			usb_write32(rtlpriv, 0xc80, 0x18008c10);/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-			usb_write32(rtlpriv, 0xc84, 0x38008c10);/* RX_Tone_idx[9:0], RxK_Mask[29] */
-			usb_write32(rtlpriv, 0xcb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
-			usb_write32(rtlpriv, 0x980, 0xfa000000);
-			usb_write32(rtlpriv, 0x980, 0xf8000000);
+			rtl_write_dword(rtlpriv, 0xc80, 0x18008c10);/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+			rtl_write_dword(rtlpriv, 0xc84, 0x38008c10);/* RX_Tone_idx[9:0], RxK_Mask[29] */
+			rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+			rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+			rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 			mdelay(10); /* Delay 10ms */
-			usb_write32(rtlpriv, 0xcb8, 0x00000000);
+			rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			rtw_hal_write_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
@@ -1647,32 +1647,32 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 			rtl_set_bbreg(rtlpriv, 0xcb8, 0xf, 0xd);
-			usb_write32(rtlpriv, 0x90c, 0x00008000);
-			usb_write32(rtlpriv, 0xb00, 0x03000100);
+			rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+			rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 			rtl_set_bbreg(rtlpriv, 0xc94, BIT(0), 0x1);
-			usb_write32(rtlpriv, 0x978, 0x29002000);/* TX (X,Y) */
-			usb_write32(rtlpriv, 0x97c, 0xa9002000);/* RX (X,Y) */
-			usb_write32(rtlpriv, 0x984, 0x0046a910);/* [0]:AGC_en, [15]:idac_K_Mask */
+			rtl_write_dword(rtlpriv, 0x978, 0x29002000);/* TX (X,Y) */
+			rtl_write_dword(rtlpriv, 0x97c, 0xa9002000);/* RX (X,Y) */
+			rtl_write_dword(rtlpriv, 0x984, 0x0046a910);/* [0]:AGC_en, [15]:idac_K_Mask */
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 
 			if (rtlhal->external_pa_2g)
-				usb_write32(rtlpriv, 0xc88, 0x821403f7);
+				rtl_write_dword(rtlpriv, 0xc88, 0x821403f7);
 			else
-				usb_write32(rtlpriv, 0xc88, 0x821403f1);
+				rtl_write_dword(rtlpriv, 0xc88, 0x821403f1);
 
 			if (*pDM_Odm->pBandType)
-				usb_write32(rtlpriv, 0xc8c, 0x40163e96);
+				rtl_write_dword(rtlpriv, 0xc8c, 0x40163e96);
 			else
-				usb_write32(rtlpriv, 0xc8c, 0x00163e96);
+				rtl_write_dword(rtlpriv, 0xc8c, 0x00163e96);
 
 			if (VDF_enable == 1) {
 				DbgPrint("VDF_enable\n");
 				for (k = 0; k <= 2; k++) {
 					switch (k) {
 					case 0:
-						usb_write32(rtlpriv, 0xc80, 0x18008c38);/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-						usb_write32(rtlpriv, 0xc84, 0x38008c38);/* RX_Tone_idx[9:0], RxK_Mask[29] */
+						rtl_write_dword(rtlpriv, 0xc80, 0x18008c38);/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+						rtl_write_dword(rtlpriv, 0xc84, 0x38008c38);/* RX_Tone_idx[9:0], RxK_Mask[29] */
 						rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x0);
 						break;
 					case 1:
@@ -1686,23 +1686,23 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						Tx_dt[cal] = (VDF_Y[1]>>20)-(VDF_Y[0]>>20);
 						Tx_dt[cal] = ((16*Tx_dt[cal])*10000/15708);
 						Tx_dt[cal] = (Tx_dt[cal] >> 1)+(Tx_dt[cal] & BIT(0));
-						usb_write32(rtlpriv, 0xc80, 0x18008c20);/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-						usb_write32(rtlpriv, 0xc84, 0x38008c20);/* RX_Tone_idx[9:0], RxK_Mask[29] */
+						rtl_write_dword(rtlpriv, 0xc80, 0x18008c20);/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+						rtl_write_dword(rtlpriv, 0xc84, 0x38008c20);/* RX_Tone_idx[9:0], RxK_Mask[29] */
 						rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x1);
 						rtl_set_bbreg(rtlpriv, 0xce8, 0x3fff0000, Tx_dt[cal] & 0x00003fff);
 						break;
 					default:
 						break;
 					}
-					usb_write32(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 					cal_retry = 0;
 					while (1) {
 						/* one shot */
-						usb_write32(rtlpriv, 0x980, 0xfa000000);
-						usb_write32(rtlpriv, 0x980, 0xf8000000);
+						rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+						rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 						mdelay(10); 	/* Delay 10ms */
-						usb_write32(rtlpriv, 0xcb8, 0x00000000);
+						rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 						delay_count = 0;
 						while (1) {
 							IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
@@ -1719,9 +1719,9 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 
 							if (~TX_fail) {
-								usb_write32(rtlpriv, 0xcb8, 0x02000000);
+								rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
 								VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-								usb_write32(rtlpriv, 0xcb8, 0x04000000);
+								rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 								VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								TX0IQKOK = TRUE;
 								break;
@@ -1749,17 +1749,17 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					TX_Y0[cal] = VDF_Y[k-1];
 				}
 			} else {
-				usb_write32(rtlpriv, 0xc80, 0x18008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-				usb_write32(rtlpriv, 0xc84, 0x38008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29]  */
-				usb_write32(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+				rtl_write_dword(rtlpriv, 0xc80, 0x18008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+				rtl_write_dword(rtlpriv, 0xc84, 0x38008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29]  */
+				rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 				cal_retry = 0;
 				while (1) {
 					/* one shot */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10); /*  Delay 10ms */
-					usb_write32(rtlpriv, 0xcb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
 						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
@@ -1775,9 +1775,9 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						/* ============TXIQK Check============== */
 						TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 						if (~TX_fail) {
-							usb_write32(rtlpriv, 0xcb8, 0x02000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
 							TX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xcb8, 0x04000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 							TX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							break;
@@ -1818,21 +1818,21 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 					rtl_set_bbreg(rtlpriv, 0xcb8, 0xf, 0xd);
-					usb_write32(rtlpriv, 0x978, 0x29002000);/* TX (X,Y) */
-					usb_write32(rtlpriv, 0x97c, 0xa9002000);/* RX (X,Y) */
-					usb_write32(rtlpriv, 0x984, 0x0046a910);/* [0]:AGC_en, [15]:idac_K_Mask */
-					usb_write32(rtlpriv, 0x90c, 0x00008000);
-					usb_write32(rtlpriv, 0xb00, 0x03000100);
+					rtl_write_dword(rtlpriv, 0x978, 0x29002000);/* TX (X,Y) */
+					rtl_write_dword(rtlpriv, 0x97c, 0xa9002000);/* RX (X,Y) */
+					rtl_write_dword(rtlpriv, 0x984, 0x0046a910);/* [0]:AGC_en, [15]:idac_K_Mask */
+					rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+					rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 					rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 					switch (k) {
 					case 0:
-						usb_write32(rtlpriv, 0xc80, 0x18008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-						usb_write32(rtlpriv, 0xc84, 0x38008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+						rtl_write_dword(rtlpriv, 0xc80, 0x18008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+						rtl_write_dword(rtlpriv, 0xc84, 0x38008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 						rtl_set_bbreg(rtlpriv, 0xce8, BIT(30), 0x0);
 						break;
 					case 1:
-						usb_write32(rtlpriv, 0xc80, 0x08008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-						usb_write32(rtlpriv, 0xc84, 0x28008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+						rtl_write_dword(rtlpriv, 0xc80, 0x08008c38);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+						rtl_write_dword(rtlpriv, 0xc84, 0x28008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 						rtl_set_bbreg(rtlpriv, 0xce8, BIT(30), 0x0);
 						break;
 					case 2:
@@ -1842,25 +1842,25 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Rx_dt = %d\n", Rx_dt[cal]));
 						Rx_dt[cal] = ((16*Rx_dt[cal])*10000/13823);
 						Rx_dt[cal] = (Rx_dt[cal] >> 1)+(Rx_dt[cal] & BIT(0));
-						usb_write32(rtlpriv, 0xc80, 0x18008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-						usb_write32(rtlpriv, 0xc84, 0x38008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+						rtl_write_dword(rtlpriv, 0xc80, 0x18008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+						rtl_write_dword(rtlpriv, 0xc84, 0x38008c20);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 						rtl_set_bbreg(rtlpriv, 0xce8, 0x00003fff, Rx_dt[cal] & 0x00003fff);
 						break;
 					default:
 						break;
 					}
 
-					usb_write32(rtlpriv, 0xc88, 0x821603e0);
-					usb_write32(rtlpriv, 0xc8c, 0x68163e96);
-					usb_write32(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+					rtl_write_dword(rtlpriv, 0xc88, 0x821603e0);
+					rtl_write_dword(rtlpriv, 0xc8c, 0x68163e96);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 					cal_retry = 0;
 					while (1) {
 						/* one shot */
-						usb_write32(rtlpriv, 0x980, 0xfa000000);
-						usb_write32(rtlpriv, 0x980, 0xf8000000);
+						rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+						rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 						mdelay(10); 	/* Delay 10ms */
-						usb_write32(rtlpriv, 0xcb8, 0x00000000);
+						rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 						delay_count = 0;
 						while (1) {
 							IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
@@ -1877,9 +1877,9 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 
 							if (~TX_fail) {
-								usb_write32(rtlpriv, 0xcb8, 0x02000000);
+								rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
 								TX_X0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-								usb_write32(rtlpriv, 0xcb8, 0x04000000);
+								rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 								TX_Y0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								TX0IQKOK = TRUE;
 								break;
@@ -1920,28 +1920,28 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 					rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
 					rtl_set_bbreg(rtlpriv, 0xcb8, 0xF, 0xe);
-					usb_write32(rtlpriv, 0x90c, 0x00008000);
-					usb_write32(rtlpriv, 0x984, 0x0046a911);
+					rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+					rtl_write_dword(rtlpriv, 0x984, 0x0046a911);
 
 					rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 					rtl_set_bbreg(rtlpriv, 0xc80, BIT(29), 0x1);
 					rtl_set_bbreg(rtlpriv, 0xc84, BIT(29), 0x0);
-					usb_write32(rtlpriv, 0xc88, 0x02140119);
-					usb_write32(rtlpriv, 0xc8c, 0x28161420);
+					rtl_write_dword(rtlpriv, 0xc88, 0x02140119);
+					rtl_write_dword(rtlpriv, 0xc8c, 0x28161420);
 
 					if (k == 2) {
 						rtl_set_bbreg(rtlpriv, 0xce8, BIT(30), 0x1);  /* RX VDF Enable */
 					}
-					usb_write32(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 
 					cal_retry = 0;
 					while (1) {
 						/* one shot */
-						usb_write32(rtlpriv, 0x980, 0xfa000000);
-						usb_write32(rtlpriv, 0x980, 0xf8000000);
+						rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+						rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 						mdelay(10); /* Delay 10ms */
-						usb_write32(rtlpriv, 0xcb8, 0x00000000);
+						rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 						delay_count = 0;
 						while (1) {
 							IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
@@ -1957,9 +1957,9 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							/* ============RXIQK Check============== */
 							RX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(11));
 							if (RX_fail == 0) {
-								usb_write32(rtlpriv, 0xcb8, 0x06000000);
+								rtl_write_dword(rtlpriv, 0xcb8, 0x06000000);
 								VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-								usb_write32(rtlpriv, 0xcb8, 0x08000000);
+								rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
 								VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								RX0IQKOK = TRUE;
 								break;
@@ -1997,24 +1997,24 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, temp_reg65);
 				rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 				rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
-				usb_write32(rtlpriv, 0x90c, 0x00008000);
-				usb_write32(rtlpriv, 0xb00, 0x03000100);
-				usb_write32(rtlpriv, 0x984, 0x0046a910);/* [0]:AGC_en, [15]:idac_K_Mask */
+				rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+				rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
+				rtl_write_dword(rtlpriv, 0x984, 0x0046a910);/* [0]:AGC_en, [15]:idac_K_Mask */
 
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);	/* [31] = 1 --> Page C1 */
-				usb_write32(rtlpriv, 0xc80, 0x18008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-				usb_write32(rtlpriv, 0xc84, 0x38008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
-				usb_write32(rtlpriv, 0xc88, 0x821603e0);
-				/* usb_write32(rtlpriv, 0xc8c, 0x68163e96); */
-				usb_write32(rtlpriv, 0xcb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+				rtl_write_dword(rtlpriv, 0xc80, 0x18008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+				rtl_write_dword(rtlpriv, 0xc84, 0x38008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+				rtl_write_dword(rtlpriv, 0xc88, 0x821603e0);
+				/* rtl_write_dword(rtlpriv, 0xc8c, 0x68163e96); */
+				rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 				cal_retry = 0;
 				while (1) {
 					/* one shot */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10); 	/* Delay 10ms */
-					usb_write32(rtlpriv, 0xcb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
 						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
@@ -2031,9 +2031,9 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 
 						if (~TX_fail) {
-							usb_write32(rtlpriv, 0xcb8, 0x02000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
 							TX_X0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xcb8, 0x04000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 							TX_Y0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							break;
@@ -2074,24 +2074,24 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 				rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
 				rtl_set_bbreg(rtlpriv, 0xcb8, 0xF, 0xe);
-				usb_write32(rtlpriv, 0x90c, 0x00008000);
-				usb_write32(rtlpriv, 0x984, 0x0046a911);
+				rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
+				rtl_write_dword(rtlpriv, 0x984, 0x0046a911);
 
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); 	/* [31] = 1 --> Page C1 */
-				usb_write32(rtlpriv, 0xc80, 0x38008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
-				usb_write32(rtlpriv, 0xc84, 0x18008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
-				usb_write32(rtlpriv, 0xc88, 0x02140119);
-				usb_write32(rtlpriv, 0xc8c, 0x28161440);
-				usb_write32(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
+				rtl_write_dword(rtlpriv, 0xc80, 0x38008c10);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
+				rtl_write_dword(rtlpriv, 0xc84, 0x18008c10);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
+				rtl_write_dword(rtlpriv, 0xc88, 0x02140119);
+				rtl_write_dword(rtlpriv, 0xc8c, 0x28161440);
+				rtl_write_dword(rtlpriv, 0xcb8, 0x00100000);	/* cb8[20] ±N SI/PI ¨Ï¥ÎÅv¤Áµ¹ iqk_dpk module */
 
 				cal_retry = 0;
 				while (1) {
 					/* one shot */
-					usb_write32(rtlpriv, 0x980, 0xfa000000);
-					usb_write32(rtlpriv, 0x980, 0xf8000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xfa000000);
+					rtl_write_dword(rtlpriv, 0x980, 0xf8000000);
 
 					mdelay(10); /* Delay 10ms */
-					usb_write32(rtlpriv, 0xcb8, 0x00000000);
+					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
 						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
@@ -2107,9 +2107,9 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						/* ============RXIQK Check============== */
 						RX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(11));
 						if (RX_fail == 0) {
-							usb_write32(rtlpriv, 0xcb8, 0x06000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x06000000);
 							RX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-							usb_write32(rtlpriv, 0xcb8, 0x08000000);
+							rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
 							RX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							RX0IQKOK = TRUE;
 							break;
@@ -3329,7 +3329,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDCD) {
-			usb_write8(pDM_Odm->rtlpriv, v1, (u8)v2);
+			rtl_write_byte(pDM_Odm->rtlpriv, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -3347,7 +3347,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						usb_write8(pDM_Odm->rtlpriv, v1, (u8)v2);
+						rtl_write_byte(pDM_Odm->rtlpriv, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
@@ -3390,7 +3390,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDC) {
-			usb_write8(pDM_Odm->rtlpriv, v1, (u8)v2);
+			rtl_write_byte(pDM_Odm->rtlpriv, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -3409,7 +3409,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						usb_write8(pDM_Odm->rtlpriv, v1, (u8)v2);
+						rtl_write_byte(pDM_Odm->rtlpriv, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
@@ -3733,18 +3733,18 @@ static void _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WID
 {
 	u16 reg_rf_mode_bw, tmp = 0;
 
-	reg_rf_mode_bw = usb_read16(rtlpriv, REG_WMAC_TRXPTCL_CTL);
+	reg_rf_mode_bw = rtl_read_word(rtlpriv, REG_WMAC_TRXPTCL_CTL);
 	switch (bw) {
 	case CHANNEL_WIDTH_20:
-		usb_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, reg_rf_mode_bw & 0xFE7F);
+		rtl_write_word(rtlpriv, REG_WMAC_TRXPTCL_CTL, reg_rf_mode_bw & 0xFE7F);
 		break;
 	case CHANNEL_WIDTH_40:
 		tmp = reg_rf_mode_bw | BIT(7);
-		usb_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFEFF);
+		rtl_write_word(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFEFF);
 		break;
 	case CHANNEL_WIDTH_80:
 		tmp = reg_rf_mode_bw | BIT(8);
-		usb_write16(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFF7F);
+		rtl_write_word(rtlpriv, REG_WMAC_TRXPTCL_CTL, tmp & 0xFF7F);
 		break;
 	default:
 		DBG_871X("phy_PostSetBWMode8812():	unknown Bandwidth: %#X\n", bw);
@@ -3843,7 +3843,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 
 	/* 3 Set Reg483 */
 	SubChnlNum = _rtl8821au_phy_get_secondary_chnl(rtlpriv);
-	usb_write8(rtlpriv, REG_DATA_SC_8812, SubChnlNum);
+	rtl_write_byte(rtlpriv, REG_DATA_SC_8812, SubChnlNum);
 
 	if (pHalData->rf_chip == RF_PSEUDO_11N) {
 		DBG_871X("phy_PostSetBwMode8812: return for PSEUDO \n");
@@ -3921,8 +3921,8 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 	rtl8812au_fixspur(rtlpriv, rtlpriv->phy.current_chan_bw, rtlpriv->phy.current_channel);
 
 	/*
-	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", usb_read8(rtlpriv, 0x483));
-	 * DBG_871X("phy_PostSetBwMode8812(): Reg668: %x\n", usb_read32(rtlpriv, 0x668));
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg483: %x\n", rtl_read_byte(rtlpriv, 0x483));
+	 * DBG_871X("phy_PostSetBwMode8812(): Reg668: %x\n", rtl_read_dword(rtlpriv, 0x668));
 	 * DBG_871X("phy_PostSetBwMode8812(): Reg8AC: %x\n", rtl_get_bbreg(rtlpriv, rRFMOD_Jaguar, 0xffffffff));
 	 */
 

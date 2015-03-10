@@ -109,13 +109,13 @@ int proc_set_write_reg(struct file *file, const char *buffer,
 		switch(len)
 		{
 			case 1:
-				usb_write8(rtlpriv, addr, (uint8_t)val);
+				rtl_write_byte(rtlpriv, addr, (uint8_t)val);
 				break;
 			case 2:
-				usb_write16(rtlpriv, addr, (u16)val);
+				rtl_write_word(rtlpriv, addr, (u16)val);
 				break;
 			case 4:
-				usb_write32(rtlpriv, addr, val);
+				rtl_write_dword(rtlpriv, addr, val);
 				break;
 			default:
 				DBG_871X("error write length=%d", len);
@@ -149,13 +149,13 @@ int proc_get_read_reg(char *page, char **start,
 	switch(proc_get_read_len)
 	{
 		case 1:
-			len += snprintf(page + len, count - len, "usb_read8(0x%x)=0x%x\n", proc_get_read_addr, usb_read8(rtlpriv, proc_get_read_addr));
+			len += snprintf(page + len, count - len, "rtl_read_byte(0x%x)=0x%x\n", proc_get_read_addr, rtl_read_byte(rtlpriv, proc_get_read_addr));
 			break;
 		case 2:
-			len += snprintf(page + len, count - len, "usb_read16(0x%x)=0x%x\n", proc_get_read_addr, usb_read16(rtlpriv, proc_get_read_addr));
+			len += snprintf(page + len, count - len, "rtl_read_word(0x%x)=0x%x\n", proc_get_read_addr, rtl_read_word(rtlpriv, proc_get_read_addr));
 			break;
 		case 4:
-			len += snprintf(page + len, count - len, "usb_read32(0x%x)=0x%x\n", proc_get_read_addr, usb_read32(rtlpriv, proc_get_read_addr));
+			len += snprintf(page + len, count - len, "rtl_read_dword(0x%x)=0x%x\n", proc_get_read_addr, rtl_read_dword(rtlpriv, proc_get_read_addr));
 			break;
 		default:
 			len += snprintf(page + len, count - len, "error read length=%d\n", proc_get_read_len);
@@ -414,7 +414,7 @@ int proc_get_mac_reg_dump1(char *page, char **start,
 	for(i=0x0;i<0x300;i+=4)
 	{
 		if(j%4==1)	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
+		len += snprintf(page + len, count - len," 0x%08x ",rtl_read_dword(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 
@@ -437,7 +437,7 @@ int proc_get_mac_reg_dump2(char *page, char **start,
 	for(i=0x300;i<0x600;i+=4)
 	{
 		if(j%4==1)	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
+		len += snprintf(page + len, count - len," 0x%08x ",rtl_read_dword(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 
@@ -460,7 +460,7 @@ int proc_get_mac_reg_dump3(char *page, char **start,
 	for(i=0x600;i<0x800;i+=4)
 	{
 		if(j%4==1)	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
+		len += snprintf(page + len, count - len," 0x%08x ",rtl_read_dword(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 
@@ -482,7 +482,7 @@ int proc_get_bb_reg_dump1(char *page, char **start,
 	for(i=0x800;i<0xB00;i+=4)
 	{
 		if(j%4==1) 	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
+		len += snprintf(page + len, count - len," 0x%08x ",rtl_read_dword(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 	*eof = 1;
@@ -502,7 +502,7 @@ int proc_get_bb_reg_dump2(char *page, char **start,
 	for(i=0xB00;i<0xE00;i+=4)
 	{
 		if(j%4==1) 	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
+		len += snprintf(page + len, count - len," 0x%08x ",rtl_read_dword(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 	*eof = 1;
@@ -522,7 +522,7 @@ int proc_get_bb_reg_dump3(char *page, char **start,
 	for(i=0xE00;i<0x1000;i+=4)
 	{
 		if(j%4==1) 	len += snprintf(page + len, count - len,"0x%02x",i);
-		len += snprintf(page + len, count - len," 0x%08x ",usb_read32(rtlpriv,i));
+		len += snprintf(page + len, count - len," 0x%08x ",rtl_read_dword(rtlpriv,i));
 		if((j++)%4 == 0)	len += snprintf(page + len, count - len,"\n");
 	}
 	*eof = 1;

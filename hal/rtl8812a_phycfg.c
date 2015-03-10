@@ -139,11 +139,11 @@ static void phy_RFSerialWrite(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	if ((!pHalData->bSupportUSB3) && (IS_TEST_CHIP(pHalData->VersionID))) {	/* USB 2.0 or older */
 		/* if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv) || IS_HARDWARE_TYPE_8821(rtlpriv) is) */
 		{
-			usb_write32(rtlpriv, 0x1EC, DataAndAddr);
+			rtl_write_dword(rtlpriv, 0x1EC, DataAndAddr);
 			if (eRFPath == RF90_PATH_A)
-				usb_write32(rtlpriv, 0x1E8, 0x4000F000|0xC90);
+				rtl_write_dword(rtlpriv, 0x1E8, 0x4000F000|0xC90);
 			else
-				usb_write32(rtlpriv, 0x1E8, 0x4000F000|0xE90);
+				rtl_write_dword(rtlpriv, 0x1E8, 0x4000F000|0xE90);
 		}
 	} else {
 		/* USB 3.0 */
@@ -313,7 +313,7 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 
     	/* tangw check start 20120412 */
 	/* . APLL_EN,,APLL_320_GATEB,APLL_320BIAS,  auto config by hw fsm after pfsm_go (0x4 bit 8) set */
-	TmpU1B = usb_read8(rtlpriv, REG_SYS_FUNC_EN);
+	TmpU1B = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN);
 
 	/* ULLI some PCIe code ?? */
 
@@ -322,13 +322,13 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 	else  if(IS_HARDWARE_TYPE_8812E(rtlhal) || IS_HARDWARE_TYPE_8821E(rtlhal))
 		TmpU1B |= FEN_PCIEA;
 
-	usb_write8(rtlpriv, REG_SYS_FUNC_EN, TmpU1B);
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, TmpU1B);
 
-	usb_write8(rtlpriv, REG_SYS_FUNC_EN, (TmpU1B|FEN_BB_GLB_RSTn|FEN_BBRSTB));	/* same with 8812 */
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, (TmpU1B|FEN_BB_GLB_RSTn|FEN_BBRSTB));	/* same with 8812 */
 	/* 6. 0x1f[7:0] = 0x07 PathA RF Power On */
-	usb_write8(rtlpriv, REG_RF_CTRL, 0x07);		/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
+	rtl_write_byte(rtlpriv, REG_RF_CTRL, 0x07);		/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
 	/* 7.  PathB RF Power On */
-	usb_write8(rtlpriv, REG_OPT_CTRL_8812+2, 0x7);	/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
+	rtl_write_byte(rtlpriv, REG_OPT_CTRL_8812+2, 0x7);	/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
 	/* tangw check end 20120412 */
 
 	/*
@@ -347,7 +347,7 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 	}
 
 	if(IS_HARDWARE_TYPE_JAGUAR(rtlhal)) {
-		pHalData->Reg837 = usb_read8(rtlpriv, 0x837);
+		pHalData->Reg837 = rtl_read_byte(rtlpriv, 0x837);
 	}
 
 	return rtStatus;
@@ -2446,8 +2446,8 @@ static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
 		case 5:
 			/* if(BT_IsBtExist(rtlpriv)) */
 			{
-				/* usb_write16(rtlpriv, rA_RFE_Pinmux_Jaguar, 0x7777); */
-				usb_write8(rtlpriv, rA_RFE_Pinmux_Jaguar+2, 0x77);
+				/* rtl_write_word(rtlpriv, rA_RFE_Pinmux_Jaguar, 0x7777); */
+				rtl_write_byte(rtlpriv, rA_RFE_Pinmux_Jaguar+2, 0x77);
 			}
 			/* else */
 				/* rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777); */
@@ -2457,11 +2457,11 @@ static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
 			/* if(BT_IsBtExist(rtlpriv)) */
 			{
 				/* 
-				 * u1tmp = usb_read8(rtlpriv, rA_RFE_Inv_Jaguar+2);
-				 * usb_write8(rtlpriv, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
+				 * u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+2);
+				 * rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
 				 */
-				u1tmp = usb_read8(rtlpriv, rA_RFE_Inv_Jaguar+3);
-				usb_write8(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp &= ~BIT0));
+				u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+3);
+				rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp &= ~BIT0));
 			}
 			/* else */
 				/* rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x000); */
@@ -2501,11 +2501,11 @@ static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
 		case 5:
 			//if(BT_IsBtExist(rtlpriv))
 			{
-				//usb_write16(rtlpriv, rA_RFE_Pinmux_Jaguar, 0x7777);
+				//rtl_write_word(rtlpriv, rA_RFE_Pinmux_Jaguar, 0x7777);
 				if(rtlhal->external_pa_5g)
-					usb_write8(rtlpriv, rA_RFE_Pinmux_Jaguar+2, 0x33);
+					rtl_write_byte(rtlpriv, rA_RFE_Pinmux_Jaguar+2, 0x33);
 				else
-					usb_write8(rtlpriv, rA_RFE_Pinmux_Jaguar+2, 0x73);
+					rtl_write_byte(rtlpriv, rA_RFE_Pinmux_Jaguar+2, 0x73);
 			}
 #if 0
 			else
@@ -2525,11 +2525,11 @@ static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
 			/* if(BT_IsBtExist(rtlpriv)) */
 			{
 				/*
-				 * u1tmp = usb_read8(rtlpriv, rA_RFE_Inv_Jaguar+2);
-				 * usb_write8(rtlpriv, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
+				 * u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+2);
+				 * rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
 				 */
-				u1tmp = usb_read8(rtlpriv, rA_RFE_Inv_Jaguar+3);
-				usb_write8(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp |= BIT0));
+				u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+3);
+				rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp |= BIT0));
 			}
 			/* else */
 				/* rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x010); */
@@ -2620,7 +2620,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		}
 
 		/* CCK_CHECK_en */
-		usb_write8(rtlpriv, REG_CCK_CHECK_8812, 0x0);
+		rtl_write_byte(rtlpriv, REG_CCK_CHECK_8812, 0x0);
 	} else {		/* 5G band */
 		u16	count = 0, reg41A = 0;
 
@@ -2630,17 +2630,17 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		}
 
 		/* CCK_CHECK_en */
-		usb_write8(rtlpriv, REG_CCK_CHECK_8812, 0x80);
+		rtl_write_byte(rtlpriv, REG_CCK_CHECK_8812, 0x80);
 
 		count = 0;
-		reg41A = usb_read16(rtlpriv, REG_TXPKT_EMPTY);
+		reg41A = rtl_read_word(rtlpriv, REG_TXPKT_EMPTY);
 		/* DBG_871X("Reg41A value %d", reg41A); */
 		reg41A &= 0x30;
 		while((reg41A!= 0x30) && (count < 50)) {
 			udelay(50);
 			/* DBG_871X("Delay 50us \n"); */
 
-			reg41A = usb_read16(rtlpriv, REG_TXPKT_EMPTY);
+			reg41A = rtl_read_word(rtlpriv, REG_TXPKT_EMPTY);
 			reg41A &= 0x30;
 			count++;
 			/* DBG_871X("Reg41A value %d", reg41A); */
@@ -2751,7 +2751,7 @@ static BOOLEAN phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW)
 	BOOLEAN		ret_value = _TRUE;
 	uint8_t			Band = BAND_ON_5G, BandToSW;
 
-	u1Btmp = usb_read8(rtlpriv, REG_CCK_CHECK_8812);
+	u1Btmp = rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812);
 	if(u1Btmp & BIT7)
 		Band = BAND_ON_5G;
 	else

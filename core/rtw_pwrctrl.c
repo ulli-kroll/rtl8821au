@@ -89,7 +89,7 @@ int ips_leave(struct rtl_priv * rtlpriv)
 			}
 		}
 
-		DBG_871X("==> ips_leave.....LED(0x%08x)...\n",usb_read32(rtlpriv,0x4c));
+		DBG_871X("==> ips_leave.....LED(0x%08x)...\n",rtl_read_dword(rtlpriv,0x4c));
 		pwrpriv->bips_processing = _FALSE;
 
 		pwrpriv->bkeepfwalive = _FALSE;

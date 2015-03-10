@@ -34,7 +34,7 @@ static void _dbg_dump_macreg(struct rtl_priv *rtlpriv)
 
 	for (index = 0; index < 64; index++) {
 		offset = index*4;
-		val32 = usb_read32(rtlpriv, offset);
+		val32 = rtl_read_dword(rtlpriv, offset);
 		DBG_8192C("offset : 0x%02x ,val:0x%08x\n", offset, val32);
 	}
 }
@@ -143,101 +143,101 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
-	 * usb_write16(rtlpriv, REG_TRXDMA_CTRL_8195, 0xf5b0);
-	 * usb_write16(rtlpriv, REG_TRXDMA_CTRL_8812, 0xf5b4);
+	 * rtl_write_word(rtlpriv, REG_TRXDMA_CTRL_8195, 0xf5b0);
+	 * rtl_write_word(rtlpriv, REG_TRXDMA_CTRL_8812, 0xf5b4);
 	 */
-	usb_write8(rtlpriv, 0xf050, 0x01);		/* usb3 rx interval */
-	usb_write16(rtlpriv, REG_RXDMA_STATUS, 0x7400);	/* burset lenght=4, set 0x3400 for burset length=2 */
-	usb_write8(rtlpriv, 0x289, 0xf5);		/* for rxdma control */
-	/* usb_write8(rtlpriv, 0x3a, 0x46); */
+	rtl_write_byte(rtlpriv, 0xf050, 0x01);		/* usb3 rx interval */
+	rtl_write_word(rtlpriv, REG_RXDMA_STATUS, 0x7400);	/* burset lenght=4, set 0x3400 for burset length=2 */
+	rtl_write_byte(rtlpriv, 0x289, 0xf5);		/* for rxdma control */
+	/* rtl_write_byte(rtlpriv, 0x3a, 0x46); */
 
 	/*  0x456 = 0x70, sugguested by Zhilin */
-	usb_write8(rtlpriv, REG_AMPDU_MAX_TIME_8812, 0x70);
+	rtl_write_byte(rtlpriv, REG_AMPDU_MAX_TIME_8812, 0x70);
 
-	usb_write32(rtlpriv, 0x458, 0xffffffff);
-	usb_write8(rtlpriv, REG_USTIME_TSF, 0x50);
-	usb_write8(rtlpriv, REG_USTIME_EDCA, 0x50);
+	rtl_write_dword(rtlpriv, 0x458, 0xffffffff);
+	rtl_write_byte(rtlpriv, REG_USTIME_TSF, 0x50);
+	rtl_write_byte(rtlpriv, REG_USTIME_EDCA, 0x50);
 
 	if (IS_HARDWARE_TYPE_8821U(rtlhal))
 		speedvalue = BIT7;
 	else
-		speedvalue = usb_read8(rtlpriv, 0xff); /* check device operation speed: SS 0xff bit7 */
+		speedvalue = rtl_read_byte(rtlpriv, 0xff); /* check device operation speed: SS 0xff bit7 */
 
 	if (speedvalue & BIT7) {		/* USB2/1.1 Mode */
-		temp = usb_read8(rtlpriv, 0xfe17);
+		temp = rtl_read_byte(rtlpriv, 0xfe17);
 		if (((temp >> 4) & 0x03) == 0) {
 			pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;
-			provalue = usb_read8(rtlpriv, REG_RXDMA_PRO_8812);
-			usb_write8(rtlpriv, REG_RXDMA_PRO_8812, ((provalue|BIT(4))&(~BIT(5)))); /* set burst pkt len=512B */
-			usb_write16(rtlpriv, REG_RXDMA_PRO_8812, 0x1e);
+			provalue = rtl_read_byte(rtlpriv, REG_RXDMA_PRO_8812);
+			rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, ((provalue|BIT(4))&(~BIT(5)))); /* set burst pkt len=512B */
+			rtl_write_word(rtlpriv, REG_RXDMA_PRO_8812, 0x1e);
 		} else {
 			pHalData->UsbBulkOutSize = 64;
-			provalue = usb_read8(rtlpriv, REG_RXDMA_PRO_8812);
-			usb_write8(rtlpriv, REG_RXDMA_PRO_8812, ((provalue|BIT(5))&(~BIT(4)))); /* set burst pkt len=64B */
+			provalue = rtl_read_byte(rtlpriv, REG_RXDMA_PRO_8812);
+			rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, ((provalue|BIT(5))&(~BIT(4)))); /* set burst pkt len=64B */
 		}
 
-		usb_write16(rtlpriv, REG_RXDMA_AGG_PG_TH, 0x2005); /* dmc agg th 20K */
+		rtl_write_word(rtlpriv, REG_RXDMA_AGG_PG_TH, 0x2005); /* dmc agg th 20K */
 
 		/*
-		 * usb_write8(rtlpriv, 0x10c, 0xb4);
+		 * rtl_write_byte(rtlpriv, 0x10c, 0xb4);
 		 * hal_UphyUpdate8812AU(rtlpriv);
 		 */
 
 		pHalData->bSupportUSB3 = _FALSE;
 	} else {		/* USB3 Mode */
 		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;
-		provalue = usb_read8(rtlpriv, REG_RXDMA_PRO_8812);
-		usb_write8(rtlpriv, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
-		usb_write16(rtlpriv, REG_RXDMA_PRO_8812, 0x0e);
+		provalue = rtl_read_byte(rtlpriv, REG_RXDMA_PRO_8812);
+		rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
+		rtl_write_word(rtlpriv, REG_RXDMA_PRO_8812, 0x0e);
 		pHalData->bSupportUSB3 = _TRUE;
 
 		/*  set Reg 0xf008[3:4] to 2'00 to disable U1/U2 Mode to avoid 2.5G spur in USB3.0. added by page, 20120712 */
-		usb_write8(rtlpriv, 0xf008, usb_read8(rtlpriv, 0xf008)&0xE7);
+		rtl_write_byte(rtlpriv, 0xf008, rtl_read_byte(rtlpriv, 0xf008)&0xE7);
 	}
 
 #ifdef CONFIG_USB_TX_AGGREGATION
-	/* usb_write8(rtlpriv, REG_TDECTRL_8195, 0x30); */
+	/* rtl_write_byte(rtlpriv, REG_TDECTRL_8195, 0x30); */
 #else
-	usb_write8(rtlpriv, REG_TDECTRL, 0x10);
+	rtl_write_byte(rtlpriv, REG_TDECTRL, 0x10);
 #endif
 
-	temp = usb_read8(rtlpriv, REG_SYS_FUNC_EN);
-	usb_write8(rtlpriv, REG_SYS_FUNC_EN, temp&(~BIT(10))); 	/* reset 8051 */
+	temp = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN);
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, temp&(~BIT(10))); 	/* reset 8051 */
 
-	usb_write8(rtlpriv, REG_HT_SINGLE_AMPDU_8812, usb_read8(rtlpriv, REG_HT_SINGLE_AMPDU_8812)|BIT(7));	/* enable single pkt ampdu */
-	usb_write8(rtlpriv, REG_RX_PKT_LIMIT, 0x18);		/* for VHT packet length 11K */
+	rtl_write_byte(rtlpriv, REG_HT_SINGLE_AMPDU_8812, rtl_read_byte(rtlpriv, REG_HT_SINGLE_AMPDU_8812)|BIT(7));	/* enable single pkt ampdu */
+	rtl_write_byte(rtlpriv, REG_RX_PKT_LIMIT, 0x18);		/* for VHT packet length 11K */
 
-	usb_write8(rtlpriv, REG_PIFS, 0x00);
+	rtl_write_byte(rtlpriv, REG_PIFS, 0x00);
 
 	/* Suggention by SD1 Jong and Pisa, by Maddest 20130107. */
 	if (IS_HARDWARE_TYPE_8821U(rtlhal) && (rtlpriv->registrypriv.wifi_spec == _FALSE)) {
-		usb_write16(rtlpriv, REG_MAX_AGGR_NUM, 0x0a0a);
-		usb_write8(rtlpriv, REG_FWHW_TXQ_CTRL, 0x80);
-		usb_write8(rtlpriv, REG_AMPDU_MAX_TIME_8812, 0x5e);
-		usb_write32(rtlpriv, REG_FAST_EDCA_CTRL, 0x03087777);
+		rtl_write_word(rtlpriv, REG_MAX_AGGR_NUM, 0x0a0a);
+		rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL, 0x80);
+		rtl_write_byte(rtlpriv, REG_AMPDU_MAX_TIME_8812, 0x5e);
+		rtl_write_dword(rtlpriv, REG_FAST_EDCA_CTRL, 0x03087777);
 	} else {
-		usb_write8(rtlpriv, REG_MAX_AGGR_NUM, 0x1f);
-		usb_write8(rtlpriv, REG_FWHW_TXQ_CTRL, usb_read8(rtlpriv, REG_FWHW_TXQ_CTRL)&(~BIT(7)));
+		rtl_write_byte(rtlpriv, REG_MAX_AGGR_NUM, 0x1f);
+		rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL, rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL)&(~BIT(7)));
 	}
 
 	if (pHalData->AMPDUBurstMode)
-		usb_write8(rtlpriv, REG_AMPDU_BURST_MODE_8812, 0x5F);
+		rtl_write_byte(rtlpriv, REG_AMPDU_BURST_MODE_8812, 0x5F);
 
-	usb_write8(rtlpriv, 0x1c, usb_read8(rtlpriv, 0x1c) | BIT(5) | BIT(6));  /* to prevent mac is reseted by bus. 20111208, by Page */
+	rtl_write_byte(rtlpriv, 0x1c, rtl_read_byte(rtlpriv, 0x1c) | BIT(5) | BIT(6));  /* to prevent mac is reseted by bus. 20111208, by Page */
 
 	/* ARFB table 9 for 11ac 5G 2SS */
-	usb_write32(rtlpriv, REG_ARFR0, 0x00000010);
+	rtl_write_dword(rtlpriv, REG_ARFR0, 0x00000010);
 	if (IS_NORMAL_CHIP(pHalData->VersionID))
-		usb_write32(rtlpriv, REG_ARFR0+4, 0xfffff000);
+		rtl_write_dword(rtlpriv, REG_ARFR0+4, 0xfffff000);
 	else
-		usb_write32(rtlpriv, REG_ARFR0+4, 0x3e0ff000);
+		rtl_write_dword(rtlpriv, REG_ARFR0+4, 0x3e0ff000);
 
 	/* ARFB table 10 for 11ac 5G 1SS */
-	usb_write32(rtlpriv, REG_ARFR1, 0x00000010);
+	rtl_write_dword(rtlpriv, REG_ARFR1, 0x00000010);
 	if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv))
-		usb_write32(rtlpriv, REG_ARFR1_8812+4, 0x000ff000);
+		rtl_write_dword(rtlpriv, REG_ARFR1_8812+4, 0x000ff000);
 	else
-		usb_write32(rtlpriv, REG_ARFR1_8812+4, 0x003ff000);
+		rtl_write_dword(rtlpriv, REG_ARFR1_8812+4, 0x003ff000);
 
 }
 
@@ -269,22 +269,22 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 	 *  Enable MAC DMA/WMAC/SCHEDULE/SEC block
 	 * Set CR bit10 to enable 32k calibration. Suggested by SD1 Gimmy. Added by tynli. 2011.08.31.
 	 */
-	usb_write16(rtlpriv, REG_CR, 0x00); 	/* suggseted by zhouzhou, by page, 20111230 */
-	u2btmp = usb_read16(rtlpriv, REG_CR);
+	rtl_write_word(rtlpriv, REG_CR, 0x00); 	/* suggseted by zhouzhou, by page, 20111230 */
+	u2btmp = rtl_read_word(rtlpriv, REG_CR);
 	u2btmp |= (HCI_TXDMA_EN | HCI_RXDMA_EN | TXDMA_EN | RXDMA_EN
 				| PROTOCOL_EN | SCHEDULE_EN | ENSEC | CALTMR_EN);
-	usb_write16(rtlpriv, REG_CR, u2btmp);
+	rtl_write_word(rtlpriv, REG_CR, u2btmp);
 
 	/*
 	 * Need remove below furture, suggest by Jackie.
 	 * if 0xF0[24] =1 (LDO), need to set the 0x7C[6] to 1.
 	 */
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		u1btmp = usb_read8(rtlpriv, REG_SYS_CFG+3);
+		u1btmp = rtl_read_byte(rtlpriv, REG_SYS_CFG+3);
 		if (u1btmp & BIT0) { 	/* LDO mode. */
-			u1btmp = usb_read8(rtlpriv, 0x7c);
+			u1btmp = rtl_read_byte(rtlpriv, 0x7c);
 			/* ULLI unknown register */
-			usb_write8(rtlpriv, 0x7c, u1btmp | BIT6);
+			rtl_write_byte(rtlpriv, 0x7c, u1btmp | BIT6);
 		}
 	}
 
@@ -309,8 +309,8 @@ static VOID _InitInterrupt_8812AU(struct rtl_priv *rtlpriv)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/* HIMR */
-	usb_write32(rtlpriv, REG_HIMR0_8812, pHalData->IntrMask[0]&0xFFFFFFFF);
-	usb_write32(rtlpriv, REG_HIMR1_8812, pHalData->IntrMask[1]&0xFFFFFFFF);
+	rtl_write_dword(rtlpriv, REG_HIMR0_8812, pHalData->IntrMask[0]&0xFFFFFFFF);
+	rtl_write_dword(rtlpriv, REG_HIMR1_8812, pHalData->IntrMask[1]&0xFFFFFFFF);
 }
 
 static VOID _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
@@ -353,11 +353,11 @@ static VOID _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 	}
 
 	value8 = (u8)_NPQ(numNQ);
-	usb_write8(rtlpriv, REG_RQPN_NPQ, value8);
+	rtl_write_byte(rtlpriv, REG_RQPN_NPQ, value8);
 
 	/* TX DMA */
 	value32 = _HPQ(numHQ) | _LPQ(numLQ) | _PUBQ(numPubQ) | LD_RQPN;
-	usb_write32(rtlpriv, REG_RQPN, value32);
+	rtl_write_dword(rtlpriv, REG_RQPN, value32);
 }
 
 static VOID _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
@@ -399,11 +399,11 @@ static VOID _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 	}
 
 	value8 = (u8)_NPQ(numNQ);
-	usb_write8(rtlpriv, REG_RQPN_NPQ, value8);
+	rtl_write_byte(rtlpriv, REG_RQPN_NPQ, value8);
 
 	/* TX DMA */
 	value32 = _HPQ(numHQ) | _LPQ(numLQ) | _PUBQ(numPubQ) | LD_RQPN;
-	usb_write32(rtlpriv, REG_RQPN, value32);
+	rtl_write_dword(rtlpriv, REG_RQPN, value32);
 }
 
 static void _InitID_8812A(IN  struct rtl_priv *rtlpriv)
@@ -421,11 +421,11 @@ static VOID _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
 	else	/* for WMM */
 		txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8821;
 
-	usb_write8(rtlpriv, REG_BCNQ_BDNY, txpktbuf_bndy);
-	usb_write8(rtlpriv, REG_MGQ_BDNY, txpktbuf_bndy);
-	usb_write8(rtlpriv, REG_WMAC_LBK_BF_HD, txpktbuf_bndy);
-	usb_write8(rtlpriv, REG_TRXFF_BNDY, txpktbuf_bndy);
-	usb_write8(rtlpriv, REG_TDECTRL+1, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_BCNQ_BDNY, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_MGQ_BDNY, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_WMAC_LBK_BF_HD, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_TRXFF_BNDY, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_TDECTRL+1, txpktbuf_bndy);
 }
 
 static VOID _InitTxBufferBoundary_8812AUsb(struct rtl_priv *rtlpriv)
@@ -438,11 +438,11 @@ static VOID _InitTxBufferBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 	else	/* for WMM */
 		txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8812;
 
-	usb_write8(rtlpriv, REG_BCNQ_BDNY, txpktbuf_bndy);
-	usb_write8(rtlpriv, REG_MGQ_BDNY, txpktbuf_bndy);
-	usb_write8(rtlpriv, REG_WMAC_LBK_BF_HD, txpktbuf_bndy);
-	usb_write8(rtlpriv, REG_TRXFF_BNDY, txpktbuf_bndy);
-	usb_write8(rtlpriv, REG_TDECTRL+1, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_BCNQ_BDNY, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_MGQ_BDNY, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_WMAC_LBK_BF_HD, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_TRXFF_BNDY, txpktbuf_bndy);
+	rtl_write_byte(rtlpriv, REG_TDECTRL+1, txpktbuf_bndy);
 }
 
 static VOID _InitPageBoundary_8812AUsb(struct rtl_priv *rtlpriv)
@@ -466,9 +466,9 @@ static VOID _InitPageBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 	 */
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
-		usb_write16(rtlpriv, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8812-1);
+		rtl_write_word(rtlpriv, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8812-1);
 	else
-		usb_write16(rtlpriv, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8821-1);
+		rtl_write_word(rtlpriv, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8821-1);
 
 }
 
@@ -477,13 +477,13 @@ static VOID _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *rtlpriv,
 	u16 beQ, u16 bkQ, u16 viQ,
 	u16 voQ, u16 mgtQ, u16 hiQ)
 {
-	u16 value16 = (usb_read16(rtlpriv, REG_TRXDMA_CTRL) & 0x7);
+	u16 value16 = (rtl_read_word(rtlpriv, REG_TRXDMA_CTRL) & 0x7);
 
 	value16 |= _TXDMA_BEQ_MAP(beQ) 	| _TXDMA_BKQ_MAP(bkQ) |
 		   _TXDMA_VIQ_MAP(viQ) 	| _TXDMA_VOQ_MAP(voQ) |
 		   _TXDMA_MGQ_MAP(mgtQ) | _TXDMA_HIQ_MAP(hiQ);
 
-	usb_write16(rtlpriv, REG_TRXDMA_CTRL, value16);
+	rtl_write_word(rtlpriv, REG_TRXDMA_CTRL, value16);
 }
 
 static VOID _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
@@ -579,20 +579,20 @@ static VOID _InitQueuePriority_8812AUsb(struct rtl_priv *rtlpriv)
 
 static VOID _InitHardwareDropIncorrectBulkOut_8812A(struct rtl_priv *rtlpriv)
 {
-	uint32_t value32 = usb_read32(rtlpriv, REG_TXDMA_OFFSET_CHK);
+	uint32_t value32 = rtl_read_dword(rtlpriv, REG_TXDMA_OFFSET_CHK);
 	value32 |= DROP_DATA_EN;
-	usb_write32(rtlpriv, REG_TXDMA_OFFSET_CHK, value32);
+	rtl_write_dword(rtlpriv, REG_TXDMA_OFFSET_CHK, value32);
 }
 
 static VOID _InitNetworkType_8812A(struct rtl_priv *rtlpriv)
 {
 	uint32_t	value32;
 
-	value32 = usb_read32(rtlpriv, REG_CR);
+	value32 = rtl_read_dword(rtlpriv, REG_CR);
 	/*  TODO: use the other function to set network type */
 	value32 = (value32 & ~MASK_NETTYPE) | _NETTYPE(NT_LINK_AP);
 
-	usb_write32(rtlpriv, REG_CR, value32);
+	rtl_write_dword(rtlpriv, REG_CR, value32);
 }
 
 static VOID _InitTransferPageSize_8812AUsb(struct rtl_priv *rtlpriv)
@@ -600,12 +600,12 @@ static VOID _InitTransferPageSize_8812AUsb(struct rtl_priv *rtlpriv)
 	uint8_t	value8;
 	value8 = _PSTX(PBP_512);
 
-	usb_write8(rtlpriv, REG_PBP, value8);
+	rtl_write_byte(rtlpriv, REG_PBP, value8);
 }
 
 static VOID _InitDriverInfoSize_8812A(struct rtl_priv *rtlpriv, uint8_t	drvInfoSize)
 {
-	usb_write8(rtlpriv, REG_RX_DRVINFO_SZ, drvInfoSize);
+	rtl_write_byte(rtlpriv, REG_RX_DRVINFO_SZ, drvInfoSize);
 }
 
 static VOID _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
@@ -633,17 +633,17 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
 	/*
 	 *  some REG_RCR will be modified later by phy_ConfigMACWithHeaderFile()
 	 */
-	usb_write32(rtlpriv, REG_RCR, pHalData->ReceiveConfig);
+	rtl_write_dword(rtlpriv, REG_RCR, pHalData->ReceiveConfig);
 
 	/* Accept all multicast address */
-	usb_write32(rtlpriv, REG_MAR, 0xFFFFFFFF);
-	usb_write32(rtlpriv, REG_MAR + 4, 0xFFFFFFFF);
+	rtl_write_dword(rtlpriv, REG_MAR, 0xFFFFFFFF);
+	rtl_write_dword(rtlpriv, REG_MAR + 4, 0xFFFFFFFF);
 
 
 	/*
 	 *  Accept all data frames
 	 * value16 = 0xFFFF;
-	 * usb_write16(rtlpriv, REG_RXFLTMAP2, value16);
+	 * rtl_write_word(rtlpriv, REG_RXFLTMAP2, value16);
 	 */
 
 	/*
@@ -651,18 +651,18 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
 	 * Since ADF is removed from RCR, ps-poll will not be indicate to driver,
 	 * RxFilterMap should mask ps-poll to gurantee AP mode can rx ps-poll.
 	 * value16 = 0x400;
-	 * usb_write16(rtlpriv, REG_RXFLTMAP1, value16);
+	 * rtl_write_word(rtlpriv, REG_RXFLTMAP1, value16);
 	 */
 
 	/*
 	 *  Accept all management frames
 	 * value16 = 0xFFFF;
-	 * usb_write16(rtlpriv, REG_RXFLTMAP0, value16);
+	 * rtl_write_word(rtlpriv, REG_RXFLTMAP0, value16);
 	 */
 
 	/*
 	 * enable RX_SHIFT bits
-	 * usb_write8(rtlpriv, REG_TRXDMA_CTRL, usb_read8(rtlpriv, REG_TRXDMA_CTRL)|BIT(1));
+	 * rtl_write_byte(rtlpriv, REG_TRXDMA_CTRL, rtl_read_byte(rtlpriv, REG_TRXDMA_CTRL)|BIT(1));
 	 */
 
 }
@@ -673,7 +673,7 @@ static VOID _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *rtlpriv)
 	uint32_t	value32;
 
 	/* Response Rate Set */
-	value32 = usb_read32(rtlpriv, REG_RRSR);
+	value32 = rtl_read_dword(rtlpriv, REG_RRSR);
 	value32 &= ~RATE_BITMAP_ALL;
 
 	if (rtlpriv->registrypriv.wireless_mode & WIRELESS_11B)
@@ -682,44 +682,44 @@ static VOID _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *rtlpriv)
 		value32 |= RATE_RRSR_WITHOUT_CCK;
 
 	value32 |= RATE_RRSR_CCK_ONLY_1M;
-	usb_write32(rtlpriv, REG_RRSR, value32);
+	rtl_write_dword(rtlpriv, REG_RRSR, value32);
 
 	/*
 	 * CF-END Threshold
-	 * m_spIoBase->usb_write8(REG_CFEND_TH, 0x1);
+	 * m_spIoBase->rtl_write_byte(REG_CFEND_TH, 0x1);
 	 */
 
 	/* SIFS (used in NAV) */
 	value16 = _SPEC_SIFS_CCK(0x10) | _SPEC_SIFS_OFDM(0x10);
-	usb_write16(rtlpriv, REG_SPEC_SIFS, value16);
+	rtl_write_word(rtlpriv, REG_SPEC_SIFS, value16);
 
 	/* Retry Limit */
 	value16 = _LRL(0x30) | _SRL(0x30);
-	usb_write16(rtlpriv, REG_RL, value16);
+	rtl_write_word(rtlpriv, REG_RL, value16);
 
 }
 
 static VOID _InitEDCA_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	/* Set Spec SIFS (used in NAV) */
-	usb_write16(rtlpriv, REG_SPEC_SIFS, 0x100a);
-	usb_write16(rtlpriv, REG_MAC_SPEC_SIFS, 0x100a);
+	rtl_write_word(rtlpriv, REG_SPEC_SIFS, 0x100a);
+	rtl_write_word(rtlpriv, REG_MAC_SPEC_SIFS, 0x100a);
 
 	/* Set SIFS for CCK */
-	usb_write16(rtlpriv, REG_SIFS_CTX, 0x100a);
+	rtl_write_word(rtlpriv, REG_SIFS_CTX, 0x100a);
 
 	/* Set SIFS for OFDM */
-	usb_write16(rtlpriv, REG_SIFS_TRX, 0x100a);
+	rtl_write_word(rtlpriv, REG_SIFS_TRX, 0x100a);
 
 	/* TXOP */
-	usb_write32(rtlpriv, REG_EDCA_BE_PARAM, 0x005EA42B);
-	usb_write32(rtlpriv, REG_EDCA_BK_PARAM, 0x0000A44F);
-	usb_write32(rtlpriv, REG_EDCA_VI_PARAM, 0x005EA324);
-	usb_write32(rtlpriv, REG_EDCA_VO_PARAM, 0x002FA226);
+	rtl_write_dword(rtlpriv, REG_EDCA_BE_PARAM, 0x005EA42B);
+	rtl_write_dword(rtlpriv, REG_EDCA_BK_PARAM, 0x0000A44F);
+	rtl_write_dword(rtlpriv, REG_EDCA_VI_PARAM, 0x005EA324);
+	rtl_write_dword(rtlpriv, REG_EDCA_VO_PARAM, 0x002FA226);
 
 	/* 0x50 for 80MHz clock */
-	usb_write8(rtlpriv, REG_USTIME_TSF, 0x50);
-	usb_write8(rtlpriv, REG_USTIME_EDCA, 0x50);
+	rtl_write_byte(rtlpriv, REG_USTIME_TSF, 0x50);
+	rtl_write_byte(rtlpriv, REG_USTIME_EDCA, 0x50);
 }
 
 
@@ -727,39 +727,39 @@ static VOID _InitBeaconMaxError_8812A(struct rtl_priv *rtlpriv, BOOLEAN	InfraMod
 {
 	/* ULLI: looks here is some hacking done, wrong nams ?? */
 #ifdef RTL8192CU_ADHOC_WORKAROUND_SETTING
-	usb_write8(rtlpriv, REG_BCN_MAX_ERR, 0xFF);
+	rtl_write_byte(rtlpriv, REG_BCN_MAX_ERR, 0xFF);
 #else
-	/* usb_write8(rtlpriv, REG_BCN_MAX_ERR, (InfraMode ? 0xFF : 0x10)); */
+	/* rtl_write_byte(rtlpriv, REG_BCN_MAX_ERR, (InfraMode ? 0xFF : 0x10)); */
 #endif
 }
 
 static VOID _InitRDGSetting_8812A(struct rtl_priv *rtlpriv)
 {
-	usb_write8(rtlpriv, REG_RD_CTRL, 0xFF);
-	usb_write16(rtlpriv, REG_RD_NAV_NXT, 0x200);
-	usb_write8(rtlpriv, REG_RD_RESP_PKT_TH, 0x05);
+	rtl_write_byte(rtlpriv, REG_RD_CTRL, 0xFF);
+	rtl_write_word(rtlpriv, REG_RD_NAV_NXT, 0x200);
+	rtl_write_byte(rtlpriv, REG_RD_RESP_PKT_TH, 0x05);
 }
 
 static VOID _InitRxSetting_8812AU(struct rtl_priv *rtlpriv)
 {
-	usb_write32(rtlpriv, REG_MACID, 0x87654321);
+	rtl_write_dword(rtlpriv, REG_MACID, 0x87654321);
 	/* ULLI unknown register */
-	usb_write32(rtlpriv, 0x0700, 0x87654321);
+	rtl_write_dword(rtlpriv, 0x0700, 0x87654321);
 }
 
 static VOID _InitRetryFunction_8812A(IN  struct rtl_priv *rtlpriv)
 {
 	uint8_t	value8;
 
-	value8 = usb_read8(rtlpriv, REG_FWHW_TXQ_CTRL);
+	value8 = rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL);
 	value8 |= EN_AMPDU_RTY_NEW;
-	usb_write8(rtlpriv, REG_FWHW_TXQ_CTRL, value8);
+	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL, value8);
 
 	/*
 	 * Set ACK timeout
-	 * usb_write8(rtlpriv, REG_ACKTO, 0x40);  //masked by page for BCM IOT issue temporally
+	 * rtl_write_byte(rtlpriv, REG_ACKTO, 0x40);  //masked by page for BCM IOT issue temporally
 	 */
-	usb_write8(rtlpriv, REG_ACKTO, 0x80);
+	rtl_write_byte(rtlpriv, REG_ACKTO, 0x80);
 }
 
 /*-----------------------------------------------------------------------------
@@ -787,11 +787,11 @@ static VOID usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
 		pHalData->UsbTxAggMode = _FALSE;
 
 	if (pHalData->UsbTxAggMode) {
-		value32 = usb_read32(rtlpriv, REG_TDECTRL);
+		value32 = rtl_read_dword(rtlpriv, REG_TDECTRL);
 		value32 = value32 & ~(BLK_DESC_NUM_MASK << BLK_DESC_NUM_SHIFT);
 		value32 |= ((pHalData->UsbTxAggDescNum & BLK_DESC_NUM_MASK) << BLK_DESC_NUM_SHIFT);
 
-		usb_write32(rtlpriv, REG_TDECTRL, value32);
+		rtl_write_dword(rtlpriv, REG_TDECTRL, value32);
 	}
 
 #endif
@@ -820,13 +820,13 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 	uint8_t			valueDMA;
 	uint8_t			valueUSB;
 
-	valueDMA = usb_read8(rtlpriv, REG_TRXDMA_CTRL);
+	valueDMA = rtl_read_byte(rtlpriv, REG_TRXDMA_CTRL);
 
 	switch (pHalData->UsbRxAggMode) {
 	case USB_RX_AGG_DMA:
 		valueDMA |= RXDMA_AGG_EN;
 
-		/* usb_write8(rtlpriv, REG_RXDMA_AGG_PG_TH, 0x05); //dma agg mode, 20k
+		/* rtl_write_byte(rtlpriv, REG_RXDMA_AGG_PG_TH, 0x05); //dma agg mode, 20k
 		 *
 		 * 2012/10/26 MH For TX throught start rate temp fix.
 		 */
@@ -836,7 +836,7 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 			/* ULLI DMA on USB Device WTF ??? */
 			/* Adjust DMA page and thresh. */
 			temp = pHalData->RegAcUsbDmaSize | (pHalData->RegAcUsbDmaTime<<8);
-			usb_write16(rtlpriv, REG_RXDMA_AGG_PG_TH, temp);
+			rtl_write_word(rtlpriv, REG_RXDMA_AGG_PG_TH, temp);
 		}
 		break;
 	case USB_RX_AGG_USB:
@@ -847,7 +847,7 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 		break;
 	}
 
-	usb_write8(rtlpriv, REG_TRXDMA_CTRL, valueDMA);
+	rtl_write_byte(rtlpriv, REG_TRXDMA_CTRL, valueDMA);
 #endif
 }
 
@@ -885,7 +885,7 @@ static VOID _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 		return;
 	DBG_8192C("==>  %s ....\n", __FUNCTION__);
 
-	usb_write8(rtlpriv, REG_LEDCFG2, 0x82);
+	rtl_write_byte(rtlpriv, REG_LEDCFG2, 0x82);
 
 	rtl_set_bbreg(rtlpriv, RFPGA0_XAB_RFPARAMETER, BIT13, 0x01);
 
@@ -905,12 +905,12 @@ rt_rf_power_state RfOnOffDetect(struct rtl_priv *rtlpriv)
 	rt_rf_power_state rfpowerstate = rf_off;
 
 	if (rtlpriv->pwrctrlpriv.bHWPowerdown) {
-		val8 = usb_read8(rtlpriv, REG_HSISR);
+		val8 = rtl_read_byte(rtlpriv, REG_HSISR);
 		DBG_8192C("pwrdown, 0x5c(BIT7)=%02x\n", val8);
 		rfpowerstate = (val8 & BIT7) ? rf_off : rf_on;
 	} else { /* rf on/off */
-		usb_write8(rtlpriv, REG_MAC_PINMUX_CFG, usb_read8(rtlpriv, REG_MAC_PINMUX_CFG)&~(BIT3));
-		val8 = usb_read8(rtlpriv, REG_GPIO_IO_SEL);
+		rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG)&~(BIT3));
+		val8 = rtl_read_byte(rtlpriv, REG_GPIO_IO_SEL);
 		DBG_8192C("GPIO_IN=%02x\n", val8);
 		rfpowerstate = (val8 & BIT3) ? rf_on : rf_off;
 	}
@@ -949,8 +949,8 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	}
 
 	/* Check if MAC has already power on. by tynli. 2011.05.27. */
-	value8 = usb_read8(rtlpriv, REG_SYS_CLKR+1);
-	u1bRegCR = usb_read8(rtlpriv, REG_CR);
+	value8 = rtl_read_byte(rtlpriv, REG_SYS_CLKR+1);
+	u1bRegCR = rtl_read_byte(rtlpriv, REG_CR);
 	DBG_871X(" power-on :REG_SYS_CLKR 0x09=0x%02x. REG_CR 0x100=0x%02x.\n", value8, u1bRegCR);
 	if ((value8&BIT3)  && (u1bRegCR != 0 && u1bRegCR != 0xEA)) {
 		/* pHalData->bMACFuncEnable = TRUE; */
@@ -971,10 +971,10 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	 * R/W error. Is it a right method?
 	 */
 	if (!IS_HARDWARE_TYPE_8821(rtlhal)) {
-		usb_write8(rtlpriv, REG_RF_CTRL, 5);
-		usb_write8(rtlpriv, REG_RF_CTRL, 7);
-		usb_write8(rtlpriv, REG_RF_B_CTRL_8812, 5);
-		usb_write8(rtlpriv, REG_RF_B_CTRL_8812, 7);
+		rtl_write_byte(rtlpriv, REG_RF_CTRL, 5);
+		rtl_write_byte(rtlpriv, REG_RF_CTRL, 7);
+		rtl_write_byte(rtlpriv, REG_RF_B_CTRL_8812, 5);
+		rtl_write_byte(rtlpriv, REG_RF_B_CTRL_8812, 7);
 	}
 
 	status = _InitPowerOn8812AU(rtlpriv);
@@ -1076,17 +1076,17 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	 * Hw bug which Hw initials RxFF boundry size to a value which is larger than the real Rx buffer size in 88E.
 	 * 2011.08.05. by tynli.
 	 */
-	value8 = usb_read8(rtlpriv, REG_CR);
-	usb_write8(rtlpriv, REG_CR, (value8|MACTXEN|MACRXEN));
+	value8 = rtl_read_byte(rtlpriv, REG_CR);
+	rtl_write_byte(rtlpriv, REG_CR, (value8|MACTXEN|MACRXEN));
 
 #if defined(CONFIG_TX_MCAST2UNI)
 
 #ifdef CONFIG_TX_MCAST2UNI
-	usb_write16(rtlpriv, REG_PKT_VO_VI_LIFE_TIME, 0x0400);	/* unit: 256us. 256ms */
-	usb_write16(rtlpriv, REG_PKT_BE_BK_LIFE_TIME, 0x0400);	/* unit: 256us. 256ms */
+	rtl_write_word(rtlpriv, REG_PKT_VO_VI_LIFE_TIME, 0x0400);	/* unit: 256us. 256ms */
+	rtl_write_word(rtlpriv, REG_PKT_BE_BK_LIFE_TIME, 0x0400);	/* unit: 256us. 256ms */
 #else
-	usb_write16(rtlpriv, REG_PKT_VO_VI_LIFE_TIME, 0x3000);	/* unit: 256us. 3s */
-	usb_write16(rtlpriv, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	/* unit: 256us. 3s */
+	rtl_write_word(rtlpriv, REG_PKT_VO_VI_LIFE_TIME, 0x3000);	/* unit: 256us. 3s */
+	rtl_write_word(rtlpriv, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	/* unit: 256us. 3s */
 #endif
 #endif
 
@@ -1127,19 +1127,19 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	 * HW SEQ CTRL
 	 * set 0x0 to 0xFF by tynli. Default enable HW SEQ NUM.
 	 */
-	usb_write8(rtlpriv, REG_HWSEQ_CTRL, 0xFF);
+	rtl_write_byte(rtlpriv, REG_HWSEQ_CTRL, 0xFF);
 
 	/*
 	 * Disable BAR, suggested by Scott
 	 * 2010.04.09 add by hpfan
 	 */
-	usb_write32(rtlpriv, REG_BAR_MODE_CTRL, 0x0201ffff);
+	rtl_write_dword(rtlpriv, REG_BAR_MODE_CTRL, 0x0201ffff);
 
 	if (pregistrypriv->wifi_spec)
-		usb_write16(rtlpriv, REG_FAST_EDCA_CTRL, 0);
+		rtl_write_word(rtlpriv, REG_FAST_EDCA_CTRL, 0);
 
 	/* Nav limit , suggest by scott */
-	usb_write8(rtlpriv, 0x652, 0x0);
+	rtl_write_byte(rtlpriv, 0x652, 0x0);
 
 
 	rtl8812_InitHalDm(rtlpriv);
@@ -1160,20 +1160,20 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	 * 0x4c6[3] 1: RTS BW = Data BW
 	 * 0: RTS BW depends on CCA / secondary CCA result.
 	 */
-	usb_write8(rtlpriv, REG_QUEUE_CTRL, usb_read8(rtlpriv, REG_QUEUE_CTRL)&0xF7);
+	rtl_write_byte(rtlpriv, REG_QUEUE_CTRL, rtl_read_byte(rtlpriv, REG_QUEUE_CTRL)&0xF7);
 
 	/* enable Tx report. */
-	usb_write8(rtlpriv,  REG_FWHW_TXQ_CTRL+1, 0x0F);
+	rtl_write_byte(rtlpriv,  REG_FWHW_TXQ_CTRL+1, 0x0F);
 
 	/* Suggested by SD1 pisa. Added by tynli. 2011.10.21. */
-	usb_write8(rtlpriv, REG_EARLY_MODE_CONTROL_8812+3, 0x01);/* Pretx_en, for WEP/TKIP SEC */
+	rtl_write_byte(rtlpriv, REG_EARLY_MODE_CONTROL_8812+3, 0x01);/* Pretx_en, for WEP/TKIP SEC */
 
 	/* tynli_test_tx_report. */
-	usb_write16(rtlpriv, REG_TX_RPT_TIME, 0x3DF0);
+	rtl_write_word(rtlpriv, REG_TX_RPT_TIME, 0x3DF0);
 
 	/* Reset USB mode switch setting */
-	usb_write8(rtlpriv, REG_SDIO_CTRL_8812, 0x0);
-	usb_write8(rtlpriv, REG_ACLK_MON, 0x0);
+	rtl_write_byte(rtlpriv, REG_SDIO_CTRL_8812, 0x0);
+	rtl_write_byte(rtlpriv, REG_ACLK_MON, 0x0);
 
 	/*
 	 * RT_TRACE(COMP_INIT, DBG_TRACE, ("InitializeAdapter8188EUsb() <====\n"));
@@ -1209,7 +1209,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	 */
 
 
-	usb_write8(rtlpriv, REG_USB_HRPWM, 0);
+	rtl_write_byte(rtlpriv, REG_USB_HRPWM, 0);
 
 	/* misc */
 	{
@@ -1217,7 +1217,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 		int i;
 		uint8_t mac_addr[6];
 		for (i = 0; i < 6; i++) {
-			mac_addr[i] = usb_read8(rtlpriv, REG_MACID+i);
+			mac_addr[i] = rtl_read_byte(rtlpriv, REG_MACID+i);
 		}
 
 		DBG_8192C("MAC Address from REG_MACID = "MAC_FMT"\n", MAC_ARG(mac_addr));
@@ -1241,11 +1241,11 @@ VOID CardDisableRTL8812AU(struct rtl_priv *rtlpriv)
 	/* DBG_871X("CardDisableRTL8188EU\n"); */
 
 	/* Stop Tx Report Timer. 0x4EC[Bit1]=b'0 */
-	u1bTmp = usb_read8(rtlpriv, REG_TX_RPT_CTRL);
-	usb_write8(rtlpriv, REG_TX_RPT_CTRL, val8&(~BIT1));
+	u1bTmp = rtl_read_byte(rtlpriv, REG_TX_RPT_CTRL);
+	rtl_write_byte(rtlpriv, REG_TX_RPT_CTRL, val8&(~BIT1));
 
 	/* stop rx */
-	usb_write8(rtlpriv, REG_CR, 0x0);
+	rtl_write_byte(rtlpriv, REG_CR, 0x0);
 
 	/* Run LPS WL RFOFF flow */
 	if (IS_HARDWARE_TYPE_8821U(rtlhal))
@@ -1253,19 +1253,19 @@ VOID CardDisableRTL8812AU(struct rtl_priv *rtlpriv)
 	else
 		HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_LPS_ENTER_FLOW);
 
-	if ((usb_read8(rtlpriv, REG_MCUFWDL)&RAM_DL_SEL) && rtlpriv->bFWReady) {
+	if ((rtl_read_byte(rtlpriv, REG_MCUFWDL)&RAM_DL_SEL) && rtlpriv->bFWReady) {
 		  /* 8051 RAM code */
 		_8051Reset8812(rtlpriv);
 	}
 
 	/* Reset MCU. Suggested by Filen. 2011.01.26. by tynli. */
-	u1bTmp = usb_read8(rtlpriv, REG_SYS_FUNC_EN+1);
-	usb_write8(rtlpriv, REG_SYS_FUNC_EN+1, (u1bTmp&(~BIT2)));
+	u1bTmp = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN+1);
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, (u1bTmp&(~BIT2)));
 
 	/* MCUFWDL 0x80[1:0]=0
 	 * reset MCU ready status
 	 */
-	usb_write8(rtlpriv, REG_MCUFWDL, 0x00);
+	rtl_write_byte(rtlpriv, REG_MCUFWDL, 0x00);
 
 	/* Card disable power action flow */
 	if (IS_HARDWARE_TYPE_8821U(rtlhal))
@@ -1282,8 +1282,8 @@ static void rtl8812au_hw_power_down(struct rtl_priv *rtlpriv)
 	 */
 
 	/* Enable register area 0x0-0xc. */
-	usb_write8(rtlpriv, REG_RSV_CTRL, 0x0);
-	usb_write16(rtlpriv, REG_APS_FSMCO, 0x8812);
+	rtl_write_byte(rtlpriv, REG_RSV_CTRL, 0x0);
+	rtl_write_word(rtlpriv, REG_APS_FSMCO, 0x8812);
 }
 
 uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
@@ -1292,19 +1292,19 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	DBG_8192C("==> %s \n", __FUNCTION__);
 
-	usb_write16(rtlpriv, REG_GPIO_MUXCFG, usb_read16(rtlpriv, REG_GPIO_MUXCFG)&(~BIT12));
+	rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, rtl_read_word(rtlpriv, REG_GPIO_MUXCFG)&(~BIT12));
 
 	if (pHalData->bSupportUSB3 == _TRUE) {
 		/*
 		 * set Reg 0xf008[3:4] to 2'11 to eable U1/U2 Mode in USB3.0. added by page, 20120712
 		 */
-		usb_write8(rtlpriv, 0xf008, usb_read8(rtlpriv, 0xf008)|0x18);
+		rtl_write_byte(rtlpriv, 0xf008, rtl_read_byte(rtlpriv, 0xf008)|0x18);
 	}
 
-	usb_write32(rtlpriv, REG_HISR0_8812, 0xFFFFFFFF);
-	usb_write32(rtlpriv, REG_HISR1_8812, 0xFFFFFFFF);
-	usb_write32(rtlpriv, REG_HIMR0_8812, IMR_DISABLED_8812);
-	usb_write32(rtlpriv, REG_HIMR1_8812, IMR_DISABLED_8812);
+	rtl_write_dword(rtlpriv, REG_HISR0_8812, 0xFFFFFFFF);
+	rtl_write_dword(rtlpriv, REG_HISR1_8812, 0xFFFFFFFF);
+	rtl_write_dword(rtlpriv, REG_HIMR0_8812, IMR_DISABLED_8812);
+	rtl_write_dword(rtlpriv, REG_HIMR1_8812, IMR_DISABLED_8812);
 
 	if (rtlpriv->hw_init_completed == _TRUE) {
 		CardDisableRTL8812AU(rtlpriv);
@@ -1573,7 +1573,7 @@ static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 	uint8_t			eeValue;
 
 	/* check system boot selection */
-	eeValue = usb_read8(rtlpriv, REG_9346CR);
+	eeValue = rtl_read_byte(rtlpriv, REG_9346CR);
 	pEEPROM->EepromOrEfuse		= (eeValue & BOOT_FROM_EEPROM) ? _TRUE : _FALSE;
 	pEEPROM->bautoload_fail_flag	= (eeValue & EEPROM_EN) ? _FALSE : _TRUE;
 
@@ -1639,9 +1639,9 @@ void UpdateInterruptMask8812AU(struct rtl_priv *rtlpriv, uint8_t bHIMR0, uint32_
 		*himr &= (~RemoveMSR);
 
 	if (bHIMR0)
-		usb_write32(rtlpriv, REG_HIMR0_8812, *himr);
+		rtl_write_dword(rtlpriv, REG_HIMR0_8812, *himr);
 	else
-		usb_write32(rtlpriv, REG_HIMR1_8812, *himr);
+		rtl_write_dword(rtlpriv, REG_HIMR1_8812, *himr);
 
 }
 
@@ -1649,15 +1649,15 @@ void _update_response_rate(struct rtl_priv *rtlpriv, unsigned int mask)
 {
 	uint8_t	RateIndex = 0;
 	/* Set RRSR rate table. */
-	usb_write8(rtlpriv, REG_RRSR, mask&0xff);
-	usb_write8(rtlpriv, REG_RRSR+1, (mask>>8)&0xff);
+	rtl_write_byte(rtlpriv, REG_RRSR, mask&0xff);
+	rtl_write_byte(rtlpriv, REG_RRSR+1, (mask>>8)&0xff);
 
 	/* Set RTS initial rate */
 	while (mask > 0x1) {
 		mask = (mask >> 1);
 		RateIndex++;
 	}
-	usb_write8(rtlpriv, REG_INIRTS_RATE_SEL, RateIndex);
+	rtl_write_byte(rtlpriv, REG_INIRTS_RATE_SEL, RateIndex);
 }
 
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)

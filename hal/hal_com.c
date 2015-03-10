@@ -387,7 +387,7 @@ void hal_init_macaddr(struct rtl_priv *rtlpriv)
 
 void c2h_evt_clear(struct rtl_priv *rtlpriv)
 {
-	usb_write8(rtlpriv, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
+	rtl_write_byte(rtlpriv, REG_C2HEVT_CLEAR, C2H_EVT_HOST_CLOSE);
 }
 
 int32_t c2h_evt_read(struct rtl_priv *rtlpriv, uint8_t *buf)
@@ -400,7 +400,7 @@ int32_t c2h_evt_read(struct rtl_priv *rtlpriv, uint8_t *buf)
 	if (buf == NULL)
 		goto exit;
 
-	trigger = usb_read8(rtlpriv, REG_C2HEVT_CLEAR);
+	trigger = rtl_read_byte(rtlpriv, REG_C2HEVT_CLEAR);
 
 	if (trigger == C2H_EVT_HOST_CLOSE) {
 		goto exit; /* Not ready */
@@ -412,8 +412,8 @@ int32_t c2h_evt_read(struct rtl_priv *rtlpriv, uint8_t *buf)
 
 	memset(c2h_evt, 0, 16);
 
-	*buf = usb_read8(rtlpriv, REG_C2HEVT_MSG_NORMAL);
-	*(buf+1) = usb_read8(rtlpriv, REG_C2HEVT_MSG_NORMAL + 1);
+	*buf = rtl_read_byte(rtlpriv, REG_C2HEVT_MSG_NORMAL);
+	*(buf+1) = rtl_read_byte(rtlpriv, REG_C2HEVT_MSG_NORMAL + 1);
 
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): ",
 		&c2h_evt , sizeof(c2h_evt));
@@ -425,7 +425,7 @@ int32_t c2h_evt_read(struct rtl_priv *rtlpriv, uint8_t *buf)
 
 	/* Read the content */
 	for (i = 0; i < c2h_evt->plen; i++)
-		c2h_evt->payload[i] = usb_read8(rtlpriv, REG_C2HEVT_MSG_NORMAL + sizeof(*c2h_evt) + i);
+		c2h_evt->payload[i] = rtl_read_byte(rtlpriv, REG_C2HEVT_MSG_NORMAL + sizeof(*c2h_evt) + i);
 
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): Command Content:\n",
 		c2h_evt->payload, c2h_evt->plen);

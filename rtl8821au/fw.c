@@ -36,10 +36,10 @@ static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num
 
 	uint8_t valid;
 
-	/* DBG_8192C(" _is_fw_read_cmd_down ,reg_1cc(%x),msg_box(%d)...\n",usb_read8(rtlpriv,REG_HMETFR),msgbox_num); */
+	/* DBG_8192C(" _is_fw_read_cmd_down ,reg_1cc(%x),msg_box(%d)...\n",rtl_read_byte(rtlpriv,REG_HMETFR),msgbox_num); */
 
 	do {
-		valid = usb_read8(rtlpriv, REG_HMETFR) & BIT(msgbox_num);
+		valid = rtl_read_byte(rtlpriv, REG_HMETFR) & BIT(msgbox_num);
 		if (0 == valid) {
 			read_down = _TRUE;
 		}
@@ -117,22 +117,22 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint
 			msgbox_ex_addr = REG_HMEBOX_EXT0_8812 + (h2c_box_num * RTL8812_EX_MESSAGE_BOX_SIZE);
 #ifdef CONFIG_H2C_EF
 			for (cmd_idx = 0; cmd_idx < ext_cmd_len; cmd_idx++) {
-				usb_write8(rtlpriv, msgbox_ex_addr+cmd_idx, *((uint8_t *)(&h2c_cmd_ex)+cmd_idx));
+				rtl_write_byte(rtlpriv, msgbox_ex_addr+cmd_idx, *((uint8_t *)(&h2c_cmd_ex)+cmd_idx));
 			}
 #else
 			h2c_cmd_ex = le32_to_cpu(h2c_cmd_ex);
-			usb_write32(rtlpriv, msgbox_ex_addr, h2c_cmd_ex);
+			rtl_write_dword(rtlpriv, msgbox_ex_addr, h2c_cmd_ex);
 #endif
 		}
 		/* Write command */
 		msgbox_addr = REG_HMEBOX_0 + (h2c_box_num * RTL8812_MESSAGE_BOX_SIZE);
 #ifdef CONFIG_H2C_EF
 		for (cmd_idx = 0; cmd_idx < RTL8812_MESSAGE_BOX_SIZE; cmd_idx++) {
-			usb_write8(rtlpriv, msgbox_addr+cmd_idx, *((uint8_t *)(&h2c_cmd)+cmd_idx));
+			rtl_write_byte(rtlpriv, msgbox_addr+cmd_idx, *((uint8_t *)(&h2c_cmd)+cmd_idx));
 		}
 #else
 		h2c_cmd = le32_to_cpu(h2c_cmd);
-		usb_write32(rtlpriv, msgbox_addr, h2c_cmd);
+		rtl_write_dword(rtlpriv, msgbox_addr, h2c_cmd);
 #endif
 
 		bcmd_down = _TRUE;
@@ -734,18 +734,18 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		 *  We should set AID, correct TSF, HW seq enable before set JoinBssReport to Fw in 88/92C.
 		 *  Suggested by filen. Added by tynli.
 		 */
-		usb_write16(rtlpriv, REG_BCN_PSR_RPT, (0xC000|pmlmeinfo->aid));
+		rtl_write_word(rtlpriv, REG_BCN_PSR_RPT, (0xC000|pmlmeinfo->aid));
 		/*
 		 *  Do not set TSF again here or vWiFi beacon DMA INT will not work.
 		 *  correct_TSF(rtlpriv, pmlmeext);
 		 *  Hw sequende enable by dedault. 2010.06.23. by tynli.
-		 * usb_write16(rtlpriv, REG_NQOS_SEQ, ((pmlmeext->mgnt_seq+100)&0xFFF));
-		 * usb_write8(rtlpriv, REG_HWSEQ_CTRL, 0xFF);
+		 * rtl_write_word(rtlpriv, REG_NQOS_SEQ, ((pmlmeext->mgnt_seq+100)&0xFFF));
+		 * rtl_write_byte(rtlpriv, REG_HWSEQ_CTRL, 0xFF);
 		 */
 
 		/* Set REG_CR bit 8. DMA beacon by SW. */
 		pHalData->RegCR_1 |= BIT0;
-		usb_write8(rtlpriv,  REG_CR+1, pHalData->RegCR_1);
+		rtl_write_byte(rtlpriv,  REG_CR+1, pHalData->RegCR_1);
 
 		/*
 		 * Disable Hw protection for a time which revserd for Hw sending beacon.
@@ -754,8 +754,8 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		 * SetBcnCtrlReg(rtlpriv, 0, BIT3);
 		 * SetBcnCtrlReg(rtlpriv, BIT4, 0);
 		 */
-		usb_write8(rtlpriv, REG_BCN_CTRL, usb_read8(rtlpriv, REG_BCN_CTRL)&(~BIT(3)));
-		usb_write8(rtlpriv, REG_BCN_CTRL, usb_read8(rtlpriv, REG_BCN_CTRL)|BIT(4));
+		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)&(~BIT(3)));
+		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(4));
 
 		if (pHalData->RegFwHwTxQCtrl&BIT6) {
 			DBG_871X("HalDownloadRSVDPage(): There is an rtlpriv is sending beacon.\n");
@@ -763,7 +763,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		}
 
 		/* Set FWHW_TXQ_CTRL 0x422[6]=0 to tell Hw the packet is not a real beacon frame. */
-		usb_write8(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl&(~BIT6)));
+		rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl&(~BIT6)));
 		pHalData->RegFwHwTxQCtrl &= (~BIT6);
 
 		/* Clear beacon valid check bit. */
@@ -833,8 +833,8 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		/* Enable Bcn */
 		/* SetBcnCtrlReg(rtlpriv, BIT3, 0); */
 		/* SetBcnCtrlReg(rtlpriv, 0, BIT4); */
-		usb_write8(rtlpriv, REG_BCN_CTRL, usb_read8(rtlpriv, REG_BCN_CTRL)|BIT(3));
-		usb_write8(rtlpriv, REG_BCN_CTRL, usb_read8(rtlpriv, REG_BCN_CTRL)&(~BIT(4)));
+		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(3));
+		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)&(~BIT(4)));
 
 		/*
 		 * To make sure that if there exists an rtlpriv which would like to send beacon.
@@ -845,7 +845,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		 */
 
 		if (bSendBeacon) {
-			usb_write8(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl|BIT6));
+			rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl|BIT6));
 			pHalData->RegFwHwTxQCtrl |= BIT6;
 		}
 
@@ -864,7 +864,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		{
 			/* Clear CR[8] or beacon packet will not be send to TxBuf anymore. */
 			pHalData->RegCR_1 &= (~BIT0);
-			usb_write8(rtlpriv,  REG_CR+1, pHalData->RegCR_1);
+			rtl_write_byte(rtlpriv,  REG_CR+1, pHalData->RegCR_1);
 		}
 	}
 

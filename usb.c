@@ -126,7 +126,7 @@ exit:
 
 
 
-uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr)
+static uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -148,7 +148,7 @@ uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr)
 
 }
 
-u16 usb_read16(struct rtl_priv *rtlpriv, uint32_t addr)
+static u16 usb_read16(struct rtl_priv *rtlpriv, uint32_t addr)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -170,7 +170,7 @@ u16 usb_read16(struct rtl_priv *rtlpriv, uint32_t addr)
 
 }
 
-uint32_t usb_read32(struct rtl_priv *rtlpriv, uint32_t addr)
+static uint32_t usb_read32(struct rtl_priv *rtlpriv, uint32_t addr)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -193,7 +193,7 @@ uint32_t usb_read32(struct rtl_priv *rtlpriv, uint32_t addr)
 
 }
 
-void usb_write8(struct rtl_priv *rtlpriv, uint32_t addr, uint8_t val)
+static void usb_write8(struct rtl_priv *rtlpriv, uint32_t addr, uint8_t val)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -214,7 +214,7 @@ void usb_write8(struct rtl_priv *rtlpriv, uint32_t addr, uint8_t val)
 	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 }
 
-void usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val)
+static void usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -235,7 +235,7 @@ void usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val)
 	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 }
 
-void usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val)
+static void usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -255,7 +255,7 @@ void usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val)
 	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
 }
 
-void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, void *pdata, u16 length)
+static void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, void *pdata, u16 length)
 {
 	uint8_t request;
 	uint8_t requesttype;
@@ -1312,6 +1312,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	struct rtl_hal_cfg *rtl_hal_cfg)
 {
 	struct rtl_usb *rtlusb;
+	struct usb_device *udev;
 	struct rtl_priv *rtlpriv = NULL;
 	struct net_device *ndev = NULL;
 	int status = _FAIL;
@@ -1328,6 +1329,10 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	rtlpriv->ndev = ndev;
 
 	rtlusb->rtlpriv = rtlpriv;
+	udev = rtlusb->udev;
+
+	/* ULLI: Init IO handler */
+	_rtl_usb_io_handler_init(&udev->dev, rtlpriv);
 
 	rtlpriv->bDriverStopped=_TRUE;
 

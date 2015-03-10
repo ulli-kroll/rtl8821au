@@ -557,6 +557,46 @@ static inline u8 get_rf_type(struct rtl_phy *rtlphy)
 /* Not fully compatible */
 #define rtl_usbdev(rtlpriv) (&(rtlpriv->priv.dev))
 
+
+static inline u8 rtl_read_byte(struct rtl_priv *rtlpriv, u32 addr)
+{
+	return rtlpriv->io.read8_sync(rtlpriv, addr);
+}
+
+static inline u16 rtl_read_word(struct rtl_priv *rtlpriv, u32 addr)
+{
+	return rtlpriv->io.read16_sync(rtlpriv, addr);
+}
+
+static inline u32 rtl_read_dword(struct rtl_priv *rtlpriv, u32 addr)
+{
+	return rtlpriv->io.read32_sync(rtlpriv, addr);
+}
+
+static inline void rtl_write_byte(struct rtl_priv *rtlpriv, u32 addr, u8 val8)
+{
+	rtlpriv->io.write8_async(rtlpriv, addr, val8);
+}
+
+static inline void rtl_write_word(struct rtl_priv *rtlpriv, u32 addr, u16 val16)
+{
+	rtlpriv->io.write16_async(rtlpriv, addr, val16);
+}
+
+static inline void rtl_write_dword(struct rtl_priv *rtlpriv,
+				   u32 addr, u32 val32)
+{
+	rtlpriv->io.write32_async(rtlpriv, addr, val32);
+}
+
+static inline void rtl_writeN(struct rtl_priv *rtlpriv,
+				   u32 addr, void *data, u16 len)
+{
+	rtlpriv->io.writeN_sync(rtlpriv, addr, data, len);
+}
+
+
+
 /* ULLI : Hope this is an border, for old code  */
 
 

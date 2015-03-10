@@ -262,15 +262,7 @@ void rtw_proc_init_one(struct net_device *ndev)
 	uint8_t rf_type;
 
 	if (rtw_proc == NULL) {
-		if (rtlpriv->chip_type == RTL8188C_8192C) {
-			memcpy(rtw_proc_name, RTL8192C_PROC_NAME, sizeof(RTL8192C_PROC_NAME));
-		} else if (rtlpriv->chip_type == RTL8723A) {
-			memcpy(rtw_proc_name, RTW_PROC_NAME, sizeof(RTW_PROC_NAME));
-		} else if (rtlpriv->chip_type == RTL8188E) {
-			memcpy(rtw_proc_name, RTW_PROC_NAME, sizeof(RTW_PROC_NAME));
-		} else {
-			memcpy(rtw_proc_name, RTW_PROC_NAME, sizeof(RTW_PROC_NAME));
-		}
+		memcpy(rtw_proc_name, RTW_PROC_NAME, sizeof(RTW_PROC_NAME));
 
 		rtw_proc = create_proc_entry(rtw_proc_name, S_IFDIR, init_net.proc_net);
 		if (rtw_proc == NULL) {

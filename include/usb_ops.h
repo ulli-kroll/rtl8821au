@@ -37,10 +37,6 @@ enum{
  * ULLI some 'user' defines as wrapper
  * we may remove this
  */
-#define rtw_usb_control_msg(dev, pipe, request, requesttype, value, index, data, size, timeout_ms) \
-	usb_control_msg((dev), (pipe), (request), (requesttype), (value), (index), (data), (size), (timeout_ms))
-#define rtw_usb_bulk_msg(usb_dev, pipe, data, len, actual_length, timeout_ms) \
-	usb_bulk_msg((usb_dev), (pipe), (data), (len), (actual_length), (timeout_ms))
 #include <usb_ops_linux.h>
 
 

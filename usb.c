@@ -70,7 +70,7 @@ static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 valu
 			memcpy( pIo_buf, pdata, len);
 		}
 
-		status = rtw_usb_control_msg(udev, pipe, request, reqtype, value, index, pIo_buf, len, RTW_USB_CONTROL_MSG_TIMEOUT);
+		status = usb_control_msg(udev, pipe, request, reqtype, value, index, pIo_buf, len, RTW_USB_CONTROL_MSG_TIMEOUT);
 
 		if (status == len) {   // Success this control transfer. */
 			rtw_reset_continual_urb_error(pdvobjpriv);

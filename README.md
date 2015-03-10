@@ -1,4 +1,4 @@
-rtl8821au linux
+rtl8821au linux (or rtl8812au)
 ======================
 
 rtl8821 linux kernel driver for AC1200 (801.11ac) 

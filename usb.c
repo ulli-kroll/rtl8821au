@@ -293,6 +293,26 @@ int usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t length, uint8_t
 
 }
 
+static void _rtl_usb_io_handler_init(struct device *dev,
+				     struct rtl_priv *rtlpriv)
+{
+	rtlpriv->io.dev = dev;
+	mutex_init(&rtlpriv->io.bb_mutex);
+	rtlpriv->io.write8_async	= usb_write8;
+	rtlpriv->io.write16_async	= usb_write16;
+	rtlpriv->io.write32_async	= usb_write32;
+	rtlpriv->io.read8_sync		= usb_read8;
+	rtlpriv->io.read16_sync		= usb_read16;
+	rtlpriv->io.read32_sync		= usb_read32;
+	rtlpriv->io.writeN_sync		= usb_writeN;
+}
+
+static void _rtl_usb_io_handler_release(struct rtl_priv *rtlpriv)
+{
+	mutex_destroy(&rtlpriv->io.bb_mutex);
+}
+
+
 static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 {
 	_irqL irqL;

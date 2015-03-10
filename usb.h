@@ -82,16 +82,16 @@ uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr);
 u16 usb_read16(struct rtl_priv *rtlpriv, uint32_t addr);
 uint32_t usb_read32(struct rtl_priv *rtlpriv, uint32_t addr);
 
-int usb_write8(struct rtl_priv *rtlpriv, uint32_t addr, uint8_t val);
-int usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val);
-int usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val);
+void usb_write8(struct rtl_priv *rtlpriv, uint32_t addr, uint8_t val);
+void usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val);
+void usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val);
 
 void usb_write_port_cancel(struct rtl_priv *rtlpriv);
 void usb_read_port_cancel(struct rtl_priv *rtlprivl);
 
 uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem);
 u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf *pxmitbu);
-int usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t length, uint8_t *pdata);
+void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t length, uint8_t *pdata);
 
 
 /* ULLI : we use here rtw_usb_* because interface is not complete */

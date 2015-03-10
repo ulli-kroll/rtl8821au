@@ -8,7 +8,7 @@ int rtw_resume_process(struct rtl_priv *rtlpriv);
 static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {
 	struct rtl_usb  *pdvobjpriv = rtl_usbdev(rtlpriv);
-	struct usb_device *udev=pdvobjpriv->pusbdev;
+	struct usb_device *udev=pdvobjpriv->udev;
 	int _unused;
 
 	unsigned int pipe;
@@ -458,7 +458,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf 
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data;
-	struct usb_device *pusbd = rtlusb->pusbdev;
+	struct usb_device *pusbd = rtlusb->udev;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 
 	if ((rtlpriv->bDriverStopped) || (rtlpriv->bSurpriseRemoved) ||(rtlpriv->pwrctrlpriv.pnp_bstop_trx)) {
@@ -700,7 +700,7 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 	struct recv_buf	*precvbuf = (struct recv_buf *) rmem;
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
-	struct usb_device	*pusbd = rtlusb->pusbdev;
+	struct usb_device	*pusbd = rtlusb->udev;
 	uint32_t addr = RECV_BULK_IN_ADDR;
 
 	if (rtlpriv->bDriverStopped || rtlpriv->bSurpriseRemoved
@@ -881,8 +881,8 @@ static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl
 	pdvobjpriv->macid[1] = _TRUE; 	/* macid=1 for bc/mc stainfo */
 
 
-	pdvobjpriv->pusbintf = usb_intf ;
-	pusbd = pdvobjpriv->pusbdev = interface_to_usbdev(usb_intf);
+	pdvobjpriv->intf = usb_intf ;
+	pusbd = pdvobjpriv->udev = interface_to_usbdev(usb_intf);
 	usb_set_intfdata(usb_intf, pdvobjpriv);
 
 	pdvobjpriv->RtNumInPipes = 0;
@@ -1402,7 +1402,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 
 #ifdef CONFIG_PM
 	if (rtlpriv->pwrctrlpriv.bSupportRemoteWakeup) {
-		rtlusb->pusbdev->do_remote_wakeup=1;
+		rtlusb->udev->do_remote_wakeup=1;
 		pusb_intf->needs_remote_wakeup = 1;
 		device_init_wakeup(&pusb_intf->dev, 1);
 		DBG_871X("\n  rtlpriv->pwrctrlpriv.bSupportRemoteWakeup~~~~~~\n");

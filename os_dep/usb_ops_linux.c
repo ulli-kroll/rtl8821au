@@ -246,7 +246,7 @@ static u32 usb_bulkout_zero(struct rtl_priv *rtlpriv, u32 addr)
 	struct zero_bulkout_context *pcontext;
 	PURB	purb = NULL;
 	struct rtl_usb *pdvobj = rtl_usbdev(rtlpriv);
-	struct usb_device *pusbd = pdvobj->pusbdev;
+	struct usb_device *pusbd = pdvobj->udev;
 
 	/* DBG_871X("%s\n", __func__); */
 

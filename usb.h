@@ -4,6 +4,9 @@
 #include <linux/usb.h>
 
 struct rtl_usb {
+	struct usb_interface *intf;
+	struct usb_device *udev;
+	
         struct rtl_priv *rtlpriv;
 
 	//for local/global synchronization
@@ -55,8 +58,6 @@ struct rtl_usb {
 	uint8_t * usb_vendor_req_buf;
 #endif
 
-	struct usb_interface *pusbintf;
-	struct usb_device *pusbdev;
 
 	ATOMIC_T continual_urb_error;
 
@@ -74,7 +75,7 @@ struct rtl_usb_priv {
 static inline struct device *dvobj_to_dev(struct rtl_usb *dvobj)
 {
 	/* todo: get interface type from dvobj and the return the dev accordingly */
-	return &dvobj->pusbintf->dev;
+	return &dvobj->intf->dev;
 }
 
 uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr);

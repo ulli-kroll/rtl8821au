@@ -1004,6 +1004,18 @@ void usb_dvobj_deinit(struct usb_interface *usb_intf)
 
 }
 
+static void rtl8812au_set_hw_type(struct rtl_priv *rtlpriv)
+{
+	if (rtlpriv->chip_type == RTL8812) {
+		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8812AU;
+		DBG_871X("CHIP TYPE: RTL8812\n");
+	} else if (rtlpriv->chip_type == RTL8821) {
+		/* rtlpriv->HardwareType = HARDWARE_TYPE_RTL8811AU; */
+		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8821U;
+		DBG_871X("CHIP TYPE: RTL8811AU or RTL8821U\n");
+	}
+}
+
 static void rtw_decide_chip_type_by_usb_info(struct rtl_priv *rtlpriv, const struct usb_device_id *pdid)
 {
 	rtlpriv->chip_type = pdid->driver_info;

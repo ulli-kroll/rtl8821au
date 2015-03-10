@@ -44,12 +44,6 @@ enum{
 #include <usb_ops_linux.h>
 
 
-
-
-
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
-void rtl8812au_set_hw_type(struct rtl_priv *rtlpriv);
-#endif
 /*
 * Increase and check if the continual_urb_error of this @param dvobjprive is larger than MAX_CONTINUAL_URB_ERR
 * @return _TRUE:

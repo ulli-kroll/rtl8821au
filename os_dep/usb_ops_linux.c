@@ -196,22 +196,6 @@ void rtl8812au_xmit_tasklet(void *priv)
 
 }
 
-
-void rtl8812au_set_hw_type(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->chip_type == RTL8812) {
-		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8812AU;
-		DBG_871X("CHIP TYPE: RTL8812\n");
-	} else if (rtlpriv->chip_type == RTL8821) {
-		/* rtlpriv->HardwareType = HARDWARE_TYPE_RTL8811AU; */
-		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8821U;
-		DBG_871X("CHIP TYPE: RTL8811AU or RTL8821U\n");
-	}
-}
-
-
-
-
 struct zero_bulkout_context{
 	void *pbuf;
 	void *purb;

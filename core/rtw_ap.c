@@ -520,7 +520,8 @@ void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_lev
 		{
 		//n mode ra_bitmap
 		if (psta_ht->ht_option)	{
-			rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+			rf_type = rtlpriv->phy.rf_type;
+
 			if (rf_type == RF_2T2R)
 				limit = 16;	// 2R
 			else
@@ -1248,8 +1249,7 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 		ht_cap = _TRUE;
 		network_type |= WIRELESS_11_24N;
 
-
-		rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+		rf_type = rtlpriv->phy.rf_type;
 
 		if ((psecuritypriv->wpa_pairwise_cipher & WPA_CIPHER_CCMP) ||
 			(psecuritypriv->wpa2_pairwise_cipher & WPA_CIPHER_CCMP)) {

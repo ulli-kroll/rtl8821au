@@ -139,7 +139,7 @@ uint8_t networktype_to_raid_ex(struct rtl_priv *rtlpriv,unsigned char network_ty
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	uint8_t raid, rf_type;
 
-	rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+	rf_type = rtlpriv->phy.rf_type;
 
 	switch(network_type)
 	{
@@ -1124,7 +1124,7 @@ void HT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE)
 	pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info = le16_to_cpu( pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info );
 	pmlmeinfo->HT_caps.u.HT_cap_element.HT_ext_caps = le16_to_cpu( pmlmeinfo->HT_caps.u.HT_cap_element.HT_ext_caps );
 
-	rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+	rf_type = rtlpriv->phy.rf_type;
 
 	//update the MCS rates
 	for (i = 0; i < 16; i++)

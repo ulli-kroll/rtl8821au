@@ -139,7 +139,7 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 
 	pvhtpriv->ampdu_len = pregistrypriv->ampdu_factor;
 
-	rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+	rf_type = rtlpriv->phy.rf_type;
 
 	if (rf_type == RF_1T1R)
 		pvhtpriv->vht_mcs_map[0] = 0xfe;	/* Only support 1SS MCS 0~9; */
@@ -372,7 +372,8 @@ void VHT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE)
 	pcap_mcs = GET_VHT_CAPABILITY_ELE_RX_MCS(pIE->data);
 	memcpy(vht_mcs, pcap_mcs, 2);
 
-	rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+	rf_type = rtlpriv->phy.rf_type;
+	
 	if ((rf_type == RF_1T1R) || (rf_type == RF_1T2R))
 		vht_mcs[0] |= 0xfc;
 	else if (rf_type == RF_2T2R)
@@ -445,7 +446,8 @@ uint32_t rtw_build_vht_op_mode_notify_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf
 
 	chnl_width = pvhtpriv->bwmode;
 
-	rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+	rf_type = rtlpriv->phy.rf_type;
+
 	if (rf_type == RF_1T1R)
 		rx_nss = 1;
 	else
@@ -516,7 +518,8 @@ uint32_t rtw_build_vht_cap_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	 */
 
 	if (TEST_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_RX)) {
-		rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+		rf_type = rtlpriv->phy.rf_type;
+
 		if ((rf_type == RF_2T2R) || (rf_type == RF_1T2R)) {
 			SET_VHT_CAPABILITY_ELE_RX_STBC(pcap, 2);
 		} else if (rf_type == RF_1T1R) {

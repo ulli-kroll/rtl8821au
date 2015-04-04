@@ -3675,7 +3675,8 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 			//todo: disable SM power save mode
 			pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info |= 0x000c;
 
-			rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+			rf_type = rtlpriv->phy.rf_type;
+
 			//switch (pregpriv->rf_config)
 			switch(rf_type)
 			{

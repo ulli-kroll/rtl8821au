@@ -1031,7 +1031,7 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv)
 			short_GI_20 = (pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info&IEEE80211_HT_CAP_SGI_20) ? 1:0;
 			short_GI_40 = (pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info&IEEE80211_HT_CAP_SGI_40) ? 1:0;
 
-			rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+			rf_type = rtlpriv->phy.rf_type;
 
 			if (pmlmeext->cur_channel > 14) {
 				if ((pregistrypriv->bw_mode & 0xf0) > 0)

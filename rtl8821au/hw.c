@@ -970,10 +970,6 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 		*pval = podmpriv->SupportAbility;
 		break;
 
-	case HW_VAR_RF_TYPE:
-		*pval = rtlpriv->phy.rf_type;
-		break;
-
 	case HW_VAR_FWLPS_RF_ON:
 		/* When we halt NIC, we should check if FW LPS is leave. */
 		if (rtlpriv->pwrctrlpriv.rf_pwrstate == rf_off) {

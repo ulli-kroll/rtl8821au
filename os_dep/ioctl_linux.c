@@ -2569,7 +2569,7 @@ void rf_reg_dump(struct rtl_priv *rtlpriv)
 	int i, j = 1, path;
 	u32 value;
 	uint8_t rf_type, path_nums = 0;
-	rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+	rf_type = rtlpriv->phy.rf_type;
 
 	printk("\n======= RF REG =======\n");
 	if ((RF_1T2R == rf_type) || (RF_1T1R == rf_type))

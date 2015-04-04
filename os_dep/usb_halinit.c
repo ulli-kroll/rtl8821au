@@ -101,16 +101,18 @@ static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *rtlpriv,
 
 void rtl8812au_interface_configure(struct rtl_priv *rtlpriv)
 {
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
+
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
 
 	if (IS_SUPER_SPEED_USB(rtlpriv))
-		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;	/* 1024 bytes */
+		rtlusb->max_bulk_out_size = USB_SUPER_SPEED_BULK_SIZE;	/* 1024 bytes */
 	else if (IS_HIGH_SPEED_USB(rtlpriv))
-		pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;	/* 512 bytes */
+		rtlusb->max_bulk_out_size = USB_HIGH_SPEED_BULK_SIZE;	/* 512 bytes */
 	else
-		pHalData->UsbBulkOutSize = USB_FULL_SPEED_BULK_SIZE; 	/*64 bytes */
+		rtlusb->max_bulk_out_size = USB_FULL_SPEED_BULK_SIZE; 	/*64 bytes */
 
 #ifdef CONFIG_USB_TX_AGGREGATION
 	pHalData->UsbTxAggMode		= 1;
@@ -138,6 +140,7 @@ void rtl8812au_interface_configure(struct rtl_priv *rtlpriv)
 
 static VOID _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 {
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	u8 speedvalue, provalue, temp;
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -166,12 +169,12 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 	if (speedvalue & BIT7) {		/* USB2/1.1 Mode */
 		temp = rtl_read_byte(rtlpriv, 0xfe17);
 		if (((temp >> 4) & 0x03) == 0) {
-			pHalData->UsbBulkOutSize = USB_HIGH_SPEED_BULK_SIZE;
+			rtlusb->max_bulk_out_size = USB_HIGH_SPEED_BULK_SIZE;
 			provalue = rtl_read_byte(rtlpriv, REG_RXDMA_PRO_8812);
 			rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, ((provalue|BIT(4))&(~BIT(5)))); /* set burst pkt len=512B */
 			rtl_write_word(rtlpriv, REG_RXDMA_PRO_8812, 0x1e);
 		} else {
-			pHalData->UsbBulkOutSize = 64;
+			rtlusb->max_bulk_out_size = 64;
 			provalue = rtl_read_byte(rtlpriv, REG_RXDMA_PRO_8812);
 			rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, ((provalue|BIT(5))&(~BIT(4)))); /* set burst pkt len=64B */
 		}
@@ -185,7 +188,7 @@ static VOID _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 
 		pHalData->bSupportUSB3 = _FALSE;
 	} else {		/* USB3 Mode */
-		pHalData->UsbBulkOutSize = USB_SUPER_SPEED_BULK_SIZE;
+		rtlusb->max_bulk_out_size = USB_SUPER_SPEED_BULK_SIZE;
 		provalue = rtl_read_byte(rtlpriv, REG_RXDMA_PRO_8812);
 		rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
 		rtl_write_word(rtlpriv, REG_RXDMA_PRO_8812, 0x0e);

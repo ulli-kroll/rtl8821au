@@ -1436,7 +1436,6 @@ struct _rtw_hal {
 	RT_AMPDU_BRUST		AMPDUBurstMode; //92C maybe not use, but for compile successfully
 
 
-	u32	UsbBulkOutSize;
 	BOOLEAN		bSupportUSB3;
 
 	// Interrupt relatd register information.

@@ -7,6 +7,7 @@ struct rtl_usb {
 	struct usb_interface *intf;
 	struct usb_device *udev;
 	
+	u32 max_bulk_out_size;
         struct rtl_priv *rtlpriv;
 
 	//for local/global synchronization

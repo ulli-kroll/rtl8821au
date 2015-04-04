@@ -436,6 +436,7 @@ static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 #define IDEA_CONDITION 1	/* check all packets before enqueue */
 int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct xmit_frame *pxmitframe = NULL;
 	struct xmit_frame *pfirstframe = NULL;
@@ -452,7 +453,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 	uint32_t	pbuf_tail;	/* last pkt tail */
 	uint32_t	len;		/* packet length, except TXDESC_SIZE and PKT_OFFSET */
 
-	uint32_t	bulkSize = pHalData->UsbBulkOutSize;
+	uint32_t	bulkSize = rtlusb->max_bulk_out_size;
 	uint8_t	descCount;
 	uint32_t	bulkPtr;
 

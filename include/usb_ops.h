@@ -81,19 +81,5 @@ enum RTW_USB_SPEED {
 #define USB_HIGH_SPEED_BULK_SIZE	512		// usb 2.0
 #define USB_FULL_SPEED_BULK_SIZE	64		// usb 1.1
 
-static inline uint8_t rtw_usb_bulk_size_boundary(struct rtl_priv * rtlpriv,int buf_len)
-{
-	uint8_t rst = _TRUE;
-
-	if (IS_SUPER_SPEED_USB(rtlpriv))
-		rst = (0 == (buf_len) % USB_SUPER_SPEED_BULK_SIZE)?_TRUE:_FALSE;
-	if (IS_HIGH_SPEED_USB(rtlpriv))
-		rst = (0 == (buf_len) % USB_HIGH_SPEED_BULK_SIZE)?_TRUE:_FALSE;
-	else
-		rst = (0 == (buf_len) % USB_FULL_SPEED_BULK_SIZE)?_TRUE:_FALSE;
-	return rst;
-}
-
-
 #endif //__USB_OPS_H_
 

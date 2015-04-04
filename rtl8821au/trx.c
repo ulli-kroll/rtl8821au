@@ -150,6 +150,19 @@ static void rtl8812a_fill_txdesc_vcs(struct rtl_priv *rtlpriv, struct pkt_attrib
 	}
 }
 
+static inline uint8_t rtw_usb_bulk_size_boundary(struct rtl_priv * rtlpriv,int buf_len)
+{
+	uint8_t rst = _TRUE;
+
+	if (IS_SUPER_SPEED_USB(rtlpriv))
+		rst = (0 == (buf_len) % USB_SUPER_SPEED_BULK_SIZE)?_TRUE:_FALSE;
+	if (IS_HIGH_SPEED_USB(rtlpriv))
+		rst = (0 == (buf_len) % USB_HIGH_SPEED_BULK_SIZE)?_TRUE:_FALSE;
+	else
+		rst = (0 == (buf_len) % USB_FULL_SPEED_BULK_SIZE)?_TRUE:_FALSE;
+	return rst;
+}
+
 static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32_t sz , uint8_t bagg_pkt)
 {
 	int	pull = 0;

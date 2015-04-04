@@ -176,14 +176,6 @@ int rtw_regulatory_id = 0xff; /*  Regulatory tab id, 0xff = follow efuse's setti
 #endif
 module_param(rtw_regulatory_id, int, 0644);
 
-
-#ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-int rtw_force_ant = 2;	/* 0 :normal, 1:Main ant, 2:Aux ant */
-int rtw_force_igi = 0;	/* 0 :normal */
-module_param(rtw_force_ant, int, 0644);
-module_param(rtw_force_igi, int, 0644);
-#endif
-
 char *rtw_initmac = 0;  /* temp mac address if users want to use instead of the mac address in Efuse */
 
 
@@ -712,11 +704,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 #endif
 
 	registry_par->notch_filter = (uint8_t)rtw_notch_filter;
-
-#ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
-	registry_par->force_ant = (uint8_t)rtw_force_ant;
-	registry_par->force_igi = (uint8_t)rtw_force_igi;
-#endif
 
 	registry_par->regulatory_tid = (uint8_t)rtw_regulatory_id;
 

@@ -1235,19 +1235,19 @@ uint8_t convert_ip_addr(uint8_t hch, uint8_t mch, uint8_t lch)
     return ((key_char2num(hch) * 100) + (key_char2num(mch) * 10 ) + key_char2num(lch));
 }
 
-extern char* rtw_initmac;
+extern char* __rtw_initmac;
 void rtw_macaddr_cfg(uint8_t *mac_addr)
 {
 	uint8_t mac[ETH_ALEN];
 	if(mac_addr == NULL)	return;
 
-	if ( rtw_initmac )
+	if ( __rtw_initmac )
 	{	//	Users specify the mac address
 		int jj,kk;
 
 		for( jj = 0, kk = 0; jj < ETH_ALEN; jj++, kk += 3 )
 		{
-			mac[jj] = key_2char2num(rtw_initmac[kk], rtw_initmac[kk+ 1]);
+			mac[jj] = key_2char2num(__rtw_initmac[kk], __rtw_initmac[kk+ 1]);
 		}
 		memcpy(mac_addr, mac, ETH_ALEN);
 	}

@@ -297,7 +297,7 @@ int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 #ifdef CONFIG_TX_MCAST2UNI
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
-	extern int rtw_mc2u_disable;
+	extern int __rtw_mc2u_disable;
 #endif
 	int32_t res = 0;
 	u16 queue;
@@ -309,7 +309,7 @@ int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 	rtw_check_xmit_resource(rtlpriv, pkt);
 
 #ifdef CONFIG_TX_MCAST2UNI
-	if ( !rtw_mc2u_disable
+	if ( !__rtw_mc2u_disable
 		&& check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE
 		&& ( IP_MCAST_MAC(pkt->data)
 			|| ICMPV6_MCAST_MAC(pkt->data) )

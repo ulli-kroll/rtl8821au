@@ -376,10 +376,10 @@ int32_t FirmwareDownload8812(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 
 	pDM_Odm = &pHalData->odmpriv;
 
-	if (pDM_Odm->SupportICType == ODM_RTL8812)
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		ODM_ReadFirmware_MP_8812A_FW_NIC(&rtlhal->pfirmware, &rtlhal->fwsize);
-	if (pDM_Odm->SupportICType == ODM_RTL8821)
-			ODM_ReadFirmware_MP_8821A_FW_NIC(&rtlhal->pfirmware, &rtlhal->fwsize);
+	if (IS_HARDWARE_TYPE_8821U(rtlhal))
+		ODM_ReadFirmware_MP_8821A_FW_NIC(&rtlhal->pfirmware, &rtlhal->fwsize);
 
 	DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", rtlhal->fwsize);
 

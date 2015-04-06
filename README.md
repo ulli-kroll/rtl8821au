@@ -1,8 +1,18 @@
 rtl8821au linux (or rtl8812au)
-======================
+==============================
 
 rtl8821 linux kernel driver for AC1200 (801.11ac) 
 Wireless Dual-Band USB Adapter
+
+IMPORTANT UPDATE:  2015/04/06
+=================
+As of today the firmware binary is no longer part of
+the kernel driver rtl8821au
+You need to install the firmware binaries with
+
+make installfw
+
+
 
 This driver is for rtl8812au and rtl8821au devices
 I found this driver on the Edimax Site

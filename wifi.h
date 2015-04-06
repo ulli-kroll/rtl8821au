@@ -512,7 +512,6 @@ void rtl8812au_interface_configure(struct rtl_priv *rtlpriv);
 void ReadAdapterInfo8812AU(struct rtl_priv *rtlpriv);
 
 enum hardware_type {
-	HARDWARE_TYPE_RTL8812E,
 	HARDWARE_TYPE_RTL8812AU,
 	HARDWARE_TYPE_RTL8811AU,
 	HARDWARE_TYPE_RTL8821E,
@@ -523,12 +522,10 @@ enum hardware_type {
 };
 
 // RTL8812 Series
-#define IS_HARDWARE_TYPE_8812E(rtlhal)	\
-	(rtlhal->hw_type == HARDWARE_TYPE_RTL8812E)
 #define IS_HARDWARE_TYPE_8812AU(rtlhal)	\
 	(rtlhal->hw_type == HARDWARE_TYPE_RTL8812AU)
 #define IS_HARDWARE_TYPE_8812(rtlhal)	\
-	(IS_HARDWARE_TYPE_8812E(rtlhal) || IS_HARDWARE_TYPE_8812AU(rtlhal))
+	(IS_HARDWARE_TYPE_8812AU(rtlhal))
 
 // RTL8821 Series
 #define IS_HARDWARE_TYPE_8821E(rtlhal)	\

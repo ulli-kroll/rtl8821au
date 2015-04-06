@@ -319,7 +319,7 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 
 	if(IS_HARDWARE_TYPE_8812AU(rtlhal) || IS_HARDWARE_TYPE_8821U(rtlhal))
 		TmpU1B |= FEN_USBA;
-	else  if(IS_HARDWARE_TYPE_8812E(rtlhal) || IS_HARDWARE_TYPE_8821E(rtlhal))
+	else  if(IS_HARDWARE_TYPE_8821E(rtlhal))
 		TmpU1B |= FEN_PCIEA;
 
 	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, TmpU1B);

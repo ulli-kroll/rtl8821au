@@ -1236,8 +1236,6 @@ Hal_ReadRFEType_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 			    rtlhal->external_lna_5g == _TRUE || rtlhal->external_lna_2g == _TRUE)) {
 				if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 					rtlhal->rfe_type = 0;
-				else if (IS_HARDWARE_TYPE_8812E(rtlhal))
-					rtlhal->rfe_type = 2;
 			}
 		}
 	} else {

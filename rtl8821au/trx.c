@@ -1351,7 +1351,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 		 *
 		 * 2012.05.25 LukeLee: Testchip AGC report is wrong, it should be restored back to old formula in MP chip
 		 */
-		if ((pDM_Odm->SupportICType & (ODM_RTL8812|ODM_RTL8821)) && (!pDM_Odm->bIsMPChip))
+		if ((!pDM_Odm->bIsMPChip))
 			rx_pwr_all = (pPhyStaRpt->pwdb_all & 0x7f) - 110;
 		else
 			rx_pwr_all = (((pPhyStaRpt->pwdb_all) >> 1) & 0x7f) - 110;	 /* OLD FORMULA */

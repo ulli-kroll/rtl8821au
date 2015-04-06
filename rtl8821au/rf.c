@@ -334,28 +334,11 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		rtlhal->SupportInterface, rtlhal->board_type));
 
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		switch (ConfigType) {
-		case CONFIG_RF_RADIO:
-			rtl8812au_phy_config_rf_with_headerfile(rtlpriv, eRFPath);
-			break;
-
-		default:
-			;
-		}
-	}
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
+		rtl8812au_phy_config_rf_with_headerfile(rtlpriv, eRFPath);
 
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		switch (ConfigType) {
-		case CONFIG_RF_RADIO:
-			if (eRFPath == RF90_PATH_A) {
-				rtl8821au_phy_config_rf_with_headerfile(rtlpriv, RF90_PATH_A);
-			}
-			break;
-		default:
-			;
-		}
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("<===8821_ODM_ConfigRFWithHeaderFile\n"));
+		rtl8821au_phy_config_rf_with_headerfile(rtlpriv, RF90_PATH_A);
 	}
 }
 

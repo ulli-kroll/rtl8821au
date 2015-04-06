@@ -1111,6 +1111,8 @@ static u16 odm_Cfo(s8 Value)
 static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	u8	i, Max_spatial_stream;
 	s8	rx_pwr[4], rx_pwr_all = 0;
 	u8	EVM, EVMdbm, PWDB_ALL = 0, PWDB_ALL_BT;
@@ -1175,7 +1177,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 
 		LNA_idx = ((cck_agc_rpt & 0xE0) >> 5);
 		VGA_idx = (cck_agc_rpt & 0x1F);
-		if (pDM_Odm->SupportICType == ODM_RTL8812) {
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			switch (LNA_idx) {
 			case 7:
 				if (VGA_idx <= 27)
@@ -1228,7 +1230,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 				if (PWDB_ALL > 100)
 					PWDB_ALL = 100;
 			}
-		} else if (pDM_Odm->SupportICType == ODM_RTL8821) {
+		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 			s8 Pout = -6;
 
 			switch (LNA_idx) {
@@ -1497,7 +1499,7 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyI
 	*/
 #if (defined(CONFIG_HW_ANTENNA_DIVERSITY))
 	/* -----------------Smart Antenna Debug Message------------------ */
-	if (pDM_Odm->SupportICType == ODM_RTL8821) {
+	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		pFAT_T	pDM_FatTable = &pDM_Odm->DM_FatTable;
 
 		if (pPktinfo->bPacketToSelf || pPktinfo->bPacketMatchBSSID) {

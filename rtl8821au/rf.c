@@ -324,7 +324,7 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	ODM_RF_Config_Type ConfigType, enum radio_path eRFPath)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	
+
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
@@ -334,7 +334,7 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		rtlhal->SupportInterface, rtlhal->board_type));
 
-	if (pDM_Odm->SupportICType == ODM_RTL8812) {
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
 			rtl8812au_phy_config_rf_with_headerfile(rtlpriv, eRFPath);
@@ -345,7 +345,7 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		}
 	}
 
-	if (pDM_Odm->SupportICType == ODM_RTL8821) {
+	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		switch (ConfigType) {
 		case CONFIG_RF_RADIO:
 			if (eRFPath == RF90_PATH_A) {

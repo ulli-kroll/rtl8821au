@@ -244,10 +244,8 @@ void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 	odm_RefreshRateAdaptiveMask(pDM_Odm);
 	odm_EdcaTurboCheck(pDM_Odm);
 
-	if (pDM_Odm->SupportICType & (ODM_RTL8812|ODM_RTL8821)) {
-		/* if (pDM_Odm->SupportICType & ODM_RTL8812) */
-		ODM_TXPowerTrackingCheck(pDM_Odm);
-	}
+	ODM_TXPowerTrackingCheck(pDM_Odm);
+
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		if (pDM_Odm->bLinked) {
 			if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess)) {
@@ -1298,19 +1296,16 @@ void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
 		struct sta_info *pstat = pDM_Odm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pstat)) {
-			if ((pDM_Odm->SupportICType == ODM_RTL8812)
-			 || (pDM_Odm->SupportICType == ODM_RTL8821)) {
-				if (pstat->rssi_stat.UndecoratedSmoothedPWDB < pRA->LdpcThres) {
-					pRA->bUseLdpc = TRUE;
-					pRA->bLowerRtsRate = TRUE;
-					Set_RA_LDPC_8812(pstat, TRUE);
-					/* DbgPrint("RSSI=%d, bUseLdpc = TRUE\n", pHalData->UndecoratedSmoothedPWDB); */
-				} else if (pstat->rssi_stat.UndecoratedSmoothedPWDB > (pRA->LdpcThres-5)) {
-					pRA->bUseLdpc = FALSE;
-					pRA->bLowerRtsRate = FALSE;
-					Set_RA_LDPC_8812(pstat, FALSE);
-					/* DbgPrint("RSSI=%d, bUseLdpc = FALSE\n", pHalData->UndecoratedSmoothedPWDB); */
-				}
+			if (pstat->rssi_stat.UndecoratedSmoothedPWDB < pRA->LdpcThres) {
+				pRA->bUseLdpc = TRUE;
+				pRA->bLowerRtsRate = TRUE;
+				Set_RA_LDPC_8812(pstat, TRUE);
+				/* DbgPrint("RSSI=%d, bUseLdpc = TRUE\n", pHalData->UndecoratedSmoothedPWDB); */
+			} else if (pstat->rssi_stat.UndecoratedSmoothedPWDB > (pRA->LdpcThres-5)) {
+				pRA->bUseLdpc = FALSE;
+				pRA->bLowerRtsRate = FALSE;
+				Set_RA_LDPC_8812(pstat, FALSE);
+				/* DbgPrint("RSSI=%d, bUseLdpc = FALSE\n", pHalData->UndecoratedSmoothedPWDB); */
 			}
 
 			if (TRUE == ODM_RAStateCheck(pDM_Odm, pstat->rssi_stat.UndecoratedSmoothedPWDB, FALSE , &pstat->rssi_level)) {
@@ -1453,7 +1448,7 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 	if (pDM_Odm->bLinked != _TRUE)
 		return;
 
-	if ((pDM_Odm->SupportICType == ODM_RTL8812) || (pDM_Odm->SupportICType == ODM_RTL8821)) {
+	if (1) {
 		u64	curTxOkCnt = rtlpriv->xmitpriv.tx_bytes - rtlpriv->xmitpriv.last_tx_bytes;
 		u64	curRxOkCnt = rtlpriv->recvpriv.rx_bytes - rtlpriv->recvpriv.last_rx_bytes;
 
@@ -1479,7 +1474,7 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 					tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
 
 				if (psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
-					if ((pDM_Odm->SupportICType == ODM_RTL8812) || (pDM_Odm->SupportICType == ODM_RTL8821))
+					if (1)
 						PWDB_rssi[sta_cnt++] = (((u8)(psta->mac_id&0xFF)) | ((psta->rssi_stat.UndecoratedSmoothedPWDB&0x7F)<<16));
 					else
 						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16));
@@ -1534,7 +1529,7 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 		for (i = 0; i < sta_cnt; i++) {
 			if (PWDB_rssi[i] != (0)) {
 				if (pHalData->fw_ractrl == _TRUE) {	/* Report every sta's RSSI to FW */
-					if ((pDM_Odm->SupportICType == ODM_RTL8812) || (pDM_Odm->SupportICType == ODM_RTL8821)) {
+					if (1) {
 						PWDB_rssi[i] |= (UL_DL_STATE << 24);
 						rtl8812_set_rssi_cmd(rtlpriv, (u8 *)(&PWDB_rssi[i]));
 					}

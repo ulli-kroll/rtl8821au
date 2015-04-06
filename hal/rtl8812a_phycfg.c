@@ -319,8 +319,6 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 
 	if(IS_HARDWARE_TYPE_8812AU(rtlhal) || IS_HARDWARE_TYPE_8821U(rtlhal))
 		TmpU1B |= FEN_USBA;
-	else  if(IS_HARDWARE_TYPE_8821E(rtlhal))
-		TmpU1B |= FEN_PCIEA;
 
 	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, TmpU1B);
 
@@ -2876,7 +2874,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
 			else
 				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
-		} else if ((IS_HARDWARE_TYPE_8821E(rtlhal) || IS_HARDWARE_TYPE_8821S(rtlhal))
+		} else if ((IS_HARDWARE_TYPE_8821S(rtlhal))
 			      && channelToSW > 14) {
 			/* <20130111, Kordan> For better result of APK. Asked by Willson. */
 			if (36 <= channelToSW && channelToSW <= 64)

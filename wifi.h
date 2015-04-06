@@ -514,7 +514,6 @@ void ReadAdapterInfo8812AU(struct rtl_priv *rtlpriv);
 enum hardware_type {
 	HARDWARE_TYPE_RTL8812AU,
 	HARDWARE_TYPE_RTL8811AU,
-	HARDWARE_TYPE_RTL8821E,
 	HARDWARE_TYPE_RTL8821U,
 	HARDWARE_TYPE_RTL8821S,
 
@@ -528,8 +527,6 @@ enum hardware_type {
 	(IS_HARDWARE_TYPE_8812AU(rtlhal))
 
 // RTL8821 Series
-#define IS_HARDWARE_TYPE_8821E(rtlhal)	\
-	(rtlhal->hw_type == HARDWARE_TYPE_RTL8821E)
 #define IS_HARDWARE_TYPE_8811AU(rtlhal)	\
 	(rtlhal->hw_type == HARDWARE_TYPE_RTL8811AU)
 #define IS_HARDWARE_TYPE_8821U(rtlhal)	\
@@ -538,8 +535,7 @@ enum hardware_type {
 #define IS_HARDWARE_TYPE_8821S(rtlhal)	\
 	(rtlhal->hw_type == HARDWARE_TYPE_RTL8821S)
 #define IS_HARDWARE_TYPE_8821(rtlhal)		\
-	(IS_HARDWARE_TYPE_8821E(rtlhal) || \
-	 IS_HARDWARE_TYPE_8821U(rtlhal) || \
+	(IS_HARDWARE_TYPE_8821U(rtlhal) || \
 	 IS_HARDWARE_TYPE_8821S(rtlhal))
 
 #define IS_HARDWARE_TYPE_JAGUAR(rtlhal)	\

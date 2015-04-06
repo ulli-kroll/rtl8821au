@@ -66,9 +66,12 @@ static void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 
 void ConfigureTxpowerTrack(struct _rtw_dm *pDM_Odm, PTXPWRTRACK_CFG pConfig)
 {
-	if (pDM_Odm->SupportICType == ODM_RTL8821)
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	if (IS_HARDWARE_TYPE_8821U(rtlhal))
 		ConfigureTxpowerTrack_8821A(pConfig);
-	if (pDM_Odm->SupportICType == ODM_RTL8812)
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		ConfigureTxpowerTrack_8812A(pConfig);
 }
 
@@ -117,9 +120,10 @@ VOID ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
 
 VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 {
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
-	
+
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
@@ -320,7 +324,7 @@ VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 			if (ThermalValue > efuse->EEPROMThermalMeter) {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) higher than PG value(%d)\n", ThermalValue, efuse->EEPROMThermalMeter));
 
-				if (pDM_Odm->SupportICType == ODM_RTL8821) {
+				if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
 					for (p = RF90_PATH_A; p < c.RfPathCount; p++)
 						(*c.ODM_TxPwrTrackSetPwr)(pDM_Odm, MIX_MODE, p, Indexforchannel);
@@ -331,7 +335,7 @@ VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 			} else {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->EEPROMThermalMeter));
 
-				if (pDM_Odm->SupportICType == ODM_RTL8821) {
+				if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
 					for (p = RF90_PATH_A; p < c.RfPathCount; p++)
 						(*c.ODM_TxPwrTrackSetPwr)(pDM_Odm, MIX_MODE, p, Indexforchannel);

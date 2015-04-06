@@ -95,7 +95,6 @@ uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param);
 void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg);
 void rtl8812_Add_RateATid(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);
 
-void CheckFwRsvdPageContent(struct rtl_priv *rtlpriv);
 void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *rtlpriv, u16 mstatus_rpt );
 
 #endif//__RTL8188E_CMD_H__

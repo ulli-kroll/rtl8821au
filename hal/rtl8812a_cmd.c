@@ -47,24 +47,3 @@ void rtl8812_Add_RateATid(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t * a
 
 
 
-// To check if reserved page content is destroyed by beacon beacuse beacon is too large.
-// 2010.06.23. Added by tynli.
-VOID
-CheckFwRsvdPageContent(
-	IN	struct rtl_priv *	rtlpriv
-)
-{
-	 struct _rtw_hal*	pHalData = GET_HAL_DATA(rtlpriv);
-	uint32_t	MaxBcnPageNum;
-
- 	if(pHalData->FwRsvdPageStartOffset != 0)
- 	{
- 		/*MaxBcnPageNum = PageNum_128(pMgntInfo->MaxBeaconSize);
-		RT_ASSERT((MaxBcnPageNum <= pHalData->FwRsvdPageStartOffset),
-			("CheckFwRsvdPageContent(): The reserved page content has been"\
-			"destroyed by beacon!!! MaxBcnPageNum(%d) FwRsvdPageStartOffset(%d)\n!",
-			MaxBcnPageNum, pHalData->FwRsvdPageStartOffset));*/
- 	}
-}
-
-

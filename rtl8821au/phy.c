@@ -174,7 +174,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		VDF_enable = TRUE;
 	}
 	VDF_enable = FALSE;
-	temp_reg65 = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bMaskDWord);
+	temp_reg65 = rtw_hal_read_rfreg(rtlpriv, Path, 0x65, bMaskDWord);
 
 	switch (Path) {
 	case RF90_PATH_A:
@@ -228,12 +228,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	    {
 		/* ====== TX IQK ====== */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 		rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
 		rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xc94, BIT(0), 0x1);
@@ -302,7 +302,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -313,13 +313,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {							/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(12));
+						TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 
 						if (~TX_fail) {
 							rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
-							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
+							VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
-							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
+							VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							break;
 						} else {
@@ -358,7 +358,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -369,25 +369,25 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {				/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(12));
+						TX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(12));
 
 						if (~TX_fail) {
 							rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
-							TX_X0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
+							TX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
-							TX_Y0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
+							TX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							TX0IQKOK = TRUE;
 							/*
 							rtl_write_dword(rtlpriv, 0xcb8, 0x01000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
+							reg1 = rtl_get_bbreg(rtlpriv, 0xd00, 0xffffffff);
 							rtl_write_dword(rtlpriv, 0xcb8, 0x02000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
+							reg2 = rtl_get_bbreg(rtlpriv, 0xd00, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("Before PW = %d\n", Image_Power);
 							rtl_write_dword(rtlpriv, 0xcb8, 0x03000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
+							reg1 = rtl_get_bbreg(rtlpriv, 0xd00, 0xffffffff);
 							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
+							reg2 = rtl_get_bbreg(rtlpriv, 0xd00, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("After PW = %d\n", Image_Power);
 							*/
@@ -413,7 +413,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(pDM_Odm->rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 
 		if (TX0IQKOK == FALSE)
@@ -425,13 +425,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
 			rtl_write_dword(rtlpriv, 0x984, 0x0046a911);
@@ -488,7 +488,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					delay_count = 0;
 
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -499,12 +499,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {	/* If 20ms No Result, then cal_retry++ */
 						/* ============RXIQK Check============== */
-						RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(11));
+						RX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(11));
 						if (RX_fail == 0) {
 							rtl_write_dword(rtlpriv, 0xcb8, 0x06000000);
-							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
+							VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
-							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
+							VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							RX0IQKOK = TRUE;
 							break;
 						} else {
@@ -531,13 +531,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			/*  1. RX RF Setting */
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -567,7 +567,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd00, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -578,25 +578,25 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 				if (delay_count < 20) {	/* If 20ms No Result, then cal_retry++ */
 					/* ============RXIQK Check============== */
-					RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, BIT(11));
+					RX_fail = rtl_get_bbreg(rtlpriv, 0xd00, BIT(11));
 					if (RX_fail == 0) {
 						rtl_write_dword(rtlpriv, 0xcb8, 0x06000000);
-						RX_X0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
+						RX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 						rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
-						RX_Y0[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x07ff0000)<<21;
+						RX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 						RX0IQKOK = TRUE;
 						/*
 						rtl_write_dword(rtlpriv, 0xcb8, 0x05000000);
-						reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
+						reg1 = rtl_get_bbreg(rtlpriv, 0xd00, 0xffffffff);
 						rtl_write_dword(rtlpriv, 0xcb8, 0x06000000);
-						reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
+						reg2 = rtl_get_bbreg(rtlpriv, 0xd00, 0x0000001f);
 						DbgPrint("reg1 = %d, reg2 = %d", reg1, reg2);
 						Image_Power = (reg2<<32)+reg1;
 						DbgPrint("Before PW = %d\n", Image_Power);
 						rtl_write_dword(rtlpriv, 0xcb8, 0x07000000);
-						reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0xffffffff);
+						reg1 = rtl_get_bbreg(rtlpriv, 0xd00, 0xffffffff);
 						rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
-						reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd00, 0x0000001f);
+						reg2 = rtl_get_bbreg(rtlpriv, 0xd00, 0x0000001f);
 						Image_Power = (reg2<<32)+reg1;
 						DbgPrint("After PW = %d\n", Image_Power);
 						*/
@@ -628,12 +628,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	    {
 		/* Path-B TX/RX IQK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 		rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
 		rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xe94, BIT(0), 0x1);
@@ -696,7 +696,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_write_dword(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd40, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -707,13 +707,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {		/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(12));
+						TX_fail = rtl_get_bbreg(rtlpriv, 0xd40, BIT(12));
 
 						if (~TX_fail) {
 							rtl_write_dword(rtlpriv, 0xeb8, 0x02000000);
-							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
+							VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x04000000);
-							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
+							VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							TX1IQKOK = TRUE;
 							break;
 						} else {
@@ -753,7 +753,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_write_dword(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd40, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -764,25 +764,25 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {							/* If 20ms No Result, then cal_retry++ */
 						/* ============TXIQK Check============== */
-						TX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(12));
+						TX_fail = rtl_get_bbreg(rtlpriv, 0xd40, BIT(12));
 						if (~TX_fail) {
 							rtl_write_dword(rtlpriv, 0xeb8, 0x02000000);
-							TX_X1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
+							TX_X1[cal] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x04000000);
-							TX_Y1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
+							TX_Y1[cal] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							TX1IQKOK = TRUE;
 							/*
 							int			reg1 = 0, reg2 = 0, Image_Power = 0;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x01000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
+							reg1 = rtl_get_bbreg(rtlpriv, 0xd40, 0xffffffff);
 							rtl_write_dword(rtlpriv, 0xeb8, 0x02000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
+							reg2 = rtl_get_bbreg(rtlpriv, 0xd40, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("Before PW = %d\n", Image_Power);
 							rtl_write_dword(rtlpriv, 0xeb8, 0x03000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
+							reg1 = rtl_get_bbreg(rtlpriv, 0xd40, 0xffffffff);
 							rtl_write_dword(rtlpriv, 0xeb8, 0x04000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
+							reg2 = rtl_get_bbreg(rtlpriv, 0xd40, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("After PW = %d\n", Image_Power);
 							*/
@@ -886,7 +886,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_write_dword(rtlpriv, 0xeb8, 0x00000000);
 					delay_count = 0;
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd40, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -897,12 +897,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {	/* If 20ms No Result, then cal_retry++ */
 						/* ============RXIQK Check============== */
-						RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(11));
+						RX_fail = rtl_get_bbreg(rtlpriv, 0xd40, BIT(11));
 						if (RX_fail == 0) {
 							rtl_write_dword(rtlpriv, 0xeb8, 0x06000000);
-							VDF_X[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
+							VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x08000000);
-							VDF_Y[k] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
+							VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							RX1IQKOK = TRUE;
 							break;
 						} else {
@@ -931,13 +931,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		} else {
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -969,7 +969,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					delay_count = 0;
 
 					while (1) {
-						IQK_ready = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(10));
+						IQK_ready = rtl_get_bbreg(rtlpriv, 0xd40, BIT(10));
 						if ((IQK_ready) || (delay_count > 20)) {
 							break;
 						} else {
@@ -980,25 +980,25 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 					if (delay_count < 20) {				/* If 20ms No Result, then cal_retry++ */
 						/* ============RXIQK Check============== */
-						RX_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, BIT(11));
+						RX_fail = rtl_get_bbreg(rtlpriv, 0xd40, BIT(11));
 						if (RX_fail == 0) {
 							rtl_write_dword(rtlpriv, 0xeb8, 0x06000000);
-							RX_X1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
+							RX_X1[cal] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x08000000);
-							RX_Y1[cal] = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x07ff0000)<<21;
+							RX_Y1[cal] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							RX1IQKOK = TRUE;
 							/*
 							rtl_write_dword(rtlpriv, 0xeb8, 0x05000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
+							reg1 = rtl_get_bbreg(rtlpriv, 0xd40, 0xffffffff);
 							rtl_write_dword(rtlpriv, 0xeb8, 0x06000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
+							reg2 = rtl_get_bbreg(rtlpriv, 0xd40, 0x0000001f);
 							DbgPrint("reg1 = %d, reg2 = %d", reg1, reg2);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("Before PW = %d\n", Image_Power);
 							rtl_write_dword(rtlpriv, 0xeb8, 0x07000000);
-							reg1 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0xffffffff);
+							reg1 = rtl_get_bbreg(rtlpriv, 0xd40, 0xffffffff);
 							rtl_write_dword(rtlpriv, 0xeb8, 0x08000000);
-							reg2 = rtl_get_bbreg(pDM_Odm->rtlpriv, 0xd40, 0x0000001f);
+							reg2 = rtl_get_bbreg(rtlpriv, 0xd40, 0x0000001f);
 							Image_Power = (reg2<<32)+reg1;
 							DbgPrint("After PW = %d\n", Image_Power);
 							*/
@@ -3301,7 +3301,8 @@ static BOOLEAN CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 
 static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
@@ -3329,7 +3330,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDCD) {
-			rtl_write_byte(pDM_Odm->rtlpriv, v1, (u8)v2);
+			rtl_write_byte(rtlpriv, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -3347,7 +3348,7 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						rtl_write_byte(pDM_Odm->rtlpriv, v1, (u8)v2);
+						rtl_write_byte(rtlpriv, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
@@ -3362,7 +3363,8 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 
 static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
@@ -3390,7 +3392,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 
 		/* This (offset, data) pair meets the condition. */
 		if (v1 < 0xCDCDCDC) {
-			rtl_write_byte(pDM_Odm->rtlpriv, v1, (u8)v2);
+			rtl_write_byte(rtlpriv, v1, (u8)v2);
 			continue;
 		} else {
 			/* This line is the start line of branch. */
@@ -3426,7 +3428,8 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 
 void _rtl8821au_phy_config_mac_with_headerfile(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigMACWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));

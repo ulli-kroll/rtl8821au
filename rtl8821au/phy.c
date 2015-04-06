@@ -3264,9 +3264,12 @@ static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct _rtw_dm *pDM_Odm)
 
 void _rtl8821au_phy_read_and_config_txpwr_lmt(struct _rtw_dm *pDM_Odm)
 {
-	if (pDM_Odm->SupportICType == ODM_RTL8812)
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(pDM_Odm);
-	if (pDM_Odm->SupportICType == ODM_RTL8821)
+	if (IS_HARDWARE_TYPE_8821U(rtlhal))
 		ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(pDM_Odm);
 }
 
@@ -3437,13 +3440,11 @@ void _rtl8821au_phy_config_mac_with_headerfile(struct _rtw_dm *pDM_Odm)
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		rtlhal->SupportInterface, rtlhal->board_type));
 
-	if (pDM_Odm->SupportICType == ODM_RTL8812) {
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		ODM_ReadAndConfig_MP_8812A_MAC_REG(pDM_Odm);
-	}
-	if (pDM_Odm->SupportICType == ODM_RTL8821) {
+	
+	if (IS_HARDWARE_TYPE_8821U(rtlhal))
 		ODM_ReadAndConfig_MP_8821A_MAC_REG(pDM_Odm);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("<===8821_ODM_ConfigMACwithHeaderFile\n"));
-	}
 }
 
 

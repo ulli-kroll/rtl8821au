@@ -1275,6 +1275,7 @@ int pm_netdev_open(struct net_device *ndev, uint8_t bnormal)
 int netdev_close(struct net_device *ndev)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);	
 
 	if (rtlpriv->pwrctrlpriv.bInternalAutoSuspend == _TRUE) {
 		/*rtw_pwr_wakeup(rtlpriv); */
@@ -1314,6 +1315,8 @@ int netdev_close(struct net_device *ndev)
 		rtw_hal_led_control(rtlpriv, LED_CTL_POWER_OFF);
 	}
 
+	kfree(rtlhal->pfirmware);
+	rtlhal->pfirmware = NULL;
 
 	DBG_871X("-871x_drv - drv_close, bup=%d\n", rtlpriv->bup);
 

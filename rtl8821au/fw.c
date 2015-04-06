@@ -1134,6 +1134,11 @@ static int32_t _FWFreeToGo8812(struct rtl_priv *rtlpriv)
 int32_t FirmwareDownload8812(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	struct device *device = dvobj_to_dev(rtlusb);
+	const struct firmware *fw;
+	u8 *pfwdata;
+
 	int32_t	rtStatus = _SUCCESS;
 	uint8_t	writeFW_retry = 0;
 	uint32_t fwdl_start_time;
@@ -1143,10 +1148,28 @@ int32_t FirmwareDownload8812(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 
 	pDM_Odm = &pHalData->odmpriv;
 
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-		ODM_ReadFirmware_MP_8812A_FW_NIC(&rtlhal->pfirmware, &rtlhal->fwsize);
-	if (IS_HARDWARE_TYPE_8821U(rtlhal))
-		ODM_ReadFirmware_MP_8821A_FW_NIC(&rtlhal->pfirmware, &rtlhal->fwsize);
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+		const char fw_name[] = "rtlwifi/rtl8812aufw.bin";
+
+		if (request_firmware(&fw, fw_name, device)) {
+			dev_err(device, "Firmware %s not available\n", fw_name);
+			return -ENOENT;
+		} else {
+			dev_info(device, "Firmware %s loaded\n", fw_name);
+		}
+	}
+
+	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+		const char fw_name[] = "rtlwifi/rtl8821aufw.bin";
+
+		if (request_firmware(&fw, fw_name, device)) {
+			dev_err(device, "Firmware %s not available\n", fw_name);
+			return -ENOENT;
+		} else {
+			dev_info(device, "Firmware %s loaded\n", fw_name);
+		}
+	}
+
 
 	DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", rtlhal->fwsize);
 
@@ -1155,6 +1178,15 @@ int32_t FirmwareDownload8812(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 			goto Exit;
 		}
 
+
+	pfwdata = kzalloc(FW_SIZE_8812, GFP_KERNEL);
+	if (!pfwdata)
+		return -ENOMEM;
+
+	rtlhal->pfirmware = pfwdata;
+	memcpy(rtlhal->pfirmware, fw->data, fw->size);
+	rtlhal->fwsize = fw->size;
+	release_firmware(fw);
 
 	{
 		DBG_871X_LEVEL(_drv_info_, "+%s: !bUsedWoWLANFw, FmrmwareLen:%d+\n", __func__, rtlhal->fwsize);

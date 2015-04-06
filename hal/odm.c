@@ -1529,10 +1529,8 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 		for (i = 0; i < sta_cnt; i++) {
 			if (PWDB_rssi[i] != (0)) {
 				if (pHalData->fw_ractrl == _TRUE) {	/* Report every sta's RSSI to FW */
-					if (1) {
-						PWDB_rssi[i] |= (UL_DL_STATE << 24);
-						rtl8812_set_rssi_cmd(rtlpriv, (u8 *)(&PWDB_rssi[i]));
-					}
+					PWDB_rssi[i] |= (UL_DL_STATE << 24);
+					rtl8812_set_rssi_cmd(rtlpriv, (u8 *)(&PWDB_rssi[i]));
 				} else {
 				}
 			}

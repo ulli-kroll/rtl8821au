@@ -30,7 +30,8 @@
 
 void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type ConfigType)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigBBWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
@@ -38,7 +39,7 @@ void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type Conf
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		rtlhal->SupportInterface, rtlhal->board_type));
 
-	if (pDM_Odm->SupportICType == ODM_RTL8812) {
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		switch (ConfigType) {
 		case CONFIG_BB_PHY_REG:
 			ODM_ReadAndConfig_MP_8812A_PHY_REG(pDM_Odm);
@@ -62,7 +63,7 @@ void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type Conf
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, (" ===> phy_ConfigBBWithHeaderFile() agc:Rtl8812PHY_REGArray\n"));
 	}
 
-	if (pDM_Odm->SupportICType == ODM_RTL8821) {
+	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		switch (ConfigType) {
 		case CONFIG_BB_PHY_REG:
 			ODM_ReadAndConfig_MP_8821A_PHY_REG(pDM_Odm);

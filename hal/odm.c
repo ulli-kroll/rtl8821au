@@ -222,6 +222,8 @@ void odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm);
  */
 void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
 	odm_CommonInfoSelfUpdate(pDM_Odm);
@@ -246,7 +248,7 @@ void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 		/* if (pDM_Odm->SupportICType & ODM_RTL8812) */
 		ODM_TXPowerTrackingCheck(pDM_Odm);
 	}
-	if (pDM_Odm->SupportICType & ODM_RTL8821) {
+	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		if (pDM_Odm->bLinked) {
 			if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess)) {
 				pDM_Odm->preChannel = *pDM_Odm->pChannel;
@@ -280,7 +282,7 @@ void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Value)
 {
 	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->rtlpriv);
-	
+
 	/* ODM_RT_TRACE(pDM_Odm,); */
 
 	/*
@@ -783,6 +785,8 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 
 void odm_DIG(struct _rtw_dm *pDM_Odm)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	pDIG_T						pDM_DigTable = &pDM_Odm->DM_DigTable;
 	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 	pRXHP_T						pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
@@ -813,7 +817,7 @@ void odm_DIG(struct _rtw_dm *pDM_Odm)
 	/* 1 Boundary Decision */
 	dm_dig_max = DM_DIG_MAX_NIC;
 
-	if (pDM_Odm->SupportICType != ODM_RTL8821)
+	if (IS_HARDWARE_TYPE_8821U(rtlhal))
 		dm_dig_min = DM_DIG_MIN_NIC;
 	else
 		dm_dig_min = 0x1C;
@@ -824,7 +828,7 @@ void odm_DIG(struct _rtw_dm *pDM_Odm)
 		{
 			/* 2 Modify DIG upper bound */
 			/* 2013.03.19 Luke: Modified upper bound for Netgear rental house test */
-			if (pDM_Odm->SupportICType != ODM_RTL8821)
+			if (IS_HARDWARE_TYPE_8821U(rtlhal))
 				offset = 20;
 			else
 				offset = 10;
@@ -1024,7 +1028,7 @@ void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm)
 void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->rtlpriv);
-	
+
 	u8	CurCCK_CCAThres;
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
 
@@ -1121,6 +1125,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	uint32_t ra_mask, u8 rssi_level)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal  *rtlhal = rtl_hal(rtlpriv);
 
 	struct sta_info *pEntry;
 	uint32_t 	rate_bitmap = 0;
@@ -1190,7 +1195,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 		if (pDM_Odm->rtlpriv->phy.rf_type == RF_1T1R) {
 			if ((pDM_Odm->SupportICType == ODM_RTL8821) ||
 				(pDM_Odm->SupportICType == ODM_RTL8812 && pDM_Odm->bIsMPChip)) {
-				if ((pDM_Odm->SupportICType == ODM_RTL8821)
+				if (IS_HARDWARE_TYPE_8821U(rtlhal)
 					&& (pDM_Odm->SupportInterface ==  ODM_ITRF_USB)
 					&& (*(pDM_Odm->pChannel) >= 149)) {
 					if (rssi_level == 1)				/* add by Gary for ac-series */

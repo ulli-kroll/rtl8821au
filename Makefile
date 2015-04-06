@@ -157,6 +157,10 @@ config_r:
 	@echo "make config"
 	/bin/bash script/Configure script/config.in
 
+installfw:
+	mkdir -p /lib/firmware/rtlwifi
+	cp -n firmware/* /lib/firmware/rtlwifi/.
+
 .PHONY: modules clean
 
 clean:

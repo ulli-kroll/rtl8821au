@@ -219,9 +219,6 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 // limitation of path length
 #define PATH_LENGTH_MAX PATH_MAX
 
-//Atomic integer operations
-#define ATOMIC_T atomic_t
-
 #define NDEV_FMT "%s"
 #define NDEV_ARG(ndev) ndev->name
 #define ADPT_FMT "%s"

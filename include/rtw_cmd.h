@@ -69,7 +69,7 @@
 		#define C2H_QUEUE_MAX_LEN 10
 #endif
 
-		ATOMIC_T event_seq;
+		atomic_t event_seq;
 		uint8_t	*evt_buf;	//shall be non-paged, and 4 bytes aligned
 		uint8_t	*evt_allocated_buf;
 		u32	evt_done_cnt;

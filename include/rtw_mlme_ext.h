@@ -450,7 +450,7 @@ struct mlme_ext_priv
 {
 	struct rtl_priv	*rtlpriv;
 	uint8_t	mlmeext_init;
-	ATOMIC_T		event_seq;
+	atomic_t event_seq;
 	u16	mgnt_seq;
 
 	//struct fw_priv 	fwpriv;

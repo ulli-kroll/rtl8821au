@@ -6,7 +6,7 @@
 struct rtl_usb {
 	struct usb_interface *intf;
 	struct usb_device *udev;
-	
+
 	u32 max_bulk_out_size;
         struct rtl_priv *rtlpriv;
 
@@ -60,7 +60,7 @@ struct rtl_usb {
 #endif
 
 
-	ATOMIC_T continual_urb_error;
+	atomic_t continual_urb_error;
 
 /*-------- below is for PCIE INTERFACE --------*/
 
@@ -88,7 +88,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf 
 
 /* ULLI : we use here rtw_usb_* because interface is not complete */
 struct rtl_hal_cfg;
-int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid, 
+int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid,
 		struct rtl_hal_cfg *rtl_hal_cfg);
 void rtw_usb_disconnect(struct usb_interface *pusb_intf);
 

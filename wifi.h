@@ -346,10 +346,10 @@ struct rtl_priv {
 	uint8_t	init_adpt_in_progress;
 	uint8_t	bHaltInProgress;
 
-	_thread_hdl_ cmdThread;
-	_thread_hdl_ evtThread;
-	_thread_hdl_ xmitThread;
-	_thread_hdl_ recvThread;
+	void *cmdThread;
+	void *evtThread;
+	void *xmitThread;
+	void *recvThread;
 
 #ifndef PLATFORM_LINUX
 	NDIS_STATUS (*dvobj_init)(struct rtl_usb *dvobj);

@@ -75,7 +75,6 @@
 	typedef	int	_OS_STATUS;
 	//typedef u32	_irqL;
 	typedef unsigned long _irqL;
-	typedef int		thread_return;
 	typedef void*	thread_context;
 
 	#define thread_exit() complete_and_exit(NULL, 0)

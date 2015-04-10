@@ -72,7 +72,7 @@ _func_exit_;
 }
 
 #ifdef CONFIG_C2H_WK
-static void c2h_wk_callback(_workitem *work);
+static void c2h_wk_callback(struct work_struct *work);
 #endif
 sint _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 {
@@ -84,7 +84,7 @@ _func_enter_;
 	pevtpriv->evt_done_cnt = 0;
 
 #ifdef CONFIG_C2H_WK
-	_init_workitem(&pevtpriv->c2h_wk, c2h_wk_callback, NULL);
+	INIT_WORK(&pevtpriv->c2h_wk, c2h_wk_callback);
 	pevtpriv->c2h_wk_alive = _FALSE;
 	pevtpriv->c2h_queue = rtw_cbuf_alloc(C2H_QUEUE_MAX_LEN+1);
 #endif
@@ -99,7 +99,7 @@ void _rtw_free_evt_priv (struct	evt_priv *pevtpriv)
 _func_enter_;
 
 #ifdef CONFIG_C2H_WK
-	_cancel_workitem_sync(&pevtpriv->c2h_wk);
+	cancel_work_sync(&pevtpriv->c2h_wk);
 	while(pevtpriv->c2h_wk_alive)
 		msleep(10);
 
@@ -2187,7 +2187,7 @@ exit:
 }
 
 #ifdef CONFIG_C2H_WK
-static void c2h_wk_callback(_workitem *work)
+static void c2h_wk_callback(struct work_struct *work)
 {
 	struct evt_priv *evtpriv = container_of(work, struct evt_priv, c2h_wk);
 	struct rtl_priv *rtlpriv = container_of(evtpriv, struct rtl_priv, evtpriv);

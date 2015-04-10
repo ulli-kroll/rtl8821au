@@ -162,10 +162,10 @@ struct pwrctrl_priv
 	uint8_t	bcn_ant_mode;
 
 	u32	alives;
-	_workitem cpwm_event;
+	struct work_struct cpwm_event;
 #ifdef CONFIG_LPS_RPWM_TIMER
 	uint8_t brpwmtimeout;
-	_workitem rpwmtimeoutwi;
+	struct work_struct rpwmtimeoutwi;
 	_timer pwr_rpwm_timer;
 #endif // CONFIG_LPS_RPWM_TIMER
 	uint8_t	bpower_saving;

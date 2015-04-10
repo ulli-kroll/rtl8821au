@@ -186,7 +186,7 @@ struct rtl_led {
 
 	_timer				BlinkTimer; // Timer object for led blinking.
 
-	_workitem			BlinkWorkItem; // Workitem used by BlinkTimer to manipulate H/W to blink LED.
+	struct work_struct			BlinkWorkItem; // Workitem used by BlinkTimer to manipulate H/W to blink LED.
 };
 
 typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;

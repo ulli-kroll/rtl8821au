@@ -856,7 +856,7 @@ static void BlinkTimerCallback(void *data)
 		return;
 	}
 
-	_set_workitem(&(pLed->BlinkWorkItem));
+	schedule_work(&(pLed->BlinkWorkItem));
 }
 
 /*
@@ -864,7 +864,7 @@ static void BlinkTimerCallback(void *data)
  * 		Callback function of LED BlinkWorkItem.
  * 		We dispatch acture LED blink action according to LedStrategy.
  */
-static void BlinkWorkItemCallback(_workitem *work)
+static void BlinkWorkItemCallback(struct work_struct *work)
 {
 	struct rtl_led *pLed = container_of(work, struct rtl_led, BlinkWorkItem);
 	BlinkHandler(pLed);
@@ -1910,7 +1910,7 @@ static void InitLed(struct rtl_priv *rtlpriv,	struct rtl_led *pLed, enum rtl_led
 
 	_init_timer(&(pLed->BlinkTimer), rtlpriv->ndev, BlinkTimerCallback, pLed);
 
-	_init_workitem(&(pLed->BlinkWorkItem), BlinkWorkItemCallback, pLed);
+	INIT_WORK(&(pLed->BlinkWorkItem), BlinkWorkItemCallback);
 }
 
 
@@ -1920,7 +1920,7 @@ static void InitLed(struct rtl_priv *rtlpriv,	struct rtl_led *pLed, enum rtl_led
  */
 static void DeInitLed(struct rtl_led *pLed)
 {
-	_cancel_workitem_sync(&(pLed->BlinkWorkItem));
+	cancel_work_sync(&(pLed->BlinkWorkItem));
 	_cancel_timer_ex(&(pLed->BlinkTimer));
 	ResetLedStatus(pLed);
 }

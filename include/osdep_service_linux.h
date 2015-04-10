@@ -77,8 +77,6 @@ struct __queue {
 	typedef void timer_hdl_return;
 	typedef void* timer_hdl_context;
 
-	typedef struct work_struct _workitem;
-
 
 __inline static struct list_head *get_next(struct list_head	*list)
 {
@@ -121,21 +119,6 @@ __inline static void _cancel_timer(_timer *ptimer,u8 *bcancelled)
 	*bcancelled=  _TRUE;//TRUE ==1; FALSE==0
 }
 
-
-__inline static void _init_workitem(_workitem *pwork, void *pfunc, void *cntx)
-{
-	INIT_WORK(pwork, pfunc);
-}
-
-__inline static void _set_workitem(_workitem *pwork)
-{
-	schedule_work(pwork);
-}
-
-__inline static void _cancel_workitem_sync(_workitem *pwork)
-{
-	cancel_work_sync(pwork);
-}
 //
 // Global Mutex: can only be used at PASSIVE level.
 //

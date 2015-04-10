@@ -26,7 +26,7 @@
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Realtek Wireless Lan Driver");
 MODULE_AUTHOR("Realtek Semiconductor Corp.");
-MODULE_VERSION(DRIVERVERSION);
+MODULE_VERSION("git. based on v4.2.2_7502.20130517");
 
 /* module param defaults */
 static int rtw_chip_version = 0x00;

@@ -72,7 +72,6 @@ struct rtl_priv;
 #include <rtw_mlme_ext.h>
 #include <rtw_ap.h>
 #include <rtw_efuse.h>
-#include <rtw_version.h>
 
 #include <ip.h>
 #include <if_ether.h>
@@ -251,12 +250,7 @@ __inline static uint8_t *myid(struct eeprom_priv *peepriv)
 }
 
 // HCI Related header file
-#include <usb_osintf.h>
 #include <usb_ops.h>
-#include <usb_hal.h>
-
-
-
 
 
 #endif //__DRV_TYPES_H__

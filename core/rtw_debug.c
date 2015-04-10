@@ -59,7 +59,6 @@
 #endif
 
 #ifdef CONFIG_PROC_DEBUG
-#include <rtw_version.h>
 
 int proc_get_drv_version(char *page, char **start,
 			  off_t offset, int count,
@@ -69,7 +68,7 @@ int proc_get_drv_version(char *page, char **start,
 
 	int len = 0;
 
-	len += snprintf(page + len, count - len, "%s\n", DRIVERVERSION);
+	len += snprintf(page + len, count - len, "%s\n", "git");
 
 	*eof = 1;
 	return len;

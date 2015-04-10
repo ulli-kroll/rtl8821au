@@ -3271,11 +3271,10 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	return txPower;
 }
 
-static VOID PHY_SetPowerLimitTableValue(struct _rtw_dm *pDM_Odm,
+static void PHY_SetPowerLimitTableValue(struct rtl_priv *rtlpriv,
 	s8 *Regulation, s8 *Band, s8 *Bandwidth, s8 *RateSection,
 	s8 *RfPath, s8 *Channel, s8 *PowerLimit)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t		regulation = 0, bandwidth = 0, rateSection = 0,
@@ -3339,26 +3338,25 @@ static VOID PHY_SetPowerLimitTableValue(struct _rtw_dm *pDM_Odm,
 }
 
 
-static void odm_ConfigBB_TXPWR_LMT_8812A(struct _rtw_dm *pDM_Odm,
+static void odm_ConfigBB_TXPWR_LMT_8812A(struct rtl_priv *rtlpriv,
 	u8 *Regulation, u8 *Band, u8 *Bandwidth,
 	u8 *RateSection, u8 *RfPath, u8 *Channel,
 	u8 *PowerLimit)
 {
-	PHY_SetPowerLimitTableValue(pDM_Odm, Regulation, Band,
+	PHY_SetPowerLimitTableValue(rtlpriv, Regulation, Band,
 		Bandwidth, RateSection, RfPath, Channel, PowerLimit);
 }
 
 
 static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 	uint32_t i		= 0;
 	uint32_t ArrayLen       = RTL8812AU_TXPWR_LMT_ARRAY_LEN;
 	u8 **Array		= RTL8812AU_TXPWR_LMT;
 
+#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_TXPWR_LMT\n"));
-
+#endif
 	for (i = 0; i < ArrayLen; i += 7) {
 		u8 *regulation = Array[i];
 		u8 *band = Array[i+1];
@@ -3368,19 +3366,19 @@ static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 		u8 *chnl = Array[i+5];
 		u8 *val = Array[i+6];
 
-		odm_ConfigBB_TXPWR_LMT_8812A(pDM_Odm, regulation, band, bandwidth, rate, rfPath, chnl, val);
+		odm_ConfigBB_TXPWR_LMT_8812A(rtlpriv, regulation, band, bandwidth, rate, rfPath, chnl, val);
 	}
 
 }
 
 
-static void odm_ConfigBB_TXPWR_LMT_8821A(struct _rtw_dm *pDM_Odm,
+static void odm_ConfigBB_TXPWR_LMT_8821A(struct rtl_priv *rtlpriv,
 	u8 *Regulation, u8 *Band, u8 *Bandwidth,
 	u8 * RateSection, u8 *RfPath, u8 *Channel,
 	u8 *PowerLimit
     )
 {
-	PHY_SetPowerLimitTableValue(pDM_Odm, Regulation, Band,
+	PHY_SetPowerLimitTableValue(rtlpriv, Regulation, Band,
 		Bandwidth, RateSection, RfPath, Channel, PowerLimit);
 }
 
@@ -3394,8 +3392,9 @@ static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 	uint32_t ArrayLen       = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
 	u8 **Array		= RTL8821AU_TXPWR_LMT;
 
+#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_TXPWR_LMT\n"));
-
+#endif
 	for (i = 0; i < ArrayLen; i += 7) {
 		u8 *regulation = Array[i];
 		u8 *band = Array[i+1];
@@ -3405,7 +3404,7 @@ static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 		u8 *chnl = Array[i+5];
 		u8 *val = Array[i+6];
 
-		odm_ConfigBB_TXPWR_LMT_8821A(pDM_Odm, regulation, band, bandwidth, rate, rfPath, chnl, val);
+		odm_ConfigBB_TXPWR_LMT_8821A(rtlpriv, regulation, band, bandwidth, rate, rfPath, chnl, val);
 	}
 
 }

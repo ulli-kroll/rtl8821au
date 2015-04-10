@@ -183,7 +183,6 @@ void rtw_os_xmit_schedule(struct rtl_priv *rtlpriv)
 {
 	struct rtl_priv *pri_adapter = rtlpriv;
 
-	_irqL  irqL;
 	struct xmit_priv *pxmitpriv;
 
 	if(!rtlpriv)
@@ -191,13 +190,13 @@ void rtw_os_xmit_schedule(struct rtl_priv *rtlpriv)
 
 	pxmitpriv = &rtlpriv->xmitpriv;
 
-	_enter_critical_bh(&pxmitpriv->lock, &irqL);
+	spin_lock_bh(&pxmitpriv->lock);
 
 	if(rtw_txframes_pending(rtlpriv)) {
 		tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
 	}
 
-	_exit_critical_bh(&pxmitpriv->lock, &irqL);
+	spin_unlock_bh(&pxmitpriv->lock);
 }
 
 static void rtw_check_xmit_resource(struct rtl_priv *rtlpriv, struct sk_buff *pkt)
@@ -225,7 +224,6 @@ int rtw_mlcst2unicst(struct rtl_priv *rtlpriv, struct sk_buff *skb)
 {
 	struct	sta_priv *pstapriv = &rtlpriv->stapriv;
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
-	_irqL	irqL;
 	struct list_head	*phead, *plist;
 	struct sk_buff *newskb;
 	struct sta_info *psta = NULL;
@@ -237,7 +235,7 @@ int rtw_mlcst2unicst(struct rtl_priv *rtlpriv, struct sk_buff *skb)
 	int i;
 	int32_t	res;
 
-	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->asoc_list_lock);
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
 
@@ -252,7 +250,7 @@ int rtw_mlcst2unicst(struct rtl_priv *rtlpriv, struct sk_buff *skb)
 			chk_alive_list[chk_alive_num++] = stainfo_offset;
 		}
 	}
-	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 	for (i = 0; i < chk_alive_num; i++) {
 		psta = rtw_get_stainfo_by_offset(pstapriv, chk_alive_list[i]);

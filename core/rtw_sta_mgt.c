@@ -161,11 +161,10 @@ inline struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int 
  */
 static void rtw_mfree_all_stainfo(struct sta_priv *pstapriv )
 {
-	_irqL	 irqL;
 	struct list_head	*plist, *phead;
 	struct sta_info *psta = NULL;
 
-	_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
+	spin_lock_bh(&pstapriv->sta_hash_lock);
 
 	phead = get_list_head(&pstapriv->free_sta_queue);
 	plist = get_next(phead);
@@ -175,7 +174,7 @@ static void rtw_mfree_all_stainfo(struct sta_priv *pstapriv )
 		plist = get_next(plist);
 	}
 
-	_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
+	spin_unlock_bh(&pstapriv->sta_hash_lock);
 
 }
 
@@ -189,7 +188,6 @@ static void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv)
 
 uint32_t _rtw_free_sta_priv(struct sta_priv *pstapriv)
 {
-	_irqL 	irqL;
 	struct list_head	*phead, *plist;
 	struct sta_info *psta = NULL;
 	struct recv_reorder_ctrl *preorder_ctrl;
@@ -198,7 +196,7 @@ uint32_t _rtw_free_sta_priv(struct sta_priv *pstapriv)
 	if (pstapriv) {
 
 		/*	delete all reordering_ctrl_timer		*/
-		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
+		spin_lock_bh(&pstapriv->sta_hash_lock);
 		for (index = 0; index < NUM_STA; index++) {
 			phead = &(pstapriv->sta_hash[index]);
 			plist = get_next(phead);
@@ -214,7 +212,7 @@ uint32_t _rtw_free_sta_priv(struct sta_priv *pstapriv)
 				}
 			}
 		}
-		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
+		spin_unlock_bh(&pstapriv->sta_hash_lock);
 		/*===============================*/
 
 		rtw_mfree_sta_priv_lock(pstapriv);
@@ -230,7 +228,6 @@ uint32_t _rtw_free_sta_priv(struct sta_priv *pstapriv)
 
 struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 {
-	_irqL irqL, irqL2;
 	uint tmp_aid;
 	int32_t	index;
 	struct list_head	*phash_list;
@@ -243,16 +240,16 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 	pfree_sta_queue = &pstapriv->free_sta_queue;
 
 	/*
-	 * _enter_critical_bh(&(pfree_sta_queue->lock), &irqL);
+	 * spin_lock_bh(&(pfree_sta_queue->lock), &irqL);
 	 */
 
-	_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
+	spin_lock_bh(&(pstapriv->sta_hash_lock));
 
 	if (_rtw_queue_empty(pfree_sta_queue) == _TRUE) {
 		/*
-		 * _exit_critical_bh(&(pfree_sta_queue->lock), &irqL);
+		 * spin_unlock_bh(&(pfree_sta_queue->lock), &irqL);
 		 */
-		_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
+		spin_unlock_bh(&(pstapriv->sta_hash_lock));
 		psta = NULL;
 	} else {
 		psta = LIST_CONTAINOR(get_next(&pfree_sta_queue->queue), struct sta_info, list);
@@ -260,7 +257,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		rtw_list_delete(&(psta->list));
 
 		/*
-		 * _exit_critical_bh(&(pfree_sta_queue->lock), &irqL);
+		 * spin_unlock_bh(&(pfree_sta_queue->lock), &irqL);
 		 */
 
 		tmp_aid = psta->aid;
@@ -280,7 +277,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		phash_list = &(pstapriv->sta_hash[index]);
 
 		/*
-		 * _enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
+		 * spin_lock_bh(&(pstapriv->sta_hash_lock), &irqL2);
 		 */
 
 		list_add_tail(&psta->hash_list, phash_list);
@@ -288,7 +285,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		pstapriv->asoc_sta_count ++ ;
 
 		/*
-		 * _exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
+		 * spin_unlock_bh(&(pstapriv->sta_hash_lock), &irqL2);
 		 */
 
 /*
@@ -338,7 +335,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 
 exit:
 
-	_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
+	spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
 	return psta;
 
@@ -350,7 +347,6 @@ exit:
 uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 {
 	int i;
-	_irqL irqL0;
 	struct __queue *pfree_sta_queue;
 	struct recv_reorder_ctrl *preorder_ctrl;
 	struct	sta_xmit_priv	*pstaxmitpriv;
@@ -362,9 +358,9 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 		goto exit;
 
 
-	_enter_critical_bh(&psta->lock, &irqL0);
+	spin_lock_bh(&psta->lock);
 	psta->state &= ~_FW_LINKED;
-	_exit_critical_bh(&psta->lock, &irqL0);
+	spin_unlock_bh(&psta->lock);
 
 	pfree_sta_queue = &pstapriv->free_sta_queue;
 
@@ -375,7 +371,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 
 	/* rtw_list_delete(&psta->wakeup_list); */
 
-	_enter_critical_bh(&pxmitpriv->lock, &irqL0);
+	spin_lock_bh(&pxmitpriv->lock);
 
 	rtw_free_xmitframe_queue(pxmitpriv, &psta->sleep_q);
 	psta->sleepq_len = 0;
@@ -391,12 +387,12 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	pstaxmitpriv->vo_q.qcnt = 0;
 
 	/*
-	 * _exit_critical_bh(&(pxmitpriv->vo_pending.lock), &irqL0);
+	 * spin_unlock_bh(&(pxmitpriv->vo_pending.lock), &irqL0);
 	 */
 
 	/*
 	 * vi
-	 * _enter_critical_bh(&(pxmitpriv->vi_pending.lock), &irqL0);
+	 * spin_lock_bh(&(pxmitpriv->vi_pending.lock), &irqL0);
 	*/
 	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->vi_q.sta_pending);
 	rtw_list_delete(&(pstaxmitpriv->vi_q.tx_pending));
@@ -405,12 +401,12 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	pstaxmitpriv->vi_q.qcnt = 0;
 
 	/*
-	 * _exit_critical_bh(&(pxmitpriv->vi_pending.lock), &irqL0);
+	 * spin_unlock_bh(&(pxmitpriv->vi_pending.lock), &irqL0);
 	 */
 
 	/*
 	 * be
-	 * _enter_critical_bh(&(pxmitpriv->be_pending.lock), &irqL0);
+	 * spin_lock_bh(&(pxmitpriv->be_pending.lock), &irqL0);
 	 */
 	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->be_q.sta_pending);
 	rtw_list_delete(&(pstaxmitpriv->be_q.tx_pending));
@@ -419,12 +415,12 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	pstaxmitpriv->be_q.qcnt = 0;
 
 	/*
-	 * _exit_critical_bh(&(pxmitpriv->be_pending.lock), &irqL0);
+	 * spin_unlock_bh(&(pxmitpriv->be_pending.lock), &irqL0);
 	 */
 
 	/*
 	 * bk
-	 * _enter_critical_bh(&(pxmitpriv->bk_pending.lock), &irqL0);
+	 * spin_lock_bh(&(pxmitpriv->bk_pending.lock), &irqL0);
 	 */
 
 	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->bk_q.sta_pending);
@@ -434,10 +430,10 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	pstaxmitpriv->bk_q.qcnt = 0;
 
 	/*
-	 * _exit_critical_bh(&(pxmitpriv->bk_pending.lock), &irqL0);
+	 * spin_unlock_bh(&(pxmitpriv->bk_pending.lock), &irqL0);
 	 */
 
-	_exit_critical_bh(&pxmitpriv->lock, &irqL0);
+	spin_unlock_bh(&pxmitpriv->lock);
 
 	rtw_list_delete(&psta->hash_list);
 	pstapriv->asoc_sta_count --;
@@ -457,7 +453,6 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	 */
 
 	for(i = 0; i < 16 ; i++) {
-		_irqL irqL;
 		struct list_head	*phead, *plist;
 		struct recv_frame *prframe;
 		struct __queue *ppending_recvframe_queue;
@@ -470,7 +465,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 
 		ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
 
-		_enter_critical_bh(&ppending_recvframe_queue->lock, &irqL);
+		spin_lock_bh(&ppending_recvframe_queue->lock);
 
 		phead = 	get_list_head(ppending_recvframe_queue);
 		plist = get_next(phead);
@@ -485,7 +480,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 			rtw_free_recvframe(prframe, pfree_recv_queue);
 		}
 
-		_exit_critical_bh(&ppending_recvframe_queue->lock, &irqL);
+		spin_unlock_bh(&ppending_recvframe_queue->lock);
 
 	}
 
@@ -501,17 +496,17 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 #ifdef CONFIG_AP_MODE
 
 	/*
-	 * _enter_critical_bh(&pstapriv->asoc_list_lock, &irqL0);
+	 * spin_lock_bh(&pstapriv->asoc_list_lock, &irqL0);
 	 * rtw_list_delete(&psta->asoc_list);
-	 * _exit_critical_bh(&pstapriv->asoc_list_lock, &irqL0);
+	 * spin_unlock_bh(&pstapriv->asoc_list_lock, &irqL0);
 	 */
 
-	_enter_critical_bh(&pstapriv->auth_list_lock, &irqL0);
+	spin_lock_bh(&pstapriv->auth_list_lock);
 	if (!list_empty(&psta->auth_list)) {
 		rtw_list_delete(&psta->auth_list);
 		pstapriv->auth_list_cnt--;
 	}
-	_exit_critical_bh(&pstapriv->auth_list_lock, &irqL0);
+	spin_unlock_bh(&pstapriv->auth_list_lock);
 
 	psta->expire_to = 0;
 
@@ -544,9 +539,9 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 
 #endif
 
-	/*_enter_critical_bh(&(pfree_sta_queue->lock), &irqL0); */
+	/*spin_lock_bh(&(pfree_sta_queue->lock), &irqL0); */
 	list_add_tail(&psta->list, get_list_head(pfree_sta_queue));
-	/* _exit_critical_bh(&(pfree_sta_queue->lock), &irqL0); */
+	/* spin_unlock_bh(&(pfree_sta_queue->lock), &irqL0); */
 
 exit:
 
@@ -557,7 +552,6 @@ exit:
 
 void rtw_free_all_stainfo(struct rtl_priv *rtlpriv)
 {
-	_irqL	 irqL;
 	struct list_head	*plist, *phead;
 	int32_t	index;
 	struct sta_info *psta = NULL;
@@ -567,7 +561,7 @@ void rtw_free_all_stainfo(struct rtl_priv *rtlpriv)
 	if(pstapriv->asoc_sta_count==1)
 		return;
 
-	_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
+	spin_lock_bh(&pstapriv->sta_hash_lock);
 
 	for(index=0; index< NUM_STA; index++) {
 		phead = &(pstapriv->sta_hash[index]);
@@ -584,14 +578,13 @@ void rtw_free_all_stainfo(struct rtl_priv *rtlpriv)
 		}
 	}
 
-	_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
+	spin_unlock_bh(&pstapriv->sta_hash_lock);
 }
 
 /* any station allocated can be searched by hash list */
 struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 {
 
-	_irqL	 irqL;
 	struct list_head	*plist, *phead;
 
 	struct sta_info *psta = NULL;
@@ -609,7 +602,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 
 	index = wifi_mac_hash(addr);
 
-	_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
+	spin_lock_bh(&pstapriv->sta_hash_lock);
 
 	phead = &(pstapriv->sta_hash[index]);
 	plist = get_next(phead);
@@ -626,7 +619,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		plist = get_next(plist);
 	}
 
-	_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
+	spin_unlock_bh(&pstapriv->sta_hash_lock);
 
 	return psta;
 }
@@ -655,12 +648,12 @@ uint32_t rtw_init_bcmc_stainfo(struct rtl_priv* rtlpriv)
 	ptxservq= &(psta->sta_xmitpriv.be_q);
 
 	/*
-	 * _enter_critical(&pstapending->lock, &irqL0);
+	 * spin_lock_irqsave(&pstapending->lock, &irqL0);
 	 *
 	 * if (list_empty(&ptxservq->tx_pending))
 	 * 	list_add_tail(&ptxservq->tx_pending, get_list_head(pstapending));
 	 *
-	 * _exit_critical(&pstapending->lock, &irqL0);
+	 * spin_unlock_irqrestore(&pstapending->lock, &irqL0);
 	 */
 
 exit:
@@ -684,7 +677,6 @@ uint8_t rtw_access_ctrl(struct rtl_priv *rtlpriv, uint8_t *mac_addr)
 {
 	uint8_t res = _TRUE;
 #ifdef  CONFIG_AP_MODE
-	_irqL irqL;
 	struct list_head	*plist, *phead;
 	struct rtw_wlan_acl_node *paclnode;
 	uint8_t match = _FALSE;
@@ -692,7 +684,7 @@ uint8_t rtw_access_ctrl(struct rtl_priv *rtlpriv, uint8_t *mac_addr)
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
 	struct __queue	*pacl_node_q =&pacl_list->acl_node_q;
 
-	_enter_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_lock_bh(&(pacl_node_q->lock));
 	phead = get_list_head(pacl_node_q);
 	plist = get_next(phead);
 	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
@@ -707,7 +699,7 @@ uint8_t rtw_access_ctrl(struct rtl_priv *rtlpriv, uint8_t *mac_addr)
 		}
 	}
 
-	_exit_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_unlock_bh(&(pacl_node_q->lock));
 
 
 	if(pacl_list->mode == 1) {	/* accept unless in deny list */

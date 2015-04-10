@@ -55,7 +55,6 @@ void init_mlme_ap_info(struct rtl_priv *rtlpriv)
 
 void free_mlme_ap_info(struct rtl_priv *rtlpriv)
 {
-	_irqL irqL;
 	struct sta_info *psta = NULL;
 	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
@@ -83,9 +82,9 @@ void free_mlme_ap_info(struct rtl_priv *rtlpriv)
 	 */
 
 	psta = rtw_get_bcmc_stainfo(rtlpriv);
-	_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+	spin_lock_bh(&(pstapriv->sta_hash_lock));
 	rtw_free_stainfo(rtlpriv, psta);
-	_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+	spin_unlock_bh(&(pstapriv->sta_hash_lock));
 }
 
 static void update_BCNTIM(struct rtl_priv *rtlpriv)
@@ -348,7 +347,6 @@ uint8_t chk_sta_is_alive(struct sta_info *psta)
 
 void	expire_timeout_chk(struct rtl_priv *rtlpriv)
 {
-	_irqL irqL;
 	struct list_head	*phead, *plist;
 	uint8_t updated;
 	struct sta_info *psta = NULL;
@@ -357,7 +355,7 @@ void	expire_timeout_chk(struct rtl_priv *rtlpriv)
 	char chk_alive_list[NUM_STA];
 	int i;
 
-	_enter_critical_bh(&pstapriv->auth_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->auth_list_lock);
 
 	phead = &pstapriv->auth_list;
 	plist = get_next(phead);
@@ -383,23 +381,23 @@ void	expire_timeout_chk(struct rtl_priv *rtlpriv)
 					psta->hwaddr[0], psta->hwaddr[1], psta->hwaddr[2],
 					psta->hwaddr[3], psta->hwaddr[4], psta->hwaddr[5]);
 
-				_exit_critical_bh(&pstapriv->auth_list_lock, &irqL);
+				spin_unlock_bh(&pstapriv->auth_list_lock);
 
-				_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+				spin_lock_bh(&(pstapriv->sta_hash_lock));
 				rtw_free_stainfo(rtlpriv, psta);
-				_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+				spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
-				_enter_critical_bh(&pstapriv->auth_list_lock, &irqL);
+				spin_lock_bh(&pstapriv->auth_list_lock);
 			}
 		}
 
 	}
 
-	_exit_critical_bh(&pstapriv->auth_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->auth_list_lock);
 
 	psta = NULL;
 
-	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->asoc_list_lock);
 
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
@@ -472,7 +470,7 @@ void	expire_timeout_chk(struct rtl_priv *rtlpriv)
 		}
 	}
 
-	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 	associated_clients_update(rtlpriv, updated);
 }
@@ -599,7 +597,6 @@ void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_lev
 
 static void update_bmc_sta(struct rtl_priv *rtlpriv)
 {
-	_irqL	irqL;
 	uint32_t	 init_rate=0;
 	unsigned char	network_type, raid;
 	int i, supportRateNum = 0;
@@ -690,9 +687,9 @@ static void update_bmc_sta(struct rtl_priv *rtlpriv)
 
 		rtw_stassoc_hw_rpt(rtlpriv, psta);
 
-		_enter_critical_bh(&psta->lock, &irqL);
+		spin_lock_bh(&psta->lock);
 		psta->state = _FW_LINKED;
-		_exit_critical_bh(&psta->lock, &irqL);
+		spin_unlock_bh(&psta->lock);
 
 	} else {
 		DBG_871X("add_RATid_bmc_sta error!\n");
@@ -709,7 +706,6 @@ static void update_bmc_sta(struct rtl_priv *rtlpriv)
 
 void update_sta_info_apmode(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
-	_irqL	irqL;
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
@@ -789,9 +785,9 @@ void update_sta_info_apmode(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	//add_RATid(rtlpriv, psta);//move to ap_sta_info_defer_update()
 
 
-	_enter_critical_bh(&psta->lock, &irqL);
+	spin_lock_bh(&psta->lock);
 	psta->state |= _FW_LINKED;
-	_exit_critical_bh(&psta->lock, &irqL);
+	spin_unlock_bh(&psta->lock);
 
 
 }
@@ -1356,7 +1352,6 @@ void rtw_set_macaddr_acl(struct rtl_priv *rtlpriv, int mode)
 
 int rtw_acl_add_sta(struct rtl_priv *rtlpriv, uint8_t *addr)
 {
-	_irqL irqL;
 	struct list_head	*plist, *phead;
 	uint8_t added = _FALSE;
 	int i, ret=0;
@@ -1370,8 +1365,7 @@ int rtw_acl_add_sta(struct rtl_priv *rtlpriv, uint8_t *addr)
 	if ((NUM_ACL-1) < pacl_list->num)
 		return (-1);
 
-
-	_enter_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_lock_bh(&(pacl_node_q->lock));
 
 	phead = get_list_head(pacl_node_q);
 	plist = get_next(phead);
@@ -1389,14 +1383,14 @@ int rtw_acl_add_sta(struct rtl_priv *rtlpriv, uint8_t *addr)
 		}
 	}
 
-	_exit_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_unlock_bh(&(pacl_node_q->lock));
 
 
 	if (added == _TRUE)
 		return ret;
 
 
-	_enter_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_lock_bh(&(pacl_node_q->lock));
 
 	for(i=0; i< NUM_ACL; i++) {
 		paclnode = &pacl_list->aclnode[i];
@@ -1418,14 +1412,13 @@ int rtw_acl_add_sta(struct rtl_priv *rtlpriv, uint8_t *addr)
 
 	DBG_871X("%s, acl_num=%d\n", __func__, pacl_list->num);
 
-	_exit_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_unlock_bh(&(pacl_node_q->lock));
 
 	return ret;
 }
 
 int rtw_acl_remove_sta(struct rtl_priv *rtlpriv, uint8_t *addr)
 {
-	_irqL irqL;
 	struct list_head	*plist, *phead;
 	int i, ret=0;
 	struct rtw_wlan_acl_node *paclnode;
@@ -1435,7 +1428,7 @@ int rtw_acl_remove_sta(struct rtl_priv *rtlpriv, uint8_t *addr)
 
 	DBG_871X("%s(acl_num=%d)=" MAC_FMT "\n", __func__, pacl_list->num, MAC_ARG(addr));
 
-	_enter_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_lock_bh(&(pacl_node_q->lock));
 
 	phead = get_list_head(pacl_node_q);
 	plist = get_next(phead);
@@ -1455,7 +1448,7 @@ int rtw_acl_remove_sta(struct rtl_priv *rtlpriv, uint8_t *addr)
 		}
 	}
 
-	_exit_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_unlock_bh(&(pacl_node_q->lock));
 
 	DBG_871X("%s, acl_num=%d\n", __func__, pacl_list->num);
 
@@ -1698,7 +1691,6 @@ static void update_bcn_vendor_spec_ie(struct rtl_priv *rtlpriv, uint8_t *oui)
 
 void update_beacon(struct rtl_priv *rtlpriv, uint8_t ie_id, uint8_t *oui, uint8_t tx)
 {
-	_irqL irqL;
 	struct mlme_priv *pmlmepriv;
 	struct mlme_ext_priv	*pmlmeext;
 	//struct mlme_ext_info	*pmlmeinfo;
@@ -1715,7 +1707,7 @@ void update_beacon(struct rtl_priv *rtlpriv, uint8_t ie_id, uint8_t *oui, uint8_
 	if (_FALSE == pmlmeext->bstart_bss)
 		return;
 
-	_enter_critical_bh(&pmlmepriv->bcn_update_lock, &irqL);
+	spin_lock_bh(&pmlmepriv->bcn_update_lock);
 
 	switch(ie_id) {
 	case _TIM_IE_:
@@ -1736,7 +1728,7 @@ void update_beacon(struct rtl_priv *rtlpriv, uint8_t ie_id, uint8_t *oui, uint8_
 
 	pmlmepriv->update_bcn = _TRUE;
 
-	_exit_critical_bh(&pmlmepriv->bcn_update_lock, &irqL);
+	spin_unlock_bh(&pmlmepriv->bcn_update_lock);
 
 	if (tx) {
 		//send_beacon(rtlpriv);//send_beacon must execute on TSR level
@@ -1836,12 +1828,11 @@ void associated_clients_update(struct rtl_priv *rtlpriv, uint8_t updated)
 {
 	//update associcated stations cap.
 	if (updated == _TRUE) {
-		_irqL irqL;
 		struct list_head	*phead, *plist;
 		struct sta_info *psta=NULL;
 		struct sta_priv *pstapriv = &rtlpriv->stapriv;
 
-		_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+		spin_lock_bh(&pstapriv->asoc_list_lock);
 
 		phead = &pstapriv->asoc_list;
 		plist = get_next(phead);
@@ -1855,7 +1846,7 @@ void associated_clients_update(struct rtl_priv *rtlpriv, uint8_t updated)
 			VCS_update(rtlpriv, psta);
 		}
 
-		_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+		spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 	}
 
@@ -2085,7 +2076,6 @@ uint8_t bss_cap_update_on_sta_leave(struct rtl_priv *rtlpriv, struct sta_info *p
 
 uint8_t ap_free_sta(struct rtl_priv *rtlpriv, struct sta_info *psta, bool active, u16 reason)
 {
-	_irqL irqL;
 	uint8_t beacon_updated = _FALSE;
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
@@ -2118,9 +2108,9 @@ uint8_t ap_free_sta(struct rtl_priv *rtlpriv, struct sta_info *psta, bool active
 	rtw_clearstakey_cmd(rtlpriv, (uint8_t *)psta, (uint8_t)rtw_get_camid(psta->mac_id), _TRUE);
 
 
-	_enter_critical_bh(&psta->lock, &irqL);
+	spin_lock_bh(&psta->lock);
 	psta->state &= ~_FW_LINKED;
-	_exit_critical_bh(&psta->lock, &irqL);
+	spin_unlock_bh(&psta->lock);
 
 	{
 		rtw_indicate_sta_disassoc_event(rtlpriv, psta);
@@ -2130,9 +2120,9 @@ uint8_t ap_free_sta(struct rtl_priv *rtlpriv, struct sta_info *psta, bool active
 
 	beacon_updated = bss_cap_update_on_sta_leave(rtlpriv, psta);
 
-	_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+	spin_lock_bh(&(pstapriv->sta_hash_lock));
 	rtw_free_stainfo(rtlpriv, psta);
-	_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+	spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
 
 	return beacon_updated;
@@ -2141,7 +2131,6 @@ uint8_t ap_free_sta(struct rtl_priv *rtlpriv, struct sta_info *psta, bool active
 
 int rtw_ap_inform_ch_switch(struct rtl_priv *rtlpriv, uint8_t new_ch, uint8_t ch_offset)
 {
-	_irqL irqL;
 	struct list_head	*phead, *plist;
 	int ret=0;
 	struct sta_info *psta = NULL;
@@ -2156,7 +2145,7 @@ int rtw_ap_inform_ch_switch(struct rtl_priv *rtlpriv, uint8_t new_ch, uint8_t ch
 	DBG_871X(FUNC_NDEV_FMT" with ch:%u, offset:%u\n",
 		FUNC_NDEV_ARG(rtlpriv->ndev), new_ch, ch_offset);
 
-	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->asoc_list_lock);
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
 
@@ -2168,7 +2157,7 @@ int rtw_ap_inform_ch_switch(struct rtl_priv *rtlpriv, uint8_t new_ch, uint8_t ch
 		issue_action_spct_ch_switch(rtlpriv, psta->hwaddr, new_ch, ch_offset);
 		psta->expire_to = ((pstapriv->expire_to * 2) > 5) ? 5 : (pstapriv->expire_to * 2);
 	}
-	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 	issue_action_spct_ch_switch(rtlpriv, bc_addr, new_ch, ch_offset);
 
@@ -2177,7 +2166,6 @@ int rtw_ap_inform_ch_switch(struct rtl_priv *rtlpriv, uint8_t new_ch, uint8_t ch
 
 int rtw_sta_flush(struct rtl_priv *rtlpriv)
 {
-	_irqL irqL;
 	struct list_head	*phead, *plist;
 	int ret=0;
 	struct sta_info *psta = NULL;
@@ -2192,7 +2180,7 @@ int rtw_sta_flush(struct rtl_priv *rtlpriv)
 		return ret;
 
 
-	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->asoc_list_lock);
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
 
@@ -2205,11 +2193,11 @@ int rtw_sta_flush(struct rtl_priv *rtlpriv)
 		rtw_list_delete(&psta->asoc_list);
 		pstapriv->asoc_list_cnt--;
 
-		//_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+		//spin_unlock_bh(&pstapriv->asoc_list_lock, &irqL);
 		ap_free_sta(rtlpriv, psta, _TRUE, WLAN_REASON_DEAUTH_LEAVING);
-		//_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+		//spin_lock_bh(&pstapriv->asoc_list_lock, &irqL);
 	}
-	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 
 	issue_deauth(rtlpriv, bc_addr, WLAN_REASON_DEAUTH_LEAVING);
@@ -2291,7 +2279,6 @@ void rtw_ap_restore_network(struct rtl_priv *rtlpriv)
 	struct sta_priv * pstapriv = &rtlpriv->stapriv;
 	struct sta_info *psta;
 	struct security_priv* psecuritypriv= &(rtlpriv->securitypriv);
-	_irqL irqL;
 	struct list_head	*phead, *plist;
 	uint8_t chk_alive_num = 0;
 	char chk_alive_list[NUM_STA];
@@ -2315,7 +2302,7 @@ void rtw_ap_restore_network(struct rtl_priv *rtlpriv)
 		return;
 	}
 
-	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->asoc_list_lock);
 
 	phead = &pstapriv->asoc_list;
 	plist = get_next(phead);
@@ -2332,7 +2319,7 @@ void rtw_ap_restore_network(struct rtl_priv *rtlpriv)
 		}
 	}
 
-	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 	for (i = 0; i < chk_alive_num; i++) {
 		psta = rtw_get_stainfo_by_offset(pstapriv, chk_alive_list[i]);
@@ -2405,7 +2392,6 @@ void start_ap_mode(struct rtl_priv *rtlpriv)
 
 void stop_ap_mode(struct rtl_priv *rtlpriv)
 {
-	_irqL irqL;
 	struct list_head	*phead, *plist;
 	struct rtw_wlan_acl_node *paclnode;
 	struct sta_info *psta = NULL;
@@ -2424,7 +2410,7 @@ void stop_ap_mode(struct rtl_priv *rtlpriv)
 	rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11WEPDisabled;
 
 	//for ACL
-	_enter_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_lock_bh(&(pacl_node_q->lock));
 	phead = get_list_head(pacl_node_q);
 	plist = get_next(phead);
 	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
@@ -2439,7 +2425,7 @@ void stop_ap_mode(struct rtl_priv *rtlpriv)
 			pacl_list->num--;
 		}
 	}
-	_exit_critical_bh(&(pacl_node_q->lock), &irqL);
+	spin_unlock_bh(&(pacl_node_q->lock));
 
 	DBG_871X("%s, free acl_node_queue, num=%d\n", __func__, pacl_list->num);
 
@@ -2449,9 +2435,9 @@ void stop_ap_mode(struct rtl_priv *rtlpriv)
 	rtw_free_all_stainfo(rtlpriv);
 
 	psta = rtw_get_bcmc_stainfo(rtlpriv);
-	_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+	spin_lock_bh(&(pstapriv->sta_hash_lock));
 	rtw_free_stainfo(rtlpriv, psta);
-	_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+	spin_unlock_bh(&(pstapriv->sta_hash_lock));
 
 	rtw_init_bcmc_stainfo(rtlpriv);
 

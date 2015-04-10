@@ -953,7 +953,6 @@ _END_ONBEACON_:
 unsigned int OnAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 {
 #ifdef CONFIG_AP_MODE
-	_irqL irqL;
 	unsigned int	auth_mode, seq, ie_len;
 	unsigned char	*sa, *p;
 	u16	algorithm;
@@ -1044,7 +1043,7 @@ unsigned int OnAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 	}
 	else
 	{
-		_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+		spin_lock_bh(&pstapriv->asoc_list_lock);
 		if(list_empty(&pstat->asoc_list)==_FALSE)
 		{
 			rtw_list_delete(&pstat->asoc_list);
@@ -1054,20 +1053,20 @@ unsigned int OnAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 				//TODO: STA re_auth within expire_to
 			}
 		}
-		_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+		spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 		if (seq==1) {
 			//TODO: STA re_auth and auth timeout
 		}
 	}
 
-	_enter_critical_bh(&pstapriv->auth_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->auth_list_lock);
 	if (list_empty(&pstat->auth_list))
 	{
 		list_add_tail(&pstat->auth_list, &pstapriv->auth_list);
 		pstapriv->auth_list_cnt++;
 	}
-	_exit_critical_bh(&pstapriv->auth_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->auth_list_lock);
 
 	if (pstat->auth_seq == 0)
 		pstat->expire_to = pstapriv->auth_to;
@@ -1282,7 +1281,6 @@ authclnt_fail:
 unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 {
 #ifdef CONFIG_AP_MODE
-	_irqL irqL;
 	u16 capab_info, listen_interval;
 	struct rtw_ieee802_11_elems elems;
 	struct sta_info	*pstat;
@@ -1757,22 +1755,22 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 	pstat->state &= (~WIFI_FW_ASSOC_STATE);
 	pstat->state |= WIFI_FW_ASSOC_SUCCESS;
 
-	_enter_critical_bh(&pstapriv->auth_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->auth_list_lock);
 	if (!list_empty(&pstat->auth_list))
 	{
 		rtw_list_delete(&pstat->auth_list);
 		pstapriv->auth_list_cnt--;
 	}
-	_exit_critical_bh(&pstapriv->auth_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->auth_list_lock);
 
-	_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_lock_bh(&pstapriv->asoc_list_lock);
 	if (list_empty(&pstat->asoc_list))
 	{
 		pstat->expire_to = pstapriv->expire_to;
 		list_add_tail(&pstat->asoc_list, &pstapriv->asoc_list);
 		pstapriv->asoc_list_cnt++;
 	}
-	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+	spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 	// now the station is qualified to join our BSS...
 	if(pstat && (pstat->state & WIFI_FW_ASSOC_SUCCESS) && (_STATS_SUCCESSFUL_==status))
@@ -1956,13 +1954,12 @@ unsigned int OnDeAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 #ifdef CONFIG_AP_MODE
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
 	{
-		_irqL irqL;
 		struct sta_info *psta;
 		struct sta_priv *pstapriv = &rtlpriv->stapriv;
 
-		//_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+		//spin_lock_bh(&(pstapriv->sta_hash_lock), &irqL);
 		//rtw_free_stainfo(rtlpriv, psta);
-		//_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+		//spin_unlock_bh(&(pstapriv->sta_hash_lock), &irqL);
 
 		DBG_871X_LEVEL(_drv_always_, "ap recv deauth reason code(%d) sta:%pM\n",
 			       	reason, GetAddr2Ptr(pframe));
@@ -1972,7 +1969,7 @@ unsigned int OnDeAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 		{
 			uint8_t updated;
 
-			_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+			spin_lock_bh(&pstapriv->asoc_list_lock);
 			if(list_empty(&psta->asoc_list)==_FALSE)
 			{
 				rtw_list_delete(&psta->asoc_list);
@@ -1980,7 +1977,7 @@ unsigned int OnDeAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 				updated = ap_free_sta(rtlpriv, psta, _FALSE, reason);
 
 			}
-			_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+			spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 			associated_clients_update(rtlpriv, updated);
 		}
@@ -2021,13 +2018,12 @@ unsigned int OnDisassoc(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 #ifdef CONFIG_AP_MODE
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
 	{
-		_irqL irqL;
 		struct sta_info *psta;
 		struct sta_priv *pstapriv = &rtlpriv->stapriv;
 
-		//_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+		//spin_lock_bh(&(pstapriv->sta_hash_lock), &irqL);
 		//rtw_free_stainfo(rtlpriv, psta);
-		//_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
+		//spin_unlock_bh(&(pstapriv->sta_hash_lock), &irqL);
 
 		DBG_871X_LEVEL(_drv_always_, "ap recv disassoc reason code(%d) sta:%pM\n",
 				reason, GetAddr2Ptr(pframe));
@@ -2037,7 +2033,7 @@ unsigned int OnDisassoc(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 		{
 			uint8_t updated;
 
-			_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+			spin_lock_bh(&pstapriv->asoc_list_lock);
 			if(list_empty(&psta->asoc_list)==_FALSE)
 			{
 				rtw_list_delete(&psta->asoc_list);
@@ -2045,7 +2041,7 @@ unsigned int OnDisassoc(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 				updated = ap_free_sta(rtlpriv, psta, _FALSE, reason);
 
 			}
-			_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
+			spin_unlock_bh(&pstapriv->asoc_list_lock);
 
 			associated_clients_update(rtlpriv, updated);
 		}
@@ -2583,7 +2579,7 @@ void dump_mgntframe(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe)
 int32_t dump_mgntframe_and_wait(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe, int timeout_ms)
 {
 	int32_t ret = _FAIL;
-	_irqL irqL;
+	unsigned long flags;
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct xmit_buf *pxmitbuf = pmgntframe->pxmitbuf;
 	struct submit_ctx sctx;
@@ -2600,9 +2596,9 @@ int32_t dump_mgntframe_and_wait(struct rtl_priv *rtlpriv, struct xmit_frame *pmg
 	if (ret == _SUCCESS)
 		ret = rtw_sctx_wait(&sctx);
 
-	_enter_critical(&pxmitpriv->lock_sctx, &irqL);
+	spin_lock_irqsave(&pxmitpriv->lock_sctx, flags);
 	pxmitbuf->sctx = NULL;
-	_exit_critical(&pxmitpriv->lock_sctx, &irqL);
+	spin_unlock_irqrestore(&pxmitpriv->lock_sctx, flags);
 
 	 return ret;
 }
@@ -2662,7 +2658,6 @@ void issue_beacon(struct rtl_priv *rtlpriv, int timeout_ms)
 	unsigned int	rate_len;
 	struct xmit_priv	*pxmitpriv = &(rtlpriv->xmitpriv);
 #if defined (CONFIG_AP_MODE)
-	_irqL irqL;
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 #endif //#if defined (CONFIG_AP_MODE)
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
@@ -2679,7 +2674,7 @@ void issue_beacon(struct rtl_priv *rtlpriv, int timeout_ms)
 		return;
 	}
 #if defined (CONFIG_AP_MODE)
-	_enter_critical_bh(&pmlmepriv->bcn_update_lock, &irqL);
+	spin_lock_bh(&pmlmepriv->bcn_update_lock);
 #endif //#if defined (CONFIG_AP_MODE)
 
 	//update attribute
@@ -2800,7 +2795,7 @@ _issue_bcn:
 #if defined (CONFIG_AP_MODE)
 	pmlmepriv->update_bcn = _FALSE;
 
-	_exit_critical_bh(&pmlmepriv->bcn_update_lock, &irqL);
+	spin_unlock_bh(&pmlmepriv->bcn_update_lock);
 #endif //#if defined (CONFIG_AP_MODE)
 
 	if ((pattrib->pktlen + TXDESC_SIZE) > 512)
@@ -4161,7 +4156,6 @@ exit:
 
 void issue_action_spct_ch_switch(struct rtl_priv *rtlpriv, uint8_t *ra, uint8_t new_ch, uint8_t ch_offset)
 {
-	_irqL	irqL;
 	struct list_head		*plist, *phead;
 	struct xmit_frame			*pmgntframe;
 	struct pkt_attrib			*pattrib;
@@ -4371,7 +4365,6 @@ void issue_action_BA(struct rtl_priv *rtlpriv, unsigned char *raddr, unsigned ch
 
 static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 {
-	_irqL	irqL;
 	struct list_head		*plist, *phead;
 	unsigned char category, action;
 	struct xmit_frame			*pmgntframe;
@@ -4451,7 +4444,7 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 	{
 		int i;
 
-		_enter_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+		spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 
 		phead = get_list_head(queue);
 		plist = get_next(phead);
@@ -4485,7 +4478,7 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 
 		}
 
-		_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 
 
 		for(i= 0;i<8;i++)
@@ -5728,7 +5721,6 @@ Following are the event callback functions
 //for sta/adhoc mode
 void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
-	_irqL	irqL;
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -5781,9 +5773,9 @@ void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	memcpy(&psta->vhtpriv, &pmlmepriv->vhtpriv, sizeof(struct vht_priv));
 #endif //CONFIG_80211AC_VHT
 
-	_enter_critical_bh(&psta->lock, &irqL);
+	spin_lock_bh(&psta->lock);
 	psta->state = _FW_LINKED;
-	_exit_critical_bh(&psta->lock, &irqL);
+	spin_unlock_bh(&psta->lock);
 
 }
 
@@ -7064,7 +7056,6 @@ uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 #ifdef CONFIG_AP_MODE
 	else //tx bc/mc frames after update TIM
 	{
-		_irqL irqL;
 		struct sta_info *psta_bmc;
 		struct list_head	*xmitframe_plist, *xmitframe_phead;
 		struct xmit_frame *pxmitframe=NULL;
@@ -7079,8 +7070,8 @@ uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 		if((pstapriv->tim_bitmap&BIT(0)) && (psta_bmc->sleepq_len>0))
 		{
 			msleep(10);// 10ms, ATIM(HIQ) Windows
-			//_enter_critical_bh(&psta_bmc->sleep_q.lock, &irqL);
-			_enter_critical_bh(&pxmitpriv->lock, &irqL);
+			//spin_lock_bh(&psta_bmc->sleep_q.lock, &irqL);
+			spin_lock_bh(&pxmitpriv->lock);
 
 			xmitframe_phead = get_list_head(&psta_bmc->sleep_q);
 			xmitframe_plist = get_next(xmitframe_phead);
@@ -7109,8 +7100,8 @@ uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 			}
 
-			//_exit_critical_bh(&psta_bmc->sleep_q.lock, &irqL);
-			_exit_critical_bh(&pxmitpriv->lock, &irqL);
+			//spin_unlock_bh(&psta_bmc->sleep_q.lock, &irqL);
+			spin_unlock_bh(&pxmitpriv->lock);
 
 
 		}

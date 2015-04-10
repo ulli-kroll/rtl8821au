@@ -297,7 +297,7 @@ static void _rtl_usb_io_handler_release(struct rtl_priv *rtlpriv)
 
 static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 {
-	_irqL irqL;
+	unsigned long flags;
 	int i;
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)purb->context;
 	/* struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data; */
@@ -330,7 +330,7 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 
 
 /*
-	_enter_critical(&pxmitpriv->lock, &irqL);
+	spin_lock_irqsave(&pxmitpriv->lock, &irqL);
 
 	pxmitpriv->txirp_cnt--;
 
@@ -360,7 +360,7 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 
 	}
 
-	_exit_critical(&pxmitpriv->lock, &irqL);
+	spin_unlock_irqrestore(&pxmitpriv->lock, &irqL);
 
 
 	if(pxmitpriv->txirp_cnt==0)
@@ -415,10 +415,10 @@ static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 	}
 
 check_completion:
-	_enter_critical(&pxmitpriv->lock_sctx, &irqL);
+	spin_lock_irqsave(&pxmitpriv->lock_sctx, flags);
 	rtw_sctx_done_err(&pxmitbuf->sctx,
 		purb->status ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
-	_exit_critical(&pxmitpriv->lock_sctx, &irqL);
+	spin_unlock_irqrestore(&pxmitpriv->lock_sctx, flags);
 
 	rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 
@@ -432,7 +432,7 @@ check_completion:
 
 u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf)
 {
-	_irqL irqL;
+	unsigned long flags;
 	unsigned int pipe;
 	int status;
 	u32 ret = _FAIL, bwritezero = _FALSE;
@@ -452,7 +452,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf 
 		goto exit;
 	}
 
-	_enter_critical(&pxmitpriv->lock, &irqL);
+	spin_lock_irqsave(&pxmitpriv->lock, flags);
 
 	switch(addr) {
 		case VO_QUEUE_INX:
@@ -479,7 +479,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf 
 			break;
 	}
 
-	_exit_critical(&pxmitpriv->lock, &irqL);
+	spin_unlock_irqrestore(&pxmitpriv->lock, flags);
 
 	purb	= pxmitbuf->pxmit_urb[0];
 
@@ -575,17 +575,16 @@ void usb_write_port_cancel(struct rtl_priv *rtlpriv)
 
 static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 {
-	_irqL irqL;
 	uint isevt, *pbuf;
 	struct recv_buf	*precvbuf = (struct recv_buf *) purb->context;
 	struct rtl_priv 		*rtlpriv = (struct rtl_priv *) precvbuf->rtlpriv;
 	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 
 	/*
-	 * _enter_critical(&precvpriv->lock, &irqL);
+	 * spin_lock_irqsave(&precvpriv->lock, &irqL);
 	 * precvbuf->irp_pending=_FALSE;
 	 * precvpriv->rx_pending_cnt --;
-	 * _exit_critical(&precvpriv->lock, &irqL);
+	 * spin_unlock_irqrestore(&precvpriv->lock, &irqL);
 	 */
 
 	precvpriv->rx_pending_cnt--;
@@ -672,7 +671,6 @@ exit:
 
 uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 {
-	_irqL irqL;
 	int err;
 	unsigned int pipe;
 	SIZE_PTR tmpaddr = 0;
@@ -732,10 +730,10 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 		}
 
 		/*
-		 * _enter_critical(&precvpriv->lock, &irqL);
+		 * spin_lock_irqsave(&precvpriv->lock, &irqL);
 		 * precvpriv->rx_pending_cnt++;
 		 * precvbuf->irp_pending = _TRUE;
-		 * _exit_critical(&precvpriv->lock, &irqL);
+		 * spin_unlock_irqrestore(&precvpriv->lock, &irqL);
 		 */
 		precvpriv->rx_pending_cnt++;
 

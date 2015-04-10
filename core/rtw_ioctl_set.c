@@ -62,7 +62,6 @@ _func_exit_;
 uint8_t rtw_do_join(struct rtl_priv * rtlpriv);
 uint8_t rtw_do_join(struct rtl_priv * rtlpriv)
 {
-	_irqL	irqL;
 	struct list_head	*plist, *phead;
 	uint8_t * pibss = NULL;
 	struct	mlme_priv	*pmlmepriv = &(rtlpriv->mlmepriv);
@@ -71,7 +70,7 @@ uint8_t rtw_do_join(struct rtl_priv * rtlpriv)
 
 _func_enter_;
 
-	_enter_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 	phead = get_list_head(queue);
 	plist = get_next(phead);
 
@@ -85,7 +84,7 @@ _func_enter_;
 
 	if(_rtw_queue_empty(queue)== _TRUE)
 	{
-		_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 
 		//when set_ssid/set_bssid for rtw_do_join(), but scanning queue is empty
@@ -109,7 +108,7 @@ _func_enter_;
 	else
 	{
 		int select_ret;
-		_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 		if((select_ret=rtw_select_and_join_from_scanned_queue(pmlmepriv))==_SUCCESS)
 		{
 			pmlmepriv->to_join = _FALSE;
@@ -193,7 +192,6 @@ _func_exit_;
 
 uint8_t rtw_set_802_11_bssid(struct rtl_priv* rtlpriv, uint8_t *bssid)
 {
-	_irqL irqL;
 	uint8_t status=_SUCCESS;
 
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
@@ -209,7 +207,7 @@ _func_enter_;
 		goto exit;
 	}
 
-	_enter_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_lock_bh(&pmlmepriv->lock);
 
 
 	DBG_871X("Set BSSID under fw_state=0x%08x\n", get_fwstate(pmlmepriv));
@@ -257,7 +255,7 @@ handle_tkip_countermeasure:
 	}
 
 release_mlme_lock:
-	_exit_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_unlock_bh(&pmlmepriv->lock);
 
 exit:
 
@@ -268,7 +266,6 @@ _func_exit_;
 
 uint8_t rtw_set_802_11_ssid(struct rtl_priv* rtlpriv, NDIS_802_11_SSID *ssid)
 {
-	_irqL irqL;
 	uint8_t status = _SUCCESS;
 	uint32_t	 cur_time = 0;
 
@@ -285,7 +282,7 @@ _func_enter_;
 		goto exit;
 	}
 
-	_enter_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_lock_bh(&pmlmepriv->lock);
 
 	DBG_871X("Set SSID under fw_state=0x%08x\n", get_fwstate(pmlmepriv));
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == _TRUE) {
@@ -367,7 +364,7 @@ handle_tkip_countermeasure:
 	}
 
 release_mlme_lock:
-	_exit_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_unlock_bh(&pmlmepriv->lock);
 
 exit:
 
@@ -380,7 +377,6 @@ _func_exit_;
 uint8_t rtw_set_802_11_infrastructure_mode(struct rtl_priv* rtlpriv,
 	NDIS_802_11_NETWORK_INFRASTRUCTURE networktype)
 {
-	_irqL irqL;
 	struct	mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct	wlan_network	*cur_network = &pmlmepriv->cur_network;
 	NDIS_802_11_NETWORK_INFRASTRUCTURE* pold_state = &(cur_network->network.InfrastructureMode);
@@ -389,7 +385,7 @@ _func_enter_;
 
 	if(*pold_state != networktype)
 	{
-		_enter_critical_bh(&pmlmepriv->lock, &irqL);
+		spin_lock_bh(&pmlmepriv->lock);
 
 		//DBG_871X("change mode, old_mode=%d, new_mode=%d, fw_state=0x%x\n", *pold_state, networktype, get_fwstate(pmlmepriv));
 
@@ -447,7 +443,7 @@ _func_enter_;
 		//RT_TRACE(COMP_OID_SET, DBG_LOUD, ("set_infrastructure: fw_state:%x after changing mode\n",
 		//									get_fwstate(pmlmepriv) ));
 
-		_exit_critical_bh(&pmlmepriv->lock, &irqL);
+		spin_unlock_bh(&pmlmepriv->lock);
 	}
 
 _func_exit_;
@@ -458,12 +454,11 @@ _func_exit_;
 
 uint8_t rtw_set_802_11_disassociate(struct rtl_priv *rtlpriv)
 {
-	_irqL irqL;
 	struct mlme_priv * pmlmepriv = &rtlpriv->mlmepriv;
 
 _func_enter_;
 
-	_enter_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_lock_bh(&pmlmepriv->lock);
 
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
 	{
@@ -473,7 +468,7 @@ _func_enter_;
 		rtw_pwr_wakeup(rtlpriv);
 	}
 
-	_exit_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_unlock_bh(&pmlmepriv->lock);
 
 _func_exit_;
 
@@ -482,7 +477,6 @@ _func_exit_;
 
 uint8_t rtw_set_802_11_bssid_list_scan(struct rtl_priv* rtlpriv, NDIS_802_11_SSID *pssid, int ssid_max_num)
 {
-	_irqL	irqL;
 	struct	mlme_priv		*pmlmepriv= &rtlpriv->mlmepriv;
 	uint8_t	res=_TRUE;
 
@@ -509,11 +503,11 @@ _func_enter_;
 			;
 		}
 	} else {
-		_enter_critical_bh(&pmlmepriv->lock, &irqL);
+		spin_lock_bh(&pmlmepriv->lock);
 
 		res = rtw_sitesurvey_cmd(rtlpriv, pssid, ssid_max_num, NULL, 0);
 
-		_exit_critical_bh(&pmlmepriv->lock, &irqL);
+		spin_unlock_bh(&pmlmepriv->lock);
 	}
 exit:
 

@@ -170,14 +170,13 @@ struct recv_frame *_rtw_alloc_recvframe (struct __queue *pfree_recv_queue)
 
 struct recv_frame *rtw_alloc_recvframe (struct __queue *pfree_recv_queue)
 {
-	_irqL irqL;
 	struct recv_frame  *precvframe;
 
-	_enter_critical_bh(&pfree_recv_queue->lock, &irqL);
+	spin_lock_bh(&pfree_recv_queue->lock);
 
 	precvframe = _rtw_alloc_recvframe(pfree_recv_queue);
 
-	_exit_critical_bh(&pfree_recv_queue->lock, &irqL);
+	spin_unlock_bh(&pfree_recv_queue->lock);
 
 	return precvframe;
 }
@@ -192,7 +191,6 @@ void rtw_init_recvframe(struct recv_frame *precvframe, struct recv_priv *precvpr
 
 int rtw_free_recvframe(struct recv_frame *precvframe, struct __queue *pfree_recv_queue)
 {
-	_irqL irqL;
 	struct rtl_priv *rtlpriv=precvframe->rtlpriv;
 	struct recv_priv *precvpriv = &rtlpriv->recvpriv;
 
@@ -200,7 +198,7 @@ _func_enter_;
 
 	rtw_os_free_recvframe(precvframe);
 
-	_enter_critical_bh(&pfree_recv_queue->lock, &irqL);
+	spin_lock_bh(&pfree_recv_queue->lock);
 
 	rtw_list_delete(&(precvframe->list));
 
@@ -213,7 +211,7 @@ _func_enter_;
 				precvpriv->free_recvframe_cnt++;
 	}
 
-	_exit_critical_bh(&pfree_recv_queue->lock, &irqL);
+	spin_unlock_bh(&pfree_recv_queue->lock);
 
 	return _SUCCESS;
 }
@@ -244,13 +242,12 @@ sint _rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue
 sint rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue)
 {
 	sint ret;
-	_irqL irqL;
 
 	/* _spinlock(&pfree_recv_queue->lock); */
-	_enter_critical_bh(&queue->lock, &irqL);
+	spin_lock_bh(&queue->lock);
 	ret = _rtw_enqueue_recvframe(precvframe, queue);
 	/* spin_unlock(&pfree_recv_queue->lock); */
-	_exit_critical_bh(&queue->lock, &irqL);
+	spin_unlock_bh(&queue->lock);
 
 	return ret;
 }
@@ -318,38 +315,36 @@ uint32_t rtw_free_uc_swdec_pending_queue(struct rtl_priv *rtlpriv)
 
 sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, struct __queue *queue)
 {
-	_irqL irqL;
-
-	_enter_critical_bh(&queue->lock, &irqL);
+	spin_lock_bh(&queue->lock);
 
 	rtw_list_delete(&precvbuf->list);
 	list_add(&precvbuf->list, get_list_head(queue));
 
-	_exit_critical_bh(&queue->lock, &irqL);
+	spin_unlock_bh(&queue->lock);
 
 	return _SUCCESS;
 }
 
 sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, struct __queue *queue)
 {
-	_irqL irqL;
+	unsigned long flags;
 
-	_enter_critical_ex(&queue->lock, &irqL);
+	spin_lock_irqsave(&queue->lock, flags);
 
 	rtw_list_delete(&precvbuf->list);
 
 	list_add_tail(&precvbuf->list, get_list_head(queue));
-	_exit_critical_ex(&queue->lock, &irqL);
+	spin_unlock_irqrestore(&queue->lock, flags);
 	return _SUCCESS;
 }
 
 struct recv_buf *rtw_dequeue_recvbuf (struct __queue *queue)
 {
-	_irqL irqL;
+	unsigned long flags;
 	struct recv_buf *precvbuf;
 	struct list_head	*plist, *phead;
 
-	_enter_critical_ex(&queue->lock, &irqL);
+	spin_lock_irqsave(&queue->lock, flags);
 
 	if(_rtw_queue_empty(queue) == _TRUE) {
 		precvbuf = NULL;
@@ -364,7 +359,7 @@ struct recv_buf *rtw_dequeue_recvbuf (struct __queue *queue)
 
 	}
 
-	_exit_critical_ex(&queue->lock, &irqL);
+	spin_unlock_irqrestore(&queue->lock, flags);
 
 	return precvbuf;
 
@@ -1174,13 +1169,12 @@ sint validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 
 		if ((psta->state&WIFI_SLEEP_STATE)
 		   && (pstapriv->sta_dz_bitmap&BIT(psta->aid))) {
-			_irqL irqL;
 			struct list_head	*xmitframe_plist, *xmitframe_phead;
 			struct xmit_frame *pxmitframe=NULL;
 			struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 
-			/* _enter_critical_bh(&psta->sleep_q.lock, &irqL);*/
-			_enter_critical_bh(&pxmitpriv->lock, &irqL);
+			/* spin_lock_bh(&psta->sleep_q.lock, &irqL);*/
+			spin_lock_bh(&pxmitpriv->lock);
 
 			xmitframe_phead = get_list_head(&psta->sleep_q);
 			xmitframe_plist = get_next(xmitframe_phead);
@@ -1219,11 +1213,11 @@ sint validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 					update_beacon(rtlpriv, _TIM_IE_, NULL, _FALSE);
 				}
 
-				/* _exit_critical_bh(&psta->sleep_q.lock, &irqL); */
-				_exit_critical_bh(&pxmitpriv->lock, &irqL);
+				/* spin_unlock_bh(&psta->sleep_q.lock, &irqL); */
+				spin_unlock_bh(&pxmitpriv->lock);
 			} else {
-				/* _exit_critical_bh(&psta->sleep_q.lock, &irqL); */
-				_exit_critical_bh(&pxmitpriv->lock, &irqL);
+				/* spin_unlock_bh(&psta->sleep_q.lock, &irqL); */
+				spin_unlock_bh(&pxmitpriv->lock);
 
 				/* DBG_871X("no buffered packets to xmit\n"); */
 				if (pstapriv->tim_bitmap&BIT(psta->aid)) {
@@ -2059,7 +2053,7 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, struct re
 	/* DbgPrint("+enqueue_reorder_recvframe()\n"); */
 
 	/*
-	 * _enter_critical_ex(&ppending_recvframe_queue->lock, &irql);
+	 * spin_lock_irqsave(&ppending_recvframe_queue->lock, &irql);
 	 * _rtw_spinlock_ex(&ppending_recvframe_queue->lock);
 	 */
 
@@ -2080,7 +2074,7 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, struct re
 			 */
 
 			/*
-			 * _exit_critical_ex(&ppending_recvframe_queue->lock, &irql);
+			 * spin_unlock_irqrestore(&ppending_recvframe_queue->lock, &irql);
 			 */
 
 			return _FALSE;
@@ -2093,7 +2087,7 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, struct re
 
 
 	/*
-	 * _enter_critical_ex(&ppending_recvframe_queue->lock, &irql);
+	 * spin_lock_irqsave(&ppending_recvframe_queue->lock, &irql);
 	 * _rtw_spinlock_ex(&ppending_recvframe_queue->lock);
 	 */
 
@@ -2103,7 +2097,7 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, struct re
 
 	/*
 	 * _rtw_spinunlock_ex(&ppending_recvframe_queue->lock);
-	 *_exit_critical_ex(&ppending_recvframe_queue->lock, &irql);
+	 *spin_unlock_irqrestore(&ppending_recvframe_queue->lock, &irql);
 	 */
 
 
@@ -2130,7 +2124,7 @@ int recv_indicatepkts_in_order(struct rtl_priv *rtlpriv, struct recv_reorder_ctr
 	/* DbgPrint("+recv_indicatepkts_in_order\n"); */
 
 	/*
-	 * _enter_critical_ex(&ppending_recvframe_queue->lock, &irql);
+	 * spin_lock_irqsave(&ppending_recvframe_queue->lock, &irql);
 	 * _rtw_spinlock_ex(&ppending_recvframe_queue->lock);
 	 */
 
@@ -2141,7 +2135,7 @@ int recv_indicatepkts_in_order(struct rtl_priv *rtlpriv, struct recv_reorder_ctr
 	if (bforced==_TRUE) {
 		if(list_empty(phead)) {
 			/*
-			 * _exit_critical_ex(&ppending_recvframe_queue->lock, &irql);
+			 * spin_unlock_irqrestore(&ppending_recvframe_queue->lock, &irql);
 			 * _rtw_spinunlock_ex(&ppending_recvframe_queue->lock);
 			 */
 			return _TRUE;
@@ -2216,7 +2210,7 @@ int recv_indicatepkts_in_order(struct rtl_priv *rtlpriv, struct recv_reorder_ctr
 
 	/*
 	 * _rtw_spinunlock_ex(&ppending_recvframe_queue->lock);
-	 * _exit_critical_ex(&ppending_recvframe_queue->lock, &irql);
+	 * spin_unlock_irqrestore(&ppending_recvframe_queue->lock, &irql);
 	 */
 
 
@@ -2235,7 +2229,7 @@ int recv_indicatepkts_in_order(struct rtl_priv *rtlpriv, struct recv_reorder_ctr
 		//pTS->RxIndicateState = RXTS_INDICATE_IDLE;
 	}
 */
-	/* _exit_critical_ex(&ppending_recvframe_queue->lock, &irql); */
+	/* spin_unlock_irqrestore(&ppending_recvframe_queue->lock, &irql); */
 
 	/* return _TRUE; */
 	return bPktInBuf;
@@ -2245,7 +2239,6 @@ int recv_indicatepkts_in_order(struct rtl_priv *rtlpriv, struct recv_reorder_ctr
 int recv_indicatepkt_reorder(struct rtl_priv *rtlpriv, struct recv_frame *prframe);
 int recv_indicatepkt_reorder(struct rtl_priv *rtlpriv, struct recv_frame *prframe)
 {
-	_irqL irql;
 	int retval = _SUCCESS;
 	struct rx_pkt_attrib *pattrib = &prframe->attrib;
 	struct recv_reorder_ctrl *preorder_ctrl = prframe->preorder_ctrl;
@@ -2312,7 +2305,7 @@ int recv_indicatepkt_reorder(struct rtl_priv *rtlpriv, struct recv_frame *prfram
 
 	}
 
-	_enter_critical_bh(&ppending_recvframe_queue->lock, &irql);
+	spin_lock_bh(&ppending_recvframe_queue->lock);
 
 	//s2. check if winstart_b(indicate_seq) needs to been updated
 	if(!check_indicate_seq(preorder_ctrl, pattrib->seq_num))
@@ -2320,7 +2313,7 @@ int recv_indicatepkt_reorder(struct rtl_priv *rtlpriv, struct recv_frame *prfram
 		//pHTInfo->RxReorderDropCounter++;
 		//ReturnRFDList(rtlpriv, pRfd);
 		//RT_TRACE(COMP_RX_REORDER, DBG_TRACE, ("RxReorderIndicatePacket() ==> Packet Drop!!\n"));
-		//_exit_critical_ex(&ppending_recvframe_queue->lock, &irql);
+		//spin_unlock_irqrestore(&ppending_recvframe_queue->lock, &irql);
 		//return _FAIL;
 
 		goto _err_exit;
@@ -2331,7 +2324,7 @@ int recv_indicatepkt_reorder(struct rtl_priv *rtlpriv, struct recv_frame *prfram
 	if(!enqueue_reorder_recvframe(preorder_ctrl, prframe))
 	{
 		//DbgPrint("recv_indicatepkt_reorder, enqueue_reorder_recvframe fail!\n");
-		//_exit_critical_ex(&ppending_recvframe_queue->lock, &irql);
+		//spin_unlock_irqrestore(&ppending_recvframe_queue->lock, &irql);
 		//return _FAIL;
 		goto _err_exit;
 	}
@@ -2351,11 +2344,11 @@ int recv_indicatepkt_reorder(struct rtl_priv *rtlpriv, struct recv_frame *prfram
 	if(recv_indicatepkts_in_order(rtlpriv, preorder_ctrl, _FALSE)==_TRUE)
 	{
 		_set_timer(&preorder_ctrl->reordering_ctrl_timer, REORDER_WAIT_TIME);
-		_exit_critical_bh(&ppending_recvframe_queue->lock, &irql);
+		spin_unlock_bh(&ppending_recvframe_queue->lock);
 	}
 	else
 	{
-		_exit_critical_bh(&ppending_recvframe_queue->lock, &irql);
+		spin_unlock_bh(&ppending_recvframe_queue->lock);
 		_cancel_timer_ex(&preorder_ctrl->reordering_ctrl_timer);
 	}
 
@@ -2366,7 +2359,7 @@ _success_exit:
 
 _err_exit:
 
-        _exit_critical_bh(&ppending_recvframe_queue->lock, &irql);
+        spin_unlock_bh(&ppending_recvframe_queue->lock);
 
 	return _FAIL;
 }
@@ -2374,7 +2367,6 @@ _err_exit:
 
 void rtw_reordering_ctrl_timeout_handler(void *pcontext)
 {
-	_irqL irql;
 	struct recv_reorder_ctrl *preorder_ctrl = (struct recv_reorder_ctrl *)pcontext;
 	struct rtl_priv *rtlpriv = preorder_ctrl->rtlpriv;
 	struct __queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
@@ -2387,14 +2379,14 @@ void rtw_reordering_ctrl_timeout_handler(void *pcontext)
 
 	//DBG_871X("+rtw_reordering_ctrl_timeout_handler()=>\n");
 
-	_enter_critical_bh(&ppending_recvframe_queue->lock, &irql);
+	spin_lock_bh(&ppending_recvframe_queue->lock);
 
 	if(recv_indicatepkts_in_order(rtlpriv, preorder_ctrl, _TRUE)==_TRUE)
 	{
 		_set_timer(&preorder_ctrl->reordering_ctrl_timer, REORDER_WAIT_TIME);
 	}
 
-	_exit_critical_bh(&ppending_recvframe_queue->lock, &irql);
+	spin_unlock_bh(&ppending_recvframe_queue->lock);
 
 }
 
@@ -2576,7 +2568,6 @@ int recv_func(struct rtl_priv *rtlpriv, struct recv_frame *rframe)
 	if (check_fwstate(mlmepriv, WIFI_STATION_STATE) && psecuritypriv->busetkipkey)
 	{
 		struct recv_frame *pending_frame;
-		_irqL irqL;
 
 		while((pending_frame=rtw_alloc_recvframe(&rtlpriv->recvpriv.uc_swdec_pending_queue))) {
 			if (recv_func_posthandle(rtlpriv, pending_frame) == _SUCCESS)

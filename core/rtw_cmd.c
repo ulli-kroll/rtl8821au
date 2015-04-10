@@ -141,20 +141,20 @@ ISR/Call-Back functions can't call this sub-function.
 
 sint	_rtw_enqueue_cmd(struct __queue *queue, struct cmd_obj *obj)
 {
-	_irqL irqL;
+	unsigned long flags;
 
 _func_enter_;
 
 	if (obj == NULL)
 		goto exit;
 
-	//_enter_critical_bh(&queue->lock, &irqL);
-	_enter_critical(&queue->lock, &irqL);
+	//spin_lock_bh(&queue->lock, &irqL);
+	spin_lock_irqsave(&queue->lock, flags);
 
 	list_add_tail(&obj->list, &queue->queue);
 
-	//_exit_critical_bh(&queue->lock, &irqL);
-	_exit_critical(&queue->lock, &irqL);
+	//spin_unlock_bh(&queue->lock, &irqL);
+	spin_unlock_irqrestore(&queue->lock, flags);
 
 exit:
 
@@ -165,13 +165,13 @@ _func_exit_;
 
 struct	cmd_obj	*_rtw_dequeue_cmd(struct __queue *queue)
 {
-	_irqL irqL;
+	unsigned long flags;
 	struct cmd_obj *obj;
 
 _func_enter_;
 
-	//_enter_critical_bh(&(queue->lock), &irqL);
-	_enter_critical(&queue->lock, &irqL);
+	//spin_lock_bh(&(queue->lock), &irqL);
+	spin_lock_irqsave(&queue->lock, flags);
 	if (list_empty(&(queue->queue)))
 		obj = NULL;
 	else
@@ -180,8 +180,8 @@ _func_enter_;
 		rtw_list_delete(&obj->list);
 	}
 
-	//_exit_critical_bh(&(queue->lock), &irqL);
-	_exit_critical(&queue->lock, &irqL);
+	//spin_unlock_bh(&(queue->lock), &irqL);
+	spin_unlock_irqrestore(&queue->lock, flags);
 
 _func_exit_;
 
@@ -2306,16 +2306,15 @@ _func_exit_;
 }
 void rtw_disassoc_cmd_callback(struct rtl_priv*	rtlpriv,  struct cmd_obj *pcmd)
 {
-	_irqL	irqL;
 	struct 	mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
 _func_enter_;
 
 	if (pcmd->res != H2C_SUCCESS)
 	{
-		_enter_critical_bh(&pmlmepriv->lock, &irqL);
+		spin_lock_bh(&pmlmepriv->lock);
 		set_fwstate(pmlmepriv, _FW_LINKED);
-		_exit_critical_bh(&pmlmepriv->lock, &irqL);
+		spin_unlock_bh(&pmlmepriv->lock);
 
 		goto exit;
 	}
@@ -2353,7 +2352,6 @@ _func_exit_;
 
 void rtw_createbss_cmd_callback(struct rtl_priv *rtlpriv, struct cmd_obj *pcmd)
 {
-	_irqL irqL;
 	uint8_t timer_cancelled;
 	struct sta_info *psta = NULL;
 	struct wlan_network *pwlan = NULL;
@@ -2389,7 +2387,7 @@ _func_enter_;
 	pnetwork->IELength = le32_to_cpu(pnetwork->IELength);
 #endif
 
-	_enter_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_lock_bh(&pmlmepriv->lock);
 
 
 	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) )
@@ -2408,16 +2406,14 @@ _func_enter_;
 	}
 	else
 	{
-		_irqL	irqL;
-
 		pwlan = _rtw_alloc_network(pmlmepriv);
-		_enter_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+		spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 		if ( pwlan == NULL)
 		{
 			pwlan = rtw_get_oldest_wlan_network(&pmlmepriv->scanned_queue);
 			if( pwlan == NULL)
 			{
-				_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+				spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 				goto createbss_cmd_fail;
 			}
 			pwlan->last_scanned = jiffies;
@@ -2441,14 +2437,14 @@ _func_enter_;
 
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 
-		_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
+		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 		// we will set _FW_LINKED when there is one more sat to join us (rtw_stassoc_event_callback)
 
 	}
 
 createbss_cmd_fail:
 
-	_exit_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_unlock_bh(&pmlmepriv->lock);
 
 	rtw_free_cmd_obj(pcmd);
 
@@ -2483,7 +2479,6 @@ _func_exit_;
 }
 void rtw_setassocsta_cmdrsp_callback(struct rtl_priv*	rtlpriv,  struct cmd_obj *pcmd)
 {
-	_irqL	irqL;
 	struct sta_priv * pstapriv = &rtlpriv->stapriv;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct set_assocsta_parm* passocsta_parm = (struct set_assocsta_parm*)(pcmd->parmbuf);
@@ -2499,13 +2494,13 @@ _func_enter_;
 
 	psta->aid = psta->mac_id = passocsta_rsp->cam_id;
 
-	_enter_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_lock_bh(&pmlmepriv->lock);
 
 	if ((check_fwstate(pmlmepriv, WIFI_MP_STATE) == _TRUE) && (check_fwstate(pmlmepriv, _FW_UNDER_LINKING) == _TRUE))
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 
 	set_fwstate(pmlmepriv, _FW_LINKED);
-	_exit_critical_bh(&pmlmepriv->lock, &irqL);
+	spin_unlock_bh(&pmlmepriv->lock);
 
 exit:
 	rtw_free_cmd_obj(pcmd);

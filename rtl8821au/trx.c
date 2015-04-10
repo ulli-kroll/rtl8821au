@@ -446,7 +446,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 	struct sta_info *psta = NULL;
 	struct tx_servq *ptxservq = NULL;
 
-	_irqL irqL;
 	struct list_head *xmitframe_plist = NULL, *xmitframe_phead = NULL;
 
 	uint32_t	pbuf;		/* next pkt address */
@@ -570,7 +569,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
  * 	pxmitframe->agg_num,pxmitframe->attrib.last_txcmdsz,len,pbuf,pxmitframe->pkt_offset );
  */
 
-	_enter_critical_bh(&pxmitpriv->lock, &irqL);
+	spin_lock_bh(&pxmitpriv->lock);
 
 	xmitframe_phead = get_list_head(&ptxservq->sta_pending);
 	xmitframe_plist = get_next(xmitframe_phead);
@@ -655,7 +654,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 	if (_rtw_queue_empty(&ptxservq->sta_pending) == _TRUE)
 		rtw_list_delete(&ptxservq->tx_pending);
 
-	_exit_critical_bh(&pxmitpriv->lock, &irqL);
+	spin_unlock_bh(&pxmitpriv->lock);
 #ifdef CONFIG_80211N_HT
 	if ((pfirstframe->attrib.ether_type != 0x0806) &&
 	    (pfirstframe->attrib.ether_type != 0x888e) &&
@@ -781,14 +780,13 @@ static int32_t xmitframe_direct(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
  */
 static int32_t pre_xmitframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
-	_irqL irqL;
 	int32_t res;
 	struct xmit_buf *pxmitbuf = NULL;
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct pkt_attrib *pattrib = &pxmitframe->attrib;
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
-	_enter_critical_bh(&pxmitpriv->lock, &irqL);
+	spin_lock_bh(&pxmitpriv->lock);
 
 	/* DBG_8192C("==> %s \n",__FUNCTION__); */
 
@@ -805,7 +803,7 @@ static int32_t pre_xmitframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitf
 	if (pxmitbuf == NULL)
 		goto enqueue;
 
-	_exit_critical_bh(&pxmitpriv->lock, &irqL);
+	spin_unlock_bh(&pxmitpriv->lock);
 
 	pxmitframe->pxmitbuf = pxmitbuf;
 	pxmitframe->buf_addr = pxmitbuf->pbuf;
@@ -820,7 +818,7 @@ static int32_t pre_xmitframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitf
 
 enqueue:
 	res = rtw_xmitframe_enqueue(rtlpriv, pxmitframe);
-	_exit_critical_bh(&pxmitpriv->lock, &irqL);
+	spin_unlock_bh(&pxmitpriv->lock);
 
 	if (res != _SUCCESS) {
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
@@ -1904,9 +1902,9 @@ void rtl8812_query_rx_phy_status(
 	pkt_info.DataRate = pattrib->data_rate;
 	//rtl8188e_query_rx_phy_status(precvframe, pphy_status);
 
-	//_enter_critical_bh(&pHalData->odm_stainfo_lock, &irqL);
+	//spin_lock_bh(&pHalData->odm_stainfo_lock, &irqL);
 	ODM_PhyStatusQuery(&pHalData->odmpriv,pPHYInfo,pphy_status,&(pkt_info));
-	//_exit_critical_bh(&pHalData->odm_stainfo_lock, &irqL);
+	//spin_unlock_bh(&pHalData->odm_stainfo_lock, &irqL);
 
 	precvframe->psta = NULL;
 	if (pkt_info.bPacketMatchBSSID &&

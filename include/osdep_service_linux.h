@@ -67,14 +67,12 @@
 
 	typedef struct timer_list _timer;
 
-	struct	__queue	{
+struct __queue {
 		struct	list_head	queue;
 		spinlock_t	lock;
-	};
+};
 
 	typedef	int	_OS_STATUS;
-	//typedef u32	_irqL;
-	typedef unsigned long _irqL;
 	typedef void*	thread_context;
 
 	#define thread_exit() complete_and_exit(NULL, 0)
@@ -99,36 +97,6 @@ __inline static struct list_head	*get_list_head(struct __queue	*queue)
 #define LIST_CONTAINOR(ptr, type, member) \
         ((type *)((char *)(ptr)-(SIZE_T)(&((type *)0)->member)))
 
-
-__inline static void _enter_critical(spinlock_t *plock, _irqL *pirqL)
-{
-	spin_lock_irqsave(plock, *pirqL);
-}
-
-__inline static void _exit_critical(spinlock_t *plock, _irqL *pirqL)
-{
-	spin_unlock_irqrestore(plock, *pirqL);
-}
-
-__inline static void _enter_critical_ex(spinlock_t *plock, _irqL *pirqL)
-{
-	spin_lock_irqsave(plock, *pirqL);
-}
-
-__inline static void _exit_critical_ex(spinlock_t *plock, _irqL *pirqL)
-{
-	spin_unlock_irqrestore(plock, *pirqL);
-}
-
-__inline static void _enter_critical_bh(spinlock_t *plock, _irqL *pirqL)
-{
-	spin_lock_bh(plock);
-}
-
-__inline static void _exit_critical_bh(spinlock_t *plock, _irqL *pirqL)
-{
-	spin_unlock_bh(plock);
-}
 
 __inline static void rtw_list_delete(struct list_head *plist)
 {

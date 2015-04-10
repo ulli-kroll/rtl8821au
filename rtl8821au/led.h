@@ -105,7 +105,7 @@ enum led_ctl_mode {
 	LED_CTL_CONNECTION_NO_TRANSFER = 14,
 };
 
-typedef	enum _LED_STATE{
+enum LED_STATE{
 	LED_UNKNOWN = 0,
 	RTW_LED_ON = 1,
 	RTW_LED_OFF = 2,
@@ -131,7 +131,7 @@ typedef	enum _LED_STATE{
 	LED_BLINK_Azurewave_40Mbps = 22,
 	LED_BLINK_Azurewave_80Mbps = 23,
 	LED_BLINK_Azurewave_MAXMbps = 24,
-}LED_STATE;
+};
 
 enum rtl_led_pin {
 	LED_PIN_GPIO0,
@@ -153,13 +153,13 @@ enum rtl_led_pin {
 				||(_LED)->bLedScanBlinkInProgress)
 
 
-typedef	enum _LED_STRATEGY_USB{
+enum LED_STRATEGY {
 	SW_LED_MODE1 = 1, // 2 LEDs, through LED0 and LED1. For ALPHA.
 	SW_LED_MODE9 = 9, //for Belkin AC950
 	SW_LED_MODE10 = 10, //for Netgear A6200V2
 	SW_LED_MODE11 = 11, //for Edimax / ASUS
 	SW_LED_MODE13 = 13, //for Netgear A6100, 8811Au
-}LED_STRATEGY_USB, *PLED_STRATEGY_USB;
+};
 
 
 struct rtl_led {
@@ -167,7 +167,7 @@ struct rtl_led {
 
 	enum rtl_led_pin		LedPin;	// Identify how to implement this SW led.
 
-	LED_STATE			CurrLedState; // Current LED state.
+	enum LED_STATE			CurrLedState; // Current LED state.
 	BOOLEAN				bLedOn; // TRUE if LED is ON, FALSE if LED is OFF.
 
 	BOOLEAN				bSWLedCtrl;
@@ -182,21 +182,19 @@ struct rtl_led {
 
 	u32					BlinkTimes; // Number of times to toggle led state for blinking.
 	uint8_t					BlinkCounter; //Added for turn off overlap led after blinking a while, by page, 20120821
-	LED_STATE			BlinkingLedState; // Next state for blinking, either LED_ON or LED_OFF are.
+	enum LED_STATE			BlinkingLedState; // Next state for blinking, either LED_ON or LED_OFF are.
 
 	_timer				BlinkTimer; // Timer object for led blinking.
 
 	struct work_struct			BlinkWorkItem; // Workitem used by BlinkTimer to manipulate H/W to blink LED.
 };
 
-typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;
-
 struct rtl_led_ctl {
 	/* add for led controll */
 	struct rtl_led SwLed0;
 	struct rtl_led SwLed1;
 	struct rtl_led SwLed2;
-	LED_STRATEGY		LedStrategy;
+	enum LED_STRATEGY LedStrategy;
 	void (*SwLedOn)(struct rtl_priv *rtlpriv, struct rtl_led *pLed);
 	void (*SwLedOff)(struct rtl_priv *rtlpriv, struct rtl_led *pLed);
 	/* add for led controll */

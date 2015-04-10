@@ -29,8 +29,8 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	.get_bbreg = 	rtl8821au_phy_query_bb_reg,
 	.set_bbreg = 	rtl8821au_phy_set_bb_reg,
-	.get_rfreg = 	PHY_QueryRFReg8812,
-	.set_rfreg = 	PHY_SetRFReg8812,
+	.get_rfreg = 	rtl8821au_phy_query_rf_reg,
+	.set_rfreg = 	rtl8821au_phy_set_rf_reg,
 	
 	.init_sw_leds = rtl8821au_init_sw_leds,
 	.deinit_sw_leds = rtl8812au_deinit_sw_leds,

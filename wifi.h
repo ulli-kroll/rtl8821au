@@ -456,11 +456,11 @@ struct rtl_hal_ops {
 
 	void	(*hal_dm_watchdog)(struct rtl_priv *rtlpriv);
 
-	uint8_t	(*GetHalDefVarHandler)(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, PVOID pValue);
-	uint8_t	(*SetHalDefVarHandler)(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, PVOID pValue);
+	uint8_t	(*GetHalDefVarHandler)(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);
+	uint8_t	(*SetHalDefVarHandler)(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);
 
-	void	(*GetHalODMVarHandler)(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1,BOOLEAN bSet);
-	void	(*SetHalODMVarHandler)(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1,BOOLEAN bSet);
+	void	(*GetHalODMVarHandler)(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);
+	void	(*SetHalODMVarHandler)(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);
 
 	void	(*UpdateRAMaskHandler)(struct rtl_priv *rtlpriv, u32 mac_id, uint8_t rssi_level);
 	void	(*SetBeaconRelatedRegistersHandler)(struct rtl_priv *rtlpriv);

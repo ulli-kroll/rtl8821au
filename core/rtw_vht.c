@@ -199,7 +199,7 @@ uint32_t	rtw_vht_rate_to_bitmap(uint8_t *pVHTRate)
 	return RateBitmap;
 }
 
-void update_sta_vht_info_apmode(struct rtl_priv *rtlpriv, PVOID psta)
+void update_sta_vht_info_apmode(struct rtl_priv *rtlpriv, void *psta)
 {
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	struct vht_priv *pvhtpriv_ap = &pmlmepriv->vhtpriv;

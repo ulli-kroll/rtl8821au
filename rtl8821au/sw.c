@@ -17,8 +17,8 @@ u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv, uint8_t efuseType);
 int rtl8812_Efuse_PgPacketRead(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t *data);
 int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t word_en, uint8_t *data);
 u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv, u16 efuse_addr, uint8_t word_en, uint8_t *data);
-void rtl8812_GetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1, BOOLEAN bSet);
-void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,	PVOID 	pValue1, BOOLEAN bSet);
+void rtl8812_GetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1, BOOLEAN bSet);
+void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,	void *	pValue1, BOOLEAN bSet);
 void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable);
 
 static struct rtl_hal_ops rtl8821au_hal_ops = {

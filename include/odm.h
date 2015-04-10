@@ -975,7 +975,7 @@ VOID
 ODM_CmnInfoHook(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		PVOID			pValue
+	IN		void 	*pValue
 	);
 
 VOID
@@ -983,7 +983,7 @@ ODM_CmnInfoPtrArrayHook(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		u16			Index,
-	IN		PVOID			pValue
+	IN		void *pValue
 	);
 
 VOID

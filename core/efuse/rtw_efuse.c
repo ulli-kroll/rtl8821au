@@ -120,7 +120,7 @@ EFUSE_Read1Byte(
 	uint32_t	k=0;
 	u16	contentLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
 
 	if (Address < contentLen)	//E-fuse 512Byte
 	{
@@ -190,7 +190,7 @@ EFUSE_Write1Byte(
 	uint32_t	k=0;
 	u16	contentLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (PVOID)&contentLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
 
 	if( Address < contentLen)	//E-fuse 512Byte
 	{
@@ -421,7 +421,7 @@ Efuse_WordEnableDataWrite(		struct rtl_priv *rtlpriv,
 u16 efuse_GetMaxSize(struct rtl_priv *rtlpriv)
 {
 	u16	max_size;
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_size);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (void *)&max_size);
 	return max_size;
 }
 //------------------------------------------------------------------------------
@@ -429,7 +429,7 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 {
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
@@ -447,7 +447,7 @@ uint8_t rtw_BT_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint
 {
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
@@ -470,7 +470,7 @@ uint8_t rtw_efuse_map_write(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_
 	uint8_t	ret = _SUCCESS;
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
@@ -568,7 +568,7 @@ uint8_t rtw_BT_efuse_map_write(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uin
 	uint8_t	ret = _SUCCESS;
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
@@ -684,7 +684,7 @@ Efuse_ReadAllMap(
 
 	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv,_FALSE, _TRUE);
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, efuseType, 0, mapLen, Efuse);
 
@@ -842,7 +842,7 @@ void EFUSE_ShadowMapUpdate(
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if (pEEPROM->bautoload_fail_flag == _TRUE)
 	{
@@ -854,8 +854,8 @@ void EFUSE_ShadowMapUpdate(
 
 	}
 
-	//PlatformMoveMemory((PVOID)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0],
-	//(PVOID)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen);
+	//PlatformMoveMemory((void *)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0],
+	//(void *)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen);
 }// EFUSE_ShadowMapUpdate
 
 

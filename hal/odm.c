@@ -347,7 +347,7 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 }
 
 
-void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValue)
+void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValue)
 {
 	/*
 	 * Hook call by reference pointer.
@@ -439,7 +439,7 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, PVOID pValu
 
 
 void ODM_CmnInfoPtrArrayHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
-	u16 Index, PVOID pValue)
+	u16 Index, void *pValue)
 {
 	/*
 	 * Hook call by reference pointer.

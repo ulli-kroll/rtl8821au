@@ -1300,7 +1300,7 @@ rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, uint8_t efuseType, u16	_offset,
 
 /* Do not support BT */
 static VOID Hal_EFUSEGetEfuseDefinition8812A(struct rtl_priv *rtlpriv,
-	u8 efuseType, u8 type, PVOID pOut)
+	u8 efuseType, u8 type, void *pOut)
 {
 	switch (type) {
 	case TYPE_EFUSE_MAX_SECTION:
@@ -1376,7 +1376,7 @@ static u8 Hal_EfuseWordEnableDataWrite8812A(struct rtl_priv *rtlpriv,
 	uint8_t	badworden = 0x0F;
 	uint8_t	tmpdata[8];
 
-	memset((PVOID)tmpdata, 0xff, PGPKT_DATA_SIZE);
+	memset((void *)tmpdata, 0xff, PGPKT_DATA_SIZE);
 
 	/*
 	 * RT_TRACE(COMP_EFUSE, DBG_LOUD, ("word_en = %x efuse_addr=%x\n", word_en, efuse_addr));
@@ -1513,8 +1513,8 @@ static int hal_EfusePgPacketRead_8812A(struct rtl_priv *rtlpriv,
 	if (offset > EFUSE_MAX_SECTION_JAGUAR)
 		return _FALSE;
 
-	memset((PVOID)data, 0xff, sizeof(uint8_t) * PGPKT_DATA_SIZE);
-	memset((PVOID)tmpdata, 0xff, sizeof(uint8_t) * PGPKT_DATA_SIZE);
+	memset((void *)data, 0xff, sizeof(uint8_t) * PGPKT_DATA_SIZE);
+	memset((void *)tmpdata, 0xff, sizeof(uint8_t) * PGPKT_DATA_SIZE);
 
 
 	/*
@@ -1645,7 +1645,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 
 	/* DBG_871X("hal_EfusePgPacketWrite_8812A target offset 0x%x word_en 0x%x \n", target_pkt.offset, target_pkt.word_en); */
 
-	memset((PVOID)target_pkt.data, 0xFF, sizeof(uint8_t)*8);
+	memset((void *)target_pkt.data, 0xFF, sizeof(uint8_t)*8);
 
 	efuse_WordEnableDataRead(word_en, data, target_pkt.data);
 	target_word_cnts = Efuse_CalculateWordCnts(target_pkt.word_en);
@@ -2069,7 +2069,7 @@ void ReadRFType8812A(struct rtl_priv *rtlpriv)
 }
 
 void rtl8812_GetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
-	PVOID pValue1, BOOLEAN bSet)
+	void *pValue1, BOOLEAN bSet)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *podmpriv = &pHalData->odmpriv;
@@ -2083,7 +2083,7 @@ void rtl8812_GetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
 }
 
 void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
-	PVOID pValue1, BOOLEAN bSet)
+	void *pValue1, BOOLEAN bSet)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *podmpriv = &pHalData->odmpriv;

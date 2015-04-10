@@ -115,7 +115,7 @@ void	rtw_vht_use_default_setting(struct rtl_priv *rtlpriv);
 u32	rtw_build_vht_operation_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf, uint8_t channel);
 u32	rtw_build_vht_op_mode_notify_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 u32	rtw_build_vht_cap_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf);
-void	update_sta_vht_info_apmode(struct rtl_priv *rtlpriv, PVOID psta);
+void	update_sta_vht_info_apmode(struct rtl_priv *rtlpriv, void *psta);
 void	update_hw_vht_param(struct rtl_priv *rtlpriv);
 void	VHT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE);
 void	VHT_operation_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE);

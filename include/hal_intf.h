@@ -191,11 +191,11 @@ void rtw_hal_chip_configure(struct rtl_priv *rtlpriv);
 void rtw_hal_read_chip_info(struct rtl_priv *rtlpriv);
 void rtw_hal_read_chip_version(struct rtl_priv *rtlpriv);
 
-uint8_t rtw_hal_set_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, PVOID pValue);
-uint8_t rtw_hal_get_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, PVOID pValue);
+uint8_t rtw_hal_set_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);
+uint8_t rtw_hal_get_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);
 
-void rtw_hal_set_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1,BOOLEAN bSet);
-void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, PVOID pValue1,BOOLEAN bSet);
+void rtw_hal_set_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);
+void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);
 
 void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv);
 void rtw_hal_disable_interrupt(struct rtl_priv *rtlpriv);

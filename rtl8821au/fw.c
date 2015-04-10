@@ -977,7 +977,7 @@ static VOID _FWDownloadEnable_8812(struct rtl_priv *rtlpriv, BOOLEAN enable)
 
 #define MAX_REG_BOLCK_SIZE	196
 
-static int _BlockWrite_8812(struct rtl_priv *rtlpriv, PVOID buffer, uint32_t buffSize)
+static int _BlockWrite_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t buffSize)
 {
 	int ret = _SUCCESS;
 
@@ -1038,7 +1038,7 @@ exit:
 
 
 static int _PageWrite_8812(struct rtl_priv *rtlpriv, uint32_t page,
-	PVOID buffer, uint32_t size)
+	void *buffer, uint32_t size)
 {
 	uint8_t value8;
 	uint8_t u8Page = (uint8_t) (page & 0x07) ;
@@ -1050,7 +1050,7 @@ static int _PageWrite_8812(struct rtl_priv *rtlpriv, uint32_t page,
 }
 
 
-static int _WriteFW_8812(struct rtl_priv *rtlpriv, PVOID buffer, uint32_t size)
+static int _WriteFW_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t size)
 {
 	/*
 	 * Since we need dynamic decide method of dwonload fw, so we call this function to get chip version.

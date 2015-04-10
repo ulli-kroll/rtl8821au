@@ -820,7 +820,7 @@ struct SetChannelPlan_param
 /*H2C Handler index: 60 */
 struct LedBlink_param
 {
-	PVOID	 pLed;
+	void *pLed;
 };
 
 /*H2C Handler index: 61 */

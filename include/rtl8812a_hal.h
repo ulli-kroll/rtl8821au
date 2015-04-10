@@ -38,34 +38,6 @@
 #include "rtl8812a_sreset.h"
 #endif
 
-
-//---------------------------------------------------------------------
-//		RTL8812AU From header
-//---------------------------------------------------------------------
-		#define RTL8812_FW_IMG						"rtl8812AU\\rtl8812Ufw.bin"
-		#define RTL8812_FW_WW_IMG				"rtl8812AU\\rtl8812Ufwww.bin"
-		#define RTL8812_PHY_REG					"rtl8812AU\\PHY_REG.txt"
-		#define RTL8812_AGC_TAB					"rtl8812AU\\AGC_TAB.txt"
-		#define RTL8812_PHY_MACREG 				"rtl8812AU\\MAC_REG.txt"
-		#define RTL8812_PHY_REG_PG					"rtl8812AU\\PHY_REG_PG.txt"
-		#define RTL8812_PHY_REG_MP 				"rtl8812AU\\PHY_REG_MP.txt"
-		#define RTL8812_TXPWR_LMT					"rtl8812AU\\TXPWR_LMT.txt"
-
-//---------------------------------------------------------------------
-//		RTL8821U From file
-//---------------------------------------------------------------------
-		#define RTL8821_FW_IMG						"rtl8821AU\\rtl8821Ufw.bin"
-		#define RTL8821_FW_WW_IMG				"rtl8821AU\\rtl8821Ufwww.bin"
-		#define RTL8821_PHY_REG					"rtl8821AU\\PHY_REG.txt"
-		#define RTL8821_AGC_TAB					"rtl8821AU\\AGC_TAB.txt"
-		#define RTL8821_PHY_MACREG 				"rtl8821AU\\MAC_REG.txt"
-		#define RTL8821_PHY_REG_PG					"rtl8821AU\\PHY_REG_PG.txt"
-		#define RTL8821_PHY_REG_MP 				"rtl8821AU\\PHY_REG_MP.txt"
-		#define RTL8821_TXPWR_LMT					"rtl8821AU\\TXPWR_LMT.txt"
-
-//---------------------------------------------------------------------
-//		RTL8812 Power Configuration CMDs for PCIe interface
-//---------------------------------------------------------------------
 #define Rtl8812_NIC_PWR_ON_FLOW				rtl8812_power_on_flow
 #define Rtl8812_NIC_RF_OFF_FLOW				rtl8812_radio_off_flow
 #define Rtl8812_NIC_DISABLE_FLOW				rtl8812_card_disable_flow

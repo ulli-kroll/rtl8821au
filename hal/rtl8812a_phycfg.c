@@ -53,9 +53,6 @@ void PHY_MACConfig8812(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	s8				*pszMACRegFile;
-	s8				sz8812MACRegFile[] = RTL8812_PHY_MACREG;
-
-	pszMACRegFile = sz8812MACRegFile;
 
 	/*
 	 * Config MAC

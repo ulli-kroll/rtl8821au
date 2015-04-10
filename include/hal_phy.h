@@ -117,7 +117,7 @@ typedef enum _SwChnlCmdID{
 	CmdID_SetTxPowerLevel,
 	CmdID_BBRegWrite10,
 	CmdID_WritePortUlong,
-	CmdID_WritePortUshort,
+	CmdID_WritePortu16,
 	CmdID_WritePortUchar,
 	CmdID_RF_WriteReg,
 }SwChnlCmdID;

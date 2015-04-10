@@ -9,6 +9,9 @@ int32_t rtl8812au_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfra
 int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 
+void rtl8812_query_rx_desc_status(struct recv_frame *precvframe, uint8_t *pdesc);
+void rtl8812_query_rx_phy_status(struct recv_frame *prframe, uint8_t *pphy_stat);
+
 void _dbg_dump_tx_info(struct rtl_priv	*rtlpriv,int frame_tag,u8 *ptxdesc);
 
 

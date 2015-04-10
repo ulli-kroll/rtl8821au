@@ -21,11 +21,7 @@
 #define __RTL8812A_HAL_H__
 
 //#include "hal_com.h"
-#if 1
-#include "hal_data.h"
-#else
-#include "../hal/OUTSRC/odm_precomp.h"
-#endif
+#include <odm_precomp.h>
 
 //include HAL Related header after HAL Related compiling flags
 #include "rtl8812a_spec.h"

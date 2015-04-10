@@ -1,5 +1,5 @@
 #include <drv_types.h>
-#include <hal_data.h>
+#include <rtl8812a_recv.h>
 #include <../rtl8821au/trx.h>
 
 extern int pm_netdev_open(struct net_device *ndev,uint8_t bnormal);

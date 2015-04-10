@@ -19,7 +19,6 @@
  ******************************************************************************/
 
 #include <drv_types.h>
-#include <hal_data.h>
 
 /*
  * ULLI led.c is a mess, we have two different paths for

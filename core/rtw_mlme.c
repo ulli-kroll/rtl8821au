@@ -646,7 +646,7 @@ void rtw_update_scanned_network(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *target)
 {
 	_irqL irqL;
 	struct list_head	*plist, *phead;
-	ULONG	bssid_ex_sz;
+	u32	bssid_ex_sz;
 	struct mlme_priv	*pmlmepriv = &(rtlpriv->mlmepriv);
 	struct __queue	*queue	= &(pmlmepriv->scanned_queue);
 	struct wlan_network	*pnetwork = NULL;

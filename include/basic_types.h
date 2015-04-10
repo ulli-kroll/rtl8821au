@@ -48,8 +48,6 @@
 	typedef	signed int sint;
 
 //        #define UCHAR u8
-	#define UINT u32
-	#define ULONG u32
 
 	typedef void (*proc_t)(void*);
 

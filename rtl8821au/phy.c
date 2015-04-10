@@ -2,6 +2,7 @@
 #include "phy.h"
 #include "table.h"
 #include "rf.h"
+#include "reg.h"
 /*
  * 1. BB register R/W API
  */
@@ -4086,6 +4087,162 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, BAND_TYPE Band,
 	/* DBG_871X("<=== PHY_GetTxBBSwing_8812A, out = 0x%X\n", out); */
 
 	return out;
+}
+
+
+/* 
+ * ULLI : in rtlwifi check is needed for swithing band 
+ * ULLI : is in rtl8821au_phy_switch_wirelessband() 
+ * */
+
+BOOLEAN phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW)
+{
+	uint8_t			u1Btmp;
+	BOOLEAN		ret_value = _TRUE;
+	uint8_t			Band = BAND_ON_5G, BandToSW;
+
+	u1Btmp = rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812);
+	if(u1Btmp & BIT7)
+		Band = BAND_ON_5G;
+	else
+		Band = BAND_ON_2_4G;
+
+	/* Use current channel to judge Band Type and switch Band if need. */
+	if(channelToSW > 14) {
+		BandToSW = BAND_ON_5G;
+	} else {
+		BandToSW = BAND_ON_2_4G;
+	}
+
+	if(BandToSW != Band)
+		rtl8821au_phy_switch_wirelessband(rtlpriv,BandToSW);
+
+	return ret_value;
+}
+static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	u8			u1tmp = 0;
+	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
+
+	if(Band == BAND_ON_2_4G) {
+		switch(rtlhal->rfe_type){
+		case 0: case 1: case 2:
+			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x000);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x000);
+			break;
+		case 3:
+			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x54337770);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x54337770);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
+			rtl_set_bbreg(rtlpriv, r_ANTSEL_SW_Jaguar,0x00000303, 0x1);
+			break;
+		case 4:
+			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x001);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x001);
+			break;
+		case 5:
+			/* if(BT_IsBtExist(rtlpriv)) */
+			{
+				/* rtl_write_word(rtlpriv, rA_RFE_Pinmux_Jaguar, 0x7777); */
+				rtl_write_byte(rtlpriv, rA_RFE_Pinmux_Jaguar+2, 0x77);
+			}
+			/* else */
+				/* rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777); */
+
+			rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
+
+			/* if(BT_IsBtExist(rtlpriv)) */
+			{
+				/* 
+				 * u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+2);
+				 * rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
+				 */
+				u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+3);
+				rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp &= ~BIT0));
+			}
+			/* else */
+				/* rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x000); */
+
+			rtl_set_bbreg(rtlpriv, rB_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x000);
+			break;
+		default:
+			break;
+		}
+	} else {
+		switch(rtlhal->rfe_type){
+		case 0:
+			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
+			break;
+		case 1:
+			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x000);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x000);
+			break;
+		case 2: case 4:
+			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337777);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337777);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
+			break;
+		case 3:
+			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x54337717);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x54337717);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
+			rtl_set_bbreg(rtlpriv, r_ANTSEL_SW_Jaguar,0x00000303, 0x1);
+			break;
+		case 5:
+			//if(BT_IsBtExist(rtlpriv))
+			{
+				//rtl_write_word(rtlpriv, rA_RFE_Pinmux_Jaguar, 0x7777);
+				if(rtlhal->external_pa_5g)
+					rtl_write_byte(rtlpriv, rA_RFE_Pinmux_Jaguar+2, 0x33);
+				else
+					rtl_write_byte(rtlpriv, rA_RFE_Pinmux_Jaguar+2, 0x73);
+			}
+#if 0
+			else
+			{
+				if (rtlhal->external_pa_5g)
+					rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337777);
+				else
+					rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77737777);
+			}
+#endif
+
+			if (rtlhal->external_pa_5g)
+				rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337777);
+			else
+				rtl_set_bbreg(rtlpriv, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77737777);
+
+			/* if(BT_IsBtExist(rtlpriv)) */
+			{
+				/*
+				 * u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+2);
+				 * rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
+				 */
+				u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+3);
+				rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp |= BIT0));
+			}
+			/* else */
+				/* rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x010); */
+
+			rtl_set_bbreg(rtlpriv, rB_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x010);
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)

@@ -4448,3 +4448,476 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 	/* DBG_871X("<==rtl8821au_phy_switch_wirelessband():Switch Band OK.\n"); */
 }
 
+static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t power_index,
+	u8 path, u8 rate)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	BOOLEAN		Direction = FALSE;
+	uint32_t	TxagcOffset = 0;
+
+	/*
+	 *  <20120928, Kordan> A workaround in 8812A/8821A testchip, to fix the bug of odd Tx power indexes.
+	 */
+	if ((power_index % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(rtlhal) && IS_TEST_CHIP(pHalData->VersionID))
+		power_index -= 1;
+
+	/* 2013.01.18 LukeLee: Modify TXAGC by dcmd_Dynamic_Ctrl() */
+	if (path == RF90_PATH_A) {
+		Direction = pHalData->odmpriv.IsTxagcOffsetPositiveA;
+		TxagcOffset = pHalData->odmpriv.TxagcOffsetValueA;
+	} else if (path == RF90_PATH_B) {
+		Direction = pHalData->odmpriv.IsTxagcOffsetPositiveB;
+		TxagcOffset = pHalData->odmpriv.TxagcOffsetValueB;
+	}
+	
+	if (Direction == FALSE) {
+		if(power_index > TxagcOffset)
+			power_index -= TxagcOffset;
+		else
+			power_index = 0;
+	} else {
+		power_index += TxagcOffset;
+		if (power_index > 0x3F)
+			power_index = 0x3F;
+	}
+
+	/* ULLI check register names as in rtlwifi-lib */
+
+	if (path == RF90_PATH_A) {
+		switch (rate) {
+		case MGN_1M:    
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_CCK11_CCK1, MASKBYTE0, power_index);
+			break;
+		case MGN_2M:    
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_CCK11_CCK1, MASKBYTE1, power_index);
+			break;
+		case MGN_5_5M:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_CCK11_CCK1, MASKBYTE2, power_index);
+			break;
+		case MGN_11M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_CCK11_CCK1, MASKBYTE3, power_index);
+			break;
+
+		case MGN_6M:    
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_OFDM18_OFDM6, MASKBYTE0, power_index);
+			break;
+		case MGN_9M:    
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_OFDM18_OFDM6, MASKBYTE1, power_index);
+			break;
+		case MGN_12M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_OFDM18_OFDM6, MASKBYTE2, power_index);
+			break;
+		case MGN_18M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_OFDM18_OFDM6, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_24M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_OFDM54_OFDM24, MASKBYTE0, power_index);
+			break;
+		case MGN_36M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_OFDM54_OFDM24, MASKBYTE1, power_index);
+			break;
+		case MGN_48M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_OFDM54_OFDM24, MASKBYTE2, power_index);
+			break;
+		case MGN_54M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_OFDM54_OFDM24, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_MCS0:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS03_MCS00, MASKBYTE0, power_index);
+			break;
+		case MGN_MCS1:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS03_MCS00, MASKBYTE1, power_index);
+			break;
+		case MGN_MCS2:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS03_MCS00, MASKBYTE2, power_index);
+			break;
+		case MGN_MCS3:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS03_MCS00, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_MCS4:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS07_MCS04, MASKBYTE0, power_index);
+			break;
+		case MGN_MCS5:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS07_MCS04, MASKBYTE1, power_index);
+			break;
+		case MGN_MCS6:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS07_MCS04, MASKBYTE2, power_index);
+			break;
+		case MGN_MCS7:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS07_MCS04, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_MCS8:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS11_MCS08, MASKBYTE0, power_index);
+			break;
+		case MGN_MCS9:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS11_MCS08, MASKBYTE1, power_index);
+			break;
+		case MGN_MCS10: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS11_MCS08, MASKBYTE2, power_index);
+			break;
+		case MGN_MCS11: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS11_MCS08, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_MCS12: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS15_MCS12, MASKBYTE0, power_index);
+			break;
+		case MGN_MCS13: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS15_MCS12, MASKBYTE1, power_index);
+			break;
+		case MGN_MCS14: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS15_MCS12, MASKBYTE2, power_index);
+			break;
+		case MGN_MCS15: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_MCS15_MCS12, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_VHT1SS_MCS0: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE0, power_index);
+			break;
+		case MGN_VHT1SS_MCS1: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE1, power_index);
+			break;
+		case MGN_VHT1SS_MCS2: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE2, power_index);
+			break;
+		case MGN_VHT1SS_MCS3: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS1INDEX3_NSS1INDEX0, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_VHT1SS_MCS4: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE0, power_index);
+			break;
+		case MGN_VHT1SS_MCS5: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE1, power_index);
+			break;
+		case MGN_VHT1SS_MCS6: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE2, power_index);
+			break;
+		case MGN_VHT1SS_MCS7: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS1INDEX7_NSS1INDEX4, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_VHT1SS_MCS8: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE0, power_index);
+			break;
+		case MGN_VHT1SS_MCS9: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE1, power_index);
+			break;
+		case MGN_VHT2SS_MCS0: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE2, power_index);
+			break;
+		case MGN_VHT2SS_MCS1: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX1_NSS1INDEX8, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_VHT2SS_MCS2: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE0, power_index);
+			break;
+		case MGN_VHT2SS_MCS3: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE1, power_index);
+			break;
+		case MGN_VHT2SS_MCS4: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE2, power_index);
+			break;
+		case MGN_VHT2SS_MCS5: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX5_NSS2INDEX2, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_VHT2SS_MCS6: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE0, power_index);
+			break;
+		case MGN_VHT2SS_MCS7: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE1, power_index);
+			break;
+		case MGN_VHT2SS_MCS8: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE2, power_index);
+			break;
+		case MGN_VHT2SS_MCS9: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_A_NSS2INDEX9_NSS2INDEX6, MASKBYTE3, power_index);
+			break;
+	
+		default:
+			DBG_871X("Invalid Rate!!\n");
+			break;
+		}
+	} else if (path == RF90_PATH_B) {
+		switch (rate) {
+		case MGN_1M:    
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_CCK11_CCK1, MASKBYTE0, power_index); 
+			break;
+		case MGN_2M:    
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_CCK11_CCK1, MASKBYTE1, power_index); 
+			break;
+		case MGN_5_5M:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_CCK11_CCK1, MASKBYTE2, power_index); 
+			break;
+		case MGN_11M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_CCK11_CCK1, MASKBYTE3, power_index); 
+			break;
+		
+		case MGN_6M:    
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_OFDM18_OFDM6, MASKBYTE0, power_index);
+			break;
+		case MGN_9M:    
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_OFDM18_OFDM6, MASKBYTE1, power_index);
+			break;
+		case MGN_12M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_OFDM18_OFDM6, MASKBYTE2, power_index);
+			break;
+		case MGN_18M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_OFDM18_OFDM6, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_24M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_OFDM54_OFDM24, MASKBYTE0, power_index); 
+			break;
+		case MGN_36M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_OFDM54_OFDM24, MASKBYTE1, power_index); 
+			break;
+		case MGN_48M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_OFDM54_OFDM24, MASKBYTE2, power_index); 
+			break;
+		case MGN_54M:   
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_OFDM54_OFDM24, MASKBYTE3, power_index); 
+			break;
+		
+		case MGN_MCS0:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS03_MCS00, MASKBYTE0, power_index);
+			break;
+		case MGN_MCS1:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS03_MCS00, MASKBYTE1, power_index);
+			break;
+		case MGN_MCS2:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS03_MCS00, MASKBYTE2, power_index);
+			break;
+		case MGN_MCS3:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS03_MCS00, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_MCS4:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS07_MCS04, MASKBYTE0, power_index);
+			break;
+		case MGN_MCS5:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS07_MCS04, MASKBYTE1, power_index);
+			break;
+		case MGN_MCS6:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS07_MCS04, MASKBYTE2, power_index);
+			break;
+		case MGN_MCS7:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS07_MCS04, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_MCS8:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS11_MCS08, MASKBYTE0, power_index);
+			break;
+		case MGN_MCS9:  
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS11_MCS08, MASKBYTE1, power_index);
+			break;
+		case MGN_MCS10: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS11_MCS08, MASKBYTE2, power_index);
+			break;
+		case MGN_MCS11: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS11_MCS08, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_MCS12: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS15_MCS12, MASKBYTE0, power_index);
+			break;
+		case MGN_MCS13: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS15_MCS12, MASKBYTE1, power_index);
+			break;
+		case MGN_MCS14: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS15_MCS12, MASKBYTE2, power_index);
+			break;
+		case MGN_MCS15:
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_MCS15_MCS12, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_VHT1SS_MCS0: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE0, power_index); 
+			break;
+		case MGN_VHT1SS_MCS1: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE1, power_index); 
+			break;
+		case MGN_VHT1SS_MCS2: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE2, power_index); 
+			break;
+		case MGN_VHT1SS_MCS3: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS1INDEX3_NSS1INDEX0, MASKBYTE3, power_index); 
+			break;
+		
+		case MGN_VHT1SS_MCS4: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE0, power_index);
+			break;
+		case MGN_VHT1SS_MCS5: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE1, power_index);
+			break;
+		case MGN_VHT1SS_MCS6: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE2, power_index);
+			break;
+		case MGN_VHT1SS_MCS7: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS1INDEX7_NSS1INDEX4, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_VHT1SS_MCS8: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE0, power_index);
+			break;
+		case MGN_VHT1SS_MCS9: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE1, power_index);
+			break;
+		case MGN_VHT2SS_MCS0: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE2, power_index);
+			break;
+		case MGN_VHT2SS_MCS1: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX1_NSS1INDEX8, MASKBYTE3, power_index);
+			break;
+		
+		case MGN_VHT2SS_MCS2: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE0, power_index); 
+			break;
+		case MGN_VHT2SS_MCS3: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE1, power_index); 
+			break;
+		case MGN_VHT2SS_MCS4: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE2, power_index); 
+			break;
+		case MGN_VHT2SS_MCS5: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX5_NSS2INDEX2, MASKBYTE3, power_index); 
+			break;
+		
+		case MGN_VHT2SS_MCS6: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE0, power_index);
+			break;
+		case MGN_VHT2SS_MCS7: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE1, power_index);
+			break;
+		case MGN_VHT2SS_MCS8: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE2, power_index);
+			break;
+		case MGN_VHT2SS_MCS9: 
+			rtl_set_bbreg(rtlpriv, RTXAGC_B_NSS2INDEX9_NSS2INDEX6, MASKBYTE3, power_index);
+			break;
+		
+		    default:
+		         DBG_871X("Invalid Rate!!\n");
+		         break;
+		}
+	}
+	else
+	{
+		DBG_871X("Invalid RFPath!!\n");
+	}
+}
+
+static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv, uint8_t RFPath,
+	enum CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t *Rates,
+	uint8_t	RateArraySize)
+{
+	uint32_t power_index = 0;
+	int	i = 0;
+
+	for (i = 0; i < RateArraySize; ++i) {
+		power_index = PHY_GetTxPowerIndex_8812A(rtlpriv, RFPath, Rates[i], BandWidth, Channel);
+		_rtl8821au_phy_set_txpower_index(rtlpriv, power_index, RFPath, Rates[i]);
+	}
+
+}
+static void _rtl8821au_phy_txpower_training_by_path(struct rtl_priv *rtlpriv, 
+	enum CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t RfPath)
+{
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+
+	uint8_t	i;
+	uint32_t	PowerLevel, writeData, writeOffset;
+
+	if(RfPath >= pHalData->NumTotalRFPath)
+		return;
+
+	writeData = 0;
+
+	if (RfPath == RF90_PATH_A) {
+		PowerLevel = PHY_GetTxPowerIndex_8812A(rtlpriv, RF90_PATH_A, MGN_MCS7, BandWidth, Channel);
+		writeOffset =  rA_TxPwrTraing_Jaguar;
+	} else {
+		PowerLevel = PHY_GetTxPowerIndex_8812A(rtlpriv, RF90_PATH_B, MGN_MCS7, BandWidth, Channel);
+		writeOffset =  rB_TxPwrTraing_Jaguar;
+	}
+
+	for (i = 0; i < 3; i++) {
+		if(i == 0)
+			PowerLevel = PowerLevel - 10;
+		else if(i == 1)
+			PowerLevel = PowerLevel - 8;
+		else
+			PowerLevel = PowerLevel - 6;
+			
+		writeData |= (((PowerLevel > 2)?(PowerLevel):2) << (i * 8));
+	}
+
+	rtl_set_bbreg(rtlpriv, writeOffset, 0xffffff, writeData);
+}
+
+
+static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv, 
+	uint8_t	channel, uint8_t path)
+{
+
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct registry_priv	*pregistrypriv = &rtlpriv->registrypriv;
+	uint8_t	cckRates[]   = {MGN_1M, MGN_2M, MGN_5_5M, MGN_11M};
+	uint8_t	ofdmRates[]  = {MGN_6M, MGN_9M, MGN_12M, MGN_18M, MGN_24M, MGN_36M, MGN_48M, MGN_54M};
+	uint8_t	htRates1T[]  = {MGN_MCS0, MGN_MCS1, MGN_MCS2, MGN_MCS3, MGN_MCS4, MGN_MCS5, MGN_MCS6, MGN_MCS7};
+	uint8_t	htRates2T[]  = {MGN_MCS8, MGN_MCS9, MGN_MCS10, MGN_MCS11, MGN_MCS12, MGN_MCS13, MGN_MCS14, MGN_MCS15};
+	uint8_t	vhtRates1T[] = {MGN_VHT1SS_MCS0, MGN_VHT1SS_MCS1, MGN_VHT1SS_MCS2, MGN_VHT1SS_MCS3, MGN_VHT1SS_MCS4,
+				MGN_VHT1SS_MCS5, MGN_VHT1SS_MCS6, MGN_VHT1SS_MCS7, MGN_VHT1SS_MCS8, MGN_VHT1SS_MCS9};
+	uint8_t	vhtRates2T[] = {MGN_VHT2SS_MCS0, MGN_VHT2SS_MCS1, MGN_VHT2SS_MCS2, MGN_VHT2SS_MCS3, MGN_VHT2SS_MCS4,
+				MGN_VHT2SS_MCS5, MGN_VHT2SS_MCS6, MGN_VHT2SS_MCS7, MGN_VHT2SS_MCS8, MGN_VHT2SS_MCS9};
+
+	//DBG_871X("==>PHY_SetTxPowerLevelByPath8812()\n");
+
+	//if(pMgntInfo->RegNByteAccess == 0)
+	if(pHalData->CurrentBandType == BAND_ON_2_4G)
+		_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
+								  cckRates, sizeof(cckRates)/sizeof(u8));
+
+	_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
+								  ofdmRates, sizeof(ofdmRates)/sizeof(u8));
+	_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
+								  htRates1T, sizeof(htRates1T)/sizeof(u8));
+	_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
+							  	  vhtRates1T, sizeof(vhtRates1T)/sizeof(u8));
+
+	if (pHalData->NumTotalRFPath >= 2) {
+		_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
+							  htRates2T, sizeof(htRates2T)/sizeof(u8));
+		_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
+							  vhtRates2T, sizeof(vhtRates2T)/sizeof(u8));
+	}
+
+	_rtl8821au_phy_txpower_training_by_path(rtlpriv, rtlpriv->phy.current_chan_bw, channel, path);
+
+	/* DBG_871X("<==PHY_SetTxPowerLevelByPath8812()\n"); */
+}
+
+
+
+void PHY_SetTxPowerLevel8812(struct rtl_priv *rtlpriv, uint8_t	Channel)
+{
+
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	uint8_t	path = 0;
+
+	/* DBG_871X("==>PHY_SetTxPowerLevel8812()\n"); */
+
+	for (path = RF90_PATH_A; path < pHalData->NumTotalRFPath; ++path) {
+		rtl8821au_phy_set_txpower_level_by_path(rtlpriv, Channel, path);
+	}
+
+	/* DBG_871X("<==PHY_SetTxPowerLevel8812()\n"); */
+}

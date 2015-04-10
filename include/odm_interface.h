@@ -53,7 +53,7 @@ typedef enum _ODM_H2C_CMD
 //
 typedef  void *PRT_WORK_ITEM ;
 typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
-typedef VOID (*RT_WORKITEM_CALL_BACK)(void *pContext);
+typedef void (*RT_WORKITEM_CALL_BACK)(void *pContext);
 
 
 #endif	// __ODM_INTERFACE_H__

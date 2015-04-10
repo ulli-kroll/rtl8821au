@@ -559,7 +559,7 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, PTxPowerInfo24G pwrInf
 
 }
 
-VOID Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
+void Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	BOOLEAN	AutoLoadFail)
 {
 }
@@ -581,7 +581,7 @@ void Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo)
 	DBG_8192C("EEPROM ID=0x%04x\n", EEPROMId);
 }
 
-VOID Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
+void Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN AutoloadFail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
@@ -705,7 +705,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 
 }
 
-VOID Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
+void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -721,7 +721,7 @@ VOID Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 
 }
 
-VOID Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
+void Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
@@ -746,7 +746,7 @@ VOID Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	DBG_871X("ThermalMeter = 0x%x\n", efuse->EEPROMThermalMeter);
 }
 
-VOID Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
+void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	BOOLEAN	AutoLoadFail)
 {
 	rtlpriv->mlmepriv.ChannelPlan = hal_com_get_channel_plan(
@@ -760,7 +760,7 @@ VOID Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	DBG_871X("mlmepriv.ChannelPlan = 0x%02x\n", rtlpriv->mlmepriv.ChannelPlan);
 }
 
-VOID Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
+void Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	BOOLEAN	AutoLoadFail)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -775,7 +775,7 @@ VOID Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	DBG_871X("CrystalCap: 0x%2x\n", pHalData->CrystalCap);
 }
 
-VOID Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
+void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
 	uint8_t *PROMContent, BOOLEAN AutoLoadFail)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -802,7 +802,7 @@ VOID Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
 	DBG_871X("SWAS: bHwAntDiv = %x, TRxAntDivType = %x\n", pHalData->AntDivCfg, pHalData->TRxAntDivType);
 }
 
-VOID
+void
 Hal_ReadPAType_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
@@ -867,7 +867,7 @@ Hal_ReadPAType_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	DBG_871X("pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
 }
 
-VOID
+void
 Hal_ReadPAType_8821A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	 AutoloadFail)
 {
@@ -933,7 +933,7 @@ Hal_ReadPAType_8821A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	DBG_871X("pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
 }
 
-VOID
+void
 Hal_ReadRFEType_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
@@ -983,7 +983,7 @@ Hal_ReadRFEType_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 /*
  * 2013/04/15 MH Add 8812AU- VL/VS/VN for different board type.
  */
-VOID
+void
 hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN AutoloadFail)
 {
@@ -1077,7 +1077,7 @@ enum {
  *
  */
 
-VOID
+void
 rtl8812_EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t PwrState)
 {
 	uint8_t	tempval;
@@ -1132,7 +1132,7 @@ Hal_EfuseSwitchToBank8812A(struct rtl_priv *rtlpriv, u8 bank)
 	return _FALSE;
 }
 
-static VOID
+static void
 Hal_EfuseReadEFuse8812A(struct rtl_priv *rtlpriv, u16 _offset,
 	u16 _size_byte, uint8_t *pbuf)
 {
@@ -1291,7 +1291,7 @@ exit:
 		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
 }
 
-VOID
+void
 rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, uint8_t efuseType, u16	_offset,
 	u16 _size_byte, uint8_t *pbuf)
 {
@@ -1299,7 +1299,7 @@ rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, uint8_t efuseType, u16	_offset,
 }
 
 /* Do not support BT */
-static VOID Hal_EFUSEGetEfuseDefinition8812A(struct rtl_priv *rtlpriv,
+static void Hal_EFUSEGetEfuseDefinition8812A(struct rtl_priv *rtlpriv,
 	u8 efuseType, u8 type, void *pOut)
 {
 	switch (type) {
@@ -1362,7 +1362,7 @@ static VOID Hal_EFUSEGetEfuseDefinition8812A(struct rtl_priv *rtlpriv,
 	}
 }
 
-VOID rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv, uint8_t efuseType,
+void rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv, uint8_t efuseType,
 	uint8_t	 type, void *pOut)
 {
 	Hal_EFUSEGetEfuseDefinition8812A(rtlpriv, efuseType, type, pOut);
@@ -2393,7 +2393,7 @@ void InitDefaultValue8821A(struct rtl_priv *rtlpriv)
 		pHalData->odmpriv.RFCalibrateInfo.ThermalValue_HP[i] = 0;
 }
 
-VOID _InitBeaconParameters_8812A(struct rtl_priv *rtlpriv)
+void _InitBeaconParameters_8812A(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 

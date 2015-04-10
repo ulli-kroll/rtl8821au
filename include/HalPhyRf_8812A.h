@@ -51,7 +51,7 @@ PHY_APCalibrate_8812A(
 void
 PHY_DigitalPredistortion_8812A(		IN	struct rtl_priv *rtlpriv);
 
-VOID
+void
 PHY_DPCalibrate_8812A(
 	IN 	struct _rtw_dm *pDM_Odm
 );

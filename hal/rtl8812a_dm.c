@@ -252,7 +252,7 @@ void rtl8812_InitHalDm(struct rtl_priv *rtlpriv)
 }
 
 
-VOID rtl8812_HalDmWatchDog(struct rtl_priv *rtlpriv)
+void rtl8812_HalDmWatchDog(struct rtl_priv *rtlpriv)
 {
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
 	BOOLEAN		bFwPSAwake = _TRUE;

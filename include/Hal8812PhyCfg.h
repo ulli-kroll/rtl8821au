@@ -88,7 +88,7 @@ u32 PHY_GetTxBBSwing_8812A(
 //
 // Switch bandwidth for 8192S
 //
-VOID
+void
 PHY_SetBWMode8812(
 	IN	struct rtl_priv *		rtlpriv,
 	IN	enum CHANNEL_WIDTH		Bandwidth,
@@ -98,14 +98,14 @@ PHY_SetBWMode8812(
 //
 // channel switch related funciton
 //
-VOID
+void
 PHY_SwChnl8812(
 	IN	struct rtl_priv *rtlpriv,
 	IN	uint8_t			channel
 );
 
 
-VOID
+void
 PHY_SetSwChnlBWMode8812(
 	IN	struct rtl_priv *		rtlpriv,
 	IN	uint8_t					channel,
@@ -118,7 +118,7 @@ PHY_SetSwChnlBWMode8812(
 // BB/MAC/RF other monitor API
 //
 
-VOID
+void
 storePwrIndexDiffRateOffset(
 	IN	struct rtl_priv *rtlpriv,
 	IN	u32		RegAddr,

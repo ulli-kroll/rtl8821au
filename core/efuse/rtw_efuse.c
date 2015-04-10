@@ -51,7 +51,7 @@ Efuse_CalculateWordCnts( uint8_t	word_en)
 //
 //	Created by Roger, 2008.10.21.
 //
-VOID
+void
 ReadEFuseByte(
 		struct rtl_priv *rtlpriv,
 		u16 			_offset,
@@ -674,7 +674,7 @@ exit:
  * 11/11/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-static VOID
+static void
 Efuse_ReadAllMap(
 			struct rtl_priv *rtlpriv,
 			uint8_t		efuseType,
@@ -709,7 +709,7 @@ Efuse_ReadAllMap(
  * 11/12/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-static VOID
+static void
 efuse_ShadowRead1Byte(
 		struct rtl_priv *rtlpriv,
 		u16		Offset,
@@ -722,7 +722,7 @@ efuse_ShadowRead1Byte(
 }	// EFUSE_ShadowRead1Byte
 
 //---------------Read Two Bytes
-static VOID
+static void
 efuse_ShadowRead2Byte(
 		struct rtl_priv *rtlpriv,
 		u16		Offset,
@@ -736,7 +736,7 @@ efuse_ShadowRead2Byte(
 }	// EFUSE_ShadowRead2Byte
 
 //---------------Read Four Bytes
-static VOID
+static void
 efuse_ShadowRead4Byte(
 		struct rtl_priv *rtlpriv,
 		u16		Offset,
@@ -771,13 +771,13 @@ efuse_ShadowRead4Byte(
  *
  *---------------------------------------------------------------------------*/
 #ifdef PLATFORM
-static VOID
+static void
 efuse_ShadowWrite1Byte(
 		struct rtl_priv *rtlpriv,
 		u16		Offset,
 	 	uint8_t		Value);
 #endif //PLATFORM
-static VOID
+static void
 efuse_ShadowWrite1Byte(
 		struct rtl_priv *rtlpriv,
 		u16		Offset,
@@ -790,7 +790,7 @@ efuse_ShadowWrite1Byte(
 }	// efuse_ShadowWrite1Byte
 
 //---------------Write Two Bytes
-static VOID
+static void
 efuse_ShadowWrite2Byte(
 		struct rtl_priv *rtlpriv,
 		u16		Offset,
@@ -804,7 +804,7 @@ efuse_ShadowWrite2Byte(
 }	// efuse_ShadowWrite1Byte
 
 //---------------Write Four Bytes
-static VOID
+static void
 efuse_ShadowWrite4Byte(
 		struct rtl_priv *rtlpriv,
 		u16		Offset,

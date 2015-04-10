@@ -173,7 +173,7 @@ PHY_RFShadowRead(
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
-VOID
+void
 PHY_RFShadowWrite(
 	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
@@ -186,43 +186,43 @@ PHY_RFShadowCompare(
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
-VOID
+void
 PHY_RFShadowRecorver(
 	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset);
 
-VOID
+void
 PHY_RFShadowCompareAll(
 	IN	struct rtl_priv *	rtlpriv);
 
-VOID
+void
 PHY_RFShadowRecorverAll(
 	IN	struct rtl_priv *	rtlpriv);
 
-VOID
+void
 PHY_RFShadowCompareFlagSet(
 	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
 	IN	uint8_t				Type);
 
-VOID
+void
 PHY_RFShadowRecorverFlagSet(
 	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,
 	IN	u32				Offset,
 	IN	uint8_t				Type);
 
-VOID
+void
 PHY_RFShadowCompareFlagSetAll(
 	IN	struct rtl_priv *	rtlpriv);
 
-VOID
+void
 PHY_RFShadowRecorverFlagSetAll(
 	IN	struct rtl_priv *	rtlpriv);
 
-VOID
+void
 PHY_RFShadowRefresh(
 	IN	struct rtl_priv *	rtlpriv);
 

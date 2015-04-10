@@ -901,20 +901,20 @@ static u8 DeltaSwingTableIdx_2GA_N_8188E[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 4, 5
 #define SWAW_STEP_PEAK		0
 #define SWAW_STEP_DETERMINE	1
 
-VOID ODM_Write_DIG(IN	struct _rtw_dm *pDM_Odm, 	IN	u8	CurrentIGI);
-VOID ODM_Write_CCK_CCA_Thres(IN	struct _rtw_dm *pDM_Odm, IN	u8	CurCCK_CCAThres);
+void ODM_Write_DIG(IN	struct _rtw_dm *pDM_Odm, 	IN	u8	CurrentIGI);
+void ODM_Write_CCK_CCA_Thres(IN	struct _rtw_dm *pDM_Odm, IN	u8	CurCCK_CCAThres);
 
-VOID
+void
 ODM_SetAntenna(
 	IN 	struct _rtw_dm *pDM_Odm,
 	IN	u8		Antenna);
 
 
 #define SwAntDivRestAfterLink	ODM_SwAntDivRestAfterLink
-VOID ODM_SwAntDivRestAfterLink(	IN	struct _rtw_dm *pDM_Odm);
+void ODM_SwAntDivRestAfterLink(	IN	struct _rtw_dm *pDM_Odm);
 
 #define dm_CheckTXPowerTracking 	ODM_TXPowerTrackingCheck
-VOID
+void
 ODM_TXPowerTrackingCheck(
 	IN		struct _rtw_dm *	pDM_Odm
 	);
@@ -929,7 +929,7 @@ ODM_RAStateCheck(
 
 
 #define dm_SWAW_RSSI_Check	ODM_SwAntDivChkPerPktRssi
-VOID ODM_SwAntDivChkPerPktRssi(
+void ODM_SwAntDivChkPerPktRssi(
 	IN struct _rtw_dm *	pDM_Odm,
 	IN u8			StationID,
 	IN PODM_PHY_INFO_T pPhyInfo
@@ -944,7 +944,7 @@ GetPSDData(
 
 
 
-VOID
+void
 odm_DIGbyRSSI_LPS(
 	IN		struct _rtw_dm *	pDM_Odm
 	);
@@ -957,28 +957,28 @@ uint32_t ODM_Get_Rate_Bitmap(
 
 
 
-VOID ODM_DMInit( IN	struct _rtw_dm *pDM_Odm);
+void ODM_DMInit( IN	struct _rtw_dm *pDM_Odm);
 
-VOID
+void
 ODM_DMWatchdog(
 	IN		struct _rtw_dm *		pDM_Odm			// For common use in the future
 	);
 
-VOID
+void
 ODM_CmnInfoInit(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		uint32_t			Value
 	);
 
-VOID
+void
 ODM_CmnInfoHook(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		void 	*pValue
 	);
 
-VOID
+void
 ODM_CmnInfoPtrArrayHook(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
@@ -986,29 +986,29 @@ ODM_CmnInfoPtrArrayHook(
 	IN		void *pValue
 	);
 
-VOID
+void
 ODM_CmnInfoUpdate(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		uint32_t			CmnInfo,
 	IN		uint64_t			Value
 	);
 
-VOID
+void
 ODM_InitAllTimers(
     IN struct _rtw_dm *pDM_Odm
     );
 
-VOID
+void
 ODM_CancelAllTimers(
     IN struct _rtw_dm *   pDM_Odm
     );
 
-VOID
+void
 ODM_ReleaseAllTimers(
     IN struct _rtw_dm *pDM_Odm
     );
 
-VOID
+void
 ODM_AntselStatistics_88C(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		u8			MacId,
@@ -1017,7 +1017,7 @@ ODM_AntselStatistics_88C(
 );
 
 
-VOID
+void
 ODM_UpdateInitRate(
 	IN	struct _rtw_dm *pDM_Odm,
 	IN	u8		Rate

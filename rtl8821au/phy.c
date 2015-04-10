@@ -3030,7 +3030,7 @@ u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *rtlpriv,  uint8_t Band,
  *
  * 	2010.03.09, added by Roger.
  */
-VOID phy_TxPwrAdjInPercentage(struct rtl_priv *rtlpriv, uint8_t *pTxPwrIdx)
+void phy_TxPwrAdjInPercentage(struct rtl_priv *rtlpriv, uint8_t *pTxPwrIdx)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	TxPwrInPercentage = 0;

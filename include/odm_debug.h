@@ -153,7 +153,7 @@
 #endif
 
 
-VOID
+void
 ODM_InitDebugSetting(
 	IN		struct _rtw_dm *	pDM_Odm
 	);

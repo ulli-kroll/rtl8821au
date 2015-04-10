@@ -39,7 +39,7 @@ static void _dbg_dump_macreg(struct rtl_priv *rtlpriv)
 	}
 }
 
-static VOID _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
+static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
@@ -138,7 +138,7 @@ void rtl8812au_interface_configure(struct rtl_priv *rtlpriv)
 
 }
 
-static VOID _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
+static void _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -307,7 +307,7 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 */
 
 /* Shall USB interface init this? */
-static VOID _InitInterrupt_8812AU(struct rtl_priv *rtlpriv)
+static void _InitInterrupt_8812AU(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
@@ -316,7 +316,7 @@ static VOID _InitInterrupt_8812AU(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_HIMR1_8812, pHalData->IntrMask[1]&0xFFFFFFFF);
 }
 
-static VOID _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
+static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
@@ -363,7 +363,7 @@ static VOID _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_RQPN, value32);
 }
 
-static VOID _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
+static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct registry_priv	*pregistrypriv = &rtlpriv->registrypriv;
@@ -414,7 +414,7 @@ static void _InitID_8812A(IN  struct rtl_priv *rtlpriv)
 	hal_init_macaddr(rtlpriv);	/* set mac_address */
 }
 
-static VOID _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
+static void _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
 {
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	uint8_t	txpktbuf_bndy;
@@ -431,7 +431,7 @@ static VOID _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_TDECTRL+1, txpktbuf_bndy);
 }
 
-static VOID _InitTxBufferBoundary_8812AUsb(struct rtl_priv *rtlpriv)
+static void _InitTxBufferBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	uint8_t	txpktbuf_bndy;
@@ -448,7 +448,7 @@ static VOID _InitTxBufferBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_TDECTRL+1, txpktbuf_bndy);
 }
 
-static VOID _InitPageBoundary_8812AUsb(struct rtl_priv *rtlpriv)
+static void _InitPageBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	/*
@@ -476,7 +476,7 @@ static VOID _InitPageBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 }
 
 
-static VOID _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *rtlpriv,
+static void _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *rtlpriv,
 	u16 beQ, u16 bkQ, u16 viQ,
 	u16 voQ, u16 mgtQ, u16 hiQ)
 {
@@ -489,7 +489,7 @@ static VOID _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *rtlpriv,
 	rtl_write_word(rtlpriv, REG_TRXDMA_CTRL, value16);
 }
 
-static VOID _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
+static void _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
@@ -537,7 +537,7 @@ static VOID _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 
 }
 
-static VOID _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
+static void _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
@@ -560,7 +560,7 @@ static VOID _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 	_InitNormalChipRegPriority_8812AUsb(rtlpriv, beQ, bkQ, viQ, voQ, mgtQ, hiQ);
 }
 
-static VOID _InitQueuePriority_8812AUsb(struct rtl_priv *rtlpriv)
+static void _InitQueuePriority_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 
@@ -580,14 +580,14 @@ static VOID _InitQueuePriority_8812AUsb(struct rtl_priv *rtlpriv)
 
 
 
-static VOID _InitHardwareDropIncorrectBulkOut_8812A(struct rtl_priv *rtlpriv)
+static void _InitHardwareDropIncorrectBulkOut_8812A(struct rtl_priv *rtlpriv)
 {
 	uint32_t value32 = rtl_read_dword(rtlpriv, REG_TXDMA_OFFSET_CHK);
 	value32 |= DROP_DATA_EN;
 	rtl_write_dword(rtlpriv, REG_TXDMA_OFFSET_CHK, value32);
 }
 
-static VOID _InitNetworkType_8812A(struct rtl_priv *rtlpriv)
+static void _InitNetworkType_8812A(struct rtl_priv *rtlpriv)
 {
 	uint32_t	value32;
 
@@ -598,7 +598,7 @@ static VOID _InitNetworkType_8812A(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_CR, value32);
 }
 
-static VOID _InitTransferPageSize_8812AUsb(struct rtl_priv *rtlpriv)
+static void _InitTransferPageSize_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	uint8_t	value8;
 	value8 = _PSTX(PBP_512);
@@ -606,12 +606,12 @@ static VOID _InitTransferPageSize_8812AUsb(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_PBP, value8);
 }
 
-static VOID _InitDriverInfoSize_8812A(struct rtl_priv *rtlpriv, uint8_t	drvInfoSize)
+static void _InitDriverInfoSize_8812A(struct rtl_priv *rtlpriv, uint8_t	drvInfoSize)
 {
 	rtl_write_byte(rtlpriv, REG_RX_DRVINFO_SZ, drvInfoSize);
 }
 
-static VOID _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
+static void _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	/* uint32_t			value32; */
@@ -670,7 +670,7 @@ static VOID _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
 
 }
 
-static VOID _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *rtlpriv)
+static void _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *rtlpriv)
 {
 	u16	value16;
 	uint32_t	value32;
@@ -702,7 +702,7 @@ static VOID _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *rtlpriv)
 
 }
 
-static VOID _InitEDCA_8812AUsb(struct rtl_priv *rtlpriv)
+static void _InitEDCA_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	/* Set Spec SIFS (used in NAV) */
 	rtl_write_word(rtlpriv, REG_SPEC_SIFS, 0x100a);
@@ -726,7 +726,7 @@ static VOID _InitEDCA_8812AUsb(struct rtl_priv *rtlpriv)
 }
 
 
-static VOID _InitBeaconMaxError_8812A(struct rtl_priv *rtlpriv, BOOLEAN	InfraMode)
+static void _InitBeaconMaxError_8812A(struct rtl_priv *rtlpriv, BOOLEAN	InfraMode)
 {
 	/* ULLI: looks here is some hacking done, wrong nams ?? */
 #ifdef RTL8192CU_ADHOC_WORKAROUND_SETTING
@@ -736,21 +736,21 @@ static VOID _InitBeaconMaxError_8812A(struct rtl_priv *rtlpriv, BOOLEAN	InfraMod
 #endif
 }
 
-static VOID _InitRDGSetting_8812A(struct rtl_priv *rtlpriv)
+static void _InitRDGSetting_8812A(struct rtl_priv *rtlpriv)
 {
 	rtl_write_byte(rtlpriv, REG_RD_CTRL, 0xFF);
 	rtl_write_word(rtlpriv, REG_RD_NAV_NXT, 0x200);
 	rtl_write_byte(rtlpriv, REG_RD_RESP_PKT_TH, 0x05);
 }
 
-static VOID _InitRxSetting_8812AU(struct rtl_priv *rtlpriv)
+static void _InitRxSetting_8812AU(struct rtl_priv *rtlpriv)
 {
 	rtl_write_dword(rtlpriv, REG_MACID, 0x87654321);
 	/* ULLI unknown register */
 	rtl_write_dword(rtlpriv, 0x0700, 0x87654321);
 }
 
-static VOID _InitRetryFunction_8812A(IN  struct rtl_priv *rtlpriv)
+static void _InitRetryFunction_8812A(IN  struct rtl_priv *rtlpriv)
 {
 	uint8_t	value8;
 
@@ -780,7 +780,7 @@ static VOID _InitRetryFunction_8812A(IN  struct rtl_priv *rtlpriv)
  *	12/10/2010	MHC		Seperate to smaller function.
  *
  *---------------------------------------------------------------------------*/
-static VOID usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
+static void usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
 {
 #ifdef CONFIG_USB_TX_AGGREGATION
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -816,7 +816,7 @@ static VOID usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
  *	12/10/2010	MHC		Seperate to smaller function.
  *
  *---------------------------------------------------------------------------*/
-static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
+static void usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 {
 #ifdef CONFIG_USB_RX_AGGREGATION
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -854,7 +854,7 @@ static VOID usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 #endif
 }
 
-static VOID init_UsbAggregationSetting_8812A(struct rtl_priv *rtlpriv)
+static void init_UsbAggregationSetting_8812A(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
@@ -869,7 +869,7 @@ static VOID init_UsbAggregationSetting_8812A(struct rtl_priv *rtlpriv)
 }
 
 /* Set CCK and OFDM Block "ON" */
-static VOID _BBTurnOnBlock(struct rtl_priv *rtlpriv)
+static void _BBTurnOnBlock(struct rtl_priv *rtlpriv)
 {
 	rtl_set_bbreg(rtlpriv, RFPGA0_RFMOD, bCCKEn, 0x1);
 	rtl_set_bbreg(rtlpriv, RFPGA0_RFMOD, bOFDMEn, 0x1);
@@ -880,7 +880,7 @@ enum {
 	Antenna_Right = 2,
 };
 
-static VOID _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
+static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 
@@ -1233,7 +1233,7 @@ exit:
 	return status;
 }
 
-VOID CardDisableRTL8812AU(struct rtl_priv *rtlpriv)
+void CardDisableRTL8812AU(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	u1bTmp;
@@ -1360,7 +1360,7 @@ unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv)
  *
  * -------------------------------------------------------------------
  */
-VOID hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
+void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
@@ -1396,7 +1396,7 @@ VOID hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 	DBG_871X("Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->EEPROMCustomerID, efuse->EEPROMSubCustomerID);
 }
 
-VOID hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
+void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -1420,7 +1420,7 @@ VOID hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 	DBG_8192C("%s MAC Address from EFUSE = "MAC_FMT"\n", __FUNCTION__, MAC_ARG(pEEPROM->mac_addr));
 }
 
-VOID hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
+void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	/*  struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv); */
@@ -1524,12 +1524,12 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	pHalData->bLedOpenDrain = _TRUE;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
 }
 
-static VOID ReadLEDSetting_8812AU(struct rtl_priv *rtlpriv,
+static void ReadLEDSetting_8812AU(struct rtl_priv *rtlpriv,
 	u8 *PROMContent, BOOLEAN AutoloadFail)
 {
 }
 
-VOID InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
+void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -1588,7 +1588,7 @@ static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 	InitAdapterVariablesByPROM_8812AU(rtlpriv);
 }
 
-VOID hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
+void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 

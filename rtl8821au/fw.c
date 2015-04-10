@@ -953,7 +953,7 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 }
 
 
-static VOID _FWDownloadEnable_8812(struct rtl_priv *rtlpriv, BOOLEAN enable)
+static void _FWDownloadEnable_8812(struct rtl_priv *rtlpriv, BOOLEAN enable)
 {
 	uint8_t	tmp;
 

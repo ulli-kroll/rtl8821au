@@ -29,7 +29,7 @@ static void ResumeTxBeacon(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
 }
 
-static VOID _BeaconFunctionEnable(struct rtl_priv *rtlpriv, BOOLEAN Enable,
+static void _BeaconFunctionEnable(struct rtl_priv *rtlpriv, BOOLEAN Enable,
 	BOOLEAN	Linked)
 {
 	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (BIT4 | BIT3 | BIT1));

@@ -401,7 +401,7 @@ _func_exit_;
 
 
 
-VOID read_eeprom_content(struct rtl_priv *rtlpriv)
+void read_eeprom_content(struct rtl_priv *rtlpriv)
 {
 }
 

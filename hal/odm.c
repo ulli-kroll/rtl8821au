@@ -1408,7 +1408,7 @@ void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm)
 /*
  * sherry move from DUSC to here 20110517
  */
-static VOID
+static void
 FindMinimumRSSI_Dmsp(
 	IN	struct rtl_priv *rtlpriv
 )
@@ -1691,7 +1691,7 @@ void odm_EdcaTurboCheck(struct _rtw_dm *pDM_Odm)
 
 
 
-VOID odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
+void odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
 {
 
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;

@@ -85,7 +85,7 @@ void ConfigureTxpowerTrack(struct _rtw_dm *pDM_Odm, PTXPWRTRACK_CFG pConfig)
  *        need to call this function.
  * ======================================================================
  */
-VOID ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
+void ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_efuse *efuse = rtl_efuse(pDM_Odm->rtlpriv);
 	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->rtlpriv);
@@ -118,7 +118,7 @@ VOID ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
 	rtldm->thermalvalue_lck = efuse->EEPROMThermalMeter;
 }
 
-VOID ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
+void ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);

@@ -25,7 +25,7 @@ void rtl8812_deinit_dm_priv(IN struct rtl_priv *rtlpriv);
 void rtl8812_InitHalDm(IN struct rtl_priv *rtlpriv);
 void rtl8812_HalDmWatchDog(IN struct rtl_priv *rtlpriv);
 
-//VOID rtl8192c_dm_CheckTXPowerTracking(IN struct rtl_priv *rtlpriv);
+//void rtl8192c_dm_CheckTXPowerTracking(IN struct rtl_priv *rtlpriv);
 
 //void rtl8192c_dm_RF_Saving(IN struct rtl_priv *rtlpriv, IN uint8_t bForceInNormal);
 

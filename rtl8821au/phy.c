@@ -3349,8 +3349,10 @@ static void odm_ConfigBB_TXPWR_LMT_8812A(struct _rtw_dm *pDM_Odm,
 }
 
 
-static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct _rtw_dm *pDM_Odm)
+static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 {
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 	uint32_t i		= 0;
 	uint32_t ArrayLen       = RTL8812AU_TXPWR_LMT_ARRAY_LEN;
 	u8 **Array		= RTL8812AU_TXPWR_LMT;
@@ -3383,8 +3385,11 @@ static void odm_ConfigBB_TXPWR_LMT_8821A(struct _rtw_dm *pDM_Odm,
 }
 
 
-static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct _rtw_dm *pDM_Odm)
+static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 {
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
+
 	uint32_t i		= 0;
 	uint32_t ArrayLen       = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
 	u8 **Array		= RTL8821AU_TXPWR_LMT;
@@ -3405,15 +3410,14 @@ static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct _rtw_dm *pDM_Odm)
 
 }
 
-void _rtl8821au_phy_read_and_config_txpwr_lmt(struct _rtw_dm *pDM_Odm)
+void _rtl8821au_phy_read_and_config_txpwr_lmt(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-		ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(pDM_Odm);
+		ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(rtlpriv);
 	if (IS_HARDWARE_TYPE_8821U(rtlhal))
-		ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(pDM_Odm);
+		ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(rtlpriv);
 }
 
 

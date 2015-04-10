@@ -135,7 +135,7 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)
 
 	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->EEPROMRegulatory != 2) ||
 	     efuse->EEPROMRegulatory == 1) {
-		_rtl8821au_phy_read_and_config_txpwr_lmt(&pHalData->odmpriv);
+		_rtl8821au_phy_read_and_config_txpwr_lmt(rtlpriv);
 	}
 
 	/* Read PHY_REG.TXT BB INIT!! */

@@ -73,7 +73,6 @@ struct __queue {
 };
 
 	typedef	int	_OS_STATUS;
-	typedef void*	thread_context;
 
 	#define thread_exit() complete_and_exit(NULL, 0)
 

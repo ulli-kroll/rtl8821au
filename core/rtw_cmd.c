@@ -322,7 +322,7 @@ _func_enter_;
 _func_exit_;
 }
 
-int rtw_cmd_thread(thread_context context)
+int rtw_cmd_thread(void *context)
 {
 	uint8_t ret;
 	struct cmd_obj *pcmd;

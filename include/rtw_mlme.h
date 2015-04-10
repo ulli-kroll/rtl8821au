@@ -465,7 +465,7 @@ extern void rtw_cpwm_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 extern void rtw_join_timeout_handler(RTW_TIMER_HDL_ARGS);
 extern void _rtw_scan_timeout_handler(RTW_TIMER_HDL_ARGS);
 
-int event_thread(thread_context context);
+int event_thread(void *context);
 
 extern void rtw_free_network_queue(struct rtl_priv *rtlpriv,uint8_t isfreeall);
 extern int rtw_init_mlme_priv(struct rtl_priv *rtlpriv);// (struct mlme_priv *pmlmepriv);

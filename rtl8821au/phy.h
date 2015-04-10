@@ -14,4 +14,6 @@ void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radi
 void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radio_path eRFPath);
 void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band);
 
+uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, BAND_TYPE Band,
+	uint8_t	RFPath);
 #endif

@@ -260,7 +260,7 @@ static u8 getSwingIndex(struct _rtw_dm *pDM_Odm)
 	u8 			i = 0;
 	uint32_t 			bbSwing;
 
-	bbSwing = PHY_GetTxBBSwing_8812A(rtlpriv, pHalData->CurrentBandType, RF90_PATH_A);
+	bbSwing = phy_get_tx_swing_8821au(rtlpriv, pHalData->CurrentBandType, RF90_PATH_A);
 
 	for (i = 0; i < TXSCALE_TABLE_SIZE; ++i)
 		if (bbSwing == TxScalingTable_Jaguar[i])

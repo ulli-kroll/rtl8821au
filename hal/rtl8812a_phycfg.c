@@ -64,7 +64,7 @@ void PHY_MACConfig8812(struct rtl_priv *rtlpriv)
 	/* ULLI strange only for rtl8821au ?? */
 	/* Ulli check for RTL8812_PHY_MACREG file */
 	 
-	_rtl8821au_phy_config_mac_with_headerfile(&pHalData->odmpriv);
+	_rtl8821au_phy_config_mac_with_headerfile(rtlpriv);
 }
 
 

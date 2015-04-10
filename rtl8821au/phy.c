@@ -3445,9 +3445,8 @@ static BOOLEAN CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 	return TRUE;
 }
 
-static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
+static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	
 	uint32_t     hex         = 0;
@@ -3468,8 +3467,9 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 	hex += _interface << 8;
 	hex += platform << 16;
 	hex += 0xFF000000;
+#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_MAC_REG, hex = 0x%X\n", hex));
-
+#endif
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];
 		uint32_t v2 = Array[i+1];
@@ -3507,9 +3507,8 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct _rtw_dm *pDM_Odm)
 
 }
 
-static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
+static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
 	uint32_t     hex         = 0;
@@ -3525,13 +3524,13 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 	uint32_t     ArrayLen    = RTL8821AUMAC_1T_ARRAYLEN;
 	uint32_t    *Array       = RTL8821AU_MAC_REG_ARRAY;
 
-
 	hex += board;
 	hex += _interface << 8;
 	hex += platform << 16;
 	hex += 0xFF000000;
+#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_MAC_REG, hex = 0x%X\n", hex));
-
+#endif
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];
 		uint32_t v2 = Array[i+1];
@@ -3557,7 +3556,7 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 				while (v2 != 0xDEAD &&
 					v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen - 2) {
-						rtl_write_byte(pDM_Odm->rtlpriv, v1, (u8)v2);
+						rtl_write_byte(rtlpriv, v1, (u8)v2);
 						READ_NEXT_PAIR(Array, v1, v2, i);
 				}
 
@@ -3572,22 +3571,22 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct _rtw_dm * pDM_Odm)
 }
 
 
-void _rtl8821au_phy_config_mac_with_headerfile(struct _rtw_dm *pDM_Odm)
+void _rtl8821au_phy_config_mac_with_headerfile(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	
+
+#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("===>ODM_ConfigMACWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		rtlhal->SupportInterface, rtlhal->board_type));
-
+#endif
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-		ODM_ReadAndConfig_MP_8812A_MAC_REG(pDM_Odm);
+		ODM_ReadAndConfig_MP_8812A_MAC_REG(rtlpriv);
 	
 	if (IS_HARDWARE_TYPE_8821U(rtlhal))
-		ODM_ReadAndConfig_MP_8821A_MAC_REG(pDM_Odm);
+		ODM_ReadAndConfig_MP_8821A_MAC_REG(rtlpriv);
 }
 
 

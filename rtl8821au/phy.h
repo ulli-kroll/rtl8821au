@@ -10,7 +10,7 @@ void rtl8821au_phy_set_rf_reg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr
 void rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery);
 
 
-void _rtl8821au_phy_config_mac_with_headerfile(struct _rtw_dm *pDM_Odm);
+void _rtl8821au_phy_config_mac_with_headerfile(struct rtl_priv *rtlpriv);
 void _rtl8821au_phy_read_and_config_txpwr_lmt(struct _rtw_dm *pDM_Odm);
 
 void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radio_path eRFPath);

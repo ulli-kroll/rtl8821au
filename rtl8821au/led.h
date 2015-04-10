@@ -21,8 +21,6 @@
 #ifndef __RTL8821AU_LED_H__
 #define __RTL8821AU_LED_H__
 
-#define MSECS(t)        (HZ * ((t) / 1000) + (HZ * ((t) % 1000)) / 1000)
-
 //================================================================================
 //	LED Behavior Constant.
 //================================================================================
@@ -34,23 +32,6 @@
 #define LED_INITIAL_INTERVAL		1800
 
 // LED Customerization
-
-//NETTRONIX
-#define LED_BLINK_NORMAL_INTERVAL_NETTRONIX	100
-#define LED_BLINK_SLOWLY_INTERVAL_NETTRONIX	2000
-
-//PORNET
-#define LED_BLINK_SLOWLY_INTERVAL_PORNET	1000
-#define LED_BLINK_NORMAL_INTERVAL_PORNET	100
-#define LED_BLINK_FAST_INTERVAL_BITLAND		30
-
-//AzWave.
-#define LED_CM2_BLINK_ON_INTERVAL		250
-#define LED_CM2_BLINK_OFF_INTERVAL		4750
-#define LED_CM8_BLINK_OFF_INTERVAL		3750	//for QMI
-
-//RunTop
-#define LED_RunTop_BLINK_INTERVAL		300
 
 //ALPHA
 #define LED_BLINK_NO_LINK_INTERVAL_ALPHA	1000
@@ -75,14 +56,6 @@
 #define LED_BLINK_LINK_INTERVAL_ON_BELKIN		200
 #define LED_BLINK_LINK_INTERVAL_OFF_BELKIN		100
 #define LED_BLINK_ERROR_INTERVAL_BELKIN		100
-
-//by chiyokolin for Azurewave
-#define LED_CM12_BLINK_INTERVAL_5Mbps		160
-#define LED_CM12_BLINK_INTERVAL_10Mbps		80
-#define LED_CM12_BLINK_INTERVAL_20Mbps		50
-#define LED_CM12_BLINK_INTERVAL_40Mbps		40
-#define LED_CM12_BLINK_INTERVAL_80Mbps		30
-#define LED_CM12_BLINK_INTERVAL_MAXMbps		25
 
 //================================================================================
 // LED object.

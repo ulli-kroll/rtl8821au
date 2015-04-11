@@ -1608,7 +1608,10 @@ void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm)
 		return;
 	} else {
 		/* DBG_871X("Schedule TxPowerTracking direct call!!\n"); */
-		ODM_TXPowerTrackingCallback_ThermalMeter(rtlpriv);
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal))
+			rtl8812au_dm_txpower_tracking_callback_thermalmeter(rtlpriv);
+		if (IS_HARDWARE_TYPE_8821U(rtlhal))
+			rtl8821au_dm_txpower_tracking_callback_thermalmeter(rtlpriv);
 		pDM_Odm->RFCalibrateInfo.TM_Trigger = 0;
 	}
 

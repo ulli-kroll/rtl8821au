@@ -32,29 +32,14 @@ typedef enum _PWRTRACK_CONTROL_METHOD {
 	MIX_MODE
 } PWRTRACK_METHOD;
 
-typedef struct _TXPWRTRACK_CFG {
-	u8 		SwingTableSize_CCK;
-	u8 		SwingTableSize_OFDM;
-	u8 		Threshold_IQK;
-	u8 		AverageThermalNum;
-	u8 		RfPathCount;
-	uint32_t 		ThermalRegAddr;
-	void (*ODM_TxPwrTrackSetPwr) (struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method, u8 RFPath, u8 ChannelMappedIndex);
-	void (*DoIQK) (struct rtl_priv *rtlpriv, u8 DeltaThermalIndex, u8 ThermalValue, u8 Threshold);
-	void (*PHY_LCCalibrate) (struct rtl_priv *rtlpriv);
-	void (*GetDeltaSwingTable) (struct rtl_priv *rtlpriv, u8 **up_a, u8 **down_a, u8 **up_b, u8 **down_b);
-} TXPWRTRACK_CFG, *PTXPWRTRACK_CFG;
 
 void
 ODM_ClearTxPowerTrackingState(
 	IN struct _rtw_dm *	pDM_Odm
 	);
 
-void
-ODM_TXPowerTrackingCallback_ThermalMeter(
-	IN struct rtl_priv *rtlpriv
-	);
-
+void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpriv);
+void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpriv);
 
 
 #define ODM_TARGET_CHNL_NUM_2G_5G	59

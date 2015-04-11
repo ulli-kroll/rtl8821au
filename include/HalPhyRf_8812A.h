@@ -36,10 +36,7 @@ void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery);
 //
 // LC calibrate
 //
-void
-PHY_LCCalibrate_8812A(
-	IN struct _rtw_dm *	pDM_Odm
-);
+void PHY_LCCalibrate_8812A(struct rtl_priv *rtlpriuv);
 
 //
 // AP calibrate

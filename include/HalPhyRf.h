@@ -32,11 +32,6 @@ typedef enum _PWRTRACK_CONTROL_METHOD {
 	MIX_MODE
 } PWRTRACK_METHOD;
 
-typedef void 	(*FuncSetPwr)(struct _rtw_dm *,PWRTRACK_METHOD, u8, u8);
-typedef void 	(*FuncIQK)(struct _rtw_dm *, u8, u8, u8);
-typedef void 	(*FuncLCK)(struct _rtw_dm *);
-typedef void  	(*FuncSwing)(struct _rtw_dm *, u8 **, u8 **, u8 **, u8 **);
-
 typedef struct _TXPWRTRACK_CFG {
 	u8 		SwingTableSize_CCK;
 	u8 		SwingTableSize_OFDM;
@@ -44,17 +39,11 @@ typedef struct _TXPWRTRACK_CFG {
 	u8 		AverageThermalNum;
 	u8 		RfPathCount;
 	uint32_t 		ThermalRegAddr;
-	FuncSetPwr 	ODM_TxPwrTrackSetPwr;
-	FuncIQK 	DoIQK;
-	FuncLCK		PHY_LCCalibrate;
-	FuncSwing	GetDeltaSwingTable;
+	void (*ODM_TxPwrTrackSetPwr) (struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method, u8 RFPath, u8 ChannelMappedIndex);
+	void (*DoIQK) (struct rtl_priv *rtlpriv, u8 DeltaThermalIndex, u8 ThermalValue, u8 Threshold);
+	void (*PHY_LCCalibrate) (struct rtl_priv *rtlpriv);
+	void (*GetDeltaSwingTable) (struct rtl_priv *rtlpriv, u8 **up_a, u8 **down_a, u8 **up_b, u8 **down_b);
 } TXPWRTRACK_CFG, *PTXPWRTRACK_CFG;
-
-void ConfigureTxpowerTrack(
-	IN 	struct _rtw_dm *	pDM_Odm,
-	OUT	PTXPWRTRACK_CFG	pConfig
-	);
-
 
 void
 ODM_ClearTxPowerTrackingState(

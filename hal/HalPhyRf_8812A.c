@@ -40,15 +40,15 @@
 #define	BW_40M  1
 #define	BW_80M	2
 
-static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
+static void phy_LCCalibrate_8812A(struct rtl_priv *rtlpriv, BOOLEAN	is2T)
 {
 	uint32_t	/*RF_Amode=0, RF_Bmode=0,*/ LC_Cal = 0, tmp = 0;
 
 	/* Check continuous TX and Packet TX */
-	uint32_t	reg0x914 = rtl_read_dword(pDM_Odm->rtlpriv, rSingleTone_ContTx_Jaguar);;
+	uint32_t	reg0x914 = rtl_read_dword(rtlpriv, rSingleTone_ContTx_Jaguar);;
 
 	/* Backup RF reg18. */
-	LC_Cal = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	LC_Cal = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	if ((reg0x914 & 0x70000) != 0)	/* If contTx, disable all continuous TX. 0x914[18:16] */
 		/*
@@ -59,7 +59,7 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 
 		;
 	else		/* If packet Tx-ing, pause Tx. */
-		rtl_write_byte(pDM_Odm->rtlpriv, REG_TXPAUSE, 0xFF);
+		rtl_write_byte(rtlpriv, REG_TXPAUSE, 0xFF);
 
 
 /*
@@ -76,18 +76,18 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 */
 
 	/* Enter LCK mode */
-	tmp = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
+	tmp = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
 
 	/* 3 3. Read RF reg18 */
-	LC_Cal = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	LC_Cal = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	/* 3 4. Set LC calibration begin bit15 */
-	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
+	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
 
 	/* Leave LCK mode */
-	tmp = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
+	tmp = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
 
 	mdelay(100);
 
@@ -101,11 +101,11 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 		;
 	} else {
 		/* Deal with Packet TX case */
-		rtl_write_byte(pDM_Odm->rtlpriv, REG_TXPAUSE, 0x00);
+		rtl_write_byte(rtlpriv, REG_TXPAUSE, 0x00);
 	}
 
 	/* Recover channel number */
-	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);
+	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);
 
 	/*
 	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask, RF_Amode);
@@ -122,17 +122,15 @@ static void phy_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm, BOOLEAN	is2T)
 #define		DP_DPK_NUM		3
 #define		DP_DPK_VALUE_NUM	2
 
-void PHY_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm)
+void PHY_LCCalibrate_8812A(struct rtl_priv *rtlpriv)
 {
 	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
 
-	struct rtl_priv *		rtlpriv = pDM_Odm->rtlpriv;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-
+#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_LCCalibrate_8812A\n"));
-
-	phy_LCCalibrate_8812A(pDM_Odm, TRUE);
-
+#endif
+	phy_LCCalibrate_8812A(rtlpriv, TRUE);
+#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("<=== PHY_LCCalibrate_8812A\n"));
-
+#endif
 }

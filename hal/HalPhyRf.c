@@ -64,9 +64,8 @@ static void ConfigureTxpowerTrack_8821A(PTXPWRTRACK_CFG pConfig)
 	pConfig->GetDeltaSwingTable = rtl8821au_get_delta_swing_table;
 }
 
-void ConfigureTxpowerTrack(struct _rtw_dm *pDM_Odm, PTXPWRTRACK_CFG pConfig)
+static void ConfigureTxpowerTrack(struct rtl_priv *rtlpriv, PTXPWRTRACK_CFG pConfig)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	if (IS_HARDWARE_TYPE_8821U(rtlhal))
@@ -142,9 +141,9 @@ void ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 
 	/* 4 2. Initilization ( 7 steps in total ) */
 
-	ConfigureTxpowerTrack(pDM_Odm, &c);
+	ConfigureTxpowerTrack(rtlpriv, &c);
 
-	(*c.GetDeltaSwingTable)(pDM_Odm, (u8 **)&up_a, (u8 **)&down_a,
+	(*c.GetDeltaSwingTable)(rtlpriv, (u8 **)&up_a, (u8 **)&down_a,
 					 (u8 **)&up_b, (u8 **)&down_b);
 
 	rtldm->TXPowerTrackingCallbackCnt++; /* cosa add for debug */
@@ -198,7 +197,7 @@ void ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("delta_LCK(%d) >= Threshold_IQK(%d)\n", delta_LCK, c.Threshold_IQK));
 		rtldm->thermalvalue_lck = ThermalValue;
 		if (c.PHY_LCCalibrate)
-			(*c.PHY_LCCalibrate)(pDM_Odm);
+			(*c.PHY_LCCalibrate)(rtlpriv);
 	}
 
 	/* if ( 7. If necessary, move the index of swing table to adjust Tx power. */
@@ -327,10 +326,10 @@ void ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 				if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
 					for (p = RF90_PATH_A; p < c.RfPathCount; p++)
-						(*c.ODM_TxPwrTrackSetPwr)(pDM_Odm, MIX_MODE, p, Indexforchannel);
+						(*c.ODM_TxPwrTrackSetPwr)(rtlpriv, MIX_MODE, p, Indexforchannel);
 				} else {
 					for (p = RF90_PATH_A; p < c.RfPathCount; p++)
-						(*c.ODM_TxPwrTrackSetPwr)(pDM_Odm, BBSWING, p, Indexforchannel);
+						(*c.ODM_TxPwrTrackSetPwr)(rtlpriv, BBSWING, p, Indexforchannel);
 				}
 			} else {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->EEPROMThermalMeter));
@@ -338,10 +337,10 @@ void ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 				if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
 					for (p = RF90_PATH_A; p < c.RfPathCount; p++)
-						(*c.ODM_TxPwrTrackSetPwr)(pDM_Odm, MIX_MODE, p, Indexforchannel);
+						(*c.ODM_TxPwrTrackSetPwr)(rtlpriv, MIX_MODE, p, Indexforchannel);
 				} else {
 					for (p = RF90_PATH_A; p < c.RfPathCount; p++)
-						(*c.ODM_TxPwrTrackSetPwr)(pDM_Odm, BBSWING, p, Indexforchannel);
+						(*c.ODM_TxPwrTrackSetPwr)(rtlpriv, BBSWING, p, Indexforchannel);
 				}
 			}
 
@@ -355,7 +354,7 @@ void ODM_TXPowerTrackingCallback_ThermalMeter(struct rtl_priv *rtlpriv)
 
 	}
 	if ((delta_IQK >= c.Threshold_IQK))	/* Delta temperature is equal to or larger than 20 centigrade (When threshold is 8). */
-		(*c.DoIQK)(pDM_Odm, delta_IQK, ThermalValue, 8);
+		(*c.DoIQK)(rtlpriv, delta_IQK, ThermalValue, 8);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("<===ODM_TXPowerTrackingCallback_ThermalMeter\n"));
 

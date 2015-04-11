@@ -131,6 +131,8 @@ void PHY_LCCalibrate_8812A(struct _rtw_dm *pDM_Odm)
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_LCCalibrate_8812A\n"));
 
+	phy_LCCalibrate_8812A(pDM_Odm, TRUE);
+
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("<=== PHY_LCCalibrate_8812A\n"));
 
 }

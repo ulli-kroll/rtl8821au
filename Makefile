@@ -86,7 +86,6 @@ ifeq ($(CONFIG_RTL8821A), y)
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
 _OUTSRC_FILES += hal/HalHWImg8821A_BB.o\
 		hal/HalPhyRf_8812A.o\
-		hal/HalPhyRf_8821A.o\
 		hal/odm_RegConfig8821A.o
 endif
 

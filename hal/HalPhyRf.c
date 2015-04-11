@@ -270,25 +270,13 @@ void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpri
 			if (ThermalValue > efuse->EEPROMThermalMeter) {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) higher than PG value(%d)\n", ThermalValue, efuse->EEPROMThermalMeter));
 
-				if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
-					for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
-						ODM_TxPwrTrackSetPwr8812A(rtlpriv, MIX_MODE, p, Indexforchannel);
-				} else {
-					for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
-						ODM_TxPwrTrackSetPwr8812A(rtlpriv, BBSWING, p, Indexforchannel);
-				}
+				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
+					ODM_TxPwrTrackSetPwr8812A(rtlpriv, BBSWING, p, Indexforchannel);
 			} else {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->EEPROMThermalMeter));
 
-				if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
-					for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
-						ODM_TxPwrTrackSetPwr8812A(rtlpriv, MIX_MODE, p, Indexforchannel);
-				} else {
-					for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
-						ODM_TxPwrTrackSetPwr8812A(rtlpriv, BBSWING, p, Indexforchannel);
-				}
+				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
+					ODM_TxPwrTrackSetPwr8812A(rtlpriv, BBSWING, p, Indexforchannel);
 			}
 
 			rtldm->BbSwingIdxCckBase = rtldm->BbSwingIdxCck;  	/* Record last time Power Tracking result as base. */

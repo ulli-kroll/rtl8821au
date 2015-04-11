@@ -898,6 +898,8 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 	struct pwrctrl_priv *pwrpriv = &rtlpriv->pwrctrlpriv;
 	uint8_t	Mode = 0, RLBM = 0, PowerState = 0, LPSAwakeIntvl = 1;
 
+	PSMode = PS_MODE_MIN;		/* ULLI: fix for powermode on low bitrate streaming */
+
 	DBG_871X("%s: Mode=%d SmartPS=%d UAPSD=%d\n", __FUNCTION__,
 			PSMode, pwrpriv->smart_ps, rtlpriv->registrypriv.uapsd_enable);
 

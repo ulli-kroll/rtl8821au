@@ -53,7 +53,7 @@
 
 #define CONFIG_DFS	1
 
-	#define CONFIG_IPS	1
+	#define CONFIG_IPS	0	/* ULLI: fix for powermode on low bitrate streaming */
 	#ifdef CONFIG_IPS
 	//#define CONFIG_IPS_LEVEL_2	1 //enable this to set default IPS mode to IPS_LEVEL_2
 	#endif

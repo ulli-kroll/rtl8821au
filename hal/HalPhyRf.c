@@ -405,17 +405,6 @@ void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpri
 			rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] =  up_a[delta];        /* Record delta swing for mix mode power tracking */
 
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is higher and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A]));
-
-			if (MAX_PATH_NUM_8821A > 1) {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TUP_B[%d] = %d\n", delta, up_b[delta]));
-				rtldm->DeltaPowerIndexLast[RF90_PATH_B] = rtldm->DeltaPowerIndex[RF90_PATH_B];
-				rtldm->DeltaPowerIndex[RF90_PATH_B] = up_b[delta];
-
-				rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B] =  up_a[delta];       /* Record delta swing for mix mode power tracking */
-
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is higher and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B] = %d\n", rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B]));
-			}
-
 		} else {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TDOWN_A[%d] = %d\n", delta, down_a[delta]));
 
@@ -425,17 +414,6 @@ void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpri
 			rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] =  -1 * down_a[delta];        /* Record delta swing for mix mode power tracking */
 
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is lower and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A]));
-
-			if (MAX_PATH_NUM_8821A > 1) {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TDOWN_B[%d] = %d\n", delta, down_b[delta]));
-
-				rtldm->DeltaPowerIndexLast[RF90_PATH_B] = rtldm->DeltaPowerIndex[RF90_PATH_B];
-				rtldm->DeltaPowerIndex[RF90_PATH_B] = -1 * down_b[delta];
-
-				rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B] =  -1 * down_b[delta];       /* Record delta swing for mix mode power tracking */
-
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is lower and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B] = %d\n", rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B]));
-			}
 		}
 
 	    for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++) {
@@ -497,14 +475,9 @@ void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpri
 		 */
 		if (ThermalValue > rtldm->thermalvalue) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
-			if (MAX_PATH_NUM_8821A > 1)
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_B], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
 
 			} else if (ThermalValue < rtldm->thermalvalue) { /* Low temperature */
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
-
-				if (MAX_PATH_NUM_8821A > 1)
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_B], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
 
 			}
 			if (ThermalValue > efuse->EEPROMThermalMeter) {

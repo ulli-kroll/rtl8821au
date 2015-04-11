@@ -5,7 +5,7 @@ rtl8821 linux kernel driver for AC1200 (801.11ac)
 Wireless Dual-Band USB Adapter
 
 IMPORTANT UPDATE:  2015/04/06
-=================
+-----------------------------
 As of today the firmware binary is no longer part of
 the kernel driver rtl8821au
 You need to install the firmware binaries with
@@ -30,6 +30,7 @@ and you will see ;-)
 
 ISSUES:
 - With low traffic (150kBit/s), the driver will go into low power mode.
+  (currently fixed, diabled powersaving)
 
 TESTED DEVICES:
 D-Link DWA 171
@@ -38,7 +39,6 @@ with kernel 3.19
 
 
 STATUS:
-Firmware is build into the driver.
 Currently driver works with old wireless extension *only*
 No support for iw 
 

@@ -4,6 +4,21 @@
 
 static void rtl8821au_dm_dig(struct rtl_priv *rtlpriuv);
 
+static uint32_t edca_setting_UL[HT_IOT_PEER_MAX] =
+/* UNKNOWN		REALTEK_90	REALTEK_92SE	BROADCOM		RALINK		ATHEROS		CISCO		MERU        MARVELL	92U_AP		SELF_AP(DownLink/Tx) */
+{ 0x5e4322, 		0xa44f, 		0x5e4322,		0x5ea32b,  		0x5ea422, 	0x5ea322,	0x3ea430,	0x5ea42b, 0x5ea44f,	0x5e4322,	0x5e4322};
+
+
+static uint32_t edca_setting_DL[HT_IOT_PEER_MAX] =
+/* UNKNOWN		REALTEK_90	REALTEK_92SE	BROADCOM		RALINK		ATHEROS		CISCO		MERU,       MARVELL	92U_AP		SELF_AP(UpLink/Rx) */
+{ 0xa44f, 		0x5ea44f, 	0x5e4322, 		0x5ea42b, 		0xa44f, 		0xa630, 		0x5ea630,	0x5ea42b, 0xa44f,		0xa42b,		0xa42b};
+
+static uint32_t edca_setting_DL_GMode[HT_IOT_PEER_MAX] =
+/* UNKNOWN		REALTEK_90	REALTEK_92SE	BROADCOM		RALINK		ATHEROS		CISCO		MERU,       MARVELL	92U_AP		SELF_AP */
+{ 0x4322, 		0xa44f, 		0x5e4322,		0xa42b, 			0x5e4322, 	0x4322, 		0xa42b,		0x5ea42b, 0xa44f,		0x5e4322,	0x5ea42b};
+
+
+
 u8 CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01},	/*  0, -16.0dB */
 	{0x09, 0x09, 0x08, 0x06, 0x05, 0x03, 0x01, 0x01},	/*  1, -15.5dB */
@@ -1742,6 +1757,145 @@ static void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm)
 	 */
 
 	odm_RSSIMonitorCheckCE(pDM_Odm);
+}
+
+
+
+/*
+ * ============================================================
+ * EDCA Turbo
+ * ============================================================
+ */
+
+static void odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
+{
+
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	uint32_t	EDCA_BE_UL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_UL[pMgntInfo->IOTPeer]; */
+	uint32_t	EDCA_BE_DL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_DL[pMgntInfo->IOTPeer]; */
+	uint32_t	ICType = pDM_Odm->SupportICType;
+	uint32_t	IOTPeer = 0;
+	u8		WirelessMode = 0xFF;	/* invalid value */
+	uint32_t 	trafficIndex;
+	uint32_t	edca_param;
+	u64		cur_tx_bytes = 0;
+	u64		cur_rx_bytes = 0;
+	u8		bbtchange = _FALSE;
+	 struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
+	struct xmit_priv		*pxmitpriv = &(rtlpriv->xmitpriv);
+	struct recv_priv		*precvpriv = &(rtlpriv->recvpriv);
+	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
+	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
+	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
+
+
+	if ((pregpriv->wifi_spec == 1)) {	/*|| (pmlmeinfo->HT_enable == 0)) */
+		goto dm_CheckEdcaTurbo_EXIT;
+	}
+
+	if (pDM_Odm->pWirelessMode != NULL)
+		WirelessMode = *(pDM_Odm->pWirelessMode);
+
+	IOTPeer = pmlmeinfo->assoc_AP_vendor;
+
+	if (IOTPeer >=  HT_IOT_PEER_MAX) {
+		goto dm_CheckEdcaTurbo_EXIT;
+	}
+
+	/* Check if the status needs to be changed. */
+	if ((bbtchange) || (!precvpriv->bIsAnyNonBEPkts)) {
+		cur_tx_bytes = pxmitpriv->tx_bytes - pxmitpriv->last_tx_bytes;
+		cur_rx_bytes = precvpriv->rx_bytes - precvpriv->last_rx_bytes;
+
+		/* traffic, TX or RX */
+		if ((IOTPeer == HT_IOT_PEER_RALINK) || (IOTPeer == HT_IOT_PEER_ATHEROS)) {
+			if (cur_tx_bytes > (cur_rx_bytes << 2)) {
+				/* Uplink TP is present. */
+				trafficIndex = UP_LINK;
+			} else {
+				/* Balance TP is present. */
+				trafficIndex = DOWN_LINK;
+			}
+		} else {
+			if (cur_rx_bytes > (cur_tx_bytes << 2)) {
+				/* Downlink TP is present. */
+				trafficIndex = DOWN_LINK;
+			} else {
+				/* Balance TP is present. */
+				trafficIndex = UP_LINK;
+			}
+		}
+
+		if ((pDM_Odm->DM_EDCA_Table.prv_traffic_idx != trafficIndex) || (!pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA)) {
+			/* merge from 92s_92c_merge temp brunch v2445    20120215 */
+			if ((IOTPeer == HT_IOT_PEER_CISCO)
+			   && ((WirelessMode == ODM_WM_G) || (WirelessMode == (ODM_WM_B|ODM_WM_G)) || (WirelessMode == ODM_WM_A) || (WirelessMode == ODM_WM_B))) {
+				EDCA_BE_DL = edca_setting_DL_GMode[IOTPeer];
+			} else if ((IOTPeer == HT_IOT_PEER_AIRGO)
+			       && ((WirelessMode == ODM_WM_G) || (WirelessMode == ODM_WM_A))) {
+					EDCA_BE_DL = 0xa630;
+			} else if (IOTPeer == HT_IOT_PEER_MARVELL) {
+				EDCA_BE_DL = edca_setting_DL[IOTPeer];
+				EDCA_BE_UL = edca_setting_UL[IOTPeer];
+			} else if (IOTPeer == HT_IOT_PEER_ATHEROS) {
+				/* Set DL EDCA for Atheros peer to 0x3ea42b. Suggested by SD3 Wilson for ASUS TP issue. */
+				EDCA_BE_DL = edca_setting_DL[IOTPeer];
+			}
+
+			if ((ICType == ODM_RTL8812)) {		/* add 8812AU/8812AE */
+				EDCA_BE_UL = 0x5ea42b;
+				EDCA_BE_DL = 0x5ea42b;
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("8812A: EDCA_BE_UL=0x%x EDCA_BE_DL =0x%x", EDCA_BE_UL, EDCA_BE_DL));
+			}
+
+			if (trafficIndex == DOWN_LINK)
+				edca_param = EDCA_BE_DL;
+			else
+				edca_param = EDCA_BE_UL;
+
+			rtl_write_dword(rtlpriv, REG_EDCA_BE_PARAM, edca_param);
+
+			pDM_Odm->DM_EDCA_Table.prv_traffic_idx = trafficIndex;
+		}
+
+		pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = _TRUE;
+	} else {
+		/*
+		 * Turn Off EDCA turbo here.
+		 * Restore original EDCA according to the declaration of AP.
+		 */
+		if (pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA) {
+			rtl_write_dword(rtlpriv, REG_EDCA_BE_PARAM, pHalData->AcParam_BE);
+			pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = _FALSE;
+		}
+	}
+
+dm_CheckEdcaTurbo_EXIT:
+	/* Set variables for next time. */
+	precvpriv->bIsAnyNonBEPkts = _FALSE;
+	pxmitpriv->last_tx_bytes = pxmitpriv->tx_bytes;
+	precvpriv->last_rx_bytes = precvpriv->rx_bytes;
+}
+
+
+static void odm_EdcaTurboCheck(struct _rtw_dm *pDM_Odm)
+{
+	/*
+	 * For AP/ADSL use prtl8192cd_priv
+	 * For CE/NIC use _ADAPTER
+	 */
+
+	/*
+	 *
+	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
+	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
+	 * HW dynamic mechanism.
+	 */
+
+	if (!(pDM_Odm->SupportAbility & ODM_MAC_EDCA_TURBO))
+		return;
+
+	odm_EdcaTurboCheckCE(pDM_Odm);
 }
 
 

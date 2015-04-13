@@ -37,7 +37,6 @@ void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm);
 void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8 IGI);
 void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm);
 void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm);
-void odm_EdcaTurboCheck(struct _rtw_dm *pDM_Odm);
 
 
 #endif

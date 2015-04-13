@@ -485,7 +485,8 @@ void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm)
  *---------------------------------------------------------------------------*/
 void ODM_ChangeDynamicInitGainThresh(struct _rtw_dm *pDM_Odm, uint32_t DM_Type, uint32_t DM_Value)
 {
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
 	/* ULLI better switch/case ?? */
 	if (DM_Type == DIG_TYPE_THRESH_HIGH) {
@@ -633,7 +634,8 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 
 void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 {
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
 	if (pDM_Odm->StopDIG) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("Stop Writing IGI\n"));
@@ -741,7 +743,8 @@ void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 
 void ODM_Write_CCK_CCA_Thres(struct _rtw_dm *pDM_Odm, u8	 CurCCK_CCAThres)
 {
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
 	if (pDM_DigTable->CurCCK_CCAThres != CurCCK_CCAThres) {	/* modify by Guo.Mingzhi 2012-01-03 */
 		rtl_write_byte(pDM_Odm->rtlpriv, ODM_REG(CCK_CCA, pDM_Odm), CurCCK_CCAThres);

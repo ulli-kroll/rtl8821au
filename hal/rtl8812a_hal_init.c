@@ -2477,8 +2477,8 @@ uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 			} else if (dm_func == 6) {
 				/* turn on all dynamic func */
 				if (!(podmpriv->SupportAbility & DYNAMIC_BB_DIG)) {
-					pDIG_T pDigTable = &podmpriv->DM_DigTable;
-					pDigTable->CurIGValue = rtl_read_byte(rtlpriv, 0xc50);
+					struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
+					dm_digtable->CurIGValue = rtl_read_byte(rtlpriv, 0xc50);
 				}
 				/* pdmpriv->DMFlag |= DYNAMIC_FUNC_BT; */
 				podmpriv->SupportAbility = DYNAMIC_ALL_FUNC_ENABLE;

@@ -735,15 +735,16 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		rtl8812_set_FwJoinBssReport_cmd(rtlpriv, *pval);
 		break;
 
-	case HW_VAR_INITIAL_GAIN:
+	case HW_VAR_INITIAL_GAIN:	/* ULLI not in rtlwifi */
 		{
 			pDIG_T pDigTable = &podmpriv->DM_DigTable;
+			struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 			uint32_t rx_gain = *(u32 *)pval;
 
 			if (rx_gain == 0xff) {		/* restore rx gain */
 				ODM_Write_DIG(podmpriv, pDigTable->BackupIGValue);
 			} else {
-				pDigTable->BackupIGValue = pDigTable->CurIGValue;
+				pDigTable->BackupIGValue = dm_digtable->CurIGValue;
 				ODM_Write_DIG(podmpriv, rx_gain);
 			}
 		}

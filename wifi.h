@@ -281,6 +281,48 @@ struct rtl_io {
 };
 
 struct dig_t {
+	u32 RssiLowThresh;
+	u32 RssiHighThresh;
+
+	u32 FALowThresh;
+	u32 FAHighThresh;
+
+	u32 Recover_cnt;
+	u8 PreIGValue;
+	u8 CurIGValue;
+
+	u8 Dig_Enable_Flag;
+	u8 Dig_Ext_Port_Stage;
+
+	u8 CurSTAConnectState;
+	u8 PreSTAConnectState;
+	u8 CurMultiSTAConnectState;
+
+	char BackoffVal;
+	char BackoffVal_range_max;
+	char BackoffVal_range_min;
+
+	u8 rx_gain_range_max;
+	u8 rx_gain_range_min;
+
+	u8 Rssi_val_min;
+
+	u8 PreCCK_CCAThres;
+	u8 CurCCK_CCAThres;
+	u8 PreCCKPDState;
+	u8 CurCCKPDState;
+
+	u8 LargeFAHit;
+	u8 ForbiddenIGI;
+
+	u8 DIG_Dynamic_MIN_0;
+	u8 DIG_Dynamic_MIN_1;
+	u8		BT30_CurIGI;
+	BOOLEAN		bMediaConnect_0;
+	BOOLEAN		bMediaConnect_1;
+
+	u32 AntDiv_RSSI_max;
+	u32 RSSI_max;
 };
 
 struct rtl_priv {
@@ -292,7 +334,7 @@ struct rtl_priv {
 	struct rtl_dm dm;		/* Caution new dm data */
 	struct rtl_hal_cfg *cfg;
 	struct rtl_io io;
-	struct dig_t *dm_digtable;
+	struct dig_t dm_digtable;
 
 
 	struct rtl_usb_priv priv;
@@ -854,48 +896,13 @@ typedef struct _RX_High_Power_
 
 typedef struct _Dynamic_Initial_Gain_Threshold_
 {
-	u8		Dig_Enable_Flag;
-	u8		Dig_Ext_Port_Stage;
 
-	int		   	RssiLowThresh;
-	int		    	RssiHighThresh;
 
-	uint32_t		FALowThresh;
-	uint32_t		FAHighThresh;
 
-	u8		CurSTAConnectState;
-	u8		PreSTAConnectState;
-	u8		CurMultiSTAConnectState;
 
-	u8		PreIGValue;
-	u8		CurIGValue;
-	u8		BT30_CurIGI;
+
 	u8		BackupIGValue;
-
-	s8		BackoffVal;
-	s8		BackoffVal_range_max;
-	s8		BackoffVal_range_min;
-	u8		rx_gain_range_max;
-	u8		rx_gain_range_min;
-	u8		Rssi_val_min;
-
-	u8		PreCCK_CCAThres;
-	u8		CurCCK_CCAThres;
-	u8		PreCCKPDState;
-	u8		CurCCKPDState;
-
-	u8		LargeFAHit;
-	u8		ForbiddenIGI;
-	uint32_t		Recover_cnt;
-
-	u8		DIG_Dynamic_MIN_0;
-	u8		DIG_Dynamic_MIN_1;
-	BOOLEAN		bMediaConnect_0;
-	BOOLEAN		bMediaConnect_1;
-
-	uint32_t		AntDiv_RSSI_max;
-	uint32_t		RSSI_max;
-}DIG_T,*pDIG_T;
+} DIG_T,*pDIG_T;
 
 
 

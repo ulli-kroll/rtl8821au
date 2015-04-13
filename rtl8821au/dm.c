@@ -182,9 +182,10 @@ static void odm_CommonInfoSelfInit(struct _rtw_dm *pDM_Odm)
 
 static void odm_DIGInit(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
-	
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
 	/* pDM_DigTable->Dig_Enable_Flag = TRUE; */
 	/* pDM_DigTable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
@@ -1953,7 +1954,9 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 
 void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
+
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
 	BOOLEAN		bFwPSAwake = _TRUE;
 	uint8_t hw_init_completed = _FALSE;
@@ -1961,7 +1964,6 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
 	hw_init_completed = rtlpriv->hw_init_completed;
 
@@ -2055,12 +2057,12 @@ skip_dm:
 static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 	
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	
-	pDIG_T						pDM_DigTable = &pDM_Odm->DM_DigTable;
 	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 	pRXHP_T						pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
 	u8						DIG_Dynamic_MIN;

@@ -717,45 +717,6 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 }
 
 
-
-/*
- * 3============================================================
- * 3 FASLE ALARM CHECK
- * 3============================================================
- */
-
-void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm)
-{
-	uint32_t ret_value;
-	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
-
-	if (!(pDM_Odm->SupportAbility & ODM_BB_FA_CNT))
-		return;
-
-	{
-		uint32_t CCKenable;
-		/* read OFDM FA counter */
-		FalseAlmCnt->Cnt_Ofdm_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
-		FalseAlmCnt->Cnt_Cck_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
-
-		CCKenable =  rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_BB_RX_PATH_11AC, BIT28);
-		if (CCKenable)		/* if (*pDM_Odm->pBandType == ODM_BAND_2_4G) */
-			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail + FalseAlmCnt->Cnt_Cck_fail;
-		else
-			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail;
-
-		/* reset OFDM FA coutner */
-		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
-		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
-		/* reset CCK FA counter */
-		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
-		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
-	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Cck_fail=%d\n", FalseAlmCnt->Cnt_Cck_fail));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Ofdm_fail=%d\n", FalseAlmCnt->Cnt_Ofdm_fail));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Total False Alarm=%d\n", FalseAlmCnt->Cnt_all));
-}
-
 /*
  * 3============================================================
  * 3 CCK Packet Detect Threshold

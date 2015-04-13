@@ -1534,6 +1534,49 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 }
 
 
+
+/*
+ * 3============================================================
+ * 3 FASLE ALARM CHECK
+ * 3============================================================
+ */
+
+static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv)
+{
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
+	
+	uint32_t ret_value;
+	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
+
+	if (!(pDM_Odm->SupportAbility & ODM_BB_FA_CNT))
+		return;
+
+	{
+		uint32_t CCKenable;
+		/* read OFDM FA counter */
+		FalseAlmCnt->Cnt_Ofdm_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
+		FalseAlmCnt->Cnt_Cck_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
+
+		CCKenable =  rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC, BIT28);
+		if (CCKenable)		/* if (*pDM_Odm->pBandType == ODM_BAND_2_4G) */
+			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail + FalseAlmCnt->Cnt_Cck_fail;
+		else
+			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail;
+
+		/* reset OFDM FA coutner */
+		rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
+		rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
+		/* reset CCK FA counter */
+		rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
+		rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
+	}
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Cck_fail=%d\n", FalseAlmCnt->Cnt_Cck_fail));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Ofdm_fail=%d\n", FalseAlmCnt->Cnt_Ofdm_fail));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Total False Alarm=%d\n", FalseAlmCnt->Cnt_all));
+}
+
+
 /*
  * 2011/09/20 MH This is the entry pointer for all team to execute HW out source DM.
  * You can not add any dummy function here, be care, you can only use DM structure
@@ -1548,7 +1591,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
 	odm_CommonInfoSelfUpdate(pDM_Odm);
-	odm_FalseAlarmCounterStatistics(pDM_Odm);
+	rtl8821ae_dm_false_alarm_counter_statistics(rtlpriv);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
 
 	odm_RSSIMonitorCheck(pDM_Odm);

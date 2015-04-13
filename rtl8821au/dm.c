@@ -1898,66 +1898,6 @@ static void odm_EdcaTurboCheck(struct _rtw_dm *pDM_Odm)
 	odm_EdcaTurboCheckCE(pDM_Odm);
 }
 
-
-/*
- * 2011/09/20 MH This is the entry pointer for all team to execute HW out source DM.
- * You can not add any dummy function here, be care, you can only use DM structure
- * to perform any new ODM_DM.
- */
-void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
-{
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
-
-	odm_CommonInfoSelfUpdate(pDM_Odm);
-	rtl8821ae_dm_false_alarm_counter_statistics(rtlpriv);
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
-
-	odm_RSSIMonitorCheck(pDM_Odm);
-
-	rtl8821au_dm_dig(rtlpriv);
-
-	odm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
-
-	odm_CCKPacketDetectionThresh(pDM_Odm);
-
-	if (*(pDM_Odm->pbPowerSaving) == TRUE)
-		return;
-
-	odm_RefreshRateAdaptiveMask(pDM_Odm);
-	odm_EdcaTurboCheck(pDM_Odm);
-
-	rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
-
-	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		if (pDM_Odm->bLinked) {
-			if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess)) {
-				pDM_Odm->preChannel = *pDM_Odm->pChannel;
-				pDM_Odm->LinkedInterval = 0;
-			}
-
-			if (pDM_Odm->LinkedInterval < 3)
-				pDM_Odm->LinkedInterval++;
-
-			if (pDM_Odm->LinkedInterval == 2) {
-				struct rtl_priv *	rtlpriv = pDM_Odm->rtlpriv;
-
-				/*
-				 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
-				 * void rtl8821au_phy_iq_calibrate(rtlpriv, FALSE);
-				 */
-			}
-		} else
-			pDM_Odm->LinkedInterval = 0;
-	}
-	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
-
-	odm_dtc(pDM_Odm);
-}
-
 static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -2019,14 +1959,17 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 
 
 
-void rtl8812_HalDmWatchDog(struct rtl_priv *rtlpriv)
+void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 {
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
 	BOOLEAN		bFwPSAwake = _TRUE;
 	uint8_t hw_init_completed = _FALSE;
+	
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
+	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
 	hw_init_completed = rtlpriv->hw_init_completed;
 
@@ -2048,8 +1991,60 @@ void rtl8812_HalDmWatchDog(struct rtl_priv *rtlpriv)
 
 
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
-		rtl8821au_dm_watchdog(rtlpriv);
-
+				
+				
+		
+		
+		/*
+		 * 2011/09/20 MH This is the entry pointer for all team to execute HW out source DM.
+		 * You can not add any dummy function here, be care, you can only use DM structure
+		 * to perform any new ODM_DM.
+		 */
+	
+		odm_CommonInfoSelfUpdate(pDM_Odm);
+		rtl8821ae_dm_false_alarm_counter_statistics(rtlpriv);
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
+	
+		odm_RSSIMonitorCheck(pDM_Odm);
+	
+		rtl8821au_dm_dig(rtlpriv);
+	
+		odm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
+	
+		odm_CCKPacketDetectionThresh(pDM_Odm);
+	
+		if (*(pDM_Odm->pbPowerSaving) == TRUE)
+			return;
+	
+		odm_RefreshRateAdaptiveMask(pDM_Odm);
+		odm_EdcaTurboCheck(pDM_Odm);
+	
+		rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
+	
+		if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+			if (pDM_Odm->bLinked) {
+				if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess)) {
+					pDM_Odm->preChannel = *pDM_Odm->pChannel;
+					pDM_Odm->LinkedInterval = 0;
+				}
+	
+				if (pDM_Odm->LinkedInterval < 3)
+					pDM_Odm->LinkedInterval++;
+	
+				if (pDM_Odm->LinkedInterval == 2) {
+					struct rtl_priv *	rtlpriv = pDM_Odm->rtlpriv;
+	
+					/*
+					 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
+					 * void rtl8821au_phy_iq_calibrate(rtlpriv, FALSE);
+					 */
+				}
+			} else
+				pDM_Odm->LinkedInterval = 0;
+		}
+		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
+	
+		odm_dtc(pDM_Odm);
 	}
 
 skip_dm:

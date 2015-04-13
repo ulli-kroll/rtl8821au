@@ -1,5 +1,6 @@
 #include "sw.h"
 
+#include "dm.h"
 #include "phy.h"
 #include "reg.h"
 #include "trx.h"
@@ -91,7 +92,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.set_channel_handler =	PHY_SwChnl8812,
 	.set_chnl_bw_handler =	PHY_SetSwChnlBWMode8812,
 
-	.hal_dm_watchdog =	rtl8812_HalDmWatchDog,
+	.hal_dm_watchdog =	rtl8821au_dm_watchdog,
 
 	.Add_RateATid =		rtl8812_Add_RateATid,
 #ifdef CONFIG_ANTENNA_DIVERSITY

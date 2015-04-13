@@ -532,10 +532,6 @@ enum hardware_type {
 	(IS_HARDWARE_TYPE_8821U(rtlhal) || \
 	 IS_HARDWARE_TYPE_8821S(rtlhal))
 
-#define IS_HARDWARE_TYPE_JAGUAR(rtlhal)	\
-	(IS_HARDWARE_TYPE_8812(rtlhal) || \
-	 IS_HARDWARE_TYPE_8821(rtlhal))
-
 static inline u8 get_rf_type(struct rtl_phy *rtlphy)
 {
 	return rtlphy->rf_type;

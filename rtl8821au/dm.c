@@ -1578,6 +1578,174 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 
 
 /*
+ * 3============================================================
+ * 3 RSSI Monitor
+ * 3============================================================
+ */
+
+
+static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
+{
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
+	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
+
+	/* 1 1.Determine the minimum RSSI */
+
+	if ((pDM_Odm->bLinked != _TRUE) && (pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0)) {
+		pdmpriv->MinUndecoratedPWDBForDM = 0;
+		/* ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("Not connected to any \n")); */
+	} else {
+		pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
+	}
+
+	/* DBG_8192C("%s=>MinUndecoratedPWDBForDM(%d)\n",__FUNCTION__,pdmpriv->MinUndecoratedPWDBForDM); */
+	/* ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM)); */
+}
+
+static void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
+{
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
+	int	i;
+	int	tmpEntryMaxPWDB = 0, tmpEntryMinPWDB = 0xff;
+	u8 	sta_cnt = 0;
+	u8	UL_DL_STATE = 0;			/*  for 8812 use */
+	uint32_t PWDB_rssi[NUM_STA] = { 0 };		/* [0~15]:MACID, [16~31]:PWDB_rssi */
+
+	if (pDM_Odm->bLinked != _TRUE)
+		return;
+
+	if (1) {
+		u64	curTxOkCnt = rtlpriv->xmitpriv.tx_bytes - rtlpriv->xmitpriv.last_tx_bytes;
+		u64	curRxOkCnt = rtlpriv->recvpriv.rx_bytes - rtlpriv->recvpriv.last_rx_bytes;
+
+		if (curRxOkCnt > (curTxOkCnt*6))
+			UL_DL_STATE = 1;
+		else
+			UL_DL_STATE = 0;
+	}
+
+
+	/* if (check_fwstate(&rtlpriv->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE) */
+	{
+#if 1
+		struct sta_info *psta;
+
+		for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
+			psta = pDM_Odm->pODM_StaInfo[i];
+			if (IS_STA_VALID(psta)) {
+				if (psta->rssi_stat.UndecoratedSmoothedPWDB < tmpEntryMinPWDB)
+					tmpEntryMinPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
+
+				if (psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
+					tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
+
+				if (psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
+					if (1)
+						PWDB_rssi[sta_cnt++] = (((u8)(psta->mac_id&0xFF)) | ((psta->rssi_stat.UndecoratedSmoothedPWDB&0x7F)<<16));
+					else
+						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16));
+
+				}
+			}
+		}
+#else
+		_irqL irqL;
+		struct list_head	*plist, *phead;
+		struct sta_info *psta;
+		struct sta_priv *pstapriv = &rtlpriv->stapriv;
+		u8 bcast_addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+
+		spin_lock_bh(&pstapriv->sta_hash_lock, &irqL);
+
+		for (i = 0; i < NUM_STA; i++) {
+			phead = &(pstapriv->sta_hash[i]);
+			plist = get_next(phead);
+
+			while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+				psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
+
+				plist = get_next(plist);
+
+				if (_rtw_memcmp(psta->hwaddr, bcast_addr, ETH_ALEN)
+				 || _rtw_memcmp(psta->hwaddr, myid(&rtlpriv->eeprompriv), ETH_ALEN))
+					continue;
+
+				if (psta->state & WIFI_ASOC_STATE) {
+					if (psta->rssi_stat.UndecoratedSmoothedPWDB < tmpEntryMinPWDB)
+						tmpEntryMinPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
+
+					if (psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
+						tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
+
+					if (psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
+						/* printk("%s==> mac_id(%d),rssi(%d)\n",__FUNCTION__,psta->mac_id,psta->rssi_stat.UndecoratedSmoothedPWDB); */
+						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16));
+					}
+				}
+
+			}
+
+		}
+
+		spin_unlock_bh(&pstapriv->sta_hash_lock, &irqL);
+#endif
+
+		/* printk("%s==> sta_cnt(%d)\n",__FUNCTION__,sta_cnt); */
+
+		for (i = 0; i < sta_cnt; i++) {
+			if (PWDB_rssi[i] != (0)) {
+				if (pHalData->fw_ractrl == _TRUE) {	/* Report every sta's RSSI to FW */
+					PWDB_rssi[i] |= (UL_DL_STATE << 24);
+					rtl8812_set_rssi_cmd(rtlpriv, (u8 *)(&PWDB_rssi[i]));
+				} else {
+				}
+			}
+		}
+	}
+
+
+
+	if (tmpEntryMaxPWDB != 0) {	/* If associated entry is found */
+		pdmpriv->EntryMaxUndecoratedSmoothedPWDB = tmpEntryMaxPWDB;
+	} else {
+		pdmpriv->EntryMaxUndecoratedSmoothedPWDB = 0;
+	}
+
+	if (tmpEntryMinPWDB != 0xff) {	/* If associated entry is found */
+		pdmpriv->EntryMinUndecoratedSmoothedPWDB = tmpEntryMinPWDB;
+	} else {
+		pdmpriv->EntryMinUndecoratedSmoothedPWDB = 0;
+	}
+
+	FindMinimumRSSI(rtlpriv);	/* get pdmpriv->MinUndecoratedPWDBForDM */
+
+	ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
+}
+
+static void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm)
+{
+	/*
+	 * For AP/ADSL use prtl8192cd_priv
+	 * For CE/NIC use _ADAPTER
+	 */
+
+	if (!(pDM_Odm->SupportAbility & ODM_BB_RSSI_MONITOR))
+		return;
+
+	/*
+	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
+	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
+	 * HW dynamic mechanism.
+	 */
+
+	odm_RSSIMonitorCheckCE(pDM_Odm);
+}
+
+
+/*
  * 2011/09/20 MH This is the entry pointer for all team to execute HW out source DM.
  * You can not add any dummy function here, be care, you can only use DM structure
  * to perform any new ODM_DM.

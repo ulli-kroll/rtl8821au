@@ -38,9 +38,6 @@ ODM_ClearTxPowerTrackingState(
 	IN struct _rtw_dm *	pDM_Odm
 	);
 
-void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpriv);
-void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpriv);
-
 
 #define ODM_TARGET_CHNL_NUM_2G_5G	59
 

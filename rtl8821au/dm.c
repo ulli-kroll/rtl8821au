@@ -1514,10 +1514,7 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 
 	if (!pDM_Odm->RFCalibrateInfo.TM_Trigger) {		/* at least delay 1 sec */
 		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
-		if (IS_HARDWARE_TYPE_JAGUAR(rtlhal))
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
-		else
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 
 		/* DBG_871X("Trigger Thermal Meter!!\n"); */
 

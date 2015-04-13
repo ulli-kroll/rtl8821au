@@ -200,9 +200,7 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0xFFF000, (CrystalCap | (CrystalCap << 6)));
 	}
 
-	if(IS_HARDWARE_TYPE_JAGUAR(rtlhal)) {
-		pHalData->Reg837 = rtl_read_byte(rtlpriv, 0x837);
-	}
+	pHalData->Reg837 = rtl_read_byte(rtlpriv, 0x837);
 
 	return rtStatus;
 

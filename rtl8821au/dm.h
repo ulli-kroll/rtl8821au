@@ -27,4 +27,5 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 	u8 RFPath, u8 ChannelMappedIndex);
 
+void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm);
 #endif

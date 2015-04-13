@@ -195,7 +195,6 @@ void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm);
 void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
 
 void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm);
-void ODM_TXPowerTrackingCheck(struct _rtw_dm *pDM_Odm);
 void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingInit(struct _rtw_dm *pDM_Odm);
@@ -246,7 +245,7 @@ void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
 	odm_RefreshRateAdaptiveMask(pDM_Odm);
 	odm_EdcaTurboCheck(pDM_Odm);
 
-	ODM_TXPowerTrackingCheck(pDM_Odm);
+	rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
 
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		if (pDM_Odm->bLinked) {

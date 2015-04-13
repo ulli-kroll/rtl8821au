@@ -1503,7 +1503,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	rtldm->TXPowercount = 0;
 }
 
-static void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm)
+void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -1532,25 +1532,4 @@ static void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm)
 		pDM_Odm->RFCalibrateInfo.TM_Trigger = 0;
 	}
 
-}
-
-void ODM_TXPowerTrackingCheck(struct _rtw_dm *pDM_Odm)
-{
-	/*
-	 * For AP/ADSL use prtl8192cd_priv
-	 * For CE/NIC use _ADAPTER
-	 */
-
-	/*
-	 * if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
-	 * 	return;
-	 */
-
-	/*
-	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
-	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
-	 * HW dynamic mechanism.
-	 */
-
-	odm_TXPowerTrackingCheckCE(pDM_Odm);
 }

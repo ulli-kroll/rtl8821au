@@ -23,66 +23,6 @@
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/dm.h>
 
-static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
-{
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	uint8_t	tmp1byte;
-	uint8_t	bPbcPressed = _FALSE;
-
-	if(!rtlpriv->registrypriv.hw_wps_pbc)
-		return;
-
-	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
-		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL);
-		tmp1byte |= (HAL_8192C_HW_GPIO_WPS_BIT);
-		rtl_write_byte(rtlpriv, GPIO_IO_SEL, tmp1byte);	/* enable GPIO[2] as output mode */
-
-		tmp1byte &= ~(HAL_8192C_HW_GPIO_WPS_BIT);
-		rtl_write_byte(rtlpriv,  GPIO_IN, tmp1byte);	/* reset the floating voltage level */
-
-		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL);
-		tmp1byte &= ~(HAL_8192C_HW_GPIO_WPS_BIT);
-		rtl_write_byte(rtlpriv, GPIO_IO_SEL, tmp1byte);	/* enable GPIO[2] as input mode */
-
-		tmp1byte =rtl_read_byte(rtlpriv, GPIO_IN);
-
-		if (tmp1byte == 0xff)
-			return ;
-
-		if (tmp1byte&HAL_8192C_HW_GPIO_WPS_BIT) {
-			bPbcPressed = _TRUE;
-		}
-	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
-		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL_8811A);
-		tmp1byte |= (BIT4);
-		rtl_write_byte(rtlpriv, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as output mode */
-
-		tmp1byte &= ~(BIT4);
-		rtl_write_byte(rtlpriv,  GPIO_IN_8811A, tmp1byte);		/* reset the floating voltage level */
-
-		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL_8811A);
-		tmp1byte &= ~(BIT4);
-		rtl_write_byte(rtlpriv, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as input mode */
-
-		tmp1byte =rtl_read_byte(rtlpriv, GPIO_IN_8811A);
-
-		if (tmp1byte == 0xff)
-			return ;
-
-		if (tmp1byte&BIT4) {
-			bPbcPressed = _TRUE;
-		}
-	}
-	if( _TRUE == bPbcPressed) {
-		/*
-		 * Here we only set bPbcPressed to true
-		 * After trigger PBC, the variable will be set to false
-		 */
-		DBG_8192C("CheckPbcGPIO - PBC is pressed\n");
-
-		rtw_request_wps_pbc_event(rtlpriv);
-	}
-}
 
 /*
  * Initialize GPIO setting registers
@@ -252,52 +192,6 @@ void rtl8812_InitHalDm(struct rtl_priv *rtlpriv)
 	rtlpriv->fix_rate = 0xFF;
 }
 
-
-void rtl8812_HalDmWatchDog(struct rtl_priv *rtlpriv)
-{
-	BOOLEAN		bFwCurrentInPSMode = _FALSE;
-	BOOLEAN		bFwPSAwake = _TRUE;
-	uint8_t hw_init_completed = _FALSE;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-
-	hw_init_completed = rtlpriv->hw_init_completed;
-
-	if (hw_init_completed == _FALSE)
-		goto skip_dm;
-
-#ifdef CONFIG_LPS
-	{
-		bFwCurrentInPSMode = rtlpriv->pwrctrlpriv.bFwCurrentInPSMode;
-		rtw_hal_get_hwreg(rtlpriv, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&bFwPSAwake));
-	}
-#endif
-	/* ODM */
-	if (hw_init_completed == _TRUE) {
-		uint8_t	bLinked=_FALSE;
-
-		if(rtw_linked_check(rtlpriv))
-			bLinked = _TRUE;
-
-
-		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
-		rtl8821au_dm_watchdog(rtlpriv);
-
-	}
-
-skip_dm:
-
-	/*
-	 * Check GPIO to determine current RF on/off and Pbc status.
-	 * Check Hardware Radio ON/OFF or not
-	 */
-	{
-		/* temp removed */
-		dm_CheckPbcGPIO(rtlpriv);
-	}
-	return;
-}
 
 void rtl8812_init_dm_priv(IN struct rtl_priv *rtlpriv)
 {

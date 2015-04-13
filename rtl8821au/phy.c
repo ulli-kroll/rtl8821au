@@ -4603,7 +4603,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 	/*
 	 *  <20120928, Kordan> A workaround in 8812A/8821A testchip, to fix the bug of odd Tx power indexes.
 	 */
-	if ((power_index % 2 == 1) && IS_HARDWARE_TYPE_JAGUAR(rtlhal) && IS_TEST_CHIP(pHalData->VersionID))
+	if ((power_index % 2 == 1) && IS_TEST_CHIP(pHalData->VersionID))
 		power_index -= 1;
 
 	/* 2013.01.18 LukeLee: Modify TXAGC by dcmd_Dynamic_Ctrl() */

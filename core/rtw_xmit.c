@@ -450,11 +450,12 @@ static void update_attrib_vcs_info(struct rtl_priv *rtlpriv, struct xmit_frame *
 			/* to do list: check MIMO power save condition. */
 
 			/* check AMPDU aggregation for TXOP */
+#if 0			/* ULLI we maqy keep this here */			
 			if ((pattrib->ampdu_en == _TRUE) && (!IS_HARDWARE_TYPE_JAGUAR(rtlhal))) {
 				pattrib->vcs_mode = RTS_CTS;
 				break;
 			}
-
+#endif
 			pattrib->vcs_mode = NONE_VCS;
 			break;
 		}

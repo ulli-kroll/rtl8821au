@@ -755,7 +755,7 @@ typedef enum _BASEBAND_CONFIG_PHY_REG_PG_VALUE_TYPE{
 } PHY_REG_PG_TYPE;
 
 
-typedef struct ODM_RF_Calibration_Structure
+struct ODM_RF_Calibration_Structure
 {
 	//for tx power tracking
 
@@ -817,7 +817,8 @@ typedef struct ODM_RF_Calibration_Structure
 	uint32_t 	TxIQC_8723B[2][3][2]; // { {S0: 0xc94, 0xc80, 0xc4c} , {S1: 0xc9c, 0xc88, 0xc4c}}
 	uint32_t 	RxIQC_8723B[2][2][2]; // { {S0: 0xc14, 0xca0} , {S1: 0xc1c, 0xc78}}
 
-}ODM_RF_CAL_T,*PODM_RF_CAL_T;
+};
+
 typedef struct _ODM_RATE_ADAPTIVE
 {
 	u8				Type;				// DM_Type_ByFW/DM_Type_ByDriver
@@ -1236,7 +1237,7 @@ struct _rtw_dm {
 
 	ANT_DETECTED_INFO	AntDetectedInfo; // Antenna detected information for RSSI tool
 
-	ODM_RF_CAL_T	RFCalibrateInfo;
+	struct ODM_RF_Calibration_Structure RFCalibrateInfo;
 
 	//
 	// TX power tracking

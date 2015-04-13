@@ -310,7 +310,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	int 		TX_X1[cal_num], TX_Y1[cal_num], RX_X1[cal_num], RX_Y1[cal_num];
 	BOOLEAN  	TX1IQKOK = FALSE, RX1IQKOK = FALSE, VDF_enable = FALSE;
 	int 			i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0, dt = 0;
-	PODM_RF_CAL_T  pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
+	struct ODM_RF_Calibration_Structure *pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d, ExtPA5G = %d, ExtPA2G = %d\n", rtlpriv->phy.current_chan_bw, rtlhal->external_pa_5g, rtlhal->external_pa_2g));
 	if (rtlpriv->phy.current_chan_bw == 2) {
@@ -4085,7 +4085,7 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, BAND_TYPE Band,
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(rtlpriv));
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
-	PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
+	struct ODM_RF_Calibration_Structure *pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	s8	bbSwing_2G = -1 * GetRegTxBBSwing_2G(rtlpriv);
 	s8	bbSwing_5G = -1 * GetRegTxBBSwing_5G(rtlpriv);
@@ -4567,7 +4567,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 		struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(rtlpriv));
 	 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
-		PODM_RF_CAL_T  	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
+		struct ODM_RF_Calibration_Structure *pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
 		rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000,
 					 phy_get_tx_swing_8821au(rtlpriv, (BAND_TYPE)Band, RF90_PATH_A)); // 0xC1C[31:21]

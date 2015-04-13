@@ -160,13 +160,7 @@ struct rtl_phy {
 	int32_t	RegEB4;
 	int32_t	RegEBC;
 
-	//for IQK
-	u32	ADDA_backup[IQK_ADDA_REG_NUM];
-	u32	IQK_MAC_backup[IQK_MAC_REG_NUM];
-	u32	IQK_BB_backup_recover[9];
-	u32	IQK_BB_backup[IQK_BB_REG_NUM];
-
-	uint8_t	bRfPiEnable;
+	uint32_t RegC04, RegC08, Reg874;
 
 	// The current Tx Power Level
 	/* ULLI vars currently not used */
@@ -632,16 +626,6 @@ struct dm_priv {
 
 	//uint8_t   RSVD_2;
 
-	//for APK
-	u32	APKoutput[2][2];	//path A/B; output1_1a/output1_2a
-	uint8_t	bAPKdone;
-	uint8_t	bAPKThermalMeterIgnore;
-	uint8_t	bDPdone;
-	uint8_t	bDPPathAOK;
-	uint8_t	bDPPathBOK;
-	//uint8_t   RSVD_3;
-	//uint8_t   RSVD_4;
-	//uint8_t   RSVD_5;
 
 	uint8_t	PowerIndex_backup[6];
 	uint8_t	OFDM_index[2];
@@ -760,19 +744,10 @@ struct ODM_RF_Calibration_Structure
 	//for tx power tracking
 
 	uint32_t	RegA24; // for TempCCK
-	int32_t	RegE94;
-	int32_t 	RegE9C;
-	int32_t	RegEB4;
-	int32_t	RegEBC;
 
 	u8  	TM_Trigger;
-    	u8  	InternalPA5G[2];	//pathA / pathB
-
 	BOOLEAN	TxPowerTrackingInProgress;
 	BOOLEAN	bDPKenable;
-
-	u8 	bRfPiEnable;
-
 
 	//------------------------- Tx power Tracking -------------------------//
 	u8 	bCCKinCH14;
@@ -782,41 +757,14 @@ struct ODM_RF_Calibration_Structure
 	u8 	ThermalValue_HP[HP_THERMAL_NUM];
 	u8 	ThermalValue_HP_index;
 	BOOLEAN	bNeedIQK;
-	u8	Delta_IQK;
-	u8	Delta_LCK;
 	s8  BBSwingDiff2G, BBSwingDiff5G; // Unit: dB
 
 	//--------------------------------------------------------------------//
 
-	//for IQK
-	uint32_t 	RegC04;
-	uint32_t 	Reg874;
-	uint32_t 	RegC08;
-	uint32_t 	RegB68;
-	uint32_t 	RegB6C;
-	uint32_t 	Reg870;
-	uint32_t 	Reg860;
-	uint32_t 	Reg864;
 
 	BOOLEAN	bIQKInitialized;
 	BOOLEAN bLCKInProgress;
 	BOOLEAN	bAntennaDetected;
-	uint32_t	ADDA_backup[IQK_ADDA_REG_NUM];
-	uint32_t	IQK_MAC_backup[IQK_MAC_REG_NUM];
-	uint32_t	IQK_BB_backup_recover[9];
-	uint32_t	IQK_BB_backup[IQK_BB_REG_NUM];
-
-	//for APK
-	uint32_t 	APKoutput[2][2]; //path A/B; output1_1a/output1_2a
-	u8 	bAPKdone;
-	u8 	bAPKThermalMeterIgnore;
-	u8 	bDPdone;
-	u8 	bDPPathAOK;
-	u8 	bDPPathBOK;
-
-	uint32_t 	TxIQC_8723B[2][3][2]; // { {S0: 0xc94, 0xc80, 0xc4c} , {S1: 0xc9c, 0xc88, 0xc4c}}
-	uint32_t 	RxIQC_8723B[2][2][2]; // { {S0: 0xc14, 0xca0} , {S1: 0xc1c, 0xc78}}
-
 };
 
 typedef struct _ODM_RATE_ADAPTIVE

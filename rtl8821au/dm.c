@@ -1533,3 +1533,61 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 	}
 
 }
+
+
+/*
+ * 2011/09/20 MH This is the entry pointer for all team to execute HW out source DM.
+ * You can not add any dummy function here, be care, you can only use DM structure
+ * to perform any new ODM_DM.
+ */
+void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
+{
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
+
+	odm_CommonInfoSelfUpdate(pDM_Odm);
+	odm_FalseAlarmCounterStatistics(pDM_Odm);
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
+
+	odm_RSSIMonitorCheck(pDM_Odm);
+
+	odm_DIG(pDM_Odm);
+
+	odm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
+
+	odm_CCKPacketDetectionThresh(pDM_Odm);
+
+	if (*(pDM_Odm->pbPowerSaving) == TRUE)
+		return;
+
+	odm_RefreshRateAdaptiveMask(pDM_Odm);
+	odm_EdcaTurboCheck(pDM_Odm);
+
+	rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
+
+	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+		if (pDM_Odm->bLinked) {
+			if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess)) {
+				pDM_Odm->preChannel = *pDM_Odm->pChannel;
+				pDM_Odm->LinkedInterval = 0;
+			}
+
+			if (pDM_Odm->LinkedInterval < 3)
+				pDM_Odm->LinkedInterval++;
+
+			if (pDM_Odm->LinkedInterval == 2) {
+				struct rtl_priv *	rtlpriv = pDM_Odm->rtlpriv;
+
+				/*
+				 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
+				 * void rtl8821au_phy_iq_calibrate(rtlpriv, FALSE);
+				 */
+			}
+		} else
+			pDM_Odm->LinkedInterval = 0;
+	}
+	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
+
+	odm_dtc(pDM_Odm);
+}

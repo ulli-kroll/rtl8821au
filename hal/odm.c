@@ -165,7 +165,6 @@ unsigned int TxPwrTrk_OFDM_SwingTbl[TxPwrTrk_OFDM_SwingTbl_Len] = {
 
 /* START------------COMMON INFO RELATED--------------- */
 void odm_CommonInfoSelfInit(struct _rtw_dm *pDM_Odm);
-void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm);
 /*
 void odm_FindMinimumRSSI(struct _rtw_dm *pDM_Odm);
 void odm_IsLinked(struct _rtw_dm *pDM_Odm);
@@ -173,12 +172,8 @@ void odm_IsLinked(struct _rtw_dm *pDM_Odm);
 /* END------------COMMON INFO RELATED--------------- */
 
 /* START---------------DIG--------------------------- */
-void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm);
 void odm_DIGInit(struct _rtw_dm *pDM_Odm);
-void odm_DIG(struct _rtw_dm *pDM_Odm);
-void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm);
 void odm_AdaptivityInit(struct _rtw_dm *pDM_Odm);
-void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8 IGI);
 /* END---------------DIG--------------------------- */
 
 /* START-------BB POWER SAVE----------------------- */
@@ -189,17 +184,13 @@ void odm_1R_CCA(struct _rtw_dm *pDM_Odm);
 /* END-------------------PSD----------------------- */
 
 void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm);
-void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm);
-void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm);
 
 void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
 
-void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm);
 void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm);
-void odm_EdcaTurboCheck(struct _rtw_dm *pDM_Odm);
 void ODM_EdcaTurboInit(struct _rtw_dm *pDM_Odm);
 
 void odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm);
@@ -216,62 +207,6 @@ void odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm);
  */
 
 
-/*
- * 2011/09/20 MH This is the entry pointer for all team to execute HW out source DM.
- * You can not add any dummy function here, be care, you can only use DM structure
- * to perform any new ODM_DM.
- */
-void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
-{
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
-
-	odm_CommonInfoSelfUpdate(pDM_Odm);
-	odm_FalseAlarmCounterStatistics(pDM_Odm);
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
-
-	odm_RSSIMonitorCheck(pDM_Odm);
-
-	odm_DIG(pDM_Odm);
-
-	odm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
-
-	odm_CCKPacketDetectionThresh(pDM_Odm);
-
-	if (*(pDM_Odm->pbPowerSaving) == TRUE)
-		return;
-
-	odm_RefreshRateAdaptiveMask(pDM_Odm);
-	odm_EdcaTurboCheck(pDM_Odm);
-
-	rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
-
-	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		if (pDM_Odm->bLinked) {
-			if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess)) {
-				pDM_Odm->preChannel = *pDM_Odm->pChannel;
-				pDM_Odm->LinkedInterval = 0;
-			}
-
-			if (pDM_Odm->LinkedInterval < 3)
-				pDM_Odm->LinkedInterval++;
-
-			if (pDM_Odm->LinkedInterval == 2) {
-				struct rtl_priv *	rtlpriv = pDM_Odm->rtlpriv;
-
-				/*
-				 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
-				 * void rtl8821au_phy_iq_calibrate(rtlpriv, FALSE);
-				 */
-			}
-		} else
-			pDM_Odm->LinkedInterval = 0;
-	}
-	pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
-
-	odm_dtc(pDM_Odm);
-}
 
 
 /*

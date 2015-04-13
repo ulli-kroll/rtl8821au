@@ -28,4 +28,18 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 	u8 RFPath, u8 ChannelMappedIndex);
 
 void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm);
+
+/* Old prototypes */
+
+void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm);
+void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm);
+void odm_DIG(struct _rtw_dm *pDM_Odm);
+void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm);
+void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm);
+void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8 IGI);
+void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm);
+void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm);
+void odm_EdcaTurboCheck(struct _rtw_dm *pDM_Odm);
+
+
 #endif

@@ -34,7 +34,6 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv);
 
 void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm);
 void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm);
-void odm_DIG(struct _rtw_dm *pDM_Odm);
 void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm);
 void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm);
 void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8 IGI);

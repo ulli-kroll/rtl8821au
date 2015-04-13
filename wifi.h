@@ -280,6 +280,8 @@ struct rtl_io {
 	u32(*read32_sync) (struct rtl_priv *rtlpriv, u32 addr);
 };
 
+struct dig_t {
+};
 
 struct rtl_priv {
 	struct net_device *ndev;
@@ -290,6 +292,7 @@ struct rtl_priv {
 	struct rtl_dm dm;		/* Caution new dm data */
 	struct rtl_hal_cfg *cfg;
 	struct rtl_io io;
+	struct dig_t *dm_digtable;
 
 
 	struct rtl_usb_priv priv;

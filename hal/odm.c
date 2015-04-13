@@ -1567,59 +1567,6 @@ void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
  */
 
 
-void ODM_TXPowerTrackingCheck(struct _rtw_dm *pDM_Odm)
-{
-	/*
-	 * For AP/ADSL use prtl8192cd_priv
-	 * For CE/NIC use _ADAPTER
-	 */
-
-	/*
-	 * if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK))
-	 * 	return;
-	 */
-
-	/*
-	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
-	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
-	 * HW dynamic mechanism.
-	 */
-
-	odm_TXPowerTrackingCheckCE(pDM_Odm);
-}
-
-void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm)
-{
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-
-	if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK)) {
-		return;
-	}
-
-	if (!pDM_Odm->RFCalibrateInfo.TM_Trigger) {		/* at least delay 1 sec */
-		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
-		if (IS_HARDWARE_TYPE_JAGUAR(rtlhal))
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
-		else
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_OLD, bRFRegOffsetMask, 0x60);
-
-		/* DBG_871X("Trigger Thermal Meter!!\n"); */
-
-		pDM_Odm->RFCalibrateInfo.TM_Trigger = 1;
-		return;
-	} else {
-		/* DBG_871X("Schedule TxPowerTracking direct call!!\n"); */
-		if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-			rtl8812au_dm_txpower_tracking_callback_thermalmeter(rtlpriv);
-		if (IS_HARDWARE_TYPE_8821U(rtlhal))
-			rtl8821au_dm_txpower_tracking_callback_thermalmeter(rtlpriv);
-		pDM_Odm->RFCalibrateInfo.TM_Trigger = 0;
-	}
-
-}
-
-
 /*
  * antenna mapping info
  *  1: right-side antenna

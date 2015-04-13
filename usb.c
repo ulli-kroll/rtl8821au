@@ -1203,11 +1203,6 @@ int rtw_resume_process(struct rtl_priv *rtlpriv)
 #endif
 	up(&pwrpriv->lock);
 
-	if (rtlpriv->pid[1]!=0) {
-		DBG_871X("pid[1]:%d\n",rtlpriv->pid[1]);
-		rtw_signal_process(rtlpriv->pid[1], SIGUSR2);
-	}
-
 	ret = 0;
 exit:
 	pwrpriv->bInSuspend = _FALSE;

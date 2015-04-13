@@ -1108,10 +1108,7 @@ void rtw_indicate_connect(struct rtl_priv *rtlpriv)
 
 		rtw_hal_led_control(rtlpriv, LED_CTL_LINK);
 
-
-		{
-			rtw_os_indicate_connect(rtlpriv);
-		}
+		rtw_os_indicate_connect(rtlpriv);
 
 	}
 }

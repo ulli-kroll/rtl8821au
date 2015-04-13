@@ -303,7 +303,6 @@ struct rtl_priv {
 
 
 	int	DriverState;// for disable driver using module, use dongle to replace module.
-	int	pid[3];//process id from UI, 0:wps, 1:hostapd, 2:dhcpcd
 	int	bDongle;//build-in module or external dongle
 	u16 	chip_type;
 	u16	interface_type;//USB,SDIO,SPI,PCI

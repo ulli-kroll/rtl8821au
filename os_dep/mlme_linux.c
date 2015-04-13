@@ -79,9 +79,6 @@ _func_enter_;
 	rtw_indicate_wx_assoc_event(rtlpriv);
 	netif_carrier_on(rtlpriv->ndev);
 
-	if(rtlpriv->pid[2] !=0)
-		rtw_signal_process(rtlpriv->pid[2], SIGALRM);
-
 _func_exit_;
 
 }

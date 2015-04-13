@@ -2014,8 +2014,6 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 		 * After trigger PBC, the variable will be set to false
 		 */
 		DBG_8192C("CheckPbcGPIO - PBC is pressed\n");
-
-		rtw_request_wps_pbc_event(rtlpriv);
 	}
 }
 

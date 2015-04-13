@@ -174,17 +174,6 @@ static void request_wps_pbc_event(struct rtl_priv *rtlpriv)
 
 }
 
-void rtw_request_wps_pbc_event(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->pid[0] == 0) {
-		/* 0 is the default value and it means the application monitors the HW PBC doesn't privde its pid to driver. */
-		return;
-	}
-
-	rtw_signal_process(rtlpriv->pid[0], SIGUSR1);
-	rtw_hal_led_control(rtlpriv, LED_CTL_START_WPS_BOTTON);
-}
-
 void indicate_wx_scan_complete_event(struct rtl_priv *rtlpriv)
 {
 	union iwreq_data wrqu;

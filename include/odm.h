@@ -960,11 +960,6 @@ uint32_t ODM_Get_Rate_Bitmap(
 void ODM_DMInit( IN	struct _rtw_dm *pDM_Odm);
 
 void
-ODM_DMWatchdog(
-	IN		struct _rtw_dm *		pDM_Odm			// For common use in the future
-	);
-
-void
 ODM_CmnInfoInit(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,

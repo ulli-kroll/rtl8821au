@@ -21,6 +21,7 @@
 #define _RTL8812A_DM_C_
 
 #include <rtl8812a_hal.h>
+#include <../rtl8821au/dm.h>
 
 static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 {
@@ -281,7 +282,7 @@ void rtl8812_HalDmWatchDog(struct rtl_priv *rtlpriv)
 
 
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
-		ODM_DMWatchdog(&pHalData->odmpriv);
+		rtl8821au_dm_watchdog(rtlpriv);
 
 	}
 

@@ -1540,10 +1540,12 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
  * You can not add any dummy function here, be care, you can only use DM structure
  * to perform any new ODM_DM.
  */
-void ODM_DMWatchdog(struct _rtw_dm *pDM_Odm)
+void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 
 	odm_CommonInfoSelfUpdate(pDM_Odm);

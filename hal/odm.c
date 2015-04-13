@@ -179,10 +179,6 @@ void odm_TXPowerTrackingInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm);
 void ODM_EdcaTurboInit(struct _rtw_dm *pDM_Odm);
 
-void odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm);
-
-
-
 #define	RxDefaultAnt1		0x65a9
 #define	RxDefaultAnt2		0x569a
 

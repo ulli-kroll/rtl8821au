@@ -1759,18 +1759,18 @@ static void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm)
 	odm_RSSIMonitorCheckCE(pDM_Odm);
 }
 
-
-
 /*
  * ============================================================
  * EDCA Turbo
  * ============================================================
  */
 
-static void odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 {
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
+	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	uint32_t	EDCA_BE_UL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_UL[pMgntInfo->IOTPeer]; */
 	uint32_t	EDCA_BE_DL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_DL[pMgntInfo->IOTPeer]; */
 	uint32_t	ICType = pDM_Odm->SupportICType;
@@ -1781,13 +1781,26 @@ static void odm_EdcaTurboCheckCE(struct _rtw_dm *pDM_Odm)
 	u64		cur_tx_bytes = 0;
 	u64		cur_rx_bytes = 0;
 	u8		bbtchange = _FALSE;
-	 struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 	struct xmit_priv		*pxmitpriv = &(rtlpriv->xmitpriv);
 	struct recv_priv		*precvpriv = &(rtlpriv->recvpriv);
 	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
+	/*
+	 * For AP/ADSL use prtl8192cd_priv
+	 * For CE/NIC use _ADAPTER
+	 */
+
+	/*
+	 *
+	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
+	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
+	 * HW dynamic mechanism.
+	 */
+
+	if (!(pDM_Odm->SupportAbility & ODM_MAC_EDCA_TURBO))
+		return;
 
 	if ((pregpriv->wifi_spec == 1)) {	/*|| (pmlmeinfo->HT_enable == 0)) */
 		goto dm_CheckEdcaTurbo_EXIT;
@@ -1875,27 +1888,6 @@ dm_CheckEdcaTurbo_EXIT:
 	precvpriv->bIsAnyNonBEPkts = _FALSE;
 	pxmitpriv->last_tx_bytes = pxmitpriv->tx_bytes;
 	precvpriv->last_rx_bytes = precvpriv->rx_bytes;
-}
-
-
-static void odm_EdcaTurboCheck(struct _rtw_dm *pDM_Odm)
-{
-	/*
-	 * For AP/ADSL use prtl8192cd_priv
-	 * For CE/NIC use _ADAPTER
-	 */
-
-	/*
-	 *
-	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
-	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
-	 * HW dynamic mechanism.
-	 */
-
-	if (!(pDM_Odm->SupportAbility & ODM_MAC_EDCA_TURBO))
-		return;
-
-	odm_EdcaTurboCheckCE(pDM_Odm);
 }
 
 static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
@@ -2017,7 +2009,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 			return;
 	
 		odm_RefreshRateAdaptiveMask(pDM_Odm);
-		odm_EdcaTurboCheck(pDM_Odm);
+		rtl8821au_dm_check_edca_turbo(rtlpriv);
 	
 		rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
 	

@@ -13,14 +13,35 @@ enum radio_path {
 
 struct rtl_hal_ops;
 
-
-/* Here will go the new Halinterface data */
-#define CHANNEL_MAX_NUMBER			14+24+21	// 14 is the max channel number
+#define CHANNEL_MAX_NUMBER	(14 + 24 + 21)	/* 14 is the max channel no */
 #define CHANNEL_MAX_NUMBER_2G		14
-#define CHANNEL_MAX_NUMBER_5G		54			// Please refer to "phy_GetChnlGroup8812A" and "Hal_ReadTxPowerInfo8812A"
+#define CHANNEL_MAX_NUMBER_5G		54 /* Please refer to
+					    *"phy_GetChnlGroup8812A" and
+					    * "Hal_ReadTxPowerInfo8812A"
+					    */
 #define CHANNEL_MAX_NUMBER_5G_80M	7
-#define CHANNEL_GROUP_MAX				3+9	// ch1~3, ch4~9, ch10~14 total three groups
-#define MAX_PG_GROUP					13
+#define CHANNEL_GROUP_MAX	(3 + 9)	/*  ch1~3, 4~9, 10~14 = three groups */
+#define CHANNEL_MAX_NUMBER_5G		54 /* Please refer to
+					    *"phy_GetChnlGroup8812A" and
+					    * "Hal_ReadTxPowerInfo8812A"
+					    */
+#define CHANNEL_MAX_NUMBER_5G_80M	7
+#define MAX_PG_GROUP			13
+#define	CHANNEL_GROUP_MAX_2G		3
+#define	CHANNEL_GROUP_IDX_5GL		3
+#define	CHANNEL_GROUP_IDX_5GM		6
+#define	CHANNEL_GROUP_IDX_5GH		9
+#define	CHANNEL_GROUP_MAX_5G		9
+#define CHANNEL_MAX_NUMBER_2G		14
+#define AVG_THERMAL_NUM			8
+#define AVG_THERMAL_NUM_88E		4
+#define AVG_THERMAL_NUM_8723BE		4
+#define MAX_TID_COUNT			9
+
+
+
+
+
 
 #define MAX_REGULATION_NUM						3
 #define MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE	4
@@ -73,47 +94,114 @@ struct txpower_info_5g {
 	u8 bw160_diff[MAX_RF_PATH][MAX_TX_COUNT];
 };
 
-struct rtl_efuse {
-	//
-	// EEPROM setting.
-	//
-	u16	eeprom_vid;
-	u16	eeprom_svid;
-	u16	EEPROMPID;
-	u16	EEPROMSDID;
 
-	uint8_t	EEPROMCustomerID;
-	uint8_t	EEPROMSubCustomerID;
-	uint8_t	eeprom_version;
-	uint8_t	EEPROMRegulatory;
-	uint8_t	EEPROMThermalMeter;
-	uint8_t	EEPROMBluetoothCoexist;
-	uint8_t	EEPROMBluetoothType;
-	uint8_t	EEPROMBluetoothAntNum;
-	uint8_t	EEPROMBluetoothAntIsolation;
-	uint8_t	EEPROMBluetoothRadioShared;
 
-	// For power group
-	/* ULLI both vars are only read ??? */
-	uint8_t	pwrgroup_ht20[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
-	uint8_t	pwrgroup_ht40[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
 
-	//---------------------------------------------------------------------------------//
-	//3 [2.4G]
-	uint8_t	Index24G_CCK_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
-	uint8_t	Index24G_BW40_Base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
-	//If only one tx, only BW20 and OFDM are used.
-	s8	CCK_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	OFDM_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW20_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	BW40_24G_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	//3 [5G]
-	u8	txpwr_5g_bw40base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
-	u8	txpwr_5g_bw80base[MAX_RF_PATH][CHANNEL_MAX_NUMBER_5G_80M];
-	s8	txpwr_5g_ofdmdiff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	txpwr_5g_bw20diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	txpwr_5g_bw40diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8	txpwr_5g_bw80diff[MAX_RF_PATH][MAX_TX_COUNT];
+#define	EFUSE_MAX_LOGICAL_SIZE			512
+
+struct rtl_efuse {	bool autoLoad_ok;
+	bool bootfromefuse;
+	u16 max_physical_size;
+
+	u8 efuse_map[2][EFUSE_MAX_LOGICAL_SIZE];
+	u16 efuse_usedbytes;
+	u8 efuse_usedpercentage;
+#ifdef EFUSE_REPG_WORKAROUND
+	bool efuse_re_pg_sec1flag;
+	u8 efuse_re_pg_data[8];
+#endif
+
+	u8 autoload_failflag;
+	u8 autoload_status;
+
+	short epromtype;
+	u16 eeprom_vid;
+	u16 eeprom_did;
+	u16 eeprom_svid;
+	u16 eeprom_smid;
+	u8 eeprom_oemid;
+	u16 eeprom_channelplan;
+	u8 eeprom_version;
+	u8 board_type;
+	u8 external_pa;
+
+	u8 dev_addr[6];
+	u8 wowlan_enable;
+	u8 antenna_div_cfg;
+	u8 antenna_div_type;
+
+	bool txpwr_fromeprom;
+	u8 eeprom_crystalcap;
+	u8 eeprom_tssi[2];
+	u8 eeprom_tssi_5g[3][2]; /* for 5GL/5GM/5GH band. */
+	u8 eeprom_pwrlimit_ht20[CHANNEL_GROUP_MAX];
+	u8 eeprom_pwrlimit_ht40[CHANNEL_GROUP_MAX];
+	u8 eeprom_chnlarea_txpwr_cck[MAX_RF_PATH][CHANNEL_GROUP_MAX_2G];
+	u8 eeprom_chnlarea_txpwr_ht40_1s[MAX_RF_PATH][CHANNEL_GROUP_MAX];
+	u8 eprom_chnl_txpwr_ht40_2sdf[MAX_RF_PATH][CHANNEL_GROUP_MAX];
+
+	u8 internal_pa_5g[2];	/* pathA / pathB */
+	u8 eeprom_c9;
+	u8 eeprom_cc;
+
+	/*For power group */
+	u8 eeprom_pwrgroup[2][3];
+	u8 pwrgroup_ht20[2][CHANNEL_MAX_NUMBER];
+	u8 pwrgroup_ht40[2][CHANNEL_MAX_NUMBER];
+
+	u8 txpwrlevel_cck[MAX_RF_PATH][CHANNEL_MAX_NUMBER_2G];
+	/*For HT 40MHZ pwr */
+	u8 txpwrlevel_ht40_1s[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	/*For HT 40MHZ pwr */
+	u8 txpwrlevel_ht40_2s[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+
+	/*--------------------------------------------------------*
+	 * 8192CE\8192SE\8192DE\8723AE use the following 4 arrays,
+	 * other ICs (8188EE\8723BE\8192EE\8812AE...)
+	 * define new arrays in Windows code.
+	 * BUT, in linux code, we use the same array for all ICs.
+	 *
+	 * The Correspondance relation between two arrays is:
+	 * txpwr_cckdiff[][] == CCK_24G_Diff[][]
+	 * txpwr_ht20diff[][] == BW20_24G_Diff[][]
+	 * txpwr_ht40diff[][] == BW40_24G_Diff[][]
+	 * txpwr_legacyhtdiff[][] == OFDM_24G_Diff[][]
+	 *
+	 * Sizes of these arrays are decided by the larger ones.
+	 */
+	char txpwr_cckdiff[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	char txpwr_ht20diff[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	char txpwr_ht40diff[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	char txpwr_legacyhtdiff[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+
+	u8 txpwr_5g_bw40base[MAX_RF_PATH][CHANNEL_MAX_NUMBER];
+	u8 txpwr_5g_bw80base[MAX_RF_PATH][CHANNEL_MAX_NUMBER_5G_80M];
+	char txpwr_5g_ofdmdiff[MAX_RF_PATH][MAX_TX_COUNT];
+	char txpwr_5g_bw20diff[MAX_RF_PATH][MAX_TX_COUNT];
+	char txpwr_5g_bw40diff[MAX_RF_PATH][MAX_TX_COUNT];
+	char txpwr_5g_bw80diff[MAX_RF_PATH][MAX_TX_COUNT];
+
+	u8 txpwr_safetyflag;			/* Band edge enable flag */
+	u16 eeprom_txpowerdiff;
+	u8 legacy_httxpowerdiff;	/* Legacy to HT rate power diff */
+	u8 antenna_txpwdiff[3];
+
+	u8 eeprom_regulatory;
+	u8 eeprom_thermalmeter;
+	u8 thermalmeter[2]; /*ThermalMeter, index 0 for RFIC0, 1 for RFIC1 */
+	u16 tssi_13dbm;
+	u8 crystalcap;		/* CrystalCap. */
+	u8 delta_iqk;
+	u8 delta_lck;
+
+	u8 legacy_ht_txpowerdiff;	/*Legacy to HT rate power diff */
+	bool apk_thermalmeterignore;
+
+	bool b1x1_recvcombine;
+	bool b1ss_support;
+
+	/*channel plan */
+	u8 channel_plan;
 
 };
 

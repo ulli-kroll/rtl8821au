@@ -307,9 +307,9 @@ static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 	MSG_8192C("pDM_Odm TxPowerTrackControl = %d\n", rtldm->TxPowerTrackControl);
 
 	rtldm->TxPowerTrackControl = TRUE;
-	rtldm->thermalvalue = efuse->EEPROMThermalMeter;
-	rtldm->thermalvalue_iqk = efuse->EEPROMThermalMeter;
-	rtldm->thermalvalue_lck = efuse->EEPROMThermalMeter;
+	rtldm->thermalvalue = efuse->eeprom_thermalmeter;
+	rtldm->thermalvalue_iqk = efuse->eeprom_thermalmeter;
+	rtldm->thermalvalue_lck = efuse->eeprom_thermalmeter;
 
 	/* The index of "0 dB" in SwingTable. */
 	{
@@ -1130,8 +1130,8 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	ThermalValue = (u8)rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
 	if (!rtldm->TxPowerTrackControl
-	 || efuse->EEPROMThermalMeter == 0
-	 || efuse->EEPROMThermalMeter == 0xFF)
+	 || efuse->eeprom_thermalmeter == 0
+	 || efuse->eeprom_thermalmeter == 0xFF)
 		return;
 
 	/* 4 if (. Initialize ThermalValues of RFCalibrateInfo */
@@ -1156,7 +1156,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	if (ThermalValue_AVG_count) {               /* Calculate Average ThermalValue after average enough times */
 		ThermalValue = (u8)(ThermalValue_AVG / ThermalValue_AVG_count);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", ThermalValue, efuse->EEPROMThermalMeter));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", ThermalValue, efuse->eeprom_thermalmeter));
 	}
 
 	/* 4 5. Calculate delta, delta_LCK, delta_IQK. */
@@ -1180,13 +1180,13 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	if (delta > 0 && rtldm->TxPowerTrackControl) {
 		/* "delta" here is used to record the absolute value of differrence. */
-	    delta = ThermalValue > efuse->EEPROMThermalMeter?(ThermalValue - efuse->EEPROMThermalMeter):(efuse->EEPROMThermalMeter - ThermalValue);
+	    delta = ThermalValue > efuse->eeprom_thermalmeter?(ThermalValue - efuse->eeprom_thermalmeter):(efuse->eeprom_thermalmeter - ThermalValue);
 		if (delta >= TXSCALE_TABLE_SIZE)
 			delta = TXSCALE_TABLE_SIZE - 1;
 
 		/* 4 7.1 The Final Power Index = BaseIndex + PowerIndexOffset */
 
-		if (ThermalValue > efuse->EEPROMThermalMeter) {
+		if (ThermalValue > efuse->eeprom_thermalmeter) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TUP_A[%d] = %d\n", delta, up_a[delta]));
 			rtldm->DeltaPowerIndexLast[RF90_PATH_A] = rtldm->DeltaPowerIndex[RF90_PATH_A];
 			rtldm->DeltaPowerIndex[RF90_PATH_A] = up_a[delta];
@@ -1281,21 +1281,21 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		 *  2012/04/25 MH Add for tx power tracking to set tx power in tx agc for 88E.
 		 */
 		if (ThermalValue > rtldm->thermalvalue) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_B], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
+			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
+			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_B], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
 
 			} else if (ThermalValue < rtldm->thermalvalue) { /* Low temperature */
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_B], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_B], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
 
 			}
-			if (ThermalValue > efuse->EEPROMThermalMeter) {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) higher than PG value(%d)\n", ThermalValue, efuse->EEPROMThermalMeter));
+			if (ThermalValue > efuse->eeprom_thermalmeter) {
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) higher than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
 
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
 					ODM_TxPwrTrackSetPwr8812A(rtlpriv, BBSWING, p, Indexforchannel);
 			} else {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->EEPROMThermalMeter));
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
 
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
 					ODM_TxPwrTrackSetPwr8812A(rtlpriv, BBSWING, p, Indexforchannel);
@@ -1351,8 +1351,8 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	ThermalValue = (u8)rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
 	if (!rtldm->TxPowerTrackControl
-	 || efuse->EEPROMThermalMeter == 0
-	 || efuse->EEPROMThermalMeter == 0xFF)
+	 || efuse->eeprom_thermalmeter == 0
+	 || efuse->eeprom_thermalmeter == 0xFF)
 		return;
 
 	/* 4 if (. Initialize ThermalValues of RFCalibrateInfo */
@@ -1377,7 +1377,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	if (ThermalValue_AVG_count) {               /* Calculate Average ThermalValue after average enough times */
 		ThermalValue = (u8)(ThermalValue_AVG / ThermalValue_AVG_count);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", ThermalValue, efuse->EEPROMThermalMeter));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", ThermalValue, efuse->eeprom_thermalmeter));
 	}
 
 	/* 4 5. Calculate delta, delta_LCK, delta_IQK. */
@@ -1401,13 +1401,13 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	if (delta > 0 && rtldm->TxPowerTrackControl) {
 		/* "delta" here is used to record the absolute value of differrence. */
-	    delta = ThermalValue > efuse->EEPROMThermalMeter?(ThermalValue - efuse->EEPROMThermalMeter):(efuse->EEPROMThermalMeter - ThermalValue);
+	    delta = ThermalValue > efuse->eeprom_thermalmeter?(ThermalValue - efuse->eeprom_thermalmeter):(efuse->eeprom_thermalmeter - ThermalValue);
 		if (delta >= TXSCALE_TABLE_SIZE)
 			delta = TXSCALE_TABLE_SIZE - 1;
 
 		/* 4 7.1 The Final Power Index = BaseIndex + PowerIndexOffset */
 
-		if (ThermalValue > efuse->EEPROMThermalMeter) {
+		if (ThermalValue > efuse->eeprom_thermalmeter) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TUP_A[%d] = %d\n", delta, up_a[delta]));
 			rtldm->DeltaPowerIndexLast[RF90_PATH_A] = rtldm->DeltaPowerIndex[RF90_PATH_A];
 			rtldm->DeltaPowerIndex[RF90_PATH_A] = up_a[delta];
@@ -1484,20 +1484,20 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		 *  2012/04/25 MH Add for tx power tracking to set tx power in tx agc for 88E.
 		 */
 		if (ThermalValue > rtldm->thermalvalue) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
+			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
 
 			} else if (ThermalValue < rtldm->thermalvalue) { /* Low temperature */
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->EEPROMThermalMeter, rtldm->thermalvalue));
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->PowerIndexOffset[RF90_PATH_A], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
 
 			}
-			if (ThermalValue > efuse->EEPROMThermalMeter) {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) higher than PG value(%d)\n", ThermalValue, efuse->EEPROMThermalMeter));
+			if (ThermalValue > efuse->eeprom_thermalmeter) {
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) higher than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
 
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++)
 					ODM_TxPwrTrackSetPwr8821A(rtlpriv, MIX_MODE, p, Indexforchannel);
 			} else {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->EEPROMThermalMeter));
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
 
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++)

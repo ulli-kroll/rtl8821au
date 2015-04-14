@@ -126,12 +126,12 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)
 
 	/* DBG_871X("==>phy_BB8812_Config_ParaFile\n"); */
 
-	DBG_871X("===> phy_BB8812_Config_ParaFile() EEPROMRegulatory %d\n", efuse->EEPROMRegulatory );
+	DBG_871X("===> phy_BB8812_Config_ParaFile() EEPROMRegulatory %d\n", efuse->eeprom_regulatory);
 
 	PHY_InitPowerLimitTable( &(pHalData->odmpriv) );
 
-	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->EEPROMRegulatory != 2) ||
-	     efuse->EEPROMRegulatory == 1) {
+	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2) ||
+	     efuse->eeprom_regulatory == 1) {
 		_rtl8821au_phy_read_and_config_txpwr_lmt(rtlpriv);
 	}
 
@@ -145,8 +145,8 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)
 
 		ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG_PG);
 
-		if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->EEPROMRegulatory != 2) ||
-		 	efuse->EEPROMRegulatory == 1 )
+		if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2) ||
+		 	efuse->eeprom_regulatory == 1 )
 			PHY_ConvertPowerLimitToPowerIndex( rtlpriv );
 	}
 

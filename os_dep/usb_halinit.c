@@ -1372,28 +1372,35 @@ void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 		/* VID, PID */
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			efuse->eeprom_vid = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8812AU]);
-			efuse->EEPROMPID = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8812AU]);
+			efuse->eeprom_did = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8812AU]);
 		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 			efuse->eeprom_vid = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8821AU]);
-			efuse->EEPROMPID = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8821AU]);
+			efuse->eeprom_did = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8821AU]);
 		}
 
 		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
-		efuse->EEPROMCustomerID = *(uint8_t *)&PROMContent[EEPROM_CustomID_8812];
-		efuse->EEPROMSubCustomerID = EEPROM_Default_SubCustomerID;
+		efuse->eeprom_oemid = *(uint8_t *)&PROMContent[EEPROM_CustomID_8812];
+/* ULLI : rot in rtlwifi		
+ *		efuse->EEPROMSubCustomerID = EEPROM_Default_SubCustomerID;
+ */ 
 
 	} else {
 		efuse->eeprom_vid = EEPROM_Default_VID;
-		efuse->EEPROMPID = EEPROM_Default_PID;
+		efuse->eeprom_did = EEPROM_Default_PID;
 
 		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
-		efuse->EEPROMCustomerID		= EEPROM_Default_CustomerID;
-		efuse->EEPROMSubCustomerID	= EEPROM_Default_SubCustomerID;
-
+		efuse->eeprom_oemid		= EEPROM_Default_CustomerID;
+/* ULLI : rot in rtlwifi
+ * 		efuse->EEPROMSubCustomerID	= EEPROM_Default_SubCustomerID;
+ */
 	}
 
-	DBG_871X("VID = 0x%04X, PID = 0x%04X\n", efuse->eeprom_vid, efuse->EEPROMPID);
-	DBG_871X("Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->EEPROMCustomerID, efuse->EEPROMSubCustomerID);
+	DBG_871X("VID = 0x%04X, PID = 0x%04X\n", efuse->eeprom_vid, efuse->eeprom_did);
+/* ULLI : rot in rtlwifi	
+	DBG_871X("Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->eeprom_oemid, efuse->EEPROMSubCustomerID);
+*/ 
+	DBG_871X("Customer ID: 0x%02X\n", efuse->eeprom_oemid);
+
 }
 
 void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
@@ -1462,24 +1469,24 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 
 	/* For customized behavior. */
 
-	if ((efuse->eeprom_vid == 0x050D) && (efuse->EEPROMPID == 0x1106))		/* SerComm for Belkin. */
+	if ((efuse->eeprom_vid == 0x050D) && (efuse->eeprom_did == 0x1106))		/* SerComm for Belkin. */
 		pEEPROM->CustomerID = RT_CID_Sercomm_Belkin;	/* ULLI : RTL8812 */
-	else if ((efuse->eeprom_vid == 0x0846) && (efuse->EEPROMPID == 0x9052))	/* SerComm for Netgear. */
+	else if ((efuse->eeprom_vid == 0x0846) && (efuse->eeprom_did == 0x9052))	/* SerComm for Netgear. */
 		pEEPROM->CustomerID = RT_CID_Sercomm_Netgear;	/* ULLI :  posible typo for pid maybe 0x9052 */
-	else if ((efuse->eeprom_vid == 0x2001) && (efuse->EEPROMPID == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
+	else if ((efuse->eeprom_vid == 0x2001) && (efuse->eeprom_did == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
 		pEEPROM->CustomerID = RT_CID_ALPHA_Dlink;	/* ULLI : RTL8812 */
-	else if ((efuse->eeprom_vid == 0x0B05) && (efuse->EEPROMPID == 0x17D2))	/* Edimax for ASUS */
+	else if ((efuse->eeprom_vid == 0x0B05) && (efuse->eeprom_did == 0x17D2))	/* Edimax for ASUS */
 		pEEPROM->CustomerID = RT_CID_Edimax_ASUS;	/* ULLI : RTL8812 */
 
-	DBG_871X("PID= 0x%x, VID=  %x\n", efuse->EEPROMPID, efuse->eeprom_vid);
+	DBG_871X("PID= 0x%x, VID=  %x\n", efuse->eeprom_did, efuse->eeprom_vid);
 
 	/* Decide CustomerID according to VID/DID or EEPROM */
-	switch (efuse->EEPROMCustomerID) {
+	switch (efuse->eeprom_oemid) {
 	case EEPROM_CID_DEFAULT:
-		if ((efuse->eeprom_vid == 0x0846) && (efuse->EEPROMPID == 0x9052))
+		if ((efuse->eeprom_vid == 0x0846) && (efuse->eeprom_did == 0x9052))
 			pEEPROM->CustomerID = RT_CID_NETGEAR;		/* ULLI : RTL8821 */
 
-		DBG_871X("PID= 0x%x, VID=  %x\n", efuse->EEPROMPID, efuse->eeprom_vid);
+		DBG_871X("PID= 0x%x, VID=  %x\n", efuse->eeprom_did, efuse->eeprom_vid);
 		break;
 	default:
 		pEEPROM->CustomerID = RT_CID_DEFAULT;

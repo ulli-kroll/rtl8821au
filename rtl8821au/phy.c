@@ -2523,8 +2523,8 @@ static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
 		rfPath = -1, rateSection = -1, channelGroup = -1;
 	uint8_t	powerLimit = MAX_POWER_INDEX;
 
-	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 0 && efuse->EEPROMRegulatory != 1)
-	   || efuse->EEPROMRegulatory == 2)
+	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 0 && efuse->eeprom_regulatory != 1)
+	   || efuse->eeprom_regulatory == 2)
 		return MAX_POWER_INDEX;
 
 	switch (RegPwrTblSel) {
@@ -3087,9 +3087,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 
 	if (bIn24G) { /* 3 ============================== 2.4 G ============================== */
 		if (IS_CCK_RATE(Rate)) {
-			txPower = efuse->Index24G_CCK_Base[RFPath][chnlIdx];
+			txPower = efuse->txpwrlevel_cck[RFPath][chnlIdx];
 		} else if (MGN_6M <= Rate) {
-			txPower = efuse->Index24G_BW40_Base[RFPath][chnlIdx];
+			txPower = efuse->txpwrlevel_ht40_1s[RFPath][chnlIdx];
 		} else {
 			DBG_871X("===> mpt_ProQueryCaltxPower_Jaguar: INVALID Rate.\n");
 		}
@@ -3098,15 +3098,15 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 
 		/* OFDM-1T */
 		if (MGN_6M <= Rate && Rate <= MGN_54M && !IS_CCK_RATE(Rate)) {
-			txPower += efuse->OFDM_24G_Diff[RFPath][TX_1S];
+			txPower += efuse->txpwr_legacyhtdiff[RFPath][TX_1S];
 			/* DBG_871X("+PowerDiff 2.4G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_24G_Diff[RFPath][TX_1S]); */
 		}
 
 		if (BandWidth == CHANNEL_WIDTH_20) {	/* BW20-1S, BW20-2S */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += efuse->BW20_24G_Diff[RFPath][TX_1S];
+				txPower += efuse->txpwr_ht20diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += efuse->BW20_24G_Diff[RFPath][TX_2S];
+				txPower += efuse->txpwr_ht20diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 2.4G (RF-%c): (BW20-1S, BW20-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
@@ -3114,9 +3114,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 			 */
 		} else if (BandWidth == CHANNEL_WIDTH_40) {	/* BW40-1S, BW40-2S */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += efuse->BW40_24G_Diff[RFPath][TX_1S];
+				txPower += efuse->txpwr_ht40diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += efuse->BW40_24G_Diff[RFPath][TX_2S];
+				txPower += efuse->txpwr_ht40diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S) = (%d, %d)\n", ((RFPath==0)?'A':'B'),
@@ -3124,9 +3124,9 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 			 */
 		} else if (BandWidth == CHANNEL_WIDTH_80) {	/* Willis suggest adopt BW 40M power index while in BW 80 mode */
 			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += efuse->BW40_24G_Diff[RFPath][TX_1S];
+				txPower += efuse->txpwr_ht40diff[RFPath][TX_1S];
 			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS15) || (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT2SS_MCS9))
-				txPower += efuse->BW40_24G_Diff[RFPath][TX_2S];
+				txPower += efuse->txpwr_ht40diff[RFPath][TX_2S];
 
 			/*
 			 * DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S) = (%d, %d) P.S. Current is in BW 80MHz\n", ((RFPath==0)?'A':'B'),
@@ -3201,11 +3201,11 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	 * HT=3/4/5/6 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
 	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
 	 */
-	if (pregistrypriv->RegPwrByRate == _FALSE && efuse->EEPROMRegulatory != 2) {
+	if (pregistrypriv->RegPwrByRate == _FALSE && efuse->eeprom_regulatory != 2) {
 		powerDiffByRate = phy_GetTxPwrByRateOffset_8812(rtlpriv, (uint8_t)(!bIn24G), RFPath, Rate);
 
-		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && efuse->EEPROMRegulatory != 2)
-		||  efuse->EEPROMRegulatory == 1) {
+		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2)
+		||  efuse->eeprom_regulatory == 1) {
 			uint8_t limit = 0;
 			limit = _rtl8821au_phy_get_txpower_limit(rtlpriv, pregistrypriv->RegPwrTblSel, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (enum radio_path)RFPath, Rate, Channel);
 

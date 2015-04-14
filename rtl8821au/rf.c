@@ -137,7 +137,7 @@ void getTxPowerWriteValByRegulatory8812(
 	uint8_t			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
 	s8			pwr_diff=0;
 	uint32_t 			writeVal, customer_limit, rf;
-	uint8_t			Regulatory = efuse->EEPROMRegulatory;
+	uint8_t			Regulatory = efuse->eeprom_regulatory;
 
 	//
 	// Index 0 & 1= legacy OFDM, 2-5=HT_MCS rate
@@ -442,7 +442,7 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *rtlpriv, uint8_t *pPo
 					(pPowerlevel[idx1]<<16) | (pPowerlevel[idx1]<<24);
 			}
 
-			if (efuse->EEPROMRegulatory == 0) {
+			if (efuse->eeprom_regulatory == 0) {
 				tmpval = (pHalData->MCSTxPowerLevelOriginalOffset[0][6]) +
 						(pHalData->MCSTxPowerLevelOriginalOffset[0][7]<<8);
 				TxAGC[RF90_PATH_A] += tmpval;

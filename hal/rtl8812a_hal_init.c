@@ -626,12 +626,16 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_2G; ch++) {
 			Hal_GetChnlGroup8812A(ch+1, &group);
 
-			if (ch == 14-1) {
-				efuse->Index24G_CCK_Base[rfPath][ch] = pwrInfo24G.index_cck_base[rfPath][5];
-				efuse->Index24G_BW40_Base[rfPath][ch] = pwrInfo24G.index_bw40_base[rfPath][group];
+			if (ch == (CHANNEL_MAX_NUMBER_2G-1)) {
+				efuse->txpwrlevel_cck[rfPath][ch] = 
+					pwrInfo24G.index_cck_base[rfPath][5];
+				efuse->txpwrlevel_ht40_1s[rfPath][ch] = 
+					pwrInfo24G.index_bw40_base[rfPath][group];
 			} else {
-				efuse->Index24G_CCK_Base[rfPath][ch] = pwrInfo24G.index_cck_base[rfPath][group];
-				efuse->Index24G_BW40_Base[rfPath][ch] = pwrInfo24G.index_bw40_base[rfPath][group];
+				efuse->txpwrlevel_cck[rfPath][ch] = 
+					pwrInfo24G.index_cck_base[rfPath][group];
+				efuse->txpwrlevel_ht40_1s[rfPath][ch] = 
+					pwrInfo24G.index_bw40_base[rfPath][group];
 			}
 
 			/*
@@ -667,10 +671,10 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 		}
 
 		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
-			efuse->CCK_24G_Diff[rfPath][TxCount]  = pwrInfo24G.cck_diff[rfPath][TxCount];
-			efuse->OFDM_24G_Diff[rfPath][TxCount] = pwrInfo24G.ofdm_diff[rfPath][TxCount];
-			efuse->BW20_24G_Diff[rfPath][TxCount] = pwrInfo24G.bw20_diff[rfPath][TxCount];
-			efuse->BW40_24G_Diff[rfPath][TxCount] = pwrInfo24G.bw40_diff[rfPath][TxCount];
+			efuse->txpwr_cckdiff[rfPath][TxCount]  = pwrInfo24G.cck_diff[rfPath][TxCount];
+			efuse->txpwr_legacyhtdiff[rfPath][TxCount] = pwrInfo24G.ofdm_diff[rfPath][TxCount];
+			efuse->txpwr_ht20diff[rfPath][TxCount] = pwrInfo24G.bw20_diff[rfPath][TxCount];
+			efuse->txpwr_ht40diff[rfPath][TxCount] = pwrInfo24G.bw40_diff[rfPath][TxCount];
 
 			efuse->txpwr_5g_ofdmdiff[rfPath][TxCount] = pwrInfo5G.ofdm_diff[rfPath][TxCount];
 			efuse->txpwr_5g_bw20diff[rfPath][TxCount] = pwrInfo5G.bw20_diff[rfPath][TxCount];
@@ -687,21 +691,21 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 		if (registry_par->regulatory_tid == 0xff) {
 
 			if (PROMContent[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
-				efuse->EEPROMRegulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* bit0~2 */
+				efuse->eeprom_regulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* bit0~2 */
 			else
-				efuse->EEPROMRegulatory = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* bit0~2 */
+				efuse->eeprom_regulatory = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* bit0~2 */
 		} else{
-			efuse->EEPROMRegulatory = registry_par->regulatory_tid;
+			efuse->eeprom_regulatory = registry_par->regulatory_tid;
 		}
 
 		/* 2012/09/26 MH Add for TX power calibrate rate. */
 		pHalData->TxPwrCalibrateRate = PROMContent[EEPROM_TX_PWR_CALIBRATE_RATE_8812];
 	} else {
-		efuse->EEPROMRegulatory = 0;
+		efuse->eeprom_regulatory = 0;
 		/* 2012/09/26 MH Add for TX power calibrate rate. */
 		pHalData->TxPwrCalibrateRate = EEPROM_DEFAULT_TX_CALIBRATE_RATE;
 	}
-	DBG_871X("EEPROMRegulatory = 0x%x TxPwrCalibrateRate=0x%x\n", efuse->EEPROMRegulatory, pHalData->TxPwrCalibrateRate);
+	DBG_871X("EEPROMRegulatory = 0x%x TxPwrCalibrateRate=0x%x\n", efuse->eeprom_regulatory, pHalData->TxPwrCalibrateRate);
 
 }
 
@@ -725,25 +729,25 @@ void Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+
 	/* uint8_t	tempval; */
 
 	/*
 	 * ThermalMeter from EEPROM
 	 */
 	if (!AutoloadFail)
-		efuse->EEPROMThermalMeter = PROMContent[EEPROM_THERMAL_METER_8812];
+		efuse->eeprom_thermalmeter = PROMContent[EEPROM_THERMAL_METER_8812];
 	else
-		efuse->EEPROMThermalMeter = EEPROM_Default_ThermalMeter_8812;
+		efuse->eeprom_thermalmeter = EEPROM_Default_ThermalMeter_8812;
 	/* pHalData->EEPROMThermalMeter = (tempval&0x1f);	//[4:0] */
 
-	if (efuse->EEPROMThermalMeter == 0xff || AutoloadFail) {
-		pHalData->bAPKThermalMeterIgnore = _TRUE;
-		efuse->EEPROMThermalMeter = 0xFF;
+	if (efuse->eeprom_thermalmeter == 0xff || AutoloadFail) {
+		efuse->apk_thermalmeterignore = _TRUE;
+		efuse->eeprom_thermalmeter = 0xFF;
 	}
 
 	/* pHalData->ThermalMeter[0] = pHalData->EEPROMThermalMeter; */
-	DBG_871X("ThermalMeter = 0x%x\n", efuse->EEPROMThermalMeter);
+	DBG_871X("ThermalMeter = 0x%x\n", efuse->eeprom_thermalmeter);
 }
 
 void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,

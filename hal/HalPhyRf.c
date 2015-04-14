@@ -72,9 +72,9 @@ void ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
 	rtldm->Modify_TxAGC_Flag_PathA = FALSE;       /* Initial at Modify Tx Scaling Mode */
 	rtldm->Modify_TxAGC_Flag_PathB = FALSE;       /* Initial at Modify Tx Scaling Mode */
 	rtldm->Remnant_CCKSwingIdx = 0;
-	rtldm->thermalvalue = efuse->EEPROMThermalMeter;
-	rtldm->thermalvalue_iqk = efuse->EEPROMThermalMeter;
-	rtldm->thermalvalue_lck = efuse->EEPROMThermalMeter;
+	rtldm->thermalvalue = efuse->eeprom_thermalmeter;
+	rtldm->thermalvalue_iqk = efuse->eeprom_thermalmeter;
+	rtldm->thermalvalue_lck = efuse->eeprom_thermalmeter;
 }
 
 

@@ -281,14 +281,14 @@ BOOLEAN Hal_GetChnlGroup8812A(uint8_t Channel, uint8_t *pGroup)
 
 static void
 hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g *pwrInfo24G,
-	PTxPowerInfo5G	pwrInfo5G, uint8_t *PROMContent,
+	struct txpower_info_5g	*pwrInfo5G, uint8_t *PROMContent,
 	BOOLEAN	AutoLoadFail)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t rfPath, eeAddr = EEPROM_TX_PWR_INX_8812, group, TxCount = 0;
 
 	memset(pwrInfo24G, 0, sizeof(*pwrInfo24G));
-	memset(pwrInfo5G, 0, sizeof(TxPowerInfo5G));
+	memset(pwrInfo5G, 0, sizeof(*pwrInfo5G));
 
 	/* DBG_871X("hal_ReadPowerValueFromPROM8812A(): PROMContent[0x%x]=0x%x\n", (eeAddr+1), PROMContent[eeAddr+1]); */
 	if (0xFF == PROMContent[eeAddr+1])  /* YJ,add,120316 */
@@ -316,21 +316,21 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 
 			/* 5G default value */
 			for (group = 0 ; group < MAX_CHNL_GROUP_5G; group++) {
-				pwrInfo5G->IndexBW40_Base[rfPath][group] =		EEPROM_DEFAULT_5G_INDEX;
+				pwrInfo5G->index_bw40_base[rfPath][group] =		EEPROM_DEFAULT_5G_INDEX;
 			}
 
 			for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
 				if (TxCount == 0) {
-					pwrInfo5G->OFDM_Diff[rfPath][0] =	EEPROM_DEFAULT_5G_OFDM_DIFF;
-					pwrInfo5G->BW20_Diff[rfPath][0] =	EEPROM_DEFAULT_5G_HT20_DIFF;
-					pwrInfo5G->BW80_Diff[rfPath][0] =	EEPROM_DEFAULT_DIFF;
-					pwrInfo5G->BW160_Diff[rfPath][0] =	EEPROM_DEFAULT_DIFF;
+					pwrInfo5G->ofdm_diff[rfPath][0] =	EEPROM_DEFAULT_5G_OFDM_DIFF;
+					pwrInfo5G->bw20_diff[rfPath][0] =	EEPROM_DEFAULT_5G_HT20_DIFF;
+					pwrInfo5G->bw80_diff[rfPath][0] =	EEPROM_DEFAULT_DIFF;
+					pwrInfo5G->bw160_diff[rfPath][0] =	EEPROM_DEFAULT_DIFF;
 				} else {
-					pwrInfo5G->OFDM_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
-					pwrInfo5G->BW20_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
-					pwrInfo5G->BW40_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
-					pwrInfo5G->BW80_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
-					pwrInfo5G->BW160_Diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrInfo5G->ofdm_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrInfo5G->bw20_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrInfo5G->bw40_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrInfo5G->bw80_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrInfo5G->bw160_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
 
 				}
 			}
@@ -446,9 +446,9 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 
 		/* 5G default value */
 		for (group = 0 ; group < MAX_CHNL_GROUP_5G; group++) {
-			pwrInfo5G->IndexBW40_Base[rfPath][group] =		PROMContent[eeAddr++];
-			if (pwrInfo5G->IndexBW40_Base[rfPath][group] == 0xFF)
-				pwrInfo5G->IndexBW40_Base[rfPath][group] = EEPROM_DEFAULT_DIFF;
+			pwrInfo5G->index_bw40_base[rfPath][group] =		PROMContent[eeAddr++];
+			if (pwrInfo5G->index_bw40_base[rfPath][group] == 0xFF)
+				pwrInfo5G->index_bw40_base[rfPath][group] = EEPROM_DEFAULT_DIFF;
 
 			/*
 			 * DBG_871X("8812-5G RF-%d-G-%d BW40-Addr-%x BASE=%x\n",
@@ -458,20 +458,20 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 
 		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
 			if (TxCount == 0) {
-				pwrInfo5G->BW40_Diff[rfPath][TxCount] = 0;
+				pwrInfo5G->bw40_diff[rfPath][TxCount] = 0;
 				{
-					pwrInfo5G->BW20_Diff[rfPath][0] = (PROMContent[eeAddr] & 0xf0) >> 4;
-					if (pwrInfo5G->BW20_Diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
-						pwrInfo5G->BW20_Diff[rfPath][TxCount] |= 0xF0;
+					pwrInfo5G->bw20_diff[rfPath][0] = (PROMContent[eeAddr] & 0xf0) >> 4;
+					if (pwrInfo5G->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+						pwrInfo5G->bw20_diff[rfPath][TxCount] |= 0xF0;
 				}
 				/*
 				 * DBG_871X("8812-5G RF-%d-SS-%d BW20-Addr-%x DIFF=%d\n",
 				 * rfPath, TxCount, eeAddr, pwrInfo5G->BW20_Diff[rfPath][TxCount]);
 				 */
 				{
-					pwrInfo5G->OFDM_Diff[rfPath][0] = (PROMContent[eeAddr] & 0x0f);
-					if (pwrInfo5G->OFDM_Diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
-						pwrInfo5G->OFDM_Diff[rfPath][TxCount] |= 0xF0;
+					pwrInfo5G->ofdm_diff[rfPath][0] = (PROMContent[eeAddr] & 0x0f);
+					if (pwrInfo5G->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+						pwrInfo5G->ofdm_diff[rfPath][TxCount] |= 0xF0;
 				}
 				/*
 				 * DBG_871X("8812-5G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
@@ -481,9 +481,9 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 				eeAddr++;
 			} else {
 				{
-					pwrInfo5G->BW40_Diff[rfPath][TxCount] = (PROMContent[eeAddr] & 0xf0) >> 4;
-					if (pwrInfo5G->BW40_Diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
-						pwrInfo5G->BW40_Diff[rfPath][TxCount] |= 0xF0;
+					pwrInfo5G->bw40_diff[rfPath][TxCount] = (PROMContent[eeAddr] & 0xf0) >> 4;
+					if (pwrInfo5G->bw40_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+						pwrInfo5G->bw40_diff[rfPath][TxCount] |= 0xF0;
 				}
 				/*
 				 * DBG_871X("8812-5G RF-%d-SS-%d BW40-Addr-%x DIFF=%d\n",
@@ -491,9 +491,9 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 				 */
 
 				{
-					pwrInfo5G->BW20_Diff[rfPath][TxCount] = (PROMContent[eeAddr] & 0x0f);
-					if (pwrInfo5G->BW20_Diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
-						pwrInfo5G->BW20_Diff[rfPath][TxCount] |= 0xF0;
+					pwrInfo5G->bw20_diff[rfPath][TxCount] = (PROMContent[eeAddr] & 0x0f);
+					if (pwrInfo5G->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+						pwrInfo5G->bw20_diff[rfPath][TxCount] |= 0xF0;
 				}
 				/*
 				 * DBG_871X("8812-5G RF-%d-SS-%d BW20-Addr-%x DIFF=%d\n",
@@ -506,8 +506,8 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 
 
 		{
-			pwrInfo5G->OFDM_Diff[rfPath][1] =	(PROMContent[eeAddr] & 0xf0) >> 4;
-			pwrInfo5G->OFDM_Diff[rfPath][2] =	(PROMContent[eeAddr] & 0x0f);
+			pwrInfo5G->ofdm_diff[rfPath][1] =	(PROMContent[eeAddr] & 0xf0) >> 4;
+			pwrInfo5G->ofdm_diff[rfPath][2] =	(PROMContent[eeAddr] & 0x0f);
 		}
 		/*
 		 * DBG_871X("8812-5G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
@@ -516,7 +516,7 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 		eeAddr++;
 
 
-			pwrInfo5G->OFDM_Diff[rfPath][3] =	(PROMContent[eeAddr] & 0x0f);
+			pwrInfo5G->ofdm_diff[rfPath][3] =	(PROMContent[eeAddr] & 0x0f);
 
 		/*
 		 * DBG_871X("8812-5G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
@@ -525,8 +525,8 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 		eeAddr++;
 
 		for (TxCount = 1; TxCount < MAX_TX_COUNT; TxCount++) {
-			if (pwrInfo5G->OFDM_Diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
-				pwrInfo5G->OFDM_Diff[rfPath][TxCount] |= 0xF0;
+			if (pwrInfo5G->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				pwrInfo5G->ofdm_diff[rfPath][TxCount] |= 0xF0;
 
 			/*
 			 * DBG_871X("8812-5G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
@@ -536,18 +536,18 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 
 		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
 			{
-				pwrInfo5G->BW80_Diff[rfPath][TxCount] =	(PROMContent[eeAddr] & 0xf0) >> 4;
-				if (pwrInfo5G->BW80_Diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
-					pwrInfo5G->BW80_Diff[rfPath][TxCount] |= 0xF0;
+				pwrInfo5G->bw80_diff[rfPath][TxCount] =	(PROMContent[eeAddr] & 0xf0) >> 4;
+				if (pwrInfo5G->bw80_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrInfo5G->bw80_diff[rfPath][TxCount] |= 0xF0;
 			}
 			/*
 			 * DBG_871X("8812-5G RF-%d-SS-%d BW80-Addr-%x DIFF=%d\n",
 			 * rfPath, TxCount, eeAddr, pwrInfo5G->BW80_Diff[rfPath][TxCount]);
 			 */
 			{
-				pwrInfo5G->BW160_Diff[rfPath][TxCount] =	(PROMContent[eeAddr] & 0x0f);
-				if (pwrInfo5G->BW160_Diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
-					pwrInfo5G->BW160_Diff[rfPath][TxCount] |= 0xF0;
+				pwrInfo5G->bw160_diff[rfPath][TxCount] =	(PROMContent[eeAddr] & 0x0f);
+				if (pwrInfo5G->bw160_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrInfo5G->bw160_diff[rfPath][TxCount] |= 0xF0;
 			}
 			/*
 			 * DBG_871X("8812-5G RF-%d-SS-%d BW160-Addr-%x DIFF=%d\n",
@@ -603,7 +603,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct txpower_info_2g pwrInfo24G;
-	TxPowerInfo5G	pwrInfo5G;
+	struct txpower_info_5g pwrInfo5G;
 	uint8_t	rfPath, ch, group, TxCount;
 	uint8_t	channel5G[CHANNEL_MAX_NUMBER_5G] = {
 		 36,  38,  40,  42,  44,  46,  48,  50,  52,  54,  56,  58,
@@ -644,7 +644,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G; ch++) {
 			Hal_GetChnlGroup8812A(channel5G[ch], &group);
 
-			efuse->txpwr_5g_bw40base[rfPath][ch] = pwrInfo5G.IndexBW40_Base[rfPath][group];
+			efuse->txpwr_5g_bw40base[rfPath][ch] = pwrInfo5G.index_bw40_base[rfPath][group];
 
 			/*
 			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);
@@ -655,8 +655,8 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 			uint8_t	upper, lower;
 
 			Hal_GetChnlGroup8812A(channel5G_80M[ch], &group);
-			upper = pwrInfo5G.IndexBW40_Base[rfPath][group];
-			lower = pwrInfo5G.IndexBW40_Base[rfPath][group+1];
+			upper = pwrInfo5G.index_bw40_base[rfPath][group];
+			lower = pwrInfo5G.index_bw40_base[rfPath][group+1];
 
 			efuse->txpwr_5g_bw80base[rfPath][ch] = (upper + lower) / 2;
 
@@ -672,10 +672,10 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 			efuse->BW20_24G_Diff[rfPath][TxCount] = pwrInfo24G.bw20_diff[rfPath][TxCount];
 			efuse->BW40_24G_Diff[rfPath][TxCount] = pwrInfo24G.bw40_diff[rfPath][TxCount];
 
-			efuse->txpwr_5g_ofdmdiff[rfPath][TxCount] = pwrInfo5G.OFDM_Diff[rfPath][TxCount];
-			efuse->txpwr_5g_bw20diff[rfPath][TxCount] = pwrInfo5G.BW20_Diff[rfPath][TxCount];
-			efuse->txpwr_5g_bw40diff[rfPath][TxCount] = pwrInfo5G.BW40_Diff[rfPath][TxCount];
-			efuse->txpwr_5g_bw80diff[rfPath][TxCount] = pwrInfo5G.BW80_Diff[rfPath][TxCount];
+			efuse->txpwr_5g_ofdmdiff[rfPath][TxCount] = pwrInfo5G.ofdm_diff[rfPath][TxCount];
+			efuse->txpwr_5g_bw20diff[rfPath][TxCount] = pwrInfo5G.bw20_diff[rfPath][TxCount];
+			efuse->txpwr_5g_bw40diff[rfPath][TxCount] = pwrInfo5G.bw40_diff[rfPath][TxCount];
+			efuse->txpwr_5g_bw80diff[rfPath][TxCount] = pwrInfo5G.bw80_diff[rfPath][TxCount];
 /* #if DBG */
 		}
 	}

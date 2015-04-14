@@ -63,16 +63,15 @@ struct txpower_info_2g {
 	u8 bw160_diff[MAX_RF_PATH][MAX_TX_COUNT];
 };
 
-typedef struct _TxPowerInfo5G{
-	uint8_t IndexBW40_Base[MAX_RF_PATH][MAX_CHNL_GROUP_5G];
-	//If only one tx, only BW20, OFDM, BW80 and BW160 are used.
-	s8 OFDM_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8 BW20_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8 BW40_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8 BW80_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8 BW160_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-}TxPowerInfo5G, *PTxPowerInfo5G;
-
+struct txpower_info_5g {
+	u8 index_bw40_base[MAX_RF_PATH][MAX_CHNL_GROUP_5G];
+	/*If only one tx, only BW20, OFDM, BW80 and BW160 are used.*/
+	u8 ofdm_diff[MAX_RF_PATH][MAX_TX_COUNT];
+	u8 bw20_diff[MAX_RF_PATH][MAX_TX_COUNT];
+	u8 bw40_diff[MAX_RF_PATH][MAX_TX_COUNT];
+	u8 bw80_diff[MAX_RF_PATH][MAX_TX_COUNT];
+	u8 bw160_diff[MAX_RF_PATH][MAX_TX_COUNT];
+};
 
 struct rtl_efuse {
 	//

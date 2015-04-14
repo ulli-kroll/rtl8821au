@@ -51,15 +51,17 @@ struct rtl_hal_ops;
 //It must always set to 4, otherwise read efuse table secquence will be wrong.
 #define 	MAX_TX_COUNT				4
 
-typedef struct _TxPowerInfo24G{
-	uint8_t IndexCCK_Base[MAX_RF_PATH][MAX_CHNL_GROUP_24G];
-	uint8_t IndexBW40_Base[MAX_RF_PATH][MAX_CHNL_GROUP_24G-1];
-	//If only one tx, only BW20 and OFDM are used.
-	s8 CCK_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8 OFDM_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8 BW20_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-	s8 BW40_Diff[MAX_RF_PATH][MAX_TX_COUNT];
-}TxPowerInfo24G, *PTxPowerInfo24G;
+struct txpower_info_2g {
+	u8 index_cck_base[MAX_RF_PATH][MAX_CHNL_GROUP_24G];
+	u8 index_bw40_base[MAX_RF_PATH][MAX_CHNL_GROUP_24G];
+	/*If only one tx, only BW20 and OFDM are used.*/
+	u8 cck_diff[MAX_RF_PATH][MAX_TX_COUNT];
+	u8 ofdm_diff[MAX_RF_PATH][MAX_TX_COUNT];
+	u8 bw20_diff[MAX_RF_PATH][MAX_TX_COUNT];
+	u8 bw40_diff[MAX_RF_PATH][MAX_TX_COUNT];
+	u8 bw80_diff[MAX_RF_PATH][MAX_TX_COUNT];
+	u8 bw160_diff[MAX_RF_PATH][MAX_TX_COUNT];
+};
 
 typedef struct _TxPowerInfo5G{
 	uint8_t IndexBW40_Base[MAX_RF_PATH][MAX_CHNL_GROUP_5G];

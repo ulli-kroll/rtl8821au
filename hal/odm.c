@@ -490,25 +490,25 @@ void ODM_ChangeDynamicInitGainThresh(struct _rtw_dm *pDM_Odm, uint32_t DM_Type, 
 
 	/* ULLI better switch/case ?? */
 	if (DM_Type == DIG_TYPE_THRESH_HIGH) {
-		pDM_DigTable->RssiHighThresh = DM_Value;
+		pDM_DigTable->rssi_highthresh = DM_Value;
 	} else if (DM_Type == DIG_TYPE_THRESH_LOW) {
-		pDM_DigTable->RssiLowThresh = DM_Value;
+		pDM_DigTable->rssi_lowthresh = DM_Value;
 	} else if (DM_Type == DIG_TYPE_ENABLE) {
-		pDM_DigTable->Dig_Enable_Flag	= TRUE;
+		pDM_DigTable->dig_enable_flag = TRUE;
 	} else if (DM_Type == DIG_TYPE_DISABLE) {
-		pDM_DigTable->Dig_Enable_Flag = FALSE;
+		pDM_DigTable->dig_enable_flag = FALSE;
 	} else if (DM_Type == DIG_TYPE_BACKOFF) {
 		if (DM_Value > 30)
 			DM_Value = 30;
-		pDM_DigTable->BackoffVal = (u8)DM_Value;
+		pDM_DigTable->backoff_enable_flag = (u8)DM_Value;
 	} else if (DM_Type == DIG_TYPE_RX_GAIN_MIN) {
 		if (DM_Value == 0)
 			DM_Value = 0x1;
-		pDM_DigTable->rx_gain_range_min = (u8)DM_Value;
+		pDM_DigTable->rx_gain_min = (u8)DM_Value;
 	} else if (DM_Type == DIG_TYPE_RX_GAIN_MAX) {
 		if (DM_Value > 0x50)
 			DM_Value = 0x50;
-		pDM_DigTable->rx_gain_range_max = (u8)DM_Value;
+		pDM_DigTable->rx_gain_max = (u8)DM_Value;
 	}
 }	/* DM_ChangeDynamicInitGainThresh */
 
@@ -645,14 +645,14 @@ void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("ODM_REG(IGI_A,pDM_Odm)=0x%x, ODM_BIT(IGI,pDM_Odm)=0x%x \n",
 		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm)));
 
-	if (pDM_DigTable->CurIGValue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
+	if (pDM_DigTable->cur_igvalue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
 		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
 		if (pDM_Odm->rtlpriv->phy.rf_type != ODM_1T1R)
 			rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_B, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("CurrentIGI(0x%02x). \n", CurrentIGI));
 		/* pDM_DigTable->PreIGValue = pDM_DigTable->CurIGValue; */
-		pDM_DigTable->CurIGValue = CurrentIGI;
+		pDM_DigTable->cur_igvalue = CurrentIGI;
 	}
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("ODM_Write_DIG():CurrentIGI=0x%x \n", CurrentIGI));
 
@@ -746,11 +746,11 @@ void ODM_Write_CCK_CCA_Thres(struct _rtw_dm *pDM_Odm, u8	 CurCCK_CCAThres)
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
-	if (pDM_DigTable->CurCCK_CCAThres != CurCCK_CCAThres) {	/* modify by Guo.Mingzhi 2012-01-03 */
+	if (pDM_DigTable->cur_cck_cca_thres != CurCCK_CCAThres) {	/* modify by Guo.Mingzhi 2012-01-03 */
 		rtl_write_byte(pDM_Odm->rtlpriv, ODM_REG(CCK_CCA, pDM_Odm), CurCCK_CCAThres);
 	}
-	pDM_DigTable->PreCCK_CCAThres = pDM_DigTable->CurCCK_CCAThres;
-	pDM_DigTable->CurCCK_CCAThres = CurCCK_CCAThres;
+	pDM_DigTable->pre_cck_cca_thres = pDM_DigTable->cur_cck_cca_thres;
+	pDM_DigTable->cur_cck_cca_thres = CurCCK_CCAThres;
 
 }
 

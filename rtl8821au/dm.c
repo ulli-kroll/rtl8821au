@@ -189,40 +189,40 @@ static void odm_DIGInit(struct _rtw_dm *pDM_Odm)
 
 	/* pDM_DigTable->Dig_Enable_Flag = TRUE; */
 	/* pDM_DigTable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
-	pDM_DigTable->CurIGValue = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
+	pDM_DigTable->cur_igvalue = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
 	/* pDM_DigTable->PreIGValue = 0x0; */
 	/* pDM_DigTable->CurSTAConnectState = pDM_DigTable->PreSTAConnectState = DIG_STA_DISCONNECT; */
 	/* pDM_DigTable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */
-	pDM_DigTable->RssiLowThresh 	= DM_DIG_THRESH_LOW;
-	pDM_DigTable->RssiHighThresh 	= DM_DIG_THRESH_HIGH;
-	pDM_DigTable->FALowThresh	= DM_FALSEALARM_THRESH_LOW;
-	pDM_DigTable->FAHighThresh	= DM_FALSEALARM_THRESH_HIGH;
+	pDM_DigTable->rssi_lowthresh 	= DM_DIG_THRESH_LOW;
+	pDM_DigTable->rssi_highthresh	= DM_DIG_THRESH_HIGH;
+	pDM_DigTable->fa_lowthresh	= DM_FALSEALARM_THRESH_LOW;
+	pDM_DigTable->fa_highthresh	= DM_FALSEALARM_THRESH_HIGH;
 
 	if (rtlhal->board_type & (ODM_BOARD_EXT_PA|ODM_BOARD_EXT_LNA)) {
-		pDM_DigTable->rx_gain_range_max = DM_DIG_MAX_NIC;
-		pDM_DigTable->rx_gain_range_min = DM_DIG_MIN_NIC;
+		pDM_DigTable->rx_gain_max = DM_DIG_MAX_NIC;
+		pDM_DigTable->rx_gain_min = DM_DIG_MIN_NIC;
 	} else {
-		pDM_DigTable->rx_gain_range_max = DM_DIG_MAX_NIC;
-		pDM_DigTable->rx_gain_range_min = DM_DIG_MIN_NIC;
+		pDM_DigTable->rx_gain_max = DM_DIG_MAX_NIC;
+		pDM_DigTable->rx_gain_min = DM_DIG_MIN_NIC;
 	}
-	pDM_DigTable->BackoffVal = DM_DIG_BACKOFF_DEFAULT;
-	pDM_DigTable->BackoffVal_range_max = DM_DIG_BACKOFF_MAX;
-	pDM_DigTable->BackoffVal_range_min = DM_DIG_BACKOFF_MIN;
-	pDM_DigTable->PreCCK_CCAThres = 0xFF;
-	pDM_DigTable->CurCCK_CCAThres = 0x83;
-	pDM_DigTable->ForbiddenIGI = DM_DIG_MIN_NIC;
-	pDM_DigTable->LargeFAHit = 0;
-	pDM_DigTable->Recover_cnt = 0;
-	pDM_DigTable->DIG_Dynamic_MIN_0 = DM_DIG_MIN_NIC;
-	pDM_DigTable->DIG_Dynamic_MIN_1 = DM_DIG_MIN_NIC;
-	pDM_DigTable->bMediaConnect_0 = FALSE;
-	pDM_DigTable->bMediaConnect_1 = FALSE;
+	pDM_DigTable->back_val = DM_DIG_BACKOFF_DEFAULT;
+	pDM_DigTable->back_range_max = DM_DIG_BACKOFF_MAX;
+	pDM_DigTable->back_range_min = DM_DIG_BACKOFF_MIN;
+	pDM_DigTable->pre_cck_cca_thres = 0xFF;
+	pDM_DigTable->cur_cck_cca_thres = 0x83;
+	pDM_DigTable->forbidden_igi= DM_DIG_MIN_NIC;
+	pDM_DigTable->large_fa_hit = 0;
+	pDM_DigTable->recover_cnt = 0;
+	pDM_DigTable->dig_min_0 = DM_DIG_MIN_NIC;
+	pDM_DigTable->dig_min_1 = DM_DIG_MIN_NIC;
+	pDM_DigTable->media_connect_0 = FALSE;
+	pDM_DigTable->media_connect_1 = FALSE;
 
 	/* To Initialize pDM_Odm->bDMInitialGainEnable == FALSE to avoid DIG error */
 	pDM_Odm->bDMInitialGainEnable = TRUE;
 
 	/* To Initi BT30 IGI */
-	pDM_DigTable->BT30_CurIGI = 0x32;
+	pDM_DigTable->bt30_cur_igi = 0x32;
 
 }
 
@@ -2003,7 +2003,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 	
 		rtl8821au_dm_dig(rtlpriv);
 	
-		odm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
+		odm_Adaptivity(pDM_Odm, pDM_DigTable->cur_igvalue);
 	
 		odm_CCKPacketDetectionThresh(pDM_Odm);
 	
@@ -2069,7 +2069,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	u8						DIG_MaxOfMin;
 	BOOLEAN						FirstConnect, FirstDisConnect;
 	u8						dm_dig_max, dm_dig_min, offset;
-	u8						CurrentIGI = pDM_DigTable->CurIGValue;
+	u8						CurrentIGI = pDM_DigTable->cur_igvalue;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG()==>\n"));
 	/* if (!(pDM_Odm->SupportAbility & (ODM_BB_DIG|ODM_BB_FA_CNT))) */
@@ -2084,9 +2084,9 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	}
 
 	/* add by Neil Chen to avoid PSD is processing */
-	DIG_Dynamic_MIN = pDM_DigTable->DIG_Dynamic_MIN_0;
-	FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == FALSE);
-	FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->bMediaConnect_0 == TRUE);
+	DIG_Dynamic_MIN = pDM_DigTable->dig_min_0;
+	FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->media_connect_0 == FALSE);
+	FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->media_connect_0 == TRUE);
 
 
 	/* 1 Boundary Decision */
@@ -2109,11 +2109,11 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 				offset = 10;
 
 			if ((pDM_Odm->RSSI_Min + offset) > dm_dig_max)
-				pDM_DigTable->rx_gain_range_max = dm_dig_max;
+				pDM_DigTable->rx_gain_max = dm_dig_max;
 			else if ((pDM_Odm->RSSI_Min + offset) < dm_dig_min)
-				pDM_DigTable->rx_gain_range_max = dm_dig_min;
+				pDM_DigTable->rx_gain_max = dm_dig_min;
 			else
-				pDM_DigTable->rx_gain_range_max = pDM_Odm->RSSI_Min + offset;
+				pDM_DigTable->rx_gain_max = pDM_Odm->RSSI_Min + offset;
 
 
 			/* 2 Modify DIG lower bound */
@@ -2138,7 +2138,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 			}
 		}
 	} else {
-		pDM_DigTable->rx_gain_range_max = dm_dig_max;
+		pDM_DigTable->rx_gain_max = dm_dig_max;
 		DIG_Dynamic_MIN = dm_dig_min;
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : No Link\n"));
 	}
@@ -2147,48 +2147,48 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	if (pFalseAlmCnt->Cnt_all > 10000) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("dm_DIG(): Abnornally false alarm case. \n"));
 
-		if (pDM_DigTable->LargeFAHit != 3)
-			pDM_DigTable->LargeFAHit++;
-		if (pDM_DigTable->ForbiddenIGI < CurrentIGI) {			/* if (pDM_DigTable->ForbiddenIGI < pDM_DigTable->CurIGValue) */
-			pDM_DigTable->ForbiddenIGI = (u8)CurrentIGI;	/* pDM_DigTable->ForbiddenIGI = pDM_DigTable->CurIGValue; */
-			pDM_DigTable->LargeFAHit = 1;
+		if (pDM_DigTable->large_fa_hit != 3)
+			pDM_DigTable->large_fa_hit++;
+		if (pDM_DigTable->forbidden_igi < CurrentIGI) {			/* if (pDM_DigTable->ForbiddenIGI < pDM_DigTable->CurIGValue) */
+			pDM_DigTable->forbidden_igi = (u8)CurrentIGI;	/* pDM_DigTable->ForbiddenIGI = pDM_DigTable->CurIGValue; */
+			pDM_DigTable->large_fa_hit = 1;
 		}
 
-		if (pDM_DigTable->LargeFAHit >= 3) {
-			if ((pDM_DigTable->ForbiddenIGI+1) > pDM_DigTable->rx_gain_range_max)
-				pDM_DigTable->rx_gain_range_min = pDM_DigTable->rx_gain_range_max;
+		if (pDM_DigTable->large_fa_hit >= 3) {
+			if ((pDM_DigTable->forbidden_igi+1) > pDM_DigTable->rx_gain_max)
+				pDM_DigTable->rx_gain_min = pDM_DigTable->rx_gain_max;
 			else
-				pDM_DigTable->rx_gain_range_min = (pDM_DigTable->ForbiddenIGI + 1);
-			pDM_DigTable->Recover_cnt = 3600; 	/* 3600=2hr */
+				pDM_DigTable->rx_gain_min = (pDM_DigTable->forbidden_igi + 1);
+			pDM_DigTable->recover_cnt = 3600; 	/* 3600=2hr */
 		}
 
 	} else {
 		/* Recovery mechanism for IGI lower bound */
-		if (pDM_DigTable->Recover_cnt != 0)
-			pDM_DigTable->Recover_cnt--;
+		if (pDM_DigTable->recover_cnt != 0)
+			pDM_DigTable->recover_cnt--;
 		else {
-			if (pDM_DigTable->LargeFAHit < 3) {
-				if ((pDM_DigTable->ForbiddenIGI-1) < DIG_Dynamic_MIN) {		/* DM_DIG_MIN)  */
-					pDM_DigTable->ForbiddenIGI = DIG_Dynamic_MIN;		/* DM_DIG_MIN; */
-					pDM_DigTable->rx_gain_range_min = DIG_Dynamic_MIN;	/* DM_DIG_MIN; */
+			if (pDM_DigTable->large_fa_hit < 3) {
+				if ((pDM_DigTable->forbidden_igi-1) < DIG_Dynamic_MIN) {		/* DM_DIG_MIN)  */
+					pDM_DigTable->forbidden_igi = DIG_Dynamic_MIN;		/* DM_DIG_MIN; */
+					pDM_DigTable->rx_gain_min = DIG_Dynamic_MIN;	/* DM_DIG_MIN; */
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Normal Case: At Lower Bound\n"));
 				} else {
-					pDM_DigTable->ForbiddenIGI--;
-					pDM_DigTable->rx_gain_range_min = (pDM_DigTable->ForbiddenIGI + 1);
+					pDM_DigTable->forbidden_igi--;
+					pDM_DigTable->rx_gain_min = (pDM_DigTable->forbidden_igi+ 1);
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Normal Case: Approach Lower Bound\n"));
 				}
 			} else {
-				pDM_DigTable->LargeFAHit = 0;
+				pDM_DigTable->large_fa_hit = 0;
 			}
 		}
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): pDM_DigTable->LargeFAHit=%d\n", pDM_DigTable->LargeFAHit));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): pDM_DigTable->LargeFAHit=%d\n", pDM_DigTable->large_fa_hit));
 
 	if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10))
-		pDM_DigTable->rx_gain_range_min = dm_dig_min;
+		pDM_DigTable->rx_gain_min = dm_dig_min;
 
-	if (pDM_DigTable->rx_gain_range_min > pDM_DigTable->rx_gain_range_max)
-		pDM_DigTable->rx_gain_range_min = pDM_DigTable->rx_gain_range_max;
+	if (pDM_DigTable->rx_gain_min > pDM_DigTable->rx_gain_max)
+		pDM_DigTable->rx_gain_min = pDM_DigTable->rx_gain_max;
 
 	/* 1 Adjust initial gain by false alarm */
 	if (pDM_Odm->bLinked) {
@@ -2210,13 +2210,13 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 
 			if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10)
 			 && (pFalseAlmCnt->Cnt_all < DM_DIG_FA_TH1))
-				CurrentIGI = pDM_DigTable->rx_gain_range_min;
+				CurrentIGI = pDM_DigTable->rx_gain_min;
 		}
 	} else {
 		/* CurrentIGI = pDM_DigTable->rx_gain_range_min; */	/* pDM_DigTable->CurIGValue = pDM_DigTable->rx_gain_range_min */
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): DIG BeforeLink\n"));
 		if (FirstDisConnect) {
-			CurrentIGI = pDM_DigTable->rx_gain_range_min;
+			CurrentIGI = pDM_DigTable->rx_gain_min;
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): First DisConnect \n"));
 		} else {
 			/* 2012.03.30 LukeLee: enable DIG before link but with very high thresholds */
@@ -2232,10 +2232,10 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): DIG End Adjust IGI\n"));
 	/* 1 Check initial gain by upper/lower bound */
 
-	if (CurrentIGI > pDM_DigTable->rx_gain_range_max)
-		CurrentIGI = pDM_DigTable->rx_gain_range_max;
-	if (CurrentIGI < pDM_DigTable->rx_gain_range_min)
-		CurrentIGI = pDM_DigTable->rx_gain_range_min;
+	if (CurrentIGI > pDM_DigTable->rx_gain_max)
+		CurrentIGI = pDM_DigTable->rx_gain_max;
+	if (CurrentIGI < pDM_DigTable->rx_gain_min)
+		CurrentIGI = pDM_DigTable->rx_gain_min;
 
 	if (pDM_Odm->SupportAbility & ODM_BB_ADAPTIVITY) {
 		if (CurrentIGI > (pDM_Odm->IGI_target + 4))
@@ -2243,7 +2243,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	}
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): rx_gain_range_max=0x%x, rx_gain_range_min=0x%x\n",
-		pDM_DigTable->rx_gain_range_max, pDM_DigTable->rx_gain_range_min));
+		pDM_DigTable->rx_gain_max, pDM_DigTable->rx_gain_min));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): TotalFA=%d\n", pFalseAlmCnt->Cnt_all));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): CurIGValue=0x%x\n", CurrentIGI));
 
@@ -2251,8 +2251,8 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 
 	{		/* BT is not using */
 		ODM_Write_DIG(pDM_Odm, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue); */
-		pDM_DigTable->bMediaConnect_0 = pDM_Odm->bLinked;
-		pDM_DigTable->DIG_Dynamic_MIN_0 = DIG_Dynamic_MIN;
+		pDM_DigTable->media_connect_0 = pDM_Odm->bLinked;
+		pDM_DigTable->dig_min_0 = DIG_Dynamic_MIN;
 	}
 }
 

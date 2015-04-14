@@ -281,48 +281,65 @@ struct rtl_io {
 };
 
 struct dig_t {
-	u32 RssiLowThresh;
-	u32 RssiHighThresh;
+	u32 rssi_lowthresh;
+	u32 rssi_highthresh;
+	u32 fa_lowthresh;
+	u32 fa_highthresh;
+	long last_min_undec_pwdb_for_dm;
+	long rssi_highpower_lowthresh;
+	long rssi_highpower_highthresh;
+	u32 recover_cnt;
+	u32 pre_igvalue;
+	u32 cur_igvalue;
+	long rssi_val;
+	u8 dig_enable_flag;
+	u8 dig_ext_port_stage;
+	u8 dig_algorithm;
+	u8 dig_twoport_algorithm;
+	u8 dig_dbgmode;
+	u8 dig_slgorithm_switch;
+	u8 cursta_cstate;
+	u8 presta_cstate;
+	u8 curmultista_cstate;
+	u8 stop_dig;
+	char back_val;
+	char back_range_max;
+	char back_range_min;
+	u8 rx_gain_max;
+	u8 rx_gain_min;
+	u8 min_undec_pwdb_for_dm;
+	u8 rssi_val_min;
+	u8 pre_cck_cca_thres;
+	u8 cur_cck_cca_thres;
+	u8 pre_cck_pd_state;
+	u8 cur_cck_pd_state;
+	u8 pre_cck_fa_state;
+	u8 cur_cck_fa_state;
+	u8 pre_ccastate;
+	u8 cur_ccasate;
+	u8 large_fa_hit;
+	u8 forbidden_igi;
+	u8 dig_state;
+	u8 dig_highpwrstate;
+	u8 cur_sta_cstate;
+	u8 pre_sta_cstate;
+	u8 cur_ap_cstate;
+	u8 pre_ap_cstate;
+	u8 cur_pd_thstate;
+	u8 pre_pd_thstate;
+	u8 cur_cs_ratiostate;
+	u8 pre_cs_ratiostate;
+	u8 backoff_enable_flag;
+	char backoffval_range_max;
+	char backoffval_range_min;
+	u8 dig_min_0;
+	u8 dig_min_1;
+	u8 bt30_cur_igi;
+	bool media_connect_0;
+	bool media_connect_1;
 
-	u32 FALowThresh;
-	u32 FAHighThresh;
-
-	u32 Recover_cnt;
-	u8 PreIGValue;
-	u8 CurIGValue;
-
-	u8 Dig_Enable_Flag;
-	u8 Dig_Ext_Port_Stage;
-
-	u8 CurSTAConnectState;
-	u8 PreSTAConnectState;
-	u8 CurMultiSTAConnectState;
-
-	char BackoffVal;
-	char BackoffVal_range_max;
-	char BackoffVal_range_min;
-
-	u8 rx_gain_range_max;
-	u8 rx_gain_range_min;
-
-	u8 Rssi_val_min;
-
-	u8 PreCCK_CCAThres;
-	u8 CurCCK_CCAThres;
-	u8 PreCCKPDState;
-	u8 CurCCKPDState;
-
-	u8 LargeFAHit;
-	u8 ForbiddenIGI;
-
-	u8 DIG_Dynamic_MIN_0;
-	u8 DIG_Dynamic_MIN_1;
-	u8		BT30_CurIGI;
-	BOOLEAN		bMediaConnect_0;
-	BOOLEAN		bMediaConnect_1;
-
-	u32 AntDiv_RSSI_max;
-	u32 RSSI_max;
+	u32 antdiv_rssi_max;
+	u32 rssi_max;
 };
 
 struct rtl_priv {

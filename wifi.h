@@ -340,6 +340,10 @@ struct dig_t {
 
 	u32 antdiv_rssi_max;
 	u32 rssi_max;
+
+/* ULLI : not in rtlwifi */
+
+	u8 BackupIGValue;
 };
 
 struct rtl_priv {
@@ -913,12 +917,6 @@ typedef struct _RX_High_Power_
 
 typedef struct _Dynamic_Initial_Gain_Threshold_
 {
-
-
-
-
-
-	u8		BackupIGValue;
 } DIG_T,*pDIG_T;
 
 

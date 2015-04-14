@@ -737,7 +737,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 	case HW_VAR_INITIAL_GAIN:	/* ULLI not in rtlwifi */
 		{
-			pDIG_T pDigTable = &podmpriv->DM_DigTable;
 			struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 			uint32_t rx_gain = *(u32 *)pval;
 

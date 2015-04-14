@@ -914,13 +914,6 @@ typedef struct _RX_High_Power_
 
 }RXHP_T, *pRXHP_T;
 
-
-typedef struct _Dynamic_Initial_Gain_Threshold_
-{
-} DIG_T,*pDIG_T;
-
-
-
 #define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
 #define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
 
@@ -1153,7 +1146,6 @@ struct _rtw_dm {
 	//ODM Structure
 	//
 	FAT_T		DM_FatTable;
-	DIG_T		DM_DigTable;
 	PS_T		DM_PSTable;
 	Pri_CCA_T	DM_PriCCA;
 	RXHP_T		DM_RXHP_Table;

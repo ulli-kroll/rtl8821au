@@ -253,6 +253,21 @@ struct rtl_hal {
 	bool fw_ready;
 };
 
+
+#define MAX_TX_COUNT			4
+#define MAX_RATE_SECTION_NUM		6
+#define MAX_5G_BANDWITH_NUM		4
+#define	MAX_RF_PATH			4
+#define	MAX_CHNL_GROUP_24G		6
+#define	MAX_CHNL_GROUP_5G		14
+
+#define TX_PWR_BY_RATE_NUM_BAND		2
+#define TX_PWR_BY_RATE_NUM_RF		4
+#define TX_PWR_BY_RATE_NUM_SECTION	12
+#define MAX_BASE_NUM_IN_PHY_REG_PG_24G  6
+#define MAX_BASE_NUM_IN_PHY_REG_PG_5G	5
+
+
 //###### duplicate code,will move to ODM #########
 #define IQK_MAC_REG_NUM		4
 #define IQK_ADDA_REG_NUM		16
@@ -263,41 +278,172 @@ struct rtl_hal {
 #define IQK_BB_REG_NUM_test	6
 
 
-struct rtl_phy {
-	u8	rf_type;
+#define IQK_MATRIX_REG_NUM	8
+#define IQK_MATRIX_SETTINGS_NUM	(1 + 24 + 21)
 
-	u8	current_chan_bw;
-
-	u8	current_channel;
-
-	//for TxPwrTracking2
-	int32_t	RegE94;
-	int32_t  RegE9C;
-	int32_t	RegEB4;
-	int32_t	RegEBC;
-
-	uint32_t RegC04, RegC08, Reg874;
-
-	// The current Tx Power Level
-	/* ULLI vars currently not used */
-	uint8_t	cur_cck_txpwridx;
-	uint8_t	cur_ofdm2g_txpwridx;
-	uint8_t	cur_bw20_txpwridx;
-	uint8_t	cur_bw40_txpwridx;
-
-	uint8_t	txpwr_limit_2_4g[MAX_REGULATION_NUM]
-				[MAX_2_4G_BANDWITH_NUM]
-	                        [MAX_2_4G_RATE_SECTION_NUM]
-	                        [MAX_2_4G_CHANNEL_NUM]
-				[MAX_RF_PATH_NUM];
-
-	// Power Limit Table for 5G
-	uint8_t	txpwr_limit_5g[MAX_REGULATION_NUM]
-				[MAX_5G_BANDWITH_NUM]
-				[MAX_5G_RATE_SECTION_NUM]
-				[MAX_5G_CHANNEL_NUM]
-				[MAX_RF_PATH_NUM];
+enum rt_polarity_ctl {
+	RT_POLARITY_LOW_ACT = 0,
+	RT_POLARITY_HIGH_ACT = 1,
 };
+
+struct iqk_matrix_regs {
+	bool iqk_done;
+	long value[1][IQK_MATRIX_REG_NUM];
+};
+
+
+struct phy_parameters {
+	u16 length;
+	u32 *pdata;
+};
+
+enum hw_param_tab_index {
+	PHY_REG_2T,
+	PHY_REG_1T,
+	PHY_REG_PG,
+	RADIOA_2T,
+	RADIOB_2T,
+	RADIOA_1T,
+	RADIOB_1T,
+	MAC_REG,
+	AGCTAB_2T,
+	AGCTAB_1T,
+	MAX_TAB
+};
+
+enum io_type {
+	IO_CMD_PAUSE_DM_BY_SCAN = 0,
+	IO_CMD_PAUSE_BAND0_DM_BY_SCAN = 0,
+	IO_CMD_PAUSE_BAND1_DM_BY_SCAN = 1,
+	IO_CMD_RESUME_DM_BY_SCAN = 2,
+};
+
+struct bb_reg_def {
+	u32 rfintfs;
+	u32 rfintfi;
+	u32 rfintfo;
+	u32 rfintfe;
+	u32 rf3wire_offset;
+	u32 rflssi_select;
+	u32 rftxgain_stage;
+	u32 rfhssi_para1;
+	u32 rfhssi_para2;
+	u32 rfsw_ctrl;
+	u32 rfagc_control1;
+	u32 rfagc_control2;
+	u32 rfrxiq_imbal;
+	u32 rfrx_afe;
+	u32 rftxiq_imbal;
+	u32 rftx_afe;
+	u32 rf_rb;		/* rflssi_readback */
+	u32 rf_rbpi;		/* rflssi_readbackpi */
+};
+
+struct init_gain {
+	u8 xaagccore1;
+	u8 xbagccore1;
+	u8 xcagccore1;
+	u8 xdagccore1;
+	u8 cca;
+
+};
+
+struct rtl_phy {
+	struct bb_reg_def phyreg_def[4];	/*Radio A/B/C/D */
+	struct init_gain initgain_backup;
+	enum io_type current_io_type;
+
+	u8 rf_mode;
+	u8 rf_type;
+	u8 current_chan_bw;
+	u8 set_bwmode_inprogress;
+	u8 sw_chnl_inprogress;
+	u8 sw_chnl_stage;
+	u8 sw_chnl_step;
+	u8 current_channel;
+	u8 h2c_box_num;
+	u8 set_io_inprogress;
+	u8 lck_inprogress;
+
+	/* record for power tracking */
+	s32 reg_e94;
+	s32 reg_e9c;
+	s32 reg_ea4;
+	s32 reg_eac;
+	s32 reg_eb4;
+	s32 reg_ebc;
+	s32 reg_ec4;
+	s32 reg_ecc;
+	u8 rfpienable;
+	u8 reserve_0;
+	u16 reserve_1;
+	u32 reg_c04, reg_c08, reg_874;
+	u32 adda_backup[16];
+	u32 iqk_mac_backup[IQK_MAC_REG_NUM];
+	u32 iqk_bb_backup[10];
+	bool iqk_initialized;
+
+	bool rfpath_rx_enable[MAX_RF_PATH];
+	u8 reg_837;
+	/* Dual mac */
+	bool need_iqk;
+	struct iqk_matrix_regs iqk_matrix[IQK_MATRIX_SETTINGS_NUM];
+
+	bool rfpi_enable;
+	bool iqk_in_progress;
+
+	u8 pwrgroup_cnt;
+	u8 cck_high_power;
+	/* this is for 88E & 8723A */
+	u32 mcs_txpwrlevel_origoffset[MAX_PG_GROUP][16];
+	/* MAX_PG_GROUP groups of pwr diff by rates */
+	u32 mcs_offset[MAX_PG_GROUP][16];
+	u32 tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
+				   [TX_PWR_BY_RATE_NUM_RF]
+				   [TX_PWR_BY_RATE_NUM_RF]
+				   [TX_PWR_BY_RATE_NUM_SECTION];
+	u8 txpwr_by_rate_base_24g[TX_PWR_BY_RATE_NUM_RF]
+				 [TX_PWR_BY_RATE_NUM_RF]
+				 [MAX_BASE_NUM_IN_PHY_REG_PG_24G];
+	u8 txpwr_by_rate_base_5g[TX_PWR_BY_RATE_NUM_RF]
+				[TX_PWR_BY_RATE_NUM_RF]
+				[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
+	u8 default_initialgain[4];
+
+	/* the current Tx power level */
+	u8 cur_cck_txpwridx;
+	u8 cur_ofdm24g_txpwridx;
+	u8 cur_bw20_txpwridx;
+	u8 cur_bw40_txpwridx;
+
+	char txpwr_limit_2_4g[MAX_REGULATION_NUM]
+			     [MAX_2_4G_BANDWITH_NUM]
+			     [MAX_RATE_SECTION_NUM]
+			     [CHANNEL_MAX_NUMBER_2G]
+			     [MAX_RF_PATH_NUM];
+	char txpwr_limit_5g[MAX_REGULATION_NUM]
+			   [MAX_5G_BANDWITH_NUM]
+			   [MAX_RATE_SECTION_NUM]
+			   [CHANNEL_MAX_NUMBER_5G]
+			   [MAX_RF_PATH_NUM];
+
+	u32 rfreg_chnlval[2];
+	bool apk_done;
+	u32 reg_rf3c[2];	/* pathA / pathB  */
+
+	u32 backup_rf_0x1a;/*92ee*/
+	/* bfsync */
+	u8 framesync;
+	u32 framesync_c34;
+
+	u8 num_total_rfpath;
+	struct phy_parameters hwparam_tables[MAX_TAB];
+	u16 rf_pathmap;
+
+	u8 hw_rof_enable; /*Enable GPIO[9] as WL RF HW PDn source*/
+	enum rt_polarity_ctl polarity_ctl;
+};
+
 
 #define AVG_THERMAL_NUM		8
 #define IQK_Matrix_REG_NUM		8
@@ -945,10 +1091,6 @@ typedef enum _RT_MULTI_FUNC{
 //
 // <Roger_Notes> For RTL8723 WiFi PDn/GPIO polarity control configuration. 2010.10.08.
 //
-typedef enum _RT_POLARITY_CTL {
-	RT_POLARITY_LOW_ACT 	= 0,
-	RT_POLARITY_HIGH_ACT 	= 1,
-} RT_POLARITY_CTL, *PRT_POLARITY_CTL;
 
 // For RTL8723 regulator mode. by tynli. 2011.01.14.
 typedef enum _RT_REGULATOR_MODE {
@@ -1432,7 +1574,7 @@ struct _rtw_dm {
 struct _rtw_hal {
 	HAL_VERSION			VersionID;
 	RT_MULTI_FUNC		MultiFunc; // For multi-function consideration.
-	RT_POLARITY_CTL		PolarityCtl; // For Wifi PDn Polarity control.
+	enum rt_polarity_ctl		PolarityCtl; // For Wifi PDn Polarity control.
 	RT_REGULATOR_MODE	RegulatorMode; // switching regulator or LDO
 
 	//current WIFI_PHY values

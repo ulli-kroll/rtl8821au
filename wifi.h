@@ -328,52 +328,134 @@ struct fast_ant_training {
 	BOOLEAN		bBecomeLinked;
 };
 
+struct dm_phy_dbg_info {
+	char rx_snrdb[4];
+	u64 num_qry_phy_status;
+	u64 num_qry_phy_status_cck;
+	u64 num_qry_phy_status_ofdm;
+	u16 num_qry_beacon_pkt;
+	u16 num_non_be_pkt;
+	s32 rx_evm[4];
+};
+
+#define DEL_SW_IDX_SZ		30
+#define BAND_NUM			3
+
 struct rtl_dm {
-	u8  	ThermalMeter[2];    // ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
-	u8  	thermalvalue;
-	u8  	thermalvalue_lck;
-	u8  	thermalvalue_iqk;
-	u8	ThermalValue_DPK;
-	u8	thermalvalue_avg[AVG_THERMAL_NUM];
-	u8	thermalvalue_avg_index;
-	u8	thermalvalue_rxgain;
-	u8	ThermalValue_Crystal;
-	u8	ThermalValue_DPKstore;
-	u8	ThermalValue_DPKtrack;
+	/*PHY status for Dynamic Management */
+	long entry_min_undec_sm_pwdb;
+	long undec_sm_cck;
+	long undec_sm_pwdb;	/*out dm */
+	long entry_max_undec_sm_pwdb;
+	s32 ofdm_pkt_cnt;
+	bool dm_initialgain_enable;
+	bool dynamic_txpower_enable;
+	bool current_turbo_edca;
+	bool is_any_nonbepkts;	/*out dm */
+	bool is_cur_rdlstate;
+	bool txpower_trackinginit;
+	bool disable_framebursting;
+	bool cck_inch14;
+	bool txpower_tracking;
+	bool useramask;
+	bool rfpath_rxenable[4];
+	bool inform_fw_driverctrldm;
+	bool current_mrc_switch;
+	u8 txpowercount;
+	u8 powerindex_backup[6];
 
-	BOOLEAN	bReloadtxpowerindex;
+	u8 thermalvalue_rxgain;
+	u8 thermalvalue_iqk;
+	u8 thermalvalue_lck;
+	u8 thermalvalue;
+	u8 last_dtp_lvl;
+	u8 thermalvalue_avg[AVG_THERMAL_NUM];
+	u8 thermalvalue_avg_index;
+	bool done_txpower;
+	u8 dynamic_txhighpower_lvl;	/*Tx high power level */
+	u8 dm_flag;		/*Indicate each dynamic mechanism's status. */
+	u8 dm_flag_tmp;
+	u8 dm_type;
+	u8 dm_rssi_sel;
+	u8 txpower_track_control;
+	bool interrupt_migration;
+	bool disable_tx_int;
+	char ofdm_index[MAX_RF_PATH];
+	u8 default_ofdm_index;
+	u8 default_cck_index;
+	char cck_index;
+	char delta_power_index[MAX_RF_PATH];
+	char delta_power_index_last[MAX_RF_PATH];
+	char power_index_offset[MAX_RF_PATH];
+	char absolute_ofdm_swing_idx[MAX_RF_PATH];
+	char remnant_ofdm_swing_idx[MAX_RF_PATH];
+	char remnant_cck_idx;
+	bool modify_txagc_flag_path_a;
+	bool modify_txagc_flag_path_b;
 
-	s8			Aboslute_OFDMSwingIdx[MAX_RF_PATH];
-	s8			Remnant_OFDMSwingIdx[MAX_RF_PATH];
-	s8			Remnant_CCKSwingIdx;
-	s8			Modify_TxAGC_Value;       //Remnat compensate value at TxAGC
-	BOOLEAN			Modify_TxAGC_Flag_PathA;
-	BOOLEAN			Modify_TxAGC_Flag_PathB;
+	bool one_entry_only;
+	
+	struct dm_phy_dbg_info dbginfo;
 
-	u8			BbSwingIdxOfdm[MAX_RF_PATH];
-	u8			BbSwingIdxOfdmCurrent;
-	u8			BbSwingIdxOfdmBase[MAX_RF_PATH];
-	BOOLEAN			BbSwingFlagOfdm;
-	u8			BbSwingIdxCck;
-	u8			BbSwingIdxCckCurrent;
-	u8			BbSwingIdxCckBase;
-	u8			DefaultOfdmIndex;
-	u8			DefaultCckIndex;
-	BOOLEAN			BbSwingFlagCck;
+	/* Dynamic ATC switch */
+	bool atc_status;
+	bool large_cfo_hit;
+	bool is_freeze;
+	int cfo_tail[2];
+	int cfo_ave_pre;
+	int crystal_cap;
+	u8 cfo_threshold;
+	u32 packet_count;
+	u32 packet_count_pre;
+	u8 tx_rate;
 
-	uint32_t 	TXPowerTrackingCallbackCnt; //cosa add for debug
-	BOOLEAN bTXPowerTrackingInit;
-	BOOLEAN bTXPowerTracking;
-	u8  	TXPowercount;
-	BOOLEAN bTxPowerChanged;
-	u8 	CCK_index;
-	u8  	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
-	u8 	OFDM_index[MAX_RF_PATH];
-	s8	PowerIndexOffset[MAX_RF_PATH];
-	s8	DeltaPowerIndex[MAX_RF_PATH];
-	s8	DeltaPowerIndexLast[MAX_RF_PATH];
+	/*88e tx power tracking*/
+	u8	swing_idx_ofdm[MAX_RF_PATH];
+	u8	swing_idx_ofdm_cur;
+	u8	swing_idx_ofdm_base[MAX_RF_PATH];
+	bool	swing_flag_ofdm;
+	u8	swing_idx_cck;
+	u8	swing_idx_cck_cur;
+	u8	swing_idx_cck_base;
+	bool	swing_flag_cck;
 
-	struct fast_ant_training DM_FatTable;
+	char	swing_diff_2g;
+	char	swing_diff_5g;
+
+	u8 delta_swing_table_idx_24gccka_p[DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_24gccka_n[DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_24gcckb_p[DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_24gcckb_n[DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_24ga_p[DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_24ga_n[DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_24gb_p[DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_24gb_n[DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_5ga_p[BAND_NUM][DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_5ga_n[BAND_NUM][DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_5gb_p[BAND_NUM][DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_5gb_n[BAND_NUM][DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_24ga_p_8188e[DEL_SW_IDX_SZ];
+	u8 delta_swing_table_idx_24ga_n_8188e[DEL_SW_IDX_SZ];
+
+	/* DMSP */
+	bool supp_phymode_switch;
+
+	/* DulMac */
+	struct fast_ant_training fat_table;
+
+	u8	resp_tx_path;
+	u8	path_sel;
+	u32	patha_sum;
+	u32	pathb_sum;
+	u32	patha_cnt;
+	u32	pathb_cnt;
+
+	u8 pre_channel;
+	u8 *p_channel;
+	u8 linked_interval;
+
+	u64 last_tx_ok_cnt;
+	u64 last_rx_ok_cnt;
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))

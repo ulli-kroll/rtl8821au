@@ -3250,11 +3250,11 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	 * DBG_871X("Final Tx Power(RF-%c, Channel: %d) = %d(0x%X)\n", ((RFPath==0)?'A':'B'), chnlIdx+1, txPower, txPower);
 	 */
 
-	if (rtldm->Modify_TxAGC_Flag_PathA || rtldm->Modify_TxAGC_Flag_PathB) {
+	if (rtldm->modify_txagc_flag_path_a || rtldm->modify_txagc_flag_path_b) {
 		/* 20130424 Mimic whether path A or B has to modify TxAGC */
 
 		/* DBG_871X("Before add Remanant_OFDMSwingIdx[rfpath %u] %d", txPower); */
-		txPower += rtldm->Remnant_OFDMSwingIdx[RFPath];
+		txPower += rtldm->remnant_ofdm_swing_idx[RFPath];
 		/* DBG_871X("After add Remanant_OFDMSwingIdx[rfpath %u] %d => txPower %d", RFPath, pDM_Odm->Remnant_OFDMSwingIdx[RFPath], txPower); */
 	}
 
@@ -4582,7 +4582,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 			if (Band != currentBand) {
 				BBDiffBetweenBand = (pRFCalibrateInfo->BBSwingDiff2G - pRFCalibrateInfo->BBSwingDiff5G);
 				BBDiffBetweenBand = (Band == BAND_ON_2_4G) ? BBDiffBetweenBand : (-1 * BBDiffBetweenBand);
-				rtldm->DefaultOfdmIndex += BBDiffBetweenBand*2;
+				rtldm->default_ofdm_index += BBDiffBetweenBand*2;
 			}
 
 			ODM_ClearTxPowerTrackingState(pDM_Odm);

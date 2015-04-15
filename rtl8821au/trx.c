@@ -1443,7 +1443,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 	}
 	pDM_Odm->RxPWDBAve = pDM_Odm->RxPWDBAve + pPhyInfo->RxPWDBAll;
 
-	rtldm->DM_FatTable.antsel_rx_keep_0 = pPhyStaRpt->antidx_anta;
+	rtldm->fat_table.antsel_rx_keep_0 = pPhyStaRpt->antidx_anta;
 
 	/*
 	 * DbgPrint("pPhyStaRpt->antidx_anta = %d, pPhyStaRpt->antidx_antb = %d, pPhyStaRpt->resvd_1 = %d",

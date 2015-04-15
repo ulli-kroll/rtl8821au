@@ -51,27 +51,27 @@ void ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->rtlpriv);
 	u8 p = 0;
 
-	rtldm->BbSwingIdxCckBase = rtldm->DefaultCckIndex;
-	rtldm->BbSwingIdxCck = rtldm->DefaultCckIndex;
-	rtldm->CCK_index = 0;
+	rtldm->swing_idx_cck_base = rtldm->default_cck_index;
+	rtldm->swing_idx_cck = rtldm->default_cck_index;
+	rtldm->cck_index;
 
 	for (p = RF90_PATH_A; p < MAX_RF_PATH; ++p) {
-		rtldm->BbSwingIdxOfdmBase[p] = rtldm->DefaultOfdmIndex;
-		rtldm->BbSwingIdxOfdm[p] = rtldm->DefaultOfdmIndex;
-		rtldm->OFDM_index[p] = rtldm->DefaultOfdmIndex;
+		rtldm->swing_idx_ofdm_base[p] = rtldm->default_ofdm_index;
+		rtldm->swing_idx_ofdm[p] = rtldm->default_ofdm_index;
+		rtldm->ofdm_index[p] = rtldm->default_ofdm_index;
 
-		rtldm->PowerIndexOffset[p] = 0;
-		rtldm->DeltaPowerIndex[p] = 0;
-		rtldm->DeltaPowerIndexLast[p] = 0;
-		rtldm->PowerIndexOffset[p] = 0;
+		rtldm->power_index_offset[p] = 0;
+		rtldm->delta_power_index[p] = 0;
+		rtldm->delta_power_index_last[p] = 0;
+		rtldm->power_index_offset[p] = 0;	/* ULLI Huh */
 
-		rtldm->Aboslute_OFDMSwingIdx[p] = 0;    /* Initial Mix mode power tracking */
-		rtldm->Remnant_OFDMSwingIdx[p] = 0;
+		rtldm->absolute_ofdm_swing_idx[p] = 0;    /* Initial Mix mode power tracking */
+		rtldm->remnant_ofdm_swing_idx[p] = 0;
 	}
 
-	rtldm->Modify_TxAGC_Flag_PathA = FALSE;       /* Initial at Modify Tx Scaling Mode */
-	rtldm->Modify_TxAGC_Flag_PathB = FALSE;       /* Initial at Modify Tx Scaling Mode */
-	rtldm->Remnant_CCKSwingIdx = 0;
+	rtldm->modify_txagc_flag_path_a = FALSE;       /* Initial at Modify Tx Scaling Mode */
+	rtldm->modify_txagc_flag_path_b = FALSE;       /* Initial at Modify Tx Scaling Mode */
+	rtldm->remnant_cck_idx = 0;
 	rtldm->thermalvalue = efuse->eeprom_thermalmeter;
 	rtldm->thermalvalue_iqk = efuse->eeprom_thermalmeter;
 	rtldm->thermalvalue_lck = efuse->eeprom_thermalmeter;

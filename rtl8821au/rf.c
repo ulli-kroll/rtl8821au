@@ -203,56 +203,6 @@ void getTxPowerWriteValByRegulatory8812(
 				writeVal = ((index<2)?powerBase0[rf]:powerBase1[rf]);
 				//RTPRINT(FPHY, PHY_TXPWR, ("Better regulatory, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
 				break;
-			case 3:	// Customer defined power diff.
-					// increase power diff defined by customer.
-				chnlGroup = 0;
-				//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
-				//	chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
-
-				/*
-				if (pHalData->CurrentChannelBW == CHANNEL_WIDTH_40)
-				{
-					RTPRINT(FPHY, PHY_TXPWR, ("customer's limit, 40MHz rf(%c) = 0x%x\n",
-						((rf==0)?'A':'B'), efuse->pwrgroup_ht40[rf][Channel-1]));
-				}
-				else
-				{
-					RTPRINT(FPHY, PHY_TXPWR, ("customer's limit, 20MHz rf(%c) = 0x%x\n",
-						((rf==0)?'A':'B'), efuse->pwrgroup_ht40[rf][Channel-1]));
-				}*/
-
-				if(index < 2)
-					pwr_diff = pHalData->TxPwrLegacyHtDiff[rf][Channel-1];
-				else if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_20)
-					pwr_diff = pHalData->TxPwrHt20Diff[rf][Channel-1];
-
-				//RTPRINT(FPHY, PHY_TXPWR, ("power diff rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), pwr_diff));
-
-				if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_40)
-					customer_pwr_limit = efuse->pwrgroup_ht40[rf][Channel-1];
-				else
-					customer_pwr_limit = efuse->pwrgroup_ht40[rf][Channel-1];
-
-				//RTPRINT(FPHY, PHY_TXPWR, ("customer pwr limit  rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), customer_pwr_limit));
-
-				if(pwr_diff >= customer_pwr_limit)
-					pwr_diff = 0;
-				else
-					pwr_diff = customer_pwr_limit - pwr_diff;
-
-				for (i=0; i<4; i++)
-				{
-					pwr_diff_limit[i] = (u8)((pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]&(0x7f<<(i*8)))>>(i*8));
-
-					if(pwr_diff_limit[i] > pwr_diff)
-						pwr_diff_limit[i] = pwr_diff;
-				}
-				customer_limit = (pwr_diff_limit[3]<<24) | (pwr_diff_limit[2]<<16) |
-								(pwr_diff_limit[1]<<8) | (pwr_diff_limit[0]);
-				//RTPRINT(FPHY, PHY_TXPWR, ("Customer's limit rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), customer_limit));
-				writeVal = customer_limit + ((index<2)?powerBase0[rf]:powerBase1[rf]);
-				//RTPRINT(FPHY, PHY_TXPWR, ("Customer, writeVal rf(%c)= 0x%x\n", ((rf==0)?'A':'B'), writeVal));
-				break;
 			default:
 				chnlGroup = 0;
 				writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] +

@@ -1631,13 +1631,6 @@ struct _rtw_hal {
 						[TX_PWR_BY_RATE_NUM_SECTION];
 	//---------------------------------------------------------------------------------//
 
-	//2 Power Limit Table
-	uint8_t	TxPwrLevelCck[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];
-	uint8_t	TxPwrLevelHT40_1S[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];	// For HT 40MHZ pwr
-	uint8_t	TxPwrLevelHT40_2S[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];	// For HT 40MHZ pwr
-	uint8_t	TxPwrHt20Diff[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];// HT 20<->40 Pwr diff
-	uint8_t	TxPwrLegacyHtDiff[RF_PATH_MAX_92C_88E][CHANNEL_MAX_NUMBER];// For HT<->legacy pwr diff
-
 	// Power Limit Table for 2.4G
 
 	// Store the original power by rate value of the base of each rate section of rf path A & B

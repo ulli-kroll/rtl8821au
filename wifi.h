@@ -303,6 +303,31 @@ struct rtl_phy {
 #define IQK_Matrix_REG_NUM		8
 #define IQK_Matrix_Settings_NUM	14+24+21 // Channels_2_4G_NUM + Channels_5G_20M_NUM + Channels_5G
 
+#define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
+#define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
+
+
+struct fast_ant_training {
+	u8	Bssid[6];
+	u8	antsel_rx_keep_0;
+	u8	antsel_rx_keep_1;
+	u8	antsel_rx_keep_2;
+	uint32_t	antSumRSSI[7];
+	uint32_t	antRSSIcnt[7];
+	uint32_t	antAveRSSI[7];
+	u8	FAT_State;
+	uint32_t	TrainIdx;
+	u8	antsel_a[ODM_ASSOCIATE_ENTRY_NUM];
+	u8	antsel_b[ODM_ASSOCIATE_ENTRY_NUM];
+	u8	antsel_c[ODM_ASSOCIATE_ENTRY_NUM];
+	uint32_t	MainAnt_Sum[ODM_ASSOCIATE_ENTRY_NUM];
+	uint32_t	AuxAnt_Sum[ODM_ASSOCIATE_ENTRY_NUM];
+	uint32_t	MainAnt_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
+	uint32_t	AuxAnt_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
+	u8	RxIdleAnt;
+	BOOLEAN		bBecomeLinked;
+};
+
 struct rtl_dm {
 	u8  	ThermalMeter[2];    // ThermalMeter, index 0 for RFIC0, and 1 for RFIC1
 	u8  	thermalvalue;
@@ -1030,33 +1055,6 @@ typedef struct _RX_High_Power_
 
 }RXHP_T, *pRXHP_T;
 
-#define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
-#define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
-
-
-typedef struct _FAST_ANTENNA_TRAINNING_
-{
-	u8	Bssid[6];
-	u8	antsel_rx_keep_0;
-	u8	antsel_rx_keep_1;
-	u8	antsel_rx_keep_2;
-	uint32_t	antSumRSSI[7];
-	uint32_t	antRSSIcnt[7];
-	uint32_t	antAveRSSI[7];
-	u8	FAT_State;
-	uint32_t	TrainIdx;
-	u8	antsel_a[ODM_ASSOCIATE_ENTRY_NUM];
-	u8	antsel_b[ODM_ASSOCIATE_ENTRY_NUM];
-	u8	antsel_c[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	MainAnt_Sum[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	AuxAnt_Sum[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	MainAnt_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	AuxAnt_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
-	u8	RxIdleAnt;
-	BOOLEAN		bBecomeLinked;
-
-}FAT_T,*pFAT_T;
-
 typedef struct _ODM_PATH_DIVERSITY_
 {
 	u8	RespTxPath;
@@ -1261,7 +1259,7 @@ struct _rtw_dm {
 	//
 	//ODM Structure
 	//
-	FAT_T		DM_FatTable;
+	struct fast_ant_training DM_FatTable;
 	PS_T		DM_PSTable;
 	Pri_CCA_T	DM_PriCCA;
 	RXHP_T		DM_RXHP_Table;

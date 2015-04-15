@@ -373,7 +373,7 @@ struct rtl_dm {
 	s8	DeltaPowerIndex[MAX_RF_PATH];
 	s8	DeltaPowerIndexLast[MAX_RF_PATH];
 
-
+	struct fast_ant_training DM_FatTable;
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
@@ -1259,7 +1259,6 @@ struct _rtw_dm {
 	//
 	//ODM Structure
 	//
-	struct fast_ant_training DM_FatTable;
 	PS_T		DM_PSTable;
 	Pri_CCA_T	DM_PriCCA;
 	RXHP_T		DM_RXHP_Table;

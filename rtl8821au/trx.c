@@ -1110,6 +1110,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	u8	i, Max_spatial_stream;
 	s8	rx_pwr[4], rx_pwr_all = 0;
@@ -1442,7 +1443,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 	}
 	pDM_Odm->RxPWDBAve = pDM_Odm->RxPWDBAve + pPhyInfo->RxPWDBAll;
 
-	pDM_Odm->DM_FatTable.antsel_rx_keep_0 = pPhyStaRpt->antidx_anta;
+	rtldm->DM_FatTable.antsel_rx_keep_0 = pPhyStaRpt->antidx_anta;
 
 	/*
 	 * DbgPrint("pPhyStaRpt->antidx_anta = %d, pPhyStaRpt->antidx_antb = %d, pPhyStaRpt->resvd_1 = %d",

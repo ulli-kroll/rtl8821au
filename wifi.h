@@ -306,27 +306,27 @@ struct rtl_phy {
 #define ASSOCIATE_ENTRY_NUM					32 // Max size of AsocEntry[].
 #define	ODM_ASSOCIATE_ENTRY_NUM				ASSOCIATE_ENTRY_NUM
 
-
 struct fast_ant_training {
-	u8	Bssid[6];
+	u8	bssid[6];
 	u8	antsel_rx_keep_0;
 	u8	antsel_rx_keep_1;
 	u8	antsel_rx_keep_2;
-	uint32_t	antSumRSSI[7];
-	uint32_t	antRSSIcnt[7];
-	uint32_t	antAveRSSI[7];
-	u8	FAT_State;
-	uint32_t	TrainIdx;
-	u8	antsel_a[ODM_ASSOCIATE_ENTRY_NUM];
-	u8	antsel_b[ODM_ASSOCIATE_ENTRY_NUM];
-	u8	antsel_c[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	MainAnt_Sum[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	AuxAnt_Sum[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	MainAnt_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	AuxAnt_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
-	u8	RxIdleAnt;
-	BOOLEAN		bBecomeLinked;
+	u32	ant_sum[7];
+	u32	ant_cnt[7];
+	u32	ant_ave[7];
+	u8	fat_state;
+	u32	train_idx;
+	u8	antsel_a[ASSOCIATE_ENTRY_NUM];
+	u8	antsel_b[ASSOCIATE_ENTRY_NUM];
+	u8	antsel_c[ASSOCIATE_ENTRY_NUM];
+	u32	main_ant_sum[ASSOCIATE_ENTRY_NUM];
+	u32	aux_ant_sum[ASSOCIATE_ENTRY_NUM];
+	u32	main_ant_cnt[ASSOCIATE_ENTRY_NUM];
+	u32	aux_ant_cnt[ASSOCIATE_ENTRY_NUM];
+	u8	rx_idle_ant;
+	bool	becomelinked;
 };
+
 
 struct dm_phy_dbg_info {
 	char rx_snrdb[4];

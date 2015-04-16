@@ -197,7 +197,6 @@ struct registry_priv
 	u32	RegTxPwrLimit;
 	uint8_t	RegEnableTxPowerLimit;
 	uint8_t	RegPowerBase;
-	uint8_t	RegPwrTblSel;
 	uint8_t	RegPwrByRate;
 	s8	TxBBSwing_2G;
 	s8	TxBBSwing_5G;

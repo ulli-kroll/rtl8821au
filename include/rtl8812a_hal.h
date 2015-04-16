@@ -203,11 +203,6 @@ typedef enum _TX_PWR_PERCENTAGE{
 
 #define GET_RF_TYPE(priv)			(GET_HAL_DATA(priv)->rf_type)
 
-#define INCLUDE_MULTI_FUNC_BT(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_BT)
-#define INCLUDE_MULTI_FUNC_GPS(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_GPS)
-
-//#define IS_MULTI_FUNC_CHIP(rtlpriv)	(((((PHAL_DATA_TYPE)(rtlpriv->HalData))->MultiFunc) & (RT_MULTI_FUNC_BT|RT_MULTI_FUNC_GPS)) ? _TRUE : _FALSE)
-
 //#define RT_IS_FUNC_DISABLED(rtlpriv, __FuncBits) ( (rtlpriv)->DisabledFunctions & (__FuncBits) )
 
 #define GetRegTxBBSwing_2G(_Adapter)	(_Adapter->registrypriv.TxBBSwing_2G)

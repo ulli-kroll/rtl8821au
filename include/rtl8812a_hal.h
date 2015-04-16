@@ -201,7 +201,6 @@ typedef enum _TX_PWR_PERCENTAGE{
 	TX_PWR_PERCENTAGE_3 = 0x08, //100%, default target output power.
 } TX_PWR_PERCENTAGE;
 
-#define GET_RF_TYPE(priv)			(GET_HAL_DATA(priv)->rf_type)
 
 //#define RT_IS_FUNC_DISABLED(rtlpriv, __FuncBits) ( (rtlpriv)->DisabledFunctions & (__FuncBits) )
 

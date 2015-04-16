@@ -4060,10 +4060,10 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, BAND_TYPE Band,
 	uint8_t	RFPath)
 {
+	struct rtl_dm *rtldm = &(rtlpriv->dm);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(rtlpriv));
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
-	struct ODM_RF_Calibration_Structure *pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	s8	bbSwing_2G = -1 * GetRegTxBBSwing_2G(rtlpriv);
 	s8	bbSwing_5G = -1 * GetRegTxBBSwing_5G(rtlpriv);
@@ -4073,7 +4073,7 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, BAND_TYPE Band,
 
 	if (pEEPROM->bautoload_fail_flag) {
 		if (Band == BAND_ON_2_4G) {
-			pRFCalibrateInfo->BBSwingDiff2G = bbSwing_2G;
+			rtldm->swing_diff_2g = bbSwing_2G;
 			if      (bbSwing_2G == 0)
 				out = 0x200; /*  0 dB */
 		        else if (bbSwing_2G == -3)
@@ -4084,15 +4084,15 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, BAND_TYPE Band,
 				out = 0x0B6; /* -9 dB */
 		        else {
 				if (rtlhal->external_pa_2g) {
-					pRFCalibrateInfo->BBSwingDiff2G = -3;
+					rtldm->swing_diff_2g = -3;
 					out = 0x16A;
 				} else  {
-					pRFCalibrateInfo->BBSwingDiff2G = 0;
+					rtldm->swing_diff_2g = 0;
 					out = 0x200;
 				}
 			}
 		} else if (Band == BAND_ON_5G) {
-			pRFCalibrateInfo->BBSwingDiff5G = bbSwing_5G;
+			rtldm->swing_diff_5g = bbSwing_5G;
 			if      (bbSwing_5G == 0)
 				out = 0x200; /*  0 dB */
 			else if (bbSwing_5G == -3)
@@ -4103,16 +4103,16 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, BAND_TYPE Band,
 				out = 0x0B6; /* -9 dB */
 			else {
 				if (rtlhal->external_pa_5g) {
-					pRFCalibrateInfo->BBSwingDiff5G = -3;
+					rtldm->swing_diff_5g = -3;
 					out = 0x16A;
 				} else  {
-					pRFCalibrateInfo->BBSwingDiff5G = 0;
+					rtldm->swing_diff_5g = 0;
 					out = 0x200;
 				}
 			}
 		} else  {
-			pRFCalibrateInfo->BBSwingDiff2G = -3;
-			pRFCalibrateInfo->BBSwingDiff5G = -3;
+			rtldm->swing_diff_2g = -3;
+			rtldm->swing_diff_5g = -3;
 			out = 0x16A; /* -3 dB */
 		}
 	} else {
@@ -4154,54 +4154,54 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, BAND_TYPE Band,
 		/* 3 Path-A */
 		if (swingA == 0x00) {
 			if (Band == BAND_ON_2_4G)
-				pRFCalibrateInfo->BBSwingDiff2G = 0;
+				rtldm->swing_diff_2g = 0;
 			else
-				pRFCalibrateInfo->BBSwingDiff5G = 0;
+				rtldm->swing_diff_5g = 0;
 			out = 0x200; /* 0 dB */
 		} else if (swingA == 0x01) {
 			if (Band == BAND_ON_2_4G)
-				pRFCalibrateInfo->BBSwingDiff2G = -3;
+				rtldm->swing_diff_2g = -3;
 			else
-				pRFCalibrateInfo->BBSwingDiff5G = -3;
+				rtldm->swing_diff_5g = -3;
 			out = 0x16A; /*  -3 dB */
 		} else if (swingA == 0x10) {
 			if (Band == BAND_ON_2_4G)
-				pRFCalibrateInfo->BBSwingDiff2G = -6;
+				rtldm->swing_diff_2g = -6;
 			else
-				pRFCalibrateInfo->BBSwingDiff5G = -6;
+				rtldm->swing_diff_5g = -6;
 			out = 0x101; /* -6 dB */
 		} else if (swingA == 0x11) {
 			if (Band == BAND_ON_2_4G)
-				pRFCalibrateInfo->BBSwingDiff2G = -9;
+				rtldm->swing_diff_2g = -9;
 			else
-				pRFCalibrateInfo->BBSwingDiff5G = -9;
+				rtldm->swing_diff_5g = -9;
 			out = 0x0B6; /* -9 dB */
 		}
 
 		/* 3 Path-B */
 		if (swingB == 0x00) {
 			if (Band == BAND_ON_2_4G)
-				pRFCalibrateInfo->BBSwingDiff2G = 0;
+				rtldm->swing_diff_2g = 0;
 			else
-				pRFCalibrateInfo->BBSwingDiff5G = 0;
+				rtldm->swing_diff_5g = 0;
 			out = 0x200; /* 0 dB */
 		} else if (swingB == 0x01) {
 			if (Band == BAND_ON_2_4G)
-				pRFCalibrateInfo->BBSwingDiff2G = -3;
+				rtldm->swing_diff_2g = -3;
 			else
-				pRFCalibrateInfo->BBSwingDiff5G = -3;
+				rtldm->swing_diff_5g = -3;
 			out = 0x16A; /* -3 dB */
 		} else if (swingB == 0x10) {
 			if (Band == BAND_ON_2_4G)
-				pRFCalibrateInfo->BBSwingDiff2G = -6;
+				rtldm->swing_diff_2g = -6;
 			else
-				pRFCalibrateInfo->BBSwingDiff5G = -6;
+				rtldm->swing_diff_5g = -6;
 			out = 0x101; /* -6 dB */
 		} else if (swingB == 0x11) {
 			if (Band == BAND_ON_2_4G)
-				pRFCalibrateInfo->BBSwingDiff2G = -9;
+				rtldm->swing_diff_2g = -9;
 			else
-				pRFCalibrateInfo->BBSwingDiff5G = -9;
+				rtldm->swing_diff_5g = -9;
 			out = 0x0B6; /* -9 dB */
 		}
 	}
@@ -4544,7 +4544,6 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 		struct _rtw_hal	*pHalData = GET_HAL_DATA(GetDefaultAdapter(rtlpriv));
 	 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
-		struct ODM_RF_Calibration_Structure *pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 
 		rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000,
 					 phy_get_tx_swing_8821au(rtlpriv, (BAND_TYPE)Band, RF90_PATH_A)); // 0xC1C[31:21]
@@ -4557,7 +4556,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		 */
 		{
 			if (Band != currentBand) {
-				BBDiffBetweenBand = (pRFCalibrateInfo->BBSwingDiff2G - pRFCalibrateInfo->BBSwingDiff5G);
+				BBDiffBetweenBand = (rtldm->swing_diff_2g - rtldm->swing_diff_5g);
 				BBDiffBetweenBand = (Band == BAND_ON_2_4G) ? BBDiffBetweenBand : (-1 * BBDiffBetweenBand);
 				rtldm->default_ofdm_index += BBDiffBetweenBand*2;
 			}

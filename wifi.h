@@ -1197,7 +1197,6 @@ struct ODM_RF_Calibration_Structure
 	u8 	ThermalValue_HP[HP_THERMAL_NUM];
 	u8 	ThermalValue_HP_index;
 	BOOLEAN	bNeedIQK;
-	s8  BBSwingDiff2G, BBSwingDiff5G; // Unit: dB
 
 	//--------------------------------------------------------------------//
 

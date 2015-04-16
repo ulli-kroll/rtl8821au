@@ -398,6 +398,7 @@ struct rtl_phy {
 	u32 mcs_txpwrlevel_origoffset[MAX_PG_GROUP][16];
 	/* MAX_PG_GROUP groups of pwr diff by rates */
 	u32 mcs_offset[MAX_PG_GROUP][16];
+#if 0 	/* ULLI disabled to get (in any case) compiler error */
 	u32 tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
 				   [TX_PWR_BY_RATE_NUM_RF]
 				   [TX_PWR_BY_RATE_NUM_RF]
@@ -408,6 +409,7 @@ struct rtl_phy {
 	u8 txpwr_by_rate_base_5g[TX_PWR_BY_RATE_NUM_RF]
 				[TX_PWR_BY_RATE_NUM_RF]
 				[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
+#endif
 	u8 default_initialgain[4];
 
 	/* the current Tx power level */
@@ -442,6 +444,29 @@ struct rtl_phy {
 
 	u8 hw_rof_enable; /*Enable GPIO[9] as WL RF HW PDn source*/
 	enum rt_polarity_ctl polarity_ctl;
+
+
+	/* ULLI : Border from old (struct rtw_hal) */
+
+#define MAX_BASE_NUM_IN_PHY_REG_PG_2_4G			4 //  CCK:1,OFDM:2, HT:2
+#define MAX_BASE_NUM_IN_PHY_REG_PG_5G			5 // OFDM:1, HT:2, VHT:2
+
+	/* ULLI: neded to convert this */
+
+	u32	TxPwrByRateOffset[TX_PWR_BY_RATE_NUM_BAND]
+						[TX_PWR_BY_RATE_NUM_RF]
+						[TX_PWR_BY_RATE_NUM_SECTION];
+	//---------------------------------------------------------------------------------//
+
+	// Power Limit Table for 2.4G
+
+	// Store the original power by rate value of the base of each rate section of rf path A & B
+	uint8_t	TxPwrByRateBase2_4G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
+						[MAX_BASE_NUM_IN_PHY_REG_PG_2_4G];
+	uint8_t	TxPwrByRateBase5G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
+						[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
+
+
 };
 
 
@@ -1128,8 +1153,6 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 	RT_AMPDU_BRUST_8723B	 	= 7,
 }RT_AMPDU_BRUST,*PRT_AMPDU_BRUST_MODE;
 
-#define MAX_BASE_NUM_IN_PHY_REG_PG_2_4G			4 //  CCK:1,OFDM:2, HT:2
-#define MAX_BASE_NUM_IN_PHY_REG_PG_5G			5 // OFDM:1, HT:2, VHT:2
 
 
 //###### duplicate code,will move to ODM #########
@@ -1626,19 +1649,6 @@ struct _rtw_hal {
 	//
 	uint8_t	TxPwrByRateTable;
 	uint8_t	TxPwrByRateBand;
-	u32	TxPwrByRateOffset[TX_PWR_BY_RATE_NUM_BAND]
-						[TX_PWR_BY_RATE_NUM_RF]
-						[TX_PWR_BY_RATE_NUM_SECTION];
-	//---------------------------------------------------------------------------------//
-
-	// Power Limit Table for 2.4G
-
-	// Store the original power by rate value of the base of each rate section of rf path A & B
-	uint8_t	TxPwrByRateBase2_4G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
-						[MAX_BASE_NUM_IN_PHY_REG_PG_2_4G];
-	uint8_t	TxPwrByRateBase5G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
-						[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
-
 
 
 

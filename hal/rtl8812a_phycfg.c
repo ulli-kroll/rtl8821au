@@ -429,7 +429,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv)
 					/* process RF90_PATH_A later */
 					for (rfPath = 0; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
 						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
-							BW40PwrBasedBm2_4G = pHalData->TxPwrByRateBase2_4G[rfPath][baseIndex2_4G];
+							BW40PwrBasedBm2_4G = rtlphy->TxPwrByRateBase2_4G[rfPath][baseIndex2_4G];
 						else
 							BW40PwrBasedBm2_4G = rtlpriv->registrypriv.RegPowerBase * 2;
 
@@ -554,7 +554,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv)
 						/* process RF90_PATH_A later */
 						for (rfPath = RF90_PATH_B; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
 							if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
-								BW40PwrBasedBm5G = pHalData->TxPwrByRateBase5G[rfPath][baseIndex5G];
+								BW40PwrBasedBm5G = rtlphy->TxPwrByRateBase5G[rfPath][baseIndex5G];
 							else
 								BW40PwrBasedBm5G = rtlpriv->registrypriv.RegPowerBase * 2;
 
@@ -648,7 +648,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv)
 
 
 						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
-							BW40PwrBasedBm5G = pHalData->TxPwrByRateBase5G[RF90_PATH_A][baseIndex5G];
+							BW40PwrBasedBm5G = rtlphy->TxPwrByRateBase5G[RF90_PATH_A][baseIndex5G];
 						else
 							BW40PwrBasedBm5G = rtlpriv->registrypriv.RegPowerBase * 2;
 
@@ -677,6 +677,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv)
 static void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *rtlpriv,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t			rf_path, rate_section;
 
@@ -732,7 +733,7 @@ static void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *rtlpriv,
 		rate_section = (uint8_t)((RegAddr&0xFFF)-0xE20)/4;
 	}
 
-	pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section] = Data;
+	rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section] = Data;
 	
 	/*
 	 * DBG_871X("VHT TxPwrByRateOffset Addr-%x==>BAND/RF/SEC=%d/%d/%d = %08x\n",
@@ -773,6 +774,7 @@ static void phy_ChangePGDataFromExactToRelativeValue(u32* pData, uint8_t Start,
 static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtlpriv,
 	uint32_t RegAddr, uint32_t BitMask, u32 *pData)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t		rf_path, rate_section, BaseValue = 0;
 	/*
@@ -840,7 +842,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-			&(pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
+			&(rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
 			
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, after changing to relative\n",
@@ -861,14 +863,14 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, before changing to relative\n",
 		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
 		 */
-		BaseValue = ((uint8_t) (pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 28) & 0xF) * 10 +
-					((uint8_t) (pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 24 ) & 0xF);
+		BaseValue = ((uint8_t) (rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 28) & 0xF) * 10 +
+					((uint8_t) (rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 24 ) & 0xF);
 					
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 1, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-			&( pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
+			&( rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-			&( pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 0, 3, BaseValue);
+			&( rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 0, 3, BaseValue);
 			
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, after changing to relative\n",
@@ -895,9 +897,9 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		BaseValue = ( ( uint8_t ) ( *pData >> 12 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 8 ) & 0xF );
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
-			&(pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
+			&(rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-			&(pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 2, 3, BaseValue);
+			&(rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 2, 3, BaseValue);
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, after changing to relative\n",
 		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
@@ -1102,6 +1104,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAddr,
 	uint32_t Data)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t		Base = 0;
 
@@ -1113,28 +1116,28 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 
 			switch(RegAddr) {
 			case 0xC20:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][0] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][0] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][0] ) );
 				 */
 				break;
 			case 0xC28:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC30:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC38:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3] ) );
@@ -1147,28 +1150,28 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 			Base = (uint8_t) (Data >> 24);
 			switch(RegAddr) {
 			case 0xC20:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][0] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][0] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][0] ) );
 				 */
 				break;
 			case 0xC28:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC30:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC38:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3] ) );
@@ -1185,35 +1188,35 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 
 			switch(RegAddr) {
 			case 0xC28:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][0] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][0] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of OFDM 54M (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][0] ) );
 				 */
 				break;
 			case 0xC30:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][1] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][1] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC38:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][2] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][2] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS15 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC40:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][3] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][3] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 1SS MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][3] ) );
 				 */
 				break;
 			case 0xC4C:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][4] =
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][4] =
 					( uint8_t ) ( ( Data >> 12 ) & 0xF ) * 10 +
 					( uint8_t ) ( ( Data >> 8 ) & 0xF );
 				/* 
@@ -1222,35 +1225,35 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 				 */
 				break;
 			case 0xE28:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][0] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][0] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of OFDM 54M (RF path B) = %d\n",
 				 *	pHalData->TxPwrByRateBase5G[RF90_PATH_B][0] ) );
 				 */
 				break;
 			case 0xE30:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][1] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][1] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][1] ) );
 				 */
 				break;
 			case 0xE38:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][2] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][2] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS15 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][2] ) );
 				 */
 				break;
 			case 0xE40:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][3] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][3] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 1SS MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][3] ) );
 				 */
 				break;
 			case 0xE4C:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][4] =
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][4] =
 					( uint8_t ) ( ( Data >> 12 ) & 0xF ) * 10 +
 					( uint8_t ) ( ( Data >> 8 ) & 0xF );
 				/*
@@ -1261,74 +1264,75 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 			default:
 				break;
 			};
+
 		} else {
 			Base = (uint8_t) (Data >> 24);
 			switch(RegAddr) {
 			case 0xC28:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][0]  = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][0]  = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of OFDM 54M (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][0] ) );
 				 */
 				break;
 			case 0xC30:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][1]  = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][1]  = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC38:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][2]  = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][2]  = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS15 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC40:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][3] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][3] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 1SS MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][3] ) );
 				 */
 				break;
 			case 0xC4C:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_A][4] = ( uint8_t ) ( ( Data >> 8 ) & 0xFF );
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][4] = ( uint8_t ) ( ( Data >> 8 ) & 0xFF );
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 2SS MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][4] ) );
 				 */
 				break;
 			case 0xE28:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][0] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][0] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of OFDM 54M (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][0] ) );
 				 */
 				break;
 			case 0xE30:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][1] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][1] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][1] ) );
 				 */
 				break;
 			case 0xE38:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][2]  = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][2]  = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS15 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][2] ) );
 				 */
 				break;
 			case 0xE40:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][3] = Base;
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][3] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 1SS MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][3] ) );
 				 */
 				break;
 			case 0xE4C:
-				pHalData->TxPwrByRateBase5G[RF90_PATH_B][4] = ( uint8_t ) ( ( Data >> 8 ) & 0xFF );
+				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][4] = ( uint8_t ) ( ( Data >> 8 ) & 0xFF );
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 2SS MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][4] ) );
@@ -1345,28 +1349,28 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 
 			switch(RegAddr) {
 			case 0xE20:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][0] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][0] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][0] ) );
 				 */
 				break;
 			case 0xE28:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][1] ) );
 				 */
 				break;
 			case 0xE30:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][2] ) );
 				 */
 				break;
 			case 0xE38:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][3] ) );
@@ -1380,28 +1384,28 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 			Base = (uint8_t) (Data >> 24);
 			switch(RegAddr) {
 			case 0xC20:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][0] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][0] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][0] ) );
 				 */
 				break;
 			case 0xC28:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][1] ) );
 				 */
 				break;
 			case 0xC30:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][2] ) );
 				 */
 				break;
 			case 0xC38:
-				pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
+				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
 				/* 
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G  power by rate of MCS15 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][3] ) );
@@ -1424,22 +1428,22 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 
 	switch (RegAddr) {
 	case rTxAGC_A_Rate54_24:
-		pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
-		pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
+		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
+		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
 		/* 
 		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n", pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1]));
 		 */
 		break;
 	case rTxAGC_A_Mcs07_Mcs04:
-		pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
-		pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
+		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
+		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
 		/* 
 		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n", pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2]));
 		 */
 		break;
 	case rTxAGC_A_Mcs15_Mcs12:
-		pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
-		pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
+		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
+		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
 		/* 
 		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n", pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3]));
 		 */

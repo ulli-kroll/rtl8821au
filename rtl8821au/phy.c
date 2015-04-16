@@ -2740,6 +2740,7 @@ BOOLEAN phy_GetChnlIndex8812A(uint8_t Channel, uint8_t *ChannelIdx)
 u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *rtlpriv,  uint8_t Band,
 	uint8_t	Rf_Path, uint8_t Rate_Section)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	uint8_t			shift = 0, original_rate = Rate_Section;
 	uint32_t			tx_pwr_diff = 0;
@@ -3013,7 +3014,7 @@ u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *rtlpriv,  uint8_t Band,
 	if (Band == BAND_ON_2_4G && (Rate_Section >= 7 && Rate_Section <= 11))
 		Band = BAND_ON_5G;
 
-	tx_pwr_diff = (pHalData->TxPwrByRateOffset[Band][Rf_Path][Rate_Section] >> shift) & 0xff;
+	tx_pwr_diff = (rtlphy->TxPwrByRateOffset[Band][Rf_Path][Rate_Section] >> shift) & 0xff;
 
 	/*
 	 * DBG_871X("TxPwrByRateOffset-BAND(%d)-RF(%d)-RAS(%d)=%x tx_pwr_diff=%d shift=%d\n",

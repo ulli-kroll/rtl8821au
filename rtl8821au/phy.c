@@ -2516,8 +2516,6 @@ static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
 	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);	/* get rid of this */
-
 	short band = -1, regulation = -1, bandwidth = -1,
 		rfPath = -1, rateSection = -1, channelGroup = -1;
 	uint8_t	powerLimit = MAX_POWER_INDEX;
@@ -2725,7 +2723,6 @@ u32 phy_GetTxPwrByRateOffset_8812(struct rtl_priv *rtlpriv,  uint8_t Band,
 	uint8_t	Rf_Path, uint8_t Rate_Section)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
-	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	uint8_t			shift = 0, original_rate = Rate_Section;
 	uint32_t			tx_pwr_diff = 0;
 
@@ -3050,8 +3047,6 @@ u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *		pDM_Odm = &pHalData->odmpriv;
 	uint8_t					i = 0;	/* default set to 1S */
 	struct registry_priv	*pregistrypriv = &rtlpriv->registrypriv;
 	uint32_t					powerDiffByRate = 0;
@@ -3261,7 +3256,6 @@ static void PHY_SetPowerLimitTableValue(struct rtl_priv *rtlpriv,
 	s8 *RfPath, s8 *Channel, s8 *PowerLimit)
 {
 	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t		regulation = 0, bandwidth = 0, rateSection = 0,
 			channel, powerLimit, channelGroup;
 
@@ -3763,7 +3757,6 @@ static void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data, enum radio_path path, uint32_t RegAddr)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 	
 	if (Addr == 0xfe || Addr == 0xffe) {
 		msleep(50);
@@ -4252,7 +4245,6 @@ static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	u8			u1tmp = 0;
-	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 
 	if(Band == BAND_ON_2_4G) {
 		switch(rtlhal->rfe_type){
@@ -4998,7 +4990,6 @@ static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv,
 {
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct registry_priv	*pregistrypriv = &rtlpriv->registrypriv;
 	uint8_t	cckRates[]   = {MGN_1M, MGN_2M, MGN_5_5M, MGN_11M};
 	uint8_t	ofdmRates[]  = {MGN_6M, MGN_9M, MGN_12M, MGN_18M, MGN_24M, MGN_36M, MGN_48M, MGN_54M};
 	uint8_t	htRates1T[]  = {MGN_MCS0, MGN_MCS1, MGN_MCS2, MGN_MCS3, MGN_MCS4, MGN_MCS5, MGN_MCS6, MGN_MCS7};

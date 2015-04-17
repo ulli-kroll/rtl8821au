@@ -1086,9 +1086,7 @@ struct dm_priv {
 	uint8_t	OFDM_index[2];
 
 	uint8_t	bCCKinCH14;
-	uint8_t	CCK_index;
 	uint8_t	bDoneTxpower;
-	uint8_t	CCK_index_HP;
 
 	uint8_t	OFDM_index_HP[2];
 	uint8_t	ThermalValue_HP[HP_THERMAL_NUM];
@@ -1189,9 +1187,6 @@ struct ODM_RF_Calibration_Structure
 	BOOLEAN	TxPowerTrackingInProgress;
 	BOOLEAN	bDPKenable;
 
-	//------------------------- Tx power Tracking -------------------------//
-	u8 	bCCKinCH14;
-	u8 	CCK_index;
 
 
 	u8 	ThermalValue_HP[HP_THERMAL_NUM];

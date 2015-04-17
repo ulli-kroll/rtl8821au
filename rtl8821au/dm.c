@@ -1262,10 +1262,6 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("\n\n========================================================================================================\n"));
 		if (rtldm->cck_index > TXSCALE_TABLE_SIZE-1)
 			rtldm->cck_index = TXSCALE_TABLE_SIZE-1;
-		/*
-		 * else if (rtldm->RFCalibrateInfo.CCK_index < 0)
-		 * 	rtldm->RFCalibrateInfo.CCK_index = 0;
-		 */
 	} else {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("The thermal meter is unchanged or TxPowerTracking OFF(%d): ThermalValue: %d , rtldm->RFCalibrateInfo.ThermalValue: %d\n", rtldm->txpower_track_control, ThermalValue, rtldm->thermalvalue));
 
@@ -1469,10 +1465,6 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("\n\n========================================================================================================\n"));
 		if (rtldm->cck_index > TXSCALE_TABLE_SIZE-1)
 			rtldm->cck_index = TXSCALE_TABLE_SIZE-1;
-		/*
-		 * else if (rtldm->RFCalibrateInfo.CCK_index < 0)
-		 * 	rtldm->RFCalibrateInfo.CCK_index = 0;
-		 */
 	} else {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("The thermal meter is unchanged or TxPowerTracking OFF(%d): ThermalValue: %d , rtldm->RFCalibrateInfo.ThermalValue: %d\n", rtldm->txpower_track_control, ThermalValue, rtldm->thermalvalue));
 

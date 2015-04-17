@@ -2367,8 +2367,11 @@ void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rss
 	psta->init_rate = init_rate;
 }
 
+/* ULLI : dejavu in  rtl8812au_init_default_value() */
+
 void InitDefaultValue8821A(struct rtl_priv *rtlpriv)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct _rtw_hal *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct dm_priv *pdmpriv;
@@ -2385,7 +2388,7 @@ void InitDefaultValue8821A(struct rtl_priv *rtlpriv)
 
 	/* init dm default value */
 	pHalData->bChnlBWInitialzed = _FALSE;
-	pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized = _FALSE;
+	rtlphy->iqk_initialized = _FALSE;
 	pHalData->odmpriv.RFCalibrateInfo.TM_Trigger = 0;	/* for IQK */
 	pHalData->pwrGroupCnt = 0;
 	pHalData->PGMaxGroup = MAX_PG_GROUP;

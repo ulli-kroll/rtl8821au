@@ -922,6 +922,7 @@ rt_rf_power_state RfOnOffDetect(struct rtl_priv *rtlpriv)
 
 uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	value8 = 0, u1bRegCR;
 	u16  value16;
@@ -936,11 +937,11 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	DBG_871X(" ULLI: Call rtl8812au_hal_init in usb_halinit.c\n");
 
 	if (rtlpriv->pwrctrlpriv.bkeepfwalive) {
-		if (pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized) {
+		if (rtlphy->iqk_initialized) {
 			/* PHY_IQCalibrate_8812A(rtlpriv,_TRUE); */
 		} else {
 			/* PHY_IQCalibrate_8812A(rtlpriv,_FALSE); */
-			pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized = _TRUE;
+			rtlphy->iqk_initialized = _TRUE;
 		}
 
 		/*
@@ -1186,11 +1187,11 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	if (pwrctrlpriv->rf_pwrstate == rf_on) {
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			pHalData->odmpriv.RFCalibrateInfo.bNeedIQK = _TRUE;
-			if (pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized)
+			if (rtlphy->iqk_initialized)
 				rtl8812au_phy_iq_calibrate(rtlpriv, _TRUE);
 			else {
 				rtl8812au_phy_iq_calibrate(rtlpriv, _FALSE);
-				pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized = _TRUE;
+				rtlphy->iqk_initialized = _TRUE;
 			}
 		}
 
@@ -1672,6 +1673,7 @@ void _update_response_rate(struct rtl_priv *rtlpriv, unsigned int mask)
 
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct _rtw_hal *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct dm_priv *pdmpriv;
@@ -1689,7 +1691,7 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 
 	/* init dm default value */
 	pHalData->bChnlBWInitialzed = _FALSE;
-	pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized = _FALSE;
+	rtlphy->iqk_initialized = _FALSE;
 	pHalData->odmpriv.RFCalibrateInfo.TM_Trigger = 0;/* for IQK */
 	pHalData->pwrGroupCnt = 0;
 	pHalData->PGMaxGroup = MAX_PG_GROUP;

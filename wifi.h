@@ -1196,7 +1196,6 @@ struct ODM_RF_Calibration_Structure
 	//--------------------------------------------------------------------//
 
 
-	BOOLEAN	bIQKInitialized;
 	BOOLEAN bLCKInProgress;
 	BOOLEAN	bAntennaDetected;
 };

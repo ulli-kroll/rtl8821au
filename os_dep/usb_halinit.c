@@ -1695,9 +1695,6 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 	pHalData->odmpriv.RFCalibrateInfo.TM_Trigger = 0;/* for IQK */
 	pHalData->pwrGroupCnt = 0;
 	pHalData->PGMaxGroup = MAX_PG_GROUP;
-	pHalData->odmpriv.RFCalibrateInfo.ThermalValue_HP_index = 0;
-	for (i = 0; i < HP_THERMAL_NUM; i++)
-		pHalData->odmpriv.RFCalibrateInfo.ThermalValue_HP[i] = 0;
 
 	pHalData->IntrMask[0]	= (u32)(	\
 /*

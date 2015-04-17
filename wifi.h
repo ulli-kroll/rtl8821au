@@ -1089,8 +1089,6 @@ struct dm_priv {
 	uint8_t	bDoneTxpower;
 
 	uint8_t	OFDM_index_HP[2];
-	uint8_t	ThermalValue_HP[HP_THERMAL_NUM];
-	uint8_t	ThermalValue_HP_index;
 	//uint8_t   RSVD_6;
 
 	u32	TXPowerTrackingCallbackCnt;	//cosa add for debug
@@ -1189,8 +1187,6 @@ struct ODM_RF_Calibration_Structure
 
 
 
-	u8 	ThermalValue_HP[HP_THERMAL_NUM];
-	u8 	ThermalValue_HP_index;
 	BOOLEAN	bNeedIQK;
 
 	//--------------------------------------------------------------------//

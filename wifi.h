@@ -1183,7 +1183,6 @@ struct ODM_RF_Calibration_Structure
 
 	u8  	TM_Trigger;
 	BOOLEAN	TxPowerTrackingInProgress;
-	BOOLEAN	bDPKenable;
 
 
 

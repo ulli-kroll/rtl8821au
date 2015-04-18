@@ -565,7 +565,7 @@ struct rtl_dm {
 	bool modify_txagc_flag_path_b;
 
 	bool one_entry_only;
-	
+
 	struct dm_phy_dbg_info dbginfo;
 
 	/* Dynamic ATC switch */
@@ -1635,7 +1635,6 @@ struct _rtw_hal {
 
 	// Read/write are allow for following hardware information variables
 	uint8_t	pwrGroupCnt;
-	u32	MCSTxPowerLevelOriginalOffset[MAX_PG_GROUP][16];
 	u32	CCKTxPowerLevelOriginalOffset;
 
 	uint8_t	CrystalCap;

@@ -57,10 +57,10 @@ void PHY_MACConfig8812(struct rtl_priv *rtlpriv)
 	/*
 	 * Config MAC
 	 */
-	 
+
 	/* ULLI strange only for rtl8821au ?? */
 	/* Ulli check for RTL8812_PHY_MACREG file */
-	 
+
 	_rtl8821au_phy_config_mac_with_headerfile(rtlpriv);
 }
 
@@ -119,7 +119,7 @@ void PHY_BB8812_Config_1T(struct rtl_priv *rtlpriv)
 static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	
+
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 	int			rtStatus = _SUCCESS;
@@ -231,42 +231,42 @@ static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_TYPE Band, uint8_t 
 	uint8_t	index = 0;
 	if (Band == BAND_ON_2_4G) {
 		switch (Rate) {
-		case MGN_1M: 
-		case MGN_2M: 
-		case MGN_5_5M: 
+		case MGN_1M:
+		case MGN_2M:
+		case MGN_5_5M:
 		case MGN_11M:
 			index = 0;
 			break;
 
-		case MGN_6M: 
-		case MGN_9M: 
-		case MGN_12M: 
+		case MGN_6M:
+		case MGN_9M:
+		case MGN_12M:
 		case MGN_18M:
-		case MGN_24M: 
-		case MGN_36M: 
-		case MGN_48M: 
+		case MGN_24M:
+		case MGN_36M:
+		case MGN_48M:
 		case MGN_54M:
 			index = 1;
 			break;
 
-		case MGN_MCS0: 
-		case MGN_MCS1: 
-		case MGN_MCS2: 
+		case MGN_MCS0:
+		case MGN_MCS1:
+		case MGN_MCS2:
 		case MGN_MCS3:
-		case MGN_MCS4: 
-		case MGN_MCS5: 
-		case MGN_MCS6: 
+		case MGN_MCS4:
+		case MGN_MCS5:
+		case MGN_MCS6:
 		case MGN_MCS7:
 			index = 2;
 			break;
 
-		case MGN_MCS8: 
-		case MGN_MCS9: 
-		case MGN_MCS10: 
+		case MGN_MCS8:
+		case MGN_MCS9:
+		case MGN_MCS10:
 		case MGN_MCS11:
-		case MGN_MCS12: 
-		case MGN_MCS13: 
-		case MGN_MCS14: 
+		case MGN_MCS12:
+		case MGN_MCS13:
+		case MGN_MCS14:
 		case MGN_MCS15:
 			index = 3;
 			break;
@@ -277,60 +277,60 @@ static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_TYPE Band, uint8_t 
 		}
 	} else if (Band == BAND_ON_5G) {
 		switch (Rate) {
-		case MGN_6M: 
-		case MGN_9M: 
-		case MGN_12M: 
+		case MGN_6M:
+		case MGN_9M:
+		case MGN_12M:
 		case MGN_18M:
-		case MGN_24M: 
-		case MGN_36M: 
-		case MGN_48M: 
+		case MGN_24M:
+		case MGN_36M:
+		case MGN_48M:
 		case MGN_54M:
 			index = 0;
 			break;
 
-		case MGN_MCS0: 
-		case MGN_MCS1: 
-		case MGN_MCS2: 
+		case MGN_MCS0:
+		case MGN_MCS1:
+		case MGN_MCS2:
 		case MGN_MCS3:
-		case MGN_MCS4: 
-		case MGN_MCS5: 
-		case MGN_MCS6: 
+		case MGN_MCS4:
+		case MGN_MCS5:
+		case MGN_MCS6:
 		case MGN_MCS7:
 			index = 1;
 			break;
 
-		case MGN_MCS8: 
-		case MGN_MCS9: 
-		case MGN_MCS10: 
+		case MGN_MCS8:
+		case MGN_MCS9:
+		case MGN_MCS10:
 		case MGN_MCS11:
 		case MGN_MCS12:
-		case MGN_MCS13: 
-		case MGN_MCS14: 
+		case MGN_MCS13:
+		case MGN_MCS14:
 		case MGN_MCS15:
 			index = 2;
 			break;
 
-		case MGN_VHT1SS_MCS0: 
-		case MGN_VHT1SS_MCS1: 
+		case MGN_VHT1SS_MCS0:
+		case MGN_VHT1SS_MCS1:
 		case MGN_VHT1SS_MCS2:
-		case MGN_VHT1SS_MCS3: 
-		case MGN_VHT1SS_MCS4: 
+		case MGN_VHT1SS_MCS3:
+		case MGN_VHT1SS_MCS4:
 		case MGN_VHT1SS_MCS5:
-		case MGN_VHT1SS_MCS6: 
-		case MGN_VHT1SS_MCS7: 
+		case MGN_VHT1SS_MCS6:
+		case MGN_VHT1SS_MCS7:
 		case MGN_VHT1SS_MCS8:
 		case MGN_VHT1SS_MCS9:
 			index = 3;
 			break;
 
-		case MGN_VHT2SS_MCS0: 
-		case MGN_VHT2SS_MCS1: 
+		case MGN_VHT2SS_MCS0:
+		case MGN_VHT2SS_MCS1:
 		case MGN_VHT2SS_MCS2:
-		case MGN_VHT2SS_MCS3: 
-		case MGN_VHT2SS_MCS4: 
+		case MGN_VHT2SS_MCS3:
+		case MGN_VHT2SS_MCS4:
 		case MGN_VHT2SS_MCS5:
-		case MGN_VHT2SS_MCS6: 
-		case MGN_VHT2SS_MCS7: 
+		case MGN_VHT2SS_MCS6:
+		case MGN_VHT2SS_MCS7:
 		case MGN_VHT2SS_MCS8:
 		case MGN_VHT2SS_MCS9:
 			index = 4;
@@ -527,7 +527,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv)
 								if (rateSection == 2) {
 									rtlphy->txpwr_limit_5g[regulation][bw][2][group][RF90_PATH_A] =
 										rtlphy->txpwr_limit_5g[regulation][bw][4][group][RF90_PATH_A];
-										
+
 									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][4][group][RF90_PATH_A];
 								} else if (rateSection == 4) {
 									rtlphy->txpwr_limit_5g[regulation][bw][4][group][RF90_PATH_A] =
@@ -543,7 +543,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv)
 								else if ( rateSection == 5 ) {
 									rtlphy->txpwr_limit_5g[regulation][bw][5][group][RF90_PATH_A] =
 										rtlphy->txpwr_limit_5g[regulation][bw][3][group][RF90_PATH_A];
-										
+
 									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][3][group][RF90_PATH_A];
 								}
 
@@ -690,7 +690,7 @@ static void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *rtlpriv,
 	 * OFDM=1/2 			18/12/9/6     54/48/36/24
 	 * HT=3/4/56 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
 	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
-	 * 
+	 *
 	 * #define		TX_PWR_BY_RATE_NUM_BAND			2
 	 * #define		TX_PWR_BY_RATE_NUM_RF			4
 	 * #define		TX_PWR_BY_RATE_NUM_SECTION		12
@@ -699,7 +699,7 @@ static void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *rtlpriv,
 	/*
 	 *  1. Judge TX power by rate array band type.
 	 */
-	
+
 	/* if(RegAddr == rTxAGC_A_CCK11_CCK1_JAguar || RegAddr == rTxAGC_B_CCK11_CCK1_JAguar) */
 	if ((RegAddr & 0xFFF) == 0xC20) {
 		pHalData->TxPwrByRateTable++;	/* Record that it is the first data to record. */
@@ -734,7 +734,7 @@ static void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *rtlpriv,
 	}
 
 	rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section] = Data;
-	
+
 	/*
 	 * DBG_871X("VHT TxPwrByRateOffset Addr-%x==>BAND/RF/SEC=%d/%d/%d = %08x\n",
 	 * 	RegAddr, pHalData->TxPwrByRateBand, rf_path, rate_section, Data);
@@ -748,7 +748,7 @@ static void phy_ChangePGDataFromExactToRelativeValue(u32* pData, uint8_t Start,
 	s8	i = 0;
 	uint8_t	TempValue = 0;
 	uint32_t	TempData = 0;
-	
+
 	/* BaseValue = ( BaseValue & 0xf ) + ( ( BaseValue >> 4 ) & 0xf ) * 10; */
 	/* RT_TRACE(COMP_INIT, DBG_LOUD, ("Corrected BaseValue %u\n", BaseValue ) ); */
 
@@ -786,14 +786,14 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 	 * OFDM=1/2 			18/12/9/6     54/48/36/24
 	 * HT=3/4/56 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
 	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
-	 * 
+	 *
 	 * #define		TX_PWR_BY_RATE_NUM_BAND			2
 	 * #define		TX_PWR_BY_RATE_NUM_RF			4
 	 * #define		TX_PWR_BY_RATE_NUM_SECTION		12
-	 * 
+	 *
 	 * Judge TX power by rate array RF type
 	 */
-	
+
 	if (( RegAddr & 0xF00) == 0xC00) {
 		rf_path = 0;
 	} else if (( RegAddr & 0xF00) == 0xE00) {
@@ -803,7 +803,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 	/*
 	 * Judge TX power by rate array rate section
 	 */
-	
+
 	if (rf_path == 0) {
 		rate_section = (u8) (( RegAddr & 0xFFF) - 0xC20) / 4;
 	} else if (rf_path == 1) {
@@ -820,7 +820,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		 */
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
-		/* 
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, after changing to relative\n",
 		 * 		pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
 		 */
@@ -843,7 +843,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
 			&(rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
-			
+
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, after changing to relative\n",
 		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
@@ -854,7 +854,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 
 	case 0xC44:
 	case 0xE44:
-		/* 
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, before changing to relative\n",
 		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
@@ -865,13 +865,13 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		 */
 		BaseValue = ((uint8_t) (rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 28) & 0xF) * 10 +
 					((uint8_t) (rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 24 ) & 0xF);
-					
+
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 1, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
 			&( rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
 			&( rtlphy->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 0, 3, BaseValue);
-			
+
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, after changing to relative\n",
 		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
@@ -884,7 +884,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 
 	case 0xC4C:
 	case 0xE4C:
-		/* 
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, before changing to relative\n",
 		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
@@ -893,7 +893,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->TxPwrByRateOffset[%d][%d][%d] = 0x%x, before changing to relative\n",
 		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->TxPwrByRateOffset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
 		 */
-		 
+
 		BaseValue = ( ( uint8_t ) ( *pData >> 12 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 8 ) & 0xF );
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
@@ -915,6 +915,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpriv,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t *pData)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	u8			BaseValue = 0;
@@ -931,8 +932,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
-			&(pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][0] ), 0, 3, BaseValue);
-			
+			&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][0] ), 0, 3, BaseValue);
+
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][1] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -942,16 +943,16 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_A_CCK1_Mcs32) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][6] = *pData;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][6] = *pData;
+		/*
 		 * DBG_871X("MCSTxPowerLevelOriginalOffset[%d][6] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][6]);
 		 */
 	}
 
 	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0xffffff00) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][7] = *pData;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][7] = *pData;
+		/*
 		 * DBG_871X("MCSTxPowerLevelOriginalOffset[%d][7] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][7]);
 		 */
@@ -966,11 +967,11 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		 * 	pHalData->pwrGroupCnt, pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][2] );
 		 */
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) *10 + ((uint8_t) (*pData >> 24) & 0xF);
-		
+
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-			&(pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][2]), 0, 3, BaseValue);
+			&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][2]), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][3] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -980,7 +981,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_A_Mcs11_Mcs08) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][4] = *pData;
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][4] = *pData;
 		/* DBG_871X("MCSTxPowerLevelOriginalOffset[%d][4] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][4]);
 		 */
@@ -997,8 +998,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-			&(pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][4]), 0, 3, BaseValue);
-		/* 
+			&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][4]), 0, 3, BaseValue);
+		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][5] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][4] = 0x%x, after changing to relative\n",
@@ -1007,7 +1008,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_B_Rate54_24) {
-		/* 
+		/*
 		 * DBG_871X("RegAddr %x\n", RegAddr );
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][9] = 0x%x, before changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -1018,7 +1019,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-				&(pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][8]), 0, 3, BaseValue);
+				&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][8]), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][9] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -1029,7 +1030,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_B_CCK1_55_Mcs32) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][14] = *pData;
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][14] = *pData;
 		/*
 		 * DBG_871X("MCSTxPowerLevelOriginalOffset[%d][14] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][14]);
@@ -1037,8 +1038,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0x000000ff) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][15] = *pData;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][15] = *pData;
+		/*
 		 * DBG_871X("MCSTxPowerLevelOriginalOffset[%d][15] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][15]);
 		 */
@@ -1056,7 +1057,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-				&(pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][10] ), 0, 3, BaseValue);
+				&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][10] ), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][11] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -1066,7 +1067,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_B_Mcs15_Mcs12) {
-		/* 
+		/*
 		 * DBG_871X("RegAddr %x\n", RegAddr );
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][13] = 0x%x, before changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -1077,8 +1078,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-				&(pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][12]), 0, 3, BaseValue);
-				
+				&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][12]), 0, 3, BaseValue);
+
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][13] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -1117,28 +1118,28 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 			switch(RegAddr) {
 			case 0xC20:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][0] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][0] ) );
 				 */
 				break;
 			case 0xC28:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC30:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC38:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3] ) );
 				 */
@@ -1151,28 +1152,28 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 			switch(RegAddr) {
 			case 0xC20:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][0] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][0] ) );
 				 */
 				break;
 			case 0xC28:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC30:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC38:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3] ) );
 				 */
@@ -1196,21 +1197,21 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 				break;
 			case 0xC30:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][1] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC38:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][2] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS15 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC40:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][3] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 1SS MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][3] ) );
 				 */
@@ -1219,35 +1220,35 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][4] =
 					( uint8_t ) ( ( Data >> 12 ) & 0xF ) * 10 +
 					( uint8_t ) ( ( Data >> 8 ) & 0xF );
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 2SS MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][4] ) );
 				 */
 				break;
 			case 0xE28:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][0] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of OFDM 54M (RF path B) = %d\n",
 				 *	pHalData->TxPwrByRateBase5G[RF90_PATH_B][0] ) );
 				 */
 				break;
 			case 0xE30:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][1] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][1] ) );
 				 */
 				break;
 			case 0xE38:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][2] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS15 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][2] ) );
 				 */
 				break;
 			case 0xE40:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][3] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 1SS MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][3] ) );
 				 */
@@ -1270,70 +1271,70 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 			switch(RegAddr) {
 			case 0xC28:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][0]  = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of OFDM 54M (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][0] ) );
 				 */
 				break;
 			case 0xC30:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][1]  = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC38:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][2]  = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS15 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC40:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][3] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 1SS MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][3] ) );
 				 */
 				break;
 			case 0xC4C:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_A][4] = ( uint8_t ) ( ( Data >> 8 ) & 0xFF );
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 2SS MCS7 (RF path A) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_A][4] ) );
 				 */
 				break;
 			case 0xE28:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][0] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of OFDM 54M (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][0] ) );
 				 */
 				break;
 			case 0xE30:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][1] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][1] ) );
 				 */
 				break;
 			case 0xE38:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][2]  = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of MCS15 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][2] ) );
 				 */
 				break;
 			case 0xE40:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][3] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 1SS MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][3] ) );
 				 */
 				break;
 			case 0xE4C:
 				rtlphy->TxPwrByRateBase5G[RF90_PATH_B][4] = ( uint8_t ) ( ( Data >> 8 ) & 0xFF );
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("5G power by rate of 2SS MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase5G[RF90_PATH_B][4] ) );
 				 */
@@ -1364,7 +1365,7 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 				break;
 			case 0xE30:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][2] ) );
 				 */
@@ -1385,28 +1386,28 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 			switch(RegAddr) {
 			case 0xC20:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][0] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][0] ) );
 				 */
 				break;
 			case 0xC28:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][1] ) );
 				 */
 				break;
 			case 0xC30:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][2] ) );
 				 */
 				break;
 			case 0xC38:
 				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
-				/* 
+				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G  power by rate of MCS15 (RF path B) = %d\n",
 				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][3] ) );
 				 */
@@ -1430,21 +1431,21 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 	case rTxAGC_A_Rate54_24:
 		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
 		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
-		/* 
+		/*
 		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n", pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1]));
 		 */
 		break;
 	case rTxAGC_A_Mcs07_Mcs04:
 		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
 		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
-		/* 
+		/*
 		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n", pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2]));
 		 */
 		break;
 	case rTxAGC_A_Mcs15_Mcs12:
 		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
 		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
-		/* 
+		/*
 		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n", pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3]));
 		 */
 		break;
@@ -1459,6 +1460,7 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 void storePwrIndexDiffRateOffset(struct rtl_priv *rtlpriv, uint32_t RegAddr,
 	uint32_t BitMask, uint32_t Data)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t	tmpData = Data;
@@ -1487,57 +1489,57 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *rtlpriv, uint32_t RegAddr,
 	phy_StorePwrByRateIndexBase(rtlpriv, RegAddr, tmpData );
 
 	if (RegAddr == rTxAGC_A_Rate18_06) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][0] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][0] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][0] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][0]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Rate54_24) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][1] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][1] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][1] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][1]));
 		 */
 	}
 	if(RegAddr == rTxAGC_A_CCK1_Mcs32) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][6] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][6] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][6] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][6]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0xffffff00) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][7] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][7] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][7] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][7]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Mcs03_Mcs00) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][2] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][2] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][2] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][2]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Mcs07_Mcs04) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][3] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][3] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][3] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][3]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Mcs11_Mcs08) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][4] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][4] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][4] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][4]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Mcs15_Mcs12) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][5] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][5] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][5] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][5]));
 		 */
@@ -1547,57 +1549,57 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *rtlpriv, uint32_t RegAddr,
 		}
 	}
 	if (RegAddr == rTxAGC_B_Rate18_06) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][8] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][8] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][8] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][8]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Rate54_24) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][9] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][9] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][9] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 *	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][9]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_CCK1_55_Mcs32) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][14] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][14] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][14] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][14]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0x000000ff) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][15] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][15] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][15] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][15]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Mcs03_Mcs00) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][10] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][10] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][10] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][10]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Mcs07_Mcs04) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][11] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][11] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][11] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][11]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Mcs11_Mcs08) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][12] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][12] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][12] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][12]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Mcs15_Mcs12) {
-		pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][13] = Data;
-		/* 
+		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][13] = Data;
+		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][13] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][13]));
 		 */
@@ -1621,7 +1623,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *rtlpriv, uint32_t RegAddr,
  **************************************************************************************************************/
 
 
-static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv, 
+static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
 	uint8_t RFPath, enum CHANNEL_WIDTH BandWidth,
 	uint8_t Channel, uint8_t *Rate, uint8_t *power_index,
 	uint8_t	ArraySize)
@@ -1643,9 +1645,9 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
  * Page revised on 20121106
  * the new way to set tx power by rate, NByte access, here N byte shall be 4 byte(DWord) or NByte(N>4) access. by page/YP, 20121106
  */
- 
+
 /* ULLI called in HalPhyRf8812A.c and HalPhyRf21A.c */
- 
+
 /* ULLI used in rtl8821au/dm.c */
 
 
@@ -1655,7 +1657,7 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
 static void phy_InitRssiTRSW(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	
+
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 	uint8_t 			channel = rtlpriv->phy.current_channel;
@@ -1679,7 +1681,7 @@ static void phy_InitRssiTRSW(struct rtl_priv *rtlpriv)
 	}
 }
 
-/* 
+/*
  * Prototypes needed here, because functions are moved to rtl8821au/phy.c
  */
 
@@ -1690,7 +1692,7 @@ void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	
+
 	uint8_t	eRFPath = 0;
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	channelToSW = rtlpriv->phy.current_channel;
@@ -1791,7 +1793,7 @@ static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *rtlpriv)
 	ODM_ClearTxPowerTrackingState(&pHalData->odmpriv);
 	PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal)) 
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		phy_InitRssiTRSW(rtlpriv);
 
 	if ((pHalData->bNeedIQK == _TRUE)) {
@@ -1848,7 +1850,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 			(pHalData->nCur40MhzPrimeSC != ChnlOffsetOf40MHz) ||
 			(pHalData->nCur80MhzPrimeSC != ChnlOffsetOf80MHz) ||
 			(pHalData->CurrentCenterFrequencyIndex1!= CenterFrequencyIndex1)) {
-			
+
 			pHalData->bSetChnlBW = _TRUE;
 		}
 	}

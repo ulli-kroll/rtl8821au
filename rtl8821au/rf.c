@@ -131,6 +131,7 @@ void getTxPowerWriteValByRegulatory8812(
 	OUT		u32*		pOutWriteVal
 	)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -152,7 +153,7 @@ void getTxPowerWriteValByRegulatory8812(
 				chnlGroup = 0;
 				//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
 				//	chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
-				writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] +
+				writeVal = rtlphy->mcs_txpwrlevel_origoffset[chnlGroup][index+(rf?8:0)] +
 					((index<2)?powerBase0[rf]:powerBase1[rf]);
 				//RTPRINT(FPHY, PHY_TXPWR, ("RTK better performance, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
 				break;
@@ -193,7 +194,7 @@ void getTxPowerWriteValByRegulatory8812(
 					}
 					//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
 					//chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
-					writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] +
+					writeVal = rtlphy->mcs_txpwrlevel_origoffset[chnlGroup][index+(rf?8:0)] +
 							((index<2)?powerBase0[rf]:powerBase1[rf]);
 					//RTPRINT(FPHY, PHY_TXPWR, ("Realtek regulatory, 20MHz, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
 				}
@@ -205,7 +206,7 @@ void getTxPowerWriteValByRegulatory8812(
 				break;
 			default:
 				chnlGroup = 0;
-				writeVal = pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)] +
+				writeVal = rtlphy->mcs_txpwrlevel_origoffset[chnlGroup][index+(rf?8:0)] +
 						((index<2)?powerBase0[rf]:powerBase1[rf]);
 				//RTPRINT(FPHY, PHY_TXPWR, ("RTK better performance, writeVal rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
 				break;
@@ -343,6 +344,7 @@ int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 
 void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *rtlpriv, uint8_t *pPowerlevel)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
@@ -393,12 +395,12 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *rtlpriv, uint8_t *pPo
 			}
 
 			if (efuse->eeprom_regulatory == 0) {
-				tmpval = (pHalData->MCSTxPowerLevelOriginalOffset[0][6]) +
-						(pHalData->MCSTxPowerLevelOriginalOffset[0][7]<<8);
+				tmpval = (rtlphy->mcs_txpwrlevel_origoffset[0][6]) +
+						(rtlphy->mcs_txpwrlevel_origoffset[0][7]<<8);
 				TxAGC[RF90_PATH_A] += tmpval;
 
-				tmpval = (pHalData->MCSTxPowerLevelOriginalOffset[0][14]) +
-						(pHalData->MCSTxPowerLevelOriginalOffset[0][15]<<24);
+				tmpval = (rtlphy->mcs_txpwrlevel_origoffset[0][14]) +
+						(rtlphy->mcs_txpwrlevel_origoffset[0][15]<<24);
 				TxAGC[RF90_PATH_B] += tmpval;
 			}
 		}

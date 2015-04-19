@@ -1070,7 +1070,6 @@ struct dm_priv {
 	//for High Power
 	uint8_t 	bDynamicTxPowerEnable;
 	uint8_t 	LastDTPLvl;
-	uint8_t	DynamicTxHighPowerLvl;//Add by Jacken Tx Power Control for Near/Far Range 2008/03/06
 
 	//for tx power tracking
 	uint8_t	bTXPowerTracking;

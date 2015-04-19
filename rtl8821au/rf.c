@@ -2,6 +2,7 @@
 #include "rf.h"
 #include "reg.h"
 #include "phy.h"
+#include "dm.h"
 
 void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH	Bandwidth)	/* 20M or 40M */
 {
@@ -216,19 +217,19 @@ void getTxPowerWriteValByRegulatory8812(
 // Currently, we cannot fully disable driver dynamic tx power mechanism because it is referenced by BT coexist mechanism.
 // In the future, two mechanism shall be separated from each other and maintained independantly. Thanks for Lanhsin's reminder.
 		//92d do not need this
-		if(pdmpriv->DynamicTxHighPowerLvl == TxHighPwrLevel_Level1)
+		if(rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_Level1)
 			writeVal = 0x14141414;
-		else if(pdmpriv->DynamicTxHighPowerLvl == TxHighPwrLevel_Level2)
+		else if(rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_Level2)
 			writeVal = 0x00000000;
 
 		// 20100628 Joseph: High power mode for BT-Coexist mechanism.
 		// This mechanism is only applied when Driver-Highpower-Mechanism is OFF.
-		if(pdmpriv->DynamicTxHighPowerLvl == TxHighPwrLevel_BT1)
+		if(rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_BT1)
 		{
 			//RTPRINT(FBT, BT_TRACE, ("Tx Power (-6)\n"));
 			writeVal = writeVal - 0x06060606;
 		}
-		else if(pdmpriv->DynamicTxHighPowerLvl == TxHighPwrLevel_BT2)
+		else if(rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_BT2)
 		{
 			//RTPRINT(FBT, BT_TRACE, ("Tx Power (-0)\n"));
 			writeVal = writeVal ;
@@ -381,10 +382,10 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *rtlpriv, uint8_t *pPo
  * Currently, we cannot fully disable driver dynamic tx power mechanism because it is referenced by BT coexist mechanism.
  * In the future, two mechanism shall be separated from each other and maintained independantly. Thanks for Lanhsin's reminder.
  */
-		if (pdmpriv->DynamicTxHighPowerLvl == TxHighPwrLevel_Level1) {
+		if (rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_Level1) {
 			TxAGC[RF90_PATH_A] = 0x10101010;
 			TxAGC[RF90_PATH_B] = 0x10101010;
-		} else if (pdmpriv->DynamicTxHighPowerLvl == TxHighPwrLevel_Level2) {
+		} else if (rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_Level2) {
 			TxAGC[RF90_PATH_A] = 0x00000000;
 			TxAGC[RF90_PATH_B] = 0x00000000;
 		} else {

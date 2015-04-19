@@ -804,25 +804,6 @@ typedef enum tag_DIG_Connect_Definition
 //3===========================================================
 
 //3===========================================================
-//3 Dynamic Tx Power
-//3===========================================================
-//Dynamic Tx Power Control Threshold
-#define		TX_POWER_NEAR_FIELD_THRESH_LVL2	74
-#define		TX_POWER_NEAR_FIELD_THRESH_LVL1	67
-#define		TX_POWER_NEAR_FIELD_THRESH_AP		0x3F
-
-#define		TxHighPwrLevel_Normal		0
-#define		TxHighPwrLevel_Level1		1
-#define		TxHighPwrLevel_Level2		2
-#define		TxHighPwrLevel_BT1			3
-#define		TxHighPwrLevel_BT2			4
-#define		TxHighPwrLevel_15			5
-#define		TxHighPwrLevel_35			6
-#define		TxHighPwrLevel_50			7
-#define		TxHighPwrLevel_70			8
-#define		TxHighPwrLevel_100			9
-
-//3===========================================================
 //3 Tx Power Tracking
 //3===========================================================
 #if 0 //mask this, since these have been defined in typdef.h, vivi

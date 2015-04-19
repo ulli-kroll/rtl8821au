@@ -50,10 +50,9 @@ static u32 phy_RFSerialRead(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	uint32_t Offset)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct bb_reg_def *pphyreg = &(rtlpriv->phy.phyreg_def[eRFPath]);
 	
 	uint32_t			retValue = 0;
-	 struct _rtw_hal			*pHalData = GET_HAL_DATA(rtlpriv);
-	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 	BOOLEAN				bIsPIMode = _FALSE;
 
 
@@ -78,21 +77,21 @@ static u32 phy_RFSerialRead(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 		bIsPIMode = (BOOLEAN)rtl_get_bbreg(rtlpriv, 0xE00, 0x4);
 
 	if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv))
-		rtl_set_bbreg(rtlpriv, pPhyReg->rfHSSIPara2, bMaskDWord, 0);
+		rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bMaskDWord, 0);
 
-	rtl_set_bbreg(rtlpriv, pPhyReg->rfHSSIPara2, bHSSIRead_addr_Jaguar, Offset);
+	rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bHSSIRead_addr_Jaguar, Offset);
 
 	if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv) )
-		rtl_set_bbreg(rtlpriv, pPhyReg->rfHSSIPara2, bMaskDWord, Offset|BIT8);
+		rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bMaskDWord, Offset|BIT8);
 
 	if (IS_VENDOR_8812A_C_CUT(rtlpriv) || IS_HARDWARE_TYPE_8821(rtlhal))
 		udelay(20);
 
 	if (bIsPIMode) {
-		retValue = rtl_get_bbreg(rtlpriv, pPhyReg->rfLSSIReadBackPi, rRead_data_Jaguar);
+		retValue = rtl_get_bbreg(rtlpriv, pphyreg->rf_rbpi, rRead_data_Jaguar);
 		/* DBG_871X("[PI mode] RFR-%d Addr[0x%x]=0x%x\n", eRFPath, pPhyReg->rfLSSIReadBackPi, retValue); */
 	} else {
-		retValue = rtl_get_bbreg(rtlpriv, pPhyReg->rfLSSIReadBack, rRead_data_Jaguar);
+		retValue = rtl_get_bbreg(rtlpriv, pphyreg->rf_rb, rRead_data_Jaguar);
 		/* DBG_871X("[SI mode] RFR-%d Addr[0x%x]=0x%x\n", eRFPath, pPhyReg->rfLSSIReadBack, retValue); */
 	}
 
@@ -107,9 +106,9 @@ static u32 phy_RFSerialRead(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 static void phy_RFSerialWrite(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	uint32_t Offset, uint32_t Data)
 {
+	struct bb_reg_def *pphyreg = &(rtlpriv->phy.phyreg_def[eRFPath]);
 	uint32_t		DataAndAddr = 0;
 	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
-	BB_REGISTER_DEFINITION_T	*pPhyReg = &pHalData->PHYRegDef[eRFPath];
 
 	/*
 	 * 2009/06/17 MH We can not execute IO for power save or other accident mode.
@@ -149,7 +148,7 @@ static void phy_RFSerialWrite(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 		/* USB 3.0 */
 		/* Write Operation */
 		/* TODO: Dynamically determine whether using PI or SI to write RF registers. */
-		rtl_set_bbreg(rtlpriv, pPhyReg->rf3wireOffset, bMaskDWord, DataAndAddr);
+		rtl_set_bbreg(rtlpriv, pphyreg->rf3wire_offset, bMaskDWord, DataAndAddr);
 		/* DBG_871X("RFW-%d Addr[0x%x]=0x%x\n", eRFPath, pPhyReg->rf3wireOffset, DataAndAddr); */
 	}
 

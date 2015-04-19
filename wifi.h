@@ -1655,8 +1655,6 @@ struct _rtw_hal {
 
 	u32	AcParam_BE; //Original parameter for BE, use for EDCA turbo.
 
-	BB_REGISTER_DEFINITION_T	PHYRegDef[4];	//Radio A/B/C/D
-
 	u32	RfRegChnlVal[2];
 
 	//RDG enable

@@ -67,31 +67,31 @@ void PHY_MACConfig8812(struct rtl_priv *rtlpriv)
 
 static void phy_InitBBRFRegisterDefinition(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 
 	/* RF Interface Sowrtware Control */
-	pHalData->PHYRegDef[RF90_PATH_A].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 LSBs if read 32-bit from 0x870 */
-	pHalData->PHYRegDef[RF90_PATH_B].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 MSBs if read 32-bit from 0x870 (16-bit for 0x872) */
+	rtlphy->phyreg_def[RF90_PATH_A].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 LSBs if read 32-bit from 0x870 */
+	rtlphy->phyreg_def[RF90_PATH_B].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 MSBs if read 32-bit from 0x870 (16-bit for 0x872) */
 
 	/* RF Interface Output (and Enable) */
-	pHalData->PHYRegDef[RF90_PATH_A].rfintfo = rFPGA0_XA_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x860 */
-	pHalData->PHYRegDef[RF90_PATH_B].rfintfo = rFPGA0_XB_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x864 */
+	rtlphy->phyreg_def[RF90_PATH_A].rfintfo = rFPGA0_XA_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x860 */
+	rtlphy->phyreg_def[RF90_PATH_B].rfintfo = rFPGA0_XB_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x864 */
 
 	/* RF Interface (Output and)  Enable */
-	pHalData->PHYRegDef[RF90_PATH_A].rfintfe = rFPGA0_XA_RFInterfaceOE;	/* 16 MSBs if read 32-bit from 0x860 (16-bit for 0x862) */
-	pHalData->PHYRegDef[RF90_PATH_B].rfintfe = rFPGA0_XB_RFInterfaceOE; 	/* 16 MSBs if read 32-bit from 0x864 (16-bit for 0x866) */
+	rtlphy->phyreg_def[RF90_PATH_A].rfintfe = rFPGA0_XA_RFInterfaceOE;	/* 16 MSBs if read 32-bit from 0x860 (16-bit for 0x862) */
+	rtlphy->phyreg_def[RF90_PATH_B].rfintfe = rFPGA0_XB_RFInterfaceOE; 	/* 16 MSBs if read 32-bit from 0x864 (16-bit for 0x866) */
 
-	pHalData->PHYRegDef[RF90_PATH_A].rf3wireOffset = rA_LSSIWrite_Jaguar; 	/* LSSI Parameter */
-	pHalData->PHYRegDef[RF90_PATH_B].rf3wireOffset = rB_LSSIWrite_Jaguar;
+	rtlphy->phyreg_def[RF90_PATH_A].rf3wire_offset = rA_LSSIWrite_Jaguar; 	/* LSSI Parameter */
+	rtlphy->phyreg_def[RF90_PATH_B].rf3wire_offset = rB_LSSIWrite_Jaguar;
 
-	pHalData->PHYRegDef[RF90_PATH_A].rfHSSIPara2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
-	pHalData->PHYRegDef[RF90_PATH_B].rfHSSIPara2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
+	rtlphy->phyreg_def[RF90_PATH_A].rfhssi_para2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
+	rtlphy->phyreg_def[RF90_PATH_B].rfhssi_para2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
 
 	/* Tranceiver Readback LSSI/HSPI mode */
-	pHalData->PHYRegDef[RF90_PATH_A].rfLSSIReadBack = rA_SIRead_Jaguar;
-	pHalData->PHYRegDef[RF90_PATH_B].rfLSSIReadBack = rB_SIRead_Jaguar;
-	pHalData->PHYRegDef[RF90_PATH_A].rfLSSIReadBackPi = rA_PIRead_Jaguar;
-	pHalData->PHYRegDef[RF90_PATH_B].rfLSSIReadBackPi = rB_PIRead_Jaguar;
+	rtlphy->phyreg_def[RF90_PATH_A].rf_rb = rA_SIRead_Jaguar;
+	rtlphy->phyreg_def[RF90_PATH_B].rf_rb = rB_SIRead_Jaguar;
+	rtlphy->phyreg_def[RF90_PATH_A].rf_rbpi = rA_PIRead_Jaguar;
+	rtlphy->phyreg_def[RF90_PATH_B].rf_rbpi = rB_PIRead_Jaguar;
 
 	/* pHalData->bPhyValueInitReady=_TRUE; */
 }

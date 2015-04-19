@@ -134,8 +134,6 @@ void getTxPowerWriteValByRegulatory8812(
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	uint8_t			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
 	s8			pwr_diff=0;
 	uint32_t 			writeVal, customer_limit, rf;
@@ -348,8 +346,6 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *rtlpriv, uint8_t *pPo
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv		*pdmpriv = &pHalData->dmpriv;
 	struct mlme_ext_priv 	*pmlmeext = &rtlpriv->mlmeextpriv;
 	uint32_t		TxAGC[2] = {0, 0},
 				tmpval = 0;

@@ -918,7 +918,6 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	u8			BaseValue = 0;
 
 	if (RegAddr == rTxAGC_A_Rate54_24) {

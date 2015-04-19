@@ -118,6 +118,7 @@ void PHY_BB8812_Config_1T(struct rtl_priv *rtlpriv)
 
 static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
@@ -141,7 +142,7 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)
 	/* If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
 	/* 1 TODO */
 	if (pEEPROM->bautoload_fail_flag == _FALSE) {
-		pHalData->pwrGroupCnt = 0;
+		rtlphy->pwrgroup_cnt = 0;
 
 		ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG_PG);
 
@@ -932,7 +933,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
 		phy_ChangePGDataFromExactToRelativeValue(
-			&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][0] ), 0, 3, BaseValue);
+			&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][0] ), 0, 3, BaseValue);
 
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][1] = 0x%x, after changing to relative\n",
@@ -943,7 +944,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_A_CCK1_Mcs32) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][6] = *pData;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][6] = *pData;
 		/*
 		 * DBG_871X("MCSTxPowerLevelOriginalOffset[%d][6] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][6]);
@@ -951,7 +952,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0xffffff00) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][7] = *pData;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][7] = *pData;
 		/*
 		 * DBG_871X("MCSTxPowerLevelOriginalOffset[%d][7] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][7]);
@@ -971,7 +972,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-			&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][2]), 0, 3, BaseValue);
+			&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][2]), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][3] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -981,7 +982,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_A_Mcs11_Mcs08) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][4] = *pData;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][4] = *pData;
 		/* DBG_871X("MCSTxPowerLevelOriginalOffset[%d][4] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][4]);
 		 */
@@ -998,7 +999,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-			&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][4]), 0, 3, BaseValue);
+			&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][4]), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][5] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -1019,7 +1020,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-				&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][8]), 0, 3, BaseValue);
+				&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][8]), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][9] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -1030,7 +1031,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_B_CCK1_55_Mcs32) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][14] = *pData;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][14] = *pData;
 		/*
 		 * DBG_871X("MCSTxPowerLevelOriginalOffset[%d][14] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][14]);
@@ -1038,7 +1039,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	}
 
 	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0x000000ff) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][15] = *pData;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][15] = *pData;
 		/*
 		 * DBG_871X("MCSTxPowerLevelOriginalOffset[%d][15] = 0x%x\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][15]);
@@ -1057,7 +1058,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-				&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][10] ), 0, 3, BaseValue);
+				&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][10] ), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][11] = 0x%x, after changing to relative\n",
 		 * 	pHalData->pwrGroupCnt, *pData );
@@ -1078,7 +1079,7 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
 		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
 		phy_ChangePGDataFromExactToRelativeValue(
-				&(rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][12]), 0, 3, BaseValue);
+				&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][12]), 0, 3, BaseValue);
 
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][13] = 0x%x, after changing to relative\n",
@@ -1489,122 +1490,122 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *rtlpriv, uint32_t RegAddr,
 	phy_StorePwrByRateIndexBase(rtlpriv, RegAddr, tmpData );
 
 	if (RegAddr == rTxAGC_A_Rate18_06) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][0] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][0] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][0] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][0]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Rate54_24) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][1] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][1] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][1] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][1]));
 		 */
 	}
 	if(RegAddr == rTxAGC_A_CCK1_Mcs32) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][6] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][6] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][6] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][6]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0xffffff00) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][7] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][7] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][7] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][7]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Mcs03_Mcs00) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][2] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][2] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][2] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][2]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Mcs07_Mcs04) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][3] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][3] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][3] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][3]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Mcs11_Mcs08) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][4] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][4] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][4] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][4]));
 		 */
 	}
 	if (RegAddr == rTxAGC_A_Mcs15_Mcs12) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][5] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][5] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][5] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][5]));
 		 */
 		if(rtlpriv->phy.rf_type== RF_1T1R) {
-			pHalData->pwrGroupCnt++;
+			rtlphy->pwrgroup_cnt++;
 			/* RT_TRACE(COMP_INIT, DBG_TRACE, ("pwrGroupCnt = %d\n", pHalData->pwrGroupCnt)); */
 		}
 	}
 	if (RegAddr == rTxAGC_B_Rate18_06) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][8] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][8] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][8] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][8]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Rate54_24) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][9] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][9] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][9] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 *	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][9]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_CCK1_55_Mcs32) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][14] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][14] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][14] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][14]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0x000000ff) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][15] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][15] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][15] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][15]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Mcs03_Mcs00) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][10] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][10] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][10] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][10]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Mcs07_Mcs04) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][11] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][11] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][11] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][11]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Mcs11_Mcs08) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][12] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][12] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][12] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][12]));
 		 */
 	}
 	if (RegAddr == rTxAGC_B_Mcs15_Mcs12) {
-		rtlphy->mcs_txpwrlevel_origoffset[pHalData->pwrGroupCnt][13] = Data;
+		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][13] = Data;
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_TRACE, ("MCSTxPowerLevelOriginalOffset[%d][13] = 0x%lx\n", pHalData->pwrGroupCnt,
 		 * 	pHalData->MCSTxPowerLevelOriginalOffset[pHalData->pwrGroupCnt][13]));
 		 */
 		if(rtlpriv->phy.rf_type != RF_1T1R)
-			pHalData->pwrGroupCnt++;
+			rtlphy->pwrgroup_cnt++;
 	}
 }
 

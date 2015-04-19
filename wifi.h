@@ -1634,7 +1634,6 @@ struct _rtw_hal {
 	uint8_t	LegacyHTTxPowerDiff;// Legacy to HT rate power diff
 
 	// Read/write are allow for following hardware information variables
-	uint8_t	pwrGroupCnt;
 	u32	CCKTxPowerLevelOriginalOffset;
 
 	uint8_t	CrystalCap;

@@ -627,14 +627,14 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 			Hal_GetChnlGroup8812A(ch+1, &group);
 
 			if (ch == (CHANNEL_MAX_NUMBER_2G-1)) {
-				efuse->txpwrlevel_cck[rfPath][ch] = 
+				efuse->txpwrlevel_cck[rfPath][ch] =
 					pwrInfo24G.index_cck_base[rfPath][5];
-				efuse->txpwrlevel_ht40_1s[rfPath][ch] = 
+				efuse->txpwrlevel_ht40_1s[rfPath][ch] =
 					pwrInfo24G.index_bw40_base[rfPath][group];
 			} else {
-				efuse->txpwrlevel_cck[rfPath][ch] = 
+				efuse->txpwrlevel_cck[rfPath][ch] =
 					pwrInfo24G.index_cck_base[rfPath][group];
-				efuse->txpwrlevel_ht40_1s[rfPath][ch] = 
+				efuse->txpwrlevel_ht40_1s[rfPath][ch] =
 					pwrInfo24G.index_bw40_base[rfPath][group];
 			}
 
@@ -2390,7 +2390,7 @@ void InitDefaultValue8821A(struct rtl_priv *rtlpriv)
 	pHalData->bChnlBWInitialzed = _FALSE;
 	rtlphy->iqk_initialized = _FALSE;
 	pHalData->odmpriv.RFCalibrateInfo.TM_Trigger = 0;	/* for IQK */
-	pHalData->pwrGroupCnt = 0;
+	rtlphy->pwrgroup_cnt = 0;
 	pHalData->PGMaxGroup = MAX_PG_GROUP;
 }
 

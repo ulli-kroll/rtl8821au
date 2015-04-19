@@ -1381,9 +1381,9 @@ void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 
 		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
 		efuse->eeprom_oemid = *(uint8_t *)&PROMContent[EEPROM_CustomID_8812];
-/* ULLI : rot in rtlwifi		
+/* ULLI : rot in rtlwifi
  *		efuse->EEPROMSubCustomerID = EEPROM_Default_SubCustomerID;
- */ 
+ */
 
 	} else {
 		efuse->eeprom_vid = EEPROM_Default_VID;
@@ -1397,9 +1397,9 @@ void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 	}
 
 	DBG_871X("VID = 0x%04X, PID = 0x%04X\n", efuse->eeprom_vid, efuse->eeprom_did);
-/* ULLI : rot in rtlwifi	
+/* ULLI : rot in rtlwifi
 	DBG_871X("Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->eeprom_oemid, efuse->EEPROMSubCustomerID);
-*/ 
+*/
 	DBG_871X("Customer ID: 0x%02X\n", efuse->eeprom_oemid);
 
 }
@@ -1693,7 +1693,7 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 	pHalData->bChnlBWInitialzed = _FALSE;
 	rtlphy->iqk_initialized = _FALSE;
 	pHalData->odmpriv.RFCalibrateInfo.TM_Trigger = 0;/* for IQK */
-	pHalData->pwrGroupCnt = 0;
+	rtlphy->pwrgroup_cnt = 0;
 	pHalData->PGMaxGroup = MAX_PG_GROUP;
 
 	pHalData->IntrMask[0]	= (u32)(	\

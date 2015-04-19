@@ -160,7 +160,7 @@ void getTxPowerWriteValByRegulatory8812(
 			case 1:	// Realtek regulatory
 					// increase power diff defined by Realtek for regulatory
 				{
-					if(pHalData->pwrGroupCnt == 1)
+					if(rtlphy->pwrgroup_cnt == 1)
 						chnlGroup = 0;
 					//if(pHalData->pwrGroupCnt >= pHalData->PGMaxGroup)
 					{

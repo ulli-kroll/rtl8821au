@@ -244,6 +244,8 @@ static void odm_AdaptivityInit(struct _rtw_dm *pDM_Odm)
 
 static void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rate_adaptive *p_ra = &(rtlpriv->ra);
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
 
 	pOdmRA->Type = DM_Type_ByDriver;
@@ -255,7 +257,7 @@ static void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm)
 	pOdmRA->RATRState = DM_RATR_STA_INIT;
 	pOdmRA->LdpcThres = 35;
 	pOdmRA->bUseLdpc = FALSE;
-	pOdmRA->HighRSSIThresh = 50;
+	p_ra->high_rssi_thresh_for_ra = 50;
 	pOdmRA->LowRSSIThresh = 20;
 }
 

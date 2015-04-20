@@ -376,6 +376,9 @@ void ODM_CmnInfoPtrArrayHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
  */
 void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rate_adaptive *p_ra = &(rtlpriv->ra);
+
 	/*
 	 * This init variable may be changed in run time.
 	 */
@@ -400,7 +403,7 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 		pDM_Odm->DebugLevel = (uint32_t)Value;
 		break;
 	case	ODM_CMNINFO_RA_THRESHOLD_HIGH:
-		pDM_Odm->RateAdaptive.HighRSSIThresh = (u8)Value;
+		p_ra->high_rssi_thresh_for_ra = (u8)Value;
 		break;
 
 	case	ODM_CMNINFO_RA_THRESHOLD_LOW:
@@ -994,9 +997,12 @@ void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 BOOLEAN ODM_RAStateCheck(struct _rtw_dm *pDM_Odm, int32_t RSSI,
 	BOOLEAN	 bForceUpdate, u8 *pRATRState)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rate_adaptive *p_ra = &(rtlpriv->ra);
+
 	PODM_RATE_ADAPTIVE pRA = &pDM_Odm->RateAdaptive;
 	const u8 GoUpGap = 5;
-	u8 HighRSSIThreshForRA = pRA->HighRSSIThresh;
+	u8 HighRSSIThreshForRA = p_ra->high_rssi_thresh_for_ra;
 	u8 LowRSSIThreshForRA = pRA->LowRSSIThresh;
 	u8 RATRState;
 

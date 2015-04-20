@@ -1295,11 +1295,6 @@ struct ODM_RF_Calibration_Structure
 
 	u8  	TM_Trigger;
 	BOOLEAN	TxPowerTrackingInProgress;
-
-
-
-	BOOLEAN	bNeedIQK;
-
 	//--------------------------------------------------------------------//
 
 
@@ -1755,7 +1750,6 @@ struct _rtw_hal {
 	BOOLEAN		bSwChnl;
 	BOOLEAN		bSetChnlBW;
 	BOOLEAN		bChnlBWInitialzed;
-	BOOLEAN		bNeedIQK;
 
 	uint8_t	bLedOpenDrain; // Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16.
 	uint8_t	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default

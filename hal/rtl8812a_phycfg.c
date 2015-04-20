@@ -1796,7 +1796,7 @@ static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *rtlpriv)
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		phy_InitRssiTRSW(rtlpriv);
 
-	if ((pHalData->bNeedIQK == _TRUE)) {
+	if ((rtlpriv->phy.need_iqk = false == true)) {
 		if(IS_HARDWARE_TYPE_8812(rtlhal)) {
 			rtl8812au_phy_iq_calibrate(rtlpriv, _FALSE);
 		}
@@ -1804,7 +1804,7 @@ static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *rtlpriv)
 		{
 			rtl8821au_phy_iq_calibrate(rtlpriv, _FALSE);
 		}
-		pHalData->bNeedIQK = _FALSE;
+		rtlpriv->phy.need_iqk = false;
 	}
 }
 

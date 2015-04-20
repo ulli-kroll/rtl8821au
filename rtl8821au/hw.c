@@ -269,6 +269,7 @@ static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	M
 
 void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 {
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData;
 	struct dm_priv *pdmpriv;
@@ -500,7 +501,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 					RetryLimit = 0x7;
 				}
 
-				pHalData->bNeedIQK = _TRUE;
+				rtlphy->need_iqk = true;
 			} else if (type == 1) { /* joinbss_event call back when join res < 0  */
 
 				rtl_write_word(rtlpriv, REG_RXFLTMAP2, 0x00);

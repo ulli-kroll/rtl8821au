@@ -301,7 +301,6 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 	struct ODM_RF_Calibration_Structure *pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
@@ -1269,7 +1268,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		 */ 
 #if 1
 		if (TX_finish && RX_finish) {
-			pRFCalibrateInfo->bNeedIQK = FALSE;
+			rtlpriv->phy.need_iqk = false;
 
 			if (rtlpriv->phy.current_chan_bw == 2) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 0 --> Page C */
@@ -1373,7 +1372,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 #if 1		 
 		if (TX_finish && RX_finish) {
 /* pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].bIQKDone= TRUE; */
-			pRFCalibrateInfo->bNeedIQK = FALSE;
+			rtlpriv->phy.need_iqk = false;
 
 			if (rtlpriv->phy.current_chan_bw == 2) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 0 --> Page C */

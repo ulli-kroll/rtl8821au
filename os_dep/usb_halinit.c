@@ -1186,7 +1186,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	/* 2010/08/26 MH Merge from 8192CE. */
 	if (pwrctrlpriv->rf_pwrstate == rf_on) {
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-			pHalData->odmpriv.RFCalibrateInfo.bNeedIQK = _TRUE;
+			rtlphy->need_iqk = true;
 			if (rtlphy->iqk_initialized)
 				rtl8812au_phy_iq_calibrate(rtlpriv, _TRUE);
 			else {

@@ -282,7 +282,7 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 		("===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
 		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		rtlhal->SupportInterface, rtlhal->board_type));
+		rtlhal->interface, rtlhal->board_type));
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		rtl8812au_phy_config_rf_with_headerfile(rtlpriv, eRFPath);

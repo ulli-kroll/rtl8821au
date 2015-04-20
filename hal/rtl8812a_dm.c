@@ -65,9 +65,6 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 	pDM_Odm->rtlpriv = rtlpriv;
 
-	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_INTERFACE,rtlpriv->interface_type);
-
-
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_IC_TYPE, ODM_RTL8812);
 	else if (IS_HARDWARE_TYPE_8821(rtlhal))

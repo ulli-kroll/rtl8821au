@@ -321,7 +321,6 @@ typedef enum _ODM_Common_Info_Definition
 
 	//-----------HOOK BEFORE REG INIT-----------//
 	ODM_CMNINFO_ABILITY,					// ODM_ABILITY_E
-	ODM_CMNINFO_INTERFACE,				// ODM_INTERFACE_E
 	ODM_CMNINFO_MP_TEST_CHIP,
 	ODM_CMNINFO_IC_TYPE,					// ODM_IC_TYPE_E
 	ODM_CMNINFO_CUT_VER,					// ODM_CUT_VERSION_E
@@ -423,7 +422,6 @@ typedef enum _ODM_Support_Ability_Definition
 
 }ODM_ABILITY_E;
 
-//	ODM_CMNINFO_INTERFACE
 typedef enum tag_ODM_Support_Interface_Definition
 {
 	ODM_ITRF_USB 	=	0x2,

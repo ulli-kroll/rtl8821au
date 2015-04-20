@@ -1331,7 +1331,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	rtlpriv->bDriverStopped=_TRUE;
 
 	/* step 1-1., decide the chip_type via driver_info */
-	rtlpriv->interface_type = RTW_USB;
+	rtlpriv->rtlhal.interface = INTF_USB;
 	rtw_decide_chip_type_by_usb_info(rtlpriv, pdid);
 
 	/* ndev->init = NULL; */

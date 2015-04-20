@@ -334,11 +334,6 @@ struct rtl_hal {
 
 	bool real_wow_v2_enable;
 	bool re_init_llt_table;
-	
-	/* old */
-	
-	u8 SupportInterface;
-	
 };
 
 
@@ -853,7 +848,6 @@ struct rtl_priv {
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	bDongle;//build-in module or external dongle
 	u16 	chip_type;
-	u16	interface_type;//USB,SDIO,SPI,PCI
 
 	struct	mlme_priv mlmepriv;
 	struct	mlme_ext_priv mlmeextpriv;

@@ -1433,8 +1433,6 @@ struct _rtw_dm {
 	uint32_t			SupportAbility;
 	// ODM PCIE/USB/SDIO = 1/2/3
 	u8			SupportInterface;
-	// ODM composite or independent. Bit oriented/ 92C+92D+ .... or any other type = 1/2/3/...
-	uint32_t			SupportICType;
 	// Cut Version TestChip/A-cut/B-cut... = 0/1/2/3/...
 	u8			CutVersion;
 	// Fab Version TSMC/UMC = 0/1

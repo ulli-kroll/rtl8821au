@@ -216,10 +216,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		pDM_Odm->bIsMPChip = (u8)Value;
 		break;
 
-	case	ODM_CMNINFO_IC_TYPE:
-		pDM_Odm->SupportICType = Value;
-		break;
-
 	case	ODM_CMNINFO_CUT_VER:
 		pDM_Odm->CutVersion = (u8)Value;
 		break;
@@ -872,8 +868,8 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	case (ODM_WM_AC|ODM_WM_A):
 	case (ODM_WM_AC|ODM_WM_G):
 		if (pDM_Odm->rtlpriv->phy.rf_type == RF_1T1R) {
-			if ((pDM_Odm->SupportICType == ODM_RTL8821) ||
-				(pDM_Odm->SupportICType == ODM_RTL8812 && pDM_Odm->bIsMPChip)) {
+			if (IS_HARDWARE_TYPE_8811AU(rtlhal) ||
+				(IS_HARDWARE_TYPE_8812AU(rtlhal) && pDM_Odm->bIsMPChip)) {
 				if (IS_HARDWARE_TYPE_8821U(rtlhal)
 					&& (pDM_Odm->SupportInterface ==  ODM_ITRF_USB)
 					&& (*(pDM_Odm->pChannel) >= 149)) {

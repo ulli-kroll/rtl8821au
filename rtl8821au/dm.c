@@ -1776,13 +1776,13 @@ static void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm)
 
 static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 {
+	struct rtl_hal *rtlhal =&(rtlpriv->rtlhal);
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
 	uint32_t	EDCA_BE_UL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_UL[pMgntInfo->IOTPeer]; */
 	uint32_t	EDCA_BE_DL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_DL[pMgntInfo->IOTPeer]; */
-	uint32_t	ICType = pDM_Odm->SupportICType;
 	uint32_t	IOTPeer = 0;
 	u8		WirelessMode = 0xFF;	/* invalid value */
 	uint32_t 	trafficIndex;
@@ -1864,7 +1864,7 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 				EDCA_BE_DL = edca_setting_DL[IOTPeer];
 			}
 
-			if ((ICType == ODM_RTL8812)) {		/* add 8812AU/8812AE */
+			if ((IS_HARDWARE_TYPE_8811AU(rtlhal))) {		/* add 8812AU/8812AE */
 				EDCA_BE_UL = 0x5ea42b;
 				EDCA_BE_DL = 0x5ea42b;
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("8812A: EDCA_BE_UL=0x%x EDCA_BE_DL =0x%x", EDCA_BE_UL, EDCA_BE_DL));

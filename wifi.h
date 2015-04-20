@@ -823,6 +823,36 @@ struct dig_t {
 	u8 BackupIGValue;
 };
 
+struct rate_adaptive {
+	u8 rate_adaptive_disabled;
+	u8 ratr_state;
+	u16 reserve;
+
+	u32 high_rssi_thresh_for_ra;
+	u32 high2low_rssi_thresh_for_ra;
+	u8 low2high_rssi_thresh_for_ra40m;
+	u32 low_rssi_thresh_for_ra40m;
+	u8 low2high_rssi_thresh_for_ra20m;
+	u32 low_rssi_thresh_for_ra20m;
+	u32 upper_rssi_threshold_ratr;
+	u32 middleupper_rssi_threshold_ratr;
+	u32 middle_rssi_threshold_ratr;
+	u32 middlelow_rssi_threshold_ratr;
+	u32 low_rssi_threshold_ratr;
+	u32 ultralow_rssi_threshold_ratr;
+	u32 low_rssi_threshold_ratr_40m;
+	u32 low_rssi_threshold_ratr_20m;
+	u8 ping_rssi_enable;
+	u32 ping_rssi_ratr;
+	u32 ping_rssi_thresh_for_ra;
+	u32 last_ratr;
+	u8 pre_ratr_state;
+	u8 ldpc_thres;
+	bool use_ldpc;
+	bool lower_rts_rate;
+	bool is_special_data;
+};
+
 struct rtl_priv {
 	struct net_device *ndev;
 
@@ -833,6 +863,7 @@ struct rtl_priv {
 	struct rtl_hal_cfg *cfg;
 	struct rtl_io io;
 	struct dig_t dm_digtable;
+	struct rate_adaptive ra;
 
 
 	struct rtl_usb_priv priv;

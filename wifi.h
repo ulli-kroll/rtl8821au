@@ -4,6 +4,11 @@
 #include <linux/types.h>
 #include "usb.h"
 
+enum intf_type {
+	INTF_PCI = 0,
+	INTF_USB = 1,
+};
+
 enum radio_path {
 	RF90_PATH_A = 0,
 	RF90_PATH_B = 1,
@@ -237,9 +242,7 @@ struct rtl_hal {
 	struct bt_coexist_8723 hal_coex_8723;
 #endif
 
-#if 0
 	enum intf_type interface;
-#endif
 	u16 hw_type;		/*92c or 92d or 92s and so on */
 	u8 ic_class;
 	u8 oem_id;

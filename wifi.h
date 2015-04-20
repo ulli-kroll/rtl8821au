@@ -223,16 +223,32 @@ typedef enum tag_Board_Definition
 
 
 struct rtl_hal {
-	u16 interface_type;//USB,SDIO,SPI,PCI
-	// ODM PCIE/USB/SDIO = 1/2/3
-	u8 SupportInterface;
+#if 0
+	struct ieee80211_hw *hw;
+#endif
+	bool driver_is_goingto_unload;
+	bool up_first_time;
+	bool first_init;
+	bool being_init_adapter;
+	bool bbrf_ready;
+	bool mac_func_enable;
+	bool pre_edcca_enable;
+#if 0
+	struct bt_coexist_8723 hal_coex_8723;
+#endif
 
-	u16 hw_type;
-
-	// Board Type Normal/HighPower/MiniCard/SLIM/Combo/... = 0/1/2/3/4/...
+#if 0
+	enum intf_type interface;
+#endif
+	u16 hw_type;		/*92c or 92d or 92s and so on */
+	u8 ic_class;
+	u8 oem_id;
+	u32 version;		/*version of chip */
+	u8 state;		/*stop 0, start 1 */
 	u8 board_type;
+	u8 external_pa;
 
-
+	u8 pa_mode;
 	u8 pa_type_2g;
 	u8 pa_type_5g;
 	u8 lna_type_2g;
@@ -251,6 +267,75 @@ struct rtl_hal {
 	bool h2c_setinprogress;
 	u8 last_hmeboxnum;
 	bool fw_ready;
+	/*Reserve page start offset except beacon in TxQ. */
+	u8 fw_rsvdpage_startoffset;
+	u8 h2c_txcmd_seq;
+	u8 current_ra_rate;
+
+	/* FW Cmd IO related */
+	u16 fwcmd_iomap;
+	u32 fwcmd_ioparam;
+	bool set_fwcmd_inprogress;
+	u8 current_fwcmd_io;
+
+#if 0
+	struct p2p_ps_offload_t p2p_ps_offload;
+#endif
+	bool fw_clk_change_in_progress;
+	bool allow_sw_to_change_hwclc;
+	u8 fw_ps_state;
+	/**/
+	bool driver_going2unload;
+
+	/*AMPDU init min space*/
+	u8 minspace_cfg;	/*For Min spacing configurations */
+
+	/* Dual mac */
+#if 0
+	enum macphy_mode macphymode;
+	enum band_type current_bandtype;	/* 0:2.4G, 1:5G */
+	enum band_type current_bandtypebackup;
+	enum band_type bandset;
+#endif
+	/* dual MAC 0--Mac0 1--Mac1 */
+	u32 interfaceindex;
+	/* just for DualMac S3S4 */
+	u8 macphyctl_reg;
+	bool earlymode_enable;
+	u8 max_earlymode_num;
+	/* Dual mac*/
+	bool during_mac0init_radiob;
+	bool during_mac1init_radioa;
+	bool reloadtxpowerindex;
+	/* True if IMR or IQK  have done
+	for 2.4G in scan progress */
+	bool load_imrandiqk_setting_for2g;
+
+	bool disable_amsdu_8k;
+	bool master_of_dmsp;
+	bool slave_of_dmsp;
+
+	u16 rx_tag;/*for 92ee*/
+	u8 rts_en;
+
+	/*for wowlan*/
+	bool wow_enable;
+	bool enter_pnp_sleep;
+	bool wake_from_pnp_sleep;
+	bool wow_enabled;
+	__kernel_time_t last_suspend_sec;
+	u32 wowlan_fwsize;
+	u8 *wowlan_firmware;
+
+	u8 hw_rof_enable; /*Enable GPIO[9] as WL RF HW PDn source*/
+
+	bool real_wow_v2_enable;
+	bool re_init_llt_table;
+	
+	/* old */
+	
+	u8 SupportInterface;
+	
 };
 
 

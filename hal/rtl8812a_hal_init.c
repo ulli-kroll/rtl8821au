@@ -2234,15 +2234,15 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 
 	if (IS_1T2R(ChipVersion)) {
 		rtlpriv->phy.rf_type = RF_1T2R;
-		pHalData->NumTotalRFPath = 2;
+		 rtlpriv->phy.num_total_rfpath = 2;
 		DBG_8192C("==> RF_Type : 1T2R\n");
 	} else if (IS_2T2R(ChipVersion)) {
 		rtlpriv->phy.rf_type = RF_2T2R;
-		pHalData->NumTotalRFPath = 2;
+		 rtlpriv->phy.num_total_rfpath = 2;
 		DBG_8192C("==> RF_Type : 2T2R\n");
 	} else {
 		rtlpriv->phy.rf_type = RF_1T1R;
-		pHalData->NumTotalRFPath = 1;
+		 rtlpriv->phy.num_total_rfpath = 1;
 		DBG_8192C("==> RF_Type 1T1R\n");
 	}
 

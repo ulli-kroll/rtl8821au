@@ -105,7 +105,7 @@ void getPowerBase8812(
 		//DBG_871X(" [OFDM power base index rf(%c) = 0x%x]\n", ((i==0)?'A':'B'), *(OfdmBase+i));
 	}
 
-	for(i=0; i<pHalData->NumTotalRFPath; i++)
+	for(i=0; i< rtlpriv->phy.num_total_rfpath; i++)
 	{
 		//Check HT20 to HT40 diff
 		if(rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_20)
@@ -306,7 +306,7 @@ static int _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 	 * -----------------------------------------------------------------
 	 */
 	/* for(eRFPath = RF90_PATH_A; eRFPath <pHalData->NumTotalRFPath; eRFPath++) */
-	for (eRFPath = 0; eRFPath < pHalData->NumTotalRFPath; eRFPath++) {
+	for (eRFPath = 0; eRFPath <  rtlpriv->phy.num_total_rfpath; eRFPath++) {
 		/* ----Initialize RF fom connfiguration file---- */
 		ODM_ConfigRFWithHeaderFile(rtlpriv, CONFIG_RF_RADIO, (enum radio_path)eRFPath);
 
@@ -325,9 +325,9 @@ int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 
 	/* Initialize general global value */
 	if (rtlpriv->phy.rf_type == RF_1T1R)
-		pHalData->NumTotalRFPath = 1;
+		rtlpriv->phy.num_total_rfpath = 1;
 	else
-		pHalData->NumTotalRFPath = 2;
+		rtlpriv->phy.num_total_rfpath = 2;
 
 	/*
 	 * Config BB and RF

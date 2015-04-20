@@ -4940,7 +4940,7 @@ static void _rtl8821au_phy_txpower_training_by_path(struct rtl_priv *rtlpriv,
 	uint8_t	i;
 	uint32_t	PowerLevel, writeData, writeOffset;
 
-	if(RfPath >= pHalData->NumTotalRFPath)
+	if(RfPath >=  rtlpriv->phy.num_total_rfpath)
 		return;
 
 	writeData = 0;
@@ -4996,7 +4996,7 @@ static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv,
 	_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
 							  	  vhtRates1T, sizeof(vhtRates1T)/sizeof(u8));
 
-	if (pHalData->NumTotalRFPath >= 2) {
+	if ( rtlpriv->phy.num_total_rfpath >= 2) {
 		_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
 							  htRates2T, sizeof(htRates2T)/sizeof(u8));
 		_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
@@ -5012,13 +5012,11 @@ static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv,
 
 void PHY_SetTxPowerLevel8812(struct rtl_priv *rtlpriv, uint8_t	Channel)
 {
-
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	path = 0;
 
 	/* DBG_871X("==>PHY_SetTxPowerLevel8812()\n"); */
 
-	for (path = RF90_PATH_A; path < pHalData->NumTotalRFPath; ++path) {
+	for (path = RF90_PATH_A; path < rtlpriv->phy.num_total_rfpath; ++path) {
 		rtl8821au_phy_set_txpower_level_by_path(rtlpriv, Channel, path);
 	}
 

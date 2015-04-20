@@ -359,7 +359,7 @@ static void PHY_InitPowerLimitTable(struct _rtw_dm *pDM_Odm)
 		for (j = 0; j < MAX_2_4G_BANDWITH_NUM; ++j)
 			for (k = 0; k < MAX_2_4G_RATE_SECTION_NUM; ++k)
 				for (m = 0; m < MAX_2_4G_CHANNEL_NUM; ++m)
-					for (l = 0; l < GET_HAL_RFPATH_NUM(rtlpriv) ;++l)
+					for (l = 0; l <  rtlpriv->phy.num_total_rfpath ;++l)
 						rtlphy->txpwr_limit_2_4g[i][j][k][m][l] = MAX_POWER_INDEX;
 	}
 
@@ -367,7 +367,7 @@ static void PHY_InitPowerLimitTable(struct _rtw_dm *pDM_Odm)
 		for (j = 0; j < MAX_5G_BANDWITH_NUM; ++j)
 			for (k = 0; k < MAX_5G_RATE_SECTION_NUM; ++k)
 				for (m = 0; m < MAX_5G_CHANNEL_NUM; ++m)
-					for (l = 0; l <  GET_HAL_RFPATH_NUM(rtlpriv) ; ++l)
+					for (l = 0; l <   rtlpriv->phy.num_total_rfpath ; ++l)
 						rtlphy->txpwr_limit_5g[i][j][k][m][l] = MAX_POWER_INDEX;
 	}
 
@@ -1723,7 +1723,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 	else
 		rtl_set_bbreg(rtlpriv, rFc_area_Jaguar, 0x1ffe0000, 0x96a);
 
-	for (eRFPath = 0; eRFPath < pHalData->NumTotalRFPath; eRFPath++) {
+	for (eRFPath = 0; eRFPath <  rtlpriv->phy.num_total_rfpath; eRFPath++) {
 		/* [2.4G] LC Tank */
 		if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv)) {
 			if (1 <= channelToSW && channelToSW <= 7)

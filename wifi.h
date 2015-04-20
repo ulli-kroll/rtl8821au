@@ -1702,7 +1702,6 @@ struct _rtw_hal {
 
 	//rf_ctrl
 	uint8_t	rf_chip;
-	uint8_t	NumTotalRFPath;
 
 	uint8_t	InterfaceSel;
 	uint8_t	framesync;
@@ -1847,7 +1846,6 @@ static inline struct _rtw_hal *GET_HAL_DATA(struct rtl_priv *priv)
 {
 	return priv->HalData;
 }
-#define GET_HAL_RFPATH_NUM(rtlpriv) ((( struct _rtw_hal *)((rtlpriv)->HalData))->NumTotalRFPath )
 #define RT_GetInterfaceSelection(_Adapter) 	(GET_HAL_DATA(_Adapter)->InterfaceSel)
 
 

@@ -79,10 +79,7 @@ u32 PHY_GetTxPowerIndex_8812A(
 	IN	uint8_t					Channel
 	);
 
-u32 PHY_GetTxBBSwing_8812A(
-	IN	struct rtl_priv *rtlpriv,
-	IN	BAND_TYPE 	Band,
-	IN	uint8_t			RFPath
+u32 PHY_GetTxBBSwing_8812A(struct rtl_priv *rtlpriv, enum band_type Band, uint8_t RFPath
 	);
 
 //

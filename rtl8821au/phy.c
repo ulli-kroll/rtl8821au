@@ -2441,7 +2441,7 @@ static BOOLEAN eqNByte(uint8_t *str1, uint8_t *str2, uint32_t num)
 }
 
 
-static s8 phy_GetChannelGroup(BAND_TYPE Band, uint8_t Channel)
+static s8 phy_GetChannelGroup(enum band_type Band, uint8_t Channel)
 {
 	s8 channelGroup = -1;
 
@@ -2502,7 +2502,7 @@ static s8 phy_GetChannelGroup(BAND_TYPE Band, uint8_t Channel)
 }
 
 static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
-					   BAND_TYPE Band,
+					   enum band_type Band,
 					   enum CHANNEL_WIDTH Bandwidth,
 					   enum radio_path RfPath,
 					   uint8_t DataRate, uint8_t Channel)
@@ -4043,7 +4043,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 	rtl8821au_phy_rf6052_set_bandwidth(rtlpriv, rtlpriv->phy.current_chan_bw);
 }
 
-uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, BAND_TYPE Band,
+uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 	uint8_t	RFPath)
 {
 	struct rtl_dm *rtldm = &(rtlpriv->dm);
@@ -4358,7 +4358,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 
 	/* DBG_871X("==>rtl8821au_phy_switch_wirelessband() %s\n", ((Band==0)?"2.4G":"5G")); */
 
-	pHalData->CurrentBandType =(BAND_TYPE)Band;
+	pHalData->CurrentBandType =(enum band_type)Band;
 
 	if(Band == BAND_ON_2_4G) {	/* 2.4G band */
 
@@ -4530,9 +4530,9 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 	 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
 		rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000,
-					 phy_get_tx_swing_8821au(rtlpriv, (BAND_TYPE)Band, RF90_PATH_A)); // 0xC1C[31:21]
+					 phy_get_tx_swing_8821au(rtlpriv, (enum band_type)Band, RF90_PATH_A)); // 0xC1C[31:21]
 		rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000,
-					 phy_get_tx_swing_8821au(rtlpriv, (BAND_TYPE)Band, RF90_PATH_B)); // 0xE1C[31:21]
+					 phy_get_tx_swing_8821au(rtlpriv, (enum band_type)Band, RF90_PATH_B)); // 0xE1C[31:21]
 
 		/*
 		 *  <20121005, Kordan> When TxPowerTrack is ON, we should take care of the change of BB swing.

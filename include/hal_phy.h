@@ -34,12 +34,6 @@
 #define	RF6052_MAX_PATH				2
 
 /*--------------------------Define Parameters-------------------------------*/
-typedef enum _BAND_TYPE{
-	BAND_ON_2_4G = 0,
-	BAND_ON_5G,
-	BAND_ON_BOTH,
-	BANDMAX
-}BAND_TYPE,*PBAND_TYPE;
 
 typedef	enum _RF_TYPE{
 	RF_TYPE_MIN = 0, 	// 0

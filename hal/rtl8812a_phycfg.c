@@ -227,7 +227,7 @@ int PHY_RFConfig8812(struct rtl_priv *rtlpriv)
 	return rtStatus;
 }
 
-static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_TYPE Band, uint8_t Rate)
+static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(enum band_type Band, uint8_t Rate)
 {
 	uint8_t	index = 0;
 	if (Band == BAND_ON_2_4G) {

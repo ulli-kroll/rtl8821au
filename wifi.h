@@ -853,6 +853,13 @@ struct rate_adaptive {
 	bool is_special_data;
 };
 
+enum band_type {
+	BAND_ON_2_4G = 0,
+	BAND_ON_5G,
+	BAND_ON_BOTH,
+	BANDMAX
+};
+
 struct rtl_priv {
 	struct net_device *ndev;
 
@@ -1682,8 +1689,8 @@ struct _rtw_hal {
 
 	//current WIFI_PHY values
 	WIRELESS_MODE		CurrentWirelessMode;
-	BAND_TYPE			CurrentBandType;	//0:2.4G, 1:5G
-	BAND_TYPE			BandSet;
+	enum band_type 		CurrentBandType;	//0:2.4G, 1:5G
+	enum band_type		BandSet;
 	uint8_t	CurrentCenterFrequencyIndex1;
 	uint8_t	nCur40MhzPrimeSC;// Control channel sub-carrier
 	uint8_t	nCur80MhzPrimeSC;   //used for primary 40MHz of 80MHz mode

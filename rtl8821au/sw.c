@@ -10,7 +10,7 @@
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
 void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rssi_level);
-void ReadChipVersion8812A(struct rtl_priv *rtlpriv);
+void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv);
 void rtl8812_EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t PwrState);
 void rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, uint8_t efuseType, u16 _offset, u16 	_size_byte, uint8_t *pbuf);
 void rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv, uint8_t efuseType, uint8_t type, void *pOut);
@@ -86,7 +86,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	.UpdateRAMaskHandler =	UpdateHalRAMask8812A,
 
-	.read_chip_version =	ReadChipVersion8812A,
+	.read_chip_version =	rtl8821au_read_chip_version,
 
 	.set_bwmode_handler =	PHY_SetBWMode8812,
 	.set_channel_handler =	PHY_SwChnl8812,

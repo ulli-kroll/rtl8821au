@@ -2176,7 +2176,7 @@ void InitPGData8812A(struct rtl_priv *rtlpriv)
 
 }
 
-void ReadChipVersion8812A(struct rtl_priv *rtlpriv)
+void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 {
 	uint32_t	value32;
 	HAL_VERSION		ChipVersion;

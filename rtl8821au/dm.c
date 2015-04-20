@@ -2,6 +2,10 @@
 #include "phy.h"
 #include <odm_precomp.h>
 
+
+#undef ODM_RT_TRACE
+#define ODM_RT_TRACE(x, ...)	do {} while (0);
+
 static void rtl8821au_dm_dig(struct rtl_priv *rtlpriuv);
 
 static uint32_t edca_setting_UL[HT_IOT_PEER_MAX] =
@@ -391,7 +395,6 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 	uint32_t 	finalBbSwingIdx[2];
 
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	u8 PwrTrackingLimit = 26; /* +1.0dB */
 	u8 TxRate = 0xFF;

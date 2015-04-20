@@ -384,14 +384,6 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 		pDM_Odm->SupportAbility = (uint32_t)Value;
 		break;
 
-	case	ODM_CMNINFO_WIFI_DIRECT:
-		pDM_Odm->bWIFI_Direct = (BOOLEAN)Value;
-		break;
-
-	case	ODM_CMNINFO_WIFI_DISPLAY:
-		pDM_Odm->bWIFI_Display = (BOOLEAN)Value;
-		break;
-
 	case	ODM_CMNINFO_LINK:
 		pDM_Odm->bLinked = (BOOLEAN)Value;
 		break;

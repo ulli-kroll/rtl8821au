@@ -300,7 +300,6 @@ static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->rtlpriv);
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	rtldm->txpower_tracking = _TRUE;
 	rtldm->txpowercount = 0;
@@ -852,7 +851,6 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 	u8 RFPath, u8 ChannelMappedIndex)
 {
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	u8 PwrTrackingLimit = 26; /* +1.0dB */
 	u8 TxRate = 0xFF;
@@ -1061,7 +1059,6 @@ void rtl8821au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 	u8 **up_a, u8 **down_a,
 	u8 **up_b, u8 **down_b)
 {
-	 struct _rtw_hal  	*pHalData = GET_HAL_DATA(rtlpriv);
 	/* u16     rate = pMgntInfo->ForcedDataRate; */
 	u16	rate = 0;
 	u8         	channel   		 = rtlpriv->phy.current_channel;
@@ -1137,7 +1134,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		rtldm->swing_idx_cck_base, rtldm->swing_idx_ofdm_base[RF90_PATH_A], 
 		rtldm->default_ofdm_index));
 
-	ThermalValue = (u8)rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
+	ThermalValue = (u8)rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
 	if (!rtldm->txpower_track_control
 	 || efuse->eeprom_thermalmeter == 0
 	 || efuse->eeprom_thermalmeter == 0xFF)

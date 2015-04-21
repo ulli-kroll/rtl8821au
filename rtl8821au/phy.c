@@ -301,8 +301,6 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	uint32_t 	TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int		TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
@@ -952,7 +950,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(pDM_Odm->rtlpriv, Path, 0x8, 0xffc00));	/* Load LOK */
+		rtw_hal_write_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00));	/* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
 
 		if (TX1IQKOK == FALSE)
@@ -964,13 +962,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(pDM_Odm->rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -4930,8 +4928,6 @@ static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv, u
 static void _rtl8821au_phy_txpower_training_by_path(struct rtl_priv *rtlpriv, 
 	enum CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t RfPath)
 {
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-
 	uint8_t	i;
 	uint32_t	PowerLevel, writeData, writeOffset;
 

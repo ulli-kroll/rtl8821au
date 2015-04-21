@@ -209,20 +209,12 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 
 int PHY_RFConfig8812(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	int		rtStatus = _SUCCESS;
+	int rtStatus = _SUCCESS;
 
 	if (rtlpriv->bSurpriseRemoved)
 		return _FAIL;
 
-	switch(pHalData->rf_chip) {
-	case RF_PSEUDO_11N:
-		DBG_871X("%s(): RF_PSEUDO_11N\n",__FUNCTION__);
-		break;
-	default:
-		rtStatus = rtl8821au_phy_rf6052_config(rtlpriv);
-		break;
-	}
+	rtStatus = rtl8821au_phy_rf6052_config(rtlpriv);
 
 	return rtStatus;
 }
@@ -1701,12 +1693,6 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 		if(phy_SwBand8812(rtlpriv, channelToSW) == _FALSE) {
 			DBG_871X("error Chnl %d !\n", channelToSW);
 		}
-	}
-
-	/* <20130313, Kordan> Sample code to demonstrate how to configure AGC_TAB_DIFF.(Disabled by now) */
-	if (pHalData->rf_chip == RF_PSEUDO_11N) {
-		DBG_871X("phy_SwChnl8812: return for PSEUDO \n");
-		return;
 	}
 
 	/* DBG_871X("[BW:CHNL], phy_SwChnl8812(), switch to channel %d !!\n", channelToSW); */

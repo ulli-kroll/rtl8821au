@@ -1598,10 +1598,6 @@ static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 
 void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-
-	pHalData->rf_chip = RF_6052;
-
 	if (IsSupported24G(rtlpriv->registrypriv.wireless_mode) &&
 		IsSupported5G(rtlpriv->registrypriv.wireless_mode))
 		rtlpriv->rtlhal.bandset = BAND_ON_BOTH;

@@ -35,16 +35,6 @@
 
 /*--------------------------Define Parameters-------------------------------*/
 
-typedef	enum _RF_TYPE{
-	RF_TYPE_MIN = 0, 	// 0
-	RF_8225=1,			// 1 11b/g RF for verification only
-	RF_8256=2,			// 2 11b/g/n
-	RF_8258=3,			// 3 11a/b/g/n RF
-	RF_6052=4,			// 4 11b/g/n RF
-	RF_PSEUDO_11N=5,	// 5, It is a temporality RF.
-	RF_TYPE_MAX
-}RF_TYPE_E,*PRF_TYPE_E;
-
 #define	TX_1S			0
 #define	TX_2S			1
 #define	TX_3S			2

@@ -3958,11 +3958,6 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 	SubChnlNum = _rtl8821au_phy_get_secondary_chnl(rtlpriv);
 	rtl_write_byte(rtlpriv, REG_DATA_SC_8812, SubChnlNum);
 
-	if (pHalData->rf_chip == RF_PSEUDO_11N) {
-		DBG_871X("phy_PostSetBwMode8812: return for PSEUDO \n");
-		return;
-	}
-
 	/* DBG_871X("[BW:CHNL], phy_PostSetBwMode8812(), set BW=%s !!\n", GLBwSrc[pHalData->CurrentChannelBW]); */
 
 	/* 3 Set Reg848 Reg864 Reg8AC Reg8C4 RegA00 */

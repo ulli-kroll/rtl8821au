@@ -2045,10 +2045,6 @@ void InitRDGSetting8812A(struct rtl_priv *rtlpriv)
 
 void ReadRFType8812A(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-
-	pHalData->rf_chip = RF_6052;
-
 	/*
 	 * if (pHalData->rf_type == RF_1T1R){
 	 *	pHalData->bRFPathRxEnable[0] = _TRUE;

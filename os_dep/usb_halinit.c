@@ -1604,11 +1604,11 @@ void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
 
 	if (IsSupported24G(rtlpriv->registrypriv.wireless_mode) &&
 		IsSupported5G(rtlpriv->registrypriv.wireless_mode))
-		pHalData->BandSet = BAND_ON_BOTH;
+		rtlpriv->rtlhal.bandset = BAND_ON_BOTH;
 	else if (IsSupported5G(rtlpriv->registrypriv.wireless_mode))
-		pHalData->BandSet = BAND_ON_5G;
+		rtlpriv->rtlhal.bandset = BAND_ON_5G;
 	else
-		pHalData->BandSet = BAND_ON_2_4G;
+		rtlpriv->rtlhal.bandset = BAND_ON_2_4G;
 
 	/*
 	 * if (rtlpriv->bInHctTest)

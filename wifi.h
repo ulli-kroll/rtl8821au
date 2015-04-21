@@ -306,8 +306,9 @@ struct rtl_hal {
 	enum band_type current_bandtype;	/* 0:2.4G, 1:5G */
 #if 0
 	enum band_type current_bandtypebackup;
-	enum band_type bandset;
 #endif
+	enum band_type bandset;
+
 	/* dual MAC 0--Mac0 1--Mac1 */
 	u32 interfaceindex;
 	/* just for DualMac S3S4 */
@@ -1688,7 +1689,6 @@ struct _rtw_hal {
 
 	//current WIFI_PHY values
 	WIRELESS_MODE		CurrentWirelessMode;
-	enum band_type		BandSet;
 	uint8_t	CurrentCenterFrequencyIndex1;
 	uint8_t	nCur40MhzPrimeSC;// Control channel sub-carrier
 	uint8_t	nCur80MhzPrimeSC;   //used for primary 40MHz of 80MHz mode

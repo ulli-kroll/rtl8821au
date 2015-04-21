@@ -340,7 +340,6 @@ typedef enum _ODM_Common_Info_Definition
 //--------- POINTER REFERENCE-----------//
 	ODM_CMNINFO_MAC_PHY_MODE,			// ODM_MAC_PHY_MODE_E
 	ODM_CMNINFO_WM_MODE,				// ODM_WIRELESS_MODE_E
-	ODM_CMNINFO_BAND,					// ODM_BAND_TYPE_E
 	ODM_CMNINFO_SEC_CHNL_OFFSET,		// ODM_SEC_CHNL_OFFSET_E
 	ODM_CMNINFO_SEC_MODE,				// ODM_SECURITY_E
 	ODM_CMNINFO_CHNL,
@@ -537,14 +536,6 @@ typedef enum tag_Wireless_Mode_Definition
 	ODM_WM_AUTO		= BIT5,
 	ODM_WM_AC		= BIT6,
 }ODM_WIRELESS_MODE_E;
-
-// ODM_CMNINFO_BAND
-typedef enum tag_Band_Type_Definition
-{
-	ODM_BAND_2_4G 	= BIT0,
-	ODM_BAND_5G 		= BIT1,
-
-}ODM_BAND_TYPE_E;
 
 // ODM_CMNINFO_SEC_CHNL_OFFSET
 typedef enum tag_Secondary_Channel_Offset_Definition

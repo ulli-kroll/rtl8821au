@@ -1428,7 +1428,7 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 			if (pLed->bLedWPSBlinkInProgress == _TRUE || pLed1->bLedWPSBlinkInProgress == _TRUE)
 				;
 			else {
-				if (pHalData->CurrentBandType == BAND_ON_2_4G) { 		/* LED0 settings */
+				if (rtlpriv->rtlhal.current_bandtype == BAND_ON_2_4G) { 		/* LED0 settings */
 					pLed->CurrLedState = RTW_LED_ON;
 					pLed->BlinkingLedState = RTW_LED_ON;
 					if (pLed->bLedBlinkInProgress == _TRUE) {
@@ -1440,7 +1440,7 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 					pLed1->CurrLedState = RTW_LED_OFF;
 					pLed1->BlinkingLedState = RTW_LED_OFF;
 					_set_timer(&(pLed1->BlinkTimer), 0);
-				} else if (pHalData->CurrentBandType == BAND_ON_5G) {		/* LED1 settings */
+				} else if (rtlpriv->rtlhal.current_bandtype == BAND_ON_5G) {		/* LED1 settings */
 					pLed1->CurrLedState = RTW_LED_ON;
 					pLed1->BlinkingLedState = RTW_LED_ON;
 					if (pLed1->bLedBlinkInProgress == _TRUE) {
@@ -1532,7 +1532,7 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 		break;
 
 	case LED_CTL_STOP_WPS:	/* WPS connect success */
-		if (pHalData->CurrentBandType == BAND_ON_2_4G) {	/* LED0 settings */
+		if (rtlpriv->rtlhal.current_bandtype == BAND_ON_2_4G) {	/* LED0 settings */
 			pLed->bLedWPSBlinkInProgress = _FALSE;
 			pLed->CurrLedState = RTW_LED_ON;
 			pLed->BlinkingLedState = RTW_LED_ON;
@@ -1545,7 +1545,7 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 			pLed1->CurrLedState = RTW_LED_OFF;
 			pLed1->BlinkingLedState = RTW_LED_OFF;
 			_set_timer(&(pLed1->BlinkTimer), 0);
-		} else if (pHalData->CurrentBandType == BAND_ON_5G) {	/* LED1 settings */
+		} else if (rtlpriv->rtlhal.current_bandtype == BAND_ON_5G) {	/* LED1 settings */
 			pLed1->bLedWPSBlinkInProgress = _FALSE;
 			pLed1->CurrLedState = RTW_LED_ON;
 			pLed1->BlinkingLedState = RTW_LED_ON;

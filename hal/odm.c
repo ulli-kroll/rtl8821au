@@ -274,10 +274,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 		pDM_Odm->pWirelessMode = (u8 *)pValue;
 		break;
 
-	case	ODM_CMNINFO_BAND:
-		pDM_Odm->pBandType = (u8 *)pValue;
-		break;
-
 	case	ODM_CMNINFO_SEC_CHNL_OFFSET:
 		pDM_Odm->pSecChOffset = (u8 *)pValue;
 		break;
@@ -537,7 +533,7 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 		pDM_Odm->TH_H = pDM_Odm->Force_TH_H;
 		pDM_Odm->TH_L = pDM_Odm->Force_TH_L;
 	} else {
-		if (*pDM_Odm->pBandType == BAND_ON_5G) {
+		if (rtlpriv->rtlhal.current_bandtype == BAND_ON_5G) {
 			pDM_Odm->TH_H = 0xf4;	/* 0xf8; */
 			pDM_Odm->TH_L = 0xf7;	/* 0xfb; */
 		} else {

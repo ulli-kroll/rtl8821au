@@ -280,11 +280,10 @@ static void ODM_EdcaTurboInit(struct _rtw_dm *pDM_Odm)
 static u8 getSwingIndex(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *	rtlpriv = pDM_Odm->rtlpriv;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	u8 			i = 0;
 	uint32_t 			bbSwing;
 
-	bbSwing = phy_get_tx_swing_8821au(rtlpriv, pHalData->CurrentBandType, RF90_PATH_A);
+	bbSwing = phy_get_tx_swing_8821au(rtlpriv, rtlpriv->rtlhal.current_bandtype, RF90_PATH_A);
 
 	for (i = 0; i < TXSCALE_TABLE_SIZE; ++i)
 		if (bbSwing == TxScalingTable_Jaguar[i])

@@ -391,7 +391,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		else
 			rtl_write_dword(rtlpriv, 0xc88, 0x821403f1);
 
-		if (*pDM_Odm->pBandType)
+		if (rtlhal->current_bandtype)
 			rtl_write_dword(rtlpriv, 0xc8c, 0x68163e96);
 		else {
 			rtl_write_dword(rtlpriv, 0xc8c, 0x28163e96);
@@ -791,7 +791,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		else
 			rtl_write_dword(rtlpriv, 0xe88, 0x821403f1);
 
-		if (*pDM_Odm->pBandType)
+		if (rtlhal->current_bandtype)
 			rtl_write_dword(rtlpriv, 0xe8c, 0x68163e96);
 		else
 			rtl_write_dword(rtlpriv, 0xe8c, 0x28163e96);
@@ -1746,7 +1746,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			else
 				rtl_write_dword(rtlpriv, 0xc88, 0x821403f4);
 
-			if (*pDM_Odm->pBandType)
+			if (rtlhal->current_bandtype)
 				rtl_write_dword(rtlpriv, 0xc8c, 0x68163e96);
 			else
 				rtl_write_dword(rtlpriv, 0xc8c, 0x28163e96);
@@ -1798,7 +1798,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			else
 				rtl_write_dword(rtlpriv, 0xc88, 0x821403f1);
 
-			if (*pDM_Odm->pBandType)
+			if (rtlhal->current_bandtype)
 				rtl_write_dword(rtlpriv, 0xc8c, 0x40163e96);
 			else
 				rtl_write_dword(rtlpriv, 0xc8c, 0x00163e96);
@@ -4354,11 +4354,11 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	uint8_t				currentBand = pHalData->CurrentBandType;
+	uint8_t				currentBand = rtlhal->current_bandtype;
 
 	/* DBG_871X("==>rtl8821au_phy_switch_wirelessband() %s\n", ((Band==0)?"2.4G":"5G")); */
 
-	pHalData->CurrentBandType =(enum band_type)Band;
+	rtlhal->current_bandtype =(enum band_type)Band;
 
 	if(Band == BAND_ON_2_4G) {	/* 2.4G band */
 
@@ -4971,8 +4971,6 @@ static void _rtl8821au_phy_txpower_training_by_path(struct rtl_priv *rtlpriv,
 static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv, 
 	uint8_t	channel, uint8_t path)
 {
-
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	cckRates[]   = {MGN_1M, MGN_2M, MGN_5_5M, MGN_11M};
 	uint8_t	ofdmRates[]  = {MGN_6M, MGN_9M, MGN_12M, MGN_18M, MGN_24M, MGN_36M, MGN_48M, MGN_54M};
 	uint8_t	htRates1T[]  = {MGN_MCS0, MGN_MCS1, MGN_MCS2, MGN_MCS3, MGN_MCS4, MGN_MCS5, MGN_MCS6, MGN_MCS7};
@@ -4985,7 +4983,7 @@ static void rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv,
 	//DBG_871X("==>PHY_SetTxPowerLevelByPath8812()\n");
 
 	//if(pMgntInfo->RegNByteAccess == 0)
-	if(pHalData->CurrentBandType == BAND_ON_2_4G)
+	if(rtlpriv->rtlhal.current_bandtype == BAND_ON_2_4G)
 		_rtl8821au_phy_set_txpower_level_by_path(rtlpriv, path, rtlpriv->phy.current_chan_bw, channel,
 								  cckRates, sizeof(cckRates)/sizeof(u8));
 

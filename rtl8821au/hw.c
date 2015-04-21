@@ -362,7 +362,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			 */
 			HalSetBrateCfg(rtlpriv, pval, &BrateCfg);
 
-			if (pHalData->CurrentBandType == BAND_ON_2_4G) {
+			if (rtlhal->current_bandtype == BAND_ON_2_4G) {
 				/*
 				 * CCK 2M ACK should be disabled for some BCM and Atheros AP IOT
 				 * because CCK 2M has poor TXEVM

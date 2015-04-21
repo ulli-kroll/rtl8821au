@@ -226,6 +226,12 @@ typedef enum tag_Board_Definition
     ODM_BOARD_EXT_LNA_5G   = BIT(7), // 0 = no 5G ext-LNA, 1 = existing 5G ext-LNA
 }ODM_BOARD_TYPE_E;
 
+enum band_type {
+	BAND_ON_2_4G = 0,
+	BAND_ON_5G,
+	BAND_ON_BOTH,
+	BANDMAX
+};
 
 struct rtl_hal {
 #if 0
@@ -296,7 +302,9 @@ struct rtl_hal {
 	/* Dual mac */
 #if 0
 	enum macphy_mode macphymode;
+#endif
 	enum band_type current_bandtype;	/* 0:2.4G, 1:5G */
+#if 0
 	enum band_type current_bandtypebackup;
 	enum band_type bandset;
 #endif
@@ -851,13 +859,6 @@ struct rate_adaptive {
 	bool use_ldpc;
 	bool lower_rts_rate;
 	bool is_special_data;
-};
-
-enum band_type {
-	BAND_ON_2_4G = 0,
-	BAND_ON_5G,
-	BAND_ON_BOTH,
-	BANDMAX
 };
 
 struct rtl_priv {
@@ -1493,8 +1494,6 @@ struct _rtw_dm {
 	u8			*pMacPhyMode;
 	// Wireless mode B/G/A/N = BIT0/BIT1/BIT2/BIT3
 	u8			*pWirelessMode; //ODM_WIRELESS_MODE_E
-	// Frequence band 2.4G/5G = 0/1
-	u8			*pBandType;
 	// Secondary channel offset don't_care/below/above = 0/1/2
 	u8			*pSecChOffset;
 	// Security mode Open/WEP/AES/TKIP = 0/1/2/3
@@ -1689,7 +1688,6 @@ struct _rtw_hal {
 
 	//current WIFI_PHY values
 	WIRELESS_MODE		CurrentWirelessMode;
-	enum band_type 		CurrentBandType;	//0:2.4G, 1:5G
 	enum band_type		BandSet;
 	uint8_t	CurrentCenterFrequencyIndex1;
 	uint8_t	nCur40MhzPrimeSC;// Control channel sub-carrier

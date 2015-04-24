@@ -261,7 +261,7 @@ static void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm)
 	pOdmRA->LowRSSIThresh = 20;
 }
 
-static void ODM_EdcaTurboInit(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_dm_init_edca_turbo(struct _rtw_dm *pDM_Odm)
 {
 
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
@@ -349,7 +349,7 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 	odm_AdaptivityInit(pDM_Odm);
 	odm_RateAdaptiveMaskInit(pDM_Odm);
 
-	ODM_EdcaTurboInit(pDM_Odm);
+	rtl8821au_dm_init_edca_turbo(pDM_Odm);
 
 	odm_TXPowerTrackingInit(pDM_Odm);
 }

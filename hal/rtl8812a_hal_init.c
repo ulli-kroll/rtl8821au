@@ -2478,10 +2478,6 @@ uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 		}
 		break;
 
-	case HAL_DEF_DBG_DUMP_RXPKT:
-		pHalData->bDumpRxPkt = *(uint8_t *)pval;
-		break;
-
 	case HAL_DEF_DBG_DUMP_TXPKT:
 		pHalData->bDumpTxPkt = *(uint8_t *)pval;
 		break;
@@ -2668,10 +2664,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 				DBG_8192C("rate_mask2=0x%08x, rate_mask1=0x%08x\n", rate_mask2, rate_mask1);
 			}
 		}
-		break;
-
-	case HAL_DEF_DBG_DUMP_RXPKT:
-		*(uint8_t *)pval = pHalData->bDumpRxPkt;
 		break;
 
 	case HAL_DEF_DBG_DUMP_TXPKT:

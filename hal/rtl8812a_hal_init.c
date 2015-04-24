@@ -2278,33 +2278,6 @@ void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rss
 	psta->init_rate = init_rate;
 }
 
-/* ULLI : dejavu in  rtl8812au_init_default_value() */
-
-void InitDefaultValue8821A(struct rtl_priv *rtlpriv)
-{
-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
-	struct _rtw_hal *pHalData;
-	struct pwrctrl_priv *pwrctrlpriv;
-	struct dm_priv *pdmpriv;
-	uint8_t i;
-
-	pHalData = GET_HAL_DATA(rtlpriv);
-	pwrctrlpriv = &rtlpriv->pwrctrlpriv;
-	pdmpriv = &pHalData->dmpriv;
-
-	/* init default value */
-	pHalData->fw_ractrl = _FALSE;
-	if (!pwrctrlpriv->bkeepfwalive)
-		pHalData->LastHMEBoxNum = 0;
-
-	/* init dm default value */
-	pHalData->bChnlBWInitialzed = _FALSE;
-	rtlphy->iqk_initialized = _FALSE;
-	pHalData->odmpriv.RFCalibrateInfo.TM_Trigger = 0;	/* for IQK */
-	rtlphy->pwrgroup_cnt = 0;
-	pHalData->PGMaxGroup = MAX_PG_GROUP;
-}
-
 void _InitBeaconParameters_8812A(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);

@@ -261,10 +261,11 @@ static void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm)
 	pOdmRA->LowRSSIThresh = 20;
 }
 
-static void rtl8821au_dm_init_edca_turbo(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_dm_init_edca_turbo(struct rtl_priv *rtlpriv)
 {
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;	
 
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = FALSE;
 	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = FALSE;
 	rtlpriv->recvpriv.bIsAnyNonBEPkts = FALSE;
@@ -343,13 +344,15 @@ static void odm_TXPowerTrackingInit(struct _rtw_dm *pDM_Odm)
 
 void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	
 	/* 2012.05.03 Luke: For all IC series */
 	odm_CommonInfoSelfInit(pDM_Odm);
 	odm_DIGInit(pDM_Odm);
 	odm_AdaptivityInit(pDM_Odm);
 	odm_RateAdaptiveMaskInit(pDM_Odm);
 
-	rtl8821au_dm_init_edca_turbo(pDM_Odm);
+	rtl8821au_dm_init_edca_turbo(rtlpriv);
 
 	odm_TXPowerTrackingInit(pDM_Odm);
 }

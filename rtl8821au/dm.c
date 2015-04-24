@@ -242,9 +242,10 @@ static void odm_AdaptivityInit(struct _rtw_dm *pDM_Odm)
 	pDM_Odm->AdapEn_RSSI = 32;	/* 45; */
 }
 
-static void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_dm_init_rate_adaptive_mask(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;	
 	struct rate_adaptive *p_ra = &(rtlpriv->ra);
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
 
@@ -350,7 +351,7 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 	odm_CommonInfoSelfInit(pDM_Odm);
 	odm_DIGInit(pDM_Odm);
 	odm_AdaptivityInit(pDM_Odm);
-	odm_RateAdaptiveMaskInit(pDM_Odm);
+	rtl8821au_dm_init_rate_adaptive_mask(rtlpriv);
 
 	rtl8821au_dm_init_edca_turbo(rtlpriv);
 

@@ -871,43 +871,6 @@ int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_f
 
 void _dbg_dump_tx_info(struct rtl_priv	*rtlpriv,int frame_tag, uint8_t *ptxdesc)
 {
-	uint8_t bDumpTxPkt;
-	uint8_t bDumpTxDesc = _FALSE;
-	rtw_hal_get_def_var(rtlpriv, HAL_DEF_DBG_DUMP_TXPKT, &(bDumpTxPkt));
-
-	if(bDumpTxPkt ==1){		/* dump txdesc for data frame */
-		DBG_871X("dump tx_desc for data frame\n");
-		if((frame_tag&0x0f) == DATA_FRAMETAG){
-			bDumpTxDesc = _TRUE;
-		}
-	} else if(bDumpTxPkt ==2){	/* dump txdesc for mgnt frame */
-		DBG_871X("dump tx_desc for mgnt frame\n");
-		if((frame_tag&0x0f) == MGNT_FRAMETAG){
-			bDumpTxDesc = _TRUE;
-		}
-	}
-	else if(bDumpTxPkt ==3){	/* dump early info */
-	}
-
-	if(bDumpTxDesc){
-		/*
-		 * ptxdesc->txdw4 = cpu_to_le32(0x00001006);//RTS Rate=24M
-		 * ptxdesc->txdw6 = 0x6666f800;
-		 */
-		DBG_8192C("=====================================\n");
-		DBG_8192C("Offset00(0x%08x)\n",*((uint32_t *)(ptxdesc)));
-		DBG_8192C("Offset04(0x%08x)\n",*((uint32_t *)(ptxdesc+4)));
-		DBG_8192C("Offset08(0x%08x)\n",*((uint32_t *)(ptxdesc+8)));
-		DBG_8192C("Offset12(0x%08x)\n",*((uint32_t *)(ptxdesc+12)));
-		DBG_8192C("Offset16(0x%08x)\n",*((uint32_t *)(ptxdesc+16)));
-		DBG_8192C("Offset20(0x%08x)\n",*((uint32_t *)(ptxdesc+20)));
-		DBG_8192C("Offset24(0x%08x)\n",*((uint32_t *)(ptxdesc+24)));
-		DBG_8192C("Offset28(0x%08x)\n",*((uint32_t *)(ptxdesc+28)));
-		DBG_8192C("Offset32(0x%08x)\n",*((uint32_t *)(ptxdesc+32)));
-		DBG_8192C("Offset36(0x%08x)\n",*((uint32_t *)(ptxdesc+36)));
-		DBG_8192C("=====================================\n");
-	}
-
 }
 
 /*

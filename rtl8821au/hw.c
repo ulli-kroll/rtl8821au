@@ -1024,4 +1024,83 @@ void Set_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 	}
 }
 
+void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
+{
+	uint32_t	value32;
+	HAL_VERSION		ChipVersion;
+	struct _rtw_hal *pHalData;
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	pHalData = GET_HAL_DATA(rtlpriv);
+
+	value32 = rtl_read_dword(rtlpriv, REG_SYS_CFG);
+	DBG_8192C("%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);
+
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
+		ChipVersion.ICType = CHIP_8812;
+	else
+		ChipVersion.ICType = CHIP_8821;
+
+	ChipVersion.ChipType = ((value32 & RTL_ID) ? TEST_CHIP : NORMAL_CHIP);
+
+	if (rtlpriv->registrypriv.rf_config == RF_MAX_TYPE) {
+		if (IS_HARDWARE_TYPE_8812(rtlhal))
+			ChipVersion.RFType = RF_TYPE_2T2R;	/* RF_2T2R; */
+		else
+			ChipVersion.RFType = RF_TYPE_1T1R;	/*RF_1T1R; */
+	}
+
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
+		ChipVersion.VendorType = ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : CHIP_VENDOR_TSMC);
+	else {
+		uint32_t vendor;
+
+		vendor = (value32 & EXT_VENDOR_ID) >> EXT_VENDOR_ID_SHIFT;
+		switch (vendor) {
+		case 0:
+			vendor = CHIP_VENDOR_TSMC;
+			break;
+		case 1:
+			vendor = CHIP_VENDOR_SMIC;
+			break;
+		case 2:
+			vendor = CHIP_VENDOR_UMC;
+			break;
+		}
+		ChipVersion.VendorType = vendor;
+	}
+	ChipVersion.CUTVersion = (value32 & CHIP_VER_RTL_MASK)>>CHIP_VER_RTL_SHIFT; /* IC version (CUT) */
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
+		ChipVersion.CUTVersion += 1;
+
+	/* value32 = rtl_read_dword(rtlpriv, REG_GPIO_OUTSTS); */
+	ChipVersion.ROMVer = 0;	/* ROM code version. */
+
+	/* For multi-function consideration. Added by Roger, 2010.10.06. */
+	value32 = rtl_read_dword(rtlpriv, REG_MULTI_FUNC_CTRL);
+	pHalData->PolarityCtl = ((value32 & WL_HWPDN_SL) ? RT_POLARITY_HIGH_ACT : RT_POLARITY_LOW_ACT);
+
+#if 1
+	dump_chip_info(ChipVersion);
+#endif
+
+	memcpy(&pHalData->VersionID, &ChipVersion, sizeof(HAL_VERSION));
+
+	if (IS_1T2R(ChipVersion)) {
+		rtlpriv->phy.rf_type = RF_1T2R;
+		 rtlpriv->phy.num_total_rfpath = 2;
+		DBG_8192C("==> RF_Type : 1T2R\n");
+	} else if (IS_2T2R(ChipVersion)) {
+		rtlpriv->phy.rf_type = RF_2T2R;
+		 rtlpriv->phy.num_total_rfpath = 2;
+		DBG_8192C("==> RF_Type : 2T2R\n");
+	} else {
+		rtlpriv->phy.rf_type = RF_1T1R;
+		 rtlpriv->phy.num_total_rfpath = 1;
+		DBG_8192C("==> RF_Type 1T1R\n");
+	}
+
+	DBG_8192C("RF_Type is %x!!\n", rtlpriv->phy.rf_type);
+}
+
 

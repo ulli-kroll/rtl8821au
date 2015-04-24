@@ -573,10 +573,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		rtl_write_byte(rtlpriv, REG_SECCFG, val8);
 		break;
 
-	case HW_VAR_DM_FLAG:
-		podmpriv->SupportAbility = *(u32 *) pval;
-		break;
-
 	case HW_VAR_DM_FUNC_OP:
 		if (*pval) 	/* save dm flag */
 			podmpriv->BK_SupportAbility = podmpriv->SupportAbility;
@@ -965,10 +961,6 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL+2);
 			*pval = (BIT(0) & val8) ? _TRUE:_FALSE;
 		}
-		break;
-
-	case HW_VAR_DM_FLAG:
-		*pval = podmpriv->SupportAbility;
 		break;
 
 	case HW_VAR_FWLPS_RF_ON:

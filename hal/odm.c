@@ -1133,8 +1133,5 @@ void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext)
  */
 
 /* Justin: According to the current RRSI to adjust Response Frame TX power, 2012/11/05 */
-void odm_dtc(struct _rtw_dm *pDM_Odm)
-{
-}
 
 

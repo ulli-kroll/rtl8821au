@@ -2042,8 +2042,6 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 				pDM_Odm->LinkedInterval = 0;
 		}
 		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
-	
-		odm_dtc(pDM_Odm);
 	}
 
 skip_dm:

@@ -985,7 +985,6 @@ ODM_UpdateInitRate(
 	IN	struct _rtw_dm *pDM_Odm,
 	IN	u8		Rate
 	);
-void odm_dtc(struct _rtw_dm *pDM_Odm);
 
 #endif
 

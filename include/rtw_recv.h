@@ -248,7 +248,6 @@ struct recv_priv
 
 	struct rtl_priv	*rtlpriv;
 
-	u32	bIsAnyNonBEPkts;
 	u64	rx_bytes;
 	u64	rx_pkts;
 	u64	rx_drop;

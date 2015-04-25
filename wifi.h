@@ -1280,11 +1280,7 @@ typedef enum _USB_RX_AGG_MODE{
 
 typedef struct _EDCA_TURBO_
 {
-	BOOLEAN bCurrentTurboEDCA;
-	BOOLEAN bIsCurRDLState;
-
 	uint32_t	prv_traffic_idx; // edca turbo
-
 }EDCA_T,*pEDCA_T;
 
 

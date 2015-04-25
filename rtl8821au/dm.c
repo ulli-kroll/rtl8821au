@@ -264,12 +264,9 @@ static void rtl8821au_dm_init_rate_adaptive_mask(struct rtl_priv *rtlpriv)
 
 static void rtl8821au_dm_init_edca_turbo(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;	
-
-	pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = FALSE;
-	pDM_Odm->DM_EDCA_Table.bIsCurRDLState = FALSE;
-	rtlpriv->recvpriv.bIsAnyNonBEPkts = FALSE;
+	rtlpriv->dm.current_turbo_edca = false;
+	rtlpriv->dm.is_cur_rdlstate = false;
+	rtlpriv->dm.is_any_nonbepkts = false;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial VO PARAM: 0x%x\n", rtl_read_dword(pDM_Odm->rtlpriv, ODM_EDCA_VO_PARAM)));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial VI PARAM: 0x%x\n", rtl_read_dword(pDM_Odm->rtlpriv, ODM_EDCA_VI_PARAM)));
@@ -1827,7 +1824,7 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 	}
 
 	/* Check if the status needs to be changed. */
-	if ((bbtchange) || (!precvpriv->bIsAnyNonBEPkts)) {
+	if ((bbtchange) || (!rtlpriv->dm.is_any_nonbepkts)) {
 		cur_tx_bytes = pxmitpriv->tx_bytes - pxmitpriv->last_tx_bytes;
 		cur_rx_bytes = precvpriv->rx_bytes - precvpriv->last_rx_bytes;
 
@@ -1850,7 +1847,7 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 			}
 		}
 
-		if ((pDM_Odm->DM_EDCA_Table.prv_traffic_idx != trafficIndex) || (!pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA)) {
+		if ((pDM_Odm->DM_EDCA_Table.prv_traffic_idx != trafficIndex) || (!rtlpriv->dm.current_turbo_edca)) {
 			/* merge from 92s_92c_merge temp brunch v2445    20120215 */
 			if ((IOTPeer == HT_IOT_PEER_CISCO)
 			   && ((WirelessMode == ODM_WM_G) || (WirelessMode == (ODM_WM_B|ODM_WM_G)) || (WirelessMode == ODM_WM_A) || (WirelessMode == ODM_WM_B))) {
@@ -1882,21 +1879,21 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 			pDM_Odm->DM_EDCA_Table.prv_traffic_idx = trafficIndex;
 		}
 
-		pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = _TRUE;
+		rtlpriv->dm.current_turbo_edca = true;
 	} else {
 		/*
 		 * Turn Off EDCA turbo here.
 		 * Restore original EDCA according to the declaration of AP.
 		 */
-		if (pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA) {
+		if (rtlpriv->dm.current_turbo_edca) {
 			rtl_write_dword(rtlpriv, REG_EDCA_BE_PARAM, pHalData->AcParam_BE);
-			pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = _FALSE;
+			rtlpriv->dm.current_turbo_edca = false;
 		}
 	}
 
 dm_CheckEdcaTurbo_EXIT:
 	/* Set variables for next time. */
-	precvpriv->bIsAnyNonBEPkts = _FALSE;
+	rtlpriv->dm.is_any_nonbepkts = false;
 	pxmitpriv->last_tx_bytes = pxmitpriv->tx_bytes;
 	precvpriv->last_rx_bytes = precvpriv->rx_bytes;
 }

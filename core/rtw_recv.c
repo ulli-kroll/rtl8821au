@@ -1375,7 +1375,7 @@ sint validate_recv_data_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 		pattrib->hdrlen = pattrib->to_fr_ds==3 ? 32 : 26;
 
 		if(pattrib->priority!=0 && pattrib->priority!=3) {
-			rtlpriv->recvpriv.bIsAnyNonBEPkts = _TRUE;
+			rtlpriv->dm.is_any_nonbepkts = true;
 		}
 	} else {
 		pattrib->priority=0;

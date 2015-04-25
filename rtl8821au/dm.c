@@ -184,7 +184,9 @@ static void rtl8821au_cm_common_info_self_update(struct _rtw_dm *pDM_Odm)
 	ODM_InitDebugSetting(pDM_Odm);
 }
 
-static void odm_DIGInit(struct _rtw_dm *pDM_Odm)
+/* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */
+
+static void _rtl_dm_diginit(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 
@@ -347,7 +349,8 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 	
 	/* 2012.05.03 Luke: For all IC series */
 	rtl8821au_cm_common_info_self_update(pDM_Odm);
-	odm_DIGInit(pDM_Odm);
+	/* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */	
+	_rtl_dm_diginit(pDM_Odm);
 	odm_AdaptivityInit(rtlpriv);
 	rtl8821au_dm_init_rate_adaptive_mask(rtlpriv);
 

@@ -295,8 +295,7 @@ static u8 getSwingIndex(struct _rtw_dm *pDM_Odm)
 }
 
 
-
-static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 {
 	u8 		p = 0;
 	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->rtlpriv);
@@ -336,11 +335,6 @@ static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 		rtldm->delta_power_index_last[p] = 0;
 		rtldm->power_index_offset[p] = 0;
 	}
-}
-
-static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
-{
-	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
 }
 
 void ODM_DMInit(struct _rtw_dm *pDM_Odm)

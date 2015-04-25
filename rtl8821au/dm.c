@@ -338,7 +338,7 @@ static void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm)
 	}
 }
 
-static void odm_TXPowerTrackingInit(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 {
 	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
 }
@@ -356,7 +356,7 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 
 	rtl8821au_dm_init_edca_turbo(rtlpriv);
 
-	odm_TXPowerTrackingInit(pDM_Odm);
+	rtl8821au_dm_initialize_txpower_tracking_thermalmeter(pDM_Odm);
 }
 
 /* From hal/OUTSRC/rtl8812a/HalPhyRf_8812A.c */

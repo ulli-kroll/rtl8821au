@@ -150,7 +150,6 @@ unsigned int TxPwrTrk_OFDM_SwingTbl[TxPwrTrk_OFDM_SwingTbl_Len] = {
  */
 
 /* START------------COMMON INFO RELATED--------------- */
-void odm_CommonInfoSelfInit(struct _rtw_dm *pDM_Odm);
 /*
 void odm_FindMinimumRSSI(struct _rtw_dm *pDM_Odm);
 void odm_IsLinked(struct _rtw_dm *pDM_Odm);

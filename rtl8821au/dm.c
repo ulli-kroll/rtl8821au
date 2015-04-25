@@ -173,7 +173,7 @@ u8	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
  * 2011/09/21 MH Add to describe different team necessary resource allocate??
  */
 
-static void odm_CommonInfoSelfInit(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_cm_common_info_self_update(struct _rtw_dm *pDM_Odm)
 {
 	pDM_Odm->bCckHighPower = (BOOLEAN) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
 	pDM_Odm->RFPathRxEnable = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
@@ -346,7 +346,7 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	
 	/* 2012.05.03 Luke: For all IC series */
-	odm_CommonInfoSelfInit(pDM_Odm);
+	rtl8821au_cm_common_info_self_update(pDM_Odm);
 	odm_DIGInit(pDM_Odm);
 	odm_AdaptivityInit(rtlpriv);
 	rtl8821au_dm_init_rate_adaptive_mask(rtlpriv);

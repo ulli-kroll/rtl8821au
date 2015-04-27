@@ -999,7 +999,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 			txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8821;
 	}
 
-	status =  InitLLTTable8812(rtlpriv, txpktbuf_bndy);
+	status =  _rtl8821au_llt_table_init(rtlpriv, txpktbuf_bndy);
 	if (status == _FAIL) {
 		goto exit;
 	}

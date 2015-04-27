@@ -76,7 +76,7 @@ uint8_t _LLTRead(struct rtl_priv *rtlpriv, uint32_t address)
 	return 0xFF;
 }
 
-int32_t InitLLTTable8812(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy)
+int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy)
 {
 	int32_t	status = _FAIL;
 	uint32_t	i;

@@ -52,30 +52,6 @@ static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, 
 	return status;
 }
 
-uint8_t _LLTRead(struct rtl_priv *rtlpriv, uint32_t address)
-{
-	int32_t	count = 0;
-	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_OP(_LLT_READ_ACCESS);
-	u16	LLTReg = REG_LLT_INIT;
-
-
-	rtl_write_dword(rtlpriv, LLTReg, value);
-
-	/* polling and get value */
-	do {
-		value = rtl_read_dword(rtlpriv, LLTReg);
-		if (_LLT_NO_ACTIVE == _LLT_OP_VALUE(value)) {
-			return (uint8_t)value;
-		}
-
-		if (count > POLLING_LLT_THRESHOLD) {
-			break;
-		}
-	} while (count++);
-
-	return 0xFF;
-}
-
 int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy)
 {
 	int32_t	status = _FAIL;

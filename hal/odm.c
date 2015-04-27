@@ -242,10 +242,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		pDM_Odm->bWIFITest = (BOOLEAN)Value;
 		break;
 
-	case	ODM_CMNINFO_SMART_CONCURRENT:
-		pDM_Odm->bDualMacSmartConcurrent = (BOOLEAN) Value;
-		break;
-
 	/* To remove the compiler warning, must add an empty default statement to handle the other values. */
 	default:
 		/* do nothing */

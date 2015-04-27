@@ -1490,7 +1490,6 @@ struct _rtw_dm {
 	BOOLEAN			bInHctTest;
 	BOOLEAN			bWIFITest;
 
-	BOOLEAN			bDualMacSmartConcurrent;
 	uint32_t			BK_SupportAbility;
 	u8			AntDivType;
 //-----------HOOK BEFORE REG INIT-----------//

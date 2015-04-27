@@ -27,7 +27,7 @@
  *
  *-------------------------------------------------------------------------
  */
-static int32_t _LLTWrite(struct rtl_priv *rtlpriv, uint32_t address, uint32_t data)
+static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, uint32_t data)
 {
 	int32_t	status = _SUCCESS;
 	int32_t	count = 0;
@@ -84,14 +84,14 @@ int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 	 struct _rtw_hal *pHalData	= GET_HAL_DATA(rtlpriv);
 
 	for (i = 0; i < (txpktbuf_bndy - 1); i++) {
-		status = _LLTWrite(rtlpriv, i, i + 1);
+		status = _rtl8821au_llt_write(rtlpriv, i, i + 1);
 		if (_SUCCESS != status) {
 			return status;
 		}
 	}
 
 	/* end of list */
-	status = _LLTWrite(rtlpriv, (txpktbuf_bndy - 1), 0xFF);
+	status = _rtl8821au_llt_write(rtlpriv, (txpktbuf_bndy - 1), 0xFF);
 	if (_SUCCESS != status) {
 		return status;
 	}
@@ -102,14 +102,14 @@ int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 	 * Otherwise used as local loopback buffer.
 	 */
 	for (i = txpktbuf_bndy; i < Last_Entry_Of_TxPktBuf; i++) {
-		status = _LLTWrite(rtlpriv, i, (i + 1));
+		status = _rtl8821au_llt_write(rtlpriv, i, (i + 1));
 		if (_SUCCESS != status) {
 			return status;
 		}
 	}
 
 	/*  Let last entry point to the start entry of ring buffer */
-	status = _LLTWrite(rtlpriv, Last_Entry_Of_TxPktBuf, txpktbuf_bndy);
+	status = _rtl8821au_llt_write(rtlpriv, Last_Entry_Of_TxPktBuf, txpktbuf_bndy);
 	if (_SUCCESS != status) {
 		return status;
 	}

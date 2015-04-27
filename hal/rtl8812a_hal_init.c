@@ -124,7 +124,7 @@ BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *rtlpriv)
  *
  */
 
-void SetBcnCtrlReg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8_t ClearBits)
+void rtl8821au_set_bcn_ctrl_reg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8_t ClearBits)
 {
 	struct _rtw_hal *pHalData;
 
@@ -918,7 +918,6 @@ Hal_ReadRFEType_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	if (!AutoloadFail) {
 		if (GetRegRFEType(rtlpriv) != 64)
@@ -969,7 +968,6 @@ hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 {
 	/* if (IS_HARDWARE_TYPE_8812AU(rtlpriv) && rtlpriv->UsbModeMechanism.RegForcedUsbMode == 5) */
 	{
-		struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 		uint8_t	reg_tmp, i, j, antenna = 0, wmode = 0;
 		/* Read anenna type from EFUSE 1019/1018 */
 		for (i = 0; i < 2; i++) {

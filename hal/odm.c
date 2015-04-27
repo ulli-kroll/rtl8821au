@@ -465,9 +465,8 @@ void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm)
  *	When		Who		Remark
  *
  *---------------------------------------------------------------------------*/
-void ODM_ChangeDynamicInitGainThresh(struct _rtw_dm *pDM_Odm, uint32_t DM_Type, uint32_t DM_Value)
+void ODM_ChangeDynamicInitGainThresh(struct rtl_priv *rtlpriv, uint32_t DM_Type, uint32_t DM_Value)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
 	/* ULLI better switch/case ?? */

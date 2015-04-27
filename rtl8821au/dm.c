@@ -175,7 +175,10 @@ u8	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
 
 static void rtl8821au_cm_common_info_self_update(struct _rtw_dm *pDM_Odm)
 {
-	pDM_Odm->bCckHighPower = (BOOLEAN) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+
+	rtlphy->cck_high_power = (BOOLEAN) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
 	pDM_Odm->RFPathRxEnable = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
 	pDM_Odm->pbNet_closed = &pDM_Odm->BOOLEAN_temp;
 

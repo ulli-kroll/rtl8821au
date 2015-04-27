@@ -1436,7 +1436,6 @@ struct _rtw_dm {
 	u8			Times_2G;
 
 //------ ODM HANDLE, DRIVER NEEDS NOT TO HOOK------//
-	BOOLEAN			bCckHighPower;
 	u8			RFPathRxEnable;		// ODM_CMNINFO_RFPATH_ENABLE
 	u8			ControlChannel;
 //------ ODM HANDLE, DRIVER NEEDS NOT TO HOOK------//

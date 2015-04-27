@@ -1129,7 +1129,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 		 */
 
 		/* if (pHalData->eRFPowerState == eRfOn) */
-			cck_highpwr = pDM_Odm->bCckHighPower;
+			cck_highpwr = rtlpriv->phy.cck_high_power;
 		/*
 		 * else
 		 * 	cck_highpwr = FALSE;

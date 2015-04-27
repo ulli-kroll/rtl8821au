@@ -66,7 +66,7 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 	rtl_write_word(rtlpriv, REG_BCN_INTERVAL, pmlmeinfo->bcn_interval);
 	rtl_write_byte(rtlpriv, REG_ATIMWND, 0x02);	/* 2ms */
 
-	_InitBeaconParameters_8812A(rtlpriv);
+	rtl8821au_init_beacon_parameters(rtlpriv);
 
 	rtl_write_byte(rtlpriv, REG_SLOT, 0x09);
 
@@ -318,9 +318,9 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		/* rtl_write_byte(rtlpriv, REG_CAL_TIMER+1, 0x3); */
 		rtl_write_byte(rtlpriv, REG_APS_FSMCO+1, 0x80);
 		break;
-		
-		
-		
+
+
+
 	case HW_VAR_MEDIA_STATUS:
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x0c;
 		val8 |= *pval;
@@ -492,10 +492,10 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				rtl_write_dword(rtlpriv, REG_RCR, val32);
 
 				if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE) {
-					/* ULLI removed 
+					/* ULLI removed
 					 * RetryLimit = (pEEPROM->CustomerID == RT_CID_CCX) ? 7 : 48;
 					 */
-					
+
 					RetryLimit = 48;
 				} else { /* Ad-hoc Mode */
 					RetryLimit = 0x7;

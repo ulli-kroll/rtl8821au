@@ -1070,7 +1070,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 
 	_InitRetryFunction_8812A(rtlpriv);
 	init_UsbAggregationSetting_8812A(rtlpriv);
-	_InitBeaconParameters_8812A(rtlpriv);
+	rtl8821au_init_beacon_parameters(rtlpriv);
 	_InitBeaconMaxError_8812A(rtlpriv, _TRUE);
 
 	_InitBurstPktLen(rtlpriv);  /* added by page. 20110919 */

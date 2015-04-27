@@ -2278,7 +2278,7 @@ void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rss
 	psta->init_rate = init_rate;
 }
 
-void _InitBeaconParameters_8812A(struct rtl_priv *rtlpriv)
+void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 

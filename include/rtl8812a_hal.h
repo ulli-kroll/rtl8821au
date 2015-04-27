@@ -245,7 +245,7 @@ void	hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent, BOOL
 BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *rtlpriv);
 
 
-void _InitBeaconParameters_8812A(struct rtl_priv *rtlpriv);
+void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv);
 
 void ReadRFType8812A(struct rtl_priv *rtlpriv);
 

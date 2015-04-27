@@ -171,8 +171,6 @@ void odm_1R_CCA(struct _rtw_dm *pDM_Odm);
 
 void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm);
 
-void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext);
-
 void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingInit(struct _rtw_dm *pDM_Odm);
@@ -1091,22 +1089,6 @@ FindMinimumRSSI_Dmsp(
 
 #else
 
-void ODM_SwAntDivChkPerPktRssi(struct _rtw_dm *pDM_Odm, u8 StationID,
-	PODM_PHY_INFO_T pPhyInfo)
-{
-}
-
-void ODM_SwAntDivResetBeforeLink(struct _rtw_dm *pDM_Odm)
-{
-}
-
-void ODM_SwAntDivRestAfterLink(IN struct _rtw_dm *pDM_Odm)
-{
-}
-
-void odm_SwAntDivChkAntSwitchCallback(void *FunctionContext)
-{
-}
 
 #endif
 

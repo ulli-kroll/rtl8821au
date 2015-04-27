@@ -866,9 +866,6 @@ ODM_SetAntenna(
 	IN	u8		Antenna);
 
 
-#define SwAntDivRestAfterLink	ODM_SwAntDivRestAfterLink
-void ODM_SwAntDivRestAfterLink(	IN	struct _rtw_dm *pDM_Odm);
-
 #define dm_CheckTXPowerTracking 	ODM_TXPowerTrackingCheck
 void
 ODM_TXPowerTrackingCheck(
@@ -881,14 +878,6 @@ ODM_RAStateCheck(
 	IN		int32_t			RSSI,
 	IN		BOOLEAN			bForceUpdate,
 	OUT		u8 *		pRATRState
-	);
-
-
-#define dm_SWAW_RSSI_Check	ODM_SwAntDivChkPerPktRssi
-void ODM_SwAntDivChkPerPktRssi(
-	IN struct _rtw_dm *	pDM_Odm,
-	IN u8			StationID,
-	IN PODM_PHY_INFO_T pPhyInfo
 	);
 
 

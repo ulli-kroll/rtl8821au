@@ -2302,10 +2302,6 @@ void _InitBeaconParameters_8812A(struct rtl_priv *rtlpriv)
 	pHalData->RegCR_1 = rtl_read_byte(rtlpriv, REG_CR+1);
 }
 
-static void hw_var_set_correct_tsf(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
-{
-}
-
 static void hw_var_set_mlme_disconnect(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
 }

@@ -1,5 +1,29 @@
 #include "hw.h"
 
+void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
+{
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+
+	rtl_write_word(rtlpriv, REG_BCN_CTRL, 0x1010);
+
+	/* TODO: Remove these magic number */
+	rtl_write_word(rtlpriv, REG_TBTT_PROHIBIT, 0x6404);		/* ms */
+	rtl_write_byte(rtlpriv, REG_DRVERLYINT, DRIVER_EARLY_INT_TIME_8812);	/* 5ms */
+	rtl_write_byte(rtlpriv, REG_BCNDMATIM, BCN_DMA_ATIME_INT_TIME_8812); 	/* 2ms */
+
+	/*
+	 *  Suggested by designer timchen. Change beacon AIFS to the largest number
+	 *  beacause test chip does not contension before sending beacon. by tynli. 2009.11.03
+	 */
+	rtl_write_word(rtlpriv, REG_BCNTCFG, 0x660F);
+
+	pHalData->RegBcnCtrlVal = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
+	pHalData->RegTxPause = rtl_read_byte(rtlpriv, REG_TXPAUSE);
+	pHalData->RegFwHwTxQCtrl = rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2);
+	pHalData->RegReg542 = rtl_read_byte(rtlpriv, REG_TBTT_PROHIBIT+2);
+	pHalData->RegCR_1 = rtl_read_byte(rtlpriv, REG_CR+1);
+}
+
 static void StopTxBeacon(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);

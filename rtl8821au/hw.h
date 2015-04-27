@@ -10,6 +10,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *val);
 
 void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv);
 
+void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv);
 
 
 /* temporaly prototypes for transition */

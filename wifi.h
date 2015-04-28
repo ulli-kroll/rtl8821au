@@ -739,6 +739,7 @@ struct rtl_dm {
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
+#define rtl_mac(rtlpriv)	(&((rtlpriv)->mac80211))
 #define rtl_efuse(rtlpriv)	(&((rtlpriv)->efuse))
 #define rtl_phy(rtlpriv)	(&((rtlpriv)->phy))
 #define rtl_dm(rtlpriv)		(&((rtlpriv)->dm))
@@ -879,6 +880,105 @@ struct rate_adaptive {
 	bool is_special_data;
 };
 
+struct rtl_mac {
+	u8 mac_addr[ETH_ALEN];
+	u8 mac80211_registered;
+	u8 beacon_enabled;
+
+	u32 tx_ss_num;
+	u32 rx_ss_num;
+
+#if 0	/* ULLI : Currently we are using wireless ext */
+	struct ieee80211_supported_band bands[IEEE80211_NUM_BANDS];
+	struct ieee80211_hw *hw;
+	struct ieee80211_vif *vif;
+	enum nl80211_iftype opmode;
+#endif	
+
+	/*Probe Beacon management */
+#if 0	/* Ulli : currently we are using wireless-ext */	
+	struct rtl_tid_data tids[MAX_TID_COUNT];
+	enum rtl_link_state link_state;
+#endif
+	int n_channels;
+	int n_bitrates;
+
+	bool offchan_delay;
+	u8 p2p;	/*using p2p role*/
+	bool p2p_in_use;
+
+	/*filters */
+	u32 rx_conf;
+	u16 rx_mgt_filter;
+	u16 rx_ctrl_filter;
+	u16 rx_data_filter;
+
+	bool act_scanning;
+	u8 cnt_after_linked;
+	bool skip_scan;
+
+	/* early mode */
+	/* skb wait queue */
+	struct sk_buff_head skb_waitq[MAX_TID_COUNT];
+
+	u8 ht_stbc_cap;
+	u8 ht_cur_stbc;
+
+	/*vht support*/
+	u8 vht_enable;
+	u8 bw_80;
+	u8 vht_cur_ldpc;
+	u8 vht_cur_stbc;
+	u8 vht_stbc_cap;
+	u8 vht_ldpc_cap;
+
+	/*RDG*/
+	bool rdg_en;
+
+	/*AP*/
+	u8 bssid[ETH_ALEN] __aligned(2);
+	u32 vendor;
+	u8 mcs[16];	/* 16 bytes mcs for HT rates. */
+	u32 basic_rates; /* b/g rates */
+	u8 ht_enable;
+	u8 sgi_40;
+	u8 sgi_20;
+	u8 bw_40;
+	u16 mode;		/* wireless mode */
+	u8 slot_time;
+	u8 short_preamble;
+	u8 use_cts_protect;
+	u8 cur_40_prime_sc;
+	u8 cur_40_prime_sc_bk;
+	u8 cur_80_prime_sc;
+	u64 tsf;
+	u8 retry_short;
+	u8 retry_long;
+	u16 assoc_id;
+	bool hiddenssid;
+
+	/*IBSS*/
+	int beacon_interval;
+
+	/*AMPDU*/
+	u8 min_space_cfg;	/*For Min spacing configurations */
+	u8 max_mss_density;
+	u8 current_ampdu_factor;
+	u8 current_ampdu_density;
+
+	/*QOS & EDCA */
+#if 0	/* Ulli : currently we are using wireless-ext */	
+	struct ieee80211_tx_queue_params edca_param[RTL_MAC80211_NUM_QUEUE];
+	struct rtl_qos_parameters ac[AC_MAX];
+#endif	
+
+	/* counters */
+	u64 last_txok_cnt;
+	u64 last_rxok_cnt;
+	u32 last_bt_edca_ul;
+	u32 last_bt_edca_dl;
+};
+
 struct rtl_priv {
 	struct net_device *ndev;
 
@@ -890,7 +990,7 @@ struct rtl_priv {
 	struct rtl_io io;
 	struct dig_t dm_digtable;
 	struct rate_adaptive ra;
-
+	struct rtl_mac mac80211;
 
 	struct rtl_usb_priv priv;
 

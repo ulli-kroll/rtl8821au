@@ -339,7 +339,6 @@ typedef enum _ODM_Common_Info_Definition
 //--------- POINTER REFERENCE-----------//
 	ODM_CMNINFO_MAC_PHY_MODE,			// ODM_MAC_PHY_MODE_E
 	ODM_CMNINFO_WM_MODE,				// ODM_WIRELESS_MODE_E
-	ODM_CMNINFO_SEC_CHNL_OFFSET,		// ODM_SEC_CHNL_OFFSET_E
 	ODM_CMNINFO_SEC_MODE,				// ODM_SECURITY_E
 	ODM_CMNINFO_CHNL,
 	ODM_CMNINFO_FORCED_RATE,
@@ -522,15 +521,6 @@ typedef enum tag_Operation_Mode_Definition
 	ODM_WIFI_DIRECT	= BIT7,
 	ODM_WIFI_DISPLAY	= BIT8,
 }ODM_OPERATION_MODE_E;
-
-
-// ODM_CMNINFO_SEC_CHNL_OFFSET
-typedef enum tag_Secondary_Channel_Offset_Definition
-{
-	ODM_DONT_CARE 	= 0,
-	ODM_BELOW 		= 1,
-	ODM_ABOVE 			= 2
-}ODM_SEC_CHNL_OFFSET_E;
 
 // ODM_CMNINFO_SEC_MODE
 typedef enum tag_Security_Definition

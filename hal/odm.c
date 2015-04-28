@@ -267,10 +267,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 		pDM_Odm->pWirelessMode = (u8 *)pValue;
 		break;
 
-	case	ODM_CMNINFO_SEC_CHNL_OFFSET:
-		pDM_Odm->pSecChOffset = (u8 *)pValue;
-		break;
-
 	case	ODM_CMNINFO_SEC_MODE:
 		pDM_Odm->pSecurity = (u8 *)pValue;
 		break;
@@ -414,14 +410,6 @@ void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm)
 	u8	EntryCnt = 0;
 	u8	i;
 	struct sta_info *pEntry;
-
-	if (rtlpriv->phy.current_chan_bw == ODM_BW40M) {
-		if (*(pDM_Odm->pSecChOffset) == 1)
-			pDM_Odm->ControlChannel = *(pDM_Odm->pChannel)-2;
-		else if (*(pDM_Odm->pSecChOffset) == 2)
-			pDM_Odm->ControlChannel = *(pDM_Odm->pChannel)+2;
-	} else
-		pDM_Odm->ControlChannel = *(pDM_Odm->pChannel);
 
 	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
 		pEntry = pDM_Odm->pODM_StaInfo[i];

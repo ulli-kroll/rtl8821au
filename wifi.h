@@ -1554,7 +1554,6 @@ struct _rtw_dm {
 
 //------ ODM HANDLE, DRIVER NEEDS NOT TO HOOK------//
 	u8			RFPathRxEnable;		// ODM_CMNINFO_RFPATH_ENABLE
-	u8			ControlChannel;
 //------ ODM HANDLE, DRIVER NEEDS NOT TO HOOK------//
 
 //--------REMOVED COMMON INFO----------//
@@ -1606,8 +1605,6 @@ struct _rtw_dm {
 	u8			*pMacPhyMode;
 	// Wireless mode B/G/A/N = BIT0/BIT1/BIT2/BIT3
 	u8			*pWirelessMode; //ODM_WIRELESS_MODE_E
-	// Secondary channel offset don't_care/below/above = 0/1/2
-	u8			*pSecChOffset;
 	// Security mode Open/WEP/AES/TKIP = 0/1/2/3
 	u8			*pSecurity;
  	// Central channel location Ch1/Ch2/....

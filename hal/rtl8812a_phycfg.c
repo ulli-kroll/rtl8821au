@@ -1801,8 +1801,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	uint8_t	CenterFrequencyIndex1
 )
 {
-	struct rtl_priv * 	pDefAdapter =  GetDefaultAdapter(rtlpriv);
-	struct _rtw_hal *	pHalData = GET_HAL_DATA(pDefAdapter);
+	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t			tmpChannel = rtlpriv->phy.current_channel;
 	enum CHANNEL_WIDTH	tmpBW= rtlpriv->phy.current_chan_bw;
 	uint8_t			tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
@@ -1862,7 +1861,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	}
 
 	/* Switch workitem or set timer to do switch channel or setbandwidth operation */
-	if((!pDefAdapter->bDriverStopped) && (!pDefAdapter->bSurpriseRemoved)) {
+	if((!rtlpriv->bDriverStopped) && (!rtlpriv->bSurpriseRemoved)) {
 		phy_SwChnlAndSetBwMode8812(rtlpriv);
 	} else {
 		if(pHalData->bSwChnl) {

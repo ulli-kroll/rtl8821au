@@ -213,8 +213,6 @@ typedef enum _TX_PWR_PERCENTAGE{
 #define GetRegbENRFEType(_Adapter)	(_Adapter->registrypriv.bEn_RFE)
 #define GetRegRFEType(_Adapter)	(_Adapter->registrypriv.RFE_Type)
 
-#define GetDefaultAdapter(rtlpriv)	rtlpriv
-
 // rtl8812_hal_init.c
 void	_8051Reset8812(struct rtl_priv *rtlpriv);
 void	InitializeFirmwareVars8812(struct rtl_priv *rtlpriv);

@@ -915,6 +915,7 @@ u8 BWMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 {
 	uint8_t	SCSettingOfDesc = 0;
+	struct rtl_mac *mac = &(rtlpriv->mac80211);
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
@@ -932,13 +933,13 @@ u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 			else
 				DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
 		} else {
-			if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
+			if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
 				SCSettingOfDesc = VHT_DATA_SC_20_LOWEST_OF_80MHZ;
-			else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
+			else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER))
 				SCSettingOfDesc = VHT_DATA_SC_20_LOWER_OF_80MHZ;
-			else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
+			else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
 				SCSettingOfDesc = VHT_DATA_SC_20_UPPER_OF_80MHZ;
-			else if((pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
+			else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER) && (pHalData->nCur80MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER))
 				SCSettingOfDesc = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
 			else
 				DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
@@ -951,9 +952,9 @@ u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 		if(pattrib->bwmode == CHANNEL_WIDTH_40) {
 			SCSettingOfDesc = VHT_DATA_SC_DONOT_CARE;
 		} else if(pattrib->bwmode == CHANNEL_WIDTH_20) {
-			if(pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_UPPER) {
+			if(mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER) {
 				SCSettingOfDesc = VHT_DATA_SC_20_UPPER_OF_80MHZ;
-			} else if(pHalData->nCur40MhzPrimeSC == HAL_PRIME_CHNL_OFFSET_LOWER) {
+			} else if(mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER) {
 				SCSettingOfDesc = VHT_DATA_SC_20_LOWER_OF_80MHZ;
 			} else 		{
 				SCSettingOfDesc = VHT_DATA_SC_DONOT_CARE;

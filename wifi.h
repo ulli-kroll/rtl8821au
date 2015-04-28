@@ -1801,7 +1801,6 @@ struct _rtw_hal {
 	//current WIFI_PHY values
 	enum wireless_mode CurrentWirelessMode;
 	uint8_t	CurrentCenterFrequencyIndex1;
-	uint8_t	nCur40MhzPrimeSC;// Control channel sub-carrier
 	uint8_t	nCur80MhzPrimeSC;   //used for primary 40MHz of 80MHz mode
 
 	u16	CustomerID;

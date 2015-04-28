@@ -1801,10 +1801,11 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	uint8_t	CenterFrequencyIndex1
 )
 {
+	struct rtl_mac	*mac = &(rtlpriv->mac80211);
 	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t			tmpChannel = rtlpriv->phy.current_channel;
 	enum CHANNEL_WIDTH	tmpBW= rtlpriv->phy.current_chan_bw;
-	uint8_t			tmpnCur40MhzPrimeSC = pHalData->nCur40MhzPrimeSC;
+	uint8_t			tmpnCur40MhzPrimeSC = mac->cur_40_prime_sc;
 	uint8_t			tmpnCur80MhzPrimeSC = pHalData->nCur80MhzPrimeSC;
 	uint8_t			tmpCenterFrequencyIndex1 =pHalData->CurrentCenterFrequencyIndex1;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
@@ -1832,7 +1833,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 			pHalData->bChnlBWInitialzed = _TRUE;
 			pHalData->bSetChnlBW = _TRUE;
 		} else if((rtlpriv->phy.current_chan_bw != ChnlWidth) ||
-			(pHalData->nCur40MhzPrimeSC != ChnlOffsetOf40MHz) ||
+			(mac->cur_40_prime_sc != ChnlOffsetOf40MHz) ||
 			(pHalData->nCur80MhzPrimeSC != ChnlOffsetOf80MHz) ||
 			(pHalData->CurrentCenterFrequencyIndex1!= CenterFrequencyIndex1)) {
 
@@ -1854,7 +1855,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 
 	if(pHalData->bSetChnlBW) {
 		rtlpriv->phy.current_chan_bw = ChnlWidth;
-		pHalData->nCur40MhzPrimeSC = ChnlOffsetOf40MHz;
+		mac->cur_40_prime_sc = ChnlOffsetOf40MHz;
 		pHalData->nCur80MhzPrimeSC = ChnlOffsetOf80MHz;
 
 		pHalData->CurrentCenterFrequencyIndex1 = CenterFrequencyIndex1;
@@ -1870,7 +1871,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 		}
 		if(pHalData->bSetChnlBW) {
 			rtlpriv->phy.current_chan_bw = tmpBW;
-			pHalData->nCur40MhzPrimeSC = tmpnCur40MhzPrimeSC;
+			mac->cur_40_prime_sc = tmpnCur40MhzPrimeSC;
 			pHalData->nCur80MhzPrimeSC = tmpnCur80MhzPrimeSC;
 			pHalData->CurrentCenterFrequencyIndex1 = tmpCenterFrequencyIndex1;
 		}

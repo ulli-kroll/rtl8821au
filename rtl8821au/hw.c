@@ -585,7 +585,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			uint8_t bShortPreamble = *pval;
 
 			/*  Joseph marked out for Netgear 3500 TKIP channel 7 issue.(Temporarily) */
-			val8 = (pHalData->nCur40MhzPrimeSC) << 5;
+			val8 = (rtlpriv->mac80211.cur_40_prime_sc) << 5;
 			if (bShortPreamble)
 				val8 |= 0x80;
 			rtl_write_byte(rtlpriv, REG_RRSR+2, val8);

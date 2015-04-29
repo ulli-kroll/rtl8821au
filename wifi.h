@@ -1857,7 +1857,6 @@ struct _rtw_hal {
 	uint8_t	bIQKInitialized;
 	BOOLEAN		bLCKInProgress;
 
-	BOOLEAN		bSwChnl;
 	BOOLEAN		bSetChnlBW;
 	BOOLEAN		bChnlBWInitialzed;
 

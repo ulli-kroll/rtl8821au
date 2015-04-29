@@ -1772,6 +1772,9 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	uint8_t			tmpCenterFrequencyIndex1 =pHalData->CurrentCenterFrequencyIndex1;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 
+	BOOLEAN bSwChnl = _FALSE;
+
+
 	/* DBG_871X("=> PHY_HandleSwChnlAndSetBW8812: bSwitchChannel %d, bSetBandWidth %d \n",bSwitchChannel,bSetBandWidth); */
 
 	/* check is swchnl or setbw */
@@ -1784,7 +1787,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	if(bSwitchChannel) {
 		if(rtlpriv->phy.current_channel != ChannelNum) {
 			if (HAL_IsLegalChannel(rtlpriv, ChannelNum))
-				pHalData->bSwChnl = _TRUE;
+				bSwChnl = _TRUE;
 			else
 				return;
 		}
@@ -1803,13 +1806,13 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 		}
 	}
 
-	if(!pHalData->bSetChnlBW && !pHalData->bSwChnl) {
-		/* DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",pHalData->bSwChnl,pHalData->bSetChnlBW); */
+	if(!pHalData->bSetChnlBW && !bSwChnl) {
+		/* DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",bSwChnl,pHalData->bSetChnlBW); */
 		return;
 	}
 
 
-	if(pHalData->bSwChnl) {
+	if(bSwChnl) {
 		rtlpriv->phy.current_channel = ChannelNum;
 		pHalData->CurrentCenterFrequencyIndex1 = ChannelNum;
 	}
@@ -1833,9 +1836,9 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 			return;
 		}
 	
-		if (pHalData->bSwChnl) {
+		if (bSwChnl) {
 			rtl8821au_phy_sw_chnl_callback(rtlpriv);
-			pHalData->bSwChnl = _FALSE;
+			bSwChnl = _FALSE;
 		}
 	
 		if (pHalData->bSetChnlBW) {
@@ -1858,7 +1861,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 			rtlpriv->phy.need_iqk = false;
 		}
 	} else {
-		if(pHalData->bSwChnl) {
+		if(bSwChnl) {
 			rtlpriv->phy.current_channel = tmpChannel;
 			pHalData->CurrentCenterFrequencyIndex1 = tmpChannel;
 		}
@@ -1877,7 +1880,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	 */
 
 	/*
-	 * DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",pHalData->bSwChnl,pHalData->bSetChnlBW);
+	 * DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",bSwChnl,pHalData->bSetChnlBW);
 	 */
 
 }

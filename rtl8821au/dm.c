@@ -1851,10 +1851,10 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 		if ((pDM_Odm->DM_EDCA_Table.prv_traffic_idx != trafficIndex) || (!rtlpriv->dm.current_turbo_edca)) {
 			/* merge from 92s_92c_merge temp brunch v2445    20120215 */
 			if ((IOTPeer == HT_IOT_PEER_CISCO)
-			   && ((WirelessMode == ODM_WM_G) || (WirelessMode == (ODM_WM_B|ODM_WM_G)) || (WirelessMode == ODM_WM_A) || (WirelessMode == ODM_WM_B))) {
+			   && ((WirelessMode == WIRELESS_MODE_G) || (WirelessMode == (WIRELESS_MODE_B|WIRELESS_MODE_G)) || (WirelessMode == WIRELESS_MODE_A) || (WirelessMode == WIRELESS_MODE_B))) {
 				EDCA_BE_DL = edca_setting_DL_GMode[IOTPeer];
 			} else if ((IOTPeer == HT_IOT_PEER_AIRGO)
-			       && ((WirelessMode == ODM_WM_G) || (WirelessMode == ODM_WM_A))) {
+			       && ((WirelessMode == WIRELESS_MODE_G) || (WirelessMode == WIRELESS_MODE_A))) {
 					EDCA_BE_DL = 0xa630;
 			} else if (IOTPeer == HT_IOT_PEER_MARVELL) {
 				EDCA_BE_DL = edca_setting_DL[IOTPeer];

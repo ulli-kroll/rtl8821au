@@ -27,6 +27,7 @@
 #include "odm_precomp.h"
 #include <../rtl8821au/reg.h>
 #include <../rtl8821au/dm.h>
+#include <../wifi.h>
 
 
 
@@ -803,22 +804,22 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	WirelessMode = pEntry->wireless_mode;
 
 	switch (WirelessMode) {
-	case ODM_WM_B:
+	case WIRELESS_MODE_B:
 		if (ra_mask & 0x0000000c)		/* 11M or 5.5M enable */
 			rate_bitmap = 0x0000000d;
 		else
 			rate_bitmap = 0x0000000f;
 		break;
 
-	case (ODM_WM_G):
-	case (ODM_WM_A):
+	case WIRELESS_MODE_G:
+	case WIRELESS_MODE_A:
 		if (rssi_level == DM_RATR_STA_HIGH)
 			rate_bitmap = 0x00000f00;
 		else
 			rate_bitmap = 0x00000ff0;
 		break;
 
-	case (ODM_WM_B|ODM_WM_G):
+	case WIRELESS_MODE_B | WIRELESS_MODE_G:
 		if (rssi_level == DM_RATR_STA_HIGH)
 			rate_bitmap = 0x00000f00;
 		else if (rssi_level == DM_RATR_STA_MIDDLE)
@@ -827,9 +828,9 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 			rate_bitmap = 0x00000ff5;
 		break;
 
-	case (ODM_WM_B|ODM_WM_G|ODM_WM_N24G):
-	case (ODM_WM_B|ODM_WM_N24G):
-	case (ODM_WM_A|ODM_WM_N5G):
+	case WIRELESS_MODE_B | WIRELESS_MODE_G | WIRELESS_MODE_N_24G:
+	case WIRELESS_MODE_B | WIRELESS_MODE_N_24G:
+	case WIRELESS_MODE_A | WIRELESS_MODE_N_5G:
 		if (pDM_Odm->rtlpriv->phy.rf_type == ODM_1T2R || pDM_Odm->rtlpriv->phy.rf_type == ODM_1T1R) {
 			if (rssi_level == DM_RATR_STA_HIGH) {
 				rate_bitmap = 0x000f0000;
@@ -854,8 +855,8 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 			}
 		}
 		break;
-	case (ODM_WM_AC|ODM_WM_A):
-	case (ODM_WM_AC|ODM_WM_G):
+	case WIRELESS_MODE_AC_5G | WIRELESS_MODE_A:
+	case WIRELESS_MODE_AC_5G | WIRELESS_MODE_G:
 		if (pDM_Odm->rtlpriv->phy.rf_type == RF_1T1R) {
 			if (IS_HARDWARE_TYPE_8811AU(rtlhal) ||
 				(IS_HARDWARE_TYPE_8812AU(rtlhal) && pDM_Odm->bIsMPChip)) {

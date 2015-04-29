@@ -233,6 +233,23 @@ enum band_type {
 	BANDMAX
 };
 
+/*mlme related.*/
+enum wireless_mode {
+	WIRELESS_MODE_UNKNOWN = 0x00,
+	WIRELESS_MODE_A = 0x01,
+	WIRELESS_MODE_B = 0x02,
+	WIRELESS_MODE_G = 0x04,
+	WIRELESS_MODE_AUTO = 0x08,
+	WIRELESS_MODE_N_24G = 0x10,
+	WIRELESS_MODE_N_5G = 0x20,
+	WIRELESS_MODE_AC_5G = 0x40,
+	WIRELESS_MODE_AC_24G  = 0x80,
+	WIRELESS_MODE_AC_ONLY = 0x100,
+#if 0	/* ULLI : we can't enable this,but this is not used in rtlwifi */
+	WIRELESS_MODE_MAX = 0x800
+#endif
+};
+
 struct rtl_hal {
 #if 0
 	struct ieee80211_hw *hw;
@@ -1683,7 +1700,7 @@ struct _rtw_hal {
 	RT_REGULATOR_MODE	RegulatorMode; // switching regulator or LDO
 
 	//current WIFI_PHY values
-	WIRELESS_MODE		CurrentWirelessMode;
+	enum wireless_mode CurrentWirelessMode;
 	uint8_t	CurrentCenterFrequencyIndex1;
 	uint8_t	nCur40MhzPrimeSC;// Control channel sub-carrier
 	uint8_t	nCur80MhzPrimeSC;   //used for primary 40MHz of 80MHz mode

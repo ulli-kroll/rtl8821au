@@ -3947,7 +3947,6 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 {
 	uint8_t			SubChnlNum = 0;
 	uint8_t			L1pkVal = 0;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	/* 3 Set Reg668 Reg440 BW */
 	_rtl8821au_phy_set_reg_bw(rtlpriv, rtlpriv->phy.current_chan_bw);
@@ -3981,7 +3980,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 
 		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
 
-		if(pHalData->Reg837 & BIT2)
+		if(rtlpriv->phy.reg_837 & BIT2)
 			L1pkVal = 6;
 		else {
 			if(rtlpriv->phy.rf_type == RF_2T2R)
@@ -4006,7 +4005,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 
 		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
 
-		if(pHalData->Reg837 & BIT2)
+		if(rtlpriv->phy.reg_837 & BIT2)
 			L1pkVal = 5;
 		else {
 			if(rtlpriv->phy.rf_type == RF_2T2R)

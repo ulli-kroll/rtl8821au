@@ -743,16 +743,16 @@ void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 void Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	BOOLEAN	AutoLoadFail)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 
 	if (!AutoLoadFail) {
-		pHalData->CrystalCap = hwinfo[EEPROM_XTAL_8812];
-		if (pHalData->CrystalCap == 0xFF)
-			pHalData->CrystalCap = EEPROM_Default_CrystalCap_8812;	 /* what value should 8812 set? */
+		rtlefuse->crystalcap = hwinfo[EEPROM_XTAL_8812];
+		if (rtlefuse->crystalcap == 0xFF)
+			rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;	 /* what value should 8812 set? */
 	} else {
-		pHalData->CrystalCap = EEPROM_Default_CrystalCap_8812;
+		rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;
 	}
-	DBG_871X("CrystalCap: 0x%2x\n", pHalData->CrystalCap);
+	DBG_871X("CrystalCap: 0x%2x\n", rtlefuse->crystalcap);
 }
 
 void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,

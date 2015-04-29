@@ -20,6 +20,9 @@
 
 #include <odm_precomp.h>
 
+#undef ODM_RT_TRACE
+#define ODM_RT_TRACE(x, ...)	do {} while (0);
+
 static BOOLEAN
 CheckCondition(
     const uint32_t  Condition,
@@ -455,12 +458,9 @@ uint32_t Array_MP_8812A_AGC_TAB[] = {
 
 };
 
-void
-ODM_ReadAndConfig_MP_8812A_AGC_TAB(
- 	IN   struct _rtw_dm * pDM_Odm
- 	)
+void ODM_ReadAndConfig_MP_8812A_AGC_TAB(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
@@ -493,7 +493,7 @@ ODM_ReadAndConfig_MP_8812A_AGC_TAB(
 	    // This (offset, data) pair meets the condition.
 	    if ( v1 < 0xCDCDCDCD )
 	    {
-		    odm_ConfigBB_AGC_8812A(pDM_Odm, v1, bMaskDWord, v2);
+		    odm_ConfigBB_AGC_8812A(rtlpriv, v1, bMaskDWord, v2);
 		    continue;
 	 	}
 		else
@@ -516,7 +516,7 @@ ODM_ReadAndConfig_MP_8812A_AGC_TAB(
 		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
-		     		odm_ConfigBB_AGC_8812A(pDM_Odm, v1, bMaskDWord, v2);
+		     		odm_ConfigBB_AGC_8812A(rtlpriv, v1, bMaskDWord, v2);
 		            READ_NEXT_PAIR(v1, v2, i);
 		        }
 
@@ -769,12 +769,9 @@ uint32_t Array_MP_8812A_PHY_REG[] = {
 
 };
 
-void
-ODM_ReadAndConfig_MP_8812A_PHY_REG(
- 	IN   struct _rtw_dm * pDM_Odm
- 	)
+void ODM_ReadAndConfig_MP_8812A_PHY_REG(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
@@ -805,7 +802,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG(
 	    // This (offset, data) pair meets the condition.
 	    if ( v1 < 0xCDCDCDCD )
 	    {
-		   	odm_ConfigBB_PHY_8812A(pDM_Odm, v1, bMaskDWord, v2);
+		   	odm_ConfigBB_PHY_8812A(rtlpriv, v1, bMaskDWord, v2);
 		    continue;
 	 	}
 		else
@@ -828,7 +825,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG(
 		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
-		   			odm_ConfigBB_PHY_8812A(pDM_Odm, v1, bMaskDWord, v2);
+		   			odm_ConfigBB_PHY_8812A(rtlpriv, v1, bMaskDWord, v2);
 		            READ_NEXT_PAIR(v1, v2, i);
 		        }
 
@@ -889,12 +886,9 @@ uint32_t Array_MP_8812A_PHY_REG_PG[] = {
 
 };
 
-void
-ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(
- 	IN   struct _rtw_dm * pDM_Odm
- 	)
+void ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	
 	uint32_t     hex = 0;
 	uint32_t     i           = 0;
@@ -909,7 +903,9 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(
 	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG_PG)/sizeof(uint32_t);
 	uint32_t    *Array       = Array_MP_8812A_PHY_REG_PG;
 
+#if 0
 	pDM_Odm->PhyRegPgValueType = PHY_REG_PG_EXACT_VALUE;
+#endif	
 	hex += board;
 	hex += _interface << 8;
 	hex += platform << 16;
@@ -924,7 +920,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(
 	    // this line is a line of pure_body
 	    if ( v1 < 0xCDCDCDCD )
 	    {
-		 	 odm_ConfigBB_PHY_REG_PG_8812A(pDM_Odm, v1, v2, v3);
+		 	 odm_ConfigBB_PHY_REG_PG_8812A(rtlpriv, v1, v2, v3);
 		 	 continue;
 	    }
 	    else
@@ -993,12 +989,9 @@ uint32_t Array_MP_8812A_PHY_REG_PG_ASUS[] = {
 
 };
 
-void
-ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(
- 	IN   struct _rtw_dm * pDM_Odm
- 	)
+void ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(pDM_Odm->rtlpriv);
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
@@ -1030,7 +1023,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(
 	    // This (offset, data) pair meets the condition.
 	    if ( v1 < 0xCDCDCDCD )
 	    {
-		   	odm_ConfigBB_PHY_8812A(pDM_Odm, v1, bMaskDWord, v2);
+		   	odm_ConfigBB_PHY_8812A(rtlpriv, v1, bMaskDWord, v2);
 		    continue;
 	 	}
 		else
@@ -1053,7 +1046,7 @@ ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(
 		               v2 != 0xCDEF &&
 		               v2 != 0xCDCD && i < ArrayLen -2)
 		        {
-		   			odm_ConfigBB_PHY_8812A(pDM_Odm, v1, bMaskDWord, v2);
+		   			odm_ConfigBB_PHY_8812A(rtlpriv, v1, bMaskDWord, v2);
 		            READ_NEXT_PAIR(v1, v2, i);
 		        }
 

@@ -1413,8 +1413,6 @@ struct ODM_RF_Calibration_Structure
 {
 	//for tx power tracking
 
-	uint32_t	RegA24; // for TempCCK
-
 	u8  	TM_Trigger;
 	BOOLEAN	TxPowerTrackingInProgress;
 	//--------------------------------------------------------------------//
@@ -1848,7 +1846,6 @@ struct _rtw_hal {
 	// Read/write are allow for following hardware information variables
 	u32	CCKTxPowerLevelOriginalOffset;
 
-	uint8_t	CrystalCap;
 	u32	AntennaTxPath;					// Antenna path Tx
 	u32	AntennaRxPath;					// Antenna path Rx
 
@@ -1857,7 +1854,6 @@ struct _rtw_hal {
 	uint8_t	bIQKInitialized;
 	BOOLEAN		bLCKInProgress;
 
-	BOOLEAN		bSetChnlBW;
 	BOOLEAN		bChnlBWInitialzed;
 
 	uint8_t	bLedOpenDrain; // Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16.
@@ -1881,7 +1877,6 @@ struct _rtw_hal {
 	uint8_t	RegFwHwTxQCtrl;
 	uint8_t	RegReg542;
 	uint8_t	RegCR_1;
-	uint8_t	Reg837;
 	uint8_t	RegRFPathS1;
 	u16	RegRRSR;
 

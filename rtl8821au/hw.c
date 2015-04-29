@@ -266,7 +266,6 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 
 static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	MediaStatus)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -283,11 +282,11 @@ static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	M
 	if ((MediaStatus == RT_MEDIA_CONNECT)
 	   && ((pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_BCUTAP)
 	      || (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP))) {
-		pHalData->Reg837 |= BIT2;
-		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, pHalData->Reg837);
+		rtlpriv->phy.reg_837 |= BIT2;
+		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, rtlpriv->phy.reg_837);
 	} else {
-		pHalData->Reg837 &= (~BIT2);
-		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, pHalData->Reg837);
+		rtlpriv->phy.reg_837 &= (~BIT2);
+		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, rtlpriv->phy.reg_837);
 	}
 }
 

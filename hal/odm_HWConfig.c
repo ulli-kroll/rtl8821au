@@ -42,18 +42,18 @@ void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type Conf
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		switch (ConfigType) {
 		case CONFIG_BB_PHY_REG:
-			ODM_ReadAndConfig_MP_8812A_PHY_REG(pDM_Odm);
+			ODM_ReadAndConfig_MP_8812A_PHY_REG(pDM_Odm->rtlpriv);
 			break;
 
 		case CONFIG_BB_AGC_TAB:
-			ODM_ReadAndConfig_MP_8812A_AGC_TAB(pDM_Odm);
+			ODM_ReadAndConfig_MP_8812A_AGC_TAB(pDM_Odm->rtlpriv);
 			break;
 
 		case CONFIG_BB_PHY_REG_PG:
 			if (rtlhal->rfe_type == 3 && pDM_Odm->bIsMPChip)
-				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(pDM_Odm);
+				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(pDM_Odm->rtlpriv);
 			else
-				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(pDM_Odm);
+				ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(pDM_Odm->rtlpriv);
 			break;
 
 		default:
@@ -66,15 +66,15 @@ void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type Conf
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		switch (ConfigType) {
 		case CONFIG_BB_PHY_REG:
-			ODM_ReadAndConfig_MP_8821A_PHY_REG(pDM_Odm);
+			ODM_ReadAndConfig_MP_8821A_PHY_REG(pDM_Odm->rtlpriv);
 			break;
 
 		case CONFIG_BB_AGC_TAB:
-			ODM_ReadAndConfig_MP_8821A_AGC_TAB(pDM_Odm);
+			ODM_ReadAndConfig_MP_8821A_AGC_TAB(pDM_Odm->rtlpriv);
 			break;
 
 		case CONFIG_BB_PHY_REG_PG:
-			ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(pDM_Odm);
+			ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(pDM_Odm->rtlpriv);
 			break;
 
 		default:

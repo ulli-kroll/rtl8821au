@@ -27,28 +27,19 @@ static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex);
 *                           AGC_TAB.TXT
 ******************************************************************************/
 
-void
-ODM_ReadAndConfig_MP_8821A_AGC_TAB( // TC: Test Chip, MP: MP Chip
-	IN   struct _rtw_dm * pDM_Odm
-);
+void ODM_ReadAndConfig_MP_8821A_AGC_TAB(struct rtl_priv *rtlpirv);
 
 /******************************************************************************
 *                           PHY_REG.TXT
 ******************************************************************************/
 
-void
-ODM_ReadAndConfig_MP_8821A_PHY_REG( // TC: Test Chip, MP: MP Chip
-	IN   struct _rtw_dm * pDM_Odm
-);
+void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv);
 
 /******************************************************************************
 *                           PHY_REG_PG.TXT
 ******************************************************************************/
 
-void
-ODM_ReadAndConfig_MP_8821A_PHY_REG_PG( // TC: Test Chip, MP: MP Chip
-	IN   struct _rtw_dm * pDM_Odm
-);
+void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv);
 
 #endif
 

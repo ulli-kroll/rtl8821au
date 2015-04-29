@@ -20,6 +20,8 @@
 
 #include <odm_precomp.h>
 
+#undef ODM_RT_TRACE
+#define ODM_RT_TRACE(x, ...)	do {} while (0);
 
 void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data, enum radio_path path, uint32_t RegAddr)
@@ -47,17 +49,17 @@ void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 }
 
 
-void odm_ConfigBB_AGC_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
+void odm_ConfigBB_AGC_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
-	rtl_set_bbreg(pDM_Odm->rtlpriv, Addr, Bitmask, Data);
+	rtl_set_bbreg(rtlpriv, Addr, Bitmask, Data);
 	/* Add 1us delay between BB/RF register setting. */
 	udelay(1);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data));
 }
 
-void odm_ConfigBB_PHY_REG_PG_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
+void odm_ConfigBB_PHY_REG_PG_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe)
@@ -75,11 +77,11 @@ void odm_ConfigBB_PHY_REG_PG_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("===> @@@@@@@ ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X %08X\n", Addr, Bitmask, Data));
 
-	storePwrIndexDiffRateOffset(pDM_Odm->rtlpriv, Addr, Bitmask, Data);
+	storePwrIndexDiffRateOffset(rtlpriv, Addr, Bitmask, Data);
 
 }
 
-void odm_ConfigBB_PHY_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
+void odm_ConfigBB_PHY_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe)
@@ -94,9 +96,8 @@ void odm_ConfigBB_PHY_8821A(struct _rtw_dm *pDM_Odm, uint32_t Addr,
 		udelay(5);
 	else if (Addr == 0xf9)
 		udelay(1);
-	else if (Addr == 0xa24)
-		pDM_Odm->RFCalibrateInfo.RegA24 = Data;
-	rtl_set_bbreg(pDM_Odm->rtlpriv, Addr, Bitmask, Data);
+
+	rtl_set_bbreg(rtlpriv, Addr, Bitmask, Data);
 
 	/* Add 1us delay between BB/RF register setting. */
 	udelay(1);

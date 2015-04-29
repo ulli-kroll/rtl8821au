@@ -190,13 +190,7 @@
 #define	EEPROM_Default_ThermalMeter_8723B		0x18
 
 
-#define EEPROM_Default_CrystalCap				0x0
-#define EEPROM_Default_CrystalCap_8723A		0x20
-#define EEPROM_Default_CrystalCap_88E 			0x20
 #define EEPROM_Default_CrystalCap_8812			0x20
-#define EEPROM_Default_CrystalCap_8192E			0x20
-#define EEPROM_Default_CrystalCap_8723B			0x20
-#define EEPROM_Default_CrystalFreq				0x0
 #define EEPROM_Default_TxPowerLevel_92C		0x22
 #define EEPROM_Default_TxPowerLevel_2G			0x2C
 #define EEPROM_Default_TxPowerLevel_5G			0x22
@@ -260,19 +254,6 @@
 //----------------------------------------------------------------------------
 #define MAX_RF_PATH_NUM	2
 #define MAX_CHNL_GROUP		3+9
-typedef struct _TxPowerInfo{
-	uint8_t CCKIndex[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	uint8_t HT40_1SIndex[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	uint8_t HT40_2SIndexDiff[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	s8 HT20IndexDiff[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	uint8_t OFDMIndexDiff[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	uint8_t HT40MaxOffset[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	uint8_t HT20MaxOffset[MAX_RF_PATH_NUM][MAX_CHNL_GROUP];
-	uint8_t TSSI_A[3];
-	uint8_t TSSI_B[3];
-	uint8_t TSSI_A_5G[3];		//5GL/5GM/5GH
-	uint8_t TSSI_B_5G[3];
-}TxPowerInfo, *PTxPowerInfo;
 
 
 //For 88E new structure

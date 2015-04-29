@@ -161,10 +161,10 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)
 int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 	int	rtStatus = _SUCCESS;
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	TmpU1B=0;
-	uint8_t	CrystalCap;
+	uint8_t	crystal_cap;
 
 	phy_InitBBRFRegisterDefinition(rtlpriv);
 
@@ -193,15 +193,15 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		/* write 0x2C[30:25] = 0x2C[24:19] = CrystalCap */
-		CrystalCap = pHalData->CrystalCap & 0x3F;
-		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0x7FF80000, (CrystalCap | (CrystalCap << 6)));
+		crystal_cap = rtlefuse->crystalcap & 0x3F;
+		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0x7FF80000, (crystal_cap | (crystal_cap << 6)));
 	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 		/* 0x2C[23:18] = 0x2C[17:12] = CrystalCap */
-		CrystalCap = pHalData->CrystalCap & 0x3F;
-		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0xFFF000, (CrystalCap | (CrystalCap << 6)));
+		crystal_cap = rtlefuse->crystalcap & 0x3F;
+		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0xFFF000, (crystal_cap | (crystal_cap << 6)));
 	}
 
-	pHalData->Reg837 = rtl_read_byte(rtlpriv, 0x837);
+	rtlpriv->phy.reg_837 = rtl_read_byte(rtlpriv, 0x837);
 
 	return rtStatus;
 
@@ -1772,7 +1772,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	uint8_t			tmpCenterFrequencyIndex1 =pHalData->CurrentCenterFrequencyIndex1;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 
-	BOOLEAN bSwChnl = _FALSE;
+	BOOLEAN bSwChnl = _FALSE, bSetChnlBW = _FALSE;
 
 
 	/* DBG_871X("=> PHY_HandleSwChnlAndSetBW8812: bSwitchChannel %d, bSetBandWidth %d \n",bSwitchChannel,bSetBandWidth); */
@@ -1796,18 +1796,18 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	if(bSetBandWidth) {
 		if(pHalData->bChnlBWInitialzed == _FALSE) {
 			pHalData->bChnlBWInitialzed = _TRUE;
-			pHalData->bSetChnlBW = _TRUE;
+			bSetChnlBW = _TRUE;
 		} else if((rtlpriv->phy.current_chan_bw != ChnlWidth) ||
 			(mac->cur_40_prime_sc != ChnlOffsetOf40MHz) ||
 			(mac->cur_80_prime_sc != ChnlOffsetOf80MHz) ||
 			(pHalData->CurrentCenterFrequencyIndex1!= CenterFrequencyIndex1)) {
 
-			pHalData->bSetChnlBW = _TRUE;
+			bSetChnlBW = _TRUE;
 		}
 	}
 
-	if(!pHalData->bSetChnlBW && !bSwChnl) {
-		/* DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",bSwChnl,pHalData->bSetChnlBW); */
+	if(!bSetChnlBW && !bSwChnl) {
+		/* DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",bSwChnl,bSetChnlBW); */
 		return;
 	}
 
@@ -1818,7 +1818,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	}
 
 
-	if(pHalData->bSetChnlBW) {
+	if(bSetChnlBW) {
 		rtlpriv->phy.current_chan_bw = ChnlWidth;
 		mac->cur_40_prime_sc = ChnlOffsetOf40MHz;
 		mac->cur_80_prime_sc = ChnlOffsetOf80MHz;
@@ -1830,7 +1830,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	if((!rtlpriv->bDriverStopped) && (!rtlpriv->bSurpriseRemoved)) {
 		struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
-		/* DBG_871X("phy_SwChnlAndSetBwMode8812(): bSwChnl %d, bSetChnlBW %d \n", pHalData->bSwChnl, pHalData->bSetChnlBW); */
+		/* DBG_871X("phy_SwChnlAndSetBwMode8812(): bSwChnl %d, bSetChnlBW %d \n", bSwChnl, bSetChnlBW); */
 	
 		if ((rtlpriv->bDriverStopped) || (rtlpriv->bSurpriseRemoved)) {
 			return;
@@ -1841,9 +1841,9 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 			bSwChnl = _FALSE;
 		}
 	
-		if (pHalData->bSetChnlBW) {
+		if (bSetChnlBW) {
 			rtl8821au_phy_set_bw_mode_callback(rtlpriv);
-			pHalData->bSetChnlBW = _FALSE;
+			bSetChnlBW = _FALSE;
 		}
 	
 		ODM_ClearTxPowerTrackingState(&pHalData->odmpriv);
@@ -1865,7 +1865,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 			rtlpriv->phy.current_channel = tmpChannel;
 			pHalData->CurrentCenterFrequencyIndex1 = tmpChannel;
 		}
-		if(pHalData->bSetChnlBW) {
+		if(bSetChnlBW) {
 			rtlpriv->phy.current_chan_bw = tmpBW;
 			mac->cur_40_prime_sc = tmpnCur40MhzPrimeSC;
 			mac->cur_80_prime_sc = tmpnCur80MhzPrimeSC;
@@ -1880,7 +1880,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	 */
 
 	/*
-	 * DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",bSwChnl,pHalData->bSetChnlBW);
+	 * DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",bSwChnl,bSetChnlBW);
 	 */
 
 }

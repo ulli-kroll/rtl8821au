@@ -1133,7 +1133,7 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 	return _FAIL;
 }
 
-int32_t FirmwareDownload8812(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
+int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
@@ -1173,7 +1173,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 	}
 
 
-	DBG_871X(" ===> FirmwareDownload8812() fw:%s, size: %d\n", "Firmware for NIC", rtlhal->fwsize);
+	DBG_871X(" ===> rtl8821au_download_fw() fw:%s, size: %d\n", "Firmware for NIC", rtlhal->fwsize);
 
 	if (rtlhal->fwsize > FW_SIZE_8812) {
 			rtStatus = _FAIL;

@@ -24,6 +24,7 @@
 #include <../rtl8821au/reg.h>
 #include <../rtl8821au/trx.h>
 #include <../rtl8821au/hw.h>
+#include <../rtl8821au/fw.h>
 
 
 static void _dbg_dump_macreg(struct rtl_priv *rtlpriv)
@@ -1011,7 +1012,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	if (pHalData->bRDGEnable)
 		_InitRDGSetting_8812A(rtlpriv);
 
-	status = FirmwareDownload8812(rtlpriv, _FALSE);
+	status = rtl8821au_download_fw(rtlpriv, _FALSE);
 	if (status != _SUCCESS) {
 		DBG_871X("%s: Download Firmware failed!!\n", __FUNCTION__);
 		rtlpriv->bFWReady = _FALSE;

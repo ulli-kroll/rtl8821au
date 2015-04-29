@@ -955,7 +955,7 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 }
 
 
-static void _FWDownloadEnable_8812(struct rtl_priv *rtlpriv, BOOLEAN enable)
+static void _rtl8821ae_enable_fw_download(struct rtl_priv *rtlpriv, BOOLEAN enable)
 {
 	uint8_t	tmp;
 
@@ -1223,7 +1223,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 		_8051Reset8812(rtlpriv);
 	}
 
-	_FWDownloadEnable_8812(rtlpriv, _TRUE);
+	_rtl8821ae_enable_fw_download(rtlpriv, _TRUE);
 	fwdl_start_time = jiffies;
 	while (1) {
 		/* reset the FWDL chksum */
@@ -1239,7 +1239,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 			, writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
 		);
 	}
-	_FWDownloadEnable_8812(rtlpriv, _FALSE);
+	_rtl8821ae_enable_fw_download(rtlpriv, _FALSE);
 	if (_SUCCESS != rtStatus) {
 		DBG_871X("DL Firmware failed!\n");
 		goto Exit;

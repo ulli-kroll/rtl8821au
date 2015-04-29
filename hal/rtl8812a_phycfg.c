@@ -1755,44 +1755,6 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 	}
 }
 
-static void phy_SwChnlAndSetBwMode8812(struct rtl_priv *rtlpriv)
-{
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
-
-	/* DBG_871X("phy_SwChnlAndSetBwMode8812(): bSwChnl %d, bSetChnlBW %d \n", pHalData->bSwChnl, pHalData->bSetChnlBW); */
-
-	if ((rtlpriv->bDriverStopped) || (rtlpriv->bSurpriseRemoved)) {
-		return;
-	}
-
-	if (pHalData->bSwChnl) {
-		rtl8821au_phy_sw_chnl_callback(rtlpriv);
-		pHalData->bSwChnl = _FALSE;
-	}
-
-	if (pHalData->bSetChnlBW) {
-		rtl8821au_phy_set_bw_mode_callback(rtlpriv);
-		pHalData->bSetChnlBW = _FALSE;
-	}
-
-	ODM_ClearTxPowerTrackingState(&pHalData->odmpriv);
-	PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
-		phy_InitRssiTRSW(rtlpriv);
-
-	if ((rtlpriv->phy.need_iqk = false == true)) {
-		if(IS_HARDWARE_TYPE_8812(rtlhal)) {
-			rtl8812au_phy_iq_calibrate(rtlpriv, _FALSE);
-		}
-		else if(IS_HARDWARE_TYPE_8821(rtlhal))
-		{
-			rtl8821au_phy_iq_calibrate(rtlpriv, _FALSE);
-		}
-		rtlpriv->phy.need_iqk = false;
-	}
-}
 
 static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	BOOLEAN	bSwitchChannel, BOOLEAN	bSetBandWidth,
@@ -1863,7 +1825,38 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 
 	/* Switch workitem or set timer to do switch channel or setbandwidth operation */
 	if((!rtlpriv->bDriverStopped) && (!rtlpriv->bSurpriseRemoved)) {
-		phy_SwChnlAndSetBwMode8812(rtlpriv);
+		struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+		/* DBG_871X("phy_SwChnlAndSetBwMode8812(): bSwChnl %d, bSetChnlBW %d \n", pHalData->bSwChnl, pHalData->bSetChnlBW); */
+	
+		if ((rtlpriv->bDriverStopped) || (rtlpriv->bSurpriseRemoved)) {
+			return;
+		}
+	
+		if (pHalData->bSwChnl) {
+			rtl8821au_phy_sw_chnl_callback(rtlpriv);
+			pHalData->bSwChnl = _FALSE;
+		}
+	
+		if (pHalData->bSetChnlBW) {
+			rtl8821au_phy_set_bw_mode_callback(rtlpriv);
+			pHalData->bSetChnlBW = _FALSE;
+		}
+	
+		ODM_ClearTxPowerTrackingState(&pHalData->odmpriv);
+		PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
+	
+		if (IS_HARDWARE_TYPE_8812(rtlhal))
+			phy_InitRssiTRSW(rtlpriv);
+	
+		if ((rtlpriv->phy.need_iqk = false == true)) {
+			if(IS_HARDWARE_TYPE_8812(rtlhal))
+				rtl8812au_phy_iq_calibrate(rtlpriv, _FALSE);
+			else if(IS_HARDWARE_TYPE_8821(rtlhal))
+				rtl8821au_phy_iq_calibrate(rtlpriv, _FALSE);
+
+			rtlpriv->phy.need_iqk = false;
+		}
 	} else {
 		if(pHalData->bSwChnl) {
 			rtlpriv->phy.current_channel = tmpChannel;

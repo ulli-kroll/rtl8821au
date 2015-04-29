@@ -916,7 +916,6 @@ u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 {
 	uint8_t	SCSettingOfDesc = 0;
 	struct rtl_mac *mac = &(rtlpriv->mac80211);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 * DBG_871X("SCMapping: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);

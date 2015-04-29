@@ -3900,9 +3900,7 @@ void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *rtlpriv)
 {
 	struct rtl_mac *mac = &(rtlpriv->mac80211);
-	
-	uint8_t					SCSettingOf40 = 0, SCSettingOf20 = 0;
-	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
+	uint8_t	SCSettingOf40 = 0, SCSettingOf20 = 0;
 
 	/*
 	 * DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);

@@ -1092,7 +1092,7 @@ exit:
 	return ret;
 }
 
-static int32_t _FWFreeToGo8812(struct rtl_priv *rtlpriv)
+static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 {
 	uint32_t	counter = 0;
 	uint32_t	value32;
@@ -1245,7 +1245,7 @@ int32_t FirmwareDownload8812(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 		goto Exit;
 	}
 
-	rtStatus = _FWFreeToGo8812(rtlpriv);
+	rtStatus = _rtl8821au_fw_free_to_go(rtlpriv);
 	if (_SUCCESS != rtStatus) {
 		DBG_871X("DL Firmware failed!\n");
 		goto Exit;

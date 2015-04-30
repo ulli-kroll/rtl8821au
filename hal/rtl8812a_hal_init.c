@@ -782,9 +782,8 @@ void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
 	DBG_871X("SWAS: bHwAntDiv = %x, TRxAntDivType = %x\n", pHalData->AntDivCfg, pHalData->TRxAntDivType);
 }
 
-void
-Hal_ReadPAType_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
-	BOOLEAN	AutoloadFail)
+void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
+			BOOLEAN	AutoloadFail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 

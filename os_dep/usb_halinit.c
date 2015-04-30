@@ -1567,7 +1567,7 @@ void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		Hal_ReadPAType_8821A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
 	} else {
-		Hal_ReadPAType_8812A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
+		_rtl8812au_read_pa_type(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
 		_rtl8812au_read_rfe_type(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
 	}
 

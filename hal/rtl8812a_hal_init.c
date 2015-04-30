@@ -846,8 +846,7 @@ void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	DBG_871X("pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
 }
 
-void
-Hal_ReadPAType_8821A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
+void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	BOOLEAN	 AutoloadFail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);

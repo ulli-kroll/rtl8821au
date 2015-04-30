@@ -1201,7 +1201,7 @@ unsigned int rtl8812au_inirp_init(struct rtl_priv *rtlpriv);
 unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv);
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv);
 void rtl8812au_interface_configure(struct rtl_priv *rtlpriv);
-void ReadAdapterInfo8812AU(struct rtl_priv *rtlpriv);
+void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv);
 
 enum hardware_type {
 	HARDWARE_TYPE_RTL8812AU,

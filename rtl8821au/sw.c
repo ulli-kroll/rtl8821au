@@ -57,7 +57,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.free_recv_priv =	rtl8812au_free_recv_priv,
 	.init_default_value =	rtl8812au_init_default_value,
 	.intf_chip_configure =	rtl8812au_interface_configure,
-	.read_adapter_info =	ReadAdapterInfo8812AU,
+	.read_adapter_info =	_rtl8821au_read_adapter_info,
 
 	/* .set_bwmode_handler = 	PHY_SetBWMode8192C; */
 	/* .set_channel_handler = 	PHY_SwChnl8192C; */

@@ -1613,7 +1613,7 @@ void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
 	 */
 }
 
-void ReadAdapterInfo8812AU(struct rtl_priv *rtlpriv)
+void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 

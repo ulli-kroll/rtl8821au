@@ -235,7 +235,7 @@ void	Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN AutoLo
 void	Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv,u8* PROMContent,BOOLEAN AutoLoadFail);
 void	Hal_ReadPAType_8812A(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
 void	Hal_ReadPAType_8821A(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
-void	Hal_ReadRFEType_8812A(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
+void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent, BOOLEAN	AutoloadFail);
 void	Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *rtlpriv, u8* hwinfo, BOOLEAN AutoLoadFail);
 void	hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent, BOOLEAN AutoloadFail);
 

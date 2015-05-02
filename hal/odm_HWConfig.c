@@ -44,11 +44,6 @@ void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type Conf
 		case CONFIG_BB_PHY_REG:
 			ODM_ReadAndConfig_MP_8812A_PHY_REG(pDM_Odm->rtlpriv);
 			break;
-
-		case CONFIG_BB_AGC_TAB:
-			ODM_ReadAndConfig_MP_8812A_AGC_TAB(pDM_Odm->rtlpriv);
-			break;
-
 		default:
 			;
 		}
@@ -60,10 +55,6 @@ void ODM_ConfigBBWithHeaderFile(struct _rtw_dm *pDM_Odm, ODM_BB_Config_Type Conf
 		switch (ConfigType) {
 		case CONFIG_BB_PHY_REG:
 			ODM_ReadAndConfig_MP_8821A_PHY_REG(pDM_Odm->rtlpriv);
-			break;
-
-		case CONFIG_BB_AGC_TAB:
-			ODM_ReadAndConfig_MP_8821A_AGC_TAB(pDM_Odm->rtlpriv);
 			break;
 
 		default:

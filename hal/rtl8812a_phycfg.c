@@ -115,6 +115,17 @@ void PHY_BB8812_Config_1T(struct rtl_priv *rtlpriv)
 	rtl_set_bbreg(rtlpriv, 0xe64, bMaskDWord, 0);
 }
 
+static void ODM_ReadAndConfig_PHY_REG(struct rtl_priv *rtlpriv)
+{
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm	= &pHalData->odmpriv;
+
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
+		ODM_ReadAndConfig_MP_8812A_PHY_REG(pDM_Odm->rtlpriv);
+	else
+		ODM_ReadAndConfig_MP_8821A_PHY_REG(pDM_Odm->rtlpriv);
+}
 
 static void ODM_ReadAndConfig_PHY_AGC_TAB(struct rtl_priv *rtlpriv)
 {
@@ -168,7 +179,7 @@ static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)
 	}
 
 	/* Read PHY_REG.TXT BB INIT!! */
-	ODM_ConfigBBWithHeaderFile(&pHalData->odmpriv, CONFIG_BB_PHY_REG);
+	ODM_ReadAndConfig_PHY_REG(rtlpriv);
 
 	/* If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
 	/* 1 TODO */

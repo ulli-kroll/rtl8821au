@@ -380,7 +380,6 @@ static void PHY_InitPowerLimitTable(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t		i, j, k, l, m;
 
 	/* DBG_871X( "=====> PHY_InitPowerLimitTable()!\n" ); */

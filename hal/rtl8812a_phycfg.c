@@ -118,25 +118,21 @@ void PHY_BB8812_Config_1T(struct rtl_priv *rtlpriv)
 static void ODM_ReadAndConfig_PHY_REG(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm	= &pHalData->odmpriv;
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-		ODM_ReadAndConfig_MP_8812A_PHY_REG(pDM_Odm->rtlpriv);
+		ODM_ReadAndConfig_MP_8812A_PHY_REG(rtlpriv);
 	else
-		ODM_ReadAndConfig_MP_8821A_PHY_REG(pDM_Odm->rtlpriv);
+		ODM_ReadAndConfig_MP_8821A_PHY_REG(rtlpriv);
 }
 
 static void ODM_ReadAndConfig_PHY_AGC_TAB(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm	= &pHalData->odmpriv;
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-		ODM_ReadAndConfig_MP_8812A_AGC_TAB(pDM_Odm->rtlpriv);
+		ODM_ReadAndConfig_MP_8812A_AGC_TAB(rtlpriv);
 	else
-		ODM_ReadAndConfig_MP_8821A_AGC_TAB(pDM_Odm->rtlpriv);
+		ODM_ReadAndConfig_MP_8821A_AGC_TAB(rtlpriv);
 }
 
 
@@ -1873,27 +1869,27 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 		struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 		/* DBG_871X("phy_SwChnlAndSetBwMode8812(): bSwChnl %d, bSetChnlBW %d \n", bSwChnl, bSetChnlBW); */
-	
+
 		if ((rtlpriv->bDriverStopped) || (rtlpriv->bSurpriseRemoved)) {
 			return;
 		}
-	
+
 		if (bSwChnl) {
 			rtl8821au_phy_sw_chnl_callback(rtlpriv);
 			bSwChnl = _FALSE;
 		}
-	
+
 		if (bSetChnlBW) {
 			rtl8821au_phy_set_bw_mode_callback(rtlpriv);
 			bSetChnlBW = _FALSE;
 		}
-	
+
 		ODM_ClearTxPowerTrackingState(&pHalData->odmpriv);
 		PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-	
+
 		if (IS_HARDWARE_TYPE_8812(rtlhal))
 			phy_InitRssiTRSW(rtlpriv);
-	
+
 		if ((rtlpriv->phy.need_iqk = false == true)) {
 			if(IS_HARDWARE_TYPE_8812(rtlhal))
 				rtl8812au_phy_iq_calibrate(rtlpriv, _FALSE);

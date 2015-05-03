@@ -562,7 +562,7 @@ struct rtl_phy {
 
 	/* ULLI: neded to convert this */
 
-	u32	TxPwrByRateOffset[TX_PWR_BY_RATE_NUM_BAND]
+	u32	tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
 						[TX_PWR_BY_RATE_NUM_RF]
 						[TX_PWR_BY_RATE_NUM_SECTION];
 	//---------------------------------------------------------------------------------//

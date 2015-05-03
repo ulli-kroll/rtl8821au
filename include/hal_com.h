@@ -20,6 +20,7 @@
 #ifndef __HAL_COMMON_H__
 #define __HAL_COMMON_H__
 
+#include <../rtl8821au/def.h>
 #include "HalVerDef.h"
 #include "hal_pg.h"
 #include "hal_phy.h"

@@ -572,7 +572,7 @@ struct rtl_phy {
 	// Store the original power by rate value of the base of each rate section of rf path A & B
 	uint8_t	 txpwr_by_rate_base_24g[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
 						[MAX_BASE_NUM_IN_PHY_REG_PG_2_4G];
-	uint8_t	TxPwrByRateBase5G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
+	uint8_t	txpwr_by_rate_base_5g[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
 						[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
 
 

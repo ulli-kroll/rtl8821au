@@ -459,7 +459,7 @@ static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv)
 					/* process RF90_PATH_A later */
 					for (rfPath = 0; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
 						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
-							BW40PwrBasedBm2_4G = rtlphy->TxPwrByRateBase2_4G[rfPath][baseIndex2_4G];
+							BW40PwrBasedBm2_4G = rtlphy->txpwr_by_rate_base_24g[rfPath][baseIndex2_4G];
 						else
 							BW40PwrBasedBm2_4G = rtlpriv->registrypriv.RegPowerBase * 2;
 
@@ -1146,31 +1146,31 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 
 			switch(RegAddr) {
 			case 0xC20:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][0] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][0] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path A) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][0] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][0] ) );
 				 */
 				break;
 			case 0xC28:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][1] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC30:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][2] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC38:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][3] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][3] ) );
 				 */
 				break;
 			default:
@@ -1180,31 +1180,31 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 			Base = (uint8_t) (Data >> 24);
 			switch(RegAddr) {
 			case 0xC20:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][0] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][0] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path A) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][0] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][0] ) );
 				 */
 				break;
 			case 0xC28:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][1] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][1] ) );
 				 */
 				break;
 			case 0xC30:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][2] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][2] ) );
 				 */
 				break;
 			case 0xC38:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][3] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][3] ) );
 				 */
 				break;
 			default:
@@ -1379,31 +1379,31 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 
 			switch(RegAddr) {
 			case 0xE20:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][0] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][0] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path B) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][0] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_B][0] ) );
 				 */
 				break;
 			case 0xE28:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][1] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path B) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][1] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_B][1] ) );
 				 */
 				break;
 			case 0xE30:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][2] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path B) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][2] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_B][2] ) );
 				 */
 				break;
 			case 0xE38:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][3] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path B) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][3] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_B][3] ) );
 				 */
 				break;
 			default:
@@ -1414,31 +1414,31 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 			Base = (uint8_t) (Data >> 24);
 			switch(RegAddr) {
 			case 0xC20:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][0] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][0] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of CCK (RF path B) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][0] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_B][0] ) );
 				 */
 				break;
 			case 0xC28:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][1] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path B) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][1] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_B][1] ) );
 				 */
 				break;
 			case 0xC30:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][2] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path B) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][2] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_B][2] ) );
 				 */
 				break;
 			case 0xC38:
-				rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
+				rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][3] = Base;
 				/*
 				 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G  power by rate of MCS15 (RF path B) = %d\n",
-				 * 	pHalData->TxPwrByRateBase2_4G[RF90_PATH_B][3] ) );
+				 * 	pHalData->txpwr_by_rate_base_24g[RF90_PATH_B][3] ) );
 				 */
 				break;
 			default:
@@ -1458,24 +1458,24 @@ static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAd
 
 	switch (RegAddr) {
 	case rTxAGC_A_Rate54_24:
-		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][1] = Base;
-		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][1] = Base;
+		rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][1] = Base;
+		rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][1] = Base;
 		/*
-		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n", pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][1]));
+		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of OFDM 54M (RF path A) = %d\n", pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][1]));
 		 */
 		break;
 	case rTxAGC_A_Mcs07_Mcs04:
-		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][2] = Base;
-		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][2] = Base;
+		rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][2] = Base;
+		rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][2] = Base;
 		/*
-		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n", pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][2]));
+		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS7 (RF path A) = %d\n", pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][2]));
 		 */
 		break;
 	case rTxAGC_A_Mcs15_Mcs12:
-		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_A][3] = Base;
-		rtlphy->TxPwrByRateBase2_4G[RF90_PATH_B][3] = Base;
+		rtlphy->txpwr_by_rate_base_24g[RF90_PATH_A][3] = Base;
+		rtlphy->txpwr_by_rate_base_24g[RF90_PATH_B][3] = Base;
 		/*
-		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n", pHalData->TxPwrByRateBase2_4G[RF90_PATH_A][3]));
+		 * RT_DISP(FPHY, PHY_TXPWR, ("2.4G power by rate of MCS15 (RF path A) = %d\n", pHalData->txpwr_by_rate_base_24g[RF90_PATH_A][3]));
 		 */
 		break;
 	default:

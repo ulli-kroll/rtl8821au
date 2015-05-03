@@ -570,7 +570,7 @@ struct rtl_phy {
 	// Power Limit Table for 2.4G
 
 	// Store the original power by rate value of the base of each rate section of rf path A & B
-	uint8_t	TxPwrByRateBase2_4G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
+	uint8_t	 txpwr_by_rate_base_24g[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
 						[MAX_BASE_NUM_IN_PHY_REG_PG_2_4G];
 	uint8_t	TxPwrByRateBase5G[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
 						[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
@@ -893,10 +893,10 @@ struct rtl_mac {
 	struct ieee80211_hw *hw;
 	struct ieee80211_vif *vif;
 	enum nl80211_iftype opmode;
-#endif	
+#endif
 
 	/*Probe Beacon management */
-#if 0	/* Ulli : currently we are using wireless-ext */	
+#if 0	/* Ulli : currently we are using wireless-ext */
 	struct rtl_tid_data tids[MAX_TID_COUNT];
 	enum rtl_link_state link_state;
 #endif
@@ -967,10 +967,10 @@ struct rtl_mac {
 	u8 current_ampdu_density;
 
 	/*QOS & EDCA */
-#if 0	/* Ulli : currently we are using wireless-ext */	
+#if 0	/* Ulli : currently we are using wireless-ext */
 	struct ieee80211_tx_queue_params edca_param[RTL_MAC80211_NUM_QUEUE];
 	struct rtl_qos_parameters ac[AC_MAX];
-#endif	
+#endif
 
 	/* counters */
 	u64 last_txok_cnt;

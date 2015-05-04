@@ -788,7 +788,7 @@ void ODM_ReadAndConfig_MP_8812A_PHY_REG(struct rtl_priv *rtlpriv)
 
 		// This (offset, data) pair meets the condition.
 		if ( v1 < 0xCDCDCDCD ) {
-			odm_ConfigBB_PHY_8812A(rtlpriv, v1, bMaskDWord, v2);
+			odm_ConfigBB_PHY_8821A(rtlpriv, v1, bMaskDWord, v2);
 			continue;
 		} else {
 			// This line is the start line of branch.
@@ -805,7 +805,7 @@ void ODM_ReadAndConfig_MP_8812A_PHY_REG(struct rtl_priv *rtlpriv)
 				READ_NEXT_PAIR(v1, v2, i);
 				while (v2 != 0xDEAD && v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen -2) {
-						odm_ConfigBB_PHY_8812A(rtlpriv, v1, bMaskDWord, v2);
+						odm_ConfigBB_PHY_8821A(rtlpriv, v1, bMaskDWord, v2);
 
 						READ_NEXT_PAIR(v1, v2, i);
 				}
@@ -1001,7 +1001,8 @@ void ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(struct rtl_priv *rtlpriv)
 
 		// This (offset, data) pair meets the condition.
 		if (v1 < 0xCDCDCDCD ) {
-		   	odm_ConfigBB_PHY_8812A(rtlpriv, v1, bMaskDWord, v2);
+			/* ULLI : why not odm_ConfigBB_PHY_REG_PG_8821A() ?? */
+			odm_ConfigBB_PHY_8821A(rtlpriv, v1, bMaskDWord, v2);
 			continue;
 		} else {
 			// This line is the start line of branch.
@@ -1018,7 +1019,8 @@ void ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(struct rtl_priv *rtlpriv)
 				READ_NEXT_PAIR(v1, v2, i);
 				while (v2 != 0xDEAD && v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen -2) {
-		   			odm_ConfigBB_PHY_8812A(rtlpriv, v1, bMaskDWord, v2);
+					/* ULLI : why not odm_ConfigBB_PHY_REG_PG_8821A() ?? */
+					odm_ConfigBB_PHY_8821A(rtlpriv, v1, bMaskDWord, v2);
 					READ_NEXT_PAIR(v1, v2, i);
 				}
 

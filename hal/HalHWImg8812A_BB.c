@@ -898,8 +898,8 @@ void ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 
 		// this line is a line of pure_body
 		if ( v1 < 0xCDCDCDCD ) {
-		 	 odm_ConfigBB_PHY_REG_PG_8812A(rtlpriv, v1, v2, v3);
-		 	 continue;
+			odm_ConfigBB_PHY_REG_PG_8821A(rtlpriv, v1, v2, v3);
+			continue;
 		} else {
 			// this line is the start of branch
 			if ( !CheckCondition(Array[i], hex) ) {

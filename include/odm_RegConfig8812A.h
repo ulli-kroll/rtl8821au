@@ -20,9 +20,6 @@
 #ifndef __INC_ODM_REGCONFIG_H_8812A
 #define __INC_ODM_REGCONFIG_H_8812A
 
-void odm_ConfigBB_PHY_REG_PG_8812A(struct rtl_priv *rtlpriv,
-    uint32_t Addr, uint32_t Bitmask, uint32_t Data);
-
 void odm_ConfigBB_PHY_8812A(struct rtl_priv *rtlpriv,
     uint32_t Addr, uint32_t Bitmask, uint32_t Data);
 

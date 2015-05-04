@@ -23,17 +23,6 @@
 #undef ODM_RT_TRACE
 #define ODM_RT_TRACE(x, ...)	do {} while (0);
 
-void odm_ConfigBB_PHY_REG_PG_8812A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Bitmask, uint32_t Data)
-{
-	if (Addr == 0xfe || Addr == 0xffe) {
-		msleep(50);
-	} else {
-		storePwrIndexDiffRateOffset(rtlpriv, Addr, Bitmask, Data);
-	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X %08X\n", Addr, Bitmask, Data));
-}
-
 void odm_ConfigBB_PHY_8812A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {

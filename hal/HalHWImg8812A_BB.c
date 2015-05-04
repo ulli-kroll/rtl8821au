@@ -55,7 +55,7 @@ static BOOLEAN CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 *                           AGC_TAB.TXT
 ******************************************************************************/
 
-uint32_t Array_MP_8812A_AGC_TAB[] = {
+uint32_t RTL8812AU_AGC_TAB_ARRAY[] = {
 	0xFF0F07D8, 0xABCD,
 		0x81C, 0xFF000001,
 		0x81C, 0xFF020001,
@@ -471,8 +471,8 @@ void ODM_ReadAndConfig_MP_8812A_AGC_TAB(struct rtl_priv *rtlpriv)
 	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 
-	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_AGC_TAB)/sizeof(uint32_t);
-	uint32_t    *Array       = Array_MP_8812A_AGC_TAB;
+	uint32_t     ArrayLen    = sizeof(RTL8812AU_AGC_TAB_ARRAY)/sizeof(uint32_t);
+	uint32_t    *Array       = RTL8812AU_AGC_TAB_ARRAY;
 
 	hex += board;
 	hex += _interface << 8;

@@ -58,7 +58,6 @@
 
 #include <HalHWImg8812A_BB.h>
 #include <HalHWImg8812A_FW.h>
-#include <odm_RegConfig8812A.h>
 
 
 #include <HalHWImg8821A_BB.h>

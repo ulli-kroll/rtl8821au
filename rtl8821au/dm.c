@@ -178,7 +178,7 @@ static void rtl8821au_cm_common_info_self_update(struct _rtw_dm *pDM_Odm)
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 
-	rtlphy->cck_high_power = (BOOLEAN) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(CCK_RPT_FORMAT, pDM_Odm), ODM_BIT(CCK_RPT_FORMAT, pDM_Odm));
+	rtlphy->cck_high_power = (BOOLEAN) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_RPT_FORMAT_11AC, ODM_BIT_CCK_RPT_FORMAT_11AC);
 	pDM_Odm->RFPathRxEnable = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
 	pDM_Odm->pbNet_closed = &pDM_Odm->BOOLEAN_temp;
 

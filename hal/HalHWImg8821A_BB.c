@@ -555,7 +555,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
 *                           PHY_REG_PG.TXT
 ******************************************************************************/
 
-uint32_t Array_MP_8821A_PHY_REG_PG[] = {
+uint32_t RTL8821AU_PHY_REG_PG_ARRAY[] = {
 		0xC20, 0x00000000, 0x32343638,
 		0xC24, 0x00000000, 0x36363838,
 		0xC28, 0x00000000, 0x28303234,
@@ -609,8 +609,8 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 
-	uint32_t ArrayLen    = sizeof(Array_MP_8821A_PHY_REG_PG)/sizeof(uint32_t);
-	uint32_t *Array       = Array_MP_8821A_PHY_REG_PG;
+	uint32_t ArrayLen    = sizeof(RTL8821AU_PHY_REG_PG_ARRAY)/sizeof(uint32_t);
+	uint32_t *Array       = RTL8821AU_PHY_REG_PG_ARRAY;
 
 #if 0
 	pDM_Odm->PhyRegPgValueType = PHY_REG_PG_EXACT_VALUE;

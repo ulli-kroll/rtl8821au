@@ -487,7 +487,7 @@ void ODM_ReadAndConfig_MP_8812A_AGC_TAB(struct rtl_priv *rtlpriv)
 
 		// This (offset, data) pair meets the condition.
 		if (v1 < 0xCDCDCDCD)  {
-			odm_ConfigBB_AGC_8812A(rtlpriv, v1, bMaskDWord, v2);
+			odm_ConfigBB_AGC_8821A(rtlpriv, v1, bMaskDWord, v2);
 			continue;
 		} else { // This line is the start line of branch.
 			if (!CheckCondition(Array[i], hex)) {
@@ -503,7 +503,7 @@ void ODM_ReadAndConfig_MP_8812A_AGC_TAB(struct rtl_priv *rtlpriv)
 				READ_NEXT_PAIR(v1, v2, i);
 				while (v2 != 0xDEAD && v2 != 0xCDEF &&
 					v2 != 0xCDCD && i < ArrayLen -2) {
-						odm_ConfigBB_AGC_8812A(rtlpriv, v1, bMaskDWord, v2);
+						odm_ConfigBB_AGC_8821A(rtlpriv, v1, bMaskDWord, v2);
 
 						READ_NEXT_PAIR(v1, v2, i);
 				}

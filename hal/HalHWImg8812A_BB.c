@@ -522,7 +522,7 @@ void ODM_ReadAndConfig_MP_8812A_AGC_TAB(struct rtl_priv *rtlpriv)
 *                           PHY_REG.TXT
 ******************************************************************************/
 
-uint32_t Array_MP_8812A_PHY_REG[] = {
+uint32_t RTL8812AU_PHY_REG_ARRAY[] = {
 		0x800, 0x8020D010,
 		0x804, 0x080112E0,
 		0x808, 0x0E028233,
@@ -771,8 +771,8 @@ void ODM_ReadAndConfig_MP_8812A_PHY_REG(struct rtl_priv *rtlpriv)
 	u8 platform = ODM_CE;
 	u8 _interface = RTW_USB;
 	u8  board = rtlhal->board_type;
-	uint32_t ArrayLen    = sizeof(Array_MP_8812A_PHY_REG)/sizeof(uint32_t);
-	uint32_t *Array       = Array_MP_8812A_PHY_REG;
+	uint32_t ArrayLen    = sizeof(RTL8812AU_PHY_REG_ARRAY)/sizeof(uint32_t);
+	uint32_t *Array       = RTL8812AU_PHY_REG_ARRAY;
 
 
 	hex += board;

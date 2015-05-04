@@ -930,7 +930,7 @@ void ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 *                           PHY_REG_PG_ASUS.TXT
 ******************************************************************************/
 
-uint32_t Array_MP_8812A_PHY_REG_PG_ASUS[] = {
+uint32_t RTL8812AU_PHY_REG_PG_ASUS_ARRAY[] = {
 		0xC20, 0x00000000, 0x34343434,
 		0xC24, 0x00000000, 0x32323232,
 		0xC28, 0x00000000, 0x28303232,
@@ -986,8 +986,8 @@ void ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(struct rtl_priv *rtlpriv)
 	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 
-	uint32_t     ArrayLen    = sizeof(Array_MP_8812A_PHY_REG_PG_ASUS)/sizeof(uint32_t);
-	uint32_t    *Array       = Array_MP_8812A_PHY_REG_PG_ASUS;
+	uint32_t     ArrayLen    = sizeof(RTL8812AU_PHY_REG_PG_ASUS_ARRAY)/sizeof(uint32_t);
+	uint32_t    *Array       = RTL8812AU_PHY_REG_PG_ASUS_ARRAY;
 
 	hex += board;
 	hex += _interface << 8;

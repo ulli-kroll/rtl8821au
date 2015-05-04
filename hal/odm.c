@@ -710,7 +710,7 @@ void ODM_Write_CCK_CCA_Thres(struct _rtw_dm *pDM_Odm, u8	 CurCCK_CCAThres)
 	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
 	if (pDM_DigTable->cur_cck_cca_thres != CurCCK_CCAThres) {	/* modify by Guo.Mingzhi 2012-01-03 */
-		rtl_write_byte(pDM_Odm->rtlpriv, ODM_REG(CCK_CCA, pDM_Odm), CurCCK_CCAThres);
+		rtl_write_byte(pDM_Odm->rtlpriv, ODM_REG_CCK_CCA_11AC, CurCCK_CCAThres);
 	}
 	pDM_DigTable->pre_cck_cca_thres = pDM_DigTable->cur_cck_cca_thres;
 	pDM_DigTable->cur_cck_cca_thres = CurCCK_CCAThres;

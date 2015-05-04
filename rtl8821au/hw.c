@@ -1103,10 +1103,6 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	value32 = rtl_read_dword(rtlpriv, REG_MULTI_FUNC_CTRL);
 	pHalData->PolarityCtl = ((value32 & WL_HWPDN_SL) ? RT_POLARITY_HIGH_ACT : RT_POLARITY_LOW_ACT);
 
-#if 1
-	dump_chip_info(ChipVersion);
-#endif
-
 	memcpy(&pHalData->VersionID, &ChipVersion, sizeof(HAL_VERSION));
 
 	if (IS_1T2R(ChipVersion)) {

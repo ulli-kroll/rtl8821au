@@ -115,8 +115,6 @@ typedef enum _RT_MEDIA_STATUS {
 #define PageNum(_Len, _Size)		(u32)(((_Len)/(_Size)) + ((_Len)&((_Size) - 1) ? 1:0))
 
 
-void dump_chip_info(HAL_VERSION	ChipVersion);
-
 uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
 	IN	struct rtl_priv *rtlpriv,

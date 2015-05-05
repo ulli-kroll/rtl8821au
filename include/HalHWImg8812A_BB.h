@@ -27,8 +27,6 @@ static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex);
 *                           AGC_TAB.TXT
 ******************************************************************************/
 
-void ODM_ReadAndConfig_MP_8812A_AGC_TAB(struct rtl_priv *rtlpriv);
-
 /******************************************************************************
 *                           PHY_REG.TXT
 ******************************************************************************/

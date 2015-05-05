@@ -20,6 +20,7 @@
 
 //#include "Mp_Precomp.h"
 #include <odm_precomp.h>
+#include <../rtl8821au/table.h>
 
 #undef ODM_RT_TRACE
 #define ODM_RT_TRACE(x, ...)	do {} while (0);
@@ -267,7 +268,7 @@ void ODM_ReadAndConfig_MP_8821A_AGC_TAB(struct rtl_priv *rtlpriv)
 	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 
-	uint32_t ArrayLen = sizeof(RTL8821AU_AGC_TAB_ARRAY)/sizeof(uint32_t);
+	uint32_t ArrayLen = RTL8821AU_AGC_TAB_ARRAY_LEN;
 	uint32_t *Array = RTL8821AU_AGC_TAB_ARRAY;
 
 
@@ -505,7 +506,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
 	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 
-	uint32_t     ArrayLen    = sizeof(RTL8821AU_PHY_REG_ARRAY)/sizeof(uint32_t);
+	uint32_t     ArrayLen    = RTL8821AU_PHY_REG_ARRAY_LEN;
 	uint32_t    *Array       = RTL8821AU_PHY_REG_ARRAY;
 
 
@@ -609,8 +610,8 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
 
-	uint32_t ArrayLen    = sizeof(RTL8821AU_PHY_REG_PG_ARRAY)/sizeof(uint32_t);
-	uint32_t *Array       = RTL8821AU_PHY_REG_PG_ARRAY;
+	uint32_t ArrayLen    = RTL8821AU_PHY_REG_PG_ARRAY_LEN;
+	uint32_t *Array      = RTL8821AU_PHY_REG_PG_ARRAY;
 
 #if 0
 	pDM_Odm->PhyRegPgValueType = PHY_REG_PG_EXACT_VALUE;

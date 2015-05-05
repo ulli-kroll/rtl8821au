@@ -117,23 +117,17 @@ void PHY_BB8812_Config_1T(struct rtl_priv *rtlpriv)
 
 static void ODM_ReadAndConfig_PHY_REG(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-
 	ODM_ReadAndConfig_MP_8821A_PHY_REG(rtlpriv);
 }
 
 static void ODM_ReadAndConfig_PHY_AGC_TAB(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-
 	ODM_ReadAndConfig_MP_8821A_AGC_TAB(rtlpriv);
 }
 
 
 static void ODM_ReadAndConfig_PHY_REG_PG(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-
 	ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);
 }
 

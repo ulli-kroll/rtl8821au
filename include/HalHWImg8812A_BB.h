@@ -31,8 +31,6 @@ static BOOLEAN CheckCondition(const uint32_t Condition, const uint32_t Hex);
 *                           PHY_REG.TXT
 ******************************************************************************/
 
-void ODM_ReadAndConfig_MP_8812A_PHY_REG(struct rtl_priv *rtlpriv);
-
 /******************************************************************************
 *                           PHY_REG_PG.TXT
 ******************************************************************************/

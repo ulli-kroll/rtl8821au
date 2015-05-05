@@ -119,10 +119,7 @@ static void ODM_ReadAndConfig_PHY_REG(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-		ODM_ReadAndConfig_MP_8812A_PHY_REG(rtlpriv);
-	else
-		ODM_ReadAndConfig_MP_8821A_PHY_REG(rtlpriv);
+	ODM_ReadAndConfig_MP_8821A_PHY_REG(rtlpriv);
 }
 
 static void ODM_ReadAndConfig_PHY_AGC_TAB(struct rtl_priv *rtlpriv)

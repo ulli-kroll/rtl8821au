@@ -133,19 +133,8 @@ static void ODM_ReadAndConfig_PHY_AGC_TAB(struct rtl_priv *rtlpriv)
 static void ODM_ReadAndConfig_PHY_REG_PG(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm	= &pHalData->odmpriv;
 
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		if (rtlhal->rfe_type == 3 && pDM_Odm->bIsMPChip)
-			ODM_ReadAndConfig_MP_8812A_PHY_REG_PG_ASUS(pDM_Odm->rtlpriv);
-		else
-			ODM_ReadAndConfig_MP_8812A_PHY_REG_PG(pDM_Odm->rtlpriv);
-	}
-
-	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(pDM_Odm->rtlpriv);
-	}
+	ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);
 }
 
 static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)

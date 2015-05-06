@@ -279,10 +279,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 		pDM_Odm->pbGetValueFromOtherMac = (BOOLEAN *)pValue;
 		break;
 
-	case	ODM_CMNINFO_DMSP_IS_MASTER:
-		pDM_Odm->pbMasterOfDMSP = (BOOLEAN *)pValue;
-		break;
-
 	case	ODM_CMNINFO_SCAN:
 		pDM_Odm->pbScanInProcess = (BOOLEAN *)pValue;
 		break;

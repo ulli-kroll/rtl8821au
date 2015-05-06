@@ -1609,7 +1609,6 @@ struct _rtw_dm {
 	// Common info for 92D DMSP
 
 	BOOLEAN			*pbGetValueFromOtherMac;
-	BOOLEAN			*pbMasterOfDMSP; //MAC0: master, MAC1: slave
 	// Common info for Status
 	BOOLEAN			*pbScanInProcess;
 	BOOLEAN			*pbPowerSaving;

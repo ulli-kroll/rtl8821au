@@ -770,16 +770,11 @@ void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
 		} else {
 			pHalData->AntDivCfg = registry_par->antdiv_cfg;
 		}
-
-		pHalData->TRxAntDivType = PROMContent[EEPROM_RF_ANTENNA_OPT_8812];  /* todo by page */
-		if (pHalData->TRxAntDivType == 0xFF)
-			pHalData->TRxAntDivType = FIXED_HW_ANTDIV; /* For 88EE, 1Tx and 1RxCG are fixed.(1Ant, Tx and RxCG are both on aux port) */
 	} else {
 		pHalData->AntDivCfg = 0;
-		/* pHalData->TRxAntDivType = pHalData->TRxAntDivType; // ????? */
 	}
 
-	DBG_871X("SWAS: bHwAntDiv = %x, TRxAntDivType = %x\n", pHalData->AntDivCfg, pHalData->TRxAntDivType);
+	DBG_871X("SWAS: bHwAntDiv = %x\n", pHalData->AntDivCfg);
 }
 
 void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,

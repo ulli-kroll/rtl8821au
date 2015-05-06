@@ -33,10 +33,7 @@ typedef enum _PWRTRACK_CONTROL_METHOD {
 } PWRTRACK_METHOD;
 
 
-void
-ODM_ClearTxPowerTrackingState(
-	IN struct _rtw_dm *	pDM_Odm
-	);
+void ODM_ClearTxPowerTrackingState(struct rtl_priv *rtlpriv);
 
 
 #define ODM_TARGET_CHNL_NUM_2G_5G	59

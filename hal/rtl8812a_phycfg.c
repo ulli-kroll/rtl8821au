@@ -1860,7 +1860,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 			bSetChnlBW = _FALSE;
 		}
 
-		ODM_ClearTxPowerTrackingState(&pHalData->odmpriv);
+		ODM_ClearTxPowerTrackingState(rtlpriv);
 		PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 		if (IS_HARDWARE_TYPE_8812(rtlhal))

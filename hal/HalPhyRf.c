@@ -44,11 +44,10 @@
  *        need to call this function.
  * ======================================================================
  */
-void ODM_ClearTxPowerTrackingState(struct _rtw_dm *pDM_Odm)
+void ODM_ClearTxPowerTrackingState(struct rtl_priv *rtlpriv)
 {
-	struct rtl_efuse *efuse = rtl_efuse(pDM_Odm->rtlpriv);
-	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->rtlpriv);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(pDM_Odm->rtlpriv);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 	u8 p = 0;
 
 	rtldm->swing_idx_cck_base = rtldm->default_cck_index;

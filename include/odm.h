@@ -355,7 +355,6 @@ typedef enum _ODM_Common_Info_Definition
 	ODM_CMNINFO_DBG_LEVEL,				// uint32_t
 	ODM_CMNINFO_RA_THRESHOLD_HIGH,		// u8
 	ODM_CMNINFO_RA_THRESHOLD_LOW,		// u8
-	ODM_CMNINFO_RF_ANTENNA_TYPE,		// u8
 //------------CALL BY VALUE-------------//
 
 	//

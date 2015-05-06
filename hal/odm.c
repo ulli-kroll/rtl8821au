@@ -213,10 +213,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		pDM_Odm->bIsMPChip = (u8)Value;
 		break;
 
-	case    ODM_CMNINFO_RF_ANTENNA_TYPE:
-		pDM_Odm->AntDivType = (u8)Value;
-		break;
-
 	case	ODM_CMNINFO_BOARD_TYPE:
 		rtlhal->board_type = (u8)Value;
 		break;

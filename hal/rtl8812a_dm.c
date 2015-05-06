@@ -104,8 +104,6 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_PATCH_ID,pEEPROM->CustomerID);
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_BWIFI_TEST,rtlpriv->registrypriv.wifi_spec);
 
- 	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RF_ANTENNA_TYPE, pHalData->TRxAntDivType);
-
 	pdmpriv->InitODMFlag =	ODM_RF_CALIBRATION		|
 							ODM_RF_TX_PWR_TRACK	//|
 							;
@@ -150,7 +148,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_MP_MODE,&(rtlpriv->registrypriv.mp_mode));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SCAN,&(pmlmepriv->bScanInProcess));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_POWER_SAVING,&(pwrctrlpriv->bpower_saving));
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_RF_ANTENNA_TYPE, pHalData->TRxAntDivType);
 
 	for (i = 0; i < NUM_STA; i++) {
 		/* pDM_Odm->pODM_StaInfo[i] = NULL; */

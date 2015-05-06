@@ -1586,7 +1586,6 @@ struct _rtw_dm {
 	BOOLEAN			bWIFITest;
 
 	uint32_t			BK_SupportAbility;
-	u8			AntDivType;
 //-----------HOOK BEFORE REG INIT-----------//
 
 	//

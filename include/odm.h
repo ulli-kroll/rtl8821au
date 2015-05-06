@@ -340,7 +340,6 @@ typedef enum _ODM_Common_Info_Definition
 
 	ODM_CMNINFO_SCAN,
 	ODM_CMNINFO_POWER_SAVING,
-	ODM_CMNINFO_ONE_PATH_CCA,			// ODM_CCA_PATH_E
 	ODM_CMNINFO_INIT_ON,
 	ODM_CMNINFO_ANT_TEST,
 	ODM_CMNINFO_MP_MODE,
@@ -505,14 +504,6 @@ typedef enum tag_Bandwidth_Definition
 // ODM_CMNINFO_CHNL
 
 
-
-// ODM_CMNINFO_ONE_PATH_CCA
-typedef enum tag_CCA_Path
-{
-	ODM_CCA_2R			= 0,
-	ODM_CCA_1R_A			= 1,
-	ODM_CCA_1R_B			= 2,
-}ODM_CCA_PATH_E;
 
 
 typedef struct _ODM_RA_Info_

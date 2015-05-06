@@ -1606,8 +1606,6 @@ struct _rtw_dm {
 	// Common info for Status
 	BOOLEAN			*pbScanInProcess;
 	BOOLEAN			*pbPowerSaving;
-	// CCA Path 2-path/path-A/path-B = 0/1/2; using ODM_CCA_PATH_E.
-	u8			*pOnePathCCA;
 	//pMgntInfo->AntennaTest
 	u8			*pAntennaTest;
 	u8			*mp_mode;

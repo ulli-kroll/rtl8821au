@@ -265,10 +265,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 		pDM_Odm->pbPowerSaving = (BOOLEAN *)pValue;
 		break;
 
-	case	ODM_CMNINFO_ONE_PATH_CCA:
-		pDM_Odm->pOnePathCCA = (u8 *)pValue;
-		break;
-
 	case	ODM_CMNINFO_INIT_ON:
 		pDM_Odm->pinit_adpt_in_progress =  (BOOLEAN *)pValue;
 		break;

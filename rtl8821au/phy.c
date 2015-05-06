@@ -4518,8 +4518,6 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 	if (IS_NORMAL_CHIP(pHalData->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		s8	BBDiffBetweenBand = 0;
 		struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
-		struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
 		rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000,
 					 phy_get_tx_swing_8821au(rtlpriv, (enum band_type)Band, RF90_PATH_A)); // 0xC1C[31:21]

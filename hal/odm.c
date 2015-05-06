@@ -235,9 +235,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 	case 	ODM_CMNINFO_PATCH_ID:
 		pDM_Odm->PatchID = (u8)Value;
 		break;
-	case 	ODM_CMNINFO_BINHCT_TEST:
-		pDM_Odm->bInHctTest = (BOOLEAN)Value;
-		break;
 	case 	ODM_CMNINFO_BWIFI_TEST:
 		pDM_Odm->bWIFITest = (BOOLEAN)Value;
 		break;

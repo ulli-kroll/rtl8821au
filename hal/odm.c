@@ -311,10 +311,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 		pDM_Odm->pAntennaTest =  (u8 *)pValue;
 		break;
 
-	case	ODM_CMNINFO_NET_CLOSED:
-		pDM_Odm->pbNet_closed = (BOOLEAN *)pValue;
-		break;
-
 	case 	ODM_CMNINFO_FORCED_RATE:
 		pDM_Odm->pForcedDataRate = (u16 *)pValue;
 		break;

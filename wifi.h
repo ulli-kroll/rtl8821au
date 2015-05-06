@@ -1597,7 +1597,6 @@ struct _rtw_dm {
 //--------- POINTER REFERENCE-----------//
 
 	u8			u8_temp;
-	BOOLEAN			BOOLEAN_temp;
 
 	// MAC PHY Mode SMSP/DMSP/DMDP = 0/1/2
 	u8			*pMacPhyMode;
@@ -1618,7 +1617,6 @@ struct _rtw_dm {
 	u8			*pOnePathCCA;
 	//pMgntInfo->AntennaTest
 	u8			*pAntennaTest;
-	BOOLEAN			*pbNet_closed;
 	u8			*mp_mode;
 	//u8			*pAidMap;
 //--------- POINTER REFERENCE-----------//

@@ -54,7 +54,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-	uint8_t	cut_ver,fab_ver;
+	uint8_t	fab_ver;
 	uint8_t	BoardType = ODM_BOARD_DEFAULT;
 
 	/*
@@ -72,13 +72,8 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 
 	fab_ver = ODM_TSMC;
-	if (IS_VENDOR_8812A_C_CUT(rtlpriv))
-		cut_ver = ODM_CUT_C;
-	else
-		cut_ver = ODM_CUT_A;
 
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_FAB_VER,fab_ver);
-	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_CUT_VER,cut_ver);
 
 	ODM_CmnInfoInit(pDM_Odm,	ODM_CMNINFO_MP_TEST_CHIP,IS_NORMAL_CHIP(pHalData->VersionID));
 

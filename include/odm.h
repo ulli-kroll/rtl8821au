@@ -323,7 +323,6 @@ typedef enum _ODM_Common_Info_Definition
 	ODM_CMNINFO_ABILITY,					// ODM_ABILITY_E
 	ODM_CMNINFO_MP_TEST_CHIP,
 	ODM_CMNINFO_IC_TYPE,					// ODM_IC_TYPE_E
-	ODM_CMNINFO_CUT_VER,					// ODM_CUT_VERSION_E
 	ODM_CMNINFO_FAB_VER,					// ODM_FAB_E
 	ODM_CMNINFO_BOARD_TYPE,				// ODM_BOARD_TYPE_E
 	ODM_CMNINFO_EXT_TRSW,
@@ -425,19 +424,6 @@ typedef enum tag_ODM_Support_IC_Type_Definition
 }ODM_IC_TYPE_E;
 
 #define ODM_IC_11AC_SERIES		(ODM_RTL8812 | ODM_RTL8821|ODM_RTL8813A)
-
-//ODM_CMNINFO_CUT_VER
-typedef enum tag_ODM_Cut_Version_Definition
-{
-	ODM_CUT_A 		=	1,
-	ODM_CUT_B 		=	2,
-	ODM_CUT_C 		=	3,
-	ODM_CUT_D 		=	4,
-	ODM_CUT_E 		=	5,
-	ODM_CUT_F 		=	6,
-	ODM_CUT_I 		=	9,
-	ODM_CUT_TEST 	=	7,
-}ODM_CUT_VERSION_E;
 
 // ODM_CMNINFO_FAB_VER
 typedef enum tag_ODM_Fab_Version_Definition

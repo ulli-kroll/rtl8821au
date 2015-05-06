@@ -213,10 +213,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		pDM_Odm->bIsMPChip = (u8)Value;
 		break;
 
-	case	ODM_CMNINFO_CUT_VER:
-		pDM_Odm->CutVersion = (u8)Value;
-		break;
-
 	case	ODM_CMNINFO_FAB_VER:
 		pDM_Odm->FabVersion = (u8)Value;
 		break;

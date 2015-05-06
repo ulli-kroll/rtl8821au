@@ -333,7 +333,6 @@ typedef enum _ODM_Common_Info_Definition
 	// Dynamic value:
 	//
 //--------- POINTER REFERENCE-----------//
-	ODM_CMNINFO_MAC_PHY_MODE,			// ODM_MAC_PHY_MODE_E
 	ODM_CMNINFO_WM_MODE,				// ODM_WIRELESS_MODE_E
 	ODM_CMNINFO_SEC_MODE,				// ODM_SECURITY_E
 	ODM_CMNINFO_CHNL,

@@ -1595,8 +1595,6 @@ struct _rtw_dm {
 
 	u8			u8_temp;
 
-	// MAC PHY Mode SMSP/DMSP/DMDP = 0/1/2
-	u8			*pMacPhyMode;
 	// Wireless mode B/G/A/N = BIT0/BIT1/BIT2/BIT3
 	u8			*pWirelessMode; //ODM_WIRELESS_MODE_E
 	// Security mode Open/WEP/AES/TKIP = 0/1/2/3

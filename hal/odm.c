@@ -162,8 +162,6 @@ void odm_DIGInit(struct _rtw_dm *pDM_Odm);
 void odm_AdaptivityInit(struct _rtw_dm *pDM_Odm);
 /* END---------------DIG--------------------------- */
 
-/* START-------BB POWER SAVE----------------------- */
-void odm_1R_CCA(struct _rtw_dm *pDM_Odm);
 /* END---------BB POWER SAVE----------------------- */
 
 /* START-----------------PSD----------------------- */
@@ -673,45 +671,6 @@ void ODM_Write_CCK_CCA_Thres(struct _rtw_dm *pDM_Odm, u8	 CurCCK_CCAThres)
 	pDM_DigTable->pre_cck_cca_thres = pDM_DigTable->cur_cck_cca_thres;
 	pDM_DigTable->cur_cck_cca_thres = CurCCK_CCAThres;
 
-}
-
-void odm_1R_CCA(struct _rtw_dm *pDM_Odm)
-{
-	pPS_T	pDM_PSTable = &pDM_Odm->DM_PSTable;
-
-	if (pDM_Odm->RSSI_Min != 0xFF) {
-		if (pDM_PSTable->PreCCAState == CCA_2R) {
-			if (pDM_Odm->RSSI_Min >= 35)
-				pDM_PSTable->CurCCAState = CCA_1R;
-			else
-				pDM_PSTable->CurCCAState = CCA_2R;
-
-		} else {
-			if (pDM_Odm->RSSI_Min <= 30)
-				pDM_PSTable->CurCCAState = CCA_2R;
-			else
-				pDM_PSTable->CurCCAState = CCA_1R;
-		}
-	} else {
-		pDM_PSTable->CurCCAState = CCA_MAX;
-	}
-
-	if (pDM_PSTable->PreCCAState != pDM_PSTable->CurCCAState) {
-		if (pDM_PSTable->CurCCAState == CCA_1R) {
-			if (pDM_Odm->rtlpriv->phy.rf_type == ODM_2T2R) {
-				rtl_set_bbreg(pDM_Odm->rtlpriv, 0xc04  , MASKBYTE0, 0x13);
-				/* rtl_set_bbreg(rtlpriv, 0xe70, MASKBYTE3, 0x20); */
-			} else {
-				rtl_set_bbreg(pDM_Odm->rtlpriv, 0xc04  , MASKBYTE0, 0x23);
-				/* rtl_set_bbreg(rtlpriv, 0xe70, 0x7fc00000, 0x10c); */ /* Set RegE70[30:22] = 9b'100001100 */
-			}
-		} else {
-			rtl_set_bbreg(pDM_Odm->rtlpriv, 0xc04  , MASKBYTE0, 0x33);
-			/* rtl_set_bbreg(rtlpriv,0xe70, MASKBYTE3, 0x63); */
-		}
-		pDM_PSTable->PreCCAState = pDM_PSTable->CurCCAState;
-	}
-	/* ODM_RT_TRACE(pDM_Odm,	COMP_BB_POWERSAVING, DBG_LOUD, ("CCAStage = %s\n",(pDM_PSTable->CurCCAState==0)?"1RCCA":"2RCCA")); */
 }
 
 /*

@@ -322,7 +322,6 @@ typedef enum _ODM_Common_Info_Definition
 	//-----------HOOK BEFORE REG INIT-----------//
 	ODM_CMNINFO_ABILITY,					// ODM_ABILITY_E
 	ODM_CMNINFO_MP_TEST_CHIP,
-	ODM_CMNINFO_IC_TYPE,					// ODM_IC_TYPE_E
 	ODM_CMNINFO_BOARD_TYPE,				// ODM_BOARD_TYPE_E
 	ODM_CMNINFO_EXT_TRSW,
 	ODM_CMNINFO_PATCH_ID,				//CUSTOMER ID
@@ -412,16 +411,6 @@ typedef enum tag_ODM_Support_Interface_Definition
 {
 	ODM_ITRF_USB 	=	0x2,
 }ODM_INTERFACE_E;
-
-// ODM_CMNINFO_IC_TYPE
-typedef enum tag_ODM_Support_IC_Type_Definition
-{
-	ODM_RTL8812 	=	BIT5,
-	ODM_RTL8821 	=	BIT6,
-	ODM_RTL8813A	=	BIT9
-}ODM_IC_TYPE_E;
-
-#define ODM_IC_11AC_SERIES		(ODM_RTL8812 | ODM_RTL8821|ODM_RTL8813A)
 
 // ODM_CMNINFO_RF_TYPE
 //

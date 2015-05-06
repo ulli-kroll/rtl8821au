@@ -64,11 +64,6 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 	pDM_Odm->rtlpriv = rtlpriv;
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_IC_TYPE, ODM_RTL8812);
-	else if (IS_HARDWARE_TYPE_8821(rtlhal))
-		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_IC_TYPE, ODM_RTL8821);
-
 	ODM_CmnInfoInit(pDM_Odm,	ODM_CMNINFO_MP_TEST_CHIP,IS_NORMAL_CHIP(pHalData->VersionID));
 
 	/* 1 ======= BoardType: ODM_CMNINFO_BOARD_TYPE ======= */

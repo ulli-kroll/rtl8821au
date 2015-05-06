@@ -1578,8 +1578,6 @@ struct _rtw_dm {
 	u8			SupportInterface;
 	// Cut Version TestChip/A-cut/B-cut... = 0/1/2/3/...
 	u8			CutVersion;
-	// Fab Version TSMC/UMC = 0/1
-	u8			FabVersion;
 
 	// with external TRSW  NO/Yes = 0/1
 	u8			ExtTRSW;

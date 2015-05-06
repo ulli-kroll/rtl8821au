@@ -54,7 +54,6 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-	uint8_t	fab_ver;
 	uint8_t	BoardType = ODM_BOARD_DEFAULT;
 
 	/*
@@ -69,11 +68,6 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_IC_TYPE, ODM_RTL8812);
 	else if (IS_HARDWARE_TYPE_8821(rtlhal))
 		ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_IC_TYPE, ODM_RTL8821);
-
-
-	fab_ver = ODM_TSMC;
-
-	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_FAB_VER,fab_ver);
 
 	ODM_CmnInfoInit(pDM_Odm,	ODM_CMNINFO_MP_TEST_CHIP,IS_NORMAL_CHIP(pHalData->VersionID));
 

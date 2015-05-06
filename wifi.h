@@ -1608,7 +1608,6 @@ struct _rtw_dm {
 	u8			*pChannel;	//central channel number
 	// Common info for 92D DMSP
 
-	BOOLEAN			*pbGetValueFromOtherMac;
 	// Common info for Status
 	BOOLEAN			*pbScanInProcess;
 	BOOLEAN			*pbPowerSaving;

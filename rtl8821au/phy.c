@@ -4535,7 +4535,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 				rtldm->default_ofdm_index += BBDiffBetweenBand*2;
 			}
 
-			ODM_ClearTxPowerTrackingState(rtlpriv);
+			rtl8821au_dm_clean_txpower_tracking_state(rtlpriv);
 		}
 	}
 

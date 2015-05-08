@@ -44,7 +44,7 @@
  *        need to call this function.
  * ======================================================================
  */
-void ODM_ClearTxPowerTrackingState(struct rtl_priv *rtlpriv)
+void rtl8821au_dm_clean_txpower_tracking_state(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);

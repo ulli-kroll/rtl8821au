@@ -1,5 +1,6 @@
 #include <rtl8812a_hal.h>
 #include "phy.h"
+#include "dm.h"
 #include "table.h"
 #include "rf.h"
 #include "reg.h"

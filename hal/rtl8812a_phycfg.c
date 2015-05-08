@@ -21,6 +21,7 @@
 
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/phy.h>
+#include <../rtl8821au/dm.h>
 #include <../rtl8821au/reg.h>
 #include <../rtl8821au/rf.h>
 #include <../wifi.h>

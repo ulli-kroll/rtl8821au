@@ -193,51 +193,51 @@ static void _rtl_dm_diginit(struct _rtw_dm *pDM_Odm)
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
-	/* pDM_DigTable->Dig_Enable_Flag = TRUE; */
-	/* pDM_DigTable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
-	pDM_DigTable->cur_igvalue = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
-	/* pDM_DigTable->PreIGValue = 0x0; */
-	/* pDM_DigTable->CurSTAConnectState = pDM_DigTable->PreSTAConnectState = DIG_STA_DISCONNECT; */
-	/* pDM_DigTable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */
-	pDM_DigTable->rssi_lowthresh 	= DM_DIG_THRESH_LOW;
-	pDM_DigTable->rssi_highthresh	= DM_DIG_THRESH_HIGH;
-	pDM_DigTable->fa_lowthresh	= DM_FALSEALARM_THRESH_LOW;
-	pDM_DigTable->fa_highthresh	= DM_FALSEALARM_THRESH_HIGH;
+	/* dm_digtable->Dig_Enable_Flag = TRUE; */
+	/* dm_digtable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
+	dm_digtable->cur_igvalue = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
+	/* dm_digtable->PreIGValue = 0x0; */
+	/* dm_digtable->CurSTAConnectState = dm_digtable->PreSTAConnectState = DIG_STA_DISCONNECT; */
+	/* dm_digtable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */
+	dm_digtable->rssi_lowthresh 	= DM_DIG_THRESH_LOW;
+	dm_digtable->rssi_highthresh	= DM_DIG_THRESH_HIGH;
+	dm_digtable->fa_lowthresh	= DM_FALSEALARM_THRESH_LOW;
+	dm_digtable->fa_highthresh	= DM_FALSEALARM_THRESH_HIGH;
 
 	if (rtlhal->board_type & (ODM_BOARD_EXT_PA|ODM_BOARD_EXT_LNA)) {
-		pDM_DigTable->rx_gain_max = DM_DIG_MAX_NIC;
-		pDM_DigTable->rx_gain_min = DM_DIG_MIN_NIC;
+		dm_digtable->rx_gain_max = DM_DIG_MAX_NIC;
+		dm_digtable->rx_gain_min = DM_DIG_MIN_NIC;
 	} else {
-		pDM_DigTable->rx_gain_max = DM_DIG_MAX_NIC;
-		pDM_DigTable->rx_gain_min = DM_DIG_MIN_NIC;
+		dm_digtable->rx_gain_max = DM_DIG_MAX_NIC;
+		dm_digtable->rx_gain_min = DM_DIG_MIN_NIC;
 	}
-	pDM_DigTable->back_val = DM_DIG_BACKOFF_DEFAULT;
-	pDM_DigTable->back_range_max = DM_DIG_BACKOFF_MAX;
-	pDM_DigTable->back_range_min = DM_DIG_BACKOFF_MIN;
-	pDM_DigTable->pre_cck_cca_thres = 0xFF;
-	pDM_DigTable->cur_cck_cca_thres = 0x83;
-	pDM_DigTable->forbidden_igi= DM_DIG_MIN_NIC;
-	pDM_DigTable->large_fa_hit = 0;
-	pDM_DigTable->recover_cnt = 0;
-	pDM_DigTable->dig_min_0 = DM_DIG_MIN_NIC;
-	pDM_DigTable->dig_min_1 = DM_DIG_MIN_NIC;
-	pDM_DigTable->media_connect_0 = FALSE;
-	pDM_DigTable->media_connect_1 = FALSE;
+	dm_digtable->back_val = DM_DIG_BACKOFF_DEFAULT;
+	dm_digtable->back_range_max = DM_DIG_BACKOFF_MAX;
+	dm_digtable->back_range_min = DM_DIG_BACKOFF_MIN;
+	dm_digtable->pre_cck_cca_thres = 0xFF;
+	dm_digtable->cur_cck_cca_thres = 0x83;
+	dm_digtable->forbidden_igi= DM_DIG_MIN_NIC;
+	dm_digtable->large_fa_hit = 0;
+	dm_digtable->recover_cnt = 0;
+	dm_digtable->dig_min_0 = DM_DIG_MIN_NIC;
+	dm_digtable->dig_min_1 = DM_DIG_MIN_NIC;
+	dm_digtable->media_connect_0 = FALSE;
+	dm_digtable->media_connect_1 = FALSE;
 
 	/* To Initialize pDM_Odm->bDMInitialGainEnable == FALSE to avoid DIG error */
 	pDM_Odm->bDMInitialGainEnable = TRUE;
 
 	/* To Initi BT30 IGI */
-	pDM_DigTable->bt30_cur_igi = 0x32;
+	dm_digtable->bt30_cur_igi = 0x32;
 
 }
 
 static void odm_AdaptivityInit(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;	
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
 	pDM_Odm->TH_H = 0xfa; 		/* -6dB */
 	pDM_Odm->TH_L = 0xfd; 		/* -3dB */
@@ -250,7 +250,7 @@ static void odm_AdaptivityInit(struct rtl_priv *rtlpriv)
 static void rtl8821au_dm_init_rate_adaptive_mask(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;	
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 	struct rate_adaptive *p_ra = &(rtlpriv->ra);
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
 
@@ -342,10 +342,10 @@ static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct _rtw_dm
 void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
-	
+
 	/* 2012.05.03 Luke: For all IC series */
 	rtl8821au_cm_common_info_self_update(pDM_Odm);
-	/* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */	
+	/* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */
 	_rtl_dm_diginit(pDM_Odm);
 	odm_AdaptivityInit(rtlpriv);
 	rtl8821au_dm_init_rate_adaptive_mask(rtlpriv);
@@ -461,30 +461,30 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 		else
 			PwrTrackingLimit = 24;
 	}
-#if 0	
+#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit));
 #endif
 	if (Method == BBSWING) {
-#if 0		
+#if 0
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8812A\n"));
 #endif
 		if (RFPath == RF90_PATH_A) {
 			finalBbSwingIdx[RF90_PATH_A] = (rtldm->ofdm_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_A];
-#if 0			
+#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
 				rtldm->OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
 #endif
 			rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		} else {
 			finalBbSwingIdx[RF90_PATH_B] = (rtldm->ofdm_index[RF90_PATH_B] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_B];
-#if 0			
+#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_B]=%d\n",
 				rtldm->OFDM_index[RF90_PATH_B], finalBbSwingIdx[RF90_PATH_B]));
 #endif
 			rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_B]]);
 		}
 	} else if (Method == MIX_MODE) {
-#if 0		
+#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
 				rtldm->DefaultOfdmIndex, rtldm->absolute_ofdm_swing_idx[RFPath], RFPath));
 #endif
@@ -505,7 +505,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 #if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif				
+#endif
 				} else if (Final_OFDM_Swing_Index < 0) {
 					rtldm->remnant_cck_idx = Final_OFDM_Swing_Index;            /* CCK Follow the same compensate value as Path A */
 					rtldm->remnant_ofdm_swing_idx[RFPath] = Final_OFDM_Swing_Index;
@@ -519,7 +519,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 #if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif					
+#endif
 				} else 	{
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[Final_OFDM_Swing_Index]);
 #if 0
@@ -536,7 +536,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 						rtldm->modify_txagc_flag_path_a = FALSE;
 #if 0
 						ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
-#endif						
+#endif
 					}
 				}
 			}
@@ -552,7 +552,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					/* Set TxAGC Page E{}; */
 #if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif					
+#endif
 				} else if (Final_OFDM_Swing_Index < 0) {
 					rtldm->remnant_ofdm_swing_idx[RFPath] = Final_OFDM_Swing_Index;
 
@@ -563,7 +563,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					/* Set TxAGC Page E{}; */
 #if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif					
+#endif
 				} else {
 					rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[Final_OFDM_Swing_Index]);
 #if 0
@@ -578,7 +578,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 						rtldm->modify_txagc_flag_path_b = FALSE;
 #if 0
 						ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
-#endif						
+#endif
 					}
 				}
 			}
@@ -603,69 +603,69 @@ static u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
 };
 
 static u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DELTA_SWINGIDX_SIZE] = {
-	{0, 1, 1, 2, 2, 3, 3, 4, 5,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 2, 3, 3, 4, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9,  9, 10, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9,  9, 10,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
 static u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DELTA_SWINGIDX_SIZE] = {
-	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15, 15},
-	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15, 15},
-	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15, 15},
 };
 
 static u8 rtl8812ae_delta_swing_table_idx_5ga_p[][DELTA_SWINGIDX_SIZE] = {
-	{0, 1, 1, 2, 2, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11, 
+	{0, 1, 1, 2, 2, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11,
 	11, 12, 12, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gb_n[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,
 	7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11
 };
-	
+
 static u8 rtl8812au_delta_swing_table_idx_24gb_p[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
-	
+
 static u8 rtl8812au_delta_swing_table_idx_24ga_n[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24ga_p[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gcckb_n[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,
 	7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gcckb_p[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gccka_n[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10
 };
-	
+
 static u8 rtl8812au_delta_swing_table_idx_24gccka_p[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 
@@ -674,78 +674,78 @@ static u8 rtl8812au_delta_swing_table_idx_24gccka_p[] = {
 ******************************************************************************/
 
 static u8 rtl8812ae_delta_swing_table_idx_5gb_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
-	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 12, 13, 13, 14, 15, 16, 16, 17, 17, 18, 18},
-	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  6,  7,  7,  8,  9, 
+	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  6,  7,  7,  8,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
 static u8 rtl8812ae_delta_swing_table_idx_5gb_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
-	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  9,  9, 10, 10, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  9,  9, 10, 10,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  6,  7,  7,  8,  9, 
+	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  6,  7,  7,  8,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
 static u8 rtl8812ae_delta_swing_table_idx_5ga_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
-	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 13, 14, 15, 16, 16, 17, 17, 18, 18},
-	{0, 1, 1, 2, 3, 3, 4, 4, 5,  6,  6,  7,  7,  8,  9,  9, 
+	{0, 1, 1, 2, 3, 3, 4, 4, 5,  6,  6,  7,  7,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 16, 16, 17, 17},
-	{0, 1, 1, 2, 3, 3, 4, 4, 5,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 3, 3, 4, 4, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 12, 13, 13, 14, 14, 15, 15, 16, 17, 18, 18},
 };
 
 static u8 rtl8812ae_delta_swing_table_idx_5ga_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
-	{0, 1, 1, 2, 2, 3, 4, 5, 6,  7,  7,  8,  9,  9, 10, 10, 
+	{0, 1, 1, 2, 2, 3, 4, 5, 6,  7,  7,  8,  9,  9, 10, 10,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 2, 3, 4, 4, 5, 5, 6,  7,  7,  8,  9,  9, 10, 11, 
+	{0, 1, 2, 3, 4, 4, 5, 5, 6,  7,  7,  8,  9,  9, 10, 11,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 2, 3, 4, 4, 5, 5, 6,  7,  7,  8,  9,  9, 10, 11, 
+	{0, 1, 2, 3, 4, 4, 5, 5, 6,  7,  7,  8,  9,  9, 10, 11,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gb_n_rfe3[] = {
-	0, 1, 1, 2, 2, 3, 3, 4, 4,  4,  5,  5,  6,  6,  6,  7,  
+	0, 1, 1, 2, 2, 3, 3, 4, 4,  4,  5,  5,  6,  6,  6,  7,
 	7,  7,  8,  8,  9,  9, 10, 11, 12, 12, 13, 14, 15, 15
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gb_p_rfe3[] = {
-	0, 1, 1, 2, 2, 2, 2, 3, 3,  3,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 2, 3, 3,  3,  4,  4,  5,  5,  5,  6,
 	6,  7,  7,  8,  9, 10, 10, 10, 10, 11, 11, 11, 11, 11
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24ga_n_rfe3[] = {
-	0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  6,  7,  7,  8,  8,  9, 
+	0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  6,  7,  7,  8,  8,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 13, 13, 14, 14, 15, 15
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24ga_p_rfe3[] = {
-	0, 0, 1, 1, 1, 2, 2, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 0, 1, 1, 1, 2, 2, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gcckb_n_rfe3[] = {
-	0, 1, 1, 2, 2, 3, 3, 4, 4,  4,  5,  5,  6,  6,  6,  7,  
+	0, 1, 1, 2, 2, 3, 3, 4, 4,  4,  5,  5,  6,  6,  6,  7,
 	7,  7,  8,  8,  9,  9, 10, 11, 12, 12, 13, 14, 15, 15
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gcckb_p_rfe3[] = {
-	0, 1, 1, 2, 2, 2, 2, 3, 3,  3,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 2, 3, 3,  3,  4,  4,  5,  5,  5,  6,
 	6,  7,  7,  8,  9, 10, 10, 10, 10, 11, 11, 11, 11, 11
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gccka_n_rfe3[] = {
-	0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  6,  7,  7,  8,  8,  9, 
+	0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  6,  7,  7,  8,  8,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 13, 13, 14, 14, 15, 15
 };
 
 static u8 rtl8812au_delta_swing_table_idx_24gccka_p_rfe3[] = {
-	0, 0, 1, 1, 1, 2, 2, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 0, 1, 1, 1, 2, 2, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11
 };
 
@@ -757,8 +757,8 @@ void rtl8812au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;	
-	
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
+
 	u16	rate = *(pDM_Odm->pForcedDataRate);
 	u8         	channel   		 = rtlpriv->phy.current_channel;
 
@@ -895,20 +895,20 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 		else
 			PwrTrackingLimit = 24;
 	}
-#if 0	
+#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit));
 #endif
 	if (Method == BBSWING) {
 		if (RFPath == RF90_PATH_A) {
 			finalBbSwingIdx[RF90_PATH_A] = (rtldm->ofdm_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_A];
-#if 0			
+#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
 				rtldm->OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
 #endif
 			rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		}
 	} else if (Method == MIX_MODE) {
-#if 0		
+#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
 				rtldm->DefaultOfdmIndex, rtldm->Aboslute_OFDMSwingIdx[RFPath], RFPath));
 #endif
@@ -930,7 +930,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 #if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif					
+#endif
 				} else if (Final_OFDM_Swing_Index < 0) {
 					rtldm->remnant_cck_idx = Final_OFDM_Swing_Index;            /* CCK Follow the same compensate value as Path A */
 					rtldm->remnant_ofdm_swing_idx[RFPath] = Final_OFDM_Swing_Index;
@@ -944,7 +944,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 #if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif					
+#endif
 				} else {
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[Final_OFDM_Swing_Index]);
 #if 0
@@ -962,7 +962,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 						rtldm->modify_txagc_flag_path_a = FALSE;
 #if 0
 						ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
-#endif						
+#endif
 					}
 				}
 			}
@@ -978,78 +978,78 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 ******************************************************************************/
 
 static u8 rtl8821au_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
-	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 14, 14, 14, 14},
-	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9,  9, 10, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9,  9, 10,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
 static u8 rtl8821au_delta_swing_table_idx_5gb_p[][DELTA_SWINGIDX_SIZE] = {
-	{0, 1, 1, 2, 2, 3, 3, 4, 5,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 2, 3, 3, 4, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
-	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9,  9, 10, 
+	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9,  9, 10,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
 static u8 rtl8821au_delta_swing_table_idx_5ga_n[][DELTA_SWINGIDX_SIZE] = {
-	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  
+	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,
 	9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15},
-	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  
+	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,
 	9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15},
-	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  
+	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,
 	9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15},
 };
 
 static u8 rtl8821au_delta_swing_table_idx_5ga_p[][DELTA_SWINGIDX_SIZE] = {
-	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16, 
+	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16,
 	16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16},
-	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16, 
+	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16,
 	16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16},
-	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16, 
+	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16,
 	16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16},
 };
 
 static u8 rtl8821au_delta_swing_table_idx_24gb_n[]    = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,
 	7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11
 };
 
 static u8 rtl8821au_delta_swing_table_idx_24gb_p[]    = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 
 static u8 rtl8821au_delta_swing_table_idx_24ga_n[]    = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10
 };
 
 static u8 rtl8821au_delta_swing_table_idx_24ga_p[]    = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 
 static u8 rtl8821au_delta_swing_table_idx_24gcckb_n[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  5,  5,  5,  6,  6,
 	7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 11, 11, 11, 11
 };
 
 static u8 rtl8821au_delta_swing_table_idx_24gcckb_p[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 
 static u8 rtl8821au_delta_swing_table_idx_24gccka_n[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,  
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  6,  7,  7,  7,  8,  8,  9, 10, 10, 10, 10, 10, 10
 };
 
 static u8 rtl8821au_delta_swing_table_idx_24gccka_p[] = {
-	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6, 
+	0, 1, 1, 2, 2, 2, 3, 3, 3,  4,  4,  4,  5,  5,  5,  6,
 	6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7
 };
 
@@ -1201,14 +1201,14 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	rtl8812au_get_delta_swing_table(rtlpriv, (u8 **)&up_a, (u8 **)&down_a,
 					 (u8 **)&up_b, (u8 **)&down_b);
 
-#if 0		/* ULLI : only writing, no use */		
+#if 0		/* ULLI : only writing, no use */
 	rtldm->TXPowerTrackingCallbackCnt++; /* cosa add for debug */
-#endif	
+#endif
 	rtldm->txpower_trackinginit = TRUE;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, 
-		("===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n", 
-		rtldm->swing_idx_cck_base, rtldm->swing_idx_ofdm_base[RF90_PATH_A], 
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
+		("===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n",
+		rtldm->swing_idx_cck_base, rtldm->swing_idx_ofdm_base[RF90_PATH_A],
 		rtldm->default_ofdm_index));
 
 	ThermalValue = (u8)rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
@@ -1223,7 +1223,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	if (rtldm->bReloadtxpowerindex) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("reload ofdm index for band switch\n"));
 	}
-#endif	
+#endif
 
 	/* 4 4. Calculate average thermal meter */
 
@@ -1354,9 +1354,9 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	if ((rtldm->power_index_offset[RF90_PATH_A] != 0 ||  rtldm->power_index_offset[RF90_PATH_B] != 0)
 	 && rtldm->txpower_track_control) {
 		/* 4 7.2 Configure the Swing Table to adjust Tx Power. */
-#if 0		/* ULLI : only writing, no use */		
+#if 0		/* ULLI : only writing, no use */
 		rtldm->bTxPowerChanged = TRUE; /* Always TRUE after Tx Power is adjusted by power tracking. */
-#endif		
+#endif
 		/*
 		 *  2012/04/2if ( MH According to Luke's suggestion, we can not write BB digital
 		 *  to increase TX power. Otherwise, EVM will be bad.
@@ -1426,7 +1426,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	rtl8821au_get_delta_swing_table(rtlpriv, (u8 **)&up_a, (u8 **)&down_a,
 					 (u8 **)&up_b, (u8 **)&down_b);
 
-#if 0		/* ULLI : only writing, no use */		
+#if 0		/* ULLI : only writing, no use */
 	rtldm->TXPowerTrackingCallbackCnt++; /* cosa add for debug */
 	rtldm->bTXPowerTrackingInit = TRUE;
 #endif
@@ -1445,7 +1445,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	if (rtldm->bReloadtxpowerindex) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("reload ofdm index for band switch\n"));
 	}
-#endif	
+#endif
 
 	/* 4 4. Calculate average thermal meter */
 
@@ -1557,9 +1557,9 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	if ((rtldm->power_index_offset[RF90_PATH_A] != 0 ||  rtldm->power_index_offset[RF90_PATH_B] != 0)
 	 && rtldm->txpower_track_control) {
 		/* 4 7.2 Configure the Swing Table to adjust Tx Power. */
-#if 0		/* ULLI : only writing, no use */		
+#if 0		/* ULLI : only writing, no use */
 		rtldm->bTxPowerChanged = TRUE; /* Always TRUE after Tx Power is adjusted by power tracking. */
-#endif		
+#endif
 		/*
 		 *  2012/04/2if ( MH According to Luke's suggestion, we can not write BB digital
 		 *  to increase TX power. Otherwise, EVM will be bad.
@@ -1644,7 +1644,7 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
-	
+
 	uint32_t ret_value;
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
 
@@ -2038,12 +2038,12 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
 	BOOLEAN		bFwPSAwake = _TRUE;
 	uint8_t hw_init_completed = _FALSE;
-	
+
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
@@ -2068,49 +2068,49 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
-				
-				
-		
-		
+
+
+
+
 		/*
 		 * 2011/09/20 MH This is the entry pointer for all team to execute HW out source DM.
 		 * You can not add any dummy function here, be care, you can only use DM structure
 		 * to perform any new ODM_DM.
 		 */
-	
+
 		odm_CommonInfoSelfUpdate(pDM_Odm);
 		rtl8821ae_dm_false_alarm_counter_statistics(rtlpriv);
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
-	
+
 		odm_RSSIMonitorCheck(pDM_Odm);
-	
+
 		rtl8821au_dm_dig(rtlpriv);
-	
-		odm_Adaptivity(pDM_Odm, pDM_DigTable->cur_igvalue);
-	
+
+		odm_Adaptivity(pDM_Odm, dm_digtable->cur_igvalue);
+
 		odm_CCKPacketDetectionThresh(pDM_Odm);
-	
+
 		if (*(pDM_Odm->pbPowerSaving) == TRUE)
 			return;
-	
+
 		odm_RefreshRateAdaptiveMask(pDM_Odm);
 		rtl8821au_dm_check_edca_turbo(rtlpriv);
-	
+
 		rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
-	
+
 		if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 			if (pDM_Odm->bLinked) {
 				if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess)) {
 					pDM_Odm->preChannel = *pDM_Odm->pChannel;
 					pDM_Odm->LinkedInterval = 0;
 				}
-	
+
 				if (pDM_Odm->LinkedInterval < 3)
 					pDM_Odm->LinkedInterval++;
-	
+
 				if (pDM_Odm->LinkedInterval == 2) {
 					struct rtl_priv *	rtlpriv = pDM_Odm->rtlpriv;
-	
+
 					/*
 					 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
 					 * void rtl8821au_phy_iq_calibrate(rtlpriv, FALSE);
@@ -2138,19 +2138,19 @@ skip_dm:
 static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
-	
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
+
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-	
+
 	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 	pRXHP_T						pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
 	u8						DIG_Dynamic_MIN;
 	u8						DIG_MaxOfMin;
 	BOOLEAN						FirstConnect, FirstDisConnect;
 	u8						dm_dig_max, dm_dig_min, offset;
-	u8						CurrentIGI = pDM_DigTable->cur_igvalue;
+	u8						CurrentIGI = dm_digtable->cur_igvalue;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG()==>\n"));
 	/* if (!(pDM_Odm->SupportAbility & (ODM_BB_DIG|ODM_BB_FA_CNT))) */
@@ -2165,9 +2165,9 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	}
 
 	/* add by Neil Chen to avoid PSD is processing */
-	DIG_Dynamic_MIN = pDM_DigTable->dig_min_0;
-	FirstConnect = (pDM_Odm->bLinked) && (pDM_DigTable->media_connect_0 == FALSE);
-	FirstDisConnect = (!pDM_Odm->bLinked) && (pDM_DigTable->media_connect_0 == TRUE);
+	DIG_Dynamic_MIN = dm_digtable->dig_min_0;
+	FirstConnect = (pDM_Odm->bLinked) && (dm_digtable->media_connect_0 == FALSE);
+	FirstDisConnect = (!pDM_Odm->bLinked) && (dm_digtable->media_connect_0 == TRUE);
 
 
 	/* 1 Boundary Decision */
@@ -2190,11 +2190,11 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 				offset = 10;
 
 			if ((pDM_Odm->RSSI_Min + offset) > dm_dig_max)
-				pDM_DigTable->rx_gain_max = dm_dig_max;
+				dm_digtable->rx_gain_max = dm_dig_max;
 			else if ((pDM_Odm->RSSI_Min + offset) < dm_dig_min)
-				pDM_DigTable->rx_gain_max = dm_dig_min;
+				dm_digtable->rx_gain_max = dm_dig_min;
 			else
-				pDM_DigTable->rx_gain_max = pDM_Odm->RSSI_Min + offset;
+				dm_digtable->rx_gain_max = pDM_Odm->RSSI_Min + offset;
 
 
 			/* 2 Modify DIG lower bound */
@@ -2219,7 +2219,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 			}
 		}
 	} else {
-		pDM_DigTable->rx_gain_max = dm_dig_max;
+		dm_digtable->rx_gain_max = dm_dig_max;
 		DIG_Dynamic_MIN = dm_dig_min;
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : No Link\n"));
 	}
@@ -2228,48 +2228,48 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	if (pFalseAlmCnt->Cnt_all > 10000) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("dm_DIG(): Abnornally false alarm case. \n"));
 
-		if (pDM_DigTable->large_fa_hit != 3)
-			pDM_DigTable->large_fa_hit++;
-		if (pDM_DigTable->forbidden_igi < CurrentIGI) {			/* if (pDM_DigTable->ForbiddenIGI < pDM_DigTable->CurIGValue) */
-			pDM_DigTable->forbidden_igi = (u8)CurrentIGI;	/* pDM_DigTable->ForbiddenIGI = pDM_DigTable->CurIGValue; */
-			pDM_DigTable->large_fa_hit = 1;
+		if (dm_digtable->large_fa_hit != 3)
+			dm_digtable->large_fa_hit++;
+		if (dm_digtable->forbidden_igi < CurrentIGI) {			/* if (dm_digtable->ForbiddenIGI < dm_digtable->CurIGValue) */
+			dm_digtable->forbidden_igi = (u8)CurrentIGI;	/* dm_digtable->ForbiddenIGI = dm_digtable->CurIGValue; */
+			dm_digtable->large_fa_hit = 1;
 		}
 
-		if (pDM_DigTable->large_fa_hit >= 3) {
-			if ((pDM_DigTable->forbidden_igi+1) > pDM_DigTable->rx_gain_max)
-				pDM_DigTable->rx_gain_min = pDM_DigTable->rx_gain_max;
+		if (dm_digtable->large_fa_hit >= 3) {
+			if ((dm_digtable->forbidden_igi+1) > dm_digtable->rx_gain_max)
+				dm_digtable->rx_gain_min = dm_digtable->rx_gain_max;
 			else
-				pDM_DigTable->rx_gain_min = (pDM_DigTable->forbidden_igi + 1);
-			pDM_DigTable->recover_cnt = 3600; 	/* 3600=2hr */
+				dm_digtable->rx_gain_min = (dm_digtable->forbidden_igi + 1);
+			dm_digtable->recover_cnt = 3600; 	/* 3600=2hr */
 		}
 
 	} else {
 		/* Recovery mechanism for IGI lower bound */
-		if (pDM_DigTable->recover_cnt != 0)
-			pDM_DigTable->recover_cnt--;
+		if (dm_digtable->recover_cnt != 0)
+			dm_digtable->recover_cnt--;
 		else {
-			if (pDM_DigTable->large_fa_hit < 3) {
-				if ((pDM_DigTable->forbidden_igi-1) < DIG_Dynamic_MIN) {		/* DM_DIG_MIN)  */
-					pDM_DigTable->forbidden_igi = DIG_Dynamic_MIN;		/* DM_DIG_MIN; */
-					pDM_DigTable->rx_gain_min = DIG_Dynamic_MIN;	/* DM_DIG_MIN; */
+			if (dm_digtable->large_fa_hit < 3) {
+				if ((dm_digtable->forbidden_igi-1) < DIG_Dynamic_MIN) {		/* DM_DIG_MIN)  */
+					dm_digtable->forbidden_igi = DIG_Dynamic_MIN;		/* DM_DIG_MIN; */
+					dm_digtable->rx_gain_min = DIG_Dynamic_MIN;	/* DM_DIG_MIN; */
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Normal Case: At Lower Bound\n"));
 				} else {
-					pDM_DigTable->forbidden_igi--;
-					pDM_DigTable->rx_gain_min = (pDM_DigTable->forbidden_igi+ 1);
+					dm_digtable->forbidden_igi--;
+					dm_digtable->rx_gain_min = (dm_digtable->forbidden_igi+ 1);
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Normal Case: Approach Lower Bound\n"));
 				}
 			} else {
-				pDM_DigTable->large_fa_hit = 0;
+				dm_digtable->large_fa_hit = 0;
 			}
 		}
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): pDM_DigTable->LargeFAHit=%d\n", pDM_DigTable->large_fa_hit));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): dm_digtable->LargeFAHit=%d\n", dm_digtable->large_fa_hit));
 
 	if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10))
-		pDM_DigTable->rx_gain_min = dm_dig_min;
+		dm_digtable->rx_gain_min = dm_dig_min;
 
-	if (pDM_DigTable->rx_gain_min > pDM_DigTable->rx_gain_max)
-		pDM_DigTable->rx_gain_min = pDM_DigTable->rx_gain_max;
+	if (dm_digtable->rx_gain_min > dm_digtable->rx_gain_max)
+		dm_digtable->rx_gain_min = dm_digtable->rx_gain_max;
 
 	/* 1 Adjust initial gain by false alarm */
 	if (pDM_Odm->bLinked) {
@@ -2283,21 +2283,21 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 		} else 	{
 			/* FA for Combo IC--NeilChen--2012--09--28 */
 			if (pFalseAlmCnt->Cnt_all > DM_DIG_FA_TH2)
-				CurrentIGI = CurrentIGI + 4;	/* pDM_DigTable->CurIGValue = pDM_DigTable->PreIGValue+2; */
+				CurrentIGI = CurrentIGI + 4;	/* dm_digtable->CurIGValue = dm_digtable->PreIGValue+2; */
 			else if (pFalseAlmCnt->Cnt_all > DM_DIG_FA_TH1)
-				CurrentIGI = CurrentIGI + 2;	/* pDM_DigTable->CurIGValue = pDM_DigTable->PreIGValue+1; */
+				CurrentIGI = CurrentIGI + 2;	/* dm_digtable->CurIGValue = dm_digtable->PreIGValue+1; */
 			else if (pFalseAlmCnt->Cnt_all < DM_DIG_FA_TH0)
-				CurrentIGI = CurrentIGI - 2;	/* pDM_DigTable->CurIGValue =pDM_DigTable->PreIGValue-1; */
+				CurrentIGI = CurrentIGI - 2;	/* dm_digtable->CurIGValue =dm_digtable->PreIGValue-1; */
 
 			if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10)
 			 && (pFalseAlmCnt->Cnt_all < DM_DIG_FA_TH1))
-				CurrentIGI = pDM_DigTable->rx_gain_min;
+				CurrentIGI = dm_digtable->rx_gain_min;
 		}
 	} else {
-		/* CurrentIGI = pDM_DigTable->rx_gain_range_min; */	/* pDM_DigTable->CurIGValue = pDM_DigTable->rx_gain_range_min */
+		/* CurrentIGI = dm_digtable->rx_gain_range_min; */	/* dm_digtable->CurIGValue = dm_digtable->rx_gain_range_min */
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): DIG BeforeLink\n"));
 		if (FirstDisConnect) {
-			CurrentIGI = pDM_DigTable->rx_gain_min;
+			CurrentIGI = dm_digtable->rx_gain_min;
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): First DisConnect \n"));
 		} else {
 			/* 2012.03.30 LukeLee: enable DIG before link but with very high thresholds */
@@ -2313,10 +2313,10 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): DIG End Adjust IGI\n"));
 	/* 1 Check initial gain by upper/lower bound */
 
-	if (CurrentIGI > pDM_DigTable->rx_gain_max)
-		CurrentIGI = pDM_DigTable->rx_gain_max;
-	if (CurrentIGI < pDM_DigTable->rx_gain_min)
-		CurrentIGI = pDM_DigTable->rx_gain_min;
+	if (CurrentIGI > dm_digtable->rx_gain_max)
+		CurrentIGI = dm_digtable->rx_gain_max;
+	if (CurrentIGI < dm_digtable->rx_gain_min)
+		CurrentIGI = dm_digtable->rx_gain_min;
 
 	if (pDM_Odm->SupportAbility & ODM_BB_ADAPTIVITY) {
 		if (CurrentIGI > (pDM_Odm->IGI_target + 4))
@@ -2324,16 +2324,16 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	}
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): rx_gain_range_max=0x%x, rx_gain_range_min=0x%x\n",
-		pDM_DigTable->rx_gain_max, pDM_DigTable->rx_gain_min));
+		dm_digtable->rx_gain_max, dm_digtable->rx_gain_min));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): TotalFA=%d\n", pFalseAlmCnt->Cnt_all));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): CurIGValue=0x%x\n", CurrentIGI));
 
 	/* 2 High power RSSI threshold */
 
 	{		/* BT is not using */
-		ODM_Write_DIG(pDM_Odm, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue); */
-		pDM_DigTable->media_connect_0 = pDM_Odm->bLinked;
-		pDM_DigTable->dig_min_0 = DIG_Dynamic_MIN;
+		ODM_Write_DIG(pDM_Odm, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, dm_digtable->CurIGValue); */
+		dm_digtable->media_connect_0 = pDM_Odm->bLinked;
+		dm_digtable->dig_min_0 = DIG_Dynamic_MIN;
 	}
 }
 

@@ -3417,7 +3417,8 @@ static BOOLEAN CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 	return TRUE;
 }
 
-static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_priv *rtlpriv)
+
+void _rtl8821au_phy_config_mac_with_headerfile(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
@@ -3430,71 +3431,16 @@ static void ODM_ReadAndConfig_MP_8812A_MAC_REG(struct rtl_priv *rtlpriv)
 	u8  platform = ODM_CE;
 	u8 _interface = RTW_USB;
 	u8 board = rtlhal->board_type;
+	uint32_t ArrayLen;
+	uint32_t *Array;
 
-	uint32_t     ArrayLen    = RTL8812AUMAC_1T_ARRAYLEN;
-	uint32_t    *Array       = RTL8812AU_MAC_REG_ARRAY;
-
-
-	hex += board;
-	hex += _interface << 8;
-	hex += platform << 16;
-	hex += 0xFF000000;
-#if 0
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_MAC_REG, hex = 0x%X\n", hex));
-#endif
-	for (i = 0; i < ArrayLen; i += 2) {
-		uint32_t v1 = Array[i];
-		uint32_t v2 = Array[i+1];
-
-		/* This (offset, data) pair meets the condition. */
-		if (v1 < 0xCDCDCDCD) {
-			rtl_write_byte(rtlpriv, v1, (u8)v2);
-			continue;
-		} else {
-			/* This line is the start line of branch. */
-			if (!CheckCondition(Array[i], hex)) {
-				/* Discard the following (offset, data) pairs. */
-				READ_NEXT_PAIR(Array, v1, v2, i);
-				while (v2 != 0xDEAD &&
-					v2 != 0xCDEF &&
-					v2 != 0xCDCD && i < ArrayLen - 2) {
-						READ_NEXT_PAIR(Array, v1, v2, i);
-				}
-				i -= 2; /* prevent from for-loop += 2 */
-			} else { /* Configure matched pairs and skip to end of if-else. */
-				READ_NEXT_PAIR(Array, v1, v2, i);
-				while (v2 != 0xDEAD &&
-					v2 != 0xCDEF &&
-					v2 != 0xCDCD && i < ArrayLen - 2) {
-						rtl_write_byte(rtlpriv, v1, (u8)v2);
-						READ_NEXT_PAIR(Array, v1, v2, i);
-				}
-
-				while (v2 != 0xDEAD && i < ArrayLen - 2) {
-					READ_NEXT_PAIR(Array, v1, v2, i);
-				}
-			}
-		}
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+		ArrayLen    = RTL8812AUMAC_1T_ARRAYLEN;
+		Array       = RTL8812AU_MAC_REG_ARRAY;
+	} else {
+		ArrayLen    = RTL8821AUMAC_1T_ARRAYLEN;
+		Array       = RTL8821AU_MAC_REG_ARRAY;
 	}
-
-}
-
-static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_priv *rtlpriv)
-{
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-
-	uint32_t     hex         = 0;
-	uint32_t     i           = 0;
-	u16     count       = 0;
-	uint32_t    *ptr_array   = NULL;
-
-	/* ULLI : fixed values ?? */
-	u8  platform = ODM_CE;
-	u8 _interface = RTW_USB;
-	u8 board = rtlhal->board_type;
-
-	uint32_t     ArrayLen    = RTL8821AUMAC_1T_ARRAYLEN;
-	uint32_t    *Array       = RTL8821AU_MAC_REG_ARRAY;
 
 	hex += board;
 	hex += _interface << 8;
@@ -3541,26 +3487,6 @@ static void ODM_ReadAndConfig_MP_8821A_MAC_REG(struct rtl_priv *rtlpriv)
 	}
 
 }
-
-
-void _rtl8821au_phy_config_mac_with_headerfile(struct rtl_priv *rtlpriv)
-{
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-
-#if 0
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
-		("===>ODM_ConfigMACWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
-		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		rtlhal->SupportInterface, rtlhal->board_type));
-#endif
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-		ODM_ReadAndConfig_MP_8812A_MAC_REG(rtlpriv);
-
-	if (IS_HARDWARE_TYPE_8821U(rtlhal))
-		ODM_ReadAndConfig_MP_8821A_MAC_REG(rtlpriv);
-}
-
 
 /* *****  */
 
@@ -5016,7 +4942,7 @@ void PHY_SetTxPowerLevel8812(struct rtl_priv *rtlpriv, uint8_t	Channel)
 void ODM_ReadAndConfig_MP_8821A_AGC_TAB(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	
+
 	uint32_t hex = 0;
 	uint32_t i = 0;
 	u16 count = 0;
@@ -5084,7 +5010,7 @@ void ODM_ReadAndConfig_MP_8821A_AGC_TAB(struct rtl_priv *rtlpriv)
 void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	
+
 	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
 
 	uint32_t     hex         = 0;
@@ -5099,7 +5025,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
 
 	uint32_t ArrayLen;
 	uint32_t *Array;
-	
+
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		ArrayLen = RTL8812AU_PHY_REG_ARRAY_LEN;
 		Array = RTL8812AU_PHY_REG_ARRAY;
@@ -5153,7 +5079,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
 void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	
+
 	uint32_t hex = 0;
 	uint32_t i = 0;
 	u16 count = 0;
@@ -5185,7 +5111,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 
 #if 0
 	pDM_Odm->PhyRegPgValueType = PHY_REG_PG_EXACT_VALUE;
-#endif	
+#endif
 	hex += board;
 	hex += _interface << 8;
 	hex += platform << 16;
@@ -5204,7 +5130,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 			// this line is the start of branch
 			if (!CheckCondition(Array[i], hex)) {
 				 // don't need the hw_body
- 
+
 				/* ULLI : BUG ?? must be i += 3 ?? */
 
 				i += 2; // skip the pair of expression

@@ -2080,7 +2080,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 		odm_CommonInfoSelfUpdate(pDM_Odm);
 		rtl8821ae_dm_false_alarm_counter_statistics(rtlpriv);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->RSSI_Min));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->rssi_val_min));
 
 		odm_RSSIMonitorCheck(pDM_Odm);
 
@@ -2189,30 +2189,30 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 			else
 				offset = 10;
 
-			if ((pDM_Odm->RSSI_Min + offset) > dm_dig_max)
+			if ((dm_digtable->rssi_val_min + offset) > dm_dig_max)
 				dm_digtable->rx_gain_max = dm_dig_max;
-			else if ((pDM_Odm->RSSI_Min + offset) < dm_dig_min)
+			else if ((dm_digtable->rssi_val_min + offset) < dm_dig_min)
 				dm_digtable->rx_gain_max = dm_dig_min;
 			else
-				dm_digtable->rx_gain_max = pDM_Odm->RSSI_Min + offset;
+				dm_digtable->rx_gain_max = dm_digtable->rssi_val_min + offset;
 
 
 			/* 2 Modify DIG lower bound */
 			/*
 			if ((pFalseAlmCnt->Cnt_all > 500)&&(DIG_Dynamic_MIN < 0x25))
 				DIG_Dynamic_MIN++;
-			else if (((pFalseAlmCnt->Cnt_all < 500)||(pDM_Odm->RSSI_Min < 8))&&(DIG_Dynamic_MIN > dm_dig_min))
+			else if (((pFalseAlmCnt->Cnt_all < 500)||(pDM_Odm->rssi_val_min < 8))&&(DIG_Dynamic_MIN > dm_dig_min))
 				DIG_Dynamic_MIN--;
 			*/
 			if (pDM_Odm->bOneEntryOnly) {
-				if (pDM_Odm->RSSI_Min < dm_dig_min)
+				if (dm_digtable->rssi_val_min < dm_dig_min)
 					DIG_Dynamic_MIN = dm_dig_min;
-				else if (pDM_Odm->RSSI_Min > DIG_MaxOfMin)
+				else if (dm_digtable->rssi_val_min > DIG_MaxOfMin)
 					DIG_Dynamic_MIN = DIG_MaxOfMin;
 				else
-					DIG_Dynamic_MIN = pDM_Odm->RSSI_Min;
+					DIG_Dynamic_MIN = dm_digtable->rssi_val_min;
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : bOneEntryOnly=TRUE,  DIG_Dynamic_MIN=0x%x\n", DIG_Dynamic_MIN));
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : pDM_Odm->RSSI_Min=%d\n", pDM_Odm->RSSI_Min));
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : pDM_Odm->rssi_val_min=%d\n", pDM_Odm->rssi_val_min));
 			} else {
 				/* 1 Lower Bound for 88E AntDiv */
 				DIG_Dynamic_MIN = dm_dig_min;
@@ -2275,8 +2275,8 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	if (pDM_Odm->bLinked) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): DIG AfterLink\n"));
 		if (FirstConnect) {
-			if (pDM_Odm->RSSI_Min <= DIG_MaxOfMin)
-			    CurrentIGI = pDM_Odm->RSSI_Min;
+			if (dm_digtable->rssi_val_min <= DIG_MaxOfMin)
+			    CurrentIGI = dm_digtable->rssi_val_min;
 			else
 			    CurrentIGI = DIG_MaxOfMin;
 			ODM_RT_TRACE(pDM_Odm,	ODM_COMP_DIG, ODM_DBG_LOUD, ("DIG: First Connect\n"));

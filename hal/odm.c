@@ -318,6 +318,7 @@ void ODM_CmnInfoPtrArrayHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
 void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 	struct rate_adaptive *p_ra = &(rtlpriv->ra);
 
 	/*
@@ -333,7 +334,7 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 		break;
 
 	case	ODM_CMNINFO_RSSI_MIN:
-		pDM_Odm->RSSI_Min = (u8)Value;
+		dm_digtable->rssi_val_min = (u8)Value;
 		break;
 
 	case	ODM_CMNINFO_DBG_COMP:
@@ -452,6 +453,7 @@ int getIGIForDiff(int value_IGI)
 void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
 	int32_t TH_H_dmc, TH_L_dmc;
 	int32_t TH_H, TH_L, Diff, IGI_target;
@@ -488,9 +490,9 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	}
 
 	if (!pDM_Odm->ForceEDCCA) {
-		if (pDM_Odm->RSSI_Min > pDM_Odm->AdapEn_RSSI)
+		if (dm_digtable->rssi_val_min > pDM_Odm->AdapEn_RSSI)
 			EDCCA_State = 1;
-		else if (pDM_Odm->RSSI_Min < (pDM_Odm->AdapEn_RSSI - 5))
+		else if (dm_digtable->rssi_val < (pDM_Odm->AdapEn_RSSI - 5))
 			EDCCA_State = 0;
 	} else
 		EDCCA_State = 1;
@@ -579,12 +581,15 @@ void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 
 void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
+
 	/* struct rtl_priv *rtlpriv =pDM_Odm->rtlpriv; */
 	/* pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable; */
 	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
 
 	u8	RSSI_Lower = DM_DIG_MIN_NIC;   	/* 0x1E or 0x1C */
-	u8	CurrentIGI = pDM_Odm->RSSI_Min;
+	u8	CurrentIGI = dm_digtable->rssi_val;
 
 	CurrentIGI = CurrentIGI+RSSI_OFFSET_DIG;
 
@@ -604,8 +609,8 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 	/* Lower bound checking */
 
 	/* RSSI Lower bound check */
-	if ((pDM_Odm->RSSI_Min-10) > DM_DIG_MIN_NIC)
-		RSSI_Lower = (pDM_Odm->RSSI_Min-10);
+	if ((dm_digtable->rssi_val_min) > DM_DIG_MIN_NIC)
+		RSSI_Lower = (dm_digtable->rssi_val_min-10);
 	else
 		RSSI_Lower = DM_DIG_MIN_NIC;
 
@@ -628,7 +633,9 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 
 void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 {
-	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->rtlpriv);
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	u8	CurCCK_CCAThres;
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
@@ -640,9 +647,9 @@ void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 		return;
 
 	if (pDM_Odm->bLinked) {
-		if (pDM_Odm->RSSI_Min > 25)
+		if (dm_digtable->rssi_val_min > 25)
 			CurCCK_CCAThres = 0xcd;
-		else if ((pDM_Odm->RSSI_Min <= 25) && (pDM_Odm->RSSI_Min > 10))
+		else if ((dm_digtable->rssi_val_min <= 25) && (dm_digtable->rssi_val_min > 10))
 			CurCCK_CCAThres = 0x83;
 		else {
 			if (FalseAlmCnt->Cnt_Cck_fail > 1000)

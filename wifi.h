@@ -1615,7 +1615,6 @@ struct _rtw_dm {
 //------------CALL BY VALUE-------------//
 	BOOLEAN			bLinkInProcess;
 	BOOLEAN			bLinked;
-	u8			RSSI_Min;
 	u8          InterfaceIndex; // Add for 92D  dual MAC: 0--Mac0 1--Mac1
 	BOOLEAN         bIsMPChip;
 	BOOLEAN			bOneEntryOnly;

@@ -74,15 +74,13 @@ _HAL_INTFS_FILES +=	hal/rtl8812a_hal_init.o \
 
 ifeq ($(CONFIG_RTL8812A), y)
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
-_OUTSRC_FILES += hal/HalPhyRf_8812A.o
 endif
 
 ifeq ($(CONFIG_RTL8821A), y)
 
 
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
-_OUTSRC_FILES += hal/HalPhyRf_8812A.o\
-		hal/odm_RegConfig8821A.o
+_OUTSRC_FILES += hal/odm_RegConfig8821A.o
 endif
 
 

@@ -1101,6 +1101,82 @@ void rtl8821au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 	return;
 }
 
+static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
+{
+	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
+
+	uint32_t	/*RF_Amode=0, RF_Bmode=0,*/ LC_Cal = 0, tmp = 0;
+
+	/* Check continuous TX and Packet TX */
+	uint32_t	reg0x914 = rtl_read_dword(rtlpriv, rSingleTone_ContTx_Jaguar);;
+
+	/* Backup RF reg18. */
+	LC_Cal = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+
+	if ((reg0x914 & 0x70000) != 0)	/* If contTx, disable all continuous TX. 0x914[18:16] */
+		/*
+		 *  <20121121, Kordan> A workaround: If we set 0x914[18:16] as zero, BB turns off ContTx
+		 *  until another packet comes in. To avoid ContTx being turned off, we skip this step.
+		 * ODM_Write4Byte(pDM_Odm, rSingleTone_ContTx_Jaguar, reg0x914 & (~0x70000));
+		 */
+
+		;
+	else		/* If packet Tx-ing, pause Tx. */
+		rtl_write_byte(rtlpriv, REG_TXPAUSE, 0xFF);
+
+
+/*
+	//3 1. Read original RF mode
+	RF_Amode = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask);
+	if(is2T)
+		RF_Bmode = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask);
+
+
+	//3 2. Set RF mode = standby mode
+	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask, (RF_Amode&0x8FFFF)|0x10000);
+	if(is2T)
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask, (RF_Bmode&0x8FFFF)|0x10000);
+*/
+
+	/* Enter LCK mode */
+	tmp = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
+
+	/* 3 3. Read RF reg18 */
+	LC_Cal = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+
+	/* 3 4. Set LC calibration begin bit15 */
+	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
+
+	/* Leave LCK mode */
+	tmp = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
+
+	mdelay(100);
+
+	/* 3 Restore original situation */
+	if ((reg0x914 & 70000) != 0) {	/* Deal with contisuous TX case, 0x914[18:16] */
+		/*
+		 * <20121121, Kordan> A workaround: If we set 0x914[18:16] as zero, BB turns off ContTx
+		 * until another packet comes in. To avoid ContTx being turned off, we skip this step.
+		 * ODM_Write4Byte(pDM_Odm, rSingleTone_ContTx_Jaguar, reg0x914);
+		 */
+		;
+	} else {
+		/* Deal with Packet TX case */
+		rtl_write_byte(rtlpriv, REG_TXPAUSE, 0x00);
+	}
+
+	/* Recover channel number */
+	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);
+
+	/*
+	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask, RF_Amode);
+	if(is2T)
+		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask, RF_Bmode);
+		*/
+}
+
 static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);

@@ -5109,9 +5109,6 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 		Array = RTL8821AU_PHY_REG_PG_ARRAY;
 	}
 
-#if 0
-	pDM_Odm->PhyRegPgValueType = PHY_REG_PG_EXACT_VALUE;
-#endif
 	hex += board;
 	hex += _interface << 8;
 	hex += platform << 16;

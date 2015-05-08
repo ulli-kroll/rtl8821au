@@ -1182,7 +1182,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	if ((delta_LCK >= IQK_THRESHOLD)) {	/* Delta temperature is equal to or larger than 20 centigrade. */
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("delta_LCK(%d) >= Threshold_IQK(%d)\n", delta_LCK, IQK_THRESHOLD));
 		rtldm->thermalvalue_lck = ThermalValue;
-		PHY_LCCalibrate_8812A(rtlpriv);
+		rtl8812au_phy_lc_calibrate(rtlpriv);
 	}
 
 	/* if ( 7. If necessary, move the index of swing table to adjust Tx power. */
@@ -1404,7 +1404,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	if ((delta_LCK >= IQK_THRESHOLD)) {	/* Delta temperature is equal to or larger than 20 centigrade. */
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("delta_LCK(%d) >= Threshold_IQK(%d)\n", delta_LCK, IQK_THRESHOLD));
 		rtldm->thermalvalue_lck = ThermalValue;
-		PHY_LCCalibrate_8812A(rtlpriv);
+		rtl8812au_phy_lc_calibrate(rtlpriv);
 	}
 
 	/* if ( 7. If necessary, move the index of swing table to adjust Tx power. */

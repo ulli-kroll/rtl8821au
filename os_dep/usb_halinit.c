@@ -947,7 +947,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 
 		/*
 		 * ODM_TXPowerTrackingCheck(&pHalData->odmpriv );
-		 * PHY_LCCalibrate_8812A(rtlpriv);
+		 * rtl8812au_phy_lc_calibrate(rtlpriv);
 		 */
 
 		goto exit;
@@ -1200,7 +1200,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 		/* ODM_TXPowerTrackingCheck(&pHalData->odmpriv ); */
 
 
-		/* PHY_LCCalibrate_8812A(rtlpriv); */
+		/* rtl8812au_phy_lc_calibrate(rtlpriv); */
 	}
 
 	/* HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_PABIAS);

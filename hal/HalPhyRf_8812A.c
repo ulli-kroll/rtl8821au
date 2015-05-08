@@ -122,15 +122,15 @@ static void phy_LCCalibrate_8812A(struct rtl_priv *rtlpriv, BOOLEAN	is2T)
 #define		DP_DPK_NUM		3
 #define		DP_DPK_VALUE_NUM	2
 
-void PHY_LCCalibrate_8812A(struct rtl_priv *rtlpriv)
+void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 {
 	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
 
 #if 0
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> PHY_LCCalibrate_8812A\n"));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> rtl8812au_phy_lc_calibrate\n"));
 #endif
 	phy_LCCalibrate_8812A(rtlpriv, TRUE);
 #if 0
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("<=== PHY_LCCalibrate_8812A\n"));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("<=== rtl8812au_phy_lc_calibrate\n"));
 #endif
 }

@@ -40,8 +40,17 @@
 #define	BW_40M  1
 #define	BW_80M	2
 
-static void phy_LCCalibrate_8812A(struct rtl_priv *rtlpriv, BOOLEAN	is2T)
+#define		DP_BB_REG_NUM		7
+#define		DP_RF_REG_NUM		1
+#define		DP_RETRY_LIMIT		10
+#define		DP_PATH_NUM		2
+#define		DP_DPK_NUM		3
+#define		DP_DPK_VALUE_NUM	2
+
+void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 {
+	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
+
 	uint32_t	/*RF_Amode=0, RF_Bmode=0,*/ LC_Cal = 0, tmp = 0;
 
 	/* Check continuous TX and Packet TX */
@@ -112,25 +121,4 @@ static void phy_LCCalibrate_8812A(struct rtl_priv *rtlpriv, BOOLEAN	is2T)
 	if(is2T)
 		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask, RF_Bmode);
 		*/
-
-}
-
-#define		DP_BB_REG_NUM		7
-#define		DP_RF_REG_NUM		1
-#define		DP_RETRY_LIMIT		10
-#define		DP_PATH_NUM		2
-#define		DP_DPK_NUM		3
-#define		DP_DPK_VALUE_NUM	2
-
-void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
-{
-	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
-
-#if 0
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("===> rtl8812au_phy_lc_calibrate\n"));
-#endif
-	phy_LCCalibrate_8812A(rtlpriv, TRUE);
-#if 0
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("<=== rtl8812au_phy_lc_calibrate\n"));
-#endif
 }

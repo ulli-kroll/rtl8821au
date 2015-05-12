@@ -92,7 +92,6 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 	/* 1 ============== End of BoardType ============== */
 
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_EXT_TRSW, 0);
 
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_PATCH_ID,pEEPROM->CustomerID);
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_BWIFI_TEST,rtlpriv->registrypriv.wifi_spec);

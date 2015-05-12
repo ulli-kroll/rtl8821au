@@ -1577,7 +1577,6 @@ struct _rtw_dm {
 	u8			CutVersion;
 
 	// with external TRSW  NO/Yes = 0/1
-	u8			ExtTRSW;
 	u8			PatchID; //Customer ID
 	BOOLEAN			bInHctTest;
 	BOOLEAN			bWIFITest;

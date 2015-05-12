@@ -322,7 +322,6 @@ typedef enum _ODM_Common_Info_Definition
 	//-----------HOOK BEFORE REG INIT-----------//
 	ODM_CMNINFO_ABILITY,					// ODM_ABILITY_E
 	ODM_CMNINFO_MP_TEST_CHIP,
-	ODM_CMNINFO_EXT_TRSW,
 	ODM_CMNINFO_PATCH_ID,				//CUSTOMER ID
 	ODM_CMNINFO_BWIFI_TEST,
 	//-----------HOOK BEFORE REG INIT-----------//

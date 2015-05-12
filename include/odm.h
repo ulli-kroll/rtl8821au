@@ -555,18 +555,6 @@ typedef enum _FAT_STATE
 	FAT_TRAINING_STATE 		= 1,
 }FAT_STATE_E, *PFAT_STATE_E;
 
-typedef enum _ANT_DIV_TYPE
-{
-	NO_ANTDIV			= 0xFF,
-	CG_TRX_HW_ANTDIV		= 0x01,
-	CGCS_RX_HW_ANTDIV 	= 0x02,
-	FIXED_HW_ANTDIV		= 0x03,
-	CG_TRX_SMART_ANTDIV	= 0x04,
-	CGCS_RX_SW_ANTDIV	= 0x05,
-	S0S1_HW_ANTDIV          = 0x06, //8723B intrnal switch S0 S1
-}ANT_DIV_TYPE_E, *PANT_DIV_TYPE_E;
-
-
 //
 // Antenna detection information from single tone mechanism, added by Roger, 2012.11.27.
 //

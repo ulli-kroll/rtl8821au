@@ -20,6 +20,18 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band);
 uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 	uint8_t	RFPath);
 	
+enum _ANT_DIV_TYPE {
+	NO_ANTDIV		= 0xFF,
+	CG_TRX_HW_ANTDIV	= 0x01,
+	CGCS_RX_HW_ANTDIV 	= 0x02,
+	FIXED_HW_ANTDIV		= 0x03,
+	CG_TRX_SMART_ANTDIV	= 0x04,
+	CGCS_RX_SW_ANTDIV	= 0x05,
+	S0S1_HW_ANTDIV          = 0x06, //8723B intrnal switch S0 S1
+};
+
+
+
 	
 /* Not in rtlwifi */
 

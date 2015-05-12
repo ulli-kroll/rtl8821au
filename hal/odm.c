@@ -214,9 +214,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 	case 	ODM_CMNINFO_PATCH_ID:
 		pDM_Odm->PatchID = (u8)Value;
 		break;
-	case 	ODM_CMNINFO_BWIFI_TEST:
-		pDM_Odm->bWIFITest = (BOOLEAN)Value;
-		break;
 
 	/* To remove the compiler warning, must add an empty default statement to handle the other values. */
 	default:

@@ -1579,7 +1579,6 @@ struct _rtw_dm {
 	// with external TRSW  NO/Yes = 0/1
 	u8			PatchID; //Customer ID
 	BOOLEAN			bInHctTest;
-	BOOLEAN			bWIFITest;
 
 	uint32_t			BK_SupportAbility;
 //-----------HOOK BEFORE REG INIT-----------//

@@ -94,7 +94,6 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_PATCH_ID,pEEPROM->CustomerID);
-	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_BWIFI_TEST,rtlpriv->registrypriv.wifi_spec);
 
 	pdmpriv->InitODMFlag =	ODM_RF_CALIBRATION		|
 							ODM_RF_TX_PWR_TRACK	//|

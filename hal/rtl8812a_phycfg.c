@@ -132,7 +132,7 @@ static void ODM_ReadAndConfig_PHY_REG_PG(struct rtl_priv *rtlpriv)
 	ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);
 }
 
-static int phy_BB8812_Config_ParaFile(struct rtl_priv *rtlpriv)
+static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
@@ -205,7 +205,7 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 	/*
 	 * Config BB and AGC
 	 */
-	rtStatus = phy_BB8812_Config_ParaFile(rtlpriv);
+	rtStatus = _rtl8821au_phy_bb_with_headerfile(rtlpriv);
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		/* write 0x2C[30:25] = 0x2C[24:19] = CrystalCap */

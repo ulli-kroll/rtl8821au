@@ -172,11 +172,11 @@ _OneOutPipeMapping(
 
 static void
 _TwoOutPipeMapping(
-	IN	struct rtl_priv *rtlpriv,
-	IN	BOOLEAN	 	bWIFICfg
+	IN	struct rtl_priv *rtlpriv
 	)
 {
 	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
+	BOOLEAN bWIFICfg = _FALSE;
 
 	if(bWIFICfg){ //WMM
 
@@ -217,10 +217,10 @@ _TwoOutPipeMapping(
 }
 
 static void _ThreeOutPipeMapping(
-	IN	struct rtl_priv *rtlpriv,
-	IN	BOOLEAN	 	bWIFICfg
+	IN	struct rtl_priv *rtlpriv
 	)
 {
+	BOOLEAN bWIFICfg = _FALSE;
 	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
 
 	if(bWIFICfg){//for WMM
@@ -310,18 +310,16 @@ Hal_MappingOutPipe(
 {
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 
-	BOOLEAN	 bWIFICfg = _FALSE;	/* ULLI resolve THIS in next round */
-
 	BOOLEAN result = _TRUE;
 
 	switch(NumOutPipe)
 	{
 		case 2:
-			_TwoOutPipeMapping(rtlpriv, bWIFICfg);
+			_TwoOutPipeMapping(rtlpriv);
 			break;
 		case 3:
 		case 4:
-			_ThreeOutPipeMapping(rtlpriv, bWIFICfg);
+			_ThreeOutPipeMapping(rtlpriv);
 			break;
 		case 1:
 			_OneOutPipeMapping(rtlpriv);

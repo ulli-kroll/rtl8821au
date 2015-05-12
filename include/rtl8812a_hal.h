@@ -217,7 +217,6 @@ typedef enum _TX_PWR_PERCENTAGE{
 void	_8051Reset8812(struct rtl_priv *rtlpriv);
 void	InitializeFirmwareVars8812(struct rtl_priv *rtlpriv);
 
-int32_t	 _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy);
 void InitRDGSetting8812A(struct rtl_priv *rtlpriv);
 
 void CheckAutoloadState8812A(struct rtl_priv *rtlpriv);

@@ -1123,3 +1123,68 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 }
 
 
+static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, uint32_t data)
+{
+	int32_t	status = _SUCCESS;
+	int32_t	count = 0;
+	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | _LLT_OP(_LLT_WRITE_ACCESS);
+	u16	LLTReg = REG_LLT_INIT;
+
+	rtl_write_dword(rtlpriv, LLTReg, value);
+
+	/* polling */
+	do {
+		value = rtl_read_dword(rtlpriv, LLTReg);
+		if (_LLT_NO_ACTIVE == _LLT_OP_VALUE(value)) {
+			break;
+		}
+
+		if (count > POLLING_LLT_THRESHOLD) {
+			status = _FAIL;
+			break;
+		}
+	} while (count++);
+
+	return status;
+}
+
+int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy)
+{
+	int32_t	status = _FAIL;
+	uint32_t	i;
+	uint32_t	Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
+	 struct _rtw_hal *pHalData	= GET_HAL_DATA(rtlpriv);
+
+	for (i = 0; i < (txpktbuf_bndy - 1); i++) {
+		status = _rtl8821au_llt_write(rtlpriv, i, i + 1);
+		if (_SUCCESS != status) {
+			return status;
+		}
+	}
+
+	/* end of list */
+	status = _rtl8821au_llt_write(rtlpriv, (txpktbuf_bndy - 1), 0xFF);
+	if (_SUCCESS != status) {
+		return status;
+	}
+
+	/*
+	 * Make the other pages as ring buffer
+	 * This ring buffer is used as beacon buffer if we config this MAC as two MAC transfer.
+	 * Otherwise used as local loopback buffer.
+	 */
+	for (i = txpktbuf_bndy; i < Last_Entry_Of_TxPktBuf; i++) {
+		status = _rtl8821au_llt_write(rtlpriv, i, (i + 1));
+		if (_SUCCESS != status) {
+			return status;
+		}
+	}
+
+	/*  Let last entry point to the start entry of ring buffer */
+	status = _rtl8821au_llt_write(rtlpriv, Last_Entry_Of_TxPktBuf, txpktbuf_bndy);
+	if (_SUCCESS != status) {
+		return status;
+	}
+
+	return status;
+}

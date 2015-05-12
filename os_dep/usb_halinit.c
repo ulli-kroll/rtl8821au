@@ -327,34 +327,19 @@ static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 	uint32_t numPubQ = 0;
 	uint32_t value32;
 	uint8_t	 value8;
-	BOOLEAN	bWiFiConfig = 0;	/* ULLI resolve THIS in next round */
 
-	if (!bWiFiConfig) {
-		numPubQ = NORMAL_PAGE_NUM_PUBQ_8821;
+	numPubQ = NORMAL_PAGE_NUM_PUBQ_8821;
 
-		if (pHalData->OutEpQueueSel & TX_SELE_HQ)
-			numHQ = NORMAL_PAGE_NUM_HPQ_8821;
+	if (pHalData->OutEpQueueSel & TX_SELE_HQ)
+		numHQ = NORMAL_PAGE_NUM_HPQ_8821;
 
-		if (pHalData->OutEpQueueSel & TX_SELE_LQ)
-			numLQ = NORMAL_PAGE_NUM_LPQ_8821;
+	if (pHalData->OutEpQueueSel & TX_SELE_LQ)
+		numLQ = NORMAL_PAGE_NUM_LPQ_8821;
 
-		/* NOTE: This step shall be proceed before writting REG_RQPN. */
-		if (pHalData->OutEpQueueSel & TX_SELE_NQ)
-			numNQ = NORMAL_PAGE_NUM_NPQ_8821;
+	/* NOTE: This step shall be proceed before writting REG_RQPN. */
+	if (pHalData->OutEpQueueSel & TX_SELE_NQ)
+		numNQ = NORMAL_PAGE_NUM_NPQ_8821;
 
-	} else { /* WMM */
-		numPubQ = WMM_NORMAL_PAGE_NUM_PUBQ_8821;
-
-		if (pHalData->OutEpQueueSel & TX_SELE_HQ)
-			numHQ = WMM_NORMAL_PAGE_NUM_HPQ_8821;
-
-		if (pHalData->OutEpQueueSel & TX_SELE_LQ)
-			numLQ = WMM_NORMAL_PAGE_NUM_LPQ_8821;
-
-		/* NOTE: This step shall be proceed before writting REG_RQPN. */
-		if (pHalData->OutEpQueueSel & TX_SELE_NQ)
-			numNQ = WMM_NORMAL_PAGE_NUM_NPQ_8821;
-	}
 
 	value8 = (u8)_NPQ(numNQ);
 	rtl_write_byte(rtlpriv, REG_RQPN_NPQ, value8);
@@ -374,33 +359,18 @@ static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 	uint32_t numPubQ	= 0;
 	uint32_t value32;
 	uint8_t	value8;
-	BOOLEAN	bWiFiConfig = 0;	/* ULLI resolve THIS in next round */
 
-	if (!bWiFiConfig) {
-		numPubQ = NORMAL_PAGE_NUM_PUBQ_8812;
+	numPubQ = NORMAL_PAGE_NUM_PUBQ_8812;
 
-		if (pHalData->OutEpQueueSel & TX_SELE_HQ)
-			numHQ = NORMAL_PAGE_NUM_HPQ_8812;
+	if (pHalData->OutEpQueueSel & TX_SELE_HQ)
+		numHQ = NORMAL_PAGE_NUM_HPQ_8812;
 
-		if (pHalData->OutEpQueueSel & TX_SELE_LQ)
-			numLQ = NORMAL_PAGE_NUM_LPQ_8812;
+	if (pHalData->OutEpQueueSel & TX_SELE_LQ)
+		numLQ = NORMAL_PAGE_NUM_LPQ_8812;
 
-		/* NOTE: This step shall be proceed before writting REG_RQPN. */
-		if (pHalData->OutEpQueueSel & TX_SELE_NQ)
-			numNQ = NORMAL_PAGE_NUM_NPQ_8812;
-	} else { /* WMM */
-		numPubQ = WMM_NORMAL_PAGE_NUM_PUBQ_8812;
-
-		if (pHalData->OutEpQueueSel & TX_SELE_HQ)
-			numHQ = WMM_NORMAL_PAGE_NUM_HPQ_8812;
-
-		if (pHalData->OutEpQueueSel & TX_SELE_LQ)
-			numLQ = WMM_NORMAL_PAGE_NUM_LPQ_8812;
-
-		/* NOTE: This step shall be proceed before writting REG_RQPN. */
-		if (pHalData->OutEpQueueSel & TX_SELE_NQ)
-			numNQ = WMM_NORMAL_PAGE_NUM_NPQ_8812;
-	}
+	/* NOTE: This step shall be proceed before writting REG_RQPN. */
+	if (pHalData->OutEpQueueSel & TX_SELE_NQ)
+		numNQ = NORMAL_PAGE_NUM_NPQ_8812;
 
 	value8 = (u8)_NPQ(numNQ);
 	rtl_write_byte(rtlpriv, REG_RQPN_NPQ, value8);

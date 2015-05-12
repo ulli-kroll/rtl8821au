@@ -49,12 +49,13 @@ static void dm_InitGPIOSetting(struct rtl_priv *rtlpriv)
 
 static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 {
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-	uint8_t	BoardType = ODM_BOARD_DEFAULT;
 
 	/*
 	 * Init Value
@@ -66,31 +67,28 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 	ODM_CmnInfoInit(pDM_Odm,	ODM_CMNINFO_MP_TEST_CHIP,IS_NORMAL_CHIP(pHalData->VersionID));
 
-	/* 1 ======= BoardType: ODM_CMNINFO_BOARD_TYPE ======= */
-	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power)
-	{
+	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power) 	{
 		rtlhal->external_pa_2g = 1;
 		rtlhal->external_lna_2g = 1;
-	}
-	else
-	{
+	} else {
 		rtlhal->external_lna_2g = 0;
 	}
 
+	rtlefuse->board_type = ODM_BOARD_DEFAULT;
 	if (rtlhal->external_lna_2g != 0) {
-		BoardType |= ODM_BOARD_EXT_LNA;
+		rtlefuse->board_type |= ODM_BOARD_EXT_LNA;
 	}
 	if (rtlhal->external_lna_5g != 0) {
-		BoardType |= ODM_BOARD_EXT_LNA_5G;
+		rtlefuse->board_type |= ODM_BOARD_EXT_LNA_5G;
 	}
 	if (rtlhal->external_pa_2g != 0) {
-		BoardType |= ODM_BOARD_EXT_PA;
+		rtlefuse->board_type |= ODM_BOARD_EXT_PA;
 	}
 	if (rtlhal->external_pa_5g != 0) {
-		BoardType |= ODM_BOARD_EXT_PA_5G;
+		rtlefuse->board_type |= ODM_BOARD_EXT_PA_5G;
 	}
 
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_BOARD_TYPE, BoardType);
+	rtlhal->board_type = rtlefuse->board_type;
 
 	/* 1 ============== End of BoardType ============== */
 

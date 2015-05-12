@@ -210,9 +210,6 @@ struct rtl_efuse {	bool autoLoad_ok;
 
 };
 
-// ODM_CMNINFO_BOARD_TYPE
-// For non-AC-series IC , ODM_BOARD_5G_EXT_PA and ODM_BOARD_5G_EXT_LNA are ignored
-// For AC-series IC, external PA & LNA can be indivisuallly added on 2.4G and/or 5G
 typedef enum tag_Board_Definition
 {
     ODM_BOARD_DEFAULT  	= 0, 	  // The DEFAULT case.

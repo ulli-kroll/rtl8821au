@@ -211,10 +211,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 		pDM_Odm->bIsMPChip = (u8)Value;
 		break;
 
-	case	ODM_CMNINFO_BOARD_TYPE:
-		rtlhal->board_type = (u8)Value;
-		break;
-
 	case	ODM_CMNINFO_EXT_TRSW:
 		pDM_Odm->ExtTRSW = (u8)Value;
 		break;

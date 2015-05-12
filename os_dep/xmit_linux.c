@@ -152,15 +152,8 @@ void rtw_os_pkt_complete(struct rtl_priv *rtlpriv, struct sk_buff *pkt)
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 
 	queue = skb_get_queue_mapping(pkt);
-	if (rtlpriv->registrypriv.wifi_spec) {
-		if (__netif_subqueue_stopped(rtlpriv->ndev, queue) &&
-		   (pxmitpriv->hwxmits[queue].accnt < WMM_XMIT_THRESHOLD)) {
-			netif_wake_subqueue(rtlpriv->ndev, queue);
-		}
-	} else {
-		if(__netif_subqueue_stopped(rtlpriv->ndev, queue))
-			netif_wake_subqueue(rtlpriv->ndev, queue);
-	}
+	if(__netif_subqueue_stopped(rtlpriv->ndev, queue))
+		netif_wake_subqueue(rtlpriv->ndev, queue);
 
 	dev_kfree_skb_any(pkt);
 }
@@ -205,17 +198,9 @@ static void rtw_check_xmit_resource(struct rtl_priv *rtlpriv, struct sk_buff *pk
 	u16	queue;
 
 	queue = skb_get_queue_mapping(pkt);
-	if (rtlpriv->registrypriv.wifi_spec) {
-		/* No free space for Tx, tx_worker is too slow */
-		if (pxmitpriv->hwxmits[queue].accnt > WMM_XMIT_THRESHOLD) {
-			/* DBG_871X("%s(): stop netif_subqueue[%d]\n", __FUNCTION__, queue); */
+	if(pxmitpriv->free_xmitframe_cnt<=4) {
+		if (!netif_tx_queue_stopped(netdev_get_tx_queue(rtlpriv->ndev, queue)))
 			netif_stop_subqueue(rtlpriv->ndev, queue);
-		}
-	} else {
-		if(pxmitpriv->free_xmitframe_cnt<=4) {
-			if (!netif_tx_queue_stopped(netdev_get_tx_queue(rtlpriv->ndev, queue)))
-				netif_stop_subqueue(rtlpriv->ndev, queue);
-		}
 	}
 }
 
@@ -307,11 +292,8 @@ int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 	rtw_check_xmit_resource(rtlpriv, pkt);
 
 #ifdef CONFIG_TX_MCAST2UNI
-	if ( !__rtw_mc2u_disable
-		&& check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE
-		&& ( IP_MCAST_MAC(pkt->data)
-			|| ICMPV6_MCAST_MAC(pkt->data) )
-		&& (rtlpriv->registrypriv.wifi_spec == 0)
+	if ( !__rtw_mc2u_disable && check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE && 
+	   ( IP_MCAST_MAC(pkt->data) || ICMPV6_MCAST_MAC(pkt->data) )
 		)
 	{
 		if ( pxmitpriv->free_xmitframe_cnt > (NR_XMITFRAME/4) ) {

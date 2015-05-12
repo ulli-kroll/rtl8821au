@@ -913,43 +913,6 @@ void WMMOnAssocRsp(struct rtl_priv *rtlpriv)
 
 		inx[0] = 0; inx[1] = 1; inx[2] = 2; inx[3] = 3;
 
-		if(pregpriv->wifi_spec==1)
-		{
-			uint32_t	j, tmp, change_inx;
-
-			//entry indx: 0->vo, 1->vi, 2->be, 3->bk.
-			for(i=0; i<4; i++)
-			{
-				for(j=i+1; j<4; j++)
-				{
-					//compare CW and AIFS
-					if((edca[j] & 0xFFFF) < (edca[i] & 0xFFFF))
-					{
-						change_inx = _TRUE;
-					}
-					else if((edca[j] & 0xFFFF) == (edca[i] & 0xFFFF))
-					{
-						//compare TXOP
-						if((edca[j] >> 16) > (edca[i] >> 16))
-							change_inx = _TRUE;
-					}
-
-					if(change_inx)
-					{
-						tmp = edca[i];
-						edca[i] = edca[j];
-						edca[j] = tmp;
-
-						tmp = inx[i];
-						inx[i] = inx[j];
-						inx[j] = tmp;
-
-						change_inx = _FALSE;
-					}
-				}
-			}
-		}
-
 		for(i=0; i<4; i++) {
 			pxmitpriv->wmm_para_seq[i] = inx[i];
 			DBG_871X("wmm_para_seq(%d): %d\n", i, pxmitpriv->wmm_para_seq[i]);

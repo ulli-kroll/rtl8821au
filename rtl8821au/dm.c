@@ -1880,10 +1880,6 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 	if (!(pDM_Odm->SupportAbility & ODM_MAC_EDCA_TURBO))
 		return;
 
-	if ((pregpriv->wifi_spec == 1)) {	/*|| (pmlmeinfo->HT_enable == 0)) */
-		goto dm_CheckEdcaTurbo_EXIT;
-	}
-
 	if (pDM_Odm->pWirelessMode != NULL)
 		WirelessMode = *(pDM_Odm->pWirelessMode);
 

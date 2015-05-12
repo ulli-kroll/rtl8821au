@@ -3689,8 +3689,7 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 
 					if((pregpriv->rx_stbc == 0x3) ||//enable for 2.4/5 GHz
 						((pmlmeext->cur_wireless_mode & WIRELESS_11_24N) && (pregpriv->rx_stbc == 0x1)) || //enable for 2.4GHz
-						((pmlmeext->cur_wireless_mode & WIRELESS_11_5N) && (pregpriv->rx_stbc == 0x2)) || //enable for 5GHz
-						(pregpriv->wifi_spec==1))
+						((pmlmeext->cur_wireless_mode & WIRELESS_11_5N) && (pregpriv->rx_stbc == 0x2))) //enable for 5GHz
 					{
 						DBG_871X("declare supporting RX STBC\n");
 						pmlmeinfo->HT_caps.u.HT_cap_element.HT_caps_info |= cpu_to_le16(0x0200);//RX STBC two spatial stream
@@ -3726,14 +3725,11 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 						(_rtw_memcmp(pIE->data, WMM_OUI, 4)) ||
 						(_rtw_memcmp(pIE->data, WPS_OUI, 4)))
 				{
-					if(!rtlpriv->registrypriv.wifi_spec)
-					{
-						//Commented by Kurt 20110629
-						//In some older APs, WPS handshake
-						//would be fail if we append vender extensions informations to AP
-						if(_rtw_memcmp(pIE->data, WPS_OUI, 4)){
-							pIE->Length=14;
-						}
+					//Commented by Kurt 20110629
+					//In some older APs, WPS handshake
+					//would be fail if we append vender extensions informations to AP
+					if(_rtw_memcmp(pIE->data, WPS_OUI, 4)){
+						pIE->Length=14;
 					}
 					pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, pIE->Length, pIE->data, &(pattrib->pktlen));
 				}
@@ -4935,32 +4931,6 @@ uint8_t collect_bss_info(struct rtl_priv *rtlpriv, struct recv_frame *precv_fram
 		bssid->Privacy = 0;
 
 	bssid->Configuration.ATIMWindow = 0;
-
-	//20/40 BSS Coexistence check
-	if((pregistrypriv->wifi_spec==1) && (_FALSE == pmlmeinfo->bwmode_updated))
-	{
-		struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
-#ifdef CONFIG_80211N_HT
-		p = rtw_get_ie(bssid->IEs + _FIXED_IE_LENGTH_, _HT_CAPABILITY_IE_, &len, bssid->IELength - _FIXED_IE_LENGTH_);
-		if(p && len>0)
-		{
-			struct HT_caps_element	*pHT_caps;
-			pHT_caps = (struct HT_caps_element	*)(p + 2);
-
-			if(pHT_caps->u.HT_cap_element.HT_caps_info&BIT(14))
-			{
-				pmlmepriv->num_FortyMHzIntolerant++;
-			}
-		}
-		else
-		{
-			pmlmepriv->num_sta_no_ht++;
-		}
-#endif //CONFIG_80211N_HT
-
-	}
-
-
 
 	// mark bss info receving from nearby channel as SignalQuality 101
 	if(bssid->Configuration.DSConfig != rtw_get_oper_ch(rtlpriv))

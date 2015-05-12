@@ -792,12 +792,6 @@ static int rtw_is_desired_network(struct rtl_priv *rtlpriv, struct wlan_network 
 		}
 	}
 
-	if (rtlpriv->registrypriv.wifi_spec == 1) { /* for  correct flow of 8021X  to do.... */
-		if ((desired_encmode == Ndis802_11EncryptionDisabled) && (privacy != 0))
-	            bselected = _FALSE;
-	}
-
-
  	if ((desired_encmode != Ndis802_11EncryptionDisabled) && (privacy == 0)) {
 		DBG_871X("desired_encmode: %d, privacy: %d\n", desired_encmode, privacy);
 		bselected = _FALSE;
@@ -1952,14 +1946,6 @@ void rtw_dynamic_check_timer_handlder(struct rtl_priv *rtlpriv)
 
 	rtw_dynamic_chk_wk_cmd(rtlpriv);
 
-	if (pregistrypriv->wifi_spec==1)
-	{
-		{
-			//auto site survey
-			rtw_auto_scan_handler(rtlpriv);
-		}
-	}
-
 #ifdef CONFIG_AP_MODE
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
 	{
@@ -2565,10 +2551,7 @@ void rtw_joinbss_reset(struct rtl_priv *rtlpriv)
 	// TH=0 => means that validate usb rx aggregation, use init value.
 	if (phtpriv->ht_option)
 	{
-		if (rtlpriv->registrypriv.wifi_spec==1)
-			threshold = 1;
-		else
-			threshold = 0;
+		threshold = 0;
 		rtw_hal_set_hwreg(rtlpriv, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
 	}
 	else
@@ -2697,14 +2680,7 @@ void rtw_update_ht_cap(struct rtl_priv *rtlpriv, uint8_t *pie, uint ie_len, uint
 	//maybe needs check if ap supports rx ampdu.
 	if ((phtpriv->ampdu_enable==_FALSE) &&(pregistrypriv->ampdu_enable==1))
 	{
-		if (pregistrypriv->wifi_spec==1)
-		{
-			phtpriv->ampdu_enable = _FALSE;
-		}
-		else
-		{
-			phtpriv->ampdu_enable = _TRUE;
-		}
+		phtpriv->ampdu_enable = _TRUE;
 	}
 	else if (pregistrypriv->ampdu_enable==2)
 	{

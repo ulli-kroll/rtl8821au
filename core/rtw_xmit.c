@@ -400,7 +400,7 @@ static void update_attrib_vcs_info(struct rtl_priv *rtlpriv, struct xmit_frame *
 	 * 		Other fragments are protected by previous fragment.
 	 * 		So we only need to check the length of first fragment.
 	 */
-	if (pmlmeext->cur_wireless_mode < WIRELESS_11_24N  || rtlpriv->registrypriv.wifi_spec) {
+	if (pmlmeext->cur_wireless_mode < WIRELESS_11_24N) {
 		if (sz > rtlpriv->registrypriv.rts_thresh) {
 			pattrib->vcs_mode = RTS_CTS;
 		} else {
@@ -2024,13 +2024,6 @@ struct xmit_frame *rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmi
 	int i, inx[4];
 
 	inx[0] = 0; inx[1] = 1; inx[2] = 2; inx[3] = 3;
-
-	if (pregpriv->wifi_spec == 1) {
-		int j, tmp, acirp_cnt[4];
-
-		for (j = 0; j < 4; j++)
-			inx[j] = pxmitpriv->wmm_para_seq[j];
-	}
 
 	spin_lock_bh(&pxmitpriv->lock);
 

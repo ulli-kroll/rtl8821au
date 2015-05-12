@@ -214,7 +214,7 @@ static void _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_PIFS, 0x00);
 
 	/* Suggention by SD1 Jong and Pisa, by Maddest 20130107. */
-	if (IS_HARDWARE_TYPE_8821U(rtlhal) && (rtlpriv->registrypriv.wifi_spec == _FALSE)) {
+	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		rtl_write_word(rtlpriv, REG_MAX_AGGR_NUM, 0x0a0a);
 		rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL, 0x80);
 		rtl_write_byte(rtlpriv, REG_AMPDU_MAX_TIME_8812, 0x5e);
@@ -327,7 +327,7 @@ static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 	uint32_t numPubQ = 0;
 	uint32_t value32;
 	uint8_t	 value8;
-	BOOLEAN	bWiFiConfig = pregistrypriv->wifi_spec;
+	BOOLEAN	bWiFiConfig = 0;	/* ULLI resolve THIS in next round */
 
 	if (!bWiFiConfig) {
 		numPubQ = NORMAL_PAGE_NUM_PUBQ_8821;
@@ -374,7 +374,7 @@ static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 	uint32_t numPubQ	= 0;
 	uint32_t value32;
 	uint8_t	value8;
-	BOOLEAN	bWiFiConfig	= pregistrypriv->wifi_spec;
+	BOOLEAN	bWiFiConfig = 0;	/* ULLI resolve THIS in next round */
 
 	if (!bWiFiConfig) {
 		numPubQ = NORMAL_PAGE_NUM_PUBQ_8812;
@@ -420,10 +420,7 @@ static void _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	uint8_t	txpktbuf_bndy;
 
-	if (!pregistrypriv->wifi_spec)
-		txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
-	else	/* for WMM */
-		txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8821;
+	txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
 
 	rtl_write_byte(rtlpriv, REG_BCNQ_BDNY, txpktbuf_bndy);
 	rtl_write_byte(rtlpriv, REG_MGQ_BDNY, txpktbuf_bndy);
@@ -437,10 +434,7 @@ static void _InitTxBufferBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	uint8_t	txpktbuf_bndy;
 
-	if (!pregistrypriv->wifi_spec)
-		txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
-	else	/* for WMM */
-		txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8812;
+	txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
 
 	rtl_write_byte(rtlpriv, REG_BCNQ_BDNY, txpktbuf_bndy);
 	rtl_write_byte(rtlpriv, REG_MGQ_BDNY, txpktbuf_bndy);
@@ -518,21 +512,12 @@ static void _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 		break;
 	}
 
-	if (!pregistrypriv->wifi_spec) {
 		beQ	= valueLow;
 		bkQ	= valueLow;
 		viQ	= valueHi;
 		voQ	= valueHi;
 		mgtQ	= valueHi;
 		hiQ	= valueHi;
-	} else {	/* for WMM ,CONFIG_OUT_EP_WIFI_MODE */
-		beQ	= valueLow;
-		bkQ	= valueHi;
-		viQ	= valueHi;
-		voQ	= valueLow;
-		mgtQ	= valueHi;
-		hiQ	= valueHi;
-	}
 
 	_InitNormalChipRegPriority_8812AUsb(rtlpriv, beQ, bkQ, viQ, voQ, mgtQ, hiQ);
 
@@ -543,21 +528,13 @@ static void _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
-	if (!pregistrypriv->wifi_spec) {	/* typical setting */
 		beQ	= QUEUE_LOW;
 		bkQ	= QUEUE_LOW;
 		viQ	= QUEUE_NORMAL;
 		voQ	= QUEUE_HIGH;
 		mgtQ 	= QUEUE_HIGH;
 		hiQ	= QUEUE_HIGH;
-	} else {	/* for WMM */
-		beQ	= QUEUE_LOW;
-		bkQ	= QUEUE_NORMAL;
-		viQ	= QUEUE_NORMAL;
-		voQ	= QUEUE_HIGH;
-		mgtQ 	= QUEUE_HIGH;
-		hiQ	= QUEUE_HIGH;
-	}
+
 	_InitNormalChipRegPriority_8812AUsb(rtlpriv, beQ, bkQ, viQ, voQ, mgtQ, hiQ);
 }
 
@@ -787,9 +764,6 @@ static void usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t			value32;
 
-	if (rtlpriv->registrypriv.wifi_spec)
-		pHalData->UsbTxAggMode = _FALSE;
-
 	if (pHalData->UsbTxAggMode) {
 		value32 = rtl_read_dword(rtlpriv, REG_TDECTRL);
 		value32 = value32 & ~(BLK_DESC_NUM_MASK << BLK_DESC_NUM_SHIFT);
@@ -987,18 +961,10 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 		goto exit;
 	}
 
-	if (!pregistrypriv->wifi_spec) {
 		if (IS_HARDWARE_TYPE_8812(rtlhal))
 			txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
 		else
 			txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
-	} else {
-		/* for WMM */
-		if (IS_HARDWARE_TYPE_8812(rtlhal))
-			txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8812;
-		else
-			txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8821;
-	}
 
 	status =  _rtl8821au_llt_table_init(rtlpriv, txpktbuf_bndy);
 	if (status == _FAIL) {
@@ -1139,9 +1105,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	 * 2010.04.09 add by hpfan
 	 */
 	rtl_write_dword(rtlpriv, REG_BAR_MODE_CTRL, 0x0201ffff);
-
-	if (pregistrypriv->wifi_spec)
-		rtl_write_word(rtlpriv, REG_FAST_EDCA_CTRL, 0);
 
 	/* Nav limit , suggest by scott */
 	rtl_write_byte(rtlpriv, 0x652, 0x0);

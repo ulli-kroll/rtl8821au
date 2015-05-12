@@ -142,7 +142,6 @@ static int rtw_lowrate_two_xmit = 1;/* Use 2 path Tx to transmit MCS0~7 and lega
 /* int rf_config = RF_1T2R;   1T2R */
 static int rtw_rf_config = RF_MAX_TYPE;  /* auto */
 static int rtw_low_power = 0;
-static int rtw_wifi_spec = 0;
 static int rtw_channel_plan = RT_CHANNEL_DOMAIN_MAX;
 
 
@@ -210,7 +209,6 @@ module_param(rtw_rf_config, int, 0644);
 module_param(rtw_power_mgnt, int, 0644);
 module_param(rtw_smart_ps, int, 0644);
 module_param(rtw_low_power, int, 0644);
-module_param(rtw_wifi_spec, int, 0644);
 
 module_param(rtw_antdiv_cfg, int, 0644);
 module_param(rtw_antdiv_type, int, 0644);
@@ -681,9 +679,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->lowrate_two_xmit = (uint8_t)rtw_lowrate_two_xmit;
 	registry_par->rf_config = (uint8_t)rtw_rf_config;
 	registry_par->low_power = (uint8_t)rtw_low_power;
-
-
-	registry_par->wifi_spec = (uint8_t)rtw_wifi_spec;
 
 	registry_par->channel_plan = (uint8_t)rtw_channel_plan;
 

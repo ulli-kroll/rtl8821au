@@ -169,8 +169,6 @@ struct registry_priv
 	uint8_t	rf_config ;
 	uint8_t	low_power ;
 
-	uint8_t	wifi_spec;// !turbo_mode
-
 	uint8_t	channel_plan;
 	BOOLEAN	bAcceptAddbaReq;
 

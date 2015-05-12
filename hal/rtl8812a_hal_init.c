@@ -2432,17 +2432,10 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 		break;
 
 	case HAL_DEF_TX_PAGE_BOUNDARY:
-		if (!rtlpriv->registrypriv.wifi_spec) 	{
-			if (IS_HARDWARE_TYPE_8812(rtlhal))
-				*(uint8_t *)pval = TX_PAGE_BOUNDARY_8812;
-			else
-				*(uint8_t *)pval = TX_PAGE_BOUNDARY_8821;
-		} else 	{
-			if (IS_HARDWARE_TYPE_8812(rtlhal))
-				*(uint8_t *)pval = WMM_NORMAL_TX_PAGE_BOUNDARY_8812;
-			else
-				*(uint8_t *)pval = WMM_NORMAL_TX_PAGE_BOUNDARY_8821;
-		}
+		if (IS_HARDWARE_TYPE_8812(rtlhal))
+			*(uint8_t *)pval = TX_PAGE_BOUNDARY_8812;
+		else
+			*(uint8_t *)pval = TX_PAGE_BOUNDARY_8821;
 		break;
 
 	case HAL_DEF_TX_PAGE_BOUNDARY_WOWLAN:

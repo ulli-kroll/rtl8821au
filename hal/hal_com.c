@@ -310,7 +310,7 @@ Hal_MappingOutPipe(
 {
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 
-	BOOLEAN	 bWIFICfg = (pregistrypriv->wifi_spec) ?_TRUE:_FALSE;
+	BOOLEAN	 bWIFICfg = _FALSE;	/* ULLI resolve THIS in next round */
 
 	BOOLEAN result = _TRUE;
 

@@ -2193,48 +2193,6 @@ uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 	bResult = _SUCCESS;
 
 	switch (variable) {
-	case HAL_DEF_DBG_DM_FUNC:
-		{
-			uint8_t dm_func;
-			struct dm_priv *pdmpriv;
-			struct _rtw_dm *podmpriv;
-
-
-			dm_func = *((uint8_t *)pval);
-			pdmpriv = &pHalData->dmpriv;
-			podmpriv = &pHalData->odmpriv;
-
-			if (dm_func == 0) {
-				/* disable all dynamic func */
-				podmpriv->SupportAbility = DYNAMIC_FUNC_DISABLE;
-				DBG_8192C("==> Disable all dynamic function...\n");
-			} else if (dm_func == 1) {
-				/* disable DIG */
-				podmpriv->SupportAbility &= (~DYNAMIC_BB_DIG);
-				DBG_8192C("==> Disable DIG...\n");
-			} else if (dm_func == 2) {
-				/* disable High power */
-				podmpriv->SupportAbility &= (~DYNAMIC_BB_DYNAMIC_TXPWR);
-			} else if (dm_func == 3) {
-				/* disable tx power tracking */
-				podmpriv->SupportAbility &= (~DYNAMIC_RF_CALIBRATION);
-				DBG_8192C("==> Disable tx power tracking...\n");
-			} else if (dm_func == 5) {
-				/* disable antenna diversity */
-				podmpriv->SupportAbility &= (~DYNAMIC_BB_ANT_DIV);
-			} else if (dm_func == 6) {
-				/* turn on all dynamic func */
-				if (!(podmpriv->SupportAbility & DYNAMIC_BB_DIG)) {
-					struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
-					dm_digtable->cur_igvalue = rtl_read_byte(rtlpriv, 0xc50);
-				}
-				/* pdmpriv->DMFlag |= DYNAMIC_FUNC_BT; */
-				podmpriv->SupportAbility = DYNAMIC_ALL_FUNC_ENABLE;
-				DBG_8192C("==> Turn on all dynamic function...\n");
-			}
-		}
-		break;
-
 	case HW_DEF_FA_CNT_DUMP:
 		{
 			uint8_t mac_id;
@@ -2329,10 +2287,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 
 	case HAL_DEF_RX_PACKET_OFFSET:
 		*((u32 *)pval) = RXDESC_SIZE + DRVINFO_SZ;
-		break;
-
-	case HAL_DEF_DBG_DM_FUNC:
-		*((u32 *)pval) = pHalData->odmpriv.SupportAbility;
 		break;
 
 #if (RATE_ADAPTIVE_SUPPORT == 1)

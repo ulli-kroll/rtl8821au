@@ -596,32 +596,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		rtl_write_byte(rtlpriv, REG_SECCFG, val8);
 		break;
 
-	case HW_VAR_DM_FUNC_OP:
-		if (*pval) 	/* save dm flag */
-			podmpriv->BK_SupportAbility = podmpriv->SupportAbility;
-		else 		/* restore dm flag */
-			podmpriv->SupportAbility = podmpriv->BK_SupportAbility;
-		break;
-
-	case HW_VAR_DM_FUNC_SET:
-		val32 = *(u32 *) pval;
-		if (val32 == DYNAMIC_ALL_FUNC_ENABLE) {
-			pdmpriv->DMFlag = pdmpriv->InitDMFlag;
-			podmpriv->SupportAbility = pdmpriv->InitODMFlag;
-		} else {
-			podmpriv->SupportAbility |= val32;
-		}
-		break;
-
-	case HW_VAR_DM_FUNC_CLR:
-		val32 = *(u32 *) pval;
-		/*
-		 *  input is already a mask to clear function
-		 *  don't invert it again! George,Lucas@20130513
-		 */
-		podmpriv->SupportAbility &= val32;
-		break;
-
 	case HW_VAR_CAM_EMPTY_ENTRY:
 		{
 			uint8_t ucIndex = *pval;

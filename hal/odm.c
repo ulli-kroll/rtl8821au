@@ -203,10 +203,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 	/*
 	 * Fixed ODM value.
 	 */
-	case	ODM_CMNINFO_ABILITY:
-		pDM_Odm->SupportAbility = (uint32_t)Value;
-		break;
-
 	case	ODM_CMNINFO_MP_TEST_CHIP:
 		pDM_Odm->bIsMPChip = (u8)Value;
 		break;
@@ -315,10 +311,6 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 	 * This init variable may be changed in run time.
 	 */
 	switch	(CmnInfo) {
-	case	ODM_CMNINFO_ABILITY:
-		pDM_Odm->SupportAbility = (uint32_t)Value;
-		break;
-
 	case	ODM_CMNINFO_LINK:
 		pDM_Odm->bLinked = (BOOLEAN)Value;
 		break;
@@ -450,11 +442,6 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	uint32_t value32;
 	BOOLEAN EDCCA_State;
 
-	if (!(pDM_Odm->SupportAbility & ODM_BB_ADAPTIVITY)) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("Go to odm_DynamicEDCCA() \n"));
-		/*  Add by Neil Chen to enable edcca to MP Platform */
-		return;
-	}
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_Adaptivity() =====> \n"));
 
 	if (pDM_Odm->bForceThresh) {
@@ -629,9 +616,6 @@ void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 
 	u8	CurCCK_CCAThres;
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
-
-	if (!(pDM_Odm->SupportAbility & (ODM_BB_CCK_PD|ODM_BB_FA_CNT)))
-		return;
 
 	if (rtlhal->external_lna_2g)
 		return;
@@ -823,11 +807,6 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm)
 {
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("odm_RefreshRateAdaptiveMask()---------->\n"));
-	if (!(pDM_Odm->SupportAbility & ODM_BB_RA_MASK)) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("odm_RefreshRateAdaptiveMask(): Return cos not supported\n"));
-		return;
-	}
 	/*
 	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
 	 * at the same time. In the stage2/3, we need to prive universal interface and merge all

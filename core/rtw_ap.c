@@ -935,8 +935,6 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		//Switch_DM_Func(rtlpriv, DYNAMIC_FUNC_DISABLE, _FALSE);
 
 			{
-			//turn on all dynamic functions
-			Switch_DM_Func(rtlpriv, DYNAMIC_ALL_FUNC_ENABLE, _TRUE);
 
 			//rtw_hal_set_hwreg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
 		}

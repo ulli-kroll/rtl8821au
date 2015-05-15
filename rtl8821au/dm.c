@@ -1603,9 +1603,6 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
-	if (!(pDM_Odm->SupportAbility & ODM_RF_TX_PWR_TRACK)) {
-		return;
-	}
 
 	if (!pDM_Odm->RFCalibrateInfo.TM_Trigger) {		/* at least delay 1 sec */
 		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
@@ -1642,8 +1639,6 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 	uint32_t ret_value;
 	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
 
-	if (!(pDM_Odm->SupportAbility & ODM_BB_FA_CNT))
-		return;
 
 	{
 		uint32_t CCKenable;
@@ -1825,9 +1820,6 @@ static void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm)
 	 * For CE/NIC use _ADAPTER
 	 */
 
-	if (!(pDM_Odm->SupportAbility & ODM_BB_RSSI_MONITOR))
-		return;
-
 	/*
 	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
 	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
@@ -1876,9 +1868,6 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
 	 * HW dynamic mechanism.
 	 */
-
-	if (!(pDM_Odm->SupportAbility & ODM_MAC_EDCA_TURBO))
-		return;
 
 	if (pDM_Odm->pWirelessMode != NULL)
 		WirelessMode = *(pDM_Odm->pWirelessMode);
@@ -2143,11 +2132,6 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	u8						CurrentIGI = dm_digtable->cur_igvalue;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG()==>\n"));
-	/* if (!(pDM_Odm->SupportAbility & (ODM_BB_DIG|ODM_BB_FA_CNT))) */
-	if ((!(pDM_Odm->SupportAbility&ODM_BB_DIG)) || (!(pDM_Odm->SupportAbility&ODM_BB_FA_CNT))) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() Return: SupportAbility ODM_BB_DIG or ODM_BB_FA_CNT is disabled\n"));
-		return;
-	}
 
 	if (*(pDM_Odm->pbScanInProcess)) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() Return: In Scan Progress \n"));
@@ -2308,10 +2292,8 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	if (CurrentIGI < dm_digtable->rx_gain_min)
 		CurrentIGI = dm_digtable->rx_gain_min;
 
-	if (pDM_Odm->SupportAbility & ODM_BB_ADAPTIVITY) {
-		if (CurrentIGI > (pDM_Odm->IGI_target + 4))
-			CurrentIGI = (u8)pDM_Odm->IGI_target + 4;
-	}
+	if (CurrentIGI > (pDM_Odm->IGI_target + 4))
+		CurrentIGI = (u8)pDM_Odm->IGI_target + 4;
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): rx_gain_range_max=0x%x, rx_gain_range_min=0x%x\n",
 		dm_digtable->rx_gain_max, dm_digtable->rx_gain_min));

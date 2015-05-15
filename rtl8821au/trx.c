@@ -1370,7 +1370,6 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 			}
 		}
 		/* 2 For dynamic ATC switch */
-		if (pDM_Odm->SupportAbility & ODM_BB_DYNAMIC_ATC) {
 			if (pPktinfo->bPacketMatchBSSID) {
 				/* 3 Update CFO report for path-A & path-B */
 				for (i = RF90_PATH_A; i < ODM_RF_PATH_MAX; i++) {
@@ -1388,7 +1387,6 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 				 * 	("pPhyStaRpt->path_cfotail[i] = 0x%x, pDM_Odm->CFO_tail[i] = 0x%x\n", pPhyStaRpt->path_cfotail[0], pDM_Odm->CFO_tail[1]));
 				 */
 			}
-		}
 	}
 	/* DbgPrint("isCCKrate= %d, pPhyInfo->SignalStrength=%d % PWDB_AL=%d rf_rx_num=%d\n", isCCKrate, pPhyInfo->SignalStrength, PWDB_ALL, rf_rx_num); */
 

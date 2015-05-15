@@ -412,34 +412,6 @@ void UpdateBrateTblForSoftAP(uint8_t *bssrateset, uint32_t	 bssratelen)
 
 }
 
-void Save_DM_Func_Flag(struct rtl_priv *rtlpriv)
-{
-	uint8_t	bSaveFlag = _TRUE;
-
-
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_DM_FUNC_OP, (uint8_t *)(&bSaveFlag));
-
-}
-
-void Restore_DM_Func_Flag(struct rtl_priv *rtlpriv)
-{
-	uint8_t	bSaveFlag = _FALSE;
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_DM_FUNC_OP, (uint8_t *)(&bSaveFlag));
-}
-
-void Switch_DM_Func(struct rtl_priv *rtlpriv, uint32_t	 mode, uint8_t enable)
-{
-
-	if(enable == _TRUE)
-	{
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_DM_FUNC_SET, (uint8_t *)(&mode));
-	}
-	else
-	{
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_DM_FUNC_CLR, (uint8_t *)(&mode));
-	}
-}
-
 static void Set_NETYPE1_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 {
 	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MEDIA_STATUS1, (uint8_t *)(&type));
@@ -1934,14 +1906,11 @@ void update_IOT_info(struct rtl_priv *rtlpriv)
 		case HT_IOT_PEER_RALINK:
 			pmlmeinfo->turboMode_cts2self = 0;
 			pmlmeinfo->turboMode_rtsen = 1;
-			//disable high power
-			Switch_DM_Func(rtlpriv, (~DYNAMIC_BB_DYNAMIC_TXPWR), _FALSE);
 			break;
 		case HT_IOT_PEER_REALTEK:
 			//rtw_write16(rtlpriv, 0x4cc, 0xffff);
 			//rtw_write16(rtlpriv, 0x546, 0x01c0);
 			//disable high power
-			Switch_DM_Func(rtlpriv, (~DYNAMIC_BB_DYNAMIC_TXPWR), _FALSE);
 			break;
 		default:
 			pmlmeinfo->turboMode_cts2self = 0;

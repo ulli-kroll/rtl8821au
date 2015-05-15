@@ -517,10 +517,6 @@ void UpdateBrateTbl(struct rtl_priv *rtlpriv,uint8_t *mBratesOS);
 void UpdateBrateTblForSoftAP(uint8_t *bssrateset, u32 bssratelen);
 void change_band_update_ie(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *pnetwork);
 
-void Save_DM_Func_Flag(struct rtl_priv *rtlpriv);
-void Restore_DM_Func_Flag(struct rtl_priv *rtlpriv);
-void Switch_DM_Func(struct rtl_priv *rtlpriv, u32 mode, uint8_t enable);
-
 //void Set_NETYPE1_MSR(struct rtl_priv *rtlpriv, uint8_t type);
 //void Set_NETYPE0_MSR(struct rtl_priv *rtlpriv, uint8_t type);
 

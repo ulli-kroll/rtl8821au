@@ -4750,8 +4750,6 @@ void site_survey(struct rtl_priv *rtlpriv)
 
 			initialgain = 0xff; //restore RX GAIN
 			rtw_hal_set_hwreg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
-			//turn on dynamic functions
-			Restore_DM_Func_Flag(rtlpriv);
 			//Switch_DM_Func(rtlpriv, DYNAMIC_ALL_FUNC_ENABLE, _TRUE);
 
 			if (is_client_associated_to_ap(rtlpriv) == _TRUE)
@@ -5780,10 +5778,6 @@ void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res)
 		}
 	}
 
-
-	//turn on dynamic functions
-	Switch_DM_Func(rtlpriv, DYNAMIC_ALL_FUNC_ENABLE, _TRUE);
-
 	// update IOT-releated issue
 	update_IOT_info(rtlpriv);
 
@@ -6356,10 +6350,6 @@ uint8_t createbss_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		pmlmeinfo->agg_enable_bitmap = 0;
 		pmlmeinfo->candidate_tid_bitmap = 0;
 
-		//disable dynamic functions, such as high power, DIG
-		Save_DM_Func_Flag(rtlpriv);
-		Switch_DM_Func(rtlpriv, DYNAMIC_FUNC_DISABLE, _FALSE);
-
 		//config the initial gain under linking, need to write the BB registers
 		//initialgain = 0x1E;
 		//rtw_hal_set_hwreg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
@@ -6720,9 +6710,6 @@ uint8_t sitesurvey_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 	if ((pmlmeext->sitesurvey_res.state == SCAN_START) || (pmlmeext->sitesurvey_res.state == SCAN_TXNULL))
 	{
-		//disable dynamic functions, such as high power, DIG
-		Save_DM_Func_Flag(rtlpriv);
-		Switch_DM_Func(rtlpriv, DYNAMIC_FUNC_DISABLE, _FALSE);
 
 		//config the initial gain under scaning, need to write the BB registers
 			initialgain = 0x1e;

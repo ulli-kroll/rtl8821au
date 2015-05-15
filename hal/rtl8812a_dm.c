@@ -95,15 +95,9 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_PATCH_ID,pEEPROM->CustomerID);
 
-	pdmpriv->InitODMFlag =	ODM_RF_CALIBRATION		|
-							ODM_RF_TX_PWR_TRACK	//|
-							;
 	/* if(pHalData->AntDivCfg)
 	 *	pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
 	 */
-
-	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
-
 }
 static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 {
@@ -116,20 +110,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int i;
-
-	pdmpriv->InitODMFlag =	ODM_BB_DIG |
-#ifdef	CONFIG_ODM_REFRESH_RAMASK
-				ODM_BB_RA_MASK		|
-#endif
-				ODM_BB_FA_CNT			|
-				ODM_BB_RSSI_MONITOR	|
-				ODM_RF_TX_PWR_TRACK	|	/* For RF */
-				ODM_MAC_EDCA_TURBO
-			;
-	if (pHalData->AntDivCfg)
-		pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
-
-	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_WM_MODE,&(pmlmeext->cur_wireless_mode));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_FORCED_RATE,&(pHalData->ForcedDataRate));

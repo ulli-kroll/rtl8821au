@@ -320,7 +320,6 @@ typedef enum _ODM_Common_Info_Definition
 	//
 
 	//-----------HOOK BEFORE REG INIT-----------//
-	ODM_CMNINFO_ABILITY,					// ODM_ABILITY_E
 	ODM_CMNINFO_MP_TEST_CHIP,
 	ODM_CMNINFO_PATCH_ID,				//CUSTOMER ID
 	//-----------HOOK BEFORE REG INIT-----------//
@@ -362,45 +361,6 @@ typedef enum _ODM_Common_Info_Definition
 
 
 }ODM_CMNINFO_E;
-
-//
-// 2011/10/20 MH Define ODM support ability.  ODM_CMNINFO_ABILITY
-//
-typedef enum _ODM_Support_Ability_Definition
-{
-	//
-	// BB ODM section BIT 0-15
-	//
-	ODM_BB_DIG					= BIT0,
-	ODM_BB_RA_MASK				= BIT1,
-	ODM_BB_DYNAMIC_TXPWR		= BIT2,
-	ODM_BB_FA_CNT					= BIT3,
-	ODM_BB_RSSI_MONITOR			= BIT4,
-	ODM_BB_CCK_PD				= BIT5,
-	ODM_BB_ANT_DIV				= BIT6,
-	ODM_BB_PWR_SAVE				= BIT7,
-	ODM_BB_PWR_TRAIN				= BIT8,
-	ODM_BB_RATE_ADAPTIVE			= BIT9,
-	ODM_BB_PATH_DIV				= BIT10,
-	ODM_BB_PSD					= BIT11,
-	ODM_BB_RXHP					= BIT12,
-	ODM_BB_ADAPTIVITY				= BIT13,
-	ODM_BB_DYNAMIC_ATC			= BIT14,
-
-	//
-	// MAC DM section BIT 16-23
-	//
-	ODM_MAC_EDCA_TURBO			= BIT16,
-	ODM_MAC_EARLY_MODE			= BIT17,
-
-	//
-	// RF ODM section BIT 24-31
-	//
-	ODM_RF_TX_PWR_TRACK			= BIT24,
-	ODM_RF_RX_GAIN_TRACK			= BIT25,
-	ODM_RF_CALIBRATION			= BIT26,
-
-}ODM_ABILITY_E;
 
 typedef enum tag_ODM_Support_Interface_Definition
 {

@@ -1570,7 +1570,6 @@ struct _rtw_dm {
 	//
 //-----------HOOK BEFORE REG INIT-----------//
 	// ODM Support Ability DIG/RATR/TX_PWR_TRACK/ ¡K¡K = 1/2/3/¡K
-	uint32_t			SupportAbility;
 	// ODM PCIE/USB/SDIO = 1/2/3
 	u8			SupportInterface;
 	// Cut Version TestChip/A-cut/B-cut... = 0/1/2/3/...
@@ -1580,7 +1579,6 @@ struct _rtw_dm {
 	u8			PatchID; //Customer ID
 	BOOLEAN			bInHctTest;
 
-	uint32_t			BK_SupportAbility;
 //-----------HOOK BEFORE REG INIT-----------//
 
 	//

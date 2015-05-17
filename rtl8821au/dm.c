@@ -1174,12 +1174,6 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	/* 4 if (. Initialize ThermalValues of RFCalibrateInfo */
 
-#if 0 	/* ULLI : var not used, check ?? */
-	if (rtldm->bReloadtxpowerindex) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("reload ofdm index for band switch\n"));
-	}
-#endif
-
 	/* 4 4. Calculate average thermal meter */
 
 	rtldm->thermalvalue_avg[rtldm->thermalvalue_avg_index] = ThermalValue;
@@ -1387,12 +1381,6 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		return;
 
 	/* 4 if (. Initialize ThermalValues of RFCalibrateInfo */
-
-#if 0 	/* ULLI : var not used, check ?? */
-	if (rtldm->bReloadtxpowerindex) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("reload ofdm index for band switch\n"));
-	}
-#endif
 
 	/* 4 4. Calculate average thermal meter */
 

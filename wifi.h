@@ -1310,7 +1310,6 @@ struct dm_priv {
 	//for tx power tracking
 	uint8_t	bTXPowerTracking;
 	uint8_t	TXPowercount;
-	uint8_t	bTXPowerTrackingInit;
 	uint8_t	TxPowerTrackControl;	//for mp mode, turn off txpwrtracking as default
 	uint8_t	TM_Trigger;
 
@@ -1325,8 +1324,6 @@ struct dm_priv {
 
 	uint8_t	OFDM_index_HP[2];
 	//uint8_t   RSVD_6;
-
-	u32	TXPowerTrackingCallbackCnt;	//cosa add for debug
 
 	u32	prv_traffic_idx; // edca turbo
 //###### duplicate code,will move to ODM #########

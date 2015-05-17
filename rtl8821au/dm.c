@@ -1158,7 +1158,6 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 					 (u8 **)&up_b, (u8 **)&down_b);
 
 #if 0		/* ULLI : only writing, no use */
-	rtldm->TXPowerTrackingCallbackCnt++; /* cosa add for debug */
 #endif
 	rtldm->txpower_trackinginit = TRUE;
 
@@ -1378,11 +1377,6 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	rtl8821au_get_delta_swing_table(rtlpriv, (u8 **)&up_a, (u8 **)&down_a,
 					 (u8 **)&up_b, (u8 **)&down_b);
-
-#if 0		/* ULLI : only writing, no use */
-	rtldm->TXPowerTrackingCallbackCnt++; /* cosa add for debug */
-	rtldm->bTXPowerTrackingInit = TRUE;
-#endif
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n", rtldm->swing_idx_cck_base, rtldm->swing_idx_ofdm_base[RF90_PATH_A], rtldm->default_ofdm_index));
 

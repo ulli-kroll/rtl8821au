@@ -461,33 +461,23 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 		else
 			PwrTrackingLimit = 24;
 	}
-#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit));
-#endif
 	if (Method == BBSWING) {
-#if 0
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8812A\n"));
-#endif
 		if (RFPath == RF90_PATH_A) {
 			finalBbSwingIdx[RF90_PATH_A] = (rtldm->ofdm_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_A];
-#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
 				rtldm->OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
-#endif
 			rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		} else {
 			finalBbSwingIdx[RF90_PATH_B] = (rtldm->ofdm_index[RF90_PATH_B] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_B];
-#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_B]=%d\n",
 				rtldm->OFDM_index[RF90_PATH_B], finalBbSwingIdx[RF90_PATH_B]));
-#endif
 			rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_B]]);
 		}
 	} else if (Method == MIX_MODE) {
-#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
 				rtldm->DefaultOfdmIndex, rtldm->absolute_ofdm_swing_idx[RFPath], RFPath));
-#endif
 
 			Final_OFDM_Swing_Index = rtldm->default_ofdm_index + rtldm->absolute_ofdm_swing_idx[RFPath];
 
@@ -503,9 +493,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					/* et TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-#if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif
 				} else if (Final_OFDM_Swing_Index < 0) {
 					rtldm->remnant_cck_idx = Final_OFDM_Swing_Index;            /* CCK Follow the same compensate value as Path A */
 					rtldm->remnant_ofdm_swing_idx[RFPath] = Final_OFDM_Swing_Index;
@@ -517,14 +505,11 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					/* Set TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel);*/
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-#if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif
 				} else 	{
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[Final_OFDM_Swing_Index]);
-#if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index));
-#endif
+
 					if (rtldm->modify_txagc_flag_path_a) { /* If TxAGC has changed, reset TxAGC again */
 						rtldm->remnant_cck_idx = 0;
 						rtldm->remnant_ofdm_swing_idx[RFPath] = 0;
@@ -534,9 +519,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 						PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 						rtldm->modify_txagc_flag_path_a = FALSE;
-#if 0
 						ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
-#endif
 					}
 				}
 			}
@@ -550,9 +533,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					rtldm->modify_txagc_flag_path_b = TRUE;
 
 					/* Set TxAGC Page E{}; */
-#if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif
 				} else if (Final_OFDM_Swing_Index < 0) {
 					rtldm->remnant_ofdm_swing_idx[RFPath] = Final_OFDM_Swing_Index;
 
@@ -561,14 +542,10 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					rtldm->modify_txagc_flag_path_b = TRUE;
 
 					/* Set TxAGC Page E{}; */
-#if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif
 				} else {
 					rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[Final_OFDM_Swing_Index]);
-#if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index));
-#endif
 					if (rtldm->modify_txagc_flag_path_b) {			/* If TxAGC has changed, reset TxAGC again */
 						rtldm->remnant_cck_idx = 0;
 						rtldm->remnant_ofdm_swing_idx[RFPath] = 0;
@@ -576,9 +553,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 						/* Set TxAGC Page E{}; */
 
 						rtldm->modify_txagc_flag_path_b = FALSE;
-#if 0
 						ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
-#endif
 					}
 				}
 			}
@@ -860,9 +835,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 	u8 i = 0;
 	uint32_t finalBbSwingIdx[1];
 
-#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8821A\n"));
-#endif
 	if (TxRate != 0xFF) {
 		/* 2 CCK */
 		if ((TxRate >= MGN_1M) && (TxRate <= MGN_11M))
@@ -895,23 +868,17 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 		else
 			PwrTrackingLimit = 24;
 	}
-#if 0
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit));
-#endif
 	if (Method == BBSWING) {
 		if (RFPath == RF90_PATH_A) {
 			finalBbSwingIdx[RF90_PATH_A] = (rtldm->ofdm_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_A];
-#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
 				rtldm->OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
-#endif
 			rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		}
 	} else if (Method == MIX_MODE) {
-#if 0
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
 				rtldm->DefaultOfdmIndex, rtldm->Aboslute_OFDMSwingIdx[RFPath], RFPath));
-#endif
 
 			Final_OFDM_Swing_Index = rtldm->default_ofdm_index + rtldm->absolute_ofdm_swing_idx[RFPath];
 
@@ -928,9 +895,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					/* Set TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-#if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif
 				} else if (Final_OFDM_Swing_Index < 0) {
 					rtldm->remnant_cck_idx = Final_OFDM_Swing_Index;            /* CCK Follow the same compensate value as Path A */
 					rtldm->remnant_ofdm_swing_idx[RFPath] = Final_OFDM_Swing_Index;
@@ -942,14 +907,10 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 					/* Set TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-#if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
-#endif
 				} else {
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[Final_OFDM_Swing_Index]);
-#if 0
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index));
-#endif
 					if (rtldm->modify_txagc_flag_path_a) {
 						/* If TxAGC has changed, reset TxAGC again */
 						rtldm->remnant_cck_idx = 0;
@@ -960,9 +921,7 @@ void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 						PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 						rtldm->modify_txagc_flag_path_a = FALSE;
-#if 0
 						ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
-#endif
 					}
 				}
 			}

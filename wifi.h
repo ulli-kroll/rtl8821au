@@ -1853,7 +1853,6 @@ struct _rtw_hal {
 	uint8_t	RegFwHwTxQCtrl;
 	uint8_t	RegReg542;
 	uint8_t	RegCR_1;
-	uint8_t	RegRFPathS1;
 	u16	RegRRSR;
 
 	uint8_t	CurAntenna;

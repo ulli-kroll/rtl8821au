@@ -3968,10 +3968,12 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 	struct rtl_dm *rtldm = &(rtlpriv->dm);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-	char swing_2g = -1 * GetRegTxBBSwing_2G(rtlpriv);
-	char swing_5g = -1 * GetRegTxBBSwing_5G(rtlpriv);
+	char reg_swing_2g = -1;	/* 0xff */
+	char reg_swing_5g = -1;	/* 0xff */
+	char swing_2g = -1 * reg_swing_2g;
+	char swing_5g = -1 * reg_swing_5g;
 	uint32_t	out = 0x200;
-	const s8	AUTO = -1;	/* ULLI : Auto Temp ?? */
+	const char auto_temp = -1;
 
 
 	if (pEEPROM->bautoload_fail_flag) {
@@ -4022,7 +4024,7 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 		uint32_t swing = 0, swingA = 0, swingB = 0;
 
 		if (Band == BAND_ON_2_4G) {
-			if (GetRegTxBBSwing_2G(rtlpriv) == AUTO) {
+			if (reg_swing_2g == auto_temp) {
 				EFUSE_ShadowRead(rtlpriv, 1, EEPROM_TX_BBSWING_2G_8812, (uint32_t *)&swing);
 				swing = (swing == 0xFF) ? 0x00 : swing;
 			} else if (swing_2g ==  0)
@@ -4035,7 +4037,7 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 				swing = 0xFF; // -9 dB */
 			else swing = 0x00;
 		} else {
-			if (GetRegTxBBSwing_5G(rtlpriv) == AUTO) {
+			if (reg_swing_5g == auto_temp) {
 				EFUSE_ShadowRead(rtlpriv, 1, EEPROM_TX_BBSWING_5G_8812, (uint32_t *)&swing);
 				swing = (swing == 0xFF) ? 0x00 : swing;
 			} else if (swing_5g ==  0)

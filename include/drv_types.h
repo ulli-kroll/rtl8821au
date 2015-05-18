@@ -196,8 +196,6 @@ struct registry_priv
 	uint8_t	RegEnableTxPowerLimit;
 	uint8_t	RegPowerBase;
 	uint8_t	RegPwrByRate;
-	char 	TxBBSwing_2G;
-	char 	TxBBSwing_5G;
 	uint8_t	AmplifierType_2G;
 	uint8_t	AmplifierType_5G;
 	uint8_t	bEn_RFE;

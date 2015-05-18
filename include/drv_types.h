@@ -192,7 +192,6 @@ struct registry_priv
 	uint8_t regulatory_tid;
 
 	//define for tx power adjust
-	u32	RegTxPwrLimit;
 	uint8_t	RegEnableTxPowerLimit;
 	uint8_t	RegPowerBase;
 	uint8_t	RegPwrByRate;

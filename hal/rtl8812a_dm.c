@@ -165,7 +165,6 @@ void rtl8812_init_dm_priv(IN struct rtl_priv *rtlpriv)
 
 	rtlpriv->registrypriv.RegEnableTxPowerLimit = 0;
 	rtlpriv->registrypriv.RegPowerBase = 14;
-	rtlpriv->registrypriv.RegTxPwrLimit = 0xFFFFFFFF;
 	rtlpriv->registrypriv.bEn_RFE = 0;
 	rtlpriv->registrypriv.RFE_Type = 64;
 	pHalData->RegRFPathS1 = 0;

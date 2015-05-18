@@ -3968,22 +3968,22 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 	struct rtl_dm *rtldm = &(rtlpriv->dm);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-	s8	bbSwing_2G = -1 * GetRegTxBBSwing_2G(rtlpriv);
-	s8	bbSwing_5G = -1 * GetRegTxBBSwing_5G(rtlpriv);
+	char swing_2g = -1 * GetRegTxBBSwing_2G(rtlpriv);
+	char swing_5g = -1 * GetRegTxBBSwing_5G(rtlpriv);
 	uint32_t	out = 0x200;
-	const s8	AUTO = -1;
+	const s8	AUTO = -1;	/* ULLI : Auto Temp ?? */
 
 
 	if (pEEPROM->bautoload_fail_flag) {
 		if (Band == BAND_ON_2_4G) {
-			rtldm->swing_diff_2g = bbSwing_2G;
-			if      (bbSwing_2G == 0)
+			rtldm->swing_diff_2g = swing_2g;
+			if      (swing_2g == 0)
 				out = 0x200; /*  0 dB */
-		        else if (bbSwing_2G == -3)
+		        else if (swing_2g == -3)
 				out = 0x16A; /* -3 dB */
-		        else if (bbSwing_2G == -6)
+		        else if (swing_2g == -6)
 				out = 0x101; /* -6 dB */
-		        else if (bbSwing_2G == -9)
+		        else if (swing_2g == -9)
 				out = 0x0B6; /* -9 dB */
 		        else {
 				if (rtlhal->external_pa_2g) {
@@ -3995,14 +3995,14 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 				}
 			}
 		} else if (Band == BAND_ON_5G) {
-			rtldm->swing_diff_5g = bbSwing_5G;
-			if      (bbSwing_5G == 0)
+			rtldm->swing_diff_5g = swing_5g;
+			if      (swing_5g == 0)
 				out = 0x200; /*  0 dB */
-			else if (bbSwing_5G == -3)
+			else if (swing_5g == -3)
 				out = 0x16A; /* -3 dB */
-			else if (bbSwing_5G == -6)
+			else if (swing_5g == -6)
 				out = 0x101; /* -6 dB */
-			else if (bbSwing_5G == -9)
+			else if (swing_5g == -9)
 				out = 0x0B6; /* -9 dB */
 			else {
 				if (rtlhal->external_pa_5g) {
@@ -4025,26 +4025,26 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 			if (GetRegTxBBSwing_2G(rtlpriv) == AUTO) {
 				EFUSE_ShadowRead(rtlpriv, 1, EEPROM_TX_BBSWING_2G_8812, (uint32_t *)&swing);
 				swing = (swing == 0xFF) ? 0x00 : swing;
-			} else if (bbSwing_2G ==  0)
+			} else if (swing_2g ==  0)
 				swing = 0x00; /*  0 dB */
-			else if (bbSwing_2G == -3)
+			else if (swing_2g == -3)
 				swing = 0x05; /* -3 dB */
-			else if (bbSwing_2G == -6)
+			else if (swing_2g == -6)
 				swing = 0x0A; // -6 dB */
-			else if (bbSwing_2G == -9)
+			else if (swing_2g == -9)
 				swing = 0xFF; // -9 dB */
 			else swing = 0x00;
 		} else {
 			if (GetRegTxBBSwing_5G(rtlpriv) == AUTO) {
 				EFUSE_ShadowRead(rtlpriv, 1, EEPROM_TX_BBSWING_5G_8812, (uint32_t *)&swing);
 				swing = (swing == 0xFF) ? 0x00 : swing;
-			} else if (bbSwing_5G ==  0)
+			} else if (swing_5g ==  0)
 				swing = 0x00; /*  0 dB */
-			else if (bbSwing_5G == -3)
+			else if (swing_5g == -3)
 				swing = 0x05; /* -3 dB */
-			else if (bbSwing_5G == -6)
+			else if (swing_5g == -6)
 				swing = 0x0A; /* -6 dB */
-			else if (bbSwing_5G == -9)
+			else if (swing_5g == -9)
 				swing = 0xFF; /* -9 dB */
 			else swing = 0x00;
 		}

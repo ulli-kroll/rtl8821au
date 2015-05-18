@@ -197,7 +197,7 @@ static void _rtl_dm_diginit(struct _rtw_dm *pDM_Odm)
 
 	/* dm_digtable->Dig_Enable_Flag = TRUE; */
 	/* dm_digtable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
-	dm_digtable->cur_igvalue = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
+	dm_digtable->cur_igvalue = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC);
 	/* dm_digtable->PreIGValue = 0x0; */
 	/* dm_digtable->CurSTAConnectState = dm_digtable->PreSTAConnectState = DIG_STA_DISCONNECT; */
 	/* dm_digtable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */

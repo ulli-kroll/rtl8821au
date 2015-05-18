@@ -1497,7 +1497,6 @@ typedef struct _RX_High_Power_
 	BOOLEAN		First_time_enter;
 	BOOLEAN		RXHP_enable;
 	u8		TP_Mode;
-	struct timer_list	PSDTimer;
 
 }RXHP_T, *pRXHP_T;
 
@@ -1524,7 +1523,6 @@ typedef struct _ANT_DETECTED_INFO{
 // 2011/09/22 MH Copy from SD4 defined structure. We use to support PHY DM integration.
 //
 struct _rtw_dm {
-	//struct timer_list 	FastAntTrainingTimer;
 	//
 	//	Add for different team use temporarily
 	//
@@ -1711,14 +1709,10 @@ struct _rtw_dm {
 
 	//PSD
 	BOOLEAN			bUserAssignLevel;
-	struct timer_list 		PSDTimer;
 	u8			RSSI_BT;			//come from BT
 	BOOLEAN			bPSDinProcess;
 	BOOLEAN			bPSDactive;
 	BOOLEAN			bDMInitialGainEnable;
-
-	//MPT DIG
-	struct timer_list 		MPT_DIGTimer;
 
 	//for rate adaptive, in fact,  88c/92c fw will handle this
 	u8			bUseRAMask;
@@ -1749,12 +1743,6 @@ struct _rtw_dm {
 	//
 	// ODM system resource.
 	//
-
-	// ODM relative time.
-	struct timer_list 				PathDivSwitchTimer;
-	//2011.09.27 add for Path Diversity
-	struct timer_list				CCKPathDiversityTimer;
-	struct timer_list 	FastAntTrainingTimer;
 
 	// ODM relative workitem.
 

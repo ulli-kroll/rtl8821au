@@ -544,9 +544,9 @@ void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm)));
 
 	if (pDM_DigTable->cur_igvalue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
-		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
+		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
 		if (pDM_Odm->rtlpriv->phy.rf_type != ODM_1T1R)
-			rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG(IGI_B, pDM_Odm), ODM_BIT(IGI, pDM_Odm), CurrentIGI);
+			rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_IGI_B_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("CurrentIGI(0x%02x). \n", CurrentIGI));
 		/* pDM_DigTable->PreIGValue = pDM_DigTable->CurIGValue; */

@@ -987,7 +987,8 @@ static u8 odm_QueryRxPwrPercentage(s8 AntPower)
  * IF other SW team do not support the feature, remove this section.??
  */
 
-static int32_t odm_SignalScaleMapping(struct _rtw_dm *pDM_Odm, int32_t CurrSig)
+/* ULLI : this function is in rtlwifi */
+static long rtl_signal_scale_mapping(struct _rtw_dm *pDM_Odm, int32_t CurrSig)
 {
 	int32_t RetSig;
 
@@ -1395,11 +1396,11 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 	 * It is assigned to the BSS List in GetValueFromBeaconOrProbeRsp().
 	 */
 	if (isCCKrate) {
-		pPhyInfo->SignalStrength = (u8)(odm_SignalScaleMapping(pDM_Odm, PWDB_ALL));	/* PWDB_ALL; */
+		pPhyInfo->SignalStrength = (u8)(rtl_signal_scale_mapping(pDM_Odm, PWDB_ALL));	/* PWDB_ALL; */
 	} else {
 		if (rf_rx_num != 0) {
 			/* ULLI crap inside this call */
-			pPhyInfo->SignalStrength = (u8)(odm_SignalScaleMapping(pDM_Odm, total_rssi /= rf_rx_num));
+			pPhyInfo->SignalStrength = (u8)(rtl_signal_scale_mapping(pDM_Odm, total_rssi /= rf_rx_num));
 		}
 	}
 	pDM_Odm->RxPWDBAve = pDM_Odm->RxPWDBAve + pPhyInfo->RxPWDBAll;

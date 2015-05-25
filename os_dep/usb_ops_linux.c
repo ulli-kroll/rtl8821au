@@ -60,7 +60,7 @@ static int recvbuf2recvframe(struct rtl_priv *rtlpriv, struct sk_buff *pskb)
 		precvframe->precvbuf = NULL;	/* can't access the precvbuf for new arch. */
 		precvframe->len = 0;
 
-		rtl8812_query_rx_desc_status(precvframe, pbuf);
+		rtl8812_query_rx_desc_status(rtlpriv, &precvframe->attrib, precvframe, pbuf);
 
 		pattrib = &precvframe->attrib;
 

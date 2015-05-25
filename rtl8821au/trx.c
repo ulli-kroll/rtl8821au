@@ -1764,10 +1764,10 @@ static void process_phy_info(struct rtl_priv *rtlpriv, struct recv_frame *precvf
 
 }
 
-void rtl8812_query_rx_desc_status(struct recv_frame *precvframe, uint8_t *pdesc)
+void rtl8812_query_rx_desc_status(struct rtl_priv *rtlpriv,
+				   struct rx_pkt_attrib	*pattrib,
+				   struct recv_frame *precvframe, uint8_t *pdesc)
 {
-	struct rx_pkt_attrib	*pattrib = &precvframe->attrib;
-
 	memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
 
 	//Offset 0

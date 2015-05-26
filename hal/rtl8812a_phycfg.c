@@ -122,7 +122,6 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 	int			rtStatus = _SUCCESS;
 
 	/* DBG_871X("==>phy_BB8812_Config_ParaFile\n"); */

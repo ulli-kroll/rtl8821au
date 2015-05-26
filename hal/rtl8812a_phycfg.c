@@ -121,12 +121,6 @@ static void ODM_ReadAndConfig_PHY_AGC_TAB(struct rtl_priv *rtlpriv)
 	ODM_ReadAndConfig_MP_8821A_AGC_TAB(rtlpriv);
 }
 
-
-static void ODM_ReadAndConfig_PHY_REG_PG(struct rtl_priv *rtlpriv)
-{
-	ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);
-}
-
 static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
@@ -155,7 +149,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 	if (pEEPROM->bautoload_fail_flag == _FALSE) {
 		rtlphy->pwrgroup_cnt = 0;
 
-		ODM_ReadAndConfig_PHY_REG_PG(rtlpriv);
+		ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);
 
 		if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2) ||
 		 	efuse->eeprom_regulatory == 1 )

@@ -50,7 +50,7 @@ static void PHY_InitPowerLimitTable(struct rtl_priv *rtlpriv);
  * 3. Initial MAC/BB/RF config by reading MAC/BB/RF txt.
  */
 
-void PHY_BB8812_Config_1T(struct rtl_priv *rtlpriv)
+void _rtl8812au_bb8812_config_1t(struct rtl_priv *rtlpriv)
 {
 	/* BB OFDM RX Path_A */
 	rtl_set_bbreg(rtlpriv, rRxPath_Jaguar, bRxPath_Jaguar, 0x11);

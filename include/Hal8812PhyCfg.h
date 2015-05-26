@@ -59,7 +59,7 @@
 //
 /* MAC/BB/RF HAL config */
 int	PHY_BBConfig8812(IN struct rtl_priv *rtlpriv	);
-void	PHY_BB8812_Config_1T(IN struct rtl_priv *rtlpriv );
+void _rtl8812au_bb8812_config_1t(struct rtl_priv *rtlpriv);
 int	PHY_RFConfig8812(IN struct rtl_priv *rtlpriv	);
 
 

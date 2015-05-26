@@ -1050,7 +1050,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 		goto exit;
 
 	if (rtlpriv->phy.rf_type == RF_1T1R && IS_HARDWARE_TYPE_8812AU(rtlhal))
-		PHY_BB8812_Config_1T(rtlpriv);
+		_rtl8812au_bb8812_config_1t(rtlpriv);
 
 	if (rtlpriv->registrypriv.channel <= 14)
 		rtl8821au_phy_switch_wirelessband(rtlpriv, BAND_ON_2_4G);

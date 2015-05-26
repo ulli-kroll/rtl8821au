@@ -5147,5 +5147,564 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 	}
 }
 
+static void PHY_InitPowerLimitTable(struct rtl_priv *rtlpriv)
+{
+	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
+	uint8_t		i, j, k, l, m;
+
+	/* DBG_871X( "=====> PHY_InitPowerLimitTable()!\n" ); */
+
+	for (i = 0; i < MAX_REGULATION_NUM; ++i) {
+		for (j = 0; j < MAX_2_4G_BANDWITH_NUM; ++j)
+			for (k = 0; k < MAX_2_4G_RATE_SECTION_NUM; ++k)
+				for (m = 0; m < MAX_2_4G_CHANNEL_NUM; ++m)
+					for (l = 0; l <  rtlpriv->phy.num_total_rfpath ;++l)
+						rtlphy->txpwr_limit_2_4g[i][j][k][m][l] = MAX_POWER_INDEX;
+	}
+
+	for (i = 0; i < MAX_REGULATION_NUM; ++i) {
+		for (j = 0; j < MAX_5G_BANDWITH_NUM; ++j)
+			for (k = 0; k < MAX_5G_RATE_SECTION_NUM; ++k)
+				for (m = 0; m < MAX_5G_CHANNEL_NUM; ++m)
+					for (l = 0; l <   rtlpriv->phy.num_total_rfpath ; ++l)
+						rtlphy->txpwr_limit_5g[i][j][k][m][l] = MAX_POWER_INDEX;
+	}
+
+	/* DBG_871X("<===== PHY_InitPowerLimitTable()!\n" ); */
+}
+static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(enum band_type Band, uint8_t Rate)
+{
+	uint8_t	index = 0;
+	if (Band == BAND_ON_2_4G) {
+		switch (Rate) {
+		case MGN_1M:
+		case MGN_2M:
+		case MGN_5_5M:
+		case MGN_11M:
+			index = 0;
+			break;
+
+		case MGN_6M:
+		case MGN_9M:
+		case MGN_12M:
+		case MGN_18M:
+		case MGN_24M:
+		case MGN_36M:
+		case MGN_48M:
+		case MGN_54M:
+			index = 1;
+			break;
+
+		case MGN_MCS0:
+		case MGN_MCS1:
+		case MGN_MCS2:
+		case MGN_MCS3:
+		case MGN_MCS4:
+		case MGN_MCS5:
+		case MGN_MCS6:
+		case MGN_MCS7:
+			index = 2;
+			break;
+
+		case MGN_MCS8:
+		case MGN_MCS9:
+		case MGN_MCS10:
+		case MGN_MCS11:
+		case MGN_MCS12:
+		case MGN_MCS13:
+		case MGN_MCS14:
+		case MGN_MCS15:
+			index = 3;
+			break;
+
+		default:
+			DBG_871X("Wrong rate 0x%x to obtain index in 2.4G in phy_getPowerByRateBaseIndex()\n", Rate );
+			break;
+		}
+	} else if (Band == BAND_ON_5G) {
+		switch (Rate) {
+		case MGN_6M:
+		case MGN_9M:
+		case MGN_12M:
+		case MGN_18M:
+		case MGN_24M:
+		case MGN_36M:
+		case MGN_48M:
+		case MGN_54M:
+			index = 0;
+			break;
+
+		case MGN_MCS0:
+		case MGN_MCS1:
+		case MGN_MCS2:
+		case MGN_MCS3:
+		case MGN_MCS4:
+		case MGN_MCS5:
+		case MGN_MCS6:
+		case MGN_MCS7:
+			index = 1;
+			break;
+
+		case MGN_MCS8:
+		case MGN_MCS9:
+		case MGN_MCS10:
+		case MGN_MCS11:
+		case MGN_MCS12:
+		case MGN_MCS13:
+		case MGN_MCS14:
+		case MGN_MCS15:
+			index = 2;
+			break;
+
+		case MGN_VHT1SS_MCS0:
+		case MGN_VHT1SS_MCS1:
+		case MGN_VHT1SS_MCS2:
+		case MGN_VHT1SS_MCS3:
+		case MGN_VHT1SS_MCS4:
+		case MGN_VHT1SS_MCS5:
+		case MGN_VHT1SS_MCS6:
+		case MGN_VHT1SS_MCS7:
+		case MGN_VHT1SS_MCS8:
+		case MGN_VHT1SS_MCS9:
+			index = 3;
+			break;
+
+		case MGN_VHT2SS_MCS0:
+		case MGN_VHT2SS_MCS1:
+		case MGN_VHT2SS_MCS2:
+		case MGN_VHT2SS_MCS3:
+		case MGN_VHT2SS_MCS4:
+		case MGN_VHT2SS_MCS5:
+		case MGN_VHT2SS_MCS6:
+		case MGN_VHT2SS_MCS7:
+		case MGN_VHT2SS_MCS8:
+		case MGN_VHT2SS_MCS9:
+			index = 4;
+			break;
+
+		default:
+			DBG_871X("Wrong rate 0x%x to obtain index in 5G in phy_getPowerByRateBaseIndex()\n", Rate );
+			break;
+		}
+	}
+
+	return index;
+}
 
 
+static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	uint8_t 	BW40PwrBasedBm2_4G, BW40PwrBasedBm5G;
+	uint8_t 	regulation, bw, channel, rateSection, group;
+	uint8_t 	baseIndex2_4G;
+	uint8_t		baseIndex5G;
+	s8 		tempValue = 0, tempPwrLmt = 0;
+	uint8_t 	rfPath = 0;
+
+	DBG_871X( "=====> PHY_ConvertPowerLimitToPowerIndex()\n" );
+	for (regulation = 0; regulation < MAX_REGULATION_NUM; ++regulation) {
+		for (bw = 0; bw < MAX_2_4G_BANDWITH_NUM; ++bw) {
+			for (group = 0; group < MAX_2_4G_CHANNEL_NUM; ++group) {
+				if (group == 0)
+					channel = 1;
+				else if (group == 1)
+					channel = 3;
+				else if (group == 2)
+					channel = 6;
+				else if (group == 3)
+					channel = 9;
+				else if (group == 4)
+					channel = 12;
+				else
+					channel = 14;
+
+
+				for (rateSection = 0; rateSection < MAX_2_4G_RATE_SECTION_NUM; ++rateSection) {
+					if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE) {
+						/*
+						 *  obtain the base dBm values in 2.4G band
+						 *  CCK => 11M, OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15
+						 */
+						if (rateSection == 0) {		/* CCK */
+							baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_ON_2_4G, MGN_11M);
+						} else if (rateSection == 1) { /* OFDM */
+							baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_ON_2_4G, MGN_54M);
+						} else if (rateSection == 2) {	/* HT IT */
+							baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_ON_2_4G, MGN_MCS7);
+						} else if (rateSection == 3) {	/* HT 2T */
+							baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_ON_2_4G, MGN_MCS15);
+						}
+					}
+
+					/*
+					 * we initially record the raw power limit value in rf path A, so we must obtain the raw
+					 * power limit value by using index rf path A and use it to calculate all the value of
+					 * all the path
+					 */
+					tempPwrLmt = rtlphy->txpwr_limit_2_4g[regulation][bw][rateSection][group][RF90_PATH_A];
+					/* process RF90_PATH_A later */
+					for (rfPath = 0; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
+						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
+							BW40PwrBasedBm2_4G = rtlphy->txpwr_by_rate_base_24g[rfPath][baseIndex2_4G];
+						else
+							BW40PwrBasedBm2_4G = rtlpriv->registrypriv.RegPowerBase * 2;
+
+						if (tempPwrLmt != MAX_POWER_INDEX) {
+							tempValue = tempPwrLmt - BW40PwrBasedBm2_4G;
+							rtlphy->txpwr_limit_2_4g[regulation][bw][rateSection][group][rfPath] = tempValue;
+						}
+
+						DBG_871X("txpwr_limit_2_4g[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
+							(TxPwrLimit in dBm %d - BW40PwrLmt2_4G[channel %d][rfPath %d] %d) \n",
+							regulation, bw, rateSection, group, rtlphy->txpwr_limit_2_4g[regulation][bw][rateSection][group][rfPath],
+							tempPwrLmt, channel, rfPath, BW40PwrBasedBm2_4G );
+					}
+				}
+			}
+		}
+	}
+
+	if (IS_HARDWARE_TYPE_8812(rtlhal) || IS_HARDWARE_TYPE_8821(rtlhal)) {
+		for (regulation = 0; regulation < MAX_REGULATION_NUM; ++regulation) {
+			for (bw = 0; bw < MAX_5G_BANDWITH_NUM; ++bw) {
+				for (group = 0; group < MAX_5G_CHANNEL_NUM; ++group) {
+
+					/* channels of 5G band in Hal_ReadTxPowerInfo8812A()
+					36,38,40,42,44,
+					46,48,50,52,54,
+					56,58,60,62,64,
+					100,102,104,106,108,
+					110,112,114,116,118,
+					120,122,124,126,128,
+					130,132,134,136,138,
+					140,142,144,149,151,
+	                		153,155,157,159,161,
+	                		163,165,167,168,169,
+	                		171,173,175,177 */
+					if (group == 0)
+						channel = 0;	/* index of chnl 36 in channel5G */
+					else if (group == 1)
+						channel = 4;	/* index of chnl 44 in chanl5G */
+					else if (group == 2)
+						channel = 7;	/* index of chnl 50 in chanl5G */
+					else if (group == 3)
+						channel = 12;	/* index of chnl 60 in chanl5G */
+					else if (group == 4)
+						channel = 15;	/* index of chnl 100 in chanl5G */
+					else if (group == 5)
+						channel = 19;	/* index of chnl 108 in chanl5G */
+					else if (group == 6)
+						channel = 23;	/* index of chnl 116 in chanl5G */
+					else if (group == 7)
+						channel = 27;	/* index of chnl 124 in chanl5G */
+					else if (group == 8)
+						channel = 31;	/* index of chnl 132 in chanl5G */
+					else if (group == 9)
+						channel = 35;	/* index of chnl 140 in chanl5G */
+					else if (group == 10)
+						channel = 38;	/* index of chnl 149 in chanl5G */
+					else if (group == 11)
+						channel = 42;	/* index of chnl 157 in chanl5G */
+					else if (group == 12)
+						channel = 46;	/* index of chnl 165 in chanl5G */
+					else
+						channel = 51;	/* index of chnl 173 in chanl5G */
+
+					for (rateSection = 0; rateSection < MAX_5G_RATE_SECTION_NUM; ++rateSection) {
+						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE) {
+							/*
+							 * obtain the base dBm values in 5G band
+							 * OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15,
+							 * VHT => 1SSMCS7, VHT 2T => 2SSMCS7
+							 */
+							if (rateSection == 1) {	/* OFDM */
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_ON_5G, MGN_54M);
+							} else if (rateSection == 2) {	/* HT 1T */
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_ON_5G, MGN_MCS7);
+							} else if (rateSection == 3) {	/* HT 2T */
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_ON_5G, MGN_MCS15);
+							} else if (rateSection == 4) {	/* VHT 1T */
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_ON_5G, MGN_VHT1SS_MCS7);
+							} else if (rateSection == 5) {	/* VHT 2T */
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(BAND_ON_5G, MGN_VHT2SS_MCS7);
+							}
+						}
+
+						/*
+						 * we initially record the raw power limit value in rf path A, so we must obtain the raw
+						 * power limit value by using index rf path A and use it to calculate all the value of
+						 * all the path
+						 */
+						tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][RF90_PATH_A];
+						if (tempPwrLmt == MAX_POWER_INDEX) {
+							if (bw == 0 || bw == 1) {	/* 5G VHT and HT can cross reference */
+								DBG_871X( "No power limit table of the specified band %d, bandwidth %d, ratesection %d, group %d, rf path %d\n",
+											1, bw, rateSection, group, RF90_PATH_A );
+								if (rateSection == 2) {
+									rtlphy->txpwr_limit_5g[regulation][bw][2][group][RF90_PATH_A] =
+										rtlphy->txpwr_limit_5g[regulation][bw][4][group][RF90_PATH_A];
+
+									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][4][group][RF90_PATH_A];
+								} else if (rateSection == 4) {
+									rtlphy->txpwr_limit_5g[regulation][bw][4][group][RF90_PATH_A] =
+										rtlphy->txpwr_limit_5g[regulation][bw][2][group][RF90_PATH_A];
+
+									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][2][group][RF90_PATH_A];
+								} else if ( rateSection == 3 ) {
+									rtlphy->txpwr_limit_5g[regulation][bw][3][group][RF90_PATH_A] =
+										rtlphy->txpwr_limit_5g[regulation][bw][5][group][RF90_PATH_A];
+
+									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][5][group][RF90_PATH_A];
+								}
+								else if ( rateSection == 5 ) {
+									rtlphy->txpwr_limit_5g[regulation][bw][5][group][RF90_PATH_A] =
+										rtlphy->txpwr_limit_5g[regulation][bw][3][group][RF90_PATH_A];
+
+									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][3][group][RF90_PATH_A];
+								}
+
+								DBG_871X("use other value %d", tempPwrLmt);
+							}
+						}
+
+						/* process RF90_PATH_A later */
+						for (rfPath = RF90_PATH_B; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
+							if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
+								BW40PwrBasedBm5G = rtlphy->txpwr_by_rate_base_5g[rfPath][baseIndex5G];
+							else
+								BW40PwrBasedBm5G = rtlpriv->registrypriv.RegPowerBase * 2;
+
+							if (tempPwrLmt != MAX_POWER_INDEX) {
+								tempValue = tempPwrLmt - BW40PwrBasedBm5G;
+								rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][rfPath] = tempValue;
+							}
+
+							DBG_871X("txpwr_limit_5g[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
+								(TxPwrLimit in dBm %d - BW40PwrLmt5G[channel %d][rfPath %d] %d) \n",
+								regulation, bw, rateSection, group, rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][rfPath],
+								tempPwrLmt, channel, rfPath, BW40PwrBasedBm5G );
+						}
+
+					}
+
+				}
+			}
+		}
+
+		/* process value of RF90_PATH_A */
+		for (regulation = 0; regulation < MAX_REGULATION_NUM; ++regulation) {
+			for (bw = 0; bw < MAX_5G_BANDWITH_NUM; ++bw) {
+				for (group = 0; group < MAX_5G_CHANNEL_NUM; ++group) {
+					if (group == 0 )
+						channel = 0;	/* index of chnl 36 in channel5G */
+					else if (group == 1)
+						channel = 4;	/* index of chnl 44 in chanl5G */
+					else if (group == 2)
+						channel = 7;	/* index of chnl 50 in chanl5G */
+					else if (group == 3)
+						channel = 12;	/* index of chnl 60 in chanl5G */
+					else if (group == 4)
+						channel = 15;	/* index of chnl 100 in chanl5G */
+					else if (group == 5)
+						channel = 19;	/* index of chnl 108 in chanl5G */
+					else if (group == 6)
+						channel = 23;	/* index of chnl 116 in chanl5G */
+					else if (group == 7)
+						channel = 27;	/* index of chnl 124 in chanl5G */
+					else if (group == 8)
+						channel = 31;	/* index of chnl 132 in chanl5G */
+					else if (group == 9)
+						channel = 35;	/* index of chnl 140 in chanl5G */
+					else if (group == 10)
+						channel = 38;	/* index of chnl 149 in chanl5G */
+					else if (group == 11)
+						channel = 42;	/* index of chnl 157 in chanl5G */
+					else if (group == 12)
+						channel = 46;	/* index of chnl 165 in chanl5G */
+					else
+						channel = 51;	/* index of chnl 173 in chanl5G */
+
+					for (rateSection = 0; rateSection < MAX_5G_RATE_SECTION_NUM; ++rateSection) {
+						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE) {
+							/*
+							 * obtain the base dBm values in 5G band
+							 * OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15,
+							 * VHT => 1SSMCS7, VHT 2T => 2SSMCS7
+							 */
+							if (rateSection == 1) { //OFDM
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index( BAND_ON_5G, MGN_54M );
+							} else if (rateSection == 2) {	/* HT 1T */
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index( BAND_ON_5G, MGN_MCS7 );
+							} else if (rateSection == 3) {	/* HT 2T */
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index( BAND_ON_5G, MGN_MCS15 );
+							} else if (rateSection == 4) {	/* VHT 1T */
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index( BAND_ON_5G, MGN_VHT1SS_MCS7 );
+							} else if (rateSection == 5) {	/* VHT 2T */
+								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index( BAND_ON_5G, MGN_VHT2SS_MCS7 );
+							}
+						}
+
+						tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][RF90_PATH_A];
+						if (tempPwrLmt == MAX_POWER_INDEX) {
+							if (bw == 0 || bw == 1) { /* 5G VHT and HT can cross reference */
+								DBG_871X("No power limit table of the specified band %d, bandwidth %d, ratesection %d, group %d, rf path %d\n",
+											1, bw, rateSection, group, RF90_PATH_A );
+								if (rateSection == 2)
+									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][4][group][RF90_PATH_A];
+								else if (rateSection == 4)
+									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][2][group][RF90_PATH_A];
+								else if (rateSection == 3)
+									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][5][group][RF90_PATH_A];
+								else if (rateSection == 5)
+									tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][3][group][RF90_PATH_A];
+
+								DBG_871X("use other value %d", tempPwrLmt );
+							}
+						}
+
+
+						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
+							BW40PwrBasedBm5G = rtlphy->txpwr_by_rate_base_5g[RF90_PATH_A][baseIndex5G];
+						else
+							BW40PwrBasedBm5G = rtlpriv->registrypriv.RegPowerBase * 2;
+
+						if (tempPwrLmt != MAX_POWER_INDEX) {
+							tempValue = tempPwrLmt - BW40PwrBasedBm5G;
+							rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][RF90_PATH_A] = tempValue;
+						}
+
+						DBG_871X("txpwr_limit_5g[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
+							(TxPwrLimit in dBm %d - BW40PwrLmt5G[channel %d][rfPath %d] %d) \n",
+							regulation, bw, rateSection, group, rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][RF90_PATH_A],
+							tempPwrLmt, channel, RF90_PATH_A, BW40PwrBasedBm5G );
+					}
+				}
+			}
+		}
+	}
+	DBG_871X("<===== PHY_ConvertPowerLimitToPowerIndex()\n" );
+}
+
+static void phy_InitBBRFRegisterDefinition(struct rtl_priv *rtlpriv)
+{
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+
+	/* RF Interface Sowrtware Control */
+	rtlphy->phyreg_def[RF90_PATH_A].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 LSBs if read 32-bit from 0x870 */
+	rtlphy->phyreg_def[RF90_PATH_B].rfintfs = rFPGA0_XAB_RFInterfaceSW;	/* 16 MSBs if read 32-bit from 0x870 (16-bit for 0x872) */
+
+	/* RF Interface Output (and Enable) */
+	rtlphy->phyreg_def[RF90_PATH_A].rfintfo = rFPGA0_XA_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x860 */
+	rtlphy->phyreg_def[RF90_PATH_B].rfintfo = rFPGA0_XB_RFInterfaceOE;	/* 16 LSBs if read 32-bit from 0x864 */
+
+	/* RF Interface (Output and)  Enable */
+	rtlphy->phyreg_def[RF90_PATH_A].rfintfe = rFPGA0_XA_RFInterfaceOE;	/* 16 MSBs if read 32-bit from 0x860 (16-bit for 0x862) */
+	rtlphy->phyreg_def[RF90_PATH_B].rfintfe = rFPGA0_XB_RFInterfaceOE; 	/* 16 MSBs if read 32-bit from 0x864 (16-bit for 0x866) */
+
+	rtlphy->phyreg_def[RF90_PATH_A].rf3wire_offset = rA_LSSIWrite_Jaguar; 	/* LSSI Parameter */
+	rtlphy->phyreg_def[RF90_PATH_B].rf3wire_offset = rB_LSSIWrite_Jaguar;
+
+	rtlphy->phyreg_def[RF90_PATH_A].rfhssi_para2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
+	rtlphy->phyreg_def[RF90_PATH_B].rfhssi_para2 = rHSSIRead_Jaguar;		/* wire control parameter2 */
+
+	/* Tranceiver Readback LSSI/HSPI mode */
+	rtlphy->phyreg_def[RF90_PATH_A].rf_rb = rA_SIRead_Jaguar;
+	rtlphy->phyreg_def[RF90_PATH_B].rf_rb = rB_SIRead_Jaguar;
+	rtlphy->phyreg_def[RF90_PATH_A].rf_rbpi = rA_PIRead_Jaguar;
+	rtlphy->phyreg_def[RF90_PATH_B].rf_rbpi = rB_PIRead_Jaguar;
+
+	/* pHalData->bPhyValueInitReady=_TRUE; */
+}
+
+static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
+{
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+
+	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+	int			rtStatus = _SUCCESS;
+
+	/* DBG_871X("==>phy_BB8812_Config_ParaFile\n"); */
+
+	DBG_871X("===> phy_BB8812_Config_ParaFile() EEPROMRegulatory %d\n", efuse->eeprom_regulatory);
+
+	PHY_InitPowerLimitTable(rtlpriv);
+
+	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2) ||
+	     efuse->eeprom_regulatory == 1) {
+		_rtl8821au_phy_read_and_config_txpwr_lmt(rtlpriv);
+	}
+
+	/* Read PHY_REG.TXT BB INIT!! */
+	ODM_ReadAndConfig_MP_8821A_PHY_REG(rtlpriv);
+
+	/* If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
+	/* 1 TODO */
+	if (pEEPROM->bautoload_fail_flag == _FALSE) {
+		rtlphy->pwrgroup_cnt = 0;
+
+		ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);
+
+		if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2) ||
+		 	efuse->eeprom_regulatory == 1 )
+			PHY_ConvertPowerLimitToPowerIndex( rtlpriv );
+	}
+
+
+	/* BB AGC table Initialization */
+	ODM_ReadAndConfig_MP_8821A_AGC_TAB(rtlpriv);
+
+	return rtStatus;
+}
+
+int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
+	int	rtStatus = _SUCCESS;
+	uint8_t	TmpU1B=0;
+	uint8_t	crystal_cap;
+
+	phy_InitBBRFRegisterDefinition(rtlpriv);
+
+    	/* tangw check start 20120412 */
+	/* . APLL_EN,,APLL_320_GATEB,APLL_320BIAS,  auto config by hw fsm after pfsm_go (0x4 bit 8) set */
+	TmpU1B = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN);
+
+	/* ULLI some PCIe code ?? */
+
+	if(IS_HARDWARE_TYPE_8812AU(rtlhal) || IS_HARDWARE_TYPE_8821U(rtlhal))
+		TmpU1B |= FEN_USBA;
+
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, TmpU1B);
+
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, (TmpU1B|FEN_BB_GLB_RSTn|FEN_BBRSTB));	/* same with 8812 */
+	/* 6. 0x1f[7:0] = 0x07 PathA RF Power On */
+	rtl_write_byte(rtlpriv, REG_RF_CTRL, 0x07);		/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
+	/* 7.  PathB RF Power On */
+	rtl_write_byte(rtlpriv, REG_OPT_CTRL_8812+2, 0x7);	/* RF_SDMRSTB,RF_RSTB,RF_EN same with 8723a */
+	/* tangw check end 20120412 */
+
+	/*
+	 * Config BB and AGC
+	 */
+	rtStatus = _rtl8821au_phy_bb_with_headerfile(rtlpriv);
+
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+		/* write 0x2C[30:25] = 0x2C[24:19] = CrystalCap */
+		crystal_cap = rtlefuse->crystalcap & 0x3F;
+		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0x7FF80000, (crystal_cap | (crystal_cap << 6)));
+	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+		/* 0x2C[23:18] = 0x2C[17:12] = CrystalCap */
+		crystal_cap = rtlefuse->crystalcap & 0x3F;
+		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0xFFF000, (crystal_cap | (crystal_cap << 6)));
+	}
+
+	rtlpriv->phy.reg_837 = rtl_read_byte(rtlpriv, 0x837);
+
+	return rtStatus;
+
+}

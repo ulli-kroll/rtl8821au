@@ -116,11 +116,6 @@ void PHY_BB8812_Config_1T(struct rtl_priv *rtlpriv)
 	rtl_set_bbreg(rtlpriv, 0xe64, bMaskDWord, 0);
 }
 
-static void ODM_ReadAndConfig_PHY_AGC_TAB(struct rtl_priv *rtlpriv)
-{
-	ODM_ReadAndConfig_MP_8821A_AGC_TAB(rtlpriv);
-}
-
 static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
@@ -158,7 +153,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 
 
 	/* BB AGC table Initialization */
-	ODM_ReadAndConfig_PHY_AGC_TAB(rtlpriv);
+	ODM_ReadAndConfig_MP_8821A_AGC_TAB(rtlpriv);
 
 	return rtStatus;
 }

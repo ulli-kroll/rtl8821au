@@ -41,7 +41,7 @@ const char *const GLBwSrc[]={
 /* ----------------------------Function Body---------------------------------- */
 
 static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv);
-static void PHY_InitPowerLimitTable(struct _rtw_dm *pDM_Odm);
+static void PHY_InitPowerLimitTable(struct rtl_priv *rtlpriv);
 
 /*
  * 2. RF register R/W API
@@ -129,7 +129,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 
 	DBG_871X("===> phy_BB8812_Config_ParaFile() EEPROMRegulatory %d\n", efuse->eeprom_regulatory);
 
-	PHY_InitPowerLimitTable( &(pHalData->odmpriv) );
+	PHY_InitPowerLimitTable(rtlpriv);
 
 	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2) ||
 	     efuse->eeprom_regulatory == 1) {
@@ -338,9 +338,8 @@ static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(enum band_type Band, uin
 	return index;
 }
 
-static void PHY_InitPowerLimitTable(struct _rtw_dm *pDM_Odm)
+static void PHY_InitPowerLimitTable(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
 	uint8_t		i, j, k, l, m;
 

@@ -116,11 +116,6 @@ void PHY_BB8812_Config_1T(struct rtl_priv *rtlpriv)
 	rtl_set_bbreg(rtlpriv, 0xe64, bMaskDWord, 0);
 }
 
-static void ODM_ReadAndConfig_PHY_REG(struct rtl_priv *rtlpriv)
-{
-	ODM_ReadAndConfig_MP_8821A_PHY_REG(rtlpriv);
-}
-
 static void ODM_ReadAndConfig_PHY_AGC_TAB(struct rtl_priv *rtlpriv)
 {
 	ODM_ReadAndConfig_MP_8821A_AGC_TAB(rtlpriv);
@@ -153,7 +148,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 	}
 
 	/* Read PHY_REG.TXT BB INIT!! */
-	ODM_ReadAndConfig_PHY_REG(rtlpriv);
+	ODM_ReadAndConfig_MP_8821A_PHY_REG(rtlpriv);
 
 	/* If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
 	/* 1 TODO */

@@ -50,22 +50,6 @@ static void PHY_InitPowerLimitTable(struct rtl_priv *rtlpriv);
  * 3. Initial MAC/BB/RF config by reading MAC/BB/RF txt.
  */
 
-void PHY_MACConfig8812(struct rtl_priv *rtlpriv)
-{
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	s8				*pszMACRegFile;
-
-	/*
-	 * Config MAC
-	 */
-
-	/* ULLI strange only for rtl8821au ?? */
-	/* Ulli check for RTL8812_PHY_MACREG file */
-
-	_rtl8821au_phy_config_mac_with_headerfile(rtlpriv);
-}
-
-
 void PHY_BB8812_Config_1T(struct rtl_priv *rtlpriv)
 {
 	/* BB OFDM RX Path_A */

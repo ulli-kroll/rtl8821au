@@ -979,7 +979,7 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	 */
 	rtlpriv->phy.current_channel = 0;	/* set 0 to trigger switch correct channel */
 
-	PHY_MACConfig8812(rtlpriv);
+	 _rtl8821au_phy_config_mac_with_headerfile(rtlpriv);
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		_InitQueueReservedPage_8812AUsb(rtlpriv);

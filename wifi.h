@@ -1077,6 +1077,78 @@ struct rtl_priv {
 };
 
 
+struct rtl_stats {
+	u8 psaddr[ETH_ALEN];
+	u32 mac_time[2];
+	s8 rssi;
+	u8 signal;
+	u8 noise;
+	u8 rate;		/* hw desc rate */
+	u8 received_channel;
+	u8 control;
+	u8 mask;
+	u8 freq;
+	u16 len;
+	u64 tsf;
+	u32 beacon_time;
+	u8 nic_type;
+	u16 length;
+	u8 signalquality;	/*in 0-100 index. */
+	/*
+	 * Real power in dBm for this packet,
+	 * no beautification and aggregation.
+	 * */
+	s32 recvsignalpower;
+	s8 rxpower;		/*in dBm Translate from PWdB */
+	u8 signalstrength;	/*in 0-100 index. */
+	u16 hwerror:1;
+	u16 crc:1;
+	u16 icv:1;
+	u16 shortpreamble:1;
+	u16 antenna:1;
+	u16 decrypted:1;
+	u16 wakeup:1;
+	u32 timestamp_low;
+	u32 timestamp_high;
+	bool shift;
+
+	u8 rx_drvinfo_size;
+	u8 rx_bufshift;
+	bool isampdu;
+	bool isfirst_ampdu;
+	bool rx_is40Mhzpacket;
+	u8 rx_packet_bw;
+	u32 rx_pwdb_all;
+	u8 rx_mimo_signalstrength[4];	/*in 0~100 index */
+	s8 rx_mimo_signalquality[4];
+	u8 rx_mimo_evm_dbm[4];
+	u16 cfo_short[4];		/* per-path's Cfo_short */
+	u16 cfo_tail[4];
+
+	s8 rx_mimo_sig_qual[4];
+	u8 rx_pwr[4]; /* per-path's pwdb */
+	u8 rx_snr[4]; /* per-path's SNR */
+	u8 bandwidth;
+	u8 bt_coex_pwr_adjust;
+	bool packet_matchbssid;
+	bool is_cck;
+	bool is_ht;
+	bool packet_toself;
+	bool packet_beacon;	/*for rssi */
+	char cck_adc_pwdb[4];	/*for rx path selection */
+
+	bool is_vht;
+	bool is_short_gi;
+	u8 vht_nss;
+
+	u8 packet_report_type;
+
+	u32 macid;
+	u8 wake_match;
+	u32 bt_rx_rssi_percentage;
+	u32 macid_valid_entry[2];
+};
+
 
 
 struct rtl_hal_ops {

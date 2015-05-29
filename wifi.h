@@ -1666,7 +1666,6 @@ struct _rtw_dm {
 	// Common info for 92D DMSP
 
 	// Common info for Status
-	BOOLEAN			*pbScanInProcess;
 	BOOLEAN			*pbPowerSaving;
 	//pMgntInfo->AntennaTest
 	u8			*pAntennaTest;

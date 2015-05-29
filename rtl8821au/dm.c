@@ -1957,6 +1957,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	struct rtl_mac *mac = rtl_mac(rtlpriv);	
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
@@ -2019,7 +2020,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 		if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 			if (pDM_Odm->bLinked) {
-				if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!*pDM_Odm->pbScanInProcess)) {
+				if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!mac->act_scanning)) {
 					pDM_Odm->preChannel = *pDM_Odm->pChannel;
 					pDM_Odm->LinkedInterval = 0;
 				}
@@ -2058,6 +2059,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -2073,7 +2075,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG()==>\n"));
 
-	if (*(pDM_Odm->pbScanInProcess)) {
+	if (mac->act_scanning) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() Return: In Scan Progress \n"));
 		return;
 	}

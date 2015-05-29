@@ -221,6 +221,8 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 
 void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValue)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	/*
 	 * Hook call by reference pointer.
 	 */
@@ -242,7 +244,7 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 		break;
 
 	case	ODM_CMNINFO_SCAN:
-		pDM_Odm->pbScanInProcess = (BOOLEAN *)pValue;
+		mac->act_scanning = (BOOLEAN *)pValue;
 		break;
 
 	case	ODM_CMNINFO_POWER_SAVING:

@@ -1770,7 +1770,6 @@ struct _rtw_dm {
 	//u8    PSD_Report_RXHP[80];   // Add By Gary
 	//u8    PSD_func_flag;               // Add By Gary
 	//for DIG
-	//u8		bDMInitialGainEnable;
 	//u8		binitialized; // for dm_initial_gain_Multi_STA use.
 	//for Antenna diversity
 	//u8	AntDivCfg;// 0:OFF , 1:ON, 2:by efuse
@@ -1783,7 +1782,6 @@ struct _rtw_dm {
 	u8			RSSI_BT;			//come from BT
 	BOOLEAN			bPSDinProcess;
 	BOOLEAN			bPSDactive;
-	BOOLEAN			bDMInitialGainEnable;
 
 	//for rate adaptive, in fact,  88c/92c fw will handle this
 	u8			bUseRAMask;

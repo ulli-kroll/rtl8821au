@@ -226,9 +226,6 @@ static void _rtl_dm_diginit(struct _rtw_dm *pDM_Odm)
 	dm_digtable->media_connect_0 = FALSE;
 	dm_digtable->media_connect_1 = FALSE;
 
-	/* To Initialize pDM_Odm->bDMInitialGainEnable == FALSE to avoid DIG error */
-	pDM_Odm->bDMInitialGainEnable = TRUE;
-
 	/* To Initi BT30 IGI */
 	dm_digtable->bt30_cur_igi = 0x32;
 

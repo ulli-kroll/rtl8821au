@@ -438,8 +438,7 @@ struct tx_desc_8821au {
 
 
 
-typedef struct _Phy_Status_Rpt_8812
-{
+struct rw_fwinfo_8821au {
 #if 0
 	PHY_RX_AGC_INFO_T path_agc[2];
 	u8 	ch_num[2];
@@ -503,7 +502,7 @@ typedef struct _Phy_Status_Rpt_8812
 	u8			antidx_anta:3;
 	u8			antidx_antb:3;
 	u8			resvd_1:2;
-} PHY_STATUS_RPT_8812_T,*PPHY_STATUS_RPT_8812_T;
+};
 
 
 #endif

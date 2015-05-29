@@ -1085,7 +1085,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 	u8	cck_highpwr = 0;
 	u8	LNA_idx, VGA_idx;
 
-	PPHY_STATUS_RPT_8812_T pPhyStaRpt = (PPHY_STATUS_RPT_8812_T)pPhyStatus;
+	struct rw_fwinfo_8821au *pPhyStaRpt = (struct rw_fwinfo_8821au *) pPhyStatus;
 
 	if (pPktinfo->DataRate <= DESC_RATE54M) {
 		switch (pPhyStaRpt->r_RFMOD) {

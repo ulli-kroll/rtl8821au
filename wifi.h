@@ -976,6 +976,23 @@ struct rtl_mac {
 	u32 last_bt_edca_dl;
 };
 
+struct false_alarm_statistics {
+	u32 cnt_parity_fail;
+	u32 cnt_rate_illegal;
+	u32 cnt_crc8_fail;
+	u32 cnt_mcs_fail;
+	u32 cnt_fast_fsync_fail;
+	u32 cnt_sb_search_fail;
+	u32 cnt_ofdm_fail;
+	u32 cnt_cck_fail;
+	u32 cnt_all;
+	u32 cnt_ofdm_cca;
+	u32 cnt_cck_cca;
+	u32 cnt_cca_all;
+	u32 cnt_bw_usc;
+	u32 cnt_bw_lsc;
+};
+
 struct rtl_priv {
 	struct net_device *ndev;
 
@@ -989,6 +1006,7 @@ struct rtl_priv {
 	struct rate_adaptive ra;
 	struct rtl_mac mac80211;
 
+	struct false_alarm_statistics falsealm_cnt;
 	struct rtl_usb_priv priv;
 
 
@@ -1517,22 +1535,6 @@ typedef struct _ODM_Mac_Status_Info_
 
 }ODM_MAC_INFO;
 
-typedef struct _FALSE_ALARM_STATISTICS{
-	uint32_t	Cnt_Parity_Fail;
-	uint32_t	Cnt_Rate_Illegal;
-	uint32_t	Cnt_Crc8_fail;
-	uint32_t	Cnt_Mcs_fail;
-	uint32_t	Cnt_Ofdm_fail;
-	uint32_t	Cnt_Cck_fail;
-	uint32_t	Cnt_all;
-	uint32_t	Cnt_Fast_Fsync;
-	uint32_t	Cnt_SB_Search_fail;
-	uint32_t	Cnt_OFDM_CCA;
-	uint32_t	Cnt_CCK_CCA;
-	uint32_t	Cnt_CCA_all;
-	uint32_t	Cnt_BW_USC;	//Gary
-	uint32_t	Cnt_BW_LSC;	//Gary
-}FALSE_ALARM_STATISTICS, *PFALSE_ALARM_STATISTICS;
 typedef struct _Dynamic_Power_Saving_
 {
 	u8		PreCCAState;
@@ -1751,8 +1753,6 @@ struct _rtw_dm {
 	PS_T		DM_PSTable;
 	Pri_CCA_T	DM_PriCCA;
 	RXHP_T		DM_RXHP_Table;
-	FALSE_ALARM_STATISTICS	FalseAlmCnt;
-	FALSE_ALARM_STATISTICS	FlaseAlmCntBuddyAdapter;
 	//#ifdef CONFIG_ANTENNA_DIVERSITY
 	BOOLEAN		RSSI_test;
 	//#endif

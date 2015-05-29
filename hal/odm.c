@@ -563,7 +563,7 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 
 	/* struct rtl_priv *rtlpriv =pDM_Odm->rtlpriv; */
 	/* pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable; */
-	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
+	struct false_alarm_statistics *pFalseAlmCnt = &(rtlpriv->falsealm_cnt);
 
 	u8	RSSI_Lower = DM_DIG_MIN_NIC;   	/* 0x1E or 0x1C */
 	u8	CurrentIGI = dm_digtable->rssi_val;
@@ -576,11 +576,11 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("---Neil---odm_DIG is in LPS mode\n"));
 	/* Adjust by  FA in LPS MODE */
-	if (pFalseAlmCnt->Cnt_all > DM_DIG_FA_TH2_LPS)
+	if (pFalseAlmCnt->cnt_all > DM_DIG_FA_TH2_LPS)
 		CurrentIGI = CurrentIGI+2;
-	else if (pFalseAlmCnt->Cnt_all > DM_DIG_FA_TH1_LPS)
+	else if (pFalseAlmCnt->cnt_all > DM_DIG_FA_TH1_LPS)
 		CurrentIGI = CurrentIGI+1;
-	else if (pFalseAlmCnt->Cnt_all < DM_DIG_FA_TH0_LPS)
+	else if (pFalseAlmCnt->cnt_all < DM_DIG_FA_TH0_LPS)
 		CurrentIGI = CurrentIGI-1;
 
 	/* Lower bound checking */
@@ -615,7 +615,7 @@ void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	u8	CurCCK_CCAThres;
-	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
+	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
 
 	if (rtlhal->external_lna_2g)
 		return;
@@ -626,13 +626,13 @@ void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 		else if ((dm_digtable->rssi_val_min <= 25) && (dm_digtable->rssi_val_min > 10))
 			CurCCK_CCAThres = 0x83;
 		else {
-			if (FalseAlmCnt->Cnt_Cck_fail > 1000)
+			if (FalseAlmCnt->cnt_cck_fail > 1000)
 				CurCCK_CCAThres = 0x83;
 			else
 				CurCCK_CCAThres = 0x40;
 		}
 	} else {
-		if (FalseAlmCnt->Cnt_Cck_fail > 1000)
+		if (FalseAlmCnt->cnt_cck_fail > 1000)
 			CurCCK_CCAThres = 0x83;
 		else
 			CurCCK_CCAThres = 0x40;

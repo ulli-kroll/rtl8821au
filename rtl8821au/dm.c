@@ -1578,20 +1578,19 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
 	uint32_t ret_value;
-	PFALSE_ALARM_STATISTICS FalseAlmCnt = &(pDM_Odm->FalseAlmCnt);
-
+	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
 
 	{
 		uint32_t CCKenable;
 		/* read OFDM FA counter */
-		FalseAlmCnt->Cnt_Ofdm_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
-		FalseAlmCnt->Cnt_Cck_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
+		FalseAlmCnt->cnt_ofdm_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
+		FalseAlmCnt->cnt_cck_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
 
 		CCKenable =  rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC, BIT28);
 		if (CCKenable)		/* if (*pDM_Odm->pBandType == ODM_BAND_2_4G) */
-			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail + FalseAlmCnt->Cnt_Cck_fail;
+			FalseAlmCnt->cnt_all = FalseAlmCnt->cnt_ofdm_fail + FalseAlmCnt->cnt_cck_fail;
 		else
-			FalseAlmCnt->Cnt_all = FalseAlmCnt->Cnt_Ofdm_fail;
+			FalseAlmCnt->cnt_all = FalseAlmCnt->cnt_ofdm_fail;
 
 		/* reset OFDM FA coutner */
 		rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
@@ -1600,9 +1599,9 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 		rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
 		rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Cck_fail=%d\n", FalseAlmCnt->Cnt_Cck_fail));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Ofdm_fail=%d\n", FalseAlmCnt->Cnt_Ofdm_fail));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Total False Alarm=%d\n", FalseAlmCnt->Cnt_all));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Cck_fail=%d\n", FalseAlmCnt->cnt_cck_fail));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Ofdm_fail=%d\n", FalseAlmCnt->cnt_ofdm_fail));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Total False Alarm=%d\n", FalseAlmCnt->cnt_all));
 }
 
 
@@ -2064,7 +2063,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
-	PFALSE_ALARM_STATISTICS		pFalseAlmCnt = &pDM_Odm->FalseAlmCnt;
+	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
 	pRXHP_T						pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
 	u8						DIG_Dynamic_MIN;
 	u8						DIG_MaxOfMin;
@@ -2140,7 +2139,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	}
 
 	/* 1 Modify DIG lower bound, deal with abnorally large false alarm */
-	if (pFalseAlmCnt->Cnt_all > 10000) {
+	if (FalseAlmCnt->cnt_all > 10000) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("dm_DIG(): Abnornally false alarm case. \n"));
 
 		if (dm_digtable->large_fa_hit != 3)
@@ -2197,15 +2196,15 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 			ODM_RT_TRACE(pDM_Odm,	ODM_COMP_DIG, ODM_DBG_LOUD, ("DIG: First Connect\n"));
 		} else 	{
 			/* FA for Combo IC--NeilChen--2012--09--28 */
-			if (pFalseAlmCnt->Cnt_all > DM_DIG_FA_TH2)
+			if (FalseAlmCnt->cnt_all > DM_DIG_FA_TH2)
 				CurrentIGI = CurrentIGI + 4;	/* dm_digtable->CurIGValue = dm_digtable->PreIGValue+2; */
-			else if (pFalseAlmCnt->Cnt_all > DM_DIG_FA_TH1)
+			else if (FalseAlmCnt->cnt_all > DM_DIG_FA_TH1)
 				CurrentIGI = CurrentIGI + 2;	/* dm_digtable->CurIGValue = dm_digtable->PreIGValue+1; */
-			else if (pFalseAlmCnt->Cnt_all < DM_DIG_FA_TH0)
+			else if (FalseAlmCnt->cnt_all < DM_DIG_FA_TH0)
 				CurrentIGI = CurrentIGI - 2;	/* dm_digtable->CurIGValue =dm_digtable->PreIGValue-1; */
 
 			if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10)
-			 && (pFalseAlmCnt->Cnt_all < DM_DIG_FA_TH1))
+			 && (FalseAlmCnt->cnt_all < DM_DIG_FA_TH1))
 				CurrentIGI = dm_digtable->rx_gain_min;
 		}
 	} else {
@@ -2216,11 +2215,11 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): First DisConnect \n"));
 		} else {
 			/* 2012.03.30 LukeLee: enable DIG before link but with very high thresholds */
-			if (pFalseAlmCnt->Cnt_all > 10000)
+			if (FalseAlmCnt->cnt_all > 10000)
 				CurrentIGI = CurrentIGI + 4;
-			else if (pFalseAlmCnt->Cnt_all > 8000)
+			else if (FalseAlmCnt->cnt_all > 8000)
 				CurrentIGI = CurrentIGI + 2;
-			else if (pFalseAlmCnt->Cnt_all < 500)
+			else if (FalseAlmCnt->cnt_all < 500)
 				CurrentIGI = CurrentIGI - 2;
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): England DIG \n"));
 		}

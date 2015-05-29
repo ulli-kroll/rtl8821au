@@ -188,16 +188,14 @@ static void rtl8821au_cm_common_info_self_update(struct _rtw_dm *pDM_Odm)
 
 /* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */
 
-static void _rtl_dm_diginit(struct _rtw_dm *pDM_Odm)
+static void _rtl_dm_diginit(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
-
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
 	/* dm_digtable->Dig_Enable_Flag = TRUE; */
 	/* dm_digtable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
-	dm_digtable->cur_igvalue = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC);
+	dm_digtable->cur_igvalue = (u8) rtl_get_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC);
 	/* dm_digtable->PreIGValue = 0x0; */
 	/* dm_digtable->CurSTAConnectState = dm_digtable->PreSTAConnectState = DIG_STA_DISCONNECT; */
 	/* dm_digtable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */
@@ -343,7 +341,7 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 	/* 2012.05.03 Luke: For all IC series */
 	rtl8821au_cm_common_info_self_update(pDM_Odm);
 	/* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */
-	_rtl_dm_diginit(pDM_Odm);
+	_rtl_dm_diginit(rtlpriv);
 	odm_AdaptivityInit(rtlpriv);
 	rtl8821au_dm_init_rate_adaptive_mask(rtlpriv);
 

@@ -741,7 +741,7 @@ static u8 DeltaSwingTableIdx_2GA_N_8188E[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 4, 5
 #define SWAW_STEP_DETERMINE	1
 
 void ODM_Write_DIG(IN	struct _rtw_dm *pDM_Odm, 	IN	u8	CurrentIGI);
-void ODM_Write_CCK_CCA_Thres(IN	struct _rtw_dm *pDM_Odm, IN	u8	CurCCK_CCAThres);
+void ODM_Write_CCK_CCA_Thres(struct rtl_priv *rtlpriv, u8 CurCCK_CCAThres);
 
 void
 ODM_SetAntenna(

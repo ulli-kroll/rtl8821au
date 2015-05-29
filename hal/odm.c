@@ -638,16 +638,15 @@ void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 			CurCCK_CCAThres = 0x40;
 	}
 
-		ODM_Write_CCK_CCA_Thres(pDM_Odm, CurCCK_CCAThres);
+		ODM_Write_CCK_CCA_Thres(rtlpriv, CurCCK_CCAThres);
 }
 
-void ODM_Write_CCK_CCA_Thres(struct _rtw_dm *pDM_Odm, u8	 CurCCK_CCAThres)
+void ODM_Write_CCK_CCA_Thres(struct rtl_priv *rtlpriv, u8 CurCCK_CCAThres)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
 	if (pDM_DigTable->cur_cck_cca_thres != CurCCK_CCAThres) {	/* modify by Guo.Mingzhi 2012-01-03 */
-		rtl_write_byte(pDM_Odm->rtlpriv, ODM_REG_CCK_CCA_11AC, CurCCK_CCAThres);
+		rtl_write_byte(rtlpriv, ODM_REG_CCK_CCA_11AC, CurCCK_CCAThres);
 	}
 	pDM_DigTable->pre_cck_cca_thres = pDM_DigTable->cur_cck_cca_thres;
 	pDM_DigTable->cur_cck_cca_thres = CurCCK_CCAThres;

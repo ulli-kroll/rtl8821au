@@ -179,12 +179,10 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	sint	bmcst = IS_MCAST(pattrib->ra);
 
-	if (rtlpriv->registrypriv.mp_mode == 0) {
-		if ((!bagg_pkt) && (rtw_usb_bulk_size_boundary(rtlpriv, TXDESC_SIZE+sz) == _FALSE)) {
-			ptxdesc = (pmem+PACKET_OFFSET_SZ);
-			/* DBG_8192C("==> non-agg-pkt,shift pointer...\n"); */
-			pull = 1;
-		}
+	if ((!bagg_pkt) && (rtw_usb_bulk_size_boundary(rtlpriv, TXDESC_SIZE+sz) == _FALSE)) {
+		ptxdesc = (pmem+PACKET_OFFSET_SZ);
+		/* DBG_8192C("==> non-agg-pkt,shift pointer...\n"); */
+		pull = 1;
 	}
 
 	memset(ptxdesc, 0, TXDESC_SIZE);
@@ -206,11 +204,9 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 		SET_TX_DESC_BMC(ptxdesc, 1);
 	}
 
-	if (rtlpriv->registrypriv.mp_mode == 0) {
-		if (!bagg_pkt) {
-			if ((pull) && (pxmitframe->pkt_offset > 0)) {
-				pxmitframe->pkt_offset = pxmitframe->pkt_offset - 1;
-			}
+	if (!bagg_pkt) {
+		if ((pull) && (pxmitframe->pkt_offset > 0)) {
+			pxmitframe->pkt_offset = pxmitframe->pkt_offset - 1;
 		}
 	}
 

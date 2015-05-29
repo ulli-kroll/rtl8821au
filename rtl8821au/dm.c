@@ -303,8 +303,6 @@ static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct _rtw_dm
 	rtldm->txpowercount = 0;
 	rtldm->txpower_trackinginit = _FALSE;
 	/* #if	(MP_DRIVER != 1) */		/* for mp driver, turn off txpwrtracking as default */
-	if (*(pDM_Odm->mp_mode) != 1)
-		rtldm->txpower_track_control = _TRUE;
 	/* #endif//#if	(MP_DRIVER != 1) */
 	MSG_8192C("pDM_Odm TxPowerTrackControl = %d\n", rtldm->txpower_track_control);
 

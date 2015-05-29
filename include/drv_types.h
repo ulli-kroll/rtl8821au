@@ -120,7 +120,6 @@ struct registry_priv
 	uint8_t	short_retry_lmt;
 	u16	busy_thresh;
 	uint8_t	ack_policy;
-	uint8_t	mp_mode;
 	uint8_t	software_encrypt;
 	uint8_t	software_decrypt;
 	uint8_t	acm_method;

@@ -1669,7 +1669,6 @@ struct _rtw_dm {
 	BOOLEAN			*pbPowerSaving;
 	//pMgntInfo->AntennaTest
 	u8			*pAntennaTest;
-	u8			*mp_mode;
 	//u8			*pAidMap;
 //--------- POINTER REFERENCE-----------//
 	u16			*pForcedDataRate;

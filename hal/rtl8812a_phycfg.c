@@ -1108,10 +1108,8 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	channelToSW = rtlpriv->phy.current_channel;
 
-	if (rtlpriv->registrypriv.mp_mode == 0) {
-		if(phy_SwBand8812(rtlpriv, channelToSW) == _FALSE) {
-			DBG_871X("error Chnl %d !\n", channelToSW);
-		}
+	if(phy_SwBand8812(rtlpriv, channelToSW) == _FALSE) {
+		DBG_871X("error Chnl %d !\n", channelToSW);
 	}
 
 	/* DBG_871X("[BW:CHNL], phy_SwChnl8812(), switch to channel %d !!\n", channelToSW); */

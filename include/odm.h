@@ -338,7 +338,6 @@ typedef enum _ODM_Common_Info_Definition
 	ODM_CMNINFO_POWER_SAVING,
 	ODM_CMNINFO_INIT_ON,
 	ODM_CMNINFO_ANT_TEST,
-	ODM_CMNINFO_MP_MODE,
 //--------- POINTER REFERENCE-----------//
 
 //------------CALL BY VALUE-------------//

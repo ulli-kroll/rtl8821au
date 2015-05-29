@@ -71,8 +71,6 @@ static int rtw_busy_thresh = 40;
 /* int qos_enable = 0; */
 static int rtw_ack_policy = NORMAL_ACK;
 
-static int rtw_mp_mode = 0;
-
 static int rtw_software_encrypt = 0;
 static int rtw_software_decrypt = 0;
 
@@ -186,7 +184,6 @@ module_param(rtw_rfintfs, int, 0644);
 module_param(rtw_lbkmode, int, 0644);
 module_param(rtw_network_mode, int, 0644);
 module_param(rtw_channel, int, 0644);
-module_param(rtw_mp_mode, int, 0644);
 module_param(rtw_wmm_enable, int, 0644);
 module_param(rtw_vrtl_carrier_sense, int, 0644);
 module_param(rtw_vcs_type, int, 0644);
@@ -644,7 +641,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->busy_thresh = (u16)rtw_busy_thresh;
 	/* registry_par->qos_enable = (uint8_t)rtw_qos_enable; */
 	registry_par->ack_policy = (uint8_t)rtw_ack_policy;
-	registry_par->mp_mode = (uint8_t)rtw_mp_mode;
 	registry_par->software_encrypt = (uint8_t)rtw_software_encrypt;
 	registry_par->software_decrypt = (uint8_t)rtw_software_decrypt;
 

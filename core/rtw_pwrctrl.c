@@ -504,10 +504,7 @@ _func_enter_;
 
 	pwrctrlpriv->LpsIdleCount = 0;
 	//pwrctrlpriv->FWCtrlPSMode =rtlpriv->registrypriv.power_mgnt;// PS_MODE_MIN;
-	if (rtlpriv->registrypriv.mp_mode == 1)
-		pwrctrlpriv->power_mgnt =PS_MODE_ACTIVE ;
-	else
-		pwrctrlpriv->power_mgnt =rtlpriv->registrypriv.power_mgnt;// PS_MODE_MIN;
+	pwrctrlpriv->power_mgnt =rtlpriv->registrypriv.power_mgnt;// PS_MODE_MIN;
 	pwrctrlpriv->bLeisurePs = (PS_MODE_ACTIVE != pwrctrlpriv->power_mgnt)?_TRUE:_FALSE;
 
 	pwrctrlpriv->bFwCurrentInPSMode = _FALSE;

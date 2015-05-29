@@ -276,9 +276,8 @@ static void rtl8821au_dm_init_edca_turbo(struct rtl_priv *rtlpriv)
 
 }
 
-static u8 getSwingIndex(struct _rtw_dm *pDM_Odm)
+static u8 getSwingIndex(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *	rtlpriv = pDM_Odm->rtlpriv;
 	u8 			i = 0;
 	uint32_t 			bbSwing;
 
@@ -313,7 +312,7 @@ static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct _rtw_dm
 
 	/* The index of "0 dB" in SwingTable. */
 	{
-		u8 defaultSwingIndex = getSwingIndex(pDM_Odm);
+		u8 defaultSwingIndex = getSwingIndex(rtlpriv);
 
 
 		rtldm->default_ofdm_index = (defaultSwingIndex == TXSCALE_TABLE_SIZE) ? 24 : defaultSwingIndex;

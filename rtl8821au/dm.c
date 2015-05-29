@@ -291,11 +291,10 @@ static u8 getSwingIndex(struct rtl_priv *rtlpriv)
 }
 
 
-static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct rtl_priv *rtlpriv)
 {
 	u8 		p = 0;
-	struct rtl_dm	*rtldm = rtl_dm(pDM_Odm->rtlpriv);
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 
 	rtldm->txpower_tracking = _TRUE;
@@ -344,7 +343,7 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 
 	rtl8821au_dm_init_edca_turbo(rtlpriv);
 
-	rtl8821au_dm_initialize_txpower_tracking_thermalmeter(pDM_Odm);
+	rtl8821au_dm_initialize_txpower_tracking_thermalmeter(rtlpriv);
 }
 
 /* From hal/OUTSRC/rtl8812a/HalPhyRf_8812A.c */

@@ -1227,7 +1227,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 		if (pPktinfo->bPacketMatchBSSID) {
 			u8	SQ, SQ_rpt;
 
-			if (pPhyInfo->RxPWDBAll > 40 && !pDM_Odm->bInHctTest) {
+			if (pPhyInfo->RxPWDBAll > 40) {
 				SQ = 100;
 			} else {
 				SQ_rpt = pPhyStaRpt->pwdb_all;

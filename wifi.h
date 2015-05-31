@@ -1519,13 +1519,8 @@ typedef struct _ODM_RATE_ADAPTIVE
 typedef struct _ODM_Phy_Dbg_Info_
 {
 	//ODM Write,debug info
-	s8		RxSNRdB[4];
-	uint64_t		NumQryPhyStatus;
-	uint64_t		NumQryPhyStatusCCK;
-	uint64_t		NumQryPhyStatusOFDM;
 	u8		NumQryBeaconPkt;
 	//Others
-	int32_t		RxEVM[4];
 
 }ODM_PHY_DBG_INFO_T;
 

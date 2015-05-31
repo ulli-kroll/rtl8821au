@@ -1119,7 +1119,6 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 	if (isCCKrate) {
 		u8 cck_agc_rpt;
 
-		pDM_Odm->PhyDbgInfo.NumQryPhyStatusCCK++;
 		/*
 		 *  (1)Hardware does not provide RSSI for CCK
 		 *  (2)PWDB, Average PWDB cacluated by hardware (for rate adaptive)
@@ -1249,7 +1248,6 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 		}
 	} else {
 		/* is OFDM rate */
-		pDM_Odm->PhyDbgInfo.NumQryPhyStatusOFDM++;
 
 		/*
 		 * (1)Get RSSI for OFDM rate
@@ -1293,7 +1291,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 			pPhyInfo->RxMIMOSignalStrength[i] = (u8) RSSI;
 
 			/* Get Rx snr value in DB */
-			pPhyInfo->RxSNR[i] = pDM_Odm->PhyDbgInfo.RxSNRdB[i] = pPhyStaRpt->rxsnr[i]/2;
+			pPhyInfo->RxSNR[i] = pPhyStaRpt->rxsnr[i]/2;
 
 			/*
 			 *  (2) CFO_short  & CFO_tail

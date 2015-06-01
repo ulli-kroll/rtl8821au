@@ -188,7 +188,6 @@ static void rtl8821au_cm_common_info_self_update(struct _rtw_dm *pDM_Odm)
 	if (tmp & BIT(1))
 		rtlpriv->dm.rfpath_rxenable[1] = true;
 
-	pDM_Odm->TxRate = 0xFF;
 	ODM_InitDebugSetting(pDM_Odm);
 }
 

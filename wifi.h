@@ -1682,7 +1682,6 @@ struct _rtw_dm {
 
 	u8			RxRate;
 	BOOLEAN			StopDIG;
-	u8			TxRate;
 	u8			LinkedInterval;
 	u8			preChannel;
 	u8			AntType;

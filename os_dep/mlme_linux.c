@@ -74,12 +74,12 @@ extern void rtw_indicate_wx_disassoc_event(struct rtl_priv *rtlpriv);
 void rtw_os_indicate_connect(struct rtl_priv *rtlpriv)
 {
 
-_func_enter_;
+
 
 	rtw_indicate_wx_assoc_event(rtlpriv);
 	netif_carrier_on(rtlpriv->ndev);
 
-_func_exit_;
+
 
 }
 
@@ -148,7 +148,7 @@ void rtw_os_indicate_disconnect( struct rtl_priv *rtlpriv )
 {
    //RT_PMKID_LIST   backupPMKIDList[ NUM_PMKID_CACHE ];
 
-_func_enter_;
+
 
 	netif_carrier_off(rtlpriv->ndev); // Do it first for tx broadcast pkt after disconnection issue!
 
@@ -156,7 +156,7 @@ _func_enter_;
 
 	 rtw_reset_securitypriv( rtlpriv );
 
-_func_exit_;
+
 
 }
 
@@ -166,7 +166,7 @@ void rtw_report_sec_ie(struct rtl_priv *rtlpriv,uint8_t authmode,uint8_t *sec_ie
 	uint8_t	*buff,*p,i;
 	union iwreq_data wrqu;
 
-_func_enter_;
+
 
 	buff = NULL;
 	if(authmode==_WPA_IE_ID_)
@@ -201,7 +201,7 @@ _func_enter_;
 
 	}
 
-_func_exit_;
+
 
 }
 

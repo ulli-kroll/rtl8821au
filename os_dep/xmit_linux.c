@@ -324,7 +324,7 @@ drop_packet:
 
 exit:
 
-_func_exit_;
+
 
 	return 0;
 }

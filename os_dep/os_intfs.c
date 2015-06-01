@@ -699,7 +699,7 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->regulatory_tid = (uint8_t)rtw_regulatory_id;
 
 
-_func_exit_;
+
 
 	return status;
 }

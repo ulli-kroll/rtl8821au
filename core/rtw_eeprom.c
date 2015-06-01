@@ -395,7 +395,7 @@ uint8_t eeprom_read(struct rtl_priv *rtlpriv, uint32_t	addr_off, uint8_t sz, uin
 		stmp = eeprom_read16(rtlpriv, reg);
 		rbuf[idx] = (uint8_t)(stmp & 0xff);
 	}
-_func_exit_;
+
 	return _TRUE;
 }
 

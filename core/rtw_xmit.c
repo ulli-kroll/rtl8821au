@@ -956,7 +956,7 @@ static int32_t xmitframe_addmic(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
 */
 	}
 
-_func_exit_;
+
 
 	return _SUCCESS;
 }
@@ -1007,7 +1007,7 @@ int32_t rtw_make_wlanhdr (struct rtl_priv *rtlpriv , uint8_t *hdr, struct pkt_at
 
 	/* sint bmcst = IS_MCAST(pattrib->ra); */
 
-_func_enter_;
+
 
 /*
 	psta = rtw_get_stainfo(&rtlpriv->stapriv, pattrib->ra);
@@ -1279,7 +1279,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 	int32_t bmcst = IS_MCAST(pattrib->ra);
 	int32_t res = _SUCCESS;
 
-_func_enter_;
+
 
 /*
 	if (pattrib->psta)

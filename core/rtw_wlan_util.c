@@ -1396,7 +1396,7 @@ _mismatch:
 	rtw_mfree(bssid);
 	return _FAIL;
 
-	_func_exit_;
+	
 }
 
 void update_beacon_info(struct rtl_priv *rtlpriv, uint8_t *pframe, uint pkt_len, struct sta_info *psta)

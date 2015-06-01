@@ -151,7 +151,7 @@ struct	wlan_network *_rtw_dequeue_network(struct __queue *queue)
 
 	struct wlan_network *pnetwork;
 
-_func_enter_;
+
 
 	spin_lock_bh(&queue->lock, &irqL);
 
@@ -168,7 +168,7 @@ _func_enter_;
 
 	spin_unlock_bh(&queue->lock, &irqL);
 
-_func_exit_;
+
 
 	return pnetwork;
 }
@@ -421,9 +421,9 @@ static int rtw_enqueue_network(struct __queue *queue, struct wlan_network *pnetw
 static struct	wlan_network *rtw_dequeue_network(struct __queue *queue)
 {
 	struct wlan_network *pnetwork;
-_func_enter_;
+
 	pnetwork = _rtw_dequeue_network(queue);
-_func_exit_;
+
 	return pnetwork;
 }
 */
@@ -626,7 +626,7 @@ static void update_current_network(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *pnet
 		}
 	}
 
-_func_exit_;
+
 
 }
 
@@ -750,7 +750,7 @@ static void rtw_add_network(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *pnetwork)
 	struct	mlme_priv	*pmlmepriv = &(((struct rtl_priv *)rtlpriv)->mlmepriv);
 	//struct __queue	*queue	= &(pmlmepriv->scanned_queue);
 
-_func_enter_;
+
 
 	//spin_lock_bh(&queue->lock, &irqL);
 
@@ -760,7 +760,7 @@ _func_enter_;
 
 	//spin_unlock_bh(&queue->lock, &irqL);
 
-_func_exit_;
+
 }
 
 //select the desired network based on the capability of the (i)bss.
@@ -896,7 +896,7 @@ void rtw_surveydone_event_callback(struct rtl_priv	*rtlpriv, uint8_t *pbuf)
 
 #endif
 
-_func_enter_;
+
 
 	spin_lock_bh(&pmlmepriv->lock);
 
@@ -981,7 +981,7 @@ _func_enter_;
 
 	rtw_os_xmit_schedule(rtlpriv);
 
-_func_exit_;
+
 
 }
 
@@ -1343,7 +1343,7 @@ void rtw_joinbss_event_prehandle(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	struct wlan_network	*pcur_wlan = NULL, *ptarget_wlan = NULL;
 	unsigned int 		the_same_macaddr = _FALSE;
 
-_func_enter_;
+
 
 #ifdef CONFIG_RTL8712
        //endian_convert
@@ -1527,20 +1527,20 @@ _func_enter_;
 ignore_joinbss_callback:
 
 	spin_unlock_bh(&pmlmepriv->lock);
-	_func_exit_;
+	
 }
 
 void rtw_joinbss_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 {
 	struct wlan_network 	*pnetwork	= (struct wlan_network *)pbuf;
 
-_func_enter_;
+
 
 	mlmeext_joinbss_event_callback(rtlpriv, pnetwork->join_res);
 
 	rtw_os_xmit_schedule(rtlpriv);
 
-_func_exit_;
+
 }
 
 uint8_t search_max_mac_id(struct rtl_priv *rtlpriv)
@@ -1628,7 +1628,7 @@ void rtw_stassoc_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	struct wlan_network 	*cur_network = &(pmlmepriv->cur_network);
 	struct wlan_network	*ptarget_wlan = NULL;
 
-_func_enter_;
+
 
 	if (rtw_access_ctrl(rtlpriv, pstassoc->macaddr) == _FALSE)
 		return;
@@ -1707,7 +1707,7 @@ _func_enter_;
 
 exit:
 
-_func_exit_;
+	;
 
 }
 
@@ -1723,7 +1723,7 @@ void rtw_stadel_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf)
    	struct	sta_priv *pstapriv = &rtlpriv->stapriv;
 	struct wlan_network *tgt_network = &(pmlmepriv->cur_network);
 
-_func_enter_;
+
 
 	psta = rtw_get_stainfo(&rtlpriv->stapriv, pstadel->macaddr);
 	if (psta)
@@ -1819,7 +1819,7 @@ _func_enter_;
 
 	spin_unlock_bh(&pmlmepriv->lock);
 
-_func_exit_;
+
 
 }
 
@@ -1827,9 +1827,9 @@ _func_exit_;
 void rtw_cpwm_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 {
 
-_func_enter_;
 
-_func_exit_;
+
+
 
 }
 
@@ -1841,7 +1841,7 @@ void _rtw_join_timeout_handler (struct rtl_priv *rtlpriv)
 {
 	struct	mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
-_func_enter_;
+
 
 
 	DBG_871X("%s, fw_state=%x\n", __FUNCTION__, get_fwstate(pmlmepriv));
@@ -1860,7 +1860,7 @@ _func_enter_;
 
 	spin_unlock_bh(&pmlmepriv->lock);
 
-_func_exit_;
+
 
 }
 
@@ -2032,7 +2032,7 @@ int rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv )
 	struct	wlan_network	*candidate = NULL;
 	uint8_t 		bSupportAntDiv = _FALSE;
 
-_func_enter_;
+
 
 	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 	phead = get_list_head(queue);
@@ -2111,7 +2111,7 @@ _func_enter_;
 exit:
 	spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 
-_func_exit_;
+
 
 	return ret;
 }
@@ -2124,7 +2124,7 @@ sint rtw_set_auth(struct rtl_priv * rtlpriv,struct security_priv *psecuritypriv)
 	struct	cmd_priv	*pcmdpriv=&(rtlpriv->cmdpriv);
 	sint		res=_SUCCESS;
 
-_func_enter_;
+
 
 	pcmd = (struct	cmd_obj*)rtw_zmalloc(sizeof(struct	cmd_obj));
 	if (pcmd==NULL){
@@ -2155,7 +2155,7 @@ _func_enter_;
 
 exit:
 
-_func_exit_;
+
 
 	return res;
 
@@ -2171,7 +2171,7 @@ sint rtw_set_key(struct rtl_priv * rtlpriv,struct security_priv *psecuritypriv,s
 	struct mlme_priv		*pmlmepriv = &(rtlpriv->mlmepriv);
 	sint	res=_SUCCESS;
 
-_func_enter_;
+
 
 	pcmd = (struct	cmd_obj*)rtw_zmalloc(sizeof(struct	cmd_obj));
 	if (pcmd==NULL){
@@ -2248,7 +2248,7 @@ _func_enter_;
 	res = rtw_enqueue_cmd(pcmdpriv, pcmd);
 
 exit:
-_func_exit_;
+
 	return res;
 
 }
@@ -2382,7 +2382,7 @@ sint rtw_restruct_sec_ie(struct rtl_priv *rtlpriv,uint8_t *in_ie, uint8_t *out_i
 	uint 	ndisauthmode=psecuritypriv->ndisauthtype;
 	uint ndissecuritytype = psecuritypriv->ndisencryptstatus;
 
-_func_enter_;
+
 
 	//copy fixed ie only
 	memcpy(out_ie, in_ie,12);
@@ -2419,7 +2419,7 @@ _func_enter_;
 		}
 	}
 
-_func_exit_;
+
 
 	return ielength;
 }
@@ -2431,7 +2431,7 @@ void rtw_init_registrypriv_dev_network(	struct rtl_priv * rtlpriv)
 	WLAN_BSSID_EX    *pdev_network = &pregistrypriv->dev_network;
 	uint8_t *myhwaddr = myid(peepriv);
 
-_func_enter_;
+
 
 	memcpy(pdev_network->MacAddress, myhwaddr, ETH_ALEN);
 
@@ -2445,7 +2445,7 @@ _func_enter_;
 	pdev_network->Configuration.FHConfig.DwellTime = 0;
 
 
-_func_exit_;
+
 
 }
 
@@ -2458,7 +2458,7 @@ void rtw_update_registrypriv_dev_network(struct rtl_priv * rtlpriv)
 	struct	wlan_network	*cur_network = &rtlpriv->mlmepriv.cur_network;
 	//struct	xmit_priv	*pxmitpriv = &rtlpriv->xmitpriv;
 
-_func_enter_;
+
 
 	pdev_network->Privacy = (psecuritypriv->dot11PrivacyAlgrthm > 0 ? 1 : 0) ; // adhoc no 802.1x
 
@@ -2511,16 +2511,16 @@ _func_enter_;
 	//notes: translate IELength & Length after assign the Length to cmdsz in createbss_cmd();
 	//pdev_network->IELength = cpu_to_le32(sz);
 
-_func_exit_;
+
 
 }
 
 void rtw_get_encrypt_decrypt_from_registrypriv(struct rtl_priv * rtlpriv)
 {
-_func_enter_;
 
 
-_func_exit_;
+
+
 
 }
 

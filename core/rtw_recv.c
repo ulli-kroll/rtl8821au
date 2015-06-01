@@ -120,7 +120,7 @@ sint _rtw_init_recv_priv(struct recv_priv *precvpriv, struct rtl_priv *rtlpriv)
 
 exit:
 
-_func_exit_;
+
 
 	return res;
 
@@ -194,7 +194,7 @@ int rtw_free_recvframe(struct recv_frame *precvframe, struct __queue *pfree_recv
 	struct rtl_priv *rtlpriv=precvframe->rtlpriv;
 	struct recv_priv *precvpriv = &rtlpriv->recvpriv;
 
-_func_enter_;
+
 
 	rtw_os_free_recvframe(precvframe);
 
@@ -820,7 +820,7 @@ sint sta2sta_data_frame(
 	sint bmcast = IS_MCAST(pattrib->dst);
 
 
-_func_enter_;
+
 
 	if ((check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == _TRUE) ||
 		(check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == _TRUE))
@@ -903,7 +903,7 @@ _func_enter_;
 	}
 
 exit:
-_func_exit_;
+
 	return ret;
 
 }
@@ -926,7 +926,7 @@ sint ap2sta_data_frame(
 	uint8_t *myhwaddr = myid(&rtlpriv->eeprompriv);
 	sint bmcast = IS_MCAST(pattrib->dst);
 
-_func_enter_;
+
 
 	if ((check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE)
 		&& (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE
@@ -1021,7 +1021,7 @@ _func_enter_;
 
 exit:
 
-_func_exit_;
+
 
 	return ret;
 
@@ -1043,7 +1043,7 @@ sint sta2ap_data_frame(
 	unsigned char *mybssid  = get_bssid(pmlmepriv);
 	sint ret=_SUCCESS;
 
-_func_enter_;
+
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
 	{
@@ -1092,7 +1092,7 @@ _func_enter_;
 
 exit:
 
-_func_exit_;
+
 
 	return ret;
 
@@ -1428,7 +1428,7 @@ sint validate_recv_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_fram
 	uint8_t  ver =(unsigned char) (*ptr)&0x3 ;
 
 
-_func_enter_;
+
 
 	/* add version chk */
 	if (ver != 0){
@@ -1559,7 +1559,7 @@ sint wlanhdr_to_ethhdr ( struct recv_frame *precvframe)
 		memcpy(ptr+12, &len, 2);
 	}
 
-_func_exit_;
+
 	return ret;
 
 }
@@ -1582,7 +1582,7 @@ sint wlanhdr_to_ethhdr ( struct recv_frame *precvframe)
 	struct rx_pkt_attrib *pattrib = & precvframe->u.hdr.attrib;
 	struct _vlan *pvlan = NULL;
 
-_func_enter_;
+
 
 	psnap=(struct ieee80211_snap_hdr *)(ptr+pattrib->hdrlen + pattrib->iv_len);
 	psnap_type=ptr+pattrib->hdrlen + pattrib->iv_len+SNAP_SIZE;
@@ -2567,7 +2567,7 @@ int32_t rtw_recv_entry(struct recv_frame *precvframe)
 	struct recv_priv *precvpriv;
 	int32_t ret=_SUCCESS;
 
-_func_enter_;
+
 
 //	RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("+rtw_recv_entry\n"));
 
@@ -2584,7 +2584,7 @@ _func_enter_;
 
 	precvpriv->rx_pkts++;
 
-_func_exit_;
+
 
 	return ret;
 
@@ -2592,7 +2592,7 @@ _recv_entry_drop:
 
 	//RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,("_recv_entry_drop\n"));
 
-_func_exit_;
+
 
 	return ret;
 }

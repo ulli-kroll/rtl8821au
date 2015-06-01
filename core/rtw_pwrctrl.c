@@ -209,7 +209,7 @@ void rtw_set_rpwm(struct rtl_priv *rtlpriv, uint8_t pslv)
 	uint8_t	rpwm;
 	struct pwrctrl_priv *pwrpriv = &rtlpriv->pwrctrlpriv;
 
-_func_enter_;
+
 
 	pslv = PS_STATE(pslv);
 
@@ -261,7 +261,7 @@ _func_enter_;
 		pwrpriv->cpwm = pslv;
 	}
 
-_func_exit_;
+
 }
 
 static uint8_t PS_RDY_CHECK(struct rtl_priv *rtlpriv)
@@ -299,7 +299,7 @@ void rtw_set_ps_mode(struct rtl_priv *rtlpriv, uint8_t ps_mode, uint8_t smart_ps
 {
 	struct pwrctrl_priv *pwrpriv = &rtlpriv->pwrctrlpriv;
 
-_func_enter_;
+
 
 	if (ps_mode > PM_Card_Disable) {
 		return;
@@ -342,7 +342,7 @@ _func_enter_;
 		}
 	}
 
-_func_exit_;
+
 }
 
 /*
@@ -390,7 +390,7 @@ void LPS_Enter(struct rtl_priv *rtlpriv)
 	struct pwrctrl_priv	*pwrpriv = &rtlpriv->pwrctrlpriv;
 	struct mlme_priv	*pmlmepriv = &(rtlpriv->mlmepriv);
 
-_func_enter_;
+
 
 //	DBG_871X("+LeisurePSEnter\n");
 
@@ -411,7 +411,7 @@ _func_enter_;
 
 //	DBG_871X("-LeisurePSEnter\n");
 
-_func_exit_;
+
 }
 
 //
@@ -426,7 +426,7 @@ void LPS_Leave(struct rtl_priv *rtlpriv)
 	uint32_t	 start_time;
 	uint8_t bAwake = _FALSE;
 
-_func_enter_;
+
 
 
 //	DBG_871X("+LeisurePSLeave\n");
@@ -444,7 +444,7 @@ _func_enter_;
 
 //	DBG_871X("-LeisurePSLeave\n");
 
-_func_exit_;
+
 }
 #endif
 
@@ -457,7 +457,7 @@ void LeaveAllPowerSaveMode(IN struct rtl_priv *rtlpriv)
 	struct mlme_priv	*pmlmepriv = &(rtlpriv->mlmepriv);
 	uint8_t	enqueue = 0;
 
-_func_enter_;
+
 
 	//DBG_871X("%s.....\n",__FUNCTION__);
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
@@ -478,14 +478,14 @@ _func_enter_;
 		}
 	}
 
-_func_exit_;
+
 }
 
 void rtw_init_pwrctrl_priv(struct rtl_priv *rtlpriv)
 {
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 
-_func_enter_;
+
 
 	sema_init(&pwrctrlpriv->lock, 1);
 	pwrctrlpriv->rf_pwrstate = rf_on;
@@ -522,7 +522,7 @@ _func_enter_;
 
 	rtw_init_timer(&pwrctrlpriv->pwr_state_check_timer, rtlpriv, pwr_state_check_handler);
 
-_func_exit_;
+
 
 }
 

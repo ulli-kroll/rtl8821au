@@ -36,7 +36,7 @@ uint8_t rtw_validate_ssid(NDIS_802_11_SSID *ssid)
 	uint8_t	 i;
 	uint8_t	ret=_TRUE;
 
-_func_enter_;
+
 
 	if (ssid->SsidLength > 32) {
 		ret= _FALSE;
@@ -54,7 +54,7 @@ _func_enter_;
 
 exit:
 
-_func_exit_;
+
 
 	return ret;
 }
@@ -68,7 +68,7 @@ uint8_t rtw_do_join(struct rtl_priv * rtlpriv)
 	struct __queue	*queue	= &(pmlmepriv->scanned_queue);
 	uint8_t ret=_SUCCESS;
 
-_func_enter_;
+
 
 	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 	phead = get_list_head(queue);
@@ -184,7 +184,7 @@ _func_enter_;
 
 exit:
 
-_func_exit_;
+
 
 	return ret;
 }
@@ -196,7 +196,7 @@ uint8_t rtw_set_802_11_bssid(struct rtl_priv* rtlpriv, uint8_t *bssid)
 
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
-_func_enter_;
+
 
 	DBG_871X_LEVEL(_drv_always_, "set bssid:%pM\n", bssid);
 
@@ -259,7 +259,7 @@ release_mlme_lock:
 
 exit:
 
-_func_exit_;
+
 
 	return status;
 }
@@ -272,7 +272,7 @@ uint8_t rtw_set_802_11_ssid(struct rtl_priv* rtlpriv, NDIS_802_11_SSID *ssid)
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct wlan_network *pnetwork = &pmlmepriv->cur_network;
 
-_func_enter_;
+
 
 	DBG_871X_LEVEL(_drv_always_, "set ssid [%s] fw_state=0x%08x\n",
 		       	ssid->Ssid, get_fwstate(pmlmepriv));
@@ -368,7 +368,7 @@ release_mlme_lock:
 
 exit:
 
-_func_exit_;
+
 
 	return status;
 
@@ -381,7 +381,7 @@ uint8_t rtw_set_802_11_infrastructure_mode(struct rtl_priv* rtlpriv,
 	struct	wlan_network	*cur_network = &pmlmepriv->cur_network;
 	NDIS_802_11_NETWORK_INFRASTRUCTURE* pold_state = &(cur_network->network.InfrastructureMode);
 
-_func_enter_;
+
 
 	if(*pold_state != networktype)
 	{
@@ -446,7 +446,7 @@ _func_enter_;
 		spin_unlock_bh(&pmlmepriv->lock);
 	}
 
-_func_exit_;
+
 
 	return _TRUE;
 }
@@ -456,7 +456,7 @@ uint8_t rtw_set_802_11_disassociate(struct rtl_priv *rtlpriv)
 {
 	struct mlme_priv * pmlmepriv = &rtlpriv->mlmepriv;
 
-_func_enter_;
+
 
 	spin_lock_bh(&pmlmepriv->lock);
 
@@ -470,7 +470,7 @@ _func_enter_;
 
 	spin_unlock_bh(&pmlmepriv->lock);
 
-_func_exit_;
+
 
 	return _TRUE;
 }
@@ -480,7 +480,7 @@ uint8_t rtw_set_802_11_bssid_list_scan(struct rtl_priv* rtlpriv, NDIS_802_11_SSI
 	struct	mlme_priv		*pmlmepriv= &rtlpriv->mlmepriv;
 	uint8_t	res=_TRUE;
 
-_func_enter_;
+
 
 	if (rtlpriv == NULL) {
 		res=_FALSE;
@@ -511,7 +511,7 @@ _func_enter_;
 	}
 exit:
 
-_func_exit_;
+
 
 	return res;
 }
@@ -522,7 +522,7 @@ uint8_t rtw_set_802_11_authentication_mode(struct rtl_priv* rtlpriv, NDIS_802_11
 	int res;
 	uint8_t ret;
 
-_func_enter_;
+
 
 	psecuritypriv->ndisauthtype=authmode;
 
@@ -536,7 +536,7 @@ _func_enter_;
 	else
 		ret=_FALSE;
 
-_func_exit_;
+
 
 	return ret;
 }
@@ -549,7 +549,7 @@ uint8_t rtw_set_802_11_add_wep(struct rtl_priv* rtlpriv, NDIS_802_11_WEP *wep){
 	struct security_priv* psecuritypriv=&(rtlpriv->securitypriv);
 	uint8_t		ret=_SUCCESS;
 
-_func_enter_;
+
 
 	bdefaultkey=(wep->KeyIndex & 0x40000000) > 0 ? _FALSE : _TRUE;   //for ???
 	btransmitkey= (wep->KeyIndex & 0x80000000) > 0 ? _TRUE  : _FALSE;	//for ???
@@ -586,7 +586,7 @@ _func_enter_;
 		ret= _FALSE;
 exit:
 
-_func_exit_;
+
 
 	return ret;
 
@@ -596,7 +596,7 @@ uint8_t rtw_set_802_11_remove_wep(struct rtl_priv* rtlpriv, uint32_t	 keyindex){
 
 	uint8_t ret=_SUCCESS;
 
-_func_enter_;
+
 
 	if (keyindex >= 0x80000000 || rtlpriv == NULL){
 
@@ -629,7 +629,7 @@ _func_enter_;
 
 exit:
 
-_func_exit_;
+
 
 	return ret;
 
@@ -644,7 +644,7 @@ uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 	uint8_t	bgrouptkey = _FALSE;//can be remove later
 	uint8_t	ret=_SUCCESS;
 
-_func_enter_;
+
 
 	if (((key->KeyIndex & 0x80000000) == 0) && ((key->KeyIndex & 0x40000000) > 0)){
 
@@ -919,7 +919,7 @@ _func_enter_;
 
 exit:
 
-_func_exit_;
+
 
 	return ret;
 }
@@ -933,7 +933,7 @@ uint8_t rtw_set_802_11_remove_key(struct rtl_priv*	rtlpriv, NDIS_802_11_REMOVE_K
 	uint8_t	keyIndex = (uint8_t)key->KeyIndex & 0x03;
 	uint8_t	ret=_SUCCESS;
 
-_func_enter_;
+
 
 	if ((key->KeyIndex & 0xbffffffc) > 0) {
 		ret=_FAIL;
@@ -971,7 +971,7 @@ _func_enter_;
 
 exit:
 
-_func_exit_;
+
 
 	return _TRUE;
 

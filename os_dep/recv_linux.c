@@ -360,7 +360,7 @@ _recv_indicatepkt_drop:
 
 	 return _FAIL;
 
-_func_exit_;
+
 
 }
 

@@ -721,7 +721,7 @@ exit:
 		rtw_mfree(pwep);
 	}
 
-_func_exit_;
+
 
 	return ret;
 }
@@ -1352,7 +1352,7 @@ static int rtw_wx_get_wap(struct net_device *ndev,
 
 	memset(wrqu->ap_addr.sa_data, 0, ETH_ALEN);
 
-	_func_enter_;
+	
 
 	if  (((check_fwstate(pmlmepriv, _FW_LINKED)) == _TRUE) ||
 	     ((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)) == _TRUE) ||
@@ -2117,7 +2117,7 @@ static int rtw_wx_set_enc(struct net_device *ndev,
 
 exit:
 
-	_func_exit_;
+	
 
 	return ret;
 

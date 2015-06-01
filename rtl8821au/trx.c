@@ -1258,7 +1258,7 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 			 *  2008/01/30 MH we will judge RF RX path now.
 			 * DbgPrint("pDM_Odm->RFPathRxEnable = %x\n", pDM_Odm->RFPathRxEnable);
 			 */
-			if (pDM_Odm->RFPathRxEnable & BIT(i)) {
+			if (rtlpriv->dm.rfpath_rxenable[i]) {
 				rf_rx_num++;
 			}
 			/*

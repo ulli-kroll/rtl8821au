@@ -254,11 +254,7 @@ static void rtl8821au_dm_init_rate_adaptive_mask(struct rtl_priv *rtlpriv)
 	struct rate_adaptive *p_ra = &(rtlpriv->ra);
 	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
 
-	pOdmRA->Type = DM_Type_ByDriver;
-	if (pOdmRA->Type == DM_Type_ByDriver)
-		pDM_Odm->bUseRAMask = _TRUE;
-	else
-		pDM_Odm->bUseRAMask = _FALSE;
+	pDM_Odm->bUseRAMask = _TRUE;
 
 	pOdmRA->RATRState = DM_RATR_STA_INIT;
 	pOdmRA->LdpcThres = 35;

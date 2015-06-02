@@ -1512,7 +1512,6 @@ struct ODM_RF_Calibration_Structure
 
 typedef struct _ODM_RATE_ADAPTIVE
 {
-	u8				Type;				// DM_Type_ByFW/DM_Type_ByDriver
 	u8				LdpcThres;			// if RSSI > LdpcThres => switch from LPDC to BCC
 	BOOLEAN				bUseLdpc;
 	BOOLEAN				bLowerRtsRate;

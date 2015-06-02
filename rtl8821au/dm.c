@@ -1610,17 +1610,18 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 
 static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 {
+	struct dig_t *rtl_dm_dig = &rtlpriv->dm_digtable;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
 	/* 1 1.Determine the minimum RSSI */
 
-	if (rtlpriv->mac80211.link_state < MAC80211_LINKED && (pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0)) {
+	if (rtlpriv->mac80211.link_state < MAC80211_LINKED && (rtlpriv->dm.entry_min_undec_sm_pwdb == 0)) {
 		pdmpriv->MinUndecoratedPWDBForDM = 0;
 		/* ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("Not connected to any \n")); */
 	} else {
-		pdmpriv->MinUndecoratedPWDBForDM = pdmpriv->EntryMinUndecoratedSmoothedPWDB;
+		pdmpriv->MinUndecoratedPWDBForDM = rtlpriv->dm.entry_min_undec_sm_pwdb;
 	}
 
 	/* DBG_8192C("%s=>MinUndecoratedPWDBForDM(%d)\n",__FUNCTION__,pdmpriv->MinUndecoratedPWDBForDM); */
@@ -1739,9 +1740,9 @@ static void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 	}
 
 	if (tmpEntryMinPWDB != 0xff) {	/* If associated entry is found */
-		pdmpriv->EntryMinUndecoratedSmoothedPWDB = tmpEntryMinPWDB;
+		rtlpriv->dm.entry_min_undec_sm_pwdb = tmpEntryMinPWDB;
 	} else {
-		pdmpriv->EntryMinUndecoratedSmoothedPWDB = 0;
+		rtlpriv->dm.entry_min_undec_sm_pwdb = 0;
 	}
 
 	FindMinimumRSSI(rtlpriv);	/* get pdmpriv->MinUndecoratedPWDBForDM */

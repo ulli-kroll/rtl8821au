@@ -877,6 +877,13 @@ struct rate_adaptive {
 	bool is_special_data;
 };
 
+enum rtl_link_state {
+	MAC80211_NOLINK = 0,
+	MAC80211_LINKING = 1,
+	MAC80211_LINKED = 2,
+	MAC80211_LINKED_SCANNING = 3,
+};
+
 struct rtl_mac {
 	u8 mac_addr[ETH_ALEN];
 	u8 mac80211_registered;
@@ -895,8 +902,8 @@ struct rtl_mac {
 	/*Probe Beacon management */
 #if 0	/* Ulli : currently we are using wireless-ext */
 	struct rtl_tid_data tids[MAX_TID_COUNT];
-	enum rtl_link_state link_state;
 #endif
+	enum rtl_link_state link_state;
 	int n_channels;
 	int n_bitrates;
 
@@ -1666,7 +1673,6 @@ struct _rtw_dm {
 //--------- POINTER REFERENCE-----------//
 	u16			*pForcedDataRate;
 //------------CALL BY VALUE-------------//
-	BOOLEAN			bLinked;
 	u8          InterfaceIndex; // Add for 92D  dual MAC: 0--Mac0 1--Mac1
 	BOOLEAN         bIsMPChip;
 	BOOLEAN			bOneEntryOnly;

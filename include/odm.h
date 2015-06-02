@@ -340,7 +340,6 @@ typedef enum _ODM_Common_Info_Definition
 //--------- POINTER REFERENCE-----------//
 
 //------------CALL BY VALUE-------------//
-	ODM_CMNINFO_LINK,
 	ODM_CMNINFO_RSSI_MIN,
 	ODM_CMNINFO_DBG_COMP,				// uint64_t
 	ODM_CMNINFO_DBG_LEVEL,				// uint32_t

@@ -306,10 +306,6 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 	 * This init variable may be changed in run time.
 	 */
 	switch	(CmnInfo) {
-	case	ODM_CMNINFO_LINK:
-		pDM_Odm->bLinked = (BOOLEAN)Value;
-		break;
-
 	case	ODM_CMNINFO_RSSI_MIN:
 		dm_digtable->rssi_val_min = (u8)Value;
 		break;
@@ -457,7 +453,7 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 
 	rtl_set_bbreg(pDM_Odm->rtlpriv, 0x800, BIT10, 0);		/* ADC_mask enable */
 
-	if (!pDM_Odm->bLinked) {
+	if (rtlpriv->mac80211.link_state < MAC80211_LINKED) {
 		return;
 	}
 
@@ -615,7 +611,7 @@ void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
 	if (rtlhal->external_lna_2g)
 		return;
 
-	if (pDM_Odm->bLinked) {
+	if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
 		if (dm_digtable->rssi_val_min > 25)
 			CurCCK_CCAThres = 0xcd;
 		else if ((dm_digtable->rssi_val_min <= 25) && (dm_digtable->rssi_val_min > 10))

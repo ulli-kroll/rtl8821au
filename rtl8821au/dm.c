@@ -1616,7 +1616,7 @@ static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 
 	/* 1 1.Determine the minimum RSSI */
 
-	if ((pDM_Odm->bLinked != _TRUE) && (pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0)) {
+	if (rtlpriv->mac80211.link_state < MAC80211_LINKED && (pdmpriv->EntryMinUndecoratedSmoothedPWDB == 0)) {
 		pdmpriv->MinUndecoratedPWDBForDM = 0;
 		/* ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("Not connected to any \n")); */
 	} else {
@@ -1638,7 +1638,7 @@ static void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 	u8	UL_DL_STATE = 0;			/*  for 8812 use */
 	uint32_t PWDB_rssi[NUM_STA] = { 0 };		/* [0~15]:MACID, [16~31]:PWDB_rssi */
 
-	if (pDM_Odm->bLinked != _TRUE)
+	if (rtlpriv->mac80211.link_state < MAC80211_LINKED)
 		return;
 
 	if (1) {
@@ -1977,16 +1977,10 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 #endif
 	/* ODM */
 	if (hw_init_completed == _TRUE) {
-		uint8_t	bLinked=_FALSE;
-
 		if(rtw_linked_check(rtlpriv))
-			bLinked = _TRUE;
-
-
-		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
-
-
-
+			rtlpriv->mac80211.link_state = MAC80211_LINKED;
+		else
+			rtlpriv->mac80211.link_state = MAC80211_NOLINK;
 
 		/*
 		 * 2011/09/20 MH This is the entry pointer for all team to execute HW out source DM.
@@ -2015,7 +2009,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 		rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
 
 		if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-			if (pDM_Odm->bLinked) {
+			if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
 				if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!mac->act_scanning)) {
 					pDM_Odm->preChannel = *pDM_Odm->pChannel;
 					pDM_Odm->LinkedInterval = 0;
@@ -2078,8 +2072,10 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 
 	/* add by Neil Chen to avoid PSD is processing */
 	DIG_Dynamic_MIN = dm_digtable->dig_min_0;
-	FirstConnect = (pDM_Odm->bLinked) && (dm_digtable->media_connect_0 == FALSE);
-	FirstDisConnect = (!pDM_Odm->bLinked) && (dm_digtable->media_connect_0 == TRUE);
+	FirstConnect = (rtlpriv->mac80211.link_state >= MAC80211_LINKED)  && 
+		       (dm_digtable->media_connect_0 == FALSE);
+	FirstDisConnect = (rtlpriv->mac80211.link_state < MAC80211_LINKED) && 
+			   (dm_digtable->media_connect_0 == TRUE);
 
 
 	/* 1 Boundary Decision */
@@ -2092,7 +2088,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 
 	DIG_MaxOfMin = DM_DIG_MAX_AP;
 
-	if (pDM_Odm->bLinked) {
+	if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
 		{
 			/* 2 Modify DIG upper bound */
 			/* 2013.03.19 Luke: Modified upper bound for Netgear rental house test */
@@ -2184,7 +2180,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 		dm_digtable->rx_gain_min = dm_digtable->rx_gain_max;
 
 	/* 1 Adjust initial gain by false alarm */
-	if (pDM_Odm->bLinked) {
+	if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): DIG AfterLink\n"));
 		if (FirstConnect) {
 			if (dm_digtable->rssi_val_min <= DIG_MaxOfMin)
@@ -2242,7 +2238,8 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 
 	{		/* BT is not using */
 		ODM_Write_DIG(pDM_Odm, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, dm_digtable->CurIGValue); */
-		dm_digtable->media_connect_0 = pDM_Odm->bLinked;
+		dm_digtable->media_connect_0 = 
+			(rtlpriv->mac80211.link_state >= MAC80211_LINKED) ? 1 : 0;
 		dm_digtable->dig_min_0 = DIG_Dynamic_MIN;
 	}
 }

@@ -1732,9 +1732,9 @@ static void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 
 
 	if (tmpEntryMaxPWDB != 0) {	/* If associated entry is found */
-		pdmpriv->EntryMaxUndecoratedSmoothedPWDB = tmpEntryMaxPWDB;
+		rtlpriv->dm.entry_max_undec_sm_pwdb = tmpEntryMaxPWDB;
 	} else {
-		pdmpriv->EntryMaxUndecoratedSmoothedPWDB = 0;
+		rtlpriv->dm.entry_max_undec_sm_pwdb = 0;
 	}
 
 	if (tmpEntryMinPWDB != 0xff) {	/* If associated entry is found */

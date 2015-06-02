@@ -1392,7 +1392,6 @@ struct dm_priv {
 	//* Upper and Lower Signal threshold for Rate Adaptive*/
 	int	UndecoratedSmoothedPWDB;
 	int	UndecoratedSmoothedCCK;
-	int	EntryMaxUndecoratedSmoothedPWDB;
 	int	LastMinUndecoratedPWDBForDM;
 
 	int32_t	UndecoratedSmoothedBeacon;

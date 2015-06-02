@@ -1666,7 +1666,6 @@ struct _rtw_dm {
 //--------- POINTER REFERENCE-----------//
 	u16			*pForcedDataRate;
 //------------CALL BY VALUE-------------//
-	BOOLEAN			bLinkInProcess;
 	BOOLEAN			bLinked;
 	u8          InterfaceIndex; // Add for 92D  dual MAC: 0--Mac0 1--Mac1
 	BOOLEAN         bIsMPChip;

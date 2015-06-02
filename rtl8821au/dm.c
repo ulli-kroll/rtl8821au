@@ -180,7 +180,7 @@ static void rtl8821au_cm_common_info_self_update(struct _rtw_dm *pDM_Odm)
 	u8 tmp;
 
 	rtlphy->cck_high_power = (BOOLEAN) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_RPT_FORMAT_11AC, ODM_BIT_CCK_RPT_FORMAT_11AC);
-	tmp = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_BB_RX_PATH_11AC, 
+	tmp = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_BB_RX_PATH_11AC,
 				 ODM_BIT_BB_RX_PATH_11AC);
 
 	if (tmp & BIT(0))
@@ -1611,9 +1611,6 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 {
 	struct dig_t *rtl_dm_dig = &rtlpriv->dm_digtable;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
 	/* 1 1.Determine the minimum RSSI */
 
@@ -1955,7 +1952,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	struct rtl_mac *mac = rtl_mac(rtlpriv);	
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
 	BOOLEAN		bFwCurrentInPSMode = _FALSE;
@@ -2074,9 +2071,9 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 
 	/* add by Neil Chen to avoid PSD is processing */
 	DIG_Dynamic_MIN = dm_digtable->dig_min_0;
-	FirstConnect = (rtlpriv->mac80211.link_state >= MAC80211_LINKED)  && 
+	FirstConnect = (rtlpriv->mac80211.link_state >= MAC80211_LINKED)  &&
 		       (dm_digtable->media_connect_0 == FALSE);
-	FirstDisConnect = (rtlpriv->mac80211.link_state < MAC80211_LINKED) && 
+	FirstDisConnect = (rtlpriv->mac80211.link_state < MAC80211_LINKED) &&
 			   (dm_digtable->media_connect_0 == TRUE);
 
 
@@ -2240,7 +2237,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 
 	{		/* BT is not using */
 		ODM_Write_DIG(pDM_Odm, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, dm_digtable->CurIGValue); */
-		dm_digtable->media_connect_0 = 
+		dm_digtable->media_connect_0 =
 			(rtlpriv->mac80211.link_state >= MAC80211_LINKED) ? 1 : 0;
 		dm_digtable->dig_min_0 = DIG_Dynamic_MIN;
 	}

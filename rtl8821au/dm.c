@@ -1618,10 +1618,10 @@ static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 	/* 1 1.Determine the minimum RSSI */
 
 	if (rtlpriv->mac80211.link_state < MAC80211_LINKED && (rtlpriv->dm.entry_min_undec_sm_pwdb == 0)) {
-		pdmpriv->MinUndecoratedPWDBForDM = 0;
+		rtl_dm_dig->min_undec_pwdb_for_dm = 0;
 		/* ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("Not connected to any \n")); */
 	} else {
-		pdmpriv->MinUndecoratedPWDBForDM = rtlpriv->dm.entry_min_undec_sm_pwdb;
+		rtl_dm_dig->min_undec_pwdb_for_dm = rtlpriv->dm.entry_min_undec_sm_pwdb;
 	}
 
 	/* DBG_8192C("%s=>MinUndecoratedPWDBForDM(%d)\n",__FUNCTION__,pdmpriv->MinUndecoratedPWDBForDM); */
@@ -1631,6 +1631,7 @@ static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 static void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct dig_t *rtl_dm_dig = &rtlpriv->dm_digtable;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
@@ -1747,7 +1748,7 @@ static void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 
 	FindMinimumRSSI(rtlpriv);	/* get pdmpriv->MinUndecoratedPWDBForDM */
 
-	ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_RSSI_MIN, pdmpriv->MinUndecoratedPWDBForDM);
+	ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_RSSI_MIN, rtl_dm_dig->min_undec_pwdb_for_dm);
 }
 
 static void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm)

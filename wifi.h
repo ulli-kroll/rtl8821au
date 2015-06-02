@@ -1393,7 +1393,6 @@ struct dm_priv {
 	int	UndecoratedSmoothedPWDB;
 	int	UndecoratedSmoothedCCK;
 	int	EntryMaxUndecoratedSmoothedPWDB;
-	int	MinUndecoratedPWDBForDM;
 	int	LastMinUndecoratedPWDBForDM;
 
 	int32_t	UndecoratedSmoothedBeacon;

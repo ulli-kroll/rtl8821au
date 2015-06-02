@@ -1630,7 +1630,6 @@ static void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct dig_t *rtl_dm_dig = &rtlpriv->dm_digtable;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int	i;
 	int	tmpEntryMaxPWDB = 0, tmpEntryMinPWDB = 0xff;
 	u8 	sta_cnt = 0;

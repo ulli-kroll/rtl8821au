@@ -1765,8 +1765,6 @@ struct _rtw_dm {
 	//u8	AntDivCfg;// 0:OFF , 1:ON, 2:by efuse
 	//struct sta_info *RSSI_target;
 
-	BOOLEAN			*pinit_adpt_in_progress;
-
 	//PSD
 	BOOLEAN			bUserAssignLevel;
 	u8			RSSI_BT;			//come from BT

@@ -816,11 +816,6 @@ void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 		return;
 	}
 
-	if (!pDM_Odm->bUseRAMask) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("<---- odm_RefreshRateAdaptiveMask(): driver does not control rate adaptive mask\n"));
-		return;
-	}
-
 	/* printk("==> %s \n",__FUNCTION__); */
 
 	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {

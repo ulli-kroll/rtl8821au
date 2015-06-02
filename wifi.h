@@ -1773,9 +1773,6 @@ struct _rtw_dm {
 	BOOLEAN			bPSDinProcess;
 	BOOLEAN			bPSDactive;
 
-	//for rate adaptive, in fact,  88c/92c fw will handle this
-	u8			bUseRAMask;
-
 	ODM_RATE_ADAPTIVE	RateAdaptive;
 
 	ANT_DETECTED_INFO	AntDetectedInfo; // Antenna detected information for RSSI tool

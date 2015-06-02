@@ -1998,7 +1998,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 		odm_Adaptivity(pDM_Odm, dm_digtable->cur_igvalue);
 
-		odm_CCKPacketDetectionThresh(pDM_Odm);
+		odm_CCKPacketDetectionThresh(rtlpriv);
 
 		if (*(pDM_Odm->pbPowerSaving) == TRUE)
 			return;

@@ -599,9 +599,8 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
  * 3============================================================
  */
 
-void odm_CCKPacketDetectionThresh(struct _rtw_dm *pDM_Odm)
+void odm_CCKPacketDetectionThresh(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 

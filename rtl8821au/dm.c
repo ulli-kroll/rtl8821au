@@ -1561,17 +1561,14 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 
 static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
-
 	uint32_t ret_value;
 	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
 
 	{
 		uint32_t CCKenable;
 		/* read OFDM FA counter */
-		FalseAlmCnt->cnt_ofdm_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
-		FalseAlmCnt->cnt_cck_fail = rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
+		FalseAlmCnt->cnt_ofdm_fail = rtl_get_bbreg(rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
+		FalseAlmCnt->cnt_cck_fail = rtl_get_bbreg(rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
 
 		CCKenable =  rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC, BIT28);
 		if (CCKenable)		/* if (*pDM_Odm->pBandType == ODM_BAND_2_4G) */

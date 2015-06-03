@@ -809,6 +809,7 @@ void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 {
 	u8	i;
 	struct rtl_priv *rtlpriv	=  pDM_Odm->rtlpriv;
+	struct rate_adaptive *p_ra = &(rtlpriv->ra);
 	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
 
 	if (rtlpriv->bDriverStopped) {
@@ -821,12 +822,12 @@ void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
 		struct sta_info *pstat = pDM_Odm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pstat)) {
-			if (pstat->rssi_stat.UndecoratedSmoothedPWDB < pRA->LdpcThres) {
+			if (pstat->rssi_stat.UndecoratedSmoothedPWDB < p_ra->ldpc_thres) {
 				pRA->bUseLdpc = TRUE;
 				pRA->bLowerRtsRate = TRUE;
 				Set_RA_LDPC_8812(pstat, TRUE);
 				/* DbgPrint("RSSI=%d, bUseLdpc = TRUE\n", pHalData->UndecoratedSmoothedPWDB); */
-			} else if (pstat->rssi_stat.UndecoratedSmoothedPWDB > (pRA->LdpcThres-5)) {
+			} else if (pstat->rssi_stat.UndecoratedSmoothedPWDB > (p_ra->ldpc_thres-5)) {
 				pRA->bUseLdpc = FALSE;
 				pRA->bLowerRtsRate = FALSE;
 				Set_RA_LDPC_8812(pstat, FALSE);

@@ -1512,7 +1512,6 @@ struct ODM_RF_Calibration_Structure
 
 typedef struct _ODM_RATE_ADAPTIVE
 {
-	u8				LdpcThres;			// if RSSI > LdpcThres => switch from LPDC to BCC
 	BOOLEAN				bUseLdpc;
 	BOOLEAN				bLowerRtsRate;
 	u8				LowRSSIThresh;		// if RSSI <= LowRSSIThresh	=> RATRState is DM_RATR_STA_LOW

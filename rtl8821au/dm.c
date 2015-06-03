@@ -249,10 +249,7 @@ static void odm_AdaptivityInit(struct rtl_priv *rtlpriv)
 
 static void rtl8821au_dm_init_rate_adaptive_mask(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 	struct rate_adaptive *p_ra = &(rtlpriv->ra);
-	PODM_RATE_ADAPTIVE	pOdmRA = &pDM_Odm->RateAdaptive;
 
 	p_ra->ratr_state = DM_RATR_STA_INIT;
 	p_ra->ldpc_thres = 35;

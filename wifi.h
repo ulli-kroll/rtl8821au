@@ -1512,7 +1512,6 @@ struct ODM_RF_Calibration_Structure
 
 typedef struct _ODM_RATE_ADAPTIVE
 {
-	BOOLEAN				bUseLdpc;
 	BOOLEAN				bLowerRtsRate;
 	u8				LowRSSIThresh;		// if RSSI <= LowRSSIThresh	=> RATRState is DM_RATR_STA_LOW
 	u8				RATRState;			// Current RSSI level, DM_RATR_STA_HIGH/DM_RATR_STA_MIDDLE/DM_RATR_STA_LOW

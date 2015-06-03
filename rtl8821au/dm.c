@@ -256,7 +256,7 @@ static void rtl8821au_dm_init_rate_adaptive_mask(struct rtl_priv *rtlpriv)
 
 	pOdmRA->RATRState = DM_RATR_STA_INIT;
 	p_ra->ldpc_thres = 35;
-	pOdmRA->bUseLdpc = FALSE;
+	p_ra->use_ldpc = FALSE;
 	p_ra->high_rssi_thresh_for_ra = 50;
 	pOdmRA->LowRSSIThresh = 20;
 }

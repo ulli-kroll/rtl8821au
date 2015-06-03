@@ -823,12 +823,12 @@ void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 		struct sta_info *pstat = pDM_Odm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pstat)) {
 			if (pstat->rssi_stat.UndecoratedSmoothedPWDB < p_ra->ldpc_thres) {
-				pRA->bUseLdpc = TRUE;
+				p_ra->use_ldpc = TRUE;
 				pRA->bLowerRtsRate = TRUE;
 				Set_RA_LDPC_8812(pstat, TRUE);
 				/* DbgPrint("RSSI=%d, bUseLdpc = TRUE\n", pHalData->UndecoratedSmoothedPWDB); */
 			} else if (pstat->rssi_stat.UndecoratedSmoothedPWDB > (p_ra->ldpc_thres-5)) {
-				pRA->bUseLdpc = FALSE;
+				p_ra->use_ldpc = FALSE;
 				pRA->bLowerRtsRate = FALSE;
 				Set_RA_LDPC_8812(pstat, FALSE);
 				/* DbgPrint("RSSI=%d, bUseLdpc = FALSE\n", pHalData->UndecoratedSmoothedPWDB); */

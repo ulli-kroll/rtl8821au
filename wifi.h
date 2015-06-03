@@ -1513,7 +1513,6 @@ struct ODM_RF_Calibration_Structure
 typedef struct _ODM_RATE_ADAPTIVE
 {
 	BOOLEAN				bLowerRtsRate;
-	u8				LowRSSIThresh;		// if RSSI <= LowRSSIThresh	=> RATRState is DM_RATR_STA_LOW
 
 } ODM_RATE_ADAPTIVE, *PODM_RATE_ADAPTIVE;
 typedef struct _ODM_Phy_Dbg_Info_

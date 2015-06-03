@@ -258,7 +258,7 @@ static void rtl8821au_dm_init_rate_adaptive_mask(struct rtl_priv *rtlpriv)
 	p_ra->ldpc_thres = 35;
 	p_ra->use_ldpc = FALSE;
 	p_ra->high_rssi_thresh_for_ra = 50;
-	pOdmRA->LowRSSIThresh = 20;
+	p_ra->low2high_rssi_thresh_for_ra40m = 20;
 }
 
 static void rtl8821au_dm_init_edca_turbo(struct rtl_priv *rtlpriv)

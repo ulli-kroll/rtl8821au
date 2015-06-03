@@ -321,10 +321,6 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 		p_ra->high_rssi_thresh_for_ra = (u8)Value;
 		break;
 
-	case	ODM_CMNINFO_RA_THRESHOLD_LOW:
-		pDM_Odm->RateAdaptive.LowRSSIThresh = (u8)Value;
-		break;
-
 	default:
 		/* do nothing */
 		break;
@@ -857,7 +853,7 @@ BOOLEAN ODM_RAStateCheck(struct _rtw_dm *pDM_Odm, int32_t RSSI,
 	PODM_RATE_ADAPTIVE pRA = &pDM_Odm->RateAdaptive;
 	const u8 GoUpGap = 5;
 	u8 HighRSSIThreshForRA = p_ra->high_rssi_thresh_for_ra;
-	u8 LowRSSIThreshForRA = pRA->LowRSSIThresh;
+	u8 LowRSSIThreshForRA = p_ra->low2high_rssi_thresh_for_ra40m;
 	u8 RATRState;
 
 	/*

@@ -321,28 +321,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 	case HW_VAR_SET_RPWM:
 		break;
-	case HW_VAR_USB_MODE:
-		if (*pval == 1)
-			rtl_write_byte(rtlpriv, REG_OPT_CTRL_8812, 0x4);
-		else if (*pval == 2)
-			rtl_write_byte(rtlpriv, REG_OPT_CTRL_8812, 0x8);
-
-		rtl_write_byte(rtlpriv, REG_SDIO_CTRL_8812, 0x2);
-		rtl_write_byte(rtlpriv, REG_ACLK_MON, 0x1);
-		/*
-		 * 2013/01/29 MH Test with chunchu/cheng, in Alpha AMD platform. when
-		 * U2/U3 switch 8812AU will be recognized as another card and then
-		 * OS will treat it as a new card and assign a new GUID. Then SWUSB
-		 * service can not work well. We need to delay the card switch time to U3
-		 * Then OS can unload the previous U2 port card and load new U3 port card later.
-		 * The strange sympton can disappear.
-		 */
-		rtl_write_byte(rtlpriv, REG_CAL_TIMER+1, 0x40);
-		/* rtl_write_byte(rtlpriv, REG_CAL_TIMER+1, 0x3); */
-		rtl_write_byte(rtlpriv, REG_APS_FSMCO+1, 0x80);
-		break;
-
-
 
 	case HW_VAR_MEDIA_STATUS:
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x0c;

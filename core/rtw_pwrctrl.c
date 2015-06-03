@@ -253,7 +253,6 @@ void rtw_set_rpwm(struct rtl_priv *rtlpriv, uint8_t pslv)
 	if (rpwm & PS_ACK)
 		_set_timer(&pwrpriv->pwr_rpwm_timer, LPS_RPWM_WAIT_MS);
 #endif // CONFIG_LPS_RPWM_TIMER
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_SET_RPWM, (uint8_t *)(&rpwm));
 
 	pwrpriv->tog += 0x80;
 

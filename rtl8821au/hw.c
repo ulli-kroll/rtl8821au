@@ -319,9 +319,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		}
 #endif
 		break;
-	case HW_VAR_SET_RPWM:
-		break;
-
 	case HW_VAR_MEDIA_STATUS:
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x0c;
 		val8 |= *pval;

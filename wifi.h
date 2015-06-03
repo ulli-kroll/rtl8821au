@@ -1698,9 +1698,6 @@ struct _rtw_dm {
 	uint32_t			IGI_target;
 	BOOLEAN			ForceEDCCA;
 	u8			AdapEn_RSSI;
-	BOOLEAN			bForceThresh;
-	uint32_t			Force_TH_H;
-	uint32_t			Force_TH_L;
 
 	//2 Define STA info.
 	// _ODM_STA_INFO

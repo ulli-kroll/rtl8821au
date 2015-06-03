@@ -431,17 +431,12 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_Adaptivity() =====> \n"));
 
-	if (pDM_Odm->bForceThresh) {
-		pDM_Odm->TH_H = pDM_Odm->Force_TH_H;
-		pDM_Odm->TH_L = pDM_Odm->Force_TH_L;
+	if (rtlpriv->rtlhal.current_bandtype == BAND_ON_5G) {
+		pDM_Odm->TH_H = 0xf4;	/* 0xf8; */
+		pDM_Odm->TH_L = 0xf7;	/* 0xfb; */
 	} else {
-		if (rtlpriv->rtlhal.current_bandtype == BAND_ON_5G) {
-			pDM_Odm->TH_H = 0xf4;	/* 0xf8; */
-			pDM_Odm->TH_L = 0xf7;	/* 0xfb; */
-		} else {
-			pDM_Odm->TH_H = 0xf4;	/* 0xfa; */
-			pDM_Odm->TH_L = 0xf7;	/* 0xfd; */
-		}
+		pDM_Odm->TH_H = 0xf4;	/* 0xfa; */
+		pDM_Odm->TH_L = 0xf7;	/* 0xfd; */
 	}
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("pDM_Odm->ForceEDCCA=%d, IGI_Base=0x%x, TH_H=0x%x, TH_L=0x%x, AdapEn_RSSI = %d\n",

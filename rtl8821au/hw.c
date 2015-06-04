@@ -1068,7 +1068,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 
 static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, uint32_t data)
 {
-	int32_t	status = true;
+	bool status = true;
 	int32_t	count = 0;
 	uint32_t value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | 
 			 _LLT_OP(_LLT_WRITE_ACCESS);
@@ -1093,16 +1093,14 @@ static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, 
 
 int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy)
 {
-	int32_t	status = _FAIL;
-	uint32_t	i;
-	uint32_t	Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
-	 struct _rtw_hal *pHalData	= GET_HAL_DATA(rtlpriv);
+	bool status;
+	uint32_t i;
+	uint32_t Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
 
 	for (i = 0; i < (txpktbuf_bndy - 1); i++) {
 		status = _rtl8821au_llt_write(rtlpriv, i, i + 1);
-		if (_SUCCESS != status) {
+		if (!status)
 			return status;
-		}
 	}
 
 	/* end of list */
@@ -1118,16 +1116,14 @@ int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 	 */
 	for (i = txpktbuf_bndy; i < Last_Entry_Of_TxPktBuf; i++) {
 		status = _rtl8821au_llt_write(rtlpriv, i, (i + 1));
-		if (_SUCCESS != status) {
+		if (!status)
 			return status;
-		}
 	}
 
 	/*  Let last entry point to the start entry of ring buffer */
 	status = _rtl8821au_llt_write(rtlpriv, Last_Entry_Of_TxPktBuf, txpktbuf_bndy);
-	if (_SUCCESS != status) {
+	if (!status)
 		return status;
-	}
 
-	return status;
+	return true;
 }

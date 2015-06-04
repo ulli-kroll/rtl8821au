@@ -65,7 +65,7 @@ static void _BeaconFunctionEnable(struct rtl_priv *rtlpriv, BOOLEAN Enable,
 	rtl_write_byte(rtlpriv, REG_RD_CTRL+1, 0x6F);
 }
 
-void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
+void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 {
 	uint32_t	value32;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);

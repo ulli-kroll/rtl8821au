@@ -31,7 +31,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.set_bbreg = 	rtl8821au_phy_set_bb_reg,
 	.get_rfreg = 	rtl8821au_phy_query_rf_reg,
 	.set_rfreg = 	rtl8821au_phy_set_rf_reg,
-	
+
 	.init_sw_leds = rtl8821au_init_sw_leds,
 	.deinit_sw_leds = rtl8812au_deinit_sw_leds,
 	.led_control	= rtl8821au_led_control,
@@ -70,7 +70,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.GetHalDefVarHandler = 	rtl8821au_get_hal_def_var,
 	.SetHalDefVarHandler = 	rtl8821au_set_hal_def_var,
 
-	.SetBeaconRelatedRegistersHandler = 	SetBeaconRelatedRegisters8812A,
+	.SetBeaconRelatedRegistersHandler = 	rtl8821au_set_beacon_related_registers,
 
 	/* .Add_RateATid = &rtl8192c_Add_RateATid, */
 
@@ -112,7 +112,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.SetHalODMVarHandler = rtl8812_SetHalODMVar,
 	.hal_notch_filter = hal_notch_filter_8812,
 
-	.SetBeaconRelatedRegistersHandler =	SetBeaconRelatedRegisters8812A,
+	.SetBeaconRelatedRegistersHandler =	rtl8821au_set_beacon_related_registers,
 };
 
 static struct rtl_hal_cfg rtl8821au_hal_cfg = {
@@ -203,15 +203,15 @@ static struct usb_driver rtl8821au_usb_drv = {
 	.probe = rtl8821au_probe,
 	.disconnect = rtw_usb_disconnect,
 	.id_table = rtw_usb_id_tbl,
-#if 0 	
+#if 0
 	.suspend =  rtl8821au_suspend,
 	.resume = rtl8821au_resume,
   	.reset_resume   = rtl8821au_resume,
-#endif  	
+#endif
 #ifdef CONFIG_AUTOSUSPEND
 	.supports_autosuspend = 1,
 #endif
-	
+
 };
 
 module_usb_driver(rtl8821au_usb_drv)

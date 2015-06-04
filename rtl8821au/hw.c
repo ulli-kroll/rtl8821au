@@ -24,7 +24,7 @@ void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 	pHalData->RegCR_1 = rtl_read_byte(rtlpriv, REG_CR+1);
 }
 
-static void StopTxBeacon(struct rtl_priv *rtlpriv)
+static void _rtl8821au_stop_tx_beacon(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
@@ -137,9 +137,7 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 		DBG_871X("%s()-%d mode = %d\n", __FUNCTION__, __LINE__, mode);
 
 		if ((mode == _HW_STATE_STATION_) || (mode == _HW_STATE_NOLINK_)) {
-			{
-				StopTxBeacon(rtlpriv);
-			}
+			_rtl8821au_stop_tx_beacon(rtlpriv);
 
 			rtl_write_byte(rtlpriv, REG_BCN_CTRL, 0x19);		/* disable atim wnd */
 			/* rtl_write_byte(rtlpriv,REG_BCN_CTRL, 0x18); */
@@ -408,7 +406,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				 * pHalData->RegTxPause |= STOP_BCNQ;BIT(6)
 				 * rtl_write_byte(rtlpriv, REG_TXPAUSE, (rtl_read_byte(rtlpriv, REG_TXPAUSE)|BIT(6)));
 				 */
-				StopTxBeacon(rtlpriv);
+				_rtl8821au_stop_tx_beacon(rtlpriv);
 			}
 
 			/* disable related TSF function */

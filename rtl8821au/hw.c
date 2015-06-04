@@ -189,19 +189,15 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 
 static void hw_var_set_bcn_func(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
-	uint32_t bcn_ctrl_reg;
-
-	{
-		bcn_ctrl_reg = REG_BCN_CTRL;
+	if (*((uint8_t *) val))
+		rtl_write_byte(rtlpriv, REG_BCN_CTRL, (EN_BCN_FUNCTION | EN_TXBCN_RPT));
+	else {
+		u8 tmp;
+		
+		tmp = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
+		tmp &= (~(EN_BCN_FUNCTION | EN_TXBCN_RPT));
+		rtl_write_byte(rtlpriv, REG_BCN_CTRL, tmp);
 	}
-
-	if (*((uint8_t *) val)) {
-		rtl_write_byte(rtlpriv, bcn_ctrl_reg, (EN_BCN_FUNCTION | EN_TXBCN_RPT));
-	} else {
-		rtl_write_byte(rtlpriv, bcn_ctrl_reg, rtl_read_byte(rtlpriv, bcn_ctrl_reg)&(~(EN_BCN_FUNCTION | EN_TXBCN_RPT)));
-	}
-
-
 }
 
 static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)

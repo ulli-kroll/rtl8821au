@@ -1068,22 +1068,22 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 
 static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, uint32_t data)
 {
-	int32_t	status = _SUCCESS;
+	int32_t	status = true;
 	int32_t	count = 0;
-	uint32_t	value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | _LLT_OP(_LLT_WRITE_ACCESS);
-	u16	LLTReg = REG_LLT_INIT;
+	uint32_t value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | 
+			 _LLT_OP(_LLT_WRITE_ACCESS);
 
-	rtl_write_dword(rtlpriv, LLTReg, value);
+	rtl_write_dword(rtlpriv, REG_LLT_INIT, value);
 
 	/* polling */
 	do {
-		value = rtl_read_dword(rtlpriv, LLTReg);
+		value = rtl_read_dword(rtlpriv, REG_LLT_INIT);
 		if (_LLT_NO_ACTIVE == _LLT_OP_VALUE(value)) {
 			break;
 		}
 
 		if (count > POLLING_LLT_THRESHOLD) {
-			status = _FAIL;
+			status = false;
 			break;
 		}
 	} while (count++);

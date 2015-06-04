@@ -37,7 +37,7 @@ static void _rtl8821au_stop_tx_beacon(struct rtl_priv *rtlpriv)
 	 /* todo: CheckFwRsvdPageContent(rtlpriv);  // 2010.06.23. Added by tynli. */
 }
 
-static void ResumeTxBeacon(struct rtl_priv *rtlpriv)
+static void  _rtl8821au_resume_tx_beacon(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
@@ -107,7 +107,7 @@ void SetBeaconRelatedRegisters8812A(struct rtl_priv *rtlpriv)
 
 	_BeaconFunctionEnable(rtlpriv, _TRUE, _TRUE);
 
-	ResumeTxBeacon(rtlpriv);
+	_rtl8821au_resume_tx_beacon(rtlpriv);
 
 	/* rtl_write_byte(rtlpriv, 0x422, rtl_read_byte(rtlpriv, 0x422)|BIT(6)); */
 
@@ -142,10 +142,10 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 			rtl_write_byte(rtlpriv, REG_BCN_CTRL, 0x19);		/* disable atim wnd */
 			/* rtl_write_byte(rtlpriv,REG_BCN_CTRL, 0x18); */
 		} else if ((mode == _HW_STATE_ADHOC_) /*|| (mode == _HW_STATE_AP_)*/ ) {
-			ResumeTxBeacon(rtlpriv);
+			_rtl8821au_resume_tx_beacon(rtlpriv);
 			rtl_write_byte(rtlpriv, REG_BCN_CTRL, 0x1a);
 		} else if (mode == _HW_STATE_AP_) {
-			ResumeTxBeacon(rtlpriv);
+			_rtl8821au_resume_tx_beacon(rtlpriv);
 
 			rtl_write_byte(rtlpriv, REG_BCN_CTRL, 0x12);
 
@@ -425,7 +425,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				 * pHalData->RegTxPause  &= (~STOP_BCNQ);
 				 * rtl_write_byte(rtlpriv, REG_TXPAUSE, (rtl_read_byte(rtlpriv, REG_TXPAUSE)&(~BIT(6))));
 				 */
-				ResumeTxBeacon(rtlpriv);
+				_rtl8821au_resume_tx_beacon(rtlpriv);
 			}
 		}
 		break;

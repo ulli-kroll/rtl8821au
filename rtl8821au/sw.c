@@ -111,8 +111,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.GetHalODMVarHandler = rtl8812_GetHalODMVar,
 	.SetHalODMVarHandler = rtl8812_SetHalODMVar,
 	.hal_notch_filter = hal_notch_filter_8812,
-
-	.SetBeaconRelatedRegistersHandler =	rtl8821au_set_beacon_related_registers,
 };
 
 static struct rtl_hal_cfg rtl8821au_hal_cfg = {

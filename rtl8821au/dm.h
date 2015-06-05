@@ -40,8 +40,6 @@ void rtl8812au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 void rtl8821au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 					    u8 **up_a, u8 **down_a,
 					    u8 **up_b, u8 **down_b);
-void DoIQK_8812A(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
-	u8 	ThermalValue, u8 Threshold);
 void DoIQK_8821A(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
 	u8 ThermalValue, u8 Threshold);
 

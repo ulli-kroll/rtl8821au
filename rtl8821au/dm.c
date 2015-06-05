@@ -350,7 +350,7 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
  * ============================================================
  */
 /* From hal/OUTSRC/rtl8812a/HalPhyRf_8812A.c, caution function pointer */
-void DoIQK_8812A(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
+static void rtl8812au_do_iqk(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
 	u8 	ThermalValue, u8 Threshold)
 {
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
@@ -1330,7 +1330,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	}
 	if ((delta_iqk >= IQK_THRESHOLD))	/* Delta temperature is equal to or larger than 20 centigrade (When threshold is 8). */
-		DoIQK_8812A(rtlpriv, delta_iqk, thermal_value, 8);
+		rtl8812au_do_iqk(rtlpriv, delta_iqk, thermal_value, 8);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("<===ODM_TXPowerTrackingCallback_ThermalMeter\n"));
 

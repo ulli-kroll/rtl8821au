@@ -377,7 +377,7 @@ void DoIQK_8812A(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
  *
  *---------------------------------------------------------------------------*/
 
-void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
+static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 	u8 	RFPath, u8 	ChannelMappedIndex)
 {
 	uint32_t 	finalBbSwingIdx[2];
@@ -450,7 +450,7 @@ void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 	}
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit));
 	if (Method == BBSWING) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8812A\n"));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>rtl8812au_dm_pxpwr_track_set_pwr\n"));
 		if (RFPath == RF90_PATH_A) {
 			finalBbSwingIdx[RF90_PATH_A] = (rtldm->ofdm_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_A];
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
@@ -1312,12 +1312,12 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) higher than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
 
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
-					ODM_TxPwrTrackSetPwr8812A(rtlpriv, BBSWING, p, index_for_channel);
+					rtl8812au_dm_pxpwr_track_set_pwr(rtlpriv, BBSWING, p, index_for_channel);
 			} else {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
 
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
-					ODM_TxPwrTrackSetPwr8812A(rtlpriv, BBSWING, p, index_for_channel);
+					rtl8812au_dm_pxpwr_track_set_pwr(rtlpriv, BBSWING, p, index_for_channel);
 			}
 
 			rtldm->swing_idx_cck_base = rtldm->swing_idx_cck;  	/* Record last time Power Tracking result as base. */

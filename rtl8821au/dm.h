@@ -44,8 +44,6 @@ void DoIQK_8812A(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
 	u8 	ThermalValue, u8 Threshold);
 void DoIQK_8821A(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
 	u8 ThermalValue, u8 Threshold);
-void ODM_TxPwrTrackSetPwr8812A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
-	u8 	RFPath, u8 	ChannelMappedIndex);
 void ODM_TxPwrTrackSetPwr8821A(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 	u8 RFPath, u8 ChannelMappedIndex);
 

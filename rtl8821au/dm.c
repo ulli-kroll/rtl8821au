@@ -800,7 +800,7 @@ void rtl8812au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 
 /* From hal/OUTSRC/rtl8821a/HalPhyRf_8821A.c, caution function pointer */
 
-void DoIQK_8821A(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
+static void rtl8821au_do_iqk(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
 	u8 ThermalValue, u8 Threshold)
 {
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
@@ -1519,7 +1519,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	}
 	if ((delta_IQK >= IQK_THRESHOLD))	/* Delta temperature is equal to or larger than 20 centigrade (When threshold is 8). */
-		DoIQK_8821A(rtlpriv, delta_IQK, ThermalValue, 8);
+		rtl8821au_do_iqk(rtlpriv, delta_IQK, ThermalValue, 8);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("<===ODM_TXPowerTrackingCallback_ThermalMeter\n"));
 

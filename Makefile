@@ -48,41 +48,49 @@ _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 
 _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com.o \
-			hal/hal_phy.o
+			hal/hal_phy.o \
+			hal/odm.o
 
-_OUTSRC_FILES := hal/odm.o
-
-########### HAL_RTL8812A_RTL8821A #################################
-
-ifneq ($(CONFIG_RTL8812A)_$(CONFIG_RTL8821A), n_n)
-
-MODULE_NAME = rtl8821au
-
-_HAL_INTFS_FILES +=  hal/HalPwrSeqCmd.o \
+_HAL_INTFS_FILES +=	hal/HalPwrSeqCmd.o \
 			hal/Hal8812PwrSeq.o \
 			hal/Hal8821APwrSeq.o\
-			hal/rtl8812a_xmit.o
-
-_HAL_INTFS_FILES +=	hal/rtl8812a_hal_init.o \
+			hal/rtl8812a_xmit.o \
+			hal/rtl8812a_hal_init.o \
 			hal/rtl8812a_phycfg.o \
 			hal/rtl8812a_dm.o \
 			hal/rtl8812a_cmd.o \
 			hal/rtl8812au_xmit.o \
-			hal/rtl8812au_recv.o
+			hal/rtl8812au_recv.o \
+			hal/odm_RegConfig8821A.o
 
-ifeq ($(CONFIG_RTL8812A), y)
+rtk_core :=		core/rtw_cmd.o \
+			core/rtw_security.o \
+			core/rtw_debug.o \
+			core/rtw_ioctl_set.o \
+			core/rtw_ieee80211.o \
+			core/rtw_mlme.o \
+			core/rtw_mlme_ext.o \
+			core/rtw_wlan_util.o \
+			core/rtw_vht.o \
+			core/rtw_pwrctrl.o \
+			core/rtw_rf.o \
+			core/rtw_recv.o \
+			core/rtw_sta_mgt.o \
+			core/rtw_ap.o \
+			core/rtw_xmit.o	\
+			core/efuse/rtw_efuse.o
+
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
-endif
-
-ifeq ($(CONFIG_RTL8821A), y)
-
-
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
-_OUTSRC_FILES += hal/odm_RegConfig8821A.o
-endif
 
+MODULE_NAME = rtl8821au
 
-endif
+$(MODULE_NAME)-y += 	$(rtk_core) \
+			$(_OS_INTFS_FILES) \
+			$(_HAL_INTFS_FILES) \
+			$(_OUTSRC_FILES) \
+			
+$(MODULE_NAME)-y += $(RTL8821AU_FILES)
 
 ########### END OF PATH  #################################
 ifeq ($(CONFIG_POWER_SAVING), y)
@@ -102,30 +110,6 @@ endif
 
 ifneq ($(KERNELRELEASE),)
 
-rtk_core :=	core/rtw_cmd.o \
-		core/rtw_security.o \
-		core/rtw_debug.o \
-		core/rtw_ioctl_set.o \
-		core/rtw_ieee80211.o \
-		core/rtw_mlme.o \
-		core/rtw_mlme_ext.o \
-		core/rtw_wlan_util.o \
-		core/rtw_vht.o \
-		core/rtw_pwrctrl.o \
-		core/rtw_rf.o \
-		core/rtw_recv.o \
-		core/rtw_sta_mgt.o \
-		core/rtw_ap.o \
-		core/rtw_xmit.o	\
-		core/efuse/rtw_efuse.o
-
-$(MODULE_NAME)-y += $(rtk_core)
-
-$(MODULE_NAME)-y += $(_OS_INTFS_FILES)
-$(MODULE_NAME)-y += $(_HAL_INTFS_FILES)
-$(MODULE_NAME)-y += $(_OUTSRC_FILES)
-
-$(MODULE_NAME)-y += $(RTL8821AU_FILES)
 
 
 obj-$(CONFIG_RTL8812AU_8821AU) := $(MODULE_NAME).o

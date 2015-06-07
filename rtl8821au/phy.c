@@ -7,9 +7,12 @@
 /*
  * 1. BB register R/W API
  */
-
-#undef ODM_RT_TRACE
-#define ODM_RT_TRACE(x, ...)	do {} while (0);
+#undef RT_TRACE
+static inline void RT_TRACE(struct rtl_priv *rtlpriv,
+			    int comp, int level,
+			    const char *fmt, ...)
+{
+}
 
 #define READ_NEXT_PAIR(array_table, v1, v2, i) \
 	do { \
@@ -205,12 +208,12 @@ static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 		if (RX_X>>1 == 0x112 || RX_Y>>1 == 0x3ee) {
 			rtl_set_bbreg(rtlpriv, 0xc10, 0x000003ff, 0x100);
 			rtl_set_bbreg(rtlpriv, 0xc10, 0x03ff0000, 0);
-			/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff)); */
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff);
 		} else {
 			rtl_set_bbreg(rtlpriv, 0xc10, 0x000003ff, RX_X>>1);
 			rtl_set_bbreg(rtlpriv, 0xc10, 0x03ff0000, RX_Y>>1);
-			/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff)); */
-			/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xc10 = %x ====>fill to IQC\n", ODM_Read4Byte(pDM_Odm, 0xc10))); */
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff);
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "0xc10 = %x ====>fill to IQC\n", rtl_read_dword(rtlpriv, 0xc10));
 		}
 		break;
 	case RF90_PATH_B:
@@ -218,12 +221,12 @@ static void _rtl8812au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 			if (RX_X>>1 == 0x112 || RX_Y>>1 == 0x3ee) {
 				rtl_set_bbreg(rtlpriv, 0xe10, 0x000003ff, 0x100);
 				rtl_set_bbreg(rtlpriv, 0xe10, 0x03ff0000, 0);
-				/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff)); */
+				RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff);
 			} else {
 				rtl_set_bbreg(rtlpriv, 0xe10, 0x000003ff, RX_X>>1);
 				rtl_set_bbreg(rtlpriv, 0xe10, 0x03ff0000, RX_Y>>1);
-				/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x====>fill to IQC\n ", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff)); */
-				/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe10 = %x====>fill to IQC\n", ODM_Read4Byte(pDM_Odm, 0xe10))); */
+				RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RX_X = %x;;RX_Y = %x====>fill to IQC\n ", RX_X>>1&0x000003ff, RX_Y>>1&0x000003ff);
+				RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "0xe10 = %x====>fill to IQC\n", rtl_read_dword(rtlpriv, 0xe10));
 			}
 		break;
 	default:
@@ -239,8 +242,8 @@ static void _rtl8821au_iqk_rx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 		rtl_set_bbreg(rtlpriv, 0xc10, 0x000003ff, RX_X>>1);
 		rtl_set_bbreg(rtlpriv, 0xc10, 0x03ff0000, RX_Y>>1);
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1, RX_Y>>1)); */
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xc10 = %x ====>fill to IQC\n", ODM_Read4Byte(pDM_Odm, 0xc10))); */
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RX_X = %x;;RX_Y = %x ====>fill to IQC\n", RX_X>>1, RX_Y>>1);
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "0xc10 = %x ====>fill to IQC\n", rtl_read_dword(rtlpriv, 0xc10));
 		break;
 	default:
 		break;
@@ -258,8 +261,8 @@ static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 		rtl_write_dword(rtlpriv, 0xcc8, 0x20000000);
 		rtl_set_bbreg(rtlpriv, 0xccc, 0x000007ff, TX_Y);
 		rtl_set_bbreg(rtlpriv, 0xcd4, 0x000007ff, TX_X);
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X&0x000007ff, TX_Y&0x000007ff)); */
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", rtl_get_bbreg(pDM_Odm->rtlpriv, 0xcd4, 0x000007ff), rtl_get_bbreg(pDM_Odm->rtlpriv, 0xccc, 0x000007ff))); */
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X&0x000007ff, TX_Y&0x000007ff);
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", rtl_get_bbreg(rtlpriv, 0xcd4, 0x000007ff), rtl_get_bbreg(rtlpriv, 0xccc, 0x000007ff));
 		break;
 	case RF90_PATH_B:
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
@@ -268,8 +271,8 @@ static void _rtl8812au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 		rtl_write_dword(rtlpriv, 0xec8, 0x20000000);
 		rtl_set_bbreg(rtlpriv, 0xecc, 0x000007ff, TX_Y);
 		rtl_set_bbreg(rtlpriv, 0xed4, 0x000007ff, TX_X);
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X&0x000007ff, TX_Y&0x000007ff)); */
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xed4 = %x;;0xecc = %x ====>fill to IQC\n", rtl_get_bbreg(pDM_Odm->rtlpriv, 0xed4, 0x000007ff), rtl_get_bbreg(pDM_Odm->rtlpriv, 0xecc, 0x000007ff))); */
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X&0x000007ff, TX_Y&0x000007ff);
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "0xed4 = %x;;0xecc = %x ====>fill to IQC\n", rtl_get_bbreg(rtlpriv, 0xed4, 0x000007ff), rtl_get_bbreg(rtlpriv, 0xecc, 0x000007ff));
 		break;
 	default:
 		break;
@@ -287,8 +290,8 @@ static void _rtl8821au_iqk_tx_fill_iqc(struct rtl_priv *rtlpriv, enum radio_path
 		rtl_write_dword(rtlpriv, 0xcc8, 0x20000000);
 		rtl_set_bbreg(rtlpriv, 0xccc, 0x000007ff, TX_Y);
 		rtl_set_bbreg(rtlpriv, 0xcd4, 0x000007ff, TX_X);
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X, TX_Y)); */
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", rtl_get_bbreg(pDM_Odm->rtlpriv, 0xcd4, 0x000007ff), rtl_get_bbreg(pDM_Odm->rtlpriv, 0xccc, 0x000007ff))); */
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TX_X = %x;;TX_Y = %x =====> fill to IQC\n", TX_X, TX_Y);
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "0xcd4 = %x;;0xccc = %x ====>fill to IQC\n", rtl_get_bbreg(rtlpriv, 0xcd4, 0x000007ff), rtl_get_bbreg(rtlpriv, 0xccc, 0x000007ff));
 		break;
 	default:
 		break;
@@ -311,7 +314,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	BOOLEAN  	TX1IQKOK = FALSE, RX1IQKOK = FALSE, VDF_enable = FALSE;
 	int 			i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0, dt = 0;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d, ExtPA5G = %d, ExtPA2G = %d\n", rtlpriv->phy.current_chan_bw, rtlhal->external_pa_5g, rtlhal->external_pa_2g));
+	RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "BandWidth = %d, ExtPA5G = %d, ExtPA2G = %d\n", rtlpriv->phy.current_chan_bw, rtlhal->external_pa_5g, rtlhal->external_pa_2g);
 	if (rtlpriv->phy.current_chan_bw == 2) {
 		VDF_enable = TRUE;
 	}
@@ -404,7 +407,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		if (VDF_enable == 1) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TXVDF Start\n"));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TXVDF Start\n"));
 			for (k = 0; k <= 2; k++) {
 				switch (k) {
 				case 0:
@@ -419,10 +422,10 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_write_dword(rtlpriv, 0x984, 0x0046a910);	/* [0]:AGC_en, [15]:idac_K_Mask */
 					break;
 				case 2:
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff));
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff));
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff);
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff);
 					Tx_dt[cal] = (VDF_Y[1]>>20)-(VDF_Y[0]>>20);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Tx_dt = %d\n", Tx_dt[cal]));
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "Tx_dt = %d\n", Tx_dt[cal]);
 					Tx_dt[cal] = ((16*Tx_dt[cal])*10000/15708);
 					Tx_dt[cal] = (Tx_dt[cal] >> 1) + (Tx_dt[cal] & BIT(0));
 					rtl_write_dword(rtlpriv, 0xc80, 0x18008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
@@ -480,7 +483,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					}
 				}
 			}
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TXA_VDF_cal_retry = %d\n", cal_retry));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TXA_VDF_cal_retry = %d\n", cal_retry);
 			TX_X0[cal] = VDF_X[k-1] ;
 			TX_Y0[cal] = VDF_Y[k-1];
 		} else {
@@ -548,7 +551,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							break;
 					}
 				}
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TXA_cal_retry = %d\n", cal_retry));
+				RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TXA_cal_retry = %d\n", cal_retry);
 				if (TX0IQKOK)
 					TX_Average++;
 			}
@@ -563,7 +566,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 		if (VDF_enable == 1) {
 			rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x0);    /*  TX VDF Disable */
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXVDF Start\n"));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXVDF Start\n"));
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -599,10 +602,10 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_write_dword(rtlpriv, 0xc84, 0x08008c38);	/* RX_Tone_idx[9:0], RxK_Mask[29] */
 					break;
 				case 2:
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff));
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff));
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff);
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff);
 					Rx_dt[cal] = (VDF_Y[1]>>20)-(VDF_Y[0]>>20);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Rx_dt = %d\n", Rx_dt[cal]));
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "Rx_dt = %d\n", Rx_dt[cal]);
 					Rx_dt[cal] = ((16*Rx_dt[cal])*10000/13823);
 					Rx_dt[cal] = (Rx_dt[cal] >> 1) + (Rx_dt[cal] & BIT(0));
 					rtl_write_dword(rtlpriv, 0xc80, 0x38008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
@@ -665,7 +668,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					}
 				}
 			}
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXA_VDF_cal_retry = %d\n", cal_retry));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RXA_VDF_cal_retry = %d\n", cal_retry);
 			RX_X0[cal] = VDF_X[k-1] ;
 			RX_Y0[cal] = VDF_Y[k-1];
 			rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x1);    /* TX VDF Enable */
@@ -759,7 +762,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						break;
 					}
 				}
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXA_cal_retry = %d\n", cal_retry));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RXA_cal_retry = %d\n", cal_retry);
 			if (RX0IQKOK)
 				RX_Average++;
 			}
@@ -811,10 +814,10 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_set_bbreg(rtlpriv, 0xee8, BIT(31), 0x0);
 					break;
 				case 2:
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff));
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff));
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff);
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff);
 					Tx_dt[cal] = (VDF_Y[1]>>20)-(VDF_Y[0]>>20);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Tx_dt = %d\n", Tx_dt[cal]));
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "Tx_dt = %d\n", Tx_dt[cal]);
 					Tx_dt[cal] = ((16*Tx_dt[cal])*10000/15708);
 					Tx_dt[cal] = (Tx_dt[cal] >> 1) + (Tx_dt[cal] & BIT(0));
 					rtl_write_dword(rtlpriv, 0xe80, 0x18008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
@@ -874,7 +877,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					}
 				}
 			}
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TXB_VDF_cal_retry = %d\n", cal_retry));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TXB_VDF_cal_retry = %d\n", cal_retry);
 			TX_X1[cal] = VDF_X[k-1] ;
 			TX_Y1[cal] = VDF_Y[k-1];
 		} else {
@@ -944,7 +947,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						}
 					}
 				}
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TXB_cal_retry = %d\n", cal_retry));
+				RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TXB_cal_retry = %d\n", cal_retry);
 				if (TX1IQKOK)
 					TX_Average++;
 			}
@@ -959,7 +962,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 		if (VDF_enable == 1) {
 			rtl_set_bbreg(rtlpriv, 0xee8, BIT(31), 0x0);    /* TX VDF Disable */
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXVDF Start\n"));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXVDF Start\n"));
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
@@ -996,10 +999,10 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					rtl_set_bbreg(rtlpriv, 0xee8, BIT(30), 0x0);
 					break;
 				case 2:
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff));
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff));
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff);
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff);
 					Rx_dt[cal] = (VDF_Y[1]>>20)-(VDF_Y[0]>>20);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Rx_dt = %d\n", Rx_dt[cal]));
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "Rx_dt = %d\n", Rx_dt[cal]);
 					Rx_dt[cal] = ((16*Rx_dt[cal])*10000/13823);
 					Rx_dt[cal] = (Rx_dt[cal] >> 1) + (Rx_dt[cal] & BIT(0));
 					rtl_write_dword(rtlpriv, 0xe80, 0x38008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
@@ -1066,7 +1069,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			}
 
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXB_VDF_cal_retry = %d\n", cal_retry));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RXB_VDF_cal_retry = %d\n", cal_retry);
 			RX_X1[cal] = VDF_X[k-1] ;
 			RX_Y1[cal] = VDF_Y[k-1];
 			rtl_set_bbreg(rtlpriv, 0xee8, BIT(31), 0x1);	/* TX VDF Enable */
@@ -1162,7 +1165,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 				}
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXB_cal_retry = %d\n", cal_retry));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RXB_cal_retry = %d\n", cal_retry);
 			if (RX1IQKOK)
 				RX_Average++;
 			}
@@ -1177,13 +1180,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	switch (Path) {
 	case RF90_PATH_A:
 	    {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("========Path_A =======\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "========Path_A =======\n");
 		if (TX_Average == 0) {
 			_rtl8812au_iqk_tx_fill_iqc(rtlpriv, Path, 0x200, 0x0);
 			break;
 		}
 		for (i = 0; i < TX_Average; i++) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X0[%d] = %x ;; TX_Y0[%d] = %x\n", i, (TX_X0[i])>>21&0x000007ff, i, (TX_Y0[i])>>21&0x000007ff));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TX_X0[%d] = %x ;; TX_Y0[%d] = %x\n", i, (TX_X0[i])>>21&0x000007ff, i, (TX_Y0[i])>>21&0x000007ff);
 		}
 
 		for (i = 0; i < TX_Average; i++) {
@@ -1224,7 +1227,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		for (i = 0; i < RX_Average; i++) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X0[%d] = %x ;; RX_Y0[%d] = %x\n", i, (RX_X0[i])>>21&0x000007ff, i, (RX_Y0[i])>>21&0x000007ff));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RX_X0[%d] = %x ;; RX_Y0[%d] = %x\n", i, (RX_X0[i])>>21&0x000007ff, i, (RX_Y0[i])>>21&0x000007ff);
 		}
 
 		for (i = 0; i < RX_Average; i++) {
@@ -1279,14 +1282,14 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		break;
 	case RF90_PATH_B:
 	    {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("========Path_B =======\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "========Path_B =======\n");
 		if (TX_Average == 0) {
 			_rtl8812au_iqk_tx_fill_iqc(rtlpriv, Path, 0x200, 0x0);
 			break;
 		}
 
 		for (i = 0; i < TX_Average; i++) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X1[%d] = %x ;; TX_Y1[%d] = %x\n", i, (TX_X1[i])>>21&0x000007ff, i, (TX_Y1[i])>>21&0x000007ff));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TX_X1[%d] = %x ;; TX_Y1[%d] = %x\n", i, (TX_X1[i])>>21&0x000007ff, i, (TX_Y1[i])>>21&0x000007ff);
 		}
 
 		for (i = 0; i < TX_Average; i++) {
@@ -1326,7 +1329,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		for (i = 0; i < RX_Average; i++) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X1[%d] = %x ;; RX_Y1[%d] = %x\n", i, (RX_X1[i])>>21&0x000007ff, i, (RX_Y1[i])>>21&0x000007ff));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RX_X1[%d] = %x ;; RX_Y1[%d] = %x\n", i, (RX_X1[i])>>21&0x000007ff, i, (RX_Y1[i])>>21&0x000007ff);
 		}
 
 		for (i = 0; i < RX_Average; i++) {
@@ -1400,7 +1403,7 @@ static void _rtl8812au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
 		macbb_backup[i] = rtl_read_dword(rtlpriv, backup_macbb_reg[i]);
 	}
 
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
@@ -1415,7 +1418,7 @@ static void _rtl8821au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
 		macbb_backup[i] = rtl_read_dword(rtlpriv, backup_macbb_reg[i]);
 	}
 
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
 }
 
 static void _rtl8812au_iqk_backup_rf(struct rtl_priv *rtlpriv,
@@ -1430,7 +1433,7 @@ static void _rtl8812au_iqk_backup_rf(struct rtl_priv *rtlpriv,
 		RFA_backup[i] = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, Backup_RF_REG[i], bMaskDWord);
 		RFB_backup[i] = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_B, Backup_RF_REG[i], bMaskDWord);
 	}
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n")); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_backup_rf(struct rtl_priv *rtlpriv, u32 *rfa_backup,
@@ -1445,7 +1448,7 @@ static void _rtl8821au_iqk_backup_rf(struct rtl_priv *rtlpriv, u32 *rfa_backup,
 		rfa_backup[i] = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, backup_rf_reg[i], bMaskDWord);
 	}
 
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n")); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupRF Success!!!!\n")); */
 }
 
 static void _rtl8812au_iqk_backup_afe(struct rtl_priv *rtlpriv,
@@ -1458,7 +1461,7 @@ static void _rtl8812au_iqk_backup_afe(struct rtl_priv *rtlpriv,
 	for (i = 0; i < AFE_NUM; i++) {
 		AFE_backup[i] = rtl_read_dword(rtlpriv, Backup_AFE_REG[i]);
 	}
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n")); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_backup_afe(struct rtl_priv *rtlpriv, u32 *afe_backup,
@@ -1471,7 +1474,7 @@ static void _rtl8821au_iqk_backup_afe(struct rtl_priv *rtlpriv, u32 *afe_backup,
 	for (i = 0; i < afe_num; i++) {
 		afe_backup[i] = rtl_read_dword(rtlpriv, backup_afe_REG[i]);
 	}
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n")); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BackupAFE Success!!!!\n")); */
 }
 
 static void _rtl8812au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
@@ -1483,7 +1486,7 @@ static void _rtl8812au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 	for (i = 0; i < MACBB_NUM; i++) {
 		rtl_write_dword(rtlpriv, Backup_MACBB_REG[i], MACBB_backup[i]);
 	}
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
@@ -1498,7 +1501,7 @@ static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 	for (i = 0; i < macbb_num; i++) {
 		rtl_write_dword(rtlpriv, backup_macbb_reg[i], macbb_backup[i]);
 	}
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
 }
 
 static void _rtl8812au_iqk_restore_rf(struct rtl_priv *rtlpriv,
@@ -1514,10 +1517,10 @@ static void _rtl8812au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 
 	switch (Path) {
 	case RF90_PATH_A:
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path A Success!!!!\n")); */
+		/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path A Success!!!!\n")); */
 		break;
 	case RF90_PATH_B:
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path B Success!!!!\n")); */
+		/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path B Success!!!!\n")); */
 		break;
 	default:
 		break;
@@ -1537,7 +1540,7 @@ static void _rtl8821au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 
 	switch (Path) {
 	case RF90_PATH_A:
-		/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path A Success!!!!\n")); */
+		/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreRF Path A Success!!!!\n")); */
 		break;
 	default:
 		break;
@@ -1565,7 +1568,7 @@ static void _rtl8812au_iqk_restore_afe(struct rtl_priv *rtlpriv, uint32_t *AFE_b
 	rtl_write_dword(rtlpriv, 0xe88, 0x0);
 	rtl_write_dword(rtlpriv, 0xe8c, 0x3c000000);
 	rtl_write_dword(rtlpriv, 0xeb8, 0x0);
-	/* cODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
+	/* cRT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
 }
 
 static void _rtl8821au_iqk_restore_afe(struct rtl_priv *rtlpriv,
@@ -1584,7 +1587,7 @@ static void _rtl8821au_iqk_restore_afe(struct rtl_priv *rtlpriv,
 	rtl_write_dword(rtlpriv, 0xc88, 0x0);
 	rtl_write_dword(rtlpriv, 0xc8c, 0x3c000000);
 	rtl_write_dword(rtlpriv, 0xcb8, 0x0);
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
 }
 
 
@@ -1683,7 +1686,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BandWidth = %d\n", rtlpriv->phy.current_chan_bw));
+	RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "BandWidth = %d\n", rtlpriv->phy.current_chan_bw);
 	if (rtlpriv->phy.current_chan_bw == 2) {
 		VDF_enable = TRUE;
 	}
@@ -1817,8 +1820,8 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x0);
 						break;
 					case 2:
-						ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff));
-						ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff));
+						RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff);
+						RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff);
 						Tx_dt[cal] = (VDF_Y[1]>>20)-(VDF_Y[0]>>20);
 						Tx_dt[cal] = ((16*Tx_dt[cal])*10000/15708);
 						Tx_dt[cal] = (Tx_dt[cal] >> 1)+(Tx_dt[cal] & BIT(0));
@@ -1940,7 +1943,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			if (VDF_enable == 1) {
 				rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x0);    /* TX VDF Disable */
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXVDF Start\n"));
+				RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXVDF Start\n"));
 				for (k = 0; k <= 2; k++) {
 					/* ====== RX mode TXK (RXK Step 1) ====== */
 					rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -1972,10 +1975,10 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						rtl_set_bbreg(rtlpriv, 0xce8, BIT(30), 0x0);
 						break;
 					case 2:
-						ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff));
-						ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff));
+						RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_Y[1] = %x;;;VDF_Y[0] = %x\n", VDF_Y[1]>>21 & 0x00007ff, VDF_Y[0]>>21 & 0x00007ff);
+						RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "VDF_X[1] = %x;;;VDF_X[0] = %x\n", VDF_X[1]>>21 & 0x00007ff, VDF_X[0]>>21 & 0x00007ff);
 						Rx_dt[cal] = (VDF_Y[1]>>20)-(VDF_Y[0]>>20);
-						ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Rx_dt = %d\n", Rx_dt[cal]));
+						RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "Rx_dt = %d\n", Rx_dt[cal]);
 						Rx_dt[cal] = ((16*Rx_dt[cal])*10000/13823);
 						Rx_dt[cal] = (Rx_dt[cal] >> 1)+(Rx_dt[cal] & BIT(0));
 						rtl_write_dword(rtlpriv, 0xc80, 0x18008c20);	/* TX_Tone_idx[9:0], TxK_Mask[29] TX_Tone = 16 */
@@ -2037,7 +2040,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						TX_X0_RXK[cal] = TX_X0[cal];
 						TX_Y0_RXK[cal] = TX_Y0[cal];
 						TX0IQKOK = TRUE;
-						ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RXK Step 1 fail\n"));
+						RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RXK Step 1 fail\n");
 					}
 
 					/* ====== RX IQK ====== */
@@ -2191,7 +2194,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					TX_X0_RXK[cal] = TX_X0[cal];
 					TX_Y0_RXK[cal] = TX_Y0[cal];
 					TX0IQKOK = TRUE;
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("1"));
+					RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("1"));
 				}
 
 				/* ====== RX IQK ====== */
@@ -2283,13 +2286,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	switch (Path) {
 	case RF90_PATH_A:
 	    {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("========Path_A =======\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "========Path_A =======\n");
 		if (TX_Average == 0)
 			break;
 
 		for (i = 0; i < TX_Average; i++) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, (" TX_X0_RXK[%d] = %x ;; TX_Y0_RXK[%d] = %x\n", i, (TX_X0_RXK[i])>>21&0x000007ff, i, (TX_Y0_RXK[i])>>21&0x000007ff));
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("TX_X0[%d] = %x ;; TX_Y0[%d] = %x\n", i, (TX_X0[i])>>21&0x000007ff, i, (TX_Y0[i])>>21&0x000007ff));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, " TX_X0_RXK[%d] = %x ;; TX_Y0_RXK[%d] = %x\n", i, (TX_X0_RXK[i])>>21&0x000007ff, i, (TX_Y0_RXK[i])>>21&0x000007ff);
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "TX_X0[%d] = %x ;; TX_Y0[%d] = %x\n", i, (TX_X0[i])>>21&0x000007ff, i, (TX_Y0[i])>>21&0x000007ff);
 		}
 
 		for (i = 0; i < TX_Average; i++) {
@@ -2319,7 +2322,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			break;
 
 		for (i = 0; i < RX_Average; i++) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("RX_X0[%d] = %x ;; RX_Y0[%d] = %x\n", i, (RX_X0[i])>>21&0x000007ff, i, (RX_Y0[i])>>21&0x000007ff));
+			RT_TRACE(rtlpriv, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, "RX_X0[%d] = %x ;; RX_Y0[%d] = %x\n", i, (RX_X0[i])>>21&0x000007ff, i, (RX_Y0[i])>>21&0x000007ff);
 		}
 
 		for (i = 0; i < RX_Average; i++) {
@@ -3327,7 +3330,7 @@ static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 	u8 **Array		= RTL8812AU_TXPWR_LMT;
 
 #if 0
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_TXPWR_LMT\n"));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_TXPWR_LMT\n"));
 #endif
 	for (i = 0; i < ArrayLen; i += 7) {
 		u8 *regulation = Array[i];
@@ -3362,7 +3365,7 @@ static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 	u8 **Array		= RTL8821AU_TXPWR_LMT;
 
 #if 0
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_TXPWR_LMT\n"));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_TXPWR_LMT\n"));
 #endif
 	for (i = 0; i < ArrayLen; i += 7) {
 		u8 *regulation = Array[i];
@@ -3447,7 +3450,7 @@ void _rtl8821au_phy_config_mac_with_headerfile(struct rtl_priv *rtlpriv)
 	hex += platform << 16;
 	hex += 0xFF000000;
 #if 0
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_MAC_REG, hex = 0x%X\n", hex));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_MAC_REG, hex = 0x%X\n", hex));
 #endif
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];
@@ -3513,7 +3516,7 @@ static void _rtl8812au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr
 
 	_rtl8821au_config_rf_reg(rtlpriv, Addr, Data, RF90_PATH_A, Addr|maskforPhySet);
 
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data)); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data)); */
 }
 
 static void _rtl8812au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr,
@@ -3524,7 +3527,7 @@ static void _rtl8812au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr
 
 	_rtl8821au_config_rf_reg(rtlpriv, Addr, Data, RF90_PATH_B, Addr|maskforPhySet);
 
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioB] %08X %08X\n", Addr, Data)); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioB] %08X %08X\n", Addr, Data)); */
 }
 
 
@@ -3569,7 +3572,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 		hex += _interface << 8;
 		hex += platform << 16;
 		hex += 0xFF000000;
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_RadioA, hex = 0x%X\n", hex));
+		RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_RadioA, hex = 0x%X\n", hex);
 
 		for (i = 0; i < radioa_arraylen_a; i += 2) {
 			uint32_t v1 = radioa_array_table_a[i];
@@ -3612,7 +3615,7 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 		hex += _interface << 8;
 		hex += platform << 16;
 		hex += 0xFF000000;
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_RadioB, hex = 0x%X\n", hex));
+		RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8812A_RadioB, hex = 0x%X\n", hex);
 
 		for (i = 0; i < radioa_arraylen_b; i += 2) {
 			uint32_t v1 = radioa_array_table_b[i];
@@ -3701,7 +3704,7 @@ static void _rtl8821au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr
 
 	odm_ConfigRFReg_8821A(rtlpriv, Addr, Data, RF90_PATH_A, Addr|maskforPhySet);
 
-	/* ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data)); */
+	/* RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data)); */
 }
 
 
@@ -3727,7 +3730,7 @@ void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radi
 	hex += _interface << 8;
 	hex += platform << 16;
 	hex += 0xFF000000;
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_RadioA, hex = 0x%X\n", hex));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_RadioA, hex = 0x%X\n", hex);
 
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];
@@ -4971,7 +4974,7 @@ void ODM_ReadAndConfig_MP_8821A_AGC_TAB(struct rtl_priv *rtlpriv)
 	hex += platform << 16;
 	hex += 0xFF000000;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_AGC_TAB, hex = 0x%X\n", hex));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_AGC_TAB, hex = 0x%X\n", hex);
 
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];
@@ -5040,7 +5043,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
 	hex += _interface << 8;
 	hex += platform << 16;
 	hex += 0xFF000000;
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_PHY_REG, hex = 0x%X\n", hex));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_PHY_REG, hex = 0x%X\n", hex);
 
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];

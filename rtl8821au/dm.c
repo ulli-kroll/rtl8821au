@@ -1613,9 +1613,8 @@ static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 	/* ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM)); */
 }
 
-static void rtl8821au_dm_check_rssi_monitor(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct dig_t *rtl_dm_dig = &rtlpriv->dm_digtable;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	int	i;
@@ -1641,7 +1640,10 @@ static void rtl8821au_dm_check_rssi_monitor(struct _rtw_dm *pDM_Odm)
 	/* if (check_fwstate(&rtlpriv->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE) */
 	{
 #if 1
+		/* ULLI : This will go away in rtlwifi-lib */
 		struct sta_info *psta;
+		struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+		struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
 		for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
 			psta = pDM_Odm->pODM_StaInfo[i];
@@ -1963,7 +1965,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 		rtl8821ae_dm_false_alarm_counter_statistics(rtlpriv);
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->rssi_val_min));
 
-		rtl8821au_dm_check_rssi_monitor(pDM_Odm);
+		rtl8821au_dm_check_rssi_monitor(rtlpriv);
 
 		rtl8821au_dm_dig(rtlpriv);
 

@@ -29,7 +29,12 @@
 #include <../rtl8821au/dm.h>
 #include <../wifi.h>
 
-
+#undef RT_TRACE
+static inline void RT_TRACE(struct rtl_priv *rtlpriv,
+			    int comp, int level,
+			    const char *fmt, ...)
+{
+}
 
 const u16 dB_Invert_Table[8][12] = {
 	{	1,		1,		1,		2,		2,		2,		2,		3,		3,		3,		4,		4},
@@ -194,7 +199,7 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 {
 	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->rtlpriv);
 
-	/* ODM_RT_TRACE(pDM_Odm,); */
+	/* RT_TRACE(rtlpriv,); */
 
 	/*
 	 * This section is used for init value
@@ -429,7 +434,7 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	uint32_t value32;
 	BOOLEAN EDCCA_State;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_Adaptivity() =====> \n"));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_Adaptivity() =====> \n");
 
 	if (rtlpriv->rtlhal.current_bandtype == BAND_ON_5G) {
 		pDM_Odm->TH_H = 0xf4;	/* 0xf8; */
@@ -439,8 +444,8 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 		pDM_Odm->TH_L = 0xf7;	/* 0xfd; */
 	}
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("pDM_Odm->ForceEDCCA=%d, IGI_Base=0x%x, TH_H=0x%x, TH_L=0x%x, AdapEn_RSSI = %d\n",
-	pDM_Odm->ForceEDCCA, pDM_Odm->IGI_Base, pDM_Odm->TH_H, pDM_Odm->TH_L, pDM_Odm->AdapEn_RSSI));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "pDM_Odm->ForceEDCCA=%d, IGI_Base=0x%x, TH_H=0x%x, TH_L=0x%x, AdapEn_RSSI = %d\n",
+	pDM_Odm->ForceEDCCA, pDM_Odm->IGI_Base, pDM_Odm->TH_H, pDM_Odm->TH_L, pDM_Odm->AdapEn_RSSI);
 
 	rtl_set_bbreg(pDM_Odm->rtlpriv, 0x800, BIT10, 0);		/* ADC_mask enable */
 
@@ -482,8 +487,8 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	else
 		TH_L = pDM_Odm->TH_L;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("BandWidth=%s, IGI_target=0x%x, EDCCA_State=%d\n",
-		(rtlpriv->phy.current_chan_bw == ODM_BW80M) ? "80M" : ((rtlpriv->phy.current_chan_bw == ODM_BW40M) ? "40M" : "20M"), IGI_target, EDCCA_State));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "BandWidth=%s, IGI_target=0x%x, EDCCA_State=%d\n",
+		(rtlpriv->phy.current_chan_bw == ODM_BW80M) ? "80M" : ((rtlpriv->phy.current_chan_bw == ODM_BW40M) ? "40M" : "20M"), IGI_target, EDCCA_State);
 
 	if (EDCCA_State == 1) {
 		if (IGI < IGI_target) {
@@ -505,8 +510,8 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 		TH_H_dmc = 0x7f;
 		TH_L_dmc = 0x7f;
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("IGI=0x%x, TH_H_dmc=0x%x, TH_L_dmc=0x%x\n",
-		IGI, TH_H_dmc, TH_L_dmc));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "IGI=0x%x, TH_H_dmc=0x%x, TH_L_dmc=0x%x\n",
+		IGI, TH_H_dmc, TH_L_dmc);
 
 	rtl_set_bbreg(pDM_Odm->rtlpriv, rFPGA0_XB_LSSIReadBack, 0xFFFF, (TH_H_dmc<<8) | TH_L_dmc);
 }
@@ -518,23 +523,23 @@ void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
 	if (pDM_Odm->StopDIG) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("Stop Writing IGI\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "Stop Writing IGI\n");
 		return;
 	}
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("ODM_REG(IGI_A,pDM_Odm)=0x%x, ODM_BIT(IGI,pDM_Odm)=0x%x \n",
-		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm)));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "ODM_REG(IGI_A,pDM_Odm)=0x%x, ODM_BIT(IGI,pDM_Odm)=0x%x \n",
+		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
 
 	if (pDM_DigTable->cur_igvalue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
 		rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
 		if (pDM_Odm->rtlpriv->phy.rf_type != ODM_1T1R)
 			rtl_set_bbreg(pDM_Odm->rtlpriv, ODM_REG_IGI_B_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
 
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("CurrentIGI(0x%02x). \n", CurrentIGI));
+		RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "CurrentIGI(0x%02x). \n", CurrentIGI);
 		/* pDM_DigTable->PreIGValue = pDM_DigTable->CurIGValue; */
 		pDM_DigTable->cur_igvalue = CurrentIGI;
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("ODM_Write_DIG():CurrentIGI=0x%x \n", CurrentIGI));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "ODM_Write_DIG():CurrentIGI=0x%x \n", CurrentIGI);
 
 }
 
@@ -552,11 +557,11 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 
 	CurrentIGI = CurrentIGI+RSSI_OFFSET_DIG;
 
-	/* ODM_RT_TRACE(pDM_Odm,ODM_COMP_DIG_LPS, ODM_DBG_LOUD, ("odm_DIG()==>\n")); */
+	/* RT_TRACE(rtlpriv,ODM_COMP_DIG_LPS, ODM_DBG_LOUD, ("odm_DIG()==>\n")); */
 
 	/* Using FW PS mode to make IGI */
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("---Neil---odm_DIG is in LPS mode\n"));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "---Neil---odm_DIG is in LPS mode\n");
 	/* Adjust by  FA in LPS MODE */
 	if (pFalseAlmCnt->cnt_all > DM_DIG_FA_TH2_LPS)
 		CurrentIGI = CurrentIGI+2;
@@ -762,7 +767,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	}
 
 	/* printk("%s ==> rssi_level:0x%02x, WirelessMode:0x%02x, rate_bitmap:0x%08x \n",__FUNCTION__,rssi_level,WirelessMode,rate_bitmap); */
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, (" ==> rssi_level:0x%02x, WirelessMode:0x%02x, rate_bitmap:0x%08x \n", rssi_level, WirelessMode, rate_bitmap));
+	RT_TRACE(rtlpriv, ODM_COMP_RA_MASK, ODM_DBG_LOUD, " ==> rssi_level:0x%02x, WirelessMode:0x%02x, rate_bitmap:0x%08x \n", rssi_level, WirelessMode, rate_bitmap);
 
 	return (ra_mask&rate_bitmap);
 
@@ -804,7 +809,7 @@ void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
 
 	if (rtlpriv->bDriverStopped) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_TRACE, ("<---- odm_RefreshRateAdaptiveMask(): driver is going to unload\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_RA_MASK, ODM_DBG_TRACE, "<---- odm_RefreshRateAdaptiveMask(): driver is going to unload\n");
 		return;
 	}
 
@@ -826,7 +831,7 @@ void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 			}
 
 			if (TRUE == ODM_RAStateCheck(pDM_Odm, pstat->rssi_stat.UndecoratedSmoothedPWDB, FALSE , &pstat->rssi_level)) {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level));
+				RT_TRACE(rtlpriv, ODM_COMP_RA_MASK, ODM_DBG_LOUD, "RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level);
 				/* printk("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level); */
 				rtw_hal_update_ra_mask(pstat, pstat->rssi_level);
 			}
@@ -883,7 +888,7 @@ BOOLEAN ODM_RAStateCheck(struct _rtw_dm *pDM_Odm, int32_t RSSI,
 	/* printk("==>%s,RATRState:0x%02x ,RSSI:%d \n",__FUNCTION__,RATRState,RSSI); */
 
 	if (*pRATRState != RATRState || bForceUpdate) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("RSSI Level %d -> %d\n", *pRATRState, RATRState));
+		RT_TRACE(rtlpriv, ODM_COMP_RA_MASK, ODM_DBG_LOUD, "RSSI Level %d -> %d\n", *pRATRState, RATRState);
 		*pRATRState = RATRState;
 		return TRUE;
 	}

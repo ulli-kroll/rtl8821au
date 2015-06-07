@@ -6,6 +6,13 @@
 #undef ODM_RT_TRACE
 #define ODM_RT_TRACE(x, ...)	do {} while (0);
 
+#undef RT_TRACE
+static inline void RT_TRACE(struct rtl_priv *rtlpriv,
+			    int comp, int level,
+			    const char *fmt, ...)
+{
+}
+
 static void rtl8821au_dm_dig(struct rtl_priv *rtlpriuv);
 
 static uint32_t edca_setting_UL[HT_IOT_PEER_MAX] =

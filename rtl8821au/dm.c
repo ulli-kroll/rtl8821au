@@ -2,10 +2,6 @@
 #include "phy.h"
 #include <odm_precomp.h>
 
-
-#undef ODM_RT_TRACE
-#define ODM_RT_TRACE(x, ...)	do {} while (0);
-
 #undef RT_TRACE
 static inline void RT_TRACE(struct rtl_priv *rtlpriv,
 			    int comp, int level,
@@ -271,10 +267,10 @@ static void rtl8821au_dm_init_edca_turbo(struct rtl_priv *rtlpriv)
 	rtlpriv->dm.is_cur_rdlstate = false;
 	rtlpriv->dm.is_any_nonbepkts = false;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial VO PARAM: 0x%x\n", rtl_read_dword(pDM_Odm->rtlpriv, ODM_EDCA_VO_PARAM)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial VI PARAM: 0x%x\n", rtl_read_dword(pDM_Odm->rtlpriv, ODM_EDCA_VI_PARAM)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial BE PARAM: 0x%x\n", rtl_read_dword(pDM_Odm->rtlpriv, ODM_EDCA_BE_PARAM)));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("Orginial BK PARAM: 0x%x\n", rtl_read_dword(pDM_Odm->rtlpriv, ODM_EDCA_BK_PARAM)));
+	RT_TRACE(rtlpriv, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, "Orginial VO PARAM: 0x%x\n", rtl_read_dword(rtlpriv, ODM_EDCA_VO_PARAM));
+	RT_TRACE(rtlpriv, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, "Orginial VI PARAM: 0x%x\n", rtl_read_dword(rtlpriv, ODM_EDCA_VI_PARAM));
+	RT_TRACE(rtlpriv, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, "Orginial BE PARAM: 0x%x\n", rtl_read_dword(rtlpriv, ODM_EDCA_BE_PARAM));
+	RT_TRACE(rtlpriv, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, "Orginial BK PARAM: 0x%x\n", rtl_read_dword(rtlpriv, ODM_EDCA_BK_PARAM));
 
 
 }
@@ -455,23 +451,23 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 		else
 			PwrTrackingLimit = 24;
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit));
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit);
 	if (Method == BBSWING) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>rtl8812au_dm_pxpwr_track_set_pwr\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "===>rtl8812au_dm_pxpwr_track_set_pwr\n");
 		if (RFPath == RF90_PATH_A) {
 			finalBbSwingIdx[RF90_PATH_A] = (rtldm->ofdm_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_A];
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
-				rtldm->OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
+				rtldm->ofdm_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]);
 			rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		} else {
 			finalBbSwingIdx[RF90_PATH_B] = (rtldm->ofdm_index[RF90_PATH_B] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_B];
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_B]=%d\n",
-				rtldm->OFDM_index[RF90_PATH_B], finalBbSwingIdx[RF90_PATH_B]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_B]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_B]=%d\n",
+				rtldm->ofdm_index[RF90_PATH_B], finalBbSwingIdx[RF90_PATH_B]);
 			rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_B]]);
 		}
 	} else if (Method == MIX_MODE) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
-				rtldm->DefaultOfdmIndex, rtldm->absolute_ofdm_swing_idx[RFPath], RFPath));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
+				rtldm->default_ofdm_index, rtldm->absolute_ofdm_swing_idx[RFPath], RFPath);
 
 			Final_OFDM_Swing_Index = rtldm->default_ofdm_index + rtldm->absolute_ofdm_swing_idx[RFPath];
 
@@ -487,7 +483,7 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 					/* et TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
+					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->remnant_ofdm_swing_idx[RFPath]);
 				} else if (Final_OFDM_Swing_Index < 0) {
 					rtldm->remnant_cck_idx = Final_OFDM_Swing_Index;            /* CCK Follow the same compensate value as Path A */
 					rtldm->remnant_ofdm_swing_idx[RFPath] = Final_OFDM_Swing_Index;
@@ -499,10 +495,10 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 					/* Set TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel);*/
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
+					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->remnant_ofdm_swing_idx[RFPath]);
 				} else 	{
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[Final_OFDM_Swing_Index]);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index));
+					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index);
 
 					if (rtldm->modify_txagc_flag_path_a) { /* If TxAGC has changed, reset TxAGC again */
 						rtldm->remnant_cck_idx = 0;
@@ -513,7 +509,7 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 						PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 						rtldm->modify_txagc_flag_path_a = FALSE;
-						ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
+						RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n");
 					}
 				}
 			}
@@ -527,7 +523,7 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 					rtldm->modify_txagc_flag_path_b = TRUE;
 
 					/* Set TxAGC Page E{}; */
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
+					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_B Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->remnant_ofdm_swing_idx[RFPath]);
 				} else if (Final_OFDM_Swing_Index < 0) {
 					rtldm->remnant_ofdm_swing_idx[RFPath] = Final_OFDM_Swing_Index;
 
@@ -536,10 +532,10 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 					rtldm->modify_txagc_flag_path_b = TRUE;
 
 					/* Set TxAGC Page E{}; */
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
+					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_B Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->remnant_ofdm_swing_idx[RFPath]);
 				} else {
 					rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[Final_OFDM_Swing_Index]);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index));
+					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_B Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index);
 					if (rtldm->modify_txagc_flag_path_b) {			/* If TxAGC has changed, reset TxAGC again */
 						rtldm->remnant_cck_idx = 0;
 						rtldm->remnant_ofdm_swing_idx[RFPath] = 0;
@@ -547,7 +543,7 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 						/* Set TxAGC Page E{}; */
 
 						rtldm->modify_txagc_flag_path_b = FALSE;
-						ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_B pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
+						RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_B pDM_Odm->Modify_TxAGC_Flag = FALSE \n");
 					}
 				}
 			}
@@ -829,7 +825,7 @@ static void rtl8821au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 	u8 i = 0;
 	uint32_t finalBbSwingIdx[1];
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TxPwrTrackSetPwr8821A\n"));
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "===>ODM_TxPwrTrackSetPwr8821A\n");
 	if (TxRate != 0xFF) {
 		/* 2 CCK */
 		if ((TxRate >= MGN_1M) && (TxRate <= MGN_11M))
@@ -862,17 +858,17 @@ static void rtl8821au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 		else
 			PwrTrackingLimit = 24;
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit));
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "TxRate=0x%x, PwrTrackingLimit=%d\n", TxRate, PwrTrackingLimit);
 	if (Method == BBSWING) {
 		if (RFPath == RF90_PATH_A) {
 			finalBbSwingIdx[RF90_PATH_A] = (rtldm->ofdm_index[RF90_PATH_A] > PwrTrackingLimit) ? PwrTrackingLimit : rtldm->ofdm_index[RF90_PATH_A];
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
-				rtldm->OFDM_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "pDM_Odm->RFCalibrateInfo.OFDM_index[RF90_PATH_A]=%d, pDM_Odm->RealBbSwingIdx[RF90_PATH_A]=%d\n",
+				rtldm->ofdm_index[RF90_PATH_A], finalBbSwingIdx[RF90_PATH_A]);
 			rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[finalBbSwingIdx[RF90_PATH_A]]);
 		}
 	} else if (Method == MIX_MODE) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
-				rtldm->DefaultOfdmIndex, rtldm->Aboslute_OFDMSwingIdx[RFPath], RFPath));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
+				rtldm->default_ofdm_index, rtldm->absolute_ofdm_swing_idx[RFPath], RFPath);
 
 			Final_OFDM_Swing_Index = rtldm->default_ofdm_index + rtldm->absolute_ofdm_swing_idx[RFPath];
 
@@ -889,7 +885,7 @@ static void rtl8821au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 					/* Set TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->Remnant_OFDMSwingIdx[RFPath]));
+					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->remnant_ofdm_swing_idx[RFPath]);
 				} else if (Final_OFDM_Swing_Index < 0) {
 					rtldm->remnant_cck_idx = Final_OFDM_Swing_Index;            /* CCK Follow the same compensate value as Path A */
 					rtldm->remnant_ofdm_swing_idx[RFPath] = Final_OFDM_Swing_Index;
@@ -901,10 +897,10 @@ static void rtl8821au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 					/* Set TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 					PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->Remnant_OFDMSwingIdx[RFPath]));
+					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->remnant_ofdm_swing_idx[RFPath]);
 				} else {
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[Final_OFDM_Swing_Index]);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index));
+					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A Compensate with BBSwing , Final_OFDM_Swing_Index = %d \n", Final_OFDM_Swing_Index);
 					if (rtldm->modify_txagc_flag_path_a) {
 						/* If TxAGC has changed, reset TxAGC again */
 						rtldm->remnant_cck_idx = 0;
@@ -915,7 +911,7 @@ static void rtl8821au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 						PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
 						rtldm->modify_txagc_flag_path_a = FALSE;
-						ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n"));
+						RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n");
 					}
 				}
 			}
@@ -1155,10 +1151,10 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 #endif
 	rtldm->txpower_trackinginit = TRUE;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
-		("===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n",
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
+		"===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n",
 		rtldm->swing_idx_cck_base, rtldm->swing_idx_ofdm_base[RF90_PATH_A],
-		rtldm->default_ofdm_index));
+		rtldm->default_ofdm_index);
 
 	thermal_value = (u8)rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
 	if (!rtldm->txpower_track_control
@@ -1184,7 +1180,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	if (thermal_value_avg_count) {               /* Calculate Average ThermalValue after average enough times */
 		thermal_value = (u8)(thermal_value_avg / thermal_value_avg_count);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", ThermalValue, efuse->eeprom_thermalmeter));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", thermal_value, efuse->eeprom_thermalmeter);
 	}
 
 	/* 4 5. Calculate delta, delta_LCK, delta_IQK. */
@@ -1194,12 +1190,12 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	delta_lck = (thermal_value > rtldm->thermalvalue_lck)?(thermal_value - rtldm->thermalvalue_lck):(rtldm->thermalvalue_lck - thermal_value);
 	delta_iqk = (thermal_value > rtldm->thermalvalue_iqk)?(thermal_value - rtldm->thermalvalue_iqk):(rtldm->thermalvalue_iqk - thermal_value);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("(delta, delta_LCK, delta_IQK) = (%d, %d, %d)\n", delta, delta_LCK, delta_IQK));
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "(delta, delta_LCK, delta_IQK) = (%d, %d, %d)\n", delta, delta_lck, delta_iqk);
 
 	/* 4 6. If necessary, do LCK. */
 
 	if ((delta_lck >= IQK_THRESHOLD)) {	/* Delta temperature is equal to or larger than 20 centigrade. */
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("delta_LCK(%d) >= Threshold_IQK(%d)\n", delta_LCK, IQK_THRESHOLD));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "delta_LCK(%d) >= Threshold_IQK(%d)\n", delta_lck, IQK_THRESHOLD);
 		rtldm->thermalvalue_lck = thermal_value;
 		rtl8812au_phy_lc_calibrate(rtlpriv);
 	}
@@ -1215,51 +1211,51 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		/* 4 7.1 The Final Power Index = BaseIndex + PowerIndexOffset */
 
 		if (thermal_value > efuse->eeprom_thermalmeter) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TUP_A[%d] = %d\n", delta, up_a[delta]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "deltaSwingTableIdx_TUP_A[%d] = %d\n", delta, up_a[delta]);
 			rtldm->delta_power_index_last[RF90_PATH_A] = rtldm->delta_power_index[RF90_PATH_A];
 			rtldm->delta_power_index[RF90_PATH_A] = up_a[delta];
 
 			rtldm->absolute_ofdm_swing_idx[RF90_PATH_A] =  up_a[delta];        /* Record delta swing for mix mode power tracking */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is higher and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_A]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Temp is higher and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_A]);
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TUP_B[%d] = %d\n", delta, up_b[delta]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "deltaSwingTableIdx_TUP_B[%d] = %d\n", delta, up_b[delta]);
 			rtldm->delta_power_index_last[RF90_PATH_B] = rtldm->delta_power_index[RF90_PATH_B];
 			rtldm->delta_power_index[RF90_PATH_B] = up_b[delta];
 
 			rtldm->absolute_ofdm_swing_idx[RF90_PATH_B] =  up_a[delta];       /* Record delta swing for mix mode power tracking */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is higher and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_B]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Temp is higher and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_B]);
 
 		} else {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TDOWN_A[%d] = %d\n", delta, down_a[delta]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "deltaSwingTableIdx_TDOWN_A[%d] = %d\n", delta, down_a[delta]);
 
 			rtldm->delta_power_index_last[RF90_PATH_A] = rtldm->delta_power_index[RF90_PATH_A];
 			rtldm->delta_power_index[RF90_PATH_A] = -1 * down_a[delta];
 
 			rtldm->absolute_ofdm_swing_idx[RF90_PATH_A] =  -1 * down_a[delta];        /* Record delta swing for mix mode power tracking */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is lower and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_A]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Temp is lower and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_A]);
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TDOWN_B[%d] = %d\n", delta, down_b[delta]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "deltaSwingTableIdx_TDOWN_B[%d] = %d\n", delta, down_b[delta]);
 
 			rtldm->delta_power_index_last[RF90_PATH_B] = rtldm->delta_power_index[RF90_PATH_B];
 			rtldm->delta_power_index[RF90_PATH_B] = -1 * down_b[delta];
 
 			rtldm->absolute_ofdm_swing_idx[RF90_PATH_B] =  -1 * down_b[delta];       /* Record delta swing for mix mode power tracking */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is lower and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_B]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Temp is lower and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_B] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_B]);
 		}
 
 	    for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("\n\n================================ [Path-%c] Calculating PowerIndexOffset ================================\n", (p == RF90_PATH_A ? 'A' : 'B')));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "\n\n================================ [Path-%c] Calculating PowerIndexOffset ================================\n", (p == RF90_PATH_A ? 'A' : 'B'));
 			if (rtldm->delta_power_index[p] == rtldm->delta_power_index_last[p])         /* If Thermal value changes but lookup table value still the same */
 				rtldm->power_index_offset[p] = 0;
 			else
 				rtldm->power_index_offset[p] = rtldm->delta_power_index[p] - rtldm->delta_power_index_last[p];      /* Power Index Diff between 2 times Power Tracking */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("[Path-%c] PowerIndexOffset(%d) = DeltaPowerIndex(%d) - DeltaPowerIndexLast(%d)\n", (p == RF90_PATH_A ? 'A' : 'B'), rtldm->power_index_offset[p], rtldm->delta_power_index[p],
-			rtldm->delta_power_index_last[p]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "[Path-%c] PowerIndexOffset(%d) = DeltaPowerIndex(%d) - DeltaPowerIndexLast(%d)\n", (p == RF90_PATH_A ? 'A' : 'B'), rtldm->power_index_offset[p], rtldm->delta_power_index[p],
+			rtldm->delta_power_index_last[p]);
 
 			rtldm->ofdm_index[p] = rtldm->swing_idx_ofdm_base[p] + rtldm->power_index_offset[p];
 			rtldm->cck_index = rtldm->swing_idx_cck_base + rtldm->power_index_offset[p];
@@ -1269,8 +1265,8 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	       /* *************Print BB Swing Base and Index Offset************* */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("The 'CCK' final index(%d) = BaseIndex(%d) + PowerIndexOffset(%d)\n",  rtldm->swing_idx_cck, rtldm->swing_idx_cck_base, rtldm->power_index_offset[p]));
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("The 'OFDM' final index(%d) = BaseIndex[%c](%d) + PowerIndexOffset(%d)\n", rtldm->swing_idx_ofdm[p], (p == RF90_PATH_A ? 'A' : 'B'), rtldm->swing_idx_ofdm_base[p], rtldm->power_index_offset[p]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "The 'CCK' final index(%d) = BaseIndex(%d) + PowerIndexOffset(%d)\n",  rtldm->swing_idx_cck, rtldm->swing_idx_cck_base, rtldm->power_index_offset[p]);
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "The 'OFDM' final index(%d) = BaseIndex[%c](%d) + PowerIndexOffset(%d)\n", rtldm->swing_idx_ofdm[p], (p == RF90_PATH_A ? 'A' : 'B'), rtldm->swing_idx_ofdm_base[p], rtldm->power_index_offset[p]);
 
 		    /* 4 7.1 Handle boundary conditions of index. */
 
@@ -1280,18 +1276,18 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 				rtldm->ofdm_index[p] = ofdm_min_index;
 			}
 		}
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("\n\n========================================================================================================\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "\n\n========================================================================================================\n");
 		if (rtldm->cck_index > TXSCALE_TABLE_SIZE-1)
 			rtldm->cck_index = TXSCALE_TABLE_SIZE-1;
 	} else {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("The thermal meter is unchanged or TxPowerTracking OFF(%d): ThermalValue: %d , rtldm->RFCalibrateInfo.ThermalValue: %d\n", rtldm->txpower_track_control, ThermalValue, rtldm->thermalvalue));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "The thermal meter is unchanged or TxPowerTracking OFF(%d): ThermalValue: %d , rtldm->RFCalibrateInfo.ThermalValue: %d\n", rtldm->txpower_track_control, thermal_value, rtldm->thermalvalue);
 
 		for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
 			rtldm->power_index_offset[p] = 0;
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxPowerTracking: [CCK] Swing Current Index: %d, Swing Base Index: %d\n", rtldm->cck_index, rtldm->swing_idx_cck_base));       /* Print Swing base & current */
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "TxPowerTracking: [CCK] Swing Current Index: %d, Swing Base Index: %d\n", rtldm->cck_index, rtldm->swing_idx_cck_base);       /* Print Swing base & current */
 	for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxPowerTracking: [OFDM] Swing Current Index: %d, Swing Base Index[%c]: %d\n", rtldm->ofdm_index[p], (p == RF90_PATH_A ? 'A' : 'B'), rtldm->swing_idx_ofdm_base[p]));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "TxPowerTracking: [OFDM] Swing Current Index: %d, Swing Base Index[%c]: %d\n", rtldm->ofdm_index[p], (p == RF90_PATH_A ? 'A' : 'B'), rtldm->swing_idx_ofdm_base[p]);
 	}
 
 	if ((rtldm->power_index_offset[RF90_PATH_A] != 0 ||  rtldm->power_index_offset[RF90_PATH_B] != 0)
@@ -1307,21 +1303,21 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		 *  2012/04/25 MH Add for tx power tracking to set tx power in tx agc for 88E.
 		 */
 		if (thermal_value > rtldm->thermalvalue) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_A], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_B], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_A], delta, thermal_value, efuse->eeprom_thermalmeter, rtldm->thermalvalue);
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature Increasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_B], delta, thermal_value, efuse->eeprom_thermalmeter, rtldm->thermalvalue);
 
 			} else if (thermal_value < rtldm->thermalvalue) { /* Low temperature */
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_A], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_B], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
+				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_A], delta, thermal_value, efuse->eeprom_thermalmeter, rtldm->thermalvalue);
+				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature Decreasing(B): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_B], delta, thermal_value, efuse->eeprom_thermalmeter, rtldm->thermalvalue);
 
 			}
 			if (thermal_value > efuse->eeprom_thermalmeter) {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) higher than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
+				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature(%d) higher than PG value(%d)\n", thermal_value, efuse->eeprom_thermalmeter);
 
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
 					rtl8812au_dm_pxpwr_track_set_pwr(rtlpriv, BBSWING, p, index_for_channel);
 			} else {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
+				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature(%d) lower than PG value(%d)\n", thermal_value, efuse->eeprom_thermalmeter);
 
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
 					rtl8812au_dm_pxpwr_track_set_pwr(rtlpriv, BBSWING, p, index_for_channel);
@@ -1331,7 +1327,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 			for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)	/* ULLI huh ?? */
 				rtldm->swing_idx_ofdm_base[p] = rtldm->swing_idx_ofdm[p];
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,  ("rtldm->RFCalibrateInfo.ThermalValue = %d ThermalValue= %d\n", rtldm->thermalvalue, ThermalValue));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,  "rtldm->RFCalibrateInfo.ThermalValue = %d ThermalValue= %d\n", rtldm->thermalvalue, thermal_value);
 
 			rtldm->thermalvalue = thermal_value;     /* Record last Power Tracking Thermal Value */
 
@@ -1339,7 +1335,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	if ((delta_iqk >= IQK_THRESHOLD))	/* Delta temperature is equal to or larger than 20 centigrade (When threshold is 8). */
 		rtl8812au_do_iqk(rtlpriv, delta_iqk, thermal_value, 8);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("<===ODM_TXPowerTrackingCallback_ThermalMeter\n"));
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "<===ODM_TXPowerTrackingCallback_ThermalMeter\n");
 
 	rtldm->txpowercount = 0;
 }
@@ -1366,7 +1362,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	rtl8821au_get_delta_swing_table(rtlpriv, (u8 **)&up_a, (u8 **)&down_a,
 					 (u8 **)&up_b, (u8 **)&down_b);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n", rtldm->swing_idx_cck_base, rtldm->swing_idx_ofdm_base[RF90_PATH_A], rtldm->default_ofdm_index));
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n", rtldm->swing_idx_cck_base, rtldm->swing_idx_ofdm_base[RF90_PATH_A], rtldm->default_ofdm_index);
 
 	thermal_value = (u8)rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
 	if (!rtldm->txpower_track_control
@@ -1392,7 +1388,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	if (thermal_value_avg_count) {               /* Calculate Average ThermalValue after average enough times */
 		thermal_value = (u8)(thermal_value_avg / thermal_value_avg_count);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", ThermalValue, efuse->eeprom_thermalmeter));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "AVG Thermal Meter = 0x%X, EFUSE Thermal Base = 0x%X\n", thermal_value, efuse->eeprom_thermalmeter);
 	}
 
 	/* 4 5. Calculate delta, delta_LCK, delta_IQK. */
@@ -1402,12 +1398,12 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	delta_lck = (thermal_value > rtldm->thermalvalue_lck)?(thermal_value - rtldm->thermalvalue_lck):(rtldm->thermalvalue_lck - thermal_value);
 	delta_iqk = (thermal_value > rtldm->thermalvalue_iqk)?(thermal_value - rtldm->thermalvalue_iqk):(rtldm->thermalvalue_iqk - thermal_value);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("(delta, delta_LCK, delta_IQK) = (%d, %d, %d)\n", delta, delta_LCK, delta_IQK));
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "(delta, delta_LCK, delta_IQK) = (%d, %d, %d)\n", delta, delta_lck, delta_iqk);
 
 	/* 4 6. If necessary, do LCK. */
 
 	if ((delta_lck >= IQK_THRESHOLD)) {	/* Delta temperature is equal to or larger than 20 centigrade. */
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("delta_LCK(%d) >= Threshold_IQK(%d)\n", delta_LCK, IQK_THRESHOLD));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "delta_LCK(%d) >= Threshold_IQK(%d)\n", delta_lck, IQK_THRESHOLD);
 		rtldm->thermalvalue_lck = thermal_value;
 		rtl8812au_phy_lc_calibrate(rtlpriv);
 	}
@@ -1423,32 +1419,32 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		/* 4 7.1 The Final Power Index = BaseIndex + PowerIndexOffset */
 
 		if (thermal_value > efuse->eeprom_thermalmeter) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TUP_A[%d] = %d\n", delta, up_a[delta]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "deltaSwingTableIdx_TUP_A[%d] = %d\n", delta, up_a[delta]);
 			rtldm->delta_power_index_last[RF90_PATH_A] = rtldm->delta_power_index[RF90_PATH_A];
 			rtldm->delta_power_index[RF90_PATH_A] = up_a[delta];
 
 			rtldm->absolute_ofdm_swing_idx[RF90_PATH_A] =  up_a[delta];        /* Record delta swing for mix mode power tracking */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is higher and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_A]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Temp is higher and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_A]);
 		} else {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("deltaSwingTableIdx_TDOWN_A[%d] = %d\n", delta, down_a[delta]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "deltaSwingTableIdx_TDOWN_A[%d] = %d\n", delta, down_a[delta]);
 
 			rtldm->delta_power_index_last[RF90_PATH_A] = rtldm->delta_power_index[RF90_PATH_A];
 			rtldm->delta_power_index[RF90_PATH_A] = -1 * down_a[delta];
 
 			rtldm->absolute_ofdm_swing_idx[RF90_PATH_A] =  -1 * down_a[delta];        /* Record delta swing for mix mode power tracking */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("******Temp is lower and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_A]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Temp is lower and rtldm->Aboslute_OFDMSwingIdx[RF90_PATH_A] = %d\n", rtldm->absolute_ofdm_swing_idx[RF90_PATH_A]);
 		}
 
 	    for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("\n\n================================ [Path-%c] Calculating PowerIndexOffset ================================\n", (p == RF90_PATH_A ? 'A' : 'B')));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "\n\n================================ [Path-%c] Calculating PowerIndexOffset ================================\n", (p == RF90_PATH_A ? 'A' : 'B'));
 			if (rtldm->delta_power_index[p] == rtldm->delta_power_index_last[p])         /* If Thermal value changes but lookup table value still the same */
 				rtldm->power_index_offset[p] = 0;
 			else
 				rtldm->power_index_offset[p] = rtldm->delta_power_index[p] - rtldm->delta_power_index_last[p];      /* Power Index Diff between 2 times Power Tracking */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("[Path-%c] PowerIndexOffset(%d) = DeltaPowerIndex(%d) - DeltaPowerIndexLast(%d)\n", (p == RF90_PATH_A ? 'A' : 'B'), rtldm->power_index_offset[p], rtldm->delta_power_index[p], rtldm->delta_power_index_last[p]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "[Path-%c] PowerIndexOffset(%d) = DeltaPowerIndex(%d) - DeltaPowerIndexLast(%d)\n", (p == RF90_PATH_A ? 'A' : 'B'), rtldm->power_index_offset[p], rtldm->delta_power_index[p], rtldm->delta_power_index_last[p]);
 
 			rtldm->ofdm_index[p] = rtldm->swing_idx_ofdm_base[p] + rtldm->power_index_offset[p];
 			rtldm->cck_index = rtldm->swing_idx_cck_base + rtldm->power_index_offset[p];
@@ -1458,8 +1454,8 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	       /* *************Print BB Swing Base and Index Offset************* */
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("The 'CCK' final index(%d) = BaseIndex(%d) + PowerIndexOffset(%d)\n", rtldm->swing_idx_cck, rtldm->swing_idx_cck_base, rtldm->power_index_offset[p]));
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("The 'OFDM' final index(%d) = BaseIndex[%c](%d) + PowerIndexOffset(%d)\n", rtldm->swing_idx_ofdm[p], (p == RF90_PATH_A ? 'A' : 'B'), rtldm->swing_idx_ofdm_base[p], rtldm->power_index_offset[p]));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "The 'CCK' final index(%d) = BaseIndex(%d) + PowerIndexOffset(%d)\n", rtldm->swing_idx_cck, rtldm->swing_idx_cck_base, rtldm->power_index_offset[p]);
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "The 'OFDM' final index(%d) = BaseIndex[%c](%d) + PowerIndexOffset(%d)\n", rtldm->swing_idx_ofdm[p], (p == RF90_PATH_A ? 'A' : 'B'), rtldm->swing_idx_ofdm_base[p], rtldm->power_index_offset[p]);
 
 		    /* 4 7.1 Handle boundary conditions of index. */
 
@@ -1469,18 +1465,18 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 				rtldm->ofdm_index[p] = ofdm_min_index;
 			}
 		}
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("\n\n========================================================================================================\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "\n\n========================================================================================================\n");
 		if (rtldm->cck_index > TXSCALE_TABLE_SIZE-1)
 			rtldm->cck_index = TXSCALE_TABLE_SIZE-1;
 	} else {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("The thermal meter is unchanged or TxPowerTracking OFF(%d): ThermalValue: %d , rtldm->RFCalibrateInfo.ThermalValue: %d\n", rtldm->txpower_track_control, ThermalValue, rtldm->thermalvalue));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "The thermal meter is unchanged or TxPowerTracking OFF(%d): ThermalValue: %d , rtldm->RFCalibrateInfo.ThermalValue: %d\n", rtldm->txpower_track_control, thermal_value, rtldm->thermalvalue);
 
 		for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++)
 			rtldm->power_index_offset[p] = 0;
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxPowerTracking: [CCK] Swing Current Index: %d, Swing Base Index: %d\n", rtldm->cck_index, rtldm->swing_idx_cck_base));       /* Print Swing base & current */
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "TxPowerTracking: [CCK] Swing Current Index: %d, Swing Base Index: %d\n", rtldm->cck_index, rtldm->swing_idx_cck_base);       /* Print Swing base & current */
 	for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("TxPowerTracking: [OFDM] Swing Current Index: %d, Swing Base Index[%c]: %d\n", rtldm->ofdm_index[p], (p == RF90_PATH_A ? 'A' : 'B'), rtldm->swing_idx_ofdm_base[p]));
+		RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "TxPowerTracking: [OFDM] Swing Current Index: %d, Swing Base Index[%c]: %d\n", rtldm->ofdm_index[p], (p == RF90_PATH_A ? 'A' : 'B'), rtldm->swing_idx_ofdm_base[p]);
 	}
 
 	if ((rtldm->power_index_offset[RF90_PATH_A] != 0 ||  rtldm->power_index_offset[RF90_PATH_B] != 0)
@@ -1496,22 +1492,22 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		 *  2012/04/25 MH Add for tx power tracking to set tx power in tx agc for 88E.
 		 */
 		if (thermal_value > rtldm->thermalvalue) {
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_A], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature Increasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_A], delta, thermal_value, efuse->eeprom_thermalmeter, rtldm->thermalvalue);
 
 			} else if (thermal_value < rtldm->thermalvalue) { /* Low temperature */
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_A], delta, ThermalValue, efuse->eeprom_thermalmeter, rtldm->thermalvalue));
+				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature Decreasing(A): delta_pi: %d , delta_t: %d, Now_t: %d, EFUSE_t: %d, Last_t: %d\n", rtldm->power_index_offset[RF90_PATH_A], delta, thermal_value, efuse->eeprom_thermalmeter, rtldm->thermalvalue);
 
 			}
 			if (thermal_value > efuse->eeprom_thermalmeter) {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) higher than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
+				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature(%d) higher than PG value(%d)\n", thermal_value, efuse->eeprom_thermalmeter);
 
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
+				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "**********Enter POWER Tracking MIX_MODE**********\n");
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++)
 					rtl8821au_dm_pxpwr_track_set_pwr(rtlpriv, MIX_MODE, p, index_for_channel);
 			} else {
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("Temperature(%d) lower than PG value(%d)\n", ThermalValue, efuse->eeprom_thermalmeter));
+				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature(%d) lower than PG value(%d)\n", thermal_value, efuse->eeprom_thermalmeter);
 
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("**********Enter POWER Tracking MIX_MODE**********\n"));
+				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "**********Enter POWER Tracking MIX_MODE**********\n");
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++)
 					rtl8821au_dm_pxpwr_track_set_pwr(rtlpriv, MIX_MODE, p, index_for_channel);
 			}
@@ -1520,7 +1516,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 			for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++)
 				rtldm->swing_idx_ofdm_base[p] = rtldm->swing_idx_ofdm[p];
 
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,  ("rtldm->RFCalibrateInfo.ThermalValue = %d ThermalValue= %d\n", rtldm->thermalvalue, ThermalValue));
+			RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,  "rtldm->RFCalibrateInfo.ThermalValue = %d ThermalValue= %d\n", rtldm->thermalvalue, thermal_value);
 
 			rtldm->thermalvalue = thermal_value;     /* Record last Power Tracking Thermal Value */
 
@@ -1528,7 +1524,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	if ((delta_iqk >= IQK_THRESHOLD))	/* Delta temperature is equal to or larger than 20 centigrade (When threshold is 8). */
 		rtl8821au_do_iqk(rtlpriv, delta_iqk, thermal_value, 8);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("<===ODM_TXPowerTrackingCallback_ThermalMeter\n"));
+	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "<===ODM_TXPowerTrackingCallback_ThermalMeter\n");
 
 	rtldm->txpowercount = 0;
 }
@@ -1590,9 +1586,9 @@ static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 		rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
 		rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Cck_fail=%d\n", FalseAlmCnt->cnt_cck_fail));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Cnt_Ofdm_fail=%d\n", FalseAlmCnt->cnt_ofdm_fail));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_FA_CNT, ODM_DBG_LOUD, ("Total False Alarm=%d\n", FalseAlmCnt->cnt_all));
+	RT_TRACE(rtlpriv, ODM_COMP_FA_CNT, ODM_DBG_LOUD, "Cnt_Cck_fail=%d\n", FalseAlmCnt->cnt_cck_fail);
+	RT_TRACE(rtlpriv, ODM_COMP_FA_CNT, ODM_DBG_LOUD, "Cnt_Ofdm_fail=%d\n", FalseAlmCnt->cnt_ofdm_fail);
+	RT_TRACE(rtlpriv, ODM_COMP_FA_CNT, ODM_DBG_LOUD, "Total False Alarm=%d\n", FalseAlmCnt->cnt_all);
 }
 
 
@@ -1611,13 +1607,13 @@ static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 
 	if (rtlpriv->mac80211.link_state < MAC80211_LINKED && (rtlpriv->dm.entry_min_undec_sm_pwdb == 0)) {
 		rtl_dm_dig->min_undec_pwdb_for_dm = 0;
-		/* ODM_RT_TRACE(pDM_Odm,COMP_BB_POWERSAVING, DBG_LOUD, ("Not connected to any \n")); */
+		/* RT_TRACE(rtlrpiv,COMP_BB_POWERSAVING, DBG_LOUD, ("Not connected to any \n")); */
 	} else {
 		rtl_dm_dig->min_undec_pwdb_for_dm = rtlpriv->dm.entry_min_undec_sm_pwdb;
 	}
 
 	/* DBG_8192C("%s=>MinUndecoratedPWDBForDM(%d)\n",__FUNCTION__,pdmpriv->MinUndecoratedPWDBForDM); */
-	/* ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM)); */
+	/* RT_TRACE(rtlrpiv,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM)); */
 }
 
 static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
@@ -1837,7 +1833,7 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 			if ((IS_HARDWARE_TYPE_8811AU(rtlhal))) {		/* add 8812AU/8812AE */
 				EDCA_BE_UL = 0x5ea42b;
 				EDCA_BE_DL = 0x5ea42b;
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, ("8812A: EDCA_BE_UL=0x%x EDCA_BE_DL =0x%x", EDCA_BE_UL, EDCA_BE_DL));
+				RT_TRACE(rtlpriv, ODM_COMP_EDCA_TURBO, ODM_DBG_LOUD, "8812A: EDCA_BE_UL=0x%x EDCA_BE_DL =0x%x", EDCA_BE_UL, EDCA_BE_DL);
 			}
 
 			if (trafficIndex == DOWN_LINK)
@@ -1970,7 +1966,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 		odm_CommonInfoSelfUpdate(pDM_Odm);
 		rtl8821ae_dm_false_alarm_counter_statistics(rtlpriv);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->rssi_val_min));
+		RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): RSSI=0x%x\n", dm_digtable->rssi_val_min);
 
 		rtl8821au_dm_check_rssi_monitor(rtlpriv);
 
@@ -2043,10 +2039,10 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	u8						dm_dig_max, dm_dig_min, offset;
 	u8						CurrentIGI = dm_digtable->cur_igvalue;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG()==>\n"));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG()==>\n");
 
 	if (mac->act_scanning) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() Return: In Scan Progress \n"));
+		RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG() Return: In Scan Progress \n");
 		return;
 	}
 
@@ -2099,8 +2095,8 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 					DIG_Dynamic_MIN = DIG_MaxOfMin;
 				else
 					DIG_Dynamic_MIN = dm_digtable->rssi_val_min;
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : bOneEntryOnly=TRUE,  DIG_Dynamic_MIN=0x%x\n", DIG_Dynamic_MIN));
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : pDM_Odm->rssi_val_min=%d\n", pDM_Odm->rssi_val_min));
+				RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG() : bOneEntryOnly=TRUE,  DIG_Dynamic_MIN=0x%x\n", DIG_Dynamic_MIN);
+				RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG() : pDM_Odm->rssi_val_min=%d\n", dm_digtable->rssi_val_min);
 			} else {
 				/* 1 Lower Bound for 88E AntDiv */
 				DIG_Dynamic_MIN = dm_dig_min;
@@ -2109,12 +2105,12 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	} else {
 		dm_digtable->rx_gain_max = dm_dig_max;
 		DIG_Dynamic_MIN = dm_dig_min;
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG() : No Link\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG() : No Link\n");
 	}
 
 	/* 1 Modify DIG lower bound, deal with abnorally large false alarm */
 	if (FalseAlmCnt->cnt_all > 10000) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("dm_DIG(): Abnornally false alarm case. \n"));
+		RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "dm_DIG(): Abnornally false alarm case. \n");
 
 		if (dm_digtable->large_fa_hit != 3)
 			dm_digtable->large_fa_hit++;
@@ -2140,18 +2136,18 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 				if ((dm_digtable->forbidden_igi-1) < DIG_Dynamic_MIN) {		/* DM_DIG_MIN)  */
 					dm_digtable->forbidden_igi = DIG_Dynamic_MIN;		/* DM_DIG_MIN; */
 					dm_digtable->rx_gain_min = DIG_Dynamic_MIN;	/* DM_DIG_MIN; */
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Normal Case: At Lower Bound\n"));
+					RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): Normal Case: At Lower Bound\n");
 				} else {
 					dm_digtable->forbidden_igi--;
 					dm_digtable->rx_gain_min = (dm_digtable->forbidden_igi+ 1);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): Normal Case: Approach Lower Bound\n"));
+					RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): Normal Case: Approach Lower Bound\n");
 				}
 			} else {
 				dm_digtable->large_fa_hit = 0;
 			}
 		}
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): dm_digtable->LargeFAHit=%d\n", dm_digtable->large_fa_hit));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): dm_digtable->LargeFAHit=%d\n", dm_digtable->large_fa_hit);
 
 	if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10))
 		dm_digtable->rx_gain_min = dm_dig_min;
@@ -2161,13 +2157,13 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 
 	/* 1 Adjust initial gain by false alarm */
 	if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): DIG AfterLink\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): DIG AfterLink\n");
 		if (FirstConnect) {
 			if (dm_digtable->rssi_val_min <= DIG_MaxOfMin)
 			    CurrentIGI = dm_digtable->rssi_val_min;
 			else
 			    CurrentIGI = DIG_MaxOfMin;
-			ODM_RT_TRACE(pDM_Odm,	ODM_COMP_DIG, ODM_DBG_LOUD, ("DIG: First Connect\n"));
+			RT_TRACE(rtlpriv,	ODM_COMP_DIG, ODM_DBG_LOUD, "DIG: First Connect\n");
 		} else 	{
 			/* FA for Combo IC--NeilChen--2012--09--28 */
 			if (FalseAlmCnt->cnt_all > DM_DIG_FA_TH2)
@@ -2183,10 +2179,10 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 		}
 	} else {
 		/* CurrentIGI = dm_digtable->rx_gain_range_min; */	/* dm_digtable->CurIGValue = dm_digtable->rx_gain_range_min */
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): DIG BeforeLink\n"));
+		RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): DIG BeforeLink\n");
 		if (FirstDisConnect) {
 			CurrentIGI = dm_digtable->rx_gain_min;
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): First DisConnect \n"));
+			RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): First DisConnect \n");
 		} else {
 			/* 2012.03.30 LukeLee: enable DIG before link but with very high thresholds */
 			if (FalseAlmCnt->cnt_all > 10000)
@@ -2195,10 +2191,10 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 				CurrentIGI = CurrentIGI + 2;
 			else if (FalseAlmCnt->cnt_all < 500)
 				CurrentIGI = CurrentIGI - 2;
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): England DIG \n"));
+			RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): England DIG \n");
 		}
 	}
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): DIG End Adjust IGI\n"));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): DIG End Adjust IGI\n");
 	/* 1 Check initial gain by upper/lower bound */
 
 	if (CurrentIGI > dm_digtable->rx_gain_max)
@@ -2209,10 +2205,10 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	if (CurrentIGI > (pDM_Odm->IGI_target + 4))
 		CurrentIGI = (u8)pDM_Odm->IGI_target + 4;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): rx_gain_range_max=0x%x, rx_gain_range_min=0x%x\n",
-		dm_digtable->rx_gain_max, dm_digtable->rx_gain_min));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): TotalFA=%d\n", pFalseAlmCnt->Cnt_all));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): CurIGValue=0x%x\n", CurrentIGI));
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): rx_gain_range_max=0x%x, rx_gain_range_min=0x%x\n",
+		dm_digtable->rx_gain_max, dm_digtable->rx_gain_min);
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): TotalFA=%d\n", FalseAlmCnt->cnt_all);
+	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): CurIGValue=0x%x\n", CurrentIGI);
 
 	/* 2 High power RSSI threshold */
 

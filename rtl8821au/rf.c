@@ -4,6 +4,13 @@
 #include "phy.h"
 #include "dm.h"
 
+#undef RT_TRACE
+static inline void RT_TRACE(struct rtl_priv *rtlpriv,
+			    int comp, int level,
+			    const char *fmt, ...)
+{
+}
+
 void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH	Bandwidth)	/* 20M or 40M */
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -278,11 +285,11 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
-		("===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip"));
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD,
-		("pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		rtlhal->interface, rtlhal->board_type));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_LOUD,
+		"===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip");
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_LOUD,
+		"pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
+		rtlhal->interface, rtlhal->board_type);
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		rtl8812au_phy_config_rf_with_headerfile(rtlpriv, eRFPath);

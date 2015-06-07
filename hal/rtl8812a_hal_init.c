@@ -2193,6 +2193,7 @@ uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 	bResult = _SUCCESS;
 
 	switch (variable) {
+#if 0	/* ULLI currently disabled */
 	case HW_DEF_FA_CNT_DUMP:
 		{
 			uint8_t mac_id;
@@ -2225,7 +2226,7 @@ uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 			pDM_Odm->DebugComponents = DebugComponents;
 		}
 		break;
-
+#endif
 	default:
 		DBG_8192C("%s: [ERROR] HAL_DEF_VARIABLE(%d) not defined!\n", __FUNCTION__, variable);
 		bResult = _FAIL;
@@ -2372,7 +2373,7 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 			}
 		}
 		break;
-
+#if 0  /* ULLI currently disabled */
 	case HW_DEF_ODM_DBG_FLAG:
 		{
 			u64	DebugComponents;
@@ -2384,7 +2385,7 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 			*((u64 *)pval) = DebugComponents;
 		}
 		break;
-
+#endif
 	case HAL_DEF_TX_PAGE_BOUNDARY:
 		if (IS_HARDWARE_TYPE_8812(rtlhal))
 			*(uint8_t *)pval = TX_PAGE_BOUNDARY_8812;

@@ -190,8 +190,6 @@ static void rtl8821au_cm_common_info_self_update(struct _rtw_dm *pDM_Odm)
 		rtlpriv->dm.rfpath_rxenable[0] = true;
 	if (tmp & BIT(1))
 		rtlpriv->dm.rfpath_rxenable[1] = true;
-
-	ODM_InitDebugSetting(pDM_Odm);
 }
 
 /* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */

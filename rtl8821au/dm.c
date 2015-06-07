@@ -1613,7 +1613,7 @@ static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 	/* ODM_RT_TRACE(pDM_Odm,COMP_DIG, DBG_LOUD, ("MinUndecoratedPWDBForDM =%d\n",pHalData->MinUndecoratedPWDBForDM)); */
 }
 
-static void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_dm_check_rssi_monitor(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct dig_t *rtl_dm_dig = &rtlpriv->dm_digtable;
@@ -1735,21 +1735,6 @@ static void odm_RSSIMonitorCheckCE(struct _rtw_dm *pDM_Odm)
 	ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_RSSI_MIN, rtl_dm_dig->min_undec_pwdb_for_dm);
 }
 
-static void odm_RSSIMonitorCheck(struct _rtw_dm *pDM_Odm)
-{
-	/*
-	 * For AP/ADSL use prtl8192cd_priv
-	 * For CE/NIC use _ADAPTER
-	 */
-
-	/*
-	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
-	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
-	 * HW dynamic mechanism.
-	 */
-
-	odm_RSSIMonitorCheckCE(pDM_Odm);
-}
 
 /*
  * ============================================================
@@ -1978,7 +1963,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 		rtl8821ae_dm_false_alarm_counter_statistics(rtlpriv);
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DIG, ODM_DBG_LOUD, ("odm_DIG(): RSSI=0x%x\n", pDM_Odm->rssi_val_min));
 
-		odm_RSSIMonitorCheck(pDM_Odm);
+		rtl8821au_dm_check_rssi_monitor(pDM_Odm);
 
 		rtl8821au_dm_dig(rtlpriv);
 

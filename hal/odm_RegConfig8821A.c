@@ -20,8 +20,12 @@
 
 #include <odm_precomp.h>
 
-#undef ODM_RT_TRACE
-#define ODM_RT_TRACE(x, ...)	do {} while (0);
+#undef RT_TRACE
+static inline void RT_TRACE(struct rtl_priv *rtlpriv,
+			    int comp, int level,
+			    const char *fmt, ...)
+{
+}
 
 void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Data, enum radio_path path, uint32_t RegAddr)
@@ -56,7 +60,7 @@ void odm_ConfigBB_AGC_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	/* Add 1us delay between BB/RF register setting. */
 	udelay(1);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data);
 }
 
 void odm_ConfigBB_PHY_REG_PG_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
@@ -75,7 +79,7 @@ void odm_ConfigBB_PHY_REG_PG_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	else if (Addr == 0xf9)
 		udelay(1);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("===> @@@@@@@ ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X %08X\n", Addr, Bitmask, Data));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_LOUD, "===> @@@@@@@ ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X %08X\n", Addr, Bitmask, Data);
 
 	storePwrIndexDiffRateOffset(rtlpriv, Addr, Bitmask, Data);
 
@@ -101,7 +105,7 @@ void odm_ConfigBB_PHY_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 
 	/* Add 1us delay between BB/RF register setting. */
 	udelay(1);
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_TRACE, ("===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data));
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data);
 }
 
 

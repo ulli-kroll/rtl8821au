@@ -1600,9 +1600,6 @@ struct _rtw_dm {
 
 	PHY_REG_PG_TYPE		PhyRegPgValueType;
 
-	uint64_t			DebugComponents;
-	uint32_t			DebugLevel;
-
 	uint64_t			NumQryPhyStatusAll; 	//CCK + OFDM
 	uint64_t			LastNumQryPhyStatusAll;
 	uint64_t			RxPWDBAve;

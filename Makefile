@@ -50,8 +50,7 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com.o \
 			hal/hal_phy.o
 
-_OUTSRC_FILES := hal/odm_debug.o	\
-		hal/odm.o
+_OUTSRC_FILES := hal/odm.o
 
 ########### HAL_RTL8812A_RTL8821A #################################
 

@@ -1,7 +1,6 @@
 #include "dm.h"
 #include "phy.h"
 #include <odm_precomp.h>
-#include <rtw_debug.h>
 
 #undef RT_TRACE
 static inline void RT_TRACE(struct rtl_priv *rtlpriv,
@@ -300,7 +299,7 @@ static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct rtl_pri
 	rtldm->txpower_trackinginit = _FALSE;
 	/* #if	(MP_DRIVER != 1) */		/* for mp driver, turn off txpwrtracking as default */
 	/* #endif//#if	(MP_DRIVER != 1) */
-	MSG_8192C("pDM_Odm TxPowerTrackControl = %d\n", rtldm->txpower_track_control);
+	dev_info(&(rtlpriv->ndev->dev), "rtldm->txpower_track_control= %d\n", rtldm->txpower_track_control);
 
 	rtldm->txpower_track_control = TRUE;
 	rtldm->thermalvalue = efuse->eeprom_thermalmeter;
@@ -1919,7 +1918,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 		 * Here we only set bPbcPressed to true
 		 * After trigger PBC, the variable will be set to false
 		 */
-		DBG_8192C("CheckPbcGPIO - PBC is pressed\n");
+		printk("rtl8821au:CheckPbcGPIO - PBC is pressed\n");
 	}
 }
 

@@ -25,6 +25,13 @@
 
 #define	EEPROM_CHANNEL_PLAN_BY_HW_MASK	0x80
 
+#undef RT_PRINT_DATA
+static inline void RT_PRINT_DATA(int comp, int level, char *titlestring, 
+			void *hexdata, int hexdatalen)
+{
+}
+
+
 uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
 	IN	struct rtl_priv *rtlpriv,

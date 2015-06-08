@@ -40,23 +40,6 @@ enum{
 #include <usb_ops_linux.h>
 
 
-/*
-* Increase and check if the continual_urb_error of this @param dvobjprive is larger than MAX_CONTINUAL_URB_ERR
-* @return _TRUE:
-* @return _FALSE:
-*/
-static inline int rtw_inc_and_chk_continual_urb_error(struct rtl_usb *dvobj)
-{
-	int ret = _FALSE;
-	int value;
-	if( (value=atomic_inc_return(&dvobj->continual_urb_error)) > MAX_CONTINUAL_URB_ERR) {
-		DBG_871X("[dvobj:%p][ERROR] continual_urb_error:%d > %d\n", dvobj, value, MAX_CONTINUAL_URB_ERR);
-		ret = _TRUE;
-	} else {
-		//DBG_871X("[dvobj:%p] continual_urb_error:%d\n", dvobj, value);
-	}
-	return ret;
-}
 
 /*
 * Set the continual_urb_error of this @param dvobjprive to 0

@@ -3,7 +3,6 @@
 #include "reg.h"
 #include "phy.h"
 #include "dm.h"
-#include <rtw_debug.h>
 
 #undef RT_TRACE
 static inline void RT_TRACE(struct rtl_priv *rtlpriv,
@@ -32,7 +31,7 @@ void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_W
 		break;
 
 	default:
-		DBG_871X("rtl8821au_phy_rf6052_set_bandwidth(): unknown Bandwidth: %#X\n", Bandwidth);
+		dev_info(&(rtlpriv->ndev->dev), "rtl8821au_phy_rf6052_set_bandwidth(): unknown Bandwidth: %#X\n", Bandwidth);
 		break;
 	}
 }

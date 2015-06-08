@@ -1,6 +1,5 @@
 #include "fw.h"
 #include <linux/firmware.h>
-#include <rtw_debug.h>
 
 #define CONFIG_H2C_EF
 
@@ -102,7 +101,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint
 		h2c_box_num = pHalData->LastHMEBoxNum;
 
 		if (!_is_fw_read_cmd_down(rtlpriv, h2c_box_num)) {
-			DBG_8192C(" fw read cmd failed...\n");
+			dev_info(&(rtlpriv->ndev->dev), " fw read cmd failed...\n");
 			goto exit;
 		}
 
@@ -294,7 +293,7 @@ void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *ar
 		H2CCommand[5] = (uint8_t)((bitmap & 0x00ff0000) >> 16);
 		H2CCommand[6] = (uint8_t)((bitmap & 0xff000000) >> 24);
 
-		DBG_871X("rtl8812_set_raid_cmd, bitmap=0x%x, mac_id=0x%x, raid=0x%x, shortGIrate=%x\n", bitmap, macid, raid, shortGIrate);
+		dev_info(&(rtlpriv->ndev->dev), "rtl8812_set_raid_cmd, bitmap=0x%x, mac_id=0x%x, raid=0x%x, shortGIrate=%x\n", bitmap, macid, raid, shortGIrate);
 
 		FillH2CCmd_8812(rtlpriv, H2C_8812_RA_MASK, 7, H2CCommand);
 	}
@@ -419,7 +418,7 @@ void ConstructBeacon(struct rtl_priv *rtlpriv, uint8_t *pframe, uint32_t *pLengt
 _ConstructBeacon:
 
 	if ((pktlen + TXDESC_SIZE) > 512) {
-		DBG_871X("beacon frame too large\n");
+		dev_info(&(rtlpriv->ndev->dev), "beacon frame too large\n");
 		return;
 	}
 
@@ -601,7 +600,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 	if (bDLFinished) {
 		TotalPageNum += CurtPktPageNum;
 		TotalPacketLen = (TotalPageNum*PageSize);
-		DBG_871X("%s(): Beacon page size = %d\n", __FUNCTION__, TotalPageNum);
+		dev_info(&(rtlpriv->ndev->dev), "%s(): Beacon page size = %d\n", __FUNCTION__, TotalPageNum);
 	} else {
 		TotalPageNum += CurtPktPageNum;
 
@@ -610,7 +609,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 		BufIndex += (CurtPktPageNum*PageSize);
 
 		if (BufIndex > MaxRsvdPageBufSize) {
-			DBG_871X("%s(): Beacon: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
+			dev_info(&(rtlpriv->ndev->dev), "%s(): Beacon: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
 				BufIndex, MaxRsvdPageBufSize);
 			goto error;
 		}
@@ -633,7 +632,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 		TotalPageNum += CurtPktPageNum;
 
 		if (BufIndex > MaxRsvdPageBufSize) {
-			DBG_871X("%s(): ps-poll: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
+			dev_info(&(rtlpriv->ndev->dev), "%s(): ps-poll: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
 				BufIndex, MaxRsvdPageBufSize);
 			goto error;
 		}
@@ -661,7 +660,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 		TotalPageNum += CurtPktPageNum;
 
 		if (BufIndex > MaxRsvdPageBufSize) {
-			DBG_871X("%s(): Null-data: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
+			dev_info(&(rtlpriv->ndev->dev), "%s(): Null-data: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
 				BufIndex, MaxRsvdPageBufSize);
 			goto error;
 		}
@@ -693,7 +692,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 
 
 	if (TotalPacketLen > MaxRsvdPageBufSize) {
-		DBG_871X("%s(): ERROR: The rsvd page size is not enough!!TotalPacketLen %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
+		dev_info(&(rtlpriv->ndev->dev),"%s(): ERROR: The rsvd page size is not enough!!TotalPacketLen %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
 			TotalPacketLen, MaxRsvdPageBufSize);
 		goto error;
 	} else {
@@ -707,7 +706,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 	}
 
 	if (!bDLFinished) {
-		DBG_871X("%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__, TotalPacketLen, TotalPageNum);
+		dev_info(&(rtlpriv->ndev->dev), "%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__, TotalPacketLen, TotalPageNum);
 		FillH2CCmd_8812(rtlpriv, H2C_8812_RSVDPAGE, 5, RsvdPageLoc);
 	}
 
@@ -729,7 +728,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 	uint8_t	DLBcnCount = 0;
 	uint32_t poll = 0;
 
-	DBG_871X("%s mstatus(%x)\n", __FUNCTION__, mstatus);
+	dev_info(&(rtlpriv->ndev->dev), "%s mstatus(%x)\n", __FUNCTION__, mstatus);
 
 	if (mstatus == 1) {
 		/*
@@ -760,7 +759,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(4));
 
 		if (pHalData->RegFwHwTxQCtrl&BIT6) {
-			DBG_871X("HalDownloadRSVDPage(): There is an rtlpriv is sending beacon.\n");
+			dev_info(&(rtlpriv->ndev->dev), "HalDownloadRSVDPage(): There is an rtlpriv is sending beacon.\n");
 			bSendBeacon = _TRUE;
 		}
 
@@ -792,9 +791,9 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		/* RT_ASSERT(bcn_valid, ("HalDownloadRSVDPage88ES(): 1 Download RSVD page failed!\n")); */
 		if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped) {
 		} else if (!bcn_valid)
-			DBG_871X("%s: 1 Download RSVD page failed! DLBcnCount:%u, poll:%u\n", __FUNCTION__ , DLBcnCount, poll);
+			dev_info(&(rtlpriv->ndev->dev), "%s: 1 Download RSVD page failed! DLBcnCount:%u, poll:%u\n", __FUNCTION__ , DLBcnCount, poll);
 		else
-			DBG_871X("%s: 1 Download RSVD success! DLBcnCount:%u, poll:%u\n", __FUNCTION__, DLBcnCount, poll);
+			dev_info(&(rtlpriv->ndev->dev), "%s: 1 Download RSVD success! DLBcnCount:%u, poll:%u\n", __FUNCTION__, DLBcnCount, poll);
 		/*
 		 * We just can send the reserved page twice during the time that Tx thread is stopped (e.g. pnpsetpower)
 		 * becuase we need to free the Tx BCN Desc which is used by the first reserved page packet.
@@ -826,9 +825,9 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 				/* RT_ASSERT(bcn_valid, ("HalDownloadRSVDPage(): 2 Download RSVD page failed!\n")); */
 				if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped) {
 				} else if (!bcn_valid)
-					DBG_871X("%s: 2 Download RSVD page failed! DLBcnCount:%u, poll:%u\n", __FUNCTION__ , DLBcnCount, poll);
+					dev_info(&(rtlpriv->ndev->dev), "%s: 2 Download RSVD page failed! DLBcnCount:%u, poll:%u\n", __FUNCTION__ , DLBcnCount, poll);
 				else
-					DBG_871X("%s: 2 Download RSVD success! DLBcnCount:%u, poll:%u\n", __FUNCTION__, DLBcnCount, poll);
+					dev_info(&(rtlpriv->ndev->dev), "%s: 2 Download RSVD success! DLBcnCount:%u, poll:%u\n", __FUNCTION__, DLBcnCount, poll);
 			}
 		}
 
@@ -857,7 +856,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 
 		if (bcn_valid) {
 			rtw_hal_set_hwreg(rtlpriv, HW_VAR_BCN_VALID, NULL);
-			DBG_871X("Set RSVD page location to Fw.\n");
+			dev_info(&(rtlpriv->ndev->dev), "Set RSVD page location to Fw.\n");
 			/* FillH2CCmd88E(rtlpriv, H2C_88E_RSVDPAGE, H2C_RSVDPAGE_LOC_LENGTH, pMgntInfo->u1RsvdPageLoc); */
 		}
 
@@ -888,7 +887,7 @@ void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *rtlpriv, u16 mstatus_rpt)
 	SET_8812_H2CCMD_MSRRPT_PARM_MACID(u1JoinBssRptParm, macId);
 	SET_8812_H2CCMD_MSRRPT_PARM_MACID_END(u1JoinBssRptParm, macId_End);
 
-	DBG_871X("[MacId],  Set MacId Ctrl(original) = 0x%x \n", u1JoinBssRptParm[0]<<16|u1JoinBssRptParm[1]<<8|u1JoinBssRptParm[2]);
+	dev_info(&(rtlpriv->ndev->dev), "[MacId],  Set MacId Ctrl(original) = 0x%x \n", u1JoinBssRptParm[0]<<16|u1JoinBssRptParm[1]<<8|u1JoinBssRptParm[2]);
 
 	FillH2CCmd_8812(rtlpriv, H2C_8812_MSRRPT, 3, u1JoinBssRptParm);
 }
@@ -902,7 +901,7 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 
 	PSMode = PS_MODE_MIN;		/* ULLI: fix for powermode on low bitrate streaming */
 
-	DBG_871X("%s: Mode=%d SmartPS=%d UAPSD=%d\n", __FUNCTION__,
+	dev_info(&(rtlpriv->ndev->dev), "%s: Mode=%d SmartPS=%d UAPSD=%d\n", __FUNCTION__,
 			PSMode, pwrpriv->smart_ps, rtlpriv->registrypriv.uapsd_enable);
 
 	switch (PSMode) {
@@ -1108,10 +1107,10 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 	} while (counter++ < 6000);
 
 	if (counter >= 6000) {
-		DBG_871X("%s: chksum report fail! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+		dev_info(&(rtlpriv->ndev->dev), "%s: chksum report fail! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 		return _FAIL;
 	}
-	DBG_871X("%s: Checksum report OK! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+	dev_info(&(rtlpriv->ndev->dev), "%s: Checksum report OK! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 
 	value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
 	value32 |= MCUFWDL_RDY;
@@ -1125,13 +1124,13 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 	do {
 		value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
 		if (value32 & WINTINI_RDY) {
-			DBG_871X("%s: Polling FW ready success!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+			dev_info(&(rtlpriv->ndev->dev), "%s: Polling FW ready success!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 			return _SUCCESS;
 		}
 		udelay(5);
 	} while (counter++ < 6000);
 
-	DBG_871X ("%s: Polling FW ready fail!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+	dev_info(&(rtlpriv->ndev->dev), "%s: Polling FW ready fail!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 	return _FAIL;
 }
 
@@ -1175,7 +1174,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 	}
 
 
-	DBG_871X(" ===> rtl8821au_download_fw() fw:%s, size: %d\n", "Firmware for NIC", rtlhal->fwsize);
+	dev_info(&(rtlpriv->ndev->dev), " ===> rtl8821au_download_fw() fw:%s, size: %d\n", "Firmware for NIC", rtlhal->fwsize);
 
 	if (rtlhal->fwsize > FW_SIZE_8812) {
 			rtStatus = _FAIL;
@@ -1193,7 +1192,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 	release_firmware(fw);
 
 	{
-		DBG_871X_LEVEL(_drv_info_, "+%s: !bUsedWoWLANFw, FmrmwareLen:%d+\n", __func__, rtlhal->fwsize);
+		dev_info(&(rtlpriv->ndev->dev), "+%s: !bUsedWoWLANFw, FmrmwareLen:%d+\n", __func__, rtlhal->fwsize);
 		/* To Check Fw header. Added by tynli. 2009.12.04. */
 		pFwHdr = (uint8_t *) rtlhal->pfirmware;
 	}
@@ -1206,7 +1205,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 	DBG_871X ("%s: fw_ver=%d fw_subver=%d sig=0x%x\n",
 		  __FUNCTION__, pHalData->FirmwareVersion, pHalData->FirmwareSubVersion, pHalData->FirmwareSignature);
 */
-	DBG_871X ("%s: fw_ver=%d fw_subver=%d\n",
+	dev_info(&(rtlpriv->ndev->dev), "%s: fw_ver=%d fw_subver=%d\n",
 		  __FUNCTION__, rtlhal->fw_version, rtlhal->fw_subversion);
 
 
@@ -1237,19 +1236,19 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 		   || (rtw_get_passing_time_ms(fwdl_start_time) > 500 && writeFW_retry++ >= 3))
 			break;
 
-		DBG_871X("%s writeFW_retry:%u, time after fwdl_start_time:%ums\n", __FUNCTION__
+		dev_info(&(rtlpriv->ndev->dev), "%s writeFW_retry:%u, time after fwdl_start_time:%ums\n", __FUNCTION__
 			, writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
 		);
 	}
 	_rtl8821ae_enable_fw_download(rtlpriv, _FALSE);
 	if (_SUCCESS != rtStatus) {
-		DBG_871X("DL Firmware failed!\n");
+		dev_info(&(rtlpriv->ndev->dev), "DL Firmware failed!\n");
 		goto Exit;
 	}
 
 	rtStatus = _rtl8821au_fw_free_to_go(rtlpriv);
 	if (_SUCCESS != rtStatus) {
-		DBG_871X("DL Firmware failed!\n");
+		dev_info(&(rtlpriv->ndev->dev), "DL Firmware failed!\n");
 		goto Exit;
 	}
 

@@ -1,7 +1,6 @@
 #include <rtl8812a_hal.h>
 #include "trx.h"
 #include "def.h"
-#include <rtw_debug.h>
 
 static void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 {
@@ -325,9 +324,9 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 			SET_TX_DESC_TX_RATE(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
 		}
 	} else if ((pxmitframe->frame_tag&0x0f) == TXAGG_FRAMETAG) {
-		DBG_8192C("pxmitframe->frame_tag == TXAGG_FRAMETAG\n");
+		dev_dbg(&(rtlpriv->ndev->dev), "pxmitframe->frame_tag == TXAGG_FRAMETAG\n");
 	} else {
-		DBG_8192C("pxmitframe->frame_tag = %d\n", pxmitframe->frame_tag);
+		dev_dbg(&(rtlpriv->ndev->dev), "pxmitframe->frame_tag = %d\n", pxmitframe->frame_tag);
 
 		SET_TX_DESC_USE_RATE(ptxdesc, 1);
 		SET_TX_DESC_TX_RATE(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
@@ -506,7 +505,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 		pxmitframe->pkt_offset = 1; 	/* first frame of aggregation, reserve offset */
 
 		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe) == _FALSE) {
-			DBG_871X("%s coalesce 1st xmitframe failed \n", __FUNCTION__);
+			dev_dbg(&(rtlpriv->ndev->dev), "%s coalesce 1st xmitframe failed \n", __FUNCTION__);
 			continue;
 		}
 
@@ -611,7 +610,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 		pxmitframe->buf_addr = pxmitbuf->pbuf + pbuf;
 
 		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe) == _FALSE) {
-			DBG_871X("%s coalesce failed \n", __FUNCTION__);
+			dev_dbg(&(rtlpriv->ndev->dev), "%s coalesce failed \n", __FUNCTION__);
 			rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			continue;
 		}
@@ -764,7 +763,7 @@ static int32_t xmitframe_direct(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
 	if (res == _SUCCESS) {
 		rtw_dump_xframe(rtlpriv, pxmitframe);
 	} else {
-		DBG_8192C("==> %s xmitframe_coalsece failed\n", __FUNCTION__);
+		dev_dbg(&(rtlpriv->ndev->dev), "==> %s xmitframe_coalsece failed\n", __FUNCTION__);
 	}
 
 	return res;
@@ -927,7 +926,7 @@ u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 			else if(mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER)
 				SCSettingOfDesc = VHT_DATA_SC_40_UPPER_OF_80MHZ;
 			else
-				DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
+				dev_info(&(rtlpriv->ndev->dev), "SCMapping: Not Correct Primary40MHz Setting \n");
 		} else {
 			if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER) && (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER))
 				SCSettingOfDesc = VHT_DATA_SC_20_LOWEST_OF_80MHZ;
@@ -938,7 +937,7 @@ u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 			else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER) && (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER))
 				SCSettingOfDesc = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
 			else
-				DBG_871X("SCMapping: Not Correct Primary40MHz Setting \n");
+				dev_info(&(rtlpriv->ndev->dev), "SCMapping: Not Correct Primary40MHz Setting \n");
 		}
 	} else if(rtlpriv->phy.current_chan_bw== CHANNEL_WIDTH_40) {
 		/*

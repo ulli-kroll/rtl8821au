@@ -1,5 +1,4 @@
 #include "hw.h"
-#include <rtw_debug.h>
 
 void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 {
@@ -135,7 +134,7 @@ static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_
 		val8 |= mode;
 		rtl_write_byte(rtlpriv, MSR, val8);
 
-		DBG_871X("%s()-%d mode = %d\n", __FUNCTION__, __LINE__, mode);
+		dev_info(&(rtlpriv->ndev->dev), "%s()-%d mode = %d\n", __FUNCTION__, __LINE__, mode);
 
 		if ((mode == _HW_STATE_STATION_) || (mode == _HW_STATE_NOLINK_)) {
 			_rtl8821au_stop_tx_beacon(rtlpriv);
@@ -519,14 +518,14 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		val32 = rtl_read_dword(rtlpriv, REG_RCR);
 		val32 |= RCR_AM;
 		rtl_write_dword(rtlpriv, REG_RCR, val32);
-		DBG_8192C("%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
+		dev_info(&(rtlpriv->ndev->dev), "%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
 		break;
 
 	case HW_VAR_OFF_RCR_AM:
 		val32 = rtl_read_dword(rtlpriv, REG_RCR);
 		val32 &= ~RCR_AM;
 		rtl_write_dword(rtlpriv, REG_RCR, val32);
-		DBG_8192C("%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
+		dev_info(&(rtlpriv->ndev->dev), "%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
 		break;
 
 	case HW_VAR_BEACON_INTERVAL:
@@ -655,7 +654,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			else
 				AcmCtrl &= (~AcmHw_BeqEn);
 
-			DBG_8192C("[HW_VAR_ACM_CTRL] Write 0x%X\n", AcmCtrl);
+			dev_info(&(rtlpriv->ndev->dev), "[HW_VAR_ACM_CTRL] Write 0x%X\n", AcmCtrl);
 			rtl_write_byte(rtlpriv, REG_ACMHWCTRL, AcmCtrl);
 		}
 		break;
@@ -783,7 +782,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 						break;
 				} while (trycnt--);
 				if (trycnt == 0) {
-					DBG_8192C("[HW_VAR_FIFO_CLEARN_UP] Stop RX DMA failed......\n");
+					dev_info(&(rtlpriv->ndev->dev), "[HW_VAR_FIFO_CLEARN_UP] Stop RX DMA failed......\n");
 				}
 
 				/* RQPN Load 0 */
@@ -799,7 +798,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	case HW_VAR_TX_RPT_MAX_MACID:
 		{
 			uint8_t maxMacid = *pval;
-			DBG_8192C("### MacID(%d),Set Max Tx RPT MID(%d)\n", maxMacid, maxMacid+1);
+			dev_info(&(rtlpriv->ndev->dev), "### MacID(%d),Set Max Tx RPT MID(%d)\n", maxMacid, maxMacid+1);
 			rtl_write_byte(rtlpriv, REG_TX_RPT_CTRL+1, maxMacid+1);
 		}
 		break;
@@ -819,7 +818,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 	case HW_VAR_APFM_ON_MAC:
 		pHalData->bMacPwrCtrlOn = *pval;
-		DBG_8192C("%s: bMacPwrCtrlOn=%d\n", __FUNCTION__, pHalData->bMacPwrCtrlOn);
+		dev_info(&(rtlpriv->ndev->dev), "%s: bMacPwrCtrlOn=%d\n", __FUNCTION__, pHalData->bMacPwrCtrlOn);
 		break;
 
 	case HW_VAR_NAV_UPPER:
@@ -827,7 +826,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			uint32_t usNavUpper = *((u32 *)pval);
 
 			if (usNavUpper > HAL_NAV_UPPER_UNIT * 0xFF) {
-				DBG_8192C("%s: [HW_VAR_NAV_UPPER] set value(0x%08X us) is larger than (%d * 0xFF)!\n",
+				dev_info(&(rtlpriv->ndev->dev), "%s: [HW_VAR_NAV_UPPER] set value(0x%08X us) is larger than (%d * 0xFF)!\n",
 					__FUNCTION__, usNavUpper, HAL_NAV_UPPER_UNIT);
 				break;
 			}
@@ -896,7 +895,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	default:
-		DBG_8192C("%s: [WARNNING] variable(%d) not defined!\n", __FUNCTION__, variable);
+		dev_info(&(rtlpriv->ndev->dev), "%s: [WARNNING] variable(%d) not defined!\n", __FUNCTION__, variable);
 		break;
 	}
 }
@@ -969,7 +968,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 		break;
 
 	default:
-		DBG_8192C("%s: [WARNNING] variable(%d) not defined!\n", __FUNCTION__, variable);
+		dev_info(&(rtlpriv->ndev->dev), "%s: [WARNNING] variable(%d) not defined!\n", __FUNCTION__, variable);
 		break;
 	}
 }
@@ -994,7 +993,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	pHalData = GET_HAL_DATA(rtlpriv);
 
 	value32 = rtl_read_dword(rtlpriv, REG_SYS_CFG);
-	DBG_8192C("%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);
+	dev_info(&(rtlpriv->ndev->dev), "%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		ChipVersion.ICType = CHIP_8812;
@@ -1045,18 +1044,18 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	if (IS_1T2R(ChipVersion)) {
 		rtlpriv->phy.rf_type = RF_1T2R;
 		 rtlpriv->phy.num_total_rfpath = 2;
-		DBG_8192C("==> RF_Type : 1T2R\n");
+		dev_info(&(rtlpriv->ndev->dev), "==> RF_Type : 1T2R\n");
 	} else if (IS_2T2R(ChipVersion)) {
 		rtlpriv->phy.rf_type = RF_2T2R;
 		 rtlpriv->phy.num_total_rfpath = 2;
-		DBG_8192C("==> RF_Type : 2T2R\n");
+		dev_info(&(rtlpriv->ndev->dev), "==> RF_Type : 2T2R\n");
 	} else {
 		rtlpriv->phy.rf_type = RF_1T1R;
 		 rtlpriv->phy.num_total_rfpath = 1;
-		DBG_8192C("==> RF_Type 1T1R\n");
+		dev_info(&(rtlpriv->ndev->dev), "==> RF_Type 1T1R\n");
 	}
 
-	DBG_8192C("RF_Type is %x!!\n", rtlpriv->phy.rf_type);
+	dev_info(&(rtlpriv->ndev->dev), "RF_Type is %x!!\n", rtlpriv->phy.rf_type);
 }
 
 

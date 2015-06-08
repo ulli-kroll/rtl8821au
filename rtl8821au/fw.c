@@ -1156,10 +1156,10 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 		const char fw_name[] = "rtlwifi/rtl8812aufw.bin";
 
 		if (request_firmware(&fw, fw_name, device)) {
-			dev_err(device, "Firmware %s not available\n", fw_name);
+			dev_err(&(rtlpriv->ndev->dev), "Firmware %s not available\n", fw_name);
 			return -ENOENT;
 		} else {
-			dev_info(device, "Firmware %s loaded\n", fw_name);
+			dev_info(&(rtlpriv->ndev->dev), "Firmware %s loaded\n", fw_name);
 		}
 	}
 
@@ -1167,10 +1167,10 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 		const char fw_name[] = "rtlwifi/rtl8821aufw.bin";
 
 		if (request_firmware(&fw, fw_name, device)) {
-			dev_err(device, "Firmware %s not available\n", fw_name);
+			dev_err(&(rtlpriv->ndev->dev), "Firmware %s not available\n", fw_name);
 			return -ENOENT;
 		} else {
-			dev_info(device, "Firmware %s loaded\n", fw_name);
+			dev_info(&(rtlpriv->ndev->dev), "Firmware %s loaded\n", fw_name);
 		}
 	}
 

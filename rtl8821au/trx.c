@@ -1,6 +1,7 @@
 #include <rtl8812a_hal.h>
 #include "trx.h"
 #include "def.h"
+#include <rtw_debug.h>
 
 static void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 {

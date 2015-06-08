@@ -36,7 +36,6 @@
 
 struct rtl_priv;
 
-#include <rtw_debug.h>
 
 #ifdef CONFIG_80211N_HT
 #include <rtw_ht.h>

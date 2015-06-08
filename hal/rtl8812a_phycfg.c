@@ -25,6 +25,7 @@
 #include <../rtl8821au/reg.h>
 #include <../rtl8821au/rf.h>
 #include <../wifi.h>
+#include <rtw_debug.h>
 
 const char *const GLBwSrc[]={
 	"CHANNEL_WIDTH_20",

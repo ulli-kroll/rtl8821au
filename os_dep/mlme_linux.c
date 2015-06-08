@@ -22,6 +22,7 @@
 #define _MLME_OSDEP_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 /*
 void sitesurvey_ctrl_handler(void *FunctionContext)

@@ -20,7 +20,7 @@
 #define _OS_INTFS_C_
 
 #include <drv_types.h>
-
+#include <rtw_debug.h>
 
 
 MODULE_LICENSE("GPL");

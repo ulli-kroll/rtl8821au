@@ -20,6 +20,7 @@
 #define _RTW_VHT_C
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 #ifdef CONFIG_80211AC_VHT
 /*

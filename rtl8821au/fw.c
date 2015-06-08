@@ -1,5 +1,7 @@
 #include "fw.h"
 #include <linux/firmware.h>
+#include <rtw_debug.h>
+
 #define CONFIG_H2C_EF
 
 #define RTL8812_MAX_H2C_BOX_NUMS	4

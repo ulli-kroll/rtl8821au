@@ -20,6 +20,7 @@
 #define _RTW_MLME_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 
 extern void indicate_wx_scan_complete_event(struct rtl_priv *rtlpriv);

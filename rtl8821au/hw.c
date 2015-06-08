@@ -1,4 +1,5 @@
 #include "hw.h"
+#include <rtw_debug.h>
 
 void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 {

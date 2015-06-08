@@ -20,6 +20,7 @@
 #define _RTL8812AU_RECV_C_
 
 #include <rtl8812a_hal.h>
+#include <rtw_debug.h>
 
 void rtl8812au_init_recvbuf(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
 {

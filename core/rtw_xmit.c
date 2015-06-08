@@ -20,7 +20,7 @@
 #define _RTW_XMIT_C_
 
 #include <drv_types.h>
-
+#include <rtw_debug.h>
 
 static uint8_t P802_1H_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0xf8 };
 static uint8_t RFC1042_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0x00 };

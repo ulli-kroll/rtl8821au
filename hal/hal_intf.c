@@ -21,7 +21,7 @@
 #define _HAL_INTF_C_
 
 #include <drv_types.h>
-
+#include <rtw_debug.h>
 
 void rtw_hal_chip_configure(struct rtl_priv *rtlpriv)
 {

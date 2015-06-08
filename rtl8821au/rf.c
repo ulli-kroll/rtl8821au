@@ -3,6 +3,7 @@
 #include "reg.h"
 #include "phy.h"
 #include "dm.h"
+#include <rtw_debug.h>
 
 #undef RT_TRACE
 static inline void RT_TRACE(struct rtl_priv *rtlpriv,

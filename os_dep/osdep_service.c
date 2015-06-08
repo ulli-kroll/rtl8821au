@@ -22,6 +22,7 @@
 #define _OSDEP_SERVICE_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 #define RT_TAG	('1178')
 

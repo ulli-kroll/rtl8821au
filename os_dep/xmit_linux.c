@@ -20,7 +20,7 @@
 #define _XMIT_OSDEP_C_
 
 #include <drv_types.h>
-
+#include <rtw_debug.h>
 
 uint rtw_remainder_len(struct pkt_file *pfile)
 {

@@ -19,6 +19,7 @@
 #define _USB_OPS_LINUX_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 #include <../rtl8821au/trx.h>
 
 

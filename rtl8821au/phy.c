@@ -4,6 +4,7 @@
 #include "table.h"
 #include "rf.h"
 #include "reg.h"
+#include <rtw_debug.h>
 /*
  * 1. BB register R/W API
  */

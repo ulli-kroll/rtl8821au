@@ -20,7 +20,7 @@
 #define _HAL_COM_C_
 
 #include <drv_types.h>
-
+#include <rtw_debug.h>
 #include <odm_precomp.h>
 
 #define	EEPROM_CHANNEL_PLAN_BY_HW_MASK	0x80

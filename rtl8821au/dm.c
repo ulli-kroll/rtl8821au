@@ -1,6 +1,7 @@
 #include "dm.h"
 #include "phy.h"
 #include <odm_precomp.h>
+#include <rtw_debug.h>
 
 #undef RT_TRACE
 static inline void RT_TRACE(struct rtl_priv *rtlpriv,

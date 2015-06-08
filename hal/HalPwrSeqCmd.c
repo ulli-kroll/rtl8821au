@@ -34,7 +34,7 @@ Major Change History:
 
 --*/
 #include <HalPwrSeqCmd.h>
-
+#include <rtw_debug.h>
 
 //
 //	Description:

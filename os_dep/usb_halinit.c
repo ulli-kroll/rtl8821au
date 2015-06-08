@@ -25,7 +25,7 @@
 #include <../rtl8821au/trx.h>
 #include <../rtl8821au/hw.h>
 #include <../rtl8821au/fw.h>
-
+#include <rtw_debug.h>
 
 static void _dbg_dump_macreg(struct rtl_priv *rtlpriv)
 {

@@ -20,6 +20,7 @@
 #define _RECV_OSDEP_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvframe, uint8_t *pdata, struct sk_buff *pskb)
 {

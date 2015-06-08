@@ -20,7 +20,7 @@
 #define _RTW_STA_MGT_C_
 
 #include <drv_types.h>
-
+#include <rtw_debug.h>
 
 
 static void _rtw_init_stainfo(struct sta_info *psta)

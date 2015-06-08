@@ -20,6 +20,7 @@
 #define _RTW_PWRCTRL_C_
 
 #include <drv_types.h>
+#include <rtw_debug.h>
 
 // Should not include hal dependent herader here, it will remove later. Lucas@20130123
 

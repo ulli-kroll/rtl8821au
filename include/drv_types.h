@@ -192,7 +192,6 @@ struct registry_priv
 	//define for tx power adjust
 	uint8_t	RegEnableTxPowerLimit;
 	uint8_t	RegPowerBase;
-	uint8_t	RegPwrByRate;
 	uint8_t	AmplifierType_2G;
 	uint8_t	AmplifierType_5G;
 	uint8_t	bEn_RFE;

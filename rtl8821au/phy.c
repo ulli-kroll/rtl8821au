@@ -3177,7 +3177,7 @@ u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	 * HT=3/4/5/6 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
 	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
 	 */
-	if (pregistrypriv->RegPwrByRate == _FALSE && efuse->eeprom_regulatory != 2) {
+	if (efuse->eeprom_regulatory != 2) {
 		powerDiffByRate = phy_Gettx_power_by_rate_offset_8812(rtlpriv, (uint8_t)(!bIn24G), RFPath, Rate);
 
 		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2)

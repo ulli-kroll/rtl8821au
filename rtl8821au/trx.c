@@ -1447,7 +1447,7 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyI
 
 	if (pPktinfo->bPacketBeacon)
 		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt++;
-	isCCKrate = (pPktinfo->DataRate <= DESC92C_RATE11M) ? TRUE : FALSE;
+	isCCKrate = (pPktinfo->DataRate <= DESC_RATE11M) ? TRUE : FALSE;
 	pDM_Odm->RxRate = pPktinfo->DataRate;
 	/*
 	if (!isCCKrate)

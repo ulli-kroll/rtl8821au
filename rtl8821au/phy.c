@@ -3970,7 +3970,7 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 {
 	struct rtl_dm *rtldm = &(rtlpriv->dm);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	char reg_swing_2g = -1;	/* 0xff */
 	char reg_swing_5g = -1;	/* 0xff */
 	char swing_2g = -1 * reg_swing_2g;
@@ -3979,7 +3979,7 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 	const char auto_temp = -1;
 
 
-	if (pEEPROM->bautoload_fail_flag) {
+	if (efuse->autoload_failflag) {
 		if (Band == BAND_ON_2_4G) {
 			rtldm->swing_diff_2g = swing_2g;
 			if      (swing_2g == 0)
@@ -5626,8 +5626,6 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	int			rtStatus = _SUCCESS;
 
 	/* DBG_871X("==>phy_BB8812_Config_ParaFile\n"); */
@@ -5646,7 +5644,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 
 	/* If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
 	/* 1 TODO */
-	if (pEEPROM->bautoload_fail_flag == _FALSE) {
+	if (efuse->autoload_failflag == _FALSE) {
 		rtlphy->pwrgroup_cnt = 0;
 
 		ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);

@@ -840,12 +840,13 @@ void EFUSE_ShadowMapUpdate(
 	 struct rtl_priv *rtlpriv,
 	 uint8_t		efuseType)
 {
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	u16	mapLen=0;
 
 	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
-	if (pEEPROM->bautoload_fail_flag == _TRUE)
+	if (efuse->autoload_failflag == _TRUE)
 	{
 		memset(pEEPROM->efuse_eeprom_data, 0xFF, mapLen);
 	}

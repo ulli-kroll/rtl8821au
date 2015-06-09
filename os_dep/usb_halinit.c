@@ -1364,12 +1364,12 @@ void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 
 void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	/*  struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv); */
 	uint32_t			i;
 	u16			value16;
 
-	if (_FALSE == pEEPROM->bautoload_fail_flag) { /* autoload OK. */
+	if (_FALSE == efuse->autoload_failflag) { /* autoload OK. */
 		if (is_boot_from_eeprom(rtlpriv)) {
 			/* Read all Content from EEPROM or EFUSE. */
 			for (i = 0; i < HWSET_MAX_SIZE_JAGUAR; i += 2) {
@@ -1473,6 +1473,7 @@ static void ReadLEDSetting_8812AU(struct rtl_priv *rtlpriv,
 
 void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 {
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
@@ -1480,50 +1481,51 @@ void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 	hal_InitPGData_8812A(rtlpriv, pEEPROM->efuse_eeprom_data);
 	Hal_EfuseParseIDCode8812A(rtlpriv, pEEPROM->efuse_eeprom_data);
 
-	Hal_ReadPROMVersion8812A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
-	hal_ReadIDs_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
-	hal_ReadMACAddress_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
-	Hal_ReadTxPowerInfo8812A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
-	Hal_ReadBoardType8812A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
+	Hal_ReadPROMVersion8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	hal_ReadIDs_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	hal_ReadMACAddress_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	Hal_ReadTxPowerInfo8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	Hal_ReadBoardType8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
 
 	/*
 	 * Read Bluetooth co-exist and initialize
 	 */
 
-	Hal_EfuseParseBTCoexistInfo8812A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
+	Hal_EfuseParseBTCoexistInfo8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
 
-	Hal_ReadChannelPlan8812A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
-	Hal_EfuseParseXtal_8812A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
-	Hal_ReadThermalMeter_8812A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
-	Hal_ReadAntennaDiversity8812A(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
+	Hal_ReadChannelPlan8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	Hal_EfuseParseXtal_8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	Hal_ReadThermalMeter_8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	Hal_ReadAntennaDiversity8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
 
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		_rtl8821au_read_pa_type(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
+		_rtl8821au_read_pa_type(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
 	} else {
-		_rtl8812au_read_pa_type(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
-		_rtl8812au_read_rfe_type(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
+		_rtl8812au_read_pa_type(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+		_rtl8812au_read_rfe_type(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
 	}
 
 	hal_CustomizeByCustomerID_8812AU(rtlpriv);
 
-	ReadLEDSetting_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
+	ReadLEDSetting_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
 
 	/* 2013/04/15 MH Add for different board type recognize. */
-	hal_ReadUsbType_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
+	hal_ReadUsbType_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
 }
 
 static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 {
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	uint8_t			eeValue;
 
 	/* check system boot selection */
 	eeValue = rtl_read_byte(rtlpriv, REG_9346CR);
 	pEEPROM->EepromOrEfuse		= (eeValue & BOOT_FROM_EEPROM) ? _TRUE : _FALSE;
-	pEEPROM->bautoload_fail_flag	= (eeValue & EEPROM_EN) ? _FALSE : _TRUE;
+	efuse->autoload_failflag	= (eeValue & EEPROM_EN) ? _FALSE : _TRUE;
 
 	DBG_8192C("Boot from %s, Autoload %s !\n", (pEEPROM->EepromOrEfuse ? "EEPROM" : "EFUSE"),
-				(pEEPROM->bautoload_fail_flag ? "Fail" : "OK"));
+				(efuse->autoload_failflag ? "Fail" : "OK"));
 
 	/* pHalData->EEType = IS_BOOT_FROM_EEPROM(rtlpriv) ? EEPROM_93C46 : EEPROM_BOOT_EFUSE; */
 

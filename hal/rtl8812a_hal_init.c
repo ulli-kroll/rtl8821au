@@ -478,16 +478,16 @@ void Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 
 void Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo)
 {
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	u16			EEPROMId;
 
 	/*  Checl 0x8129 again for making sure autoload status!! */
 	EEPROMId = le16_to_cpu(*((u16 *)hwinfo));
 	if (EEPROMId != RTL_EEPROM_ID) {
 		DBG_8192C("EEPROM ID(%#x) is invalid!!\n", EEPROMId);
-		pEEPROM->bautoload_fail_flag = _TRUE;
+		efuse->autoload_failflag = _TRUE;
 	} else {
-		pEEPROM->bautoload_fail_flag = _FALSE;
+		efuse->autoload_failflag = _FALSE;
 	}
 
 	DBG_8192C("EEPROM ID=0x%04x\n", EEPROMId);
@@ -2040,6 +2040,7 @@ u8 GetEEPROMSize8812A(struct rtl_priv *rtlpriv)
 
 void CheckAutoloadState8812A(struct rtl_priv *rtlpriv)
 {
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	PEEPROM_EFUSE_PRIV pEEPROM;
 	uint8_t val8;
 
@@ -2049,12 +2050,12 @@ void CheckAutoloadState8812A(struct rtl_priv *rtlpriv)
 	/* check system boot selection */
 	val8 = rtl_read_byte(rtlpriv, REG_9346CR);
 	pEEPROM->EepromOrEfuse = (val8 & BOOT_FROM_EEPROM) ? _TRUE : _FALSE;
-	pEEPROM->bautoload_fail_flag = (val8 & EEPROM_EN) ? _FALSE : _TRUE;
+	efuse->autoload_failflag = (val8 & EEPROM_EN) ? _FALSE : _TRUE;
 
 	DBG_8192C("%s: 9346CR(%#x)=0x%02x, Boot from %s, Autoload %s!\n",
 			__FUNCTION__, REG_9346CR, val8,
 			(pEEPROM->EepromOrEfuse ? "EEPROM" : "EFUSE"),
-			(pEEPROM->bautoload_fail_flag ? "Fail" : "OK"));
+			(efuse->autoload_failflag ? "Fail" : "OK"));
 }
 
 void InitPGData8812A(struct rtl_priv *rtlpriv)

@@ -65,7 +65,6 @@ typedef enum _RT_CUSTOMER_ID
 
 struct eeprom_priv
 {
-	uint8_t		bautoload_fail_flag;
 	uint8_t		bloadfile_fail_flag;
 	uint8_t		bloadmac_fail_flag;
 	uint8_t		EepromOrEfuse;

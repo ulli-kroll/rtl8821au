@@ -1340,8 +1340,8 @@ static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 			if ((pPktinfo->DataRate >= DESC_RATEMCS8)
 			 && (pPktinfo->DataRate <= DESC_RATEMCS15))
 				Max_spatial_stream = 2;
-			else if ((pPktinfo->DataRate >= DESC_RATEVHTSS2MCS0)
-			      && (pPktinfo->DataRate <= DESC_RATEVHTSS2MCS9))
+			else if ((pPktinfo->DataRate >= DESC_RATEVHT2SS_MCS0)
+			      && (pPktinfo->DataRate <= DESC_RATEVHT2SS_MCS9))
 				Max_spatial_stream = 2;
 			else
 				Max_spatial_stream = 1;

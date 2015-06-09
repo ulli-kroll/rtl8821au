@@ -160,7 +160,6 @@ void rtl8812_init_dm_priv(IN struct rtl_priv *rtlpriv)
 	 */
 	ODM_InitAllTimers(podmpriv );
 #endif
-	rtlpriv->registrypriv.RegEnableTxPowerLimit = 0;
 	rtlpriv->registrypriv.RegPowerBase = 14;
 	rtlpriv->registrypriv.bEn_RFE = 0;
 	rtlpriv->registrypriv.RFE_Type = 64;

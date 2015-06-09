@@ -2516,8 +2516,7 @@ static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
 		rfPath = -1, rateSection = -1, channelGroup = -1;
 	uint8_t	powerLimit = MAX_POWER_INDEX;
 
-	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 0 && efuse->eeprom_regulatory != 1)
-	   || efuse->eeprom_regulatory == 2)
+	if (efuse->eeprom_regulatory != 1 || efuse->eeprom_regulatory == 2)
 		return MAX_POWER_INDEX;
 
 	regulation = TXPWR_LMT_FCC;
@@ -3180,8 +3179,7 @@ u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	if (efuse->eeprom_regulatory != 2) {
 		powerDiffByRate = phy_Gettx_power_by_rate_offset_8812(rtlpriv, (uint8_t)(!bIn24G), RFPath, Rate);
 
-		if ((pregistrypriv->RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2)
-		||  efuse->eeprom_regulatory == 1) {
+		if (efuse->eeprom_regulatory == 1) {
 			uint8_t limit = 0;
 			limit = _rtl8821au_phy_get_txpower_limit(rtlpriv, (uint8_t)(!bIn24G) ? BAND_ON_5G : BAND_ON_2_4G, BandWidth, (enum radio_path)RFPath, Rate, Channel);
 
@@ -5634,8 +5632,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 
 	PHY_InitPowerLimitTable(rtlpriv);
 
-	if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2) ||
-	     efuse->eeprom_regulatory == 1) {
+	if (efuse->eeprom_regulatory == 1) {
 		_rtl8821au_phy_read_and_config_txpwr_lmt(rtlpriv);
 	}
 
@@ -5649,8 +5646,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 
 		ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);
 
-		if ((rtlpriv->registrypriv.RegEnableTxPowerLimit == 1 && efuse->eeprom_regulatory != 2) ||
-		 	efuse->eeprom_regulatory == 1 )
+		if (efuse->eeprom_regulatory == 1 )
 			PHY_ConvertPowerLimitToPowerIndex( rtlpriv );
 	}
 

@@ -3043,7 +3043,6 @@ u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t					i = 0;	/* default set to 1S */
-	struct registry_priv	*pregistrypriv = &rtlpriv->registrypriv;
 	uint32_t					powerDiffByRate = 0;
 	uint32_t					txPower = 0;
 	uint8_t					chnlIdx = (Channel-1);

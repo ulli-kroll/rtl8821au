@@ -2682,7 +2682,7 @@ static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
 	return powerLimit;
 }
 
-BOOLEAN phy_GetChnlIndex8812A(uint8_t Channel, uint8_t *ChannelIdx)
+static bool _rtl8821ae_phy_get_chnl_index(uint8_t Channel, uint8_t *ChannelIdx)
 {
 	uint8_t channel5G[CHANNEL_MAX_NUMBER_5G] = {
 		36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64,
@@ -3057,7 +3057,7 @@ u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
 		dev_info(&(rtlpriv->ndev->dev), "Illegal channel!!\n");
 	}
 
-	bIn24G = phy_GetChnlIndex8812A(Channel, &chnlIdx);
+	bIn24G = _rtl8821ae_phy_get_chnl_index(Channel, &chnlIdx);
 
 	/* DBG_871X("[%s] Channel Index: %d\n", (bIn24G?"2.4G":"5G"), chnlIdx); */
 

@@ -1044,7 +1044,7 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t i;
 	for (i = 0; i < ArraySize; i++) {
-		power_index[i] = (uint8_t)PHY_GetTxPowerIndex_8812A(rtlpriv, RFPath, Rate[i], BandWidth, Channel);
+		power_index[i] = _rtl8821au_get_txpower_index(rtlpriv, RFPath, Rate[i], BandWidth, Channel);
 		if ((power_index[i] % 2 == 1) &&  !IS_NORMAL_CHIP(pHalData->VersionID))
 			power_index[i] -= 1;
 	}

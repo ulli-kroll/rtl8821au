@@ -70,7 +70,7 @@ int	PHY_RFConfig8812(IN struct rtl_priv *rtlpriv	);
 //
 
 void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *rtlpriv, IN uint8_t	Channel	);
-u32 PHY_GetTxPowerIndex_8812A(
+u8 _rtl8821au_get_txpower_index(
 	IN	struct rtl_priv *		rtlpriv,
 	IN	uint8_t					RFPath,
 	IN	uint8_t					Rate,

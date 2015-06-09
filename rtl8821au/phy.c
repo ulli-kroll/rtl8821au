@@ -3037,7 +3037,7 @@ void phy_TxPwrAdjInPercentage(struct rtl_priv *rtlpriv, uint8_t *pTxPwrIdx)
 		*pTxPwrIdx = RF6052_MAX_TX_PWR;
 }
 
-u32 PHY_GetTxPowerIndex_8812A(struct rtl_priv *rtlpriv, uint8_t RFPath,
+u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	uint8_t	Rate, enum CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
 	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
@@ -4849,7 +4849,7 @@ static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv, u
 	int	i = 0;
 
 	for (i = 0; i < RateArraySize; ++i) {
-		power_index = PHY_GetTxPowerIndex_8812A(rtlpriv, RFPath, Rates[i], BandWidth, Channel);
+		power_index = _rtl8821au_get_txpower_index(rtlpriv, RFPath, Rates[i], BandWidth, Channel);
 		_rtl8821au_phy_set_txpower_index(rtlpriv, power_index, RFPath, Rates[i]);
 	}
 
@@ -4866,10 +4866,10 @@ static void _rtl8821au_phy_txpower_training_by_path(struct rtl_priv *rtlpriv,
 	writeData = 0;
 
 	if (RfPath == RF90_PATH_A) {
-		PowerLevel = PHY_GetTxPowerIndex_8812A(rtlpriv, RF90_PATH_A, MGN_MCS7, BandWidth, Channel);
+		PowerLevel = _rtl8821au_get_txpower_index(rtlpriv, RF90_PATH_A, MGN_MCS7, BandWidth, Channel);
 		writeOffset =  rA_TxPwrTraing_Jaguar;
 	} else {
-		PowerLevel = PHY_GetTxPowerIndex_8812A(rtlpriv, RF90_PATH_B, MGN_MCS7, BandWidth, Channel);
+		PowerLevel = _rtl8821au_get_txpower_index(rtlpriv, RF90_PATH_B, MGN_MCS7, BandWidth, Channel);
 		writeOffset =  rB_TxPwrTraing_Jaguar;
 	}
 

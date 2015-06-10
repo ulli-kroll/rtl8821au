@@ -717,8 +717,6 @@ typedef enum tag_SW_Antenna_Switch_Definition
 extern  uint32_t TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE];
 
 // <20121018, Kordan> In case fail to read TxPowerTrack.txt, we use the table of 88E as the default table.
-static u8 rtl8818e_delta_swing_table_idx_24gb_p[] = {0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4,  4,  4,  4,  4,  4,  5,  5,  7,  7,  8,  8,  8,  9,  9,  9,  9,  9};
-static u8 rtl8818e_delta_swing_table_idx_24gb_n[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5,  6,  6,  7,  7,  7,  7,  8,  8,  9,  9, 10, 10, 10, 11, 11, 11, 11};
 
 //
 // check Sta pointer valid or not

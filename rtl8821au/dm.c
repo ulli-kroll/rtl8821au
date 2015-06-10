@@ -556,6 +556,13 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 *                           TxPowerTrack_USB.TXT
 ******************************************************************************/
 
+static u8 rtl8818e_delta_swing_table_idx_24gb_p[] = {
+	0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4,  4,  4,  4,  4,
+	4,  5,  5,  7,  7,  8,  8,  8,  9,  9,  9,  9,  9};
+static u8 rtl8818e_delta_swing_table_idx_24gb_n[] = {
+	0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5,  6,  6,  7,  7,
+	7,  7,  8,  8,  9,  9, 10, 10, 10, 11, 11, 11, 11};
+
 static u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 14, 14, 14, 14},

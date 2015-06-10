@@ -311,9 +311,6 @@ void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value
 	 * This init variable may be changed in run time.
 	 */
 	switch	(CmnInfo) {
-	case	ODM_CMNINFO_RSSI_MIN:
-		dm_digtable->rssi_val_min = (u8)Value;
-		break;
 	case	ODM_CMNINFO_RA_THRESHOLD_HIGH:
 		p_ra->high_rssi_thresh_for_ra = (u8)Value;
 		break;

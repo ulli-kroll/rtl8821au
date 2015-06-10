@@ -340,7 +340,6 @@ typedef enum _ODM_Common_Info_Definition
 //--------- POINTER REFERENCE-----------//
 
 //------------CALL BY VALUE-------------//
-	ODM_CMNINFO_RSSI_MIN,
 	ODM_CMNINFO_RA_THRESHOLD_HIGH,		// u8
 //------------CALL BY VALUE-------------//
 

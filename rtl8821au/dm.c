@@ -1735,7 +1735,7 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 
 	FindMinimumRSSI(rtlpriv);	/* get pdmpriv->MinUndecoratedPWDBForDM */
 
-	ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_RSSI_MIN, rtl_dm_dig->min_undec_pwdb_for_dm);
+	rtl_dm_dig->rssi_val_min = rtl_dm_dig->min_undec_pwdb_for_dm;
 }
 
 

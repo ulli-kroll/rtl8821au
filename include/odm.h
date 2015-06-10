@@ -341,8 +341,6 @@ typedef enum _ODM_Common_Info_Definition
 
 //------------CALL BY VALUE-------------//
 	ODM_CMNINFO_RSSI_MIN,
-	ODM_CMNINFO_DBG_COMP,				// uint64_t
-	ODM_CMNINFO_DBG_LEVEL,				// uint32_t
 	ODM_CMNINFO_RA_THRESHOLD_HIGH,		// u8
 //------------CALL BY VALUE-------------//
 

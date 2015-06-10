@@ -801,12 +801,6 @@ ODM_CmnInfoPtrArrayHook(
 	IN		void *pValue
 	);
 
-void
-ODM_CmnInfoUpdate(
-	IN		struct _rtw_dm *	pDM_Odm,
-	IN		uint32_t			CmnInfo,
-	IN		uint64_t			Value
-	);
 
 void
 ODM_InitAllTimers(

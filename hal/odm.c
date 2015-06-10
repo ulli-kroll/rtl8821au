@@ -297,29 +297,6 @@ void ODM_CmnInfoPtrArrayHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
 
 }
 
-
-/*
- * Update Band/CHannel/.. The values are dynamic but non-per-packet.
- */
-void ODM_CmnInfoUpdate(struct _rtw_dm *pDM_Odm, uint32_t CmnInfo, uint64_t Value)
-{
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
-	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
-	struct rate_adaptive *p_ra = &(rtlpriv->ra);
-
-	/*
-	 * This init variable may be changed in run time.
-	 */
-	switch	(CmnInfo) {
-	default:
-		/* do nothing */
-		break;
-	}
-
-
-}
-
-
 void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;

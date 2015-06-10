@@ -755,9 +755,9 @@ void rtl8812au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 			*down_b = rtl8812ae_delta_swing_table_idx_5gb_n_rfe3[2];
 		} else {
 			*up_a   = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
-			*down_a = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+			*down_a = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
 			*up_b   = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
-			*down_b = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+			*down_b = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
 		}
 	} else {
 		if (1 <= channel && channel <= 14) {
@@ -789,9 +789,9 @@ void rtl8812au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 			*down_b = rtl8812ae_delta_swing_table_idx_5gb_n[2];
 		} else {
 			*up_a   = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
-			*down_a = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+			*down_a = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
 			*up_b   = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
-			*down_b = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+			*down_b = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
 		}
 	}
 
@@ -1040,9 +1040,9 @@ void rtl8821au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 		*down_b = rtl8821au_delta_swing_table_idx_5gb_n[2];
 	} else {
 		*up_a   = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
-		*down_a = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+		*down_a = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
 		*up_b   = (u8 *)rtl8818e_delta_swing_table_idx_24gb_p;
-		*down_b = (u8 *)DeltaSwingTableIdx_2GA_N_8188E;
+		*down_b = (u8 *)rtl8818e_delta_swing_table_idx_24gb_n;
 	}
 
 	return;

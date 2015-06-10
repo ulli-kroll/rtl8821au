@@ -633,39 +633,6 @@ struct ieee80211_snap_hdr {
 #define IEEE80211_OFDM_RATE_54MB		0x6C
 #define IEEE80211_BASIC_RATE_MASK		0x80
 
-#define IEEE80211_CCK_RATE_1MB_MASK		(1<<0)
-#define IEEE80211_CCK_RATE_2MB_MASK		(1<<1)
-#define IEEE80211_CCK_RATE_5MB_MASK		(1<<2)
-#define IEEE80211_CCK_RATE_11MB_MASK		(1<<3)
-#define IEEE80211_OFDM_RATE_6MB_MASK		(1<<4)
-#define IEEE80211_OFDM_RATE_9MB_MASK		(1<<5)
-#define IEEE80211_OFDM_RATE_12MB_MASK		(1<<6)
-#define IEEE80211_OFDM_RATE_18MB_MASK		(1<<7)
-#define IEEE80211_OFDM_RATE_24MB_MASK		(1<<8)
-#define IEEE80211_OFDM_RATE_36MB_MASK		(1<<9)
-#define IEEE80211_OFDM_RATE_48MB_MASK		(1<<10)
-#define IEEE80211_OFDM_RATE_54MB_MASK		(1<<11)
-
-#define IEEE80211_CCK_RATES_MASK	        0x0000000F
-#define IEEE80211_CCK_BASIC_RATES_MASK	(IEEE80211_CCK_RATE_1MB_MASK | \
-	IEEE80211_CCK_RATE_2MB_MASK)
-#define IEEE80211_CCK_DEFAULT_RATES_MASK	(IEEE80211_CCK_BASIC_RATES_MASK | \
-        IEEE80211_CCK_RATE_5MB_MASK | \
-        IEEE80211_CCK_RATE_11MB_MASK)
-
-#define IEEE80211_OFDM_RATES_MASK		0x00000FF0
-#define IEEE80211_OFDM_BASIC_RATES_MASK	(IEEE80211_OFDM_RATE_6MB_MASK | \
-	IEEE80211_OFDM_RATE_12MB_MASK | \
-	IEEE80211_OFDM_RATE_24MB_MASK)
-#define IEEE80211_OFDM_DEFAULT_RATES_MASK	(IEEE80211_OFDM_BASIC_RATES_MASK | \
-	IEEE80211_OFDM_RATE_9MB_MASK  | \
-	IEEE80211_OFDM_RATE_18MB_MASK | \
-	IEEE80211_OFDM_RATE_36MB_MASK | \
-	IEEE80211_OFDM_RATE_48MB_MASK | \
-	IEEE80211_OFDM_RATE_54MB_MASK)
-#define IEEE80211_DEFAULT_RATES_MASK (IEEE80211_OFDM_DEFAULT_RATES_MASK | \
-                                IEEE80211_CCK_DEFAULT_RATES_MASK)
-
 #define IEEE80211_NUM_OFDM_RATES	    8
 #define IEEE80211_NUM_CCK_RATES	            4
 #define IEEE80211_OFDM_SHIFT_MASK_A         4
@@ -745,82 +712,11 @@ struct ieee80211_snap_hdr {
 #define IS_HT_RATE(rate)		(((rate) & 0x80) ? _TRUE : _FALSE)
 #define IS_CCK_RATE(_rate) 	(_rate == MGN_1M || _rate == MGN_2M || _rate == MGN_5_5M || _rate == MGN_11M)
 
-
-/* NOTE: This data is for statistical purposes; not all hardware provides this
- *       information for frames received.  Not setting these will not cause
- *       any adverse affects. */
-struct ieee80211_rx_stats {
-	//u32 mac_time[2];
-	s8 rssi;
-	uint8_t signal;
-	uint8_t noise;
-	uint8_t received_channel;
-	u16 rate; /* in 100 kbps */
-	//uint8_t control;
-	uint8_t mask;
-	uint8_t freq;
-	u16 len;
-};
-
 /* IEEE 802.11 requires that STA supports concurrent reception of at least
  * three fragmented frames. This define can be increased to support more
  * concurrent frames, but it should be noted that each entry can consume about
  * 2 kB of RAM and increasing cache size will slow down frame reassembly. */
 #define IEEE80211_FRAG_CACHE_LEN 4
-
-struct ieee80211_frag_entry {
-	u32 first_frag_time;
-	uint seq;
-	uint last_frag;
-	uint qos;   //jackson
-	uint tid;	//jackson
-	struct sk_buff *skb;
-	uint8_t src_addr[ETH_ALEN];
-	uint8_t dst_addr[ETH_ALEN];
-};
-
-struct ieee80211_stats {
-	uint tx_unicast_frames;
-	uint tx_multicast_frames;
-	uint tx_fragments;
-	uint tx_unicast_octets;
-	uint tx_multicast_octets;
-	uint tx_deferred_transmissions;
-	uint tx_single_retry_frames;
-	uint tx_multiple_retry_frames;
-	uint tx_retry_limit_exceeded;
-	uint tx_discards;
-	uint rx_unicast_frames;
-	uint rx_multicast_frames;
-	uint rx_fragments;
-	uint rx_unicast_octets;
-	uint rx_multicast_octets;
-	uint rx_fcs_errors;
-	uint rx_discards_no_buffer;
-	uint tx_discards_wrong_sa;
-	uint rx_discards_undecryptable;
-	uint rx_message_in_msg_fragments;
-	uint rx_message_in_bad_msg_fragments;
-};
-struct ieee80211_softmac_stats{
-	uint rx_ass_ok;
-	uint rx_ass_err;
-	uint rx_probe_rq;
-	uint tx_probe_rs;
-	uint tx_beacons;
-	uint rx_auth_rq;
-	uint rx_auth_rs_ok;
-	uint rx_auth_rs_err;
-	uint tx_auth_rq;
-	uint no_auth_rs;
-	uint no_ass_rs;
-	uint tx_ass_rq;
-	uint rx_ass_rq;
-	uint tx_probe_rq;
-	uint reassoc;
-	uint swtxstop;
-	uint swtxawake;
-};
 
 #define SEC_KEY_1         (1<<0)
 #define SEC_KEY_2         (1<<1)
@@ -911,7 +807,6 @@ struct ieee80211_info_element {
 } __attribute__ ((packed));
 #endif
 
-
 /*
  * These are the data types that can make up management packets
  *
@@ -931,53 +826,6 @@ struct ieee80211_info_element {
 
 #define IEEE80211_DEFAULT_TX_ESSID "Penguin"
 #define IEEE80211_DEFAULT_BASIC_RATE 10
-
-
-#if defined(PLATFORM_LINUX)
-
-
-struct ieee80211_authentication {
-	struct ieee80211_header_data header;
-	u16 algorithm;
-	u16 transaction;
-	u16 status;
-	//struct ieee80211_info_element_hdr info_element;
-} __attribute__ ((packed));
-
-
-struct ieee80211_probe_response {
-	struct ieee80211_header_data header;
-	u32 time_stamp[2];
-	u16 beacon_interval;
-	u16 capability;
-	struct ieee80211_info_element info_element;
-} __attribute__ ((packed));
-
-struct ieee80211_probe_request {
-	struct ieee80211_header_data header;
-	/*struct ieee80211_info_element info_element;*/
-} __attribute__ ((packed));
-
-struct ieee80211_assoc_request_frame {
-	struct rtw_ieee80211_hdr_3addr header;
-	u16 capability;
-	u16 listen_interval;
-	//uint8_t current_ap[ETH_ALEN];
-	struct ieee80211_info_element_hdr info_element;
-} __attribute__ ((packed));
-
-struct ieee80211_assoc_response_frame {
-	struct rtw_ieee80211_hdr_3addr header;
-	u16 capability;
-	u16 status;
-	u16 aid;
-//	struct ieee80211_info_element info_element; /* supported rates */
-} __attribute__ ((packed));
-#endif
-
-
-
-
 
 
 struct ieee80211_txb {
@@ -1025,49 +873,6 @@ struct ieee80211_txb {
 #define IEEE80211_PS_UNICAST IEEE80211_DTIM_UCAST
 #define IEEE80211_PS_MBCAST IEEE80211_DTIM_MBCAST
 #define IW_ESSID_MAX_SIZE 32
-#if 0
-struct ieee80211_network {
-	/* These entries are used to identify a unique network */
-	uint8_t bssid[ETH_ALEN];
-	uint8_t channel;
-	/* Ensure null-terminated for any debug msgs */
-	uint8_t ssid[IW_ESSID_MAX_SIZE + 1];
-	uint8_t ssid_len;
-	uint8_t	rssi;	//relative signal strength
-	uint8_t	sq;		//signal quality
-
-	/* These are network statistics */
-	//struct ieee80211_rx_stats stats;
-	u16 capability;
-	u16	aid;
-	uint8_t rates[MAX_RATES_LENGTH];
-	uint8_t rates_len;
-	uint8_t rates_ex[MAX_RATES_EX_LENGTH];
-	uint8_t rates_ex_len;
-
-	uint8_t edca_parmsets[18];
-
-	uint8_t mode;
-	uint8_t flags;
-	uint8_t time_stamp[8];
-	u16 beacon_interval;
-	u16 listen_interval;
-	u16 atim_window;
-	uint8_t wpa_ie[MAX_WPA_IE_LEN];
-	size_t wpa_ie_len;
-	uint8_t rsn_ie[MAX_WPA_IE_LEN];
-	size_t rsn_ie_len;
-	uint8_t country[6];
-	uint8_t dtim_period;
-	uint8_t dtim_data;
-	uint8_t power_constraint;
-	uint8_t qosinfo;
-	uint8_t qbssload[5];
-	uint8_t network_type;
-	int join_res;
-	unsigned long	last_scanned;
-};
-#endif
 /*
 join_res:
 -1: authentication fail

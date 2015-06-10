@@ -811,7 +811,7 @@ static void rtl8821au_do_iqk(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
 }
 
 
-static void rtl8821au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
+static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
 	u8 RFPath, u8 ChannelMappedIndex)
 {
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
@@ -1501,13 +1501,13 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "**********Enter POWER Tracking MIX_MODE**********\n");
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++)
-					rtl8821au_dm_pxpwr_track_set_pwr(rtlpriv, MIX_MODE, p, index_for_channel);
+					rtl8821au_dm_txpwr_track_set_pwr(rtlpriv, MIX_MODE, p, index_for_channel);
 			} else {
 				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "Temperature(%d) lower than PG value(%d)\n", thermal_value, efuse->eeprom_thermalmeter);
 
 				RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "**********Enter POWER Tracking MIX_MODE**********\n");
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8821A; p++)
-					rtl8821au_dm_pxpwr_track_set_pwr(rtlpriv, MIX_MODE, p, index_for_channel);
+					rtl8821au_dm_txpwr_track_set_pwr(rtlpriv, MIX_MODE, p, index_for_channel);
 			}
 
 			rtldm->swing_idx_cck_base = rtldm->swing_idx_cck;  	/* Record last time Power Tracking result as base. */

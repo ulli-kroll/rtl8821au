@@ -46,7 +46,6 @@ void rtl8821au_dm_clean_txpower_tracking_state(struct rtl_priv *rtlpriv);
 
 /* Old prototypes */
 
-void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm);
 void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm);
 void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8 IGI);
 void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm);

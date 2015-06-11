@@ -295,28 +295,6 @@ void ODM_CmnInfoPtrArrayHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
 
 }
 
-void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm)
-{
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
-	u8	EntryCnt = 0;
-	u8	i;
-	struct sta_info *pEntry;
-
-	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
-		pEntry = pDM_Odm->pODM_StaInfo[i];
-		if (IS_STA_VALID(pEntry))
-			EntryCnt++;
-	}
-
-	if (EntryCnt == 1)
-		pDM_Odm->bOneEntryOnly = TRUE;
-	else
-		pDM_Odm->bOneEntryOnly = FALSE;
-}
-
-
-
-
 /*
  * 3============================================================
  * 3 DIG

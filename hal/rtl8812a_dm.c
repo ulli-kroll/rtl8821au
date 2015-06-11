@@ -120,8 +120,8 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_POWER_SAVING,&(pwrctrlpriv->bpower_saving));
 
 	for (i = 0; i < NUM_STA; i++) {
+		pDM_Odm->pODM_StaInfo[i] = NULL;
 		/* pDM_Odm->pODM_StaInfo[i] = NULL; */
-		ODM_CmnInfoPtrArrayHook(pDM_Odm, ODM_CMNINFO_STA_STATUS,i,NULL);
 	}
 }
 

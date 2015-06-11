@@ -272,29 +272,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 
 }
 
-
-void ODM_CmnInfoPtrArrayHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
-	u16 Index, void *pValue)
-{
-	/*
-	 * Hook call by reference pointer.
-	 */
-
-	switch (CmnInfo) {
-		/*
-		 * Dynamic call by reference pointer.
-		 */
-	case	ODM_CMNINFO_STA_STATUS:
-		pDM_Odm->pODM_StaInfo[Index] = (struct sta_info *)pValue;
-		break;
-	/* To remove the compiler warning, must add an empty default statement to handle the other values. */
-	default:
-		/* do nothing */
-		break;
-	}
-
-}
-
 /*
  * 3============================================================
  * 3 DIG

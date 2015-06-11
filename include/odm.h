@@ -345,7 +345,6 @@ typedef enum _ODM_Common_Info_Definition
 	//
 	// Dynamic ptr array hook itms.
 	//
-	ODM_CMNINFO_STA_STATUS,
 	ODM_CMNINFO_PHY_STATUS,
 	ODM_CMNINFO_MAC_STATUS,
 

@@ -1996,14 +1996,14 @@ void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
 			struct sta_info *psta = (struct sta_info *)pValue1;
 			if (bSet) {
 				DBG_8192C("### Set STA_(%d) info\n", psta->mac_id);
-				ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS, psta->mac_id, psta);
+				podmpriv->pODM_StaInfo[psta->mac_id] = psta;
 #if (RATE_ADAPTIVE_SUPPORT == 1)
 				ODM_RAInfo_Init(podmpriv, psta->mac_id);
 #endif
 			} else {
 				DBG_8192C("### Clean STA_(%d) info\n", psta->mac_id);
 				/* spin_lock_bh(&pHalData->odm_stainfo_lock, &irqL); */
-				ODM_CmnInfoPtrArrayHook(podmpriv, ODM_CMNINFO_STA_STATUS, psta->mac_id, NULL);
+				podmpriv->pODM_StaInfo[psta->mac_id] = NULL;
 
 				/* spin_unlock_bh(&pHalData->odm_stainfo_lock, &irqL); */
 			}

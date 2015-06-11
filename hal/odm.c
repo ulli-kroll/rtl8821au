@@ -172,8 +172,6 @@ void odm_AdaptivityInit(struct _rtw_dm *pDM_Odm);
 /* START-----------------PSD----------------------- */
 /* END-------------------PSD----------------------- */
 
-void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm);
-
 void odm_RateAdaptiveMaskInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingThermalMeterInit(struct _rtw_dm *pDM_Odm);
 void odm_TXPowerTrackingInit(struct _rtw_dm *pDM_Odm);
@@ -751,19 +749,8 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
  *	05/27/2009	hpfan	Create Version 0.
  *
  *---------------------------------------------------------------------------*/
+
 void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm)
-{
-
-	/*
-	 * 2011/09/29 MH In HW integration first stage, we provide 4 different handle to operate
-	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
-	 * HW dynamic mechanism.
-	 */
-
-	odm_RefreshRateAdaptiveMaskCE(pDM_Odm);
-}
-
-void odm_RefreshRateAdaptiveMaskCE(struct _rtw_dm *pDM_Odm)
 {
 	u8	i;
 	struct rtl_priv *rtlpriv	=  pDM_Odm->rtlpriv;

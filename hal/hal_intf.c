@@ -153,12 +153,6 @@ void rtw_hal_set_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, v
 		rtlpriv->cfg->ops->SetHalODMVarHandler(rtlpriv, eVariable, pValue1, bSet);
 }
 
-void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1, BOOLEAN bSet)
-{
-	if (rtlpriv->cfg->ops->GetHalODMVarHandler)
-		rtlpriv->cfg->ops->GetHalODMVarHandler(rtlpriv, eVariable, pValue1, bSet);
-}
-
 void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->enable_interrupt)

@@ -1970,20 +1970,6 @@ void ReadRFType8812A(struct rtl_priv *rtlpriv)
 	 */
 }
 
-void rtl8812_GetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
-	void *pValue1, BOOLEAN bSet)
-{
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *podmpriv = &pHalData->odmpriv;
-
-	switch (eVariable) {
-	case HAL_ODM_STA_INFO:
-		break;
-	default:
-		break;
-	}
-}
-
 void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
 	void *pValue1, BOOLEAN bSet)
 {

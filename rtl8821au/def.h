@@ -84,17 +84,6 @@ enum rtl_desc_qsel {
 	QSLT_CMD = 0x13,
 };
 
-//HAL_CUT_VERSION_E
-typedef enum tag_HAL_Cut_Version_Definition
-{
-	A_CUT_VERSION 		=	0,
-	B_CUT_VERSION 		=	1,
-	C_CUT_VERSION 		=	2,
-	D_CUT_VERSION 		=	3,
-	E_CUT_VERSION 		=	4,
-	F_CUT_VERSION 		=	5,
-	G_CUT_VERSION 		=	6,
-}HAL_CUT_VERSION_E;
 
 // HAL_Manufacturer
 typedef enum tag_HAL_Manufacturer_Version_Definition
@@ -120,7 +109,7 @@ struct HAL_VERSION
 {
 	int			ICType;
 	int			ChipType;
-	HAL_CUT_VERSION_E	CUTVersion;
+	int			CUTVersion;
 	HAL_VENDOR_E		VendorType;
 	HAL_RF_TYPE_E		RFType;
 	u8					ROMVer;
@@ -132,17 +121,24 @@ struct HAL_VERSION
 #define CHIP_8812		BIT(2)
 #define CHIP_8821		(BIT(0)|BIT(2))
 #define NORMAL_CHIP		BIT(3)
+#define B_CUT_VERSION		BIT(12)
+#define C_CUT_VERSION		BIT(13)
+#define D_CUT_VERSION		((BIT(12)|BIT(13)))
+#define E_CUT_VERSION		BIT(14)
+
 
 /* MASK */
 #define IC_TYPE_MASK			(BIT(0)|BIT(1)|BIT(2))
 #define CHIP_TYPE_MASK			BIT(3)
+#define CUT_VERSION_MASK		(BIT(15)|BIT(14)|BIT(13)|BIT(12))
+
 
 // Get element
 #define GET_CVID_IC_TYPE(version)			((version).ICType & IC_TYPE_MASK)
 #define GET_CVID_CHIP_TYPE(version)			((version).ChipType & CHIP_TYPE_MASK)
 #define GET_CVID_RF_TYPE(version)			((HAL_RF_TYPE_E)((version).RFType))
 #define GET_CVID_MANUFACTUER(version)		((HAL_VENDOR_E)((version).VendorType))
-#define GET_CVID_CUT_VERSION(version)		((HAL_CUT_VERSION_E)((version).CUTVersion))
+#define GET_CVID_CUT_VERSION(version)			((version).CUTVersion & CUT_VERSION_MASK)
 #define GET_CVID_ROM_VERSION(version)		(((version).ROMVer) & ROM_VERSION_MASK)
 
 //----------------------------------------------------------------------------
@@ -156,12 +152,7 @@ struct HAL_VERSION
 #define IS_NORMAL_CHIP(version)			((GET_CVID_CHIP_TYPE(version))? true: false)
 
 //HAL_CUT_VERSION_E
-#define IS_A_CUT(version)				((GET_CVID_CUT_VERSION(version) == A_CUT_VERSION) ? TRUE : FALSE)
-#define IS_B_CUT(version)				((GET_CVID_CUT_VERSION(version) == B_CUT_VERSION) ? TRUE : FALSE)
-#define IS_C_CUT(version)				((GET_CVID_CUT_VERSION(version) == C_CUT_VERSION) ? TRUE : FALSE)
-#define IS_D_CUT(version)				((GET_CVID_CUT_VERSION(version) == D_CUT_VERSION) ? TRUE : FALSE)
-#define IS_E_CUT(version)					((GET_CVID_CUT_VERSION(version) == E_CUT_VERSION) ? TRUE : FALSE)
-
+#define IS_B_CUT(version)				((GET_CVID_CUT_VERSION(version) == B_CUT_VERSION) ? true : false)
 
 //HAL_VENDOR_E
 #define IS_CHIP_VENDOR_TSMC(version)	((GET_CVID_MANUFACTUER(version) == CHIP_VENDOR_TSMC)? TRUE: FALSE)
@@ -180,7 +171,6 @@ struct HAL_VERSION
 #define IS_81XXC_TEST_CHIP(version)		((IS_81XXC(version) && (!IS_NORMAL_CHIP(version)))? TRUE: FALSE)
 
 #define IS_92C_SERIAL(version)   					((IS_81XXC(version) && IS_2T2R(version)) ? TRUE : FALSE)
-#define IS_81xxC_VENDOR_UMC_A_CUT(version)	(IS_81XXC(version)?(IS_CHIP_VENDOR_UMC(version) ? (IS_A_CUT(version) ? TRUE : FALSE) : FALSE): FALSE)
 #define IS_81xxC_VENDOR_UMC_B_CUT(version)	(IS_81XXC(version)?(IS_CHIP_VENDOR_UMC(version) ? (IS_B_CUT(version) ? TRUE : FALSE) : FALSE): FALSE)
 #define IS_81xxC_VENDOR_UMC_C_CUT(version)	(IS_81XXC(version)?(IS_CHIP_VENDOR_UMC(version) ? (IS_C_CUT(version) ? TRUE : FALSE) : FALSE): FALSE)
 

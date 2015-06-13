@@ -1000,7 +1000,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	else
 		ChipVersion.ICType = CHIP_8821;
 
-	ChipVersion.ChipType = ((value32 & RTL_ID) ? TEST_CHIP : NORMAL_CHIP);
+	ChipVersion.ChipType = ((value32 & RTL_ID) ? 0 : NORMAL_CHIP);
 
 	if (rtlpriv->registrypriv.rf_config == RF_MAX_TYPE) {
 		if (IS_HARDWARE_TYPE_8812(rtlhal))

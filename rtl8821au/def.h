@@ -93,25 +93,13 @@ typedef enum tag_HAL_Manufacturer_Version_Definition
 	CHIP_VENDOR_SMIC 	=	2,
 }HAL_VENDOR_E;
 
-typedef enum tag_HAL_RF_Type_Definition
-{
-	RF_TYPE_1T1R 	=	0,
-	RF_TYPE_1T2R 	=	1,
-	RF_TYPE_2T2R	=	2,
-	RF_TYPE_2T3R	=	3,
-	RF_TYPE_2T4R	=	4,
-	RF_TYPE_3T3R	=	5,
-	RF_TYPE_3T4R	=	6,
-	RF_TYPE_4T4R	=	7,
-}HAL_RF_TYPE_E;
-
 struct HAL_VERSION
 {
 	int			ICType;
 	int			ChipType;
 	int			CUTVersion;
 	HAL_VENDOR_E		VendorType;
-	HAL_RF_TYPE_E		RFType;
+	int			RFType;
 	u8					ROMVer;
 };
 
@@ -121,6 +109,9 @@ struct HAL_VERSION
 #define CHIP_8812		BIT(2)
 #define CHIP_8821		(BIT(0)|BIT(2))
 #define NORMAL_CHIP		BIT(3)
+#define RF_TYPE_1T1R		(~(BIT(4)|BIT(5)|BIT(6)))
+#define RF_TYPE_1T2R		BIT(4)
+#define RF_TYPE_2T2R		BIT(5)
 #define B_CUT_VERSION		BIT(12)
 #define C_CUT_VERSION		BIT(13)
 #define D_CUT_VERSION		((BIT(12)|BIT(13)))
@@ -130,13 +121,14 @@ struct HAL_VERSION
 /* MASK */
 #define IC_TYPE_MASK			(BIT(0)|BIT(1)|BIT(2))
 #define CHIP_TYPE_MASK			BIT(3)
+#define RF_TYPE_MASK			(BIT(4)|BIT(5)|BIT(6))
 #define CUT_VERSION_MASK		(BIT(15)|BIT(14)|BIT(13)|BIT(12))
 
 
 // Get element
 #define GET_CVID_IC_TYPE(version)			((version).ICType & IC_TYPE_MASK)
 #define GET_CVID_CHIP_TYPE(version)			((version).ChipType & CHIP_TYPE_MASK)
-#define GET_CVID_RF_TYPE(version)			((HAL_RF_TYPE_E)((version).RFType))
+#define GET_CVID_RF_TYPE(version)			((version).RFType & RF_TYPE_MASK)
 #define GET_CVID_MANUFACTUER(version)		((HAL_VENDOR_E)((version).VendorType))
 #define GET_CVID_CUT_VERSION(version)			((version).CUTVersion & CUT_VERSION_MASK)
 #define GET_CVID_ROM_VERSION(version)		(((version).ROMVer) & ROM_VERSION_MASK)
@@ -160,9 +152,9 @@ struct HAL_VERSION
 #define IS_CHIP_VENDOR_SMIC(version)	((GET_CVID_MANUFACTUER(version) == CHIP_VENDOR_SMIC)? TRUE: FALSE)
 
 //HAL_RF_TYPE_E
-#define IS_1T1R(version)					((GET_CVID_RF_TYPE(version) == RF_TYPE_1T1R)? TRUE : FALSE )
-#define IS_1T2R(version)					((GET_CVID_RF_TYPE(version) == RF_TYPE_1T2R)? TRUE : FALSE)
-#define IS_2T2R(version)					((GET_CVID_RF_TYPE(version) == RF_TYPE_2T2R)? TRUE : FALSE)
+#define IS_1T1R(version)					((GET_CVID_RF_TYPE(version) == RF_TYPE_1T1R)? true : false )
+#define IS_1T2R(version)					((GET_CVID_RF_TYPE(version) == RF_TYPE_1T2R)? true : false )
+#define IS_2T2R(version)					((GET_CVID_RF_TYPE(version) == RF_TYPE_2T2R)? true : false )
 
 
 //----------------------------------------------------------------------------

@@ -986,7 +986,7 @@ void Set_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 {
 	uint32_t	value32;
-	HAL_VERSION		ChipVersion;
+	struct HAL_VERSION ChipVersion;
 	struct _rtw_hal *pHalData;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
@@ -1039,7 +1039,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	value32 = rtl_read_dword(rtlpriv, REG_MULTI_FUNC_CTRL);
 	pHalData->PolarityCtl = ((value32 & WL_HWPDN_SL) ? RT_POLARITY_HIGH_ACT : RT_POLARITY_LOW_ACT);
 
-	memcpy(&pHalData->VersionID, &ChipVersion, sizeof(HAL_VERSION));
+	memcpy(&pHalData->VersionID, &ChipVersion, sizeof(struct HAL_VERSION));
 
 	if (IS_1T2R(ChipVersion)) {
 		rtlpriv->phy.rf_type = RF_1T2R;

@@ -1853,7 +1853,7 @@ struct _rtw_dm {
 };
 
 struct _rtw_hal {
-	HAL_VERSION			VersionID;
+	struct HAL_VERSION			VersionID;
 	enum rt_polarity_ctl		PolarityCtl; // For Wifi PDn Polarity control.
 	RT_REGULATOR_MODE	RegulatorMode; // switching regulator or LDO
 

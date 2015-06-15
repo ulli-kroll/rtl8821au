@@ -96,11 +96,7 @@ do{\
 
 #define HWXMIT_ENTRY	4
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 #define TXDESC_SIZE 40
-#else
-#define TXDESC_SIZE 32
-#endif
 
 #define PACKET_OFFSET_SZ (8)
 #define TXDESC_OFFSET (TXDESC_SIZE + PACKET_OFFSET_SZ)
@@ -113,9 +109,7 @@ enum TXDESC_SC{
 	SC_DUPLICATE=0x03
 };
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 #define TXDESC_40_BYTES
-#endif
 
 struct tx_desc
 {

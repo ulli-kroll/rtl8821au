@@ -1397,6 +1397,7 @@ void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
@@ -1405,13 +1406,13 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	/* For customized behavior. */
 
 	if ((efuse->eeprom_vid == 0x050D) && (efuse->eeprom_did == 0x1106))		/* SerComm for Belkin. */
-		pEEPROM->CustomerID = RT_CID_Sercomm_Belkin;	/* ULLI : RTL8812 */
+		rtlhal->oem_id = RT_CID_Sercomm_Belkin;	/* ULLI : RTL8812 */
 	else if ((efuse->eeprom_vid == 0x0846) && (efuse->eeprom_did == 0x9052))	/* SerComm for Netgear. */
-		pEEPROM->CustomerID = RT_CID_Sercomm_Netgear;	/* ULLI :  posible typo for pid maybe 0x9052 */
+		rtlhal->oem_id = RT_CID_Sercomm_Netgear;	/* ULLI :  posible typo for pid maybe 0x9052 */
 	else if ((efuse->eeprom_vid == 0x2001) && (efuse->eeprom_did == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
-		pEEPROM->CustomerID = RT_CID_ALPHA_Dlink;	/* ULLI : RTL8812 */
+		rtlhal->oem_id = RT_CID_ALPHA_Dlink;	/* ULLI : RTL8812 */
 	else if ((efuse->eeprom_vid == 0x0B05) && (efuse->eeprom_did == 0x17D2))	/* Edimax for ASUS */
-		pEEPROM->CustomerID = RT_CID_Edimax_ASUS;	/* ULLI : RTL8812 */
+		rtlhal->oem_id = RT_CID_Edimax_ASUS;	/* ULLI : RTL8812 */
 
 	DBG_871X("PID= 0x%x, VID=  %x\n", efuse->eeprom_did, efuse->eeprom_vid);
 
@@ -1419,19 +1420,19 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	switch (efuse->eeprom_oemid) {
 	case EEPROM_CID_DEFAULT:
 		if ((efuse->eeprom_vid == 0x0846) && (efuse->eeprom_did == 0x9052))
-			pEEPROM->CustomerID = RT_CID_NETGEAR;		/* ULLI : RTL8821 */
+			rtlhal->oem_id = RT_CID_NETGEAR;		/* ULLI : RTL8821 */
 
 		DBG_871X("PID= 0x%x, VID=  %x\n", efuse->eeprom_did, efuse->eeprom_vid);
 		break;
 	default:
-		pEEPROM->CustomerID = RT_CID_DEFAULT;
+		rtlhal->oem_id = RT_CID_DEFAULT;
 		break;
 
 	}
-	DBG_871X("Customer ID: 0x%2x\n", pEEPROM->CustomerID);
+	DBG_871X("Customer ID: 0x%2x\n", rtlhal->oem_id);
 
 	/* Led mode */
-	switch (pEEPROM->CustomerID) {
+	switch (rtlhal->oem_id) {
 	case RT_CID_DEFAULT:
 		pledpriv->LedStrategy = SW_LED_MODE9;
 		break;

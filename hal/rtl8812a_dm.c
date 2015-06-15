@@ -91,8 +91,6 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	/* 1 ============== End of BoardType ============== */
 
 
-	ODM_CmnInfoInit(pDM_Odm,ODM_CMNINFO_PATCH_ID,pEEPROM->CustomerID);
-
 	/* if(pHalData->AntDivCfg)
 	 *	pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
 	 */

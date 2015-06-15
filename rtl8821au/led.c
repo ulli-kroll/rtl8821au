@@ -52,6 +52,7 @@ static void SwLedOff(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 static void SwLedBlink1(struct rtl_led *pLed)
 {
 	struct rtl_priv	 *rtlpriv = pLed->rtlpriv;
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
@@ -60,7 +61,7 @@ static void SwLedBlink1(struct rtl_led *pLed)
 	u8		bStopBlinking = _FALSE;
 
 	u32 uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA;	/* add by ylb 20121012 for customer led for alpha */
-	if (pEEPROM->CustomerID == RT_CID_ALPHA_Dlink)
+	if (rtlhal->oem_id == RT_CID_ALPHA_Dlink)
 		uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA_500MS;
 
 	/* Change LED according to BlinkingLedState specified. */
@@ -71,7 +72,7 @@ static void SwLedBlink1(struct rtl_led *pLed)
 	}
 
 
-	if (pEEPROM->CustomerID == RT_CID_DEFAULT) {
+	if (rtlhal->oem_id == RT_CID_DEFAULT) {
 		if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
 			if (!pLed1->bSWLedCtrl) {
 				SwLedOn(rtlpriv, pLed1);
@@ -872,6 +873,7 @@ static void BlinkWorkItemCallback(struct work_struct *work)
 /* ALPHA, added by chiyoko, 20090106 */
 static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 {
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
@@ -879,7 +881,7 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	u32 uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA; /* add by ylb 20121012 for customer led for alpha */
-	if (pEEPROM->CustomerID == RT_CID_ALPHA_Dlink)
+	if (rtlhal->oem_id == RT_CID_ALPHA_Dlink)
 		uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA_500MS;
 
 	switch (LedAction) {

@@ -72,7 +72,6 @@ struct eeprom_priv
 	uint8_t		mac_addr[6];	//PermanentAddress
 
 	u16		channel_plan;
-	u16		CustomerID;
 
 	uint8_t		efuse_eeprom_data[EEPROM_MAX_SIZE]; //92C:256bytes, 88E:512bytes, we use union set (512bytes)
 

@@ -84,21 +84,12 @@ enum rtl_desc_qsel {
 	QSLT_CMD = 0x13,
 };
 
-
-// HAL_Manufacturer
-typedef enum tag_HAL_Manufacturer_Version_Definition
-{
-	CHIP_VENDOR_TSMC 	=	0,
-	CHIP_VENDOR_UMC 	=	1,
-	CHIP_VENDOR_SMIC 	=	2,
-}HAL_VENDOR_E;
-
 struct HAL_VERSION
 {
 	int			ICType;
 	int			ChipType;
 	int			CUTVersion;
-	HAL_VENDOR_E		VendorType;
+	int			VendorType;
 	int			RFType;
 	u8					ROMVer;
 };
@@ -112,6 +103,7 @@ struct HAL_VERSION
 #define RF_TYPE_1T1R		(~(BIT(4)|BIT(5)|BIT(6)))
 #define RF_TYPE_1T2R		BIT(4)
 #define RF_TYPE_2T2R		BIT(5)
+#define CHIP_VENDOR_UMC		BIT(7)
 #define B_CUT_VERSION		BIT(12)
 #define C_CUT_VERSION		BIT(13)
 #define D_CUT_VERSION		((BIT(12)|BIT(13)))
@@ -122,6 +114,7 @@ struct HAL_VERSION
 #define IC_TYPE_MASK			(BIT(0)|BIT(1)|BIT(2))
 #define CHIP_TYPE_MASK			BIT(3)
 #define RF_TYPE_MASK			(BIT(4)|BIT(5)|BIT(6))
+#define MANUFACTUER_MASK		BIT(7)
 #define CUT_VERSION_MASK		(BIT(15)|BIT(14)|BIT(13)|BIT(12))
 
 
@@ -129,7 +122,7 @@ struct HAL_VERSION
 #define GET_CVID_IC_TYPE(version)			((version).ICType & IC_TYPE_MASK)
 #define GET_CVID_CHIP_TYPE(version)			((version).ChipType & CHIP_TYPE_MASK)
 #define GET_CVID_RF_TYPE(version)			((version).RFType & RF_TYPE_MASK)
-#define GET_CVID_MANUFACTUER(version)		((HAL_VENDOR_E)((version).VendorType))
+#define GET_CVID_MANUFACTUER(version)			((version) & MANUFACTUER_MASK)
 #define GET_CVID_CUT_VERSION(version)			((version).CUTVersion & CUT_VERSION_MASK)
 #define GET_CVID_ROM_VERSION(version)		(((version).ROMVer) & ROM_VERSION_MASK)
 

@@ -1010,18 +1010,12 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	}
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
-		ChipVersion.VendorType = ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : CHIP_VENDOR_TSMC);
+		ChipVersion.VendorType = ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : 0);
 	else {
 		uint32_t vendor;
 
 		vendor = (value32 & EXT_VENDOR_ID) >> EXT_VENDOR_ID_SHIFT;
 		switch (vendor) {
-		case 0:
-			vendor = CHIP_VENDOR_TSMC;
-			break;
-		case 1:
-			vendor = CHIP_VENDOR_SMIC;
-			break;
 		case 2:
 			vendor = CHIP_VENDOR_UMC;
 			break;

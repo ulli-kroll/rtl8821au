@@ -1074,7 +1074,7 @@ static u16 odm_Cfo(s8 Value)
 static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	PODM_PACKET_INFO_T pPktinfo);
 
-static void ODM_PhyStatusQuery(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
@@ -1857,7 +1857,7 @@ void rtl8812_query_rx_phy_status(
 	//rtl8188e_query_rx_phy_status(precvframe, pphy_status);
 
 	//spin_lock_bh(&pHalData->odm_stainfo_lock, &irqL);
-	ODM_PhyStatusQuery(&pHalData->odmpriv,pPHYInfo,pphy_status,&(pkt_info));
+	query_rxphystatus(&pHalData->odmpriv,pPHYInfo,pphy_status,&(pkt_info));
 	//spin_unlock_bh(&pHalData->odm_stainfo_lock, &irqL);
 
 	precvframe->psta = NULL;

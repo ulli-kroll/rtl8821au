@@ -5099,7 +5099,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 		struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 		struct _rtw_dm *pDM_Odm	= &pHalData->odmpriv;
 
-		if (rtlhal->rfe_type == 3 && pDM_Odm->bIsMPChip) {
+		if (rtlhal->rfe_type == 3 && IS_NORMAL_CHIP(rtlpriv->VersionID)) {
 			ArrayLen = RTL8812AU_PHY_REG_PG_ASUS_ARRAY_LEN;
 			Array = RTL8812AU_PHY_REG_PG_ASUS_ARRAY;
 		} else {

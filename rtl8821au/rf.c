@@ -286,7 +286,7 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
 
 	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_LOUD,
-		"===>ODM_ConfigRFWithHeaderFile (%s)\n", (pDM_Odm->bIsMPChip) ? "MPChip" : "TestChip");
+		"===>ODM_ConfigRFWithHeaderFile (%s)\n", (IS_NORMAL_CHIP(rtlpriv->VersionID)) ? "MPChip" : "TestChip");
 	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_LOUD,
 		"pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		rtlhal->interface, rtlhal->board_type);

@@ -1719,7 +1719,6 @@ struct _rtw_dm {
 	u16			*pForcedDataRate;
 //------------CALL BY VALUE-------------//
 	u8          InterfaceIndex; // Add for 92D  dual MAC: 0--Mac0 1--Mac1
-	BOOLEAN         bIsMPChip;
 	BOOLEAN			bOneEntryOnly;
 	// Common info for BTDM
 //------------CALL BY VALUE-------------//

@@ -1320,7 +1320,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo
 		 *
 		 * 2012.05.25 LukeLee: Testchip AGC report is wrong, it should be restored back to old formula in MP chip
 		 */
-		if ((!pDM_Odm->bIsMPChip))
+		if ((!IS_NORMAL_CHIP(rtlpriv->VersionID)))
 			rx_pwr_all = (pPhyStaRpt->pwdb_all & 0x7f) - 110;
 		else
 			rx_pwr_all = (((pPhyStaRpt->pwdb_all) >> 1) & 0x7f) - 110;	 /* OLD FORMULA */

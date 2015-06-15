@@ -729,7 +729,7 @@ void rtl8812au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 	u16	rate = *(pDM_Odm->pForcedDataRate);
 	u8         	channel   		 = rtlpriv->phy.current_channel;
 
-	if (rtlhal->rfe_type == 3 && pDM_Odm->bIsMPChip) {
+	if (rtlhal->rfe_type == 3 && IS_NORMAL_CHIP(rtlpriv->VersionID)) {
 		if (1 <= channel && channel <= 14) {
 			if (IS_CCK_RATE(rate)) {
 				*up_a   = rtl8812au_delta_swing_table_idx_24gccka_p_rfe3;

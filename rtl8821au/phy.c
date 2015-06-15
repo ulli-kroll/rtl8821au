@@ -142,7 +142,7 @@ static void phy_RFSerialWrite(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	 * 2012/10/26 MH Revise V3236 Lanhsin check in, if we do not enable the function
 	 * for 8821, then it can not scan.
 	 */
-	if ((!pHalData->bSupportUSB3) && (!IS_NORMAL_CHIP(pHalData->VersionID))) {	/* USB 2.0 or older */
+	if ((!pHalData->bSupportUSB3) && (!IS_NORMAL_CHIP(rtlpriv->VersionID))) {	/* USB 2.0 or older */
 		/* if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv) || IS_HARDWARE_TYPE_8821(rtlpriv) is) */
 		{
 			rtl_write_dword(rtlpriv, 0x1EC, DataAndAddr);
@@ -4444,7 +4444,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 	}
 
 	/* <20120903, Kordan> Tx BB swing setting for RL6286, asked by Ynlin. */
-	if (IS_NORMAL_CHIP(pHalData->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)) {
+	if (IS_NORMAL_CHIP(rtlpriv->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		s8	BBDiffBetweenBand = 0;
 		struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 
@@ -4482,7 +4482,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 	/*
 	 *  <20120928, Kordan> A workaround in 8812A/8821A testchip, to fix the bug of odd Tx power indexes.
 	 */
-	if ((power_index % 2 == 1) && !IS_NORMAL_CHIP(pHalData->VersionID))
+	if ((power_index % 2 == 1) && !IS_NORMAL_CHIP(rtlpriv->VersionID))
 		power_index -= 1;
 
 	/* 2013.01.18 LukeLee: Modify TXAGC by dcmd_Dynamic_Ctrl() */

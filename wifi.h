@@ -1078,6 +1078,8 @@ struct rtl_priv {
 
 	/* Border */
 
+	struct HAL_VERSION VersionID;
+
 
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	bDongle;//build-in module or external dongle
@@ -1853,7 +1855,6 @@ struct _rtw_dm {
 };
 
 struct _rtw_hal {
-	struct HAL_VERSION			VersionID;
 	enum rt_polarity_ctl		PolarityCtl; // For Wifi PDn Polarity control.
 	RT_REGULATOR_MODE	RegulatorMode; // switching regulator or LDO
 

@@ -65,7 +65,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 	pDM_Odm->rtlpriv = rtlpriv;
 
-	ODM_CmnInfoInit(pDM_Odm,	ODM_CMNINFO_MP_TEST_CHIP,IS_NORMAL_CHIP(pHalData->VersionID));
+	ODM_CmnInfoInit(pDM_Odm,	ODM_CMNINFO_MP_TEST_CHIP,IS_NORMAL_CHIP(rtlpriv->VersionID));
 
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power) 	{
 		rtlhal->external_pa_2g = 1;

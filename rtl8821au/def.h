@@ -84,8 +84,7 @@ enum rtl_desc_qsel {
 	QSLT_CMD = 0x13,
 };
 
-struct HAL_VERSION
-{
+struct HAL_VERSION {
 	int			ICType;
 	int			ChipType;
 	int			CUTVersion;
@@ -159,12 +158,12 @@ struct HAL_VERSION
 #define IS_81xxC_VENDOR_UMC_B_CUT(version)	(IS_81XXC(version)?(IS_CHIP_VENDOR_UMC(version) ? (IS_B_CUT(version) ? TRUE : FALSE) : FALSE): FALSE)
 #define IS_81xxC_VENDOR_UMC_C_CUT(version)	(IS_81XXC(version)?(IS_CHIP_VENDOR_UMC(version) ? (IS_C_CUT(version) ? TRUE : FALSE) : FALSE): FALSE)
 
-#define IS_VENDOR_8812A_TEST_CHIP(_Adapter)		((IS_8812_SERIES(GET_HAL_DATA(_Adapter)->VersionID)) ? ((IS_NORMAL_CHIP(GET_HAL_DATA(_Adapter)->VersionID)) ? FALSE : TRUE) : FALSE)
-#define IS_VENDOR_8812A_MP_CHIP(_Adapter)		((IS_8812_SERIES(GET_HAL_DATA(_Adapter)->VersionID)) ? ((IS_NORMAL_CHIP(GET_HAL_DATA(_Adapter)->VersionID)) ? TRUE : FALSE) : FALSE)
-#define IS_VENDOR_8812A_C_CUT(_Adapter)			((IS_8812_SERIES(GET_HAL_DATA(_Adapter)->VersionID)) ? ((GET_CVID_CUT_VERSION(GET_HAL_DATA(_Adapter)->VersionID) == C_CUT_VERSION) ? TRUE : FALSE) : FALSE)
+#define IS_VENDOR_8812A_TEST_CHIP(_Adapter)		((IS_8812_SERIES((_Adapter)->VersionID)) ? ((IS_NORMAL_CHIP((_Adapter)->VersionID)) ? FALSE : TRUE) : FALSE)
+#define IS_VENDOR_8812A_MP_CHIP(_Adapter)		((IS_8812_SERIES((_Adapter)->VersionID)) ? ((IS_NORMAL_CHIP((_Adapter)->VersionID)) ? TRUE : FALSE) : FALSE)
+#define IS_VENDOR_8812A_C_CUT(_Adapter)			((IS_8812_SERIES((_Adapter)->VersionID)) ? ((GET_CVID_CUT_VERSION((_Adapter)->VersionID) == C_CUT_VERSION) ? TRUE : FALSE) : FALSE)
 
-#define IS_VENDOR_8821A_TEST_CHIP(_Adapter)	((IS_8821_SERIES(GET_HAL_DATA(_Adapter)->VersionID)) ? ((IS_NORMAL_CHIP(GET_HAL_DATA(_Adapter)->VersionID)) ? FALSE : TRUE) : FALSE)
-#define IS_VENDOR_8821A_MP_CHIP(_Adapter)		((IS_8821_SERIES(GET_HAL_DATA(_Adapter)->VersionID)) ? ((IS_NORMAL_CHIP(GET_HAL_DATA(_Adapter)->VersionID)) ? TRUE : FALSE) : FALSE)
+#define IS_VENDOR_8821A_TEST_CHIP(_Adapter)	((IS_8821_SERIES(_Adapter)->VersionID)) ? ((IS_NORMAL_CHIP((_Adapter)->VersionID)) ? FALSE : TRUE) : FALSE)
+#define IS_VENDOR_8821A_MP_CHIP(_Adapter)		((IS_8821_SERIES((_Adapter)->VersionID)) ? ((IS_NORMAL_CHIP((_Adapter)->VersionID)) ? TRUE : FALSE) : FALSE)
 
 
 

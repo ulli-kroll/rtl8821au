@@ -231,7 +231,7 @@ static void _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 
 	/* ARFB table 9 for 11ac 5G 2SS */
 	rtl_write_dword(rtlpriv, REG_ARFR0, 0x00000010);
-	if (IS_NORMAL_CHIP(pHalData->VersionID))
+	if (IS_NORMAL_CHIP(rtlpriv->VersionID))
 		rtl_write_dword(rtlpriv, REG_ARFR0+4, 0xfffff000);
 	else
 		rtl_write_dword(rtlpriv, REG_ARFR0+4, 0x3e0ff000);

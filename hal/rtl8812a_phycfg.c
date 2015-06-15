@@ -1045,7 +1045,7 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
 	uint8_t i;
 	for (i = 0; i < ArraySize; i++) {
 		power_index[i] = _rtl8821au_get_txpower_index(rtlpriv, RFPath, Rate[i], BandWidth, Channel);
-		if ((power_index[i] % 2 == 1) &&  !IS_NORMAL_CHIP(pHalData->VersionID))
+		if ((power_index[i] % 2 == 1) &&  !IS_NORMAL_CHIP(rtlpriv->VersionID))
 			power_index[i] -= 1;
 	}
 
@@ -1152,7 +1152,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 		rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, MASKBYTE0, channelToSW);
 
 		/* <20130104, Kordan> APK for MP chip is done on initialization from folder. */
-		if (IS_HARDWARE_TYPE_8811AU(rtlhal) && ( !IS_NORMAL_CHIP(pHalData->VersionID)) && channelToSW > 14 ) {
+		if (IS_HARDWARE_TYPE_8811AU(rtlhal) && ( !IS_NORMAL_CHIP(rtlpriv->VersionID)) && channelToSW > 14 ) {
 			/* <20121116, Kordan> For better result of APK. Asked by AlexWang. */
 			if (36 <= channelToSW && channelToSW <= 64)
 				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);

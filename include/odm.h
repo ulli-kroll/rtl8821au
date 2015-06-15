@@ -775,13 +775,6 @@ uint32_t ODM_Get_Rate_Bitmap(
 void ODM_DMInit(struct rtl_priv *rtlpriv);
 
 void
-ODM_CmnInfoInit(
-	IN		struct _rtw_dm *	pDM_Odm,
-	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		uint32_t			Value
-	);
-
-void
 ODM_CmnInfoHook(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,

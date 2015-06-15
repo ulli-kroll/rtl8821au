@@ -193,27 +193,6 @@ void odm_TXPowerTrackingCheckCE(struct _rtw_dm *pDM_Odm);
  * Init /.. Fixed HW value. Only init time.
  */
 
-void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Value)
-{
-	struct rtl_hal *rtlhal = rtl_hal(pDM_Odm->rtlpriv);
-
-	/* RT_TRACE(rtlpriv,); */
-
-	/*
-	 * This section is used for init value
-	 */
-	switch (CmnInfo) {
-	/*
-	 * Fixed ODM value.
-	 */
-
-	/* To remove the compiler warning, must add an empty default statement to handle the other values. */
-	default:
-		/* do nothing */
-		break;
-	}
-}
-
 
 void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValue)
 {

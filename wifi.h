@@ -559,6 +559,11 @@ struct rtl_phy {
 	u32 mcs_txpwrlevel_origoffset[MAX_PG_GROUP][16];
 	/* MAX_PG_GROUP groups of pwr diff by rates */
 	u32 mcs_offset[MAX_PG_GROUP][16];
+	
+	u32 tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
+				   [TX_PWR_BY_RATE_NUM_RF]
+				   [TX_PWR_BY_RATE_NUM_SECTION];
+	
 #if 0 	/* ULLI disabled to get (in any case) compiler error */
 	u32 tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
 				   [TX_PWR_BY_RATE_NUM_RF]
@@ -614,9 +619,6 @@ struct rtl_phy {
 
 	/* ULLI: neded to convert this */
 
-	u32	tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
-						[TX_PWR_BY_RATE_NUM_RF]
-						[TX_PWR_BY_RATE_NUM_SECTION];
 	//---------------------------------------------------------------------------------//
 
 	// Power Limit Table for 2.4G

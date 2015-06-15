@@ -320,7 +320,6 @@ typedef enum _ODM_Common_Info_Definition
 	//
 
 	//-----------HOOK BEFORE REG INIT-----------//
-	ODM_CMNINFO_PATCH_ID,				//CUSTOMER ID
 	//-----------HOOK BEFORE REG INIT-----------//
 
 

@@ -206,9 +206,6 @@ void ODM_CmnInfoInit(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, uint32_t Va
 	/*
 	 * Fixed ODM value.
 	 */
-	case 	ODM_CMNINFO_PATCH_ID:
-		pDM_Odm->PatchID = (u8)Value;
-		break;
 
 	/* To remove the compiler warning, must add an empty default statement to handle the other values. */
 	default:

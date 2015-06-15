@@ -138,7 +138,7 @@ void rtl8812_InitHalDm(struct rtl_priv *rtlpriv)
 	pdmpriv->DMFlag = DYNAMIC_FUNC_DISABLE;
 
 	Update_ODM_ComInfo_8812(rtlpriv);
-	ODM_DMInit(pDM_Odm);
+	ODM_DMInit(rtlpriv);
 
 	rtlpriv->fix_rate = 0xFF;
 }

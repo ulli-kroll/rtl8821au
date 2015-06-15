@@ -326,10 +326,8 @@ static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct rtl_pri
 	}
 }
 
-void ODM_DMInit(struct _rtw_dm *pDM_Odm)
+void ODM_DMInit(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
-
 	/* 2012.05.03 Luke: For all IC series */
 	rtl8821au_cm_common_info_self_update(rtlpriv);
 	/* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */

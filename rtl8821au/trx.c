@@ -1066,6 +1066,25 @@ static u16 odm_Cfo(s8 Value)
 	return ret_val;
 }
 
+
+/*
+ * Endianness before calling this API
+ */
+
+static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
+	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo);
+static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+	PODM_PACKET_INFO_T pPktinfo);
+
+static void ODM_PhyStatusQuery(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+	u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
+{
+	odm_RxPhyStatusJaguarSeries_Parsing(pDM_Odm, pPhyInfo,
+					pPhyStatus, pPktinfo);
+
+	odm_Process_RSSIForDM(pDM_Odm, pPhyInfo, pPktinfo);
+}
+
 static void odm_RxPhyStatusJaguarSeries_Parsing(struct _rtw_dm *pDM_Odm,
 	PODM_PHY_INFO_T pPhyInfo, u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
@@ -1594,21 +1613,6 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyI
 
 	}
 }
-
-/*
- * Endianness before calling this API
- */
-
-static void ODM_PhyStatusQuery(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
-	u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
-{
-	odm_RxPhyStatusJaguarSeries_Parsing(pDM_Odm, pPhyInfo,
-					pPhyStatus, pPktinfo);
-
-	odm_Process_RSSIForDM(pDM_Odm, pPhyInfo, pPktinfo);
-}
-
-
 
 static int32_t  translate2dbm(uint8_t signal_strength_idx)
 {

@@ -176,14 +176,13 @@ u8	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
  * 2011/09/21 MH Add to describe different team necessary resource allocate??
  */
 
-static void rtl8821au_cm_common_info_self_update(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_cm_common_info_self_update(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	u8 tmp;
 
-	rtlphy->cck_high_power = (BOOLEAN) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_CCK_RPT_FORMAT_11AC, ODM_BIT_CCK_RPT_FORMAT_11AC);
-	tmp = (u8) rtl_get_bbreg(pDM_Odm->rtlpriv, ODM_REG_BB_RX_PATH_11AC,
+	rtlphy->cck_high_power = (BOOLEAN) rtl_get_bbreg(rtlpriv, ODM_REG_CCK_RPT_FORMAT_11AC, ODM_BIT_CCK_RPT_FORMAT_11AC);
+	tmp = (u8) rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC,
 				 ODM_BIT_BB_RX_PATH_11AC);
 
 	if (tmp & BIT(0))
@@ -332,7 +331,7 @@ void ODM_DMInit(struct _rtw_dm *pDM_Odm)
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 
 	/* 2012.05.03 Luke: For all IC series */
-	rtl8821au_cm_common_info_self_update(pDM_Odm);
+	rtl8821au_cm_common_info_self_update(rtlpriv);
 	/* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */
 	_rtl_dm_diginit(rtlpriv);
 	odm_AdaptivityInit(rtlpriv);

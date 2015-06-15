@@ -1025,6 +1025,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	ChipVersion.CUTVersion = (value32 & CHIP_VER_RTL_MASK)>>CHIP_VER_RTL_SHIFT; /* IC version (CUT) */
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		ChipVersion.CUTVersion += 1;
+	ChipVersion.CUTVersion <<= 12;		/* ULLI shift for CUT */
 
 	/* value32 = rtl_read_dword(rtlpriv, REG_GPIO_OUTSTS); */
 	ChipVersion.ROMVer = 0;	/* ROM code version. */

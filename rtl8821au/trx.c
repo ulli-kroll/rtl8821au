@@ -884,7 +884,6 @@ void _dbg_dump_tx_info(struct rtl_priv	*rtlpriv,int frame_tag, uint8_t *ptxdesc)
 u8 BWMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 {
 	uint8_t	BWSettingOfDesc = 0;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 * DBG_871X("BWMapping pHalData->CurrentChannelBW %d, pattrib->bwmode %d \n",pHalData->CurrentChannelBW,pattrib->bwmode);

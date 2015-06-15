@@ -42,8 +42,6 @@ static void writeOFDMPowerReg8812(
 	IN 		u32*		pValue
 	)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-
 	u16 RegOffset_A[6] = {
     	RTXAGC_A_OFDM18_OFDM6,
         RTXAGC_A_OFDM54_OFDM24,
@@ -99,7 +97,6 @@ void getPowerBase8812(
 	IN OUT u32*		MCSBase
 	)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t			powerBase0, powerBase1;
 	uint8_t			i, powerlevel[2];
 
@@ -282,9 +279,6 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
-
 	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_LOUD,
 		"===>ODM_ConfigRFWithHeaderFile (%s)\n", (IS_NORMAL_CHIP(rtlpriv->VersionID)) ? "MPChip" : "TestChip");
 	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_LOUD,
@@ -327,7 +321,6 @@ static int _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 
 int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	int		rtStatus = _SUCCESS;
 
 	/* Initialize general global value */

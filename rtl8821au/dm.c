@@ -1621,7 +1621,6 @@ static void FindMinimumRSSI(struct rtl_priv *rtlpriv)
 static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 {
 	struct dig_t *rtl_dm_dig = &rtlpriv->dm_digtable;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	int	i;
 	int	tmpEntryMaxPWDB = 0, tmpEntryMinPWDB = 0xff;
 	u8 	sta_cnt = 0;
@@ -2052,7 +2051,6 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
 	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
-	pRXHP_T						pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
 	u8						DIG_Dynamic_MIN;
 	u8						DIG_MaxOfMin;
 	BOOLEAN						FirstConnect, FirstDisConnect;

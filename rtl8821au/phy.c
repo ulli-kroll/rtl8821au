@@ -2378,9 +2378,6 @@ static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 	};
 	u32 backup_rf_reg[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
 
-	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
-
 	_rtl8821au_iqk_backup_macbb(rtlpriv, macbb_backup, backup_macbb_reg,
 				    MACBB_REG_NUM);
 	_rtl8821au_iqk_backup_afe(rtlpriv, afe_backup, backup_afe_reg, AFE_REG_NUM);
@@ -4274,7 +4271,6 @@ static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
 void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t				currentBand = rtlhal->current_bandtype;
 
 	/* DBG_871X("==>rtl8821au_phy_switch_wirelessband() %s\n", ((Band==0)?"2.4G":"5G")); */
@@ -5096,9 +5092,6 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 	uint32_t *Array;
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
-		struct _rtw_dm *pDM_Odm	= &pHalData->odmpriv;
-
 		if (rtlhal->rfe_type == 3 && IS_NORMAL_CHIP(rtlpriv->VersionID)) {
 			ArrayLen = RTL8812AU_PHY_REG_PG_ASUS_ARRAY_LEN;
 			Array = RTL8812AU_PHY_REG_PG_ASUS_ARRAY;

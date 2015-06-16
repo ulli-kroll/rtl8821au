@@ -1084,24 +1084,24 @@ static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 
 
 	//3 2. Set RF mode = standby mode
-	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask, (RF_Amode&0x8FFFF)|0x10000);
+	rtl_set_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask, (RF_Amode&0x8FFFF)|0x10000);
 	if(is2T)
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask, (RF_Bmode&0x8FFFF)|0x10000);
+		rtl_set_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask, (RF_Bmode&0x8FFFF)|0x10000);
 */
 
 	/* Enter LCK mode */
 	tmp = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
+	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
 
 	/* 3 3. Read RF reg18 */
 	LC_Cal = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	/* 3 4. Set LC calibration begin bit15 */
-	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
+	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
 
 	/* Leave LCK mode */
 	tmp = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
+	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
 
 	mdelay(100);
 
@@ -1119,12 +1119,12 @@ static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 	}
 
 	/* Recover channel number */
-	rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);
+	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);
 
 	/*
-	rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask, RF_Amode);
+	rtl_set_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask, RF_Amode);
 	if(is2T)
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask, RF_Bmode);
+		rtl_set_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask, RF_Bmode);
 		*/
 }
 
@@ -1539,7 +1539,7 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 
 	if (!pDM_Odm->RFCalibrateInfo.TM_Trigger) {		/* at least delay 1 sec */
 		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
-		rtw_hal_write_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
+		rtl_set_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 
 		/* DBG_871X("Trigger Thermal Meter!!\n"); */
 

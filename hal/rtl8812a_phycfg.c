@@ -1131,44 +1131,44 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 		/* [2.4G] LC Tank */
 		if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv)) {
 			if (1 <= channelToSW && channelToSW <= 7)
-				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0017e);
+				rtl_set_rfreg(rtlpriv, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0017e);
 			else if (8 <= channelToSW && channelToSW <= 14)
-				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0013e);
+				rtl_set_rfreg(rtlpriv, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0013e);
 		}
 
 		/* RF_MOD_AG */
 		if (36 <= channelToSW && channelToSW <= 64)
-			rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x101); //5'b00101);
+			rtl_set_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x101); //5'b00101);
 		else if (100 <= channelToSW && channelToSW <= 140)
-			rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x301); //5'b01101);
+			rtl_set_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x301); //5'b01101);
 		else if (140 < channelToSW)
-			rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x501); //5'b10101);
+			rtl_set_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x501); //5'b10101);
 		else
-			rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x000); //5'b00000);
+			rtl_set_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, BIT18|BIT17|BIT16|BIT9|BIT8, 0x000); //5'b00000);
 
 		/* <20121109, Kordan> A workaround for 8812A only. */
 		rtl8812au_fixspur(rtlpriv, rtlpriv->phy.current_chan_bw, channelToSW);
 
-		rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, MASKBYTE0, channelToSW);
+		rtl_set_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, MASKBYTE0, channelToSW);
 
 		/* <20130104, Kordan> APK for MP chip is done on initialization from folder. */
 		if (IS_HARDWARE_TYPE_8811AU(rtlhal) && ( !IS_NORMAL_CHIP(rtlpriv->VersionID)) && channelToSW > 14 ) {
 			/* <20121116, Kordan> For better result of APK. Asked by AlexWang. */
 			if (36 <= channelToSW && channelToSW <= 64)
-				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);
+				rtl_set_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);
 			else if (100 <= channelToSW && channelToSW <= 140)
-				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
+				rtl_set_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
 			else
-				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
+				rtl_set_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 		} else if ((IS_HARDWARE_TYPE_8821S(rtlhal))
 			      && channelToSW > 14) {
 			/* <20130111, Kordan> For better result of APK. Asked by Willson. */
 			if (36 <= channelToSW && channelToSW <= 64)
-				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
+				rtl_set_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 			else if (100 <= channelToSW && channelToSW <= 140)
-				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x110E9);
+				rtl_set_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x110E9);
 			else
-				rtw_hal_write_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
+				rtl_set_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 		}
 	}
 }

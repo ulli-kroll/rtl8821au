@@ -210,7 +210,6 @@ void rtw_hal_bcn_related_reg_setting(struct rtl_priv *rtlpriv);
 u32	rtl_get_bbreg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask);
 void	rtl_set_bbreg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask, u32 Data);
 u32	rtw_hal_read_rfreg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, u32 BitMask);
-void	rtw_hal_write_rfreg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, u32 BitMask, u32 Data);
 
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv);
 

@@ -373,12 +373,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	    {
 		/* ====== TX IQK ====== */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+		rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
+		rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
+		rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
+		rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
+		rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+		rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 		rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
 		rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xc94, BIT(0), 0x1);
@@ -558,7 +558,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
+		rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 
 		if (TX0IQKOK == FALSE)
@@ -570,13 +570,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
 			rtl_write_dword(rtlpriv, 0x984, 0x0046a911);
@@ -676,13 +676,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 			/*  1. RX RF Setting */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -773,12 +773,12 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	    {
 		/* Path-B TX/RX IQK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+		rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
+		rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
+		rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3fffd);
+		rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe83f);
+		rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+		rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 		rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
 		rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 		rtl_set_bbreg(rtlpriv, 0xe94, BIT(0), 0x1);
@@ -954,7 +954,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		rtw_hal_write_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00));	/* Load LOK */
+		rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00));	/* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
 
 		if (TX1IQKOK == FALSE)
@@ -966,13 +966,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -1076,13 +1076,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		} else {
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+			rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x3f7ff);
+			rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfe7bf);
+			rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+			rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d0);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 			rtl_set_bbreg(rtlpriv, 0x978, BIT(31), 0x1);
 			rtl_set_bbreg(rtlpriv, 0x97c, BIT(31), 0x0);
@@ -1511,9 +1511,9 @@ static void _rtl8812au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
 	for (i = 0; i < RF_REG_NUM; i++)
-		rtw_hal_write_rfreg(rtlpriv, Path, Backup_RF_REG[i], bRFRegOffsetMask, RF_backup[i]);
+		rtl_set_rfreg(rtlpriv, Path, Backup_RF_REG[i], bRFRegOffsetMask, RF_backup[i]);
 
-	rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x0);
+	rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x0);
 
 	switch (Path) {
 	case RF90_PATH_A:
@@ -1536,7 +1536,7 @@ static void _rtl8821au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /*  [31] = 0 --> Page C */
 	for (i = 0; i < rf_reg_num; i++)
-		rtw_hal_write_rfreg(rtlpriv, Path, backup_rf_reg[i], bRFRegOffsetMask, rf_backup[i]);
+		rtl_set_rfreg(rtlpriv, Path, backup_rf_reg[i], bRFRegOffsetMask, rf_backup[i]);
 
 	switch (Path) {
 	case RF90_PATH_A:
@@ -1699,7 +1699,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			if (rtlhal->external_pa_2g) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+				rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
 			}
 
 			/* Path-A LOK */
@@ -1726,13 +1726,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			rtl_set_bbreg(rtlpriv, 0xc5c, BIT(26)|BIT(25)|BIT(24), 0x7);
 
 			/* 2. LoK RF Setting (at BW = 20M) */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x18, 0x00c00, 0x3);     /* BW 20M */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x0003f);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xf3fc3);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80002);
+			rtl_set_rfreg(rtlpriv, Path, 0x18, 0x00c00, 0x3);     /* BW 20M */
+			rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
+			rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x0003f);
+			rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xf3fc3);
+			rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+			rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
 			rtl_set_bbreg(rtlpriv, 0xcb8, 0xf, 0xd);
 			rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
 			rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
@@ -1763,13 +1763,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
+			rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
 			switch (rtlpriv->phy.current_chan_bw) {
 			case 1:
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x18, 0x00c00, 0x1);
+				rtl_set_rfreg(rtlpriv, Path, 0x18, 0x00c00, 0x1);
 				break;
 			case 2:
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x18, 0x00c00, 0x0);
+				rtl_set_rfreg(rtlpriv, Path, 0x18, 0x00c00, 0x0);
 				break;
 			default:
 				break;
@@ -1778,13 +1778,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			/* 3. TX RF Setting */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x0003f);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xf3fc3);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
-			rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+			rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x20000);
+			rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x0003f);
+			rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xf3fc3);
+			rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d5);
+			rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+			rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 			rtl_set_bbreg(rtlpriv, 0xcb8, 0xf, 0xd);
 			rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
 			rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
@@ -1948,13 +1948,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					/* ====== RX mode TXK (RXK Step 1) ====== */
 					rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 					/*  1. TX RF Setting */
-					rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x00029);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xd7ffb);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, temp_reg65);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+					rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+					rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+					rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x00029);
+					rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xd7ffb);
+					rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, temp_reg65);
+					rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+					rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 					rtl_set_bbreg(rtlpriv, 0xcb8, 0xf, 0xd);
 					rtl_write_dword(rtlpriv, 0x978, 0x29002000);/* TX (X,Y) */
@@ -2046,13 +2046,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					/* ====== RX IQK ====== */
 					rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 					/* 1. RX RF Setting */
-					rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x0002f);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfffbb);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d8);
-					rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+					rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+					rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+					rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x0002f);
+					rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfffbb);
+					rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+					rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d8);
+					rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 					rtl_set_bbreg(rtlpriv, 0x978, 0x03FF8000, (TX_X0_RXK[cal])>>21&0x000007ff);
 					rtl_set_bbreg(rtlpriv, 0x978, 0x000007FF, (TX_Y0_RXK[cal])>>21&0x000007ff);
@@ -2129,13 +2129,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				/* ====== RX mode TXK (RXK Step 1) ====== */
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 				/* 1. TX RF Setting */
-				rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x00029);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xd7ffb);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, temp_reg65);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+				rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+				rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+				rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x00029);
+				rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xd7ffb);
+				rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, temp_reg65);
+				rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x8a001);
+				rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 				rtl_write_dword(rtlpriv, 0x90c, 0x00008000);
 				rtl_write_dword(rtlpriv, 0xb00, 0x03000100);
 				rtl_write_dword(rtlpriv, 0x984, 0x0046a910);/* [0]:AGC_en, [15]:idac_K_Mask */
@@ -2200,13 +2200,13 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				/* ====== RX IQK ====== */
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 				/* 1. RX RF Setting */
-				rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x0002f);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfffbb);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d8);
-				rtw_hal_write_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
+				rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x80000);
+				rtl_set_rfreg(rtlpriv, Path, 0x30, bRFRegOffsetMask, 0x30000);
+				rtl_set_rfreg(rtlpriv, Path, 0x31, bRFRegOffsetMask, 0x0002f);
+				rtl_set_rfreg(rtlpriv, Path, 0x32, bRFRegOffsetMask, 0xfffbb);
+				rtl_set_rfreg(rtlpriv, Path, 0x8f, bRFRegOffsetMask, 0x88001);
+				rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, 0x931d8);
+				rtl_set_rfreg(rtlpriv, Path, 0xef, bRFRegOffsetMask, 0x00000);
 
 				rtl_set_bbreg(rtlpriv, 0x978, 0x03FF8000, (TX_X0_RXK[cal])>>21&0x000007ff);
 				rtl_set_bbreg(rtlpriv, 0x978, 0x000007FF, (TX_Y0_RXK[cal])>>21&0x000007ff);
@@ -2274,7 +2274,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			if (RX0IQKOK)
 				RX_Average++;
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); 	/* [31] = 0 --> Page C */
-			rtw_hal_write_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, temp_reg65);
+			rtl_set_rfreg(rtlpriv, Path, 0x65, bRFRegOffsetMask, temp_reg65);
 		    }
 			break;
 		default:
@@ -3496,7 +3496,7 @@ static void _rtl8821au_config_rf_reg(struct rtl_priv *rtlpriv, uint32_t Addr,
 	if (Addr == 0xfe || Addr == 0xffe) {
 		msleep(50);
 	} else {
-		rtw_hal_write_rfreg(rtlpriv, path, RegAddr, bRFRegOffsetMask, Data);
+		rtl_set_rfreg(rtlpriv, path, RegAddr, bRFRegOffsetMask, Data);
 		/* Add 1us delay between BB/RF register setting. */
 		udelay(1);
 	}
@@ -3682,7 +3682,7 @@ static void odm_ConfigRFReg_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	} else if (Addr == 0xf9) {
 		udelay(1);
 	} else {
-		rtw_hal_write_rfreg(rtlpriv, path, RegAddr, bRFRegOffsetMask, Data);
+		rtl_set_rfreg(rtlpriv, path, RegAddr, bRFRegOffsetMask, Data);
 		/* Add 1us delay between BB/RF register setting. */
 		udelay(1);
 	}
@@ -4323,11 +4323,11 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 
 		/* SYN Setting */
 		if(IS_VENDOR_8812A_TEST_CHIP(rtlpriv)) 	{
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x0001c);
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x16BFF);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x0001c);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x16BFF);
 		}
 
 		/* CCK_CHECK_en */
@@ -4415,11 +4415,11 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 
 		/* SYN Setting */
 		if(IS_VENDOR_8812A_TEST_CHIP(rtlpriv)) 	{
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x00017);
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
-			rtw_hal_write_rfreg(rtlpriv, RF90_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x04BFF);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x00017);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x00000);
+			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0xB5, bLSSIWrite_data_Jaguar, 0x04BFF);
 		}
 
 		/* DBG_871X("==>rtl8821au_phy_switch_wirelessband() BAND_ON_5G settings OFDM index 0x%x\n", pHalData->OFDM_index[RF90_PATH_A]); */

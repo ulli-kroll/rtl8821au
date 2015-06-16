@@ -287,10 +287,6 @@ uint32_t rtw_hal_read_rfreg(struct rtl_priv *rtlpriv, uint32_t eRFPath, uint32_t
 {
 	return rtlpriv->cfg->ops->get_rfreg(rtlpriv, eRFPath, RegAddr, BitMask);
 }
-void	rtw_hal_write_rfreg(struct rtl_priv *rtlpriv, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
-{
-	rtlpriv->cfg->ops->set_rfreg(rtlpriv, eRFPath, RegAddr, BitMask, Data);
-}
 
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv)
 {

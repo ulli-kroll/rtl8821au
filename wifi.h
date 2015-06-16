@@ -1428,7 +1428,12 @@ static inline void rtl_writeN(struct rtl_priv *rtlpriv,
 	rtlpriv->io.writeN_sync(rtlpriv, addr, data, len);
 }
 
-
+static inline void rtl_set_rfreg(struct rtl_priv *rtlpriv,
+				 enum radio_path rfpath, u32 regaddr,
+				 u32 bitmask, u32 data)
+{
+	rtlpriv->cfg->ops->set_rfreg(rtlpriv, rfpath, regaddr, bitmask, data);
+}
 
 /* ULLI : Hope this is an border, for old code  */
 

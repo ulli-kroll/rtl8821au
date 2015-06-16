@@ -1927,7 +1927,6 @@ struct _rtw_hal {
 
 	BOOLEAN		bChnlBWInitialzed;
 
-	uint8_t	bLedOpenDrain; // Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16.
 	uint8_t	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
 	uint8_t	b1x1RecvCombine;	// for 1T1R receive combining
 

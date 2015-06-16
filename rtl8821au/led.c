@@ -1995,6 +1995,9 @@ static void SwLedOn_8812AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 
 static void SwLedOff_8812AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 {
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
+	struct rtl_led_ctl *pledpriv = &(usbpriv->ledpriv);
+
 	uint8_t	LedCfg;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
@@ -2018,7 +2021,7 @@ static void SwLedOff_8812AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 			break;
 
 		case LED_PIN_LED0:
-			if (pHalData->bLedOpenDrain == _TRUE) {
+			if (pledpriv->led_opendrain == true) {
 				LedCfg &= 0x90; 	/* Set to software control. */
 				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3));
 				LedCfg = rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG);
@@ -2140,6 +2143,9 @@ static void SwLedOn_8821AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 
 static void SwLedOff_8821AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 {
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
+	struct rtl_led_ctl *pledpriv = &(usbpriv->ledpriv);
+
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	LedCfg;
@@ -2165,7 +2171,7 @@ static void SwLedOff_8821AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 			break;
 
 		case LED_PIN_LED0:
-			if (pHalData->bLedOpenDrain == _TRUE) {
+			if (pledpriv->led_opendrain == true) {
 				LedCfg &= 0x90; /* Set to software control. */
 				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3));
 				LedCfg = rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG);

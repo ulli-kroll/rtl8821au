@@ -164,6 +164,7 @@ struct rtl_led {
 
 struct rtl_led_ctl {
 	/* add for led controll */
+	bool led_opendrain;
 	struct rtl_led SwLed0;
 	struct rtl_led SwLed1;
 	struct rtl_led SwLed2;

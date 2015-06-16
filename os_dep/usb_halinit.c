@@ -1464,7 +1464,7 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 		break;
 	}
 
-	pHalData->bLedOpenDrain = _TRUE;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
+	pledpriv->led_opendrain = true;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
 }
 
 static void ReadLEDSetting_8812AU(struct rtl_priv *rtlpriv,

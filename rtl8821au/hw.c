@@ -987,10 +987,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 {
 	uint32_t	value32;
 	struct HAL_VERSION ChipVersion;
-	struct _rtw_hal *pHalData;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-
-	pHalData = GET_HAL_DATA(rtlpriv);
 
 	value32 = rtl_read_dword(rtlpriv, REG_SYS_CFG);
 	dev_info(&(rtlpriv->ndev->dev), "%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);

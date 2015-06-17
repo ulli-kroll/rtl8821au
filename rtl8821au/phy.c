@@ -4449,10 +4449,6 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 	} else if (path == RF90_PATH_B) {
 	}
 
-	{
-		if (power_index > 0x3F)
-			power_index = 0x3F;
-	}
 
 	/* ULLI check register names as in rtlwifi-lib */
 

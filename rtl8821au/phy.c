@@ -5533,7 +5533,8 @@ static void phy_InitBBRFRegisterDefinition(struct rtl_priv *rtlpriv)
 	/* pHalData->bPhyValueInitReady=_TRUE; */
 }
 
-static void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
+static void _rtl8821au_phy_config_bb_with_header_file(struct rtl_priv *rtlpriv,
+						       u8 configtype)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
@@ -5619,7 +5620,8 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 	}
 
 	/* Read PHY_REG.TXT BB INIT!! */
-	ODM_ReadAndConfig_MP_8821A_PHY_REG(rtlpriv);
+	_rtl8821au_phy_config_bb_with_header_file(rtlpriv,
+						  BASEBAND_CONFIG_PHY_REG);
 
 	/* If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
 	/* 1 TODO */

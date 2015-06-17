@@ -30,8 +30,10 @@ enum _ANT_DIV_TYPE {
 	S0S1_HW_ANTDIV          = 0x06, //8723B intrnal switch S0 S1
 };
 
-
-
+enum baseband_config_type {
+	BASEBAND_CONFIG_PHY_REG = 0,
+	BASEBAND_CONFIG_AGC_TAB = 1,
+};
 	
 /* Not in rtlwifi */
 

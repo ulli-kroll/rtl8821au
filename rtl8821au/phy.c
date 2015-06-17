@@ -4970,6 +4970,30 @@ void ODM_ReadAndConfig_MP_8821A_AGC_TAB(struct rtl_priv *rtlpriv)
 
 }
 
+
+static void _rtl8821au_config_bb_reg(struct rtl_priv *rtlpriv, uint32_t Addr,
+	uint32_t Bitmask, uint32_t Data)
+{
+	if (Addr == 0xfe)
+		msleep(50);
+	else if (Addr == 0xfd)
+		mdelay(5);
+	else if (Addr == 0xfc)
+		mdelay(1);
+	else if (Addr == 0xfb)
+		udelay(50);
+	else if (Addr == 0xfa)
+		udelay(5);
+	else if (Addr == 0xf9)
+		udelay(1);
+
+	rtl_set_bbreg(rtlpriv, Addr, Bitmask, Data);
+
+	/* Add 1us delay between BB/RF register setting. */
+	udelay(1);
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data);
+}
+
 void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);

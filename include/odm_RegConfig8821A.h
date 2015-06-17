@@ -27,9 +27,5 @@ void odm_ConfigBB_AGC_8821A(struct rtl_priv *rtlpriv,
 void odm_ConfigBB_PHY_REG_PG_8821A(struct rtl_priv *rtlpriv,
     uint32_t Addr, uint32_t Bitmask, uint32_t Data);
 
-void _rtl8821au_config_bb_reg(struct rtl_priv *rtlpriv,
-    uint32_t Addr, uint32_t Bitmask, uint32_t Data);
-
-
 #endif
 

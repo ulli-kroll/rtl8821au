@@ -59,7 +59,7 @@ void odm_ConfigBB_PHY_REG_PG_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 
 }
 
-void odm_ConfigBB_PHY_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
+void _rtl8821au_config_bb_reg(struct rtl_priv *rtlpriv, uint32_t Addr,
 	uint32_t Bitmask, uint32_t Data)
 {
 	if (Addr == 0xfe)

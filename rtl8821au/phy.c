@@ -4437,7 +4437,6 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	uint32_t	TxagcOffset = 0;
 
 	/*
 	 *  <20120928, Kordan> A workaround in 8812A/8821A testchip, to fix the bug of odd Tx power indexes.
@@ -4451,7 +4450,6 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 	}
 
 	{
-		power_index += TxagcOffset;
 		if (power_index > 0x3F)
 			power_index = 0x3F;
 	}

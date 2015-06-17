@@ -4444,12 +4444,6 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 	if ((power_index % 2 == 1) && !IS_NORMAL_CHIP(rtlpriv->VersionID))
 		power_index -= 1;
 
-	/* 2013.01.18 LukeLee: Modify TXAGC by dcmd_Dynamic_Ctrl() */
-	if (path == RF90_PATH_A) {
-	} else if (path == RF90_PATH_B) {
-	}
-
-
 	/* ULLI check register names as in rtlwifi-lib */
 
 	if (path == RF90_PATH_A) {

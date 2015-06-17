@@ -42,7 +42,6 @@ const char *const GLBwSrc[]={
 /* ----------------------------Function Body---------------------------------- */
 
 static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv);
-static void PHY_InitPowerLimitTable(struct rtl_priv *rtlpriv);
 
 /*
  * 2. RF register R/W API

@@ -4994,74 +4994,6 @@ static void _rtl8821au_config_bb_reg(struct rtl_priv *rtlpriv, uint32_t Addr,
 	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data);
 }
 
-void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
-{
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-
-	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
-
-	uint32_t     hex         = 0;
-	uint32_t     i           = 0;
-	u16     count       = 0;
-	uint32_t    *ptr_array   = NULL;
-
-	/* ULLI : fixed values ?? */
-	u8  platform = ODM_CE;
-	u8 _interface = RTW_USB;
-	u8 board = rtlhal->board_type;
-
-	uint32_t ArrayLen;
-	uint32_t *Array;
-
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		ArrayLen = RTL8812AU_PHY_REG_ARRAY_LEN;
-		Array = RTL8812AU_PHY_REG_ARRAY;
-	} else {
-		ArrayLen = RTL8821AU_PHY_REG_ARRAY_LEN;
-		Array = RTL8821AU_PHY_REG_ARRAY;
-	}
-
-	hex += board;
-	hex += _interface << 8;
-	hex += platform << 16;
-	hex += 0xFF000000;
-	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_PHY_REG, hex = 0x%X\n", hex);
-
-	for (i = 0; i < ArrayLen; i += 2) {
-		uint32_t v1 = Array[i];
-		uint32_t v2 = Array[i+1];
-
-		// This (offset, data) pair meets the condition.
-		if (v1 < 0xCDCDCDCD) {
-		   	_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
-			continue;
-		} else {
-			// This line is the start line of branch.
-			if (!CheckCondition(Array[i], hex)) {
-				// Discard the following (offset, data) pairs.
-				READ_NEXT_PAIR(v1, v2, i);
-			        while (v2 != 0xDEAD && v2 != 0xCDEF &&
-			               v2 != 0xCDCD && i < ArrayLen -2) {
-						READ_NEXT_PAIR(v1, v2, i);
-				}
-				i -= 2; // prevent from for-loop += 2
-			} else {
-				// Configure matched pairs and skip to end of if-else.
-			        READ_NEXT_PAIR(v1, v2, i);
-			        while (v2 != 0xDEAD && v2 != 0xCDEF &&
-			               v2 != 0xCDCD && i < ArrayLen -2) {
-						_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
-						READ_NEXT_PAIR(v1, v2, i);
-			        }
-
-			        while (v2 != 0xDEAD && i < ArrayLen -2) {
-					READ_NEXT_PAIR(v1, v2, i);
-			        }
-			}
-		}
-	}
-
-}
 
 void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 {
@@ -5599,6 +5531,75 @@ static void phy_InitBBRFRegisterDefinition(struct rtl_priv *rtlpriv)
 	rtlphy->phyreg_def[RF90_PATH_B].rf_rbpi = rB_PIRead_Jaguar;
 
 	/* pHalData->bPhyValueInitReady=_TRUE; */
+}
+
+static void ODM_ReadAndConfig_MP_8821A_PHY_REG(struct rtl_priv *rtlpriv)
+{
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+
+	#define READ_NEXT_PAIR(v1, v2, i) do { i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)
+
+	uint32_t     hex         = 0;
+	uint32_t     i           = 0;
+	u16     count       = 0;
+	uint32_t    *ptr_array   = NULL;
+
+	/* ULLI : fixed values ?? */
+	u8  platform = ODM_CE;
+	u8 _interface = RTW_USB;
+	u8 board = rtlhal->board_type;
+
+	uint32_t ArrayLen;
+	uint32_t *Array;
+
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+		ArrayLen = RTL8812AU_PHY_REG_ARRAY_LEN;
+		Array = RTL8812AU_PHY_REG_ARRAY;
+	} else {
+		ArrayLen = RTL8821AU_PHY_REG_ARRAY_LEN;
+		Array = RTL8821AU_PHY_REG_ARRAY;
+	}
+
+	hex += board;
+	hex += _interface << 8;
+	hex += platform << 16;
+	hex += 0xFF000000;
+	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_PHY_REG, hex = 0x%X\n", hex);
+
+	for (i = 0; i < ArrayLen; i += 2) {
+		uint32_t v1 = Array[i];
+		uint32_t v2 = Array[i+1];
+
+		// This (offset, data) pair meets the condition.
+		if (v1 < 0xCDCDCDCD) {
+			_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
+			continue;
+		} else {
+			// This line is the start line of branch.
+			if (!CheckCondition(Array[i], hex)) {
+				// Discard the following (offset, data) pairs.
+				READ_NEXT_PAIR(v1, v2, i);
+			        while (v2 != 0xDEAD && v2 != 0xCDEF &&
+			               v2 != 0xCDCD && i < ArrayLen -2) {
+						READ_NEXT_PAIR(v1, v2, i);
+				}
+				i -= 2; // prevent from for-loop += 2
+			} else {
+				// Configure matched pairs and skip to end of if-else.
+			        READ_NEXT_PAIR(v1, v2, i);
+			        while (v2 != 0xDEAD && v2 != 0xCDEF &&
+			               v2 != 0xCDCD && i < ArrayLen -2) {
+						_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
+						READ_NEXT_PAIR(v1, v2, i);
+			        }
+
+			        while (v2 != 0xDEAD && i < ArrayLen -2) {
+					READ_NEXT_PAIR(v1, v2, i);
+			        }
+			}
+		}
+	}
+
 }
 
 static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)

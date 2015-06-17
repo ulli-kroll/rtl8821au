@@ -5061,7 +5061,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 	}
 }
 
-static void PHY_InitPowerLimitTable(struct rtl_priv *rtlpriv)
+static void _rtl8821au_phy_init_txpower_limit(struct rtl_priv *rtlpriv)
 {
 	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
 	uint8_t		i, j, k, l, m;
@@ -5612,7 +5612,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 
 	dev_info(&(rtlpriv->ndev->dev), "===> phy_BB8812_Config_ParaFile() EEPROMRegulatory %d\n", efuse->eeprom_regulatory);
 
-	PHY_InitPowerLimitTable(rtlpriv);
+	_rtl8821au_phy_init_txpower_limit(rtlpriv);
 
 	if (efuse->eeprom_regulatory == 1) {
 		_rtl8821au_phy_read_and_config_txpwr_lmt(rtlpriv);

@@ -5553,50 +5553,52 @@ static void _rtl8821au_phy_config_bb_with_header_file(struct rtl_priv *rtlpriv,
 	uint32_t ArrayLen;
 	uint32_t *Array;
 
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		ArrayLen = RTL8812AU_PHY_REG_ARRAY_LEN;
-		Array = RTL8812AU_PHY_REG_ARRAY;
-	} else {
-		ArrayLen = RTL8821AU_PHY_REG_ARRAY_LEN;
-		Array = RTL8821AU_PHY_REG_ARRAY;
-	}
-
-	hex += board;
-	hex += _interface << 8;
-	hex += platform << 16;
-	hex += 0xFF000000;
-	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_PHY_REG, hex = 0x%X\n", hex);
-
-	for (i = 0; i < ArrayLen; i += 2) {
-		uint32_t v1 = Array[i];
-		uint32_t v2 = Array[i+1];
-
-		// This (offset, data) pair meets the condition.
-		if (v1 < 0xCDCDCDCD) {
-			_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
-			continue;
+	if (configtype == BASEBAND_CONFIG_PHY_REG) {
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+			ArrayLen = RTL8812AU_PHY_REG_ARRAY_LEN;
+			Array = RTL8812AU_PHY_REG_ARRAY;
 		} else {
-			// This line is the start line of branch.
-			if (!CheckCondition(Array[i], hex)) {
-				// Discard the following (offset, data) pairs.
-				READ_NEXT_PAIR(v1, v2, i);
-			        while (v2 != 0xDEAD && v2 != 0xCDEF &&
-			               v2 != 0xCDCD && i < ArrayLen -2) {
-						READ_NEXT_PAIR(v1, v2, i);
-				}
-				i -= 2; // prevent from for-loop += 2
+			ArrayLen = RTL8821AU_PHY_REG_ARRAY_LEN;
+			Array = RTL8821AU_PHY_REG_ARRAY;
+		}
+	
+		hex += board;
+		hex += _interface << 8;
+		hex += platform << 16;
+		hex += 0xFF000000;
+		RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_PHY_REG, hex = 0x%X\n", hex);
+	
+		for (i = 0; i < ArrayLen; i += 2) {
+			uint32_t v1 = Array[i];
+			uint32_t v2 = Array[i+1];
+	
+			// This (offset, data) pair meets the condition.
+			if (v1 < 0xCDCDCDCD) {
+				_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
+				continue;
 			} else {
-				// Configure matched pairs and skip to end of if-else.
-			        READ_NEXT_PAIR(v1, v2, i);
-			        while (v2 != 0xDEAD && v2 != 0xCDEF &&
-			               v2 != 0xCDCD && i < ArrayLen -2) {
-						_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
-						READ_NEXT_PAIR(v1, v2, i);
-			        }
-
-			        while (v2 != 0xDEAD && i < ArrayLen -2) {
+				// This line is the start line of branch.
+				if (!CheckCondition(Array[i], hex)) {
+					// Discard the following (offset, data) pairs.
 					READ_NEXT_PAIR(v1, v2, i);
-			        }
+				        while (v2 != 0xDEAD && v2 != 0xCDEF &&
+				               v2 != 0xCDCD && i < ArrayLen -2) {
+							READ_NEXT_PAIR(v1, v2, i);
+					}
+					i -= 2; // prevent from for-loop += 2
+				} else {
+					// Configure matched pairs and skip to end of if-else.
+				        READ_NEXT_PAIR(v1, v2, i);
+				        while (v2 != 0xDEAD && v2 != 0xCDEF &&
+				               v2 != 0xCDCD && i < ArrayLen -2) {
+							_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
+							READ_NEXT_PAIR(v1, v2, i);
+				        }
+	
+				        while (v2 != 0xDEAD && i < ArrayLen -2) {
+						READ_NEXT_PAIR(v1, v2, i);
+				        }
+				}
 			}
 		}
 	}

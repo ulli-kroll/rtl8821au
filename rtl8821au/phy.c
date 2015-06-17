@@ -4436,7 +4436,6 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 	u8 path, u8 rate)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 *  <20120928, Kordan> A workaround in 8812A/8821A testchip, to fix the bug of odd Tx power indexes.

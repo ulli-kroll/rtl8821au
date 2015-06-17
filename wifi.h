@@ -1857,7 +1857,6 @@ struct _rtw_dm {
 };
 
 struct _rtw_hal {
-	enum rt_polarity_ctl		PolarityCtl; // For Wifi PDn Polarity control.
 	RT_REGULATOR_MODE	RegulatorMode; // switching regulator or LDO
 
 	//current WIFI_PHY values

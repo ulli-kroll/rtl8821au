@@ -1032,7 +1032,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 
 	/* For multi-function consideration. Added by Roger, 2010.10.06. */
 	value32 = rtl_read_dword(rtlpriv, REG_MULTI_FUNC_CTRL);
-	pHalData->PolarityCtl = ((value32 & WL_HWPDN_SL) ? RT_POLARITY_HIGH_ACT : RT_POLARITY_LOW_ACT);
+	rtlpriv->phy.polarity_ctl = ((value32 & WL_HWPDN_SL) ? RT_POLARITY_HIGH_ACT : RT_POLARITY_LOW_ACT);
 
 	memcpy(&(rtlpriv->VersionID), &ChipVersion, sizeof(struct HAL_VERSION));
 

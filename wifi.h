@@ -1741,10 +1741,6 @@ struct _rtw_dm {
 	u8			LinkedInterval;
 	u8			preChannel;
 	u8			AntType;
-	uint32_t			TxagcOffsetValueA;
-	BOOLEAN			IsTxagcOffsetPositiveA;
-	uint32_t			TxagcOffsetValueB;
-	BOOLEAN			IsTxagcOffsetPositiveB;
 	uint64_t			lastTxOkCnt;
 	uint64_t			lastRxOkCnt;
 	uint32_t			BbSwingOffsetA;

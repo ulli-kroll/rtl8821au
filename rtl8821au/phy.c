@@ -4448,11 +4448,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 
 	/* 2013.01.18 LukeLee: Modify TXAGC by dcmd_Dynamic_Ctrl() */
 	if (path == RF90_PATH_A) {
-		Direction = pHalData->odmpriv.IsTxagcOffsetPositiveA;
-		TxagcOffset = pHalData->odmpriv.TxagcOffsetValueA;
 	} else if (path == RF90_PATH_B) {
-		Direction = pHalData->odmpriv.IsTxagcOffsetPositiveB;
-		TxagcOffset = pHalData->odmpriv.TxagcOffsetValueB;
 	}
 
 	if (Direction == FALSE) {

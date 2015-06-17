@@ -4437,7 +4437,6 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	BOOLEAN		Direction = FALSE;
 	uint32_t	TxagcOffset = 0;
 
 	/*
@@ -4451,12 +4450,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 	} else if (path == RF90_PATH_B) {
 	}
 
-	if (Direction == FALSE) {
-		if(power_index > TxagcOffset)
-			power_index -= TxagcOffset;
-		else
-			power_index = 0;
-	} else {
+	{
 		power_index += TxagcOffset;
 		if (power_index > 0x3F)
 			power_index = 0x3F;

@@ -5138,7 +5138,7 @@ static u8 _rtl8812au_phy_get_txpower_by_rate_base_index(struct rtl_priv *rtlpriv
 }
 
 
-static void PHY_ConvertPowerLimitToPowerIndex(struct rtl_priv *rtlpriv)
+static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
@@ -5628,7 +5628,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 		ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);
 
 		if (efuse->eeprom_regulatory == 1 )
-			PHY_ConvertPowerLimitToPowerIndex( rtlpriv );
+			_rtl8821au_phy_convert_txpower_limit_to_power_index(rtlpriv);
 	}
 
 

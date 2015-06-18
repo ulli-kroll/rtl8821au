@@ -102,7 +102,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	int i;
 
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_WM_MODE,&(pmlmeext->cur_wireless_mode));

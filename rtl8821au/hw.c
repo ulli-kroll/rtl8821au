@@ -753,7 +753,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 #endif
 
 	case HW_VAR_EFUSE_USAGE:
-		pHalData->EfuseUsedPercentage = *pval;
+		rtlefuse->efuse_usedpercentage = *pval;
 		break;
 
 	case HW_VAR_EFUSE_BYTES:

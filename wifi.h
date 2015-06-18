@@ -1875,7 +1875,6 @@ struct _rtw_hal {
 	uint8_t	bAPKThermalMeterIgnore;
 
 	BOOLEAN 		EepromOrEfuse;
-	uint8_t				EfuseUsedPercentage;
 	//uint8_t				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
 
 

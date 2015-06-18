@@ -1876,7 +1876,6 @@ struct _rtw_hal {
 
 	BOOLEAN 		EepromOrEfuse;
 	uint8_t				EfuseUsedPercentage;
-	u16				EfuseUsedBytes;
 	//uint8_t				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
 
 

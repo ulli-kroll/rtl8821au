@@ -289,6 +289,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_efuse *rtlefuse =  rtl_efuse(rtlpriv);
 	struct _rtw_hal *pHalData;
 	struct dm_priv *pdmpriv;
 	struct _rtw_dm *podmpriv;
@@ -756,7 +757,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_EFUSE_BYTES:
-		pHalData->EfuseUsedBytes = *(u16 *)pval;
+		rtlefuse->efuse_usedbytes = *(u16 *)pval;
 		break;
 	case HW_VAR_FIFO_CLEARN_UP:
 		{
@@ -904,6 +905,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 {
+	struct rtl_efuse *rtlefuse =  rtl_efuse(rtlpriv);
 	struct _rtw_hal *pHalData;
 	struct _rtw_dm *podmpriv;
 	uint8_t val8;
@@ -956,7 +958,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 		break;
 #endif
 	case HW_VAR_EFUSE_BYTES: /*  To get EFUE total used bytes, added by Roger, 2008.12.22. */
-		*(u16 *)pval = pHalData->EfuseUsedBytes;
+		*(u16 *)pval = rtlefuse->efuse_usedbytes;
 		break;
 
 	case HW_VAR_APFM_ON_MAC:

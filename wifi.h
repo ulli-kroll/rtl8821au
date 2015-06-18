@@ -1713,8 +1713,6 @@ struct _rtw_dm {
 	u8			*pWirelessMode; //ODM_WIRELESS_MODE_E
 	// Security mode Open/WEP/AES/TKIP = 0/1/2/3
 	u8			*pSecurity;
- 	// Central channel location Ch1/Ch2/....
-	u8			*pChannel;	//central channel number
 	// Common info for 92D DMSP
 
 	// Common info for Status

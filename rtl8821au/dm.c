@@ -2005,8 +2005,8 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 		if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 			if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
-				if ((*pDM_Odm->pChannel != pDM_Odm->preChannel) && (!mac->act_scanning)) {
-					pDM_Odm->preChannel = *pDM_Odm->pChannel;
+				if ((rtlpriv->phy.current_channel != pDM_Odm->preChannel) && (!mac->act_scanning)) {
+					pDM_Odm->preChannel = rtlpriv->phy.current_channel;
 					pDM_Odm->LinkedInterval = 0;
 				}
 

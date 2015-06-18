@@ -214,10 +214,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 		pDM_Odm->pSecurity = (u8 *)pValue;
 		break;
 
-	case	ODM_CMNINFO_CHNL:
-		pDM_Odm->pChannel = (u8 *)pValue;
-		break;
-
 	case	ODM_CMNINFO_SCAN:
 		mac->act_scanning = (BOOLEAN *)pValue;
 		break;
@@ -613,7 +609,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 				(IS_HARDWARE_TYPE_8812AU(rtlhal) && IS_NORMAL_CHIP(rtlpriv->VersionID))) {
 				if (IS_HARDWARE_TYPE_8821U(rtlhal)
 					&& (pDM_Odm->SupportInterface ==  ODM_ITRF_USB)
-					&& (*(pDM_Odm->pChannel) >= 149)) {
+					&& (rtlpriv->phy.current_channel >= 149)) {
 					if (rssi_level == 1)				/* add by Gary for ac-series */
 						rate_bitmap = 0x001f8000;
 					else if (rssi_level == 2)

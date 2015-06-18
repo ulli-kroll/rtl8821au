@@ -329,7 +329,6 @@ typedef enum _ODM_Common_Info_Definition
 //--------- POINTER REFERENCE-----------//
 	ODM_CMNINFO_WM_MODE,				// ODM_WIRELESS_MODE_E
 	ODM_CMNINFO_SEC_MODE,				// ODM_SECURITY_E
-	ODM_CMNINFO_CHNL,
 	ODM_CMNINFO_FORCED_RATE,
 
 	ODM_CMNINFO_SCAN,
@@ -446,10 +445,6 @@ typedef enum tag_Bandwidth_Definition
 	ODM_BW160M 		= 3,
 	ODM_BW10M 		= 4,
 }ODM_BW_E;
-
-// ODM_CMNINFO_CHNL
-
-
 
 
 typedef struct _ODM_RA_Info_

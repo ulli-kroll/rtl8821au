@@ -126,7 +126,7 @@ void rtl8812_InitHalDm(struct rtl_priv *rtlpriv)
 
 	dm_InitGPIOSetting(rtlpriv);
 
-	pdmpriv->DM_Type = DM_Type_ByDriver;
+	rtlpriv->dm.dm_type = DM_Type_ByDriver;
 	pdmpriv->DMFlag = DYNAMIC_FUNC_DISABLE;
 
 	Update_ODM_ComInfo_8812(rtlpriv);

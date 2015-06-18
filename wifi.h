@@ -1446,7 +1446,6 @@ static inline void rtl_set_rfreg(struct rtl_priv *rtlpriv,
 #define HP_THERMAL_NUM		8
 
 struct dm_priv {
-	uint8_t	DM_Type;
 	uint8_t	DMFlag;
 	uint8_t	InitDMFlag;
 	//uint8_t   RSVD_1;
@@ -1802,7 +1801,6 @@ struct _rtw_dm {
 	//
 
 	//common
-	//u8		DM_Type;
 	//u8    PSD_Report_RXHP[80];   // Add By Gary
 	//u8    PSD_func_flag;               // Add By Gary
 	//for DIG

@@ -7,6 +7,9 @@ struct rtl_usb {
 	struct usb_interface *intf;
 	struct usb_device *udev;
 
+	/* Bcn control register setting */
+	u32 reg_bcn_ctrl_val;
+
 	u32 max_bulk_out_size;
         struct rtl_priv *rtlpriv;
 

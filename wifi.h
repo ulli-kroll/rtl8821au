@@ -559,11 +559,11 @@ struct rtl_phy {
 	u32 mcs_txpwrlevel_origoffset[MAX_PG_GROUP][16];
 	/* MAX_PG_GROUP groups of pwr diff by rates */
 	u32 mcs_offset[MAX_PG_GROUP][16];
-	
+
 	u32 tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
 				   [TX_PWR_BY_RATE_NUM_RF]
 				   [TX_PWR_BY_RATE_NUM_SECTION];
-	
+
 #if 0 	/* ULLI disabled to get (in any case) compiler error */
 	u32 tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
 				   [TX_PWR_BY_RATE_NUM_RF]
@@ -1932,7 +1932,6 @@ struct _rtw_hal {
 	uint8_t	fw_ractrl;
 	uint8_t	RegTxPause;
 	// Beacon function related global variable.
-	uint8_t	RegBcnCtrlVal;
 	uint8_t	RegFwHwTxQCtrl;
 	uint8_t	RegReg542;
 	uint8_t	RegCR_1;

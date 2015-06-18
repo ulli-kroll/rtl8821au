@@ -62,14 +62,12 @@ BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *rtlpriv)
 
 void rtl8821au_set_bcn_ctrl_reg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8_t ClearBits)
 {
-	struct _rtw_hal *pHalData;
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 
-	pHalData = GET_HAL_DATA(rtlpriv);
+	rtlusb->reg_bcn_ctrl_val |= SetBits;
+	rtlusb->reg_bcn_ctrl_val &= ~ClearBits;
 
-	pHalData->RegBcnCtrlVal |= SetBits;
-	pHalData->RegBcnCtrlVal &= ~ClearBits;
-
-	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (uint8_t)pHalData->RegBcnCtrlVal);
+	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (uint8_t)rtlusb->reg_bcn_ctrl_val);
 }
 
 

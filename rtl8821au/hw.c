@@ -2,6 +2,7 @@
 
 void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 {
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	rtl_write_word(rtlpriv, REG_BCN_CTRL, 0x1010);
@@ -17,7 +18,7 @@ void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 	 */
 	rtl_write_word(rtlpriv, REG_BCNTCFG, 0x660F);
 
-	pHalData->RegBcnCtrlVal = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
+	rtlusb->reg_bcn_ctrl_val = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
 	pHalData->RegTxPause = rtl_read_byte(rtlpriv, REG_TXPAUSE);
 	pHalData->RegFwHwTxQCtrl = rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2);
 	pHalData->RegReg542 = rtl_read_byte(rtlpriv, REG_TBTT_PROHIBIT+2);
@@ -193,7 +194,7 @@ static void hw_var_set_bcn_func(struct rtl_priv *rtlpriv, uint8_t variable, uint
 		rtl_write_byte(rtlpriv, REG_BCN_CTRL, (EN_BCN_FUNCTION | EN_TXBCN_RPT));
 	else {
 		u8 tmp;
-		
+
 		tmp = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
 		tmp &= (~(EN_BCN_FUNCTION | EN_TXBCN_RPT));
 		rtl_write_byte(rtlpriv, REG_BCN_CTRL, tmp);
@@ -980,7 +981,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 
 void Set_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 {
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MEDIA_STATUS, (uint8_t *)(&type));	
+	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MEDIA_STATUS, (uint8_t *)(&type));
 }
 
 void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
@@ -1055,7 +1056,7 @@ static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, 
 {
 	bool status = true;
 	int32_t	count = 0;
-	uint32_t value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) | 
+	uint32_t value = _LLT_INIT_ADDR(address) | _LLT_INIT_DATA(data) |
 			 _LLT_OP(_LLT_WRITE_ACCESS);
 
 	rtl_write_dword(rtlpriv, REG_LLT_INIT, value);

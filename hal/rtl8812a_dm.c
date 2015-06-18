@@ -30,8 +30,6 @@
 
 static void dm_InitGPIOSetting(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
-
 	uint8_t	tmp1byte;
 
 	tmp1byte = rtl_read_byte(rtlpriv, REG_GPIO_MUXCFG);

@@ -2007,22 +2007,8 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 			if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
 				if ((rtlpriv->phy.current_channel != pDM_Odm->preChannel) && (!mac->act_scanning)) {
 					pDM_Odm->preChannel = rtlpriv->phy.current_channel;
-					pDM_Odm->LinkedInterval = 0;
 				}
-
-				if (pDM_Odm->LinkedInterval < 3)
-					pDM_Odm->LinkedInterval++;
-
-				if (pDM_Odm->LinkedInterval == 2) {
-					struct rtl_priv *	rtlpriv = pDM_Odm->rtlpriv;
-
-					/*
-					 * mark out IQK flow to prevent tx stuck. by Maddest 20130306
-					 * void rtl8821au_phy_iq_calibrate(rtlpriv, FALSE);
-					 */
-				}
-			} else
-				pDM_Odm->LinkedInterval = 0;
+			}
 		}
 		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 	}

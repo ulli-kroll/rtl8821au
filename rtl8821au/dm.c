@@ -2003,13 +2003,6 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 		rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
 
-		if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-			if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
-				if ((rtlpriv->phy.current_channel != pDM_Odm->preChannel) && (!mac->act_scanning)) {
-					pDM_Odm->preChannel = rtlpriv->phy.current_channel;
-				}
-			}
-		}
 		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 	}
 

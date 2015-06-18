@@ -50,8 +50,6 @@
 //#define	SET_CHANNEL_CMD	0xF3000000
 //#define	UPDATE_RA_CMD	0xFD0000A2
 
-#define	DYNAMIC_FUNC_DISABLE			(0x0)
-
 // ====== ODM_ABILITY_E ========
 // BB ODM section BIT 0-15
 #define	DYNAMIC_BB_DIG				BIT(0)

@@ -53,9 +53,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
+	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
 
 	/*
 	 * Init Value

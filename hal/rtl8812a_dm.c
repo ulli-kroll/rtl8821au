@@ -96,7 +96,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 {
 	struct rtl_mac *mac = &(rtlpriv->mac80211);
-	
+
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
@@ -119,9 +119,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 void rtl8812_InitHalDm(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	uint8_t	i;
 
 	dm_InitGPIOSetting(rtlpriv);

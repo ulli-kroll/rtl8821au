@@ -1858,7 +1858,6 @@ struct _rtw_hal {
 	uint8_t	CurrentCenterFrequencyIndex1;
 
 	u16	CustomerID;
-	u16	BasicRateSet;
 	u16 ForcedDataRate;// Force Data Rate. 0: Auto, 0x02: 1M ~ 0x6C: 54M.
 	u32	ReceiveConfig;
 

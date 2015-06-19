@@ -362,10 +362,9 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 				 * because CCK 2M has poor TXEVM
 				 * CCK 5.5M & 11M ACK should be enabled for better performance
 				 */
-				pHalData->BasicRateSet = BrateCfg = (BrateCfg | 0xd) & 0x15d;
+				BrateCfg = (BrateCfg | 0xd) & 0x15d;
 				BrateCfg |= 0x01; /* default enable 1M ACK rate */
 			} else { /* 5G */
-				pHalData->BasicRateSet &= 0xFF0;
 				BrateCfg |= 0x10; /* default enable 6M ACK rate */
 			}
 			/*

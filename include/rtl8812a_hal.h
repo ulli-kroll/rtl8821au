@@ -193,14 +193,6 @@ typedef struct _RT_FIRMWARE_8812 {
 // | 2byte|----8bytes----|1byte|--7bytes--| //92D
 #define EFUSE_OOB_PROTECT_BYTES_JAGUAR		18 	// PG data exclude header, dummy 7 bytes frome CP test and reserved 1byte.
 #define EFUSE_PROTECT_BYTES_BANK_JAGUAR		16
-// Added for different registry settings to adjust TxPwr index. added by Roger, 2010.03.09.
-typedef enum _TX_PWR_PERCENTAGE{
-	TX_PWR_PERCENTAGE_0 = 0x01, // 12.5%
-	TX_PWR_PERCENTAGE_1 = 0x02, // 25%
-	TX_PWR_PERCENTAGE_2 = 0x04, // 50%
-	TX_PWR_PERCENTAGE_3 = 0x08, //100%, default target output power.
-} TX_PWR_PERCENTAGE;
-
 
 //#define RT_IS_FUNC_DISABLED(rtlpriv, __FuncBits) ( (rtlpriv)->DisabledFunctions & (__FuncBits) )
 

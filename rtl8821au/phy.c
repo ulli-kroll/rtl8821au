@@ -2998,41 +2998,6 @@ u32 phy_Gettx_power_by_rate_offset_8812(struct rtl_priv *rtlpriv,  uint8_t Band,
 
 }
 
-/*
- * Description:
- * 	Subtract number of TxPwr index from different advance settings.
- *
- * 	2010.03.09, added by Roger.
- */
-void phy_TxPwrAdjInPercentage(struct rtl_priv *rtlpriv, uint8_t *pTxPwrIdx)
-{
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	uint8_t	TxPwrInPercentage = 0;
-
-	/* Retrieve default TxPwr index settings from registry. */
-	TxPwrInPercentage = pHalData->TxPwrInPercentage;
-
-	if (*pTxPwrIdx > RF6052_MAX_TX_PWR)
-		*pTxPwrIdx = RF6052_MAX_TX_PWR;
-
-	/*
-	 * <Roger_Notes> NEC Spec: dB = 10*log(X/Y), X: target value, Y: default value.
-	 * For example: TxPower 50%, 10*log(50/100)=(nearly)-3dB
-	 * 2010.07.26.
-	 */
-
-	if (TxPwrInPercentage & TX_PWR_PERCENTAGE_0) {	/* 12.5% , -9dB */
-		*pTxPwrIdx -= 18;
-	} else if (TxPwrInPercentage & TX_PWR_PERCENTAGE_1) {	/* 25%, -6dB */
-		*pTxPwrIdx -= 12;
-	} else if (TxPwrInPercentage & TX_PWR_PERCENTAGE_2) {	/* 50%, -3dB */
-		*pTxPwrIdx -= 6;
-	}
-
-	if (*pTxPwrIdx > RF6052_MAX_TX_PWR)	/* Avoid underflow condition. */
-		*pTxPwrIdx = RF6052_MAX_TX_PWR;
-}
-
 u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	uint8_t	Rate, enum CHANNEL_WIDTH BandWidth, uint8_t Channel)
 {
@@ -3230,13 +3195,6 @@ u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
 
 	if (txPower > MAX_POWER_INDEX)
 		txPower = MAX_POWER_INDEX;
-
-	/*
-	 * 2012/09/26 MH We need to take care high power device limiation to prevent destroy EXT_PA.
-	 * This case had ever happened in CU/SU high power module. THe limitation = 0x20.
-	 * But for 8812, we still not know the value.
-	 */
-	phy_TxPwrAdjInPercentage(rtlpriv, (uint8_t *)&txPower);
 
 	return txPower;
 }

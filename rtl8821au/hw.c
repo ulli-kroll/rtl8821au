@@ -916,10 +916,6 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 	podmpriv = &pHalData->odmpriv;
 
 	switch (variable) {
-	case HW_VAR_BASIC_RATE:
-		*(u16 *)pval = pHalData->BasicRateSet;
-		break;
-
 	case HW_VAR_TXPAUSE:
 		*pval = rtl_read_byte(rtlpriv, REG_TXPAUSE);
 		break;

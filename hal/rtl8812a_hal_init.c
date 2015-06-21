@@ -2127,28 +2127,6 @@ uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 	bResult = _SUCCESS;
 
 	switch (variable) {
-#if 0	/* ULLI currently disabled */
-	case HW_DEF_FA_CNT_DUMP:
-		{
-			uint8_t mac_id;
-			struct _rtw_dm *pDM_Odm;
-
-
-			mac_id = *(uint8_t *)pval;
-			pDM_Odm = &pHalData->odmpriv;
-
-			if (rtlpriv->bLinkInfoDump & BIT(1))
-				pDM_Odm->DebugComponents |=	ODM_COMP_DIG;
-			else
-				pDM_Odm->DebugComponents &= ~ODM_COMP_DIG;
-
-			if (rtlpriv->bLinkInfoDump & BIT(2))
-				pDM_Odm->DebugComponents |=	ODM_COMP_FA_CNT;
-			else
-				pDM_Odm->DebugComponents &= ~ODM_COMP_FA_CNT;
-		}
-		break;
-#endif
 	default:
 		DBG_8192C("%s: [ERROR] HAL_DEF_VARIABLE(%d) not defined!\n", __FUNCTION__, variable);
 		bResult = _FAIL;

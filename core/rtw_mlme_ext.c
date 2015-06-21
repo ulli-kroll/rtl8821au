@@ -5979,12 +5979,6 @@ void _linked_info_dump(struct rtl_priv *rtlpriv)
 
 	//============  tx info ============
 	rtw_hal_get_def_var(rtlpriv, HW_DEF_RA_INFO_DUMP,&mac_id);
-
-	//============  rx info ============
-	rtw_hal_set_def_var(rtlpriv, HW_DEF_FA_CNT_DUMP,&mac_id);
-
-
-
 }
 
 uint8_t chk_ap_is_alive(struct rtl_priv *rtlpriv, struct sta_info *psta)

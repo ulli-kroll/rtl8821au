@@ -675,11 +675,8 @@ exit:
  * 11/11/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-static void
-Efuse_ReadAllMap(
-			struct rtl_priv *rtlpriv,
-			uint8_t		efuseType,
-	 	uint8_t		*Efuse)
+static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t efuseType,
+		uint8_t	*Efuse)
 {
 	u16	mapLen=0;
 
@@ -761,7 +758,7 @@ void EFUSE_ShadowMapUpdate(
 	}
 	else
 	{
-		Efuse_ReadAllMap(rtlpriv, efuseType, efuse->efuse_map[0]);
+		efuse_read_all_map(rtlpriv, efuseType, efuse->efuse_map[0]);
 
 	}
 

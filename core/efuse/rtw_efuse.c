@@ -761,7 +761,7 @@ void EFUSE_ShadowMapUpdate(
 	}
 	else
 	{
-		Efuse_ReadAllMap(rtlpriv, efuseType, &efuse->efuse_map[0]);
+		Efuse_ReadAllMap(rtlpriv, efuseType, efuse->efuse_map[0]);
 
 	}
 

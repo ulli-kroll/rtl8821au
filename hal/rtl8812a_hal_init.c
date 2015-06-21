@@ -1936,13 +1936,6 @@ rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset,
 	return ret;
 }
 
-void InitRDGSetting8812A(struct rtl_priv *rtlpriv)
-{
-	rtl_write_byte(rtlpriv, REG_RD_CTRL, 0xFF);
-	rtl_write_word(rtlpriv, REG_RD_NAV_NXT, 0x200);
-	rtl_write_byte(rtlpriv, REG_RD_RESP_PKT_TH, 0x05);
-}
-
 void ReadRFType8812A(struct rtl_priv *rtlpriv)
 {
 	/*
@@ -2008,51 +2001,6 @@ void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable)
 		/* rtl_write_byte(rtlpriv, rOFDM0_RxDSP+1, rtl_read_byte(rtlpriv, rOFDM0_RxDSP+1) & ~BIT1); */
 	}
 }
-
-u8 GetEEPROMSize8812A(struct rtl_priv *rtlpriv)
-{
-	uint8_t	size = 0;
-	uint32_t	curRCR;
-
-	curRCR = rtl_read_word(rtlpriv, REG_SYS_EEPROM_CTRL);
-	size = (curRCR & EEPROMSEL) ? 6 : 4; /* 6: EEPROM used is 93C46, 4: boot from E-Fuse. */
-
-	DBG_871X("EEPROM type is %s\n", size == 4 ? "E-FUSE" : "93C46");
-	/* return size; */
-	return 4; /*  <20120713, Kordan> The default value of HW is 6 ?!! */
-}
-
-void CheckAutoloadState8812A(struct rtl_priv *rtlpriv)
-{
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	PEEPROM_EFUSE_PRIV pEEPROM;
-	uint8_t val8;
-
-
-	pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-
-	/* check system boot selection */
-	val8 = rtl_read_byte(rtlpriv, REG_9346CR);
-	pEEPROM->EepromOrEfuse = (val8 & BOOT_FROM_EEPROM) ? _TRUE : _FALSE;
-	efuse->autoload_failflag = (val8 & EEPROM_EN) ? _FALSE : _TRUE;
-
-	DBG_8192C("%s: 9346CR(%#x)=0x%02x, Boot from %s, Autoload %s!\n",
-			__FUNCTION__, REG_9346CR, val8,
-			(pEEPROM->EepromOrEfuse ? "EEPROM" : "EFUSE"),
-			(efuse->autoload_failflag ? "Fail" : "OK"));
-}
-
-void InitPGData8812A(struct rtl_priv *rtlpriv)
-{
-	PEEPROM_EFUSE_PRIV pEEPROM;
-	uint32_t i;
-	u16 val16;
-
-
-	pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-
-}
-
 
 void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rssi_level)
 {

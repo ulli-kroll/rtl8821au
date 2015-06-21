@@ -206,13 +206,8 @@ typedef struct _RT_FIRMWARE_8812 {
 void	_8051Reset8812(struct rtl_priv *rtlpriv);
 void	InitializeFirmwareVars8812(struct rtl_priv *rtlpriv);
 
-void InitRDGSetting8812A(struct rtl_priv *rtlpriv);
-
-void CheckAutoloadState8812A(struct rtl_priv *rtlpriv);
 
 // EFuse
-uint8_t	GetEEPROMSize8812A(struct rtl_priv *rtlpriv);
-void InitPGData8812A(struct rtl_priv *rtlpriv);
 void	Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo);
 void	Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
 void	Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN	AutoLoadFail);

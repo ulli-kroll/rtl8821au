@@ -1184,7 +1184,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	enum CHANNEL_WIDTH	tmpBW= rtlpriv->phy.current_chan_bw;
 	uint8_t			tmpnCur40MhzPrimeSC = mac->cur_40_prime_sc;
 	uint8_t			tmpnCur80MhzPrimeSC = mac->cur_80_prime_sc;
-	uint8_t			tmpCenterFrequencyIndex1 =pHalData->CurrentCenterFrequencyIndex1;
+	uint8_t			tmpCenterFrequencyIndex1 = rtlpriv->phy.current_channel;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 
 	BOOLEAN bSwChnl = _FALSE, bSetChnlBW = _FALSE;
@@ -1215,7 +1215,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 		} else if((rtlpriv->phy.current_chan_bw != ChnlWidth) ||
 			(mac->cur_40_prime_sc != ChnlOffsetOf40MHz) ||
 			(mac->cur_80_prime_sc != ChnlOffsetOf80MHz) ||
-			(pHalData->CurrentCenterFrequencyIndex1!= CenterFrequencyIndex1)) {
+			(rtlpriv->phy.current_channel != CenterFrequencyIndex1)) {
 
 			bSetChnlBW = _TRUE;
 		}
@@ -1229,7 +1229,6 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 
 	if(bSwChnl) {
 		rtlpriv->phy.current_channel = ChannelNum;
-		pHalData->CurrentCenterFrequencyIndex1 = ChannelNum;
 	}
 
 
@@ -1237,8 +1236,6 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 		rtlpriv->phy.current_chan_bw = ChnlWidth;
 		mac->cur_40_prime_sc = ChnlOffsetOf40MHz;
 		mac->cur_80_prime_sc = ChnlOffsetOf80MHz;
-
-		pHalData->CurrentCenterFrequencyIndex1 = CenterFrequencyIndex1;
 	}
 
 	/* Switch workitem or set timer to do switch channel or setbandwidth operation */
@@ -1278,13 +1275,11 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	} else {
 		if(bSwChnl) {
 			rtlpriv->phy.current_channel = tmpChannel;
-			pHalData->CurrentCenterFrequencyIndex1 = tmpChannel;
 		}
 		if(bSetChnlBW) {
 			rtlpriv->phy.current_chan_bw = tmpBW;
 			mac->cur_40_prime_sc = tmpnCur40MhzPrimeSC;
 			mac->cur_80_prime_sc = tmpnCur80MhzPrimeSC;
-			pHalData->CurrentCenterFrequencyIndex1 = tmpCenterFrequencyIndex1;
 		}
 	}
 

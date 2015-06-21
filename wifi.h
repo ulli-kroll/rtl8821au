@@ -1855,7 +1855,6 @@ struct _rtw_hal {
 
 	//current WIFI_PHY values
 	enum wireless_mode CurrentWirelessMode;
-	uint8_t	CurrentCenterFrequencyIndex1;
 
 	u16	CustomerID;
 	u16 ForcedDataRate;// Force Data Rate. 0: Auto, 0x02: 1M ~ 0x6C: 54M.

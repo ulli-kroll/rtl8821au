@@ -2238,41 +2238,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 		*(uint8_t *)pval = 1;
 		break;
 
-	case HW_DEF_RA_INFO_DUMP:
-		{
-			uint8_t mac_id = *(uint8_t *)pval;
-			uint32_t cmd = 0x40000400 | mac_id;
-			uint32_t ra_info1, ra_info2;
-			uint32_t rate_mask1, rate_mask2;
-
-			if ((rtlpriv->bLinkInfoDump & BIT(0))
-			    && (check_fwstate(&rtlpriv->mlmepriv, _FW_LINKED) == _TRUE)) {
-				DBG_8192C("============ RA status check  Mac_id:%d ===================\n", mac_id);
-
-				rtl_write_dword(rtlpriv, REG_HMEBOX_E2_E3_8812, cmd);
-				ra_info1 = rtl_read_dword(rtlpriv, REG_RSVD5_8812);
-				ra_info2 = rtl_read_dword(rtlpriv, REG_RSVD6_8812);
-				rate_mask1 = rtl_read_dword(rtlpriv, REG_RSVD7_8812);
-				rate_mask2 = rtl_read_dword(rtlpriv, REG_RSVD8_8812);
-
-				DBG_8192C("[ ra_info1:0x%08x ] =>RSSI=%d, BW_setting=0x%02x, DISRA=0x%02x, VHT_EN=0x%02x\n",
-					ra_info1,
-					ra_info1&0xFF,
-					(ra_info1>>8)  & 0xFF,
-					(ra_info1>>16) & 0xFF,
-					(ra_info1>>24) & 0xFF);
-
-				DBG_8192C("[ ra_info2:0x%08x ] =>hight_rate=0x%02x, lowest_rate=0x%02x, SGI=0x%02x, RateID=%d\n",
-					ra_info2,
-					ra_info2&0xFF,
-					(ra_info2>>8)  & 0xFF,
-					(ra_info2>>16) & 0xFF,
-					(ra_info2>>24) & 0xFF);
-
-				DBG_8192C("rate_mask2=0x%08x, rate_mask1=0x%08x\n", rate_mask2, rate_mask1);
-			}
-		}
-		break;
 	case HAL_DEF_TX_PAGE_BOUNDARY:
 		if (IS_HARDWARE_TYPE_8812(rtlhal))
 			*(uint8_t *)pval = TX_PAGE_BOUNDARY_8812;

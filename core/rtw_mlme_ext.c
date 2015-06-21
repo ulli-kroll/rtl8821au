@@ -5976,9 +5976,6 @@ void _linked_info_dump(struct rtl_priv *rtlpriv)
 		rtw_hal_get_def_var(rtlpriv, HAL_DEF_UNDERCORATEDSMOOTHEDPWDB, &UndecoratedSmoothedPWDB);
 		DBG_871X("UndecoratedSmoothedPWDB:%d\n",UndecoratedSmoothedPWDB);
 	}
-
-	//============  tx info ============
-	rtw_hal_get_def_var(rtlpriv, HW_DEF_RA_INFO_DUMP,&mac_id);
 }
 
 uint8_t chk_ap_is_alive(struct rtl_priv *rtlpriv, struct sta_info *psta)

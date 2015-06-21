@@ -1,5 +1,6 @@
 #include <drv_types.h>
 #include "wifi.h"
+#include <rtl8812a_spec.h>
 
 static void efuse_ShadowRead1Byte(struct rtl_priv *rtlpriv, u16	Offset,
 	 	u8 *Value)
@@ -71,18 +72,74 @@ void EFUSE_ShadowRead(struct rtl_priv *rtlpriv, u8 Type,
 
 }	// EFUSE_ShadowRead
 
+
+enum {
+	VOLTAGE_V25	= 0x03,
+	LDOE25_SHIFT	= 28 ,
+	};
+
+
+static void EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t PwrState)
+{
+	uint8_t	tempval;
+	u16	tmpV16;
+#define EFUSE_ACCESS_ON_JAGUAR 0x69
+#define EFUSE_ACCESS_OFF_JAGUAR 0x00
+	if (PwrState == _TRUE) {
+		rtl_write_byte(rtlpriv, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_ON_JAGUAR);
+
+		/* 1.2V Power: From VDDON with Power Cut(0x0000h[15]), defualt valid */
+		tmpV16 = rtl_read_word(rtlpriv, REG_SYS_ISO_CTRL);
+		if (!(tmpV16 & PWC_EV12V)) {
+			tmpV16 |= PWC_EV12V ;
+			/* rtl_write_word(rtlpriv,REG_SYS_ISO_CTRL,tmpV16); */
+		}
+		/* Reset: 0x0000h[28], default valid */
+		tmpV16 =  rtl_read_word(rtlpriv, REG_SYS_FUNC_EN);
+		if (!(tmpV16 & FEN_ELDR)) {
+			tmpV16 |= FEN_ELDR ;
+			rtl_write_word(rtlpriv, REG_SYS_FUNC_EN, tmpV16);
+		}
+
+		/* Clock: Gated(0x0008h[5]) 8M(0x0008h[1]) clock from ANA, default valid */
+		tmpV16 = rtl_read_word(rtlpriv, REG_SYS_CLKR);
+		if ((!(tmpV16 & LOADER_CLK_EN)) || (!(tmpV16 & ANA8M))) {
+			tmpV16 |= (LOADER_CLK_EN | ANA8M);
+			rtl_write_word(rtlpriv, REG_SYS_CLKR, tmpV16);
+		}
+
+		if (bWrite == _TRUE) {
+			/* Enable LDO 2.5V before read/write action */
+			tempval = rtl_read_byte(rtlpriv, EFUSE_TEST+3);
+			tempval &= ~(BIT3|BIT4|BIT5|BIT6);
+			tempval |= (VOLTAGE_V25 << 3);
+			tempval |= BIT7;
+			rtl_write_byte(rtlpriv, EFUSE_TEST + 3, tempval);
+		}
+	} else {
+		rtl_write_byte(rtlpriv, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_OFF_JAGUAR);
+
+		if (bWrite == _TRUE) {
+			/* Disable LDO 2.5V after read/write action */
+			tempval = rtl_read_byte(rtlpriv, EFUSE_TEST + 3);
+			rtl_write_byte(rtlpriv, EFUSE_TEST + 3, (tempval & 0x7F));
+		}
+	}
+}
+
+
 static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t efuseType,
 		uint8_t	*Efuse)
 {
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv,_FALSE, _TRUE);
+	EfusePowerSwitch(rtlpriv,_FALSE, _TRUE);
 
 	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, efuseType, 0, mapLen, Efuse);
 
-	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv,_FALSE, _FALSE);
+	EfusePowerSwitch(rtlpriv,_FALSE, _FALSE);
 }
 
 uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
@@ -94,11 +151,11 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
 
-	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv, _FALSE, _TRUE);
+	EfusePowerSwitch(rtlpriv, _FALSE, _TRUE);
 
 	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, EFUSE_WIFI, addr, cnts, data);
 
-	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv, _FALSE, _FALSE);
+	EfusePowerSwitch(rtlpriv, _FALSE, _FALSE);
 
 	return _SUCCESS;
 }

@@ -72,13 +72,6 @@ void EFUSE_ShadowRead(struct rtl_priv *rtlpriv, u8 Type,
 
 }	// EFUSE_ShadowRead
 
-
-enum {
-	VOLTAGE_V25	= 0x03,
-	LDOE25_SHIFT	= 28 ,
-	};
-
-
 static void EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t PwrState)
 {
 	uint8_t	tempval;

@@ -77,9 +77,9 @@ enum rtl_var_map {
 	/*efuse map */
 	EFUSE_TEST,
 	EFUSE_CTRL,
-#if 0
 	EFUSE_CLK,
 	EFUSE_CLK_CTRL,
+#if 0
 	EFUSE_PWC_EV12V,
 	EFUSE_FEN_ELDR,
 	EFUSE_LOADER_CLK_EN,

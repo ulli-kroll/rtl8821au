@@ -73,6 +73,9 @@ enum rtl_desc92_rate {
 	DESC_RATEVHT2SS_MCS9 = 0x3f,
 };
 
+enum rtl_var_map {
+};
+
 struct rtl_hal_ops;
 
 #define CHANNEL_MAX_NUMBER	(14 + 24 + 21)	/* 14 is the max channel no */

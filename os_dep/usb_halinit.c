@@ -578,8 +578,7 @@ static void _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
 	pHalData->ReceiveConfig |= ACRC32;
 #endif
 
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal) || IS_HARDWARE_TYPE_8821U(rtlhal))
-		pHalData->ReceiveConfig |= FORCEACK;
+	pHalData->ReceiveConfig |= FORCEACK;
 
 	/*
 	 *  some REG_RCR will be modified later by phy_ConfigMACWithHeaderFile()

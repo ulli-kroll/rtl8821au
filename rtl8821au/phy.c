@@ -5572,8 +5572,7 @@ int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
 
 	/* ULLI some PCIe code ?? */
 
-	if(IS_HARDWARE_TYPE_8812AU(rtlhal) || IS_HARDWARE_TYPE_8821U(rtlhal))
-		TmpU1B |= FEN_USBA;
+	TmpU1B |= FEN_USBA;
 
 	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, TmpU1B);
 

@@ -5104,20 +5104,18 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 
 
 				for (rateSection = 0; rateSection < MAX_2_4G_RATE_SECTION_NUM; ++rateSection) {
-					{
-						/*
-						 *  obtain the base dBm values in 2.4G band
-						 *  CCK => 11M, OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15
-						 */
-						if (rateSection == 0) {		/* CCK */
-							baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_2_4G, MGN_11M);
-						} else if (rateSection == 1) { /* OFDM */
-							baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_2_4G, MGN_54M);
-						} else if (rateSection == 2) {	/* HT IT */
-							baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_2_4G, MGN_MCS7);
-						} else if (rateSection == 3) {	/* HT 2T */
-							baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_2_4G, MGN_MCS15);
-						}
+					/*
+					 *  obtain the base dBm values in 2.4G band
+					 *  CCK => 11M, OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15
+					 */
+					if (rateSection == 0) {		/* CCK */
+						baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_2_4G, MGN_11M);
+					} else if (rateSection == 1) { /* OFDM */
+						baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_2_4G, MGN_54M);
+					} else if (rateSection == 2) {	/* HT IT */
+						baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_2_4G, MGN_MCS7);
+					} else if (rateSection == 3) {	/* HT 2T */
+						baseIndex2_4G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_2_4G, MGN_MCS15);
 					}
 
 					/*
@@ -5128,7 +5126,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 					tempPwrLmt = rtlphy->txpwr_limit_2_4g[regulation][bw][rateSection][group][RF90_PATH_A];
 					/* process RF90_PATH_A later */
 					for (rfPath = 0; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
-							BW40PwrBasedBm2_4G = rtlphy->txpwr_by_rate_base_24g[rfPath][baseIndex2_4G];
+						BW40PwrBasedBm2_4G = rtlphy->txpwr_by_rate_base_24g[rfPath][baseIndex2_4G];
 
 						if (tempPwrLmt != MAX_POWER_INDEX) {
 							tempValue = tempPwrLmt - BW40PwrBasedBm2_4G;
@@ -5192,23 +5190,21 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 						channel = 51;	/* index of chnl 173 in chanl5G */
 
 					for (rateSection = 0; rateSection < MAX_5G_RATE_SECTION_NUM; ++rateSection) {
-						{
-							/*
-							 * obtain the base dBm values in 5G band
-							 * OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15,
-							 * VHT => 1SSMCS7, VHT 2T => 2SSMCS7
-							 */
-							if (rateSection == 1) {	/* OFDM */
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_54M);
-							} else if (rateSection == 2) {	/* HT 1T */
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_MCS7);
-							} else if (rateSection == 3) {	/* HT 2T */
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_MCS15);
-							} else if (rateSection == 4) {	/* VHT 1T */
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_VHT1SS_MCS7);
-							} else if (rateSection == 5) {	/* VHT 2T */
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_VHT2SS_MCS7);
-							}
+						/*
+						 * obtain the base dBm values in 5G band
+						 * OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15,
+						 * VHT => 1SSMCS7, VHT 2T => 2SSMCS7
+						 */
+						if (rateSection == 1) {	/* OFDM */
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_54M);
+						} else if (rateSection == 2) {	/* HT 1T */
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_MCS7);
+						} else if (rateSection == 3) {	/* HT 2T */
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_MCS15);
+						} else if (rateSection == 4) {	/* VHT 1T */
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_VHT1SS_MCS7);
+						} else if (rateSection == 5) {	/* VHT 2T */
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_VHT2SS_MCS7);
 						}
 
 						/*
@@ -5250,7 +5246,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 
 						/* process RF90_PATH_A later */
 						for (rfPath = RF90_PATH_B; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
-								BW40PwrBasedBm5G = rtlphy->txpwr_by_rate_base_5g[rfPath][baseIndex5G];
+							BW40PwrBasedBm5G = rtlphy->txpwr_by_rate_base_5g[rfPath][baseIndex5G];
 
 							if (tempPwrLmt != MAX_POWER_INDEX) {
 								tempValue = tempPwrLmt - BW40PwrBasedBm5G;
@@ -5303,23 +5299,21 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 						channel = 51;	/* index of chnl 173 in chanl5G */
 
 					for (rateSection = 0; rateSection < MAX_5G_RATE_SECTION_NUM; ++rateSection) {
-						{
-							/*
-							 * obtain the base dBm values in 5G band
-							 * OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15,
-							 * VHT => 1SSMCS7, VHT 2T => 2SSMCS7
-							 */
-							if (rateSection == 1) { //OFDM
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_54M );
-							} else if (rateSection == 2) {	/* HT 1T */
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_MCS7 );
-							} else if (rateSection == 3) {	/* HT 2T */
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_MCS15 );
-							} else if (rateSection == 4) {	/* VHT 1T */
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_VHT1SS_MCS7 );
-							} else if (rateSection == 5) {	/* VHT 2T */
-								baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_VHT2SS_MCS7 );
-							}
+						/*
+						 * obtain the base dBm values in 5G band
+						 * OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15,
+						 * VHT => 1SSMCS7, VHT 2T => 2SSMCS7
+						 */
+						if (rateSection == 1) { //OFDM
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_54M );
+						} else if (rateSection == 2) {	/* HT 1T */
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_MCS7 );
+						} else if (rateSection == 3) {	/* HT 2T */
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_MCS15 );
+						} else if (rateSection == 4) {	/* VHT 1T */
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_VHT1SS_MCS7 );
+						} else if (rateSection == 5) {	/* VHT 2T */
+							baseIndex5G = _rtl8812au_phy_get_txpower_by_rate_base_index(rtlpriv, BAND_ON_5G, MGN_VHT2SS_MCS7 );
 						}
 
 						tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][RF90_PATH_A];
@@ -5341,7 +5335,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 						}
 
 
-							BW40PwrBasedBm5G = rtlphy->txpwr_by_rate_base_5g[RF90_PATH_A][baseIndex5G];
+						BW40PwrBasedBm5G = rtlphy->txpwr_by_rate_base_5g[RF90_PATH_A][baseIndex5G];
 
 						if (tempPwrLmt != MAX_POWER_INDEX) {
 							tempValue = tempPwrLmt - BW40PwrBasedBm5G;

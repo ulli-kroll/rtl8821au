@@ -494,7 +494,6 @@
 // TODO: use these definition when using REG_xxx naming rule.
 // NOTE: DO NOT Remove these definition. Use later.
 
-#define EFUSE_CTRL				REG_EFUSE_CTRL		// E-Fuse Control.
 #define MSR						(REG_CR + 2)		// Media Status register
 //#define ISR						REG_HISR
 

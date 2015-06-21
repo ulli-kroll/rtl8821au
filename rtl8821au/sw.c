@@ -114,6 +114,7 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.ops = &rtl8821au_hal_ops,
 
 	.maps[EFUSE_TEST] = REG_EFUSE_TEST,
+	.maps[EFUSE_CTRL] = REG_EFUSE_CTRL,
 };
 
 

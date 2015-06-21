@@ -76,8 +76,8 @@ enum rtl_desc92_rate {
 enum rtl_var_map {
 	/*efuse map */
 	EFUSE_TEST,
-#if 0
 	EFUSE_CTRL,
+#if 0
 	EFUSE_CLK,
 	EFUSE_CLK_CTRL,
 	EFUSE_PWC_EV12V,

@@ -83,8 +83,6 @@ typedef struct PG_PKT_STRUCT_A{
 
 u16	efuse_GetMaxSize(struct rtl_priv *rtlpriv);
 uint8_t	rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data);
-uint8_t	rtw_BT_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data);
-uint8_t 	rtw_BT_efuse_map_write(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data);
 
 uint8_t	Efuse_CalculateWordCnts(uint8_t word_en);
 void	ReadEFuseByte(struct rtl_priv *rtlpriv, u16 _offset, uint8_t *pbuf) ;

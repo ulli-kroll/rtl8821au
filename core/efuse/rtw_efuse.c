@@ -444,25 +444,6 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 	return _SUCCESS;
 }
 
-uint8_t rtw_BT_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
-{
-	u16	mapLen=0;
-
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_BT, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
-
-	if ((addr + cnts) > mapLen)
-		return _FAIL;
-
-	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv, _FALSE, _TRUE);
-
-	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, EFUSE_BT, addr, cnts, data);
-
-	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv, _FALSE, _FALSE);
-
-	return _SUCCESS;
-}
-
-
 /*-----------------------------------------------------------------------------
  * Function:	Efuse_ReadAllMap
  *

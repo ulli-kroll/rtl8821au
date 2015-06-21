@@ -2148,18 +2148,6 @@ uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 				pDM_Odm->DebugComponents &= ~ODM_COMP_FA_CNT;
 		}
 		break;
-
-	case HW_DEF_ODM_DBG_FLAG:
-		{
-			u64 DebugComponents;
-			struct _rtw_dm *pDM_Odm;
-
-
-			DebugComponents = *((u64 *)pval);
-			pDM_Odm = &pHalData->odmpriv;
-			pDM_Odm->DebugComponents = DebugComponents;
-		}
-		break;
 #endif
 	default:
 		DBG_8192C("%s: [ERROR] HAL_DEF_VARIABLE(%d) not defined!\n", __FUNCTION__, variable);
@@ -2307,19 +2295,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 			}
 		}
 		break;
-#if 0  /* ULLI currently disabled */
-	case HW_DEF_ODM_DBG_FLAG:
-		{
-			u64	DebugComponents;
-			struct _rtw_dm *pDM_Odm;
-
-			pDM_Odm = &pHalData->odmpriv;
-			DebugComponents = pDM_Odm->DebugComponents;
-			DBG_8192C("%s: pDM_Odm->DebugComponents=0x%llx\n", __FUNCTION__, DebugComponents);
-			*((u64 *)pval) = DebugComponents;
-		}
-		break;
-#endif
 	case HAL_DEF_TX_PAGE_BOUNDARY:
 		if (IS_HARDWARE_TYPE_8812(rtlhal))
 			*(uint8_t *)pval = TX_PAGE_BOUNDARY_8812;

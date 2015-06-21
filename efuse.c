@@ -70,3 +70,36 @@ void EFUSE_ShadowRead(struct rtl_priv *rtlpriv, u8 Type,
 		efuse_ShadowRead4Byte(rtlpriv, Offset, (uint32_t *)Value);
 
 }	// EFUSE_ShadowRead
+
+static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t efuseType,
+		uint8_t	*Efuse)
+{
+	u16	mapLen=0;
+
+	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv,_FALSE, _TRUE);
+
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+
+	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, efuseType, 0, mapLen, Efuse);
+
+	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv,_FALSE, _FALSE);
+}
+
+void EFUSE_ShadowMapUpdate(
+	 struct rtl_priv *rtlpriv,
+	 uint8_t		efuseType)
+{
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	u16	mapLen=0;
+
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+
+	if (efuse->autoload_failflag == _TRUE)
+		memset(&efuse->efuse_map[0][0], 0xFF, mapLen);
+	else
+		efuse_read_all_map(rtlpriv, efuseType, efuse->efuse_map[0]);
+
+	//PlatformMoveMemory((void *)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0],
+	//(void *)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen);
+}// EFUSE_ShadowMapUpdate
+

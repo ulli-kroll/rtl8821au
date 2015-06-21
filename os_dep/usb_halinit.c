@@ -1514,43 +1514,42 @@ static void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 
-	hal_InitPGData_8812A(rtlpriv, pEEPROM->efuse_eeprom_data);
-	Hal_EfuseParseIDCode8812A(rtlpriv, pEEPROM->efuse_eeprom_data);
+	hal_InitPGData_8812A(rtlpriv, &efuse->efuse_map[0][0]);
+	Hal_EfuseParseIDCode8812A(rtlpriv, &efuse->efuse_map[0][0]);
 
-	Hal_ReadPROMVersion8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
-	hal_ReadIDs_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
-	hal_ReadMACAddress_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
-	Hal_ReadTxPowerInfo8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
-	Hal_ReadBoardType8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	Hal_ReadPROMVersion8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	hal_ReadIDs_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	hal_ReadMACAddress_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_ReadTxPowerInfo8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_ReadBoardType8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 
 	/*
 	 * Read Bluetooth co-exist and initialize
 	 */
 
-	Hal_EfuseParseBTCoexistInfo8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	Hal_EfuseParseBTCoexistInfo8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 
-	Hal_ReadChannelPlan8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
-	Hal_EfuseParseXtal_8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
-	Hal_ReadThermalMeter_8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
-	Hal_ReadAntennaDiversity8812A(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	Hal_ReadChannelPlan8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_EfuseParseXtal_8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_ReadThermalMeter_8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_ReadAntennaDiversity8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		_rtl8821au_read_pa_type(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+		_rtl8821au_read_pa_type(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 	} else {
-		_rtl8812au_read_pa_type(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
-		_rtl8812au_read_rfe_type(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+		_rtl8812au_read_pa_type(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+		_rtl8812au_read_rfe_type(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 	}
 
 	hal_CustomizeByCustomerID_8812AU(rtlpriv);
 
-	ReadLEDSetting_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	ReadLEDSetting_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 
 	/* 2013/04/15 MH Add for different board type recognize. */
-	hal_ReadUsbType_8812AU(rtlpriv, pEEPROM->efuse_eeprom_data, efuse->autoload_failflag);
+	hal_ReadUsbType_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 }
 
 static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)

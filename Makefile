@@ -13,7 +13,8 @@ CONFIG_PLATFORM_I386_PC = y
 
 export TopDIR ?= $(shell pwd)
 
-RTL8821AU_FILES	:=	usb.o \
+RTL8821AU_FILES	:=	efuse.o \
+			usb.o \
 			rtl8821au/dm.o \
 			rtl8821au/fw.o \
 			rtl8821au/hw.o \

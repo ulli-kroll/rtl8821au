@@ -710,48 +710,6 @@ Efuse_ReadAllMap(
  * 11/12/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-static void
-efuse_ShadowRead1Byte(
-		struct rtl_priv *rtlpriv,
-		u16		Offset,
-	 	uint8_t		*Value)
-{
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-
-	*Value = pEEPROM->efuse_eeprom_data[Offset];
-
-}	// EFUSE_ShadowRead1Byte
-
-//---------------Read Two Bytes
-static void
-efuse_ShadowRead2Byte(
-		struct rtl_priv *rtlpriv,
-		u16		Offset,
-	 	u16		*Value)
-{
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-
-	*Value = pEEPROM->efuse_eeprom_data[Offset];
-	*Value |= pEEPROM->efuse_eeprom_data[Offset+1]<<8;
-
-}	// EFUSE_ShadowRead2Byte
-
-//---------------Read Four Bytes
-static void
-efuse_ShadowRead4Byte(
-		struct rtl_priv *rtlpriv,
-		u16		Offset,
-	 	uint32_t		*Value)
-{
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-
-	*Value = pEEPROM->efuse_eeprom_data[Offset];
-	*Value |= pEEPROM->efuse_eeprom_data[Offset+1]<<8;
-	*Value |= pEEPROM->efuse_eeprom_data[Offset+2]<<16;
-	*Value |= pEEPROM->efuse_eeprom_data[Offset+3]<<24;
-
-}	// efuse_ShadowRead4Byte
-
 
 /*-----------------------------------------------------------------------------
  * Function:	efuse_ShadowWrite1Byte
@@ -771,54 +729,6 @@ efuse_ShadowRead4Byte(
  * 11/12/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-#ifdef PLATFORM
-static void
-efuse_ShadowWrite1Byte(
-		struct rtl_priv *rtlpriv,
-		u16		Offset,
-	 	uint8_t		Value);
-#endif //PLATFORM
-static void
-efuse_ShadowWrite1Byte(
-		struct rtl_priv *rtlpriv,
-		u16		Offset,
-	 	uint8_t		Value)
-{
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-
-	pEEPROM->efuse_eeprom_data[Offset] = Value;
-
-}	// efuse_ShadowWrite1Byte
-
-//---------------Write Two Bytes
-static void
-efuse_ShadowWrite2Byte(
-		struct rtl_priv *rtlpriv,
-		u16		Offset,
-	 	u16		Value)
-{
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-
-	pEEPROM->efuse_eeprom_data[Offset] = Value&0x00FF;
-	pEEPROM->efuse_eeprom_data[Offset+1] = Value>>8;
-
-}	// efuse_ShadowWrite1Byte
-
-//---------------Write Four Bytes
-static void
-efuse_ShadowWrite4Byte(
-		struct rtl_priv *rtlpriv,
-		u16		Offset,
-		uint32_t		Value)
-{
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-
-	pEEPROM->efuse_eeprom_data[Offset] = (uint8_t)(Value&0x000000FF);
-	pEEPROM->efuse_eeprom_data[Offset+1] = (uint8_t)((Value>>8)&0x0000FF);
-	pEEPROM->efuse_eeprom_data[Offset+2] = (uint8_t)((Value>>16)&0x00FF);
-	pEEPROM->efuse_eeprom_data[Offset+3] = (uint8_t)((Value>>24)&0xFF);
-
-}	// efuse_ShadowWrite1Byte
 
 /*-----------------------------------------------------------------------------
  * Function:	EFUSE_ShadowMapUpdate
@@ -841,18 +751,17 @@ void EFUSE_ShadowMapUpdate(
 	 uint8_t		efuseType)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	u16	mapLen=0;
 
 	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if (efuse->autoload_failflag == _TRUE)
 	{
-		memset(pEEPROM->efuse_eeprom_data, 0xFF, mapLen);
+		memset(&efuse->efuse_map[0][0], 0xFF, mapLen);
 	}
 	else
 	{
-		Efuse_ReadAllMap(rtlpriv, efuseType, pEEPROM->efuse_eeprom_data);
+		Efuse_ReadAllMap(rtlpriv, efuseType, &efuse->efuse_map[0]);
 
 	}
 
@@ -877,19 +786,4 @@ void EFUSE_ShadowMapUpdate(
  * 11/12/2008 	MHC		Create Version 0.
  *
  *---------------------------------------------------------------------------*/
-void
-EFUSE_ShadowRead(
-			struct rtl_priv *rtlpriv,
-			uint8_t		Type,
-			u16		Offset,
-	 	uint32_t		*Value	)
-{
-	if (Type == 1)
-		efuse_ShadowRead1Byte(rtlpriv, Offset, (uint8_t *)Value);
-	else if (Type == 2)
-		efuse_ShadowRead2Byte(rtlpriv, Offset, (u16 *)Value);
-	else if (Type == 4)
-		efuse_ShadowRead4Byte(rtlpriv, Offset, (uint32_t *)Value);
-
-}	// EFUSE_ShadowRead
 

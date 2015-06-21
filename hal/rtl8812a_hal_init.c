@@ -840,45 +840,6 @@ void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	DBG_871X("pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
 }
 
-void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
-		bool autoload_fail)
-{
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-
-	if (!autoload_fail) {
-		if (hwinfo[EEPROM_RFE_OPTION_8812] & BIT7) {
-			if (rtlhal->external_lna_5g) {
-				if (rtlhal->external_pa_5g) {
-					if (rtlhal->external_lna_2g && rtlhal->external_pa_2g)
-						rtlhal->rfe_type = 3;
-					else
-						rtlhal->rfe_type = 0;
-				} else
-					rtlhal->rfe_type = 2;
-			} else
-				rtlhal->rfe_type = 4;
-		} else {
-			rtlhal->rfe_type= hwinfo[EEPROM_RFE_OPTION_8812]&0x3F;
-
-			/*
-			 * 2013/03/19 MH Due to othe customer already use incorrect EFUSE map
-			 * to for their product. We need to add workaround to prevent to modify
-			 * spec and notify all customer to revise the IC 0xca content. After
-			 * discussing with Willis an YN, revise driver code to prevent.
-			 */
-			if (rtlhal->rfe_type == 4 &&
-			   (rtlhal->external_pa_5g == _TRUE || rtlhal->external_pa_2g == _TRUE ||
-			    rtlhal->external_lna_5g == _TRUE || rtlhal->external_lna_2g == _TRUE)) {
-				if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-					rtlhal->rfe_type = 0;
-			}
-		}
-	} else {
-		rtlhal->rfe_type = EEPROM_DEFAULT_RFE_OPTION;
-	}
-
-	DBG_871X("RFE Type: 0x%2x\n", rtlhal->rfe_type);
-}
 
 /*
  * 2013/04/15 MH Add 8812AU- VL/VS/VN for different board type.

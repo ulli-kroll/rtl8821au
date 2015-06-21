@@ -504,10 +504,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	 */
 	/* if(RegAddr == rTxAGC_A_CCK11_CCK1_JAguar || RegAddr == rTxAGC_B_CCK11_CCK1_JAguar) */
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal) || IS_HARDWARE_TYPE_8821(rtlhal)) {
-		phy_PreprocessVHTPGDataFromExactToRelativeValue(rtlpriv, RegAddr,
-			BitMask, pData);
-	}
+	phy_PreprocessVHTPGDataFromExactToRelativeValue(rtlpriv, RegAddr,
+		BitMask, pData);
 
 }
 
@@ -733,9 +731,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *rtlpriv, uint32_t RegAddr,
 	 * for 11 n series. T
 	 */
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal) || IS_HARDWARE_TYPE_8821(rtlhal)) {
-		PHY_StorePwrByRateIndexVhtSeries(rtlpriv, RegAddr, BitMask, Data);
-	}
+	PHY_StorePwrByRateIndexVhtSeries(rtlpriv, RegAddr, BitMask, Data);
 
 	/* Awk add to stroe the base power by rate value */
 	phy_StorePwrByRateIndexBase(rtlpriv, RegAddr, tmpData );

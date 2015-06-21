@@ -134,12 +134,6 @@ void rtw_hal_get_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 		rtlpriv->cfg->ops->get_hw_reg(rtlpriv, variable, val);
 }
 
-uint8_t rtw_hal_set_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue)
-{
-	if (rtlpriv->cfg->ops->SetHalDefVarHandler)
-		return rtlpriv->cfg->ops->SetHalDefVarHandler(rtlpriv, eVariable, pValue);
-	return _FAIL;
-}
 uint8_t rtw_hal_get_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue)
 {
 	if (rtlpriv->cfg->ops->GetHalDefVarHandler)

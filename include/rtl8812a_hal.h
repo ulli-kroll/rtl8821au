@@ -225,7 +225,6 @@ void	hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent, BOOL
 BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *rtlpriv);
 void ReadRFType8812A(struct rtl_priv *rtlpriv);
 
-uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval);
 uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval);
 
 // register

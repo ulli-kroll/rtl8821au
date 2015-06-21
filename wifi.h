@@ -1302,7 +1302,6 @@ struct rtl_hal_ops {
 	void	(*hal_dm_watchdog)(struct rtl_priv *rtlpriv);
 
 	uint8_t	(*GetHalDefVarHandler)(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);
-	uint8_t	(*SetHalDefVarHandler)(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);
 
 	void	(*SetHalODMVarHandler)(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);
 

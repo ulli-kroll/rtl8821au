@@ -2115,29 +2115,6 @@ void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rss
 
 /*
  *	Description:
- *		Change default setting of specified variable.
- */
-uint8_t rtl8821au_set_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval)
-{
-	struct _rtw_hal *pHalData;
-	uint8_t bResult;
-
-
-	pHalData = GET_HAL_DATA(rtlpriv);
-	bResult = _SUCCESS;
-
-	switch (variable) {
-	default:
-		DBG_8192C("%s: [ERROR] HAL_DEF_VARIABLE(%d) not defined!\n", __FUNCTION__, variable);
-		bResult = _FAIL;
-		break;
-	}
-
-	return bResult;
-}
-
-/*
- *	Description:
  *		Query setting of specified variable.
  */
 uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval)

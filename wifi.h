@@ -74,6 +74,24 @@ enum rtl_desc92_rate {
 };
 
 enum rtl_var_map {
+	/*efuse map */
+	EFUSE_TEST,
+#if 0
+	EFUSE_CTRL,
+	EFUSE_CLK,
+	EFUSE_CLK_CTRL,
+	EFUSE_PWC_EV12V,
+	EFUSE_FEN_ELDR,
+	EFUSE_LOADER_CLK_EN,
+	EFUSE_ANA8M,
+	EFUSE_HWSET_MAX_SIZE,
+	EFUSE_MAX_SECTION_MAP,
+	EFUSE_REAL_CONTENT_SIZE,
+	EFUSE_OOB_PROTECT_BYTES_LEN,
+	EFUSE_ACCESS,
+#endif
+	/*keep it last */
+	RTL_VAR_MAP_MAX,
 };
 
 struct rtl_hal_ops;
@@ -813,11 +831,10 @@ struct rtl_hal_cfg {
 #if 0 		/* ULLI currently not defined */
 	struct rtl_mod_params *mod_params;
 	struct rtl_hal_usbint_cfg *usb_interface_cfg;
-
+#endif
 	/*this map used for some registers or vars
 	   defined int HAL but used in MAIN */
 	u32 maps[RTL_VAR_MAP_MAX];
-#endif
 };
 
 struct rtl_priv;

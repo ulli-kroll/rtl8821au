@@ -495,7 +495,6 @@
 // NOTE: DO NOT Remove these definition. Use later.
 
 #define EFUSE_CTRL				REG_EFUSE_CTRL		// E-Fuse Control.
-#define EFUSE_TEST				REG_EFUSE_TEST		// E-Fuse Test.
 #define MSR						(REG_CR + 2)		// Media Status register
 //#define ISR						REG_HISR
 

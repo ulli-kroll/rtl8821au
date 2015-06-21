@@ -103,19 +103,19 @@ static void EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t P
 
 		if (bWrite == _TRUE) {
 			/* Enable LDO 2.5V before read/write action */
-			tempval = rtl_read_byte(rtlpriv, EFUSE_TEST+3);
+			tempval = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_TEST]+3);
 			tempval &= ~(BIT3|BIT4|BIT5|BIT6);
 			tempval |= (VOLTAGE_V25 << 3);
 			tempval |= BIT7;
-			rtl_write_byte(rtlpriv, EFUSE_TEST + 3, tempval);
+			rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_TEST] + 3, tempval);
 		}
 	} else {
 		rtl_write_byte(rtlpriv, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_OFF_JAGUAR);
 
 		if (bWrite == _TRUE) {
 			/* Disable LDO 2.5V after read/write action */
-			tempval = rtl_read_byte(rtlpriv, EFUSE_TEST + 3);
-			rtl_write_byte(rtlpriv, EFUSE_TEST + 3, (tempval & 0x7F));
+			tempval = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_TEST] + 3);
+			rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_TEST] + 3, (tempval & 0x7F));
 		}
 	}
 }

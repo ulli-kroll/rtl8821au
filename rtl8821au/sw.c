@@ -112,6 +112,8 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.name = "rtl8821au",
 	.fw_name = "rtlwifi/rtl8821aufw.bin",	/* ULLI note two files */
 	.ops = &rtl8821au_hal_ops,
+
+	.maps[EFUSE_TEST] = REG_EFUSE_TEST,
 };
 
 

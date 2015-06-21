@@ -85,6 +85,24 @@ static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t efuseType,
 	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv,_FALSE, _FALSE);
 }
 
+uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
+{
+	u16	mapLen=0;
+
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+
+	if ((addr + cnts) > mapLen)
+		return _FAIL;
+
+	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv, _FALSE, _TRUE);
+
+	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, EFUSE_WIFI, addr, cnts, data);
+
+	rtlpriv->cfg->ops->EfusePowerSwitch(rtlpriv, _FALSE, _FALSE);
+
+	return _SUCCESS;
+}
+
 void EFUSE_ShadowMapUpdate(
 	 struct rtl_priv *rtlpriv,
 	 uint8_t		efuseType)

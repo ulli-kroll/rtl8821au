@@ -200,7 +200,6 @@ typedef struct _RT_FIRMWARE_8812 {
 #define GetRegAmplifierType5G(_Adapter)	(_Adapter->registrypriv.AmplifierType_5G)
 
 #define GetRegbENRFEType(_Adapter)	(_Adapter->registrypriv.bEn_RFE)
-#define GetRegRFEType(_Adapter)	(_Adapter->registrypriv.RFE_Type)
 
 // rtl8812_hal_init.c
 void	_8051Reset8812(struct rtl_priv *rtlpriv);

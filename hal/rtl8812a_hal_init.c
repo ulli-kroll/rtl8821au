@@ -846,9 +846,7 @@ void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	if (!AutoloadFail) {
-		if (GetRegRFEType(rtlpriv) != 64)
-			rtlhal->rfe_type = GetRegRFEType(rtlpriv);
-		else if (PROMContent[EEPROM_RFE_OPTION_8812] & BIT7) {
+		if (PROMContent[EEPROM_RFE_OPTION_8812] & BIT7) {
 			if (rtlhal->external_lna_5g) {
 				if (rtlhal->external_pa_5g) {
 					if (rtlhal->external_lna_2g && rtlhal->external_pa_2g)
@@ -876,10 +874,7 @@ void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 			}
 		}
 	} else {
-		if (GetRegRFEType(rtlpriv) != 64)
-			rtlhal->rfe_type = GetRegRFEType(rtlpriv);
-		else
-			rtlhal->rfe_type = EEPROM_DEFAULT_RFE_OPTION;
+		rtlhal->rfe_type = EEPROM_DEFAULT_RFE_OPTION;
 	}
 
 	DBG_871X("RFE Type: 0x%2x\n", rtlhal->rfe_type);

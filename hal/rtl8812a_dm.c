@@ -149,7 +149,6 @@ void rtl8812_init_dm_priv(IN struct rtl_priv *rtlpriv)
 #endif
 	rtlpriv->registrypriv.RegPowerBase = 14;
 	rtlpriv->registrypriv.bEn_RFE = 0;
-	rtlpriv->registrypriv.RFE_Type = 64;
 }
 
 void rtl8812_deinit_dm_priv(IN struct rtl_priv *rtlpriv)

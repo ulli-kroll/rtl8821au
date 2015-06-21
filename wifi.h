@@ -1552,11 +1552,6 @@ typedef struct _EDCA_TURBO_
 
 //#endif
 
-typedef enum _BASEBAND_CONFIG_PHY_REG_PG_VALUE_TYPE{
-	PHY_REG_PG_EXACT_VALUE = 1
-} PHY_REG_PG_TYPE;
-
-
 struct ODM_RF_Calibration_Structure
 {
 	//for tx power tracking
@@ -1657,8 +1652,6 @@ struct _rtw_dm {
 	struct rtl_priv *	rtlpriv;		// For CE/NIC team
 	// WHen you use rtlpriv or priv pointer, you must make sure the pointer is ready.
 	BOOLEAN			odm_ready;
-
-	PHY_REG_PG_TYPE		PhyRegPgValueType;
 
 	uint64_t			NumQryPhyStatusAll; 	//CCK + OFDM
 	uint64_t			LastNumQryPhyStatusAll;

@@ -5104,7 +5104,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 
 
 				for (rateSection = 0; rateSection < MAX_2_4G_RATE_SECTION_NUM; ++rateSection) {
-					if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE) {
+					{
 						/*
 						 *  obtain the base dBm values in 2.4G band
 						 *  CCK => 11M, OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15
@@ -5128,10 +5128,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 					tempPwrLmt = rtlphy->txpwr_limit_2_4g[regulation][bw][rateSection][group][RF90_PATH_A];
 					/* process RF90_PATH_A later */
 					for (rfPath = 0; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
-						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
 							BW40PwrBasedBm2_4G = rtlphy->txpwr_by_rate_base_24g[rfPath][baseIndex2_4G];
-						else
-							BW40PwrBasedBm2_4G = rtlpriv->registrypriv.RegPowerBase * 2;
 
 						if (tempPwrLmt != MAX_POWER_INDEX) {
 							tempValue = tempPwrLmt - BW40PwrBasedBm2_4G;
@@ -5195,7 +5192,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 						channel = 51;	/* index of chnl 173 in chanl5G */
 
 					for (rateSection = 0; rateSection < MAX_5G_RATE_SECTION_NUM; ++rateSection) {
-						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE) {
+						{
 							/*
 							 * obtain the base dBm values in 5G band
 							 * OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15,
@@ -5253,10 +5250,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 
 						/* process RF90_PATH_A later */
 						for (rfPath = RF90_PATH_B; rfPath < MAX_RF_PATH_NUM; ++rfPath) {
-							if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
 								BW40PwrBasedBm5G = rtlphy->txpwr_by_rate_base_5g[rfPath][baseIndex5G];
-							else
-								BW40PwrBasedBm5G = rtlpriv->registrypriv.RegPowerBase * 2;
 
 							if (tempPwrLmt != MAX_POWER_INDEX) {
 								tempValue = tempPwrLmt - BW40PwrBasedBm5G;
@@ -5309,7 +5303,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 						channel = 51;	/* index of chnl 173 in chanl5G */
 
 					for (rateSection = 0; rateSection < MAX_5G_RATE_SECTION_NUM; ++rateSection) {
-						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE) {
+						{
 							/*
 							 * obtain the base dBm values in 5G band
 							 * OFDM => 54M, HT 1T => MCS7, HT 2T => MCS15,
@@ -5347,10 +5341,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 						}
 
 
-						if (pHalData->odmpriv.PhyRegPgValueType == PHY_REG_PG_EXACT_VALUE)
 							BW40PwrBasedBm5G = rtlphy->txpwr_by_rate_base_5g[RF90_PATH_A][baseIndex5G];
-						else
-							BW40PwrBasedBm5G = rtlpriv->registrypriv.RegPowerBase * 2;
 
 						if (tempPwrLmt != MAX_POWER_INDEX) {
 							tempValue = tempPwrLmt - BW40PwrBasedBm5G;
@@ -5428,17 +5419,17 @@ static void _rtl8821au_phy_config_bb_with_header_file(struct rtl_priv *rtlpriv,
 			ArrayLen = RTL8821AU_PHY_REG_ARRAY_LEN;
 			Array = RTL8821AU_PHY_REG_ARRAY;
 		}
-	
+
 		hex += board;
 		hex += _interface << 8;
 		hex += platform << 16;
 		hex += 0xFF000000;
 		RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_PHY_REG, hex = 0x%X\n", hex);
-	
+
 		for (i = 0; i < ArrayLen; i += 2) {
 			uint32_t v1 = Array[i];
 			uint32_t v2 = Array[i+1];
-	
+
 			// This (offset, data) pair meets the condition.
 			if (v1 < 0xCDCDCDCD) {
 				_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
@@ -5461,7 +5452,7 @@ static void _rtl8821au_phy_config_bb_with_header_file(struct rtl_priv *rtlpriv,
 							_rtl8821au_config_bb_reg(rtlpriv, v1, bMaskDWord, v2);
 							READ_NEXT_PAIR(v1, v2, i);
 				        }
-	
+
 				        while (v2 != 0xDEAD && i < ArrayLen -2) {
 						READ_NEXT_PAIR(v1, v2, i);
 				        }
@@ -5470,20 +5461,20 @@ static void _rtl8821au_phy_config_bb_with_header_file(struct rtl_priv *rtlpriv,
 		}
 	} else if (configtype == BASEBAND_CONFIG_AGC_TAB) {
 		struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-		
+
 		uint32_t hex = 0;
 		uint32_t i = 0;
 		u16 count = 0;
 		uint32_t *ptr_array = NULL;
-		
+
 		/* ULLI : fixed values ?? */
 		u8  platform = ODM_CE;
 		u8 _interface = RTW_USB;
 		u8 board = rtlhal->board_type;
-		
+
 		uint32_t ArrayLen;
 		uint32_t *Array;
-		
+
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			ArrayLen = RTL8812AU_AGC_TAB_ARRAY_LEN;
 			Array = RTL8812AU_AGC_TAB_ARRAY;
@@ -5491,18 +5482,18 @@ static void _rtl8821au_phy_config_bb_with_header_file(struct rtl_priv *rtlpriv,
 			ArrayLen = RTL8821AU_AGC_TAB_ARRAY_LEN;
 			Array = RTL8821AU_AGC_TAB_ARRAY;
 		}
-		
+
 		hex += board;
 		hex += _interface << 8;
 		hex += platform << 16;
 		hex += 0xFF000000;
-		
+
 		RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_AGC_TAB, hex = 0x%X\n", hex);
-		
+
 		for (i = 0; i < ArrayLen; i += 2) {
 			uint32_t v1 = Array[i];
 			uint32_t v2 = Array[i+1];
-		
+
 			// This (offset, data) pair meets the condition.
 			if (v1 < 0xCDCDCDCD ) {
 				odm_ConfigBB_AGC_8821A(rtlpriv, v1, bMaskDWord, v2);
@@ -5525,7 +5516,7 @@ static void _rtl8821au_phy_config_bb_with_header_file(struct rtl_priv *rtlpriv,
 							odm_ConfigBB_AGC_8821A(rtlpriv, v1, bMaskDWord, v2);
 							READ_NEXT_PAIR(v1, v2, i);
 					}
-		
+
 					while (v2 != 0xDEAD && i < ArrayLen -2) {
 						READ_NEXT_PAIR(v1, v2, i);
 					}

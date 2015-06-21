@@ -4,6 +4,8 @@
 #include <linux/types.h>
 #include "usb.h"
 
+#include "efuse.h"	/* ULLI : Note this belongs to base.h we doesn't have */
+
 enum intf_type {
 	INTF_PCI = 0,
 	INTF_USB = 1,

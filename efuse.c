@@ -83,8 +83,8 @@ static void EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t P
 
 		/* 1.2V Power: From VDDON with Power Cut(0x0000h[15]), defualt valid */
 		tmpV16 = rtl_read_word(rtlpriv, REG_SYS_ISO_CTRL);
-		if (!(tmpV16 & PWC_EV12V)) {
-			tmpV16 |= PWC_EV12V ;
+		if (!(tmpV16 & rtlpriv->cfg->maps[EFUSE_PWC_EV12V])) {
+			tmpV16 |= rtlpriv->cfg->maps[EFUSE_PWC_EV12V];
 			/* rtl_write_word(rtlpriv,REG_SYS_ISO_CTRL,tmpV16); */
 		}
 		/* Reset: 0x0000h[28], default valid */

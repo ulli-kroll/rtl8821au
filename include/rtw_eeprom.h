@@ -67,7 +67,6 @@ struct eeprom_priv
 {
 	uint8_t		bloadfile_fail_flag;
 	uint8_t		bloadmac_fail_flag;
-	uint8_t		EepromOrEfuse;
 
 	uint8_t		mac_addr[6];	//PermanentAddress
 

@@ -26,6 +26,7 @@
 #include <../rtl8821au/hw.h>
 #include <../rtl8821au/fw.h>
 #include <rtw_debug.h>
+#include <hal_intf.h>
 
 static void _dbg_dump_macreg(struct rtl_priv *rtlpriv)
 {
@@ -1369,7 +1370,7 @@ void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 	u16			value16;
 
 	if (_FALSE == efuse->autoload_failflag) { /* autoload OK. */
-		if (is_boot_from_eeprom(rtlpriv)) {
+		if (efuse->epromtype == EEPROM_93C46) {
 			/* Read all Content from EEPROM or EFUSE. */
 			for (i = 0; i < HWSET_MAX_SIZE_JAGUAR; i += 2) {
 				/*
@@ -1386,7 +1387,7 @@ void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 		 * pHalData->AutoloadFailFlag = _TRUE;
 		 * update to default value 0xFF
 		 */
-		if (!is_boot_from_eeprom(rtlpriv))
+		if (efuse->epromtype == EEPROM_BOOT_EFUSE)
 			EFUSE_ShadowMapUpdate(rtlpriv, EFUSE_WIFI);
 	}
 }
@@ -1554,17 +1555,26 @@ void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 
 static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 {
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
-	uint8_t			eeValue;
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
+	uint8_t	tmp_u1b;
 
 	/* check system boot selection */
-	eeValue = rtl_read_byte(rtlpriv, REG_9346CR);
-	pEEPROM->EepromOrEfuse		= (eeValue & BOOT_FROM_EEPROM) ? _TRUE : _FALSE;
-	efuse->autoload_failflag	= (eeValue & EEPROM_EN) ? _FALSE : _TRUE;
+	tmp_u1b = rtl_read_byte(rtlpriv, REG_9346CR);
+	if (tmp_u1b & BIT(4)) {
+#if 0		/* ULLI : currently no RT_TRACE */
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "Boot from EEPROM\n");
+#endif
+		rtlefuse->epromtype = EEPROM_93C46;
+	} else {
+#if 0		/* ULLI : currently no RT_TRACE */
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "Boot from EFUSE\n");
+#endif
+		rtlefuse->epromtype = EEPROM_BOOT_EFUSE;
+	}
+	rtlefuse->autoload_failflag	= (tmp_u1b & EEPROM_EN) ? _FALSE : _TRUE;
 
-	DBG_8192C("Boot from %s, Autoload %s !\n", (pEEPROM->EepromOrEfuse ? "EEPROM" : "EFUSE"),
-				(efuse->autoload_failflag ? "Fail" : "OK"));
+	DBG_8192C("Boot from %s, Autoload %s !\n", ((rtlefuse->epromtype == EEPROM_93C46) ? "EEPROM" : "EFUSE"),
+				(rtlefuse->autoload_failflag ? "Fail" : "OK"));
 
 	/* pHalData->EEType = IS_BOOT_FROM_EEPROM(rtlpriv) ? EEPROM_93C46 : EEPROM_BOOT_EFUSE; */
 

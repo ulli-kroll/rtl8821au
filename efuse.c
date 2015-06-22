@@ -89,8 +89,8 @@ static void EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t P
 		}
 		/* Reset: 0x0000h[28], default valid */
 		tmpV16 =  rtl_read_word(rtlpriv, REG_SYS_FUNC_EN);
-		if (!(tmpV16 & FEN_ELDR)) {
-			tmpV16 |= FEN_ELDR ;
+		if (!(tmpV16 & rtlpriv->cfg->maps[EFUSE_FEN_ELDR])) {
+			tmpV16 |= rtlpriv->cfg->maps[EFUSE_FEN_ELDR] ;
 			rtl_write_word(rtlpriv, REG_SYS_FUNC_EN, tmpV16);
 		}
 

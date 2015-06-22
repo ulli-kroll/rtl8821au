@@ -118,6 +118,7 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.maps[EFUSE_CLK] = 0,
 	.maps[EFUSE_CLK_CTRL] = REG_EFUSE_CTRL,
 	.maps[EFUSE_PWC_EV12V] = PWC_EV12V,
+	.maps[EFUSE_FEN_ELDR] = FEN_ELDR,
 };
 
 

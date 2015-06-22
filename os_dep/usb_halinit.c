@@ -1589,9 +1589,6 @@ static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 
 	}
 
-	DBG_8192C("Boot from %s, Autoload %s !\n", ((rtlefuse->epromtype == EEPROM_93C46) ? "EEPROM" : "EFUSE"),
-				(rtlefuse->autoload_failflag ? "Fail" : "OK"));
-
 	/* pHalData->EEType = IS_BOOT_FROM_EEPROM(rtlpriv) ? EEPROM_93C46 : EEPROM_BOOT_EFUSE; */
 
 	InitAdapterVariablesByPROM_8812AU(rtlpriv);

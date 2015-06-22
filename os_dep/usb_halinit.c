@@ -1571,7 +1571,23 @@ static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 #endif
 		rtlefuse->epromtype = EEPROM_BOOT_EFUSE;
 	}
-	rtlefuse->autoload_failflag	= (tmp_u1b & EEPROM_EN) ? _FALSE : _TRUE;
+
+	if (tmp_u1b & EEPROM_EN) {
+#if 0		/* ULLI : currently no RT_TRACE */
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Autoload OK\n");
+#endif
+		rtlefuse->autoload_failflag = false;
+#if 0
+		_rtl8821ae_read_adapter_info(hw, false);
+#endif
+	} else {
+#if 0		/* ULLI : currently no RT_TRACE */
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG, "Autoload ERR!!\n");
+#endif
+		/* ULLI : not in rtlwifi, maybe autoload_failflag to set to true */
+		rtlefuse->autoload_failflag = false;
+
+	}
 
 	DBG_8192C("Boot from %s, Autoload %s !\n", ((rtlefuse->epromtype == EEPROM_93C46) ? "EEPROM" : "EFUSE"),
 				(rtlefuse->autoload_failflag ? "Fail" : "OK"));

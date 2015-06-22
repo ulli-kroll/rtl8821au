@@ -2098,7 +2098,7 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 		break;
 
 	case HAL_DEF_LDPC:
-		if (IS_VENDOR_8812A_C_CUT(rtlpriv))
+		if (IS_VENDOR_8812A_C_CUT(rtlpriv->VersionID))
 			*(uint8_t *)pval = _TRUE;
 		else if (IS_HARDWARE_TYPE_8821(rtlhal))
 			*(uint8_t *)pval = _FALSE;

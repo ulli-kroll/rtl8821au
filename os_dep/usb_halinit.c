@@ -239,7 +239,7 @@ static void _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 
 	/* ARFB table 10 for 11ac 5G 1SS */
 	rtl_write_dword(rtlpriv, REG_ARFR1, 0x00000010);
-	if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv))
+	if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv->VersionID))
 		rtl_write_dword(rtlpriv, REG_ARFR1_8812+4, 0x000ff000);
 	else
 		rtl_write_dword(rtlpriv, REG_ARFR1_8812+4, 0x003ff000);
@@ -252,7 +252,7 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 	uint8_t	u1btmp = 0;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
-	if (IS_VENDOR_8821A_MP_CHIP(rtlpriv)) {
+	if (IS_VENDOR_8821A_MP_CHIP(rtlpriv->VersionID)) {
 		/* HW Power on sequence */
 		if (!HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_A_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
 			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);

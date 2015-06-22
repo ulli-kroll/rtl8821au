@@ -965,7 +965,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 
 	for (eRFPath = 0; eRFPath <  rtlpriv->phy.num_total_rfpath; eRFPath++) {
 		/* [2.4G] LC Tank */
-		if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv)) {
+		if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv->VersionID)) {
 			if (1 <= channelToSW && channelToSW <= 7)
 				rtl_set_rfreg(rtlpriv, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0017e);
 			else if (8 <= channelToSW && channelToSW <= 14)

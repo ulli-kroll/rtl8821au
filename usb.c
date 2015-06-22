@@ -1387,7 +1387,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	rtlpriv->intf_stop=&usb_intf_stop;
 
 	/* step read_chip_version */
-	rtw_hal_read_chip_version(rtlpriv);
+	rtlpriv->cfg->ops->read_chip_version(rtlpriv);
 
 	/* step usb endpoint mapping */
 	rtw_hal_chip_configure(rtlpriv);

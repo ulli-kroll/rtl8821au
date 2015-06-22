@@ -96,8 +96,8 @@ static void EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t P
 
 		/* Clock: Gated(0x0008h[5]) 8M(0x0008h[1]) clock from ANA, default valid */
 		tmpV16 = rtl_read_word(rtlpriv, REG_SYS_CLKR);
-		if ((!(tmpV16 & LOADER_CLK_EN)) || (!(tmpV16 & ANA8M))) {
-			tmpV16 |= (LOADER_CLK_EN | ANA8M);
+		if ((!(tmpV16 & rtlpriv->cfg->maps[EFUSE_LOADER_CLK_EN])) || (!(tmpV16 & ANA8M))) {
+			tmpV16 |= (rtlpriv->cfg->maps[EFUSE_LOADER_CLK_EN] | ANA8M);
 			rtl_write_word(rtlpriv, REG_SYS_CLKR, tmpV16);
 		}
 

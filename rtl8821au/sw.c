@@ -118,6 +118,9 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.maps[EFUSE_FEN_ELDR] = FEN_ELDR,
 	.maps[EFUSE_LOADER_CLK_EN] = LOADER_CLK_EN,
 	.maps[EFUSE_ANA8M] = ANA8M,
+
+
+	.maps[EFUSE_ACCESS] = REG_EFUSE_BURN_GNT_8812, /* ULLI : or REG_EFUSE_ACCESS as in rtlwifi */
 };
 
 

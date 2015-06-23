@@ -88,8 +88,8 @@ enum rtl_var_map {
 	EFUSE_MAX_SECTION_MAP,
 	EFUSE_REAL_CONTENT_SIZE,
 	EFUSE_OOB_PROTECT_BYTES_LEN,
-	EFUSE_ACCESS,
 #endif
+	EFUSE_ACCESS,
 	/*keep it last */
 	RTL_VAR_MAP_MAX,
 };

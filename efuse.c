@@ -79,7 +79,7 @@ static void efuse_power_switch(struct rtl_priv *rtlpriv, u8 write, u8 pwrstate)
 #define EFUSE_ACCESS_ON_JAGUAR 0x69
 #define EFUSE_ACCESS_OFF_JAGUAR 0x00
 	if (pwrstate) {
-		rtl_write_byte(rtlpriv, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_ON_JAGUAR);
+		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_ACCESS], EFUSE_ACCESS_ON_JAGUAR);
 
 		/* 1.2V Power: From VDDON with Power Cut(0x0000h[15]), defualt valid */
 		tmpV16 = rtl_read_word(rtlpriv, REG_SYS_ISO_CTRL);

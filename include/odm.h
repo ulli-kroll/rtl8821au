@@ -469,17 +469,6 @@ typedef struct _ODM_RA_Info_
 	u16 RptTime;
 	u8 RAWaitingCounter;
 	u8 RAPendingCounter;
-#if 1 //POWER_TRAINING_ACTIVE == 1 // For compile  pass only~!
-	u8 PTActive;  // on or off
-	u8 PTTryState;  // 0 trying state, 1 for decision state
-	u8 PTStage;  // 0~6
-	u8 PTStopCount; //Stop PT counter
-	u8 PTPreRate;  // if rate change do PT
-	u8 PTPreRssi; // if RSSI change 5% do PT
-	u8 PTModeSS;  // decide whitch rate should do PT
-	u8 RAstage;  // StageRA, decide how many times RA will be done between PT
-	u8 PTSmoothFactor;
-#endif
 } ODM_RA_INFO_T,*PODM_RA_INFO_T;
 
 typedef struct _IQK_MATRIX_REGS_SETTING{

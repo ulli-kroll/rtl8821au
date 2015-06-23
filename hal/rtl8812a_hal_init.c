@@ -2085,14 +2085,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 		break;
 #endif
 
-#if (POWER_TRAINING_ACTIVE == 1)
-	case HAL_DEF_PT_PWR_STATUS:
-		{
-			uint8_t MacID = *(uint8_t *)pval;
-			*(uint8_t *)pval = ODM_RA_GetHwPwrStatus_8812A(&pHalData->odmpriv, MacID);
-		}
-		break;
-#endif
 	case HW_VAR_MAX_RX_AMPDU_FACTOR:
 		*((u32 *)pval) = MAX_AMPDU_FACTOR_64K;
 		break;

@@ -606,7 +606,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	case WIRELESS_MODE_AC_5G | WIRELESS_MODE_G:
 		if (pDM_Odm->rtlpriv->phy.rf_type == RF_1T1R) {
 			if (IS_HARDWARE_TYPE_8811AU(rtlhal) ||
-				(IS_HARDWARE_TYPE_8812AU(rtlhal) && IS_NORMAL_CHIP(rtlpriv->VersionID))) {
+				(IS_HARDWARE_TYPE_8812AU(rtlhal) && IS_NORMAL_CHIP(rtlhal->version))) {
 				if (IS_HARDWARE_TYPE_8821U(rtlhal)
 					&& (pDM_Odm->SupportInterface ==  ODM_ITRF_USB)
 					&& (rtlpriv->phy.current_channel >= 149)) {
@@ -628,7 +628,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 				rate_bitmap = 0x000ff010;
 		       }
 		} else {
-			if (IS_NORMAL_CHIP(rtlpriv->VersionID)) {
+			if (IS_NORMAL_CHIP(rtlhal->version)) {
 				if (rssi_level == 1)			/* add by Gary for ac-series */
 					rate_bitmap = 0xfe3f8000;       /* VHT 2SS MCS3~9 */
 				else if (rssi_level == 2)

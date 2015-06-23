@@ -1102,9 +1102,6 @@ struct rtl_priv {
 
 	/* Border */
 
-	struct HAL_VERSION VersionID;
-
-
 	int	DriverState;// for disable driver using module, use dongle to replace module.
 	int	bDongle;//build-in module or external dongle
 	u16 	chip_type;

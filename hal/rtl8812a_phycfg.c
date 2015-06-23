@@ -881,7 +881,7 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
 	uint8_t i;
 	for (i = 0; i < ArraySize; i++) {
 		power_index[i] = _rtl8821au_get_txpower_index(rtlpriv, RFPath, Rate[i], BandWidth, Channel);
-		if ((power_index[i] % 2 == 1) &&  !IS_NORMAL_CHIP(rtlpriv->VersionID))
+		if ((power_index[i] % 2 == 1) &&  !IS_NORMAL_CHIP(rtlhal->version))
 			power_index[i] -= 1;
 	}
 
@@ -965,7 +965,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 
 	for (eRFPath = 0; eRFPath <  rtlpriv->phy.num_total_rfpath; eRFPath++) {
 		/* [2.4G] LC Tank */
-		if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv->VersionID)) {
+		if (IS_VENDOR_8812A_TEST_CHIP(rtlhal->version)) {
 			if (1 <= channelToSW && channelToSW <= 7)
 				rtl_set_rfreg(rtlpriv, eRFPath, RF_TxLCTank_Jaguar, bLSSIWrite_data_Jaguar, 0x0017e);
 			else if (8 <= channelToSW && channelToSW <= 14)
@@ -988,7 +988,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 		rtl_set_rfreg(rtlpriv, eRFPath, RF_CHNLBW_Jaguar, MASKBYTE0, channelToSW);
 
 		/* <20130104, Kordan> APK for MP chip is done on initialization from folder. */
-		if (IS_HARDWARE_TYPE_8811AU(rtlhal) && ( !IS_NORMAL_CHIP(rtlpriv->VersionID)) && channelToSW > 14 ) {
+		if (IS_HARDWARE_TYPE_8811AU(rtlhal) && ( !IS_NORMAL_CHIP(rtlhal->version)) && channelToSW > 14 ) {
 			/* <20121116, Kordan> For better result of APK. Asked by AlexWang. */
 			if (36 <= channelToSW && channelToSW <= 64)
 				rtl_set_rfreg(rtlpriv, eRFPath, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);

@@ -73,7 +73,7 @@ static u32 phy_RFSerialRead(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 
 	/* <20120809, Kordan> CCA OFF(when entering), asked by James to avoid reading the wrong value. */
 	/* <20120828, Kordan> Toggling CCA would affect RF 0x0, skip it! */
-	if (Offset != 0x0 &&  !(IS_VENDOR_8812A_C_CUT(rtlpriv->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)))
+	if (Offset != 0x0 &&  !(IS_VENDOR_8812A_C_CUT(rtlhal->version) || IS_HARDWARE_TYPE_8821(rtlhal)))
 		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0x8, 1);
 
 	Offset &= 0xff;
@@ -83,15 +83,15 @@ static u32 phy_RFSerialRead(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	else if (eRFPath == RF90_PATH_B)
 		bIsPIMode = (BOOLEAN)rtl_get_bbreg(rtlpriv, 0xE00, 0x4);
 
-	if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv->VersionID))
+	if (IS_VENDOR_8812A_TEST_CHIP(rtlhal->version))
 		rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bMaskDWord, 0);
 
 	rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bHSSIRead_addr_Jaguar, Offset);
 
-	if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv->VersionID) )
+	if (IS_VENDOR_8812A_TEST_CHIP(rtlhal->version) )
 		rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bMaskDWord, Offset|BIT8);
 
-	if (IS_VENDOR_8812A_C_CUT(rtlpriv->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal))
+	if (IS_VENDOR_8812A_C_CUT(rtlhal->version) || IS_HARDWARE_TYPE_8821(rtlhal))
 		udelay(20);
 
 	if (bIsPIMode) {
@@ -104,7 +104,7 @@ static u32 phy_RFSerialRead(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 
 	/* <20120809, Kordan> CCA ON(when exiting), asked by James to avoid reading the wrong value. */
 	/* <20120828, Kordan> Toggling CCA would affect RF 0x0, skip it! */
-	if (Offset != 0x0 &&  ! (IS_VENDOR_8812A_C_CUT(rtlpriv->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)))
+	if (Offset != 0x0 &&  ! (IS_VENDOR_8812A_C_CUT(rtlhal->version) || IS_HARDWARE_TYPE_8821(rtlhal)))
 		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0x8, 0);
 
 	return retValue;
@@ -113,6 +113,7 @@ static u32 phy_RFSerialRead(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 static void phy_RFSerialWrite(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	uint32_t Offset, uint32_t Data)
 {
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct bb_reg_def *pphyreg = &(rtlpriv->phy.phyreg_def[eRFPath]);
 	uint32_t		DataAndAddr = 0;
 	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
@@ -142,7 +143,7 @@ static void phy_RFSerialWrite(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	 * 2012/10/26 MH Revise V3236 Lanhsin check in, if we do not enable the function
 	 * for 8821, then it can not scan.
 	 */
-	if ((!pHalData->bSupportUSB3) && (!IS_NORMAL_CHIP(rtlpriv->VersionID))) {	/* USB 2.0 or older */
+	if ((!pHalData->bSupportUSB3) && (!IS_NORMAL_CHIP(rtlhal->version))) {	/* USB 2.0 or older */
 		/* if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv) || IS_HARDWARE_TYPE_8821(rtlpriv) is) */
 		{
 			rtl_write_dword(rtlpriv, 0x1EC, DataAndAddr);
@@ -3716,7 +3717,7 @@ void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	/* C cut Item12 ADC FIFO CLOCK */
-	if(IS_VENDOR_8812A_C_CUT(rtlpriv->VersionID)) {
+	if(IS_VENDOR_8812A_C_CUT(rtlhal->version)) {
 		if(Bandwidth == CHANNEL_WIDTH_40 && Channel == 11)
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0xC00, 0x3);		/* 0x8AC[11:10] = 2'b11 */
 		else
@@ -4212,12 +4213,12 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		}
 
 		/* AGC table select */
-		if(IS_VENDOR_8821A_MP_CHIP(rtlpriv->VersionID))
+		if(IS_VENDOR_8821A_MP_CHIP(rtlhal->version))
 			rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xF00, 0); // 0xC1C[11:8] = 0
 		else
 			rtl_set_bbreg(rtlpriv, rAGC_table_Jaguar, 0x3, 0);
 
-		if(IS_VENDOR_8812A_TEST_CHIP(rtlpriv->VersionID)) {
+		if(IS_VENDOR_8812A_TEST_CHIP(rtlhal->version)) {
 			/* r_select_5G for path_A/B */
 			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT12, 0x0);
 			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT12, 0x0);
@@ -4225,7 +4226,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 			/* LANON (5G uses external LNA) */
 			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT15, 0x1);
 			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT15, 0x1);
-		} else if(IS_VENDOR_8812A_MP_CHIP(rtlpriv->VersionID)) {
+		} else if(IS_VENDOR_8812A_MP_CHIP(rtlhal->version)) {
 			if(GetRegbENRFEType(rtlpriv))
 				phy_SetRFEReg8812(rtlpriv, Band);
 			else {
@@ -4259,7 +4260,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		rtl_set_bbreg(rtlpriv, rOFDMCCKEN_Jaguar, bOFDMEN_Jaguar|bCCKEN_Jaguar, 0x3);
 
 		/* SYN Setting */
-		if(IS_VENDOR_8812A_TEST_CHIP(rtlpriv->VersionID)) 	{
+		if(IS_VENDOR_8812A_TEST_CHIP(rtlhal->version)) 	{
 			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
 			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
 			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x0001c);
@@ -4300,12 +4301,12 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		rtl_set_bbreg(rtlpriv, rOFDMCCKEN_Jaguar, bOFDMEN_Jaguar|bCCKEN_Jaguar, 0x00);
 
 		/* AGC table select */
-		if (IS_VENDOR_8821A_MP_CHIP(rtlpriv->VersionID))
+		if (IS_VENDOR_8821A_MP_CHIP(rtlhal->version))
 			rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xF00, 1); /* 0xC1C[11:8] = 1 */
 		else
 			rtl_set_bbreg(rtlpriv, rAGC_table_Jaguar, 0x3, 1);
 
-		if(IS_VENDOR_8812A_TEST_CHIP(rtlpriv->VersionID)) 	{
+		if(IS_VENDOR_8812A_TEST_CHIP(rtlhal->version)) 	{
 			/* r_select_5G for path_A/B */
 			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT12, 0x1);
 			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT12, 0x1);
@@ -4313,7 +4314,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 			/* LANON (5G uses external LNA) */
 			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT15, 0x0);
 			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT15, 0x0);
-		} else if(IS_VENDOR_8812A_MP_CHIP(rtlpriv->VersionID)) {
+		} else if(IS_VENDOR_8812A_MP_CHIP(rtlhal->version)) {
 			if(GetRegbENRFEType(rtlpriv))
 				phy_SetRFEReg8812(rtlpriv, Band);
 			else {
@@ -4351,7 +4352,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		rtl_set_bbreg(rtlpriv, rOFDMCCKEN_Jaguar, bOFDMEN_Jaguar|bCCKEN_Jaguar, 0x2);
 
 		/* SYN Setting */
-		if(IS_VENDOR_8812A_TEST_CHIP(rtlpriv->VersionID)) 	{
+		if(IS_VENDOR_8812A_TEST_CHIP(rtlhal->version)) 	{
 			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0xEF, bLSSIWrite_data_Jaguar, 0x40000);
 			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0x3E, bLSSIWrite_data_Jaguar, 0x00000);
 			rtl_set_rfreg(rtlpriv, RF90_PATH_A, 0x3F, bLSSIWrite_data_Jaguar, 0x00017);
@@ -4363,7 +4364,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 	}
 
 	/* <20120903, Kordan> Tx BB swing setting for RL6286, asked by Ynlin. */
-	if (IS_NORMAL_CHIP(rtlpriv->VersionID) || IS_HARDWARE_TYPE_8821(rtlhal)) {
+	if (IS_NORMAL_CHIP(rtlhal->version) || IS_HARDWARE_TYPE_8821(rtlhal)) {
 		s8	BBDiffBetweenBand = 0;
 		struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 
@@ -4398,7 +4399,7 @@ static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t 
 	/*
 	 *  <20120928, Kordan> A workaround in 8812A/8821A testchip, to fix the bug of odd Tx power indexes.
 	 */
-	if ((power_index % 2 == 1) && !IS_NORMAL_CHIP(rtlpriv->VersionID))
+	if ((power_index % 2 == 1) && !IS_NORMAL_CHIP(rtlhal->version))
 		power_index -= 1;
 
 	/* ULLI check register names as in rtlwifi-lib */
@@ -4880,7 +4881,7 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 	uint32_t *Array;
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		if (rtlhal->rfe_type == 3 && IS_NORMAL_CHIP(rtlpriv->VersionID)) {
+		if (rtlhal->rfe_type == 3 && IS_NORMAL_CHIP(rtlhal->version)) {
 			ArrayLen = RTL8812AU_PHY_REG_PG_ASUS_ARRAY_LEN;
 			Array = RTL8812AU_PHY_REG_PG_ASUS_ARRAY;
 		} else {

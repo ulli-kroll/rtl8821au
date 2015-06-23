@@ -984,58 +984,62 @@ void Set_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 {
 	uint32_t	value32;
-	struct HAL_VERSION ChipVersion;
+	enum version_8821au chip_version = VERSION_UNKNOWN;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	value32 = rtl_read_dword(rtlpriv, REG_SYS_CFG);
 	dev_info(&(rtlpriv->ndev->dev), "%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
-		ChipVersion.ICType = CHIP_8812;
+		chip_version = CHIP_8812;
 	else
-		ChipVersion.ICType = CHIP_8821;
+		chip_version = CHIP_8821;
 
-	ChipVersion.ChipType = ((value32 & RTL_ID) ? 0 : NORMAL_CHIP);
+	chip_version |= ((value32 & RTL_ID) ? 0 : NORMAL_CHIP);
 
 	if (rtlpriv->registrypriv.rf_config == RF_MAX_TYPE) {
 		if (IS_HARDWARE_TYPE_8812(rtlhal))
-			ChipVersion.RFType = RF_TYPE_2T2R;	/* RF_2T2R; */
+			chip_version |= RF_TYPE_2T2R;	/* RF_2T2R; */
 		else
-			ChipVersion.RFType = RF_TYPE_1T1R;	/*RF_1T1R; */
+			chip_version |= RF_TYPE_1T1R;	/*RF_1T1R; */
 	}
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
-		ChipVersion.VendorType = ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : 0);
+		chip_version |= ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : 0);
 	else {
 		uint32_t vendor;
 
 		vendor = (value32 & EXT_VENDOR_ID) >> EXT_VENDOR_ID_SHIFT;
 		switch (vendor) {
 		case 2:
-			vendor = CHIP_VENDOR_UMC;
+			chip_version |= CHIP_VENDOR_UMC;
 			break;
 		}
-		ChipVersion.VendorType = vendor;
 	}
-	ChipVersion.CUTVersion = (value32 & CHIP_VER_RTL_MASK)>>CHIP_VER_RTL_SHIFT; /* IC version (CUT) */
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
-		ChipVersion.CUTVersion += 1;
-	ChipVersion.CUTVersion <<= 12;		/* ULLI shift for CUT */
-
+	
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+		u32 rtl_id = ((value32 & CHIP_VER_RTL_MASK) >> CHIP_VER_RTL_SHIFT) + 1;
+		
+		chip_version = (enum version_8821au) (chip_version | (rtl_id << 12));
+	} else {
+		u32 rtl_id = ((value32 & CHIP_VER_RTL_MASK) >> CHIP_VER_RTL_SHIFT);
+		
+		chip_version = (enum version_8821au) (chip_version | (rtl_id << 12));
+	}
+	
+#if 0	
 	/* value32 = rtl_read_dword(rtlpriv, REG_GPIO_OUTSTS); */
 	ChipVersion.ROMVer = 0;	/* ROM code version. */
-
+#endif
 	/* For multi-function consideration. Added by Roger, 2010.10.06. */
 	value32 = rtl_read_dword(rtlpriv, REG_MULTI_FUNC_CTRL);
 	rtlpriv->phy.polarity_ctl = ((value32 & WL_HWPDN_SL) ? RT_POLARITY_HIGH_ACT : RT_POLARITY_LOW_ACT);
 
-	memcpy(&(rtlpriv->VersionID), &ChipVersion, sizeof(struct HAL_VERSION));
-
-	if (IS_1T2R(ChipVersion)) {
+	if (IS_1T2R(chip_version)) {
 		rtlpriv->phy.rf_type = RF_1T2R;
 		 rtlpriv->phy.num_total_rfpath = 2;
 		dev_info(&(rtlpriv->ndev->dev), "==> RF_Type : 1T2R\n");
-	} else if (IS_2T2R(ChipVersion)) {
+	} else if (IS_2T2R(chip_version)) {
 		rtlpriv->phy.rf_type = RF_2T2R;
 		 rtlpriv->phy.num_total_rfpath = 2;
 		dev_info(&(rtlpriv->ndev->dev), "==> RF_Type : 2T2R\n");

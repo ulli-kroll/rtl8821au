@@ -2,6 +2,7 @@
 #define __RTL8821AU_DEF_H__
 
 #include <linux/types.h>
+#include <linux/bitops.h>
 
 /* BIT 7 HT Rate*/
 // TxHT = 0
@@ -84,29 +85,24 @@ enum rtl_desc_qsel {
 	QSLT_CMD = 0x13,
 };
 
-struct HAL_VERSION {
-	int			ICType;
-	int			ChipType;
-	int			CUTVersion;
-	int			VendorType;
-	int			RFType;
-	u8					ROMVer;
-};
-
 //VERSION_8192C			VersionID;
 //HAL_VERSION			VersionID;
 
-#define CHIP_8812		BIT(2)
-#define CHIP_8821		(BIT(0)|BIT(2))
-#define NORMAL_CHIP		BIT(3)
-#define RF_TYPE_1T1R		(~(BIT(4)|BIT(5)|BIT(6)))
-#define RF_TYPE_1T2R		BIT(4)
-#define RF_TYPE_2T2R		BIT(5)
-#define CHIP_VENDOR_UMC		BIT(7)
-#define B_CUT_VERSION		BIT(12)
-#define C_CUT_VERSION		BIT(13)
-#define D_CUT_VERSION		((BIT(12)|BIT(13)))
-#define E_CUT_VERSION		BIT(14)
+enum version_8821au {
+	CHIP_8812 =	BIT(2),
+	CHIP_8821 = 	(BIT(0)|BIT(2)),
+	NORMAL_CHIP =	BIT(3),
+	RF_TYPE_1T1R =	(~(BIT(4)|BIT(5)|BIT(6))),
+	RF_TYPE_1T2R =	BIT(4),
+	RF_TYPE_2T2R =	BIT(5),
+	CHIP_VENDOR_UMC = BIT(7),
+	B_CUT_VERSION =	BIT(12),
+	C_CUT_VERSION = BIT(13),
+	D_CUT_VERSION =	((BIT(12)|BIT(13))),
+	E_CUT_VERSION = BIT(14),
+	
+	VERSION_UNKNOWN = 0x0,
+};
 
 
 /* MASK */
@@ -118,12 +114,12 @@ struct HAL_VERSION {
 
 
 // Get element
-#define GET_CVID_IC_TYPE(version)			((version).ICType & IC_TYPE_MASK)
-#define GET_CVID_CHIP_TYPE(version)			((version).ChipType & CHIP_TYPE_MASK)
-#define GET_CVID_RF_TYPE(version)			((version).RFType & RF_TYPE_MASK)
+#define GET_CVID_IC_TYPE(version)			((version) & IC_TYPE_MASK)
+#define GET_CVID_CHIP_TYPE(version)			((version) & CHIP_TYPE_MASK)
+#define GET_CVID_RF_TYPE(version)			((version) & RF_TYPE_MASK)
 #define GET_CVID_MANUFACTUER(version)			((version) & MANUFACTUER_MASK)
-#define GET_CVID_CUT_VERSION(version)			((version).CUTVersion & CUT_VERSION_MASK)
-#define GET_CVID_ROM_VERSION(version)		(((version).ROMVer) & ROM_VERSION_MASK)
+#define GET_CVID_CUT_VERSION(version)			((version) & CUT_VERSION_MASK)
+#define GET_CVID_ROM_VERSION(version)		(((version)) & ROM_VERSION_MASK)
 
 //----------------------------------------------------------------------------
 //Common Macro. --

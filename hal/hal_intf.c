@@ -234,15 +234,13 @@ void	rtw_hal_free_recv_priv(struct rtl_priv *rtlpriv)
 		rtlpriv->cfg->ops->free_recv_priv(rtlpriv);
 }
 
-void rtw_hal_update_ra_mask(struct sta_info *psta, uint8_t rssi_level)
+void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta, 
+			    uint8_t rssi_level)
 {
-	struct rtl_priv *rtlpriv;
 	struct mlme_priv *pmlmepriv;
 
 	if (!psta)
 		return;
-
-	rtlpriv = psta->rtlpriv;
 
 	pmlmepriv = &(rtlpriv->mlmepriv);
 

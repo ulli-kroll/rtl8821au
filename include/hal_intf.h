@@ -195,7 +195,7 @@ void	rtw_hal_free_xmit_priv(struct rtl_priv *rtlpriv);
 int32_t	rtw_hal_init_recv_priv(struct rtl_priv *rtlpriv);
 void	rtw_hal_free_recv_priv(struct rtl_priv *rtlpriv);
 
-void rtw_hal_update_ra_mask(struct sta_info *psta, uint8_t rssi_level);
+void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_level);
 void	rtw_hal_add_ra_tid(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);
 
 void rtw_hal_bcn_related_reg_setting(struct rtl_priv *rtlpriv);

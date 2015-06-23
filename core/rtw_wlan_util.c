@@ -1752,7 +1752,7 @@ unsigned char get_highest_mcs_rate(struct HT_caps_element *pHT_caps)
 
 void Update_RA_Entry(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
-	rtw_hal_update_ra_mask(psta, 0);
+	rtw_hal_update_ra_mask(psta->rtlpriv, psta, 0);
 }
 
 void enable_rate_adaptive(struct rtl_priv *rtlpriv, struct sta_info *psta);

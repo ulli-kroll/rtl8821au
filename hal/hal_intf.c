@@ -22,6 +22,7 @@
 
 #include <drv_types.h>
 #include <rtw_debug.h>
+#include <rtl8812a_hal.h>
 
 void rtw_hal_chip_configure(struct rtl_priv *rtlpriv)
 {
@@ -247,8 +248,7 @@ void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta,
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
 		add_RATid(rtlpriv, psta, rssi_level);
 	} else {
-		if (rtlpriv->cfg->ops->UpdateRAMaskHandler)
-			rtlpriv->cfg->ops->UpdateRAMaskHandler(rtlpriv, psta->mac_id, rssi_level);
+		UpdateHalRAMask8812A(rtlpriv, psta->mac_id, rssi_level);
 	}
 }
 

@@ -9,7 +9,6 @@
 
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
-void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rssi_level);
 void rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, uint8_t efuseType, u16 _offset, u16 	_size_byte, uint8_t *pbuf);
 void rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv, uint8_t efuseType, uint8_t type, void *pOut);
 u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv, uint8_t efuseType);
@@ -79,8 +78,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	.dm_init =		rtl8812_init_dm_priv,
 	.dm_deinit =		rtl8812_deinit_dm_priv,
-
-	.UpdateRAMaskHandler =	UpdateHalRAMask8812A,
 
 	.read_chip_version =	rtl8821au_read_chip_version,
 

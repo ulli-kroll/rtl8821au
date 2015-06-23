@@ -1324,7 +1324,6 @@ struct rtl_hal_ops {
 
 	void	(*SetHalODMVarHandler)(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);
 
-	void	(*UpdateRAMaskHandler)(struct rtl_priv *rtlpriv, u32 mac_id, uint8_t rssi_level);
 	void	(*SetBeaconRelatedRegistersHandler)(struct rtl_priv *rtlpriv);
 
 	void	(*Add_RateATid)(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);

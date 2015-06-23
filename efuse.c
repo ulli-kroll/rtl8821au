@@ -72,13 +72,13 @@ void EFUSE_ShadowRead(struct rtl_priv *rtlpriv, u8 Type,
 
 }	// EFUSE_ShadowRead
 
-static void EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t PwrState)
+static void efuse_power_switch(struct rtl_priv *rtlpriv, u8 write, u8 pwrstate)
 {
 	uint8_t	tempval;
 	u16	tmpV16;
 #define EFUSE_ACCESS_ON_JAGUAR 0x69
 #define EFUSE_ACCESS_OFF_JAGUAR 0x00
-	if (PwrState == _TRUE) {
+	if (pwrstate) {
 		rtl_write_byte(rtlpriv, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_ON_JAGUAR);
 
 		/* 1.2V Power: From VDDON with Power Cut(0x0000h[15]), defualt valid */
@@ -103,7 +103,7 @@ static void EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t P
 			rtl_write_word(rtlpriv, REG_SYS_CLKR, tmpV16);
 		}
 
-		if (bWrite == _TRUE) {
+		if (write) {
 			/* Enable LDO 2.5V before read/write action */
 			tempval = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_TEST]+3);
 			tempval &= ~(BIT3|BIT4|BIT5|BIT6);
@@ -114,7 +114,7 @@ static void EfusePowerSwitch(struct rtl_priv *rtlpriv, uint8_t bWrite, uint8_t P
 	} else {
 		rtl_write_byte(rtlpriv, REG_EFUSE_BURN_GNT_8812, EFUSE_ACCESS_OFF_JAGUAR);
 
-		if (bWrite == _TRUE) {
+		if (write) {
 			/* Disable LDO 2.5V after read/write action */
 			tempval = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_TEST] + 3);
 			rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_TEST] + 3, (tempval & 0x7F));
@@ -128,13 +128,13 @@ static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t efuseType,
 {
 	u16	mapLen=0;
 
-	EfusePowerSwitch(rtlpriv,_FALSE, _TRUE);
+	efuse_power_switch(rtlpriv, false, true);
 
 	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, efuseType, 0, mapLen, Efuse);
 
-	EfusePowerSwitch(rtlpriv,_FALSE, _FALSE);
+	efuse_power_switch(rtlpriv, false, false);
 }
 
 uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
@@ -146,11 +146,11 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
 
-	EfusePowerSwitch(rtlpriv, _FALSE, _TRUE);
+	efuse_power_switch(rtlpriv, false, true);
 
 	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, EFUSE_WIFI, addr, cnts, data);
 
-	EfusePowerSwitch(rtlpriv, _FALSE, _FALSE);
+	efuse_power_switch(rtlpriv, false, false);
 
 	return _SUCCESS;
 }

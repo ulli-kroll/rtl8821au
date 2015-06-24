@@ -938,8 +938,8 @@ Hal_EfuseSwitchToBank8812A(struct rtl_priv *rtlpriv, u8 bank)
 	return _FALSE;
 }
 
-static void
-Hal_EfuseReadEFuse8812A(struct rtl_priv *rtlpriv, u16 _offset,
+void
+rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, u16	_offset,
 	u16 _size_byte, uint8_t *pbuf)
 {
 	uint8_t	*efuseTbl = NULL;
@@ -1095,13 +1095,6 @@ exit:
 
 	if (eFuseWord)
 		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
-}
-
-void
-rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, u16	_offset,
-	u16 _size_byte, uint8_t *pbuf)
-{
-	Hal_EfuseReadEFuse8812A(rtlpriv, _offset, _size_byte, pbuf);
 }
 
 /* Do not support BT */

@@ -124,6 +124,164 @@ static void efuse_power_switch(struct rtl_priv *rtlpriv, u8 write, u8 pwrstate)
 }
 
 
+static void rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, u16	_offset,
+	u16 _size_byte, uint8_t *pbuf)
+{
+	uint8_t	*efuseTbl = NULL;
+	u16	eFuse_Addr = 0;
+	uint8_t	offset = 0, wden = 0;
+	u16	i, j;
+	u16	**eFuseWord = NULL;
+	u16	efuse_utilized = 0;
+	uint8_t	efuse_usage = 0;
+	uint8_t	offset_2_0 = 0;
+	uint8_t	efuseHeader = 0, efuseExtHdr = 0, efuseData = 0;
+
+	/*
+	 * Do NOT excess total size of EFuse table. Added by Roger, 2008.11.10.
+	 */
+	if ((_offset + _size_byte) > EFUSE_MAP_LEN_JAGUAR) {
+		/* total E-Fuse table is 512bytes */
+		dev_err(&(rtlpriv->ndev->dev), "Hal_EfuseReadEFuse8812A(): Invalid offset(%#x) with read bytes(%#x)!!\n", _offset, _size_byte);
+		goto exit;
+	}
+
+	efuseTbl = (uint8_t *) rtw_zmalloc(EFUSE_MAP_LEN_JAGUAR);
+	if (efuseTbl == NULL) {
+		dev_err(&(rtlpriv->ndev->dev), "%s: alloc efuseTbl fail!\n", __FUNCTION__);
+		goto exit;
+	}
+
+	eFuseWord = (u16 **) rtw_malloc2d(EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
+	if (eFuseWord == NULL) {
+		dev_err(&(rtlpriv->ndev->dev), "%s: alloc eFuseWord fail!\n", __FUNCTION__);
+		goto exit;
+	}
+
+	/* 0. Refresh efuse init map as all oxFF. */
+	for (i = 0; i < EFUSE_MAX_SECTION_JAGUAR; i++)
+		for (j = 0; j < EFUSE_MAX_WORD_UNIT; j++)
+			eFuseWord[i][j] = 0xFFFF;
+
+	/*
+	 * 1. Read the first byte to check if efuse is empty!!!
+	 */
+	efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseHeader);
+
+	if (efuseHeader != 0xFF) {
+		efuse_utilized++;
+	} else {
+		dev_err(&(rtlpriv->ndev->dev), "EFUSE is empty\n");
+		efuse_utilized = 0;
+		goto exit;
+	}
+	/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("Hal_EfuseReadEFuse8812A(): efuse_utilized: %d\n", efuse_utilized)); */
+
+	/*
+	 * 2. Read real efuse content. Filter PG header and every section data.
+	 */
+	while ((efuseHeader != 0xFF) && AVAILABLE_EFUSE_ADDR_8812(eFuse_Addr)) {
+		/* RTPRINT(FEEPROM, EFUSE_READ_ALL, ("efuse_Addr-%d efuse_data=%x\n", eFuse_Addr-1, *rtemp8)); */
+
+		/* Check PG header for section num. */
+		if (EXT_HEADER(efuseHeader)) {	/* extended header */
+			offset_2_0 = GET_HDR_OFFSET_2_0(efuseHeader);
+			/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("extended header offset_2_0=%X\n", offset_2_0)); */
+
+			efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseExtHdr);
+
+			/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseExtHdr)); */
+
+			if (efuseExtHdr != 0xff) {
+				efuse_utilized++;
+				if (ALL_WORDS_DISABLED(efuseExtHdr)) {
+					efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseHeader);
+					if (efuseHeader != 0xff) {
+						efuse_utilized++;
+					}
+					break;
+				} else {
+					offset = ((efuseExtHdr & 0xF0) >> 1) | offset_2_0;
+					wden = (efuseExtHdr & 0x0F);
+				}
+			} else 	{
+				dev_err(&(rtlpriv->ndev->dev), "Error condition, extended = 0xff\n");
+				/* We should handle this condition. */
+				break;
+			}
+		} else {
+			offset = ((efuseHeader >> 4) & 0x0f);
+			wden = (efuseHeader & 0x0f);
+		}
+
+		if (offset < EFUSE_MAX_SECTION_JAGUAR) {
+			/* Get word enable value from PG header */
+			/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("Offset-%X Worden=%X\n", offset, wden)); */
+
+			for (i = 0; i < EFUSE_MAX_WORD_UNIT; i++) {
+				/* Check word enable condition in the section */
+				if (!(wden & (0x01 << i))) {
+					efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseData);
+					/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseData)); */
+					efuse_utilized++;
+					eFuseWord[offset][i] = (efuseData & 0xff);
+
+					if (!AVAILABLE_EFUSE_ADDR_8812(eFuse_Addr))
+						break;
+
+					efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseData);
+					/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("efuse[%X]=%X\n", eFuse_Addr-1, efuseData)); */
+					efuse_utilized++;
+					eFuseWord[offset][i] |= (((u16)efuseData << 8) & 0xff00);
+
+					if (!AVAILABLE_EFUSE_ADDR_8812(eFuse_Addr))
+						break;
+				}
+			}
+		}
+
+		/* Read next PG header */
+		efuse_OneByteRead(rtlpriv, eFuse_Addr++, &efuseHeader);
+		/* RTPRINT(FEEPROM, EFUSE_READ_ALL, ("Addr=%d rtemp 0x%x\n", eFuse_Addr, *rtemp8)); */
+
+		if (efuseHeader != 0xFF) {
+			efuse_utilized++;
+		}
+	}
+
+	/*
+	 * 3. Collect 16 sections and 4 word unit into Efuse map.
+	 */
+	for (i = 0; i < EFUSE_MAX_SECTION_JAGUAR; i++) {
+		for (j = 0; j < EFUSE_MAX_WORD_UNIT; j++) {
+			efuseTbl[(i*8)+(j*2)] = (eFuseWord[i][j] & 0xff);
+			efuseTbl[(i*8)+((j*2)+1)] = ((eFuseWord[i][j] >> 8) & 0xff);
+		}
+	}
+
+	/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("Hal_EfuseReadEFuse8812A(): efuse_utilized: %d\n", efuse_utilized)); */
+
+	/*
+	 * 4. Copy from Efuse map to output pointer memory!!!
+	 */
+	for (i = 0; i < _size_byte; i++) {
+		pbuf[i] = efuseTbl[_offset+i];
+	}
+
+	/*
+	 * 5. Calculate Efuse utilization.
+	 */
+	efuse_usage = (u8)((eFuse_Addr*100)/EFUSE_REAL_CONTENT_LEN_JAGUAR);
+	rtw_hal_set_hwreg(rtlpriv, HW_VAR_EFUSE_BYTES, (uint8_t *)&eFuse_Addr);
+
+exit:
+	if (efuseTbl)
+		rtw_mfree(efuseTbl);
+
+	if (eFuseWord)
+		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
+}
+
 static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 {
 	u16	mapLen=0;

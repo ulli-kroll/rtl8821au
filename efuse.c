@@ -288,32 +288,11 @@ static void EFUSEGetEfuseDefinition(struct rtl_priv *rtlpriv,
 	u8 type, void *pOut)
 {
 	switch (type) {
-	case TYPE_EFUSE_MAX_SECTION:
-		{
-			uint8_t *pMax_section;
-			pMax_section = (uint8_t *) pOut;
-			*pMax_section = EFUSE_MAX_SECTION_JAGUAR;
-		}
-		break;
 	case TYPE_EFUSE_REAL_CONTENT_LEN:
 		{
 			u16 *pu2Tmp;
 			pu2Tmp = (u16 *) pOut;
 			*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
-		}
-		break;
-	case TYPE_EFUSE_CONTENT_LEN_BANK:
-		{
-			u16 *pu2Tmp;
-			pu2Tmp = (u16 *) pOut;
-			*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
-		}
-		break;
-	case TYPE_AVAILABLE_EFUSE_BYTES_BANK:
-		{
-			u16 *pu2Tmp;
-			pu2Tmp = (u16 *) pOut;
-			*pu2Tmp = (u16) (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
 		}
 		break;
 	case TYPE_AVAILABLE_EFUSE_BYTES_TOTAL:

@@ -281,13 +281,80 @@ exit:
 		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
 }
 
+
+
+/* Do not support BT */
+static void EFUSEGetEfuseDefinition(struct rtl_priv *rtlpriv,
+	u8 type, void *pOut)
+{
+	switch (type) {
+	case TYPE_EFUSE_MAX_SECTION:
+		{
+			uint8_t *pMax_section;
+			pMax_section = (uint8_t *) pOut;
+			*pMax_section = EFUSE_MAX_SECTION_JAGUAR;
+		}
+		break;
+	case TYPE_EFUSE_REAL_CONTENT_LEN:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *) pOut;
+			*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
+		}
+		break;
+	case TYPE_EFUSE_CONTENT_LEN_BANK:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *) pOut;
+			*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
+		}
+		break;
+	case TYPE_AVAILABLE_EFUSE_BYTES_BANK:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *) pOut;
+			*pu2Tmp = (u16) (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
+		}
+		break;
+	case TYPE_AVAILABLE_EFUSE_BYTES_TOTAL:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *) pOut;
+			*pu2Tmp = (u16) (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
+		}
+		break;
+	case TYPE_EFUSE_MAP_LEN:
+		{
+			u16 *pu2Tmp;
+			pu2Tmp = (u16 *) pOut;
+			*pu2Tmp = (u16) EFUSE_MAP_LEN_JAGUAR;
+		}
+		break;
+	case TYPE_EFUSE_PROTECT_BYTES_BANK:
+		{
+			uint8_t *pu1Tmp;
+			pu1Tmp = (uint8_t *) pOut;
+			*pu1Tmp = (uint8_t) (EFUSE_OOB_PROTECT_BYTES_JAGUAR);
+		}
+		break;
+	default:
+		{
+			uint8_t *pu1Tmp;
+			pu1Tmp = (uint8_t *) pOut;
+			*pu1Tmp = 0;
+		}
+		break;
+	}
+}
+
+
 static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 {
 	u16	mapLen=0;
 
 	efuse_power_switch(rtlpriv, false, true);
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	read_efuse(rtlpriv, 0, mapLen, Efuse);
 
@@ -298,7 +365,7 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 {
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
@@ -317,7 +384,7 @@ void EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv)
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if (efuse->autoload_failflag == _TRUE)
 		memset(&efuse->efuse_map[0][0], 0xFF, mapLen);
@@ -339,7 +406,7 @@ EFUSE_Read1Byte(
 	uint32_t	k=0;
 	u16	contentLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
+	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
 
 	if (Address < contentLen)	//E-fuse 512Byte
 	{
@@ -387,7 +454,7 @@ EFUSE_Write1Byte(
 	uint32_t	k=0;
 	u16	contentLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
+	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
 
 	if( Address < contentLen)	//E-fuse 512Byte
 	{
@@ -426,6 +493,6 @@ EFUSE_Write1Byte(
 u16 efuse_GetMaxSize(struct rtl_priv *rtlpriv)
 {
 	u16	max_size;
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (void *)&max_size);
+	EFUSEGetEfuseDefinition(rtlpriv, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (void *)&max_size);
 	return max_size;
 }

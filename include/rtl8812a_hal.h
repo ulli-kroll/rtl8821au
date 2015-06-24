@@ -219,7 +219,6 @@ void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN A
 void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
 void	hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent, BOOLEAN AutoloadFail);
 void ReadRFType8812A(struct rtl_priv *rtlpriv);
-void rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv, uint8_t type, void *pOut);
 uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE variable, void *pval);
 void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rssi_level);
 // register

@@ -92,7 +92,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 #endif
 
 	/* Efuse related function */
-	.EFUSEGetEfuseDefinition =	rtl8812_EFUSE_GetEfuseDefinition,
 	.EfuseGetCurrentSize =	rtl8812_EfuseGetCurrentSize,
 	.Efuse_PgPacketRead =	rtl8812_Efuse_PgPacketRead,
 	.Efuse_PgPacketWrite =	rtl8812_Efuse_PgPacketWrite,

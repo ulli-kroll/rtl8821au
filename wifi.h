@@ -1337,7 +1337,6 @@ struct rtl_hal_ops {
 	int32_t (*mgnt_xmit)(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
 	int32_t	(*hal_xmitframe_enqueue)(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 
-	void (*EFUSEGetEfuseDefinition)(struct rtl_priv *rtlpriv, uint8_t type, void *pOut);
 	u16	(*EfuseGetCurrentSize)(struct rtl_priv *rtlpriv);
 	int 	(*Efuse_PgPacketRead)(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t *data);
 	int 	(*Efuse_PgPacketWrite)(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t word_en, uint8_t *data);

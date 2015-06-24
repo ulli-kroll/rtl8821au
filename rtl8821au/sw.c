@@ -9,7 +9,6 @@
 
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
-void rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, u16 _offset, u16 	_size_byte, uint8_t *pbuf);
 void rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv, uint8_t type, void *pOut);
 u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv);
 int rtl8812_Efuse_PgPacketRead(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t *data);
@@ -94,7 +93,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 #endif
 
 	/* Efuse related function */
-	.ReadEFuse =		rtl8812_ReadEFuse,
 	.EFUSEGetEfuseDefinition =	rtl8812_EFUSE_GetEfuseDefinition,
 	.EfuseGetCurrentSize =	rtl8812_EfuseGetCurrentSize,
 	.Efuse_PgPacketRead =	rtl8812_Efuse_PgPacketRead,

@@ -1,6 +1,7 @@
 #include <drv_types.h>
 #include "wifi.h"
 #include <rtl8812a_spec.h>
+#include <rtl8812a_hal.h>
 
 static void efuse_ShadowRead1Byte(struct rtl_priv *rtlpriv, u16	Offset,
 	 	u8 *Value)
@@ -131,7 +132,7 @@ static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 
 	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
-	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, 0, mapLen, Efuse);
+	rtl8812_ReadEFuse(rtlpriv, 0, mapLen, Efuse);
 
 	efuse_power_switch(rtlpriv, false, false);
 }
@@ -147,7 +148,7 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 
 	efuse_power_switch(rtlpriv, false, true);
 
-	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, addr, cnts, data);
+	rtl8812_ReadEFuse(rtlpriv, addr, cnts, data);
 
 	efuse_power_switch(rtlpriv, false, false);
 

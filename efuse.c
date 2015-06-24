@@ -124,8 +124,7 @@ static void efuse_power_switch(struct rtl_priv *rtlpriv, u8 write, u8 pwrstate)
 }
 
 
-static void rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, u16	_offset,
-	u16 _size_byte, uint8_t *pbuf)
+static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u8 *pbuf)
 {
 	uint8_t	*efuseTbl = NULL;
 	u16	eFuse_Addr = 0;
@@ -290,7 +289,7 @@ static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 
 	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
-	rtl8812_ReadEFuse(rtlpriv, 0, mapLen, Efuse);
+	read_efuse(rtlpriv, 0, mapLen, Efuse);
 
 	efuse_power_switch(rtlpriv, false, false);
 }
@@ -306,7 +305,7 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 
 	efuse_power_switch(rtlpriv, false, true);
 
-	rtl8812_ReadEFuse(rtlpriv, addr, cnts, data);
+	read_efuse(rtlpriv, addr, cnts, data);
 
 	efuse_power_switch(rtlpriv, false, false);
 

@@ -1942,9 +1942,6 @@ struct _rtw_hal {
 
 	uint8_t	FwRsvdPageStartOffset; //2010.06.23. Added by tynli. Reserve page start offset except beacon in TxQ.
 
-	// 2010/08/09 MH Add CU power down mode.
-	BOOLEAN		pwrdown;
-
 	uint8_t	OutEpQueueSel;
 	uint8_t	OutEpNumber;
 

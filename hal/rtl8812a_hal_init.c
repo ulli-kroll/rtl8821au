@@ -29,26 +29,6 @@
  *-------------------------------------------------------------------------
  */
 
-BOOLEAN HalDetectPwrDownMode8812(struct rtl_priv *rtlpriv)
-{
-	uint8_t tmpvalue = 0;
-	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
-
-	EFUSE_ShadowRead(rtlpriv, 1, EEPROM_RF_OPT3_92C, (uint32_t *)&tmpvalue);
-
-	/* 2010/08/25 MH INF priority > PDN Efuse value. */
-	if (tmpvalue & BIT(4) && pwrctrlpriv->reg_pdnmode)
-		pHalData->pwrdown = _TRUE;
-	else
-		pHalData->pwrdown = _FALSE;
-
-	DBG_8192C("HalDetectPwrDownMode(): PDN=%d\n", pHalData->pwrdown);
-
-	return pHalData->pwrdown;
-}
-
-
 /*====================================================================================
  *
  * 20100209 Joseph:

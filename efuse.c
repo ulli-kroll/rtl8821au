@@ -139,13 +139,13 @@ static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u
 	/*
 	 * Do NOT excess total size of EFuse table. Added by Roger, 2008.11.10.
 	 */
-	if ((_offset + _size_byte) > EFUSE_MAP_LEN_JAGUAR) {
+	if ((_offset + _size_byte) > rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE]) {
 		/* total E-Fuse table is 512bytes */
 		dev_err(&(rtlpriv->ndev->dev), "Hal_EfuseReadEFuse8812A(): Invalid offset(%#x) with read bytes(%#x)!!\n", _offset, _size_byte);
 		goto exit;
 	}
 
-	efuseTbl = (uint8_t *) rtw_zmalloc(EFUSE_MAP_LEN_JAGUAR);
+	efuseTbl = (uint8_t *) rtw_zmalloc(rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE]);
 	if (efuseTbl == NULL) {
 		dev_err(&(rtlpriv->ndev->dev), "%s: alloc efuseTbl fail!\n", __FUNCTION__);
 		goto exit;
@@ -323,13 +323,6 @@ static void EFUSEGetEfuseDefinition(struct rtl_priv *rtlpriv,
 			*pu2Tmp = (u16) (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
 		}
 		break;
-	case TYPE_EFUSE_MAP_LEN:
-		{
-			u16 *pu2Tmp;
-			pu2Tmp = (u16 *) pOut;
-			*pu2Tmp = (u16) EFUSE_MAP_LEN_JAGUAR;
-		}
-		break;
 	case TYPE_EFUSE_PROTECT_BYTES_BANK:
 		{
 			uint8_t *pu1Tmp;
@@ -350,11 +343,9 @@ static void EFUSEGetEfuseDefinition(struct rtl_priv *rtlpriv,
 
 static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 {
-	u16	mapLen=0;
+	u16	mapLen=rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE];
 
 	efuse_power_switch(rtlpriv, false, true);
-
-	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	read_efuse(rtlpriv, 0, mapLen, Efuse);
 
@@ -363,9 +354,7 @@ static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 
 uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
 {
-	u16	mapLen=0;
-
-	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+	u16	mapLen=rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE];
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
@@ -382,9 +371,7 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 void EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	u16	mapLen=0;
-
-	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+	u16	mapLen=rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE];
 
 	if (efuse->autoload_failflag == _TRUE)
 		memset(&efuse->efuse_map[0][0], 0xFF, mapLen);

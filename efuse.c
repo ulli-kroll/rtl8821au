@@ -343,26 +343,18 @@ static void EFUSEGetEfuseDefinition(struct rtl_priv *rtlpriv,
 
 static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 {
-	u16	mapLen=rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE];
-
 	efuse_power_switch(rtlpriv, false, true);
-
-	read_efuse(rtlpriv, 0, mapLen, Efuse);
-
+	read_efuse(rtlpriv, 0, rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE], Efuse);
 	efuse_power_switch(rtlpriv, false, false);
 }
 
 uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
 {
-	u16	mapLen=rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE];
-
-	if ((addr + cnts) > mapLen)
+	if ((addr + cnts) > rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE])
 		return _FAIL;
 
 	efuse_power_switch(rtlpriv, false, true);
-
 	read_efuse(rtlpriv, addr, cnts, data);
-
 	efuse_power_switch(rtlpriv, false, false);
 
 	return _SUCCESS;
@@ -371,10 +363,9 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 void EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	u16	mapLen=rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE];
 
 	if (efuse->autoload_failflag == _TRUE)
-		memset(&efuse->efuse_map[0][0], 0xFF, mapLen);
+		memset(&efuse->efuse_map[0][0], 0xFF, rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE]);
 	else
 		efuse_read_all_map(rtlpriv, efuse->efuse_map[0]);
 

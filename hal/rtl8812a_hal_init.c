@@ -449,11 +449,6 @@ hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv, struct txpower_info_2g
 
 }
 
-void Hal_EfuseParseBTCoexistInfo8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
-	BOOLEAN	AutoLoadFail)
-{
-}
-
 void Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);

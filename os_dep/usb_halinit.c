@@ -1531,8 +1531,6 @@ void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 	 * Read Bluetooth co-exist and initialize
 	 */
 
-	Hal_EfuseParseBTCoexistInfo8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-
 	Hal_ReadChannelPlan8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 	Hal_EfuseParseXtal_8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 	Hal_ReadThermalMeter_8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);

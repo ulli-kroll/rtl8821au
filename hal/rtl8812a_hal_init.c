@@ -1246,7 +1246,7 @@ u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv,
 }
 
 
-static u16 hal_EfuseGetCurrentSize_8812A(struct rtl_priv *rtlpriv)
+u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv)
 {
 	int	bContinual = _TRUE;
 	u16	efuse_addr = 0;
@@ -1287,16 +1287,6 @@ static u16 hal_EfuseGetCurrentSize_8812A(struct rtl_priv *rtlpriv)
 
 	return efuse_addr;
 }
-
-u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv)
-{
-	u16 ret = 0;
-
-	ret = hal_EfuseGetCurrentSize_8812A(rtlpriv);
-
-	return ret;
-}
-
 
 static int hal_EfusePgPacketRead_8812A(struct rtl_priv *rtlpriv,
 	uint8_t offset, uint8_t *data)

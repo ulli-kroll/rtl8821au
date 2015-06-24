@@ -1380,7 +1380,7 @@ void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 			}
 		} else {
 			/* Read EFUSE real map to shadow. */
-			EFUSE_ShadowMapUpdate(rtlpriv, EFUSE_WIFI);
+			EFUSE_ShadowMapUpdate(rtlpriv);
 		}
 	} else {	/* autoload fail */
 		/*
@@ -1388,7 +1388,7 @@ void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 		 * update to default value 0xFF
 		 */
 		if (efuse->epromtype == EEPROM_BOOT_EFUSE)
-			EFUSE_ShadowMapUpdate(rtlpriv, EFUSE_WIFI);
+			EFUSE_ShadowMapUpdate(rtlpriv);
 	}
 }
 

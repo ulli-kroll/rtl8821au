@@ -1418,7 +1418,6 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 	static int repeat_times = 0;
 
 	BOOLEAN	bExtendedHeader = _FALSE;
-	uint8_t	efuseType = EFUSE_WIFI;
 
 	/*
 	 * <Roger_Notes> Efuse has been pre-programmed dummy 5Bytes at the end of Efuse by CP.

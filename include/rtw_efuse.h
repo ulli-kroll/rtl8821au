@@ -35,9 +35,6 @@
 
 #define	PGPKT_DATA_SIZE		8
 
-#define	EFUSE_WIFI				0
-#define	EFUSE_BT				1
-
 enum _EFUSE_DEF_TYPE {
 	TYPE_EFUSE_MAX_SECTION				= 0,
 	TYPE_EFUSE_REAL_CONTENT_LEN			= 1,
@@ -95,7 +92,7 @@ void	efuse_WordEnableDataRead(uint8_t word_en, uint8_t *sourdata, uint8_t *targe
 uint8_t	Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv, u16 efuse_addr, uint8_t word_en, uint8_t *data);
 
 uint8_t	EFUSE_Read1Byte(struct rtl_priv *rtlpriv, u16 Address);
-void	EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv, uint8_t efuseType);
+void	EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv);
 void	EFUSE_ShadowRead(struct rtl_priv *rtlpriv, uint8_t Type, u16 Offset, u32 *Value);
 #endif
 

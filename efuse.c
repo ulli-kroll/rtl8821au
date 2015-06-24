@@ -123,16 +123,15 @@ static void efuse_power_switch(struct rtl_priv *rtlpriv, u8 write, u8 pwrstate)
 }
 
 
-static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t efuseType,
-		uint8_t	*Efuse)
+static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 {
 	u16	mapLen=0;
 
 	efuse_power_switch(rtlpriv, false, true);
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
-	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, efuseType, 0, mapLen, Efuse);
+	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, 0, mapLen, Efuse);
 
 	efuse_power_switch(rtlpriv, false, false);
 }
@@ -141,33 +140,31 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 {
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if ((addr + cnts) > mapLen)
 		return _FAIL;
 
 	efuse_power_switch(rtlpriv, false, true);
 
-	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, EFUSE_WIFI, addr, cnts, data);
+	rtlpriv->cfg->ops->ReadEFuse(rtlpriv, addr, cnts, data);
 
 	efuse_power_switch(rtlpriv, false, false);
 
 	return _SUCCESS;
 }
 
-void EFUSE_ShadowMapUpdate(
-	 struct rtl_priv *rtlpriv,
-	 uint8_t		efuseType)
+void EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	u16	mapLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, efuseType, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_MAP_LEN, (void *)&mapLen);
 
 	if (efuse->autoload_failflag == _TRUE)
 		memset(&efuse->efuse_map[0][0], 0xFF, mapLen);
 	else
-		efuse_read_all_map(rtlpriv, efuseType, efuse->efuse_map[0]);
+		efuse_read_all_map(rtlpriv, efuse->efuse_map[0]);
 
 	//PlatformMoveMemory((void *)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0],
 	//(void *)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen);

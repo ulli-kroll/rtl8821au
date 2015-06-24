@@ -119,7 +119,7 @@ EFUSE_Read1Byte(
 	uint32_t	k=0;
 	u16	contentLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
 
 	if (Address < contentLen)	//E-fuse 512Byte
 	{
@@ -189,7 +189,7 @@ EFUSE_Write1Byte(
 	uint32_t	k=0;
 	u16	contentLen=0;
 
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
 
 	if( Address < contentLen)	//E-fuse 512Byte
 	{
@@ -420,7 +420,7 @@ Efuse_WordEnableDataWrite(		struct rtl_priv *rtlpriv,
 u16 efuse_GetMaxSize(struct rtl_priv *rtlpriv)
 {
 	u16	max_size;
-	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, EFUSE_WIFI , TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (void *)&max_size);
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (void *)&max_size);
 	return max_size;
 }
 //------------------------------------------------------------------------------

@@ -295,13 +295,6 @@ static void EFUSEGetEfuseDefinition(struct rtl_priv *rtlpriv,
 			*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
 		}
 		break;
-	case TYPE_AVAILABLE_EFUSE_BYTES_TOTAL:
-		{
-			u16 *pu2Tmp;
-			pu2Tmp = (u16 *) pOut;
-			*pu2Tmp = (u16) (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR);
-		}
-		break;
 	case TYPE_EFUSE_PROTECT_BYTES_BANK:
 		{
 			uint8_t *pu1Tmp;
@@ -445,11 +438,3 @@ EFUSE_Write1Byte(
 		}
 	}
 }/* EFUSE_Write1Byte */
-
-//------------------------------------------------------------------------------
-u16 efuse_GetMaxSize(struct rtl_priv *rtlpriv)
-{
-	u16	max_size;
-	EFUSEGetEfuseDefinition(rtlpriv, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (void *)&max_size);
-	return max_size;
-}

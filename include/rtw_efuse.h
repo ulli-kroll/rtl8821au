@@ -37,7 +37,6 @@
 
 enum _EFUSE_DEF_TYPE {
 	TYPE_EFUSE_REAL_CONTENT_LEN			= 1,
-	TYPE_AVAILABLE_EFUSE_BYTES_TOTAL	= 3,
 	TYPE_EFUSE_PROTECT_BYTES_BANK		= 5,
 };
 
@@ -74,7 +73,6 @@ typedef struct PG_PKT_STRUCT_A{
 
 /*------------------------Export global variable----------------------------*/
 
-u16	efuse_GetMaxSize(struct rtl_priv *rtlpriv);
 uint8_t	rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data);
 
 uint8_t	Efuse_CalculateWordCnts(uint8_t word_en);

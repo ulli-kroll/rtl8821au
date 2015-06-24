@@ -328,3 +328,104 @@ void EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv)
 	//(void *)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen);
 }// EFUSE_ShadowMapUpdate
 
+uint8_t
+EFUSE_Read1Byte(
+		struct rtl_priv *rtlpriv,
+		u16		Address)
+{
+	uint8_t	data;
+	uint8_t	Bytetemp = {0x00};
+	uint8_t	temp = {0x00};
+	uint32_t	k=0;
+	u16	contentLen=0;
+
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
+
+	if (Address < contentLen)	//E-fuse 512Byte
+	{
+		//Write E-fuse Register address bit0~7
+		temp = Address & 0xFF;
+		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+1, temp);
+		Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2);
+		//Write E-fuse Register address bit8~9
+		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
+		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2, temp);
+
+		//Write 0x30[31]=0
+		Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3);
+		temp = Bytetemp & 0x7F;
+		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3, temp);
+
+		//Wait Write-ready (0x30[31]=1)
+		Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3);
+		while(!(Bytetemp & 0x80))
+		{
+			Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3);
+			k++;
+			if(k==1000)
+			{
+				k=0;
+				break;
+			}
+		}
+		data=rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+		return data;
+	}
+	else
+		return 0xFF;
+
+}/* EFUSE_Read1Byte */
+
+void
+EFUSE_Write1Byte(
+		struct rtl_priv *rtlpriv,
+		u16		Address,
+		uint8_t		Value)
+{
+	uint8_t	Bytetemp = {0x00};
+	uint8_t	temp = {0x00};
+	uint32_t	k=0;
+	u16	contentLen=0;
+
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
+
+	if( Address < contentLen)	//E-fuse 512Byte
+	{
+		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL], Value);
+
+		//Write E-fuse Register address bit0~7
+		temp = Address & 0xFF;
+		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+1, temp);
+		Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2);
+
+		//Write E-fuse Register address bit8~9
+		temp = ((Address >> 8) & 0x03) | (Bytetemp & 0xFC);
+		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2, temp);
+
+		//Write 0x30[31]=1
+		Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3);
+		temp = Bytetemp | 0x80;
+		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3, temp);
+
+		//Wait Write-ready (0x30[31]=0)
+		Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3);
+		while(Bytetemp & 0x80)
+		{
+			Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3);
+			k++;
+			if(k==100)
+			{
+				k=0;
+				break;
+			}
+		}
+	}
+}/* EFUSE_Write1Byte */
+
+//------------------------------------------------------------------------------
+u16 efuse_GetMaxSize(struct rtl_priv *rtlpriv)
+{
+	u16	max_size;
+	rtlpriv->cfg->ops->EFUSEGetEfuseDefinition(rtlpriv, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (void *)&max_size);
+	return max_size;
+}

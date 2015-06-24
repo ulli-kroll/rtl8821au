@@ -83,8 +83,6 @@ uint8_t	rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 
 uint8_t	Efuse_CalculateWordCnts(uint8_t word_en);
 void	ReadEFuseByte(struct rtl_priv *rtlpriv, u16 _offset, uint8_t *pbuf) ;
-uint8_t	efuse_OneByteRead(struct rtl_priv *rtlpriv, u16 addr, uint8_t *data);
-uint8_t	efuse_OneByteWrite(struct rtl_priv *rtlpriv, u16 addr, uint8_t data);
 
 int 	Efuse_PgPacketRead(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t *data);
 int 	Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t word_en, uint8_t *data);

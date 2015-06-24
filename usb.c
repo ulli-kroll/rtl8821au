@@ -1649,3 +1649,93 @@ void rtw_usb_disconnect(struct usb_interface *pusb_intf)
 	return;
 }
 
+/*  11/16/2008 MH Read one byte from real Efuse. */
+uint8_t
+efuse_OneByteRead(
+		struct rtl_priv *rtlpriv,
+		u16			addr,
+		uint8_t			*data)
+{
+	uint8_t	tmpidx = 0;
+	uint8_t	bResult;
+
+	//DBG_871X("===> EFUSE_OneByteRead(), addr = %x\n", addr);
+	//DBG_871X("===> EFUSE_OneByteRead() start, 0x34 = 0x%X\n", rtl_read_dword(rtlpriv, EFUSE_TEST));
+
+	// -----------------e-fuse reg ctrl ---------------------------------
+	//address
+	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+1, (uint8_t)(addr&0xff));
+	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2, ((uint8_t)((addr>>8) &0x03) ) |
+	(rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2)&0xFC ));
+
+	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3,  0x72);//read cmd
+
+	while(!(0x80 &rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3))&&(tmpidx<1000))
+	{
+		mdelay(1);
+		tmpidx++;
+	}
+	if(tmpidx<1000)
+	{
+		*data=rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+		bResult = _TRUE;
+	}
+	else
+	{
+		*data = 0xff;
+		bResult = 0;
+	}
+
+	return bResult;
+}
+
+
+/*
+ * ULLI need this for rtlwifi-lib
+ * void efuse_write_1byte(struct ieee80211_hw *hw, u16 address, u8 value)
+ */
+/*  11/16/2008 MH Write one byte to reald Efuse. */
+uint8_t
+efuse_OneByteWrite(
+		struct rtl_priv *rtlpriv,
+		u16			addr,
+		uint8_t			data)
+{
+	uint8_t	tmpidx = 0;
+	uint8_t	bResult= 0;
+	uint32_t efuseValue = 0;
+
+	//DBG_871X("===> EFUSE_OneByteWrite(), addr = %x data=%x\n", addr, data);
+	//DBG_871X("===> EFUSE_OneByteWrite() start, 0x34 = 0x%X\n", rtl_read_dword(rtlpriv, EFUSE_TEST));
+
+	// -----------------e-fuse reg ctrl ---------------------------------
+	//address
+
+
+	efuseValue = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+	efuseValue |= (BIT21|BIT31);
+	efuseValue &= ~(0x3FFFF);
+	efuseValue |= ((addr<<8 | data) & 0x3FFFF);
+
+	{
+		rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL], efuseValue);
+	}
+
+	while((0x80 &  rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3)) && (tmpidx<100) ){
+		mdelay(1);
+		tmpidx++;
+	}
+
+	if(tmpidx<100)
+	{
+		bResult = _TRUE;
+	}
+	else
+	{
+		bResult = 0;
+	}
+
+	return bResult;
+}
+
+

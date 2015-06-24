@@ -936,7 +936,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 
 /* Do not support BT */
 static void Hal_EFUSEGetEfuseDefinition8812A(struct rtl_priv *rtlpriv,
-	u8 efuseType, u8 type, void *pOut)
+	u8 type, void *pOut)
 {
 	switch (type) {
 	case TYPE_EFUSE_MAX_SECTION:
@@ -998,10 +998,10 @@ static void Hal_EFUSEGetEfuseDefinition8812A(struct rtl_priv *rtlpriv,
 	}
 }
 
-void rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv, uint8_t efuseType,
+void rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv,
 	uint8_t	 type, void *pOut)
 {
-	Hal_EFUSEGetEfuseDefinition8812A(rtlpriv, efuseType, type, pOut);
+	Hal_EFUSEGetEfuseDefinition8812A(rtlpriv, type, pOut);
 }
 
 static u8 Hal_EfuseWordEnableDataWrite8812A(struct rtl_priv *rtlpriv,

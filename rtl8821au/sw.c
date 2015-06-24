@@ -9,7 +9,6 @@
 
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
-void rtl8812_EFUSE_GetEfuseDefinition(struct rtl_priv *rtlpriv, uint8_t type, void *pOut);
 u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv);
 int rtl8812_Efuse_PgPacketRead(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t *data);
 int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t word_en, uint8_t *data);

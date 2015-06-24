@@ -932,11 +932,6 @@ hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
  *
  */
 
-static BOOLEAN
-Hal_EfuseSwitchToBank8812A(struct rtl_priv *rtlpriv, u8 bank)
-{
-	return _FALSE;
-}
 
 void
 rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, u16	_offset,

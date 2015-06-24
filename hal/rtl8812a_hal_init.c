@@ -1098,7 +1098,7 @@ exit:
 }
 
 void
-rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, uint8_t efuseType, u16	_offset,
+rtl8812_ReadEFuse(struct rtl_priv *rtlpriv, u16	_offset,
 	u16 _size_byte, uint8_t *pbuf)
 {
 	Hal_EfuseReadEFuse8812A(rtlpriv, _offset, _size_byte, pbuf);

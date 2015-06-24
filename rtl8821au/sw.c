@@ -115,6 +115,7 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.maps[EFUSE_LOADER_CLK_EN] = LOADER_CLK_EN,
 	.maps[EFUSE_ANA8M] = ANA8M,
 	.maps[EFUSE_HWSET_MAX_SIZE] = EFUSE_MAP_LEN_JAGUAR,	/* ULLI : or HWSET_MAX_SIZE */
+	.maps[EFUSE_MAX_SECTION_MAP] = EFUSE_MAX_SECTION_JAGUAR,	/* ULLI : or EFUSE_MAX_SECTION */
 	
 	
 	.maps[EFUSE_ACCESS] = REG_EFUSE_BURN_GNT_8812, /* ULLI : or REG_EFUSE_ACCESS as in rtlwifi */

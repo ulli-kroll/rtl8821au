@@ -135,6 +135,8 @@ static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u
 	uint8_t	efuse_usage = 0;
 	uint8_t	offset_2_0 = 0;
 	uint8_t	efuseHeader = 0, efuseExtHdr = 0, efuseData = 0;
+	const u16 efuse_max_section =
+		rtlpriv->cfg->maps[EFUSE_MAX_SECTION_MAP];
 
 	/*
 	 * Do NOT excess total size of EFuse table. Added by Roger, 2008.11.10.
@@ -151,7 +153,7 @@ static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u
 		goto exit;
 	}
 
-	eFuseWord = (u16 **) rtw_malloc2d(EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
+	eFuseWord = (u16 **) rtw_malloc2d(efuse_max_section, EFUSE_MAX_WORD_UNIT, sizeof(u16));
 	if (eFuseWord == NULL) {
 		dev_err(&(rtlpriv->ndev->dev), "%s: alloc eFuseWord fail!\n", __FUNCTION__);
 		goto exit;

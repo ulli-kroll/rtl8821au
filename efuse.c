@@ -290,13 +290,6 @@ static void EFUSEGetEfuseDefinition(struct rtl_priv *rtlpriv,
 	u8 type, void *pOut)
 {
 	switch (type) {
-	case TYPE_EFUSE_REAL_CONTENT_LEN:
-		{
-			u16 *pu2Tmp;
-			pu2Tmp = (u16 *) pOut;
-			*pu2Tmp = EFUSE_REAL_CONTENT_LEN_JAGUAR;
-		}
-		break;
 	case TYPE_EFUSE_PROTECT_BYTES_BANK:
 		{
 			uint8_t *pu1Tmp;
@@ -356,9 +349,7 @@ EFUSE_Read1Byte(
 	uint8_t	Bytetemp = {0x00};
 	uint8_t	temp = {0x00};
 	uint32_t	k=0;
-	u16	contentLen=0;
-
-	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
+	u16	contentLen = rtlpriv->cfg->maps[EFUSE_REAL_CONTENT_SIZE];
 
 	if (Address < contentLen)	//E-fuse 512Byte
 	{
@@ -404,9 +395,7 @@ EFUSE_Write1Byte(
 	uint8_t	Bytetemp = {0x00};
 	uint8_t	temp = {0x00};
 	uint32_t	k=0;
-	u16	contentLen=0;
-
-	EFUSEGetEfuseDefinition(rtlpriv, TYPE_EFUSE_REAL_CONTENT_LEN, (void *)&contentLen);
+	u16	contentLen = rtlpriv->cfg->maps[EFUSE_REAL_CONTENT_SIZE];
 
 	if( Address < contentLen)	//E-fuse 512Byte
 	{

@@ -54,7 +54,6 @@ struct rtl_priv;
 #include <rtw_security.h>
 #include <rtw_xmit.h>
 #include <recv_osdep.h>
-#include <rtw_efuse.h>
 #include <../rtl8821au/led.h>			/* Cureently here needed */
 #include <hal_intf.h>
 #include <hal_com.h>
@@ -70,7 +69,7 @@ struct rtl_priv;
 #include <rtw_event.h>
 #include <rtw_mlme_ext.h>
 #include <rtw_ap.h>
-#include <rtw_efuse.h>
+// #include <rtw_efuse.h>
 
 #include <ip.h>
 #include <if_ether.h>

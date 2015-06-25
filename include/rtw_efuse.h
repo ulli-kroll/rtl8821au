@@ -75,7 +75,6 @@ void	ReadEFuseByte(struct rtl_priv *rtlpriv, u16 _offset, uint8_t *pbuf) ;
 uint8_t	Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv, u16 efuse_addr, uint8_t word_en, uint8_t *data);
 
 uint8_t	EFUSE_Read1Byte(struct rtl_priv *rtlpriv, u16 Address);
-void	EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv);
 void	EFUSE_ShadowRead(struct rtl_priv *rtlpriv, uint8_t Type, u16 Offset, u32 *Value);
 #endif
 

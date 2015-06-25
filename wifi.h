@@ -1457,44 +1457,6 @@ static inline void rtl_set_rfreg(struct rtl_priv *rtlpriv,
 #define HP_THERMAL_NUM		8
 
 struct dm_priv {
-	uint8_t	DMFlag;
-	uint8_t	InitDMFlag;
-	//uint8_t   RSVD_1;
-
-	u32	InitODMFlag;
-	//* Upper and Lower Signal threshold for Rate Adaptive*/
-	int	UndecoratedSmoothedPWDB;
-	int	UndecoratedSmoothedCCK;
-	int	LastMinUndecoratedPWDBForDM;
-
-	int32_t	UndecoratedSmoothedBeacon;
-
-//###### duplicate code,will move to ODM #########
-	//for High Power
-	uint8_t 	bDynamicTxPowerEnable;
-	uint8_t 	LastDTPLvl;
-
-	//for tx power tracking
-	uint8_t	bTXPowerTracking;
-	uint8_t	TXPowercount;
-	uint8_t	TxPowerTrackControl;	//for mp mode, turn off txpwrtracking as default
-	uint8_t	TM_Trigger;
-
-	//uint8_t   RSVD_2;
-
-
-	uint8_t	PowerIndex_backup[6];
-	uint8_t	OFDM_index[2];
-
-	uint8_t	bCCKinCH14;
-	uint8_t	bDoneTxpower;
-
-	uint8_t	OFDM_index_HP[2];
-	//uint8_t   RSVD_6;
-
-	u32	prv_traffic_idx; // edca turbo
-//###### duplicate code,will move to ODM #########
-
 	// Add for Reading Initial Data Rate SEL Register 0x484 during watchdog. Using for fill tx desc. 2011.3.21 by Thomas
 	uint8_t	INIDATA_RATE[32];
 };

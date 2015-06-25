@@ -283,31 +283,6 @@ exit:
 		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
 }
 
-
-
-/* Do not support BT */
-static void EFUSEGetEfuseDefinition(struct rtl_priv *rtlpriv,
-	u8 type, void *pOut)
-{
-	switch (type) {
-	case TYPE_EFUSE_PROTECT_BYTES_BANK:
-		{
-			uint8_t *pu1Tmp;
-			pu1Tmp = (uint8_t *) pOut;
-			*pu1Tmp = (uint8_t) (EFUSE_OOB_PROTECT_BYTES_JAGUAR);
-		}
-		break;
-	default:
-		{
-			uint8_t *pu1Tmp;
-			pu1Tmp = (uint8_t *) pOut;
-			*pu1Tmp = 0;
-		}
-		break;
-	}
-}
-
-
 static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 {
 	efuse_power_switch(rtlpriv, false, true);

@@ -42,8 +42,6 @@ struct pgpkt_struct {
 	u8 offset;
 	u8 word_en;
 	u8 data[8];
-	/* ULLI Maybe not needed */
-	u8 word_cnts;
 };
 
 /*------------------------------Define structure----------------------------*/

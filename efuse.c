@@ -616,8 +616,8 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 	 * 2009.02.19.
 	 */
 #if 0	 /* ULLI : temporary disabled */
-	if (rtlpriv->cfg->ops->EfuseGetCurrentSize(rtlpriv) >= (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR)) {
-		DBG_871X("hal_EfusePgPacketWrite_8812A() error: %x >= %x\n", rtlpriv->cfg->ops->EfuseGetCurrentSize(rtlpriv), (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR));
+	if (rtl8812_EfuseGetCurrentSize(rtlpriv) >= (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR)) {
+		DBG_871X("hal_EfusePgPacketWrite_8812A() error: %x >= %x\n", rtl8812_EfuseGetCurrentSize(rtlpriv), (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR));
 		return _FALSE;
 	}
 #endif
@@ -794,7 +794,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 							if ((tmp_word_en & 0x0F) != 0x0F) {
 								/* reorganize other pg packet */
 								/* efuse_addr = efuse_addr + (2*tmp_word_cnts) +1;//next pg packet addr */
-								efuse_addr = rtlpriv->cfg->ops->EfuseGetCurrentSize(rtlpriv);
+								efuse_addr = rtl8812_EfuseGetCurrentSize(rtlpriv);
 								/* =========================== */
 								target_pkt.offset = offset;
 								target_pkt.word_en = tmp_word_en;
@@ -945,7 +945,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 							uint8_t	reorg_offset = tmp_pkt.offset;
 							uint8_t	reorg_worden = badworden;
 							Efuse_PgPacketWrite(rtlpriv, reorg_offset, reorg_worden, originaldata);
-							efuse_addr = rtlpriv->cfg->ops->EfuseGetCurrentSize(rtlpriv);
+							efuse_addr = rtl8812_EfuseGetCurrentSize(rtlpriv);
 						} else {
 							/* ############################ */
 							efuse_addr = efuse_addr + (tmp_word_cnts*2) + 1; /* Next pg_packet */

@@ -145,7 +145,7 @@ static void _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	u8 speedvalue, provalue, temp;
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+ 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 * rtl_write_word(rtlpriv, REG_TRXDMA_CTRL_8195, 0xf5b0);
@@ -388,7 +388,6 @@ static void _InitID_8812A(IN  struct rtl_priv *rtlpriv)
 
 static void _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
 {
-	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	uint8_t	txpktbuf_bndy;
 
 	txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
@@ -402,7 +401,6 @@ static void _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
 
 static void _InitTxBufferBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 {
-	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	uint8_t	txpktbuf_bndy;
 
 	txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
@@ -848,7 +846,6 @@ static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 
 rt_rf_power_state RfOnOffDetect(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	val8;
 	rt_rf_power_state rfpowerstate = rf_off;
 
@@ -1300,8 +1297,6 @@ void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	if (!AutoloadFail) {
 		/* VID, PID */

@@ -38,12 +38,13 @@
 #define		EFUSE_MAX_WORD_UNIT			4
 
 /*------------------------------Define structure----------------------------*/
-typedef struct PG_PKT_STRUCT_A{
-	uint8_t offset;
-	uint8_t word_en;
-	uint8_t data[8];
-	uint8_t word_cnts;
-}PGPKT_STRUCT,*PPGPKT_STRUCT;
+struct pgpkt_struct {
+	u8 offset;
+	u8 word_en;
+	u8 data[8];
+	/* ULLI Maybe not needed */
+	u8 word_cnts;
+};
 
 /*------------------------------Define structure----------------------------*/
 

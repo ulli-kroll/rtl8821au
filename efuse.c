@@ -627,8 +627,8 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 	uint8_t	tmp_word_cnts = 0, target_word_cnts = 0;
 	uint8_t	tmp_header, match_word_en, tmp_word_en;
 
-	PGPKT_STRUCT target_pkt;
-	PGPKT_STRUCT tmp_pkt;
+	struct pgpkt_struct target_pkt;
+	struct pgpkt_struct tmp_pkt;
 
 	uint8_t	originaldata[sizeof(uint8_t) * 8];
 	uint8_t	tmpindex = 0, badworden = 0x0F;

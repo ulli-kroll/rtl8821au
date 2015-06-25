@@ -137,6 +137,8 @@ static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u
 	uint8_t	efuseHeader = 0, efuseExtHdr = 0, efuseData = 0;
 	const u16 efuse_max_section =
 		rtlpriv->cfg->maps[EFUSE_MAX_SECTION_MAP];
+	const u32 efuse_len =
+		rtlpriv->cfg->maps[EFUSE_REAL_CONTENT_SIZE];
 
 	/*
 	 * Do NOT excess total size of EFuse table. Added by Roger, 2008.11.10.
@@ -272,7 +274,7 @@ static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u
 	/*
 	 * 5. Calculate Efuse utilization.
 	 */
-	efuse_usage = (u8)((eFuse_Addr*100)/EFUSE_REAL_CONTENT_LEN_JAGUAR);
+	efuse_usage = (u8)((eFuse_Addr*100)/efuse_len);
 	rtw_hal_set_hwreg(rtlpriv, HW_VAR_EFUSE_BYTES, (uint8_t *)&eFuse_Addr);
 
 exit:

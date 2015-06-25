@@ -982,29 +982,30 @@ static u8 odm_QueryRxPwrPercentage(s8 AntPower)
  * IF other SW team do not support the feature, remove this section.??
  */
 
-/* ULLI : this function is in rtlwifi */
+/*
+ * ULLI : this function is in rtlwifi
+ * ULLI : but with other values
+ */
 static long rtl_signal_scale_mapping(struct _rtw_dm *pDM_Odm, int32_t CurrSig)
 {
 	int32_t RetSig;
 
-	if ((pDM_Odm->SupportInterface  == ODM_ITRF_USB)) {
-		if (CurrSig >= 51 && CurrSig <= 100) {
-			RetSig = 100;
-		} else if (CurrSig >= 41 && CurrSig <= 50) {
-			RetSig = 80 + ((CurrSig - 40)*2);
-		} else if (CurrSig >= 31 && CurrSig <= 40) {
-			RetSig = 66 + (CurrSig - 30);
-		} else if (CurrSig >= 21 && CurrSig <= 30) {
-			RetSig = 54 + (CurrSig - 20);
-		} else if (CurrSig >= 10 && CurrSig <= 20) {
-			RetSig = 42 + (((CurrSig - 10) * 2) / 3);
-		} else if (CurrSig >= 5 && CurrSig <= 9) {
-			RetSig = 22 + (((CurrSig - 5) * 3) / 2);
-		} else if (CurrSig >= 1 && CurrSig <= 4) {
-			RetSig = 6 + (((CurrSig - 1) * 3) / 2);
-		} else {
-			RetSig = CurrSig;
-		}
+	if (CurrSig >= 51 && CurrSig <= 100) {
+		RetSig = 100;
+	} else if (CurrSig >= 41 && CurrSig <= 50) {
+		RetSig = 80 + ((CurrSig - 40)*2);
+	} else if (CurrSig >= 31 && CurrSig <= 40) {
+		RetSig = 66 + (CurrSig - 30);
+	} else if (CurrSig >= 21 && CurrSig <= 30) {
+		RetSig = 54 + (CurrSig - 20);
+	} else if (CurrSig >= 10 && CurrSig <= 20) {
+		RetSig = 42 + (((CurrSig - 10) * 2) / 3);
+	} else if (CurrSig >= 5 && CurrSig <= 9) {
+		RetSig = 22 + (((CurrSig - 5) * 3) / 2);
+	} else if (CurrSig >= 1 && CurrSig <= 4) {
+		RetSig = 6 + (((CurrSig - 1) * 3) / 2);
+	} else {
+		RetSig = CurrSig;
 	}
 
 	return RetSig;

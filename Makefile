@@ -65,7 +65,6 @@ rtk_core :=		core/rtw_cmd.o \
 			core/rtw_sta_mgt.o \
 			core/rtw_ap.o \
 			core/rtw_xmit.o	\
-			core/efuse/rtw_efuse.o
 
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
 EXTRA_CFLAGS += -DCONFIG_RTL8821A

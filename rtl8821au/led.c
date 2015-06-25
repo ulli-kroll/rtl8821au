@@ -53,7 +53,6 @@ static void SwLedBlink1(struct rtl_led *pLed)
 {
 	struct rtl_priv	 *rtlpriv = pLed->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
@@ -878,7 +877,6 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 	struct rtl_led_ctl *ledpriv = &(usbpriv->ledpriv);
 	struct rtl_led *pLed = &(ledpriv->SwLed0);
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 
 	u32 uLedBlinkNoLinkInterval = LED_BLINK_NO_LINK_INTERVAL_ALPHA; /* add by ylb 20121012 for customer led for alpha */
 	if (rtlhal->oem_id == RT_CID_ALPHA_Dlink)

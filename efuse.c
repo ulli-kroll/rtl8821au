@@ -407,7 +407,15 @@ EFUSE_Write1Byte(
 	}
 }/* EFUSE_Write1Byte */
 
-
+static u8 Efuse_CalculateWordCnts(u8 word_en)
+{
+	uint8_t word_cnts = 0;
+	if(!(word_en & BIT(0)))	word_cnts++; // 0 : write enable
+	if(!(word_en & BIT(1)))	word_cnts++;
+	if(!(word_en & BIT(2)))	word_cnts++;
+	if(!(word_en & BIT(3)))	word_cnts++;
+	return word_cnts;
+}
 
 u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv)
 {
@@ -451,6 +459,44 @@ u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv)
 	return efuse_addr;
 }
 
+static void efuse_WordEnableDataRead(u8 word_en, u8 *sourdata,
+					u8 *targetdata)
+{
+	if (!(word_en&BIT(0)))
+	{
+		targetdata[0] = sourdata[0];
+		targetdata[1] = sourdata[1];
+	}
+	if (!(word_en&BIT(1)))
+	{
+		targetdata[2] = sourdata[2];
+		targetdata[3] = sourdata[3];
+	}
+	if (!(word_en&BIT(2)))
+	{
+		targetdata[4] = sourdata[4];
+		targetdata[5] = sourdata[5];
+	}
+	if (!(word_en&BIT(3)))
+	{
+		targetdata[6] = sourdata[6];
+		targetdata[7] = sourdata[7];
+	}
+}
+
+
+uint8_t
+Efuse_WordEnableDataWrite(		struct rtl_priv *rtlpriv,
+								u16		efuse_addr,
+								uint8_t		word_en,
+								uint8_t		*data)
+{
+	uint8_t	ret=0;
+
+	ret =  rtlpriv->cfg->ops->Efuse_WordEnableDataWrite(rtlpriv, efuse_addr, word_en, data);
+
+	return ret;
+}
 
 static int Efuse_PgPacketRead(struct rtl_priv *rtlpriv,
 	uint8_t offset, uint8_t *data)
@@ -547,6 +593,22 @@ static int Efuse_PgPacketRead(struct rtl_priv *rtlpriv,
 	else
 		return _TRUE;
 
+}
+
+
+
+
+int
+Efuse_PgPacketWrite(	struct rtl_priv *rtlpriv,
+						uint8_t 			offset,
+						uint8_t			word_en,
+						uint8_t			*data)
+{
+	int ret;
+
+	ret =  rtlpriv->cfg->ops->Efuse_PgPacketWrite(rtlpriv, offset, word_en, data);
+
+	return ret;
 }
 
 static int
@@ -1059,4 +1121,46 @@ u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv,
 	ret = Hal_EfuseWordEnableDataWrite8812A(rtlpriv, efuse_addr, word_en, data);
 
 	return ret;
+}
+
+void
+ReadEFuseByte(
+		struct rtl_priv *rtlpriv,
+		u16 			_offset,
+		uint8_t 			*pbuf)
+{
+	uint32_t	value32;
+	uint8_t	readbyte;
+	u16	retry;
+	//uint32_t start=jiffies;
+
+	//Write Address
+	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+1, (_offset & 0xff));
+	readbyte = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2);
+	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2, ((_offset >> 8) & 0x03) | (readbyte & 0xfc));
+
+	//Write bit 32 0
+	readbyte = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3);
+	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+3, (readbyte & 0x7f));
+
+	//Check bit 32 read-ready
+	retry = 0;
+	value32 = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+	//while(!(((value32 >> 24) & 0xff) & 0x80)  && (retry<10))
+	while(!(((value32 >> 24) & 0xff) & 0x80)  && (retry<10000))
+	{
+		value32 = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+		retry++;
+	}
+
+	// 20100205 Joseph: Add delay suggested by SD1 Victor.
+	// This fix the problem that Efuse read error in high temperature condition.
+	// Designer says that there shall be some delay after ready bit is set, or the
+	// result will always stay on last data we read.
+	udelay(50);
+	value32 = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+
+	*pbuf = (uint8_t)(value32 & 0xff);
+	//DBG_871X("ReadEFuseByte _offset:%08u, in %d ms\n",_offset ,rtw_get_passing_time_ms(start));
+
 }

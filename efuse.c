@@ -559,6 +559,15 @@ int rtl8812_Efuse_PgPacketRead(struct rtl_priv *rtlpriv, uint8_t offset,
 	return ret;
 }
 
+static int Efuse_PgPacketRead(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t *data)
+{
+	int	ret=0;
+
+	ret =  rtlpriv->cfg->ops->Efuse_PgPacketRead(rtlpriv, offset, data);
+
+	return ret;
+}
+
 static int
 hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 	uint8_t	word_en, uint8_t *data)

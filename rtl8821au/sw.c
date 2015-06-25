@@ -9,7 +9,6 @@
 
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
-int rtl8812_Efuse_PgPacketRead(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t *data);
 int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t word_en, uint8_t *data);
 u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv, u16 efuse_addr, uint8_t word_en, uint8_t *data);
 void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,	void *	pValue1, BOOLEAN bSet);
@@ -91,7 +90,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 #endif
 
 	/* Efuse related function */
-	.Efuse_PgPacketRead =	rtl8812_Efuse_PgPacketRead,
 	.Efuse_PgPacketWrite =	rtl8812_Efuse_PgPacketWrite,
 	.Efuse_WordEnableDataWrite = &rtl8812_Efuse_WordEnableDataWrite,
 

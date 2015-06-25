@@ -563,7 +563,7 @@ static int Efuse_PgPacketRead(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t 
 {
 	int	ret=0;
 
-	ret =  rtlpriv->cfg->ops->Efuse_PgPacketRead(rtlpriv, offset, data);
+	ret =  rtl8812_Efuse_PgPacketRead(rtlpriv, offset, data);
 
 	return ret;
 }

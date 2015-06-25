@@ -125,20 +125,6 @@ Efuse_PgPacketWrite(	struct rtl_priv *rtlpriv,
 	return ret;
 }
 
-
-int
-Efuse_PgPacketWrite_BT(	struct rtl_priv *rtlpriv,
-						uint8_t 			offset,
-						uint8_t			word_en,
-						uint8_t			*data)
-{
-	int ret;
-
-	ret =  rtlpriv->cfg->ops->Efuse_PgPacketWrite_BT(rtlpriv, offset, word_en, data);
-
-	return ret;
-}
-
 /*-----------------------------------------------------------------------------
  * Function:	efuse_WordEnableDataRead
  *

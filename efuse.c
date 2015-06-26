@@ -581,30 +581,11 @@ static int efuse_pg_packet_read(struct rtl_priv *rtlpriv,
 
 }
 
-int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset,
-	uint8_t	word_en, IN uint8_t *data);
-
-
-
-int
-Efuse_PgPacketWrite(	struct rtl_priv *rtlpriv,
-						uint8_t 			offset,
-						uint8_t			word_en,
-						uint8_t			*data)
-{
-	int ret;
-
-	rtl8812_Efuse_PgPacketWrite(rtlpriv, offset, word_en, data);
-
-	return ret;
-}
-
 static u8 efuse_word_enable_data_write(struct rtl_priv *rtlpriv,
 	u16 efuse_addr, uint8_t word_en, uint8_t *data);
 
 
-static int
-hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
+static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 	uint8_t	word_en, uint8_t *data)
 {
 	uint8_t WriteState = PG_STATE_HEADER;
@@ -793,7 +774,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 							if (0x0F != (badworden & 0x0F)) {
 								uint8_t	reorg_offset = offset;
 								uint8_t	reorg_worden = badworden;
-								Efuse_PgPacketWrite(rtlpriv, reorg_offset, reorg_worden, target_pkt.data);
+								efuse_pg_packet_write(rtlpriv, reorg_offset, reorg_worden, target_pkt.data);
 							}
 							/* ############################ */
 
@@ -965,7 +946,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 						if (0x0F != (badworden & 0x0F)) {
 							uint8_t	reorg_offset = tmp_pkt.offset;
 							uint8_t	reorg_worden = badworden;
-							Efuse_PgPacketWrite(rtlpriv, reorg_offset, reorg_worden, originaldata);
+							efuse_pg_packet_write(rtlpriv, reorg_offset, reorg_worden, originaldata);
 							efuse_addr = rtl8812_EfuseGetCurrentSize(rtlpriv);
 						} else {
 							/* ############################ */
@@ -1030,18 +1011,6 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 #endif	
 	return _TRUE;
 }
-
-int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset,
-	uint8_t	word_en, IN uint8_t *data)
-{
-	int	ret;
-
-	ret = hal_EfusePgPacketWrite_8812A(rtlpriv, offset, word_en, data);
-
-	return ret;
-}
-
-
 
 static u8 efuse_word_enable_data_write(struct rtl_priv *rtlpriv,
 	u16 efuse_addr, uint8_t word_en, uint8_t *data)

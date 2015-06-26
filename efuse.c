@@ -417,7 +417,7 @@ static u8 Efuse_CalculateWordCnts(u8 word_en)
 	return word_cnts;
 }
 
-u16 rtl8812_EfuseGetCurrentSize(struct rtl_priv *rtlpriv)
+static u16 efuse_get_current_size(struct rtl_priv *rtlpriv)
 {
 	int	bContinual = _TRUE;
 	u16	efuse_addr = 0;
@@ -796,7 +796,7 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 							if ((tmp_word_en & 0x0F) != 0x0F) {
 								/* reorganize other pg packet */
 								/* efuse_addr = efuse_addr + (2*tmp_word_cnts) +1;//next pg packet addr */
-								efuse_addr = rtl8812_EfuseGetCurrentSize(rtlpriv);
+								efuse_addr = efuse_get_current_size(rtlpriv);
 								/* =========================== */
 								target_pkt.offset = offset;
 								target_pkt.word_en = tmp_word_en;
@@ -947,7 +947,7 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 							uint8_t	reorg_offset = tmp_pkt.offset;
 							uint8_t	reorg_worden = badworden;
 							efuse_pg_packet_write(rtlpriv, reorg_offset, reorg_worden, originaldata);
-							efuse_addr = rtl8812_EfuseGetCurrentSize(rtlpriv);
+							efuse_addr = efuse_get_current_size(rtlpriv);
 						} else {
 							/* ############################ */
 							efuse_addr = efuse_addr + (tmp_word_cnts*2) + 1; /* Next pg_packet */

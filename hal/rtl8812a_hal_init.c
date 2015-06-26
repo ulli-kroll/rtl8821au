@@ -466,16 +466,16 @@ void Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo)
 	DBG_8192C("EEPROM ID=0x%04x\n", EEPROMId);
 }
 
-void Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
-	BOOLEAN AutoloadFail)
+void Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
+	bool autoload_fail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
-	if (AutoloadFail) {
+	if (autoload_fail) {
 		efuse->eeprom_version = EEPROM_Default_Version;
 	} else{
-		efuse->eeprom_version = *(uint8_t *)&PROMContent[EEPROM_VERSION_8812];
+		efuse->eeprom_version = hwinfo[EEPROM_VERSION_8812];
 		if (efuse->eeprom_version == 0xFF)
 			efuse->eeprom_version = EEPROM_Default_Version;
 	}

@@ -169,7 +169,7 @@ BOOLEAN Hal_GetChnlGroup8812A(uint8_t Channel, uint8_t *pGroup)
 	return bIn24G;
 }
 
-static void hal_ReadPowerValueFromPROM8812A(struct rtl_priv *rtlpriv,
+static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 	struct txpower_info_2g *pwrinfo24g,
 	struct txpower_info_5g *pwrinfo5g,
 	u8 *hwinfo,
@@ -474,7 +474,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	uint8_t	channel5G_80M[CHANNEL_MAX_NUMBER_5G_80M] = {
 		42, 58, 106, 122, 138, 155, 171};
 
-	hal_ReadPowerValueFromPROM8812A(rtlpriv, &pwrInfo24G, &pwrInfo5G, hwinfo, autoload_fail);
+	_rtl8821au_read_power_value_fromprom(rtlpriv, &pwrInfo24G, &pwrInfo5G, hwinfo, autoload_fail);
 
 	/*
 	 * if(!AutoLoadFail)

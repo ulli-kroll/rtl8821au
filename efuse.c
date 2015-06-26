@@ -484,20 +484,6 @@ static void efuse_WordEnableDataRead(u8 word_en, u8 *sourdata,
 	}
 }
 
-
-uint8_t
-Efuse_WordEnableDataWrite(		struct rtl_priv *rtlpriv,
-								u16		efuse_addr,
-								uint8_t		word_en,
-								uint8_t		*data)
-{
-	uint8_t	ret=0;
-
-	ret =  rtlpriv->cfg->ops->Efuse_WordEnableDataWrite(rtlpriv, efuse_addr, word_en, data);
-
-	return ret;
-}
-
 static int efuse_pg_packet_read(struct rtl_priv *rtlpriv,
 	uint8_t offset, uint8_t *data)
 {
@@ -610,6 +596,10 @@ Efuse_PgPacketWrite(	struct rtl_priv *rtlpriv,
 
 	return ret;
 }
+
+static u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv,
+	u16 efuse_addr, uint8_t word_en, uint8_t *data);
+
 
 static int
 hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
@@ -794,7 +784,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 
 						/* ***********	so-2-2-A ******************* */
 						if ((match_word_en&0x0F) != 0x0F) {
-							badworden = Efuse_WordEnableDataWrite(rtlpriv, efuse_addr + 1, tmp_pkt.word_en, target_pkt.data);
+							badworden = rtl8812_Efuse_WordEnableDataWrite(rtlpriv, efuse_addr + 1, tmp_pkt.word_en, target_pkt.data);
 
 							/************	so-2-2-A-1 ******************* */
 							/* ############################ */
@@ -968,7 +958,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 
 					if (efuse_pg_packet_read(rtlpriv, tmp_pkt.offset, originaldata)) {
 						/* check if data exist */
-						badworden = Efuse_WordEnableDataWrite(rtlpriv, efuse_addr+1, tmp_pkt.word_en, originaldata);
+						badworden = rtl8812_Efuse_WordEnableDataWrite(rtlpriv, efuse_addr+1, tmp_pkt.word_en, originaldata);
 						/* ############################ */
 						if (0x0F != (badworden & 0x0F)) {
 							uint8_t	reorg_offset = tmp_pkt.offset;
@@ -1113,7 +1103,7 @@ static u8 Hal_EfuseWordEnableDataWrite8812A(struct rtl_priv *rtlpriv,
 	return badworden;
 }
 
-u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv,
+static u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv,
 	u16 efuse_addr, uint8_t word_en, uint8_t *data)
 {
 	uint8_t	ret = 0;

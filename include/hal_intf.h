@@ -171,7 +171,6 @@ void rtw_hal_stop(struct rtl_priv *rtlpriv);
 void rtw_hal_set_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val);
 void rtw_hal_get_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val);
 
-void rtw_hal_chip_configure(struct rtl_priv *rtlpriv);
 void rtw_hal_read_chip_info(struct rtl_priv *rtlpriv);
 
 uint8_t rtw_hal_get_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);

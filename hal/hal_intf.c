@@ -24,12 +24,6 @@
 #include <rtw_debug.h>
 #include <rtl8812a_hal.h>
 
-void rtw_hal_chip_configure(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->intf_chip_configure)
-		rtlpriv->cfg->ops->intf_chip_configure(rtlpriv);
-}
-
 void rtw_hal_read_chip_info(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->read_adapter_info)

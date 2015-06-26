@@ -1306,8 +1306,6 @@ struct rtl_hal_ops {
 
 	void	(*init_default_value)(struct rtl_priv *rtlpriv);
 
-	void	(*intf_chip_configure)(struct rtl_priv *rtlpriv);
-
 	void	(*read_adapter_info)(struct rtl_priv *rtlpriv);
 
 	void	(*enable_interrupt)(struct rtl_priv *rtlpriv);
@@ -1363,7 +1361,6 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv);
 unsigned int rtl8812au_inirp_init(struct rtl_priv *rtlpriv);
 unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv);
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv);
-void rtl8812au_interface_configure(struct rtl_priv *rtlpriv);
 void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv);
 
 enum hardware_type {

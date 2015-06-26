@@ -1321,6 +1321,110 @@ static int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 	return 0;
 }
 
+
+
+static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
+{
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+
+	pHalData->OutEpQueueSel = 0;
+	pHalData->OutEpNumber = 0;
+
+	switch (NumOutPipe) {
+	case 	4:
+		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
+		pHalData->OutEpNumber = 4;
+		break;
+	case 	3:
+		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
+		pHalData->OutEpNumber = 3;
+		break;
+	case 	2:
+		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_NQ;
+		pHalData->OutEpNumber = 2;
+		break;
+	case 	1:
+		pHalData->OutEpQueueSel = TX_SELE_HQ;
+		pHalData->OutEpNumber = 1;
+		break;
+	default:
+		break;
+
+	}
+	DBG_871X("%s OutEpQueueSel(0x%02x), OutEpNumber(%d) \n", __FUNCTION__, pHalData->OutEpQueueSel, pHalData->OutEpNumber);
+
+}
+
+
+static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *rtlpriv,
+	uint8_t	NumInPipe, uint8_t NumOutPipe)
+{
+	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
+	BOOLEAN		result		= _FALSE;
+
+	_ConfigChipOutEP_8812(rtlpriv, NumOutPipe);
+
+	/* Normal chip with one IN and one OUT doesn't have interrupt IN EP. */
+	if (1 == pHalData->OutEpNumber) {
+		if (1 != NumInPipe) {
+			return result;
+		}
+	}
+
+	/*
+	 * All config other than above support one Bulk IN and one Interrupt IN.
+	 * if (2 != NumInPipe){
+	 * 	return result;
+	 * }
+	 */
+
+	result = Hal_MappingOutPipe(rtlpriv, NumOutPipe);
+
+	return result;
+
+}
+
+static void _rtl_usb_init_tx_rx(struct rtl_priv *rtlpriv)
+{
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
+
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
+	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
+
+	if (IS_SUPER_SPEED_USB(rtlpriv))
+		rtlusb->max_bulk_out_size = USB_SUPER_SPEED_BULK_SIZE;	/* 1024 bytes */
+	else if (IS_HIGH_SPEED_USB(rtlpriv))
+		rtlusb->max_bulk_out_size = USB_HIGH_SPEED_BULK_SIZE;	/* 512 bytes */
+	else
+		rtlusb->max_bulk_out_size = USB_FULL_SPEED_BULK_SIZE; 	/*64 bytes */
+
+#ifdef CONFIG_USB_TX_AGGREGATION
+	pHalData->UsbTxAggMode		= 1;
+	pHalData->UsbTxAggDescNum	= 6;	/* only 4 bits */
+
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))	/* page added for Jaguar */
+		pHalData->UsbTxAggDescNum = 3;
+#endif
+
+#ifdef CONFIG_USB_RX_AGGREGATION
+	pHalData->UsbRxAggMode		= USB_RX_AGG_DMA;	/* USB_RX_AGG_DMA; */
+	pHalData->UsbRxAggBlockCount	= 8; 			/* unit : 512b */
+	pHalData->UsbRxAggBlockTimeout	= 0x6;
+	pHalData->UsbRxAggPageCount	= 16; 			/* uint :128 b //0x0A;	// 10 = MAX_RX_DMA_BUFFER_SIZE/2/pHalData->UsbBulkOutSize */
+	pHalData->UsbRxAggPageTimeout = 0x6; 			/* 6, absolute time = 34ms/(2^6) */
+
+	pHalData->RegAcUsbDmaSize = 4;
+	pHalData->RegAcUsbDmaTime = 8;
+#endif
+
+	HalUsbSetQueuePipeMapping8812AUsb(rtlpriv,
+				pdvobjpriv->RtNumInPipes, pdvobjpriv->RtNumOutPipes);
+
+}
+
+
+
 int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid, 
 	struct rtl_hal_cfg *rtl_hal_cfg)
 {
@@ -1390,7 +1494,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	rtlpriv->cfg->ops->read_chip_version(rtlpriv);
 
 	/* step usb endpoint mapping */
-	rtw_hal_chip_configure(rtlpriv);
+	 _rtl_usb_init_tx_rx(rtlpriv);
 
 	/* step read efuse/eeprom data and get mac_addr */
 	rtw_hal_read_chip_info(rtlpriv);
@@ -1737,105 +1841,3 @@ efuse_OneByteWrite(
 
 	return bResult;
 }
-
-
-static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
-{
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-
-	pHalData->OutEpQueueSel = 0;
-	pHalData->OutEpNumber = 0;
-
-	switch (NumOutPipe) {
-	case 	4:
-		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
-		pHalData->OutEpNumber = 4;
-		break;
-	case 	3:
-		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
-		pHalData->OutEpNumber = 3;
-		break;
-	case 	2:
-		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_NQ;
-		pHalData->OutEpNumber = 2;
-		break;
-	case 	1:
-		pHalData->OutEpQueueSel = TX_SELE_HQ;
-		pHalData->OutEpNumber = 1;
-		break;
-	default:
-		break;
-
-	}
-	DBG_871X("%s OutEpQueueSel(0x%02x), OutEpNumber(%d) \n", __FUNCTION__, pHalData->OutEpQueueSel, pHalData->OutEpNumber);
-
-}
-
-
-static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *rtlpriv,
-	uint8_t	NumInPipe, uint8_t NumOutPipe)
-{
-	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-	BOOLEAN		result		= _FALSE;
-
-	_ConfigChipOutEP_8812(rtlpriv, NumOutPipe);
-
-	/* Normal chip with one IN and one OUT doesn't have interrupt IN EP. */
-	if (1 == pHalData->OutEpNumber) {
-		if (1 != NumInPipe) {
-			return result;
-		}
-	}
-
-	/*
-	 * All config other than above support one Bulk IN and one Interrupt IN.
-	 * if (2 != NumInPipe){
-	 * 	return result;
-	 * }
-	 */
-
-	result = Hal_MappingOutPipe(rtlpriv, NumOutPipe);
-
-	return result;
-
-}
-
-void rtl8812au_interface_configure(struct rtl_priv *rtlpriv)
-{
-	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
-
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
-
-	if (IS_SUPER_SPEED_USB(rtlpriv))
-		rtlusb->max_bulk_out_size = USB_SUPER_SPEED_BULK_SIZE;	/* 1024 bytes */
-	else if (IS_HIGH_SPEED_USB(rtlpriv))
-		rtlusb->max_bulk_out_size = USB_HIGH_SPEED_BULK_SIZE;	/* 512 bytes */
-	else
-		rtlusb->max_bulk_out_size = USB_FULL_SPEED_BULK_SIZE; 	/*64 bytes */
-
-#ifdef CONFIG_USB_TX_AGGREGATION
-	pHalData->UsbTxAggMode		= 1;
-	pHalData->UsbTxAggDescNum	= 6;	/* only 4 bits */
-
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal))	/* page added for Jaguar */
-		pHalData->UsbTxAggDescNum = 3;
-#endif
-
-#ifdef CONFIG_USB_RX_AGGREGATION
-	pHalData->UsbRxAggMode		= USB_RX_AGG_DMA;	/* USB_RX_AGG_DMA; */
-	pHalData->UsbRxAggBlockCount	= 8; 			/* unit : 512b */
-	pHalData->UsbRxAggBlockTimeout	= 0x6;
-	pHalData->UsbRxAggPageCount	= 16; 			/* uint :128 b //0x0A;	// 10 = MAX_RX_DMA_BUFFER_SIZE/2/pHalData->UsbBulkOutSize */
-	pHalData->UsbRxAggPageTimeout = 0x6; 			/* 6, absolute time = 34ms/(2^6) */
-
-	pHalData->RegAcUsbDmaSize = 4;
-	pHalData->RegAcUsbDmaTime = 8;
-#endif
-
-	HalUsbSetQueuePipeMapping8812AUsb(rtlpriv,
-				pdvobjpriv->RtNumInPipes, pdvobjpriv->RtNumOutPipes);
-
-}
-

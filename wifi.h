@@ -821,6 +821,30 @@ struct rtl_dm {
 #define rtl_phy(rtlpriv)	(&((rtlpriv)->phy))
 #define rtl_dm(rtlpriv)		(&((rtlpriv)->dm))
 
+struct rtl_hal_usbint_cfg {
+	/* data - rx */
+	u32 in_ep_num;
+	u32 rx_urb_num;
+	u32 rx_max_size;
+#if 0	/* ULLI Currently disabled */
+	/* op - rx */
+	void (*usb_rx_hdl)(struct ieee80211_hw *, struct sk_buff *);
+	void (*usb_rx_segregate_hdl)(struct ieee80211_hw *, struct sk_buff *,
+				     struct sk_buff_head *);
+
+	/* tx */
+	void (*usb_tx_cleanup)(struct ieee80211_hw *, struct sk_buff *);
+	int (*usb_tx_post_hdl)(struct ieee80211_hw *, struct urb *,
+			       struct sk_buff *);
+	struct sk_buff *(*usb_tx_aggregate_hdl)(struct ieee80211_hw *,
+						struct sk_buff_head *);
+
+	/* endpoint mapping */
+	int (*usb_endpoint_mapping)(struct ieee80211_hw *hw);
+	u16 (*usb_mq_to_hwq)(__le16 fc, u16 mac80211_queue_index);
+#endif
+};
+
 struct rtl_hal_cfg {
 	u8 bar_id;
 	bool write_readback;
@@ -830,8 +854,8 @@ struct rtl_hal_cfg {
 	struct rtl_hal_ops *ops;
 #if 0 		/* ULLI currently not defined */
 	struct rtl_mod_params *mod_params;
-	struct rtl_hal_usbint_cfg *usb_interface_cfg;
 #endif
+	struct rtl_hal_usbint_cfg *usb_interface_cfg;
 	/*this map used for some registers or vars
 	   defined int HAL but used in MAIN */
 	u32 maps[RTL_VAR_MAP_MAX];

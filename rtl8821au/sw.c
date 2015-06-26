@@ -96,6 +96,24 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.hal_notch_filter = hal_notch_filter_8812,
 };
 
+static struct rtl_hal_usbint_cfg rtl8821au_interface_cfg = {
+#if 0
+	/* rx */
+	.in_ep_num = RTL92C_USB_BULK_IN_NUM,
+	.rx_urb_num = RTL92C_NUM_RX_URBS,
+	.rx_max_size = RTL92C_SIZE_MAX_RX_BUFFER,
+	.usb_rx_hdl = rtl8192cu_rx_hdl,
+	.usb_rx_segregate_hdl = NULL, /* rtl8192c_rx_segregate_hdl; */
+	/* tx */
+	.usb_tx_cleanup = rtl8192c_tx_cleanup,
+	.usb_tx_post_hdl = rtl8192c_tx_post_hdl,
+	.usb_tx_aggregate_hdl = rtl8192c_tx_aggregate_hdl,
+	/* endpoint mapping */
+	.usb_endpoint_mapping = rtl8192cu_endpoint_mapping,
+	.usb_mq_to_hwq = rtl8192cu_mq_to_hwq,
+#endif	
+};
+
 static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.name = "rtl8821au",
 	.fw_name = "rtlwifi/rtl8821aufw.bin",	/* ULLI note two files */

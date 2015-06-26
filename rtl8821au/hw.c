@@ -1114,3 +1114,341 @@ int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 
 	return true;
 }
+
+
+static void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
+{
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	/*  struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv); */
+	uint32_t			i;
+	u16			value16;
+
+	if (_FALSE == efuse->autoload_failflag) { /* autoload OK. */
+		if (efuse->epromtype == EEPROM_93C46) {
+			/* Read all Content from EEPROM or EFUSE. */
+			for (i = 0; i < HWSET_MAX_SIZE_JAGUAR; i += 2) {
+				/*
+				 * value16 = EF2Byte(ReadEEprom(rtlpriv, (u16) (i>>1)));
+				 * *((u16 *)(&PROMContent[i])) = value16;
+				 */
+			}
+		} else {
+			/* Read EFUSE real map to shadow. */
+			EFUSE_ShadowMapUpdate(rtlpriv);
+		}
+	} else {	/* autoload fail */
+		/*
+		 * pHalData->AutoloadFailFlag = _TRUE;
+		 * update to default value 0xFF
+		 */
+		if (efuse->epromtype == EEPROM_BOOT_EFUSE)
+			EFUSE_ShadowMapUpdate(rtlpriv);
+	}
+}
+
+static void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
+	BOOLEAN	AutoloadFail)
+{
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	if (!AutoloadFail) {
+		/* VID, PID */
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+			efuse->eeprom_vid = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8812AU]);
+			efuse->eeprom_did = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8812AU]);
+		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+			efuse->eeprom_vid = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8821AU]);
+			efuse->eeprom_did = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8821AU]);
+		}
+
+		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
+		efuse->eeprom_oemid = *(uint8_t *)&PROMContent[EEPROM_CustomID_8812];
+/* ULLI : rot in rtlwifi
+ *		efuse->EEPROMSubCustomerID = EEPROM_Default_SubCustomerID;
+ */
+
+	} else {
+		efuse->eeprom_vid = EEPROM_Default_VID;
+		efuse->eeprom_did = EEPROM_Default_PID;
+
+		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
+		efuse->eeprom_oemid		= EEPROM_Default_CustomerID;
+/* ULLI : rot in rtlwifi
+ * 		efuse->EEPROMSubCustomerID	= EEPROM_Default_SubCustomerID;
+ */
+	}
+
+#if 0
+	DBG_871X("VID = 0x%04X, PID = 0x%04X\n", efuse->eeprom_vid, efuse->eeprom_did);
+#endif	
+/* ULLI : rot in rtlwifi
+	DBG_871X("Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->eeprom_oemid, efuse->EEPROMSubCustomerID);
+*/
+#if 0
+	DBG_871X("Customer ID: 0x%02X\n", efuse->eeprom_oemid);
+#endif	
+}
+
+static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
+	BOOLEAN	AutoloadFail)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+
+	if (_FALSE == AutoloadFail) {
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+			/* Read Permanent MAC address and set value to hardware */
+			memcpy(pEEPROM->mac_addr, &PROMContent[EEPROM_MAC_ADDR_8812AU], ETH_ALEN);
+		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+			/*  Read Permanent MAC address and set value to hardware */
+			memcpy(pEEPROM->mac_addr, &PROMContent[EEPROM_MAC_ADDR_8821AU], ETH_ALEN);
+		}
+	} else {
+		/* Random assigh MAC address */
+		uint8_t	sMacAddr[ETH_ALEN] = {0x00, 0xE0, 0x4C, 0x88, 0x12, 0x00};
+		/* sMacAddr[5] = (u8)GetRandomNumber(1, 254); */
+		memcpy(pEEPROM->mac_addr, sMacAddr, ETH_ALEN);
+	}
+
+#if 0
+	DBG_8192C("%s MAC Address from EFUSE = "MAC_FMT"\n", __FUNCTION__, MAC_ARG(pEEPROM->mac_addr));
+#endif	
+}
+
+
+static void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
+		bool autoload_fail)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	if (!autoload_fail) {
+		if (hwinfo[EEPROM_RFE_OPTION_8812] & BIT7) {
+			if (rtlhal->external_lna_5g) {
+				if (rtlhal->external_pa_5g) {
+					if (rtlhal->external_lna_2g && rtlhal->external_pa_2g)
+						rtlhal->rfe_type = 3;
+					else
+						rtlhal->rfe_type = 0;
+				} else
+					rtlhal->rfe_type = 2;
+			} else
+				rtlhal->rfe_type = 4;
+		} else {
+			rtlhal->rfe_type= hwinfo[EEPROM_RFE_OPTION_8812]&0x3F;
+
+			/*
+			 * 2013/03/19 MH Due to othe customer already use incorrect EFUSE map
+			 * to for their product. We need to add workaround to prevent to modify
+			 * spec and notify all customer to revise the IC 0xca content. After
+			 * discussing with Willis an YN, revise driver code to prevent.
+			 */
+			if (rtlhal->rfe_type == 4 &&
+			   (rtlhal->external_pa_5g == _TRUE || rtlhal->external_pa_2g == _TRUE ||
+			    rtlhal->external_lna_5g == _TRUE || rtlhal->external_lna_2g == _TRUE)) {
+				if (IS_HARDWARE_TYPE_8812AU(rtlhal))
+					rtlhal->rfe_type = 0;
+			}
+		}
+	} else {
+		rtlhal->rfe_type = EEPROM_DEFAULT_RFE_OPTION;
+	}
+#if 0
+	DBG_871X("RFE Type: 0x%2x\n", rtlhal->rfe_type);
+#endif	
+}
+
+static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
+{
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
+	struct rtl_led_ctl *pledpriv = &(usbpriv->ledpriv);
+
+	/* For customized behavior. */
+
+	if ((efuse->eeprom_vid == 0x050D) && (efuse->eeprom_did == 0x1106))		/* SerComm for Belkin. */
+		rtlhal->oem_id = RT_CID_Sercomm_Belkin;	/* ULLI : RTL8812 */
+	else if ((efuse->eeprom_vid == 0x0846) && (efuse->eeprom_did == 0x9052))	/* SerComm for Netgear. */
+		rtlhal->oem_id = RT_CID_Sercomm_Netgear;	/* ULLI :  posible typo for pid maybe 0x9052 */
+	else if ((efuse->eeprom_vid == 0x2001) && (efuse->eeprom_did == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
+		rtlhal->oem_id = RT_CID_ALPHA_Dlink;	/* ULLI : RTL8812 */
+	else if ((efuse->eeprom_vid == 0x0B05) && (efuse->eeprom_did == 0x17D2))	/* Edimax for ASUS */
+		rtlhal->oem_id = RT_CID_Edimax_ASUS;	/* ULLI : RTL8812 */
+
+#if 0
+	DBG_871X("PID= 0x%x, VID=  %x\n", efuse->eeprom_did, efuse->eeprom_vid);
+#endif
+	/* Decide CustomerID according to VID/DID or EEPROM */
+	switch (efuse->eeprom_oemid) {
+	case EEPROM_CID_DEFAULT:
+		if ((efuse->eeprom_vid == 0x0846) && (efuse->eeprom_did == 0x9052))
+			rtlhal->oem_id = RT_CID_NETGEAR;		/* ULLI : RTL8821 */
+#if 0
+		DBG_871X("PID= 0x%x, VID=  %x\n", efuse->eeprom_did, efuse->eeprom_vid);
+#endif		
+		break;
+	default:
+		rtlhal->oem_id = RT_CID_DEFAULT;
+		break;
+
+	}
+#if 0	
+	DBG_871X("Customer ID: 0x%2x\n", rtlhal->oem_id);
+#endif
+
+	/* Led mode */
+	switch (rtlhal->oem_id) {
+	case RT_CID_DEFAULT:
+		pledpriv->LedStrategy = SW_LED_MODE9;
+		break;
+
+	/* ULLI check RT_CID_819x values */
+
+	case RT_CID_Sercomm_Belkin:
+		pledpriv->LedStrategy = SW_LED_MODE9;
+		break;
+
+	case RT_CID_Sercomm_Netgear:
+		pledpriv->LedStrategy = SW_LED_MODE10;
+		break;
+
+	case RT_CID_ALPHA_Dlink:	/* add by ylb 20121012 for customer led for alpha */
+		pledpriv->LedStrategy = SW_LED_MODE1;
+		break;
+
+	case RT_CID_Edimax_ASUS:
+		pledpriv->LedStrategy = SW_LED_MODE11;
+		break;
+
+	case RT_CID_NETGEAR:
+		pledpriv->LedStrategy = SW_LED_MODE13;
+		break;
+
+	default:
+		pledpriv->LedStrategy = SW_LED_MODE9;
+		break;
+	}
+
+	pledpriv->led_opendrain = true;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
+}
+
+static void ReadLEDSetting_8812AU(struct rtl_priv *rtlpriv,
+	u8 *PROMContent, BOOLEAN AutoloadFail)
+{
+}
+
+void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
+{
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+
+	hal_InitPGData_8812A(rtlpriv, &efuse->efuse_map[0][0]);
+	Hal_EfuseParseIDCode8812A(rtlpriv, &efuse->efuse_map[0][0]);
+
+	Hal_ReadPROMVersion8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	hal_ReadIDs_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	hal_ReadMACAddress_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	_rtl88au_read_txpower_info_from_hwpg(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_ReadBoardType8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+
+	/*
+	 * Read Bluetooth co-exist and initialize
+	 */
+
+	Hal_ReadChannelPlan8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_EfuseParseXtal_8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_ReadThermalMeter_8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_ReadAntennaDiversity8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+
+	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+		_rtl8821au_read_pa_type(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	} else {
+		_rtl8812au_read_pa_type(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+		_rtl8812au_read_rfe_type(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	}
+
+	hal_CustomizeByCustomerID_8812AU(rtlpriv);
+
+	ReadLEDSetting_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+
+	/* 2013/04/15 MH Add for different board type recognize. */
+	hal_ReadUsbType_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+}
+
+
+static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
+{
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
+	uint8_t	tmp_u1b;
+
+	/* check system boot selection */
+	tmp_u1b = rtl_read_byte(rtlpriv, REG_9346CR);
+	if (tmp_u1b & BIT(4)) {
+#if 0		/* ULLI : currently no RT_TRACE */
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "Boot from EEPROM\n");
+#endif
+		rtlefuse->epromtype = EEPROM_93C46;
+	} else {
+#if 0		/* ULLI : currently no RT_TRACE */
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "Boot from EFUSE\n");
+#endif
+		rtlefuse->epromtype = EEPROM_BOOT_EFUSE;
+	}
+
+	if (tmp_u1b & EEPROM_EN) {
+#if 0		/* ULLI : currently no RT_TRACE */
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Autoload OK\n");
+#endif
+		rtlefuse->autoload_failflag = false;
+#if 0
+		_rtl8821ae_read_adapter_info(hw, false);
+#endif
+	} else {
+#if 0		/* ULLI : currently no RT_TRACE */
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG, "Autoload ERR!!\n");
+#endif
+		/* ULLI : not in rtlwifi, maybe autoload_failflag to set to true */
+		rtlefuse->autoload_failflag = false;
+
+	}
+
+	/* pHalData->EEType = IS_BOOT_FROM_EEPROM(rtlpriv) ? EEPROM_93C46 : EEPROM_BOOT_EFUSE; */
+
+	InitAdapterVariablesByPROM_8812AU(rtlpriv);
+}
+
+void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
+{
+	if (IsSupported24G(rtlpriv->registrypriv.wireless_mode) &&
+		IsSupported5G(rtlpriv->registrypriv.wireless_mode))
+		rtlpriv->rtlhal.bandset = BAND_ON_BOTH;
+	else if (IsSupported5G(rtlpriv->registrypriv.wireless_mode))
+		rtlpriv->rtlhal.bandset = BAND_ON_5G;
+	else
+		rtlpriv->rtlhal.bandset = BAND_ON_2_4G;
+
+	/*
+	 * if (rtlpriv->bInHctTest)
+	 * 	pHalData->BandSet = BAND_ON_2_4G;
+	 */
+}
+
+void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
+{
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+#if 0
+	DBG_871X("====> ReadAdapterInfo8812AU\n");
+#endif
+	/* Read all content in Efuse/EEPROM. */
+	Hal_ReadPROMContent_8812A(rtlpriv);
+
+	/* We need to define the RF type after all PROM value is recognized. */
+	hal_ReadRFType_8812A(rtlpriv);
+#if 0
+	DBG_871X("ReadAdapterInfo8812AU <====\n");
+#endif	
+}

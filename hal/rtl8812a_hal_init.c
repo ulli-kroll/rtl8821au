@@ -470,7 +470,6 @@ void Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	bool autoload_fail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	if (autoload_fail) {
 		efuse->eeprom_version = EEPROM_Default_Version;

@@ -482,8 +482,8 @@ void Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	/* DBG_871X("pHalData->eeprom_version is 0x%x\n", pHalData->eeprom_version); */
 }
 
-void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
-	BOOLEAN	AutoLoadFail)
+void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
+	bool autoload_fail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -500,7 +500,7 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	uint8_t	channel5G_80M[CHANNEL_MAX_NUMBER_5G_80M] = {
 		42, 58, 106, 122, 138, 155, 171};
 
-	hal_ReadPowerValueFromPROM8812A(rtlpriv, &pwrInfo24G, &pwrInfo5G, PROMContent, AutoLoadFail);
+	hal_ReadPowerValueFromPROM8812A(rtlpriv, &pwrInfo24G, &pwrInfo5G, hwinfo, autoload_fail);
 
 	/*
 	 * if(!AutoLoadFail)
@@ -571,20 +571,20 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 
 
 	/* 2010/10/19 MH Add Regulator recognize for CU. */
-	if (!AutoLoadFail) {
+	if (!autoload_fail) {
 		struct registry_priv  *registry_par = &rtlpriv->registrypriv;
 		if (registry_par->regulatory_tid == 0xff) {
 
-			if (PROMContent[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
+			if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
 				efuse->eeprom_regulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* bit0~2 */
 			else
-				efuse->eeprom_regulatory = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* bit0~2 */
+				efuse->eeprom_regulatory = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* bit0~2 */
 		} else{
 			efuse->eeprom_regulatory = registry_par->regulatory_tid;
 		}
 
 		/* 2012/09/26 MH Add for TX power calibrate rate. */
-		pHalData->TxPwrCalibrateRate = PROMContent[EEPROM_TX_PWR_CALIBRATE_RATE_8812];
+		pHalData->TxPwrCalibrateRate = hwinfo[EEPROM_TX_PWR_CALIBRATE_RATE_8812];
 	} else {
 		efuse->eeprom_regulatory = 0;
 		/* 2012/09/26 MH Add for TX power calibrate rate. */

@@ -1519,7 +1519,7 @@ void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 	Hal_ReadPROMVersion8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 	hal_ReadIDs_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 	hal_ReadMACAddress_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-	Hal_ReadTxPowerInfo8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	_rtl88au_read_txpower_info_from_hwpg(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 	Hal_ReadBoardType8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 
 	/*

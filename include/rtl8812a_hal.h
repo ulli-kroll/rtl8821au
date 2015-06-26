@@ -209,7 +209,6 @@ void	InitializeFirmwareVars8812(struct rtl_priv *rtlpriv);
 // EFuse
 void	Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo);
 void	Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, u8 *hwinfo, bool autoload_fail);
-void	Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv,u8* hwinfo, bool autoload_fail);
 void	Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv,u8* hwinfo,bool autoload_fail);
 void	Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv,u8* PROMContent,BOOLEAN 	AutoloadFail);
 void	Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
@@ -223,5 +222,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rssi_level);
 // register
 void SetBcnCtrlReg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8_t ClearBits);
+void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo, bool autoload_fail);
 #endif //__RTL8188E_HAL_H__
 

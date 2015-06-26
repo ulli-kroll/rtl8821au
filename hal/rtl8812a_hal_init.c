@@ -456,7 +456,7 @@ void Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	/* DBG_871X("pHalData->eeprom_version is 0x%x\n", pHalData->eeprom_version); */
 }
 
-void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
+void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	bool autoload_fail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);

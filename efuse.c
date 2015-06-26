@@ -1042,7 +1042,7 @@ rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset,
 
 
 
-static u8 Hal_EfuseWordEnableDataWrite8812A(struct rtl_priv *rtlpriv,
+static u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv,
 	u16 efuse_addr, uint8_t word_en, uint8_t *data)
 {
 	u16 tmpaddr = 0;
@@ -1101,16 +1101,6 @@ static u8 Hal_EfuseWordEnableDataWrite8812A(struct rtl_priv *rtlpriv,
 		}
 	}
 	return badworden;
-}
-
-static u8 rtl8812_Efuse_WordEnableDataWrite(struct rtl_priv *rtlpriv,
-	u16 efuse_addr, uint8_t word_en, uint8_t *data)
-{
-	uint8_t	ret = 0;
-
-	ret = Hal_EfuseWordEnableDataWrite8812A(rtlpriv, efuse_addr, word_en, data);
-
-	return ret;
 }
 
 void

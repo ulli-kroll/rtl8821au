@@ -498,7 +498,7 @@ Efuse_WordEnableDataWrite(		struct rtl_priv *rtlpriv,
 	return ret;
 }
 
-static int Efuse_PgPacketRead(struct rtl_priv *rtlpriv,
+static int efuse_pg_packet_read(struct rtl_priv *rtlpriv,
 	uint8_t offset, uint8_t *data)
 {
 	uint8_t	ReadState = PG_STATE_HEADER;
@@ -966,7 +966,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 					/* ************	s1-2-A :cover the exist data ******************* */
 					memset(originaldata, 0xff, sizeof(uint8_t) * 8);
 
-					if (Efuse_PgPacketRead(rtlpriv, tmp_pkt.offset, originaldata)) {
+					if (efuse_pg_packet_read(rtlpriv, tmp_pkt.offset, originaldata)) {
 						/* check if data exist */
 						badworden = Efuse_WordEnableDataWrite(rtlpriv, efuse_addr+1, tmp_pkt.word_en, originaldata);
 						/* ############################ */

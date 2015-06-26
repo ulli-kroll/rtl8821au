@@ -581,6 +581,8 @@ static int efuse_pg_packet_read(struct rtl_priv *rtlpriv,
 
 }
 
+int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset,
+	uint8_t	word_en, IN uint8_t *data);
 
 
 
@@ -592,7 +594,7 @@ Efuse_PgPacketWrite(	struct rtl_priv *rtlpriv,
 {
 	int ret;
 
-	ret =  rtlpriv->cfg->ops->Efuse_PgPacketWrite(rtlpriv, offset, word_en, data);
+	rtl8812_Efuse_PgPacketWrite(rtlpriv, offset, word_en, data);
 
 	return ret;
 }
@@ -1029,8 +1031,7 @@ hal_EfusePgPacketWrite_8812A(IN	struct rtl_priv *rtlpriv, uint8_t offset,
 	return _TRUE;
 }
 
-int
-rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset,
+int rtl8812_Efuse_PgPacketWrite(struct rtl_priv *rtlpriv, uint8_t offset,
 	uint8_t	word_en, IN uint8_t *data)
 {
 	int	ret;

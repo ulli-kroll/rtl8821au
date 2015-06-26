@@ -1359,8 +1359,6 @@ struct rtl_hal_ops {
 	int32_t (*mgnt_xmit)(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
 	int32_t	(*hal_xmitframe_enqueue)(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 
-	int 	(*Efuse_PgPacketWrite)(struct rtl_priv *rtlpriv, uint8_t offset, uint8_t word_en, uint8_t *data);
-
 	void (*hal_notch_filter)(struct rtl_priv * rtlpriv, bool enable);
 	void (*hal_reset_security_engine)(struct rtl_priv * rtlpriv);
 	int32_t (*c2h_handler)(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt);

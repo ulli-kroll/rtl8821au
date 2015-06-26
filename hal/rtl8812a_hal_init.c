@@ -594,14 +594,14 @@ void Hal_ReadTxPowerInfo8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 
 }
 
-void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
-	BOOLEAN	AutoloadFail)
+void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
+	bool autoload_fail)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
-	if (!AutoloadFail) {
-		pHalData->InterfaceSel = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0xE0)>>5;
-		if (PROMContent[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
+	if (!autoload_fail) {
+		pHalData->InterfaceSel = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0xE0)>>5;
+		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
 			pHalData->InterfaceSel = (EEPROM_DEFAULT_BOARD_OPTION&0xE0)>>5;
 	} else {
 		pHalData->InterfaceSel = 0;

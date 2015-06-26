@@ -1384,7 +1384,7 @@ static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *rtlpriv,
 
 }
 
-static void _rtl_usb_init_tx_rx(struct rtl_priv *rtlpriv)
+static void _rtl_usb_init_tx(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 
@@ -1406,6 +1406,12 @@ static void _rtl_usb_init_tx_rx(struct rtl_priv *rtlpriv)
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))	/* page added for Jaguar */
 		pHalData->UsbTxAggDescNum = 3;
 #endif
+}
+
+static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
+{
+	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
+	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
 
 #ifdef CONFIG_USB_RX_AGGREGATION
 	pHalData->UsbRxAggMode		= USB_RX_AGG_DMA;	/* USB_RX_AGG_DMA; */
@@ -1420,7 +1426,6 @@ static void _rtl_usb_init_tx_rx(struct rtl_priv *rtlpriv)
 
 	HalUsbSetQueuePipeMapping8812AUsb(rtlpriv,
 				pdvobjpriv->RtNumInPipes, pdvobjpriv->RtNumOutPipes);
-
 }
 
 
@@ -1494,7 +1499,8 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	rtlpriv->cfg->ops->read_chip_version(rtlpriv);
 
 	/* step usb endpoint mapping */
-	 _rtl_usb_init_tx_rx(rtlpriv);
+	 _rtl_usb_init_tx(rtlpriv);
+	 _rtl_usb_init_rx(rtlpriv);
 
 	/* step read efuse/eeprom data and get mac_addr */
 	rtw_hal_read_chip_info(rtlpriv);

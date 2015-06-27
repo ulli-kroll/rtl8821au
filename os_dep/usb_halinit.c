@@ -77,7 +77,7 @@ static void _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 			rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, ((provalue|BIT(4))&(~BIT(5)))); /* set burst pkt len=512B */
 			rtl_write_word(rtlpriv, REG_RXDMA_PRO_8812, 0x1e);
 		} else {
-			rtlusb->max_bulk_out_size = 64;
+			rtlusb->max_bulk_out_size = USB_FULL_SPEED_BULK_SIZE;
 			provalue = rtl_read_byte(rtlpriv, REG_RXDMA_PRO_8812);
 			rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, ((provalue|BIT(5))&(~BIT(4)))); /* set burst pkt len=64B */
 		}

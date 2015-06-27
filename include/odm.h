@@ -350,11 +350,6 @@ typedef enum _ODM_Common_Info_Definition
 
 }ODM_CMNINFO_E;
 
-typedef enum tag_ODM_Support_Interface_Definition
-{
-	ODM_ITRF_USB 	=	0x2,
-}ODM_INTERFACE_E;
-
 // ODM_CMNINFO_RF_TYPE
 //
 // For example 1T2R (A+AB = BIT0|BIT4|BIT5)

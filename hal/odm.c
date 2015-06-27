@@ -608,7 +608,6 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 			if (IS_HARDWARE_TYPE_8811AU(rtlhal) ||
 				(IS_HARDWARE_TYPE_8812AU(rtlhal) && IS_NORMAL_CHIP(rtlhal->version))) {
 				if (IS_HARDWARE_TYPE_8821U(rtlhal)
-					&& (pDM_Odm->SupportInterface ==  ODM_ITRF_USB)
 					&& (rtlpriv->phy.current_channel >= 149)) {
 					if (rssi_level == 1)				/* add by Gary for ac-series */
 						rate_bitmap = 0x001f8000;

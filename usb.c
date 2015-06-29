@@ -1042,7 +1042,7 @@ static void usb_intf_start(struct rtl_priv *rtlpriv)
 	rtw_hal_inirp_init(rtlpriv);
 }
 
-static void usb_intf_stop(struct rtl_priv *rtlpriv)
+void usb_intf_stop(struct rtl_priv *rtlpriv)
 {
 	/* disabel_hw_interrupt */
 	if (rtlpriv->bSurpriseRemoved == _FALSE) {
@@ -1070,8 +1070,7 @@ static void rtw_dev_unload(struct rtl_priv *rtlpriv)
 
 		rtlpriv->bDriverStopped = _TRUE;
 		/* s3. */
-		if(rtlpriv->intf_stop)
-			rtlpriv->intf_stop(rtlpriv);
+		usb_intf_stop(rtlpriv);
 
 		/* s4. */
 		if(!rtlpriv->pwrctrlpriv.bInternalAutoSuspend )
@@ -1493,7 +1492,6 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	rtlpriv->cfg = rtl_hal_cfg;
 
 	rtlpriv->intf_start=&usb_intf_start;
-	rtlpriv->intf_stop=&usb_intf_stop;
 
 	/* step read_chip_version */
 	rtlpriv->cfg->ops->read_chip_version(rtlpriv);

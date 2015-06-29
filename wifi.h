@@ -1173,7 +1173,6 @@ struct rtl_priv {
 #endif
 
 	void (*intf_start)(struct rtl_priv * rtlpriv);
-	void (*intf_stop)(struct rtl_priv * rtlpriv);
 
 
 #ifdef PLATFORM_LINUX

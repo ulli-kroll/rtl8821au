@@ -1238,9 +1238,7 @@ void rtw_ips_dev_unload(struct rtl_priv *rtlpriv)
 
 	rtw_hal_set_hwreg(rtlpriv, HW_VAR_FIFO_CLEARN_UP, 0);
 
-	if (rtlpriv->intf_stop) {
-		rtlpriv->intf_stop(rtlpriv);
-	}
+	usb_intf_stop(rtlpriv);
 
 	/* s5. */
 	if (rtlpriv->bSurpriseRemoved == _FALSE) {

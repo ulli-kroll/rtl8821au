@@ -8,6 +8,36 @@
 #define RTL8812_MESSAGE_BOX_SIZE		4
 #define RTL8812_EX_MESSAGE_BOX_SIZE	4
 
+void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	uint8_t u1bTmp, u1bTmp2;
+
+	/* Reset MCU IO Wrapper- sugggest by SD1-Gimmy */
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
+		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2&(~BIT3));
+	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
+		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2&(~BIT0));
+	}
+
+	u1bTmp = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN+1);
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp&(~BIT2));
+
+	/* Enable MCU IO Wrapper */
+	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
+		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2 | (BIT3));
+	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
+		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2 | (BIT0));
+	}
+
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp|(BIT2));
+
+	/* DBG_871X("=====> _8051Reset8812(): 8051 reset success .\n"); */
+}
 
 static BOOLEAN Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
 	uint8_t	shortGIrate)

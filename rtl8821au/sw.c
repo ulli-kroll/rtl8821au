@@ -7,6 +7,8 @@
 #include "hw.h"
 #include "led.h"
 
+#include <rtl8812a_hal.h>
+
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
 void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,	void *	pValue1, BOOLEAN bSet);
@@ -123,7 +125,7 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.maps[EFUSE_HWSET_MAX_SIZE] = EFUSE_MAP_LEN_JAGUAR,	/* ULLI : or HWSET_MAX_SIZE */
 	.maps[EFUSE_MAX_SECTION_MAP] = EFUSE_MAX_SECTION_JAGUAR,	/* ULLI : or EFUSE_MAX_SECTION */
 	.maps[EFUSE_REAL_CONTENT_SIZE] =  EFUSE_REAL_CONTENT_LEN_JAGUAR,	/* ULLI : EFUSE_REAL_CONTENT_LEN */
-	
+	.maps[EFUSE_OOB_PROTECT_BYTES_LEN] = EFUSE_OOB_PROTECT_BYTES_JAGUAR,	/* ULLI : EFUSE_OOB_PROTECT_BYTES */
 	.maps[EFUSE_ACCESS] = REG_EFUSE_BURN_GNT_8812, /* ULLI : or REG_EFUSE_ACCESS as in rtlwifi */
 };
 

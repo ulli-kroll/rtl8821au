@@ -1117,7 +1117,7 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 	value32 &= ~WINTINI_RDY;
 	rtl_write_dword(rtlpriv, REG_MCUFWDL, value32);
 
-	_8051Reset8812(rtlpriv);
+	rtl8821au_firmware_selfreset(rtlpriv);
 
 	/* polling for FW ready */
 	counter = 0;
@@ -1221,7 +1221,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 	 */
 	if (rtl_read_byte(rtlpriv, REG_MCUFWDL) & BIT7) { /* 8051 RAM code */
 		rtl_write_byte(rtlpriv, REG_MCUFWDL, 0x00);
-		_8051Reset8812(rtlpriv);
+		rtl8821au_firmware_selfreset(rtlpriv);
 	}
 
 	_rtl8821ae_enable_fw_download(rtlpriv, _TRUE);

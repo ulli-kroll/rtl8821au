@@ -1091,7 +1091,7 @@ void CardDisableRTL8812AU(struct rtl_priv *rtlpriv)
 
 	if ((rtl_read_byte(rtlpriv, REG_MCUFWDL)&RAM_DL_SEL) && rtlpriv->bFWReady) {
 		  /* 8051 RAM code */
-		_8051Reset8812(rtlpriv);
+		rtl8821au_firmware_selfreset(rtlpriv);
 	}
 
 	/* Reset MCU. Suggested by Filen. 2011.01.26. by tynli. */

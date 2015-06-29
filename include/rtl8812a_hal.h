@@ -202,7 +202,7 @@ typedef struct _RT_FIRMWARE_8812 {
 #define GetRegbENRFEType(_Adapter)	(_Adapter->registrypriv.bEn_RFE)
 
 // rtl8812_hal_init.c
-void	_8051Reset8812(struct rtl_priv *rtlpriv);
+void	rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv);
 void	InitializeFirmwareVars8812(struct rtl_priv *rtlpriv);
 
 

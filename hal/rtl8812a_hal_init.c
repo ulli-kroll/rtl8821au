@@ -51,7 +51,7 @@ void rtl8821au_set_bcn_ctrl_reg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8
 }
 
 
-void _8051Reset8812(struct rtl_priv *rtlpriv)
+void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t u1bTmp, u1bTmp2;

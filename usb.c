@@ -1039,7 +1039,7 @@ static void rtw_decide_chip_type_by_usb_info(struct rtl_priv *rtlpriv, const str
 
 void usb_intf_start(struct rtl_priv *rtlpriv)
 {
-	rtw_hal_inirp_init(rtlpriv);
+	rtl8812au_inirp_init(rtlpriv);
 }
 
 void usb_intf_stop(struct rtl_priv *rtlpriv)

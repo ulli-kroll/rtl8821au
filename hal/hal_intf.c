@@ -152,19 +152,6 @@ void rtw_hal_disable_interrupt(struct rtl_priv *rtlpriv)
 		DBG_871X("%s: cfg->ops.disable_interrupt is NULL!\n", __func__);
 }
 
-
-uint32_t	rtw_hal_inirp_init(struct rtl_priv *rtlpriv)
-{
-	uint32_t rst = _FAIL;
-
-	if (rtlpriv->cfg->ops->inirp_init)
-		rst = rtlpriv->cfg->ops->inirp_init(rtlpriv);
-	else
-		DBG_871X(" %s cfg->ops.inirp_init is NULL!!!\n", __func__);
-
-	return rst;
-}
-
 uint32_t	rtw_hal_inirp_deinit(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->inirp_deinit)

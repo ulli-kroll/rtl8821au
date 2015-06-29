@@ -38,7 +38,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	/* .free_hal_data = rtl8192c_free_hal_data, */
 
-	.inirp_init =		rtl8812au_inirp_init,
 	.inirp_deinit =		rtl8812au_inirp_deinit,
 
 	.init_xmit_priv =	rtl8812au_init_xmit_priv,

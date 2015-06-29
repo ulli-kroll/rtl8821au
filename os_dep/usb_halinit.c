@@ -1066,7 +1066,7 @@ exit:
 	return status;
 }
 
-void CardDisableRTL8812AU(struct rtl_priv *rtlpriv)
+static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	u1bTmp;
@@ -1143,7 +1143,7 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_HIMR1_8812, IMR_DISABLED_8812);
 
 	if (rtlpriv->hw_init_completed == _TRUE) {
-		CardDisableRTL8812AU(rtlpriv);
+		_rtl8821au_poweroff_adapter(rtlpriv);
 
 		if ((rtlpriv->pwrctrlpriv.bHWPwrPindetect) && (rtlpriv->pwrctrlpriv.bHWPowerdown))
 			rtl8812au_hw_power_down(rtlpriv);

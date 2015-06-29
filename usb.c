@@ -1039,7 +1039,28 @@ static void rtw_decide_chip_type_by_usb_info(struct rtl_priv *rtlpriv, const str
 
 void usb_intf_start(struct rtl_priv *rtlpriv)
 {
-	rtl8812au_inirp_init(rtlpriv);
+	uint8_t i;
+	struct recv_buf *precvbuf;
+	uint	status;
+	struct rtl_usb *pdev = rtl_usbdev(rtlpriv);
+	struct recv_priv *precvpriv = &(rtlpriv->recvpriv);
+
+	status = _SUCCESS;
+
+	/* issue Rx irp to receive data */
+	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
+	for (i = 0; i < NR_RECVBUFF; i++) {
+		if (usb_read_port(rtlpriv, 0, (unsigned char *) precvbuf) == _FALSE) {
+			status = _FAIL;
+			goto exit;
+		}
+
+		precvbuf++;
+		precvpriv->free_recv_buf_queue_cnt--;
+	}
+
+exit:
+	;
 }
 
 void usb_intf_stop(struct rtl_priv *rtlpriv)

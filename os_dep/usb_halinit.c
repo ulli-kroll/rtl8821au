@@ -1151,35 +1151,6 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 	return _SUCCESS;
 }
 
-
-unsigned int rtl8812au_inirp_init(struct rtl_priv *rtlpriv)
-{
-	uint8_t i;
-	struct recv_buf *precvbuf;
-	uint	status;
-	struct rtl_usb *pdev = rtl_usbdev(rtlpriv);
-	struct recv_priv *precvpriv = &(rtlpriv->recvpriv);
-
-	status = _SUCCESS;
-
-	/* issue Rx irp to receive data */
-	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
-	for (i = 0; i < NR_RECVBUFF; i++) {
-		if (usb_read_port(rtlpriv, 0, (unsigned char *) precvbuf) == _FALSE) {
-			status = _FAIL;
-			goto exit;
-		}
-
-		precvbuf++;
-		precvpriv->free_recv_buf_queue_cnt--;
-	}
-
-exit:
-
-	return status;
-
-}
-
 unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv)
 {
 	usb_read_port_cancel(rtlpriv);

@@ -1167,11 +1167,6 @@ struct rtl_priv {
 	void *xmitThread;
 	void *recvThread;
 
-#ifndef PLATFORM_LINUX
-	NDIS_STATUS (*dvobj_init)(struct rtl_usb *dvobj);
-	void (*dvobj_deinit)(struct rtl_usb *dvobj);
-#endif
-
 #ifdef PLATFORM_LINUX
 	int bup;
 	struct net_device_stats stats;

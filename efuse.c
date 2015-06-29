@@ -162,7 +162,7 @@ static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u
 	}
 
 	/* 0. Refresh efuse init map as all oxFF. */
-	for (i = 0; i < EFUSE_MAX_SECTION_JAGUAR; i++)
+	for (i = 0; i < efuse_max_section; i++)
 		for (j = 0; j < EFUSE_MAX_WORD_UNIT; j++)
 			eFuseWord[i][j] = 0xFFFF;
 
@@ -217,7 +217,7 @@ static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u
 			wden = (efuseHeader & 0x0f);
 		}
 
-		if (offset < EFUSE_MAX_SECTION_JAGUAR) {
+		if (offset < efuse_max_section) {
 			/* Get word enable value from PG header */
 			/* RT_DISP(FEEPROM, EFUSE_READ_ALL, ("Offset-%X Worden=%X\n", offset, wden)); */
 
@@ -255,7 +255,7 @@ static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u
 	/*
 	 * 3. Collect 16 sections and 4 word unit into Efuse map.
 	 */
-	for (i = 0; i < EFUSE_MAX_SECTION_JAGUAR; i++) {
+	for (i = 0; i < efuse_max_section; i++) {
 		for (j = 0; j < EFUSE_MAX_WORD_UNIT; j++) {
 			efuseTbl[(i*8)+(j*2)] = (eFuseWord[i][j] & 0xff);
 			efuseTbl[(i*8)+((j*2)+1)] = ((eFuseWord[i][j] >> 8) & 0xff);
@@ -282,7 +282,7 @@ exit:
 		rtw_mfree(efuseTbl);
 
 	if (eFuseWord)
-		rtw_mfree2d((void *)eFuseWord, EFUSE_MAX_SECTION_JAGUAR, EFUSE_MAX_WORD_UNIT, sizeof(u16));
+		rtw_mfree2d((void *)eFuseWord, efuse_max_section, EFUSE_MAX_WORD_UNIT, sizeof(u16));
 }
 
 static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)

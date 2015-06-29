@@ -1107,9 +1107,8 @@ int _netdev_open(struct net_device *ndev)
 			goto netdev_open_error;
 		}
 
-		if (rtlpriv->intf_start) {
-			rtlpriv->intf_start(rtlpriv);
-		}
+		usb_intf_start(rtlpriv);
+		
 		rtw_hal_led_control(rtlpriv, LED_CTL_NO_LINK);
 
 		rtlpriv->bup = _TRUE;
@@ -1181,9 +1180,7 @@ int  ips_netdrv_open(struct rtl_priv *rtlpriv)
 		goto netdev_open_error;
 	}
 
-	if (rtlpriv->intf_start) {
-		rtlpriv->intf_start(rtlpriv);
-	}
+	usb_intf_start(rtlpriv);
 
 	rtw_set_pwr_state_check_timer(&rtlpriv->pwrctrlpriv);
 	_set_timer(&rtlpriv->mlmepriv.dynamic_chk_timer, 5000);

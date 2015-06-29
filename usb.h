@@ -95,4 +95,5 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 		struct rtl_hal_cfg *rtl_hal_cfg);
 void rtw_usb_disconnect(struct usb_interface *pusb_intf);
 void usb_intf_stop(struct rtl_priv *rtlpriv);
+void usb_intf_start(struct rtl_priv *rtlpriv);
 #endif

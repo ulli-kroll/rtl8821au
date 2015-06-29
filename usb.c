@@ -1037,7 +1037,7 @@ static void rtw_decide_chip_type_by_usb_info(struct rtl_priv *rtlpriv, const str
 }
 
 
-static void usb_intf_start(struct rtl_priv *rtlpriv)
+void usb_intf_start(struct rtl_priv *rtlpriv)
 {
 	rtw_hal_inirp_init(rtlpriv);
 }
@@ -1490,8 +1490,6 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	}
 
 	rtlpriv->cfg = rtl_hal_cfg;
-
-	rtlpriv->intf_start=&usb_intf_start;
 
 	/* step read_chip_version */
 	rtlpriv->cfg->ops->read_chip_version(rtlpriv);

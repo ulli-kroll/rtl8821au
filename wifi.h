@@ -1172,9 +1172,6 @@ struct rtl_priv {
 	void (*dvobj_deinit)(struct rtl_usb *dvobj);
 #endif
 
-	void (*intf_start)(struct rtl_priv * rtlpriv);
-
-
 #ifdef PLATFORM_LINUX
 	int bup;
 	struct net_device_stats stats;

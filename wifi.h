@@ -74,6 +74,20 @@ enum rtl_desc92_rate {
 };
 
 enum rtl_var_map {
+	/*reg map */
+	SYS_ISO_CTRL = 0,
+#if 0
+	SYS_FUNC_EN,
+	SYS_CLK,
+	MAC_RCR_AM,
+	MAC_RCR_AB,
+	MAC_RCR_ACRC32,
+	MAC_RCR_ACF,
+	MAC_RCR_AAP,
+	MAC_HIMR,
+	MAC_HIMRE,
+	MAC_HSISR,
+#endif
 	/*efuse map */
 	EFUSE_TEST,
 	EFUSE_CTRL,

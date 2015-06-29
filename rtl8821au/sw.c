@@ -114,6 +114,16 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.fw_name = "rtlwifi/rtl8821aufw.bin",	/* ULLI note two files */
 	.ops = &rtl8821au_hal_ops,
 
+	.maps[SYS_ISO_CTRL] = REG_SYS_ISO_CTRL,
+#if 0
+	.maps[SYS_FUNC_EN] = REG_SYS_FUNC_EN,
+	.maps[SYS_CLK] = REG_SYS_CLKR,
+	.maps[MAC_RCR_AM] = AM,
+	.maps[MAC_RCR_AB] = AB,
+	.maps[MAC_RCR_ACRC32] = ACRC32,
+	.maps[MAC_RCR_ACF] = ACF,
+	.maps[MAC_RCR_AAP] = AAP,
+#endif
 	.maps[EFUSE_TEST] = REG_EFUSE_TEST,
 	.maps[EFUSE_CTRL] = REG_EFUSE_CTRL,
 	.maps[EFUSE_CLK] = 0,

@@ -1242,6 +1242,38 @@ struct rtl_ps_ctl {
 	u64 last_wakeup_time;
 };
 
+struct rtl_locks {
+#if 0	
+	/* mutex */
+	struct mutex conf_mutex;
+	struct mutex ps_mutex;
+
+	/*spin lock */
+	spinlock_t ips_lock;
+	spinlock_t irq_th_lock;
+	spinlock_t irq_pci_lock;
+	spinlock_t tx_lock;
+	spinlock_t h2c_lock;
+	spinlock_t rf_ps_lock;
+	spinlock_t rf_lock;
+	spinlock_t lps_lock;
+	spinlock_t waitq_lock;
+	spinlock_t entry_list_lock;
+	spinlock_t usb_lock;
+
+	/*FW clock change */
+	spinlock_t fw_ps_lock;
+
+	/*Dual mac*/
+	spinlock_t cck_and_rw_pagea_lock;
+
+	/*Easy concurrent*/
+	spinlock_t check_sendpkt_lock;
+
+	spinlock_t iqk_lock;
+#endif	
+};
+
 
 
 struct rtl_priv {
@@ -1260,6 +1292,7 @@ struct rtl_priv {
 
 	struct false_alarm_statistics falsealm_cnt;
 	struct rtl_usb_priv priv;
+	struct rtl_locks locks;
 
 
 

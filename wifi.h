@@ -832,6 +832,7 @@ struct rtl_dm {
 #define rtl_efuse(rtlpriv)	(&((rtlpriv)->efuse))
 #define rtl_phy(rtlpriv)	(&((rtlpriv)->phy))
 #define rtl_dm(rtlpriv)		(&((rtlpriv)->dm))
+#define rtl_psc(rtlpriv)	(&((rtlpriv)->psc))
 
 struct rtl_hal_usbint_cfg {
 	/* data - rx */
@@ -1115,12 +1116,141 @@ struct false_alarm_statistics {
 	u32 cnt_bw_lsc;
 };
 
+enum rt_psmode {
+	EACTIVE,		/*Active/Continuous access. */
+	EMAXPS,			/*Max power save mode. */
+	EFASTPS,		/*Fast power save mode. */
+	EAUTOPS,		/*Auto power save mode. */
+};
+
+/*RF state.*/
+enum rf_pwrstate {
+	ERFON,
+	ERFSLEEP,
+	ERFOFF
+};
+
+enum p2p_ps_state {
+	P2P_PS_DISABLE = 0,
+	P2P_PS_ENABLE = 1,
+	P2P_PS_SCAN = 2,
+	P2P_PS_SCAN_DONE = 3,
+	P2P_PS_ALLSTASLEEP = 4, /* for P2P GO */
+};
+
+enum p2p_ps_mode {
+	P2P_PS_NONE = 0,
+	P2P_PS_CTWINDOW = 1,
+	P2P_PS_NOA	 = 2,
+	P2P_PS_MIX = 3, /* CTWindow and NoA */
+};
+
+struct rtl_p2p_ps_info {
+	enum p2p_ps_mode p2p_ps_mode; /* indicate p2p ps mode */
+	enum p2p_ps_state p2p_ps_state; /*  indicate p2p ps state */
+	u8 noa_index; /*  Identifies instance of Notice of Absence timing. */
+	/*  Client traffic window. A period of time in TU after TBTT. */
+	u8 ctwindow;
+	u8 opp_ps; /*  opportunistic power save. */
+	u8 noa_num; /*  number of NoA descriptor in P2P IE. */
+	/*  Count for owner, Type of client. */
+	u8 noa_count_type[P2P_MAX_NOA_NUM];
+	/*  Max duration for owner, preferred or min acceptable duration
+	 * for client.
+	 */
+	u32 noa_duration[P2P_MAX_NOA_NUM];
+	/*  Length of interval for owner, preferred or max acceptable intervali
+	 * of client.
+	 */
+	u32 noa_interval[P2P_MAX_NOA_NUM];
+	/*  schedule in terms of the lower 4 bytes of the TSF timer. */
+	u32 noa_start_time[P2P_MAX_NOA_NUM];
+};
+
+struct rtl_ps_ctl {
+	bool pwrdomain_protect;
+	bool in_powersavemode;
+	bool rfchange_inprogress;
+	bool swrf_processing;
+	bool hwradiooff;
+	/*
+	 * just for PCIE ASPM
+	 * If it supports ASPM, Offset[560h] = 0x40,
+	 * otherwise Offset[560h] = 0x00.
+	 * */
+	bool support_aspm;
+	bool support_backdoor;
+
+	/*for LPS */
+	enum rt_psmode dot11_psmode;	/*Power save mode configured. */
+	bool swctrl_lps;
+	bool leisure_ps;
+	bool fwctrl_lps;
+	u8 fwctrl_psmode;
+	/*For Fw control LPS mode */
+	u8 reg_fwctrl_lps;
+	/*Record Fw PS mode status. */
+	bool fw_current_inpsmode;
+	u8 reg_max_lps_awakeintvl;
+	bool report_linked;
+	bool low_power_enable;/*for 32k*/
+
+	/*for IPS */
+	bool inactiveps;
+
+	u32 rfoff_reason;
+
+	/*RF OFF Level */
+	u32 cur_ps_level;
+	u32 reg_rfps_level;
+
+	/*just for PCIE ASPM */
+	u8 const_amdpci_aspm;
+	bool pwrdown_mode;
+
+	enum rf_pwrstate inactive_pwrstate;
+	enum rf_pwrstate rfpwr_state;	/*cur power state */
+
+	/* for SW LPS*/
+	bool sw_ps_enabled;
+	bool state;
+	bool state_inap;
+	bool multi_buffered;
+	u16 nullfunc_seq;
+	unsigned int dtim_counter;
+	unsigned int sleep_ms;
+	unsigned long last_sleep_jiffies;
+	unsigned long last_awake_jiffies;
+	unsigned long last_delaylps_stamp_jiffies;
+	unsigned long last_dtim;
+	unsigned long last_beacon;
+	unsigned long last_action;
+	unsigned long last_slept;
+
+	/*For P2P PS */
+	struct rtl_p2p_ps_info p2p_ps_info;
+	u8 pwr_mode;
+	u8 smart_ps;
+
+	/* wake up on line */
+	u8 wo_wlan_mode;
+	u8 arp_offload_enable;
+	u8 gtk_offload_enable;
+	/* Used for WOL, indicates the reason for waking event.*/
+	u32 wakeup_reason;
+	/* Record the last waking time for comparison with setting key. */
+	u64 last_wakeup_time;
+};
+
+
+
 struct rtl_priv {
 	struct net_device *ndev;
 
 	struct rtl_hal rtlhal;		/* Caution new Hal data */
 	struct rtl_phy phy;
 	struct rtl_efuse efuse;
+	struct rtl_ps_ctl psc;
 	struct rtl_dm dm;		/* Caution new dm data */
 	struct rtl_hal_cfg *cfg;
 	struct rtl_io io;

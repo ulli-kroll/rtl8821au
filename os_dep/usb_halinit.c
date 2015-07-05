@@ -212,11 +212,11 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 /* Shall USB interface init this? */
 static void rtl8821au_enable_interrupt(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 
 	/* HIMR */
-	rtl_write_dword(rtlpriv, REG_HIMR0_8812, pHalData->IntrMask[0]&0xFFFFFFFF);
-	rtl_write_dword(rtlpriv, REG_HIMR1_8812, pHalData->IntrMask[1]&0xFFFFFFFF);
+	rtl_write_dword(rtlpriv, REG_HIMR0_8812, rtlusb->irq_mask[0]&0xFFFFFFFF);
+	rtl_write_dword(rtlpriv, REG_HIMR1_8812, rtlusb->irq_mask[1]&0xFFFFFFFF);
 }
 
 static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
@@ -1167,15 +1167,14 @@ unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv)
 
 void UpdateInterruptMask8812AU(struct rtl_priv *rtlpriv, uint8_t bHIMR0, uint32_t AddMSR, uint32_t RemoveMSR)
 {
-	struct _rtw_hal *pHalData;
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 
 	uint32_t *himr;
-	pHalData = GET_HAL_DATA(rtlpriv);
 
 	if (bHIMR0)
-		himr = &(pHalData->IntrMask[0]);
+		himr = &(rtlusb->irq_mask[0]);
 	else
-		himr = &(pHalData->IntrMask[1]);
+		himr = &(rtlusb->irq_mask[1]);
 
 	if (AddMSR)
 		*himr |= AddMSR;
@@ -1207,6 +1206,7 @@ void _update_response_rate(struct rtl_priv *rtlpriv, unsigned int mask)
 
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 {
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct _rtw_hal *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
@@ -1230,7 +1230,7 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 	rtlphy->pwrgroup_cnt = 0;
 	pHalData->PGMaxGroup = MAX_PG_GROUP;
 
-	pHalData->IntrMask[0]	= (u32)(	\
+	rtlusb->irq_mask[0]	= (u32)(	\
 /*
 					IMR_ROK 		|
 					IMR_RDU		|
@@ -1258,7 +1258,7 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
  */
 					0);
 
-	pHalData->IntrMask[1] 	= (u32)(	\
+	rtlusb->irq_mask[1] 	= (u32)(	\
 /*
 					IMR_RXFOVW		|
 					IMR_TXFOVW		|

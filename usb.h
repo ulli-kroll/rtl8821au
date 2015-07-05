@@ -13,6 +13,9 @@ struct rtl_usb {
 	u32 max_bulk_out_size;
         struct rtl_priv *rtlpriv;
 
+	/* irq  . HIMR,HIMR_EX */
+	u32 irq_mask[2];
+
 	//for local/global synchronization
 	//
 	spinlock_t	lock;

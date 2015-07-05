@@ -2102,9 +2102,6 @@ struct _rtw_hal {
 
 	BOOLEAN		bSupportUSB3;
 
-	// Interrupt relatd register information.
-	u32	IntArray[3];//HISR0,HISR1,HSISR
-	u32	IntrMask[3];
 	uint8_t	C2hArray[16];
 	#ifdef CONFIG_USB_TX_AGGREGATION
 	uint8_t	UsbTxAggMode;

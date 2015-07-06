@@ -166,9 +166,6 @@ int __rtw_mc2u_disable = 0;
 static int rtw_80211d = 0;
 #endif
 
-static int rtw_regulatory_id = 0xff; /*  Regulatory tab id, 0xff = follow efuse's setting */
-module_param(rtw_regulatory_id, int, 0644);
-
 char *__rtw_initmac = 0;  /* temp mac address if users want to use instead of the mac address in Efuse */
 
 
@@ -691,11 +688,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 #endif
 
 	registry_par->notch_filter = (uint8_t)rtw_notch_filter;
-
-	registry_par->regulatory_tid = (uint8_t)rtw_regulatory_id;
-
-
-
 
 	return status;
 }

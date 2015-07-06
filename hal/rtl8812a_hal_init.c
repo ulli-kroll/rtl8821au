@@ -76,7 +76,7 @@ void rtl8812_free_hal_data(struct rtl_priv *rtlpriv)
  * 				Efuse related code
  * ===========================================================
  */
-static u8 Hal_GetChnlGroup8812A(u8 chnl)
+static u8 _rtl8821au_get_chnl_group(u8 chnl)
 {
 	u8 group = 0;
 
@@ -447,7 +447,7 @@ void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 
 	for (rfPath = 0; rfPath < MAX_RF_PATH; rfPath++) {
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_2G; ch++) {
-			group = Hal_GetChnlGroup8812A(ch+1);
+			group = _rtl8821au_get_chnl_group(ch+1);
 
 			if (ch == (CHANNEL_MAX_NUMBER_2G-1)) {
 				efuse->txpwrlevel_cck[rfPath][ch] =
@@ -469,7 +469,7 @@ void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		}
 
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G; ch++) {
-			group = Hal_GetChnlGroup8812A(channel5G[ch]);
+			group = _rtl8821au_get_chnl_group(channel5G[ch]);
 
 			efuse->txpwr_5g_bw40base[rfPath][ch] = pwrInfo5G.index_bw40_base[rfPath][group];
 
@@ -481,7 +481,7 @@ void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G_80M; ch++) {
 			uint8_t	upper, lower;
 
-			group = Hal_GetChnlGroup8812A(channel5G_80M[ch]);
+			group = _rtl8821au_get_chnl_group(channel5G_80M[ch]);
 			upper = pwrInfo5G.index_bw40_base[rfPath][group];
 			lower = pwrInfo5G.index_bw40_base[rfPath][group+1];
 

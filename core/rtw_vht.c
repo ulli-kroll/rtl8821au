@@ -129,7 +129,7 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 			SET_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_TX);
 	}
 
-	rtw_hal_get_def_var(rtlpriv, HAL_DEF_RX_STBC, (uint8_t *)&bHwSTBCSupport);
+	bHwSTBCSupport = 1;
 
 	if (bHwSTBCSupport) {
 		if (TEST_FLAG(pregistrypriv->stbc_cap, BIT0))

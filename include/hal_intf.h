@@ -116,7 +116,6 @@ typedef enum _HAL_DEF_VARIABLE{
 	HAL_DEF_RA_SGI,
 	HAL_DEF_LDPC, 					// LDPC support
 	HAL_DEF_TX_STBC, 				// TX STBC support
-	HAL_DEF_RX_STBC, 				// RX STBC support
 	HW_VAR_MAX_RX_AMPDU_FACTOR,
 	HAL_DEF_ANT_DETECT,//to do for 8723a
 

@@ -517,14 +517,10 @@ void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		else
 			efuse->eeprom_regulatory = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* bit0~2 */
 
-		/* 2012/09/26 MH Add for TX power calibrate rate. */
-		pHalData->TxPwrCalibrateRate = hwinfo[EEPROM_TX_PWR_CALIBRATE_RATE_8812];
 	} else {
 		efuse->eeprom_regulatory = 0;
-		/* 2012/09/26 MH Add for TX power calibrate rate. */
-		pHalData->TxPwrCalibrateRate = EEPROM_DEFAULT_TX_CALIBRATE_RATE;
 	}
-	DBG_871X("EEPROMRegulatory = 0x%x TxPwrCalibrateRate=0x%x\n", efuse->eeprom_regulatory, pHalData->TxPwrCalibrateRate);
+	DBG_871X("EEPROMRegulatory = 0x%x\n", efuse->eeprom_regulatory);
 
 }
 

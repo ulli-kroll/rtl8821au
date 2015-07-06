@@ -2016,8 +2016,6 @@ struct _rtw_hal {
 
 	uint8_t	Regulation2_4G;
 	uint8_t	Regulation5G;
-
-	uint8_t	TxPwrCalibrateRate;
 	//
 	// TX power by rate table at most 4RF path.
 	// The register is

@@ -94,6 +94,7 @@ static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num
 ******************************************/
 static int32_t FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint32_t CmdLen, uint8_t *pCmdBuffer)
 {
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t bcmd_down = _FALSE;
 	int32_t retry_cnts = 100;
 	uint8_t h2c_box_num;
@@ -109,7 +110,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint
 	pHalData = GET_HAL_DATA(rtlpriv);
 
 
-	if (rtlpriv->bFWReady == _FALSE) {
+	if (rtlhal->fw_ready == false) {
 		/* DBG_8192C("FillH2CCmd_8812(): return H2C cmd because fw is not ready\n"); */
 		return ret;
 	}

@@ -1352,7 +1352,6 @@ struct rtl_priv {
 
 	int net_closed;
 
-	uint8_t bFWReady;
 	uint8_t bBTFWReady;
 	uint8_t bReadPortCancel;
 	uint8_t bWritePortCancel;

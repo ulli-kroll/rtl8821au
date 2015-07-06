@@ -849,12 +849,12 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	status = rtl8821au_download_fw(rtlpriv, _FALSE);
 	if (status != _SUCCESS) {
 		DBG_871X("%s: Download Firmware failed!!\n", __FUNCTION__);
-		rtlpriv->bFWReady = _FALSE;
+		rtlhal->fw_ready = false;
 		pHalData->fw_ractrl = _FALSE;
 		/* return status; */
 	} else {
 		DBG_871X("%s: Download Firmware Success!!\n", __FUNCTION__);
-		rtlpriv->bFWReady = _TRUE;
+		rtlhal->fw_ready = true;
 		pHalData->fw_ractrl = _TRUE;
 	}
 
@@ -1089,7 +1089,7 @@ static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 	else
 		HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_LPS_ENTER_FLOW);
 
-	if ((rtl_read_byte(rtlpriv, REG_MCUFWDL)&RAM_DL_SEL) && rtlpriv->bFWReady) {
+	if ((rtl_read_byte(rtlpriv, REG_MCUFWDL)&RAM_DL_SEL) && rtlhal->fw_ready) {
 		  /* 8051 RAM code */
 		rtl8821au_firmware_selfreset(rtlpriv);
 	}

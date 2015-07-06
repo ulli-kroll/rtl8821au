@@ -92,7 +92,9 @@ static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num
 *|31 - 0	  |
 *|ext_msg|
 ******************************************/
-static void FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint32_t CmdLen, uint8_t *pCmdBuffer)
+static void _rtl8821au_fill_h2c_command(struct rtl_priv *rtlpriv, 
+					u8 element_id, u32 cmd_len, 
+					u8 *cmdbuffer)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t bcmd_down = _FALSE;
@@ -116,10 +118,10 @@ static void FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint32_
 
 	_unused = mutex_lock_interruptible(&(rtl_usbdev(rtlpriv)->h2c_fwcmd_mutex));
 
-	if (!pCmdBuffer) {
+	if (!cmdbuffer) {
 		goto exit;
 	}
-	if (CmdLen > RTL8812_MAX_CMD_LEN) {
+	if (cmd_len > RTL8812_MAX_CMD_LEN) {
 		goto exit;
 	}
 
@@ -135,14 +137,14 @@ static void FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint32_
 			goto exit;
 		}
 
-		*(uint8_t *)(&h2c_cmd) = ElementID;
+		*(uint8_t *)(&h2c_cmd) = element_id;
 
-		if (CmdLen <= 3) {
-			memcpy((uint8_t *)(&h2c_cmd)+1, pCmdBuffer, CmdLen);
+		if (cmd_len <= 3) {
+			memcpy((uint8_t *)(&h2c_cmd)+1, cmdbuffer, cmd_len);
 		} else {
-			memcpy((uint8_t *)(&h2c_cmd)+1, pCmdBuffer, 3);
-			ext_cmd_len = CmdLen-3;
-			memcpy((uint8_t *)(&h2c_cmd_ex), pCmdBuffer+3, ext_cmd_len);
+			memcpy((uint8_t *)(&h2c_cmd)+1, cmdbuffer, 3);
+			ext_cmd_len = cmd_len-3;
+			memcpy((uint8_t *)(&h2c_cmd_ex), cmdbuffer+3, ext_cmd_len);
 
 			/* Write Ext command */
 			msgbox_ex_addr = REG_HMEBOX_EXT0_8812 + (h2c_box_num * RTL8812_EX_MESSAGE_BOX_SIZE);
@@ -196,7 +198,7 @@ uint8_t rtl8812_h2c_msg_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 	CmdLen = pcmdmsg->sz;
 	pCmdBuffer = pcmdmsg->buf;
 
-	FillH2CCmd_8812(rtlpriv, ElementID, CmdLen, pCmdBuffer);
+	_rtl8821au_fill_h2c_command(rtlpriv, ElementID, CmdLen, pCmdBuffer);
 
 	return H2C_SUCCESS;
 }
@@ -208,7 +210,7 @@ uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param)
 
 	*((u32 *) param) = cpu_to_le32(*((u32 *) param));
 
-	FillH2CCmd_8812(rtlpriv, H2C_8812_RSSI_REPORT, 4, param);
+	_rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_RSSI_REPORT, 4, param);
 
 
 	return res;
@@ -321,7 +323,7 @@ void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *ar
 
 		dev_info(&(rtlpriv->ndev->dev), "rtl8812_set_raid_cmd, bitmap=0x%x, mac_id=0x%x, raid=0x%x, shortGIrate=%x\n", bitmap, macid, raid, shortGIrate);
 
-		FillH2CCmd_8812(rtlpriv, H2C_8812_RA_MASK, 7, H2CCommand);
+		_rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_RA_MASK, 7, H2CCommand);
 	}
 
 	if (shortGIrate == _TRUE)
@@ -732,7 +734,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 
 	if (!bDLFinished) {
 		dev_info(&(rtlpriv->ndev->dev), "%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__, TotalPacketLen, TotalPageNum);
-		FillH2CCmd_8812(rtlpriv, H2C_8812_RSVDPAGE, 5, RsvdPageLoc);
+		_rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_RSVDPAGE, 5, RsvdPageLoc);
 	}
 
 	rtw_free_cmd_xmitbuf(pxmitpriv);
@@ -914,7 +916,7 @@ void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *rtlpriv, u16 mstatus_rpt)
 
 	dev_info(&(rtlpriv->ndev->dev), "[MacId],  Set MacId Ctrl(original) = 0x%x \n", u1JoinBssRptParm[0]<<16|u1JoinBssRptParm[1]<<8|u1JoinBssRptParm[2]);
 
-	FillH2CCmd_8812(rtlpriv, H2C_8812_MSRRPT, 3, u1JoinBssRptParm);
+	_rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_MSRRPT, 3, u1JoinBssRptParm);
 }
 
 
@@ -977,7 +979,7 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 	/* AllON(0x0C), RFON(0x04), RFOFF(0x00) */
 	SET_8812_H2CCMD_PWRMODE_PARM_PWR_STATE(u1H2CSetPwrMode, PowerState);
 
-	FillH2CCmd_8812(rtlpriv, H2C_8812_SETPWRMODE, sizeof(u1H2CSetPwrMode), (uint8_t *)&u1H2CSetPwrMode);
+	_rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_SETPWRMODE, sizeof(u1H2CSetPwrMode), (uint8_t *)&u1H2CSetPwrMode);
 }
 
 

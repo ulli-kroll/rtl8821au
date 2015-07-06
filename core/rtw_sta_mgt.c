@@ -21,6 +21,7 @@
 
 #include <drv_types.h>
 #include <rtw_debug.h>
+#include <rtl8812a_hal.h>
 
 
 static void _rtw_init_stainfo(struct sta_info *psta)
@@ -485,7 +486,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	}
 
 	if (!(psta->state & WIFI_AP_STATE))
-		rtw_hal_set_odm_var(rtlpriv, HAL_ODM_STA_INFO, psta, _FALSE);
+		rtl8812_SetHalODMVar(rtlpriv, HAL_ODM_STA_INFO, psta, _FALSE);
 
 	/*
 	 * release mac id for non-bc/mc station,

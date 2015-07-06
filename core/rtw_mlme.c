@@ -21,6 +21,7 @@
 
 #include <drv_types.h>
 #include <rtw_debug.h>
+#include <rtl8812a_hal.h>
 
 
 extern void indicate_wx_scan_complete_event(struct rtl_priv *rtlpriv);
@@ -1199,7 +1200,7 @@ static struct sta_info *rtw_joinbss_update_stainfo(struct rtl_priv *rtlpriv, str
 
 
 		//sta mode
-		rtw_hal_set_odm_var(rtlpriv,HAL_ODM_STA_INFO,psta,_TRUE);
+		rtl8812_SetHalODMVar(rtlpriv,HAL_ODM_STA_INFO,psta,_TRUE);
 
 		//security related
 		if (rtlpriv->securitypriv.dot11AuthAlgrthm== dot11AuthAlgrthm_8021X)
@@ -1670,7 +1671,7 @@ void rtw_stassoc_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	//psta->aid = (uint)pstassoc->cam_id;
 	DBG_871X("%s\n",__FUNCTION__);
 	//for ad-hoc mode
-	rtw_hal_set_odm_var(rtlpriv,HAL_ODM_STA_INFO,psta,_TRUE);
+	rtl8812_SetHalODMVar(rtlpriv,HAL_ODM_STA_INFO,psta,_TRUE);
 
 	rtw_stassoc_hw_rpt(rtlpriv,psta);
 

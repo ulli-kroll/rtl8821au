@@ -130,12 +130,6 @@ uint8_t rtw_hal_get_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable
 	return _FAIL;
 }
 
-void rtw_hal_set_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1, BOOLEAN bSet)
-{
-	if (rtlpriv->cfg->ops->SetHalODMVarHandler)
-		rtlpriv->cfg->ops->SetHalODMVarHandler(rtlpriv, eVariable, pValue1, bSet);
-}
-
 void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->enable_interrupt)

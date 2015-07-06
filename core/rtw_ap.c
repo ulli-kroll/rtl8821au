@@ -660,7 +660,7 @@ static void update_bmc_sta(struct rtl_priv *rtlpriv)
 
 		//DBG_871X("Add id %d val %08x to ratr for bmc sta\n", psta->aid, tx_ra_bitmap);
 		//ap mode
-		rtw_hal_set_odm_var(rtlpriv, HAL_ODM_STA_INFO, psta, _TRUE);
+		rtl8812_SetHalODMVar(rtlpriv, HAL_ODM_STA_INFO, psta, _TRUE);
 
 		//if (pHalData->fw_ractrl == _TRUE)
 		{
@@ -724,7 +724,7 @@ void update_sta_info_apmode(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		                                       //release macid when call rtw_free_stainfo()
 
 	//ap mode
-	rtw_hal_set_odm_var(rtlpriv,HAL_ODM_STA_INFO,psta,_TRUE);
+	rtl8812_SetHalODMVar(rtlpriv,HAL_ODM_STA_INFO,psta,_TRUE);
 
 	if (psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)
 		psta->ieee8021x_blocked = _TRUE;

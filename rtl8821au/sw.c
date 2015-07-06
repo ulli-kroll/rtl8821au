@@ -11,7 +11,6 @@
 
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
-void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,	void *	pValue1, BOOLEAN bSet);
 void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable);
 
 static struct rtl_hal_ops rtl8821au_hal_ops = {
@@ -87,7 +86,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.AntDivCompareHandler =		AntDivCompare8812,
 #endif
 
-	.SetHalODMVarHandler = rtl8812_SetHalODMVar,
 	.hal_notch_filter = hal_notch_filter_8812,
 };
 

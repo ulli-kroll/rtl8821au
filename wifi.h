@@ -1509,8 +1509,6 @@ struct rtl_hal_ops {
 
 	uint8_t	(*GetHalDefVarHandler)(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);
 
-	void	(*SetHalODMVarHandler)(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);
-
 	void	(*SetBeaconRelatedRegistersHandler)(struct rtl_priv *rtlpriv);
 
 	void	(*Add_RateATid)(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);

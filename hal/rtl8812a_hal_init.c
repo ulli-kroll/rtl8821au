@@ -76,57 +76,61 @@ void rtl8812_free_hal_data(struct rtl_priv *rtlpriv)
  * 				Efuse related code
  * ===========================================================
  */
-static void Hal_GetChnlGroup8812A(uint8_t Channel, uint8_t *pGroup)
+static u8 Hal_GetChnlGroup8812A(u8 chnl)
 {
-	if (Channel <= 14) {
-		if (1 <= Channel && Channel <= 2)
-			*pGroup = 0;
-		else if (3  <= Channel && Channel <= 5)
-			*pGroup = 1;
-		else if (6  <= Channel && Channel <= 8)
-			*pGroup = 2;
-		else if (9  <= Channel && Channel <= 11)
-			*pGroup = 3;
-		else if (12 <= Channel && Channel <= 14)
-			*pGroup = 4;
+	u8 group = 0;
+
+	if (chnl <= 14) {
+		if (1 <= chnl && chnl <= 2)
+			group = 0;
+		else if (3  <= chnl && chnl <= 5)
+			group = 1;
+		else if (6  <= chnl && chnl <= 8)
+			group = 2;
+		else if (9  <= chnl && chnl <= 11)
+			group = 3;
+		else if (12 <= chnl && chnl <= 14)
+			group = 4;
 		else {
-			DBG_871X("==>mpt_GetChnlGroup8812A in 2.4 G, but Channel %d in Group not found \n", Channel);
+			DBG_871X("==>mpt_GetChnlGroup8812A in 2.4 G, but chnl %d in Group not found \n", chnl);
 		}
 	} else {
-		if      (36   <= Channel && Channel <=  42)
-			*pGroup = 0;
-		else if (44   <= Channel && Channel <=  48)
-			*pGroup = 1;
-		else if (50   <= Channel && Channel <=  58)
-			*pGroup = 2;
-		else if (60   <= Channel && Channel <=  64)
-			*pGroup = 3;
-		else if (100  <= Channel && Channel <= 106)
-			*pGroup = 4;
-		else if (108  <= Channel && Channel <= 114)
-			*pGroup = 5;
-		else if (116  <= Channel && Channel <= 122)
-			*pGroup = 6;
-		else if (124  <= Channel && Channel <= 130)
-			*pGroup = 7;
-		else if (132  <= Channel && Channel <= 138)
-			*pGroup = 8;
-		else if (140  <= Channel && Channel <= 144)
-			*pGroup = 9;
-		else if (149  <= Channel && Channel <= 155)
-			*pGroup = 10;
-		else if (157  <= Channel && Channel <= 161)
-			*pGroup = 11;
-		else if (165  <= Channel && Channel <= 171)
-			*pGroup = 12;
-		else if (173  <= Channel && Channel <= 177)
-			*pGroup = 13;
+		if      (36   <= chnl && chnl <=  42)
+			group = 0;
+		else if (44   <= chnl && chnl <=  48)
+			group = 1;
+		else if (50   <= chnl && chnl <=  58)
+			group = 2;
+		else if (60   <= chnl && chnl <=  64)
+			group = 3;
+		else if (100  <= chnl && chnl <= 106)
+			group = 4;
+		else if (108  <= chnl && chnl <= 114)
+			group = 5;
+		else if (116  <= chnl && chnl <= 122)
+			group = 6;
+		else if (124  <= chnl && chnl <= 130)
+			group = 7;
+		else if (132  <= chnl && chnl <= 138)
+			group = 8;
+		else if (140  <= chnl && chnl <= 144)
+			group = 9;
+		else if (149  <= chnl && chnl <= 155)
+			group = 10;
+		else if (157  <= chnl && chnl <= 161)
+			group = 11;
+		else if (165  <= chnl && chnl <= 171)
+			group = 12;
+		else if (173  <= chnl && chnl <= 177)
+			group = 13;
 		else {
-			DBG_871X("==>mpt_GetChnlGroup8812A in 5G, but Channel %d in Group not found \n", Channel);
+			DBG_871X("==>mpt_GetChnlGroup8812A in 5G, but chnl %d in Group not found \n", chnl);
 		}
 
 	}
 	/* DBG_871X("<==mpt_GetChnlGroup8812A,  (%s) Channel = %d, Group =%d,\n", (bIn24G) ? "2.4G" : "5G", Channel, *pGroup); */
+
+	return group;
 }
 
 static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
@@ -443,7 +447,7 @@ void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 
 	for (rfPath = 0; rfPath < MAX_RF_PATH; rfPath++) {
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_2G; ch++) {
-			Hal_GetChnlGroup8812A(ch+1, &group);
+			group = Hal_GetChnlGroup8812A(ch+1);
 
 			if (ch == (CHANNEL_MAX_NUMBER_2G-1)) {
 				efuse->txpwrlevel_cck[rfPath][ch] =
@@ -465,7 +469,7 @@ void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		}
 
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G; ch++) {
-			Hal_GetChnlGroup8812A(channel5G[ch], &group);
+			group = Hal_GetChnlGroup8812A(channel5G[ch]);
 
 			efuse->txpwr_5g_bw40base[rfPath][ch] = pwrInfo5G.index_bw40_base[rfPath][group];
 
@@ -477,7 +481,7 @@ void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G_80M; ch++) {
 			uint8_t	upper, lower;
 
-			Hal_GetChnlGroup8812A(channel5G_80M[ch], &group);
+			group = Hal_GetChnlGroup8812A(channel5G_80M[ch]);
 			upper = pwrInfo5G.index_bw40_base[rfPath][group];
 			lower = pwrInfo5G.index_bw40_base[rfPath][group+1];
 

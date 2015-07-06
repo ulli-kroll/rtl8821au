@@ -76,13 +76,9 @@ void rtl8812_free_hal_data(struct rtl_priv *rtlpriv)
  * 				Efuse related code
  * ===========================================================
  */
-BOOLEAN Hal_GetChnlGroup8812A(uint8_t Channel, uint8_t *pGroup)
+static void Hal_GetChnlGroup8812A(uint8_t Channel, uint8_t *pGroup)
 {
-	BOOLEAN bIn24G = _TRUE;
-
 	if (Channel <= 14) {
-		bIn24G = _TRUE;
-
 		if (1 <= Channel && Channel <= 2)
 			*pGroup = 0;
 		else if (3  <= Channel && Channel <= 5)
@@ -97,8 +93,6 @@ BOOLEAN Hal_GetChnlGroup8812A(uint8_t Channel, uint8_t *pGroup)
 			DBG_871X("==>mpt_GetChnlGroup8812A in 2.4 G, but Channel %d in Group not found \n", Channel);
 		}
 	} else {
-		bIn24G = _FALSE;
-
 		if      (36   <= Channel && Channel <=  42)
 			*pGroup = 0;
 		else if (44   <= Channel && Channel <=  48)
@@ -133,8 +127,6 @@ BOOLEAN Hal_GetChnlGroup8812A(uint8_t Channel, uint8_t *pGroup)
 
 	}
 	/* DBG_871X("<==mpt_GetChnlGroup8812A,  (%s) Channel = %d, Group =%d,\n", (bIn24G) ? "2.4G" : "5G", Channel, *pGroup); */
-
-	return bIn24G;
 }
 
 static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,

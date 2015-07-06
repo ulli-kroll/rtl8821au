@@ -198,10 +198,6 @@ static struct usb_device_id rtw_usb_id_tbl[] ={
 
 MODULE_DEVICE_TABLE(usb, rtw_usb_id_tbl);
 
-extern void rtw_usb_if1_deinit(struct rtl_priv *rtlpriv);
-extern void usb_dvobj_deinit(struct usb_interface *usb_intf);
-
-
 static int rtl8821au_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
 	return rtw_usb_probe(pusb_intf, pdid, &rtl8821au_hal_cfg);

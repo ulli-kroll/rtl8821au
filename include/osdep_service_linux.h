@@ -60,7 +60,6 @@
 	#include <linux/usb.h>
 	#include <linux/usb/ch9.h>
 
-	typedef struct urb *  PURB;
 #ifdef CONFIG_USB_SUSPEND
 #define CONFIG_AUTOSUSPEND	1
 #endif

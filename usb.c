@@ -455,7 +455,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf 
 	unsigned int pipe;
 	int status;
 	u32 ret = _FAIL, bwritezero = _FALSE;
-	PURB	purb = NULL;
+	struct urb *purb = NULL;
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data;
@@ -695,7 +695,7 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 	SIZE_PTR tmpaddr = 0;
 	SIZE_PTR alignment = 0;
 	uint32_t ret = _SUCCESS;
-	PURB purb = NULL;
+	struct urb *purb = NULL;
 	struct recv_buf	*precvbuf = (struct recv_buf *) rmem;
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;

@@ -347,7 +347,7 @@ struct xmit_buf
 	u32	ff_hwaddr;
 
 #if defined(PLATFORM_LINUX)
-	PURB	pxmit_urb[8];
+	struct urb *pxmit_urb[8];
 	dma_addr_t dma_transfer_addr;	/* (in) dma addr for transfer_buffer */
 #endif
 

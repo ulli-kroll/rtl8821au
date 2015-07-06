@@ -349,7 +349,7 @@ struct recv_buf
 
 
 	#if defined(PLATFORM_LINUX)
-	PURB	purb;
+	struct urb *purb;
 	dma_addr_t dma_transfer_addr;	/* (in) dma addr for transfer_buffer */
 	u32 alloc_sz;
 	#endif

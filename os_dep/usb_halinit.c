@@ -1208,6 +1208,7 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct dm_priv *pdmpriv;
@@ -1221,7 +1222,7 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 	/* init default value */
 	pHalData->fw_ractrl = _FALSE;
 	if (!pwrctrlpriv->bkeepfwalive)
-		pHalData->LastHMEBoxNum = 0;
+		rtlhal->last_hmeboxnum = 0;
 
 	/* init dm default value */
 	pHalData->bChnlBWInitialzed = _FALSE;

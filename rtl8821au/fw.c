@@ -102,14 +102,10 @@ static void _rtl8821au_fill_h2c_command(struct rtl_priv *rtlpriv,
 	uint8_t h2c_box_num;
 	uint32_t msgbox_addr;
 	uint32_t msgbox_ex_addr;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t cmd_idx, ext_cmd_len;
 	uint32_t h2c_cmd = 0;
 	uint32_t h2c_cmd_ex = 0;
 	int _unused;
-
-	pHalData = GET_HAL_DATA(rtlpriv);
-
 
 	if (rtlhal->fw_ready == false) {
 		/* DBG_8192C("FillH2CCmd_8812(): return H2C cmd because fw is not ready\n"); */
@@ -130,7 +126,7 @@ static void _rtl8821au_fill_h2c_command(struct rtl_priv *rtlpriv,
 
 	/* pay attention to if  race condition happened in  H2C cmd setting. */
 	do {
-		h2c_box_num = pHalData->LastHMEBoxNum;
+		h2c_box_num = rtlhal->last_hmeboxnum;
 
 		if (!_is_fw_read_cmd_down(rtlpriv, h2c_box_num)) {
 			dev_info(&(rtlpriv->ndev->dev), " fw read cmd failed...\n");
@@ -175,7 +171,7 @@ static void _rtl8821au_fill_h2c_command(struct rtl_priv *rtlpriv,
 	 * 	 	,pHalData->LastHMEBoxNum ,CmdLen,msgbox_addr,h2c_cmd,msgbox_ex_addr,h2c_cmd_ex);
 	 */
 
-		pHalData->LastHMEBoxNum = (h2c_box_num+1) % RTL8812_MAX_H2C_BOX_NUMS;
+		rtlhal->last_hmeboxnum = (h2c_box_num+1) % RTL8812_MAX_H2C_BOX_NUMS;
 
 	} while ((!bcmd_down) && (retry_cnts--));
 

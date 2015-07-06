@@ -2055,9 +2055,6 @@ struct _rtw_hal {
 	//RDG enable
 	BOOLEAN	 bRDGEnable;
 
-	//for host message to fw
-	uint8_t	LastHMEBoxNum;
-
 	uint8_t	fw_ractrl;
 	uint8_t	RegTxPause;
 	// Beacon function related global variable.

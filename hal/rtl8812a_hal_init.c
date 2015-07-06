@@ -53,14 +53,14 @@ void rtl8821au_set_bcn_ctrl_reg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8
 
 void InitializeFirmwareVars8812(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct pwrctrl_priv *pwrpriv;
 	pwrpriv = &rtlpriv->pwrctrlpriv;
 
 	/* Init Fw LPS related. */
 	rtlpriv->pwrctrlpriv.bFwCurrentInPSMode = _FALSE;
 	/* Init H2C counter. by tynli. 2009.12.09. */
-	pHalData->LastHMEBoxNum = 0;
+	rtlhal->last_hmeboxnum = 0;
 }
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv)

@@ -65,7 +65,6 @@
 
 	//after link
 	#ifdef CONFIG_ANTENNA_DIVERSITY
-	#define CONFIG_HW_ANTENNA_DIVERSITY
 	#endif
 
 

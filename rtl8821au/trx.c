@@ -1464,18 +1464,6 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyI
 			pPktinfo->StationID, isCCKrate, pPhyInfo->RxPWDBAll);
 	}
 	*/
-#if (defined(CONFIG_HW_ANTENNA_DIVERSITY))
-	/* -----------------Smart Antenna Debug Message------------------ */
-	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		pFAT_T	pDM_FatTable = &pDM_Odm->DM_FatTable;
-
-		if (pPktinfo->bPacketToSelf || pPktinfo->bPacketMatchBSSID) {
-			if (pPktinfo->DataRate > DESC8812_RATE11M)
-				ODM_AntselStatistics_8821A(pDM_Odm, pDM_FatTable->antsel_rx_keep_0, pPktinfo->StationID, pPhyInfo->RxPWDBAll);
-		}
-	}
-
-#endif
 /*
 	if (pDM_Odm->SupportICType == ODM_RTL8812)
 	{

@@ -92,7 +92,7 @@ static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num
 *|31 - 0	  |
 *|ext_msg|
 ******************************************/
-static int32_t FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint32_t CmdLen, uint8_t *pCmdBuffer)
+static void FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint32_t CmdLen, uint8_t *pCmdBuffer)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t bcmd_down = _FALSE;
@@ -104,7 +104,6 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint
 	uint8_t cmd_idx, ext_cmd_len;
 	uint32_t h2c_cmd = 0;
 	uint32_t h2c_cmd_ex = 0;
-	int32_t ret = _FAIL;
 	int _unused;
 
 	pHalData = GET_HAL_DATA(rtlpriv);
@@ -112,7 +111,7 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint
 
 	if (rtlhal->fw_ready == false) {
 		/* DBG_8192C("FillH2CCmd_8812(): return H2C cmd because fw is not ready\n"); */
-		return ret;
+		return;
 	}
 
 	_unused = mutex_lock_interruptible(&(rtl_usbdev(rtlpriv)->h2c_fwcmd_mutex));
@@ -178,13 +177,9 @@ static int32_t FillH2CCmd_8812(struct rtl_priv *rtlpriv, uint8_t ElementID, uint
 
 	} while ((!bcmd_down) && (retry_cnts--));
 
-	ret = _SUCCESS;
-
 exit:
 
 	mutex_unlock(&(rtl_usbdev(rtlpriv)->h2c_fwcmd_mutex));
-
-	return ret;
 }
 
 uint8_t rtl8812_h2c_msg_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)

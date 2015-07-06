@@ -2014,8 +2014,8 @@ struct _rtw_hal {
 	//uint8_t				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
 
 
-	uint8_t	Regulation2_4G;
-	uint8_t	Regulation5G;
+//	uint8_t	Regulation2_4G;
+//	uint8_t	Regulation5G;
 	//
 	// TX power by rate table at most 4RF path.
 	// The register is
@@ -2026,7 +2026,7 @@ struct _rtw_hal {
 	// CCK=0 OFDM=1/2 HT-MCS 0-15=3/4/56 VHT=7/8/9/10/11
 	//
 	uint8_t	TxPwrByRateTable;
-	uint8_t	TxPwrByRateBand;
+ 	uint8_t	TxPwrByRateBand;
 
 
 
@@ -2036,8 +2036,8 @@ struct _rtw_hal {
 	// Read/write are allow for following hardware information variables
 	u32	CCKTxPowerLevelOriginalOffset;
 
-	u32	AntennaTxPath;					// Antenna path Tx
-	u32	AntennaRxPath;					// Antenna path Rx
+//	u32	AntennaTxPath;					// Antenna path Tx
+//	u32	AntennaRxPath;					// Antenna path Rx
 
 	uint8_t	BoardType;
 	uint8_t	ExternalPA;

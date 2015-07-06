@@ -341,20 +341,16 @@ void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *ar
  * Retrun value: the page number.
  * 2012.08.09, by tynli.
  */
-u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *rtlpriv, BOOLEAN	bWoWLANBoundary)
+u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	RsvdPageNum = 0;
 	uint8_t	TxPageBndy = LAST_ENTRY_OF_TX_PKT_BUFFER_8812; /* default reseved 1 page for the IC type which is undefined. */
 
-	if (bWoWLANBoundary) {
-		TxPageBndy = TX_PAGE_BOUNDARY_WOWLAN_8812;
-	} else {
-		if (IS_HARDWARE_TYPE_8812(rtlhal))
-			TxPageBndy = TX_PAGE_BOUNDARY_8812;
-		else
-			TxPageBndy = TX_PAGE_BOUNDARY_8821;
-	}
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
+		TxPageBndy = TX_PAGE_BOUNDARY_8812;
+	else
+		TxPageBndy = TX_PAGE_BOUNDARY_8821;
 
 	RsvdPageNum = LAST_ENTRY_OF_TX_PKT_BUFFER_8812 - TxPageBndy + 1;
 
@@ -608,7 +604,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 	 *  <tynli_note> The function SetFwRsvdPagePkt_8812() input must be added a value "bDLWholePackets" to
 	 *  decide if download wowlan packets, and use "bDLWholePackets" to be GetTxBufferRsvdPageNum8812() 2nd input value.
 	 */
-	RsvdPageNum = GetTxBufferRsvdPageNum8812(rtlpriv, _FALSE);
+	RsvdPageNum = GetTxBufferRsvdPageNum8812(rtlpriv);
 	MaxRsvdPageBufSize = RsvdPageNum*PageSize;
 
 	pcmdframe = rtw_alloc_cmdxmitframe(pxmitpriv, MaxRsvdPageBufSize);

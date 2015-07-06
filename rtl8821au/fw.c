@@ -343,14 +343,17 @@ void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *ar
  */
 u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *rtlpriv, BOOLEAN	bWoWLANBoundary)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	RsvdPageNum = 0;
 	uint8_t	TxPageBndy = LAST_ENTRY_OF_TX_PKT_BUFFER_8812; /* default reseved 1 page for the IC type which is undefined. */
 
 	if (bWoWLANBoundary) {
 		TxPageBndy = TX_PAGE_BOUNDARY_WOWLAN_8812;
 	} else {
-		rtw_hal_get_def_var(rtlpriv, HAL_DEF_TX_PAGE_BOUNDARY, (uint8_t *)&TxPageBndy);
+		if (IS_HARDWARE_TYPE_8812(rtlhal))
+			TxPageBndy = TX_PAGE_BOUNDARY_8812;
+		else
+			TxPageBndy = TX_PAGE_BOUNDARY_8821;
 	}
 
 	RsvdPageNum = LAST_ENTRY_OF_TX_PKT_BUFFER_8812 - TxPageBndy + 1;

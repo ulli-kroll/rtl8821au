@@ -286,22 +286,6 @@ void rtw_hal_bcn_related_reg_setting(struct rtl_priv *rtlpriv)
 		rtlpriv->cfg->ops->SetBeaconRelatedRegistersHandler(rtlpriv);
 }
 
-
-#ifdef CONFIG_ANTENNA_DIVERSITY
-uint8_t	rtw_hal_antdiv_before_linked(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->AntDivBeforeLinkHandler)
-		return rtlpriv->cfg->ops->AntDivBeforeLinkHandler(rtlpriv);
-	return _FALSE;
-}
-
-void rtw_hal_antdiv_rssi_compared(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
-{
-	if (rtlpriv->cfg->ops->AntDivCompareHandler)
-		rtlpriv->cfg->ops->AntDivCompareHandler(rtlpriv, dst, src);
-}
-#endif
-
 void rtw_hal_notch_filter(struct rtl_priv *rtlpriv, bool enable)
 {
 	if (rtlpriv->cfg->ops->hal_notch_filter)

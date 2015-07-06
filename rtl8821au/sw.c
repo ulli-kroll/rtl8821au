@@ -81,10 +81,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.hal_dm_watchdog =	rtl8821au_dm_watchdog,
 
 	.Add_RateATid =		rtl8812_Add_RateATid,
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	.AntDivBeforeLinkHandler =	AntDivBeforeLink8812,
-	.AntDivCompareHandler =		AntDivCompare8812,
-#endif
 
 	.hal_notch_filter = hal_notch_filter_8812,
 };

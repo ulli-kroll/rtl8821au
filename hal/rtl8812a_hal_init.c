@@ -1056,18 +1056,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 		}
 		break;
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	case HAL_DEF_IS_SUPPORT_ANT_DIV:
-		*((uint8_t *)pval) = (pHalData->AntDivCfg == 0) ? _FALSE : _TRUE;
-		break;
-#endif
-
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	case HAL_DEF_CURRENT_ANTENNA:
-		*((uint8_t *)pval) = pHalData->CurAntenna;
-		break;
-#endif
-
 	case HAL_DEF_DRVINFO_SZ:
 		*((u32 *)pval) = DRVINFO_SZ;
 		break;

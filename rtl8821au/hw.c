@@ -947,11 +947,6 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 
 		break;
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	case HW_VAR_CURRENT_ANTENNA:
-		*pval = pHalData->CurAntenna;
-		break;
-#endif
 	case HW_VAR_EFUSE_BYTES: /*  To get EFUE total used bytes, added by Roger, 2008.12.22. */
 		*(u16 *)pval = rtlefuse->efuse_usedbytes;
 		break;

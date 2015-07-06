@@ -568,11 +568,6 @@ void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src,
 	uint8_t sq_final;
 	long rssi_final;
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	rtw_hal_antdiv_rssi_compared(rtlpriv, dst, src); 	/* this will update src.Rssi, need consider again */
-#endif
-
-
 	/* The rule below is 1/5 for sample value, 4/5 for history value */
 	if (check_fwstate(&rtlpriv->mlmepriv, _FW_LINKED) && is_same_network(&(rtlpriv->mlmepriv.cur_network.network), src)) {
 		/* Take the recvpriv's value for the connected AP*/
@@ -681,10 +676,6 @@ void rtw_update_scanned_network(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *target)
 			//list_del_init(&oldest->list);
 			pnetwork = oldest;
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-			/* target->PhyInfo.Optimum_antenna = pHalData->CurAntenna;//optimum_antenna=>For antenna diversity */
-			rtw_hal_get_def_var(rtlpriv, HAL_DEF_CURRENT_ANTENNA, &(target->PhyInfo.Optimum_antenna));
-#endif
 			memcpy(&(pnetwork->network), target,  get_WLAN_BSSID_EX_sz(target));
 			/*
 			 * pnetwork->last_scanned = jiffies;
@@ -711,10 +702,6 @@ void rtw_update_scanned_network(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *target)
 
 			bssid_ex_sz = get_WLAN_BSSID_EX_sz(target);
 			target->Length = bssid_ex_sz;
-#ifdef CONFIG_ANTENNA_DIVERSITY
-			/* target->PhyInfo.Optimum_antenna = pHalData->CurAntenna; */
-			rtw_hal_get_def_var(rtlpriv, HAL_DEF_CURRENT_ANTENNA, &(target->PhyInfo.Optimum_antenna));
-#endif
 			memcpy(&(pnetwork->network), target, bssid_ex_sz );
 
 			pnetwork->last_scanned = jiffies;
@@ -2095,18 +2082,6 @@ int rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv )
 		}
 	}
 
-	#ifdef CONFIG_ANTENNA_DIVERSITY
-	rtw_hal_get_def_var(rtlpriv, HAL_DEF_IS_SUPPORT_ANT_DIV, &(bSupportAntDiv));
-	if (_TRUE == bSupportAntDiv)
-	{
-		uint8_t CurrentAntenna;
-		rtw_hal_get_def_var(rtlpriv, HAL_DEF_CURRENT_ANTENNA, &(CurrentAntenna));
-		DBG_871X("#### Opt_Ant_(%s) , cur_Ant(%s)\n",
-			(2==candidate->network.PhyInfo.Optimum_antenna)?"A":"B",
-			(2==CurrentAntenna)?"A":"B"
-		);
-	}
-	#endif
 	set_fwstate(pmlmepriv, _FW_UNDER_LINKING);
 	ret = rtw_joinbss_cmd(rtlpriv, candidate);
 

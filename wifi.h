@@ -1512,10 +1512,6 @@ struct rtl_hal_ops {
 	void	(*SetBeaconRelatedRegistersHandler)(struct rtl_priv *rtlpriv);
 
 	void	(*Add_RateATid)(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	uint8_t	(*AntDivBeforeLinkHandler)(struct rtl_priv *rtlpriv);
-	void	(*AntDivCompareHandler)(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
-#endif
 	uint8_t	(*interface_ps_func)(struct rtl_priv *rtlpriv,HAL_INTF_PS_FUNC efunc_id, u8* val);
 
 	int32_t	(*hal_xmit)(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
@@ -1932,9 +1928,7 @@ struct _rtw_dm {
 	PS_T		DM_PSTable;
 	Pri_CCA_T	DM_PriCCA;
 	RXHP_T		DM_RXHP_Table;
-	//#ifdef CONFIG_ANTENNA_DIVERSITY
 	BOOLEAN		RSSI_test;
-	//#endif
 
 
 	EDCA_T		DM_EDCA_Table;

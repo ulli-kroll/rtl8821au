@@ -61,11 +61,8 @@
 	#define CONFIG_LPS	1
 
 	//befor link
-	//#define CONFIG_ANTENNA_DIVERSITY
 
 	//after link
-	#ifdef CONFIG_ANTENNA_DIVERSITY
-	#endif
 
 
 #define CONFIG_AP_MODE	1

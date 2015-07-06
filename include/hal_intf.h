@@ -203,11 +203,6 @@ void	rtw_hal_set_chan(struct rtl_priv *rtlpriv, uint8_t channel);
 void	rtw_hal_set_chnl_bw(struct rtl_priv *rtlpriv, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
 void	rtw_hal_dm_watchdog(struct rtl_priv *rtlpriv);
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-uint8_t	rtw_hal_antdiv_before_linked(struct rtl_priv *rtlpriv);
-void	rtw_hal_antdiv_rssi_compared(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
-#endif
-
 void rtw_hal_notch_filter(struct rtl_priv * rtlpriv, bool enable);
 void rtw_hal_reset_security_engine(struct rtl_priv * rtlpriv);
 

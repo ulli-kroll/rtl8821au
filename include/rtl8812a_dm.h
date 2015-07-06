@@ -28,9 +28,5 @@ void rtl8812_InitHalDm(IN struct rtl_priv *rtlpriv);
 
 //void rtl8192c_dm_RF_Saving(IN struct rtl_priv *rtlpriv, IN uint8_t bForceInNormal);
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-void	AntDivCompare8812(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
-uint8_t AntDivBeforeLink8812(struct rtl_priv *rtlpriv );
-#endif
 #endif
 

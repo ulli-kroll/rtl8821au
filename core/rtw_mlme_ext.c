@@ -4717,23 +4717,6 @@ void site_survey(struct rtl_priv *rtlpriv)
 
 
 		{
-
-
-#ifdef CONFIG_ANTENNA_DIVERSITY
-			// 20100721:Interrupt scan operation here.
-			// For SW antenna diversity before link, it needs to switch to another antenna and scan again.
-			// It compares the scan result and select beter one to do connection.
-			if(rtw_hal_antdiv_before_linked(rtlpriv))
-			{
-				pmlmeext->sitesurvey_res.bss_cnt = 0;
-				pmlmeext->sitesurvey_res.channel_idx = -1;
-				pmlmeext->chan_scan_time = SURVEY_TO /2;
-				set_survey_timer(pmlmeext, pmlmeext->chan_scan_time);
-				return;
-			}
-#endif
-
-
 			pmlmeext->sitesurvey_res.state = SCAN_COMPLETE;
 
 			//switch back to the original channel
@@ -4821,10 +4804,6 @@ uint8_t collect_bss_info(struct rtl_priv *rtlpriv, struct recv_frame *precv_fram
 	bssid->Rssi = precv_frame->attrib.phy_info.RecvSignalPower; // in dBM.raw data
 	bssid->PhyInfo.SignalQuality = precv_frame->attrib.phy_info.SignalQuality;//in percentage
 	bssid->PhyInfo.SignalStrength = precv_frame->attrib.phy_info.SignalStrength;//in percentage
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	//rtw_hal_get_hwreg(rtlpriv, HW_VAR_CURRENT_ANTENNA, (uint8_t *)(&bssid->PhyInfo.Optimum_antenna));
-	rtw_hal_get_def_var(rtlpriv, HAL_DEF_CURRENT_ANTENNA,  &bssid->PhyInfo.Optimum_antenna);
-#endif
 
 	// checking SSID
 	if ((p = rtw_get_ie(bssid->IEs + _FIXED_IE_LENGTH_, _SSID_IE_, &len, bssid->IELength - _FIXED_IE_LENGTH_)) == NULL)
@@ -6376,9 +6355,6 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX		*pnetwork = (WLAN_BSSID_EX*)(&(pmlmeinfo->network));
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	struct joinbss_parm	*pparm = (struct joinbss_parm *)pbuf;
-#endif //CONFIG_ANTENNA_DIVERSITY
 	uint32_t	 i;
 	uint8_t	cbw40_enable=0;
         //uint32_t	initialgain;
@@ -6407,9 +6383,6 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_DISCONNECT, 0);
 	}
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	rtw_antenna_select_cmd(rtlpriv, pparm->network.PhyInfo.Optimum_antenna, _FALSE);
-#endif
 	rtw_joinbss_reset(rtlpriv);
 
 	pmlmeext->cur_bwmode = CHANNEL_WIDTH_20;

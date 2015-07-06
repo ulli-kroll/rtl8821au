@@ -895,10 +895,6 @@ uint8_t rtw_lps_ctrl_wk_cmd(struct rtl_priv*rtlpriv, uint8_t lps_ctrl_type, uint
 uint8_t rtw_rpt_timer_cfg_cmd(struct rtl_priv*rtlpriv, u16 minRptTime);
 #endif
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-extern  uint8_t rtw_antenna_select_cmd(struct rtl_priv*rtlpriv, uint8_t antenna,uint8_t enqueue);
-#endif
-
 extern uint8_t rtw_ps_cmd(struct rtl_priv*rtlpriv);
 
 #ifdef CONFIG_AP_MODE

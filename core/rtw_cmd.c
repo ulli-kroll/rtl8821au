@@ -1949,57 +1949,6 @@ exit:
 
 #endif
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
-void antenna_select_wk_hdl(struct rtl_priv *rtlpriv, uint8_t antenna)
-{
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_ANTENNA_DIVERSITY_SELECT, (uint8_t *)(&antenna));
-}
-
-uint8_t rtw_antenna_select_cmd(struct rtl_priv*rtlpriv, uint8_t antenna,uint8_t enqueue)
-{
-	struct cmd_obj		*ph2c;
-	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
-	struct cmd_priv	*pcmdpriv = &rtlpriv->cmdpriv;
-	uint8_t 	bSupportAntDiv = _FALSE;
-	uint8_t	res = _SUCCESS;
-
-
-	rtw_hal_get_def_var(rtlpriv, HAL_DEF_IS_SUPPORT_ANT_DIV, &(bSupportAntDiv));
-	if(_FALSE == bSupportAntDiv )	return res;
-
-	if(_TRUE == enqueue)
-	{
-		ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-		if(ph2c==NULL){
-			res= _FAIL;
-			goto exit;
-		}
-
-		pdrvextra_cmd_parm = (struct drvextra_cmd_parm*)rtw_zmalloc(sizeof(struct drvextra_cmd_parm));
-		if(pdrvextra_cmd_parm==NULL){
-			rtw_mfree(ph2c);
-			res= _FAIL;
-			goto exit;
-		}
-
-		pdrvextra_cmd_parm->ec_id = ANT_SELECT_WK_CID;
-		pdrvextra_cmd_parm->type_size = antenna;
-		pdrvextra_cmd_parm->pbuf = NULL;
-		init_h2fwcmd_w_parm_no_rsp(ph2c, pdrvextra_cmd_parm, GEN_CMD_CODE(_Set_Drv_Extra));
-
-		res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-	}
-	else{
-		antenna_select_wk_hdl(rtlpriv,antenna );
-	}
-exit:
-
-
-
-	return res;
-
-}
-#endif
 
 void power_saving_wk_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf, int sz);
 void power_saving_wk_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf, int sz)
@@ -2255,11 +2204,6 @@ uint8_t rtw_drvextra_cmd_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 #if (RATE_ADAPTIVE_SUPPORT==1)
 		case RTP_TIMER_CFG_WK_CID:
 			rpt_timer_setting_wk_hdl(rtlpriv, pdrvextra_cmd->type_size);
-			break;
-#endif
-#ifdef CONFIG_ANTENNA_DIVERSITY
-		case ANT_SELECT_WK_CID:
-			antenna_select_wk_hdl(rtlpriv, pdrvextra_cmd->type_size);
 			break;
 #endif
 #ifdef CONFIG_AP_MODE

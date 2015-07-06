@@ -209,7 +209,7 @@ void	InitializeFirmwareVars8812(struct rtl_priv *rtlpriv);
 void	Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo);
 void	Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, u8 *hwinfo, bool autoload_fail);
 void	Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv,u8* hwinfo,bool autoload_fail);
-void	Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv,u8* PROMContent,BOOLEAN 	AutoloadFail);
+void	Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv,u8* hwinfo, bool autoload_fail);
 void	Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
 void	Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN AutoLoadFail);
 void	Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv,u8* PROMContent,BOOLEAN AutoLoadFail);

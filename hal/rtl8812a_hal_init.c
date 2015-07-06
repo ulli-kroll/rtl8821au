@@ -552,8 +552,8 @@ void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 
 }
 
-void Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
-	BOOLEAN	AutoloadFail)
+void Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
+	bool autoload_fail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 
@@ -562,13 +562,13 @@ void Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 	/*
 	 * ThermalMeter from EEPROM
 	 */
-	if (!AutoloadFail)
-		efuse->eeprom_thermalmeter = PROMContent[EEPROM_THERMAL_METER_8812];
+	if (!autoload_fail)
+		efuse->eeprom_thermalmeter = hwinfo[EEPROM_THERMAL_METER_8812];
 	else
 		efuse->eeprom_thermalmeter = EEPROM_Default_ThermalMeter_8812;
 	/* pHalData->EEPROMThermalMeter = (tempval&0x1f);	//[4:0] */
 
-	if (efuse->eeprom_thermalmeter == 0xff || AutoloadFail) {
+	if (efuse->eeprom_thermalmeter == 0xff || autoload_fail) {
 		efuse->apk_thermalmeterignore = _TRUE;
 		efuse->eeprom_thermalmeter = 0xFF;
 	}

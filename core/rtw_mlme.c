@@ -2606,15 +2606,6 @@ unsigned int rtw_restructure_ht_ie(struct rtl_priv *rtlpriv, uint8_t *in_ie, uin
 							IEEE80211_HT_CAP_DSSSCCK40;
 
 
-		{
-			uint32_t	 rx_packet_offset, max_recvbuf_sz;
-			rtw_hal_get_def_var(rtlpriv, HAL_DEF_RX_PACKET_OFFSET, &rx_packet_offset);
-			rtw_hal_get_def_var(rtlpriv, HAL_DEF_MAX_RECVBUF_SZ, &max_recvbuf_sz);
-			//if (max_recvbuf_sz-rx_packet_offset>(8191-256)) {
-			//	DBG_871X("%s IEEE80211_HT_CAP_MAX_AMSDU is set\n", __FUNCTION__);
-			//	ht_capie.cap_info = ht_capie.cap_info |IEEE80211_HT_CAP_MAX_AMSDU;
-			//}
-		}
 		/*
 		AMPDU_para [1:0]:Max AMPDU Len => 0:8k , 1:16k, 2:32k, 3:64k
 		AMPDU_para [4:2]:Min MPDU Start Spacing

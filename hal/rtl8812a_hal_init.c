@@ -1127,10 +1127,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 			*(uint8_t *)pval = TX_PAGE_BOUNDARY_8821;
 		break;
 
-	case HAL_DEF_TX_PAGE_BOUNDARY_WOWLAN:
-		*(uint8_t *)pval = TX_PAGE_BOUNDARY_WOWLAN_8812;
-		break;
-
 	default:
 		DBG_8192C("%s: [ERROR] HAL_DEF_VARIABLE(%d) not defined!\n", __FUNCTION__, variable);
 		bResult = _FAIL;

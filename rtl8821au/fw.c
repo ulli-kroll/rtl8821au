@@ -348,7 +348,7 @@ u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *rtlpriv, BOOLEAN	bWoWLANBoundary)
 	uint8_t	TxPageBndy = LAST_ENTRY_OF_TX_PKT_BUFFER_8812; /* default reseved 1 page for the IC type which is undefined. */
 
 	if (bWoWLANBoundary) {
-		rtw_hal_get_def_var(rtlpriv, HAL_DEF_TX_PAGE_BOUNDARY_WOWLAN, (uint8_t *)&TxPageBndy);
+		TxPageBndy = TX_PAGE_BOUNDARY_WOWLAN_8812;
 	} else {
 		rtw_hal_get_def_var(rtlpriv, HAL_DEF_TX_PAGE_BOUNDARY, (uint8_t *)&TxPageBndy);
 	}

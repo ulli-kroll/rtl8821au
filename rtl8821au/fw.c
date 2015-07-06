@@ -180,25 +180,6 @@ exit:
 	mutex_unlock(&(rtl_usbdev(rtlpriv)->h2c_fwcmd_mutex));
 }
 
-uint8_t rtl8812_h2c_msg_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
-{
-	uint8_t ElementID, CmdLen;
-	uint8_t *pCmdBuffer;
-	struct cmd_msg_parm  *pcmdmsg;
-
-	if (!pbuf)
-		return H2C_PARAMETERS_ERROR;
-
-	pcmdmsg = (struct cmd_msg_parm *)pbuf;
-	ElementID = pcmdmsg->eid;
-	CmdLen = pcmdmsg->sz;
-	pCmdBuffer = pcmdmsg->buf;
-
-	_rtl8821au_fill_h2c_command(rtlpriv, ElementID, CmdLen, pCmdBuffer);
-
-	return H2C_SUCCESS;
-}
-
 uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param)
 {
 	uint8_t	res = _SUCCESS;

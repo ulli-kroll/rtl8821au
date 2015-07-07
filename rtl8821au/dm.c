@@ -181,7 +181,7 @@ static void rtl8821au_cm_common_info_self_update(struct rtl_priv *rtlpriv)
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	u8 tmp;
 
-	rtlphy->cck_high_power = (BOOLEAN) rtl_get_bbreg(rtlpriv, ODM_REG_CCK_RPT_FORMAT_11AC, ODM_BIT_CCK_RPT_FORMAT_11AC);
+	rtlphy->cck_high_power = (bool) rtl_get_bbreg(rtlpriv, ODM_REG_CCK_RPT_FORMAT_11AC, ODM_BIT_CCK_RPT_FORMAT_11AC);
 	tmp = (u8) rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC,
 				 ODM_BIT_BB_RX_PATH_11AC);
 
@@ -198,7 +198,7 @@ static void _rtl_dm_diginit(struct rtl_priv *rtlpriv)
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
-	/* dm_digtable->Dig_Enable_Flag = TRUE; */
+	/* dm_digtable->Dig_Enable_Flag = true; */
 	/* dm_digtable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
 	dm_digtable->cur_igvalue = (u8) rtl_get_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC);
 	/* dm_digtable->PreIGValue = 0x0; */
@@ -226,8 +226,8 @@ static void _rtl_dm_diginit(struct rtl_priv *rtlpriv)
 	dm_digtable->recover_cnt = 0;
 	dm_digtable->dig_min_0 = DM_DIG_MIN_NIC;
 	dm_digtable->dig_min_1 = DM_DIG_MIN_NIC;
-	dm_digtable->media_connect_0 = FALSE;
-	dm_digtable->media_connect_1 = FALSE;
+	dm_digtable->media_connect_0 = false;
+	dm_digtable->media_connect_1 = false;
 
 	/* To Initi BT30 IGI */
 	dm_digtable->bt30_cur_igi = 0x32;
@@ -253,7 +253,7 @@ static void rtl8821au_dm_init_rate_adaptive_mask(struct rtl_priv *rtlpriv)
 
 	p_ra->ratr_state = DM_RATR_STA_INIT;
 	p_ra->ldpc_thres = 35;
-	p_ra->use_ldpc = FALSE;
+	p_ra->use_ldpc = false;
 	p_ra->high_rssi_thresh_for_ra = 50;
 	p_ra->low2high_rssi_thresh_for_ra40m = 20;
 }
@@ -293,14 +293,14 @@ static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct rtl_pri
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 
-	rtldm->txpower_tracking = _TRUE;
+	rtldm->txpower_tracking = true;
 	rtldm->txpowercount = 0;
-	rtldm->txpower_trackinginit = _FALSE;
+	rtldm->txpower_trackinginit = false;
 	/* #if	(MP_DRIVER != 1) */		/* for mp driver, turn off txpwrtracking as default */
 	/* #endif//#if	(MP_DRIVER != 1) */
 	dev_info(&(rtlpriv->ndev->dev), "rtldm->txpower_track_control= %d\n", rtldm->txpower_track_control);
 
-	rtldm->txpower_track_control = TRUE;
+	rtldm->txpower_track_control = true;
 	rtldm->thermalvalue = efuse->eeprom_thermalmeter;
 	rtldm->thermalvalue_iqk = efuse->eeprom_thermalmeter;
 	rtldm->thermalvalue_lck = efuse->eeprom_thermalmeter;
@@ -354,7 +354,7 @@ static void rtl8812au_do_iqk(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 
 	rtldm->thermalvalue_iqk = ThermalValue;
-	rtl8812au_phy_iq_calibrate(rtlpriv, FALSE);
+	rtl8812au_phy_iq_calibrate(rtlpriv, false);
 }
 
 /*-----------------------------------------------------------------------------
@@ -473,7 +473,7 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[PwrTrackingLimit]);
 
-					rtldm->modify_txagc_flag_path_a = TRUE;
+					rtldm->modify_txagc_flag_path_a = true;
 
 					/* et TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
@@ -485,7 +485,7 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[0]);
 
-					rtldm->modify_txagc_flag_path_a = TRUE;
+					rtldm->modify_txagc_flag_path_a = true;
 
 					/* Set TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel);*/
@@ -503,8 +503,8 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 						/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 						PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
-						rtldm->modify_txagc_flag_path_a = FALSE;
-						RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n");
+						rtldm->modify_txagc_flag_path_a = false;
+						RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A pDM_Odm->Modify_TxAGC_Flag = false \n");
 					}
 				}
 			}
@@ -515,7 +515,7 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 
 					rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[PwrTrackingLimit]);
 
-					rtldm->modify_txagc_flag_path_b = TRUE;
+					rtldm->modify_txagc_flag_path_b = true;
 
 					/* Set TxAGC Page E{}; */
 					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_B Over BBSwing Limit , PwrTrackingLimit = %d , Remnant TxAGC Value = %d \n", PwrTrackingLimit, rtldm->remnant_ofdm_swing_idx[RFPath]);
@@ -524,7 +524,7 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 
 					rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[0]);
 
-					rtldm->modify_txagc_flag_path_b = TRUE;
+					rtldm->modify_txagc_flag_path_b = true;
 
 					/* Set TxAGC Page E{}; */
 					RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_B Lower then BBSwing lower bound  0 , Remnant TxAGC Value = %d \n", rtldm->remnant_ofdm_swing_idx[RFPath]);
@@ -537,8 +537,8 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 
 						/* Set TxAGC Page E{}; */
 
-						rtldm->modify_txagc_flag_path_b = FALSE;
-						RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_B pDM_Odm->Modify_TxAGC_Flag = FALSE \n");
+						rtldm->modify_txagc_flag_path_b = false;
+						RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_B pDM_Odm->Modify_TxAGC_Flag = false \n");
 					}
 				}
 			}
@@ -811,7 +811,7 @@ static void rtl8821au_do_iqk(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 
 	rtldm->thermalvalue_iqk = ThermalValue;
-	rtl8821au_phy_iq_calibrate(rtlpriv, FALSE);
+	rtl8821au_phy_iq_calibrate(rtlpriv, false);
 }
 
 
@@ -882,7 +882,7 @@ static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[PwrTrackingLimit]);
 
-					rtldm->modify_txagc_flag_path_a = TRUE;
+					rtldm->modify_txagc_flag_path_a = true;
 
 					/* Set TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
@@ -894,7 +894,7 @@ static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 
 					rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, TxScalingTable_Jaguar[0]);
 
-					rtldm->modify_txagc_flag_path_a = TRUE;
+					rtldm->modify_txagc_flag_path_a = true;
 
 					/* Set TxAGC Page C{}; */
 					/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
@@ -912,8 +912,8 @@ static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_
 						/* rtlpriv->cfg->ops.SetTxPowerLevelHandler(rtlpriv, pHalData->CurrentChannel); */
 						PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
-						rtldm->modify_txagc_flag_path_a = FALSE;
-						RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A pDM_Odm->Modify_TxAGC_Flag = FALSE \n");
+						rtldm->modify_txagc_flag_path_a = false;
+						RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, "******Path_A pDM_Odm->Modify_TxAGC_Flag = false \n");
 					}
 				}
 			}
@@ -1054,7 +1054,7 @@ void rtl8821au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 
 static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 {
-	BOOLEAN 		bStartContTx = FALSE, bSingleTone = FALSE, bCarrierSuppression = FALSE;
+	bool 		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
 
 	uint32_t	/*RF_Amode=0, RF_Bmode=0,*/ LC_Cal = 0, tmp = 0;
 
@@ -1151,7 +1151,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 #if 0		/* ULLI : only writing, no use */
 #endif
-	rtldm->txpower_trackinginit = TRUE;
+	rtldm->txpower_trackinginit = true;
 
 	RT_TRACE(rtlpriv, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,
 		"===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n",
@@ -1296,7 +1296,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	 && rtldm->txpower_track_control) {
 		/* 4 7.2 Configure the Swing Table to adjust Tx Power. */
 #if 0		/* ULLI : only writing, no use */
-		rtldm->bTxPowerChanged = TRUE; /* Always TRUE after Tx Power is adjusted by power tracking. */
+		rtldm->bTxPowerChanged = true; /* Always true after Tx Power is adjusted by power tracking. */
 #endif
 		/*
 		 *  2012/04/2if ( MH According to Luke's suggestion, we can not write BB digital
@@ -1485,7 +1485,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	 && rtldm->txpower_track_control) {
 		/* 4 7.2 Configure the Swing Table to adjust Tx Power. */
 #if 0		/* ULLI : only writing, no use */
-		rtldm->bTxPowerChanged = TRUE; /* Always TRUE after Tx Power is adjusted by power tracking. */
+		rtldm->bTxPowerChanged = true; /* Always true after Tx Power is adjusted by power tracking. */
 #endif
 		/*
 		 *  2012/04/2if ( MH According to Luke's suggestion, we can not write BB digital
@@ -1641,7 +1641,7 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 	}
 
 
-	/* if (check_fwstate(&rtlpriv->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE) */
+	/* if (check_fwstate(&rtlpriv->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true) */
 	{
 #if 1
 		/* ULLI : This will go away in rtlwifi-lib */
@@ -1680,7 +1680,7 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 			phead = &(pstapriv->sta_hash[i]);
 			plist = get_next(phead);
 
-			while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+			while ((rtw_end_of_queue_search(phead, plist)) == false) {
 				psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 
 				plist = get_next(plist);
@@ -1713,7 +1713,7 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 
 		for (i = 0; i < sta_cnt; i++) {
 			if (PWDB_rssi[i] != (0)) {
-				if (pHalData->fw_ractrl == _TRUE) {	/* Report every sta's RSSI to FW */
+				if (pHalData->fw_ractrl == true) {	/* Report every sta's RSSI to FW */
 					PWDB_rssi[i] |= (UL_DL_STATE << 24);
 					rtl8812_set_rssi_cmd(rtlpriv, (u8 *)(&PWDB_rssi[i]));
 				} else {
@@ -1751,19 +1751,22 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal =&(rtlpriv->rtlhal);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-
+	
+	u64		cur_tx_bytes = 0;
+	u64		cur_rx_bytes = 0;
 	uint32_t	EDCA_BE_UL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_UL[pMgntInfo->IOTPeer]; */
 	uint32_t	EDCA_BE_DL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_DL[pMgntInfo->IOTPeer]; */
 	uint32_t	IOTPeer = 0;
+	
+	
+	
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
+	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	u8		WirelessMode = 0xFF;	/* invalid value */
 	uint32_t 	trafficIndex;
 	uint32_t	edca_param;
-	u64		cur_tx_bytes = 0;
-	u64		cur_rx_bytes = 0;
-	u8		bbtchange = _FALSE;
+	u8		bbtchange = false;
 	struct xmit_priv		*pxmitpriv = &(rtlpriv->xmitpriv);
 	struct recv_priv		*precvpriv = &(rtlpriv->recvpriv);
 	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
@@ -1870,7 +1873,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	tmp1byte;
-	uint8_t	bPbcPressed = _FALSE;
+	uint8_t	bPbcPressed = false;
 
 	if(!rtlpriv->registrypriv.hw_wps_pbc)
 		return;
@@ -1893,7 +1896,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 			return ;
 
 		if (tmp1byte&HAL_8192C_HW_GPIO_WPS_BIT) {
-			bPbcPressed = _TRUE;
+			bPbcPressed = true;
 		}
 	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL_8811A);
@@ -1913,10 +1916,10 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 			return ;
 
 		if (tmp1byte&BIT4) {
-			bPbcPressed = _TRUE;
+			bPbcPressed = true;
 		}
 	}
-	if( _TRUE == bPbcPressed) {
+	if( true == bPbcPressed) {
 		/*
 		 * Here we only set bPbcPressed to true
 		 * After trigger PBC, the variable will be set to false
@@ -1940,9 +1943,9 @@ static void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm)
 	}
 
 	if (EntryCnt == 1)
-		pDM_Odm->bOneEntryOnly = TRUE;
+		pDM_Odm->bOneEntryOnly = true;
 	else
-		pDM_Odm->bOneEntryOnly = FALSE;
+		pDM_Odm->bOneEntryOnly = false;
 }
 
 void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
@@ -1950,10 +1953,9 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
-
-	BOOLEAN		bFwCurrentInPSMode = _FALSE;
-	BOOLEAN		bFwPSAwake = _TRUE;
-	uint8_t hw_init_completed = _FALSE;
+	bool bFwCurrentInPSMode = false;
+	bool bFwPSAwake = true;
+	uint8_t hw_init_completed = false;
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -1961,7 +1963,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 	hw_init_completed = rtlpriv->hw_init_completed;
 
-	if (hw_init_completed == _FALSE)
+	if (hw_init_completed == false)
 		goto skip_dm;
 
 #ifdef CONFIG_LPS
@@ -1971,7 +1973,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 	}
 #endif
 	/* ODM */
-	if (hw_init_completed == _TRUE) {
+	if (hw_init_completed == true) {
 		if(rtw_linked_check(rtlpriv))
 			rtlpriv->mac80211.link_state = MAC80211_LINKED;
 		else
@@ -1995,7 +1997,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 		odm_CCKPacketDetectionThresh(rtlpriv);
 
-		if (*(pDM_Odm->pbPowerSaving) == TRUE)
+		if (*(pDM_Odm->pbPowerSaving) == true)
 			return;
 
 		odm_RefreshRateAdaptiveMask(pDM_Odm);
@@ -2024,17 +2026,16 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
+	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
+	u8						DIG_Dynamic_MIN;
+	u8						DIG_MaxOfMin;
+	bool						FirstConnect, FirstDisConnect;
+	u8						dm_dig_max, dm_dig_min, offset;
+	u8						CurrentIGI = dm_digtable->cur_igvalue;
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-
-	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
-	u8						DIG_Dynamic_MIN;
-	u8						DIG_MaxOfMin;
-	BOOLEAN						FirstConnect, FirstDisConnect;
-	u8						dm_dig_max, dm_dig_min, offset;
-	u8						CurrentIGI = dm_digtable->cur_igvalue;
 
 	RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG()==>\n");
 
@@ -2046,9 +2047,9 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	/* add by Neil Chen to avoid PSD is processing */
 	DIG_Dynamic_MIN = dm_digtable->dig_min_0;
 	FirstConnect = (rtlpriv->mac80211.link_state >= MAC80211_LINKED)  &&
-		       (dm_digtable->media_connect_0 == FALSE);
+		       (dm_digtable->media_connect_0 == false);
 	FirstDisConnect = (rtlpriv->mac80211.link_state < MAC80211_LINKED) &&
-			   (dm_digtable->media_connect_0 == TRUE);
+			   (dm_digtable->media_connect_0 == true);
 
 
 	/* 1 Boundary Decision */
@@ -2092,7 +2093,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 					DIG_Dynamic_MIN = DIG_MaxOfMin;
 				else
 					DIG_Dynamic_MIN = dm_digtable->rssi_val_min;
-				RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG() : bOneEntryOnly=TRUE,  DIG_Dynamic_MIN=0x%x\n", DIG_Dynamic_MIN);
+				RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG() : bOneEntryOnly=true,  DIG_Dynamic_MIN=0x%x\n", DIG_Dynamic_MIN);
 				RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG() : pDM_Odm->rssi_val_min=%d\n", dm_digtable->rssi_val_min);
 			} else {
 				/* 1 Lower Bound for 88E AntDiv */
@@ -2241,8 +2242,8 @@ void rtl8821au_dm_clean_txpower_tracking_state(struct rtl_priv *rtlpriv)
 		rtldm->remnant_ofdm_swing_idx[p] = 0;
 	}
 
-	rtldm->modify_txagc_flag_path_a = FALSE;       /* Initial at Modify Tx Scaling Mode */
-	rtldm->modify_txagc_flag_path_b = FALSE;       /* Initial at Modify Tx Scaling Mode */
+	rtldm->modify_txagc_flag_path_a = false;       /* Initial at Modify Tx Scaling Mode */
+	rtldm->modify_txagc_flag_path_b = false;       /* Initial at Modify Tx Scaling Mode */
 	rtldm->remnant_cck_idx = 0;
 	rtldm->thermalvalue = efuse->eeprom_thermalmeter;
 	rtldm->thermalvalue_iqk = efuse->eeprom_thermalmeter;

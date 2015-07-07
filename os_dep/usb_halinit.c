@@ -1229,7 +1229,6 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 	rtlphy->iqk_initialized = _FALSE;
 	pHalData->odmpriv.RFCalibrateInfo.TM_Trigger = 0;/* for IQK */
 	rtlphy->pwrgroup_cnt = 0;
-	pHalData->PGMaxGroup = MAX_PG_GROUP;
 
 	rtlusb->irq_mask[0]	= (u32)(	\
 /*

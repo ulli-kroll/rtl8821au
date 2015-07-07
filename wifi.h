@@ -2029,7 +2029,6 @@ struct _rtw_hal {
 
 
 
-	uint8_t	PGMaxGroup;
 	uint8_t	LegacyHTTxPowerDiff;// Legacy to HT rate power diff
 
 	// Read/write are allow for following hardware information variables

@@ -165,7 +165,7 @@ void getTxPowerWriteValByRegulatory8812(
 				{
 					if(rtlphy->pwrgroup_cnt == 1)
 						chnlGroup = 0;
-					//if(pHalData->pwrGroupCnt >= pHalData->PGMaxGroup)
+					//if(rtlphy->pwrgroup_cnt >= MAX_PG_GROUP)
 					{
 						if (Channel < 3)			// Chanel 1-2
 							chnlGroup = 0;

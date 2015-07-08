@@ -1125,10 +1125,7 @@ void rtw_indicate_disconnect( struct rtl_priv *rtlpriv )
 		rtw_hal_led_control(rtlpriv, LED_CTL_NO_LINK);
 	}
 
-#ifdef CONFIG_LPS
 	rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_DISCONNECT, 1);
-#endif
-
 }
 
 inline void rtw_indicate_scan_done( struct rtl_priv *rtlpriv, bool aborted)

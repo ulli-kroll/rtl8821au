@@ -253,11 +253,9 @@ void rtw_ps_processor(struct rtl_priv*rtlpriv);
 int autoresume_enter(struct rtl_priv* rtlpriv);
 #endif
 
-#ifdef CONFIG_LPS
 int32_t LPS_RF_ON_check(struct rtl_priv *rtlpriv, u32 delay_ms);
 void LPS_Enter(struct rtl_priv *rtlpriv);
 void LPS_Leave(struct rtl_priv *rtlpriv);
-#endif
 
 /* ULLI resolve these #define's */
 

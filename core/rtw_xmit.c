@@ -736,12 +736,10 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *pkt, stru
 		DBG_871X_LEVEL(_drv_always_, "send eapol packet\n");
 	}
 
-#ifdef CONFIG_LPS
 	/* If EAPOL , ARP , OR DHCP packet, driver must be in active mode. */
 	if ((pattrib->ether_type == 0x0806) || (pattrib->ether_type == 0x888e) || (pattrib->dhcp_pkt == 1)) {
 		rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_SPECIAL_PACKET, 1);
 	}
-#endif
 
 	bmcast = IS_MCAST(pattrib->ra);
 

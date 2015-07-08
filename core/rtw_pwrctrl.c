@@ -197,7 +197,6 @@ static void pwr_state_check_handler(RTW_TIMER_HDL_ARGS)
 }
 
 
-#ifdef CONFIG_LPS
 /*
  *
  * Parameters
@@ -446,7 +445,6 @@ void LPS_Leave(struct rtl_priv *rtlpriv)
 
 
 }
-#endif
 
 //
 // Description: Leave all power save mode: LPS, FwLPS, IPS if needed.
@@ -462,9 +460,7 @@ void LeaveAllPowerSaveMode(IN struct rtl_priv *rtlpriv)
 	//DBG_871X("%s.....\n",__FUNCTION__);
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
 	{ //connect
-#ifdef CONFIG_LPS
 		rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_LEAVE, enqueue);
-#endif
 
 	} else {
 		if(rtlpriv->pwrctrlpriv.rf_pwrstate== rf_off) {

@@ -58,8 +58,6 @@
 	//#define CONFIG_IPS_LEVEL_2	1 //enable this to set default IPS mode to IPS_LEVEL_2
 	#endif
 
-	#define CONFIG_LPS	1
-
 	//befor link
 
 	//after link

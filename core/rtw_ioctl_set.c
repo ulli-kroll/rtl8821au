@@ -319,11 +319,9 @@ uint8_t rtw_set_802_11_ssid(struct rtl_priv* rtlpriv, NDIS_802_11_SSID *ssid)
 					goto release_mlme_lock;//it means driver is in WIFI_ADHOC_MASTER_STATE, we needn't create bss again.
 				}
 			}
-#ifdef CONFIG_LPS
 			else {
 				rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_JOINBSS, 1);
 			}
-#endif
 		}
 		else
 		{

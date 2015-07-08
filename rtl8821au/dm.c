@@ -1966,12 +1966,9 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 	if (hw_init_completed == false)
 		goto skip_dm;
 
-#ifdef CONFIG_LPS
-	{
-		fw_current_inpsmode = rtlpriv->pwrctrlpriv.fw_current_inpsmode;
-		rtw_hal_get_hwreg(rtlpriv, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&fw_ps_awake));
-	}
-#endif
+	fw_current_inpsmode = rtlpriv->pwrctrlpriv.fw_current_inpsmode;
+	rtw_hal_get_hwreg(rtlpriv, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&fw_ps_awake));
+
 	/* ODM */
 	if (hw_init_completed == true) {
 		if(rtw_linked_check(rtlpriv))

@@ -502,11 +502,9 @@ uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, in
 
 
 
-#ifdef CONFIG_LPS
 	if(check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE){
 		rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_SCAN, 1);
 	}
-#endif
 
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if (ph2c == NULL)
@@ -1682,9 +1680,7 @@ exit:
 
 static void traffic_status_watchdog(struct rtl_priv *rtlpriv)
 {
-#ifdef CONFIG_LPS
 	uint8_t	bEnterPS;
-#endif
 	u16	BusyThreshold = 100;
 	uint8_t	bBusyTraffic = _FALSE, bTxBusyTraffic = _FALSE, bRxBusyTraffic = _FALSE;
 	uint8_t	bHigherBusyTraffic = _FALSE, bHigherBusyRxTraffic = _FALSE, bHigherBusyTxTraffic = _FALSE;
@@ -1723,7 +1719,6 @@ static void traffic_status_watchdog(struct rtl_priv *rtlpriv)
 				bHigherBusyTxTraffic = _TRUE;
 		}
 
-#ifdef CONFIG_LPS
 		{
 		// check traffic for  powersaving.
 		if( ((pmlmepriv->LinkDetectInfo.NumRxUnicastOkInPeriod + pmlmepriv->LinkDetectInfo.NumTxOkInPeriod) > 8 ) ||
@@ -1747,13 +1742,10 @@ static void traffic_status_watchdog(struct rtl_priv *rtlpriv)
 			LPS_Leave(rtlpriv);
 		}
 		}
-#endif // CONFIG_LPS
 	}
 	else
 	{
-#ifdef CONFIG_LPS
 		LPS_Leave(rtlpriv);
-#endif
 	}
 
 	pmlmepriv->LinkDetectInfo.NumRxOkInPeriod = 0;
@@ -1786,8 +1778,6 @@ void dynamic_chk_wk_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf, int sz)
 	//check_hw_pbc(rtlpriv, pdrvextra_cmd->pbuf, pdrvextra_cmd->type_size);
 
 }
-
-#ifdef CONFIG_LPS
 
 void lps_ctrl_wk_hdl(struct rtl_priv *rtlpriv, uint8_t lps_ctrl_type);
 void lps_ctrl_wk_hdl(struct rtl_priv *rtlpriv, uint8_t lps_ctrl_type)
@@ -1904,7 +1894,6 @@ exit:
 
 }
 
-#endif
 
 #if (RATE_ADAPTIVE_SUPPORT==1)
 void rpt_timer_setting_wk_hdl(struct rtl_priv *rtlpriv, u16 minRptTime)
@@ -2196,11 +2185,9 @@ uint8_t rtw_drvextra_cmd_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 		case POWER_SAVING_CTRL_WK_CID:
 			power_saving_wk_hdl(rtlpriv, pdrvextra_cmd->pbuf, pdrvextra_cmd->type_size);
 			break;
-#ifdef CONFIG_LPS
 		case LPS_CTRL_WK_CID:
 			lps_ctrl_wk_hdl(rtlpriv, (uint8_t)pdrvextra_cmd->type_size);
 			break;
-#endif
 #if (RATE_ADAPTIVE_SUPPORT==1)
 		case RTP_TIMER_CFG_WK_CID:
 			rpt_timer_setting_wk_hdl(rtlpriv, pdrvextra_cmd->type_size);

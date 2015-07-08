@@ -672,50 +672,11 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
  *
  *---------------------------------------------------------------------------*/
 
-void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm)
-{
-	u8	i;
-	struct rtl_priv *rtlpriv	=  pDM_Odm->rtlpriv;
-	struct rate_adaptive *p_ra = &(rtlpriv->ra);
-	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
-
-	if (rtlpriv->bDriverStopped) {
-		RT_TRACE(rtlpriv, ODM_COMP_RA_MASK, ODM_DBG_TRACE, "<---- odm_RefreshRateAdaptiveMask(): driver is going to unload\n");
-		return;
-	}
-
-	/* printk("==> %s \n",__FUNCTION__); */
-
-	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
-		struct sta_info *pstat = pDM_Odm->pODM_StaInfo[i];
-		if (IS_STA_VALID(pstat)) {
-			if (pstat->rssi_stat.UndecoratedSmoothedPWDB < p_ra->ldpc_thres) {
-				p_ra->use_ldpc = TRUE;
-				pRA->bLowerRtsRate = TRUE;
-				Set_RA_LDPC_8812(pstat, TRUE);
-				/* DbgPrint("RSSI=%d, bUseLdpc = TRUE\n", pHalData->UndecoratedSmoothedPWDB); */
-			} else if (pstat->rssi_stat.UndecoratedSmoothedPWDB > (p_ra->ldpc_thres-5)) {
-				p_ra->use_ldpc = FALSE;
-				pRA->bLowerRtsRate = FALSE;
-				Set_RA_LDPC_8812(pstat, FALSE);
-				/* DbgPrint("RSSI=%d, bUseLdpc = FALSE\n", pHalData->UndecoratedSmoothedPWDB); */
-			}
-
-			if (TRUE == ODM_RAStateCheck(rtlpriv, pstat->rssi_stat.UndecoratedSmoothedPWDB, FALSE , &pstat->rssi_level)) {
-				RT_TRACE(rtlpriv, ODM_COMP_RA_MASK, ODM_DBG_LOUD, "RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level);
-				/* printk("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level); */
-				rtw_hal_update_ra_mask(pstat->rtlpriv, pstat, pstat->rssi_level);
-			}
-		}
-	}
-
-}
-
 /*
  * Return Value: BOOLEAN
  * - TRUE: RATRState is changed.
  */
-bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,
+static bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,
 	bool bForceUpdate, u8 *pRATRState)
 {
 	struct rate_adaptive *p_ra = &(rtlpriv->ra);
@@ -763,4 +724,43 @@ bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,
 	}
 
 	return FALSE;
+}
+
+void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm)
+{
+	u8	i;
+	struct rtl_priv *rtlpriv	=  pDM_Odm->rtlpriv;
+	struct rate_adaptive *p_ra = &(rtlpriv->ra);
+	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
+
+	if (rtlpriv->bDriverStopped) {
+		RT_TRACE(rtlpriv, ODM_COMP_RA_MASK, ODM_DBG_TRACE, "<---- odm_RefreshRateAdaptiveMask(): driver is going to unload\n");
+		return;
+	}
+
+	/* printk("==> %s \n",__FUNCTION__); */
+
+	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
+		struct sta_info *pstat = pDM_Odm->pODM_StaInfo[i];
+		if (IS_STA_VALID(pstat)) {
+			if (pstat->rssi_stat.UndecoratedSmoothedPWDB < p_ra->ldpc_thres) {
+				p_ra->use_ldpc = TRUE;
+				pRA->bLowerRtsRate = TRUE;
+				Set_RA_LDPC_8812(pstat, TRUE);
+				/* DbgPrint("RSSI=%d, bUseLdpc = TRUE\n", pHalData->UndecoratedSmoothedPWDB); */
+			} else if (pstat->rssi_stat.UndecoratedSmoothedPWDB > (p_ra->ldpc_thres-5)) {
+				p_ra->use_ldpc = FALSE;
+				pRA->bLowerRtsRate = FALSE;
+				Set_RA_LDPC_8812(pstat, FALSE);
+				/* DbgPrint("RSSI=%d, bUseLdpc = FALSE\n", pHalData->UndecoratedSmoothedPWDB); */
+			}
+
+			if (TRUE == ODM_RAStateCheck(rtlpriv, pstat->rssi_stat.UndecoratedSmoothedPWDB, FALSE , &pstat->rssi_level)) {
+				RT_TRACE(rtlpriv, ODM_COMP_RA_MASK, ODM_DBG_LOUD, "RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level);
+				/* printk("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level); */
+				rtw_hal_update_ra_mask(pstat->rtlpriv, pstat, pstat->rssi_level);
+			}
+		}
+	}
+
 }

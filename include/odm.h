@@ -721,10 +721,6 @@ ODM_TXPowerTrackingCheck(
 	IN		struct _rtw_dm *	pDM_Odm
 	);
 
-bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,
-	bool bForceUpdate, u8 *pRATRState);
-
-
 uint32_t
 GetPSDData(
 	struct _rtw_dm *pDM_Odm,

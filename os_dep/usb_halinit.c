@@ -155,17 +155,17 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 
 	if (IS_VENDOR_8821A_MP_CHIP(rtlhal->version)) {
 		/* HW Power on sequence */
-		if (!HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_A_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
+		if (!rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_A_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
 			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
 			return _FAIL;
 		}
 	} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		if (!HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_TESTCHIP_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
+		if (!rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_TESTCHIP_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
 			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
 			return _FAIL;
 		}
 	} else {
-		if (!HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_ENABLE_FLOW)) {
+		if (!rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_ENABLE_FLOW)) {
 			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
 			return _FAIL;
 		}
@@ -1085,9 +1085,9 @@ static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 
 	/* Run LPS WL RFOFF flow */
 	if (IS_HARDWARE_TYPE_8821U(rtlhal))
-		HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_LPS_ENTER_FLOW);
+		rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_LPS_ENTER_FLOW);
 	else
-		HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_LPS_ENTER_FLOW);
+		rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_LPS_ENTER_FLOW);
 
 	if ((rtl_read_byte(rtlpriv, REG_MCUFWDL)&RAM_DL_SEL) && rtlhal->fw_ready) {
 		  /* 8051 RAM code */
@@ -1105,9 +1105,9 @@ static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 
 	/* Card disable power action flow */
 	if (IS_HARDWARE_TYPE_8821U(rtlhal))
-		HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_DISABLE_FLOW);
+		rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_DISABLE_FLOW);
 	else
-		HalPwrSeqCmdParsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_DISABLE_FLOW);
+		rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_DISABLE_FLOW);
 }
 
 static void rtl8812au_hw_power_down(struct rtl_priv *rtlpriv)

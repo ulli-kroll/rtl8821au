@@ -45,10 +45,16 @@ Major Change History:
 //
 //	2011.07.07, added by Roger.
 //
-uint8_t HalPwrSeqCmdParsing(struct rtl_priv *rtlpriv, uint8_t CutVersion,
-	uint8_t FabVersion, uint8_t InterfaceType, struct wlan_pwr_cfg PwrSeqCmd[])
+
+/* ULLI : rtlwifi core.c
+ * real name is rtl_hal_pwrseqcmdparsing ()
+ */
+
+bool rtw_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
+				 u8 fabversion, u8 interface_type,
+				 struct wlan_pwr_cfg pwrcfgcmd[])
 {
-	struct wlan_pwr_cfg PwrCfgCmd = {0};
+	struct wlan_pwr_cfg cfg_cmd = {0};
 	uint8_t	bPollingBit = _FALSE;
 	uint32_t AryIdx = 0;
 	uint8_t value = 0;
@@ -57,25 +63,25 @@ uint8_t HalPwrSeqCmdParsing(struct rtl_priv *rtlpriv, uint8_t CutVersion,
 	uint32_t maxPollingCnt = 5000;
 
 	do {
-		PwrCfgCmd = PwrSeqCmd[AryIdx];
+		cfg_cmd = pwrcfgcmd[AryIdx];
 
 		/* 2 Only Handle the command whose FAB, CUT, and Interface are matched */
-		if ((GET_PWR_CFG_FAB_MASK(PwrCfgCmd) & FabVersion)
-		   && (GET_PWR_CFG_CUT_MASK(PwrCfgCmd) & CutVersion)
-		   && (GET_PWR_CFG_INTF_MASK(PwrCfgCmd) & InterfaceType)) {
-			switch (GET_PWR_CFG_CMD(PwrCfgCmd)) {
+		if ((GET_PWR_CFG_FAB_MASK(cfg_cmd) & fabversion)
+		   && (GET_PWR_CFG_CUT_MASK(cfg_cmd) & cut_version)
+		   && (GET_PWR_CFG_INTF_MASK(cfg_cmd) & interface_type)) {
+			switch (GET_PWR_CFG_CMD(cfg_cmd)) {
 			case PWR_CMD_READ:
 				break;
 
 			case PWR_CMD_WRITE:
-				offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
+				offset = GET_PWR_CFG_OFFSET(cfg_cmd);
 
 				{
 					/* Read the value from system register */
 					value = rtl_read_byte(rtlpriv, offset);
 
-					value=value&(~(GET_PWR_CFG_MASK(PwrCfgCmd)));
-					value=value|(GET_PWR_CFG_VALUE(PwrCfgCmd)&GET_PWR_CFG_MASK(PwrCfgCmd));
+					value=value&(~(GET_PWR_CFG_MASK(cfg_cmd)));
+					value=value|(GET_PWR_CFG_VALUE(cfg_cmd)&GET_PWR_CFG_MASK(cfg_cmd));
 
 					/* Write the value back to sytem register */
 					rtl_write_byte(rtlpriv, offset, value);
@@ -84,12 +90,12 @@ uint8_t HalPwrSeqCmdParsing(struct rtl_priv *rtlpriv, uint8_t CutVersion,
 
 			case PWR_CMD_POLLING:
 				bPollingBit = _FALSE;
-				offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
+				offset = GET_PWR_CFG_OFFSET(cfg_cmd);
 				do {
 						value = rtl_read_byte(rtlpriv, offset);
 
-					value=value&GET_PWR_CFG_MASK(PwrCfgCmd);
-					if (value == (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd)))
+					value=value&GET_PWR_CFG_MASK(cfg_cmd);
+					if (value == (GET_PWR_CFG_VALUE(cfg_cmd) & GET_PWR_CFG_MASK(cfg_cmd)))
 						bPollingBit = _TRUE;
 					else
 						udelay(10);
@@ -103,10 +109,10 @@ uint8_t HalPwrSeqCmdParsing(struct rtl_priv *rtlpriv, uint8_t CutVersion,
 				break;
 
 			case PWR_CMD_DELAY:
-				if (GET_PWR_CFG_VALUE(PwrCfgCmd) == PWRSEQ_DELAY_US)
-					udelay(GET_PWR_CFG_OFFSET(PwrCfgCmd));
+				if (GET_PWR_CFG_VALUE(cfg_cmd) == PWRSEQ_DELAY_US)
+					udelay(GET_PWR_CFG_OFFSET(cfg_cmd));
 				else
-					udelay(GET_PWR_CFG_OFFSET(PwrCfgCmd)*1000);
+					udelay(GET_PWR_CFG_OFFSET(cfg_cmd)*1000);
 				break;
 
 			case PWR_CMD_END:

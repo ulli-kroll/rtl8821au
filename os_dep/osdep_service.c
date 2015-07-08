@@ -26,25 +26,6 @@
 
 #define RT_TAG	('1178')
 
-/*
-* Translate the OS dependent @param error_code to OS independent RTW_STATUS_CODE
-* @return: one of RTW_STATUS_CODE
-*/
-inline int RTW_STATUS_CODE(int error_code)
-{
-	if (error_code >= 0)
-		return _SUCCESS;
-
-	switch (error_code) {
-	/*
-	 * case -ETIMEDOUT:
-	 * 	return RTW_STATUS_TIMEDOUT;
-	 */
-	default:
-		return _FAIL;
-	}
-}
-
 u32 rtw_atoi(u8 *s)
 {
 	int num = 0, flag = 0;

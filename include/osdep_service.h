@@ -79,8 +79,6 @@
 #define BIT35	0x0800000000
 #define BIT36	0x1000000000
 
-extern int RTW_STATUS_CODE(int error_code);
-
 #define CONFIG_USE_VMALLOC
 
 //flags used for rtw_update_mem_stat()

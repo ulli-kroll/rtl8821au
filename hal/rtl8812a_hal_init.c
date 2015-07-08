@@ -58,7 +58,7 @@ void InitializeFirmwareVars8812(struct rtl_priv *rtlpriv)
 	pwrpriv = &rtlpriv->pwrctrlpriv;
 
 	/* Init Fw LPS related. */
-	rtlpriv->pwrctrlpriv.bFwCurrentInPSMode = _FALSE;
+	rtlpriv->pwrctrlpriv.fw_current_inpsmode = false;
 	/* Init H2C counter. by tynli. 2009.12.09. */
 	rtlhal->last_hmeboxnum = 0;
 }

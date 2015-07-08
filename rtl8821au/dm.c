@@ -1953,8 +1953,8 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
-	bool bFwCurrentInPSMode = false;
-	bool bFwPSAwake = true;
+	bool fw_current_inpsmode = false;
+	bool fw_ps_awake = true;
 	uint8_t hw_init_completed = false;
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
@@ -1968,8 +1968,8 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 #ifdef CONFIG_LPS
 	{
-		bFwCurrentInPSMode = rtlpriv->pwrctrlpriv.bFwCurrentInPSMode;
-		rtw_hal_get_hwreg(rtlpriv, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&bFwPSAwake));
+		fw_current_inpsmode = rtlpriv->pwrctrlpriv.fw_current_inpsmode;
+		rtw_hal_get_hwreg(rtlpriv, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&fw_ps_awake));
 	}
 #endif
 	/* ODM */

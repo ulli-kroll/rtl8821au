@@ -325,14 +325,14 @@ void rtw_set_ps_mode(struct rtl_priv *rtlpriv, uint8_t ps_mode, uint8_t smart_ps
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(rtlpriv, PS_STATE_S4);
 			rtw_hal_set_hwreg(rtlpriv, HW_VAR_H2C_FW_PWRMODE, (uint8_t *)(&ps_mode));
-			pwrpriv->bFwCurrentInPSMode = _FALSE;
+			pwrpriv->fw_current_inpsmode = false;
 		}
 	} else 	{
 		if (PS_RDY_CHECK(rtlpriv)) {
 			DBG_871X("%s: Enter 802.11 power save\n", __FUNCTION__);
 
 
-			pwrpriv->bFwCurrentInPSMode = _TRUE;
+			pwrpriv->fw_current_inpsmode = true;
 			pwrpriv->pwr_mode = ps_mode;
 			pwrpriv->smart_ps = smart_ps;
 			pwrpriv->bcn_ant_mode = bcn_ant_mode;
@@ -507,7 +507,7 @@ void rtw_init_pwrctrl_priv(struct rtl_priv *rtlpriv)
 	pwrctrlpriv->power_mgnt =rtlpriv->registrypriv.power_mgnt;// PS_MODE_MIN;
 	pwrctrlpriv->bLeisurePs = (PS_MODE_ACTIVE != pwrctrlpriv->power_mgnt)?_TRUE:_FALSE;
 
-	pwrctrlpriv->bFwCurrentInPSMode = _FALSE;
+	pwrctrlpriv->fw_current_inpsmode = false;
 
 	pwrctrlpriv->rpwm = 0;
 	pwrctrlpriv->cpwm = PS_STATE_S4;

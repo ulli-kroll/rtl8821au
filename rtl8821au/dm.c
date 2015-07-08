@@ -1564,7 +1564,7 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
  * 3============================================================
  */
 
-static void rtl8821ae_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv)
+static void rtl8821au_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv)
 {
 	uint32_t ret_value;
 	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
@@ -1929,7 +1929,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 }
 
 
-static void odm_CommonInfoSelfUpdate(struct _rtw_dm * pDM_Odm)
+static void rtl8821au_dm_common_info_self_update(struct _rtw_dm * pDM_Odm)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	u8	EntryCnt = 0;
@@ -1982,8 +1982,8 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 		 * to perform any new ODM_DM.
 		 */
 
-		odm_CommonInfoSelfUpdate(pDM_Odm);
-		rtl8821ae_dm_false_alarm_counter_statistics(rtlpriv);
+		rtl8821au_dm_common_info_self_update(pDM_Odm);
+		rtl8821au_dm_false_alarm_counter_statistics(rtlpriv);
 		RT_TRACE(rtlpriv, ODM_COMP_DIG, ODM_DBG_LOUD, "odm_DIG(): RSSI=0x%x\n", dm_digtable->rssi_val_min);
 
 		rtl8821au_dm_check_rssi_monitor(rtlpriv);

@@ -22,14 +22,6 @@
 #include <rtw_debug.h>
 #include <../rtl8821au/trx.h>
 
-
-static int32_t pre_recv_entry(struct recv_frame *precvframe, uint8_t *pphy_status)
-{
-	int32_t ret = _SUCCESS;
-
-	return ret;
-}
-
 static int recvbuf2recvframe(struct rtl_priv *rtlpriv, struct sk_buff *pskb)
 {
 	uint8_t	*pbuf;

@@ -49,7 +49,7 @@ void rtl8821au_dm_clean_txpower_tracking_state(struct rtl_priv *rtlpriv);
 void odm_FalseAlarmCounterStatistics(struct _rtw_dm *pDM_Odm);
 void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8 IGI);
 void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm);
-void odm_CCKPacketDetectionThresh(struct rtl_priv *rtlpriv);
+void rtl8821au_dm_cck_packet_detection_thresh(struct rtl_priv *rtlpriv);
 
 
 #endif

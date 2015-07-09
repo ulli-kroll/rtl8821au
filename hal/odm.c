@@ -478,7 +478,7 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
  * 3============================================================
  */
 
-void odm_CCKPacketDetectionThresh(struct rtl_priv *rtlpriv)
+void rtl8821au_dm_cck_packet_detection_thresh(struct rtl_priv *rtlpriv)
 {
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);

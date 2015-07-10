@@ -833,6 +833,7 @@ struct rtl_dm {
 #define rtl_phy(rtlpriv)	(&((rtlpriv)->phy))
 #define rtl_dm(rtlpriv)		(&((rtlpriv)->dm))
 #define rtl_psc(rtlpriv)	(&((rtlpriv)->psc))
+#define rtl_priv(ndev)		(netdev_priv(ndev))
 
 struct rtl_hal_usbint_cfg {
 	/* data - rx */

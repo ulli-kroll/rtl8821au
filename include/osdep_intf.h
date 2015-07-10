@@ -69,13 +69,8 @@ int rtw_start_pseudo_adhoc(struct rtl_priv *rtlpriv);
 int rtw_stop_pseudo_adhoc(struct rtl_priv *rtlpriv);
 #endif
 
-int rtl8821au_init_sw_vars(struct net_device *ndev);
-uint8_t rtw_free_drv_sw(struct rtl_priv *rtlpriv);
-uint8_t rtw_reset_drv_sw(struct rtl_priv *rtlpriv);
-
 u32 rtw_start_drv_threads(struct rtl_priv *rtlpriv);
 void rtw_stop_drv_threads (struct rtl_priv *rtlpriv);
-void rtw_cancel_all_timer(struct rtl_priv *rtlpriv);
 
 #ifdef PLATFORM_LINUX
 int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);

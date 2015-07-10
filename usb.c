@@ -1111,6 +1111,31 @@ static void rtw_dev_unload(struct rtl_priv *rtlpriv)
 	DBG_871X("<=== rtw_dev_unload\n");
 }
 
+static void rtw_cancel_all_timer(struct rtl_priv *rtlpriv)
+{
+	_cancel_timer_ex(&rtlpriv->mlmepriv.assoc_timer);
+
+	/*
+	 * _cancel_timer_ex(&rtlpriv->securitypriv.tkip_timer);
+	 * RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel tkip_timer! \n"));
+	 */
+
+	_cancel_timer_ex(&rtlpriv->mlmepriv.scan_to_timer);
+	_cancel_timer_ex(&rtlpriv->mlmepriv.dynamic_chk_timer);
+
+	/* cancel sw led timer */
+	rtw_hal_sw_led_deinit(rtlpriv);
+
+	_cancel_timer_ex(&rtlpriv->pwrctrlpriv.pwr_state_check_timer);
+
+
+#ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
+	_cancel_timer_ex(&rtlpriv->recvpriv.signal_stat_timer);
+#endif
+	/* cancel dm timer */
+	rtw_hal_dm_deinit(rtlpriv);
+
+}
 
 static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 {
@@ -1313,6 +1338,40 @@ netdev_open_error:
 	return _FAIL;
 }
 
+static uint8_t rtw_reset_drv_sw(struct rtl_priv *rtlpriv)
+{
+	uint8_t	ret8 = _SUCCESS;
+	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
+	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
+
+	/* hal_priv */
+	rtw_hal_def_value_init(rtlpriv);
+	rtlpriv->bReadPortCancel = _FALSE;
+	rtlpriv->bWritePortCancel = _FALSE;
+	rtlpriv->bLinkInfoDump = 0;
+	pmlmepriv->scan_interval = SCAN_INTERVAL;	/* 30*2 sec = 60sec */
+
+	rtlpriv->xmitpriv.tx_pkts = 0;
+	rtlpriv->recvpriv.rx_pkts = 0;
+
+	pmlmepriv->LinkDetectInfo.bBusyTraffic = _FALSE;
+
+	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY | _FW_UNDER_LINKING);
+
+#ifdef CONFIG_AUTOSUSPEND
+#endif
+
+	pwrctrlpriv->pwr_state_check_cnts = 0;
+
+	/* mlmeextpriv */
+	rtlpriv->mlmeextpriv.sitesurvey_res.state = SCAN_DISABLE;
+
+#ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
+	rtw_set_signal_stat_timer(&rtlpriv->recvpriv);
+#endif
+
+	return ret8;
+}
 
 int rtw_ips_pwr_up(struct rtl_priv *rtlpriv)
 {
@@ -1542,13 +1601,33 @@ error_exit:
 }
 #endif
 
+
+static int rtw_net_set_mac_address(struct net_device *ndev, void *p)
+{
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+	struct sockaddr *addr = p;
+
+	if (rtlpriv->bup == _FALSE) {
+		/*
+		 * DBG_871X("r8711_net_set_mac_address(), MAC=%x:%x:%x:%x:%x:%x\n", addr->sa_data[0], addr->sa_data[1], addr->sa_data[2], addr->sa_data[3],
+		 * addr->sa_data[4], addr->sa_data[5]);
+		 */
+		memcpy(rtlpriv->eeprompriv.mac_addr, addr->sa_data, ETH_ALEN);
+		/*
+		 * memcpy(ndev->dev_addr, addr->sa_data, ETH_ALEN);
+		 * rtlpriv->bset_hwaddr = _TRUE;
+		 */
+	}
+
+	return 0;
+}
+
 /*
  * ULLI messy but needed
  */
 
 int netdev_open(struct net_device *ndev);
 int netdev_close(struct net_device *ndev);
-int rtw_net_set_mac_address(struct net_device *ndev, void *p);
 struct net_device_stats *rtw_net_get_stats(struct net_device *ndev);
 uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev);
 
@@ -1691,6 +1770,152 @@ static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 				pdvobjpriv->RtNumInPipes, pdvobjpriv->RtNumOutPipes);
 }
 
+
+static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
+{
+	uint8_t ret  = _SUCCESS;
+	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
+	struct xmit_priv	*pxmitpriv = &rtlpriv->xmitpriv;
+	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
+	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
+
+	/* xmit_priv */
+	pxmitpriv->vcs_setting = pregistrypriv->vrtl_carrier_sense;
+	pxmitpriv->vcs = pregistrypriv->vcs_type;
+	pxmitpriv->vcs_type = pregistrypriv->vcs_type;
+	/* pxmitpriv->rts_thresh = pregistrypriv->rts_thresh; */
+	pxmitpriv->frag_len = pregistrypriv->frag_thresh;
+
+	/* recv_priv */
+
+	/* mlme_priv */
+	pmlmepriv->scan_interval = SCAN_INTERVAL;	/* 30*2 sec = 60sec */
+	pmlmepriv->scan_mode = SCAN_ACTIVE;
+
+	/*
+	 * qos_priv
+	 * pmlmepriv->qospriv.qos_option = pregistrypriv->wmm_enable;
+	 */
+
+	/* ht_priv */
+#ifdef CONFIG_80211N_HT
+	pmlmepriv->htpriv.ampdu_enable = _FALSE; /* set to disabled */
+#endif
+
+	/* security_priv */
+	/* rtw_get_encrypt_decrypt_from_registrypriv(rtlpriv); */
+	psecuritypriv->binstallGrpkey = _FAIL;
+	psecuritypriv->sw_encrypt = pregistrypriv->software_encrypt;
+	psecuritypriv->sw_decrypt = pregistrypriv->software_decrypt;
+
+	psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_Open; /* open system */
+	psecuritypriv->dot11PrivacyAlgrthm = _NO_PRIVACY_;
+
+	psecuritypriv->dot11PrivacyKeyIndex = 0;
+
+	psecuritypriv->dot118021XGrpPrivacy = _NO_PRIVACY_;
+	psecuritypriv->dot118021XGrpKeyid = 1;
+
+	psecuritypriv->ndisauthtype = Ndis802_11AuthModeOpen;
+	psecuritypriv->ndisencryptstatus = Ndis802_11WEPDisabled;
+
+
+	/* pwrctrl_priv */
+
+
+	/* registry_priv */
+	rtw_init_registrypriv_dev_network(rtlpriv);
+	rtw_update_registrypriv_dev_network(rtlpriv);
+
+
+	/* hal_priv */
+	rtw_hal_def_value_init(rtlpriv);
+
+	/* misc. */
+	rtlpriv->bReadPortCancel = _FALSE;
+	rtlpriv->bWritePortCancel = _FALSE;
+	rtlpriv->bLinkInfoDump = 0;
+	rtlpriv->bNotifyChannelChange = 0;
+
+	return ret;
+}
+
+
+
+
+static int rtl8821au_init_sw_vars(struct net_device *ndev)
+{
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
+
+	uint8_t	ret8 = _SUCCESS;
+
+	ret8 = rtw_init_default_value(rtlpriv);
+
+	if ((rtw_init_cmd_priv(&rtlpriv->cmdpriv)) == _FAIL) {
+		ret8 = _FAIL;
+		goto exit;
+	}
+
+	rtlpriv->cmdpriv.rtlpriv = rtlpriv;
+
+	if ((rtw_init_evt_priv(&rtlpriv->evtpriv)) == _FAIL) {
+		ret8 = _FAIL;
+		goto exit;
+	}
+
+
+	if (rtw_init_mlme_priv(rtlpriv) == _FAIL) {
+		ret8 = _FAIL;
+		goto exit;
+	}
+
+	if (init_mlme_ext_priv(rtlpriv) == _FAIL) {
+		ret8 = _FAIL;
+		goto exit;
+	}
+
+	if (_rtw_init_xmit_priv(&rtlpriv->xmitpriv, rtlpriv) == _FAIL) 	{
+		DBG_871X("Can't _rtw_init_xmit_priv\n");
+		ret8 = _FAIL;
+		goto exit;
+	}
+
+	if (_rtw_init_recv_priv(&rtlpriv->recvpriv, rtlpriv) == _FAIL) {
+		DBG_871X("Can't _rtw_init_recv_priv\n");
+		ret8 = _FAIL;
+		goto exit;
+	}
+
+	/*
+	 * We don't need to memset rtlpriv->XXX to zero, because rtlpriv is allocated by rtw_zvmalloc().
+	 * memset((unsigned char *)&rtlpriv->securitypriv, 0, sizeof (struct security_priv));
+	 */
+
+	/* _init_timer(&(rtlpriv->securitypriv.tkip_timer), rtlpriv->pifp, rtw_use_tkipkey_handler, rtlpriv); */
+
+	if (_rtw_init_sta_priv(&rtlpriv->stapriv) == _FAIL) {
+		DBG_871X("Can't _rtw_init_sta_priv\n");
+		ret8 = _FAIL;
+		goto exit;
+	}
+
+	rtlpriv->stapriv.rtlpriv = rtlpriv;
+	rtlpriv->setband = GHZ24_50;
+	rtw_init_bcmc_stainfo(rtlpriv);
+
+	rtw_init_pwrctrl_priv(rtlpriv);
+
+	/* memset((uint8_t *)&rtlpriv->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv */
+
+
+	rtw_hal_dm_init(rtlpriv);
+	rtw_hal_sw_led_init(rtlpriv);
+
+exit:
+
+	return ret8;
+
+}
 
 
 int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid, 
@@ -1846,6 +2071,42 @@ free_adapter:
 	}
 exit:
 	return -ENODEV;
+}
+
+
+static uint8_t rtw_free_drv_sw(struct rtl_priv *rtlpriv)
+{
+	struct net_device *ndev = (struct net_device *)rtlpriv->ndev;
+
+	/*
+	 * we can call rtw_p2p_enable here, but:
+	 * 1. rtw_p2p_enable may have IO operation
+	 * 2. rtw_p2p_enable is bundled with wext interface
+	 */
+
+	free_mlme_ext_priv(&rtlpriv->mlmeextpriv);
+
+
+	rtw_free_cmd_priv(&rtlpriv->cmdpriv);
+
+	rtw_free_evt_priv(&rtlpriv->evtpriv);
+
+	rtw_free_mlme_priv(&rtlpriv->mlmepriv);
+
+	/* free_io_queue(rtlpriv); */
+
+	_rtw_free_xmit_priv(&rtlpriv->xmitpriv);
+
+	_rtw_free_sta_priv(&rtlpriv->stapriv); /* will free bcmc_stainfo here */
+
+	_rtw_free_recv_priv(&rtlpriv->recvpriv);
+
+	/* rtw_mfree(rtlpriv); */
+
+	rtw_hal_free_data(rtlpriv);
+
+	return _SUCCESS;
+
 }
 
 void rtw_usb_if1_deinit(struct rtl_priv *rtlpriv)

@@ -187,9 +187,6 @@ module_param(rtw_ampdu_enable, int, 0644);
 module_param(rtw_rx_stbc, int, 0644);
 module_param(rtw_ampdu_amsdu, int, 0644);
 #endif
-#ifdef CONFIG_80211AC_VHT
-module_param(rtw_vht_enable, int, 0644);
-#endif
 
 module_param(rtw_lowrate_two_xmit, int, 0644);
 
@@ -653,7 +650,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 #endif
 
 #ifdef CONFIG_80211AC_VHT
-	registry_par->vht_enable = (uint8_t)rtw_vht_enable;
 	registry_par->ampdu_factor = (uint8_t)rtw_ampdu_factor;
 	registry_par->vht_rate_sel = (uint8_t)rtw_vht_rate_sel;
 	registry_par->ldpc_cap = (uint8_t)rtw_ldpc_cap;

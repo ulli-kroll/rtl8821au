@@ -149,7 +149,6 @@ struct registry_priv
 #endif //CONFIG_80211N_HT
 
 #ifdef CONFIG_80211AC_VHT
-	uint8_t	vht_enable;
 	uint8_t	ampdu_factor;
 	uint8_t	vht_rate_sel;
 	// BIT0: Enable VHT LDPC Rx, BIT1: Enable VHT LDPC Tx, BIT4: Enable HT LDPC Rx, BIT5: Enable HT LDPC Tx

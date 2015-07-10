@@ -1073,7 +1073,7 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork
 
 #ifdef CONFIG_80211AC_VHT
 	pvhtpriv->vht_option = _FALSE;
-	if (phtpriv->ht_option && pregistrypriv->vht_enable) {
+	if (phtpriv->ht_option) {
 		rtw_restructure_vht_ie(rtlpriv, &pnetwork->network.IEs[0], &psecnetwork->IEs[0],
 								pnetwork->network.IELength, &psecnetwork->IELength);
 	}

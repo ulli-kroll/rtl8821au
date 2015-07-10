@@ -103,11 +103,25 @@ static struct rtl_hal_usbint_cfg rtl8821au_interface_cfg = {
 #endif	
 };
 
+/* ULLI : shamelessly copied from rtlwifi */
+
+static struct rtl_mod_params rtl8821au_mod_params = {
+	.sw_crypto = false,
+	.inactiveps = true,
+	.swctrl_lps = false,
+	.fwctrl_lps = true,
+	.msi_support = true,
+#if 0	/* Ulli : currently not defined */	
+	.debug = DBG_EMERG,
+#endif	
+	.disable_watchdog = 0,
+};
+
 static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.name = "rtl8821au",
 	.fw_name = "rtlwifi/rtl8821aufw.bin",	/* ULLI note two files */
 	.ops = &rtl8821au_hal_ops,
-
+	.mod_params = &rtl8821au_mod_params,
 	.maps[SYS_ISO_CTRL] = REG_SYS_ISO_CTRL,
 #if 0
 	.maps[SYS_FUNC_EN] = REG_SYS_FUNC_EN,

@@ -835,6 +835,31 @@ struct rtl_dm {
 #define rtl_psc(rtlpriv)	(&((rtlpriv)->psc))
 #define rtl_priv(ndev)		(netdev_priv(ndev))
 
+struct rtl_mod_params {
+	/* default: 0 = using hardware encryption */
+	bool sw_crypto;
+
+	/* default: 0 = DBG_EMERG (0)*/
+	int debug;
+
+	/* default: 1 = using no linked power save */
+	bool inactiveps;
+
+	/* default: 1 = using linked sw power save */
+	bool swctrl_lps;
+
+	/* default: 1 = using linked fw power save */
+	bool fwctrl_lps;
+
+	/* default: 0 = not using MSI interrupts mode
+	 * submodules should set their own default value
+	 */
+	bool msi_support;
+
+	/* default 0: 1 means disable */
+	bool disable_watchdog;
+};
+
 struct rtl_hal_usbint_cfg {
 	/* data - rx */
 	u32 in_ep_num;
@@ -866,9 +891,7 @@ struct rtl_hal_cfg {
 	char *fw_name;
 	char *alt_fw_name;
 	struct rtl_hal_ops *ops;
-#if 0 		/* ULLI currently not defined */
 	struct rtl_mod_params *mod_params;
-#endif
 	struct rtl_hal_usbint_cfg *usb_interface_cfg;
 	/*this map used for some registers or vars
 	   defined int HAL but used in MAIN */

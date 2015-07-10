@@ -52,17 +52,6 @@
 #define CONFIG_RECV_REORDERING_CTRL	1
 
 #define CONFIG_DFS	1
-
-	#define CONFIG_IPS	0	/* ULLI: fix for powermode on low bitrate streaming */
-	#ifdef CONFIG_IPS
-	//#define CONFIG_IPS_LEVEL_2	1 //enable this to set default IPS mode to IPS_LEVEL_2
-	#endif
-
-	//befor link
-
-	//after link
-
-
 #define CONFIG_AP_MODE	1
 #ifdef CONFIG_AP_MODE
 #endif

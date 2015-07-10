@@ -1150,7 +1150,6 @@ int netdev_open(struct net_device *ndev)
 	return ret;
 }
 
-#ifdef CONFIG_IPS
 int  ips_netdrv_open(struct rtl_priv *rtlpriv)
 {
 	int status = _SUCCESS;
@@ -1213,7 +1212,6 @@ void rtw_ips_pwr_down(struct rtl_priv *rtlpriv)
 	rtlpriv->bCardDisableWOHSM = _FALSE;
 	DBG_871X("<=== rtw_ips_pwr_down..................... in %dms\n", rtw_get_passing_time_ms(start_time));
 }
-#endif
 void rtw_ips_dev_unload(struct rtl_priv *rtlpriv)
 {
 	struct net_device *ndev = (struct net_device *) rtlpriv->ndev;
@@ -1238,10 +1236,8 @@ int pm_netdev_open(struct net_device *ndev, uint8_t bnormal)
 
 	if (_TRUE == bnormal)
 		status = netdev_open(ndev);
-#ifdef CONFIG_IPS
 	else
 		status =  (_SUCCESS == ips_netdrv_open(rtl_priv(ndev)))?(0):(-1);
-#endif
 
 	return status;
 }

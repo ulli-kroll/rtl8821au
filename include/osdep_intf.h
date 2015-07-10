@@ -98,10 +98,8 @@ static void rtw_proc_remove_one(struct net_device *dev){}
 
 
 void rtw_ips_dev_unload(struct rtl_priv *rtlpriv);
-#ifdef CONFIG_IPS
 int rtw_ips_pwr_up(struct rtl_priv *rtlpriv);
 void rtw_ips_pwr_down(struct rtl_priv *rtlpriv);
-#endif
 
 void rtw_ndev_destructor(struct  net_device *ndev);
 

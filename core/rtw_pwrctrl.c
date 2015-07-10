@@ -24,8 +24,6 @@
 
 // Should not include hal dependent herader here, it will remove later. Lucas@20130123
 
-#ifdef CONFIG_IPS
-
 void ips_enter(struct rtl_priv *rtlpriv)
 {
 	struct pwrctrl_priv *pwrpriv = &rtlpriv->pwrctrlpriv;
@@ -102,9 +100,6 @@ int ips_leave(struct rtl_priv * rtlpriv)
 	return result;
 }
 
-
-#endif
-
 #ifdef CONFIG_AUTOSUSPEND
 extern void autosuspend_enter(struct rtl_priv* rtlpriv);
 extern int autoresume_enter(struct rtl_priv* rtlpriv);
@@ -178,9 +173,7 @@ void rtw_ps_processor(struct rtl_priv *rtlpriv)
 #endif
 		{
 
-#ifdef CONFIG_IPS
 			ips_enter(rtlpriv);
-#endif
 		}
 	}
 exit:
@@ -600,14 +593,12 @@ int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, uint32_t	 ips_deffer_ms, const cha
 		} else
 #endif
 		{
-#ifdef CONFIG_IPS
 			DBG_8192C("%s call ips_leave....\n",__FUNCTION__);
 			if (_FAIL ==  ips_leave(rtlpriv)) {
 				DBG_8192C("======> ips_leave fail.............\n");
 				ret = _FAIL;
 				goto exit;
 			}
-#endif
 		}
 	}
 

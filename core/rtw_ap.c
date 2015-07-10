@@ -1300,7 +1300,7 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 	}
 
 	//ht_cap
-	if (pregistrypriv->ht_enable && ht_cap == _TRUE) {
+	if (ht_cap == _TRUE) {
 		pmlmepriv->htpriv.ht_option = _TRUE;
 		pmlmepriv->qospriv.qos_option = 1;
 

@@ -388,9 +388,6 @@ static void init_channel_list(struct rtl_priv *rtlpriv, RT_CHANNEL_INFO *channel
 				continue;
 			}
 
-			if ((0 == rtlpriv->registrypriv.ht_enable) && (8 == o->inc))
-				continue;
-
 			if ((0 < (rtlpriv->registrypriv.bw_mode & 0xf0)) &&
 				((BW40MINUS == o->bw) || (BW40PLUS == o->bw)))
 				continue;

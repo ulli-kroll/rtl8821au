@@ -133,7 +133,6 @@ struct registry_priv
 	WLAN_BSSID_EX    dev_network;
 
 #ifdef CONFIG_80211N_HT
-	uint8_t	ht_enable;
 	// 0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160MHz
 	// 2.4G use bit 0 ~ 3, 5G use bit 4 ~ 7
 	// 0x21 means enable 2.4G 40MHz & 5G 80MHz

@@ -1055,7 +1055,6 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork
 
 #ifdef CONFIG_80211N_HT
 	phtpriv->ht_option = _FALSE;
-	if(pregistrypriv->ht_enable)
 	{
 		//	Added by Albert 2010/06/23
 		//	For the WEP mode, we will use the bg mode to do the connection to avoid some IOT issue.

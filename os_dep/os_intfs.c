@@ -85,7 +85,6 @@ static int rtw_uapsd_acvi_en = 0;
 static int rtw_uapsd_acvo_en = 0;
 
 #ifdef CONFIG_80211N_HT
-static int rtw_ht_enable = 1;
 
 /*
  *  0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160MHz, 4: 80+80MHz
@@ -183,7 +182,6 @@ module_param(rtw_vcs_type, int, 0644);
 module_param(rtw_busy_thresh, int, 0644);
 
 #ifdef CONFIG_80211N_HT
-module_param(rtw_ht_enable, int, 0644);
 module_param(rtw_bw_mode, int, 0644);
 module_param(rtw_ampdu_enable, int, 0644);
 module_param(rtw_rx_stbc, int, 0644);
@@ -647,7 +645,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->uapsd_acvo_en = (uint8_t)rtw_uapsd_acvo_en;
 
 #ifdef CONFIG_80211N_HT
-	registry_par->ht_enable = (uint8_t)rtw_ht_enable;
 	registry_par->bw_mode = (uint8_t)rtw_bw_mode;
 	registry_par->ampdu_enable = (uint8_t)rtw_ampdu_enable;
 	registry_par->rx_stbc = (uint8_t)rtw_rx_stbc;

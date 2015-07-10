@@ -1292,7 +1292,7 @@ netdev_open_error:
 
 }
 
-int netdev_open(struct net_device *ndev)
+static int netdev_open(struct net_device *ndev)
 {
 	int ret;
 	int _unused;
@@ -1421,7 +1421,7 @@ void rtw_ips_dev_unload(struct rtl_priv *rtlpriv)
 
 }
 
-int netdev_close(struct net_device *ndev)
+static int netdev_close(struct net_device *ndev)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);	
@@ -1626,8 +1626,6 @@ static int rtw_net_set_mac_address(struct net_device *ndev, void *p)
  * ULLI messy but needed
  */
 
-int netdev_open(struct net_device *ndev);
-int netdev_close(struct net_device *ndev);
 struct net_device_stats *rtw_net_get_stats(struct net_device *ndev);
 uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev);
 

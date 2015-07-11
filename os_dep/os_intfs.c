@@ -50,7 +50,6 @@ static int rtw_power_mgnt = PS_MODE_ACTIVE;
 
 static int rtw_smart_ps = 2;
 
-MODULE_PARM_DESC(rtw_ips_mode, "The default IPS mode");
 
 static int rtw_long_retry_lmt = 7;
 static int rtw_short_retry_lmt = 7;

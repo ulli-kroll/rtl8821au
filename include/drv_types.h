@@ -99,7 +99,6 @@ struct registry_priv
 	uint8_t	channel;//ad-hoc support requirement
 	uint8_t	wireless_mode;//A, B, G, auto
 	uint8_t 	scan_mode;//active, passive
-	uint8_t	radio_enable;
 	uint8_t	preamble;//long, short, auto
 	uint8_t	vrtl_carrier_sense;//Enable, Disable, Auto
 	uint8_t	vcs_type;//RTS/CTS, CTS-to-self

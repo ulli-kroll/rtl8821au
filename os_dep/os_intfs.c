@@ -59,7 +59,6 @@ static int rtw_smart_ps = 2;
 module_param(rtw_ips_mode, int, 0644);
 MODULE_PARM_DESC(rtw_ips_mode, "The default IPS mode");
 
-static int rtw_radio_enable = 1;
 static int rtw_long_retry_lmt = 7;
 static int rtw_short_retry_lmt = 7;
 static int rtw_busy_thresh = 40;
@@ -609,7 +608,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->smart_ps =  (uint8_t)rtw_smart_ps;
 	registry_par->power_mgnt = (uint8_t)rtw_power_mgnt;
 	registry_par->ips_mode = (uint8_t)rtw_ips_mode;
-	registry_par->radio_enable = (uint8_t)rtw_radio_enable;
 	registry_par->long_retry_lmt = (uint8_t)rtw_long_retry_lmt;
 	registry_par->short_retry_lmt = (uint8_t)rtw_short_retry_lmt;
 	registry_par->busy_thresh = (u16)rtw_busy_thresh;

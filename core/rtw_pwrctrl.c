@@ -646,11 +646,11 @@ int rtw_pm_set_ips(struct rtl_priv *rtlpriv, uint8_t mode)
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 
 	if (mode == IPS_NORMAL) {
-		rtw_ips_mode_req(pwrctrlpriv, mode);
+		pwrctrlpriv->ips_mode_req = mode;
 		DBG_871X("%s %s\n", __FUNCTION__, "IPS_NORMAL");
 		return 0;
 	} else if ( mode ==IPS_NONE) {
-		rtw_ips_mode_req(pwrctrlpriv, mode);
+		pwrctrlpriv->ips_mode_req = mode;
 		DBG_871X("%s %s\n", __FUNCTION__, "IPS_NONE");
 		if ((rtlpriv->bSurpriseRemoved ==0)&&(_FAIL == rtw_pwr_wakeup(rtlpriv)) )
 			return -EFAULT;

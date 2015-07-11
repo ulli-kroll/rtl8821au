@@ -1,57 +1,59 @@
 rtl8821au linux (or rtl8812au)
 ==============================
 
-rtl8821 linux kernel driver for AC1200 (801.11ac) 
-Wireless Dual-Band USB Adapter
+rtl8821/rtl8812 linux kernel driver Wireless Dual-Band USB Adapter
 
-This driver is for rtl8812au *and* rtl8821au devices
-I found this driver on the Edimax Site
-original file :
-EW-7822UAC_Linux_driver_v1.0.1.6.zip source file to
+For issues with the hardware and driver see at the end of this readme.  
+If oone device is mising -> email  
 
-Why this name, look in the 
-driver/net/wireless/rtlwifi
-and you will see ;-)
+Building and install driver
+---------------------------
 
-ISSUES:
-- With low traffic (150kBit/s), the driver will go into low power mode.
-  (currently fixed, diabled powersaving)
-
-TESTED DEVICES:  
-* D-Link DWA 171  
-* TP-Link T4U AC 1200  
-
-with kernel 3.19 and up, lower kernel down to 3.10 will work too.
-
-STATUS:
-Currently driver works with old wireless extension *only*
-Support for 'iw' only ap and sta modes, no monitor mode !!!
-
-Build type  
+for building type  
 `make`  
-in sourcetree
 
-and  
+for load the driver  
 `sudo insmod rtl8821au.ko`  
-will load the driver
 
-for installing the needed firmware type  
+You need to install the needed fw with  
 `sudo make installfw`  
 
-INFO:  
-If you have a Belkin AC950 please contact me.
-I need some information about the leds (how many)
-This device will work, but the driver uses three leds.
-
-For crosscompile use  
+If you need to crosscompile use 
 ARCH= CROSS_COMPILE= KSRC=
+while calling `make`
 
 i.e.  
 'make ARCH="mips" CROSS_COMPILE=mipsel-softfloat-linux-uclibc- KSRC=/home/user/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/linux-ramips_rt305x/linux-3.18.7/ modules'  
 
-TOTO:  
-- (more) checkpatch fixes, code rewriting  
-- move to rtlwife-lib  
+This driver is based Edimax Linux driver  
+EW-7822UAC_Linux_driver_v1.0.1.6.zip  
+*and heavently reworked*
+
+TESTED DEVICES:
+---------------
+* D-Link DWA 171  
+* Digitus Wirelss AC  
+* TP-Link T4U AC 1200  
+* Linksys WUSB 6300  
+
+with kernel 3.19 and up, lower kernel down to 3.10 will work too.
+
+STATUS:
+-------
+* Currently driver works with old wireless extension *only*
+* Support for 'iw' only ap and sta modes, no monitor mode !!!
+
+ISSUES:
+-------
+- With low traffic (150kBit/s), the driver will go into low power mode. Currently maybe fixed.
+- All USB3 devices will *not* work in USB3 mode. This is not an issue in the driver. Without the driver loaded and the tool 'usbview' you will see this. The device connects to the EHCI port of USB3. Maybe it's fixable in the driver
+
+TODO:
+-----
+- more checkpatch fixes, code rewriting  
+- more adjustments for rtlwifi
 - regulation fix for 2.4G/5G band (errors currently disabled)
+- move intoi to rtlwifi, going upstream  
+
 
 Hans Ulli Kroll <ulli.kroll@googlemail.com>

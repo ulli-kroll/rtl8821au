@@ -771,7 +771,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			/* keep sn */
 			rtlpriv->xmitpriv.nqos_ssn = rtl_read_word(rtlpriv, REG_NQOS_SEQ);
 
-			if (pwrpriv->bkeepfwalive != _TRUE) {
+			{
 				/* RX DMA stop */
 				val32 = rtl_read_dword(rtlpriv, REG_RXPKT_NUM);
 				val32 |= RW_RELEASE_EN;

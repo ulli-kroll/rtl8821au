@@ -1510,9 +1510,7 @@ int rtw_resume_process(struct rtl_priv *rtlpriv)
 
 	down(&pwrpriv->lock);
 	rtw_reset_drv_sw(rtlpriv);
-	pwrpriv->bkeepfwalive = _FALSE;
 
-	DBG_871X("bkeepfwalive(%x)\n",pwrpriv->bkeepfwalive);
 	if(pm_netdev_open(ndev,_TRUE) != 0){
 		up(&pwrpriv->lock);
 		goto exit;

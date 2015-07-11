@@ -88,7 +88,6 @@ int ips_leave(struct rtl_priv * rtlpriv)
 		DBG_871X("==> ips_leave.....LED(0x%08x)...\n",rtl_read_dword(rtlpriv,0x4c));
 		pwrpriv->bips_processing = _FALSE;
 
-		pwrpriv->bkeepfwalive = _FALSE;
 		pwrpriv->bpower_saving = _FALSE;
 	}
 
@@ -487,7 +486,6 @@ void rtw_init_pwrctrl_priv(struct rtl_priv *rtlpriv)
 	pwrctrlpriv->pwr_state_check_cnts = 0;
 	pwrctrlpriv->bInternalAutoSuspend = _FALSE;
 	pwrctrlpriv->bInSuspend = _FALSE;
-	pwrctrlpriv->bkeepfwalive = _FALSE;
 
 	pwrctrlpriv->LpsIdleCount = 0;
 	//pwrctrlpriv->FWCtrlPSMode =rtlpriv->registrypriv.power_mgnt;// PS_MODE_MIN;

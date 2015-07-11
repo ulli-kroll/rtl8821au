@@ -214,7 +214,6 @@ struct pwrctrl_priv
 	uint8_t		wepkeymask;
 	uint8_t		bHWPowerdown;//if support hw power down
 	uint8_t		bHWPwrPindetect;
-	uint8_t		bkeepfwalive;
 	uint8_t		brfoffbyhw;
 	unsigned long PS_BBRegBackup[PSBBREG_TOTALCNT];
 };

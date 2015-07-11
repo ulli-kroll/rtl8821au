@@ -779,22 +779,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 
 	DBG_871X(" ULLI: Call rtl8812au_hal_init in usb_halinit.c\n");
 
-	if (rtlpriv->pwrctrlpriv.bkeepfwalive) {
-		if (rtlphy->iqk_initialized) {
-			/* PHY_IQCalibrate_8812A(rtlpriv,_TRUE); */
-		} else {
-			/* PHY_IQCalibrate_8812A(rtlpriv,_FALSE); */
-			rtlphy->iqk_initialized = _TRUE;
-		}
-
-		/*
-		 * ODM_TXPowerTrackingCheck(&pHalData->odmpriv );
-		 * rtl8812au_phy_lc_calibrate(rtlpriv);
-		 */
-
-		goto exit;
-	}
-
 	/* Check if MAC has already power on. by tynli. 2011.05.27. */
 	value8 = rtl_read_byte(rtlpriv, REG_SYS_CLKR+1);
 	u1bRegCR = rtl_read_byte(rtlpriv, REG_CR);
@@ -1221,8 +1205,7 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 
 	/* init default value */
 	pHalData->fw_ractrl = _FALSE;
-	if (!pwrctrlpriv->bkeepfwalive)
-		rtlhal->last_hmeboxnum = 0;
+	rtlhal->last_hmeboxnum = 0;
 
 	/* init dm default value */
 	pHalData->bChnlBWInitialzed = _FALSE;

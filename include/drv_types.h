@@ -94,7 +94,6 @@ struct specific_device_id{
 
 struct registry_priv
 {
-	uint8_t	lbkmode;
 	uint8_t	hci;
 	NDIS_802_11_SSID	ssid;
 	uint8_t	network_mode;	//infra, ad-hoc, auto

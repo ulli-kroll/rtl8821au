@@ -151,7 +151,6 @@ struct registry_priv
 
 	uint8_t	lowrate_two_xmit;
 
-	uint8_t	rf_config ;
 	uint8_t	low_power ;
 
 	uint8_t	channel_plan;

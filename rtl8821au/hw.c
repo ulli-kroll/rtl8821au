@@ -992,12 +992,10 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 
 	chip_version |= ((value32 & RTL_ID) ? 0 : NORMAL_CHIP);
 
-	if (rtlpriv->registrypriv.rf_config == RF_MAX_TYPE) {
-		if (IS_HARDWARE_TYPE_8812(rtlhal))
-			chip_version |= RF_TYPE_2T2R;	/* RF_2T2R; */
-		else
-			chip_version |= RF_TYPE_1T1R;	/*RF_1T1R; */
-	}
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
+		chip_version |= RF_TYPE_2T2R;	/* RF_2T2R; */
+	else
+		chip_version |= RF_TYPE_1T1R;	/*RF_1T1R; */
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		chip_version |= ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : 0);

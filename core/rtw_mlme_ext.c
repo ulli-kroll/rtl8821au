@@ -3670,7 +3670,6 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 
 			rf_type = rtlpriv->phy.rf_type;
 
-			//switch (pregpriv->rf_config)
 			switch(rf_type)
 			{
 				case RF_1T1R:

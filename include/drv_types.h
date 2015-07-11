@@ -119,11 +119,6 @@ struct registry_priv
 	  //UAPSD
 	uint8_t	wmm_enable;
 	uint8_t	uapsd_enable;
-	uint8_t	uapsd_max_sp;
-	uint8_t	uapsd_acbk_en;
-	uint8_t	uapsd_acbe_en;
-	uint8_t	uapsd_acvi_en;
-	uint8_t	uapsd_acvo_en;
 
 	WLAN_BSSID_EX    dev_network;
 

@@ -72,11 +72,6 @@ static int rtw_acm_method = 0;			/* 0:By SW 1:By HW. */
 
 static int rtw_wmm_enable = 1;		/* default is set to enable the wmm. */
 static int rtw_uapsd_enable = 0;
-static int rtw_uapsd_max_sp = NO_LIMIT;
-static int rtw_uapsd_acbk_en = 0;
-static int rtw_uapsd_acbe_en = 0;
-static int rtw_uapsd_acvi_en = 0;
-static int rtw_uapsd_acvo_en = 0;
 
 #ifdef CONFIG_80211N_HT
 
@@ -621,11 +616,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	 /* UAPSD */
 	registry_par->wmm_enable = (uint8_t)rtw_wmm_enable;
 	registry_par->uapsd_enable = (uint8_t)rtw_uapsd_enable;
-	registry_par->uapsd_max_sp = (uint8_t)rtw_uapsd_max_sp;
-	registry_par->uapsd_acbk_en = (uint8_t)rtw_uapsd_acbk_en;
-	registry_par->uapsd_acbe_en = (uint8_t)rtw_uapsd_acbe_en;
-	registry_par->uapsd_acvi_en = (uint8_t)rtw_uapsd_acvi_en;
-	registry_par->uapsd_acvo_en = (uint8_t)rtw_uapsd_acvo_en;
 
 #ifdef CONFIG_80211N_HT
 	registry_par->bw_mode = (uint8_t)rtw_bw_mode;

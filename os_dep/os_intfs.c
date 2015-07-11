@@ -29,8 +29,6 @@ MODULE_AUTHOR("Realtek Semiconductor Corp.");
 MODULE_VERSION("git. based on v4.2.2_7502.20130517");
 
 /* module param defaults */
-static int rtw_network_mode = Ndis802_11IBSS;	/* Ndis802_11Infrastructure; infra, ad-hoc, auto */
-					/* NDIS_802_11_SSID	ssid; */
 static int rtw_channel = 1;/* ad-hoc support requirement */
 static int rtw_wireless_mode = WIRELESS_MODE_MAX;
 static int rtw_vrtl_carrier_sense = AUTO_VCS;
@@ -140,7 +138,6 @@ char *__rtw_initmac = 0;  /* temp mac address if users want to use instead of th
 
 
 module_param(__rtw_initmac, charp, 0644);
-module_param(rtw_network_mode, int, 0644);
 module_param(rtw_channel, int, 0644);
 module_param(rtw_wmm_enable, int, 0644);
 module_param(rtw_vrtl_carrier_sense, int, 0644);
@@ -551,8 +548,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 
 	uint status = _SUCCESS;
 	struct registry_priv  *registry_par = &rtlpriv->registrypriv;
-
-	registry_par->network_mode  = (uint8_t)rtw_network_mode;
 
 	memcpy(registry_par->ssid.Ssid, "ANY", 3);
 	registry_par->ssid.SsidLength = 3;

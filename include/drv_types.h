@@ -95,7 +95,6 @@ struct specific_device_id{
 struct registry_priv
 {
 	NDIS_802_11_SSID	ssid;
-	uint8_t	network_mode;	//infra, ad-hoc, auto
 	uint8_t	channel;//ad-hoc support requirement
 	uint8_t	wireless_mode;//A, B, G, auto
 	uint8_t 	scan_mode;//active, passive

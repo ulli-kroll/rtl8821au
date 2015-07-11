@@ -163,10 +163,6 @@ struct registry_priv
 #ifdef CONFIG_80211D
 	uint8_t enable80211d;
 #endif
-
-	uint8_t ifname[16];
-	uint8_t if2name[16];
-
 	uint8_t notch_filter;
 
 	//define for tx power adjust

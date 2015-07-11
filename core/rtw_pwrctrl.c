@@ -24,7 +24,9 @@
 
 // Should not include hal dependent herader here, it will remove later. Lucas@20130123
 
-void ips_enter(struct rtl_priv *rtlpriv)
+/* ULLI : rtw_ prefix for not distrub rtlwifi */
+
+void rtw_ips_enter(struct rtl_priv *rtlpriv)
 {
 	struct pwrctrl_priv *pwrpriv = &rtlpriv->pwrctrlpriv;
 
@@ -50,7 +52,9 @@ void ips_enter(struct rtl_priv *rtlpriv)
 
 }
 
-int ips_leave(struct rtl_priv * rtlpriv)
+/* ULLI : rtw_ prefix for not distrub rtlwifi */
+
+int rtw_ips_leave(struct rtl_priv * rtlpriv)
 {
 	struct pwrctrl_priv *pwrpriv = &rtlpriv->pwrctrlpriv;
 	struct security_priv* psecuritypriv=&(rtlpriv->securitypriv);
@@ -169,7 +173,7 @@ void rtw_ps_processor(struct rtl_priv *rtlpriv)
 #endif
 		{
 
-			ips_enter(rtlpriv);
+			rtw_ips_enter(rtlpriv);
 		}
 	}
 exit:
@@ -590,7 +594,7 @@ int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, uint32_t	 ips_deffer_ms, const cha
 #endif
 		{
 			DBG_8192C("%s call ips_leave....\n",__FUNCTION__);
-			if (_FAIL ==  ips_leave(rtlpriv)) {
+			if (_FAIL ==  rtw_ips_leave(rtlpriv)) {
 				DBG_8192C("======> ips_leave fail.............\n");
 				ret = _FAIL;
 				goto exit;

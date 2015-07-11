@@ -146,7 +146,6 @@ enum _PS_BBRegBackup_ {
 enum { // for ips_mode
 	IPS_NONE=0,
 	IPS_NORMAL,
-	IPS_LEVEL_2,
 };
 
 struct pwrctrl_priv

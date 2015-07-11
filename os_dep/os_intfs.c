@@ -44,19 +44,12 @@ static int rtw_soft_ap = 0;
 				/* int smart_ps = 1; */
 #ifdef CONFIG_POWER_SAVING
 static int rtw_power_mgnt = 1;
-#ifdef CONFIG_IPS_LEVEL_2
-static int rtw_ips_mode = IPS_LEVEL_2;
-#else
-static int rtw_ips_mode = IPS_NORMAL;
-#endif
 #else
 static int rtw_power_mgnt = PS_MODE_ACTIVE;
-static int rtw_ips_mode = IPS_NONE;
 #endif
 
 static int rtw_smart_ps = 2;
 
-module_param(rtw_ips_mode, int, 0644);
 MODULE_PARM_DESC(rtw_ips_mode, "The default IPS mode");
 
 static int rtw_long_retry_lmt = 7;

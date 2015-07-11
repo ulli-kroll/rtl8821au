@@ -41,9 +41,6 @@ void ips_enter(struct rtl_priv *rtlpriv)
 		pwrpriv->bpower_saving = _TRUE;
 		DBG_871X_LEVEL(_drv_always_, "nolinked power save enter\n");
 
-		if(pwrpriv->ips_mode == IPS_LEVEL_2)
-			pwrpriv->bkeepfwalive = _TRUE;
-
 		rtw_ips_pwr_down(rtlpriv);
 		pwrpriv->rf_pwrstate = rf_off;
 	}
@@ -650,9 +647,9 @@ int rtw_pm_set_ips(struct rtl_priv *rtlpriv, uint8_t mode)
 {
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 
-	if (mode == IPS_NORMAL || mode == IPS_LEVEL_2 ) {
+	if (mode == IPS_NORMAL) {
 		rtw_ips_mode_req(pwrctrlpriv, mode);
-		DBG_871X("%s %s\n", __FUNCTION__, mode == IPS_NORMAL?"IPS_NORMAL":"IPS_LEVEL_2");
+		DBG_871X("%s %s\n", __FUNCTION__, "IPS_NORMAL");
 		return 0;
 	} else if ( mode ==IPS_NONE) {
 		rtw_ips_mode_req(pwrctrlpriv, mode);

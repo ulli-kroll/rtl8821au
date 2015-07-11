@@ -152,9 +152,6 @@ struct registry_priv
 
 	BOOLEAN	bAcceptAddbaReq;
 
-	uint8_t	antdiv_cfg;
-	uint8_t	antdiv_type;
-
 	uint8_t	usbss_enable;//0:disable,1:enable
 	uint8_t	hwpdn_mode;//0:disable,1:enable,2:decide by EFUSE config
 	uint8_t	hwpwrp_detect;//0:disable,1:enable

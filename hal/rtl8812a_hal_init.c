@@ -602,13 +602,9 @@ void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
 
 	if (!AutoLoadFail) {
 		/*  Antenna Diversity setting. */
-		if (registry_par->antdiv_cfg == 2) {
-			pHalData->AntDivCfg = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0x18)>>3;
-			if (PROMContent[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
-				pHalData->AntDivCfg = (EEPROM_DEFAULT_BOARD_OPTION&0x18)>>3;;
-		} else {
-			pHalData->AntDivCfg = registry_par->antdiv_cfg;
-		}
+		pHalData->AntDivCfg = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0x18)>>3;
+		if (PROMContent[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
+			pHalData->AntDivCfg = (EEPROM_DEFAULT_BOARD_OPTION&0x18)>>3;;
 	} else {
 		pHalData->AntDivCfg = 0;
 	}

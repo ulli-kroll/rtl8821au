@@ -95,8 +95,8 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	BOOLEAN	bHwLDPCSupport = _FALSE, bHwSTBCSupport = _FALSE;
 	uint8_t	rf_type = 0;
 
-	pvhtpriv->bwmode = (pregistrypriv->bw_mode & 0xF0) >> 4;
-	if (pvhtpriv->bwmode > CHANNEL_WIDTH_80)
+	pvhtpriv->vht_bwmode = (pregistrypriv->bw_mode & 0xF0) >> 4;
+	if (pvhtpriv->vht_bwmode > CHANNEL_WIDTH_80)
 		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT3) ? _TRUE : _FALSE;
 	else
 		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT2) ? _TRUE : _FALSE;
@@ -221,14 +221,14 @@ void update_sta_vht_info_apmode(struct rtl_priv *rtlpriv, void *psta)
 	pvhtpriv_sta->ldpc_cap = cur_ldpc_cap;
 	DBG_871X("Current STA VHT LDPC = %02X\n", cur_ldpc_cap);
 
-	if (pvhtpriv_sta->bwmode > pvhtpriv_ap->bwmode)
-		pvhtpriv_sta->bwmode = pvhtpriv_ap->bwmode;
+	if (pvhtpriv_sta->vht_bwmode > pvhtpriv_ap->vht_bwmode)
+		pvhtpriv_sta->vht_bwmode = pvhtpriv_ap->vht_bwmode;
 
-	if (pvhtpriv_sta->bwmode == CHANNEL_WIDTH_80) {
+	if (pvhtpriv_sta->vht_bwmode == CHANNEL_WIDTH_80) {
 		/* B5 Short GI for 80 MHz */
 		pvhtpriv_sta->sgi = (GET_VHT_CAPABILITY_ELE_SHORT_GI80M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi) ? _TRUE : _FALSE;
 		DBG_871X("Current STA ShortGI80MHz = %d\n", pvhtpriv_sta->sgi);
-	} else if (pvhtpriv_sta->bwmode >= CHANNEL_WIDTH_160) {
+	} else if (pvhtpriv_sta->vht_bwmode >= CHANNEL_WIDTH_160) {
 		/* B5 Short GI for 80 MHz */
 		pvhtpriv_sta->sgi = (GET_VHT_CAPABILITY_ELE_SHORT_GI160M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi) ? _TRUE : _FALSE;
 		DBG_871X("Current STA ShortGI160MHz = %d\n", pvhtpriv_sta->sgi);
@@ -401,9 +401,9 @@ void VHT_operation_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs p
 
 	if ((GET_VHT_OPERATION_ELE_CHL_WIDTH(pIE->data) >= 1)
 	   && ((pregistrypriv->bw_mode & 0xf0) >= CHANNEL_WIDTH_80)) {
-		pvhtpriv->bwmode = CHANNEL_WIDTH_80;
+		pvhtpriv->vht_bwmode = CHANNEL_WIDTH_80;
 	} else {
-		pvhtpriv->bwmode = phtpriv->bwmode;
+		pvhtpriv->vht_bwmode = phtpriv->bwmode;
 	}
 }
 
@@ -416,12 +416,12 @@ uint32_t rtw_build_vht_operation_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf, uin
 	uint32_t	len = 0;
 	uint8_t	operation[5];
 
-	if (pvhtpriv->bwmode >= CHANNEL_WIDTH_80)
+	if (pvhtpriv->vht_bwmode >= CHANNEL_WIDTH_80)
 		ChnlWidth = 1;
 	else
 		ChnlWidth = 0;
 
-	center_freq = rtw_get_center_ch(channel, pvhtpriv->bwmode, HAL_PRIME_CHNL_OFFSET_LOWER);
+	center_freq = rtw_get_center_ch(channel, pvhtpriv->vht_bwmode, HAL_PRIME_CHNL_OFFSET_LOWER);
 
 	SET_VHT_OPERATION_ELE_CHL_WIDTH(operation, ChnlWidth);
 	/*
@@ -445,7 +445,7 @@ uint32_t rtw_build_vht_op_mode_notify_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf
 		rf_type = 0;
 	uint8_t	chnl_width, rx_nss;
 
-	chnl_width = pvhtpriv->bwmode;
+	chnl_width = pvhtpriv->vht_bwmode;
 
 	rf_type = rtlpriv->phy.rf_type;
 
@@ -501,7 +501,7 @@ uint32_t rtw_build_vht_cap_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	 * ShortGI for 160MHz
 	 */
 
-	if (pvhtpriv->bwmode > CHANNEL_WIDTH_80) {
+	if (pvhtpriv->vht_bwmode > CHANNEL_WIDTH_80) {
 		SET_VHT_CAPABILITY_ELE_SHORT_GI160M(pcap, pvhtpriv->sgi ? 1 : 0);
 	}
 
@@ -658,8 +658,8 @@ uint32_t rtw_restructure_vht_ie(struct rtl_priv *rtlpriv, uint8_t *in_ie, uint8_
 			pframe = rtw_set_ie(out_ie+out_len, EID_VHTOperation, ielen, p+2 , pout_len);
 		}
 
-		if (pvhtpriv->bwmode > operation_bw)
-			pvhtpriv->bwmode = operation_bw;
+		if (pvhtpriv->vht_bwmode > operation_bw)
+			pvhtpriv->vht_bwmode = operation_bw;
 
 		/*
 		 * Operating Mode Notification element
@@ -690,8 +690,8 @@ void VHTOnAssocRsp(struct rtl_priv *rtlpriv)
 	if (!pmlmeinfo->VHT_enable)
 		return;
 
-	if (pvhtpriv->bwmode >= CHANNEL_WIDTH_80)
-		pmlmeext->cur_bwmode = pvhtpriv->bwmode;
+	if (pvhtpriv->vht_bwmode >= CHANNEL_WIDTH_80)
+		pmlmeext->cur_bwmode = pvhtpriv->vht_bwmode;
 
 	ht_AMPDU_len = pmlmeinfo->HT_caps.u.HT_cap_element.AMPDU_para & 0x03;
 

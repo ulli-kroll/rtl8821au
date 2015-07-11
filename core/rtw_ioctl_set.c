@@ -1044,7 +1044,7 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv)
 	}
 #ifdef CONFIG_80211AC_VHT
 	else if (IsSupportedVHT(pmlmeext->cur_wireless_mode)) {
-		max_rate = ((rtw_vht_data_rate(pvhtpriv->bwmode, pvhtpriv->sgi, pvhtpriv->vht_highest_rate) + 1) >> 1) * 10;
+		max_rate = ((rtw_vht_data_rate(pvhtpriv->vht_bwmode, pvhtpriv->sgi, pvhtpriv->vht_highest_rate) + 1) >> 1) * 10;
 	}
 #endif //CONFIG_80211AC_VHT
 	else

@@ -478,7 +478,7 @@ static void update_attrib_phy_info(struct pkt_attrib *pattrib, struct sta_info *
 #ifdef CONFIG_80211N_HT
 #ifdef CONFIG_80211AC_VHT
 	if (psta->vhtpriv.vht_option) {
-		pattrib->bwmode = psta->vhtpriv.bwmode;
+		pattrib->bwmode = psta->vhtpriv.vht_bwmode;
 		pattrib->sgi = psta->vhtpriv.sgi;
 
 		if (TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX))

@@ -1681,7 +1681,7 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 		memcpy(pstat->vhtpriv.vht_cap, elems.vht_capabilities, 12);
 
 		if (elems.vht_op_mode_notify && elems.vht_op_mode_notify_len == 1) {
-			pstat->vhtpriv.bwmode = GET_VHT_OPERATING_MODE_FIELD_CHNL_WIDTH(elems.vht_op_mode_notify);
+			pstat->vhtpriv.vht_bwmode = GET_VHT_OPERATING_MODE_FIELD_CHNL_WIDTH(elems.vht_op_mode_notify);
 		}
 	}
 	else {
@@ -5712,7 +5712,7 @@ void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		psta->qos_option = _TRUE;
 
 #ifdef CONFIG_80211AC_VHT
-	if (pmlmepriv->vhtpriv.bwmode < CHANNEL_WIDTH_80)
+	if (pmlmepriv->vhtpriv.vht_bwmode < CHANNEL_WIDTH_80)
 		pmlmepriv->vhtpriv.sgi = psta->htpriv.sgi;
 	memcpy(&psta->vhtpriv, &pmlmepriv->vhtpriv, sizeof(struct vht_priv));
 #endif //CONFIG_80211AC_VHT

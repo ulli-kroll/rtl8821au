@@ -98,7 +98,7 @@ struct vht_priv
 	uint8_t	stbc_cap;
 	uint8_t	beamform_cap;
 
-	uint8_t	bwmode;
+	uint8_t	vht_bwmode;
 	uint8_t	sgi;//short GI
 	uint8_t	ampdu_len;
 

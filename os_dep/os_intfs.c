@@ -582,7 +582,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	uint status = _SUCCESS;
 	struct registry_priv  *registry_par = &rtlpriv->registrypriv;
 
-	/* registry_par->hci = (uint8_t)hci; */
 	registry_par->network_mode  = (uint8_t)rtw_network_mode;
 
 	memcpy(registry_par->ssid.Ssid, "ANY", 3);

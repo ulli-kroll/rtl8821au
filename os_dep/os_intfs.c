@@ -22,12 +22,6 @@
 #include <drv_types.h>
 #include <rtw_debug.h>
 
-
-MODULE_LICENSE("GPL");
-MODULE_DESCRIPTION("Realtek Wireless Lan Driver");
-MODULE_AUTHOR("Realtek Semiconductor Corp.");
-MODULE_VERSION("git. based on v4.2.2_7502.20130517");
-
 /* module param defaults */
 static int rtw_channel = 1;/* ad-hoc support requirement */
 static int rtw_wireless_mode = WIRELESS_MODE_MAX;

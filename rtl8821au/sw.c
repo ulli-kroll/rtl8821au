@@ -375,6 +375,11 @@ static struct usb_driver rtl8821au_usb_drv = {
 
 };
 
+MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Realtek Wireless Lan Driver");
+MODULE_AUTHOR("Hans Ulli Kroll <ulli.kroll@googlemail.com>");
+MODULE_VERSION("git. based on v4.2.2_7502.20130517");
+
 module_param_named(swenc, rtl8821au_mod_params.sw_crypto, bool, 0444);
 module_param_named(ips, rtl8821au_mod_params.inactiveps, bool, 0444);
 

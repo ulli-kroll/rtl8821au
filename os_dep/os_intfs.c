@@ -593,7 +593,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->soft_ap =  (uint8_t)rtw_soft_ap;
 	registry_par->smart_ps =  (uint8_t)rtw_smart_ps;
 	registry_par->power_mgnt = (uint8_t)rtw_power_mgnt;
-	registry_par->ips_mode = (uint8_t)rtw_ips_mode;
 	registry_par->long_retry_lmt = (uint8_t)rtw_long_retry_lmt;
 	registry_par->short_retry_lmt = (uint8_t)rtw_short_retry_lmt;
 	registry_par->busy_thresh = (u16)rtw_busy_thresh;

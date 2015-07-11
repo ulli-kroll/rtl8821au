@@ -472,6 +472,7 @@ void LeaveAllPowerSaveMode(IN struct rtl_priv *rtlpriv)
 
 void rtw_init_pwrctrl_priv(struct rtl_priv *rtlpriv)
 {
+	struct rtl_hal_cfg *cfg = rtlpriv->cfg;
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 
 
@@ -482,8 +483,8 @@ void rtw_init_pwrctrl_priv(struct rtl_priv *rtlpriv)
 	pwrctrlpriv->ips_leave_cnts=0;
 	pwrctrlpriv->bips_processing = _FALSE;
 
-	pwrctrlpriv->ips_mode = rtlpriv->registrypriv.ips_mode;
-	pwrctrlpriv->ips_mode_req = rtlpriv->registrypriv.ips_mode;
+	pwrctrlpriv->ips_mode = cfg->mod_params->inactiveps;
+	pwrctrlpriv->ips_mode_req = cfg->mod_params->inactiveps;
 
 	pwrctrlpriv->pwr_state_check_interval = RTW_PWR_STATE_CHK_INTERVAL;
 	pwrctrlpriv->pwr_state_check_cnts = 0;

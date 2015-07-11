@@ -376,7 +376,9 @@ static struct usb_driver rtl8821au_usb_drv = {
 };
 
 module_param_named(swenc, rtl8821au_mod_params.sw_crypto, bool, 0444);
+module_param_named(ips, rtl8821au_mod_params.inactiveps, bool, 0444);
 
 MODULE_PARM_DESC(swenc, "Set to 1 for software crypto (default 0)\n");
+MODULE_PARM_DESC(ips, "Set to 0 to not use link power save (default 1)\n");
 
 module_usb_driver(rtl8821au_usb_drv)

@@ -571,7 +571,7 @@ void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	rtlpriv->mlmepriv.ChannelPlan = hal_com_get_channel_plan(
 		rtlpriv
 		, hwinfo?hwinfo[EEPROM_ChannelPlan_8812]:0xFF
-		, rtlpriv->registrypriv.channel_plan
+		,  RT_CHANNEL_DOMAIN_MAX
 		, RT_CHANNEL_DOMAIN_REALTEK_DEFINE
 		, AutoLoadFail
 	);

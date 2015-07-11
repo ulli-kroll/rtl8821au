@@ -126,8 +126,6 @@ static int rtw_beamform_cap = 0;
 static int rtw_lowrate_two_xmit = 1;/* Use 2 path Tx to transmit MCS0~7 and legacy mode */
 
 static int rtw_low_power = 0;
-static int rtw_channel_plan = RT_CHANNEL_DOMAIN_MAX;
-
 
 static int rtw_AcceptAddbaReq = _TRUE;/* 0:Reject AP's Add BA req, 1:Accept AP's Add BA req. */
 
@@ -157,7 +155,6 @@ char *__rtw_initmac = 0;  /* temp mac address if users want to use instead of th
 
 
 module_param(__rtw_initmac, charp, 0644);
-module_param(rtw_channel_plan, int, 0644);
 module_param(rtw_network_mode, int, 0644);
 module_param(rtw_channel, int, 0644);
 module_param(rtw_wmm_enable, int, 0644);
@@ -631,9 +628,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 #endif
 	registry_par->lowrate_two_xmit = (uint8_t)rtw_lowrate_two_xmit;
 	registry_par->low_power = (uint8_t)rtw_low_power;
-
-	registry_par->channel_plan = (uint8_t)rtw_channel_plan;
-
 
 	registry_par->bAcceptAddbaReq = (uint8_t)rtw_AcceptAddbaReq;
 

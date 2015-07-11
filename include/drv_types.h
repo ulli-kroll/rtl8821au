@@ -153,7 +153,6 @@ struct registry_priv
 
 	uint8_t	low_power ;
 
-	uint8_t	channel_plan;
 	BOOLEAN	bAcceptAddbaReq;
 
 	uint8_t	antdiv_cfg;

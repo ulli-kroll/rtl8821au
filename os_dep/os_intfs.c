@@ -65,9 +65,6 @@ static int rtw_busy_thresh = 40;
 /* int qos_enable = 0; */
 static int rtw_ack_policy = NORMAL_ACK;
 
-static int rtw_software_encrypt = 0;
-static int rtw_software_decrypt = 0;
-
 static int rtw_acm_method = 0;			/* 0:By SW 1:By HW. */
 
 static int rtw_wmm_enable = 1;		/* default is set to enable the wmm. */
@@ -602,8 +599,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->busy_thresh = (u16)rtw_busy_thresh;
 	/* registry_par->qos_enable = (uint8_t)rtw_qos_enable; */
 	registry_par->ack_policy = (uint8_t)rtw_ack_policy;
-	registry_par->software_encrypt = (uint8_t)rtw_software_encrypt;
-	registry_par->software_decrypt = (uint8_t)rtw_software_decrypt;
 
 	registry_par->acm_method = (uint8_t)rtw_acm_method;
 

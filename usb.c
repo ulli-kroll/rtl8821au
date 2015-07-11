@@ -1771,6 +1771,7 @@ static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 
 static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 {
+	struct rtl_hal_cfg *cfg = rtlpriv->cfg;
 	uint8_t ret  = _SUCCESS;
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	struct xmit_priv	*pxmitpriv = &rtlpriv->xmitpriv;
@@ -1803,8 +1804,8 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	/* security_priv */
 	/* rtw_get_encrypt_decrypt_from_registrypriv(rtlpriv); */
 	psecuritypriv->binstallGrpkey = _FAIL;
-	psecuritypriv->sw_encrypt = pregistrypriv->software_encrypt;
-	psecuritypriv->sw_decrypt = pregistrypriv->software_decrypt;
+	psecuritypriv->sw_encrypt = cfg->mod_params->sw_crypto;
+	psecuritypriv->sw_decrypt = cfg->mod_params->sw_crypto;
 
 	psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_Open; /* open system */
 	psecuritypriv->dot11PrivacyAlgrthm = _NO_PRIVACY_;

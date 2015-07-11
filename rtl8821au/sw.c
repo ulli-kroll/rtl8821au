@@ -228,5 +228,7 @@ static struct usb_driver rtl8821au_usb_drv = {
 
 };
 
-module_usb_driver(rtl8821au_usb_drv)
+module_param_named(swenc, rtl8821au_mod_params.sw_crypto, bool, 0444);
 
+module_usb_driver(rtl8821au_usb_drv)
+MODULE_PARM_DESC(swenc, "Set to 1 for software crypto (default 0)\n");

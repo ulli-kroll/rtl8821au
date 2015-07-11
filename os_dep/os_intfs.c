@@ -29,7 +29,6 @@ MODULE_AUTHOR("Realtek Semiconductor Corp.");
 MODULE_VERSION("git. based on v4.2.2_7502.20130517");
 
 /* module param defaults */
-static int rtw_rfintfs = HWPI;
 static int rtw_lbkmode = 0;			/* RTL8712_AIR_TRX; */
 
 
@@ -170,7 +169,6 @@ char *__rtw_initmac = 0;  /* temp mac address if users want to use instead of th
 
 module_param(__rtw_initmac, charp, 0644);
 module_param(rtw_channel_plan, int, 0644);
-module_param(rtw_rfintfs, int, 0644);
 module_param(rtw_lbkmode, int, 0644);
 module_param(rtw_network_mode, int, 0644);
 module_param(rtw_channel, int, 0644);
@@ -588,7 +586,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	uint status = _SUCCESS;
 	struct registry_priv  *registry_par = &rtlpriv->registrypriv;
 
-	registry_par->rfintfs = (uint8_t)rtw_rfintfs;
 	registry_par->lbkmode = (uint8_t)rtw_lbkmode;
 	/* registry_par->hci = (uint8_t)hci; */
 	registry_par->network_mode  = (uint8_t)rtw_network_mode;

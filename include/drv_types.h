@@ -94,7 +94,6 @@ struct specific_device_id{
 
 struct registry_priv
 {
-	uint8_t	chip_version;
 	uint8_t	rfintfs;
 	uint8_t	lbkmode;
 	uint8_t	hci;

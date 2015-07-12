@@ -4,7 +4,7 @@ rtl8821au linux (or rtl8812au)
 rtl8821/rtl8812 linux kernel driver Wireless Dual-Band USB Adapter
 
 For issues with the hardware and driver see at the end of this readme.  
-If oone device is mising -> email  
+If one USB-ID is missing, please mail me.
 
 Building and install driver
 ---------------------------
@@ -18,9 +18,10 @@ for load the driver
 You need to install the needed fw with  
 `sudo make installfw`  
 
-If you need to crosscompile use 
-ARCH= CROSS_COMPILE= KSRC=
-while calling `make`
+If you need to crosscompile use  
+'ARCH= CROSS_COMPILE= KSRC='  
+while calling  
+`make`
 
 i.e.  
 'make ARCH="mips" CROSS_COMPILE=mipsel-softfloat-linux-uclibc- KSRC=/home/user/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/linux-ramips_rt305x/linux-3.18.7/ modules'  
@@ -40,13 +41,19 @@ with kernel 3.19 and up, lower kernel down to 3.10 will work too.
 
 STATUS:
 -------
-* Currently driver works with old wireless extension *only*
+* Currently driver works with old wireless extension **only**
 * Support for 'iw' only ap and sta modes, no monitor mode !!!
 
 ISSUES:
 -------
 - With low traffic (150kBit/s), the driver will go into low power mode. Currently maybe fixed.
-- All USB3 devices will *not* work in USB3 mode. This is not an issue in the driver. Without the driver loaded and the tool 'usbview' you will see this. The device connects to the EHCI port of USB3. Maybe it's fixable in the driver
+- All USB3 devices will **not** work in USB3 (XHCI) mode.
+
+EHCI mode on USB3 ports
+
+Every USB3 port consists of a XHCI and EHCI controller. The RTL8812AU device connects only to the EHCI controller.  
+And I don't know why. You can see this via `lsusb` or `usbview`.
+
 
 TODO:
 -----

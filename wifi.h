@@ -102,6 +102,86 @@ enum rtl_var_map {
 	EFUSE_REAL_CONTENT_SIZE,
 	EFUSE_OOB_PROTECT_BYTES_LEN,
 	EFUSE_ACCESS,
+
+#if 0
+	/*CAM map */
+	RWCAM,
+	WCAMI,
+	RCAMO,
+	CAMDBG,
+	SECR,
+	SEC_CAM_NONE,
+	SEC_CAM_WEP40,
+	SEC_CAM_TKIP,
+	SEC_CAM_AES,
+	SEC_CAM_WEP104,
+
+	/*IMR map */
+	RTL_IMR_BCNDMAINT6,	/*Beacon DMA Interrupt 6 */
+	RTL_IMR_BCNDMAINT5,	/*Beacon DMA Interrupt 5 */
+	RTL_IMR_BCNDMAINT4,	/*Beacon DMA Interrupt 4 */
+	RTL_IMR_BCNDMAINT3,	/*Beacon DMA Interrupt 3 */
+	RTL_IMR_BCNDMAINT2,	/*Beacon DMA Interrupt 2 */
+	RTL_IMR_BCNDMAINT1,	/*Beacon DMA Interrupt 1 */
+	RTL_IMR_BCNDOK8,	/*Beacon Queue DMA OK Interrup 8 */
+	RTL_IMR_BCNDOK7,	/*Beacon Queue DMA OK Interrup 7 */
+	RTL_IMR_BCNDOK6,	/*Beacon Queue DMA OK Interrup 6 */
+	RTL_IMR_BCNDOK5,	/*Beacon Queue DMA OK Interrup 5 */
+	RTL_IMR_BCNDOK4,	/*Beacon Queue DMA OK Interrup 4 */
+	RTL_IMR_BCNDOK3,	/*Beacon Queue DMA OK Interrup 3 */
+	RTL_IMR_BCNDOK2,	/*Beacon Queue DMA OK Interrup 2 */
+	RTL_IMR_BCNDOK1,	/*Beacon Queue DMA OK Interrup 1 */
+	RTL_IMR_TIMEOUT2,	/*Timeout interrupt 2 */
+	RTL_IMR_TIMEOUT1,	/*Timeout interrupt 1 */
+	RTL_IMR_TXFOVW,		/*Transmit FIFO Overflow */
+	RTL_IMR_PSTIMEOUT,	/*Power save time out interrupt */
+	RTL_IMR_BCNINT,		/*Beacon DMA Interrupt 0 */
+	RTL_IMR_RXFOVW,		/*Receive FIFO Overflow */
+	RTL_IMR_RDU,		/*Receive Descriptor Unavailable */
+	RTL_IMR_ATIMEND,	/*For 92C,ATIM Window End Interrupt */
+	RTL_IMR_BDOK,		/*Beacon Queue DMA OK Interrup */
+	RTL_IMR_HIGHDOK,	/*High Queue DMA OK Interrupt */
+	RTL_IMR_COMDOK,		/*Command Queue DMA OK Interrupt*/
+	RTL_IMR_TBDOK,		/*Transmit Beacon OK interrup */
+	RTL_IMR_MGNTDOK,	/*Management Queue DMA OK Interrupt */
+	RTL_IMR_TBDER,		/*For 92C,Transmit Beacon Error Interrupt */
+	RTL_IMR_BKDOK,		/*AC_BK DMA OK Interrupt */
+	RTL_IMR_BEDOK,		/*AC_BE DMA OK Interrupt */
+	RTL_IMR_VIDOK,		/*AC_VI DMA OK Interrupt */
+	RTL_IMR_VODOK,		/*AC_VO DMA Interrupt */
+	RTL_IMR_ROK,		/*Receive DMA OK Interrupt */
+	RTL_IMR_HSISR_IND,	/*HSISR Interrupt*/
+	RTL_IBSS_INT_MASKS,	/*(RTL_IMR_BCNINT | RTL_IMR_TBDOK |
+				 * RTL_IMR_TBDER) */
+	RTL_IMR_C2HCMD,		/*fw interrupt*/
+#endif
+
+	/*CCK Rates, TxHT = 0 */
+	RTL_RC_CCK_RATE1M,
+	RTL_RC_CCK_RATE2M,
+	RTL_RC_CCK_RATE5_5M,
+	RTL_RC_CCK_RATE11M,
+
+	/*OFDM Rates, TxHT = 0 */
+	RTL_RC_OFDM_RATE6M,
+	RTL_RC_OFDM_RATE9M,
+	RTL_RC_OFDM_RATE12M,
+	RTL_RC_OFDM_RATE18M,
+	RTL_RC_OFDM_RATE24M,
+	RTL_RC_OFDM_RATE36M,
+	RTL_RC_OFDM_RATE48M,
+	RTL_RC_OFDM_RATE54M,
+
+	RTL_RC_HT_RATEMCS7,
+	RTL_RC_HT_RATEMCS15,
+
+	RTL_RC_VHT_RATE_1SS_MCS7,
+	RTL_RC_VHT_RATE_1SS_MCS8,
+	RTL_RC_VHT_RATE_1SS_MCS9,
+	RTL_RC_VHT_RATE_2SS_MCS7,
+	RTL_RC_VHT_RATE_2SS_MCS8,
+	RTL_RC_VHT_RATE_2SS_MCS9,
+
 	/*keep it last */
 	RTL_VAR_MAP_MAX,
 };

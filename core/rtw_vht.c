@@ -121,7 +121,11 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	 *  STBC
 	 */
 
-	rtw_hal_get_def_var(rtlpriv, HAL_DEF_TX_STBC, (uint8_t *)&bHwSTBCSupport);
+	if (rtlpriv->phy.rf_type == RF_2T2R)
+		bHwSTBCSupport = 1;
+	else
+		bHwSTBCSupport = 0;
+
 	CLEAR_FLAGS(pvhtpriv->stbc_cap);
 
 	if (bHwSTBCSupport) {

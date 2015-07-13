@@ -1073,13 +1073,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 			*(uint8_t *)pval = _FALSE;
 		break;
 
-	case HAL_DEF_TX_STBC:
-		if (rtlpriv->phy.rf_type == RF_2T2R)
-			*(uint8_t *)pval = 1;
-		else
-			*(uint8_t *)pval = 0;
-		break;
-
 	default:
 		DBG_8192C("%s: [ERROR] HAL_DEF_VARIABLE(%d) not defined!\n", __FUNCTION__, variable);
 		bResult = _FAIL;

@@ -1040,10 +1040,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 		}
 		break;
 
-	case HAL_DEF_DRVINFO_SZ:
-		*((u32 *)pval) = DRVINFO_SZ;
-		break;
-
 #if (RATE_ADAPTIVE_SUPPORT == 1)
 	case HAL_DEF_RA_DECISION_RATE:
 		{

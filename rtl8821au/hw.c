@@ -1446,7 +1446,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 #endif	
 }
 
-rt_rf_power_state RfOnOffDetect(struct rtl_priv *rtlpriv)
+bool rtl8821au_gpio_radio_on_off_checking(struct rtl_priv *rtlpriv)
 {
 	uint8_t	val8;
 	rt_rf_power_state rfpowerstate = rf_off;

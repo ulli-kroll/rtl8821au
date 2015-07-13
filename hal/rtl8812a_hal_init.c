@@ -1040,22 +1040,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 		}
 		break;
 
-#if (RATE_ADAPTIVE_SUPPORT == 1)
-	case HAL_DEF_RA_DECISION_RATE:
-		{
-			uint8_t MacID = *(uint8_t *)pval;
-			*((uint8_t *)pval) = ODM_RA_GetDecisionRate_8812A(&pHalData->odmpriv, MacID);
-		}
-		break;
-
-	case HAL_DEF_RA_SGI:
-		{
-			uint8_t MacID = *(uint8_t *)pval;
-			*((uint8_t *)pval) = ODM_RA_GetShortGI_8812A(&pHalData->odmpriv, MacID);
-		}
-		break;
-#endif
-
 	case HW_VAR_MAX_RX_AMPDU_FACTOR:
 		*((u32 *)pval) = MAX_AMPDU_FACTOR_64K;
 		break;

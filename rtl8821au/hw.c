@@ -120,7 +120,7 @@ void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 
 }
 
-static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
+static void hw_var_set_opmode(struct rtl_priv *rtlpriv, uint8_t *val)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	val8;
@@ -328,7 +328,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_SET_OPMODE:
-		hw_var_set_opmode(rtlpriv, variable, pval);
+		hw_var_set_opmode(rtlpriv, pval);
 		break;
 
 	case HW_VAR_MAC_ADDR:

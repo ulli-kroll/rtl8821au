@@ -253,7 +253,7 @@ Hal_MappingOutPipe(
 
 void hal_init_macaddr(struct rtl_priv *rtlpriv)
 {
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MAC_ADDR, rtlpriv->eeprompriv.mac_addr);
+	rtw_hal_set_hwreg(rtlpriv, HW_VAR_ETHER_ADDR, rtlpriv->eeprompriv.mac_addr);
 }
 
 /*

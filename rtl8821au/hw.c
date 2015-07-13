@@ -302,6 +302,16 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	podmpriv = &pHalData->odmpriv;
 
 	switch (variable) {
+	case HW_VAR_ETHER_ADDR:
+		for (idx = 0 ; idx < 6; idx++) {
+			rtl_write_byte(rtlpriv, (REG_MACID + idx), pval[idx]);
+		}
+		break;
+
+	/* ULLI : old Hw vars */
+
+
+
 	case HW_VAR_RXDMA_AGG_PG_TH:
 #ifdef CONFIG_USB_RX_AGGREGATION
 		{
@@ -324,12 +334,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x03;
 		val8 |= *pval << 2;
 		rtl_write_byte(rtlpriv, MSR, val8);
-		break;
-
-	case HW_VAR_MAC_ADDR:
-		for (idx = 0 ; idx < 6; idx++) {
-			rtl_write_byte(rtlpriv, (REG_MACID + idx), pval[idx]);
-		}
 		break;
 
 	case HW_VAR_BSSID:

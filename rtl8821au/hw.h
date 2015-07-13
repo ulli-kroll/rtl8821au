@@ -16,6 +16,6 @@ int32_t	 _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 /* temporaly prototypes for transition */
 
 void Set_MSR(struct rtl_priv *rtlpriv, uint8_t type);
-bool rtl8821au_gpio_radio_on_off_checking(struct rtl_priv *rtlpriv);
+bool rtl8821au_gpio_radio_on_off_checking(struct rtl_priv *rtlpriv, u8 *valid);
 
 #endif

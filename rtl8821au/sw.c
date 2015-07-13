@@ -175,6 +175,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	.init_sw_vars	= rtl8821au_init_sw_vars,
 	.radio_onoff_checking = rtl8821au_gpio_radio_on_off_checking,
+	.set_network_type = rtl8821au_set_network_type,
 
 
 	/** ** */

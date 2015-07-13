@@ -6272,7 +6272,7 @@ uint8_t setopmode_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		type = _HW_STATE_NOLINK_;
 	}
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_SET_OPMODE, (uint8_t *)(&type));
+	rtlpriv->cfg->ops->set_network_type(rtlpriv, type);
 	//Set_NETYPE0_MSR(rtlpriv, type);
 
 	return H2C_SUCCESS;

@@ -1576,6 +1576,7 @@ struct rtl_hal_ops {
 	void	(*deinit_sw_leds)(struct rtl_priv *rtlpriv);
 	void	(*led_control) (struct rtl_priv *rtlpriv, enum led_ctl_mode ledcation);
 	bool	(*radio_onoff_checking) (struct rtl_priv *rtlpriv, u8 *valid);
+	int 	(*set_network_type) (struct rtl_priv *prtpriv, uint8_t val);
 
 
 	/* Old HAL functions */

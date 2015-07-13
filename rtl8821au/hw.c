@@ -120,11 +120,10 @@ void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 
 }
 
-static void rtl8821au_set_network_type(struct rtl_priv *rtlpriv, uint8_t *val)
+int rtl8821au_set_network_type(struct rtl_priv *rtlpriv, uint8_t mode)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	val8;
-	uint8_t	mode = *((uint8_t *)val);
 
 	{
 		/* disable Port0 TSF update */
@@ -185,7 +184,7 @@ static void rtl8821au_set_network_type(struct rtl_priv *rtlpriv, uint8_t *val)
 			rtl_write_byte(rtlpriv, REG_BCN_CTRL_1, rtl_read_byte(rtlpriv, REG_BCN_CTRL_1)|DIS_ATIM);
 		}
 	}
-
+	return 0;
 }
 
 static void hw_var_set_bcn_func(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
@@ -325,10 +324,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x03;
 		val8 |= *pval << 2;
 		rtl_write_byte(rtlpriv, MSR, val8);
-		break;
-
-	case HW_VAR_SET_OPMODE:
-		rtl8821au_set_network_type(rtlpriv, pval);
 		break;
 
 	case HW_VAR_MAC_ADDR:

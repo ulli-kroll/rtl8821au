@@ -745,23 +745,6 @@ static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 
 }
 
-rt_rf_power_state RfOnOffDetect(struct rtl_priv *rtlpriv)
-{
-	uint8_t	val8;
-	rt_rf_power_state rfpowerstate = rf_off;
-
-	if (rtlpriv->pwrctrlpriv.bHWPowerdown) {
-		val8 = rtl_read_byte(rtlpriv, REG_HSISR);
-		DBG_8192C("pwrdown, 0x5c(BIT7)=%02x\n", val8);
-		rfpowerstate = (val8 & BIT7) ? rf_off : rf_on;
-	} else { /* rf on/off */
-		rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG)&~(BIT3));
-		val8 = rtl_read_byte(rtlpriv, REG_GPIO_IO_SEL);
-		DBG_8192C("GPIO_IN=%02x\n", val8);
-		rfpowerstate = (val8 & BIT3) ? rf_on : rf_off;
-	}
-	return rfpowerstate;
-}
 
 uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 {

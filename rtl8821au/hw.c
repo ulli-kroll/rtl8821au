@@ -1445,3 +1445,25 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	DBG_871X("ReadAdapterInfo8812AU <====\n");
 #endif	
 }
+
+rt_rf_power_state RfOnOffDetect(struct rtl_priv *rtlpriv)
+{
+	uint8_t	val8;
+	rt_rf_power_state rfpowerstate = rf_off;
+
+	if (rtlpriv->pwrctrlpriv.bHWPowerdown) {
+		val8 = rtl_read_byte(rtlpriv, REG_HSISR);
+#if 0		
+		DBG_8192C("pwrdown, 0x5c(BIT7)=%02x\n", val8);
+#endif
+		rfpowerstate = (val8 & BIT7) ? rf_off : rf_on;
+	} else { /* rf on/off */
+		rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG)&~(BIT3));
+		val8 = rtl_read_byte(rtlpriv, REG_GPIO_IO_SEL);
+#if 0		
+		DBG_8192C("GPIO_IN=%02x\n", val8);
+#endif		
+		rfpowerstate = (val8 & BIT3) ? rf_on : rf_off;
+	}
+	return rfpowerstate;
+}

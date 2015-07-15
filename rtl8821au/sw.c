@@ -83,6 +83,100 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	return ret;
 }
 
+/* ULLI : temporaly used here, to get right vars for init_sw_vars */
+
+void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
+{
+	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
+	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
+	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
+	BOOLEAN	bHwLDPCSupport = _FALSE, bHwSTBCSupport = _FALSE;
+	uint8_t	rf_type = 0;
+
+	pvhtpriv->vht_bwmode = (pregistrypriv->bw_mode & 0xF0) >> 4;
+	if (pvhtpriv->vht_bwmode > CHANNEL_WIDTH_80)
+		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT3) ? _TRUE : _FALSE;
+	else
+		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT2) ? _TRUE : _FALSE;
+
+	/*
+	 * LDPC support
+	 */
+
+	rtw_hal_get_def_var(rtlpriv, HAL_DEF_LDPC, (uint8_t *)&bHwLDPCSupport);
+	CLEAR_FLAGS(pvhtpriv->ldpc_cap);
+
+	if (bHwLDPCSupport) {
+		if (TEST_FLAG(pregistrypriv->ldpc_cap, BIT0))
+			SET_FLAG(pvhtpriv->ldpc_cap, LDPC_VHT_ENABLE_RX);
+		if (TEST_FLAG(pregistrypriv->ldpc_cap, BIT1))
+			SET_FLAG(pvhtpriv->ldpc_cap, LDPC_VHT_ENABLE_TX);
+#if 0
+		DBG_871X("[VHT] Support LDPC = 0x%02X\n", pvhtpriv->ldpc_cap);
+#endif
+	}
+
+	/*
+	 *  STBC
+	 */
+
+	if (rtlpriv->phy.rf_type == RF_2T2R)
+		bHwSTBCSupport = 1;
+	else
+		bHwSTBCSupport = 0;
+
+	CLEAR_FLAGS(pvhtpriv->stbc_cap);
+
+	if (bHwSTBCSupport) {
+		if (TEST_FLAG(pregistrypriv->stbc_cap, BIT1))
+			SET_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_TX);
+	}
+
+	bHwSTBCSupport = 1;
+
+	if (bHwSTBCSupport) {
+		if (TEST_FLAG(pregistrypriv->stbc_cap, BIT0))
+			SET_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_RX);
+	}
+
+#if 0
+	DBG_871X("[VHT] Support STBC = 0x%02X\n", pvhtpriv->stbc_cap);
+#endif
+
+	pvhtpriv->ampdu_len = pregistrypriv->ampdu_factor;
+
+	rf_type = rtlpriv->phy.rf_type;
+
+	if (rf_type == RF_1T1R)
+		pvhtpriv->vht_mcs_map[0] = 0xfe;	/* Only support 1SS MCS 0~9; */
+	else
+		pvhtpriv->vht_mcs_map[0] = 0xfa;	/* support 1SS MCS 0~9 2SS MCS 0~9 */
+	pvhtpriv->vht_mcs_map[1] = 0xff;
+
+	if (pregistrypriv->vht_rate_sel == 1) {
+		pvhtpriv->vht_mcs_map[0] = 0xfc;	/* support 1SS MCS 0~7 */
+	} else if (pregistrypriv->vht_rate_sel == 2) {
+		pvhtpriv->vht_mcs_map[0] = 0xfd;	/* Support 1SS MCS 0~8 */
+	} else if (pregistrypriv->vht_rate_sel == 3) {
+		pvhtpriv->vht_mcs_map[0] = 0xfe;	/* Support 1SS MCS 0~9 */
+	} else if (pregistrypriv->vht_rate_sel == 4) {
+		pvhtpriv->vht_mcs_map[0] = 0xf0;	/* support 1SS MCS 0~7 2SS MCS 0~7 */
+	} else if (pregistrypriv->vht_rate_sel == 5) {
+		pvhtpriv->vht_mcs_map[0] = 0xf5;	/* support 1SS MCS 0~8 2SS MCS 0~8 */
+	} else if (pregistrypriv->vht_rate_sel == 6) {
+		pvhtpriv->vht_mcs_map[0] = 0xfa;	/* support 1SS MCS 0~9 2SS MCS 0~9 */
+	} else if (pregistrypriv->vht_rate_sel == 7) {
+		pvhtpriv->vht_mcs_map[0] = 0xf8;	/* support 1SS MCS 0-7 2SS MCS 0~9 */
+	} else if (pregistrypriv->vht_rate_sel == 8) {
+		pvhtpriv->vht_mcs_map[0] = 0xf9;	/* support 1SS MCS 0-8 2SS MCS 0~9 */
+	} else if (pregistrypriv->vht_rate_sel == 9) {
+		pvhtpriv->vht_mcs_map[0] = 0xf4;	/* support 1SS MCS 0-7 2SS MCS 0~8 */
+	}
+
+	pvhtpriv->vht_highest_rate = rtw_get_vht_highest_rate(rtlpriv, pvhtpriv->vht_mcs_map);
+}
+
+
 static int rtl8821au_init_sw_vars(struct net_device *ndev)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);

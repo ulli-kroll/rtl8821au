@@ -176,6 +176,32 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	pvhtpriv->vht_highest_rate = rtw_get_vht_highest_rate(rtlpriv, pvhtpriv->vht_mcs_map);
 }
 
+#if 0
+static int rtw_vht_enable = 1;
+static int rtw_ampdu_factor = 7;
+static int rtw_vht_rate_sel = 0;
+/*
+ *
+ *  BIT0: Enable VHT LDPC Rx,
+ *  BIT1: Enable VHT LDPC Tx,
+ *  BIT4: Enable HT LDPC Rx,
+ *  BIT5: Enable HT LDPC Tx
+ */
+static int rtw_ldpc_cap = 0x33;
+/*  BIT0: Enable VHT STBC Rx,
+ *  BIT1: Enable VHT STBC Tx,
+ *  BIT4: Enable HT STBC Rx,
+ *  BIT5: Enable HT STBC Tx
+ */
+static int rtw_stbc_cap = 0x3;
+/*
+ * BIT0: Enable VHT Beamformer,
+ * BIT1: Enable VHT Beamformee,
+ * BIT4: Enable HT Beamformer,
+ * BIT5: Enable HT Beamformee
+ */
+static int rtw_beamform_cap = 0;
+#endif
 
 static int rtl8821au_init_sw_vars(struct net_device *ndev)
 {

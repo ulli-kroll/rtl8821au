@@ -180,8 +180,20 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 static int rtl8821au_init_sw_vars(struct net_device *ndev)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
-
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	uint8_t	ret8 = _SUCCESS;
+
+	/* ULLI : needed for rtlwifi-lib to init core , from rtl8821ae */
+
+	mac->ht_enable = true;
+	mac->ht_cur_stbc = 0;
+	mac->ht_stbc_cap = 0;
+	mac->vht_cur_ldpc = 0;
+	mac->vht_ldpc_cap = 0;
+	mac->vht_cur_stbc = 0;
+	mac->vht_stbc_cap = 0;
+
+	/* ULLI : Border for old init_sw_vars */
 
 	ret8 = rtw_init_default_value(rtlpriv);
 

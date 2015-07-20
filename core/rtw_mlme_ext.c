@@ -4313,7 +4313,7 @@ void issue_action_BA(struct rtl_priv *rtlpriv, unsigned char *raddr, unsigned ch
 				/*
 				//BA_para_set = cpu_to_le16((le16_to_cpu(pmlmeinfo->ADDBA_req.BA_para_set) & 0x3f) | 0x1000); //64 buffer size
 				*/
-				rtw_hal_get_def_var(rtlpriv, HW_VAR_MAX_RX_AMPDU_FACTOR, &max_rx_ampdu_factor);
+				max_rx_ampdu_factor = MAX_AMPDU_FACTOR_64K;
 				if(MAX_AMPDU_FACTOR_64K == max_rx_ampdu_factor)
 					BA_para_set = ((le16_to_cpu(pmlmeinfo->ADDBA_req.BA_para_set) & 0x3f) | 0x1000); //64 buffer size
 				else if(MAX_AMPDU_FACTOR_32K == max_rx_ampdu_factor)

@@ -1040,10 +1040,6 @@ uint8_t rtl8821au_get_hal_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE var
 		}
 		break;
 
-	case HW_VAR_MAX_RX_AMPDU_FACTOR:
-		*((u32 *)pval) = MAX_AMPDU_FACTOR_64K;
-		break;
-
 	default:
 		DBG_8192C("%s: [ERROR] HAL_DEF_VARIABLE(%d) not defined!\n", __FUNCTION__, variable);
 		bResult = _FAIL;

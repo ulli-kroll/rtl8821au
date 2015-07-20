@@ -2583,7 +2583,7 @@ unsigned int rtw_restructure_ht_ie(struct rtl_priv *rtlpriv, uint8_t *in_ie, uin
 		AMPDU_para [4:2]:Min MPDU Start Spacing
 		*/
 
-		rtw_hal_get_def_var(rtlpriv, HW_VAR_MAX_RX_AMPDU_FACTOR, &max_rx_ampdu_factor);
+		max_rx_ampdu_factor = MAX_AMPDU_FACTOR_64K;
 		ht_capie.ampdu_params_info = (max_rx_ampdu_factor&0x03);
 
 		if (rtlpriv->securitypriv.dot11PrivacyAlgrthm == _AES_ )

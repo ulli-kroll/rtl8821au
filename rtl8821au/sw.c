@@ -87,6 +87,8 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 
 void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 {
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
@@ -103,7 +105,14 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	 * LDPC support
 	 */
 
-	rtw_hal_get_def_var(rtlpriv, HAL_DEF_LDPC, (uint8_t *)&bHwLDPCSupport);
+	if (IS_VENDOR_8812A_C_CUT(rtlhal->version))
+		bHwLDPCSupport = true;
+	else if (IS_HARDWARE_TYPE_8821(rtlhal))
+		bHwLDPCSupport = false;
+	else
+		bHwLDPCSupport = false;
+
+
 	CLEAR_FLAGS(pvhtpriv->ldpc_cap);
 
 	if (bHwLDPCSupport) {

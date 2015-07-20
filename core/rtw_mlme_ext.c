@@ -5946,7 +5946,7 @@ void _linked_info_dump(struct rtl_priv *rtlpriv)
 	}
 	if(rtlpriv->bLinkInfoDump){
 		DBG_871X("\n============ linked status check ===================\n");
-		rtw_hal_get_def_var(rtlpriv, HAL_DEF_UNDERCORATEDSMOOTHEDPWDB, &UndecoratedSmoothedPWDB);
+		rtl8821au_get_hal_def_var(rtlpriv, HAL_DEF_UNDERCORATEDSMOOTHEDPWDB, &UndecoratedSmoothedPWDB);
 		DBG_871X("UndecoratedSmoothedPWDB:%d\n",UndecoratedSmoothedPWDB);
 	}
 }

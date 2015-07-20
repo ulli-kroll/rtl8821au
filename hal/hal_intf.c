@@ -123,13 +123,6 @@ void rtw_hal_get_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 		rtlpriv->cfg->ops->get_hw_reg(rtlpriv, variable, val);
 }
 
-uint8_t rtw_hal_get_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue)
-{
-	if (rtlpriv->cfg->ops->GetHalDefVarHandler)
-		return rtlpriv->cfg->ops->GetHalDefVarHandler(rtlpriv, eVariable, pValue);
-	return _FAIL;
-}
-
 void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->enable_interrupt)

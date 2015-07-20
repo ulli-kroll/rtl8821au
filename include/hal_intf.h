@@ -87,8 +87,6 @@ void rtw_hal_get_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 
 void rtw_hal_read_chip_info(struct rtl_priv *rtlpriv);
 
-uint8_t rtw_hal_get_def_var(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);
-
 void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);
 
 void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv);

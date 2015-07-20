@@ -1684,8 +1684,6 @@ struct rtl_hal_ops {
 
 	void	(*hal_dm_watchdog)(struct rtl_priv *rtlpriv);
 
-	uint8_t	(*GetHalDefVarHandler)(struct rtl_priv *rtlpriv, HAL_DEF_VARIABLE eVariable, void *pValue);
-
 	void	(*SetBeaconRelatedRegistersHandler)(struct rtl_priv *rtlpriv);
 
 	void	(*Add_RateATid)(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);

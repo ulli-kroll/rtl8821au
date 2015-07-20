@@ -77,7 +77,6 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	/* misc. */
 	rtlpriv->bReadPortCancel = _FALSE;
 	rtlpriv->bWritePortCancel = _FALSE;
-	rtlpriv->bLinkInfoDump = 0;
 	rtlpriv->bNotifyChannelChange = 0;
 
 	return ret;

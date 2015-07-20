@@ -5944,11 +5944,6 @@ void _linked_info_dump(struct rtl_priv *rtlpriv)
 	{
 		mac_id=2;
 	}
-	if(rtlpriv->bLinkInfoDump){
-		DBG_871X("\n============ linked status check ===================\n");
-		rtl8821au_get_hal_def_var(rtlpriv, HAL_DEF_UNDERCORATEDSMOOTHEDPWDB, &UndecoratedSmoothedPWDB);
-		DBG_871X("UndecoratedSmoothedPWDB:%d\n",UndecoratedSmoothedPWDB);
-	}
 }
 
 uint8_t chk_ap_is_alive(struct rtl_priv *rtlpriv, struct sta_info *psta)

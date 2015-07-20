@@ -1531,7 +1531,6 @@ struct rtl_priv {
 	uint8_t bBTFWReady;
 	uint8_t bReadPortCancel;
 	uint8_t bWritePortCancel;
-	uint8_t bLinkInfoDump;
 	//	Added by Albert 2012/10/26
 	//	The driver will show up the desired channel number when this flag is 1.
 	uint8_t bNotifyChannelChange;

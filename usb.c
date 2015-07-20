@@ -1348,7 +1348,6 @@ static uint8_t rtw_reset_drv_sw(struct rtl_priv *rtlpriv)
 	rtw_hal_def_value_init(rtlpriv);
 	rtlpriv->bReadPortCancel = _FALSE;
 	rtlpriv->bWritePortCancel = _FALSE;
-	rtlpriv->bLinkInfoDump = 0;
 	pmlmepriv->scan_interval = SCAN_INTERVAL;	/* 30*2 sec = 60sec */
 
 	rtlpriv->xmitpriv.tx_pkts = 0;

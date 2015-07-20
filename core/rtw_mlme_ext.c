@@ -5913,28 +5913,6 @@ void _linked_info_dump(struct rtl_priv *rtlpriv)
       struct mlme_ext_info    *pmlmeinfo = &(pmlmeext->mlmext_info);
 	uint8_t mac_id;
 	int UndecoratedSmoothedPWDB;
-	#if 0
-	DBG_871X("============ linked status check ===================\n");
-	DBG_871X("pathA Rx SNRdb:%d, pathB Rx SNRdb:%d\n",rtlpriv->recvpriv.RxSNRdB[0], rtlpriv->recvpriv.RxSNRdB[1]);
-	DBG_871X("pathA Rx PWDB:%d\n",rtlpriv->recvpriv.rxpwdb);
-	rtw_hal_get_def_var(rtlpriv, HAL_DEF_UNDERCORATEDSMOOTHEDPWDB, &UndecoratedSmoothedPWDB);
-	DBG_871X("UndecoratedSmoothedPWDB:%d\n",UndecoratedSmoothedPWDB);
-	DBG_871X("Rx RSSI:%d\n",rtlpriv->recvpriv.rssi);
-	DBG_871X("Rx Signal_strength:%d\n",rtlpriv->recvpriv.signal_strength);
-	DBG_871X("Rx Signal_qual:%d \n",rtlpriv->recvpriv.signal_qual);
-	if ( check_fwstate( &rtlpriv->mlmepriv,  _FW_LINKED ) )
-	{
-		DBG_871X("bw mode: %d, channel: %d\n", rtlpriv->mlmeextpriv.cur_bwmode, rtlpriv->mlmeextpriv.cur_channel );
-		DBG_871X("received bytes = %d\n", (uint32_t) (rtlpriv->recvpriv.rx_bytes - rtlpriv->recvpriv.last_rx_bytes ) );
-	}
-	DBG_871X("============ linked status check ===================\n");
-	DBG_871X("============ RX GAIN / FALSE ALARM  ===================\n");
-	DBG_871X(" DIG PATH-A(0x%02x), PATH-B(0x%02x)\n",rtl_read_byte(rtlpriv,0xc50),rtl_read_byte(rtlpriv,0xc58));
-	DBG_871X(" OFDM -Alarm DA2(0x%04x),DA4(0x%04x),DA6(0x%04x),DA8(0x%04x)\n",
-		rtl_read_word(rtlpriv,0xDA2),rtl_read_word(rtlpriv,0xDA4),rtl_read_word(rtlpriv,0xDA6),rtl_read_word(rtlpriv,0xDA8));
-
-	DBG_871X(" CCK -Alarm A5B(0x%02x),A5C(0x%02x)\n",rtl_read_byte(rtlpriv,0xA5B),rtl_read_byte(rtlpriv,0xA5C));
-	#endif
 
 	if((pmlmeinfo->state&0x03) == WIFI_FW_STATION_STATE)
 	{

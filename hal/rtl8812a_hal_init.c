@@ -858,33 +858,23 @@ void ReadRFType8812A(struct rtl_priv *rtlpriv)
 	 */
 }
 
-void rtl8812_SetHalODMVar(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable,
-	void *pValue1, BOOLEAN bSet)
+void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, BOOLEAN bSet)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *podmpriv = &pHalData->odmpriv;
 	/* _irqL irqL; */
-	switch (eVariable) {
-	case HAL_ODM_STA_INFO:
-		{
-			struct sta_info *psta = (struct sta_info *)pValue1;
-			if (bSet) {
-				DBG_8192C("### Set STA_(%d) info\n", psta->mac_id);
-				podmpriv->pODM_StaInfo[psta->mac_id] = psta;
-#if (RATE_ADAPTIVE_SUPPORT == 1)
-				ODM_RAInfo_Init(podmpriv, psta->mac_id);
-#endif
-			} else {
-				DBG_8192C("### Clean STA_(%d) info\n", psta->mac_id);
-				/* spin_lock_bh(&pHalData->odm_stainfo_lock, &irqL); */
-				podmpriv->pODM_StaInfo[psta->mac_id] = NULL;
 
-				/* spin_unlock_bh(&pHalData->odm_stainfo_lock, &irqL); */
-			}
-		}
-		break;
-	default:
-		break;
+	if (bSet) {
+		DBG_8192C("### Set STA_(%d) info\n", psta->mac_id);
+		podmpriv->pODM_StaInfo[psta->mac_id] = psta;
+#if (RATE_ADAPTIVE_SUPPORT == 1)
+		ODM_RAInfo_Init(podmpriv, psta->mac_id);
+#endif
+	} else {
+		DBG_8192C("### Clean STA_(%d) info\n", psta->mac_id);
+		/* spin_lock_bh(&pHalData->odm_stainfo_lock, &irqL); */
+		podmpriv->pODM_StaInfo[psta->mac_id] = NULL;
+		/* spin_unlock_bh(&pHalData->odm_stainfo_lock, &irqL); */
 	}
 }
 

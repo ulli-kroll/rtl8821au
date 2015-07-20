@@ -486,7 +486,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	}
 
 	if (!(psta->state & WIFI_AP_STATE))
-		rtl8812_SetHalODMVar(rtlpriv, HAL_ODM_STA_INFO, psta, _FALSE);
+		rtw_set_sta_info(rtlpriv, psta, _FALSE);
 
 	/*
 	 * release mac id for non-bc/mc station,

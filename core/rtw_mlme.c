@@ -1184,7 +1184,7 @@ static struct sta_info *rtw_joinbss_update_stainfo(struct rtl_priv *rtlpriv, str
 
 
 		//sta mode
-		rtl8812_SetHalODMVar(rtlpriv,HAL_ODM_STA_INFO,psta,_TRUE);
+		rtw_set_sta_info(rtlpriv, psta, _TRUE);
 
 		//security related
 		if (rtlpriv->securitypriv.dot11AuthAlgrthm== dot11AuthAlgrthm_8021X)
@@ -1655,7 +1655,7 @@ void rtw_stassoc_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	//psta->aid = (uint)pstassoc->cam_id;
 	DBG_871X("%s\n",__FUNCTION__);
 	//for ad-hoc mode
-	rtl8812_SetHalODMVar(rtlpriv,HAL_ODM_STA_INFO,psta,_TRUE);
+	rtw_set_sta_info(rtlpriv, psta, _TRUE);
 
 	rtw_stassoc_hw_rpt(rtlpriv,psta);
 

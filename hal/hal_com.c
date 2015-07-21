@@ -90,42 +90,6 @@ HAL_IsLegalChannel(
 	return bLegalChannel;
 }
 
-uint8_t	MRateToHwRate(uint8_t rate)
-{
-	uint8_t	ret = DESC_RATE1M;
-
-	switch(rate)
-	{
-		// CCK and OFDM non-HT rates
-	case IEEE80211_CCK_RATE_1MB:	ret = DESC_RATE1M;	break;
-	case IEEE80211_CCK_RATE_2MB:	ret = DESC_RATE2M;	break;
-	case IEEE80211_CCK_RATE_5MB:	ret = DESC_RATE5_5M;	break;
-	case IEEE80211_CCK_RATE_11MB:	ret = DESC_RATE11M;	break;
-	case IEEE80211_OFDM_RATE_6MB:	ret = DESC_RATE6M;	break;
-	case IEEE80211_OFDM_RATE_9MB:	ret = DESC_RATE9M;	break;
-	case IEEE80211_OFDM_RATE_12MB:	ret = DESC_RATE12M;	break;
-	case IEEE80211_OFDM_RATE_18MB:	ret = DESC_RATE18M;	break;
-	case IEEE80211_OFDM_RATE_24MB:	ret = DESC_RATE24M;	break;
-	case IEEE80211_OFDM_RATE_36MB:	ret = DESC_RATE36M;	break;
-	case IEEE80211_OFDM_RATE_48MB:	ret = DESC_RATE48M;	break;
-	case IEEE80211_OFDM_RATE_54MB:	ret = DESC_RATE54M;	break;
-
-		// HT rates since here
-	//case MGN_MCS0:		ret = DESC_RATEMCS0;	break;
-	//case MGN_MCS1:		ret = DESC_RATEMCS1;	break;
-	//case MGN_MCS2:		ret = DESC_RATEMCS2;	break;
-	//case MGN_MCS3:		ret = DESC_RATEMCS3;	break;
-	//case MGN_MCS4:		ret = DESC_RATEMCS4;	break;
-	//case MGN_MCS5:		ret = DESC_RATEMCS5;	break;
-	//case MGN_MCS6:		ret = DESC_RATEMCS6;	break;
-	//case MGN_MCS7:		ret = DESC_RATEMCS7;	break;
-
-	default:		break;
-	}
-
-	return ret;
-}
-
 void	HalSetBrateCfg(
 	IN struct rtl_priv *	rtlpriv,
 	IN uint8_t			*mBratesOS,

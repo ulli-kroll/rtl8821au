@@ -68,8 +68,6 @@ HAL_IsLegalChannel(
 	IN	u32			Channel
 	);
 
-uint8_t	MRateToHwRate(uint8_t rate);
-
 void	HalSetBrateCfg(
 	IN struct rtl_priv *	rtlpriv,
 	IN uint8_t			*mBratesOS,

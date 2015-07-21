@@ -2,6 +2,12 @@
 #include "trx.h"
 #include "def.h"
 
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+
+
 /* ULLI : reference -> u16 rtl8192cu_mq_to_hwq() */
 /* ULLI : for rtl_hal_usbint_cfg ->usb_mq_to_hwq */
 
@@ -1950,5 +1956,71 @@ void rtl8812_query_rx_phy_status(
 		}
 		process_phy_info(rtlpriv, precvframe);
 	}
+}
+
+
+
+static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
+{
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+
+	pHalData->OutEpQueueSel = 0;
+	pHalData->OutEpNumber = 0;
+
+	switch (NumOutPipe) {
+	case 	4:
+		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
+		pHalData->OutEpNumber = 4;
+		break;
+	case 	3:
+		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
+		pHalData->OutEpNumber = 3;
+		break;
+	case 	2:
+		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_NQ;
+		pHalData->OutEpNumber = 2;
+		break;
+	case 	1:
+		pHalData->OutEpQueueSel = TX_SELE_HQ;
+		pHalData->OutEpNumber = 1;
+		break;
+	default:
+		break;
+
+	}
+	DBG_871X("%s OutEpQueueSel(0x%02x), OutEpNumber(%d) \n", __FUNCTION__, pHalData->OutEpQueueSel, pHalData->OutEpNumber);
+
+}
+
+
+/* endpoint mapping */
+
+int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv)
+{
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
+
+	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
+	BOOLEAN		result		= _FALSE;
+
+	_ConfigChipOutEP_8812(rtlpriv, rtlusb->RtNumOutPipes);
+
+	/* Normal chip with one IN and one OUT doesn't have interrupt IN EP. */
+	if (1 == pHalData->OutEpNumber) {
+		if (1 != rtlusb->RtNumInPipes) {
+			return result;
+		}
+	}
+
+	/*
+	 * All config other than above support one Bulk IN and one Interrupt IN.
+	 * if (2 != NumInPipe){
+	 * 	return result;
+	 * }
+	 */
+
+	result = Hal_MappingOutPipe(rtlpriv, rtlusb->RtNumOutPipes);
+
+	return result;
+
 }
 

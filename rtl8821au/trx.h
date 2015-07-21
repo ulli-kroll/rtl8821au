@@ -13,7 +13,7 @@ void rtl8812_query_rx_desc_status(struct rtl_priv *rtlpriv,
 				   struct rx_pkt_attrib	*pattrib,
 				   struct recv_frame *precvframe, uint8_t *pdesc);
 void rtl8812_query_rx_phy_status(struct recv_frame *prframe, uint8_t *pphy_stat);
-
+int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv);
 void _dbg_dump_tx_info(struct rtl_priv	*rtlpriv,int frame_tag,u8 *ptxdesc);
 
 

@@ -1695,17 +1695,18 @@ static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 
 /* endpoint mapping */
 
-int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv,
-	uint8_t	NumInPipe, uint8_t NumOutPipe)
+int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv)
 {
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
+
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	BOOLEAN		result		= _FALSE;
 
-	_ConfigChipOutEP_8812(rtlpriv, NumOutPipe);
+	_ConfigChipOutEP_8812(rtlpriv, rtlusb->RtNumOutPipes);
 
 	/* Normal chip with one IN and one OUT doesn't have interrupt IN EP. */
 	if (1 == pHalData->OutEpNumber) {
-		if (1 != NumInPipe) {
+		if (1 != rtlusb->RtNumInPipes) {
 			return result;
 		}
 	}
@@ -1717,7 +1718,7 @@ int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv,
 	 * }
 	 */
 
-	result = Hal_MappingOutPipe(rtlpriv, NumOutPipe);
+	result = Hal_MappingOutPipe(rtlpriv, rtlusb->RtNumOutPipes);
 
 	return result;
 
@@ -1763,8 +1764,7 @@ static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 	pHalData->RegAcUsbDmaTime = 8;
 #endif
 
-	rtl8821au_endpoint_mapping(rtlpriv,
-				pdvobjpriv->RtNumInPipes, pdvobjpriv->RtNumOutPipes);
+	rtl8821au_endpoint_mapping(rtlpriv);
 }
 
 int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid, 

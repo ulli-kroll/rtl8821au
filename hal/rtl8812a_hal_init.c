@@ -40,17 +40,6 @@
  *
  */
 
-void rtl8821au_set_bcn_ctrl_reg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8_t ClearBits)
-{
-	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
-
-	rtlusb->reg_bcn_ctrl_val |= SetBits;
-	rtlusb->reg_bcn_ctrl_val &= ~ClearBits;
-
-	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (uint8_t)rtlusb->reg_bcn_ctrl_val);
-}
-
-
 void InitializeFirmwareVars8812(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);

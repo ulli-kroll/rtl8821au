@@ -746,7 +746,7 @@ static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 }
 
 
-uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
+uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -759,8 +759,6 @@ uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv)
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	rt_rf_power_state eRfPowerStateToSet;
 	uint32_t init_start_time = jiffies;
-
-	DBG_871X(" ULLI: Call rtl8812au_hal_init in usb_halinit.c\n");
 
 	/* Check if MAC has already power on. by tynli. 2011.05.27. */
 	value8 = rtl_read_byte(rtlpriv, REG_SYS_CLKR+1);

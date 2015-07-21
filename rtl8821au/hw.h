@@ -9,7 +9,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *val);
 void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *val);
 
 void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv);
-
+uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv);
 void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv);
 int32_t	 _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy);
 

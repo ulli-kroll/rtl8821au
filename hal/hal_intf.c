@@ -75,7 +75,7 @@ uint rtw_hal_init(struct rtl_priv *rtlpriv)
 
 	rtlpriv->hw_init_completed = _FALSE;
 
-	status = rtlpriv->cfg->ops->hal_init(rtlpriv);
+	status = rtlpriv->cfg->ops->hw_init(rtlpriv);
 
 	if (status == _SUCCESS) {
 		rtlpriv->hw_init_completed = _TRUE;

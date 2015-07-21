@@ -1648,11 +1648,11 @@ struct rtl_hal_ops {
 	void	(*led_control) (struct rtl_priv *rtlpriv, enum led_ctl_mode ledcation);
 	bool	(*radio_onoff_checking) (struct rtl_priv *rtlpriv, u8 *valid);
 	int 	(*set_network_type) (struct rtl_priv *prtpriv, uint8_t val);
+	u32	(*hw_init)(struct rtl_priv *rtlpriv);
 
 
 	/* Old HAL functions */
 
-	u32	(*hal_init)(struct rtl_priv *rtlpriv);
 	u32	(*hal_deinit)(struct rtl_priv *rtlpriv);
 
 	void	(*free_hal_data)(struct rtl_priv *rtlpriv);
@@ -1710,7 +1710,6 @@ static void rtw_hal_fill_fake_txdesc (struct rtl_priv *rtlpriv, u8 *pDesc,
 
 /*Only for transition between old (RTW) and new (rtlwifi-lib) API */
 
-uint32_t rtl8812au_hal_init(struct rtl_priv *rtlpriv);
 uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv);
 unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv);
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv);

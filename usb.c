@@ -1699,7 +1699,7 @@ static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 	pHalData->RegAcUsbDmaTime = 8;
 #endif
 
-	rtl8821au_endpoint_mapping(rtlpriv);
+	rtlpriv->cfg->usb_interface_cfg->usb_endpoint_mapping(rtlpriv);
 }
 
 int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid, 

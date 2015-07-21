@@ -468,7 +468,9 @@ static struct rtl_hal_usbint_cfg rtl8821au_interface_cfg = {
 	.usb_tx_post_hdl = rtl8192c_tx_post_hdl,
 	.usb_tx_aggregate_hdl = rtl8192c_tx_aggregate_hdl,
 	/* endpoint mapping */
-	.usb_endpoint_mapping = rtl8192cu_endpoint_mapping,
+#endif
+	.usb_endpoint_mapping = rtl8821au_endpoint_mapping,
+#if 0
 	.usb_mq_to_hwq = rtl8192cu_mq_to_hwq,
 #endif	
 };
@@ -492,6 +494,8 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.fw_name = "rtlwifi/rtl8821aufw.bin",	/* ULLI note two files */
 	.ops = &rtl8821au_hal_ops,
 	.mod_params = &rtl8821au_mod_params,
+	.usb_interface_cfg = &rtl8821au_interface_cfg,
+
 	.maps[SYS_ISO_CTRL] = REG_SYS_ISO_CTRL,
 #if 0
 	.maps[SYS_FUNC_EN] = REG_SYS_FUNC_EN,

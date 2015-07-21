@@ -1031,7 +1031,9 @@ struct rtl_hal_usbint_cfg {
 						struct sk_buff_head *);
 
 	/* endpoint mapping */
-	int (*usb_endpoint_mapping)(struct ieee80211_hw *hw);
+#endif
+	int (*usb_endpoint_mapping)(struct rtl_priv *rtlpriv);
+#if 0
 	u16 (*usb_mq_to_hwq)(__le16 fc, u16 mac80211_queue_index);
 #endif
 };

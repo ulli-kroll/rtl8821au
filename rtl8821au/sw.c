@@ -211,6 +211,88 @@ static int rtw_stbc_cap = 0x3;
 static int rtw_beamform_cap = 0;
 #endif
 
+
+
+void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
+{
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct _rtw_hal *pHalData;
+	struct pwrctrl_priv *pwrctrlpriv;
+	struct dm_priv *pdmpriv;
+	uint8_t i;
+
+	pHalData = GET_HAL_DATA(rtlpriv);
+	pwrctrlpriv = &rtlpriv->pwrctrlpriv;
+	pdmpriv = &pHalData->dmpriv;
+
+
+	/* init default value */
+	pHalData->fw_ractrl = _FALSE;
+	rtlhal->last_hmeboxnum = 0;
+
+	/* init dm default value */
+	pHalData->bChnlBWInitialzed = _FALSE;
+	rtlphy->iqk_initialized = _FALSE;
+	pHalData->odmpriv.RFCalibrateInfo.TM_Trigger = 0;/* for IQK */
+	rtlphy->pwrgroup_cnt = 0;
+
+	rtlusb->irq_mask[0]	= (u32)(	\
+/*
+					IMR_ROK 		|
+					IMR_RDU		|
+					IMR_VODOK		|
+					IMR_VIDOK		|
+					IMR_BEDOK		|
+					IMR_BKDOK		|
+					IMR_MGNTDOK		|
+					IMR_HIGHDOK		|
+					IMR_CPWM		|
+					IMR_CPWM2		|
+					IMR_C2HCMD		|
+					IMR_HISR1_IND_INT	|
+					IMR_ATIMEND		|
+					IMR_BCNDMAINT_E	|
+					IMR_HSISR_IND_ON_INT	|
+					IMR_BCNDOK0		|
+					IMR_BCNDMAINT0	|
+					IMR_TSF_BIT32_TOGGLE	|
+					IMR_TXBCN0OK	|
+					IMR_TXBCN0ERR	|
+					IMR_GTINT3		|
+					IMR_GTINT4		|
+					IMR_TXCCK		|
+ */
+					0);
+
+	rtlusb->irq_mask[1] 	= (u32)(	\
+/*
+					IMR_RXFOVW		|
+					IMR_TXFOVW		|
+					IMR_RXERR		|
+					IMR_TXERR		|
+					IMR_ATIMEND_E	|
+					IMR_BCNDOK1		|
+					IMR_BCNDOK2		|
+					IMR_BCNDOK3		|
+					IMR_BCNDOK4		|
+					IMR_BCNDOK5		|
+					IMR_BCNDOK6		|
+					IMR_BCNDOK7		|
+					IMR_BCNDMAINT1	|
+					IMR_BCNDMAINT2	|
+					IMR_BCNDMAINT3	|
+					IMR_BCNDMAINT4	|
+					IMR_BCNDMAINT5	|
+					IMR_BCNDMAINT6	|
+					IMR_BCNDMAINT7	|
+ */
+					0);
+}
+
+
+
 static int rtl8821au_init_sw_vars(struct net_device *ndev)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);

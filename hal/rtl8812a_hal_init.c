@@ -43,8 +43,6 @@
 void InitializeFirmwareVars8812(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct pwrctrl_priv *pwrpriv;
-	pwrpriv = &rtlpriv->pwrctrlpriv;
 
 	/* Init Fw LPS related. */
 	rtlpriv->pwrctrlpriv.fw_current_inpsmode = false;

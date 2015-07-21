@@ -2,6 +2,48 @@
 #include "trx.h"
 #include "def.h"
 
+/* ULLI : reference -> u16 rtl8192cu_mq_to_hwq() */
+/* ULLI : for rtl_hal_usbint_cfg ->usb_mq_to_hwq */
+
+static uint32_t rtw_get_ff_hwaddr(struct xmit_frame *pxmitframe)
+{
+	uint32_t	 addr;
+	struct pkt_attrib *pattrib = &pxmitframe->attrib;
+
+	switch (pattrib->qsel) {
+	case 0:
+	case 3:
+		addr = BE_QUEUE_INX;
+		break;
+	case 1:
+	case 2:
+		addr = BK_QUEUE_INX;
+		break;
+	case 4:
+	case 5:
+		addr = VI_QUEUE_INX;
+		break;
+	case 6:
+	case 7:
+		addr = VO_QUEUE_INX;
+		break;
+	case 0x10:
+		addr = BCN_QUEUE_INX;
+		break;
+	case 0x11:	/* BC/MC in PS (HIQ) */
+		addr = HIGH_QUEUE_INX;
+		break;
+	case 0x12:
+	default:
+		addr = MGT_QUEUE_INX;
+		break;
+
+	}
+
+	return addr;
+
+}
+
 static void rtl8812a_cal_txdesc_chksum(uint8_t *ptxdesc)
 {
 	u16 *usPtr;

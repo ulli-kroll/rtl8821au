@@ -584,8 +584,6 @@ void xmit_delivery_enabled_frames(struct rtl_priv *rtlpriv, struct sta_info *pst
 
 uint8_t	qos_acm(uint8_t acm_mask, uint8_t priority);
 
-u32	rtw_get_ff_hwaddr(struct xmit_frame	*pxmitframe);
-
 //include after declaring struct xmit_buf, in order to avoid warning
 #include <xmit_osdep.h>
 

@@ -1995,6 +1995,95 @@ static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 
 /* endpoint mapping */
 
+static void
+_OneOutPipeMapping(
+	IN	struct rtl_priv *rtlpriv
+	)
+{
+	struct rtl_usb *pdvobjpriv = rtl_usbdev(rtlpriv);
+
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_VO] = pdvobjpriv->RtOutPipe[0];//VO
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_VI] = pdvobjpriv->RtOutPipe[0];//VI
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_BE] = pdvobjpriv->RtOutPipe[0];//BE
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_BK] = pdvobjpriv->RtOutPipe[0];//BK
+
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_BCN] = pdvobjpriv->RtOutPipe[0];//BCN
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_MGT] = pdvobjpriv->RtOutPipe[0];//MGT
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_HI] = pdvobjpriv->RtOutPipe[0];//HIGH
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_TXCMD] = pdvobjpriv->RtOutPipe[0];//TXCMD
+}
+
+static void
+_TwoOutPipeMapping(
+	IN	struct rtl_priv *rtlpriv
+	)
+{
+	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
+
+	//BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
+	//{  1, 	1, 	0, 	0, 	0, 	0, 	0, 	0, 		0	};
+	//0:H, 1:N
+
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_VO] = pdvobjpriv->RtOutPipe[0];//VO
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_VI] = pdvobjpriv->RtOutPipe[0];//VI
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_BE] = pdvobjpriv->RtOutPipe[1];//BE
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_BK] = pdvobjpriv->RtOutPipe[1];//BK
+
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_BCN] = pdvobjpriv->RtOutPipe[0];//BCN
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_MGT] = pdvobjpriv->RtOutPipe[0];//MGT
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_HI] = pdvobjpriv->RtOutPipe[0];//HIGH
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_TXCMD] = pdvobjpriv->RtOutPipe[0];//TXCMD
+}
+
+static void _ThreeOutPipeMapping(
+	IN	struct rtl_priv *rtlpriv
+	)
+{
+	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
+
+		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
+		//{  2, 	2, 	1, 	0, 	0, 	0, 	0, 	0, 		0	};
+		//0:H, 1:N, 2:L
+
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_VO] = pdvobjpriv->RtOutPipe[0];//VO
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_VI] = pdvobjpriv->RtOutPipe[1];//VI
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_BE] = pdvobjpriv->RtOutPipe[2];//BE
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_BK] = pdvobjpriv->RtOutPipe[2];//BK
+
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_BCN] = pdvobjpriv->RtOutPipe[0];//BCN
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_MGT] = pdvobjpriv->RtOutPipe[0];//MGT
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_HI] = pdvobjpriv->RtOutPipe[0];//HIGH
+	pdvobjpriv->Queue2Pipe[RTL_TXQ_TXCMD] = pdvobjpriv->RtOutPipe[0];//TXCMD
+
+}
+static BOOLEAN Hal_MappingOutPipe(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
+{
+	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
+
+	BOOLEAN result = _TRUE;
+
+	switch(NumOutPipe)
+	{
+		case 2:
+			_TwoOutPipeMapping(rtlpriv);
+			break;
+		case 3:
+		case 4:
+			_ThreeOutPipeMapping(rtlpriv);
+			break;
+		case 1:
+			_OneOutPipeMapping(rtlpriv);
+			break;
+		default:
+			result = _FALSE;
+			break;
+	}
+
+	return result;
+
+}
+
+
 int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);

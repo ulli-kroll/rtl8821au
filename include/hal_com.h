@@ -73,11 +73,6 @@ void	HalSetBrateCfg(
 	IN uint8_t			*mBratesOS,
 	OUT u16			*pBrateCfg);
 
-BOOLEAN
-Hal_MappingOutPipe(
-	IN	struct rtl_priv *rtlpriv,
-	IN	uint8_t		NumOutPipe
-	);
 
 void hal_init_macaddr(struct rtl_priv *rtlpriv);
 

@@ -1693,7 +1693,9 @@ static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 }
 
 
-static BOOLEAN HalUsbSetQueuePipeMapping8812AUsb(struct rtl_priv *rtlpriv,
+/* endpoint mapping */
+
+int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv,
 	uint8_t	NumInPipe, uint8_t NumOutPipe)
 {
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
@@ -1761,7 +1763,7 @@ static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 	pHalData->RegAcUsbDmaTime = 8;
 #endif
 
-	HalUsbSetQueuePipeMapping8812AUsb(rtlpriv,
+	rtl8821au_endpoint_mapping(rtlpriv,
 				pdvobjpriv->RtNumInPipes, pdvobjpriv->RtNumOutPipes);
 }
 

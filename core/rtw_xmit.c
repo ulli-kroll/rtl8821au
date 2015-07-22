@@ -2064,8 +2064,7 @@ exit:
 	return pxmitframe;
 }
 
-#if 1
-struct tx_servq *rtw_get_sta_pending(struct rtl_priv *rtlpriv, struct sta_info *psta, sint up, uint8_t *ac)
+static struct tx_servq *rtw_get_sta_pending(struct rtl_priv *rtlpriv, struct sta_info *psta, sint up, uint8_t *ac)
 {
 	struct tx_servq *ptxservq = NULL;
 
@@ -2099,51 +2098,6 @@ struct tx_servq *rtw_get_sta_pending(struct rtl_priv *rtlpriv, struct sta_info *
 
 	return ptxservq;
 }
-#else
-
-__inline static struct tx_servq *rtw_get_sta_pending
-	(struct rtl_priv *rtlpriv, struct __queue **ppstapending, struct sta_info *psta, sint up)
-{
-	struct tx_servq *ptxservq;
-	struct hw_xmit *phwxmits =  rtlpriv->xmitpriv.hwxmits;
-
-	{
-		switch (up) {
-		case 1:
-		case 2:
-			ptxservq = &(psta->sta_xmitpriv.bk_q);
-			*ppstapending = &rtlpriv->xmitpriv.bk_pending;
-			(phwxmits+3)->accnt++;
-			break;
-
-		case 4:
-		case 5:
-			ptxservq = &(psta->sta_xmitpriv.vi_q);
-			*ppstapending = &rtlpriv->xmitpriv.vi_pending;
-			(phwxmits+1)->accnt++;
-			break;
-
-		case 6:
-		case 7:
-			ptxservq = &(psta->sta_xmitpriv.vo_q);
-			*ppstapending = &rtlpriv->xmitpriv.vo_pending;
-			(phwxmits+0)->accnt++;
-			break;
-
-		case 0:
-		case 3:
-		default:
-			ptxservq = &(psta->sta_xmitpriv.be_q);
-			*ppstapending = &rtlpriv->xmitpriv.be_pending;
-			(phwxmits+2)->accnt++;
-		break;
-		}
-
-	}
-
-	return ptxservq;
-}
-#endif
 
 /*
  * Will enqueue pxmitframe to the proper queue,

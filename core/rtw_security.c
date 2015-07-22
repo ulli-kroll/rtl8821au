@@ -168,7 +168,7 @@ void rtw_wep_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	uint8_t	*pframe, *payload,*iv;    //,*wepkey
 	uint8_t	wepkey[16];
 	uint8_t   hw_hdr_offset=0;
-	struct	pkt_attrib	 *pattrib = &((struct xmit_frame*)pxmitframe)->attrib;
+	struct	tx_pkt_attrib	 *pattrib = &((struct xmit_frame*)pxmitframe)->tx_attrib;
 	struct 	security_priv	*psecuritypriv=&rtlpriv->securitypriv;
 	struct	xmit_priv		*pxmitpriv=&rtlpriv->xmitpriv;
 
@@ -654,7 +654,7 @@ uint32_t	rtw_tkip_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	uint8_t	*pframe, *payload,*iv,*prwskey;
 	union pn48 dot11txpn;
 	//struct	sta_info		*stainfo;
-	struct	pkt_attrib	 *pattrib = &((struct xmit_frame *)pxmitframe)->attrib;
+	struct	tx_pkt_attrib	 *pattrib = &((struct xmit_frame *)pxmitframe)->tx_attrib;
 	struct 	security_priv	*psecuritypriv=&rtlpriv->securitypriv;
 	struct	xmit_priv		*pxmitpriv=&rtlpriv->xmitpriv;
 	uint32_t	res=_SUCCESS;
@@ -1515,7 +1515,7 @@ uint32_t	rtw_aes_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	uint8_t	*pframe,*prwskey;	//, *payload,*iv
 	uint8_t   hw_hdr_offset = 0;
 	//struct	sta_info		*stainfo;
-	struct	pkt_attrib	 *pattrib = &((struct xmit_frame *)pxmitframe)->attrib;
+	struct	tx_pkt_attrib	 *pattrib = &((struct xmit_frame *)pxmitframe)->tx_attrib;
 	struct 	security_priv	*psecuritypriv=&rtlpriv->securitypriv;
 	struct	xmit_priv		*pxmitpriv=&rtlpriv->xmitpriv;
 

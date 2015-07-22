@@ -51,7 +51,7 @@ void rtw_os_xmit_schedule(struct rtl_priv *rtlpriv);
 int rtw_os_xmit_resource_alloc(struct rtl_priv *rtlpriv, struct xmit_buf *pxmitbuf, u32 alloc_sz, uint8_t flag);
 void rtw_os_xmit_resource_free(struct rtl_priv *rtlpriv, struct xmit_buf *pxmitbuf, u32 free_sz, uint8_t flag);
 
-extern void rtw_set_tx_chksum_offload(struct sk_buff *pkt, struct pkt_attrib *pattrib);
+extern void rtw_set_tx_chksum_offload(struct sk_buff *pkt, struct tx_pkt_attrib *pattrib);
 
 extern uint rtw_remainder_len(struct pkt_file *pfile);
 extern void _rtw_open_pktfile(struct sk_buff *pkt, struct pkt_file *pfile);

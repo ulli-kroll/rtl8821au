@@ -2516,7 +2516,7 @@ void update_mgnt_tx_rate(struct rtl_priv *rtlpriv, uint8_t rate)
 	//DBG_871X("%s(): rate = %x\n",__FUNCTION__, rate);
 }
 
-void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
+void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
 {
 	uint8_t	wireless_mode;
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
@@ -2557,7 +2557,7 @@ void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct pkt_attrib *pattri
 void update_mgntframe_attrib_addr(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe)
 {
 	uint8_t	*pframe;
-	struct pkt_attrib	*pattrib = &pmgntframe->attrib;
+	struct tx_pkt_attrib	*pattrib = &pmgntframe->tx_attrib;
 
 	pframe = (uint8_t *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 
@@ -2649,7 +2649,7 @@ int update_hidden_ssid(uint8_t *ies, uint32_t	 ies_len, uint8_t hidden_ssid_mode
 void issue_beacon(struct rtl_priv *rtlpriv, int timeout_ms)
 {
 	struct xmit_frame	*pmgntframe;
-	struct pkt_attrib	*pattrib;
+	struct tx_pkt_attrib	*pattrib;
 	unsigned char	*pframe;
 	struct rtw_ieee80211_hdr *pwlanhdr;
 	unsigned short *fctrl;
@@ -2676,7 +2676,7 @@ void issue_beacon(struct rtl_priv *rtlpriv, int timeout_ms)
 #endif //#if defined (CONFIG_AP_MODE)
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 	pattrib->qsel = 0x10;
 
@@ -2815,7 +2815,7 @@ _issue_bcn:
 void issue_probersp(struct rtl_priv *rtlpriv, unsigned char *da, uint8_t is_valid_p2p_probereq)
 {
 	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
+	struct tx_pkt_attrib			*pattrib;
 	unsigned char					*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	unsigned short				*fctrl;
@@ -2844,7 +2844,7 @@ void issue_probersp(struct rtl_priv *rtlpriv, unsigned char *da, uint8_t is_vali
 
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
@@ -3022,7 +3022,7 @@ int _issue_probereq(struct rtl_priv *rtlpriv, NDIS_802_11_SSID *pssid, uint8_t *
 {
 	int ret = _FAIL;
 	struct xmit_frame		*pmgntframe;
-	struct pkt_attrib		*pattrib;
+	struct tx_pkt_attrib		*pattrib;
 	unsigned char			*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	unsigned short		*fctrl;
@@ -3041,7 +3041,7 @@ int _issue_probereq(struct rtl_priv *rtlpriv, NDIS_802_11_SSID *pssid, uint8_t *
 	}
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 
@@ -3167,7 +3167,7 @@ exit:
 void issue_auth(struct rtl_priv *rtlpriv, struct sta_info *psta, unsigned short status)
 {
 	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
+	struct tx_pkt_attrib			*pattrib;
 	unsigned char					*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	unsigned short				*fctrl;
@@ -3184,7 +3184,7 @@ void issue_auth(struct rtl_priv *rtlpriv, struct sta_info *psta, unsigned short 
 	}
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
@@ -3311,7 +3311,7 @@ void issue_asocrsp(struct rtl_priv *rtlpriv, unsigned short status, struct sta_i
 #ifdef CONFIG_AP_MODE
 	struct xmit_frame	*pmgntframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
-	struct pkt_attrib *pattrib;
+	struct tx_pkt_attrib *pattrib;
 	unsigned char	*pbuf, *pframe;
 	unsigned short val;
 	unsigned short *fctrl;
@@ -3330,7 +3330,7 @@ void issue_asocrsp(struct rtl_priv *rtlpriv, unsigned short status, struct sta_i
 	}
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 
@@ -3484,7 +3484,7 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 {
 	int ret = _FAIL;
 	struct xmit_frame				*pmgntframe;
-	struct pkt_attrib				*pattrib;
+	struct tx_pkt_attrib				*pattrib;
 	unsigned char					*pframe, *p;
 	struct rtw_ieee80211_hdr			*pwlanhdr;
 	unsigned short				*fctrl;
@@ -3508,7 +3508,7 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 		goto exit;
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 
@@ -3776,7 +3776,7 @@ static int _issue_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, unsigned
 {
 	int ret = _FAIL;
 	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
+	struct tx_pkt_attrib			*pattrib;
 	unsigned char					*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	unsigned short				*fctrl;
@@ -3799,7 +3799,7 @@ static int _issue_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, unsigned
 	}
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 	pattrib->retry_ctrl = _FALSE;
 
@@ -3907,7 +3907,7 @@ static int _issue_qos_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, u16 
 {
 	int ret = _FAIL;
 	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
+	struct tx_pkt_attrib			*pattrib;
 	unsigned char					*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	unsigned short				*fctrl, *qc;
@@ -3923,7 +3923,7 @@ static int _issue_qos_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, u16 
 	}
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 	pattrib->hdrlen +=2;
@@ -4039,7 +4039,7 @@ exit:
 static int _issue_deauth(struct rtl_priv *rtlpriv, unsigned char *da, unsigned short reason, uint8_t wait_ack)
 {
 	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
+	struct tx_pkt_attrib			*pattrib;
 	unsigned char					*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	unsigned short				*fctrl;
@@ -4056,7 +4056,7 @@ static int _issue_deauth(struct rtl_priv *rtlpriv, unsigned char *da, unsigned s
 	}
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 	pattrib->retry_ctrl = _FALSE;
 
@@ -4151,7 +4151,7 @@ void issue_action_spct_ch_switch(struct rtl_priv *rtlpriv, uint8_t *ra, uint8_t 
 {
 	struct list_head		*plist, *phead;
 	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
+	struct tx_pkt_attrib			*pattrib;
 	unsigned char				*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	unsigned short			*fctrl;
@@ -4168,7 +4168,7 @@ void issue_action_spct_ch_switch(struct rtl_priv *rtlpriv, uint8_t *ra, uint8_t 
 		return;
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
@@ -4220,7 +4220,7 @@ void issue_action_BA(struct rtl_priv *rtlpriv, unsigned char *raddr, unsigned ch
 	u16	BA_starting_seqctrl;
 	HT_CAP_AMPDU_FACTOR max_rx_ampdu_factor;
 	struct xmit_frame		*pmgntframe;
-	struct pkt_attrib		*pattrib;
+	struct tx_pkt_attrib		*pattrib;
 	uint8_t					*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	u16					*fctrl;
@@ -4240,7 +4240,7 @@ void issue_action_BA(struct rtl_priv *rtlpriv, unsigned char *raddr, unsigned ch
 	}
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
@@ -4361,7 +4361,7 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 	struct list_head		*plist, *phead;
 	unsigned char category, action;
 	struct xmit_frame			*pmgntframe;
-	struct pkt_attrib			*pattrib;
+	struct tx_pkt_attrib			*pattrib;
 	unsigned char				*pframe;
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	unsigned short			*fctrl;
@@ -4393,7 +4393,7 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 	}
 
 	//update attribute
-	pattrib = &pmgntframe->attrib;
+	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
@@ -6975,13 +6975,13 @@ uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 				psta_bmc->sleepq_len--;
 				if(psta_bmc->sleepq_len>0)
-					pxmitframe->attrib.mdata = 1;
+					pxmitframe->tx_attrib.mdata = 1;
 				else
-					pxmitframe->attrib.mdata = 0;
+					pxmitframe->tx_attrib.mdata = 0;
 
-				pxmitframe->attrib.triggered=1;
+				pxmitframe->tx_attrib.triggered=1;
 
-				pxmitframe->attrib.qsel = 0x11;//HIQ
+				pxmitframe->tx_attrib.qsel = 0x11;//HIQ
 
 				rtw_hal_xmitframe_enqueue(rtlpriv, pxmitframe);
 

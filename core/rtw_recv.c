@@ -1189,11 +1189,11 @@ sint validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 				psta->sleepq_len--;
 
 				if(psta->sleepq_len>0)
-					pxmitframe->attrib.mdata = 1;
+					pxmitframe->tx_attrib.mdata = 1;
                                 else
-					pxmitframe->attrib.mdata = 0;
+					pxmitframe->tx_attrib.mdata = 0;
 
-				pxmitframe->attrib.triggered = 1;
+				pxmitframe->tx_attrib.triggered = 1;
 
 	                        /*
 	                         * DBG_871X("handling ps-poll, q_len=%d, tim=%x\n", psta->sleepq_len, pstapriv->tim_bitmap);

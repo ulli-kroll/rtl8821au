@@ -49,7 +49,6 @@ struct rtl_priv;
 #include <rtw_rf.h>
 #include <rtw_cmd.h>
 #include <cmd_osdep.h>
-#include <xmit_osdep.h>
 #include <rtw_recv.h>
 #include <rtw_security.h>
 #include <rtw_xmit.h>

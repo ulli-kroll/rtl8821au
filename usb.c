@@ -459,7 +459,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf 
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct xmit_frame *pxmitframe = (struct xmit_frame *)pxmitbuf->priv_data;
 	struct usb_device *pusbd = rtlusb->udev;
-	struct pkt_attrib *pattrib = &pxmitframe->attrib;
+	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
 
 	if ((rtlpriv->bDriverStopped) || (rtlpriv->bSurpriseRemoved) ||(rtlpriv->pwrctrlpriv.pnp_bstop_trx)) {
 		#ifdef DBG_TX

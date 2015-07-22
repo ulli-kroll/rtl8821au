@@ -14,7 +14,7 @@ static inline void DBG_871X(const char *fmt, ...)
 static uint32_t rtw_get_ff_hwaddr(struct xmit_frame *pxmitframe)
 {
 	uint32_t	 addr;
-	struct pkt_attrib *pattrib = &pxmitframe->attrib;
+	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
 
 	switch (pattrib->qsel) {
 	case 0:
@@ -166,7 +166,7 @@ void rtl8821au_fill_fake_txdesc(struct rtl_priv *rtlpriv, uint8_t *pDesc,
  * Fw can tell Hw to send these packet derectly.
  *
 */
-static void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, uint8_t *ptxdesc)
+static void rtl8812a_fill_txdesc_sectype(struct tx_pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
 	if ((pattrib->encrypt > 0) && !pattrib->bswenc) {
 		switch (pattrib->encrypt) {
@@ -192,7 +192,7 @@ static void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, uint8_t *pt
 }
 
 
-static void rtl8812a_fill_txdesc_phy(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
+static void rtl8812a_fill_txdesc_phy(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
 	/* DBG_8192C("bwmode=%d, ch_off=%d\n", pattrib->bwmode, pattrib->ch_offset); */
 
@@ -203,7 +203,7 @@ static void rtl8812a_fill_txdesc_phy(struct rtl_priv *rtlpriv, struct pkt_attrib
 	}
 }
 
-static void rtl8812a_fill_txdesc_vcs(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib, uint8_t *ptxdesc)
+static void rtl8812a_fill_txdesc_vcs(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib, uint8_t *ptxdesc)
 {
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -257,7 +257,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	struct rtl_priv *rtlpriv = pxmitframe->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
-	struct pkt_attrib	*pattrib = &pxmitframe->attrib;
+	struct tx_pkt_attrib	*pattrib = &pxmitframe->tx_attrib;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	uint8_t	*ptxdesc =  pmem;
@@ -435,15 +435,15 @@ static int32_t rtw_dump_xframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmi
 	uint8_t *mem_addr;
 	uint32_t ff_hwaddr;
 	struct xmit_buf *pxmitbuf = pxmitframe->pxmitbuf;
-	struct pkt_attrib *pattrib = &pxmitframe->attrib;
+	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
 #ifdef CONFIG_80211N_HT
 	if ((pxmitframe->frame_tag == DATA_FRAMETAG) &&
-	    (pxmitframe->attrib.ether_type != 0x0806) &&
-	    (pxmitframe->attrib.ether_type != 0x888e) &&
-	    (pxmitframe->attrib.ether_type != 0x88b4) &&
-	    (pxmitframe->attrib.dhcp_pkt != 1)) {
+	    (pxmitframe->tx_attrib.ether_type != 0x0806) &&
+	    (pxmitframe->tx_attrib.ether_type != 0x888e) &&
+	    (pxmitframe->tx_attrib.ether_type != 0x88b4) &&
+	    (pxmitframe->tx_attrib.dhcp_pkt != 1)) {
 		rtw_issue_addbareq_cmd(rtlpriv, pxmitframe);
 	}
 #endif
@@ -499,7 +499,7 @@ static int32_t rtw_dump_xframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmi
 #ifdef CONFIG_USB_TX_AGGREGATION
 static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 {
-	struct pkt_attrib *pattrib = &pxmitframe->attrib;
+	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
 
 	uint32_t	len = 0;
 
@@ -619,8 +619,8 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 	}
 
 	/* dequeue same priority packet from station tx queue */
-	psta = pfirstframe->attrib.psta;
-	switch (pfirstframe->attrib.priority) {
+	psta = pfirstframe->tx_attrib.psta;
+	switch (pfirstframe->tx_attrib.priority) {
 	case 1:
 	case 2:
 		ptxservq = &(psta->sta_xmitpriv.bk_q);
@@ -708,7 +708,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 		rtw_os_xmit_complete(rtlpriv, pxmitframe);
 
 		/* (len - TXDESC_SIZE) == pxmitframe->attrib.last_txcmdsz */
-		update_txdesc(pxmitframe, pxmitframe->buf_addr, pxmitframe->attrib.last_txcmdsz, _TRUE);
+		update_txdesc(pxmitframe, pxmitframe->buf_addr, pxmitframe->tx_attrib.last_txcmdsz, _TRUE);
 
 		/* don't need xmitframe any more */
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
@@ -738,10 +738,10 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 
 	spin_unlock_bh(&pxmitpriv->lock);
 #ifdef CONFIG_80211N_HT
-	if ((pfirstframe->attrib.ether_type != 0x0806) &&
-	    (pfirstframe->attrib.ether_type != 0x888e) &&
-	    (pfirstframe->attrib.ether_type != 0x88b4) &&
-	    (pfirstframe->attrib.dhcp_pkt != 1)) {
+	if ((pfirstframe->tx_attrib.ether_type != 0x0806) &&
+	    (pfirstframe->tx_attrib.ether_type != 0x888e) &&
+	    (pfirstframe->tx_attrib.ether_type != 0x88b4) &&
+	    (pfirstframe->tx_attrib.dhcp_pkt != 1)) {
 		rtw_issue_addbareq_cmd(rtlpriv, pfirstframe);
 	}
 #endif
@@ -754,7 +754,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 		/* DBG_8192C("$$$$$ buf size equal to USB block size $$$$$$\n"); */
 	}
 
-	update_txdesc(pfirstframe, pfirstframe->buf_addr, pfirstframe->attrib.last_txcmdsz, _TRUE);
+	update_txdesc(pfirstframe, pfirstframe->buf_addr, pfirstframe->tx_attrib.last_txcmdsz, _TRUE);
 
 	/* 3 4. write xmit buffer to USB FIFO */
 	ff_hwaddr = rtw_get_ff_hwaddr(pfirstframe);
@@ -865,7 +865,7 @@ static int32_t pre_xmitframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitf
 	int32_t res;
 	struct xmit_buf *pxmitbuf = NULL;
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
-	struct pkt_attrib *pattrib = &pxmitframe->attrib;
+	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
 	spin_lock_bh(&pxmitpriv->lock);
@@ -967,7 +967,7 @@ void _dbg_dump_tx_info(struct rtl_priv	*rtlpriv,int frame_tag, uint8_t *ptxdesc)
 
 
 
-u8 BWMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
+u8 BWMapping_8812(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
 {
 	uint8_t	BWSettingOfDesc = 0;
 
@@ -993,7 +993,7 @@ u8 BWMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
 	return BWSettingOfDesc;
 }
 
-u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib)
+u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
 {
 	uint8_t	SCSettingOfDesc = 0;
 	struct rtl_mac *mac = &(rtlpriv->mac80211);

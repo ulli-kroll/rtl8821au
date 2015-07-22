@@ -62,7 +62,7 @@ sint rtw_endofpktfile(struct pkt_file *pfile)
 	return _FALSE;
 }
 
-void rtw_set_tx_chksum_offload(struct sk_buff *pkt, struct pkt_attrib *pattrib)
+void rtw_set_tx_chksum_offload(struct sk_buff *pkt, struct tx_pkt_attrib *pattrib)
 {
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX

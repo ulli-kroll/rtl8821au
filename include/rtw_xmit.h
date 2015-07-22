@@ -210,8 +210,7 @@ struct pkt_attrib
 };
 #else
 //reduce size
-struct pkt_attrib
-{
+struct tx_pkt_attrib {
 	uint8_t	type;
 	uint8_t	subtype;
 	uint8_t	bswenc;
@@ -363,11 +362,10 @@ struct xmit_buf
 };
 
 
-struct xmit_frame
-{
+struct xmit_frame {
 	struct list_head	list;
 
-	struct pkt_attrib attrib;
+	struct tx_pkt_attrib tx_attrib;
 
 	struct sk_buff *pkt;
 
@@ -540,7 +538,7 @@ extern int32_t rtw_free_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *px
 
 void rtw_count_tx_stats(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe, int sz);
 extern void rtw_update_protection(struct rtl_priv *rtlpriv, uint8_t *ie, uint ie_len);
-extern int32_t rtw_make_wlanhdr(struct rtl_priv *rtlpriv, uint8_t *hdr, struct pkt_attrib *pattrib);
+extern int32_t rtw_make_wlanhdr(struct rtl_priv *rtlpriv, uint8_t *hdr, struct tx_pkt_attrib *pattrib);
 extern int32_t rtw_put_snap(uint8_t *data, u16 h_proto);
 
 extern struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv);
@@ -553,7 +551,7 @@ extern int32_t rtw_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame
 extern struct xmit_frame* rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmit *phwxmit_i, sint entry);
 
 extern int32_t rtw_xmit_classifier(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
-extern u32 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib);
+extern u32 rtw_calculate_wlan_pkt_size_by_attribue(struct tx_pkt_attrib *pattrib);
 #define rtw_wlan_pkt_size(f) rtw_calculate_wlan_pkt_size_by_attribue(&f->attrib)
 extern int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, struct xmit_frame *pxmitframe);
 int32_t _rtw_init_hw_txqueue(struct hw_txqueue* phw_txqueue, uint8_t ac_tag);
@@ -561,7 +559,7 @@ void _rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
 
 
 int32_t rtw_txframes_pending(struct rtl_priv *rtlpriv);
-int32_t rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib);
+int32_t rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib);
 void rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry);
 
 

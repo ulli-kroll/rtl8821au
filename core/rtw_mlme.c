@@ -2760,7 +2760,7 @@ void rtw_issue_addbareq_cmd(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfr
 	int priority;
 	struct sta_info *psta=NULL;
 	struct ht_priv	*phtpriv;
-	struct pkt_attrib *pattrib =&pxmitframe->attrib;
+	struct tx_pkt_attrib *pattrib =&pxmitframe->tx_attrib;
 	int32_t bmcst = IS_MCAST(pattrib->ra);
 
 	//if (bmcst || (rtlpriv->mlmepriv.LinkDetectInfo.bTxBusyTraffic == _FALSE))

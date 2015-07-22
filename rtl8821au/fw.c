@@ -550,7 +550,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData;
 	struct xmit_frame	*pcmdframe;
-	struct pkt_attrib	*pattrib;
+	struct tx_pkt_attrib	*pattrib;
 	struct xmit_priv	*pxmitpriv;
 	struct mlme_ext_priv	*pmlmeext;
 	struct mlme_ext_info	*pmlmeinfo;
@@ -701,7 +701,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 		goto error;
 	} else {
 		/* update attribute */
-		pattrib = &pcmdframe->attrib;
+		pattrib = &pcmdframe->tx_attrib;
 		update_mgntframe_attrib(rtlpriv, pattrib);
 		pattrib->qsel = 0x10;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescLen;

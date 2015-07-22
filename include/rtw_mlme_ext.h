@@ -610,7 +610,7 @@ void beacon_timing_control(struct rtl_priv *rtlpriv);
 extern uint8_t set_tx_beacon_cmd(struct rtl_priv*rtlpriv);
 unsigned int setup_beacon_frame(struct rtl_priv *rtlpriv, unsigned char *beacon_frame);
 void update_mgnt_tx_rate(struct rtl_priv *rtlpriv, uint8_t rate);
-void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct pkt_attrib *pattrib);
+void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib);
 void update_mgntframe_attrib_addr(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
 void dump_mgntframe(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
 int32_t dump_mgntframe_and_wait(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe, int timeout_ms);

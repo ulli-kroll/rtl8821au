@@ -268,7 +268,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 	}
 
 	rtw_alloc_hwxmits(rtlpriv);
-	rtw_init_hwxmits(pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
+	rtw_init_hwxmits(pxmitpriv->hwxmits);
 
 	for (i = 0; i < 4; i++) {
 		pxmitpriv->wmm_para_seq[i] = i;
@@ -353,9 +353,6 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 
 	pxmitbuf = &pxmitpriv->pcmd_xmitbuf;
 	rtw_os_xmit_resource_free(rtlpriv, pxmitbuf, 0, _TRUE);
-
-	rtw_free_hwxmits(rtlpriv);
-
 out:
 	;
 }
@@ -2010,7 +2007,7 @@ static struct xmit_frame *dequeue_one_xmitframe(struct xmit_priv *pxmitpriv, str
 	return pxmitframe;
 }
 
-struct xmit_frame *rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmit *phwxmit_i, sint entry)
+struct xmit_frame *rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmit *phwxmit_i)
 {
 	struct list_head *sta_plist, *sta_phead;
 	struct hw_xmit *phwxmit;
@@ -2025,7 +2022,7 @@ struct xmit_frame *rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmi
 
 	spin_lock_bh(&pxmitpriv->lock);
 
-	for (i = 0; i < entry; i++) {
+	for (i = 0; i < HWXMIT_ENTRY; i++) {
 		phwxmit = phwxmit_i + inx[i];
 
 		/* spin_lock_irqsave(&phwxmit->sta_queue->lock, &irqL0); */
@@ -2225,34 +2222,8 @@ void rtw_alloc_hwxmits(struct rtl_priv *rtlpriv)
 	struct hw_xmit *hwxmits;
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 
-	pxmitpriv->hwxmit_entry = HWXMIT_ENTRY;
-
-	pxmitpriv->hwxmits = (struct hw_xmit *)rtw_zmalloc(sizeof (struct hw_xmit) * pxmitpriv->hwxmit_entry);
-
 	hwxmits = pxmitpriv->hwxmits;
 
-	if (pxmitpriv->hwxmit_entry == 5) {
-		/* pxmitpriv->bmc_txqueue.head = 0; */
-		/* hwxmits[0] .phwtxqueue = &pxmitpriv->bmc_txqueue; */
-		hwxmits[0].sta_queue = &pxmitpriv->bm_pending;
-
-		/* pxmitpriv->vo_txqueue.head = 0; */
-		/* hwxmits[1] .phwtxqueue = &pxmitpriv->vo_txqueue; */
-		hwxmits[1].sta_queue = &pxmitpriv->vo_pending;
-
-		/* pxmitpriv->vi_txqueue.head = 0; */
-		/* hwxmits[2] .phwtxqueue = &pxmitpriv->vi_txqueue; */
-		hwxmits[2].sta_queue = &pxmitpriv->vi_pending;
-
-		/* pxmitpriv->bk_txqueue.head = 0; */
-		/* hwxmits[3] .phwtxqueue = &pxmitpriv->bk_txqueue; */
-		hwxmits[3].sta_queue = &pxmitpriv->bk_pending;
-
-		/* pxmitpriv->be_txqueue.head = 0; */
-		/* hwxmits[4] .phwtxqueue = &pxmitpriv->be_txqueue; */
-		hwxmits[4].sta_queue = &pxmitpriv->be_pending;
-
-	} else if (pxmitpriv->hwxmit_entry == 4) {
 		/* pxmitpriv->vo_txqueue.head = 0; */
 		/* hwxmits[0] .phwtxqueue = &pxmitpriv->vo_txqueue; */
 		hwxmits[0].sta_queue = &pxmitpriv->vo_pending;
@@ -2268,25 +2239,13 @@ void rtw_alloc_hwxmits(struct rtl_priv *rtlpriv)
 		/* pxmitpriv->bk_txqueue.head = 0; */
 		/* hwxmits[3] .phwtxqueue = &pxmitpriv->bk_txqueue; */
 		hwxmits[3].sta_queue = &pxmitpriv->bk_pending;
-	} else {
-		;
-	}
 }
 
-void rtw_free_hwxmits(struct rtl_priv *rtlpriv)
-{
-	struct hw_xmit *hwxmits;
-	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 
-	hwxmits = pxmitpriv->hwxmits;
-	if (hwxmits)
-		rtw_mfree(hwxmits);
-}
-
-void rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry)
+void rtw_init_hwxmits(struct hw_xmit *phwxmit)
 {
 	sint i;
-	for (i = 0; i < entry; i++, phwxmit++) {
+	for (i = 0; i < HWXMIT_ENTRY; i++, phwxmit++) {
 		/*
 		 * spin_lock_init(&phwxmit->xmit_lock);
 		 * INIT_LIST_HEAD(&phwxmit->pending);

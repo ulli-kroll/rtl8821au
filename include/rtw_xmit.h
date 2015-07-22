@@ -435,8 +435,7 @@ struct	xmit_priv	{
 	u64	last_tx_bytes;
 	u64	last_tx_pkts;
 
-	struct hw_xmit *hwxmits;
-	uint8_t	hwxmit_entry;
+	struct hw_xmit hwxmits[HWXMIT_ENTRY];
 
 	uint8_t	wmm_para_seq[4];//sequence for wmm ac parameter strength from large to small. it's value is 0->vo, 1->vi, 2->be, 3->bk.
 
@@ -496,7 +495,7 @@ extern int32_t rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame
 extern void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, struct __queue *pframequeue);
 struct tx_servq *rtw_get_sta_pending(struct rtl_priv *rtlpriv, struct sta_info *psta, sint up, uint8_t *ac);
 extern int32_t rtw_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
-extern struct xmit_frame* rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmit *phwxmit_i, sint entry);
+extern struct xmit_frame* rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmit *phwxmit_i);
 
 extern int32_t rtw_xmit_classifier(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 extern u32 rtw_calculate_wlan_pkt_size_by_attribue(struct tx_pkt_attrib *pattrib);
@@ -508,7 +507,7 @@ void _rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
 
 int32_t rtw_txframes_pending(struct rtl_priv *rtlpriv);
 int32_t rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib);
-void rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry);
+void rtw_init_hwxmits(struct hw_xmit *phwxmit);
 
 
 int32_t _rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpriv);
@@ -516,7 +515,6 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv);
 
 
 void rtw_alloc_hwxmits(struct rtl_priv *rtlpriv);
-void rtw_free_hwxmits(struct rtl_priv *rtlpriv);
 
 
 int32_t rtw_xmit(struct rtl_priv *rtlpriv, struct sk_buff **pkt);

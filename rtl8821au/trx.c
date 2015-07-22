@@ -559,7 +559,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 	do {
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
-		pxmitframe = rtw_dequeue_xframe(pxmitpriv, pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
+		pxmitframe = rtw_dequeue_xframe(pxmitpriv, pxmitpriv->hwxmits);
 		if (pxmitframe == NULL) {
 			/*
 			 * no more xmit frame, release xmit buffer

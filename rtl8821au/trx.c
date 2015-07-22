@@ -16,7 +16,7 @@ static uint32_t rtw_get_ff_hwaddr(struct xmit_frame *pxmitframe)
 	uint32_t	 addr;
 	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
 
-	switch (pattrib->qsel) {
+	switch (pattrib->tx_qsel) {
 	case 0:
 	case 3:
 		addr = BE_QUEUE_INX;
@@ -307,7 +307,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	SET_TX_DESC_MACID(ptxdesc, pattrib->mac_id);
 	SET_TX_DESC_RATE_ID(ptxdesc, pattrib->raid);
 
-	SET_TX_DESC_QUEUE_SEL(ptxdesc,  pattrib->qsel);
+	SET_TX_DESC_QUEUE_SEL(ptxdesc,  pattrib->tx_qsel);
 
 	/* offset 12 */
 

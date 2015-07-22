@@ -703,7 +703,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 		/* update attribute */
 		pattrib = &pcmdframe->tx_attrib;
 		update_mgntframe_attrib(rtlpriv, pattrib);
-		pattrib->qsel = 0x10;
+		pattrib->tx_qsel = 0x10;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescLen;
 
 		dump_mgntframe_and_wait(rtlpriv, pcmdframe, 100);

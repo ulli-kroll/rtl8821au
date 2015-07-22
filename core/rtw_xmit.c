@@ -2303,7 +2303,7 @@ static void do_queue_select(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *patt
 
 	qsel = pattrib->priority;
 
-	pattrib->qsel = qsel;
+	pattrib->tx_qsel = qsel;
 }
 
 /*
@@ -2416,7 +2416,7 @@ sint xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *rtlpriv, struct xmit_fr
 		/* pattrib->triggered=0; */
 
 		if (bmcst)
-			pattrib->qsel = 0x11;	/* HIQ */
+			pattrib->tx_qsel = 0x11;	/* HIQ */
 
 
 		return ret;

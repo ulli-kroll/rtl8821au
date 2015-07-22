@@ -2527,7 +2527,7 @@ void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pat
 	pattrib->nr_frags = 1;
 	pattrib->priority = 7;
 	pattrib->mac_id = 0;
-	pattrib->qsel = 0x12;
+	pattrib->tx_qsel = 0x12;
 
 	pattrib->pktlen = 0;
 
@@ -2678,7 +2678,7 @@ void issue_beacon(struct rtl_priv *rtlpriv, int timeout_ms)
 	//update attribute
 	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
-	pattrib->qsel = 0x10;
+	pattrib->tx_qsel = 0x10;
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
 
@@ -6981,7 +6981,7 @@ uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 				pxmitframe->tx_attrib.triggered=1;
 
-				pxmitframe->tx_attrib.qsel = 0x11;//HIQ
+				pxmitframe->tx_attrib.tx_qsel = 0x11;//HIQ
 
 				rtw_hal_xmitframe_enqueue(rtlpriv, pxmitframe);
 

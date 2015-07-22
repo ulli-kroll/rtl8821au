@@ -195,7 +195,7 @@ struct tx_pkt_attrib {
 	uint8_t	mdata;//more data bit
 	uint8_t	pctrl;//per packet txdesc control enable
 	uint8_t	triggered;//for ap mode handling Power Saving sta
-	uint8_t	qsel;
+	uint8_t	tx_qsel;
 	uint8_t	eosp;
 	uint8_t	rate;
 	uint8_t	intel_proxim;

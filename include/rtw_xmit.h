@@ -158,57 +158,6 @@ struct	hw_xmit	{
 	int	accnt;
 };
 
-#if 0
-struct pkt_attrib
-{
-	uint8_t	type;
-	uint8_t	subtype;
-	uint8_t	bswenc;
-	uint8_t	dhcp_pkt;
-	u16	ether_type;
-	int	pktlen;		//the original 802.3 pkt raw_data len (not include ether_hdr data)
-	int	pkt_hdrlen;	//the original 802.3 pkt header len
-	int	hdrlen;		//the WLAN Header Len
-	int	nr_frags;
-	int	last_txcmdsz;
-	int	encrypt;	//when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith
-	uint8_t	iv[8];
-	int	iv_len;
-	uint8_t	icv[8];
-	int	icv_len;
-	int	priority;
-	int	ack_policy;
-	int	mac_id;
-	int	vcs_mode;	//virtual carrier sense method
-
-	uint8_t 	dst[ETH_ALEN];
-	uint8_t	src[ETH_ALEN];
-	uint8_t	ta[ETH_ALEN];
-	uint8_t 	ra[ETH_ALEN];
-
-	uint8_t	key_idx;
-
-	uint8_t	qos_en;
-	uint8_t	ht_en;
-	uint8_t	raid;//rate adpative id
-	uint8_t	bwmode;
-	uint8_t	ch_offset;//PRIME_CHNL_OFFSET
-	uint8_t	sgi;//short GI
-	uint8_t	ampdu_en;//tx ampdu enable
-	uint8_t	mdata;//more data bit
-	uint8_t	eosp;
-
-	uint8_t	triggered;//for ap mode handling Power Saving sta
-
-	u32	qsel;
-	u16	seqnum;
-
-	struct sta_info * psta;
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	uint8_t	hw_tcp_csum;
-#endif
-};
-#else
 //reduce size
 struct tx_pkt_attrib {
 	uint8_t	type;
@@ -267,7 +216,6 @@ struct tx_pkt_attrib {
 
 
 };
-#endif
 
 
 #define WLANHDR_OFFSET	64

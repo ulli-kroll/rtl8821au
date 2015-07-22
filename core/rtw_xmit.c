@@ -86,7 +86,6 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 	_rtw_init_queue(&pxmitpriv->bk_pending);
 	_rtw_init_queue(&pxmitpriv->vi_pending);
 	_rtw_init_queue(&pxmitpriv->vo_pending);
-	_rtw_init_queue(&pxmitpriv->bm_pending);
 
 	/*
 	 * _rtw_init_queue(&pxmitpriv->legacy_dz_queue);
@@ -2108,13 +2107,6 @@ __inline static struct tx_servq *rtw_get_sta_pending
 	struct tx_servq *ptxservq;
 	struct hw_xmit *phwxmits =  rtlpriv->xmitpriv.hwxmits;
 
-#ifdef CONFIG_RTL8711
-
-	if (IS_MCAST(psta->hwaddr)) {
-		ptxservq = &(psta->sta_xmitpriv.be_q);	/* we will use be_q to queue bc/mc frames in BCMC_stainfo */
-		*ppstapending = &rtlpriv->xmitpriv.bm_pending;
-	} else
-#endif
 	{
 		switch (up) {
 		case 1:

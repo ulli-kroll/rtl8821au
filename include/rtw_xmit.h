@@ -396,7 +396,6 @@ struct	xmit_priv	{
 	struct __queue	bk_pending;
 	struct __queue	vi_pending;
 	struct __queue	vo_pending;
-	struct __queue	bm_pending;
 
 	//struct __queue	legacy_dz_queue;
 	//struct __queue	apsd_queue;

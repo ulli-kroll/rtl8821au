@@ -2767,7 +2767,7 @@ void rtw_issue_addbareq_cmd(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfr
 	if (bmcst || (rtlpriv->mlmepriv.LinkDetectInfo.NumTxOkInPeriod<100))
 		return;
 
-	priority = pattrib->priority;
+	priority = pattrib->tx_priority;
 
 	psta = rtw_get_stainfo(&rtlpriv->stapriv, pattrib->ra);
 	if (pattrib->psta != psta)

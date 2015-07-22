@@ -576,8 +576,8 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 		}
 
 		/* TID 0~15 */
-		if ((pxmitframe->attrib.priority < 0) ||
-		    (pxmitframe->attrib.priority > 15)) {
+		if ((pxmitframe->attrib.tx_priority < 0) ||
+		    (pxmitframe->attrib.tx_priority > 15)) {
 			/* rtw_free_xmitframe(pxmitpriv, pxmitframe); */
 			continue;
 		}
@@ -620,7 +620,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 
 	/* dequeue same priority packet from station tx queue */
 	psta = pfirstframe->tx_attrib.psta;
-	switch (pfirstframe->tx_attrib.priority) {
+	switch (pfirstframe->tx_attrib.tx_priority) {
 	case 1:
 	case 2:
 		ptxservq = &(psta->sta_xmitpriv.bk_q);

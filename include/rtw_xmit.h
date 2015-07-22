@@ -176,7 +176,7 @@ struct tx_pkt_attrib {
 	uint8_t	icv_len;
 	uint8_t	iv[18];
 	uint8_t	icv[16];
-	uint8_t	priority;
+	uint8_t	tx_priority;
 	uint8_t	ack_policy;
 	uint8_t	mac_id;
 	uint8_t	vcs_mode;	//virtual carrier sense method

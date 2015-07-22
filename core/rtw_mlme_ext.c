@@ -2525,7 +2525,7 @@ void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pat
 
 	pattrib->hdrlen = 24;
 	pattrib->nr_frags = 1;
-	pattrib->priority = 7;
+	pattrib->tx_priority = 7;
 	pattrib->mac_id = 0;
 	pattrib->tx_qsel = 0x12;
 

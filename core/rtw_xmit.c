@@ -661,7 +661,7 @@ static void set_qos(struct pkt_file *ppktfile, struct tx_pkt_attrib *pattrib)
 		UserPriority = 7;
 	}
 
-	pattrib->priority = UserPriority;
+	pattrib->tx_priority = UserPriority;
 	pattrib->hdrlen = WLAN_HDR_A3_QOS_LEN;
 	pattrib->subtype = WIFI_QOS_DATA_TYPE;
 }
@@ -791,7 +791,7 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *pkt, stru
 
 	pattrib->hdrlen = WLAN_HDR_A3_LEN;
 	pattrib->subtype = WIFI_DATA_TYPE;
-	pattrib->priority = 0;
+	pattrib->tx_priority = 0;
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE)) {
 		if (pattrib->qos_en)
@@ -801,7 +801,7 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *pkt, stru
 			set_qos(&pktfile, pattrib);
 
 			if (pmlmepriv->acm_mask != 0) {
-				pattrib->priority = qos_acm(pmlmepriv->acm_mask, pattrib->priority);
+				pattrib->tx_priority = qos_acm(pmlmepriv->acm_mask, pattrib->tx_priority);
 			}
 		}
 	}
@@ -917,7 +917,7 @@ static int32_t xmitframe_addmic(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
 
 			/* if(pqospriv->qos_option==1) */
 			if (pattrib->qos_en)
-				priority[0] = (uint8_t)pxmitframe->tx_attrib.priority;
+				priority[0] = (uint8_t)pxmitframe->tx_attrib.tx_priority;
 
 
 			rtw_secmicappend(&micdata, &priority[0], 4);
@@ -1077,8 +1077,8 @@ int32_t rtw_make_wlanhdr (struct rtl_priv *rtlpriv , uint8_t *hdr, struct tx_pkt
 		if (qos_option) {
 			qc = (unsigned short *)(hdr + pattrib->hdrlen - 2);
 
-			if (pattrib->priority)
-				SetPriority(qc, pattrib->priority);
+			if (pattrib->tx_priority)
+				SetPriority(qc, pattrib->tx_priority);
 
 			SetEOSP(qc, pattrib->eosp);
 
@@ -1109,17 +1109,17 @@ int32_t rtw_make_wlanhdr (struct rtl_priv *rtlpriv , uint8_t *hdr, struct tx_pkt
 			/* if(psta) */
 			{
 
-				psta->sta_xmitpriv.txseq_tid[pattrib->priority]++;
-				psta->sta_xmitpriv.txseq_tid[pattrib->priority] &= 0xFFF;
+				psta->sta_xmitpriv.txseq_tid[pattrib->tx_priority]++;
+				psta->sta_xmitpriv.txseq_tid[pattrib->tx_priority] &= 0xFFF;
 
-				pattrib->seqnum = psta->sta_xmitpriv.txseq_tid[pattrib->priority];
+				pattrib->seqnum = psta->sta_xmitpriv.txseq_tid[pattrib->tx_priority];
 
 				SetSeqNum(hdr, pattrib->seqnum);
 
 #ifdef CONFIG_80211N_HT
 				/* check if enable ampdu */
 				if (pattrib->ht_en && psta->htpriv.ampdu_enable) {
-					if (psta->htpriv.agg_enable_bitmap & BIT(pattrib->priority))
+					if (psta->htpriv.agg_enable_bitmap & BIT(pattrib->tx_priority))
 					pattrib->ampdu_en = _TRUE;
 				}
 
@@ -1127,19 +1127,19 @@ int32_t rtw_make_wlanhdr (struct rtl_priv *rtlpriv , uint8_t *hdr, struct tx_pkt
 				if (pattrib->ampdu_en == _TRUE) 	{
 					u16 tx_seq;
 
-					tx_seq = psta->BA_starting_seqctrl[pattrib->priority & 0x0f];
+					tx_seq = psta->BA_starting_seqctrl[pattrib->tx_priority & 0x0f];
 
 					/* check BA_starting_seqctrl */
 					if (SN_LESS(pattrib->seqnum, tx_seq)) {
 						/* DBG_871X("tx ampdu seqnum(%d) < tx_seq(%d)\n", pattrib->seqnum, tx_seq); */
 						pattrib->ampdu_en = _FALSE;	/* AGG BK */
 					} else if (SN_EQUAL(pattrib->seqnum, tx_seq)) {
-						psta->BA_starting_seqctrl[pattrib->priority & 0x0f] = (tx_seq+1)&0xfff;
+						psta->BA_starting_seqctrl[pattrib->tx_priority & 0x0f] = (tx_seq+1)&0xfff;
 
 						pattrib->ampdu_en = _TRUE;	/* AGG EN */
 					} else 	{
 						/* DBG_871X("tx ampdu over run\n"); */
-						psta->BA_starting_seqctrl[pattrib->priority & 0x0f] = (pattrib->seqnum+1)&0xfff;
+						psta->BA_starting_seqctrl[pattrib->tx_priority & 0x0f] = (pattrib->seqnum+1)&0xfff;
 						pattrib->ampdu_en = _TRUE;	/* AGG EN */
 					}
 
@@ -1172,7 +1172,7 @@ int32_t rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attr
 {
 	struct sta_info *psta;
 	struct tx_servq *ptxservq;
-	int priority = pattrib->priority;
+	int priority = pattrib->tx_priority;
 /*
 	if(pattrib->psta)
 	{
@@ -2197,7 +2197,7 @@ int32_t rtw_xmit_classifier(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfr
 		return _FAIL;
 	}
 
-	ptxservq = rtw_get_sta_pending(rtlpriv, psta, pattrib->priority, (uint8_t *)(&ac_index));
+	ptxservq = rtw_get_sta_pending(rtlpriv, psta, pattrib->tx_priority, (uint8_t *)(&ac_index));
 
 	/* spin_lock_irqsave(&pstapending->lock, &irqL0); */
 
@@ -2301,7 +2301,7 @@ static void do_queue_select(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *patt
 {
 	uint8_t qsel;
 
-	qsel = pattrib->priority;
+	qsel = pattrib->tx_priority;
 
 	pattrib->tx_qsel = qsel;
 }
@@ -2473,7 +2473,7 @@ sint xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *rtlpriv, struct xmit_fr
 
 			psta->sleepq_len++;
 
-			switch (pattrib->priority) {
+			switch (pattrib->tx_priority) {
 			case 1:
 			case 2:
 				wmmps_ac = psta->uapsd_bk&BIT(0);
@@ -2551,7 +2551,7 @@ static void dequeue_xmitframes_to_sleeping_queue(struct rtl_priv *rtlpriv, struc
 		if (_TRUE == ret) {
 			pattrib = &pxmitframe->tx_attrib;
 
-			ptxservq = rtw_get_sta_pending(rtlpriv, psta, pattrib->priority, (uint8_t *)(&ac_index));
+			ptxservq = rtw_get_sta_pending(rtlpriv, psta, pattrib->tx_priority, (uint8_t *)(&ac_index));
 
 			ptxservq->qcnt--;
 			phwxmits[ac_index].accnt--;
@@ -2631,7 +2631,7 @@ void wakeup_sta_to_xmit(struct rtl_priv *rtlpriv, struct sta_info *psta)
 
 		rtw_list_delete(&pxmitframe->list);
 
-		switch (pxmitframe->tx_attrib.priority) {
+		switch (pxmitframe->tx_attrib.tx_priority) {
 		case 1:
 		case 2:
 			wmmps_ac = psta->uapsd_bk&BIT(1);
@@ -2784,7 +2784,7 @@ void xmit_delivery_enabled_frames(struct rtl_priv *rtlpriv, struct sta_info *pst
 
 		xmitframe_plist = get_next(xmitframe_plist);
 
-		switch (pxmitframe->tx_attrib.priority) {
+		switch (pxmitframe->tx_attrib.tx_priority) {
 		case 1:
 		case 2:
 			wmmps_ac = psta->uapsd_bk&BIT(1);

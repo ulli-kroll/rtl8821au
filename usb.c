@@ -313,7 +313,7 @@ static void _rtl_usb_io_handler_release(struct rtl_priv *rtlpriv)
 }
 
 
-static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
+static void usb_write_port_complete(struct urb *purb)
 {
 	unsigned long flags;
 	int i;
@@ -591,7 +591,7 @@ void usb_write_port_cancel(struct rtl_priv *rtlpriv)
 
 
 
-static void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
+static void usb_read_port_complete(struct urb *purb)
 {
 	uint isevt, *pbuf;
 	struct recv_buf	*precvbuf = (struct recv_buf *) purb->context;

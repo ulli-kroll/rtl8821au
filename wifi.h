@@ -2251,7 +2251,6 @@ struct _rtw_hal {
 	BOOLEAN		bSupportUSB3;
 
 	uint8_t	C2hArray[16];
-	uint8_t	UsbTxAggMode;
 	uint8_t	UsbTxAggDescNum;
 
 	u16	HwRxPageSize;				// Hardware setting

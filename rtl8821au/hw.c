@@ -2043,13 +2043,11 @@ static void usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t			value32;
 
-	if (pHalData->UsbTxAggMode) {
 		value32 = rtl_read_dword(rtlpriv, REG_TDECTRL);
 		value32 = value32 & ~(BLK_DESC_NUM_MASK << BLK_DESC_NUM_SHIFT);
 		value32 |= ((pHalData->UsbTxAggDescNum & BLK_DESC_NUM_MASK) << BLK_DESC_NUM_SHIFT);
 
 		rtl_write_dword(rtlpriv, REG_TDECTRL, value32);
-	}
 
 }
 

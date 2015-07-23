@@ -1674,7 +1674,6 @@ static void _rtl_usb_init_tx(struct rtl_priv *rtlpriv)
 	else
 		rtlusb->max_bulk_out_size = USB_FULL_SPEED_BULK_SIZE; 	/*64 bytes */
 
-	pHalData->UsbTxAggMode		= 1;
 	pHalData->UsbTxAggDescNum	= 6;	/* only 4 bits */
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))	/* page added for Jaguar */

@@ -2264,12 +2264,9 @@ struct _rtw_hal {
 	BOOLEAN		bSupportUSB3;
 
 	uint8_t	C2hArray[16];
-	#ifdef CONFIG_USB_TX_AGGREGATION
 	uint8_t	UsbTxAggMode;
 	uint8_t	UsbTxAggDescNum;
-	#endif // CONFIG_USB_TX_AGGREGATION
 
-	#ifdef CONFIG_USB_RX_AGGREGATION
 	u16	HwRxPageSize;				// Hardware setting
 	u32	MaxUsbRxAggBlock;
 
@@ -2281,7 +2278,6 @@ struct _rtw_hal {
 
 	uint8_t	RegAcUsbDmaSize;
 	uint8_t	RegAcUsbDmaTime;
-	#endif//CONFIG_USB_RX_AGGREGATION
 
 
 

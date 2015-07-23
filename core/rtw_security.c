@@ -178,12 +178,8 @@ void rtw_wep_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	if(((struct xmit_frame*)pxmitframe)->buf_addr==NULL)
 		return;
 
-#ifdef CONFIG_USB_TX_AGGREGATION
 	hw_hdr_offset = TXDESC_SIZE +
 		 (((struct xmit_frame*)pxmitframe)->pkt_offset * PACKET_OFFSET_SZ);
-#else
-	hw_hdr_offset = TXDESC_OFFSET;
-#endif
 
 	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
 
@@ -663,12 +659,8 @@ uint32_t	rtw_tkip_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	if(((struct xmit_frame*)pxmitframe)->buf_addr==NULL)
 		return _FAIL;
 
-#ifdef CONFIG_USB_TX_AGGREGATION
 	hw_hdr_offset = TXDESC_SIZE +
 		 (((struct xmit_frame*)pxmitframe)->pkt_offset * PACKET_OFFSET_SZ);
-#else
-	hw_hdr_offset = TXDESC_OFFSET;
-#endif
 
 	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
 	//4 start to encrypt each fragment
@@ -1526,12 +1518,8 @@ uint32_t	rtw_aes_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	if(((struct xmit_frame*)pxmitframe)->buf_addr==NULL)
 		return _FAIL;
 
-#ifdef CONFIG_USB_TX_AGGREGATION
 	hw_hdr_offset = TXDESC_SIZE +
 		 (((struct xmit_frame*)pxmitframe)->pkt_offset * PACKET_OFFSET_SZ);
-#else
-	hw_hdr_offset = TXDESC_OFFSET;
-#endif
 
 	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
 

@@ -856,11 +856,7 @@ static int32_t xmitframe_addmic(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
 	}
 */
 
-#ifdef CONFIG_USB_TX_AGGREGATION
 	hw_hdr_offset = TXDESC_SIZE + (pxmitframe->pkt_offset * PACKET_OFFSET_SZ);;
-#else
-	hw_hdr_offset = TXDESC_OFFSET;
-#endif
 
 	if (pattrib->encrypt == _TKIP_) {	/* if(psecuritypriv->dot11PrivacyAlgrthm==_TKIP_PRIVACY_) */
 		/*
@@ -1306,11 +1302,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 
 	pbuf_start = pxmitframe->buf_addr;
 
-#ifdef CONFIG_USB_TX_AGGREGATION
 	hw_hdr_offset =  TXDESC_SIZE + (pxmitframe->pkt_offset * PACKET_OFFSET_SZ);
-#else
-	hw_hdr_offset = TXDESC_OFFSET;
-#endif
 
 	mem_start = pbuf_start +	hw_hdr_offset;
 
@@ -1520,20 +1512,12 @@ void rtw_count_tx_stats(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe,
 
 	if ((pxmitframe->frame_tag&0x0f) == DATA_FRAMETAG) {
 		pxmitpriv->tx_bytes += sz;
-#if defined(CONFIG_USB_TX_AGGREGATION)
 		pmlmepriv->LinkDetectInfo.NumTxOkInPeriod += pxmitframe->agg_num;
-#else
-		pmlmepriv->LinkDetectInfo.NumTxOkInPeriod++;
-#endif
 
 		psta = pxmitframe->tx_attrib.psta;
 		if (psta) {
 			pstats = &psta->sta_stats;
-#if defined(CONFIG_USB_TX_AGGREGATION)
 			pstats->tx_pkts += pxmitframe->agg_num;
-#else
-			pstats->tx_pkts++;
-#endif
 			pstats->tx_bytes += sz;
 		}
 	}
@@ -1770,9 +1754,7 @@ void rtw_init_xmitframe(struct xmit_frame *pxframe)
 		pxframe->pkt = NULL;
 		pxframe->pkt_offset = 1;	/*default use pkt_offset to fill tx desc */
 
-#ifdef CONFIG_USB_TX_AGGREGATION
 		pxframe->agg_num = 1;
-#endif
 	}
 }
 
@@ -1976,18 +1958,6 @@ static struct xmit_frame *dequeue_one_xmitframe(struct xmit_priv *pxmitpriv, str
 
 		xmitframe_plist = get_next(xmitframe_plist);
 
-/*#ifdef RTK_DMP_PLATFORM
-#ifdef CONFIG_USB_TX_AGGREGATION
-		if((ptxservq->qcnt>0) && (ptxservq->qcnt<=2))
-		{
-			pxmitframe = NULL;
-
-			tasklet_schedule(&pxmitpriv->xmit_tasklet);
-
-			break;
-		}
-#endif
-#endif*/
 		rtw_list_delete(&pxmitframe->list);
 
 		ptxservq->qcnt--;

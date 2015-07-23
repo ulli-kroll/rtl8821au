@@ -20,15 +20,7 @@
 #ifndef __RTL8812A_RECV_H__
 #define __RTL8812A_RECV_H__
 
-	#ifndef CONFIG_MINIMAL_MEMORY_USAGE
-		#define MAX_RECVBUF_SZ (24576) // 24k
-		//#define MAX_RECVBUF_SZ (20480) //20K
-		//#define MAX_RECVBUF_SZ (10240) //10K
-		//#define MAX_RECVBUF_SZ (15360) // 15k < 16k
-		//#define MAX_RECVBUF_SZ (8192+1024) // 8K+1k
-	#else
-		#define MAX_RECVBUF_SZ (4000) // about 4K
-	#endif
+#define MAX_RECVBUF_SZ (24576) // 24k
 
 // Rx smooth factor
 #define Rx_Smooth_Factor (20)

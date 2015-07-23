@@ -323,12 +323,10 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 		rtl8812a_fill_txdesc_sectype(pattrib, ptxdesc);
 
 		/* offset 20 */
-#ifdef CONFIG_USB_TX_AGGREGATION
 		if (pxmitframe->agg_num > 1) {
 			/* DBG_8192C("%s agg_num:%d\n",__FUNCTION__,pxmitframe->agg_num ); */
 			SET_TX_DESC_USB_TXAGG_NUM(ptxdesc, pxmitframe->agg_num);
 		}
-#endif
 
 		rtl8812a_fill_txdesc_vcs(rtlpriv, pattrib, ptxdesc);
 
@@ -496,7 +494,6 @@ static int32_t rtw_dump_xframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmi
 	return ret;
 }
 
-#ifdef CONFIG_USB_TX_AGGREGATION
 static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 {
 	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
@@ -774,71 +771,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 
 	return _TRUE;
 }
-
-#else
-
-int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
-{
-
-	struct hw_xmit *phwxmits;
-	sint hwentry;
-	struct xmit_frame *pxmitframe = NULL;
-	int res = _SUCCESS, xcnt = 0;
-
-	phwxmits = pxmitpriv->hwxmits;
-	hwentry = pxmitpriv->hwxmit_entry;
-
-	if (pxmitbuf == NULL) {
-		pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv);
-		if (!pxmitbuf) {
-			return _FALSE;
-		}
-	}
-
-
-	do {
-		pxmitframe =  rtw_dequeue_xframe(pxmitpriv, phwxmits, hwentry);
-
-		if (pxmitframe) {
-			pxmitframe->pxmitbuf = pxmitbuf;
-
-			pxmitframe->buf_addr = pxmitbuf->pbuf;
-
-			pxmitbuf->priv_data = pxmitframe;
-
-			if ((pxmitframe->frame_tag&0x0f) == DATA_FRAMETAG) {
-				if (pxmitframe->attrib.priority <= 15) {
-					/* TID0~15 */
-					res = rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe);
-				}
-				/* DBG_8192C("==> pxmitframe->attrib.priority:%d\n",pxmitframe->attrib.priority); */
-				rtw_os_xmit_complete(rtlpriv, pxmitframe);	/* always return ndis_packet after rtw_xmitframe_coalesce */
-			}
-
-			if (res == _SUCCESS) {
-				rtw_dump_xframe(rtlpriv, pxmitframe);
-			} else {
-				rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
-				rtw_free_xmitframe(pxmitpriv, pxmitframe);
-			}
-
-			xcnt++;
-
-		} else 	{
-			rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
-			return _FALSE;
-		}
-
-		break;
-
-	} while (0 /*xcnt < (NR_XMITFRAME >> 3)*/);
-
-	return _TRUE;
-
-}
-#endif
-
-
 
 static int32_t xmitframe_direct(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {

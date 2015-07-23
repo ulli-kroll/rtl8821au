@@ -20,11 +20,7 @@
 #ifndef _RTW_XMIT_H_
 #define _RTW_XMIT_H_
 
-#ifdef CONFIG_USB_TX_AGGREGATION
 #define MAX_XMITBUF_SZ	(20480)	// 20k
-#else
-#define MAX_XMITBUF_SZ	(2048)
-#endif
 
 #ifdef CONFIG_SINGLE_XMIT_BUF
 #define NR_XMITBUFF	(1)
@@ -326,9 +322,7 @@ struct xmit_frame {
 	struct xmit_buf *pxmitbuf;
 
 
-#ifdef CONFIG_USB_TX_AGGREGATION
 	uint8_t	agg_num;
-#endif
 	s8	pkt_offset;
 
 	uint8_t *alloc_addr; /* the actual address this xmitframe allocated */

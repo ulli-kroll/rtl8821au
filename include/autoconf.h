@@ -72,10 +72,7 @@
  * Interface  Related Config
  */
 
-#ifndef CONFIG_MINIMAL_MEMORY_USAGE
-	#define CONFIG_USB_TX_AGGREGATION	1
-	#define CONFIG_USB_RX_AGGREGATION	1
-#endif
+#define CONFIG_USB_RX_AGGREGATION	1
 
 #define CONFIG_PREALLOC_RECV_SKB	1
 /*
@@ -116,10 +113,6 @@
  */
 
 #define RATE_ADAPTIVE_SUPPORT 		0
-
-
-#ifdef CONFIG_USB_TX_AGGREGATION
-#endif
 
 #define	RTL8188E_EARLY_MODE_PKT_NUM_10	0
 

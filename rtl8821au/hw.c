@@ -1541,12 +1541,10 @@ static void _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 		rtl_write_byte(rtlpriv, 0xf008, rtl_read_byte(rtlpriv, 0xf008)&0xE7);
 	}
 
-#ifdef CONFIG_USB_TX_AGGREGATION
-	/* rtl_write_byte(rtlpriv, REG_TDECTRL_8195, 0x30); */
-#else
+#if 0
+	/* ULLI disabled through CONFIG_USB_TX_AGGREGATION is in use */
 	rtl_write_byte(rtlpriv, REG_TDECTRL, 0x10);
 #endif
-
 	temp = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN);
 	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, temp&(~BIT(10))); 	/* reset 8051 */
 
@@ -2044,7 +2042,6 @@ static void _InitBeaconMaxError_8812A(struct rtl_priv *rtlpriv, BOOLEAN	InfraMod
  *---------------------------------------------------------------------------*/
 static void usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
 {
-#ifdef CONFIG_USB_TX_AGGREGATION
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t			value32;
 
@@ -2056,7 +2053,6 @@ static void usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
 		rtl_write_dword(rtlpriv, REG_TDECTRL, value32);
 	}
 
-#endif
 }
 
 

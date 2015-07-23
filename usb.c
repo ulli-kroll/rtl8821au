@@ -448,7 +448,7 @@ check_completion:
 
 
 
-u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf *pxmitbuf)
+u32 usb_write_port(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct xmit_buf *pxmitbuf)
 {
 	unsigned long flags;
 	unsigned int pipe;
@@ -472,7 +472,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf 
 
 	spin_lock_irqsave(&pxmitpriv->lock, flags);
 
-	switch(addr) {
+	switch(queue_idx) {
 		case VO_QUEUE_INX:
 			pxmitpriv->voq_cnt++;
 			pxmitbuf->flags = VO_QUEUE_INX;
@@ -502,7 +502,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 addr, u32 cnt, struct xmit_buf 
 	purb	= pxmitbuf->pxmit_urb[0];
 
 	/* translate DMA FIFO addr to pipehandle */
-	pipe = usb_sndbulkpipe(pusbd, rtlusb->Queue2Pipe[addr]);	
+	pipe = usb_sndbulkpipe(pusbd, rtlusb->Queue2Pipe[queue_idx]);
 
 #ifdef CONFIG_REDUCE_USB_TX_INT
 	if ((pxmitpriv->free_xmitbuf_cnt%NR_XMITBUFF == 0) ||

@@ -2094,9 +2094,6 @@ static void usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 			rtl_write_word(rtlpriv, REG_RXDMA_AGG_PG_TH, temp);
 		}
 		break;
-	case USB_RX_AGG_USB:
-	case USB_RX_AGG_MIX:
-	case USB_RX_AGG_DISABLE:
 	default:
 		/* TODO: */
 		break;

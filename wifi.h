@@ -1858,10 +1858,7 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 
 
 typedef enum _USB_RX_AGG_MODE{
-	USB_RX_AGG_DISABLE,
 	USB_RX_AGG_DMA,
-	USB_RX_AGG_USB,
-	USB_RX_AGG_MIX
 }USB_RX_AGG_MODE;
 
 typedef struct _EDCA_TURBO_

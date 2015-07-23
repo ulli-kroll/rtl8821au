@@ -2077,26 +2077,19 @@ static void usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 
 	valueDMA = rtl_read_byte(rtlpriv, REG_TRXDMA_CTRL);
 
-	switch (pHalData->UsbRxAggMode) {
-	case USB_RX_AGG_DMA:
-		valueDMA |= RXDMA_AGG_EN;
+	valueDMA |= RXDMA_AGG_EN;
 
-		/* rtl_write_byte(rtlpriv, REG_RXDMA_AGG_PG_TH, 0x05); //dma agg mode, 20k
-		 *
-		 * 2012/10/26 MH For TX throught start rate temp fix.
-		 */
-		{
-			u16			temp;
+	/* rtl_write_byte(rtlpriv, REG_RXDMA_AGG_PG_TH, 0x05); //dma agg mode, 20k
+	 *
+	 * 2012/10/26 MH For TX throught start rate temp fix.
+	 */
+	{
+		u16			temp;
 
-			/* ULLI DMA on USB Device WTF ??? */
-			/* Adjust DMA page and thresh. */
-			temp = pHalData->RegAcUsbDmaSize | (pHalData->RegAcUsbDmaTime<<8);
-			rtl_write_word(rtlpriv, REG_RXDMA_AGG_PG_TH, temp);
-		}
-		break;
-	default:
-		/* TODO: */
-		break;
+		/* ULLI DMA on USB Device WTF ??? */
+		/* Adjust DMA page and thresh. */
+		temp = pHalData->RegAcUsbDmaSize | (pHalData->RegAcUsbDmaTime<<8);
+		rtl_write_word(rtlpriv, REG_RXDMA_AGG_PG_TH, temp);
 	}
 
 	rtl_write_byte(rtlpriv, REG_TRXDMA_CTRL, valueDMA);

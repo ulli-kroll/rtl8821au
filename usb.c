@@ -1686,7 +1686,6 @@ static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
 
-	pHalData->UsbRxAggMode		= USB_RX_AGG_DMA;	/* USB_RX_AGG_DMA; */
 	pHalData->UsbRxAggBlockCount	= 8; 			/* unit : 512b */
 	pHalData->UsbRxAggBlockTimeout	= 0x6;
 	pHalData->UsbRxAggPageCount	= 16; 			/* uint :128 b //0x0A;	// 10 = MAX_RX_DMA_BUFFER_SIZE/2/pHalData->UsbBulkOutSize */

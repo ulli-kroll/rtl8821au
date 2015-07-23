@@ -1856,11 +1856,6 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 
 //###### duplicate code,will move to ODM #########
 
-
-typedef enum _USB_RX_AGG_MODE{
-	USB_RX_AGG_DMA,
-}USB_RX_AGG_MODE;
-
 typedef struct _EDCA_TURBO_
 {
 	uint32_t	prv_traffic_idx; // edca turbo
@@ -2262,7 +2257,6 @@ struct _rtw_hal {
 	u16	HwRxPageSize;				// Hardware setting
 	u32	MaxUsbRxAggBlock;
 
-	USB_RX_AGG_MODE	UsbRxAggMode;
 	uint8_t	UsbRxAggBlockCount;			// USB Block count. Block size is 512-byte in hight speed and 64-byte in full speed
 	uint8_t	UsbRxAggBlockTimeout;
 	uint8_t	UsbRxAggPageCount;			// 8192C DMA page count

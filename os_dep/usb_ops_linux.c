@@ -22,6 +22,8 @@
 #include <rtw_debug.h>
 #include <../rtl8821au/trx.h>
 
+/* ULLI : move to trx.c ?? */
+
 static int recvbuf2recvframe(struct rtl_priv *rtlpriv, struct sk_buff *pskb)
 {
 	uint8_t	*pbuf;
@@ -38,9 +40,7 @@ static int recvbuf2recvframe(struct rtl_priv *rtlpriv, struct sk_buff *pskb)
 	transfer_len = (int32_t)pskb->len;
 	pbuf = pskb->data;
 
-#ifdef CONFIG_USB_RX_AGGREGATION
 	pkt_cnt = GET_RX_STATUS_DESC_USB_AGG_PKTNUM(pbuf);
-#endif
 
 	do {
 		precvframe = rtw_alloc_recvframe(pfree_recv_queue);
@@ -117,12 +117,10 @@ static int recvbuf2recvframe(struct rtl_priv *rtlpriv, struct sk_buff *pskb)
 
 		}
 
-#ifdef CONFIG_USB_RX_AGGREGATION
 		/*  jaguar 8-byte alignment */
 		pkt_offset = (u16)_RND8(pkt_offset);
 		pkt_cnt--;
 		pbuf += pkt_offset;
-#endif
 		transfer_len -= pkt_offset;
 		precvframe = NULL;
 

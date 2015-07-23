@@ -72,8 +72,6 @@
  * Interface  Related Config
  */
 
-#define CONFIG_USB_RX_AGGREGATION	1
-
 #define CONFIG_PREALLOC_RECV_SKB	1
 /*
  * CONFIG_USE_USB_BUFFER_ALLOC_XX uses Linux USB Buffer alloc API and is for Linux platform only now!

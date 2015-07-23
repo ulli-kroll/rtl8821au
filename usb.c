@@ -1686,7 +1686,6 @@ static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
 
-#ifdef CONFIG_USB_RX_AGGREGATION
 	pHalData->UsbRxAggMode		= USB_RX_AGG_DMA;	/* USB_RX_AGG_DMA; */
 	pHalData->UsbRxAggBlockCount	= 8; 			/* unit : 512b */
 	pHalData->UsbRxAggBlockTimeout	= 0x6;
@@ -1695,7 +1694,6 @@ static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 
 	pHalData->RegAcUsbDmaSize = 4;
 	pHalData->RegAcUsbDmaTime = 8;
-#endif
 
 	rtlpriv->cfg->usb_interface_cfg->usb_endpoint_mapping(rtlpriv);
 }

@@ -1857,17 +1857,12 @@ typedef enum _RT_AMPDU_BRUST_MODE{
 //###### duplicate code,will move to ODM #########
 
 
-#ifdef CONFIG_USB_RX_AGGREGATION
 typedef enum _USB_RX_AGG_MODE{
 	USB_RX_AGG_DISABLE,
 	USB_RX_AGG_DMA,
 	USB_RX_AGG_USB,
 	USB_RX_AGG_MIX
 }USB_RX_AGG_MODE;
-
-//#define MAX_RX_DMA_BUFFER_SIZE	10240		// 10K for 8192C RX DMA buffer
-
-#endif
 
 typedef struct _EDCA_TURBO_
 {

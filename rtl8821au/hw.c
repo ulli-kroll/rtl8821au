@@ -326,7 +326,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 
 	case HW_VAR_RXDMA_AGG_PG_TH:
-#ifdef CONFIG_USB_RX_AGGREGATION
 		{
 			/*uint8_t	threshold = *((uint8_t *)val);
 			if ( threshold == 0)
@@ -335,7 +334,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			}
 			rtl_write_byte(rtlpriv, REG_RXDMA_AGG_PG_TH, threshold);*/
 		}
-#endif
 		break;
 	case HW_VAR_MEDIA_STATUS:
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x0c;
@@ -2073,7 +2071,6 @@ static void usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
  *---------------------------------------------------------------------------*/
 static void usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 {
-#ifdef CONFIG_USB_RX_AGGREGATION
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t			valueDMA;
 	uint8_t			valueUSB;
@@ -2106,7 +2103,6 @@ static void usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 	}
 
 	rtl_write_byte(rtlpriv, REG_TRXDMA_CTRL, valueDMA);
-#endif
 }
 static void init_UsbAggregationSetting_8812A(struct rtl_priv *rtlpriv)
 {

@@ -672,7 +672,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 		}
 		rtw_list_delete(&pxmitframe->list);
 		ptxservq->qcnt--;
-		phwxmit->accnt--;
 
 #ifndef IDEA_CONDITION
 		/*  suppose only data frames would be in queue */

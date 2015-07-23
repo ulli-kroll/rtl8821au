@@ -151,7 +151,6 @@ struct	hw_xmit	{
 	struct __queue *sta_queue;
 	//struct hw_txqueue *phwtxqueue;
 	//sint	txcmdcnt;
-	int	accnt;
 };
 
 //reduce size

@@ -2008,8 +2008,6 @@ struct xmit_frame *rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmi
 			pxmitframe = dequeue_one_xmitframe(pxmitpriv, phwxmit, ptxservq, pframe_queue);
 
 			if (pxmitframe) {
-				phwxmit->accnt--;
-
 				/* Remove sta node when there is no pending packets. */
 				if (_rtw_queue_empty(pframe_queue))	/* must be done after get_next and before break */
 					rtw_list_delete(&ptxservq->tx_pending);
@@ -2122,7 +2120,6 @@ int32_t rtw_xmit_classifier(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfr
 
 	list_add_tail(&pxmitframe->list, get_list_head(&ptxservq->sta_pending));
 	ptxservq->qcnt++;
-	phwxmits[ac_index].accnt++;
 
 	/* spin_unlock_irqrestore(&ptxservq->sta_pending.lock, &irqL1); */
 
@@ -2167,7 +2164,6 @@ void rtw_init_hwxmits(struct hw_xmit *phwxmit)
 		 * INIT_LIST_HEAD(&phwxmit->pending);
 		 * phwxmit->txcmdcnt = 0;
 		 */
-		phwxmit->accnt = 0;
 	}
 }
 
@@ -2429,7 +2425,6 @@ static void dequeue_xmitframes_to_sleeping_queue(struct rtl_priv *rtlpriv, struc
 			ptxservq = rtw_get_sta_pending(rtlpriv, psta, pattrib->tx_priority, (uint8_t *)(&ac_index));
 
 			ptxservq->qcnt--;
-			phwxmits[ac_index].accnt--;
 		} else 	{
 			/* DBG_871X("xmitframe_enqueue_for_sleeping_sta return _FALSE\n"); */
 		}

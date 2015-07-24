@@ -897,9 +897,7 @@ void rtw_surveydone_event_callback(struct rtl_priv	*rtlpriv, uint8_t *pbuf)
 	}
 
 	if (check_fwstate(pmlmepriv,_FW_UNDER_SURVEY)) {
-		uint8_t timer_cancelled;
-
-		_cancel_timer(&pmlmepriv->scan_to_timer, &timer_cancelled);
+		_cancel_timer(&pmlmepriv->scan_to_timer);
 
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
 	} else {
@@ -1318,7 +1316,6 @@ static void rtw_joinbss_update_network(struct rtl_priv *rtlpriv, struct wlan_net
 void rtw_joinbss_event_prehandle(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 {
 	static uint8_t retry=0;
-	uint8_t timer_cancelled;
 	struct sta_info *ptarget_sta= NULL, *pcur_sta = NULL;
    	struct	sta_priv *pstapriv = &rtlpriv->stapriv;
 	struct	mlme_priv	*pmlmepriv = &(rtlpriv->mlmepriv);
@@ -1447,7 +1444,7 @@ void rtw_joinbss_event_prehandle(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 
 			//s5. Cancle assoc_timer
-			_cancel_timer(&pmlmepriv->assoc_timer, &timer_cancelled);
+			_cancel_timer(&pmlmepriv->assoc_timer);
 
 
 		}

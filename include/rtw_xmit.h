@@ -332,7 +332,6 @@ struct xmit_frame {
 struct tx_servq {
 	struct list_head	tx_pending;
 	struct __queue	sta_pending;
-	int qcnt;
 };
 
 
@@ -488,7 +487,7 @@ void _rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
 
 
 int32_t rtw_txframes_pending(struct rtl_priv *rtlpriv);
-int32_t rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib);
+bool rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib);
 void rtw_init_hwxmits(struct hw_xmit *phwxmit);
 
 

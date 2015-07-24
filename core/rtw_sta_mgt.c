@@ -384,7 +384,6 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->vo_q.sta_pending);
 	list_del_init(&(pstaxmitpriv->vo_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits;
-	pstaxmitpriv->vo_q.qcnt = 0;
 
 	/*
 	 * spin_unlock_bh(&(pxmitpriv->vo_pending.lock), &irqL0);
@@ -397,7 +396,6 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->vi_q.sta_pending);
 	list_del_init(&(pstaxmitpriv->vi_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits+1;
-	pstaxmitpriv->vi_q.qcnt = 0;
 
 	/*
 	 * spin_unlock_bh(&(pxmitpriv->vi_pending.lock), &irqL0);
@@ -410,7 +408,6 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->be_q.sta_pending);
 	list_del_init(&(pstaxmitpriv->be_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits+2;
-	pstaxmitpriv->be_q.qcnt = 0;
 
 	/*
 	 * spin_unlock_bh(&(pxmitpriv->be_pending.lock), &irqL0);
@@ -424,7 +421,6 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->bk_q.sta_pending);
 	list_del_init(&(pstaxmitpriv->bk_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits+3;
-	pstaxmitpriv->bk_q.qcnt = 0;
 
 	/*
 	 * spin_unlock_bh(&(pxmitpriv->bk_pending.lock), &irqL0);

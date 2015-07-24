@@ -671,7 +671,6 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 			break;
 		}
 		list_del_init(&pxmitframe->list);
-		ptxservq->qcnt--;
 
 #ifndef IDEA_CONDITION
 		/*  suppose only data frames would be in queue */
@@ -803,7 +802,7 @@ static int32_t pre_xmitframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitf
 
 	/* DBG_8192C("==> %s \n",__FUNCTION__); */
 
-	if (rtw_txframes_sta_ac_pending(rtlpriv, pattrib) > 0) {
+	if (rtw_txframes_sta_ac_pending(rtlpriv, pattrib)) {
 		/* DBG_8192C("enqueue AC(%d)\n",pattrib->priority); */
 		goto enqueue;
 	}

@@ -29,7 +29,6 @@ static void _init_txservq(struct tx_servq *ptxservq)
 {
 	INIT_LIST_HEAD(&ptxservq->tx_pending);
 	_rtw_init_queue(&ptxservq->sta_pending);
-	ptxservq->qcnt = 0;
 }
 
 
@@ -1154,7 +1153,7 @@ int32_t rtw_txframes_pending(struct rtl_priv *rtlpriv)
 			 (_rtw_queue_empty(&pxmitpriv->vo_pending) == _FALSE));
 }
 
-int32_t rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
+bool rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
 {
 	struct sta_info *psta;
 	struct tx_servq *ptxservq;
@@ -1207,7 +1206,9 @@ int32_t rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attr
 
 	}
 
-	return ptxservq->qcnt;
+	/* ULLI : return true if !list_empty() */
+
+	return list_empty (&(ptxservq->sta_pending.queue)) ? false : true;
 }
 
 /*
@@ -1954,8 +1955,6 @@ static struct xmit_frame *dequeue_one_xmitframe(struct xmit_priv *pxmitpriv, str
 
 		list_del_init(&pxmitframe->list);
 
-		ptxservq->qcnt--;
-
 		/* list_add_tail(&pxmitframe->list, &phwxmit->pending); */
 
 		/* ptxservq->qcnt--; */
@@ -2113,7 +2112,6 @@ int32_t rtw_xmit_classifier(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfr
 	/* spin_lock_irqsave(&ptxservq->sta_pending.lock, &irqL1); */
 
 	list_add_tail(&pxmitframe->list, get_list_head(&ptxservq->sta_pending));
-	ptxservq->qcnt++;
 
 	/* spin_unlock_irqrestore(&ptxservq->sta_pending.lock, &irqL1); */
 
@@ -2417,8 +2415,6 @@ static void dequeue_xmitframes_to_sleeping_queue(struct rtl_priv *rtlpriv, struc
 			pattrib = &pxmitframe->tx_attrib;
 
 			ptxservq = rtw_get_sta_pending(rtlpriv, psta, pattrib->tx_priority, (uint8_t *)(&ac_index));
-
-			ptxservq->qcnt--;
 		} else 	{
 			/* DBG_871X("xmitframe_enqueue_for_sleeping_sta return _FALSE\n"); */
 		}

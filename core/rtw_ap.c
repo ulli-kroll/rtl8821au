@@ -2379,7 +2379,7 @@ void start_ap_mode(struct rtl_priv *rtlpriv)
 
 
 	//for ACL
-	INIT_LIST_HEAD(&(pacl_list->acl_node_q.queue));
+	INIT_LIST_HEAD(&(pacl_list->acl_node_q.list));
 	pacl_list->num = 0;
 	pacl_list->mode = 0;
 	for(i = 0; i < NUM_ACL; i++) {

@@ -125,7 +125,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 		pxframe->buf_addr = NULL;
 		pxframe->pxmitbuf = NULL;
 
-		list_add_tail(&(pxframe->list), &(pxmitpriv->free_xmit_queue.queue));
+		list_add_tail(&(pxframe->list), &(pxmitpriv->free_xmit_queue.list));
 
 		pxframe++;
 	}
@@ -174,7 +174,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 
 		pxmitbuf->flags = XMIT_VO_QUEUE;
 
-		list_add_tail(&pxmitbuf->list, &(pxmitpriv->free_xmitbuf_queue.queue));
+		list_add_tail(&pxmitbuf->list, &(pxmitpriv->free_xmitbuf_queue.list));
 
 		pxmitbuf++;
 
@@ -208,7 +208,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 
 		pxframe->ext_tag = 1;
 
-		list_add_tail(&(pxframe->list), &(pxmitpriv->free_xframe_ext_queue.queue));
+		list_add_tail(&(pxframe->list), &(pxmitpriv->free_xframe_ext_queue.list));
 
 		pxframe++;
 	}
@@ -242,7 +242,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 		}
 
 
-		list_add_tail(&pxmitbuf->list, &(pxmitpriv->free_xmit_extbuf_queue.queue));
+		list_add_tail(&pxmitbuf->list, &(pxmitpriv->free_xmit_extbuf_queue.list));
 		pxmitbuf++;
 
 	}
@@ -1208,7 +1208,7 @@ bool rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attrib 
 
 	/* ULLI : return true if !list_empty() */
 
-	return list_empty (&(ptxservq->sta_pending.queue)) ? false : true;
+	return list_empty (&(ptxservq->sta_pending.list)) ? false : true;
 }
 
 /*

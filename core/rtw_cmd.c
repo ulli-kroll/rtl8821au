@@ -152,7 +152,7 @@ sint	_rtw_enqueue_cmd(struct __queue *queue, struct cmd_obj *obj)
 	//spin_lock_bh(&queue->lock, &irqL);
 	spin_lock_irqsave(&queue->lock, flags);
 
-	list_add_tail(&obj->list, &queue->queue);
+	list_add_tail(&obj->list, &queue->list);
 
 	//spin_unlock_bh(&queue->lock, &irqL);
 	spin_unlock_irqrestore(&queue->lock, flags);
@@ -173,11 +173,11 @@ struct	cmd_obj	*_rtw_dequeue_cmd(struct __queue *queue)
 
 	//spin_lock_bh(&(queue->lock), &irqL);
 	spin_lock_irqsave(&queue->lock, flags);
-	if (list_empty(&(queue->queue)))
+	if (list_empty(&(queue->list)))
 		obj = NULL;
 	else
 	{
-		obj = container_of(get_next(&(queue->queue)), struct cmd_obj, list);
+		obj = container_of(get_next(&(queue->list)), struct cmd_obj, list);
 		list_del_init(&obj->list);
 	}
 
@@ -2350,7 +2350,7 @@ void rtw_createbss_cmd_callback(struct rtl_priv *rtlpriv, struct cmd_obj *pcmd)
 		}
 		else
 		{
-			list_add_tail(&(pwlan->list), &pmlmepriv->scanned_queue.queue);
+			list_add_tail(&(pwlan->list), &pmlmepriv->scanned_queue.list);
 		}
 
 		pnetwork->Length = get_WLAN_BSSID_EX_sz(pnetwork);

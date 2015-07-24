@@ -77,7 +77,7 @@ sint _rtw_init_mlme_priv (struct rtl_priv *rtlpriv)
 	for (i = 0; i < MAX_BSS_CNT; i++) {
 		INIT_LIST_HEAD(&(pnetwork->list));
 
-		list_add_tail(&(pnetwork->list), &(pmlmepriv->free_bss_pool.queue));
+		list_add_tail(&(pnetwork->list), &(pmlmepriv->free_bss_pool.list));
 
 		pnetwork++;
 	}
@@ -137,7 +137,7 @@ sint _rtw_enqueue_network(struct __queue *queue, struct wlan_network *pnetwork)
 
 	spin_lock_bh(&queue->lock);
 
-	list_add_tail(&pnetwork->list, &queue->queue);
+	list_add_tail(&pnetwork->list, &queue->list);
 
 	spin_unlock_bh(&queue->lock);
 
@@ -188,7 +188,7 @@ struct	wlan_network *_rtw_alloc_network(struct	mlme_priv *pmlmepriv )	/* (struct
 		pnetwork=NULL;
 		goto exit;
 	}
-	plist = get_next(&(free_queue->queue));
+	plist = get_next(&(free_queue->list));
 
 	pnetwork = container_of(plist , struct wlan_network, list);
 
@@ -233,7 +233,7 @@ void _rtw_free_network(struct	mlme_priv *pmlmepriv ,struct wlan_network *pnetwor
 	spin_lock_bh(&free_queue->lock);
 
 	list_del_init(&(pnetwork->list));
-	list_add_tail(&(pnetwork->list),&(free_queue->queue));
+	list_add_tail(&(pnetwork->list),&(free_queue->list));
 
 	pmlmepriv->num_of_scanned --;
 
@@ -708,7 +708,7 @@ void rtw_update_scanned_network(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *target)
 			if (pnetwork->network.PhyInfo.SignalQuality == 101)
 				pnetwork->network.PhyInfo.SignalQuality = 0;
 
-			list_add_tail(&(pnetwork->list),&(queue->queue));
+			list_add_tail(&(pnetwork->list),&(queue->list));
 
 		}
 	}
@@ -995,7 +995,7 @@ static void free_scanqueue(struct	mlme_priv *pmlmepriv)
 	while (plist != phead) {
 		ptemp = get_next(plist);
 		list_del_init(plist);
-		list_add_tail(plist, &free_queue->queue);
+		list_add_tail(plist, &free_queue->list);
 		plist =ptemp;
 		pmlmepriv->num_of_scanned --;
         }

@@ -253,7 +253,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		spin_unlock_bh(&(pstapriv->sta_hash_lock));
 		psta = NULL;
 	} else {
-		psta = container_of(get_next(&pfree_sta_queue->queue), struct sta_info, list);
+		psta = container_of(get_next(&pfree_sta_queue->list), struct sta_info, list);
 
 		list_del_init(&(psta->list));
 

@@ -138,7 +138,7 @@ void rtw_init_timer(_timer *ptimer, void *rtlpriv, void *pfunc)
 void _rtw_init_queue(struct __queue *pqueue)
 {
 
-	INIT_LIST_HEAD(&(pqueue->queue));
+	INIT_LIST_HEAD(&(pqueue->list));
 
 	spin_lock_init(&(pqueue->lock));
 
@@ -146,7 +146,7 @@ void _rtw_init_queue(struct __queue *pqueue)
 
 u32 _rtw_queue_empty(struct __queue *pqueue)
 {
-	return list_empty(&(pqueue->queue));
+	return list_empty(&(pqueue->list));
 }
 
 u32 rtw_end_of_queue_search(struct list_head *head, struct list_head *plist)

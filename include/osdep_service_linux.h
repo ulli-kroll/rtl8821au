@@ -67,7 +67,7 @@
 	typedef struct timer_list _timer;
 
 struct __queue {
-		struct	list_head	queue;
+		struct	list_head list;
 		spinlock_t	lock;
 };
 
@@ -81,7 +81,7 @@ __inline static struct list_head *get_next(struct list_head	*list)
 
 __inline static struct list_head	*get_list_head(struct __queue	*queue)
 {
-	return (&(queue->queue));
+	return (&(queue->list));
 }
 
 #define RTW_TIMER_HDL_ARGS void *FunctionContext

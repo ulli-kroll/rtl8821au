@@ -42,7 +42,6 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 _HAL_INTFS_FILES +=	hal/HalPwrSeqCmd.o \
 			hal/Hal8812PwrSeq.o \
 			hal/Hal8821APwrSeq.o\
-			hal/rtl8812a_xmit.o \
 			hal/rtl8812a_hal_init.o \
 			hal/rtl8812a_phycfg.o \
 			hal/rtl8812a_dm.o \

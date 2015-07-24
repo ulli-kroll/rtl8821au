@@ -654,7 +654,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 	xmitframe_plist = get_next(xmitframe_phead);
 
 	while (rtw_end_of_queue_search(xmitframe_phead, xmitframe_plist) == _FALSE) {
-		pxmitframe = LIST_CONTAINOR(xmitframe_plist, struct xmit_frame, list);
+		pxmitframe = container_of(xmitframe_plist, struct xmit_frame, list);
 		xmitframe_plist = get_next(xmitframe_plist);
 
 		pxmitframe->agg_num = 0; 	/* not first frame of aggregation */

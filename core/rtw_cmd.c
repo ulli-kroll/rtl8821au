@@ -177,7 +177,7 @@ struct	cmd_obj	*_rtw_dequeue_cmd(struct __queue *queue)
 		obj = NULL;
 	else
 	{
-		obj = LIST_CONTAINOR(get_next(&(queue->queue)), struct cmd_obj, list);
+		obj = container_of(get_next(&(queue->queue)), struct cmd_obj, list);
 		list_del_init(&obj->list);
 	}
 

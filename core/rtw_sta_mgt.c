@@ -171,7 +171,7 @@ static void rtw_mfree_all_stainfo(struct sta_priv *pstapriv )
 	plist = get_next(phead);
 
 	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
-		psta = LIST_CONTAINOR(plist, struct sta_info ,list);
+		psta = container_of(plist, struct sta_info ,list);
 		plist = get_next(plist);
 	}
 
@@ -204,7 +204,7 @@ uint32_t _rtw_free_sta_priv(struct sta_priv *pstapriv)
 
 			while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
 				int i;
-				psta = LIST_CONTAINOR(plist, struct sta_info ,hash_list);
+				psta = container_of(plist, struct sta_info ,hash_list);
 				plist = get_next(plist);
 
 				for(i=0; i < 16 ; i++) 	{
@@ -253,7 +253,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		spin_unlock_bh(&(pstapriv->sta_hash_lock));
 		psta = NULL;
 	} else {
-		psta = LIST_CONTAINOR(get_next(&pfree_sta_queue->queue), struct sta_info, list);
+		psta = container_of(get_next(&pfree_sta_queue->queue), struct sta_info, list);
 
 		list_del_init(&(psta->list));
 
@@ -565,7 +565,7 @@ void rtw_free_all_stainfo(struct rtl_priv *rtlpriv)
 		plist = get_next(phead);
 
 		while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
-			psta = LIST_CONTAINOR(plist, struct sta_info ,hash_list);
+			psta = container_of(plist, struct sta_info ,hash_list);
 
 			plist = get_next(plist);
 
@@ -606,7 +606,7 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 
 	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
 
-		psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
+		psta = container_of(plist, struct sta_info, hash_list);
 
 		if ((_rtw_memcmp(psta->hwaddr, addr, ETH_ALEN))== _TRUE) {
 			/* if found the matched address */
@@ -685,7 +685,7 @@ uint8_t rtw_access_ctrl(struct rtl_priv *rtlpriv, uint8_t *mac_addr)
 	phead = get_list_head(pacl_node_q);
 	plist = get_next(phead);
 	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
-		paclnode = LIST_CONTAINOR(plist, struct rtw_wlan_acl_node, list);
+		paclnode = container_of(plist, struct rtw_wlan_acl_node, list);
 		plist = get_next(plist);
 
 		if(_rtw_memcmp(paclnode->addr, mac_addr, ETH_ALEN)) {

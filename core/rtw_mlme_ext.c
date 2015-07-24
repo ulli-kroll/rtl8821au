@@ -4451,7 +4451,7 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 			if (rtw_end_of_queue_search(phead,plist)== _TRUE)
 				break;
 
-			pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
+			pnetwork = container_of(plist, struct wlan_network, list);
 
 			plist = get_next(plist);
 
@@ -6967,7 +6967,7 @@ uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 			while ((rtw_end_of_queue_search(xmitframe_phead, xmitframe_plist)) == _FALSE)
 			{
-				pxmitframe = LIST_CONTAINOR(xmitframe_plist, struct xmit_frame, list);
+				pxmitframe = container_of(xmitframe_plist, struct xmit_frame, list);
 
 				xmitframe_plist = get_next(xmitframe_plist);
 

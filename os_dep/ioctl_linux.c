@@ -1307,7 +1307,7 @@ static int rtw_wx_set_wap(struct net_device *ndev,
 			break;
 		}
 
-		pnetwork = LIST_CONTAINOR(pmlmepriv->pscanned, struct wlan_network, list);
+		pnetwork = container_of(pmlmepriv->pscanned, struct wlan_network, list);
 
 		pmlmepriv->pscanned = get_next(pmlmepriv->pscanned);
 
@@ -1632,7 +1632,7 @@ static int rtw_wx_get_scan(struct net_device *ndev, struct iw_request_info *a,
 			break;
 		}
 
-		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
+		pnetwork = container_of(plist, struct wlan_network, list);
 
 		/* report network only if the current channel set contains the channel to which this network belongs */
 		if (rtw_ch_set_search_ch(rtlpriv->mlmeextpriv.channel_set, pnetwork->network.Configuration.DSConfig) >= 0
@@ -1743,7 +1743,7 @@ static int rtw_wx_set_essid(struct net_device *ndev,
 				break;
 			}
 
-			pnetwork = LIST_CONTAINOR(pmlmepriv->pscanned, struct wlan_network, list);
+			pnetwork = container_of(pmlmepriv->pscanned, struct wlan_network, list);
 
 			pmlmepriv->pscanned = get_next(pmlmepriv->pscanned);
 

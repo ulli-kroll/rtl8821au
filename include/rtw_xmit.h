@@ -437,15 +437,6 @@ struct	xmit_priv	{
 #ifdef PLATFORM_LINUX
 	struct tasklet_struct xmit_tasklet;
 #endif
-	//per AC pending irp
-	int beq_cnt;
-	int bkq_cnt;
-	int viq_cnt;
-	int voq_cnt;
-
-
-
-
 	struct __queue free_xmitbuf_queue;
 	struct __queue pending_xmitbuf_queue;
 	uint8_t *pallocated_xmitbuf;

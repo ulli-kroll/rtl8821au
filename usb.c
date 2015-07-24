@@ -326,16 +326,12 @@ static void usb_write_port_complete(struct urb *purb)
 
 	switch(pxmitbuf->flags) {
 		case VO_QUEUE_INX:
-			pxmitpriv->voq_cnt--;
 			break;
 		case VI_QUEUE_INX:
-			pxmitpriv->viq_cnt--;
 			break;
 		case BE_QUEUE_INX:
-			pxmitpriv->beq_cnt--;
 			break;
 		case BK_QUEUE_INX:
-			pxmitpriv->bkq_cnt--;
 			break;
 		case HIGH_QUEUE_INX:
 #ifdef CONFIG_AP_MODE
@@ -347,46 +343,6 @@ static void usb_write_port_complete(struct urb *purb)
 	}
 
 
-/*
-	spin_lock_irqsave(&pxmitpriv->lock, &irqL);
-
-	pxmitpriv->txirp_cnt--;
-
-	switch(pattrib->priority)
-	{
-		case 1:
-		case 2:
-			pxmitpriv->bkq_cnt--;
-			//DBG_8192C("pxmitpriv->bkq_cnt=%d\n", pxmitpriv->bkq_cnt);
-			break;
-		case 4:
-		case 5:
-			pxmitpriv->viq_cnt--;
-			//DBG_8192C("pxmitpriv->viq_cnt=%d\n", pxmitpriv->viq_cnt);
-			break;
-		case 6:
-		case 7:
-			pxmitpriv->voq_cnt--;
-			//DBG_8192C("pxmitpriv->voq_cnt=%d\n", pxmitpriv->voq_cnt);
-			break;
-		case 0:
-		case 3:
-		default:
-			pxmitpriv->beq_cnt--;
-			//DBG_8192C("pxmitpriv->beq_cnt=%d\n", pxmitpriv->beq_cnt);
-			break;
-
-	}
-
-	spin_unlock_irqrestore(&pxmitpriv->lock, &irqL);
-
-
-	if(pxmitpriv->txirp_cnt==0)
-	{
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete: txirp_cnt== 0, set allrxreturnevt!\n"));
-		_rtw_up_sema(&(pxmitpriv->tx_retevt));
-	}
-*/
         /* rtw_free_xmitframe(pxmitpriv, pxmitframe); */
 
 	if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped ||rtlpriv->bWritePortCancel) {
@@ -474,19 +430,15 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct xmit
 
 	switch(queue_idx) {
 		case VO_QUEUE_INX:
-			pxmitpriv->voq_cnt++;
 			pxmitbuf->flags = VO_QUEUE_INX;
 			break;
 		case VI_QUEUE_INX:
-			pxmitpriv->viq_cnt++;
 			pxmitbuf->flags = VI_QUEUE_INX;
 			break;
 		case BE_QUEUE_INX:
-			pxmitpriv->beq_cnt++;
 			pxmitbuf->flags = BE_QUEUE_INX;
 			break;
 		case BK_QUEUE_INX:
-			pxmitpriv->bkq_cnt++;
 			pxmitbuf->flags = BK_QUEUE_INX;
 			break;
 		case HIGH_QUEUE_INX:

@@ -277,12 +277,6 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 
 	sema_init(&(pxmitpriv->tx_retevt), 0);
 
-	/* per AC pending irp */
-	pxmitpriv->beq_cnt = 0;
-	pxmitpriv->bkq_cnt = 0;
-	pxmitpriv->viq_cnt = 0;
-	pxmitpriv->voq_cnt = 0;
-
 	rtw_hal_init_xmit_priv(rtlpriv);
 
 exit:

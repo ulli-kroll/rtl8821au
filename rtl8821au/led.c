@@ -891,11 +891,11 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 				return;
 			}
 			if (pLed->bLedLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedBlinkInProgress = _FALSE;
 			}
 
@@ -915,11 +915,11 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 				return;
 			}
 			if (pLed->bLedNoLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedNoLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedBlinkInProgress = _FALSE;
 			}
 			pLed->bLedLinkBlinkInProgress = _TRUE;
@@ -940,15 +940,15 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 				return;
 
 			if (pLed->bLedNoLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedNoLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				 pLed->bLedLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedBlinkInProgress = _FALSE;
 			}
 			pLed->bLedScanBlinkInProgress = _TRUE;
@@ -974,11 +974,11 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 				return;
 			}
 			if (pLed->bLedNoLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedNoLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedLinkBlinkInProgress = _FALSE;
 			}
 			pLed->bLedBlinkInProgress = _TRUE;
@@ -996,19 +996,19 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 	case LED_CTL_START_WPS_BOTTON:
 		 if (pLed->bLedWPSBlinkInProgress == _FALSE) {
 			if (pLed->bLedNoLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedNoLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				 pLed->bLedLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedScanBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedScanBlinkInProgress = _FALSE;
 			}
 			pLed->bLedWPSBlinkInProgress = _TRUE;
@@ -1024,23 +1024,23 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 
 	case LED_CTL_STOP_WPS:
 		if (pLed->bLedNoLinkBlinkInProgress == _TRUE) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedNoLinkBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedLinkBlinkInProgress == _TRUE) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			 pLed->bLedLinkBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedBlinkInProgress == _TRUE) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedScanBlinkInProgress == _TRUE) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedScanBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedWPSBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 		} else {
 			pLed->bLedWPSBlinkInProgress = _TRUE;
 		}
@@ -1057,7 +1057,7 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 
 	case LED_CTL_STOP_WPS_FAIL:
 		if (pLed->bLedWPSBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedWPSBlinkInProgress = _FALSE;
 		}
 
@@ -1074,23 +1074,23 @@ static void SwLedControlMode1(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAct
 		pLed->CurrLedState = RTW_LED_OFF;
 		pLed->BlinkingLedState = RTW_LED_OFF;
 		if (pLed->bLedNoLinkBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedNoLinkBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedLinkBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedLinkBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedWPSBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedWPSBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedScanBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedScanBlinkInProgress = _FALSE;
 		}
 
@@ -1156,7 +1156,7 @@ void SwLedControlMode9(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 		if (LedAction == LED_CTL_LINK) {
 			if (rtlpriv->securitypriv.dot11PrivacyAlgrthm != _NO_PRIVACY_) {
 				if (pLed2->bLedBlinkInProgress == _TRUE) {
-					_cancel_timer_ex(&(pLed2->BlinkTimer));
+					del_timer_sync_ex(&(pLed2->BlinkTimer));
 					pLed2->bLedBlinkInProgress = _FALSE;
 				}
 				pLed2->CurrLedState = RTW_LED_ON;
@@ -1186,7 +1186,7 @@ void SwLedControlMode9(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 				return;
 			}
 			if (pLed->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedBlinkInProgress = _FALSE;
 			}
 
@@ -1222,11 +1222,11 @@ void SwLedControlMode9(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 				return;
 
 			if (pLed->bLedNoLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedNoLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedBlinkInProgress = _FALSE;
 			}
 			pLed->bLedScanBlinkInProgress = _TRUE;
@@ -1248,7 +1248,7 @@ void SwLedControlMode9(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 				return;
 			}
 			if (pLed->bLedNoLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedNoLinkBlinkInProgress = _FALSE;
 			}
 			pLed->bLedBlinkInProgress = _TRUE;
@@ -1275,7 +1275,7 @@ void SwLedControlMode9(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 	case LED_CTL_STOP_WPS:	/* WPS connect success */
 		/* LED2 settings */
 		if (pLed2->bLedWPSBlinkInProgress == _TRUE) {
-			_cancel_timer_ex(&(pLed2->BlinkTimer));
+			del_timer_sync_ex(&(pLed2->BlinkTimer));
 			pLed2->bLedBlinkInProgress = _FALSE;
 			pLed2->bLedWPSBlinkInProgress = _FALSE;
 		}
@@ -1285,7 +1285,7 @@ void SwLedControlMode9(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 			_set_timer(&(pLed2->BlinkTimer), 0);
 
 		/* LED1 settings */
-		_cancel_timer_ex(&(pLed1->BlinkTimer));
+		del_timer_sync_ex(&(pLed1->BlinkTimer));
 		pLed1->CurrLedState = RTW_LED_OFF;
 		pLed1->BlinkingLedState = RTW_LED_OFF;
 		if (pLed1->bLedOn)
@@ -1346,32 +1346,32 @@ void SwLedControlMode9(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 		pLed->BlinkingLedState = RTW_LED_OFF;
 
 		if (pLed->bLedNoLinkBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedNoLinkBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedLinkBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedLinkBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedWPSBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedWPSBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedScanBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedScanBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedStartToLinkBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedStartToLinkBlinkInProgress = _FALSE;
 		}
 
 		if (pLed1->bLedWPSBlinkInProgress) {
-			_cancel_timer_ex(&(pLed1->BlinkTimer));
+			del_timer_sync_ex(&(pLed1->BlinkTimer));
 			pLed1->bLedWPSBlinkInProgress = _FALSE;
 		}
 
@@ -1384,7 +1384,7 @@ void SwLedControlMode9(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 	case LED_CTL_CONNECTION_NO_TRANSFER:
 		 if (pLed->bLedBlinkInProgress == _FALSE) {
 			if (pLed->bLedNoLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedNoLinkBlinkInProgress = _FALSE;
 			}
 			pLed->bLedBlinkInProgress = _TRUE;
@@ -1432,7 +1432,7 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 					pLed->CurrLedState = RTW_LED_ON;
 					pLed->BlinkingLedState = RTW_LED_ON;
 					if (pLed->bLedBlinkInProgress == _TRUE) {
-						_cancel_timer_ex(&(pLed->BlinkTimer));
+						del_timer_sync_ex(&(pLed->BlinkTimer));
 						pLed->bLedBlinkInProgress = _FALSE;
 					}
 					_set_timer(&(pLed->BlinkTimer), 0);
@@ -1444,7 +1444,7 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 					pLed1->CurrLedState = RTW_LED_ON;
 					pLed1->BlinkingLedState = RTW_LED_ON;
 					if (pLed1->bLedBlinkInProgress == _TRUE) {
-						_cancel_timer_ex(&(pLed1->BlinkTimer));
+						del_timer_sync_ex(&(pLed1->BlinkTimer));
 						pLed1->bLedBlinkInProgress = _FALSE;
 					}
 					_set_timer(&(pLed1->BlinkTimer), 0);
@@ -1480,11 +1480,11 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 				return;
 
 			if (pLed->bLedNoLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedNoLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedBlinkInProgress = _FALSE;
 			}
 			pLed->bLedScanBlinkInProgress = _TRUE;
@@ -1494,11 +1494,11 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 			_set_timer(&(pLed->BlinkTimer), 0);
 
 			if (pLed1->bLedNoLinkBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed1->BlinkTimer));
+				del_timer_sync_ex(&(pLed1->BlinkTimer));
 				pLed1->bLedNoLinkBlinkInProgress = _FALSE;
 			}
 			if (pLed1->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed1->BlinkTimer));
+				del_timer_sync_ex(&(pLed1->BlinkTimer));
 				pLed1->bLedBlinkInProgress = _FALSE;
 			}
 			pLed1->bLedScanBlinkInProgress = _TRUE;
@@ -1537,7 +1537,7 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 			pLed->CurrLedState = RTW_LED_ON;
 			pLed->BlinkingLedState = RTW_LED_ON;
 			if (pLed->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedBlinkInProgress = _FALSE;
 			}
 			_set_timer(&(pLed->BlinkTimer), 0);
@@ -1550,7 +1550,7 @@ void SwLedControlMode10(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 			pLed1->CurrLedState = RTW_LED_ON;
 			pLed1->BlinkingLedState = RTW_LED_ON;
 			if (pLed1->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed1->BlinkTimer));
+				del_timer_sync_ex(&(pLed1->BlinkTimer));
 				pLed1->bLedBlinkInProgress = _FALSE;
 			}
 			_set_timer(&(pLed1->BlinkTimer), 0);
@@ -1604,7 +1604,7 @@ void SwLedControlMode11(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 
 	case LED_CTL_LINK:
 		if (pLed->bLedBlinkInProgress == _TRUE) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 		pLed->bLedBlinkInProgress = _TRUE;
@@ -1619,7 +1619,7 @@ void SwLedControlMode11(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 	case LED_CTL_START_WPS: /* wait until xinpin finish */
 	case LED_CTL_START_WPS_BOTTON:
 		if (pLed->bLedBlinkInProgress == _TRUE) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 		pLed->bLedWPSBlinkInProgress = _TRUE;
@@ -1638,7 +1638,7 @@ void SwLedControlMode11(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 	case LED_CTL_STOP_WPS:
 	case LED_CTL_STOP_WPS_FAIL:
 		if (pLed->bLedBlinkInProgress == _TRUE) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 		pLed->CurrLedState = LED_BLINK_WPS_STOP;
@@ -1650,23 +1650,23 @@ void SwLedControlMode11(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
 		pLed->BlinkingLedState = RTW_LED_OFF;
 
 		if (pLed->bLedNoLinkBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedNoLinkBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedLinkBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedLinkBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedWPSBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedWPSBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedScanBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedScanBlinkInProgress = _FALSE;
 		}
 
@@ -1698,12 +1698,12 @@ static void SwLedControlMode13(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAc
 		pLed->CurrLedState = RTW_LED_ON;
 		pLed->BlinkingLedState = RTW_LED_ON;
 		if (pLed->bLedBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 
 		if (pLed->bLedScanBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedScanBlinkInProgress = _FALSE;
 		}
 
@@ -1714,11 +1714,11 @@ static void SwLedControlMode13(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAc
 	case LED_CTL_START_WPS_BOTTON:
 		if (pLed->bLedWPSBlinkInProgress == _FALSE) {
 			if (pLed->bLedBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedBlinkInProgress = _FALSE;
 			}
 			if (pLed->bLedScanBlinkInProgress == _TRUE) {
-				_cancel_timer_ex(&(pLed->BlinkTimer));
+				del_timer_sync_ex(&(pLed->BlinkTimer));
 				pLed->bLedScanBlinkInProgress = _FALSE;
 			}
 			pLed->bLedWPSBlinkInProgress = _TRUE;
@@ -1735,7 +1735,7 @@ static void SwLedControlMode13(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAc
 
 	case LED_CTL_STOP_WPS:
 		if (pLed->bLedWPSBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedWPSBlinkInProgress = _FALSE;
 		} else {
 			pLed->bLedWPSBlinkInProgress = _TRUE;
@@ -1755,7 +1755,7 @@ static void SwLedControlMode13(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAc
 	case LED_CTL_STOP_WPS_FAIL:
 	case LED_CTL_STOP_WPS_FAIL_OVERLAP: /* WPS session overlap */
 		if (pLed->bLedWPSBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedWPSBlinkInProgress = _FALSE;
 		}
 
@@ -1779,11 +1779,11 @@ static void SwLedControlMode13(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAc
 			return;
 		}
 		if (pLed->bLedBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedScanBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedScanBlinkInProgress = _FALSE;
 		}
 		/* if (!IS_LED_BLINKING(pLed)) */
@@ -1799,15 +1799,15 @@ static void SwLedControlMode13(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAc
 		pLed->CurrLedState = RTW_LED_OFF;
 		pLed->BlinkingLedState = RTW_LED_OFF;
 		if (pLed->bLedBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedScanBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedScanBlinkInProgress = _FALSE;
 		}
 		if (pLed->bLedWPSBlinkInProgress) {
-			_cancel_timer_ex(&(pLed->BlinkTimer));
+			del_timer_sync_ex(&(pLed->BlinkTimer));
 			pLed->bLedWPSBlinkInProgress = _FALSE;
 		}
 
@@ -1920,7 +1920,7 @@ static void InitLed(struct rtl_priv *rtlpriv,	struct rtl_led *pLed, enum rtl_led
 static void DeInitLed(struct rtl_led *pLed)
 {
 	cancel_work_sync(&(pLed->BlinkWorkItem));
-	_cancel_timer_ex(&(pLed->BlinkTimer));
+	del_timer_sync_ex(&(pLed->BlinkTimer));
 	ResetLedStatus(pLed);
 }
 

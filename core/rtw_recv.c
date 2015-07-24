@@ -2309,7 +2309,7 @@ int recv_indicatepkt_reorder(struct rtl_priv *rtlpriv, struct recv_frame *prfram
 	else
 	{
 		spin_unlock_bh(&ppending_recvframe_queue->lock);
-		_cancel_timer_ex(&preorder_ctrl->reordering_ctrl_timer);
+		del_timer_sync_ex(&preorder_ctrl->reordering_ctrl_timer);
 	}
 
 

@@ -144,7 +144,7 @@ extern void rtw_yield_os(void);
 extern void rtw_init_timer(_timer *ptimer, void *rtlpriv, void *pfunc);
 
 
-__inline static unsigned char _cancel_timer_ex(_timer *ptimer)
+__inline static unsigned char del_timer_sync_ex(_timer *ptimer)
 {
 #ifdef PLATFORM_LINUX
 	return del_timer_sync(ptimer);

@@ -555,9 +555,9 @@ void free_mlme_ext_priv (struct mlme_ext_priv *pmlmeext)
 
 	if (rtlpriv->bDriverStopped == _TRUE)
 	{
-		_cancel_timer_ex(&pmlmeext->survey_timer);
-		_cancel_timer_ex(&pmlmeext->link_timer);
-		//_cancel_timer_ex(&pmlmeext->ADDBA_timer);
+		del_timer_sync_ex(&pmlmeext->survey_timer);
+		del_timer_sync_ex(&pmlmeext->link_timer);
+		//del_timer_sync_ex(&pmlmeext->ADDBA_timer);
 	}
 }
 
@@ -1850,7 +1850,7 @@ unsigned int OnAssocRsp(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 	if (pmlmeinfo->state & WIFI_FW_ASSOC_SUCCESS)
 		return _SUCCESS;
 
-	_cancel_timer_ex(&pmlmeext->link_timer);
+	del_timer_sync_ex(&pmlmeext->link_timer);
 
 	//status
 	if ((status = le16_to_cpu(*(unsigned short *)(pframe + WLAN_HDR_A3_LEN + 2))) > 0)
@@ -5043,7 +5043,7 @@ void start_clnt_auth(struct rtl_priv* rtlpriv)
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	_cancel_timer_ex(&pmlmeext->link_timer);
+	del_timer_sync_ex(&pmlmeext->link_timer);
 
 	pmlmeinfo->state &= (~WIFI_FW_AUTH_NULL);
 	pmlmeinfo->state |= WIFI_FW_AUTH_STATE;
@@ -5075,7 +5075,7 @@ void start_clnt_assoc(struct rtl_priv* rtlpriv)
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	_cancel_timer_ex(&pmlmeext->link_timer);
+	del_timer_sync_ex(&pmlmeext->link_timer);
 
 	pmlmeinfo->state &= (~(WIFI_FW_AUTH_NULL | WIFI_FW_AUTH_STATE));
 	pmlmeinfo->state |= (WIFI_FW_AUTH_SUCCESS | WIFI_FW_ASSOC_STATE);
@@ -5895,7 +5895,7 @@ void mlmeext_sta_del_event_callback(struct rtl_priv *rtlpriv)
 		//set MSR to no link state -> infra. mode
 		Set_MSR(rtlpriv, _HW_STATE_STATION_);
 
-		_cancel_timer_ex(&pmlmeext->link_timer);
+		del_timer_sync_ex(&pmlmeext->link_timer);
 
 	}
 
@@ -6293,7 +6293,7 @@ uint8_t createbss_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		//rtw_hal_set_hwreg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
 
 		//cancel link timer
-		_cancel_timer_ex(&pmlmeext->link_timer);
+		del_timer_sync_ex(&pmlmeext->link_timer);
 
 		//clear CAM
 		flush_all_cam_entry(rtlpriv);
@@ -6340,7 +6340,7 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		//clear CAM
 		flush_all_cam_entry(rtlpriv);
 
-		_cancel_timer_ex(&pmlmeext->link_timer);
+		del_timer_sync_ex(&pmlmeext->link_timer);
 
 		//set MSR to nolink -> infra. mode
 		//Set_MSR(rtlpriv, _HW_STATE_NOLINK_);
@@ -6468,7 +6468,7 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
 
 	//cancel link timer
-	_cancel_timer_ex(&pmlmeext->link_timer);
+	del_timer_sync_ex(&pmlmeext->link_timer);
 
 	start_clnt_join(rtlpriv);
 
@@ -6519,7 +6519,7 @@ uint8_t disconnect_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 	flush_all_cam_entry(rtlpriv);
 
-	_cancel_timer_ex(&pmlmeext->link_timer);
+	del_timer_sync_ex(&pmlmeext->link_timer);
 
 	rtw_free_uc_swdec_pending_queue(rtlpriv);
 

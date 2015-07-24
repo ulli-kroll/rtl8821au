@@ -897,7 +897,7 @@ void rtw_surveydone_event_callback(struct rtl_priv	*rtlpriv, uint8_t *pbuf)
 	}
 
 	if (check_fwstate(pmlmepriv,_FW_UNDER_SURVEY)) {
-		_cancel_timer(&pmlmepriv->scan_to_timer);
+		del_timer_sync(&pmlmepriv->scan_to_timer);
 
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
 	} else {
@@ -1412,7 +1412,7 @@ void rtw_joinbss_event_prehandle(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 
 			//s5. Cancle assoc_timer
-			_cancel_timer(&pmlmepriv->assoc_timer);
+			del_timer_sync(&pmlmepriv->assoc_timer);
 
 
 		}

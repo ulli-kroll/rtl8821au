@@ -99,11 +99,6 @@ __inline static void _set_timer(_timer *ptimer,u32 delay_time)
 	mod_timer(ptimer , (jiffies+(delay_time*HZ/1000)));
 }
 
-__inline static void _cancel_timer(_timer *ptimer)
-{
-	del_timer_sync(ptimer);
-}
-
 static inline int rtw_netif_queue_stopped(struct net_device *ndev)
 {
 	return (netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 0)) &&

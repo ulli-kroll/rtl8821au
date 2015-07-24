@@ -2296,7 +2296,7 @@ void rtw_createbss_cmd_callback(struct rtl_priv *rtlpriv, struct cmd_obj *pcmd)
 		_set_timer(&pmlmepriv->assoc_timer, 1 );
 	}
 
-	_cancel_timer(&pmlmepriv->assoc_timer);
+	del_timer_sync(&pmlmepriv->assoc_timer);
 
 #ifdef CONFIG_FW_MLMLE
        //endian_convert

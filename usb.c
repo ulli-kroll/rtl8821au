@@ -1113,24 +1113,24 @@ static void rtw_dev_unload(struct rtl_priv *rtlpriv)
 
 static void rtw_cancel_all_timer(struct rtl_priv *rtlpriv)
 {
-	_cancel_timer_ex(&rtlpriv->mlmepriv.assoc_timer);
+	del_timer_sync_ex(&rtlpriv->mlmepriv.assoc_timer);
 
 	/*
-	 * _cancel_timer_ex(&rtlpriv->securitypriv.tkip_timer);
+	 * del_timer_sync_ex(&rtlpriv->securitypriv.tkip_timer);
 	 * RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel tkip_timer! \n"));
 	 */
 
-	_cancel_timer_ex(&rtlpriv->mlmepriv.scan_to_timer);
-	_cancel_timer_ex(&rtlpriv->mlmepriv.dynamic_chk_timer);
+	del_timer_sync_ex(&rtlpriv->mlmepriv.scan_to_timer);
+	del_timer_sync_ex(&rtlpriv->mlmepriv.dynamic_chk_timer);
 
 	/* cancel sw led timer */
 	rtw_hal_sw_led_deinit(rtlpriv);
 
-	_cancel_timer_ex(&rtlpriv->pwrctrlpriv.pwr_state_check_timer);
+	del_timer_sync_ex(&rtlpriv->pwrctrlpriv.pwr_state_check_timer);
 
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
-	_cancel_timer_ex(&rtlpriv->recvpriv.signal_stat_timer);
+	del_timer_sync_ex(&rtlpriv->recvpriv.signal_stat_timer);
 #endif
 	/* cancel dm timer */
 	rtw_hal_dm_deinit(rtlpriv);

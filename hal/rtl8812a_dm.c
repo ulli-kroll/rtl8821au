@@ -157,7 +157,7 @@ void rtl8812_deinit_dm_priv(IN struct rtl_priv *rtlpriv)
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *		podmpriv = &pHalData->odmpriv;
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
-	/* _cancel_timer_ex(&pdmpriv->SwAntennaSwitchTimer); */
+	/* del_timer_sync_ex(&pdmpriv->SwAntennaSwitchTimer); */
 	ODM_CancelAllTimers(podmpriv);
 #endif
 }

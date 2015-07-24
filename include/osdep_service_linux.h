@@ -73,9 +73,6 @@ struct __queue {
 
 	typedef	int	_OS_STATUS;
 
-	typedef void timer_hdl_return;
-	typedef void* timer_hdl_context;
-
 
 __inline static struct list_head *get_next(struct list_head	*list)
 {
@@ -108,24 +105,6 @@ __inline static void _cancel_timer(_timer *ptimer,u8 *bcancelled)
 	*bcancelled=  _TRUE;//TRUE ==1; FALSE==0
 }
 
-//
-// Global Mutex: can only be used at PASSIVE level.
-//
-
-#define ACQUIRE_GLOBAL_MUTEX(_MutexCounter)                              \
-{                                                               \
-	while (atomic_inc_return((atomic_t *)&(_MutexCounter)) != 1)\
-	{                                                           \
-		atomic_dec((atomic_t *)&(_MutexCounter));        \
-		msleep(10);                          \
-	}                                                           \
-}
-
-#define RELEASE_GLOBAL_MUTEX(_MutexCounter)                              \
-{                                                               \
-	atomic_dec((atomic_t *)&(_MutexCounter));        \
-}
-
 static inline int rtw_netif_queue_stopped(struct net_device *ndev)
 {
 	return (netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 0)) &&
@@ -149,9 +128,6 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 	netif_tx_stop_all_queues(ndev);
 }
 
-#define rtw_signal_process(pid, sig) kill_pid(find_vpid((pid)),(sig), 1)
-
-
 
 // limitation of path length
 #define PATH_LENGTH_MAX PATH_MAX
@@ -164,9 +140,6 @@ static inline void rtw_netif_stop_queue(struct net_device *ndev)
 #define FUNC_NDEV_ARG(ndev) __func__, ndev->name
 #define FUNC_ADPT_FMT "%s(%s)"
 #define FUNC_ADPT_ARG(rtlpriv) __func__, rtlpriv->ndev->name
-
-#define STRUCT_PACKED __attribute__ ((packed))
-
 
 #endif
 

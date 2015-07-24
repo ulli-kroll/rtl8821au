@@ -67,18 +67,6 @@
 #define FW_START_ADDRESS		0x1000
 #define FW_END_ADDRESS		0x5FFF
 
-
-
-typedef struct _RT_FIRMWARE_8812 {
-#ifdef CONFIG_EMBEDDED_FWIMG
-	u8*			szFwBuffer;
-#else
-	uint8_t			szFwBuffer[FW_SIZE_8812];
-#endif
-	u32			ulFwLength;
-
-} RT_FIRMWARE_8812, *PRT_FIRMWARE_8812;
-
 //
 // This structure must be cared byte-ordering
 //

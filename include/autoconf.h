@@ -41,13 +41,10 @@
  */
 //#define CONFIG_PWRCTRL
 
-#define CONFIG_EMBEDDED_FWIMG	1
+/* ULLI : currently we keep this for grep */
 
 #define CONFIG_80211N_HT	1
-
-#ifdef CONFIG_80211N_HT
-	#define CONFIG_80211AC_VHT 1
-#endif
+#define CONFIG_80211AC_VHT 1
 
 #define CONFIG_RECV_REORDERING_CTRL	1
 

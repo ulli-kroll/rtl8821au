@@ -31,9 +31,6 @@
 #define AUTOCONF_INCLUDED
 #define DRV_NAME "rtl8821au"
 
-#define PLATFORM_LINUX	1
-
-
 //#define CONFIG_IOCTL_CFG80211 1
 
 /*

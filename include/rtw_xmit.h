@@ -238,9 +238,8 @@ struct  submit_ctx{
 	u32 submit_time; /* */
 	u32 timeout_ms; /* <0: not synchronous, 0: wait forever, >0: up to ms waiting */
 	int status; /* status for operation */
-#ifdef PLATFORM_LINUX
+
 	struct completion done;
-#endif
 };
 
 enum {
@@ -288,12 +287,8 @@ struct xmit_buf
 	//u32 sz[8];
 	u32	ff_hwaddr;
 
-#if defined(PLATFORM_LINUX)
 	struct urb *pxmit_urb[8];
 	dma_addr_t dma_transfer_addr;	/* (in) dma addr for transfer_buffer */
-#endif
-
-
 
 	uint8_t bpending[8];
 
@@ -433,9 +428,8 @@ struct	xmit_priv	{
 	struct semaphore	tx_retevt;//all tx return event;
 	uint8_t		txirp_cnt;//
 
-#ifdef PLATFORM_LINUX
 	struct tasklet_struct xmit_tasklet;
-#endif
+
 	struct __queue free_xmitbuf_queue;
 	struct __queue pending_xmitbuf_queue;
 	uint8_t *pallocated_xmitbuf;

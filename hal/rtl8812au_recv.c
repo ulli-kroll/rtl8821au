@@ -41,11 +41,9 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 	int	i, res = _SUCCESS;
 	struct recv_buf *precvbuf;
 
-#ifdef PLATFORM_LINUX
 	tasklet_init(&precvpriv->recv_tasklet,
 	     (void(*)(unsigned long))rtl8812au_recv_tasklet,
 	     (unsigned long)rtlpriv);
-#endif
 
 	/* init recv_buf */
 	_rtw_init_queue(&precvpriv->free_recv_buf_queue);
@@ -88,8 +86,6 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 
 	precvpriv->free_recv_buf_queue_cnt = NR_RECVBUFF;
 
-#ifdef PLATFORM_LINUX
-
 	skb_queue_head_init(&precvpriv->rx_skb_queue);
 
 #ifdef CONFIG_PREALLOC_RECV_SKB
@@ -120,7 +116,6 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 		}
 	}
 #endif
-#endif
 
 exit:
 	return res;
@@ -142,8 +137,6 @@ void rtl8812au_free_recv_priv (struct rtl_priv *rtlpriv)
 	if (precvpriv->pallocated_recv_buf)
 		rtw_mfree(precvpriv->pallocated_recv_buf);
 
-#ifdef PLATFORM_LINUX
-
 	if (skb_queue_len(&precvpriv->rx_skb_queue)) {
 		DBG_8192C(KERN_WARNING "rx_skb_queue not empty\n");
 	}
@@ -159,9 +152,6 @@ void rtl8812au_free_recv_priv (struct rtl_priv *rtlpriv)
 	skb_queue_purge(&precvpriv->free_recv_skb_queue);
 
 #endif
-
-#endif
-
 }
 
 

@@ -33,9 +33,7 @@
 #define _FALSE		0
 
 
-#ifdef PLATFORM_LINUX
 #include <osdep_service_linux.h>
-#endif
 
 #define RTW_TIMER_HDL_NAME(name) rtw_##name##_timer_hdl
 #define RTW_DECLARE_TIMER_HDL(name) void RTW_TIMER_HDL_NAME(name)(RTW_TIMER_HDL_ARGS)
@@ -145,43 +143,29 @@ extern void rtw_init_timer(_timer *ptimer, void *rtlpriv, void *pfunc);
 
 __inline static unsigned char del_timer_sync_ex(_timer *ptimer)
 {
-#ifdef PLATFORM_LINUX
 	return del_timer_sync(ptimer);
-#endif
 }
 
 static __inline void thread_enter(char *name)
 {
-#ifdef PLATFORM_LINUX
 	allow_signal(SIGTERM);
-#endif
 }
 
 __inline static void flush_signals_thread(void)
 {
-#ifdef PLATFORM_LINUX
-	if (signal_pending (current))
-	{
+	if (signal_pending (current)) {
 		flush_signals(current);
 	}
-#endif
 }
 
 __inline static _OS_STATUS res_to_status(sint res)
 {
-
-#if defined (PLATFORM_LINUX) || defined (PLATFORM_MPIXEL)
 	return res;
-#endif
-
-
 }
 
 __inline static void rtw_dump_stack(void)
 {
-#ifdef PLATFORM_LINUX
 	dump_stack();
-#endif
 }
 
 __inline static int rtw_bug_check(void *parg1, void *parg2, void *parg3, void *parg4)

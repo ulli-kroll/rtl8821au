@@ -324,8 +324,6 @@ struct ieee_ibss_seq {
 	struct list_head	list;
 };
 
-#if defined(PLATFORM_LINUX)
-
 struct rtw_ieee80211_hdr {
 	u16 frame_ctl;
 	u16 duration_id;
@@ -374,8 +372,6 @@ struct eapol {
 	uint8_t type;
 	u16 length;
 } __attribute__ ((packed));
-
-#endif
 
 enum eap_type {
 	EAP_PACKET = 0,
@@ -485,8 +481,6 @@ enum eap_type {
 
 #define P80211_OUI_LEN 3
 
-#if defined(PLATFORM_LINUX)
-
 struct ieee80211_snap_hdr {
 
         uint8_t    dsap;   /* always 0xAA */
@@ -495,9 +489,6 @@ struct ieee80211_snap_hdr {
         uint8_t    oui[P80211_OUI_LEN];    /* organizational universal id */
 
 } __attribute__ ((packed));
-
-#endif
-
 
 #define SNAP_SIZE sizeof(struct ieee80211_snap_hdr)
 
@@ -667,8 +658,6 @@ struct ieee80211_snap_hdr {
 #define WEP_KEYS 4
 #define WEP_KEY_LEN 13
 
-#if defined(PLATFORM_LINUX)
-
 struct ieee80211_security {
 	u16 active_key:2,
             enabled:1,
@@ -680,8 +669,6 @@ struct ieee80211_security {
 	uint8_t level;
 	u16 flags;
 } __attribute__ ((packed));
-
-#endif
 
 /*
 
@@ -723,8 +710,6 @@ struct ieee80211_header_data {
 #define MFIE_TYPE_RATES_EX   50
 #define MFIE_TYPE_GENERIC    221
 
-#if defined(PLATFORM_LINUX)
-
 struct ieee80211_info_element_hdr {
 	uint8_t id;
 	uint8_t len;
@@ -735,7 +720,6 @@ struct ieee80211_info_element {
 	uint8_t len;
 	uint8_t data[0];
 } __attribute__ ((packed));
-#endif
 
 /*
  * These are the data types that can make up management packets

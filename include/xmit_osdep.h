@@ -32,8 +32,6 @@ struct pkt_file {
 
 
 
-#ifdef PLATFORM_LINUX
-
 #define NR_XMITFRAME	256
 
 struct xmit_priv;
@@ -43,8 +41,6 @@ struct xmit_frame;
 struct xmit_buf;
 
 extern int rtw_xmit_entry(struct sk_buff *pkt, struct  net_device *ndev);
-
-#endif
 
 void rtw_os_xmit_schedule(struct rtl_priv *rtlpriv);
 

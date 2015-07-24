@@ -874,9 +874,7 @@ int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_f
 		pxmitpriv->tx_pkts--;
 		pxmitpriv->tx_drop++;
 	} else {
-#ifdef PLATFORM_LINUX
 		tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
-#endif
 	}
 
 	return err;

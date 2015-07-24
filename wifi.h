@@ -1520,13 +1520,10 @@ struct rtl_priv {
 	void *xmitThread;
 	void *recvThread;
 
-#ifdef PLATFORM_LINUX
 	int bup;
 	struct net_device_stats stats;
 	struct iw_statistics iwstats;
 	struct proc_dir_entry *dir_dev;// for proc directory
-
-#endif //end of PLATFORM_LINUX
 
 	int net_closed;
 

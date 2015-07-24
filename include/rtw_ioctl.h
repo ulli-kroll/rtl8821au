@@ -160,9 +160,8 @@ struct oid_obj_priv {
 };
 
 
-#if defined(PLATFORM_LINUX) && defined(CONFIG_WIRELESS_EXT)
 extern struct iw_handler_def  rtw_handlers_def;
-#endif
+
 extern	NDIS_STATUS drv_query_info(
 	IN	struct  net_device	*MiniportAdapterContext,
 	IN	NDIS_OID		Oid,

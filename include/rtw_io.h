@@ -21,21 +21,14 @@
 #ifndef _RTW_IO_H_
 #define _RTW_IO_H_
 
-
-#ifdef PLATFORM_LINUX
-
+/* ULLI : must remove this ?? */
 
 #define rtw_usb_buffer_alloc(dev, size, dma) usb_alloc_coherent((dev), (size), (in_interrupt() ? GFP_ATOMIC : GFP_KERNEL), (dma))
 #define rtw_usb_buffer_free(dev, size, addr, dma) usb_free_coherent((dev), (size), (addr), (dma))
 
-#endif //PLATFORM_LINUX
-
-
 #define NUM_IOREQ		8
 
-#ifdef PLATFORM_LINUX
 #define MAX_PROT_SZ	(64-16)
-#endif
 
 #define _IOREADY			0
 #define _IO_WAIT_COMPLETE   1

@@ -47,8 +47,6 @@ The protection mechanism is through the pending queue.
 
 	struct mutex ioctl_mutex;	/* ULLI: never used */
 
-
-#ifdef PLATFORM_LINUX
 	// when in USB, IO is through interrupt in/out endpoints
 	struct usb_device 	*udev;
 	struct urb *piorw_urb;
@@ -58,9 +56,6 @@ The protection mechanism is through the pending queue.
 	_timer	io_timer;
 	uint8_t bio_irp_timeout;
 	uint8_t bio_timer_cancel;
-#endif
-
-
 };
 
 
@@ -72,7 +67,6 @@ int rtw_stop_pseudo_adhoc(struct rtl_priv *rtlpriv);
 u32 rtw_start_drv_threads(struct rtl_priv *rtlpriv);
 void rtw_stop_drv_threads (struct rtl_priv *rtlpriv);
 
-#ifdef PLATFORM_LINUX
 int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
 
 u16 rtw_recv_select_queue(struct sk_buff *skb);
@@ -88,9 +82,6 @@ static void rtw_proc_remove_one(struct net_device *dev){}
 /*
  *	#endif //!CONFIG_PROC_DEBUG
 */
-#endif //PLATFORM_LINUX
-
-
 
 void rtw_ips_dev_unload(struct rtl_priv *rtlpriv);
 int rtw_ips_pwr_up(struct rtl_priv *rtlpriv);

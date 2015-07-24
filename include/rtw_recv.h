@@ -263,7 +263,6 @@ struct recv_priv
 	uint8_t	rx_pending_cnt;
 
 
-#if defined(PLATFORM_LINUX)
 	struct tasklet_struct irq_prepare_beacon_tasklet;
 	struct tasklet_struct recv_tasklet;
 	struct sk_buff_head free_recv_skb_queue;
@@ -272,8 +271,6 @@ struct recv_priv
 	struct task rx_indicate_tasklet;
 	struct ifqueue rx_indicate_queue;
 #endif	// CONFIG_RX_INDICATE_QUEUE
-
-#endif //defined(PLATFORM_LINUX)
 
 	uint8_t *pallocated_recv_buf;
 	uint8_t *precv_buf;    // 4 alignment
@@ -347,22 +344,16 @@ struct recv_buf
 	uint8_t	*ptail;
 	uint8_t	*pend;
 
-
-	#if defined(PLATFORM_LINUX)
 	struct urb *purb;
 	dma_addr_t dma_transfer_addr;	/* (in) dma addr for transfer_buffer */
 	u32 alloc_sz;
-	#endif
-
 
 	uint8_t  irp_pending;
 	int  transfer_len;
 
 
-#ifdef PLATFORM_LINUX
 	struct sk_buff *pskb;
 	uint8_t	reuse;
-#endif
 };
 
 

@@ -27,11 +27,9 @@ int32_t	rtl8812au_init_xmit_priv(struct rtl_priv *rtlpriv)
 	struct xmit_priv	*pxmitpriv = &rtlpriv->xmitpriv;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
-#ifdef PLATFORM_LINUX
 	tasklet_init(&pxmitpriv->xmit_tasklet,
 	     (void(*)(unsigned long))rtl8812au_xmit_tasklet,
 	     (unsigned long)rtlpriv);
-#endif
 	return _SUCCESS;
 }
 

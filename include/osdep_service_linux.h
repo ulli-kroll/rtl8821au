@@ -92,11 +92,6 @@ __inline static struct list_head	*get_list_head(struct __queue	*queue)
         ((type *)((char *)(ptr)-(SIZE_T)(&((type *)0)->member)))
 
 
-__inline static void rtw_list_delete(struct list_head *plist)
-{
-	list_del_init(plist);
-}
-
 #define RTW_TIMER_HDL_ARGS void *FunctionContext
 
 __inline static void _init_timer(_timer *ptimer,struct net_device *nic_hdl,void *pfunc,void* cntx)

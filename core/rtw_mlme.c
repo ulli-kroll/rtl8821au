@@ -165,7 +165,7 @@ struct	wlan_network *_rtw_dequeue_network(struct __queue *queue)
 	{
 		pnetwork = LIST_CONTAINOR(get_next(&queue->queue), struct wlan_network, list);
 
-		rtw_list_delete(&(pnetwork->list));
+		list_del_init(&(pnetwork->list));
 	}
 
 	spin_unlock_bh(&queue->lock, &irqL);
@@ -192,7 +192,7 @@ struct	wlan_network *_rtw_alloc_network(struct	mlme_priv *pmlmepriv )	/* (struct
 
 	pnetwork = LIST_CONTAINOR(plist , struct wlan_network, list);
 
-	rtw_list_delete(&pnetwork->list);
+	list_del_init(&pnetwork->list);
 
 	pnetwork->network_type = 0;
 	pnetwork->fixed = _FALSE;
@@ -232,8 +232,7 @@ void _rtw_free_network(struct	mlme_priv *pmlmepriv ,struct wlan_network *pnetwor
 
 	spin_lock_bh(&free_queue->lock);
 
-	rtw_list_delete(&(pnetwork->list));
-
+	list_del_init(&(pnetwork->list));
 	list_add_tail(&(pnetwork->list),&(free_queue->queue));
 
 	pmlmepriv->num_of_scanned --;
@@ -261,8 +260,7 @@ void _rtw_free_network_nolock(struct	mlme_priv *pmlmepriv, struct wlan_network *
 
 	/* spin_lock_irqsave(&free_queue->lock, &irqL); */
 
-	rtw_list_delete(&(pnetwork->list));
-
+	list_del_init(&(pnetwork->list));
 	list_add_tail(&(pnetwork->list), get_list_head(free_queue));
 
 	pmlmepriv->num_of_scanned --;
@@ -998,7 +996,7 @@ static void free_scanqueue(struct	mlme_priv *pmlmepriv)
 
 	while (plist != phead) {
 		ptemp = get_next(plist);
-		rtw_list_delete(plist);
+		list_del_init(plist);
 		list_add_tail(plist, &free_queue->queue);
 		plist =ptemp;
 		pmlmepriv->num_of_scanned --;

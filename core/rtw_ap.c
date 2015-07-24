@@ -375,7 +375,7 @@ void	expire_timeout_chk(struct rtl_priv *rtlpriv)
 		if (psta->expire_to > 0) {
 			psta->expire_to--;
 			if (psta->expire_to == 0) {
-				rtw_list_delete(&psta->auth_list);
+				list_del_init(&psta->auth_list);
 				pstapriv->auth_list_cnt--;
 
 				DBG_871X("auth expire %02X%02X%02X%02X%02X%02X\n",
@@ -453,7 +453,7 @@ void	expire_timeout_chk(struct rtl_priv *rtlpriv)
 #endif // CONFIG_TX_MCAST2UNI
 
 		if (psta->expire_to <= 0) {
-			rtw_list_delete(&psta->asoc_list);
+			list_del_init(&psta->asoc_list);
 			pstapriv->asoc_list_cnt--;
 
 			DBG_871X("asoc expire "MAC_FMT", state=0x%x\n", MAC_ARG(psta->hwaddr), psta->state);
@@ -1440,7 +1440,7 @@ int rtw_acl_remove_sta(struct rtl_priv *rtlpriv, uint8_t *addr)
 			if (paclnode->valid == _TRUE) {
 				paclnode->valid = _FALSE;
 
-				rtw_list_delete(&paclnode->list);
+				list_del_init(&paclnode->list);
 
 				pacl_list->num--;
 			}
@@ -2189,7 +2189,7 @@ int rtw_sta_flush(struct rtl_priv *rtlpriv)
 
 		plist = get_next(plist);
 
-		rtw_list_delete(&psta->asoc_list);
+		list_del_init(&psta->asoc_list);
 		pstapriv->asoc_list_cnt--;
 
 		//spin_unlock_bh(&pstapriv->asoc_list_lock, &irqL);
@@ -2419,7 +2419,7 @@ void stop_ap_mode(struct rtl_priv *rtlpriv)
 		if (paclnode->valid == _TRUE) {
 			paclnode->valid = _FALSE;
 
-			rtw_list_delete(&paclnode->list);
+			list_del_init(&paclnode->list);
 
 			pacl_list->num--;
 		}

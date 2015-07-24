@@ -156,7 +156,7 @@ struct recv_frame *_rtw_alloc_recvframe (struct __queue *pfree_recv_queue)
 
 		precvframe = container_of(plist, struct recv_frame, list);
 
-		rtw_list_delete(&precvframe->list);
+		list_del_init(&precvframe->list);
 		rtlpriv=precvframe->rtlpriv;
 		if(rtlpriv !=NULL){
 			precvpriv=&rtlpriv->recvpriv;
@@ -200,7 +200,7 @@ int rtw_free_recvframe(struct recv_frame *precvframe, struct __queue *pfree_recv
 
 	spin_lock_bh(&pfree_recv_queue->lock);
 
-	rtw_list_delete(&(precvframe->list));
+	list_del_init(&(precvframe->list));
 
 	precvframe->len = 0;
 
@@ -226,9 +226,7 @@ sint _rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue
 	struct recv_priv *precvpriv = &rtlpriv->recvpriv;
 
 	/*INIT_LIST_HEAD(&(precvframe->u.hdr.list)); */
-	rtw_list_delete(&(precvframe->list));
-
-
+	list_del_init(&(precvframe->list));
 	list_add_tail(&(precvframe->list), get_list_head(queue));
 
 	if (rtlpriv != NULL) {
@@ -286,7 +284,7 @@ void rtw_free_recvframe_queue(struct __queue *pframequeue,  struct __queue *pfre
 		plist = get_next(plist);
 
 		/*
-		 * rtw_list_delete(&precvframe->u.hdr.list);
+		 * list_del_init(&precvframe->u.hdr.list);
 		 * will do this in rtw_free_recvframe()
 		 */
 
@@ -317,7 +315,7 @@ sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, struct __queue *queu
 {
 	spin_lock_bh(&queue->lock);
 
-	rtw_list_delete(&precvbuf->list);
+	list_del_init(&precvbuf->list);
 	list_add(&precvbuf->list, get_list_head(queue));
 
 	spin_unlock_bh(&queue->lock);
@@ -331,8 +329,7 @@ sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, struct __queue *queue)
 
 	spin_lock_irqsave(&queue->lock, flags);
 
-	rtw_list_delete(&precvbuf->list);
-
+	list_del_init(&precvbuf->list);
 	list_add_tail(&precvbuf->list, get_list_head(queue));
 	spin_unlock_irqrestore(&queue->lock, flags);
 	return _SUCCESS;
@@ -355,7 +352,7 @@ struct recv_buf *rtw_dequeue_recvbuf (struct __queue *queue)
 
 		precvbuf = LIST_CONTAINOR(plist, struct recv_buf, list);
 
-		rtw_list_delete(&precvbuf->list);
+		list_del_init(&precvbuf->list);
 
 	}
 
@@ -1184,7 +1181,7 @@ sint validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 
 				xmitframe_plist = get_next(xmitframe_plist);
 
-				rtw_list_delete(&pxmitframe->list);
+				list_del_init(&pxmitframe->list);
 
 				psta->sleepq_len--;
 
@@ -1692,7 +1689,7 @@ struct recv_frame *recvframe_defrag(struct rtl_priv *rtlpriv,struct __queue *def
 	phead = get_list_head(defrag_q);
 	plist = get_next(phead);
 	prframe = container_of(plist, struct recv_frame, list);
-	rtw_list_delete(&(prframe->list));
+	list_del_init(&(prframe->list));
 
 	if (curfragnum != prframe->attrib.frag_num) {
 		/*
@@ -2054,7 +2051,7 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, struct re
 	 * _rtw_spinlock_ex(&ppending_recvframe_queue->lock);
 	 */
 
-	rtw_list_delete(&(prframe->list));
+	list_del_init(&(prframe->list));
 
 	list_add_tail(&(prframe->list), plist);
 
@@ -2121,7 +2118,7 @@ int recv_indicatepkts_in_order(struct rtl_priv *rtlpriv, struct recv_reorder_ctr
 
 		if(!SN_LESS(preorder_ctrl->indicate_seq, pattrib->seq_num)) {
 			plist = get_next(plist);
-			rtw_list_delete(&(prframe->list));
+			list_del_init(&(prframe->list));
 
 			if(SN_EQUAL(preorder_ctrl->indicate_seq, pattrib->seq_num)) {
 				preorder_ctrl->indicate_seq = (preorder_ctrl->indicate_seq + 1) & 0xFFF;

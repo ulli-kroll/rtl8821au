@@ -670,7 +670,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 			pxmitframe->pkt_offset = 1;
 			break;
 		}
-		rtw_list_delete(&pxmitframe->list);
+		list_del_init(&pxmitframe->list);
 		ptxservq->qcnt--;
 
 #ifndef IDEA_CONDITION
@@ -730,7 +730,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 
 
 	if (_rtw_queue_empty(&ptxservq->sta_pending) == _TRUE)
-		rtw_list_delete(&ptxservq->tx_pending);
+		list_del_init(&ptxservq->tx_pending);
 
 	spin_unlock_bh(&pxmitpriv->lock);
 #ifdef CONFIG_80211N_HT

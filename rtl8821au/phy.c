@@ -5099,7 +5099,9 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 	s8 		tempValue = 0, tempPwrLmt = 0;
 	uint8_t 	rfPath = 0;
 
+#ifndef DISABLE_ANNOYING_INFO
 	dev_info(&(rtlpriv->ndev->dev), "=====> PHY_ConvertPowerLimitToPowerIndex()\n" );
+#endif	
 	for (regulation = 0; regulation < MAX_REGULATION_NUM; ++regulation) {
 		for (bw = 0; bw < MAX_2_4G_BANDWITH_NUM; ++bw) {
 			for (group = 0; group < MAX_2_4G_CHANNEL_NUM; ++group) {
@@ -5374,7 +5376,9 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 			}
 		}
 	}
+#ifndef DISABLE_ANNOYING_INFO
 	dev_info(&(rtlpriv->ndev->dev), "<===== PHY_ConvertPowerLimitToPowerIndex()\n" );
+#endif	
 }
 
 static void phy_InitBBRFRegisterDefinition(struct rtl_priv *rtlpriv)

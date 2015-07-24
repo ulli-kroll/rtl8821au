@@ -246,7 +246,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 
 	spin_lock_bh(&(pstapriv->sta_hash_lock));
 
-	if (_rtw_queue_empty(pfree_sta_queue) == _TRUE) {
+	if (list_empty(&pfree_sta_queue->list)) {
 		/*
 		 * spin_unlock_bh(&(pfree_sta_queue->lock), &irqL);
 		 */

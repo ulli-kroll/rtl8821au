@@ -82,8 +82,7 @@ uint8_t rtw_do_join(struct rtl_priv * rtlpriv)
 
 	pmlmepriv->to_join = _TRUE;
 
-	if(_rtw_queue_empty(queue)== _TRUE)
-	{
+	if(list_empty(&queue->list)) {
 		spin_unlock_bh(&(pmlmepriv->scanned_queue.lock));
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 

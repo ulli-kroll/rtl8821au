@@ -1147,10 +1147,10 @@ int32_t rtw_txframes_pending(struct rtl_priv *rtlpriv)
 {
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 
-	return ((_rtw_queue_empty(&pxmitpriv->be_pending) == _FALSE) ||
-			 (_rtw_queue_empty(&pxmitpriv->bk_pending) == _FALSE) ||
-			 (_rtw_queue_empty(&pxmitpriv->vi_pending) == _FALSE) ||
-			 (_rtw_queue_empty(&pxmitpriv->vo_pending) == _FALSE));
+	return (!list_empty(&pxmitpriv->be_pending.list) ||
+		!list_empty(&pxmitpriv->bk_pending.list) ||
+		!list_empty(&pxmitpriv->vi_pending.list) ||
+		!list_empty(&pxmitpriv->vo_pending.list));
 }
 
 bool rtw_txframes_sta_ac_pending(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
@@ -1605,7 +1605,7 @@ struct xmit_buf *rtw_alloc_xmitbuf_ext(struct xmit_priv *pxmitpriv)
 
 	spin_lock_irqsave(&pfree_queue->lock, flags);
 
-	if (_rtw_queue_empty(pfree_queue) == _TRUE) {
+	if (list_empty(&pfree_queue->list)) {
 		pxmitbuf = NULL;
 	} else {
 
@@ -1669,7 +1669,7 @@ struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv)
 
 	spin_lock_irqsave(&pfree_xmitbuf_queue->lock, flags);
 
-	if (_rtw_queue_empty(pfree_xmitbuf_queue) == _TRUE) {
+	if (list_empty(&pfree_xmitbuf_queue->list)) {
 		pxmitbuf = NULL;
 	} else {
 
@@ -1778,7 +1778,7 @@ struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv)	/* (struct _
 
 	spin_lock_bh(&pfree_xmit_queue->lock);
 
-	if (_rtw_queue_empty(pfree_xmit_queue) == _TRUE) {
+	if (list_empty(&pfree_xmit_queue->list)) {
 		pxframe =  NULL;
 	} else {
 		phead = get_list_head(pfree_xmit_queue);
@@ -1806,7 +1806,7 @@ struct xmit_frame *rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv)
 
 	spin_lock_bh(&queue->lock);
 
-	if (_rtw_queue_empty(queue) == _TRUE) {
+	if (list_empty(&queue->list)) {
 		pxframe =  NULL;
 	} else {
 		phead = get_list_head(queue);
@@ -2002,7 +2002,7 @@ struct xmit_frame *rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmi
 
 			if (pxmitframe) {
 				/* Remove sta node when there is no pending packets. */
-				if (_rtw_queue_empty(pframe_queue))	/* must be done after get_next and before break */
+				if (list_empty(&pframe_queue->list))	/* must be done after get_next and before break */
 					list_del_init(&ptxservq->tx_pending);
 
 				/* spin_unlock_irqrestore(&phwxmit->sta_queue->lock, &irqL0); */

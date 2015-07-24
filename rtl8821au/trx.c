@@ -728,7 +728,9 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 	}	/* end while( aggregate same priority and same DA(AP or STA) frames) */
 
 
-	if (_rtw_queue_empty(&ptxservq->sta_pending) == _TRUE)
+	/* ULLI : Huh ???, must follow this ... */
+
+	if (list_empty(&ptxservq->sta_pending.list))
 		list_del_init(&ptxservq->tx_pending);
 
 	spin_unlock_bh(&pxmitpriv->lock);

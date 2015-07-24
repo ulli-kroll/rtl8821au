@@ -144,11 +144,6 @@ void _rtw_init_queue(struct __queue *pqueue)
 
 }
 
-u32 _rtw_queue_empty(struct __queue *pqueue)
-{
-	return list_empty(&(pqueue->list));
-}
-
 u32 rtw_end_of_queue_search(struct list_head *head, struct list_head *plist)
 {
 	if (head == plist)

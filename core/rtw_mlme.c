@@ -184,7 +184,7 @@ struct	wlan_network *_rtw_alloc_network(struct	mlme_priv *pmlmepriv )	/* (struct
 
 	spin_lock_bh(&free_queue->lock);
 
-	if (_rtw_queue_empty(free_queue) == _TRUE) {
+	if (list_empty(&free_queue->list)) {
 		pnetwork=NULL;
 		goto exit;
 	}
@@ -669,7 +669,7 @@ void rtw_update_scanned_network(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *target)
 	 * with this beacon's information */
 	if (rtw_end_of_queue_search(phead,plist)== _TRUE) {
 
-		if (_rtw_queue_empty(&(pmlmepriv->free_bss_pool)) == _TRUE) {
+		if (list_empty(&(pmlmepriv->free_bss_pool.list)) == _TRUE) {
 			/* If there are no more slots, expire the oldest */
 			//list_del_init(&oldest->list);
 			pnetwork = oldest;

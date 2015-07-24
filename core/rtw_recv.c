@@ -147,7 +147,7 @@ struct recv_frame *_rtw_alloc_recvframe (struct __queue *pfree_recv_queue)
 	struct rtl_priv *rtlpriv;
 	struct recv_priv *precvpriv;
 
-	if (_rtw_queue_empty(pfree_recv_queue) == _TRUE) {
+	if (list_empty(&pfree_recv_queue->list)) {
 		precvframe = NULL;
 	} else {
 		phead = get_list_head(pfree_recv_queue);
@@ -343,7 +343,7 @@ struct recv_buf *rtw_dequeue_recvbuf (struct __queue *queue)
 
 	spin_lock_irqsave(&queue->lock, flags);
 
-	if(_rtw_queue_empty(queue) == _TRUE) {
+	if(list_empty(&queue->list)) {
 		precvbuf = NULL;
 	} else {
 		phead = get_list_head(queue);
@@ -1803,7 +1803,7 @@ struct recv_frame* recvframe_chk_defrag(struct rtl_priv *rtlpriv, struct recv_fr
 		if (pdefrag_q != NULL) {
 			if (fragnum == 0) {
 				/* the first fragment */
-				if(_rtw_queue_empty(pdefrag_q) == _FALSE) {
+				if(!list_empty(&pdefrag_q->list)) {
 					/* free current defrag_q */
 					rtw_free_recvframe_queue(pdefrag_q, pfree_recv_queue);
 				}

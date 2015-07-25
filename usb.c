@@ -639,6 +639,20 @@ exit:
 	;
 }
 
+
+static void init_recvbuf(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
+{
+	precvbuf->transfer_len = 0;
+	precvbuf->len = 0;
+	precvbuf->ref_cnt = 0;
+
+	if (precvbuf->pbuf) {
+		precvbuf->pdata = precvbuf->phead = precvbuf->ptail = precvbuf->pbuf;
+		precvbuf->pend = precvbuf->pdata + MAX_RECVBUF_SZ;
+	}
+
+}
+
 uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 {
 	int err;
@@ -668,7 +682,7 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 #endif
 
 	if (precvbuf != NULL) {
-		rtl8812au_init_recvbuf(rtlpriv, precvbuf);
+		init_recvbuf(rtlpriv, precvbuf);
 
 		/* re-assign for linux based on skb */
 		if ((precvbuf->reuse == _FALSE) || (precvbuf->skb == NULL)) {

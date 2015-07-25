@@ -22,19 +22,6 @@
 #include <rtl8812a_hal.h>
 #include <rtw_debug.h>
 
-void rtl8812au_init_recvbuf(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
-{
-	precvbuf->transfer_len = 0;
-	precvbuf->len = 0;
-	precvbuf->ref_cnt = 0;
-
-	if (precvbuf->pbuf) {
-		precvbuf->pdata = precvbuf->phead = precvbuf->ptail = precvbuf->pbuf;
-		precvbuf->pend = precvbuf->pdata + MAX_RECVBUF_SZ;
-	}
-
-}
-
 int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 {
 	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;

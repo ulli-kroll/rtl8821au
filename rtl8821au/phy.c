@@ -8,8 +8,6 @@
  * 1. BB register R/W API
  */
 
-#define DbgPrint(x, ...)	do { } while (0);
-
 #define READ_NEXT_PAIR(array_table, v1, v2, i) \
 	do { \
 		i += 2; \
@@ -1803,7 +1801,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				rtl_write_dword(rtlpriv, 0xc8c, 0x00163e96);
 
 			if (VDF_enable == 1) {
-				DbgPrint("VDF_enable\n");
+				RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "VDF_enable\n");
 				for (k = 0; k <= 2; k++) {
 					switch (k) {
 					case 0:

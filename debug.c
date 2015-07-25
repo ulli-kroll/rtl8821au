@@ -22,8 +22,8 @@
  * Larry Finger <Larry.Finger@lwfinger.net>
  *****************************************************************************/
 
+#include <drv_types.h>
 #include "wifi.h"
-
 #include <linux/moduleparam.h>
 
 void rtw_dbgp_flag_init(struct rtl_priv *rtlpriv)

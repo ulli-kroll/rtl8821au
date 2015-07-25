@@ -136,8 +136,6 @@ int rtw_os_recvbuf_resource_alloc(struct rtl_priv *rtlpriv, struct recv_buf *pre
 
 	precvbuf->pallocated_buf  = precvbuf->pbuf = NULL;
 
-	precvbuf->pdata = precvbuf->phead = precvbuf->ptail = precvbuf->pend = NULL;
-
 	precvbuf->transfer_len = 0;
 
 	precvbuf->len = 0;

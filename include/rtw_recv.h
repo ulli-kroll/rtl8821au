@@ -339,10 +339,6 @@ struct recv_buf
 	uint8_t	*pallocated_buf;
 
 	u32	len;
-	uint8_t	*phead;
-	uint8_t	*pdata;
-	uint8_t	*ptail;
-	uint8_t	*pend;
 
 	struct urb *purb;
 	dma_addr_t dma_transfer_addr;	/* (in) dma addr for transfer_buffer */

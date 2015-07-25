@@ -671,11 +671,6 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 		precvbuf->transfer_len = 0;
 		precvbuf->len = 0;
 		precvbuf->ref_cnt = 0;
-		
-		if (precvbuf->pbuf) {
-			precvbuf->pdata = precvbuf->phead = precvbuf->ptail = precvbuf->pbuf;
-			precvbuf->pend = precvbuf->pdata + MAX_RECVBUF_SZ;
-		}
 			
 		/* re-assign for linux based on skb */
 		if ((precvbuf->reuse == _FALSE) || (precvbuf->skb == NULL)) {
@@ -692,17 +687,9 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 
 		/* ULLI : hell of a code, can't we use skb-> direct here */
 
-			precvbuf->phead = precvbuf->skb->head;
-			precvbuf->pdata = precvbuf->skb->data;
-			precvbuf->ptail = skb_tail_pointer(precvbuf->skb);
-			precvbuf->pend = skb_end_pointer(precvbuf->skb);
 			precvbuf->pbuf = precvbuf->skb->data;
 		} else {
 			/* reuse skb */
-			precvbuf->phead = precvbuf->skb->head;
-			precvbuf->pdata = precvbuf->skb->data;
-			precvbuf->ptail = skb_tail_pointer(precvbuf->skb);
-			precvbuf->pend = skb_end_pointer(precvbuf->skb);
 			precvbuf->pbuf = precvbuf->skb->data;
 
 			precvbuf->reuse = _FALSE;

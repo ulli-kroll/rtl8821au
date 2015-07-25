@@ -615,32 +615,34 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 		bulkPtr = ((pbuf / bulkSize) + 1) * bulkSize; /* round to next bulkSize */
 	}
 
+	/* ULLI sta enqueue code into tx queue */
+
 	/* dequeue same priority packet from station tx queue */
 	psta = pfirstframe->tx_attrib.psta;
 	switch (pfirstframe->tx_attrib.tx_priority) {
 	case 1:
 	case 2:
 		ptxservq = &(psta->sta_xmitpriv.bk_q);
-		phwxmit = pxmitpriv->hwxmits + 3;
+		phwxmit = &pxmitpriv->hwxmits[3];
 		break;
 
 	case 4:
 	case 5:
 		ptxservq = &(psta->sta_xmitpriv.vi_q);
-		phwxmit = pxmitpriv->hwxmits + 1;
+		phwxmit = &pxmitpriv->hwxmits[1];
 		break;
 
 	case 6:
 	case 7:
 		ptxservq = &(psta->sta_xmitpriv.vo_q);
-		phwxmit = pxmitpriv->hwxmits;
+		phwxmit = &pxmitpriv->hwxmits[0];
 		break;
 
 	case 0:
 	case 3:
 	default:
 		ptxservq = &(psta->sta_xmitpriv.be_q);
-		phwxmit = pxmitpriv->hwxmits + 2;
+		phwxmit = &pxmitpriv->hwxmits[2];
 		break;
 	}
 /*

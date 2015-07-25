@@ -336,7 +336,6 @@ struct recv_buf
 	struct rtl_priv *rtlpriv;
 
 	uint8_t	*pbuf;
-	uint8_t	*pallocated_buf;
 
 	u32	len;
 

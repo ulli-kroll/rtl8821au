@@ -592,13 +592,13 @@ static void usb_read_port_complete(struct urb *purb)
 			rtw_reset_continual_urb_error(rtl_usbdev(rtlpriv));
 
 			precvbuf->transfer_len = purb->actual_length;
-			skb_put(precvbuf->pskb, purb->actual_length);
-			skb_queue_tail(&precvpriv->rx_skb_queue, precvbuf->pskb);
+			skb_put(precvbuf->skb, purb->actual_length);
+			skb_queue_tail(&precvpriv->rx_skb_queue, precvbuf->skb);
 
 			if (skb_queue_len(&precvpriv->rx_skb_queue) <= 1)
 				tasklet_schedule(&precvpriv->recv_tasklet);
 
-			precvbuf->pskb = NULL;
+			precvbuf->skb = NULL;
 			precvbuf->reuse = _FALSE;
 			usb_read_port(rtlpriv, 0, (unsigned char *)precvbuf);
 		}
@@ -659,9 +659,9 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 	}
 
 #ifdef CONFIG_PREALLOC_RECV_SKB
-	if ((precvbuf->reuse == _FALSE) || (precvbuf->pskb == NULL)) {
-		precvbuf->pskb = skb_dequeue(&precvpriv->free_recv_skb_queue);
-		if (precvbuf->pskb != NULL) {
+	if ((precvbuf->reuse == _FALSE) || (precvbuf->skb == NULL)) {
+		precvbuf->skb = skb_dequeue(&precvpriv->free_recv_skb_queue);
+		if (precvbuf->skb != NULL) {
 			precvbuf->reuse = _TRUE;
 		}
 	}
@@ -671,30 +671,32 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 		rtl8812au_init_recvbuf(rtlpriv, precvbuf);
 
 		/* re-assign for linux based on skb */
-		if ((precvbuf->reuse == _FALSE) || (precvbuf->pskb == NULL)) {
+		if ((precvbuf->reuse == _FALSE) || (precvbuf->skb == NULL)) {
 			/* precvbuf->pskb = alloc_skb(MAX_RECVBUF_SZ, GFP_ATOMIC);//don't use this after v2.6.25 */
-			precvbuf->pskb = netdev_alloc_skb(rtlpriv->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
-			if (precvbuf->pskb == NULL) {
+			precvbuf->skb = netdev_alloc_skb(rtlpriv->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
+			if (precvbuf->skb == NULL) {
 				DBG_8192C("#### usb_read_port() alloc_skb fail!#####\n");
 				return _FAIL;
 			}
 
-			tmpaddr = (SIZE_PTR)precvbuf->pskb->data;
+			tmpaddr = (SIZE_PTR)precvbuf->skb->data;
 			alignment = tmpaddr & (RECVBUFF_ALIGN_SZ-1);
-			skb_reserve(precvbuf->pskb, (RECVBUFF_ALIGN_SZ - alignment));
+			skb_reserve(precvbuf->skb, (RECVBUFF_ALIGN_SZ - alignment));
 
-			precvbuf->phead = precvbuf->pskb->head;
-			precvbuf->pdata = precvbuf->pskb->data;
-			precvbuf->ptail = skb_tail_pointer(precvbuf->pskb);
-			precvbuf->pend = skb_end_pointer(precvbuf->pskb);
-			precvbuf->pbuf = precvbuf->pskb->data;
+		/* ULLI : hell of a code, can't we use sbk-> direct here */
+
+			precvbuf->phead = precvbuf->skb->head;
+			precvbuf->pdata = precvbuf->skb->data;
+			precvbuf->ptail = skb_tail_pointer(precvbuf->skb);
+			precvbuf->pend = skb_end_pointer(precvbuf->skb);
+			precvbuf->pbuf = precvbuf->skb->data;
 		} else {
 			/* reuse skb */
-			precvbuf->phead = precvbuf->pskb->head;
-			precvbuf->pdata = precvbuf->pskb->data;
-			precvbuf->ptail = skb_tail_pointer(precvbuf->pskb);
-			precvbuf->pend = skb_end_pointer(precvbuf->pskb);
-			precvbuf->pbuf = precvbuf->pskb->data;
+			precvbuf->phead = precvbuf->skb->head;
+			precvbuf->pdata = precvbuf->skb->data;
+			precvbuf->ptail = skb_tail_pointer(precvbuf->skb);
+			precvbuf->pend = skb_end_pointer(precvbuf->skb);
+			precvbuf->pbuf = precvbuf->skb->data;
 
 			precvbuf->reuse = _FALSE;
 		}

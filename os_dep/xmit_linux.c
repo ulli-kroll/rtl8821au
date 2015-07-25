@@ -160,16 +160,16 @@ void rtw_os_pkt_complete(struct rtl_priv *rtlpriv, struct sk_buff *pkt)
 
 void rtw_os_xmit_complete(struct rtl_priv *rtlpriv, struct xmit_frame *pxframe)
 {
-	if(pxframe->pkt) {
+	if(pxframe->skb) {
 		/*
 		 * RT_TRACE(_module_xmit_osdep_c_,_drv_err_,("linux : rtw_os_xmit_complete, dev_kfree_skb()\n"));
 		 *
 		 * dev_kfree_skb_any(pxframe->pkt);
 		 */
-		rtw_os_pkt_complete(rtlpriv, pxframe->pkt);
+		rtw_os_pkt_complete(rtlpriv, pxframe->skb);
 	}
 
-	pxframe->pkt = NULL;
+	pxframe->skb = NULL;
 }
 
 void rtw_os_xmit_schedule(struct rtl_priv *rtlpriv)

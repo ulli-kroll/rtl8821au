@@ -141,7 +141,7 @@ int rtw_os_recvbuf_resource_alloc(struct rtl_priv *rtlpriv, struct recv_buf *pre
 		res = _FAIL;
 	}
 
-	precvbuf->pskb = NULL;
+	precvbuf->skb = NULL;
 
 	precvbuf->reuse = _FALSE;
 
@@ -166,8 +166,8 @@ int rtw_os_recvbuf_resource_free(struct rtl_priv *rtlpriv, struct recv_buf *prec
 		usb_free_urb(precvbuf->purb);
 	}
 
-	if(precvbuf->pskb)
-		dev_kfree_skb_any(precvbuf->pskb);
+	if(precvbuf->skb)
+		dev_kfree_skb_any(precvbuf->skb);
 
 
 	return ret;
@@ -372,9 +372,9 @@ void rtw_os_read_port(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
 	precvbuf->ref_cnt--;
 
 	/* free skb in recv_buf */
-	dev_kfree_skb_any(precvbuf->pskb);
+	dev_kfree_skb_any(precvbuf->skb);
 
-	precvbuf->pskb = NULL;
+	precvbuf->skb = NULL;
 	precvbuf->reuse = _FALSE;
 
 	if (precvbuf->irp_pending == _FALSE) {

@@ -587,7 +587,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 		pxmitframe->agg_num = 1; 	/* alloc xmitframe should assign to 1. */
 		pxmitframe->pkt_offset = 1; 	/* first frame of aggregation, reserve offset */
 
-		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe) == _FALSE) {
+		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->skb, pxmitframe) == _FALSE) {
 			dev_dbg(&(rtlpriv->ndev->dev), "%s coalesce 1st xmitframe failed \n", __FUNCTION__);
 			continue;
 		}
@@ -692,7 +692,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 		/* pxmitframe->pxmitbuf = pxmitbuf; */
 		pxmitframe->buf_addr = pxmitbuf->pbuf + pbuf;
 
-		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe) == _FALSE) {
+		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->skb, pxmitframe) == _FALSE) {
 			dev_dbg(&(rtlpriv->ndev->dev), "%s coalesce failed \n", __FUNCTION__);
 			rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			continue;
@@ -779,7 +779,7 @@ static int32_t xmitframe_direct(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
 	int32_t res = _SUCCESS;
 	/* DBG_8192C("==> %s \n",__FUNCTION__); */
 
-	res = rtw_xmitframe_coalesce(rtlpriv, pxmitframe->pkt, pxmitframe);
+	res = rtw_xmitframe_coalesce(rtlpriv, pxmitframe->skb, pxmitframe);
 	if (res == _SUCCESS) {
 		rtw_dump_xframe(rtlpriv, pxmitframe);
 	} else {

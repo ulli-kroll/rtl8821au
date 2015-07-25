@@ -305,7 +305,7 @@ struct xmit_frame {
 
 	struct tx_pkt_attrib tx_attrib;
 
-	struct sk_buff *pkt;
+	struct sk_buff *skb;
 
 	int	frame_tag;
 

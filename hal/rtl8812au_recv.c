@@ -93,25 +93,22 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 		int i;
 		SIZE_PTR tmpaddr = 0;
 		SIZE_PTR alignment = 0;
-		struct sk_buff *pskb = NULL;
+		struct sk_buff *skb = NULL;
 
 		skb_queue_head_init(&precvpriv->free_recv_skb_queue);
 
 		for (i = 0; i < NR_PREALLOC_RECV_SKB; i++) {
 
-			pskb = __netdev_alloc_skb(rtlpriv->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ, GFP_KERNEL);
+			skb = __netdev_alloc_skb(rtlpriv->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ, GFP_KERNEL);
 
-			if (pskb) {
-				pskb->dev = rtlpriv->ndev;
+			if (skb) {
+				skb->dev = rtlpriv->ndev;
 
-				tmpaddr = (SIZE_PTR)pskb->data;
+				tmpaddr = (SIZE_PTR) skb->data;
 				alignment = tmpaddr & (RECVBUFF_ALIGN_SZ-1);
-				skb_reserve(pskb, (RECVBUFF_ALIGN_SZ - alignment));
-
-				skb_queue_tail(&precvpriv->free_recv_skb_queue, pskb);
+				skb_reserve(skb, (RECVBUFF_ALIGN_SZ - alignment));
+				skb_queue_tail(&precvpriv->free_recv_skb_queue, skb);
 			}
-
-			pskb = NULL;
 
 		}
 	}

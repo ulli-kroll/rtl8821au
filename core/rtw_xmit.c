@@ -120,7 +120,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 		pxframe->rtlpriv = rtlpriv;
 		pxframe->frame_tag = NULL_FRAMETAG;
 
-		pxframe->pkt = NULL;
+		pxframe->skb = NULL;
 
 		pxframe->buf_addr = NULL;
 		pxframe->pxmitbuf = NULL;
@@ -201,7 +201,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 		pxframe->rtlpriv = rtlpriv;
 		pxframe->frame_tag = NULL_FRAMETAG;
 
-		pxframe->pkt = NULL;
+		pxframe->skb = NULL;
 
 		pxframe->buf_addr = NULL;
 		pxframe->pxmitbuf = NULL;
@@ -1746,7 +1746,7 @@ void rtw_init_xmitframe(struct xmit_frame *pxframe)
 
 		pxframe->frame_tag = DATA_FRAMETAG;
 
-		pxframe->pkt = NULL;
+		pxframe->skb = NULL;
 		pxframe->pkt_offset = 1;	/*default use pkt_offset to fill tx desc */
 
 		pxframe->agg_num = 1;
@@ -1840,7 +1840,7 @@ struct xmit_frame *rtw_alloc_xmitframe_once(struct xmit_priv *pxmitpriv)
 	pxframe->rtlpriv = pxmitpriv->rtlpriv;
 	pxframe->frame_tag = NULL_FRAMETAG;
 
-	pxframe->pkt = NULL;
+	pxframe->skb = NULL;
 
 	pxframe->buf_addr = NULL;
 	pxframe->pxmitbuf = NULL;
@@ -1857,15 +1857,15 @@ int32_t rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmit
 {
 	struct __queue *queue;
 	struct rtl_priv *rtlpriv = pxmitpriv->rtlpriv;
-	struct sk_buff *pndis_pkt = NULL;
+	struct sk_buff *skb = NULL;
 
 	if (pxmitframe == NULL) {
 		goto exit;
 	}
 
-	if (pxmitframe->pkt) {
-		pndis_pkt = pxmitframe->pkt;
-		pxmitframe->pkt = NULL;
+	if (pxmitframe->skb) {
+		skb = pxmitframe->skb;
+		pxmitframe->skb = NULL;
 	}
 
 	if (pxmitframe->alloc_addr) {
@@ -1897,8 +1897,8 @@ int32_t rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmit
 
 check_pkt_complete:
 
-	if (pndis_pkt)
-		rtw_os_pkt_complete(rtlpriv, pndis_pkt);
+	if (skb)
+		rtw_os_pkt_complete(rtlpriv, skb);
 
 exit:
 
@@ -2211,7 +2211,7 @@ int32_t rtw_xmit(struct rtl_priv *rtlpriv, struct sk_buff **ppkt)
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
 		return -1;
 	}
-	pxmitframe->pkt = *ppkt;
+	pxmitframe->skb = *ppkt;
 
 	rtw_hal_led_control(rtlpriv, LED_CTL_TX);
 

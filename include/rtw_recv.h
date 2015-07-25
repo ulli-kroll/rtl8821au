@@ -352,7 +352,7 @@ struct recv_buf
 	int  transfer_len;
 
 
-	struct sk_buff *pskb;
+	struct sk_buff *skb;
 	uint8_t	reuse;
 };
 

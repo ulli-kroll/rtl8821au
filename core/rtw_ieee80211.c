@@ -34,7 +34,6 @@ uint8_t WPA_CIPHER_SUITE_WRAP[] = { 0x00, 0x50, 0xf2, 3 };
 uint8_t WPA_CIPHER_SUITE_CCMP[] = { 0x00, 0x50, 0xf2, 4 };
 uint8_t WPA_CIPHER_SUITE_WEP104[] = { 0x00, 0x50, 0xf2, 5 };
 
-u16 RSN_VERSION_BSD = 1;
 uint8_t RSN_AUTH_KEY_MGMT_UNSPEC_802_1X[] = { 0x00, 0x0f, 0xac, 1 };
 uint8_t RSN_AUTH_KEY_MGMT_PSK_OVER_802_1X[] = { 0x00, 0x0f, 0xac, 2 };
 uint8_t RSN_CIPHER_SUITE_NONE[] = { 0x00, 0x0f, 0xac, 0 };

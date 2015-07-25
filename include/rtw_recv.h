@@ -374,14 +374,8 @@ struct recv_buf
 */
 struct recv_frame {
 	struct list_head	list;
-#ifndef CONFIG_BSD_RX_USE_MBUF
 	struct sk_buff	 *pkt;
 	struct sk_buff	 *pkt_newalloc;
-#else // CONFIG_BSD_RX_USE_MBUF
-	struct sk_buff *pkt;
-	struct sk_buff *pkt_newalloc;
-#endif // CONFIG_BSD_RX_USE_MBUF
-
 	struct rtl_priv  *rtlpriv;
 
 	uint8_t fragcnt;

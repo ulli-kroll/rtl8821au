@@ -20,9 +20,19 @@
 #define _RTW_MLME_EXT_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
 #include <../rtl8821au/hw.h>
 
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+
+#define _drv_always_		1
+#define	_drv_warning_		6
+#undef DBG_871X_LEVEL
+static inline void DBG_871X_LEVEL(const int level, const char *fmt, ...)
+{
+}
 
 struct mlme_handler mlme_sta_tbl[]={
 	{WIFI_ASSOCREQ,		"OnAssocReq",	&OnAssocReq},

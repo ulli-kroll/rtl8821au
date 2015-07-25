@@ -20,7 +20,22 @@
 #define _RTW_PWRCTRL_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
+
+#undef DBG_8192C
+static inline void DBG_8192C(const char *fmt, ...)
+{
+}
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+#define _drv_always_		1
+#define _drv_info_			8
+#undef DBG_871X_LEVEL
+static inline void DBG_871X_LEVEL(const int level, const char *fmt, ...)
+{
+}
 
 // Should not include hal dependent herader here, it will remove later. Lucas@20130123
 

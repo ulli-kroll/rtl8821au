@@ -20,10 +20,18 @@
 #define _IOCTL_LINUX_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
 #include <odm_precomp.h>
 
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
+#define _drv_always_		1
+#undef DBG_871X_LEVEL
+static inline void DBG_871X_LEVEL(const int level, const char *fmt, ...)
+{
+}
 
 #define RTL_IOCTL_WPA_SUPPLICANT	(SIOCIWFIRSTPRIV+30)
 

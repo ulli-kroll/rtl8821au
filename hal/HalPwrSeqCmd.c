@@ -34,7 +34,11 @@ Major Change History:
 
 --*/
 #include <HalPwrSeqCmd.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 //
 //	Description:

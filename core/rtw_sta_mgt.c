@@ -20,9 +20,12 @@
 #define _RTW_STA_MGT_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
 #include <rtl8812a_hal.h>
 
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 static void _rtw_init_stainfo(struct sta_info *psta)
 {

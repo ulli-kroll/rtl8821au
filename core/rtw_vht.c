@@ -20,7 +20,11 @@
 #define _RTW_VHT_C
 
 #include <drv_types.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 #ifdef CONFIG_80211AC_VHT
 /*

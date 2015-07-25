@@ -21,8 +21,12 @@
 #define _HAL_INTF_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
 #include <rtl8812a_hal.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 void rtw_hal_read_chip_info(struct rtl_priv *rtlpriv)
 {

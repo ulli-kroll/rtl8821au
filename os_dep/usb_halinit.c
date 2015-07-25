@@ -25,8 +25,12 @@
 #include <../rtl8821au/trx.h>
 #include <../rtl8821au/hw.h>
 #include <../rtl8821au/fw.h>
-#include <rtw_debug.h>
 #include <hal_intf.h>
+
+#undef DBG_8192C
+static inline void DBG_8192C(const char *fmt, ...)
+{
+}
 
 static void _dbg_dump_macreg(struct rtl_priv *rtlpriv)
 {

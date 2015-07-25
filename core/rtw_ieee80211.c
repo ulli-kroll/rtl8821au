@@ -20,7 +20,12 @@
 #define _IEEE80211_C
 
 #include <drv_types.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+
 
 uint8_t RTW_WPA_OUI_TYPE[] = { 0x00, 0x50, 0xf2, 1 };
 u16 RTW_WPA_VERSION = 1;

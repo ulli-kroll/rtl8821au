@@ -22,7 +22,11 @@
 #define _OSDEP_SERVICE_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 #define RT_TAG	('1178')
 

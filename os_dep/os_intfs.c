@@ -20,7 +20,6 @@
 #define _OS_INTFS_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
 
 /* module param defaults */
 static int rtw_channel = 1;/* ad-hoc support requirement */

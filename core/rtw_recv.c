@@ -20,8 +20,11 @@
 #define _RTW_RECV_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
 
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS);

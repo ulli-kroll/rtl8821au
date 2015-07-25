@@ -21,7 +21,12 @@
 
 #include <../rtl8821au/def.h>
 #include <drv_types.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+
 /*
 Caller and the rtw_cmd_thread can protect cmd_q by spin_lock.
 No irqsave is necessary.

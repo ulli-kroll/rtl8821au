@@ -20,11 +20,17 @@
 #define _HAL_COM_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
 #include <odm_precomp.h>
 
 #define	EEPROM_CHANNEL_PLAN_BY_HW_MASK	0x80
 
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+
+#define _drv_info_			8
+#define _module_hal_init_c_		BIT(14)
 #undef RT_PRINT_DATA
 static inline void RT_PRINT_DATA(int comp, int level, char *titlestring, 
 			void *hexdata, int hexdatalen)

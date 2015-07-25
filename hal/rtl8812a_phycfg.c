@@ -25,7 +25,11 @@
 #include <../rtl8821au/reg.h>
 #include <../rtl8821au/rf.h>
 #include <../wifi.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 const char *const GLBwSrc[]={
 	"CHANNEL_WIDTH_20",

@@ -20,9 +20,12 @@
 #define _RTW_MLME_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
 #include <rtl8812a_hal.h>
 
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 extern void indicate_wx_scan_complete_event(struct rtl_priv *rtlpriv);
 extern uint8_t rtw_do_join(struct rtl_priv * rtlpriv);

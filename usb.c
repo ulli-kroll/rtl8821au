@@ -1,7 +1,16 @@
 #include <drv_types.h>
-#include <rtw_debug.h>
 #include <rtl8812a_recv.h>
 #include <../rtl8821au/trx.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+
+#undef DBG_8192C
+static inline void DBG_8192C(const char *fmt, ...)
+{
+}
 
 /*
 * Increase and check if the continual_urb_error of this @param dvobjprive is larger than MAX_CONTINUAL_URB_ERR

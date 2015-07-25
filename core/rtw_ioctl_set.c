@@ -20,7 +20,17 @@
 #define _RTW_IOCTL_SET_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+
+#define _drv_always_		1
+#undef DBG_871X_LEVEL
+static inline void DBG_871X_LEVEL(const int level, const char *fmt, ...)
+{
+}
 
 extern void indicate_wx_scan_complete_event(struct rtl_priv *rtlpriv);
 

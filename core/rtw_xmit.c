@@ -20,7 +20,22 @@
 #define _RTW_XMIT_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+
+#undef DBG_8192C
+static inline void DBG_8192C(const char *fmt, ...)
+{
+}
+
+#define _drv_always_		1
+#undef DBG_871X_LEVEL
+static inline void DBG_871X_LEVEL(const int level, const char *fmt, ...)
+{
+}
 
 static uint8_t P802_1H_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0xf8 };
 static uint8_t RFC1042_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0x00 };

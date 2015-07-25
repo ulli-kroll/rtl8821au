@@ -20,9 +20,12 @@
 #define _RTW_AP_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
 #include <../rtl8821au/hw.h>
 
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 #ifdef CONFIG_AP_MODE
 

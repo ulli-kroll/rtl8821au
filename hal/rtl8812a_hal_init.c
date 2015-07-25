@@ -19,7 +19,16 @@
  ******************************************************************************/
 #define _RTL8812A_HAL_INIT_C_
 #include <rtl8812a_hal.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
+
+#undef DBG_8192C
+static inline void DBG_8192C(const char *fmt, ...)
+{
+}
 
 /*
  *-------------------------------------------------------------------------

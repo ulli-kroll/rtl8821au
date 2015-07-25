@@ -20,7 +20,11 @@
 #define _XMIT_OSDEP_C_
 
 #include <drv_types.h>
-#include <rtw_debug.h>
+
+#undef DBG_871X
+static inline void DBG_871X(const char *fmt, ...)
+{
+}
 
 uint rtw_remainder_len(struct pkt_file *pfile)
 {

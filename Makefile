@@ -13,9 +13,10 @@ CONFIG_PLATFORM_I386_PC = y
 
 export TopDIR ?= $(shell pwd)
 
-RTL8821AU_FILES	:=	efuse.o \
-			usb.o \
-			rtl8821au/dm.o \
+RTLWIFI_FILES :=	efuse.o \
+			usb.o
+
+RTL8821AU_FILES	:=	rtl8821au/dm.o \
 			rtl8821au/fw.o \
 			rtl8821au/hw.o \
 			rtl8821au/led.o \
@@ -25,7 +26,7 @@ RTL8821AU_FILES	:=	efuse.o \
 			rtl8821au/table.o \
 			rtl8821au/trx.o
 
-_OS_INTFS_FILES :=	os_dep/osdep_service.o \
+OS_FILES :=		os_dep/osdep_service.o \
 			os_dep/os_intfs.o \
 			os_dep/usb_ops_linux.o \
 			os_dep/ioctl_linux.o \
@@ -34,12 +35,11 @@ _OS_INTFS_FILES :=	os_dep/osdep_service.o \
 			os_dep/recv_linux.o \
 			os_dep/usb_halinit.o 
 
-_HAL_INTFS_FILES :=	hal/hal_intf.o \
+HAL_FILES 	:=	hal/hal_intf.o \
 			hal/hal_com.o \
 			hal/hal_phy.o \
-			hal/odm.o
-
-_HAL_INTFS_FILES +=	hal/HalPwrSeqCmd.o \
+			hal/odm.o \
+			hal/HalPwrSeqCmd.o \
 			hal/Hal8812PwrSeq.o \
 			hal/Hal8821APwrSeq.o\
 			hal/rtl8812a_hal_init.o \
@@ -50,7 +50,7 @@ _HAL_INTFS_FILES +=	hal/HalPwrSeqCmd.o \
 			hal/rtl8812au_recv.o \
 			hal/odm_RegConfig8821A.o
 
-rtk_core :=		core/rtw_cmd.o \
+CORE_FILES :=		core/rtw_cmd.o \
 			core/rtw_security.o \
 			core/rtw_ioctl_set.o \
 			core/rtw_ieee80211.o \
@@ -70,12 +70,12 @@ EXTRA_CFLAGS += -DCONFIG_RTL8821A
 
 MODULE_NAME = rtl8821au
 
-$(MODULE_NAME)-y += 	$(rtk_core) \
-			$(_OS_INTFS_FILES) \
-			$(_HAL_INTFS_FILES) \
-			$(_OUTSRC_FILES) \
+$(MODULE_NAME)-y += 	$(OS_FILES) \
+			$(CORE_FILES) \
+			$(RTLWIFI_FILES) \
+			$(HAL_FILES) \
+			$(RTL8821AU_FILES)
 			
-$(MODULE_NAME)-y += $(RTL8821AU_FILES)
 
 ########### END OF PATH  #################################
 ifeq ($(CONFIG_POWER_SAVING), y)

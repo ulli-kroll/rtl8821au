@@ -341,8 +341,6 @@ struct recv_buf
 	u32 alloc_sz;
 
 	uint8_t  irp_pending;
-	int  transfer_len;
-
 
 	struct sk_buff *skb;
 	uint8_t	reuse;

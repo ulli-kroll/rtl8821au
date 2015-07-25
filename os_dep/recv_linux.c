@@ -133,7 +133,6 @@ int rtw_os_recvbuf_resource_alloc(struct rtl_priv *rtlpriv, struct recv_buf *pre
 	precvbuf->skb = NULL;
 
 	precvbuf->reuse = _FALSE;
-	precvbuf->transfer_len = 0;
 
 	precvbuf->len = 0;
 

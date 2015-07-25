@@ -591,7 +591,6 @@ static void usb_read_port_complete(struct urb *purb)
 		} else {
 			rtw_reset_continual_urb_error(rtl_usbdev(rtlpriv));
 
-			precvbuf->transfer_len = purb->actual_length;
 			skb_put(precvbuf->skb, purb->actual_length);
 			skb_queue_tail(&precvpriv->rx_skb_queue, precvbuf->skb);
 
@@ -668,7 +667,6 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 #endif
 
 	if (precvbuf != NULL) {
-		precvbuf->transfer_len = 0;
 		precvbuf->len = 0;
 		precvbuf->ref_cnt = 0;
 			

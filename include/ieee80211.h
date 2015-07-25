@@ -133,7 +133,6 @@ extern uint8_t WPA_CIPHER_SUITE_WEP104[];
 #define RSN_HEADER_LEN 4
 #define RSN_SELECTOR_LEN 4
 
-extern u16 RSN_VERSION_BSD;
 extern uint8_t RSN_AUTH_KEY_MGMT_UNSPEC_802_1X[];
 extern uint8_t RSN_AUTH_KEY_MGMT_PSK_OVER_802_1X[];
 extern uint8_t RSN_CIPHER_SUITE_NONE[];

@@ -32,7 +32,7 @@ int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvfra
 
 
 	if(pdata == NULL) {
-		precvframe->pkt = NULL;
+		precvframe->skb = NULL;
 		res = _FAIL;
 		return res;
 	}
@@ -61,12 +61,14 @@ int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvfra
 		 */
 		alloc_sz += 14;
 	}
+	
+	/* ULLI : why copy skb */
 
 	pkt_copy = netdev_alloc_skb(rtlpriv->ndev, alloc_sz);
 
 	if(pkt_copy) {
 		pkt_copy->dev = rtlpriv->ndev;
-		precvframe->pkt = pkt_copy;
+		precvframe->skb = pkt_copy;
 		precvframe->rx_head = pkt_copy->data;
 		precvframe->rx_end = pkt_copy->data + alloc_sz;
 		skb_reserve(pkt_copy, 8 - ((SIZE_PTR)( pkt_copy->data) & 7 ));	/* force pkt_copy->data at 8-byte alignment address */
@@ -86,8 +88,8 @@ int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvfra
 			goto exit_rtw_os_recv_resource_alloc;
 		}
 
-		precvframe->pkt = skb_clone(pskb, GFP_ATOMIC);
-		if(precvframe->pkt) {
+		precvframe->skb = skb_clone(pskb, GFP_ATOMIC);
+		if(precvframe->skb) {
 			precvframe->rx_head = precvframe->rx_data = precvframe->rx_tail = pdata;
 			precvframe->rx_end =  pdata + alloc_sz;
 		} else 	{
@@ -108,10 +110,10 @@ exit_rtw_os_recv_resource_alloc:
 
 void rtw_os_free_recvframe(struct recv_frame *precvframe)
 {
-	if(precvframe->pkt) {
-		dev_kfree_skb_any(precvframe->pkt);	/* free skb by driver */
+	if(precvframe->skb) {
+		dev_kfree_skb_any(precvframe->skb);	/* free skb by driver */
 
-		precvframe->pkt = NULL;
+		precvframe->skb = NULL;
 	}
 }
 
@@ -121,7 +123,7 @@ int rtw_os_recv_resource_alloc(struct rtl_priv *rtlpriv, struct recv_frame *prec
 {
 	int	res=_SUCCESS;
 
-	precvframe->pkt_newalloc = precvframe->pkt = NULL;
+	precvframe->skb_newalloc = precvframe->skb = NULL;
 
 	return res;
 }
@@ -192,7 +194,9 @@ struct sk_buff  *rtw_os_alloc_msdu_pkt(struct recv_frame *prframe, u16 nSubframe
 	} else
 #endif
 	{
-		sub_skb = skb_clone(prframe->pkt, GFP_ATOMIC);
+		/* ULLI : another place who clones skb */
+			
+		sub_skb = skb_clone(prframe->skb, GFP_ATOMIC);
 		if(sub_skb) {
 			sub_skb->data = pdata + ETH_HLEN;
 			sub_skb->len = nSubframe_Length;
@@ -331,7 +335,7 @@ int rtw_recv_indicatepkt(struct rtl_priv *rtlpriv, struct recv_frame *precv_fram
 	precvpriv = &(rtlpriv->recvpriv);
 	pfree_recv_queue = &(precvpriv->free_recv_queue);
 
-	skb = precv_frame->pkt;
+	skb = precv_frame->skb;
 	if (skb == NULL) {
 		goto _recv_indicatepkt_drop;
 	}
@@ -346,7 +350,7 @@ int rtw_recv_indicatepkt(struct rtl_priv *rtlpriv, struct recv_frame *precv_fram
 
 _recv_indicatepkt_end:
 
-	precv_frame->pkt = NULL; 		/* pointers to NULL before rtw_free_recvframe() */
+	precv_frame->skb = NULL; 		/* pointers to NULL before rtw_free_recvframe() */
 
 	rtw_free_recvframe(precv_frame, pfree_recv_queue);
 

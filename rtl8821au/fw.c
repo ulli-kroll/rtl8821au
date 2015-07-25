@@ -36,7 +36,7 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 
 	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp|(BIT2));
 
-	/* DBG_871X("=====> _8051Reset8812(): 8051 reset success .\n"); */
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " _8051Reset8812(): 8051 reset success .\n");
 }
 
 static BOOLEAN Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
@@ -1111,10 +1111,12 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 	} while (counter++ < 6000);
 
 	if (counter >= 6000) {
-		dev_info(&(rtlpriv->ndev->dev), "%s: chksum report fail! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+			 "%s: chksum report fail! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 		return _FAIL;
 	}
-	dev_info(&(rtlpriv->ndev->dev), "%s: Checksum report OK! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+	RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+		 "%s: Checksum report OK! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 
 	value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
 	value32 |= MCUFWDL_RDY;
@@ -1128,13 +1130,15 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 	do {
 		value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
 		if (value32 & WINTINI_RDY) {
-			dev_info(&(rtlpriv->ndev->dev), "%s: Polling FW ready success!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+				 "%s: Polling FW ready success!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 			return _SUCCESS;
 		}
 		udelay(5);
 	} while (counter++ < 6000);
 
-	dev_info(&(rtlpriv->ndev->dev), "%s: Polling FW ready fail!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+	RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+		 "%s: Polling FW ready fail!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
 	return _FAIL;
 }
 
@@ -1159,10 +1163,8 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 		const char fw_name[] = "rtlwifi/rtl8812aufw.bin";
 
 		if (request_firmware(&fw, fw_name, device)) {
-			dev_err(&(rtlpriv->ndev->dev), "Firmware %s not available\n", fw_name);
+			RT_TRACE(rtlpriv, COMP_FW, DBG_EMERG, "Firmware %s not available\n", fw_name);
 			return -ENOENT;
-		} else {
-			dev_info(&(rtlpriv->ndev->dev), "Firmware %s loaded\n", fw_name);
 		}
 	}
 
@@ -1170,15 +1172,13 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 		const char fw_name[] = "rtlwifi/rtl8821aufw.bin";
 
 		if (request_firmware(&fw, fw_name, device)) {
-			dev_err(&(rtlpriv->ndev->dev), "Firmware %s not available\n", fw_name);
+			RT_TRACE(rtlpriv, COMP_FW, DBG_EMERG, "Firmware %s not available\n", fw_name);
 			return -ENOENT;
-		} else {
-			dev_info(&(rtlpriv->ndev->dev), "Firmware %s loaded\n", fw_name);
 		}
 	}
 
 
-	dev_info(&(rtlpriv->ndev->dev), " ===> rtl8821au_download_fw() fw:%s, size: %d\n", "Firmware for NIC", rtlhal->fwsize);
+	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "Normal Firmware SIZE %d\n", rtlhal->fwsize);
 
 	if (rtlhal->fwsize > FW_SIZE_8812) {
 			rtStatus = _FAIL;
@@ -1195,11 +1195,8 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 	rtlhal->fwsize = fw->size;
 	release_firmware(fw);
 
-	{
-		dev_info(&(rtlpriv->ndev->dev), "+%s: !bUsedWoWLANFw, FmrmwareLen:%d+\n", __func__, rtlhal->fwsize);
-		/* To Check Fw header. Added by tynli. 2009.12.04. */
-		pFwHdr = (uint8_t *) rtlhal->pfirmware;
-	}
+	/* To Check Fw header. Added by tynli. 2009.12.04. */
+	pFwHdr = (uint8_t *) rtlhal->pfirmware;
 
 	rtlhal->fw_version =  (u16)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
 	rtlhal->fw_subversion = (u16)GET_FIRMWARE_HDR_SUB_VER_8812(pFwHdr);
@@ -1209,7 +1206,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 	DBG_871X ("%s: fw_ver=%d fw_subver=%d sig=0x%x\n",
 		  __FUNCTION__, pHalData->FirmwareVersion, pHalData->FirmwareSubVersion, pHalData->FirmwareSignature);
 */
-	dev_info(&(rtlpriv->ndev->dev), "%s: fw_ver=%d fw_subver=%d\n",
+	RT_TRACE(rtlpriv, COMP_FW, DBG_DMESG, "%s: fw_ver=%d fw_subver=%d\n",
 		  __FUNCTION__, rtlhal->fw_version, rtlhal->fw_subversion);
 
 

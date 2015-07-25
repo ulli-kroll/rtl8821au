@@ -8,8 +8,6 @@
  * 1. BB register R/W API
  */
 
-#define DISABLE_ANNOYING_INFO
-
 #define DbgPrint(x, ...)	do { } while (0);
 
 #define READ_NEXT_PAIR(array_table, v1, v2, i) \
@@ -2599,18 +2597,15 @@ static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
 		break;
 
 	default:
-#ifndef DISABLE_ANNOYING_INFO
-		dev_info(&(rtlpriv->ndev->dev), "Wrong rate 0x%x\n", DataRate);
-#endif		
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "Wrong rate 0x%x\n", DataRate);
 		break;
 	}
 
-#ifndef DISABLE_ANNOYING_INFO
 	if (Band == BAND_ON_2_4G  && rateSection > 3)
-		dev_info(&(rtlpriv->ndev->dev), "Wrong rate 0x%x: No VHT in 2.4G Band\n", DataRate);
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "Wrong rate 0x%x: No VHT in 2.4G Band\n", DataRate);
 	if (Band == BAND_ON_5G  && rateSection == 0)
-		dev_info(&(rtlpriv->ndev->dev), "Wrong rate 0x%x: No CCK in 5G Band\n", DataRate);
-#endif
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "Wrong rate 0x%x: No CCK in 5G Band\n", DataRate);
+
 	/*
 	 * workaround for wrong index combination to obtain tx power limit,
 	 * OFDM only exists in BW 20M
@@ -2636,7 +2631,7 @@ static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
 
 	if (band == -1 || regulation == -1 || bandwidth == -1 ||
 	     rateSection == -1 || channelGroup == -1) 	{
-		dev_info(&(rtlpriv->ndev->dev), "Wrong index value to access power limit table \
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "Wrong index value to access power limit table \
 			  [band %d][regulation %d][bandwidth %d][rf_path %d][rate_section %d][chnlGroup %d]\n",
 			  band, regulation, bandwidth, RfPath, rateSection, channelGroup);
 
@@ -2649,10 +2644,8 @@ static u8 _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
 	else if (Band == BAND_ON_5G)
 		powerLimit = rtlphy->txpwr_limit_5g[regulation]
 			[bandwidth][rateSection][channelGroup][RfPath];
-#ifndef DISABLE_ANNOYING_INFO			
 	else
-		dev_info(&(rtlpriv->ndev->dev), "No power limit table of the specified band\n");
-#endif		
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "No power limit table of the specified band\n");
 
 #if 0
 	/* combine 5G VHT & HT rate */
@@ -3211,11 +3204,9 @@ static void PHY_SetPowerLimitTableValue(struct rtl_priv *rtlpriv,
 	uint8_t		regulation = 0, bandwidth = 0, rateSection = 0,
 			channel, powerLimit, channelGroup;
 
-#ifndef DISABLE_ANNOYING_INFO
-	dev_info(&(rtlpriv->ndev->dev), "Index of power limit table \
+	RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "Index of power limit table \
 		  [band %s][regulation %s][bw %s][rate section %s][rf path %s][chnl %s][val %s]\n",
 		  Band, Regulation, Bandwidth, RateSection, RfPath, Channel, PowerLimit);
-#endif		  
 
 	if (!Getu8IntegerFromStringInDecimal(Channel, &channel) ||
 		 !Getu8IntegerFromStringInDecimal(PowerLimit, &powerLimit)) {
@@ -3255,17 +3246,15 @@ static void PHY_SetPowerLimitTableValue(struct rtl_priv *rtlpriv,
 		bandwidth = 3;
 
 	if (eqNByte(Band, "2.4G", 4)) {
-#ifndef DISABLE_ANNOYING_INFO		
-		dev_info(&(rtlpriv->ndev->dev), "2.4G Band value : [regulation %d][bw %d][rate_section %d][chnl %d][val %d]\n",
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "2.4G Band value : [regulation %d][bw %d][rate_section %d][chnl %d][val %d]\n",
 			regulation, bandwidth, rateSection, channel, powerLimit);
-#endif			
+
 		channelGroup = phy_GetChannelGroup(rtlpriv, BAND_ON_2_4G, channel);
 		rtlphy->txpwr_limit_2_4g[regulation][bandwidth][rateSection][channelGroup][RF90_PATH_A] = powerLimit;
 	} else if (eqNByte(Band, "5G", 2)) {
-#ifndef DISABLE_ANNOYING_INFO		
-		dev_info(&(rtlpriv->ndev->dev), "5G Band value : [regulation %d][bw %d][rate_section %d][chnl %d][val %d]\n",
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "5G Band value : [regulation %d][bw %d][rate_section %d][chnl %d][val %d]\n",
 			  regulation, bandwidth, rateSection, channel, powerLimit);
-#endif			  
+
 		channelGroup = phy_GetChannelGroup(rtlpriv, BAND_ON_5G, channel);
 		rtlphy->txpwr_limit_5g[regulation][bandwidth][rateSection][channelGroup][RF90_PATH_A] = powerLimit;
 	} else {
@@ -5094,10 +5083,9 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 	uint8_t		baseIndex5G;
 	s8 		tempValue = 0, tempPwrLmt = 0;
 	uint8_t 	rfPath = 0;
+	
+	RT_TRACE(rtlpriv, COMP_POWER, DBG_TRACE,  "=====> PHY_ConvertPowerLimitToPowerIndex()\n" );
 
-#ifndef DISABLE_ANNOYING_INFO
-	dev_info(&(rtlpriv->ndev->dev), "=====> PHY_ConvertPowerLimitToPowerIndex()\n" );
-#endif	
 	for (regulation = 0; regulation < MAX_REGULATION_NUM; ++regulation) {
 		for (bw = 0; bw < MAX_2_4G_BANDWITH_NUM; ++bw) {
 			for (group = 0; group < MAX_2_4G_CHANNEL_NUM; ++group) {
@@ -5145,12 +5133,10 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 							rtlphy->txpwr_limit_2_4g[regulation][bw][rateSection][group][rfPath] = tempValue;
 						}
 
-#ifndef DISABLE_ANNOYING_INFO
-						dev_info(&(rtlpriv->ndev->dev), "txpwr_limit_2_4g[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
+						RT_TRACE(rtlpriv, COMP_POWER, DBG_TRACE, "txpwr_limit_2_4g[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
 							(TxPwrLimit in dBm %d - BW40PwrLmt2_4G[channel %d][rfPath %d] %d) \n",
 							regulation, bw, rateSection, group, rtlphy->txpwr_limit_2_4g[regulation][bw][rateSection][group][rfPath],
 							tempPwrLmt, channel, rfPath, BW40PwrBasedBm2_4G );
-#endif
 					}
 				}
 			}
@@ -5228,10 +5214,8 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 					tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][RF90_PATH_A];
 					if (tempPwrLmt == MAX_POWER_INDEX) {
 						if (bw == 0 || bw == 1) {	/* 5G VHT and HT can cross reference */
-#ifndef DISABLE_ANNOYING_INFO							
-							dev_info(&(rtlpriv->ndev->dev), "No power limit table of the specified band %d, bandwidth %d, ratesection %d, group %d, rf path %d\n",
+							RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "No power limit table of the specified band %d, bandwidth %d, ratesection %d, group %d, rf path %d\n",
 										1, bw, rateSection, group, RF90_PATH_A );
-#endif										
 							if (rateSection == 2) {
 								rtlphy->txpwr_limit_5g[regulation][bw][2][group][RF90_PATH_A] =
 									rtlphy->txpwr_limit_5g[regulation][bw][4][group][RF90_PATH_A];
@@ -5254,9 +5238,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 
 								tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][3][group][RF90_PATH_A];
 							}
-#ifndef DISABLE_ANNOYING_INFO
-							dev_info(&(rtlpriv->ndev->dev),"use other value %d", tempPwrLmt);
-#endif							
+							RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD,"use other value %d", tempPwrLmt);
 						}
 					}
 
@@ -5268,12 +5250,10 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 							tempValue = tempPwrLmt - BW40PwrBasedBm5G;
 							rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][rfPath] = tempValue;
 						}
-#ifndef DISABLE_ANNOYING_INFO
-						dev_info(&(rtlpriv->ndev->dev), "txpwr_limit_5g[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
+						RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "txpwr_limit_5g[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
 							(TxPwrLimit in dBm %d - BW40PwrLmt5G[channel %d][rfPath %d] %d) \n",
 							regulation, bw, rateSection, group, rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][rfPath],
 							tempPwrLmt, channel, rfPath, BW40PwrBasedBm5G );
-#endif
 					}
 
 				}
@@ -5336,10 +5316,8 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 					tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][RF90_PATH_A];
 					if (tempPwrLmt == MAX_POWER_INDEX) {
 						if (bw == 0 || bw == 1) { /* 5G VHT and HT can cross reference */
-#ifndef DISABLE_ANNOYING_INFO							
-							dev_info(&(rtlpriv->ndev->dev), "No power limit table of the specified band %d, bandwidth %d, ratesection %d, group %d, rf path %d\n",
+							RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "No power limit table of the specified band %d, bandwidth %d, ratesection %d, group %d, rf path %d\n",
 										1, bw, rateSection, group, RF90_PATH_A );
-#endif										
 							if (rateSection == 2)
 								tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][4][group][RF90_PATH_A];
 							else if (rateSection == 4)
@@ -5348,9 +5326,7 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 								tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][5][group][RF90_PATH_A];
 							else if (rateSection == 5)
 								tempPwrLmt = rtlphy->txpwr_limit_5g[regulation][bw][3][group][RF90_PATH_A];
-#ifndef DISABLE_ANNOYING_INFO
-							dev_info(&(rtlpriv->ndev->dev), "use other value %d", tempPwrLmt );
-#endif							
+							RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "use other value %d", tempPwrLmt );
 						}
 					}
 
@@ -5362,19 +5338,16 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 						rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][RF90_PATH_A] = tempValue;
 					}
 
-#ifndef DISABLE_ANNOYING_INFO
-					dev_info(&(rtlpriv->ndev->dev), "txpwr_limit_5g[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
+					RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "txpwr_limit_5g[regulation %d][bw %d][rateSection %d][group %d] %d=\n\
 						(TxPwrLimit in dBm %d - BW40PwrLmt5G[channel %d][rfPath %d] %d) \n",
 						regulation, bw, rateSection, group, rtlphy->txpwr_limit_5g[regulation][bw][rateSection][group][RF90_PATH_A],
 						tempPwrLmt, channel, RF90_PATH_A, BW40PwrBasedBm5G );
-#endif
 				}
 			}
 		}
 	}
-#ifndef DISABLE_ANNOYING_INFO
-	dev_info(&(rtlpriv->ndev->dev), "<===== PHY_ConvertPowerLimitToPowerIndex()\n" );
-#endif	
+
+	RT_TRACE(rtlpriv, COMP_POWER, DBG_TRACE, "<===== PHY_ConvertPowerLimitToPowerIndex()\n" );
 }
 
 static void phy_InitBBRFRegisterDefinition(struct rtl_priv *rtlpriv)

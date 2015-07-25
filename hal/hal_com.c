@@ -29,15 +29,6 @@ static inline void DBG_871X(const char *fmt, ...)
 {
 }
 
-#define _drv_info_			8
-#define _module_hal_init_c_		BIT(14)
-#undef RT_PRINT_DATA
-static inline void RT_PRINT_DATA(int comp, int level, char *titlestring, 
-			void *hexdata, int hexdatalen)
-{
-}
-
-
 uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
 	IN	struct rtl_priv *rtlpriv,
@@ -170,7 +161,7 @@ int32_t c2h_evt_read(struct rtl_priv *rtlpriv, uint8_t *buf)
 	*buf = rtl_read_byte(rtlpriv, REG_C2HEVT_MSG_NORMAL);
 	*(buf+1) = rtl_read_byte(rtlpriv, REG_C2HEVT_MSG_NORMAL + 1);
 
-	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): ",
+	RT_PRINT_DATA(rtlpriv, COMP_FW, DBG_DMESG, "c2h_evt_read(): ",
 		&c2h_evt , sizeof(c2h_evt));
 
 	if (0) {
@@ -182,7 +173,7 @@ int32_t c2h_evt_read(struct rtl_priv *rtlpriv, uint8_t *buf)
 	for (i = 0; i < c2h_evt->plen; i++)
 		c2h_evt->payload[i] = rtl_read_byte(rtlpriv, REG_C2HEVT_MSG_NORMAL + sizeof(*c2h_evt) + i);
 
-	RT_PRINT_DATA(_module_hal_init_c_, _drv_info_, "c2h_evt_read(): Command Content:\n",
+	RT_PRINT_DATA(rtlpriv, COMP_FW, DBG_DMESG, "c2h_evt_read(): Command Content:\n",
 		c2h_evt->payload, c2h_evt->plen);
 
 	ret = _SUCCESS;

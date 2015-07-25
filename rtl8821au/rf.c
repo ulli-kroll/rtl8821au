@@ -4,13 +4,6 @@
 #include "phy.h"
 #include "dm.h"
 
-#undef RT_TRACE
-static inline void RT_TRACE(struct rtl_priv *rtlpriv,
-			    int comp, int level,
-			    const char *fmt, ...)
-{
-}
-
 void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH	Bandwidth)	/* 20M or 40M */
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -279,9 +272,9 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
-	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_LOUD,
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 		"===>ODM_ConfigRFWithHeaderFile (%s)\n", (IS_NORMAL_CHIP(rtlhal->version)) ? "MPChip" : "TestChip");
-	RT_TRACE(rtlpriv, ODM_COMP_INIT, ODM_DBG_LOUD,
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 		"pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
 		rtlhal->interface, rtlhal->board_type);
 

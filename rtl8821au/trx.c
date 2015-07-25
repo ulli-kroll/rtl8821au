@@ -1347,7 +1347,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo
 
 
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
-		/* ODM_RT_TRACE(pDM_Odm,ODM_COMP_RSSI_MONITOR, ODM_DBG_LOUD, ("ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll)); */
+		/* ODM_RT_TRACE(pDM_Odm,ODM_COMP_RSSI_MONITOR, DBG_LOUD, ("ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll)); */
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL_BT;
 		pPhyInfo->RxPower = rx_pwr_all;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
@@ -1408,7 +1408,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo
 					pDM_Odm->packetCount++;
 
 				/*
-				 * ODM_RT_TRACE(pDM_Odm, ODM_COMP_DYNAMIC_ATC, ODM_DBG_LOUD,
+				 * ODM_RT_TRACE(pDM_Odm, ODM_COMP_DYNAMIC_ATC, DBG_LOUD,
 				 * 	("pPhyStaRpt->path_cfotail[i] = 0x%x, pDM_Odm->CFO_tail[i] = 0x%x\n", pPhyStaRpt->path_cfotail[0], pDM_Odm->CFO_tail[1]));
 				 */
 			}

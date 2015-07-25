@@ -40,7 +40,6 @@
 
 #include <odm.h>
 #include <odm_HWConfig.h>
-#include <odm_debug.h>
 #include <odm_RegDefine11AC.h>
 
 	//#include "hal_com.h"

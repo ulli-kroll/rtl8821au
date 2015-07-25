@@ -24,11 +24,11 @@ while calling
 `make`
 
 i.e.  
-'make ARCH="mips" CROSS_COMPILE=mipsel-softfloat-linux-uclibc- KSRC=/home/user/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/linux-ramips_rt305x/linux-3.18.7/ modules'  
+`make ARCH="mips" CROSS_COMPILE=mipsel-softfloat-linux-uclibc- KSRC=/home/user/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/linux-ramips_rt305x/linux-3.18.7/ modules`  
 
 This driver is based Edimax Linux driver  
 EW-7822UAC_Linux_driver_v1.0.1.6.zip  
-*and heavently reworked*
+**and heavently reworked**
 
 TESTED DEVICES:
 ---------------
@@ -51,8 +51,10 @@ ISSUES:
 
 EHCI mode on USB3 ports
 
-Every USB3 port consists of a XHCI and EHCI controller. The RTL8812AU device connects only to the EHCI controller.  
-And I don't know why. You can see this via `lsusb` or `usbview`.
+Every USB3 port consists of a XHCI and EHCI controller. 
+The RTL8812AU device connects only to the EHCI controller.  
+And I don't know why. this in an HW issues.  
+You can see this via `lsusb` or `usbview`.
 
 
 TODO:

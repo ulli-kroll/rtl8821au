@@ -13,7 +13,8 @@ CONFIG_PLATFORM_I386_PC = y
 
 export TopDIR ?= $(shell pwd)
 
-RTLWIFI_FILES :=	efuse.o \
+RTLWIFI_FILES :=	debug.o \
+			efuse.o \
 			usb.o
 
 RTL8821AU_FILES	:=	rtl8821au/dm.o \

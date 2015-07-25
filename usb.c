@@ -1,6 +1,7 @@
 #include <drv_types.h>
 #include <rtl8812a_recv.h>
 #include <../rtl8821au/trx.h>
+#include "debug.h"
 
 #undef DBG_871X
 static inline void DBG_871X(const char *fmt, ...)
@@ -1669,6 +1670,10 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 
 	rtlusb->rtlpriv = rtlpriv;
 	udev = rtlusb->udev;
+
+	/* ULLI must clean/reorder this mess */
+
+	rtw_dbgp_flag_init(rtlpriv);
 
 	/* ULLI: Init IO handler */
 	_rtl_usb_io_handler_init(&udev->dev, rtlpriv);

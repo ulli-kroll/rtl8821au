@@ -9,6 +9,7 @@
 
 #include <rtl8812a_hal.h>
 
+#include "../debug.h"
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
 void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable);
@@ -483,9 +484,7 @@ static struct rtl_mod_params rtl8821au_mod_params = {
 	.swctrl_lps = false,
 	.fwctrl_lps = true,
 	.msi_support = true,
-#if 0	/* Ulli : currently not defined */	
 	.debug = DBG_EMERG,
-#endif	
 	.disable_watchdog = 0,
 };
 

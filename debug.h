@@ -237,5 +237,5 @@ static inline void RT_PRINT_DATA(struct rtl_priv *rtlpriv,
 
 #endif
 
-void rtl_dbgp_flag_init(struct rtl_priv *rtlpriv);
+void rtw_dbgp_flag_init(struct rtl_priv *rtlpriv);
 #endif

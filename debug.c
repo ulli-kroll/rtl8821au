@@ -26,7 +26,7 @@
 
 #include <linux/moduleparam.h>
 
-void rtl_dbgp_flag_init(struct rtl_priv *rtlpriv)
+void rtw_dbgp_flag_init(struct rtl_priv *rtlpriv)
 {
 	u8 i;
 
@@ -46,4 +46,3 @@ void rtl_dbgp_flag_init(struct rtl_priv *rtlpriv)
 
 	/*Init Debug flag enable condition */
 }
-EXPORT_SYMBOL_GPL(rtl_dbgp_flag_init);

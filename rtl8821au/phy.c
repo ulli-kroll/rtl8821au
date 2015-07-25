@@ -406,7 +406,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		if (VDF_enable == 1) {
-			RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("TXVDF Start\n"));
+			RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "TXVDF Start\n");
 			for (k = 0; k <= 2; k++) {
 				switch (k) {
 				case 0:
@@ -565,7 +565,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 		if (VDF_enable == 1) {
 			rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x0);    /*  TX VDF Disable */
-			RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RXVDF Start\n"));
+			RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RXVDF Start\n");
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -961,7 +961,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 		if (VDF_enable == 1) {
 			rtl_set_bbreg(rtlpriv, 0xee8, BIT(31), 0x0);    /* TX VDF Disable */
-			RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RXVDF Start\n"));
+			RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RXVDF Start\n");
 
 			/* ====== RX IQK ====== */
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
@@ -1942,7 +1942,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 			if (VDF_enable == 1) {
 				rtl_set_bbreg(rtlpriv, 0xce8, BIT(31), 0x0);    /* TX VDF Disable */
-				RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RXVDF Start\n"));
+				RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RXVDF Start\n");
 				for (k = 0; k <= 2; k++) {
 					/* ====== RX mode TXK (RXK Step 1) ====== */
 					rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -2193,7 +2193,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					TX_X0_RXK[cal] = TX_X0[cal];
 					TX_Y0_RXK[cal] = TX_Y0[cal];
 					TX0IQKOK = TRUE;
-					RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("1"));
+					RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "1");
 				}
 
 				/* ====== RX IQK ====== */

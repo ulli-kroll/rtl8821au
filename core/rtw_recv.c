@@ -92,8 +92,7 @@ sint _rtw_init_recv_priv(struct recv_priv *precvpriv, struct rtl_priv *rtlpriv)
 
 		list_add_tail(&(precvframe->list), &(precvpriv->free_recv_queue.list));
 
-		res = rtw_os_recv_resource_alloc(rtlpriv, precvframe);
-
+		precvframe->skb = NULL;
 		precvframe->len = 0;
 
 		precvframe->rtlpriv =rtlpriv;

@@ -35,10 +35,6 @@ extern void rtw_handle_tkip_mic_err(struct rtl_priv *rtlpriv,u8 bgroup);
 int	rtw_init_recv_priv(struct recv_priv *precvpriv, struct rtl_priv *rtlpriv);
 void rtw_free_recv_priv (struct recv_priv *precvpriv);
 
-
-int rtw_os_recv_resource_alloc(struct rtl_priv *rtlpriv, struct recv_frame *precvframe);
-
-
 int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvframe, u8 *pdata, struct sk_buff *pskb);
 void rtw_os_free_recvframe(struct recv_frame *precvframe);
 

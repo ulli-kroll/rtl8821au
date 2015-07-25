@@ -117,18 +117,6 @@ void rtw_os_free_recvframe(struct recv_frame *precvframe)
 	}
 }
 
-
-/* alloc os related resource in struct recv_frame */
-int rtw_os_recv_resource_alloc(struct rtl_priv *rtlpriv, struct recv_frame *precvframe)
-{
-	int	res=_SUCCESS;
-
-	precvframe->skb = NULL;
-
-	return res;
-}
-
-
 /* alloc os related resource in struct recv_buf */
 int rtw_os_recvbuf_resource_alloc(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
 {

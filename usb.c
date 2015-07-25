@@ -683,7 +683,7 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 			alignment = tmpaddr & (RECVBUFF_ALIGN_SZ-1);
 			skb_reserve(precvbuf->skb, (RECVBUFF_ALIGN_SZ - alignment));
 
-		/* ULLI : hell of a code, can't we use sbk-> direct here */
+		/* ULLI : hell of a code, can't we use skb-> direct here */
 
 			precvbuf->phead = precvbuf->skb->head;
 			precvbuf->pdata = precvbuf->skb->data;

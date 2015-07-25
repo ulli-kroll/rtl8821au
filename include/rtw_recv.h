@@ -375,7 +375,6 @@ struct recv_buf
 struct recv_frame {
 	struct list_head	list;
 	struct sk_buff *skb;
-	struct sk_buff *skb_newalloc;
 	struct rtl_priv  *rtlpriv;
 
 	uint8_t fragcnt;

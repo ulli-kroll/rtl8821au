@@ -123,7 +123,7 @@ int rtw_os_recv_resource_alloc(struct rtl_priv *rtlpriv, struct recv_frame *prec
 {
 	int	res=_SUCCESS;
 
-	precvframe->skb_newalloc = precvframe->skb = NULL;
+	precvframe->skb = NULL;
 
 	return res;
 }

@@ -685,12 +685,8 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 			alignment = tmpaddr & (RECVBUFF_ALIGN_SZ-1);
 			skb_reserve(precvbuf->skb, (RECVBUFF_ALIGN_SZ - alignment));
 
-		/* ULLI : hell of a code, can't we use skb-> direct here */
-
-			precvbuf->pbuf = precvbuf->skb->data;
 		} else {
 			/* reuse skb */
-			precvbuf->pbuf = precvbuf->skb->data;
 
 			precvbuf->reuse = _FALSE;
 		}
@@ -709,7 +705,7 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 		pipe = usb_rcvbulkpipe(pusbd, rtlusb->RtInPipe[0]);
 
 		usb_fill_bulk_urb(purb, pusbd, pipe,
-						precvbuf->pbuf,
+						precvbuf->skb->data,
 						MAX_RECVBUF_SZ,
 						usb_read_port_complete,
 						precvbuf);	/* context is precvbuf */

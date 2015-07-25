@@ -334,9 +334,6 @@ struct recv_buf
 	u32	ref_cnt;
 
 	struct rtl_priv *rtlpriv;
-
-	uint8_t	*pbuf;
-
 	u32	len;
 
 	struct urb *purb;

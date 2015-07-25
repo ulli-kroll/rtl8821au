@@ -5,6 +5,7 @@
 #include "usb.h"
 
 #include "efuse.h"	/* ULLI : Note this belongs to base.h we doesn't have */
+#include "debug.h"
 
 enum intf_type {
 	INTF_PCI = 0,
@@ -1452,7 +1453,15 @@ struct rtl_locks {
 #endif	
 };
 
+struct rtl_debug {
+	u32 dbgp_type[DBGP_TYPE_MAX];
+	int global_debuglevel;
+	u64 global_debugcomponents;
 
+	/* add for proc debug */
+	struct proc_dir_entry *proc_dir;
+	char proc_name[20];
+};
 
 struct rtl_priv {
 	struct net_device *ndev;
@@ -1471,7 +1480,7 @@ struct rtl_priv {
 	struct false_alarm_statistics falsealm_cnt;
 	struct rtl_usb_priv priv;
 	struct rtl_locks locks;
-
+	struct rtl_debug dbg;
 
 
 	struct _rtw_hal *HalData;

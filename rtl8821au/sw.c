@@ -300,6 +300,9 @@ static int rtl8821au_init_sw_vars(struct net_device *ndev)
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	uint8_t	ret8 = _SUCCESS;
 
+	/* for debug level */
+	rtlpriv->dbg.global_debuglevel = rtlpriv->cfg->mod_params->debug;
+
 	/* ULLI : needed for rtlwifi-lib to init core , from rtl8821ae */
 
 	mac->ht_enable = true;

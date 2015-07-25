@@ -80,12 +80,12 @@ int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvfra
 			DBG_871X("%s: alloc_skb fail , drop frag frame \n", __FUNCTION__);
 			/* rtw_free_recvframe(precvframe, pfree_recv_queue); */
 			res = _FAIL;
-			goto exit_rtw_os_recv_resource_alloc;
+			goto out;
 		}
 
 		if(pskb == NULL) {
 			res = _FAIL;
-			goto exit_rtw_os_recv_resource_alloc;
+			goto out;
 		}
 
 		precvframe->skb = skb_clone(pskb, GFP_ATOMIC);
@@ -102,8 +102,7 @@ int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvfra
 		}
 	}
 
-exit_rtw_os_recv_resource_alloc:
-
+out:
 	return res;
 
 }

@@ -1398,7 +1398,7 @@ static void _rtl8812au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
 		macbb_backup[i] = rtl_read_dword(rtlpriv, backup_macbb_reg[i]);
 	}
 
-	/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BackupMacBB Success!!!!\n");
 }
 
 static void _rtl8821au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
@@ -1413,7 +1413,7 @@ static void _rtl8821au_iqk_backup_macbb(struct rtl_priv *rtlpriv,
 		macbb_backup[i] = rtl_read_dword(rtlpriv, backup_macbb_reg[i]);
 	}
 
-	/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("BackupMacBB Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BackupMacBB Success!!!!\n");
 }
 
 static void _rtl8812au_iqk_backup_rf(struct rtl_priv *rtlpriv,
@@ -1428,7 +1428,7 @@ static void _rtl8812au_iqk_backup_rf(struct rtl_priv *rtlpriv,
 		RFA_backup[i] = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, Backup_RF_REG[i], bMaskDWord);
 		RFB_backup[i] = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_B, Backup_RF_REG[i], bMaskDWord);
 	}
-	/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("BackupRF Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BackupRF Success!!!!\n");
 }
 
 static void _rtl8821au_iqk_backup_rf(struct rtl_priv *rtlpriv, u32 *rfa_backup,
@@ -1443,7 +1443,7 @@ static void _rtl8821au_iqk_backup_rf(struct rtl_priv *rtlpriv, u32 *rfa_backup,
 		rfa_backup[i] = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, backup_rf_reg[i], bMaskDWord);
 	}
 
-	/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("BackupRF Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BackupRF Success!!!!\n");
 }
 
 static void _rtl8812au_iqk_backup_afe(struct rtl_priv *rtlpriv,
@@ -1456,7 +1456,7 @@ static void _rtl8812au_iqk_backup_afe(struct rtl_priv *rtlpriv,
 	for (i = 0; i < AFE_NUM; i++) {
 		AFE_backup[i] = rtl_read_dword(rtlpriv, Backup_AFE_REG[i]);
 	}
-	/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("BackupAFE Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BackupAFE Success!!!!\n");
 }
 
 static void _rtl8821au_iqk_backup_afe(struct rtl_priv *rtlpriv, u32 *afe_backup,
@@ -1469,7 +1469,7 @@ static void _rtl8821au_iqk_backup_afe(struct rtl_priv *rtlpriv, u32 *afe_backup,
 	for (i = 0; i < afe_num; i++) {
 		afe_backup[i] = rtl_read_dword(rtlpriv, backup_afe_REG[i]);
 	}
-	/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("BackupAFE Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BackupAFE Success!!!!\n");
 }
 
 static void _rtl8812au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
@@ -1481,7 +1481,7 @@ static void _rtl8812au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 	for (i = 0; i < MACBB_NUM; i++) {
 		rtl_write_dword(rtlpriv, Backup_MACBB_REG[i], MACBB_backup[i]);
 	}
-	/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RestoreMacBB Success!!!!\n");
 }
 
 static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
@@ -1496,7 +1496,7 @@ static void _rtl8821au_iqk_restore_macbb(struct rtl_priv *rtlpriv,
 	for (i = 0; i < macbb_num; i++) {
 		rtl_write_dword(rtlpriv, backup_macbb_reg[i], macbb_backup[i]);
 	}
-	/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RestoreMacBB Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RestoreMacBB Success!!!!\n");
 }
 
 static void _rtl8812au_iqk_restore_rf(struct rtl_priv *rtlpriv,
@@ -1512,10 +1512,10 @@ static void _rtl8812au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 
 	switch (Path) {
 	case RF90_PATH_A:
-		/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RestoreRF Path A Success!!!!\n")); */
+		RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RestoreRF Path A Success!!!!\n");
 		break;
 	case RF90_PATH_B:
-		/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RestoreRF Path B Success!!!!\n")); */
+		RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RestoreRF Path B Success!!!!\n");
 		break;
 	default:
 		break;
@@ -1535,7 +1535,7 @@ static void _rtl8821au_iqk_restore_rf(struct rtl_priv *rtlpriv,
 
 	switch (Path) {
 	case RF90_PATH_A:
-		/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RestoreRF Path A Success!!!!\n")); */
+		RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RestoreRF Path A Success!!!!\n");
 		break;
 	default:
 		break;
@@ -1563,7 +1563,7 @@ static void _rtl8812au_iqk_restore_afe(struct rtl_priv *rtlpriv, uint32_t *AFE_b
 	rtl_write_dword(rtlpriv, 0xe88, 0x0);
 	rtl_write_dword(rtlpriv, 0xe8c, 0x3c000000);
 	rtl_write_dword(rtlpriv, 0xeb8, 0x0);
-	/* cRT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RestoreAFE Success!!!!\n");
 }
 
 static void _rtl8821au_iqk_restore_afe(struct rtl_priv *rtlpriv,
@@ -1582,7 +1582,7 @@ static void _rtl8821au_iqk_restore_afe(struct rtl_priv *rtlpriv,
 	rtl_write_dword(rtlpriv, 0xc88, 0x0);
 	rtl_write_dword(rtlpriv, 0xc8c, 0x3c000000);
 	rtl_write_dword(rtlpriv, 0xcb8, 0x0);
-	/* RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, ("RestoreAFE Success!!!!\n")); */
+	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RestoreAFE Success!!!!\n");
 }
 
 
@@ -3278,9 +3278,8 @@ static void ODM_ReadAndConfig_MP_8812A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 	uint32_t ArrayLen       = RTL8812AU_TXPWR_LMT_ARRAY_LEN;
 	u8 **Array		= RTL8812AU_TXPWR_LMT;
 
-#if 0
-	RT_TRACE(rtlpriv, ODM_COMP_INIT, DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8812A_TXPWR_LMT\n"));
-#endif
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE, "===> ODM_ReadAndConfig_MP_8812A_TXPWR_LMT\n");
+
 	for (i = 0; i < ArrayLen; i += 7) {
 		u8 *regulation = Array[i];
 		u8 *band = Array[i+1];
@@ -3313,9 +3312,8 @@ static void ODM_ReadAndConfig_MP_8821A_TXPWR_LMT(struct rtl_priv *rtlpriv)
 	uint32_t ArrayLen       = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
 	u8 **Array		= RTL8821AU_TXPWR_LMT;
 
-#if 0
-	RT_TRACE(rtlpriv, ODM_COMP_INIT, DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_TXPWR_LMT\n"));
-#endif
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_TXPWR_LMT\n");
+
 	for (i = 0; i < ArrayLen; i += 7) {
 		u8 *regulation = Array[i];
 		u8 *band = Array[i+1];
@@ -3398,9 +3396,9 @@ void _rtl8821au_phy_config_mac_with_headerfile(struct rtl_priv *rtlpriv)
 	hex += _interface << 8;
 	hex += platform << 16;
 	hex += 0xFF000000;
-#if 0
-	RT_TRACE(rtlpriv, ODM_COMP_INIT, DBG_TRACE, ("===> ODM_ReadAndConfig_MP_8821A_MAC_REG, hex = 0x%X\n", hex));
-#endif
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE, "===> ODM_ReadAndConfig_MP_8821A_MAC_REG, hex = 0x%X\n", hex);
+
 	for (i = 0; i < ArrayLen; i += 2) {
 		uint32_t v1 = Array[i];
 		uint32_t v2 = Array[i+1];
@@ -3465,7 +3463,7 @@ static void _rtl8821au_config_rf_radio_a(struct rtl_priv *rtlpriv, uint32_t Addr
 
 	_rtl8821au_config_rf_reg(rtlpriv, Addr, Data, RF90_PATH_A, Addr|maskforPhySet);
 
-	/* RT_TRACE(rtlpriv, ODM_COMP_INIT, DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data)); */
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE, "===> ODM_ConfigRFWithHeaderFile: [RadioA] %08X %08X\n", Addr, Data);
 }
 
 static void _rtl8821au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr,
@@ -3476,7 +3474,7 @@ static void _rtl8821au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr
 
 	_rtl8821au_config_rf_reg(rtlpriv, Addr, Data, RF90_PATH_B, Addr|maskforPhySet);
 
-	/* RT_TRACE(rtlpriv, ODM_COMP_INIT, DBG_TRACE, ("===> ODM_ConfigRFWithHeaderFile: [RadioB] %08X %08X\n", Addr, Data)); */
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE, "===> ODM_ConfigRFWithHeaderFile: [RadioB] %08X %08X\n", Addr, Data);
 }
 
 
@@ -3603,16 +3601,12 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 		}
 
 	case RF90_PATH_C:
-		/*
-		 * RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG,
-		 * 	 "switch case not process\n");
-		 */
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG,
+			 "switch case not process\n");
 		break;
 	case RF90_PATH_D:
-		/*
-		 * RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG,
-		 * 	 "switch case not process\n");
-		 */
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG, 
+			 "switch case not process\n");
 		break;
 	}
 }

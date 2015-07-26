@@ -307,7 +307,7 @@ static int _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 	}
 
 
-	/* RT_TRACE(COMP_INIT, DBG_LOUD, ("<---phy_RF6052_Config_ParaFile_8812()\n")); */
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "<---phy_RF6052_Config_ParaFile_8812()\n");
 
 	return rtStatus;
 }

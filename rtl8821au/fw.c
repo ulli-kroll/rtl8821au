@@ -1256,9 +1256,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 
 Exit:
 
-	/*
-	 * RT_TRACE(COMP_INIT, DBG_LOUD, (" <=== FirmwareDownload91C()\n"));
-	 */
-
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " <=== FirmwareDownload91C()\n");
+	
 	return rtStatus;
 }

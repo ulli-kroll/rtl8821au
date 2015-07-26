@@ -1347,7 +1347,9 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo
 
 
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
-		/* ODM_RT_TRACE(pDM_Odm,ODM_COMP_RSSI_MONITOR, DBG_LOUD, ("ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll)); */
+#if 0		/* Currently no value in rtlwifi for this */
+		RT_TRACE(rtlpriv, COMP_RSSI_MONITOR, DBG_LOUD, "ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll);
+#endif		
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL_BT;
 		pPhyInfo->RxPower = rx_pwr_all;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;

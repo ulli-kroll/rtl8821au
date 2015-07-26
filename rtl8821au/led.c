@@ -830,10 +830,11 @@ static void BlinkHandler(struct rtl_led *pLed)
 		break;
 
 	default:
-		/*
-		 * RT_TRACE(COMP_LED, DBG_LOUD, ("BlinkWorkItemCallback 0x%x \n", pHalData->LedStrategy));
-		 * SwLedBlink(pLed);
-		 */
+		RT_TRACE(rtlpriv, COMP_LED, DBG_LOUD, "BlinkWorkItemCallback 0x%x \n", ledpriv->LedStrategy);
+#if 0		/* ULLI : Damn, check old sources */
+		SwLedBlink(pLed);
+#endif		
+	
 		break;
 	}
 }

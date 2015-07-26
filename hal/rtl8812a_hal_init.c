@@ -20,16 +20,6 @@
 #define _RTL8812A_HAL_INIT_C_
 #include <rtl8812a_hal.h>
 
-#undef DBG_871X
-static inline void DBG_871X(const char *fmt, ...)
-{
-}
-
-#undef DBG_8192C
-static inline void DBG_8192C(const char *fmt, ...)
-{
-}
-
 /*
  *-------------------------------------------------------------------------
  *
@@ -87,9 +77,11 @@ static u8 _rtl8821au_get_chnl_group(u8 chnl)
 			group = 3;
 		else if (12 <= chnl && chnl <= 14)
 			group = 4;
+#if 0
 		else {
 			DBG_871X("==>mpt_GetChnlGroup8812A in 2.4 G, but chnl %d in Group not found \n", chnl);
 		}
+#endif
 	} else {
 		if      (36   <= chnl && chnl <=  42)
 			group = 0;
@@ -119,9 +111,11 @@ static u8 _rtl8821au_get_chnl_group(u8 chnl)
 			group = 12;
 		else if (173  <= chnl && chnl <= 177)
 			group = 13;
+#if 0
 		else {
 			DBG_871X("==>mpt_GetChnlGroup8812A in 5G, but chnl %d in Group not found \n", chnl);
 		}
+#endif
 
 	}
 	/* DBG_871X("<==mpt_GetChnlGroup8812A,  (%s) Channel = %d, Group =%d,\n", (bIn24G) ? "2.4G" : "5G", Channel, *pGroup); */
@@ -146,7 +140,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 		autoload_fail = true;
 
 	if (autoload_fail) {
-		DBG_871X("hal_ReadPowerValueFromPROM8812A(): Use Default value!\n");
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "hal_ReadPowerValueFromPROM8812A(): Use Default value!\n");
 		for (rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++) {
 			/*  2.4G default value */
 			for (group = 0 ; group < MAX_CHNL_GROUP_24G; group++) {
@@ -392,13 +386,13 @@ void Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, u8 *hwinfo)
 	/*  Checl 0x8129 again for making sure autoload status!! */
 	EEPROMId = le16_to_cpu(*((u16 *)hwinfo));
 	if (EEPROMId != RTL_EEPROM_ID) {
-		DBG_8192C("EEPROM ID(%#x) is invalid!!\n", EEPROMId);
+		RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROM ID(%#x) is invalid!!\n", EEPROMId);
 		efuse->autoload_failflag = _TRUE;
 	} else {
 		efuse->autoload_failflag = _FALSE;
 	}
 
-	DBG_8192C("EEPROM ID=0x%04x\n", EEPROMId);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROM ID=0x%04x\n", EEPROMId);
 }
 
 void Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
@@ -516,7 +510,7 @@ void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	} else {
 		efuse->eeprom_regulatory = 0;
 	}
-	DBG_871X("EEPROMRegulatory = 0x%x\n", efuse->eeprom_regulatory);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROMRegulatory = 0x%x\n", efuse->eeprom_regulatory);
 
 }
 
@@ -532,7 +526,7 @@ void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	} else {
 		pHalData->InterfaceSel = 0;
 	}
-	DBG_871X("Board Type: 0x%2x\n", pHalData->InterfaceSel);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "Board Type: 0x%2x\n", pHalData->InterfaceSel);
 
 }
 
@@ -558,7 +552,7 @@ void Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	}
 
 	/* pHalData->ThermalMeter[0] = pHalData->EEPROMThermalMeter; */
-	DBG_871X("ThermalMeter = 0x%x\n", efuse->eeprom_thermalmeter);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "ThermalMeter = 0x%x\n", efuse->eeprom_thermalmeter);
 }
 
 void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
@@ -572,7 +566,7 @@ void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 		, AutoLoadFail
 	);
 
-	DBG_871X("mlmepriv.ChannelPlan = 0x%02x\n", rtlpriv->mlmepriv.ChannelPlan);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "mlmepriv.ChannelPlan = 0x%02x\n", rtlpriv->mlmepriv.ChannelPlan);
 }
 
 void Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
@@ -587,7 +581,7 @@ void Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	} else {
 		rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;
 	}
-	DBG_871X("CrystalCap: 0x%2x\n", rtlefuse->crystalcap);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "CrystalCap: 0x%2x\n", rtlefuse->crystalcap);
 }
 
 void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
@@ -605,7 +599,7 @@ void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
 		pHalData->AntDivCfg = 0;
 	}
 
-	DBG_871X("SWAS: bHwAntDiv = %x\n", pHalData->AntDivCfg);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "SWAS: bHwAntDiv = %x\n", pHalData->AntDivCfg);
 }
 
 void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
@@ -666,10 +660,10 @@ void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 			rtlhal->external_lna_5g = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	}
-	DBG_871X("pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, rtlhal->external_pa_2g);
-	DBG_871X("pHalData->PAType_5G is 0x%x, pHalData->ExternalPA_5G = %d\n", rtlhal->pa_type_5g, rtlhal->external_pa_5g);
-	DBG_871X("pHalData->LNAType_2G is 0x%x, pHalData->ExternalLNA_2G = %d\n", rtlhal->lna_type_2g, rtlhal->external_lna_2g);
-	DBG_871X("pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, rtlhal->external_pa_2g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->PAType_5G is 0x%x, pHalData->ExternalPA_5G = %d\n", rtlhal->pa_type_5g, rtlhal->external_pa_5g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->LNAType_2G is 0x%x, pHalData->ExternalLNA_2G = %d\n", rtlhal->lna_type_2g, rtlhal->external_lna_2g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
 }
 
 void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
@@ -731,10 +725,10 @@ void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 			rtlhal->external_lna_5g = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;
 		}
 	}
-	DBG_871X("pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, rtlhal->external_pa_2g);
-	DBG_871X("pHalData->PAType_5G is 0x%x, pHalData->ExternalPA_5G = %d\n", rtlhal->pa_type_5g, rtlhal->external_pa_5g);
-	DBG_871X("pHalData->LNAType_2G is 0x%x, pHalData->ExternalLNA_2G = %d\n", rtlhal->lna_type_2g, rtlhal->external_lna_2g);
-	DBG_871X("pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, rtlhal->external_pa_2g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->PAType_5G is 0x%x, pHalData->ExternalPA_5G = %d\n", rtlhal->pa_type_5g, rtlhal->external_pa_5g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->LNAType_2G is 0x%x, pHalData->ExternalLNA_2G = %d\n", rtlhal->lna_type_2g, rtlhal->external_lna_2g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
 }
 
 
@@ -791,7 +785,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 			rtlpriv->phy.rf_type = RF_1T1R;
 			/* UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE); */
 			/* pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VL; */
-			DBG_871X("%s(): EFUSE_HIDDEN_812AU_VL\n", __FUNCTION__);
+			RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU_VL\n", __FUNCTION__);
 		} else if (antenna == 2) {
 			if (wmode == 3) {
 				if (PROMContent[EEPROM_USB_MODE_8812] == 0x2) {
@@ -799,7 +793,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 					 * RTL8812AU Normal Mode. No further action.
 					 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU;
 					 */
-					DBG_871X("%s(): EFUSE_HIDDEN_812AU\n", __FUNCTION__);
+					RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU\n", __FUNCTION__);
 				} else {
 					/*
 					 * Antenna == 2 WMODE = 3 RTL8812AU-VS 11AC + USB2.0 Mode
@@ -807,7 +801,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 					 * UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE);
 					 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VS;
 					 */
-					DBG_871X("%s(): EFUSE_HIDDEN_812AU_VS\n", __FUNCTION__);
+					RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU_VS\n", __FUNCTION__);
 				}
 			} else
 				if (wmode == 2) {
@@ -816,7 +810,7 @@ hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 				 * UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE);
 				 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VN;
 				 */
-				DBG_871X("%s(): EFUSE_HIDDEN_812AU_VN\n", __FUNCTION__);
+				RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU_VN\n", __FUNCTION__);
 			}
 		}
 	}
@@ -861,13 +855,13 @@ void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, BOOLEAN b
 	/* _irqL irqL; */
 
 	if (bSet) {
-		DBG_8192C("### Set STA_(%d) info\n", psta->mac_id);
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "### Set STA_(%d) info\n", psta->mac_id);
 		podmpriv->pODM_StaInfo[psta->mac_id] = psta;
 #if (RATE_ADAPTIVE_SUPPORT == 1)
 		ODM_RAInfo_Init(podmpriv, psta->mac_id);
 #endif
 	} else {
-		DBG_8192C("### Clean STA_(%d) info\n", psta->mac_id);
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "### Clean STA_(%d) info\n", psta->mac_id);
 		/* spin_lock_bh(&pHalData->odm_stainfo_lock, &irqL); */
 		podmpriv->pODM_StaInfo[psta->mac_id] = NULL;
 		/* spin_unlock_bh(&pHalData->odm_stainfo_lock, &irqL); */
@@ -877,10 +871,10 @@ void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, BOOLEAN b
 void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable)
 {
 	if (enable) {
-		DBG_871X("Enable notch filter\n");
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Enable notch filter\n");
 		/* rtl_write_byte(rtlpriv, rOFDM0_RxDSP+1, rtl_read_byte(rtlpriv, rOFDM0_RxDSP+1) | BIT1); */
 	} else {
-		DBG_871X("Disable notch filter\n");
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Disable notch filter\n");
 		/* rtl_write_byte(rtlpriv, rOFDM0_RxDSP+1, rtl_read_byte(rtlpriv, rOFDM0_RxDSP+1) & ~BIT1); */
 	}
 }

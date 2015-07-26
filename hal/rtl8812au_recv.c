@@ -21,11 +21,6 @@
 
 #include <rtl8812a_hal.h>
 
-#undef DBG_8192C
-static inline void DBG_8192C(const char *fmt, ...)
-{
-}
-
 int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 {
 	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
@@ -126,7 +121,7 @@ void rtl8812au_free_recv_priv (struct rtl_priv *rtlpriv)
 		rtw_mfree(precvpriv->pallocated_recv_buf);
 
 	if (skb_queue_len(&precvpriv->rx_skb_queue)) {
-		DBG_8192C(KERN_WARNING "rx_skb_queue not empty\n");
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "rx_skb_queue not empty\n");
 	}
 
 	skb_queue_purge(&precvpriv->rx_skb_queue);
@@ -134,7 +129,7 @@ void rtl8812au_free_recv_priv (struct rtl_priv *rtlpriv)
 #ifdef CONFIG_PREALLOC_RECV_SKB
 
 	if (skb_queue_len(&precvpriv->free_recv_skb_queue)) {
-		DBG_8192C(KERN_WARNING "free_recv_skb_queue not empty, %d\n", skb_queue_len(&precvpriv->free_recv_skb_queue));
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "free_recv_skb_queue not empty, %d\n", skb_queue_len(&precvpriv->free_recv_skb_queue));
 	}
 
 	skb_queue_purge(&precvpriv->free_recv_skb_queue);

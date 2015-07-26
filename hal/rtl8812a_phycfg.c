@@ -26,11 +26,6 @@
 #include <../rtl8821au/rf.h>
 #include <../wifi.h>
 
-#undef DBG_871X
-static inline void DBG_871X(const char *fmt, ...)
-{
-}
-
 const char *const GLBwSrc[]={
 	"CHANNEL_WIDTH_20",
 	"CHANNEL_WIDTH_40",
@@ -950,7 +945,7 @@ static void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 	uint8_t	channelToSW = rtlpriv->phy.current_channel;
 
 	if(phy_SwBand8812(rtlpriv, channelToSW) == _FALSE) {
-		DBG_871X("error Chnl %d !\n", channelToSW);
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "error Chnl %d !\n", channelToSW);
 	}
 
 	/* DBG_871X("[BW:CHNL], phy_SwChnl8812(), switch to channel %d !!\n", channelToSW); */
@@ -1037,7 +1032,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 
 	/* check is swchnl or setbw */
 	if(!bSwitchChannel && !bSetBandWidth) {
-		DBG_871X("PHY_HandleSwChnlAndSetBW8812:  not switch channel and not set bandwidth \n");
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "PHY_HandleSwChnlAndSetBW8812:  not switch channel and not set bandwidth \n");
 		return;
 	}
 

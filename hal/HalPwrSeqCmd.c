@@ -35,11 +35,6 @@ Major Change History:
 --*/
 #include <HalPwrSeqCmd.h>
 
-#undef DBG_871X
-static inline void DBG_871X(const char *fmt, ...)
-{
-}
-
 //
 //	Description:
 //		This routine deal with the Power Configuration CMDs parsing for RTL8723/RTL8188E Series IC.
@@ -105,7 +100,7 @@ bool rtw_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
 						udelay(10);
 
 					if (pollingCount++ > maxPollingCnt) {
-						DBG_871X("Fail to polling Offset[%#x]\n", offset);
+						RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Fail to polling Offset[%#x]\n", offset);
 						return _FALSE;
 					}
 				} while (!bPollingBit);

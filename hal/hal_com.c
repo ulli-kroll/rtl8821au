@@ -24,11 +24,6 @@
 
 #define	EEPROM_CHANNEL_PLAN_BY_HW_MASK	0x80
 
-#undef DBG_871X
-static inline void DBG_871X(const char *fmt, ...)
-{
-}
-
 uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
 	IN	struct rtl_priv *rtlpriv,
@@ -72,16 +67,16 @@ HAL_IsLegalChannel(
 	if (Channel > 14) {
 		if(IsSupported5G(rtlpriv->registrypriv.wireless_mode) == _FALSE) {
 			bLegalChannel = _FALSE;
-			DBG_871X("Channel > 14 but wireless_mode do not support 5G\n");
+			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Channel > 14 but wireless_mode do not support 5G\n");
 		}
 	} else if ((Channel <= 14) && (Channel >=1)){
 		if(IsSupported24G(rtlpriv->registrypriv.wireless_mode) == _FALSE) {
 			bLegalChannel = _FALSE;
-			DBG_871X("(Channel <= 14) && (Channel >=1) but wireless_mode do not support 2.4G\n");
+			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "(Channel <= 14) && (Channel >=1) but wireless_mode do not support 2.4G\n");
 		}
 	} else {
 		bLegalChannel = _FALSE;
-		DBG_871X("Channel is Invalid !!!\n");
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Channel is Invalid !!!\n");
 	}
 
 	return bLegalChannel;
@@ -165,7 +160,7 @@ int32_t c2h_evt_read(struct rtl_priv *rtlpriv, uint8_t *buf)
 		&c2h_evt , sizeof(c2h_evt));
 
 	if (0) {
-		DBG_871X("%s id:%u, len:%u, seq:%u, trigger:0x%02x\n", __func__
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s id:%u, len:%u, seq:%u, trigger:0x%02x\n", __func__
 			, c2h_evt->id, c2h_evt->plen, c2h_evt->seq, trigger);
 	}
 

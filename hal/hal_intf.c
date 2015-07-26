@@ -23,11 +23,6 @@
 #include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-#undef DBG_871X
-static inline void DBG_871X(const char *fmt, ...)
-{
-}
-
 void rtw_hal_read_chip_info(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->read_adapter_info)
@@ -92,7 +87,7 @@ uint rtw_hal_init(struct rtl_priv *rtlpriv)
 		rtw_hal_led_control(rtlpriv, LED_CTL_POWER_ON);
 	} else {
 		rtlpriv->hw_init_completed = _FALSE;
-		DBG_871X("rtw_hal_init: hal__init fail\n");
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "rtw_hal_init: hal__init fail\n");
 	}
 
 	return status;
@@ -109,7 +104,7 @@ uint rtw_hal_deinit(struct rtl_priv *rtlpriv)
 		rtw_hal_led_control(rtlpriv, LED_CTL_POWER_OFF);
 		rtlpriv->hw_init_completed = _FALSE;
 	} else {
-		DBG_871X("\n rtw_hal_deinit: hal_init fail\n");
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "\n rtw_hal_deinit: hal_init fail\n");
 	}
 
 	return status;
@@ -132,7 +127,7 @@ void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv)
 	if (rtlpriv->cfg->ops->enable_interrupt)
 		rtlpriv->cfg->ops->enable_interrupt(rtlpriv);
 	else
-		DBG_871X("%s: cfg->ops.enable_interrupt is NULL!\n", __func__);
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "->ops.enable_interrupt is NULL!\n");
 
 }
 void rtw_hal_disable_interrupt(struct rtl_priv *rtlpriv)
@@ -140,7 +135,7 @@ void rtw_hal_disable_interrupt(struct rtl_priv *rtlpriv)
 	if (rtlpriv->cfg->ops->disable_interrupt)
 		rtlpriv->cfg->ops->disable_interrupt(rtlpriv);
 	else
-		DBG_871X("%s: cfg->ops.disable_interrupt is NULL!\n", __func__);
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "->ops.disable_interrupt is NULL!\n");
 }
 
 uint32_t	rtw_hal_inirp_deinit(struct rtl_priv *rtlpriv)

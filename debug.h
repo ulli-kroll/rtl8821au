@@ -164,7 +164,6 @@ enum dbgp_flag_e {
 	DBGP_TYPE_MAX
 };
 
-#define CONFIG_RTLWIFI_DEBUG
 #ifdef CONFIG_RTLWIFI_DEBUG
 
 #define RT_ASSERT(_exp, fmt, ...)					\

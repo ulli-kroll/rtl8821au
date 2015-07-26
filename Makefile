@@ -8,6 +8,14 @@ EXTRA_CFLAGS += -I$(src)/include
 CONFIG_RTL8812A = y
 CONFIG_RTL8821A = y
 
+# Note CONFIG_RTLWIFI_DEBUG
+# this enables *only* the compiling for this
+# to enable the output use i.e.
+# insmod rtl8821au.ko debug=5
+# see modinfo rtl8821au.ko
+
+CONFIG_RTLWIFI_DEBUG = y
+
 CONFIG_POWER_SAVING = y
 CONFIG_PLATFORM_I386_PC = y
 
@@ -68,6 +76,7 @@ CORE_FILES :=		core/rtw_cmd.o \
 
 EXTRA_CFLAGS += -DCONFIG_RTL8812A
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
+EXTRA_CFLAGS += -DCONFIG_RTLWIFI_DEBUG
 
 MODULE_NAME = rtl8821au
 

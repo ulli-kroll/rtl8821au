@@ -19,7 +19,7 @@ You need to install the needed fw with
 `sudo make installfw`  
 
 If you need to crosscompile use  
-'ARCH= CROSS_COMPILE= KSRC='  
+`ARCH= CROSS_COMPILE= KSRC=`  
 while calling  
 `make`
 

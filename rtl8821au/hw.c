@@ -3,11 +3,6 @@
 #include "fw.h"
 #include "phy.h"
 
-#undef DBG_871X
-static inline void DBG_871X(const char *fmt, ...)
-{
-}
-
 #undef DBG_8192C
 static inline void DBG_8192C(const char *fmt, ...)
 {
@@ -147,7 +142,7 @@ int rtl8821au_set_network_type(struct rtl_priv *rtlpriv, uint8_t mode)
 		val8 |= mode;
 		rtl_write_byte(rtlpriv, MSR, val8);
 
-		dev_info(&(rtlpriv->ndev->dev), "%s()-%d mode = %d\n", __FUNCTION__, __LINE__, mode);
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s()-%d mode = %d\n", __FUNCTION__, __LINE__, mode);
 
 		if ((mode == _HW_STATE_STATION_) || (mode == _HW_STATE_NOLINK_)) {
 			_rtl8821au_stop_tx_beacon(rtlpriv);
@@ -529,14 +524,14 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		val32 = rtl_read_dword(rtlpriv, REG_RCR);
 		val32 |= RCR_AM;
 		rtl_write_dword(rtlpriv, REG_RCR, val32);
-		dev_info(&(rtlpriv->ndev->dev), "%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
 		break;
 
 	case HW_VAR_OFF_RCR_AM:
 		val32 = rtl_read_dword(rtlpriv, REG_RCR);
 		val32 &= ~RCR_AM;
 		rtl_write_dword(rtlpriv, REG_RCR, val32);
-		dev_info(&(rtlpriv->ndev->dev), "%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,  "%s, %d, RCR= %x\n", __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
 		break;
 
 	case HW_VAR_BEACON_INTERVAL:
@@ -665,7 +660,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			else
 				AcmCtrl &= (~AcmHw_BeqEn);
 
-			dev_info(&(rtlpriv->ndev->dev), "[HW_VAR_ACM_CTRL] Write 0x%X\n", AcmCtrl);
+			RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "[HW_VAR_ACM_CTRL] Write 0x%X\n", AcmCtrl);
 			rtl_write_byte(rtlpriv, REG_ACMHWCTRL, AcmCtrl);
 		}
 		break;
@@ -793,7 +788,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 						break;
 				} while (trycnt--);
 				if (trycnt == 0) {
-					dev_info(&(rtlpriv->ndev->dev), "[HW_VAR_FIFO_CLEARN_UP] Stop RX DMA failed......\n");
+					RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "[HW_VAR_FIFO_CLEARN_UP] Stop RX DMA failed......\n");
 				}
 
 				/* RQPN Load 0 */
@@ -809,7 +804,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	case HW_VAR_TX_RPT_MAX_MACID:
 		{
 			uint8_t maxMacid = *pval;
-			dev_info(&(rtlpriv->ndev->dev), "### MacID(%d),Set Max Tx RPT MID(%d)\n", maxMacid, maxMacid+1);
+			RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "### MacID(%d),Set Max Tx RPT MID(%d)\n", maxMacid, maxMacid+1);
 			rtl_write_byte(rtlpriv, REG_TX_RPT_CTRL+1, maxMacid+1);
 		}
 		break;
@@ -829,7 +824,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 	case HW_VAR_APFM_ON_MAC:
 		pHalData->bMacPwrCtrlOn = *pval;
-		dev_info(&(rtlpriv->ndev->dev), "%s: bMacPwrCtrlOn=%d\n", __FUNCTION__, pHalData->bMacPwrCtrlOn);
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s: bMacPwrCtrlOn=%d\n", __FUNCTION__, pHalData->bMacPwrCtrlOn);
 		break;
 
 	case HW_VAR_NAV_UPPER:
@@ -837,7 +832,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			uint32_t usNavUpper = *((u32 *)pval);
 
 			if (usNavUpper > HAL_NAV_UPPER_UNIT * 0xFF) {
-				dev_info(&(rtlpriv->ndev->dev), "%s: [HW_VAR_NAV_UPPER] set value(0x%08X us) is larger than (%d * 0xFF)!\n",
+				RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s: [HW_VAR_NAV_UPPER] set value(0x%08X us) is larger than (%d * 0xFF)!\n",
 					__FUNCTION__, usNavUpper, HAL_NAV_UPPER_UNIT);
 				break;
 			}
@@ -906,7 +901,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	default:
-		dev_info(&(rtlpriv->ndev->dev), "%s: [WARNNING] variable(%d) not defined!\n", __FUNCTION__, variable);
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s: [WARNNING] variable(%d) not defined!\n", __FUNCTION__, variable);
 		break;
 	}
 }
@@ -971,7 +966,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 		break;
 
 	default:
-		dev_info(&(rtlpriv->ndev->dev), "%s: [WARNNING] variable(%d) not defined!\n", __FUNCTION__, variable);
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s: [WARNNING] variable(%d) not defined!\n", __FUNCTION__, variable);
 		break;
 	}
 }
@@ -993,7 +988,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	value32 = rtl_read_dword(rtlpriv, REG_SYS_CFG);
-	dev_info(&(rtlpriv->ndev->dev), "%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s SYS_CFG(0x%X)=0x%08x \n", __FUNCTION__, REG_SYS_CFG, value32);
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		chip_version = CHIP_8812;
@@ -1041,18 +1036,18 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	if (IS_1T2R(chip_version)) {
 		rtlpriv->phy.rf_type = RF_1T2R;
 		 rtlpriv->phy.num_total_rfpath = 2;
-		dev_info(&(rtlpriv->ndev->dev), "==> RF_Type : 1T2R\n");
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "==> RF_Type : 1T2R\n");
 	} else if (IS_2T2R(chip_version)) {
 		rtlpriv->phy.rf_type = RF_2T2R;
 		 rtlpriv->phy.num_total_rfpath = 2;
-		dev_info(&(rtlpriv->ndev->dev), "==> RF_Type : 2T2R\n");
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "==> RF_Type : 2T2R\n");
 	} else {
 		rtlpriv->phy.rf_type = RF_1T1R;
 		 rtlpriv->phy.num_total_rfpath = 1;
-		dev_info(&(rtlpriv->ndev->dev), "==> RF_Type 1T1R\n");
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "==> RF_Type 1T1R\n");
 	}
 
-	dev_info(&(rtlpriv->ndev->dev), "RF_Type is %x!!\n", rtlpriv->phy.rf_type);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "RF_Type is %x!!\n", rtlpriv->phy.rf_type);
 }
 
 
@@ -1182,15 +1177,11 @@ static void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
  */
 	}
 
-#if 0
-	DBG_871X("VID = 0x%04X, PID = 0x%04X\n", efuse->eeprom_vid, efuse->eeprom_did);
-#endif	
-/* ULLI : rot in rtlwifi
-	DBG_871X("Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->eeprom_oemid, efuse->EEPROMSubCustomerID);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "VID = 0x%04X, PID = 0x%04X\n", efuse->eeprom_vid, efuse->eeprom_did);
+/* ULLI : not in rtlwifi
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->eeprom_oemid, efuse->EEPROMSubCustomerID);
 */
-#if 0
-	DBG_871X("Customer ID: 0x%02X\n", efuse->eeprom_oemid);
-#endif	
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Customer ID: 0x%02X\n", efuse->eeprom_oemid);
 }
 
 static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
@@ -1214,9 +1205,7 @@ static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 		memcpy(pEEPROM->mac_addr, sMacAddr, ETH_ALEN);
 	}
 
-#if 0
-	DBG_8192C("%s MAC Address from EFUSE = "MAC_FMT"\n", __FUNCTION__, MAC_ARG(pEEPROM->mac_addr));
-#endif	
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s MAC Address from EFUSE = "MAC_FMT"\n", __FUNCTION__, MAC_ARG(pEEPROM->mac_addr));
 }
 
 
@@ -1592,17 +1581,17 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 	if (IS_VENDOR_8821A_MP_CHIP(rtlhal->version)) {
 		/* HW Power on sequence */
 		if (!rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_A_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
-			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
+			RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s: run power on flow fail\n", __func__);
 			return _FAIL;
 		}
 	} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		if (!rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_TESTCHIP_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
-			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
+			RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s: run power on flow fail\n", __func__);
 			return _FAIL;
 		}
 	} else {
 		if (!rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_ENABLE_FLOW)) {
-			DBG_871X(KERN_ERR "%s: run power on flow fail\n", __func__);
+			RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s: run power on flow fail\n", __func__);
 			return _FAIL;
 		}
 	}
@@ -1853,7 +1842,7 @@ static void _InitQueuePriority_8812AUsb(struct rtl_priv *rtlpriv)
 		_InitNormalChipThreeOutEpPriority_8812AUsb(rtlpriv);
 		break;
 	default:
-		DBG_871X("_InitQueuePriority_8812AUsb(): Shall not reach here!\n");
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "_InitQueuePriority_8812AUsb(): Shall not reach here!\n");
 		break;
 	}
 }
@@ -2144,10 +2133,10 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	/* Check if MAC has already power on. by tynli. 2011.05.27. */
 	value8 = rtl_read_byte(rtlpriv, REG_SYS_CLKR+1);
 	u1bRegCR = rtl_read_byte(rtlpriv, REG_CR);
-	DBG_871X(" power-on :REG_SYS_CLKR 0x09=0x%02x. REG_CR 0x100=0x%02x.\n", value8, u1bRegCR);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " power-on :REG_SYS_CLKR 0x09=0x%02x. REG_CR 0x100=0x%02x.\n", value8, u1bRegCR);
 	if ((value8&BIT3)  && (u1bRegCR != 0 && u1bRegCR != 0xEA)) {
 		/* pHalData->bMACFuncEnable = TRUE; */
-		DBG_871X(" MAC has already power on.\n");
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " MAC has already power on.\n");
 	} else {
 		/*
 		 * pHalData->bMACFuncEnable = FALSE;
@@ -2155,7 +2144,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 		 * state which is set before sleep under wowlan mode. 2012.01.04. by tynli.
 		 * pHalData->FwPSState = FW_PS_STATE_ALL_ON_88E;
 		 */
-		DBG_871X(" MAC has not been powered on yet.\n");
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " MAC has not been powered on yet.\n");
 	}
 
 	/*
@@ -2194,12 +2183,12 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 
 	status = rtl8821au_download_fw(rtlpriv, _FALSE);
 	if (status != _SUCCESS) {
-		DBG_871X("%s: Download Firmware failed!!\n", __FUNCTION__);
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: Download Firmware failed!!\n", __FUNCTION__);
 		rtlhal->fw_ready = false;
 		pHalData->fw_ractrl = _FALSE;
 		/* return status; */
 	} else {
-		DBG_871X("%s: Download Firmware Success!!\n", __FUNCTION__);
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: Download Firmware Success!!\n", __FUNCTION__);
 		rtlhal->fw_ready = true;
 		pHalData->fw_ractrl = _TRUE;
 	}
@@ -2402,12 +2391,12 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 			mac_addr[i] = rtl_read_byte(rtlpriv, REG_MACID+i);
 		}
 
-		DBG_8192C("MAC Address from REG_MACID = "MAC_FMT"\n", MAC_ARG(mac_addr));
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "MAC Address from REG_MACID = "MAC_FMT"\n", MAC_ARG(mac_addr));
 	}
 
 exit:
 
-	DBG_871X("%s in %dms\n", __FUNCTION__, rtw_get_passing_time_ms(init_start_time));
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s in %dms\n", __FUNCTION__, rtw_get_passing_time_ms(init_start_time));
 
 	return status;
 }

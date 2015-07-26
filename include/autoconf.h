@@ -112,25 +112,3 @@
 
 #define CONFIG_ATTEMPT_TO_FIX_AP_BEACON_ERROR
 
-/*
- * Debug Related Config
- */
-#define DBG	1
-
-#define CONFIG_DEBUG /* DBG_871X, etc... */
-//#define CONFIG_DEBUG_RTL871X /* RT_TRACE, RT_PRINT_DATA, _func_enter_, _func_exit_ */
-
-#define CONFIG_PROC_DEBUG
-
-
-//#define DBG_TX
-
-//#define DBG_RX_SIGNAL_DISPLAY_SSID_MONITORED "jeff-ap"
-
-
-
-//#define DBG_ROAMING_TEST
-
-//#define DBG_HAL_INIT_PROFILING
-
-

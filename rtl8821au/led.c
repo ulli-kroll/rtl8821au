@@ -27,6 +27,14 @@
  * And up too three leds ...
  */
 
+/* for RTL8812AU */
+/* TP-LINK : LED_PIN_LED0 */
+/* LINKSYS : LED_PIN_LED0 -> traffic */
+/* LINKSYS : LED_PIN_LED2 -> WPS ?? or whatever */
+
+/* for RTL8821AU see LED PATH for HW info */
+/* For Digitus Wireless AC433 */
+/* DLINK DWA */
 
 
 static void SwLedOn(struct rtl_priv *rtlpriv, struct rtl_led *pLed)

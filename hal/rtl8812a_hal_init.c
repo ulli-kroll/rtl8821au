@@ -519,6 +519,7 @@ void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
+#if 0	/* ULLI check this in old source, may be vendor specific ?? */
 	if (!autoload_fail) {
 		pHalData->InterfaceSel = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0xE0)>>5;
 		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
@@ -527,7 +528,7 @@ void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		pHalData->InterfaceSel = 0;
 	}
 	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "Board Type: 0x%2x\n", pHalData->InterfaceSel);
-
+#endif
 }
 
 void Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,

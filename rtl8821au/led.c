@@ -1942,27 +1942,7 @@ static void SwLedOn_8812AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		return;
 	}
 
-	if (RT_GetInterfaceSelection(rtlpriv) == INTF_SEL2_MINICARD
-	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL3_USB_Solo
-	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL4_USB_Combo) {
-		LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-		switch (pLed->LedPin) {
-		case LED_PIN_GPIO0:
-			break;
-
-		case LED_PIN_LED0:
-			LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-			rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
-			break;
-
-		case LED_PIN_LED1:
-			rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg&0x0f)|BIT5); /* SW control led1 on. */
-			break;
-
-		default:
-			break;
-		}
-	} else {
+	{
 		switch (pLed->LedPin) {
 		case LED_PIN_GPIO0:
 			break;
@@ -2012,42 +1992,7 @@ static void SwLedOff_8812AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		return;
 	}
 
-	if (RT_GetInterfaceSelection(rtlpriv) == INTF_SEL2_MINICARD
-	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL3_USB_Solo
-	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL4_USB_Combo) {
-		LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-
-		/*
-		 * 2009/10/23 MH Issau eed to move the LED GPIO from bit  0 to bit3.
-		 * 2009/10/26 MH Issau if tyhe device is 8c DID is 0x8176, we need to enable bit6 to
-		 * enable GPIO8 for controlling LED.
-		 * 2010/07/02 Supprt Open-drain arrangement for controlling the LED. Added by Roger.
-		 */
-		switch (pLed->LedPin) {
-		case LED_PIN_GPIO0:
-			break;
-
-		case LED_PIN_LED0:
-			if (pledpriv->led_opendrain == true) {
-				LedCfg &= 0x90; 	/* Set to software control. */
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3));
-				LedCfg = rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG);
-				LedCfg &= 0xFE;
-				rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, LedCfg);
-			} else {
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3|BIT5|BIT6));
-			}
-			break;
-
-		case LED_PIN_LED1:
-			LedCfg &= 0x0f; 	/* Set to software control. */
-			rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3));
-			break;
-
-		default:
-			break;
-		}
-	} else {
+	{
 		switch (pLed->LedPin) {
 		case LED_PIN_GPIO0:
 			break;
@@ -2098,29 +2043,7 @@ static void SwLedOn_8821AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		return;
 	}
 
-	if (RT_GetInterfaceSelection(rtlpriv) == INTF_SEL2_MINICARD
-	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL3_USB_Solo
-	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL4_USB_Combo) {
-		LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-		switch (pLed->LedPin) {
-		case LED_PIN_GPIO0:
-			break;
-
-		case LED_PIN_LED0:
-
-			LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-			rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg&0xf0)|BIT5|BIT6); /* SW control led0 on. */
-			break;
-
-		case LED_PIN_LED1:
-			rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg&0x0f)|BIT5); /* SW control led1 on. */
-			break;
-
-		default:
-			break;
-
-		}
-	} else {
+	 {
 		switch (pLed->LedPin) {
 		case LED_PIN_GPIO0:
 			break;
@@ -2161,43 +2084,7 @@ static void SwLedOff_8821AU(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		return;
 	}
 
-	if (RT_GetInterfaceSelection(rtlpriv) == INTF_SEL2_MINICARD
-	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL3_USB_Solo
-	 || RT_GetInterfaceSelection(rtlpriv) == INTF_SEL4_USB_Combo) {
-		LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-
-		/*
-		 * 2009/10/23 MH Issau eed to move the LED GPIO from bit  0 to bit3.
-		 * 2009/10/26 MH Issau if tyhe device is 8c DID is 0x8176, we need to enable bit6 to
-		 * enable GPIO8 for controlling LED.
-		 * 2010/07/02 Supprt Open-drain arrangement for controlling the LED. Added by Roger.
-		 */
-
-		switch (pLed->LedPin) {
-		case LED_PIN_GPIO0:
-			break;
-
-		case LED_PIN_LED0:
-			if (pledpriv->led_opendrain == true) {
-				LedCfg &= 0x90; /* Set to software control. */
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3));
-				LedCfg = rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG);
-				LedCfg &= 0xFE;
-				rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, LedCfg);
-			} else {
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3|BIT5|BIT6));
-			}
-			break;
-
-		case LED_PIN_LED1:
-			LedCfg &= 0x0f; /* Set to software control. */
-			rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3));
-			break;
-
-		default:
-			break;
-		}
-	} else {
+	{
 		switch (pLed->LedPin) {
 		case LED_PIN_GPIO0:
 			break;

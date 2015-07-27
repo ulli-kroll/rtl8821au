@@ -61,13 +61,14 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 	pDM_Odm->rtlpriv = rtlpriv;
 
+#if 0	/* ULLI check this in old source, may be vendor specific ?? */
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power) 	{
 		rtlhal->external_pa_2g = 1;
 		rtlhal->external_lna_2g = 1;
 	} else {
 		rtlhal->external_lna_2g = 0;
 	}
-
+#endif
 	rtlefuse->board_type = ODM_BOARD_DEFAULT;
 	if (rtlhal->external_lna_2g != 0) {
 		rtlefuse->board_type |= ODM_BOARD_EXT_LNA;

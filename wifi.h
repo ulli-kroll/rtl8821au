@@ -1831,21 +1831,6 @@ typedef enum _RT_REGULATOR_MODE {
 //
 // Interface type.
 //
-typedef	enum _INTERFACE_SELECT_PCIE{
-	INTF_SEL0_SOLO_MINICARD			= 0,		// WiFi solo-mCard
-	INTF_SEL1_BT_COMBO_MINICARD		= 1,		// WiFi+BT combo-mCard
-	INTF_SEL2_PCIe						= 2,		// PCIe Card
-} INTERFACE_SELECT_PCIE, *PINTERFACE_SELECT_PCIE;
-
-
-typedef	enum _INTERFACE_SELECT_USB{
-	INTF_SEL0_USB 				= 0,		// USB
-	INTF_SEL1_USB_High_Power  	= 1,		// USB with high power PA
-	INTF_SEL2_MINICARD		  	= 2,		// Minicard
-	INTF_SEL3_USB_Solo 		= 3,		// USB solo-Slim module
-	INTF_SEL4_USB_Combo		= 4,		// USB Combo-Slim module
-	INTF_SEL5_USB_Combo_MF	= 5,		// USB WiFi+BT Multi-Function Combo, i.e., Proprietary layout(AS-VAU) which is the same as SDIO card
-} INTERFACE_SELECT_USB, *PINTERFACE_SELECT_USB;
 
 typedef enum _RT_AMPDU_BRUST_MODE{
 	RT_AMPDU_BRUST_NONE 		= 0,
@@ -2170,7 +2155,6 @@ struct _rtw_hal {
 	//rf_ctrl
 	uint8_t	rf_chip;
 
-	uint8_t	InterfaceSel;
 	uint8_t	framesync;
 	u32	framesyncC34;
 	uint8_t	framesyncMonitor;
@@ -2280,7 +2264,5 @@ static inline struct _rtw_hal *GET_HAL_DATA(struct rtl_priv *priv)
 {
 	return priv->HalData;
 }
-#define RT_GetInterfaceSelection(_Adapter) 	(GET_HAL_DATA(_Adapter)->InterfaceSel)
-
 
 #endif

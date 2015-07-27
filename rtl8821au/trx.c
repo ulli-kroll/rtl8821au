@@ -925,6 +925,8 @@ u8 BWMapping_8812(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
 	return BWSettingOfDesc;
 }
 
+/* ULLI check secondary channel mappen */
+
 u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
 {
 	uint8_t	SCSettingOfDesc = 0;
@@ -943,7 +945,7 @@ u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
 			else if(mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER)
 				SCSettingOfDesc = VHT_DATA_SC_40_UPPER_OF_80MHZ;
 			else
-				dev_info(&(rtlpriv->ndev->dev), "SCMapping: Not Correct Primary40MHz Setting \n");
+				RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "SCMapping: Not Correct Primary40MHz Setting \n");
 		} else {
 			if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER) && (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER))
 				SCSettingOfDesc = VHT_DATA_SC_20_LOWEST_OF_80MHZ;
@@ -954,7 +956,7 @@ u8 SCMapping_8812(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib)
 			else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER) && (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER))
 				SCSettingOfDesc = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
 			else
-				dev_info(&(rtlpriv->ndev->dev), "SCMapping: Not Correct Primary40MHz Setting \n");
+				RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "SCMapping: Not Correct Primary40MHz Setting \n");
 		}
 	} else if(rtlpriv->phy.current_chan_bw== CHANNEL_WIDTH_40) {
 		/*

@@ -291,7 +291,7 @@ static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct rtl_pri
 	rtldm->txpower_trackinginit = false;
 	/* #if	(MP_DRIVER != 1) */		/* for mp driver, turn off txpwrtracking as default */
 	/* #endif//#if	(MP_DRIVER != 1) */
-	dev_info(&(rtlpriv->ndev->dev), "rtldm->txpower_track_control= %d\n", rtldm->txpower_track_control);
+	RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD, "rtldm->txpower_track_control= %d\n", rtldm->txpower_track_control);
 
 	rtldm->txpower_track_control = true;
 	rtldm->thermalvalue = efuse->eeprom_thermalmeter;

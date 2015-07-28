@@ -1087,9 +1087,9 @@ void rtw_indicate_connect(struct rtl_priv *rtlpriv)
 #endif
 
 		set_fwstate(pmlmepriv, _FW_LINKED);
-
+#if 0		/* ULLI : disabled due crashing system */
 		rtw_hal_led_control(rtlpriv, LED_CTL_LINK);
-
+#endif
 		rtw_os_indicate_connect(rtlpriv);
 
 	}
@@ -1120,8 +1120,9 @@ void rtw_indicate_disconnect( struct rtl_priv *rtlpriv )
 		rtlpriv->pwrctrlpriv.ips_deny_time = jiffies + rtw_ms_to_systime(3000);
 
 		_clr_fwstate_(pmlmepriv, _FW_LINKED);
-
+#if 0		/* ULLI : disabled due crashing system */
 		rtw_hal_led_control(rtlpriv, LED_CTL_NO_LINK);
+#endif
 	}
 
 	rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_DISCONNECT, 1);

@@ -1202,7 +1202,7 @@ int _netdev_open(struct net_device *ndev)
 
 		usb_intf_start(rtlpriv);
 		
-		rtw_hal_led_control(rtlpriv, LED_CTL_NO_LINK);
+		rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_NO_LINK);
 
 		rtlpriv->bup = _TRUE;
 	}
@@ -1330,7 +1330,7 @@ int rtw_ips_pwr_up(struct rtl_priv *rtlpriv)
 
 	result = ips_netdrv_open(rtlpriv);
 
-	rtw_hal_led_control(rtlpriv, LED_CTL_NO_LINK);
+	rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_NO_LINK);
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "<===  rtw_ips_pwr_up.............. in %dms\n", rtw_get_passing_time_ms(start_time));
 	return result;
@@ -1408,7 +1408,7 @@ static int netdev_close(struct net_device *ndev)
 		/* s2-4. */
 		rtw_free_network_queue(rtlpriv, _TRUE);
 		/* Close LED */
-		rtw_hal_led_control(rtlpriv, LED_CTL_POWER_OFF);
+		rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_OFF);
 	}
 
 	kfree(rtlhal->pfirmware);

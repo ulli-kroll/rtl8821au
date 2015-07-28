@@ -62,12 +62,6 @@ void rtw_hal_sw_led_deinit(struct rtl_priv *rtlpriv)
 		rtlpriv->cfg->ops->deinit_sw_leds(rtlpriv);
 }
 
-void rtw_hal_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction)
-{
-	rtlpriv->cfg->ops->led_control(rtlpriv, LedAction);
-}
-
-
 uint rtw_hal_init(struct rtl_priv *rtlpriv)
 {
 	uint status = _SUCCESS;
@@ -84,7 +78,7 @@ uint rtw_hal_init(struct rtl_priv *rtlpriv)
 
 		rtw_hal_reset_security_engine(rtlpriv);
 
-		rtw_hal_led_control(rtlpriv, LED_CTL_POWER_ON);
+		rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_ON);
 	} else {
 		rtlpriv->hw_init_completed = _FALSE;
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "rtw_hal_init: hal__init fail\n");
@@ -101,7 +95,7 @@ uint rtw_hal_deinit(struct rtl_priv *rtlpriv)
 	status = rtlpriv->cfg->ops->hal_deinit(rtlpriv);
 
 	if (status == _SUCCESS) {
-		rtw_hal_led_control(rtlpriv, LED_CTL_POWER_OFF);
+		rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_OFF);
 		rtlpriv->hw_init_completed = _FALSE;
 	} else {
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "\n rtw_hal_deinit: hal_init fail\n");

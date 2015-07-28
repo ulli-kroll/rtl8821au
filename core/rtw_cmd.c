@@ -565,9 +565,9 @@ uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, in
 		pmlmepriv->scan_start_time = jiffies;
 
 			_set_timer(&pmlmepriv->scan_to_timer, SCANNING_TIMEOUT);
-
+#if 0		/* ULLI : disabled due crashing system */
 		rtw_hal_led_control(rtlpriv, LED_CTL_SITE_SURVEY);
-
+#endif
 		pmlmepriv->scan_interval = SCAN_INTERVAL;// 30*2 sec = 60sec
 	} else {
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
@@ -862,9 +862,9 @@ uint8_t rtw_createbss_cmd(struct rtl_priv  *rtlpriv)
 	uint8_t	res=_SUCCESS;
 
 
-
+#if 0		/* ULLI : disabled due crashing system */
 	rtw_hal_led_control(rtlpriv, LED_CTL_START_TO_LINK);
-
+#endif
 	if (pmlmepriv->assoc_ssid.SsidLength == 0){
 		;
 	} else {
@@ -954,9 +954,9 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
 
-
+#if 0		/* ULLI : disabled due crashing system */
 	rtw_hal_led_control(rtlpriv, LED_CTL_START_TO_LINK);
-
+#endif
 	if (pmlmepriv->assoc_ssid.SsidLength == 0){
 		;
 	} else {

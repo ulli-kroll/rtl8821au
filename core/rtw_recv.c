@@ -2438,8 +2438,9 @@ int recv_func_posthandle(struct rtl_priv *rtlpriv, struct recv_frame *prframe)
 
 
 	// DATA FRAME
+#if 0		/* ULLI : disabled due crashing system */
 	rtw_hal_led_control(rtlpriv, LED_CTL_RX);
-
+#endif
 	prframe = decryptor(rtlpriv, prframe);
 	if (prframe == NULL) {
 		ret = _FAIL;

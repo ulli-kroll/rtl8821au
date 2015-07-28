@@ -77,8 +77,6 @@ uint rtw_hal_init(struct rtl_priv *rtlpriv)
 			rtw_hal_notch_filter(rtlpriv, 1);
 
 		rtw_hal_reset_security_engine(rtlpriv);
-
-		rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_ON);
 	} else {
 		rtlpriv->hw_init_completed = _FALSE;
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "rtw_hal_init: hal__init fail\n");
@@ -95,7 +93,6 @@ uint rtw_hal_deinit(struct rtl_priv *rtlpriv)
 	status = rtlpriv->cfg->ops->hal_deinit(rtlpriv);
 
 	if (status == _SUCCESS) {
-		rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_OFF);
 		rtlpriv->hw_init_completed = _FALSE;
 	} else {
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "\n rtw_hal_deinit: hal_init fail\n");

@@ -1202,10 +1202,9 @@ int _netdev_open(struct net_device *ndev)
 
 		usb_intf_start(rtlpriv);
 		
-		rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_NO_LINK);
-
 		rtlpriv->bup = _TRUE;
 	}
+	rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_ON);
 	rtlpriv->net_closed = _FALSE;
 
 	_set_timer(&rtlpriv->mlmepriv.dynamic_chk_timer, 2000);
@@ -1408,8 +1407,8 @@ static int netdev_close(struct net_device *ndev)
 		/* s2-4. */
 		rtw_free_network_queue(rtlpriv, _TRUE);
 		/* Close LED */
-		rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_OFF);
 	}
+	rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_OFF);
 
 	kfree(rtlhal->pfirmware);
 	rtlhal->pfirmware = NULL;

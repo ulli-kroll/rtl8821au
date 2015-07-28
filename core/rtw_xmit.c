@@ -2227,9 +2227,6 @@ int32_t rtw_xmit(struct rtl_priv *rtlpriv, struct sk_buff **ppkt)
 		return -1;
 	}
 	pxmitframe->skb = *ppkt;
-#if 0		/* ULLI : disabled due crashing system */
-	rtw_hal_led_control(rtlpriv, LED_CTL_TX);
-#endif
 	do_queue_select(rtlpriv, &pxmitframe->tx_attrib);
 
 #ifdef CONFIG_AP_MODE

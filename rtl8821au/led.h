@@ -86,23 +86,6 @@ enum rtl_led_pin {
 // PCIE LED Definition.
 //================================================================================
 
-#define IS_LED_WPS_BLINKING(_LED)	((_LED)->CurrLedState==LED_BLINK_WPS \
-					|| (_LED)->CurrLedState==LED_BLINK_WPS_STOP \
-					|| (_LED)->bLedWPSBlinkInProgress)
-
-#define IS_LED_BLINKING(_LED) 	((_LED)->bLedWPSBlinkInProgress \
-				||(_LED)->bLedScanBlinkInProgress)
-
-
-enum LED_STRATEGY {
-	SW_LED_MODE1 = 1, // 2 LEDs, through LED0 and LED1. For ALPHA.
-	SW_LED_MODE9 = 9, //for Belkin AC950
-	SW_LED_MODE10 = 10, //for Netgear A6200V2
-	SW_LED_MODE11 = 11, //for Edimax / ASUS
-	SW_LED_MODE13 = 13, //for Netgear A6100, 8811Au
-};
-
-
 struct rtl_led {
 	struct rtl_priv *		rtlpriv;
 
@@ -119,7 +102,6 @@ struct rtl_led_ctl {
 	struct rtl_led SwLed0;
 	struct rtl_led SwLed1;
 	struct rtl_led SwLed2;
-	enum LED_STRATEGY LedStrategy;
 	void (*SwLedOn)(struct rtl_priv *rtlpriv, struct rtl_led *pLed);
 	void (*SwLedOff)(struct rtl_priv *rtlpriv, struct rtl_led *pLed);
 	/* add for led controll */

@@ -1291,39 +1291,6 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	DBG_871X("Customer ID: 0x%2x\n", rtlhal->oem_id);
 #endif
 
-	/* Led mode */
-	switch (rtlhal->oem_id) {
-	case RT_CID_DEFAULT:
-		pledpriv->LedStrategy = SW_LED_MODE9;
-		break;
-
-	/* ULLI check RT_CID_819x values */
-
-	case RT_CID_Sercomm_Belkin:
-		pledpriv->LedStrategy = SW_LED_MODE9;
-		break;
-
-	case RT_CID_Sercomm_Netgear:
-		pledpriv->LedStrategy = SW_LED_MODE10;
-		break;
-
-	case RT_CID_ALPHA_Dlink:	/* add by ylb 20121012 for customer led for alpha */
-		pledpriv->LedStrategy = SW_LED_MODE1;
-		break;
-
-	case RT_CID_Edimax_ASUS:
-		pledpriv->LedStrategy = SW_LED_MODE11;
-		break;
-
-	case RT_CID_NETGEAR:
-		pledpriv->LedStrategy = SW_LED_MODE13;
-		break;
-
-	default:
-		pledpriv->LedStrategy = SW_LED_MODE9;
-		break;
-	}
-
 	pledpriv->led_opendrain = true;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
 }
 

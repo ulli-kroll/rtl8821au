@@ -144,22 +144,6 @@ struct rtl_led {
 	BOOLEAN				bLedOn; // TRUE if LED is ON, FALSE if LED is OFF.
 
 	BOOLEAN				bSWLedCtrl;
-
-	BOOLEAN				bLedBlinkInProgress; // TRUE if it is blinking, FALSE o.w..
-	// ALPHA, added by chiyoko, 20090106
-	BOOLEAN				bLedNoLinkBlinkInProgress;
-	BOOLEAN				bLedLinkBlinkInProgress;
-	BOOLEAN				bLedStartToLinkBlinkInProgress;
-	BOOLEAN				bLedScanBlinkInProgress;
-	BOOLEAN				bLedWPSBlinkInProgress;
-
-	u32					BlinkTimes; // Number of times to toggle led state for blinking.
-	uint8_t					BlinkCounter; //Added for turn off overlap led after blinking a while, by page, 20120821
-	enum LED_STATE			BlinkingLedState; // Next state for blinking, either LED_ON or LED_OFF are.
-
-	_timer				BlinkTimer; // Timer object for led blinking.
-
-	struct work_struct			BlinkWorkItem; // Workitem used by BlinkTimer to manipulate H/W to blink LED.
 };
 
 struct rtl_led_ctl {
@@ -181,7 +165,7 @@ struct rtl_led_ctl {
 //================================================================================
 
 void rtl8821au_init_sw_leds(struct rtl_priv *rtlpriv);
-void rtl8812au_deinit_sw_leds(struct rtl_priv *rtlpriv);
+void rtl8821au_deinit_sw_leds(struct rtl_priv *rtlpriv);
 void rtl8821au_led_control(struct rtl_priv *rtlpriv, enum led_ctl_mode LedAction);
 
 #endif

@@ -396,7 +396,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.set_rfreg = 	rtl8821au_phy_set_rf_reg,
 
 	.init_sw_leds = rtl8821au_init_sw_leds,
-	.deinit_sw_leds = rtl8812au_deinit_sw_leds,
+	.deinit_sw_leds = rtl8821au_deinit_sw_leds,
 	.led_control	= rtl8821au_led_control,
 
 	.init_sw_vars	= rtl8821au_init_sw_vars,

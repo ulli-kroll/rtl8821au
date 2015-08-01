@@ -1643,7 +1643,101 @@ static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 	rtlpriv->cfg->usb_interface_cfg->usb_endpoint_mapping(rtlpriv);
 }
 
-int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid, 
+/* ULLI : ugly but currently we do this here */
+
+/***************************************************/
+
+static void _rtl_init_deferred_work(struct rtl_priv *rtlpriv)
+{
+#if 0
+	/* <1> timer */
+	setup_timer(&rtlpriv->works.watchdog_timer,
+		    rtl_watch_dog_timer_callback, (unsigned long)hw);
+	setup_timer(&rtlpriv->works.dualmac_easyconcurrent_retrytimer,
+		    rtl_easy_concurrent_retrytimer_callback, (unsigned long)hw);
+	/* <2> work queue */
+	rtlpriv->works.hw = hw;
+	rtlpriv->works.rtl_wq = alloc_workqueue("%s", 0, 0, rtlpriv->cfg->name);
+	INIT_DELAYED_WORK(&rtlpriv->works.watchdog_wq,
+			  (void *)rtl_watchdog_wq_callback);
+	INIT_DELAYED_WORK(&rtlpriv->works.ips_nic_off_wq,
+			  (void *)rtl_ips_nic_off_wq_callback);
+	INIT_DELAYED_WORK(&rtlpriv->works.ps_work,
+			  (void *)rtl_swlps_wq_callback);
+	INIT_DELAYED_WORK(&rtlpriv->works.ps_rfon_wq,
+			  (void *)rtl_swlps_rfon_wq_callback);
+	INIT_DELAYED_WORK(&rtlpriv->works.fwevt_wq,
+			  (void *)rtl_fwevt_wq_callback);
+#endif
+}
+
+static void rtl_deinit_deferred_work(struct rtl_priv *rtlpriv)
+{
+#if 0
+	del_timer_sync(&rtlpriv->works.watchdog_timer);
+
+	cancel_delayed_work(&rtlpriv->works.watchdog_wq);
+	cancel_delayed_work(&rtlpriv->works.ips_nic_off_wq);
+	cancel_delayed_work(&rtlpriv->works.ps_work);
+	cancel_delayed_work(&rtlpriv->works.ps_rfon_wq);
+	cancel_delayed_work(&rtlpriv->works.fwevt_wq);
+#endif
+}
+
+static int rtl_init_core(struct rtl_priv *rtlpriv)
+{
+	struct rtl_mac *rtlmac = rtl_mac(rtlpriv);
+
+	/* <1> init mac80211 */
+#if 0
+	_rtl_init_mac80211(hw);
+	rtlmac->hw = hw;
+
+	/* <2> rate control register */
+	hw->rate_control_algorithm = "rtl_rc";
+
+	/*
+	 * <3> init CRDA must come after init
+	 * mac80211 hw  in _rtl_init_mac80211.
+	 */
+	if (rtl_regd_init(hw, rtl_reg_notifier)) {
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG, "REGD init failed\n");
+		return 1;
+	}
+#endif
+	/* <4> locks */
+#if 0
+	mutex_init(&rtlpriv->locks.conf_mutex);
+	spin_lock_init(&rtlpriv->locks.ips_lock);
+	spin_lock_init(&rtlpriv->locks.irq_th_lock);
+	spin_lock_init(&rtlpriv->locks.h2c_lock);
+	spin_lock_init(&rtlpriv->locks.rf_ps_lock);
+	spin_lock_init(&rtlpriv->locks.rf_lock);
+	spin_lock_init(&rtlpriv->locks.waitq_lock);
+	spin_lock_init(&rtlpriv->locks.entry_list_lock);
+	spin_lock_init(&rtlpriv->locks.cck_and_rw_pagea_lock);
+	spin_lock_init(&rtlpriv->locks.check_sendpkt_lock);
+	spin_lock_init(&rtlpriv->locks.fw_ps_lock);
+	spin_lock_init(&rtlpriv->locks.lps_lock);
+	spin_lock_init(&rtlpriv->locks.iqk_lock);
+	/* <5> init list */
+	INIT_LIST_HEAD(&rtlpriv->entry_list);
+#endif
+	rtlmac->link_state = MAC80211_NOLINK;
+
+	/* <6> init deferred work */
+	_rtl_init_deferred_work(rtlpriv);
+
+	return 0;
+}
+
+/***************************************************/
+
+
+
+
+
+int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid,
 	struct rtl_hal_cfg *rtl_hal_cfg)
 {
 	struct rtl_usb *rtlusb;
@@ -1665,6 +1759,16 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 
 	rtlusb->rtlpriv = rtlpriv;
 	udev = rtlusb->udev;
+
+#if 0
+	/* this spin lock must be initialized early */
+	spin_lock_init(&rtlpriv->locks.usb_lock);
+	INIT_WORK(&rtlpriv->works.fill_h2c_cmd,
+		  rtl_fill_h2c_cmd_work_callback);
+	INIT_WORK(&rtlpriv->works.lps_change_work,
+		  rtl_lps_change_work_callback);
+#endif
+
 
 	/* ULLI must clean/reorder this mess */
 

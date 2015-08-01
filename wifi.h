@@ -1450,7 +1450,35 @@ struct rtl_locks {
 	spinlock_t check_sendpkt_lock;
 
 	spinlock_t iqk_lock;
-#endif	
+#endif
+};
+
+struct rtl_works {
+#if 0
+	struct ieee80211_hw *hw;
+
+	/*timer */
+	struct timer_list watchdog_timer;
+	struct timer_list dualmac_easyconcurrent_retrytimer;
+	struct timer_list fw_clockoff_timer;
+	struct timer_list fast_antenna_training_timer;
+	/*task */
+	struct tasklet_struct irq_tasklet;
+	struct tasklet_struct irq_prepare_bcn_tasklet;
+
+	/*work queue */
+	struct workqueue_struct *rtl_wq;
+	struct delayed_work watchdog_wq;
+	struct delayed_work ips_nic_off_wq;
+
+	/* For SW LPS */
+	struct delayed_work ps_work;
+	struct delayed_work ps_rfon_wq;
+	struct delayed_work fwevt_wq;
+
+	struct work_struct lps_change_work;
+	struct work_struct fill_h2c_cmd;
+#endif
 };
 
 struct rtl_debug {
@@ -1481,7 +1509,7 @@ struct rtl_priv {
 	struct rtl_usb_priv priv;
 	struct rtl_locks locks;
 	struct rtl_debug dbg;
-
+	struct rtl_works works;
 
 	struct _rtw_hal *HalData;
 

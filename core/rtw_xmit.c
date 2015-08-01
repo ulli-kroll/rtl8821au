@@ -42,7 +42,7 @@ static uint8_t RFC1042_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0x00 };
 
 
 struct pkt_file {
-	struct sk_buff *pkt;
+	struct sk_buff *skb;
 	SIZE_T pkt_len;	 //the remainder length of the open_file
 	uint8_t *cur_buffer;
 	uint8_t *buf_start;
@@ -55,11 +55,11 @@ static uint rtw_remainder_len(struct pkt_file *pfile)
 	return (pfile->buf_len - ((SIZE_PTR)(pfile->cur_addr) - (SIZE_PTR)(pfile->buf_start)));
 }
 
-static void _rtw_open_pktfile (struct sk_buff *pktptr, struct pkt_file *pfile)
+static void _rtw_open_pktfile (struct sk_buff *skb, struct pkt_file *pfile)
 {
-	pfile->pkt = pktptr;
-	pfile->cur_addr = pfile->buf_start = pktptr->data;
-	pfile->pkt_len = pfile->buf_len = pktptr->len;
+	pfile->skb = skb;
+	pfile->cur_addr = pfile->buf_start = skb->data;
+	pfile->pkt_len = pfile->buf_len = skb->len;
 
 	pfile->cur_buffer = pfile->buf_start ;
 }
@@ -72,7 +72,7 @@ static uint _rtw_pktfile_read (struct pkt_file *pfile, uint8_t *rmem, uint rlen)
 	len = (rlen > len)? len: rlen;
 
 	if(rmem)
-		skb_copy_bits(pfile->pkt, pfile->buf_len-pfile->pkt_len, rmem, len);
+		skb_copy_bits(pfile->skb, pfile->buf_len-pfile->pkt_len, rmem, len);
 
 	pfile->cur_addr += len;
 	pfile->pkt_len -= len;
@@ -88,7 +88,7 @@ static void set_qos(struct pkt_file *ppktfile, struct tx_pkt_attrib *pattrib)
 	int32_t UserPriority = 0;
 
 
-	_rtw_open_pktfile(ppktfile->pkt, ppktfile);
+	_rtw_open_pktfile(ppktfile->skb, ppktfile);
 	_rtw_pktfile_read(ppktfile, (unsigned char *) &etherhdr, ETH_HLEN);
 
 	/* get UserPriority from IP hdr */
@@ -721,7 +721,7 @@ uint8_t	qos_acm(uint8_t acm_mask, uint8_t priority)
 	return change_priority;
 }
 
-static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *pkt, struct tx_pkt_attrib *pattrib)
+static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *skb, struct tx_pkt_attrib *pattrib)
 {
 	uint i;
 	struct pkt_file pktfile;
@@ -735,7 +735,7 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *pkt, stru
 	struct qos_priv		*pqospriv = &pmlmepriv->qospriv;
 	sint res = _SUCCESS;
 
-	_rtw_open_pktfile(pkt, &pktfile);
+	_rtw_open_pktfile(skb, &pktfile);
 	i = _rtw_pktfile_read(&pktfile, (uint8_t *)&etherhdr, ETH_HLEN);
 
 	pattrib->ether_type = ntohs(etherhdr.h_proto);
@@ -870,7 +870,7 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *pkt, stru
 		pattrib->bswenc = _FALSE;
 	}
 
-	rtw_set_tx_chksum_offload(pkt, pattrib);
+	rtw_set_tx_chksum_offload(skb, pattrib);
 
 exit:
 

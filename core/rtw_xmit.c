@@ -20,6 +20,7 @@
 #define _RTW_XMIT_C_
 
 #include <drv_types.h>
+#include <linux/udp.h>
 
 #undef DBG_871X
 static inline void DBG_871X(const char *fmt, ...)
@@ -81,21 +82,16 @@ static uint _rtw_pktfile_read (struct pkt_file *pfile, uint8_t *rmem, uint rlen)
 }
 
 
-static void set_qos(struct pkt_file *ppktfile, struct tx_pkt_attrib *pattrib)
+static void set_qos(struct sk_buff *skb, struct tx_pkt_attrib *pattrib)
 {
-	struct ethhdr etherhdr;
-	struct iphdr ip_hdr;
+	struct iphdr *ip_hdr;
 	int32_t UserPriority = 0;
-
-
-	_rtw_open_pktfile(ppktfile->skb, ppktfile);
-	_rtw_pktfile_read(ppktfile, (unsigned char *) &etherhdr, ETH_HLEN);
 
 	/* get UserPriority from IP hdr */
 	if (pattrib->ether_type == 0x0800) {
-		_rtw_pktfile_read(ppktfile, (uint8_t *)&ip_hdr, sizeof(ip_hdr));
+		ip_hdr = (struct iphdr *) (skb->data + ETH_HLEN);
 		/* UserPriority = (ntohs(ip_hdr.tos) >> 5) & 0x3; */
-		UserPriority = ip_hdr.tos >> 5;
+		UserPriority = ip_hdr->tos >> 5;
 	} else if (pattrib->ether_type == 0x888e) {
 		/*
 		 *  "When priority processing of data frames is supported,
@@ -724,9 +720,8 @@ uint8_t	qos_acm(uint8_t acm_mask, uint8_t priority)
 static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *skb, struct tx_pkt_attrib *pattrib)
 {
 	uint i;
-	struct pkt_file pktfile;
 	struct sta_info *psta = NULL;
-	struct ethhdr etherhdr;
+	struct ethhdr *etherhdr;
 
 	sint bmcast;
 	struct sta_priv		*pstapriv = &rtlpriv->stapriv;
@@ -735,15 +730,12 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *skb, stru
 	struct qos_priv		*pqospriv = &pmlmepriv->qospriv;
 	sint res = _SUCCESS;
 
-	_rtw_open_pktfile(skb, &pktfile);
-	i = _rtw_pktfile_read(&pktfile, (uint8_t *)&etherhdr, ETH_HLEN);
+	etherhdr = (struct ethhdr *) skb->data;
 
-	pattrib->ether_type = ntohs(etherhdr.h_proto);
+	pattrib->ether_type = ntohs(etherhdr->h_proto);
 
-
-	memcpy(pattrib->dst, &etherhdr.h_dest, ETH_ALEN);
-	memcpy(pattrib->src, &etherhdr.h_source, ETH_ALEN);
-
+	memcpy(pattrib->dst, &(etherhdr->h_dest), ETH_ALEN);
+	memcpy(pattrib->src, &(etherhdr->h_source), ETH_ALEN);
 
 	if ((check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == _TRUE) ||
 		(check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) == _TRUE)) {
@@ -757,21 +749,26 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *skb, stru
 		memcpy(pattrib->ta, get_bssid(pmlmepriv), ETH_ALEN);
 	}
 
-	pattrib->pktlen = pktfile.pkt_len;
+	pattrib->pktlen = skb->len - ETH_HLEN;
 
 	if (ETH_P_IP == pattrib->ether_type) {
+#if 0		
 		/*
 		 *  The following is for DHCP and ARP packet, we use cck1M to tx these packets and let LPS awake some time
 		 *  to prevent DHCP protocol fail
 		 */
 		uint8_t tmp[24];
 		_rtw_pktfile_read(&pktfile, &tmp[0], 24);
+#endif
+		/* ULLI : get udp header */
+		struct udphdr *udp = (struct udphdr *) skb->data + ETH_HLEN + 20;
 		pattrib->dhcp_pkt = 0;
-		if (pktfile.pkt_len > 282) {	/* MINIMUM_DHCP_PACKET_SIZE) { */
+		
+		if (pattrib->pktlen > 282) {	/* MINIMUM_DHCP_PACKET_SIZE) { */
 			if (ETH_P_IP == pattrib->ether_type) {
 				/* IP header */
-				if (((tmp[21] == 68) && (tmp[23] == 67)) ||
-					((tmp[21] == 67) && (tmp[23] == 68))) {
+				if (((udp->source == 68) && (udp->dest == 67)) ||
+				    ((udp->source == 67) && (udp->dest == 68))) {
 					/* 68 : UDP BOOTP client */
 					/* 67 : UDP BOOTP server */
 					/*
@@ -850,10 +847,10 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *skb, stru
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE)) {
 		if (pattrib->qos_en)
-			set_qos(&pktfile, pattrib);
+			set_qos(skb, pattrib);
 	} else {
 		if (pqospriv->qos_option) {
-			set_qos(&pktfile, pattrib);
+			set_qos(skb, pattrib);
 
 			if (pmlmepriv->acm_mask != 0) {
 				pattrib->tx_priority = qos_acm(pmlmepriv->acm_mask, pattrib->tx_priority);

@@ -21,14 +21,6 @@
 #define __XMIT_OSDEP_H_
 
 
-struct pkt_file {
-	struct sk_buff *pkt;
-	SIZE_T pkt_len;	 //the remainder length of the open_file
-	uint8_t *cur_buffer;
-	uint8_t *buf_start;
-	uint8_t *cur_addr;
-	SIZE_T buf_len;
-};
 
 
 
@@ -48,11 +40,6 @@ int rtw_os_xmit_resource_alloc(struct rtl_priv *rtlpriv, struct xmit_buf *pxmitb
 void rtw_os_xmit_resource_free(struct rtl_priv *rtlpriv, struct xmit_buf *pxmitbuf, u32 free_sz, uint8_t flag);
 
 extern void rtw_set_tx_chksum_offload(struct sk_buff *pkt, struct tx_pkt_attrib *pattrib);
-
-extern uint rtw_remainder_len(struct pkt_file *pfile);
-extern void _rtw_open_pktfile(struct sk_buff *pkt, struct pkt_file *pfile);
-extern uint _rtw_pktfile_read (struct pkt_file *pfile, uint8_t *rmem, uint rlen);
-extern sint rtw_endofpktfile (struct pkt_file *pfile);
 
 extern void rtw_os_pkt_complete(struct rtl_priv *rtlpriv, struct sk_buff *pkt);
 extern void rtw_os_xmit_complete(struct rtl_priv *rtlpriv, struct xmit_frame *pxframe);

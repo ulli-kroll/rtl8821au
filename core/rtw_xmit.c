@@ -40,6 +40,85 @@ static inline void DBG_871X_LEVEL(const int level, const char *fmt, ...)
 static uint8_t P802_1H_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0xf8 };
 static uint8_t RFC1042_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0x00 };
 
+
+struct pkt_file {
+	struct sk_buff *pkt;
+	SIZE_T pkt_len;	 //the remainder length of the open_file
+	uint8_t *cur_buffer;
+	uint8_t *buf_start;
+	uint8_t *cur_addr;
+	SIZE_T buf_len;
+};
+
+static uint rtw_remainder_len(struct pkt_file *pfile)
+{
+	return (pfile->buf_len - ((SIZE_PTR)(pfile->cur_addr) - (SIZE_PTR)(pfile->buf_start)));
+}
+
+static void _rtw_open_pktfile (struct sk_buff *pktptr, struct pkt_file *pfile)
+{
+	pfile->pkt = pktptr;
+	pfile->cur_addr = pfile->buf_start = pktptr->data;
+	pfile->pkt_len = pfile->buf_len = pktptr->len;
+
+	pfile->cur_buffer = pfile->buf_start ;
+}
+
+static uint _rtw_pktfile_read (struct pkt_file *pfile, uint8_t *rmem, uint rlen)
+{
+	uint	len = 0;
+
+	len =  rtw_remainder_len(pfile);
+	len = (rlen > len)? len: rlen;
+
+	if(rmem)
+		skb_copy_bits(pfile->pkt, pfile->buf_len-pfile->pkt_len, rmem, len);
+
+	pfile->cur_addr += len;
+	pfile->pkt_len -= len;
+
+	return len;
+}
+
+
+static void set_qos(struct pkt_file *ppktfile, struct tx_pkt_attrib *pattrib)
+{
+	struct ethhdr etherhdr;
+	struct iphdr ip_hdr;
+	int32_t UserPriority = 0;
+
+
+	_rtw_open_pktfile(ppktfile->pkt, ppktfile);
+	_rtw_pktfile_read(ppktfile, (unsigned char *) &etherhdr, ETH_HLEN);
+
+	/* get UserPriority from IP hdr */
+	if (pattrib->ether_type == 0x0800) {
+		_rtw_pktfile_read(ppktfile, (uint8_t *)&ip_hdr, sizeof(ip_hdr));
+		/* UserPriority = (ntohs(ip_hdr.tos) >> 5) & 0x3; */
+		UserPriority = ip_hdr.tos >> 5;
+	} else if (pattrib->ether_type == 0x888e) {
+		/*
+		 *  "When priority processing of data frames is supported,
+		 *  a STA's SME should send EAPOL-Key frames at the highest priority."
+		 */
+		UserPriority = 7;
+	}
+
+	pattrib->tx_priority = UserPriority;
+	pattrib->hdrlen = WLAN_HDR_A3_QOS_LEN;
+	pattrib->subtype = WIFI_QOS_DATA_TYPE;
+}
+
+static sint rtw_endofpktfile(struct pkt_file *pfile)
+{
+
+	if (pfile->pkt_len == 0) {
+		return _TRUE;
+	}
+
+	return _FALSE;
+}
+
 static void _init_txservq(struct tx_servq *ptxservq)
 {
 	INIT_LIST_HEAD(&ptxservq->tx_pending);
@@ -640,34 +719,6 @@ uint8_t	qos_acm(uint8_t acm_mask, uint8_t priority)
 	}
 
 	return change_priority;
-}
-
-static void set_qos(struct pkt_file *ppktfile, struct tx_pkt_attrib *pattrib)
-{
-	struct ethhdr etherhdr;
-	struct iphdr ip_hdr;
-	int32_t UserPriority = 0;
-
-
-	_rtw_open_pktfile(ppktfile->pkt, ppktfile);
-	_rtw_pktfile_read(ppktfile, (unsigned char *) &etherhdr, ETH_HLEN);
-
-	/* get UserPriority from IP hdr */
-	if (pattrib->ether_type == 0x0800) {
-		_rtw_pktfile_read(ppktfile, (uint8_t *)&ip_hdr, sizeof(ip_hdr));
-		/* UserPriority = (ntohs(ip_hdr.tos) >> 5) & 0x3; */
-		UserPriority = ip_hdr.tos >> 5;
-	} else if (pattrib->ether_type == 0x888e) {
-		/*
-		 *  "When priority processing of data frames is supported,
-		 *  a STA's SME should send EAPOL-Key frames at the highest priority."
-		 */
-		UserPriority = 7;
-	}
-
-	pattrib->tx_priority = UserPriority;
-	pattrib->hdrlen = WLAN_HDR_A3_QOS_LEN;
-	pattrib->subtype = WIFI_QOS_DATA_TYPE;
 }
 
 static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *pkt, struct tx_pkt_attrib *pattrib)

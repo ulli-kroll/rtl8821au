@@ -1312,12 +1312,9 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 
 	SIZE_PTR addr;
 
-	uint8_t *pframe, *mem_start;
-	uint8_t hw_hdr_offset;
+	u8 *mem_start;
+	u8 hw_hdr_offset;
 
-	/* struct sta_info		*psta; */
-	/* struct sta_priv		*pstapriv = &rtlpriv->stapriv; */
-	/* struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv; */
 	struct xmit_priv	*pxmitpriv = &rtlpriv->xmitpriv;
 
 	struct tx_pkt_attrib	*pattrib = &pxmitframe->tx_attrib;
@@ -1327,32 +1324,6 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 	int32_t bmcst = IS_MCAST(pattrib->ra);
 	int32_t res = _SUCCESS;
 
-
-
-/*
-	if (pattrib->psta)
-	{
-		psta = pattrib->psta;
-	} else
-	{
-		DBG_871X("%s, call rtw_get_stainfo()\n", __func__);
-		psta = rtw_get_stainfo(&rtlpriv->stapriv, pattrib->ra);
-	}
-
-	if(psta==NULL)
-	{
-
-		DBG_871X("%s, psta==NUL\n", __func__);
-		return _FAIL;
-	}
-
-
-	if(!(psta->state &_FW_LINKED))
-	{
-		DBG_871X("%s, psta->state(0x%x) != _FW_LINKED\n", __func__, psta->state);
-		return _FAIL;
-	}
-*/
 	if (pxmitframe->buf_addr == NULL) {
 		DBG_8192C("==> %s buf_addr==NULL \n", __FUNCTION__);
 		return _FAIL;
@@ -1362,7 +1333,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 
 	hw_hdr_offset =  TXDESC_SIZE + (pxmitframe->pkt_offset * PACKET_OFFSET_SZ);
 
-	mem_start = pbuf_start +	hw_hdr_offset;
+	mem_start = pbuf_start + hw_hdr_offset;
 
 	if (rtw_make_wlanhdr(rtlpriv, mem_start, pattrib) == _FAIL) {
 		DBG_8192C("rtw_xmitframe_coalesce: rtw_make_wlanhdr fail; drop pkt\n");
@@ -1377,6 +1348,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 	frg_len = pxmitpriv->frag_len - 4;	/* 2346-4 = 2342 */
 
 	while (1) {
+		u8 *pframe;
 		llc_sz = 0;
 
 		mpdu_len = frg_len;
@@ -1390,39 +1362,8 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 
 		/* adding icv, if necessary... */
 		if (pattrib->iv_len) {
-/*
-			//if (check_fwstate(pmlmepriv, WIFI_MP_STATE))
-			//	psta = rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
-			//else
-			//	psta = rtw_get_stainfo(pstapriv, pattrib->ra);
-
-			if (psta != NULL)
-			{
-				switch(pattrib->encrypt)
-				{
-					case _WEP40_:
-					case _WEP104_:
-							WEP_IV(pattrib->iv, psta->dot11txpn, pattrib->key_idx);
-						break;
-					case _TKIP_:
-						if(bmcst)
-							TKIP_IV(pattrib->iv, psta->dot11txpn, pattrib->key_idx);
-						else
-							TKIP_IV(pattrib->iv, psta->dot11txpn, 0);
-						break;
-					case _AES_:
-						if(bmcst)
-							AES_IV(pattrib->iv, psta->dot11txpn, pattrib->key_idx);
-						else
-							AES_IV(pattrib->iv, psta->dot11txpn, 0);
-						break;
-				}
-			}
-*/
 			memcpy(pframe, pattrib->iv, pattrib->iv_len);
-
 			pframe += pattrib->iv_len;
-
 			mpdu_len -= pattrib->iv_len;
 		}
 

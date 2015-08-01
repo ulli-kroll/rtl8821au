@@ -513,9 +513,9 @@ static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 }
 
 #define IDEA_CONDITION 1	/* check all packets before enqueue */
-int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
+int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, 
+				     struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
-	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct xmit_frame *pxmitframe = NULL;
 	struct xmit_frame *pfirstframe = NULL;
@@ -525,13 +525,13 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 	struct sta_info *psta = NULL;
 	struct tx_servq *ptxservq = NULL;
 
-	struct list_head *xmitframe_plist = NULL, *xmitframe_phead = NULL;
+	struct list_head *item;
 
 	uint32_t	pbuf;		/* next pkt address */
 	uint32_t	pbuf_tail;	/* last pkt tail */
 	uint32_t	len;		/* packet length, except TXDESC_SIZE and PKT_OFFSET */
 
-	uint32_t	bulkSize = rtlusb->max_bulk_out_size;
+	uint32_t	bulkSize = rtl_usbdev(rtlpriv)->max_bulk_out_size;
 	uint8_t	descCount;
 	uint32_t	bulkPtr;
 
@@ -652,12 +652,8 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv 
 
 	spin_lock_bh(&pxmitpriv->lock);
 
-	xmitframe_phead = get_list_head(&ptxservq->sta_pending);
-	xmitframe_plist = get_next(xmitframe_phead);
-
-	while (rtw_end_of_queue_search(xmitframe_phead, xmitframe_plist) == _FALSE) {
-		pxmitframe = container_of(xmitframe_plist, struct xmit_frame, list);
-		xmitframe_plist = get_next(xmitframe_plist);
+	list_for_each(item, get_list_head(&ptxservq->sta_pending)) {
+		pxmitframe = list_entry(item, struct xmit_frame, list);
 
 		pxmitframe->agg_num = 0; 	/* not first frame of aggregation */
 		pxmitframe->pkt_offset = 0; 	/* not first frame of aggregation, no need to reserve offset */

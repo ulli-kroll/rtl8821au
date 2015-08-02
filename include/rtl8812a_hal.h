@@ -64,8 +64,6 @@
 
 #if 1 // download firmware related data structure
 #define FW_SIZE_8812			0x8000 // Compatible with RTL8723 Maximal RAM code size 24K.   modified to 32k, TO compatible with 92d maximal fw size 32k
-#define FW_START_ADDRESS		0x1000
-#define FW_END_ADDRESS		0x5FFF
 
 //
 // This structure must be cared byte-ordering

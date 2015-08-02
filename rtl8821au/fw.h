@@ -42,4 +42,8 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode);
 int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw);
 void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv);
 
+#define FW_8821AU_START_ADDRESS    	0x1000
+#define FW_8821AU_END_ADDRESS         	0x5FFF
+#define FW_SIZE_8812			0x8000 // Compatible with RTL8723 Maximal RAM code size 24K.   modified to 32k, TO compatible with 92d maximal fw size 32k
+
 #endif

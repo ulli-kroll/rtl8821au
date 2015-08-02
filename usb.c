@@ -1,6 +1,7 @@
 #include <drv_types.h>
 #include <rtl8812a_recv.h>
 #include <../rtl8821au/trx.h>
+#include <../rtl8821au/fw.h>
 #include "debug.h"
 
 #undef DBG_871X
@@ -136,7 +137,7 @@ static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 valu
 		}
 
 		/* firmware download is checksumed, don't retry */
-		if( (value >= FW_START_ADDRESS ) || status == len )
+		if( (value >= FW_8821AU_START_ADDRESS ) || status == len )
 			break;
 
 	}

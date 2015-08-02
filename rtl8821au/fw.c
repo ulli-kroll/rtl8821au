@@ -1007,7 +1007,7 @@ static int _BlockWrite_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t buf
 	}
 
 	for (i = 0; i < blockCount_p1; i++) {
-		rtl_writeN(rtlpriv, (FW_START_ADDRESS + i * blockSize_p1), (bufferPtr + i * blockSize_p1), blockSize_p1);
+		rtl_writeN(rtlpriv, (FW_8821AU_START_ADDRESS + i * blockSize_p1), (bufferPtr + i * blockSize_p1), blockSize_p1);
 	}
 
 
@@ -1023,7 +1023,7 @@ static int _BlockWrite_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t buf
 		}
 
 		for (i = 0; i < blockCount_p2; i++) {
-			rtl_writeN(rtlpriv, (FW_START_ADDRESS + offset + i*blockSize_p2), (bufferPtr + offset + i*blockSize_p2), blockSize_p2);
+			rtl_writeN(rtlpriv, (FW_8821AU_START_ADDRESS + offset + i*blockSize_p2), (bufferPtr + offset + i*blockSize_p2), blockSize_p2);
 		}
 	}
 
@@ -1034,7 +1034,7 @@ static int _BlockWrite_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t buf
 		blockCount_p3 = remainSize_p2 / blockSize_p3;
 
 		for (i = 0 ; i < blockCount_p3; i++) {
-			rtl_write_byte(rtlpriv, (FW_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
+			rtl_write_byte(rtlpriv, (FW_8821AU_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
 		}
 	}
 

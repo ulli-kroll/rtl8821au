@@ -1760,9 +1760,9 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	rtlusb->rtlpriv = rtlpriv;
 	udev = rtlusb->udev;
 
-#if 0
 	/* this spin lock must be initialized early */
 	spin_lock_init(&rtlpriv->locks.usb_lock);
+#if 0	
 	INIT_WORK(&rtlpriv->works.fill_h2c_cmd,
 		  rtl_fill_h2c_cmd_work_callback);
 	INIT_WORK(&rtlpriv->works.lps_change_work,

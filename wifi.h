@@ -1438,7 +1438,9 @@ struct rtl_locks {
 	spinlock_t lps_lock;
 	spinlock_t waitq_lock;
 	spinlock_t entry_list_lock;
+#endif	
 	spinlock_t usb_lock;
+#if 0	
 
 	/*FW clock change */
 	spinlock_t fw_ps_lock;

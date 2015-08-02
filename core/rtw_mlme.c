@@ -1831,44 +1831,6 @@ void rtw_scan_timeout_handler (struct rtl_priv *rtlpriv)
 
 }
 
-static void rtw_auto_scan_handler(struct rtl_priv *rtlpriv)
-{
-	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
-	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
-
-	//auto site survey per 60sec
-	if (pmlmepriv->scan_interval >0)
-	{
-		pmlmepriv->scan_interval--;
-		if (pmlmepriv->scan_interval==0)
-		{
-/*
-			if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == _TRUE)
-			{
-				DBG_871X("exit %s when _FW_UNDER_SURVEY|_FW_UNDER_LINKING -> \n", __FUNCTION__);
-				return;
-			}
-
-			if (pmlmepriv->sitesurveyctrl.traffic_busy == _TRUE)
-			{
-				DBG_871X("%s exit cause traffic_busy(%x)\n",__FUNCTION__, pmlmepriv->sitesurveyctrl.traffic_busy);
-				return;
-			}
-*/
-
-
-			DBG_871X("%s\n", __FUNCTION__);
-
-			rtw_set_802_11_bssid_list_scan(rtlpriv, NULL, 0);
-
-			pmlmepriv->scan_interval = SCAN_INTERVAL;// 30*2 sec = 60sec
-
-		}
-
-	}
-
-}
-
 void rtw_dynamic_check_timer_handlder(struct rtl_priv *rtlpriv)
 {
 #ifdef CONFIG_AP_MODE

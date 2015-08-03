@@ -20,22 +20,7 @@
 #define _RTW_PWRCTRL_C_
 
 #include <drv_types.h>
-
-#undef DBG_8192C
-static inline void DBG_8192C(const char *fmt, ...)
-{
-}
-
-#undef DBG_871X
-static inline void DBG_871X(const char *fmt, ...)
-{
-}
-#define _drv_always_		1
-#define _drv_info_			8
-#undef DBG_871X_LEVEL
-static inline void DBG_871X_LEVEL(const int level, const char *fmt, ...)
-{
-}
+#include <../debug.h>
 
 // Should not include hal dependent herader here, it will remove later. Lucas@20130123
 
@@ -53,10 +38,10 @@ void rtw_ips_enter(struct rtl_priv *rtlpriv)
 	pwrpriv->ips_mode = pwrpriv->ips_mode_req;
 
 	pwrpriv->ips_enter_cnts++;
-	DBG_871X("==>ips_enter cnts:%d\n",pwrpriv->ips_enter_cnts);
+	RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "==>ips_enter cnts:%d\n",pwrpriv->ips_enter_cnts);
 	if (rf_off == pwrpriv->change_rfpwrstate) {
 		pwrpriv->bpower_saving = _TRUE;
-		DBG_871X_LEVEL(_drv_always_, "nolinked power save enter\n");
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "nolinked power save enter\n");
 
 		rtw_ips_pwr_down(rtlpriv);
 		pwrpriv->rf_pwrstate = rf_off;
@@ -83,16 +68,16 @@ int rtw_ips_leave(struct rtl_priv * rtlpriv)
 		pwrpriv->bips_processing = _TRUE;
 		pwrpriv->change_rfpwrstate = rf_on;
 		pwrpriv->ips_leave_cnts++;
-		DBG_871X("==>ips_leave cnts:%d\n",pwrpriv->ips_leave_cnts);
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "==>ips_leave cnts:%d\n",pwrpriv->ips_leave_cnts);
 
 		if ((result = rtw_ips_pwr_up(rtlpriv)) == _SUCCESS) {
 			pwrpriv->rf_pwrstate = rf_on;
 		}
-		DBG_871X_LEVEL(_drv_always_, "nolinked power save leave\n");
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "nolinked power save leave\n");
 
 		if ((_WEP40_ == psecuritypriv->dot11PrivacyAlgrthm)
 		   ||(_WEP104_ == psecuritypriv->dot11PrivacyAlgrthm)) {
-			DBG_871X("==>%s,channel(%d),processing(%x)\n",__FUNCTION__,rtlpriv->mlmeextpriv.cur_channel,pwrpriv->bips_processing);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "==>%s,channel(%d),processing(%x)\n",__FUNCTION__,rtlpriv->mlmeextpriv.cur_channel,pwrpriv->bips_processing);
 			set_channel_bwmode(rtlpriv, rtlpriv->mlmeextpriv.cur_channel, HAL_PRIME_CHNL_OFFSET_DONT_CARE, CHANNEL_WIDTH_20);
 			for (keyid = 0; keyid < 4; keyid++) {
 				if (pmlmepriv->key_mask & BIT(keyid)) {
@@ -104,7 +89,7 @@ int rtw_ips_leave(struct rtl_priv * rtlpriv)
 			}
 		}
 
-		DBG_871X("==> ips_leave.....LED(0x%08x)...\n",rtl_read_dword(rtlpriv,0x4c));
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "==> ips_leave.....LED(0x%08x)...\n",rtl_read_dword(rtlpriv,0x4c));
 		pwrpriv->bips_processing = _FALSE;
 
 		pwrpriv->bpower_saving = _FALSE;
@@ -142,8 +127,8 @@ bool rtw_pwr_unassociated_idle(struct rtl_priv *rtlpriv)
 
 	if (pxmit_priv->free_xmitbuf_cnt != NR_XMITBUFF ||
 		pxmit_priv->free_xmit_extbuf_cnt != NR_XMIT_EXTBUFF) {
-		DBG_871X_LEVEL(_drv_always_, "There are some pkts to transmit\n");
-		DBG_871X_LEVEL(_drv_info_, "free_xmitbuf_cnt: %d, free_xmit_extbuf_cnt: %d\n",
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "There are some pkts to transmit\n");
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "free_xmitbuf_cnt: %d, free_xmit_extbuf_cnt: %d\n",
 			pxmit_priv->free_xmitbuf_cnt, pxmit_priv->free_xmit_extbuf_cnt);
 		goto exit;
 	}
@@ -170,7 +155,7 @@ void rtw_ps_processor(struct rtl_priv *rtlpriv)
 
 	if ((pwrpriv->rf_pwrstate == rf_on)
 	   && ((pwrpriv->pwr_state_check_cnts%4)==0)) {
-		DBG_871X("==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
 		pwrpriv->change_rfpwrstate = rf_off;
 #ifdef CONFIG_AUTOSUSPEND
 		if (rtlpriv->registrypriv.usbss_enable) {
@@ -228,7 +213,7 @@ void rtw_set_rpwm(struct rtl_priv *rtlpriv, uint8_t pslv)
 
 #ifdef CONFIG_LPS_RPWM_TIMER
 	if (pwrpriv->brpwmtimeout == _TRUE) {
-		DBG_871X("%s: RPWM timeout, force to set RPWM(0x%02X) again!\n", __FUNCTION__, pslv);
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s: RPWM timeout, force to set RPWM(0x%02X) again!\n", __FUNCTION__, pslv);
 	} else
 #endif // CONFIG_LPS_RPWM_TIMER
 	{
@@ -295,7 +280,7 @@ static uint8_t PS_RDY_CHECK(struct rtl_priv *rtlpriv)
 		return _FALSE;
 	if ((rtlpriv->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)
 	  && (rtlpriv->securitypriv.binstallGrpkey == _FALSE)) {
-		DBG_871X("Group handshake still in progress !!!\n");
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "Group handshake still in progress !!!\n");
 		return _FALSE;
 	}
 
@@ -326,7 +311,7 @@ void rtw_set_ps_mode(struct rtl_priv *rtlpriv, uint8_t ps_mode, uint8_t smart_ps
 	if(ps_mode == PS_MODE_ACTIVE)
 	{
 		{
-			DBG_871X("rtw_set_ps_mode: Leave 802.11 power save\n");
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "rtw_set_ps_mode: Leave 802.11 power save\n");
 
 
 			pwrpriv->pwr_mode = ps_mode;
@@ -336,7 +321,7 @@ void rtw_set_ps_mode(struct rtl_priv *rtlpriv, uint8_t ps_mode, uint8_t smart_ps
 		}
 	} else 	{
 		if (PS_RDY_CHECK(rtlpriv)) {
-			DBG_871X("%s: Enter 802.11 power save\n", __FUNCTION__);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s: Enter 802.11 power save\n", __FUNCTION__);
 
 
 			pwrpriv->fw_current_inpsmode = true;
@@ -373,13 +358,13 @@ int32_t LPS_RF_ON_check(struct rtl_priv *rtlpriv, uint32_t	 delay_ms)
 
 		if (_TRUE == rtlpriv->bSurpriseRemoved) {
 			err = -2;
-			DBG_871X("%s: device surprise removed!!\n", __FUNCTION__);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s: device surprise removed!!\n", __FUNCTION__);
 			break;
 		}
 
 		if (rtw_get_passing_time_ms(start_time) > delay_ms) {
 			err = -1;
-			DBG_871X("%s: Wait for FW LPS leave more than %u ms!!!\n", __FUNCTION__, delay_ms);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s: Wait for FW LPS leave more than %u ms!!!\n", __FUNCTION__, delay_ms);
 			break;
 		}
 		rtw_usleep_os(100);
@@ -550,17 +535,17 @@ int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, uint32_t	 ips_deffer_ms, const cha
 
 
 	if (pwrpriv->ps_processing) {
-		DBG_871X("%s wait ps_processing...\n", __func__);
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s wait ps_processing...\n", __func__);
 		while (pwrpriv->ps_processing && rtw_get_passing_time_ms(start) <= 3000)
 			msleep(10);
 		if (pwrpriv->ps_processing)
-			DBG_871X("%s wait ps_processing timeout\n", __func__);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s wait ps_processing timeout\n", __func__);
 		else
-			DBG_871X("%s wait ps_processing done\n", __func__);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s wait ps_processing done\n", __func__);
 	}
 
 	if (pwrpriv->bInternalAutoSuspend == _FALSE && pwrpriv->bInSuspend) {
-		DBG_871X("%s wait bInSuspend...\n", __func__);
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s wait bInSuspend...\n", __func__);
 		while (pwrpriv->bInSuspend
 			&& ((rtw_get_passing_time_ms(start) <= 3000)
 				|| (rtw_get_passing_time_ms(start) <= 500))
@@ -569,9 +554,9 @@ int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, uint32_t	 ips_deffer_ms, const cha
 		}
 
 		if (pwrpriv->bInSuspend)
-			DBG_871X("%s wait bInSuspend timeout\n", __func__);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s wait bInSuspend timeout\n", __func__);
 		else
-			DBG_871X("%s wait bInSuspend done\n", __func__);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s wait bInSuspend done\n", __func__);
 	}
 
 	//System suspend is not allowed to wakeup
@@ -595,22 +580,22 @@ int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, uint32_t	 ips_deffer_ms, const cha
 	if (rf_off == pwrpriv->rf_pwrstate ) {
 #ifdef CONFIG_AUTOSUSPEND
 		if (pwrpriv->brfoffbyhw==_TRUE) {
-			DBG_8192C("hw still in rf_off state ...........\n");
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "hw still in rf_off state ...........\n");
 			ret = _FAIL;
 			goto exit;
 		} else if (rtlpriv->registrypriv.usbss_enable) {
-			DBG_8192C("%s call autoresume_enter....\n",__FUNCTION__);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s call autoresume_enter....\n",__FUNCTION__);
 			if (_FAIL ==  autoresume_enter(rtlpriv)) {
-				DBG_8192C("======> autoresume fail.............\n");
+				RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "======> autoresume fail.............\n");
 				ret = _FAIL;
 				goto exit;
 			}
 		} else
 #endif
 		{
-			DBG_8192C("%s call ips_leave....\n",__FUNCTION__);
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s call ips_leave....\n",__FUNCTION__);
 			if (_FAIL ==  rtw_ips_leave(rtlpriv)) {
-				DBG_8192C("======> ips_leave fail.............\n");
+				RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "======> ips_leave fail.............\n");
 				ret = _FAIL;
 				goto exit;
 			}
@@ -622,7 +607,7 @@ int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, uint32_t	 ips_deffer_ms, const cha
 		|| !rtlpriv->bup
 		|| !rtlpriv->hw_init_completed
 	){
-		DBG_8192C("%s: bDriverStopped=%d, bup=%d, hw_init_completed=%u\n"
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s: bDriverStopped=%d, bup=%d, hw_init_completed=%u\n"
 			, caller
 		   	, rtlpriv->bDriverStopped
 		   	, rtlpriv->bup
@@ -666,11 +651,11 @@ int rtw_pm_set_ips(struct rtl_priv *rtlpriv, uint8_t mode)
 
 	if (mode == IPS_NORMAL) {
 		pwrctrlpriv->ips_mode_req = mode;
-		DBG_871X("%s %s\n", __FUNCTION__, "IPS_NORMAL");
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s %s\n", __FUNCTION__, "IPS_NORMAL");
 		return 0;
 	} else if ( mode ==IPS_NONE) {
 		pwrctrlpriv->ips_mode_req = mode;
-		DBG_871X("%s %s\n", __FUNCTION__, "IPS_NONE");
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s %s\n", __FUNCTION__, "IPS_NONE");
 		if ((rtlpriv->bSurpriseRemoved ==0)&&(_FAIL == rtw_pwr_wakeup(rtlpriv)) )
 			return -EFAULT;
 	} else {

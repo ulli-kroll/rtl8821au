@@ -45,8 +45,6 @@ int rtw_os_recvbuf_resource_free(struct rtl_priv *rtlpriv, struct recv_buf *prec
 struct sk_buff *rtw_os_alloc_msdu_pkt(struct recv_frame *prframe, u16 nSubframe_Length, u8 *pdata);
 void rtw_os_recv_indicate_pkt(struct rtl_priv *rtlpriv, struct sk_buff *pkt, struct rx_pkt_attrib *pattrib);
 
-void rtw_os_read_port(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf);
-
 void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl);
 
 

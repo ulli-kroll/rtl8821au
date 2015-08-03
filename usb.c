@@ -19,6 +19,13 @@ static inline void DBG_8192C(const char *fmt, ...)
 * @return _TRUE:
 * @return _FALSE:
 */
+
+/* ULLI : currently wrong functions for this prototypes, we change this (maybe) later */
+
+static uint32_t _rtl_usb_receive(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem);
+
+
+
 static inline int rtw_inc_and_chk_continual_urb_error(struct rtl_usb *dvobj)
 {
 	int ret = _FALSE;
@@ -548,9 +555,7 @@ void usb_write_port_cancel(struct rtl_priv *rtlpriv)
 	}
 }
 
-
-
-static void usb_read_port_complete(struct urb *purb)
+static void _rtl_rx_complete(struct urb *purb)
 {
 	uint isevt, *pbuf;
 	struct recv_buf	*precvbuf = (struct recv_buf *) purb->context;
@@ -593,7 +598,7 @@ static void usb_read_port_complete(struct urb *purb)
 		if ((purb->actual_length > MAX_RECVBUF_SZ)
 		 || (purb->actual_length < RXDESC_SIZE)) {
 			precvbuf->reuse = _TRUE;
-			usb_read_port(rtlpriv, 0, (unsigned char *)precvbuf);
+			_rtl_usb_receive(rtlpriv, 0, (unsigned char *)precvbuf);
 			DBG_8192C("%s()-%d: RX Warning!\n", __FUNCTION__, __LINE__);
 		} else {
 			rtw_reset_continual_urb_error(rtl_usbdev(rtlpriv));
@@ -606,7 +611,7 @@ static void usb_read_port_complete(struct urb *purb)
 
 			precvbuf->skb = NULL;
 			precvbuf->reuse = _FALSE;
-			usb_read_port(rtlpriv, 0, (unsigned char *)precvbuf);
+			_rtl_usb_receive(rtlpriv, 0, (unsigned char *)precvbuf);
 		}
 	} else {
 		DBG_8192C("###=> usb_read_port_complete => urb status(%d)\n", purb->status);
@@ -630,7 +635,7 @@ static void usb_read_port_complete(struct urb *purb)
 		case -ECOMM:
 		case -EOVERFLOW:
 			precvbuf->reuse = _TRUE;
-			usb_read_port(rtlpriv, 0, (unsigned char *)precvbuf);
+			_rtl_usb_receive(rtlpriv, 0, (unsigned char *)precvbuf);
 			break;
 		case -EINPROGRESS:
 			DBG_8192C("ERROR: URB IS IN PROGRESS!/n");
@@ -645,7 +650,27 @@ exit:
 	;
 }
 
-uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
+void rtw_os_read_port(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
+{
+	struct recv_priv *precvpriv = &rtlpriv->recvpriv;
+
+	precvbuf->ref_cnt--;
+
+	/* free skb in recv_buf */
+	dev_kfree_skb_any(precvbuf->skb);
+
+	precvbuf->skb = NULL;
+	precvbuf->reuse = _FALSE;
+
+	if (precvbuf->irp_pending == _FALSE) {
+		_rtl_usb_receive(rtlpriv, 0, (unsigned char *)precvbuf);
+	}
+
+
+
+}
+
+static uint32_t _rtl_usb_receive (struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 {
 	int err;
 	unsigned int pipe;
@@ -712,7 +737,7 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 		usb_fill_bulk_urb(purb, pusbd, pipe,
 						precvbuf->skb->data,
 						MAX_RECVBUF_SZ,
-						usb_read_port_complete,
+						_rtl_rx_complete,
 						precvbuf);	/* context is precvbuf */
 
 		err = usb_submit_urb(purb, GFP_ATOMIC);
@@ -998,7 +1023,7 @@ void usb_intf_start(struct rtl_priv *rtlpriv)
 	/* issue Rx irp to receive data */
 	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
 	for (i = 0; i < NR_RECVBUFF; i++) {
-		if (usb_read_port(rtlpriv, 0, (unsigned char *) precvbuf) == _FALSE) {
+		if (_rtl_usb_receive(rtlpriv, 0, (unsigned char *) precvbuf) == _FALSE) {
 			status = _FAIL;
 			goto exit;
 		}

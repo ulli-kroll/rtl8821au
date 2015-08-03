@@ -353,25 +353,6 @@ _recv_indicatepkt_drop:
 
 }
 
-void rtw_os_read_port(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
-{
-	struct recv_priv *precvpriv = &rtlpriv->recvpriv;
-
-	precvbuf->ref_cnt--;
-
-	/* free skb in recv_buf */
-	dev_kfree_skb_any(precvbuf->skb);
-
-	precvbuf->skb = NULL;
-	precvbuf->reuse = _FALSE;
-
-	if (precvbuf->irp_pending == _FALSE) {
-		usb_read_port(rtlpriv, 0, (unsigned char *)precvbuf);
-	}
-
-
-
-}
 void _rtw_reordering_ctrl_timeout_handler (void *FunctionContext);
 void _rtw_reordering_ctrl_timeout_handler (void *FunctionContext)
 {

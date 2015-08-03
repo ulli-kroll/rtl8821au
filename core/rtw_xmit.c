@@ -1304,24 +1304,17 @@ This sub-routine will perform all the following:
 6. apply sw-encrypt, if necessary.
 
 */
-int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, struct xmit_frame *pxmitframe)
+int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *skb, 
+			       struct xmit_frame *pxmitframe)
 {
 	struct pkt_file pktfile;
-
 	int32_t frg_inx, frg_len, mpdu_len, llc_sz, mem_sz;
-
 	SIZE_PTR addr;
-
 	u8 *mem_start;
 	u8 hw_hdr_offset;
-
 	struct xmit_priv	*pxmitpriv = &rtlpriv->xmitpriv;
-
 	struct tx_pkt_attrib	*pattrib = &pxmitframe->tx_attrib;
-
 	uint8_t *pbuf_start;
-
-	int32_t bmcst = IS_MCAST(pattrib->ra);
 	int32_t res = _SUCCESS;
 
 	if (pxmitframe->buf_addr == NULL) {
@@ -1330,9 +1323,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 	}
 
 	pbuf_start = pxmitframe->buf_addr;
-
 	hw_hdr_offset =  TXDESC_SIZE + (pxmitframe->pkt_offset * PACKET_OFFSET_SZ);
-
 	mem_start = pbuf_start + hw_hdr_offset;
 
 	if (rtw_make_wlanhdr(rtlpriv, mem_start, pattrib) == _FAIL) {
@@ -1341,7 +1332,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 		goto exit;
 	}
 
-	_rtw_open_pktfile(pkt, &pktfile);
+	_rtw_open_pktfile(skb, &pktfile);
 	_rtw_pktfile_read(&pktfile, NULL, pattrib->pkt_hdrlen);
 
 	frg_inx = 0;
@@ -1378,7 +1369,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 		}
 
 
-		if (bmcst) {
+		if (IS_MCAST(pattrib->ra)) {
 			/* don't do fragment to broadcat/multicast packets */
 			mem_sz = _rtw_pktfile_read(&pktfile, pframe, pattrib->pktlen);
 		} else {
@@ -1394,7 +1385,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 
 		frg_inx++;
 
-		if (bmcst || (rtw_endofpktfile(&pktfile) == _TRUE)) {
+		if (IS_MCAST(pattrib->ra) || (rtw_endofpktfile(&pktfile) == _TRUE)) {
 			pattrib->nr_frags = frg_inx;
 
 			pattrib->last_txcmdsz = pattrib->hdrlen + pattrib->iv_len + ((pattrib->nr_frags == 1) ? llc_sz : 0) +
@@ -1422,7 +1413,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *pkt, st
 
 	xmitframe_swencrypt(rtlpriv, pxmitframe);
 
-	if (bmcst == _FALSE)
+	if (IS_MCAST(pattrib->ra) == _FALSE)
 		update_attrib_vcs_info(rtlpriv, pxmitframe);
 	else
 		pattrib->vcs_mode = NONE_VCS;

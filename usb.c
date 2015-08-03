@@ -331,7 +331,7 @@ static void _rtl_usb_io_handler_release(struct rtl_priv *rtlpriv)
 }
 
 
-static void usb_write_port_complete(struct urb *purb)
+static void _rtl_tx_complete(struct urb *purb)
 {
 	unsigned long flags;
 	int i;
@@ -419,8 +419,9 @@ check_completion:
 }
 
 
+/* ULLI : _rtlw* prefix because of rtlwifi namespace issues */
 
-u32 usb_write_port(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct xmit_buf *pxmitbuf)
+u32 _rtlw_usb_transmit(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct xmit_buf *pxmitbuf)
 {
 	unsigned long flags;
 	unsigned int pipe;
@@ -485,7 +486,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct xmit
 	usb_fill_bulk_urb(purb, pusbd, pipe,
        				pxmitframe->buf_addr, 	/* = pxmitbuf->pbuf */
               			cnt,
-              			usb_write_port_complete,
+              			_rtl_tx_complete,
               			pxmitbuf);		/* context is pxmitbuf */
 #if 0
 	if (bwritezero) {
@@ -497,7 +498,7 @@ u32 usb_write_port(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct xmit
 	if (!status) {
 	} else {
 		rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_WRITE_PORT_ERR);
-		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "usb_write_port, status=%d\n", status);
+		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, " _rtlw_usb_transmit, status=%d\n", status);
 		switch (status) {
 		case -ENODEV:
 			rtlpriv->bDriverStopped=_TRUE;

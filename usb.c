@@ -1514,7 +1514,7 @@ void autosuspend_enter(struct rtl_priv* rtlpriv)
 
 			usb_autopm_put_interface(dvobj->pusbintf);
 	}
-	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "...pm_usage_cnt(%d).....\n", atomic_read(&(dvobj->pusbintf->pm_usage_cnt)));
+	RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG, "...pm_usage_cnt(%d).....\n", atomic_read(&(dvobj->pusbintf->pm_usage_cnt)));
 
 }
 
@@ -1527,19 +1527,19 @@ int autoresume_enter(struct rtl_priv* rtlpriv)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct rtl_usb *dvobj = rtl_usbdev(rtlpriv);
 
-	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "====> autoresume_enter \n");
+	RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG, "====> autoresume_enter \n");
 
 	if (rf_off == pwrpriv->rf_pwrstate) {
 		pwrpriv->ps_flag = _FALSE;
 			if (usb_autopm_get_interface(dvobj->pusbintf) < 0) {
-				RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD,  "can't get autopm: %d\n", result);
+				RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG,  "can't get autopm: %d\n", result);
 				result = _FAIL;
 				goto error_exit;
 			}
 
-		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "...pm_usage_cnt(%d).....\n", atomic_read(&(dvobj->pusbintf->pm_usage_cnt)));
+		RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG, "...pm_usage_cnt(%d).....\n", atomic_read(&(dvobj->pusbintf->pm_usage_cnt)));
 	}
-	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "<==== autoresume_enter \n");
+	RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG, "<==== autoresume_enter \n");
 error_exit:
 
 	return result;

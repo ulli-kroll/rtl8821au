@@ -386,7 +386,7 @@ sint recvframe_chkmic(struct rtl_priv *rtlpriv,  struct recv_frame *precvframe){
 	if (prxattrib->encrypt == _TKIP_) {
 		/* calculate mic code */
 		if (stainfo != NULL) {
-			if (IS_MCAST(prxattrib->ra)) {
+			if (is_multicast_ether_addr(prxattrib->ra)) {
 				/*
 				 * mickey=&psecuritypriv->dot118021XGrprxmickey.skey[0];
 				 * iv = precvframe->u.hdr.rx_data+prxattrib->hdrlen;
@@ -443,11 +443,11 @@ sint recvframe_chkmic(struct rtl_priv *rtlpriv,  struct recv_frame *precvframe){
 				 * cannot compare with psecuritypriv->dot118021XGrpKeyid also cause timing issue
 				 */
 
-				if((IS_MCAST(prxattrib->ra)==_TRUE)  && (prxattrib->key_index != pmlmeinfo->key_index ))
+				if((is_multicast_ether_addr(prxattrib->ra)==_TRUE)  && (prxattrib->key_index != pmlmeinfo->key_index ))
 					brpt_micerror = _FALSE;
 
 				if((prxattrib->bdecrypted ==_TRUE)&& (brpt_micerror == _TRUE)) {
-					rtw_handle_tkip_mic_err(rtlpriv,(uint8_t)IS_MCAST(prxattrib->ra));
+					rtw_handle_tkip_mic_err(rtlpriv,(uint8_t)is_multicast_ether_addr(prxattrib->ra));
 					DBG_871X(" mic error :prxattrib->bdecrypted=%d\n",prxattrib->bdecrypted);
 				} else {
 					DBG_871X(" mic error :prxattrib->bdecrypted=%d\n",prxattrib->bdecrypted);
@@ -457,7 +457,7 @@ sint recvframe_chkmic(struct rtl_priv *rtlpriv,  struct recv_frame *precvframe){
 
 			} else {
 				/* mic checked ok */
-				if((psecuritypriv->bcheck_grpkey ==_FALSE)&&(IS_MCAST(prxattrib->ra)==_TRUE)){
+				if((psecuritypriv->bcheck_grpkey ==_FALSE)&&(is_multicast_ether_addr(prxattrib->ra)==_TRUE)){
 					psecuritypriv->bcheck_grpkey =_TRUE;
 				}
 			}
@@ -779,7 +779,7 @@ void count_rx_stats(struct rtl_priv *rtlpriv, struct recv_frame *prframe, struct
 
 	rtlpriv->mlmepriv.LinkDetectInfo.NumRxOkInPeriod++;
 
-	if( (!MacAddr_isBcst(pattrib->dst)) && (!IS_MCAST(pattrib->dst))){
+	if( (!MacAddr_isBcst(pattrib->dst)) && (!is_multicast_ether_addr(pattrib->dst))){
 		rtlpriv->mlmepriv.LinkDetectInfo.NumRxUnicastOkInPeriod++;
 	}
 
@@ -816,7 +816,7 @@ sint sta2sta_data_frame(
 	uint8_t *mybssid  = get_bssid(pmlmepriv);
 	uint8_t *myhwaddr = myid(&rtlpriv->eeprompriv);
 	uint8_t * sta_addr = NULL;
-	sint bmcast = IS_MCAST(pattrib->dst);
+	sint bmcast = is_multicast_ether_addr(pattrib->dst);
 
 
 
@@ -862,7 +862,7 @@ sint sta2sta_data_frame(
 	else if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
 		if (bmcast) {
 			// For AP mode, if DA == MCAST, then BSSID should be also MCAST
-			if (!IS_MCAST(pattrib->bssid)){
+			if (!is_multicast_ether_addr(pattrib->bssid)){
 					ret= _FAIL;
 					goto exit;
 			}
@@ -923,7 +923,7 @@ sint ap2sta_data_frame(
 	struct	mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	uint8_t *mybssid  = get_bssid(pmlmepriv);
 	uint8_t *myhwaddr = myid(&rtlpriv->eeprompriv);
-	sint bmcast = IS_MCAST(pattrib->dst);
+	sint bmcast = is_multicast_ether_addr(pattrib->dst);
 
 
 
@@ -1395,7 +1395,7 @@ sint validate_recv_data_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 	}
 
 	if(pattrib->privacy){
-		GET_ENCRY_ALGO(psecuritypriv, psta, pattrib->encrypt, IS_MCAST(pattrib->ra));
+		GET_ENCRY_ALGO(psecuritypriv, psta, pattrib->encrypt, is_multicast_ether_addr(pattrib->ra));
 
 		SET_ICE_IV_LEN(pattrib->iv_len, pattrib->icv_len, pattrib->encrypt);
 	}
@@ -2211,7 +2211,7 @@ int recv_indicatepkt_reorder(struct rtl_priv *rtlpriv, struct recv_frame *prfram
 		//s1.
 		wlanhdr_to_ethhdr(prframe);
 
-		if ((pattrib->qos!=1) /*|| pattrib->priority!=0 || IS_MCAST(pattrib->ra)*/
+		if ((pattrib->qos!=1) /*|| pattrib->priority!=0 || is_multicast_ether_addr(pattrib->ra)*/
 			|| (pattrib->eth_type==0x0806) || (pattrib->ack_policy!=0))
 		{
 			if ((rtlpriv->bDriverStopped == _FALSE) &&
@@ -2541,7 +2541,7 @@ int recv_func(struct rtl_priv *rtlpriv, struct recv_frame *rframe)
 
 		/* check if need to enqueue into uc_swdec_pending_queue*/
 		if (check_fwstate(mlmepriv, WIFI_STATION_STATE) &&
-			!IS_MCAST(prxattrib->ra) && prxattrib->encrypt>0 &&
+			!is_multicast_ether_addr(prxattrib->ra) && prxattrib->encrypt>0 &&
 			(prxattrib->bdecrypted == 0 ||psecuritypriv->sw_decrypt == _TRUE) &&
 			!is_wep_enc(psecuritypriv->dot11PrivacyAlgrthm) &&
 			!psecuritypriv->busetkipkey) {

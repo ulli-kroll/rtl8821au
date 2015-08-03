@@ -593,7 +593,7 @@ static int32_t update_attrib_sec_info(struct rtl_priv *rtlpriv, struct tx_pkt_at
 	sint res = _SUCCESS;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
-	sint bmcast = IS_MCAST(pattrib->ra);
+	sint bmcast = is_multicast_ether_addr(pattrib->ra);
 
 	memset(pattrib->dot118021x_UncstKey.skey,  0, 16);
 	memset(pattrib->dot11tkiptxmickey.skey,  0, 16);
@@ -793,7 +793,7 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *skb, stru
 		rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_SPECIAL_PACKET, 1);
 	}
 
-	bmcast = IS_MCAST(pattrib->ra);
+	bmcast = is_multicast_ether_addr(pattrib->ra);
 
 	/* get sta_info */
 	if (bmcast) {
@@ -886,7 +886,7 @@ static int32_t xmitframe_addmic(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
 	struct	xmit_priv		*pxmitpriv = &rtlpriv->xmitpriv;
 	uint8_t priority[4] = {0x0, 0x0, 0x0, 0x0};
 	uint8_t hw_hdr_offset = 0;
-	sint bmcst = IS_MCAST(pattrib->ra);
+	sint bmcst = is_multicast_ether_addr(pattrib->ra);
 
 /*
 	if(pattrib->psta)
@@ -1051,7 +1051,7 @@ int32_t rtw_make_wlanhdr (struct rtl_priv *rtlpriv , uint8_t *hdr, struct tx_pkt
 
 	/* struct sta_info *psta; */
 
-	/* sint bmcst = IS_MCAST(pattrib->ra); */
+	/* sint bmcst = is_multicast_ether_addr(pattrib->ra); */
 
 
 
@@ -1369,7 +1369,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *skb,
 		}
 
 
-		if (IS_MCAST(pattrib->ra)) {
+		if (is_multicast_ether_addr(pattrib->ra)) {
 			/* don't do fragment to broadcat/multicast packets */
 			mem_sz = _rtw_pktfile_read(&pktfile, pframe, pattrib->pktlen);
 		} else {
@@ -1385,7 +1385,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *skb,
 
 		frg_inx++;
 
-		if (IS_MCAST(pattrib->ra) || (rtw_endofpktfile(&pktfile) == _TRUE)) {
+		if (is_multicast_ether_addr(pattrib->ra) || (rtw_endofpktfile(&pktfile) == _TRUE)) {
 			pattrib->nr_frags = frg_inx;
 
 			pattrib->last_txcmdsz = pattrib->hdrlen + pattrib->iv_len + ((pattrib->nr_frags == 1) ? llc_sz : 0) +
@@ -1413,7 +1413,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *skb,
 
 	xmitframe_swencrypt(rtlpriv, pxmitframe);
 
-	if (IS_MCAST(pattrib->ra) == _FALSE)
+	if (is_multicast_ether_addr(pattrib->ra) == _FALSE)
 		update_attrib_vcs_info(rtlpriv, pxmitframe);
 	else
 		pattrib->vcs_mode = NONE_VCS;
@@ -2234,7 +2234,7 @@ sint xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *rtlpriv, struct xmit_fr
 	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
-	sint bmcst = IS_MCAST(pattrib->ra);
+	sint bmcst = is_multicast_ether_addr(pattrib->ra);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _FALSE)
 	    return ret;

@@ -263,7 +263,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	uint8_t	*ptxdesc =  pmem;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	sint	bmcst = IS_MCAST(pattrib->ra);
+	sint	bmcst = is_multicast_ether_addr(pattrib->ra);
 
 	if ((!bagg_pkt) && (rtw_usb_bulk_size_boundary(rtlpriv, TXDESC_SIZE+sz) == _FALSE)) {
 		ptxdesc = (pmem+PACKET_OFFSET_SZ);

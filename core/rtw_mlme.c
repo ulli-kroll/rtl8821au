@@ -2684,7 +2684,7 @@ void rtw_issue_addbareq_cmd(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfr
 	struct sta_info *psta=NULL;
 	struct ht_priv	*phtpriv;
 	struct tx_pkt_attrib *pattrib =&pxmitframe->tx_attrib;
-	int32_t bmcst = IS_MCAST(pattrib->ra);
+	int32_t bmcst = is_multicast_ether_addr(pattrib->ra);
 
 	//if (bmcst || (rtlpriv->mlmepriv.LinkDetectInfo.bTxBusyTraffic == _FALSE))
 	if (bmcst || (rtlpriv->mlmepriv.LinkDetectInfo.NumTxOkInPeriod<100))

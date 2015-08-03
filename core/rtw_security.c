@@ -695,7 +695,7 @@ uint32_t	rtw_tkip_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 			}
 */
 
-			if(IS_MCAST(pattrib->ra))
+			if(is_multicast_ether_addr(pattrib->ra))
 			{
 				prwskey=psecuritypriv->dot118021XGrpKey[psecuritypriv->dot118021XGrpKeyid].skey;
 			}
@@ -789,7 +789,7 @@ uint32_t	 rtw_tkip_decrypt(struct rtl_priv *rtlpriv, struct recv_frame  *precvfr
 		stainfo=rtw_get_stainfo(&rtlpriv->stapriv ,&prxattrib->ta[0] );
 		if (stainfo!=NULL){
 
-			if(IS_MCAST(prxattrib->ra))
+			if(is_multicast_ether_addr(prxattrib->ra))
 			{
 				if(psecuritypriv->binstallGrpkey==_FALSE)
 				{
@@ -1554,7 +1554,7 @@ uint32_t	rtw_aes_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 			}
 */
 
-			if(IS_MCAST(pattrib->ra))
+			if(is_multicast_ether_addr(pattrib->ra))
 			{
 				prwskey=psecuritypriv->dot118021XGrpKey[psecuritypriv->dot118021XGrpKeyid].skey;
 			}
@@ -1893,7 +1893,7 @@ uint32_t	rtw_aes_decrypt(struct rtl_priv *rtlpriv, struct recv_frame *precvframe
 
 		stainfo=rtw_get_stainfo(&rtlpriv->stapriv ,&prxattrib->ta[0] );
 		if (stainfo!=NULL){
-			if(IS_MCAST(prxattrib->ra))
+			if(is_multicast_ether_addr(prxattrib->ra))
 			{
 				//in concurrent we should use sw descrypt in group key, so we remove this message
 				//DBG_871X("rx bc/mc packets, to perform sw rtw_aes_decrypt\n");

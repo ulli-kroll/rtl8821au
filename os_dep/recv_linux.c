@@ -214,26 +214,25 @@ struct sk_buff  *rtw_os_alloc_msdu_pkt(struct recv_frame *prframe, u16 nSubframe
 	return sub_skb;
 }
 
-void rtw_os_recv_indicate_pkt(struct rtl_priv *rtlpriv, struct sk_buff  *pkt, struct rx_pkt_attrib *pattrib)
+void rtw_os_recv_indicate_pkt(struct rtl_priv *rtlpriv, struct sk_buff *skb, struct rx_pkt_attrib *pattrib)
 {
 	struct mlme_priv*pmlmepriv = &rtlpriv->mlmepriv;
 
 	/* Indicat the packets to upper layer */
-	if (pkt) {
+	if (skb) {
 		if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
-		 	struct sk_buff  *pskb2=NULL;
+			struct sk_buff  *skb_dup = NULL;
 		 	struct sta_info *psta = NULL;
 		 	struct sta_priv *pstapriv = &rtlpriv->stapriv;
-			int bmcast = IS_MCAST(pattrib->dst);
 
 			/* DBG_871X("bmcast=%d\n", bmcast); */
 
 			if(_rtw_memcmp(pattrib->dst, myid(&rtlpriv->eeprompriv), ETH_ALEN)==_FALSE) {
 				/* DBG_871X("not ap psta=%p, addr=%pM\n", psta, pattrib->dst); */
 
-				if(bmcast) {
+				if(is_multicast_ether_addr(pattrib->dst)) {
 					psta = rtw_get_bcmc_stainfo(rtlpriv);
-					pskb2 = skb_clone(pkt, GFP_ATOMIC);
+					skb_dup = skb_clone(skb, GFP_ATOMIC);
 				} else {
 					psta = rtw_get_stainfo(pstapriv, pattrib->dst);
 				}
@@ -244,13 +243,13 @@ void rtw_os_recv_indicate_pkt(struct rtl_priv *rtlpriv, struct sk_buff  *pkt, st
 					/* DBG_871X("directly forwarding to the rtw_xmit_entry\n"); */
 
 					/* skb->ip_summed = CHECKSUM_NONE; */
-					pkt->dev = ndev;
-					skb_set_queue_mapping(pkt, rtw_recv_select_queue(pkt));
+					skb->dev = ndev;
+					skb_set_queue_mapping(skb, rtw_recv_select_queue(skb));
 
-					rtw_xmit_entry(pkt, ndev);
+					rtw_xmit_entry(skb, ndev);
 
-					if(bmcast && (pskb2 != NULL) ) {
-						pkt = pskb2;
+					if(is_multicast_ether_addr(pattrib->dst) && (skb_dup != NULL) ) {
+						skb = skb_dup;
 					} else {
 						return;
 					}
@@ -262,11 +261,11 @@ void rtw_os_recv_indicate_pkt(struct rtl_priv *rtlpriv, struct sk_buff  *pkt, st
 			}
 		}
 
-		pkt->protocol = eth_type_trans(pkt, rtlpriv->ndev);
-		pkt->dev = rtlpriv->ndev;
+		skb->protocol = eth_type_trans(skb, rtlpriv->ndev);
+		skb->dev = rtlpriv->ndev;
 
-		pkt->ip_summed = CHECKSUM_NONE;
-		netif_rx(pkt);
+		skb->ip_summed = CHECKSUM_NONE;
+		netif_rx(skb);
 	}
 }
 

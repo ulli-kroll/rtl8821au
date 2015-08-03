@@ -75,7 +75,7 @@ int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvfra
 		precvframe->skb = pkt_copy;
 		precvframe->rx_head = pkt_copy->data;
 		precvframe->rx_end = pkt_copy->data + alloc_sz;
-		skb_reserve(pkt_copy, 8 - ((SIZE_PTR)( pkt_copy->data) & 7 ));	/* force pkt_copy->data at 8-byte alignment address */
+		skb_reserve(pkt_copy, 8 - ((__kernel_size_t)( pkt_copy->data) & 7 ));	/* force pkt_copy->data at 8-byte alignment address */
 		skb_reserve(pkt_copy, shift_sz);				/* force ip_hdr at 8-byte alignment address according to shift_sz. */
 		memcpy(pkt_copy->data, pdata, skb_len);
 		precvframe->rx_data = precvframe->rx_tail = pkt_copy->data;

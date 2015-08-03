@@ -44,11 +44,11 @@ static uint8_t RFC1042_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0x00 };
 
 struct pkt_file {
 	struct sk_buff *skb;
-	SIZE_T pkt_len;	 //the remainder length of the open_file
+	__kernel_size_t pkt_len;	 //the remainder length of the open_file
 	uint8_t *cur_buffer;
 	uint8_t *buf_start;
 	uint8_t *cur_addr;
-	SIZE_T buf_len;
+	__kernel_size_t buf_len;
 };
 
 static uint rtw_remainder_len(struct pkt_file *pfile)
@@ -1309,7 +1309,7 @@ int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *skb,
 {
 	struct pkt_file pktfile;
 	int32_t frg_inx, frg_len, mpdu_len, llc_sz, mem_sz;
-	SIZE_PTR addr;
+	__kernel_size_t addr;
 	u8 *mem_start;
 	u8 hw_hdr_offset;
 	struct xmit_priv	*pxmitpriv = &rtlpriv->xmitpriv;

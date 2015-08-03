@@ -78,7 +78,7 @@ static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 valu
 	 * For mstar platform, mstar suggests the address for USB IO should be 16 bytes alignment.
 	 * Trying to fix it here.
 	 */
-	pIo_buf = (tmp_buf==NULL)?NULL:tmp_buf + ALIGNMENT_UNIT -((SIZE_PTR)(tmp_buf) & 0x0f );
+	pIo_buf = (tmp_buf==NULL)?NULL:tmp_buf + ALIGNMENT_UNIT -((__kernel_size_t)(tmp_buf) & 0x0f );
 #endif
 
 	if ( pIo_buf== NULL) {
@@ -649,8 +649,8 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 {
 	int err;
 	unsigned int pipe;
-	SIZE_PTR tmpaddr = 0;
-	SIZE_PTR alignment = 0;
+	__kernel_size_t tmpaddr = 0;
+	__kernel_size_t alignment = 0;
 	uint32_t ret = _SUCCESS;
 	struct urb *purb = NULL;
 	struct recv_buf	*precvbuf = (struct recv_buf *) rmem;
@@ -686,7 +686,7 @@ uint32_t usb_read_port(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t *rmem)
 				return _FAIL;
 			}
 
-			tmpaddr = (SIZE_PTR)precvbuf->skb->data;
+			tmpaddr = (__kernel_size_t) precvbuf->skb->data;
 			alignment = tmpaddr & (RECVBUFF_ALIGN_SZ-1);
 			skb_reserve(precvbuf->skb, (RECVBUFF_ALIGN_SZ - alignment));
 
@@ -780,7 +780,7 @@ static uint8_t rtw_init_intf_priv(struct rtl_usb *dvobj)
 		goto exit;
 	}
 	dvobj->usb_vendor_req_buf  =
-		(uint8_t *)N_BYTE_ALIGMENT((SIZE_PTR)(dvobj->usb_alloc_vendor_req_buf ), ALIGNMENT_UNIT);
+		(uint8_t *)N_BYTE_ALIGMENT((__kernel_size_t)(dvobj->usb_alloc_vendor_req_buf ), ALIGNMENT_UNIT);
 exit:
 #endif
 

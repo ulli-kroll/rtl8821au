@@ -73,7 +73,7 @@ int rtw_os_xmit_resource_alloc(struct rtl_priv *rtlpriv, struct xmit_buf *pxmitb
 			return _FAIL;
 		}
 
-		pxmitbuf->pbuf = (uint8_t *)N_BYTE_ALIGMENT((SIZE_PTR)(pxmitbuf->pallocated_buf), XMITBUF_ALIGN_SZ);
+		pxmitbuf->pbuf = (uint8_t *)N_BYTE_ALIGMENT((__kernel_size_t)(pxmitbuf->pallocated_buf), XMITBUF_ALIGN_SZ);
 	}
 
 	if (flag) {

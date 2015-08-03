@@ -41,7 +41,7 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 	}
 	memset(precvpriv->pallocated_recv_buf, 0, NR_RECVBUFF * sizeof(struct recv_buf) + 4);
 
-	precvpriv->precv_buf = (uint8_t *) N_BYTE_ALIGMENT((SIZE_PTR)(precvpriv->pallocated_recv_buf), 4);
+	precvpriv->precv_buf = (uint8_t *) N_BYTE_ALIGMENT((__kernel_size_t)(precvpriv->pallocated_recv_buf), 4);
 	/*
 	 * precvpriv->precv_buf = precvpriv->pallocated_recv_buf + 4 -
 	 * 	((uint) (precvpriv->pallocated_recv_buf) &(4-1));
@@ -77,8 +77,8 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 #ifdef CONFIG_PREALLOC_RECV_SKB
 	{
 		int i;
-		SIZE_PTR tmpaddr = 0;
-		SIZE_PTR alignment = 0;
+		__kernel_size_t tmpaddr = 0;
+		__kernel_size_t alignment = 0;
 		struct sk_buff *skb = NULL;
 
 		skb_queue_head_init(&precvpriv->free_recv_skb_queue);
@@ -90,7 +90,7 @@ int	rtl8812au_init_recv_priv(struct rtl_priv *rtlpriv)
 			if (skb) {
 				skb->dev = rtlpriv->ndev;
 
-				tmpaddr = (SIZE_PTR) skb->data;
+				tmpaddr = (__kernel_size_t) skb->data;
 				alignment = tmpaddr & (RECVBUFF_ALIGN_SZ-1);
 				skb_reserve(skb, (RECVBUFF_ALIGN_SZ - alignment));
 				skb_queue_tail(&precvpriv->free_recv_skb_queue, skb);

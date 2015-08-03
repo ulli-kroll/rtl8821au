@@ -482,7 +482,7 @@ static int32_t rtw_dump_xframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmi
 
 		mem_addr += w_sz;
 
-		mem_addr = (uint8_t *)RND4(((SIZE_PTR)(mem_addr)));
+		mem_addr = (uint8_t *)RND4(((__kernel_size_t)(mem_addr)));
 
 	}
 

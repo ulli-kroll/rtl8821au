@@ -604,13 +604,13 @@ int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, uint32_t	 ips_deffer_ms, const cha
 
 	//TODO: the following checking need to be merged...
 	if (rtlpriv->bDriverStopped
-		|| !rtlpriv->bup
+		|| !rtlpriv->initialized
 		|| !rtlpriv->hw_init_completed
 	){
-		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s: bDriverStopped=%d, bup=%d, hw_init_completed=%u\n"
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "%s: bDriverStopped=%d, initialized=%d, hw_init_completed=%u\n"
 			, caller
 		   	, rtlpriv->bDriverStopped
-		   	, rtlpriv->bup
+		   	, rtlpriv->initialized
 		   	, rtlpriv->hw_init_completed);
 		ret= _FALSE;
 		goto exit;

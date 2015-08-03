@@ -1294,7 +1294,7 @@ static int rtw_wx_set_wap(struct net_device *ndev,
 		goto exit;
 	}
 
-	if (!rtlpriv->bup) {
+	if (!rtlpriv->initialized) {
 		ret = -1;
 		goto exit;
 	}
@@ -1433,7 +1433,7 @@ static int rtw_wx_set_scan(struct net_device *ndev, struct iw_request_info *a,
 		goto exit;
 		}
 
-	if (!rtlpriv->bup) {
+	if (!rtlpriv->initialized) {
 		ret = -1;
 		goto exit;
 	}
@@ -1695,7 +1695,7 @@ static int rtw_wx_set_essid(struct net_device *ndev,
 		goto exit;
 	}
 
-	if (!rtlpriv->bup) {
+	if (!rtlpriv->initialized) {
 		ret = -1;
 		goto exit;
 	}

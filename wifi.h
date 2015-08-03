@@ -1514,6 +1514,7 @@ struct rtl_priv {
 	struct rtl_works works;
 
 	struct _rtw_hal *HalData;
+	bool initialized;
 
 
 	/* Border */
@@ -1559,7 +1560,6 @@ struct rtl_priv {
 	void *xmitThread;
 	void *recvThread;
 
-	int bup;
 	struct net_device_stats stats;
 	struct iw_statistics iwstats;
 	struct proc_dir_entry *dir_dev;// for proc directory

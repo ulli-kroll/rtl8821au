@@ -1034,7 +1034,7 @@ static void rtw_dev_unload(struct rtl_priv *rtlpriv)
 	struct net_device *ndev= (struct net_device*)rtlpriv->ndev;
 	uint8_t val8;
 
-	if (rtlpriv->bup == _TRUE) {
+	if (rtlpriv->initialized == true) {
 		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "===> rtw_dev_unload\n");
 
 		rtlpriv->bDriverStopped = _TRUE;
@@ -1052,7 +1052,7 @@ static void rtw_dev_unload(struct rtl_priv *rtlpriv)
 			rtlpriv->bSurpriseRemoved = _TRUE;
 		}
 
-		rtlpriv->bup = _FALSE;
+		rtlpriv->initialized = false;
 	} else {
 		;
 	}
@@ -1100,9 +1100,9 @@ static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t messa
 
 	DBG_871X("==> %s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
 
-	if((!rtlpriv->bup) || (rtlpriv->bDriverStopped)||(rtlpriv->bSurpriseRemoved)) {
-		DBG_871X("rtlpriv->bup=%d bDriverStopped=%d bSurpriseRemoved = %d\n",
-			rtlpriv->bup, rtlpriv->bDriverStopped,rtlpriv->bSurpriseRemoved);
+	if((!rtlpriv->initialized) || (rtlpriv->bDriverStopped)||(rtlpriv->bSurpriseRemoved)) {
+		DBG_871X("rtlpriv->initialized=%d bDriverStopped=%d bSurpriseRemoved = %d\n",
+			rtlpriv->initialized, rtlpriv->bDriverStopped,rtlpriv->bSurpriseRemoved);
 		goto exit;
 	}
 
@@ -1171,14 +1171,14 @@ int _netdev_open(struct net_device *ndev)
 	struct rtl_priv *rtlpriv =  rtl_priv(ndev);
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 
-	DBG_871X("+871x_drv - drv_open, bup=%d\n", rtlpriv->bup);
+	DBG_871X("+871x_drv - drv_open, bup=%d\n", rtlpriv->initialized);
 
 	if (pwrctrlpriv->ps_flag == _TRUE) {
 		rtlpriv->net_closed = _FALSE;
 		goto netdev_open_normal_process;
 	}
 
-	if (rtlpriv->bup == _FALSE) {
+	if (rtlpriv->initialized == _FALSE) {
 		rtlpriv->bDriverStopped = _FALSE;
 		rtlpriv->bSurpriseRemoved = _FALSE;
 		rtlpriv->bCardDisableWOHSM = _FALSE;
@@ -1203,7 +1203,7 @@ int _netdev_open(struct net_device *ndev)
 
 		usb_intf_start(rtlpriv);
 		
-		rtlpriv->bup = _TRUE;
+		rtlpriv->initialized = _TRUE;
 	}
 	rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_ON);
 	rtlpriv->net_closed = _FALSE;
@@ -1223,18 +1223,18 @@ int _netdev_open(struct net_device *ndev)
 
 netdev_open_normal_process:
 
-	DBG_871X("-871x_drv - drv_open, bup=%d\n", rtlpriv->bup);
+	DBG_871X("-871x_drv - drv_open, initialized=%d\n", rtlpriv->initialized);
 
 	return 0;
 
 netdev_open_error:
 
-	rtlpriv->bup = _FALSE;
+	rtlpriv->initialized = _FALSE;
 
 	netif_carrier_off(ndev);
 	rtw_netif_stop_queue(ndev);
 
-	DBG_871X("-871x_drv - drv_open fail, bup=%d\n", rtlpriv->bup);
+	DBG_871X("-871x_drv - drv_open fail, initialized=%d\n", rtlpriv->initialized);
 
 	return (-1);
 
@@ -1281,7 +1281,7 @@ int  ips_netdrv_open(struct rtl_priv *rtlpriv)
 
 netdev_open_error:
 	/* rtlpriv->bup = _FALSE; */
-	DBG_871X("-ips_netdrv_open - drv_open failure, bup=%d\n", rtlpriv->bup);
+	DBG_871X("-ips_netdrv_open - drv_open failure, initialized=%d\n", rtlpriv->initialized);
 
 	return _FAIL;
 }
@@ -1390,7 +1390,7 @@ static int netdev_close(struct net_device *ndev)
 	}
 	else*/
 	if (rtlpriv->pwrctrlpriv.rf_pwrstate == rf_on) {
-		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "(2)871x_drv - drv_close, bup=%d, hw_init_completed=%d\n", rtlpriv->bup, rtlpriv->hw_init_completed);
+		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "(2)871x_drv - drv_close, initialized=%d, hw_init_completed=%d\n", rtlpriv->initialized, rtlpriv->hw_init_completed);
 
 		/* s1. */
 		if (ndev) {
@@ -1414,7 +1414,7 @@ static int netdev_close(struct net_device *ndev)
 	kfree(rtlhal->pfirmware);
 	rtlhal->pfirmware = NULL;
 
-	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "-871x_drv - drv_close, bup=%d\n", rtlpriv->bup);
+	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "-871x_drv - drv_close, initialized=%d\n", rtlpriv->initialized);
 
 	return 0;
 
@@ -1552,7 +1552,7 @@ static int rtw_net_set_mac_address(struct net_device *ndev, void *p)
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct sockaddr *addr = p;
 
-	if (rtlpriv->bup == _FALSE) {
+	if (rtlpriv->initialized == false) {
 		/*
 		 * DBG_871X("r8711_net_set_mac_address(), MAC=%x:%x:%x:%x:%x:%x\n", addr->sa_data[0], addr->sa_data[1], addr->sa_data[2], addr->sa_data[3],
 		 * addr->sa_data[4], addr->sa_data[5]);
@@ -1861,10 +1861,10 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	rtw_init_netdev_name(ndev, ifname);
 	rtw_macaddr_cfg(rtlpriv->eeprompriv.mac_addr);
 
-	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "bDriverStopped:%d, bSurpriseRemoved:%d, bup:%d, hw_init_completed:%d\n"
+	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "bDriverStopped:%d, bSurpriseRemoved:%d, initialized:%d, hw_init_completed:%d\n"
 		, rtlpriv->bDriverStopped
 		, rtlpriv->bSurpriseRemoved
-		, rtlpriv->bup
+		, rtlpriv->initialized
 		, rtlpriv->hw_init_completed
 	);
 

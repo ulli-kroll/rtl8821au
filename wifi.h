@@ -1663,7 +1663,7 @@ struct rtl_hal_ops {
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
 	int (*init_sw_vars) (struct net_device *ndev);
-	void (*deinit_sw_vars) (struct net_device *ndev);
+	void (*deinit_sw_vars) (struct rtl_priv *rtlpriv);
 
 	void	(*set_hw_reg)(struct rtl_priv *rtlpriv, u8 variable,u8 *val);
 	void	(*get_hw_reg)(struct rtl_priv *rtlpriv, u8 variable,u8 *val);

@@ -384,6 +384,11 @@ exit:
 
 }
 
+static void rtl8821au_deinit_sw_vars(struct rtl_priv *rtlpriv)
+{
+	kfree(rtlpriv->rtlhal.pfirmware);
+	rtlpriv->rtlhal.pfirmware = NULL;
+}
 
 static struct rtl_hal_ops rtl8821au_hal_ops = {
 	/*
@@ -401,6 +406,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.led_control	= rtl8821au_led_control,
 
 	.init_sw_vars	= rtl8821au_init_sw_vars,
+	.deinit_sw_vars	= rtl8821au_deinit_sw_vars,
 	.radio_onoff_checking = rtl8821au_gpio_radio_on_off_checking,
 	.set_network_type = rtl8821au_set_network_type,
 	.hw_init =	 	rtl8812au_hw_init,

@@ -1436,9 +1436,7 @@ static int netdev_close(struct net_device *ndev)
 		/* Close LED */
 	}
 	rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_OFF);
-
-	kfree(rtlhal->pfirmware);
-	rtlhal->pfirmware = NULL;
+	rtlpriv->cfg->ops->deinit_sw_vars(rtlpriv);
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "-871x_drv - drv_close, initialized=%d\n", rtlpriv->initialized);
 

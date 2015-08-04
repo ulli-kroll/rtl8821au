@@ -413,7 +413,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.hw_init =	 	rtl8812au_hw_init,
 	
 	/* ULLI : need to check params herer */
-	
+	.phy_rf6052_set_cck_txpower = rtl8821au_phy_rf6052_set_cck_txpower,
 	.phy_rf6052_set_ofdm_txpower = rtl8821au_phy_rf6052_set_ofdm_txpower,
 
 	/** ** */

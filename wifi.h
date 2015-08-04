@@ -1689,6 +1689,9 @@ struct rtl_hal_ops {
 	int 	(*set_network_type) (struct rtl_priv *prtpriv, uint8_t val);
 	u32	(*hw_init)(struct rtl_priv *rtlpriv);
 
+
+	void 	(*phy_rf6052_set_cck_txpower) (struct rtl_priv *rtlpriv,
+					       u8 *powerlevel);
 #if 0
 	void 	(*phy_rf6052_set_ofdm_txpower) (struct rtl_priv *rtlpriv,
 					        u8 *ppowerlevel, u8 channel);

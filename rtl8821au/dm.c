@@ -1528,15 +1528,15 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 
-
-	if (!pDM_Odm->RFCalibrateInfo.TM_Trigger) {		/* at least delay 1 sec */
+	if ( rtldm->tm_trigger) {		/* at least delay 1 sec */
 		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
 		rtl_set_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 
 		/* DBG_871X("Trigger Thermal Meter!!\n"); */
 
-		pDM_Odm->RFCalibrateInfo.TM_Trigger = 1;
+		 rtldm->tm_trigger = 1;
 		return;
 	} else {
 		/* DBG_871X("Schedule TxPowerTracking direct call!!\n"); */
@@ -1544,7 +1544,7 @@ void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
 			rtl8812au_dm_txpower_tracking_callback_thermalmeter(rtlpriv);
 		if (IS_HARDWARE_TYPE_8821U(rtlhal))
 			rtl8821au_dm_txpower_tracking_callback_thermalmeter(rtlpriv);
-		pDM_Odm->RFCalibrateInfo.TM_Trigger = 0;
+		 rtldm->tm_trigger = 0;
 	}
 
 }

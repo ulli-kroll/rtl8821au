@@ -889,10 +889,11 @@ struct rtl_dm {
 	u8 thermalvalue_rxgain;
 	u8 thermalvalue_iqk;
 	u8 thermalvalue_lck;
-	u8 thermalvalue;
+	u8 thermalvalue;		/* introduced in commit 1637c1b7e */
 	u8 last_dtp_lvl;
 	u8 thermalvalue_avg[AVG_THERMAL_NUM];
 	u8 thermalvalue_avg_index;
+	u8 tm_trigger;
 	bool done_txpower;
 	u8 dynamic_txhighpower_lvl;	/*Tx high power level */
 	u8 dm_flag;		/*Indicate each dynamic mechanism's status. */
@@ -1889,7 +1890,6 @@ struct ODM_RF_Calibration_Structure
 {
 	//for tx power tracking
 
-	u8  	TM_Trigger;
 	BOOLEAN	TxPowerTrackingInProgress;
 	//--------------------------------------------------------------------//
 

@@ -217,6 +217,7 @@ static int rtw_beamform_cap = 0;
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData;
@@ -236,7 +237,7 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 	/* init dm default value */
 	pHalData->bChnlBWInitialzed = _FALSE;
 	rtlphy->iqk_initialized = _FALSE;
-	pHalData->odmpriv.RFCalibrateInfo.TM_Trigger = 0;/* for IQK */
+	rtldm->tm_trigger = 0;/* for IQK */
 	rtlphy->pwrgroup_cnt = 0;
 
 	rtlusb->irq_mask[0]	= (u32)(	\

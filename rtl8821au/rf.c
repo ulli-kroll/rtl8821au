@@ -288,10 +288,10 @@ void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
 
 
 
-static int _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
+static bool _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 {
 	uint8_t	eRFPath;
-	int	rtStatus = _SUCCESS;
+	int	rtStatus = true;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
@@ -312,10 +312,8 @@ static int _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 	return rtStatus;
 }
 
-int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
+bool rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 {
-	int		rtStatus = _SUCCESS;
-
 	/* Initialize general global value */
 	if (rtlpriv->phy.rf_type == RF_1T1R)
 		rtlpriv->phy.num_total_rfpath = 1;
@@ -326,10 +324,7 @@ int rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)
 	 * Config BB and RF
 	 */
 
-	rtStatus = _rtl8821au_phy_rf6052_config_parafile(rtlpriv);
-
-	return rtStatus;
-
+	return _rtl8821au_phy_rf6052_config_parafile(rtlpriv);
 }
 
 /* currently noz used, as in rtl8821ae */

@@ -3,6 +3,7 @@
 #include "dm.h"
 #include "phy.h"
 #include "reg.h"
+#include "rf.h"
 #include "trx.h"
 #include "hw.h"
 #include "led.h"
@@ -410,6 +411,10 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.radio_onoff_checking = rtl8821au_gpio_radio_on_off_checking,
 	.set_network_type = rtl8821au_set_network_type,
 	.hw_init =	 	rtl8812au_hw_init,
+	
+	/* ULLI : need to check params herer */
+	
+	.phy_rf6052_set_ofdm_txpower = rtl8821au_phy_rf6052_set_ofdm_txpower,
 
 	/** ** */
 

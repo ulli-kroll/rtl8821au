@@ -4850,8 +4850,8 @@ static void _rtl8821au_config_bb_reg(struct rtl_priv *rtlpriv, uint32_t Addr,
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE, "===> ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X\n", Addr, Data);
 }
 
-
-void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
+bool _rtl8821au_phy_config_bb_with_pgheaderfile(struct rtl_priv *rtlpriv,
+							u8 configtype)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
@@ -4881,6 +4881,12 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 		Array = RTL8821AU_PHY_REG_PG_ARRAY;
 	}
 
+	if (configtype != BASEBAND_CONFIG_PHY_REG) {
+		RT_TRACE(rtlpriv, COMP_SEND, DBG_TRACE,
+			 "configtype != BaseBand_Config_PHY_REG\n");
+		return true;
+	}
+	
 	hex += board;
 	hex += _interface << 8;
 	hex += platform << 16;
@@ -4915,6 +4921,8 @@ void ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(struct rtl_priv *rtlpriv)
 			}
 		}
 	}
+	
+	return true;
 }
 
 static void _rtl8821au_phy_init_txpower_limit(struct rtl_priv *rtlpriv)
@@ -5533,7 +5541,8 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 	if (efuse->autoload_failflag == _FALSE) {
 		rtlphy->pwrgroup_cnt = 0;
 
-		ODM_ReadAndConfig_MP_8821A_PHY_REG_PG(rtlpriv);
+		rtlpriv->cfg->ops->config_bb_with_pgheaderfile(rtlpriv,
+							       BASEBAND_CONFIG_PHY_REG);
 
 		if (efuse->eeprom_regulatory == 1 )
 			_rtl8821au_phy_convert_txpower_limit_to_power_index(rtlpriv);

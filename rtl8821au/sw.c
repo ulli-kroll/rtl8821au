@@ -496,8 +496,8 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.phy_rf6052_set_cck_txpower = rtl8821au_phy_rf6052_set_cck_txpower,
 	.phy_rf6052_set_ofdm_txpower = rtl8821au_phy_rf6052_set_ofdm_txpower,
 	.config_bb_with_headerfile = _rtl8821au_phy_config_bb_with_headerfile,
-#if 0
-	.config_bb_with_pgfile = rtl8821au_phy_config_bb_with_with_pgfile,
+	.config_bb_with_pgheaderfile = _rtl8821au_phy_config_bb_with_pgheaderfile,
+#if 0	
 	.phy_lc_calibrate = rtl8821au_phy_lc_calibrate,
 	-phy_set_bw_mode_callback = rtl8821au_phy_set_bw_mode_callback,
 	.dm_dynamic_txpower = rtl8821au_dm_dynamic_txpower,

@@ -411,9 +411,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 #endif
 
 	.enable_interrupt = rtl8821au_enable_interrupt,
-#if 0
 	.disable_interrupt = rtl8821au_disable_interrupt,
-#endif
 
 	.hw_init =	 	rtl8812au_hw_init,
 

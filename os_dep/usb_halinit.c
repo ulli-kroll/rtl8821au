@@ -158,9 +158,8 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 
 	rtl_write_dword(rtlpriv, REG_HISR0_8812, 0xFFFFFFFF);
 	rtl_write_dword(rtlpriv, REG_HISR1_8812, 0xFFFFFFFF);
-	rtl_write_dword(rtlpriv, REG_HIMR0_8812, IMR_DISABLED_8812);
-	rtl_write_dword(rtlpriv, REG_HIMR1_8812, IMR_DISABLED_8812);
-
+	rtlpriv->cfg->ops->disable_interrupt(rtlpriv);
+	
 	if (rtlpriv->hw_init_completed == _TRUE) {
 		_rtl8821au_poweroff_adapter(rtlpriv);
 

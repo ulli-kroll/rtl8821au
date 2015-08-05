@@ -1599,6 +1599,11 @@ void rtl8821au_enable_interrupt(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_HIMR1_8812, rtlusb->irq_mask[1]&0xFFFFFFFF);
 }
 
+void rtl8821au_disable_interrupt(struct rtl_priv *rtlpriv)
+{
+	rtl_write_dword(rtlpriv, REG_HIMR0_8812, IMR_DISABLED_8812);
+	rtl_write_dword(rtlpriv, REG_HIMR1_8812, IMR_DISABLED_8812);
+}
 static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);

@@ -1706,6 +1706,8 @@ struct rtl_hal_ops {
 	bool (*config_bb_with_pgheaderfile) (struct rtl_priv *rtlpriv,
 					     u8 configtype);
 
+	void (*phy_set_bw_mode_callback) (struct rtl_priv *rtlpriv);
+
 	bool (*get_btc_status) (void);
 
 	/* Old HAL functions */

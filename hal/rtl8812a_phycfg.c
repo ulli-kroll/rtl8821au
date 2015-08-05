@@ -932,7 +932,6 @@ static void phy_InitRssiTRSW(struct rtl_priv *rtlpriv)
  * Prototypes needed here, because functions are moved to rtl8821au/phy.c
  */
 
-void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv);
 void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 	u8 Channel);
 
@@ -1092,7 +1091,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 		}
 
 		if (bSetChnlBW) {
-			rtl8821au_phy_set_bw_mode_callback(rtlpriv);
+			rtlpriv->cfg->ops->phy_set_bw_mode_callback(rtlpriv);
 			bSetChnlBW = _FALSE;
 		}
 

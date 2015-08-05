@@ -10,6 +10,10 @@ bool _rtl8821au_phy_config_bb_with_headerfile(struct rtl_priv *rtlpriv,
 						       u8 configtype);
 bool _rtl8821au_phy_config_bb_with_pgheaderfile(struct rtl_priv *rtlpriv,
 							u8 configtype);
+void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv);
+
+
+							
 void rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery);
 
 

@@ -391,6 +391,12 @@ static void rtl8821au_deinit_sw_vars(struct rtl_priv *rtlpriv)
 	rtlpriv->rtlhal.pfirmware = NULL;
 }
 
+/* get bt coexist status */
+static bool rtl8821au_get_btc_status(void)
+{
+	return false;
+}
+
 static struct rtl_hal_ops rtl8821au_hal_ops = {
 	/*
 	 * New HAL functions with struct net_device  as first param
@@ -497,8 +503,9 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	-phy_set_bw_mode_callback = rtl8821au_phy_set_bw_mode_callback,
 	.dm_dynamic_txpower = rtl8821au_dm_dynamic_txpower,
 	.fill_h2c_cmd = rtl8821au_fill_h2c_cmd,
-	.get_btc_status = rtl8821au_get_btc_status,
 #endif	
+	.get_btc_status = rtl8821au_get_btc_status,
+
 	/** ** */
 
 	/* Old HAL functions */

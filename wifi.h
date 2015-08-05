@@ -1702,6 +1702,8 @@ struct rtl_hal_ops {
 					       u8 *pPowerLevelBW40,
 					       u8 Channel);
 
+	bool (*get_btc_status) (void);
+
 	/* Old HAL functions */
 
 	u32	(*hal_deinit)(struct rtl_priv *rtlpriv);

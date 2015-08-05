@@ -92,7 +92,7 @@ static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num
 *|31 - 0	  |
 *|ext_msg|
 ******************************************/
-static void _rtl8821au_fill_h2c_command(struct rtl_priv *rtlpriv, 
+static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv, 
 					u8 element_id, u32 cmd_len, 
 					u8 *cmdbuffer)
 {
@@ -175,7 +175,7 @@ exit:
 	mutex_unlock(&(rtl_usbdev(rtlpriv)->h2c_fwcmd_mutex));
 }
 
-void rtl8821au_fill_h2c_command(struct rtl_priv *rtlpriv, 
+void rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv, 
 					u8 element_id, u32 cmd_len, 
 					u8 *cmdbuffer)
 {
@@ -190,7 +190,7 @@ void rtl8821au_fill_h2c_command(struct rtl_priv *rtlpriv,
 
 	memset(tmp_cmdbuf, 0, 8);
 	memcpy(tmp_cmdbuf, cmdbuffer, cmd_len);
-	_rtl8821au_fill_h2c_command(rtlpriv, element_id, cmd_len, (u8 *)&tmp_cmdbuf);
+	_rtl8821au_fill_h2c_cmd(rtlpriv, element_id, cmd_len, (u8 *)&tmp_cmdbuf);
 }
 
 uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param)
@@ -200,7 +200,7 @@ uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param)
 
 	*((u32 *) param) = cpu_to_le32(*((u32 *) param));
 
-	rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_RSSI_REPORT, 4, param);
+	rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_RSSI_REPORT, 4, param);
 
 
 	return res;
@@ -313,7 +313,7 @@ void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *ar
 
 		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "rtl8812_set_raid_cmd, bitmap=0x%x, mac_id=0x%x, raid=0x%x, shortGIrate=%x\n", bitmap, macid, raid, shortGIrate);
 
-		rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_RA_MASK, 7, H2CCommand);
+		rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_RA_MASK, 7, H2CCommand);
 	}
 
 	if (shortGIrate == _TRUE)
@@ -724,7 +724,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
 
 	if (!bDLFinished) {
 		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__, TotalPacketLen, TotalPageNum);
-		rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_RSVDPAGE, 5, RsvdPageLoc);
+		rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_RSVDPAGE, 5, RsvdPageLoc);
 	}
 
 	rtw_free_cmd_xmitbuf(pxmitpriv);
@@ -906,7 +906,7 @@ void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *rtlpriv, u16 mstatus_rpt)
 
 	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "[MacId],  Set MacId Ctrl(original) = 0x%x \n", u1JoinBssRptParm[0]<<16|u1JoinBssRptParm[1]<<8|u1JoinBssRptParm[2]);
 
-	rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_MSRRPT, 3, u1JoinBssRptParm);
+	rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_MSRRPT, 3, u1JoinBssRptParm);
 }
 
 
@@ -969,7 +969,7 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 	/* AllON(0x0C), RFON(0x04), RFOFF(0x00) */
 	SET_8812_H2CCMD_PWRMODE_PARM_PWR_STATE(u1H2CSetPwrMode, PowerState);
 
-	rtl8821au_fill_h2c_command(rtlpriv, H2C_8812_SETPWRMODE, sizeof(u1H2CSetPwrMode), (uint8_t *)&u1H2CSetPwrMode);
+	rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_SETPWRMODE, sizeof(u1H2CSetPwrMode), (uint8_t *)&u1H2CSetPwrMode);
 }
 
 

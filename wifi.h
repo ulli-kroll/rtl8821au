@@ -1707,6 +1707,9 @@ struct rtl_hal_ops {
 					     u8 configtype);
 
 	void (*phy_set_bw_mode_callback) (struct rtl_priv *rtlpriv);
+	void (*fill_h2c_cmd) (struct rtl_priv *rtlpriv, u8 element_id,
+			      u32 cmd_len, u8 *p_cmdbuffer);
+
 
 	bool (*get_btc_status) (void);
 

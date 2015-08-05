@@ -7,6 +7,7 @@
 #include "trx.h"
 #include "hw.h"
 #include "led.h"
+#include "fw.h"
 
 #include <rtl8812a_hal.h>
 
@@ -503,8 +504,8 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.phy_set_bw_mode_callback = rtl8821au_phy_set_bw_mode_callback,
 #if 0
 	.dm_dynamic_txpower = rtl8821au_dm_dynamic_txpower,
-	.fill_h2c_cmd = rtl8821au_fill_h2c_cmd,
 #endif	
+	.fill_h2c_cmd = rtl8821au_fill_h2c_cmd,
 	.get_btc_status = rtl8821au_get_btc_status,
 
 	/** ** */

@@ -1701,6 +1701,8 @@ struct rtl_hal_ops {
 					       u8 *pPowerLevelBW20,
 					       u8 *pPowerLevelBW40,
 					       u8 Channel);
+	bool (*config_bb_with_headerfile) (struct rtl_priv *rtlpriv,
+					   u8 configtype);
 
 	bool (*get_btc_status) (void);
 

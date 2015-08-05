@@ -6,6 +6,8 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *	rtlpriv, u32 RegAddr, u32 BitMas
 u32 rtl8821au_phy_query_rf_reg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, u32 BitMask);
 void rtl8821au_phy_set_rf_reg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, 
 	u32 BitMask, u32 Data);
+bool _rtl8821au_phy_config_bb_with_headerfile(struct rtl_priv *rtlpriv,
+						       u8 configtype);
 
 void rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery);
 

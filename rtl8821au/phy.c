@@ -5371,7 +5371,7 @@ static void phy_InitBBRFRegisterDefinition(struct rtl_priv *rtlpriv)
 	/* pHalData->bPhyValueInitReady=_TRUE; */
 }
 
-static void _rtl8821au_phy_config_bb_with_header_file(struct rtl_priv *rtlpriv,
+bool _rtl8821au_phy_config_bb_with_headerfile(struct rtl_priv *rtlpriv,
 						       u8 configtype)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
@@ -5504,6 +5504,8 @@ static void _rtl8821au_phy_config_bb_with_header_file(struct rtl_priv *rtlpriv,
 			}
 		}
 	}
+
+	return true;
 }
 
 static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
@@ -5523,8 +5525,8 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 	}
 
 	/* Read PHY_REG.TXT BB INIT!! */
-	_rtl8821au_phy_config_bb_with_header_file(rtlpriv,
-						  BASEBAND_CONFIG_PHY_REG);
+	rtlpriv->cfg->ops->config_bb_with_headerfile(rtlpriv,
+						     BASEBAND_CONFIG_PHY_REG);
 
 	/* If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
 	/* 1 TODO */
@@ -5539,8 +5541,8 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 
 
 	/* BB AGC table Initialization */
-	_rtl8821au_phy_config_bb_with_header_file(rtlpriv,
-						  BASEBAND_CONFIG_AGC_TAB);
+	rtlpriv->cfg->ops->config_bb_with_headerfile(rtlpriv,
+						     BASEBAND_CONFIG_AGC_TAB);
 	return rtStatus;
 }
 

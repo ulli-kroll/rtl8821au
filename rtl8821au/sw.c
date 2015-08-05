@@ -410,8 +410,8 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.read_eeprom_info = rtl8821au_read_eeprom_info,
 #endif
 
-#if 0	/* ULLI : as above rtl8812au_inirp_deinit() ??*/
 	.enable_interrupt = rtl8821au_enable_interrupt,
+#if 0
 	.disable_interrupt = rtl8821au_disable_interrupt,
 #endif
 

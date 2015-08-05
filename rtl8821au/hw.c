@@ -1590,7 +1590,7 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 }
 
 /* Shall USB interface init this? */
-static void rtl8821au_enable_interrupt(struct rtl_priv *rtlpriv)
+void rtl8821au_enable_interrupt(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 
@@ -2198,7 +2198,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	/* Get Rx PHY status in order to report RSSI and others. */
 	_InitDriverInfoSize_8812A(rtlpriv, DRVINFO_SZ);
 
-	rtl8821au_enable_interrupt(rtlpriv);
+	rtlpriv->cfg->ops->enable_interrupt(rtlpriv);
 	_InitID_8812A(rtlpriv);			/* set mac_address */
 	_InitNetworkType_8812A(rtlpriv);	/* set msr */
 	_InitWMACSetting_8812A(rtlpriv);

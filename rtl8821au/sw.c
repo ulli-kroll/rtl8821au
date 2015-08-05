@@ -396,30 +396,112 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	 * New HAL functions with struct net_device  as first param
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
+	 
+	 /* ULLI : API table stolen form rtl8192cu */
+
+	.init_sw_vars	= rtl8821au_init_sw_vars,
+	.deinit_sw_vars	= rtl8821au_deinit_sw_vars,
+
+	/* ULLI : must check API here */
+	.read_chip_version =	rtl8821au_read_chip_version,
+	/* ULLI : somewhere in the source, nanme ?? ... */
+
+#if 0	/* ULLI : _rtl8821au_read_adapter_info(), maybe */
+	.read_eeprom_info = rtl8821au_read_eeprom_info,
+#endif
+
+#if 0	/* ULLI : as above rtl8812au_inirp_deinit() ??*/
+	.enable_interrupt = rtl8821au_enable_interrupt,
+	.disable_interrupt = rtl8821au_disable_interrupt,
+#endif
+
+	.hw_init =	 	rtl8812au_hw_init,
+
+#if 0	
+	.hw_disable = rtl8821au_card_disable,
+#endif	
+
+	.set_network_type = rtl8821au_set_network_type,
+
+#if 0
+	.set_chk_bssid = rtl8821au_set_check_bssid,
+	.set_qos = rtl8821au_set_qos,
+	.set_bcn_reg = rtl8821au_set_beacon_related_registers,
+	.set_bcn_intv = rtl8821au_set_beacon_interval,
+	.update_interrupt_mask = rtl8821_update_interrupt_mask,
+#endif	
+
+	/* ULLI : check API */
+	.set_hw_reg =	 	rtl8821au_set_hw_reg,
+	.get_hw_reg = 		rtl8821au_get_hw_reg,
+	
+#if 0	/* ULLI : currently not known */
+	.update_rate_tbl = rtl8821_update_hal_rate_tbl,
+#endif	
+
+#if 0	/* ULLI : somewhere in the tx path mess */
+	.fill_tx_desc = rtl8821au_tx_fill_desc,
+#endif
+	/* ULLI : maybe wrong API */
+	.fill_fake_txdesc	= rtl8821au_fill_fake_txdesc,
+	
+#if 0	/* ULLI : somewhere in the tx path mess */
+	.fill_tx_cmdesc = rtl8821au_tx_fill_cmddesc,
+#endif
+
+#if 0	/* ULLI : somewhere in the rx path mess */
+	.query_rx_desc = rtl8821au_rx_query_desc,
+#endif
+
+#if 0	/* ULLI : currently not known */
+	.set_channel_access = rtl8821au_update_channel_access_setting,
+#endif
+	/* ULLI : check params */
+	.radio_onoff_checking = rtl8821au_gpio_radio_on_off_checking,
+
+#if 0	/* ULLI : maybe in old HAL ops */
+	.set_bw_mode = rtl8821au_phy_set_bw_mode,
+	.switch_channel = rtl8821au_phy_sw_chanl,
+	.dm_watchdog = rtl8821au_dm_watchdog,
+
+	/* ULLI : rtlwifi function here ? */
+	.scan_operation_backup = rtl_phy_scan_operation_backup,
+#endif
+
+#if 0	/* ULLI : currently not known */
+	.set_rf_power_state = rtl8821au_phy_set_rf_power_state,
+#endif
+
+	.led_control	= rtl8821au_led_control,
+
+#if 0	/* ULLI : hmm, see in cam.c of rtlwifi ?? */
+	.enable_hw_sec = rtl8821au_enable_hw_security_setup,
+	.set_key = rtl8821au_set_key,
+#endif
+
+	.init_sw_leds = rtl8821au_init_sw_leds,
+	.deinit_sw_leds = rtl8821au_deinit_sw_leds,
 
 	.get_bbreg = 	rtl8821au_phy_query_bb_reg,
 	.set_bbreg = 	rtl8821au_phy_set_bb_reg,
 	.get_rfreg = 	rtl8821au_phy_query_rf_reg,
 	.set_rfreg = 	rtl8821au_phy_set_rf_reg,
 
-	.init_sw_leds = rtl8821au_init_sw_leds,
-	.deinit_sw_leds = rtl8821au_deinit_sw_leds,
-	.led_control	= rtl8821au_led_control,
-
-	.init_sw_vars	= rtl8821au_init_sw_vars,
-	.deinit_sw_vars	= rtl8821au_deinit_sw_vars,
-	.radio_onoff_checking = rtl8821au_gpio_radio_on_off_checking,
-	.set_network_type = rtl8821au_set_network_type,
-	.hw_init =	 	rtl8812au_hw_init,
-	
 	/* ULLI : need to check params herer */
 	.phy_rf6052_config = rtl8821au_phy_rf6052_config,
 	.phy_rf6052_set_cck_txpower = rtl8821au_phy_rf6052_set_cck_txpower,
 	.phy_rf6052_set_ofdm_txpower = rtl8821au_phy_rf6052_set_ofdm_txpower,
 
+#if 0
+	.config_bb_with_headeerfile = rtl8821au_phy_config_bb_with_headerfile,
+	.config_bb_with_pgfile = rtl8821au_phy_config_bb_with_with_pgfile,
+	.phy_lc_calibrate = rtl8821au_phy_lc_calibrate,
+	-phy_set_bw_mode_callback = rtl8821au_phy_set_bw_mode_callback,
+	.dm_dynamic_txpower = rtl8821au_dm_dynamic_txpower,
+	.fill_h2c_cmd = rtl8821au_fill_h2c_cmd,
+	.get_btc_status = rtl8821au_get_btc_status,
+#endif	
 	/** ** */
-
-	.fill_fake_txdesc	= rtl8821au_fill_fake_txdesc,
 
 	/* Old HAL functions */
 
@@ -442,10 +524,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	/* .hal_dm_watchdog = 	rtl8192c_HalDmWatchDog; */
 
-
-	.set_hw_reg =	 	rtl8821au_set_hw_reg,
-	.get_hw_reg = 		rtl8821au_get_hw_reg,
-
 	.SetBeaconRelatedRegistersHandler = 	rtl8821au_set_beacon_related_registers,
 
 	/* .Add_RateATid = &rtl8192c_Add_RateATid, */
@@ -459,7 +537,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.dm_init =		rtl8812_init_dm_priv,
 	.dm_deinit =		rtl8812_deinit_dm_priv,
 
-	.read_chip_version =	rtl8821au_read_chip_version,
 
 	.set_bwmode_handler =	PHY_SetBWMode8812,
 	.set_channel_handler =	PHY_SwChnl8812,

@@ -4,7 +4,6 @@
 
 /* ULLI : we *must* get rid of this mess */
 
-#include <Hal8812PhyCfg.h>
 #include <rtl8812a_cmd.h>
 
 static const u32 txscalling_tbl[TXSCALE_TABLE_SIZE] = {

@@ -69,7 +69,6 @@ int	PHY_RFConfig8812(IN struct rtl_priv *rtlpriv	);
 // BB TX Power R/W
 //
 
-void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *rtlpriv, IN uint8_t	Channel	);
 u8 _rtl8821au_get_txpower_index(
 	IN	struct rtl_priv *		rtlpriv,
 	IN	uint8_t					RFPath,

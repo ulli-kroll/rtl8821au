@@ -30,25 +30,3 @@ void odm_ConfigBB_AGC_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE, "===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data);
 }
 
-void odm_ConfigBB_PHY_REG_PG_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Bitmask, uint32_t Data)
-{
-	if (Addr == 0xfe)
-		msleep(50);
-	else if (Addr == 0xfd)
-		mdelay(5);
-	else if (Addr == 0xfc)
-		mdelay(1);
-	else if (Addr == 0xfb)
-		udelay(50);
-	else if (Addr == 0xfa)
-		udelay(5);
-	else if (Addr == 0xf9)
-		udelay(1);
-
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "===> @@@@@@@ ODM_ConfigBBWithHeaderFile: [PHY_REG] %08X %08X %08X\n", Addr, Bitmask, Data);
-
-	storePwrIndexDiffRateOffset(rtlpriv, Addr, Bitmask, Data);
-
-}
-

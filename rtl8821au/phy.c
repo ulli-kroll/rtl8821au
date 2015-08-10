@@ -4904,7 +4904,20 @@ bool _rtl8821au_phy_config_bb_with_pgheaderfile(struct rtl_priv *rtlpriv,
 
 		// this line is a line of pure_body
 		if (v1 < 0xCDCDCDCD) {
-			odm_ConfigBB_PHY_REG_PG_8821A(rtlpriv, v1, v2, v3);
+			if (v1 == 0xfe)
+				msleep(50);
+			else if (v1 == 0xfd)
+				mdelay(5);
+			else if (v1 == 0xfc)
+				mdelay(1);
+			else if (v1 == 0xfb)
+				udelay(50);
+			else if (v1 == 0xfa)
+				udelay(5);
+			else if (v1 == 0xf9)
+				udelay(1);
+
+			storePwrIndexDiffRateOffset(rtlpriv, v1, v2, v3);
 			continue;
 		} else {
 			// this line is the start of branch

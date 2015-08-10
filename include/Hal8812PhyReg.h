@@ -114,15 +114,6 @@
 //#define rConfig_Pmpd_AntB			0xb98
 //#define rAPK							0xbd8
 
-// RXIQC
-#define rA_RxIQC_AB_Jaguar    	0xc10  //RxIQ imblance matrix coeff. A & B
-#define rA_RxIQC_CD_Jaguar    	0xc14  //RxIQ imblance matrix coeff. C & D
-#define rA_TxScale_Jaguar 		0xc1c  // Pah_A TX scaling factor
-#define rB_TxScale_Jaguar 		0xe1c  // Path_B TX scaling factor
-#define rB_RxIQC_AB_Jaguar    	0xe10  //RxIQ imblance matrix coeff. A & B
-#define rB_RxIQC_CD_Jaguar    	0xe14  //RxIQ imblance matrix coeff. C & D
-#define b_RxIQC_AC_Jaguar		0x02ff  // bit mask for IQC matrix element A & C
-#define b_RxIQC_BD_Jaguar		0x02ff0000 // bit mask for IQC matrix element A & C
 
 
 // DIG-related
@@ -148,16 +139,6 @@
 #define rOFDM_RxEVMCSI_Jaguar		0xf8c
 #define rOFDM_SIGReport_Jaguar		0xf90
 
-// Misc functions
-#define rEDCCA_Jaguar				0x8a4 // EDCCA
-#define bEDCCA_Jaguar				0xffff
-#define rAGC_table_Jaguar			0x82c   // AGC tabel select
-#define bAGC_table_Jaguar			0x3
-#define b_sel5g_Jaguar    				0x1000 // sel5g
-#define b_LNA_sw_Jaguar				0x8000 // HW/WS control for LNA
-#define rFc_area_Jaguar				0x860   // fc_area 
-#define bFc_area_Jaguar				0x1ffe000
-#define rSingleTone_ContTx_Jaguar	0x914
 
 // RFE
 #define rA_RFE_Pinmux_Jaguar	0xcb0  // Path_A RFE cotrol pinmux
@@ -187,75 +168,6 @@
 //#define rRx_IQK_PI_B					0xe5c
 //#define rIQK_AGC_Cont				0xe60
 
-
-// AFE-related
-#define rA_AFEPwr1_Jaguar					0xc60 // dynamic AFE power control
-#define rA_AFEPwr2_Jaguar					0xc64 // dynamic AFE power control
-#define rA_Rx_WaitCCA_Tx_CCKRFON_Jaguar	0xc68
-#define rA_Tx_CCKBBON_OFDMRFON_Jaguar	0xc6c
-#define rA_Tx_OFDMBBON_Tx2Rx_Jaguar		0xc70
-#define rA_Tx2Tx_RXCCK_Jaguar				0xc74
-#define rA_Rx_OFDM_WaitRIFS_Jaguar			0xc78
-#define rA_Rx2Rx_BT_Jaguar					0xc7c
-#define rA_sleep_nav_Jaguar 					0xc80
-#define rA_pmpd_Jaguar 						0xc84
-#define rB_AFEPwr1_Jaguar					0xe60 // dynamic AFE power control
-#define rB_AFEPwr2_Jaguar					0xe64 // dynamic AFE power control
-#define rB_Rx_WaitCCA_Tx_CCKRFON_Jaguar	0xe68
-#define rB_Tx_CCKBBON_OFDMRFON_Jaguar	0xe6c
-#define rB_Tx_OFDMBBON_Tx2Rx_Jaguar		0xe70
-#define rB_Tx2Tx_RXCCK_Jaguar				0xe74
-#define rB_Rx_OFDM_WaitRIFS_Jaguar			0xe78
-#define rB_Rx2Rx_BT_Jaguar					0xe7c
-#define rB_sleep_nav_Jaguar 					0xe80
-#define rB_pmpd_Jaguar 						0xe84
-
-// RSSI Dump
-#define rA_RSSIDump_Jaguar 			0xBF0
-#define rB_RSSIDump_Jaguar 			0xBF1
-#define rS1_RXevmDump_Jaguar		0xBF4 
-#define rS2_RXevmDump_Jaguar 		0xBF5
-#define rA_RXsnrDump_Jaguar		0xBF6
-#define rB_RXsnrDump_Jaguar		0xBF7
-#define rA_CfoShortDump_Jaguar		0xBF8 
-#define rB_CfoShortDump_Jaguar		0xBFA
-#define rA_CfoLongDump_Jaguar		0xBEC
-#define rB_CfoLongDump_Jaguar		0xBEE
- 
-
-// RF Register
-//
-#define RF_AC_Jaguar				0x00	// 
-#define RF_RF_Top_Jaguar			0x07	// 
-#define RF_TXLOK_Jaguar				0x08	// 
-#define RF_TXAPK_Jaguar				0x0B
-#define RF_CHNLBW_Jaguar 			0x18	// RF channel and BW switch
-#define RF_TxLCTank_Jaguar          	0x54
-#define RF_APK_Jaguar				0x63
-#define bRF_CHNLBW_MOD_AG_Jaguar	0x70300
-#define bRF_CHNLBW_BW 				0xc00
-#define RF_RCK1_Jaguar				0x1c	// 
-#define RF_RCK2_Jaguar				0x1d
-#define RF_RCK3_Jaguar   			0x1e
-#define RF_LCK						0xB4
-
-
-//
-// RL6052 Register definition
-//
-#define RF_AC						0x00	// 
-#define RF_IPA_A					0x0C	// 
-#define RF_TXBIAS_A					0x0D
-#define RF_BS_PA_APSET_G9_G11		0x0E
-#define RF_MODE1					0x10	// 
-#define RF_MODE2					0x11	// 
-#define RF_CHNLBW					0x18	// RF channel and BW switch
-#define RF_RCK_OS					0x30	// RF TX PA control
-#define RF_TXPA_G1					0x31	// RF TX PA control
-#define RF_TXPA_G2					0x32	// RF TX PA control
-#define RF_TXPA_G3					0x33	// RF TX PA control
-#define RF_0x52 						0x52
-#define RF_WE_LUT					0xEF
 
 //
 //Bit Mask
@@ -461,16 +373,6 @@
 #define bWord0                    		0x3
 #define bWord1                    		0xc
 #define bDWord                    		0xf
-
-//for PutRegsetting & GetRegSetting BitMask
-#define bMaskHWord                	0xffff0000
-#define bMaskLWord                		0x0000ffff
-#define bMaskDWord                	0xffffffff
-#define bMask12Bits				0xfff	
-#define bMaskH4Bits				0xf0000000	
-#define bMaskOFDM_D			0xffc00000
-#define bMaskCCK				0x3f3f3f3f
-
 
 /*--------------------------Define Parameters-------------------------------*/
 

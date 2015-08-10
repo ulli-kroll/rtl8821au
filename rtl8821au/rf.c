@@ -254,8 +254,7 @@ void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *rtlpriv,
 
 	getPowerBase8812(rtlpriv, pPowerLevelOFDM,pPowerLevelBW20,pPowerLevelBW40, Channel, &powerBase0[0], &powerBase1[0]);
 
-	for(index=0; index<6; index++)
-	{
+	for(index=0; index<6; index++) {
 		getTxPowerWriteValByRegulatory8812(rtlpriv, Channel, index,
 			&powerBase0[0], &powerBase1[0], &writeVal[0]);
 
@@ -263,53 +262,52 @@ void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *rtlpriv,
 	}
 }
 
-/*
- * If you want to add a new IC, Please follow below template and generate a new one.
- */
-
-void ODM_ConfigRFWithHeaderFile(struct rtl_priv *rtlpriv,
-	ODM_RF_Config_Type ConfigType, enum radio_path eRFPath)
-{
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
-		"===>ODM_ConfigRFWithHeaderFile (%s)\n", (IS_NORMAL_CHIP(rtlhal->version)) ? "MPChip" : "TestChip");
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
-		"pDM_Odm->SupportInterface: 0x%X, pDM_Odm->BoardType: 0x%X\n",
-		rtlhal->interface, rtlhal->board_type);
-
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
-		rtl8812au_phy_config_rf_with_headerfile(rtlpriv, eRFPath);
-
-	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		rtl8821au_phy_config_rf_with_headerfile(rtlpriv, RF90_PATH_A);
-	}
-}
-
-
-
 static bool _rtl8821au_phy_rf6052_config_parafile(struct rtl_priv *rtlpriv)
 {
-	uint8_t	eRFPath;
-	int	rtStatus = true;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	u8 rfpath;
+	bool rtstatus = true;
 
-	/*
-	 * -----------------------------------------------------------------
-	 * <2> Initialize RF
-	 * -----------------------------------------------------------------
-	 */
-	/* for(eRFPath = RF90_PATH_A; eRFPath <pHalData->NumTotalRFPath; eRFPath++) */
-	for (eRFPath = 0; eRFPath <  rtlpriv->phy.num_total_rfpath; eRFPath++) {
-		/* ----Initialize RF fom connfiguration file---- */
-		ODM_ConfigRFWithHeaderFile(rtlpriv, CONFIG_RF_RADIO, (enum radio_path)eRFPath);
+	for (rfpath = 0; rfpath < rtlpriv->phy.num_total_rfpath; rfpath++) {
+		switch (rfpath) {
+		case RF90_PATH_A :
+			if (rtlhal->hw_type == HARDWARE_TYPE_RTL8812AU)
+				rtstatus =
+				  rtl8812au_phy_config_rf_with_headerfile(rtlpriv,
+						(enum radio_path) rfpath);
+			else
+				rtstatus =
+				  rtl8821au_phy_config_rf_with_headerfile(rtlpriv,
+						(enum radio_path) rfpath);
 
+			break;
+		case RF90_PATH_B :
+			if (rtlhal->hw_type == HARDWARE_TYPE_RTL8812AU)
+				rtstatus =
+				  rtl8812au_phy_config_rf_with_headerfile(rtlpriv,
+						(enum radio_path) rfpath);
+			else
+				rtstatus =
+				  rtl8821au_phy_config_rf_with_headerfile(rtlpriv,
+						(enum radio_path) rfpath);
+
+		case RF90_PATH_C :
+			break;
+		case RF90_PATH_D :
+			break;
+
+		}
+		if (!rtstatus) {
+			RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE,
+				 "Radio[%d] Fail!!", rfpath);
+			return false;
+		}
 	}
 
+	/*put arrays in dm.c*/
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE, "\n");
 
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "<---phy_RF6052_Config_ParaFile_8812()\n");
-
-	return rtStatus;
+	return rtstatus;
 }
 
 bool rtl8821au_phy_rf6052_config(struct rtl_priv *rtlpriv)

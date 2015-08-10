@@ -3480,7 +3480,7 @@ static void _rtl8821au_config_rf_radio_b(struct rtl_priv *rtlpriv, uint32_t Addr
 
 
 
-void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
+bool rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 				enum radio_path eRFPath)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
@@ -3610,6 +3610,8 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 			 "switch case not process\n");
 		break;
 	}
+
+	return rtstatus;
 }
 
 
@@ -3617,12 +3619,13 @@ void rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 *                           RadioA.TXT
 ******************************************************************************/
 
-void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radio_path eRFPath)
+bool rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radio_path eRFPath)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
 
 	uint32_t	hex         = 0;
 	uint32_t	i           = 0;
+	bool rtstatus = true;
 	u16	count       = 0;
 	uint32_t	*ptr_array   = NULL;
 
@@ -3677,6 +3680,7 @@ void rtl8821au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv, enum radi
 		}
 	}
 
+	return rtstatus;
 }
 
 static void _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH bw)

@@ -1,6 +1,13 @@
 #include "dm.h"
 #include "phy.h"
-#include <odm_precomp.h>
+
+/* ULLI : we *must* get rid of this mess */
+
+#include <HalPhyRf_8812A.h>
+#include <Hal8812PhyReg.h>
+#include <Hal8812PhyCfg.h>
+#include <rtl8812a_cmd.h>
+extern  uint32_t TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE];
 
 static void rtl8821au_dm_dig(struct rtl_priv *rtlpriuv);
 

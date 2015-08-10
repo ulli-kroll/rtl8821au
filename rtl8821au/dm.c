@@ -4,20 +4,48 @@
 
 static void rtl8821au_dm_dig(struct rtl_priv *rtlpriuv);
 
-static uint32_t edca_setting_UL[HT_IOT_PEER_MAX] =
-/* UNKNOWN		REALTEK_90	REALTEK_92SE	BROADCOM		RALINK		ATHEROS		CISCO		MERU        MARVELL	92U_AP		SELF_AP(DownLink/Tx) */
-{ 0x5e4322, 		0xa44f, 		0x5e4322,		0x5ea32b,  		0x5ea422, 	0x5ea322,	0x3ea430,	0x5ea42b, 0x5ea44f,	0x5e4322,	0x5e4322};
+static const u32 edca_setting_ul[HT_IOT_PEER_MAX] = {
+	0x5e4322,	/*  0 UNKNOWN */
+	0xa44f,		/*  1 REALTEK_90 */
+	0x5e4322,	/*  2 REALTEK_92SE */
+	0x5ea32b,	/*  3 BROADCOM */
+	0x5ea422,	/*  4 RALINK */
+	0x5ea322,	/*  5 ATHEROS */
+	0x3ea430,	/*  6 CISCO */
+	0x5ea42b,	/*  7 MERU */
+	0x5ea44f,	/*  8 MARVELL */
+	0x5e4322,	/*  9 92U_AP */
+	0x5e4322,	/* 10 SELF_AP(DownLink/Tx) */
+};
 
 
-static uint32_t edca_setting_DL[HT_IOT_PEER_MAX] =
-/* UNKNOWN		REALTEK_90	REALTEK_92SE	BROADCOM		RALINK		ATHEROS		CISCO		MERU,       MARVELL	92U_AP		SELF_AP(UpLink/Rx) */
-{ 0xa44f, 		0x5ea44f, 	0x5e4322, 		0x5ea42b, 		0xa44f, 		0xa630, 		0x5ea630,	0x5ea42b, 0xa44f,		0xa42b,		0xa42b};
+static const u32 edca_setting_dl[HT_IOT_PEER_MAX] = {
+	0xa44f,		/*  0 UNKNOWN */
+	0x5ea44f,	/*  1 REALTEK_90 */
+	0x5e4322,	/*  2 REALTEK_92SE */
+	0x5ea42b,	/*  3 BROADCOM */
+	0xa44f,		/*  4 RALINK */
+	0xa630,		/*  5 ATHEROS */
+	0x5ea630,	/*  6 CISCO */
+	0x5ea42b,	/*  7 MERU */
+	0xa44f,		/*  8 MARVELL */
+	0xa42b,		/*  9 92U_AP */
+	0xa42b		/* 10 SELF_AP(UpLink/Rx) */
+};
 
-static uint32_t edca_setting_DL_GMode[HT_IOT_PEER_MAX] =
-/* UNKNOWN		REALTEK_90	REALTEK_92SE	BROADCOM		RALINK		ATHEROS		CISCO		MERU,       MARVELL	92U_AP		SELF_AP */
-{ 0x4322, 		0xa44f, 		0x5e4322,		0xa42b, 			0x5e4322, 	0x4322, 		0xa42b,		0x5ea42b, 0xa44f,		0x5e4322,	0x5ea42b};
-
-
+static const u32 edca_setting_gmode[HT_IOT_PEER_MAX] = {
+	0x4322,		/*  0 UNKNOWN */
+	0xa44f,		/*  1 REALTEK_90 */
+	0x5e4322,	/*  2 REALTEK_92SE */
+	0xa42b,		/*  3 BROADCOM */
+	0x5e4322,	/*  4 RALINK */
+	0x4322,		/*  5 ATHEROS */
+	0xa42b,		/*  6 CISCO */
+	0x5ea42b,	/*  7 MERU */
+	0xa44f,		/*  8 MARVELL */
+	0x5e4322,	/*  9 92U_AP */
+	0x5ea42b	/* 10 SELF_AP */
+};
 
 u8 CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01},	/*  0, -16.0dB */
@@ -1815,16 +1843,16 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 			/* merge from 92s_92c_merge temp brunch v2445    20120215 */
 			if ((IOTPeer == HT_IOT_PEER_CISCO)
 			   && ((WirelessMode == WIRELESS_MODE_G) || (WirelessMode == (WIRELESS_MODE_B|WIRELESS_MODE_G)) || (WirelessMode == WIRELESS_MODE_A) || (WirelessMode == WIRELESS_MODE_B))) {
-				EDCA_BE_DL = edca_setting_DL_GMode[IOTPeer];
+				EDCA_BE_DL = edca_setting_gmode[IOTPeer];
 			} else if ((IOTPeer == HT_IOT_PEER_AIRGO)
 			       && ((WirelessMode == WIRELESS_MODE_G) || (WirelessMode == WIRELESS_MODE_A))) {
 					EDCA_BE_DL = 0xa630;
 			} else if (IOTPeer == HT_IOT_PEER_MARVELL) {
-				EDCA_BE_DL = edca_setting_DL[IOTPeer];
-				EDCA_BE_UL = edca_setting_UL[IOTPeer];
+				EDCA_BE_DL = edca_setting_dl[IOTPeer];
+				EDCA_BE_UL = edca_setting_ul[IOTPeer];
 			} else if (IOTPeer == HT_IOT_PEER_ATHEROS) {
 				/* Set DL EDCA for Atheros peer to 0x3ea42b. Suggested by SD3 Wilson for ASUS TP issue. */
-				EDCA_BE_DL = edca_setting_DL[IOTPeer];
+				EDCA_BE_DL = edca_setting_dl[IOTPeer];
 			}
 
 			if ((IS_HARDWARE_TYPE_8811AU(rtlhal))) {		/* add 8812AU/8812AE */

@@ -2290,9 +2290,6 @@ struct _rtw_hal {
 
 	RT_AMPDU_BRUST		AMPDUBurstMode; //92C maybe not use, but for compile successfully
 
-
-	BOOLEAN		bSupportUSB3;
-
 	uint8_t	C2hArray[16];
 	uint8_t	UsbTxAggDescNum;
 

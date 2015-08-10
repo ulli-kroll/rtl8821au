@@ -137,7 +137,8 @@ static void phy_RFSerialWrite(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	 * 2012/10/26 MH Revise V3236 Lanhsin check in, if we do not enable the function
 	 * for 8821, then it can not scan.
 	 */
-	if ((!pHalData->bSupportUSB3) && (!IS_NORMAL_CHIP(rtlhal->version))) {	/* USB 2.0 or older */
+	if ((!IF_RTL8821AU_USB3_MODE(rtlpriv->rtlhal.version)) &&
+	    (!IS_NORMAL_CHIP(rtlhal->version))) {	/* USB 2.0 or older */
 		/* if (IS_VENDOR_8812A_TEST_CHIP(rtlpriv) || IS_HARDWARE_TYPE_8821(rtlpriv) is) */
 		{
 			rtl_write_dword(rtlpriv, 0x1EC, DataAndAddr);

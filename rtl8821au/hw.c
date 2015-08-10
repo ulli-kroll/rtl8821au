@@ -2,6 +2,7 @@
 #include "reg.h"
 #include "fw.h"
 #include "phy.h"
+#include "def.h"
 
 #undef DBG_8192C
 static inline void DBG_8192C(const char *fmt, ...)
@@ -1483,13 +1484,13 @@ static void _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
 		 * hal_UphyUpdate8812AU(rtlpriv);
 		 */
 
-		pHalData->bSupportUSB3 = _FALSE;
+		rtlpriv->rtlhal.version |= ~RTL8821AU_USB3_MODE;
 	} else {		/* USB3 Mode */
 		rtlusb->max_bulk_out_size = USB_SUPER_SPEED_BULK_SIZE;
 		provalue = rtl_read_byte(rtlpriv, REG_RXDMA_PRO_8812);
 		rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
 		rtl_write_word(rtlpriv, REG_RXDMA_PRO_8812, 0x0e);
-		pHalData->bSupportUSB3 = _TRUE;
+		rtlpriv->rtlhal.version |= ~RTL8821AU_USB3_MODE;
 
 		/*  set Reg 0xf008[3:4] to 2'00 to disable U1/U2 Mode to avoid 2.5G spur in USB3.0. added by page, 20120712 */
 		rtl_write_byte(rtlpriv, 0xf008, rtl_read_byte(rtlpriv, 0xf008)&0xE7);

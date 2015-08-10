@@ -143,13 +143,11 @@ static void rtl8812au_hw_power_down(struct rtl_priv *rtlpriv)
 
 uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 {
-
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	DBG_8192C("==> %s \n", __FUNCTION__);
 
 	rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, rtl_read_word(rtlpriv, REG_GPIO_MUXCFG)&(~BIT12));
 
-	if (pHalData->bSupportUSB3 == _TRUE) {
+	if (IF_RTL8821AU_USB3_MODE(rtlpriv->rtlhal.version) == _TRUE) {
 		/*
 		 * set Reg 0xf008[3:4] to 2'11 to eable U1/U2 Mode in USB3.0. added by page, 20120712
 		 */

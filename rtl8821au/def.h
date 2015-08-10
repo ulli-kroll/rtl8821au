@@ -100,9 +100,15 @@ enum version_8821au {
 	C_CUT_VERSION = BIT(13),
 	D_CUT_VERSION =	((BIT(12)|BIT(13))),
 	E_CUT_VERSION = BIT(14),
+
+	/* ULLI : our own bitfield, form pHalData->bSupportUSB3 */
+
+	RTL8821AU_USB3_MODE = BIT(15),
 	
 	VERSION_UNKNOWN = 0x0,
 };
+
+#define IF_RTL8821AU_USB3_MODE(version)		((version) & RTL8821AU_USB3_MODE)
 
 
 /* MASK */

@@ -1,9 +1,9 @@
 #include "dm.h"
 #include "phy.h"
+#include "reg.h"
 
 /* ULLI : we *must* get rid of this mess */
 
-#include <HalPhyRf_8812A.h>
 #include <Hal8812PhyReg.h>
 #include <Hal8812PhyCfg.h>
 #include <rtl8812a_cmd.h>

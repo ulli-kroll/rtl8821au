@@ -25,12 +25,8 @@
 #define	IQK_DELAY_TIME_8812A		10		//ms
 #define	IQK_DEFERRED_TIME_8812A		4		//sec
 #define	index_mapping_NUM_8812A	15
-#define AVG_THERMAL_NUM_8812A	4
-#define RF_T_METER_8812A 		0x42
 
 //1 7.	IQK
-
-void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery);
 
 
 

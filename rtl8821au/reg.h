@@ -238,4 +238,6 @@
 #define bTxAGC_byte2_Jaguar							0xff0000
 #define bTxAGC_byte3_Jaguar							0xff000000
 
+#define RF_T_METER_8812A 		0x42
+
 #endif

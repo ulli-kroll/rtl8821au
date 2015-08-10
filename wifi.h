@@ -212,6 +212,7 @@ struct rtl_hal_ops;
 #define AVG_THERMAL_NUM			8
 #define AVG_THERMAL_NUM_88E		4
 #define AVG_THERMAL_NUM_8723BE		4
+#define AVG_THERMAL_NUM_8812A		4
 #define MAX_TID_COUNT			9
 
 

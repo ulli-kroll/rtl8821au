@@ -61,7 +61,6 @@
 
 #include <HalHWImg8821A_BB.h>
 #include <HalHWImg8821A_FW.h>
-#include <odm_RegConfig8821A.h>
 
 #endif	// __ODM_PRECOMP_H__
 

@@ -56,8 +56,7 @@ HAL_FILES 	:=	hal/hal_intf.o \
 			hal/rtl8812a_dm.o \
 			hal/rtl8812a_cmd.o \
 			hal/rtl8812au_xmit.o \
-			hal/rtl8812au_recv.o \
-			hal/odm_RegConfig8821A.o
+			hal/rtl8812au_recv.o
 
 CORE_FILES :=		core/rtw_cmd.o \
 			core/rtw_security.o \

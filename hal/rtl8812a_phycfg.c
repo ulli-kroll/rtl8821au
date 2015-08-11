@@ -151,33 +151,34 @@ static void PHY_StorePwrByRateIndexVhtSeries(struct rtl_priv *rtlpriv,
 
 }
 
-static void phy_ChangePGDataFromExactToRelativeValue(u32* pData, uint8_t Start,
-	uint8_t End, uint8_t BaseValue)
+static void _phy_convert_txpower_dbm_to_relative_value(u32* data, u8 start,
+						       u8 end, u8 base_val)
 {
-	s8	i = 0;
-	uint8_t	TempValue = 0;
-	uint32_t	TempData = 0;
+	char i = 0;
+	u8 temp_value;
+	u32 temp_data;
 
 	/* BaseValue = ( BaseValue & 0xf ) + ( ( BaseValue >> 4 ) & 0xf ) * 10; */
 	/* RT_TRACE(COMP_INIT, DBG_LOUD, ("Corrected BaseValue %u\n", BaseValue ) ); */
 
 	for (i = 3; i >= 0; --i) {
-		if (i >= Start && i <= End) {
+		if (i >= start && i <= end) {
 			/* Get the exact value */
-			TempValue = (uint8_t) (*pData >> (i * 8) ) & 0xF;
-			TempValue += (( uint8_t) (( *pData >> (i * 8 + 4)) & 0xF)) * 10;
+			temp_value = (u8) (*data >> (i * 8) ) & 0xF;
+			temp_value += (( u8) ((*data >> (i * 8 + 4)) & 0xF)) * 10;
 
 			/* Change the value to a relative value */
-			TempValue = (TempValue > BaseValue) ? TempValue - BaseValue : BaseValue - TempValue;
+			temp_value = (temp_value > base_val) ? temp_value - 
+					base_val : base_val - temp_value;
 		} else {
-			TempValue = (uint8_t) (*pData >> (i * 8)) & 0xFF;
+			temp_value = (uint8_t) (*data >> (i * 8)) & 0xFF;
 		}
 
-		TempData <<= 8;
-		TempData |= TempValue;
+		temp_data <<= 8;
+		temp_data |= temp_value;
 	}
 
-	*pData = TempData;
+	*data = temp_data;
 }
 
 static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtlpriv,
@@ -228,7 +229,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
 		 */
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
-		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
+		_phy_convert_txpower_dbm_to_relative_value( pData, 0, 3, BaseValue );
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
 		 * 		pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
@@ -249,8 +250,8 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
 		 */
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
-		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
 			&(rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
 
 		/*
@@ -275,10 +276,10 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		BaseValue = ((uint8_t) (rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 28) & 0xF) * 10 +
 					((uint8_t) (rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 24 ) & 0xF);
 
-		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 1, BaseValue);
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 1, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
 			&( rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value(
 			&( rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 0, 3, BaseValue);
 
 		/*
@@ -304,10 +305,10 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 		 */
 
 		BaseValue = ( ( uint8_t ) ( *pData >> 12 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 8 ) & 0xF );
-		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value( pData, 0, 3, BaseValue );
+		_phy_convert_txpower_dbm_to_relative_value(
 			&(rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value(
 			&(rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 2, 3, BaseValue);
 		/*
 		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
@@ -338,8 +339,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		 */
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF );
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
-		phy_ChangePGDataFromExactToRelativeValue( pData, 0, 3, BaseValue );
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value( pData, 0, 3, BaseValue );
+		_phy_convert_txpower_dbm_to_relative_value(
 			&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][0] ), 0, 3, BaseValue);
 
 		/*
@@ -377,8 +378,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) *10 + ((uint8_t) (*pData >> 24) & 0xF);
 
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
-		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
 			&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][2]), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][3] = 0x%x, after changing to relative\n",
@@ -404,8 +405,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		 */
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
-		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
 			&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][4]), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][5] = 0x%x, after changing to relative\n",
@@ -425,8 +426,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		 */
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
-		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
 				&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][8]), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][9] = 0x%x, after changing to relative\n",
@@ -463,8 +464,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		 */
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
-		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
 				&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][10] ), 0, 3, BaseValue);
 		/*
 		 * DBG_871X("pHalData->MCSTxPowerLevelOriginalOffset[%d][11] = 0x%x, after changing to relative\n",
@@ -484,8 +485,8 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 		 */
 		BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 		/* DBG_871X("BaseValue = %d\n", BaseValue ); */
-		phy_ChangePGDataFromExactToRelativeValue(pData, 0, 3, BaseValue);
-		phy_ChangePGDataFromExactToRelativeValue(
+		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
 				&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][12]), 0, 3, BaseValue);
 
 		/*

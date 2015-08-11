@@ -181,147 +181,10 @@ static void _phy_convert_txpower_dbm_to_relative_value(u32* data, u8 start,
 	*data = temp_data;
 }
 
+
 static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtlpriv,
-	uint32_t RegAddr, uint32_t BitMask, u32 *pData)
-{
-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	uint8_t		rf_path, rate_section, BaseValue = 0;
-	/*
-	 * For VHT series TX power by rate table.
-	 * VHT TX power by rate off setArray =
-	 * Band:-2G&5G = 0 / 1
-	 * RF: at most 4*4 = ABCD=0/1/2/3
-	 * CCK=0 				11/5.5/2/1
-	 * OFDM=1/2 			18/12/9/6     54/48/36/24
-	 * HT=3/4/56 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
-	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
-	 *
-	 * #define		TX_PWR_BY_RATE_NUM_BAND			2
-	 * #define		TX_PWR_BY_RATE_NUM_RF			4
-	 * #define		TX_PWR_BY_RATE_NUM_SECTION		12
-	 *
-	 * Judge TX power by rate array RF type
-	 */
-
-	if (( RegAddr & 0xF00) == 0xC00) {
-		rf_path = 0;
-	} else if (( RegAddr & 0xF00) == 0xE00) {
-		rf_path = 1;
-	}
-
-	/*
-	 * Judge TX power by rate array rate section
-	 */
-
-	if (rf_path == 0) {
-		rate_section = (u8) (( RegAddr & 0xFFF) - 0xC20) / 4;
-	} else if (rf_path == 1) {
-		rate_section = (uint8_t) (( RegAddr & 0xFFF) - 0xE20) / 4;
-	}
-
-	switch (RegAddr) {
-	case 0xC20:
-	case 0xE20:
-		/*
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
-		 */
-		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
-		_phy_convert_txpower_dbm_to_relative_value( pData, 0, 3, BaseValue );
-		/*
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
-		 * 		pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
-		 */
-		break;
-
-	case 0xC28:
-	case 0xE28:
-	case 0xC30:
-	case 0xE30:
-	case 0xC38:
-	case 0xE38:
-		/*
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
-		 */
-		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
-		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
-		_phy_convert_txpower_dbm_to_relative_value(
-			&(rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
-
-		/*
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
-		 */
-		break;
-
-	case 0xC44:
-	case 0xE44:
-		/*
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
-		 */
-		BaseValue = ((uint8_t) (rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 28) & 0xF) * 10 +
-					((uint8_t) (rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 24 ) & 0xF);
-
-		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 1, BaseValue);
-		_phy_convert_txpower_dbm_to_relative_value(
-			&( rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
-		_phy_convert_txpower_dbm_to_relative_value(
-			&( rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 0, 3, BaseValue);
-
-		/*
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
-		 */
-		break;
-
-	case 0xC4C:
-	case 0xE4C:
-		/*
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
-		 */
-
-		BaseValue = ( ( uint8_t ) ( *pData >> 12 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 8 ) & 0xF );
-		_phy_convert_txpower_dbm_to_relative_value( pData, 0, 3, BaseValue );
-		_phy_convert_txpower_dbm_to_relative_value(
-			&(rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
-		_phy_convert_txpower_dbm_to_relative_value(
-			&(rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 2, 3, BaseValue);
-		/*
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
-		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
-		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
-		 */
-		break;
-	}
-}
-
+	uint32_t RegAddr, uint32_t BitMask, u32 *pData);
+	
 static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpriv,
 	uint32_t RegAddr, uint32_t BitMask, uint32_t *pData)
 {
@@ -507,6 +370,147 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	phy_PreprocessVHTPGDataFromExactToRelativeValue(rtlpriv, RegAddr,
 		BitMask, pData);
 
+}
+
+static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtlpriv,
+	uint32_t RegAddr, uint32_t BitMask, u32 *pData)
+{
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	uint8_t		rf_path, rate_section, BaseValue = 0;
+	/*
+	 * For VHT series TX power by rate table.
+	 * VHT TX power by rate off setArray =
+	 * Band:-2G&5G = 0 / 1
+	 * RF: at most 4*4 = ABCD=0/1/2/3
+	 * CCK=0 				11/5.5/2/1
+	 * OFDM=1/2 			18/12/9/6     54/48/36/24
+	 * HT=3/4/56 			MCS0-3 MCS4-7 MCS8-11 MCS12-15
+	 * VHT=7/8/9/10/11		1SSMCS0-3 1SSMCS4-7 2SSMCS1/0/1SSMCS/9/8 2SSMCS2-5
+	 *
+	 * #define		TX_PWR_BY_RATE_NUM_BAND			2
+	 * #define		TX_PWR_BY_RATE_NUM_RF			4
+	 * #define		TX_PWR_BY_RATE_NUM_SECTION		12
+	 *
+	 * Judge TX power by rate array RF type
+	 */
+
+	if (( RegAddr & 0xF00) == 0xC00) {
+		rf_path = 0;
+	} else if (( RegAddr & 0xF00) == 0xE00) {
+		rf_path = 1;
+	}
+
+	/*
+	 * Judge TX power by rate array rate section
+	 */
+
+	if (rf_path == 0) {
+		rate_section = (u8) (( RegAddr & 0xFFF) - 0xC20) / 4;
+	} else if (rf_path == 1) {
+		rate_section = (uint8_t) (( RegAddr & 0xFFF) - 0xE20) / 4;
+	}
+
+	switch (RegAddr) {
+	case 0xC20:
+	case 0xE20:
+		/*
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
+		 */
+		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
+		_phy_convert_txpower_dbm_to_relative_value( pData, 0, 3, BaseValue );
+		/*
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
+		 * 		pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
+		 */
+		break;
+
+	case 0xC28:
+	case 0xE28:
+	case 0xC30:
+	case 0xE30:
+	case 0xC38:
+	case 0xE38:
+		/*
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
+		 */
+		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
+		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
+			&(rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
+
+		/*
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
+		 */
+		break;
+
+	case 0xC44:
+	case 0xE44:
+		/*
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
+		 */
+		BaseValue = ((uint8_t) (rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 28) & 0xF) * 10 +
+					((uint8_t) (rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] >> 24 ) & 0xF);
+
+		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 1, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
+			&( rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
+			&( rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 0, 3, BaseValue);
+
+		/*
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
+		 */
+		break;
+
+	case 0xC4C:
+	case 0xE4C:
+		/*
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("RegAddr %x\n", RegAddr ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, before changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
+		 */
+
+		BaseValue = ( ( uint8_t ) ( *pData >> 12 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 8 ) & 0xF );
+		_phy_convert_txpower_dbm_to_relative_value( pData, 0, 3, BaseValue );
+		_phy_convert_txpower_dbm_to_relative_value(
+			&(rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1]), 0, 3, BaseValue);
+		_phy_convert_txpower_dbm_to_relative_value(
+			&(rtlphy->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2]), 2, 3, BaseValue);
+		/*
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section, *pData ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 1, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 1] ));
+		 * RT_TRACE(COMP_INIT, DBG_LOUD, ("pHalData->tx_power_by_rate_offset[%d][%d][%d] = 0x%x, after changing to relative\n",
+		 * 	pHalData->TxPwrByRateBand, rf_path, rate_section - 2, pHalData->tx_power_by_rate_offset[pHalData->TxPwrByRateBand][rf_path][rate_section - 2] ));
+		 */
+		break;
+	}
 }
 
 static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAddr,

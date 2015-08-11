@@ -513,7 +513,7 @@ static void phy_PreprocessVHTPGDataFromExactToRelativeValue(struct rtl_priv *rtl
 	}
 }
 
-static void phy_StorePwrByRateIndexBase(struct rtl_priv *rtlpriv, uint32_t RegAddr,
+static void _rtl8821au_phy_set_txpower_by_rate_base(struct rtl_priv *rtlpriv, uint32_t RegAddr,
 	uint32_t Data)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
@@ -738,7 +738,7 @@ void storePwrIndexDiffRateOffset(struct rtl_priv *rtlpriv, uint32_t RegAddr,
 	PHY_StorePwrByRateIndexVhtSeries(rtlpriv, RegAddr, BitMask, Data);
 
 	/* Awk add to stroe the base power by rate value */
-	phy_StorePwrByRateIndexBase(rtlpriv, RegAddr, tmpData );
+	_rtl8821au_phy_set_txpower_by_rate_base(rtlpriv, RegAddr, tmpData );
 
 	if (RegAddr == rTxAGC_A_Rate18_06) {
 		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][0] = Data;

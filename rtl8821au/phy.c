@@ -5397,6 +5397,9 @@ static void phy_InitBBRFRegisterDefinition(struct rtl_priv *rtlpriv)
 	/* pHalData->bPhyValueInitReady=_TRUE; */
 }
 
+
+/* ULLI : check with _rtl8821ae_phy_config_bb_with_headerfile () */
+
 bool _rtl8821au_phy_config_bb_with_headerfile(struct rtl_priv *rtlpriv,
 						       u8 configtype)
 {
@@ -5502,7 +5505,10 @@ bool _rtl8821au_phy_config_bb_with_headerfile(struct rtl_priv *rtlpriv,
 
 			// This (offset, data) pair meets the condition.
 			if (v1 < 0xCDCDCDCD ) {
-				odm_ConfigBB_AGC_8821A(rtlpriv, v1, bMaskDWord, v2);
+				rtl_set_bbreg(rtlpriv, v1, bMaskDWord, v2);
+				/* Add 1us delay between BB/RF register setting. */
+				udelay(1);
+
 				continue;
 			} else {
 				// This line is the start line of branch.
@@ -5519,7 +5525,10 @@ bool _rtl8821au_phy_config_bb_with_headerfile(struct rtl_priv *rtlpriv,
 					READ_NEXT_PAIR(v1, v2, i);
 					while (v2 != 0xDEAD && v2 != 0xCDEF &&
 						v2 != 0xCDCD && i < ArrayLen -2) {
-							odm_ConfigBB_AGC_8821A(rtlpriv, v1, bMaskDWord, v2);
+							rtl_set_bbreg(rtlpriv, v1, bMaskDWord, v2);
+							/* Add 1us delay between BB/RF register setting. */
+							udelay(1);
+
 							READ_NEXT_PAIR(v1, v2, i);
 					}
 

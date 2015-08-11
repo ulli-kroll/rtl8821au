@@ -20,13 +20,3 @@
 
 #include <odm_precomp.h>
 
-void odm_ConfigBB_AGC_8821A(struct rtl_priv *rtlpriv, uint32_t Addr,
-	uint32_t Bitmask, uint32_t Data)
-{
-	rtl_set_bbreg(rtlpriv, Addr, Bitmask, Data);
-	/* Add 1us delay between BB/RF register setting. */
-	udelay(1);
-
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_TRACE, "===> ODM_ConfigBBWithHeaderFile: [AGC_TAB] %08X %08X\n", Addr, Data);
-}
-

@@ -21,8 +21,6 @@
 #define __INC_ODM_REGCONFIG_H_8821A
 
 
-void odm_ConfigBB_AGC_8821A(struct rtl_priv *rtlpriv,
-    uint32_t Addr, uint32_t Bitmask, uint32_t Data);
 
 #endif
 

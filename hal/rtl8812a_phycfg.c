@@ -192,67 +192,70 @@ static void phy_PreprocessPGDataFromExactToRelativeValue(struct rtl_priv *rtlpri
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	u8			BaseValue = 0;
 
-	if (RegAddr == rTxAGC_A_Rate54_24) {
+	switch (RegAddr) {
+	case rTxAGC_A_Rate54_24 :
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF );
 		_phy_convert_txpower_dbm_to_relative_value( pData, 0, 3, BaseValue );
 		_phy_convert_txpower_dbm_to_relative_value(
 			&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][0] ), 0, 3, BaseValue);
-	}
-
-	if (RegAddr == rTxAGC_A_CCK1_Mcs32) {
+		break;
+	
+	case rTxAGC_A_CCK1_Mcs32 :
 		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][6] = *pData;
-	}
+		break;
 
-	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0xffffff00) {
-		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][7] = *pData;
-	}
+	case rTxAGC_B_CCK11_A_CCK2_11 :
+		if (BitMask == 0xffffff00)
+			rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][7] = *pData;
+		if (BitMask == 0x000000ff)
+			rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][15] = *pData;
+		break;
+		
+		
 
-	if (RegAddr == rTxAGC_A_Mcs07_Mcs04) {
+	case rTxAGC_A_Mcs07_Mcs04 :
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) *10 + ((uint8_t) (*pData >> 24) & 0xF);
 
 		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
 		_phy_convert_txpower_dbm_to_relative_value(
 			&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][2]), 0, 3, BaseValue);
-	}
-
-	if (RegAddr == rTxAGC_A_Mcs11_Mcs08) {
+		break;
+	
+	case rTxAGC_A_Mcs11_Mcs08 :
 		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][4] = *pData;
-	}
+		break;
 
-	if (RegAddr == rTxAGC_A_Mcs15_Mcs12) {
+	case rTxAGC_A_Mcs15_Mcs12 :
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
 		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
 		_phy_convert_txpower_dbm_to_relative_value(
 			&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][4]), 0, 3, BaseValue);
-	}
+		break;
 
-	if (RegAddr == rTxAGC_B_Rate54_24) {
+	case rTxAGC_B_Rate54_24 :
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
 		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
 		_phy_convert_txpower_dbm_to_relative_value(
 				&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][8]), 0, 3, BaseValue);
-	}
+		break;
 
-	if (RegAddr == rTxAGC_B_CCK1_55_Mcs32) {
+	case rTxAGC_B_CCK1_55_Mcs32 :
 		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][14] = *pData;
-	}
+		break;
 
-	if (RegAddr == rTxAGC_B_CCK11_A_CCK2_11 && BitMask == 0x000000ff) {
-		rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][15] = *pData;
-	}
-
-	if (RegAddr == rTxAGC_B_Mcs07_Mcs04) {
+	case rTxAGC_B_Mcs07_Mcs04 :
 		BaseValue = ((uint8_t) (*pData >> 28) & 0xF) * 10 + ((uint8_t) (*pData >> 24) & 0xF);
 		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
 		_phy_convert_txpower_dbm_to_relative_value(
 				&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][10] ), 0, 3, BaseValue);
-	}
-
-	if (RegAddr == rTxAGC_B_Mcs15_Mcs12) {
+		break;
+	
+	case rTxAGC_B_Mcs15_Mcs12 :
 		BaseValue = ( ( uint8_t ) ( *pData >> 28 ) & 0xF ) *10 + ( ( uint8_t ) ( *pData >> 24 ) & 0xF );
 		_phy_convert_txpower_dbm_to_relative_value(pData, 0, 3, BaseValue);
 		_phy_convert_txpower_dbm_to_relative_value(
 				&(rtlphy->mcs_txpwrlevel_origoffset[rtlphy->pwrgroup_cnt][12]), 0, 3, BaseValue);
+		break;
 	}
 
 

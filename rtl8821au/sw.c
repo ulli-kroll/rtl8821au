@@ -376,7 +376,7 @@ static int rtl8821au_init_sw_vars(struct net_device *ndev)
 	/* memset((uint8_t *)&rtlpriv->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv */
 
 
-	rtw_hal_dm_init(rtlpriv);
+	rtlpriv->cfg->ops->dm_init(rtlpriv);
 	rtw_hal_sw_led_init(rtlpriv);
 
 exit:

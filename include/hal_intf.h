@@ -65,7 +65,6 @@ typedef struct eeprom_priv EEPROM_EFUSE_PRIV, *PEEPROM_EFUSE_PRIV;
 
 
 
-void rtw_hal_dm_init(struct rtl_priv *rtlpriv);
 void rtw_hal_dm_deinit(struct rtl_priv *rtlpriv);
 void rtw_hal_sw_led_init(struct rtl_priv *rtlpriv);
 void rtw_hal_sw_led_deinit(struct rtl_priv *rtlpriv);

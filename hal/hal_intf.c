@@ -23,12 +23,6 @@
 #include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-void rtw_hal_dm_deinit(struct rtl_priv *rtlpriv)
-{
-	/* cancel dm  timer */
-	if (rtlpriv->cfg->ops->dm_deinit)
-		rtlpriv->cfg->ops->dm_deinit(rtlpriv);
-}
 void rtw_hal_sw_led_init(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->init_sw_leds)

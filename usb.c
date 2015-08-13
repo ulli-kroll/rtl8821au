@@ -1108,8 +1108,7 @@ static void rtw_cancel_all_timer(struct rtl_priv *rtlpriv)
 	del_timer_sync_ex(&rtlpriv->recvpriv.signal_stat_timer);
 #endif
 	/* cancel dm timer */
-	rtw_hal_dm_deinit(rtlpriv);
-
+	rtlpriv->cfg->ops->dm_deinit(rtlpriv);
 }
 
 static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t message)

@@ -23,12 +23,6 @@
 #include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-void rtw_hal_read_chip_info(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->read_adapter_info)
-		rtlpriv->cfg->ops->read_adapter_info(rtlpriv);
-}
-
 void rtw_hal_def_value_init(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->init_default_value)

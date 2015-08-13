@@ -63,7 +63,6 @@ typedef struct eeprom_priv EEPROM_EFUSE_PRIV, *PEEPROM_EFUSE_PRIV;
 #define GET_EEPROM_EFUSE_PRIV(rtlpriv) (&rtlpriv->eeprompriv)
 
 
-void rtw_hal_def_value_init(struct rtl_priv *rtlpriv);
 
 void	rtw_hal_free_data(struct rtl_priv *rtlpriv);
 

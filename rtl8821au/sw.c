@@ -74,7 +74,7 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 
 
 	/* hal_priv */
-	rtw_hal_def_value_init(rtlpriv);
+	rtlpriv->cfg->ops->init_default_value(rtlpriv);
 
 	/* misc. */
 	rtlpriv->bReadPortCancel = _FALSE;

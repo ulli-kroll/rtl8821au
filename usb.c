@@ -1319,7 +1319,7 @@ static uint8_t rtw_reset_drv_sw(struct rtl_priv *rtlpriv)
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 
 	/* hal_priv */
-	rtw_hal_def_value_init(rtlpriv);
+	rtlpriv->cfg->ops->init_default_value(rtlpriv);
 	rtlpriv->bReadPortCancel = _FALSE;
 	rtlpriv->bWritePortCancel = _FALSE;
 	pmlmepriv->scan_interval = SCAN_INTERVAL;	/* 30*2 sec = 60sec */

@@ -14,7 +14,6 @@
 #include "../debug.h"
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
-void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable);
 
 static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 {
@@ -552,8 +551,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.hal_dm_watchdog =	rtl8821au_dm_watchdog,
 
 	.Add_RateATid =		rtl8812_Add_RateATid,
-
-	.hal_notch_filter = hal_notch_filter_8812,
 };
 
 static struct rtl_hal_usbint_cfg rtl8821au_interface_cfg = {

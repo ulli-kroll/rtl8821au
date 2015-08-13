@@ -869,17 +869,6 @@ void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, BOOLEAN b
 	}
 }
 
-void hal_notch_filter_8812(struct rtl_priv *rtlpriv, bool enable)
-{
-	if (enable) {
-		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Enable notch filter\n");
-		/* rtl_write_byte(rtlpriv, rOFDM0_RxDSP+1, rtl_read_byte(rtlpriv, rOFDM0_RxDSP+1) | BIT1); */
-	} else {
-		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Disable notch filter\n");
-		/* rtl_write_byte(rtlpriv, rOFDM0_RxDSP+1, rtl_read_byte(rtlpriv, rOFDM0_RxDSP+1) & ~BIT1); */
-	}
-}
-
 void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rssi_level)
 {
 	/* volatile unsigned int result; */

@@ -165,11 +165,6 @@ module_param(rtw_80211d, int, 0644);
 MODULE_PARM_DESC(rtw_80211d, "Enable 802.11d mechanism");
 #endif
 
-
-static uint rtw_notch_filter = RTW_NOTCH_FILTER;
-module_param(rtw_notch_filter, uint, 0644);
-MODULE_PARM_DESC(rtw_notch_filter, "0:Disable, 1:Enable, 2:Enable only for P2P");
-
 #ifdef CONFIG_PROC_DEBUG
 #define RTL8192C_PROC_NAME "rtl819xC"
 static char rtw_proc_name[IFNAMSIZ];
@@ -607,8 +602,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 #ifdef CONFIG_80211D
 	registry_par->enable80211d = (uint8_t)rtw_80211d;
 #endif
-
-	registry_par->notch_filter = (uint8_t)rtw_notch_filter;
 
 	return status;
 }

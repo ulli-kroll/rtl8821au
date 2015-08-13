@@ -73,9 +73,6 @@ uint rtw_hal_init(struct rtl_priv *rtlpriv)
 	if (status == _SUCCESS) {
 		rtlpriv->hw_init_completed = _TRUE;
 
-		if (rtlpriv->registrypriv.notch_filter == 1)
-			rtw_hal_notch_filter(rtlpriv, 1);
-
 		rtw_hal_reset_security_engine(rtlpriv);
 	} else {
 		rtlpriv->hw_init_completed = _FALSE;
@@ -267,12 +264,6 @@ void rtw_hal_bcn_related_reg_setting(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->SetBeaconRelatedRegistersHandler)
 		rtlpriv->cfg->ops->SetBeaconRelatedRegistersHandler(rtlpriv);
-}
-
-void rtw_hal_notch_filter(struct rtl_priv *rtlpriv, bool enable)
-{
-	if (rtlpriv->cfg->ops->hal_notch_filter)
-		rtlpriv->cfg->ops->hal_notch_filter(rtlpriv, enable);
 }
 
 void rtw_hal_reset_security_engine(struct rtl_priv *rtlpriv)

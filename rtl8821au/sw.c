@@ -377,7 +377,7 @@ static int rtl8821au_init_sw_vars(struct net_device *ndev)
 
 
 	rtlpriv->cfg->ops->dm_init(rtlpriv);
-	rtw_hal_sw_led_init(rtlpriv);
+	rtlpriv->cfg->ops->init_sw_leds(rtlpriv);
 
 exit:
 

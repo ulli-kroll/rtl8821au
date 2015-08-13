@@ -1099,7 +1099,7 @@ static void rtw_cancel_all_timer(struct rtl_priv *rtlpriv)
 	del_timer_sync_ex(&rtlpriv->mlmepriv.dynamic_chk_timer);
 
 	/* cancel sw led timer */
-	rtw_hal_sw_led_deinit(rtlpriv);
+	rtlpriv->cfg->ops->deinit_sw_leds(rtlpriv);
 
 	del_timer_sync_ex(&rtlpriv->pwrctrlpriv.pwr_state_check_timer);
 

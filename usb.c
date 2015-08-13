@@ -1961,7 +1961,7 @@ static uint8_t rtw_free_drv_sw(struct rtl_priv *rtlpriv)
 
 	/* rtw_mfree(rtlpriv); */
 
-	rtw_hal_free_data(rtlpriv);
+	rtlpriv->cfg->ops->free_hal_data(rtlpriv);
 
 	return _SUCCESS;
 

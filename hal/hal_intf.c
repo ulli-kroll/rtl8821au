@@ -23,11 +23,6 @@
 #include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-void	rtw_hal_free_data(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->free_hal_data)
-		rtlpriv->cfg->ops->free_hal_data(rtlpriv);
-}
 void	rtw_hal_dm_init(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->dm_init)

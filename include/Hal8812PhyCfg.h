@@ -113,13 +113,6 @@ PHY_SetSwChnlBWMode8812(
 // BB/MAC/RF other monitor API
 //
 
-void
-storePwrIndexDiffRateOffset(
-	IN	struct rtl_priv *rtlpriv,
-	IN	u32		RegAddr,
-	IN	u32		BitMask,
-	IN	u32		Data
-	);
 
 /*--------------------------Exported Function prototype---------------------*/
 #endif	// __INC_HAL8192CPHYCFG_H

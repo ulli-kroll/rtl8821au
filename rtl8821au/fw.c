@@ -799,7 +799,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 				 * rtw_mdelay_os(10);
 				 * check rsvd page download OK.
 				 */
-				rtw_hal_get_hwreg(rtlpriv, HW_VAR_BCN_VALID, (uint8_t *)(&bcn_valid));
+				rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_BCN_VALID, (uint8_t *)(&bcn_valid));
 				poll++;
 			} while (!bcn_valid && (poll%10) != 0 && !rtlpriv->bSurpriseRemoved && !rtlpriv->bDriverStopped);
 
@@ -834,7 +834,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 						 * rtw_mdelay_os(10);
 						 * check rsvd page download OK.
 						 */
-						rtw_hal_get_hwreg(rtlpriv, HW_VAR_BCN_VALID, (uint8_t *)(&bcn_valid));
+						rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_BCN_VALID, (uint8_t *)(&bcn_valid));
 						poll++;
 					} while (!bcn_valid && (poll%10) != 0 && !rtlpriv->bSurpriseRemoved && !rtlpriv->bDriverStopped);
 				} while (!bcn_valid && DLBcnCount <= 100 && !rtlpriv->bSurpriseRemoved && !rtlpriv->bDriverStopped);

@@ -2029,7 +2029,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 		goto skip_dm;
 
 	fw_current_inpsmode = rtlpriv->pwrctrlpriv.fw_current_inpsmode;
-	rtw_hal_get_hwreg(rtlpriv, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&fw_ps_awake));
+	rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&fw_ps_awake));
 
 	/* ODM */
 	if (hw_init_completed == true) {

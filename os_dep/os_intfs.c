@@ -362,7 +362,7 @@ void rtw_proc_init_one(struct net_device *ndev)
 		return;
 	}
 
-	rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+	rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 	if ((RF_1T2R == rf_type) || (RF_1T1R == rf_type)) {
 		entry = create_proc_read_entry("rf_reg_dump3", S_IFREG | S_IRUGO,
 					   dir_dev, proc_get_rf_reg_dump3, dev);
@@ -484,7 +484,7 @@ void rtw_proc_remove_one(struct net_device *ndev)
 		remove_proc_entry("bb_reg_dump3", dir_dev);
 		remove_proc_entry("rf_reg_dump1", dir_dev);
 		remove_proc_entry("rf_reg_dump2", dir_dev);
-		rtw_hal_get_hwreg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
+		rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_RF_TYPE, (uint8_t *)(&rf_type));
 		if ((RF_1T2R == rf_type) || (RF_1T1R == rf_type)) {
 			remove_proc_entry("rf_reg_dump3", dir_dev);
 			remove_proc_entry("rf_reg_dump4", dir_dev);

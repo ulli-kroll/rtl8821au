@@ -1994,7 +1994,7 @@ static void rtw_chk_hi_queue_hdl(struct rtl_priv *rtlpriv)
 		//while((rtw_read32(rtlpriv, 0x414)&0x00ffff00)!=0)
 		//while((rtw_read32(rtlpriv, 0x414)&0x0000ff00)!=0)
 
-		rtw_hal_get_hwreg(rtlpriv, HW_VAR_CHK_HI_QUEUE_EMPTY, &val);
+		rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_CHK_HI_QUEUE_EMPTY, &val);
 
 		while(_FALSE == val)
 		{
@@ -2005,7 +2005,7 @@ static void rtw_chk_hi_queue_hdl(struct rtl_priv *rtlpriv)
 			if(cnt>10)
 				break;
 
-			rtw_hal_get_hwreg(rtlpriv, HW_VAR_CHK_HI_QUEUE_EMPTY, &val);
+			rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_CHK_HI_QUEUE_EMPTY, &val);
 		}
 
 		if(cnt<=10)

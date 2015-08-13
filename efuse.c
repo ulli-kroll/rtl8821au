@@ -424,7 +424,7 @@ static u16 efuse_get_current_size(struct rtl_priv *rtlpriv)
 	uint8_t	hoffset = 0, hworden = 0;
 	uint8_t	efuse_data, word_cnts = 0;
 
-	rtw_hal_get_hwreg(rtlpriv, HW_VAR_EFUSE_BYTES, (uint8_t *)&efuse_addr);
+	rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_EFUSE_BYTES, (uint8_t *)&efuse_addr);
 
 	/* RTPRINT(FEEPROM, EFUSE_PG, ("hal_EfuseGetCurrentSize_8723A(), start_efuse_addr = %d\n", efuse_addr)); */
 

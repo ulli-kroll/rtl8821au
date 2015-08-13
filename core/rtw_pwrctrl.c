@@ -352,7 +352,7 @@ int32_t LPS_RF_ON_check(struct rtl_priv *rtlpriv, uint32_t	 delay_ms)
 
 	start_time = jiffies;
 	while (1) {
-		rtw_hal_get_hwreg(rtlpriv, HW_VAR_FWLPS_RF_ON, &bAwake);
+		rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_FWLPS_RF_ON, &bAwake);
 		if (_TRUE == bAwake)
 			break;
 

@@ -1382,7 +1382,7 @@ void rtw_ips_dev_unload(struct rtl_priv *rtlpriv)
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "====> %s...\n", __FUNCTION__);
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_FIFO_CLEARN_UP, 0);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_FIFO_CLEARN_UP, 0);
 
 	usb_intf_stop(rtlpriv);
 

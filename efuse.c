@@ -275,7 +275,7 @@ static void read_efuse(struct rtl_priv *rtlpriv, u16 _offset,  u16 _size_byte, u
 	 * 5. Calculate Efuse utilization.
 	 */
 	efuse_usage = (u8)((eFuse_Addr*100)/efuse_len);
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_EFUSE_BYTES, (uint8_t *)&eFuse_Addr);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_EFUSE_BYTES, (uint8_t *)&eFuse_Addr);
 
 exit:
 	if (efuseTbl)
@@ -454,7 +454,7 @@ static u16 efuse_get_current_size(struct rtl_priv *rtlpriv)
 		}
 	}
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_EFUSE_BYTES, (uint8_t *)&efuse_addr);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_EFUSE_BYTES, (uint8_t *)&efuse_addr);
 
 	return efuse_addr;
 }

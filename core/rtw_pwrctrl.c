@@ -316,7 +316,7 @@ void rtw_set_ps_mode(struct rtl_priv *rtlpriv, uint8_t ps_mode, uint8_t smart_ps
 
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(rtlpriv, PS_STATE_S4);
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_H2C_FW_PWRMODE, (uint8_t *)(&ps_mode));
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_H2C_FW_PWRMODE, (uint8_t *)(&ps_mode));
 			pwrpriv->fw_current_inpsmode = false;
 		}
 	} else 	{
@@ -328,7 +328,7 @@ void rtw_set_ps_mode(struct rtl_priv *rtlpriv, uint8_t ps_mode, uint8_t smart_ps
 			pwrpriv->pwr_mode = ps_mode;
 			pwrpriv->smart_ps = smart_ps;
 			pwrpriv->bcn_ant_mode = bcn_ant_mode;
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_H2C_FW_PWRMODE, (uint8_t *)(&ps_mode));
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_H2C_FW_PWRMODE, (uint8_t *)(&ps_mode));
 
 			rtw_set_rpwm(rtlpriv, PS_STATE_S2);
 		}

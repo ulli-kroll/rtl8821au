@@ -4586,8 +4586,8 @@ unsigned int send_beacon(struct rtl_priv *rtlpriv)
 
 	uint32_t	 start = jiffies;
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BCN_VALID, NULL);
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_DL_BCN_SEL, NULL);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BCN_VALID, NULL);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_DL_BCN_SEL, NULL);
 	do{
 		issue_beacon(rtlpriv, 100);
 		issue++;
@@ -4669,7 +4669,7 @@ void site_survey(struct rtl_priv *rtlpriv)
 		//PAUSE 4-AC Queue when site_survey
 		//rtw_hal_get_hwreg(rtlpriv, HW_VAR_TXPAUSE, (uint8_t *)(&val8));
 		//val8 |= 0x0f;
-		//rtw_hal_set_hwreg(rtlpriv, HW_VAR_TXPAUSE, (uint8_t *)(&val8));
+		//rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_TXPAUSE, (uint8_t *)(&val8));
 		if(pmlmeext->sitesurvey_res.channel_idx == 0)
 		{
 #ifdef DBG_FIXED_CHAN
@@ -4733,13 +4733,13 @@ void site_survey(struct rtl_priv *rtlpriv)
 
 			//flush 4-AC Queue after site_survey
 			//val8 = 0;
-			//rtw_hal_set_hwreg(rtlpriv, HW_VAR_TXPAUSE, (uint8_t *)(&val8));
+			//rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_TXPAUSE, (uint8_t *)(&val8));
 
 			//config MSR
 			Set_MSR(rtlpriv, (pmlmeinfo->state & 0x3));
 
 			initialgain = 0xff; //restore RX GAIN
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
 			//Switch_DM_Func(rtlpriv, DYNAMIC_ALL_FUNC_ENABLE, _TRUE);
 
 			if (is_client_associated_to_ap(rtlpriv) == _TRUE)
@@ -4749,7 +4749,7 @@ void site_survey(struct rtl_priv *rtlpriv)
 			}
 
 			val8 = 0; //survey done
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_SITESURVEY, (uint8_t *)(&val8));
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_SITESURVEY, (uint8_t *)(&val8));
 
 			report_surveydone_event(rtlpriv);
 
@@ -4947,7 +4947,7 @@ void start_create_ibss(struct rtl_priv* rtlpriv)
 		//set_opmode_cmd(rtlpriv, adhoc);//removed
 
 		val8 = 0xcf;
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
 
 		//switch channel
 		//SelectChannel(rtlpriv, pmlmeext->cur_channel, HAL_PRIME_CHNL_OFFSET_DONT_CARE);
@@ -4967,9 +4967,9 @@ void start_create_ibss(struct rtl_priv* rtlpriv)
 		}
 		else
 		{
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_BSSID, rtlpriv->registrypriv.dev_network.MacAddress);
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BSSID, rtlpriv->registrypriv.dev_network.MacAddress);
 			join_type = 0;
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
 
 			report_join_res(rtlpriv, 1);
 			pmlmeinfo->state |= WIFI_FW_ASSOC_SUCCESS;
@@ -5010,7 +5010,7 @@ void start_clnt_join(struct rtl_priv* rtlpriv)
 
 		val8 = (pmlmeinfo->auth_algo == dot11AuthAlgrthm_8021X)? 0xcc: 0xcf;
 
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
 
 		//switch channel
 		//set_channel_bwmode(rtlpriv, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
@@ -5029,7 +5029,7 @@ void start_clnt_join(struct rtl_priv* rtlpriv)
 		Set_MSR(rtlpriv, WIFI_FW_ADHOC_STATE);
 
 		val8 = 0xcf;
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
 
 		//switch channel
 		set_channel_bwmode(rtlpriv, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
@@ -5746,8 +5746,8 @@ void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res)
 	if(join_res < 0)
 	{
 		join_type = 1;
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_BSSID, null_addr);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BSSID, null_addr);
 
 		goto exit_mlmeext_joinbss_event_callback;
 	}
@@ -5767,10 +5767,10 @@ void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res)
 	// update IOT-releated issue
 	update_IOT_info(rtlpriv);
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BASIC_RATE, cur_network->SupportedRates);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BASIC_RATE, cur_network->SupportedRates);
 
 	//BCN interval
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BEACON_INTERVAL, (uint8_t *)(&pmlmeinfo->bcn_interval));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BEACON_INTERVAL, (uint8_t *)(&pmlmeinfo->bcn_interval));
 
 	//udpate capability
 	update_capinfo(rtlpriv, pmlmeinfo->capability);
@@ -5800,14 +5800,14 @@ void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res)
 		set_sta_rate(rtlpriv, psta);
 
 		#if (RATE_ADAPTIVE_SUPPORT==1)	//for 88E RA
-		rtw_hal_set_hwreg(rtlpriv,HW_VAR_TX_RPT_MAX_MACID, (uint8_t *)&psta->mac_id);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv,HW_VAR_TX_RPT_MAX_MACID, (uint8_t *)&psta->mac_id);
 		#endif
 		media_status = (psta->mac_id<<8)|1; //  MACID|OPMODE: 1 means connect
-		rtw_hal_set_hwreg(rtlpriv,HW_VAR_H2C_MEDIA_STATUS_RPT,(uint8_t *)&media_status);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv,HW_VAR_H2C_MEDIA_STATUS_RPT,(uint8_t *)&media_status);
 	}
 
 	join_type = 2;
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
 
 	if((pmlmeinfo->state&0x03) == WIFI_FW_STATION_STATE)
 	{
@@ -5864,7 +5864,7 @@ void mlmeext_sta_add_event_callback(struct rtl_priv *rtlpriv, struct sta_info *p
 		}
 
 		join_type = 2;
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
 	}
 
 	pmlmeinfo->FW_sta_info[psta->mac_id].psta = psta;
@@ -5886,8 +5886,8 @@ void mlmeext_sta_del_event_callback(struct rtl_priv *rtlpriv)
 	{
 		//set_opmode_cmd(rtlpriv, infra_client_with_mlme);
 
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_DISCONNECT, 0);
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_BSSID, null_addr);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_DISCONNECT, 0);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BSSID, null_addr);
 
 
 		//switch to the 20M Hz mode after disconnect
@@ -6300,7 +6300,7 @@ uint8_t createbss_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 		//config the initial gain under linking, need to write the BB registers
 		//initialgain = 0x1E;
-		//rtw_hal_set_hwreg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
+		//rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
 
 		//cancel link timer
 		del_timer_sync_ex(&pmlmeext->link_timer);
@@ -6357,7 +6357,7 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		Set_MSR(rtlpriv, _HW_STATE_STATION_);
 
 
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_DISCONNECT, 0);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_DISCONNECT, 0);
 	}
 
 	rtw_joinbss_reset(rtlpriv);
@@ -6471,11 +6471,11 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 	//config the initial gain under linking, need to write the BB registers
 	//initialgain = 0x1E;
-	//rtw_hal_set_hwreg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
+	//rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BSSID, pmlmeinfo->network.MacAddress);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BSSID, pmlmeinfo->network.MacAddress);
 	join_type = 0;
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_JOIN, (uint8_t *)(&join_type));
 
 	//cancel link timer
 	del_timer_sync_ex(&pmlmeext->link_timer);
@@ -6504,14 +6504,14 @@ uint8_t disconnect_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 	//pmlmeinfo->state = WIFI_FW_NULL_STATE;
 
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_DISCONNECT, 0);
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BSSID, null_addr);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_DISCONNECT, 0);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BSSID, null_addr);
 
 	if(((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE) || ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE))
 	{
 		//Stop BCN
 		val8 = 0;
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_BCN_FUNC, (uint8_t *)(&val8));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BCN_FUNC, (uint8_t *)(&val8));
 	}
 
 
@@ -6656,13 +6656,13 @@ uint8_t sitesurvey_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		//config the initial gain under scaning, need to write the BB registers
 			initialgain = 0x1e;
 
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
 
 		//set MSR to no link state
 		Set_MSR(rtlpriv, _HW_STATE_NOLINK_);
 
 		val8 = 1; //under site survey
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_MLME_SITESURVEY, (uint8_t *)(&val8));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MLME_SITESURVEY, (uint8_t *)(&val8));
 
 		pmlmeext->sitesurvey_res.state = SCAN_PROCESS;
 	}
@@ -7039,7 +7039,7 @@ void change_band_update_ie(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *pnetwork)
 	rtw_set_supported_rate(pnetwork->SupportedRates, network_type);
 
 	UpdateBrateTbl(rtlpriv, pnetwork->SupportedRates);
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BASIC_RATE, pnetwork->SupportedRates);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BASIC_RATE, pnetwork->SupportedRates);
 
 	if(total_rate_len > 8)
 	{
@@ -7136,12 +7136,12 @@ uint8_t set_csa_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 	rtw_hal_get_hwreg(rtlpriv, HW_VAR_TXPAUSE, &gval8);
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_TXPAUSE, &sval8);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_TXPAUSE, &sval8);
 
 	DBG_871X("DFS detected! Swiching channel to %d!\n", new_ch_no);
 	SelectChannel(rtlpriv, new_ch_no);
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_TXPAUSE, &gval8);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_TXPAUSE, &gval8);
 
 	rtw_free_network_queue(rtlpriv, _TRUE);
 	rtw_indicate_disconnect(rtlpriv);

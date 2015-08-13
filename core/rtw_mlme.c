@@ -1083,7 +1083,7 @@ void rtw_indicate_connect(struct rtl_priv *rtlpriv)
 	if (!check_fwstate(&rtlpriv->mlmepriv, _FW_LINKED)) {
 
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_ANTENNA_DIVERSITY_LINK, 0);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ANTENNA_DIVERSITY_LINK, 0);
 #endif
 
 		set_fwstate(pmlmepriv, _FW_LINKED);
@@ -1560,11 +1560,11 @@ void rtw_stassoc_hw_rpt(struct rtl_priv *rtlpriv,struct sta_info *psta)
 	#if (RATE_ADAPTIVE_SUPPORT==1)	//for 88E RA
 	{
 		uint8_t macid = search_max_mac_id(rtlpriv);
-		rtw_hal_set_hwreg(rtlpriv,HW_VAR_TX_RPT_MAX_MACID, (uint8_t *)&macid);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv,HW_VAR_TX_RPT_MAX_MACID, (uint8_t *)&macid);
 	}
 	#endif
 	media_status = (psta->mac_id<<8)|1; //  MACID|OPMODE:1 connect
-	rtw_hal_set_hwreg(rtlpriv,HW_VAR_H2C_MEDIA_STATUS_RPT,(uint8_t *)&media_status);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv,HW_VAR_H2C_MEDIA_STATUS_RPT,(uint8_t *)&media_status);
 }
 
 void rtw_stassoc_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf)
@@ -1684,7 +1684,7 @@ void rtw_stadel_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		u16 media_status;
 		media_status = (mac_id<<8)|0; //  MACID|OPMODE:0 means disconnect
 		//for STA,AP,ADHOC mode, report disconnect stauts to FW
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_H2C_MEDIA_STATUS_RPT, (uint8_t *)&media_status);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_H2C_MEDIA_STATUS_RPT, (uint8_t *)&media_status);
 	}
 
         if (check_fwstate(pmlmepriv, WIFI_AP_STATE))
@@ -2449,12 +2449,12 @@ void rtw_joinbss_reset(struct rtl_priv *rtlpriv)
 	if (phtpriv->ht_option)
 	{
 		threshold = 0;
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
 	}
 	else
 	{
 		threshold = 1;
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
 	}
 
 #endif

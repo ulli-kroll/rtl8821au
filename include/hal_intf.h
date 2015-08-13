@@ -66,7 +66,6 @@ typedef struct eeprom_priv EEPROM_EFUSE_PRIV, *PEEPROM_EFUSE_PRIV;
 uint rtw_hal_init(struct rtl_priv *rtlpriv);
 uint rtw_hal_deinit(struct rtl_priv *rtlpriv);
 void rtw_hal_stop(struct rtl_priv *rtlpriv);
-void rtw_hal_set_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val);
 void rtw_hal_get_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val);
 
 void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);

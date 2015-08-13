@@ -874,7 +874,7 @@ static int rtw_set_wpa_ie(struct rtl_priv *rtlpriv, char *pie, unsigned short ie
 		 * WPS open need to enable multicast
 		 * || check_fwstate(&rtlpriv->mlmepriv, WIFI_UNDER_WPS) == _TRUE)
 		 */
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_OFF_RCR_AM, null_addr);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_OFF_RCR_AM, null_addr);
 
 exit:
 	if (buf)

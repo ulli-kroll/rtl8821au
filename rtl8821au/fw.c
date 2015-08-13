@@ -785,7 +785,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		pHalData->RegFwHwTxQCtrl &= (~BIT6);
 
 		/* Clear beacon valid check bit. */
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_BCN_VALID, NULL);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BCN_VALID, NULL);
 		DLBcnCount = 0;
 		poll = 0;
 
@@ -821,7 +821,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		/* if (bcn_valid && rtlpriv->bEnterPnpSleep) */
 		if (0) {
 			if (bSendBeacon) {
-				rtw_hal_set_hwreg(rtlpriv, HW_VAR_BCN_VALID, NULL);
+				rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BCN_VALID, NULL);
 				DLBcnCount = 0;
 				poll = 0;
 				do {
@@ -872,7 +872,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 		 */
 
 		if (bcn_valid) {
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_BCN_VALID, NULL);
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BCN_VALID, NULL);
 			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "Set RSVD page location to Fw.\n");
 			/* FillH2CCmd88E(rtlpriv, H2C_88E_RSVDPAGE, H2C_RSVDPAGE_LOC_LENGTH, pMgntInfo->u1RsvdPageLoc); */
 		}

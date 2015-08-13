@@ -59,12 +59,6 @@ uint rtw_hal_deinit(struct rtl_priv *rtlpriv)
 	return status;
 }
 
-void rtw_hal_set_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
-{
-	if (rtlpriv->cfg->ops->set_hw_reg)
-		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, variable, val);
-}
-
 void rtw_hal_get_hwreg(struct rtl_priv *rtlpriv, uint8_t variable, uint8_t *val)
 {
 	if (rtlpriv->cfg->ops->get_hw_reg)

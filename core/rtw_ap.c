@@ -816,9 +816,9 @@ static void update_hw_ht_param(struct rtl_priv *rtlpriv)
 
 	min_MPDU_spacing = (pmlmeinfo->HT_caps.u.HT_cap_element.AMPDU_para & 0x1c) >> 2;
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_AMPDU_MIN_SPACE, (uint8_t *)(&min_MPDU_spacing));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AMPDU_MIN_SPACE, (uint8_t *)(&min_MPDU_spacing));
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_AMPDU_FACTOR, (uint8_t *)(&max_AMPDU_len));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AMPDU_FACTOR, (uint8_t *)(&max_AMPDU_len));
 
 	//
 	// Config SM Power Save setting
@@ -908,25 +908,25 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	Set_MSR(rtlpriv, _HW_STATE_AP_);
 
 	//Set BSSID REG
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BSSID, pnetwork->MacAddress);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BSSID, pnetwork->MacAddress);
 
 	//Set EDCA param reg
 	acparm = 0x002F3217; // VO
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_VO, (uint8_t *)(&acparm));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_VO, (uint8_t *)(&acparm));
 	acparm = 0x005E4317; // VI
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_VI, (uint8_t *)(&acparm));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_VI, (uint8_t *)(&acparm));
 	//acparm = 0x00105320; // BE
 	acparm = 0x005ea42b;
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_BE, (uint8_t *)(&acparm));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_BE, (uint8_t *)(&acparm));
 	acparm = 0x0000A444; // BK
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_BK, (uint8_t *)(&acparm));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_BK, (uint8_t *)(&acparm));
 
 	//Set Security
 	val8 = (psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)? 0xcc: 0xcf;
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
 
 	//Beacon Control related register
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BEACON_INTERVAL, (uint8_t *)(&bcn_interval));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BEACON_INTERVAL, (uint8_t *)(&bcn_interval));
 
 	if (pmlmepriv->cur_network.join_res != _TRUE) { //setting only at  first time
 		//uint32_t	 initialgain;
@@ -940,7 +940,7 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 			{
 
-			//rtw_hal_set_hwreg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
+			//rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
 		}
 
 	}
@@ -1014,7 +1014,7 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 	//update RRSR after set channel and bandwidth
 	UpdateBrateTbl(rtlpriv, pnetwork->SupportedRates);
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BASIC_RATE, pnetwork->SupportedRates);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BASIC_RATE, pnetwork->SupportedRates);
 
 	//udpate capability after cur_wireless_mode updated
 	update_capinfo(rtlpriv, rtw_get_capability((WLAN_BSSID_EX *)pnetwork));

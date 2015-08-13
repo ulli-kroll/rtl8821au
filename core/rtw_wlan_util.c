@@ -418,7 +418,7 @@ void UpdateBrateTblForSoftAP(uint8_t *bssrateset, uint32_t	 bssratelen)
 
 static void Set_NETYPE1_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 {
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MEDIA_STATUS1, (uint8_t *)(&type));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MEDIA_STATUS1, (uint8_t *)(&type));
 }
 
 
@@ -657,12 +657,12 @@ void CAM_empty_entry(
 	uint8_t 			ucIndex
 )
 {
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_CAM_EMPTY_ENTRY, (uint8_t *)(&ucIndex));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_CAM_EMPTY_ENTRY, (uint8_t *)(&ucIndex));
 }
 
 void invalidate_cam_all(struct rtl_priv *rtlpriv)
 {
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_CAM_INVALID_ALL, 0);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_CAM_INVALID_ALL, 0);
 }
 
 void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key)
@@ -696,7 +696,7 @@ void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, 
 		cam_val[0] = val;
 		cam_val[1] = addr + (unsigned int)j;
 
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_CAM_WRITE, (uint8_t *)cam_val);
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_CAM_WRITE, (uint8_t *)cam_val);
 
 		//rtw_write32(rtlpriv, WCAMI, val);
 
@@ -744,7 +744,7 @@ void flush_all_cam_entry(struct rtl_priv *rtlpriv)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_CAM_INVALID_ALL, 0);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_CAM_INVALID_ALL, 0);
 
 
 	memset((uint8_t *)(pmlmeinfo->FW_sta_info), 0, sizeof(pmlmeinfo->FW_sta_info));
@@ -826,15 +826,15 @@ void WMMOnAssocRsp(struct rtl_priv *rtlpriv)
 
 		TXOP = 0;
 		acParm = AIFS | (ECWMin << 8) | (ECWMax << 12) | (TXOP << 16);
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_BE, (uint8_t *)(&acParm));
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_BK, (uint8_t *)(&acParm));
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_VI, (uint8_t *)(&acParm));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_BE, (uint8_t *)(&acParm));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_BK, (uint8_t *)(&acParm));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_VI, (uint8_t *)(&acParm));
 
 		ECWMin = 2;
 		ECWMax = 3;
 		TXOP = 0x2f;
 		acParm = AIFS | (ECWMin << 8) | (ECWMax << 12) | (TXOP << 16);
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_VO, (uint8_t *)(&acParm));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_VO, (uint8_t *)(&acParm));
 	}
 	else
 	{
@@ -855,25 +855,25 @@ void WMMOnAssocRsp(struct rtl_priv *rtlpriv)
 			switch (ACI)
 			{
 				case 0x0:
-					rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_BE, (uint8_t *)(&acParm));
+					rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_BE, (uint8_t *)(&acParm));
 					acm_mask |= (ACM? BIT(1):0);
 					edca[XMIT_BE_QUEUE] = acParm;
 					break;
 
 				case 0x1:
-					rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_BK, (uint8_t *)(&acParm));
+					rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_BK, (uint8_t *)(&acParm));
 					//acm_mask |= (ACM? BIT(0):0);
 					edca[XMIT_BK_QUEUE] = acParm;
 					break;
 
 				case 0x2:
-					rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_VI, (uint8_t *)(&acParm));
+					rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_VI, (uint8_t *)(&acParm));
 					acm_mask |= (ACM? BIT(2):0);
 					edca[XMIT_VI_QUEUE] = acParm;
 					break;
 
 				case 0x3:
-					rtw_hal_set_hwreg(rtlpriv, HW_VAR_AC_PARAM_VO, (uint8_t *)(&acParm));
+					rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AC_PARAM_VO, (uint8_t *)(&acParm));
 					acm_mask |= (ACM? BIT(3):0);
 					edca[XMIT_VO_QUEUE] = acParm;
 					break;
@@ -883,7 +883,7 @@ void WMMOnAssocRsp(struct rtl_priv *rtlpriv)
 		}
 
 		if(rtlpriv->registrypriv.acm_method == 1)
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_ACM_CTRL, (uint8_t *)(&acm_mask));
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ACM_CTRL, (uint8_t *)(&acm_mask));
 		else
 			rtlpriv->mlmepriv.acm_mask = acm_mask;
 
@@ -1140,9 +1140,9 @@ void HTOnAssocRsp(struct rtl_priv *rtlpriv)
 
 	min_MPDU_spacing = (pmlmeinfo->HT_caps.u.HT_cap_element.AMPDU_para & 0x1c) >> 2;
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_AMPDU_MIN_SPACE, (uint8_t *)(&min_MPDU_spacing));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AMPDU_MIN_SPACE, (uint8_t *)(&min_MPDU_spacing));
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_AMPDU_FACTOR, (uint8_t *)(&max_AMPDU_len));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AMPDU_FACTOR, (uint8_t *)(&max_AMPDU_len));
 
 	//set_channel_bwmode(rtlpriv, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
 }
@@ -1796,7 +1796,7 @@ void update_tx_basic_rate(struct rtl_priv *rtlpriv, uint8_t wirelessmode)
 	else
 		update_mgnt_tx_rate(rtlpriv, IEEE80211_OFDM_RATE_6MB);
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_BASIC_RATE, supported_rates);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BASIC_RATE, supported_rates);
 }
 
 unsigned char check_assoc_AP(uint8_t *pframe, uint len)
@@ -1941,7 +1941,7 @@ void update_capinfo(struct rtl_priv *rtlpriv, u16 updateCap)
 			{
 				ShortPreamble = _TRUE;
 				pmlmeinfo->preamble_mode = PREAMBLE_SHORT;
-				rtw_hal_set_hwreg( rtlpriv, HW_VAR_ACK_PREAMBLE, (uint8_t *)&ShortPreamble );
+				rtlpriv->cfg->ops->set_hw_reg( rtlpriv, HW_VAR_ACK_PREAMBLE, (uint8_t *)&ShortPreamble );
 			}
 		}
 		else
@@ -1950,7 +1950,7 @@ void update_capinfo(struct rtl_priv *rtlpriv, u16 updateCap)
 			{
 				ShortPreamble = _FALSE;
 				pmlmeinfo->preamble_mode = PREAMBLE_LONG;
-				rtw_hal_set_hwreg( rtlpriv, HW_VAR_ACK_PREAMBLE, (uint8_t *)&ShortPreamble );
+				rtlpriv->cfg->ops->set_hw_reg( rtlpriv, HW_VAR_ACK_PREAMBLE, (uint8_t *)&ShortPreamble );
 			}
 		}
 	}
@@ -1984,7 +1984,7 @@ void update_capinfo(struct rtl_priv *rtlpriv, u16 updateCap)
 		}
  	}
 
-	rtw_hal_set_hwreg( rtlpriv, HW_VAR_SLOT_TIME, &pmlmeinfo->slotTime );
+	rtlpriv->cfg->ops->set_hw_reg( rtlpriv, HW_VAR_SLOT_TIME, &pmlmeinfo->slotTime );
 
 }
 
@@ -2153,7 +2153,7 @@ void update_TSF(struct mlme_ext_priv *pmlmeext, uint8_t *pframe, uint len)
 
 void correct_TSF(struct rtl_priv *rtlpriv, struct mlme_ext_priv *pmlmeext)
 {
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_CORRECT_TSF, 0);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_CORRECT_TSF, 0);
 }
 
 void beacon_timing_control(struct rtl_priv *rtlpriv)

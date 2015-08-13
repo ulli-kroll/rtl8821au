@@ -1807,7 +1807,7 @@ void lps_ctrl_wk_hdl(struct rtl_priv *rtlpriv, uint8_t lps_ctrl_type)
 			mstatus = 1;//connect
 			// Reset LPS Setting
 			rtlpriv->pwrctrlpriv.LpsIdleCount = 0;
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_H2C_FW_JOINBSSRPT, (uint8_t *)(&mstatus));
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_H2C_FW_JOINBSSRPT, (uint8_t *)(&mstatus));
 			break;
 		case LPS_CTRL_DISCONNECT:
 			//DBG_871X("LPS_CTRL_DISCONNECT \n");
@@ -1815,7 +1815,7 @@ void lps_ctrl_wk_hdl(struct rtl_priv *rtlpriv, uint8_t lps_ctrl_type)
 			{
 				LPS_Leave(rtlpriv);
 			}
-			rtw_hal_set_hwreg(rtlpriv, HW_VAR_H2C_FW_JOINBSSRPT, (uint8_t *)(&mstatus));
+			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_H2C_FW_JOINBSSRPT, (uint8_t *)(&mstatus));
 			break;
 		case LPS_CTRL_SPECIAL_PACKET:
 			//DBG_871X("LPS_CTRL_SPECIAL_PACKET \n");
@@ -1891,7 +1891,7 @@ exit:
 #if (RATE_ADAPTIVE_SUPPORT==1)
 void rpt_timer_setting_wk_hdl(struct rtl_priv *rtlpriv, u16 minRptTime)
 {
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_RPT_TIMER_SETTING, (uint8_t *)(&minRptTime));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_RPT_TIMER_SETTING, (uint8_t *)(&minRptTime));
 }
 
 uint8_t rtw_rpt_timer_cfg_cmd(struct rtl_priv*rtlpriv, u16 minRptTime)

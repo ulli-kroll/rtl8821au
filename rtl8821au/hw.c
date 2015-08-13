@@ -979,7 +979,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 
 void Set_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 {
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_MEDIA_STATUS, (uint8_t *)(&type));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MEDIA_STATUS, (uint8_t *)(&type));
 }
 
 void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)

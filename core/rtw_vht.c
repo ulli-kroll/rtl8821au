@@ -210,7 +210,7 @@ void update_hw_vht_param(struct rtl_priv *rtlpriv)
 	ht_AMPDU_len = pmlmeinfo->HT_caps.u.HT_cap_element.AMPDU_para & 0x03;
 
 	if (pvhtpriv->ampdu_len > ht_AMPDU_len)
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_AMPDU_FACTOR, (uint8_t *)(&pvhtpriv->ampdu_len));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AMPDU_FACTOR, (uint8_t *)(&pvhtpriv->ampdu_len));
 }
 
 void VHT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE)
@@ -617,9 +617,9 @@ void VHTOnAssocRsp(struct rtl_priv *rtlpriv)
 	ht_AMPDU_len = pmlmeinfo->HT_caps.u.HT_cap_element.AMPDU_para & 0x03;
 
 	if (pvhtpriv->ampdu_len > ht_AMPDU_len)
-		rtw_hal_set_hwreg(rtlpriv, HW_VAR_AMPDU_FACTOR, (uint8_t *)(&pvhtpriv->ampdu_len));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AMPDU_FACTOR, (uint8_t *)(&pvhtpriv->ampdu_len));
 
-	rtw_hal_set_hwreg(rtlpriv, HW_VAR_AMPDU_MAX_TIME, (uint8_t *)(&pvhtpriv->vht_highest_rate));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AMPDU_MAX_TIME, (uint8_t *)(&pvhtpriv->vht_highest_rate));
 }
 
 #endif

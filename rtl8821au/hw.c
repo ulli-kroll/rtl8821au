@@ -1399,6 +1399,9 @@ void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
 
 void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 {
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 #if 0
 	DBG_871X("====> ReadAdapterInfo8812AU\n");
@@ -1411,6 +1414,31 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 #if 0
 	DBG_871X("ReadAdapterInfo8812AU <====\n");
 #endif	
+
+#if 0	/* ULLI check this in old source, may be vendor specific ?? */
+	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power) 	{
+		rtlhal->external_pa_2g = 1;
+		rtlhal->external_lna_2g = 1;
+	} else {
+		rtlhal->external_lna_2g = 0;
+	}
+#endif
+	rtlefuse->board_type = ODM_BOARD_DEFAULT;
+	if (rtlhal->external_lna_2g != 0) {
+		rtlefuse->board_type |= ODM_BOARD_EXT_LNA;
+	}
+	if (rtlhal->external_lna_5g != 0) {
+		rtlefuse->board_type |= ODM_BOARD_EXT_LNA_5G;
+	}
+	if (rtlhal->external_pa_2g != 0) {
+		rtlefuse->board_type |= ODM_BOARD_EXT_PA;
+	}
+	if (rtlhal->external_pa_5g != 0) {
+		rtlefuse->board_type |= ODM_BOARD_EXT_PA_5G;
+	}
+
+	rtlhal->board_type = rtlefuse->board_type;
+
 }
 
 bool rtl8821au_gpio_radio_on_off_checking(struct rtl_priv *rtlpriv, u8 *valid)

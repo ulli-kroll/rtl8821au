@@ -100,8 +100,6 @@ void	rtw_hal_set_chan(struct rtl_priv *rtlpriv, uint8_t channel);
 void	rtw_hal_set_chnl_bw(struct rtl_priv *rtlpriv, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
 void	rtw_hal_dm_watchdog(struct rtl_priv *rtlpriv);
 
-void rtw_hal_reset_security_engine(struct rtl_priv * rtlpriv);
-
 int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt);
 c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *rtlpriv);
 

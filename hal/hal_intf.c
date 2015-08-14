@@ -33,8 +33,6 @@ uint rtw_hal_init(struct rtl_priv *rtlpriv)
 
 	if (status == _SUCCESS) {
 		rtlpriv->hw_init_completed = _TRUE;
-
-		rtw_hal_reset_security_engine(rtlpriv);
 	} else {
 		rtlpriv->hw_init_completed = _FALSE;
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "rtw_hal_init: hal__init fail\n");
@@ -213,12 +211,6 @@ void rtw_hal_bcn_related_reg_setting(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->SetBeaconRelatedRegistersHandler)
 		rtlpriv->cfg->ops->SetBeaconRelatedRegistersHandler(rtlpriv);
-}
-
-void rtw_hal_reset_security_engine(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->hal_reset_security_engine)
-		rtlpriv->cfg->ops->hal_reset_security_engine(rtlpriv);
 }
 
 int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt)

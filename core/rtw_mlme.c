@@ -1081,11 +1081,6 @@ void rtw_indicate_connect(struct rtl_priv *rtlpriv)
 	pmlmepriv->to_join = _FALSE;
 
 	if (!check_fwstate(&rtlpriv->mlmepriv, _FW_LINKED)) {
-
-#ifdef CONFIG_SW_ANTENNA_DIVERSITY
-		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ANTENNA_DIVERSITY_LINK, 0);
-#endif
-
 		set_fwstate(pmlmepriv, _FW_LINKED);
 		rtw_os_indicate_connect(rtlpriv);
 

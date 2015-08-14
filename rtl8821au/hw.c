@@ -729,34 +729,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 #endif
 
-#ifdef CONFIG_SW_ANTENNA_DIVERSITY
-	case HW_VAR_ANTENNA_DIVERSITY_LINK:
-		/* SwAntDivRestAfterLink8192C(rtlpriv); */
-		ODM_SwAntDivRestAfterLink(podmpriv);
-		break;
-
-	case HW_VAR_ANTENNA_DIVERSITY_SELECT:
-		{
-			uint8_t Optimum_antenna = *pval;
-			uint8_t 	Ant;
-
-			/*
-			 * switch antenna to Optimum_antenna
-			 * DBG_8192C("==> HW_VAR_ANTENNA_DIVERSITY_SELECT , Ant_(%s)\n",(Optimum_antenna==2)?"A":"B");
-			 */
-			if (pHalData->CurAntenna != Optimum_antenna) {
-				Ant = (Optimum_antenna == 2) ? MAIN_ANT : AUX_ANT;
-				ODM_UpdateRxIdleAnt_88E(podmpriv, Ant);
-
-				pHalData->CurAntenna = Optimum_antenna;
-				/*
-				 * DBG_8192C("==> HW_VAR_ANTENNA_DIVERSITY_SELECT , Ant_(%s)\n",(Optimum_antenna==2)?"A":"B");
-				 */
-			}
-		}
-		break;
-#endif
-
 	case HW_VAR_EFUSE_USAGE:
 		rtlefuse->efuse_usedpercentage = *pval;
 		break;

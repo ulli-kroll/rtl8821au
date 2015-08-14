@@ -758,22 +758,6 @@ ODM_CmnInfoPtrArrayHook(
 	IN		void *pValue
 	);
 
-
-void
-ODM_InitAllTimers(
-    IN struct _rtw_dm *pDM_Odm
-    );
-
-void
-ODM_CancelAllTimers(
-    IN struct _rtw_dm *   pDM_Odm
-    );
-
-void
-ODM_ReleaseAllTimers(
-    IN struct _rtw_dm *pDM_Odm
-    );
-
 void
 ODM_AntselStatistics_88C(
 	IN		struct _rtw_dm *	pDM_Odm,

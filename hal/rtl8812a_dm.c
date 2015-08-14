@@ -116,12 +116,6 @@ void rtl8812_init_dm_priv(IN struct rtl_priv *rtlpriv)
 	/* spin_lock_init(&(pHalData->odm_stainfo_lock)); */
 
 	Init_ODM_ComInfo_8812(rtlpriv);
-#ifdef CONFIG_SW_ANTENNA_DIVERSITY
-	/*
-	 * _init_timer(&(pdmpriv->SwAntennaSwitchTimer),  rtlpriv->ndev , odm_SW_AntennaSwitchCallback, rtlpriv);
-	 */
-	ODM_InitAllTimers(podmpriv );
-#endif
 	rtlpriv->registrypriv.bEn_RFE = 0;
 }
 
@@ -130,8 +124,4 @@ void rtl8812_deinit_dm_priv(IN struct rtl_priv *rtlpriv)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	struct _rtw_dm *		podmpriv = &pHalData->odmpriv;
-#ifdef CONFIG_SW_ANTENNA_DIVERSITY
-	/* del_timer_sync_ex(&pdmpriv->SwAntennaSwitchTimer); */
-	ODM_CancelAllTimers(podmpriv);
-#endif
 }

@@ -21,11 +21,6 @@
  #ifndef __HAL_PHY_RF_H__
  #define __HAL_PHY_RF_H__
 
-typedef enum _SPUR_CAL_METHOD {
-	PLL_RESET,
-	AFE_PHASE_SEL
-} SPUR_CAL_METHOD;
-
 typedef enum _PWRTRACK_CONTROL_METHOD {
 	BBSWING,
 	TXAGC,

@@ -199,8 +199,6 @@ void	Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv,u8* hwinfo, bool autolo
 void	Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo, BOOLEAN AutoLoadFail);
 void	Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv,u8* hwinfo,BOOLEAN AutoLoadFail);
 void	Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv,u8* PROMContent,BOOLEAN AutoLoadFail);
-void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
-void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
 void	hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent, BOOLEAN AutoloadFail);
 void ReadRFType8812A(struct rtl_priv *rtlpriv);
 void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rssi_level);

@@ -3,7 +3,6 @@
 
 #include <odm_types.h>
 #include <odm.h>
-#include <HalPhyRf.h>
 
 
 //3===========================================================

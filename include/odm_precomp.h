@@ -42,14 +42,11 @@
 #include <odm_HWConfig.h>
 #include <odm_RegDefine11AC.h>
 
-	//#include "hal_com.h"
-	#include <HalPhyRf.h>
-
-		#include <HalPhyRf_8812A.h>//for IQK,LCK,Power-tracking
-		#include <rtl8812a_hal.h>
-		#include <HalPhyRf_8821A.h>//for IQK,LCK,Power-tracking
-		#include <HalPhyRf_8812A.h>//for IQK,LCK,Power-tracking
-		#include <rtl8812a_hal.h>
+#include <HalPhyRf_8812A.h>//for IQK,LCK,Power-tracking
+#include <rtl8812a_hal.h>
+#include <HalPhyRf_8821A.h>//for IQK,LCK,Power-tracking
+#include <HalPhyRf_8812A.h>//for IQK,LCK,Power-tracking
+#include <rtl8812a_hal.h>
 
 
 #include <odm_interface.h>

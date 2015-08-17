@@ -23,41 +23,12 @@
 
 #include <odm_types.h>
 
-
-#define		TEST_FALG___		1
-
-
-//2 Config Flags and Structs - defined by each ODM Type
-
-
-
-//2 Hardware Parameter Files
-
-
-
-
-//2 OutSrc Header Files
-
 #include <odm.h>
 #include <odm_HWConfig.h>
 #include <odm_RegDefine11AC.h>
 
-#include <HalPhyRf_8812A.h>//for IQK,LCK,Power-tracking
-#include <rtl8812a_hal.h>
-#include <HalPhyRf_8821A.h>//for IQK,LCK,Power-tracking
-#include <HalPhyRf_8812A.h>//for IQK,LCK,Power-tracking
-#include <rtl8812a_hal.h>
-
-
 #include <odm_interface.h>
 #include <odm_reg.h>
-
-#include <HalHWImg8812A_BB.h>
-#include <HalHWImg8812A_FW.h>
-
-
-#include <HalHWImg8821A_BB.h>
-#include <HalHWImg8821A_FW.h>
 
 #endif	// __ODM_PRECOMP_H__
 

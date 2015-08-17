@@ -28,6 +28,7 @@
 #include <../rtl8821au/reg.h>
 #include <../rtl8821au/dm.h>
 #include <../wifi.h>
+#include <rtl8812a_cmd.h>
 
 #define ODM_RT_ASSERT(x, ...)	do { } while (0);
 

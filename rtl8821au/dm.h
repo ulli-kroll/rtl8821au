@@ -163,6 +163,12 @@ void rtl8821au_dm_cck_packet_detection_thresh(struct rtl_priv *rtlpriv);
 #define	PATHDIV_REG					0xB30
 #define	PATHDIV_TRI					0xBA0
 
+enum pwr_track_control_method {
+	BBSWING,
+	TXAGC,
+	MIX_MODE
+};
+
 
 
 #endif

@@ -437,8 +437,9 @@ static void rtl8812au_do_iqk(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
  *
  *---------------------------------------------------------------------------*/
 
-static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
-	u8 	RFPath, u8 	ChannelMappedIndex)
+static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv,
+					     enum pwr_track_control_method Method,
+					     u8 RFPath, u8 ChannelMappedIndex)
 {
 	uint32_t 	finalBbSwingIdx[2];
 
@@ -877,8 +878,9 @@ static void rtl8821au_do_iqk(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
 }
 
 
-static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv, PWRTRACK_METHOD Method,
-	u8 RFPath, u8 ChannelMappedIndex)
+static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
+					     enum pwr_track_control_method Method,
+					     u8 RFPath, u8 ChannelMappedIndex)
 {
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 

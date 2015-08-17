@@ -21,15 +21,6 @@
  #ifndef __HAL_PHY_RF_H__
  #define __HAL_PHY_RF_H__
 
-typedef enum _PWRTRACK_CONTROL_METHOD {
-	BBSWING,
-	TXAGC,
-	MIX_MODE
-} PWRTRACK_METHOD;
-
-
-
-
 #define ODM_TARGET_CHNL_NUM_2G_5G	59
 
 #endif	// #ifndef __HAL_PHY_RF_H__

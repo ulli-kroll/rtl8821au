@@ -58,12 +58,6 @@ The protection mechanism is through the pending queue.
 	uint8_t bio_timer_cancel;
 };
 
-
-#ifdef CONFIG_R871X_TEST
-int rtw_start_pseudo_adhoc(struct rtl_priv *rtlpriv);
-int rtw_stop_pseudo_adhoc(struct rtl_priv *rtlpriv);
-#endif
-
 u32 rtw_start_drv_threads(struct rtl_priv *rtlpriv);
 void rtw_stop_drv_threads (struct rtl_priv *rtlpriv);
 

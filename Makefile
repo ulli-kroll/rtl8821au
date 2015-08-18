@@ -5,7 +5,6 @@ EXTRA_CFLAGS += -Wno-uninitialized
 
 EXTRA_CFLAGS += -I$(src)/include
 
-CONFIG_RTL8812A = y
 CONFIG_RTL8821A = y
 
 # Note CONFIG_RTLWIFI_DEBUG
@@ -73,7 +72,6 @@ CORE_FILES :=		core/rtw_cmd.o \
 			core/rtw_ap.o \
 			core/rtw_xmit.o	\
 
-EXTRA_CFLAGS += -DCONFIG_RTL8812A
 EXTRA_CFLAGS += -DCONFIG_RTL8821A
 EXTRA_CFLAGS += -DCONFIG_RTLWIFI_DEBUG
 
@@ -104,11 +102,11 @@ endif
 
 ifneq ($(KERNELRELEASE),)
 
-obj-$(CONFIG_RTL8812AU_8821AU) := $(MODULE_NAME).o
+obj-$(CONFIG_RTL8821AU) := $(MODULE_NAME).o
 
 else
 
-export CONFIG_RTL8812AU_8821AU = m
+export CONFIG_RTL8821AU = m
 
 all: modules
 

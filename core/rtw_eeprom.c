@@ -180,23 +180,6 @@ out:
 void eeprom_write16(struct rtl_priv * rtlpriv, u16 reg, u16 data)
 {
 	uint8_t x;
-#ifdef CONFIG_RTL8712
-	uint8_t	tmp8_ori,tmp8_new,tmp8_clk_ori,tmp8_clk_new;
-
-	tmp8_ori = usb_read8(rtlpriv, 0x102502f1);
-	tmp8_new = tmp8_ori & 0xf7;
-
-	if (tmp8_ori != tmp8_new) {
-		usb_write8(rtlpriv, 0x102502f1, tmp8_new);
-		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x102502f1=====\n"));
-	}
-	tmp8_clk_ori=usb_read8(rtlpriv,0x10250003);
-	tmp8_clk_new=tmp8_clk_ori|0x20;
-	if (tmp8_clk_new != tmp8_clk_ori) {
-		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x10250003=====\n"));
-		usb_write8(rtlpriv, 0x10250003, tmp8_clk_new);
-	}
-#endif
 
 	x = usb_read8(rtlpriv, EE_9346CR);
 
@@ -249,13 +232,7 @@ void eeprom_write16(struct rtl_priv * rtlpriv, u16 reg, u16 data)
 
 	eeprom_clean(rtlpriv );
 exit:
-#ifdef CONFIG_RTL8712
-	if(tmp8_clk_new!=tmp8_clk_ori)
-		usb_write8(rtlpriv, 0x10250003, tmp8_clk_ori);
-	if(tmp8_new!=tmp8_ori)
-		usb_write8(rtlpriv, 0x102502f1, tmp8_ori);
 
-#endif
 	return;
 }
 
@@ -264,24 +241,6 @@ u16 eeprom_read16(struct rtl_priv * rtlpriv, u16 reg) //ReadEEprom
 
 	u16 x;
 	u16 data=0;
-#ifdef CONFIG_RTL8712
-	uint8_t	tmp8_ori,tmp8_new,tmp8_clk_ori,tmp8_clk_new;
-
-	tmp8_ori = usb_read8(rtlpriv, 0x102502f1);
-	tmp8_new = tmp8_ori & 0xf7;
-
-	if (tmp8_ori != tmp8_new) {
-		usb_write8(rtlpriv, 0x102502f1, tmp8_new);
-		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x102502f1=====\n"));
-	}
-
-	tmp8_clk_ori=usb_read8(rtlpriv,0x10250003);
-	tmp8_clk_new=tmp8_clk_ori|0x20;
-	if (tmp8_clk_new != tmp8_clk_ori) {
-		RT_TRACE(_module_rtl871x_mp_ioctl_c_,_drv_err_,("====write 0x10250003=====\n"));
-		usb_write8(rtlpriv, 0x10250003, tmp8_clk_new);
-	}
-#endif
 
 	if (rtlpriv->bSurpriseRemoved == _TRUE) {
 		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
@@ -311,14 +270,6 @@ u16 eeprom_read16(struct rtl_priv * rtlpriv, u16 reg) //ReadEEprom
 
 	eeprom_clean(rtlpriv);
 out:
-#ifdef CONFIG_RTL8712
-	if (tmp8_clk_new != tmp8_clk_ori)
-		usb_write8(rtlpriv, 0x10250003, tmp8_clk_ori);
-
-	if (tmp8_new != tmp8_ori)
-		usb_write8(rtlpriv, 0x102502f1, tmp8_ori);
-
-#endif
 
 	return data;
 }

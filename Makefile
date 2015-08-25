@@ -45,7 +45,6 @@ OS_FILES :=		os_dep/osdep_service.o \
 
 HAL_FILES 	:=	hal/hal_intf.o \
 			hal/hal_com.o \
-			hal/hal_phy.o \
 			hal/odm.o \
 			hal/HalPwrSeqCmd.o \
 			hal/Hal8812PwrSeq.o \

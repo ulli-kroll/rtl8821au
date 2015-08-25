@@ -18,8 +18,6 @@ CONFIG_RTLWIFI_DEBUG = y
 CONFIG_POWER_SAVING = y
 CONFIG_PLATFORM_I386_PC = y
 
-export TopDIR ?= $(shell pwd)
-
 RTLWIFI_FILES :=	debug.o \
 			efuse.o \
 			usb.o
@@ -93,8 +91,8 @@ EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
 ARCH ?= $(SUBARCH)
 CROSS_COMPILE ?=
-KVER  := $(shell uname -r)
-KSRC := /lib/modules/$(KVER)/build
+PWD  := $(shell pwd)
+KSRC := /lib/modules/$(shell uname -r)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
 endif
@@ -110,7 +108,7 @@ export CONFIG_RTL8821AU = m
 all: modules
 
 modules:
-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd)  modules
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(PWD)  modules
 
 strip:
 	$(CROSS_COMPILE)strip $(MODULE_NAME).ko --strip-unneeded
@@ -132,3 +130,8 @@ clean:
 	rm -fr .tmp_versions
 endif
 
+help:
+	@echo "options :"
+	@echo "modules		build this module"
+	@echo "installfw	install firmware"
+	@echo "clean		clean"

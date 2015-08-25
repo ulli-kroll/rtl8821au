@@ -121,7 +121,6 @@ static void _rtl8821au_phy_rf_serial_write(struct rtl_priv *rtlpriv, uint8_t eRF
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct bb_reg_def *pphyreg = &(rtlpriv->phy.phyreg_def[eRFPath]);
 	uint32_t		DataAndAddr = 0;
-	struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 
 	/*
 	 * 2009/06/17 MH We can not execute IO for power save or other accident mode.

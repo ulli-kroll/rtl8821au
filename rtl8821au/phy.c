@@ -15,6 +15,17 @@
 		v2 = array_table[i+1]; \
 	} while (0)
 
+static u32 _rtl8821au_phy_calculate_bit_shift(uint32_t BitMask)
+{
+	uint32_t i;
+
+	for (i = 0; i <= 31; i++) {
+		if (((BitMask >> i) & 0x1) == 1)
+			break;
+	}
+
+	return i;
+}
 
 u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint32_t BitMask)
 {
@@ -24,7 +35,7 @@ u32 rtl8821au_phy_query_bb_reg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint3
 
 
 	OriginalValue = rtl_read_dword(rtlpriv, RegAddr);
-	BitShift = PHY_CalculateBitShift(BitMask);
+	BitShift = _rtl8821au_phy_calculate_bit_shift(BitMask);
 	ReturnValue = (OriginalValue & BitMask) >> BitShift;
 
 	/* DBG_871X("BBR MASK=0x%x Addr[0x%x]=0x%x\n", BitMask, RegAddr, OriginalValue); */
@@ -38,7 +49,7 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask
 
 	if (BitMask != bMaskDWord) {	/* if not "double word" write */
 		OriginalValue = rtl_read_dword(rtlpriv, RegAddr);
-		BitShift = PHY_CalculateBitShift(BitMask);
+		BitShift = _rtl8821au_phy_calculate_bit_shift(BitMask);
 		Data = ((OriginalValue) & (~BitMask)) | (((Data << BitShift)) & BitMask);
 	}
 
@@ -168,7 +179,7 @@ void rtl8821au_phy_set_rf_reg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr
 	if (BitMask != bLSSIWrite_data_Jaguar) {
 		uint32_t	Original_Value, BitShift;
 		Original_Value = phy_RFSerialRead(rtlpriv, eRFPath, RegAddr);
-		BitShift =  PHY_CalculateBitShift(BitMask);
+		BitShift =  _rtl8821au_phy_calculate_bit_shift(BitMask);
 		Data = ((Original_Value) & (~BitMask)) | (Data<< BitShift);
 	}
 
@@ -183,7 +194,7 @@ u32 rtl8821au_phy_query_rf_reg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAdd
 
 	Original_Value = phy_RFSerialRead(rtlpriv, eRFPath, RegAddr);
 
-	BitShift =  PHY_CalculateBitShift(BitMask);
+	BitShift =  _rtl8821au_phy_calculate_bit_shift(BitMask);
 	Readback_Value = (Original_Value & BitMask) >> BitShift;
 
 	return (Readback_Value);

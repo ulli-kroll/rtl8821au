@@ -136,11 +136,6 @@ typedef struct RF_Shadow_Compare_Map {
 /*--------------------------Exported Function prototype---------------------*/
 
 u32
-PHY_CalculateBitShift(
-	u32 BitMask
-	);
-
-u32
 PHY_RFShadowRead(
 	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,

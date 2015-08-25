@@ -40,15 +40,3 @@ static RF_SHADOW_T RF_Shadow[RF6052_MAX_PATH][RF6052_MAX_REG];
 * Output:	none
 * Return:		uint32_t		Return the shift bit bit position of the mask
 */
-u32 PHY_CalculateBitShift(uint32_t BitMask)
-{
-	uint32_t i;
-
-	for (i = 0; i <= 31; i++) {
-		if (((BitMask >> i) & 0x1) == 1)
-			break;
-	}
-
-	return i;
-}
-

@@ -58,7 +58,7 @@ void rtl8821au_phy_set_bb_reg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask
 	/* DBG_871X("BBW MASK=0x%x Addr[0x%x]=0x%x\n", BitMask, RegAddr, Data); */
 }
 
-static u32 phy_RFSerialRead(struct rtl_priv *rtlpriv, uint8_t eRFPath,
+static u32 _rtl8821au_phy_rf_serial_read(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	uint32_t Offset)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -115,7 +115,7 @@ static u32 phy_RFSerialRead(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	return retValue;
 }
 
-static void phy_RFSerialWrite(struct rtl_priv *rtlpriv, uint8_t eRFPath,
+static void _rtl8821au_phy_rf_serial_write(struct rtl_priv *rtlpriv, uint8_t eRFPath,
 	uint32_t Offset, uint32_t Data)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -178,12 +178,12 @@ void rtl8821au_phy_set_rf_reg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr
 	/* RF data is 20 bits only */
 	if (BitMask != bLSSIWrite_data_Jaguar) {
 		uint32_t	Original_Value, BitShift;
-		Original_Value = phy_RFSerialRead(rtlpriv, eRFPath, RegAddr);
+		Original_Value =  _rtl8821au_phy_rf_serial_read(rtlpriv, eRFPath, RegAddr);
 		BitShift =  _rtl8821au_phy_calculate_bit_shift(BitMask);
 		Data = ((Original_Value) & (~BitMask)) | (Data<< BitShift);
 	}
 
-	phy_RFSerialWrite(rtlpriv, eRFPath, RegAddr, Data);
+	 _rtl8821au_phy_rf_serial_write(rtlpriv, eRFPath, RegAddr, Data);
 
 }
 
@@ -192,7 +192,7 @@ u32 rtl8821au_phy_query_rf_reg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAdd
 {
 	u32 Original_Value, Readback_Value, BitShift;
 
-	Original_Value = phy_RFSerialRead(rtlpriv, eRFPath, RegAddr);
+	Original_Value =  _rtl8821au_phy_rf_serial_read(rtlpriv, eRFPath, RegAddr);
 
 	BitShift =  _rtl8821au_phy_calculate_bit_shift(BitMask);
 	Readback_Value = (Original_Value & BitMask) >> BitShift;

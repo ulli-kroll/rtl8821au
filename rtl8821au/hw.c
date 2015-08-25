@@ -799,11 +799,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		}
 		break;
 
-	case HW_VAR_APFM_ON_MAC:
-		pHalData->bMacPwrCtrlOn = *pval;
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s: bMacPwrCtrlOn=%d\n", __FUNCTION__, pHalData->bMacPwrCtrlOn);
-		break;
-
 	case HW_VAR_NAV_UPPER:
 		{
 			uint32_t usNavUpper = *((u32 *)pval);
@@ -931,10 +926,6 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 
 	case HW_VAR_EFUSE_BYTES: /*  To get EFUE total used bytes, added by Roger, 2008.12.22. */
 		*(u16 *)pval = rtlefuse->efuse_usedbytes;
-		break;
-
-	case HW_VAR_APFM_ON_MAC:
-		*pval = pHalData->bMacPwrCtrlOn;
 		break;
 
 	case HW_VAR_CHK_HI_QUEUE_EMPTY:

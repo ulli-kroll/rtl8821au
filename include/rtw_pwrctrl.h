@@ -212,7 +212,6 @@ struct pwrctrl_priv
 	rt_rf_power_state	change_rfpwrstate;
 
 	uint8_t		wepkeymask;
-	uint8_t		bHWPowerdown;//if support hw power down
 	uint8_t		bHWPwrPindetect;
 	uint8_t		brfoffbyhw;
 	unsigned long PS_BBRegBackup[PSBBREG_TOTALCNT];

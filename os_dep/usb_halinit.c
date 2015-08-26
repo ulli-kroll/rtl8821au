@@ -129,6 +129,7 @@ static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 		rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_DISABLE_FLOW);
 }
 
+#if 0	/* ULLI : we have no HW power down here ->pwrctrlpriv.bHWPowerdown = 0 */
 static void rtl8812au_hw_power_down(struct rtl_priv *rtlpriv)
 {
 	/*
@@ -140,7 +141,7 @@ static void rtl8812au_hw_power_down(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_RSV_CTRL, 0x0);
 	rtl_write_word(rtlpriv, REG_APS_FSMCO, 0x8812);
 }
-
+#endif
 uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 {
 	DBG_8192C("==> %s \n", __FUNCTION__);
@@ -160,9 +161,10 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 	
 	if (rtlpriv->hw_init_completed == _TRUE) {
 		_rtl8821au_poweroff_adapter(rtlpriv);
-
+#if 0	/* ULLI : we have no HW power down here ->pwrctrlpriv.bHWPowerdown = 0 */
 		if ((rtlpriv->pwrctrlpriv.bHWPwrPindetect) && (rtlpriv->pwrctrlpriv.bHWPowerdown))
 			rtl8812au_hw_power_down(rtlpriv);
+#endif
 	}
 	return _SUCCESS;
 }

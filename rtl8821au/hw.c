@@ -1412,13 +1412,7 @@ bool rtl8821au_gpio_radio_on_off_checking(struct rtl_priv *rtlpriv, u8 *valid)
 	uint8_t	val8;
 	enum rf_pwrstate rfpowerstate = ERFOFF;
 
-	if (rtlpriv->pwrctrlpriv.bHWPowerdown) {
-		val8 = rtl_read_byte(rtlpriv, REG_HSISR);
-#if 0		
-		DBG_8192C("pwrdown, 0x5c(BIT7)=%02x\n", val8);
-#endif
-		rfpowerstate = (val8 & BIT(7)) ? ERFOFF : ERFON;
-	} else { /* rf on/off */
+	{ /* rf on/off */
 		rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG)&~(BIT(3)));
 		val8 = rtl_read_byte(rtlpriv, REG_GPIO_IO_SEL);
 #if 0		

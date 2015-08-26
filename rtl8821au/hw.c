@@ -1410,21 +1410,21 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 bool rtl8821au_gpio_radio_on_off_checking(struct rtl_priv *rtlpriv, u8 *valid)
 {
 	uint8_t	val8;
-	rt_rf_power_state rfpowerstate = rf_off;
+	enum rf_pwrstate rfpowerstate = ERFOFF;
 
 	if (rtlpriv->pwrctrlpriv.bHWPowerdown) {
 		val8 = rtl_read_byte(rtlpriv, REG_HSISR);
 #if 0		
 		DBG_8192C("pwrdown, 0x5c(BIT7)=%02x\n", val8);
 #endif
-		rfpowerstate = (val8 & BIT7) ? rf_off : rf_on;
+		rfpowerstate = (val8 & BIT7) ? ERFOFF : ERFON;
 	} else { /* rf on/off */
 		rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG)&~(BIT3));
 		val8 = rtl_read_byte(rtlpriv, REG_GPIO_IO_SEL);
 #if 0		
 		DBG_8192C("GPIO_IN=%02x\n", val8);
 #endif		
-		rfpowerstate = (val8 & BIT3) ? rf_on : rf_off;
+		rfpowerstate = (val8 & BIT3) ? ERFON : ERFOFF;
 	}
 	return rfpowerstate;
 }

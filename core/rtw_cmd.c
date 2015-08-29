@@ -1740,7 +1740,7 @@ void dynamic_chk_wk_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf, int sz)
 		traffic_status_watchdog(rtlpriv);
 	}
 
-	rtw_hal_dm_watchdog(rtlpriv);
+	rtlpriv->cfg->ops->dm_watchdog(rtlpriv);
 
 	//check_hw_pbc(rtlpriv, pdrvextra_cmd->pbuf, pdrvextra_cmd->type_size);
 

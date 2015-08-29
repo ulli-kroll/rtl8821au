@@ -466,8 +466,10 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 #if 0	/* ULLI : maybe in old HAL ops */
 	.set_bw_mode = rtl8821au_phy_set_bw_mode,
 	.switch_channel = rtl8821au_phy_sw_chanl,
+#endif
 	.dm_watchdog = rtl8821au_dm_watchdog,
 
+#if 0
 	/* ULLI : rtlwifi function here ? */
 	.scan_operation_backup = rtl_phy_scan_operation_backup,
 #endif
@@ -497,13 +499,13 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.phy_rf6052_set_ofdm_txpower = rtl8821au_phy_rf6052_set_ofdm_txpower,
 	.config_bb_with_headerfile = _rtl8821au_phy_config_bb_with_headerfile,
 	.config_bb_with_pgheaderfile = _rtl8821au_phy_config_bb_with_pgheaderfile,
-#if 0	
+#if 0
 	.phy_lc_calibrate = rtl8821au_phy_lc_calibrate,
 #endif
 	.phy_set_bw_mode_callback = rtl8821au_phy_set_bw_mode_callback,
 #if 0
 	.dm_dynamic_txpower = rtl8821au_dm_dynamic_txpower,
-#endif	
+#endif
 	.fill_h2c_cmd = rtl8821au_fill_h2c_cmd,
 	.get_btc_status = rtl8821au_get_btc_status,
 
@@ -528,8 +530,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	/* .set_bwmode_handler = 	PHY_SetBWMode8192C; */
 	/* .set_channel_handler = 	PHY_SwChnl8192C; */
 
-	/* .hal_dm_watchdog = 	rtl8192c_HalDmWatchDog; */
-
 	.SetBeaconRelatedRegistersHandler = 	rtl8821au_set_beacon_related_registers,
 
 	/* .Add_RateATid = &rtl8192c_Add_RateATid, */
@@ -547,8 +547,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.set_bwmode_handler =	PHY_SetBWMode8812,
 	.set_channel_handler =	PHY_SwChnl8812,
 	.set_chnl_bw_handler =	PHY_SetSwChnlBWMode8812,
-
-	.hal_dm_watchdog =	rtl8821au_dm_watchdog,
 
 	.Add_RateATid =		rtl8812_Add_RateATid,
 };

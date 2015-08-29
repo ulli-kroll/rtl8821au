@@ -1710,6 +1710,8 @@ struct rtl_hal_ops {
 
 
 	bool (*get_btc_status) (void);
+	void (*dm_watchdog)(struct rtl_priv *rtlpriv);
+
 
 	/* Old HAL functions */
 

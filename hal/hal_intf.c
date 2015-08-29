@@ -201,12 +201,6 @@ void	rtw_hal_set_chnl_bw(struct rtl_priv *rtlpriv, uint8_t channel, enum CHANNEL
 		rtlpriv->cfg->ops->set_chnl_bw_handler(rtlpriv, channel, Bandwidth, Offset40, Offset80);
 }
 
-void	rtw_hal_dm_watchdog(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->hal_dm_watchdog)
-		rtlpriv->cfg->ops->hal_dm_watchdog(rtlpriv);
-}
-
 void rtw_hal_bcn_related_reg_setting(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->SetBeaconRelatedRegistersHandler)

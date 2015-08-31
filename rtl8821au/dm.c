@@ -1595,15 +1595,14 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	rtldm->txpowercount = 0;
 }
 
-void rtl8821au_check_tx_power_tracking_thermalmeter(struct _rtw_dm *pDM_Odm)
+static void rtl8821au_check_tx_power_tracking_thermalmeter(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 
 	if ( rtldm->tm_trigger) {		/* at least delay 1 sec */
 		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
-		rtl_set_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
+		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
 
 		/* DBG_871X("Trigger Thermal Meter!!\n"); */
 
@@ -2096,7 +2095,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 		odm_RefreshRateAdaptiveMask(pDM_Odm);
 		rtl8821au_dm_check_edca_turbo(rtlpriv);
 
-		rtl8821au_check_tx_power_tracking_thermalmeter(pDM_Odm);
+		rtl8821au_check_tx_power_tracking_thermalmeter(rtlpriv);
 
 		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
 	}

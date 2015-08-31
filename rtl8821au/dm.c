@@ -2012,6 +2012,38 @@ static void rtl8821au_dm_common_info_self_update(struct _rtw_dm * pDM_Odm)
 		pDM_Odm->bOneEntryOnly = false;
 }
 
+static void rtl8821au_dm_cck_packet_detection_thresh(struct rtl_priv *rtlpriv)
+{
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	u8	CurCCK_CCAThres;
+	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
+
+	if (rtlhal->external_lna_2g)
+		return;
+
+	if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
+		if (dm_digtable->rssi_val_min > 25)
+			CurCCK_CCAThres = 0xcd;
+		else if ((dm_digtable->rssi_val_min <= 25) && (dm_digtable->rssi_val_min > 10))
+			CurCCK_CCAThres = 0x83;
+		else {
+			if (FalseAlmCnt->cnt_cck_fail > 1000)
+				CurCCK_CCAThres = 0x83;
+			else
+				CurCCK_CCAThres = 0x40;
+		}
+	} else {
+		if (FalseAlmCnt->cnt_cck_fail > 1000)
+			CurCCK_CCAThres = 0x83;
+		else
+			CurCCK_CCAThres = 0x40;
+	}
+
+		ODM_Write_CCK_CCA_Thres(rtlpriv, CurCCK_CCAThres);
+}
+
 void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);

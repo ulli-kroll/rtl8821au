@@ -1924,13 +1924,6 @@ typedef struct _ODM_RATE_ADAPTIVE
 	BOOLEAN				bLowerRtsRate;
 
 } ODM_RATE_ADAPTIVE, *PODM_RATE_ADAPTIVE;
-typedef struct _ODM_Phy_Dbg_Info_
-{
-	//ODM Write,debug info
-	u8		NumQryBeaconPkt;
-	//Others
-
-}ODM_PHY_DBG_INFO_T;
 
 typedef struct _ODM_Mac_Status_Info_
 {
@@ -2110,10 +2103,6 @@ struct _rtw_dm {
 	BOOLEAN				RaSupport88E;
 
 	// Define ...........
-
-	// Latest packet phy info (ODM write)
-	ODM_PHY_DBG_INFO_T	 PhyDbgInfo;
-	//PHY_INFO_88E		PhyInfo;
 
 	// Latest packet phy info (ODM write)
 	ODM_MAC_INFO		*pMacInfo;

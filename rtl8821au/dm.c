@@ -2097,7 +2097,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 
 		rtl8821au_check_tx_power_tracking_thermalmeter(rtlpriv);
 
-		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt = 0;
+		rtlpriv->dm.dbginfo.num_qry_beacon_pkt = 0;
 	}
 
 skip_dm:
@@ -2239,7 +2239,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	}
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "odm_DIG(): dm_digtable->LargeFAHit=%d\n", dm_digtable->large_fa_hit);
 
-	if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10))
+	if (rtlpriv->dm.dbginfo.num_qry_beacon_pkt < 10)
 		dm_digtable->rx_gain_min = dm_dig_min;
 
 	if (dm_digtable->rx_gain_min > dm_digtable->rx_gain_max)
@@ -2263,7 +2263,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 			else if (FalseAlmCnt->cnt_all < DM_DIG_FA_TH0)
 				CurrentIGI = CurrentIGI - 2;	/* dm_digtable->CurIGValue =dm_digtable->PreIGValue-1; */
 
-			if ((pDM_Odm->PhyDbgInfo.NumQryBeaconPkt < 10)
+			if ((rtlpriv->dm.dbginfo.num_qry_beacon_pkt < 10)
 			 && (FalseAlmCnt->cnt_all < DM_DIG_FA_TH1))
 				CurrentIGI = dm_digtable->rx_gain_min;
 		}

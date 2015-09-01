@@ -1451,6 +1451,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo
 static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
 	PODM_PACKET_INFO_T pPktinfo)
 {
+	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	int32_t		UndecoratedSmoothedPWDB, UndecoratedSmoothedCCK, UndecoratedSmoothedOFDM, RSSI_Ave;
 	u8		isCCKrate = 0;
 	u8		RSSI_max, RSSI_min, i;
@@ -1472,7 +1473,7 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyI
 	}
 
 	if (pPktinfo->bPacketBeacon)
-		pDM_Odm->PhyDbgInfo.NumQryBeaconPkt++;
+		rtlpriv->dm.dbginfo.num_qry_beacon_pkt++;
 	isCCKrate = (pPktinfo->DataRate <= DESC_RATE11M) ? TRUE : FALSE;
 	pDM_Odm->RxRate = pPktinfo->DataRate;
 	/*

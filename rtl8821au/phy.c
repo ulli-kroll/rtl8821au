@@ -4869,12 +4869,12 @@ static void _rtl8821au_config_bb_reg(struct rtl_priv *rtlpriv, uint32_t Addr,
 /******************** */
 
 
-static void _phy_convert_txpower_dbm_to_relative_value(u32* data, u8 start,
+static void _phy_convert_txpower_dbm_to_relative_value(u32 *data, u8 start,
 						       u8 end, u8 base_val)
 {
-	char i = 0;
-	u8 temp_value;
-	u32 temp_data;
+	s8 i = 0;
+	u8 temp_value = 0;
+	u32 temp_data = 0;
 
 	/* BaseValue = ( BaseValue & 0xf ) + ( ( BaseValue >> 4 ) & 0xf ) * 10; */
 	/* RT_TRACE(COMP_INIT, DBG_LOUD, ("Corrected BaseValue %u\n", BaseValue ) ); */
@@ -4883,13 +4883,14 @@ static void _phy_convert_txpower_dbm_to_relative_value(u32* data, u8 start,
 		if (i >= start && i <= end) {
 			/* Get the exact value */
 			temp_value = (u8) (*data >> (i * 8) ) & 0xF;
-			temp_value += (( u8) ((*data >> (i * 8 + 4)) & 0xF)) * 10;
+			temp_value += (( u8) (( *data >> (i * 8 + 4)) & 0xF)) * 10;
 
 			/* Change the value to a relative value */
-			temp_value = (temp_value > base_val) ? temp_value - 
-					base_val : base_val - temp_value;
+			temp_value = (temp_value > base_val) ?
+				(temp_value - base_val) :
+				(base_val - temp_value);
 		} else {
-			temp_value = (uint8_t) (*data >> (i * 8)) & 0xFF;
+			temp_value = (u8) (*data >> (i * 8)) & 0xFF;
 		}
 
 		temp_data <<= 8;

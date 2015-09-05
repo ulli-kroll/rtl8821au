@@ -1161,6 +1161,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct device *device = dvobj_to_dev(rtlusb);
 	const struct firmware *fw;
+	char *fw_name;
 	u8 *pfwdata;
 
 	int32_t	rtStatus = _SUCCESS;
@@ -1172,22 +1173,17 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
 
 	pDM_Odm = &pHalData->odmpriv;
 
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		const char fw_name[] = "rtlwifi/rtl8812aufw.bin";
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) 
+		fw_name = "rtlwifi/rtl8812aufw.bin";
 
-		if (request_firmware(&fw, fw_name, device)) {
-			RT_TRACE(rtlpriv, COMP_FW, DBG_EMERG, "Firmware %s not available\n", fw_name);
-			return -ENOENT;
-		}
-	}
+	if (IS_HARDWARE_TYPE_8821U(rtlhal))
+		fw_name = "rtlwifi/rtl8821aufw.bin";
 
-	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		const char fw_name[] = "rtlwifi/rtl8821aufw.bin";
+	pr_info("Loading firmware %s\n", fw_name);
 
-		if (request_firmware(&fw, fw_name, device)) {
-			RT_TRACE(rtlpriv, COMP_FW, DBG_EMERG, "Firmware %s not available\n", fw_name);
-			return -ENOENT;
-		}
+	if (request_firmware(&fw, fw_name, device)) {
+		RT_TRACE(rtlpriv, COMP_FW, DBG_EMERG, "Firmware %s not available\n", fw_name);
+		return -ENOENT;
 	}
 
 

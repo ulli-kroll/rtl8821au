@@ -47,25 +47,6 @@ const char *const GLBwSrc[]={
  * 3. Initial MAC/BB/RF config by reading MAC/BB/RF txt.
  */
 
-void _rtl8812au_bb8812_config_1t(struct rtl_priv *rtlpriv)
-{
-	/* BB OFDM RX Path_A */
-	rtl_set_bbreg(rtlpriv, rRxPath_Jaguar, bRxPath_Jaguar, 0x11);
-	/* BB OFDM TX Path_A */
-	rtl_set_bbreg(rtlpriv, rTxPath_Jaguar, bMaskLWord, 0x1111);
-	/* BB CCK R/Rx Path_A */
-	rtl_set_bbreg(rtlpriv, rCCK_RX_Jaguar, bCCK_RX_Jaguar, 0x0);
-	/* MCS support */
-	rtl_set_bbreg(rtlpriv, 0x8bc, 0xc0000060, 0x4);
-	/* RF Path_B HSSI OFF */
-	rtl_set_bbreg(rtlpriv, 0xe00, 0xf, 0x4);
-	/* RF Path_B Power Down */
-	rtl_set_bbreg(rtlpriv, 0xe90, bMaskDWord, 0);
-	/* ADDA Path_B OFF */
-	rtl_set_bbreg(rtlpriv, 0xe60, bMaskDWord, 0);
-	rtl_set_bbreg(rtlpriv, 0xe64, bMaskDWord, 0);
-}
-
 
 int PHY_RFConfig8812(struct rtl_priv *rtlpriv)
 {

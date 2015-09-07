@@ -127,28 +127,6 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
 
 
 
-/* <20130207, Kordan> The variales initialized here are used in odm_LNAPowerControl(). */
-static void phy_InitRssiTRSW(struct rtl_priv *rtlpriv)
-{
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *	pDM_Odm = &pHalData->odmpriv;
-	uint8_t 			channel = rtlpriv->phy.current_channel;
-
-	if (rtlhal->rfe_type == 3){
-		if (channel <= 14) {
-			;
-		} else if (36 <= channel && channel <= 64) {
-			;
-		} else if (100 <= channel && channel <= 144) {
-			;
-		} else if (149 <= channel) {
-			;
-		}
-	}
-}
-
 /*
  * Prototypes needed here, because functions are moved to rtl8821au/phy.c
  */
@@ -246,9 +224,6 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 
 		rtl8821au_dm_clean_txpower_tracking_state(rtlpriv);
 		PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
-
-		if (IS_HARDWARE_TYPE_8812(rtlhal))
-			phy_InitRssiTRSW(rtlpriv);
 
 		if ((rtlpriv->phy.need_iqk = false == true)) {
 			if(IS_HARDWARE_TYPE_8812(rtlhal))

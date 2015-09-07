@@ -150,8 +150,6 @@ static void phy_InitRssiTRSW(struct rtl_priv *rtlpriv)
 			pDM_Odm->RSSI_TRSW_H   = 75;
 			pDM_Odm->RSSI_TRSW_iso = 30;
 		}
-
-		pDM_Odm->RSSI_TRSW_L = pDM_Odm->RSSI_TRSW_H - pDM_Odm->RSSI_TRSW_iso - 10;
 	}
 }
 

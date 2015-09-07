@@ -138,17 +138,13 @@ static void phy_InitRssiTRSW(struct rtl_priv *rtlpriv)
 
 	if (rtlhal->rfe_type == 3){
 		if (channel <= 14) {
-			pDM_Odm->RSSI_TRSW_H    = 70;		/* Unit: percentage(%) */
-			pDM_Odm->RSSI_TRSW_iso  = 25;
+			;
 		} else if (36 <= channel && channel <= 64) {
-			pDM_Odm->RSSI_TRSW_H   = 70;
-			pDM_Odm->RSSI_TRSW_iso = 25;
+			;
 		} else if (100 <= channel && channel <= 144) {
-			pDM_Odm->RSSI_TRSW_H   = 80;
-			pDM_Odm->RSSI_TRSW_iso = 35;
+			;
 		} else if (149 <= channel) {
-			pDM_Odm->RSSI_TRSW_H   = 75;
-			pDM_Odm->RSSI_TRSW_iso = 30;
+			;
 		}
 	}
 }

@@ -2067,8 +2067,6 @@ struct _rtw_dm {
 	u8			RSSI_A;
 	u8			RSSI_B;
 	uint64_t			RSSI_TRSW;
-	uint64_t			RSSI_TRSW_H;
-	uint64_t			RSSI_TRSW_iso;
 
 	u8			RxRate;
 	BOOLEAN			StopDIG;

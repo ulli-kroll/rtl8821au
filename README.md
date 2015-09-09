@@ -6,6 +6,29 @@ rtl8821/rtl8812 linux kernel driver Wireless Dual-Band USB Adapter
 For issues with the hardware and driver see at the end of this readme.  
 If one USB-ID is missing, please mail me.
 
+**NEW:**  
+Added firmware files from Asus named :  
+AWUS036AC from 20150212
+
+Added **new** module params, taken form rtlwifi driver  
+see with `modinfo rtl8821au.ko`  
+`swenc:  Set to 1 for software crypto`  
+`ips:    Set to 0 to not use link power save`  
+`debug:  Set debug level (0-5)`  
+
+currently ips is/may be disabled
+
+In 2T2R Modes they are some issues with the bandwith.  
+Output form iperf3  
+used with Xioami MiWifi : Wifi Chip MT7612E  
+`[  4]   0.00-10.00  sec   113 MBytes  94.5 Mbits/sec    0             sender`  
+`[  4]   0.00-10.00  sec   112 MBytes  94.2 Mbits/sec                  receiver`  
+used with Edimax BR-6208AC : Wifi Chip RTL8812AE  
+`[  4]   0.00-10.00  sec  17.3 MBytes  14.5 Mbits/sec    0             sender`  
+`[  4]   0.00-10.00  sec  17.0 MBytes  14.2 Mbits/sec                  receiver`  
+
+Maybe I test this further, if I have time. tough
+
 Building and install driver
 ---------------------------
 
@@ -37,7 +60,7 @@ TESTED DEVICES:
 * TP-Link T4U AC 1200  
 * Linksys WUSB 6300  
 
-with kernel 3.19 and up, lower kernel down to 3.10 will work too.
+with kernel 4.2 and up, lower kernel down to 3.10 will work too.
 
 STATUS:
 -------

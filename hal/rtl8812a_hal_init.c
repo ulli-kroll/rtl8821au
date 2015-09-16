@@ -603,22 +603,26 @@ void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
 	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "SWAS: bHwAntDiv = %x\n", pHalData->AntDivCfg);
 }
 
-void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
-			BOOLEAN	AutoloadFail)
+void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
+			     bool autoload_fail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
-	if (!AutoloadFail) {
+	if (!autoload_fail) {
 		if (GetRegAmplifierType2G(rtlpriv) == 0) {
 			/* AUTO */
-			rtlhal->pa_type_2g = EF1Byte(*(uint8_t *)&PROMContent[EEPROM_PA_TYPE_8812AU]);
-			rtlhal->lna_type_2g = EF1Byte(*(uint8_t *)&PROMContent[EEPROM_LNA_TYPE_2G_8812AU]);
+			rtlhal->pa_type_2g = hwinfo[EEPROM_PA_TYPE_8812AU];
+			rtlhal->lna_type_2g = hwinfo[EEPROM_LNA_TYPE_2G_8812AU];
+
 			if (rtlhal->pa_type_2g == 0xFF && rtlhal->lna_type_2g == 0xFF) {
 				rtlhal->pa_type_2g = 0;
 				rtlhal->lna_type_2g = 0;
 			}
-			rtlhal->external_pa_2g = ((rtlhal->pa_type_2g & BIT5) && (rtlhal->pa_type_2g & BIT4)) ? 1 : 0;
-			rtlhal->external_lna_2g = ((rtlhal->lna_type_2g & BIT7) && (rtlhal->lna_type_2g & BIT3)) ? 1 : 0;
+
+			rtlhal->external_pa_2g = ((rtlhal->pa_type_2g & BIT5) && 
+						  (rtlhal->pa_type_2g & BIT4)) ? 1 : 0;
+			rtlhal->external_lna_2g = ((rtlhal->lna_type_2g & BIT7) &&
+						   (rtlhal->lna_type_2g & BIT3)) ? 1 : 0;
 		} else 	{
 			rtlhal->external_pa_2g  = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_PA)  ? 1 : 0;
 			rtlhal->external_lna_2g = (GetRegAmplifierType2G(rtlpriv)&ODM_BOARD_EXT_LNA) ? 1 : 0;
@@ -626,14 +630,18 @@ void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
 
 		if (GetRegAmplifierType5G(rtlpriv) == 0) {
 			/* AUTO */
-			rtlhal->pa_type_5g = EF1Byte(*(uint8_t *)&PROMContent[EEPROM_PA_TYPE_8812AU]);
-			rtlhal->lna_type_5g = EF1Byte(*(uint8_t *)&PROMContent[EEPROM_LNA_TYPE_5G_8812AU]);
+			rtlhal->pa_type_5g = hwinfo[EEPROM_PA_TYPE_8812AU];
+			rtlhal->lna_type_5g = hwinfo[EEPROM_LNA_TYPE_5G_8812AU];
+
 			if (rtlhal->pa_type_5g == 0xFF && rtlhal->lna_type_5g == 0xFF) {
 				rtlhal->pa_type_5g = 0;
 				rtlhal->lna_type_5g = 0;
 			}
-			rtlhal->external_pa_5g = ((rtlhal->pa_type_5g & BIT1) && (rtlhal->pa_type_5g & BIT0)) ? 1 : 0;
-			rtlhal->external_lna_5g = ((rtlhal->lna_type_5g & BIT7) && (rtlhal->lna_type_5g & BIT3)) ? 1 : 0;
+
+			rtlhal->external_pa_5g = ((rtlhal->pa_type_5g & BIT1) &&
+						  (rtlhal->pa_type_5g & BIT0)) ? 1 : 0;
+			rtlhal->external_lna_5g = ((rtlhal->lna_type_5g & BIT7) &&
+						   (rtlhal->lna_type_5g & BIT3)) ? 1 : 0;
 		} else {
 			rtlhal->external_pa_5g  = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_PA_5G)  ? 1 : 0;
 			rtlhal->external_lna_5g = (GetRegAmplifierType5G(rtlpriv)&ODM_BOARD_EXT_LNA_5G) ? 1 : 0;

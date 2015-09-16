@@ -10,8 +10,8 @@ static inline void DBG_8192C(const char *fmt, ...)
 }
 
 
-static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
-	BOOLEAN	 AutoloadFail);
+static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
+				    bool autoload_fail);
 
 void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 {
@@ -2381,17 +2381,17 @@ exit:
 	return status;
 }
 
-static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
-	BOOLEAN	 AutoloadFail)
+static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
+				    bool autoload_fail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
-	if (!AutoloadFail) {
+	if (!autoload_fail) {
 		if (GetRegAmplifierType2G(rtlpriv) == 0) {
 			/* AUTO */
 
-			rtlhal->pa_type_2g = EF1Byte(*(uint8_t *) &PROMContent[EEPROM_PA_TYPE_8812AU]);
-			rtlhal->lna_type_2g = EF1Byte(*(uint8_t *) &PROMContent[EEPROM_LNA_TYPE_2G_8812AU]);
+			rtlhal->pa_type_2g = hwinfo[EEPROM_PA_TYPE_8812AU];
+			rtlhal->lna_type_2g = hwinfo[EEPROM_LNA_TYPE_2G_8812AU];
 			if (rtlhal->pa_type_2g == 0xFF && rtlhal->lna_type_2g == 0xFF) {
 				rtlhal->pa_type_2g = 0;
 				rtlhal->lna_type_2g = 0;
@@ -2405,8 +2405,8 @@ static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *PROMConte
 
 		if (GetRegAmplifierType5G(rtlpriv) == 0) {
 			/* AUTO */
-			rtlhal->pa_type_5g = EF1Byte(*(uint8_t *) &PROMContent[EEPROM_PA_TYPE_8812AU]);
-			rtlhal->lna_type_5g = EF1Byte(*(uint8_t *) &PROMContent[EEPROM_LNA_TYPE_5G_8812AU]);
+			rtlhal->pa_type_5g = hwinfo[EEPROM_PA_TYPE_8812AU];
+			rtlhal->lna_type_5g = hwinfo[EEPROM_LNA_TYPE_5G_8812AU];
 			if (rtlhal->pa_type_5g == 0xFF && rtlhal->lna_type_5g == 0xFF) {
 				rtlhal->pa_type_5g = 0;
 				rtlhal->lna_type_5g = 0;

@@ -116,7 +116,6 @@ void rtl8812_init_dm_priv(IN struct rtl_priv *rtlpriv)
 	/* spin_lock_init(&(pHalData->odm_stainfo_lock)); */
 
 	Init_ODM_ComInfo_8812(rtlpriv);
-	rtlpriv->registrypriv.bEn_RFE = 0;
 }
 
 void rtl8812_deinit_dm_priv(IN struct rtl_priv *rtlpriv)

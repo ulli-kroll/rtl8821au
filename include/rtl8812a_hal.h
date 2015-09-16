@@ -182,8 +182,6 @@
 
 //#define RT_IS_FUNC_DISABLED(rtlpriv, __FuncBits) ( (rtlpriv)->DisabledFunctions & (__FuncBits) )
 
-#define GetRegbENRFEType(_Adapter)	(_Adapter->registrypriv.bEn_RFE)
-
 // rtl8812_hal_init.c
 void	InitializeFirmwareVars8812(struct rtl_priv *rtlpriv);
 

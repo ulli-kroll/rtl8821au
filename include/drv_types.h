@@ -158,7 +158,6 @@ struct registry_priv
 #ifdef CONFIG_80211D
 	uint8_t enable80211d;
 #endif
-	uint8_t	bEn_RFE;
 };
 
 

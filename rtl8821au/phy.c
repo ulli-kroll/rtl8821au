@@ -4232,7 +4232,8 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT15, 0x1);
 			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT15, 0x1);
 		} else if(IS_VENDOR_8812A_MP_CHIP(rtlhal->version)) {
-			if(GetRegbENRFEType(rtlpriv))
+			if(0 /* GetRegbENRFEType(rtlpriv) */)
+			
 				phy_SetRFEReg8812(rtlpriv, Band);
 			else {
 				/* PAPE_A (bypass RFE module in 2G) */
@@ -4320,7 +4321,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT15, 0x0);
 			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT15, 0x0);
 		} else if(IS_VENDOR_8812A_MP_CHIP(rtlhal->version)) {
-			if(GetRegbENRFEType(rtlpriv))
+			if(0 /* GetRegbENRFEType(rtlpriv) */)
 				phy_SetRFEReg8812(rtlpriv, Band);
 			else {
 				/* PAPE_A (bypass RFE module in 2G) */

@@ -112,10 +112,6 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
  * Prototypes needed here, because functions are moved to rtl8821au/phy.c
  */
 
-void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
-	u8 Channel);
-
-
 static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	BOOLEAN	bSwitchChannel, BOOLEAN	bSetBandWidth,
 	uint8_t	ChannelNum, enum CHANNEL_WIDTH ChnlWidth,

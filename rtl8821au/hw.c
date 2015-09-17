@@ -2397,7 +2397,8 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	 */
 
 
-	status = PHY_BBConfig8812(rtlpriv);
+	status = rtl8821au_phy_bb_config(rtlpriv);
+
 	if (status == _FAIL)
 		goto exit;
 

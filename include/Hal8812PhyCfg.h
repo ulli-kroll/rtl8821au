@@ -58,7 +58,6 @@
 // Initialization related function
 //
 /* MAC/BB/RF HAL config */
-int	PHY_BBConfig8812(IN struct rtl_priv *rtlpriv	);
 
 /* RF config */
 

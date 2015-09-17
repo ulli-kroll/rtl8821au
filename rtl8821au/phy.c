@@ -6223,7 +6223,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 	return rtStatus;
 }
 
-int PHY_BBConfig8812(struct rtl_priv *rtlpriv)
+int rtl8821au_phy_bb_config(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);

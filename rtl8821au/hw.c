@@ -10,8 +10,6 @@ static inline void DBG_8192C(const char *fmt, ...)
 }
 
 
-static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
-				    bool autoload_fail);
 
 void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 {
@@ -1266,6 +1264,13 @@ static void ReadLEDSetting_8812AU(struct rtl_priv *rtlpriv,
 {
 }
 
+
+static void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
+				    bool autoload_fail);
+
+static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
+				    bool autoload_fail);
+
 void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
@@ -2379,6 +2384,56 @@ exit:
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s in %dms\n", __FUNCTION__, rtw_get_passing_time_ms(init_start_time));
 
 	return status;
+}
+
+static void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
+			     bool autoload_fail)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	if (!autoload_fail) {
+		rtlhal->pa_type_2g = hwinfo[EEPROM_PA_TYPE_8812AU];
+		rtlhal->lna_type_2g = hwinfo[EEPROM_LNA_TYPE_2G_8812AU];
+
+		if (rtlhal->pa_type_2g == 0xFF && rtlhal->lna_type_2g == 0xFF) {
+			rtlhal->pa_type_2g = 0;
+			rtlhal->lna_type_2g = 0;
+		}
+
+		rtlhal->external_pa_2g = ((rtlhal->pa_type_2g & BIT5) &&
+					  (rtlhal->pa_type_2g & BIT4)) ? 1 : 0;
+		rtlhal->external_lna_2g = ((rtlhal->lna_type_2g & BIT7) &&
+					   (rtlhal->lna_type_2g & BIT3)) ? 1 : 0;
+
+		rtlhal->pa_type_5g = hwinfo[EEPROM_PA_TYPE_8812AU];
+		rtlhal->lna_type_5g = hwinfo[EEPROM_LNA_TYPE_5G_8812AU];
+
+		if (rtlhal->pa_type_5g == 0xFF && rtlhal->lna_type_5g == 0xFF) {
+			rtlhal->pa_type_5g = 0;
+			rtlhal->lna_type_5g = 0;
+		}
+
+		rtlhal->external_pa_5g = ((rtlhal->pa_type_5g & BIT1) &&
+					  (rtlhal->pa_type_5g & BIT0)) ? 1 : 0;
+		rtlhal->external_lna_5g = ((rtlhal->lna_type_5g & BIT7) &&
+					   (rtlhal->lna_type_5g & BIT3)) ? 1 : 0;
+
+	} else {
+		rtlhal->external_pa_2g  = EEPROM_Default_PAType;
+		rtlhal->external_pa_5g  = 0xFF;
+		rtlhal->external_lna_2g = EEPROM_Default_LNAType;
+		rtlhal->external_lna_5g = 0xFF;
+
+		rtlhal->external_pa_2g  = 0;
+		rtlhal->external_lna_2g = 0;
+
+		rtlhal->external_pa_5g  = 0;
+		rtlhal->external_lna_5g = 0;
+	}
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->PAType_2G is 0x%x, pHalData->ExternalPA_2G = %d\n", rtlhal->pa_type_2g, rtlhal->external_pa_2g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->PAType_5G is 0x%x, pHalData->ExternalPA_5G = %d\n", rtlhal->pa_type_5g, rtlhal->external_pa_5g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->LNAType_2G is 0x%x, pHalData->ExternalLNA_2G = %d\n", rtlhal->lna_type_2g, rtlhal->external_lna_2g);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
 }
 
 static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,

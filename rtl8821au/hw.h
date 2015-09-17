@@ -14,7 +14,6 @@ void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv);
 int32_t	 _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy);
 void rtl8821au_enable_interrupt(struct rtl_priv *rtlpriv);
 void rtl8821au_disable_interrupt(struct rtl_priv *rtlpriv);
-void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv,u8* PROMContent, BOOLEAN AutoloadFail);
 
 /* temporaly prototypes for transition */
 

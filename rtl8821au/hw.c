@@ -1,6 +1,7 @@
 #include "hw.h"
 #include "reg.h"
 #include "fw.h"
+#include "rf.h"
 #include "phy.h"
 #include "def.h"
 
@@ -2227,6 +2228,20 @@ static void _rtl8812au_bb8812_config_1t(struct rtl_priv *rtlpriv)
 	/* ADDA Path_B OFF */
 	rtl_set_bbreg(rtlpriv, 0xe60, bMaskDWord, 0);
 	rtl_set_bbreg(rtlpriv, 0xe64, bMaskDWord, 0);
+}
+
+
+
+static int PHY_RFConfig8812(struct rtl_priv *rtlpriv)
+{
+	int rtStatus = _SUCCESS;
+
+	if (rtlpriv->bSurpriseRemoved)
+		return _FAIL;
+
+	rtStatus = rtl8821au_phy_rf6052_config(rtlpriv);
+
+	return rtStatus;
 }
 
 uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)

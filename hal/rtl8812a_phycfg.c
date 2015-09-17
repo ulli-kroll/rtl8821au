@@ -47,20 +47,6 @@ const char *const GLBwSrc[]={
  * 3. Initial MAC/BB/RF config by reading MAC/BB/RF txt.
  */
 
-
-int PHY_RFConfig8812(struct rtl_priv *rtlpriv)
-{
-	int rtStatus = _SUCCESS;
-
-	if (rtlpriv->bSurpriseRemoved)
-		return _FAIL;
-
-	rtStatus = rtl8821au_phy_rf6052_config(rtlpriv);
-
-	return rtStatus;
-}
-
-
 /* Ulli called in odm_RegConfig8812A.c and odm_RegConfig8821A.c */
 
 /**************************************************************************************************************

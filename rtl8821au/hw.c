@@ -1436,9 +1436,6 @@ void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 	hal_CustomizeByCustomerID_8812AU(rtlpriv);
 
 	ReadLEDSetting_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-
-	/* 2013/04/15 MH Add for different board type recognize. */
-	hal_ReadUsbType_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
 }
 
 

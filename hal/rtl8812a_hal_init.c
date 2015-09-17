@@ -156,31 +156,6 @@ hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
  *
  */
 
-void ReadRFType8812A(struct rtl_priv *rtlpriv)
-{
-	/*
-	 * if (pHalData->rf_type == RF_1T1R){
-	 *	pHalData->bRFPathRxEnable[0] = _TRUE;
-	 * }
-	 * else {	// Default unknow type is 2T2r
-	 *	pHalData->bRFPathRxEnable[0] = pHalData->bRFPathRxEnable[1] = _TRUE;
-	 *}
-	 */
-
-	if (IsSupported24G(rtlpriv->registrypriv.wireless_mode) &&
-		IsSupported5G(rtlpriv->registrypriv.wireless_mode))
-		rtlpriv->rtlhal.bandset = BAND_ON_BOTH;
-	else if (IsSupported5G(rtlpriv->registrypriv.wireless_mode))
-		rtlpriv->rtlhal.bandset = BAND_ON_5G;
-	else
-		rtlpriv->rtlhal.bandset = BAND_ON_2_4G;
-
-	/*
-	 * if(rtlpriv->bInHctTest)
-	 * 	pHalData->BandSet = BAND_ON_2_4G;
-	 */
-}
-
 void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, BOOLEAN bSet)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);

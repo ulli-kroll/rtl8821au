@@ -68,83 +68,79 @@ void rtl8812_free_hal_data(struct rtl_priv *rtlpriv)
 /*
  * 2013/04/15 MH Add 8812AU- VL/VS/VN for different board type.
  */
-void
-hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, uint8_t *PROMContent,
-	BOOLEAN AutoloadFail)
+void hal_ReadUsbType_8812AU(struct rtl_priv *rtlpriv, u8 *hwinfo,
+			    bool autoload_fail)
 {
-	/* if (IS_HARDWARE_TYPE_8812AU(rtlpriv) && rtlpriv->UsbModeMechanism.RegForcedUsbMode == 5) */
-	{
-		uint8_t	reg_tmp, i, j, antenna = 0, wmode = 0;
-		/* Read anenna type from EFUSE 1019/1018 */
-		for (i = 0; i < 2; i++) {
-			/* Check efuse address 1019 */
-			/* Check efuse address 1018 */
-			efuse_OneByteRead(rtlpriv, 1019-i, &reg_tmp);
+	uint8_t	reg_tmp, i, j, antenna = 0, wmode = 0;
+	/* Read anenna type from EFUSE 1019/1018 */
+	for (i = 0; i < 2; i++) {
+		/* Check efuse address 1019 */
+		/* Check efuse address 1018 */
+		efuse_OneByteRead(rtlpriv, 1019-i, &reg_tmp);
 
-			for (j = 0; j < 2; j++) {
-				/* CHeck bit 7-5 */
-				/* Check bit 3-1 */
-				antenna = ((reg_tmp&0xee) >> (5-(j*4)));
-				if (antenna == 0)
-					continue;
-				else {
-					break;
-				}
+		for (j = 0; j < 2; j++) {
+			/* CHeck bit 7-5 */
+			/* Check bit 3-1 */
+			antenna = ((reg_tmp&0xee) >> (5-(j*4)));
+			if (antenna == 0)
+				continue;
+			else {
+				break;
 			}
 		}
+	}
 
-		/* Read anenna type from EFUSE 1021/1020 */
-		for (i = 0; i < 2; i++) {
-			/* Check efuse address 1019 */
-			/* Check efuse address 1018 */
-			efuse_OneByteRead(rtlpriv, 1021-i, &reg_tmp);
+	/* Read anenna type from EFUSE 1021/1020 */
+	for (i = 0; i < 2; i++) {
+		/* Check efuse address 1019 */
+		/* Check efuse address 1018 */
+		efuse_OneByteRead(rtlpriv, 1021-i, &reg_tmp);
 
-			for (j = 0; j < 2; j++) {
-				/* CHeck bit 3-2 */
-				/* Check bit 1-0 */
-				wmode = ((reg_tmp&0x0f) >> (2-(j*2)));
-				if (wmode)
-					continue;
-				else {
-					break;
-				}
+		for (j = 0; j < 2; j++) {
+			/* CHeck bit 3-2 */
+			/* Check bit 1-0 */
+			wmode = ((reg_tmp&0x0f) >> (2-(j*2)));
+			if (wmode)
+				continue;
+			else {
+				break;
 			}
 		}
+	}
 
-		/* Ulli Antenna Mode */
-		/* Antenna == 1 WMODE = 3 RTL8812AU-VL 11AC + USB2.0 Mode */
-		if (antenna == 1) {
-			/* Config 8812AU as 1*1 mode AC mode. */
-			rtlpriv->phy.rf_type = RF_1T1R;
-			/* UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE); */
-			/* pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VL; */
-			RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU_VL\n", __FUNCTION__);
-		} else if (antenna == 2) {
-			if (wmode == 3) {
-				if (PROMContent[EEPROM_USB_MODE_8812] == 0x2) {
-					/*
-					 * RTL8812AU Normal Mode. No further action.
-					 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU;
-					 */
-					RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU\n", __FUNCTION__);
-				} else {
-					/*
-					 * Antenna == 2 WMODE = 3 RTL8812AU-VS 11AC + USB2.0 Mode
-					 * Driver will not support USB automatic switch
-					 * UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE);
-					 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VS;
-					 */
-					RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU_VS\n", __FUNCTION__);
-				}
-			} else
-				if (wmode == 2) {
+	/* Ulli Antenna Mode */
+	/* Antenna == 1 WMODE = 3 RTL8812AU-VL 11AC + USB2.0 Mode */
+	if (antenna == 1) {
+		/* Config 8812AU as 1*1 mode AC mode. */
+		rtlpriv->phy.rf_type = RF_1T1R;
+		/* UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE); */
+		/* pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VL; */
+		RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU_VL\n", __FUNCTION__);
+	} else if (antenna == 2) {
+		if (wmode == 3) {
+			if (hwinfo[EEPROM_USB_MODE_8812] == 0x2) {
 				/*
-				 * Antenna == 2 WMODE = 2 RTL8812AU-VN 11N only + USB2.0 Mode
-				 * UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE);
-				 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VN;
+				 * RTL8812AU Normal Mode. No further action.
+				 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU;
 				 */
-				RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU_VN\n", __FUNCTION__);
+				RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU\n", __FUNCTION__);
+			} else {
+				/*
+				 * Antenna == 2 WMODE = 3 RTL8812AU-VS 11AC + USB2.0 Mode
+				 * Driver will not support USB automatic switch
+				 * UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE);
+				 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VS;
+				 */
+				RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU_VS\n", __FUNCTION__);
 			}
+		} else
+			if (wmode == 2) {
+			/*
+			 * Antenna == 2 WMODE = 2 RTL8812AU-VN 11N only + USB2.0 Mode
+			 * UsbModeSwitch_SetUsbModeMechOn(rtlpriv, FALSE);
+			 * pHalData->EFUSEHidden = EFUSE_HIDDEN_812AU_VN;
+			 */
+			RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "%s(): EFUSE_HIDDEN_812AU_VN\n", __FUNCTION__);
 		}
 	}
 }

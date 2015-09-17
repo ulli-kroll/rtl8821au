@@ -1271,6 +1271,9 @@ static void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 				    bool autoload_fail);
 
+static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
+	bool autoload_fail);
+
 void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
@@ -2477,3 +2480,422 @@ static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "pHalData->LNAType_5G is 0x%x, pHalData->ExternalLNA_5G = %d\n", rtlhal->lna_type_5g, rtlhal->external_lna_5g);
 }
 
+static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
+	struct txpower_info_2g *pwrinfo24g,
+	struct txpower_info_5g *pwrinfo5g,
+	u8 *hwinfo,
+	bool autoload_fail)
+{
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	uint32_t rfPath, eeAddr = EEPROM_TX_PWR_INX_8812, group, TxCount = 0;
+
+	memset(pwrinfo24g, 0, sizeof(*pwrinfo24g));
+	memset(pwrinfo5g, 0, sizeof(*pwrinfo5g));
+
+	/* DBG_871X("hal_ReadPowerValueFromPROM8812A(): PROMContent[0x%x]=0x%x\n", (eeAddr+1), PROMContent[eeAddr+1]); */
+	if (0xFF == hwinfo[eeAddr+1])  /* YJ,add,120316 */
+		autoload_fail = true;
+
+	if (autoload_fail) {
+		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "hal_ReadPowerValueFromPROM8812A(): Use Default value!\n");
+		for (rfPath = 0 ; rfPath < MAX_RF_PATH ; rfPath++) {
+			/*  2.4G default value */
+			for (group = 0 ; group < MAX_CHNL_GROUP_24G; group++) {
+				pwrinfo24g->index_cck_base[rfPath][group] = EEPROM_DEFAULT_24G_INDEX;
+				pwrinfo24g->index_bw40_base[rfPath][group] = EEPROM_DEFAULT_24G_INDEX;
+			}
+			for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
+				if (TxCount == 0) {
+					pwrinfo24g->bw20_diff[rfPath][0] = EEPROM_DEFAULT_24G_HT20_DIFF;
+					pwrinfo24g->ofdm_diff[rfPath][0] = EEPROM_DEFAULT_24G_OFDM_DIFF;
+				} else {
+					pwrinfo24g->bw20_diff[rfPath][TxCount] = EEPROM_DEFAULT_DIFF;
+					pwrinfo24g->bw40_diff[rfPath][TxCount] = EEPROM_DEFAULT_DIFF;
+					pwrinfo24g->cck_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrinfo24g->ofdm_diff[rfPath][TxCount] = EEPROM_DEFAULT_DIFF;
+				}
+			}
+
+			/* 5G default value */
+			for (group = 0 ; group < MAX_CHNL_GROUP_5G; group++)
+				pwrinfo5g->index_bw40_base[rfPath][group] = EEPROM_DEFAULT_5G_INDEX;
+
+			for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
+				if (TxCount == 0) {
+					pwrinfo5g->ofdm_diff[rfPath][0] = EEPROM_DEFAULT_5G_OFDM_DIFF;
+					pwrinfo5g->bw20_diff[rfPath][0] = EEPROM_DEFAULT_5G_HT20_DIFF;
+					pwrinfo5g->bw80_diff[rfPath][0] = EEPROM_DEFAULT_DIFF;
+					pwrinfo5g->bw160_diff[rfPath][0] = EEPROM_DEFAULT_DIFF;
+				} else {
+					/* ULLI check for-loop in _rtl8821ae_read_power_fromprom() */
+					pwrinfo5g->ofdm_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrinfo5g->bw20_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrinfo5g->bw40_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrinfo5g->bw80_diff[rfPath][TxCount] =	EEPROM_DEFAULT_DIFF;
+					pwrinfo5g->bw160_diff[rfPath][TxCount] = EEPROM_DEFAULT_DIFF;
+
+				}
+			}
+
+		}
+
+		/* pHalData->bNOPG = _TRUE; */
+		return;
+	}
+
+	pHalData->bTXPowerDataReadFromEEPORM = _TRUE;		/* YJ,move,120316 */
+
+	for (rfPath = 0; rfPath < MAX_RF_PATH; rfPath++) {
+		/*  2.4G default value */
+		for (group = 0; group < MAX_CHNL_GROUP_24G; group++) {
+			pwrinfo24g->index_cck_base[rfPath][group] = hwinfo[eeAddr++];
+			if (pwrinfo24g->index_cck_base[rfPath][group] == 0xFF) {
+				pwrinfo24g->index_cck_base[rfPath][group] = EEPROM_DEFAULT_24G_INDEX;
+				/* pHalData->bNOPG = _TRUE; */
+			}
+			/*
+			 * DBG_871X("8812-2G RF-%d-G-%d CCK-Addr-%x BASE=%x\n",
+			 * rfPath, group, eeAddr-1, pwrInfo24G->IndexCCK_Base[rfPath][group]);
+			 */
+		}
+
+		for (group = 0; group < MAX_CHNL_GROUP_24G-1; group++) {
+			pwrinfo24g->index_bw40_base[rfPath][group] = hwinfo[eeAddr++];
+			if (pwrinfo24g->index_bw40_base[rfPath][group] == 0xFF)
+				pwrinfo24g->index_bw40_base[rfPath][group] = EEPROM_DEFAULT_24G_INDEX;
+			/*
+			 * DBG_871X("8812-2G RF-%d-G-%d BW40-Addr-%x BASE=%x\n",
+			 * rfPath, group, eeAddr-1, pwrInfo24G->IndexBW40_Base[rfPath][group]);
+			 */
+		}
+
+		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
+			if (TxCount == 0) {
+				pwrinfo24g->bw40_diff[rfPath][TxCount] = 0;
+
+				pwrinfo24g->bw20_diff[rfPath][TxCount] = (hwinfo[eeAddr] & 0xf0) >> 4;
+				if (pwrinfo24g->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo24g->bw20_diff[rfPath][TxCount] |= 0xF0;
+
+				/*
+				 * DBG_871X("8812-2G RF-%d-SS-%d BW20-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo24G->BW20_Diff[rfPath][TxCount]);
+				 */
+
+				pwrinfo24g->ofdm_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0x0f);
+				if (pwrinfo24g->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo24g->ofdm_diff[rfPath][TxCount] |= 0xF0;
+
+				/*
+				 * DBG_871X("8812-2G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo24G->OFDM_Diff[rfPath][TxCount]);
+				 */
+
+				pwrinfo24g->cck_diff[rfPath][TxCount] = 0;
+				eeAddr++;
+			} else {
+				pwrinfo24g->bw40_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0xf0)>>4;
+				if (pwrinfo24g->bw40_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo24g->bw40_diff[rfPath][TxCount] |= 0xF0;
+
+				/*
+				 * DBG_871X("8812-2G RF-%d-SS-%d BW40-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo24G->BW40_Diff[rfPath][TxCount]);
+				 */
+
+				pwrinfo24g->bw20_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0x0f);
+				if (pwrinfo24g->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo24g->bw20_diff[rfPath][TxCount] |= 0xF0;
+
+				/*
+				 * DBG_871X("8812-2G RF-%d-SS-%d BW20-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo24G->BW20_Diff[rfPath][TxCount]);
+				 */
+
+				eeAddr++;
+
+
+				pwrinfo24g->ofdm_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0xf0)>>4;
+				if (pwrinfo24g->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo24g->ofdm_diff[rfPath][TxCount] |= 0xF0;
+
+				/*
+				 * DBG_871X("8812-2G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo24G->BW20_Diff[rfPath][TxCount]);
+				 */
+
+				pwrinfo24g->cck_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0x0f);
+				if (pwrinfo24g->cck_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo24g->cck_diff[rfPath][TxCount] |= 0xF0;
+				/*
+				 * DBG_871X("8812-2G RF-%d-SS-%d CCK-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo24G->CCK_Diff[rfPath][TxCount]);
+				 */
+
+				eeAddr++;
+			}
+		}
+
+		/* 5G default value */
+		for (group = 0 ; group < MAX_CHNL_GROUP_5G; group++) {
+			pwrinfo5g->index_bw40_base[rfPath][group] =		hwinfo[eeAddr++];
+			if (pwrinfo5g->index_bw40_base[rfPath][group] == 0xFF)
+				pwrinfo5g->index_bw40_base[rfPath][group] = EEPROM_DEFAULT_DIFF;
+
+			/*
+			 * DBG_871X("8812-5G RF-%d-G-%d BW40-Addr-%x BASE=%x\n",
+			 * rfPath, TxCount, eeAddr-1, pwrInfo5G->IndexBW40_Base[rfPath][group]);
+			 */
+		}
+
+		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
+			if (TxCount == 0) {
+				pwrinfo5g->bw40_diff[rfPath][TxCount] = 0;
+				pwrinfo5g->bw20_diff[rfPath][0] = (hwinfo[eeAddr] & 0xf0) >> 4;
+				if (pwrinfo5g->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo5g->bw20_diff[rfPath][TxCount] |= 0xF0;
+				/*
+				 * DBG_871X("8812-5G RF-%d-SS-%d BW20-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo5G->BW20_Diff[rfPath][TxCount]);
+				 */
+				pwrinfo5g->ofdm_diff[rfPath][0] = (hwinfo[eeAddr] & 0x0f);
+				if (pwrinfo5g->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo5g->ofdm_diff[rfPath][TxCount] |= 0xF0;
+				/*
+				 * DBG_871X("8812-5G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo5G->OFDM_Diff[rfPath][TxCount]);
+				 */
+
+				eeAddr++;
+			} else {
+				pwrinfo5g->bw40_diff[rfPath][TxCount] = (hwinfo[eeAddr] & 0xf0) >> 4;
+				if (pwrinfo5g->bw40_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo5g->bw40_diff[rfPath][TxCount] |= 0xF0;
+				/*
+				 * DBG_871X("8812-5G RF-%d-SS-%d BW40-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo5G->BW40_Diff[rfPath][TxCount]);
+				 */
+
+				pwrinfo5g->bw20_diff[rfPath][TxCount] = (hwinfo[eeAddr] & 0x0f);
+				if (pwrinfo5g->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+					pwrinfo5g->bw20_diff[rfPath][TxCount] |= 0xF0;
+				/*
+				 * DBG_871X("8812-5G RF-%d-SS-%d BW20-Addr-%x DIFF=%d\n",
+				 * rfPath, TxCount, eeAddr, pwrInfo5G->BW20_Diff[rfPath][TxCount]);
+				 */
+
+				eeAddr++;
+			}
+		}
+
+
+		pwrinfo5g->ofdm_diff[rfPath][1] =	(hwinfo[eeAddr] & 0xf0) >> 4;
+		pwrinfo5g->ofdm_diff[rfPath][2] =	(hwinfo[eeAddr] & 0x0f);
+		/*
+		 * DBG_871X("8812-5G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
+		 * rfPath, 2, eeAddr, pwrInfo5G->OFDM_Diff[rfPath][2]);
+		 */
+		eeAddr++;
+
+		pwrinfo5g->ofdm_diff[rfPath][3] =	(hwinfo[eeAddr] & 0x0f);
+		/*
+		 * DBG_871X("8812-5G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
+		 * rfPath, 3, eeAddr, pwrInfo5G->OFDM_Diff[rfPath][3]);
+		 */
+		eeAddr++;
+
+		for (TxCount = 1; TxCount < MAX_TX_COUNT; TxCount++) {
+			if (pwrinfo5g->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				pwrinfo5g->ofdm_diff[rfPath][TxCount] |= 0xF0;
+
+			/*
+			 * DBG_871X("8812-5G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
+			 * rfPath, TxCount, eeAddr, pwrInfo5G->OFDM_Diff[rfPath][TxCount]);
+			 */
+		}
+
+		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
+			pwrinfo5g->bw80_diff[rfPath][TxCount] =	(hwinfo[eeAddr] & 0xf0) >> 4;
+			if (pwrinfo5g->bw80_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				pwrinfo5g->bw80_diff[rfPath][TxCount] |= 0xF0;
+			/*
+			 * DBG_871X("8812-5G RF-%d-SS-%d BW80-Addr-%x DIFF=%d\n",
+			 * rfPath, TxCount, eeAddr, pwrInfo5G->BW80_Diff[rfPath][TxCount]);
+			 */
+			pwrinfo5g->bw160_diff[rfPath][TxCount] =	(hwinfo[eeAddr] & 0x0f);
+			if (pwrinfo5g->bw160_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				pwrinfo5g->bw160_diff[rfPath][TxCount] |= 0xF0;
+			/*
+			 * DBG_871X("8812-5G RF-%d-SS-%d BW160-Addr-%x DIFF=%d\n",
+			 * rfPath, TxCount, eeAddr, pwrInfo5G->BW160_Diff[rfPath][TxCount]);
+			 */
+			eeAddr++;
+		}
+	}
+
+}
+
+static u8 _rtl8821au_get_chnl_group(u8 chnl)
+{
+	u8 group = 0;
+
+	if (chnl <= 14) {
+		if (1 <= chnl && chnl <= 2)
+			group = 0;
+		else if (3  <= chnl && chnl <= 5)
+			group = 1;
+		else if (6  <= chnl && chnl <= 8)
+			group = 2;
+		else if (9  <= chnl && chnl <= 11)
+			group = 3;
+		else if (12 <= chnl && chnl <= 14)
+			group = 4;
+#if 0
+		else {
+			DBG_871X("==>mpt_GetChnlGroup8812A in 2.4 G, but chnl %d in Group not found \n", chnl);
+		}
+#endif
+	} else {
+		if      (36   <= chnl && chnl <=  42)
+			group = 0;
+		else if (44   <= chnl && chnl <=  48)
+			group = 1;
+		else if (50   <= chnl && chnl <=  58)
+			group = 2;
+		else if (60   <= chnl && chnl <=  64)
+			group = 3;
+		else if (100  <= chnl && chnl <= 106)
+			group = 4;
+		else if (108  <= chnl && chnl <= 114)
+			group = 5;
+		else if (116  <= chnl && chnl <= 122)
+			group = 6;
+		else if (124  <= chnl && chnl <= 130)
+			group = 7;
+		else if (132  <= chnl && chnl <= 138)
+			group = 8;
+		else if (140  <= chnl && chnl <= 144)
+			group = 9;
+		else if (149  <= chnl && chnl <= 155)
+			group = 10;
+		else if (157  <= chnl && chnl <= 161)
+			group = 11;
+		else if (165  <= chnl && chnl <= 171)
+			group = 12;
+		else if (173  <= chnl && chnl <= 177)
+			group = 13;
+#if 0
+		else {
+			DBG_871X("==>mpt_GetChnlGroup8812A in 5G, but chnl %d in Group not found \n", chnl);
+		}
+#endif
+
+	}
+	/* DBG_871X("<==mpt_GetChnlGroup8812A,  (%s) Channel = %d, Group =%d,\n", (bIn24G) ? "2.4G" : "5G", Channel, *pGroup); */
+
+	return group;
+}
+
+static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
+	bool autoload_fail)
+{
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct txpower_info_2g pwrInfo24G;
+	struct txpower_info_5g pwrInfo5G;
+	uint8_t	rfPath, ch, group, TxCount;
+	uint8_t	channel5G[CHANNEL_MAX_NUMBER_5G] = {
+		 36,  38,  40,  42,  44,  46,  48,  50,  52,  54,  56,  58,
+		 60,  62,  64, 100, 102, 104, 106, 108, 110, 112, 114, 116,
+		118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140,
+		142, 144, 149, 151, 153, 155, 157, 159, 161, 163, 165, 167,
+		168, 169, 171, 173, 175, 177 };
+
+	uint8_t	channel5G_80M[CHANNEL_MAX_NUMBER_5G_80M] = {
+		42, 58, 106, 122, 138, 155, 171};
+
+	_rtl8821au_read_power_value_fromprom(rtlpriv, &pwrInfo24G, &pwrInfo5G, hwinfo, autoload_fail);
+
+	/*
+	 * if(!AutoLoadFail)
+	 * 	pHalData->bTXPowerDataReadFromEEPORM = _TRUE;
+	 */
+
+	for (rfPath = 0; rfPath < MAX_RF_PATH; rfPath++) {
+		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_2G; ch++) {
+			group = _rtl8821au_get_chnl_group(ch+1);
+
+			if (ch == (CHANNEL_MAX_NUMBER_2G-1)) {
+				efuse->txpwrlevel_cck[rfPath][ch] =
+					pwrInfo24G.index_cck_base[rfPath][5];
+				efuse->txpwrlevel_ht40_1s[rfPath][ch] =
+					pwrInfo24G.index_bw40_base[rfPath][group];
+			} else {
+				efuse->txpwrlevel_cck[rfPath][ch] =
+					pwrInfo24G.index_cck_base[rfPath][group];
+				efuse->txpwrlevel_ht40_1s[rfPath][ch] =
+					pwrInfo24G.index_bw40_base[rfPath][group];
+			}
+
+			/*
+			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);
+			 * DBG_871X("Index24G_CCK_Base[%d][%d] = 0x%x\n",rfPath,ch ,pHalData->Index24G_CCK_Base[rfPath][ch]);
+			 * DBG_871X("Index24G_BW40_Base[%d][%d] = 0x%x\n",rfPath,ch,pHalData->Index24G_BW40_Base[rfPath][ch]);
+			 */
+		}
+
+		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G; ch++) {
+			group = _rtl8821au_get_chnl_group(channel5G[ch]);
+
+			efuse->txpwr_5g_bw40base[rfPath][ch] = pwrInfo5G.index_bw40_base[rfPath][group];
+
+			/*
+			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);
+			 * DBG_871X("Index5G_BW40_Base[%d][%d] = 0x%x\n",rfPath,ch,pHalData->Index5G_BW40_Base[rfPath][ch]);
+			 */
+		}
+		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G_80M; ch++) {
+			uint8_t	upper, lower;
+
+			group = _rtl8821au_get_chnl_group(channel5G_80M[ch]);
+			upper = pwrInfo5G.index_bw40_base[rfPath][group];
+			lower = pwrInfo5G.index_bw40_base[rfPath][group+1];
+
+			efuse->txpwr_5g_bw80base[rfPath][ch] = (upper + lower) / 2;
+
+			/*
+			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);
+			 * DBG_871X("Index5G_BW80_Base[%d][%d] = 0x%x\n",rfPath,ch,pHalData->Index5G_BW80_Base[rfPath][ch]);
+			 */
+		}
+
+		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
+			efuse->txpwr_cckdiff[rfPath][TxCount]  = pwrInfo24G.cck_diff[rfPath][TxCount];
+			efuse->txpwr_legacyhtdiff[rfPath][TxCount] = pwrInfo24G.ofdm_diff[rfPath][TxCount];
+			efuse->txpwr_ht20diff[rfPath][TxCount] = pwrInfo24G.bw20_diff[rfPath][TxCount];
+			efuse->txpwr_ht40diff[rfPath][TxCount] = pwrInfo24G.bw40_diff[rfPath][TxCount];
+
+			efuse->txpwr_5g_ofdmdiff[rfPath][TxCount] = pwrInfo5G.ofdm_diff[rfPath][TxCount];
+			efuse->txpwr_5g_bw20diff[rfPath][TxCount] = pwrInfo5G.bw20_diff[rfPath][TxCount];
+			efuse->txpwr_5g_bw40diff[rfPath][TxCount] = pwrInfo5G.bw40_diff[rfPath][TxCount];
+			efuse->txpwr_5g_bw80diff[rfPath][TxCount] = pwrInfo5G.bw80_diff[rfPath][TxCount];
+/* #if DBG */
+		}
+	}
+
+
+	/* 2010/10/19 MH Add Regulator recognize for CU. */
+	if (!autoload_fail) {
+		struct registry_priv  *registry_par = &rtlpriv->registrypriv;
+
+		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
+			efuse->eeprom_regulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* bit0~2 */
+		else
+			efuse->eeprom_regulatory = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* bit0~2 */
+
+	} else {
+		efuse->eeprom_regulatory = 0;
+	}
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROMRegulatory = 0x%x\n", efuse->eeprom_regulatory);
+
+}

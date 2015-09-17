@@ -199,7 +199,6 @@ void ReadRFType8812A(struct rtl_priv *rtlpriv);
 void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rssi_level);
 // register
 void SetBcnCtrlReg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8_t ClearBits);
-void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo, bool autoload_fail);
 void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, BOOLEAN bSet);
 
 #endif //__RTL8188E_HAL_H__

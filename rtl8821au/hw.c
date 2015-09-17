@@ -1274,6 +1274,134 @@ static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	bool autoload_fail);
 
+
+/* ULLI : refractoring this into one function _read_adapter_info() */
+
+static void Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, u8 *hwinfo)
+{
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	u16			EEPROMId;
+
+	/*  Checl 0x8129 again for making sure autoload status!! */
+	EEPROMId = le16_to_cpu(*((u16 *)hwinfo));
+	if (EEPROMId != RTL_EEPROM_ID) {
+		RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROM ID(%#x) is invalid!!\n", EEPROMId);
+		efuse->autoload_failflag = _TRUE;
+	} else {
+		efuse->autoload_failflag = _FALSE;
+	}
+
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROM ID=0x%04x\n", EEPROMId);
+}
+
+static void Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
+	bool autoload_fail)
+{
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+
+	if (autoload_fail) {
+		efuse->eeprom_version = EEPROM_Default_Version;
+	} else{
+		efuse->eeprom_version = hwinfo[EEPROM_VERSION_8812];
+		if (efuse->eeprom_version == 0xFF)
+			efuse->eeprom_version = EEPROM_Default_Version;
+	}
+	/* DBG_871X("pHalData->eeprom_version is 0x%x\n", pHalData->eeprom_version); */
+}
+
+
+static void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
+	bool autoload_fail)
+{
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+
+#if 0	/* ULLI check this in old source, may be vendor specific ?? */
+	if (!autoload_fail) {
+		pHalData->InterfaceSel = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0xE0)>>5;
+		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
+			pHalData->InterfaceSel = (EEPROM_DEFAULT_BOARD_OPTION&0xE0)>>5;
+	} else {
+		pHalData->InterfaceSel = 0;
+	}
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "Board Type: 0x%2x\n", pHalData->InterfaceSel);
+#endif
+}
+
+static void Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
+	bool autoload_fail)
+{
+	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+
+	/* uint8_t	tempval; */
+
+	/*
+	 * ThermalMeter from EEPROM
+	 */
+	if (!autoload_fail)
+		efuse->eeprom_thermalmeter = hwinfo[EEPROM_THERMAL_METER_8812];
+	else
+		efuse->eeprom_thermalmeter = EEPROM_Default_ThermalMeter_8812;
+	/* pHalData->EEPROMThermalMeter = (tempval&0x1f);	//[4:0] */
+
+	if (efuse->eeprom_thermalmeter == 0xff || autoload_fail) {
+		efuse->apk_thermalmeterignore = _TRUE;
+		efuse->eeprom_thermalmeter = 0xFF;
+	}
+
+	/* pHalData->ThermalMeter[0] = pHalData->EEPROMThermalMeter; */
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "ThermalMeter = 0x%x\n", efuse->eeprom_thermalmeter);
+}
+
+static void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
+	BOOLEAN	AutoLoadFail)
+{
+	rtlpriv->mlmepriv.ChannelPlan = hal_com_get_channel_plan(
+		rtlpriv
+		, hwinfo?hwinfo[EEPROM_ChannelPlan_8812]:0xFF
+		,  RT_CHANNEL_DOMAIN_MAX
+		, RT_CHANNEL_DOMAIN_REALTEK_DEFINE
+		, AutoLoadFail
+	);
+
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "mlmepriv.ChannelPlan = 0x%02x\n", rtlpriv->mlmepriv.ChannelPlan);
+}
+
+static void Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
+	BOOLEAN	AutoLoadFail)
+{
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
+
+	if (!AutoLoadFail) {
+		rtlefuse->crystalcap = hwinfo[EEPROM_XTAL_8812];
+		if (rtlefuse->crystalcap == 0xFF)
+			rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;	 /* what value should 8812 set? */
+	} else {
+		rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;
+	}
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "CrystalCap: 0x%2x\n", rtlefuse->crystalcap);
+}
+
+void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
+	uint8_t *PROMContent, BOOLEAN AutoLoadFail)
+{
+	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct registry_priv	*registry_par = &rtlpriv->registrypriv;
+
+	if (!AutoLoadFail) {
+		/*  Antenna Diversity setting. */
+		pHalData->AntDivCfg = (PROMContent[EEPROM_RF_BOARD_OPTION_8812]&0x18)>>3;
+		if (PROMContent[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
+			pHalData->AntDivCfg = (EEPROM_DEFAULT_BOARD_OPTION&0x18)>>3;;
+	} else {
+		pHalData->AntDivCfg = 0;
+	}
+
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "SWAS: bHwAntDiv = %x\n", pHalData->AntDivCfg);
+}
+
+
+
+
 void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);

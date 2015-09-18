@@ -2341,3 +2341,54 @@ void rtl8821au_dm_clean_txpower_tracking_state(struct rtl_priv *rtlpriv)
 	rtldm->thermalvalue_iqk = efuse->eeprom_thermalmeter;
 	rtldm->thermalvalue_lck = efuse->eeprom_thermalmeter;
 }
+
+static void rtl8821_dm_init_gpio_setting(struct rtl_priv *rtlpriv)
+{
+	uint8_t	tmp1byte;
+
+	tmp1byte = rtl_read_byte(rtlpriv, REG_GPIO_MUXCFG);
+	tmp1byte &= (GPIOSEL_GPIO | ~GPIOSEL_ENBT);
+
+	rtl_write_byte(rtlpriv, REG_GPIO_MUXCFG, tmp1byte);
+
+}
+
+static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
+{
+	struct rtl_mac *mac = &(rtlpriv->mac80211);
+
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
+	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
+	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
+	int i;
+
+	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_WM_MODE,&(pmlmeext->cur_wireless_mode));
+	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_FORCED_RATE,&(pHalData->ForcedDataRate));
+
+	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SEC_MODE,&(rtlpriv->securitypriv.dot11PrivacyAlgrthm));
+	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SCAN,&(pmlmepriv->bScanInProcess));
+	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_POWER_SAVING,&(pwrctrlpriv->bpower_saving));
+
+	for (i = 0; i < NUM_STA; i++) {
+		pDM_Odm->pODM_StaInfo[i] = NULL;
+		/* pDM_Odm->pODM_StaInfo[i] = NULL; */
+	}
+}
+
+
+void rtl8812_dm_init(struct rtl_priv *rtlpriv)
+{
+	uint8_t	i;
+
+	rtl8821_dm_init_gpio_setting(rtlpriv);
+
+	rtlpriv->dm.dm_type = DM_Type_ByDriver;
+	rtlpriv->dm.dm_flag = 0;
+
+	Update_ODM_ComInfo_8812(rtlpriv);
+	ODM_DMInit(rtlpriv);
+
+	rtlpriv->fix_rate = 0xFF;
+}

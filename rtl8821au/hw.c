@@ -4,6 +4,7 @@
 #include "rf.h"
 #include "phy.h"
 #include "def.h"
+#include "dm.h"
 
 #undef DBG_8192C
 static inline void DBG_8192C(const char *fmt, ...)
@@ -2441,8 +2442,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	/* Nav limit , suggest by scott */
 	rtl_write_byte(rtlpriv, 0x652, 0x0);
 
-
-	rtl8812_InitHalDm(rtlpriv);
+	rtl8812_dm_init(rtlpriv);
 
 	/*
 	 * 2010/08/11 MH Merge from 8192SE for Minicard init. We need to confirm current radio status

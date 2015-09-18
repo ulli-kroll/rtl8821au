@@ -45,6 +45,7 @@ void rtl8821au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 					    u8 **up_b, u8 **down_b);
 void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv);
 void rtl8821au_dm_clean_txpower_tracking_state(struct rtl_priv *rtlpriv);
+void rtl8812_dm_init(struct rtl_priv *rtlpriv);
 
 /* Old prototypes */
 

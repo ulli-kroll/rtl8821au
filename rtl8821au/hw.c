@@ -1386,7 +1386,7 @@ static void Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 void Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 				   bool autoload_fail)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 
 	if (!autoload_fail) {
 		u8 tmp;
@@ -1394,14 +1394,15 @@ void Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		tmp = hwinfo[EEPROM_RF_BOARD_OPTION_8812];
 		
 		/*  Antenna Diversity setting. */
-		pHalData->AntDivCfg = (tmp & 0x18) >>3;
+		rtlefuse->antenna_div_cfg = (tmp & 0x18) >>3;
 		if (tmp == 0xFF)
-			pHalData->AntDivCfg = (EEPROM_DEFAULT_BOARD_OPTION & 0x18) >> 3;;
+			rtlefuse->antenna_div_cfg = (EEPROM_DEFAULT_BOARD_OPTION & 0x18) >> 3;;
 	} else {
-		pHalData->AntDivCfg = 0;
+		rtlefuse->antenna_div_cfg = 0;
 	}
 
-	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "SWAS: bHwAntDiv = %x\n", pHalData->AntDivCfg);
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "SWAS: bHwAntDiv = %x\n", 
+		 rtlefuse->antenna_div_cfg);
 }
 
 

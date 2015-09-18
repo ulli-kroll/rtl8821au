@@ -1387,7 +1387,6 @@ void Hal_ReadAntennaDiversity8812A(IN struct rtl_priv *rtlpriv,
 	uint8_t *PROMContent, BOOLEAN AutoLoadFail)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct registry_priv	*registry_par = &rtlpriv->registrypriv;
 
 	if (!AutoLoadFail) {
 		/*  Antenna Diversity setting. */
@@ -1731,7 +1730,6 @@ void rtl8821au_disable_interrupt(struct rtl_priv *rtlpriv)
 static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	uint32_t numHQ = 0;
 	uint32_t numLQ = 0;
 	uint32_t numNQ = 0;
@@ -1763,7 +1761,6 @@ static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct registry_priv	*pregistrypriv = &rtlpriv->registrypriv;
 	uint32_t numHQ		= 0;
 	uint32_t numLQ		= 0;
 	uint32_t numNQ		= 0;
@@ -1874,7 +1871,6 @@ static void _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *rtlpriv,
 static void _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
 	u16	valueHi = 0;
@@ -1912,7 +1908,6 @@ static void _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 
 static void _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 {
-	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
 		beQ	= QUEUE_LOW;
@@ -2255,7 +2250,6 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	uint32_t	status = _SUCCESS;
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
-	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	rt_rf_power_state eRfPowerStateToSet;
 	uint32_t init_start_time = jiffies;
 
@@ -3027,8 +3021,6 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 
 	/* 2010/10/19 MH Add Regulator recognize for CU. */
 	if (!autoload_fail) {
-		struct registry_priv  *registry_par = &rtlpriv->registrypriv;
-
 		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
 			efuse->eeprom_regulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* bit0~2 */
 		else

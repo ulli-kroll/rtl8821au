@@ -1832,7 +1832,6 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 	u8		bbtchange = false;
 	struct xmit_priv		*pxmitpriv = &(rtlpriv->xmitpriv);
 	struct recv_priv		*precvpriv = &(rtlpriv->recvpriv);
-	struct registry_priv	*pregpriv = &rtlpriv->registrypriv;
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 

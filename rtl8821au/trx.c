@@ -1991,25 +1991,22 @@ static void _ThreeOutPipeMapping(
 }
 static BOOLEAN Hal_MappingOutPipe(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 {
-	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
-
 	BOOLEAN result = _TRUE;
 
-	switch(NumOutPipe)
-	{
-		case 2:
-			_TwoOutPipeMapping(rtlpriv);
-			break;
-		case 3:
-		case 4:
-			_ThreeOutPipeMapping(rtlpriv);
-			break;
-		case 1:
-			_OneOutPipeMapping(rtlpriv);
-			break;
-		default:
-			result = _FALSE;
-			break;
+	switch(NumOutPipe) {
+	case 2:
+		_TwoOutPipeMapping(rtlpriv);
+		break;
+	case 3:
+	case 4:
+		_ThreeOutPipeMapping(rtlpriv);
+		break;
+	case 1:
+		_OneOutPipeMapping(rtlpriv);
+		break;
+	default:
+		result = _FALSE;
+		break;
 	}
 
 	return result;

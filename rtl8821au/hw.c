@@ -1081,7 +1081,7 @@ int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 	return true;
 }
 
-static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
+static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -1091,14 +1091,14 @@ static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 	if (_FALSE == AutoloadFail) {
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			/* Read Permanent MAC address and set value to hardware */
-			memcpy(pEEPROM->mac_addr, &PROMContent[EEPROM_MAC_ADDR_8812AU], ETH_ALEN);
+			memcpy(pEEPROM->mac_addr, &hwinfo[EEPROM_MAC_ADDR_8812AU], ETH_ALEN);
 		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 			/*  Read Permanent MAC address and set value to hardware */
-			memcpy(pEEPROM->mac_addr, &PROMContent[EEPROM_MAC_ADDR_8821AU], ETH_ALEN);
+			memcpy(pEEPROM->mac_addr, &hwinfo[EEPROM_MAC_ADDR_8821AU], ETH_ALEN);
 		}
 	} else {
 		/* Random assigh MAC address */
-		uint8_t	sMacAddr[ETH_ALEN] = {0x00, 0xE0, 0x4C, 0x88, 0x12, 0x00};
+		u8 sMacAddr[ETH_ALEN] = {0x00, 0xE0, 0x4C, 0x88, 0x12, 0x00};
 		/* sMacAddr[5] = (u8)GetRandomNumber(1, 254); */
 		memcpy(pEEPROM->mac_addr, sMacAddr, ETH_ALEN);
 	}

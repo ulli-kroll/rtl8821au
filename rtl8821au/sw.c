@@ -315,6 +315,9 @@ static int rtl8821au_init_sw_vars(struct net_device *ndev)
 	mac->vht_cur_stbc = 0;
 	mac->vht_stbc_cap = 0;
 
+	rtlpriv->rtlhal.current_bandtype = BAND_ON_2_4G;
+	rtlpriv->rtlhal.bandset = BAND_ON_BOTH;
+
 	/* ULLI : Border for old init_sw_vars */
 
 	ret8 = rtw_init_default_value(rtlpriv);

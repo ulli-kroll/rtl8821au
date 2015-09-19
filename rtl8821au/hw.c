@@ -1406,22 +1406,6 @@ void Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 }
 
 
-void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
-{
-	if (IsSupported24G(rtlpriv->registrypriv.wireless_mode) &&
-		IsSupported5G(rtlpriv->registrypriv.wireless_mode))
-		rtlpriv->rtlhal.bandset = BAND_ON_BOTH;
-	else if (IsSupported5G(rtlpriv->registrypriv.wireless_mode))
-		rtlpriv->rtlhal.bandset = BAND_ON_5G;
-	else
-		rtlpriv->rtlhal.bandset = BAND_ON_2_4G;
-
-	/*
-	 * if (rtlpriv->bInHctTest)
-	 * 	pHalData->BandSet = BAND_ON_2_4G;
-	 */
-}
-
 void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
@@ -1483,10 +1467,6 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	hal_CustomizeByCustomerID_8812AU(rtlpriv);
 
 	ReadLEDSetting_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
-
-	/* We need to define the RF type after all PROM value is recognized. */
-	hal_ReadRFType_8812A(rtlpriv);
-
 
 #if 0	/* ULLI check this in old source, may be vendor specific ?? */
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power) 	{

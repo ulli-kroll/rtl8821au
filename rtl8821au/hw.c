@@ -1080,23 +1080,6 @@ int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 	return true;
 }
 
-
-static void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
-{
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-
-	if (_FALSE == efuse->autoload_failflag) { /* autoload OK. */
-		EFUSE_ShadowMapUpdate(rtlpriv);
-	} else {	/* autoload fail */
-		/*
-		 * pHalData->AutoloadFailFlag = _TRUE;
-		 * update to default value 0xFF
-		 */
-		if (efuse->epromtype == EEPROM_BOOT_EFUSE)
-			EFUSE_ShadowMapUpdate(rtlpriv);
-	}
-}
-
 static void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	BOOLEAN	AutoloadFail)
 {
@@ -1418,8 +1401,17 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 
 	/* pHalData->EEType = IS_BOOT_FROM_EEPROM(rtlpriv) ? EEPROM_93C46 : EEPROM_BOOT_EFUSE; */
 
+	if (rtlefuse->autoload_failflag == false) { /* autoload OK. */
+		EFUSE_ShadowMapUpdate(rtlpriv);
+	} else {	/* autoload fail */
+		/*
+		 * pHalData->AutoloadFailFlag = _TRUE;
+		 * update to default value 0xFF
+		 */
+		if (rtlefuse->epromtype == EEPROM_BOOT_EFUSE)
+			EFUSE_ShadowMapUpdate(rtlpriv);
+	}
 
-	hal_InitPGData_8812A(rtlpriv, &rtlefuse->efuse_map[0][0]);
 	Hal_EfuseParseIDCode8812A(rtlpriv, &rtlefuse->efuse_map[0][0]);
 
 	Hal_ReadPROMVersion8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);

@@ -1374,6 +1374,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	tmp_u1b;
+	u8 hwinfo[HWSET_MAX_SIZE_JAGUAR];
 
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
@@ -1403,13 +1404,19 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 
 	if (rtlefuse->autoload_failflag == false) { /* autoload OK. */
 		rtw_efuse_shadow_map_update(rtlpriv);
+		memcpy(hwinfo, &rtlefuse->efuse_map[EFUSE_INIT_MAP][0],
+		       HWSET_MAX_SIZE_JAGUAR);
 	} else {	/* autoload fail */
 		/*
 		 * pHalData->AutoloadFailFlag = _TRUE;
 		 * update to default value 0xFF
 		 */
-		if (rtlefuse->epromtype == EEPROM_BOOT_EFUSE)
+		if (rtlefuse->epromtype == EEPROM_BOOT_EFUSE) {
 			rtw_efuse_shadow_map_update(rtlpriv);
+			memcpy(hwinfo, &rtlefuse->efuse_map[EFUSE_INIT_MAP][0],
+			       HWSET_MAX_SIZE_JAGUAR);
+		}
+
 	}
 
 	Hal_EfuseParseIDCode8812A(rtlpriv, &rtlefuse->efuse_map[0][0]);

@@ -1489,17 +1489,13 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-#if 0
-	DBG_871X("====> ReadAdapterInfo8812AU\n");
-#endif
+
 	/* Read all content in Efuse/EEPROM. */
 	Hal_ReadPROMContent_8812A(rtlpriv);
 
 	/* We need to define the RF type after all PROM value is recognized. */
 	hal_ReadRFType_8812A(rtlpriv);
-#if 0
-	DBG_871X("ReadAdapterInfo8812AU <====\n");
-#endif	
+
 
 #if 0	/* ULLI check this in old source, may be vendor specific ?? */
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power) 	{

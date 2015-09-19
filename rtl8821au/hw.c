@@ -1080,40 +1080,6 @@ int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 	return true;
 }
 
-static void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *hwinfo,
-	BOOLEAN	AutoloadFail)
-{
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-
-	if (!AutoloadFail) {
-		/* VID, PID */
-		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-			efuse->eeprom_vid = *((u16 *) &hwinfo[EEPROM_VID_8812AU]);
-			efuse->eeprom_did = *((u16 *) &hwinfo[EEPROM_PID_8812AU]);
-		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-			efuse->eeprom_vid = *((u16 *) &hwinfo[EEPROM_VID_8821AU]);
-			efuse->eeprom_did = *((u16 *) &hwinfo[EEPROM_PID_8821AU]);
-		}
-
-		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
-		efuse->eeprom_oemid = hwinfo[EEPROM_CustomID_8812];
-/* ULLI : rot in rtlwifi
- *		efuse->EEPROMSubCustomerID = EEPROM_Default_SubCustomerID;
- */
-
-	} else {
-		efuse->eeprom_vid = EEPROM_Default_VID;
-		efuse->eeprom_did = EEPROM_Default_PID;
-
-		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
-		efuse->eeprom_oemid		= EEPROM_Default_CustomerID;
-/* ULLI : rot in rtlwifi
- * 		efuse->EEPROMSubCustomerID	= EEPROM_Default_SubCustomerID;
- */
-	}
-}
-
 static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
@@ -1414,7 +1380,33 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 			rtlefuse->eeprom_version = EEPROM_Default_Version;
 	}
 
-	hal_ReadIDs_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	if (!rtlefuse->autoload_failflag) {
+		/* VID, PID */
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+			rtlefuse->eeprom_vid = *((u16 *) &hwinfo[EEPROM_VID_8812AU]);
+			rtlefuse->eeprom_did = *((u16 *) &hwinfo[EEPROM_PID_8812AU]);
+		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+			rtlefuse->eeprom_vid = *((u16 *) &hwinfo[EEPROM_VID_8821AU]);
+			rtlefuse->eeprom_did = *((u16 *) &hwinfo[EEPROM_PID_8821AU]);
+		}
+
+		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
+		rtlefuse->eeprom_oemid = hwinfo[EEPROM_CustomID_8812];
+/* ULLI : rot in rtlwifi
+ *		efuse->EEPROMSubCustomerID = EEPROM_Default_SubCustomerID;
+ */
+
+	} else {
+		rtlefuse->eeprom_vid = EEPROM_Default_VID;
+		rtlefuse->eeprom_did = EEPROM_Default_PID;
+
+		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
+		rtlefuse->eeprom_oemid		= EEPROM_Default_CustomerID;
+/* ULLI : rot in rtlwifi
+ * 		efuse->EEPROMSubCustomerID	= EEPROM_Default_SubCustomerID;
+ */
+	}
+
 	hal_ReadMACAddress_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	_rtl88au_read_txpower_info_from_hwpg(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	Hal_ReadBoardType8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);

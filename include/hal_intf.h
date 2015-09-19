@@ -58,11 +58,6 @@ typedef	enum _RT_EEPROM_TYPE{
 #define RF_CHANGE_BY_HW 	BIT30
 #define RF_CHANGE_BY_SW 	BIT31
 
-
-typedef struct eeprom_priv EEPROM_EFUSE_PRIV, *PEEPROM_EFUSE_PRIV;
-#define GET_EEPROM_EFUSE_PRIV(rtlpriv) (&rtlpriv->eeprompriv)
-
-
 uint rtw_hal_init(struct rtl_priv *rtlpriv);
 uint rtw_hal_deinit(struct rtl_priv *rtlpriv);
 void rtw_hal_stop(struct rtl_priv *rtlpriv);

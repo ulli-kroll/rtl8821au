@@ -476,8 +476,9 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		{
 			uint8_t RetryLimit = 0x30;
 			uint8_t type = *(uint8_t *)pval;
+
 			struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
-			EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+			struct eeprom_priv *pEEPROM = &rtlpriv->eeprompriv;
 
 			if (type == 0) { 	/* prepare to join  */
 				/*
@@ -1084,7 +1085,8 @@ static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
+
+	struct eeprom_priv *pEEPROM = &rtlpriv->eeprompriv;
 
 	if (_FALSE == AutoloadFail) {
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
@@ -1151,9 +1153,11 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	EEPROM_EFUSE_PRIV	*pEEPROM = GET_EEPROM_EFUSE_PRIV(rtlpriv);
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *pledpriv = &(usbpriv->ledpriv);
+
+	struct eeprom_priv *pEEPROM = &rtlpriv->eeprompriv;
+
 
 	/* For customized behavior. */
 

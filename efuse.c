@@ -304,7 +304,9 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 	return _SUCCESS;
 }
 
-void EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv)
+/* ULLI rtw is used for not messing with rtlwifi */
+
+void rtw_efuse_shadow_map_update(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 
@@ -312,10 +314,7 @@ void EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv)
 		memset(&efuse->efuse_map[0][0], 0xFF, rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE]);
 	else
 		efuse_read_all_map(rtlpriv, efuse->efuse_map[0]);
-
-	//PlatformMoveMemory((void *)&pHalData->EfuseMap[EFUSE_MODIFY_MAP][0],
-	//(void *)&pHalData->EfuseMap[EFUSE_INIT_MAP][0], mapLen);
-}// EFUSE_ShadowMapUpdate
+}
 
 uint8_t
 EFUSE_Read1Byte(

@@ -58,7 +58,7 @@ void	EFUSE_ShadowRead(struct rtl_priv *rtlpriv, uint8_t Type, u16 Offset, u32 *V
 
 uint8_t	efuse_OneByteRead(struct rtl_priv *rtlpriv, u16 addr, uint8_t *data);
 uint8_t	efuse_OneByteWrite(struct rtl_priv *rtlpriv, u16 addr, uint8_t data);
-void	EFUSE_ShadowMapUpdate(struct rtl_priv *rtlpriv);
+void	rtw_efuse_shadow_map_update(struct rtl_priv *rtlpriv);
 
 enum {
 	VOLTAGE_V25	= 0x03,

@@ -1259,21 +1259,6 @@ static void Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, u8 *hwinfo)
 	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROM ID=0x%04x\n", EEPROMId);
 }
 
-static void Hal_ReadPROMVersion8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
-	bool autoload_fail)
-{
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-
-	if (autoload_fail) {
-		efuse->eeprom_version = EEPROM_Default_Version;
-	} else{
-		efuse->eeprom_version = hwinfo[EEPROM_VERSION_8812];
-		if (efuse->eeprom_version == 0xFF)
-			efuse->eeprom_version = EEPROM_Default_Version;
-	}
-	/* DBG_871X("pHalData->eeprom_version is 0x%x\n", pHalData->eeprom_version); */
-}
-
 
 static void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	bool autoload_fail)
@@ -1421,7 +1406,14 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 
 	Hal_EfuseParseIDCode8812A(rtlpriv, &rtlefuse->efuse_map[0][0]);
 
-	Hal_ReadPROMVersion8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	if (rtlefuse->autoload_failflag) {
+		rtlefuse->eeprom_version = EEPROM_Default_Version;
+	} else{
+		rtlefuse->eeprom_version = hwinfo[EEPROM_VERSION_8812];
+		if (rtlefuse->eeprom_version == 0xFF)
+			rtlefuse->eeprom_version = EEPROM_Default_Version;
+	}
+
 	hal_ReadIDs_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	hal_ReadMACAddress_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	_rtl88au_read_txpower_info_from_hwpg(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);

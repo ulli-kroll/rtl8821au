@@ -1143,12 +1143,6 @@ static void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *hwinfo,
  * 		efuse->EEPROMSubCustomerID	= EEPROM_Default_SubCustomerID;
  */
 	}
-
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "VID = 0x%04X, PID = 0x%04X\n", efuse->eeprom_vid, efuse->eeprom_did);
-/* ULLI : not in rtlwifi
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Customer ID: 0x%02X, SubCustomer ID: 0x%02X\n", efuse->eeprom_oemid, efuse->EEPROMSubCustomerID);
-*/
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Customer ID: 0x%02X\n", efuse->eeprom_oemid);
 }
 
 static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,

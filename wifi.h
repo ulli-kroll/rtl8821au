@@ -1533,7 +1533,6 @@ struct rtl_priv {
 	struct	security_priv	securitypriv;
 	struct	registry_priv	registrypriv;
 	struct	pwrctrl_priv	pwrctrlpriv;
-	struct 	eeprom_priv eeprompriv;
 
 #ifdef CONFIG_AP_MODE
 	struct	hostapd_priv	*phostapdpriv;

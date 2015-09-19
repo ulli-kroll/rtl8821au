@@ -2294,13 +2294,11 @@ sint rtw_restruct_sec_ie(struct rtl_priv *rtlpriv,uint8_t *in_ie, uint8_t *out_i
 void rtw_init_registrypriv_dev_network(	struct rtl_priv * rtlpriv)
 {
 	struct registry_priv* pregistrypriv = &rtlpriv->registrypriv;
-	struct eeprom_priv* peepriv = &rtlpriv->eeprompriv;
 	WLAN_BSSID_EX    *pdev_network = &pregistrypriv->dev_network;
-	uint8_t *myhwaddr = myid(peepriv);
 
 
 
-	memcpy(pdev_network->MacAddress, myhwaddr, ETH_ALEN);
+	memcpy(pdev_network->MacAddress, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 
 	memcpy(&pdev_network->Ssid, &pregistrypriv->ssid, sizeof(NDIS_802_11_SSID));
 

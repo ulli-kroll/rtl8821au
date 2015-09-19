@@ -364,7 +364,7 @@ void ConstructBeacon(struct rtl_priv *rtlpriv, uint8_t *pframe, uint32_t *pLengt
 	*(fctrl) = 0;
 
 	memcpy(pwlanhdr->addr1, bc_addr, ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 	memcpy(pwlanhdr->addr3, get_my_bssid(cur_network), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, 0/*pmlmeext->mgnt_seq*/);
@@ -470,7 +470,7 @@ void ConstructPSPoll(struct rtl_priv *rtlpriv, uint8_t *pframe, uint32_t *pLengt
 	memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	/* TA. */
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 
 	*pLength = 16;
 }
@@ -508,19 +508,19 @@ void ConstructNullFunctionData(
 	case Ndis802_11Infrastructure:
 		SetToDs(fctrl);
 		memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-		memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+		memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 		memcpy(pwlanhdr->addr3, StaAddr, ETH_ALEN);
 		break;
 	case Ndis802_11APMode:
 		SetFrDs(fctrl);
 		memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
 		memcpy(pwlanhdr->addr2, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-		memcpy(pwlanhdr->addr3, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+		memcpy(pwlanhdr->addr3, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 		break;
 	case Ndis802_11IBSS:
 	default:
 		memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
-		memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+		memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 		memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 		break;
 	}

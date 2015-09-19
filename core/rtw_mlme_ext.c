@@ -603,7 +603,7 @@ static void _mgt_dispatcher(struct rtl_priv *rtlpriv, struct mlme_handler *ptabl
 	  if(ptable->func)
         {
        	 //receive the frames that ra(a1) is my address or ra(a1) is bc address.
-		if (!_rtw_memcmp(GetAddr1Ptr(pframe), myid(&rtlpriv->eeprompriv), ETH_ALEN) &&
+		if (!_rtw_memcmp(GetAddr1Ptr(pframe), rtlpriv->mac80211.mac_addr, ETH_ALEN) &&
 			!_rtw_memcmp(GetAddr1Ptr(pframe), bc_addr, ETH_ALEN))
 		{
 			return;
@@ -632,7 +632,7 @@ void mgt_dispatcher(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 	}
 
 	//receive the frames that ra(a1) is my address or ra(a1) is bc address.
-	if (!_rtw_memcmp(GetAddr1Ptr(pframe), myid(&rtlpriv->eeprompriv), ETH_ALEN) &&
+	if (!_rtw_memcmp(GetAddr1Ptr(pframe), rtlpriv->mac80211.mac_addr, ETH_ALEN) &&
 		!_rtw_memcmp(GetAddr1Ptr(pframe), bc_addr, ETH_ALEN))
 	{
 		return;
@@ -1198,7 +1198,7 @@ unsigned int OnAuthClient(struct rtl_priv *rtlpriv, struct recv_frame *precv_fra
 	DBG_871X("%s\n", __FUNCTION__);
 
 	//check A1 matches or not
-	if (!_rtw_memcmp(myid(&(rtlpriv->eeprompriv)), get_da(pframe), ETH_ALEN))
+	if (!_rtw_memcmp(rtlpriv->mac80211.mac_addr, get_da(pframe), ETH_ALEN))
 		return _SUCCESS;
 
 	if (!(pmlmeinfo->state & WIFI_FW_AUTH_STATE))
@@ -1851,7 +1851,7 @@ unsigned int OnAssocRsp(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 	DBG_871X("%s\n", __FUNCTION__);
 
 	//check A1 matches or not
-	if (!_rtw_memcmp(myid(&(rtlpriv->eeprompriv)), get_da(pframe), ETH_ALEN))
+	if (!_rtw_memcmp(rtlpriv->mac80211.mac_addr, get_da(pframe), ETH_ALEN))
 		return _SUCCESS;
 
 	if (!(pmlmeinfo->state & (WIFI_FW_AUTH_SUCCESS | WIFI_FW_ASSOC_STATE)))
@@ -2200,7 +2200,7 @@ unsigned int OnAction_back(struct rtl_priv *rtlpriv, struct recv_frame *precv_fr
 	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 #ifdef CONFIG_80211N_HT
 	//check RA matches or not
-	if (!_rtw_memcmp(myid(&(rtlpriv->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))//for if1, sta/ap mode
+	if (!_rtw_memcmp(rtlpriv->mac80211.mac_addr, GetAddr1Ptr(pframe), ETH_ALEN))//for if1, sta/ap mode
 		return _SUCCESS;
 
 /*
@@ -2399,7 +2399,7 @@ unsigned int on_action_public(struct rtl_priv *rtlpriv, struct recv_frame *precv
 	uint8_t category, action;
 
 	/* check RA matches or not */
-	if (!_rtw_memcmp(myid(&(rtlpriv->eeprompriv)), GetAddr1Ptr(pframe), ETH_ALEN))
+	if (!_rtw_memcmp(rtlpriv->mac80211.mac_addr, GetAddr1Ptr(pframe), ETH_ALEN))
 		goto exit;
 
 	category = frame_body[0];
@@ -2700,7 +2700,7 @@ void issue_beacon(struct rtl_priv *rtlpriv, int timeout_ms)
 	*(fctrl) = 0;
 
 	memcpy(pwlanhdr->addr1, bc_addr, ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 	memcpy(pwlanhdr->addr3, get_my_bssid(cur_network), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, 0/*pmlmeext->mgnt_seq*/);
@@ -2862,7 +2862,7 @@ void issue_probersp(struct rtl_priv *rtlpriv, unsigned char *da, uint8_t is_vali
 	pframe = (uint8_t *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
 
-	mac = myid(&(rtlpriv->eeprompriv));
+	mac = rtlpriv->mac80211.mac_addr;
 	bssid = cur_network->MacAddress;
 
 	fctrl = &(pwlanhdr->frame_ctl);
@@ -3060,7 +3060,7 @@ int _issue_probereq(struct rtl_priv *rtlpriv, NDIS_802_11_SSID *pssid, uint8_t *
 	pframe = (uint8_t *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
 
-	mac = myid(&(rtlpriv->eeprompriv));
+	mac = rtlpriv->mac80211.mac_addr;
 
 	fctrl = &(pwlanhdr->frame_ctl);
 	*(fctrl) = 0;
@@ -3216,8 +3216,8 @@ void issue_auth(struct rtl_priv *rtlpriv, struct sta_info *psta, unsigned short 
 	if(psta)// for AP mode
 	{
 		memcpy(pwlanhdr->addr1, psta->hwaddr, ETH_ALEN);
-		memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
-		memcpy(pwlanhdr->addr3, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+		memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
+		memcpy(pwlanhdr->addr3, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 
 
 		// setting auth algo number
@@ -3252,7 +3252,7 @@ void issue_auth(struct rtl_priv *rtlpriv, struct sta_info *psta, unsigned short 
 	else
 	{
 		memcpy(pwlanhdr->addr1, get_my_bssid(&pmlmeinfo->network), ETH_ALEN);
-		memcpy(pwlanhdr->addr2, myid(&rtlpriv->eeprompriv), ETH_ALEN);
+		memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 		memcpy(pwlanhdr->addr3, get_my_bssid(&pmlmeinfo->network), ETH_ALEN);
 
 		// setting auth algo number
@@ -3353,7 +3353,7 @@ void issue_asocrsp(struct rtl_priv *rtlpriv, unsigned short status, struct sta_i
 	*(fctrl) = 0;
 
 	memcpy((void *)GetAddr1Ptr(pwlanhdr), pstat->hwaddr, ETH_ALEN);
-	memcpy((void *)GetAddr2Ptr(pwlanhdr), myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy((void *)GetAddr2Ptr(pwlanhdr), rtlpriv->mac80211.mac_addr, ETH_ALEN);
 	memcpy((void *)GetAddr3Ptr(pwlanhdr), get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 
@@ -3530,7 +3530,7 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 	fctrl = &(pwlanhdr->frame_ctl);
 	*(fctrl) = 0;
 	memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 	memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
@@ -3836,7 +3836,7 @@ static int _issue_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, unsigned
 	}
 
 	memcpy(pwlanhdr->addr1, da, ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 	memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
@@ -3971,7 +3971,7 @@ static int _issue_qos_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, u16 
 	SetAckpolicy(qc, pattrib->ack_policy);
 
 	memcpy(pwlanhdr->addr1, da, ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 	memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
@@ -4079,7 +4079,7 @@ static int _issue_deauth(struct rtl_priv *rtlpriv, unsigned char *da, unsigned s
 	*(fctrl) = 0;
 
 	memcpy(pwlanhdr->addr1, da, ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 	memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
@@ -4190,7 +4190,7 @@ void issue_action_spct_ch_switch(struct rtl_priv *rtlpriv, uint8_t *ra, uint8_t 
 	*(fctrl) = 0;
 
 	memcpy(pwlanhdr->addr1, ra, ETH_ALEN); /* RA */
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN); /* TA */
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN); /* TA */
 	memcpy(pwlanhdr->addr3, ra, ETH_ALEN); /* DA = RA */
 
 	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
@@ -4263,7 +4263,7 @@ void issue_action_BA(struct rtl_priv *rtlpriv, unsigned char *raddr, unsigned ch
 
 	//memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 	memcpy(pwlanhdr->addr1, raddr, ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 	memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);
@@ -4415,7 +4415,7 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 	*(fctrl) = 0;
 
 	memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-	memcpy(pwlanhdr->addr2, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pwlanhdr->addr2, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 	memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, pmlmeext->mgnt_seq);

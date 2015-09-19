@@ -1096,7 +1096,7 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 
 	pbss_network->Rssi = 0;
 
-	memcpy(pbss_network->MacAddress, myid(&(rtlpriv->eeprompriv)), ETH_ALEN);
+	memcpy(pbss_network->MacAddress, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 
 	//beacon interval
 	p = rtw_get_beacon_interval_from_ie(ie);//ie + 8;	// 8: TimeStamp, 2: Beacon Interval 2:Capability

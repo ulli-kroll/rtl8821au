@@ -227,7 +227,7 @@ void rtw_os_recv_indicate_pkt(struct rtl_priv *rtlpriv, struct sk_buff *skb, str
 
 			/* DBG_871X("bmcast=%d\n", bmcast); */
 
-			if(_rtw_memcmp(pattrib->dst, myid(&rtlpriv->eeprompriv), ETH_ALEN)==_FALSE) {
+			if(_rtw_memcmp(pattrib->dst, rtlpriv->mac80211.mac_addr, ETH_ALEN)==_FALSE) {
 				/* DBG_871X("not ap psta=%p, addr=%pM\n", psta, pattrib->dst); */
 
 				if(is_multicast_ether_addr(pattrib->dst)) {

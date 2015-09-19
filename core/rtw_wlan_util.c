@@ -2190,7 +2190,7 @@ void rtw_alloc_macid(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
 		return;
 
-	if(_rtw_memcmp(psta->hwaddr, myid(&rtlpriv->eeprompriv), ETH_ALEN))
+	if(_rtw_memcmp(psta->hwaddr, rtlpriv->mac80211.mac_addr, ETH_ALEN))
 	{
 		psta->mac_id = NUM_STA;
 		return;
@@ -2230,7 +2230,7 @@ void rtw_release_macid(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
 		return;
 
-	if(_rtw_memcmp(psta->hwaddr, myid(&rtlpriv->eeprompriv), ETH_ALEN))
+	if(_rtw_memcmp(psta->hwaddr, rtlpriv->mac80211.mac_addr, ETH_ALEN))
 	{
 		return;
 	}

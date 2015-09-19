@@ -1580,7 +1580,7 @@ static int rtw_net_set_mac_address(struct net_device *ndev, void *p)
 		 * DBG_871X("r8711_net_set_mac_address(), MAC=%x:%x:%x:%x:%x:%x\n", addr->sa_data[0], addr->sa_data[1], addr->sa_data[2], addr->sa_data[3],
 		 * addr->sa_data[4], addr->sa_data[5]);
 		 */
-		memcpy(rtlpriv->eeprompriv.mac_addr, addr->sa_data, ETH_ALEN);
+		memcpy(rtlpriv->mac80211.mac_addr, addr->sa_data, ETH_ALEN);
 		/*
 		 * memcpy(ndev->dev_addr, addr->sa_data, ETH_ALEN);
 		 * rtlpriv->bset_hwaddr = _TRUE;
@@ -1882,7 +1882,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 
 	/*  set mac addr */
 	rtw_init_netdev_name(ndev, ifname);
-	rtw_macaddr_cfg(rtlpriv->eeprompriv.mac_addr);
+	rtw_macaddr_cfg(rtlpriv->mac80211.mac_addr);
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "bDriverStopped:%d, bSurpriseRemoved:%d, initialized:%d, hw_init_completed:%d\n"
 		, rtlpriv->bDriverStopped
@@ -1900,7 +1900,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
  * 	ULLI : for support older kernel < 3.14,
  *	ether_addr_copy(ndev->dev_addr, rtlpriv->eeprompriv.mac_addr);
  */
-	memcpy(ndev->dev_addr,  rtlpriv->eeprompriv.mac_addr, ETH_ALEN);
+	memcpy(ndev->dev_addr, rtlpriv->mac80211.mac_addr, ETH_ALEN);
 
 	/* Tell the network stack we exist */
 	if (register_netdev(rtlpriv->ndev) != 0) {

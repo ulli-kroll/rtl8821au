@@ -117,7 +117,7 @@ void	HalSetBrateCfg(
 
 void hal_init_macaddr(struct rtl_priv *rtlpriv)
 {
-	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ETHER_ADDR, rtlpriv->eeprompriv.mac_addr);
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ETHER_ADDR, rtlpriv->mac80211.mac_addr);
 }
 
 /*

@@ -63,17 +63,6 @@ typedef enum _RT_CUSTOMER_ID
 	RT_CID_ALPHA_Dlink = 44,//add by ylb 20121012 for customer led for alpha
 }RT_CUSTOMER_ID, *PRT_CUSTOMER_ID;
 
-struct eeprom_priv
-{
-	uint8_t		bloadfile_fail_flag;
-	uint8_t		bloadmac_fail_flag;
-
-	uint8_t		mac_addr[6];	//PermanentAddress
-
-	u16		channel_plan;
-};
-
-
 extern void eeprom_write16(struct rtl_priv *rtlpriv, u16 reg, u16 data);
 extern u16 eeprom_read16(struct rtl_priv *rtlpriv, u16 reg);
 extern void read_eeprom_content(struct rtl_priv *rtlpriv);

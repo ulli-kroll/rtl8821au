@@ -814,7 +814,7 @@ sint sta2sta_data_frame(
 	struct	sta_priv 		*pstapriv = &rtlpriv->stapriv;
 	struct	mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	uint8_t *mybssid  = get_bssid(pmlmepriv);
-	uint8_t *myhwaddr = myid(&rtlpriv->eeprompriv);
+	uint8_t *myhwaddr = rtlpriv->mac80211.mac_addr;
 	uint8_t * sta_addr = NULL;
 	sint bmcast = is_multicast_ether_addr(pattrib->dst);
 
@@ -922,7 +922,7 @@ sint ap2sta_data_frame(
 	struct	sta_priv 		*pstapriv = &rtlpriv->stapriv;
 	struct	mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	uint8_t *mybssid  = get_bssid(pmlmepriv);
-	uint8_t *myhwaddr = myid(&rtlpriv->eeprompriv);
+	uint8_t *myhwaddr = rtlpriv->mac80211.mac_addr;
 	sint bmcast = is_multicast_ether_addr(pattrib->dst);
 
 
@@ -1078,7 +1078,7 @@ sint sta2ap_data_frame(
 		}
 	}
 	else {
-		uint8_t *myhwaddr = myid(&rtlpriv->eeprompriv);
+		uint8_t *myhwaddr = rtlpriv->mac80211.mac_addr;
 		if (!_rtw_memcmp(pattrib->ra, myhwaddr, ETH_ALEN)) {
 			ret = RTW_RX_HANDLED;
 			goto exit;
@@ -1115,7 +1115,7 @@ sint validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 	}
 
 	/* receive the frames that ra(a1) is my address */
-	if (!_rtw_memcmp(GetAddr1Ptr(pframe), myid(&rtlpriv->eeprompriv), ETH_ALEN))
+	if (!_rtw_memcmp(GetAddr1Ptr(pframe), rtlpriv->mac80211.mac_addr, ETH_ALEN))
 	{
 		return _FAIL;
 	}
@@ -1270,7 +1270,7 @@ sint validate_recv_mgnt_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 			else if (GetFrameSubType(precv_frame->rx_data) == WIFI_PROBEREQ)
 				psta->sta_stats.rx_probereq_pkts++;
 			else if (GetFrameSubType(precv_frame->rx_data) == WIFI_PROBERSP) {
-				if (_rtw_memcmp(rtlpriv->eeprompriv.mac_addr, GetAddr1Ptr(precv_frame->rx_data), ETH_ALEN) == _TRUE)
+				if (_rtw_memcmp(rtlpriv->mac80211.mac_addr, GetAddr1Ptr(precv_frame->rx_data), ETH_ALEN) == _TRUE)
 					psta->sta_stats.rx_probersp_pkts++;
 				else if (is_broadcast_mac_addr(GetAddr1Ptr(precv_frame->rx_data))
 					|| is_multicast_mac_addr(GetAddr1Ptr(precv_frame->rx_data)))

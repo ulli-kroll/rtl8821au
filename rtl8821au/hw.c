@@ -1405,11 +1405,32 @@ void Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		 rtlefuse->antenna_div_cfg);
 }
 
-static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
+
+void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
+{
+	if (IsSupported24G(rtlpriv->registrypriv.wireless_mode) &&
+		IsSupported5G(rtlpriv->registrypriv.wireless_mode))
+		rtlpriv->rtlhal.bandset = BAND_ON_BOTH;
+	else if (IsSupported5G(rtlpriv->registrypriv.wireless_mode))
+		rtlpriv->rtlhal.bandset = BAND_ON_5G;
+	else
+		rtlpriv->rtlhal.bandset = BAND_ON_2_4G;
+
+	/*
+	 * if (rtlpriv->bInHctTest)
+	 * 	pHalData->BandSet = BAND_ON_2_4G;
+	 */
+}
+
+void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	tmp_u1b;
+
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+
+	/* Read all content in Efuse/EEPROM. */
 
 	/* check system boot selection */
 	tmp_u1b = rtl_read_byte(rtlpriv, REG_9346CR);
@@ -1437,61 +1458,34 @@ static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 	/* pHalData->EEType = IS_BOOT_FROM_EEPROM(rtlpriv) ? EEPROM_93C46 : EEPROM_BOOT_EFUSE; */
 
 
-	hal_InitPGData_8812A(rtlpriv, &efuse->efuse_map[0][0]);
-	Hal_EfuseParseIDCode8812A(rtlpriv, &efuse->efuse_map[0][0]);
+	hal_InitPGData_8812A(rtlpriv, &rtlefuse->efuse_map[0][0]);
+	Hal_EfuseParseIDCode8812A(rtlpriv, &rtlefuse->efuse_map[0][0]);
 
-	Hal_ReadPROMVersion8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-	hal_ReadIDs_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-	hal_ReadMACAddress_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-	_rtl88au_read_txpower_info_from_hwpg(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-	Hal_ReadBoardType8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_ReadPROMVersion8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	hal_ReadIDs_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	hal_ReadMACAddress_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	_rtl88au_read_txpower_info_from_hwpg(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	Hal_ReadBoardType8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 
 	/*
 	 * Read Bluetooth co-exist and initialize
 	 */
 
-	Hal_ReadChannelPlan8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-	Hal_EfuseParseXtal_8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-	Hal_ReadThermalMeter_8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-	Hal_ReadAntennaDiversity8812A(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+	Hal_ReadChannelPlan8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	Hal_EfuseParseXtal_8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	Hal_ReadThermalMeter_8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	Hal_ReadAntennaDiversity8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-		_rtl8821au_read_pa_type(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+		_rtl8821au_read_pa_type(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	} else {
-		_rtl8812au_read_pa_type(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-		_rtl8812au_read_rfe_type(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
+		_rtl8812au_read_pa_type(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+		_rtl8812au_read_rfe_type(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	}
 
 	hal_CustomizeByCustomerID_8812AU(rtlpriv);
 
-	ReadLEDSetting_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-}
-
-void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)
-{
-	if (IsSupported24G(rtlpriv->registrypriv.wireless_mode) &&
-		IsSupported5G(rtlpriv->registrypriv.wireless_mode))
-		rtlpriv->rtlhal.bandset = BAND_ON_BOTH;
-	else if (IsSupported5G(rtlpriv->registrypriv.wireless_mode))
-		rtlpriv->rtlhal.bandset = BAND_ON_5G;
-	else
-		rtlpriv->rtlhal.bandset = BAND_ON_2_4G;
-
-	/*
-	 * if (rtlpriv->bInHctTest)
-	 * 	pHalData->BandSet = BAND_ON_2_4G;
-	 */
-}
-
-void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
-{
-	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-
-	/* Read all content in Efuse/EEPROM. */
-	Hal_ReadPROMContent_8812A(rtlpriv);
+	ReadLEDSetting_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 
 	/* We need to define the RF type after all PROM value is recognized. */
 	hal_ReadRFType_8812A(rtlpriv);

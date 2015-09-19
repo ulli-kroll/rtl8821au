@@ -1463,8 +1463,8 @@ static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 	if (tmp_u1b & EEPROM_EN) {
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Autoload OK\n");
 		rtlefuse->autoload_failflag = false;
-#if 0
-		_rtl8821ae_read_adapter_info(hw, false);
+#if 0		/* ULLI  : this is done in rtl_usb_probe / rtw_usb_probe */
+		_rtl8821au_read_adapter_info(hw, false);
 #endif
 	} else {
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG, "Autoload ERR!!\n");

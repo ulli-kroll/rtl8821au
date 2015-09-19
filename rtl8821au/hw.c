@@ -1084,23 +1084,9 @@ int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 static void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	/*  struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv); */
-	uint32_t			i;
-	u16			value16;
 
 	if (_FALSE == efuse->autoload_failflag) { /* autoload OK. */
-		if (efuse->epromtype == EEPROM_93C46) {
-			/* Read all Content from EEPROM or EFUSE. */
-			for (i = 0; i < HWSET_MAX_SIZE_JAGUAR; i += 2) {
-				/*
-				 * value16 = EF2Byte(ReadEEprom(rtlpriv, (u16) (i>>1)));
-				 * *((u16 *)(&PROMContent[i])) = value16;
-				 */
-			}
-		} else {
-			/* Read EFUSE real map to shadow. */
-			EFUSE_ShadowMapUpdate(rtlpriv);
-		}
+		EFUSE_ShadowMapUpdate(rtlpriv);
 	} else {	/* autoload fail */
 		/*
 		 * pHalData->AutoloadFailFlag = _TRUE;

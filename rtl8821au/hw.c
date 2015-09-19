@@ -1405,13 +1405,36 @@ void Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		 rtlefuse->antenna_div_cfg);
 }
 
-
-
-
-void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
+static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
 {
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	uint8_t	tmp_u1b;
+
+	/* check system boot selection */
+	tmp_u1b = rtl_read_byte(rtlpriv, REG_9346CR);
+	if (tmp_u1b & BIT(4)) {
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "Boot from EEPROM\n");
+		rtlefuse->epromtype = EEPROM_93C46;
+	} else {
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "Boot from EFUSE\n");
+		rtlefuse->epromtype = EEPROM_BOOT_EFUSE;
+	}
+
+	if (tmp_u1b & EEPROM_EN) {
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Autoload OK\n");
+		rtlefuse->autoload_failflag = false;
+#if 0		/* ULLI  : this is done in rtl_usb_probe / rtw_usb_probe */
+		_rtl8821au_read_adapter_info(hw, false);
+#endif
+	} else {
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG, "Autoload ERR!!\n");
+		/* ULLI : not in rtlwifi, maybe autoload_failflag to set to true */
+		rtlefuse->autoload_failflag = false;
+
+	}
+
+	/* pHalData->EEType = IS_BOOT_FROM_EEPROM(rtlpriv) ? EEPROM_93C46 : EEPROM_BOOT_EFUSE; */
 
 
 	hal_InitPGData_8812A(rtlpriv, &efuse->efuse_map[0][0]);
@@ -1442,40 +1465,6 @@ void InitAdapterVariablesByPROM_8812AU(struct rtl_priv *rtlpriv)
 	hal_CustomizeByCustomerID_8812AU(rtlpriv);
 
 	ReadLEDSetting_8812AU(rtlpriv, &efuse->efuse_map[0][0], efuse->autoload_failflag);
-}
-
-
-static void Hal_ReadPROMContent_8812A(struct rtl_priv *rtlpriv)
-{
-	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
-	uint8_t	tmp_u1b;
-
-	/* check system boot selection */
-	tmp_u1b = rtl_read_byte(rtlpriv, REG_9346CR);
-	if (tmp_u1b & BIT(4)) {
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "Boot from EEPROM\n");
-		rtlefuse->epromtype = EEPROM_93C46;
-	} else {
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "Boot from EFUSE\n");
-		rtlefuse->epromtype = EEPROM_BOOT_EFUSE;
-	}
-
-	if (tmp_u1b & EEPROM_EN) {
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "Autoload OK\n");
-		rtlefuse->autoload_failflag = false;
-#if 0		/* ULLI  : this is done in rtl_usb_probe / rtw_usb_probe */
-		_rtl8821au_read_adapter_info(hw, false);
-#endif
-	} else {
-		RT_TRACE(rtlpriv, COMP_ERR, DBG_EMERG, "Autoload ERR!!\n");
-		/* ULLI : not in rtlwifi, maybe autoload_failflag to set to true */
-		rtlefuse->autoload_failflag = false;
-
-	}
-
-	/* pHalData->EEType = IS_BOOT_FROM_EEPROM(rtlpriv) ? EEPROM_93C46 : EEPROM_BOOT_EFUSE; */
-
-	InitAdapterVariablesByPROM_8812AU(rtlpriv);
 }
 
 void hal_ReadRFType_8812A(struct rtl_priv *rtlpriv)

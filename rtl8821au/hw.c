@@ -1111,7 +1111,7 @@ static void hal_InitPGData_8812A(struct rtl_priv *rtlpriv, u8 *PROMContent)
 	}
 }
 
-static void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
+static void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	BOOLEAN	AutoloadFail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
@@ -1120,15 +1120,15 @@ static void hal_ReadIDs_8812AU(struct rtl_priv *rtlpriv, u8 *PROMContent,
 	if (!AutoloadFail) {
 		/* VID, PID */
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-			efuse->eeprom_vid = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8812AU]);
-			efuse->eeprom_did = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8812AU]);
+			efuse->eeprom_vid = *((u16 *) &hwinfo[EEPROM_VID_8812AU]);
+			efuse->eeprom_did = *((u16 *) &hwinfo[EEPROM_PID_8812AU]);
 		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-			efuse->eeprom_vid = EF2Byte(*(u16 *)&PROMContent[EEPROM_VID_8821AU]);
-			efuse->eeprom_did = EF2Byte(*(u16 *)&PROMContent[EEPROM_PID_8821AU]);
+			efuse->eeprom_vid = *((u16 *) &hwinfo[EEPROM_VID_8821AU]);
+			efuse->eeprom_did = *((u16 *) &hwinfo[EEPROM_PID_8821AU]);
 		}
 
 		/* Customer ID, 0x00 and 0xff are reserved for Realtek. */
-		efuse->eeprom_oemid = *(uint8_t *)&PROMContent[EEPROM_CustomID_8812];
+		efuse->eeprom_oemid = hwinfo[EEPROM_CustomID_8812];
 /* ULLI : rot in rtlwifi
  *		efuse->EEPROMSubCustomerID = EEPROM_Default_SubCustomerID;
  */

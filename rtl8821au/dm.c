@@ -1748,8 +1748,8 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 
 				plist = get_next(plist);
 
-				if (_rtw_memcmp(psta->hwaddr, bcast_addr, ETH_ALEN)
-				 || _rtw_memcmp(psta->hwaddr, myid(&rtlpriv->eeprompriv), ETH_ALEN))
+				if (memcmp(psta->hwaddr, bcast_addr, ETH_ALEN) == 0
+				 || memcmp(psta->hwaddr, myid(&rtlpriv->eeprompriv), ETH_ALEN) == 0)
 					continue;
 
 				if (psta->state & WIFI_ASOC_STATE) {

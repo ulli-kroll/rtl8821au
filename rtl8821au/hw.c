@@ -1175,24 +1175,6 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 
 /* ULLI : refractoring this into one function _read_adapter_info() */
 
-static void Hal_EfuseParseIDCode8812A(struct rtl_priv *rtlpriv, u8 *hwinfo)
-{
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	u16			EEPROMId;
-
-	/*  Checl 0x8129 again for making sure autoload status!! */
-	EEPROMId = le16_to_cpu(*((u16 *)hwinfo));
-	if (EEPROMId != RTL_EEPROM_ID) {
-		RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROM ID(%#x) is invalid!!\n", EEPROMId);
-		efuse->autoload_failflag = _TRUE;
-	} else {
-		efuse->autoload_failflag = _FALSE;
-	}
-
-	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROM ID=0x%04x\n", EEPROMId);
-}
-
-
 static void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	bool autoload_fail)
 {
@@ -1255,6 +1237,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	uint8_t	tmp_u1b;
 	u8 hwinfo[HWSET_MAX_SIZE_JAGUAR];
+	u16 EEPROMId;
 
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
@@ -1299,7 +1282,14 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 
 	}
 
-	Hal_EfuseParseIDCode8812A(rtlpriv, &rtlefuse->efuse_map[0][0]);
+	/*  Checl 0x8129 again for making sure autoload status!! */
+	EEPROMId = le16_to_cpu(*((u16 *)hwinfo));
+	if (EEPROMId != RTL_EEPROM_ID) {
+		RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROM ID(%#x) is invalid!!\n", EEPROMId);
+		rtlefuse->autoload_failflag = _TRUE;
+	} else {
+		rtlefuse->autoload_failflag = _FALSE;
+	}
 
 	if (rtlefuse->autoload_failflag) {
 		rtlefuse->eeprom_version = EEPROM_Default_Version;

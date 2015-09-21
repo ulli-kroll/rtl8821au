@@ -1552,63 +1552,6 @@ exit:
 	return res;
 }
 
-uint8_t rtw_set_chplan_cmd(struct rtl_priv*rtlpriv, uint8_t chplan, uint8_t enqueue)
-{
-	struct	cmd_obj*	pcmdobj;
-	struct	SetChannelPlan_param *setChannelPlan_param;
-	struct	cmd_priv   *pcmdpriv = &rtlpriv->cmdpriv;
-
-	uint8_t	res=_SUCCESS;
-
-
-
-	//check input parameter
-	if(!rtw_is_channel_plan_valid(chplan)) {
-		res = _FAIL;
-		goto exit;
-	}
-
-	//prepare cmd parameter
-	setChannelPlan_param = (struct	SetChannelPlan_param *)rtw_zmalloc(sizeof(struct SetChannelPlan_param));
-	if(setChannelPlan_param == NULL) {
-		res= _FAIL;
-		goto exit;
-	}
-	setChannelPlan_param->channel_plan=chplan;
-
-	if(enqueue)
-	{
-		//need enqueue, prepare cmd_obj and enqueue
-		pcmdobj = (struct	cmd_obj*)rtw_zmalloc(sizeof(struct	cmd_obj));
-		if(pcmdobj == NULL){
-			rtw_mfree(setChannelPlan_param);
-			res=_FAIL;
-			goto exit;
-		}
-
-		init_h2fwcmd_w_parm_no_rsp(pcmdobj, setChannelPlan_param, GEN_CMD_CODE(_SetChannelPlan));
-		res = rtw_enqueue_cmd(pcmdpriv, pcmdobj);
-	}
-	else
-	{
-		//no need to enqueue, do the cmd hdl directly and free cmd parameter
-		if( H2C_SUCCESS !=set_chplan_hdl(rtlpriv, (unsigned char *)setChannelPlan_param) )
-			res = _FAIL;
-
-		rtw_mfree(setChannelPlan_param);
-	}
-
-	//do something based on res...
-	if(res == _SUCCESS)
-		rtlpriv->mlmepriv.ChannelPlan = chplan;
-
-exit:
-
-
-
-	return res;
-}
-
 uint8_t rtw_set_csa_cmd(struct rtl_priv*rtlpriv, uint8_t new_ch_no)
 {
 	struct	cmd_obj*	pcmdobj;

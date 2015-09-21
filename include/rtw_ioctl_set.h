@@ -47,8 +47,6 @@ uint8_t rtw_validate_ssid(NDIS_802_11_SSID *ssid);
 
 u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv);
 int rtw_set_scan_mode(struct rtl_priv *rtlpriv, RT_SCAN_TYPE scan_mode);
-int rtw_set_channel_plan(struct rtl_priv *rtlpriv, uint8_t channel_plan);
-int rtw_set_country(struct rtl_priv *rtlpriv, const char *country_code);
 
 #endif
 

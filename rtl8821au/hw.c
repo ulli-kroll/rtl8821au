@@ -1192,31 +1192,6 @@ static void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 #endif
 }
 
-static void Hal_ReadThermalMeter_8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
-	bool autoload_fail)
-{
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-
-	/* uint8_t	tempval; */
-
-	/*
-	 * ThermalMeter from EEPROM
-	 */
-	if (!autoload_fail)
-		efuse->eeprom_thermalmeter = hwinfo[EEPROM_THERMAL_METER_8812];
-	else
-		efuse->eeprom_thermalmeter = EEPROM_Default_ThermalMeter_8812;
-	/* pHalData->EEPROMThermalMeter = (tempval&0x1f);	//[4:0] */
-
-	if (efuse->eeprom_thermalmeter == 0xff || autoload_fail) {
-		efuse->apk_thermalmeterignore = _TRUE;
-		efuse->eeprom_thermalmeter = 0xFF;
-	}
-
-	/* pHalData->ThermalMeter[0] = pHalData->EEPROMThermalMeter; */
-	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "ThermalMeter = 0x%x\n", efuse->eeprom_thermalmeter);
-}
-
 static void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	BOOLEAN	AutoLoadFail)
 {
@@ -1358,7 +1333,17 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 		rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;
 	}
 
-	Hal_ReadThermalMeter_8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+
+	if (!rtlefuse->autoload_failflag)
+		rtlefuse->eeprom_thermalmeter = hwinfo[EEPROM_THERMAL_METER_8812];
+	else
+		rtlefuse->eeprom_thermalmeter = EEPROM_Default_ThermalMeter_8812;
+	/* pHalData->EEPROMThermalMeter = (tempval&0x1f);	//[4:0] */
+
+	if (rtlefuse->eeprom_thermalmeter == 0xff || rtlefuse->autoload_failflag) {
+		rtlefuse->apk_thermalmeterignore = _TRUE;
+		rtlefuse->eeprom_thermalmeter = 0xFF;
+	}
 
 	if (!rtlefuse->autoload_failflag) {
 		u8 tmp;

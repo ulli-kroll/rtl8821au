@@ -1121,48 +1121,6 @@ static void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 #endif	
 }
 
-static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
-{
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
-	struct rtl_led_ctl *pledpriv = &(usbpriv->ledpriv);
-
-	/* For customized behavior. */
-
-	if ((efuse->eeprom_vid == 0x050D) && (efuse->eeprom_did == 0x1106))		/* SerComm for Belkin. */
-		rtlhal->oem_id = RT_CID_Sercomm_Belkin;	/* ULLI : RTL8812 */
-	else if ((efuse->eeprom_vid == 0x0846) && (efuse->eeprom_did == 0x9052))	/* SerComm for Netgear. */
-		rtlhal->oem_id = RT_CID_Sercomm_Netgear;	/* ULLI :  posible typo for pid maybe 0x9052 */
-	else if ((efuse->eeprom_vid == 0x2001) && (efuse->eeprom_did == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
-		rtlhal->oem_id = RT_CID_ALPHA_Dlink;	/* ULLI : RTL8812 */
-	else if ((efuse->eeprom_vid == 0x0B05) && (efuse->eeprom_did == 0x17D2))	/* Edimax for ASUS */
-		rtlhal->oem_id = RT_CID_Edimax_ASUS;	/* ULLI : RTL8812 */
-
-#if 0
-	DBG_871X("PID= 0x%x, VID=  %x\n", efuse->eeprom_did, efuse->eeprom_vid);
-#endif
-	/* Decide CustomerID according to VID/DID or EEPROM */
-	switch (efuse->eeprom_oemid) {
-	case EEPROM_CID_DEFAULT:
-		if ((efuse->eeprom_vid == 0x0846) && (efuse->eeprom_did == 0x9052))
-			rtlhal->oem_id = RT_CID_NETGEAR;		/* ULLI : RTL8821 */
-#if 0
-		DBG_871X("PID= 0x%x, VID=  %x\n", efuse->eeprom_did, efuse->eeprom_vid);
-#endif		
-		break;
-	default:
-		rtlhal->oem_id = RT_CID_DEFAULT;
-		break;
-
-	}
-#if 0	
-	DBG_871X("Customer ID: 0x%2x\n", rtlhal->oem_id);
-#endif
-
-	pledpriv->led_opendrain = true;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
-}
-
 static void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 				    bool autoload_fail);
 
@@ -1193,6 +1151,8 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
+	struct rtl_led_ctl *pledpriv = &(usbpriv->ledpriv);
 	uint8_t	tmp_u1b;
 	u8 hwinfo[HWSET_MAX_SIZE_JAGUAR];
 	u16 EEPROMId;
@@ -1360,7 +1320,30 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 		_rtl8812au_read_rfe_type(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	}
 
-	hal_CustomizeByCustomerID_8812AU(rtlpriv);
+	/* For customized behavior. */
+
+	if ((rtlefuse->eeprom_vid == 0x050D) && (rtlefuse->eeprom_did == 0x1106))		/* SerComm for Belkin. */
+		rtlhal->oem_id = RT_CID_Sercomm_Belkin;	/* ULLI : RTL8812 */
+	else if ((rtlefuse->eeprom_vid == 0x0846) && (rtlefuse->eeprom_did == 0x9052))	/* SerComm for Netgear. */
+		rtlhal->oem_id = RT_CID_Sercomm_Netgear;	/* ULLI :  posible typo for pid maybe 0x9052 */
+	else if ((rtlefuse->eeprom_vid == 0x2001) && (rtlefuse->eeprom_did == 0x330e))	/* add by ylb 20121012 for customer led for alpha */
+		rtlhal->oem_id = RT_CID_ALPHA_Dlink;	/* ULLI : RTL8812 */
+	else if ((rtlefuse->eeprom_vid == 0x0B05) && (rtlefuse->eeprom_did == 0x17D2))	/* Edimax for ASUS */
+		rtlhal->oem_id = RT_CID_Edimax_ASUS;	/* ULLI : RTL8812 */
+
+	/* Decide CustomerID according to VID/DID or EEPROM */
+	switch (rtlefuse->eeprom_oemid) {
+	case EEPROM_CID_DEFAULT:
+		if ((rtlefuse->eeprom_vid == 0x0846) && (rtlefuse->eeprom_did == 0x9052))
+			rtlhal->oem_id = RT_CID_NETGEAR;		/* ULLI : RTL8821 */
+		break;
+	default:
+		rtlhal->oem_id = RT_CID_DEFAULT;
+		break;
+
+	}
+
+	pledpriv->led_opendrain = true;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
 
 #if 0	/* ULLI check this in old source, may be vendor specific ?? */
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power) 	{

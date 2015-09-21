@@ -1163,12 +1163,6 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 	pledpriv->led_opendrain = true;	/* Support Open-drain arrangement for controlling the LED. Added by Roger, 2009.10.16. */
 }
 
-static void ReadLEDSetting_8812AU(struct rtl_priv *rtlpriv,
-	u8 *PROMContent, BOOLEAN AutoloadFail)
-{
-}
-
-
 static void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 				    bool autoload_fail);
 
@@ -1397,8 +1391,6 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	}
 
 	hal_CustomizeByCustomerID_8812AU(rtlpriv);
-
-	ReadLEDSetting_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 
 #if 0	/* ULLI check this in old source, may be vendor specific ?? */
 	if(pHalData->InterfaceSel == INTF_SEL1_USB_High_Power) 	{

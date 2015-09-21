@@ -1125,7 +1125,6 @@ static void hal_CustomizeByCustomerID_8812AU(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *pledpriv = &(usbpriv->ledpriv);
 

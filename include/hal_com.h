@@ -59,7 +59,7 @@ hal_com_get_channel_plan(
 	IN	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
 	IN	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
 	IN	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
-	IN	BOOLEAN		AutoLoadFail
+	IN	bool			AutoLoadFail
 	);
 
 BOOLEAN

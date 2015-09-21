@@ -24,21 +24,23 @@
 
 #define	EEPROM_CHANNEL_PLAN_BY_HW_MASK	0x80
 
-uint8_t	//return the final channel plan decision
-hal_com_get_channel_plan(
-	IN	struct rtl_priv *rtlpriv,
-	IN	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
-	IN	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
-	IN	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
-	IN	BOOLEAN		AutoLoadFail
-	)
+/*
+ * 	u8 hw_channel_plan,	channel plan from HW (efuse/eeprom)
+ *	u8 sw_channel_plan,	channel plan from SW (registry/module param)
+ *	u8 def_channel_plan,	channel plan used when the former two is invalid
+ *	bool AutoLoadFail
+ */
+
+
+u8 hal_com_get_channel_plan(struct rtl_priv *rtlpriv, u8 hw_channel_plan,	
+			    u8 sw_channel_plan, u8 def_channel_plan,
+			    bool AutoLoadFail)
 {
 	uint8_t swConfig;
 	uint8_t chnlPlan;
 
 	swConfig = _TRUE;
-	if (!AutoLoadFail)
-	{
+	if (!AutoLoadFail) {
 		if (!rtw_is_channel_plan_valid(sw_channel_plan))
 			swConfig = _FALSE;
 		if (hw_channel_plan & EEPROM_CHANNEL_PLAN_BY_HW_MASK)

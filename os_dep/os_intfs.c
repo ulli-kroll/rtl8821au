@@ -23,7 +23,6 @@
 
 /* module param defaults */
 static int rtw_channel = 1;/* ad-hoc support requirement */
-static int rtw_wireless_mode = WIRELESS_MODE_MAX;
 static int rtw_vrtl_carrier_sense = AUTO_VCS;
 static int rtw_vcs_type = RTS_CTS;
 static int rtw_rts_thresh = 2347;
@@ -541,12 +540,11 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->ssid.SsidLength = 3;
 
 	registry_par->channel = (uint8_t)rtw_channel;
-	registry_par->wireless_mode = (uint8_t)rtw_wireless_mode;
 
-	if (IsSupported24G(registry_par->wireless_mode) && (!IsSupported5G(registry_par->wireless_mode))
+	if (IsSupported24G(WIRELESS_MODE_MAX) && (!IsSupported5G(WIRELESS_MODE_MAX))
 		&& (registry_par->channel > 14)) {
 		registry_par->channel = 1;
-	} else if (IsSupported5G(registry_par->wireless_mode) && (!IsSupported24G(registry_par->wireless_mode))
+	} else if (IsSupported5G(WIRELESS_MODE_MAX) && (!IsSupported24G(WIRELESS_MODE_MAX))
 		&& (registry_par->channel <= 14)) {
 		registry_par->channel = 36;
 	}

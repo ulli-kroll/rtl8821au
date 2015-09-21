@@ -66,12 +66,12 @@ bool HAL_IsLegalChannel(struct rtl_priv *rtlpriv, uint32_t Channel)
 	bool bLegalChannel = _TRUE;
 
 	if (Channel > 14) {
-		if(IsSupported5G(rtlpriv->registrypriv.wireless_mode) == _FALSE) {
+		if(IsSupported5G(WIRELESS_MODE_MAX) == _FALSE) {
 			bLegalChannel = _FALSE;
 			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Channel > 14 but wireless_mode do not support 5G\n");
 		}
 	} else if ((Channel <= 14) && (Channel >=1)){
-		if(IsSupported24G(rtlpriv->registrypriv.wireless_mode) == _FALSE) {
+		if(IsSupported24G(WIRELESS_MODE_MAX) == _FALSE) {
 			bLegalChannel = _FALSE;
 			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "(Channel <= 14) && (Channel >=1) but wireless_mode do not support 2.4G\n");
 		}

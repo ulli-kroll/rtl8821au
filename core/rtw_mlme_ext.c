@@ -313,7 +313,7 @@ static void init_mlme_ext_priv_value(struct rtl_priv* rtlpriv)
 
 	pmlmeext->retry = 0;
 
-	pmlmeext->cur_wireless_mode = rtlpriv->registrypriv.wireless_mode;
+	pmlmeext->cur_wireless_mode = WIRELESS_MODE_MAX;
 
 	//memcpy(pmlmeext->channel_set, DefaultChannelPlan[rtlpriv->mlmepriv.ChannelPlan].Channel, DefaultChannelPlan[rtlpriv->mlmepriv.ChannelPlan].Len);
 	//memcpy(pmlmeext->channel_set, default_channel_set, MAX_CHANNEL_NUM);
@@ -430,7 +430,7 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 		return chanset_size;
 	}
 
-	if(IsSupported24G(rtlpriv->registrypriv.wireless_mode))
+	if(IsSupported24G(WIRELESS_MODE_MAX))
 	{
 		b2_4GBand = _TRUE;
 		if(RT_CHANNEL_DOMAIN_REALTEK_DEFINE == ChannelPlan)
@@ -439,7 +439,7 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 			Index2G = RTW_ChannelPlanMap[ChannelPlan].Index2G;
 	}
 
-	if(IsSupported5G(rtlpriv->registrypriv.wireless_mode))
+	if(IsSupported5G(WIRELESS_MODE_MAX))
 	{
 		b5GBand = _TRUE;
 		if(RT_CHANNEL_DOMAIN_REALTEK_DEFINE == ChannelPlan)
@@ -5206,8 +5206,7 @@ static void process_80211d(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *bssid)
 		chplan_new = pmlmeext->channel_set;
 
 		i = j = k = 0;
-		if (pregistrypriv->wireless_mode & WIRELESS_11G)
-		{
+		if (WIRELESS_MODE_MAX & WIRELESS_11G) {
 			do {
 				if ((i == MAX_CHANNEL_NUM) ||
 					(chplan_sta[i].ChannelNum == 0) ||
@@ -5283,8 +5282,7 @@ static void process_80211d(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *bssid)
 			}
 		}
 
-		if (pregistrypriv->wireless_mode & WIRELESS_11A)
-		{
+		if (WIRELESS_MODE_MAX & WIRELESS_11A) {
 			do {
 				if ((i == MAX_CHANNEL_NUM) ||
 					(chplan_sta[i].ChannelNum == 0))

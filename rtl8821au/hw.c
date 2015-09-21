@@ -1899,7 +1899,9 @@ static void _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *rtlpriv)
 	value32 = rtl_read_dword(rtlpriv, REG_RRSR);
 	value32 &= ~RATE_BITMAP_ALL;
 
-	if (rtlpriv->registrypriv.wireless_mode & WIRELESS_11B)
+	/* ULLI : maybe WIRELESS_MODE_MAX from ieee80211.h is meant ?? */
+
+	if (WIRELESS_MODE_MAX & WIRELESS_11B)
 		value32 |= RATE_RRSR_CCK_ONLY_1M;
 	else
 		value32 |= RATE_RRSR_WITHOUT_CCK;

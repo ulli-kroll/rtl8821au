@@ -2034,7 +2034,7 @@ void update_wireless_mode(struct rtl_priv *rtlpriv)
 		}
 	}
 
-	pmlmeext->cur_wireless_mode = network_type & rtlpriv->registrypriv.wireless_mode;
+	pmlmeext->cur_wireless_mode = network_type & WIRELESS_MODE_MAX;
 /*
 	if((pmlmeext->cur_wireless_mode==WIRELESS_11G) ||
 		(pmlmeext->cur_wireless_mode==WIRELESS_11BG))//WIRELESS_MODE_G)

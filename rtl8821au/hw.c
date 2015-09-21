@@ -1256,21 +1256,6 @@ static void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "mlmepriv.ChannelPlan = 0x%02x\n", rtlpriv->mlmepriv.ChannelPlan);
 }
 
-static void Hal_EfuseParseXtal_8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
-	BOOLEAN	AutoLoadFail)
-{
-	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
-
-	if (!AutoLoadFail) {
-		rtlefuse->crystalcap = hwinfo[EEPROM_XTAL_8812];
-		if (rtlefuse->crystalcap == 0xFF)
-			rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;	 /* what value should 8812 set? */
-	} else {
-		rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;
-	}
-	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "CrystalCap: 0x%2x\n", rtlefuse->crystalcap);
-}
-
 void Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
 				   bool autoload_fail)
 {
@@ -1404,7 +1389,15 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	 */
 
 	Hal_ReadChannelPlan8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
-	Hal_EfuseParseXtal_8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+
+	if (!rtlefuse->autoload_failflag) {
+		rtlefuse->crystalcap = hwinfo[EEPROM_XTAL_8812];
+		if (rtlefuse->crystalcap == 0xFF)
+			rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;	 /* what value should 8812 set? */
+	} else {
+		rtlefuse->crystalcap = EEPROM_Default_CrystalCap_8812;
+	}
+
 	Hal_ReadThermalMeter_8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	Hal_ReadAntennaDiversity8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 

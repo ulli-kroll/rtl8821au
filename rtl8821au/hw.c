@@ -1256,29 +1256,6 @@ static void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "mlmepriv.ChannelPlan = 0x%02x\n", rtlpriv->mlmepriv.ChannelPlan);
 }
 
-void Hal_ReadAntennaDiversity8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
-				   bool autoload_fail)
-{
-	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
-
-	if (!autoload_fail) {
-		u8 tmp;
-		
-		tmp = hwinfo[EEPROM_RF_BOARD_OPTION_8812];
-		
-		/*  Antenna Diversity setting. */
-		rtlefuse->antenna_div_cfg = (tmp & 0x18) >>3;
-		if (tmp == 0xFF)
-			rtlefuse->antenna_div_cfg = (EEPROM_DEFAULT_BOARD_OPTION & 0x18) >> 3;;
-	} else {
-		rtlefuse->antenna_div_cfg = 0;
-	}
-
-	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "SWAS: bHwAntDiv = %x\n", 
-		 rtlefuse->antenna_div_cfg);
-}
-
-
 void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
@@ -1399,7 +1376,19 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	}
 
 	Hal_ReadThermalMeter_8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
-	Hal_ReadAntennaDiversity8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+
+	if (!rtlefuse->autoload_failflag) {
+		u8 tmp;
+		
+		tmp = hwinfo[EEPROM_RF_BOARD_OPTION_8812];
+		
+		/*  Antenna Diversity setting. */
+		rtlefuse->antenna_div_cfg = (tmp & 0x18) >>3;
+		if (tmp == 0xFF)
+			rtlefuse->antenna_div_cfg = (EEPROM_DEFAULT_BOARD_OPTION & 0x18) >> 3;;
+	} else {
+		rtlefuse->antenna_div_cfg = 0;
+	}
 
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		_rtl8821au_read_pa_type(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);

@@ -1175,23 +1175,6 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 
 /* ULLI : refractoring this into one function _read_adapter_info() */
 
-static void Hal_ReadBoardType8812A(struct rtl_priv *rtlpriv, u8 *hwinfo,
-	bool autoload_fail)
-{
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-
-#if 0	/* ULLI check this in old source, may be vendor specific ?? */
-	if (!autoload_fail) {
-		pHalData->InterfaceSel = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0xE0)>>5;
-		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
-			pHalData->InterfaceSel = (EEPROM_DEFAULT_BOARD_OPTION&0xE0)>>5;
-	} else {
-		pHalData->InterfaceSel = 0;
-	}
-	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "Board Type: 0x%2x\n", pHalData->InterfaceSel);
-#endif
-}
-
 static void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 	BOOLEAN	AutoLoadFail)
 {
@@ -1317,7 +1300,19 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	}
 
 	_rtl88au_read_txpower_info_from_hwpg(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
-	Hal_ReadBoardType8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	
+
+#if 0	/* ULLI check this in old source, may be vendor specific ?? */
+	/* ULLI from Hal_ReadBoardType8812A() */
+	if (!autoload_fail) {
+		pHalData->InterfaceSel = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0xE0)>>5;
+		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
+			pHalData->InterfaceSel = (EEPROM_DEFAULT_BOARD_OPTION&0xE0)>>5;
+	} else {
+		pHalData->InterfaceSel = 0;
+	}
+	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "Board Type: 0x%2x\n", pHalData->InterfaceSel);
+#endif
 
 	/*
 	 * Read Bluetooth co-exist and initialize

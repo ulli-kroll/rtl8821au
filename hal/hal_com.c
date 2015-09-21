@@ -31,6 +31,9 @@
  *	bool AutoLoadFail
  */
 
+#define rtw_is_channel_plan_valid(chplan) (chplan<RT_CHANNEL_DOMAIN_MAX || \
+					   chplan == RT_CHANNEL_DOMAIN_REALTEK_DEFINE)
+
 
 u8 hal_com_get_channel_plan(struct rtl_priv *rtlpriv, u8 hw_channel_plan,	
 			    u8 sw_channel_plan, u8 def_channel_plan,
@@ -58,13 +61,9 @@ u8 hal_com_get_channel_plan(struct rtl_priv *rtlpriv, u8 hw_channel_plan,
 	return chnlPlan;
 }
 
-BOOLEAN
-HAL_IsLegalChannel(
-	IN	struct rtl_priv *rtlpriv,
-	IN	uint32_t			Channel
-	)
+bool HAL_IsLegalChannel(struct rtl_priv *rtlpriv, uint32_t Channel)
 {
-	BOOLEAN bLegalChannel = _TRUE;
+	bool bLegalChannel = _TRUE;
 
 	if (Channel > 14) {
 		if(IsSupported5G(rtlpriv->registrypriv.wireless_mode) == _FALSE) {

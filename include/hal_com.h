@@ -62,11 +62,7 @@ hal_com_get_channel_plan(
 	IN	bool			AutoLoadFail
 	);
 
-BOOLEAN
-HAL_IsLegalChannel(
-	IN	struct rtl_priv *rtlpriv,
-	IN	u32			Channel
-	);
+bool HAL_IsLegalChannel(struct rtl_priv *rtlpriv, u32 Channel);
 
 void	HalSetBrateCfg(
 	IN struct rtl_priv *	rtlpriv,

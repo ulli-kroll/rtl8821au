@@ -1080,30 +1080,6 @@ int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 	return true;
 }
 
-static void hal_ReadMACAddress_8812AU(struct rtl_priv *rtlpriv, u8 *hwinfo,
-	BOOLEAN	AutoloadFail)
-{
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-
-	if (_FALSE == AutoloadFail) {
-		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-			/* Read Permanent MAC address and set value to hardware */
-			memcpy(rtlpriv->mac80211.mac_addr, &hwinfo[EEPROM_MAC_ADDR_8812AU], ETH_ALEN);
-		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
-			/*  Read Permanent MAC address and set value to hardware */
-			memcpy(rtlpriv->mac80211.mac_addr, &hwinfo[EEPROM_MAC_ADDR_8821AU], ETH_ALEN);
-		}
-	} else {
-		/* Random assigh MAC address */
-		u8 sMacAddr[ETH_ALEN] = {0x00, 0xE0, 0x4C, 0x88, 0x12, 0x00};
-		/* sMacAddr[5] = (u8)GetRandomNumber(1, 254); */
-		memcpy(rtlpriv->mac80211.mac_addr, sMacAddr, ETH_ALEN);
-	}
-
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "%s MAC Address from EFUSE = "MAC_FMT"\n", __FUNCTION__, MAC_ARG(rtlpriv->mac80211.mac_addr));
-}
-
-
 static void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 		bool autoload_fail)
 {
@@ -1405,7 +1381,21 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
  */
 	}
 
-	hal_ReadMACAddress_8812AU(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	if (!rtlefuse->autoload_failflag) {
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+			/* Read Permanent MAC address and set value to hardware */
+			memcpy(rtlpriv->mac80211.mac_addr, &hwinfo[EEPROM_MAC_ADDR_8812AU], ETH_ALEN);
+		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+			/*  Read Permanent MAC address and set value to hardware */
+			memcpy(rtlpriv->mac80211.mac_addr, &hwinfo[EEPROM_MAC_ADDR_8821AU], ETH_ALEN);
+		}
+	} else {
+		/* Random assigh MAC address */
+		u8 sMacAddr[ETH_ALEN] = {0x00, 0xE0, 0x4C, 0x88, 0x12, 0x00};
+		/* sMacAddr[5] = (u8)GetRandomNumber(1, 254); */
+		memcpy(rtlpriv->mac80211.mac_addr, sMacAddr, ETH_ALEN);
+	}
+
 	_rtl88au_read_txpower_info_from_hwpg(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	Hal_ReadBoardType8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 

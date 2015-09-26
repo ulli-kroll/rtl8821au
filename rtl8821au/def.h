@@ -120,12 +120,13 @@ enum version_8821au {
 
 
 // Get element
-#define GET_CVID_IC_TYPE(version)			((version) & IC_TYPE_MASK)
-#define GET_CVID_CHIP_TYPE(version)			((version) & CHIP_TYPE_MASK)
-#define GET_CVID_RF_TYPE(version)			((version) & RF_TYPE_MASK)
-#define GET_CVID_MANUFACTUER(version)			((version) & MANUFACTUER_MASK)
-#define GET_CVID_CUT_VERSION(version)			((version) & CUT_VERSION_MASK)
-#define GET_CVID_ROM_VERSION(version)		(((version)) & ROM_VERSION_MASK)
+#define GET_CVID_IC_TYPE(version)	((version) & IC_TYPE_MASK)
+#define GET_CVID_CHIP_TYPE(version)	((version) & CHIP_TYPE_MASK)
+#define GET_CVID_RF_TYPE(version)	((version) & RF_TYPE_MASK)
+#define GET_CVID_MANUFACTUER(version)	((version) & MANUFACTUER_MASK)
+#define GET_CVID_CUT_VERSION(version)	((version) & CUT_VERSION_MASK)
+#define NUM_CUT_VERSION(version)	(GET_CVID_CUT_VERSION(version) >> 12)
+#define GET_CVID_ROM_VERSION(version)	(((version)) & ROM_VERSION_MASK)
 
 //----------------------------------------------------------------------------
 //Common Macro. --

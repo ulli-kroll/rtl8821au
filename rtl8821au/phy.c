@@ -3,10 +3,85 @@
 #include "dm.h"
 #include "table.h"
 #include "rf.h"
+#include "def.h"
 #include "reg.h"
 /*
  * 1. BB register R/W API
  */
+
+static bool CheckPositive(struct rtl_priv *rtlpriv,
+			  uint32_t Condition1, uint32_t Condition2)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	u8 _BoardType = ((rtlhal->board_type & ODM_BOARD_EXT_LNA) ? 0x01 : 0) |
+			((rtlhal->board_type & ODM_BOARD_EXT_PA) ?  0x02 : 0) |
+			((rtlhal->board_type & ODM_BOARD_EXT_LNA_5G) ? 0x04 : 0) |
+			((rtlhal->board_type & ODM_BOARD_EXT_PA_5G) ? 0x10 : 0) |
+			/* ULLI : would be zero, but curently here for consistence */
+			((rtlhal->board_type & ODM_BOARD_BT) ? 0x10 : 0);
+#if 0
+	/* ULLI : From AWUSB driver
+	 * pDM_Odm->SupportInterface : RTW_USB 	 BIT1,
+	 * pDM_Odm->SupportPlatform  : ODM_CE     0x04
+	 */
+#endif
+	uint32_t cond1   = Condition1, cond2 = Condition2;
+	uint32_t driver1 = NUM_CUT_VERSION(rtlhal->version) << 24 |
+		           ODM_CE << 16 |
+		           /* ULLI : pDM_Odm->PackageType      << 12 |  is zero */
+		           RTW_USB << 8  |
+		           _BoardType;
+	uint32_t driver2 = rtlhal->lna_type_2g <<  0 |
+		           rtlhal->pa_type_2g  <<  8 |
+		           rtlhal->lna_type_5g << 16 |
+		           rtlhal->lna_type_5g  << 24;
+
+	/*
+	 * ============== Value Defined Check ===============
+	 * QFN Type [15:12] and Cut Version [27:24] need to do value check
+	 */
+
+	if (((cond1 & 0x0000F000) != 0) &&
+	    ((cond1 & 0x0000F000) != (driver1 & 0x0000F000)))
+		return false;
+		
+	if (((cond1 & 0x0F000000) != 0) &&
+	    ((cond1 & 0x0F000000) != (driver1 & 0x0F000000)))
+		return false;
+
+	/*
+	 * =============== Bit Defined Check ================
+	 * We don't care [31:28] and [23:20]
+	 */
+
+	cond1   &= 0x000F0FFF;
+	driver1 &= 0x000F0FFF;
+
+	if ((cond1 & driver1) == cond1) {
+		uint32_t bitMask = 0;
+		if ((cond1 & 0x0F) == 0) /* BoardType is DONTCARE */
+			return true;
+
+		if ((cond1 & BIT0) != 0) /* GLNA */
+			bitMask |= 0x000000FF;
+		if ((cond1 & BIT1) != 0) /* GPA */
+			bitMask |= 0x0000FF00;
+		if ((cond1 & BIT2) != 0) /* ALNA */
+			bitMask |= 0x00FF0000;
+		if ((cond1 & BIT3) != 0) /* APA */
+			bitMask |= 0xFF000000;
+
+		if ((cond2 & bitMask) == (driver2 & bitMask)) /* BoardType of each RF path is matched */
+			return false;
+		else
+			return false;
+	} else {
+		return false;
+	}
+
+	return false;
+}
 
 #define READ_NEXT_PAIR(array_table, v1, v2, i) \
 	do { \

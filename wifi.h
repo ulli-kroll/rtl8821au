@@ -2179,8 +2179,6 @@ struct _rtw_dm {
 };
 
 struct _rtw_hal {
-	RT_REGULATOR_MODE	RegulatorMode; // switching regulator or LDO
-
 	//current WIFI_PHY values
 	enum wireless_mode CurrentWirelessMode;
 
@@ -2189,16 +2187,9 @@ struct _rtw_hal {
 	u32	ReceiveConfig;
 
 	//rf_ctrl
-	uint8_t	rf_chip;
-
-	uint8_t	framesync;
-	u32	framesyncC34;
-	uint8_t	framesyncMonitor;
 	uint8_t	DefaultInitialGain[4];
 
 	uint8_t	bTXPowerDataReadFromEEPORM;
-	uint8_t	bAPKThermalMeterIgnore;
-
 	//uint8_t				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
 
 
@@ -2223,11 +2214,6 @@ struct _rtw_hal {
 	// Read/write are allow for following hardware information variables
 	u32	CCKTxPowerLevelOriginalOffset;
 
-//	u32	AntennaTxPath;					// Antenna path Tx
-//	u32	AntennaRxPath;					// Antenna path Rx
-
-	uint8_t	BoardType;
-	uint8_t	ExternalPA;
 	uint8_t	bIQKInitialized;
 	BOOLEAN		bLCKInProgress;
 
@@ -2261,10 +2247,6 @@ struct _rtw_hal {
 
 	// 2010/12/10 MH Add for USB aggreation mode dynamic shceme.
 	BOOLEAN		UsbRxHighSpeedMode;
-
-	// 2010/11/22 MH Add for slim combo debug mode selective.
-	// This is used for fix the drawback of CU TSMC-A/UMC-A cut. HW auto suspend ability. Close BT clock.
-	BOOLEAN		SlimComboDbg;
 
 	uint8_t	AMPDUDensity;
 

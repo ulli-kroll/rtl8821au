@@ -48,14 +48,12 @@ static BOOLEAN Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
 
 	bShortGI = shortGIrate;
 
-#ifdef CONFIG_80211AC_VHT
 	if (bShortGI && IsSupportedVHT(psta->wireless_mode)
 	 && (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP)
 	 && TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX)) {
 		if (psta->vhtpriv.vht_highest_rate >= MGN_VHT2SS_MCS8)
 			bShortGI = _FALSE;
 	}
-#endif
 
 	return bShortGI;
 }
@@ -230,7 +228,6 @@ void Set_RA_LDPC_8812(struct sta_info *psta, BOOLEAN bLDPC)
 	if (psta == NULL)
 		return;
 
-#ifdef CONFIG_80211AC_VHT
 	if (psta->wireless_mode == WIRELESS_11_5AC) {
 		if (bLDPC && TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_CAP_TX))
 			SET_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX);
@@ -243,7 +240,6 @@ void Set_RA_LDPC_8812(struct sta_info *psta, BOOLEAN bLDPC)
 			else
 				CLEAR_FLAG(psta->htpriv.ldpc_cap, LDPC_HT_ENABLE_TX);
 		}
-#endif
 
 	/* DBG_871X("MacId %d bLDPC %d\n", psta->mac_id, bLDPC); */
 }
@@ -256,7 +252,6 @@ u8 Get_RA_LDPC_8812(struct sta_info *psta)
 		bLDPC = 0;
 	else
 		if (psta != NULL) {
-#ifdef CONFIG_80211AC_VHT
 			if (IsSupportedVHT(psta->wireless_mode)) {
 				if (TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_CAP_TX))
 					bLDPC = 1;
@@ -269,7 +264,6 @@ u8 Get_RA_LDPC_8812(struct sta_info *psta)
 					else
 						bLDPC = 0;
 				} else
-#endif
 				bLDPC = 0;
 	}
 

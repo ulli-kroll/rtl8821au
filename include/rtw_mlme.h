@@ -357,9 +357,7 @@ struct mlme_priv {
 
 	struct ht_priv	htpriv;
 
-#ifdef CONFIG_80211AC_VHT
 	struct vht_priv	vhtpriv;
-#endif
 
 	RT_LINK_DETECT_T	LinkDetectInfo;
 	_timer	dynamic_chk_timer; //dynamic/periodic check timer

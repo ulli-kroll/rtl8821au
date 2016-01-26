@@ -554,7 +554,7 @@ static void update_attrib_phy_info(struct tx_pkt_attrib *pattrib, struct sta_inf
 	pattrib->qos_en = psta->qos_option;
 
 	pattrib->raid = psta->raid;
-#ifdef CONFIG_80211AC_VHT
+
 	if (psta->vhtpriv.vht_option) {
 		pattrib->bwmode = psta->vhtpriv.vht_bwmode;
 		pattrib->sgi = psta->vhtpriv.sgi;
@@ -565,7 +565,6 @@ static void update_attrib_phy_info(struct tx_pkt_attrib *pattrib, struct sta_inf
 		if (TEST_FLAG(psta->vhtpriv.stbc_cap, STBC_VHT_ENABLE_TX))
 			pattrib->stbc = 1;
 	} else
-#endif
 	{
 		pattrib->bwmode = psta->htpriv.bwmode;
 		pattrib->sgi = psta->htpriv.sgi;

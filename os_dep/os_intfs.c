@@ -72,7 +72,6 @@ static int rtw_ampdu_amsdu = 0;/*  0: disabled, 1:enabled, 2:auto */
  */
 static int rtw_short_gi = 0xf;
 
-#ifdef CONFIG_80211AC_VHT
 static int rtw_vht_enable = 1;
 static int rtw_ampdu_factor = 7;
 static int rtw_vht_rate_sel = 0;
@@ -97,7 +96,6 @@ static int rtw_stbc_cap = 0x3;
  * BIT5: Enable HT Beamformee
  */
 static int rtw_beamform_cap = 0;
-#endif /* CONFIG_80211AC_VHT */
 
 static int rtw_lowrate_two_xmit = 1;/* Use 2 path Tx to transmit MCS0~7 and legacy mode */
 
@@ -568,13 +566,11 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->ampdu_amsdu = (uint8_t)rtw_ampdu_amsdu;
 	registry_par->short_gi = (uint8_t)rtw_short_gi;
 
-#ifdef CONFIG_80211AC_VHT
 	registry_par->ampdu_factor = (uint8_t)rtw_ampdu_factor;
 	registry_par->vht_rate_sel = (uint8_t)rtw_vht_rate_sel;
 	registry_par->ldpc_cap = (uint8_t)rtw_ldpc_cap;
 	registry_par->stbc_cap = (uint8_t)rtw_stbc_cap;
 	registry_par->beamform_cap = (uint8_t)rtw_beamform_cap;
-#endif
 	registry_par->lowrate_two_xmit = (uint8_t)rtw_lowrate_two_xmit;
 	registry_par->low_power = (uint8_t)rtw_low_power;
 

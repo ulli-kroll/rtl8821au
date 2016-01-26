@@ -126,12 +126,10 @@ void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rss
 		raid = rtw_hal_networktype_to_raid(rtlpriv, networkType);
 
 		mask = update_supported_rate(cur_network->SupportedRates, supportRateNum);
-#ifdef CONFIG_80211AC_VHT
 		if (pmlmeinfo->VHT_enable) {
 			mask |= (rtw_vht_rate_to_bitmap(psta->vhtpriv.vht_mcs_map) << 12);
 			shortGIrate = psta->vhtpriv.sgi;
 		} else
-#endif
 			{
 				mask |= (pmlmeinfo->HT_enable) ? update_MCS_rate(&(pmlmeinfo->HT_caps)) : 0;
 				if (support_short_GI(rtlpriv, &(pmlmeinfo->HT_caps)))

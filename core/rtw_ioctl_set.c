@@ -1005,9 +1005,7 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv)
 	uint8_t	bw_40MHz=0, short_GI_20=0, short_GI_40=0, cbw40_enable=0;
 	u16	mcs_rate=0;
 	uint32_t	ht_ielen = 0;
-#ifdef CONFIG_80211AC_VHT
 	struct vht_priv	*pvhtpriv = &pmlmepriv->vhtpriv;
-#endif
 
 	if((check_fwstate(pmlmepriv, _FW_LINKED) != _TRUE)
 		&& (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) != _TRUE))
@@ -1048,11 +1046,9 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv)
 			);
 		}
 	}
-#ifdef CONFIG_80211AC_VHT
 	else if (IsSupportedVHT(pmlmeext->cur_wireless_mode)) {
 		max_rate = ((rtw_vht_data_rate(pvhtpriv->vht_bwmode, pvhtpriv->sgi, pvhtpriv->vht_highest_rate) + 1) >> 1) * 10;
 	}
-#endif //CONFIG_80211AC_VHT
 	else
 	{
 		while( (pcur_bss->SupportedRates[i]!=0) && (pcur_bss->SupportedRates[i]!=0xFF))

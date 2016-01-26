@@ -180,7 +180,6 @@ uint8_t networktype_to_raid_ex(struct rtl_priv *rtlpriv,unsigned char network_ty
 					raid = RATEID_IDX_BGN_40M_1SS;
 			}
 			break;
-#ifdef CONFIG_80211AC_VHT
 		case WIRELESS_11_5AC:
 		case WIRELESS_11_24AC:
 			if ((rf_type == RF_1T1R) || (rtlpriv->mlmepriv.vhtpriv.vht_highest_rate <= MGN_VHT1SS_MCS9))
@@ -188,7 +187,6 @@ uint8_t networktype_to_raid_ex(struct rtl_priv *rtlpriv,unsigned char network_ty
 			else
 				raid = RATEID_IDX_VHT_2SS;
 			break;
-#endif
 		default:
 			raid = RATEID_IDX_BGN_40M_2SS;
 			break;

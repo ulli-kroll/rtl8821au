@@ -1681,7 +1681,6 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 		//goto OnAssocReqFail;
 	}
 
-#ifdef CONFIG_80211AC_VHT
 	memset(&pstat->vhtpriv, 0, sizeof(struct vht_priv));
 	if (elems.vht_capabilities && elems.vht_capabilities_len == 12) {
 		pstat->flags |= WLAN_STA_VHT;
@@ -1701,7 +1700,6 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 		status = _STATS_FAILURE_;
 		goto OnAssocReqFail;
 	}
-#endif /* CONFIG_80211AC_VHT */
 
        //
        //if (hapd->iface->current_mode->mode == HOSTAPD_MODE_IEEE80211G)//?
@@ -1902,7 +1900,6 @@ unsigned int OnAssocRsp(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 				HT_info_handler(rtlpriv, pIE);
 				break;
 
-#ifdef CONFIG_80211AC_VHT
 			case EID_VHTCapability:
 				VHT_caps_handler(rtlpriv, pIE);
 				break;
@@ -1910,7 +1907,6 @@ unsigned int OnAssocRsp(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 			case EID_VHTOperation:
 				VHT_operation_handler(rtlpriv, pIE);
 				break;
-#endif
 
 			case _ERPINFO_IE_:
 				ERP_IE_handler(rtlpriv, pIE);
@@ -3411,7 +3407,6 @@ void issue_asocrsp(struct rtl_priv *rtlpriv, unsigned short status, struct sta_i
 
 	}
 
-#ifdef CONFIG_80211AC_VHT
 	if ((pstat->flags & WLAN_STA_VHT) && (pmlmepriv->vhtpriv.vht_option))
 	{
 		uint32_t	 ie_len=0;
@@ -3434,8 +3429,6 @@ void issue_asocrsp(struct rtl_priv *rtlpriv, unsigned short status, struct sta_i
 			pattrib->pktlen +=(ie_len+2);
 		}
 	}
-#endif //CONFIG_80211AC_VHT
-
 	//FILL WMM IE
 	if ((pstat->flags & WLAN_STA_WME) && (pmlmepriv->qospriv.qos_option))
 	{
@@ -3733,7 +3726,6 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 					pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, pIE->Length, pIE->data, &(pattrib->pktlen));
 				}
 				break;
-#ifdef CONFIG_80211AC_VHT
 			case EID_VHTCapability:
 				if (rtlpriv->mlmepriv.vhtpriv.vht_option ==_TRUE) {
 					pframe = rtw_set_ie(pframe, EID_VHTCapability, pIE->Length, pIE->data, &(pattrib->pktlen));
@@ -3745,7 +3737,6 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 					pframe = rtw_set_ie(pframe, EID_OpModeNotification, pIE->Length, pIE->data, &(pattrib->pktlen));
 				}
 				break;
-#endif // CONFIG_80211AC_VHT
 			default:
 				break;
 		}
@@ -5699,11 +5690,9 @@ void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	if(pmlmepriv->qospriv.qos_option)
 		psta->qos_option = _TRUE;
 
-#ifdef CONFIG_80211AC_VHT
 	if (pmlmepriv->vhtpriv.vht_bwmode < CHANNEL_WIDTH_80)
 		pmlmepriv->vhtpriv.sgi = psta->htpriv.sgi;
 	memcpy(&psta->vhtpriv, &pmlmepriv->vhtpriv, sizeof(struct vht_priv));
-#endif //CONFIG_80211AC_VHT
 
 	spin_lock_bh(&psta->lock);
 	psta->state = _FW_LINKED;
@@ -5759,11 +5748,8 @@ void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res)
 	//HT
 	HTOnAssocRsp(rtlpriv);
 
-#ifdef CONFIG_80211AC_VHT
 	//VHT
 	VHTOnAssocRsp(rtlpriv);
-#endif
-
 
 	psta = rtw_get_stainfo(pstapriv, cur_network->MacAddress);
 	if (psta) //only for infra. mode
@@ -6418,7 +6404,6 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 					}
 				}
 				break;
-#ifdef CONFIG_80211AC_VHT
 			case EID_VHTCapability://Get VHT Cap IE.
 				pmlmeinfo->VHT_enable = 1;
 				break;
@@ -6433,7 +6418,6 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 					}
 				}
 				break;
-#endif
 			default:
 				break;
 		}

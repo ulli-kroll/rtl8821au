@@ -26,7 +26,6 @@ static inline void DBG_871X(const char *fmt, ...)
 {
 }
 
-#ifdef CONFIG_80211AC_VHT
 /*
  * 20/40/80,	ShortGI,	MCS Rate
  */
@@ -622,5 +621,4 @@ void VHTOnAssocRsp(struct rtl_priv *rtlpriv)
 	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_AMPDU_MAX_TIME, (uint8_t *)(&pvhtpriv->vht_highest_rate));
 }
 
-#endif
 

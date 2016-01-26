@@ -296,7 +296,6 @@ static char *translate_scan(struct rtl_priv *rtlpriv,
 		short_GI = (pht_capie->cap_info&(IEEE80211_HT_CAP_SGI_20|IEEE80211_HT_CAP_SGI_40)) ? 1:0;
 	}
 
-#ifdef CONFIG_80211AC_VHT
 	/* parsing VHT_CAP_IE */
 	p = rtw_get_ie(&pnetwork->network.IEs[12], EID_VHTCapability, &vht_ielen, pnetwork->network.IELength-12);
 	if (p && vht_ielen > 0) {
@@ -314,7 +313,6 @@ static char *translate_scan(struct rtl_priv *rtlpriv,
 		vht_highest_rate = rtw_get_vht_highest_rate(rtlpriv, mcs_map);
 		vht_data_rate = rtw_vht_data_rate(CHANNEL_WIDTH_80, short_GI, vht_highest_rate);
 	}
-#endif
 
 	/* Add the protocol name */
 	iwe.cmd = SIOCGIWNAME;
@@ -903,10 +901,8 @@ static int rtw_wx_get_name(struct net_device *ndev,
 			ht_cap = _TRUE;
 		}
 
-#ifdef CONFIG_80211AC_VHT
 		if (pmlmepriv->vhtpriv.vht_option == _TRUE)
 			vht_cap = _TRUE;
-#endif
 
 		prates = &pcur_bss->SupportedRates;
 

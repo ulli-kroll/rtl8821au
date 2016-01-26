@@ -502,7 +502,6 @@ void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_lev
 		if (psta->bssrateset[i])
 			tx_ra_bitmap |= rtw_get_bit_value_from_ieee_value(psta->bssrateset[i]&0x7f);
 	}
-#ifdef CONFIG_80211AC_VHT
 	//AC mode ra_bitmap
 	if (psta->vhtpriv.vht_option) {
 		uint32_t	vht_bitmap = 0;
@@ -513,7 +512,6 @@ void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_lev
 		//max short GI rate
 		shortGIrate = psta->vhtpriv.sgi;
 	} else
-#endif //CONFIG_80211AC_VHT
 		{
 		//n mode ra_bitmap
 		if (psta_ht->ht_option)	{
@@ -536,11 +534,9 @@ void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_lev
 
 	if ( pcur_network->Configuration.DSConfig > 14 ) {
 		// 5G band
-#ifdef CONFIG_80211AC_VHT
 		if (psta->vhtpriv.vht_option)  {
 			sta_band = WIRELESS_11_5AC;
 		} else
-#endif
 		{
 			if (tx_ra_bitmap & 0xffff000)
 				sta_band |= WIRELESS_11_5N | WIRELESS_11A;
@@ -764,9 +760,7 @@ void update_sta_info_apmode(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	phtpriv_sta->agg_enable_bitmap = 0x0;//reset
 	phtpriv_sta->candidate_tid_bitmap = 0x0;//reset
 
-#ifdef CONFIG_80211AC_VHT
 	update_sta_vht_info_apmode(rtlpriv, psta);
-#endif
 
 	//todo: init other variables
 
@@ -877,12 +871,10 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		update_hw_ht_param(rtlpriv);
 	}
 
-#ifdef CONFIG_80211AC_VHT
 	if (pmlmepriv->vhtpriv.vht_option) {
 		pmlmeinfo->VHT_enable = _TRUE;
 		update_hw_vht_param(rtlpriv);
 	}
-#endif //CONFIG_80211AC_VHT
 
 	if (pmlmepriv->cur_network.join_res != _TRUE) { //setting only at  first time
 		//WEP Key will be set before this function, do not clear CAM.
@@ -968,14 +960,12 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 	}
 
-#ifdef CONFIG_80211AC_VHT
 	p = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTOperation, &ie_len, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
 	if ( p && ie_len) {
 		if (GET_VHT_OPERATION_ELE_CHL_WIDTH(p+2) >= 1) {
 			cur_bwmode = CHANNEL_WIDTH_80;
 		}
 	}
-#endif
 
 	//TODO: need to judge the phy parameters on concurrent mode for single phy
 	//set_channel_bwmode(rtlpriv, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
@@ -2203,7 +2193,6 @@ void sta_info_update(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	if (pmlmepriv->htpriv.ht_option == _FALSE)
 		psta->htpriv.ht_option = _FALSE;
 
-#ifdef CONFIG_80211AC_VHT
 	//update 802.11AC vht cap.
 	if (WLAN_STA_VHT&flags) {
 		psta->vhtpriv.vht_option = _TRUE;
@@ -2213,7 +2202,6 @@ void sta_info_update(struct rtl_priv *rtlpriv, struct sta_info *psta)
 
 	if (pmlmepriv->vhtpriv.vht_option == _FALSE)
 		psta->vhtpriv.vht_option = _FALSE;
-#endif
 
 
 	update_sta_info_apmode(rtlpriv, psta);

@@ -930,9 +930,7 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork
 	struct security_priv	*psecuritypriv=&rtlpriv->securitypriv;
 	struct registry_priv	*pregistrypriv = &rtlpriv->registrypriv;
 	struct ht_priv			*phtpriv = &pmlmepriv->htpriv;
-#ifdef CONFIG_80211AC_VHT
 	struct vht_priv		*pvhtpriv = &pmlmepriv->vhtpriv;
-#endif //CONFIG_80211AC_VHT
 	NDIS_802_11_NETWORK_INFRASTRUCTURE ndis_network_mode = pnetwork->network.InfrastructureMode;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -1054,13 +1052,11 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork
 	}
 
 
-#ifdef CONFIG_80211AC_VHT
 	pvhtpriv->vht_option = _FALSE;
 	if (phtpriv->ht_option) {
 		rtw_restructure_vht_ie(rtlpriv, &pnetwork->network.IEs[0], &psecnetwork->IEs[0],
 								pnetwork->network.IELength, &psecnetwork->IELength);
 	}
-#endif
 
 	pmlmeinfo->assoc_AP_vendor = check_assoc_AP(pnetwork->network.IEs, pnetwork->network.IELength);
 

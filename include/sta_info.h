@@ -141,9 +141,7 @@ struct sta_info {
 
 	struct ht_priv	htpriv;
 
-#ifdef CONFIG_80211AC_VHT
 	struct vht_priv	vhtpriv;
-#endif
 
 	//Notes:
 	//STA_Mode:

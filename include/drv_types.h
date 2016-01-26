@@ -39,10 +39,7 @@ struct rtl_priv;
 
 #include <rtw_ht.h>
 
-#ifdef CONFIG_80211AC_VHT
 #include <rtw_vht.h>
-#endif
-
 
 #include <rtw_rf.h>
 #include <rtw_cmd.h>
@@ -128,7 +125,6 @@ struct registry_priv
 	// BIT3 - 160MHz, 1: support, 0: non-support
 	uint8_t	short_gi;
 
-#ifdef CONFIG_80211AC_VHT
 	uint8_t	ampdu_factor;
 	uint8_t	vht_rate_sel;
 	// BIT0: Enable VHT LDPC Rx, BIT1: Enable VHT LDPC Tx, BIT4: Enable HT LDPC Rx, BIT5: Enable HT LDPC Tx
@@ -137,7 +133,6 @@ struct registry_priv
 	uint8_t	stbc_cap;
 	// BIT0: Enable VHT Beamformer, BIT1: Enable VHT Beamformee, BIT4: Enable HT Beamformer, BIT5: Enable HT Beamformee
 	uint8_t	beamform_cap;
-#endif //CONFIG_80211AC_VHT
 
 	uint8_t	lowrate_two_xmit;
 

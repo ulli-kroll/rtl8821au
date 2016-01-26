@@ -436,7 +436,6 @@ static int32_t rtw_dump_xframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmi
 	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
-#ifdef CONFIG_80211N_HT
 	if ((pxmitframe->frame_tag == DATA_FRAMETAG) &&
 	    (pxmitframe->tx_attrib.ether_type != 0x0806) &&
 	    (pxmitframe->tx_attrib.ether_type != 0x888e) &&
@@ -444,7 +443,6 @@ static int32_t rtw_dump_xframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmi
 	    (pxmitframe->tx_attrib.dhcp_pkt != 1)) {
 		rtw_issue_addbareq_cmd(rtlpriv, pxmitframe);
 	}
-#endif
 	mem_addr = pxmitframe->buf_addr;
 
 	for (t = 0; t < pattrib->nr_frags; t++) {
@@ -732,14 +730,12 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv,
 		list_del_init(&ptxservq->tx_pending);
 
 	spin_unlock_bh(&pxmitpriv->lock);
-#ifdef CONFIG_80211N_HT
 	if ((pfirstframe->tx_attrib.ether_type != 0x0806) &&
 	    (pfirstframe->tx_attrib.ether_type != 0x888e) &&
 	    (pfirstframe->tx_attrib.ether_type != 0x88b4) &&
 	    (pfirstframe->tx_attrib.dhcp_pkt != 1)) {
 		rtw_issue_addbareq_cmd(rtlpriv, pfirstframe);
 	}
-#endif
 	/* 3 3. update first frame txdesc */
 	if ((pbuf_tail % bulkSize) == 0) {
 		/* remove pkt_offset */

@@ -929,9 +929,7 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork
 	struct qos_priv		*pqospriv= &pmlmepriv->qospriv;
 	struct security_priv	*psecuritypriv=&rtlpriv->securitypriv;
 	struct registry_priv	*pregistrypriv = &rtlpriv->registrypriv;
-#ifdef CONFIG_80211N_HT
 	struct ht_priv			*phtpriv = &pmlmepriv->htpriv;
-#endif //CONFIG_80211N_HT
 #ifdef CONFIG_80211AC_VHT
 	struct vht_priv		*pvhtpriv = &pmlmepriv->vhtpriv;
 #endif //CONFIG_80211AC_VHT
@@ -1040,7 +1038,6 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork
 		}
 	}
 
-#ifdef CONFIG_80211N_HT
 	phtpriv->ht_option = _FALSE;
 	{
 		//	Added by Albert 2010/06/23
@@ -1056,7 +1053,6 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork
 		}
 	}
 
-#endif
 
 #ifdef CONFIG_80211AC_VHT
 	pvhtpriv->vht_option = _FALSE;

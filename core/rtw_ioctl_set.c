@@ -1000,13 +1000,11 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv)
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	WLAN_BSSID_EX  *pcur_bss = &pmlmepriv->cur_network.network;
-#ifdef CONFIG_80211N_HT
 	struct rtw_ieee80211_ht_cap *pht_capie;
 	uint8_t	rf_type = 0;
 	uint8_t	bw_40MHz=0, short_GI_20=0, short_GI_40=0, cbw40_enable=0;
 	u16	mcs_rate=0;
 	uint32_t	ht_ielen = 0;
-#endif
 #ifdef CONFIG_80211AC_VHT
 	struct vht_priv	*pvhtpriv = &pmlmepriv->vhtpriv;
 #endif
@@ -1015,7 +1013,6 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv)
 		&& (check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE) != _TRUE))
 		return 0;
 
-#ifdef CONFIG_80211N_HT
 	if (IsSupportedTxHT(pmlmeext->cur_wireless_mode)) {
 		p = rtw_get_ie(&pcur_bss->IEs[12], _HT_CAPABILITY_IE_, &ht_ielen, pcur_bss->IELength-12);
 		if(p && ht_ielen>0)
@@ -1057,7 +1054,6 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv)
 	}
 #endif //CONFIG_80211AC_VHT
 	else
-#endif //CONFIG_80211N_HT
 	{
 		while( (pcur_bss->SupportedRates[i]!=0) && (pcur_bss->SupportedRates[i]!=0xFF))
 		{

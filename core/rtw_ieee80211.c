@@ -477,13 +477,11 @@ int rtw_generate_ie(struct registry_priv *pregistrypriv)
 		ie = rtw_set_ie(ie, _EXT_SUPPORTEDRATES_IE_, (rateLen - 8), (pdev_network->SupportedRates + 8), &sz);
 	}
 
-#ifdef CONFIG_80211N_HT
 	//HT Cap.
 	if(((WIRELESS_MODE_MAX & WIRELESS_11_5N) || (WIRELESS_MODE_MAX & WIRELESS_11_24N)))
 	{
 		//todo:
 	}
-#endif //CONFIG_80211N_HT
 
 	//pdev_network->IELength =  sz; //update IELength
 

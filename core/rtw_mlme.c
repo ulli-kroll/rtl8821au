@@ -1273,9 +1273,7 @@ static void rtw_joinbss_update_network(struct rtl_priv *rtlpriv, struct wlan_net
 	rtw_update_protection(rtlpriv, (cur_network->network.IEs) + sizeof (NDIS_802_11_FIXED_IEs),
 									(cur_network->network.IELength));
 
-#ifdef CONFIG_80211N_HT
 	rtw_update_ht_cap(rtlpriv, cur_network->network.IEs, cur_network->network.IELength, (uint8_t) cur_network->network.Configuration.DSConfig);
-#endif
 }
 
 //Notes: the fucntion could be > passive_level (the same context as Rx tasklet)
@@ -2394,16 +2392,9 @@ void rtw_joinbss_reset(struct rtl_priv *rtlpriv)
 	uint8_t	threshold;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 
-#ifdef CONFIG_80211N_HT
 	struct ht_priv		*phtpriv = &pmlmepriv->htpriv;
-#endif
 
 	//todo: if you want to do something io/reg/hw setting before join_bss, please add code here
-
-
-
-
-#ifdef CONFIG_80211N_HT
 
 	pmlmepriv->num_FortyMHzIntolerant = 0;
 
@@ -2423,13 +2414,8 @@ void rtw_joinbss_reset(struct rtl_priv *rtlpriv)
 		threshold = 1;
 		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
 	}
-
-#endif
-
 }
 
-
-#ifdef CONFIG_80211N_HT
 
 //the fucntion is >= passive_level
 unsigned int rtw_restructure_ht_ie(struct rtl_priv *rtlpriv, uint8_t *in_ie, uint8_t *out_ie, uint in_len, uint *pout_len)
@@ -2695,8 +2681,6 @@ void rtw_issue_addbareq_cmd(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfr
 	}
 
 }
-
-#endif
 
 sint rtw_linked_check(struct rtl_priv *rtlpriv)
 {

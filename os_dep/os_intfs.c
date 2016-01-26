@@ -52,8 +52,6 @@ static int rtw_acm_method = 0;			/* 0:By SW 1:By HW. */
 static int rtw_wmm_enable = 1;		/* default is set to enable the wmm. */
 static int rtw_uapsd_enable = 0;
 
-#ifdef CONFIG_80211N_HT
-
 /*
  *  0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160MHz, 4: 80+80MHz
  *  2.4G use bit 0 ~ 3, 5G use bit 4 ~ 7
@@ -73,7 +71,6 @@ static int rtw_ampdu_amsdu = 0;/*  0: disabled, 1:enabled, 2:auto */
  *  BIT3 - 160MHz, 0: support, 1: non-support
  */
 static int rtw_short_gi = 0xf;
-#endif
 
 #ifdef CONFIG_80211AC_VHT
 static int rtw_vht_enable = 1;
@@ -136,12 +133,10 @@ module_param(rtw_vrtl_carrier_sense, int, 0644);
 module_param(rtw_vcs_type, int, 0644);
 module_param(rtw_busy_thresh, int, 0644);
 
-#ifdef CONFIG_80211N_HT
 module_param(rtw_bw_mode, int, 0644);
 module_param(rtw_ampdu_enable, int, 0644);
 module_param(rtw_rx_stbc, int, 0644);
 module_param(rtw_ampdu_amsdu, int, 0644);
-#endif
 
 module_param(rtw_lowrate_two_xmit, int, 0644);
 
@@ -395,7 +390,6 @@ void rtw_proc_init_one(struct net_device *ndev)
 		return;
 	}
 	entry->write_proc = proc_set_rx_signal;
-#ifdef CONFIG_80211N_HT
 	entry = create_proc_read_entry("ht_enable", S_IFREG | S_IRUGO,
 				   dir_dev, proc_get_ht_enable, dev);
 	if (!entry) {
@@ -427,7 +421,6 @@ void rtw_proc_init_one(struct net_device *ndev)
 		return;
 	}
 	entry->write_proc = proc_set_rx_stbc;
-#endif
 
 	entry = create_proc_read_entry("path_rssi", S_IFREG | S_IRUGO,
 					dir_dev, proc_get_two_path_rssi, dev);
@@ -492,7 +485,6 @@ void rtw_proc_remove_one(struct net_device *ndev)
 		remove_proc_entry("all_sta_info", dir_dev);
 #endif
 		remove_proc_entry("rx_signal", dir_dev);
-#ifdef CONFIG_80211N_HT
 		remove_proc_entry("bw_mode", dir_dev);
 
 		remove_proc_entry("ht_enable", dir_dev);
@@ -500,7 +492,6 @@ void rtw_proc_remove_one(struct net_device *ndev)
 		remove_proc_entry("ampdu_enable", dir_dev);
 
 		remove_proc_entry("rx_stbc", dir_dev);
-#endif
 		remove_proc_entry("path_rssi", dir_dev);
 
 		remove_proc_entry("rssi_disp", dir_dev);
@@ -571,13 +562,11 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->wmm_enable = (uint8_t)rtw_wmm_enable;
 	registry_par->uapsd_enable = (uint8_t)rtw_uapsd_enable;
 
-#ifdef CONFIG_80211N_HT
 	registry_par->bw_mode = (uint8_t)rtw_bw_mode;
 	registry_par->ampdu_enable = (uint8_t)rtw_ampdu_enable;
 	registry_par->rx_stbc = (uint8_t)rtw_rx_stbc;
 	registry_par->ampdu_amsdu = (uint8_t)rtw_ampdu_amsdu;
 	registry_par->short_gi = (uint8_t)rtw_short_gi;
-#endif
 
 #ifdef CONFIG_80211AC_VHT
 	registry_par->ampdu_factor = (uint8_t)rtw_ampdu_factor;

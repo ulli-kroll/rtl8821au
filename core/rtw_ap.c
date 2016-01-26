@@ -428,7 +428,6 @@ void	expire_timeout_chk(struct rtl_priv *rtlpriv)
 		}
 
 #ifdef CONFIG_TX_MCAST2UNI
-#ifdef CONFIG_80211N_HT
 		if ((psta->flags & WLAN_STA_HT) && (psta->htpriv.agg_enable_bitmap || psta->under_exist_checking)) {
 			/*
 			 * check sta by delba(addba) for 11n STA
@@ -452,7 +451,6 @@ void	expire_timeout_chk(struct rtl_priv *rtlpriv)
 				psta->htpriv.candidate_tid_bitmap = 0x0;//reset
 			}
 		}
-#endif //CONFIG_80211N_HT
 #endif // CONFIG_TX_MCAST2UNI
 
 		if (psta->expire_to <= 0) {
@@ -491,12 +489,10 @@ void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_lev
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	WLAN_BSSID_EX *pcur_network = (WLAN_BSSID_EX *)&pmlmepriv->cur_network.network;
 
-#ifdef CONFIG_80211N_HT
 	if (psta)
 		psta_ht = &psta->htpriv;
 	else
 		return;
-#endif //CONFIG_80211N_HT
 
 	if (!(psta->state & _FW_LINKED))
 		return;
@@ -506,7 +502,6 @@ void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_lev
 		if (psta->bssrateset[i])
 			tx_ra_bitmap |= rtw_get_bit_value_from_ieee_value(psta->bssrateset[i]&0x7f);
 	}
-#ifdef CONFIG_80211N_HT
 #ifdef CONFIG_80211AC_VHT
 	//AC mode ra_bitmap
 	if (psta->vhtpriv.vht_option) {
@@ -538,7 +533,6 @@ void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_lev
 			shortGIrate = psta_ht->sgi;
 		}
 	}
-#endif //CONFIG_80211N_HT
 
 	if ( pcur_network->Configuration.DSConfig > 14 ) {
 		// 5G band
@@ -619,9 +613,7 @@ static void update_bmc_sta(struct rtl_priv *rtlpriv)
 		pmlmeinfo->FW_sta_info[psta->mac_id].psta = psta;
 
 		psta->qos_option = 0;
-#ifdef CONFIG_80211N_HT
 		psta->htpriv.ht_option = _FALSE;
-#endif //CONFIG_80211N_HT
 
 		psta->ieee8021x_blocked = 0;
 
@@ -713,10 +705,8 @@ void update_sta_info_apmode(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
-#ifdef CONFIG_80211N_HT
 	struct ht_priv	*phtpriv_ap = &pmlmepriv->htpriv;
 	struct ht_priv	*phtpriv_sta = &psta->htpriv;
-#endif //CONFIG_80211N_HT
 	//set intf_tag to if1
 	//psta->intf_tag = 0;
 
@@ -739,7 +729,6 @@ void update_sta_info_apmode(struct rtl_priv *rtlpriv, struct sta_info *psta)
 
 	//ERP
 	VCS_update(rtlpriv, psta);
-#ifdef CONFIG_80211N_HT
 	//HT related cap
 	if (phtpriv_sta->ht_option) {
 		//check if sta supports rx ampdu
@@ -774,7 +763,6 @@ void update_sta_info_apmode(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	send_delba(rtlpriv, 1, psta->hwaddr);// // originator
 	phtpriv_sta->agg_enable_bitmap = 0x0;//reset
 	phtpriv_sta->candidate_tid_bitmap = 0x0;//reset
-#endif //CONFIG_80211N_HT
 
 #ifdef CONFIG_80211AC_VHT
 	update_sta_vht_info_apmode(rtlpriv, psta);
@@ -880,7 +868,6 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	//pmlmeinfo->HT_enable;
 	if (pmlmepriv->qospriv.qos_option)
 		pmlmeinfo->WMM_enable = _TRUE;
-#ifdef CONFIG_80211N_HT
 	if (pmlmepriv->htpriv.ht_option) {
 		pmlmeinfo->WMM_enable = _TRUE;
 		pmlmeinfo->HT_enable = _TRUE;
@@ -889,7 +876,6 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 		update_hw_ht_param(rtlpriv);
 	}
-#endif //#CONFIG_80211N_HT
 
 #ifdef CONFIG_80211AC_VHT
 	if (pmlmepriv->vhtpriv.vht_option) {
@@ -944,7 +930,6 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		}
 
 	}
-#ifdef CONFIG_80211N_HT
 	//set channel, bwmode
 	p = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), _HT_ADD_INFO_IE_, &ie_len, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
 	if ( p && ie_len) {
@@ -982,7 +967,6 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		}
 
 	}
-#endif //CONFIG_80211N_HT
 
 #ifdef CONFIG_80211AC_VHT
 	p = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTOperation, &ie_len, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
@@ -1233,7 +1217,6 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 			}
 		}
 	}
-#ifdef CONFIG_80211N_HT
 	//parsing HT_CAP_IE
 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, _HT_CAPABILITY_IE_, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_));
 	if (p && ie_len>0) {
@@ -1272,7 +1255,6 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 	if (p && ie_len>0) {
 		pHT_info_ie=p;
 	}
-#endif //CONFIG_80211N_HT
 	switch(network_type) {
 	case WIRELESS_11B:
 		pbss_network->NetworkTypeInUse = Ndis802_11DS;
@@ -1293,7 +1275,6 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 
 	pmlmepriv->cur_network.network_type = network_type;
 
-#ifdef CONFIG_80211N_HT
 	pmlmepriv->htpriv.ht_option = _FALSE;
 
 	if ( (psecuritypriv->wpa2_pairwise_cipher&WPA_CIPHER_TKIP) ||
@@ -1315,7 +1296,6 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 
 		HT_info_handler(rtlpriv, (PNDIS_802_11_VARIABLE_IEs)pHT_info_ie);
 	}
-#endif
 	pbss_network->Length = get_WLAN_BSSID_EX_sz((WLAN_BSSID_EX  *)pbss_network);
 
 	//issue beacon to start bss network
@@ -1739,8 +1719,6 @@ void update_beacon(struct rtl_priv *rtlpriv, uint8_t ie_id, uint8_t *oui, uint8_
 
 }
 
-#ifdef CONFIG_80211N_HT
-
 /*
 op_mode
 Set to 0 (HT pure) under the followign conditions
@@ -1823,8 +1801,6 @@ static int rtw_ht_operation_update(struct rtl_priv *rtlpriv)
 	return op_mode_changes;
 
 }
-
-#endif /* CONFIG_80211N_HT */
 
 void associated_clients_update(struct rtl_priv *rtlpriv, uint8_t updated)
 {
@@ -1942,8 +1918,6 @@ void bss_cap_update_on_sta_join(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		}
 	}
 
-#ifdef CONFIG_80211N_HT
-
 	if (psta->flags & WLAN_STA_HT) {
 		u16 ht_capab = le16_to_cpu(psta->htpriv.ht_cap.cap_info);
 
@@ -1995,8 +1969,6 @@ void bss_cap_update_on_sta_join(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		update_beacon(rtlpriv, _HT_ADD_INFO_IE_, NULL, _TRUE);
 	}
 
-#endif /* CONFIG_80211N_HT */
-
 	//update associcated stations cap.
 	associated_clients_update(rtlpriv,  beacon_updated);
 
@@ -2042,8 +2014,6 @@ uint8_t bss_cap_update_on_sta_leave(struct rtl_priv *rtlpriv, struct sta_info *p
 		}
 	}
 
-#ifdef CONFIG_80211N_HT
-
 	if (psta->no_ht_gf_set) {
 		psta->no_ht_gf_set = 0;
 		pmlmepriv->num_sta_ht_no_gf--;
@@ -2065,8 +2035,6 @@ uint8_t bss_cap_update_on_sta_leave(struct rtl_priv *rtlpriv, struct sta_info *p
 		update_beacon(rtlpriv, _HT_ADD_INFO_IE_, NULL, _TRUE);
 	}
 
-#endif /* CONFIG_80211N_HT */
-
 	//update associcated stations cap.
 	//associated_clients_update(rtlpriv,  beacon_updated); //move it to avoid deadlock
 
@@ -2087,14 +2055,11 @@ uint8_t ap_free_sta(struct rtl_priv *rtlpriv, struct sta_info *psta, bool active
 		return beacon_updated;
 
 	if (active == _TRUE) {
-#ifdef CONFIG_80211N_HT
 		//tear down Rx AMPDU
 		send_delba(rtlpriv, 0, psta->hwaddr);// recipient
 
 		//tear down TX AMPDU
 		send_delba(rtlpriv, 1, psta->hwaddr);// // originator
-
-#endif //CONFIG_80211N_HT
 
 		issue_deauth(rtlpriv, psta->hwaddr, reason);
 	}
@@ -2227,7 +2192,6 @@ void sta_info_update(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		psta->qos_option = 0;
 
 
-#ifdef CONFIG_80211N_HT
 	//update 802.11n ht cap.
 	if (WLAN_STA_HT&flags) {
 		psta->htpriv.ht_option = _TRUE;
@@ -2238,7 +2202,6 @@ void sta_info_update(struct rtl_priv *rtlpriv, struct sta_info *psta)
 
 	if (pmlmepriv->htpriv.ht_option == _FALSE)
 		psta->htpriv.ht_option = _FALSE;
-#endif
 
 #ifdef CONFIG_80211AC_VHT
 	//update 802.11AC vht cap.
@@ -2357,18 +2320,14 @@ void start_ap_mode(struct rtl_priv *rtlpriv)
 	pmlmepriv->num_sta_no_short_preamble = 0;
 
 	pmlmepriv->num_sta_ht_no_gf = 0;
-#ifdef CONFIG_80211N_HT
 	pmlmepriv->num_sta_no_ht = 0;
-#endif //CONFIG_80211N_HT
 	pmlmepriv->num_sta_ht_20mhz = 0;
 
 	pmlmepriv->olbc = _FALSE;
 
 	pmlmepriv->olbc_ht = _FALSE;
 
-#ifdef CONFIG_80211N_HT
 	pmlmepriv->ht_op_mode = 0;
-#endif
 
 	for(i=0; i<NUM_STA; i++)
 		pstapriv->sta_aid[i] = NULL;

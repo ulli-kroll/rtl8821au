@@ -40,7 +40,6 @@
 
 /* ULLI : currently we keep this for grep */
 
-#define CONFIG_80211N_HT	1
 #define CONFIG_80211AC_VHT 1
 
 #define CONFIG_RECV_REORDERING_CTRL	1

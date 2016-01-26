@@ -2360,8 +2360,6 @@ int process_recv_indicatepkts(struct rtl_priv *rtlpriv, struct recv_frame *prfra
 	//struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 
-#ifdef CONFIG_80211N_HT
-
 	struct ht_priv	*phtpriv = &pmlmepriv->htpriv;
 
 	if(phtpriv->ht_option==_TRUE)  //B/G/N Mode
@@ -2380,7 +2378,6 @@ int process_recv_indicatepkts(struct rtl_priv *rtlpriv, struct recv_frame *prfra
 		}
 	}
 	else //B/G mode
-#endif
 	{
 		retval=wlanhdr_to_ethhdr (prframe);
 		if(retval != _SUCCESS)
@@ -2457,54 +2454,12 @@ int recv_func_posthandle(struct rtl_priv *rtlpriv, struct recv_frame *prframe)
 
 	count_rx_stats(rtlpriv, prframe, NULL);
 
-#ifdef CONFIG_80211N_HT
 	ret = process_recv_indicatepkts(rtlpriv, prframe);
 	if (ret != _SUCCESS)
 	{
 		rtw_free_recvframe(orig_prframe, pfree_recv_queue);//free this recv_frame
 		goto _recv_data_drop;
 	}
-#else // CONFIG_80211N_HT
-	if (!pattrib->amsdu)
-	{
-		ret = wlanhdr_to_ethhdr (prframe);
-		if (ret != _SUCCESS)
-		{
-			rtw_free_recvframe(orig_prframe, pfree_recv_queue);//free this recv_frame
-			goto _recv_data_drop;
-		}
-
-		if ((rtlpriv->bDriverStopped == _FALSE) && (rtlpriv->bSurpriseRemoved == _FALSE))
-		{
-			//indicate this recv_frame
-			ret = rtw_recv_indicatepkt(rtlpriv, prframe);
-			if (ret != _SUCCESS)
-			{
-				goto _recv_data_drop;
-			}
-		}
-		else
-		{
-			ret = _FAIL;
-			rtw_free_recvframe(orig_prframe, pfree_recv_queue); //free this recv_frame
-		}
-
-	}
-	else if(pattrib->amsdu==1)
-	{
-
-		ret = amsdu_to_msdu(rtlpriv, prframe);
-		if(ret != _SUCCESS)
-		{
-			rtw_free_recvframe(orig_prframe, pfree_recv_queue);
-			goto _recv_data_drop;
-		}
-	}
-	else
-	{
-		goto _recv_data_drop;
-	}
-#endif // CONFIG_80211N_HT
 
 _exit_recv_func:
 	return ret;

@@ -43,9 +43,7 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	 */
 
 	/* ht_priv */
-#ifdef CONFIG_80211N_HT
 	pmlmepriv->htpriv.ampdu_enable = _FALSE; /* set to disabled */
-#endif
 
 	/* security_priv */
 	/* rtw_get_encrypt_decrypt_from_registrypriv(rtlpriv); */

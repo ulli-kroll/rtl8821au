@@ -1649,7 +1649,6 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 	}
 
 
-#ifdef CONFIG_80211N_HT
 	/* save HT capabilities in the sta object */
 	memset(&pstat->htpriv.ht_cap, 0, sizeof(struct rtw_ieee80211_ht_cap));
 	if (elems.ht_capabilities && elems.ht_capabilities_len >= sizeof(struct rtw_ieee80211_ht_cap))
@@ -1681,7 +1680,6 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 		//status = WLAN_STATUS_CIPHER_REJECTED_PER_POLICY;
 		//goto OnAssocReqFail;
 	}
-#endif /* CONFIG_80211N_HT */
 
 #ifdef CONFIG_80211AC_VHT
 	memset(&pstat->vhtpriv, 0, sizeof(struct vht_priv));
@@ -2198,7 +2196,6 @@ unsigned int OnAction_back(struct rtl_priv *rtlpriv, struct recv_frame *precv_fr
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	uint8_t *pframe = precv_frame->rx_data;
 	struct sta_priv *pstapriv = &rtlpriv->stapriv;
-#ifdef CONFIG_80211N_HT
 	//check RA matches or not
 	if (!_rtw_memcmp(rtlpriv->mac80211.mac_addr, GetAddr1Ptr(pframe), ETH_ALEN))//for if1, sta/ap mode
 		return _SUCCESS;
@@ -2297,7 +2294,6 @@ unsigned int OnAction_back(struct rtl_priv *rtlpriv, struct recv_frame *precv_fr
 				break;
 		}
 	}
-#endif //CONFIG_80211N_HT
 	return _SUCCESS;
 }
 
@@ -3389,7 +3385,6 @@ void issue_asocrsp(struct rtl_priv *rtlpriv, unsigned short status, struct sta_i
 		pframe = rtw_set_ie(pframe, _EXT_SUPPORTEDRATES_IE_, (pstat->bssratelen-8), pstat->bssrateset+8, &(pattrib->pktlen));
 	}
 
-#ifdef CONFIG_80211N_HT
 	if ((pstat->flags & WLAN_STA_HT) && (pmlmepriv->htpriv.ht_option))
 	{
 		uint ie_len=0;
@@ -3415,7 +3410,6 @@ void issue_asocrsp(struct rtl_priv *rtlpriv, unsigned short status, struct sta_i
 		}
 
 	}
-#endif
 
 #ifdef CONFIG_80211AC_VHT
 	if ((pstat->flags & WLAN_STA_VHT) && (pmlmepriv->vhtpriv.vht_option))
@@ -3648,7 +3642,6 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 		pframe = rtw_set_ie(pframe, _RSN_IE_2_, ie_len, (p + 2), &(pattrib->pktlen));
 	}
 
-#ifdef CONFIG_80211N_HT
 	//HT caps
 	if(rtlpriv->mlmepriv.htpriv.ht_option==_TRUE)
 	{
@@ -3718,7 +3711,6 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 
 		}
 	}
-#endif
 
 	//vendor specific IE, such as WPA, WMM, WPS
 	for (i = sizeof(NDIS_802_11_FIXED_IEs); i < pmlmeinfo->network.IELength;)
@@ -4241,7 +4233,6 @@ void issue_action_BA(struct rtl_priv *rtlpriv, unsigned char *raddr, unsigned ch
 	struct sta_priv		*pstapriv = &rtlpriv->stapriv;
 	struct registry_priv	 	*pregpriv = &rtlpriv->registrypriv;
 
-#ifdef CONFIG_80211N_HT
 	DBG_871X("%s, category=%d, action=%d, status=%d\n", __FUNCTION__, category, action, status);
 
 	if ((pmgntframe = alloc_mgtxmitframe(pxmitpriv)) == NULL)
@@ -4363,7 +4354,6 @@ void issue_action_BA(struct rtl_priv *rtlpriv, unsigned char *raddr, unsigned ch
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	dump_mgntframe(rtlpriv, pmgntframe);
-#endif //CONFIG_80211N_HT
 }
 
 static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
@@ -4383,7 +4373,6 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 	struct __queue		*queue	= &(pmlmepriv->scanned_queue);
 	uint8_t InfoContent[16] = {0};
 	uint8_t ICS[8][15];
-#ifdef CONFIG_80211N_HT
 	if((pmlmepriv->num_FortyMHzIntolerant==0) || (pmlmepriv->num_sta_no_ht==0))
 		return;
 
@@ -4520,7 +4509,6 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
 	dump_mgntframe(rtlpriv, pmgntframe);
-#endif //CONFIG_80211N_HT
 }
 
 unsigned int send_delba(struct rtl_priv *rtlpriv, uint8_t initiator, uint8_t *addr)
@@ -4557,7 +4545,6 @@ unsigned int send_delba(struct rtl_priv *rtlpriv, uint8_t initiator, uint8_t *ad
 	}
 	else if(initiator == 1)// originator
 	{
-#ifdef CONFIG_80211N_HT
 		//DBG_871X("tx agg_enable_bitmap(0x%08x)\n", psta->htpriv.agg_enable_bitmap);
 		for(tid = 0;tid<MAXTID;tid++)
 		{
@@ -4570,7 +4557,6 @@ unsigned int send_delba(struct rtl_priv *rtlpriv, uint8_t initiator, uint8_t *ad
 
 			}
 		}
-#endif //CONFIG_80211N_HT
 	}
 
 	return _SUCCESS;
@@ -5680,7 +5666,6 @@ void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	//ERP
 	VCS_update(rtlpriv, psta);
 
-#ifdef CONFIG_80211N_HT
 	//HT
 	if(pmlmepriv->htpriv.ht_option)
 	{
@@ -5695,25 +5680,20 @@ void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta)
 
 	}
 	else
-#endif //CONFIG_80211N_HT
 	{
-#ifdef CONFIG_80211N_HT
 		psta->htpriv.ht_option = _FALSE;
 
 		psta->htpriv.ampdu_enable = _FALSE;
 
 		psta->htpriv.sgi = _FALSE;
-#endif //CONFIG_80211N_HT
 		psta->qos_option = _FALSE;
 
 	}
-#ifdef CONFIG_80211N_HT
 	psta->htpriv.bwmode = pmlmeext->cur_bwmode;
 	psta->htpriv.ch_offset = pmlmeext->cur_ch_offset;
 
 	psta->htpriv.agg_enable_bitmap = 0x0;//reset
 	psta->htpriv.candidate_tid_bitmap = 0x0;//reset
-#endif //CONFIG_80211N_HT
 
 	//QoS
 	if(pmlmepriv->qospriv.qos_option)
@@ -6203,7 +6183,6 @@ void link_timer_hdl(struct rtl_priv *rtlpriv)
 
 void addba_timer_hdl(struct sta_info *psta)
 {
-#ifdef CONFIG_80211N_HT
 	struct ht_priv	*phtpriv;
 
 	if(!psta)
@@ -6217,7 +6196,6 @@ void addba_timer_hdl(struct sta_info *psta)
 			phtpriv->candidate_tid_bitmap=0x0;
 
 	}
-#endif //CONFIG_80211N_HT
 }
 
 uint8_t NULL_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
@@ -6403,7 +6381,6 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 				break;
 
 			case _HT_EXTRA_INFO_IE_:	//Get HT Info IE.
-#ifdef CONFIG_80211N_HT
 				pmlmeinfo->HT_info_enable = 1;
 
 				//spec case only for cisco's ap because cisco's ap issue assoc rsp using mcs rate @40MHz or @20MHz
@@ -6440,7 +6417,6 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 						DBG_871X("set HT ch/bw before connected\n");
 					}
 				}
-#endif //CONFIG_80211N_HT
 				break;
 #ifdef CONFIG_80211AC_VHT
 			case EID_VHTCapability://Get VHT Cap IE.
@@ -6810,7 +6786,6 @@ uint8_t add_ba_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 	if(!psta)
 		return 	H2C_SUCCESS;
 
-#ifdef CONFIG_80211N_HT
 	if (((pmlmeinfo->state & WIFI_FW_ASSOC_SUCCESS) && (pmlmeinfo->HT_enable)) ||
 		((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE))
 	{
@@ -6825,7 +6800,6 @@ uint8_t add_ba_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 	{
 		psta->htpriv.candidate_tid_bitmap &= ~BIT(pparm->tid);
 	}
-#endif //CONFIG_80211N_HT
 	return 	H2C_SUCCESS;
 }
 

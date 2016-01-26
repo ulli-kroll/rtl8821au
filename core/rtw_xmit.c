@@ -554,7 +554,6 @@ static void update_attrib_phy_info(struct tx_pkt_attrib *pattrib, struct sta_inf
 	pattrib->qos_en = psta->qos_option;
 
 	pattrib->raid = psta->raid;
-#ifdef CONFIG_80211N_HT
 #ifdef CONFIG_80211AC_VHT
 	if (psta->vhtpriv.vht_option) {
 		pattrib->bwmode = psta->vhtpriv.vht_bwmode;
@@ -575,7 +574,6 @@ static void update_attrib_phy_info(struct tx_pkt_attrib *pattrib, struct sta_inf
 	pattrib->ht_en = psta->htpriv.ht_option;
 	pattrib->ch_offset = psta->htpriv.ch_offset;
 	pattrib->ampdu_en = _FALSE;
-#endif
 	/*
 	 * if(pattrib->ht_en && psta->htpriv.ampdu_enable) {
 	 * 	if(psta->htpriv.agg_enable_bitmap & BIT(pattrib->priority))
@@ -1164,7 +1162,6 @@ int32_t rtw_make_wlanhdr (struct rtl_priv *rtlpriv , uint8_t *hdr, struct tx_pkt
 
 				SetSeqNum(hdr, pattrib->seqnum);
 
-#ifdef CONFIG_80211N_HT
 				/* check if enable ampdu */
 				if (pattrib->ht_en && psta->htpriv.ampdu_enable) {
 					if (psta->htpriv.agg_enable_bitmap & BIT(pattrib->tx_priority))
@@ -1192,8 +1189,6 @@ int32_t rtw_make_wlanhdr (struct rtl_priv *rtlpriv , uint8_t *hdr, struct tx_pkt
 					}
 
 				}
-#endif
-
 			}
 		}
 

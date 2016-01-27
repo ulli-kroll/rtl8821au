@@ -1,34 +1,11 @@
-/******************************************************************************
- *
- * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of version 2 of the GNU General Public License as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
- ******************************************************************************/
 //***** temporarily flag *******
-#define CONFIG_SINGLE_IMG
 #define CONFIG_ODM_REFRESH_RAMASK
-#define CONFIG_PHY_SETTING_WITH_ODM
 //for FPGA VERIFICATION config
-#define RTL8188E_FPGA_TRUE_PHY_VERIFICATION 0
 
 //***** temporarily flag *******
 /*
  * Public  General Config
  */
-#define AUTOCONF_INCLUDED
 #define DRV_NAME "rtl8821au"
 
 //#define CONFIG_IOCTL_CFG80211 1
@@ -38,25 +15,14 @@
  */
 //#define CONFIG_PWRCTRL
 
-
 #define CONFIG_RECV_REORDERING_CTRL	1
 
 #define CONFIG_DFS	1
 #define CONFIG_AP_MODE	1
-#ifdef CONFIG_AP_MODE
-#endif
-
-
-
 #define CONFIG_SKB_COPY	1//for amsdu
-
 #define USB_INTERFERENCE_ISSUE // this should be checked in all usb interface
-
 #define CONFIG_NEW_SIGNAL_STAT_PROCESS
-#define RTW_NOTCH_FILTER 0 /* 0:Disable, 1:Enable, */
-
 #define CONFIG_TX_MCAST2UNI	1	// Support IP multicast->unicast
-
 
 /*
  * Interface  Related Config
@@ -72,14 +38,7 @@
 #define CONFIG_USB_VENDOR_REQ_MUTEX
 #define CONFIG_VENDOR_REQ_RETRY
 
-/*
- * HAL  Related Config
- */
 #define RTL8812A_RX_PACKET_INCLUDE_CRC	0
-
-//#define CONFIG_ONLY_ONE_OUT_EP_TO_LOW	0
-
-#define CONFIG_OUT_EP_WIFI_MODE	0
 
 #define ENABLE_USB_DROP_INCORRECT_OUT	0
 
@@ -87,14 +46,6 @@
 #define RTL8192CU_ADHOC_WORKAROUND_SETTING	1
 
 #define ENABLE_NEW_RFE_TYPE	0
-
-/*
- * Platform  Related Config
- */
-
-
-
-
 
 /*
  * Outsource  Related Config

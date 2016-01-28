@@ -185,7 +185,6 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 }
 
 #if 0
-static int rtw_vht_enable = 1;
 static int rtw_ampdu_factor = 7;
 static int rtw_vht_rate_sel = 0;
 /*

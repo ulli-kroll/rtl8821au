@@ -70,7 +70,6 @@ static int rtw_ampdu_amsdu = 0;/*  0: disabled, 1:enabled, 2:auto */
  */
 static int rtw_short_gi = 0xf;
 
-static int rtw_vht_enable = 1;
 static int rtw_ampdu_factor = 7;
 static int rtw_vht_rate_sel = 0;
 /*

@@ -693,9 +693,7 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 
 
 
-extern int rtw_ht_enable;
 extern int rtw_bw_mode;
-extern int rtw_ampdu_enable;	/* for enable tx_ampdu */
 
 static int rtw_drv_init(struct usb_interface *pusb_intf,const struct usb_device_id *pdid);
 static void rtw_dev_remove(struct usb_interface *pusb_intf);

@@ -133,8 +133,6 @@ struct registry_priv
 	// BIT0: Enable VHT Beamformer, BIT1: Enable VHT Beamformee, BIT4: Enable HT Beamformer, BIT5: Enable HT Beamformee
 	uint8_t	beamform_cap;
 
-	uint8_t	lowrate_two_xmit;
-
 	uint8_t	low_power ;
 
 	BOOLEAN	bAcceptAddbaReq;

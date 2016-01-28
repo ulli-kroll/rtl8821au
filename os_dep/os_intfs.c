@@ -94,8 +94,6 @@ static int rtw_stbc_cap = 0x3;
  */
 static int rtw_beamform_cap = 0;
 
-static int rtw_lowrate_two_xmit = 1;/* Use 2 path Tx to transmit MCS0~7 and legacy mode */
-
 static int rtw_low_power = 0;
 
 static int rtw_AcceptAddbaReq = _TRUE;/* 0:Reject AP's Add BA req, 1:Accept AP's Add BA req. */
@@ -131,8 +129,6 @@ module_param(rtw_busy_thresh, int, 0644);
 module_param(rtw_bw_mode, int, 0644);
 module_param(rtw_rx_stbc, int, 0644);
 module_param(rtw_ampdu_amsdu, int, 0644);
-
-module_param(rtw_lowrate_two_xmit, int, 0644);
 
 module_param(rtw_power_mgnt, int, 0644);
 module_param(rtw_smart_ps, int, 0644);
@@ -566,7 +562,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->ldpc_cap = (uint8_t)rtw_ldpc_cap;
 	registry_par->stbc_cap = (uint8_t)rtw_stbc_cap;
 	registry_par->beamform_cap = (uint8_t)rtw_beamform_cap;
-	registry_par->lowrate_two_xmit = (uint8_t)rtw_lowrate_two_xmit;
 	registry_par->low_power = (uint8_t)rtw_low_power;
 
 	registry_par->bAcceptAddbaReq = (uint8_t)rtw_AcceptAddbaReq;

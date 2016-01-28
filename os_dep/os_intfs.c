@@ -58,7 +58,6 @@ static int rtw_uapsd_enable = 0;
  * 0x21 means enable 2.4G 40MHz & 5G 80MHz
  */
 static int rtw_bw_mode = 0x21;
-static int rtw_cbw40_enable = 3;	/* 0 :diable, bit(0): enable 2.4g, bit(1): enable 5g */
 static int rtw_rx_stbc = 1;		/* 0: disable, bit(0):enable 2.4g, bit(1):enable 5g, default is set to enable 2.4GHZ for IOT issue with bufflao's AP at 5GHZ */
 
 static int rtw_ampdu_amsdu = 0;/*  0: disabled, 1:enabled, 2:auto */

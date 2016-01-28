@@ -1278,9 +1278,7 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 		pmlmepriv->htpriv.ht_option = _TRUE;
 		pmlmepriv->qospriv.qos_option = 1;
 
-		if (pregistrypriv->ampdu_enable == 1) {
-			pmlmepriv->htpriv.ampdu_enable = _TRUE;
-		}
+		pmlmepriv->htpriv.ampdu_enable = _TRUE;
 
 		HT_caps_handler(rtlpriv, (PNDIS_802_11_VARIABLE_IEs)pHT_caps_ie);
 

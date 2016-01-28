@@ -2519,15 +2519,8 @@ void rtw_update_ht_cap(struct rtl_priv *rtlpriv, uint8_t *pie, uint ie_len, uint
 	DBG_871X("+rtw_update_ht_cap()\n");
 
 	//maybe needs check if ap supports rx ampdu.
-	if ((phtpriv->ampdu_enable==_FALSE) &&(pregistrypriv->ampdu_enable==1))
-	{
+	if ((phtpriv->ampdu_enable==_FALSE))
 		phtpriv->ampdu_enable = _TRUE;
-	}
-	else if (pregistrypriv->ampdu_enable==2)
-	{
-		phtpriv->ampdu_enable = _TRUE;
-	}
-
 
 	//check Max Rx A-MPDU Size
 	len = 0;

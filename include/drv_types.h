@@ -115,7 +115,6 @@ struct registry_priv
 	// 2.4G use bit 0 ~ 3, 5G use bit 4 ~ 7
 	// 0x21 means enable 2.4G 40MHz & 5G 80MHz
 	uint8_t	bw_mode;
-	uint8_t	ampdu_enable;//for tx
 	uint8_t 	rx_stbc;
 	uint8_t	ampdu_amsdu;//A-MPDU Supports A-MSDU is permitted
 	// Short GI support Bit Map

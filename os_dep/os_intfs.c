@@ -59,7 +59,6 @@ static int rtw_uapsd_enable = 0;
  */
 static int rtw_bw_mode = 0x21;
 static int rtw_cbw40_enable = 3;	/* 0 :diable, bit(0): enable 2.4g, bit(1): enable 5g */
-static int rtw_ampdu_enable = 1;	/* for enable tx_ampdu */
 static int rtw_rx_stbc = 1;		/* 0: disable, bit(0):enable 2.4g, bit(1):enable 5g, default is set to enable 2.4GHZ for IOT issue with bufflao's AP at 5GHZ */
 
 static int rtw_ampdu_amsdu = 0;/*  0: disabled, 1:enabled, 2:auto */
@@ -132,7 +131,6 @@ module_param(rtw_vcs_type, int, 0644);
 module_param(rtw_busy_thresh, int, 0644);
 
 module_param(rtw_bw_mode, int, 0644);
-module_param(rtw_ampdu_enable, int, 0644);
 module_param(rtw_rx_stbc, int, 0644);
 module_param(rtw_ampdu_amsdu, int, 0644);
 
@@ -561,7 +559,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->uapsd_enable = (uint8_t)rtw_uapsd_enable;
 
 	registry_par->bw_mode = (uint8_t)rtw_bw_mode;
-	registry_par->ampdu_enable = (uint8_t)rtw_ampdu_enable;
 	registry_par->rx_stbc = (uint8_t)rtw_rx_stbc;
 	registry_par->ampdu_amsdu = (uint8_t)rtw_ampdu_amsdu;
 	registry_par->short_gi = (uint8_t)rtw_short_gi;

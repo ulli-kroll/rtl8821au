@@ -28,7 +28,6 @@ static int rtw_vcs_type = RTS_CTS;
 static int rtw_rts_thresh = 2347;
 static int rtw_frag_thresh = 2346;
 static int rtw_preamble = PREAMBLE_LONG;	/* long, short, auto */
-static int rtw_scan_mode = 1;		/* active, passive */
 static int rtw_adhoc_tx_pwr = 1;
 static int rtw_soft_ap = 0;
 				/* int smart_ps = 1; */
@@ -535,7 +534,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->rts_thresh = (u16)rtw_rts_thresh;
 	registry_par->frag_thresh = (u16)rtw_frag_thresh;
 	registry_par->preamble = (uint8_t)rtw_preamble;
-	registry_par->scan_mode = (uint8_t)rtw_scan_mode;
 	registry_par->adhoc_tx_pwr = (uint8_t)rtw_adhoc_tx_pwr;
 	registry_par->soft_ap =  (uint8_t)rtw_soft_ap;
 	registry_par->smart_ps =  (uint8_t)rtw_smart_ps;

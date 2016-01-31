@@ -1925,6 +1925,19 @@ static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 
 /* endpoint mapping */
 
+static void _OneOutEpMapping(struct rtl_ep_map *ep_map)
+{
+	/* typical setting */
+
+	ep_map->ep_mapping[RTL_TXQ_BE]	= 2;
+	ep_map->ep_mapping[RTL_TXQ_BK]	= 2;
+	ep_map->ep_mapping[RTL_TXQ_VI]	= 2;
+	ep_map->ep_mapping[RTL_TXQ_VO] = 2;
+	ep_map->ep_mapping[RTL_TXQ_MGT] = 2;
+	ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
+	ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
+}
+
 static void
 _OneOutPipeMapping(
 	IN	struct rtl_priv *rtlpriv
@@ -1941,6 +1954,19 @@ _OneOutPipeMapping(
 	pdvobjpriv->Queue2Pipe[RTL_TXQ_MGT] = pdvobjpriv->RtOutPipe[0];//MGT
 	pdvobjpriv->Queue2Pipe[RTL_TXQ_HI] = pdvobjpriv->RtOutPipe[0];//HIGH
 	pdvobjpriv->Queue2Pipe[RTL_TXQ_TXCMD] = pdvobjpriv->RtOutPipe[0];//TXCMD
+}
+
+static void _TwoOutEpMapping(struct rtl_ep_map *ep_map)
+{
+	/* typical setting */
+
+	ep_map->ep_mapping[RTL_TXQ_BE]	= 3;
+	ep_map->ep_mapping[RTL_TXQ_BK]	= 3;
+	ep_map->ep_mapping[RTL_TXQ_VI]	= 2;
+	ep_map->ep_mapping[RTL_TXQ_VO]	= 2;
+	ep_map->ep_mapping[RTL_TXQ_MGT] = 2;
+	ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
+	ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
 }
 
 static void
@@ -1963,6 +1989,19 @@ _TwoOutPipeMapping(
 	pdvobjpriv->Queue2Pipe[RTL_TXQ_MGT] = pdvobjpriv->RtOutPipe[0];//MGT
 	pdvobjpriv->Queue2Pipe[RTL_TXQ_HI] = pdvobjpriv->RtOutPipe[0];//HIGH
 	pdvobjpriv->Queue2Pipe[RTL_TXQ_TXCMD] = pdvobjpriv->RtOutPipe[0];//TXCMD
+}
+
+static void _ThreeOutEpMapping(struct rtl_ep_map *ep_map)
+{
+	/* typical setting */
+
+	ep_map->ep_mapping[RTL_TXQ_BE]	= 5;
+	ep_map->ep_mapping[RTL_TXQ_BK]	= 5;
+	ep_map->ep_mapping[RTL_TXQ_VI]	= 3;
+	ep_map->ep_mapping[RTL_TXQ_VO]	= 2;
+	ep_map->ep_mapping[RTL_TXQ_MGT] = 2;
+	ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
+	ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
 }
 
 static void _ThreeOutPipeMapping(

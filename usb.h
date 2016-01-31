@@ -3,7 +3,6 @@
 
 #include <linux/usb.h>
 
-#if 0		/* ULLI : warning this enum is from rtlwifi, check if we can use this */
 enum rtl_txq {
 	/* These definitions shall be consistent with value
 	 * returned by skb_get_queue_mapping
@@ -17,21 +16,15 @@ enum rtl_txq {
 	RTL_TXQ_MGT,
 	RTL_TXQ_HI,
 
+	RTL_TXQ_TXCMD,		/* ULLI : Only in RTL8812AU driver ??? */
+
 	/* Must be last */
 	__RTL_TXQ_NUM,
 };
-#else
-enum rtl_txq {
-	RTL_TXQ_VO,
-	RTL_TXQ_VI,
-	RTL_TXQ_BE,
-	RTL_TXQ_BK,
-	RTL_TXQ_BCN,
-	RTL_TXQ_MGT,
-	RTL_TXQ_HI,
-	RTL_TXQ_TXCMD,
+
+struct rtl_ep_map {
+	u32 ep_mapping[__RTL_TXQ_NUM];
 };
-#endif
 
 struct rtl_usb {
 	struct usb_interface *intf;
@@ -45,6 +38,8 @@ struct rtl_usb {
 
 	/* irq  . HIMR,HIMR_EX */
 	u32 irq_mask[2];
+
+	struct rtl_ep_map ep_map;
 
 	//for local/global synchronization
 	//

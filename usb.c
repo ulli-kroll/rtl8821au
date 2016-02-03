@@ -343,15 +343,15 @@ static void _rtl_tx_complete(struct urb *purb)
 	/* struct pkt_attrib *pattrib = &pxmitframe->attrib; */
 
 	switch(pxmitbuf->flags) {
-		case VO_QUEUE_INX:
+		case RTL_TXQ_VO:
 			break;
-		case VI_QUEUE_INX:
+		case RTL_TXQ_VI:
 			break;
-		case BE_QUEUE_INX:
+		case RTL_TXQ_BE:
 			break;
-		case BK_QUEUE_INX:
+		case RTL_TXQ_BK:
 			break;
-		case HIGH_QUEUE_INX:
+		case RTL_TXQ_HI:
 #ifdef CONFIG_AP_MODE
 			rtw_chk_hi_queue_cmd(rtlpriv);
 #endif
@@ -446,23 +446,23 @@ u32 _rtlw_usb_transmit(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct 
 	spin_lock_irqsave(&pxmitpriv->lock, flags);
 
 	switch(queue_idx) {
-		case VO_QUEUE_INX:
-			pxmitbuf->flags = VO_QUEUE_INX;
+		case RTL_TXQ_VO:
+			pxmitbuf->flags = RTL_TXQ_VO;
 			break;
-		case VI_QUEUE_INX:
-			pxmitbuf->flags = VI_QUEUE_INX;
+		case RTL_TXQ_VI:
+			pxmitbuf->flags = RTL_TXQ_VI;
 			break;
-		case BE_QUEUE_INX:
-			pxmitbuf->flags = BE_QUEUE_INX;
+		case RTL_TXQ_BE:
+			pxmitbuf->flags = RTL_TXQ_BE;
 			break;
-		case BK_QUEUE_INX:
-			pxmitbuf->flags = BK_QUEUE_INX;
+		case RTL_TXQ_BK:
+			pxmitbuf->flags = RTL_TXQ_BK;
 			break;
-		case HIGH_QUEUE_INX:
-			pxmitbuf->flags = HIGH_QUEUE_INX;
+		case RTL_TXQ_HI:
+			pxmitbuf->flags = RTL_TXQ_HI;
 			break;
 		default:
-			pxmitbuf->flags = MGT_QUEUE_INX;
+			pxmitbuf->flags = RTL_TXQ_MGT;
 			break;
 	}
 

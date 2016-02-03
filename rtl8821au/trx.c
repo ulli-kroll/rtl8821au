@@ -19,29 +19,29 @@ static uint32_t rtw_get_ff_hwaddr(struct xmit_frame *pxmitframe)
 	switch (pattrib->tx_qsel) {
 	case 0:
 	case 3:
-		addr = BE_QUEUE_INX;
+		addr = RTL_TXQ_BE;
 		break;
 	case 1:
 	case 2:
-		addr = BK_QUEUE_INX;
+		addr = RTL_TXQ_BK;
 		break;
 	case 4:
 	case 5:
-		addr = VI_QUEUE_INX;
+		addr = RTL_TXQ_VI;
 		break;
 	case 6:
 	case 7:
-		addr = VO_QUEUE_INX;
+		addr = RTL_TXQ_VO;
 		break;
 	case 0x10:
-		addr = BCN_QUEUE_INX;
+		addr = RTL_TXQ_BCN;
 		break;
 	case 0x11:	/* BC/MC in PS (HIQ) */
-		addr = HIGH_QUEUE_INX;
+		addr = RTL_TXQ_HI;
 		break;
 	case 0x12:
 	default:
-		addr = MGT_QUEUE_INX;
+		addr = RTL_TXQ_MGT;
 		break;
 
 	}
@@ -1994,6 +1994,13 @@ _TwoOutPipeMapping(
 static void _ThreeOutEpMapping(struct rtl_ep_map *ep_map)
 {
 	/* typical setting */
+
+	/*
+	 * ULLI :
+	 * newer EP mapping found on DLINK DWA 171
+	 * ep OUT Pipes : 5 (bulk) , 6 (bulk), 8 (bulk), 9 (bulk)
+	 * ep IN  Pipes : 4 (bulk) , 7 (int)
+	 */
 
 	ep_map->ep_mapping[RTL_TXQ_BE]	= 5;
 	ep_map->ep_mapping[RTL_TXQ_BK]	= 5;

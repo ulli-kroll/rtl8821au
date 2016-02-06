@@ -24,20 +24,67 @@ struct rtl_ep_map {
 	u32 ep_mapping[__RTL_TXQ_NUM];
 };
 
+/*  Add suspend/resume later */
+enum rtl_usb_state {
+	USB_STATE_STOP	= 0,
+	USB_STATE_START	= 1,
+};
+
 struct rtl_usb {
-	struct usb_interface *intf;
 	struct usb_device *udev;
+	struct usb_interface *intf;
+	enum rtl_usb_state state;
 
 	/* Bcn control register setting */
 	u32 reg_bcn_ctrl_val;
-
-	u32 max_bulk_out_size;
-        struct rtl_priv *rtlpriv;
-
+	/* for 88/92cu card disable */
+	u8	disableHWSM;
+#if 0	/* ULLI : currently not defined */	
+	/*QOS & EDCA */
+	enum acm_method acm_method;
+#endif	
 	/* irq  . HIMR,HIMR_EX */
 	u32 irq_mask[2];
+	bool irq_enabled;
 
+	u16 (*usb_mq_to_hwq)(__le16 fc, u16 mac80211_queue_index);
+
+	/* Tx */
+	u8 out_ep_nums ;
+	u8 out_queue_sel;
 	struct rtl_ep_map ep_map;
+
+	u32 max_bulk_out_size;
+	u32 tx_submitted_urbs;
+#if 0	/* ULLI : currently not defined */	
+	struct sk_buff_head tx_skb_queue[RTL_USB_MAX_EP_NUM];
+	struct usb_anchor tx_pending[RTL_USB_MAX_EP_NUM];
+	struct usb_anchor tx_submitted;
+
+	struct sk_buff *(*usb_tx_aggregate_hdl)(struct ieee80211_hw *,
+						struct sk_buff_head *);
+	int (*usb_tx_post_hdl)(struct ieee80211_hw *,
+			       struct urb *, struct sk_buff *);
+	void (*usb_tx_cleanup)(struct ieee80211_hw *, struct sk_buff *);
+#endif
+
+	/* Rx */
+	u8 in_ep_nums;
+	u32 in_ep;		/* Bulk IN endpoint number */
+	u32 rx_max_size;	/* Bulk IN max buffer size */
+	u32 rx_urb_num;		/* How many Bulk INs are submitted to host. */
+	struct usb_anchor	rx_submitted;
+	struct usb_anchor	rx_cleanup_urbs;
+	struct tasklet_struct   rx_work_tasklet;
+	struct sk_buff_head	rx_queue;
+#if 0	/* ULLI : currently not defined */	
+	void (*usb_rx_segregate_hdl)(struct ieee80211_hw *, struct sk_buff *,
+				     struct sk_buff_head *);
+	void (*usb_rx_hdl)(struct ieee80211_hw *, struct sk_buff *);
+#endif	
+	/* ULLI : end of rtlwifi rtl_usb */
+	
+        struct rtl_priv *rtlpriv;
 
 	//for local/global synchronization
 	//

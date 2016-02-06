@@ -495,7 +495,7 @@ static void update_attrib_vcs_info(struct rtl_priv *rtlpriv, struct xmit_frame *
 			/* IOT action */
 			if ((pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_ATHEROS)
 			 && (pattrib->ampdu_en == _TRUE)
-			 && (rtlpriv->securitypriv.dot11PrivacyAlgrthm == _AES_)) {
+			 && (rtlpriv->securitypriv.dot11PrivacyAlgrthm == AESCCMP_ENCRYPTION)) {
 				pattrib->vcs_mode = CTS_TO_SELF;
 				break;
 			}
@@ -624,21 +624,21 @@ static int32_t update_attrib_sec_info(struct rtl_priv *rtlpriv, struct tx_pkt_at
 		}
 
 		/* For WPS 1.0 WEP, driver should not encrypt EAPOL Packet for WPS handshake. */
-		if (((pattrib->encrypt == _WEP40_)
-		 || (pattrib->encrypt == _WEP104_)) && (pattrib->ether_type == 0x888e))
-			pattrib->encrypt = _NO_PRIVACY_;
+		if (((pattrib->encrypt == WEP40_ENCRYPTION)
+		 || (pattrib->encrypt == WEP104_ENCRYPTION)) && (pattrib->ether_type == 0x888e))
+			pattrib->encrypt = NO_ENCRYPTION;
 
 	}
 
 	switch (pattrib->encrypt) {
-	case _WEP40_:
-	case _WEP104_:
+	case WEP40_ENCRYPTION:
+	case WEP104_ENCRYPTION:
 		pattrib->iv_len = 4;
 		pattrib->icv_len = 4;
 		WEP_IV(pattrib->iv, psta->dot11txpn, pattrib->key_idx);
 		break;
 
-	case _TKIP_:
+	case TKIP_ENCRYPTION:
 		pattrib->iv_len = 8;
 		pattrib->icv_len = 4;
 
@@ -657,7 +657,7 @@ static int32_t update_attrib_sec_info(struct rtl_priv *rtlpriv, struct tx_pkt_at
 
 		break;
 
-	case _AES_:
+	case AESCCMP_ENCRYPTION:
 		pattrib->iv_len = 8;
 		pattrib->icv_len = 8;
 
@@ -911,7 +911,7 @@ static int32_t xmitframe_addmic(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
 
 	hw_hdr_offset = TXDESC_SIZE + (pxmitframe->pkt_offset * PACKET_OFFSET_SZ);;
 
-	if (pattrib->encrypt == _TKIP_) {	/* if(psecuritypriv->dot11PrivacyAlgrthm==_TKIP_PRIVACY_) */
+	if (pattrib->encrypt == TKIP_ENCRYPTION) {	/* if(psecuritypriv->dot11PrivacyAlgrthm==_TKIP_PRIVACY_) */
 		/*
 		 * encode mic code
 		 * if(stainfo!= NULL)
@@ -1013,14 +1013,14 @@ static int32_t xmitframe_swencrypt(struct rtl_priv *rtlpriv, struct xmit_frame *
 	if (pattrib->bswenc) {
 		/* DBG_871X("start xmitframe_swencrypt\n"); */
 		switch (pattrib->encrypt) {
-		case _WEP40_:
-		case _WEP104_:
+		case WEP40_ENCRYPTION:
+		case WEP104_ENCRYPTION:
 			rtw_wep_encrypt(rtlpriv, (uint8_t *)pxmitframe);
 			break;
-		case _TKIP_:
+		case TKIP_ENCRYPTION:
 			rtw_tkip_encrypt(rtlpriv, (uint8_t *)pxmitframe);
 			break;
-		case _AES_:
+		case AESCCMP_ENCRYPTION:
 			rtw_aes_encrypt(rtlpriv, (uint8_t *)pxmitframe);
 			break;
 		default:
@@ -1279,7 +1279,7 @@ uint32_t	 rtw_calculate_wlan_pkt_size_by_attribue(struct tx_pkt_attrib *pattrib)
 	len = pattrib->hdrlen + pattrib->iv_len;	/* WLAN Header and IV */
 	len += SNAP_SIZE + sizeof(u16);		/* LLC */
 	len += pattrib->pktlen;
-	if (pattrib->encrypt == _TKIP_)
+	if (pattrib->encrypt == TKIP_ENCRYPTION)
 		len += 8;	/* MIC */
 	len += ((pattrib->bswenc) ? pattrib->icv_len : 0);	/* ICV */
 

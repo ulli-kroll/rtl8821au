@@ -383,7 +383,7 @@ sint recvframe_chkmic(struct rtl_priv *rtlpriv,  struct recv_frame *precvframe){
 
 	stainfo=rtw_get_stainfo(&rtlpriv->stapriv ,&prxattrib->ta[0]);
 
-	if (prxattrib->encrypt == _TKIP_) {
+	if (prxattrib->encrypt == TKIP_ENCRYPTION) {
 		/* calculate mic code */
 		if (stainfo != NULL) {
 			if (is_multicast_ether_addr(prxattrib->ra)) {
@@ -493,12 +493,12 @@ struct recv_frame * decryptor(struct rtl_priv *rtlpriv,struct recv_frame *precv_
 			DBG_871X("prxattrib->key_index(%d) > WEP_KEYS \n", prxattrib->key_index);
 
 			switch(prxattrib->encrypt){
-			case _WEP40_:
-			case _WEP104_:
+			case WEP40_ENCRYPTION:
+			case WEP104_ENCRYPTION:
 				prxattrib->key_index = psecuritypriv->dot11PrivacyKeyIndex;
 				break;
-			case _TKIP_:
-			case _AES_:
+			case TKIP_ENCRYPTION:
+			case AESCCMP_ENCRYPTION:
 			default:
 				prxattrib->key_index = psecuritypriv->dot118021XGrpKeyid;
 				break;
@@ -516,14 +516,14 @@ struct recv_frame * decryptor(struct rtl_priv *rtlpriv,struct recv_frame *precv_
 #endif
 
 		switch (prxattrib->encrypt) {
-		case _WEP40_:
-		case _WEP104_:
+		case WEP40_ENCRYPTION:
+		case WEP104_ENCRYPTION:
 			rtw_wep_decrypt(rtlpriv, precv_frame);
 			break;
-		case _TKIP_:
+		case TKIP_ENCRYPTION:
 			res = rtw_tkip_decrypt(rtlpriv, precv_frame);
 			break;
-		case _AES_:
+		case AESCCMP_ENCRYPTION:
 			res = rtw_aes_decrypt(rtlpriv, precv_frame);
 			break;
 		default:
@@ -531,7 +531,7 @@ struct recv_frame * decryptor(struct rtl_priv *rtlpriv,struct recv_frame *precv_
 		}
 	} else if(prxattrib->bdecrypted==1
 		&& prxattrib->encrypt >0
-		&& (psecuritypriv->busetkipkey==1 || prxattrib->encrypt !=_TKIP_ )
+		&& (psecuritypriv->busetkipkey==1 || prxattrib->encrypt !=TKIP_ENCRYPTION )
 		)
 	{
 		{

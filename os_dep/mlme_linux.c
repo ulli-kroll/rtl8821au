@@ -137,10 +137,10 @@ void rtw_reset_securitypriv( struct rtl_priv *rtlpriv )
 		struct security_priv *psec_priv=&rtlpriv->securitypriv;
 
 		psec_priv->dot11AuthAlgrthm =dot11AuthAlgrthm_Open;  //open system
-		psec_priv->dot11PrivacyAlgrthm = _NO_PRIVACY_;
+		psec_priv->dot11PrivacyAlgrthm = NO_ENCRYPTION;
 		psec_priv->dot11PrivacyKeyIndex = 0;
 
-		psec_priv->dot118021XGrpPrivacy = _NO_PRIVACY_;
+		psec_priv->dot118021XGrpPrivacy = NO_ENCRYPTION;
 		psec_priv->dot118021XGrpKeyid = 1;
 
 		psec_priv->ndisauthtype = Ndis802_11AuthModeOpen;

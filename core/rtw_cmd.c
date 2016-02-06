@@ -1041,9 +1041,9 @@ uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork
 		//	Added by Albert 2010/06/23
 		//	For the WEP mode, we will use the bg mode to do the connection to avoid some IOT issue.
 		//	Especially for Realtek 8192u SoftAP.
-		if (	( rtlpriv->securitypriv.dot11PrivacyAlgrthm != _WEP40_ ) &&
-			( rtlpriv->securitypriv.dot11PrivacyAlgrthm != _WEP104_ ) &&
-			( rtlpriv->securitypriv.dot11PrivacyAlgrthm != _TKIP_ ))
+		if (	( rtlpriv->securitypriv.dot11PrivacyAlgrthm != WEP40_ENCRYPTION ) &&
+			( rtlpriv->securitypriv.dot11PrivacyAlgrthm != WEP104_ENCRYPTION ) &&
+			( rtlpriv->securitypriv.dot11PrivacyAlgrthm != TKIP_ENCRYPTION ))
 		{
 			//rtw_restructure_ht_ie
 			rtw_restructure_ht_ie(rtlpriv, &pnetwork->network.IEs[0], &psecnetwork->IEs[0],
@@ -1277,7 +1277,7 @@ uint8_t rtw_clearstakey_cmd(struct rtl_priv *rtlpriv, uint8_t *psta, uint8_t ent
 
 		memcpy(psetstakey_para->addr, sta->hwaddr, ETH_ALEN);
 
-		psetstakey_para->algorithm = _NO_PRIVACY_;
+		psetstakey_para->algorithm = NO_ENCRYPTION;
 
 		psetstakey_para->id = entry;
 

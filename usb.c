@@ -1497,8 +1497,8 @@ int rtw_resume_process(struct rtl_priv *rtlpriv)
 		pwrpriv->brfoffbyhw = _FALSE;
 		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "enc_algorithm(%x),wepkeymask(%x)\n",
 			rtlpriv->securitypriv.dot11PrivacyAlgrthm,pwrpriv->wepkeymask);
-		if  ((_WEP40_ == rtlpriv->securitypriv.dot11PrivacyAlgrthm) ||
-			(_WEP104_ == rtlpriv->securitypriv.dot11PrivacyAlgrthm)) {
+		if  ((WEP40_ENCRYPTION == rtlpriv->securitypriv.dot11PrivacyAlgrthm) ||
+			(WEP104_ENCRYPTION == rtlpriv->securitypriv.dot11PrivacyAlgrthm)) {
 			sint keyid;
 
 			for (keyid = 0; keyid < 4; keyid++) {

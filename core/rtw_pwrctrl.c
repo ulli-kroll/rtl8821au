@@ -75,8 +75,8 @@ int rtw_ips_leave(struct rtl_priv * rtlpriv)
 		}
 		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "nolinked power save leave\n");
 
-		if ((_WEP40_ == psecuritypriv->dot11PrivacyAlgrthm)
-		   ||(_WEP104_ == psecuritypriv->dot11PrivacyAlgrthm)) {
+		if ((WEP40_ENCRYPTION == psecuritypriv->dot11PrivacyAlgrthm)
+		   ||(WEP104_ENCRYPTION == psecuritypriv->dot11PrivacyAlgrthm)) {
 			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "==>%s,channel(%d),processing(%x)\n",__FUNCTION__,rtlpriv->mlmeextpriv.cur_channel,pwrpriv->bips_processing);
 			set_channel_bwmode(rtlpriv, rtlpriv->mlmeextpriv.cur_channel, HAL_PRIME_CHNL_OFFSET_DONT_CARE, CHANNEL_WIDTH_20);
 			for (keyid = 0; keyid < 4; keyid++) {

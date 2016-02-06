@@ -192,7 +192,7 @@ void rtw_wep_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
 
 	//start to encrypt each fragment
-	if((pattrib->encrypt==_WEP40_)||(pattrib->encrypt==_WEP104_))
+	if((pattrib->encrypt==WEP40_ENCRYPTION)||(pattrib->encrypt==WEP104_ENCRYPTION))
 	{
 		keylength=psecuritypriv->dot11DefKeylen[psecuritypriv->dot11PrivacyKeyIndex];
 
@@ -253,7 +253,7 @@ void rtw_wep_decrypt(struct rtl_priv  *rtlpriv, struct recv_frame *precvframe)
 	pframe= precvframe->rx_data;
 
 	//start to decrypt recvframe
-	if((prxattrib->encrypt==_WEP40_)||(prxattrib->encrypt==_WEP104_))
+	if((prxattrib->encrypt==WEP40_ENCRYPTION)||(prxattrib->encrypt==WEP104_ENCRYPTION))
 	{
 		iv=pframe+prxattrib->hdrlen;
 		//keyindex=(iv[3]&0x3);
@@ -672,7 +672,7 @@ uint32_t	rtw_tkip_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 
 	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
 	//4 start to encrypt each fragment
-	if(pattrib->encrypt==_TKIP_){
+	if(pattrib->encrypt==TKIP_ENCRYPTION){
 
 /*
 		if(pattrib->psta)
@@ -784,7 +784,7 @@ uint32_t	 rtw_tkip_decrypt(struct rtl_priv *rtlpriv, struct recv_frame  *precvfr
 	pframe = precvframe->rx_data;
 
 	//4 start to decrypt recvframe
-	if(prxattrib->encrypt==_TKIP_){
+	if(prxattrib->encrypt==TKIP_ENCRYPTION){
 
 		stainfo=rtw_get_stainfo(&rtlpriv->stapriv ,&prxattrib->ta[0] );
 		if (stainfo!=NULL){
@@ -1532,7 +1532,7 @@ uint32_t	rtw_aes_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	pframe = ((struct xmit_frame*)pxmitframe)->buf_addr + hw_hdr_offset;
 
 	//4 start to encrypt each fragment
-	if((pattrib->encrypt==_AES_)){
+	if((pattrib->encrypt==AESCCMP_ENCRYPTION)){
 /*
 		if(pattrib->psta)
 		{
@@ -1889,7 +1889,7 @@ uint32_t	rtw_aes_decrypt(struct rtl_priv *rtlpriv, struct recv_frame *precvframe
 
 	pframe= precvframe->rx_data;
 	//4 start to encrypt each fragment
-	if((prxattrib->encrypt==_AES_)){
+	if((prxattrib->encrypt==AESCCMP_ENCRYPTION)){
 
 		stainfo=rtw_get_stainfo(&rtlpriv->stapriv ,&prxattrib->ta[0] );
 		if (stainfo!=NULL){

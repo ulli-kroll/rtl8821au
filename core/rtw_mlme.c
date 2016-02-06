@@ -477,10 +477,10 @@ int rtw_is_same_ibss(struct rtl_priv *rtlpriv, struct wlan_network *pnetwork)
 	int ret=_TRUE;
 	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
 
-	if ((psecuritypriv->dot11PrivacyAlgrthm != _NO_PRIVACY_ )
+	if ((psecuritypriv->dot11PrivacyAlgrthm != NO_ENCRYPTION )
 	   && ( pnetwork->network.Privacy == 0 )) {
 		ret=_FALSE;
-	} else if ((psecuritypriv->dot11PrivacyAlgrthm == _NO_PRIVACY_ )
+	} else if ((psecuritypriv->dot11PrivacyAlgrthm == NO_ENCRYPTION )
 		  && ( pnetwork->network.Privacy == 1 ) ) {
 		ret=_FALSE;
 	} else {
@@ -2075,20 +2075,20 @@ sint rtw_set_key(struct rtl_priv * rtlpriv,struct security_priv *psecuritypriv,s
 
 	switch(psetkeyparm->algorithm){
 
-		case _WEP40_:
+		case WEP40_ENCRYPTION:
 			keylen=5;
 			memcpy(&(psetkeyparm->key[0]), &(psecuritypriv->dot11DefKey[keyid].skey[0]), keylen);
 			break;
-		case _WEP104_:
+		case WEP104_ENCRYPTION:
 			keylen=13;
 			memcpy(&(psetkeyparm->key[0]), &(psecuritypriv->dot11DefKey[keyid].skey[0]), keylen);
 			break;
-		case _TKIP_:
+		case TKIP_ENCRYPTION:
 			keylen=16;
 			memcpy(&psetkeyparm->key, &psecuritypriv->dot118021XGrpKey[keyid], keylen);
 			psetkeyparm->grpkey=1;
 			break;
-		case _AES_:
+		case AESCCMP_ENCRYPTION:
 			keylen=16;
 			memcpy(&psetkeyparm->key, &psecuritypriv->dot118021XGrpKey[keyid], keylen);
 			psetkeyparm->grpkey=1;
@@ -2462,7 +2462,7 @@ unsigned int rtw_restructure_ht_ie(struct rtl_priv *rtlpriv, uint8_t *in_ie, uin
 		max_rx_ampdu_factor = MAX_AMPDU_FACTOR_64K;
 		ht_capie.ampdu_params_info = (max_rx_ampdu_factor&0x03);
 
-		if (rtlpriv->securitypriv.dot11PrivacyAlgrthm == _AES_ )
+		if (rtlpriv->securitypriv.dot11PrivacyAlgrthm == AESCCMP_ENCRYPTION )
 			ht_capie.ampdu_params_info |= (IEEE80211_HT_CAP_AMPDU_DENSITY&(0x07<<2));
 		else
 			ht_capie.ampdu_params_info |= (IEEE80211_HT_CAP_AMPDU_DENSITY&0x00);

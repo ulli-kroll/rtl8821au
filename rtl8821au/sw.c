@@ -52,11 +52,11 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	psecuritypriv->sw_decrypt = cfg->mod_params->sw_crypto;
 
 	psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_Open; /* open system */
-	psecuritypriv->dot11PrivacyAlgrthm = _NO_PRIVACY_;
+	psecuritypriv->dot11PrivacyAlgrthm = NO_ENCRYPTION;
 
 	psecuritypriv->dot11PrivacyKeyIndex = 0;
 
-	psecuritypriv->dot118021XGrpPrivacy = _NO_PRIVACY_;
+	psecuritypriv->dot118021XGrpPrivacy = NO_ENCRYPTION;
 	psecuritypriv->dot118021XGrpKeyid = 1;
 
 	psecuritypriv->ndisauthtype = Ndis802_11AuthModeOpen;

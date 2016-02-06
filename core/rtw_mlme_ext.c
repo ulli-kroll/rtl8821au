@@ -339,7 +339,7 @@ static void init_mlme_ext_priv_value(struct rtl_priv* rtlpriv)
 	pmlmeinfo->key_index = 0;
 	pmlmeinfo->iv = 0;
 
-	pmlmeinfo->enc_algo = _NO_PRIVACY_;
+	pmlmeinfo->enc_algo = NO_ENCRYPTION;
 	pmlmeinfo->authModeToggle = 0;
 
 	memset(pmlmeinfo->chg_txt, 0, 128);
@@ -990,7 +990,7 @@ unsigned int OnAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 		struct rx_pkt_attrib	 *prxattrib = &(precv_frame->attrib);
 
 		prxattrib->hdrlen = WLAN_HDR_A3_LEN;
-		prxattrib->encrypt = _WEP40_;
+		prxattrib->encrypt = WEP40_ENCRYPTION;
 
 		iv = pframe+prxattrib->hdrlen;
 		prxattrib->key_index = ((iv[3]>>6)&0x3);
@@ -1009,8 +1009,8 @@ unsigned int OnAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 	DBG_871X("auth alg=%x, seq=%X\n", algorithm, seq);
 
 	if (auth_mode == 2 &&
-			psecuritypriv->dot11PrivacyAlgrthm != _WEP40_ &&
-			psecuritypriv->dot11PrivacyAlgrthm != _WEP104_)
+			psecuritypriv->dot11PrivacyAlgrthm != WEP40_ENCRYPTION &&
+			psecuritypriv->dot11PrivacyAlgrthm != WEP104_ENCRYPTION)
 		auth_mode = 0;
 
 	if ((algorithm > 0 && auth_mode == 0) ||	// rx a shared-key auth but shared not enabled
@@ -2539,7 +2539,7 @@ void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pat
 		wireless_mode = WIRELESS_11G;
 	pattrib->raid =  rtw_get_mgntframe_raid(rtlpriv, wireless_mode);
 
-	pattrib->encrypt = _NO_PRIVACY_;
+	pattrib->encrypt = NO_ENCRYPTION;
 	pattrib->bswenc = _FALSE;
 
 	pattrib->qos_en = _FALSE;
@@ -3288,7 +3288,7 @@ void issue_auth(struct rtl_priv *rtlpriv, struct sta_info *psta, unsigned short 
 
 			pattrib->hdrlen = sizeof(struct rtw_ieee80211_hdr_3addr);
 
-			pattrib->encrypt = _WEP40_;
+			pattrib->encrypt = WEP40_ENCRYPTION;
 
 			pattrib->icv_len = 4;
 
@@ -6692,7 +6692,7 @@ uint8_t set_stakey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	//for macid >=2, camid = macid+3;
 
 
-	if(pparm->algorithm == _NO_PRIVACY_)	// clear cam entry
+	if(pparm->algorithm == NO_ENCRYPTION)	// clear cam entry
 	{
 		clear_cam_entry(rtlpriv, pparm->id);
 		ret = H2C_SUCCESS;

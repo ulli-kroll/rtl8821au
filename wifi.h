@@ -74,6 +74,18 @@ enum rtl_desc92_rate {
 	DESC_RATEVHT2SS_MCS9 = 0x3f,
 };
 
+/* Ref: 802.11i sepc D10.0 7.3.2.25.1
+Cipher Suites Encryption Algorithms */
+enum rt_enc_alg {
+	NO_ENCRYPTION = 0,
+	WEP40_ENCRYPTION = 1,
+	TKIP_ENCRYPTION = 2,
+	RSERVED_ENCRYPTION = 3,
+	AESCCMP_ENCRYPTION = 4,
+	WEP104_ENCRYPTION = 5,
+	AESCMAC_ENCRYPTION = 6,	/*IEEE802.11w */
+};
+
 enum rtl_var_map {
 	/*reg map */
 	SYS_ISO_CTRL = 0,

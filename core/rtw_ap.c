@@ -615,7 +615,7 @@ static void update_bmc_sta(struct rtl_priv *rtlpriv)
 
 		memset((void*)&psta->sta_stats, 0, sizeof(struct stainfo_stats));
 
-		//psta->dot118021XPrivacy = _NO_PRIVACY_;//!!! remove it, because it has been set before this.
+		//psta->dot118021XPrivacy = NO_ENCRYPTION;//!!! remove it, because it has been set before this.
 
 
 
@@ -878,7 +878,7 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 	if (pmlmepriv->cur_network.join_res != _TRUE) { //setting only at  first time
 		//WEP Key will be set before this function, do not clear CAM.
-		if ((psecuritypriv->dot11PrivacyAlgrthm != _WEP40_) && (psecuritypriv->dot11PrivacyAlgrthm != _WEP104_))
+		if ((psecuritypriv->dot11PrivacyAlgrthm != WEP40_ENCRYPTION) && (psecuritypriv->dot11PrivacyAlgrthm != WEP104_ENCRYPTION))
 			flush_all_cam_entry(rtlpriv);	//clear CAM
 	}
 
@@ -1137,8 +1137,8 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 
 	//wpa2
 	group_cipher = 0; pairwise_cipher = 0;
-	psecuritypriv->wpa2_group_cipher = _NO_PRIVACY_;
-	psecuritypriv->wpa2_pairwise_cipher = _NO_PRIVACY_;
+	psecuritypriv->wpa2_group_cipher = NO_ENCRYPTION;
+	psecuritypriv->wpa2_pairwise_cipher = NO_ENCRYPTION;
 	p = rtw_get_ie(ie + _BEACON_IE_OFFSET_, _RSN_IE_2_, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_));
 	if (p && ie_len>0) {
 		if (rtw_parse_wpa2_ie(p, ie_len+2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
@@ -1156,8 +1156,8 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 	//wpa
 	ie_len = 0;
 	group_cipher = 0; pairwise_cipher = 0;
-	psecuritypriv->wpa_group_cipher = _NO_PRIVACY_;
-	psecuritypriv->wpa_pairwise_cipher = _NO_PRIVACY_;
+	psecuritypriv->wpa_group_cipher = NO_ENCRYPTION;
+	psecuritypriv->wpa_pairwise_cipher = NO_ENCRYPTION;
 	for (p = ie + _BEACON_IE_OFFSET_; ;p += (ie_len + 2)) {
 		p = rtw_get_ie(p, _SSN_IE_1_, &ie_len, (pbss_network->IELength - _BEACON_IE_OFFSET_ - (ie_len + 2)));
 		if ((p) && (_rtw_memcmp(p+2, OUI1, 4))) {
@@ -1497,15 +1497,15 @@ static int rtw_ap_set_key(struct rtl_priv *rtlpriv, uint8_t *key, uint8_t alg, i
 	psetkeyparm->set_tx = set_tx;
 
 	switch(alg) {
-	case _WEP40_:
+	case WEP40_ENCRYPTION:
 		keylen = 5;
 		break;
-	case _WEP104_:
+	case WEP104_ENCRYPTION:
 		keylen = 13;
 		break;
-	case _TKIP_:
-	case _TKIP_WTMIC_:
-	case _AES_:
+	case TKIP_ENCRYPTION:
+	case RSERVED_ENCRYPTION:
+	case AESCCMP_ENCRYPTION:
 		keylen = 16;
 	default:
 		keylen = 16;
@@ -1542,13 +1542,13 @@ int rtw_ap_set_wep_key(struct rtl_priv *rtlpriv, uint8_t *key, uint8_t keylen, i
 
 	switch(keylen) {
 	case 5:
-		alg =_WEP40_;
+		alg =WEP40_ENCRYPTION;
 		break;
 	case 13:
-		alg =_WEP104_;
+		alg =WEP104_ENCRYPTION;
 		break;
 	default:
-		alg =_NO_PRIVACY_;
+		alg =NO_ENCRYPTION;
 	}
 
 	DBG_871X("%s\n", __FUNCTION__);
@@ -2241,15 +2241,15 @@ void rtw_ap_restore_network(struct rtl_priv *rtlpriv)
 
 	start_bss_network(rtlpriv, (uint8_t *)&mlmepriv->cur_network.network);
 
-	if ((rtlpriv->securitypriv.dot11PrivacyAlgrthm == _TKIP_) ||
-		(rtlpriv->securitypriv.dot11PrivacyAlgrthm == _AES_)) {
+	if ((rtlpriv->securitypriv.dot11PrivacyAlgrthm == TKIP_ENCRYPTION) ||
+		(rtlpriv->securitypriv.dot11PrivacyAlgrthm == AESCCMP_ENCRYPTION)) {
 		/* restore group key, WEP keys is restored in ips_leave() */
 		rtw_set_key(rtlpriv, psecuritypriv, psecuritypriv->dot118021XGrpKeyid, 0);
 	}
 
 	/* per sta pairwise key and settings */
-	if ((rtlpriv->securitypriv.dot11PrivacyAlgrthm != _TKIP_) &&
-		(rtlpriv->securitypriv.dot11PrivacyAlgrthm != _AES_)) {
+	if ((rtlpriv->securitypriv.dot11PrivacyAlgrthm != TKIP_ENCRYPTION) &&
+		(rtlpriv->securitypriv.dot11PrivacyAlgrthm != AESCCMP_ENCRYPTION)) {
 		return;
 	}
 

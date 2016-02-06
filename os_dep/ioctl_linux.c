@@ -584,8 +584,8 @@ static int wpa_set_encryption(struct net_device *ndev, struct ieee_param *param,
 		DBG_871X("wpa_set_encryption, crypt.alg = WEP\n");
 
 		rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;
-		rtlpriv->securitypriv.dot11PrivacyAlgrthm = _WEP40_;
-		rtlpriv->securitypriv.dot118021XGrpPrivacy = _WEP40_;
+		rtlpriv->securitypriv.dot11PrivacyAlgrthm = WEP40_ENCRYPTION;
+		rtlpriv->securitypriv.dot118021XGrpPrivacy = WEP40_ENCRYPTION;
 
 		wep_key_idx = param->u.crypt.idx;
 		wep_key_len = param->u.crypt.key_len;
@@ -609,8 +609,8 @@ static int wpa_set_encryption(struct net_device *ndev, struct ieee_param *param,
 			pwep->Length = wep_total_len;
 
 			if (wep_key_len == 13) {
-				rtlpriv->securitypriv.dot11PrivacyAlgrthm = _WEP104_;
-				rtlpriv->securitypriv.dot118021XGrpPrivacy = _WEP104_;
+				rtlpriv->securitypriv.dot11PrivacyAlgrthm = WEP104_ENCRYPTION;
+				rtlpriv->securitypriv.dot118021XGrpPrivacy = WEP104_ENCRYPTION;
 			}
 		} else {
 			ret = -EINVAL;
@@ -793,46 +793,46 @@ static int rtw_set_wpa_ie(struct rtl_priv *rtlpriv, char *pie, unsigned short ie
 
 		switch (group_cipher) {
 		case WPA_CIPHER_NONE:
-			rtlpriv->securitypriv.dot118021XGrpPrivacy = _NO_PRIVACY_;
+			rtlpriv->securitypriv.dot118021XGrpPrivacy = NO_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11EncryptionDisabled;
 			break;
 		case WPA_CIPHER_WEP40:
-			rtlpriv->securitypriv.dot118021XGrpPrivacy = _WEP40_;
+			rtlpriv->securitypriv.dot118021XGrpPrivacy = WEP40_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;
 			break;
 		case WPA_CIPHER_TKIP:
-			rtlpriv->securitypriv.dot118021XGrpPrivacy = _TKIP_;
+			rtlpriv->securitypriv.dot118021XGrpPrivacy = TKIP_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption2Enabled;
 			break;
 		case WPA_CIPHER_CCMP:
-			rtlpriv->securitypriv.dot118021XGrpPrivacy = _AES_;
+			rtlpriv->securitypriv.dot118021XGrpPrivacy = AESCCMP_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption3Enabled;
 			break;
 		case WPA_CIPHER_WEP104:
-			rtlpriv->securitypriv.dot118021XGrpPrivacy = _WEP104_;
+			rtlpriv->securitypriv.dot118021XGrpPrivacy = WEP104_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;
 			break;
 		}
 
 		switch (pairwise_cipher) {
 		case WPA_CIPHER_NONE:
-			rtlpriv->securitypriv.dot11PrivacyAlgrthm = _NO_PRIVACY_;
+			rtlpriv->securitypriv.dot11PrivacyAlgrthm = NO_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11EncryptionDisabled;
 			break;
 		case WPA_CIPHER_WEP40:
-			rtlpriv->securitypriv.dot11PrivacyAlgrthm = _WEP40_;
+			rtlpriv->securitypriv.dot11PrivacyAlgrthm = WEP40_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;
 			break;
 		case WPA_CIPHER_TKIP:
-			rtlpriv->securitypriv.dot11PrivacyAlgrthm = _TKIP_;
+			rtlpriv->securitypriv.dot11PrivacyAlgrthm = TKIP_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption2Enabled;
 			break;
 		case WPA_CIPHER_CCMP:
-			rtlpriv->securitypriv.dot11PrivacyAlgrthm = _AES_;
+			rtlpriv->securitypriv.dot11PrivacyAlgrthm = AESCCMP_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption3Enabled;
 			break;
 		case WPA_CIPHER_WEP104:
-			rtlpriv->securitypriv.dot11PrivacyAlgrthm = _WEP104_;
+			rtlpriv->securitypriv.dot11PrivacyAlgrthm = WEP104_ENCRYPTION;
 			rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;
 			break;
 		}
@@ -865,9 +865,9 @@ static int rtw_set_wpa_ie(struct rtl_priv *rtlpriv, char *pie, unsigned short ie
 	}
 
 	/* TKIP and AES disallow multicast packets until installing group key */
-	if (rtlpriv->securitypriv.dot11PrivacyAlgrthm == _TKIP_ ||
-	    rtlpriv->securitypriv.dot11PrivacyAlgrthm == _TKIP_WTMIC_ ||
-	    rtlpriv->securitypriv.dot11PrivacyAlgrthm == _AES_)
+	if (rtlpriv->securitypriv.dot11PrivacyAlgrthm == TKIP_ENCRYPTION ||
+	    rtlpriv->securitypriv.dot11PrivacyAlgrthm == RSERVED_ENCRYPTION ||
+	    rtlpriv->securitypriv.dot11PrivacyAlgrthm == AESCCMP_ENCRYPTION)
 		/*
 		 * WPS open need to enable multicast
 		 * || check_fwstate(&rtlpriv->mlmepriv, WIFI_UNDER_WPS) == _TRUE)
@@ -2024,8 +2024,8 @@ static int rtw_wx_set_enc(struct net_device *ndev,
 	if (erq->flags & IW_ENCODE_DISABLED) {
 		DBG_871X("EncryptionDisabled\n");
 		rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11EncryptionDisabled;
-		rtlpriv->securitypriv.dot11PrivacyAlgrthm = _NO_PRIVACY_;
-		rtlpriv->securitypriv.dot118021XGrpPrivacy = _NO_PRIVACY_;
+		rtlpriv->securitypriv.dot11PrivacyAlgrthm = NO_ENCRYPTION;
+		rtlpriv->securitypriv.dot118021XGrpPrivacy = NO_ENCRYPTION;
 		rtlpriv->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Open; /* open system */
 		authmode = Ndis802_11AuthModeOpen;
 		rtlpriv->securitypriv.ndisauthtype = authmode;
@@ -2051,8 +2051,8 @@ static int rtw_wx_set_enc(struct net_device *ndev,
 
 		rtlpriv->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Open;
 
-		rtlpriv->securitypriv.dot11PrivacyAlgrthm = _NO_PRIVACY_;
-		rtlpriv->securitypriv.dot118021XGrpPrivacy = _NO_PRIVACY_;
+		rtlpriv->securitypriv.dot11PrivacyAlgrthm = NO_ENCRYPTION;
+		rtlpriv->securitypriv.dot118021XGrpPrivacy = NO_ENCRYPTION;
 		authmode = Ndis802_11AuthModeOpen;
 		rtlpriv->securitypriv.ndisauthtype = authmode;
 	} else if (erq->flags & IW_ENCODE_RESTRICTED) {
@@ -2061,8 +2061,8 @@ static int rtw_wx_set_enc(struct net_device *ndev,
 
 		rtlpriv->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Shared;
 
-		rtlpriv->securitypriv.dot11PrivacyAlgrthm = _WEP40_;
-		rtlpriv->securitypriv.dot118021XGrpPrivacy = _WEP40_;
+		rtlpriv->securitypriv.dot11PrivacyAlgrthm = WEP40_ENCRYPTION;
+		rtlpriv->securitypriv.dot118021XGrpPrivacy = WEP40_ENCRYPTION;
 		authmode = Ndis802_11AuthModeShared;
 		rtlpriv->securitypriv.ndisauthtype = authmode;
 	} else {
@@ -2070,8 +2070,8 @@ static int rtw_wx_set_enc(struct net_device *ndev,
 
 		rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;/* Ndis802_11EncryptionDisabled; */
 		rtlpriv->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Open; /* open system */
-		rtlpriv->securitypriv.dot11PrivacyAlgrthm = _NO_PRIVACY_;
-		rtlpriv->securitypriv.dot118021XGrpPrivacy = _NO_PRIVACY_;
+		rtlpriv->securitypriv.dot11PrivacyAlgrthm = NO_ENCRYPTION;
+		rtlpriv->securitypriv.dot118021XGrpPrivacy = NO_ENCRYPTION;
 		authmode = Ndis802_11AuthModeOpen;
 		rtlpriv->securitypriv.ndisauthtype = authmode;
 	}
@@ -2093,13 +2093,13 @@ static int rtw_wx_set_enc(struct net_device *ndev,
 
 			switch (rtlpriv->securitypriv.dot11DefKeylen[key]) {
 			case 5:
-				rtlpriv->securitypriv.dot11PrivacyAlgrthm = _WEP40_;
+				rtlpriv->securitypriv.dot11PrivacyAlgrthm = WEP40_ENCRYPTION;
 				break;
 			case 13:
-				rtlpriv->securitypriv.dot11PrivacyAlgrthm = _WEP104_;
+				rtlpriv->securitypriv.dot11PrivacyAlgrthm = WEP104_ENCRYPTION;
 				break;
 			default:
-				rtlpriv->securitypriv.dot11PrivacyAlgrthm = _NO_PRIVACY_;
+				rtlpriv->securitypriv.dot11PrivacyAlgrthm = NO_ENCRYPTION;
 				break;
 			}
 
@@ -2296,8 +2296,8 @@ static int rtw_wx_set_auth(struct net_device *ndev,
 
 			if (param->value) {
 				rtlpriv->securitypriv.ndisencryptstatus = Ndis802_11EncryptionDisabled;
-				rtlpriv->securitypriv.dot11PrivacyAlgrthm = _NO_PRIVACY_;
-				rtlpriv->securitypriv.dot118021XGrpPrivacy = _NO_PRIVACY_;
+				rtlpriv->securitypriv.dot11PrivacyAlgrthm = NO_ENCRYPTION;
+				rtlpriv->securitypriv.dot118021XGrpPrivacy = NO_ENCRYPTION;
 				rtlpriv->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Open; /* open system */
 				rtlpriv->securitypriv.ndisauthtype = Ndis802_11AuthModeOpen;
 			}
@@ -2799,8 +2799,8 @@ static int rtw_set_encryption(struct net_device *ndev, struct ieee_param *param,
 
 		psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_Open;
 		psecuritypriv->ndisencryptstatus = Ndis802_11EncryptionDisabled;
-		psecuritypriv->dot11PrivacyAlgrthm = _NO_PRIVACY_;
-		psecuritypriv->dot118021XGrpPrivacy = _NO_PRIVACY_;
+		psecuritypriv->dot11PrivacyAlgrthm = NO_ENCRYPTION;
+		psecuritypriv->dot118021XGrpPrivacy = NO_ENCRYPTION;
 
 		DBG_871X("clear default encryption keys, keyid=%d\n", param->u.crypt.idx);
 
@@ -2846,12 +2846,12 @@ static int rtw_set_encryption(struct net_device *ndev, struct ieee_param *param,
 
 			psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_Auto;
 			psecuritypriv->ndisencryptstatus = Ndis802_11Encryption1Enabled;
-			psecuritypriv->dot11PrivacyAlgrthm = _WEP40_;
-			psecuritypriv->dot118021XGrpPrivacy = _WEP40_;
+			psecuritypriv->dot11PrivacyAlgrthm = WEP40_ENCRYPTION;
+			psecuritypriv->dot118021XGrpPrivacy = WEP40_ENCRYPTION;
 
 			if (pwep->KeyLength == 13) {
-				psecuritypriv->dot11PrivacyAlgrthm = _WEP104_;
-				psecuritypriv->dot118021XGrpPrivacy = _WEP104_;
+				psecuritypriv->dot11PrivacyAlgrthm = WEP104_ENCRYPTION;
+				psecuritypriv->dot118021XGrpPrivacy = WEP104_ENCRYPTION;
 			}
 
 
@@ -2890,15 +2890,15 @@ static int rtw_set_encryption(struct net_device *ndev, struct ieee_param *param,
 
 				memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len > 16 ? 16 : param->u.crypt.key_len));
 
-				psecuritypriv->dot118021XGrpPrivacy = _WEP40_;
+				psecuritypriv->dot118021XGrpPrivacy = WEP40_ENCRYPTION;
 				if (param->u.crypt.key_len == 13) {
-						psecuritypriv->dot118021XGrpPrivacy = _WEP104_;
+						psecuritypriv->dot118021XGrpPrivacy = WEP104_ENCRYPTION;
 				}
 
 			} else if (strcmp(param->u.crypt.alg, "TKIP") == 0) {
 				DBG_871X("%s, set group_key, TKIP\n", __FUNCTION__);
 
-				psecuritypriv->dot118021XGrpPrivacy = _TKIP_;
+				psecuritypriv->dot118021XGrpPrivacy = TKIP_ENCRYPTION;
 
 				memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len > 16 ? 16 : param->u.crypt.key_len));
 
@@ -2914,13 +2914,13 @@ static int rtw_set_encryption(struct net_device *ndev, struct ieee_param *param,
 			} else if (strcmp(param->u.crypt.alg, "CCMP") == 0) {
 				DBG_871X("%s, set group_key, CCMP\n", __FUNCTION__);
 
-				psecuritypriv->dot118021XGrpPrivacy = _AES_;
+				psecuritypriv->dot118021XGrpPrivacy = AESCCMP_ENCRYPTION;
 
 				memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len > 16 ? 16 : param->u.crypt.key_len));
 			} else {
 				DBG_871X("%s, set group_key, none\n", __FUNCTION__);
 
-				psecuritypriv->dot118021XGrpPrivacy = _NO_PRIVACY_;
+				psecuritypriv->dot118021XGrpPrivacy = NO_ENCRYPTION;
 			}
 
 			psecuritypriv->dot118021XGrpKeyid = param->u.crypt.idx;
@@ -2951,14 +2951,14 @@ static int rtw_set_encryption(struct net_device *ndev, struct ieee_param *param,
 				if (strcmp(param->u.crypt.alg, "WEP") == 0) {
 					DBG_871X("%s, set pairwise key, WEP\n", __FUNCTION__);
 
-					psta->dot118021XPrivacy = _WEP40_;
+					psta->dot118021XPrivacy = WEP40_ENCRYPTION;
 					if (param->u.crypt.key_len == 13) {
-						psta->dot118021XPrivacy = _WEP104_;
+						psta->dot118021XPrivacy = WEP104_ENCRYPTION;
 					}
 				} else if (strcmp(param->u.crypt.alg, "TKIP") == 0) {
 					DBG_871X("%s, set pairwise key, TKIP\n", __FUNCTION__);
 
-					psta->dot118021XPrivacy = _TKIP_;
+					psta->dot118021XPrivacy = TKIP_ENCRYPTION;
 
 					/*
 					 * DEBUG_ERR("set key length :param->u.crypt.key_len=%d\n", param->u.crypt.key_len);
@@ -2972,11 +2972,11 @@ static int rtw_set_encryption(struct net_device *ndev, struct ieee_param *param,
 				} else if (strcmp(param->u.crypt.alg, "CCMP") == 0) {
 					DBG_871X("%s, set pairwise key, CCMP\n", __FUNCTION__);
 
-					psta->dot118021XPrivacy = _AES_;
+					psta->dot118021XPrivacy = AESCCMP_ENCRYPTION;
 				} else {
 					DBG_871X("%s, set pairwise key, none\n", __FUNCTION__);
 
-					psta->dot118021XPrivacy = _NO_PRIVACY_;
+					psta->dot118021XPrivacy = NO_ENCRYPTION;
 				}
 
 				rtw_ap_set_pairwise_key(rtlpriv, psta);
@@ -2988,12 +2988,12 @@ static int rtw_set_encryption(struct net_device *ndev, struct ieee_param *param,
 				if (strcmp(param->u.crypt.alg, "WEP") == 0) {
 					memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len > 16 ? 16 : param->u.crypt.key_len));
 
-					psecuritypriv->dot118021XGrpPrivacy = _WEP40_;
+					psecuritypriv->dot118021XGrpPrivacy = WEP40_ENCRYPTION;
 					if (param->u.crypt.key_len == 13) {
-						psecuritypriv->dot118021XGrpPrivacy = _WEP104_;
+						psecuritypriv->dot118021XGrpPrivacy = WEP104_ENCRYPTION;
 					}
 				} else if (strcmp(param->u.crypt.alg, "TKIP") == 0) {
-					psecuritypriv->dot118021XGrpPrivacy = _TKIP_;
+					psecuritypriv->dot118021XGrpPrivacy = TKIP_ENCRYPTION;
 
 					memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len > 16 ? 16 : param->u.crypt.key_len));
 
@@ -3007,11 +3007,11 @@ static int rtw_set_encryption(struct net_device *ndev, struct ieee_param *param,
 					psecuritypriv->busetkipkey = _TRUE;
 
 				} else if (strcmp(param->u.crypt.alg, "CCMP") == 0) {
-					psecuritypriv->dot118021XGrpPrivacy = _AES_;
+					psecuritypriv->dot118021XGrpPrivacy = AESCCMP_ENCRYPTION;
 
 					memcpy(psecuritypriv->dot118021XGrpKey[param->u.crypt.idx].skey,  param->u.crypt.key, (param->u.crypt.key_len > 16 ? 16 : param->u.crypt.key_len));
 				} else {
-					psecuritypriv->dot118021XGrpPrivacy = _NO_PRIVACY_;
+					psecuritypriv->dot118021XGrpPrivacy = NO_ENCRYPTION;
 				}
 
 				psecuritypriv->dot118021XGrpKeyid = param->u.crypt.idx;

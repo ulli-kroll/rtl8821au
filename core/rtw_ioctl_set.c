@@ -571,13 +571,13 @@ uint8_t rtw_set_802_11_add_wep(struct rtl_priv* rtlpriv, NDIS_802_11_WEP *wep){
 	switch(wep->KeyLength)
 	{
 		case 5:
-			psecuritypriv->dot11PrivacyAlgrthm=_WEP40_;
+			psecuritypriv->dot11PrivacyAlgrthm=WEP40_ENCRYPTION;
 			break;
 		case 13:
-			psecuritypriv->dot11PrivacyAlgrthm=_WEP104_;
+			psecuritypriv->dot11PrivacyAlgrthm=WEP104_ENCRYPTION;
 			break;
 		default:
-			psecuritypriv->dot11PrivacyAlgrthm=_NO_PRIVACY_;
+			psecuritypriv->dot11PrivacyAlgrthm=NO_ENCRYPTION;
 			break;
 	}
 
@@ -695,14 +695,14 @@ uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 
 		// Check key length for TKIP.
 		//if(encryptionAlgorithm == RT_ENC_TKIP_ENCRYPTION && key->KeyLength != 32)
-		if((encryptionalgo== _TKIP_)&& (key->KeyLength != 32)){
+		if((encryptionalgo== TKIP_ENCRYPTION)&& (key->KeyLength != 32)){
 			ret=_FAIL;
 			goto exit;
 
 		}
 
 		// Check key length for AES.
-		if((encryptionalgo== _AES_)&& (key->KeyLength != 16)) {
+		if((encryptionalgo== AESCCMP_ENCRYPTION)&& (key->KeyLength != 16)) {
 			// For our supplicant, EAPPkt9x.vxd, cannot differentiate TKIP and AES case.
 			if(key->KeyLength == 32) {
 				key->KeyLength = 16;
@@ -713,7 +713,7 @@ uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 		}
 
 		// Check key length for WEP. For NDTEST, 2005.01.27, by rcnjko.
-		if(	(encryptionalgo== _WEP40_|| encryptionalgo== _WEP104_) && (key->KeyLength != 5 || key->KeyLength != 13)) {
+		if(	(encryptionalgo== WEP40_ENCRYPTION|| encryptionalgo== WEP104_ENCRYPTION) && (key->KeyLength != 5 || key->KeyLength != 13)) {
 			ret=_FAIL;
 			goto exit;
 		}
@@ -730,13 +730,13 @@ uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 			switch(key->KeyLength)
 			{
 				case 5:
-					rtlpriv->securitypriv.dot11PrivacyAlgrthm=_WEP40_;
+					rtlpriv->securitypriv.dot11PrivacyAlgrthm=WEP40_ENCRYPTION;
 					break;
 				case 13:
-					rtlpriv->securitypriv.dot11PrivacyAlgrthm=_WEP104_;
+					rtlpriv->securitypriv.dot11PrivacyAlgrthm=WEP104_ENCRYPTION;
 					break;
 				default:
-					rtlpriv->securitypriv.dot11PrivacyAlgrthm=_NO_PRIVACY_;
+					rtlpriv->securitypriv.dot11PrivacyAlgrthm=NO_ENCRYPTION;
 					break;
 			}
 
@@ -754,11 +754,11 @@ uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 		}
 
 		// Check key length for TKIP
-		if((encryptionalgo== _TKIP_) && (key->KeyLength != 32)) {
+		if((encryptionalgo== TKIP_ENCRYPTION) && (key->KeyLength != 32)) {
 			ret= _FAIL;
 			goto exit;
 
-		} else if(encryptionalgo== _AES_ && (key->KeyLength != 16 && key->KeyLength != 32) ) {
+		} else if(encryptionalgo== AESCCMP_ENCRYPTION && (key->KeyLength != 16 && key->KeyLength != 32) ) {
 
 			// Check key length for AES
 			// For NDTEST, we allow keylen=32 in this case. 2005.01.27, by rcnjko.
@@ -767,7 +767,7 @@ uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 		}
 
 		// Change the key length for EAPPkt9x.vxd. Added by Annie, 2005-11-03.
-		if((encryptionalgo==  _AES_) && (key->KeyLength == 32) ) {
+		if((encryptionalgo==  AESCCMP_ENCRYPTION) && (key->KeyLength == 32) ) {
 			key->KeyLength = 16;
 		}
 
@@ -784,7 +784,7 @@ uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 	}
 
 	// If WEP encryption algorithm, just call rtw_set_802_11_add_wep().
-	if((rtlpriv->securitypriv.dot11AuthAlgrthm !=dot11AuthAlgrthm_8021X)&&(encryptionalgo== _WEP40_  || encryptionalgo== _WEP104_))
+	if((rtlpriv->securitypriv.dot11AuthAlgrthm !=dot11AuthAlgrthm_8021X)&&(encryptionalgo== WEP40_ENCRYPTION  || encryptionalgo== WEP104_ENCRYPTION))
 	{
 		uint8_t ret;
 		uint32_t	 keyindex;
@@ -884,7 +884,7 @@ uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 
 			memcpy(&stainfo->dot118021x_UncstKey, key->KeyMaterial, 16);
 
-			if(encryptionalgo== _TKIP_)
+			if(encryptionalgo== TKIP_ENCRYPTION)
 			{
 				rtlpriv->securitypriv.busetkipkey=_FALSE;
 
@@ -902,7 +902,7 @@ uint8_t rtw_set_802_11_add_key(struct rtl_priv* rtlpriv, NDIS_802_11_KEY *key){
 				}
 
 			}
-			else if(encryptionalgo == _AES_)
+			else if(encryptionalgo == AESCCMP_ENCRYPTION)
 			{
 
 			}

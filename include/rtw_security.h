@@ -20,16 +20,7 @@
 #ifndef __RTW_SECURITY_H_
 #define __RTW_SECURITY_H_
 
-
-#define _NO_PRIVACY_		0x0
-#define _WEP40_				0x1
-#define _TKIP_				0x2
-#define _TKIP_WTMIC_		0x3
-#define _AES_				0x4
-#define _WEP104_			0x5
-#define _WEP_WPA_MIXED_	0x07  // WEP + WPA
-
-#define is_wep_enc(alg) (((alg) == _WEP40_) || ((alg) == _WEP104_))
+#define is_wep_enc(alg) (((alg) == WEP40_ENCRYPTION) || ((alg) == WEP104_ENCRYPTION))
 
 #define _WPA_IE_ID_	0xdd
 #define _WPA2_IE_ID_	0x30
@@ -219,16 +210,16 @@ do{\
 do{\
 	switch(encrypt)\
 	{\
-		case _WEP40_:\
-		case _WEP104_:\
+		case WEP40_ENCRYPTION:\
+		case WEP104_ENCRYPTION:\
 			iv_len = 4;\
 			icv_len = 4;\
 			break;\
-		case _TKIP_:\
+		case TKIP_ENCRYPTION:\
 			iv_len = 8;\
 			icv_len = 4;\
 			break;\
-		case _AES_:\
+		case AESCCMP_ENCRYPTION:\
 			iv_len = 8;\
 			icv_len = 8;\
 			break;\

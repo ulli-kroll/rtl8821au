@@ -171,16 +171,16 @@ static void rtl8812a_fill_txdesc_sectype(struct tx_pkt_attrib *pattrib, uint8_t 
 	if ((pattrib->encrypt > 0) && !pattrib->bswenc) {
 		switch (pattrib->encrypt) {
 		/* SEC_TYPE : 0:NO_ENC,1:WEP40/TKIP,2:WAPI,3:AES */
-		case _WEP40_:
-		case _WEP104_:
-		case _TKIP_:
-		case _TKIP_WTMIC_:
+		case WEP40_ENCRYPTION:
+		case WEP104_ENCRYPTION:
+		case TKIP_ENCRYPTION:
+		case RSERVED_ENCRYPTION:
 			SET_TX_DESC_SEC_TYPE(ptxdesc, 0x1);
 			break;
-		case _AES_:
+		case AESCCMP_ENCRYPTION:
 			SET_TX_DESC_SEC_TYPE(ptxdesc, 0x3);
 			break;
-		case _NO_PRIVACY_:
+		case NO_ENCRYPTION:
 		default:
 			SET_TX_DESC_SEC_TYPE(ptxdesc, 0x0);
 			break;
@@ -504,7 +504,7 @@ static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 		pattrib->pktlen +
 		((pattrib->bswenc) ? pattrib->icv_len : 0);
 
-	if (pattrib->encrypt == _TKIP_)
+	if (pattrib->encrypt == TKIP_ENCRYPTION)
 		len += 8;
 
 	return len;

@@ -394,6 +394,32 @@ struct rtl_efuse {	bool autoLoad_ok;
 
 };
 
+#define KEY_BUF_SIZE                             5
+#define MAX_KEY_LEN                              61
+
+struct rtl_security {
+	/*default 0 */
+	bool use_sw_sec;
+
+	bool being_setkey;
+	bool use_defaultkey;
+	/*Encryption Algorithm for Unicast Packet */
+	enum rt_enc_alg pairwise_enc_algorithm;
+	/*Encryption Algorithm for Brocast/Multicast */
+	enum rt_enc_alg group_enc_algorithm;
+	/*Cam Entry Bitmap */
+	u32 hwsec_cam_bitmap;
+	u8 hwsec_cam_sta_addr[TOTAL_CAM_ENTRY][ETH_ALEN];
+	/*local Key buffer, indx 0 is for
+	   pairwise key 1-4 is for agoup key. */
+	u8 key_buf[KEY_BUF_SIZE][MAX_KEY_LEN];
+	u8 key_len[KEY_BUF_SIZE];
+
+	/*The pointer of Pairwise Key,
+	   it always points to KeyBuf[4] */
+	u8 *pairwise_key;
+};
+
 enum hw_variables {
 	HW_VAR_ETHER_ADDR,
 	HW_VAR_MULTICAST_REG,
@@ -1606,6 +1632,7 @@ struct rtl_priv {
 	struct rtl_usb_priv priv;
 	struct rtl_locks locks;
 	struct rtl_debug dbg;
+	struct rtl_security sec;
 	struct rtl_works works;
 
 	struct _rtw_hal *HalData;

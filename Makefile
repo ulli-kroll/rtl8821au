@@ -18,7 +18,8 @@ CONFIG_RTLWIFI_DEBUG = y
 CONFIG_POWER_SAVING = y
 CONFIG_PLATFORM_I386_PC = y
 
-RTLWIFI_FILES :=	debug.o \
+RTLWIFI_FILES :=	cam.o \
+			debug.o \
 			efuse.o \
 			usb.o
 

@@ -5,6 +5,7 @@
 #include "phy.h"
 #include "def.h"
 #include "dm.h"
+#include "../cam.h"
 
 #undef DBG_8192C
 static inline void DBG_8192C(const char *fmt, ...)

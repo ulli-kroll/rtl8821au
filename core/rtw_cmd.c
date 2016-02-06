@@ -22,6 +22,10 @@
 #include <../rtl8821au/def.h>
 #include <drv_types.h>
 
+#include <../usb.h>
+#include <../wifi.h>
+#include <../cam.h>
+
 #undef DBG_871X
 static inline void DBG_871X(const char *fmt, ...)
 {

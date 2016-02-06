@@ -530,13 +530,6 @@ void SetBWMode(struct rtl_priv *rtlpriv, unsigned short bwmode, unsigned char ch
 
 unsigned int decide_wait_for_beacon_timeout(unsigned int bcn_interval);
 
-void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key);
-void clear_cam_entry(struct rtl_priv *rtlpriv, uint8_t entry);
-
-void invalidate_cam_all(struct rtl_priv *rtlpriv);
-void CAM_empty_entry(struct rtl_priv *rtlpriv, uint8_t ucIndex);
-
-
 int allocate_fw_sta_entry(struct rtl_priv *rtlpriv);
 void flush_all_cam_entry(struct rtl_priv *rtlpriv);
 

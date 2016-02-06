@@ -1995,13 +1995,6 @@ static void _ThreeOutEpMapping(struct rtl_ep_map *ep_map)
 {
 	/* typical setting */
 
-	/*
-	 * ULLI :
-	 * newer EP mapping found on DLINK DWA 171
-	 * ep OUT Pipes : 5 (bulk) , 6 (bulk), 8 (bulk), 9 (bulk)
-	 * ep IN  Pipes : 4 (bulk) , 7 (int)
-	 */
-
 	ep_map->ep_mapping[RTL_TXQ_BE]	= 5;
 	ep_map->ep_mapping[RTL_TXQ_BK]	= 5;
 	ep_map->ep_mapping[RTL_TXQ_VI]	= 3;
@@ -2010,6 +2003,20 @@ static void _ThreeOutEpMapping(struct rtl_ep_map *ep_map)
 	ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
 	ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
 }
+
+static void _FourOutEpMapping(struct rtl_ep_map *ep_map)
+{
+	/* typical setting */
+
+	ep_map->ep_mapping[RTL_TXQ_BE]	= 8;
+	ep_map->ep_mapping[RTL_TXQ_BK]	= 8;
+	ep_map->ep_mapping[RTL_TXQ_VI]	= 6;
+	ep_map->ep_mapping[RTL_TXQ_VO]	= 5;
+	ep_map->ep_mapping[RTL_TXQ_MGT] = 5;
+	ep_map->ep_mapping[RTL_TXQ_BCN] = 5;
+	ep_map->ep_mapping[RTL_TXQ_HI]	= 5;
+}
+
 
 static void _ThreeOutPipeMapping(
 	IN	struct rtl_priv *rtlpriv

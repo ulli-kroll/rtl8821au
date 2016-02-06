@@ -423,6 +423,8 @@ check_completion:
 
 u32 _rtlw_usb_transmit(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct xmit_buf *pxmitbuf)
 {
+	u32 ep_num;
+	
 	unsigned long flags;
 	unsigned int pipe;
 	int status;
@@ -471,7 +473,8 @@ u32 _rtlw_usb_transmit(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct 
 	purb	= pxmitbuf->pxmit_urb[0];
 
 	/* translate DMA FIFO addr to pipehandle */
-	pipe = usb_sndbulkpipe(pusbd, rtlusb->Queue2Pipe[queue_idx]);
+	ep_num = rtlusb->ep_map.ep_mapping[queue_idx];	
+	pipe = usb_sndbulkpipe(pusbd, ep_num);
 
 #ifdef CONFIG_REDUCE_USB_TX_INT
 	if ((pxmitpriv->free_xmitbuf_cnt%NR_XMITBUFF == 0) ||
@@ -907,7 +910,6 @@ static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl
 				pdvobjpriv->RtNumInPipes++;
 			} else if (RT_usb_endpoint_is_bulk_out(pendp_desc)) {
 				DBG_871X("RT_usb_endpoint_is_bulk_out = %x\n", RT_usb_endpoint_num(pendp_desc));
-				pdvobjpriv->RtOutPipe[pdvobjpriv->RtNumOutPipes] = RT_usb_endpoint_num(pendp_desc);
 				pdvobjpriv->RtNumOutPipes++;
 			}
 			pdvobjpriv->ep_num[i] = RT_usb_endpoint_num(pendp_desc);

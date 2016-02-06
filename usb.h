@@ -59,8 +59,6 @@ struct rtl_usb {
 
 	//In /Out Pipe information
 	int	RtInPipe[2];
-	int	RtOutPipe[3];
-	uint8_t	Queue2Pipe[HW_QUEUE_ENTRY];//for out pipe mapping
 
 	uint8_t	irq_alloc;
 

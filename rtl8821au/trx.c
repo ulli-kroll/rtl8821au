@@ -1938,24 +1938,6 @@ static void _OneOutEpMapping(struct rtl_ep_map *ep_map)
 	ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
 }
 
-static void
-_OneOutPipeMapping(
-	IN	struct rtl_priv *rtlpriv
-	)
-{
-	struct rtl_usb *pdvobjpriv = rtl_usbdev(rtlpriv);
-
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_VO] = pdvobjpriv->RtOutPipe[0];//VO
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_VI] = pdvobjpriv->RtOutPipe[0];//VI
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_BE] = pdvobjpriv->RtOutPipe[0];//BE
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_BK] = pdvobjpriv->RtOutPipe[0];//BK
-
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_BCN] = pdvobjpriv->RtOutPipe[0];//BCN
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_MGT] = pdvobjpriv->RtOutPipe[0];//MGT
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_HI] = pdvobjpriv->RtOutPipe[0];//HIGH
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_TXCMD] = pdvobjpriv->RtOutPipe[0];//TXCMD
-}
-
 static void _TwoOutEpMapping(struct rtl_ep_map *ep_map)
 {
 	/* typical setting */
@@ -1967,28 +1949,6 @@ static void _TwoOutEpMapping(struct rtl_ep_map *ep_map)
 	ep_map->ep_mapping[RTL_TXQ_MGT] = 2;
 	ep_map->ep_mapping[RTL_TXQ_BCN] = 2;
 	ep_map->ep_mapping[RTL_TXQ_HI]	= 2;
-}
-
-static void
-_TwoOutPipeMapping(
-	IN	struct rtl_priv *rtlpriv
-	)
-{
-	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
-
-	//BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
-	//{  1, 	1, 	0, 	0, 	0, 	0, 	0, 	0, 		0	};
-	//0:H, 1:N
-
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_VO] = pdvobjpriv->RtOutPipe[0];//VO
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_VI] = pdvobjpriv->RtOutPipe[0];//VI
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_BE] = pdvobjpriv->RtOutPipe[1];//BE
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_BK] = pdvobjpriv->RtOutPipe[1];//BK
-
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_BCN] = pdvobjpriv->RtOutPipe[0];//BCN
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_MGT] = pdvobjpriv->RtOutPipe[0];//MGT
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_HI] = pdvobjpriv->RtOutPipe[0];//HIGH
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_TXCMD] = pdvobjpriv->RtOutPipe[0];//TXCMD
 }
 
 static void _ThreeOutEpMapping(struct rtl_ep_map *ep_map)
@@ -2017,42 +1977,24 @@ static void _FourOutEpMapping(struct rtl_ep_map *ep_map)
 	ep_map->ep_mapping[RTL_TXQ_HI]	= 5;
 }
 
-
-static void _ThreeOutPipeMapping(
-	IN	struct rtl_priv *rtlpriv
-	)
-{
-	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
-
-		//	BK, 	BE, 	VI, 	VO, 	BCN,	CMD,MGT,HIGH,HCCA
-		//{  2, 	2, 	1, 	0, 	0, 	0, 	0, 	0, 		0	};
-		//0:H, 1:N, 2:L
-
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_VO] = pdvobjpriv->RtOutPipe[0];//VO
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_VI] = pdvobjpriv->RtOutPipe[1];//VI
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_BE] = pdvobjpriv->RtOutPipe[2];//BE
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_BK] = pdvobjpriv->RtOutPipe[2];//BK
-
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_BCN] = pdvobjpriv->RtOutPipe[0];//BCN
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_MGT] = pdvobjpriv->RtOutPipe[0];//MGT
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_HI] = pdvobjpriv->RtOutPipe[0];//HIGH
-	pdvobjpriv->Queue2Pipe[RTL_TXQ_TXCMD] = pdvobjpriv->RtOutPipe[0];//TXCMD
-
-}
 static BOOLEAN Hal_MappingOutPipe(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 {
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	struct rtl_ep_map *ep_map = &(rtlusb->ep_map);
 	BOOLEAN result = _TRUE;
 
 	switch(NumOutPipe) {
 	case 2:
-		_TwoOutPipeMapping(rtlpriv);
+		_TwoOutEpMapping(ep_map);
 		break;
 	case 3:
+		_ThreeOutEpMapping(ep_map);
+		break;
 	case 4:
-		_ThreeOutPipeMapping(rtlpriv);
+		_FourOutEpMapping(ep_map);
 		break;
 	case 1:
-		_OneOutPipeMapping(rtlpriv);
+		_OneOutEpMapping(ep_map);
 		break;
 	default:
 		result = _FALSE;

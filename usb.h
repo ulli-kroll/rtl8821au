@@ -16,8 +16,6 @@ enum rtl_txq {
 	RTL_TXQ_MGT,
 	RTL_TXQ_HI,
 
-	RTL_TXQ_TXCMD,		/* ULLI : Only in RTL8812AU driver ??? */
-
 	/* Must be last */
 	__RTL_TXQ_NUM,
 };

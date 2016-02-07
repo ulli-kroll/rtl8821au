@@ -417,13 +417,6 @@
 #define REG_RXERR_RPT					0x0664
 #define REG_WMAC_TRXPTCL_CTL			0x0668
 
-// Security
-#define REG_CAMCMD						0x0670
-#define REG_CAMWRITE					0x0674
-#define REG_CAMREAD					0x0678
-#define REG_CAMDBG						0x067C
-#define REG_SECCFG						0x0680
-
 // Power
 #define REG_WOW_CTRL					0x0690
 #define REG_PS_RX_INFO					0x0692
@@ -505,16 +498,6 @@
 // Redifine MACID register, to compatible prior ICs.
 #define IDR0						REG_MACID			// MAC ID Register, Offset 0x0050-0x0053
 #define IDR4						(REG_MACID + 4)		// MAC ID Register, Offset 0x0054-0x0055
-
-
-//
-// 9. Security Control Registers	(Offset: )
-//
-#define RWCAM					REG_CAMCMD		//IN 8190 Data Sheet is called CAMcmd
-#define WCAMI					REG_CAMWRITE	// Software write CAM input content
-#define RCAMO					REG_CAMREAD		// Software read/write CAM config
-#define CAMDBG					REG_CAMDBG
-#define SECR						REG_SECCFG		//Security Configuration Register
 
 // Unused register
 #define UnusedRegister			0x1BF
@@ -725,35 +708,6 @@ Default: 00b.
 //----------------------------------------------------------------------------
 #define BW_OPMODE_20MHZ			BIT2
 #define BW_OPMODE_5G				BIT1
-
-//----------------------------------------------------------------------------
-//       CAM Config Setting (offset 0x680, 1 byte)
-//----------------------------------------------------------------------------
-#define CAM_VALID				BIT15
-#define CAM_NOTVALID			0x0000
-#define CAM_USEDK				BIT5
-
-#define CAM_CONTENT_COUNT 	8
-
-#define CAM_NONE				0x0
-#define CAM_WEP40				0x01
-#define CAM_TKIP				0x02
-#define CAM_AES					0x04
-#define CAM_WEP104				0x05
-
-#define TOTAL_CAM_ENTRY		32
-#define HALF_CAM_ENTRY			16
-
-#define CAM_CONFIG_USEDK		_TRUE
-#define CAM_CONFIG_NO_USEDK	_FALSE
-
-#define CAM_WRITE				BIT16
-#define CAM_READ				0x00000000
-#define CAM_POLLINIG			BIT31
-
-#define SCR_UseDK				0x01
-#define SCR_TxSecEnable			0x02
-#define SCR_RxSecEnable			0x04
 
 //
 // 10. Power Save Control Registers

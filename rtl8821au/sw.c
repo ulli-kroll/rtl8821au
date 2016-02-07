@@ -614,7 +614,6 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.maps[EFUSE_OOB_PROTECT_BYTES_LEN] = EFUSE_OOB_PROTECT_BYTES_JAGUAR,	/* ULLI : EFUSE_OOB_PROTECT_BYTES */
 	.maps[EFUSE_ACCESS] = REG_EFUSE_BURN_GNT_8812, /* ULLI : or REG_EFUSE_ACCESS as in rtlwifi */
 
-#if 0
 	.maps[RWCAM] = REG_CAMCMD,
 	.maps[WCAMI] = REG_CAMWRITE,
 	.maps[RCAMO] = REG_CAMREAD,
@@ -625,7 +624,7 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.maps[SEC_CAM_TKIP] = CAM_TKIP,
 	.maps[SEC_CAM_AES] = CAM_AES,
 	.maps[SEC_CAM_WEP104] = CAM_WEP104,
-
+#if 0
 	.maps[RTL_IMR_BCNDMAINT6] = IMR_BCNDMAINT6,
 	.maps[RTL_IMR_BCNDMAINT5] = IMR_BCNDMAINT5,
 	.maps[RTL_IMR_BCNDMAINT4] = IMR_BCNDMAINT4,

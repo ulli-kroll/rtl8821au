@@ -7,6 +7,8 @@
 #include "efuse.h"	/* ULLI : Note this belongs to base.h we doesn't have */
 #include "debug.h"
 
+#define TOTAL_CAM_ENTRY		32
+
 enum intf_type {
 	INTF_PCI = 0,
 	INTF_USB = 1,
@@ -116,7 +118,6 @@ enum rtl_var_map {
 	EFUSE_OOB_PROTECT_BYTES_LEN,
 	EFUSE_ACCESS,
 
-#if 0
 	/*CAM map */
 	RWCAM,
 	WCAMI,
@@ -128,7 +129,7 @@ enum rtl_var_map {
 	SEC_CAM_TKIP,
 	SEC_CAM_AES,
 	SEC_CAM_WEP104,
-
+#if 0
 	/*IMR map */
 	RTL_IMR_BCNDMAINT6,	/*Beacon DMA Interrupt 6 */
 	RTL_IMR_BCNDMAINT5,	/*Beacon DMA Interrupt 5 */

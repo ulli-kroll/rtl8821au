@@ -345,4 +345,40 @@
 #define RF_0x52 						0x52
 #define RF_WE_LUT					0xEF
 
+// Security
+#define REG_CAMCMD						0x0670
+#define REG_CAMWRITE					0x0674
+#define REG_CAMREAD					0x0678
+#define REG_CAMDBG						0x067C
+#define REG_SECCFG						0x0680
+
+//----------------------------------------------------------------------------
+//       CAM Config Setting (offset 0x680, 1 byte)
+//----------------------------------------------------------------------------
+#define CAM_VALID				BIT15
+#define CAM_NOTVALID			0x0000
+#define CAM_USEDK				BIT5
+
+#define CAM_CONTENT_COUNT 	8
+
+#define CAM_NONE				0x0
+#define CAM_WEP40				0x01
+#define CAM_TKIP				0x02
+#define CAM_AES					0x04
+#define CAM_WEP104				0x05
+
+#define HALF_CAM_ENTRY			16
+
+#define CAM_CONFIG_USEDK		_TRUE
+#define CAM_CONFIG_NO_USEDK	_FALSE
+
+#define CAM_WRITE				BIT16
+#define CAM_READ				0x00000000
+#define CAM_POLLINIG			BIT31
+
+#define SCR_UseDK				0x01
+#define SCR_TxSecEnable			0x02
+#define SCR_RxSecEnable			0x04
+
+
 #endif

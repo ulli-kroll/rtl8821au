@@ -355,7 +355,6 @@
 //----------------------------------------------------------------------------
 //       CAM Config Setting (offset 0x680, 1 byte)
 //----------------------------------------------------------------------------
-#define CAM_VALID				BIT15
 #define CAM_NOTVALID			0x0000
 #define CAM_USEDK				BIT5
 
@@ -372,9 +371,7 @@
 #define CAM_CONFIG_USEDK		_TRUE
 #define CAM_CONFIG_NO_USEDK	_FALSE
 
-#define CAM_WRITE				BIT16
 #define CAM_READ				0x00000000
-#define CAM_POLLINIG			BIT31
 
 #define SCR_UseDK				0x01
 #define SCR_TxSecEnable			0x02

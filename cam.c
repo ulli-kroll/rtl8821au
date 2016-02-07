@@ -91,3 +91,107 @@ void clear_cam_entry(struct rtl_priv *rtlpriv, uint8_t entry)
 
 	write_cam(rtlpriv, entry, 0, null_sta, null_key);
 }
+
+static void rtl_cam_program_entry(struct rtl_priv *rtlpriv, u32 entry_no,
+			   u8 *mac_addr, u8 *key_cont_128, u16 us_config)
+{
+	u32 target_command;
+	u32 target_content = 0;
+	u8 entry_i;
+
+	RT_PRINT_DATA(rtlpriv, COMP_SEC, DBG_DMESG, "Key content :",
+		      key_cont_128, 16);
+
+	for (entry_i = 0; entry_i < CAM_CONTENT_COUNT; entry_i++) {
+		target_command = entry_i + CAM_CONTENT_COUNT * entry_no;
+		target_command = target_command | BIT(31) | BIT(16);
+
+		if (entry_i == 0) {
+			target_content = (u32) (*(mac_addr + 0)) << 16 |
+			    (u32) (*(mac_addr + 1)) << 24 | (u32) us_config;
+
+			rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[WCAMI],
+					target_content);
+			rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[RWCAM],
+					target_command);
+
+			RT_TRACE(rtlpriv, COMP_SEC, DBG_LOUD,
+				 "WRITE %x: %x\n",
+				 rtlpriv->cfg->maps[WCAMI], target_content);
+			RT_TRACE(rtlpriv, COMP_SEC, DBG_LOUD,
+				 "The Key ID is %d\n", entry_no);
+			RT_TRACE(rtlpriv, COMP_SEC, DBG_LOUD,
+				 "WRITE %x: %x\n",
+				 rtlpriv->cfg->maps[RWCAM], target_command);
+
+		} else if (entry_i == 1) {
+
+			target_content = (u32) (*(mac_addr + 5)) << 24 |
+			    (u32) (*(mac_addr + 4)) << 16 |
+			    (u32) (*(mac_addr + 3)) << 8 |
+			    (u32) (*(mac_addr + 2));
+
+			rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[WCAMI],
+					target_content);
+			rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[RWCAM],
+					target_command);
+
+			RT_TRACE(rtlpriv, COMP_SEC, DBG_LOUD,
+				 "WRITE A4: %x\n", target_content);
+			RT_TRACE(rtlpriv, COMP_SEC, DBG_LOUD,
+				 "WRITE A0: %x\n", target_command);
+
+		} else {
+
+			target_content =
+			    (u32) (*(key_cont_128 + (entry_i * 4 - 8) + 3)) <<
+			    24 | (u32) (*(key_cont_128 + (entry_i * 4 - 8) + 2))
+			    << 16 |
+			    (u32) (*(key_cont_128 + (entry_i * 4 - 8) + 1)) << 8
+			    | (u32) (*(key_cont_128 + (entry_i * 4 - 8) + 0));
+
+			rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[WCAMI],
+					target_content);
+			rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[RWCAM],
+					target_command);
+			udelay(100);
+
+			RT_TRACE(rtlpriv, COMP_SEC, DBG_LOUD,
+				 "WRITE A4: %x\n", target_content);
+			RT_TRACE(rtlpriv, COMP_SEC, DBG_LOUD,
+				 "WRITE A0: %x\n", target_command);
+		}
+	}
+
+	RT_TRACE(rtlpriv, COMP_SEC, DBG_LOUD,
+		 "after set key, usconfig:%x\n", us_config);
+}
+
+u8 rtw_cam_add_one_entry(struct rtl_priv *rtlpriv, u8 *mac_addr,
+			 u32 ul_key_id, u32 ul_entry_idx, u32 ul_enc_alg,
+			 u32 ul_default_key, u8 *key_content)
+{
+	u32 us_config;
+
+	RT_TRACE(rtlpriv, COMP_SEC, DBG_DMESG,
+		 "EntryNo:%x, ulKeyId=%x, ulEncAlg=%x, ulUseDK=%x MacAddr %pM\n",
+		 ul_entry_idx, ul_key_id, ul_enc_alg,
+		 ul_default_key, mac_addr);
+
+	if (ul_key_id == TOTAL_CAM_ENTRY) {
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING,
+			 "ulKeyId exceed!\n");
+		return 0;
+	}
+
+	if (ul_default_key == 1)
+		us_config = CFG_VALID | ((u16) (ul_enc_alg) << 2);
+	else
+		us_config = CFG_VALID | ((ul_enc_alg) << 2) | ul_key_id;
+
+
+	rtl_cam_program_entry(rtlpriv, ul_entry_idx, mac_addr,
+			      (u8 *)key_content, us_config);
+
+	RT_TRACE(rtlpriv, COMP_SEC, DBG_DMESG, "end\n");
+}

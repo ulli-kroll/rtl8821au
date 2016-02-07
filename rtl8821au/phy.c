@@ -140,7 +140,7 @@ static u32 _rtl8821au_phy_rf_serial_read(struct rtl_priv *rtlpriv, uint8_t eRFPa
 	struct bb_reg_def *pphyreg = &(rtlpriv->phy.phyreg_def[eRFPath]);
 
 	uint32_t			retValue = 0;
-	BOOLEAN				bIsPIMode = _FALSE;
+	bool				bIsPIMode = _FALSE;
 
 
 	/*
@@ -159,9 +159,9 @@ static u32 _rtl8821au_phy_rf_serial_read(struct rtl_priv *rtlpriv, uint8_t eRFPa
 	Offset &= 0xff;
 
 	if (eRFPath == RF90_PATH_A)
-		bIsPIMode = (BOOLEAN)rtl_get_bbreg(rtlpriv, 0xC00, 0x4);
+		bIsPIMode = (bool)rtl_get_bbreg(rtlpriv, 0xC00, 0x4);
 	else if (eRFPath == RF90_PATH_B)
-		bIsPIMode = (BOOLEAN)rtl_get_bbreg(rtlpriv, 0xE00, 0x4);
+		bIsPIMode = (bool)rtl_get_bbreg(rtlpriv, 0xE00, 0x4);
 
 	if (IS_VENDOR_8812A_TEST_CHIP(rtlhal->version))
 		rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bMaskDWord, 0);
@@ -390,9 +390,9 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	uint32_t 	TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int		TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
 	int 		TX_X0[cal_num], TX_Y0[cal_num], RX_X0[cal_num], RX_Y0[cal_num];
-	BOOLEAN 	TX0IQKOK = FALSE, RX0IQKOK = FALSE;
+	bool 	TX0IQKOK = FALSE, RX0IQKOK = FALSE;
 	int 		TX_X1[cal_num], TX_Y1[cal_num], RX_X1[cal_num], RX_Y1[cal_num];
-	BOOLEAN  	TX1IQKOK = FALSE, RX1IQKOK = FALSE, VDF_enable = FALSE;
+	bool  	TX1IQKOK = FALSE, RX1IQKOK = FALSE, VDF_enable = FALSE;
 	int 			i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0, dt = 0;
 
 	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BandWidth = %d, ExtPA5G = %d, ExtPA2G = %d\n", rtlpriv->phy.current_chan_bw, rtlhal->external_pa_5g, rtlhal->external_pa_2g);
@@ -1731,7 +1731,7 @@ static void _rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 
 
 
-void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery)
+void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, bool bReCovery)
 {
 	_rtl8812au_phy_iq_calibrate(rtlpriv);
 }
@@ -1760,8 +1760,8 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	uint32_t TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int 	TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
 	int 	TX_X0[cal_num], TX_Y0[cal_num], TX_X0_RXK[cal_num], TX_Y0_RXK[cal_num], RX_X0[cal_num], RX_Y0[cal_num];
-	BOOLEAN TX0IQKOK = FALSE, RX0IQKOK = FALSE;
-	BOOLEAN VDF_enable = FALSE;
+	bool TX0IQKOK = FALSE, RX0IQKOK = FALSE;
+	bool VDF_enable = FALSE;
 	int 	i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0;
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
@@ -2478,7 +2478,7 @@ static void _rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 	/* _IQK_TX_CheckResult_8821A */
 }
 
-void rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery)
+void rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv, bool bReCovery)
 {
 	_rtl8821au_phy_iq_calibrate(rtlpriv);
 }
@@ -2487,7 +2487,7 @@ void rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery)
 /* ********************************************************** */
 
 /* OLD functions need complete ? rewrite */
-BOOLEAN Getu8IntegerFromStringInDecimal(s8 *Str, uint8_t *pInt)
+bool Getu8IntegerFromStringInDecimal(s8 *Str, uint8_t *pInt)
 {
 	u16 i = 0;
 	*pInt = 0;
@@ -2506,7 +2506,7 @@ BOOLEAN Getu8IntegerFromStringInDecimal(s8 *Str, uint8_t *pInt)
 }
 
 
-static BOOLEAN eqNByte(uint8_t *str1, uint8_t *str2, uint32_t num)
+static bool eqNByte(uint8_t *str1, uint8_t *str2, uint32_t num)
 {
 	if (num == 0)
 		return _FALSE;
@@ -2769,7 +2769,7 @@ static bool _rtl8821ae_phy_get_chnl_index(uint8_t Channel, uint8_t *ChannelIdx)
 		168, 169, 171, 173, 175, 177
 		};
 	uint8_t	i = 0;
-	BOOLEAN bIn24G = _TRUE;
+	bool bIn24G = _TRUE;
 
 	if (Channel <= 14) {
 		bIn24G = _TRUE;
@@ -3089,7 +3089,7 @@ u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	uint32_t					powerDiffByRate = 0;
 	uint32_t					txPower = 0;
 	uint8_t					chnlIdx = (Channel-1);
-	BOOLEAN				bIn24G = _FALSE;
+	bool				bIn24G = _FALSE;
 
 	/* DBG_871X("===> PHY_GetTxPowerIndex_8812A\n"); */
 
@@ -3426,7 +3426,7 @@ void _rtl8821au_phy_read_and_config_txpwr_lmt(struct rtl_priv *rtlpriv)
 
 
 
-static BOOLEAN CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
+static bool CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 {
 	uint32_t _board     = (Hex & 0x000000FF);
 	uint32_t _interface = (Hex & 0x0000FF00) >> 8;
@@ -4123,10 +4123,10 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
  * ULLI : is in rtl8821au_phy_switch_wirelessband()
  * */
 
-BOOLEAN phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW)
+bool phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW)
 {
 	uint8_t			u1Btmp;
-	BOOLEAN		ret_value = _TRUE;
+	bool		ret_value = _TRUE;
 	uint8_t			Band = BAND_ON_5G, BandToSW;
 
 	u1Btmp = rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812);

@@ -134,7 +134,7 @@ struct registry_priv
 
 	uint8_t	low_power ;
 
-	BOOLEAN	bAcceptAddbaReq;
+	bool	bAcceptAddbaReq;
 
 	uint8_t	usbss_enable;//0:disable,1:enable
 	uint8_t	hwpdn_mode;//0:disable,1:enable,2:decide by EFUSE config

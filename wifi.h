@@ -2042,17 +2042,17 @@ struct ODM_RF_Calibration_Structure
 {
 	//for tx power tracking
 
-	BOOLEAN	TxPowerTrackingInProgress;
+	bool	TxPowerTrackingInProgress;
 	//--------------------------------------------------------------------//
 
 
-	BOOLEAN bLCKInProgress;
-	BOOLEAN	bAntennaDetected;
+	bool bLCKInProgress;
+	bool	bAntennaDetected;
 };
 
 typedef struct _ODM_RATE_ADAPTIVE
 {
-	BOOLEAN				bLowerRtsRate;
+	bool				bLowerRtsRate;
 
 } ODM_RATE_ADAPTIVE, *PODM_RATE_ADAPTIVE;
 
@@ -2095,8 +2095,8 @@ typedef struct _RX_High_Power_
 	u8		Cur_IGI;
 	u8		Pre_pw_th;
 	u8		Cur_pw_th;
-	BOOLEAN		First_time_enter;
-	BOOLEAN		RXHP_enable;
+	bool		First_time_enter;
+	bool		RXHP_enable;
 	u8		TP_Mode;
 
 }RXHP_T, *pRXHP_T;
@@ -2112,7 +2112,7 @@ typedef struct _ODM_PATH_DIVERSITY_
 }PATHDIV_T, *pPATHDIV_T;
 
 typedef struct _ANT_DETECTED_INFO{
-	BOOLEAN			bAntDetected;
+	bool			bAntDetected;
 	uint32_t			dBForAntA;
 	uint32_t			dBForAntB;
 	uint32_t			dBForAntO;
@@ -2129,13 +2129,13 @@ struct _rtw_dm {
 	//
 	struct rtl_priv *	rtlpriv;		// For CE/NIC team
 	// WHen you use rtlpriv or priv pointer, you must make sure the pointer is ready.
-	BOOLEAN			odm_ready;
+	bool			odm_ready;
 
 	uint64_t			NumQryPhyStatusAll; 	//CCK + OFDM
 	uint64_t			LastNumQryPhyStatusAll;
 	uint64_t			RxPWDBAve;
 	uint64_t			RxPWDBAve_final;
-	BOOLEAN			MPDIG_2G; 		//off MPDIG
+	bool			MPDIG_2G; 		//off MPDIG
 	u8			Times_2G;
 
 //------ ODM HANDLE, DRIVER NEEDS NOT TO HOOK------//
@@ -2143,13 +2143,13 @@ struct _rtw_dm {
 
 //--------REMOVED COMMON INFO----------//
 	//u8				PseudoMacPhyMode;
-	//BOOLEAN			*BTCoexist;
-	//BOOLEAN			PseudoBtCoexist;
+	//bool			*BTCoexist;
+	//bool			PseudoBtCoexist;
 	//u8				OPMode;
-	//BOOLEAN			bAPMode;
-	//BOOLEAN			bClientMode;
-	//BOOLEAN			bAdHocMode;
-	//BOOLEAN			bSlaveOfDMSP;
+	//bool			bAPMode;
+	//bool			bClientMode;
+	//bool			bAdHocMode;
+	//bool			bSlaveOfDMSP;
 //--------REMOVED COMMON INFO----------//
 
 
@@ -2184,7 +2184,7 @@ struct _rtw_dm {
 	// Common info for 92D DMSP
 
 	// Common info for Status
-	BOOLEAN			*pbPowerSaving;
+	bool			*pbPowerSaving;
 	//pMgntInfo->AntennaTest
 	u8			*pAntennaTest;
 	//u8			*pAidMap;
@@ -2192,7 +2192,7 @@ struct _rtw_dm {
 	u16			*pForcedDataRate;
 //------------CALL BY VALUE-------------//
 	u8          InterfaceIndex; // Add for 92D  dual MAC: 0--Mac0 1--Mac1
-	BOOLEAN			bOneEntryOnly;
+	bool			bOneEntryOnly;
 	// Common info for BTDM
 //------------CALL BY VALUE-------------//
 	u8			RSSI_A;
@@ -2200,19 +2200,19 @@ struct _rtw_dm {
 	uint64_t			RSSI_TRSW;
 
 	u8			RxRate;
-	BOOLEAN			StopDIG;
+	bool			StopDIG;
 	u8			AntType;
 	uint64_t			lastTxOkCnt;
 	uint64_t			lastRxOkCnt;
 	uint32_t			BbSwingOffsetA;
-	BOOLEAN			IsBbSwingOffsetPositiveA;
+	bool			IsBbSwingOffsetPositiveA;
 	uint32_t			BbSwingOffsetB;
-	BOOLEAN			IsBbSwingOffsetPositiveB;
+	bool			IsBbSwingOffsetPositiveB;
 	uint32_t			TH_H;
 	uint32_t			TH_L;
 	uint32_t			IGI_Base;
 	uint32_t			IGI_target;
-	BOOLEAN			ForceEDCCA;
+	bool			ForceEDCCA;
 	u8			AdapEn_RSSI;
 
 	//2 Define STA info.
@@ -2228,7 +2228,7 @@ struct _rtw_dm {
 	// 2012/02/14 MH Add to share 88E ra with other SW team.
 	// We need to colelct all support abilit to a proper area.
 	//
-	BOOLEAN				RaSupport88E;
+	bool				RaSupport88E;
 
 	// Define ...........
 
@@ -2249,7 +2249,7 @@ struct _rtw_dm {
 	PS_T		DM_PSTable;
 	Pri_CCA_T	DM_PriCCA;
 	RXHP_T		DM_RXHP_Table;
-	BOOLEAN		RSSI_test;
+	bool		RSSI_test;
 
 
 	EDCA_T		DM_EDCA_Table;
@@ -2270,10 +2270,10 @@ struct _rtw_dm {
 	//struct sta_info *RSSI_target;
 
 	//PSD
-	BOOLEAN			bUserAssignLevel;
+	bool			bUserAssignLevel;
 	u8			RSSI_BT;			//come from BT
-	BOOLEAN			bPSDinProcess;
-	BOOLEAN			bPSDactive;
+	bool			bPSDinProcess;
+	bool			bPSDactive;
 
 	ODM_RATE_ADAPTIVE	RateAdaptive;
 
@@ -2288,9 +2288,9 @@ struct _rtw_dm {
 	//
 	// Dynamic ATC switch
 	//
-	BOOLEAN			bATCStatus;
-	BOOLEAN			largeCFOHit;
-	BOOLEAN			bIsfreeze;
+	bool			bATCStatus;
+	bool			largeCFOHit;
+	bool			bIsfreeze;
 	int				CFO_tail[2];
 	int				CFO_ave_pre;
 	int				CrystalCap;
@@ -2347,9 +2347,9 @@ struct _rtw_hal {
 	u32	CCKTxPowerLevelOriginalOffset;
 
 	uint8_t	bIQKInitialized;
-	BOOLEAN		bLCKInProgress;
+	bool		bLCKInProgress;
 
-	BOOLEAN		bChnlBWInitialzed;
+	bool		bChnlBWInitialzed;
 
 	uint8_t	TxPowerTrackControl; //for mp mode, turn off txpwrtracking as default
 	uint8_t	b1x1RecvCombine;	// for 1T1R receive combining
@@ -2359,7 +2359,7 @@ struct _rtw_hal {
 	u32	RfRegChnlVal[2];
 
 	//RDG enable
-	BOOLEAN	 bRDGEnable;
+	bool	 bRDGEnable;
 
 	uint8_t	fw_ractrl;
 	uint8_t	RegTxPause;
@@ -2378,7 +2378,7 @@ struct _rtw_hal {
 	uint8_t	OutEpNumber;
 
 	// 2010/12/10 MH Add for USB aggreation mode dynamic shceme.
-	BOOLEAN		UsbRxHighSpeedMode;
+	bool		UsbRxHighSpeedMode;
 
 	uint8_t	AMPDUDensity;
 

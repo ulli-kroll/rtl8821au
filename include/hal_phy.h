@@ -148,7 +148,7 @@ PHY_RFShadowWrite(
 	IN	u32				Offset,
 	IN	u32				Data);
 
-BOOLEAN
+bool
 PHY_RFShadowCompare(
 	IN	struct rtl_priv *	rtlpriv,
 	IN	uint8_t				eRFPath,

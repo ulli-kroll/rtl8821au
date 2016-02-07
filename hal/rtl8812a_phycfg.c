@@ -99,7 +99,7 @@ static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
  */
 
 static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
-	BOOLEAN	bSwitchChannel, BOOLEAN	bSetBandWidth,
+	bool	bSwitchChannel, bool	bSetBandWidth,
 	uint8_t	ChannelNum, enum CHANNEL_WIDTH ChnlWidth,
 	uint8_t	ChnlOffsetOf40MHz, uint8_t ChnlOffsetOf80MHz,
 	uint8_t	CenterFrequencyIndex1
@@ -114,7 +114,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	uint8_t			tmpCenterFrequencyIndex1 = rtlpriv->phy.current_channel;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 
-	BOOLEAN bSwChnl = _FALSE, bSetChnlBW = _FALSE;
+	bool bSwChnl = _FALSE, bSetChnlBW = _FALSE;
 
 
 	/* DBG_871X("=> PHY_HandleSwChnlAndSetBW8812: bSwitchChannel %d, bSetBandWidth %d \n",bSwitchChannel,bSetBandWidth); */

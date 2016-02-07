@@ -607,7 +607,7 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 
 	static int repeat_times = 0;
 
-	BOOLEAN	bExtendedHeader = _FALSE;
+	bool	bExtendedHeader = _FALSE;
 
 	/*
 	 * <Roger_Notes> Efuse has been pre-programmed dummy 5Bytes at the end of Efuse by CP.

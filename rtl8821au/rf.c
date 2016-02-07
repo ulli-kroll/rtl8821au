@@ -335,7 +335,7 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *rtlpriv, uint8_t *pPo
 	struct mlme_ext_priv 	*pmlmeext = &rtlpriv->mlmeextpriv;
 	uint32_t		TxAGC[2] = {0, 0},
 				tmpval = 0;
-	BOOLEAN	TurboScanOff = _FALSE;
+	bool	TurboScanOff = _FALSE;
 	uint8_t	idx1, idx2;
 	uint8_t *ptr;
 

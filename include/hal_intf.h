@@ -62,7 +62,7 @@ uint rtw_hal_init(struct rtl_priv *rtlpriv);
 uint rtw_hal_deinit(struct rtl_priv *rtlpriv);
 void rtw_hal_stop(struct rtl_priv *rtlpriv);
 
-void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,BOOLEAN bSet);
+void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,bool bSet);
 
 void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv);
 void rtw_hal_disable_interrupt(struct rtl_priv *rtlpriv);

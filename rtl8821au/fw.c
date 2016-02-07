@@ -39,10 +39,10 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " _8051Reset8812(): 8051 reset success .\n");
 }
 
-static BOOLEAN Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
+static bool Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
 	uint8_t	shortGIrate)
 {
-	BOOLEAN		bShortGI;
+	bool		bShortGI;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -223,7 +223,7 @@ uint8_t	Get_VHT_ENI(uint32_t IOTAction, uint32_t WirelessMode, uint32_t	ratr_bit
 }
 
 
-void Set_RA_LDPC_8812(struct sta_info *psta, BOOLEAN bLDPC)
+void Set_RA_LDPC_8812(struct sta_info *psta, bool bLDPC)
 {
 	if (psta == NULL)
 		return;
@@ -552,7 +552,7 @@ void ConstructNullFunctionData(
  * 						to Hw again and set the lengh in descriptor to the real beacon lengh.
  *  2009.10.15 by tynli.
  */
-static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, BOOLEAN bDLFinished)
+static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData;
@@ -734,8 +734,8 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	BOOLEAN		bSendBeacon = _FALSE;
-	BOOLEAN		bcn_valid = _FALSE;
+	bool		bSendBeacon = _FALSE;
+	bool		bcn_valid = _FALSE;
 	uint8_t	DLBcnCount = 0;
 	uint32_t poll = 0;
 
@@ -967,7 +967,7 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 }
 
 
-static void _rtl8821ae_enable_fw_download(struct rtl_priv *rtlpriv, BOOLEAN enable)
+static void _rtl8821ae_enable_fw_download(struct rtl_priv *rtlpriv, bool enable)
 {
 	uint8_t	tmp;
 
@@ -1149,7 +1149,7 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 	return _FAIL;
 }
 
-int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, BOOLEAN bUsedWoWLANFw)
+int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);

@@ -71,7 +71,7 @@ void rtl8812_free_hal_data(struct rtl_priv *rtlpriv)
  *
  */
 
-void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, BOOLEAN bSet)
+void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, bool bSet)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *podmpriv = &pHalData->odmpriv;

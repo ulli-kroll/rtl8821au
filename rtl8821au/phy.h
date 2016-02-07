@@ -11,10 +11,10 @@ bool _rtl8821au_phy_config_bb_with_headerfile(struct rtl_priv *rtlpriv,
 bool _rtl8821au_phy_config_bb_with_pgheaderfile(struct rtl_priv *rtlpriv,
 							u8 configtype);
 void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv);
-void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery);
+void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, bool bReCovery);
 
 							
-void rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv, BOOLEAN bReCovery);
+void rtl8821au_phy_iq_calibrate(struct rtl_priv *rtlpriv, bool bReCovery);
 
 
 void _rtl8821au_phy_config_mac_with_headerfile(struct rtl_priv *rtlpriv);
@@ -48,6 +48,6 @@ enum baseband_config_type {
 /* Not in rtlwifi */
 
 void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *rtlpriv, IN uint8_t	Channel	);
-BOOLEAN phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW);
+bool phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW);
 
 #endif

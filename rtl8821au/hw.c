@@ -68,8 +68,8 @@ static void  _rtl8821au_resume_tx_beacon(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
 }
 
-static void _BeaconFunctionEnable(struct rtl_priv *rtlpriv, BOOLEAN Enable,
-	BOOLEAN	Linked)
+static void _BeaconFunctionEnable(struct rtl_priv *rtlpriv, bool Enable,
+	bool	Linked)
 {
 	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (BIT4 | BIT3 | BIT1));
 	/*
@@ -1104,7 +1104,7 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 /* ULLI : refractoring this into one function _read_adapter_info() */
 
 static void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
-	BOOLEAN	AutoLoadFail)
+	bool	AutoLoadFail)
 {
 	rtlpriv->mlmepriv.ChannelPlan = hal_com_get_channel_plan(
 		rtlpriv
@@ -1626,7 +1626,7 @@ static void _InitPageBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 	/*
 	 * u16 			rxff_bndy;
 	 * u16			Offset;
-	 * BOOLEAN			bSupportRemoteWakeUp;
+	 * bool			bSupportRemoteWakeUp;
 	 */
 
 	/*
@@ -1895,7 +1895,7 @@ static void _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *rtlpriv)
 }
 
 
-static void _InitBeaconMaxError_8812A(struct rtl_priv *rtlpriv, BOOLEAN	InfraMode)
+static void _InitBeaconMaxError_8812A(struct rtl_priv *rtlpriv, bool	InfraMode)
 {
 	/* ULLI: looks here is some hacking done, wrong nams ?? */
 #ifdef RTL8192CU_ADHOC_WORKAROUND_SETTING

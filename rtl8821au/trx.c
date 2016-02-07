@@ -1977,11 +1977,11 @@ static void _FourOutEpMapping(struct rtl_ep_map *ep_map)
 	ep_map->ep_mapping[RTL_TXQ_HI]	= 5;
 }
 
-static BOOLEAN Hal_MappingOutPipe(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
+static bool Hal_MappingOutPipe(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct rtl_ep_map *ep_map = &(rtlusb->ep_map);
-	BOOLEAN result = _TRUE;
+	bool result = _TRUE;
 
 	switch(NumOutPipe) {
 	case 2:
@@ -2011,7 +2011,7 @@ int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv)
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-	BOOLEAN		result		= _FALSE;
+	bool		result		= _FALSE;
 
 	_ConfigChipOutEP_8812(rtlpriv, rtlusb->RtNumOutPipes);
 

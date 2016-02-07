@@ -1854,7 +1854,7 @@ void update_capinfo(struct rtl_priv *rtlpriv, u16 updateCap)
 {
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	BOOLEAN		ShortPreamble;
+	bool		ShortPreamble;
 
 	// Check preamble mode, 2005.01.06, by rcnjko.
 	// Mark to update preamble value forever, 2008.03.18 by lanhsin

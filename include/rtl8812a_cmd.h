@@ -86,7 +86,7 @@ struct H2C_SS_RFOFF_PARAM{
 
 
 
-void	Set_RA_LDPC_8812(struct sta_info	*psta, BOOLEAN bLDPC);
+void	Set_RA_LDPC_8812(struct sta_info	*psta, bool bLDPC);
 
 // host message to firmware cmd
 void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode);

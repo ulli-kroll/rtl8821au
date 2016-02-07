@@ -91,7 +91,7 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
-	BOOLEAN	bHwLDPCSupport = _FALSE, bHwSTBCSupport = _FALSE;
+	bool	bHwLDPCSupport = _FALSE, bHwSTBCSupport = _FALSE;
 	uint8_t	rf_type = 0;
 
 	pvhtpriv->vht_bwmode = (pregistrypriv->bw_mode & 0xF0) >> 4;

@@ -384,7 +384,7 @@ struct mlme_ext_info
 	uint8_t	candidate_tid_bitmap;
 	uint8_t	dialogToken;
 	// Accept ADDBA Request
-	BOOLEAN bAcceptAddbaReq;
+	bool bAcceptAddbaReq;
 	uint8_t	bwmode_updated;
 	uint8_t	hidden_ssid_mode;
 	uint8_t	VHT_enable;
@@ -533,7 +533,7 @@ unsigned int decide_wait_for_beacon_timeout(unsigned int bcn_interval);
 int allocate_fw_sta_entry(struct rtl_priv *rtlpriv);
 void flush_all_cam_entry(struct rtl_priv *rtlpriv);
 
-BOOLEAN IsLegal5GChannel(struct rtl_priv *rtlpriv, uint8_t channel);
+bool IsLegal5GChannel(struct rtl_priv *rtlpriv, uint8_t channel);
 
 void site_survey(struct rtl_priv *rtlpriv);
 uint8_t collect_bss_info(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame, WLAN_BSSID_EX *bssid);

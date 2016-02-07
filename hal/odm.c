@@ -129,11 +129,11 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 		break;
 
 	case	ODM_CMNINFO_SCAN:
-		mac->act_scanning = (BOOLEAN *)pValue;
+		mac->act_scanning = (bool *)pValue;
 		break;
 
 	case	ODM_CMNINFO_POWER_SAVING:
-		pDM_Odm->pbPowerSaving = (BOOLEAN *)pValue;
+		pDM_Odm->pbPowerSaving = (bool *)pValue;
 		break;
 
 	case	ODM_CMNINFO_ANT_TEST:
@@ -229,7 +229,7 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	int32_t TH_H_dmc, TH_L_dmc;
 	int32_t TH_H, TH_L, Diff, IGI_target;
 	uint32_t value32;
-	BOOLEAN EDCCA_State;
+	bool EDCCA_State;
 
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "odm_Adaptivity() =====> \n");
 
@@ -556,7 +556,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
  *---------------------------------------------------------------------------*/
 
 /*
- * Return Value: BOOLEAN
+ * Return Value: bool
  * - TRUE: RATRState is changed.
  */
 static bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,

@@ -31,7 +31,7 @@
 
 void PHY_SetRFPathSwitch_8821A(
 	IN	struct rtl_priv *rtlpriv,
-	IN	BOOLEAN		bMain
+	IN	bool		bMain
 	);
 
 

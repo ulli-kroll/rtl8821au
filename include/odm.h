@@ -214,9 +214,9 @@ typedef struct _ODM_Per_Pkt_Info_
 	//u8		Rate;
 	u8		DataRate;
 	u8		StationID;
-	BOOLEAN		bPacketMatchBSSID;
-	BOOLEAN		bPacketToSelf;
-	BOOLEAN		bPacketBeacon;
+	bool		bPacketMatchBSSID;
+	bool		bPacketToSelf;
+	bool		bPacketBeacon;
 }ODM_PACKET_INFO_T,*PODM_PACKET_INFO_T;
 
 
@@ -247,7 +247,7 @@ typedef enum tag_Dynamic_ODM_Support_Ability_Type
 #if 1
 typedef		struct _ODM_STA_INFO{
 	// Driver Write
-	BOOLEAN		bUsed;				// record the sta status link or not?
+	bool		bUsed;				// record the sta status link or not?
 	//u8		WirelessMode;		//
 	u8		IOTPeer;			// Enum value.	HT_IOT_PEER_E
 
@@ -467,9 +467,9 @@ typedef struct _ODM_RA_Info_
 } ODM_RA_INFO_T,*PODM_RA_INFO_T;
 
 typedef struct _IQK_MATRIX_REGS_SETTING{
-	BOOLEAN 	bIQKDone;
+	bool 	bIQKDone;
 	int32_t		Value[3][IQK_Matrix_REG_NUM];
-	BOOLEAN 	bBWIqkResultSaved[3];
+	bool 	bBWIqkResultSaved[3];
 }IQK_MATRIX_REGS_SETTING,*PIQK_MATRIX_REGS_SETTING;
 
 //
@@ -763,7 +763,7 @@ ODM_AntselStatistics_88C(
 	IN		struct _rtw_dm *	pDM_Odm,
 	IN		u8			MacId,
 	IN		uint32_t			PWDBAll,
-	IN		BOOLEAN			isCCKrate
+	IN		bool			isCCKrate
 );
 
 

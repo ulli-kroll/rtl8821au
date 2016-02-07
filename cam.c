@@ -32,7 +32,10 @@ void CAM_empty_entry(struct rtl_priv *rtlpriv, uint8_t ucIndex)
 
 void invalidate_cam_all(struct rtl_priv *rtlpriv)
 {
-	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_CAM_INVALID_ALL, 0);
+	uint32_t val32;
+
+	val32 = BIT(31) | BIT(30);
+	rtl_write_dword(rtlpriv, RWCAM, val32);
 }
 
 void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key)

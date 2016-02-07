@@ -20,6 +20,9 @@
 #define _RTW_WLAN_UTIL_C_
 
 #include <drv_types.h>
+#include <../usb.h>
+#include <../wifi.h>
+#include <../cam.h>
 
 #undef DBG_871X
 static inline void DBG_871X(const char *fmt, ...)
@@ -674,9 +677,7 @@ void flush_all_cam_entry(struct rtl_priv *rtlpriv)
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-
-	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_CAM_INVALID_ALL, 0);
-
+	invalidate_cam_all(rtlpriv);
 
 	memset((uint8_t *)(pmlmeinfo->FW_sta_info), 0, sizeof(pmlmeinfo->FW_sta_info));
 

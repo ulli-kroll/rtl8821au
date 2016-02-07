@@ -576,11 +576,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		rtl_write_byte(rtlpriv, REG_SECCFG, val8);
 		break;
 
-	case HW_VAR_CAM_INVALID_ALL:
-		val32 = BIT(31) | BIT(30);
-		rtl_write_dword(rtlpriv, RWCAM, val32);
-		break;
-
 	case HW_VAR_CAM_WRITE:
 		{
 			uint32_t cmd;

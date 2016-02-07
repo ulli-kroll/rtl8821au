@@ -6651,7 +6651,6 @@ uint8_t setauth_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 uint8_t setkey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 {
-	unsigned short				ctrl;
 	struct setkey_parm		*pparm = (struct setkey_parm *)pbuf;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -6661,12 +6660,8 @@ uint8_t setkey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	if(pparm->set_tx)
 		pmlmeinfo->key_index = pparm->keyid;
 
-	//write cam
-	ctrl = BIT(15) | ((pparm->algorithm) << 2) | pparm->keyid;
-
-	DBG_871X_LEVEL(_drv_always_, "set group key to hw: alg:%d(WEP40-1 WEP104-5 TKIP-2 AES-4) "
-			"keyid:%d\n", pparm->algorithm, pparm->keyid);
-	write_cam(rtlpriv, pparm->keyid, ctrl, null_sta, pparm->key);
+	rtw_cam_add_one_entry(rtlpriv, null_sta, pparm->keyid, pparm->keyid,
+			      0, pparm->algorithm, pparm->key);
 
 	//allow multicast packets to driver
         rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ON_RCR_AM, null_addr);
@@ -6676,7 +6671,6 @@ uint8_t setkey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 uint8_t set_stakey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 {
-	u16 ctrl=0;
 	uint8_t cam_id = 0;//cam_entry
 	uint8_t ret = H2C_SUCCESS;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
@@ -6708,8 +6702,6 @@ uint8_t set_stakey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		psta = rtw_get_stainfo(pstapriv, pparm->addr);
 		if(psta)
 		{
-			ctrl = (BIT(15) | ((pparm->algorithm) << 2));
-
 			DBG_871X("r871x_set_stakey_hdl(): enc_algorithm=%d\n", pparm->algorithm);
 
 			if((psta->mac_id == 1) || (psta->mac_id>(NUM_STA-4)))
@@ -6725,7 +6717,8 @@ uint8_t set_stakey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 						pparm->addr[1], pparm->addr[2], pparm->addr[3], pparm->addr[4],
 						pparm->addr[5], cam_id);
 
-			write_cam(rtlpriv, cam_id, ctrl, pparm->addr, pparm->key);
+			rtw_cam_add_one_entry(rtlpriv, pparm->addr, 0, cam_id,
+					pparm->algorithm, 1, pparm->key);
 
 			ret = H2C_SUCCESS_RSP;
 			goto exit_set_stakey_hdl;
@@ -6748,9 +6741,8 @@ uint8_t set_stakey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	else
 		cam_id = 4;
 
-	ctrl = BIT(15) | ((pparm->algorithm) << 2);
-
-		write_cam(rtlpriv, cam_id, ctrl, pparm->addr, pparm->key);
+	rtw_cam_add_one_entry(rtlpriv, pparm->addr, 0, cam_id,
+			pparm->algorithm, 1, pparm->key);
 
 	pmlmeinfo->enc_algo = pparm->algorithm;
 

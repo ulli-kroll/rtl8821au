@@ -38,7 +38,7 @@ void invalidate_cam_all(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, RWCAM, val32);
 }
 
-void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key)
+static void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key)
 {
 	unsigned int	i, val, addr;
 	//unsigned int    cmd;

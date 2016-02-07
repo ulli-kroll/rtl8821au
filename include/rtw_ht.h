@@ -75,16 +75,6 @@ typedef enum _RT_HT_INF1_CAP{
 	RT_HT_CAP_USE_JAGUAR_CCUT = 0x04,
 }RT_HT_INF1_CAPBILITY, *PRT_HT_INF1_CAPBILITY;
 
-#define	LDPC_HT_ENABLE_RX			BIT0
-#define	LDPC_HT_ENABLE_TX			BIT1
-#define	LDPC_HT_TEST_TX_ENABLE		BIT2
-#define	LDPC_HT_CAP_TX				BIT3
-
-#define	STBC_HT_ENABLE_RX			BIT0
-#define	STBC_HT_ENABLE_TX			BIT1
-#define	STBC_HT_TEST_TX_ENABLE		BIT2
-#define	STBC_HT_CAP_TX				BIT3
-
 #define	BEAMFORMING_HT_BEAMFORMER_ENABLE	BIT0	// Declare our NIC supports beamformer
 #define	BEAMFORMING_HT_BEAMFORMEE_ENABLE	BIT1	// Declare our NIC supports beamformee
 #define	BEAMFORMING_HT_BEAMFORMER_TEST		BIT2	// Transmiting Beamforming no matter the target supports it or not

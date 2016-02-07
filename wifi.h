@@ -1923,6 +1923,16 @@ enum hardware_type {
 	(IS_HARDWARE_TYPE_8821U(rtlhal) || \
 	 IS_HARDWARE_TYPE_8821S(rtlhal))
 
+#define	LDPC_HT_ENABLE_RX		BIT(0)
+#define	LDPC_HT_ENABLE_TX		BIT(1)
+#define	LDPC_HT_TEST_TX_ENABLE		BIT(2)
+#define	LDPC_HT_CAP_TX			BIT(3)
+
+#define	STBC_HT_ENABLE_RX		BIT(0)
+#define	STBC_HT_ENABLE_TX		BIT(1)
+#define	STBC_HT_TEST_TX_ENABLE		BIT(2)
+#define	STBC_HT_CAP_TX			BIT(3)
+
 static inline u8 get_rf_type(struct rtl_phy *rtlphy)
 {
 	return rtlphy->rf_type;

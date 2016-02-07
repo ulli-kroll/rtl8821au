@@ -677,7 +677,7 @@ void flush_all_cam_entry(struct rtl_priv *rtlpriv)
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	invalidate_cam_all(rtlpriv);
+	rtw_cam_reset_all_entry(rtlpriv);
 
 	memset((uint8_t *)(pmlmeinfo->FW_sta_info), 0, sizeof(pmlmeinfo->FW_sta_info));
 

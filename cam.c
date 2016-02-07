@@ -5,6 +5,24 @@
 #include <../cam.h>
 #include <../rtl8821au/reg.h>
 
+void rtw_cam_reset_sec_info(struct rtl_priv *rtlpriv)
+{
+	rtlpriv->sec.use_defaultkey = false;
+	rtlpriv->sec.pairwise_enc_algorithm = NO_ENCRYPTION;
+	rtlpriv->sec.group_enc_algorithm = NO_ENCRYPTION;
+	memset(rtlpriv->sec.key_buf, 0, KEY_BUF_SIZE * MAX_KEY_LEN);
+	memset(rtlpriv->sec.key_len, 0, KEY_BUF_SIZE);
+	rtlpriv->sec.pairwise_key = NULL;
+}
+
+
+void rtw_cam_reset_all_entry(struct rtl_priv *rtlpriv)
+{
+	u32 ul_command;
+
+	ul_command = BIT(31) | BIT(30);
+	rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[RWCAM], ul_command);
+}
 
 void CAM_empty_entry(struct rtl_priv *rtlpriv, uint8_t ucIndex)
 {
@@ -28,14 +46,6 @@ void CAM_empty_entry(struct rtl_priv *rtlpriv, uint8_t ucIndex)
 		rtl_write_dword(rtlpriv, WCAMI, ulContent);  /* delay_ms(40); */
 		rtl_write_dword(rtlpriv, RWCAM, ulCommand);  /* delay_ms(40); */
 	}
-}
-
-void invalidate_cam_all(struct rtl_priv *rtlpriv)
-{
-	uint32_t val32;
-
-	val32 = BIT(31) | BIT(30);
-	rtl_write_dword(rtlpriv, RWCAM, val32);
 }
 
 static void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key)

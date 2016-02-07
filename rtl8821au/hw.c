@@ -2219,7 +2219,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	rtw_hal_set_chnl_bw(rtlpriv, rtlpriv->registrypriv.channel,
 		CHANNEL_WIDTH_20, HAL_PRIME_CHNL_OFFSET_DONT_CARE, HAL_PRIME_CHNL_OFFSET_DONT_CARE);
 
-	invalidate_cam_all(rtlpriv);
+	rtw_cam_reset_all_entry(rtlpriv);
 
 	_InitAntenna_Selection_8812A(rtlpriv);
 

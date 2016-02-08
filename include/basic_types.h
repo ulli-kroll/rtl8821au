@@ -40,7 +40,6 @@
 
 	#include <linux/types.h>
 	#define NDIS_OID uint
-	#define NDIS_STATUS uint
 
 	typedef	signed int sint;
 

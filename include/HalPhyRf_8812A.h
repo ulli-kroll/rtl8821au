@@ -33,17 +33,9 @@
 //
 // AP calibrate
 //
-void
-PHY_APCalibrate_8812A(
-	IN	struct rtl_priv *rtlpriv,
-							IN 	s8		delta);
-void
-PHY_DigitalPredistortion_8812A(		IN	struct rtl_priv *rtlpriv);
-
-void
-PHY_DPCalibrate_8812A(
-	IN 	struct _rtw_dm *pDM_Odm
-);
+void PHY_APCalibrate_8812A(struct rtl_priv *rtlpriv, s8	delta);
+void PHY_DigitalPredistortion_8812A(struct rtl_priv *rtlpriv);
+void PHY_DPCalibrate_8812A(struct _rtw_dm *pDM_Odm);
 
 #endif	// #ifndef __HAL_PHY_RF_8812A_H__
 

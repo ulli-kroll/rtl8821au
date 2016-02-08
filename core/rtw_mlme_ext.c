@@ -4612,9 +4612,7 @@ Following are some utitity fuctions for WiFi MLME
 
 *****************************************************************************/
 
-bool IsLegal5GChannel(
-	IN struct rtl_priv *		rtlpriv,
-	IN uint8_t			channel)
+bool IsLegal5GChannel(struct rtl_priv *rtlpriv, uint8_t	channel)
 {
 
 	int i=0;

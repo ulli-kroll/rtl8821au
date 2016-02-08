@@ -705,73 +705,31 @@ typedef enum tag_SW_Antenna_Switch_Definition
 #define SWAW_STEP_PEAK		0
 #define SWAW_STEP_DETERMINE	1
 
-void ODM_Write_DIG(IN	struct _rtw_dm *pDM_Odm, 	IN	u8	CurrentIGI);
+void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI);
 void ODM_Write_CCK_CCA_Thres(struct rtl_priv *rtlpriv, u8 CurCCK_CCAThres);
 
-void
-ODM_SetAntenna(
-	IN 	struct _rtw_dm *pDM_Odm,
-	IN	u8		Antenna);
-
+void ODM_SetAntenna(struct _rtw_dm *pDM_Odm, u8 Antenna);
 
 #define dm_CheckTXPowerTracking 	ODM_TXPowerTrackingCheck
-void
-ODM_TXPowerTrackingCheck(
-	IN		struct _rtw_dm *	pDM_Odm
-	);
+void ODM_TXPowerTrackingCheck(struct _rtw_dm *pDM_Odm);
 
-uint32_t
-GetPSDData(
-	struct _rtw_dm *pDM_Odm,
-	unsigned int 	point,
-	u8 initial_gain_psd);
+uint32_t GetPSDData(struct _rtw_dm *pDM_Odm, unsigned int point, u8 initial_gain_psd);
+void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm);
 
-
-
-void
-odm_DIGbyRSSI_LPS(
-	IN		struct _rtw_dm *	pDM_Odm
-	);
-
-uint32_t ODM_Get_Rate_Bitmap(
-	IN	struct _rtw_dm *pDM_Odm,
-	IN	uint32_t		macid,
-	IN	uint32_t 		ra_mask,
-	IN	u8 		rssi_level);
-
-
+uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
+	uint32_t ra_mask, u8 rssi_level);
 
 void ODM_DMInit(struct rtl_priv *rtlpriv);
 
-void
-ODM_CmnInfoHook(
-	IN		struct _rtw_dm *	pDM_Odm,
-	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		void 	*pValue
-	);
+void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo, void *pValue);
 
-void
-ODM_CmnInfoPtrArrayHook(
-	IN		struct _rtw_dm *	pDM_Odm,
-	IN		ODM_CMNINFO_E	CmnInfo,
-	IN		u16			Index,
-	IN		void *pValue
-	);
+void ODM_CmnInfoPtrArrayHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
+	u16 Index, void *pValue);
 
-void
-ODM_AntselStatistics_88C(
-	IN		struct _rtw_dm *	pDM_Odm,
-	IN		u8			MacId,
-	IN		uint32_t			PWDBAll,
-	IN		bool			isCCKrate
-);
+void ODM_AntselStatistics_88C(struct _rtw_dm *pDM_Odm, u8 MacId,
+	uint32_t PWDBAll, bool isCCKrate);
 
-
-void
-ODM_UpdateInitRate(
-	IN	struct _rtw_dm *pDM_Odm,
-	IN	u8		Rate
-	);
+void ODM_UpdateInitRate(struct _rtw_dm *pDM_Odm, u8 Rate);
 
 #endif
 

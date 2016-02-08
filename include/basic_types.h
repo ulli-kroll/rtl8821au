@@ -39,8 +39,6 @@
 	/* ULLI : the w*nd*ws hell */
 
 	#include <linux/types.h>
-	#define IN
-	#define OUT
 	#define NDIS_OID uint
 	#define NDIS_STATUS uint
 

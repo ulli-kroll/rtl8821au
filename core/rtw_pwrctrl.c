@@ -443,7 +443,7 @@ void LPS_Leave(struct rtl_priv *rtlpriv)
 // Description: Leave all power save mode: LPS, FwLPS, IPS if needed.
 // Move code to function by tynli. 2010.03.26.
 //
-void LeaveAllPowerSaveMode(IN struct rtl_priv *rtlpriv)
+void LeaveAllPowerSaveMode(struct rtl_priv *rtlpriv)
 {
 	struct mlme_priv	*pmlmepriv = &(rtlpriv->mlmepriv);
 	uint8_t	enqueue = 0;

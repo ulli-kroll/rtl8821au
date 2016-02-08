@@ -20,13 +20,8 @@
 #ifndef __RTL8812A_RF_H__
 #define __RTL8812A_RF_H__
 
-void
-PHY_RF6052SetOFDMTxPower8812(
-	IN	struct rtl_priv *rtlpriv,
-	IN	u8*			pPowerLevelOFDM,
-	IN	u8*			pPowerLevelBW20,
-	IN	u8*			pPowerLevelBW40,
-	IN	uint8_t			Channel);
+void PHY_RF6052SetOFDMTxPower8812(struct rtl_priv *rtlpriv, u8 *pPowerLevelOFDM,
+	u8 *pPowerLevelBW20, u8 *pPowerLevelBW40, uint8_t Channel);
 
 #endif//__RTL8188E_RF_H__
 

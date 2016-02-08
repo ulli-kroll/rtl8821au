@@ -47,7 +47,7 @@ enum baseband_config_type {
 	
 /* Not in rtlwifi */
 
-void	PHY_SetTxPowerLevel8812(	IN struct rtl_priv *rtlpriv, IN uint8_t	Channel	);
+void	PHY_SetTxPowerLevel8812(struct rtl_priv *rtlpriv, uint8_t Channel);
 bool phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW);
 
 #endif

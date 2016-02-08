@@ -57,7 +57,7 @@ static void Init_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	 */
 }
 
-void rtl8812_init_dm_priv(IN struct rtl_priv *rtlpriv)
+void rtl8812_init_dm_priv(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -69,7 +69,7 @@ void rtl8812_init_dm_priv(IN struct rtl_priv *rtlpriv)
 	Init_ODM_ComInfo_8812(rtlpriv);
 }
 
-void rtl8812_deinit_dm_priv(IN struct rtl_priv *rtlpriv)
+void rtl8812_deinit_dm_priv(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;

@@ -55,19 +55,19 @@ typedef enum _RT_MEDIA_STATUS {
 
 uint8_t	//return the final channel plan decision
 hal_com_get_channel_plan(
-	IN	struct rtl_priv *rtlpriv,
-	IN	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
-	IN	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
-	IN	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
-	IN	bool			AutoLoadFail
+	struct rtl_priv *rtlpriv,
+	uint8_t			hw_channel_plan,	//channel plan from HW (efuse/eeprom)
+	uint8_t			sw_channel_plan,	//channel plan from SW (registry/module param)
+	uint8_t			def_channel_plan,	//channel plan used when the former two is invalid
+	bool			AutoLoadFail
 	);
 
 bool HAL_IsLegalChannel(struct rtl_priv *rtlpriv, u32 Channel);
 
 void	HalSetBrateCfg(
-	IN struct rtl_priv *	rtlpriv,
-	IN uint8_t			*mBratesOS,
-	OUT u16			*pBrateCfg);
+	struct rtl_priv *	rtlpriv,
+	uint8_t			*mBratesOS,
+	u16			*pBrateCfg);
 
 
 void hal_init_macaddr(struct rtl_priv *rtlpriv);

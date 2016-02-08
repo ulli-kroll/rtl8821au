@@ -1358,7 +1358,7 @@ bool rtl8821au_gpio_radio_on_off_checking(struct rtl_priv *rtlpriv, u8 *valid)
 }
 
 
-static void _InitBurstPktLen(IN struct rtl_priv *rtlpriv)
+static void _InitBurstPktLen(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -1588,7 +1588,7 @@ static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_RQPN, value32);
 }
 
-static void _InitID_8812A(IN  struct rtl_priv *rtlpriv)
+static void _InitID_8812A(struct rtl_priv *rtlpriv)
 {
 	hal_init_macaddr(rtlpriv);	/* set mac_address */
 }
@@ -1787,7 +1787,7 @@ static void _InitEDCA_8812AUsb(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_USTIME_EDCA, 0x50);
 }
 
-static void _InitRetryFunction_8812A(IN  struct rtl_priv *rtlpriv)
+static void _InitRetryFunction_8812A(struct rtl_priv *rtlpriv)
 {
 	uint8_t	value8;
 
@@ -1860,7 +1860,7 @@ static void _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
 
 }
 
-static void _InitAdaptiveCtrl_8812AUsb(IN struct rtl_priv *rtlpriv)
+static void _InitAdaptiveCtrl_8812AUsb(struct rtl_priv *rtlpriv)
 {
 	u16	value16;
 	uint32_t	value32;

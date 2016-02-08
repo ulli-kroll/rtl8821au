@@ -27,7 +27,7 @@ extern void _rtw_free_recv_priv (struct recv_priv *precvpriv);
 
 extern int32_t  rtw_recv_entry(struct recv_frame *precv_frame);
 extern int rtw_recv_indicatepkt(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
-extern void rtw_recv_returnpacket(struct  net_device *cnxt, IN struct sk_buff *preturnedpkt);
+extern void rtw_recv_returnpacket(struct  net_device *cnxt, struct sk_buff *preturnedpkt);
 
 extern void rtw_handle_tkip_mic_err(struct rtl_priv *rtlpriv,u8 bgroup);
 

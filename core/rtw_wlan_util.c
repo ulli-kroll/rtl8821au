@@ -368,10 +368,7 @@ void get_rate_set(struct rtl_priv *rtlpriv, unsigned char *pbssrate, int *bssrat
 	memcpy(pbssrate, supportedrates, *bssrate_len);
 }
 
-void UpdateBrateTbl(
-	IN struct rtl_priv *	rtlpriv,
-	IN uint8_t			*mBratesOS
-)
+void UpdateBrateTbl(struct rtl_priv *rtlpriv, uint8_t *mBratesOS)
 {
 	uint8_t	i;
 	uint8_t	rate;

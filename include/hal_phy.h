@@ -135,64 +135,30 @@ typedef struct RF_Shadow_Compare_Map {
 
 /*--------------------------Exported Function prototype---------------------*/
 
-u32
-PHY_RFShadowRead(
-	IN	struct rtl_priv *	rtlpriv,
-	IN	uint8_t				eRFPath,
-	IN	u32				Offset);
+u32 PHY_RFShadowRead(struct rtl_priv *rtlpriv, uint8_t eRFPath, u32 Offset);
 
-void
-PHY_RFShadowWrite(
-	IN	struct rtl_priv *	rtlpriv,
-	IN	uint8_t				eRFPath,
-	IN	u32				Offset,
-	IN	u32				Data);
+void PHY_RFShadowWrite(struct rtl_priv *rtlpriv, uint8_t eRFPath,
+	u32 Offset, u32	Data);
 
-bool
-PHY_RFShadowCompare(
-	IN	struct rtl_priv *	rtlpriv,
-	IN	uint8_t				eRFPath,
-	IN	u32				Offset);
+bool PHY_RFShadowCompare(struct rtl_priv *rtlpriv, uint8_t eRFPath, u32	Offset);
 
-void
-PHY_RFShadowRecorver(
-	IN	struct rtl_priv *	rtlpriv,
-	IN	uint8_t				eRFPath,
-	IN	u32				Offset);
+void PHY_RFShadowRecorver(struct rtl_priv *rtlpriv, uint8_t eRFPath, u32 Offset);
 
-void
-PHY_RFShadowCompareAll(
-	IN	struct rtl_priv *	rtlpriv);
+void PHY_RFShadowCompareAll(struct rtl_priv *rtlpriv);
 
-void
-PHY_RFShadowRecorverAll(
-	IN	struct rtl_priv *	rtlpriv);
+void PHY_RFShadowRecorverAll(struct rtl_priv *rtlpriv);
 
-void
-PHY_RFShadowCompareFlagSet(
-	IN	struct rtl_priv *	rtlpriv,
-	IN	uint8_t				eRFPath,
-	IN	u32				Offset,
-	IN	uint8_t				Type);
+void PHY_RFShadowCompareFlagSet(struct rtl_priv *rtlpriv, uint8_t eRFPath,
+	u32 Offset, uint8_t Type);
 
-void
-PHY_RFShadowRecorverFlagSet(
-	IN	struct rtl_priv *	rtlpriv,
-	IN	uint8_t				eRFPath,
-	IN	u32				Offset,
-	IN	uint8_t				Type);
+void PHY_RFShadowRecorverFlagSet(struct rtl_priv *rtlpriv, uint8_t eRFPath,
+	u32 Offset, uint8_t Type);
 
-void
-PHY_RFShadowCompareFlagSetAll(
-	IN	struct rtl_priv *	rtlpriv);
+void PHY_RFShadowCompareFlagSetAll(struct rtl_priv *rtlpriv);
 
-void
-PHY_RFShadowRecorverFlagSetAll(
-	IN	struct rtl_priv *	rtlpriv);
+void PHY_RFShadowRecorverFlagSetAll(struct rtl_priv *rtlpriv);
 
-void
-PHY_RFShadowRefresh(
-	IN	struct rtl_priv *	rtlpriv);
+void PHY_RFShadowRefresh(struct rtl_priv *rtlpriv);
 
 #endif //__HAL_COMMON_H__
 

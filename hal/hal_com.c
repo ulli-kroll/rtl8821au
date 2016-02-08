@@ -83,10 +83,8 @@ bool HAL_IsLegalChannel(struct rtl_priv *rtlpriv, uint32_t Channel)
 	return bLegalChannel;
 }
 
-void	HalSetBrateCfg(
-	IN struct rtl_priv *	rtlpriv,
-	IN uint8_t			*mBratesOS,
-	OUT u16			*pBrateCfg)
+void HalSetBrateCfg(struct rtl_priv *rtlpriv, uint8_t *mBratesOS,
+	u16	*pBrateCfg)
 {
 	uint8_t	i, is_brate, brate;
 

@@ -162,23 +162,13 @@ struct oid_obj_priv {
 
 extern struct iw_handler_def  rtw_handlers_def;
 
-extern	NDIS_STATUS drv_query_info(
-	IN	struct  net_device	*MiniportAdapterContext,
-	IN	NDIS_OID		Oid,
-	IN	void *			InformationBuffer,
-	IN	u32			InformationBufferLength,
-	OUT	u32*			BytesWritten,
-	OUT	u32*			BytesNeeded
-	);
+extern	NDIS_STATUS drv_query_info(struct net_device *MiniportAdapterContext,
+	NDIS_OID Oid, void *InformationBuffer, u32 InformationBufferLength,
+	u32 *BytesWritten, u32 *BytesNeeded);
 
-extern	NDIS_STATUS 	drv_set_info(
-	IN	struct  net_device	*MiniportAdapterContext,
-	IN	NDIS_OID		Oid,
-	IN	void *			InformationBuffer,
-	IN	u32			InformationBufferLength,
-	OUT	u32*			BytesRead,
-	OUT	u32*			BytesNeeded
-	);
+extern	NDIS_STATUS drv_set_info(struct net_device *MiniportAdapterContext,
+	NDIS_OID Oid, void *InformationBuffer, u32 InformationBufferLength,
+	u32 *BytesRead, u32 *BytesNeeded);
 
 #endif // #ifndef __INC_CEINFO_
 

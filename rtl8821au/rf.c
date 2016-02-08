@@ -29,11 +29,8 @@ void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_W
 	}
 }
 
-static void writeOFDMPowerReg8812(
-	IN		struct rtl_priv *rtlpriv,
-	IN		uint8_t		index,
-	IN 		u32*		pValue
-	)
+static void writeOFDMPowerReg8812(struct rtl_priv *rtlpriv, uint8_t index,
+	u32 *pValue)
 {
 	u16 RegOffset_A[6] = {
     	RTXAGC_A_OFDM18_OFDM6,
@@ -80,15 +77,9 @@ static void writeOFDMPowerReg8812(
 // powerbase0 for OFDM rates
 // powerbase1 for HT MCS rates
 //
-void getPowerBase8812(
-	IN	struct rtl_priv *rtlpriv,
-	IN	uint8_t *			pPowerLevelOFDM,
-	IN	uint8_t *			pPowerLevelBW20,
-	IN	uint8_t *			pPowerLevelBW40,
-	IN	uint8_t			Channel,
-	IN OUT u32*		OfdmBase,
-	IN OUT u32*		MCSBase
-	)
+void getPowerBase8812(struct rtl_priv *rtlpriv, uint8_t *pPowerLevelOFDM,
+	uint8_t *pPowerLevelBW20, uint8_t *pPowerLevelBW40, uint8_t Channel,
+	u32 *OfdmBase, u32 *MCSBase)
 {
 	uint32_t			powerBase0, powerBase1;
 	uint8_t			i, powerlevel[2];
@@ -120,14 +111,9 @@ void getPowerBase8812(
 	}
 }
 
-void getTxPowerWriteValByRegulatory8812(
-	IN		struct rtl_priv *rtlpriv,
-	IN		uint8_t			Channel,
-	IN		uint8_t			index,
-	IN		u32*		powerBase0,
-	IN		u32*		powerBase1,
-	OUT		u32*		pOutWriteVal
-	)
+void getTxPowerWriteValByRegulatory8812(struct rtl_priv *rtlpriv, 
+	uint8_t	Channel, uint8_t index, u32 *powerBase0, u32 *powerBase1,
+	u32 *pOutWriteVal)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
@@ -241,10 +227,8 @@ void getTxPowerWriteValByRegulatory8812(
 }
 
 void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *rtlpriv,
-	IN	uint8_t *		pPowerLevelOFDM,
-	IN	uint8_t *		pPowerLevelBW20,
-	IN	uint8_t *		pPowerLevelBW40,
-	IN	uint8_t		Channel)
+	uint8_t *pPowerLevelOFDM, uint8_t *pPowerLevelBW20,
+	uint8_t *pPowerLevelBW40, uint8_t Channel)
 {
 	uint32_t writeVal[2], powerBase0[2], powerBase1[2], pwrtrac_value;
 	uint8_t index = 0;

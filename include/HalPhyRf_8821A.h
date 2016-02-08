@@ -29,10 +29,7 @@
 
 //1 7.	IQK
 
-void PHY_SetRFPathSwitch_8821A(
-	IN	struct rtl_priv *rtlpriv,
-	IN	bool		bMain
-	);
+void PHY_SetRFPathSwitch_8821A(struct rtl_priv *rtlpriv, bool bMain);
 
 
 #endif	// #ifndef __HAL_PHY_RF_8821A_H__

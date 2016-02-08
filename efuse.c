@@ -310,7 +310,7 @@ void rtw_efuse_shadow_map_update(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 
-	if (efuse->autoload_failflag == _TRUE)
+	if (efuse->autoload_failflag == true)
 		memset(&efuse->efuse_map[0][0], 0xFF, rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE]);
 	else
 		efuse_read_all_map(rtlpriv, efuse->efuse_map[0]);
@@ -418,7 +418,7 @@ static u8 Efuse_CalculateWordCnts(u8 word_en)
 
 static u16 efuse_get_current_size(struct rtl_priv *rtlpriv)
 {
-	int	bContinual = _TRUE;
+	int	bContinual = true;
 	u16	efuse_addr = 0;
 	uint8_t	hoffset = 0, hworden = 0;
 	uint8_t	efuse_data, word_cnts = 0;
@@ -449,7 +449,7 @@ static u16 efuse_get_current_size(struct rtl_priv *rtlpriv)
 			/* read next header */
 			efuse_addr = efuse_addr + (word_cnts*2)+1;
 		} else {
-			bContinual = _FALSE ;
+			bContinual = false ;
 		}
 	}
 
@@ -488,8 +488,8 @@ static int efuse_pg_packet_read(struct rtl_priv *rtlpriv,
 {
 	uint8_t	ReadState = PG_STATE_HEADER;
 
-	int	bContinual = _TRUE;
-	int	bDataEmpty = _TRUE ;
+	int	bContinual = true;
+	int	bDataEmpty = true ;
 
 	uint8_t	efuse_data, word_cnts = 0;
 	u16 efuse_addr = 0;
@@ -500,9 +500,9 @@ static int efuse_pg_packet_read(struct rtl_priv *rtlpriv,
 	uint8_t	tmp_header = 0;
 
 	if (data == NULL)
-		return _FALSE;
+		return false;
 	if (offset > EFUSE_MAX_SECTION_JAGUAR)
-		return _FALSE;
+		return false;
 
 	memset((void *)data, 0xff, sizeof(uint8_t) * PGPKT_DATA_SIZE);
 	memset((void *)tmpdata, 0xff, sizeof(uint8_t) * PGPKT_DATA_SIZE);
@@ -537,18 +537,18 @@ static int efuse_pg_packet_read(struct rtl_priv *rtlpriv,
 					hworden =  efuse_data & 0x0F;
 				}
 				word_cnts = Efuse_CalculateWordCnts(hworden);
-				bDataEmpty = _TRUE ;
+				bDataEmpty = true ;
 
 				if (hoffset == offset) {
 					for (tmpidx = 0; tmpidx < word_cnts*2; tmpidx++) {
 						if (efuse_OneByteRead(rtlpriv, efuse_addr+1+tmpidx, &efuse_data)) {
 							tmpdata[tmpidx] = efuse_data;
 							if (efuse_data != 0xff) {
-								bDataEmpty = _FALSE;
+								bDataEmpty = false;
 							}
 						}
 					}
-					if (bDataEmpty == _FALSE) {
+					if (bDataEmpty == false) {
 						ReadState = PG_STATE_DATA;
 					} else {	/* read next header */
 						efuse_addr = efuse_addr + (word_cnts*2)+1;
@@ -560,7 +560,7 @@ static int efuse_pg_packet_read(struct rtl_priv *rtlpriv,
 				}
 
 			} else{
-				bContinual = _FALSE ;
+				bContinual = false ;
 			}
 		} else if (ReadState & PG_STATE_DATA) {
 			/* -------  Data section Read ------------- */
@@ -574,9 +574,9 @@ static int efuse_pg_packet_read(struct rtl_priv *rtlpriv,
 	if ((data[0] == 0xff) && (data[1] == 0xff) && (data[2] == 0xff) &&
 	    (data[3] == 0xff) && (data[4] == 0xff) && (data[5] == 0xff) &&
 	    (data[6] == 0xff) && (data[7] == 0xff))
-		return _FALSE;
+		return false;
 	else
-		return _TRUE;
+		return true;
 
 }
 
@@ -589,8 +589,8 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 {
 	uint8_t WriteState = PG_STATE_HEADER;
 
-	int bContinual = _TRUE, bDataEmpty = _TRUE;
-	/* int bResult = _TRUE; */
+	int bContinual = true, bDataEmpty = true;
+	/* int bResult = true; */
 	u16 efuse_addr = 0;
 	uint8_t	efuse_data;
 
@@ -607,7 +607,7 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 
 	static int repeat_times = 0;
 
-	bool	bExtendedHeader = _FALSE;
+	bool	bExtendedHeader = false;
 
 	/*
 	 * <Roger_Notes> Efuse has been pre-programmed dummy 5Bytes at the end of Efuse by CP.
@@ -619,7 +619,7 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 #if 0	 /* ULLI : temporary disabled */
 	if (rtl8812_EfuseGetCurrentSize(rtlpriv) >= (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR)) {
 		DBG_871X("hal_EfusePgPacketWrite_8812A() error: %x >= %x\n", rtl8812_EfuseGetCurrentSize(rtlpriv), (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR));
-		return _FALSE;
+		return false;
 	}
 #endif
 	/* Init the 8 bytes content as 0xff */
@@ -644,7 +644,7 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 	 */
 	while (bContinual && (efuse_addr  < (EFUSE_REAL_CONTENT_LEN_JAGUAR-EFUSE_OOB_PROTECT_BYTES_JAGUAR))) {
 		if (WriteState == PG_STATE_HEADER) {
-			bDataEmpty = _TRUE;
+			bDataEmpty = true;
 			badworden = 0x0F;
 			/* ************	so ******************* */
 			/* DBG_871X("EFUSE PG_STATE_HEADER\n"); */
@@ -737,11 +737,11 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 					/* ************	so-2 ******************* */
 					for (tmpindex = 0; tmpindex < (tmp_word_cnts * 2) ; tmpindex++) {
 						if (efuse_OneByteRead(rtlpriv, (efuse_addr + 1 + tmpindex), &efuse_data) && (efuse_data != 0xFF)) {
-							bDataEmpty = _FALSE;
+							bDataEmpty = false;
 						}
 					}
 					/* ***********	so-2-1 ******************* */
-					if (bDataEmpty == _FALSE) {
+					if (bDataEmpty == false) {
 						/* DBG_871X("hal_EfusePgPacketWrite_8812A section offset the same and data is NOT empty\n"); */
 						efuse_addr = efuse_addr + (tmp_word_cnts*2) + 1; /* Next pg_packet */
 #if (EFUSE_ERROE_HANDLE == 1)
@@ -801,14 +801,14 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 								target_pkt.word_en = tmp_word_en;
 								/* =========================== */
 							} else {
-								bContinual = _FALSE;
+								bContinual = false;
 							}
 #if (EFUSE_ERROE_HANDLE == 1)
 							WriteState = PG_STATE_HEADER;
 							repeat_times++;
 							if (repeat_times > EFUSE_REPEAT_THRESHOLD_) {
-								bContinual = _FALSE;
-								/* bResult = _FALSE; */
+								bContinual = false;
+								/* bResult = false; */
 							}
 #endif
 						} else{
@@ -830,7 +830,7 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 #endif				
 			} else	{
 				/* ***********	s1: header == oxff	******************* */
-				bExtendedHeader = _FALSE;
+				bExtendedHeader = false;
 
 				if (target_pkt.offset >= EFUSE_MAX_SECTION_BASE) {
 					pg_header = ((target_pkt.offset & 0x07) << 5) | 0x0F;
@@ -846,8 +846,8 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 						repeat_times++;
 
 						if (repeat_times > EFUSE_REPEAT_THRESHOLD_) {
-							bContinual = _FALSE;
-							/* bResult = _FALSE; */
+							bContinual = false;
+							/* bResult = false; */
 							efuse_addr++;
 							break;
 						}
@@ -872,8 +872,8 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 							repeat_times++;
 
 							if (repeat_times > EFUSE_REPEAT_THRESHOLD_) {
-								bContinual = _FALSE;
-								/* bResult = _FALSE; */
+								bContinual = false;
+								/* bResult = false; */
 								break;
 							}
 							efuse_OneByteWrite(rtlpriv, efuse_addr, pg_header);
@@ -888,15 +888,15 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 							repeat_times++;
 
 							if (repeat_times > EFUSE_REPEAT_THRESHOLD_) {
-								bContinual = _FALSE;
-								/* bResult = _FALSE; */
+								bContinual = false;
+								/* bResult = false; */
 								break;
 							} else {
 								efuse_addr++;
 								continue;
 							}
 						} else if (pg_header != tmp_header) {	/* offset PG fail */
-							bExtendedHeader = _TRUE;
+							bExtendedHeader = true;
 							tmp_pkt.offset = ((pg_header_temp & 0xE0) >> 5) | ((tmp_header & 0xF0) >> 1);
 							tmp_pkt.word_en =  tmp_header & 0x0F;
 							tmp_word_cnts =  Efuse_CalculateWordCnts(tmp_pkt.word_en);
@@ -922,8 +922,8 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 					WriteState = PG_STATE_HEADER;
 					repeat_times++;
 					if (repeat_times > EFUSE_REPEAT_THRESHOLD_) {
-						bContinual = _FALSE;
-						/* bResult = _FALSE; */
+						bContinual = false;
+						/* bResult = false; */
 					}
 				}
 #endif
@@ -960,8 +960,8 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 					WriteState = PG_STATE_HEADER;
 					repeat_times++;
 					if (repeat_times > EFUSE_REPEAT_THRESHOLD_) {
-						bContinual = _FALSE;
-						/* bResult = _FALSE; */
+						bContinual = false;
+						/* bResult = false; */
 					}
 #endif
 
@@ -979,7 +979,7 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 			badworden = efuse_word_enable_data_write(rtlpriv, efuse_addr+1, target_pkt.word_en, target_pkt.data);
 			if ((badworden & 0x0F) == 0x0F) {
 				/* ************  s1-1-A ******************* */
-				bContinual = _FALSE;
+				bContinual = false;
 			} else {
 				/* reorganize other pg packet  */
 				/* ***********  s1-1-B ******************* */
@@ -994,8 +994,8 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 				WriteState = PG_STATE_HEADER;
 				repeat_times++;
 				if (repeat_times > EFUSE_REPEAT_THRESHOLD_) {
-					bContinual = _FALSE;
-					/* bResult = _FALSE; */
+					bContinual = false;
+					/* bResult = false; */
 				}
 #endif
 				/* DBG_871X("EFUSE PG_STATE_HEADER-3\n"); */
@@ -1008,7 +1008,7 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 		DBG_871X("hal_EfusePgPacketWrite_8812A(): efuse_addr(%#x) Out of size!!\n", efuse_addr);
 	}
 #endif	
-	return _TRUE;
+	return true;
 }
 
 static u8 efuse_word_enable_data_write(struct rtl_priv *rtlpriv,

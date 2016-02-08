@@ -319,7 +319,7 @@ EXPORT_SYMBOL_GPL(rtl_ips_nic_on);
 
 /*
  *Determine if we can set Fw into PS mode
- *in current condition.Return TRUE if it
+ *in current condition.Return true if it
  *can enter PS mode.
  */
 static bool rtl_get_fwlps_doze(struct ieee80211_hw *hw)

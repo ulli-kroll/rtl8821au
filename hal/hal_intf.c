@@ -27,14 +27,14 @@ uint rtw_hal_init(struct rtl_priv *rtlpriv)
 {
 	uint status = _SUCCESS;
 
-	rtlpriv->hw_init_completed = _FALSE;
+	rtlpriv->hw_init_completed = false;
 
 	status = rtlpriv->cfg->ops->hw_init(rtlpriv);
 
 	if (status == _SUCCESS) {
-		rtlpriv->hw_init_completed = _TRUE;
+		rtlpriv->hw_init_completed = true;
 	} else {
-		rtlpriv->hw_init_completed = _FALSE;
+		rtlpriv->hw_init_completed = false;
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "rtw_hal_init: hal__init fail\n");
 	}
 
@@ -49,7 +49,7 @@ uint rtw_hal_deinit(struct rtl_priv *rtlpriv)
 	status = rtlpriv->cfg->ops->hal_deinit(rtlpriv);
 
 	if (status == _SUCCESS) {
-		rtlpriv->hw_init_completed = _FALSE;
+		rtlpriv->hw_init_completed = false;
 	} else {
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "\n rtw_hal_deinit: hal_init fail\n");
 	}
@@ -87,7 +87,7 @@ int32_t	rtw_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *p
 	if (rtlpriv->cfg->ops->hal_xmitframe_enqueue)
 		return rtlpriv->cfg->ops->hal_xmitframe_enqueue(rtlpriv, pxmitframe);
 
-	return _FALSE;
+	return false;
 }
 
 int32_t	rtw_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
@@ -95,7 +95,7 @@ int32_t	rtw_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 	if (rtlpriv->cfg->ops->hal_xmit)
 		return rtlpriv->cfg->ops->hal_xmit(rtlpriv, pxmitframe);
 
-	return _FALSE;
+	return false;
 }
 
 int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe)
@@ -147,7 +147,7 @@ void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta,
 
 	pmlmepriv = &(rtlpriv->mlmepriv);
 
-	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
+	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == true) {
 		add_RATid(rtlpriv, psta, rssi_level);
 	} else {
 		UpdateHalRAMask8812A(rtlpriv, psta->mac_id, rssi_level);

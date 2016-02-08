@@ -185,9 +185,9 @@ void ODM_ChangeDynamicInitGainThresh(struct rtl_priv *rtlpriv, uint32_t DM_Type,
 	} else if (DM_Type == DIG_TYPE_THRESH_LOW) {
 		pDM_DigTable->rssi_lowthresh = DM_Value;
 	} else if (DM_Type == DIG_TYPE_ENABLE) {
-		pDM_DigTable->dig_enable_flag = TRUE;
+		pDM_DigTable->dig_enable_flag = true;
 	} else if (DM_Type == DIG_TYPE_DISABLE) {
-		pDM_DigTable->dig_enable_flag = FALSE;
+		pDM_DigTable->dig_enable_flag = false;
 	} else if (DM_Type == DIG_TYPE_BACKOFF) {
 		if (DM_Value > 30)
 			DM_Value = 30;
@@ -557,7 +557,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 
 /*
  * Return Value: bool
- * - TRUE: RATRState is changed.
+ * - true: RATRState is changed.
  */
 static bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,
 	bool bForceUpdate, u8 *pRATRState)
@@ -587,7 +587,7 @@ static bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,
 		break;
 
 	default:
-		ODM_RT_ASSERT(pDM_Odm, FALSE, ("wrong rssi level setting %d !", *pRATRState));
+		ODM_RT_ASSERT(pDM_Odm, false, ("wrong rssi level setting %d !", *pRATRState));
 		break;
 	}
 
@@ -603,10 +603,10 @@ static bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,
 	if (*pRATRState != RATRState || bForceUpdate) {
 		RT_TRACE(rtlpriv, COMP_RATE, DBG_LOUD, "RSSI Level %d -> %d\n", *pRATRState, RATRState);
 		*pRATRState = RATRState;
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm)
@@ -627,18 +627,18 @@ void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm)
 		struct sta_info *pstat = pDM_Odm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pstat)) {
 			if (pstat->rssi_stat.UndecoratedSmoothedPWDB < p_ra->ldpc_thres) {
-				p_ra->use_ldpc = TRUE;
-				pRA->bLowerRtsRate = TRUE;
-				Set_RA_LDPC_8812(pstat, TRUE);
-				/* DbgPrint("RSSI=%d, bUseLdpc = TRUE\n", pHalData->UndecoratedSmoothedPWDB); */
+				p_ra->use_ldpc = true;
+				pRA->bLowerRtsRate = true;
+				Set_RA_LDPC_8812(pstat, true);
+				/* DbgPrint("RSSI=%d, bUseLdpc = true\n", pHalData->UndecoratedSmoothedPWDB); */
 			} else if (pstat->rssi_stat.UndecoratedSmoothedPWDB > (p_ra->ldpc_thres-5)) {
-				p_ra->use_ldpc = FALSE;
-				pRA->bLowerRtsRate = FALSE;
-				Set_RA_LDPC_8812(pstat, FALSE);
-				/* DbgPrint("RSSI=%d, bUseLdpc = FALSE\n", pHalData->UndecoratedSmoothedPWDB); */
+				p_ra->use_ldpc = false;
+				pRA->bLowerRtsRate = false;
+				Set_RA_LDPC_8812(pstat, false);
+				/* DbgPrint("RSSI=%d, bUseLdpc = false\n", pHalData->UndecoratedSmoothedPWDB); */
 			}
 
-			if (TRUE == ODM_RAStateCheck(rtlpriv, pstat->rssi_stat.UndecoratedSmoothedPWDB, FALSE , &pstat->rssi_level)) {
+			if (true == ODM_RAStateCheck(rtlpriv, pstat->rssi_stat.UndecoratedSmoothedPWDB, false , &pstat->rssi_level)) {
 				RT_TRACE(rtlpriv, COMP_RATE, DBG_LOUD, "RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level);
 				/* printk("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level); */
 				rtw_hal_update_ra_mask(pstat->rtlpriv, pstat, pstat->rssi_level);

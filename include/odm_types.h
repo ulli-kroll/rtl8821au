@@ -39,9 +39,6 @@
 		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_BIG
 	#endif
 
-	#define TRUE 	_TRUE
-	#define FALSE	_FALSE
-
 	//define useless flag to avoid compile warning
 	#define	USE_WORKITEM 0
 	#define 	FOR_BRAZIL_PRETEST 0

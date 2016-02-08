@@ -148,7 +148,7 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 
 	rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, rtl_read_word(rtlpriv, REG_GPIO_MUXCFG)&(~BIT12));
 
-	if (IF_RTL8821AU_USB3_MODE(rtlpriv->rtlhal.version) == _TRUE) {
+	if (IF_RTL8821AU_USB3_MODE(rtlpriv->rtlhal.version) == true) {
 		/*
 		 * set Reg 0xf008[3:4] to 2'11 to eable U1/U2 Mode in USB3.0. added by page, 20120712
 		 */
@@ -159,7 +159,7 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_HISR1_8812, 0xFFFFFFFF);
 	rtlpriv->cfg->ops->disable_interrupt(rtlpriv);
 	
-	if (rtlpriv->hw_init_completed == _TRUE) {
+	if (rtlpriv->hw_init_completed == true) {
 		_rtl8821au_poweroff_adapter(rtlpriv);
 #if 0	/* ULLI : we have no HW power down here ->pwrctrlpriv.bHWPowerdown = 0 */
 		if ((rtlpriv->pwrctrlpriv.bHWPwrPindetect) && (rtlpriv->pwrctrlpriv.bHWPowerdown))

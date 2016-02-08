@@ -54,7 +54,7 @@ bool rtw_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
 				 struct wlan_pwr_cfg pwrcfgcmd[])
 {
 	struct wlan_pwr_cfg cfg_cmd = {0};
-	uint8_t	bPollingBit = _FALSE;
+	uint8_t	bPollingBit = false;
 	uint32_t AryIdx = 0;
 	uint8_t value = 0;
 	uint32_t offset = 0;
@@ -88,20 +88,20 @@ bool rtw_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
 				break;
 
 			case PWR_CMD_POLLING:
-				bPollingBit = _FALSE;
+				bPollingBit = false;
 				offset = GET_PWR_CFG_OFFSET(cfg_cmd);
 				do {
 						value = rtl_read_byte(rtlpriv, offset);
 
 					value=value&GET_PWR_CFG_MASK(cfg_cmd);
 					if (value == (GET_PWR_CFG_VALUE(cfg_cmd) & GET_PWR_CFG_MASK(cfg_cmd)))
-						bPollingBit = _TRUE;
+						bPollingBit = true;
 					else
 						udelay(10);
 
 					if (pollingCount++ > maxPollingCnt) {
 						RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Fail to polling Offset[%#x]\n", offset);
-						return _FALSE;
+						return false;
 					}
 				} while (!bPollingBit);
 
@@ -116,7 +116,7 @@ bool rtw_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
 
 			case PWR_CMD_END:
 				/* When this command is parsed, end the process */
-				return _TRUE;
+				return true;
 				break;
 
 			default:
@@ -127,7 +127,7 @@ bool rtw_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
 		AryIdx++;		/* Add Array Index */
 	} while(1);
 
-	return _TRUE;
+	return true;
 }
 
 

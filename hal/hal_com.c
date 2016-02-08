@@ -42,15 +42,15 @@ u8 hal_com_get_channel_plan(struct rtl_priv *rtlpriv, u8 hw_channel_plan,
 	uint8_t swConfig;
 	uint8_t chnlPlan;
 
-	swConfig = _TRUE;
+	swConfig = true;
 	if (!AutoLoadFail) {
 		if (!rtw_is_channel_plan_valid(sw_channel_plan))
-			swConfig = _FALSE;
+			swConfig = false;
 		if (hw_channel_plan & EEPROM_CHANNEL_PLAN_BY_HW_MASK)
-			swConfig = _FALSE;
+			swConfig = false;
 	}
 
-	if (swConfig == _TRUE)
+	if (swConfig == true)
 		chnlPlan = sw_channel_plan;
 	else
 		chnlPlan = hw_channel_plan & (~EEPROM_CHANNEL_PLAN_BY_HW_MASK);
@@ -63,20 +63,20 @@ u8 hal_com_get_channel_plan(struct rtl_priv *rtlpriv, u8 hw_channel_plan,
 
 bool HAL_IsLegalChannel(struct rtl_priv *rtlpriv, uint32_t Channel)
 {
-	bool bLegalChannel = _TRUE;
+	bool bLegalChannel = true;
 
 	if (Channel > 14) {
-		if(IsSupported5G(WIRELESS_MODE_MAX) == _FALSE) {
-			bLegalChannel = _FALSE;
+		if(IsSupported5G(WIRELESS_MODE_MAX) == false) {
+			bLegalChannel = false;
 			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Channel > 14 but wireless_mode do not support 5G\n");
 		}
 	} else if ((Channel <= 14) && (Channel >=1)){
-		if(IsSupported24G(WIRELESS_MODE_MAX) == _FALSE) {
-			bLegalChannel = _FALSE;
+		if(IsSupported24G(WIRELESS_MODE_MAX) == false) {
+			bLegalChannel = false;
 			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "(Channel <= 14) && (Channel >=1) but wireless_mode do not support 2.4G\n");
 		}
 	} else {
-		bLegalChannel = _FALSE;
+		bLegalChannel = false;
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "Channel is Invalid !!!\n");
 	}
 

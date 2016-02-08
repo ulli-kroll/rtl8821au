@@ -127,9 +127,9 @@ void rtw_mfree2d(void *pbuf, int h, int w, int size)
 int _rtw_memcmp(void *dst, void *src, u32 sz)
 {
 	if (!(memcmp(dst, src, sz)))
-		return _TRUE;
+		return true;
 	else
-		return _FALSE;
+		return false;
 }
 
 void rtw_init_timer(_timer *ptimer, void *rtlpriv, void *pfunc)
@@ -151,9 +151,9 @@ void _rtw_init_queue(struct __queue *pqueue)
 u32 rtw_end_of_queue_search(struct list_head *head, struct list_head *plist)
 {
 	if (head == plist)
-		return _TRUE;
+		return true;
 	else
-		return _FALSE;
+		return false;
 }
 
 inline u32 rtw_systime_to_ms(u32 systime)
@@ -269,22 +269,22 @@ keep_ori:
  * rtw_cbuf_full - test if cbuf is full
  * @cbuf: pointer of struct rtw_cbuf
  *
- * Returns: _TRUE if cbuf is full
+ * Returns: true if cbuf is full
  */
 inline bool rtw_cbuf_full(struct rtw_cbuf *cbuf)
 {
-	return (cbuf->write == cbuf->read-1) ? _TRUE : _FALSE;
+	return (cbuf->write == cbuf->read-1) ? true : false;
 }
 
 /**
  * rtw_cbuf_empty - test if cbuf is empty
  * @cbuf: pointer of struct rtw_cbuf
  *
- * Returns: _TRUE if cbuf is empty
+ * Returns: true if cbuf is empty
  */
 inline bool rtw_cbuf_empty(struct rtw_cbuf *cbuf)
 {
-	return (cbuf->write == cbuf->read) ? _TRUE : _FALSE;
+	return (cbuf->write == cbuf->read) ? true : false;
 }
 
 /**
@@ -293,7 +293,7 @@ inline bool rtw_cbuf_empty(struct rtw_cbuf *cbuf)
  * @buf: pointer to push in
  *
  * Lock free operation, be careful of the use scheme
- * Returns: _TRUE push success
+ * Returns: true push success
  */
 bool rtw_cbuf_push(struct rtw_cbuf *cbuf, void *buf)
 {

@@ -191,7 +191,7 @@ int rtw_mlcst2unicst(struct rtl_priv *rtlpriv, struct sk_buff *skb)
 	plist = get_next(phead);
 
 	/* free sta asoc_queue */
-	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+	while ((rtw_end_of_queue_search(phead, plist)) == false) {
 		int stainfo_offset;
 		psta = container_of(plist, struct sta_info, asoc_list);
 		plist = get_next(plist);
@@ -209,9 +209,9 @@ int rtw_mlcst2unicst(struct rtl_priv *rtlpriv, struct sk_buff *skb)
 			continue;
 
 		/* avoid come from STA1 and send back STA1 */
-		if (_rtw_memcmp(psta->hwaddr, &skb->data[6], 6) == _TRUE
-			|| _rtw_memcmp(psta->hwaddr, null_addr, 6) == _TRUE
-			|| _rtw_memcmp(psta->hwaddr, bc_addr, 6) == _TRUE
+		if (_rtw_memcmp(psta->hwaddr, &skb->data[6], 6) == true
+			|| _rtw_memcmp(psta->hwaddr, null_addr, 6) == true
+			|| _rtw_memcmp(psta->hwaddr, bc_addr, 6) == true
 		)
 			continue;
 
@@ -230,12 +230,12 @@ int rtw_mlcst2unicst(struct rtl_priv *rtlpriv, struct sk_buff *skb)
 			DBG_871X("%s-%d: skb_copy() failed!\n", __FUNCTION__, __LINE__);
 			pxmitpriv->tx_drop++;
 			/* dev_kfree_skb_any(skb); */
-			return _FALSE;	/* Caller shall tx this multicast frame via normal way. */
+			return false;	/* Caller shall tx this multicast frame via normal way. */
 		}
 	}
 
 	dev_kfree_skb_any(skb);
-	return _TRUE;
+	return true;
 }
 #endif
 
@@ -251,20 +251,20 @@ int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 	int32_t res = 0;
 	u16 queue;
 
-	if (rtw_if_up(rtlpriv) == _FALSE) {
+	if (rtw_if_up(rtlpriv) == false) {
 		goto drop_packet;
 	}
 
 	rtw_check_xmit_resource(rtlpriv, pkt);
 
 #ifdef CONFIG_TX_MCAST2UNI
-	if ( !__rtw_mc2u_disable && check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE && 
+	if ( !__rtw_mc2u_disable && check_fwstate(pmlmepriv, WIFI_AP_STATE) == true && 
 	   ( IP_MCAST_MAC(pkt->data) || ICMPV6_MCAST_MAC(pkt->data) )
 		)
 	{
 		if ( pxmitpriv->free_xmitframe_cnt > (NR_XMITFRAME/4) ) {
 			res = rtw_mlcst2unicst(rtlpriv, pkt);
-			if (res == _TRUE) {
+			if (res == true) {
 				goto exit;
 			}
 		} else {

@@ -128,7 +128,7 @@ int rtw_os_recvbuf_resource_alloc(struct rtl_priv *rtlpriv, struct recv_buf *pre
 	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
 	struct usb_device	*pusbd = pdvobjpriv->udev;
 
-	precvbuf->irp_pending = _FALSE;
+	precvbuf->irp_pending = false;
 	precvbuf->purb = usb_alloc_urb(0, GFP_KERNEL);
 	if(precvbuf->purb == NULL){
 		res = _FAIL;
@@ -136,7 +136,7 @@ int rtw_os_recvbuf_resource_alloc(struct rtl_priv *rtlpriv, struct recv_buf *pre
 
 	precvbuf->skb = NULL;
 
-	precvbuf->reuse = _FALSE;
+	precvbuf->reuse = false;
 
 	precvbuf->len = 0;
 
@@ -220,14 +220,14 @@ void rtw_os_recv_indicate_pkt(struct rtl_priv *rtlpriv, struct sk_buff *skb, str
 
 	/* Indicat the packets to upper layer */
 	if (skb) {
-		if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
+		if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true) {
 			struct sk_buff  *skb_dup = NULL;
 		 	struct sta_info *psta = NULL;
 		 	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 
 			/* DBG_871X("bmcast=%d\n", bmcast); */
 
-			if(_rtw_memcmp(pattrib->dst, rtlpriv->mac80211.mac_addr, ETH_ALEN)==_FALSE) {
+			if(_rtw_memcmp(pattrib->dst, rtlpriv->mac80211.mac_addr, ETH_ALEN)==false) {
 				/* DBG_871X("not ap psta=%p, addr=%pM\n", psta, pattrib->dst); */
 
 				if(is_multicast_ether_addr(pattrib->dst)) {
@@ -283,7 +283,7 @@ void rtw_handle_tkip_mic_err(struct rtl_priv *rtlpriv,uint8_t bgroup)
 		cur_time = jiffies;
 
 		if(cur_time - psecuritypriv->last_mic_err_time < 60*HZ) {
-			psecuritypriv->btkip_countermeasure = _TRUE;
+			psecuritypriv->btkip_countermeasure = true;
 			psecuritypriv->last_mic_err_time = 0;
 			psecuritypriv->btkip_countermeasure_time = cur_time;
 		} else {

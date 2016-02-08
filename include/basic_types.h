@@ -39,7 +39,6 @@
 	/* ULLI : the w*nd*ws hell */
 
 	#include <linux/types.h>
-	#define NDIS_OID uint
 
 	typedef	signed int sint;
 

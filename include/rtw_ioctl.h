@@ -145,7 +145,7 @@ struct oid_funs_node {
 struct oid_par_priv
 {
 	void		*adapter_context;
-	NDIS_OID	oid;
+	uint	oid;
 	void		*information_buf;
 	u32		information_buf_len;
 	u32		*bytes_rw;
@@ -163,11 +163,11 @@ struct oid_obj_priv {
 extern struct iw_handler_def  rtw_handlers_def;
 
 extern	uint drv_query_info(struct net_device *MiniportAdapterContext,
-	NDIS_OID Oid, void *InformationBuffer, u32 InformationBufferLength,
+	uint Oid, void *InformationBuffer, u32 InformationBufferLength,
 	u32 *BytesWritten, u32 *BytesNeeded);
 
 extern	uint drv_set_info(struct net_device *MiniportAdapterContext,
-	NDIS_OID Oid, void *InformationBuffer, u32 InformationBufferLength,
+	uint Oid, void *InformationBuffer, u32 InformationBufferLength,
 	u32 *BytesRead, u32 *BytesNeeded);
 
 #endif // #ifndef __INC_CEINFO_

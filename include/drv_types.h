@@ -148,15 +148,7 @@ struct registry_priv
 
 
 //For registry parameters
-#define RGTRY_OFT(field) ((u32)FIELD_OFFSET(struct registry_priv,field))
-#define RGTRY_SZ(field)   sizeof(((struct registry_priv*) 0)->field)
-#define BSSID_OFT(field) ((u32)FIELD_OFFSET(WLAN_BSSID_EX,field))
-#define BSSID_SZ(field)   sizeof(((PWLAN_BSSID_EX) 0)->field)
-
 #define MAX_CONTINUAL_URB_ERR 4
-
-
-#define GET_IFACE_NUMS(rtlpriv) (((struct rtl_priv *)rtlpriv)->dvobj->iface_nums)
 
 enum _IFACE_TYPE {
 	IFACE_PORT0, //mapping to port0 for C/D series chips

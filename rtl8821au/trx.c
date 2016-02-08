@@ -1955,8 +1955,8 @@ static void _ThreeOutEpMapping(struct rtl_ep_map *ep_map)
 {
 	/* typical setting */
 
-	ep_map->ep_mapping[RTL_TXQ_BE]	= 5;
-	ep_map->ep_mapping[RTL_TXQ_BK]	= 5;
+	ep_map->ep_mapping[RTL_TXQ_BE]	= 4;
+	ep_map->ep_mapping[RTL_TXQ_BK]	= 4;
 	ep_map->ep_mapping[RTL_TXQ_VI]	= 3;
 	ep_map->ep_mapping[RTL_TXQ_VO]	= 2;
 	ep_map->ep_mapping[RTL_TXQ_MGT] = 2;

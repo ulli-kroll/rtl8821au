@@ -250,13 +250,8 @@ void LPS_Leave(struct rtl_priv *rtlpriv);
 
 /* ULLI resolve these #define's */
 
-#define rtw_set_do_late_resume(pwrpriv, enable) do {} while (0)
-#define rtw_register_early_suspend(pwrpriv) do {} while (0)
-#define rtw_unregister_early_suspend(pwrpriv) do {} while (0)
-
 int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, u32 ips_deffer_ms, const char *caller);
 #define rtw_pwr_wakeup(rtlpriv) _rtw_pwr_wakeup(rtlpriv, RTW_PWR_STATE_CHK_INTERVAL, __FUNCTION__)
-#define rtw_pwr_wakeup_ex(rtlpriv, ips_deffer_ms) _rtw_pwr_wakeup(rtlpriv, ips_deffer_ms, __FUNCTION__)
 int rtw_pm_set_ips(struct rtl_priv *rtlpriv, uint8_t mode);
 int rtw_pm_set_lps(struct rtl_priv *rtlpriv, uint8_t mode);
 

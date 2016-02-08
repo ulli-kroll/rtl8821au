@@ -42,8 +42,6 @@
 
 //        #define UCHAR u8
 
-	typedef void (*proc_t)(void*);
-
 	typedef 	__kernel_size_t	SIZE_T;
 	typedef	__kernel_ssize_t	SSIZE_T;
 	#define FIELD_OFFSET(s,field)	((SSIZE_T)&((s*)(0))->field)

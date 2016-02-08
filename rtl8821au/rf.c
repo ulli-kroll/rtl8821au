@@ -319,18 +319,18 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *rtlpriv, uint8_t *pPo
 	struct mlme_ext_priv 	*pmlmeext = &rtlpriv->mlmeextpriv;
 	uint32_t		TxAGC[2] = {0, 0},
 				tmpval = 0;
-	bool	TurboScanOff = _FALSE;
+	bool	TurboScanOff = false;
 	uint8_t	idx1, idx2;
 	uint8_t *ptr;
 
 	/* FOR CE ,must disable turbo scan */
-	TurboScanOff = _TRUE;
+	TurboScanOff = true;
 
 	if (pmlmeext->sitesurvey_res.state == SCAN_PROCESS) {
 		TxAGC[RF90_PATH_A] = 0x3f3f3f3f;
 		TxAGC[RF90_PATH_B] = 0x3f3f3f3f;
 
-		TurboScanOff = _TRUE;	/* disable turbo scan */
+		TurboScanOff = true;	/* disable turbo scan */
 
 		if (TurboScanOff) {
 			for (idx1 = RF90_PATH_A; idx1 <= RF90_PATH_B; idx1++) {

@@ -140,7 +140,7 @@ static u32 _rtl8821au_phy_rf_serial_read(struct rtl_priv *rtlpriv, uint8_t eRFPa
 	struct bb_reg_def *pphyreg = &(rtlpriv->phy.phyreg_def[eRFPath]);
 
 	uint32_t			retValue = 0;
-	bool				bIsPIMode = _FALSE;
+	bool				bIsPIMode = false;
 
 
 	/*
@@ -390,16 +390,16 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	uint32_t 	TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int		TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
 	int 		TX_X0[cal_num], TX_Y0[cal_num], RX_X0[cal_num], RX_Y0[cal_num];
-	bool 	TX0IQKOK = FALSE, RX0IQKOK = FALSE;
+	bool 	TX0IQKOK = false, RX0IQKOK = false;
 	int 		TX_X1[cal_num], TX_Y1[cal_num], RX_X1[cal_num], RX_Y1[cal_num];
-	bool  	TX1IQKOK = FALSE, RX1IQKOK = FALSE, VDF_enable = FALSE;
+	bool  	TX1IQKOK = false, RX1IQKOK = false, VDF_enable = false;
 	int 			i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0, dt = 0;
 
 	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BandWidth = %d, ExtPA5G = %d, ExtPA2G = %d\n", rtlpriv->phy.current_chan_bw, rtlhal->external_pa_5g, rtlhal->external_pa_2g);
 	if (rtlpriv->phy.current_chan_bw == 2) {
-		VDF_enable = TRUE;
+		VDF_enable = true;
 	}
-	VDF_enable = FALSE;
+	VDF_enable = false;
 	temp_reg65 = rtw_hal_read_rfreg(rtlpriv, Path, 0x65, bMaskDWord);
 
 	switch (Path) {
@@ -546,17 +546,17 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 							VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-							TX0IQKOK = TRUE;
+							TX0IQKOK = true;
 							break;
 						} else {
-							TX0IQKOK = FALSE;
+							TX0IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10) {
 								break;
 							}
 						}
 					} else {
-						TX0IQKOK = FALSE;
+						TX0IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10) {
 							break;
@@ -602,7 +602,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							TX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 							TX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-							TX0IQKOK = TRUE;
+							TX0IQKOK = true;
 							/*
 							rtl_write_dword(rtlpriv, 0xcb8, 0x01000000);
 							reg1 = rtl_get_bbreg(rtlpriv, 0xd00, 0xffffffff);
@@ -619,14 +619,14 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							*/
 							break;
 						} else {
-							TX0IQKOK = FALSE;
+							TX0IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10) {
 								break;
 							}
 						}
 					} else {
-						TX0IQKOK = FALSE;
+						TX0IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10)
 							break;
@@ -642,7 +642,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 
-		if (TX0IQKOK == FALSE)
+		if (TX0IQKOK == false)
 			break;				/* TXK fail, Don't do RXK */
 
 		if (VDF_enable == 1) {
@@ -731,18 +731,18 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
 							VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-							RX0IQKOK = TRUE;
+							RX0IQKOK = true;
 							break;
 						} else {
 							rtl_set_bbreg(rtlpriv, 0xc10, 0x000003ff, 0x200>>1);
 							rtl_set_bbreg(rtlpriv, 0xc10, 0x03ff0000, 0x0>>1);
-							RX0IQKOK = FALSE;
+							RX0IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10)
 								break;
 						}
 					} else {
-						RX0IQKOK = FALSE;
+						RX0IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10)
 							break;
@@ -810,7 +810,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						RX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 						rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
 						RX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-						RX0IQKOK = TRUE;
+						RX0IQKOK = true;
 						/*
 						rtl_write_dword(rtlpriv, 0xcb8, 0x05000000);
 						reg1 = rtl_get_bbreg(rtlpriv, 0xd00, 0xffffffff);
@@ -831,13 +831,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 					} else {
 						rtl_set_bbreg(rtlpriv, 0xc10, 0x000003ff, 0x200>>1);
 						rtl_set_bbreg(rtlpriv, 0xc10, 0x03ff0000, 0x0>>1);
-						RX0IQKOK = FALSE;
+						RX0IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10)
 						break;
 					}
 				} else {
-					RX0IQKOK = FALSE;
+					RX0IQKOK = false;
 					cal_retry++;
 					if (cal_retry == 10)
 						break;
@@ -940,17 +940,17 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x04000000);
 							VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
-							TX1IQKOK = TRUE;
+							TX1IQKOK = true;
 							break;
 						} else {
-							TX1IQKOK = FALSE;
+							TX1IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10) {
 								break;
 							}
 						}
 					} else {
-						TX1IQKOK = FALSE;
+						TX1IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10) {
 							break;
@@ -996,7 +996,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							TX_X1[cal] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x04000000);
 							TX_Y1[cal] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
-							TX1IQKOK = TRUE;
+							TX1IQKOK = true;
 							/*
 							int			reg1 = 0, reg2 = 0, Image_Power = 0;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x01000000);
@@ -1014,14 +1014,14 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							*/
 							break;
 						} else {
-							TX1IQKOK = FALSE;
+							TX1IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10) {
 								break;
 							}
 						}
 					}  else {
-						TX1IQKOK = FALSE;
+						TX1IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10) {
 							break;
@@ -1038,7 +1038,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00));	/* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
 
-		if (TX1IQKOK == FALSE)
+		if (TX1IQKOK == false)
 			break;				/* TXK fail, Don't do RXK */
 
 		if (VDF_enable == 1) {
@@ -1129,19 +1129,19 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x08000000);
 							VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
-							RX1IQKOK = TRUE;
+							RX1IQKOK = true;
 							break;
 						} else {
 							rtl_set_bbreg(rtlpriv, 0xe10, 0x000003ff, 0x200>>1);
 							rtl_set_bbreg(rtlpriv, 0xe10, 0x03ff0000, 0x0>>1);
-							RX1IQKOK = FALSE;
+							RX1IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10)
 								break;
 
 						}
 					} else {
-						RX1IQKOK = FALSE;
+						RX1IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10)
 							break;
@@ -1212,7 +1212,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							RX_X1[cal] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xeb8, 0x08000000);
 							RX_Y1[cal] = rtl_get_bbreg(rtlpriv, 0xd40, 0x07ff0000)<<21;
-							RX1IQKOK = TRUE;
+							RX1IQKOK = true;
 							/*
 							rtl_write_dword(rtlpriv, 0xeb8, 0x05000000);
 							reg1 = rtl_get_bbreg(rtlpriv, 0xd40, 0xffffffff);
@@ -1232,13 +1232,13 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 						} else {
 							rtl_set_bbreg(rtlpriv, 0xe10, 0x000003ff, 0x200>>1);
 							rtl_set_bbreg(rtlpriv, 0xe10, 0x03ff0000, 0x0>>1);
-							RX1IQKOK = FALSE;
+							RX1IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10)
 								break;
 						}
 					} else {
-						RX1IQKOK = FALSE;
+						RX1IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10)
 							break;
@@ -1453,7 +1453,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		 */
 #if 1
 		if (TX_finish && RX_finish) {
-/* pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].bIQKDone= TRUE; */
+/* pRFCalibrateInfo->IQKMatrixRegSetting[chnlIdx].bIQKDone= true; */
 			rtlpriv->phy.need_iqk = false;
 
 			if (rtlpriv->phy.current_chan_bw == 2) {
@@ -1760,8 +1760,8 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	uint32_t TX_fail, RX_fail, delay_count, IQK_ready, cal_retry, cal = 0, temp_reg65;
 	int 	TX_X = 0, TX_Y = 0, RX_X = 0, RX_Y = 0, TX_Average = 0, RX_Average = 0;
 	int 	TX_X0[cal_num], TX_Y0[cal_num], TX_X0_RXK[cal_num], TX_Y0_RXK[cal_num], RX_X0[cal_num], RX_Y0[cal_num];
-	bool TX0IQKOK = FALSE, RX0IQKOK = FALSE;
-	bool VDF_enable = FALSE;
+	bool TX0IQKOK = false, RX0IQKOK = false;
+	bool VDF_enable = false;
 	int 	i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0;
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
@@ -1769,7 +1769,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 
 	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BandWidth = %d\n", rtlpriv->phy.current_chan_bw);
 	if (rtlpriv->phy.current_chan_bw == 2) {
-		VDF_enable = TRUE;
+		VDF_enable = true;
 	}
 
 	while (cal < cal_num) {
@@ -1943,19 +1943,19 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 								VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 								VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-								TX0IQKOK = TRUE;
+								TX0IQKOK = true;
 								break;
 							} else {
 								rtl_set_bbreg(rtlpriv, 0xccc, 0x000007ff, 0x0);
 								rtl_set_bbreg(rtlpriv, 0xcd4, 0x000007ff, 0x200);
-								TX0IQKOK = FALSE;
+								TX0IQKOK = false;
 								cal_retry++;
 								if (cal_retry == 10) {
 									break;
 								}
 							}
 						} else {
-							TX0IQKOK = FALSE;
+							TX0IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10) {
 								break;
@@ -1999,19 +1999,19 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							TX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 							TX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-							TX0IQKOK = TRUE;
+							TX0IQKOK = true;
 							break;
 						} else {
 							rtl_set_bbreg(rtlpriv, 0xccc, 0x000007ff, 0x0);
 							rtl_set_bbreg(rtlpriv, 0xcd4, 0x000007ff, 0x200);
-							TX0IQKOK = FALSE;
+							TX0IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10) {
 								break;
 							}
 						}
 					} else {
-						TX0IQKOK = FALSE;
+						TX0IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10)
 							break;
@@ -2019,7 +2019,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 				}
 			}
 
-			if (TX0IQKOK == FALSE)
+			if (TX0IQKOK == false)
 				break;					/* TXK fail, Don't do RXK */
 
 			if (VDF_enable == 1) {
@@ -2101,26 +2101,26 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 								TX_X0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 								TX_Y0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-								TX0IQKOK = TRUE;
+								TX0IQKOK = true;
 								break;
 							} else {
-								TX0IQKOK = FALSE;
+								TX0IQKOK = false;
 								cal_retry++;
 								if (cal_retry == 10)
 									break;
 							}
 						} else {
-							TX0IQKOK = FALSE;
+							TX0IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10)
 								break;
 						}
 					}
 
-					if (TX0IQKOK == FALSE) {   /* If RX mode TXK fail, then take TXK Result */
+					if (TX0IQKOK == false) {   /* If RX mode TXK fail, then take TXK Result */
 						TX_X0_RXK[cal] = TX_X0[cal];
 						TX_Y0_RXK[cal] = TX_Y0[cal];
-						TX0IQKOK = TRUE;
+						TX0IQKOK = true;
 						RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "RXK Step 1 fail\n");
 					}
 
@@ -2181,18 +2181,18 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 								VDF_X[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 								rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
 								VDF_Y[k] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-								RX0IQKOK = TRUE;
+								RX0IQKOK = true;
 								break;
 							} else {
 								rtl_set_bbreg(rtlpriv, 0xc10, 0x000003ff, 0x200>>1);
 								rtl_set_bbreg(rtlpriv, 0xc10, 0x03ff0000, 0x0>>1);
-								RX0IQKOK = FALSE;
+								RX0IQKOK = false;
 								cal_retry++;
 								if (cal_retry == 10)
 									break;
 							}
 						} else {
-							RX0IQKOK = FALSE;
+							RX0IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10)
 								break;
@@ -2255,26 +2255,26 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							TX_X0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xcb8, 0x04000000);
 							TX_Y0_RXK[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-							TX0IQKOK = TRUE;
+							TX0IQKOK = true;
 							break;
 						} else {
-							TX0IQKOK = FALSE;
+							TX0IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10)
 								break;
 						}
 					} else {
-						TX0IQKOK = FALSE;
+						TX0IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10)
 							break;
 					}
 				}
 
-				if (TX0IQKOK == FALSE) {	/* If RX mode TXK fail, then take TXK Result */
+				if (TX0IQKOK == false) {	/* If RX mode TXK fail, then take TXK Result */
 					TX_X0_RXK[cal] = TX_X0[cal];
 					TX_Y0_RXK[cal] = TX_Y0[cal];
-					TX0IQKOK = TRUE;
+					TX0IQKOK = true;
 					RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "1");
 				}
 
@@ -2331,19 +2331,19 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 							RX_X0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
 							rtl_write_dword(rtlpriv, 0xcb8, 0x08000000);
 							RX_Y0[cal] = rtl_get_bbreg(rtlpriv, 0xd00, 0x07ff0000)<<21;
-							RX0IQKOK = TRUE;
+							RX0IQKOK = true;
 							break;
 						} else {
 							rtl_set_bbreg(rtlpriv, 0xc10, 0x000003ff, 0x200>>1);
 							rtl_set_bbreg(rtlpriv, 0xc10, 0x03ff0000, 0x0>>1);
-							RX0IQKOK = FALSE;
+							RX0IQKOK = false;
 							cal_retry++;
 							if (cal_retry == 10)
 								break;
 
 						}
 					} else {
-						RX0IQKOK = FALSE;
+						RX0IQKOK = false;
 						cal_retry++;
 						if (cal_retry == 10)
 							break;
@@ -2497,27 +2497,27 @@ bool Getu8IntegerFromStringInDecimal(s8 *Str, uint8_t *pInt)
 			*pInt *= 10;
 			*pInt += (Str[i] - '0');
 		} else {
-			return _FALSE;
+			return false;
 		}
 		++i;
 	}
 
-	return _TRUE;
+	return true;
 }
 
 
 static bool eqNByte(uint8_t *str1, uint8_t *str2, uint32_t num)
 {
 	if (num == 0)
-		return _FALSE;
+		return false;
 
 	while (num > 0) {
 		num--;
 		if (str1[num] != str2[num])
-			return _FALSE;
+			return false;
 	}
 
-	return _TRUE;
+	return true;
 }
 
 
@@ -2769,13 +2769,13 @@ static bool _rtl8821ae_phy_get_chnl_index(uint8_t Channel, uint8_t *ChannelIdx)
 		168, 169, 171, 173, 175, 177
 		};
 	uint8_t	i = 0;
-	bool bIn24G = _TRUE;
+	bool bIn24G = true;
 
 	if (Channel <= 14) {
-		bIn24G = _TRUE;
+		bIn24G = true;
 		*ChannelIdx = Channel - 1;
 	} else {
-		bIn24G = _FALSE;
+		bIn24G = false;
 
 		for (i = 0; i < sizeof(channel5G)/sizeof(uint8_t); ++i) {
 			if (channel5G[i] == Channel) {
@@ -3089,11 +3089,11 @@ u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
 	uint32_t					powerDiffByRate = 0;
 	uint32_t					txPower = 0;
 	uint8_t					chnlIdx = (Channel-1);
-	bool				bIn24G = _FALSE;
+	bool				bIn24G = false;
 
 	/* DBG_871X("===> PHY_GetTxPowerIndex_8812A\n"); */
 
-	if (HAL_IsLegalChannel(rtlpriv, Channel) == _FALSE) {
+	if (HAL_IsLegalChannel(rtlpriv, Channel) == false) {
 		chnlIdx = 0;
 		RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD, "Illegal channel!!\n");
 	}
@@ -3434,23 +3434,23 @@ static bool CheckCondition(const uint32_t  Condition, const uint32_t  Hex)
 	uint32_t cond = Condition;
 
 	if (Condition == 0xCDCDCDCD)
-		return TRUE;
+		return true;
 
 	cond = Condition & 0x000000FF;
 	if ((_board != cond) && (cond != 0xFF))
-		return FALSE;
+		return false;
 
 	cond = Condition & 0x0000FF00;
 	cond = cond >> 8;
 	if (((_interface & cond) == 0) && (cond != 0x07))
-		return FALSE;
+		return false;
 
 	cond = Condition & 0x00FF0000;
 	cond = cond >> 16;
 	if (((_platform & cond) == 0) && (cond != 0x0F))
-		return FALSE;
+		return false;
 
-	return TRUE;
+	return true;
 }
 
 
@@ -4126,7 +4126,7 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 bool phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW)
 {
 	uint8_t			u1Btmp;
-	bool		ret_value = _TRUE;
+	bool		ret_value = true;
 	uint8_t			Band = BAND_ON_5G, BandToSW;
 
 	u1Btmp = rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812);
@@ -6110,7 +6110,7 @@ static void phy_InitBBRFRegisterDefinition(struct rtl_priv *rtlpriv)
 	rtlphy->phyreg_def[RF90_PATH_A].rf_rbpi = rA_PIRead_Jaguar;
 	rtlphy->phyreg_def[RF90_PATH_B].rf_rbpi = rB_PIRead_Jaguar;
 
-	/* pHalData->bPhyValueInitReady=_TRUE; */
+	/* pHalData->bPhyValueInitReady=true; */
 }
 
 
@@ -6281,7 +6281,7 @@ static int _rtl8821au_phy_bb_with_headerfile(struct rtl_priv *rtlpriv)
 
 	/* If EEPROM or EFUSE autoload OK, We must config by PHY_REG_PG.txt */
 	/* 1 TODO */
-	if (efuse->autoload_failflag == _FALSE) {
+	if (efuse->autoload_failflag == false) {
 		rtlphy->pwrgroup_cnt = 0;
 
 		rtlpriv->cfg->ops->config_bb_with_pgheaderfile(rtlpriv,
@@ -6354,7 +6354,7 @@ void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 	uint8_t	channel = rtlpriv->phy.current_channel;
 	u32 data;
 
-	if(phy_SwBand8812(rtlpriv, channel) == _FALSE)
+	if(phy_SwBand8812(rtlpriv, channel) == false)
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "error Chnl %d !\n", channel);
 
 	/* DBG_871X("[BW:CHNL], phy_SwChnl8812(), switch to channel %d !!\n", channel); */

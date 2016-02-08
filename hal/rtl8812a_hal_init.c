@@ -97,7 +97,7 @@ void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rss
 	uint8_t	init_rate = 0;
 	uint8_t	networkType, raid;
 	uint32_t	mask, rate_bitmap;
-	uint8_t	shortGIrate = _FALSE;
+	uint8_t	shortGIrate = false;
 	int	supportRateNum = 0;
 	uint8_t	arg[4] = {0};
 	struct sta_info	*psta;
@@ -133,7 +133,7 @@ void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rss
 			{
 				mask |= (pmlmeinfo->HT_enable) ? update_MCS_rate(&(pmlmeinfo->HT_caps)) : 0;
 				if (support_short_GI(rtlpriv, &(pmlmeinfo->HT_caps)))
-					shortGIrate = _TRUE;
+					shortGIrate = true;
 			}
 
 		break;

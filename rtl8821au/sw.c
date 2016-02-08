@@ -43,7 +43,7 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	 */
 
 	/* ht_priv */
-	pmlmepriv->htpriv.ampdu_enable = _FALSE; /* set to disabled */
+	pmlmepriv->htpriv.ampdu_enable = false; /* set to disabled */
 
 	/* security_priv */
 	/* rtw_get_encrypt_decrypt_from_registrypriv(rtlpriv); */
@@ -75,8 +75,8 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	rtlpriv->cfg->ops->init_default_value(rtlpriv);
 
 	/* misc. */
-	rtlpriv->bReadPortCancel = _FALSE;
-	rtlpriv->bWritePortCancel = _FALSE;
+	rtlpriv->bReadPortCancel = false;
+	rtlpriv->bWritePortCancel = false;
 	rtlpriv->bNotifyChannelChange = 0;
 
 	return ret;
@@ -91,14 +91,14 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
-	bool	bHwLDPCSupport = _FALSE, bHwSTBCSupport = _FALSE;
+	bool	bHwLDPCSupport = false, bHwSTBCSupport = false;
 	uint8_t	rf_type = 0;
 
 	pvhtpriv->vht_bwmode = (pregistrypriv->bw_mode & 0xF0) >> 4;
 	if (pvhtpriv->vht_bwmode > CHANNEL_WIDTH_80)
-		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT3) ? _TRUE : _FALSE;
+		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT3) ? true : false;
 	else
-		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT2) ? _TRUE : _FALSE;
+		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT2) ? true : false;
 
 	/*
 	 * LDPC support
@@ -229,12 +229,12 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 
 
 	/* init default value */
-	pHalData->fw_ractrl = _FALSE;
+	pHalData->fw_ractrl = false;
 	rtlhal->last_hmeboxnum = 0;
 
 	/* init dm default value */
-	pHalData->bChnlBWInitialzed = _FALSE;
-	rtlphy->iqk_initialized = _FALSE;
+	pHalData->bChnlBWInitialzed = false;
+	rtlphy->iqk_initialized = false;
 	rtldm->tm_trigger = 0;/* for IQK */
 	rtlphy->pwrgroup_cnt = 0;
 

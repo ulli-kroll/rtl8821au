@@ -91,7 +91,7 @@ struct rtl_led {
 
 	enum rtl_led_pin		LedPin;	// Identify how to implement this SW led.
 
-	bool				bLedOn; // TRUE if LED is ON, FALSE if LED is OFF.
+	bool				bLedOn; // true if LED is ON, false if LED is OFF.
 
 	bool				bSWLedCtrl;
 };

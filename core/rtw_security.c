@@ -791,7 +791,7 @@ uint32_t	 rtw_tkip_decrypt(struct rtl_priv *rtlpriv, struct recv_frame  *precvfr
 
 			if(is_multicast_ether_addr(prxattrib->ra))
 			{
-				if(psecuritypriv->binstallGrpkey==_FALSE)
+				if(psecuritypriv->binstallGrpkey==false)
 				{
 					res=_FAIL;
 					DBG_8192C("%s:rx bc/mc packets,but didn't install group key!!!!!!!!!!\n",__FUNCTION__);
@@ -1898,7 +1898,7 @@ uint32_t	rtw_aes_decrypt(struct rtl_priv *rtlpriv, struct recv_frame *precvframe
 				//in concurrent we should use sw descrypt in group key, so we remove this message
 				//DBG_871X("rx bc/mc packets, to perform sw rtw_aes_decrypt\n");
 				//prwskey = psecuritypriv->dot118021XGrpKey[psecuritypriv->dot118021XGrpKeyid].skey;
-				if(psecuritypriv->binstallGrpkey==_FALSE)
+				if(psecuritypriv->binstallGrpkey==false)
 				{
 					res=_FAIL;
 					DBG_8192C("%s:rx bc/mc packets,but didn't install group key!!!!!!!!!!\n",__FUNCTION__);
@@ -2657,7 +2657,7 @@ void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS)
 	}
 	*/
 
-	rtlpriv->securitypriv.busetkipkey=_TRUE;
+	rtlpriv->securitypriv.busetkipkey=true;
 
 
 

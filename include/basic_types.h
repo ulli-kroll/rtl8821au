@@ -24,18 +24,6 @@
 #define SUCCESS	0
 #define FAIL	(-1)
 
-#ifndef TRUE
-	#define _TRUE	1
-#else
-	#define _TRUE	TRUE
-#endif
-
-#ifndef FALSE
-	#define _FALSE	0
-#else
-	#define _FALSE	FALSE
-#endif
-
 	/* ULLI : the w*nd*ws hell */
 
 	#include <linux/types.h>

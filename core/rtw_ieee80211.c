@@ -89,11 +89,11 @@ uint	rtw_is_cckrates_included(uint8_t *rate)
 		{
 			if  (  (((rate[i]) & 0x7f) == 2)	|| (((rate[i]) & 0x7f) == 4) ||
 			(((rate[i]) & 0x7f) == 11)  || (((rate[i]) & 0x7f) == 22) )
-			return _TRUE;
+			return true;
 			i++;
 		}
 
-		return _FALSE;
+		return false;
 }
 
 uint	rtw_is_cckratesonly_included(uint8_t *rate)
@@ -106,12 +106,12 @@ uint	rtw_is_cckratesonly_included(uint8_t *rate)
 			if  (  (((rate[i]) & 0x7f) != 2) && (((rate[i]) & 0x7f) != 4) &&
 				(((rate[i]) & 0x7f) != 11)  && (((rate[i]) & 0x7f) != 22) )
 
-			return _FALSE;
+			return false;
 
 			i++;
 	}
 
-	return _TRUE;
+	return true;
 
 }
 
@@ -119,16 +119,16 @@ int rtw_check_network_type(unsigned char *rate, int ratelen, int channel)
 {
 	if (channel > 14)
 	{
-		if ((rtw_is_cckrates_included(rate)) == _TRUE)
+		if ((rtw_is_cckrates_included(rate)) == true)
 			return WIRELESS_INVALID;
 		else
 			return WIRELESS_11A;
 	}
 	else  // could be pure B, pure G, or B/G
 	{
-		if ((rtw_is_cckratesonly_included(rate)) == _TRUE)
+		if ((rtw_is_cckratesonly_included(rate)) == true)
 			return WIRELESS_11B;
-		else if((rtw_is_cckrates_included(rate)) == _TRUE)
+		else if((rtw_is_cckrates_included(rate)) == true)
 			return 	WIRELESS_11BG;
 		else
 			return WIRELESS_11G;
@@ -286,7 +286,7 @@ uint8_t *rtw_get_ie_ex(uint8_t *in_ie, uint in_len, uint8_t eid, uint8_t *oui, u
 	while(cnt<in_len)
 	{
 		if(eid == in_ie[cnt]
-			&& ( !oui || _rtw_memcmp(&in_ie[cnt+2], oui, oui_len) == _TRUE))
+			&& ( !oui || _rtw_memcmp(&in_ie[cnt+2], oui, oui_len) == true))
 		{
 			target_ie = &in_ie[cnt];
 
@@ -508,7 +508,7 @@ unsigned char *rtw_get_wpa_ie(unsigned char *pie, int *wpa_ie_len, int limit)
 		if (pbuf) {
 
 			//check if oui matches...
-			if (_rtw_memcmp((pbuf + 2), wpa_oui_type, sizeof (wpa_oui_type)) == _FALSE) {
+			if (_rtw_memcmp((pbuf + 2), wpa_oui_type, sizeof (wpa_oui_type)) == false) {
 
 				goto check_next_ie;
 			}
@@ -557,15 +557,15 @@ unsigned char *rtw_get_wpa2_ie(unsigned char *pie, int *rsn_ie_len, int limit)
 
 int rtw_get_wpa_cipher_suite(uint8_t *s)
 {
-	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_NONE, WPA_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_NONE, WPA_SELECTOR_LEN) == true)
 		return WPA_CIPHER_NONE;
-	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_WEP40, WPA_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_WEP40, WPA_SELECTOR_LEN) == true)
 		return WPA_CIPHER_WEP40;
-	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_TKIP, WPA_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_TKIP, WPA_SELECTOR_LEN) == true)
 		return WPA_CIPHER_TKIP;
-	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_CCMP, WPA_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_CCMP, WPA_SELECTOR_LEN) == true)
 		return WPA_CIPHER_CCMP;
-	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_WEP104, WPA_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, WPA_CIPHER_SUITE_WEP104, WPA_SELECTOR_LEN) == true)
 		return WPA_CIPHER_WEP104;
 
 	return 0;
@@ -573,15 +573,15 @@ int rtw_get_wpa_cipher_suite(uint8_t *s)
 
 int rtw_get_wpa2_cipher_suite(uint8_t *s)
 {
-	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_NONE, RSN_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_NONE, RSN_SELECTOR_LEN) == true)
 		return WPA_CIPHER_NONE;
-	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_WEP40, RSN_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_WEP40, RSN_SELECTOR_LEN) == true)
 		return WPA_CIPHER_WEP40;
-	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_TKIP, RSN_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_TKIP, RSN_SELECTOR_LEN) == true)
 		return WPA_CIPHER_TKIP;
-	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_CCMP, RSN_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_CCMP, RSN_SELECTOR_LEN) == true)
 		return WPA_CIPHER_CCMP;
-	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_WEP104, RSN_SELECTOR_LEN) == _TRUE)
+	if (_rtw_memcmp(s, RSN_CIPHER_SUITE_WEP104, RSN_SELECTOR_LEN) == true)
 		return WPA_CIPHER_WEP104;
 
 	return 0;
@@ -602,7 +602,7 @@ int rtw_parse_wpa_ie(uint8_t * wpa_ie, int wpa_ie_len, int *group_cipher, int *p
 
 
 	if ((*wpa_ie != _WPA_IE_ID_) || (*(wpa_ie+1) != (uint8_t)(wpa_ie_len - 2)) ||
-	   (_rtw_memcmp(wpa_ie+2, RTW_WPA_OUI_TYPE, WPA_SELECTOR_LEN) != _TRUE) )
+	   (_rtw_memcmp(wpa_ie+2, RTW_WPA_OUI_TYPE, WPA_SELECTOR_LEN) != true) )
 	{
 		return _FAIL;
 	}
@@ -758,7 +758,7 @@ int rtw_get_sec_ie(uint8_t *in_ie,uint in_len,uint8_t *rsn_ie,u16 *rsn_len,uint8
 	{
 		authmode=in_ie[cnt];
 
-		if((authmode==_WPA_IE_ID_)&&(_rtw_memcmp(&in_ie[cnt+2], &wpa_oui[0],4)==_TRUE))
+		if((authmode==_WPA_IE_ID_)&&(_rtw_memcmp(&in_ie[cnt+2], &wpa_oui[0],4)==true))
 		{
 				if (wpa_ie) {
 				memcpy(wpa_ie, &in_ie[cnt],in_ie[cnt+1]+2);
@@ -800,18 +800,18 @@ int rtw_get_sec_ie(uint8_t *in_ie,uint in_len,uint8_t *rsn_ie,u16 *rsn_len,uint8
 
 uint8_t rtw_is_wps_ie(uint8_t *ie_ptr, uint *wps_ielen)
 {
-	uint8_t match = _FALSE;
+	uint8_t match = false;
 	uint8_t eid, wps_oui[4]={0x0,0x50,0xf2,0x04};
 
 	if(ie_ptr == NULL) return match;
 
 	eid = ie_ptr[0];
 
-	if((eid==_WPA_IE_ID_)&&(_rtw_memcmp(&ie_ptr[2], wps_oui, 4)==_TRUE))
+	if((eid==_WPA_IE_ID_)&&(_rtw_memcmp(&ie_ptr[2], wps_oui, 4)==true))
 	{
 		//DBG_8192C("==> found WPS_IE.....\n");
 		*wps_ielen = ie_ptr[1]+2;
-		match=_TRUE;
+		match=true;
 	}
 	return match;
 }
@@ -843,7 +843,7 @@ uint8_t *rtw_get_wps_ie(uint8_t *in_ie, uint in_len, uint8_t *wps_ie, uint *wps_
 	{
 		eid = in_ie[cnt];
 
-		if((eid==_WPA_IE_ID_)&&(_rtw_memcmp(&in_ie[cnt+2], wps_oui, 4)==_TRUE))
+		if((eid==_WPA_IE_ID_)&&(_rtw_memcmp(&in_ie[cnt+2], wps_oui, 4)==true))
 		{
 			wpsie_ptr = &in_ie[cnt];
 
@@ -887,7 +887,7 @@ uint8_t *rtw_get_wps_attr(uint8_t *wps_ie, uint wps_ielen, u16 target_attr_id ,u
 		*len_attr = 0;
 
 	if ( ( wps_ie[0] != _VENDOR_SPECIFIC_IE_ ) ||
-		( _rtw_memcmp( wps_ie + 2, wps_oui , 4 ) != _TRUE ) )
+		( _rtw_memcmp( wps_ie + 2, wps_oui , 4 ) != true ) )
 	{
 		return attr_ptr;
 	}
@@ -1517,7 +1517,7 @@ int rtw_action_frame_parse(const uint8_t *frame, uint32_t	 frame_len, uint8_t * 
 		!= (RTW_IEEE80211_FTYPE_MGMT|RTW_IEEE80211_STYPE_ACTION)
 	)
 	{
-		return _FALSE;
+		return false;
 	}
 
 	c = frame_body[0];
@@ -1534,7 +1534,7 @@ int rtw_action_frame_parse(const uint8_t *frame, uint32_t	 frame_len, uint8_t * 
 	if (action)
 		*action = a;
 
-	return _TRUE;
+	return true;
 }
 
 static const char *_action_public_str[] = {

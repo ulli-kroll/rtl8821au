@@ -67,7 +67,7 @@ static void rtl8812au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 	uint8_t	LedCfg;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
+	if (rtlpriv->bSurpriseRemoved == true) {
 		return;
 	}
 
@@ -105,7 +105,7 @@ static void rtl8812au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		}
 	}
 
-	pLed->bLedOn = _FALSE;
+	pLed->bLedOn = false;
 }
 
 static void rtl8821au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
@@ -117,7 +117,7 @@ static void rtl8821au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t	LedCfg;
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
+	if (rtlpriv->bSurpriseRemoved == true) {
 		return;
 	}
 
@@ -143,7 +143,7 @@ static void rtl8821au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		}
 	}
 
-	pLed->bLedOn = _FALSE;
+	pLed->bLedOn = false;
 }
 
 static void rtl8812au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
@@ -151,7 +151,7 @@ static void rtl8812au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 	uint8_t	LedCfg;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
-	if ((rtlpriv->bSurpriseRemoved == _TRUE) || (rtlpriv->bDriverStopped == _TRUE)) {
+	if ((rtlpriv->bSurpriseRemoved == true) || (rtlpriv->bDriverStopped == true)) {
 		return;
 	}
 
@@ -185,7 +185,7 @@ static void rtl8812au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		}
 	}
 
-	pLed->bLedOn = _TRUE;
+	pLed->bLedOn = true;
 }
 
 static void rtl8821au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
@@ -193,7 +193,7 @@ static void rtl8821au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 	uint8_t	LedCfg;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
-	if ((rtlpriv->bSurpriseRemoved == _TRUE) || (rtlpriv->bDriverStopped == _TRUE)) {
+	if ((rtlpriv->bSurpriseRemoved == true) || (rtlpriv->bDriverStopped == true)) {
 		return;
 	}
 
@@ -216,7 +216,7 @@ static void rtl8821au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 			break;
 		}
 	}
-	pLed->bLedOn = _TRUE;
+	pLed->bLedOn = true;
 }
 
 void rtl8821au_init_sw_leds(struct rtl_priv *rtlpriv)

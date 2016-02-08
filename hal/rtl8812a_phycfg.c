@@ -114,7 +114,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	uint8_t			tmpCenterFrequencyIndex1 = rtlpriv->phy.current_channel;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 
-	bool bSwChnl = _FALSE, bSetChnlBW = _FALSE;
+	bool bSwChnl = false, bSetChnlBW = false;
 
 
 	/* DBG_871X("=> PHY_HandleSwChnlAndSetBW8812: bSwitchChannel %d, bSetBandWidth %d \n",bSwitchChannel,bSetBandWidth); */
@@ -129,22 +129,22 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	if(bSwitchChannel) {
 		if(rtlpriv->phy.current_channel != ChannelNum) {
 			if (HAL_IsLegalChannel(rtlpriv, ChannelNum))
-				bSwChnl = _TRUE;
+				bSwChnl = true;
 			else
 				return;
 		}
 	}
 
 	if(bSetBandWidth) {
-		if(pHalData->bChnlBWInitialzed == _FALSE) {
-			pHalData->bChnlBWInitialzed = _TRUE;
-			bSetChnlBW = _TRUE;
+		if(pHalData->bChnlBWInitialzed == false) {
+			pHalData->bChnlBWInitialzed = true;
+			bSetChnlBW = true;
 		} else if((rtlpriv->phy.current_chan_bw != ChnlWidth) ||
 			(mac->cur_40_prime_sc != ChnlOffsetOf40MHz) ||
 			(mac->cur_80_prime_sc != ChnlOffsetOf80MHz) ||
 			(rtlpriv->phy.current_channel != CenterFrequencyIndex1)) {
 
-			bSetChnlBW = _TRUE;
+			bSetChnlBW = true;
 		}
 	}
 
@@ -177,12 +177,12 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 
 		if (bSwChnl) {
 			rtl8821au_phy_sw_chnl_callback(rtlpriv);
-			bSwChnl = _FALSE;
+			bSwChnl = false;
 		}
 
 		if (bSetChnlBW) {
 			rtlpriv->cfg->ops->phy_set_bw_mode_callback(rtlpriv);
-			bSetChnlBW = _FALSE;
+			bSetChnlBW = false;
 		}
 
 		rtl8821au_dm_clean_txpower_tracking_state(rtlpriv);
@@ -190,9 +190,9 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 
 		if ((rtlpriv->phy.need_iqk = false == true)) {
 			if(IS_HARDWARE_TYPE_8812(rtlhal))
-				rtl8812au_phy_iq_calibrate(rtlpriv, _FALSE);
+				rtl8812au_phy_iq_calibrate(rtlpriv, false);
 			else if(IS_HARDWARE_TYPE_8821(rtlhal))
-				rtl8821au_phy_iq_calibrate(rtlpriv, _FALSE);
+				rtl8821au_phy_iq_calibrate(rtlpriv, false);
 
 			rtlpriv->phy.need_iqk = false;
 		}
@@ -227,7 +227,7 @@ void PHY_SetBWMode8812(struct rtl_priv *rtlpriv,
 
 	/* DBG_871X("%s()===>\n",__FUNCTION__); */
 
-	PHY_HandleSwChnlAndSetBW8812(rtlpriv, _FALSE, _TRUE, rtlpriv->phy.current_channel, Bandwidth, Offset, Offset, rtlpriv->phy.current_channel);
+	PHY_HandleSwChnlAndSetBW8812(rtlpriv, false, true, rtlpriv->phy.current_channel, Bandwidth, Offset, Offset, rtlpriv->phy.current_channel);
 
 	//DBG_871X("<==%s()\n",__FUNCTION__);
 }
@@ -236,7 +236,7 @@ void PHY_SwChnl8812(struct rtl_priv *rtlpriv, uint8_t channel)
 {
 	/* DBG_871X("%s()===>\n",__FUNCTION__); */
 
-	PHY_HandleSwChnlAndSetBW8812(rtlpriv, _TRUE, _FALSE, channel, 0, 0, 0, channel);
+	PHY_HandleSwChnlAndSetBW8812(rtlpriv, true, false, channel, 0, 0, 0, channel);
 
 	/* DBG_871X("<==%s()\n",__FUNCTION__); */
 }
@@ -246,7 +246,7 @@ void PHY_SetSwChnlBWMode8812(struct rtl_priv *rtlpriv, uint8_t channel,
 {
 	/* DBG_871X("%s()===>\n",__FUNCTION__); */
 
-	PHY_HandleSwChnlAndSetBW8812(rtlpriv, _TRUE, _TRUE, channel, Bandwidth, Offset40, Offset80, channel);
+	PHY_HandleSwChnlAndSetBW8812(rtlpriv, true, true, channel, Bandwidth, Offset40, Offset80, channel);
 
 	/* DBG_871X("<==%s()\n",__FUNCTION__); */
 }

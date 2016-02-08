@@ -1653,7 +1653,7 @@ static void rtl8821au_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 	}
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_TRACE, "Cnt_Cck_fail=%d\n", FalseAlmCnt->cnt_cck_fail);
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_TRACE, "Cnt_Ofdm_fail=%d\n", FalseAlmCnt->cnt_ofdm_fail);
-	RT_TRACE(rtlpriv, COMP_DIG, DBG_TRACE, "Total False Alarm=%d\n", FalseAlmCnt->cnt_all);
+	RT_TRACE(rtlpriv, COMP_DIG, DBG_TRACE, "Total false Alarm=%d\n", FalseAlmCnt->cnt_all);
 }
 
 

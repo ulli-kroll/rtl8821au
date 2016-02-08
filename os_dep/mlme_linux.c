@@ -266,12 +266,12 @@ uint8_t rtw_handle_tkip_countermeasure(struct rtl_priv* rtlpriv)
 	uint8_t status = _SUCCESS;
 	u32 cur_time = 0;
 
-	if (rtlpriv->securitypriv.btkip_countermeasure == _TRUE) {
+	if (rtlpriv->securitypriv.btkip_countermeasure == true) {
 		cur_time = jiffies;
 
 		if( (cur_time - rtlpriv->securitypriv.btkip_countermeasure_time) > 60 * HZ )
 		{
-			rtlpriv->securitypriv.btkip_countermeasure = _FALSE;
+			rtlpriv->securitypriv.btkip_countermeasure = false;
 			rtlpriv->securitypriv.btkip_countermeasure_time = 0;
 		}
 		else

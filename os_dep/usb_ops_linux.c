@@ -147,8 +147,8 @@ void rtl8812au_recv_tasklet(void *priv)
 	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 
 	while (NULL != (pskb = skb_dequeue(&precvpriv->rx_skb_queue))) {
-		if ((rtlpriv->bDriverStopped == _TRUE)
-		|| (rtlpriv->bSurpriseRemoved == _TRUE)) {
+		if ((rtlpriv->bDriverStopped == true)
+		|| (rtlpriv->bSurpriseRemoved == true)) {
 			DBG_8192C("recv_tasklet => bDriverStopped or bSurpriseRemoved \n");
 			dev_kfree_skb_any(pskb);
 			break;
@@ -171,24 +171,24 @@ void rtl8812au_recv_tasklet(void *priv)
 
 void rtl8812au_xmit_tasklet(void *priv)
 {
-	int ret = _FALSE;
+	int ret = false;
 	struct rtl_priv *rtlpriv = (struct rtl_priv *) priv;
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 
-	if (check_fwstate(&rtlpriv->mlmepriv, _FW_UNDER_SURVEY) == _TRUE)
+	if (check_fwstate(&rtlpriv->mlmepriv, _FW_UNDER_SURVEY) == true)
 		return;
 
 	while (1) {
-		if ((rtlpriv->bDriverStopped == _TRUE)
-		 || (rtlpriv->bSurpriseRemoved == _TRUE)
-		 || (rtlpriv->bWritePortCancel == _TRUE)) {
+		if ((rtlpriv->bDriverStopped == true)
+		 || (rtlpriv->bSurpriseRemoved == true)
+		 || (rtlpriv->bWritePortCancel == true)) {
 			DBG_8192C("xmit_tasklet => bDriverStopped or bSurpriseRemoved or bWritePortCancel\n");
 			break;
 		}
 
 		ret = rtl8812au_xmitframe_complete(rtlpriv, pxmitpriv, NULL);
 
-		if (ret == _FALSE)
+		if (ret == false)
 			break;
 
 	}
@@ -203,11 +203,11 @@ void usb_read_port_cancel(struct rtl_priv *rtlpriv)
 
 	DBG_871X("%s\n", __func__);
 
-	rtlpriv->bReadPortCancel = _TRUE;
+	rtlpriv->bReadPortCancel = true;
 
 	for (i=0; i < NR_RECVBUFF ; i++) {
 
-		precvbuf->reuse = _TRUE;
+		precvbuf->reuse = true;
 		if (precvbuf->purb)	 {
 			/* DBG_8192C("usb_read_port_cancel : usb_kill_urb \n"); */
 			usb_kill_urb(precvbuf->purb);

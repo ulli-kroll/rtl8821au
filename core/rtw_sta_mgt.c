@@ -58,7 +58,7 @@ static void _rtw_init_stainfo(struct sta_info *psta)
 
 	psta->capability = 0;
 
-	psta->bpairwise_key_installed = _FALSE;
+	psta->bpairwise_key_installed = false;
 
 
 	psta->nonerp_set = 0;
@@ -173,7 +173,7 @@ static void rtw_mfree_all_stainfo(struct sta_priv *pstapriv )
 	phead = get_list_head(&pstapriv->free_sta_queue);
 	plist = get_next(phead);
 
-	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+	while ((rtw_end_of_queue_search(phead, plist)) == false) {
 		psta = container_of(plist, struct sta_info ,list);
 		plist = get_next(plist);
 	}
@@ -205,7 +205,7 @@ uint32_t _rtw_free_sta_priv(struct sta_priv *pstapriv)
 			phead = &(pstapriv->sta_hash[index]);
 			plist = get_next(phead);
 
-			while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+			while ((rtw_end_of_queue_search(phead, plist)) == false) {
 				int i;
 				psta = container_of(plist, struct sta_info ,hash_list);
 				plist = get_next(plist);
@@ -312,7 +312,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 
 			preorder_ctrl->rtlpriv = pstapriv->rtlpriv;
 
-			preorder_ctrl->enable = _FALSE;
+			preorder_ctrl->enable = false;
 
 			preorder_ctrl->indicate_seq = 0xffff;
 			preorder_ctrl->wend_b= 0xffff;
@@ -481,7 +481,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	}
 
 	if (!(psta->state & WIFI_AP_STATE))
-		rtw_set_sta_info(rtlpriv, psta, _FALSE);
+		rtw_set_sta_info(rtlpriv, psta, false);
 
 	/*
 	 * release mac id for non-bc/mc station,
@@ -563,7 +563,7 @@ void rtw_free_all_stainfo(struct rtl_priv *rtlpriv)
 		phead = &(pstapriv->sta_hash[index]);
 		plist = get_next(phead);
 
-		while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+		while ((rtw_end_of_queue_search(phead, plist)) == false) {
 			psta = container_of(plist, struct sta_info ,hash_list);
 
 			plist = get_next(plist);
@@ -603,11 +603,11 @@ struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 	phead = &(pstapriv->sta_hash[index]);
 	plist = get_next(phead);
 
-	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+	while ((rtw_end_of_queue_search(phead, plist)) == false) {
 
 		psta = container_of(plist, struct sta_info, hash_list);
 
-		if ((_rtw_memcmp(psta->hwaddr, addr, ETH_ALEN))== _TRUE) {
+		if ((_rtw_memcmp(psta->hwaddr, addr, ETH_ALEN))== true) {
 			/* if found the matched address */
 			break;
 		}
@@ -671,11 +671,11 @@ struct sta_info* rtw_get_bcmc_stainfo(struct rtl_priv *rtlpriv)
 
 uint8_t rtw_access_ctrl(struct rtl_priv *rtlpriv, uint8_t *mac_addr)
 {
-	uint8_t res = _TRUE;
+	uint8_t res = true;
 #ifdef  CONFIG_AP_MODE
 	struct list_head	*plist, *phead;
 	struct rtw_wlan_acl_node *paclnode;
-	uint8_t match = _FALSE;
+	uint8_t match = false;
 	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
 	struct __queue	*pacl_node_q =&pacl_list->acl_node_q;
@@ -683,13 +683,13 @@ uint8_t rtw_access_ctrl(struct rtl_priv *rtlpriv, uint8_t *mac_addr)
 	spin_lock_bh(&(pacl_node_q->lock));
 	phead = get_list_head(pacl_node_q);
 	plist = get_next(phead);
-	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+	while ((rtw_end_of_queue_search(phead, plist)) == false) {
 		paclnode = container_of(plist, struct rtw_wlan_acl_node, list);
 		plist = get_next(plist);
 
 		if(_rtw_memcmp(paclnode->addr, mac_addr, ETH_ALEN)) {
-			if(paclnode->valid == _TRUE) {
-				match = _TRUE;
+			if(paclnode->valid == true) {
+				match = true;
 				break;
 			}
 		}
@@ -699,11 +699,11 @@ uint8_t rtw_access_ctrl(struct rtl_priv *rtlpriv, uint8_t *mac_addr)
 
 
 	if(pacl_list->mode == 1) {	/* accept unless in deny list */
-		res = (match == _TRUE) ?  _FALSE:_TRUE;
+		res = (match == true) ?  false:true;
 	} else if(pacl_list->mode == 2) { /* deny unless in accept list */
-		res = (match == _TRUE) ?  _TRUE:_FALSE;
+		res = (match == true) ?  true:false;
 	} else {
-		 res = _TRUE;
+		 res = true;
 	}
 
 #endif

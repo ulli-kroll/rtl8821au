@@ -131,7 +131,7 @@ void update_sta_vht_info_apmode(struct rtl_priv *rtlpriv, void *psta)
 		cur_beamform_cap = 0;
 	uint8_t	*pcap_mcs;
 
-	if (pvhtpriv_sta->vht_option == _FALSE)
+	if (pvhtpriv_sta->vht_option == false)
 		return;
 
 	/* B4 Rx LDPC */
@@ -146,11 +146,11 @@ void update_sta_vht_info_apmode(struct rtl_priv *rtlpriv, void *psta)
 
 	if (pvhtpriv_sta->vht_bwmode == CHANNEL_WIDTH_80) {
 		/* B5 Short GI for 80 MHz */
-		pvhtpriv_sta->sgi = (GET_VHT_CAPABILITY_ELE_SHORT_GI80M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi) ? _TRUE : _FALSE;
+		pvhtpriv_sta->sgi = (GET_VHT_CAPABILITY_ELE_SHORT_GI80M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi) ? true : false;
 		DBG_871X("Current STA ShortGI80MHz = %d\n", pvhtpriv_sta->sgi);
 	} else if (pvhtpriv_sta->vht_bwmode >= CHANNEL_WIDTH_160) {
 		/* B5 Short GI for 80 MHz */
-		pvhtpriv_sta->sgi = (GET_VHT_CAPABILITY_ELE_SHORT_GI160M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi) ? _TRUE : _FALSE;
+		pvhtpriv_sta->sgi = (GET_VHT_CAPABILITY_ELE_SHORT_GI160M(pvhtpriv_sta->vht_cap) & pvhtpriv_ap->sgi) ? true : false;
 		DBG_871X("Current STA ShortGI160MHz = %d\n", pvhtpriv_sta->sgi);
 	} else {
 		pvhtpriv_sta->sgi = phtpriv_sta->sgi;
@@ -228,7 +228,7 @@ void VHT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE)
 	if (pIE == NULL)
 		return;
 
-	if (pvhtpriv->vht_option == _FALSE)
+	if (pvhtpriv->vht_option == false)
 		return;
 
 	pmlmeinfo->VHT_enable = 1;
@@ -247,7 +247,7 @@ void VHT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE)
 	 * B5
 	 * Short GI for 80 MHz
 	 */
-	pvhtpriv->sgi = (GET_VHT_CAPABILITY_ELE_SHORT_GI80M(pIE->data) & pvhtpriv->sgi) ? _TRUE : _FALSE;
+	pvhtpriv->sgi = (GET_VHT_CAPABILITY_ELE_SHORT_GI80M(pIE->data) & pvhtpriv->sgi) ? true : false;
 	DBG_871X("Current ShortGI80MHz = %d\n", pvhtpriv->sgi);
 
 	/*
@@ -316,7 +316,7 @@ void VHT_operation_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs p
 	if (pIE == NULL)
 		return;
 
-	if (pvhtpriv->vht_option == _FALSE)
+	if (pvhtpriv->vht_option == false)
 		return;
 
 	if ((GET_VHT_OPERATION_ELE_CHL_WIDTH(pIE->data) >= 1)
@@ -587,7 +587,7 @@ uint32_t rtw_restructure_vht_ie(struct rtl_priv *rtlpriv, uint8_t *in_ie, uint8_
 		notify_len = rtw_build_vht_op_mode_notify_ie(rtlpriv, out_ie + *pout_len);
 		*pout_len += notify_len;
 
-		pvhtpriv->vht_option = _TRUE;
+		pvhtpriv->vht_option = true;
 	}
 
 	return pvhtpriv->vht_option;

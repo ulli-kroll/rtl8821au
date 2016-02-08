@@ -16,8 +16,8 @@ static inline void DBG_8192C(const char *fmt, ...)
 
 /*
 * Increase and check if the continual_urb_error of this @param dvobjprive is larger than MAX_CONTINUAL_URB_ERR
-* @return _TRUE:
-* @return _FALSE:
+* @return true:
+* @return false:
 */
 
 /* ULLI : currently wrong functions for this prototypes, we change this (maybe) later */
@@ -28,11 +28,11 @@ static uint32_t _rtl_usb_receive(struct rtl_priv *rtlpriv, uint32_t cnt, uint8_t
 
 static inline int rtw_inc_and_chk_continual_urb_error(struct rtl_usb *dvobj)
 {
-	int ret = _FALSE;
+	int ret = false;
 	int value;
 	if( (value=atomic_inc_return(&dvobj->continual_urb_error)) > MAX_CONTINUAL_URB_ERR) {
 		DBG_871X("[dvobj:%p][ERROR] continual_urb_error:%d > %d\n", dvobj, value, MAX_CONTINUAL_URB_ERR);
-		ret = _TRUE;
+		ret = true;
 	} else {
 		//DBG_871X("[dvobj:%p] continual_urb_error:%d\n", dvobj, value);
 	}
@@ -121,7 +121,7 @@ static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 valu
 
 			if (status < 0) {
 				if(status == (-ESHUTDOWN) || status == -ENODEV) {
-					rtlpriv->bSurpriseRemoved = _TRUE;
+					rtlpriv->bSurpriseRemoved = true;
 				} else {
 					;
 				}
@@ -136,8 +136,8 @@ static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 valu
 				}
 			}
 
-			if(rtw_inc_and_chk_continual_urb_error(pdvobjpriv) == _TRUE ){
-				rtlpriv->bSurpriseRemoved = _TRUE;
+			if(rtw_inc_and_chk_continual_urb_error(pdvobjpriv) == true ){
+				rtlpriv->bSurpriseRemoved = true;
 				break;
 			}
 
@@ -392,12 +392,12 @@ static void _rtl_tx_complete(struct urb *purb)
 			goto check_completion;
 
 		} else if (purb->status == -ESHUTDOWN) {
-			rtlpriv->bDriverStopped=_TRUE;
+			rtlpriv->bDriverStopped=true;
 
 			goto check_completion;
 		} else 	{
-			rtlpriv->bSurpriseRemoved=_TRUE;
-			RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD,  "bSurpriseRemoved=TRUE\n");
+			rtlpriv->bSurpriseRemoved=true;
+			RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD,  "bSurpriseRemoved=true\n");
 			/* rtl8192cu_trigger_gpio_0(rtlpriv); */
 
 			goto check_completion;
@@ -428,7 +428,7 @@ u32 _rtlw_usb_transmit(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct 
 	unsigned long flags;
 	unsigned int pipe;
 	int status;
-	u32 ret = _FAIL, bwritezero = _FALSE;
+	u32 ret = _FAIL, bwritezero = false;
 	struct urb *purb = NULL;
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
@@ -504,7 +504,7 @@ u32 _rtlw_usb_transmit(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct 
 		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, " _rtlw_usb_transmit, status=%d\n", status);
 		switch (status) {
 		case -ENODEV:
-			rtlpriv->bDriverStopped=_TRUE;
+			rtlpriv->bDriverStopped=true;
 			break;
 		default:
 			break;
@@ -519,7 +519,7 @@ u32 _rtlw_usb_transmit(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct 
  *  We add the URB_ZERO_PACKET flag to urb so that the host will send the zero packet automatically.
  */
 /*
-	if(bwritezero == _TRUE)
+	if(bwritezero == true)
 	{
 		usb_bulkout_zero(pintfhdl, addr);
 	}
@@ -537,7 +537,7 @@ void usb_write_port_cancel(struct rtl_priv *rtlpriv)
 	int i, j;
 	struct xmit_buf *pxmitbuf = (struct xmit_buf *)rtlpriv->xmitpriv.pxmitbuf;
 
-	rtlpriv->bWritePortCancel = _TRUE;
+	rtlpriv->bWritePortCancel = true;
 
 	for (i=0; i<NR_XMITBUFF; i++) {
 		for (j=0; j<8; j++) {
@@ -568,7 +568,7 @@ static void _rtl_rx_complete(struct urb *purb)
 
 	/*
 	 * spin_lock_irqsave(&precvpriv->lock, &irqL);
-	 * precvbuf->irp_pending=_FALSE;
+	 * precvbuf->irp_pending=false;
 	 * precvpriv->rx_pending_cnt --;
 	 * spin_unlock_irqrestore(&precvpriv->lock, &irqL);
 	 */
@@ -585,7 +585,7 @@ static void _rtl_rx_complete(struct urb *purb)
 	if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped
 	|| rtlpriv->bReadPortCancel) {
 #ifdef CONFIG_PREALLOC_RECV_SKB
-		precvbuf->reuse = _TRUE;
+		precvbuf->reuse = true;
 #else
 		if (precvbuf->pskb) {
 			DBG_8192C("==> free skb(%p)\n", precvbuf->pskb);
@@ -601,7 +601,7 @@ static void _rtl_rx_complete(struct urb *purb)
 		/* SUCCESS */
 		if ((purb->actual_length > MAX_RECVBUF_SZ)
 		 || (purb->actual_length < RXDESC_SIZE)) {
-			precvbuf->reuse = _TRUE;
+			precvbuf->reuse = true;
 			_rtl_usb_receive(rtlpriv, 0, (unsigned char *)precvbuf);
 			DBG_8192C("%s()-%d: RX Warning!\n", __FUNCTION__, __LINE__);
 		} else {
@@ -614,14 +614,14 @@ static void _rtl_rx_complete(struct urb *purb)
 				tasklet_schedule(&precvpriv->recv_tasklet);
 
 			precvbuf->skb = NULL;
-			precvbuf->reuse = _FALSE;
+			precvbuf->reuse = false;
 			_rtl_usb_receive(rtlpriv, 0, (unsigned char *)precvbuf);
 		}
 	} else {
 		DBG_8192C("###=> usb_read_port_complete => urb status(%d)\n", purb->status);
 
-		if (rtw_inc_and_chk_continual_urb_error(rtl_usbdev(rtlpriv)) == _TRUE) {
-			rtlpriv->bSurpriseRemoved = _TRUE;
+		if (rtw_inc_and_chk_continual_urb_error(rtl_usbdev(rtlpriv)) == true) {
+			rtlpriv->bSurpriseRemoved = true;
 		}
 
 		switch (purb->status) {
@@ -629,16 +629,16 @@ static void _rtl_rx_complete(struct urb *purb)
 		case -EPIPE:
 		case -ENODEV:
 		case -ESHUTDOWN:
-			/* rtlpriv->bSurpriseRemoved=_TRUE; */
+			/* rtlpriv->bSurpriseRemoved=true; */
 		case -ENOENT:
-			rtlpriv->bDriverStopped = _TRUE;
+			rtlpriv->bDriverStopped = true;
 			break;
 		case -EPROTO:
 		case -EILSEQ:
 		case -ETIME:
 		case -ECOMM:
 		case -EOVERFLOW:
-			precvbuf->reuse = _TRUE;
+			precvbuf->reuse = true;
 			_rtl_usb_receive(rtlpriv, 0, (unsigned char *)precvbuf);
 			break;
 		case -EINPROGRESS:
@@ -664,9 +664,9 @@ void rtw_os_read_port(struct rtl_priv *rtlpriv, struct recv_buf *precvbuf)
 	dev_kfree_skb_any(precvbuf->skb);
 
 	precvbuf->skb = NULL;
-	precvbuf->reuse = _FALSE;
+	precvbuf->reuse = false;
 
-	if (precvbuf->irp_pending == _FALSE) {
+	if (precvbuf->irp_pending == false) {
 		_rtl_usb_receive(rtlpriv, 0, (unsigned char *)precvbuf);
 	}
 
@@ -694,10 +694,10 @@ static uint32_t _rtl_usb_receive (struct rtl_priv *rtlpriv, uint32_t cnt, uint8_
 	}
 
 #ifdef CONFIG_PREALLOC_RECV_SKB
-	if ((precvbuf->reuse == _FALSE) || (precvbuf->skb == NULL)) {
+	if ((precvbuf->reuse == false) || (precvbuf->skb == NULL)) {
 		precvbuf->skb = skb_dequeue(&precvpriv->free_recv_skb_queue);
 		if (precvbuf->skb != NULL) {
-			precvbuf->reuse = _TRUE;
+			precvbuf->reuse = true;
 		}
 	}
 #endif
@@ -707,7 +707,7 @@ static uint32_t _rtl_usb_receive (struct rtl_priv *rtlpriv, uint32_t cnt, uint8_
 		precvbuf->ref_cnt = 0;
 			
 		/* re-assign for linux based on skb */
-		if ((precvbuf->reuse == _FALSE) || (precvbuf->skb == NULL)) {
+		if ((precvbuf->reuse == false) || (precvbuf->skb == NULL)) {
 			/* precvbuf->pskb = alloc_skb(MAX_RECVBUF_SZ, GFP_ATOMIC);//don't use this after v2.6.25 */
 			precvbuf->skb = netdev_alloc_skb(rtlpriv->ndev, MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
 			if (precvbuf->skb == NULL) {
@@ -722,13 +722,13 @@ static uint32_t _rtl_usb_receive (struct rtl_priv *rtlpriv, uint32_t cnt, uint8_
 		} else {
 			/* reuse skb */
 
-			precvbuf->reuse = _FALSE;
+			precvbuf->reuse = false;
 		}
 
 		/*
 		 * spin_lock_irqsave(&precvpriv->lock, &irqL);
 		 * precvpriv->rx_pending_cnt++;
-		 * precvbuf->irp_pending = _TRUE;
+		 * precvbuf->irp_pending = true;
 		 * spin_unlock_irqrestore(&precvpriv->lock, &irqL);
 		 */
 		precvpriv->rx_pending_cnt++;
@@ -854,7 +854,7 @@ static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl
 
 	spin_lock_init(&pdvobjpriv->lock);
 
-	pdvobjpriv->macid[1] = _TRUE; 	/* macid=1 for bc/mc stainfo */
+	pdvobjpriv->macid[1] = true; 	/* macid=1 for bc/mc stainfo */
 
 
 	pdvobjpriv->intf = usb_intf ;
@@ -1026,7 +1026,7 @@ void usb_intf_start(struct rtl_priv *rtlpriv)
 	/* issue Rx irp to receive data */
 	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
 	for (i = 0; i < NR_RECVBUFF; i++) {
-		if (_rtl_usb_receive(rtlpriv, 0, (unsigned char *) precvbuf) == _FALSE) {
+		if (_rtl_usb_receive(rtlpriv, 0, (unsigned char *) precvbuf) == false) {
 			status = _FAIL;
 			goto exit;
 		}
@@ -1042,7 +1042,7 @@ exit:
 void usb_intf_stop(struct rtl_priv *rtlpriv)
 {
 	/* disabel_hw_interrupt */
-	if (rtlpriv->bSurpriseRemoved == _FALSE) {
+	if (rtlpriv->bSurpriseRemoved == false) {
 		/* device still exists, so driver can do i/o operation */
 		/* TODO: */
 	}
@@ -1065,7 +1065,7 @@ static void rtw_dev_unload(struct rtl_priv *rtlpriv)
 	if (rtlpriv->initialized == true) {
 		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "===> rtw_dev_unload\n");
 
-		rtlpriv->bDriverStopped = _TRUE;
+		rtlpriv->bDriverStopped = true;
 		/* s3. */
 		usb_intf_stop(rtlpriv);
 
@@ -1075,9 +1075,9 @@ static void rtw_dev_unload(struct rtl_priv *rtlpriv)
 
 
 		/* s5. */
-		if(rtlpriv->bSurpriseRemoved == _FALSE) {
+		if(rtlpriv->bSurpriseRemoved == false) {
 			rtw_hal_deinit(rtlpriv);
-			rtlpriv->bSurpriseRemoved = _TRUE;
+			rtlpriv->bSurpriseRemoved = true;
 		}
 
 		rtlpriv->initialized = false;
@@ -1136,13 +1136,13 @@ static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t messa
 	if(pwrpriv->bInternalAutoSuspend )
 	{
 	}
-	pwrpriv->bInSuspend = _TRUE;
+	pwrpriv->bInSuspend = true;
 	rtw_cancel_all_timer(rtlpriv);
 	LeaveAllPowerSaveMode(rtlpriv);
 
 	down(&pwrpriv->lock);
 	/*
-	 * rtlpriv->net_closed = _TRUE;
+	 * rtlpriv->net_closed = true;
 	 * s1.
 	 */
 	if (ndev) {
@@ -1151,7 +1151,7 @@ static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t messa
 	}
 
 	/* s2. */
-	rtw_disassoc_cmd(rtlpriv, 0, _FALSE);
+	rtw_disassoc_cmd(rtlpriv, 0, false);
 
 	/* s2-2.  indicate disconnect to os */
 	rtw_indicate_disconnect(rtlpriv);
@@ -1161,12 +1161,12 @@ static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t messa
 	if(!pwrpriv->bInternalAutoSuspend )
 #endif
 	/* s2-4. */
-	rtw_free_network_queue(rtlpriv, _TRUE);
+	rtw_free_network_queue(rtlpriv, true);
 
 	rtw_dev_unload(rtlpriv);
 #ifdef CONFIG_AUTOSUSPEND
 	pwrpriv->rf_pwrstate = rf_off;
-	pwrpriv->bips_processing = _FALSE;
+	pwrpriv->bips_processing = false;
 #endif
 	up(&pwrpriv->lock);
 
@@ -1200,15 +1200,15 @@ int _netdev_open(struct net_device *ndev)
 
 	DBG_871X("+871x_drv - drv_open, bup=%d\n", rtlpriv->initialized);
 
-	if (pwrctrlpriv->ps_flag == _TRUE) {
-		rtlpriv->net_closed = _FALSE;
+	if (pwrctrlpriv->ps_flag == true) {
+		rtlpriv->net_closed = false;
 		goto netdev_open_normal_process;
 	}
 
-	if (rtlpriv->initialized == _FALSE) {
-		rtlpriv->bDriverStopped = _FALSE;
-		rtlpriv->bSurpriseRemoved = _FALSE;
-		rtlpriv->bCardDisableWOHSM = _FALSE;
+	if (rtlpriv->initialized == false) {
+		rtlpriv->bDriverStopped = false;
+		rtlpriv->bSurpriseRemoved = false;
+		rtlpriv->bCardDisableWOHSM = false;
 
 		status = rtw_hal_init(rtlpriv);
 		if (status == _FAIL) {
@@ -1230,14 +1230,14 @@ int _netdev_open(struct net_device *ndev)
 
 		usb_intf_start(rtlpriv);
 		
-		rtlpriv->initialized = _TRUE;
+		rtlpriv->initialized = true;
 	}
 	rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_ON);
-	rtlpriv->net_closed = _FALSE;
+	rtlpriv->net_closed = false;
 
 	_set_timer(&rtlpriv->mlmepriv.dynamic_chk_timer, 2000);
 
-	rtlpriv->pwrctrlpriv.bips_processing = _FALSE;
+	rtlpriv->pwrctrlpriv.bips_processing = false;
 	rtw_set_pwr_state_check_timer(&rtlpriv->pwrctrlpriv);
 
 	/*
@@ -1256,7 +1256,7 @@ netdev_open_normal_process:
 
 netdev_open_error:
 
-	rtlpriv->initialized = _FALSE;
+	rtlpriv->initialized = false;
 
 	netif_carrier_off(ndev);
 	rtw_netif_stop_queue(ndev);
@@ -1285,14 +1285,14 @@ static int netdev_open(struct net_device *ndev)
 int  ips_netdrv_open(struct rtl_priv *rtlpriv)
 {
 	int status = _SUCCESS;
-	rtlpriv->net_closed = _FALSE;
+	rtlpriv->net_closed = false;
 
 	DBG_871X("===> %s.........\n", __FUNCTION__);
 
-	rtlpriv->bDriverStopped = _FALSE;
-	rtlpriv->bSurpriseRemoved = _FALSE;
-	rtlpriv->bCardDisableWOHSM = _FALSE;
-	/* rtlpriv->bup = _TRUE; */
+	rtlpriv->bDriverStopped = false;
+	rtlpriv->bSurpriseRemoved = false;
+	rtlpriv->bCardDisableWOHSM = false;
+	/* rtlpriv->bup = true; */
 
 	status = rtw_hal_init(rtlpriv);
 	if (status == _FAIL) {
@@ -1307,7 +1307,7 @@ int  ips_netdrv_open(struct rtl_priv *rtlpriv)
 	 return _SUCCESS;
 
 netdev_open_error:
-	/* rtlpriv->bup = _FALSE; */
+	/* rtlpriv->bup = false; */
 	DBG_871X("-ips_netdrv_open - drv_open failure, initialized=%d\n", rtlpriv->initialized);
 
 	return _FAIL;
@@ -1321,14 +1321,14 @@ static uint8_t rtw_reset_drv_sw(struct rtl_priv *rtlpriv)
 
 	/* hal_priv */
 	rtlpriv->cfg->ops->init_default_value(rtlpriv);
-	rtlpriv->bReadPortCancel = _FALSE;
-	rtlpriv->bWritePortCancel = _FALSE;
+	rtlpriv->bReadPortCancel = false;
+	rtlpriv->bWritePortCancel = false;
 	pmlmepriv->scan_interval = SCAN_INTERVAL;	/* 30*2 sec = 60sec */
 
 	rtlpriv->xmitpriv.tx_pkts = 0;
 	rtlpriv->recvpriv.rx_pkts = 0;
 
-	pmlmepriv->LinkDetectInfo.bBusyTraffic = _FALSE;
+	pmlmepriv->LinkDetectInfo.bBusyTraffic = false;
 
 	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY | _FW_UNDER_LINKING);
 
@@ -1370,11 +1370,11 @@ void rtw_ips_pwr_down(struct rtl_priv *rtlpriv)
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "===> rtw_ips_pwr_down...................\n");
 
-	rtlpriv->bCardDisableWOHSM = _TRUE;
-	rtlpriv->net_closed = _TRUE;
+	rtlpriv->bCardDisableWOHSM = true;
+	rtlpriv->net_closed = true;
 
 	rtw_ips_dev_unload(rtlpriv);
-	rtlpriv->bCardDisableWOHSM = _FALSE;
+	rtlpriv->bCardDisableWOHSM = false;
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "<=== rtw_ips_pwr_down..................... in %dms\n", rtw_get_passing_time_ms(start_time));
 }
 void rtw_ips_dev_unload(struct rtl_priv *rtlpriv)
@@ -1389,7 +1389,7 @@ void rtw_ips_dev_unload(struct rtl_priv *rtlpriv)
 	usb_intf_stop(rtlpriv);
 
 	/* s5. */
-	if (rtlpriv->bSurpriseRemoved == _FALSE) {
+	if (rtlpriv->bSurpriseRemoved == false) {
 		rtw_hal_deinit(rtlpriv);
 	}
 
@@ -1400,18 +1400,18 @@ static int netdev_close(struct net_device *ndev)
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);	
 
-	if (rtlpriv->pwrctrlpriv.bInternalAutoSuspend == _TRUE) {
+	if (rtlpriv->pwrctrlpriv.bInternalAutoSuspend == true) {
 		/*rtw_pwr_wakeup(rtlpriv); */
 		if (rtlpriv->pwrctrlpriv.rf_pwrstate == rf_off)
-			rtlpriv->pwrctrlpriv.ps_flag = _TRUE;
+			rtlpriv->pwrctrlpriv.ps_flag = true;
 	}
-	rtlpriv->net_closed = _TRUE;
+	rtlpriv->net_closed = true;
 
 /*	if (!rtlpriv->hw_init_completed)
 	{
 		DBG_871X("(1)871x_drv - drv_close, bup=%d, hw_init_completed=%d\n", rtlpriv->bup, rtlpriv->hw_init_completed);
 
-		rtlpriv->bDriverStopped = _TRUE;
+		rtlpriv->bDriverStopped = true;
 
 		rtw_dev_unload(rtlpriv);
 	}
@@ -1427,13 +1427,13 @@ static int netdev_close(struct net_device *ndev)
 
 		/* s2. */
 		LeaveAllPowerSaveMode(rtlpriv);
-		rtw_disassoc_cmd(rtlpriv, 500, _FALSE);
+		rtw_disassoc_cmd(rtlpriv, 500, false);
 		/* s2-2.  indicate disconnect to os */
 		rtw_indicate_disconnect(rtlpriv);
 		/* s2-3. */
 		rtw_free_assoc_resources(rtlpriv, 1);
 		/* s2-4. */
-		rtw_free_network_queue(rtlpriv, _TRUE);
+		rtw_free_network_queue(rtlpriv, true);
 		/* Close LED */
 	}
 	rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_OFF);
@@ -1457,7 +1457,7 @@ static int pm_netdev_open(struct net_device *ndev, uint8_t bnormal)
 {
 	int status;
 
-	if (_TRUE == bnormal)
+	if (true == bnormal)
 		status = netdev_open(ndev);
 	else
 		status =  (_SUCCESS == ips_netdrv_open(rtl_priv(ndev)))?(0):(-1);
@@ -1483,7 +1483,7 @@ int rtw_resume_process(struct rtl_priv *rtlpriv)
 	down(&pwrpriv->lock);
 	rtw_reset_drv_sw(rtlpriv);
 
-	if(pm_netdev_open(ndev,_TRUE) != 0){
+	if(pm_netdev_open(ndev,true) != 0){
 		up(&pwrpriv->lock);
 		goto exit;
 	}
@@ -1493,8 +1493,8 @@ int rtw_resume_process(struct rtl_priv *rtlpriv)
 
 #ifdef CONFIG_AUTOSUSPEND
 	if (pwrpriv->bInternalAutoSuspend) {
-		pwrpriv->bInternalAutoSuspend = _FALSE;
-		pwrpriv->brfoffbyhw = _FALSE;
+		pwrpriv->bInternalAutoSuspend = false;
+		pwrpriv->brfoffbyhw = false;
 		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "enc_algorithm(%x),wepkeymask(%x)\n",
 			rtlpriv->securitypriv.dot11PrivacyAlgrthm,pwrpriv->wepkeymask);
 		if  ((WEP40_ENCRYPTION == rtlpriv->securitypriv.dot11PrivacyAlgrthm) ||
@@ -1516,7 +1516,7 @@ int rtw_resume_process(struct rtl_priv *rtlpriv)
 
 	ret = 0;
 exit:
-	pwrpriv->bInSuspend = _FALSE;
+	pwrpriv->bInSuspend = false;
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "<===  %s return %d.............. in %dms\n", __FUNCTION__
 		, ret, rtw_get_passing_time_ms(start_time));
 
@@ -1531,8 +1531,8 @@ void autosuspend_enter(struct rtl_priv* rtlpriv)
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "==>autosuspend_enter...........\n");
 
-	pwrpriv->bInternalAutoSuspend = _TRUE;
-	pwrpriv->bips_processing = _TRUE;
+	pwrpriv->bInternalAutoSuspend = true;
+	pwrpriv->bips_processing = true;
 
 	if (rf_off == pwrpriv->change_rfpwrstate) {
 		usb_enable_autosuspend(dvobj->pusbdev);
@@ -1555,7 +1555,7 @@ int autoresume_enter(struct rtl_priv* rtlpriv)
 	RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG, "====> autoresume_enter \n");
 
 	if (rf_off == pwrpriv->rf_pwrstate) {
-		pwrpriv->ps_flag = _FALSE;
+		pwrpriv->ps_flag = false;
 			if (usb_autopm_get_interface(dvobj->pusbintf) < 0) {
 				RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG,  "can't get autopm: %d\n", result);
 				result = _FAIL;
@@ -1585,7 +1585,7 @@ static int rtw_net_set_mac_address(struct net_device *ndev, void *p)
 		memcpy(rtlpriv->mac80211.mac_addr, addr->sa_data, ETH_ALEN);
 		/*
 		 * memcpy(ndev->dev_addr, addr->sa_data, ETH_ALEN);
-		 * rtlpriv->bset_hwaddr = _TRUE;
+		 * rtlpriv->bset_hwaddr = true;
 		 */
 	}
 
@@ -1803,7 +1803,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	/* ULLI: Init IO handler */
 	_rtl_usb_io_handler_init(&udev->dev, rtlpriv);
 
-	rtlpriv->bDriverStopped=_TRUE;
+	rtlpriv->bDriverStopped=true;
 
 	/* step 1-1., decide the chip_type via driver_info */
 	rtlpriv->rtlhal.interface = INTF_USB;
@@ -1974,7 +1974,7 @@ void rtw_usb_if1_deinit(struct rtl_priv *rtlpriv)
 	struct mlme_priv *pmlmepriv= &rtlpriv->mlmepriv;
 
 	if(check_fwstate(pmlmepriv, _FW_LINKED))
-		rtw_disassoc_cmd(rtlpriv, 0, _FALSE);
+		rtw_disassoc_cmd(rtlpriv, 0, false);
 
 
 #ifdef CONFIG_AP_MODE
@@ -2168,7 +2168,7 @@ efuse_OneByteRead(
 	if(tmpidx<1000)
 	{
 		*data=rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
-		bResult = _TRUE;
+		bResult = true;
 	}
 	else
 	{
@@ -2218,7 +2218,7 @@ efuse_OneByteWrite(
 
 	if(tmpidx<100)
 	{
-		bResult = _TRUE;
+		bResult = true;
 	}
 	else
 	{

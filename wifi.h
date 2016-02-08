@@ -695,7 +695,7 @@ struct rtl_hal {
 	bool during_mac0init_radiob;
 	bool during_mac1init_radioa;
 	bool reloadtxpowerindex;
-	/* True if IMR or IQK  have done
+	/* true if IMR or IQK  have done
 	for 2.4G in scan progress */
 	bool load_imrandiqk_setting_for2g;
 

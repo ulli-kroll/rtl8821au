@@ -119,7 +119,7 @@ void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv,  REG_RXTSF_OFFSET_CCK, 0x50);
 	rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_OFDM, 0x50);
 
-	_BeaconFunctionEnable(rtlpriv, _TRUE, _TRUE);
+	_BeaconFunctionEnable(rtlpriv, true, true);
 
 	_rtl8821au_resume_tx_beacon(rtlpriv);
 
@@ -227,7 +227,7 @@ static void hw_var_set_mlme_sitesurvey(struct rtl_priv *rtlpriv, uint8_t variabl
 	/* config RCR to receive different BSSID & not to receive data frame */
 	value_rxfltmap2 = 0;
 
-	if ((check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)) {
+	if ((check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)) {
 		rcr_clear_bit = RCR_CBSSID_BCN;
 	}
 
@@ -494,7 +494,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 					val32 |= RCR_CBSSID_DATA|RCR_CBSSID_BCN;
 				rtl_write_dword(rtlpriv, REG_RCR, val32);
 
-				if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE) {
+				if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == true) {
 					/* ULLI removed
 					 * RetryLimit = (pEEPROM->CustomerID == RT_CID_CCX) ? 7 : 48;
 					 */
@@ -869,7 +869,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 		{
 			/* BCN_VALID, BIT16 of REG_TDECTRL = BIT0 of REG_TDECTRL+2 */
 			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL+2);
-			*pval = (BIT(0) & val8) ? _TRUE:_FALSE;
+			*pval = (BIT(0) & val8) ? true:false;
 		}
 		break;
 
@@ -880,15 +880,15 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 			 *  If it is in HW/SW Radio OFF or IPS state, we do not check Fw LPS Leave,
 			 *  because Fw is unload.
 			 */
-			*pval = _TRUE;
+			*pval = true;
 		} else {
 			uint32_t valRCR;
 			valRCR = rtl_read_dword(rtlpriv, REG_RCR);
 			valRCR &= 0x00070000;
 			if (valRCR)
-				*pval = _FALSE;
+				*pval = false;
 			else
-				*pval = _TRUE;
+				*pval = true;
 		}
 
 		break;
@@ -899,7 +899,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 
 	case HW_VAR_CHK_HI_QUEUE_EMPTY:
 		val16 = rtl_read_word(rtlpriv, REG_TXPKT_EMPTY);
-		*pval = (val16 & BIT(10)) ? _TRUE:_FALSE;
+		*pval = (val16 & BIT(10)) ? true:false;
 		break;
 
 	default:
@@ -1077,8 +1077,8 @@ static void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 			 * discussing with Willis an YN, revise driver code to prevent.
 			 */
 			if (rtlhal->rfe_type == 4 &&
-			   (rtlhal->external_pa_5g == _TRUE || rtlhal->external_pa_2g == _TRUE ||
-			    rtlhal->external_lna_5g == _TRUE || rtlhal->external_lna_2g == _TRUE)) {
+			   (rtlhal->external_pa_5g == true || rtlhal->external_pa_2g == true ||
+			    rtlhal->external_lna_5g == true || rtlhal->external_lna_2g == true)) {
 				if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 					rtlhal->rfe_type = 0;
 			}
@@ -1159,7 +1159,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 		       HWSET_MAX_SIZE_JAGUAR);
 	} else {	/* autoload fail */
 		/*
-		 * pHalData->AutoloadFailFlag = _TRUE;
+		 * pHalData->AutoloadFailFlag = true;
 		 * update to default value 0xFF
 		 */
 		if (rtlefuse->epromtype == EEPROM_BOOT_EFUSE) {
@@ -1174,9 +1174,9 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	EEPROMId = le16_to_cpu(*((u16 *)hwinfo));
 	if (EEPROMId != RTL_EEPROM_ID) {
 		RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "EEPROM ID(%#x) is invalid!!\n", EEPROMId);
-		rtlefuse->autoload_failflag = _TRUE;
+		rtlefuse->autoload_failflag = true;
 	} else {
-		rtlefuse->autoload_failflag = _FALSE;
+		rtlefuse->autoload_failflag = false;
 	}
 
 	if (rtlefuse->autoload_failflag) {
@@ -1266,7 +1266,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	/* pHalData->EEPROMThermalMeter = (tempval&0x1f);	//[4:0] */
 
 	if (rtlefuse->eeprom_thermalmeter == 0xff || rtlefuse->autoload_failflag) {
-		rtlefuse->apk_thermalmeterignore = _TRUE;
+		rtlefuse->apk_thermalmeterignore = true;
 		rtlefuse->eeprom_thermalmeter = 0xFF;
 	}
 
@@ -1985,7 +1985,7 @@ static void init_UsbAggregationSetting_8812A(struct rtl_priv *rtlpriv)
 	usb_AggSettingRxUpdate_8812A(rtlpriv);
 
 	/* 201/12/10 MH Add for USB agg mode dynamic switch. */
-	pHalData->UsbRxHighSpeedMode = _FALSE;
+	pHalData->UsbRxHighSpeedMode = false;
 }
 
 static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
@@ -2060,11 +2060,11 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	u1bRegCR = rtl_read_byte(rtlpriv, REG_CR);
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " power-on :REG_SYS_CLKR 0x09=0x%02x. REG_CR 0x100=0x%02x.\n", value8, u1bRegCR);
 	if ((value8&BIT3)  && (u1bRegCR != 0 && u1bRegCR != 0xEA)) {
-		/* pHalData->bMACFuncEnable = TRUE; */
+		/* pHalData->bMACFuncEnable = true; */
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " MAC has already power on.\n");
 	} else {
 		/*
-		 * pHalData->bMACFuncEnable = FALSE;
+		 * pHalData->bMACFuncEnable = false;
 		 * Set FwPSState to ALL_ON mode to prevent from the I/O be return because of 32k
 		 * state which is set before sleep under wowlan mode. 2012.01.04. by tynli.
 		 * pHalData->FwPSState = FW_PS_STATE_ALL_ON_88E;
@@ -2106,21 +2106,21 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	if (pHalData->bRDGEnable)
 		_InitRDGSetting_8812A(rtlpriv);
 
-	status = rtl8821au_download_fw(rtlpriv, _FALSE);
+	status = rtl8821au_download_fw(rtlpriv, false);
 	if (status != _SUCCESS) {
 		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: Download Firmware failed!!\n", __FUNCTION__);
 		rtlhal->fw_ready = false;
-		pHalData->fw_ractrl = _FALSE;
+		pHalData->fw_ractrl = false;
 		/* return status; */
 	} else {
 		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: Download Firmware Success!!\n", __FUNCTION__);
 		rtlhal->fw_ready = true;
-		pHalData->fw_ractrl = _TRUE;
+		pHalData->fw_ractrl = true;
 	}
 
 	InitializeFirmwareVars8812(rtlpriv);
 
-	if (pwrctrlpriv->reg_rfoff == _TRUE)
+	if (pwrctrlpriv->reg_rfoff == true)
 		pwrctrlpriv->rf_pwrstate = rf_off;
 
 	/*
@@ -2166,7 +2166,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	_InitRetryFunction_8812A(rtlpriv);
 	init_UsbAggregationSetting_8812A(rtlpriv);
 	rtl8821au_init_beacon_parameters(rtlpriv);
-	_InitBeaconMaxError_8812A(rtlpriv, _TRUE);
+	_InitBeaconMaxError_8812A(rtlpriv, true);
 
 	_InitBurstPktLen(rtlpriv);  /* added by page. 20110919 */
 
@@ -2280,10 +2280,10 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			rtlphy->need_iqk = true;
 			if (rtlphy->iqk_initialized)
-				rtl8812au_phy_iq_calibrate(rtlpriv, _TRUE);
+				rtl8812au_phy_iq_calibrate(rtlpriv, true);
 			else {
-				rtl8812au_phy_iq_calibrate(rtlpriv, _FALSE);
-				rtlphy->iqk_initialized = _TRUE;
+				rtl8812au_phy_iq_calibrate(rtlpriv, false);
+				rtlphy->iqk_initialized = true;
 			}
 		}
 
@@ -2301,7 +2301,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	/*
 	 *  2010/08/23 MH According to Alfred's suggestion, we need to to prevent HW enter
 	 *  suspend mode automatically.
-	 * HwSuspendModeEnable92Cu(rtlpriv, _FALSE);
+	 * HwSuspendModeEnable92Cu(rtlpriv, false);
 	 */
 
 
@@ -2476,11 +2476,11 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 
 		}
 
-		/* pHalData->bNOPG = _TRUE; */
+		/* pHalData->bNOPG = true; */
 		return;
 	}
 
-	pHalData->bTXPowerDataReadFromEEPORM = _TRUE;		/* YJ,move,120316 */
+	pHalData->bTXPowerDataReadFromEEPORM = true;		/* YJ,move,120316 */
 
 	for (rfPath = 0; rfPath < MAX_RF_PATH; rfPath++) {
 		/*  2.4G default value */
@@ -2488,7 +2488,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 			pwrinfo24g->index_cck_base[rfPath][group] = hwinfo[eeAddr++];
 			if (pwrinfo24g->index_cck_base[rfPath][group] == 0xFF) {
 				pwrinfo24g->index_cck_base[rfPath][group] = EEPROM_DEFAULT_24G_INDEX;
-				/* pHalData->bNOPG = _TRUE; */
+				/* pHalData->bNOPG = true; */
 			}
 			/*
 			 * DBG_871X("8812-2G RF-%d-G-%d CCK-Addr-%x BASE=%x\n",
@@ -2755,7 +2755,7 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 
 	/*
 	 * if(!AutoLoadFail)
-	 * 	pHalData->bTXPowerDataReadFromEEPORM = _TRUE;
+	 * 	pHalData->bTXPowerDataReadFromEEPORM = true;
 	 */
 
 	for (rfPath = 0; rfPath < MAX_RF_PATH; rfPath++) {

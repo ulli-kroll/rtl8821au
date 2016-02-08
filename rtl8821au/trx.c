@@ -238,14 +238,14 @@ static void rtl8812a_fill_txdesc_vcs(struct rtl_priv *rtlpriv, struct tx_pkt_att
 
 static inline uint8_t rtw_usb_bulk_size_boundary(struct rtl_priv * rtlpriv,int buf_len)
 {
-	uint8_t rst = _TRUE;
+	uint8_t rst = true;
 
 	if (IS_SUPER_SPEED_USB(rtlpriv))
-		rst = (0 == (buf_len) % USB_SUPER_SPEED_BULK_SIZE)?_TRUE:_FALSE;
+		rst = (0 == (buf_len) % USB_SUPER_SPEED_BULK_SIZE)?true:false;
 	if (IS_HIGH_SPEED_USB(rtlpriv))
-		rst = (0 == (buf_len) % USB_HIGH_SPEED_BULK_SIZE)?_TRUE:_FALSE;
+		rst = (0 == (buf_len) % USB_HIGH_SPEED_BULK_SIZE)?true:false;
 	else
-		rst = (0 == (buf_len) % USB_FULL_SPEED_BULK_SIZE)?_TRUE:_FALSE;
+		rst = (0 == (buf_len) % USB_FULL_SPEED_BULK_SIZE)?true:false;
 	return rst;
 }
 
@@ -265,7 +265,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	int	bmcst = is_multicast_ether_addr(pattrib->ra);
 
-	if ((!bagg_pkt) && (rtw_usb_bulk_size_boundary(rtlpriv, TXDESC_SIZE+sz) == _FALSE)) {
+	if ((!bagg_pkt) && (rtw_usb_bulk_size_boundary(rtlpriv, TXDESC_SIZE+sz) == false)) {
 		ptxdesc = (pmem+PACKET_OFFSET_SZ);
 		/* DBG_8192C("==> non-agg-pkt,shift pointer...\n"); */
 		pull = 1;
@@ -336,7 +336,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 		    (pattrib->dhcp_pkt != 1)) {
 			/* Non EAP & ARP & DHCP type data packet */
 
-			if (pattrib->ampdu_en == _TRUE) {
+			if (pattrib->ampdu_en == true) {
 				SET_TX_DESC_AGG_ENABLE(ptxdesc, 1);
 				SET_TX_DESC_MAX_AGG_NUM(ptxdesc, 0x1f);
 				/* Set A-MPDU aggregation. */
@@ -350,7 +350,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 			/* DATA  Rate FB LMT */
 			SET_TX_DESC_DATA_RATE_FB_LIMIT(ptxdesc, 0x1f);
 
-			if (pHalData->fw_ractrl == _FALSE) {
+			if (pHalData->fw_ractrl == false) {
 				SET_TX_DESC_USE_RATE(ptxdesc, 1);
 
 				if (pdmpriv->INIDATA_RATE[pattrib->mac_id] & BIT(7))
@@ -397,7 +397,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 		/* offset 20 */
 		SET_TX_DESC_RETRY_LIMIT_ENABLE(ptxdesc, 1);
 
-		if (pattrib->retry_ctrl == _TRUE) {
+		if (pattrib->retry_ctrl == true) {
 			SET_TX_DESC_DATA_RETRY_LIMIT(ptxdesc, 6);
 		} else {
 			SET_TX_DESC_DATA_RETRY_LIMIT(ptxdesc, 12);
@@ -457,7 +457,7 @@ static int32_t rtw_dump_xframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmi
 			sz = pattrib->last_txcmdsz;
 		}
 
-		pull = update_txdesc(pxmitframe, mem_addr, sz, _FALSE);
+		pull = update_txdesc(pxmitframe, mem_addr, sz, false);
 
 		if (pull) {
 			mem_addr += PACKET_OFFSET_SZ; /* pull txdesc head */
@@ -545,7 +545,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv,
 		pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv);
 		if (pxmitbuf == NULL) {
 			/* DBG_871X("%s #1, connot alloc xmitbuf!!!! \n",__FUNCTION__); */
-			return _FALSE;
+			return false;
 		}
 	}
 
@@ -561,7 +561,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv,
 			 * DBG_8192C("no more xmit frame ,return\n");
 			 */
 			rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
-			return _FALSE;
+			return false;
 		}
 
 #ifndef IDEA_CONDITION
@@ -585,7 +585,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv,
 		pxmitframe->agg_num = 1; 	/* alloc xmitframe should assign to 1. */
 		pxmitframe->pkt_offset = 1; 	/* first frame of aggregation, reserve offset */
 
-		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->skb, pxmitframe) == _FALSE) {
+		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->skb, pxmitframe) == false) {
 			dev_dbg(&(rtlpriv->ndev->dev), "%s coalesce 1st xmitframe failed \n", __FUNCTION__);
 			continue;
 		}
@@ -686,7 +686,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv,
 		/* pxmitframe->pxmitbuf = pxmitbuf; */
 		pxmitframe->buf_addr = pxmitbuf->pbuf + pbuf;
 
-		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->skb, pxmitframe) == _FALSE) {
+		if (rtw_xmitframe_coalesce(rtlpriv, pxmitframe->skb, pxmitframe) == false) {
 			dev_dbg(&(rtlpriv->ndev->dev), "%s coalesce failed \n", __FUNCTION__);
 			rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			continue;
@@ -699,7 +699,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv,
 		rtw_os_xmit_complete(rtlpriv, pxmitframe);
 
 		/* (len - TXDESC_SIZE) == pxmitframe->attrib.last_txcmdsz */
-		update_txdesc(pxmitframe, pxmitframe->buf_addr, pxmitframe->tx_attrib.last_txcmdsz, _TRUE);
+		update_txdesc(pxmitframe, pxmitframe->buf_addr, pxmitframe->tx_attrib.last_txcmdsz, true);
 
 		/* don't need xmitframe any more */
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
@@ -745,7 +745,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv,
 		/* DBG_8192C("$$$$$ buf size equal to USB block size $$$$$$\n"); */
 	}
 
-	update_txdesc(pfirstframe, pfirstframe->buf_addr, pfirstframe->tx_attrib.last_txcmdsz, _TRUE);
+	update_txdesc(pfirstframe, pfirstframe->buf_addr, pfirstframe->tx_attrib.last_txcmdsz, true);
 
 	/* 3 4. write xmit buffer to USB FIFO */
 	ff_hwaddr = rtw_get_ff_hwaddr(pfirstframe);
@@ -763,7 +763,7 @@ int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv,
 
 	rtw_free_xmitframe(pxmitpriv, pfirstframe);
 
-	return _TRUE;
+	return true;
 }
 
 static int32_t xmitframe_direct(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
@@ -783,8 +783,8 @@ static int32_t xmitframe_direct(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
 
 /*
  * Return
- *	_TRUE	dump packet directly
- *	_FALSE	enqueue packet
+ *	true	dump packet directly
+ *	false	enqueue packet
  */
 static int32_t pre_xmitframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
@@ -804,7 +804,7 @@ static int32_t pre_xmitframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitf
 	}
 
 
-	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == _TRUE)
+	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == true)
 		goto enqueue;
 
 	pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv);
@@ -822,7 +822,7 @@ static int32_t pre_xmitframe(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitf
 		rtw_free_xmitframe(pxmitpriv, pxmitframe);
 	}
 
-	return _TRUE;
+	return true;
 
 enqueue:
 	res = rtw_xmitframe_enqueue(rtlpriv, pxmitframe);
@@ -834,10 +834,10 @@ enqueue:
 		/* Trick, make the statistics correct */
 		pxmitpriv->tx_pkts--;
 		pxmitpriv->tx_drop++;
-		return _TRUE;
+		return true;
 	}
 
-	return _FALSE;
+	return false;
 }
 
 int32_t rtl8812au_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe)
@@ -847,8 +847,8 @@ int32_t rtl8812au_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntfr
 
 /*
  * Return
- *	_TRUE	dump packet directly ok
- *	_FALSE	temporary can't transmit packets to hardware
+ *	true	dump packet directly ok
+ *	false	temporary can't transmit packets to hardware
  */
 int32_t rtl8812au_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
@@ -1129,9 +1129,9 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo
 	}
 
 	if (pPktinfo->DataRate <= DESC_RATE11M)
-		isCCKrate = TRUE;
+		isCCKrate = true;
 	else
-		isCCKrate = FALSE;
+		isCCKrate = false;
 
 	pPhyInfo->RxMIMOSignalQuality[RF90_PATH_A] = -1;
 	pPhyInfo->RxMIMOSignalQuality[RF90_PATH_B] = -1;
@@ -1148,7 +1148,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo
 			cck_highpwr = rtlpriv->phy.cck_high_power;
 		/*
 		 * else
-		 * 	cck_highpwr = FALSE;
+		 * 	cck_highpwr = false;
 		 */
 
 		cck_agc_rpt =  pPhyStaRpt->cfosho[0] ;
@@ -1199,7 +1199,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo
 			}
 			rx_pwr_all += 6;
 			PWDB_ALL = odm_QueryRxPwrPercentage(rx_pwr_all);
-			if (cck_highpwr == FALSE) {
+			if (cck_highpwr == false) {
 				if (PWDB_ALL >= 80)
 					PWDB_ALL = ((PWDB_ALL-80)<<1)+((PWDB_ALL-80)>>1)+80;
 				else if ((PWDB_ALL <= 78) && (PWDB_ALL >= 20))
@@ -1470,7 +1470,7 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyI
 
 	if (pPktinfo->bPacketBeacon)
 		rtlpriv->dm.dbginfo.num_qry_beacon_pkt++;
-	isCCKrate = (pPktinfo->DataRate <= DESC_RATE11M) ? TRUE : FALSE;
+	isCCKrate = (pPktinfo->DataRate <= DESC_RATE11M) ? true : false;
 	pDM_Odm->RxRate = pPktinfo->DataRate;
 	/*
 	if (!isCCKrate)
@@ -1818,9 +1818,9 @@ void rtl8812_query_rx_phy_status(
 	struct sta_info *psta;
 	//_irqL		irqL;
 
-	pkt_info.bPacketMatchBSSID =_FALSE;
-	pkt_info.bPacketToSelf = _FALSE;
-	pkt_info.bPacketBeacon = _FALSE;
+	pkt_info.bPacketMatchBSSID =false;
+	pkt_info.bPacketToSelf = false;
+	pkt_info.bPacketBeacon = false;
 
 	wlanhdr = get_recvframe_data(precvframe);
 
@@ -1834,7 +1834,7 @@ void rtl8812_query_rx_phy_status(
 	pkt_info.bPacketBeacon = pkt_info.bPacketMatchBSSID && (GetFrameSubType(wlanhdr) == WIFI_BEACON);
 
 	if(pkt_info.bPacketBeacon){
-		if(check_fwstate(&rtlpriv->mlmepriv, WIFI_STATION_STATE) == _TRUE){
+		if(check_fwstate(&rtlpriv->mlmepriv, WIFI_STATION_STATE) == true){
 			sa = rtlpriv->mlmepriv.cur_network.network.MacAddress;
 			#if 0
 			{
@@ -1866,7 +1866,7 @@ void rtl8812_query_rx_phy_status(
 
 	precvframe->psta = NULL;
 	if (pkt_info.bPacketMatchBSSID &&
-		(check_fwstate(&rtlpriv->mlmepriv, WIFI_AP_STATE) == _TRUE))
+		(check_fwstate(&rtlpriv->mlmepriv, WIFI_AP_STATE) == true))
 	{
 		if (psta)
 		{
@@ -1877,7 +1877,7 @@ void rtl8812_query_rx_phy_status(
 	}
 	else if (pkt_info.bPacketToSelf || pkt_info.bPacketBeacon)
 	{
-		if (check_fwstate(&rtlpriv->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE)
+		if (check_fwstate(&rtlpriv->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == true)
 		{
 			if (psta)
 			{
@@ -1981,7 +1981,7 @@ static bool Hal_MappingOutPipe(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct rtl_ep_map *ep_map = &(rtlusb->ep_map);
-	bool result = _TRUE;
+	bool result = true;
 
 	switch(NumOutPipe) {
 	case 2:
@@ -1997,7 +1997,7 @@ static bool Hal_MappingOutPipe(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 		_OneOutEpMapping(ep_map);
 		break;
 	default:
-		result = _FALSE;
+		result = false;
 		break;
 	}
 
@@ -2011,7 +2011,7 @@ int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv)
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-	bool		result		= _FALSE;
+	bool		result		= false;
 
 	_ConfigChipOutEP_8812(rtlpriv, rtlusb->RtNumOutPipes);
 

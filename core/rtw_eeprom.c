@@ -41,8 +41,8 @@ void shift_out_bits(struct rtl_priv *rtlpriv, u16 data, u16 count)
 {
 	u16 x,mask;
 
-	if(rtlpriv->bSurpriseRemoved==_TRUE){
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if(rtlpriv->bSurpriseRemoved==true){
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 
@@ -56,8 +56,8 @@ void shift_out_bits(struct rtl_priv *rtlpriv, u16 data, u16 count)
 		if (data & mask)
 			x |= _EEDI;
 
-		if (rtlpriv->bSurpriseRemoved==_TRUE) {
-			RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+		if (rtlpriv->bSurpriseRemoved==true) {
+			RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 			goto out;
 		}
 
@@ -68,8 +68,8 @@ void shift_out_bits(struct rtl_priv *rtlpriv, u16 data, u16 count)
 		mask = mask >> 1;
 	} while (mask);
 
-	if (rtlpriv->bSurpriseRemoved==_TRUE){
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved==true){
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 
@@ -82,8 +82,8 @@ u16 shift_in_bits (struct rtl_priv *rtlpriv)
 {
 	u16 x,d=0,i;
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved == true) {
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 	x = usb_read8(rtlpriv, EE_9346CR);
@@ -94,8 +94,8 @@ u16 shift_in_bits (struct rtl_priv *rtlpriv)
 	for(i = 0; i < 16; i++) {
 		d = d << 1;
 		up_clk(rtlpriv, &x);
-		if(rtlpriv->bSurpriseRemoved == _TRUE) {
-			RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+		if(rtlpriv->bSurpriseRemoved == true) {
+			RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 			goto out;
 		}
 
@@ -129,14 +129,14 @@ void standby(struct rtl_priv *rtlpriv)
 u16 wait_eeprom_cmd_done(struct rtl_priv* rtlpriv)
 {
 	uint8_t 	x;
-	u16	i,res=_FALSE;
+	u16	i,res=false;
 
 	standby(rtlpriv );
 
 	for (i = 0; i < 200; i++) {
 		x = usb_read8(rtlpriv, EE_9346CR);
 		if (x & _EEDO){
-			res=_TRUE;
+			res=true;
 			goto exit;
 			}
 		rtw_udelay_os(CLOCK_RATE);
@@ -150,26 +150,26 @@ void eeprom_clean(struct rtl_priv *rtlpriv)
 {
 	u16 x;
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved == true) {
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 	x = usb_read8(rtlpriv, EE_9346CR);
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved == true) {
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 	x &= ~(_EECS | _EEDI);
 	usb_write8(rtlpriv, EE_9346CR, (uint8_t)x);
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved == true) {
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 
 	up_clk(rtlpriv, &x);
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved == true) {
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 	down_clk(rtlpriv, &x);
@@ -202,7 +202,7 @@ void eeprom_write16(struct rtl_priv * rtlpriv, u16 reg, u16 data)
 //	shift_out_bits(rtlpriv, EEPROM_ERASE_OPCODE, 3);
 //	shift_out_bits(rtlpriv, reg, rtlpriv->EepromAddressSize);
 //
-//	if (wait_eeprom_cmd_done(rtlpriv ) == FALSE)
+//	if (wait_eeprom_cmd_done(rtlpriv ) == false)
 //	{
 //		return;
 //	}
@@ -221,7 +221,7 @@ void eeprom_write16(struct rtl_priv * rtlpriv, u16 reg, u16 data)
 	// write the data to the selected EEPROM word.
 	shift_out_bits(rtlpriv, data, 16);
 
-	if (wait_eeprom_cmd_done(rtlpriv ) == _FALSE) {
+	if (wait_eeprom_cmd_done(rtlpriv ) == false) {
 		goto exit;
 	}
 
@@ -242,15 +242,15 @@ u16 eeprom_read16(struct rtl_priv * rtlpriv, u16 reg) //ReadEEprom
 	u16 x;
 	u16 data=0;
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved == true) {
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 	// select EEPROM, reset bits, set _EECS
 	x = usb_read8(rtlpriv, EE_9346CR);
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved == true) {
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 
@@ -284,15 +284,15 @@ void eeprom_read_sz(struct rtl_priv * rtlpriv, u16 reg, uint8_t * data, uint32_t
 	u16 x, data16;
 	uint32_t	 i;
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved == true) {
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 	// select EEPROM, reset bits, set _EECS
 	x = usb_read8(rtlpriv, EE_9346CR);
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE) {
-		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==_TRUE"));
+	if (rtlpriv->bSurpriseRemoved == true) {
+		RT_TRACE(_module_rtl871x_eeprom_c_,_drv_err_,("rtlpriv->bSurpriseRemoved==true"));
 		goto out;
 	}
 
@@ -347,7 +347,7 @@ uint8_t eeprom_read(struct rtl_priv *rtlpriv, uint32_t	addr_off, uint8_t sz, uin
 		rbuf[idx] = (uint8_t)(stmp & 0xff);
 	}
 
-	return _TRUE;
+	return true;
 }
 
 

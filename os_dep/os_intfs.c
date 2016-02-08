@@ -95,7 +95,7 @@ static int rtw_beamform_cap = 0;
 
 static int rtw_low_power = 0;
 
-static int rtw_AcceptAddbaReq = _TRUE;/* 0:Reject AP's Add BA req, 1:Accept AP's Add BA req. */
+static int rtw_AcceptAddbaReq = true;/* 0:Reject AP's Add BA req, 1:Accept AP's Add BA req. */
 
 static int rtw_enusbss = 0;	/* 0:disable,1:enable */
 

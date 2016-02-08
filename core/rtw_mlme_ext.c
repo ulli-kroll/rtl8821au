@@ -332,7 +332,7 @@ static void init_mlme_ext_priv_value(struct rtl_priv* rtlpriv)
 	pmlmeext->sitesurvey_res.state = SCAN_DISABLE;
 	pmlmeext->sitesurvey_res.channel_idx = 0;
 	pmlmeext->sitesurvey_res.bss_cnt = 0;
-	pmlmeext->scan_abort = _FALSE;
+	pmlmeext->scan_abort = false;
 
 	pmlmeinfo->state = WIFI_FW_NULL_STATE;
 	pmlmeinfo->reauth_count = 0;
@@ -423,7 +423,7 @@ static void init_channel_list(struct rtl_priv *rtlpriv, RT_CHANNEL_INFO *channel
 static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, RT_CHANNEL_INFO *channel_set)
 {
 	uint8_t	index,chanset_size = 0;
-	uint8_t	b5GBand = _FALSE, b2_4GBand = _FALSE;
+	uint8_t	b5GBand = false, b2_4GBand = false;
 	uint8_t	Index2G = 0, Index5G=0;
 
 	memset(channel_set, 0, sizeof(RT_CHANNEL_INFO)*MAX_CHANNEL_NUM);
@@ -436,7 +436,7 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 
 	if(IsSupported24G(WIRELESS_MODE_MAX))
 	{
-		b2_4GBand = _TRUE;
+		b2_4GBand = true;
 		if(RT_CHANNEL_DOMAIN_REALTEK_DEFINE == ChannelPlan)
 			Index2G = RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE.Index2G;
 		else
@@ -445,7 +445,7 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 
 	if(IsSupported5G(WIRELESS_MODE_MAX))
 	{
-		b5GBand = _TRUE;
+		b5GBand = true;
 		if(RT_CHANNEL_DOMAIN_REALTEK_DEFINE == ChannelPlan)
 			Index5G = RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE.Index5G;
 		else
@@ -550,7 +550,7 @@ int	init_mlme_ext_priv(struct rtl_priv* rtlpriv)
 	init_channel_list(rtlpriv, pmlmeext->channel_set, pmlmeext->max_chan_nums, &pmlmeext->channel_list);
 
 	pmlmeext->chan_scan_time = SURVEY_TO;
-	pmlmeext->mlmeext_init = _TRUE;
+	pmlmeext->mlmeext_init = true;
 
 #ifdef DBG_FIXED_CHAN
 	pmlmeext->fixed_chan = 0xFF;
@@ -567,7 +567,7 @@ void free_mlme_ext_priv (struct mlme_ext_priv *pmlmeext)
 	if (!rtlpriv)
 		return;
 
-	if (rtlpriv->bDriverStopped == _TRUE)
+	if (rtlpriv->bDriverStopped == true)
 	{
 		del_timer_sync_ex(&pmlmeext->survey_timer);
 		del_timer_sync_ex(&pmlmeext->link_timer);
@@ -680,7 +680,7 @@ void mgt_dispatcher(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 	switch (GetFrameSubType(pframe))
 	{
 		case WIFI_AUTH:
-			if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
+			if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 				ptable->func = &OnAuth;
 			else
 				ptable->func = &OnAuthClient;
@@ -690,7 +690,7 @@ void mgt_dispatcher(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 			_mgt_dispatcher(rtlpriv, ptable, precv_frame);
 			break;
 		case WIFI_PROBEREQ:
-			if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
+			if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 			{
 				_mgt_dispatcher(rtlpriv, ptable, precv_frame);
 			}
@@ -701,7 +701,7 @@ void mgt_dispatcher(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 			_mgt_dispatcher(rtlpriv, ptable, precv_frame);
 			break;
 		case WIFI_ACTION:
-			//if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
+			//if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 			_mgt_dispatcher(rtlpriv, ptable, precv_frame);
 			break;
 		default:
@@ -732,7 +732,7 @@ unsigned int OnProbeReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 	WLAN_BSSID_EX 	*cur = &(pmlmeinfo->network);
 	uint8_t *pframe = precv_frame->rx_data;
 	uint len = precv_frame->len;
-	uint8_t is_valid_p2p_probereq = _FALSE;
+	uint8_t is_valid_p2p_probereq = false;
 
 
 	if(check_fwstate(pmlmepriv, WIFI_STATION_STATE))
@@ -740,8 +740,8 @@ unsigned int OnProbeReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 		return _SUCCESS;
 	}
 
-	if(check_fwstate(pmlmepriv, _FW_LINKED) == _FALSE &&
-		check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_AP_STATE)==_FALSE)
+	if(check_fwstate(pmlmepriv, _FW_LINKED) == false &&
+		check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_AP_STATE)==false)
 	{
 		return _SUCCESS;
 	}
@@ -757,12 +757,12 @@ unsigned int OnProbeReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 	//check (wildcard) SSID
 	if (p != NULL)
 	{
-		if(is_valid_p2p_probereq == _TRUE)
+		if(is_valid_p2p_probereq == true)
 		{
 			goto _issue_probersp;
 		}
 
-		if ( (ielen != 0 && _FALSE ==_rtw_memcmp((void *)(p+2), (void *)cur->Ssid.Ssid, cur->Ssid.SsidLength))
+		if ( (ielen != 0 && false ==_rtw_memcmp((void *)(p+2), (void *)cur->Ssid.Ssid, cur->Ssid.SsidLength))
 			|| (ielen == 0 && pmlmeinfo->hidden_ssid_mode)
 		)
 		{
@@ -771,8 +771,8 @@ unsigned int OnProbeReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 
 _issue_probersp:
 
-		if(check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE &&
-			pmlmepriv->cur_network.join_res == _TRUE)
+		if(check_fwstate(pmlmepriv, _FW_LINKED) == true &&
+			pmlmepriv->cur_network.join_res == true)
 		{
 			//DBG_871X("+issue_probersp during ap mode\n");
 			issue_probersp(rtlpriv, get_sa(pframe), is_valid_p2p_probereq);
@@ -860,7 +860,7 @@ unsigned int OnBeacon(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 			pbss = (WLAN_BSSID_EX*)rtw_malloc(sizeof(WLAN_BSSID_EX));
 			if (pbss) {
 				if (collect_bss_info(rtlpriv, precv_frame, pbss) == _SUCCESS) {
-					update_network(&(pmlmepriv->cur_network.network), pbss, rtlpriv, _TRUE);
+					update_network(&(pmlmepriv->cur_network.network), pbss, rtlpriv, true);
 					rtw_get_bcn_info(&(pmlmepriv->cur_network));
 				}
 				rtw_mfree(pbss);
@@ -1028,7 +1028,7 @@ unsigned int OnAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 		goto auth_fail;
 	}
 
-	if(rtw_access_ctrl(rtlpriv, sa) == _FALSE)
+	if(rtw_access_ctrl(rtlpriv, sa) == false)
 	{
 		status = _STATS_UNABLE_HANDLE_STA_;
 		goto auth_fail;
@@ -1056,7 +1056,7 @@ unsigned int OnAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 	else
 	{
 		spin_lock_bh(&pstapriv->asoc_list_lock);
-		if(list_empty(&pstat->asoc_list)==_FALSE)
+		if(list_empty(&pstat->asoc_list)==false)
 		{
 			list_del_init(&pstat->asoc_list);
 			pstapriv->asoc_list_cnt--;
@@ -1544,7 +1544,7 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 
 				if(!selected_registrar)
 				{
-					DBG_871X("selected_registrar is _FALSE , or AP is not ready to do WPS\n");
+					DBG_871X("selected_registrar is false , or AP is not ready to do WPS\n");
 
 					status = _STATS_UNABLE_HANDLE_STA_;
 
@@ -1592,7 +1592,7 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 	pstat->flags &= ~WLAN_STA_WME;
 	pstat->qos_option = 0;
 	pstat->qos_info = 0;
-	pstat->has_legacy_ac = _TRUE;
+	pstat->has_legacy_ac = true;
 	pstat->uapsd_vo = 0;
 	pstat->uapsd_vi = 0;
 	pstat->uapsd_be = 0;
@@ -1614,9 +1614,9 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 					pstat->max_sp_len = (pstat->qos_info>>5)&0x3;
 
 					if((pstat->qos_info&0xf) !=0xf)
-						pstat->has_legacy_ac = _TRUE;
+						pstat->has_legacy_ac = true;
 					else
-						pstat->has_legacy_ac = _FALSE;
+						pstat->has_legacy_ac = false;
 
 					if(pstat->qos_info&0xf)
 					{
@@ -1667,7 +1667,7 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 		pstat->flags &= ~WLAN_STA_HT;
 
 
-	if((pmlmepriv->htpriv.ht_option == _FALSE) && (pstat->flags&WLAN_STA_HT))
+	if((pmlmepriv->htpriv.ht_option == false) && (pstat->flags&WLAN_STA_HT))
 	{
 		status = _STATS_FAILURE_;
 		goto OnAssocReqFail;
@@ -1699,7 +1699,7 @@ unsigned int OnAssocReq(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 		pstat->flags &= ~WLAN_STA_HT;
 	}
 
-	if((pmlmepriv->vhtpriv.vht_option == _FALSE) && (pstat->flags&WLAN_STA_VHT))
+	if((pmlmepriv->vhtpriv.vht_option == false) && (pstat->flags&WLAN_STA_VHT))
 	{
 		status = _STATS_FAILURE_;
 		goto OnAssocReqFail;
@@ -1958,7 +1958,7 @@ unsigned int OnDeAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 	DBG_871X("%s Reason code(%d)\n", __FUNCTION__,reason);
 
 #ifdef CONFIG_AP_MODE
-	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
+	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{
 		struct sta_info *psta;
 		struct sta_priv *pstapriv = &rtlpriv->stapriv;
@@ -1976,11 +1976,11 @@ unsigned int OnDeAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 			uint8_t updated;
 
 			spin_lock_bh(&pstapriv->asoc_list_lock);
-			if(list_empty(&psta->asoc_list)==_FALSE)
+			if(list_empty(&psta->asoc_list)==false)
 			{
 				list_del_init(&psta->asoc_list);
 				pstapriv->asoc_list_cnt--;
-				updated = ap_free_sta(rtlpriv, psta, _FALSE, reason);
+				updated = ap_free_sta(rtlpriv, psta, false, reason);
 
 			}
 			spin_unlock_bh(&pstapriv->asoc_list_lock);
@@ -1999,7 +1999,7 @@ unsigned int OnDeAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 
 		receive_disconnect(rtlpriv, GetAddr3Ptr(pframe) ,reason);
 	}
-	pmlmepriv->LinkDetectInfo.bBusyTraffic = _FALSE;
+	pmlmepriv->LinkDetectInfo.bBusyTraffic = false;
 	return _SUCCESS;
 
 }
@@ -2022,7 +2022,7 @@ unsigned int OnDisassoc(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
         DBG_871X("%s Reason code(%d)\n", __FUNCTION__,reason);
 
 #ifdef CONFIG_AP_MODE
-	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
+	if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == true)
 	{
 		struct sta_info *psta;
 		struct sta_priv *pstapriv = &rtlpriv->stapriv;
@@ -2040,11 +2040,11 @@ unsigned int OnDisassoc(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 			uint8_t updated;
 
 			spin_lock_bh(&pstapriv->asoc_list_lock);
-			if(list_empty(&psta->asoc_list)==_FALSE)
+			if(list_empty(&psta->asoc_list)==false)
 			{
 				list_del_init(&psta->asoc_list);
 				pstapriv->asoc_list_cnt--;
-				updated = ap_free_sta(rtlpriv, psta, _FALSE, reason);
+				updated = ap_free_sta(rtlpriv, psta, false, reason);
 
 			}
 			spin_unlock_bh(&pstapriv->asoc_list_lock);
@@ -2062,7 +2062,7 @@ unsigned int OnDisassoc(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame
 
 		receive_disconnect(rtlpriv, GetAddr3Ptr(pframe), reason);
 	}
-	pmlmepriv->LinkDetectInfo.bBusyTraffic = _FALSE;
+	pmlmepriv->LinkDetectInfo.bBusyTraffic = false;
 	return _SUCCESS;
 
 }
@@ -2124,7 +2124,7 @@ unsigned int on_action_spct_ch_switch(struct rtl_priv *rtlpriv, struct sta_info 
 		 * 2. things after channel switching
 		 */
 
-		ret = rtw_set_ch_cmd(rtlpriv, ch, bwmode, ch_offset, _TRUE);
+		ret = rtw_set_ch_cmd(rtlpriv, ch, bwmode, ch_offset, true);
 	}
 
 exit:
@@ -2237,7 +2237,7 @@ unsigned int OnAction_back(struct rtl_priv *rtlpriv, struct recv_frame *precv_fr
 				//process_addba_req(rtlpriv, (uint8_t *)&(pmlmeinfo->ADDBA_req), GetAddr3Ptr(pframe));
 				process_addba_req(rtlpriv, (uint8_t *)&(pmlmeinfo->ADDBA_req), addr);
 
-				if(pmlmeinfo->bAcceptAddbaReq == _TRUE)
+				if(pmlmeinfo->bAcceptAddbaReq == true)
 				{
 					issue_action_BA(rtlpriv, addr, RTW_WLAN_ACTION_ADDBA_RESP, 0);
 				}
@@ -2282,7 +2282,7 @@ unsigned int OnAction_back(struct rtl_priv *rtlpriv, struct recv_frame *precv_fr
 					tid = (frame_body[3] >> 4) & 0x0F;
 
 					preorder_ctrl =  &psta->recvreorder_ctrl[tid];
-					preorder_ctrl->enable = _FALSE;
+					preorder_ctrl->enable = false;
 					preorder_ctrl->indicate_seq = 0xffff;
 				}
 
@@ -2357,7 +2357,7 @@ unsigned int on_action_public_vendor(struct recv_frame *precv_frame)
 	uint frame_len = precv_frame->len;
 	uint8_t *frame_body = pframe + sizeof(struct rtw_ieee80211_hdr_3addr);
 
-	if (_rtw_memcmp(frame_body + 2, P2P_OUI, 4) == _TRUE) {
+	if (_rtw_memcmp(frame_body + 2, P2P_OUI, 4) == true) {
 		ret = on_action_public_p2p(precv_frame);
 	}
 
@@ -2499,12 +2499,12 @@ exit:
 
 inline struct xmit_frame *alloc_mgtxmitframe(struct xmit_priv *pxmitpriv)
 {
-	return _alloc_mgtxmitframe(pxmitpriv, _FALSE);
+	return _alloc_mgtxmitframe(pxmitpriv, false);
 }
 
 inline struct xmit_frame *alloc_mgtxmitframe_once(struct xmit_priv *pxmitpriv)
 {
-	return _alloc_mgtxmitframe(pxmitpriv, _TRUE);
+	return _alloc_mgtxmitframe(pxmitpriv, true);
 }
 
 
@@ -2544,17 +2544,17 @@ void update_mgntframe_attrib(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pat
 	pattrib->raid =  rtw_get_mgntframe_raid(rtlpriv, wireless_mode);
 
 	pattrib->encrypt = NO_ENCRYPTION;
-	pattrib->bswenc = _FALSE;
+	pattrib->bswenc = false;
 
-	pattrib->qos_en = _FALSE;
-	pattrib->ht_en = _FALSE;
+	pattrib->qos_en = false;
+	pattrib->ht_en = false;
 	pattrib->bwmode = CHANNEL_WIDTH_20;
 	pattrib->ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-	pattrib->sgi = _FALSE;
+	pattrib->sgi = false;
 
 	pattrib->seqnum = pmlmeext->mgnt_seq;
 
-	pattrib->retry_ctrl = _TRUE;
+	pattrib->retry_ctrl = true;
 
 	pattrib->mbssid = 0;
 
@@ -2573,8 +2573,8 @@ void update_mgntframe_attrib_addr(struct rtl_priv *rtlpriv, struct xmit_frame *p
 
 void dump_mgntframe(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe)
 {
-	if(rtlpriv->bSurpriseRemoved == _TRUE ||
-		rtlpriv->bDriverStopped == _TRUE)
+	if(rtlpriv->bSurpriseRemoved == true ||
+		rtlpriv->bDriverStopped == true)
 		return;
 
 	rtw_hal_mgnt_xmit(rtlpriv, pmgntframe);
@@ -2588,8 +2588,8 @@ int32_t dump_mgntframe_and_wait(struct rtl_priv *rtlpriv, struct xmit_frame *pmg
 	struct xmit_buf *pxmitbuf = pmgntframe->pxmitbuf;
 	struct submit_ctx sctx;
 
-	if(rtlpriv->bSurpriseRemoved == _TRUE ||
-		rtlpriv->bDriverStopped == _TRUE)
+	if(rtlpriv->bSurpriseRemoved == true ||
+		rtlpriv->bDriverStopped == true)
 		return ret;
 
 	rtw_sctx_init(&sctx, timeout_ms);
@@ -2797,7 +2797,7 @@ void issue_beacon(struct rtl_priv *rtlpriv, int timeout_ms)
 _issue_bcn:
 
 #if defined (CONFIG_AP_MODE)
-	pmlmepriv->update_bcn = _FALSE;
+	pmlmepriv->update_bcn = false;
 
 	spin_unlock_bh(&pmlmepriv->bcn_update_lock);
 #endif //#if defined (CONFIG_AP_MODE)
@@ -3124,7 +3124,7 @@ exit:
 
 inline void issue_probereq(struct rtl_priv *rtlpriv, NDIS_802_11_SSID *pssid, uint8_t *da)
 {
-	_issue_probereq(rtlpriv, pssid, da, _FALSE);
+	_issue_probereq(rtlpriv, pssid, da, false);
 }
 
 int issue_probereq_ex(struct rtl_priv *rtlpriv, NDIS_802_11_SSID *pssid, uint8_t *da,
@@ -3136,7 +3136,7 @@ int issue_probereq_ex(struct rtl_priv *rtlpriv, NDIS_802_11_SSID *pssid, uint8_t
 
 	do
 	{
-		ret = _issue_probereq(rtlpriv, pssid, da, wait_ms>0?_TRUE:_FALSE);
+		ret = _issue_probereq(rtlpriv, pssid, da, wait_ms>0?true:false);
 
 		i++;
 
@@ -3640,7 +3640,7 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 	}
 
 	//HT caps
-	if(rtlpriv->mlmepriv.htpriv.ht_option==_TRUE)
+	if(rtlpriv->mlmepriv.htpriv.ht_option==true)
 	{
 		p = rtw_get_ie((pmlmeinfo->network.IEs + sizeof(NDIS_802_11_FIXED_IEs)), _HT_CAPABILITY_IE_, &ie_len, (pmlmeinfo->network.IELength - sizeof(NDIS_802_11_FIXED_IEs)));
 		if ((p != NULL) && (!(is_ap_in_tkip(rtlpriv))))
@@ -3731,13 +3731,13 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 				}
 				break;
 			case EID_VHTCapability:
-				if (rtlpriv->mlmepriv.vhtpriv.vht_option ==_TRUE) {
+				if (rtlpriv->mlmepriv.vhtpriv.vht_option ==true) {
 					pframe = rtw_set_ie(pframe, EID_VHTCapability, pIE->Length, pIE->data, &(pattrib->pktlen));
 				}
 				break;
 
 			case EID_OpModeNotification:
-				if (rtlpriv->mlmepriv.vhtpriv.vht_option ==_TRUE) {
+				if (rtlpriv->mlmepriv.vhtpriv.vht_option ==true) {
 					pframe = rtw_set_ie(pframe, EID_OpModeNotification, pIE->Length, pIE->data, &(pattrib->pktlen));
 				}
 				break;
@@ -3798,7 +3798,7 @@ static int _issue_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, unsigned
 	//update attribute
 	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
-	pattrib->retry_ctrl = _FALSE;
+	pattrib->retry_ctrl = false;
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
 
@@ -3866,7 +3866,7 @@ int issue_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, unsigned int pow
 
 	do
 	{
-		ret = _issue_nulldata(rtlpriv, da, power_mode, wait_ms>0?_TRUE:_FALSE);
+		ret = _issue_nulldata(rtlpriv, da, power_mode, wait_ms>0?true:false);
 
 		i++;
 
@@ -3924,7 +3924,7 @@ static int _issue_qos_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, u16 
 	update_mgntframe_attrib(rtlpriv, pattrib);
 
 	pattrib->hdrlen +=2;
-	pattrib->qos_en = _TRUE;
+	pattrib->qos_en = true;
 	pattrib->eosp = 1;
 	pattrib->ack_policy = 0;
 	pattrib->mdata = 0;
@@ -4000,7 +4000,7 @@ int issue_qos_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, u16 tid, int
 
 	do
 	{
-		ret = _issue_qos_nulldata(rtlpriv, da, tid, wait_ms>0?_TRUE:_FALSE);
+		ret = _issue_qos_nulldata(rtlpriv, da, tid, wait_ms>0?true:false);
 
 		i++;
 
@@ -4055,7 +4055,7 @@ static int _issue_deauth(struct rtl_priv *rtlpriv, unsigned char *da, unsigned s
 	//update attribute
 	pattrib = &pmgntframe->tx_attrib;
 	update_mgntframe_attrib(rtlpriv, pattrib);
-	pattrib->retry_ctrl = _FALSE;
+	pattrib->retry_ctrl = false;
 
 	memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
 
@@ -4099,7 +4099,7 @@ exit:
 int issue_deauth(struct rtl_priv *rtlpriv, unsigned char *da, unsigned short reason)
 {
 	DBG_871X("%s to "MAC_FMT"\n", __func__, MAC_ARG(da));
-	return _issue_deauth(rtlpriv, da, reason, _FALSE);
+	return _issue_deauth(rtlpriv, da, reason, false);
 }
 
 int issue_deauth_ex(struct rtl_priv *rtlpriv, uint8_t *da, unsigned short reason, int try_cnt,
@@ -4111,7 +4111,7 @@ int issue_deauth_ex(struct rtl_priv *rtlpriv, uint8_t *da, unsigned short reason
 
 	do
 	{
-		ret = _issue_deauth(rtlpriv, da, reason, wait_ms>0?_TRUE:_FALSE);
+		ret = _issue_deauth(rtlpriv, da, reason, wait_ms>0?true:false);
 
 		i++;
 
@@ -4371,7 +4371,7 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 	if((pmlmepriv->num_FortyMHzIntolerant==0) || (pmlmepriv->num_sta_no_ht==0))
 		return;
 
-	if(_TRUE == pmlmeinfo->bwmode_updated)
+	if(true == pmlmeinfo->bwmode_updated)
 		return;
 
 
@@ -4442,7 +4442,7 @@ static void issue_action_BSSCoexistPacket(struct rtl_priv *rtlpriv)
 			uint8_t *p;
 			WLAN_BSSID_EX *pbss_network;
 
-			if (rtw_end_of_queue_search(phead,plist)== _TRUE)
+			if (rtw_end_of_queue_search(phead,plist)== true)
 				break;
 
 			pnetwork = container_of(plist, struct wlan_network, list);
@@ -4529,11 +4529,11 @@ unsigned int send_delba(struct rtl_priv *rtlpriv, uint8_t initiator, uint8_t *ad
 	{
 		for(tid = 0;tid<MAXTID;tid++)
 		{
-			if(psta->recvreorder_ctrl[tid].enable == _TRUE)
+			if(psta->recvreorder_ctrl[tid].enable == true)
 			{
 				DBG_871X("rx agg disable tid(%d)\n",tid);
 				issue_action_BA(rtlpriv, addr, RTW_WLAN_ACTION_DELBA, (((tid <<1) |initiator)&0x1F));
-				psta->recvreorder_ctrl[tid].enable = _FALSE;
+				psta->recvreorder_ctrl[tid].enable = false;
 				psta->recvreorder_ctrl[tid].indicate_seq = 0xffff;
 			}
 		}
@@ -4560,7 +4560,7 @@ unsigned int send_delba(struct rtl_priv *rtlpriv, uint8_t initiator, uint8_t *ad
 
 unsigned int send_beacon(struct rtl_priv *rtlpriv)
 {
-	uint8_t	bxmitok = _FALSE;
+	uint8_t	bxmitok = false;
 	int	issue=0;
 	int poll = 0;
 
@@ -4576,9 +4576,9 @@ unsigned int send_beacon(struct rtl_priv *rtlpriv)
 			rtw_yield_os();
 			rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_BCN_VALID, (uint8_t *)(&bxmitok));
 			poll++;
-		}while((poll%10)!=0 && _FALSE == bxmitok && !rtlpriv->bSurpriseRemoved && !rtlpriv->bDriverStopped);
+		}while((poll%10)!=0 && false == bxmitok && !rtlpriv->bSurpriseRemoved && !rtlpriv->bDriverStopped);
 
-	}while(_FALSE == bxmitok && issue<100 && !rtlpriv->bSurpriseRemoved && !rtlpriv->bDriverStopped);
+	}while(false == bxmitok && issue<100 && !rtlpriv->bSurpriseRemoved && !rtlpriv->bDriverStopped);
 
 	if(rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped)
 	{
@@ -4586,7 +4586,7 @@ unsigned int send_beacon(struct rtl_priv *rtlpriv)
 	}
 
 
-	if(_FALSE == bxmitok)
+	if(false == bxmitok)
 	{
 		DBG_871X("%s fail! %u ms\n", __FUNCTION__, rtw_get_passing_time_ms(start));
 		return _FAIL;
@@ -4622,8 +4622,8 @@ bool IsLegal5GChannel(struct rtl_priv *rtlpriv, uint8_t	channel)
 		161,163,165};
 	for(i=0;i<sizeof(Channel_5G);i++)
 		if(channel == Channel_5G[i])
-			return _TRUE;
-	return _FALSE;
+			return true;
+	return false;
 }
 
 void site_survey(struct rtl_priv *rtlpriv)
@@ -4719,9 +4719,9 @@ void site_survey(struct rtl_priv *rtlpriv)
 
 			initialgain = 0xff; //restore RX GAIN
 			rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_INITIAL_GAIN, (uint8_t *)(&initialgain));
-			//Switch_DM_Func(rtlpriv, DYNAMIC_ALL_FUNC_ENABLE, _TRUE);
+			//Switch_DM_Func(rtlpriv, DYNAMIC_ALL_FUNC_ENABLE, true);
 
-			if (is_client_associated_to_ap(rtlpriv) == _TRUE)
+			if (is_client_associated_to_ap(rtlpriv) == true)
 			{
 				issue_nulldata(rtlpriv, NULL, 0, 3, 500);
 
@@ -5662,24 +5662,24 @@ void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	//HT
 	if(pmlmepriv->htpriv.ht_option)
 	{
-		psta->htpriv.ht_option = _TRUE;
+		psta->htpriv.ht_option = true;
 
 		psta->htpriv.ampdu_enable = pmlmepriv->htpriv.ampdu_enable;
 
 		if (support_short_GI(rtlpriv, &(pmlmeinfo->HT_caps)))
-			psta->htpriv.sgi = _TRUE;
+			psta->htpriv.sgi = true;
 
-		psta->qos_option = _TRUE;
+		psta->qos_option = true;
 
 	}
 	else
 	{
-		psta->htpriv.ht_option = _FALSE;
+		psta->htpriv.ht_option = false;
 
-		psta->htpriv.ampdu_enable = _FALSE;
+		psta->htpriv.ampdu_enable = false;
 
-		psta->htpriv.sgi = _FALSE;
-		psta->qos_option = _FALSE;
+		psta->htpriv.sgi = false;
+		psta->qos_option = false;
 
 	}
 	psta->htpriv.bwmode = pmlmeext->cur_bwmode;
@@ -5690,7 +5690,7 @@ void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta)
 
 	//QoS
 	if(pmlmepriv->qospriv.qos_option)
-		psta->qos_option = _TRUE;
+		psta->qos_option = true;
 
 	if (pmlmepriv->vhtpriv.vht_bwmode < CHANNEL_WIDTH_80)
 		pmlmepriv->vhtpriv.sgi = psta->htpriv.sgi;
@@ -5902,7 +5902,7 @@ void _linked_info_dump(struct rtl_priv *rtlpriv)
 
 uint8_t chk_ap_is_alive(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
-	uint8_t ret = _FALSE;
+	uint8_t ret = false;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -5932,11 +5932,11 @@ uint8_t chk_ap_is_alive(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		&& sta_rx_probersp_pkts(psta) == sta_last_rx_probersp_pkts(psta)
 	)
 	{
-		ret = _FALSE;
+		ret = false;
 	}
 	else
 	{
-		ret = _TRUE;
+		ret = true;
 	}
 
 	sta_update_last_rx_pkts(psta);
@@ -5970,9 +5970,9 @@ void linked_status_chk(struct rtl_priv *rtlpriv)
 
 		if ((psta = rtw_get_stainfo(pstapriv, pmlmeinfo->network.MacAddress)) != NULL)
 		{
-			bool is_p2p_enable = _FALSE;
+			bool is_p2p_enable = false;
 
-			if (chk_ap_is_alive(rtlpriv, psta) == _FALSE)
+			if (chk_ap_is_alive(rtlpriv, psta) == false)
 				rx_chk = _FAIL;
 
 			if (pxmitpriv->last_tx_pkts == pxmitpriv->tx_pkts)
@@ -6079,7 +6079,7 @@ void survey_timer_hdl(struct rtl_priv *rtlpriv)
 				pmlmeext->sitesurvey_res.channel_idx++;
 		}
 
-		if(pmlmeext->scan_abort == _TRUE)
+		if(pmlmeext->scan_abort == true)
 		{
 			{
 				pmlmeext->sitesurvey_res.channel_idx = pmlmeext->sitesurvey_res.ch_num;
@@ -6088,7 +6088,7 @@ void survey_timer_hdl(struct rtl_priv *rtlpriv)
 				);
 			}
 
-			pmlmeext->scan_abort = _FALSE;//reset
+			pmlmeext->scan_abort = false;//reset
 		}
 
 		if ((ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj))) == NULL)
@@ -6178,7 +6178,7 @@ void addba_timer_hdl(struct sta_info *psta)
 
 	phtpriv = &psta->htpriv;
 
-	if((phtpriv->ht_option==_TRUE) && (phtpriv->ampdu_enable==_TRUE))
+	if((phtpriv->ht_option==true) && (phtpriv->ampdu_enable==true))
 	{
 		if(phtpriv->candidate_tid_bitmap)
 			phtpriv->candidate_tid_bitmap=0x0;
@@ -6335,7 +6335,7 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	pmlmeinfo->HT_info_enable = 0;
 	pmlmeinfo->agg_enable_bitmap = 0;
 	pmlmeinfo->candidate_tid_bitmap = 0;
-	pmlmeinfo->bwmode_updated = _FALSE;
+	pmlmeinfo->bwmode_updated = false;
 	//pmlmeinfo->assoc_AP_vendor = HT_IOT_PEER_MAX;
 	pmlmeinfo->VHT_enable = 0;
 
@@ -6427,7 +6427,7 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		i += (pIE->Length + 2);
 	}
 	//disable dynamic functions, such as high power, DIG
-	//Switch_DM_Func(rtlpriv, DYNAMIC_FUNC_DISABLE, _FALSE);
+	//Switch_DM_Func(rtlpriv, DYNAMIC_FUNC_DISABLE, false);
 
 	//config the initial gain under linking, need to write the BB registers
 	//initialgain = 0x1E;
@@ -6564,7 +6564,7 @@ uint8_t sitesurvey_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 {
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct sitesurvey_parm	*pparm = (struct sitesurvey_parm *)pbuf;
-	uint8_t	bdelayscan = _FALSE;
+	uint8_t	bdelayscan = false;
 	uint8_t	val8;
 	uint32_t	initialgain;
 	uint32_t	i;
@@ -6594,13 +6594,13 @@ uint8_t sitesurvey_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 
 		//issue null data if associating to the AP
-		if (is_client_associated_to_ap(rtlpriv) == _TRUE)
+		if (is_client_associated_to_ap(rtlpriv) == true)
 		{
 			pmlmeext->sitesurvey_res.state = SCAN_TXNULL;
 
 			issue_nulldata(rtlpriv, NULL, 1, 3, 500);
 
-			bdelayscan = _TRUE;
+			bdelayscan = true;
 		}
 		if(bdelayscan)
 		{
@@ -6925,7 +6925,7 @@ uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 			xmitframe_phead = get_list_head(&psta_bmc->sleep_q);
 			xmitframe_plist = get_next(xmitframe_phead);
 
-			while ((rtw_end_of_queue_search(xmitframe_phead, xmitframe_plist)) == _FALSE)
+			while ((rtw_end_of_queue_search(xmitframe_phead, xmitframe_plist)) == false)
 			{
 				pxmitframe = container_of(xmitframe_plist, struct xmit_frame, list);
 
@@ -7093,7 +7093,7 @@ uint8_t set_csa_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_TXPAUSE, &gval8);
 
-	rtw_free_network_queue(rtlpriv, _TRUE);
+	rtw_free_network_queue(rtlpriv, true);
 	rtw_indicate_disconnect(rtlpriv);
 
 	if ( ((new_ch_no >= 52) && (new_ch_no <= 64)) ||((new_ch_no >= 100) && (new_ch_no <= 140)) ) {

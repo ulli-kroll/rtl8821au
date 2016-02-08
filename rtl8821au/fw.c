@@ -52,7 +52,7 @@ static bool Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
 	 && (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP)
 	 && TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX)) {
 		if (psta->vhtpriv.vht_highest_rate >= MGN_VHT2SS_MCS8)
-			bShortGI = _FALSE;
+			bShortGI = false;
 	}
 
 	return bShortGI;
@@ -60,7 +60,7 @@ static bool Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
 
 static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num)
 {
-	uint8_t	read_down = _FALSE;
+	uint8_t	read_down = false;
 	int 	retry_cnts = 100;
 
 	uint8_t valid;
@@ -70,7 +70,7 @@ static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num
 	do {
 		valid = rtl_read_byte(rtlpriv, REG_HMETFR) & BIT(msgbox_num);
 		if (0 == valid) {
-			read_down = _TRUE;
+			read_down = true;
 		}
 	} while ((!read_down) && (retry_cnts--));
 
@@ -95,7 +95,7 @@ static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
 					u8 *cmdbuffer)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	uint8_t bcmd_down = _FALSE;
+	uint8_t bcmd_down = false;
 	int32_t retry_cnts = 100;
 	uint8_t h2c_box_num;
 	uint32_t msgbox_addr;
@@ -114,7 +114,7 @@ static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
 		goto exit;
 	}
 
-	if (rtlpriv->bSurpriseRemoved == _TRUE)
+	if (rtlpriv->bSurpriseRemoved == true)
 		goto exit;
 
 	/* pay attention to if  race condition happened in  H2C cmd setting. */
@@ -157,7 +157,7 @@ static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
 		rtl_write_dword(rtlpriv, msgbox_addr, h2c_cmd);
 #endif
 
-		bcmd_down = _TRUE;
+		bcmd_down = true;
 
 	/*
 	 * 	DBG_8192C("MSG_BOX:%d,CmdLen(%d), reg:0x%x =>h2c_cmd:0x%x, reg:0x%x =>h2c_cmd_ex:0x%x ..\n"
@@ -279,7 +279,7 @@ void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *ar
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	struct sta_info	*psta;
-	uint8_t macid, init_rate, raid, shortGIrate = _FALSE;
+	uint8_t macid, init_rate, raid, shortGIrate = false;
 
 	macid = arg[0];
 	raid = arg[1];
@@ -291,7 +291,7 @@ void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *ar
 		return;
 	}
 
-	if (pHalData->fw_ractrl == _TRUE) {
+	if (pHalData->fw_ractrl == true) {
 		uint8_t	H2CCommand[7] = {0};
 
 		shortGIrate = Get_RA_ShortGI(rtlpriv, psta, shortGIrate);
@@ -310,7 +310,7 @@ void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *ar
 		rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_RA_MASK, 7, H2CCommand);
 	}
 
-	if (shortGIrate == _TRUE)
+	if (shortGIrate == true)
 		init_rate |= BIT(7);
 
 	pdmpriv->INIDATA_RATE[macid] = init_rate;
@@ -521,7 +521,7 @@ void ConstructNullFunctionData(
 
 	SetSeqNum(pwlanhdr, 0);
 
-	if (bQoS == _TRUE) {
+	if (bQoS == true) {
 		struct rtw_ieee80211_hdr_3addr_qos *pwlanqoshdr;
 
 		SetFrameSubType(pframe, WIFI_QOS_DATA_NULL);
@@ -546,9 +546,9 @@ void ConstructNullFunctionData(
  * 			Now we just send 4 types packet to rsvd page.
  * 			(1)Beacon, (2)Ps-poll, (3)Null data, (4)ProbeRsp.
  * 	Input:
- * 	    bDLFinished - FALSE: At the first time we will send all the packets as a large packet to Hw,
+ * 	    bDLFinished - false: At the first time we will send all the packets as a large packet to Hw,
  * 				 		so we need to set the packet length to total lengh.
- * 			      TRUE: At the second time, we should send the first packet (default:beacon)
+ * 			      true: At the second time, we should send the first packet (default:beacon)
  * 						to Hw again and set the lengh in descriptor to the real beacon lengh.
  *  2009.10.15 by tynli.
  */
@@ -627,7 +627,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 
 		/* (2) ps-poll */
 		ConstructPSPoll(rtlpriv, &ReservedPagePacket[BufIndex], &PSPollLength);
-		rtw_hal_fill_fake_txdesc(rtlpriv, &ReservedPagePacket[BufIndex-TxDescLen], PSPollLength, _TRUE, _FALSE);
+		rtw_hal_fill_fake_txdesc(rtlpriv, &ReservedPagePacket[BufIndex-TxDescLen], PSPollLength, true, false);
 
 		SET_8812_H2CCMD_RSVDPAGE_LOC_PSPOLL(RsvdPageLoc, TotalPageNum);
 
@@ -654,8 +654,8 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 			&ReservedPagePacket[BufIndex],
 			&NullFunctionDataLength,
 			get_my_bssid(&pmlmeinfo->network),
-			_FALSE, 0, 0, _FALSE);
-		rtw_hal_fill_fake_txdesc(rtlpriv, &ReservedPagePacket[BufIndex-TxDescLen], NullFunctionDataLength, _FALSE, _FALSE);
+			false, 0, 0, false);
+		rtw_hal_fill_fake_txdesc(rtlpriv, &ReservedPagePacket[BufIndex-TxDescLen], NullFunctionDataLength, false, false);
 
 		SET_8812_H2CCMD_RSVDPAGE_LOC_NULL_DATA(RsvdPageLoc, TotalPageNum);
 
@@ -682,8 +682,8 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 			&ReservedPagePacket[BufIndex],
 			&QosNullLength,
 			get_my_bssid(&pmlmeinfo->network),
-			_TRUE, 0, 0, _FALSE);
-		rtw_hal_fill_fake_txdesc(rtlpriv, &ReservedPagePacket[BufIndex-TxDescLen], QosNullLength, _FALSE, _FALSE);
+			true, 0, 0, false);
+		rtw_hal_fill_fake_txdesc(rtlpriv, &ReservedPagePacket[BufIndex-TxDescLen], QosNullLength, false, false);
 
 		SET_8812_H2CCMD_RSVDPAGE_LOC_QOS_NULL_DATA(RsvdPageLoc, TotalPageNum);
 
@@ -734,8 +734,8 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	bool		bSendBeacon = _FALSE;
-	bool		bcn_valid = _FALSE;
+	bool		bSendBeacon = false;
+	bool		bcn_valid = false;
 	uint8_t	DLBcnCount = 0;
 	uint32_t poll = 0;
 
@@ -771,7 +771,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 
 		if (pHalData->RegFwHwTxQCtrl&BIT6) {
 			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "HalDownloadRSVDPage(): There is an rtlpriv is sending beacon.\n");
-			bSendBeacon = _TRUE;
+			bSendBeacon = true;
 		}
 
 		/* Set FWHW_TXQ_CTRL 0x422[6]=0 to tell Hw the packet is not a real beacon frame. */
@@ -785,7 +785,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 
 		do {
 			/* download rsvd page. */
-			SetFwRsvdPagePkt_8812(rtlpriv, _FALSE);
+			SetFwRsvdPagePkt_8812(rtlpriv, false);
 			DLBcnCount++;
 			do {
 				rtw_yield_os();
@@ -819,7 +819,7 @@ void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 				DLBcnCount = 0;
 				poll = 0;
 				do {
-					SetFwRsvdPagePkt_8812(rtlpriv, _TRUE);
+					SetFwRsvdPagePkt_8812(rtlpriv, true);
 					DLBcnCount++;
 
 					do {
@@ -1228,7 +1228,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 		rtl8821au_firmware_selfreset(rtlpriv);
 	}
 
-	_rtl8821ae_enable_fw_download(rtlpriv, _TRUE);
+	_rtl8821ae_enable_fw_download(rtlpriv, true);
 	fwdl_start_time = jiffies;
 	while (1) {
 		/* reset the FWDL chksum */
@@ -1244,7 +1244,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 			, writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
 		);
 	}
-	_rtl8821ae_enable_fw_download(rtlpriv, _FALSE);
+	_rtl8821ae_enable_fw_download(rtlpriv, false);
 	if (_SUCCESS != rtStatus) {
 		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "DL Firmware failed!\n");
 		goto Exit;

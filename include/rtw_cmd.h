@@ -249,8 +249,8 @@ Command-Event Mode
 #define RTW_SSID_SCAN_AMOUNT 9 // for WEXT_CSCAN_AMOUNT 9
 #define RTW_CHANNEL_SCAN_AMOUNT (14+37)
 struct sitesurvey_parm {
-	sint scan_mode;	//active: 1, passive: 0
-	/* sint bsslimit;	// 1 ~ 48 */
+	int scan_mode;	//active: 1, passive: 0
+	/* int bsslimit;	// 1 ~ 48 */
 	uint8_t ssid_num;
 	uint8_t ch_num;
 	NDIS_802_11_SSID ssid[RTW_SSID_SCAN_AMOUNT];

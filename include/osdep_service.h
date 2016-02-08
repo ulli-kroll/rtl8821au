@@ -158,7 +158,7 @@ __inline static void flush_signals_thread(void)
 	}
 }
 
-__inline static _OS_STATUS res_to_status(sint res)
+__inline static _OS_STATUS res_to_status(int res)
 {
 	return res;
 }

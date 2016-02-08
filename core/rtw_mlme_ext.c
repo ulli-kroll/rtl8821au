@@ -2617,7 +2617,7 @@ int32_t dump_mgntframe_and_wait_ack(struct rtl_priv *rtlpriv, struct xmit_frame 
 int update_hidden_ssid(uint8_t *ies, uint32_t	 ies_len, uint8_t hidden_ssid_mode)
 {
 	uint8_t *ssid_ie;
-	sint ssid_len_ori;
+	int ssid_len_ori;
 	int len_diff = 0;
 
 	ssid_ie = rtw_get_ie(ies,  WLAN_EID_SSID, &ssid_len_ori, ies_len);
@@ -2925,8 +2925,8 @@ void issue_probersp(struct rtl_priv *rtlpriv, unsigned char *da, uint8_t is_vali
 		/* retrieve SSID IE from cur_network->Ssid */
 		{
 			uint8_t *ssid_ie;
-			sint ssid_ielen;
-			sint ssid_ielen_diff;
+			int ssid_ielen;
+			int ssid_ielen_diff;
 			uint8_t buf[MAX_IE_SZ];
 			uint8_t *ies = pmgntframe->buf_addr+TXDESC_OFFSET+sizeof(struct rtw_ieee80211_hdr_3addr);
 

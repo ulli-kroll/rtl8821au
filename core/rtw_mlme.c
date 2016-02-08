@@ -38,13 +38,13 @@ extern unsigned char	MCS_rate_2R[16];
 #endif
 extern unsigned char	MCS_rate_1R[16];
 
-sint _rtw_init_mlme_priv (struct rtl_priv *rtlpriv)
+int _rtw_init_mlme_priv (struct rtl_priv *rtlpriv)
 {
-	sint	i;
+	int	i;
 	uint8_t	*pbuf;
 	struct wlan_network *pnetwork;
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
-	sint	res = _SUCCESS;
+	int	res = _SUCCESS;
 
 
 	/*
@@ -133,7 +133,7 @@ void _rtw_free_mlme_priv (struct mlme_priv *pmlmepriv)
 	}
 }
 
-sint _rtw_enqueue_network(struct __queue *queue, struct wlan_network *pnetwork)
+int _rtw_enqueue_network(struct __queue *queue, struct wlan_network *pnetwork)
 {
 	if (pnetwork == NULL)
 		goto exit;
@@ -342,10 +342,10 @@ void _rtw_free_network_queue(struct rtl_priv *rtlpriv, uint8_t isfreeall)
 
 
 
-sint rtw_if_up(struct rtl_priv *rtlpriv)
+int rtw_if_up(struct rtl_priv *rtlpriv)
 {
 
-	sint res;
+	int res;
 
 	if (rtlpriv->bDriverStopped || rtlpriv->bSurpriseRemoved
 	   || (check_fwstate(&rtlpriv->mlmepriv, _FW_LINKED)== _FALSE)){
@@ -1982,12 +1982,12 @@ exit:
 }
 
 
-sint rtw_set_auth(struct rtl_priv * rtlpriv,struct security_priv *psecuritypriv)
+int rtw_set_auth(struct rtl_priv * rtlpriv,struct security_priv *psecuritypriv)
 {
 	struct	cmd_obj* pcmd;
 	struct 	setauth_parm *psetauthparm;
 	struct	cmd_priv	*pcmdpriv=&(rtlpriv->cmdpriv);
-	sint		res=_SUCCESS;
+	int		res=_SUCCESS;
 
 
 
@@ -2027,14 +2027,14 @@ exit:
 }
 
 
-sint rtw_set_key(struct rtl_priv * rtlpriv,struct security_priv *psecuritypriv,sint keyid, uint8_t set_tx)
+int rtw_set_key(struct rtl_priv * rtlpriv,struct security_priv *psecuritypriv,int keyid, uint8_t set_tx)
 {
 	uint8_t	keylen;
 	struct cmd_obj		*pcmd;
 	struct setkey_parm	*psetkeyparm;
 	struct cmd_priv		*pcmdpriv = &(rtlpriv->cmdpriv);
 	struct mlme_priv		*pmlmepriv = &(rtlpriv->mlmepriv);
-	sint	res=_SUCCESS;
+	int	res=_SUCCESS;
 
 
 
@@ -2234,7 +2234,7 @@ static int rtw_append_pmkid(struct rtl_priv *rtlpriv,int iEntry, uint8_t *ie, ui
 	return (ie_len);
 
 }
-sint rtw_restruct_sec_ie(struct rtl_priv *rtlpriv,uint8_t *in_ie, uint8_t *out_ie, uint in_len)
+int rtw_restruct_sec_ie(struct rtl_priv *rtlpriv,uint8_t *in_ie, uint8_t *out_ie, uint in_len)
 {
 	uint8_t authmode, securitytype, match;
 	uint8_t sec_ie[255], uncst_oui[4], bkup_ie[255];
@@ -2675,7 +2675,7 @@ void rtw_issue_addbareq_cmd(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfr
 
 }
 
-sint rtw_linked_check(struct rtl_priv *rtlpriv)
+int rtw_linked_check(struct rtl_priv *rtlpriv)
 {
 	if (	(check_fwstate(&rtlpriv->mlmepriv, WIFI_AP_STATE) == _TRUE) ||
 			(check_fwstate(&rtlpriv->mlmepriv, WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE))

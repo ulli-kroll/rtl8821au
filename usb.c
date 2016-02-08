@@ -1499,7 +1499,7 @@ int rtw_resume_process(struct rtl_priv *rtlpriv)
 			rtlpriv->securitypriv.dot11PrivacyAlgrthm,pwrpriv->wepkeymask);
 		if  ((WEP40_ENCRYPTION == rtlpriv->securitypriv.dot11PrivacyAlgrthm) ||
 			(WEP104_ENCRYPTION == rtlpriv->securitypriv.dot11PrivacyAlgrthm)) {
-			sint keyid;
+			int keyid;
 
 			for (keyid = 0; keyid < 4; keyid++) {
 				if (pwrpriv->wepkeymask & BIT(keyid)) {

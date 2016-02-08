@@ -141,7 +141,7 @@ struct	hw_xmit	{
 	//struct list_head	pending;
 	struct __queue *sta_queue;
 	//struct hw_txqueue *phwtxqueue;
-	//sint	txcmdcnt;
+	//int	txcmdcnt;
 };
 
 //reduce size
@@ -283,7 +283,7 @@ struct xmit_buf
 
 	uint8_t bpending[8];
 
-	sint last[8];
+	int last[8];
 
 
 
@@ -324,8 +324,8 @@ struct tx_servq {
 struct sta_xmit_priv
 {
 	spinlock_t	lock;
-	sint	option;
-	sint	apsd_setting;	//When bit mask is on, the associated edca queue supports APSD.
+	int	option;
+	int	apsd_setting;	//When bit mask is on, the associated edca queue supports APSD.
 
 
 	//struct tx_servq blk_q[MAX_NUMBLKS];
@@ -347,14 +347,14 @@ struct sta_xmit_priv
 
 
 struct	hw_txqueue	{
-	volatile sint	head;
-	volatile sint	tail;
-	volatile sint 	free_sz;	//in units of 64 bytes
-	volatile sint      free_cmdsz;
-	volatile sint	 txsz[8];
+	volatile int	head;
+	volatile int	tail;
+	volatile int 	free_sz;	//in units of 64 bytes
+	volatile int      free_cmdsz;
+	volatile int	 txsz[8];
 	uint	ff_hwaddr;
 	uint	cmd_hwaddr;
-	sint	ac_tag;
+	int	ac_tag;
 };
 
 struct agg_pkt_info{
@@ -486,7 +486,7 @@ void rtw_alloc_hwxmits(struct rtl_priv *rtlpriv);
 int32_t rtw_xmit(struct rtl_priv *rtlpriv, struct sk_buff **pkt);
 
 #if defined(CONFIG_AP_MODE)
-sint xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
+int xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 void stop_sta_xmit(struct rtl_priv *rtlpriv, struct sta_info *psta);
 void wakeup_sta_to_xmit(struct rtl_priv *rtlpriv, struct sta_info *psta);
 void xmit_delivery_enabled_frames(struct rtl_priv *rtlpriv, struct sta_info *psta);

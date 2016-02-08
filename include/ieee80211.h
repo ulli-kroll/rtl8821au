@@ -1114,7 +1114,7 @@ ParseRes rtw_ieee802_11_parse_elems(uint8_t *start, uint len,
 				int show_errors);
 
 uint8_t *rtw_set_fixed_ie(unsigned char *pbuf, unsigned int len, unsigned char *source, unsigned int *frlen);
-uint8_t *rtw_set_ie(uint8_t *pbuf, sint index, uint len, uint8_t *source, uint *frlen);
+uint8_t *rtw_set_ie(uint8_t *pbuf, int index, uint len, uint8_t *source, uint *frlen);
 
 enum secondary_ch_offset {
 	SCN = 0, /* no secondary channel */
@@ -1127,7 +1127,7 @@ uint8_t *rtw_set_ie_ch_switch(uint8_t *buf, u32 *buf_len, uint8_t ch_switch_mode
 uint8_t *rtw_set_ie_secondary_ch_offset(uint8_t *buf, u32 *buf_len, uint8_t secondary_ch_offset);
 uint8_t *rtw_set_ie_mesh_ch_switch_parm(uint8_t *buf, u32 *buf_len, uint8_t ttl, uint8_t flags, u16 reason, u16 precedence);
 
-uint8_t *rtw_get_ie(u8*pbuf, sint index, sint *len, sint limit);
+uint8_t *rtw_get_ie(u8*pbuf, int index, int *len, int limit);
 uint8_t *rtw_get_ie_ex(uint8_t *in_ie, uint in_len, uint8_t eid, uint8_t *oui, uint8_t oui_len, uint8_t *ie, uint *ielen);
 int rtw_ies_remove_ie(uint8_t *ies, uint *ies_len, uint offset, uint8_t eid, uint8_t *oui, uint8_t oui_len);
 

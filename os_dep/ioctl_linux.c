@@ -422,7 +422,7 @@ static char *translate_scan(struct rtl_priv *rtlpriv,
 		uint8_t wpa_ie[255], rsn_ie[255];
 		u16 wpa_len = 0, rsn_len = 0;
 		uint8_t *p;
-		sint out_len = 0;
+		int out_len = 0;
 		out_len = rtw_get_sec_ie(pnetwork->network.IEs, pnetwork->network.IELength, rsn_ie, &rsn_len, wpa_ie, &wpa_len);
 
 		if (wpa_len > 0) {
@@ -1603,7 +1603,7 @@ static int rtw_wx_get_scan(struct net_device *ndev, struct iw_request_info *a,
 	u32 ret = 0;
 	u32 cnt = 0;
 	u32 wait_for_surveydone;
-	sint wait_status;
+	int wait_status;
 
 	if (rtlpriv->pwrctrlpriv.brfoffbyhw && rtlpriv->bDriverStopped) {
 		ret = -EINVAL;
@@ -3451,7 +3451,7 @@ static int rtw_set_hidden_ssid(struct net_device *ndev, struct ieee_param *param
 	int ie_len;
 	uint8_t *ssid_ie;
 	char ssid[NDIS_802_11_LENGTH_SSID + 1];
-	sint ssid_len;
+	int ssid_len;
 	uint8_t ignore_broadcast_ssid;
 
 	if (check_fwstate(mlmepriv, WIFI_AP_STATE) != _TRUE)

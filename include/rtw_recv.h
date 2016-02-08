@@ -311,7 +311,7 @@ struct recv_priv
 struct sta_recv_priv {
 
 	spinlock_t	lock;
-	sint	option;
+	int	option;
 
 	//struct __queue	blk_strms[MAX_RX_NUMBLKS];
 	struct __queue defrag_q;	 //keeping the fragment frame until defrag
@@ -409,8 +409,8 @@ extern int rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *
 extern void rtw_free_recvframe_queue(struct __queue *pframequeue,  struct __queue *pfree_recv_queue);
 u32 rtw_free_uc_swdec_pending_queue(struct rtl_priv *rtlpriv);
 
-sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, struct __queue *queue);
-sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, struct __queue *queue);
+int rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, struct __queue *queue);
+int rtw_enqueue_recvbuf(struct recv_buf *precvbuf, struct __queue *queue);
 struct recv_buf *rtw_dequeue_recvbuf (struct __queue *queue);
 
 void rtw_reordering_ctrl_timeout_handler(void *pcontext);
@@ -442,7 +442,7 @@ __inline static uint8_t *get_recvframe_data(struct recv_frame *precvframe)
 
 }
 
-__inline static uint8_t *recvframe_push(struct recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_push(struct recv_frame *precvframe, int sz)
 {
 	// append data before rx_data
 
@@ -470,7 +470,7 @@ __inline static uint8_t *recvframe_push(struct recv_frame *precvframe, sint sz)
 }
 
 
-__inline static uint8_t *recvframe_pull(struct recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_pull(struct recv_frame *precvframe, int sz)
 {
 	// rx_data += sz; move rx_data sz bytes  hereafter
 
@@ -495,7 +495,7 @@ __inline static uint8_t *recvframe_pull(struct recv_frame *precvframe, sint sz)
 
 }
 
-__inline static uint8_t *recvframe_put(struct recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_put(struct recv_frame *precvframe, int sz)
 {
 	// rx_tai += sz; move rx_tail sz bytes  hereafter
 
@@ -524,7 +524,7 @@ __inline static uint8_t *recvframe_put(struct recv_frame *precvframe, sint sz)
 
 
 
-__inline static uint8_t *recvframe_pull_tail(struct recv_frame *precvframe, sint sz)
+__inline static uint8_t *recvframe_pull_tail(struct recv_frame *precvframe, int sz)
 {
 	// rmv data from rx_tail (by yitsen)
 
@@ -589,7 +589,7 @@ __inline static uint8_t *pkt_to_recvdata(struct sk_buff *pkt)
 }
 
 
-__inline static sint get_recvframe_len(struct recv_frame *precvframe)
+__inline static int get_recvframe_len(struct recv_frame *precvframe)
 {
 	return precvframe->len;
 }

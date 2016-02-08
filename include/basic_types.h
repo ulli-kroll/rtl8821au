@@ -40,8 +40,6 @@
 
 	#include <linux/types.h>
 
-	typedef	signed int sint;
-
 //        #define UCHAR u8
 
 	typedef void (*proc_t)(void*);

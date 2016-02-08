@@ -36,9 +36,9 @@ Caller and the rtw_cmd_thread can protect cmd_q by spin_lock.
 No irqsave is necessary.
 */
 
-sint	_rtw_init_cmd_priv (struct	cmd_priv *pcmdpriv)
+int	_rtw_init_cmd_priv (struct	cmd_priv *pcmdpriv)
 {
-	sint res=_SUCCESS;
+	int res=_SUCCESS;
 
 
 
@@ -84,9 +84,9 @@ exit:
 #ifdef CONFIG_C2H_WK
 static void c2h_wk_callback(struct work_struct *work);
 #endif
-sint _rtw_init_evt_priv(struct evt_priv *pevtpriv)
+int _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 {
-	sint res=_SUCCESS;
+	int res=_SUCCESS;
 
 
 	//allocate DMA-able/Non-Page memory for cmd_buf and rsp_buf
@@ -149,7 +149,7 @@ ISR/Call-Back functions can't call this sub-function.
 
 */
 
-sint	_rtw_enqueue_cmd(struct __queue *queue, struct cmd_obj *obj)
+int	_rtw_enqueue_cmd(struct __queue *queue, struct cmd_obj *obj)
 {
 	unsigned long flags;
 

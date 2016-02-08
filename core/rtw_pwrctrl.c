@@ -60,7 +60,7 @@ int rtw_ips_leave(struct rtl_priv * rtlpriv)
 	struct security_priv* psecuritypriv=&(rtlpriv->securitypriv);
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	int result = _SUCCESS;
-	sint keyid;
+	int keyid;
 
 	down(&pwrpriv->lock);
 

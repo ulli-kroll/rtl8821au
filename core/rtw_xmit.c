@@ -105,7 +105,7 @@ static void set_qos(struct sk_buff *skb, struct tx_pkt_attrib *pattrib)
 	pattrib->subtype = WIFI_QOS_DATA_TYPE;
 }
 
-static sint rtw_endofpktfile(struct pkt_file *pfile)
+static int rtw_endofpktfile(struct pkt_file *pfile)
 {
 
 	if (pfile->pkt_len == 0) {
@@ -146,7 +146,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 	int i;
 	struct xmit_buf *pxmitbuf;
 	struct xmit_frame *pxframe;
-	sint	res = _SUCCESS;
+	int	res = _SUCCESS;
 	uint32_t	 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
 	uint32_t	 num_xmit_extbuf = NR_XMIT_EXTBUFF;
 
@@ -587,10 +587,10 @@ static void update_attrib_phy_info(struct tx_pkt_attrib *pattrib, struct sta_inf
 
 static int32_t update_attrib_sec_info(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib, struct sta_info *psta)
 {
-	sint res = _SUCCESS;
+	int res = _SUCCESS;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
-	sint bmcast = is_multicast_ether_addr(pattrib->ra);
+	int bmcast = is_multicast_ether_addr(pattrib->ra);
 
 	memset(pattrib->dot118021x_UncstKey.skey,  0, 16);
 	memset(pattrib->dot11tkiptxmickey.skey,  0, 16);
@@ -720,12 +720,12 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *skb, stru
 	struct sta_info *psta = NULL;
 	struct ethhdr *etherhdr;
 
-	sint bmcast;
+	int bmcast;
 	struct sta_priv		*pstapriv = &rtlpriv->stapriv;
 	struct security_priv	*psecuritypriv = &rtlpriv->securitypriv;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct qos_priv		*pqospriv = &pmlmepriv->qospriv;
-	sint res = _SUCCESS;
+	int res = _SUCCESS;
 
 	etherhdr = (struct ethhdr *) skb->data;
 
@@ -873,7 +873,7 @@ exit:
 
 static int32_t xmitframe_addmic(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
-	sint curfragnum, length;
+	int curfragnum, length;
 	uint8_t	*pframe, *payload, mic[8];
 	struct	mic_data		micdata;
 	/* struct	sta_info		*stainfo; */
@@ -883,7 +883,7 @@ static int32_t xmitframe_addmic(struct rtl_priv *rtlpriv, struct xmit_frame *pxm
 	struct	xmit_priv		*pxmitpriv = &rtlpriv->xmitpriv;
 	uint8_t priority[4] = {0x0, 0x0, 0x0, 0x0};
 	uint8_t hw_hdr_offset = 0;
-	sint bmcst = is_multicast_ether_addr(pattrib->ra);
+	int bmcst = is_multicast_ether_addr(pattrib->ra);
 
 /*
 	if(pattrib->psta)
@@ -1043,12 +1043,12 @@ int32_t rtw_make_wlanhdr (struct rtl_priv *rtlpriv , uint8_t *hdr, struct tx_pkt
 	struct qos_priv *pqospriv = &pmlmepriv->qospriv;
 	uint8_t qos_option = _FALSE;
 
-	sint res = _SUCCESS;
+	int res = _SUCCESS;
 	u16 *fctrl = &pwlanhdr->frame_ctl;
 
 	/* struct sta_info *psta; */
 
-	/* sint bmcst = is_multicast_ether_addr(pattrib->ra); */
+	/* int bmcst = is_multicast_ether_addr(pattrib->ra); */
 
 
 
@@ -1453,7 +1453,7 @@ void rtw_update_protection(struct rtl_priv *rtlpriv, uint8_t *ie, uint ie_len)
 
 	uint	protection;
 	uint8_t	*perp;
-	sint	 erp_len;
+	int	 erp_len;
 	struct	xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct	registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 
@@ -2014,7 +2014,7 @@ exit:
 	return pxmitframe;
 }
 
-static struct tx_servq *rtw_get_sta_pending(struct rtl_priv *rtlpriv, struct sta_info *psta, sint up, uint8_t *ac)
+static struct tx_servq *rtw_get_sta_pending(struct rtl_priv *rtlpriv, struct sta_info *psta, int up, uint8_t *ac)
 {
 	struct tx_servq *ptxservq = NULL;
 
@@ -2062,7 +2062,7 @@ int32_t rtw_xmit_classifier(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitfr
 	struct tx_pkt_attrib	*pattrib = &pxmitframe->tx_attrib;
 	struct sta_priv	*pstapriv = &rtlpriv->stapriv;
 	struct hw_xmit	*phwxmits =  rtlpriv->xmitpriv.hwxmits;
-	sint res = _SUCCESS;
+	int res = _SUCCESS;
 
 /*
 	if (pattrib->psta) {
@@ -2138,7 +2138,7 @@ void rtw_alloc_hwxmits(struct rtl_priv *rtlpriv)
 
 void rtw_init_hwxmits(struct hw_xmit *phwxmit)
 {
-	sint i;
+	int i;
 	for (i = 0; i < HWXMIT_ENTRY; i++, phwxmit++) {
 		/*
 		 * spin_lock_init(&phwxmit->xmit_lock);
@@ -2221,14 +2221,14 @@ int32_t rtw_xmit(struct rtl_priv *rtlpriv, struct sk_buff **ppkt)
 
 #if defined(CONFIG_AP_MODE)
 
-sint xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
+int xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
 {
-	sint ret = _FALSE;
+	int ret = _FALSE;
 	struct sta_info *psta = NULL;
 	struct sta_priv *pstapriv = &rtlpriv->stapriv;
 	struct tx_pkt_attrib *pattrib = &pxmitframe->tx_attrib;
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
-	sint bmcst = is_multicast_ether_addr(pattrib->ra);
+	int bmcst = is_multicast_ether_addr(pattrib->ra);
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _FALSE)
 	    return ret;
@@ -2379,7 +2379,7 @@ sint xmitframe_enqueue_for_sleeping_sta(struct rtl_priv *rtlpriv, struct xmit_fr
 
 static void dequeue_xmitframes_to_sleeping_queue(struct rtl_priv *rtlpriv, struct sta_info *psta, struct __queue *pframequeue)
 {
-	sint ret;
+	int ret;
 	struct list_head	*plist, *phead;
 	uint8_t	ac_index;
 	struct tx_servq	*ptxservq;

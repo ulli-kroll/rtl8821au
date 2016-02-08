@@ -148,7 +148,7 @@ uint8_t *rtw_set_fixed_ie(unsigned char *pbuf, unsigned int len, unsigned char *
 uint8_t *rtw_set_ie
 (
 	uint8_t *pbuf,
-	sint index,
+	int index,
 	uint len,
 	uint8_t *source,
 	uint *frlen //frame length
@@ -224,9 +224,9 @@ inline uint8_t *rtw_set_ie_mesh_ch_switch_parm(uint8_t *buf, uint32_t	 *buf_len,
 /*----------------------------------------------------------------------------
 index: the information element id index, limit is the limit for search
 -----------------------------------------------------------------------------*/
-uint8_t *rtw_get_ie(uint8_t *pbuf, sint index, sint *len, sint limit)
+uint8_t *rtw_get_ie(uint8_t *pbuf, int index, int *len, int limit)
 {
-	sint tmp,i;
+	int tmp,i;
 	uint8_t *p;
 
 	if (limit < 1){

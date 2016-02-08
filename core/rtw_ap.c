@@ -120,7 +120,7 @@ static void update_BCNTIM(struct rtl_priv *rtlpriv)
 
 			premainder_ie = p+tim_ielen;
 
-			tim_ie_offset = (sint)(p - pie);
+			tim_ie_offset = (int)(p - pie);
 
 			remainder_ielen = pnetwork_mlmeext->IELength - tim_ie_offset - tim_ielen;
 
@@ -246,7 +246,7 @@ void rtw_add_bcn_ie(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *pnetwork, uint8_t i
 
 		premainder_ie = p+ielen;
 
-		ie_offset = (sint)(p -pie);
+		ie_offset = (int)(p -pie);
 
 		remainder_ielen = pnetwork->IELength - ie_offset - ielen;
 
@@ -291,7 +291,7 @@ void rtw_remove_bcn_ie(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *pnetwork, uint8_
 
 		premainder_ie = p+ielen;
 
-		ie_offset = (sint)(p -pie);
+		ie_offset = (int)(p -pie);
 
 		remainder_ielen = pnetwork->IELength - ie_offset - ielen;
 

@@ -552,7 +552,7 @@ uint8_t rtw_set_802_11_add_wep(struct rtl_priv* rtlpriv, NDIS_802_11_WEP *wep){
 
 	uint8_t		bdefaultkey;
 	uint8_t		btransmitkey;
-	sint		keyid,res;
+	int		keyid,res;
 	struct security_priv* psecuritypriv=&(rtlpriv->securitypriv);
 	uint8_t		ret=_SUCCESS;
 

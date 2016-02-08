@@ -102,7 +102,7 @@ static void arcfour_encrypt(	struct arc4context	*parc4ctx,
 
 }
 
-static sint bcrc32initialized = 0;
+static int bcrc32initialized = 0;
 static uint32_t	 crc32_table[256];
 
 
@@ -117,7 +117,7 @@ static void crc32_init(void)
 	if (bcrc32initialized == 1)
 		goto exit;
 	else{
-		sint i, j;
+		int i, j;
 		uint32_t	 c;
 		uint8_t *p=(uint8_t *)&c, *p1;
 		uint8_t k;
@@ -143,7 +143,7 @@ exit:
 	;
 }
 
-static uint32_t	 getcrc32(uint8_t *buf, sint len)
+static uint32_t	 getcrc32(uint8_t *buf, int len)
 {
 	uint8_t *p;
 	uint32_t	  crc;
@@ -170,7 +170,7 @@ void rtw_wep_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	unsigned char	crc[4];
 	struct arc4context	 mycontext;
 
-	sint	curfragnum,length;
+	int	curfragnum,length;
 	uint32_t	keylength;
 
 	uint8_t	*pframe, *payload,*iv;    //,*wepkey
@@ -241,7 +241,7 @@ void rtw_wep_decrypt(struct rtl_priv  *rtlpriv, struct recv_frame *precvframe)
 	// exclude ICV
 	uint8_t	crc[4];
 	struct arc4context	 mycontext;
-	sint 	length;
+	int 	length;
 	uint32_t	keylength;
 	uint8_t	*pframe, *payload,*iv,wepkey[16];
 	uint8_t	 keyindex;
@@ -549,7 +549,7 @@ static const unsigned short Sbox1[2][256]=       /* Sbox for hash (can be in ROM
 */
 static void phase1(u16 *p1k,const uint8_t *tk,const uint8_t *ta,uint32_t	 iv32)
 {
-	sint  i;
+	int  i;
 
 	/* Initialize the 80 bits of P1K[] from IV32 and TA[0..5]     */
 	p1k[0]      = Lo16(iv32);
@@ -598,7 +598,7 @@ static void phase1(u16 *p1k,const uint8_t *tk,const uint8_t *ta,uint32_t	 iv32)
 */
 static void phase2(uint8_t *rc4key,const uint8_t *tk,const u16 *p1k,u16 iv16)
 {
-	sint  i;
+	int  i;
 	u16 PPK[6];                          /* temporary key for mixing    */
 
 	/* Note: all adds in the PPK[] equations below are mod 2**16         */
@@ -652,7 +652,7 @@ uint32_t	rtw_tkip_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 	uint8_t	crc[4];
 	uint8_t   hw_hdr_offset = 0;
 	struct arc4context mycontext;
-	sint 			curfragnum,length;
+	int 			curfragnum,length;
 	uint32_t	prwskeylen;
 
 	uint8_t	*pframe, *payload,*iv,*prwskey;
@@ -768,7 +768,7 @@ uint32_t	 rtw_tkip_decrypt(struct rtl_priv *rtlpriv, struct recv_frame  *precvfr
 	uint8_t   ttkey[16];
 	uint8_t	crc[4];
 	struct arc4context mycontext;
-	sint 			length;
+	int 			length;
 	uint32_t	prwskeylen;
 
 	uint8_t	*pframe, *payload,*iv,*prwskey;
@@ -898,38 +898,38 @@ exit:
 static void bitwise_xor(uint8_t *ina, uint8_t *inb, uint8_t *out);
 static void construct_mic_iv(
                         uint8_t *mic_header1,
-                        sint qc_exists,
-                        sint a4_exists,
+                        int qc_exists,
+                        int a4_exists,
                         uint8_t *mpdu,
                         uint payload_length,
                         uint8_t * pn_vector);
 static void construct_mic_header1(
                         uint8_t *mic_header1,
-                        sint header_length,
+                        int header_length,
                         uint8_t *mpdu);
 static void construct_mic_header2(
                     uint8_t *mic_header2,
                     uint8_t *mpdu,
-                    sint a4_exists,
-                    sint qc_exists);
+                    int a4_exists,
+                    int qc_exists);
 static void construct_ctr_preload(
                         uint8_t *ctr_preload,
-                        sint a4_exists,
-                        sint qc_exists,
+                        int a4_exists,
+                        int qc_exists,
                         uint8_t *mpdu,
                         uint8_t *pn_vector,
-                        sint c);
+                        int c);
 static void xor_128(uint8_t *a, uint8_t *b, uint8_t *out);
 static void xor_32(uint8_t *a, uint8_t *b, uint8_t *out);
 static uint8_t sbox(uint8_t a);
-static void next_key(uint8_t *key, sint round);
+static void next_key(uint8_t *key, int round);
 static void byte_sub(uint8_t *in, uint8_t *out);
 static void shift_row(uint8_t *in, uint8_t *out);
 static void mix_column(uint8_t *in, uint8_t *out);
 static void add_round_key( uint8_t *shiftrow_in,
                     uint8_t *mcol_in,
                     uint8_t *block_in,
-                    sint round,
+                    int round,
                     uint8_t *out);
 static void aes128k128d(uint8_t *key, uint8_t *data, uint8_t *ciphertext);
 
@@ -941,7 +941,7 @@ static void aes128k128d(uint8_t *key, uint8_t *data, uint8_t *ciphertext);
 /****************************************/
 static void xor_128(uint8_t *a, uint8_t *b, uint8_t *out)
 {
-    sint i;
+    int i;
 
     for (i=0;i<16; i++)
     {
@@ -953,7 +953,7 @@ static void xor_128(uint8_t *a, uint8_t *b, uint8_t *out)
 
 static void xor_32(uint8_t *a, uint8_t *b, uint8_t *out)
 {
-    sint i;
+    int i;
 
     for (i=0;i<4; i++)
     {
@@ -965,11 +965,11 @@ static void xor_32(uint8_t *a, uint8_t *b, uint8_t *out)
 
 static uint8_t sbox(uint8_t a)
 {
-    return sbox_table[(sint)a];
+    return sbox_table[(int)a];
 }
 
 
-static void next_key(uint8_t *key, sint round)
+static void next_key(uint8_t *key, int round)
 {
     uint8_t rcon;
     uint8_t sbox_key[4];
@@ -998,7 +998,7 @@ static void next_key(uint8_t *key, sint round)
 
 static void byte_sub(uint8_t *in, uint8_t *out)
 {
-    sint i;
+    int i;
 
     for (i=0; i< 16; i++)
     {
@@ -1033,7 +1033,7 @@ static void shift_row(uint8_t *in, uint8_t *out)
 
 static void mix_column(uint8_t *in, uint8_t *out)
 {
-    sint i;
+    int i;
     uint8_t add1b[4];
     uint8_t add1bf7[4];
     uint8_t rotl[4];
@@ -1096,8 +1096,8 @@ static void mix_column(uint8_t *in, uint8_t *out)
 
 static void aes128k128d(uint8_t *key, uint8_t *data, uint8_t *ciphertext)
 {
-    sint round;
-    sint i;
+    int round;
+    int i;
     uint8_t intermediatea[16];
     uint8_t intermediateb[16];
     uint8_t round_key[16];
@@ -1139,14 +1139,14 @@ static void aes128k128d(uint8_t *key, uint8_t *data, uint8_t *ciphertext)
 /************************************************/
 static void construct_mic_iv(
                         uint8_t *mic_iv,
-                        sint qc_exists,
-                        sint a4_exists,
+                        int qc_exists,
+                        int a4_exists,
                         uint8_t *mpdu,
                         uint payload_length,
                         uint8_t *pn_vector
                         )
 {
-    sint i;
+    int i;
 
     mic_iv[0] = 0x59;
     if (qc_exists && a4_exists) mic_iv[1] = mpdu[30] & 0x0f;    /* QoS_TC           */
@@ -1174,7 +1174,7 @@ static void construct_mic_iv(
 /************************************************/
 static void construct_mic_header1(
                         uint8_t *mic_header1,
-                        sint header_length,
+                        int header_length,
                         uint8_t *mpdu
                         )
 {
@@ -1207,11 +1207,11 @@ static void construct_mic_header1(
 static void construct_mic_header2(
                 uint8_t *mic_header2,
                 uint8_t *mpdu,
-                sint a4_exists,
-                sint qc_exists
+                int a4_exists,
+                int qc_exists
                 )
 {
-    sint i;
+    int i;
 
     for (i = 0; i<16; i++) mic_header2[i]=0x00;
 
@@ -1258,14 +1258,14 @@ static void construct_mic_header2(
 /************************************************/
 static void construct_ctr_preload(
                         uint8_t *ctr_preload,
-                        sint a4_exists,
-                        sint qc_exists,
+                        int a4_exists,
+                        int qc_exists,
                         uint8_t *mpdu,
                         uint8_t *pn_vector,
-                        sint c
+                        int c
                         )
 {
-    sint i = 0;
+    int i = 0;
 
     for (i=0; i<16; i++) ctr_preload[i] = 0x00;
     i = 0;
@@ -1297,7 +1297,7 @@ static void construct_ctr_preload(
 /************************************/
 static void bitwise_xor(uint8_t *ina, uint8_t *inb, uint8_t *out)
 {
-    sint i;
+    int i;
 
     for (i=0; i<16; i++)
     {
@@ -1307,7 +1307,7 @@ static void bitwise_xor(uint8_t *ina, uint8_t *inb, uint8_t *out)
 }
 
 
-static sint aes_cipher(uint8_t *key, uint	hdrlen,
+static int aes_cipher(uint8_t *key, uint	hdrlen,
 			uint8_t *pframe, uint plen)
 {
 //	/*static*/ unsigned char	message[MAX_MSG_SIZE];
@@ -1510,7 +1510,7 @@ uint32_t	rtw_aes_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 //	unsigned char	message[MAX_MSG_SIZE];
 
     	/* Intermediate Buffers */
-	sint 	curfragnum,length;
+	int 	curfragnum,length;
 	uint32_t	prwskeylen;
 	uint8_t	*pframe,*prwskey;	//, *payload,*iv
 	uint8_t   hw_hdr_offset = 0;
@@ -1602,13 +1602,13 @@ uint32_t	rtw_aes_encrypt(struct rtl_priv *rtlpriv, uint8_t *pxmitframe)
 		return res;
 }
 
-static sint aes_decipher(uint8_t *key, uint	hdrlen,
+static int aes_decipher(uint8_t *key, uint	hdrlen,
 			uint8_t *pframe, uint plen)
 {
 	static uint8_t	message[MAX_MSG_SIZE];
 	uint	qc_exists, a4_exists, i, j, payload_remainder,
 			num_blocks, payload_index;
-	sint res = _SUCCESS;
+	int res = _SUCCESS;
 	uint8_t pn_vector[6];
 	uint8_t mic_iv[16];
 	uint8_t mic_header1[16];
@@ -1878,7 +1878,7 @@ uint32_t	rtw_aes_decrypt(struct rtl_priv *rtlpriv, struct recv_frame *precvframe
     	/* Intermediate Buffers */
 
 
-	sint 		length;
+	int 		length;
 	uint32_t	prwskeylen;
 	uint8_t	*pframe,*prwskey;	//, *payload,*iv
 	struct	sta_info		*stainfo;

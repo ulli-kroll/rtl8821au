@@ -46,13 +46,13 @@ void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv)
 
 }
 
-sint _rtw_init_recv_priv(struct recv_priv *precvpriv, struct rtl_priv *rtlpriv)
+int _rtw_init_recv_priv(struct recv_priv *precvpriv, struct rtl_priv *rtlpriv)
 {
-	sint i;
+	int i;
 
 	struct recv_frame *precvframe;
 
-	sint	res=_SUCCESS;
+	int	res=_SUCCESS;
 
 
 	/*
@@ -221,7 +221,7 @@ int rtw_free_recvframe(struct recv_frame *precvframe, struct __queue *pfree_recv
 
 
 
-sint _rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue)
+int _rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue)
 {
 
 	struct rtl_priv *rtlpriv=precvframe->rtlpriv;
@@ -239,9 +239,9 @@ sint _rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue
 	return _SUCCESS;
 }
 
-sint rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue)
+int rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue)
 {
-	sint ret;
+	int ret;
 
 	/* _spinlock(&pfree_recv_queue->lock); */
 	spin_lock_bh(&queue->lock);
@@ -253,7 +253,7 @@ sint rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue)
 }
 
 /*
-sint	rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue)
+int	rtw_enqueue_recvframe(struct recv_frame *precvframe, struct __queue *queue)
 {
 	return rtw_free_recvframe(precvframe, queue);
 }
@@ -313,7 +313,7 @@ uint32_t rtw_free_uc_swdec_pending_queue(struct rtl_priv *rtlpriv)
 }
 
 
-sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, struct __queue *queue)
+int rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, struct __queue *queue)
 {
 	spin_lock_bh(&queue->lock);
 
@@ -325,7 +325,7 @@ sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, struct __queue *queu
 	return _SUCCESS;
 }
 
-sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, struct __queue *queue)
+int rtw_enqueue_recvbuf(struct recv_buf *precvbuf, struct __queue *queue)
 {
 	unsigned long flags;
 
@@ -364,10 +364,10 @@ struct recv_buf *rtw_dequeue_recvbuf (struct __queue *queue)
 
 }
 
-sint recvframe_chkmic(struct rtl_priv *rtlpriv,  struct recv_frame *precvframe);
-sint recvframe_chkmic(struct rtl_priv *rtlpriv,  struct recv_frame *precvframe){
+int recvframe_chkmic(struct rtl_priv *rtlpriv,  struct recv_frame *precvframe);
+int recvframe_chkmic(struct rtl_priv *rtlpriv,  struct recv_frame *precvframe){
 
-	sint	i,res=_SUCCESS;
+	int	i,res=_SUCCESS;
 	uint32_t	datalen;
 	uint8_t	miccode[8];
 	uint8_t	bmic_err=_FALSE,brpt_micerror = _TRUE;
@@ -632,10 +632,10 @@ struct recv_frame * portctrl(struct rtl_priv *rtlpriv,struct recv_frame * precv_
 
 }
 
-sint recv_decache(struct recv_frame *precv_frame, uint8_t bretry, struct stainfo_rxcache *prxcache);
-sint recv_decache(struct recv_frame *precv_frame, uint8_t bretry, struct stainfo_rxcache *prxcache)
+int recv_decache(struct recv_frame *precv_frame, uint8_t bretry, struct stainfo_rxcache *prxcache);
+int recv_decache(struct recv_frame *precv_frame, uint8_t bretry, struct stainfo_rxcache *prxcache)
 {
-	sint tid = precv_frame->attrib.priority;
+	int tid = precv_frame->attrib.priority;
 
 	u16 seq_ctrl = ( (precv_frame->attrib.seq_num&0xffff) << 4) |
 		(precv_frame->attrib.frag_num & 0xf);
@@ -797,26 +797,26 @@ void count_rx_stats(struct rtl_priv *rtlpriv, struct recv_frame *prframe, struct
 
 }
 
-sint sta2sta_data_frame(
+int sta2sta_data_frame(
 	struct rtl_priv *rtlpriv,
 	struct recv_frame *precv_frame,
 	struct sta_info**psta
 );
 
-sint sta2sta_data_frame(
+int sta2sta_data_frame(
 	struct rtl_priv *rtlpriv,
 	struct recv_frame *precv_frame,
 	struct sta_info**psta)
 {
 	uint8_t *ptr = precv_frame->rx_data;
-	sint ret = _SUCCESS;
+	int ret = _SUCCESS;
 	struct rx_pkt_attrib *pattrib = & precv_frame->attrib;
 	struct	sta_priv 		*pstapriv = &rtlpriv->stapriv;
 	struct	mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	uint8_t *mybssid  = get_bssid(pmlmepriv);
 	uint8_t *myhwaddr = rtlpriv->mac80211.mac_addr;
 	uint8_t * sta_addr = NULL;
-	sint bmcast = is_multicast_ether_addr(pattrib->dst);
+	int bmcast = is_multicast_ether_addr(pattrib->dst);
 
 
 
@@ -907,23 +907,23 @@ exit:
 
 }
 
-sint ap2sta_data_frame(
+int ap2sta_data_frame(
 	struct rtl_priv *rtlpriv,
 	struct recv_frame *precv_frame,
 	struct sta_info**psta );
-sint ap2sta_data_frame(
+int ap2sta_data_frame(
 	struct rtl_priv *rtlpriv,
 	struct recv_frame *precv_frame,
 	struct sta_info**psta )
 {
 	uint8_t *ptr = precv_frame->rx_data;
 	struct rx_pkt_attrib *pattrib = & precv_frame->attrib;
-	sint ret = _SUCCESS;
+	int ret = _SUCCESS;
 	struct	sta_priv 		*pstapriv = &rtlpriv->stapriv;
 	struct	mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	uint8_t *mybssid  = get_bssid(pmlmepriv);
 	uint8_t *myhwaddr = rtlpriv->mac80211.mac_addr;
-	sint bmcast = is_multicast_ether_addr(pattrib->dst);
+	int bmcast = is_multicast_ether_addr(pattrib->dst);
 
 
 
@@ -1026,11 +1026,11 @@ exit:
 
 }
 
-sint sta2ap_data_frame(
+int sta2ap_data_frame(
 	struct rtl_priv *rtlpriv,
 	struct recv_frame *precv_frame,
 	struct sta_info**psta );
-sint sta2ap_data_frame(
+int sta2ap_data_frame(
 	struct rtl_priv *rtlpriv,
 	struct recv_frame *precv_frame,
 	struct sta_info**psta )
@@ -1040,7 +1040,7 @@ sint sta2ap_data_frame(
 	struct	sta_priv 		*pstapriv = &rtlpriv->stapriv;
 	struct	mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	unsigned char *mybssid  = get_bssid(pmlmepriv);
-	sint ret=_SUCCESS;
+	int ret=_SUCCESS;
 
 
 
@@ -1097,8 +1097,8 @@ exit:
 
 }
 
-sint validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
-sint validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
+int validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+int validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 {
 #ifdef CONFIG_AP_MODE
 	struct rx_pkt_attrib *pattrib = &precv_frame->attrib;
@@ -1250,8 +1250,8 @@ sint validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 }
 
 struct recv_frame* recvframe_chk_defrag(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
-sint validate_recv_mgnt_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
-sint validate_recv_mgnt_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
+int validate_recv_mgnt_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+int validate_recv_mgnt_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 {
 	/* struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv; */
 
@@ -1287,8 +1287,8 @@ sint validate_recv_mgnt_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 
 }
 
-sint validate_recv_data_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
-sint validate_recv_data_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
+int validate_recv_data_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+int validate_recv_data_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 {
 	uint8_t bretry;
 	uint8_t *psa, *pda, *pbssid;
@@ -1297,7 +1297,7 @@ sint validate_recv_data_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv
 	struct rx_pkt_attrib	*pattrib = & precv_frame->attrib;
 	struct sta_priv 	*pstapriv = &rtlpriv->stapriv;
 	struct security_priv	*psecuritypriv = &rtlpriv->securitypriv;
-	sint ret = _SUCCESS;
+	int ret = _SUCCESS;
 
 	bretry = GetRetry(ptr);
 	pda = get_da(ptr);
@@ -1410,8 +1410,8 @@ exit:
 	return ret;
 }
 
-sint validate_recv_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
-sint validate_recv_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
+int validate_recv_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame);
+int validate_recv_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 {
 	/* shall check frame subtype, to / from ds, da, bssid */
 
@@ -1419,7 +1419,7 @@ sint validate_recv_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_fram
 
 	uint8_t type;
 	uint8_t subtype;
-	sint retval = _SUCCESS;
+	int retval = _SUCCESS;
 
 	struct rx_pkt_attrib *pattrib = & precv_frame->attrib;
 
@@ -1490,16 +1490,16 @@ exit:
 /* remove the wlanhdr and add the eth_hdr */
 #if 1
 
-sint wlanhdr_to_ethhdr ( struct recv_frame *precvframe);
-sint wlanhdr_to_ethhdr ( struct recv_frame *precvframe)
+int wlanhdr_to_ethhdr ( struct recv_frame *precvframe);
+int wlanhdr_to_ethhdr ( struct recv_frame *precvframe)
 {
-	sint rmv_len;
+	int rmv_len;
 	u16 eth_type, len;
 	uint8_t	bsnaphdr;
 	uint8_t	*psnap_type;
 	struct ieee80211_snap_hdr *psnap;
 
-	sint ret=_SUCCESS;
+	int ret=_SUCCESS;
 	struct rtl_priv *rtlpriv =precvframe->rtlpriv;
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
@@ -1565,15 +1565,15 @@ sint wlanhdr_to_ethhdr ( struct recv_frame *precvframe)
 
 #else
 
-sint wlanhdr_to_ethhdr ( struct recv_frame *precvframe)
+int wlanhdr_to_ethhdr ( struct recv_frame *precvframe)
 {
-	sint rmv_len;
+	int rmv_len;
 	u16 eth_type;
 	uint8_t	bsnaphdr;
 	uint8_t	*psnap_type;
 	struct ieee80211_snap_hdr	*psnap;
 
-	sint ret=_SUCCESS;
+	int ret=_SUCCESS;
 	struct rtl_priv	*rtlpriv =precvframe->u.hdr.rtlpriv;
 	struct	mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 

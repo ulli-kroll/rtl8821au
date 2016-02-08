@@ -1007,8 +1007,8 @@ unsigned int OnAuth(struct rtl_priv *rtlpriv, struct recv_frame *precv_frame)
 		offset = 4;
 	}
 
-	algorithm = le16_to_cpu(*(u16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset));
-	seq 	= le16_to_cpu(*(u16 *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 2));
+	algorithm = le16_to_cpu(*(u16 *)((u8 *)pframe + WLAN_HDR_A3_LEN + offset));
+	seq 	= le16_to_cpu(*(u16 *)((u8 *)pframe + WLAN_HDR_A3_LEN + offset + 2));
 
 	DBG_871X("auth alg=%x, seq=%X\n", algorithm, seq);
 
@@ -1210,9 +1210,9 @@ unsigned int OnAuthClient(struct rtl_priv *rtlpriv, struct recv_frame *precv_fra
 
 	offset = (GetPrivacy(pframe))? 4: 0;
 
-	algthm 	= le16_to_cpu(*(unsigned short *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset));
-	seq 	= le16_to_cpu(*(unsigned short *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 2));
-	status 	= le16_to_cpu(*(unsigned short *)((SIZE_PTR)pframe + WLAN_HDR_A3_LEN + offset + 4));
+	algthm 	= le16_to_cpu(*(unsigned short *)((u8 *)pframe + WLAN_HDR_A3_LEN + offset));
+	seq 	= le16_to_cpu(*(unsigned short *)((u8 *)pframe + WLAN_HDR_A3_LEN + offset + 2));
+	status 	= le16_to_cpu(*(unsigned short *)((u8 *)pframe + WLAN_HDR_A3_LEN + offset + 4));
 
 	if (status != 0)
 	{

@@ -57,22 +57,6 @@ uint rtw_hal_deinit(struct rtl_priv *rtlpriv)
 	return status;
 }
 
-void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->enable_interrupt)
-		rtlpriv->cfg->ops->enable_interrupt(rtlpriv);
-	else
-		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "->ops.enable_interrupt is NULL!\n");
-
-}
-void rtw_hal_disable_interrupt(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->disable_interrupt)
-		rtlpriv->cfg->ops->disable_interrupt(rtlpriv);
-	else
-		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "->ops.disable_interrupt is NULL!\n");
-}
-
 uint32_t	rtw_hal_inirp_deinit(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->inirp_deinit)

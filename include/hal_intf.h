@@ -64,9 +64,6 @@ void rtw_hal_stop(struct rtl_priv *rtlpriv);
 
 void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,bool bSet);
 
-void rtw_hal_enable_interrupt(struct rtl_priv *rtlpriv);
-void rtw_hal_disable_interrupt(struct rtl_priv *rtlpriv);
-
 u32	rtw_hal_inirp_deinit(struct rtl_priv *rtlpriv);
 
 int32_t	rtw_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);

@@ -109,16 +109,6 @@ struct reportpwrstate_parm {
 #define EXE_PWR_IPS		0x02
 #define EXE_PWR_LPS		0x04
 
-// RF state.
-typedef enum _rt_rf_power_state
-{
-	rf_on,		// RF is on after RFSleep or RFOff
-	rf_sleep,	// 802.11 Power Save mode
-	rf_off,		// HW/SW Radio OFF or Inactive Power Save
-	//=====Add the new RF state above this line=====//
-	rf_max
-}rt_rf_power_state;
-
 // RF Off Level for IPS or HW/SW radio off
 #define	RT_RF_OFF_LEVL_ASPM			BIT(0)	// PCI ASPM
 #define	RT_RF_OFF_LEVL_CLK_REQ		BIT(1)	// PCI clock request
@@ -146,75 +136,6 @@ enum _PS_BBRegBackup_ {
 enum { // for ips_mode
 	IPS_NONE=0,
 	IPS_NORMAL,
-};
-
-struct pwrctrl_priv
-{
-	struct semaphore lock;
-	volatile uint8_t rpwm; // requested power state for fw
-	volatile uint8_t cpwm; // fw current power state. updated when 1. read from HCPWM 2. driver lowers power level
-	volatile uint8_t tog; // toggling
-	volatile uint8_t cpwm_tog; // toggling
-
-	uint8_t	pwr_mode;
-	uint8_t	smart_ps;
-	uint8_t	bcn_ant_mode;
-
-	u32	alives;
-	struct work_struct cpwm_event;
-#ifdef CONFIG_LPS_RPWM_TIMER
-	uint8_t brpwmtimeout;
-	struct work_struct rpwmtimeoutwi;
-	_timer pwr_rpwm_timer;
-#endif // CONFIG_LPS_RPWM_TIMER
-	uint8_t	bpower_saving;
-
-	uint8_t	b_hw_radio_off;
-	uint8_t	reg_rfoff;
-	uint8_t	reg_pdnmode; //powerdown mode
-	u32	rfoff_reason;
-
-	//RF OFF Level
-	u32	cur_ps_level;
-	u32	reg_rfps_level;
-
-
-	uint 	ips_enter_cnts;
-	uint 	ips_leave_cnts;
-
-	uint8_t	ips_mode;
-	uint8_t	ips_mode_req; // used to accept the mode setting request, will update to ipsmode later
-	uint bips_processing;
-	u32 ips_deny_time; /* will deny IPS when system time is smaller than this */
-	uint8_t ps_processing; /* temporarily used to mark whether in rtw_ps_processor */
-
-	uint8_t	bLeisurePs;
-	uint8_t	LpsIdleCount;
-	uint8_t	power_mgnt;
-	bool fw_current_inpsmode;
-	u32	DelayLPSLastTimeStamp;
-	uint8_t 	btcoex_rfon;
-	int32_t		pnp_current_pwr_state;
-	uint8_t		pnp_bstop_trx;
-
-
-	uint8_t		bInternalAutoSuspend;
-	uint8_t		bInSuspend;
-	uint8_t		bSupportRemoteWakeup;
-	_timer 	pwr_state_check_timer;
-	int		pwr_state_check_interval;
-	uint8_t		pwr_state_check_cnts;
-
-	int 		ps_flag;
-
-	rt_rf_power_state	rf_pwrstate;//cur power state
-	//rt_rf_power_state 	current_rfpwrstate;
-	rt_rf_power_state	change_rfpwrstate;
-
-	uint8_t		wepkeymask;
-	uint8_t		bHWPwrPindetect;
-	uint8_t		brfoffbyhw;
-	unsigned long PS_BBRegBackup[PSBBREG_TOTALCNT];
 };
 
 #define RTW_PWR_STATE_CHK_INTERVAL 2000

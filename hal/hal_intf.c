@@ -185,12 +185,6 @@ void	rtw_hal_set_chnl_bw(struct rtl_priv *rtlpriv, uint8_t channel, enum CHANNEL
 		rtlpriv->cfg->ops->set_chnl_bw_handler(rtlpriv, channel, Bandwidth, Offset40, Offset80);
 }
 
-void rtw_hal_bcn_related_reg_setting(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->SetBeaconRelatedRegistersHandler)
-		rtlpriv->cfg->ops->SetBeaconRelatedRegistersHandler(rtlpriv);
-}
-
 int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt)
 {
 	int32_t ret = _FAIL;

@@ -150,11 +150,6 @@ u32 rtl_get_bbreg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint32_t BitMask)
 	return rtlpriv->cfg->ops->get_bbreg(rtlpriv, RegAddr, BitMask);
 }
 
-void rtl_set_bbreg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint32_t BitMask, uint32_t Data)
-{
-	rtlpriv->cfg->ops->set_bbreg(rtlpriv, RegAddr, BitMask, Data);
-}
-
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->interrupt_handler)

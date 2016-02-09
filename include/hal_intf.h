@@ -80,7 +80,6 @@ void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta, uin
 void	rtw_hal_add_ra_tid(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);
 
 u32	rtl_get_bbreg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask);
-void	rtl_set_bbreg(struct rtl_priv *rtlpriv, u32 RegAddr, u32 BitMask, u32 Data);
 
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv);
 

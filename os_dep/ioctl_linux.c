@@ -2114,7 +2114,7 @@ static int rtw_wx_set_enc(struct net_device *ndev,
 	memcpy(wep.KeyMaterial, keybuf, wep.KeyLength);
 
 	if (rtw_set_802_11_add_wep(rtlpriv, &wep) == false) {
-		if (rf_on == pwrpriv->rf_pwrstate)
+		if (ERFON == pwrpriv->rf_pwrstate)
 			ret = -EOPNOTSUPP;
 		goto exit;
 	}

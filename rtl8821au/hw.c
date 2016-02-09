@@ -875,7 +875,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 
 	case HW_VAR_FWLPS_RF_ON:
 		/* When we halt NIC, we should check if FW LPS is leave. */
-		if (rtlpriv->pwrctrlpriv.rf_pwrstate == rf_off) {
+		if (rtlpriv->pwrctrlpriv.rf_pwrstate == ERFOFF) {
 			/*
 			 *  If it is in HW/SW Radio OFF or IPS state, we do not check Fw LPS Leave,
 			 *  because Fw is unload.
@@ -2052,7 +2052,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	uint32_t	status = _SUCCESS;
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
-	rt_rf_power_state eRfPowerStateToSet;
+	enum rf_pwrstate eRfPowerStateToSet;
 	uint32_t init_start_time = jiffies;
 
 	/* Check if MAC has already power on. by tynli. 2011.05.27. */
@@ -2121,7 +2121,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	InitializeFirmwareVars8812(rtlpriv);
 
 	if (pwrctrlpriv->reg_rfoff == true)
-		pwrctrlpriv->rf_pwrstate = rf_off;
+		pwrctrlpriv->rf_pwrstate = ERFOFF;
 
 	/*
 	 * 2010/08/09 MH We need to check if we need to turnon or off RF after detecting
@@ -2250,7 +2250,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	 * is the same as eRfOff, we should change it to eRfOn after we config RF parameters.
 	 * Added by tynli. 2010.03.30.
 	 */
-	pwrctrlpriv->rf_pwrstate = rf_on;
+	pwrctrlpriv->rf_pwrstate = ERFON;
 
 	/*
 	 * 0x4c6[3] 1: RTS BW = Data BW
@@ -2276,7 +2276,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	 */
 
 	/* 2010/08/26 MH Merge from 8192CE. */
-	if (pwrctrlpriv->rf_pwrstate == rf_on) {
+	if (pwrctrlpriv->rf_pwrstate == ERFON) {
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			rtlphy->need_iqk = true;
 			if (rtlphy->iqk_initialized)

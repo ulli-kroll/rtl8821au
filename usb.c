@@ -1165,7 +1165,7 @@ static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t messa
 
 	rtw_dev_unload(rtlpriv);
 #ifdef CONFIG_AUTOSUSPEND
-	pwrpriv->rf_pwrstate = rf_off;
+	pwrpriv->rf_pwrstate = ERFOFF;
 	pwrpriv->bips_processing = false;
 #endif
 	up(&pwrpriv->lock);
@@ -1402,7 +1402,7 @@ static int netdev_close(struct net_device *ndev)
 
 	if (rtlpriv->pwrctrlpriv.bInternalAutoSuspend == true) {
 		/*rtw_pwr_wakeup(rtlpriv); */
-		if (rtlpriv->pwrctrlpriv.rf_pwrstate == rf_off)
+		if (rtlpriv->pwrctrlpriv.rf_pwrstate == ERFOFF)
 			rtlpriv->pwrctrlpriv.ps_flag = true;
 	}
 	rtlpriv->net_closed = true;
@@ -1416,7 +1416,7 @@ static int netdev_close(struct net_device *ndev)
 		rtw_dev_unload(rtlpriv);
 	}
 	else*/
-	if (rtlpriv->pwrctrlpriv.rf_pwrstate == rf_on) {
+	if (rtlpriv->pwrctrlpriv.rf_pwrstate == ERFON) {
 		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "(2)871x_drv - drv_close, initialized=%d, hw_init_completed=%d\n", rtlpriv->initialized, rtlpriv->hw_init_completed);
 
 		/* s1. */
@@ -1534,7 +1534,7 @@ void autosuspend_enter(struct rtl_priv* rtlpriv)
 	pwrpriv->bInternalAutoSuspend = true;
 	pwrpriv->bips_processing = true;
 
-	if (rf_off == pwrpriv->change_rfpwrstate) {
+	if (ERFOFF == pwrpriv->change_rfpwrstate) {
 		usb_enable_autosuspend(dvobj->pusbdev);
 
 			usb_autopm_put_interface(dvobj->pusbintf);
@@ -1554,7 +1554,7 @@ int autoresume_enter(struct rtl_priv* rtlpriv)
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG, "====> autoresume_enter \n");
 
-	if (rf_off == pwrpriv->rf_pwrstate) {
+	if (ERFOFF == pwrpriv->rf_pwrstate) {
 		pwrpriv->ps_flag = false;
 			if (usb_autopm_get_interface(dvobj->pusbintf) < 0) {
 				RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG,  "can't get autopm: %d\n", result);

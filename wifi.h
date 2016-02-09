@@ -1541,16 +1541,6 @@ struct rtl_ps_ctl {
 	u64 last_wakeup_time;
 };
 
-// RF state.
-typedef enum _rt_rf_power_state
-{
-	rf_on,		// RF is on after RFSleep or RFOff
-	rf_sleep,	// 802.11 Power Save mode
-	rf_off,		// HW/SW Radio OFF or Inactive Power Save
-	//=====Add the new RF state above this line=====//
-	rf_max
-}rt_rf_power_state;
-
 struct pwrctrl_priv {
 	struct semaphore lock;
 	volatile uint8_t rpwm; // requested power state for fw
@@ -1609,9 +1599,9 @@ struct pwrctrl_priv {
 
 	int 		ps_flag;
 
-	rt_rf_power_state	rf_pwrstate;//cur power state
+	enum rf_pwrstate	rf_pwrstate;//cur power state
 	//rt_rf_power_state 	current_rfpwrstate;
-	rt_rf_power_state	change_rfpwrstate;
+	enum rf_pwrstate	change_rfpwrstate;
 
 	uint8_t		wepkeymask;
 	uint8_t		bHWPwrPindetect;

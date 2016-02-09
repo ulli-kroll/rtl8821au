@@ -39,12 +39,12 @@ void rtw_ips_enter(struct rtl_priv *rtlpriv)
 
 	pwrpriv->ips_enter_cnts++;
 	RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "==>ips_enter cnts:%d\n",pwrpriv->ips_enter_cnts);
-	if (rf_off == pwrpriv->change_rfpwrstate) {
+	if (ERFOFF == pwrpriv->change_rfpwrstate) {
 		pwrpriv->bpower_saving = true;
 		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "nolinked power save enter\n");
 
 		rtw_ips_pwr_down(rtlpriv);
-		pwrpriv->rf_pwrstate = rf_off;
+		pwrpriv->rf_pwrstate = ERFOFF;
 	}
 	pwrpriv->bips_processing = false;
 
@@ -64,14 +64,14 @@ int rtw_ips_leave(struct rtl_priv * rtlpriv)
 
 	down(&pwrpriv->lock);
 
-	if ((pwrpriv->rf_pwrstate == rf_off) &&(!pwrpriv->bips_processing)) {
+	if ((pwrpriv->rf_pwrstate == ERFOFF) &&(!pwrpriv->bips_processing)) {
 		pwrpriv->bips_processing = true;
-		pwrpriv->change_rfpwrstate = rf_on;
+		pwrpriv->change_rfpwrstate = ERFON;
 		pwrpriv->ips_leave_cnts++;
 		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "==>ips_leave cnts:%d\n",pwrpriv->ips_leave_cnts);
 
 		if ((result = rtw_ips_pwr_up(rtlpriv)) == _SUCCESS) {
-			pwrpriv->rf_pwrstate = rf_on;
+			pwrpriv->rf_pwrstate = ERFON;
 		}
 		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "nolinked power save leave\n");
 
@@ -153,10 +153,10 @@ void rtw_ps_processor(struct rtl_priv *rtlpriv)
 	if (rtw_pwr_unassociated_idle(rtlpriv) == false)
 		goto exit;
 
-	if ((pwrpriv->rf_pwrstate == rf_on)
+	if ((pwrpriv->rf_pwrstate == ERFON)
 	   && ((pwrpriv->pwr_state_check_cnts%4)==0)) {
 		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "==>%s .fw_state(%x)\n",__FUNCTION__,get_fwstate(pmlmepriv));
-		pwrpriv->change_rfpwrstate = rf_off;
+		pwrpriv->change_rfpwrstate = ERFOFF;
 #ifdef CONFIG_AUTOSUSPEND
 		if (rtlpriv->registrypriv.usbss_enable) {
 			if(pwrpriv->bHWPwrPindetect)
@@ -456,7 +456,7 @@ void LeaveAllPowerSaveMode(struct rtl_priv *rtlpriv)
 		rtw_lps_ctrl_wk_cmd(rtlpriv, LPS_CTRL_LEAVE, enqueue);
 
 	} else {
-		if(rtlpriv->pwrctrlpriv.rf_pwrstate== rf_off) {
+		if(rtlpriv->pwrctrlpriv.rf_pwrstate== ERFOFF) {
 #ifdef CONFIG_AUTOSUSPEND
 			if(rtlpriv->registrypriv.usbss_enable) 	{
 				usb_disable_autosuspend(rtl_usbdev(rtlpriv)->pusbdev);
@@ -478,7 +478,7 @@ void rtw_init_pwrctrl_priv(struct rtl_priv *rtlpriv)
 
 
 	sema_init(&pwrctrlpriv->lock, 1);
-	pwrctrlpriv->rf_pwrstate = rf_on;
+	pwrctrlpriv->rf_pwrstate = ERFON;
 	pwrctrlpriv->ips_enter_cnts=0;
 	pwrctrlpriv->ips_leave_cnts=0;
 	pwrctrlpriv->bips_processing = false;
@@ -577,10 +577,10 @@ int _rtw_pwr_wakeup(struct rtl_priv *rtlpriv, uint32_t	 ips_deffer_ms, const cha
 		goto exit;
 	}
 
-	if (rf_off == pwrpriv->rf_pwrstate ) {
+	if (ERFOFF == pwrpriv->rf_pwrstate ) {
 #ifdef CONFIG_AUTOSUSPEND
 		if (pwrpriv->brfoffbyhw==true) {
-			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "hw still in rf_off state ...........\n");
+			RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG, "hw still in ERFOFF state ...........\n");
 			ret = _FAIL;
 			goto exit;
 		} else if (rtlpriv->registrypriv.usbss_enable) {

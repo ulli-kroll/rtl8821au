@@ -366,7 +366,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 
 	sema_init(&(pxmitpriv->tx_retevt), 0);
 
-	rtw_hal_init_xmit_priv(rtlpriv);
+	rtlpriv->cfg->ops->init_xmit_priv(rtlpriv);
 
 exit:
 
@@ -384,7 +384,7 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 	uint32_t	 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
 	uint32_t	 num_xmit_extbuf = NR_XMIT_EXTBUFF;
 
-	rtw_hal_free_xmit_priv(rtlpriv);
+	rtlpriv->cfg->ops->free_xmit_priv(rtlpriv);
 
 	if (pxmitpriv->pxmit_frame_buf == NULL)
 		goto out;

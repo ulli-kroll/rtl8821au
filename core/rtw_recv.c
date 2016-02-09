@@ -109,7 +109,7 @@ int _rtw_init_recv_priv(struct recv_priv *precvpriv, struct rtl_priv *rtlpriv)
 	sema_init(&precvpriv->allrxreturnevt, 0);
 
 
-	res = rtw_hal_init_recv_priv(rtlpriv);
+	res = rtlpriv->cfg->ops->init_recv_priv(rtlpriv);
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 	rtw_init_timer(&precvpriv->signal_stat_timer, rtlpriv, RTW_TIMER_HDL_NAME(signal_stat));
@@ -138,7 +138,7 @@ void _rtw_free_recv_priv (struct recv_priv *precvpriv)
 		rtw_vmfree(precvpriv->pallocated_frame_buf);
 	}
 
-	rtw_hal_free_recv_priv(rtlpriv);
+	rtlpriv->cfg->ops->free_recv_priv(rtlpriv);
 }
 
 struct recv_frame *_rtw_alloc_recvframe (struct __queue *pfree_recv_queue)

@@ -106,20 +106,6 @@ void	rtw_hal_free_xmit_priv(struct rtl_priv *rtlpriv)
 		rtlpriv->cfg->ops->free_xmit_priv(rtlpriv);
 }
 
-int32_t	rtw_hal_init_recv_priv(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->init_recv_priv)
-		return rtlpriv->cfg->ops->init_recv_priv(rtlpriv);
-
-	return _FAIL;
-}
-
-void	rtw_hal_free_recv_priv(struct rtl_priv *rtlpriv)
-{
-
-	if (rtlpriv->cfg->ops->free_recv_priv)
-		rtlpriv->cfg->ops->free_recv_priv(rtlpriv);
-}
 
 void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta, 
 			    uint8_t rssi_level)

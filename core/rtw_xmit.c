@@ -2212,7 +2212,7 @@ int32_t rtw_xmit(struct rtl_priv *rtlpriv, struct sk_buff **ppkt)
 	spin_unlock_bh(&pxmitpriv->lock);
 #endif
 
-	if (rtw_hal_xmit(rtlpriv, pxmitframe) == false)
+	if (rtlpriv->cfg->ops->hal_xmit(rtlpriv, pxmitframe) == false)
 		return 1;
 
 	return 0;

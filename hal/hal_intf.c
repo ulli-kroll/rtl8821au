@@ -144,12 +144,6 @@ void rtw_hal_add_ra_tid(struct rtl_priv *rtlpriv, uint32_t bitmap, u8 *arg, uint
 		rtlpriv->cfg->ops->Add_RateATid(rtlpriv, bitmap, arg, rssi_level);
 }
 
-
-u32 rtl_get_bbreg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint32_t BitMask)
-{
-	return rtlpriv->cfg->ops->get_bbreg(rtlpriv, RegAddr, BitMask);
-}
-
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->interrupt_handler)

@@ -2047,6 +2047,12 @@ static inline void rtl_writeN(struct rtl_priv *rtlpriv,
 	rtlpriv->io.writeN_sync(rtlpriv, addr, data, len);
 }
 
+static u32 rtl_get_bbreg(struct rtl_priv *rtlpriv, uint32_t RegAddr,
+		         uint32_t BitMask)
+{
+	return rtlpriv->cfg->ops->get_bbreg(rtlpriv, RegAddr, BitMask);
+}
+
 static void rtl_set_bbreg(struct rtl_priv *rtlpriv, uint32_t RegAddr,
 			  uint32_t BitMask, uint32_t Data)
 {

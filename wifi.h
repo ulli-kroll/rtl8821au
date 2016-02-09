@@ -1926,7 +1926,6 @@ struct rtl_hal_ops {
 
 	void	(*enable_interrupt)(struct rtl_priv *rtlpriv);
 	void	(*disable_interrupt)(struct rtl_priv *rtlpriv);
-	int32_t	(*interrupt_handler)(struct rtl_priv *rtlpriv);
 
 	void	(*set_bwmode_handler)(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset);
 	void	(*set_channel_handler)(struct rtl_priv *rtlpriv, uint8_t channel);

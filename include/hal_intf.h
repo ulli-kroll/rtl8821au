@@ -79,8 +79,6 @@ void	rtw_hal_free_recv_priv(struct rtl_priv *rtlpriv);
 void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_level);
 void	rtw_hal_add_ra_tid(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);
 
-int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv);
-
 int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt);
 c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *rtlpriv);
 

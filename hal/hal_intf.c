@@ -144,13 +144,6 @@ void rtw_hal_add_ra_tid(struct rtl_priv *rtlpriv, uint32_t bitmap, u8 *arg, uint
 		rtlpriv->cfg->ops->Add_RateATid(rtlpriv, bitmap, arg, rssi_level);
 }
 
-int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->interrupt_handler)
-		return rtlpriv->cfg->ops->interrupt_handler(rtlpriv);
-	return _FAIL;
-}
-
 int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt)
 {
 	int32_t ret = _FAIL;

@@ -492,7 +492,7 @@ void SelectChannel(struct rtl_priv *rtlpriv, unsigned char channel)
 	//saved channel info
 	rtw_set_oper_ch(rtlpriv, channel);
 
-	rtw_hal_set_chan(rtlpriv, channel);
+	rtlpriv->cfg->ops->set_channel_handler(rtlpriv, channel);
 
 	mutex_unlock(&(rtl_usbdev(rtlpriv)->setch_mutex));
 }

@@ -86,7 +86,6 @@ u32	rtw_hal_read_rfreg(struct rtl_priv *rtlpriv, u32 eRFPath, u32 RegAddr, u32 B
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv);
 
 void	rtw_hal_set_bwmode(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset);
-void	rtw_hal_set_chan(struct rtl_priv *rtlpriv, uint8_t channel);
 
 int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt);
 c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *rtlpriv);

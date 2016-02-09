@@ -508,7 +508,8 @@ void SetBWMode(struct rtl_priv *rtlpriv, unsigned short bwmode, unsigned char ch
 	rtw_set_oper_bw(rtlpriv, bwmode);
 	rtw_set_oper_choffset(rtlpriv, channel_offset);
 
-	rtw_hal_set_bwmode(rtlpriv, (enum CHANNEL_WIDTH)bwmode, channel_offset);
+	rtlpriv->cfg->ops->set_bwmode_handler(rtlpriv, 
+					      (enum CHANNEL_WIDTH)bwmode, channel_offset);
 
 	mutex_unlock(&(rtl_usbdev(rtlpriv)->setbw_mutex));
 }

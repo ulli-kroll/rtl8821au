@@ -167,12 +167,6 @@ int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv)
 	return _FAIL;
 }
 
-void	rtw_hal_set_bwmode(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset)
-{
-	if (rtlpriv->cfg->ops->set_bwmode_handler)
-		rtlpriv->cfg->ops->set_bwmode_handler(rtlpriv, Bandwidth, Offset);
-}
-
 int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt)
 {
 	int32_t ret = _FAIL;

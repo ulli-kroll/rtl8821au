@@ -155,11 +155,6 @@ void rtl_set_bbreg(struct rtl_priv *rtlpriv, uint32_t RegAddr, uint32_t BitMask,
 	rtlpriv->cfg->ops->set_bbreg(rtlpriv, RegAddr, BitMask, Data);
 }
 
-uint32_t rtw_hal_read_rfreg(struct rtl_priv *rtlpriv, uint32_t eRFPath, uint32_t RegAddr, uint32_t BitMask)
-{
-	return rtlpriv->cfg->ops->get_rfreg(rtlpriv, eRFPath, RegAddr, BitMask);
-}
-
 int32_t	rtw_hal_interrupt_handler(struct rtl_priv *rtlpriv)
 {
 	if (rtlpriv->cfg->ops->interrupt_handler)

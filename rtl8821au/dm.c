@@ -1126,7 +1126,7 @@ static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 	uint32_t	reg0x914 = rtl_read_dword(rtlpriv, rSingleTone_ContTx_Jaguar);;
 
 	/* Backup RF reg18. */
-	LC_Cal = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	LC_Cal = rtl_get_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	if ((reg0x914 & 0x70000) != 0)	/* If contTx, disable all continuous TX. 0x914[18:16] */
 		/*
@@ -1142,9 +1142,9 @@ static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 
 /*
 	//3 1. Read original RF mode
-	RF_Amode = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask);
+	RF_Amode = rtl_get_rfreg(pDM_Odm->rtlpriv, RF90_PATH_A, RF_AC, bRFRegOffsetMask);
 	if(is2T)
-		RF_Bmode = rtw_hal_read_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask);
+		RF_Bmode = rtl_get_rfreg(pDM_Odm->rtlpriv, RF90_PATH_B, RF_AC, bRFRegOffsetMask);
 
 
 	//3 2. Set RF mode = standby mode
@@ -1154,17 +1154,17 @@ static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 */
 
 	/* Enter LCK mode */
-	tmp = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	tmp = rtl_get_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
 	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
 
 	/* 3 3. Read RF reg18 */
-	LC_Cal = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	LC_Cal = rtl_get_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	/* 3 4. Set LC calibration begin bit15 */
 	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
 
 	/* Leave LCK mode */
-	tmp = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
+	tmp = rtl_get_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
 	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
 
 	mdelay(100);
@@ -1222,7 +1222,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		rtldm->swing_idx_cck_base, rtldm->swing_idx_ofdm_base[RF90_PATH_A],
 		rtldm->default_ofdm_index);
 
-	thermal_value = (u8)rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
+	thermal_value = (u8)rtl_get_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
 	if (!rtldm->txpower_track_control
 	 || efuse->eeprom_thermalmeter == 0
 	 || efuse->eeprom_thermalmeter == 0xFF)
@@ -1430,7 +1430,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD, "===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n", rtldm->swing_idx_cck_base, rtldm->swing_idx_ofdm_base[RF90_PATH_A], rtldm->default_ofdm_index);
 
-	thermal_value = (u8)rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
+	thermal_value = (u8)rtl_get_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_8812A, 0xfc00);	/* 0x42: RF Reg[15:10] 88E */
 	if (!rtldm->txpower_track_control
 	 || efuse->eeprom_thermalmeter == 0
 	 || efuse->eeprom_thermalmeter == 0xFF)

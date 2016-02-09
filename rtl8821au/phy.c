@@ -400,7 +400,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		VDF_enable = true;
 	}
 	VDF_enable = false;
-	temp_reg65 = rtw_hal_read_rfreg(rtlpriv, Path, 0x65, bMaskDWord);
+	temp_reg65 = rtl_get_rfreg(rtlpriv, Path, 0x65, bMaskDWord);
 
 	switch (Path) {
 	case RF90_PATH_A:
@@ -639,7 +639,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-		rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
+		rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtl_get_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1); /* [31] = 1 --> Page C1 */
 
 		if (TX0IQKOK == false)
@@ -1035,7 +1035,7 @@ static void _rtl8812au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		}
 
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0);		/* [31] = 0 --> Page C */
-		rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00));	/* Load LOK */
+		rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtl_get_rfreg(rtlpriv, Path, 0x8, 0xffc00));	/* Load LOK */
 		rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x1);		/* [31] = 1 --> Page C1 */
 
 		if (TX1IQKOK == false)
@@ -1511,8 +1511,8 @@ static void _rtl8812au_iqk_backup_rf(struct rtl_priv *rtlpriv,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save RF Parameters */
 	for (i = 0; i < RF_NUM; i++) {
-		RFA_backup[i] = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, Backup_RF_REG[i], bMaskDWord);
-		RFB_backup[i] = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_B, Backup_RF_REG[i], bMaskDWord);
+		RFA_backup[i] = rtl_get_rfreg(rtlpriv, RF90_PATH_A, Backup_RF_REG[i], bMaskDWord);
+		RFB_backup[i] = rtl_get_rfreg(rtlpriv, RF90_PATH_B, Backup_RF_REG[i], bMaskDWord);
 	}
 	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BackupRF Success!!!!\n");
 }
@@ -1526,7 +1526,7 @@ static void _rtl8821au_iqk_backup_rf(struct rtl_priv *rtlpriv, u32 *rfa_backup,
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Save RF Parameters */
 	for (i = 0; i < rf_num; i++) {
-		rfa_backup[i] = rtw_hal_read_rfreg(rtlpriv, RF90_PATH_A, backup_rf_reg[i], bMaskDWord);
+		rfa_backup[i] = rtl_get_rfreg(rtlpriv, RF90_PATH_A, backup_rf_reg[i], bMaskDWord);
 	}
 
 	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BackupRF Success!!!!\n");
@@ -1776,7 +1776,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 		switch (Path) {
 		case RF90_PATH_A:
 		    {
-			temp_reg65 = rtw_hal_read_rfreg(rtlpriv, Path, 0x65, bMaskDWord);
+			temp_reg65 = rtl_get_rfreg(rtlpriv, Path, 0x65, bMaskDWord);
 
 			if (rtlhal->external_pa_2g) {
 				rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
@@ -1844,7 +1844,7 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 			rtl_write_dword(rtlpriv, 0xcb8, 0x00000000);
 
 			rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
-			rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtw_hal_read_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
+			rtl_set_rfreg(rtlpriv, Path, 0x58, 0x7fe00, rtl_get_rfreg(rtlpriv, Path, 0x8, 0xffc00)); /* Load LOK */
 			switch (rtlpriv->phy.current_chan_bw) {
 			case 1:
 				rtl_set_rfreg(rtlpriv, Path, 0x18, 0x00c00, 0x1);

@@ -2054,6 +2054,13 @@ static inline void rtl_set_rfreg(struct rtl_priv *rtlpriv,
 	rtlpriv->cfg->ops->set_rfreg(rtlpriv, rfpath, regaddr, bitmask, data);
 }
 
+static inline u32 rtl_get_rfreg(struct rtl_priv *rtlpriv, enum radio_path rfpath,
+		       u32 regaddr, u32 bitmask)
+{
+	return rtlpriv->cfg->ops->get_rfreg(rtlpriv, rfpath, regaddr,
+						    bitmask);
+}
+
 /****************************************
 	mem access macro define start
 	Call endian free function when

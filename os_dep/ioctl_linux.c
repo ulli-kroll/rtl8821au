@@ -2569,8 +2569,8 @@ void rf_reg_dump(struct rtl_priv *rtlpriv)
 	for (path = 0; path < path_nums; path++) {
 		printk("\nRF_Path(%x)\n", path);
 		for (i = 0; i < 0x100; i++) {
-			/* value = rtw_hal_read_rfreg(rtlpriv, path,i, bMaskDWord); */
-			value = rtw_hal_read_rfreg(rtlpriv, path, i, 0xffffffff);
+			/* value = rtl_get_rfreg(rtlpriv, path,i, bMaskDWord); */
+			value = rtl_get_rfreg(rtlpriv, path, i, 0xffffffff);
 			if (j % 4 == 1)
 				printk("0x%02x ", i);
 

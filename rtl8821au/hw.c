@@ -2216,8 +2216,10 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	else
 		rtl8821au_phy_switch_wirelessband(rtlpriv, BAND_ON_5G);
 
-	rtw_hal_set_chnl_bw(rtlpriv, rtlpriv->registrypriv.channel,
-		CHANNEL_WIDTH_20, HAL_PRIME_CHNL_OFFSET_DONT_CARE, HAL_PRIME_CHNL_OFFSET_DONT_CARE);
+	rtlpriv->cfg->ops->set_chnl_bw_handler(rtlpriv, rtlpriv->registrypriv.channel,
+					       CHANNEL_WIDTH_20, 
+					       HAL_PRIME_CHNL_OFFSET_DONT_CARE, 
+					       HAL_PRIME_CHNL_OFFSET_DONT_CARE);
 
 	rtw_cam_reset_all_entry(rtlpriv);
 

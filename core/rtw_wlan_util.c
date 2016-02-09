@@ -545,7 +545,8 @@ void set_channel_bwmode(struct rtl_priv *rtlpriv, unsigned char channel, unsigne
 	rtw_set_oper_bw(rtlpriv, bwmode);
 	rtw_set_oper_choffset(rtlpriv, channel_offset);
 
-	rtw_hal_set_chnl_bw(rtlpriv, center_ch, bwmode, channel_offset, chnl_offset80); // set center channel
+	rtlpriv->cfg->ops->set_chnl_bw_handler(rtlpriv, center_ch, bwmode,
+					       channel_offset, chnl_offset80); // set center channel
 
 	mutex_unlock(&(rtl_usbdev(rtlpriv)->setch_mutex));
 }

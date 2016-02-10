@@ -57,15 +57,6 @@ uint rtw_hal_deinit(struct rtl_priv *rtlpriv)
 	return status;
 }
 
-uint32_t	rtw_hal_inirp_deinit(struct rtl_priv *rtlpriv)
-{
-	if (rtlpriv->cfg->ops->inirp_deinit)
-		return rtlpriv->cfg->ops->inirp_deinit(rtlpriv);
-
-	return _FAIL;
-
-}
-
 int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe)
 {
 	int32_t ret = _FAIL;

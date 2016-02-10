@@ -64,8 +64,6 @@ void rtw_hal_stop(struct rtl_priv *rtlpriv);
 
 void	rtw_hal_get_odm_var(struct rtl_priv *rtlpriv, HAL_ODM_VARIABLE eVariable, void *pValue1,bool bSet);
 
-u32	rtw_hal_inirp_deinit(struct rtl_priv *rtlpriv);
-
 int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
 
 void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_level);

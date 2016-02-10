@@ -575,7 +575,7 @@ void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_lev
 		DBG_871X("%s=> mac_id:%d , raid:%d , shortGIrate=%d, bitmap=0x%x\n",
 			__FUNCTION__ , psta->mac_id, raid ,shortGIrate, tx_ra_bitmap);
 
-		rtw_hal_add_ra_tid(rtlpriv, tx_ra_bitmap, arg, rssi_level);
+		rtlpriv->cfg->ops->Add_RateATid(rtlpriv, tx_ra_bitmap, arg, rssi_level);
 
 		if (shortGIrate == true)
 			init_rate |= BIT(6);
@@ -670,7 +670,7 @@ static void update_bmc_sta(struct rtl_priv *rtlpriv)
 			DBG_871X("%s=> mac_id:%d , raid:%d , bitmap=0x%x\n",
 				__FUNCTION__ , psta->mac_id, raid , tx_ra_bitmap);
 
-			rtw_hal_add_ra_tid(rtlpriv, tx_ra_bitmap, arg, 0);
+			rtlpriv->cfg->ops->Add_RateATid(rtlpriv, tx_ra_bitmap, arg, 0);
 		}
 
 		//set ra_id, init_rate

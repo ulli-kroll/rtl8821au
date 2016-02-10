@@ -94,12 +94,6 @@ void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta,
 	}
 }
 
-void rtw_hal_add_ra_tid(struct rtl_priv *rtlpriv, uint32_t bitmap, u8 *arg, uint8_t rssi_level)
-{
-	if (rtlpriv->cfg->ops->Add_RateATid)
-		rtlpriv->cfg->ops->Add_RateATid(rtlpriv, bitmap, arg, rssi_level);
-}
-
 int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt)
 {
 	int32_t ret = _FAIL;

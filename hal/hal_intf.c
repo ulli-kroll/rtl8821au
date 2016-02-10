@@ -66,14 +66,6 @@ uint32_t	rtw_hal_inirp_deinit(struct rtl_priv *rtlpriv)
 
 }
 
-int32_t	rtw_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe)
-{
-	if (rtlpriv->cfg->ops->hal_xmitframe_enqueue)
-		return rtlpriv->cfg->ops->hal_xmitframe_enqueue(rtlpriv, pxmitframe);
-
-	return false;
-}
-
 int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe)
 {
 	int32_t ret = _FAIL;

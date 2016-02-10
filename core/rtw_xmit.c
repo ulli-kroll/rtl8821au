@@ -2524,7 +2524,7 @@ void wakeup_sta_to_xmit(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		}
 		spin_lock_bh(&psta->sleep_q.lock, &irqL);
 */
-		rtw_hal_xmitframe_enqueue(rtlpriv, pxmitframe);
+		rtlpriv->cfg->ops->hal_xmitframe_enqueue(rtlpriv, pxmitframe);
 
 
 	}
@@ -2563,7 +2563,7 @@ void wakeup_sta_to_xmit(struct rtl_priv *rtlpriv, struct sta_info *psta)
 			spin_lock_bh(&psta_bmc->sleep_q.lock, &irqL);
 
 */
-			rtw_hal_xmitframe_enqueue(rtlpriv, pxmitframe);
+			rtlpriv->cfg->ops->hal_xmitframe_enqueue(rtlpriv, pxmitframe);
 
 		}
 
@@ -2674,7 +2674,7 @@ void xmit_delivery_enabled_frames(struct rtl_priv *rtlpriv, struct sta_info *pst
 			rtw_os_xmit_complete(rtlpriv, pxmitframe);
 		}
 */
-		rtw_hal_xmitframe_enqueue(rtlpriv, pxmitframe);
+		rtlpriv->cfg->ops->hal_xmitframe_enqueue(rtlpriv, pxmitframe);
 
 		if ((psta->sleepq_ac_len == 0) && (!psta->has_legacy_ac) && (wmmps_ac)) {
 			pstapriv->tim_bitmap &= ~BIT(psta->aid);

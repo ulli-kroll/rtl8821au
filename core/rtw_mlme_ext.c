@@ -6943,7 +6943,7 @@ uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 				pxmitframe->tx_attrib.tx_qsel = 0x11;//HIQ
 
-				rtw_hal_xmitframe_enqueue(rtlpriv, pxmitframe);
+				rtlpriv->cfg->ops->hal_xmitframe_enqueue(rtlpriv, pxmitframe);
 
 				//pstapriv->tim_bitmap &= ~BIT(0);
 

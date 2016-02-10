@@ -1198,7 +1198,7 @@ int validate_recv_ctrl_frame(struct rtl_priv *rtlpriv, struct recv_frame *precv_
 	                         * DBG_871X("handling ps-poll, q_len=%d, tim=%x\n", psta->sleepq_len, pstapriv->tim_bitmap);
 	                         */
 
-				rtw_hal_xmitframe_enqueue(rtlpriv, pxmitframe);
+				rtlpriv->cfg->ops->hal_xmitframe_enqueue(rtlpriv, pxmitframe);
 
 				if (psta->sleepq_len==0) {
 					pstapriv->tim_bitmap &= ~BIT(psta->aid);

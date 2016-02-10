@@ -324,20 +324,6 @@ extern u64 rtw_modular64(u64 x, u64 y);
 void rtw_buf_free(uint8_t **buf, u32 *buf_len);
 void rtw_buf_update(uint8_t **buf, u32 *buf_len, uint8_t *src, u32 src_len);
 
-struct rtw_cbuf {
-	u32 write;
-	u32 read;
-	u32 size;
-	void *bufs[0];
-};
-
-bool rtw_cbuf_full(struct rtw_cbuf *cbuf);
-bool rtw_cbuf_empty(struct rtw_cbuf *cbuf);
-bool rtw_cbuf_push(struct rtw_cbuf *cbuf, void *buf);
-void *rtw_cbuf_pop(struct rtw_cbuf *cbuf);
-struct rtw_cbuf *rtw_cbuf_alloc(u32 size);
-void rtw_cbuf_free(struct rtw_cbuf *cbuf);
-
 #endif
 
 

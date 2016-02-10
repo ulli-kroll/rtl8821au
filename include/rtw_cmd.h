@@ -61,14 +61,6 @@
 	};
 
 	struct	evt_priv {
-#define CONFIG_C2H_WK
-#ifdef CONFIG_C2H_WK
-		struct work_struct c2h_wk;
-		bool c2h_wk_alive;
-		struct rtw_cbuf *c2h_queue;
-		#define C2H_QUEUE_MAX_LEN 10
-#endif
-
 		atomic_t event_seq;
 		uint8_t	*evt_buf;	//shall be non-paged, and 4 bytes aligned
 		uint8_t	*evt_allocated_buf;

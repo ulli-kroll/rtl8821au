@@ -81,9 +81,6 @@ exit:
 
 }
 
-#ifdef CONFIG_C2H_WK
-static void c2h_wk_callback(struct work_struct *work);
-#endif
 int _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 {
 	int res=_SUCCESS;
@@ -93,36 +90,11 @@ int _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 	atomic_set(&pevtpriv->event_seq, 0);
 	pevtpriv->evt_done_cnt = 0;
 
-#ifdef CONFIG_C2H_WK
-	INIT_WORK(&pevtpriv->c2h_wk, c2h_wk_callback);
-	pevtpriv->c2h_wk_alive = false;
-	pevtpriv->c2h_queue = rtw_cbuf_alloc(C2H_QUEUE_MAX_LEN+1);
-#endif
-
-
-
 	return res;
 }
 
 void _rtw_free_evt_priv (struct	evt_priv *pevtpriv)
 {
-
-
-#ifdef CONFIG_C2H_WK
-	cancel_work_sync(&pevtpriv->c2h_wk);
-	while(pevtpriv->c2h_wk_alive)
-		msleep(10);
-
-	while (!rtw_cbuf_empty(pevtpriv->c2h_queue)) {
-		void *c2h;
-		if ((c2h = rtw_cbuf_pop(pevtpriv->c2h_queue)) != NULL
-			&& c2h != (void *)pevtpriv) {
-			rtw_mfree(c2h);
-		}
-	}
-#endif
-
-
 }
 
 void _rtw_free_cmd_priv (struct	cmd_priv *pcmdpriv)
@@ -2030,49 +2002,6 @@ int32_t c2h_evt_hdl(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt, c2h_i
 exit:
 	return ret;
 }
-
-#ifdef CONFIG_C2H_WK
-static void c2h_wk_callback(struct work_struct *work)
-{
-	struct evt_priv *evtpriv = container_of(work, struct evt_priv, c2h_wk);
-	struct rtl_priv *rtlpriv = container_of(evtpriv, struct rtl_priv, evtpriv);
-	struct c2h_evt_hdr *c2h_evt;
-	c2h_id_filter ccx_id_filter = rtw_hal_c2h_id_filter_ccx(rtlpriv);
-
-	evtpriv->c2h_wk_alive = true;
-
-	while (!rtw_cbuf_empty(evtpriv->c2h_queue)) {
-		if ((c2h_evt = (struct c2h_evt_hdr *)rtw_cbuf_pop(evtpriv->c2h_queue)) != NULL) {
-			/* This C2H event is read, clear it */
-			c2h_evt_clear(rtlpriv);
-		} else if ((c2h_evt = (struct c2h_evt_hdr *)rtw_malloc(16)) != NULL) {
-			/* This C2H event is not read, read & clear now */
-			if (c2h_evt_read(rtlpriv, (uint8_t *)c2h_evt) != _SUCCESS)
-				continue;
-		}
-
-		/* Special pointer to trigger c2h_evt_clear only */
-		if ((void *)c2h_evt == (void *)evtpriv)
-			continue;
-
-		if (!c2h_evt_exist(c2h_evt)) {
-			rtw_mfree(c2h_evt);
-			continue;
-		}
-
-		if (ccx_id_filter(c2h_evt->id) == true) {
-			/* Handle CCX report here */
-			rtw_hal_c2h_handler(rtlpriv, c2h_evt);
-			rtw_mfree(c2h_evt);
-		} else {
-			/* Enqueue into cmd_thread for others */
-			rtw_c2h_wk_cmd(rtlpriv, (uint8_t *)c2h_evt);
-		}
-	}
-
-	evtpriv->c2h_wk_alive = false;
-}
-#endif
 
 uint8_t rtw_drvextra_cmd_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 {

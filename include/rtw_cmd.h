@@ -920,7 +920,6 @@ enum rtw_h2c_cmd
 
  	GEN_CMD_CODE(_SetKey) ,	/*20*/
  	GEN_CMD_CODE(_SetStaKey) ,
- 	GEN_CMD_CODE(_SetStaPwrState) ,
 
 	GEN_CMD_CODE(_SetPhy) ,
  	GEN_CMD_CODE(_JoinbssRpt),
@@ -953,7 +952,6 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 
 	{GEN_CMD_CODE(_SetKey), NULL},	/*20*/
 	{GEN_CMD_CODE(_SetStaKey), &rtw_setstaKey_cmdrsp_callback},
-	{GEN_CMD_CODE(_SetStaPwrState), NULL},
 
 	{GEN_CMD_CODE(_SetPhy), NULL},
 	{GEN_CMD_CODE(_JoinbssRpt), NULL},

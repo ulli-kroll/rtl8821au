@@ -863,7 +863,6 @@ extern uint8_t rtw_clearstakey_cmd(struct rtl_priv *rtlpriv, uint8_t *psta, uint
 extern uint8_t rtw_joinbss_cmd(struct rtl_priv  *rtlpriv, struct wlan_network* pnetwork);
 uint8_t rtw_disassoc_cmd(struct rtl_priv *rtlpriv, u32 deauth_timeout_ms, bool enqueue);
 extern uint8_t rtw_setopmode_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype);
-extern uint8_t rtw_setbasicrate_cmd(struct rtl_priv  *rtlpriv, uint8_t *rateset);
 extern uint8_t rtw_setrfintfs_cmd(struct rtl_priv  *rtlpriv, uint8_t mode);
 extern uint8_t rtw_setrttbl_cmd(struct rtl_priv  *rtlpriv, struct setratable_parm *prate_table);
 extern uint8_t rtw_getrttbl_cmd(struct rtl_priv  *rtlpriv, struct getratable_rsp *pval);
@@ -925,7 +924,6 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_SetAssocSta) ,
  	GEN_CMD_CODE(_DelAssocSta) ,
  	GEN_CMD_CODE(_SetStaPwrState) ,
- 	GEN_CMD_CODE(_SetBasicRate) , /*25*/
  	GEN_CMD_CODE(_GetBasicRate) ,
 
 	GEN_CMD_CODE(_SetPhy) ,
@@ -962,7 +960,6 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 	{GEN_CMD_CODE(_SetAssocSta), &rtw_setassocsta_cmdrsp_callback},
 	{GEN_CMD_CODE(_DelAssocSta), NULL},
 	{GEN_CMD_CODE(_SetStaPwrState), NULL},
-	{GEN_CMD_CODE(_SetBasicRate), NULL}, /*25*/
 	{GEN_CMD_CODE(_GetBasicRate), NULL},
 
 	{GEN_CMD_CODE(_SetPhy), NULL},

@@ -512,41 +512,6 @@ uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, in
 	return res;
 }
 
-uint8_t rtw_setbasicrate_cmd(struct rtl_priv *rtlpriv, uint8_t *rateset)
-{
-	struct cmd_obj*			ph2c;
-	struct setbasicrate_parm*	pssetbasicratepara;
-	struct cmd_priv*		pcmdpriv=&rtlpriv->cmdpriv;
-	uint8_t	res = _SUCCESS;
-
-
-
-	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-	if (ph2c == NULL) {
-		res= _FAIL;
-		goto exit;
-	}
-	pssetbasicratepara = (struct setbasicrate_parm*)rtw_zmalloc(sizeof(struct setbasicrate_parm));
-
-	if (pssetbasicratepara == NULL) {
-		rtw_mfree(ph2c);
-		res = _FAIL;
-		goto exit;
-	}
-
-	init_h2fwcmd_w_parm_no_rsp(ph2c, pssetbasicratepara, _SetBasicRate_CMD_);
-
-	memcpy(pssetbasicratepara->basicrates, rateset, NumRates);
-
-	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-exit:
-
-
-
-	return res;
-}
-
-
 /*
 unsigned char rtw_setphy_cmd(unsigned char  *rtlpriv)
 

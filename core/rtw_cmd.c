@@ -1090,52 +1090,6 @@ exit:
 
 }
 
-uint8_t rtw_setassocsta_cmd(struct rtl_priv  *rtlpriv, uint8_t *mac_addr)
-{
-	struct cmd_priv 		*pcmdpriv = &rtlpriv->cmdpriv;
-	struct cmd_obj*			ph2c;
-	struct set_assocsta_parm	*psetassocsta_para;
-	struct set_stakey_rsp		*psetassocsta_rsp = NULL;
-
-	uint8_t	res=_SUCCESS;
-
-
-
-	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-	if(ph2c==NULL){
-		res= _FAIL;
-		goto exit;
-	}
-
-	psetassocsta_para = (struct set_assocsta_parm*)rtw_zmalloc(sizeof(struct set_assocsta_parm));
-	if(psetassocsta_para==NULL){
-		rtw_mfree(ph2c);
-		res=_FAIL;
-		goto exit;
-	}
-
-	psetassocsta_rsp = (struct set_stakey_rsp*)rtw_zmalloc(sizeof(struct set_assocsta_rsp));
-	if(psetassocsta_rsp==NULL){
-		rtw_mfree(ph2c);
-		rtw_mfree(psetassocsta_para);
-		return _FAIL;
-	}
-
-	init_h2fwcmd_w_parm_no_rsp(ph2c, psetassocsta_para, _SetAssocSta_CMD_);
-	ph2c->rsp = (uint8_t *) psetassocsta_rsp;
-	ph2c->rspsz = sizeof(struct set_assocsta_rsp);
-
-	memcpy(psetassocsta_para->addr, mac_addr,ETH_ALEN);
-
-	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-
-exit:
-
-
-
-	return res;
- }
-
 uint8_t rtw_addbareq_cmd(struct rtl_priv*rtlpriv, uint8_t tid, uint8_t *addr)
 {
 	struct cmd_priv		*pcmdpriv = &rtlpriv->cmdpriv;

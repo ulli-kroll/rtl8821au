@@ -853,7 +853,6 @@ Result:
 #define H2C_CMD_OVERFLOW		0x06
 #define H2C_RESERVED			0x07
 
-extern uint8_t rtw_setassocsta_cmd(struct rtl_priv  *rtlpriv, uint8_t *mac_addr);
 uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, int ssid_num, struct rtw_ieee80211_channel *ch, int ch_num);
 extern uint8_t rtw_createbss_cmd(struct rtl_priv  *rtlpriv);
 extern uint8_t rtw_createbss_cmd_ex(struct rtl_priv  *rtlpriv, unsigned char *pbss, unsigned int sz);
@@ -921,7 +920,6 @@ enum rtw_h2c_cmd
 
  	GEN_CMD_CODE(_SetKey) ,	/*20*/
  	GEN_CMD_CODE(_SetStaKey) ,
- 	GEN_CMD_CODE(_SetAssocSta) ,
  	GEN_CMD_CODE(_DelAssocSta) ,
  	GEN_CMD_CODE(_SetStaPwrState) ,
 
@@ -956,7 +954,6 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 
 	{GEN_CMD_CODE(_SetKey), NULL},	/*20*/
 	{GEN_CMD_CODE(_SetStaKey), &rtw_setstaKey_cmdrsp_callback},
-	{GEN_CMD_CODE(_SetAssocSta), &rtw_setassocsta_cmdrsp_callback},
 	{GEN_CMD_CODE(_DelAssocSta), NULL},
 	{GEN_CMD_CODE(_SetStaPwrState), NULL},
 

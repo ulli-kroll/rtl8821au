@@ -1815,87 +1815,6 @@ exit:
 
 }
 
-static int rtw_wx_set_rate(struct net_device *ndev,
-			      struct iw_request_info *a,
-			      union iwreq_data *wrqu, char *extra)
-{
-	int	i, ret = 0;
-	struct rtl_priv *rtlpriv = rtl_priv(ndev);
-	uint8_t	datarates[NumRates];
-	u32	target_rate = wrqu->bitrate.value;
-	u32	fixed = wrqu->bitrate.fixed;
-	u32	ratevalue = 0;
-	uint8_t mpdatarate[NumRates] = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0xff};
-
-
-	if (target_rate == -1) {
-		ratevalue = 11;
-		goto set_rate;
-	}
-	target_rate = target_rate/100000;
-
-	switch (target_rate) {
-	case 10:
-		ratevalue = 0;
-		break;
-	case 20:
-		ratevalue = 1;
-		break;
-	case 55:
-		ratevalue = 2;
-		break;
-	case 60:
-		ratevalue = 3;
-		break;
-	case 90:
-		ratevalue = 4;
-		break;
-	case 110:
-		ratevalue = 5;
-		break;
-	case 120:
-		ratevalue = 6;
-		break;
-	case 180:
-		ratevalue = 7;
-		break;
-	case 240:
-		ratevalue = 8;
-		break;
-	case 360:
-		ratevalue = 9;
-		break;
-	case 480:
-		ratevalue = 10;
-		break;
-	case 540:
-		ratevalue = 11;
-		break;
-	default:
-		ratevalue = 11;
-		break;
-	}
-
-set_rate:
-
-	for (i = 0; i < NumRates; i++) {
-		if (ratevalue == mpdatarate[i]) {
-			datarates[i] = mpdatarate[i];
-			if (fixed == 0)
-				break;
-		} else {
-			datarates[i] = 0xff;
-		}
-
-	}
-
-	if (rtw_setdatarate_cmd(rtlpriv, datarates) != _SUCCESS) {
-		ret = -1;
-	}
-
-	return ret;
-}
-
 static int rtw_wx_get_rate(struct net_device *ndev,
 			     struct iw_request_info *info,
 			     union iwreq_data *wrqu, char *extra)
@@ -3874,7 +3793,7 @@ static iw_handler rtw_handlers[] = {
 	rtw_wx_get_nick,		/* SIOCGIWNICKN */
 	NULL,					/* -- hole -- */
 	NULL,					/* -- hole -- */
-	rtw_wx_set_rate,		/* SIOCSIWRATE */
+	NULL,				/* SIOCSIWRATE */
 	rtw_wx_get_rate,		/* SIOCGIWRATE */
 	rtw_wx_set_rts,			/* SIOCSIWRTS */
 	rtw_wx_get_rts,			/* SIOCGIWRTS */

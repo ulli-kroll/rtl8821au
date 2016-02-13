@@ -512,44 +512,6 @@ uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, in
 	return res;
 }
 
-uint8_t rtw_setdatarate_cmd(struct rtl_priv *rtlpriv, uint8_t *rateset)
-{
-	struct cmd_obj*			ph2c;
-	struct setdatarate_parm*	pbsetdataratepara;
-	struct cmd_priv*		pcmdpriv = &rtlpriv->cmdpriv;
-	uint8_t	res = _SUCCESS;
-
-
-
-	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-	if (ph2c == NULL) {
-		res = _FAIL;
-		goto exit;
-	}
-
-	pbsetdataratepara = (struct setdatarate_parm*)rtw_zmalloc(sizeof(struct setdatarate_parm));
-	if (pbsetdataratepara == NULL) {
-		rtw_mfree(ph2c);
-		res = _FAIL;
-		goto exit;
-	}
-
-	init_h2fwcmd_w_parm_no_rsp(ph2c, pbsetdataratepara, GEN_CMD_CODE(_SetDataRate));
-#ifdef MP_FIRMWARE_OFFLOAD
-	pbsetdataratepara->curr_rateidx = *(uint32_t *)rateset;
-//	memcpy(pbsetdataratepara, rateset, sizeof(uint32_t));
-#else
-	pbsetdataratepara->mac_id = 5;
-	memcpy(pbsetdataratepara->datarates, rateset, NumRates);
-#endif
-	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-exit:
-
-
-
-	return res;
-}
-
 uint8_t rtw_setbasicrate_cmd(struct rtl_priv *rtlpriv, uint8_t *rateset)
 {
 	struct cmd_obj*			ph2c;

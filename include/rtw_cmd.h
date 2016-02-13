@@ -924,10 +924,6 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_Read_RFREG) ,
  	GEN_CMD_CODE(_Write_RFREG) , /*5*/
 
- 	GEN_CMD_CODE(_Read_CAM) ,	/*10*/
- 	GEN_CMD_CODE(_Write_CAM) ,
- 	GEN_CMD_CODE(_setBCNITV),
- 	GEN_CMD_CODE(_setMBIDCFG),
  	GEN_CMD_CODE(_JoinBss),   /*14*/
  	GEN_CMD_CODE(_DisConnect) , /*15*/
  	GEN_CMD_CODE(_CreateBss) ,
@@ -1001,10 +997,6 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 	{GEN_CMD_CODE(_Read_RFREG), &rtw_getbbrfreg_cmdrsp_callback},
 	{GEN_CMD_CODE(_Write_RFREG), NULL}, /*5*/
 
-	{GEN_CMD_CODE(_Read_CAM),	NULL},	/*10*/
-	{GEN_CMD_CODE(_Write_CAM),	 NULL},
-	{GEN_CMD_CODE(_setBCNITV), NULL},
- 	{GEN_CMD_CODE(_setMBIDCFG), NULL},
 	{GEN_CMD_CODE(_JoinBss), &rtw_joinbss_cmd_callback},  /*14*/
 	{GEN_CMD_CODE(_DisConnect), &rtw_disassoc_cmd_callback}, /*15*/
 	{GEN_CMD_CODE(_CreateBss), &rtw_createbss_cmd_callback},

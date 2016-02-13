@@ -731,10 +731,6 @@ struct cmd_hdl wlancmds[] =
 	GEN_DRV_CMD_HANDLER(0, NULL)
 	GEN_DRV_CMD_HANDLER(0, NULL)
 	GEN_DRV_CMD_HANDLER(0, NULL)
-	GEN_MLME_EXT_HANDLER(0, NULL) /*10*/
-	GEN_MLME_EXT_HANDLER(0, NULL)
-	GEN_MLME_EXT_HANDLER(0, NULL)
-	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(sizeof (struct joinbss_parm), join_cmd_hdl) /*14*/
 	GEN_MLME_EXT_HANDLER(sizeof (struct disconnect_parm), disconnect_hdl)
 	GEN_MLME_EXT_HANDLER(sizeof (struct createbss_parm), createbss_hdl)

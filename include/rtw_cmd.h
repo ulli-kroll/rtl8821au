@@ -854,7 +854,6 @@ Result:
 #define H2C_RESERVED			0x07
 
 extern uint8_t rtw_setassocsta_cmd(struct rtl_priv  *rtlpriv, uint8_t *mac_addr);
-extern uint8_t rtw_setstandby_cmd(struct rtl_priv *rtlpriv, uint action);
 uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, int ssid_num, struct rtw_ieee80211_channel *ch, int ch_num);
 extern uint8_t rtw_createbss_cmd(struct rtl_priv  *rtlpriv);
 extern uint8_t rtw_createbss_cmd_ex(struct rtl_priv  *rtlpriv, unsigned char *pbss, unsigned int sz);

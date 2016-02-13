@@ -429,45 +429,6 @@ post_process:
 }
 
 /*
-uint8_t rtw_setstandby_cmd(unsigned char  *rtlpriv)
-*/
-uint8_t rtw_setstandby_cmd(struct rtl_priv *rtlpriv, uint action)
-{
-	struct cmd_obj*			ph2c;
-	struct usb_suspend_parm*	psetusbsuspend;
-	struct cmd_priv 			*pcmdpriv=&rtlpriv->cmdpriv;
-
-	uint8_t ret = _SUCCESS;
-
-
-
-	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-	if (ph2c == NULL) {
-		ret = _FAIL;
-		goto exit;
-	}
-
-	psetusbsuspend = (struct usb_suspend_parm*)rtw_zmalloc(sizeof(struct usb_suspend_parm));
-	if (psetusbsuspend == NULL) {
-		rtw_mfree(ph2c);
-		ret = _FAIL;
-		goto exit;
-	}
-
-	psetusbsuspend->action = action;
-
-	init_h2fwcmd_w_parm_no_rsp(ph2c, psetusbsuspend, GEN_CMD_CODE(_SetUsbSuspend));
-
-	ret = rtw_enqueue_cmd(pcmdpriv, ph2c);
-
-exit:
-
-
-
-	return ret;
-}
-
-/*
 rtw_sitesurvey_cmd(~)
 	### NOTE:#### (!!!!)
 	MUST TAKE CARE THAT BEFORE CALLING THIS FUNC, YOU SHOULD HAVE LOCKED pmlmepriv->lock

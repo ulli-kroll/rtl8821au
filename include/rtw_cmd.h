@@ -950,20 +950,12 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_AddBAReq) , /*45*/
 	GEN_CMD_CODE(_SetChannel), /*46*/
 
-	GEN_CMD_CODE(_SetSingleCarrierTx), /*50*/
-	GEN_CMD_CODE(_SetSingleToneTx),/*51*/
-	GEN_CMD_CODE(_SetCarrierSuppressionTx),
-	GEN_CMD_CODE(_SetContinuousTx),
-	GEN_CMD_CODE(_SwitchBandwidth), /*54*/
 	GEN_CMD_CODE(_TX_Beacon), /*55*/
-
 	GEN_CMD_CODE(_Set_MLME_EVT), /*56*/
 	GEN_CMD_CODE(_Set_Drv_Extra), /*57*/
-	GEN_CMD_CODE(_Set_H2C_MSG), /*58*/
-
 	GEN_CMD_CODE(_SetChannelPlan), /*59*/
-	GEN_CMD_CODE(_LedBlink), /*60*/
 
+	GEN_CMD_CODE(_LedBlink), /*60*/
 	GEN_CMD_CODE(_SetChannelSwitch), /*61*/
 	GEN_CMD_CODE(_TDLS), /*62*/
 
@@ -1009,17 +1001,11 @@ struct _cmd_callback 	rtw_cmd_callback[] =
  	{GEN_CMD_CODE(_AddBAReq), NULL}, /*45*/
 	{GEN_CMD_CODE(_SetChannel), NULL},		/*46*/
 
-	{GEN_CMD_CODE(_SetSingleCarrierTx), NULL},	/*50*/
-	{GEN_CMD_CODE(_SetSingleToneTx), NULL}, /*51*/
-	{GEN_CMD_CODE(_SetCarrierSuppressionTx), NULL},
-	{GEN_CMD_CODE(_SetContinuousTx), NULL},
-	{GEN_CMD_CODE(_SwitchBandwidth), NULL},		/*54*/
 	{GEN_CMD_CODE(_TX_Beacon), NULL},/*55*/
-
 	{GEN_CMD_CODE(_Set_MLME_EVT), NULL},/*56*/
 	{GEN_CMD_CODE(_Set_Drv_Extra), NULL},/*57*/
-	{GEN_CMD_CODE(_Set_H2C_MSG), NULL},/*58*/
 	{GEN_CMD_CODE(_SetChannelPlan), NULL},/*59*/
+
 	{GEN_CMD_CODE(_LedBlink), NULL},/*60*/
 
 	{GEN_CMD_CODE(_SetChannelSwitch), NULL},/*61*/

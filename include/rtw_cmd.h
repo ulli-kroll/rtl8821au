@@ -919,16 +919,10 @@ struct _cmd_callback {
 
 enum rtw_h2c_cmd
 {
-	GEN_CMD_CODE(_Read_MACREG) ,	/*0*/
- 	GEN_CMD_CODE(_Write_MACREG) ,
  	GEN_CMD_CODE(_Read_BBREG) ,
  	GEN_CMD_CODE(_Write_BBREG) ,
  	GEN_CMD_CODE(_Read_RFREG) ,
  	GEN_CMD_CODE(_Write_RFREG) , /*5*/
- 	GEN_CMD_CODE(_Read_EEPROM) ,
- 	GEN_CMD_CODE(_Write_EEPROM) ,
- 	GEN_CMD_CODE(_Read_EFUSE) ,
- 	GEN_CMD_CODE(_Write_EFUSE) ,
 
  	GEN_CMD_CODE(_Read_CAM) ,	/*10*/
  	GEN_CMD_CODE(_Write_CAM) ,
@@ -1002,16 +996,10 @@ enum rtw_h2c_cmd
 #ifdef _RTW_CMD_C_
 struct _cmd_callback 	rtw_cmd_callback[] =
 {
-	{GEN_CMD_CODE(_Read_MACREG), NULL}, /*0*/
-	{GEN_CMD_CODE(_Write_MACREG), NULL},
 	{GEN_CMD_CODE(_Read_BBREG), &rtw_getbbrfreg_cmdrsp_callback},
 	{GEN_CMD_CODE(_Write_BBREG), NULL},
 	{GEN_CMD_CODE(_Read_RFREG), &rtw_getbbrfreg_cmdrsp_callback},
 	{GEN_CMD_CODE(_Write_RFREG), NULL}, /*5*/
-	{GEN_CMD_CODE(_Read_EEPROM), NULL},
-	{GEN_CMD_CODE(_Write_EEPROM), NULL},
-	{GEN_CMD_CODE(_Read_EFUSE), NULL},
-	{GEN_CMD_CODE(_Write_EFUSE), NULL},
 
 	{GEN_CMD_CODE(_Read_CAM),	NULL},	/*10*/
 	{GEN_CMD_CODE(_Write_CAM),	 NULL},

@@ -866,10 +866,6 @@ uint8_t rtw_disassoc_cmd(struct rtl_priv *rtlpriv, u32 deauth_timeout_ms, bool e
 extern uint8_t rtw_setopmode_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype);
 extern uint8_t rtw_setdatarate_cmd(struct rtl_priv  *rtlpriv, uint8_t *rateset);
 extern uint8_t rtw_setbasicrate_cmd(struct rtl_priv  *rtlpriv, uint8_t *rateset);
-extern uint8_t rtw_setbbreg_cmd(struct rtl_priv * rtlpriv, uint8_t offset, uint8_t val);
-extern uint8_t rtw_setrfreg_cmd(struct rtl_priv * rtlpriv, uint8_t offset, u32 val);
-extern uint8_t rtw_getbbreg_cmd(struct rtl_priv * rtlpriv, uint8_t offset, uint8_t * pval);
-extern uint8_t rtw_getrfreg_cmd(struct rtl_priv * rtlpriv, uint8_t offset, uint8_t * pval);
 extern uint8_t rtw_setrfintfs_cmd(struct rtl_priv  *rtlpriv, uint8_t mode);
 extern uint8_t rtw_setrttbl_cmd(struct rtl_priv  *rtlpriv, struct setratable_parm *prate_table);
 extern uint8_t rtw_getrttbl_cmd(struct rtl_priv  *rtlpriv, struct getratable_rsp *pval);

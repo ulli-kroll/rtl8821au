@@ -711,11 +711,9 @@ uint8_t del_assocsta_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 uint8_t add_ba_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 
 uint8_t mlme_evt_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
-uint8_t h2c_msg_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 uint8_t set_ch_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 uint8_t set_chplan_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
-uint8_t led_blink_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 uint8_t set_csa_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);	//Kurt: Handling DFS channel switch announcement ie.
 uint8_t tdls_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 

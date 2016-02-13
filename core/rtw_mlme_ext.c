@@ -6887,14 +6887,6 @@ _abort_event_:
 
 }
 
-uint8_t h2c_msg_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
-{
-	if(!pbuf)
-		return H2C_PARAMETERS_ERROR;
-
-	return H2C_SUCCESS;
-}
-
 uint8_t tx_beacon_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 {
 	if(send_beacon(rtlpriv)==_FAIL)
@@ -7052,18 +7044,6 @@ uint8_t set_chplan_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 
 	pmlmeext->max_chan_nums = init_channel_set(rtlpriv, setChannelPlan_param->channel_plan, pmlmeext->channel_set);
 	init_channel_list(rtlpriv, pmlmeext->channel_set, pmlmeext->max_chan_nums, &pmlmeext->channel_list);
-
-	return 	H2C_SUCCESS;
-}
-
-uint8_t led_blink_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
-{
-	struct LedBlink_param *ledBlink_param;
-
-	if(!pbuf)
-		return H2C_PARAMETERS_ERROR;
-
-	ledBlink_param = (struct LedBlink_param *)pbuf;
 
 	return 	H2C_SUCCESS;
 }

@@ -927,7 +927,6 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_SetStaPwrState) ,
  	GEN_CMD_CODE(_SetBasicRate) , /*25*/
  	GEN_CMD_CODE(_GetBasicRate) ,
- 	GEN_CMD_CODE(_GetDataRate) ,
 
 	GEN_CMD_CODE(_SetPhy) ,
  	GEN_CMD_CODE(_JoinbssRpt),
@@ -965,7 +964,6 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 	{GEN_CMD_CODE(_SetStaPwrState), NULL},
 	{GEN_CMD_CODE(_SetBasicRate), NULL}, /*25*/
 	{GEN_CMD_CODE(_GetBasicRate), NULL},
-	{GEN_CMD_CODE(_GetDataRate), NULL},
 
 	{GEN_CMD_CODE(_SetPhy), NULL},
 	{GEN_CMD_CODE(_JoinbssRpt), NULL},

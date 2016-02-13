@@ -915,11 +915,6 @@ struct _cmd_callback {
 
 enum rtw_h2c_cmd
 {
- 	GEN_CMD_CODE(_Read_BBREG) ,
- 	GEN_CMD_CODE(_Write_BBREG) ,
- 	GEN_CMD_CODE(_Read_RFREG) ,
- 	GEN_CMD_CODE(_Write_RFREG) , /*5*/
-
  	GEN_CMD_CODE(_JoinBss),   /*14*/
  	GEN_CMD_CODE(_DisConnect) , /*15*/
  	GEN_CMD_CODE(_CreateBss) ,
@@ -956,19 +951,9 @@ enum rtw_h2c_cmd
 	MAX_H2CCMD
 };
 
-#define _GetBBReg_CMD_		_Read_BBREG_CMD_
-#define _SetBBReg_CMD_ 		_Write_BBREG_CMD_
-#define _GetRFReg_CMD_ 		_Read_RFREG_CMD_
-#define _SetRFReg_CMD_ 		_Write_RFREG_CMD_
-
 #ifdef _RTW_CMD_C_
 struct _cmd_callback 	rtw_cmd_callback[] =
 {
-	{GEN_CMD_CODE(_Read_BBREG), &rtw_getbbrfreg_cmdrsp_callback},
-	{GEN_CMD_CODE(_Write_BBREG), NULL},
-	{GEN_CMD_CODE(_Read_RFREG), &rtw_getbbrfreg_cmdrsp_callback},
-	{GEN_CMD_CODE(_Write_RFREG), NULL}, /*5*/
-
 	{GEN_CMD_CODE(_JoinBss), &rtw_joinbss_cmd_callback},  /*14*/
 	{GEN_CMD_CODE(_DisConnect), &rtw_disassoc_cmd_callback}, /*15*/
 	{GEN_CMD_CODE(_CreateBss), &rtw_createbss_cmd_callback},

@@ -946,18 +946,11 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_SetRaTable) ,
  	GEN_CMD_CODE(_GetRaTable) ,
 
- 	GEN_CMD_CODE(_GetCCXReport), /*40*/
- 	GEN_CMD_CODE(_GetDTMReport),
- 	GEN_CMD_CODE(_GetTXRateStatistics),
  	GEN_CMD_CODE(_SetUsbSuspend),
- 	GEN_CMD_CODE(_SetH2cLbk),
  	GEN_CMD_CODE(_AddBAReq) , /*45*/
 	GEN_CMD_CODE(_SetChannel), /*46*/
-	GEN_CMD_CODE(_SetTxPower),
-	GEN_CMD_CODE(_SwitchAntenna),
-	GEN_CMD_CODE(_SetCrystalCap),
-	GEN_CMD_CODE(_SetSingleCarrierTx), /*50*/
 
+	GEN_CMD_CODE(_SetSingleCarrierTx), /*50*/
 	GEN_CMD_CODE(_SetSingleToneTx),/*51*/
 	GEN_CMD_CODE(_SetCarrierSuppressionTx),
 	GEN_CMD_CODE(_SetContinuousTx),
@@ -1012,18 +1005,11 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 	{GEN_CMD_CODE(_SetRaTable), NULL},
 	{GEN_CMD_CODE(_GetRaTable) , NULL},
 
-	{GEN_CMD_CODE(_GetCCXReport), NULL}, /*40*/
- 	{GEN_CMD_CODE(_GetDTMReport),	NULL},
- 	{GEN_CMD_CODE(_GetTXRateStatistics), NULL},
  	{GEN_CMD_CODE(_SetUsbSuspend), NULL},
- 	{GEN_CMD_CODE(_SetH2cLbk), NULL},
  	{GEN_CMD_CODE(_AddBAReq), NULL}, /*45*/
 	{GEN_CMD_CODE(_SetChannel), NULL},		/*46*/
-	{GEN_CMD_CODE(_SetTxPower), NULL},
-	{GEN_CMD_CODE(_SwitchAntenna), NULL},
-	{GEN_CMD_CODE(_SetCrystalCap), NULL},
-	{GEN_CMD_CODE(_SetSingleCarrierTx), NULL},	/*50*/
 
+	{GEN_CMD_CODE(_SetSingleCarrierTx), NULL},	/*50*/
 	{GEN_CMD_CODE(_SetSingleToneTx), NULL}, /*51*/
 	{GEN_CMD_CODE(_SetCarrierSuppressionTx), NULL},
 	{GEN_CMD_CODE(_SetContinuousTx), NULL},

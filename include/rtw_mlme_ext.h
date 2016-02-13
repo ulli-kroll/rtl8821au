@@ -733,7 +733,6 @@ struct cmd_hdl wlancmds[] =
 	GEN_MLME_EXT_HANDLER(sizeof (struct setauth_parm), setauth_hdl)
 	GEN_MLME_EXT_HANDLER(sizeof (struct setkey_parm), setkey_hdl) /*20*/
 	GEN_MLME_EXT_HANDLER(sizeof (struct set_stakey_parm), set_stakey_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setphy_parm), NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)

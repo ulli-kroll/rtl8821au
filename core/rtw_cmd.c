@@ -512,48 +512,6 @@ uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, in
 	return res;
 }
 
-/*
-unsigned char rtw_setphy_cmd(unsigned char  *rtlpriv)
-
-1.  be called only after rtw_update_registrypriv_dev_network( ~) or mp testing program
-2.  for AdHoc/Ap mode or mp mode?
-
-*/
-uint8_t rtw_setphy_cmd(struct rtl_priv *rtlpriv, uint8_t modem, uint8_t ch)
-{
-	struct cmd_obj*			ph2c;
-	struct setphy_parm*		psetphypara;
-	struct cmd_priv 			*pcmdpriv=&rtlpriv->cmdpriv;
-//	struct mlme_priv			*pmlmepriv = &rtlpriv->mlmepriv;
-//	struct registry_priv*		pregistry_priv = &rtlpriv->registrypriv;
-	uint8_t	res=_SUCCESS;
-
-
-
-	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-	if(ph2c==NULL){
-		res= _FAIL;
-		goto exit;
-		}
-	psetphypara = (struct setphy_parm*)rtw_zmalloc(sizeof(struct setphy_parm));
-
-	if(psetphypara==NULL){
-		rtw_mfree(ph2c);
-		res= _FAIL;
-		goto exit;
-	}
-
-	init_h2fwcmd_w_parm_no_rsp(ph2c, psetphypara, _SetPhy_CMD_);
-
-	psetphypara->modem = modem;
-	psetphypara->rfchannel = ch;
-
-	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-exit:
-
-	return res;
-}
-
 void rtw_getbbrfreg_cmdrsp_callback(struct rtl_priv*	rtlpriv,  struct cmd_obj *pcmd)
 {
  

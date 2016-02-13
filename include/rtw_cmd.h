@@ -955,9 +955,7 @@ enum rtw_h2c_cmd
 	GEN_CMD_CODE(_Set_Drv_Extra), /*57*/
 	GEN_CMD_CODE(_SetChannelPlan), /*59*/
 
-	GEN_CMD_CODE(_LedBlink), /*60*/
 	GEN_CMD_CODE(_SetChannelSwitch), /*61*/
-	GEN_CMD_CODE(_TDLS), /*62*/
 
 	MAX_H2CCMD
 };
@@ -1006,10 +1004,7 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 	{GEN_CMD_CODE(_Set_Drv_Extra), NULL},/*57*/
 	{GEN_CMD_CODE(_SetChannelPlan), NULL},/*59*/
 
-	{GEN_CMD_CODE(_LedBlink), NULL},/*60*/
-
 	{GEN_CMD_CODE(_SetChannelSwitch), NULL},/*61*/
-	{GEN_CMD_CODE(_TDLS), NULL},/*62*/
 };
 #endif
 

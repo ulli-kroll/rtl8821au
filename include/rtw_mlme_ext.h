@@ -746,7 +746,6 @@ struct cmd_hdl wlancmds[] =
 	GEN_MLME_EXT_HANDLER(sizeof (struct getbasicrate_parm), NULL)
 	GEN_MLME_EXT_HANDLER(sizeof (struct setdatarate_parm), NULL)
 	GEN_MLME_EXT_HANDLER(sizeof (struct getdatarate_parm), NULL)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setphyinfo_parm), NULL)
 	GEN_MLME_EXT_HANDLER(sizeof (struct getphyinfo_parm), NULL)  /*30*/
 	GEN_MLME_EXT_HANDLER(sizeof (struct setphy_parm), NULL)
 	GEN_MLME_EXT_HANDLER(sizeof (struct getphy_parm), NULL)

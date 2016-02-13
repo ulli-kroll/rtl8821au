@@ -941,13 +941,7 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_SetDataRate) ,
  	GEN_CMD_CODE(_GetDataRate) ,
 
- 	GEN_CMD_CODE(_GetPhyInfo) ,	/*30*/
 	GEN_CMD_CODE(_SetPhy) ,
- 	GEN_CMD_CODE(_GetPhy) ,
- 	GEN_CMD_CODE(_readRssi) ,
- 	GEN_CMD_CODE(_readGain) ,
- 	GEN_CMD_CODE(_SetAtim) , /*35*/
- 	GEN_CMD_CODE(_SetPwrMode) ,
  	GEN_CMD_CODE(_JoinbssRpt),
  	GEN_CMD_CODE(_SetRaTable) ,
  	GEN_CMD_CODE(_GetRaTable) ,
@@ -1013,13 +1007,7 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 	{GEN_CMD_CODE(_SetDataRate), NULL},
 	{GEN_CMD_CODE(_GetDataRate), NULL},
 
-	{GEN_CMD_CODE(_GetPhyInfo), NULL}, /*30*/
 	{GEN_CMD_CODE(_SetPhy), NULL},
-	{GEN_CMD_CODE(_GetPhy), NULL},
-	{GEN_CMD_CODE(_readRssi), NULL},
-	{GEN_CMD_CODE(_readGain), NULL},
-	{GEN_CMD_CODE(_SetAtim), NULL}, /*35*/
-	{GEN_CMD_CODE(_SetPwrMode), NULL},
 	{GEN_CMD_CODE(_JoinbssRpt), NULL},
 	{GEN_CMD_CODE(_SetRaTable), NULL},
 	{GEN_CMD_CODE(_GetRaTable) , NULL},

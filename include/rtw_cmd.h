@@ -921,7 +921,6 @@ enum rtw_h2c_cmd
 
  	GEN_CMD_CODE(_JoinbssRpt),
 
- 	GEN_CMD_CODE(_SetUsbSuspend),
  	GEN_CMD_CODE(_AddBAReq) , /*45*/
 	GEN_CMD_CODE(_SetChannel), /*46*/
 
@@ -950,7 +949,6 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 
 	{GEN_CMD_CODE(_JoinbssRpt), NULL},
 
- 	{GEN_CMD_CODE(_SetUsbSuspend), NULL},
  	{GEN_CMD_CODE(_AddBAReq), NULL}, /*45*/
 	{GEN_CMD_CODE(_SetChannel), NULL},		/*46*/
 

@@ -6410,14 +6410,6 @@ void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 				rtl_set_rfreg(rtlpriv, path, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
 			else
 				rtl_set_rfreg(rtlpriv, path, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
-		} else if ((IS_HARDWARE_TYPE_8821S(rtlhal)) && channel > 14) {
-			/* <20130111, Kordan> For better result of APK. Asked by Willson. */
-			if (36 <= channel && channel <= 64)
-				rtl_set_rfreg(rtlpriv, path, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
-			else if (100 <= channel && channel <= 140)
-				rtl_set_rfreg(rtlpriv, path, RF_APK_Jaguar, bRFRegOffsetMask, 0x110E9);
-			else
-				rtl_set_rfreg(rtlpriv, path, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
 		}
 	}
 }

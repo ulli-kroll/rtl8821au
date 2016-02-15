@@ -1964,7 +1964,6 @@ enum hardware_type {
 	HARDWARE_TYPE_RTL8812AU,
 	HARDWARE_TYPE_RTL8811AU,
 	HARDWARE_TYPE_RTL8821U,
-	HARDWARE_TYPE_RTL8821S,
 
 	HARDWARE_TYPE_MAX,
 };
@@ -1981,11 +1980,8 @@ enum hardware_type {
 #define IS_HARDWARE_TYPE_8821U(rtlhal)	\
 	((rtlhal->hw_type == HARDWARE_TYPE_RTL8821U) || \
        	(rtlhal->hw_type == HARDWARE_TYPE_RTL8811AU))
-#define IS_HARDWARE_TYPE_8821S(rtlhal)	\
-	(rtlhal->hw_type == HARDWARE_TYPE_RTL8821S)
 #define IS_HARDWARE_TYPE_8821(rtlhal)		\
-	(IS_HARDWARE_TYPE_8821U(rtlhal) || \
-	 IS_HARDWARE_TYPE_8821S(rtlhal))
+	(IS_HARDWARE_TYPE_8821U(rtlhal))
 
 #define	LDPC_HT_ENABLE_RX		BIT(0)
 #define	LDPC_HT_ENABLE_TX		BIT(1)

@@ -907,55 +907,43 @@ struct _cmd_callback {
 	void (*callback)(struct rtl_priv  *rtlpriv, struct cmd_obj *cmd);
 };
 
-enum rtw_h2c_cmd
-{
- 	GEN_CMD_CODE(_JoinBss),   /*14*/
- 	GEN_CMD_CODE(_DisConnect) , /*15*/
- 	GEN_CMD_CODE(_CreateBss) ,
-	GEN_CMD_CODE(_SetOpMode) ,
-	GEN_CMD_CODE(_SiteSurvey),  /*18*/
- 	GEN_CMD_CODE(_SetAuth) ,
-
- 	GEN_CMD_CODE(_SetKey) ,	/*20*/
- 	GEN_CMD_CODE(_SetStaKey) ,
-
-
- 	GEN_CMD_CODE(_AddBAReq) , /*45*/
-	GEN_CMD_CODE(_SetChannel), /*46*/
-
-	GEN_CMD_CODE(_TX_Beacon), /*55*/
-	GEN_CMD_CODE(_Set_MLME_EVT), /*56*/
-	GEN_CMD_CODE(_Set_Drv_Extra), /*57*/
-	GEN_CMD_CODE(_SetChannelPlan), /*59*/
-
-	GEN_CMD_CODE(_SetChannelSwitch), /*61*/
+enum rtw_h2c_cmd {
+ 	GEN_CMD_CODE(_JoinBss),		/*  1 */
+ 	GEN_CMD_CODE(_DisConnect) ,	/*  2 */
+ 	GEN_CMD_CODE(_CreateBss) ,	/*  3 */
+	GEN_CMD_CODE(_SetOpMode) ,	/*  4 */
+	GEN_CMD_CODE(_SiteSurvey),	/*  5 */
+ 	GEN_CMD_CODE(_SetAuth) ,	/*  6 */
+ 	GEN_CMD_CODE(_SetKey) ,		/*  7 */
+ 	GEN_CMD_CODE(_SetStaKey) ,	/*  8 */
+ 	GEN_CMD_CODE(_AddBAReq) ,	/*  9 */
+	GEN_CMD_CODE(_SetChannel),	/* 10 */
+	GEN_CMD_CODE(_TX_Beacon),	/* 11 */
+	GEN_CMD_CODE(_Set_MLME_EVT),	/* 12 */
+	GEN_CMD_CODE(_Set_Drv_Extra),	/* 13 */
+	GEN_CMD_CODE(_SetChannelPlan),	/* 14 */
+	GEN_CMD_CODE(_SetChannelSwitch),/* 15 */
 
 	MAX_H2CCMD
 };
 
 #ifdef _RTW_CMD_C_
-struct _cmd_callback 	rtw_cmd_callback[] =
-{
-	{GEN_CMD_CODE(_JoinBss), &rtw_joinbss_cmd_callback},  /*14*/
-	{GEN_CMD_CODE(_DisConnect), &rtw_disassoc_cmd_callback}, /*15*/
-	{GEN_CMD_CODE(_CreateBss), &rtw_createbss_cmd_callback},
-	{GEN_CMD_CODE(_SetOpMode), NULL},
-	{GEN_CMD_CODE(_SiteSurvey), &rtw_survey_cmd_callback}, /*18*/
-	{GEN_CMD_CODE(_SetAuth), NULL},
-
-	{GEN_CMD_CODE(_SetKey), NULL},	/*20*/
-	{GEN_CMD_CODE(_SetStaKey), &rtw_setstaKey_cmdrsp_callback},
-
-
- 	{GEN_CMD_CODE(_AddBAReq), NULL}, /*45*/
-	{GEN_CMD_CODE(_SetChannel), NULL},		/*46*/
-
-	{GEN_CMD_CODE(_TX_Beacon), NULL},/*55*/
-	{GEN_CMD_CODE(_Set_MLME_EVT), NULL},/*56*/
-	{GEN_CMD_CODE(_Set_Drv_Extra), NULL},/*57*/
-	{GEN_CMD_CODE(_SetChannelPlan), NULL},/*59*/
-
-	{GEN_CMD_CODE(_SetChannelSwitch), NULL},/*61*/
+struct _cmd_callback 	rtw_cmd_callback[] = {
+	{GEN_CMD_CODE(_JoinBss), &rtw_joinbss_cmd_callback},		/*  1 */
+	{GEN_CMD_CODE(_DisConnect), &rtw_disassoc_cmd_callback},	/*  2 */
+	{GEN_CMD_CODE(_CreateBss), &rtw_createbss_cmd_callback},	/*  3 */
+	{GEN_CMD_CODE(_SetOpMode), NULL},				/*  4 */
+	{GEN_CMD_CODE(_SiteSurvey), &rtw_survey_cmd_callback},		/*  5 */
+	{GEN_CMD_CODE(_SetAuth), NULL},					/*  6 */
+	{GEN_CMD_CODE(_SetKey), NULL},					/*  7 */
+	{GEN_CMD_CODE(_SetStaKey), &rtw_setstaKey_cmdrsp_callback},	/*  8 */
+ 	{GEN_CMD_CODE(_AddBAReq), NULL},				/*  9 */
+	{GEN_CMD_CODE(_SetChannel), NULL},				/* 10 */
+	{GEN_CMD_CODE(_TX_Beacon), NULL},				/* 11 */
+	{GEN_CMD_CODE(_Set_MLME_EVT), NULL},				/* 12 */
+	{GEN_CMD_CODE(_Set_Drv_Extra), NULL},				/* 13 */
+	{GEN_CMD_CODE(_SetChannelPlan), NULL},				/* 14 */
+	{GEN_CMD_CODE(_SetChannelSwitch), NULL},			/* 15 */
 };
 #endif
 

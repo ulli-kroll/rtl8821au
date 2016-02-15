@@ -723,25 +723,22 @@ uint8_t tdls_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 
 #ifdef _RTW_CMD_C_
 
-struct cmd_hdl wlancmds[] =
-{
-	GEN_MLME_EXT_HANDLER(sizeof (struct joinbss_parm), join_cmd_hdl) /*14*/
-	GEN_MLME_EXT_HANDLER(sizeof (struct disconnect_parm), disconnect_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct createbss_parm), createbss_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setopmode_parm), setopmode_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct sitesurvey_parm), sitesurvey_cmd_hdl) /*18*/
-	GEN_MLME_EXT_HANDLER(sizeof (struct setauth_parm), setauth_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof (struct setkey_parm), setkey_hdl) /*20*/
-	GEN_MLME_EXT_HANDLER(sizeof (struct set_stakey_parm), set_stakey_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof(struct addBaReq_parm), add_ba_hdl)
-	GEN_MLME_EXT_HANDLER(sizeof(struct set_ch_parm), set_ch_hdl) /* 46 */
-
-	GEN_MLME_EXT_HANDLER(sizeof(struct Tx_Beacon_param), tx_beacon_hdl) /*55*/
-	GEN_MLME_EXT_HANDLER(0, mlme_evt_hdl) /*56*/
-	GEN_MLME_EXT_HANDLER(0, rtw_drvextra_cmd_hdl) /*57*/
-	GEN_MLME_EXT_HANDLER(sizeof(struct SetChannelPlan_param), set_chplan_hdl) /*59*/
-
-	GEN_MLME_EXT_HANDLER(sizeof(struct SetChannelSwitch_param), set_csa_hdl) /*61*/
+struct cmd_hdl wlancmds[] = {
+	GEN_MLME_EXT_HANDLER(sizeof (struct joinbss_parm), join_cmd_hdl)		/*  1 */
+	GEN_MLME_EXT_HANDLER(sizeof (struct disconnect_parm), disconnect_hdl)		/*  2 */
+	GEN_MLME_EXT_HANDLER(sizeof (struct createbss_parm), createbss_hdl)		/*  3 */
+	GEN_MLME_EXT_HANDLER(sizeof (struct setopmode_parm), setopmode_hdl)		/*  4 */
+	GEN_MLME_EXT_HANDLER(sizeof (struct sitesurvey_parm), sitesurvey_cmd_hdl)	/*  5 */
+	GEN_MLME_EXT_HANDLER(sizeof (struct setauth_parm), setauth_hdl)			/*  6 */
+	GEN_MLME_EXT_HANDLER(sizeof (struct setkey_parm), setkey_hdl)			/*  7 */
+	GEN_MLME_EXT_HANDLER(sizeof (struct set_stakey_parm), set_stakey_hdl)		/*  8 */
+	GEN_MLME_EXT_HANDLER(sizeof(struct addBaReq_parm), add_ba_hdl)			/*  9 */
+	GEN_MLME_EXT_HANDLER(sizeof(struct set_ch_parm), set_ch_hdl)			/* 10 */
+	GEN_MLME_EXT_HANDLER(sizeof(struct Tx_Beacon_param), tx_beacon_hdl)		/* 11 */
+	GEN_MLME_EXT_HANDLER(0, mlme_evt_hdl)						/* 12 */
+	GEN_MLME_EXT_HANDLER(0, rtw_drvextra_cmd_hdl)					/* 13 */
+	GEN_MLME_EXT_HANDLER(sizeof(struct SetChannelPlan_param), set_chplan_hdl)	/* 14 */
+	GEN_MLME_EXT_HANDLER(sizeof(struct SetChannelSwitch_param), set_csa_hdl)	/* 15 */
 };
 
 #endif

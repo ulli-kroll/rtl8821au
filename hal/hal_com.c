@@ -114,11 +114,6 @@ void HalSetBrateCfg(struct rtl_priv *rtlpriv, uint8_t *mBratesOS,
 	}
 }
 
-void hal_init_macaddr(struct rtl_priv *rtlpriv)
-{
-	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ETHER_ADDR, rtlpriv->mac80211.mac_addr);
-}
-
 uint8_t  rtw_hal_networktype_to_raid(struct rtl_priv *rtlpriv,unsigned char network_type)
 {
 	return networktype_to_raid_ex(rtlpriv,network_type);

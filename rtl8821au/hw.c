@@ -1588,12 +1588,6 @@ static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_RQPN, value32);
 }
 
-static void _InitID_8812A(struct rtl_priv *rtlpriv)
-{
-	hal_init_macaddr(rtlpriv);	/* set mac_address */
-}
-
-
 static void _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
 {
 	uint8_t	txpktbuf_bndy;
@@ -2046,6 +2040,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	uint8_t	value8 = 0, u1bRegCR;
 	u16  value16;
 	uint8_t	txpktbuf_bndy;
@@ -2157,7 +2152,9 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	_InitDriverInfoSize_8812A(rtlpriv, DRVINFO_SZ);
 
 	rtlpriv->cfg->ops->enable_interrupt(rtlpriv);
-	_InitID_8812A(rtlpriv);			/* set mac_address */
+
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ETHER_ADDR, mac->mac_addr);
+
 	_InitNetworkType_8812A(rtlpriv);	/* set msr */
 	_InitWMACSetting_8812A(rtlpriv);
 	_InitAdaptiveCtrl_8812AUsb(rtlpriv);

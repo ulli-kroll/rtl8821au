@@ -70,8 +70,6 @@ void	HalSetBrateCfg(
 	u16			*pBrateCfg);
 
 
-void hal_init_macaddr(struct rtl_priv *rtlpriv);
-
 uint8_t rtw_hal_networktype_to_raid(struct rtl_priv *rtlpriv,unsigned char network_type);
 uint8_t rtw_get_mgntframe_raid(struct rtl_priv *rtlpriv,unsigned char network_type);
 #endif //__HAL_COMMON_H__

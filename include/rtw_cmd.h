@@ -886,8 +886,6 @@ uint8_t rtw_chk_hi_queue_cmd(struct rtl_priv*rtlpriv);
 uint8_t rtw_set_ch_cmd(struct rtl_priv*rtlpriv, uint8_t ch, uint8_t bw, uint8_t ch_offset, uint8_t enqueue);
 extern uint8_t rtw_set_csa_cmd(struct rtl_priv*rtlpriv, uint8_t new_ch_no);
 
-extern uint8_t rtw_c2h_wk_cmd(struct rtl_priv *rtlpriv, uint8_t *c2h_evt);
-
 uint8_t rtw_drvextra_cmd_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 
 extern void rtw_survey_cmd_callback(struct rtl_priv  *rtlpriv, struct cmd_obj *pcmd);

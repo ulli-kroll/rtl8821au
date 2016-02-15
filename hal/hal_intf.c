@@ -85,15 +85,6 @@ void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta,
 	}
 }
 
-int32_t rtw_hal_c2h_handler(struct rtl_priv *rtlpriv, struct c2h_evt_hdr *c2h_evt)
-{
-	int32_t ret = _FAIL;
-
-	if (rtlpriv->cfg->ops->c2h_handler)
-		ret = rtlpriv->cfg->ops->c2h_handler(rtlpriv, c2h_evt);
-	return ret;
-}
-
 c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *rtlpriv)
 {
 	return rtlpriv->cfg->ops->c2h_id_filter_ccx;

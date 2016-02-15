@@ -2083,7 +2083,7 @@ void correct_TSF(struct rtl_priv *rtlpriv, struct mlme_ext_priv *pmlmeext)
 
 void beacon_timing_control(struct rtl_priv *rtlpriv)
 {
-	rtlpriv->cfg->ops->SetBeaconRelatedRegistersHandler(rtlpriv);
+	rtlpriv->cfg->ops->set_bcn_reg(rtlpriv);
 }
 
 uint rtw_get_camid(uint macid)

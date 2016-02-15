@@ -1900,7 +1900,7 @@ struct rtl_hal_ops {
 
 	bool (*get_btc_status) (void);
 	void (*dm_watchdog)(struct rtl_priv *rtlpriv);
-
+	void (*set_bcn_reg)(struct rtl_priv *rtlpriv);
 
 	/* Old HAL functions */
 
@@ -1932,8 +1932,6 @@ struct rtl_hal_ops {
 	void	(*set_chnl_bw_handler)(struct rtl_priv *rtlpriv, uint8_t channel, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset40, uint8_t Offset80);
 
 	void	(*hal_dm_watchdog)(struct rtl_priv *rtlpriv);
-
-	void	(*SetBeaconRelatedRegistersHandler)(struct rtl_priv *rtlpriv);
 
 	void	(*Add_RateATid)(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);
 

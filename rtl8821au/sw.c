@@ -508,6 +508,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 #endif
 	.fill_h2c_cmd = rtl8821au_fill_h2c_cmd,
 	.get_btc_status = rtl8821au_get_btc_status,
+	.set_bcn_reg = 	rtl8821au_set_beacon_related_registers,
 
 	/** ** */
 
@@ -529,8 +530,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	/* .set_bwmode_handler = 	PHY_SetBWMode8192C; */
 	/* .set_channel_handler = 	PHY_SwChnl8192C; */
-
-	.SetBeaconRelatedRegistersHandler = 	rtl8821au_set_beacon_related_registers,
 
 	/* .Add_RateATid = &rtl8192c_Add_RateATid, */
 

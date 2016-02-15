@@ -1936,7 +1936,6 @@ struct rtl_hal_ops {
 	void	(*SetBeaconRelatedRegistersHandler)(struct rtl_priv *rtlpriv);
 
 	void	(*Add_RateATid)(struct rtl_priv *rtlpriv, u32 bitmap, u8* arg, uint8_t rssi_level);
-	uint8_t	(*interface_ps_func)(struct rtl_priv *rtlpriv,HAL_INTF_PS_FUNC efunc_id, u8* val);
 
 	int32_t	(*hal_xmit)(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 	int32_t (*mgnt_xmit)(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);

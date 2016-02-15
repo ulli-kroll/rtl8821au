@@ -82,6 +82,7 @@ static void _BeaconFunctionEnable(struct rtl_priv *rtlpriv, bool Enable,
 
 void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 {
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	uint32_t	value32;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
@@ -101,7 +102,7 @@ void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 	 */
 
 	/* BCN interval */
-	rtl_write_word(rtlpriv, REG_BCN_INTERVAL, pmlmeinfo->bcn_interval);
+	rtl_write_word(rtlpriv, REG_BCN_INTERVAL, mac->beacon_interval);
 	rtl_write_byte(rtlpriv, REG_ATIMWND, 0x02);	/* 2ms */
 
 	rtl8821au_init_beacon_parameters(rtlpriv);
@@ -300,6 +301,7 @@ static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	M
 void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_efuse *rtlefuse =  rtl_efuse(rtlpriv);
 	struct _rtw_hal *pHalData;
@@ -405,7 +407,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			/*
 			 * tsf = pmlmeext->TSFValue - ((u32)pmlmeext->TSFValue % (pmlmeinfo->bcn_interval*1024)) -1024; //us
 			 */
-			tsf = pmlmeext->TSFValue - rtw_modular64(pmlmeext->TSFValue, (pmlmeinfo->bcn_interval*1024)) - 1024; /* us */
+			tsf = pmlmeext->TSFValue - rtw_modular64(pmlmeext->TSFValue, (mac->beacon_interval*1024)) - 1024; /* us */
 
 			if (((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE)
 			   || ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)) {

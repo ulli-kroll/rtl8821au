@@ -4906,6 +4906,7 @@ uint8_t collect_bss_info(struct rtl_priv *rtlpriv, struct recv_frame *precv_fram
 
 void start_create_ibss(struct rtl_priv* rtlpriv)
 {
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	unsigned short	caps;
 	uint8_t	val8;
 	uint8_t	join_type;
@@ -4913,7 +4914,7 @@ void start_create_ibss(struct rtl_priv* rtlpriv)
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX		*pnetwork = (WLAN_BSSID_EX*)(&(pmlmeinfo->network));
 	pmlmeext->cur_channel = (uint8_t)pnetwork->Configuration.DSConfig;
-	pmlmeinfo->bcn_interval = get_beacon_interval(pnetwork);
+	mac->beacon_interval = get_beacon_interval(pnetwork);
 
 	//update wireless mode
 	update_wireless_mode(rtlpriv);
@@ -4964,6 +4965,7 @@ void start_create_ibss(struct rtl_priv* rtlpriv)
 
 void start_clnt_join(struct rtl_priv* rtlpriv)
 {
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	unsigned short	caps;
 	uint8_t	val8;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
@@ -4972,7 +4974,7 @@ void start_clnt_join(struct rtl_priv* rtlpriv)
 	int beacon_timeout;
 
 	pmlmeext->cur_channel = (uint8_t)pnetwork->Configuration.DSConfig;
-	pmlmeinfo->bcn_interval = get_beacon_interval(pnetwork);
+	mac->beacon_interval = get_beacon_interval(pnetwork);
 
 	//switch channel
 	set_channel_bwmode(rtlpriv, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
@@ -4996,7 +4998,7 @@ void start_clnt_join(struct rtl_priv* rtlpriv)
 
 		//here wait for receiving the beacon to start auth
 		//and enable a timer
-		beacon_timeout = decide_wait_for_beacon_timeout(pmlmeinfo->bcn_interval);
+		beacon_timeout = decide_wait_for_beacon_timeout(mac->beacon_interval);
 		set_link_timer(pmlmeext, beacon_timeout);
 		_set_timer( &rtlpriv->mlmepriv.assoc_timer,
 			(REAUTH_TO * REAUTH_LIMIT) + (REASSOC_TO*REASSOC_LIMIT) +beacon_timeout);
@@ -5704,6 +5706,7 @@ void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta)
 
 void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res)
 {
+	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	struct sta_info		*psta, *psta_bmc;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -5739,7 +5742,7 @@ void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res)
 	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BASIC_RATE, cur_network->SupportedRates);
 
 	//BCN interval
-	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BEACON_INTERVAL, (uint8_t *)(&pmlmeinfo->bcn_interval));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BEACON_INTERVAL, (uint8_t *)(&mac->beacon_interval));
 
 	//udpate capability
 	update_capinfo(rtlpriv, pmlmeinfo->capability);

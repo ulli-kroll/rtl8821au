@@ -364,7 +364,6 @@ struct mlme_ext_info
 	u32	iv;
 	uint8_t	chg_txt[128];
 	u16	aid;
-	u16	bcn_interval;
 	u16	capability;
 	uint8_t	assoc_AP_vendor;
 	uint8_t	slotTime;

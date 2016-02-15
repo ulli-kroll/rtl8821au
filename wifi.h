@@ -1941,8 +1941,6 @@ struct rtl_hal_ops {
 	int32_t	(*hal_xmit)(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
 	int32_t (*mgnt_xmit)(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
 	int32_t	(*hal_xmitframe_enqueue)(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
-
-	c2h_id_filter c2h_id_filter_ccx;
 };
 
 

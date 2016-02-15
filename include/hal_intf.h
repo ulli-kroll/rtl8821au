@@ -68,7 +68,5 @@ int32_t	rtw_hal_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntfram
 
 void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_level);
 
-c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *rtlpriv);
-
 #endif //__HAL_INTF_H__
 

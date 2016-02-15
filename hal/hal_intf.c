@@ -84,9 +84,3 @@ void rtw_hal_update_ra_mask(struct rtl_priv *rtlpriv, struct sta_info *psta,
 		UpdateHalRAMask8812A(rtlpriv, psta->mac_id, rssi_level);
 	}
 }
-
-c2h_id_filter rtw_hal_c2h_id_filter_ccx(struct rtl_priv *rtlpriv)
-{
-	return rtlpriv->cfg->ops->c2h_id_filter_ccx;
-}
-

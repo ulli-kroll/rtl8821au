@@ -124,7 +124,6 @@ struct registry_priv
 	uint8_t	short_gi;
 
 	uint8_t	ampdu_factor;
-	uint8_t	vht_rate_sel;
 	// BIT0: Enable VHT LDPC Rx, BIT1: Enable VHT LDPC Tx, BIT4: Enable HT LDPC Rx, BIT5: Enable HT LDPC Tx
 	uint8_t	ldpc_cap;
 	// BIT0: Enable VHT STBC Rx, BIT1: Enable VHT STBC Tx, BIT4: Enable HT STBC Rx, BIT5: Enable HT STBC Tx

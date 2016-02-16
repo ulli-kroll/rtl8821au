@@ -161,26 +161,6 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 		pvhtpriv->vht_mcs_map[0] = 0xfa;	/* support 1SS MCS 0~9 2SS MCS 0~9 */
 	pvhtpriv->vht_mcs_map[1] = 0xff;
 
-	if (pregistrypriv->vht_rate_sel == 1) {
-		pvhtpriv->vht_mcs_map[0] = 0xfc;	/* support 1SS MCS 0~7 */
-	} else if (pregistrypriv->vht_rate_sel == 2) {
-		pvhtpriv->vht_mcs_map[0] = 0xfd;	/* Support 1SS MCS 0~8 */
-	} else if (pregistrypriv->vht_rate_sel == 3) {
-		pvhtpriv->vht_mcs_map[0] = 0xfe;	/* Support 1SS MCS 0~9 */
-	} else if (pregistrypriv->vht_rate_sel == 4) {
-		pvhtpriv->vht_mcs_map[0] = 0xf0;	/* support 1SS MCS 0~7 2SS MCS 0~7 */
-	} else if (pregistrypriv->vht_rate_sel == 5) {
-		pvhtpriv->vht_mcs_map[0] = 0xf5;	/* support 1SS MCS 0~8 2SS MCS 0~8 */
-	} else if (pregistrypriv->vht_rate_sel == 6) {
-		pvhtpriv->vht_mcs_map[0] = 0xfa;	/* support 1SS MCS 0~9 2SS MCS 0~9 */
-	} else if (pregistrypriv->vht_rate_sel == 7) {
-		pvhtpriv->vht_mcs_map[0] = 0xf8;	/* support 1SS MCS 0-7 2SS MCS 0~9 */
-	} else if (pregistrypriv->vht_rate_sel == 8) {
-		pvhtpriv->vht_mcs_map[0] = 0xf9;	/* support 1SS MCS 0-8 2SS MCS 0~9 */
-	} else if (pregistrypriv->vht_rate_sel == 9) {
-		pvhtpriv->vht_mcs_map[0] = 0xf4;	/* support 1SS MCS 0-7 2SS MCS 0~8 */
-	}
-
 	pvhtpriv->vht_highest_rate = rtw_get_vht_highest_rate(rtlpriv, pvhtpriv->vht_mcs_map);
 }
 

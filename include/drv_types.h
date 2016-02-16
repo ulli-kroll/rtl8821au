@@ -141,9 +141,6 @@ struct registry_priv
 	uint8_t	hwpwrp_detect;//0:disable,1:enable
 
 	uint8_t	hw_wps_pbc;//0:disable,1:enable
-#ifdef CONFIG_80211D
-	uint8_t enable80211d;
-#endif
 };
 
 

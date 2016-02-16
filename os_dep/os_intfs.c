@@ -110,10 +110,6 @@ static int rtw_hw_wps_pbc = 1;
 int __rtw_mc2u_disable = 0;
 #endif
 
-#ifdef CONFIG_80211D
-static int rtw_80211d = 0;
-#endif
-
 char *__rtw_initmac = 0;  /* temp mac address if users want to use instead of the mac address in Efuse */
 
 
@@ -141,11 +137,6 @@ module_param(rtw_hw_wps_pbc, int, 0644);
 
 #ifdef CONFIG_TX_MCAST2UNI
 module_param(__rtw_mc2u_disable, int, 0644);
-#endif
-
-#ifdef CONFIG_80211D
-module_param(rtw_80211d, int, 0644);
-MODULE_PARM_DESC(rtw_80211d, "Enable 802.11d mechanism");
 #endif
 
 uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
@@ -207,10 +198,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 #endif
 
 	registry_par->hw_wps_pbc = (uint8_t)rtw_hw_wps_pbc;
-
-#ifdef CONFIG_80211D
-	registry_par->enable80211d = (uint8_t)rtw_80211d;
-#endif
 
 	return status;
 }

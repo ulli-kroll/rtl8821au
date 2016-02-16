@@ -2091,7 +2091,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 		if (*(pDM_Odm->pbPowerSaving) == true)
 			return;
 
-		odm_RefreshRateAdaptiveMask(pDM_Odm);
+		odm_RefreshRateAdaptiveMask(rtlpriv);
 		rtl8821au_dm_check_edca_turbo(rtlpriv);
 
 		rtl8821au_check_tx_power_tracking_thermalmeter(rtlpriv);

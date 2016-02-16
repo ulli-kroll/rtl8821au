@@ -609,11 +609,12 @@ static bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,
 	return false;
 }
 
-void odm_RefreshRateAdaptiveMask(struct _rtw_dm *pDM_Odm)
+void odm_RefreshRateAdaptiveMask(struct rtl_priv *rtlpriv)
 {
-	u8	i;
-	struct rtl_priv *rtlpriv	=  pDM_Odm->rtlpriv;
 	struct rate_adaptive *p_ra = &(rtlpriv->ra);
+	u8	i;
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
 
 	if (rtlpriv->bDriverStopped) {

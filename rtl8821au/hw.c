@@ -677,7 +677,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_H2C_FW_JOINBSSRPT:
-		rtl8812_set_FwJoinBssReport_cmd(rtlpriv, *pval);
+		rtl8821au_set_fw_joinbss_report_cmd(rtlpriv, *pval);
 		break;
 
 	case HW_VAR_INITIAL_GAIN:	/* ULLI not in rtlwifi */

@@ -729,7 +729,7 @@ error:
 	rtw_free_cmdxmitframe(pxmitpriv, pcmdframe);
 }
 
-void rtl8812_set_FwJoinBssReport_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
+void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);

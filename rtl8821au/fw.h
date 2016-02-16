@@ -44,6 +44,7 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv);
 void rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv, u8 element_id, 
 			   u32 cmd_len, u8 *cmdbuffer);
 uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param);
+void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus);
 
 #define FW_8821AU_START_ADDRESS    	0x1000
 #define FW_8821AU_END_ADDRESS         	0x5FFF

@@ -1750,7 +1750,6 @@ struct rtl_priv {
 
 	struct net_device_stats stats;
 	struct iw_statistics iwstats;
-	struct proc_dir_entry *dir_dev;// for proc directory
 
 	int net_closed;
 

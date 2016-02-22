@@ -65,18 +65,6 @@ int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
 
 u16 rtw_recv_select_queue(struct sk_buff *skb);
 
-/*
- *	#ifdef CONFIG_PROC_DEBUG
- *	void rtw_proc_init_one(struct net_device *dev);
- *	void rtw_proc_remove_one(struct net_device *dev);
- *	#else //!CONFIG_PROC_DEBUG
-*/
-static void rtw_proc_init_one(struct net_device *dev){}
-static void rtw_proc_remove_one(struct net_device *dev){}
-/*
- *	#endif //!CONFIG_PROC_DEBUG
-*/
-
 void rtw_ips_dev_unload(struct rtl_priv *rtlpriv);
 int rtw_ips_pwr_up(struct rtl_priv *rtlpriv);
 void rtw_ips_pwr_down(struct rtl_priv *rtlpriv);

@@ -1984,7 +1984,6 @@ void rtw_usb_if1_deinit(struct rtl_priv *rtlpriv)
 	if (rtlpriv->DriverState != DRIVER_DISAPPEAR) {
 		if (ndev) {
 			unregister_netdev(ndev); /* will call netdev_close() */
-			rtw_proc_remove_one(ndev);
 		}
 	}
 

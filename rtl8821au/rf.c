@@ -6,8 +6,6 @@
 
 void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH	Bandwidth)	/* 20M or 40M */
 {
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-
 	switch (Bandwidth) {
 	case CHANNEL_WIDTH_20:
 		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 3);
@@ -117,10 +115,9 @@ void getTxPowerWriteValByRegulatory8812(struct rtl_priv *rtlpriv,
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	uint8_t			i, chnlGroup=0, pwr_diff_limit[4], customer_pwr_limit;
-	s8			pwr_diff=0;
-	uint32_t 			writeVal, customer_limit, rf;
-	uint8_t			Regulatory = efuse->eeprom_regulatory;
+	uint8_t	chnlGroup=0;
+	uint32_t writeVal, rf;
+	uint8_t	Regulatory = efuse->eeprom_regulatory;
 
 	//
 	// Index 0 & 1= legacy OFDM, 2-5=HT_MCS rate
@@ -230,7 +227,7 @@ void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *rtlpriv,
 	uint8_t *pPowerLevelOFDM, uint8_t *pPowerLevelBW20,
 	uint8_t *pPowerLevelBW40, uint8_t Channel)
 {
-	uint32_t writeVal[2], powerBase0[2], powerBase1[2], pwrtrac_value;
+	uint32_t writeVal[2], powerBase0[2], powerBase1[2];
 	uint8_t index = 0;
 
 

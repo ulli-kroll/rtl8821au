@@ -111,8 +111,6 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 	enum CHANNEL_WIDTH	tmpBW= rtlpriv->phy.current_chan_bw;
 	uint8_t			tmpnCur40MhzPrimeSC = mac->cur_40_prime_sc;
 	uint8_t			tmpnCur80MhzPrimeSC = mac->cur_80_prime_sc;
-	uint8_t			tmpCenterFrequencyIndex1 = rtlpriv->phy.current_channel;
-	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 
 	bool bSwChnl = false, bSetChnlBW = false;
 
@@ -223,8 +221,6 @@ void PHY_SetBWMode8812(struct rtl_priv *rtlpriv,
 	enum CHANNEL_WIDTH	Bandwidth,	/* 20M or 40M */
 	uint8_t	Offset)		/* Upper, Lower, or Don't care */
 {
-	struct _rtw_hal *	pHalData = GET_HAL_DATA(rtlpriv);
-
 	/* DBG_871X("%s()===>\n",__FUNCTION__); */
 
 	PHY_HandleSwChnlAndSetBW8812(rtlpriv, false, true, rtlpriv->phy.current_channel, Bandwidth, Offset, Offset, rtlpriv->phy.current_channel);

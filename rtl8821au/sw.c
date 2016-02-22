@@ -201,7 +201,6 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 	struct _rtw_hal *pHalData;
 	struct pwrctrl_priv *pwrctrlpriv;
 	struct dm_priv *pdmpriv;
-	uint8_t i;
 
 	pHalData = GET_HAL_DATA(rtlpriv);
 	pwrctrlpriv = &rtlpriv->pwrctrlpriv;

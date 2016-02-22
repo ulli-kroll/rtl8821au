@@ -228,7 +228,6 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 
 	int32_t TH_H_dmc, TH_L_dmc;
 	int32_t TH_H, TH_L, Diff, IGI_target;
-	uint32_t value32;
 	bool EDCCA_State;
 
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "odm_Adaptivity() =====> \n");

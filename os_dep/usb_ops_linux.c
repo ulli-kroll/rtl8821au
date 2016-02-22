@@ -42,7 +42,6 @@ static int recvbuf2recvframe(struct rtl_priv *rtlpriv, struct sk_buff *pskb)
 	uint8_t				*pphy_status = NULL;
 	struct recv_frame	*precvframe = NULL;
 	struct rx_pkt_attrib	*pattrib = NULL;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct recv_priv	*precvpriv = &rtlpriv->recvpriv;
 	struct __queue			*pfree_recv_queue = &precvpriv->free_recv_queue;
 

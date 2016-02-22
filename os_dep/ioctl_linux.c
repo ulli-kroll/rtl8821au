@@ -126,7 +126,7 @@ static int hwaddr_aton_i(const char *txt, uint8_t *addr)
 
 static void indicate_wx_custom_event(struct rtl_priv *rtlpriv, char *msg)
 {
-	uint8_t *buff, *p;
+	uint8_t *buff;
 	union iwreq_data wrqu;
 
 	if (strlen(msg) > IW_CUSTOM_MAX) {
@@ -185,7 +185,6 @@ static void request_wps_pbc_event(struct rtl_priv *rtlpriv)
 void indicate_wx_scan_complete_event(struct rtl_priv *rtlpriv)
 {
 	union iwreq_data wrqu;
-	struct	mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
 	memset(&wrqu, 0, sizeof(union iwreq_data));
 
@@ -265,11 +264,8 @@ static char *translate_scan(struct rtl_priv *rtlpriv,
 	char *p;
 	u16 max_rate = 0, rate, ht_cap = false, vht_cap = false;
 	u32 i = 0;
-	char	*current_val;
-	long rssi;
 	uint8_t bw_40MHz = 0, short_GI = 0, bw_160MHz = 0, vht_highest_rate = 0;
 	u16 mcs_rate = 0, vht_data_rate = 0;
-	struct registry_priv *pregpriv = &rtlpriv->registrypriv;
 
 	/*  AP MAC address  */
 	iwe.cmd = SIOCGIWAP;
@@ -735,7 +731,6 @@ exit:
 static int rtw_set_wpa_ie(struct rtl_priv *rtlpriv, char *pie, unsigned short ielen)
 {
 	uint8_t *buf = NULL, *pos = NULL;
-	u32 left;
 	int group_cipher = 0, pairwise_cipher = 0;
 	int ret = 0;
 	uint8_t null_addr[] = {0, 0, 0, 0, 0, 0};
@@ -886,7 +881,6 @@ static int rtw_wx_get_name(struct net_device *ndev,
 			     union iwreq_data *wrqu, char *extra)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
-	u16 cap;
 	u32 ht_ielen = 0;
 	char *p;
 	uint8_t ht_cap = false, vht_cap = false;
@@ -1067,7 +1061,6 @@ static int rtw_wx_set_pmkid(struct net_device *ndev, struct iw_request_info *a,
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	uint8_t j, blInserted = false;
 	int intReturn = false;
-	struct mlme_priv  *pmlmepriv = &rtlpriv->mlmepriv;
 	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
 	struct iw_pmksa *pPMK = (struct iw_pmksa *) extra;
 	uint8_t strZeroMacAddress[ETH_ALEN] = { 0x00 };
@@ -1676,9 +1669,7 @@ static int rtw_wx_set_essid(struct net_device *ndev,
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct __queue *queue = &pmlmepriv->scanned_queue;
-	struct pwrctrl_priv *pwrpriv = &rtlpriv->pwrctrlpriv;
 	struct list_head *phead;
-	s8 status = true;
 	struct wlan_network *pnetwork = NULL;
 	NDIS_802_11_AUTHENTICATION_MODE authmode;
 	NDIS_802_11_SSID ndis_ssid;
@@ -2161,11 +2152,6 @@ static int rtw_wx_set_auth(struct net_device *ndev,
 {
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct iw_param *param = (struct iw_param *) &(wrqu->param);
-	struct mlme_priv 	*pmlmepriv = &rtlpriv->mlmepriv;
-	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
-	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	u32 value = param->value;
 	int ret = 0;
 
 	switch (param->flags & IW_AUTH_INDEX) {
@@ -2504,7 +2490,6 @@ void rf_reg_dump(struct rtl_priv *rtlpriv)
 static int wpa_set_param(struct net_device *ndev, uint8_t name, u32 value)
 {
 	uint ret = 0;
-	u32 flags;
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 
 	switch (name) {
@@ -3252,7 +3237,6 @@ static int rtw_set_wps_beacon(struct net_device *ndev, struct ieee_param *param,
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct mlme_priv *pmlmepriv = &(rtlpriv->mlmepriv);
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	int ie_len;
 
 	DBG_871X("%s, len=%d\n", __FUNCTION__, len);
@@ -3598,7 +3582,6 @@ static int rtw_wx_set_priv(struct net_device *ndev,
 	int ret = 0;
 	int len = 0;
 	char *ext;
-	int i;
 
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct iw_point *dwrq = (struct iw_point *) awrq;
@@ -3651,7 +3634,6 @@ static int rtw_wx_set_priv(struct net_device *ndev,
 			 * pmlmepriv->probereq_wpsie_len = cp_sz;
 			 */
 			if (pmlmepriv->wps_probe_req_ie) {
-				u32 free_len = pmlmepriv->wps_probe_req_ie_len;
 				pmlmepriv->wps_probe_req_ie_len = 0;
 				rtw_mfree(pmlmepriv->wps_probe_req_ie);
 				pmlmepriv->wps_probe_req_ie = NULL;

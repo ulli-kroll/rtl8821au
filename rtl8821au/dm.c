@@ -448,8 +448,6 @@ static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 	u8 PwrTrackingLimit = 26; /* +1.0dB */
 	u8 TxRate = 0xFF;
 	s8 Final_OFDM_Swing_Index = 0;
-	s8 Final_CCK_Swing_Index = 0;
-	u8 i = 0;
 
 	if (TxRate != 0xFF) {
 		/* Ulli better with switch case, see in rtlwifi-lib */
@@ -887,8 +885,6 @@ static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 	u8 PwrTrackingLimit = 26; /* +1.0dB */
 	u8 TxRate = 0xFF;
 	s8 Final_OFDM_Swing_Index = 0;
-	s8 Final_CCK_Swing_Index = 0;
-	u8 i = 0;
 	uint32_t finalBbSwingIdx[1];
 
 	RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD, "===>ODM_TxPwrTrackSetPwr8821A\n");
@@ -1118,8 +1114,6 @@ void rtl8821au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 
 static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 {
-	bool 		bStartContTx = false, bSingleTone = false, bCarrierSuppression = false;
-
 	uint32_t	/*RF_Amode=0, RF_Bmode=0,*/ LC_Cal = 0, tmp = 0;
 
 	/* Check continuous TX and Packet TX */
@@ -1194,7 +1188,6 @@ static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 
 static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 
@@ -1409,7 +1402,6 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 
@@ -1629,28 +1621,25 @@ static void rtl8821au_check_tx_power_tracking_thermalmeter(struct rtl_priv *rtlp
 
 static void rtl8821au_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv)
 {
-	uint32_t ret_value;
 	struct false_alarm_statistics *FalseAlmCnt = &(rtlpriv->falsealm_cnt);
+	uint32_t CCKenable;
+	/* read OFDM FA counter */
+	FalseAlmCnt->cnt_ofdm_fail = rtl_get_bbreg(rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
+	FalseAlmCnt->cnt_cck_fail = rtl_get_bbreg(rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
 
-	{
-		uint32_t CCKenable;
-		/* read OFDM FA counter */
-		FalseAlmCnt->cnt_ofdm_fail = rtl_get_bbreg(rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
-		FalseAlmCnt->cnt_cck_fail = rtl_get_bbreg(rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
+	CCKenable =  rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC, BIT28);
+	if (CCKenable)		/* if (*pDM_Odm->pBandType == ODM_BAND_2_4G) */
+		FalseAlmCnt->cnt_all = FalseAlmCnt->cnt_ofdm_fail + FalseAlmCnt->cnt_cck_fail;
+	else
+		FalseAlmCnt->cnt_all = FalseAlmCnt->cnt_ofdm_fail;
 
-		CCKenable =  rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC, BIT28);
-		if (CCKenable)		/* if (*pDM_Odm->pBandType == ODM_BAND_2_4G) */
-			FalseAlmCnt->cnt_all = FalseAlmCnt->cnt_ofdm_fail + FalseAlmCnt->cnt_cck_fail;
-		else
-			FalseAlmCnt->cnt_all = FalseAlmCnt->cnt_ofdm_fail;
+	/* reset OFDM FA coutner */
+	rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
+	rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
+	/* reset CCK FA counter */
+	rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
+	rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
 
-		/* reset OFDM FA coutner */
-		rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
-		rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
-		/* reset CCK FA counter */
-		rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
-		rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
-	}
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_TRACE, "Cnt_Cck_fail=%d\n", FalseAlmCnt->cnt_cck_fail);
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_TRACE, "Cnt_Ofdm_fail=%d\n", FalseAlmCnt->cnt_ofdm_fail);
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_TRACE, "Total false Alarm=%d\n", FalseAlmCnt->cnt_all);
@@ -1824,8 +1813,7 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 	
 	
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
+	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
 	u8		WirelessMode = 0xFF;	/* invalid value */
 	uint32_t 	trafficIndex;
 	uint32_t	edca_param;
@@ -2044,16 +2032,13 @@ static void rtl8821au_dm_cck_packet_detection_thresh(struct rtl_priv *rtlpriv)
 
 void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 	bool fw_current_inpsmode = false;
 	bool fw_ps_awake = true;
 	uint8_t hw_init_completed = false;
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
+	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
 
 	hw_init_completed = rtlpriv->hw_init_completed;
 
@@ -2125,8 +2110,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	u8						CurrentIGI = dm_digtable->cur_igvalue;
 
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
+	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
 
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "odm_DIG()==>\n");
 
@@ -2317,7 +2301,7 @@ void rtl8821au_dm_clean_txpower_tracking_state(struct rtl_priv *rtlpriv)
 
 	rtldm->swing_idx_cck_base = rtldm->default_cck_index;
 	rtldm->swing_idx_cck = rtldm->default_cck_index;
-	rtldm->cck_index;
+	rtldm->cck_index;	/* ULLI BUG ?? */
 
 	for (p = RF90_PATH_A; p < MAX_RF_PATH; ++p) {
 		rtldm->swing_idx_ofdm_base[p] = rtldm->default_ofdm_index;
@@ -2354,15 +2338,13 @@ static void rtl8821_dm_init_gpio_setting(struct rtl_priv *rtlpriv)
 
 static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 {
-	struct rtl_mac *mac = &(rtlpriv->mac80211);
-
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	int i;
-
+	
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_WM_MODE,&(pmlmeext->cur_wireless_mode));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_FORCED_RATE,&(pHalData->ForcedDataRate));
 
@@ -2379,8 +2361,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 
 void rtl8812_dm_init(struct rtl_priv *rtlpriv)
 {
-	uint8_t	i;
-
 	rtl8821_dm_init_gpio_setting(rtlpriv);
 
 	rtlpriv->dm.dm_type = DM_Type_ByDriver;

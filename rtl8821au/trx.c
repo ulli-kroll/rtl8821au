@@ -252,11 +252,9 @@ static inline uint8_t rtw_usb_bulk_size_boundary(struct rtl_priv * rtlpriv,int b
 static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32_t sz , uint8_t bagg_pkt)
 {
 	int	pull = 0;
-	uint	qsel;
-	uint8_t data_rate, pwr_status, offset;
+	uint8_t offset;
 	struct rtl_priv *rtlpriv = pxmitframe->rtlpriv;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct tx_pkt_attrib	*pattrib = &pxmitframe->tx_attrib;
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -1621,7 +1619,6 @@ static int32_t  translate2dbm(uint8_t signal_strength_idx)
 
 static void process_rssi(struct rtl_priv *rtlpriv,struct recv_frame *prframe)
 {
-	uint32_t	last_rssi, tmp_val;
 	struct rx_pkt_attrib *pattrib = &prframe->attrib;
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 	struct signal_stat * signal_stat = &rtlpriv->recvpriv.signal_strength_data;
@@ -1677,7 +1674,6 @@ static void process_rssi(struct rtl_priv *rtlpriv,struct recv_frame *prframe)
 
 static void process_link_qual(struct rtl_priv *rtlpriv,struct recv_frame *prframe)
 {
-	uint32_t	last_evm=0, tmpVal;
  	struct rx_pkt_attrib *pattrib;
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 	struct signal_stat * signal_stat;

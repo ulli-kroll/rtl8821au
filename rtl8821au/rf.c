@@ -31,31 +31,29 @@ static void writeOFDMPowerReg8812(struct rtl_priv *rtlpriv, uint8_t index,
 	u32 *pValue)
 {
 	u16 RegOffset_A[6] = {
-    	RTXAGC_A_OFDM18_OFDM6,
-        RTXAGC_A_OFDM54_OFDM24,
-        RTXAGC_A_MCS03_MCS00,
-        RTXAGC_A_MCS07_MCS04,
-        RTXAGC_A_MCS11_MCS08,
-        RTXAGC_A_MCS15_MCS12
-    };
+		RTXAGC_A_OFDM18_OFDM6,
+		RTXAGC_A_OFDM54_OFDM24,
+		RTXAGC_A_MCS03_MCS00,
+		RTXAGC_A_MCS07_MCS04,
+		RTXAGC_A_MCS11_MCS08,
+		RTXAGC_A_MCS15_MCS12
+	};
 	u16 RegOffset_B[6] = {
-        RTXAGC_B_OFDM18_OFDM6,
-        RTXAGC_B_OFDM54_OFDM24,
-        RTXAGC_B_MCS03_MCS00,
-        RTXAGC_B_MCS07_MCS04,
-        RTXAGC_B_MCS11_MCS08,
-        RTXAGC_B_MCS15_MCS12
-    };
+		RTXAGC_B_OFDM18_OFDM6,
+		RTXAGC_B_OFDM54_OFDM24,
+		RTXAGC_B_MCS03_MCS00,
+		RTXAGC_B_MCS07_MCS04,
+		RTXAGC_B_MCS11_MCS08,
+		RTXAGC_B_MCS15_MCS12
+	};
 
 	uint8_t	i, rf, pwr_val[4];
 	uint32_t	writeVal;
 	u16	RegOffset;
 
-	for(rf=0; rf<2; rf++)
-	{
+	for(rf = 0; rf < 2; rf++) {
 		writeVal = pValue[rf];
-		for(i=0; i<RF_PATH_MAX_92C_88E; i++)
-		{
+		for(i = 0; i < RF_PATH_MAX_92C_88E; i++) {	/* ULLI BUG wrong path */
 			pwr_val[i] = (uint8_t)((writeVal & (0x7f<<(i*8)))>>(i*8));
 			if (pwr_val[i]  > RF6052_MAX_TX_PWR)
 				pwr_val[i]  = RF6052_MAX_TX_PWR;
@@ -82,8 +80,7 @@ void getPowerBase8812(struct rtl_priv *rtlpriv, uint8_t *pPowerLevelOFDM,
 	uint32_t			powerBase0, powerBase1;
 	uint8_t			i, powerlevel[2];
 
-	for(i=0; i<2; i++)
-	{
+	for (i = 0; i < 2; i++) {
 		powerBase0 = pPowerLevelOFDM[i];
 
 		powerBase0 = (powerBase0<<24) | (powerBase0<<16) |(powerBase0<<8) |powerBase0;
@@ -91,17 +88,13 @@ void getPowerBase8812(struct rtl_priv *rtlpriv, uint8_t *pPowerLevelOFDM,
 		//DBG_871X(" [OFDM power base index rf(%c) = 0x%x]\n", ((i==0)?'A':'B'), *(OfdmBase+i));
 	}
 
-	for(i=0; i< rtlpriv->phy.num_total_rfpath; i++)
-	{
+	for (i = 0; i < rtlpriv->phy.num_total_rfpath; i++) {
 		//Check HT20 to HT40 diff
 		if(rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_20)
-		{
 			powerlevel[i] = pPowerLevelBW20[i];
-		}
 		else
-		{
 			powerlevel[i] = pPowerLevelBW40[i];
-		}
+
 		powerBase1 = powerlevel[i];
 		powerBase1 = (powerBase1<<24) | (powerBase1<<16) |(powerBase1<<8) |powerBase1;
 		*(MCSBase+i) = powerBase1;
@@ -123,98 +116,92 @@ void getTxPowerWriteValByRegulatory8812(struct rtl_priv *rtlpriv,
 	// Index 0 & 1= legacy OFDM, 2-5=HT_MCS rate
 	//
 
-	for(rf=0; rf<2; rf++)
-	{
-		switch(Regulatory)
-		{
-			case 0:	// Realtek better performance
-					// increase power diff defined by Realtek for large power
-				chnlGroup = 0;
-				//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
-				//	chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
-				writeVal = rtlphy->mcs_txpwrlevel_origoffset[chnlGroup][index+(rf?8:0)] +
-					((index<2)?powerBase0[rf]:powerBase1[rf]);
-				//RTPRINT(FPHY, PHY_TXPWR, ("RTK better performance, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
-				break;
-			case 1:	// Realtek regulatory
-					// increase power diff defined by Realtek for regulatory
+	for (rf = 0; rf < 2; rf++) {
+		switch(Regulatory) {
+		case 0:	// Realtek better performance
+				// increase power diff defined by Realtek for large power
+			chnlGroup = 0;
+			//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
+			//	chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
+			writeVal = rtlphy->mcs_txpwrlevel_origoffset[chnlGroup][index+(rf?8:0)] +
+				((index<2)?powerBase0[rf]:powerBase1[rf]);
+			//RTPRINT(FPHY, PHY_TXPWR, ("RTK better performance, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
+			break;
+		case 1:	// Realtek regulatory
+				// increase power diff defined by Realtek for regulatory
+			{
+				if(rtlphy->pwrgroup_cnt == 1)
+					chnlGroup = 0;
+				//if(rtlphy->pwrgroup_cnt >= MAX_PG_GROUP)
 				{
-					if(rtlphy->pwrgroup_cnt == 1)
+					if (Channel < 3)			// Chanel 1-2
 						chnlGroup = 0;
-					//if(rtlphy->pwrgroup_cnt >= MAX_PG_GROUP)
-					{
-						if (Channel < 3)			// Chanel 1-2
-							chnlGroup = 0;
-						else if (Channel < 6)		// Channel 3-5
-							chnlGroup = 1;
-						else	 if(Channel <9)		// Channel 6-8
-							chnlGroup = 2;
-						else if(Channel <12)		// Channel 9-11
-							chnlGroup = 3;
-						else if(Channel <14)		// Channel 12-13
-							chnlGroup = 4;
-						else if(Channel ==14)		// Channel 14
-							chnlGroup = 5;
+					else if (Channel < 6)		// Channel 3-5
+						chnlGroup = 1;
+					else	 if(Channel <9)		// Channel 6-8
+						chnlGroup = 2;
+					else if(Channel <12)		// Channel 9-11
+						chnlGroup = 3;
+					else if(Channel <14)		// Channel 12-13
+						chnlGroup = 4;
+					else if(Channel ==14)		// Channel 14
+						chnlGroup = 5;
 
 /*
-						if(Channel <= 3)
-							chnlGroup = 0;
-						else if(Channel >= 4 && Channel <= 9)
-							chnlGroup = 1;
-						else if(Channel > 9)
-							chnlGroup = 2;
+					if(Channel <= 3)
+						chnlGroup = 0;
+					else if(Channel >= 4 && Channel <= 9)
+						chnlGroup = 1;
+					else if(Channel > 9)
+						chnlGroup = 2;
 
 
-						if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_20)
-							chnlGroup++;
-						else
-							chnlGroup+=4;
+					if(pHalData->CurrentChannelBW == CHANNEL_WIDTH_20)
+						chnlGroup++;
+					else
+						chnlGroup+=4;
 */
-					}
-					//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
-					//chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
-					writeVal = rtlphy->mcs_txpwrlevel_origoffset[chnlGroup][index+(rf?8:0)] +
-							((index<2)?powerBase0[rf]:powerBase1[rf]);
-					//RTPRINT(FPHY, PHY_TXPWR, ("Realtek regulatory, 20MHz, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
 				}
-				break;
-			case 2:	// Better regulatory
-					// don't increase any power diff
-				writeVal = ((index<2)?powerBase0[rf]:powerBase1[rf]);
-				//RTPRINT(FPHY, PHY_TXPWR, ("Better regulatory, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
-				break;
-			default:
-				chnlGroup = 0;
+				//RTPRINT(FPHY, PHY_TXPWR, ("MCSTxPowerLevelOriginalOffset[%d][%d] = 0x%x\n",
+				//chnlGroup, index, pHalData->MCSTxPowerLevelOriginalOffset[chnlGroup][index+(rf?8:0)]));
 				writeVal = rtlphy->mcs_txpwrlevel_origoffset[chnlGroup][index+(rf?8:0)] +
 						((index<2)?powerBase0[rf]:powerBase1[rf]);
-				//RTPRINT(FPHY, PHY_TXPWR, ("RTK better performance, writeVal rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
-				break;
+				//RTPRINT(FPHY, PHY_TXPWR, ("Realtek regulatory, 20MHz, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
+			}
+			break;
+		case 2:	// Better regulatory
+				// don't increase any power diff
+			writeVal = ((index<2)?powerBase0[rf]:powerBase1[rf]);
+			//RTPRINT(FPHY, PHY_TXPWR, ("Better regulatory, writeVal(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
+			break;
+		default:
+			chnlGroup = 0;
+			writeVal = rtlphy->mcs_txpwrlevel_origoffset[chnlGroup][index+(rf?8:0)] +
+					((index<2)?powerBase0[rf]:powerBase1[rf]);
+			//RTPRINT(FPHY, PHY_TXPWR, ("RTK better performance, writeVal rf(%c) = 0x%x\n", ((rf==0)?'A':'B'), writeVal));
+			break;
 		}
 
 // 20100427 Joseph: Driver dynamic Tx power shall not affect Tx power. It shall be determined by power training mechanism.
 // Currently, we cannot fully disable driver dynamic tx power mechanism because it is referenced by BT coexist mechanism.
 // In the future, two mechanism shall be separated from each other and maintained independantly. Thanks for Lanhsin's reminder.
 		//92d do not need this
-		if(rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_Level1)
+		if (rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_Level1)
 			writeVal = 0x14141414;
-		else if(rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_Level2)
+		else if (rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_Level2)
 			writeVal = 0x00000000;
 
 		// 20100628 Joseph: High power mode for BT-Coexist mechanism.
 		// This mechanism is only applied when Driver-Highpower-Mechanism is OFF.
-		if(rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_BT1)
-		{
+		if (rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_BT1) {
 			//RTPRINT(FBT, BT_TRACE, ("Tx Power (-6)\n"));
 			writeVal = writeVal - 0x06060606;
-		}
-		else if(rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_BT2)
-		{
+		} else if(rtlpriv->dm.dynamic_txhighpower_lvl == TxHighPwrLevel_BT2) {
 			//RTPRINT(FBT, BT_TRACE, ("Tx Power (-0)\n"));
 			writeVal = writeVal ;
 		}
 		/*
-		if(pMgntInfo->bDisableTXPowerByRate)
-		{
+		if(pMgntInfo->bDisableTXPowerByRate) {
 		// add for  OID_RT_11N_TX_POWER_BY_RATE ,disable tx powre change by rate
 			writeVal = 0x2c2c2c2c;
 		}
@@ -235,7 +222,7 @@ void rtl8821au_phy_rf6052_set_ofdm_txpower(struct rtl_priv *rtlpriv,
 
 	getPowerBase8812(rtlpriv, pPowerLevelOFDM,pPowerLevelBW20,pPowerLevelBW40, Channel, &powerBase0[0], &powerBase1[0]);
 
-	for(index=0; index<6; index++) {
+	for(index = 0; index < 6; index++) {
 		getTxPowerWriteValByRegulatory8812(rtlpriv, Channel, index,
 			&powerBase0[0], &powerBase1[0], &writeVal[0]);
 
@@ -314,7 +301,7 @@ void rtl8821au_phy_rf6052_set_cck_txpower(struct rtl_priv *rtlpriv, uint8_t *pPo
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct mlme_ext_priv 	*pmlmeext = &rtlpriv->mlmeextpriv;
-	uint32_t		TxAGC[2] = {0, 0},
+	uint32_t		TxAGC[2] = {0, 0},	/* ULLI : change for 4 tx ?? */
 				tmpval = 0;
 	bool	TurboScanOff = false;
 	uint8_t	idx1, idx2;

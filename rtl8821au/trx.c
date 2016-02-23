@@ -1,6 +1,14 @@
+#ifdef CONFIG_RTLWIFI
+
+#error "NO RTLWIFI DEFINED"
+
+#else
+
 #include <rtl8812a_hal.h>
 #include "trx.h"
 #include "def.h"
+
+#endif
 
 #undef DBG_871X
 static inline void DBG_871X(const char *fmt, ...)

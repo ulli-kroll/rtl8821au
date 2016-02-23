@@ -75,11 +75,16 @@ EXTRA_CFLAGS += -DCONFIG_RTLWIFI_DEBUG
 
 MODULE_NAME = rtl8821au
 
+ifneq ($(RTLWIFI),y)
 $(MODULE_NAME)-y += 	$(OS_FILES) \
 			$(CORE_FILES) \
 			$(RTLWIFI_FILES) \
-			$(HAL_FILES) \
-			$(RTL8821AU_FILES)
+			$(HAL_FILES)
+else
+EXTRA_CFLAGS += -DCONFIG_RTLWIFI
+endif
+$(MODULE_NAME)-y +=	$(RTL8821AU_FILES)
+
 			
 
 ########### END OF PATH  #################################
@@ -136,3 +141,4 @@ help:
 	@echo "modules		build this module"
 	@echo "installfw	install firmware"
 	@echo "clean		clean"
+	@echo "RTLWIFI=y	use RTLWIFI from linux kernel not complete !!"

@@ -1,5 +1,10 @@
-#include "sw.h"
+#ifdef CONFIG_RTLWIFI
 
+#error "NO RTLWIFI DEFINED"
+
+#else
+
+#include "sw.h"
 #include "dm.h"
 #include "phy.h"
 #include "reg.h"
@@ -12,6 +17,8 @@
 #include <rtl8812a_hal.h>
 
 #include "../debug.h"
+
+#endif
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
 

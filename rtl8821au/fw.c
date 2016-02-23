@@ -1,5 +1,13 @@
+#ifdef CONFIG_RTLWIFI
+
+#error "NO RTLWIFI DEFINED"
+
+#else
+
 #include "fw.h"
 #include <linux/firmware.h>
+
+#endif
 
 #define CONFIG_H2C_EF
 

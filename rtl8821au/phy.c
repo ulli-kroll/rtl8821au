@@ -1,3 +1,9 @@
+#ifdef CONFIG_RTLWIFI
+
+#error "NO RTLWIFI DEFINED"
+
+#else
+
 #include <rtl8812a_hal.h>
 #include "phy.h"
 #include "dm.h"
@@ -5,6 +11,9 @@
 #include "rf.h"
 #include "def.h"
 #include "reg.h"
+
+#endif
+
 /*
  * 1. BB register R/W API
  */

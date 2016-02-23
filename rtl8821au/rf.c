@@ -1,8 +1,16 @@
+#ifdef CONFIG_RTLWIFI
+
+#error NO RTLWIFI DEFINED
+
+#else
+
 #include <rtl8812a_hal.h>
 #include "rf.h"
 #include "reg.h"
 #include "phy.h"
 #include "dm.h"
+
+#endif
 
 void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH	Bandwidth)	/* 20M or 40M */
 {

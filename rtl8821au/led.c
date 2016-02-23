@@ -18,7 +18,15 @@
  *
  ******************************************************************************/
 
+#ifdef CONFIG_RTLWIFI
+
+#error "NO RTLWIFI DEFINED"
+
+#else
+
 #include <drv_types.h>
+
+#endif
 
 /*
  * ULLI led.c is a mess, we have two different paths for

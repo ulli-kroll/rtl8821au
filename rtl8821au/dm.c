@@ -1,7 +1,15 @@
+#ifdef CONFIG_RTLWIFI
+
+#error "NO RTLWIFI DEFINED"
+
+#else
+
 #include "dm.h"
 #include "phy.h"
 #include "reg.h"
 #include "fw.h"
+
+#endif
 
 static const u32 txscalling_tbl[TXSCALE_TABLE_SIZE] = {
 	0x081, /* 0,  -12.0dB */

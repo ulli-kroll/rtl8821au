@@ -1,3 +1,9 @@
+#ifdef CONFIG_RTLWIFI
+
+#error "NO RTLWIFI DEFINED"
+
+#else
+
 #include "hw.h"
 #include "reg.h"
 #include "fw.h"
@@ -6,6 +12,8 @@
 #include "def.h"
 #include "dm.h"
 #include "../cam.h"
+
+#endif
 
 #undef DBG_8192C
 static inline void DBG_8192C(const char *fmt, ...)

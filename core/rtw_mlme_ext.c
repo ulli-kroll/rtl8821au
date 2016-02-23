@@ -130,136 +130,189 @@ unsigned char	MCS_rate_1R[16] = {0xff, 0x00, 0x0, 0x0, 0x01, 0x0, 0x0, 0x0, 0x0,
 /********************************************************
 ChannelPlan definitions
 *********************************************************/
-/*static RT_CHANNEL_PLAN	DefaultChannelPlan[RT_CHANNEL_DOMAIN_MAX] = {
-	{{1,2,3,4,5,6,7,8,9,10,11,36,40,44,48,52,56,60,64,100,104,108,112,116,132,136,140,149,153,157,161,165},32},					// 0x00, RT_CHANNEL_DOMAIN_FCC
-	{{1,2,3,4,5,6,7,8,9,10,11,36,40,44,48,52,56,60,64,100,104,108,112,116,136,140,149,153,157,161,165},31},						// 0x01, RT_CHANNEL_DOMAIN_IC
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13,36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140},32},						// 0x02, RT_CHANNEL_DOMAIN_ETSI
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13},13},																					// 0x03, RT_CHANNEL_DOMAIN_SPAIN
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13},13},																					// 0x04, RT_CHANNEL_DOMAIN_FRANCE
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13},13},																					// 0x05, RT_CHANNEL_DOMAIN_MKK
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13},13},																					// 0x06, RT_CHANNEL_DOMAIN_MKK1
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13,36,40,44,48,52,56,60,64},21},																// 0x07, RT_CHANNEL_DOMAIN_ISRAEL
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13,14,36,40,44,48,52,56,60,64},22},															// 0x08, RT_CHANNEL_DOMAIN_TELEC
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13,14},14},																				// 0x09, RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13},13},																					// 0x0A, RT_CHANNEL_DOMAIN_WORLD_WIDE_13
-	{{1,2,3,4,5,6,7,8,9,10,11,56,60,64,100,104,108,112,116,136,140,149,153,157,161,165},26},									// 0x0B, RT_CHANNEL_DOMAIN_TAIWAN
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13,149,153,157,161,165},18},																// 0x0C, RT_CHANNEL_DOMAIN_CHINA
-	{{1,2,3,4,5,6,7,8,9,10,11,36,40,44,48,52,56,60,64,149,153,157,161,165},24},												// 0x0D, RT_CHANNEL_DOMAIN_SINGAPORE_INDIA_MEXICO
-	{{1,2,3,4,5,6,7,8,9,10,11,36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,149,153,157,161,165},31},						// 0x0E, RT_CHANNEL_DOMAIN_KOREA
-	{{1,2,3,4,5,6,7,8,9,10,11,36,40,44,48,52,56,60,64},19},																	// 0x0F, RT_CHANNEL_DOMAIN_TURKEY
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13,36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140},32},						// 0x10, RT_CHANNEL_DOMAIN_JAPAN
-	{{1,2,3,4,5,6,7,8,9,10,11,36,40,44,48,149,153,157,161,165},20},															// 0x11, RT_CHANNEL_DOMAIN_FCC_NO_DFS
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13,36,40,44,48},17},																		// 0x12, RT_CHANNEL_DOMAIN_JAPAN_NO_DFS
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13,36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161,165},37},	// 0x13, RT_CHANNEL_DOMAIN_WORLD_WIDE_5G
-	{{1,2,3,4,5,6,7,8,9,10,11,56,60,64,149,153,157,161,165},19},																// 0x14, RT_CHANNEL_DOMAIN_TAIWAN_NO_DFS
-};*/
 
-static RT_CHANNEL_PLAN_2G	RTW_ChannelPlan2G[RT_CHANNEL_DOMAIN_2G_MAX] = {
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13},13},		// 0x00, RT_CHANNEL_DOMAIN_2G_WORLD , Passive scan CH 12, 13
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13},13},		// 0x01, RT_CHANNEL_DOMAIN_2G_ETSI1
-	{{1,2,3,4,5,6,7,8,9,10,11},11},				// 0x02, RT_CHANNEL_DOMAIN_2G_FCC1
-	{{1,2,3,4,5,6,7,8,9,10,11,12,13,14},14},	// 0x03, RT_CHANNEL_DOMAIN_2G_MIKK1
-	{{10,11,12,13},4},							// 0x04, RT_CHANNEL_DOMAIN_2G_ETSI2
-	{{},0},										// 0x05, RT_CHANNEL_DOMAIN_2G_NULL
+static RT_CHANNEL_PLAN_2G RTW_ChannelPlan2G[RT_CHANNEL_DOMAIN_2G_MAX] = {
+	{
+	  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },	/* 0x00, RT_CHANNEL_DOMAIN_2G_WORLD , Passive scan CH 12, 13 */
+	    13
+	}, {
+	  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },	/* 0x01, RT_CHANNEL_DOMAIN_2G_ETSI1 */
+	    13
+	}, {
+	  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },		/* 0x02, RT_CHANNEL_DOMAIN_2G_FCC1 */
+	    11
+	}, {
+	  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 },	/* 0x03, RT_CHANNEL_DOMAIN_2G_MIKK1 */
+	    14
+	}, {
+	  { 10, 11, 12, 13 },					/* 0x04, RT_CHANNEL_DOMAIN_2G_ETSI2 */
+	    4
+	}, {
+	  { },							/* 0x05, RT_CHANNEL_DOMAIN_2G_NULL */
+	    0
+	},
 };
 
-static RT_CHANNEL_PLAN_5G	RTW_ChannelPlan5G[RT_CHANNEL_DOMAIN_5G_MAX] = {
-	{{},0},																					// 0x00, RT_CHANNEL_DOMAIN_5G_NULL
-	{{36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140},19},						// 0x01, RT_CHANNEL_DOMAIN_5G_ETSI1
-	{{36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161,165},24},	// 0x02, RT_CHANNEL_DOMAIN_5G_ETSI2
-	{{36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,149,153,157,161,165},22},			// 0x03, RT_CHANNEL_DOMAIN_5G_ETSI3
-	{{36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161,165},24},	// 0x04, RT_CHANNEL_DOMAIN_5G_FCC1
-	{{36,40,44,48,149,153,157,161,165},9},														// 0x05, RT_CHANNEL_DOMAIN_5G_FCC2
-	{{36,40,44,48,52,56,60,64,149,153,157,161,165},13},											// 0x06, RT_CHANNEL_DOMAIN_5G_FCC3
-	{{36,40,44,48,52,56,60,64,149,153,157,161},12},												// 0x07, RT_CHANNEL_DOMAIN_5G_FCC4
-	{{149,153,157,161,165},5},																	// 0x08, RT_CHANNEL_DOMAIN_5G_FCC5
-	{{36,40,44,48,52,56,60,64},8},																// 0x09, RT_CHANNEL_DOMAIN_5G_FCC6
-	{{36,40,44,48,52,56,60,64,100,104,108,112,116,136,140,149,153,157,161,165},20},					// 0x0A, RT_CHANNEL_DOMAIN_5G_FCC7_IC1
-	{{36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,149,153,157,161,165},20},					// 0x0B, RT_CHANNEL_DOMAIN_5G_KCC1
-	{{36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140},19},						// 0x0C, RT_CHANNEL_DOMAIN_5G_MKK1
-	{{36,40,44,48,52,56,60,64},8},																// 0x0D, RT_CHANNEL_DOMAIN_5G_MKK2
-	{{100,104,108,112,116,120,124,128,132,136,140},11},											// 0x0E, RT_CHANNEL_DOMAIN_5G_MKK3
-	{{56,60,64,100,104,108,112,116,136,140,149,153,157,161,165},15},								// 0x0F, RT_CHANNEL_DOMAIN_5G_NCC1
-	{{56,60,64,149,153,157,161,165},8},															// 0x10, RT_CHANNEL_DOMAIN_5G_NCC2
+static RT_CHANNEL_PLAN_5G RTW_ChannelPlan5G[RT_CHANNEL_DOMAIN_5G_MAX] = {
+	{
+	  { },							/* 0x00, RT_CHANNEL_DOMAIN_5G_NULL */
+	  0
+	}, {
+	  { 36,  40, 44, 48, 52, 56, 60, 64, 100, 104, 108,	/* 0x01, RT_CHANNEL_DOMAIN_5G_ETSI1 */
+	   112, 116, 120, 124, 128, 132, 136, 140 },
+	  19
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x02, RT_CHANNEL_DOMAIN_5G_ETSI2 */
+	   108, 112, 116, 120, 124, 128, 132, 136, 140, 149,
+	   153, 157, 161, 165 },
+	  24
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x03, RT_CHANNEL_DOMAIN_5G_ETSI3 */
+	   108, 112, 116, 120, 124, 128, 132, 149, 153, 157,
+	   161, 165 },
+	  22
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x04, RT_CHANNEL_DOMAIN_5G_FCC1 */
+	   108, 112, 116, 120, 124, 128, 132, 136, 140, 149,
+	   153, 157, 161, 165 },
+	  24
+	}, {
+	  { 36,  40,  44,  48, 149, 153, 157, 161, 165 },	/* 0x05, RT_CHANNEL_DOMAIN_5G_FCC2 */
+	  9
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64, 149, 153,	/* 0x06, RT_CHANNEL_DOMAIN_5G_FCC3 */
+	   157, 161, 165 },
+	   13
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64, 149, 153,	/* 0x07, RT_CHANNEL_DOMAIN_5G_FCC4 */
+	   157, 161 },
+	   12
+	}, {
+	  { 149, 153, 157, 161, 165 },				/* 0x08, RT_CHANNEL_DOMAIN_5G_FCC5 */
+	   5
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64 },		/* 0x09, RT_CHANNEL_DOMAIN_5G_FCC6 */
+	  8
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x0A, RT_CHANNEL_DOMAIN_5G_FCC7_IC1 */
+	   108, 112, 116, 136, 140, 149, 153, 157, 161, 165 },
+	   20
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x0B, RT_CHANNEL_DOMAIN_5G_KCC1 */
+	   108, 112, 116, 120, 124, 149, 153, 157, 161, 165},
+	   20
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64,  100,  104,	/* 0x0C, RT_CHANNEL_DOMAIN_5G_MKK1 */
+	   108, 112, 116, 120, 124, 128, 132, 136, 140 },
+	   19
+	}, {
+	  { 36,  40,  44,  48,  52,  56,  60,  64 },		/* 0x0D, RT_CHANNEL_DOMAIN_5G_MKK2 */
+	   8
+	}, {
+	  { 100, 104, 108, 112, 116, 120, 124, 128,		/* 0x0E, RT_CHANNEL_DOMAIN_5G_MKK3 */
+	    132, 136, 140 },
+	    11
+	}, {
+	  { 56,  60,  64, 100, 104, 108, 112, 116, 136, 140,	/* 0x0F, RT_CHANNEL_DOMAIN_5G_NCC1 */
+	   149, 153, 157, 161, 165 },
+	   15
+	}, {
+	  { 56,  60,  64,  149, 153, 157, 161, 165},		/* 0x10, RT_CHANNEL_DOMAIN_5G_NCC2 */
+	  8
+	},
 
 	//===== Driver self defined for old channel plan Compatible ,Remember to modify if have new channel plan definition =====
-	{{36,40,44,48,52,56,60,64,100,104,108,112,116,132,136,140,149,153,157,161,165},21},				// 0x11, RT_CHANNEL_DOMAIN_5G_FCC
-	{{36,40,44,48},4},																			// 0x12, RT_CHANNEL_DOMAIN_5G_JAPAN_NO_DFS
-	{{36,40,44,48,149,153,157,161},8},																// 0x13, RT_CHANNEL_DOMAIN_5G_FCC4_NO_DFS
+	  {
+	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x11, RT_CHANNEL_DOMAIN_5G_FCC */
+	   108, 112, 116, 132, 136, 140, 149, 153, 157, 161,
+	   165 },
+	  21
+	}, {
+	  { 36,  40,  44,  48 },				/* 0x12, RT_CHANNEL_DOMAIN_5G_JAPAN_NO_DFS */
+	  4
+	}, {
+	  { 36,  40,  44,  48, 149, 153, 157, 161 },		/* 0x13, RT_CHANNEL_DOMAIN_5G_FCC4_NO_DFS */
+	  8
+	},
 };
 
-static RT_CHANNEL_PLAN_MAP	RTW_ChannelPlanMap[RT_CHANNEL_DOMAIN_MAX] = {
+static RT_CHANNEL_PLAN_MAP RTW_ChannelPlanMap[RT_CHANNEL_DOMAIN_MAX] = {
+	/* 2.4G  5G   Frequencies mapping */
 	//===== 0x00 ~ 0x1F , Old Define =====
-	{0x02,0x11},	//0x00, RT_CHANNEL_DOMAIN_FCC
-	{0x02,0x0A},	//0x01, RT_CHANNEL_DOMAIN_IC
-	{0x01,0x01},	//0x02, RT_CHANNEL_DOMAIN_ETSI
-	{0x01,0x00},	//0x03, RT_CHANNEL_DOMAIN_SPAIN
-	{0x01,0x00},	//0x04, RT_CHANNEL_DOMAIN_FRANCE
-	{0x03,0x00},	//0x05, RT_CHANNEL_DOMAIN_MKK
-	{0x03,0x00},	//0x06, RT_CHANNEL_DOMAIN_MKK1
-	{0x01,0x09},	//0x07, RT_CHANNEL_DOMAIN_ISRAEL
-	{0x03,0x09},	//0x08, RT_CHANNEL_DOMAIN_TELEC
-	{0x03,0x00},	//0x09, RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN
-	{0x00,0x00},	//0x0A, RT_CHANNEL_DOMAIN_WORLD_WIDE_13
-	{0x02,0x0F},	//0x0B, RT_CHANNEL_DOMAIN_TAIWAN
-	{0x01,0x08},	//0x0C, RT_CHANNEL_DOMAIN_CHINA
-	{0x02,0x06},	//0x0D, RT_CHANNEL_DOMAIN_SINGAPORE_INDIA_MEXICO
-	{0x02,0x0B},	//0x0E, RT_CHANNEL_DOMAIN_KOREA
-	{0x02,0x09},	//0x0F, RT_CHANNEL_DOMAIN_TURKEY
-	{0x01,0x01},	//0x10, RT_CHANNEL_DOMAIN_JAPAN
-	{0x02,0x05},	//0x11, RT_CHANNEL_DOMAIN_FCC_NO_DFS
-	{0x01,0x12},	//0x12, RT_CHANNEL_DOMAIN_JAPAN_NO_DFS
-	{0x00,0x04},	//0x13, RT_CHANNEL_DOMAIN_WORLD_WIDE_5G
-	{0x02,0x10},	//0x14, RT_CHANNEL_DOMAIN_TAIWAN_NO_DFS
-	{0x00,0x12},	//0x15, RT_CHANNEL_DOMAIN_ETSI_NO_DFS
-	{0x00,0x13},	//0x16, RT_CHANNEL_DOMAIN_KOREA_NO_DFS
-	{0x03,0x12},	//0x17, RT_CHANNEL_DOMAIN_JAPAN_NO_DFS
-	{0x05,0x08},	//0x18, RT_CHANNEL_DOMAIN_PAKISTAN_NO_DFS
-	{0x02,0x08},	//0x19, RT_CHANNEL_DOMAIN_TAIWAN2_NO_DFS
-	{0x00,0x00},	//0x1A,
-	{0x00,0x00},	//0x1B,
-	{0x00,0x00},	//0x1C,
-	{0x00,0x00},	//0x1D,
-	{0x00,0x00},	//0x1E,
-	{0x05,0x04},	//0x1F, RT_CHANNEL_DOMAIN_WORLD_WIDE_ONLY_5G
+	{ 0x02, 0x11 },	//0x00, RT_CHANNEL_DOMAIN_FCC
+	{ 0x02, 0x0A },	//0x01, RT_CHANNEL_DOMAIN_IC
+	{ 0x01, 0x01 },	//0x02, RT_CHANNEL_DOMAIN_ETSI
+	{ 0x01, 0x00 },	//0x03, RT_CHANNEL_DOMAIN_SPAIN
+	{ 0x01, 0x00 },	//0x04, RT_CHANNEL_DOMAIN_FRANCE
+	{ 0x03, 0x00 },	//0x05, RT_CHANNEL_DOMAIN_MKK
+	{ 0x03, 0x00 },	//0x06, RT_CHANNEL_DOMAIN_MKK1
+	{ 0x01, 0x09 },	//0x07, RT_CHANNEL_DOMAIN_ISRAEL
+	{ 0x03, 0x09 },	//0x08, RT_CHANNEL_DOMAIN_TELEC
+	{ 0x03, 0x00 },	//0x09, RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN
+	{ 0x00, 0x00 },	//0x0A, RT_CHANNEL_DOMAIN_WORLD_WIDE_13
+	{ 0x02, 0x0F },	//0x0B, RT_CHANNEL_DOMAIN_TAIWAN
+	{ 0x01, 0x08 },	//0x0C, RT_CHANNEL_DOMAIN_CHINA
+	{ 0x02, 0x06 },	//0x0D, RT_CHANNEL_DOMAIN_SINGAPORE_INDIA_MEXICO
+	{ 0x02, 0x0B },	//0x0E, RT_CHANNEL_DOMAIN_KOREA
+	{ 0x02, 0x09 },	//0x0F, RT_CHANNEL_DOMAIN_TURKEY
+	{ 0x01, 0x01 },	//0x10, RT_CHANNEL_DOMAIN_JAPAN
+	{ 0x02, 0x05 },	//0x11, RT_CHANNEL_DOMAIN_FCC_NO_DFS
+	{ 0x01, 0x12 },	//0x12, RT_CHANNEL_DOMAIN_JAPAN_NO_DFS
+	{ 0x00, 0x04 },	//0x13, RT_CHANNEL_DOMAIN_WORLD_WIDE_5G
+	{ 0x02, 0x10 },	//0x14, RT_CHANNEL_DOMAIN_TAIWAN_NO_DFS
+	{ 0x00, 0x12 },	//0x15, RT_CHANNEL_DOMAIN_ETSI_NO_DFS
+	{ 0x00, 0x13 },	//0x16, RT_CHANNEL_DOMAIN_KOREA_NO_DFS
+	{ 0x03, 0x12 },	//0x17, RT_CHANNEL_DOMAIN_JAPAN_NO_DFS
+	{ 0x05, 0x08 },	//0x18, RT_CHANNEL_DOMAIN_PAKISTAN_NO_DFS
+	{ 0x02, 0x08 },	//0x19, RT_CHANNEL_DOMAIN_TAIWAN2_NO_DFS
+	{ 0x00, 0x00 },	//0x1A,
+	{ 0x00, 0x00 },	//0x1B,
+	{ 0x00, 0x00 },	//0x1C,
+	{ 0x00, 0x00 },	//0x1D,
+	{ 0x00, 0x00 },	//0x1E,
+	{ 0x05, 0x04 },	//0x1F, RT_CHANNEL_DOMAIN_WORLD_WIDE_ONLY_5G
+
 	//===== 0x20 ~ 0x7F ,New Define =====
-	{0x00,0x00},	//0x20, RT_CHANNEL_DOMAIN_WORLD_NULL
-	{0x01,0x00},	//0x21, RT_CHANNEL_DOMAIN_ETSI1_NULL
-	{0x02,0x00},	//0x22, RT_CHANNEL_DOMAIN_FCC1_NULL
-	{0x03,0x00},	//0x23, RT_CHANNEL_DOMAIN_MKK1_NULL
-	{0x04,0x00},	//0x24, RT_CHANNEL_DOMAIN_ETSI2_NULL
-	{0x02,0x04},	//0x25, RT_CHANNEL_DOMAIN_FCC1_FCC1
-	{0x00,0x01},	//0x26, RT_CHANNEL_DOMAIN_WORLD_ETSI1
-	{0x03,0x0C},	//0x27, RT_CHANNEL_DOMAIN_MKK1_MKK1
-	{0x00,0x0B},	//0x28, RT_CHANNEL_DOMAIN_WORLD_KCC1
-	{0x00,0x05},	//0x29, RT_CHANNEL_DOMAIN_WORLD_FCC2
-	{0x00,0x00},	//0x2A,
-	{0x00,0x00},	//0x2B,
-	{0x00,0x00},	//0x2C,
-	{0x00,0x00},	//0x2D,
-	{0x00,0x00},	//0x2E,
-	{0x00,0x00},	//0x2F,
-	{0x00,0x06},	//0x30, RT_CHANNEL_DOMAIN_WORLD_FCC3
-	{0x00,0x07},	//0x31, RT_CHANNEL_DOMAIN_WORLD_FCC4
-	{0x00,0x08},	//0x32, RT_CHANNEL_DOMAIN_WORLD_FCC5
-	{0x00,0x09},	//0x33, RT_CHANNEL_DOMAIN_WORLD_FCC6
-	{0x02,0x0A},	//0x34, RT_CHANNEL_DOMAIN_FCC1_FCC7
-	{0x00,0x02},	//0x35, RT_CHANNEL_DOMAIN_WORLD_ETSI2
-	{0x00,0x03},	//0x36, RT_CHANNEL_DOMAIN_WORLD_ETSI3
-	{0x03,0x0D},	//0x37, RT_CHANNEL_DOMAIN_MKK1_MKK2
-	{0x03,0x0E},	//0x38, RT_CHANNEL_DOMAIN_MKK1_MKK3
-	{0x02,0x0F},	//0x39, RT_CHANNEL_DOMAIN_FCC1_NCC1
-	{0x00,0x00},	//0x3A,
-	{0x00,0x00},	//0x3B,
-	{0x00,0x00},	//0x3C,
-	{0x00,0x00},	//0x3D,
-	{0x00,0x00},	//0x3E,
-	{0x00,0x00},	//0x3F,
-	{0x02,0x10},	//0x40, RT_CHANNEL_DOMAIN_FCC1_NCC2
-	{0x03,0x00},	//0x41, RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN_2G
+
+	{ 0x00, 0x00 },	//0x20, RT_CHANNEL_DOMAIN_WORLD_NULL
+	{ 0x01, 0x00 },	//0x21, RT_CHANNEL_DOMAIN_ETSI1_NULL
+	{ 0x02, 0x00 },	//0x22, RT_CHANNEL_DOMAIN_FCC1_NULL
+	{ 0x03, 0x00 },	//0x23, RT_CHANNEL_DOMAIN_MKK1_NULL
+	{ 0x04, 0x00 },	//0x24, RT_CHANNEL_DOMAIN_ETSI2_NULL
+	{ 0x02, 0x04 },	//0x25, RT_CHANNEL_DOMAIN_FCC1_FCC1
+	{ 0x00, 0x01 },	//0x26, RT_CHANNEL_DOMAIN_WORLD_ETSI1
+	{ 0x03, 0x0C },	//0x27, RT_CHANNEL_DOMAIN_MKK1_MKK1
+	{ 0x00, 0x0B },	//0x28, RT_CHANNEL_DOMAIN_WORLD_KCC1
+	{ 0x00, 0x05 },	//0x29, RT_CHANNEL_DOMAIN_WORLD_FCC2
+	{ 0x00, 0x00 },	//0x2A,
+	{ 0x00, 0x00 },	//0x2B,
+	{ 0x00, 0x00 },	//0x2C,
+	{ 0x00, 0x00 },	//0x2D,
+	{ 0x00, 0x00 },	//0x2E,
+	{ 0x00, 0x00 },	//0x2F,
+	{ 0x00, 0x06 },	//0x30, RT_CHANNEL_DOMAIN_WORLD_FCC3
+	{ 0x00, 0x07 },	//0x31, RT_CHANNEL_DOMAIN_WORLD_FCC4
+	{ 0x00, 0x08 },	//0x32, RT_CHANNEL_DOMAIN_WORLD_FCC5
+	{ 0x00, 0x09 },	//0x33, RT_CHANNEL_DOMAIN_WORLD_FCC6
+	{ 0x02, 0x0A },	//0x34, RT_CHANNEL_DOMAIN_FCC1_FCC7
+	{ 0x00, 0x02 },	//0x35, RT_CHANNEL_DOMAIN_WORLD_ETSI2
+	{ 0x00, 0x03 },	//0x36, RT_CHANNEL_DOMAIN_WORLD_ETSI3
+	{ 0x03, 0x0D },	//0x37, RT_CHANNEL_DOMAIN_MKK1_MKK2
+	{ 0x03, 0x0E },	//0x38, RT_CHANNEL_DOMAIN_MKK1_MKK3
+	{ 0x02, 0x0F },	//0x39, RT_CHANNEL_DOMAIN_FCC1_NCC1
+	{ 0x00, 0x00 },	//0x3A,
+	{ 0x00, 0x00 },	//0x3B,
+	{ 0x00, 0x00 },	//0x3C,
+	{ 0x00, 0x00 },	//0x3D,
+	{ 0x00, 0x00 },	//0x3E,
+	{ 0x00, 0x00 },	//0x3F,
+	{ 0x02, 0x10 },	//0x40, RT_CHANNEL_DOMAIN_FCC1_NCC2
+	{ 0x03, 0x00 },	//0x41, RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN_2G
 };
 
-static RT_CHANNEL_PLAN_MAP	RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE = {0x03,0x02}; //use the conbination for max channel numbers
+static RT_CHANNEL_PLAN_MAP RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE = {
+	  0x03, 0x02		 /* use the conbination for max channel numbers */
+};
 
 /*
  * Search the @param channel_num in given @param channel_set
@@ -428,14 +481,13 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 
 	memset(channel_set, 0, sizeof(RT_CHANNEL_INFO)*MAX_CHANNEL_NUM);
 
-	if(ChannelPlan >= RT_CHANNEL_DOMAIN_MAX && ChannelPlan != RT_CHANNEL_DOMAIN_REALTEK_DEFINE)
-	{
+	if (ChannelPlan >= RT_CHANNEL_DOMAIN_MAX &&
+	    ChannelPlan != RT_CHANNEL_DOMAIN_REALTEK_DEFINE) {
 		DBG_871X("ChannelPlan ID %x error !!!!!\n",ChannelPlan);
 		return chanset_size;
 	}
 
-	if(IsSupported24G(WIRELESS_MODE_MAX))
-	{
+	if (IsSupported24G(WIRELESS_MODE_MAX)) {
 		b2_4GBand = true;
 		if(RT_CHANNEL_DOMAIN_REALTEK_DEFINE == ChannelPlan)
 			Index2G = RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE.Index2G;
@@ -443,8 +495,7 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 			Index2G = RTW_ChannelPlanMap[ChannelPlan].Index2G;
 	}
 
-	if(IsSupported5G(WIRELESS_MODE_MAX))
-	{
+	if (IsSupported5G(WIRELESS_MODE_MAX)) {
 		b5GBand = true;
 		if(RT_CHANNEL_DOMAIN_REALTEK_DEFINE == ChannelPlan)
 			Index5G = RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE.Index5G;
@@ -452,31 +503,24 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 			Index5G = RTW_ChannelPlanMap[ChannelPlan].Index5G;
 	}
 
-	if(b2_4GBand)
-	{
-		for(index=0;index<RTW_ChannelPlan2G[Index2G].Len;index++)
-		{
+	if (b2_4GBand) {
+		for (index = 0; index < RTW_ChannelPlan2G[Index2G].Len; index++) {
 			channel_set[chanset_size].ChannelNum = RTW_ChannelPlan2G[Index2G].Channel[index];
 
-			if(	(RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN == ChannelPlan) ||//Channel 1~11 is active, and 12~14 is passive
-				(RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN_2G == ChannelPlan)	)
-			{
+			if ((RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN == ChannelPlan) ||//Channel 1~11 is active, and 12~14 is passive
+			    (RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN_2G == ChannelPlan)) {
 				if(channel_set[chanset_size].ChannelNum >= 1 && channel_set[chanset_size].ChannelNum <= 11)
 					channel_set[chanset_size].ScanType = SCAN_ACTIVE;
 				else if((channel_set[chanset_size].ChannelNum  >= 12 && channel_set[chanset_size].ChannelNum  <= 14))
 					channel_set[chanset_size].ScanType  = SCAN_PASSIVE;
-			}
-			else if(RT_CHANNEL_DOMAIN_WORLD_WIDE_13 == ChannelPlan ||
-				RT_CHANNEL_DOMAIN_WORLD_WIDE_5G == ChannelPlan ||
-				RT_CHANNEL_DOMAIN_2G_WORLD == Index2G)// channel 12~13, passive scan
-			{
-				if(channel_set[chanset_size].ChannelNum <= 11)
-					channel_set[chanset_size].ScanType = SCAN_ACTIVE;
-				else
-					channel_set[chanset_size].ScanType = SCAN_PASSIVE;
-			}
-			else
-			{
+			} else if(RT_CHANNEL_DOMAIN_WORLD_WIDE_13 == ChannelPlan ||
+				  RT_CHANNEL_DOMAIN_WORLD_WIDE_5G == ChannelPlan ||
+				  RT_CHANNEL_DOMAIN_2G_WORLD == Index2G) { // channel 12~13, passive scan
+					if (channel_set[chanset_size].ChannelNum <= 11)
+						channel_set[chanset_size].ScanType = SCAN_ACTIVE;
+					else
+						channel_set[chanset_size].ScanType = SCAN_PASSIVE;
+			} else {
 				channel_set[chanset_size].ScanType = SCAN_ACTIVE;
 			}
 
@@ -484,28 +528,23 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 		}
 	}
 
-	if(b5GBand)
-	{
-		for(index=0;index<RTW_ChannelPlan5G[Index5G].Len;index++)
-		{
+	if (b5GBand) {
+		for (index = 0;index < RTW_ChannelPlan5G[Index5G].Len; index++) {
 #ifdef CONFIG_DFS
 			channel_set[chanset_size].ChannelNum = RTW_ChannelPlan5G[Index5G].Channel[index];
-			if ( channel_set[chanset_size].ChannelNum <= 48
-				|| channel_set[chanset_size].ChannelNum >= 149 )
-			{
+			if (channel_set[chanset_size].ChannelNum <= 48 ||
+			    channel_set[chanset_size].ChannelNum >= 149) {
 				if(RT_CHANNEL_DOMAIN_WORLD_WIDE_5G == ChannelPlan)//passive scan for all 5G channels
 					channel_set[chanset_size].ScanType = SCAN_PASSIVE;
 				else
 					channel_set[chanset_size].ScanType = SCAN_ACTIVE;
-			}
-			else
-			{
+			} else {
 				channel_set[chanset_size].ScanType = SCAN_PASSIVE;
 			}
 			chanset_size++;
 #else /* CONFIG_DFS */
-			if ( RTW_ChannelPlan5G[Index5G].Channel[index] <= 48
-				|| RTW_ChannelPlan5G[Index5G].Channel[index] >= 149 ) {
+			if (RTW_ChannelPlan5G[Index5G].Channel[index] <= 48 ||
+			    RTW_ChannelPlan5G[Index5G].Channel[index] >= 149 ) {
 				channel_set[chanset_size].ChannelNum = RTW_ChannelPlan5G[Index5G].Channel[index];
 				if(RT_CHANNEL_DOMAIN_WORLD_WIDE_5G == ChannelPlan)//passive scan for all 5G channels
 					channel_set[chanset_size].ScanType = SCAN_PASSIVE;

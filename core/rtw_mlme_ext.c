@@ -6771,23 +6771,6 @@ uint8_t set_ch_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	return 	H2C_SUCCESS;
 }
 
-uint8_t set_chplan_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
-{
-	struct SetChannelPlan_param *setChannelPlan_param;
-	struct mlme_priv		*pmlmepriv = &rtlpriv->mlmepriv;
-	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
-
-	if(!pbuf)
-		return H2C_PARAMETERS_ERROR;
-
-	setChannelPlan_param = (struct SetChannelPlan_param *)pbuf;
-
-	pmlmeext->max_chan_nums = init_channel_set(rtlpriv, setChannelPlan_param->channel_plan, pmlmeext->channel_set);
-	init_channel_list(rtlpriv, pmlmeext->channel_set, pmlmeext->max_chan_nums, &pmlmeext->channel_list);
-
-	return 	H2C_SUCCESS;
-}
-
 uint8_t set_csa_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf)
 {
 #ifdef CONFIG_DFS

@@ -207,24 +207,6 @@ typedef enum _RT_CHANNEL_DOMAIN_5G
 	RT_CHANNEL_DOMAIN_5G_MAX,
 }RT_CHANNEL_DOMAIN_5G, *PRT_CHANNEL_DOMAIN_5G;
 
-typedef struct _RT_CHANNEL_PLAN
-{
-	unsigned char	Channel[MAX_CHANNEL_NUM];
-	unsigned char	Len;
-}RT_CHANNEL_PLAN, *PRT_CHANNEL_PLAN;
-
-typedef struct _RT_CHANNEL_PLAN_2G
-{
-	unsigned char	Channel[MAX_CHANNEL_NUM_2G];
-	unsigned char	Len;
-}RT_CHANNEL_PLAN_2G, *PRT_CHANNEL_PLAN_2G;
-
-typedef struct _RT_CHANNEL_PLAN_5G
-{
-	unsigned char	Channel[MAX_CHANNEL_NUM_5G];
-	unsigned char	Len;
-}RT_CHANNEL_PLAN_5G, *PRT_CHANNEL_PLAN_5G;
-
 typedef struct _RT_CHANNEL_PLAN_MAP
 {
 	unsigned char	Index2G;

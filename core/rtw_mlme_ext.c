@@ -131,20 +131,14 @@ unsigned char	MCS_rate_1R[16] = {0xff, 0x00, 0x0, 0x0, 0x01, 0x0, 0x0, 0x0, 0x0,
 ChannelPlan definitions
 *********************************************************/
 
-static RT_CHANNEL_PLAN_2G RTW_ChannelPlan2G[RT_CHANNEL_DOMAIN_2G_MAX] = {
-	{	/* ULLI now index */
-	   { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 },	/* 0x03, RT_CHANNEL_DOMAIN_2G_MIKK1 */
-	    14
-	},
+static unsigned char RTW_ChannelPlan2G[MAX_CHANNEL_NUM_2G] = {
+	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14		/* 0x03, RT_CHANNEL_DOMAIN_2G_MIKK1 */
 };
 
-static RT_CHANNEL_PLAN_5G RTW_ChannelPlan5G[RT_CHANNEL_DOMAIN_5G_MAX] = {
-        {	/* ULLI now index */
-	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x02, RT_CHANNEL_DOMAIN_5G_ETSI2 */
-	   108, 112, 116, 120, 124, 128, 132, 136, 140, 149,
-	   153, 157, 161, 165 },
-	  24
-	},
+static unsigned char RTW_ChannelPlan5G[MAX_CHANNEL_NUM_5G] = {
+	 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x02, RT_CHANNEL_DOMAIN_5G_ETSI2 */
+	108, 112, 116, 120, 124, 128, 132, 136, 140, 149,
+	153, 157, 161, 165
 };
 
 /*
@@ -331,8 +325,8 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 	}
 
 	if (b2_4GBand) {
-		for (index = 0; index < RTW_ChannelPlan2G[Index2G].Len; index++) {
-			channel_set[chanset_size].ChannelNum = RTW_ChannelPlan2G[Index2G].Channel[index];
+		for (index = 0; index < 14; index++) {
+			channel_set[chanset_size].ChannelNum = RTW_ChannelPlan2G[index];
 
 			if ((RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN == ChannelPlan) ||//Channel 1~11 is active, and 12~14 is passive
 			    (RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN_2G == ChannelPlan)) {
@@ -356,9 +350,9 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 	}
 
 	if (b5GBand) {
-		for (index = 0;index < RTW_ChannelPlan5G[Index5G].Len; index++) {
+		for (index = 0;index < 24; index++) {
 #ifdef CONFIG_DFS
-			channel_set[chanset_size].ChannelNum = RTW_ChannelPlan5G[Index5G].Channel[index];
+			channel_set[chanset_size].ChannelNum = RTW_ChannelPlan5G[index];
 			if (channel_set[chanset_size].ChannelNum <= 48 ||
 			    channel_set[chanset_size].ChannelNum >= 149) {
 				if(RT_CHANNEL_DOMAIN_WORLD_WIDE_5G == ChannelPlan)//passive scan for all 5G channels

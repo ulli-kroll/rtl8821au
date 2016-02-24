@@ -236,10 +236,6 @@ static RT_CHANNEL_PLAN_5G RTW_ChannelPlan5G[RT_CHANNEL_DOMAIN_5G_MAX] = {
 	},
 };
 
-static RT_CHANNEL_PLAN_MAP RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE = {
-	  0x03, 0x02		 /* use the conbination for max channel numbers */
-};
-
 /*
  * Search the @param channel_num in given @param channel_set
  * @ch_set: the given channel set
@@ -415,12 +411,12 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 
 	if (IsSupported24G(WIRELESS_MODE_MAX)) {
 		b2_4GBand = true;
-		Index2G = RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE.Index2G;
+		Index2G = 0x03;
 	}
 
 	if (IsSupported5G(WIRELESS_MODE_MAX)) {
 		b5GBand = true;
-		Index5G = RTW_CHANNEL_PLAN_MAP_REALTEK_DEFINE.Index5G;
+		Index5G = 0x02;
 	}
 
 	if (b2_4GBand) {

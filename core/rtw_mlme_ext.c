@@ -132,107 +132,18 @@ ChannelPlan definitions
 *********************************************************/
 
 static RT_CHANNEL_PLAN_2G RTW_ChannelPlan2G[RT_CHANNEL_DOMAIN_2G_MAX] = {
-	{
-	  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },	/* 0x00, RT_CHANNEL_DOMAIN_2G_WORLD , Passive scan CH 12, 13 */
-	    13
-	}, {
-	  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },	/* 0x01, RT_CHANNEL_DOMAIN_2G_ETSI1 */
-	    13
-	}, {
-	  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },		/* 0x02, RT_CHANNEL_DOMAIN_2G_FCC1 */
-	    11
-	}, {
-	  { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 },	/* 0x03, RT_CHANNEL_DOMAIN_2G_MIKK1 */
+	{	/* ULLI now index */
+	   { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 },	/* 0x03, RT_CHANNEL_DOMAIN_2G_MIKK1 */
 	    14
-	}, {
-	  { 10, 11, 12, 13 },					/* 0x04, RT_CHANNEL_DOMAIN_2G_ETSI2 */
-	    4
-	}, {
-	  { },							/* 0x05, RT_CHANNEL_DOMAIN_2G_NULL */
-	    0
 	},
 };
 
 static RT_CHANNEL_PLAN_5G RTW_ChannelPlan5G[RT_CHANNEL_DOMAIN_5G_MAX] = {
-	{
-	  { },							/* 0x00, RT_CHANNEL_DOMAIN_5G_NULL */
-	  0
-	}, {
-	  { 36,  40, 44, 48, 52, 56, 60, 64, 100, 104, 108,	/* 0x01, RT_CHANNEL_DOMAIN_5G_ETSI1 */
-	   112, 116, 120, 124, 128, 132, 136, 140 },
-	  19
-	}, {
+        {	/* ULLI now index */
 	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x02, RT_CHANNEL_DOMAIN_5G_ETSI2 */
 	   108, 112, 116, 120, 124, 128, 132, 136, 140, 149,
 	   153, 157, 161, 165 },
 	  24
-	}, {
-	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x03, RT_CHANNEL_DOMAIN_5G_ETSI3 */
-	   108, 112, 116, 120, 124, 128, 132, 149, 153, 157,
-	   161, 165 },
-	  22
-	}, {
-	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x04, RT_CHANNEL_DOMAIN_5G_FCC1 */
-	   108, 112, 116, 120, 124, 128, 132, 136, 140, 149,
-	   153, 157, 161, 165 },
-	  24
-	}, {
-	  { 36,  40,  44,  48, 149, 153, 157, 161, 165 },	/* 0x05, RT_CHANNEL_DOMAIN_5G_FCC2 */
-	  9
-	}, {
-	  { 36,  40,  44,  48,  52,  56,  60,  64, 149, 153,	/* 0x06, RT_CHANNEL_DOMAIN_5G_FCC3 */
-	   157, 161, 165 },
-	   13
-	}, {
-	  { 36,  40,  44,  48,  52,  56,  60,  64, 149, 153,	/* 0x07, RT_CHANNEL_DOMAIN_5G_FCC4 */
-	   157, 161 },
-	   12
-	}, {
-	  { 149, 153, 157, 161, 165 },				/* 0x08, RT_CHANNEL_DOMAIN_5G_FCC5 */
-	   5
-	}, {
-	  { 36,  40,  44,  48,  52,  56,  60,  64 },		/* 0x09, RT_CHANNEL_DOMAIN_5G_FCC6 */
-	  8
-	}, {
-	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x0A, RT_CHANNEL_DOMAIN_5G_FCC7_IC1 */
-	   108, 112, 116, 136, 140, 149, 153, 157, 161, 165 },
-	   20
-	}, {
-	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x0B, RT_CHANNEL_DOMAIN_5G_KCC1 */
-	   108, 112, 116, 120, 124, 149, 153, 157, 161, 165},
-	   20
-	}, {
-	  { 36,  40,  44,  48,  52,  56,  60,  64,  100,  104,	/* 0x0C, RT_CHANNEL_DOMAIN_5G_MKK1 */
-	   108, 112, 116, 120, 124, 128, 132, 136, 140 },
-	   19
-	}, {
-	  { 36,  40,  44,  48,  52,  56,  60,  64 },		/* 0x0D, RT_CHANNEL_DOMAIN_5G_MKK2 */
-	   8
-	}, {
-	  { 100, 104, 108, 112, 116, 120, 124, 128,		/* 0x0E, RT_CHANNEL_DOMAIN_5G_MKK3 */
-	    132, 136, 140 },
-	    11
-	}, {
-	  { 56,  60,  64, 100, 104, 108, 112, 116, 136, 140,	/* 0x0F, RT_CHANNEL_DOMAIN_5G_NCC1 */
-	   149, 153, 157, 161, 165 },
-	   15
-	}, {
-	  { 56,  60,  64,  149, 153, 157, 161, 165},		/* 0x10, RT_CHANNEL_DOMAIN_5G_NCC2 */
-	  8
-	},
-
-	//===== Driver self defined for old channel plan Compatible ,Remember to modify if have new channel plan definition =====
-	  {
-	  { 36,  40,  44,  48,  52,  56,  60,  64, 100, 104,	/* 0x11, RT_CHANNEL_DOMAIN_5G_FCC */
-	   108, 112, 116, 132, 136, 140, 149, 153, 157, 161,
-	   165 },
-	  21
-	}, {
-	  { 36,  40,  44,  48 },				/* 0x12, RT_CHANNEL_DOMAIN_5G_JAPAN_NO_DFS */
-	  4
-	}, {
-	  { 36,  40,  44,  48, 149, 153, 157, 161 },		/* 0x13, RT_CHANNEL_DOMAIN_5G_FCC4_NO_DFS */
-	  8
 	},
 };
 
@@ -411,12 +322,12 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 
 	if (IsSupported24G(WIRELESS_MODE_MAX)) {
 		b2_4GBand = true;
-		Index2G = 0x03;
+		Index2G = 0x00;		/* ULLI now index */
 	}
 
 	if (IsSupported5G(WIRELESS_MODE_MAX)) {
 		b5GBand = true;
-		Index5G = 0x02;
+		Index5G = 0x00;		/* ULLI now index */
 	}
 
 	if (b2_4GBand) {

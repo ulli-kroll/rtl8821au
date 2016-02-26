@@ -52,7 +52,6 @@ HAL_FILES 	:=	hal/hal_intf.o \
 			hal/rtl8812a_phycfg.o \
 			hal/rtl8812a_dm.o \
 			hal/rtl8812a_cmd.o \
-			hal/rtl8812au_xmit.o \
 			hal/rtl8812au_recv.o
 
 CORE_FILES :=		core/rtw_cmd.o \

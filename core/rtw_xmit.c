@@ -21,6 +21,7 @@
 
 #include <drv_types.h>
 #include <linux/udp.h>
+#include <rtl8812a_xmit.h>
 
 #undef DBG_871X
 static inline void DBG_871X(const char *fmt, ...)
@@ -366,7 +367,7 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 
 	sema_init(&(pxmitpriv->tx_retevt), 0);
 
-	rtlpriv->cfg->ops->init_xmit_priv(rtlpriv);
+	rtl8812au_init_xmit_priv(rtlpriv);
 
 exit:
 

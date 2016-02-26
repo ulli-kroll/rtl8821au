@@ -32,8 +32,5 @@ int32_t	rtl8812au_init_xmit_priv(struct rtl_priv *rtlpriv)
 	return _SUCCESS;
 }
 
-void	rtl8812au_free_xmit_priv(struct rtl_priv *rtlpriv)
-{
-}
 
 

@@ -1910,7 +1910,6 @@ struct rtl_hal_ops {
 	u32	(*inirp_deinit)(struct rtl_priv *rtlpriv);
 
 	int32_t	(*init_xmit_priv)(struct rtl_priv *rtlpriv);
-	void	(*free_xmit_priv)(struct rtl_priv *rtlpriv);
 
 	int32_t	(*init_recv_priv)(struct rtl_priv *rtlpriv);
 	void	(*free_recv_priv)(struct rtl_priv *rtlpriv);

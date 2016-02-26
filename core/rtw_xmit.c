@@ -384,8 +384,6 @@ void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv)
 	uint32_t	 max_xmit_extbuf_size = MAX_XMIT_EXTBUF_SZ;
 	uint32_t	 num_xmit_extbuf = NR_XMIT_EXTBUFF;
 
-	rtlpriv->cfg->ops->free_xmit_priv(rtlpriv);
-
 	if (pxmitpriv->pxmit_frame_buf == NULL)
 		goto out;
 

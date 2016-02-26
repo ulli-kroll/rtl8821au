@@ -84,7 +84,6 @@
 #define USB_DUMMY_LENGTH		(USB_DUMMY_OFFSET * PACKET_OFFSET_SZ)
 
 int32_t rtl8812au_init_xmit_priv(struct rtl_priv *rtlpriv);
-void rtl8812au_free_xmit_priv(struct rtl_priv *rtlpriv);
 void rtl8812au_xmit_tasklet(void *priv);
 
 u8	BWMapping_8812(struct rtl_priv *rtlpriv, struct tx_pkt_attrib *pattrib);

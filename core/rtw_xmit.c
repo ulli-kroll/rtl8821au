@@ -367,7 +367,10 @@ int32_t	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct rtl_priv *rtlpri
 
 	sema_init(&(pxmitpriv->tx_retevt), 0);
 
-	rtl8812au_init_xmit_priv(rtlpriv);
+	tasklet_init(&pxmitpriv->xmit_tasklet,
+	     (void(*)(unsigned long))rtl8812au_xmit_tasklet,
+	     (unsigned long)rtlpriv);
+
 
 exit:
 

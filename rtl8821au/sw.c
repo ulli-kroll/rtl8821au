@@ -523,7 +523,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.free_hal_data =	rtl8812_free_hal_data,
 
 	.dm_init =		rtl8812_init_dm_priv,
-	.dm_deinit =		rtl8812_deinit_dm_priv,
 
 
 	.set_bwmode_handler =	PHY_SetBWMode8812,

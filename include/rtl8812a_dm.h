@@ -21,7 +21,6 @@
 #define __RTL8812A_DM_H__
 
 void rtl8812_init_dm_priv(struct rtl_priv *rtlpriv);
-void rtl8812_deinit_dm_priv(struct rtl_priv *rtlpriv);
 
 //void rtl8192c_dm_CheckTXPowerTracking(IN struct rtl_priv *rtlpriv);
 

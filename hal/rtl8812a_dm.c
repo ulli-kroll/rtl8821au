@@ -68,6 +68,3 @@ void rtl8812_init_dm_priv(struct rtl_priv *rtlpriv)
 	Init_ODM_ComInfo_8812(rtlpriv);
 }
 
-void rtl8812_deinit_dm_priv(struct rtl_priv *rtlpriv)
-{
-}

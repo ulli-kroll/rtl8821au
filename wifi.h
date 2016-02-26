@@ -1913,7 +1913,6 @@ struct rtl_hal_ops {
 	void	(*free_recv_priv)(struct rtl_priv *rtlpriv);
 
 	void	(*dm_init)(struct rtl_priv *rtlpriv);
-	void	(*dm_deinit)(struct rtl_priv *rtlpriv);
 	void	(*read_chip_version)(struct rtl_priv *rtlpriv);
 
 	void	(*init_default_value)(struct rtl_priv *rtlpriv);

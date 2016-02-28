@@ -2247,12 +2247,6 @@ typedef struct _ODM_RATE_ADAPTIVE
 
 } ODM_RATE_ADAPTIVE, *PODM_RATE_ADAPTIVE;
 
-typedef struct _ODM_Mac_Status_Info_
-{
-	u8	test;
-
-}ODM_MAC_INFO;
-
 typedef struct _Dynamic_Power_Saving_
 {
 	u8		PreCCAState;
@@ -2422,10 +2416,6 @@ struct _rtw_dm {
 	bool				RaSupport88E;
 
 	// Define ...........
-
-	// Latest packet phy info (ODM write)
-	ODM_MAC_INFO		*pMacInfo;
-	//MAC_INFO_88E		MacInfo;
 
 	// Different Team independt structure??
 

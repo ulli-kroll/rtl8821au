@@ -614,7 +614,6 @@ void odm_RefreshRateAdaptiveMask(struct rtl_priv *rtlpriv)
 	u8	i;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
-	PODM_RATE_ADAPTIVE	pRA = &pDM_Odm->RateAdaptive;
 
 	if (rtlpriv->bDriverStopped) {
 		RT_TRACE(rtlpriv, COMP_RATE, DBG_TRACE, "<---- odm_RefreshRateAdaptiveMask(): driver is going to unload\n");
@@ -628,12 +627,10 @@ void odm_RefreshRateAdaptiveMask(struct rtl_priv *rtlpriv)
 		if (IS_STA_VALID(pstat)) {
 			if (pstat->rssi_stat.UndecoratedSmoothedPWDB < p_ra->ldpc_thres) {
 				p_ra->use_ldpc = true;
-				pRA->bLowerRtsRate = true;
 				Set_RA_LDPC_8812(pstat, true);
 				/* DbgPrint("RSSI=%d, bUseLdpc = true\n", pHalData->UndecoratedSmoothedPWDB); */
 			} else if (pstat->rssi_stat.UndecoratedSmoothedPWDB > (p_ra->ldpc_thres-5)) {
 				p_ra->use_ldpc = false;
-				pRA->bLowerRtsRate = false;
 				Set_RA_LDPC_8812(pstat, false);
 				/* DbgPrint("RSSI=%d, bUseLdpc = false\n", pHalData->UndecoratedSmoothedPWDB); */
 			}

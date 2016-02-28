@@ -2241,12 +2241,6 @@ typedef struct _EDCA_TURBO_
 
 //#endif
 
-typedef struct _ODM_RATE_ADAPTIVE
-{
-	bool				bLowerRtsRate;
-
-} ODM_RATE_ADAPTIVE, *PODM_RATE_ADAPTIVE;
-
 typedef struct _Dynamic_Power_Saving_
 {
 	u8		PreCCAState;
@@ -2455,8 +2449,6 @@ struct _rtw_dm {
 	u8			RSSI_BT;			//come from BT
 	bool			bPSDinProcess;
 	bool			bPSDactive;
-
-	ODM_RATE_ADAPTIVE	RateAdaptive;
 
 	ANT_DETECTED_INFO	AntDetectedInfo; // Antenna detected information for RSSI tool
 

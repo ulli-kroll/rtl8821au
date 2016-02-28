@@ -2627,9 +2627,4 @@ static inline void rtw_set_oper_ch(struct rtl_priv *rtlpriv, uint8_t ch)
 	rtl_usbdev(rtlpriv)->oper_channel = ch;
 }
 
-static inline void rtw_set_oper_choffset(struct rtl_priv *rtlpriv, uint8_t offset)
-{
-	rtl_usbdev(rtlpriv)->oper_ch_offset = offset;
-}
-
 #endif

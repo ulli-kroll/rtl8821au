@@ -97,7 +97,6 @@ struct rtl_usb {
 	struct mutex setbw_mutex;
 
 	unsigned char	oper_channel; //saved channel info when call set_channel_bw
-	unsigned char	oper_ch_offset;//PRIME_CHNL_OFFSET
 
 	//For 92D, DMDP have 2 interface.
 

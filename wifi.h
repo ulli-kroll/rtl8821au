@@ -2615,4 +2615,36 @@ static inline struct _rtw_hal *GET_HAL_DATA(struct rtl_priv *priv)
 	return priv->HalData;
 }
 
+/* ULLI : we must get rid of this studip code */
+
+static inline uint8_t rtw_get_oper_ch(struct rtl_priv *rtlpriv)
+{
+	return rtl_usbdev(rtlpriv)->oper_channel;
+}
+
+static inline void rtw_set_oper_ch(struct rtl_priv *rtlpriv, uint8_t ch)
+{
+	rtl_usbdev(rtlpriv)->oper_channel = ch;
+}
+
+static inline uint8_t rtw_get_oper_bw(struct rtl_priv *rtlpriv)
+{
+	return rtl_usbdev(rtlpriv)->oper_bwmode;
+}
+
+static inline void rtw_set_oper_bw(struct rtl_priv *rtlpriv, uint8_t bw)
+{
+	rtl_usbdev(rtlpriv)->oper_bwmode = bw;
+}
+
+static inline uint8_t rtw_get_oper_choffset(struct rtl_priv *rtlpriv)
+{
+	return rtl_usbdev(rtlpriv)->oper_ch_offset;
+}
+
+static inline void rtw_set_oper_choffset(struct rtl_priv *rtlpriv, uint8_t offset)
+{
+	rtl_usbdev(rtlpriv)->oper_ch_offset = offset;
+}
+
 #endif

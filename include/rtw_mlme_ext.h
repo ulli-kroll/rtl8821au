@@ -497,14 +497,7 @@ void change_band_update_ie(struct rtl_priv *rtlpriv, WLAN_BSSID_EX *pnetwork);
 //void Set_NETYPE1_MSR(struct rtl_priv *rtlpriv, uint8_t type);
 //void Set_NETYPE0_MSR(struct rtl_priv *rtlpriv, uint8_t type);
 
-uint8_t rtw_get_oper_ch(struct rtl_priv *rtlpriv);
-void rtw_set_oper_ch(struct rtl_priv *rtlpriv, uint8_t ch);
-uint8_t rtw_get_oper_bw(struct rtl_priv *rtlpriv);
-void rtw_set_oper_bw(struct rtl_priv *rtlpriv, uint8_t bw);
-uint8_t rtw_get_oper_choffset(struct rtl_priv *rtlpriv);
-void rtw_set_oper_choffset(struct rtl_priv *rtlpriv, uint8_t offset);
 uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset);
-
 void set_channel_bwmode(struct rtl_priv *rtlpriv, unsigned char channel, unsigned char channel_offset, unsigned short bwmode);
 void SelectChannel(struct rtl_priv *rtlpriv, unsigned char channel);
 void SetBWMode(struct rtl_priv *rtlpriv, unsigned short bwmode, unsigned char channel_offset);

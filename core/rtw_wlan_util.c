@@ -419,37 +419,6 @@ static void Set_NETYPE1_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_MEDIA_STATUS1, (uint8_t *)(&type));
 }
 
-
-inline uint8_t rtw_get_oper_ch(struct rtl_priv *rtlpriv)
-{
-	return rtl_usbdev(rtlpriv)->oper_channel;
-}
-
-inline void rtw_set_oper_ch(struct rtl_priv *rtlpriv, uint8_t ch)
-{
-	rtl_usbdev(rtlpriv)->oper_channel = ch;
-}
-
-inline uint8_t rtw_get_oper_bw(struct rtl_priv *rtlpriv)
-{
-	return rtl_usbdev(rtlpriv)->oper_bwmode;
-}
-
-inline void rtw_set_oper_bw(struct rtl_priv *rtlpriv, uint8_t bw)
-{
-	rtl_usbdev(rtlpriv)->oper_bwmode = bw;
-}
-
-inline uint8_t rtw_get_oper_choffset(struct rtl_priv *rtlpriv)
-{
-	return rtl_usbdev(rtlpriv)->oper_ch_offset;
-}
-
-inline void rtw_set_oper_choffset(struct rtl_priv *rtlpriv, uint8_t offset)
-{
-	rtl_usbdev(rtlpriv)->oper_ch_offset = offset;
-}
-
 uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset)
 {
 	uint8_t	center_ch = channel;

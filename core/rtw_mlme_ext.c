@@ -3015,16 +3015,6 @@ int issue_probereq_ex(struct rtl_priv *rtlpriv, NDIS_802_11_SSID *pssid, uint8_t
 		#endif
 	}
 
-	if (try_cnt && wait_ms) {
-		if (da)
-			DBG_871X(FUNC_ADPT_FMT" to "MAC_FMT", ch:%u%s, %d/%d in %u ms\n",
-				FUNC_ADPT_ARG(rtlpriv), MAC_ARG(da), rtw_get_oper_ch(rtlpriv),
-				ret==_SUCCESS?", acked":"", i, try_cnt, rtw_get_passing_time_ms(start));
-		else
-			DBG_871X(FUNC_ADPT_FMT", ch:%u%s, %d/%d in %u ms\n",
-				FUNC_ADPT_ARG(rtlpriv), rtw_get_oper_ch(rtlpriv),
-				ret==_SUCCESS?", acked":"", i, try_cnt, rtw_get_passing_time_ms(start));
-	}
 exit:
 	return ret;
 }
@@ -3745,16 +3735,6 @@ int issue_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, unsigned int pow
 		#endif
 	}
 
-	if (try_cnt && wait_ms) {
-		if (da)
-			DBG_871X(FUNC_ADPT_FMT" to "MAC_FMT", ch:%u%s, %d/%d in %u ms\n",
-				FUNC_ADPT_ARG(rtlpriv), MAC_ARG(da), rtw_get_oper_ch(rtlpriv),
-				ret==_SUCCESS?", acked":"", i, try_cnt, rtw_get_passing_time_ms(start));
-		else
-			DBG_871X(FUNC_ADPT_FMT", ch:%u%s, %d/%d in %u ms\n",
-				FUNC_ADPT_ARG(rtlpriv), rtw_get_oper_ch(rtlpriv),
-				ret==_SUCCESS?", acked":"", i, try_cnt, rtw_get_passing_time_ms(start));
-	}
 exit:
 	return ret;
 }
@@ -3879,16 +3859,6 @@ int issue_qos_nulldata(struct rtl_priv *rtlpriv, unsigned char *da, u16 tid, int
 		#endif
 	}
 
-	if (try_cnt && wait_ms) {
-		if (da)
-			DBG_871X(FUNC_ADPT_FMT" to "MAC_FMT", ch:%u%s, %d/%d in %u ms\n",
-				FUNC_ADPT_ARG(rtlpriv), MAC_ARG(da), rtw_get_oper_ch(rtlpriv),
-				ret==_SUCCESS?", acked":"", i, try_cnt, rtw_get_passing_time_ms(start));
-		else
-			DBG_871X(FUNC_ADPT_FMT", ch:%u%s, %d/%d in %u ms\n",
-				FUNC_ADPT_ARG(rtlpriv), rtw_get_oper_ch(rtlpriv),
-				ret==_SUCCESS?", acked":"", i, try_cnt, rtw_get_passing_time_ms(start));
-	}
 exit:
 	return ret;
 }
@@ -3990,16 +3960,6 @@ int issue_deauth_ex(struct rtl_priv *rtlpriv, uint8_t *da, unsigned short reason
 		#endif
 	}
 
-	if (try_cnt && wait_ms) {
-		if (da)
-			DBG_871X(FUNC_ADPT_FMT" to "MAC_FMT", ch:%u%s, %d/%d in %u ms\n",
-				FUNC_ADPT_ARG(rtlpriv), MAC_ARG(da), rtw_get_oper_ch(rtlpriv),
-				ret==_SUCCESS?", acked":"", i, try_cnt, rtw_get_passing_time_ms(start));
-		else
-			DBG_871X(FUNC_ADPT_FMT", ch:%u%s, %d/%d in %u ms\n",
-				FUNC_ADPT_ARG(rtlpriv), rtw_get_oper_ch(rtlpriv),
-				ret==_SUCCESS?", acked":"", i, try_cnt, rtw_get_passing_time_ms(start));
-	}
 exit:
 	return ret;
 }

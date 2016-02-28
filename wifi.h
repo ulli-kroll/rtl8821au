@@ -2241,18 +2241,6 @@ typedef struct _EDCA_TURBO_
 
 //#endif
 
-struct ODM_RF_Calibration_Structure
-{
-	//for tx power tracking
-
-	bool	TxPowerTrackingInProgress;
-	//--------------------------------------------------------------------//
-
-
-	bool bLCKInProgress;
-	bool	bAntennaDetected;
-};
-
 typedef struct _ODM_RATE_ADAPTIVE
 {
 	bool				bLowerRtsRate;
@@ -2482,8 +2470,6 @@ struct _rtw_dm {
 
 	ANT_DETECTED_INFO	AntDetectedInfo; // Antenna detected information for RSSI tool
 
-	struct ODM_RF_Calibration_Structure RFCalibrateInfo;
-
 	//
 	// TX power tracking
 	//
@@ -2501,16 +2487,6 @@ struct _rtw_dm {
 	uint32_t			packetCount;
 	uint32_t			packetCount_pre;
 
-	//
-	// ODM system resource.
-	//
-
-	// ODM relative workitem.
-
-	/* Vars moved out of
-	 * typedef struct ODM_RF_Calibration_Structure {
-	 * }ODM_RF_CAL_T,*PODM_RF_CAL_T;
-	 */
 };
 
 struct _rtw_hal {

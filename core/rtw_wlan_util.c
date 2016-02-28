@@ -423,8 +423,7 @@ uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset)
 {
 	uint8_t	center_ch = channel;
 
-	if(chnl_bw == CHANNEL_WIDTH_80)
-	{
+	if (chnl_bw == CHANNEL_WIDTH_80) {
 		if((channel == 36) || (channel == 40) || (channel == 44) || (channel == 48) )
 			center_ch = 42;
 		if((channel == 52) || (channel == 56) || (channel == 60) || (channel == 64) )
@@ -439,9 +438,7 @@ uint8_t	rtw_get_center_ch(uint8_t channel, uint8_t chnl_bw, uint8_t chnl_offset)
 			center_ch = 155;
 		else if(channel <= 14)
 			center_ch = 7;
-	}
-	else if(chnl_bw == CHANNEL_WIDTH_40)
-	{
+	} else if (chnl_bw == CHANNEL_WIDTH_40) {
 		if (chnl_offset == HAL_PRIME_CHNL_OFFSET_LOWER)
 			center_ch = channel + 2;
 		else

@@ -520,18 +520,16 @@ void set_channel_bwmode(struct rtl_priv *rtlpriv, unsigned char channel, unsigne
 	struct mlme_ext_priv *pmlmeext = &rtlpriv->mlmeextpriv;
 	int _unused;
 
-	if ( rtlpriv->bNotifyChannelChange )
-	{
+	if (rtlpriv->bNotifyChannelChange) {
 		DBG_871X( "[%s] ch = %d, offset = %d, bwmode = %d\n", __FUNCTION__, channel, channel_offset, bwmode );
 	}
 
 	center_ch = rtw_get_center_ch(channel, bwmode, channel_offset);
 
-	if(bwmode == CHANNEL_WIDTH_80)
-	{
-		if(center_ch > channel)
+	if (bwmode == CHANNEL_WIDTH_80) 	{
+		if (center_ch > channel)
 			chnl_offset80 = HAL_PRIME_CHNL_OFFSET_LOWER;
-		else if(center_ch < channel)
+		else if (center_ch < channel)
 			chnl_offset80 = HAL_PRIME_CHNL_OFFSET_UPPER;
 		else
 			chnl_offset80 = HAL_PRIME_CHNL_OFFSET_DONT_CARE;

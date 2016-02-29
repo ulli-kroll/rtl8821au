@@ -584,14 +584,7 @@ static void _rtl_rx_complete(struct urb *purb)
 
 	if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped
 	|| rtlpriv->bReadPortCancel) {
-#ifdef CONFIG_PREALLOC_RECV_SKB
 		precvbuf->reuse = true;
-#else
-		if (precvbuf->pskb) {
-			DBG_8192C("==> free skb(%p)\n", precvbuf->pskb);
-			dev_kfree_skb_any(precvbuf->pskb);
-		}
-#endif
 		DBG_8192C("%s() RX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d) bReadPortCancel(%d)\n",
 		__FUNCTION__, rtlpriv->bDriverStopped, rtlpriv->bSurpriseRemoved, rtlpriv->bReadPortCancel);
 		goto exit;
@@ -693,14 +686,12 @@ static uint32_t _rtl_usb_receive (struct rtl_priv *rtlpriv, uint32_t cnt, uint8_
 		return _FAIL;
 	}
 
-#ifdef CONFIG_PREALLOC_RECV_SKB
 	if ((precvbuf->reuse == false) || (precvbuf->skb == NULL)) {
 		precvbuf->skb = skb_dequeue(&precvpriv->free_recv_skb_queue);
 		if (precvbuf->skb != NULL) {
 			precvbuf->reuse = true;
 		}
 	}
-#endif
 
 	if (precvbuf != NULL) {
 		precvbuf->len = 0;

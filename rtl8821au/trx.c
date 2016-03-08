@@ -1893,29 +1893,29 @@ void rtl8812_query_rx_phy_status(
 
 static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_usb  *rtlusb = rtl_usbdev(rtlpriv);
 
-	pHalData->OutEpQueueSel = 0;
+	rtlusb->out_queue_sel = 0;
 
 	switch (NumOutPipe) {
 	case 	4:
-		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
+		rtlusb->out_queue_sel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
 		break;
 	case 	3:
-		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
+		rtlusb->out_queue_sel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
 		break;
 	case 	2:
-		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_NQ;
+		rtlusb->out_queue_sel = TX_SELE_HQ | TX_SELE_NQ;
 		break;
 	case 	1:
-		pHalData->OutEpQueueSel = TX_SELE_HQ;
+		rtlusb->out_queue_sel = TX_SELE_HQ;
 		break;
 	default:
 		break;
 
 	}
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_EMERG, "Tx queue select :0x%02x..\n",
-		 pHalData->OutEpQueueSel);
+		 rtlusb->out_queue_sel);
 }
 
 

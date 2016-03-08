@@ -1536,7 +1536,7 @@ void rtl8821au_disable_interrupt(struct rtl_priv *rtlpriv)
 }
 static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_usb  *rtlusb = rtl_usbdev(rtlpriv);
 	uint32_t numHQ = 0;
 	uint32_t numLQ = 0;
 	uint32_t numNQ = 0;
@@ -1546,14 +1546,14 @@ static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 
 	numPubQ = NORMAL_PAGE_NUM_PUBQ_8821;
 
-	if (pHalData->OutEpQueueSel & TX_SELE_HQ)
+	if (rtlusb->out_queue_sel & TX_SELE_HQ)
 		numHQ = NORMAL_PAGE_NUM_HPQ_8821;
 
-	if (pHalData->OutEpQueueSel & TX_SELE_LQ)
+	if (rtlusb->out_queue_sel & TX_SELE_LQ)
 		numLQ = NORMAL_PAGE_NUM_LPQ_8821;
 
 	/* NOTE: This step shall be proceed before writting REG_RQPN. */
-	if (pHalData->OutEpQueueSel & TX_SELE_NQ)
+	if (rtlusb->out_queue_sel & TX_SELE_NQ)
 		numNQ = NORMAL_PAGE_NUM_NPQ_8821;
 
 
@@ -1567,7 +1567,7 @@ static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 
 static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct rtl_usb  *rtlusb = rtl_usbdev(rtlpriv);
 	uint32_t numHQ		= 0;
 	uint32_t numLQ		= 0;
 	uint32_t numNQ		= 0;
@@ -1577,14 +1577,14 @@ static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 
 	numPubQ = NORMAL_PAGE_NUM_PUBQ_8812;
 
-	if (pHalData->OutEpQueueSel & TX_SELE_HQ)
+	if (rtlusb->out_queue_sel & TX_SELE_HQ)
 		numHQ = NORMAL_PAGE_NUM_HPQ_8812;
 
-	if (pHalData->OutEpQueueSel & TX_SELE_LQ)
+	if (rtlusb->out_queue_sel & TX_SELE_LQ)
 		numLQ = NORMAL_PAGE_NUM_LPQ_8812;
 
 	/* NOTE: This step shall be proceed before writting REG_RQPN. */
-	if (pHalData->OutEpQueueSel & TX_SELE_NQ)
+	if (rtlusb->out_queue_sel & TX_SELE_NQ)
 		numNQ = NORMAL_PAGE_NUM_NPQ_8812;
 
 	value8 = (u8)_NPQ(numNQ);
@@ -1671,13 +1671,13 @@ static void _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *rtlpriv,
 
 static void _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
+	struct rtl_usb  *rtlusb = rtl_usbdev(rtlpriv);
 	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
 	u16	valueHi = 0;
 	u16	valueLow = 0;
 
-	switch (pHalData->OutEpQueueSel) {
+	switch (rtlusb->out_queue_sel) {
 	case (TX_SELE_HQ | TX_SELE_LQ):
 		valueHi = QUEUE_HIGH;
 		valueLow = QUEUE_LOW;

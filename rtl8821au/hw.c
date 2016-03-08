@@ -1723,9 +1723,9 @@ static void _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 
 static void _InitQueuePriority_8812AUsb(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 
-	switch (pHalData->OutEpNumber) {
+	switch (rtlusb->RtNumOutPipes) {
 	case 2:
 		_InitNormalChipTwoOutEpPriority_8812AUsb(rtlpriv);
 		break;

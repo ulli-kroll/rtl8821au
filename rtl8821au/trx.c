@@ -1896,24 +1896,19 @@ static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
 	pHalData->OutEpQueueSel = 0;
-	pHalData->OutEpNumber = 0;
 
 	switch (NumOutPipe) {
 	case 	4:
 		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
-		pHalData->OutEpNumber = 4;
 		break;
 	case 	3:
 		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_LQ | TX_SELE_NQ;
-		pHalData->OutEpNumber = 3;
 		break;
 	case 	2:
 		pHalData->OutEpQueueSel = TX_SELE_HQ | TX_SELE_NQ;
-		pHalData->OutEpNumber = 2;
 		break;
 	case 	1:
 		pHalData->OutEpQueueSel = TX_SELE_HQ;
-		pHalData->OutEpNumber = 1;
 		break;
 	default:
 		break;
@@ -2017,7 +2012,7 @@ int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv)
 	_ConfigChipOutEP_8812(rtlpriv, rtlusb->RtNumOutPipes);
 
 	/* Normal chip with one IN and one OUT doesn't have interrupt IN EP. */
-	if (1 == pHalData->OutEpNumber) {
+	if (1 == rtlusb->RtNumOutPipes) {
 		if (1 != rtlusb->RtNumInPipes) {
 			return result;
 		}

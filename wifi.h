@@ -2536,7 +2536,6 @@ struct _rtw_hal {
 	uint8_t	FwRsvdPageStartOffset; //2010.06.23. Added by tynli. Reserve page start offset except beacon in TxQ.
 
 	uint8_t	OutEpQueueSel;
-	uint8_t	OutEpNumber;
 
 	// 2010/12/10 MH Add for USB aggreation mode dynamic shceme.
 	bool		UsbRxHighSpeedMode;

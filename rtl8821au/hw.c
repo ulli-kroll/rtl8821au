@@ -1656,7 +1656,7 @@ static void _InitRDGSetting_8812A(struct rtl_priv *rtlpriv)
 }
 
 
-static void _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *rtlpriv,
+static void _rtl8821au_init_chipN_reg_priority(struct rtl_priv *rtlpriv,
 	u16 beQ, u16 bkQ, u16 viQ,
 	u16 voQ, u16 mgtQ, u16 hiQ)
 {
@@ -1669,7 +1669,7 @@ static void _InitNormalChipRegPriority_8812AUsb(struct rtl_priv *rtlpriv,
 	rtl_write_word(rtlpriv, REG_TRXDMA_CTRL, value16);
 }
 
-static void _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
+static void _rtl8821au_init_chipN_two_ep_priority(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb  *rtlusb = rtl_usbdev(rtlpriv);
 	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
@@ -1703,11 +1703,11 @@ static void _InitNormalChipTwoOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 		mgtQ	= valueHi;
 		hiQ	= valueHi;
 
-	_InitNormalChipRegPriority_8812AUsb(rtlpriv, beQ, bkQ, viQ, voQ, mgtQ, hiQ);
+	_rtl8821au_init_chipN_reg_priority(rtlpriv, beQ, bkQ, viQ, voQ, mgtQ, hiQ);
 
 }
 
-static void _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
+static void _rtl8821au_init_chipN_three_ep_priority(struct rtl_priv *rtlpriv)
 {
 	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
@@ -1718,20 +1718,20 @@ static void _InitNormalChipThreeOutEpPriority_8812AUsb(struct rtl_priv *rtlpriv)
 		mgtQ 	= QUEUE_HIGH;
 		hiQ	= QUEUE_HIGH;
 
-	_InitNormalChipRegPriority_8812AUsb(rtlpriv, beQ, bkQ, viQ, voQ, mgtQ, hiQ);
+	_rtl8821au_init_chipN_reg_priority(rtlpriv, beQ, bkQ, viQ, voQ, mgtQ, hiQ);
 }
 
-static void _InitQueuePriority_8812AUsb(struct rtl_priv *rtlpriv)
+static void _rtl8821au_init_chipN_queue_priority(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 
 	switch (rtlusb->RtNumOutPipes) {
 	case 2:
-		_InitNormalChipTwoOutEpPriority_8812AUsb(rtlpriv);
+		_rtl8821au_init_chipN_two_ep_priority(rtlpriv);
 		break;
 	case 3:
 	case 4:
-		_InitNormalChipThreeOutEpPriority_8812AUsb(rtlpriv);
+		_rtl8821au_init_chipN_three_ep_priority(rtlpriv);
 		break;
 	default:
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "_InitQueuePriority_8812AUsb(): Shall not reach here!\n");
@@ -2145,7 +2145,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 		_InitTxBufferBoundary_8821AUsb(rtlpriv);
 	}
 
-	_InitQueuePriority_8812AUsb(rtlpriv);
+	_rtl8821au_init_chipN_queue_priority(rtlpriv);
 	_InitPageBoundary_8812AUsb(rtlpriv);
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))

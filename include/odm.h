@@ -705,7 +705,7 @@ typedef enum tag_SW_Antenna_Switch_Definition
 #define SWAW_STEP_PEAK		0
 #define SWAW_STEP_DETERMINE	1
 
-void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI);
+void ODM_Write_DIG(struct rtl_priv *rtlpriv, u8 CurrentIGI);
 void ODM_Write_CCK_CCA_Thres(struct rtl_priv *rtlpriv, u8 CurCCK_CCAThres);
 
 void ODM_SetAntenna(struct _rtw_dm *pDM_Odm, u8 Antenna);

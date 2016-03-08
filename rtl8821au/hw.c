@@ -691,10 +691,10 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			uint32_t rx_gain = *(u32 *)pval;
 
 			if (rx_gain == 0xff) {		/* restore rx gain */
-				ODM_Write_DIG(podmpriv, dm_digtable->BackupIGValue);
+				ODM_Write_DIG(rtlpriv, dm_digtable->BackupIGValue);
 			} else {
 				dm_digtable->BackupIGValue = dm_digtable->cur_igvalue;
-				ODM_Write_DIG(podmpriv, rx_gain);
+				ODM_Write_DIG(rtlpriv, rx_gain);
 			}
 		}
 		break;

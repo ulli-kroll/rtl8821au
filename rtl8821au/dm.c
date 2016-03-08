@@ -2295,7 +2295,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	/* 2 High power RSSI threshold */
 
 	{		/* BT is not using */
-		ODM_Write_DIG(pDM_Odm, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, dm_digtable->CurIGValue); */
+		ODM_Write_DIG(rtlpriv, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, dm_digtable->CurIGValue); */
 		dm_digtable->media_connect_0 =
 			(rtlpriv->mac80211.link_state >= MAC80211_LINKED) ? 1 : 0;
 		dm_digtable->dig_min_0 = DIG_Dynamic_MIN;

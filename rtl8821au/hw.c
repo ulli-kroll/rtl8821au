@@ -19,13 +19,6 @@
 
 #endif
 
-#undef DBG_8192C
-static inline void DBG_8192C(const char *fmt, ...)
-{
-}
-
-
-
 void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
@@ -2002,7 +1995,6 @@ static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 
 	if (pHalData->AntDivCfg == 0)
 		return;
-	DBG_8192C("==>  %s ....\n", __FUNCTION__);
 
 	rtl_write_byte(rtlpriv, REG_LEDCFG2, 0x82);
 
@@ -2012,9 +2004,6 @@ static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 		pHalData->CurAntenna = MAIN_ANT;
 	else
 		pHalData->CurAntenna = AUX_ANT;
-	DBG_8192C("%s,Cur_ant:(%x)%s\n", __FUNCTION__, pHalData->CurAntenna, (pHalData->CurAntenna == MAIN_ANT) ? "MAIN_ANT" : "AUX_ANT");
-
-
 }
 
 static void _rtl8812au_bb8812_config_1t(struct rtl_priv *rtlpriv)

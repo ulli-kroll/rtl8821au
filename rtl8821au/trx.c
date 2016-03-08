@@ -13,12 +13,6 @@
 
 #endif
 
-#undef DBG_871X
-static inline void DBG_871X(const char *fmt, ...)
-{
-}
-
-
 /* ULLI : reference -> u16 rtl8192cu_mq_to_hwq() */
 /* ULLI : for rtl_hal_usbint_cfg ->usb_mq_to_hwq */
 
@@ -1925,8 +1919,8 @@ static void _ConfigChipOutEP_8812(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 		break;
 
 	}
-	DBG_871X("%s OutEpQueueSel(0x%02x), OutEpNumber(%d) \n", __FUNCTION__, pHalData->OutEpQueueSel, pHalData->OutEpNumber);
-
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_EMERG, "Tx queue select :0x%02x..\n",
+		 pHalData->OutEpQueueSel);
 }
 
 

@@ -168,7 +168,7 @@ enum version_8821au {
 #define IS_VENDOR_8821A_TEST_CHIP(version)	((IS_8821_SERIES(version)) ? ((IS_NORMAL_CHIP(version) ? false : true) : false)
 #define IS_VENDOR_8821A_MP_CHIP(version)		((IS_8821_SERIES(version)) ? ((IS_NORMAL_CHIP(version)) ? true : false) : false)
 
-
+#define MAX_RX_DMA_BUFFER_SIZE_8821                    0x3E80  // RX 16K
 
 
 #endif

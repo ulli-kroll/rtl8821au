@@ -1641,10 +1641,7 @@ static void _InitPageBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 	 * rxff_bndy = (Offset*256)-1;
 	 */
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
-		rtl_write_word(rtlpriv, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8812-1);
-	else
-		rtl_write_word(rtlpriv, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8821-1);
+	rtl_write_word(rtlpriv, (REG_TRXFF_BNDY + 2), MAX_RX_DMA_BUFFER_SIZE_8821-1);
 
 }
 

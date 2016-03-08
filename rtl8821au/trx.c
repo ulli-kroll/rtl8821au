@@ -1,6 +1,9 @@
 #ifdef CONFIG_RTLWIFI
 
-#error "NO RTLWIFI DEFINED"
+#include <../drivers/net/wireless/realtek/rtlwifi/wifi.h>
+#include <../drivers/net/wireless/realtek/rtlwifi/core.h>
+#include <../drivers/net/wireless/realtek/rtlwifi/ps.h>
+#include <../drivers/net/wireless/realtek/rtlwifi/base.h>
 
 #else
 

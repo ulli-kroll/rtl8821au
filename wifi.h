@@ -2241,55 +2241,6 @@ typedef struct _EDCA_TURBO_
 
 //#endif
 
-typedef struct _Dynamic_Power_Saving_
-{
-	u8		PreCCAState;
-	u8		CurCCAState;
-
-	u8		PreRFState;
-	u8		CurRFState;
-
-	int		    Rssi_val_min;
-
-	u8		initialize;
-	uint32_t		Reg874,RegC70,Reg85C,RegA74;
-
-}PS_T,*pPS_T;
-typedef struct _Dynamic_Primary_CCA{
-	u8		PriCCA_flag;
-	u8		intf_flag;
-	u8		intf_type;
-	u8		DupRTS_flag;
-	u8		Monitor_flag;
-	u8		CH_offset;
-	u8  		MF_state;
-}Pri_CCA_T, *pPri_CCA_T;
-
-typedef struct _RX_High_Power_
-{
-	u8		RXHP_flag;
-	u8		PSD_func_trigger;
-	u8		PSD_bitmap_RXHP[80];
-	u8		Pre_IGI;
-	u8		Cur_IGI;
-	u8		Pre_pw_th;
-	u8		Cur_pw_th;
-	bool		First_time_enter;
-	bool		RXHP_enable;
-	u8		TP_Mode;
-
-}RXHP_T, *pRXHP_T;
-
-typedef struct _ODM_PATH_DIVERSITY_
-{
-	u8	RespTxPath;
-	u8	PathSel[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	PathA_Sum[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	PathB_Sum[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	PathA_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
-	uint32_t	PathB_Cnt[ODM_ASSOCIATE_ENTRY_NUM];
-}PATHDIV_T, *pPATHDIV_T;
-
 typedef struct _ANT_DETECTED_INFO{
 	bool			bAntDetected;
 	uint32_t			dBForAntA;
@@ -2421,15 +2372,11 @@ struct _rtw_dm {
 	//
 	//ODM Structure
 	//
-	PS_T		DM_PSTable;
-	Pri_CCA_T	DM_PriCCA;
-	RXHP_T		DM_RXHP_Table;
 	bool		RSSI_test;
 
 
 	EDCA_T		DM_EDCA_Table;
 	uint32_t		WMMEDCA_BE;
-	PATHDIV_T	DM_PathDiv;
 	// Copy from SD4 structure
 	//
 	// ==================================================

@@ -3,8 +3,6 @@ EXTRA_CFLAGS += -Wno-unused
 
 EXTRA_CFLAGS += -Wno-uninitialized
 
-EXTRA_CFLAGS += -I$(src)/include
-
 CONFIG_RTL8821A = y
 
 # Note CONFIG_RTLWIFI_DEBUG
@@ -79,6 +77,7 @@ $(MODULE_NAME)-y += 	$(OS_FILES) \
 			$(CORE_FILES) \
 			$(RTLWIFI_FILES) \
 			$(HAL_FILES)
+EXTRA_CFLAGS += -I$(src)/include
 else
 EXTRA_CFLAGS += -DCONFIG_RTLWIFI
 endif

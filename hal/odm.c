@@ -313,25 +313,6 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 }
 
 
-void ODM_Write_DIG(struct rtl_priv *rtlpriv, u8 CurrentIGI)
-{
-	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
-
-	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "ODM_REG(IGI_A,pDM_Odm)=0x%x, ODM_BIT(IGI,pDM_Odm)=0x%x \n",
-		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
-
-	if (pDM_DigTable->cur_igvalue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
-		rtl_set_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
-		if (rtlpriv->phy.rf_type != ODM_1T1R)
-			rtl_set_bbreg(rtlpriv, ODM_REG_IGI_B_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
-
-		RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "CurrentIGI(0x%02x). \n", CurrentIGI);
-		/* pDM_DigTable->PreIGValue = pDM_DigTable->CurIGValue; */
-		pDM_DigTable->cur_igvalue = CurrentIGI;
-	}
-	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "ODM_Write_DIG():CurrentIGI=0x%x \n", CurrentIGI);
-
-}
 
 void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 {
@@ -374,7 +355,7 @@ void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
 	 else if (CurrentIGI < RSSI_Lower)
 		CurrentIGI = RSSI_Lower;
 
-	ODM_Write_DIG(rtlpriv, CurrentIGI);/* ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue); */
+	rtl8821au_dm_write_dig(rtlpriv, CurrentIGI);/* ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue); */
 
 }
 

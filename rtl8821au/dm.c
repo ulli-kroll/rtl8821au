@@ -2295,7 +2295,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	/* 2 High power RSSI threshold */
 
 	{		/* BT is not using */
-		ODM_Write_DIG(rtlpriv, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, dm_digtable->CurIGValue); */
+		rtl8821au_dm_write_dig(rtlpriv, CurrentIGI);	/* ODM_Write_DIG(pDM_Odm, dm_digtable->CurIGValue); */
 		dm_digtable->media_connect_0 =
 			(rtlpriv->mac80211.link_state >= MAC80211_LINKED) ? 1 : 0;
 		dm_digtable->dig_min_0 = DIG_Dynamic_MIN;
@@ -2379,4 +2379,24 @@ void rtl8812_dm_init(struct rtl_priv *rtlpriv)
 	ODM_DMInit(rtlpriv);
 
 	rtlpriv->fix_rate = 0xFF;
+}
+
+void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 CurrentIGI)
+{
+	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
+
+	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "ODM_REG(IGI_A,pDM_Odm)=0x%x, ODM_BIT(IGI,pDM_Odm)=0x%x \n",
+		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
+
+	if (pDM_DigTable->cur_igvalue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
+		rtl_set_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
+		if (rtlpriv->phy.rf_type != ODM_1T1R)
+			rtl_set_bbreg(rtlpriv, ODM_REG_IGI_B_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
+
+		RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "CurrentIGI(0x%02x). \n", CurrentIGI);
+		/* pDM_DigTable->PreIGValue = pDM_DigTable->CurIGValue; */
+		pDM_DigTable->cur_igvalue = CurrentIGI;
+	}
+	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "rtl8821au_dm_write_dig():CurrentIGI=0x%x \n", CurrentIGI);
+
 }

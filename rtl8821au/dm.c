@@ -2381,22 +2381,22 @@ void rtl8812_dm_init(struct rtl_priv *rtlpriv)
 	rtlpriv->fix_rate = 0xFF;
 }
 
-void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 CurrentIGI)
+void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 current_igi)
 {
-	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "ODM_REG(IGI_A,pDM_Odm)=0x%x, ODM_BIT(IGI,pDM_Odm)=0x%x \n",
 		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
 
-	if (pDM_DigTable->cur_igvalue != CurrentIGI) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
-		rtl_set_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
+	if (dm_digtable->cur_igvalue != current_igi) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
+		rtl_set_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC, current_igi);
 		if (rtlpriv->phy.rf_type != ODM_1T1R)
-			rtl_set_bbreg(rtlpriv, ODM_REG_IGI_B_11AC, ODM_BIT_IGI_11AC, CurrentIGI);
+			rtl_set_bbreg(rtlpriv, ODM_REG_IGI_B_11AC, ODM_BIT_IGI_11AC, current_igi);
 
-		RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "CurrentIGI(0x%02x). \n", CurrentIGI);
+		RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "CurrentIGI(0x%02x). \n", current_igi);
 		/* pDM_DigTable->PreIGValue = pDM_DigTable->CurIGValue; */
-		pDM_DigTable->cur_igvalue = CurrentIGI;
+		dm_digtable->cur_igvalue = current_igi;
 	}
-	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "rtl8821au_dm_write_dig():CurrentIGI=0x%x \n", CurrentIGI);
+	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "rtl8821au_dm_write_dig():CurrentIGI=0x%x \n", current_igi);
 
 }

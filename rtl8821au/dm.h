@@ -157,6 +157,6 @@ enum pwr_track_control_method {
 	MIX_MODE
 };
 
-void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 CurrentIGI);
+void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 current_igi);
 
 #endif

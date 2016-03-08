@@ -2330,7 +2330,6 @@ struct _rtw_dm {
 	uint64_t			RSSI_TRSW;
 
 	u8			RxRate;
-	bool			StopDIG;
 	u8			AntType;
 	uint64_t			lastTxOkCnt;
 	uint64_t			lastRxOkCnt;

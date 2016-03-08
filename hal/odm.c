@@ -318,11 +318,6 @@ void ODM_Write_DIG(struct _rtw_dm *pDM_Odm, u8 CurrentIGI)
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
 
-	if (pDM_Odm->StopDIG) {
-		RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "Stop Writing IGI\n");
-		return;
-	}
-
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "ODM_REG(IGI_A,pDM_Odm)=0x%x, ODM_BIT(IGI,pDM_Odm)=0x%x \n",
 		ODM_REG(IGI_A, pDM_Odm), ODM_BIT(IGI, pDM_Odm));
 

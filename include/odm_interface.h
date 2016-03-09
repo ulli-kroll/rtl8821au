@@ -28,15 +28,5 @@
 #define _reg_11AC(_name)		ODM_REG_##_name##_11AC
 #define _bit_11AC(_name)		ODM_BIT_##_name##_11AC
 
-#if 1 //TODO: enable it if we need to support run-time to differentiate between 92C_SERIES and JAGUAR_SERIES.
-#define _cat(_name, _ic_type, _func)	_func##_11AC(_name)
-#endif
-
-// _name: name of register or bit.
-// Example: "ODM_REG(R_A_AGC_CORE1, pDM_Odm)"
-//        gets "ODM_R_A_AGC_CORE1" or "ODM_R_A_AGC_CORE1_8192C", depends on SupportICType.
-#define ODM_REG(_name, _pDM_Odm)	_cat(_name, _pDM_Odm->SupportICType, _reg)
-#define ODM_BIT(_name, _pDM_Odm)	_cat(_name, _pDM_Odm->SupportICType, _bit)
-
 #endif	// __ODM_INTERFACE_H__
 

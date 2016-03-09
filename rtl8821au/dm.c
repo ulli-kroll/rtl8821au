@@ -2385,6 +2385,9 @@ void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 current_igi)
 {
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
+	if (dm_digtable->stop_dig)
+		return;
+
 	if (dm_digtable->cur_igvalue != current_igi) {	/*if (pDM_DigTable->PreIGValue != CurrentIGI) */
 		rtl_set_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC, current_igi);
 		if (rtlpriv->phy.rf_type != ODM_1T1R)

@@ -2049,8 +2049,6 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
 
-	hw_init_completed = rtlpriv->hw_init_completed;
-
 	if (hw_init_completed == false)
 		goto skip_dm;
 
@@ -2058,7 +2056,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 	rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_FWLPS_RF_ON, (uint8_t *)(&fw_ps_awake));
 
 	/* ODM */
-	if (hw_init_completed == true) {
+	if (rtlpriv->hw_init_completed == true) {
 		if(rtw_linked_check(rtlpriv))
 			rtlpriv->mac80211.link_state = MAC80211_LINKED;
 		else
@@ -2099,10 +2097,11 @@ skip_dm:
 	 * Check GPIO to determine current RF on/off and Pbc status.
 	 * Check Hardware Radio ON/OFF or not
 	 */
-	{
-		/* temp removed */
-		dm_CheckPbcGPIO(rtlpriv);
-	}
+
+	/* temp removed */
+	/* ULLI : for WPS Button */
+	dm_CheckPbcGPIO(rtlpriv);
+
 	return;
 }
 

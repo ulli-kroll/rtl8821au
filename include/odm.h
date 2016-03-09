@@ -673,16 +673,6 @@ typedef enum tag_RF_Type_Definition
 	RF_MAX = 2,
 }DM_RF_E;
 
-//3===========================================================
-//3 Antenna Diversity
-//3===========================================================
-typedef enum tag_SW_Antenna_Switch_Definition
-{
-	Antenna_A = 1,
-	Antenna_B = 2,
-	Antenna_MAX = 3,
-}DM_SWAS_E;
-
 
 // Maximal number of antenna detection mechanism needs to perform, added by Roger, 2011.12.28.
 #define	MAX_ANTENNA_DETECTION_CNT	10
@@ -707,14 +697,6 @@ typedef enum tag_SW_Antenna_Switch_Definition
 
 void ODM_Write_CCK_CCA_Thres(struct rtl_priv *rtlpriv, u8 CurCCK_CCAThres);
 
-void ODM_SetAntenna(struct _rtw_dm *pDM_Odm, u8 Antenna);
-
-#define dm_CheckTXPowerTracking 	ODM_TXPowerTrackingCheck
-void ODM_TXPowerTrackingCheck(struct _rtw_dm *pDM_Odm);
-
-uint32_t GetPSDData(struct _rtw_dm *pDM_Odm, unsigned int point, u8 initial_gain_psd);
-void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm);
-
 uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	uint32_t ra_mask, u8 rssi_level);
 
@@ -724,11 +706,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo, void *pValu
 
 void ODM_CmnInfoPtrArrayHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
 	u16 Index, void *pValue);
-
-void ODM_AntselStatistics_88C(struct _rtw_dm *pDM_Odm, u8 MacId,
-	uint32_t PWDBAll, bool isCCKrate);
-
-void ODM_UpdateInitRate(struct _rtw_dm *pDM_Odm, u8 Rate);
 
 #endif
 

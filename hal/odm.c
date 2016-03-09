@@ -312,54 +312,6 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	rtl_set_bbreg(pDM_Odm->rtlpriv, rFPGA0_XB_LSSIReadBack, 0xFFFF, (TH_H_dmc<<8) | TH_L_dmc);
 }
 
-
-
-void odm_DIGbyRSSI_LPS(struct _rtw_dm *pDM_Odm)
-{
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
-	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
-
-	/* struct rtl_priv *rtlpriv =pDM_Odm->rtlpriv; */
-	/* pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable; */
-	struct false_alarm_statistics *pFalseAlmCnt = &(rtlpriv->falsealm_cnt);
-
-	u8	RSSI_Lower = DM_DIG_MIN_NIC;   	/* 0x1E or 0x1C */
-	u8	CurrentIGI = dm_digtable->rssi_val;
-
-	CurrentIGI = CurrentIGI+RSSI_OFFSET_DIG;
-
-	/* RT_TRACE(rtlpriv,COMP_DIG_LPS, DBG_LOUD, ("odm_DIG()==>\n")); */
-
-	/* Using FW PS mode to make IGI */
-
-	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "---Neil---odm_DIG is in LPS mode\n");
-	/* Adjust by  FA in LPS MODE */
-	if (pFalseAlmCnt->cnt_all > DM_DIG_FA_TH2_LPS)
-		CurrentIGI = CurrentIGI+2;
-	else if (pFalseAlmCnt->cnt_all > DM_DIG_FA_TH1_LPS)
-		CurrentIGI = CurrentIGI+1;
-	else if (pFalseAlmCnt->cnt_all < DM_DIG_FA_TH0_LPS)
-		CurrentIGI = CurrentIGI-1;
-
-	/* Lower bound checking */
-
-	/* RSSI Lower bound check */
-	if ((dm_digtable->rssi_val_min) > DM_DIG_MIN_NIC)
-		RSSI_Lower = (dm_digtable->rssi_val_min-10);
-	else
-		RSSI_Lower = DM_DIG_MIN_NIC;
-
-	/* Upper and Lower Bound checking */
-	 if (CurrentIGI > DM_DIG_MAX_NIC)
-		CurrentIGI = DM_DIG_MAX_NIC;
-	 else if (CurrentIGI < RSSI_Lower)
-		CurrentIGI = RSSI_Lower;
-
-	rtl8821au_dm_write_dig(rtlpriv, CurrentIGI);/* ODM_Write_DIG(pDM_Odm, pDM_DigTable->CurIGValue); */
-
-}
-
-
 /*
  * 3============================================================
  * 3 CCK Packet Detect Threshold

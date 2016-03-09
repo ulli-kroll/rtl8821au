@@ -2287,9 +2287,6 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 		}
 
 
-		/* ODM_TXPowerTrackingCheck(&pHalData->odmpriv ); */
-
-
 		/* rtl8812au_phy_lc_calibrate(rtlpriv); */
 	}
 

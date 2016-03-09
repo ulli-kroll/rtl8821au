@@ -793,11 +793,20 @@ void rtl8812au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 					    u8 **up_b, u8 **down_b)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	struct rtl_phy *rtlphy = &rtlpriv->phy;
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
+
+	/*
+	 * ULLI must get rid of *(pDM_Odm->pForcedDataRate)
+	u8 rate = rtldm->tx_rate;
+	*/
+
+	u8 channel = rtlphy->current_channel;
+
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 
 	u16	rate = *(pDM_Odm->pForcedDataRate);
-	u8         	channel   		 = rtlpriv->phy.current_channel;
 
 	if (rtlhal->rfe_type == 3 && IS_NORMAL_CHIP(rtlhal->version)) {
 		if (1 <= channel && channel <= 14) {

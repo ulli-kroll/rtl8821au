@@ -2401,3 +2401,26 @@ void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 current_igi)
 		dm_digtable->cur_igvalue = current_igi;
 	}
 }
+
+/* ULLI : From RTL8821AE */
+
+void rtl8821au_dm_update_init_rate(struct rtl_priv *rtlpriv, u8 rate)
+{
+	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	u8 p = 0;
+
+	RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
+		 "Get C2H Command! Rate=0x%x\n", rate);
+
+	rtldm->tx_rate = rate;
+
+#if 0	/* ULLI : Must check */
+	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8821AE) {
+		rtl8821ae_dm_txpwr_track_set_pwr(hw, MIX_MODE, RF90_PATH_A, 0);
+	} else {
+		for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
+			rtl8812ae_dm_txpwr_track_set_pwr(hw, MIX_MODE, p, 0);
+	}
+#endif
+}

@@ -1988,9 +1988,10 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 }
 
 
-static void rtl8821au_dm_common_info_self_update(struct _rtw_dm * pDM_Odm)
+static void rtl8821au_dm_common_info_self_update(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
 	u8	EntryCnt = 0;
 	u8	i;
 	struct sta_info *pEntry;
@@ -2068,7 +2069,7 @@ void rtl8821au_dm_watchdog(struct rtl_priv *rtlpriv)
 		 * to perform any new ODM_DM.
 		 */
 
-		rtl8821au_dm_common_info_self_update(pDM_Odm);
+		rtl8821au_dm_common_info_self_update(rtlpriv);
 		rtl8821au_dm_false_alarm_counter_statistics(rtlpriv);
 		RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "odm_DIG(): RSSI=0x%x\n", dm_digtable->rssi_val_min);
 

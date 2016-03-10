@@ -2318,8 +2318,6 @@ struct _rtw_dm {
 	//pMgntInfo->AntennaTest
 	u8			*pAntennaTest;
 	//u8			*pAidMap;
-//--------- POINTER REFERENCE-----------//
-	u16			*pForcedDataRate;
 //------------CALL BY VALUE-------------//
 	u8          InterfaceIndex; // Add for 92D  dual MAC: 0--Mac0 1--Mac1
 	bool			bOneEntryOnly;
@@ -2422,7 +2420,6 @@ struct _rtw_hal {
 	enum wireless_mode CurrentWirelessMode;
 
 	u16	CustomerID;
-	u16 ForcedDataRate;// Force Data Rate. 0: Auto, 0x02: 1M ~ 0x6C: 54M.
 	u32	ReceiveConfig;
 
 	//rf_ctrl

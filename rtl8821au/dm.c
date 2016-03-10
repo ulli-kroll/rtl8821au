@@ -796,17 +796,8 @@ void rtl8812au_get_delta_swing_table(struct rtl_priv *rtlpriv,
 	struct rtl_phy *rtlphy = &rtlpriv->phy;
 	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 
-	/*
-	 * ULLI must get rid of *(pDM_Odm->pForcedDataRate)
 	u8 rate = rtldm->tx_rate;
-	*/
-
 	u8 channel = rtlphy->current_channel;
-
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
-
-	u16	rate = *(pDM_Odm->pForcedDataRate);
 
 	if (rtlhal->rfe_type == 3 && IS_NORMAL_CHIP(rtlhal->version)) {
 		if (1 <= channel && channel <= 14) {
@@ -2358,7 +2349,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	int i;
 	
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_WM_MODE,&(pmlmeext->cur_wireless_mode));
-	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_FORCED_RATE,&(pHalData->ForcedDataRate));
 
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SEC_MODE,&(rtlpriv->securitypriv.dot11PrivacyAlgrthm));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SCAN,&(pmlmepriv->bScanInProcess));

@@ -2307,8 +2307,6 @@ struct _rtw_dm {
 
 	u8			u8_temp;
 
-	// Wireless mode B/G/A/N = BIT0/BIT1/BIT2/BIT3
-	u8			*pWirelessMode; //ODM_WIRELESS_MODE_E
 	// Security mode Open/WEP/AES/TKIP = 0/1/2/3
 	u8			*pSecurity;
 	// Common info for 92D DMSP

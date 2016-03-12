@@ -120,10 +120,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 	 * Dynamic call by reference pointer.
 	 */
 
-	case	ODM_CMNINFO_WM_MODE:
-		pDM_Odm->pWirelessMode = (u8 *)pValue;
-		break;
-
 	case	ODM_CMNINFO_SEC_MODE:
 		pDM_Odm->pSecurity = (u8 *)pValue;
 		break;
@@ -347,7 +343,6 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	struct sta_info *pEntry;
 	uint32_t 	rate_bitmap = 0;
 	u8 	WirelessMode;
-	/* u8 	WirelessMode =*(pDM_Odm->pWirelessMode); */
 
 	pEntry = pDM_Odm->pODM_StaInfo[macid];
 	if (!IS_STA_VALID(pEntry))

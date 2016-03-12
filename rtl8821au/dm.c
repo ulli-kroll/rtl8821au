@@ -1823,7 +1823,6 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 	
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
-	u8		WirelessMode = 0xFF;	/* invalid value */
 	uint32_t 	trafficIndex;
 	uint32_t	edca_param;
 	u8		bbtchange = false;
@@ -1843,9 +1842,6 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 	 * at the same time. In the stage2/3, we need to prive universal interface and merge all
 	 * HW dynamic mechanism.
 	 */
-
-	if (pDM_Odm->pWirelessMode != NULL)
-		WirelessMode = *(pDM_Odm->pWirelessMode);
 
 	IOTPeer = pmlmeinfo->assoc_AP_vendor;
 
@@ -1879,11 +1875,9 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 
 		if ((pDM_Odm->DM_EDCA_Table.prv_traffic_idx != trafficIndex) || (!rtlpriv->dm.current_turbo_edca)) {
 			/* merge from 92s_92c_merge temp brunch v2445    20120215 */
-			if ((IOTPeer == HT_IOT_PEER_CISCO)
-			   && ((WirelessMode == WIRELESS_MODE_G) || (WirelessMode == (WIRELESS_MODE_B|WIRELESS_MODE_G)) || (WirelessMode == WIRELESS_MODE_A) || (WirelessMode == WIRELESS_MODE_B))) {
+			if ((IOTPeer == HT_IOT_PEER_CISCO)) {
 				EDCA_BE_DL = edca_setting_gmode[IOTPeer];
-			} else if ((IOTPeer == HT_IOT_PEER_AIRGO)
-			       && ((WirelessMode == WIRELESS_MODE_G) || (WirelessMode == WIRELESS_MODE_A))) {
+			} else if ((IOTPeer == HT_IOT_PEER_AIRGO)) {
 					EDCA_BE_DL = 0xa630;
 			} else if (IOTPeer == HT_IOT_PEER_MARVELL) {
 				EDCA_BE_DL = edca_setting_dl[IOTPeer];
@@ -2349,8 +2343,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 	int i;
 	
-	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_WM_MODE,&(pmlmeext->cur_wireless_mode));
-
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SEC_MODE,&(rtlpriv->securitypriv.dot11PrivacyAlgrthm));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SCAN,&(pmlmepriv->bScanInProcess));
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_POWER_SAVING,&(pwrctrlpriv->bpower_saving));

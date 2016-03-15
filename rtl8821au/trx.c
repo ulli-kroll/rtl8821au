@@ -1086,10 +1086,10 @@ static u16 odm_Cfo(s8 Value)
  * Endianness before calling this API
  */
 
-static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, struct _ODM_Phy_Status_Info_ *pPhyInfo,
 	PODM_PACKET_INFO_T pPktinfo);
 
-static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, struct _ODM_Phy_Status_Info_ *pPhyInfo,
 	u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
@@ -1447,7 +1447,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, PODM_PHY_INFO_T pPhyInfo
 }
 
 
-static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyInfo,
+static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, struct _ODM_Phy_Status_Info_ *pPhyInfo,
 	PODM_PACKET_INFO_T pPktinfo)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
@@ -1812,7 +1812,7 @@ void rtl8812_query_rx_phy_status(
 	struct rtl_priv *			rtlpriv = precvframe->rtlpriv;
 	struct rx_pkt_attrib	*pattrib = &precvframe->attrib;
 	 struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
-	PODM_PHY_INFO_T 	pPHYInfo  = (PODM_PHY_INFO_T)(&pattrib->phy_info);
+	struct _ODM_Phy_Status_Info_ *pPHYInfo  = (struct _ODM_Phy_Status_Info_ *) (&pattrib->phy_info);
 	uint8_t					*wlanhdr;
 	ODM_PACKET_INFO_T	pkt_info;
 	uint8_t *sa;

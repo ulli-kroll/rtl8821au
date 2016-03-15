@@ -180,8 +180,7 @@
 
 #define IQK_THRESHOLD				8
 
-typedef struct _ODM_Phy_Status_Info_
-{
+struct _ODM_Phy_Status_Info_ {
 	//
 	// Be care, if you want to add any element please insert between
 	// RxPWDBAll & SignalStrength.
@@ -206,7 +205,7 @@ typedef struct _ODM_Phy_Status_Info_
 	u8		RxSNR[4];				//per-path's SNR
 	u8		BandWidth;
 	u8		btCoexPwrAdjust;
-}ODM_PHY_INFO_T,*PODM_PHY_INFO_T;
+};
 
 
 typedef struct _ODM_Per_Pkt_Info_

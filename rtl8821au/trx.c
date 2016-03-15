@@ -1087,10 +1087,10 @@ static u16 odm_Cfo(s8 Value)
  */
 
 static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, struct _ODM_Phy_Status_Info_ *pPhyInfo,
-	PODM_PACKET_INFO_T pPktinfo);
+	struct _ODM_Per_Pkt_Info_ *pPktinfo);
 
 static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, struct _ODM_Phy_Status_Info_ *pPhyInfo,
-	u8 *pPhyStatus, PODM_PACKET_INFO_T pPktinfo)
+	u8 *pPhyStatus, struct _ODM_Per_Pkt_Info_ *pPktinfo)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
@@ -1448,7 +1448,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, struct _ODM_Phy_Status_I
 
 
 static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, struct _ODM_Phy_Status_Info_ *pPhyInfo,
-	PODM_PACKET_INFO_T pPktinfo)
+	struct _ODM_Per_Pkt_Info_ *pPktinfo)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
@@ -1814,7 +1814,7 @@ void rtl8812_query_rx_phy_status(
 	 struct _rtw_hal		*pHalData = GET_HAL_DATA(rtlpriv);
 	struct _ODM_Phy_Status_Info_ *pPHYInfo  = (struct _ODM_Phy_Status_Info_ *) (&pattrib->phy_info);
 	uint8_t					*wlanhdr;
-	ODM_PACKET_INFO_T	pkt_info;
+	struct _ODM_Per_Pkt_Info_ pkt_info;
 	uint8_t *sa;
 	struct sta_priv *pstapriv;
 	struct sta_info *psta;

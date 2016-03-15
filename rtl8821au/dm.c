@@ -1709,7 +1709,6 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 		struct sta_info *psta;
 		struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 		struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-		struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
 
 		for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
@@ -2339,7 +2338,6 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 {
 	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 
-	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
@@ -2393,8 +2391,7 @@ void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 current_igi)
 
 void rtl8821au_dm_update_init_rate(struct rtl_priv *rtlpriv, u8 rate)
 {
-	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 	u8 p = 0;
 
 	RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,

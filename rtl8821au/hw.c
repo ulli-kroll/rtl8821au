@@ -89,9 +89,6 @@ void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 {
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	uint32_t	value32;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	/* reset TSF, enable update TSF, correcting TSF On Beacon */
 
 	/*
@@ -862,7 +859,6 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 	struct _rtw_dm *podmpriv;
 	uint8_t val8;
 	u16 val16;
-	uint32_t val32;
 
 	pHalData = GET_HAL_DATA(rtlpriv);
 	podmpriv = &pHalData->odmpriv;
@@ -1133,8 +1129,6 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	uint8_t	tmp_u1b;
 	u8 hwinfo[HWSET_MAX_SIZE_JAGUAR];
 	u16 EEPROMId;
-
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	/* Read all content in Efuse/EEPROM. */
 
@@ -1623,7 +1617,6 @@ static void _InitTxBufferBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 
 static void _InitPageBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	/*
 	 * u16 			rxff_bndy;
 	 * u16			Offset;
@@ -1802,7 +1795,6 @@ static void _InitRetryFunction_8812A(struct rtl_priv *rtlpriv)
 
 static void _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
 {
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	/* uint32_t			value32; */
 	/* u16			value16; */
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -1951,7 +1943,6 @@ static void usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t			valueDMA;
-	uint8_t			valueUSB;
 
 	valueDMA = rtl_read_byte(rtlpriv, REG_TRXDMA_CTRL);
 
@@ -2042,7 +2033,6 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	uint8_t	value8 = 0, u1bRegCR;
-	u16  value16;
 	uint8_t	txpktbuf_bndy;
 	uint32_t	status = _SUCCESS;
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
@@ -2733,7 +2723,6 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 	bool autoload_fail)
 {
 	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct txpower_info_2g pwrInfo24G;
 	struct txpower_info_5g pwrInfo5G;
 	uint8_t	rfPath, ch, group, TxCount;

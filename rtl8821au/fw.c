@@ -202,7 +202,6 @@ void rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
 uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param)
 {
 	uint8_t	res = _SUCCESS;
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	*((u32 *) param) = cpu_to_le32(*((u32 *) param));
 
@@ -451,7 +450,6 @@ void ConstructPSPoll(struct rtl_priv *rtlpriv, uint8_t *pframe, uint32_t *pLengt
 {
 	struct rtw_ieee80211_hdr	*pwlanhdr;
 	u16					*fctrl;
-	uint32_t					pktlen;
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
@@ -1116,7 +1114,6 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 {
 	uint32_t	counter = 0;
 	uint32_t	value32;
-	uint8_t 	value8;
 
 	/* polling CheckSum report */
 	do {

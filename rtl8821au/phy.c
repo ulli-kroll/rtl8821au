@@ -1775,9 +1775,6 @@ static void _rtl8821au_iqk_tx(struct rtl_priv *rtlpriv, enum radio_path Path)
 	bool VDF_enable = false;
 	int 	i, k, VDF_Y[3], VDF_X[3], Tx_dt[3], Rx_dt[3], ii, dx = 0, dy = 0, TX_finish = 0, RX_finish = 0;
 
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
-
 	RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD, "BandWidth = %d\n", rtlpriv->phy.current_chan_bw);
 	if (rtlpriv->phy.current_chan_bw == 2) {
 		VDF_enable = true;
@@ -3471,8 +3468,6 @@ void _rtl8821au_phy_config_mac_with_headerfile(struct rtl_priv *rtlpriv)
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
-	u16     count       = 0;
-	uint32_t    *ptr_array   = NULL;
 
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
@@ -3580,9 +3575,6 @@ bool rtl8812au_phy_config_rf_with_headerfile(struct rtl_priv *rtlpriv,
 				enum radio_path eRFPath)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-
-//	struct _rtw_hal  *pHalData = GET_HAL_DATA(rtlpriv);
-//	struct _rtw_dm * pDM_Odm = &pHalData->odmpriv;
 
 	int i;
 	bool rtstatus = true;
@@ -5433,7 +5425,6 @@ static void _rtl8821au_store_tx_power_by_rate(struct rtl_priv *rtlpriv, uint32_t
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t	tmpData = Data;
 
 	/*
@@ -5819,7 +5810,6 @@ static void _rtl8821au_phy_convert_txpower_limit_to_power_index(struct rtl_priv 
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint8_t 	BW40PwrBasedBm2_4G, BW40PwrBasedBm5G;
 	uint8_t 	regulation, bw, channel, rateSection, group;
 	uint8_t 	baseIndex2_4G;
@@ -6136,8 +6126,6 @@ bool _rtl8821au_phy_config_bb_with_headerfile(struct rtl_priv *rtlpriv,
 
 	uint32_t     hex         = 0;
 	uint32_t     i           = 0;
-	u16     count       = 0;
-	uint32_t    *ptr_array   = NULL;
 
 	/* ULLI : fixed values ?? */
 	u8  platform = ODM_CE;
@@ -6200,8 +6188,6 @@ bool _rtl8821au_phy_config_bb_with_headerfile(struct rtl_priv *rtlpriv,
 
 		uint32_t hex = 0;
 		uint32_t i = 0;
-		u16 count = 0;
-		uint32_t *ptr_array = NULL;
 
 		/* ULLI : fixed values ?? */
 		u8  platform = ODM_CE;

@@ -2006,8 +2006,6 @@ static bool Hal_MappingOutPipe(struct rtl_priv *rtlpriv, uint8_t NumOutPipe)
 int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
-
-	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 	bool		result		= false;
 
 	_ConfigChipOutEP_8812(rtlpriv, rtlusb->RtNumOutPipes);

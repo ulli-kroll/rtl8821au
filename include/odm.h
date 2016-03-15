@@ -599,8 +599,5 @@ void ODM_DMInit(struct rtl_priv *rtlpriv);
 
 void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo, void *pValue);
 
-void ODM_CmnInfoPtrArrayHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E CmnInfo,
-	u16 Index, void *pValue);
-
 #endif
 

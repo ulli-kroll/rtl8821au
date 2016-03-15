@@ -382,18 +382,6 @@ typedef enum tag_Operation_Mode_Definition
 	ODM_WIFI_DISPLAY	= BIT8,
 }ODM_OPERATION_MODE_E;
 
-// ODM_CMNINFO_SEC_MODE
-typedef enum tag_Security_Definition
-{
-	ODM_SEC_OPEN 			= 0,
-	ODM_SEC_WEP40 		= 1,
-	ODM_SEC_TKIP 			= 2,
-	ODM_SEC_RESERVE 		= 3,
-	ODM_SEC_AESCCMP 		= 4,
-	ODM_SEC_WEP104 		= 5,
-	ODM_WEP_WPA_MIXED    = 6, // WEP + WPA
-}ODM_SECURITY_E;
-
 // ODM_CMNINFO_BW
 typedef enum tag_Bandwidth_Definition
 {

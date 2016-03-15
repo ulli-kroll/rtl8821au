@@ -132,10 +132,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 		pDM_Odm->pbPowerSaving = (bool *)pValue;
 		break;
 
-	case	ODM_CMNINFO_ANT_TEST:
-		pDM_Odm->pAntennaTest =  (u8 *)pValue;
-		break;
-
 	/* To remove the compiler warning, must add an empty default statement to handle the other values. */
 	default:
 		/* do nothing */

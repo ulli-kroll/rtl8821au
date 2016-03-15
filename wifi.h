@@ -2318,8 +2318,6 @@ struct _rtw_dm {
 
 	// Common info for Status
 	bool			*pbPowerSaving;
-	//pMgntInfo->AntennaTest
-	u8			*pAntennaTest;
 	//u8			*pAidMap;
 //------------CALL BY VALUE-------------//
 	u8          InterfaceIndex; // Add for 92D  dual MAC: 0--Mac0 1--Mac1

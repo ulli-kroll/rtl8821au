@@ -982,6 +982,31 @@ struct dm_phy_dbg_info {
 #define DEL_SW_IDX_SZ		30
 #define BAND_NUM			3
 
+/* ULLI : Follwing needed for Rate Adaptive */
+
+typedef struct _ODM_RA_Info_ {
+	u8 RateID;
+	uint32_t RateMask;
+	uint32_t RAUseRate;
+	u8 RateSGI;
+	u8 RssiStaRA;
+	u8 PreRssiStaRA;
+	u8 SGIEnable;
+	u8 DecisionRate;
+	u8 PreRate;
+	u8 HighestRate;
+	u8 LowestRate;
+	uint32_t NscUp;
+	uint32_t NscDown;
+	u16 RTY[5];
+	uint32_t TOTAL;
+	u16 DROP;
+	u8 Active;
+	u16 RptTime;
+	u8 RAWaitingCounter;
+	u8 RAPendingCounter;
+} ODM_RA_INFO_T,*PODM_RA_INFO_T;
+
 struct rtl_dm {
 	/*PHY status for Dynamic Management */
 	long entry_min_undec_sm_pwdb;
@@ -1101,6 +1126,8 @@ struct rtl_dm {
 
 /* ULLI : Form struct _rtw_dm, aka original sources */
 
+	u16 			CurrminRptTime;
+	ODM_RA_INFO_T   RAInfo[ODM_ASSOCIATE_ENTRY_NUM]; //See HalMacID support
 	struct sta_info *pODM_StaInfo[ODM_ASSOCIATE_ENTRY_NUM];
 	bool bOneEntryOnly;
 };
@@ -2325,10 +2352,6 @@ struct _rtw_dm {
 	bool			ForceEDCCA;
 	u8			AdapEn_RSSI;
 
-#if (RATE_ADAPTIVE_SUPPORT == 1)
-	u16 			CurrminRptTime;
-	ODM_RA_INFO_T   RAInfo[ODM_ASSOCIATE_ENTRY_NUM]; //See HalMacID support
-#endif
 	//
 	// 2012/02/14 MH Add to share 88E ra with other SW team.
 	// We need to colelct all support abilit to a proper area.

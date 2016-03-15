@@ -361,30 +361,6 @@ typedef enum tag_Operation_Mode_Definition
 	ODM_WIFI_DISPLAY	= BIT8,
 }ODM_OPERATION_MODE_E;
 
-typedef struct _ODM_RA_Info_
-{
-	u8 RateID;
-	uint32_t RateMask;
-	uint32_t RAUseRate;
-	u8 RateSGI;
-	u8 RssiStaRA;
-	u8 PreRssiStaRA;
-	u8 SGIEnable;
-	u8 DecisionRate;
-	u8 PreRate;
-	u8 HighestRate;
-	u8 LowestRate;
-	uint32_t NscUp;
-	uint32_t NscDown;
-	u16 RTY[5];
-	uint32_t TOTAL;
-	u16 DROP;
-	u8 Active;
-	u16 RptTime;
-	u8 RAWaitingCounter;
-	u8 RAPendingCounter;
-} ODM_RA_INFO_T,*PODM_RA_INFO_T;
-
 typedef struct _IQK_MATRIX_REGS_SETTING{
 	bool 	bIQKDone;
 	int32_t		Value[3][IQK_Matrix_REG_NUM];

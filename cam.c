@@ -204,4 +204,6 @@ u8 rtw_cam_add_one_entry(struct rtl_priv *rtlpriv, u8 *mac_addr,
 			      (u8 *)key_content, us_config);
 
 	RT_TRACE(rtlpriv, COMP_SEC, DBG_DMESG, "end\n");
+	
+	return 1;
 }

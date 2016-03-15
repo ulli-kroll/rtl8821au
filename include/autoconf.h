@@ -1,5 +1,4 @@
 //***** temporarily flag *******
-#define CONFIG_ODM_REFRESH_RAMASK
 //for FPGA VERIFICATION config
 
 //***** temporarily flag *******

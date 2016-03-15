@@ -283,9 +283,8 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 
 
 
-static int rtl8821au_init_sw_vars(struct net_device *ndev)
+static int rtl8821au_init_sw_vars(struct rtl_priv *rtlpriv)
 {
-	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	uint8_t	ret8 = _SUCCESS;
 

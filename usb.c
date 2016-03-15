@@ -1839,7 +1839,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	rtlpriv->cfg->ops->read_adapter_info(rtlpriv);
 
 	/* step 5. */
-	if(rtlpriv->cfg->ops->init_sw_vars(ndev) ==_FAIL) {
+	if(rtlpriv->cfg->ops->init_sw_vars(rtlpriv) ==_FAIL) {
 		goto free_hal_data;
 	}
 

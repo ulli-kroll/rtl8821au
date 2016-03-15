@@ -616,7 +616,7 @@ typedef enum tag_RF_Type_Definition
 
 void ODM_Write_CCK_CCA_Thres(struct rtl_priv *rtlpriv, u8 CurCCK_CCAThres);
 
-uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
+uint32_t ODM_Get_Rate_Bitmap(struct rtl_priv *rtlpriv, uint32_t macid,
 	uint32_t ra_mask, u8 rssi_level);
 
 void ODM_DMInit(struct rtl_priv *rtlpriv);

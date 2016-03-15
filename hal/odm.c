@@ -330,10 +330,9 @@ void ODM_Write_CCK_CCA_Thres(struct rtl_priv *rtlpriv, u8 CurCCK_CCAThres)
 
 
 
-uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
+uint32_t ODM_Get_Rate_Bitmap(struct rtl_priv *rtlpriv, uint32_t macid,
 	uint32_t ra_mask, u8 rssi_level)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal  *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 
@@ -375,7 +374,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 	case WIRELESS_MODE_B | WIRELESS_MODE_G | WIRELESS_MODE_N_24G:
 	case WIRELESS_MODE_B | WIRELESS_MODE_N_24G:
 	case WIRELESS_MODE_A | WIRELESS_MODE_N_5G:
-		if (pDM_Odm->rtlpriv->phy.rf_type == ODM_1T2R || pDM_Odm->rtlpriv->phy.rf_type == ODM_1T1R) {
+		if (rtlpriv->phy.rf_type == ODM_1T2R || rtlpriv->phy.rf_type == ODM_1T1R) {
 			if (rssi_level == DM_RATR_STA_HIGH) {
 				rate_bitmap = 0x000f0000;
 			} else if (rssi_level == DM_RATR_STA_MIDDLE) {
@@ -401,7 +400,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 		break;
 	case WIRELESS_MODE_AC_5G | WIRELESS_MODE_A:
 	case WIRELESS_MODE_AC_5G | WIRELESS_MODE_G:
-		if (pDM_Odm->rtlpriv->phy.rf_type == RF_1T1R) {
+		if (rtlpriv->phy.rf_type == RF_1T1R) {
 			if (IS_HARDWARE_TYPE_8811AU(rtlhal) ||
 				(IS_HARDWARE_TYPE_8812AU(rtlhal) && IS_NORMAL_CHIP(rtlhal->version))) {
 				if (IS_HARDWARE_TYPE_8821U(rtlhal)
@@ -437,7 +436,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 		break;
 
 	default:
-		if (pDM_Odm->rtlpriv->phy.rf_type == RF_1T2R)
+		if (rtlpriv->phy.rf_type == RF_1T2R)
 			rate_bitmap = 0x000fffff;
 		else
 			rate_bitmap = 0x0fffffff;

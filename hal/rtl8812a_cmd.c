@@ -39,7 +39,7 @@ void rtl8812_Add_RateATid(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t * a
 
 #ifdef CONFIG_ODM_REFRESH_RAMASK
 	if(rssi_level != DM_RATR_STA_INIT)
-		bitmap = ODM_Get_Rate_Bitmap(&pHalData->odmpriv, macid, bitmap, rssi_level);
+		bitmap = ODM_Get_Rate_Bitmap(rtlpriv, macid, bitmap, rssi_level);
 #endif //CONFIG_ODM_REFRESH_RAMASK
 
 	rtl8812_set_raid_cmd(rtlpriv, bitmap, arg);

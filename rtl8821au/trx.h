@@ -437,35 +437,6 @@ struct tx_desc_8821au {
 
 
 struct rw_fwinfo_8821au {
-#if 0
-	PHY_RX_AGC_INFO_T path_agc[2];
-	u8 	ch_num[2];
-	u8	cck_sig_qual_ofdm_pwdb_all;
-	u8	cck_agc_rpt_ofdm_cfosho_a;
-	u8	cck_bb_pwr_ofdm_cfosho_b;
-	u8    cck_rx_path;	//CCK_RX_PATH [3:0] (with regA07[3:0] definition)
-	u8 	rsvd_1;
-	u8	path_cfotail[2];
-	u8	pcts_mask[2];
-	s8	stream_rxevm[2];
-	u8	path_rxsnr[2];
-	u8	rsvd_2[2];
-	u8 	stream_snr[2];
-	u8 	stream_csi[2];
-	u8	rsvd_3[2];
-	s8 	sig_evm;
-	u8 	rsvd_4;
-#if (ODM_ENDIAN_TYPE == ODM_ENDIAN_LITTLE)
-	u8 	antidx_anta:3;
-	u8 	antidx_antb:3;
-	u8 	rsvd_5:2;
-#else	// _BIG_ENDIAN_
-	u8 	rsvd_5:2;
-	u8 	antidx_antb:3;
-	u8 	antidx_anta:3;
-#endif
-#endif
-
 	//2012.05.24 LukeLee: This structure should take big/little endian in consideration later.....
 
 	//DWORD 0
@@ -500,7 +471,7 @@ struct rw_fwinfo_8821au {
 	u8			antidx_anta:3;
 	u8			antidx_antb:3;
 	u8			resvd_1:2;
-};
+} __packed;
 
 
 #endif

@@ -307,46 +307,13 @@ typedef		struct _ODM_STA_INFO{
 //
 // 2011/10/20 MH Define Common info enum for all team.
 //
-typedef enum _ODM_Common_Info_Definition
-{
-//-------------REMOVED CASE-----------//
-	//ODM_CMNINFO_CCK_HP,
-	//ODM_CMNINFO_RFPATH_ENABLE,		// Define as ODM write???
-	//ODM_CMNINFO_OP_MODE,				// ODM_OPERATION_MODE_E
-//-------------REMOVED CASE-----------//
-
-	//
-	// Fixed value:
-	//
-
-	//-----------HOOK BEFORE REG INIT-----------//
-	//-----------HOOK BEFORE REG INIT-----------//
-
-
-	//
-	// Dynamic value:
-	//
-//--------- POINTER REFERENCE-----------//
+typedef enum _ODM_Common_Info_Definition {
 	ODM_CMNINFO_SEC_MODE,				// ODM_SECURITY_E
-	ODM_CMNINFO_FORCED_RATE,
-
 	ODM_CMNINFO_SCAN,
 	ODM_CMNINFO_POWER_SAVING,
 	ODM_CMNINFO_ANT_TEST,
-//--------- POINTER REFERENCE-----------//
-
-//------------CALL BY VALUE-------------//
-//------------CALL BY VALUE-------------//
-
-	//
-	// Dynamic ptr array hook itms.
-	//
 	ODM_CMNINFO_PHY_STATUS,
-	ODM_CMNINFO_MAC_STATUS,
-
 	ODM_CMNINFO_MAX,
-
-
 }ODM_CMNINFO_E;
 
 // ODM_CMNINFO_RF_TYPE

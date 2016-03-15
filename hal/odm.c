@@ -250,11 +250,11 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 	 * else
 	 */
 
-	if (rtlpriv->phy.current_chan_bw == ODM_BW20M)	/*CHANNEL_WIDTH_20 */
+	if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_20)	/*CHANNEL_WIDTH_20 */
 		IGI_target = pDM_Odm->IGI_Base;
-	else if (rtlpriv->phy.current_chan_bw == ODM_BW40M)
+	else if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_40)
 		IGI_target = pDM_Odm->IGI_Base + 2;
-	else if (rtlpriv->phy.current_chan_bw == ODM_BW80M)
+	else if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_80)
 		IGI_target = pDM_Odm->IGI_Base + 6;
 	else
 		IGI_target = pDM_Odm->IGI_Base;
@@ -272,7 +272,7 @@ void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
 		TH_L = pDM_Odm->TH_L;
 
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "BandWidth=%s, IGI_target=0x%x, EDCCA_State=%d\n",
-		(rtlpriv->phy.current_chan_bw == ODM_BW80M) ? "80M" : ((rtlpriv->phy.current_chan_bw == ODM_BW40M) ? "40M" : "20M"), IGI_target, EDCCA_State);
+		(rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_80) ? "80M" : ((rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_40) ? "40M" : "20M"), IGI_target, EDCCA_State);
 
 	if (EDCCA_State == 1) {
 		if (IGI < IGI_target) {
@@ -381,7 +381,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 			} else if (rssi_level == DM_RATR_STA_MIDDLE) {
 				rate_bitmap = 0x000ff000;
 			} else {
-				if (rtlpriv->phy.current_chan_bw == ODM_BW40M)
+				if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_40)
 					rate_bitmap = 0x000ff015;
 				else
 					rate_bitmap = 0x000ff005;
@@ -392,7 +392,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 			} else if (rssi_level == DM_RATR_STA_MIDDLE) {
 				rate_bitmap = 0x0f8ff000;
 			} else {
-				if (rtlpriv->phy.current_chan_bw == ODM_BW40M)
+				if (rtlpriv->phy.current_chan_bw == CHANNEL_WIDTH_40)
 					rate_bitmap = 0x0f8ff015;
 				else
 					rate_bitmap = 0x0f8ff005;

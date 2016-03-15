@@ -382,17 +382,6 @@ typedef enum tag_Operation_Mode_Definition
 	ODM_WIFI_DISPLAY	= BIT8,
 }ODM_OPERATION_MODE_E;
 
-// ODM_CMNINFO_BW
-typedef enum tag_Bandwidth_Definition
-{
-	ODM_BW20M 		= 0,
-	ODM_BW40M 		= 1,
-	ODM_BW80M 		= 2,
-	ODM_BW160M 		= 3,
-	ODM_BW10M 		= 4,
-}ODM_BW_E;
-
-
 typedef struct _ODM_RA_Info_
 {
 	u8 RateID;

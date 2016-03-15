@@ -2246,15 +2246,6 @@ typedef struct _EDCA_TURBO_
 
 //#endif
 
-typedef struct _ANT_DETECTED_INFO{
-	bool			bAntDetected;
-	uint32_t			dBForAntA;
-	uint32_t			dBForAntB;
-	uint32_t			dBForAntO;
-}ANT_DETECTED_INFO, *PANT_DETECTED_INFO;
-
-
-
 //
 // 2011/09/22 MH Copy from SD4 defined structure. We use to support PHY DM integration.
 //
@@ -2326,16 +2317,7 @@ struct _rtw_dm {
 //------------CALL BY VALUE-------------//
 	u8			RSSI_A;
 	u8			RSSI_B;
-	uint64_t			RSSI_TRSW;
-
 	u8			RxRate;
-	u8			AntType;
-	uint64_t			lastTxOkCnt;
-	uint64_t			lastRxOkCnt;
-	uint32_t			BbSwingOffsetA;
-	bool			IsBbSwingOffsetPositiveA;
-	uint32_t			BbSwingOffsetB;
-	bool			IsBbSwingOffsetPositiveB;
 	uint32_t			TH_H;
 	uint32_t			TH_L;
 	uint32_t			IGI_Base;
@@ -2365,8 +2347,6 @@ struct _rtw_dm {
 	//
 	//ODM Structure
 	//
-	bool		RSSI_test;
-
 
 	EDCA_T		DM_EDCA_Table;
 	uint32_t		WMMEDCA_BE;
@@ -2385,12 +2365,6 @@ struct _rtw_dm {
 	//struct sta_info *RSSI_target;
 
 	//PSD
-	bool			bUserAssignLevel;
-	u8			RSSI_BT;			//come from BT
-	bool			bPSDinProcess;
-	bool			bPSDactive;
-
-	ANT_DETECTED_INFO	AntDetectedInfo; // Antenna detected information for RSSI tool
 
 	//
 	// TX power tracking
@@ -2399,16 +2373,8 @@ struct _rtw_dm {
 	//
 	// Dynamic ATC switch
 	//
-	bool			bATCStatus;
-	bool			largeCFOHit;
-	bool			bIsfreeze;
 	int				CFO_tail[2];
-	int				CFO_ave_pre;
-	int				CrystalCap;
-	u8			CFOThreshold;
 	uint32_t			packetCount;
-	uint32_t			packetCount_pre;
-
 };
 
 struct _rtw_hal {

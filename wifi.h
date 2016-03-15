@@ -1098,6 +1098,11 @@ struct rtl_dm {
 
 	u64 last_tx_ok_cnt;
 	u64 last_rx_ok_cnt;
+
+/* ULLI : Form struct _rtw_dm, aka original sources */
+
+	struct sta_info *pODM_StaInfo[ODM_ASSOCIATE_ENTRY_NUM];
+	bool bOneEntryOnly;
 };
 
 #define rtl_hal(rtlpriv)	(&((rtlpriv)->rtlhal))
@@ -2339,11 +2344,6 @@ struct _rtw_dm {
 	uint32_t			IGI_target;
 	bool			ForceEDCCA;
 	u8			AdapEn_RSSI;
-
-	//2 Define STA info.
-	// _ODM_STA_INFO
-	// 2012/01/12 MH For MP, we need to reduce one array pointer for default port.??
-	struct sta_info *pODM_StaInfo[ODM_ASSOCIATE_ENTRY_NUM];
 
 #if (RATE_ADAPTIVE_SUPPORT == 1)
 	u16 			CurrminRptTime;

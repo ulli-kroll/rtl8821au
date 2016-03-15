@@ -73,20 +73,19 @@ void rtl8812_free_hal_data(struct rtl_priv *rtlpriv)
 
 void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, bool bSet)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *podmpriv = &pHalData->odmpriv;
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 	/* _irqL irqL; */
 
 	if (bSet) {
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "### Set STA_(%d) info\n", psta->mac_id);
-		podmpriv->pODM_StaInfo[psta->mac_id] = psta;
+		rtldm->pODM_StaInfo[psta->mac_id] = psta;
 #if (RATE_ADAPTIVE_SUPPORT == 1)
 		ODM_RAInfo_Init(podmpriv, psta->mac_id);
 #endif
 	} else {
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "### Clean STA_(%d) info\n", psta->mac_id);
 		/* spin_lock_bh(&pHalData->odm_stainfo_lock, &irqL); */
-		podmpriv->pODM_StaInfo[psta->mac_id] = NULL;
+		rtldm->pODM_StaInfo[psta->mac_id] = NULL;
 		/* spin_unlock_bh(&pHalData->odm_stainfo_lock, &irqL); */
 	}
 }

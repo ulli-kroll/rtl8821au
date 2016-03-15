@@ -1451,6 +1451,7 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyI
 	PODM_PACKET_INFO_T pPktinfo)
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 	int32_t		UndecoratedSmoothedPWDB, UndecoratedSmoothedCCK, UndecoratedSmoothedOFDM, RSSI_Ave;
 	u8		isCCKrate = 0;
 	u8		RSSI_max, RSSI_min, i;
@@ -1462,7 +1463,7 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, PODM_PHY_INFO_T pPhyI
 	if (pPktinfo->StationID == 0xFF)
 		return;
 
-	pEntry = pDM_Odm->pODM_StaInfo[pPktinfo->StationID];
+	pEntry = rtldm->pODM_StaInfo[pPktinfo->StationID];
 
 	if (!IS_STA_VALID(pEntry)) {
 		return;

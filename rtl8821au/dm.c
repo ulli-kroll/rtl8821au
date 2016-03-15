@@ -1707,11 +1707,13 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 #if 1
 		/* ULLI : This will go away in rtlwifi-lib */
 		struct sta_info *psta;
+		struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 		struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 		struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
 
+
 		for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
-			psta = pDM_Odm->pODM_StaInfo[i];
+			psta = rtldm->pODM_StaInfo[i];
 			if (IS_STA_VALID(psta)) {
 				if (psta->rssi_stat.UndecoratedSmoothedPWDB < tmpEntryMinPWDB)
 					tmpEntryMinPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
@@ -1984,22 +1986,21 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 
 static void rtl8821au_dm_common_info_self_update(struct rtl_priv *rtlpriv)
 {
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 	u8	EntryCnt = 0;
 	u8	i;
 	struct sta_info *pEntry;
 
 	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
-		pEntry = pDM_Odm->pODM_StaInfo[i];
+		pEntry = rtldm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pEntry))
 			EntryCnt++;
 	}
 
 	if (EntryCnt == 1)
-		pDM_Odm->bOneEntryOnly = true;
+		rtldm->bOneEntryOnly = true;
 	else
-		pDM_Odm->bOneEntryOnly = false;
+		rtldm->bOneEntryOnly = false;
 }
 
 static void rtl8821au_dm_cck_packet_detection_thresh(struct rtl_priv *rtlpriv)
@@ -2336,11 +2337,14 @@ static void rtl8821_dm_init_gpio_setting(struct rtl_priv *rtlpriv)
 
 static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 {
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
+
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
+
 	int i;
 	
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_SEC_MODE,&(rtlpriv->securitypriv.dot11PrivacyAlgrthm));
@@ -2348,7 +2352,7 @@ static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
 	ODM_CmnInfoHook(pDM_Odm,ODM_CMNINFO_POWER_SAVING,&(pwrctrlpriv->bpower_saving));
 
 	for (i = 0; i < NUM_STA; i++) {
-		pDM_Odm->pODM_StaInfo[i] = NULL;
+		rtldm->pODM_StaInfo[i] = NULL;
 		/* pDM_Odm->pODM_StaInfo[i] = NULL; */
 	}
 }

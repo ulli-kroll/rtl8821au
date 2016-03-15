@@ -339,12 +339,13 @@ uint32_t ODM_Get_Rate_Bitmap(struct _rtw_dm *pDM_Odm, uint32_t macid,
 {
 	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
 	struct rtl_hal  *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 
 	struct sta_info *pEntry;
 	uint32_t 	rate_bitmap = 0;
 	u8 	WirelessMode;
 
-	pEntry = pDM_Odm->pODM_StaInfo[macid];
+	pEntry = rtldm->pODM_StaInfo[macid];
 	if (!IS_STA_VALID(pEntry))
 		return ra_mask;
 
@@ -529,6 +530,7 @@ static bool ODM_RAStateCheck(struct rtl_priv *rtlpriv, u32 RSSI,
 void odm_RefreshRateAdaptiveMask(struct rtl_priv *rtlpriv)
 {
 	struct rate_adaptive *p_ra = &(rtlpriv->ra);
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
 	u8	i;
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *	pDM_Odm = &(pHalData->odmpriv);
@@ -541,7 +543,7 @@ void odm_RefreshRateAdaptiveMask(struct rtl_priv *rtlpriv)
 	/* printk("==> %s \n",__FUNCTION__); */
 
 	for (i = 0; i < ODM_ASSOCIATE_ENTRY_NUM; i++) {
-		struct sta_info *pstat = pDM_Odm->pODM_StaInfo[i];
+		struct sta_info *pstat = rtldm->pODM_StaInfo[i];
 		if (IS_STA_VALID(pstat)) {
 			if (pstat->rssi_stat.UndecoratedSmoothedPWDB < p_ra->ldpc_thres) {
 				p_ra->use_ldpc = true;

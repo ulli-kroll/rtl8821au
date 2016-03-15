@@ -217,27 +217,6 @@ struct _ODM_Per_Pkt_Info_ {
 	bool		bPacketBeacon;
 };
 
-
-
-
-
-typedef enum tag_Dynamic_ODM_Support_Ability_Type
-{
-	// BB Team
-	ODM_DIG				= 0x00000001,
-	ODM_HIGH_POWER		= 0x00000002,
-	ODM_CCK_CCA_TH		= 0x00000004,
-	ODM_FA_STATISTICS		= 0x00000008,
-	ODM_RAMASK			= 0x00000010,
-	ODM_RSSI_MONITOR		= 0x00000020,
-	ODM_SW_ANTDIV		= 0x00000040,
-	ODM_HW_ANTDIV		= 0x00000080,
-	ODM_BB_PWRSV			= 0x00000100,
-	ODM_2TPATHDIV			= 0x00000200,
-	ODM_1TPATHDIV			= 0x00000400,
-	ODM_PSD2AFH			= 0x00000800
-}ODM_Ability_E;
-
 //
 // 2011/20/20 MH For MP driver RT_WLAN_STA =  STA_INFO_T
 // Please declare below ODM relative info in your STA info structure.

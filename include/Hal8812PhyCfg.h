@@ -65,9 +65,6 @@
 // BB TX Power R/W
 //
 
-u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, uint8_t RFPath,
-	uint8_t Rate, enum CHANNEL_WIDTH BandWidth, uint8_t Channel);
-
 u32 PHY_GetTxBBSwing_8812A(struct rtl_priv *rtlpriv, enum band_type Band, uint8_t RFPath);
 
 //

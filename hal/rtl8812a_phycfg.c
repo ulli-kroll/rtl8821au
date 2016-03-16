@@ -64,23 +64,6 @@ const char *const GLBwSrc[]={
  **************************************************************************************************************/
 
 
-static void PHY_GetTxPowerIndexByRateArray_8812A(struct rtl_priv *rtlpriv,
-	uint8_t RFPath, enum CHANNEL_WIDTH BandWidth,
-	uint8_t Channel, uint8_t *Rate, uint8_t *power_index,
-	uint8_t	ArraySize)
-{
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	uint8_t i;
-	for (i = 0; i < ArraySize; i++) {
-		power_index[i] = _rtl8821au_get_txpower_index(rtlpriv, RFPath, Rate[i], BandWidth, Channel);
-		if ((power_index[i] % 2 == 1) &&  !IS_NORMAL_CHIP(rtlhal->version))
-			power_index[i] -= 1;
-	}
-
-}
-
-
 /*
  * create new definition of PHY_SetTxPowerLevel8812 by YP.
  * Page revised on 20121106

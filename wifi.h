@@ -20,6 +20,38 @@ enum radio_path {
 	RF90_PATH_C = 2,
 	RF90_PATH_D = 3,
 };
+
+enum regulation_txpwr_lmt {
+	TXPWR_LMT_FCC = 0,
+	TXPWR_LMT_MKK = 1,
+	TXPWR_LMT_ETSI = 2,
+	TXPWR_LMT_WW = 3,
+
+	TXPWR_LMT_MAX_REGULATION_NUM = 4
+};
+
+enum rate_section {
+	CCK = 0,
+	OFDM,
+	HT_MCS0_MCS7,
+	HT_MCS8_MCS15,
+	HT_MCS16_MCS23,
+	HT_MCS24_MCS31,
+	VHT_1SSMCS0_1SSMCS9,
+	VHT_2SSMCS0_2SSMCS9,
+	VHT_3SSMCS0_3SSMCS9,
+	VHT_4SSMCS0_4SSMCS9,
+};
+
+enum rf_tx_num {
+	RF_1TX = 0,
+	RF_2TX,
+	RF_3TX,
+	RF_4TX,
+	RF_MAX_TX_NUM,
+	RF_TX_NUM_NONIMPLEMENT,
+};
+
 enum rtl_desc92_rate {
 	DESC_RATE1M = 0x00,
 	DESC_RATE2M = 0x01,
@@ -869,11 +901,6 @@ struct rtl_phy {
 
 	u32 tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
 				   [TX_PWR_BY_RATE_NUM_RF]
-				   [TX_PWR_BY_RATE_NUM_SECTION];
-
-#if 0 	/* ULLI disabled to get (in any case) compiler error */
-	u32 tx_power_by_rate_offset[TX_PWR_BY_RATE_NUM_BAND]
-				   [TX_PWR_BY_RATE_NUM_RF]
 				   [TX_PWR_BY_RATE_NUM_RF]
 				   [TX_PWR_BY_RATE_NUM_SECTION];
 	u8 txpwr_by_rate_base_24g[TX_PWR_BY_RATE_NUM_RF]
@@ -882,7 +909,6 @@ struct rtl_phy {
 	u8 txpwr_by_rate_base_5g[TX_PWR_BY_RATE_NUM_RF]
 				[TX_PWR_BY_RATE_NUM_RF]
 				[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
-#endif
 	u8 default_initialgain[4];
 
 	/* the current Tx power level */
@@ -929,14 +955,6 @@ struct rtl_phy {
 	//---------------------------------------------------------------------------------//
 
 	// Power Limit Table for 2.4G
-
-	// Store the original power by rate value of the base of each rate section of rf path A & B
-	uint8_t	 txpwr_by_rate_base_24g[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
-						[MAX_BASE_NUM_IN_PHY_REG_PG_2_4G];
-	uint8_t	txpwr_by_rate_base_5g[MAX_RF_PATH_NUM_IN_POWER_LIMIT_TABLE]
-						[MAX_BASE_NUM_IN_PHY_REG_PG_5G];
-
-
 };
 
 

@@ -4,76 +4,95 @@
 #include <linux/types.h>
 #include <linux/bitops.h>
 
-/* BIT 7 HT Rate*/
-// TxHT = 0
-#define	MGN_1M				0x02
-#define	MGN_2M				0x04
-#define	MGN_5_5M			0x0b
-#define	MGN_11M			0x16
+enum MGN_RATE{
+	MGN_1M		= 0x02,
+	MGN_2M		= 0x04,
+	MGN_5_5M 	= 0x0B,
+	MGN_6M	 	= 0x0C,
+	MGN_9M		= 0x12,
+	MGN_11M 	= 0x16,
+	MGN_12M	= 0x18,
+	MGN_18M	= 0x24,
+	MGN_24M	= 0x30,
+	MGN_36M	= 0x48,
+	MGN_48M	= 0x60,
+	MGN_54M	= 0x6C,
+	MGN_MCS32	= 0x7F,
+	MGN_MCS0,
+	MGN_MCS1,
+	MGN_MCS2,
+	MGN_MCS3,
+	MGN_MCS4,
+	MGN_MCS5,
+	MGN_MCS6,
+	MGN_MCS7,
+	MGN_MCS8,
+	MGN_MCS9,
+	MGN_MCS10,
+	MGN_MCS11,
+	MGN_MCS12,
+	MGN_MCS13,
+	MGN_MCS14,
+	MGN_MCS15,
+	MGN_MCS16,
+	MGN_MCS17,
+	MGN_MCS18,
+	MGN_MCS19,
+	MGN_MCS20,
+	MGN_MCS21,
+	MGN_MCS22,
+	MGN_MCS23,
+	MGN_MCS24,
+	MGN_MCS25,
+	MGN_MCS26,
+	MGN_MCS27,
+	MGN_MCS28,
+	MGN_MCS29,
+	MGN_MCS30,
+	MGN_MCS31,
+	MGN_VHT1SS_MCS0,
+	MGN_VHT1SS_MCS1,
+	MGN_VHT1SS_MCS2,
+	MGN_VHT1SS_MCS3,
+	MGN_VHT1SS_MCS4,
+	MGN_VHT1SS_MCS5,
+	MGN_VHT1SS_MCS6,
+	MGN_VHT1SS_MCS7,
+	MGN_VHT1SS_MCS8,
+	MGN_VHT1SS_MCS9,
+	MGN_VHT2SS_MCS0,
+	MGN_VHT2SS_MCS1,
+	MGN_VHT2SS_MCS2,
+	MGN_VHT2SS_MCS3,
+	MGN_VHT2SS_MCS4,
+	MGN_VHT2SS_MCS5,
+	MGN_VHT2SS_MCS6,
+	MGN_VHT2SS_MCS7,
+	MGN_VHT2SS_MCS8,
+	MGN_VHT2SS_MCS9,
+	MGN_VHT3SS_MCS0,
+	MGN_VHT3SS_MCS1,
+	MGN_VHT3SS_MCS2,
+	MGN_VHT3SS_MCS3,
+	MGN_VHT3SS_MCS4,
+	MGN_VHT3SS_MCS5,
+	MGN_VHT3SS_MCS6,
+	MGN_VHT3SS_MCS7,
+	MGN_VHT3SS_MCS8,
+	MGN_VHT3SS_MCS9,
+	MGN_VHT4SS_MCS0,
+	MGN_VHT4SS_MCS1,
+	MGN_VHT4SS_MCS2,
+	MGN_VHT4SS_MCS3,
+	MGN_VHT4SS_MCS4,
+	MGN_VHT4SS_MCS5,
+	MGN_VHT4SS_MCS6,
+	MGN_VHT4SS_MCS7,
+	MGN_VHT4SS_MCS8,
+	MGN_VHT4SS_MCS9,
+	MGN_UNKNOWN
+};
 
-#define	MGN_6M				0x0c
-#define	MGN_9M				0x12
-#define	MGN_12M			0x18
-#define	MGN_18M			0x24
-#define	MGN_24M			0x30
-#define	MGN_36M			0x48
-#define	MGN_48M			0x60
-#define	MGN_54M			0x6c
-
-// TxHT = 1
-#define	MGN_MCS0			0x80
-#define	MGN_MCS1			0x81
-#define	MGN_MCS2			0x82
-#define	MGN_MCS3			0x83
-#define	MGN_MCS4			0x84
-#define	MGN_MCS5			0x85
-#define	MGN_MCS6			0x86
-#define	MGN_MCS7			0x87
-#define	MGN_MCS8			0x88
-#define	MGN_MCS9			0x89
-#define	MGN_MCS10			0x8a
-#define	MGN_MCS11			0x8b
-#define	MGN_MCS12			0x8c
-#define	MGN_MCS13			0x8d
-#define	MGN_MCS14			0x8e
-#define	MGN_MCS15			0x8f
-#define	MGN_VHT1SS_MCS0		0x90
-#define	MGN_VHT1SS_MCS1		0x91
-#define	MGN_VHT1SS_MCS2		0x92
-#define	MGN_VHT1SS_MCS3		0x93
-#define	MGN_VHT1SS_MCS4		0x94
-#define	MGN_VHT1SS_MCS5		0x95
-#define	MGN_VHT1SS_MCS6		0x96
-#define	MGN_VHT1SS_MCS7		0x97
-#define	MGN_VHT1SS_MCS8		0x98
-#define	MGN_VHT1SS_MCS9		0x99
-#define	MGN_VHT2SS_MCS0		0x9a
-#define	MGN_VHT2SS_MCS1		0x9b
-#define	MGN_VHT2SS_MCS2		0x9c
-#define	MGN_VHT2SS_MCS3		0x9d
-#define	MGN_VHT2SS_MCS4		0x9e
-#define	MGN_VHT2SS_MCS5		0x9f
-#define	MGN_VHT2SS_MCS6		0xa0
-#define	MGN_VHT2SS_MCS7		0xa1
-#define	MGN_VHT2SS_MCS8		0xa2
-#define	MGN_VHT2SS_MCS9		0xa3
-
-#define	MGN_MCS0_SG			0xc0
-#define	MGN_MCS1_SG			0xc1
-#define	MGN_MCS2_SG			0xc2
-#define	MGN_MCS3_SG			0xc3
-#define	MGN_MCS4_SG			0xc4
-#define	MGN_MCS5_SG			0xc5
-#define	MGN_MCS6_SG			0xc6
-#define	MGN_MCS7_SG			0xc7
-#define	MGN_MCS8_SG			0xc8
-#define	MGN_MCS9_SG			0xc9
-#define	MGN_MCS10_SG		0xca
-#define	MGN_MCS11_SG		0xcb
-#define	MGN_MCS12_SG		0xcc
-#define	MGN_MCS13_SG		0xcd
-#define	MGN_MCS14_SG		0xce
-#define	MGN_MCS15_SG		0xcf
 enum rtl_desc_qsel {
 	QSLT_BK = 0x2,
 	QSLT_BE = 0x0,

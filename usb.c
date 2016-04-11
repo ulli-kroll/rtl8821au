@@ -1235,7 +1235,7 @@ int _netdev_open(struct net_device *ndev)
 	 * netif_carrier_on(ndev);//call this func when rtw_joinbss_event_callback return success
 	 */
 	if (!rtw_netif_queue_stopped(ndev))
-		rtw_netif_start_queue(ndev);
+		netif_tx_start_all_queues(ndev);
 	else
 		netif_tx_wake_all_queues(ndev);
 

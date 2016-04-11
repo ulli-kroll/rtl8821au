@@ -29,6 +29,11 @@ static inline void DBG_871X(const char *fmt, ...)
 
 #ifdef CONFIG_AP_MODE
 
+static struct list_head *get_next(struct list_head	*list)
+{
+	return list->next;
+}
+
 extern unsigned char	RTW_WPA_OUI[];
 extern unsigned char	WMM_OUI[];
 extern unsigned char	WPS_OUI[];

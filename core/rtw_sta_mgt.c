@@ -28,6 +28,11 @@ static inline void DBG_871X(const char *fmt, ...)
 {
 }
 
+static inline struct list_head *get_next(struct list_head	*list)
+{
+	return list->next;
+}
+
 static void _rtw_init_stainfo(struct sta_info *psta)
 {
 	memset((uint8_t *)psta, 0, sizeof (struct sta_info));

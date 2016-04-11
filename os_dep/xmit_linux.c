@@ -188,13 +188,13 @@ int rtw_mlcst2unicst(struct rtl_priv *rtlpriv, struct sk_buff *skb)
 
 	spin_lock_bh(&pstapriv->asoc_list_lock);
 	phead = &pstapriv->asoc_list;
-	plist = get_next(phead);
+	plist = phead->next;
 
 	/* free sta asoc_queue */
 	while ((rtw_end_of_queue_search(phead, plist)) == false) {
 		int stainfo_offset;
 		psta = container_of(plist, struct sta_info, asoc_list);
-		plist = get_next(plist);
+		plist = plist->next;
 
 		stainfo_offset = rtw_stainfo_offset(pstapriv, psta);
 		if (stainfo_offset_valid(stainfo_offset)) {
@@ -258,7 +258,7 @@ int rtw_xmit_entry(struct sk_buff *pkt, struct net_device *ndev)
 	rtw_check_xmit_resource(rtlpriv, pkt);
 
 #ifdef CONFIG_TX_MCAST2UNI
-	if ( !__rtw_mc2u_disable && check_fwstate(pmlmepriv, WIFI_AP_STATE) == true && 
+	if ( !__rtw_mc2u_disable && check_fwstate(pmlmepriv, WIFI_AP_STATE) == true &&
 	   ( IP_MCAST_MAC(pkt->data) || ICMPV6_MCAST_MAC(pkt->data) )
 		)
 	{

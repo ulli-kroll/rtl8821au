@@ -145,6 +145,11 @@ exit:
 	return _SUCCESS;
 }
 
+static inline struct list_head *get_next(struct list_head	*list)
+{
+	return list->next;
+}
+
 struct	cmd_obj	*_rtw_dequeue_cmd(struct __queue *queue)
 {
 	unsigned long flags;
@@ -511,7 +516,7 @@ uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, in
 
 void rtw_getbbrfreg_cmdrsp_callback(struct rtl_priv*	rtlpriv,  struct cmd_obj *pcmd)
 {
- 
+
 
 	//rtw_free_cmd_obj(pcmd);
 	/* ULLI check usage of pcmd->cmdsz */
@@ -523,7 +528,7 @@ void rtw_getbbrfreg_cmdrsp_callback(struct rtl_priv*	rtlpriv,  struct cmd_obj *p
 
 void rtw_readtssi_cmdrsp_callback(struct rtl_priv*	rtlpriv,  struct cmd_obj *pcmd)
 {
- 
+
 	/* ULLI check usage of pcmd->cmdsz */
 	rtw_mfree(pcmd->parmbuf);
 	rtw_mfree(pcmd);

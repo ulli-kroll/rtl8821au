@@ -27,6 +27,11 @@ static inline void DBG_871X(const char *fmt, ...)
 {
 }
 
+static struct list_head *get_next(struct list_head	*list)
+{
+	return list->next;
+}
+
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS);
 #endif

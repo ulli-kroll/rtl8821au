@@ -34,6 +34,11 @@ static inline void DBG_8192C(const char *fmt, ...)
 {
 }
 
+static struct list_head *get_next(struct list_head	*list)
+{
+	return list->next;
+}
+
 #define _drv_always_		1
 #undef DBG_871X_LEVEL
 static inline void DBG_871X_LEVEL(const int level, const char *fmt, ...)

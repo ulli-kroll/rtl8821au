@@ -28,6 +28,11 @@ static inline void DBG_871X(const char *fmt, ...)
 {
 }
 
+static struct list_head *get_next(struct list_head	*list)
+{
+	return list->next;
+}
+
 extern void indicate_wx_scan_complete_event(struct rtl_priv *rtlpriv);
 extern uint8_t rtw_do_join(struct rtl_priv * rtlpriv);
 

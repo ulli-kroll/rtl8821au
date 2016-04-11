@@ -1300,7 +1300,7 @@ static int rtw_wx_set_wap(struct net_device *ndev,
 	authmode = rtlpriv->securitypriv.ndisauthtype;
 	spin_lock_bh(&queue->lock);
 	phead = get_list_head(queue);
-	pmlmepriv->pscanned = get_next(phead);
+	pmlmepriv->pscanned = phead->next;
 
 	while (1) {
 		if ((rtw_end_of_queue_search(phead, pmlmepriv->pscanned)) == true) {
@@ -1309,7 +1309,7 @@ static int rtw_wx_set_wap(struct net_device *ndev,
 
 		pnetwork = container_of(pmlmepriv->pscanned, struct wlan_network, list);
 
-		pmlmepriv->pscanned = get_next(pmlmepriv->pscanned);
+		pmlmepriv->pscanned = pmlmepriv->pscanned->next;
 
 		dst_bssid = pnetwork->network.MacAddress;
 
@@ -1621,7 +1621,7 @@ static int rtw_wx_get_scan(struct net_device *ndev, struct iw_request_info *a,
 	spin_lock_bh(&(pmlmepriv->scanned_queue.lock));
 
 	phead = get_list_head(queue);
-	plist = get_next(phead);
+	plist = phead->next;
 
 	while (1) {
 		if (rtw_end_of_queue_search(phead,plist) == true)
@@ -1644,7 +1644,7 @@ static int rtw_wx_get_scan(struct net_device *ndev, struct iw_request_info *a,
 			ev = translate_scan(rtlpriv, a, pnetwork, ev, stop);
 		}
 
-		plist = get_next(plist);
+		plist = plist->next;
 
 	}
 
@@ -1733,7 +1733,7 @@ static int rtw_wx_set_essid(struct net_device *ndev,
 
 		spin_lock_bh(&queue->lock);
 		phead = get_list_head(queue);
-		pmlmepriv->pscanned = get_next(phead);
+		pmlmepriv->pscanned = phead->next;
 
 		while (1) {
 			if (rtw_end_of_queue_search(phead, pmlmepriv->pscanned) == true) {
@@ -1743,7 +1743,7 @@ static int rtw_wx_set_essid(struct net_device *ndev,
 
 			pnetwork = container_of(pmlmepriv->pscanned, struct wlan_network, list);
 
-			pmlmepriv->pscanned = get_next(pmlmepriv->pscanned);
+			pmlmepriv->pscanned = pmlmepriv->pscanned->next;
 
 			dst_ssid = pnetwork->network.Ssid.Ssid;
 

@@ -69,6 +69,11 @@ exit:
 	return ret;
 }
 
+static inline struct list_head *get_next(struct list_head	*list)
+{
+	return list->next;
+}
+
 uint8_t rtw_do_join(struct rtl_priv * rtlpriv);
 uint8_t rtw_do_join(struct rtl_priv * rtlpriv)
 {

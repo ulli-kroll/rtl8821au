@@ -21,9 +21,6 @@
 #define __OSDEP_LINUX_SERVICE_H_
 
 #include <linux/netdevice.h>
-#include <linux/ip.h>
-#include <linux/kthread.h>
-#include <linux/vmalloc.h>
 
 #ifdef CONFIG_USB_SUSPEND
 #define CONFIG_AUTOSUSPEND	1

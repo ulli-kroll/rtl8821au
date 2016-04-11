@@ -19,6 +19,7 @@
  ******************************************************************************/
 #define _RTW_XMIT_C_
 
+#include <linux/ip.h>
 #include <linux/etherdevice.h>
 #include <drv_types.h>
 #include <linux/udp.h>

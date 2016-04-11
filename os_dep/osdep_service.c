@@ -21,6 +21,7 @@
 
 #define _OSDEP_SERVICE_C_
 
+#include <linux/vmalloc.h>
 #include <drv_types.h>
 
 #undef DBG_871X

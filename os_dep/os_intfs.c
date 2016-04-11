@@ -19,6 +19,9 @@
  ******************************************************************************/
 #define _OS_INTFS_C_
 
+#include <linux/ip.h>
+#include <linux/kthread.h>
+
 #include <drv_types.h>
 
 /* module param defaults */
@@ -297,7 +300,7 @@ u32 rtw_start_drv_threads(struct rtl_priv *rtlpriv)
 void rtw_stop_drv_threads(struct rtl_priv *rtlpriv)
 {
 	int _unused;
-	
+
 	/* Below is to termindate rtw_cmd_thread & event_thread... */
 	up(&rtlpriv->cmdpriv.cmd_queue_sema);
 	/* up(&rtlpriv->cmdpriv.cmd_done_sema); */

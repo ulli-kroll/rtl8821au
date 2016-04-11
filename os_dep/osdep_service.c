@@ -181,21 +181,6 @@ inline int32_t rtw_get_time_interval_ms(u32 start, u32 end)
 }
 
 
-void rtw_sleep_schedulable(int ms)
-{
-	u32 delta;
-
-	delta = (ms * HZ)/1000;	/* (ms) */
-	if (delta == 0) {
-		delta = 1;	/* 1 ms */
-	}
-	set_current_state(TASK_INTERRUPTIBLE);
-	if (schedule_timeout(delta) != 0) {
-		return;
-	}
-	return;
-}
-
 void rtw_usleep_os(int us)
 {
 	if (1 < (us/1000))

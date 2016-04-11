@@ -26,13 +26,6 @@
 #define RTW_RX_HANDLED 2
 //#define RTW_STATUS_TIMEDOUT -110
 
-#undef true
-#define true		1
-
-#undef false
-#define false		0
-
-
 #include <osdep_service_linux.h>
 
 #define RTW_TIMER_HDL_NAME(name) rtw_##name##_timer_hdl
@@ -129,8 +122,6 @@ extern u32	rtw_systime_to_ms(u32 systime);
 extern u32	rtw_ms_to_systime(u32 ms);
 extern int32_t	rtw_get_passing_time_ms(u32 start);
 extern int32_t	rtw_get_time_interval_ms(u32 start, u32 end);
-
-extern void	rtw_sleep_schedulable(int ms);
 
 extern void	rtw_usleep_os(int us);
 

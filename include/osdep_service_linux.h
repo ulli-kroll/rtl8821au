@@ -77,12 +77,6 @@ static inline void rtw_netif_start_queue(struct net_device *ndev)
 	netif_tx_start_all_queues(ndev);
 }
 
-static inline void rtw_netif_stop_queue(struct net_device *ndev)
-{
-	netif_tx_stop_all_queues(ndev);
-}
-
-
 // limitation of path length
 #define PATH_LENGTH_MAX PATH_MAX
 

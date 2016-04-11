@@ -1138,7 +1138,7 @@ static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t messa
 	 */
 	if (ndev) {
 		netif_carrier_off(ndev);
-		rtw_netif_stop_queue(ndev);
+		netif_tx_stop_all_queues(ndev);
 	}
 
 	/* s2. */
@@ -1250,7 +1250,7 @@ netdev_open_error:
 	rtlpriv->initialized = false;
 
 	netif_carrier_off(ndev);
-	rtw_netif_stop_queue(ndev);
+	netif_tx_stop_all_queues(ndev);
 
 	DBG_871X("-871x_drv - drv_open fail, initialized=%d\n", rtlpriv->initialized);
 
@@ -1413,7 +1413,7 @@ static int netdev_close(struct net_device *ndev)
 		/* s1. */
 		if (ndev) {
 			if (!rtw_netif_queue_stopped(ndev))
-				rtw_netif_stop_queue(ndev);
+				netif_tx_stop_all_queues(ndev);
 		}
 
 		/* s2. */

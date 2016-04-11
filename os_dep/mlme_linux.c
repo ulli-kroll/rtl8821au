@@ -21,6 +21,9 @@
 
 #define _MLME_OSDEP_C_
 
+#include <net/iw_handler.h>
+#include <linux/if_arp.h>
+
 #include <drv_types.h>
 
 #undef DBG_871X

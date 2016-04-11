@@ -1,3 +1,5 @@
+#include <linux/etherdevice.h>
+
 #include <drv_types.h>
 #include <rtl8812a_recv.h>
 #include <../rtl8821au/trx.h>
@@ -424,7 +426,7 @@ check_completion:
 u32 _rtlw_usb_transmit(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct xmit_buf *pxmitbuf)
 {
 	u32 ep_num;
-	
+
 	unsigned long flags;
 	unsigned int pipe;
 	int status;
@@ -473,7 +475,7 @@ u32 _rtlw_usb_transmit(struct rtl_priv *rtlpriv, u32 queue_idx, u32 cnt, struct 
 	purb	= pxmitbuf->pxmit_urb[0];
 
 	/* translate DMA FIFO addr to pipehandle */
-	ep_num = rtlusb->ep_map.ep_mapping[queue_idx];	
+	ep_num = rtlusb->ep_map.ep_mapping[queue_idx];
 	pipe = usb_sndbulkpipe(pusbd, ep_num);
 
 #ifdef CONFIG_REDUCE_USB_TX_INT
@@ -696,7 +698,7 @@ static uint32_t _rtl_usb_receive (struct rtl_priv *rtlpriv, uint32_t cnt, uint8_
 	if (precvbuf != NULL) {
 		precvbuf->len = 0;
 		precvbuf->ref_cnt = 0;
-			
+
 		/* re-assign for linux based on skb */
 		if ((precvbuf->reuse == false) || (precvbuf->skb == NULL)) {
 			/* precvbuf->pskb = alloc_skb(MAX_RECVBUF_SZ, GFP_ATOMIC);//don't use this after v2.6.25 */
@@ -1218,7 +1220,7 @@ int _netdev_open(struct net_device *ndev)
 		}
 
 		usb_intf_start(rtlpriv);
-		
+
 		rtlpriv->initialized = true;
 	}
 	rtlpriv->cfg->ops->led_control(rtlpriv, LED_CTL_POWER_ON);
@@ -1260,7 +1262,7 @@ static int netdev_open(struct net_device *ndev)
 {
 	int ret;
 	int _unused;
-	
+
 	struct rtl_priv *rtlpriv =  rtl_priv(ndev);
 
 	/* ULLI: orignal driver doesn't use the return value */
@@ -1387,7 +1389,7 @@ void rtw_ips_dev_unload(struct rtl_priv *rtlpriv)
 static int netdev_close(struct net_device *ndev)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(ndev);
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);	
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	if (rtlpriv->pwrctrlpriv.bInternalAutoSuspend == true) {
 		/*rtw_pwr_wakeup(rtlpriv); */
@@ -1777,7 +1779,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 
 	/* this spin lock must be initialized early */
 	spin_lock_init(&rtlpriv->locks.usb_lock);
-#if 0	
+#if 0
 	INIT_WORK(&rtlpriv->works.fill_h2c_cmd,
 		  rtl_fill_h2c_cmd_work_callback);
 	INIT_WORK(&rtlpriv->works.lps_change_work,
@@ -1902,10 +1904,10 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 
 
 	return 0;
-	
+
 free_dvobj:
 	usb_dvobj_deinit(pusb_intf);
-	
+
 free_hal_data:
 	if (status != _SUCCESS && rtlpriv->HalData)
 		rtw_mfree(rtlpriv->HalData);

@@ -20,6 +20,8 @@
 #ifndef __IEEE80211_H
 #define __IEEE80211_H
 
+#include <linux/wireless.h>
+
 #define MGMT_QUEUE_NUM 5
 
 #define ETH_ALEN	6

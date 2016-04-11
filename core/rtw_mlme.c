@@ -19,6 +19,7 @@
  ******************************************************************************/
 #define _RTW_MLME_C_
 
+#include <linux/etherdevice.h>
 #include <drv_types.h>
 #include <rtl8812a_hal.h>
 
@@ -1447,7 +1448,7 @@ void rtw_joinbss_event_prehandle(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 ignore_joinbss_callback:
 
 	spin_unlock_bh(&pmlmepriv->lock);
-	
+
 }
 
 void rtw_joinbss_event_callback(struct rtl_priv *rtlpriv, uint8_t *pbuf)

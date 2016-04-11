@@ -7,6 +7,7 @@
 
 #else
 
+#include <linux/etherdevice.h>
 #include <rtl8812a_hal.h>
 #include "trx.h"
 #include "def.h"
@@ -514,7 +515,7 @@ static uint32_t xmitframe_need_length(struct xmit_frame *pxmitframe)
 }
 
 #define IDEA_CONDITION 1	/* check all packets before enqueue */
-int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, 
+int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv,
 				     struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf)
 {
 	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -1346,7 +1347,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, struct _ODM_Phy_Status_I
 		pPhyInfo->RxPWDBAll = PWDB_ALL;
 #if 0		/* Currently no value in rtlwifi for this */
 		RT_TRACE(rtlpriv, COMP_RSSI_MONITOR, DBG_LOUD, "ODM OFDM RSSI=%d\n",pPhyInfo->RxPWDBAll);
-#endif		
+#endif
 		pPhyInfo->BTRxRSSIPercentage = PWDB_ALL_BT;
 		pPhyInfo->RxPower = rx_pwr_all;
 		pPhyInfo->RecvSignalPower = rx_pwr_all;
@@ -1830,7 +1831,7 @@ void rtl8812_query_rx_phy_status(
 		!pattrib->icv_err && !pattrib->crc_err &&
 		memcmp(get_hdr_bssid(wlanhdr), get_bssid(&rtlpriv->mlmepriv), ETH_ALEN) == 0);
 
-	pkt_info.bPacketToSelf = pkt_info.bPacketMatchBSSID && 
+	pkt_info.bPacketToSelf = pkt_info.bPacketMatchBSSID &&
 				(memcmp(get_da(wlanhdr), rtlpriv->mac80211.mac_addr, ETH_ALEN) == 0);
 
 	pkt_info.bPacketBeacon = pkt_info.bPacketMatchBSSID && (GetFrameSubType(wlanhdr) == WIFI_BEACON);

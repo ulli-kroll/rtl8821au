@@ -19,6 +19,7 @@
  ******************************************************************************/
 #define _RTW_XMIT_C_
 
+#include <linux/etherdevice.h>
 #include <drv_types.h>
 #include <linux/udp.h>
 #include <rtl8812a_xmit.h>
@@ -531,7 +532,7 @@ static void update_attrib_vcs_info(struct rtl_priv *rtlpriv, struct xmit_frame *
 			/* to do list: check MIMO power save condition. */
 
 			/* check AMPDU aggregation for TXOP */
-#if 0			/* ULLI we maqy keep this here */			
+#if 0			/* ULLI we maqy keep this here */
 			if ((pattrib->ampdu_en == true) && (!IS_HARDWARE_TYPE_JAGUAR(rtlhal))) {
 				pattrib->vcs_mode = RTS_CTS;
 				break;
@@ -751,7 +752,7 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *skb, stru
 	pattrib->pktlen = skb->len - ETH_HLEN;
 
 	if (ETH_P_IP == pattrib->ether_type) {
-#if 0		
+#if 0
 		/*
 		 *  The following is for DHCP and ARP packet, we use cck1M to tx these packets and let LPS awake some time
 		 *  to prevent DHCP protocol fail
@@ -762,7 +763,7 @@ static int32_t update_attrib(struct rtl_priv *rtlpriv, struct sk_buff *skb, stru
 		/* ULLI : get udp header */
 		struct udphdr *udp = (struct udphdr *) skb->data + ETH_HLEN + 20;
 		pattrib->dhcp_pkt = 0;
-		
+
 		if (pattrib->pktlen > 282) {	/* MINIMUM_DHCP_PACKET_SIZE) { */
 			if (ETH_P_IP == pattrib->ether_type) {
 				/* IP header */
@@ -1300,7 +1301,7 @@ This sub-routine will perform all the following:
 6. apply sw-encrypt, if necessary.
 
 */
-int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *skb, 
+int32_t rtw_xmitframe_coalesce(struct rtl_priv *rtlpriv, struct sk_buff *skb,
 			       struct xmit_frame *pxmitframe)
 {
 	struct pkt_file pktfile;

@@ -19,6 +19,10 @@
  ******************************************************************************/
 #define _RECV_OSDEP_C_
 
+#include <linux/etherdevice.h>
+#include <net/iw_handler.h>
+#include <linux/if_arp.h>
+
 #include <drv_types.h>
 
 #undef DBG_871X
@@ -65,7 +69,7 @@ int rtw_os_alloc_recvframe(struct rtl_priv *rtlpriv, struct recv_frame *precvfra
 		 */
 		alloc_sz += 14;
 	}
-	
+
 	/* ULLI : why copy skb */
 
 	pkt_copy = netdev_alloc_skb(rtlpriv->ndev, alloc_sz);
@@ -180,7 +184,7 @@ struct sk_buff  *rtw_os_alloc_msdu_pkt(struct recv_frame *prframe, u16 nSubframe
 #endif
 	{
 		/* ULLI : another place who clones skb */
-			
+
 		sub_skb = skb_clone(prframe->skb, GFP_ATOMIC);
 		if(sub_skb) {
 			sub_skb->data = pdata + ETH_HLEN;

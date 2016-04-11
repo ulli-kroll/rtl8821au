@@ -19,6 +19,7 @@
  ******************************************************************************/
 #define  _RTW_SECURITY_C_
 
+#include <linux/etherdevice.h>
 #include <drv_types.h>
 
 #undef DBG_871X

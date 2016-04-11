@@ -20,45 +20,10 @@
 #ifndef __OSDEP_LINUX_SERVICE_H_
 #define __OSDEP_LINUX_SERVICE_H_
 
-	#include <linux/version.h>
-	#include <linux/spinlock.h>
-	#include <linux/compiler.h>
-	#include <linux/kernel.h>
-	#include <linux/errno.h>
-	#include <linux/init.h>
-	#include <linux/slab.h>
-	#include <linux/module.h>
-	#include <linux/kref.h>
-	//#include <linux/smp_lock.h>
-	#include <linux/netdevice.h>
-	#include <linux/skbuff.h>
-	#include <linux/circ_buf.h>
-	#include <asm/uaccess.h>
-	#include <asm/byteorder.h>
-	#include <asm/atomic.h>
-	#include <asm/io.h>
-	#include <linux/semaphore.h>
-	#include <linux/sem.h>
-	#include <linux/sched.h>
-	#include <linux/etherdevice.h>
-	#include <linux/wireless.h>
-	#include <net/iw_handler.h>
-	#include <linux/if_arp.h>
-	#include <linux/rtnetlink.h>
-	#include <linux/delay.h>
-	#include <linux/proc_fs.h>	// Necessary because we use the proc fs
-	#include <linux/interrupt.h>	// for struct tasklet_struct
-	#include <linux/ip.h>
-	#include <linux/kthread.h>
-	#include <linux/list.h>
-	#include <linux/vmalloc.h>
-
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	#include <linux/in.h>
-	#include <linux/udp.h>
-#endif
-	#include <linux/usb.h>
-	#include <linux/usb/ch9.h>
+#include <linux/netdevice.h>
+#include <linux/ip.h>
+#include <linux/kthread.h>
+#include <linux/vmalloc.h>
 
 #ifdef CONFIG_USB_SUSPEND
 #define CONFIG_AUTOSUSPEND	1

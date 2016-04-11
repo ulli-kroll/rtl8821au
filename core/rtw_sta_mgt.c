@@ -19,6 +19,7 @@
  ******************************************************************************/
 #define _RTW_STA_MGT_C_
 
+#include <linux/etherdevice.h>
 #include <drv_types.h>
 #include <rtl8812a_hal.h>
 

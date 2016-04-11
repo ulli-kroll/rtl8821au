@@ -19,6 +19,9 @@
  ******************************************************************************/
 #define _IOCTL_LINUX_C_
 
+#include <net/iw_handler.h>
+#include <linux/if_arp.h>
+
 #include <drv_types.h>
 #include <odm_precomp.h>
 
@@ -1349,7 +1352,7 @@ static int rtw_wx_get_wap(struct net_device *ndev,
 
 	memset(wrqu->ap_addr.sa_data, 0, ETH_ALEN);
 
-	
+
 
 	if  (((check_fwstate(pmlmepriv, _FW_LINKED)) == true) ||
 	     ((check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)) == true) ||
@@ -2031,7 +2034,7 @@ static int rtw_wx_set_enc(struct net_device *ndev,
 
 exit:
 
-	
+
 
 	return ret;
 

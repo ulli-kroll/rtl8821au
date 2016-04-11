@@ -53,7 +53,7 @@ The protection mechanism is through the pending queue.
 	uint8_t io_irp_cnt;
 	uint8_t bio_irp_pending;
 	struct semaphore io_retevt;
-	_timer	io_timer;
+	struct timer_list io_timer;
 	uint8_t bio_irp_timeout;
 	uint8_t bio_timer_cancel;
 };

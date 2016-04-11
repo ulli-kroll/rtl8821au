@@ -26,8 +26,6 @@
 #define CONFIG_AUTOSUSPEND	1
 #endif
 
-	typedef struct timer_list _timer;
-
 struct __queue {
 		struct	list_head list;
 		spinlock_t	lock;
@@ -43,7 +41,7 @@ __inline static struct list_head	*get_list_head(struct __queue	*queue)
 
 #define RTW_TIMER_HDL_ARGS void *FunctionContext
 
-__inline static void _init_timer(_timer *ptimer,struct net_device *nic_hdl,void *pfunc,void* cntx)
+__inline static void _init_timer(struct timer_list *ptimer,struct net_device *nic_hdl,void *pfunc,void* cntx)
 {
 	//setup_timer(ptimer, pfunc,(u32)cntx);
 	ptimer->function = pfunc;
@@ -51,7 +49,7 @@ __inline static void _init_timer(_timer *ptimer,struct net_device *nic_hdl,void 
 	init_timer(ptimer);
 }
 
-__inline static void _set_timer(_timer *ptimer,u32 delay_time)
+__inline static void _set_timer(struct timer_list *ptimer,u32 delay_time)
 {
 	mod_timer(ptimer , (jiffies+(delay_time*HZ/1000)));
 }

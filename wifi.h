@@ -558,9 +558,9 @@ enum hw_variables {
 	HW_VAR_MGT_FILTER,
 	HW_VAR_CTRL_FILTER,
 	HW_VAR_DATA_FILTER,
-	
+
 	/* ULLI : HW VARS rtlwifi end */
-	
+
 	HW_VAR_MEDIA_STATUS1,
 	HW_VAR_TXPAUSE,
 	HW_VAR_BCN_FUNC,
@@ -1643,7 +1643,7 @@ struct pwrctrl_priv {
 	uint8_t		bInternalAutoSuspend;
 	uint8_t		bInSuspend;
 	uint8_t		bSupportRemoteWakeup;
-	_timer 	pwr_state_check_timer;
+	struct timer_list	pwr_state_check_timer;
 	int		pwr_state_check_interval;
 	uint8_t		pwr_state_check_cnts;
 
@@ -1660,7 +1660,7 @@ struct pwrctrl_priv {
 };
 
 struct rtl_locks {
-#if 0	
+#if 0
 	/* mutex */
 	struct mutex conf_mutex;
 	struct mutex ps_mutex;
@@ -1676,9 +1676,9 @@ struct rtl_locks {
 	spinlock_t lps_lock;
 	spinlock_t waitq_lock;
 	spinlock_t entry_list_lock;
-#endif	
+#endif
 	spinlock_t usb_lock;
-#if 0	
+#if 0
 
 	/*FW clock change */
 	spinlock_t fw_ps_lock;

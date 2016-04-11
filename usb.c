@@ -1237,7 +1237,7 @@ int _netdev_open(struct net_device *ndev)
 	if (!rtw_netif_queue_stopped(ndev))
 		rtw_netif_start_queue(ndev);
 	else
-		rtw_netif_wake_queue(ndev);
+		netif_tx_wake_all_queues(ndev);
 
 netdev_open_normal_process:
 

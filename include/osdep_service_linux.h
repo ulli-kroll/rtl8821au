@@ -67,11 +67,6 @@ static inline int rtw_netif_queue_stopped(struct net_device *ndev)
 		netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 3)) );
 }
 
-static inline void rtw_netif_wake_queue(struct net_device *ndev)
-{
-	netif_tx_wake_all_queues(ndev);
-}
-
 static inline void rtw_netif_start_queue(struct net_device *ndev)
 {
 	netif_tx_start_all_queues(ndev);

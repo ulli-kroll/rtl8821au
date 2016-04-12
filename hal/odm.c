@@ -163,50 +163,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
  *	When		Who		Remark
  *
  *---------------------------------------------------------------------------*/
-void ODM_ChangeDynamicInitGainThresh(struct rtl_priv *rtlpriv, uint32_t DM_Type, uint32_t DM_Value)
-{
-	struct dig_t *pDM_DigTable = &(rtlpriv->dm_digtable);
-
-	/* ULLI better switch/case ?? */
-	if (DM_Type == DIG_TYPE_THRESH_HIGH) {
-		pDM_DigTable->rssi_highthresh = DM_Value;
-	} else if (DM_Type == DIG_TYPE_THRESH_LOW) {
-		pDM_DigTable->rssi_lowthresh = DM_Value;
-	} else if (DM_Type == DIG_TYPE_ENABLE) {
-		pDM_DigTable->dig_enable_flag = true;
-	} else if (DM_Type == DIG_TYPE_DISABLE) {
-		pDM_DigTable->dig_enable_flag = false;
-	} else if (DM_Type == DIG_TYPE_BACKOFF) {
-		if (DM_Value > 30)
-			DM_Value = 30;
-		pDM_DigTable->backoff_enable_flag = (u8)DM_Value;
-	} else if (DM_Type == DIG_TYPE_RX_GAIN_MIN) {
-		if (DM_Value == 0)
-			DM_Value = 0x1;
-		pDM_DigTable->rx_gain_min = (u8)DM_Value;
-	} else if (DM_Type == DIG_TYPE_RX_GAIN_MAX) {
-		if (DM_Value > 0x50)
-			DM_Value = 0x50;
-		pDM_DigTable->rx_gain_max = (u8)DM_Value;
-	}
-}	/* DM_ChangeDynamicInitGainThresh */
-
-int getIGIForDiff(int value_IGI)
-{
-	#define ONERCCA_LOW_TH		0x30
-	#define ONERCCA_LOW_DIFF	8
-
-	if (value_IGI < ONERCCA_LOW_TH) {
-		if ((ONERCCA_LOW_TH - value_IGI) < ONERCCA_LOW_DIFF)
-			return ONERCCA_LOW_TH;
-		else
-			return value_IGI + ONERCCA_LOW_DIFF;
-	} else {
-		return value_IGI;
-	}
-}
-
-
 
 
 void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)

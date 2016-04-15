@@ -286,7 +286,6 @@ typedef		struct _ODM_STA_INFO{
 //
 typedef enum _ODM_Common_Info_Definition {
 	ODM_CMNINFO_SCAN,
-	ODM_CMNINFO_POWER_SAVING,
 	ODM_CMNINFO_PHY_STATUS,
 	ODM_CMNINFO_MAX,
 }ODM_CMNINFO_E;

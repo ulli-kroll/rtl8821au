@@ -65,10 +65,7 @@ struct rtl_priv;
 #include <rtw_ap.h>
 // #include <rtw_efuse.h>
 
-#include <ip.h>
-#include <if_ether.h>
 #include <ethernet.h>
-#include <circ_buf.h>
 
 #define SPEC_DEV_ID_NONE BIT(0)
 #define SPEC_DEV_ID_DISABLE_HT BIT(1)

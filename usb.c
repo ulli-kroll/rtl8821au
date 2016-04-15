@@ -45,8 +45,8 @@ int rtw_resume_process(struct rtl_priv *rtlpriv);
 
 static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {
-	struct rtl_usb  *pdvobjpriv = rtl_usbdev(rtlpriv);
-	struct usb_device *udev=pdvobjpriv->udev;
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	struct usb_device *udev = rtlusb->udev;
 	int _unused;
 
 	unsigned int pipe;
@@ -72,13 +72,13 @@ static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 valu
 	}
 
 #ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	_unused = mutex_lock_interruptible(&pdvobjpriv->usb_vendor_req_mutex);
+	_unused = mutex_lock_interruptible(&rtlusb->usb_vendor_req_mutex);
 #endif
 
 
 	/* Acquire IO memory for vendorreq */
 #ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
-	pIo_buf = pdvobjpriv->usb_vendor_req_buf;
+	pIo_buf = rtlusb->usb_vendor_req_buf;
 #else
 	tmp_buflen = MAX_USB_IO_CTL_SIZE;
 
@@ -111,7 +111,7 @@ static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 valu
 		status = usb_control_msg(udev, pipe, request, reqtype, value, index, pIo_buf, len, RTW_USB_CONTROL_MSG_TIMEOUT);
 
 		if (status == len) {   // Success this control transfer. */
-			rtw_reset_continual_urb_error(pdvobjpriv);
+			rtw_reset_continual_urb_error(rtlusb);
 			if (requesttype == 0x01) {
 				/* For Control read transfer, we have to copy the read data from pIo_buf to pdata. */
 				memcpy(pdata, pIo_buf,  len);
@@ -138,7 +138,7 @@ static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 valu
 				}
 			}
 
-			if(rtw_inc_and_chk_continual_urb_error(pdvobjpriv) == true ){
+			if(rtw_inc_and_chk_continual_urb_error(rtlusb) == true ){
 				rtlpriv->bSurpriseRemoved = true;
 				break;
 			}
@@ -155,7 +155,7 @@ static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 valu
 
 release_mutex:
 #ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	mutex_unlock(&pdvobjpriv->usb_vendor_req_mutex);
+	mutex_unlock(&rtlusb->usb_vendor_req_mutex);
 #endif
 exit:
 	return status;
@@ -826,7 +826,7 @@ static uint8_t rtw_deinit_intf_priv(struct rtl_usb *dvobj)
 	return rst;
 }
 
-static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl_usb *pdvobjpriv)
+static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl_usb *rtlusb)
 {
 	int	i;
 	uint8_t	val8;
@@ -840,26 +840,26 @@ static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl
 	struct usb_endpoint_descriptor	*pendp_desc;
 	struct usb_device			*pusbd;
 
-	mutex_init(&pdvobjpriv->hw_init_mutex);
-	mutex_init(&pdvobjpriv->h2c_fwcmd_mutex);
-	mutex_init(&pdvobjpriv->setch_mutex);
-	mutex_init(&pdvobjpriv->setbw_mutex);
+	mutex_init(&rtlusb->hw_init_mutex);
+	mutex_init(&rtlusb->h2c_fwcmd_mutex);
+	mutex_init(&rtlusb->setch_mutex);
+	mutex_init(&rtlusb->setbw_mutex);
 
-	spin_lock_init(&pdvobjpriv->lock);
+	spin_lock_init(&rtlusb->lock);
 
-	pdvobjpriv->macid[1] = true; 	/* macid=1 for bc/mc stainfo */
+	rtlusb->macid[1] = true; 	/* macid=1 for bc/mc stainfo */
 
 
-	pdvobjpriv->intf = usb_intf ;
-	pusbd = pdvobjpriv->udev = interface_to_usbdev(usb_intf);
-	usb_set_intfdata(usb_intf, pdvobjpriv);
+	rtlusb->intf = usb_intf ;
+	pusbd = rtlusb->udev = interface_to_usbdev(usb_intf);
+	usb_set_intfdata(usb_intf, rtlusb);
 
-	pdvobjpriv->RtNumInPipes = 0;
-	pdvobjpriv->RtNumOutPipes = 0;
+	rtlusb->RtNumInPipes = 0;
+	rtlusb->RtNumOutPipes = 0;
 
 	/*
 	 * rtlpriv->EepromAddressSize = 6;
-	 * pdvobjpriv->nr_endpoint = 6;
+	 * rtlusb->nr_endpoint = 6;
 	 */
 
 	pdev_desc = &pusbd->descriptor;
@@ -878,11 +878,11 @@ static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl
 	piface_desc = &phost_iface->desc;
 
 
-	pdvobjpriv->nr_endpoint = piface_desc->bNumEndpoints;
+	rtlusb->nr_endpoint = piface_desc->bNumEndpoints;
 
 	/* DBG_871X("\ndump usb_endpoint_descriptor:\n"); */
 
-	for (i = 0; i < pdvobjpriv->nr_endpoint; i++) {
+	for (i = 0; i < rtlusb->nr_endpoint; i++) {
 		phost_endp = phost_iface->endpoint + i;
 		if (phost_endp) 		{
 			pendp_desc = &phost_endp->desc;
@@ -899,68 +899,68 @@ static struct rtl_usb *usb_dvobj_init(struct usb_interface *usb_intf, struct rtl
 
 			if (RT_usb_endpoint_is_bulk_in(pendp_desc)) {
 				DBG_871X("RT_usb_endpoint_is_bulk_in = %x\n", RT_usb_endpoint_num(pendp_desc));
-				pdvobjpriv->RtInPipe[pdvobjpriv->RtNumInPipes] = RT_usb_endpoint_num(pendp_desc);
-				pdvobjpriv->RtNumInPipes++;
+				rtlusb->RtInPipe[rtlusb->RtNumInPipes] = RT_usb_endpoint_num(pendp_desc);
+				rtlusb->RtNumInPipes++;
 			} else if (RT_usb_endpoint_is_bulk_out(pendp_desc)) {
 				DBG_871X("RT_usb_endpoint_is_bulk_out = %x\n", RT_usb_endpoint_num(pendp_desc));
-				pdvobjpriv->RtNumOutPipes++;
+				rtlusb->RtNumOutPipes++;
 			}
-			pdvobjpriv->ep_num[i] = RT_usb_endpoint_num(pendp_desc);
+			rtlusb->ep_num[i] = RT_usb_endpoint_num(pendp_desc);
 		}
 	}
 
-	DBG_871X("nr_endpoint=%d, in_num=%d, out_num=%d\n\n", pdvobjpriv->nr_endpoint, pdvobjpriv->RtNumInPipes, pdvobjpriv->RtNumOutPipes);
+	DBG_871X("nr_endpoint=%d, in_num=%d, out_num=%d\n\n", rtlusb->nr_endpoint, rtlusb->RtNumInPipes, rtlusb->RtNumOutPipes);
 
 	switch(pusbd->speed) {
 	case USB_SPEED_LOW:
 		DBG_871X("USB_SPEED_LOW\n");
-		pdvobjpriv->usb_speed = RTW_USB_SPEED_1_1;
+		rtlusb->usb_speed = RTW_USB_SPEED_1_1;
 		break;
 	case USB_SPEED_FULL:
 		DBG_871X("USB_SPEED_FULL\n");
-		pdvobjpriv->usb_speed = RTW_USB_SPEED_1_1;
+		rtlusb->usb_speed = RTW_USB_SPEED_1_1;
 		break;
 	case USB_SPEED_HIGH:
 		DBG_871X("USB_SPEED_HIGH\n");
-		pdvobjpriv->usb_speed = RTW_USB_SPEED_2;
+		rtlusb->usb_speed = RTW_USB_SPEED_2;
 		break;
 	case USB_SPEED_SUPER:
 		DBG_871X("USB_SPEED_SUPER\n");
-		pdvobjpriv->usb_speed = RTW_USB_SPEED_3;
+		rtlusb->usb_speed = RTW_USB_SPEED_3;
 		break;
 	default:
 		DBG_871X("USB_SPEED_UNKNOWN(%x)\n",pusbd->speed);
-		pdvobjpriv->usb_speed = RTW_USB_SPEED_UNKNOWN;
+		rtlusb->usb_speed = RTW_USB_SPEED_UNKNOWN;
 		break;
 	}
 
-	if (pdvobjpriv->usb_speed == RTW_USB_SPEED_UNKNOWN) {
+	if (rtlusb->usb_speed == RTW_USB_SPEED_UNKNOWN) {
 		DBG_871X("UNKNOWN USB SPEED MODE, ERROR !!!\n");
 		goto free_dvobj;
 	}
 
-	if (rtw_init_intf_priv(pdvobjpriv) == _FAIL) {
+	if (rtw_init_intf_priv(rtlusb) == _FAIL) {
 		goto free_dvobj;
 	}
 
 	/* .3 misc */
-	rtw_reset_continual_urb_error(pdvobjpriv);
+	rtw_reset_continual_urb_error(rtlusb);
 
 	usb_get_dev(pusbd);
 
 	status = _SUCCESS;
 
 free_dvobj:
-	if (status != _SUCCESS && pdvobjpriv) {
+	if (status != _SUCCESS && rtlusb) {
 		usb_set_intfdata(usb_intf, NULL);
-		mutex_destroy(&pdvobjpriv->hw_init_mutex);
-		mutex_destroy(&pdvobjpriv->h2c_fwcmd_mutex);
-		mutex_destroy(&pdvobjpriv->setch_mutex);
-		mutex_destroy(&pdvobjpriv->setbw_mutex);
-		pdvobjpriv = NULL;
+		mutex_destroy(&rtlusb->hw_init_mutex);
+		mutex_destroy(&rtlusb->h2c_fwcmd_mutex);
+		mutex_destroy(&rtlusb->setch_mutex);
+		mutex_destroy(&rtlusb->setbw_mutex);
+		rtlusb = NULL;
 	}
 exit:
-	return pdvobjpriv;
+	return rtlusb;
 }
 
 void usb_dvobj_deinit(struct usb_interface *usb_intf)
@@ -1626,10 +1626,8 @@ static int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 static void _rtl_usb_init_tx(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
-
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
 
 	if (IS_SUPER_SPEED_USB(rtlpriv))
 		rtlusb->max_bulk_out_size = USB_SUPER_SPEED_BULK_SIZE;	/* 1024 bytes */
@@ -1647,7 +1645,7 @@ static void _rtl_usb_init_tx(struct rtl_priv *rtlpriv)
 static void _rtl_usb_init_rx(struct rtl_priv *rtlpriv)
 {
 	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
+	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
 
 	pHalData->UsbRxAggBlockCount	= 8; 			/* unit : 512b */
 	pHalData->UsbRxAggBlockTimeout	= 0x6;
@@ -2078,17 +2076,17 @@ static void dump_usb_interface(struct usb_interface *usb_intf)
 
 			if (RT_usb_endpoint_is_bulk_in(endp_desc)) {
 				DBG_871X("RT_usb_endpoint_is_bulk_in = %x\n", RT_usb_endpoint_num(endp_desc));
-				/* pdvobjpriv->RtNumInPipes++; */
+				/* rtlusb->RtNumInPipes++; */
 			} else if (RT_usb_endpoint_is_bulk_out(endp_desc)) {
 				DBG_871X("RT_usb_endpoint_is_bulk_out = %x\n", RT_usb_endpoint_num(endp_desc));
-				/* pdvobjpriv->RtNumOutPipes++; */
+				/* rtlusb->RtNumOutPipes++; */
 			}
-			/* pdvobjpriv->ep_num[i] = RT_usb_endpoint_num(pendp_desc); */
+			/* rtlusb->ep_num[i] = RT_usb_endpoint_num(pendp_desc); */
 		}
 	}
 
 	/*
-	 * DBG_871X("nr_endpoint=%d, in_num=%d, out_num=%d\n\n", pdvobjpriv->nr_endpoint, pdvobjpriv->RtNumInPipes, pdvobjpriv->RtNumOutPipes);
+	 * DBG_871X("nr_endpoint=%d, in_num=%d, out_num=%d\n\n", rtlusb->nr_endpoint, rtlusb->RtNumInPipes, rtlusb->RtNumOutPipes);
 	 */
 #endif
 

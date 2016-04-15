@@ -120,10 +120,6 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
 	 * Dynamic call by reference pointer.
 	 */
 
-	case	ODM_CMNINFO_SEC_MODE:
-		pDM_Odm->pSecurity = (u8 *)pValue;
-		break;
-
 	case	ODM_CMNINFO_SCAN:
 		mac->act_scanning = (bool *)pValue;
 		break;

@@ -285,7 +285,6 @@ typedef		struct _ODM_STA_INFO{
 // 2011/10/20 MH Define Common info enum for all team.
 //
 typedef enum _ODM_Common_Info_Definition {
-	ODM_CMNINFO_SEC_MODE,				// ODM_SECURITY_E
 	ODM_CMNINFO_SCAN,
 	ODM_CMNINFO_POWER_SAVING,
 	ODM_CMNINFO_PHY_STATUS,

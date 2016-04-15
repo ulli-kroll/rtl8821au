@@ -165,9 +165,10 @@ void ODM_CmnInfoHook(struct _rtw_dm *pDM_Odm, ODM_CMNINFO_E	CmnInfo, void *pValu
  *---------------------------------------------------------------------------*/
 
 
-void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8	IGI)
+void odm_Adaptivity(struct rtl_priv *rtlpriv, u8 IGI)
 {
-	struct rtl_priv *rtlpriv = pDM_Odm->rtlpriv;
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
 	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
 
 	int32_t TH_H_dmc, TH_L_dmc;

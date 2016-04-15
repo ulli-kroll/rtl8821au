@@ -40,7 +40,7 @@ void rtl8812_dm_init(struct rtl_priv *rtlpriv);
 
 /* Old prototypes */
 
-void odm_Adaptivity(struct _rtw_dm *pDM_Odm, u8 IGI);
+void odm_Adaptivity(struct rtl_priv *rtlpriv, u8 IGI);
 void odm_RefreshRateAdaptiveMask(struct rtl_priv *rtlpriv);
 
 /*  ULLI : from odm_RegDefine11AC.h */

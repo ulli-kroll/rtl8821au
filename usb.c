@@ -991,20 +991,6 @@ void usb_dvobj_deinit(struct usb_interface *usb_intf)
 }
 
 
-static void rtw_decide_chip_type_by_usb_info(struct rtl_priv *rtlpriv, const struct usb_device_id *pdid)
-{
-	rtlpriv->chip_type = pdid->driver_info;
-
-	if (rtlpriv->chip_type == RTL8812) {
-		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8812AU;
-		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "CHIP TYPE: RTL8812\n");
-	} else if (rtlpriv->chip_type == RTL8821) {
-		/* rtlpriv->HardwareType = HARDWARE_TYPE_RTL8811AU; */
-		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8821U;
-		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "CHIP TYPE: RTL8811AU or RTL8821U\n");
-	}
-}
-
 
 void usb_intf_start(struct rtl_priv *rtlpriv)
 {
@@ -1796,7 +1782,17 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 
 	/* step 1-1., decide the chip_type via driver_info */
 	rtlpriv->rtlhal.interface = INTF_USB;
-	rtw_decide_chip_type_by_usb_info(rtlpriv, pdid);
+
+	rtlpriv->chip_type = pdid->driver_info;
+
+	if (rtlpriv->chip_type == RTL8812) {
+		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8812AU;
+		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "CHIP TYPE: RTL8812\n");
+	} else if (rtlpriv->chip_type == RTL8821) {
+		/* rtlpriv->HardwareType = HARDWARE_TYPE_RTL8811AU; */
+		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8821U;
+		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "CHIP TYPE: RTL8811AU or RTL8821U\n");
+	}
 
 	/* ndev->init = NULL; */
 

@@ -20,6 +20,7 @@
 #ifndef __RTW_CMD_H_
 #define __RTW_CMD_H_
 
+#include <rtw_rf.h>
 
 #define C2H_MEM_SZ (16*1024)
 

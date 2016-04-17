@@ -20,6 +20,7 @@
 #ifndef __RTW_MLME_EXT_H_
 #define __RTW_MLME_EXT_H_
 
+#include <rtw_cmd.h>
 
 //	Commented by Albert 20101105
 //	Increase the SURVEY_TO value from 100 to 150  ( 100ms to 150ms )

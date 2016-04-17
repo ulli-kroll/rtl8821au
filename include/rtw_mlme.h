@@ -20,6 +20,9 @@
 #ifndef __RTW_MLME_H_
 #define __RTW_MLME_H_
 
+#include <rtw_rf.h>
+#include <rtw_ht.h>
+#include <rtw_vht.h>
 
 #define	MAX_BSS_CNT	128
 //#define   MAX_JOIN_TIMEOUT	2000

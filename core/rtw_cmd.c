@@ -36,7 +36,7 @@ Caller and the rtw_cmd_thread can protect cmd_q by spin_lock.
 No irqsave is necessary.
 */
 
-int	_rtw_init_cmd_priv (struct	cmd_priv *pcmdpriv)
+static int _rtw_init_cmd_priv (struct	cmd_priv *pcmdpriv)
 {
 	int res=_SUCCESS;
 
@@ -81,7 +81,7 @@ exit:
 
 }
 
-int _rtw_init_evt_priv(struct evt_priv *pevtpriv)
+static int _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 {
 	int res=_SUCCESS;
 
@@ -93,11 +93,11 @@ int _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 	return res;
 }
 
-void _rtw_free_evt_priv (struct	evt_priv *pevtpriv)
+static void _rtw_free_evt_priv (struct	evt_priv *pevtpriv)
 {
 }
 
-void _rtw_free_cmd_priv (struct	cmd_priv *pcmdpriv)
+static void _rtw_free_cmd_priv (struct	cmd_priv *pcmdpriv)
 {
 
 
@@ -121,7 +121,7 @@ ISR/Call-Back functions can't call this sub-function.
 
 */
 
-int	_rtw_enqueue_cmd(struct __queue *queue, struct cmd_obj *obj)
+static int _rtw_enqueue_cmd(struct __queue *queue, struct cmd_obj *obj)
 {
 	unsigned long flags;
 
@@ -150,7 +150,7 @@ static inline struct list_head *get_next(struct list_head	*list)
 	return list->next;
 }
 
-struct	cmd_obj	*_rtw_dequeue_cmd(struct __queue *queue)
+static struct	cmd_obj	*_rtw_dequeue_cmd(struct __queue *queue)
 {
 	unsigned long flags;
 	struct cmd_obj *obj;

@@ -97,7 +97,7 @@ static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 
 	/* Stop Tx Report Timer. 0x4EC[Bit1]=b'0 */
 	u1bTmp = rtl_read_byte(rtlpriv, REG_TX_RPT_CTRL);
-	rtl_write_byte(rtlpriv, REG_TX_RPT_CTRL, val8&(~BIT1));
+	rtl_write_byte(rtlpriv, REG_TX_RPT_CTRL, val8&(~BIT(1)));
 
 	/* stop rx */
 	rtl_write_byte(rtlpriv, REG_CR, 0x0);
@@ -115,7 +115,7 @@ static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 
 	/* Reset MCU. Suggested by Filen. 2011.01.26. by tynli. */
 	u1bTmp = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN+1);
-	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, (u1bTmp&(~BIT2)));
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, (u1bTmp&(~BIT(2))));
 
 	/* MCUFWDL 0x80[1:0]=0
 	 * reset MCU ready status
@@ -134,7 +134,7 @@ static void rtl8812au_hw_power_down(struct rtl_priv *rtlpriv)
 {
 	/*
 	 *  2010/-8/09 MH For power down module, we need to enable register block contrl reg at 0x1c.
-	 * Then enable power down control bit of register 0x04 BIT4 and BIT15 as 1.
+	 * Then enable power down control bit of register 0x04 BIT4 and BIT(15) as 1.
 	 */
 
 	/* Enable register area 0x0-0xc. */
@@ -146,7 +146,7 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 {
 	DBG_8192C("==> %s \n", __FUNCTION__);
 
-	rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, rtl_read_word(rtlpriv, REG_GPIO_MUXCFG)&(~BIT12));
+	rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, rtl_read_word(rtlpriv, REG_GPIO_MUXCFG)&(~BIT(12)));
 
 	if (IF_RTL8821AU_USB3_MODE(rtlpriv->rtlhal.version) == true) {
 		/*

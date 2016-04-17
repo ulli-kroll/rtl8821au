@@ -50,7 +50,7 @@ static bool CheckPositive(struct rtl_priv *rtlpriv,
 			((rtlhal->board_type & ODM_BOARD_BT) ? 0x10 : 0);
 #if 0
 	/* ULLI : From AWUSB driver
-	 * pDM_Odm->SupportInterface : RTW_USB 	 BIT1,
+	 * pDM_Odm->SupportInterface : RTW_USB 	 BIT(1),
 	 * pDM_Odm->SupportPlatform  : ODM_CE     0x04
 	 */
 #endif
@@ -91,13 +91,13 @@ static bool CheckPositive(struct rtl_priv *rtlpriv,
 		if ((cond1 & 0x0F) == 0) /* BoardType is DONTCARE */
 			return true;
 
-		if ((cond1 & BIT0) != 0) /* GLNA */
+		if ((cond1 & BIT(0)) != 0) /* GLNA */
 			bitMask |= 0x000000FF;
-		if ((cond1 & BIT1) != 0) /* GPA */
+		if ((cond1 & BIT(1)) != 0) /* GPA */
 			bitMask |= 0x0000FF00;
-		if ((cond1 & BIT2) != 0) /* ALNA */
+		if ((cond1 & BIT(2)) != 0) /* ALNA */
 			bitMask |= 0x00FF0000;
-		if ((cond1 & BIT3) != 0) /* APA */
+		if ((cond1 & BIT(3)) != 0) /* APA */
 			bitMask |= 0xFF000000;
 
 		if ((cond2 & bitMask) == (driver2 & bitMask)) /* BoardType of each RF path is matched */
@@ -197,7 +197,7 @@ static u32 _rtl8821au_phy_rf_serial_read(struct rtl_priv *rtlpriv, uint8_t eRFPa
 	rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bHSSIRead_addr_Jaguar, Offset);
 
 	if (IS_VENDOR_8812A_TEST_CHIP(rtlhal->version) )
-		rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bMaskDWord, Offset|BIT8);
+		rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bMaskDWord, Offset|BIT(8));
 
 	if (IS_VENDOR_8812A_C_CUT(rtlhal->version) || IS_HARDWARE_TYPE_8821(rtlhal))
 		udelay(20);
@@ -4054,12 +4054,12 @@ void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 		 */
 		if (Bandwidth == CHANNEL_WIDTH_20 && (Channel == 13 || Channel == 14)) {
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x3);  		/* 0x8AC[9:8] = 2'b11 */
-			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 1);  	/* 0x8C4[30] = 1 */
+			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 1);  	/* 0x8C4[30] = 1 */
 		} else if (Bandwidth == CHANNEL_WIDTH_40 && Channel == 11) {
-			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 1);  	/* 0x8C4[30] = 1 */
+			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 1);  	/* 0x8C4[30] = 1 */
 		} else if (Bandwidth != CHANNEL_WIDTH_80) {
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x2);  		/* 0x8AC[9:8] = 2'b10 */
-			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 0);  	/* 0x8C4[30] = 0 */
+			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 0);  	/* 0x8C4[30] = 0 */
 
 		}
 	} else if (IS_HARDWARE_TYPE_8812(rtlhal)) {
@@ -4135,7 +4135,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 	switch (rtlpriv->phy.current_chan_bw) {
 	case CHANNEL_WIDTH_20:
 		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x003003C3, 0x00300200); /* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
-		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 0);			// 0x8c4[30] = 1'b0
+		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 0);			// 0x8c4[30] = 1'b0
 
 		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 4);	/* 0x864[20:18] = 3'b4 */
 
@@ -4148,13 +4148,13 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 
 	case CHANNEL_WIDTH_40:
 		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x003003C3, 0x00300201);	/* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
-		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 0);		/* 0x8c4[30] = 1'b0 */
+		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 0);		/* 0x8c4[30] = 1'b0 */
 		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x3C, SubChnlNum);
 		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
 
 		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
 
-		if(rtlpriv->phy.reg_837 & BIT2)
+		if(rtlpriv->phy.reg_837 & BIT(2))
 			L1pkVal = 6;
 		else {
 			if(rtlpriv->phy.rf_type == RF_2T2R)
@@ -4173,13 +4173,13 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 
 	case CHANNEL_WIDTH_80:
 		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x003003C3, 0x00300202);	/* 0x8ac[21,20,9:6,1,0]=8'b11100010 */
-		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT30, 1);		/* 0x8c4[30] = 1 */
+		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 1);		/* 0x8c4[30] = 1 */
 		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x3C, SubChnlNum);
 		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
 
 		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
 
-		if(rtlpriv->phy.reg_837 & BIT2)
+		if(rtlpriv->phy.reg_837 & BIT(2))
 			L1pkVal = 5;
 		else {
 			if(rtlpriv->phy.rf_type == RF_2T2R)
@@ -4376,7 +4376,7 @@ bool phy_SwBand8812(struct rtl_priv *rtlpriv, uint8_t channelToSW)
 	uint8_t			Band = BAND_ON_5G, BandToSW;
 
 	u1Btmp = rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812);
-	if(u1Btmp & BIT7)
+	if(u1Btmp & BIT(7))
 		Band = BAND_ON_5G;
 	else
 		Band = BAND_ON_2_4G;
@@ -4437,7 +4437,7 @@ static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
 				 * rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
 				 */
 				u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+3);
-				rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp &= ~BIT0));
+				rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp &= ~BIT(0)));
 			}
 			/* else */
 				/* rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x000); */
@@ -4505,7 +4505,7 @@ static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
 				 * rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+2,  (u1tmp &0x0f));
 				 */
 				u1tmp = rtl_read_byte(rtlpriv, rA_RFE_Inv_Jaguar+3);
-				rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp |= BIT0));
+				rtl_write_byte(rtlpriv, rA_RFE_Inv_Jaguar+3,  (u1tmp |= BIT(0)));
 			}
 			/* else */
 				/* rtl_set_bbreg(rtlpriv, rA_RFE_Inv_Jaguar, bMask_RFEInv_Jaguar, 0x010); */
@@ -4546,12 +4546,12 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 
 		if(IS_VENDOR_8812A_TEST_CHIP(rtlhal->version)) {
 			/* r_select_5G for path_A/B */
-			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT12, 0x0);
-			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT12, 0x0);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT(12), 0x0);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT(12), 0x0);
 
 			/* LANON (5G uses external LNA) */
-			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT15, 0x1);
-			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT15, 0x1);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT(15), 0x1);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT(15), 0x1);
 		} else if(IS_VENDOR_8812A_MP_CHIP(rtlhal->version)) {
 			if(0 /* GetRegbENRFEType(rtlpriv) */)
 			
@@ -4635,12 +4635,12 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 
 		if(IS_VENDOR_8812A_TEST_CHIP(rtlhal->version)) 	{
 			/* r_select_5G for path_A/B */
-			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT12, 0x1);
-			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT12, 0x1);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT(12), 0x1);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT(12), 0x1);
 
 			/* LANON (5G uses external LNA) */
-			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT15, 0x0);
-			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT15, 0x0);
+			rtl_set_bbreg(rtlpriv, rA_RFE_Jaguar, BIT(15), 0x0);
+			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT(15), 0x0);
 		} else if(IS_VENDOR_8812A_MP_CHIP(rtlhal->version)) {
 			if(0 /* GetRegbENRFEType(rtlpriv) */)
 				phy_SetRFEReg8812(rtlpriv, Band);
@@ -6568,7 +6568,7 @@ void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 			data = 0x000; //5'b00000);
 
 		rtl_set_rfreg(rtlpriv, path, RF_CHNLBW_Jaguar,
-			      BIT18|BIT17|BIT16|BIT9|BIT8, data);
+			      BIT(18)|BIT(17)|BIT(16)|BIT(9)|BIT(8), data);
 
 		/* <20121109, Kordan> A workaround for 8812A only. */
 		rtl8812au_fixspur(rtlpriv, rtlpriv->phy.current_chan_bw, channel);

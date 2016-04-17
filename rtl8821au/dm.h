@@ -70,7 +70,7 @@ void odm_RefreshRateAdaptiveMask(struct rtl_priv *rtlpriv);
 
 //DIG Related
 #define	ODM_BIT_IGI_11AC					0xFFFFFFFF
-#define	ODM_BIT_CCK_RPT_FORMAT_11AC		BIT16
+#define	ODM_BIT_CCK_RPT_FORMAT_11AC		BIT(16)
 #define	ODM_BIT_BB_RX_PATH_11AC			0xF
 
 /* ULLI : From odm_reg.h */

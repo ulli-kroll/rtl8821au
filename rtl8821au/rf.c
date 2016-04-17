@@ -16,17 +16,17 @@ void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_W
 {
 	switch (Bandwidth) {
 	case CHANNEL_WIDTH_20:
-		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 3);
-		rtl_set_rfreg(rtlpriv, RF90_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 3);
+		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW_Jaguar, BIT(11)|BIT(10), 3);
+		rtl_set_rfreg(rtlpriv, RF90_PATH_B, RF_CHNLBW_Jaguar, BIT(11)|BIT(10), 3);
 		break;
 	case CHANNEL_WIDTH_40:
-		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 1);
-		rtl_set_rfreg(rtlpriv, RF90_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 1);
+		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW_Jaguar, BIT(11)|BIT(10), 1);
+		rtl_set_rfreg(rtlpriv, RF90_PATH_B, RF_CHNLBW_Jaguar, BIT(11)|BIT(10), 1);
 		break;
 
 	case CHANNEL_WIDTH_80:
-		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW_Jaguar, BIT11|BIT10, 0);
-		rtl_set_rfreg(rtlpriv, RF90_PATH_B, RF_CHNLBW_Jaguar, BIT11|BIT10, 0);
+		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW_Jaguar, BIT(11)|BIT(10), 0);
+		rtl_set_rfreg(rtlpriv, RF90_PATH_B, RF_CHNLBW_Jaguar, BIT(11)|BIT(10), 0);
 		break;
 
 	default:

@@ -161,51 +161,51 @@
 //----------------------------------------------------------------------------
 #define	IMR_DISABLED_8812					0
 // IMR DW0(0x00B0-00B3) Bit 0-31
-#define	IMR_TIMER2_8812					BIT31		// Timeout interrupt 2
-#define	IMR_TIMER1_8812					BIT30		// Timeout interrupt 1	
-#define	IMR_PSTIMEOUT_8812				BIT29		// Power Save Time Out Interrupt
-#define	IMR_GTINT4_8812					BIT28		// When GTIMER4 expires, this bit is set to 1	
-#define	IMR_GTINT3_8812					BIT27		// When GTIMER3 expires, this bit is set to 1	
-#define	IMR_TXBCN0ERR_8812				BIT26		// Transmit Beacon0 Error			
-#define	IMR_TXBCN0OK_8812					BIT25		// Transmit Beacon0 OK			
-#define	IMR_TSF_BIT32_TOGGLE_8812		BIT24		// TSF Timer BIT32 toggle indication interrupt			
-#define	IMR_BCNDMAINT0_8812				BIT20		// Beacon DMA Interrupt 0			
-#define	IMR_BCNDERR0_8812					BIT16		// Beacon Queue DMA OK0			
-#define	IMR_HSISR_IND_ON_INT_8812		BIT15		// HSISR Indicator (HSIMR & HSISR is true, this bit is set to 1)
-#define	IMR_BCNDMAINT_E_8812				BIT14		// Beacon DMA Interrupt Extension for Win7			
-#define	IMR_ATIMEND_8812					BIT12		// CTWidnow End or ATIM Window End
-#define	IMR_C2HCMD_8812					BIT10		// CPU to Host Command INT Status, Write 1 clear	
-#define	IMR_CPWM2_8812					BIT9			// CPU power Mode exchange INT Status, Write 1 clear	
-#define	IMR_CPWM_8812						BIT8			// CPU power Mode exchange INT Status, Write 1 clear	
-#define	IMR_HIGHDOK_8812					BIT7			// High Queue DMA OK	
-#define	IMR_MGNTDOK_8812					BIT6			// Management Queue DMA OK	
-#define	IMR_BKDOK_8812					BIT5			// AC_BK DMA OK		
-#define	IMR_BEDOK_8812					BIT4			// AC_BE DMA OK	
-#define	IMR_VIDOK_8812					BIT3			// AC_VI DMA OK		
-#define	IMR_VODOK_8812					BIT2			// AC_VO DMA OK	
-#define	IMR_RDU_8812						BIT1			// Rx Descriptor Unavailable	
-#define	IMR_ROK_8812						BIT0			// Receive DMA OK
+#define	IMR_TIMER2_8812					BIT(31)		// Timeout interrupt 2
+#define	IMR_TIMER1_8812					BIT(30)		// Timeout interrupt 1	
+#define	IMR_PSTIMEOUT_8812				BIT(29)		// Power Save Time Out Interrupt
+#define	IMR_GTINT4_8812					BIT(28)		// When GTIMER4 expires, this bit is set to 1	
+#define	IMR_GTINT3_8812					BIT(27)		// When GTIMER3 expires, this bit is set to 1	
+#define	IMR_TXBCN0ERR_8812				BIT(26)		// Transmit Beacon0 Error			
+#define	IMR_TXBCN0OK_8812					BIT(25)		// Transmit Beacon0 OK			
+#define	IMR_TSF_BIT32_TOGGLE_8812		BIT(24)		// TSF Timer BIT(32) toggle indication interrupt
+#define	IMR_BCNDMAINT0_8812				BIT(20)		// Beacon DMA Interrupt 0			
+#define	IMR_BCNDERR0_8812					BIT(16)		// Beacon Queue DMA OK0			
+#define	IMR_HSISR_IND_ON_INT_8812		BIT(15)		// HSISR Indicator (HSIMR & HSISR is true, this bit is set to 1)
+#define	IMR_BCNDMAINT_E_8812				BIT(14)		// Beacon DMA Interrupt Extension for Win7			
+#define	IMR_ATIMEND_8812					BIT(12)		// CTWidnow End or ATIM Window End
+#define	IMR_C2HCMD_8812					BIT(10)		// CPU to Host Command INT Status, Write 1 clear	
+#define	IMR_CPWM2_8812					BIT(9)			// CPU power Mode exchange INT Status, Write 1 clear	
+#define	IMR_CPWM_8812						BIT(8)			// CPU power Mode exchange INT Status, Write 1 clear	
+#define	IMR_HIGHDOK_8812					BIT(7)			// High Queue DMA OK	
+#define	IMR_MGNTDOK_8812					BIT(6)			// Management Queue DMA OK	
+#define	IMR_BKDOK_8812					BIT(5)			// AC_BK DMA OK		
+#define	IMR_BEDOK_8812					BIT(4)			// AC_BE DMA OK	
+#define	IMR_VIDOK_8812					BIT(3)			// AC_VI DMA OK		
+#define	IMR_VODOK_8812					BIT(2)			// AC_VO DMA OK	
+#define	IMR_RDU_8812						BIT(1)			// Rx Descriptor Unavailable	
+#define	IMR_ROK_8812						BIT(0)			// Receive DMA OK
 
 // IMR DW1(0x00B4-00B7) Bit 0-31
-#define	IMR_BCNDMAINT7_8812				BIT27		// Beacon DMA Interrupt 7
-#define	IMR_BCNDMAINT6_8812				BIT26		// Beacon DMA Interrupt 6
-#define	IMR_BCNDMAINT5_8812				BIT25		// Beacon DMA Interrupt 5
-#define	IMR_BCNDMAINT4_8812				BIT24		// Beacon DMA Interrupt 4
-#define	IMR_BCNDMAINT3_8812				BIT23		// Beacon DMA Interrupt 3
-#define	IMR_BCNDMAINT2_8812				BIT22		// Beacon DMA Interrupt 2
-#define	IMR_BCNDMAINT1_8812				BIT21		// Beacon DMA Interrupt 1
-#define	IMR_BCNDOK7_8812					BIT20		// Beacon Queue DMA OK Interrup 7
-#define	IMR_BCNDOK6_8812					BIT19		// Beacon Queue DMA OK Interrup 6
-#define	IMR_BCNDOK5_8812					BIT18		// Beacon Queue DMA OK Interrup 5
-#define	IMR_BCNDOK4_8812					BIT17		// Beacon Queue DMA OK Interrup 4
-#define	IMR_BCNDOK3_8812					BIT16		// Beacon Queue DMA OK Interrup 3
-#define	IMR_BCNDOK2_8812					BIT15		// Beacon Queue DMA OK Interrup 2
-#define	IMR_BCNDOK1_8812					BIT14		// Beacon Queue DMA OK Interrup 1
-#define	IMR_ATIMEND_E_8812				BIT13		// ATIM Window End Extension for Win7
-#define	IMR_TXERR_8812					BIT11		// Tx Error Flag Interrupt Status, write 1 clear.
-#define	IMR_RXERR_8812					BIT10		// Rx Error Flag INT Status, Write 1 clear
-#define	IMR_TXFOVW_8812					BIT9			// Transmit FIFO Overflow
-#define	IMR_RXFOVW_8812					BIT8			// Receive FIFO Overflow
+#define	IMR_BCNDMAINT7_8812				BIT(27)		// Beacon DMA Interrupt 7
+#define	IMR_BCNDMAINT6_8812				BIT(26)		// Beacon DMA Interrupt 6
+#define	IMR_BCNDMAINT5_8812				BIT(25)		// Beacon DMA Interrupt 5
+#define	IMR_BCNDMAINT4_8812				BIT(24)		// Beacon DMA Interrupt 4
+#define	IMR_BCNDMAINT3_8812				BIT(23)		// Beacon DMA Interrupt 3
+#define	IMR_BCNDMAINT2_8812				BIT(22)		// Beacon DMA Interrupt 2
+#define	IMR_BCNDMAINT1_8812				BIT(21)		// Beacon DMA Interrupt 1
+#define	IMR_BCNDOK7_8812					BIT(20)		// Beacon Queue DMA OK Interrup 7
+#define	IMR_BCNDOK6_8812					BIT(19)		// Beacon Queue DMA OK Interrup 6
+#define	IMR_BCNDOK5_8812					BIT(18)		// Beacon Queue DMA OK Interrup 5
+#define	IMR_BCNDOK4_8812					BIT(17)		// Beacon Queue DMA OK Interrup 4
+#define	IMR_BCNDOK3_8812					BIT(16)		// Beacon Queue DMA OK Interrup 3
+#define	IMR_BCNDOK2_8812					BIT(15)		// Beacon Queue DMA OK Interrup 2
+#define	IMR_BCNDOK1_8812					BIT(14)		// Beacon Queue DMA OK Interrup 1
+#define	IMR_ATIMEND_E_8812				BIT(13)		// ATIM Window End Extension for Win7
+#define	IMR_TXERR_8812					BIT(11)		// Tx Error Flag Interrupt Status, write 1 clear.
+#define	IMR_RXERR_8812					BIT(10)		// Rx Error Flag INT Status, Write 1 clear
+#define	IMR_TXFOVW_8812					BIT(9)			// Transmit FIFO Overflow
+#define	IMR_RXFOVW_8812					BIT(8)			// Receive FIFO Overflow
 
 
 //============================================================================

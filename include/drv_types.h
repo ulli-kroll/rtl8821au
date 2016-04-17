@@ -107,18 +107,18 @@ struct registry_priv
 	uint8_t 	rx_stbc;
 	uint8_t	ampdu_amsdu;//A-MPDU Supports A-MSDU is permitted
 	// Short GI support Bit Map
-	// BIT0 - 20MHz, 1: support, 0: non-support
-	// BIT1 - 40MHz, 1: support, 0: non-support
-	// BIT2 - 80MHz, 1: support, 0: non-support
-	// BIT3 - 160MHz, 1: support, 0: non-support
+	// BIT(0) - 20MHz, 1: support, 0: non-support
+	// BIT(1) - 40MHz, 1: support, 0: non-support
+	// BIT(2) - 80MHz, 1: support, 0: non-support
+	// BIT(3) - 160MHz, 1: support, 0: non-support
 	uint8_t	short_gi;
 
 	uint8_t	ampdu_factor;
-	// BIT0: Enable VHT LDPC Rx, BIT1: Enable VHT LDPC Tx, BIT4: Enable HT LDPC Rx, BIT5: Enable HT LDPC Tx
+	// BIT(0): Enable VHT LDPC Rx, BIT(1): Enable VHT LDPC Tx, BIT(4): Enable HT LDPC Rx, BIT(5): Enable HT LDPC Tx
 	uint8_t	ldpc_cap;
-	// BIT0: Enable VHT STBC Rx, BIT1: Enable VHT STBC Tx, BIT4: Enable HT STBC Rx, BIT5: Enable HT STBC Tx
+	// BIT(0): Enable VHT STBC Rx, BIT(1): Enable VHT STBC Tx, BIT(4): Enable HT STBC Rx, BIT(5): Enable HT STBC Tx
 	uint8_t	stbc_cap;
-	// BIT0: Enable VHT Beamformer, BIT1: Enable VHT Beamformee, BIT4: Enable HT Beamformer, BIT5: Enable HT Beamformee
+	// BIT(0): Enable VHT Beamformer, BIT(1): Enable VHT Beamformee, BIT(4): Enable HT Beamformer, BIT(5): Enable HT Beamformee
 	uint8_t	beamform_cap;
 
 	uint8_t	low_power ;

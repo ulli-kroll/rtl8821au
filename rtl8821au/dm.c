@@ -1158,17 +1158,17 @@ static void rtl8812au_phy_lc_calibrate(struct rtl_priv *rtlpriv)
 
 	/* Enter LCK mode */
 	tmp = rtl_get_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT14);
+	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp | BIT(14));
 
 	/* 3 3. Read RF reg18 */
 	LC_Cal = rtl_get_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
-	/* 3 4. Set LC calibration begin bit15 */
+	/* 3 4. Set LC calibration begin BIT(15) */
 	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
 
 	/* Leave LCK mode */
 	tmp = rtl_get_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask);
-	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT14);
+	rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_LCK, bRFRegOffsetMask, tmp & ~BIT(14));
 
 	mdelay(100);
 
@@ -1603,7 +1603,7 @@ static void rtl8821au_check_tx_power_tracking_thermalmeter(struct rtl_priv *rtlp
 
 	if ( rtldm->tm_trigger) {		/* at least delay 1 sec */
 		/* pHalData->TxPowerCheckCnt++;	//cosa add for debug */
-		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT17 | BIT16), 0x03);
+		rtl_set_rfreg(rtlpriv, RF90_PATH_A, RF_T_METER_NEW, (BIT(17) | BIT(16)), 0x03);
 
 		/* DBG_871X("Trigger Thermal Meter!!\n"); */
 
@@ -1636,18 +1636,18 @@ static void rtl8821au_dm_false_alarm_counter_statistics(struct rtl_priv *rtlpriv
 	FalseAlmCnt->cnt_ofdm_fail = rtl_get_bbreg(rtlpriv, ODM_REG_OFDM_FA_11AC, bMaskLWord);
 	FalseAlmCnt->cnt_cck_fail = rtl_get_bbreg(rtlpriv, ODM_REG_CCK_FA_11AC, bMaskLWord);
 
-	CCKenable =  rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC, BIT28);
+	CCKenable =  rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC, BIT(28));
 	if (CCKenable)		/* if (*pDM_Odm->pBandType == ODM_BAND_2_4G) */
 		FalseAlmCnt->cnt_all = FalseAlmCnt->cnt_ofdm_fail + FalseAlmCnt->cnt_cck_fail;
 	else
 		FalseAlmCnt->cnt_all = FalseAlmCnt->cnt_ofdm_fail;
 
 	/* reset OFDM FA coutner */
-	rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 1);
-	rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT17, 0);
+	rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT(17), 1);
+	rtl_set_bbreg(rtlpriv, ODM_REG_OFDM_FA_RST_11AC, BIT(17), 0);
 	/* reset CCK FA counter */
-	rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 0);
-	rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT15, 1);
+	rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT(15), 0);
+	rtl_set_bbreg(rtlpriv, ODM_REG_CCK_FA_RST_11AC, BIT(15), 1);
 
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_TRACE, "Cnt_Cck_fail=%d\n", FalseAlmCnt->cnt_cck_fail);
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_TRACE, "Cnt_Ofdm_fail=%d\n", FalseAlmCnt->cnt_ofdm_fail);
@@ -1954,14 +1954,14 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 		}
 	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL_8811A);
-		tmp1byte |= (BIT4);
+		tmp1byte |= (BIT(4));
 		rtl_write_byte(rtlpriv, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as output mode */
 
-		tmp1byte &= ~(BIT4);
+		tmp1byte &= ~(BIT(4));
 		rtl_write_byte(rtlpriv,  GPIO_IN_8811A, tmp1byte);		/* reset the floating voltage level */
 
 		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL_8811A);
-		tmp1byte &= ~(BIT4);
+		tmp1byte &= ~(BIT(4));
 		rtl_write_byte(rtlpriv, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as input mode */
 
 		tmp1byte =rtl_read_byte(rtlpriv, GPIO_IN_8811A);
@@ -1969,7 +1969,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 		if (tmp1byte == 0xff)
 			return ;
 
-		if (tmp1byte&BIT4) {
+		if (tmp1byte&BIT(4)) {
 			bPbcPressed = true;
 		}
 	}

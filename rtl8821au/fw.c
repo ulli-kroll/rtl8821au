@@ -24,25 +24,25 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 	/* Reset MCU IO Wrapper- sugggest by SD1-Gimmy */
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
-		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2&(~BIT3));
+		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2&(~BIT(3)));
 	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
-		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2&(~BIT0));
+		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2&(~BIT(0)));
 	}
 
 	u1bTmp = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN+1);
-	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp&(~BIT2));
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp&(~BIT(2)));
 
 	/* Enable MCU IO Wrapper */
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
-		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2 | (BIT3));
+		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2 | (BIT(3)));
 	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
-		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2 | (BIT0));
+		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2 | (BIT(0)));
 	}
 
-	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp|(BIT2));
+	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp|(BIT(2)));
 
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " _8051Reset8812(): 8051 reset success .\n");
 }
@@ -762,27 +762,27 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 		 */
 
 		/* Set REG_CR bit 8. DMA beacon by SW. */
-		pHalData->RegCR_1 |= BIT0;
+		pHalData->RegCR_1 |= BIT(0);
 		rtl_write_byte(rtlpriv,  REG_CR+1, pHalData->RegCR_1);
 
 		/*
 		 * Disable Hw protection for a time which revserd for Hw sending beacon.
 		 * Fix download reserved page packet fail that access collision with the protection time.
 		 * 2010.05.11. Added by tynli.
-		 * SetBcnCtrlReg(rtlpriv, 0, BIT3);
-		 * SetBcnCtrlReg(rtlpriv, BIT4, 0);
+		 * SetBcnCtrlReg(rtlpriv, 0, BIT(3));
+		 * SetBcnCtrlReg(rtlpriv, BIT(4), 0);
 		 */
 		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)&(~BIT(3)));
 		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(4));
 
-		if (pHalData->RegFwHwTxQCtrl&BIT6) {
+		if (pHalData->RegFwHwTxQCtrl&BIT(6)) {
 			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "HalDownloadRSVDPage(): There is an rtlpriv is sending beacon.\n");
 			bSendBeacon = true;
 		}
 
 		/* Set FWHW_TXQ_CTRL 0x422[6]=0 to tell Hw the packet is not a real beacon frame. */
-		rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl&(~BIT6)));
-		pHalData->RegFwHwTxQCtrl &= (~BIT6);
+		rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl&(~BIT(6))));
+		pHalData->RegFwHwTxQCtrl &= (~BIT(6));
 
 		/* Clear beacon valid check bit. */
 		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BCN_VALID, NULL);
@@ -849,8 +849,8 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 		}
 
 		/* Enable Bcn */
-		/* SetBcnCtrlReg(rtlpriv, BIT3, 0); */
-		/* SetBcnCtrlReg(rtlpriv, 0, BIT4); */
+		/* SetBcnCtrlReg(rtlpriv, BIT(3), 0); */
+		/* SetBcnCtrlReg(rtlpriv, 0, BIT(4)); */
 		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(3));
 		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)&(~BIT(4)));
 
@@ -863,8 +863,8 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 		 */
 
 		if (bSendBeacon) {
-			rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl|BIT6));
-			pHalData->RegFwHwTxQCtrl |= BIT6;
+			rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl|BIT(6)));
+			pHalData->RegFwHwTxQCtrl |= BIT(6);
 		}
 
 		/*
@@ -881,7 +881,7 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 		/* if (!rtlpriv->bEnterPnpSleep) */
 		{
 			/* Clear CR[8] or beacon packet will not be send to TxBuf anymore. */
-			pHalData->RegCR_1 &= (~BIT0);
+			pHalData->RegCR_1 &= (~BIT(0));
 			rtl_write_byte(rtlpriv,  REG_CR+1, pHalData->RegCR_1);
 		}
 	}
@@ -1228,7 +1228,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 	 * Suggested by Filen. If 8051 is running in RAM code, driver should inform Fw to reset by itself,
 	 * or it will cause download Fw fail. 2010.02.01. by tynli.
 	 */
-	if (rtl_read_byte(rtlpriv, REG_MCUFWDL) & BIT7) { /* 8051 RAM code */
+	if (rtl_read_byte(rtlpriv, REG_MCUFWDL) & BIT(7)) { /* 8051 RAM code */
 		rtl_write_byte(rtlpriv, REG_MCUFWDL, 0x00);
 		rtl8821au_firmware_selfreset(rtlpriv);
 	}

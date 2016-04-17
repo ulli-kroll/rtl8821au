@@ -107,9 +107,9 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 
 	pvhtpriv->vht_bwmode = (pregistrypriv->bw_mode & 0xF0) >> 4;
 	if (pvhtpriv->vht_bwmode > CHANNEL_WIDTH_80)
-		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT3) ? true : false;
+		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT(3)) ? true : false;
 	else
-		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT2) ? true : false;
+		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT(2)) ? true : false;
 
 	/*
 	 * LDPC support
@@ -126,9 +126,9 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	CLEAR_FLAGS(pvhtpriv->ldpc_cap);
 
 	if (bHwLDPCSupport) {
-		if (TEST_FLAG(pregistrypriv->ldpc_cap, BIT0))
+		if (TEST_FLAG(pregistrypriv->ldpc_cap, BIT(0)))
 			SET_FLAG(pvhtpriv->ldpc_cap, LDPC_VHT_ENABLE_RX);
-		if (TEST_FLAG(pregistrypriv->ldpc_cap, BIT1))
+		if (TEST_FLAG(pregistrypriv->ldpc_cap, BIT(1)))
 			SET_FLAG(pvhtpriv->ldpc_cap, LDPC_VHT_ENABLE_TX);
 #if 0
 		DBG_871X("[VHT] Support LDPC = 0x%02X\n", pvhtpriv->ldpc_cap);
@@ -147,14 +147,14 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	CLEAR_FLAGS(pvhtpriv->stbc_cap);
 
 	if (bHwSTBCSupport) {
-		if (TEST_FLAG(pregistrypriv->stbc_cap, BIT1))
+		if (TEST_FLAG(pregistrypriv->stbc_cap, BIT(1)))
 			SET_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_TX);
 	}
 
 	bHwSTBCSupport = 1;
 
 	if (bHwSTBCSupport) {
-		if (TEST_FLAG(pregistrypriv->stbc_cap, BIT0))
+		if (TEST_FLAG(pregistrypriv->stbc_cap, BIT(0)))
 			SET_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_RX);
 	}
 
@@ -180,23 +180,23 @@ static int rtw_ampdu_factor = 7;
 static int rtw_vht_rate_sel = 0;
 /*
  *
- *  BIT0: Enable VHT LDPC Rx,
- *  BIT1: Enable VHT LDPC Tx,
- *  BIT4: Enable HT LDPC Rx,
- *  BIT5: Enable HT LDPC Tx
+ *  BIT(0): Enable VHT LDPC Rx,
+ *  BIT(1): Enable VHT LDPC Tx,
+ *  BIT(4): Enable HT LDPC Rx,
+ *  BIT(5): Enable HT LDPC Tx
  */
 static int rtw_ldpc_cap = 0x33;
-/*  BIT0: Enable VHT STBC Rx,
- *  BIT1: Enable VHT STBC Tx,
- *  BIT4: Enable HT STBC Rx,
- *  BIT5: Enable HT STBC Tx
+/*  BIT(0): Enable VHT STBC Rx,
+ *  BIT(1): Enable VHT STBC Tx,
+ *  BIT(4): Enable HT STBC Rx,
+ *  BIT(5): Enable HT STBC Tx
  */
 static int rtw_stbc_cap = 0x3;
 /*
- * BIT0: Enable VHT Beamformer,
- * BIT1: Enable VHT Beamformee,
- * BIT4: Enable HT Beamformer,
- * BIT5: Enable HT Beamformee
+ * BIT(0): Enable VHT Beamformer,
+ * BIT(1): Enable VHT Beamformee,
+ * BIT(4): Enable HT Beamformer,
+ * BIT(5): Enable HT Beamformee
  */
 static int rtw_beamform_cap = 0;
 #endif

@@ -296,14 +296,14 @@ typedef enum _ODM_Common_Info_Definition {
 //
 typedef enum tag_ODM_RF_Path_Bit_Definition
 {
-	ODM_RF_TX_A 	=	BIT0,
-	ODM_RF_TX_B 	=	BIT1,
-	ODM_RF_TX_C	=	BIT2,
-	ODM_RF_TX_D	=	BIT3,
-	ODM_RF_RX_A	=	BIT4,
-	ODM_RF_RX_B	=	BIT5,
-	ODM_RF_RX_C	=	BIT6,
-	ODM_RF_RX_D	=	BIT7,
+	ODM_RF_TX_A 	=	BIT(0),
+	ODM_RF_TX_B 	=	BIT(1),
+	ODM_RF_TX_C	=	BIT(2),
+	ODM_RF_TX_D	=	BIT(3),
+	ODM_RF_RX_A	=	BIT(4),
+	ODM_RF_RX_B	=	BIT(5),
+	ODM_RF_RX_C	=	BIT(6),
+	ODM_RF_RX_D	=	BIT(7),
 }ODM_RF_PATH_E;
 
 
@@ -349,14 +349,14 @@ typedef enum tag_BT_Coexist_Definition
 // ODM_CMNINFO_OP_MODE
 typedef enum tag_Operation_Mode_Definition
 {
-	ODM_NO_LINK 		= BIT0,
-	ODM_LINK 			= BIT1,
-	ODM_SCAN 			= BIT2,
-	ODM_POWERSAVE 	= BIT3,
-	ODM_CLIENT_MODE	= BIT5,
-	ODM_AD_HOC 		= BIT6,
-	ODM_WIFI_DIRECT	= BIT7,
-	ODM_WIFI_DISPLAY	= BIT8,
+	ODM_NO_LINK 		= BIT(0),
+	ODM_LINK 		= BIT(1),
+	ODM_SCAN 		= BIT(2),
+	ODM_POWERSAVE 		= BIT(3),
+	ODM_CLIENT_MODE		= BIT(5),
+	ODM_AD_HOC 		= BIT(6),
+	ODM_WIFI_DIRECT		= BIT(7),
+	ODM_WIFI_DISPLAY	= BIT(8),
 }ODM_OPERATION_MODE_E;
 
 typedef struct _IQK_MATRIX_REGS_SETTING{

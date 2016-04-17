@@ -367,7 +367,7 @@ void rtw_generate_random_ibss(uint8_t * pibss)
 {
 	uint32_t	curtime = jiffies;
 
-	pibss[0] = 0x02;  //in ad-hoc mode bit1 must set to 1
+	pibss[0] = 0x02;  //in ad-hoc mode BIT(1) must set to 1
 	pibss[1] = 0x11;
 	pibss[2] = 0x87;
 	pibss[3] = (uint8_t)(curtime & 0xff) ;//p[0];

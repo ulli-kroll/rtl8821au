@@ -89,24 +89,24 @@ static void rtl8812au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 			 if (pHalData->AntDivCfg == 0) {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG0);
 				LedCfg &= 0x70; 	/* Set to software control. */
-				rtl_write_byte(rtlpriv, REG_LEDCFG0, (LedCfg|BIT3|BIT5));
+				rtl_write_byte(rtlpriv, REG_LEDCFG0, (LedCfg|BIT(3)|BIT(5)));
 			} else {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
 				LedCfg &= 0xe0; 	/* Set to software control. */
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3|BIT7|BIT6|BIT5));
+				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT(3)|BIT(7)|BIT(6)|BIT(5)));
 			}
 			break;
 
 		case LED_PIN_LED1:
 			LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG1);
 			LedCfg &= 0x70; 	/* Set to software control. */
-			rtl_write_byte(rtlpriv, REG_LEDCFG1, (LedCfg|BIT3|BIT5));
+			rtl_write_byte(rtlpriv, REG_LEDCFG1, (LedCfg|BIT(3)|BIT(5)));
 			break;
 
 		case LED_PIN_LED2:
 			LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
 			LedCfg &= 0x70; 	/* Set to software control. */
-			rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
+			rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT(3)|BIT(5)));
 			break;
 
 		default:
@@ -141,7 +141,7 @@ static void rtl8821au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 			 if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
 				LedCfg &= 0x20; 	/* Set to software control. */
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT3|BIT5));
+				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT(3)|BIT(5)));
 			 }
 
 			break;
@@ -172,21 +172,21 @@ static void rtl8812au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		case LED_PIN_LED0:
 			if (pHalData->AntDivCfg == 0) {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG0);
-				rtl_write_byte(rtlpriv, REG_LEDCFG0, (LedCfg&0x70)|BIT5); /* SW control led0 on. */
+				rtl_write_byte(rtlpriv, REG_LEDCFG0, (LedCfg&0x70)|BIT(5)); /* SW control led0 on. */
 			} else {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg&0xe0)|BIT7|BIT6|BIT5); /* SW control led0 on. */
+				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg&0xe0)|BIT(7)|BIT(6)|BIT(5)); /* SW control led0 on. */
 			}
 			break;
 
 		case LED_PIN_LED1:
 			LedCfg = rtl_read_byte(rtlpriv, (REG_LEDCFG1));
-			rtl_write_byte(rtlpriv, (REG_LEDCFG1), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
+			rtl_write_byte(rtlpriv, (REG_LEDCFG1), (LedCfg&0x70)|BIT(5)); /* SW control led1 on. */
 			break;
 
 		case LED_PIN_LED2:
 			LedCfg = rtl_read_byte(rtlpriv, (REG_LEDCFG2));
-			rtl_write_byte(rtlpriv, (REG_LEDCFG2), (LedCfg&0x70)|BIT5); /* SW control led1 on. */
+			rtl_write_byte(rtlpriv, (REG_LEDCFG2), (LedCfg&0x70)|BIT(5)); /* SW control led1 on. */
 			break;
 
 		default:
@@ -216,7 +216,7 @@ static void rtl8821au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		case LED_PIN_LED2:
 			if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, ((LedCfg&0x20) & (~BIT3))|BIT5); /* SW control led0 on. */
+				rtl_write_byte(rtlpriv, REG_LEDCFG2, ((LedCfg&0x20) & (~BIT(3)))|BIT(5)); /* SW control led0 on. */
 			}
 
 			break;

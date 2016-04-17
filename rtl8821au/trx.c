@@ -1074,7 +1074,7 @@ static u16 odm_Cfo(s8 Value)
 	if (Value < 0) {
 		ret_val = 0 - Value;
 		ret_val = (ret_val << 1) + (ret_val >> 1);	/*  *2.5~=312.5/2^7 */
-		ret_val = ret_val | BIT12;  			/* set bit12 as 1 for negative cfo */
+		ret_val = ret_val | BIT(12);  			/* set BIT(12) as 1 for negative cfo */
 	} else {
 		ret_val = Value;
 		ret_val = (ret_val << 1) + (ret_val>>1);	/*  *2.5~=312.5/2^7 */
@@ -1551,7 +1551,7 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, struct _ODM_Phy_Statu
 				}
 			}
 
-			pEntry->rssi_stat.PacketMap = (pEntry->rssi_stat.PacketMap<<1) | BIT0;
+			pEntry->rssi_stat.PacketMap = (pEntry->rssi_stat.PacketMap<<1) | BIT(0);
 		} else {
 			RSSI_Ave = pPhyInfo->RxPWDBAll;
 			pDM_Odm->RSSI_A = (u8) pPhyInfo->RxPWDBAll;
@@ -1584,7 +1584,7 @@ static void odm_Process_RSSIForDM(struct _rtw_dm *pDM_Odm, struct _ODM_Phy_Statu
 				pEntry->rssi_stat.ValidBit++;
 
 			for (i = 0; i < pEntry->rssi_stat.ValidBit; i++)
-				OFDM_pkt += (u8)(pEntry->rssi_stat.PacketMap>>i)&BIT0;
+				OFDM_pkt += (u8)(pEntry->rssi_stat.PacketMap>>i)&BIT(0);
 
 			if (pEntry->rssi_stat.ValidBit == 64) {
 				Weighting = ((OFDM_pkt<<4) > 64)?64:(OFDM_pkt<<4);

@@ -180,7 +180,7 @@ void odm_Adaptivity(struct rtl_priv *rtlpriv, u8 IGI)
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "pDM_Odm->ForceEDCCA=%d, IGI_Base=0x%x, TH_H=0x%x, TH_L=0x%x, AdapEn_RSSI = %d\n",
 	pDM_Odm->ForceEDCCA, pDM_Odm->IGI_Base, pDM_Odm->TH_H, pDM_Odm->TH_L, pDM_Odm->AdapEn_RSSI);
 
-	rtl_set_bbreg(pDM_Odm->rtlpriv, 0x800, BIT10, 0);		/* ADC_mask enable */
+	rtl_set_bbreg(pDM_Odm->rtlpriv, 0x800, BIT(10), 0);		/* ADC_mask enable */
 
 	if (rtlpriv->mac80211.link_state < MAC80211_LINKED) {
 		return;
@@ -211,11 +211,11 @@ void odm_Adaptivity(struct rtl_priv *rtlpriv, u8 IGI)
 
 	pDM_Odm->IGI_target = IGI_target;
 
-	if (pDM_Odm->TH_H & BIT7)
+	if (pDM_Odm->TH_H & BIT(7))
 		TH_H = pDM_Odm->TH_H | 0xFFFFFF00;
 	else
 		TH_H = pDM_Odm->TH_H;
-	if (pDM_Odm->TH_L & BIT7)
+	if (pDM_Odm->TH_L & BIT(7))
 		TH_L = pDM_Odm->TH_L | 0xFFFFFF00;
 	else
 		TH_L = pDM_Odm->TH_L;

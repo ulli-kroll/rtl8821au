@@ -22,7 +22,7 @@
 
 
 enum RTL871X_HCI_TYPE {
-	RTW_USB 	= BIT1,
+	RTW_USB 	= BIT(1),
 };
 
 enum _CHIP_TYPE {

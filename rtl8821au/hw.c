@@ -48,10 +48,10 @@ static void _rtl8821au_stop_tx_beacon(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 
-	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) & (~BIT6));
-	pHalData->RegFwHwTxQCtrl &= (~BIT6);
+	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) & (~BIT(6)));
+	pHalData->RegFwHwTxQCtrl &= (~BIT(6));
 	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+1, 0x64);
-	pHalData->RegReg542 &= ~(BIT0);
+	pHalData->RegReg542 &= ~(BIT(0));
 	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
 
 	 /* todo: CheckFwRsvdPageContent(rtlpriv);  // 2010.06.23. Added by tynli. */
@@ -66,19 +66,19 @@ static void  _rtl8821au_resume_tx_beacon(struct rtl_priv *rtlpriv)
 	 * which should be read from register to a global variable.
 	 */
 
-	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) | BIT6);
-	pHalData->RegFwHwTxQCtrl |= BIT6;
+	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl) | BIT(6));
+	pHalData->RegFwHwTxQCtrl |= BIT(6);
 	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+1, 0xff);
-	pHalData->RegReg542 |= BIT0;
+	pHalData->RegReg542 |= BIT(0);
 	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
 }
 
 static void _BeaconFunctionEnable(struct rtl_priv *rtlpriv, bool Enable,
 	bool	Linked)
 {
-	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (BIT4 | BIT3 | BIT1));
+	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (BIT(4) | BIT(3) | BIT(1)));
 	/*
-	 * SetBcnCtrlReg(rtlpriv, (BIT4 | BIT3 | BIT1), 0x00);
+	 * SetBcnCtrlReg(rtlpriv, (BIT(4) | BIT(3) | BIT(1)), 0x00);
 	 * RT_TRACE(COMP_BEACON, DBG_LOUD, ("_BeaconFunctionEnable 0x550 0x%x\n", rtl_read_byte(rtlpriv, 0x550)));
 	 */
 
@@ -282,20 +282,20 @@ static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	M
 	if ((MediaStatus == RT_MEDIA_CONNECT)
 	  && (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_BCUTAP)) {
 		rtl_write_byte(rtlpriv, rVhtlen_Use_Lsig_Jaguar, 0x1);
-		rtl_write_byte(rtlpriv, REG_TCR+3, BIT2);
+		rtl_write_byte(rtlpriv, REG_TCR+3, BIT(2));
 	} else {
 		rtl_write_byte(rtlpriv, rVhtlen_Use_Lsig_Jaguar, 0x3F);
-		rtl_write_byte(rtlpriv, REG_TCR+3, BIT0|BIT1|BIT2);
+		rtl_write_byte(rtlpriv, REG_TCR+3, BIT(0)|BIT(1)|BIT(2));
 	}
 
 
 	if ((MediaStatus == RT_MEDIA_CONNECT)
 	   && ((pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_BCUTAP)
 	      || (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP))) {
-		rtlpriv->phy.reg_837 |= BIT2;
+		rtlpriv->phy.reg_837 |= BIT(2);
 		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, rtlpriv->phy.reg_837);
 	} else {
-		rtlpriv->phy.reg_837 &= (~BIT2);
+		rtlpriv->phy.reg_837 &= (~BIT(2));
 		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, rtlpriv->phy.reg_837);
 	}
 }
@@ -794,7 +794,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	case HW_VAR_BCN_VALID:
 		{
 			/*
-			 * BCN_VALID, BIT16 of REG_TDECTRL = BIT0 of REG_TDECTRL+2, write 1 to clear, Clear by sw
+			 * BCN_VALID, BIT(16) of REG_TDECTRL = BIT(0) of REG_TDECTRL+2, write 1 to clear, Clear by sw
 			 */
 			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL+2);
 			val8 |= BIT(0);
@@ -870,7 +870,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 
 	case HW_VAR_BCN_VALID:
 		{
-			/* BCN_VALID, BIT16 of REG_TDECTRL = BIT0 of REG_TDECTRL+2 */
+			/* BCN_VALID, BIT(16) of REG_TDECTRL = BIT(0) of REG_TDECTRL+2 */
 			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL+2);
 			*pval = (BIT(0) & val8) ? true:false;
 		}
@@ -1059,7 +1059,7 @@ static void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	if (!autoload_fail) {
-		if (hwinfo[EEPROM_RFE_OPTION_8812] & BIT7) {
+		if (hwinfo[EEPROM_RFE_OPTION_8812] & BIT(7)) {
 			if (rtlhal->external_lna_5g) {
 				if (rtlhal->external_pa_5g) {
 					if (rtlhal->external_lna_2g && rtlhal->external_pa_2g)
@@ -1383,11 +1383,11 @@ static void _InitBurstPktLen(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_USTIME_EDCA, 0x50);
 
 	if (IS_HARDWARE_TYPE_8821U(rtlhal))
-		speedvalue = BIT7;
+		speedvalue = BIT(7);
 	else
-		speedvalue = rtl_read_byte(rtlpriv, 0xff); /* check device operation speed: SS 0xff bit7 */
+		speedvalue = rtl_read_byte(rtlpriv, 0xff); /* check device operation speed: SS 0xff BIT(7) */
 
-	if (speedvalue & BIT7) {		/* USB2/1.1 Mode */
+	if (speedvalue & BIT(7)) {		/* USB2/1.1 Mode */
 		temp = rtl_read_byte(rtlpriv, 0xfe17);
 		if (((temp >> 4) & 0x03) == 0) {
 			rtlusb->max_bulk_out_size = USB_HIGH_SPEED_BULK_SIZE;
@@ -1411,7 +1411,7 @@ static void _InitBurstPktLen(struct rtl_priv *rtlpriv)
 	} else {		/* USB3 Mode */
 		rtlusb->max_bulk_out_size = USB_SUPER_SPEED_BULK_SIZE;
 		provalue = rtl_read_byte(rtlpriv, REG_RXDMA_PRO_8812);
-		rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, provalue&(~(BIT5|BIT4))); /* set burst pkt len=1k */
+		rtl_write_byte(rtlpriv, REG_RXDMA_PRO_8812, provalue&(~(BIT(5)|BIT(4)))); /* set burst pkt len=1k */
 		rtl_write_word(rtlpriv, REG_RXDMA_PRO_8812, 0x0e);
 		rtlpriv->rtlhal.version |= ~RTL8821AU_USB3_MODE;
 
@@ -1489,7 +1489,7 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 
 	/*
 	 *  Enable MAC DMA/WMAC/SCHEDULE/SEC block
-	 * Set CR bit10 to enable 32k calibration. Suggested by SD1 Gimmy. Added by tynli. 2011.08.31.
+	 * Set CR BIT(10) to enable 32k calibration. Suggested by SD1 Gimmy. Added by tynli. 2011.08.31.
 	 */
 	rtl_write_word(rtlpriv, REG_CR, 0x00); 	/* suggseted by zhouzhou, by page, 20111230 */
 	u2btmp = rtl_read_word(rtlpriv, REG_CR);
@@ -1503,10 +1503,10 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 	 */
 	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 		u1btmp = rtl_read_byte(rtlpriv, REG_SYS_CFG+3);
-		if (u1btmp & BIT0) { 	/* LDO mode. */
+		if (u1btmp & BIT(0)) { 	/* LDO mode. */
 			u1btmp = rtl_read_byte(rtlpriv, 0x7c);
 			/* ULLI unknown register */
-			rtl_write_byte(rtlpriv, 0x7c, u1btmp | BIT6);
+			rtl_write_byte(rtlpriv, 0x7c, u1btmp | BIT(6));
 		}
 	}
 
@@ -1986,7 +1986,7 @@ static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 
 	rtl_write_byte(rtlpriv, REG_LEDCFG2, 0x82);
 
-	rtl_set_bbreg(rtlpriv, RFPGA0_XAB_RFPARAMETER, BIT13, 0x01);
+	rtl_set_bbreg(rtlpriv, RFPGA0_XAB_RFPARAMETER, BIT(13), 0x01);
 
 	if (rtl_get_bbreg(rtlpriv, rFPGA0_XA_RFInterfaceOE, 0x300) == MAIN_ANT)
 		pHalData->CurAntenna = MAIN_ANT;
@@ -2044,7 +2044,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	value8 = rtl_read_byte(rtlpriv, REG_SYS_CLKR+1);
 	u1bRegCR = rtl_read_byte(rtlpriv, REG_CR);
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " power-on :REG_SYS_CLKR 0x09=0x%02x. REG_CR 0x100=0x%02x.\n", value8, u1bRegCR);
-	if ((value8&BIT3)  && (u1bRegCR != 0 && u1bRegCR != 0xEA)) {
+	if ((value8&BIT(3))  && (u1bRegCR != 0 && u1bRegCR != 0xEA)) {
 		/* pHalData->bMACFuncEnable = true; */
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " MAC has already power on.\n");
 	} else {
@@ -2326,10 +2326,10 @@ static void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 			rtlhal->lna_type_2g = 0;
 		}
 
-		rtlhal->external_pa_2g = ((rtlhal->pa_type_2g & BIT5) &&
-					  (rtlhal->pa_type_2g & BIT4)) ? 1 : 0;
-		rtlhal->external_lna_2g = ((rtlhal->lna_type_2g & BIT7) &&
-					   (rtlhal->lna_type_2g & BIT3)) ? 1 : 0;
+		rtlhal->external_pa_2g = ((rtlhal->pa_type_2g & BIT(5)) &&
+					  (rtlhal->pa_type_2g & BIT(4))) ? 1 : 0;
+		rtlhal->external_lna_2g = ((rtlhal->lna_type_2g & BIT(7)) &&
+					   (rtlhal->lna_type_2g & BIT(3))) ? 1 : 0;
 
 		rtlhal->pa_type_5g = hwinfo[EEPROM_PA_TYPE_8812AU];
 		rtlhal->lna_type_5g = hwinfo[EEPROM_LNA_TYPE_5G_8812AU];
@@ -2339,10 +2339,10 @@ static void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
 			rtlhal->lna_type_5g = 0;
 		}
 
-		rtlhal->external_pa_5g = ((rtlhal->pa_type_5g & BIT1) &&
-					  (rtlhal->pa_type_5g & BIT0)) ? 1 : 0;
-		rtlhal->external_lna_5g = ((rtlhal->lna_type_5g & BIT7) &&
-					   (rtlhal->lna_type_5g & BIT3)) ? 1 : 0;
+		rtlhal->external_pa_5g = ((rtlhal->pa_type_5g & BIT(1)) &&
+					  (rtlhal->pa_type_5g & BIT(0))) ? 1 : 0;
+		rtlhal->external_lna_5g = ((rtlhal->lna_type_5g & BIT(7)) &&
+					   (rtlhal->lna_type_5g & BIT(3))) ? 1 : 0;
 
 	} else {
 		rtlhal->external_pa_2g  = EEPROM_Default_PAType;
@@ -2374,8 +2374,8 @@ static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 			rtlhal->pa_type_2g = 0;
 			rtlhal->lna_type_2g = 0;
 		}
-		rtlhal->external_pa_2g = (rtlhal->pa_type_2g & BIT4) ? 1 : 0;
-		rtlhal->external_lna_2g = (rtlhal->lna_type_2g & BIT3) ? 1 : 0;
+		rtlhal->external_pa_2g = (rtlhal->pa_type_2g & BIT(4)) ? 1 : 0;
+		rtlhal->external_lna_2g = (rtlhal->lna_type_2g & BIT(3)) ? 1 : 0;
 
 		rtlhal->pa_type_5g = hwinfo[EEPROM_PA_TYPE_8812AU];
 		rtlhal->lna_type_5g = hwinfo[EEPROM_LNA_TYPE_5G_8812AU];
@@ -2383,8 +2383,8 @@ static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 			rtlhal->pa_type_5g = 0;
 			rtlhal->lna_type_5g = 0;
 		}
-		rtlhal->external_pa_5g = (rtlhal->pa_type_5g & BIT0) ? 1 : 0;
-		rtlhal->external_lna_5g = (rtlhal->lna_type_5g & BIT3) ? 1 : 0;
+		rtlhal->external_pa_5g = (rtlhal->pa_type_5g & BIT(0)) ? 1 : 0;
+		rtlhal->external_lna_5g = (rtlhal->lna_type_5g & BIT(3)) ? 1 : 0;
 	} else {
 		rtlhal->external_pa_2g  = EEPROM_Default_PAType;
 		rtlhal->external_pa_5g  = 0xFF;
@@ -2497,7 +2497,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 				pwrinfo24g->bw40_diff[rfPath][TxCount] = 0;
 
 				pwrinfo24g->bw20_diff[rfPath][TxCount] = (hwinfo[eeAddr] & 0xf0) >> 4;
-				if (pwrinfo24g->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo24g->bw20_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo24g->bw20_diff[rfPath][TxCount] |= 0xF0;
 
 				/*
@@ -2506,7 +2506,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 				 */
 
 				pwrinfo24g->ofdm_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0x0f);
-				if (pwrinfo24g->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo24g->ofdm_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo24g->ofdm_diff[rfPath][TxCount] |= 0xF0;
 
 				/*
@@ -2518,7 +2518,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 				eeAddr++;
 			} else {
 				pwrinfo24g->bw40_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0xf0)>>4;
-				if (pwrinfo24g->bw40_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo24g->bw40_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo24g->bw40_diff[rfPath][TxCount] |= 0xF0;
 
 				/*
@@ -2527,7 +2527,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 				 */
 
 				pwrinfo24g->bw20_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0x0f);
-				if (pwrinfo24g->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo24g->bw20_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo24g->bw20_diff[rfPath][TxCount] |= 0xF0;
 
 				/*
@@ -2539,7 +2539,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 
 
 				pwrinfo24g->ofdm_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0xf0)>>4;
-				if (pwrinfo24g->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo24g->ofdm_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo24g->ofdm_diff[rfPath][TxCount] |= 0xF0;
 
 				/*
@@ -2548,7 +2548,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 				 */
 
 				pwrinfo24g->cck_diff[rfPath][TxCount] =	(hwinfo[eeAddr]&0x0f);
-				if (pwrinfo24g->cck_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo24g->cck_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo24g->cck_diff[rfPath][TxCount] |= 0xF0;
 				/*
 				 * DBG_871X("8812-2G RF-%d-SS-%d CCK-Addr-%x DIFF=%d\n",
@@ -2575,14 +2575,14 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 			if (TxCount == 0) {
 				pwrinfo5g->bw40_diff[rfPath][TxCount] = 0;
 				pwrinfo5g->bw20_diff[rfPath][0] = (hwinfo[eeAddr] & 0xf0) >> 4;
-				if (pwrinfo5g->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo5g->bw20_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo5g->bw20_diff[rfPath][TxCount] |= 0xF0;
 				/*
 				 * DBG_871X("8812-5G RF-%d-SS-%d BW20-Addr-%x DIFF=%d\n",
 				 * rfPath, TxCount, eeAddr, pwrInfo5G->BW20_Diff[rfPath][TxCount]);
 				 */
 				pwrinfo5g->ofdm_diff[rfPath][0] = (hwinfo[eeAddr] & 0x0f);
-				if (pwrinfo5g->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo5g->ofdm_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo5g->ofdm_diff[rfPath][TxCount] |= 0xF0;
 				/*
 				 * DBG_871X("8812-5G RF-%d-SS-%d LGOD-Addr-%x DIFF=%d\n",
@@ -2592,7 +2592,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 				eeAddr++;
 			} else {
 				pwrinfo5g->bw40_diff[rfPath][TxCount] = (hwinfo[eeAddr] & 0xf0) >> 4;
-				if (pwrinfo5g->bw40_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo5g->bw40_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo5g->bw40_diff[rfPath][TxCount] |= 0xF0;
 				/*
 				 * DBG_871X("8812-5G RF-%d-SS-%d BW40-Addr-%x DIFF=%d\n",
@@ -2600,7 +2600,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 				 */
 
 				pwrinfo5g->bw20_diff[rfPath][TxCount] = (hwinfo[eeAddr] & 0x0f);
-				if (pwrinfo5g->bw20_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+				if (pwrinfo5g->bw20_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 					pwrinfo5g->bw20_diff[rfPath][TxCount] |= 0xF0;
 				/*
 				 * DBG_871X("8812-5G RF-%d-SS-%d BW20-Addr-%x DIFF=%d\n",
@@ -2628,7 +2628,7 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 		eeAddr++;
 
 		for (TxCount = 1; TxCount < MAX_TX_COUNT; TxCount++) {
-			if (pwrinfo5g->ofdm_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+			if (pwrinfo5g->ofdm_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 				pwrinfo5g->ofdm_diff[rfPath][TxCount] |= 0xF0;
 
 			/*
@@ -2639,14 +2639,14 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 
 		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
 			pwrinfo5g->bw80_diff[rfPath][TxCount] =	(hwinfo[eeAddr] & 0xf0) >> 4;
-			if (pwrinfo5g->bw80_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+			if (pwrinfo5g->bw80_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 				pwrinfo5g->bw80_diff[rfPath][TxCount] |= 0xF0;
 			/*
 			 * DBG_871X("8812-5G RF-%d-SS-%d BW80-Addr-%x DIFF=%d\n",
 			 * rfPath, TxCount, eeAddr, pwrInfo5G->BW80_Diff[rfPath][TxCount]);
 			 */
 			pwrinfo5g->bw160_diff[rfPath][TxCount] =	(hwinfo[eeAddr] & 0x0f);
-			if (pwrinfo5g->bw160_diff[rfPath][TxCount] & BIT3)		/* 4bit sign number to 8 bit sign number */
+			if (pwrinfo5g->bw160_diff[rfPath][TxCount] & BIT(3))		/* 4bit sign number to 8 bit sign number */
 				pwrinfo5g->bw160_diff[rfPath][TxCount] |= 0xF0;
 			/*
 			 * DBG_871X("8812-5G RF-%d-SS-%d BW160-Addr-%x DIFF=%d\n",
@@ -2809,9 +2809,9 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 	/* 2010/10/19 MH Add Regulator recognize for CU. */
 	if (!autoload_fail) {
 		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
-			efuse->eeprom_regulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* bit0~2 */
+			efuse->eeprom_regulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* BIT(0)~2 */
 		else
-			efuse->eeprom_regulatory = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* bit0~2 */
+			efuse->eeprom_regulatory = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* BIT(0)~2 */
 
 	} else {
 		efuse->eeprom_regulatory = 0;

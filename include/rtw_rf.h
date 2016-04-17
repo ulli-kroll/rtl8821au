@@ -146,19 +146,19 @@ typedef enum _PROTECTION_MODE{
 	PROTECTION_MODE_FORCE_DISABLE = 2,
 }PROTECTION_MODE, *PPROTECTION_MODE;
 
-#define	LDPC_VHT_ENABLE_RX			BIT0
-#define	LDPC_VHT_ENABLE_TX			BIT1
-#define	LDPC_VHT_TEST_TX_ENABLE		BIT2
-#define	LDPC_VHT_CAP_TX				BIT3
+#define	LDPC_VHT_ENABLE_RX			BIT(0)
+#define	LDPC_VHT_ENABLE_TX			BIT(1)
+#define	LDPC_VHT_TEST_TX_ENABLE			BIT(2)
+#define	LDPC_VHT_CAP_TX				BIT(3)
 
-#define	STBC_VHT_ENABLE_RX			BIT0
-#define	STBC_VHT_ENABLE_TX			BIT1
-#define	STBC_VHT_TEST_TX_ENABLE		BIT2
-#define	STBC_VHT_CAP_TX				BIT3
+#define	STBC_VHT_ENABLE_RX			BIT(0)
+#define	STBC_VHT_ENABLE_TX			BIT(1)
+#define	STBC_VHT_TEST_TX_ENABLE			BIT(2)
+#define	STBC_VHT_CAP_TX				BIT(3)
 
-#define	BEAMFORMING_VHT_BEAMFORMER_ENABLE	BIT0	// Declare our NIC supports beamformer
-#define	BEAMFORMING_VHT_BEAMFORMEE_ENABLE	BIT1	// Declare our NIC supports beamformee
-#define	BEAMFORMING_VHT_BEAMFORMER_TEST		BIT2	// Transmiting Beamforming no matter the target supports it or not
+#define	BEAMFORMING_VHT_BEAMFORMER_ENABLE	BIT(0)	// Declare our NIC supports beamformer
+#define	BEAMFORMING_VHT_BEAMFORMEE_ENABLE	BIT(1)	// Declare our NIC supports beamformee
+#define	BEAMFORMING_VHT_BEAMFORMER_TEST		BIT(2)	// Transmiting Beamforming no matter the target supports it or not
 
 /* 2007/11/15 MH Define different RF type. */
 typedef	enum _RT_RF_TYPE_DEFINITION

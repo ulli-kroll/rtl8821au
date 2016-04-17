@@ -107,9 +107,9 @@ static void efuse_power_switch(struct rtl_priv *rtlpriv, u8 write, u8 pwrstate)
 		if (write) {
 			/* Enable LDO 2.5V before read/write action */
 			tempval = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_TEST]+3);
-			tempval &= ~(BIT3|BIT4|BIT5|BIT6);
+			tempval &= ~(BIT(3) | BIT(4) | BIT(5) | BIT(6));
 			tempval |= (VOLTAGE_V25 << 3);
-			tempval |= BIT7;
+			tempval |= BIT(7);
 			rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_TEST] + 3, tempval);
 		}
 	} else {
@@ -329,7 +329,7 @@ EFUSE_Read1Byte(
 
 	if (Address < contentLen)	//E-fuse 512Byte
 	{
-		//Write E-fuse Register address bit0~7
+		//Write E-fuse Register address BIT(0)~7
 		temp = Address & 0xFF;
 		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+1, temp);
 		Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2);
@@ -377,7 +377,7 @@ EFUSE_Write1Byte(
 	{
 		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL], Value);
 
-		//Write E-fuse Register address bit0~7
+		//Write E-fuse Register address BIT(0)~7
 		temp = Address & 0xFF;
 		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+1, temp);
 		Bytetemp = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]+2);
@@ -751,17 +751,17 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 						/* ************  so-2-2 ******************* */
 						/* DBG_871X("hal_EfusePgPacketWrite_8812A section data empty\n"); */
 						match_word_en = 0x0F;			/* same bit as original wren */
-						if (!((target_pkt.word_en & BIT0) | (tmp_pkt.word_en & BIT0))) {
-							 match_word_en &= (~BIT0);
+						if (!((target_pkt.word_en & BIT(0)) | (tmp_pkt.word_en & BIT(0)))) {
+							 match_word_en &= (~BIT(0));
 						}
-						if (!((target_pkt.word_en & BIT1) | (tmp_pkt.word_en & BIT1))) {
-							 match_word_en &= (~BIT1);
+						if (!((target_pkt.word_en & BIT(1)) | (tmp_pkt.word_en & BIT(1)))) {
+							 match_word_en &= (~BIT(1));
 						}
-						if (!((target_pkt.word_en & BIT2) | (tmp_pkt.word_en & BIT2))) {
-							 match_word_en &= (~BIT2);
+						if (!((target_pkt.word_en & BIT(2)) | (tmp_pkt.word_en & BIT(2)))) {
+							 match_word_en &= (~BIT(2));
 						}
-						if (!((target_pkt.word_en & BIT3) | (tmp_pkt.word_en & BIT3))) {
-							 match_word_en &= (~BIT3);
+						if (!((target_pkt.word_en & BIT(3)) | (tmp_pkt.word_en & BIT(3)))) {
+							 match_word_en &= (~BIT(3));
 						}
 
 						/* ***********	so-2-2-A ******************* */
@@ -778,17 +778,17 @@ static int efuse_pg_packet_write(struct rtl_priv *rtlpriv, uint8_t offset,
 							/* ############################ */
 
 							tmp_word_en = 0x0F;		/* not the same bit as original wren */
-							if ((target_pkt.word_en&BIT0) ^ (match_word_en&BIT0)) {
-								tmp_word_en &= (~BIT0);
+							if ((target_pkt.word_en&BIT(0)) ^ (match_word_en&BIT(0))) {
+								tmp_word_en &= (~BIT(0));
 							}
-							if ((target_pkt.word_en&BIT1) ^ (match_word_en&BIT1)) {
-								tmp_word_en &=	(~BIT1);
+							if ((target_pkt.word_en&BIT(1)) ^ (match_word_en&BIT(1))) {
+								tmp_word_en &=	(~BIT(1));
 							}
-							if ((target_pkt.word_en&BIT2) ^ (match_word_en&BIT2)) {
-								tmp_word_en &= (~BIT2);
+							if ((target_pkt.word_en&BIT(2)) ^ (match_word_en&BIT(2))) {
+								tmp_word_en &= (~BIT(2));
 							}
-							if ((target_pkt.word_en&BIT3) ^ (match_word_en&BIT3)) {
-								tmp_word_en &= (~BIT3);
+							if ((target_pkt.word_en&BIT(3)) ^ (match_word_en&BIT(3))) {
+								tmp_word_en &= (~BIT(3));
 							}
 
 							/* ************	so-2-2-A-2 ******************* */
@@ -1025,7 +1025,7 @@ static u8 efuse_word_enable_data_write(struct rtl_priv *rtlpriv,
 	 * RT_TRACE(COMP_EFUSE, DBG_LOUD, ("word_en = %x efuse_addr=%x\n", word_en, efuse_addr));
 	 */
 
-	if (!(word_en & BIT0)) {
+	if (!(word_en & BIT(0))) {
 		tmpaddr = start_addr;
 		efuse_OneByteWrite(rtlpriv, start_addr++, data[0]);
 		efuse_OneByteWrite(rtlpriv, start_addr++, data[1]);
@@ -1033,10 +1033,10 @@ static u8 efuse_word_enable_data_write(struct rtl_priv *rtlpriv,
 		efuse_OneByteRead(rtlpriv, tmpaddr, &tmpdata[0]);
 		efuse_OneByteRead(rtlpriv, tmpaddr+1, &tmpdata[1]);
 		if ((data[0] != tmpdata[0]) || (data[1] != tmpdata[1])) {
-			badworden &= (~BIT0);
+			badworden &= (~BIT(0));
 		}
 	}
-	if (!(word_en & BIT1)) {
+	if (!(word_en & BIT(1))) {
 		tmpaddr = start_addr;
 		efuse_OneByteWrite(rtlpriv, start_addr++, data[2]);
 		efuse_OneByteWrite(rtlpriv, start_addr++, data[3]);
@@ -1044,10 +1044,10 @@ static u8 efuse_word_enable_data_write(struct rtl_priv *rtlpriv,
 		efuse_OneByteRead(rtlpriv, tmpaddr    , &tmpdata[2]);
 		efuse_OneByteRead(rtlpriv, tmpaddr+1, &tmpdata[3]);
 		if ((data[2] != tmpdata[2]) || (data[3] != tmpdata[3])) {
-			badworden &= (~BIT1);
+			badworden &= (~BIT(1));
 		}
 	}
-	if (!(word_en & BIT2)) {
+	if (!(word_en & BIT(2))) {
 		tmpaddr = start_addr;
 		efuse_OneByteWrite(rtlpriv, start_addr++, data[4]);
 		efuse_OneByteWrite(rtlpriv, start_addr++, data[5]);
@@ -1055,10 +1055,10 @@ static u8 efuse_word_enable_data_write(struct rtl_priv *rtlpriv,
 		efuse_OneByteRead(rtlpriv, tmpaddr, &tmpdata[4]);
 		efuse_OneByteRead(rtlpriv, tmpaddr+1, &tmpdata[5]);
 		if ((data[4] != tmpdata[4]) || (data[5] != tmpdata[5])) {
-			badworden &= (~BIT2);
+			badworden &= (~BIT(2));
 		}
 	}
-	if (!(word_en & BIT3)) {
+	if (!(word_en & BIT(3))) {
 		tmpaddr = start_addr;
 		efuse_OneByteWrite(rtlpriv, start_addr++, data[6]);
 		efuse_OneByteWrite(rtlpriv, start_addr++, data[7]);
@@ -1066,7 +1066,7 @@ static u8 efuse_word_enable_data_write(struct rtl_priv *rtlpriv,
 		efuse_OneByteRead(rtlpriv, tmpaddr, &tmpdata[6]);
 		efuse_OneByteRead(rtlpriv, tmpaddr+1, &tmpdata[7]);
 		if ((data[6] != tmpdata[6]) || (data[7] != tmpdata[7])) {
-			badworden &= (~BIT3);
+			badworden &= (~BIT(3));
 		}
 	}
 	return badworden;

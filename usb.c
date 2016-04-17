@@ -2181,7 +2181,7 @@ efuse_OneByteWrite(
 
 
 	efuseValue = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
-	efuseValue |= (BIT21|BIT31);
+	efuseValue |= (BIT(21)|BIT(31));
 	efuseValue &= ~(0x3FFFF);
 	efuseValue |= ((addr<<8 | data) & 0x3FFFF);
 

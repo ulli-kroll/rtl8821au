@@ -143,23 +143,6 @@ struct registry_priv
 //For registry parameters
 #define MAX_CONTINUAL_URB_ERR 4
 
-enum _IFACE_TYPE {
-	IFACE_PORT0, //mapping to port0 for C/D series chips
-	IFACE_PORT1, //mapping to port1 for C/D series chip
-	MAX_IFACE_PORT,
-};
-
-enum _ADAPTER_TYPE {
-	PRIMARY_ADAPTER,
-	SECONDARY_ADAPTER,
-	MAX_ADAPTER = 0xFF,
-};
-
-typedef enum _DRIVER_STATE{
-	DRIVER_NORMAL = 0,
-	DRIVER_DISAPPEAR = 1,
-	DRIVER_REPLACE_DONGLE = 2,
-}DRIVER_STATE;
 
 #include "../wifi.h"
 

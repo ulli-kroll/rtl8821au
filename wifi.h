@@ -1758,8 +1758,6 @@ struct rtl_priv {
 
 	/* Border */
 
-	int	DriverState;// for disable driver using module, use dongle to replace module.
-	int	bDongle;//build-in module or external dongle
 	u16 	chip_type;
 
 	struct	mlme_priv mlmepriv;

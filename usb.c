@@ -1970,10 +1970,8 @@ void rtw_usb_if1_deinit(struct rtl_priv *rtlpriv)
 	free_mlme_ap_info(rtlpriv);
 #endif
 
-	if (rtlpriv->DriverState != DRIVER_DISAPPEAR) {
-		if (ndev) {
-			unregister_netdev(ndev); /* will call netdev_close() */
-		}
+	if (ndev) {
+		unregister_netdev(ndev); /* will call netdev_close() */
 	}
 
 	rtw_cancel_all_timer(rtlpriv);

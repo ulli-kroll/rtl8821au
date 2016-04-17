@@ -1780,15 +1780,12 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 
 	rtlpriv->bDriverStopped=true;
 
-	/* step 1-1., decide the chip_type via driver_info */
 	rtlpriv->rtlhal.interface = INTF_USB;
 
-	rtlpriv->chip_type = pdid->driver_info;
-
-	if (rtlpriv->chip_type == RTL8812) {
+	if (pdid->driver_info == RTL8812) {
 		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8812AU;
 		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "CHIP TYPE: RTL8812\n");
-	} else if (rtlpriv->chip_type == RTL8821) {
+	} else if (pdid->driver_info == RTL8821) {
 		/* rtlpriv->HardwareType = HARDWARE_TYPE_RTL8811AU; */
 		rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8821U;
 		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "CHIP TYPE: RTL8811AU or RTL8821U\n");

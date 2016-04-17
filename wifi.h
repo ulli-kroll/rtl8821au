@@ -1758,8 +1758,6 @@ struct rtl_priv {
 
 	/* Border */
 
-	u16 	chip_type;
-
 	struct	mlme_priv mlmepriv;
 	struct	mlme_ext_priv mlmeextpriv;
 	struct	cmd_priv	cmdpriv;

@@ -2067,7 +2067,7 @@ void rtw_alloc_macid(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
 	int i;
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-	struct rtl_usb *pdvobj = rtl_usbdev(rtlpriv);
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 
 
 	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
@@ -2079,16 +2079,16 @@ void rtw_alloc_macid(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		return;
 	}
 
-	spin_lock_bh(&pdvobj->lock);
+	spin_lock_bh(&rtlusb->lock);
 	for(i=0; i<NUM_STA; i++)
 	{
-		if(pdvobj->macid[i] == false)
+		if(rtlusb->macid[i] == false)
 		{
-			pdvobj->macid[i]  = true;
+			rtlusb->macid[i]  = true;
 			break;
 		}
 	}
-	spin_unlock_bh(&pdvobj->lock);
+	spin_unlock_bh(&rtlusb->lock);
 
 	if( i > (NUM_STA-1))
 	{
@@ -2107,7 +2107,7 @@ void rtw_release_macid(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
 	int i;
 	uint8_t bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
-	struct rtl_usb *pdvobj = rtl_usbdev(rtlpriv);
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 
 
 	if(_rtw_memcmp(psta->hwaddr, bc_addr, ETH_ALEN))
@@ -2118,18 +2118,18 @@ void rtw_release_macid(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		return;
 	}
 
-	spin_lock_bh(&pdvobj->lock);
+	spin_lock_bh(&rtlusb->lock);
 	if(psta->mac_id<NUM_STA && psta->mac_id !=1 )
 	{
-		if(pdvobj->macid[psta->mac_id] == true)
+		if(rtlusb->macid[psta->mac_id] == true)
 		{
 			DBG_871X("%s = %d\n", __FUNCTION__, psta->mac_id);
-			pdvobj->macid[psta->mac_id]  = false;
+			rtlusb->macid[psta->mac_id]  = false;
 			psta->mac_id = NUM_STA;
 		}
 
 	}
-	spin_unlock_bh(&pdvobj->lock);
+	spin_unlock_bh(&rtlusb->lock);
 
 }
 

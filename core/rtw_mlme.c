@@ -1483,13 +1483,13 @@ uint8_t search_max_mac_id(struct rtl_priv *rtlpriv)
 
 #if 1
 		_irqL irqL;
-		struct rtl_usb *pdvobj = rtl_usbdev(rtlpriv);
+		struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 
-		spin_lock_bh(&pdvobj->lock, &irqL);
+		spin_lock_bh(&rtlusb->lock, &irqL);
 		for(mac_id=(NUM_STA-1); mac_id>0; mac_id--)
 			if (pdvobj->macid[mac_id] == true)
 				break;
-		spin_unlock_bh(&pdvobj->lock, &irqL);
+		spin_unlock_bh(&rtlusb->lock, &irqL);
 
 #else
 		for (aid = (pstapriv->max_num_sta); aid > 0; aid--)

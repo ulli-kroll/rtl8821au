@@ -129,8 +129,8 @@ int rtw_os_recvbuf_resource_alloc(struct rtl_priv *rtlpriv, struct recv_buf *pre
 {
 	int res=_SUCCESS;
 
-	struct rtl_usb	*pdvobjpriv = rtl_usbdev(rtlpriv);
-	struct usb_device	*pusbd = pdvobjpriv->udev;
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	struct usb_device *pusbd = rtlusb->udev;
 
 	precvbuf->irp_pending = false;
 	precvbuf->purb = usb_alloc_urb(0, GFP_KERNEL);

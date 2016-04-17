@@ -965,10 +965,10 @@ exit:
 
 void usb_dvobj_deinit(struct usb_interface *usb_intf)
 {
-	struct rtl_usb *dvobj = usb_get_intfdata(usb_intf);
+	struct rtl_usb *rtlusb = usb_get_intfdata(usb_intf);
 
 	usb_set_intfdata(usb_intf, NULL);
-	if (dvobj) {
+	if (rtlusb) {
 		if (interface_to_usbdev(usb_intf)->state != USB_STATE_NOTATTACHED) {
 			/*
 			 * If we didn't unplug usb dongle and remove/insert modlue, driver fails on sitesurvey for the first time when device is up .
@@ -977,11 +977,11 @@ void usb_dvobj_deinit(struct usb_interface *usb_intf)
 			DBG_871X("usb attached..., try to reset usb device\n");
 			usb_reset_device(interface_to_usbdev(usb_intf));
 		}
-		rtw_deinit_intf_priv(dvobj);
-		mutex_destroy(&dvobj->hw_init_mutex);
-		mutex_destroy(&dvobj->h2c_fwcmd_mutex);
-		mutex_destroy(&dvobj->setch_mutex);
-		mutex_destroy(&dvobj->setbw_mutex);
+		rtw_deinit_intf_priv(rtlusb);
+		mutex_destroy(&rtlusb->hw_init_mutex);
+		mutex_destroy(&rtlusb->h2c_fwcmd_mutex);
+		mutex_destroy(&rtlusb->setch_mutex);
+		mutex_destroy(&rtlusb->setbw_mutex);
 	}
 
 	/* DBG_871X("%s %d\n", __func__, atomic_read(&usb_intf->dev.kobj.kref.refcount)); */
@@ -997,7 +997,7 @@ void usb_intf_start(struct rtl_priv *rtlpriv)
 	uint8_t i;
 	struct recv_buf *precvbuf;
 	uint	status;
-	struct rtl_usb *pdev = rtl_usbdev(rtlpriv);
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct recv_priv *precvpriv = &(rtlpriv->recvpriv);
 
 	status = _SUCCESS;
@@ -1092,8 +1092,8 @@ static void rtw_cancel_all_timer(struct rtl_priv *rtlpriv)
 
 static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 {
-	struct rtl_usb *dvobj = usb_get_intfdata(pusb_intf);
-	struct rtl_priv *rtlpriv = dvobj->rtlpriv;
+	struct rtl_usb *rtlusb = usb_get_intfdata(pusb_intf);
+	struct rtl_priv *rtlpriv = rtlusb->rtlpriv;
 	struct net_device *ndev = rtlpriv->ndev;
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct pwrctrl_priv *pwrpriv = &rtlpriv->pwrctrlpriv;
@@ -1162,8 +1162,8 @@ exit:
 
 static int rtl8821au_resume(struct usb_interface *pusb_intf)
 {
-	struct rtl_usb *dvobj = usb_get_intfdata(pusb_intf);
-	struct rtl_priv *rtlpriv = dvobj->rtlpriv;
+	struct rtl_usb *rtlusb = usb_get_intfdata(pusb_intf);
+	struct rtl_priv *rtlpriv = rtlusb->rtlpriv;
 
 	return rtw_resume_process(rtlpriv);
 }
@@ -1504,7 +1504,7 @@ exit:
 void autosuspend_enter(struct rtl_priv* rtlpriv)
 {
 	struct pwrctrl_priv *pwrpriv = &rtlpriv->pwrctrlpriv;
-	struct rtl_usb *dvobj = rtl_usbdev(rtlpriv);
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "==>autosuspend_enter...........\n");
 
@@ -1527,7 +1527,7 @@ int autoresume_enter(struct rtl_priv* rtlpriv)
 	struct security_priv* psecuritypriv=&(rtlpriv->securitypriv);
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	struct rtl_usb *dvobj = rtl_usbdev(rtlpriv);
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_DMESG, "====> autoresume_enter \n");
 
@@ -1611,7 +1611,7 @@ static int rtw_init_netdev_name(struct net_device *ndev, const char *ifname)
 
 static void _rtl_usb_init_tx(struct rtl_priv *rtlpriv)
 {
-	struct rtl_usb	*rtlusb = rtl_usbdev(rtlpriv);
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 
@@ -2096,13 +2096,12 @@ static void dump_usb_interface(struct usb_interface *usb_intf)
  */
 void rtw_usb_disconnect(struct usb_interface *pusb_intf)
 {
-	struct rtl_usb *dvobj = usb_get_intfdata(pusb_intf);
-	struct rtl_priv *rtlpriv = dvobj->rtlpriv;
+	struct rtl_usb *rtlusb = usb_get_intfdata(pusb_intf);
+	struct rtl_priv *rtlpriv = rtlusb->rtlpriv;
 	struct net_device *ndev = rtlpriv->ndev;
 	struct mlme_priv *pmlmepriv= &rtlpriv->mlmepriv;
 
 	DBG_871X("+rtw_dev_remove\n");
-
 
 	rtw_pm_set_ips(rtlpriv, IPS_NONE);
 	rtw_pm_set_lps(rtlpriv, PS_MODE_ACTIVE);

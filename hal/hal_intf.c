@@ -21,6 +21,7 @@
 #define _HAL_INTF_C_
 
 #include <drv_types.h>
+#include <rtw_ap.h>
 #include <rtl8812a_hal.h>
 
 uint rtw_hal_init(struct rtl_priv *rtlpriv)

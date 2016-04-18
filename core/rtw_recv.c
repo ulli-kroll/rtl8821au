@@ -21,6 +21,7 @@
 
 #include <linux/etherdevice.h>
 #include <drv_types.h>
+#include <rtw_ap.h>
 
 #undef DBG_871X
 static inline void DBG_871X(const char *fmt, ...)

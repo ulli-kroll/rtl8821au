@@ -54,7 +54,6 @@ struct rtl_priv;
 #include <sta_info.h>
 #include <rtw_event.h>
 #include <rtw_mlme_ext.h>
-#include <rtw_ap.h>
 // #include <rtw_efuse.h>
 
 #include <ethernet.h>

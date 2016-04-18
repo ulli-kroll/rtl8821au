@@ -20,6 +20,7 @@
 #define _RTW_AP_C_
 
 #include <drv_types.h>
+#include <rtw_ap.h>
 #include <../rtl8821au/hw.h>
 
 #undef DBG_871X

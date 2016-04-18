@@ -23,6 +23,8 @@
 #include <linux/if_arp.h>
 
 #include <drv_types.h>
+#include <rtw_ap.h>
+
 #include <odm_precomp.h>
 
 #undef DBG_871X

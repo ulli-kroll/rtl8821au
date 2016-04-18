@@ -22,6 +22,7 @@
 #include <linux/ip.h>
 #include <linux/etherdevice.h>
 #include <drv_types.h>
+#include <rtw_ap.h>
 #include <linux/udp.h>
 #include <rtl8812a_xmit.h>
 

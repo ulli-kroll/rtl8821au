@@ -22,6 +22,8 @@
 #include <../rtl8821au/def.h>
 #include <drv_types.h>
 
+#include <rtw_ap.h>
+
 #include <../usb.h>
 #include <../wifi.h>
 #include <../cam.h>

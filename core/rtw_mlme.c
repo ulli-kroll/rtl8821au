@@ -21,6 +21,7 @@
 
 #include <linux/etherdevice.h>
 #include <drv_types.h>
+#include <rtw_ap.h>
 #include <rtl8812a_hal.h>
 
 #undef DBG_871X

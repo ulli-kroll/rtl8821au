@@ -16,6 +16,7 @@
 #include "def.h"
 #include "dm.h"
 #include "../cam.h"
+#include <usb_ops.h>
 
 #endif
 

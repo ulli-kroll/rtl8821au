@@ -1,6 +1,7 @@
 #include <linux/etherdevice.h>
 
 #include <drv_types.h>
+#include <usb_ops.h>
 #include <rtw_ap.h>
 #include <rtl8812a_recv.h>
 #include <../rtl8821au/trx.h>

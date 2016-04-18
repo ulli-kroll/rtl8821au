@@ -141,9 +141,5 @@ struct registry_priv
 
 int rtw_handle_dualmac(struct rtl_priv *rtlpriv, bool init);
 
-// HCI Related header file
-#include <usb_ops.h>
-
-
 #endif //__DRV_TYPES_H__
 

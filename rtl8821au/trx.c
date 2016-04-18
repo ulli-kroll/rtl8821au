@@ -11,6 +11,7 @@
 #include <rtl8812a_hal.h>
 #include "trx.h"
 #include "def.h"
+#include <usb_ops.h>
 
 #endif
 

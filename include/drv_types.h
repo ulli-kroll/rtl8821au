@@ -137,9 +137,5 @@ struct registry_priv
 
 #include "../wifi.h"
 
-
-
-int rtw_handle_dualmac(struct rtl_priv *rtlpriv, bool init);
-
 #endif //__DRV_TYPES_H__
 

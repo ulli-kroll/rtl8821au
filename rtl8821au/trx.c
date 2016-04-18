@@ -7,6 +7,7 @@
 
 #else
 
+#include <drv_types.h>
 #include <linux/etherdevice.h>
 #include <rtl8812a_hal.h>
 #include "trx.h"

@@ -8,6 +8,7 @@
 
 #else
 
+#include <drv_types.h>
 #include "hw.h"
 #include "reg.h"
 #include "fw.h"

@@ -4,6 +4,7 @@
 
 #else
 
+#include <drv_types.h>
 #include <rtl8812a_hal.h>
 #include "rf.h"
 #include "reg.h"

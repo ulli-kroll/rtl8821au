@@ -19,6 +19,7 @@
  ******************************************************************************/
 #define _HCI_HAL_INIT_C_
 
+#include <drv_types.h>
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/phy.h>
 #include <../rtl8821au/reg.h>

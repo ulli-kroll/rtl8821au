@@ -4,6 +4,7 @@
 
 #else
 
+#include <drv_types.h>
 #include "fw.h"
 #include <linux/firmware.h>
 

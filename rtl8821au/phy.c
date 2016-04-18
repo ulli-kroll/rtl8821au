@@ -6,6 +6,7 @@
 
 #else
 
+#include <drv_types.h>
 #include <rtl8812a_hal.h>
 #include "phy.h"
 #include "dm.h"

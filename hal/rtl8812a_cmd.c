@@ -19,7 +19,7 @@
  ******************************************************************************/
 #define _RTL8812A_CMD_C_
 
-//#include <drv_types.h>
+#include <drv_types.h>
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/trx.h>
 #include <../rtl8821au/fw.h>

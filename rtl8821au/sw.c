@@ -8,6 +8,7 @@
 
 #else
 
+#include <drv_types.h>
 #include "sw.h"
 #include "dm.h"
 #include "phy.h"

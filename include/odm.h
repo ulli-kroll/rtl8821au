@@ -359,12 +359,6 @@ typedef enum tag_Operation_Mode_Definition
 	ODM_WIFI_DISPLAY	= BIT(8),
 }ODM_OPERATION_MODE_E;
 
-typedef struct _IQK_MATRIX_REGS_SETTING{
-	bool 	bIQKDone;
-	int32_t		Value[3][IQK_Matrix_REG_NUM];
-	bool 	bBWIqkResultSaved[3];
-}IQK_MATRIX_REGS_SETTING,*PIQK_MATRIX_REGS_SETTING;
-
 //
 // ODM Dynamic common info value definition
 //

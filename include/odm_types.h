@@ -26,24 +26,14 @@
 #define	ODM_AP		 	0x01	//BIT0
 #define	ODM_CE		 	0x04	//BIT2
 
+#include <drv_types.h>
 
-// Deifne HW endian support
-#define	ODM_ENDIAN_BIG	0
-#define	ODM_ENDIAN_LITTLE	1
 
-	#include <drv_types.h>
-
-	#if defined(CONFIG_LITTLE_ENDIAN)
-		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_LITTLE
-	#elif defined (CONFIG_BIG_ENDIAN)
-		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_BIG
-	#endif
-
-	//define useless flag to avoid compile warning
-	#define	USE_WORKITEM 0
-	#define 	FOR_BRAZIL_PRETEST 0
-	#define	BT_30_SUPPORT			0
-	#define   FPGA_TWO_MAC_VERIFICATION	0
+//define useless flag to avoid compile warning
+#define	USE_WORKITEM 0
+#define 	FOR_BRAZIL_PRETEST 0
+#define	BT_30_SUPPORT			0
+#define   FPGA_TWO_MAC_VERIFICATION	0
 
 
 #endif // __ODM_TYPES_H__

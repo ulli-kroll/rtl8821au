@@ -90,9 +90,6 @@ extern u32 	rtw_atoi(u8* s);
 extern void rtw_yield_os(void);
 
 
-extern void rtw_init_timer(struct timer_list *ptimer, void *rtlpriv, void *pfunc);
-
-
 __inline static unsigned char del_timer_sync_ex(struct timer_list *ptimer)
 {
 	return del_timer_sync(ptimer);

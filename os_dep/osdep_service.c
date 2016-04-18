@@ -133,13 +133,6 @@ int _rtw_memcmp(void *dst, void *src, u32 sz)
 		return false;
 }
 
-void rtw_init_timer(struct timer_list *ptimer, void *rtlpriv, void *pfunc)
-{
-	struct rtl_priv *adapter = (struct rtl_priv *)rtlpriv;
-
-	_init_timer(ptimer, adapter->ndev, pfunc, adapter);
-}
-
 void _rtw_init_queue(struct __queue *pqueue)
 {
 

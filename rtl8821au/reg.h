@@ -456,6 +456,40 @@
 #define EEPROM_VID_8821AU						0x100
 #define EEPROM_PID_8821AU						0x102
 
+#define EEPROM_Default_PID						0x1234
+#define EEPROM_Default_VID						0x5678
+#define EEPROM_Default_CustomerID				0xAB
+#define EEPROM_Default_CustomerID_8188E		0x00
+#define EEPROM_Default_SubCustomerID			0xCD
+#define EEPROM_Default_Version					0
+
+#define EEPROM_Default_CrystalCap_8812			0x20
+
+//New EFUSE deafult value
+#define EEPROM_DEFAULT_24G_INDEX			0x2A
+#define EEPROM_DEFAULT_24G_HT20_DIFF		0X02
+#define EEPROM_DEFAULT_24G_OFDM_DIFF		0X04
+
+#define EEPROM_DEFAULT_5G_INDEX			0X2A
+#define EEPROM_DEFAULT_5G_HT20_DIFF		0X00
+#define EEPROM_DEFAULT_5G_OFDM_DIFF		0X04
+
+#define EEPROM_DEFAULT_DIFF				0XFE
+#define EEPROM_DEFAULT_CHANNEL_PLAN		0x7F
+#define EEPROM_DEFAULT_BOARD_OPTION		0x00
+#define EEPROM_DEFAULT_RFE_OPTION		0x04
+#define EEPROM_DEFAULT_FEATURE_OPTION	0x00
+#define EEPROM_DEFAULT_BT_OPTION			0x10
+
+#define EEPROM_Default_ThermalMeter_8812		0x18
+
+#define EEPROM_Default_PAType						0
+#define EEPROM_Default_LNAType						0
+
+#define RTL_EEPROM_ID							0x8129
+
+#define EEPROM_CID_DEFAULT					0x0
+
 
 
 #endif

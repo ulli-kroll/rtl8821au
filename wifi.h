@@ -8,6 +8,9 @@
 #include "debug.h"
 
 #define TOTAL_CAM_ENTRY		32
+#define MAX_RF_PATH_NUM	2
+#define MAX_CHNL_GROUP		3+9
+
 
 enum intf_type {
 	INTF_PCI = 0,

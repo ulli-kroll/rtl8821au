@@ -32,12 +32,12 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	struct rtl_hal_cfg *cfg = rtlpriv->cfg;
 	uint8_t ret  = _SUCCESS;
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
-	struct xmit_priv	*pxmitpriv = &rtlpriv->xmitpriv;
+	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct security_priv *psecuritypriv = &rtlpriv->securitypriv;
 
 	/* xmit_priv */
-	pxmitpriv->vcs_setting = pregistrypriv->vrtl_carrier_sense;
+	pxmitpriv->vcs_setting = AUTO_VCS;
 	pxmitpriv->vcs = pregistrypriv->vcs_type;
 	pxmitpriv->vcs_type = pregistrypriv->vcs_type;
 	/* pxmitpriv->rts_thresh = pregistrypriv->rts_thresh; */

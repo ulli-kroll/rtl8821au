@@ -79,7 +79,6 @@ struct registry_priv
 	NDIS_802_11_SSID	ssid;
 	uint8_t	channel;//ad-hoc support requirement
 	uint8_t	preamble;//long, short, auto
-	uint8_t	vrtl_carrier_sense;//Enable, Disable, Auto
 	uint8_t	vcs_type;//RTS/CTS, CTS-to-self
 	u16	rts_thresh;
 	u16  frag_thresh;

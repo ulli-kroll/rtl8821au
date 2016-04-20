@@ -1048,7 +1048,7 @@ void VCS_update(struct rtl_priv *rtlpriv, struct sta_info *psta)
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	switch (pregpriv->vrtl_carrier_sense)/* 0:off 1:on 2:auto */
+	switch (AUTO_VCS)/* 0:off 1:on 2:auto */
 	{
 		case 0: //off
 			psta->rtsen = 0;

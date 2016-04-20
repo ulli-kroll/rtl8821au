@@ -26,7 +26,6 @@
 
 /* module param defaults */
 static int rtw_channel = 1;/* ad-hoc support requirement */
-static int rtw_vrtl_carrier_sense = AUTO_VCS;
 static int rtw_vcs_type = RTS_CTS;
 static int rtw_rts_thresh = 2347;
 static int rtw_frag_thresh = 2346;
@@ -119,7 +118,6 @@ char *__rtw_initmac = 0;  /* temp mac address if users want to use instead of th
 module_param(__rtw_initmac, charp, 0644);
 module_param(rtw_channel, int, 0644);
 module_param(rtw_wmm_enable, int, 0644);
-module_param(rtw_vrtl_carrier_sense, int, 0644);
 module_param(rtw_vcs_type, int, 0644);
 module_param(rtw_busy_thresh, int, 0644);
 
@@ -160,7 +158,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 		registry_par->channel = 36;
 	}
 
-	registry_par->vrtl_carrier_sense = (uint8_t)rtw_vrtl_carrier_sense;
 	registry_par->vcs_type = (uint8_t)rtw_vcs_type;
 	registry_par->rts_thresh = (u16)rtw_rts_thresh;
 	registry_par->frag_thresh = (u16)rtw_frag_thresh;

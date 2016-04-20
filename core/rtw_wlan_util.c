@@ -1056,7 +1056,7 @@ void VCS_update(struct rtl_priv *rtlpriv, struct sta_info *psta)
 			break;
 
 		case 1: //on
-			if (pregpriv->vcs_type == 1) /* 1:RTS/CTS 2:CTS to self */
+			if (RTS_CTS == 1) /* 1:RTS/CTS 2:CTS to self */
 			{
 				psta->rtsen = 1;
 				psta->cts2self = 0;
@@ -1072,7 +1072,7 @@ void VCS_update(struct rtl_priv *rtlpriv, struct sta_info *psta)
 		default:
 			if ((pmlmeinfo->ERP_enable) && (pmlmeinfo->ERP_IE & BIT(1)))
 			{
-				if (pregpriv->vcs_type == 1)
+				if (RTS_CTS == 1)
 				{
 					psta->rtsen = 1;
 					psta->cts2self = 0;

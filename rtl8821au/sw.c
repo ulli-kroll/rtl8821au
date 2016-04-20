@@ -38,8 +38,8 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 
 	/* xmit_priv */
 	pxmitpriv->vcs_setting = AUTO_VCS;
-	pxmitpriv->vcs = pregistrypriv->vcs_type;
-	pxmitpriv->vcs_type = pregistrypriv->vcs_type;
+	pxmitpriv->vcs = RTS_CTS;
+	pxmitpriv->vcs_type = RTS_CTS;
 	/* pxmitpriv->rts_thresh = pregistrypriv->rts_thresh; */
 	pxmitpriv->frag_len = pregistrypriv->frag_thresh;
 

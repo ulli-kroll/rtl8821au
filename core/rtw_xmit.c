@@ -1483,7 +1483,7 @@ void rtw_update_protection(struct rtl_priv *rtlpriv, uint8_t *ie, uint ie_len)
 		} else {
 			protection = (*(perp + 2)) & BIT(1);
 			if (protection) {
-				if (pregistrypriv->vcs_type == RTS_CTS)
+				if (RTS_CTS == RTS_CTS)
 					pxmitpriv->vcs = RTS_CTS;
 				else
 					pxmitpriv->vcs = CTS_TO_SELF;

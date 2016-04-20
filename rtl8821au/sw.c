@@ -41,7 +41,7 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	pxmitpriv->vcs = RTS_CTS;
 	pxmitpriv->vcs_type = RTS_CTS;
 	/* pxmitpriv->rts_thresh = pregistrypriv->rts_thresh; */
-	pxmitpriv->frag_len = pregistrypriv->frag_thresh;
+	pxmitpriv->frag_len = 2346;
 
 	/* recv_priv */
 

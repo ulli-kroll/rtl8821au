@@ -80,7 +80,6 @@ struct registry_priv
 	uint8_t	channel;//ad-hoc support requirement
 	uint8_t	preamble;//long, short, auto
 	u16	rts_thresh;
-	u16  frag_thresh;
 	uint8_t	adhoc_tx_pwr;
 	uint8_t	soft_ap;
 	uint8_t	power_mgnt;

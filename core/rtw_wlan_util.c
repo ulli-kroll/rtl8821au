@@ -810,10 +810,10 @@ static void bwmode_update_check(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_
 	pHT_info = (struct HT_info_element *)pIE->data;
 
 	if (pmlmeext->cur_channel > 14) {
-		if ((pregistrypriv->bw_mode & 0xf0) > 0)
+		if ((0x21 & 0xf0) > 0)
 			cbw40_enable = 1;
 	} else {
-		if ((pregistrypriv->bw_mode & 0x0f) > 0)
+		if ((0x21 & 0x0f) > 0)
 			cbw40_enable = 1;
 	}
 

@@ -288,7 +288,7 @@ static void init_channel_list(struct rtl_priv *rtlpriv, RT_CHANNEL_INFO *channel
 				continue;
 			}
 
-			if ((0 < (rtlpriv->registrypriv.bw_mode & 0xf0)) &&
+			if ((0 < (0x21 & 0xf0)) &&
 				((BW40MINUS == o->bw) || (BW40PLUS == o->bw)))
 				continue;
 
@@ -3505,10 +3505,10 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 
 			//to disable 40M Hz support while gd_bw_40MHz_en = 0
 			if (pmlmeext->cur_channel > 14) {
-				if ((pregpriv->bw_mode & 0xf0) > 0)
+				if ((0x21 & 0xf0) > 0)
 					cbw40_enable = 1;
 			} else {
-				if ((pregpriv->bw_mode & 0x0f) > 0)
+				if ((0x21 & 0x0f) > 0)
 					cbw40_enable = 1;
 			}
 
@@ -5942,10 +5942,10 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 					struct HT_info_element *pht_info = (struct HT_info_element *)(pIE->data);
 
 					if (pnetwork->Configuration.DSConfig > 14) {
-						if ((pregpriv->bw_mode & 0xf0) > CHANNEL_WIDTH_20)
+						if ((0x21 & 0xf0) > CHANNEL_WIDTH_20)
 							cbw40_enable = 1;
 					} else {
-						if ((pregpriv->bw_mode & 0x0f) > CHANNEL_WIDTH_20)
+						if ((0x21 & 0x0f) > CHANNEL_WIDTH_20)
 							cbw40_enable = 1;
 					}
 
@@ -5979,7 +5979,7 @@ uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 			case EID_VHTOperation://Get VHT Operation IE.
 				if (pmlmeext->cur_bwmode == CHANNEL_WIDTH_40) {
 					if((GET_VHT_OPERATION_ELE_CHL_WIDTH(pIE->data) >= 1)
-						&& ((pregpriv->bw_mode & 0xf0) >= CHANNEL_WIDTH_80)) {
+						&& ((0x21 & 0xf0) >= CHANNEL_WIDTH_80)) {
 						pmlmeext->cur_bwmode = CHANNEL_WIDTH_80;
 						DBG_871X("VHT center ch = %d\n", GET_VHT_OPERATION_ELE_CENTER_FREQ1(pIE->data));
 						DBG_871X("set VHT ch/bw before connected\n");

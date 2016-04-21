@@ -934,10 +934,10 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		pht_info = (struct HT_info_element *)(p+2);
 
 		if (cur_channel > 14) {
-			if ((pregpriv->bw_mode & 0xf0) > 0)
+			if ((0x21 & 0xf0) > 0)
 				cbw40_enable = 1;
 		} else {
-			if ((pregpriv->bw_mode & 0x0f) > 0)
+			if ((0x21 & 0x0f) > 0)
 				cbw40_enable = 1;
 		}
 

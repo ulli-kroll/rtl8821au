@@ -2553,10 +2553,10 @@ void rtw_update_ht_cap(struct rtl_priv *rtlpriv, uint8_t *pie, uint ie_len, uint
 	}
 
 	if (channel > 14) {
-		if ((pregistrypriv->bw_mode & 0xf0) > 0)
+		if ((0x21 & 0xf0) > 0)
 			cbw40_enable = 1;
 	} else {
-		if ((pregistrypriv->bw_mode & 0x0f) > 0)
+		if ((0x21 & 0x0f) > 0)
 			cbw40_enable = 1;
 	}
 

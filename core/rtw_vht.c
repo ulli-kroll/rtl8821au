@@ -320,7 +320,7 @@ void VHT_operation_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs p
 		return;
 
 	if ((GET_VHT_OPERATION_ELE_CHL_WIDTH(pIE->data) >= 1)
-	   && ((pregistrypriv->bw_mode & 0xf0) >= CHANNEL_WIDTH_80)) {
+	   && ((0x21 & 0xf0) >= CHANNEL_WIDTH_80)) {
 		pvhtpriv->vht_bwmode = CHANNEL_WIDTH_80;
 	} else {
 		pvhtpriv->vht_bwmode = phtpriv->bwmode;
@@ -516,7 +516,7 @@ uint32_t rtw_build_vht_cap_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	pcap_mcs = GET_VHT_CAPABILITY_ELE_TX_MCS(pcap);
 	memcpy(pcap_mcs, pvhtpriv->vht_mcs_map, 2);
 
-	bw = (pregistrypriv->bw_mode >> 4) & 0xf;
+	bw = (0x21 >> 4) & 0xf;
 	HighestRate = VHT_MCS_DATA_RATE[bw][pvhtpriv->sgi][((pvhtpriv->vht_highest_rate - MGN_VHT1SS_MCS0)&0x3f)];
 	HighestRate = (HighestRate+1) >> 1;
 

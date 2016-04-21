@@ -106,7 +106,7 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	bool	bHwLDPCSupport = false, bHwSTBCSupport = false;
 	uint8_t	rf_type = 0;
 
-	pvhtpriv->vht_bwmode = (pregistrypriv->bw_mode & 0xF0) >> 4;
+	pvhtpriv->vht_bwmode = (0x21 & 0xF0) >> 4;
 	if (pvhtpriv->vht_bwmode > CHANNEL_WIDTH_80)
 		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT(3)) ? true : false;
 	else

@@ -1036,10 +1036,10 @@ u16 rtw_get_cur_max_rate(struct rtl_priv *rtlpriv)
 			rf_type = rtlpriv->phy.rf_type;
 
 			if (pmlmeext->cur_channel > 14) {
-				if ((pregistrypriv->bw_mode & 0xf0) > 0)
+				if ((0x21 & 0xf0) > 0)
 					cbw40_enable = 1;
 			} else {
-				if ((pregistrypriv->bw_mode & 0x0f) > 0)
+				if ((0x21 & 0x0f) > 0)
 					cbw40_enable = 1;
 			}
 

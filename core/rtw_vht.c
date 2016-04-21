@@ -499,8 +499,8 @@ uint32_t rtw_build_vht_cap_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	 * B23 24 25
 	 * Maximum A-MPDU Length Exponent
 	 */
-	if (pregistrypriv->ampdu_factor != 0xFE) {
-		SET_VHT_CAPABILITY_ELE_MAX_RXAMPDU_FACTOR(pcap, pregistrypriv->ampdu_factor);
+	if (7 != 0xFE) {
+		SET_VHT_CAPABILITY_ELE_MAX_RXAMPDU_FACTOR(pcap, 7);
 	} else {
 		SET_VHT_CAPABILITY_ELE_MAX_RXAMPDU_FACTOR(pcap, 7);
 	}

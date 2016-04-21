@@ -67,7 +67,6 @@ static int rtw_ampdu_amsdu = 0;/*  0: disabled, 1:enabled, 2:auto */
  *  BIT3 - 160MHz, 0: support, 1: non-support
  */
 
-static int rtw_ampdu_factor = 7;
 /*
  *
  *  BIT0: Enable VHT LDPC Rx,
@@ -80,7 +79,6 @@ static int rtw_ampdu_factor = 7;
  *  BIT4: Enable HT STBC Rx,
  *  BIT5: Enable HT STBC Tx
  */
-static int rtw_stbc_cap = 0x3;
 /*
  * BIT0: Enable VHT Beamformer,
  * BIT1: Enable VHT Beamformee,
@@ -172,8 +170,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 	registry_par->rx_stbc = (uint8_t)rtw_rx_stbc;
 	registry_par->ampdu_amsdu = (uint8_t)rtw_ampdu_amsdu;
 
-	registry_par->ampdu_factor = (uint8_t)rtw_ampdu_factor;
-	registry_par->stbc_cap = (uint8_t)rtw_stbc_cap;
 	registry_par->beamform_cap = (uint8_t)rtw_beamform_cap;
 	registry_par->low_power = (uint8_t)rtw_low_power;
 

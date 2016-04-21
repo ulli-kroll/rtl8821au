@@ -148,14 +148,14 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	CLEAR_FLAGS(pvhtpriv->stbc_cap);
 
 	if (bHwSTBCSupport) {
-		if (TEST_FLAG(pregistrypriv->stbc_cap, BIT(1)))
+		if (TEST_FLAG(0x3, BIT(1)))
 			SET_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_TX);
 	}
 
 	bHwSTBCSupport = 1;
 
 	if (bHwSTBCSupport) {
-		if (TEST_FLAG(pregistrypriv->stbc_cap, BIT(0)))
+		if (TEST_FLAG(0x3, BIT(0)))
 			SET_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_RX);
 	}
 
@@ -163,7 +163,7 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	DBG_871X("[VHT] Support STBC = 0x%02X\n", pvhtpriv->stbc_cap);
 #endif
 
-	pvhtpriv->ampdu_len = pregistrypriv->ampdu_factor;
+	pvhtpriv->ampdu_len = 7;
 
 	rf_type = rtlpriv->phy.rf_type;
 

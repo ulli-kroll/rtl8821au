@@ -108,9 +108,9 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 
 	pvhtpriv->vht_bwmode = (0x21 & 0xF0) >> 4;
 	if (pvhtpriv->vht_bwmode > CHANNEL_WIDTH_80)
-		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT(3)) ? true : false;
+		pvhtpriv->sgi = TEST_FLAG(0xf, BIT(3)) ? true : false;
 	else
-		pvhtpriv->sgi = TEST_FLAG(pregistrypriv->short_gi, BIT(2)) ? true : false;
+		pvhtpriv->sgi = TEST_FLAG(0xf, BIT(2)) ? true : false;
 
 	/*
 	 * LDPC support

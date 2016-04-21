@@ -66,7 +66,6 @@ static int rtw_ampdu_amsdu = 0;/*  0: disabled, 1:enabled, 2:auto */
  *  BIT2 - 80MHz, 0: support, 1: non-support
  *  BIT3 - 160MHz, 0: support, 1: non-support
  */
-static int rtw_short_gi = 0xf;
 
 static int rtw_ampdu_factor = 7;
 /*
@@ -173,7 +172,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 
 	registry_par->rx_stbc = (uint8_t)rtw_rx_stbc;
 	registry_par->ampdu_amsdu = (uint8_t)rtw_ampdu_amsdu;
-	registry_par->short_gi = (uint8_t)rtw_short_gi;
 
 	registry_par->ampdu_factor = (uint8_t)rtw_ampdu_factor;
 	registry_par->ldpc_cap = (uint8_t)rtw_ldpc_cap;

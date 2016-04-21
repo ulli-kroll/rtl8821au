@@ -127,9 +127,9 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 	CLEAR_FLAGS(pvhtpriv->ldpc_cap);
 
 	if (bHwLDPCSupport) {
-		if (TEST_FLAG(pregistrypriv->ldpc_cap, BIT(0)))
+		if (TEST_FLAG(0x33, BIT(0)))
 			SET_FLAG(pvhtpriv->ldpc_cap, LDPC_VHT_ENABLE_RX);
-		if (TEST_FLAG(pregistrypriv->ldpc_cap, BIT(1)))
+		if (TEST_FLAG(0x33, BIT(1)))
 			SET_FLAG(pvhtpriv->ldpc_cap, LDPC_VHT_ENABLE_TX);
 #if 0
 		DBG_871X("[VHT] Support LDPC = 0x%02X\n", pvhtpriv->ldpc_cap);

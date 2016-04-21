@@ -108,7 +108,6 @@ struct registry_priv
 
 	uint8_t	ampdu_factor;
 	// BIT(0): Enable VHT LDPC Rx, BIT(1): Enable VHT LDPC Tx, BIT(4): Enable HT LDPC Rx, BIT(5): Enable HT LDPC Tx
-	uint8_t	ldpc_cap;
 	// BIT(0): Enable VHT STBC Rx, BIT(1): Enable VHT STBC Tx, BIT(4): Enable HT STBC Rx, BIT(5): Enable HT STBC Tx
 	uint8_t	stbc_cap;
 	// BIT(0): Enable VHT Beamformer, BIT(1): Enable VHT Beamformee, BIT(4): Enable HT Beamformer, BIT(5): Enable HT Beamformee

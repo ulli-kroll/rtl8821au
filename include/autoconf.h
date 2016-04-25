@@ -19,7 +19,6 @@
 #define CONFIG_DFS	1
 #define CONFIG_AP_MODE	1
 #define CONFIG_SKB_COPY	1//for amsdu
-#define USB_INTERFERENCE_ISSUE // this should be checked in all usb interface
 #define CONFIG_NEW_SIGNAL_STAT_PROCESS
 #define CONFIG_TX_MCAST2UNI	1	// Support IP multicast->unicast
 

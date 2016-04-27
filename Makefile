@@ -27,6 +27,7 @@ RTL8821AU_FILES	:=	rtl8821au/dm.o \
 			rtl8821au/led.o \
 			rtl8821au/phy.o \
 			rtl8821au/rf.o \
+			rtl8821au/quirks.o \
 			rtl8821au/sw.o \
 			rtl8821au/table.o \
 			rtl8821au/trx.o

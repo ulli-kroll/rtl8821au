@@ -56,3 +56,49 @@ Device Qualifier (for other device speed):
   bNumConfigurations      1
 
 */
+
+#ifdef CONFIG_RTLWIFI
+
+#include <../drivers/net/wireless/realtek/rtlwifi/wifi.h>
+#include <../drivers/net/wireless/realtek/rtlwifi/base.h>
+
+#else
+
+#include <drv_types.h>
+#include "dm.h"
+#include "phy.h"
+#include "reg.h"
+#include "fw.h"
+#include "quirks.h"
+
+#endif
+
+#define IS_HIGH_SPEED_USB(udev) \
+		((USB_SPEED_HIGH == (udev)->usb_speed) ? true : false)
+
+#define IS_SUPER_SPEED_USB(udev) \
+		((USB_SPEED_SUPER == (udev)->usb_speed) ? true : false)
+
+
+bool usb_reprobe_to_usb3(struct rtl_priv *rtlpriv)
+{
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	int ret = false;
+
+	if (IS_HIGH_SPEED_USB(rtlusb)) {
+		if ((rtl_read_byte(rtlpriv, 0x74) & (BIT(2)|BIT(3))) != BIT(3)) {
+			rtl_write_byte(rtlpriv, 0x74, 0x8);
+			rtl_write_byte(rtlpriv, 0x70, 0x2);
+			rtl_write_byte(rtlpriv, 0x3e, 0x1);
+			rtl_write_byte(rtlpriv, 0x3d, 0x3);
+			/* usb disconnect */
+			rtl_write_byte(rtlpriv, 0x5, 0x80);
+			ret = true;
+		}
+	} else if (IS_SUPER_SPEED_USB(rtlusb))	{
+		rtl_write_byte(rtlpriv, 0x70, rtl_read_byte(rtlpriv, 0x70) & (~BIT(1)));
+		rtl_write_byte(rtlpriv, 0x3e, rtl_read_byte(rtlpriv, 0x3e) & (~BIT(0)));
+	}
+
+	return ret;
+}

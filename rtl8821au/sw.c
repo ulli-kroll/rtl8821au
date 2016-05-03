@@ -763,6 +763,36 @@ spinlock_t rtl8821au_devices_lock;
 
 static int rtl8821au_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
+	struct usb_device *udev;
+	char *speed;
+	char *driver_info;
+
+	udev = interface_to_usbdev(pusb_intf);
+	switch (udev->speed) {
+		case USB_SPEED_LOW :	speed = "LOW";
+					break;
+		case USB_SPEED_FULL :	speed = "FULL";
+					break;
+		case USB_SPEED_HIGH :	speed = "HIGH";
+					break;
+		case USB_SPEED_SUPER :	speed = "HIGH";
+					break;
+		default :		speed = "UNKNOWN";
+					break;
+	}
+
+	switch (pdid->driver_info) {
+		case RTL8812 :	driver_info ="RTL8812";
+				break;
+
+		case RTL8821 :	driver_info ="RTL8821";
+				break;
+	}
+
+#if 0
+	dev_info(&pusb_intf->dev, "Register : %s USB-ID %04x:%04x as %s Speed\n",
+		driver_info, pdid->idVendor, pdid->idProduct, speed);
+#endif
 	return rtw_usb_probe(pusb_intf, pdid, &rtl8821au_hal_cfg);
 }
 

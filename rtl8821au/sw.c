@@ -25,6 +25,8 @@
 
 #endif
 
+#include <linux/spinlock.h>
+
 #define RTL8821AU_DRIVER_NAME		"rtl8821au"
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
@@ -734,6 +736,31 @@ static struct usb_device_id rtw_usb_id_tbl[] ={
 
 MODULE_DEVICE_TABLE(usb, rtw_usb_id_tbl);
 
+/*
+ *
+ * ULLI : We can only track rtl8821au devices via MAC Addr.
+ * ULLI : For every device we need an entry for MAC, USB Speed index and
+ * ULLI : last seen
+ *
+ * ULLI : Note about this hack ...
+ * ULLI : switch UBS3 capable device to superspeed mode
+ * ULLI : Note about device behind a USB2 HUB and/or User (re)plugs device
+ * ULLI : we need a simple byteswise read/write to track the device.
+ * ULLI : This must be done before registering this device as ethernet or
+ * ULLI : ieee80211 hw.
+ *
+ */
+
+struct rtl8821au_probed_devices {
+	struct list_head list;
+	uint8_t mac[ETH_ALEN];
+	int speed;
+	unsigned long jiffies;
+};
+
+static LIST_HEAD(rtl8821_devices);
+spinlock_t rtl8821au_devices_lock;
+
 static int rtl8821au_probe(struct usb_interface *pusb_intf, const struct usb_device_id *pdid)
 {
 	return rtw_usb_probe(pusb_intf, pdid, &rtl8821au_hal_cfg);
@@ -763,6 +790,8 @@ static int __init rtl8821au_module_init(void)
 	res = usb_register(&rtl8821au_usb_drv);
 	if (res < 0)
 		pr_err(RTL8821AU_DRIVER_NAME ": usb_register() failed (%i)\n", res);
+
+	spin_lock_init(&rtl8821au_devices_lock);
 
 	return res;
 }

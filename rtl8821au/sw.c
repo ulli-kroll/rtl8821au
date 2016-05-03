@@ -25,6 +25,8 @@
 
 #endif
 
+#define RTL8821AU_DRIVER_NAME		"rtl8821au"
+
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
 
 static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
@@ -739,7 +741,7 @@ static int rtl8821au_probe(struct usb_interface *pusb_intf, const struct usb_dev
 
 
 static struct usb_driver rtl8821au_usb_drv = {
-	.name = "rtl8821au",
+	.name = RTL8821AU_DRIVER_NAME,
 	.probe = rtl8821au_probe,
 	.disconnect = rtw_usb_disconnect,
 	.id_table = rtw_usb_id_tbl,
@@ -754,6 +756,27 @@ static struct usb_driver rtl8821au_usb_drv = {
 
 };
 
+static int __init rtl8821au_module_init(void)
+{
+	int res;
+
+	res = usb_register(&rtl8821au_usb_drv);
+	if (res < 0)
+		pr_err(RTL8821AU_DRIVER_NAME ": usb_register() failed (%i)\n", res);
+
+	return res;
+}
+
+static void __exit rtl8821au_module_exit(void)
+{
+	usb_deregister(&rtl8821au_usb_drv);
+}
+
+MODULE_DEVICE_TABLE(usb, rtw_usb_id_tbl);
+
+module_init(rtl8821au_module_init);
+module_exit(rtl8821au_module_exit);
+
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Realtek Wireless Lan Driver");
 MODULE_AUTHOR("Hans Ulli Kroll <ulli.kroll@googlemail.com>");
@@ -766,5 +789,3 @@ module_param_named(debug, rtl8821au_mod_params.debug, int, 0444);
 MODULE_PARM_DESC(swenc, "Set to 1 for software crypto (default 0)\n");
 MODULE_PARM_DESC(ips, "Set to 0 to not use link power save (default 1)\n");
 MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
-
-module_usb_driver(rtl8821au_usb_drv)

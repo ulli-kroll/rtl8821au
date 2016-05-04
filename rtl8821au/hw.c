@@ -2037,10 +2037,33 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	uint8_t	value8 = 0, u1bRegCR;
 	uint8_t	txpktbuf_bndy;
 	uint32_t	status = _SUCCESS;
+
+	/* ULLI : for debuging USB3 issue, getting USB ID during hw init */
+	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
+	struct usb_device *udev = usbpriv->dev.udev;
+	char *speed;
+
 	 struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 	enum rf_pwrstate eRfPowerStateToSet;
 	uint32_t init_start_time = jiffies;
+
+	switch (udev->speed) {
+		case USB_SPEED_LOW :	speed = "LOW";
+					break;
+		case USB_SPEED_FULL :	speed = "FULL";
+					break;
+		case USB_SPEED_HIGH :	speed = "HIGH";
+					break;
+		case USB_SPEED_SUPER :	speed = "HIGH";
+					break;
+		default :		speed = "UNKNOWN";
+					break;
+	}
+
+	dev_info(&udev->dev, "rtl8821au: hw_init USB-ID %04x:%04x %s %s %s-SPEED \n",
+		udev->descriptor.idVendor, udev->descriptor.idProduct,
+		udev->product, udev->manufacturer, speed);
 
 	/* Check if MAC has already power on. by tynli. 2011.05.27. */
 	value8 = rtl_read_byte(rtlpriv, REG_SYS_CLKR+1);

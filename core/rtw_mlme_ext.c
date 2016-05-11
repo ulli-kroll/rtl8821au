@@ -5295,7 +5295,7 @@ void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res)
 		{
 			pmlmeinfo->FW_sta_info[psta_bmc->mac_id].psta = psta_bmc;
 			update_bmc_sta_support_rate(rtlpriv, psta_bmc->mac_id);
-			Update_RA_Entry(rtlpriv, psta_bmc);
+			Update_RA_Entry(psta_bmc);
 		}
 	}
 
@@ -5329,7 +5329,7 @@ void mlmeext_joinbss_event_callback(struct rtl_priv *rtlpriv, int join_res)
 		psta->wireless_mode = pmlmeext->cur_wireless_mode;
 
 		//set per sta rate after updating HT cap.
-		set_sta_rate(rtlpriv, psta);
+		set_sta_rate(psta);
 
 		#if (RATE_ADAPTIVE_SUPPORT==1)	//for 88E RA
 		rtlpriv->cfg->ops->set_hw_reg(rtlpriv,HW_VAR_TX_RPT_MAX_MACID, (uint8_t *)&psta->mac_id);
@@ -5402,7 +5402,7 @@ void mlmeext_sta_add_event_callback(struct rtl_priv *rtlpriv, struct sta_info *p
 	pmlmeinfo->FW_sta_info[psta->mac_id].psta = psta;
 
 	//rate radaptive
-	Update_RA_Entry(rtlpriv, psta);
+	Update_RA_Entry(psta);
 
 	//update adhoc sta_info
 	update_sta_info(rtlpriv, psta);

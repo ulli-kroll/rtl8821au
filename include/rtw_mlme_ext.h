@@ -551,8 +551,8 @@ void update_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta);
 unsigned int update_basic_rate(unsigned char *ptn, unsigned int ptn_sz);
 unsigned int update_supported_rate(unsigned char *ptn, unsigned int ptn_sz);
 unsigned int update_MCS_rate(struct HT_caps_element *pHT_caps);
-void Update_RA_Entry(struct rtl_priv *rtlpriv, struct sta_info *psta);
-void set_sta_rate(struct rtl_priv *rtlpriv, struct sta_info *psta);
+void Update_RA_Entry(struct sta_info *psta);
+void set_sta_rate(struct sta_info *psta);
 
 unsigned int receive_disconnect(struct rtl_priv *rtlpriv, unsigned char *MacAddr, unsigned short reason);
 

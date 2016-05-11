@@ -1637,21 +1637,21 @@ unsigned char get_highest_mcs_rate(struct HT_caps_element *pHT_caps)
 	return i;
 }
 
-void Update_RA_Entry(struct rtl_priv *rtlpriv, struct sta_info *psta)
+void Update_RA_Entry(struct sta_info *psta)
 {
 	rtw_hal_update_ra_mask(psta->rtlpriv, psta, 0);
 }
 
-void enable_rate_adaptive(struct rtl_priv *rtlpriv, struct sta_info *psta);
-void enable_rate_adaptive(struct rtl_priv *rtlpriv, struct sta_info *psta)
+void enable_rate_adaptive(struct sta_info *psta);
+void enable_rate_adaptive(struct sta_info *psta)
 {
-	Update_RA_Entry(rtlpriv, psta);
+	Update_RA_Entry(psta);
 }
 
-void set_sta_rate(struct rtl_priv *rtlpriv, struct sta_info *psta)
+void set_sta_rate(struct sta_info *psta)
 {
 	//rate adaptive
-	enable_rate_adaptive(rtlpriv, psta);
+	enable_rate_adaptive(psta);
 }
 
 // Update RRSR and Rate for USERATE

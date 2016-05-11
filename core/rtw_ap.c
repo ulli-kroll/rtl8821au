@@ -2284,7 +2284,7 @@ void rtw_ap_restore_network(struct rtl_priv *rtlpriv)
 		if (psta == NULL) {
 			DBG_871X(FUNC_ADPT_FMT" sta_info is null\n", FUNC_ADPT_ARG(rtlpriv));
 		} else if (psta->state &_FW_LINKED) {
-			Update_RA_Entry(rtlpriv, psta);
+			Update_RA_Entry(psta);
 			//pairwise key
 			rtw_setstakey_cmd(rtlpriv, (unsigned char *)psta, true);
 		}

@@ -22,44 +22,6 @@
 #include <drv_types.h>
 #include <odm_precomp.h>
 
-#define	EEPROM_CHANNEL_PLAN_BY_HW_MASK	0x80
-
-/*
- * 	u8 hw_channel_plan,	channel plan from HW (efuse/eeprom)
- *	u8 sw_channel_plan,	channel plan from SW (registry/module param)
- *	u8 def_channel_plan,	channel plan used when the former two is invalid
- *	bool AutoLoadFail
- */
-
-#define rtw_is_channel_plan_valid(chplan) (chplan<RT_CHANNEL_DOMAIN_MAX || \
-					   chplan == RT_CHANNEL_DOMAIN_REALTEK_DEFINE)
-
-
-u8 hal_com_get_channel_plan(struct rtl_priv *rtlpriv, u8 hw_channel_plan,	
-			    u8 sw_channel_plan, u8 def_channel_plan,
-			    bool AutoLoadFail)
-{
-	uint8_t swConfig;
-	uint8_t chnlPlan;
-
-	swConfig = true;
-	if (!AutoLoadFail) {
-		if (!rtw_is_channel_plan_valid(sw_channel_plan))
-			swConfig = false;
-		if (hw_channel_plan & EEPROM_CHANNEL_PLAN_BY_HW_MASK)
-			swConfig = false;
-	}
-
-	if (swConfig == true)
-		chnlPlan = sw_channel_plan;
-	else
-		chnlPlan = hw_channel_plan & (~EEPROM_CHANNEL_PLAN_BY_HW_MASK);
-
-	if (!rtw_is_channel_plan_valid(chnlPlan))
-		chnlPlan = def_channel_plan;
-
-	return chnlPlan;
-}
 
 bool HAL_IsLegalChannel(struct rtl_priv *rtlpriv, uint32_t Channel)
 {

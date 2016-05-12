@@ -1105,23 +1105,6 @@ static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	bool autoload_fail);
 
-
-/* ULLI : refractoring this into one function _read_adapter_info() */
-
-static void Hal_ReadChannelPlan8812A(struct rtl_priv *rtlpriv, uint8_t *hwinfo,
-	bool	AutoLoadFail)
-{
-	rtlpriv->mlmepriv.ChannelPlan = hal_com_get_channel_plan(
-		rtlpriv
-		, hwinfo?hwinfo[EEPROM_ChannelPlan_8812]:0xFF
-		,  RT_CHANNEL_DOMAIN_MAX
-		, RT_CHANNEL_DOMAIN_REALTEK_DEFINE
-		, AutoLoadFail
-	);
-
-	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD, "mlmepriv.ChannelPlan = 0x%02x\n", rtlpriv->mlmepriv.ChannelPlan);
-}
-
 void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
@@ -1251,7 +1234,12 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	 * Read Bluetooth co-exist and initialize
 	 */
 
-	Hal_ReadChannelPlan8812A(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
+	rtlefuse->eeprom_channelplan = *(u8 *)&hwinfo[EEPROM_ChannelPlan_8812];
+	if (rtlefuse->eeprom_channelplan == 0xff)
+		rtlefuse->eeprom_channelplan = 0x7F;
+
+	/* set channel plan from efuse */
+	rtlefuse->channel_plan = rtlefuse->eeprom_channelplan;
 
 	if (!rtlefuse->autoload_failflag) {
 		rtlefuse->crystalcap = hwinfo[EEPROM_XTAL_8812];

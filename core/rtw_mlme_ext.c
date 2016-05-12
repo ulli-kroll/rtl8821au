@@ -390,6 +390,7 @@ static uint8_t init_channel_set(struct rtl_priv* rtlpriv, uint8_t ChannelPlan, R
 
 int	init_mlme_ext_priv(struct rtl_priv* rtlpriv)
 {
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 	int	res = _SUCCESS;
 	struct registry_priv* pregistrypriv = &rtlpriv->registrypriv;
 	struct mlme_ext_priv *pmlmeext = &rtlpriv->mlmeextpriv;
@@ -412,7 +413,7 @@ int	init_mlme_ext_priv(struct rtl_priv* rtlpriv)
 	init_mlme_ap_info(rtlpriv);
 #endif
 
-	pmlmeext->max_chan_nums = init_channel_set(rtlpriv, pmlmepriv->ChannelPlan,pmlmeext->channel_set);
+	pmlmeext->max_chan_nums = init_channel_set(rtlpriv, rtlefuse->channel_plan ,pmlmeext->channel_set);
 	init_channel_list(rtlpriv, pmlmeext->channel_set, pmlmeext->max_chan_nums, &pmlmeext->channel_list);
 
 	pmlmeext->chan_scan_time = SURVEY_TO;

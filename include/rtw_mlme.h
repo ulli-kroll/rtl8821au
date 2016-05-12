@@ -367,7 +367,6 @@ struct mlme_priv {
 
  	uint8_t 	key_mask; //use for ips to set wep key after ips_leave
 	uint8_t	acm_mask; // for wmm acm mask
-	uint8_t	ChannelPlan;
 	RT_SCAN_TYPE 	scan_mode; // active: 1, passive: 0
 
 	//uint8_t probereq_wpsie[MAX_WPS_IE_LEN];//added in probe req

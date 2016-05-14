@@ -269,7 +269,7 @@ u32 rtw_start_drv_threads(struct net_device *ndev)
 	int _unused;
 
 	{
-		rtlpriv->cmdThread = kthread_run(rtw_cmd_thread, rtlpriv, "RTW_CMD_THREAD");
+		rtlpriv->cmdThread = kthread_run(rtw_cmd_thread, ndev, "RTW_CMD_THREAD");
 		if (IS_ERR(rtlpriv->cmdThread))
 			_status = _FAIL;
 		else

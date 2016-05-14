@@ -315,7 +315,8 @@ int rtw_cmd_thread(void *context)
 	uint8_t *pcmdbuf, *prspbuf;
 	uint8_t (*cmd_hdl)(struct rtl_priv *rtlpriv, uint8_t * pbuf);
 	void (*pcmd_callback)(struct rtl_priv *dev, struct cmd_obj *pcmd);
-	struct rtl_priv *rtlpriv = (struct rtl_priv *) context;
+	struct net_device *ndev = (struct net_device *) context;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct cmd_priv *pcmdpriv = &(rtlpriv->cmdpriv);
 
 

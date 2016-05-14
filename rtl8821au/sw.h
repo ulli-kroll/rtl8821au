@@ -3,6 +3,4 @@
 
 uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv);
 
-#include <rtl8812a_hal.h>
-
 #endif

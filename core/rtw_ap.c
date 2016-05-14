@@ -22,6 +22,7 @@
 #include <drv_types.h>
 #include <rtw_ap.h>
 #include <../rtl8821au/hw.h>
+#include <rtl8812a_hal.h>
 
 #undef DBG_871X
 static inline void DBG_871X(const char *fmt, ...)

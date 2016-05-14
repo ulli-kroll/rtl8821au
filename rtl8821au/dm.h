@@ -1,9 +1,6 @@
 #ifndef	__RTL8821AU_DM_H__
 #define __RTL8821AU_DM_H__
 
-#include <odm_types.h>
-#include <odm.h>
-
 
 //3===========================================================
 //3 Dynamic Tx Power

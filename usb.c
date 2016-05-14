@@ -6,6 +6,7 @@
 #include <rtl8812a_recv.h>
 #include <../rtl8821au/trx.h>
 #include <../rtl8821au/fw.h>
+#include <../rtl8821au/sw.h>
 #include "debug.h"
 
 #undef DBG_871X
@@ -1298,8 +1299,7 @@ static uint8_t rtw_reset_drv_sw(struct rtl_priv *rtlpriv)
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 
-	/* hal_priv */
-	rtlpriv->cfg->ops->init_default_value(rtlpriv);
+	rtw_init_default_value(rtlpriv);
 	rtlpriv->bReadPortCancel = false;
 	rtlpriv->bWritePortCancel = false;
 	pmlmepriv->scan_interval = SCAN_INTERVAL;	/* 30*2 sec = 60sec */

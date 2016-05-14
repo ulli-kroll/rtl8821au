@@ -31,9 +31,17 @@
 
 void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
 
-static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
+uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 {
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	struct _rtw_hal *pHalData;
+	struct pwrctrl_priv *pwrctrlpriv;
 	struct rtl_hal_cfg *cfg = rtlpriv->cfg;
+	struct dm_priv *pdmpriv;
 	uint8_t ret  = _SUCCESS;
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
 	struct xmit_priv *pxmitpriv = &rtlpriv->xmitpriv;
@@ -86,9 +94,72 @@ static uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 	rtw_init_registrypriv_dev_network(rtlpriv);
 	rtw_update_registrypriv_dev_network(rtlpriv);
 
+	pHalData = GET_HAL_DATA(rtlpriv);
+	pwrctrlpriv = &rtlpriv->pwrctrlpriv;
+	pdmpriv = &pHalData->dmpriv;
 
-	/* hal_priv */
-	rtlpriv->cfg->ops->init_default_value(rtlpriv);
+
+	/* init default value */
+	pHalData->fw_ractrl = false;
+	rtlhal->last_hmeboxnum = 0;
+
+	/* init dm default value */
+	pHalData->bChnlBWInitialzed = false;
+	rtlphy->iqk_initialized = false;
+	rtldm->tm_trigger = 0;/* for IQK */
+	rtlphy->pwrgroup_cnt = 0;
+
+	rtlusb->irq_mask[0]	= (u32)(	\
+/*
+					IMR_ROK 		|
+					IMR_RDU		|
+					IMR_VODOK		|
+					IMR_VIDOK		|
+					IMR_BEDOK		|
+					IMR_BKDOK		|
+					IMR_MGNTDOK		|
+					IMR_HIGHDOK		|
+					IMR_CPWM		|
+					IMR_CPWM2		|
+					IMR_C2HCMD		|
+					IMR_HISR1_IND_INT	|
+					IMR_ATIMEND		|
+					IMR_BCNDMAINT_E	|
+					IMR_HSISR_IND_ON_INT	|
+					IMR_BCNDOK0		|
+					IMR_BCNDMAINT0	|
+					IMR_TSF_BIT32_TOGGLE	|
+					IMR_TXBCN0OK	|
+					IMR_TXBCN0ERR	|
+					IMR_GTINT3		|
+					IMR_GTINT4		|
+					IMR_TXCCK		|
+ */
+					0);
+
+	rtlusb->irq_mask[1] 	= (u32)(	\
+/*
+					IMR_RXFOVW		|
+					IMR_TXFOVW		|
+					IMR_RXERR		|
+					IMR_TXERR		|
+					IMR_ATIMEND_E	|
+					IMR_BCNDOK1		|
+					IMR_BCNDOK2		|
+					IMR_BCNDOK3		|
+					IMR_BCNDOK4		|
+					IMR_BCNDOK5		|
+					IMR_BCNDOK6		|
+					IMR_BCNDOK7		|
+					IMR_BCNDMAINT1	|
+					IMR_BCNDMAINT2	|
+					IMR_BCNDMAINT3	|
+					IMR_BCNDMAINT4	|
+					IMR_BCNDMAINT5	|
+					IMR_BCNDMAINT6	|
+					IMR_BCNDMAINT7	|
+ */
+					0);
 
 	/* misc. */
 	rtlpriv->bReadPortCancel = false;
@@ -205,88 +276,6 @@ static int rtw_stbc_cap = 0x3;
  */
 static int rtw_beamform_cap = 0;
 #endif
-
-
-
-void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
-{
-	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
-	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
-	struct rtl_phy *rtlphy = &(rtlpriv->phy);
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct _rtw_hal *pHalData;
-	struct pwrctrl_priv *pwrctrlpriv;
-	struct dm_priv *pdmpriv;
-
-	pHalData = GET_HAL_DATA(rtlpriv);
-	pwrctrlpriv = &rtlpriv->pwrctrlpriv;
-	pdmpriv = &pHalData->dmpriv;
-
-
-	/* init default value */
-	pHalData->fw_ractrl = false;
-	rtlhal->last_hmeboxnum = 0;
-
-	/* init dm default value */
-	pHalData->bChnlBWInitialzed = false;
-	rtlphy->iqk_initialized = false;
-	rtldm->tm_trigger = 0;/* for IQK */
-	rtlphy->pwrgroup_cnt = 0;
-
-	rtlusb->irq_mask[0]	= (u32)(	\
-/*
-					IMR_ROK 		|
-					IMR_RDU		|
-					IMR_VODOK		|
-					IMR_VIDOK		|
-					IMR_BEDOK		|
-					IMR_BKDOK		|
-					IMR_MGNTDOK		|
-					IMR_HIGHDOK		|
-					IMR_CPWM		|
-					IMR_CPWM2		|
-					IMR_C2HCMD		|
-					IMR_HISR1_IND_INT	|
-					IMR_ATIMEND		|
-					IMR_BCNDMAINT_E	|
-					IMR_HSISR_IND_ON_INT	|
-					IMR_BCNDOK0		|
-					IMR_BCNDMAINT0	|
-					IMR_TSF_BIT32_TOGGLE	|
-					IMR_TXBCN0OK	|
-					IMR_TXBCN0ERR	|
-					IMR_GTINT3		|
-					IMR_GTINT4		|
-					IMR_TXCCK		|
- */
-					0);
-
-	rtlusb->irq_mask[1] 	= (u32)(	\
-/*
-					IMR_RXFOVW		|
-					IMR_TXFOVW		|
-					IMR_RXERR		|
-					IMR_TXERR		|
-					IMR_ATIMEND_E	|
-					IMR_BCNDOK1		|
-					IMR_BCNDOK2		|
-					IMR_BCNDOK3		|
-					IMR_BCNDOK4		|
-					IMR_BCNDOK5		|
-					IMR_BCNDOK6		|
-					IMR_BCNDOK7		|
-					IMR_BCNDMAINT1	|
-					IMR_BCNDMAINT2	|
-					IMR_BCNDMAINT3	|
-					IMR_BCNDMAINT4	|
-					IMR_BCNDMAINT5	|
-					IMR_BCNDMAINT6	|
-					IMR_BCNDMAINT7	|
- */
-					0);
-}
-
-
 
 static int rtl8821au_init_sw_vars(struct net_device *ndev)
 {
@@ -517,7 +506,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	.init_recv_priv =	rtl8812au_init_recv_priv,
 	.free_recv_priv =	rtl8812au_free_recv_priv,
-	.init_default_value =	rtl8812au_init_default_value,
 	.read_adapter_info =	_rtl8821au_read_adapter_info,
 
 	/* .set_bwmode_handler = 	PHY_SetBWMode8192C; */

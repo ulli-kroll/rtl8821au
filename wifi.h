@@ -1950,6 +1950,11 @@ struct rtl_hal_ops {
 	void (*dm_watchdog)(struct rtl_priv *rtlpriv);
 	void (*set_bcn_reg)(struct rtl_priv *rtlpriv);
 
+	void	(*enable_interrupt)(struct rtl_priv *rtlpriv);
+	void	(*disable_interrupt)(struct rtl_priv *rtlpriv);
+
+	void	(*read_chip_version)(struct rtl_priv *rtlpriv);
+
 	/* Old HAL functions */
 
 	u32	(*hal_deinit)(struct rtl_priv *rtlpriv);
@@ -1962,14 +1967,11 @@ struct rtl_hal_ops {
 	void	(*free_recv_priv)(struct rtl_priv *rtlpriv);
 
 	void	(*dm_init)(struct rtl_priv *rtlpriv);
-	void	(*read_chip_version)(struct rtl_priv *rtlpriv);
+
 
 	void	(*init_default_value)(struct rtl_priv *rtlpriv);
 
 	void	(*read_adapter_info)(struct rtl_priv *rtlpriv);
-
-	void	(*enable_interrupt)(struct rtl_priv *rtlpriv);
-	void	(*disable_interrupt)(struct rtl_priv *rtlpriv);
 
 	void	(*set_bwmode_handler)(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth, uint8_t Offset);
 	void	(*set_channel_handler)(struct rtl_priv *rtlpriv, uint8_t channel);

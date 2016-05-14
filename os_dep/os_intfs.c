@@ -262,8 +262,9 @@ u16 rtw_recv_select_queue(struct sk_buff *skb)
 
 }
 
-u32 rtw_start_drv_threads(struct rtl_priv *rtlpriv)
+u32 rtw_start_drv_threads(struct net_device *ndev)
 {
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	u32 _status = _SUCCESS;
 	int _unused;
 
@@ -278,8 +279,9 @@ u32 rtw_start_drv_threads(struct rtl_priv *rtlpriv)
 
 }
 
-void rtw_stop_drv_threads(struct rtl_priv *rtlpriv)
+void rtw_stop_drv_threads(struct net_device *ndev)
 {
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int _unused;
 
 	/* Below is to termindate rtw_cmd_thread & event_thread... */

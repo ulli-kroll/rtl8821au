@@ -21,8 +21,8 @@
 #ifndef __OSDEP_INTF_H_
 #define __OSDEP_INTF_H_
 
-u32 rtw_start_drv_threads(struct rtl_priv *rtlpriv);
-void rtw_stop_drv_threads (struct rtl_priv *rtlpriv);
+u32 rtw_start_drv_threads(struct net_device *ndev);
+void rtw_stop_drv_threads (struct net_device *ndev);
 
 int rtw_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
 

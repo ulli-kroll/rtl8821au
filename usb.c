@@ -1039,9 +1039,9 @@ void usb_intf_stop(struct rtl_priv *rtlpriv)
 
 }
 
-static void rtw_dev_unload(struct rtl_priv *rtlpriv)
+static void rtw_dev_unload(struct net_device *ndev)
 {
-	struct net_device *ndev= (struct net_device*)rtlpriv->ndev;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	uint8_t val8;
 
 	if (rtlpriv->initialized == true) {
@@ -1053,8 +1053,7 @@ static void rtw_dev_unload(struct rtl_priv *rtlpriv)
 
 		/* s4. */
 		if(!rtlpriv->pwrctrlpriv.bInternalAutoSuspend )
-		rtw_stop_drv_threads(rtlpriv);
-
+		rtw_stop_drv_threads(ndev);
 
 		/* s5. */
 		if(rtlpriv->bSurpriseRemoved == false) {
@@ -1143,7 +1142,7 @@ static int rtl8821au_suspend(struct usb_interface *pusb_intf, pm_message_t messa
 	/* s2-4. */
 	rtw_free_network_queue(rtlpriv, true);
 
-	rtw_dev_unload(rtlpriv);
+	rtw_dev_unload(ndev);
 #ifdef CONFIG_AUTOSUSPEND
 	pwrpriv->rf_pwrstate = ERFOFF;
 	pwrpriv->bips_processing = false;
@@ -1197,7 +1196,7 @@ int _netdev_open(struct net_device *ndev)
 
 		DBG_871X("MAC Address = "MAC_FMT"\n", MAC_ARG(ndev->dev_addr));
 
-		status = rtw_start_drv_threads(rtlpriv);
+		status = rtw_start_drv_threads(ndev);
 		if (status == _FAIL) {
 			DBG_871X("Initialize driver software resource Failed!\n");
 			goto netdev_open_error;
@@ -1970,7 +1969,7 @@ void rtw_usb_if1_deinit(struct rtl_priv *rtlpriv)
 	}
 
 	rtw_cancel_all_timer(rtlpriv);
-	rtw_dev_unload(rtlpriv);
+	rtw_dev_unload(ndev);
 
 	RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD,  "+r871xu_dev_remove, hw_init_completed=%d\n", rtlpriv->hw_init_completed);
 

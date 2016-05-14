@@ -1897,7 +1897,7 @@ struct rtl_hal_ops {
 	 * New HAL functions with struct net_device  as first param
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
-	int (*init_sw_vars) (struct rtl_priv *rtlpriv);
+	int (*init_sw_vars) (struct net_device *ndev);
 	void (*deinit_sw_vars) (struct rtl_priv *rtlpriv);
 
 	void	(*set_hw_reg)(struct rtl_priv *rtlpriv, u8 variable,u8 *val);

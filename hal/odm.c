@@ -501,9 +501,10 @@ void odm_RefreshRateAdaptiveMask(struct rtl_priv *rtlpriv)
 			}
 
 			if (true == ODM_RAStateCheck(rtlpriv, pstat->rssi_stat.UndecoratedSmoothedPWDB, false , &pstat->rssi_level)) {
+				struct rtl_priv *rtlpriv;
 				RT_TRACE(rtlpriv, COMP_RATE, DBG_LOUD, "RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level);
 				/* printk("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi_stat.UndecoratedSmoothedPWDB, pstat->rssi_level); */
-				rtw_hal_update_ra_mask(pstat->rtlpriv, pstat, pstat->rssi_level);
+				rtw_hal_update_ra_mask(rtl_priv(pstat->ndev), pstat, pstat->rssi_level);
 			}
 		}
 	}

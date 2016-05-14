@@ -288,8 +288,9 @@ void rtl8812au_init_default_value(struct rtl_priv *rtlpriv)
 
 
 
-static int rtl8821au_init_sw_vars(struct rtl_priv *rtlpriv)
+static int rtl8821au_init_sw_vars(struct net_device *ndev)
 {
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
 	uint8_t	ret8 = _SUCCESS;
 
@@ -361,7 +362,7 @@ static int rtl8821au_init_sw_vars(struct rtl_priv *rtlpriv)
 		goto exit;
 	}
 
-	rtlpriv->stapriv.rtlpriv = rtlpriv;
+	rtlpriv->stapriv.ndev = ndev;
 	rtlpriv->setband = GHZ24_50;
 	rtw_init_bcmc_stainfo(rtlpriv);
 

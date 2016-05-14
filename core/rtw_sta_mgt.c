@@ -262,6 +262,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		spin_unlock_bh(&(pstapriv->sta_hash_lock));
 		psta = NULL;
 	} else {
+		struct rtl_priv *rtlpriv;
 		psta = container_of(get_next(&pfree_sta_queue->list), struct sta_info, list);
 
 		list_del_init(&(psta->list));
@@ -274,7 +275,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 
 		_rtw_init_stainfo(psta);
 
-		psta->rtlpriv = pstapriv->rtlpriv;
+		psta->ndev = pstapriv->ndev;
 
 		memcpy(psta->hwaddr, hwaddr, ETH_ALEN);
 
@@ -309,14 +310,14 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
                      memcpy( &psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2 );
 		}
 
-		init_addba_retry_timer(pstapriv->rtlpriv, psta);
+		init_addba_retry_timer(rtl_priv(pstapriv->ndev), psta);
 
 
 		/* for A-MPDU Rx reordering buffer control */
 		for(i = 0; i < 16; i++) {
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
 
-			preorder_ctrl->rtlpriv = pstapriv->rtlpriv;
+			preorder_ctrl->ndev= pstapriv->ndev;
 
 			preorder_ctrl->enable = false;
 
@@ -339,7 +340,7 @@ struct sta_info *rtw_alloc_stainfo(struct sta_priv *pstapriv, uint8_t *hwaddr)
 		psta->RxMgmtFrameSeqNum = 0xffff;
 
 		//alloc mac id for non-bc/mc station,
-		rtw_alloc_macid(pstapriv->rtlpriv, psta);
+		rtw_alloc_macid(rtl_priv(pstapriv->ndev), psta);
 
 	}
 
@@ -493,7 +494,7 @@ uint32_t rtw_free_stainfo(struct rtl_priv *rtlpriv , struct sta_info *psta)
 	 * release mac id for non-bc/mc station,
 	 */
 
-	rtw_release_macid(pstapriv->rtlpriv, psta);
+	rtw_release_macid(rtl_priv(pstapriv->ndev), psta);
 
 #ifdef CONFIG_AP_MODE
 

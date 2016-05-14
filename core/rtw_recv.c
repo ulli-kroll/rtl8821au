@@ -2338,7 +2338,8 @@ _err_exit:
 void rtw_reordering_ctrl_timeout_handler(void *pcontext)
 {
 	struct recv_reorder_ctrl *preorder_ctrl = (struct recv_reorder_ctrl *)pcontext;
-	struct rtl_priv *rtlpriv = preorder_ctrl->rtlpriv;
+	struct net_device *ndev = (struct net_device *) preorder_ctrl->ndev;
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct __queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
 
 

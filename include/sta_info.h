@@ -90,7 +90,7 @@ struct sta_info {
 	//struct list_head asoc_list; //20061114
 	//struct list_head sleep_list;//sleep_q
 	//struct list_head wakeup_list;//wakeup_q
-	struct rtl_priv *rtlpriv;
+	struct net_device *ndev;
 
 	struct sta_xmit_priv sta_xmitpriv;
 	struct sta_recv_priv sta_recvpriv;
@@ -329,7 +329,7 @@ struct	sta_priv {
 	struct __queue sleep_q;
 	struct __queue wakeup_q;
 
-	struct rtl_priv *rtlpriv;
+	struct net_device *ndev;
 
 
 #ifdef CONFIG_AP_MODE

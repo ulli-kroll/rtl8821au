@@ -2,6 +2,12 @@
 
 #include <../drivers/net/wireless/realtek/rtlwifi/wifi.h>
 #include <../drivers/net/wireless/realtek/rtlwifi/base.h>
+#include "reg.h"
+#include "def.h"
+#include "phy.h"
+#include "dm.h"
+#include "fw.h"
+#include "trx.h"
 
 #else
 

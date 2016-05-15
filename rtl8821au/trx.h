@@ -4,18 +4,7 @@
 void rtl8821au_fill_fake_txdesc(struct rtl_priv *rtlpriv, uint8_t *pDesc,
 	uint32_t BufferLen, uint8_t IsPsPoll, uint8_t IsBTQosNull);
 
-int32_t rtl8812au_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
-int32_t rtl8812au_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
-int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
-int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
-
-void rtl8812_query_rx_desc_status(struct rtl_priv *rtlpriv,
-				   struct rx_pkt_attrib	*pattrib,
-				   struct recv_frame *precvframe, uint8_t *pdesc);
-void rtl8812_query_rx_phy_status(struct recv_frame *prframe, uint8_t *pphy_stat);
 int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv);
-void _dbg_dump_tx_info(struct rtl_priv	*rtlpriv,int frame_tag,u8 *ptxdesc);
-
 
 /* TX desc macros */
 
@@ -473,5 +462,22 @@ struct rw_fwinfo_8821au {
 	u8			resvd_1:2;
 } __packed;
 
+
+/* ULLI : (hopefully) border for non RTLWIFI */
+
+#ifndef CONFIG_RTLWIFI
+
+int32_t rtl8812au_mgnt_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pmgntframe);
+int32_t rtl8812au_hal_xmit(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
+int32_t	 rtl8812au_hal_xmitframe_enqueue(struct rtl_priv *rtlpriv, struct xmit_frame *pxmitframe);
+int32_t rtl8812au_xmitframe_complete(struct rtl_priv *rtlpriv, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
+
+void rtl8812_query_rx_desc_status(struct rtl_priv *rtlpriv,
+				   struct rx_pkt_attrib	*pattrib,
+				   struct recv_frame *precvframe, uint8_t *pdesc);
+void rtl8812_query_rx_phy_status(struct recv_frame *prframe, uint8_t *pphy_stat);
+void _dbg_dump_tx_info(struct rtl_priv	*rtlpriv,int frame_tag,u8 *ptxdesc);
+
+#endif
 
 #endif

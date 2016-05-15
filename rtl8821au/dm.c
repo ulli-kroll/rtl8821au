@@ -18,6 +18,13 @@
 #include "reg.h"
 #include "fw.h"
 
+/* ULLI : prototypes for old non rtlwifi functions here */
+/* ULLI : these functions are at the end of the file */
+/* ULLI : they are maybe 'mixed' functions with CONFIG_RTLWIFI */
+
+static void _rtl_dm_diginit(struct rtl_priv *rtlpriv);
+static void odm_AdaptivityInit(struct rtl_priv *rtlpriv);
+
 #endif
 
 static const u32 txscalling_tbl[TXSCALE_TABLE_SIZE] = {
@@ -272,59 +279,6 @@ static void rtl8821au_cm_common_info_self_update(struct rtl_priv *rtlpriv)
 
 /* Ulli : check function in rtlwifi/core.c for _rtl_dm_diginit() */
 
-static void _rtl_dm_diginit(struct rtl_priv *rtlpriv)
-{
-	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
-
-	/* dm_digtable->Dig_Enable_Flag = true; */
-	/* dm_digtable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
-	dm_digtable->cur_igvalue = (u8) rtl_get_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC);
-	/* dm_digtable->PreIGValue = 0x0; */
-	/* dm_digtable->CurSTAConnectState = dm_digtable->PreSTAConnectState = DIG_STA_DISCONNECT; */
-	/* dm_digtable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */
-	dm_digtable->rssi_lowthresh 	= DM_DIG_THRESH_LOW;
-	dm_digtable->rssi_highthresh	= DM_DIG_THRESH_HIGH;
-	dm_digtable->fa_lowthresh	= DM_FALSEALARM_THRESH_LOW;
-	dm_digtable->fa_highthresh	= DM_FALSEALARM_THRESH_HIGH;
-
-	if (rtlhal->board_type & (ODM_BOARD_EXT_PA|ODM_BOARD_EXT_LNA)) {
-		dm_digtable->rx_gain_max = DM_DIG_MAX_NIC;
-		dm_digtable->rx_gain_min = DM_DIG_MIN_NIC;
-	} else {
-		dm_digtable->rx_gain_max = DM_DIG_MAX_NIC;
-		dm_digtable->rx_gain_min = DM_DIG_MIN_NIC;
-	}
-	dm_digtable->back_val = DM_DIG_BACKOFF_DEFAULT;
-	dm_digtable->back_range_max = DM_DIG_BACKOFF_MAX;
-	dm_digtable->back_range_min = DM_DIG_BACKOFF_MIN;
-	dm_digtable->pre_cck_cca_thres = 0xFF;
-	dm_digtable->cur_cck_cca_thres = 0x83;
-	dm_digtable->forbidden_igi= DM_DIG_MIN_NIC;
-	dm_digtable->large_fa_hit = 0;
-	dm_digtable->recover_cnt = 0;
-	dm_digtable->dig_min_0 = DM_DIG_MIN_NIC;
-	dm_digtable->dig_min_1 = DM_DIG_MIN_NIC;
-	dm_digtable->media_connect_0 = false;
-	dm_digtable->media_connect_1 = false;
-
-	/* To Initi BT30 IGI */
-	dm_digtable->bt30_cur_igi = 0x32;
-
-}
-
-static void odm_AdaptivityInit(struct rtl_priv *rtlpriv)
-{
-	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
-
-	pDM_Odm->TH_H = 0xfa; 		/* -6dB */
-	pDM_Odm->TH_L = 0xfd; 		/* -3dB */
-	pDM_Odm->IGI_Base = 0x32;
-	pDM_Odm->IGI_target = 0x1c;
-	pDM_Odm->ForceEDCCA = 0;
-	pDM_Odm->AdapEn_RSSI = 32;	/* 45; */
-}
 
 static void rtl8821au_dm_init_rate_adaptive_mask(struct rtl_priv *rtlpriv)
 {
@@ -2414,3 +2368,63 @@ void rtl8821au_dm_update_init_rate(struct rtl_priv *rtlpriv, u8 rate)
 	}
 #endif
 }
+
+/* ULLI : (hopefully) border for non RTLWIFI */
+
+#ifndef CONFIG_RTLWIFI
+
+static void _rtl_dm_diginit(struct rtl_priv *rtlpriv)
+{
+	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
+	struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
+
+	/* dm_digtable->Dig_Enable_Flag = true; */
+	/* dm_digtable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
+	dm_digtable->cur_igvalue = (u8) rtl_get_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC);
+	/* dm_digtable->PreIGValue = 0x0; */
+	/* dm_digtable->CurSTAConnectState = dm_digtable->PreSTAConnectState = DIG_STA_DISCONNECT; */
+	/* dm_digtable->CurMultiSTAConnectState = DIG_MultiSTA_DISCONNECT; */
+	dm_digtable->rssi_lowthresh 	= DM_DIG_THRESH_LOW;
+	dm_digtable->rssi_highthresh	= DM_DIG_THRESH_HIGH;
+	dm_digtable->fa_lowthresh	= DM_FALSEALARM_THRESH_LOW;
+	dm_digtable->fa_highthresh	= DM_FALSEALARM_THRESH_HIGH;
+
+	if (rtlhal->board_type & (ODM_BOARD_EXT_PA|ODM_BOARD_EXT_LNA)) {
+		dm_digtable->rx_gain_max = DM_DIG_MAX_NIC;
+		dm_digtable->rx_gain_min = DM_DIG_MIN_NIC;
+	} else {
+		dm_digtable->rx_gain_max = DM_DIG_MAX_NIC;
+		dm_digtable->rx_gain_min = DM_DIG_MIN_NIC;
+	}
+	dm_digtable->back_val = DM_DIG_BACKOFF_DEFAULT;
+	dm_digtable->back_range_max = DM_DIG_BACKOFF_MAX;
+	dm_digtable->back_range_min = DM_DIG_BACKOFF_MIN;
+	dm_digtable->pre_cck_cca_thres = 0xFF;
+	dm_digtable->cur_cck_cca_thres = 0x83;
+	dm_digtable->forbidden_igi= DM_DIG_MIN_NIC;
+	dm_digtable->large_fa_hit = 0;
+	dm_digtable->recover_cnt = 0;
+	dm_digtable->dig_min_0 = DM_DIG_MIN_NIC;
+	dm_digtable->dig_min_1 = DM_DIG_MIN_NIC;
+	dm_digtable->media_connect_0 = false;
+	dm_digtable->media_connect_1 = false;
+
+	/* To Initi BT30 IGI */
+	dm_digtable->bt30_cur_igi = 0x32;
+
+}
+
+static void odm_AdaptivityInit(struct rtl_priv *rtlpriv)
+{
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *pDM_Odm = &pHalData->odmpriv;
+
+	pDM_Odm->TH_H = 0xfa; 		/* -6dB */
+	pDM_Odm->TH_L = 0xfd; 		/* -3dB */
+	pDM_Odm->IGI_Base = 0x32;
+	pDM_Odm->IGI_target = 0x1c;
+	pDM_Odm->ForceEDCCA = 0;
+	pDM_Odm->AdapEn_RSSI = 32;	/* 45; */
+}
+
+#endif

@@ -663,15 +663,6 @@ struct cmd_hdl {
 	uint8_t (*h2cfuns)(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 };
 
-
-uint8_t read_macreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
-uint8_t write_macreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
-uint8_t read_bbreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
-uint8_t write_bbreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
-uint8_t read_rfreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
-uint8_t write_rfreg_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
-
-
 uint8_t NULL_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 uint8_t join_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 uint8_t disconnect_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
@@ -681,8 +672,6 @@ uint8_t sitesurvey_cmd_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 uint8_t setauth_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 uint8_t setkey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 uint8_t set_stakey_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
-uint8_t set_assocsta_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
-uint8_t del_assocsta_hdl(struct rtl_priv *rtlpriv, uint8_t *pbuf);
 uint8_t add_ba_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);
 
 uint8_t mlme_evt_hdl(struct rtl_priv *rtlpriv, unsigned char *pbuf);

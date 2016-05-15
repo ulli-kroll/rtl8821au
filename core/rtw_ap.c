@@ -785,8 +785,9 @@ void update_sta_info_apmode(struct rtl_priv *rtlpriv, struct sta_info *psta)
 
 }
 
-static void update_hw_ht_param(struct rtl_priv *rtlpriv)
+static void update_hw_ht_param(struct net_device *ndev)
 {
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	unsigned char		max_AMPDU_len;
 	unsigned char		min_MPDU_spacing;
 	struct registry_priv	 *pregpriv = &rtlpriv->registrypriv;
@@ -830,8 +831,9 @@ static void update_hw_ht_param(struct rtl_priv *rtlpriv)
 
 }
 
-static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
+static void start_bss_network(struct net_device *ndev, uint8_t *pbuf)
 {
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	uint8_t *p;
 	uint8_t val8, cur_channel, cur_bwmode, cur_ch_offset;
 	u16 bcn_interval;
@@ -875,12 +877,12 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 		//pmlmeinfo->HT_info_enable = true;
 		//pmlmeinfo->HT_caps_enable = true;
 
-		update_hw_ht_param(rtlpriv);
+		update_hw_ht_param(ndev);
 	}
 
 	if (pmlmepriv->vhtpriv.vht_option) {
 		pmlmeinfo->VHT_enable = true;
-		update_hw_vht_param(rtlpriv);
+		update_hw_vht_param(ndev);
 	}
 
 	if (pmlmepriv->cur_network.join_res != true) { //setting only at  first time
@@ -1022,8 +1024,9 @@ static void start_bss_network(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 
 }
 
-int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
+int rtw_check_beacon_data(struct net_device *ndev, uint8_t *pbuf,  int len)
 {
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	int ret=_SUCCESS;
 	uint8_t *p;
 	uint8_t *pHT_caps_ie=NULL;
@@ -1294,7 +1297,7 @@ int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len)
 	pbss_network->Length = get_WLAN_BSSID_EX_sz((WLAN_BSSID_EX  *)pbss_network);
 
 	//issue beacon to start bss network
-	start_bss_network(rtlpriv, (uint8_t *)pbss_network);
+	start_bss_network(ndev, (uint8_t *)pbss_network);
 
 
 	//alloc sta_info for ap itself
@@ -1433,8 +1436,9 @@ int rtw_acl_remove_sta(struct rtl_priv *rtlpriv, uint8_t *addr)
 
 }
 
-uint8_t rtw_ap_set_pairwise_key(struct rtl_priv *rtlpriv, struct sta_info *psta)
+uint8_t rtw_ap_set_pairwise_key(struct net_device *ndev, struct sta_info *psta)
 {
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct cmd_obj*			ph2c;
 	struct set_stakey_parm	*psetstakey_para;
 	struct cmd_priv 			*pcmdpriv= &rtlpriv->cmdpriv;
@@ -2229,8 +2233,9 @@ void ap_sta_info_defer_update(struct rtl_priv *rtlpriv, struct sta_info *psta)
 }
 
 /* restore hw setting from sw data structures */
-void rtw_ap_restore_network(struct rtl_priv *rtlpriv)
+void rtw_ap_restore_network(struct net_device *ndev)
 {
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct mlme_priv *mlmepriv = &rtlpriv->mlmepriv;
 	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -2246,7 +2251,7 @@ void rtw_ap_restore_network(struct rtl_priv *rtlpriv)
 
 	set_channel_bwmode(rtlpriv, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
 
-	start_bss_network(rtlpriv, (uint8_t *)&mlmepriv->cur_network.network);
+	start_bss_network(ndev, (uint8_t *)&mlmepriv->cur_network.network);
 
 	if ((rtlpriv->securitypriv.dot11PrivacyAlgrthm == TKIP_ENCRYPTION) ||
 		(rtlpriv->securitypriv.dot11PrivacyAlgrthm == AESCCMP_ENCRYPTION)) {

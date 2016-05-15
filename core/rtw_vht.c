@@ -198,8 +198,9 @@ void update_sta_vht_info_apmode(struct rtl_priv *rtlpriv, void *psta)
 
 }
 
-void update_hw_vht_param(struct rtl_priv *rtlpriv)
+void update_hw_vht_param(struct net_device *ndev)
 {
+	struct rtl_priv *rtlpriv = rtl_priv(ndev);
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
 	struct mlme_ext_priv *pmlmeext = &rtlpriv->mlmeextpriv;

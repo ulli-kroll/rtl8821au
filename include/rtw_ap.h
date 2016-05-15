@@ -37,13 +37,13 @@ void update_beacon(struct rtl_priv *rtlpriv, uint8_t ie_id, uint8_t *oui, uint8_
 void add_RATid(struct rtl_priv *rtlpriv, struct sta_info *psta, uint8_t rssi_level);
 void expire_timeout_chk(struct rtl_priv *rtlpriv);
 void update_sta_info_apmode(struct rtl_priv *rtlpriv, struct sta_info *psta);
-int rtw_check_beacon_data(struct rtl_priv *rtlpriv, uint8_t *pbuf,  int len);
-void rtw_ap_restore_network(struct rtl_priv *rtlpriv);
+int rtw_check_beacon_data(struct net_device *ndev, uint8_t *pbuf,  int len);
+void rtw_ap_restore_network(struct net_device *ndev);
 void rtw_set_macaddr_acl(struct rtl_priv *rtlpriv, int mode);
 int rtw_acl_add_sta(struct rtl_priv *rtlpriv, uint8_t *addr);
 int rtw_acl_remove_sta(struct rtl_priv *rtlpriv, uint8_t *addr);
 
-uint8_t rtw_ap_set_pairwise_key(struct rtl_priv *rtlpriv, struct sta_info *psta);
+uint8_t rtw_ap_set_pairwise_key(struct net_device *ndev, struct sta_info *psta);
 int rtw_ap_set_group_key(struct rtl_priv *rtlpriv, uint8_t *key, uint8_t alg, int keyid);
 int rtw_ap_set_wep_key(struct rtl_priv *rtlpriv, uint8_t *key, uint8_t keylen, int keyid, uint8_t set_tx);
 

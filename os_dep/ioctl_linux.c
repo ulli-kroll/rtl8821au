@@ -2888,7 +2888,7 @@ static int rtw_set_encryption(struct net_device *ndev, struct ieee_param *param,
 					psta->dot118021XPrivacy = NO_ENCRYPTION;
 				}
 
-				rtw_ap_set_pairwise_key(rtlpriv, psta);
+				rtw_ap_set_pairwise_key(ndev, psta);
 
 				psta->ieee8021x_blocked = false;
 
@@ -2972,7 +2972,7 @@ static int rtw_set_beacon(struct net_device *ndev, struct ieee_param *param, int
 	if ((pstapriv->max_num_sta > NUM_STA) || (pstapriv->max_num_sta <= 0))
 		pstapriv->max_num_sta = NUM_STA;
 
-	if (rtw_check_beacon_data(rtlpriv, pbuf,  (len-12-2)) == _SUCCESS)	/* 12 = param header, 2:no packed */
+	if (rtw_check_beacon_data(ndev, pbuf,  (len-12-2)) == _SUCCESS)	/* 12 = param header, 2:no packed */
 		ret = 0;
 	else
 		ret = -EINVAL;

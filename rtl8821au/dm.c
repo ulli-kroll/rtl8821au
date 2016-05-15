@@ -6,6 +6,7 @@
 #else
 
 #include <drv_types.h>
+#include <odm.h>
 #include "dm.h"
 #include "phy.h"
 #include "reg.h"

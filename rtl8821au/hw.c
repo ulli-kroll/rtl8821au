@@ -9,6 +9,7 @@
 #else
 
 #include <drv_types.h>
+#include <rtl8812a_hal.h>
 #include "hw.h"
 #include "reg.h"
 #include "fw.h"

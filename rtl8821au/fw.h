@@ -1,10 +1,6 @@
 #ifndef __RTL8821AU_FW_H__
 #define __RTL8821AU_FW_H__
 
-#include <rtl8812a_hal.h>
-#include "../wifi.h"
-
-
 //_RSVDPAGE_LOC_CMD0
 #define SET_8812_H2CCMD_RSVDPAGE_LOC_PROBE_RSP(__pH2CCmd, __Value)		SET_BITS_TO_LE_1BYTE(__pH2CCmd, 0, 8, __Value)
 #define SET_8812_H2CCMD_RSVDPAGE_LOC_PSPOLL(__pH2CCmd, __Value)			SET_BITS_TO_LE_1BYTE((__pH2CCmd)+1, 0, 8, __Value)

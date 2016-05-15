@@ -5,6 +5,9 @@
 #else
 
 #include <drv_types.h>
+#include <rtl8812a_spec.h>
+#include <rtl8812a_cmd.h>
+#include <rtl8812a_hal.h>
 #include "fw.h"
 #include <linux/firmware.h>
 

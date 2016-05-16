@@ -2320,7 +2320,7 @@ void rtl8812_dm_init(struct rtl_priv *rtlpriv)
 {
 	rtl8821_dm_init_gpio_setting(rtlpriv);
 
-	rtlpriv->dm.dm_type = DM_Type_ByDriver;
+	rtlpriv->dm.dm_type = DM_TYPE_BYDRIVER;
 	rtlpriv->dm.dm_flag = 0;
 
 	Update_ODM_ComInfo_8812(rtlpriv);
@@ -2338,7 +2338,7 @@ void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 current_igi)
 
 	if (dm_digtable->cur_igvalue != current_igi) {	/*if (pDM_DigTable->PreIGValue != current_igi) */
 		rtl_set_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC, current_igi);
-		if (rtlpriv->phy.rf_type != ODM_1T1R)
+		if (rtlpriv->phy.rf_type != RF_1T1R)
 			rtl_set_bbreg(rtlpriv, ODM_REG_IGI_B_11AC, ODM_BIT_IGI_11AC, current_igi);
 
 		RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, "current_igi(0x%02x). \n", current_igi);

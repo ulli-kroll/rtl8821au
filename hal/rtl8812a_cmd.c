@@ -23,12 +23,7 @@
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/trx.h>
 #include <../rtl8821au/fw.h>
-
-
-
-
-
-
+#include <../rtl8821au/dm.h>
 
 void rtl8812_Add_RateATid(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t * arg, uint8_t rssi_level)
 {

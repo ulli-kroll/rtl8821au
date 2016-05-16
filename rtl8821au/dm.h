@@ -2,6 +2,29 @@
 #define __RTL8821AU_DM_H__
 
 
+
+#define TXSCALE_TABLE_SIZE 			37
+
+//3===========================================================
+//3 Rate Adaptive
+//3===========================================================
+#define		DM_RATR_STA_INIT			0
+#define		DM_RATR_STA_HIGH			1
+#define 		DM_RATR_STA_MIDDLE		2
+#define 		DM_RATR_STA_LOW			3
+
+#define		DM_DIG_MAX_NIC				0x3e
+#define		DM_DIG_MIN_NIC				0x1e //0x22//0x1c
+
+#define		DM_TYPE_BYFW			0
+#define		DM_TYPE_BYDRIVER		1
+
+//vivi 92c&92d has different definition, 20110504
+//this is for 92c
+#define		DM_DIG_FA_TH0				0x200//0x20
+#define		DM_DIG_FA_TH1				0x300//0x100
+#define		DM_DIG_FA_TH2				0x400//0x200
+
 //3===========================================================
 //3 Dynamic Tx Power
 //3===========================================================

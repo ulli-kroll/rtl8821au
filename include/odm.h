@@ -68,7 +68,6 @@
 #define index_mapping_HP_NUM		15
 #define OFDM_TABLE_SIZE 			37
 #define OFDM_TABLE_SIZE_92D 		43
-#define TXSCALE_TABLE_SIZE 			37
 #define DELTA_SWINGIDX_SIZE		30
 #define BAND_NUM 					3
 
@@ -163,10 +162,6 @@
 
 #define IQK_BB_REG_NUM			10
 #define HP_THERMAL_NUM		8
-
-
-#define		DM_Type_ByFW			0
-#define		DM_Type_ByDriver		1
 
 //
 // Declare for common info
@@ -485,11 +480,6 @@ typedef enum tag_DIG_Connect_Definition
 #define		DM_DIG_MAX_AP_HP				0x42
 #define		DM_DIG_MIN_AP_HP				0x30
 
-//vivi 92c&92d has different definition, 20110504
-//this is for 92c
-#define		DM_DIG_FA_TH0				0x200//0x20
-#define		DM_DIG_FA_TH1				0x300//0x100
-#define		DM_DIG_FA_TH2				0x400//0x200
 //this is for 92d
 #define		DM_DIG_FA_TH0_92D			0x100
 #define		DM_DIG_FA_TH1_92D			0x400
@@ -523,15 +513,6 @@ typedef enum tag_DIG_Connect_Definition
 #define	OFDM_TABLE_SIZE 	37
 #define	OFDM_TABLE_SIZE_92D 	43
 #endif
-
-
-//3===========================================================
-//3 Rate Adaptive
-//3===========================================================
-#define		DM_RATR_STA_INIT			0
-#define		DM_RATR_STA_HIGH			1
-#define 		DM_RATR_STA_MIDDLE		2
-#define 		DM_RATR_STA_LOW			3
 
 //3===========================================================
 //3 BB Power Save

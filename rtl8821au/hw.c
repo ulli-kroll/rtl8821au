@@ -76,18 +76,6 @@ static void  _rtl8821au_resume_tx_beacon(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT+2, pHalData->RegReg542);
 }
 
-static void _BeaconFunctionEnable(struct rtl_priv *rtlpriv, bool Enable,
-	bool	Linked)
-{
-	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (BIT(4) | BIT(3) | BIT(1)));
-	/*
-	 * SetBcnCtrlReg(rtlpriv, (BIT(4) | BIT(3) | BIT(1)), 0x00);
-	 * RT_TRACE(COMP_BEACON, DBG_LOUD, ("_BeaconFunctionEnable 0x550 0x%x\n", rtl_read_byte(rtlpriv, 0x550)));
-	 */
-
-	rtl_write_byte(rtlpriv, REG_RD_CTRL+1, 0x6F);
-}
-
 void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 {
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
@@ -125,7 +113,13 @@ void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv,  REG_RXTSF_OFFSET_CCK, 0x50);
 	rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_OFDM, 0x50);
 
-	_BeaconFunctionEnable(rtlpriv, true, true);
+	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (BIT(4) | BIT(3) | BIT(1)));
+	/*
+	 * SetBcnCtrlReg(rtlpriv, (BIT(4) | BIT(3) | BIT(1)), 0x00);
+	 * RT_TRACE(COMP_BEACON, DBG_LOUD, ("_BeaconFunctionEnable 0x550 0x%x\n", rtl_read_byte(rtlpriv, 0x550)));
+	 */
+
+	rtl_write_byte(rtlpriv, REG_RD_CTRL+1, 0x6F);
 
 	_rtl8821au_resume_tx_beacon(rtlpriv);
 

@@ -1,6 +1,7 @@
 #ifdef CONFIG_RTLWIFI
 
-#error "NO RTLWIFI DEFINED"
+#include <../drivers/net/wireless/realtek/rtlwifi/wifi.h>
+#include <../drivers/net/wireless/realtek/rtlwifi/base.h>
 
 #else
 
@@ -11,6 +12,13 @@
 #include "fw.h"
 #include <linux/firmware.h>
 
+/* ULLI : prototypes for old non rtlwifi functions here */
+/* ULLI : these functions are at the end of the file */
+/* ULLI : they are maybe 'mixed' functions with CONFIG_RTLWIFI */
+
+static bool Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
+	uint8_t	shortGIrate);
+static u8 Get_RA_LDPC_8812(struct sta_info *psta);
 #endif
 
 #define CONFIG_H2C_EF
@@ -49,25 +57,6 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp|(BIT(2)));
 
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " _8051Reset8812(): 8051 reset success .\n");
-}
-
-static bool Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
-	uint8_t	shortGIrate)
-{
-	bool		bShortGI;
-	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
-	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-
-	bShortGI = shortGIrate;
-
-	if (bShortGI && IsSupportedVHT(psta->wireless_mode)
-	 && (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP)
-	 && TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX)) {
-		if (psta->vhtpriv.vht_highest_rate >= MGN_VHT2SS_MCS8)
-			bShortGI = false;
-	}
-
-	return bShortGI;
 }
 
 static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num)
@@ -233,56 +222,6 @@ uint8_t	Get_VHT_ENI(uint32_t IOTAction, uint32_t WirelessMode, uint32_t	ratr_bit
 	return (Ret << 4);
 }
 
-
-void Set_RA_LDPC_8812(struct sta_info *psta, bool bLDPC)
-{
-	if (psta == NULL)
-		return;
-
-	if (psta->wireless_mode == WIRELESS_11_5AC) {
-		if (bLDPC && TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_CAP_TX))
-			SET_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX);
-		else
-			CLEAR_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX);
-	} else
-		if (IsSupportedTxHT(psta->wireless_mode) || IsSupportedVHT(psta->wireless_mode)) {
-			if (bLDPC && TEST_FLAG(psta->htpriv.ldpc_cap, LDPC_HT_CAP_TX))
-				SET_FLAG(psta->htpriv.ldpc_cap, LDPC_HT_ENABLE_TX);
-			else
-				CLEAR_FLAG(psta->htpriv.ldpc_cap, LDPC_HT_ENABLE_TX);
-		}
-
-	/* DBG_871X("MacId %d bLDPC %d\n", psta->mac_id, bLDPC); */
-}
-
-u8 Get_RA_LDPC_8812(struct sta_info *psta)
-{
-	uint8_t	bLDPC = 0;
-
-	if (psta->mac_id == 1)
-		bLDPC = 0;
-	else
-		if (psta != NULL) {
-			if (IsSupportedVHT(psta->wireless_mode)) {
-				if (TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_CAP_TX))
-					bLDPC = 1;
-				else
-					bLDPC = 0;
-			} else
-				if (IsSupportedTxHT(psta->wireless_mode)) {
-					if (TEST_FLAG(psta->htpriv.ldpc_cap, LDPC_HT_CAP_TX))
-						bLDPC = 1;
-					else
-						bLDPC = 0;
-				} else
-				bLDPC = 0;
-	}
-
-	return (bLDPC << 2);
-}
-
-
-
 void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *arg)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
@@ -348,6 +287,372 @@ u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *rtlpriv)
 	RsvdPageNum = LAST_ENTRY_OF_TX_PKT_BUFFER_8812 - TxPageBndy + 1;
 
 	return RsvdPageNum;
+}
+
+static void _rtl8821ae_enable_fw_download(struct rtl_priv *rtlpriv, bool enable)
+{
+	uint8_t	tmp;
+
+	if (enable) {
+		/* MCU firmware download enable. */
+		tmp = rtl_read_byte(rtlpriv, REG_MCUFWDL);
+		rtl_write_byte(rtlpriv, REG_MCUFWDL, tmp|0x01);
+
+		/* 8051 reset */
+		tmp = rtl_read_byte(rtlpriv, REG_MCUFWDL+2);
+		rtl_write_byte(rtlpriv, REG_MCUFWDL+2, tmp&0xf7);
+	} else {
+
+		/* MCU firmware download disable. */
+		tmp = rtl_read_byte(rtlpriv, REG_MCUFWDL);
+		rtl_write_byte(rtlpriv, REG_MCUFWDL, tmp&0xfe);
+	}
+}
+
+
+
+#define MAX_REG_BOLCK_SIZE	196
+
+static int _BlockWrite_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t buffSize)
+{
+	int ret = _SUCCESS;
+
+	uint32_t blockSize_p1 = 4;	/* (Default) Phase #1 : PCI muse use 4-byte write to download FW */
+	uint32_t blockSize_p2 = 8;	/* Phase #2 : Use 8-byte, if Phase#1 use big size to write FW. */
+	uint32_t blockSize_p3 = 1;	/* Phase #3 : Use 1-byte, the remnant of FW image. */
+	uint32_t blockCount_p1 = 0, blockCount_p2 = 0, blockCount_p3 = 0;
+	uint32_t remainSize_p1 = 0, remainSize_p2 = 0;
+	uint8_t	 *bufferPtr	= (uint8_t *)buffer;
+	uint32_t i = 0, offset = 0;
+
+	blockSize_p1 = MAX_REG_BOLCK_SIZE;
+
+	/* 3 Phase #1 */
+	blockCount_p1 = buffSize / blockSize_p1;
+	remainSize_p1 = buffSize % blockSize_p1;
+
+	if (blockCount_p1) {
+		;
+	}
+
+	for (i = 0; i < blockCount_p1; i++) {
+		rtl_writeN(rtlpriv, (FW_8821AU_START_ADDRESS + i * blockSize_p1), (bufferPtr + i * blockSize_p1), blockSize_p1);
+	}
+
+
+	/* 3 Phase #2 */
+	if (remainSize_p1) {
+		offset = blockCount_p1 * blockSize_p1;
+
+		blockCount_p2 = remainSize_p1/blockSize_p2;
+		remainSize_p2 = remainSize_p1%blockSize_p2;
+
+		if (blockCount_p2) {
+			;
+		}
+
+		for (i = 0; i < blockCount_p2; i++) {
+			rtl_writeN(rtlpriv, (FW_8821AU_START_ADDRESS + offset + i*blockSize_p2), (bufferPtr + offset + i*blockSize_p2), blockSize_p2);
+		}
+	}
+
+	/* 3 Phase #3 */
+	if (remainSize_p2) {
+		offset = (blockCount_p1 * blockSize_p1) + (blockCount_p2 * blockSize_p2);
+
+		blockCount_p3 = remainSize_p2 / blockSize_p3;
+
+		for (i = 0 ; i < blockCount_p3; i++) {
+			rtl_write_byte(rtlpriv, (FW_8821AU_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
+		}
+	}
+
+exit:
+	return ret;
+}
+
+
+
+static int _PageWrite_8812(struct rtl_priv *rtlpriv, uint32_t page,
+	void *buffer, uint32_t size)
+{
+	uint8_t value8;
+	uint8_t u8Page = (uint8_t) (page & 0x07) ;
+
+	value8 = (rtl_read_byte(rtlpriv, REG_MCUFWDL+2) & 0xF8) | u8Page ;
+	rtl_write_byte(rtlpriv, REG_MCUFWDL+2, value8);
+
+	return _BlockWrite_8812(rtlpriv, buffer, size);
+}
+
+
+static int _WriteFW_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t size)
+{
+	/*
+	 * Since we need dynamic decide method of dwonload fw, so we call this function to get chip version.
+	 * We can remove _ReadChipVersion from ReadpadapterInfo8192C later.
+	 */
+
+	int	ret = _SUCCESS;
+	uint32_t pageNums, remainSize;
+	uint32_t page, offset;
+	uint8_t	*bufferPtr = (uint8_t *)buffer;
+
+	pageNums = size / MAX_DLFW_PAGE_SIZE ;
+	/*
+	 * RT_ASSERT((pageNums <= 4), ("Page numbers should not greater then 4 \n"));
+	 */
+
+	remainSize = size % MAX_DLFW_PAGE_SIZE;
+
+	for (page = 0; page < pageNums; page++) {
+		offset = page * MAX_DLFW_PAGE_SIZE;
+		ret = _PageWrite_8812(rtlpriv, page, bufferPtr+offset, MAX_DLFW_PAGE_SIZE);
+
+		if (ret == _FAIL)
+			goto exit;
+	}
+	if (remainSize) {
+		offset = pageNums * MAX_DLFW_PAGE_SIZE;
+		page = pageNums;
+		ret = _PageWrite_8812(rtlpriv, page, bufferPtr+offset, remainSize);
+
+		if (ret == _FAIL)
+			goto exit;
+
+	}
+
+exit:
+	return ret;
+}
+
+static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
+{
+	uint32_t	counter = 0;
+	uint32_t	value32;
+
+	/* polling CheckSum report */
+	do {
+		value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
+		if (value32 & FWDL_ChkSum_rpt)
+			break;
+	} while (counter++ < 6000);
+
+	if (counter >= 6000) {
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+			 "%s: chksum report fail! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+		return _FAIL;
+	}
+	RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+		 "%s: Checksum report OK! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+
+	value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
+	value32 |= MCUFWDL_RDY;
+	value32 &= ~WINTINI_RDY;
+	rtl_write_dword(rtlpriv, REG_MCUFWDL, value32);
+
+	rtl8821au_firmware_selfreset(rtlpriv);
+
+	/* polling for FW ready */
+	counter = 0;
+	do {
+		value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
+		if (value32 & WINTINI_RDY) {
+			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+				 "%s: Polling FW ready success!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+			return _SUCCESS;
+		}
+		udelay(5);
+	} while (counter++ < 6000);
+
+	RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+		 "%s: Polling FW ready fail!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
+	return _FAIL;
+}
+
+int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	struct device *device = dvobj_to_dev(rtlusb);
+	const struct firmware *fw;
+	char *fw_name;
+	u8 *pfwdata;
+
+	int32_t	rtStatus = _SUCCESS;
+	uint8_t	writeFW_retry = 0;
+	uint32_t fwdl_start_time;
+	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_dm *	pDM_Odm;
+	uint8_t				*pFwHdr = NULL;
+
+	pDM_Odm = &pHalData->odmpriv;
+
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) 
+		fw_name = "rtlwifi/rtl8812aufw.bin";
+
+	if (IS_HARDWARE_TYPE_8821U(rtlhal))
+		fw_name = "rtlwifi/rtl8821aufw.bin";
+
+	pr_info("Loading firmware %s\n", fw_name);
+
+	if (request_firmware(&fw, fw_name, device)) {
+		RT_TRACE(rtlpriv, COMP_FW, DBG_EMERG, "Firmware %s not available\n", fw_name);
+		return -ENOENT;
+	}
+
+
+	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "Normal Firmware SIZE %d\n", rtlhal->fwsize);
+
+	if (rtlhal->fwsize > FW_SIZE_8812) {
+			rtStatus = _FAIL;
+			goto Exit;
+		}
+
+
+	pfwdata = kzalloc(FW_SIZE_8812, GFP_KERNEL);
+	if (!pfwdata)
+		return -ENOMEM;
+
+	rtlhal->pfirmware = pfwdata;
+	memcpy(rtlhal->pfirmware, fw->data, fw->size);
+	rtlhal->fwsize = fw->size;
+	release_firmware(fw);
+
+	/* To Check Fw header. Added by tynli. 2009.12.04. */
+	pFwHdr = (uint8_t *) rtlhal->pfirmware;
+
+	rtlhal->fw_version =  (u16)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
+	rtlhal->fw_subversion = (u16)GET_FIRMWARE_HDR_SUB_VER_8812(pFwHdr);
+/*	
+	pHalData->FirmwareSignature = (u16)GET_FIRMWARE_HDR_SIGNATURE_8812(pFwHdr);
+
+	DBG_871X ("%s: fw_ver=%d fw_subver=%d sig=0x%x\n",
+		  __FUNCTION__, pHalData->FirmwareVersion, pHalData->FirmwareSubVersion, pHalData->FirmwareSignature);
+*/
+	RT_TRACE(rtlpriv, COMP_FW, DBG_DMESG, "%s: fw_ver=%d fw_subver=%d\n",
+		  __FUNCTION__, rtlhal->fw_version, rtlhal->fw_subversion);
+
+
+	if (IS_FW_HEADER_EXIST_8812(pFwHdr) || IS_FW_HEADER_EXIST_8821(pFwHdr)) {
+		/* Shift 32 bytes for FW header */
+		rtlhal->pfirmware += 32;
+		rtlhal->fwsize -= 32;
+	}
+
+	/*
+	 * Suggested by Filen. If 8051 is running in RAM code, driver should inform Fw to reset by itself,
+	 * or it will cause download Fw fail. 2010.02.01. by tynli.
+	 */
+	if (rtl_read_byte(rtlpriv, REG_MCUFWDL) & BIT(7)) { /* 8051 RAM code */
+		rtl_write_byte(rtlpriv, REG_MCUFWDL, 0x00);
+		rtl8821au_firmware_selfreset(rtlpriv);
+	}
+
+	_rtl8821ae_enable_fw_download(rtlpriv, true);
+	fwdl_start_time = jiffies;
+	while (1) {
+		/* reset the FWDL chksum */
+		rtl_write_byte(rtlpriv, REG_MCUFWDL, rtl_read_byte(rtlpriv, REG_MCUFWDL)|FWDL_ChkSum_rpt);
+
+		rtStatus = _WriteFW_8812(rtlpriv, rtlhal->pfirmware, rtlhal->fwsize);
+
+		if (rtStatus == _SUCCESS
+		   || (rtw_get_passing_time_ms(fwdl_start_time) > 500 && writeFW_retry++ >= 3))
+			break;
+
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s writeFW_retry:%u, time after fwdl_start_time:%ums\n", __FUNCTION__
+			, writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
+		);
+	}
+	_rtl8821ae_enable_fw_download(rtlpriv, false);
+	if (_SUCCESS != rtStatus) {
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "DL Firmware failed!\n");
+		goto Exit;
+	}
+
+	rtStatus = _rtl8821au_fw_free_to_go(rtlpriv);
+	if (_SUCCESS != rtStatus) {
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "DL Firmware failed!\n");
+		goto Exit;
+	}
+
+
+Exit:
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " <=== FirmwareDownload91C()\n");
+	
+	return rtStatus;
+}
+
+/* ULLI : (hopefully) border for non RTLWIFI */
+
+#ifndef CONFIG_RTLWIFI
+
+static bool Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
+	uint8_t	shortGIrate)
+{
+	bool		bShortGI;
+	struct mlme_ext_priv	*pmlmeext = &rtlpriv->mlmeextpriv;
+	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
+
+	bShortGI = shortGIrate;
+
+	if (bShortGI && IsSupportedVHT(psta->wireless_mode)
+	 && (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP)
+	 && TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX)) {
+		if (psta->vhtpriv.vht_highest_rate >= MGN_VHT2SS_MCS8)
+			bShortGI = false;
+	}
+
+	return bShortGI;
+}
+
+void Set_RA_LDPC_8812(struct sta_info *psta, bool bLDPC)
+{
+	if (psta == NULL)
+		return;
+
+	if (psta->wireless_mode == WIRELESS_11_5AC) {
+		if (bLDPC && TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_CAP_TX))
+			SET_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX);
+		else
+			CLEAR_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX);
+	} else
+		if (IsSupportedTxHT(psta->wireless_mode) || IsSupportedVHT(psta->wireless_mode)) {
+			if (bLDPC && TEST_FLAG(psta->htpriv.ldpc_cap, LDPC_HT_CAP_TX))
+				SET_FLAG(psta->htpriv.ldpc_cap, LDPC_HT_ENABLE_TX);
+			else
+				CLEAR_FLAG(psta->htpriv.ldpc_cap, LDPC_HT_ENABLE_TX);
+		}
+
+	/* DBG_871X("MacId %d bLDPC %d\n", psta->mac_id, bLDPC); */
+}
+
+static u8 Get_RA_LDPC_8812(struct sta_info *psta)
+{
+	uint8_t	bLDPC = 0;
+
+	if (psta->mac_id == 1)
+		bLDPC = 0;
+	else
+		if (psta != NULL) {
+			if (IsSupportedVHT(psta->wireless_mode)) {
+				if (TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_CAP_TX))
+					bLDPC = 1;
+				else
+					bLDPC = 0;
+			} else
+				if (IsSupportedTxHT(psta->wireless_mode)) {
+					if (TEST_FLAG(psta->htpriv.ldpc_cap, LDPC_HT_CAP_TX))
+						bLDPC = 1;
+					else
+						bLDPC = 0;
+				} else
+				bLDPC = 0;
+	}
+
+	return (bLDPC << 2);
 }
 
 void ConstructBeacon(struct rtl_priv *rtlpriv, uint8_t *pframe, uint32_t *pLength)
@@ -976,299 +1281,4 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 	rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_SETPWRMODE, sizeof(u1H2CSetPwrMode), (uint8_t *)&u1H2CSetPwrMode);
 }
 
-
-static void _rtl8821ae_enable_fw_download(struct rtl_priv *rtlpriv, bool enable)
-{
-	uint8_t	tmp;
-
-	if (enable) {
-		/* MCU firmware download enable. */
-		tmp = rtl_read_byte(rtlpriv, REG_MCUFWDL);
-		rtl_write_byte(rtlpriv, REG_MCUFWDL, tmp|0x01);
-
-		/* 8051 reset */
-		tmp = rtl_read_byte(rtlpriv, REG_MCUFWDL+2);
-		rtl_write_byte(rtlpriv, REG_MCUFWDL+2, tmp&0xf7);
-	} else {
-
-		/* MCU firmware download disable. */
-		tmp = rtl_read_byte(rtlpriv, REG_MCUFWDL);
-		rtl_write_byte(rtlpriv, REG_MCUFWDL, tmp&0xfe);
-	}
-}
-
-
-
-#define MAX_REG_BOLCK_SIZE	196
-
-static int _BlockWrite_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t buffSize)
-{
-	int ret = _SUCCESS;
-
-	uint32_t blockSize_p1 = 4;	/* (Default) Phase #1 : PCI muse use 4-byte write to download FW */
-	uint32_t blockSize_p2 = 8;	/* Phase #2 : Use 8-byte, if Phase#1 use big size to write FW. */
-	uint32_t blockSize_p3 = 1;	/* Phase #3 : Use 1-byte, the remnant of FW image. */
-	uint32_t blockCount_p1 = 0, blockCount_p2 = 0, blockCount_p3 = 0;
-	uint32_t remainSize_p1 = 0, remainSize_p2 = 0;
-	uint8_t	 *bufferPtr	= (uint8_t *)buffer;
-	uint32_t i = 0, offset = 0;
-
-	blockSize_p1 = MAX_REG_BOLCK_SIZE;
-
-	/* 3 Phase #1 */
-	blockCount_p1 = buffSize / blockSize_p1;
-	remainSize_p1 = buffSize % blockSize_p1;
-
-	if (blockCount_p1) {
-		;
-	}
-
-	for (i = 0; i < blockCount_p1; i++) {
-		rtl_writeN(rtlpriv, (FW_8821AU_START_ADDRESS + i * blockSize_p1), (bufferPtr + i * blockSize_p1), blockSize_p1);
-	}
-
-
-	/* 3 Phase #2 */
-	if (remainSize_p1) {
-		offset = blockCount_p1 * blockSize_p1;
-
-		blockCount_p2 = remainSize_p1/blockSize_p2;
-		remainSize_p2 = remainSize_p1%blockSize_p2;
-
-		if (blockCount_p2) {
-			;
-		}
-
-		for (i = 0; i < blockCount_p2; i++) {
-			rtl_writeN(rtlpriv, (FW_8821AU_START_ADDRESS + offset + i*blockSize_p2), (bufferPtr + offset + i*blockSize_p2), blockSize_p2);
-		}
-	}
-
-	/* 3 Phase #3 */
-	if (remainSize_p2) {
-		offset = (blockCount_p1 * blockSize_p1) + (blockCount_p2 * blockSize_p2);
-
-		blockCount_p3 = remainSize_p2 / blockSize_p3;
-
-		for (i = 0 ; i < blockCount_p3; i++) {
-			rtl_write_byte(rtlpriv, (FW_8821AU_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
-		}
-	}
-
-exit:
-	return ret;
-}
-
-
-
-static int _PageWrite_8812(struct rtl_priv *rtlpriv, uint32_t page,
-	void *buffer, uint32_t size)
-{
-	uint8_t value8;
-	uint8_t u8Page = (uint8_t) (page & 0x07) ;
-
-	value8 = (rtl_read_byte(rtlpriv, REG_MCUFWDL+2) & 0xF8) | u8Page ;
-	rtl_write_byte(rtlpriv, REG_MCUFWDL+2, value8);
-
-	return _BlockWrite_8812(rtlpriv, buffer, size);
-}
-
-
-static int _WriteFW_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t size)
-{
-	/*
-	 * Since we need dynamic decide method of dwonload fw, so we call this function to get chip version.
-	 * We can remove _ReadChipVersion from ReadpadapterInfo8192C later.
-	 */
-
-	int	ret = _SUCCESS;
-	uint32_t pageNums, remainSize;
-	uint32_t page, offset;
-	uint8_t	*bufferPtr = (uint8_t *)buffer;
-
-	pageNums = size / MAX_DLFW_PAGE_SIZE ;
-	/*
-	 * RT_ASSERT((pageNums <= 4), ("Page numbers should not greater then 4 \n"));
-	 */
-
-	remainSize = size % MAX_DLFW_PAGE_SIZE;
-
-	for (page = 0; page < pageNums; page++) {
-		offset = page * MAX_DLFW_PAGE_SIZE;
-		ret = _PageWrite_8812(rtlpriv, page, bufferPtr+offset, MAX_DLFW_PAGE_SIZE);
-
-		if (ret == _FAIL)
-			goto exit;
-	}
-	if (remainSize) {
-		offset = pageNums * MAX_DLFW_PAGE_SIZE;
-		page = pageNums;
-		ret = _PageWrite_8812(rtlpriv, page, bufferPtr+offset, remainSize);
-
-		if (ret == _FAIL)
-			goto exit;
-
-	}
-
-exit:
-	return ret;
-}
-
-static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
-{
-	uint32_t	counter = 0;
-	uint32_t	value32;
-
-	/* polling CheckSum report */
-	do {
-		value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
-		if (value32 & FWDL_ChkSum_rpt)
-			break;
-	} while (counter++ < 6000);
-
-	if (counter >= 6000) {
-		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
-			 "%s: chksum report fail! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
-		return _FAIL;
-	}
-	RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
-		 "%s: Checksum report OK! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
-
-	value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
-	value32 |= MCUFWDL_RDY;
-	value32 &= ~WINTINI_RDY;
-	rtl_write_dword(rtlpriv, REG_MCUFWDL, value32);
-
-	rtl8821au_firmware_selfreset(rtlpriv);
-
-	/* polling for FW ready */
-	counter = 0;
-	do {
-		value32 = rtl_read_dword(rtlpriv, REG_MCUFWDL);
-		if (value32 & WINTINI_RDY) {
-			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
-				 "%s: Polling FW ready success!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
-			return _SUCCESS;
-		}
-		udelay(5);
-	} while (counter++ < 6000);
-
-	RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
-		 "%s: Polling FW ready fail!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
-	return _FAIL;
-}
-
-int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
-{
-	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
-	struct device *device = dvobj_to_dev(rtlusb);
-	const struct firmware *fw;
-	char *fw_name;
-	u8 *pfwdata;
-
-	int32_t	rtStatus = _SUCCESS;
-	uint8_t	writeFW_retry = 0;
-	uint32_t fwdl_start_time;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *	pDM_Odm;
-	uint8_t				*pFwHdr = NULL;
-
-	pDM_Odm = &pHalData->odmpriv;
-
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) 
-		fw_name = "rtlwifi/rtl8812aufw.bin";
-
-	if (IS_HARDWARE_TYPE_8821U(rtlhal))
-		fw_name = "rtlwifi/rtl8821aufw.bin";
-
-	pr_info("Loading firmware %s\n", fw_name);
-
-	if (request_firmware(&fw, fw_name, device)) {
-		RT_TRACE(rtlpriv, COMP_FW, DBG_EMERG, "Firmware %s not available\n", fw_name);
-		return -ENOENT;
-	}
-
-
-	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "Normal Firmware SIZE %d\n", rtlhal->fwsize);
-
-	if (rtlhal->fwsize > FW_SIZE_8812) {
-			rtStatus = _FAIL;
-			goto Exit;
-		}
-
-
-	pfwdata = kzalloc(FW_SIZE_8812, GFP_KERNEL);
-	if (!pfwdata)
-		return -ENOMEM;
-
-	rtlhal->pfirmware = pfwdata;
-	memcpy(rtlhal->pfirmware, fw->data, fw->size);
-	rtlhal->fwsize = fw->size;
-	release_firmware(fw);
-
-	/* To Check Fw header. Added by tynli. 2009.12.04. */
-	pFwHdr = (uint8_t *) rtlhal->pfirmware;
-
-	rtlhal->fw_version =  (u16)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
-	rtlhal->fw_subversion = (u16)GET_FIRMWARE_HDR_SUB_VER_8812(pFwHdr);
-/*	
-	pHalData->FirmwareSignature = (u16)GET_FIRMWARE_HDR_SIGNATURE_8812(pFwHdr);
-
-	DBG_871X ("%s: fw_ver=%d fw_subver=%d sig=0x%x\n",
-		  __FUNCTION__, pHalData->FirmwareVersion, pHalData->FirmwareSubVersion, pHalData->FirmwareSignature);
-*/
-	RT_TRACE(rtlpriv, COMP_FW, DBG_DMESG, "%s: fw_ver=%d fw_subver=%d\n",
-		  __FUNCTION__, rtlhal->fw_version, rtlhal->fw_subversion);
-
-
-	if (IS_FW_HEADER_EXIST_8812(pFwHdr) || IS_FW_HEADER_EXIST_8821(pFwHdr)) {
-		/* Shift 32 bytes for FW header */
-		rtlhal->pfirmware += 32;
-		rtlhal->fwsize -= 32;
-	}
-
-	/*
-	 * Suggested by Filen. If 8051 is running in RAM code, driver should inform Fw to reset by itself,
-	 * or it will cause download Fw fail. 2010.02.01. by tynli.
-	 */
-	if (rtl_read_byte(rtlpriv, REG_MCUFWDL) & BIT(7)) { /* 8051 RAM code */
-		rtl_write_byte(rtlpriv, REG_MCUFWDL, 0x00);
-		rtl8821au_firmware_selfreset(rtlpriv);
-	}
-
-	_rtl8821ae_enable_fw_download(rtlpriv, true);
-	fwdl_start_time = jiffies;
-	while (1) {
-		/* reset the FWDL chksum */
-		rtl_write_byte(rtlpriv, REG_MCUFWDL, rtl_read_byte(rtlpriv, REG_MCUFWDL)|FWDL_ChkSum_rpt);
-
-		rtStatus = _WriteFW_8812(rtlpriv, rtlhal->pfirmware, rtlhal->fwsize);
-
-		if (rtStatus == _SUCCESS
-		   || (rtw_get_passing_time_ms(fwdl_start_time) > 500 && writeFW_retry++ >= 3))
-			break;
-
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s writeFW_retry:%u, time after fwdl_start_time:%ums\n", __FUNCTION__
-			, writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
-		);
-	}
-	_rtl8821ae_enable_fw_download(rtlpriv, false);
-	if (_SUCCESS != rtStatus) {
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "DL Firmware failed!\n");
-		goto Exit;
-	}
-
-	rtStatus = _rtl8821au_fw_free_to_go(rtlpriv);
-	if (_SUCCESS != rtStatus) {
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "DL Firmware failed!\n");
-		goto Exit;
-	}
-
-
-Exit:
-
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " <=== FirmwareDownload91C()\n");
-	
-	return rtStatus;
-}
+#endif

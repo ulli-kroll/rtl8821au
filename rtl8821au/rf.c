@@ -31,7 +31,8 @@ void rtl8821au_phy_rf6052_set_bandwidth(struct rtl_priv *rtlpriv, enum CHANNEL_W
 		break;
 
 	default:
-		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD, "rtl8821au_phy_rf6052_set_bandwidth(): unknown Bandwidth: %#X\n", Bandwidth);
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
+			 "rtl8821au_phy_rf6052_set_bandwidth(): unknown Bandwidth: %#X\n", Bandwidth);
 		break;
 	}
 }

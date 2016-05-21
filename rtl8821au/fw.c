@@ -56,7 +56,8 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 
 	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp|(BIT(2)));
 
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " _8051Reset8812(): 8051 reset success .\n");
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
+		 "_8051Reset8812(): 8051 reset success .\n");
 }
 
 static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num)
@@ -70,9 +71,9 @@ static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num
 
 	do {
 		valid = rtl_read_byte(rtlpriv, REG_HMETFR) & BIT(msgbox_num);
-		if (0 == valid) {
+		if (0 == valid)
 			read_down = true;
-		}
+
 	} while ((!read_down) && (retry_cnts--));
 
 	return read_down;
@@ -108,12 +109,11 @@ static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
 
 	_unused = mutex_lock_interruptible(&(rtl_usbdev(rtlpriv)->h2c_fwcmd_mutex));
 
-	if (!cmdbuffer) {
+	if (!cmdbuffer)
 		goto exit;
-	}
-	if (cmd_len > RTL8812_MAX_CMD_LEN) {
+
+	if (cmd_len > RTL8812_MAX_CMD_LEN)
 		goto exit;
-	}
 
 	if (rtlpriv->bSurpriseRemoved == true)
 		goto exit;
@@ -123,7 +123,8 @@ static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
 		h2c_box_num = rtlhal->last_hmeboxnum;
 
 		if (!_is_fw_read_cmd_down(rtlpriv, h2c_box_num)) {
-			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, " fw read cmd failed...\n");
+			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+				 "fw read cmd failed...\n");
 			goto exit;
 		}
 
@@ -255,7 +256,9 @@ void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *ar
 		H2CCommand[5] = (uint8_t)((bitmap & 0x00ff0000) >> 16);
 		H2CCommand[6] = (uint8_t)((bitmap & 0xff000000) >> 24);
 
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "rtl8812_set_raid_cmd, bitmap=0x%x, mac_id=0x%x, raid=0x%x, shortGIrate=%x\n", bitmap, macid, raid, shortGIrate);
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+			 "rtl8812_set_raid_cmd, bitmap=0x%x, mac_id=0x%x, raid=0x%x, shortGIrate=%x\n",
+			 bitmap, macid, raid, shortGIrate);
 
 		rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_RA_MASK, 7, H2CCommand);
 	}
@@ -502,7 +505,9 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 	}
 
 
-	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "Normal Firmware SIZE %d\n", rtlhal->fwsize);
+	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+		 "Normal Firmware SIZE %d\n",
+		 rtlhal->fwsize);
 
 	if (rtlhal->fwsize > FW_SIZE_8812) {
 			rtStatus = _FAIL;
@@ -530,8 +535,9 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 	DBG_871X ("%s: fw_ver=%d fw_subver=%d sig=0x%x\n",
 		  __FUNCTION__, pHalData->FirmwareVersion, pHalData->FirmwareSubVersion, pHalData->FirmwareSignature);
 */
-	RT_TRACE(rtlpriv, COMP_FW, DBG_DMESG, "%s: fw_ver=%d fw_subver=%d\n",
-		  __FUNCTION__, rtlhal->fw_version, rtlhal->fw_subversion);
+	RT_TRACE(rtlpriv, COMP_FW, DBG_DMESG,
+		 "%s: fw_ver=%d fw_subver=%d\n",
+		 __FUNCTION__, rtlhal->fw_version, rtlhal->fw_subversion);
 
 
 	if (IS_FW_HEADER_EXIST_8812(pFwHdr) || IS_FW_HEADER_EXIST_8821(pFwHdr)) {
@@ -561,26 +567,30 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 		   || (rtw_get_passing_time_ms(fwdl_start_time) > 500 && writeFW_retry++ >= 3))
 			break;
 
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s writeFW_retry:%u, time after fwdl_start_time:%ums\n", __FUNCTION__
-			, writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+			 "%s writeFW_retry:%u, time after fwdl_start_time:%ums\n",
+			 __FUNCTION__ , writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
 		);
 	}
 	_rtl8821ae_enable_fw_download(rtlpriv, false);
 	if (_SUCCESS != rtStatus) {
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "DL Firmware failed!\n");
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+			 "DL Firmware failed!\n");
 		goto Exit;
 	}
 
 	rtStatus = _rtl8821au_fw_free_to_go(rtlpriv);
 	if (_SUCCESS != rtStatus) {
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "DL Firmware failed!\n");
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+			 "DL Firmware failed!\n");
 		goto Exit;
 	}
 
 
 Exit:
 
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " <=== FirmwareDownload91C()\n");
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
+		"<=== FirmwareDownload91C()\n");
 	
 	return rtStatus;
 }
@@ -745,7 +755,8 @@ void ConstructBeacon(struct rtl_priv *rtlpriv, uint8_t *pframe, uint32_t *pLengt
 _ConstructBeacon:
 
 	if ((pktlen + TXDESC_SIZE) > 512) {
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "beacon frame too large\n");
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+			 "beacon frame too large\n");
 		return;
 	}
 
@@ -926,7 +937,8 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 	if (bDLFinished) {
 		TotalPageNum += CurtPktPageNum;
 		TotalPacketLen = (TotalPageNum*PageSize);
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s(): Beacon page size = %d\n", __FUNCTION__, TotalPageNum);
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+			 "%s(): Beacon page size = %d\n", __FUNCTION__, TotalPageNum);
 	} else {
 		TotalPageNum += CurtPktPageNum;
 
@@ -935,8 +947,10 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 		BufIndex += (CurtPktPageNum*PageSize);
 
 		if (BufIndex > MaxRsvdPageBufSize) {
-			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s(): Beacon: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
-				BufIndex, MaxRsvdPageBufSize);
+			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+				"%s(): Beacon: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n",
+				__FUNCTION__, BufIndex,
+				MaxRsvdPageBufSize);
 			goto error;
 		}
 
@@ -958,8 +972,9 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 		TotalPageNum += CurtPktPageNum;
 
 		if (BufIndex > MaxRsvdPageBufSize) {
-			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s(): ps-poll: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
-				BufIndex, MaxRsvdPageBufSize);
+			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+				 "%s(): ps-poll: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n",
+				 __FUNCTION__, BufIndex, MaxRsvdPageBufSize);
 			goto error;
 		}
 
@@ -986,8 +1001,9 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 		TotalPageNum += CurtPktPageNum;
 
 		if (BufIndex > MaxRsvdPageBufSize) {
-			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s(): Null-data: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
-				BufIndex, MaxRsvdPageBufSize);
+			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+				"%s(): Null-data: The rsvd page size is not enough!!BufIndex %d, MaxRsvdPageBufSize %d\n",
+				__FUNCTION__, BufIndex, MaxRsvdPageBufSize);
 			goto error;
 		}
 
@@ -1018,8 +1034,9 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 
 
 	if (TotalPacketLen > MaxRsvdPageBufSize) {
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s(): ERROR: The rsvd page size is not enough!!TotalPacketLen %d, MaxRsvdPageBufSize %d\n", __FUNCTION__,
-			TotalPacketLen, MaxRsvdPageBufSize);
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+			 "%s(): ERROR: The rsvd page size is not enough!!TotalPacketLen %d, MaxRsvdPageBufSize %d\n",
+			 __FUNCTION__, TotalPacketLen, MaxRsvdPageBufSize);
 		goto error;
 	} else {
 		/* update attribute */
@@ -1032,7 +1049,9 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 	}
 
 	if (!bDLFinished) {
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__, TotalPacketLen, TotalPageNum);
+		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+			 "%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n",
+			 __FUNCTION__, TotalPacketLen, TotalPageNum);
 		rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_RSVDPAGE, 5, RsvdPageLoc);
 	}
 
@@ -1054,7 +1073,8 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 	uint8_t	DLBcnCount = 0;
 	uint32_t poll = 0;
 
-	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s mstatus(%x)\n", __FUNCTION__, mstatus);
+	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+		 "%s mstatus(%x)\n", __FUNCTION__, mstatus);
 
 	if (mstatus == 1) {
 		/*
@@ -1085,7 +1105,8 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 		rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|BIT(4));
 
 		if (pHalData->RegFwHwTxQCtrl&BIT(6)) {
-			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "HalDownloadRSVDPage(): There is an rtlpriv is sending beacon.\n");
+			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+				 "HalDownloadRSVDPage(): There is an rtlpriv is sending beacon.\n");
 			bSendBeacon = true;
 		}
 
@@ -1117,9 +1138,13 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 		/* RT_ASSERT(bcn_valid, ("HalDownloadRSVDPage88ES(): 1 Download RSVD page failed!\n")); */
 		if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped) {
 		} else if (!bcn_valid)
-			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: 1 Download RSVD page failed! DLBcnCount:%u, poll:%u\n", __FUNCTION__ , DLBcnCount, poll);
+			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+				 "%s: 1 Download RSVD page failed! DLBcnCount:%u, poll:%u\n",
+				__FUNCTION__ , DLBcnCount, poll);
 		else
-			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: 1 Download RSVD success! DLBcnCount:%u, poll:%u\n", __FUNCTION__, DLBcnCount, poll);
+			RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+				 "%s: 1 Download RSVD success! DLBcnCount:%u, poll:%u\n",
+				 __FUNCTION__, DLBcnCount, poll);
 		/*
 		 * We just can send the reserved page twice during the time that Tx thread is stopped (e.g. pnpsetpower)
 		 * becuase we need to free the Tx BCN Desc which is used by the first reserved page packet.
@@ -1151,9 +1176,13 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 				/* RT_ASSERT(bcn_valid, ("HalDownloadRSVDPage(): 2 Download RSVD page failed!\n")); */
 				if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped) {
 				} else if (!bcn_valid)
-					RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: 2 Download RSVD page failed! DLBcnCount:%u, poll:%u\n", __FUNCTION__ , DLBcnCount, poll);
+					RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+						 "%s: 2 Download RSVD page failed! DLBcnCount:%u, poll:%u\n",
+						 __FUNCTION__ , DLBcnCount, poll);
 				else
-					RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: 2 Download RSVD success! DLBcnCount:%u, poll:%u\n", __FUNCTION__, DLBcnCount, poll);
+					RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+						 "%s: 2 Download RSVD success! DLBcnCount:%u, poll:%u\n",
+						 __FUNCTION__, DLBcnCount, poll);
 			}
 		}
 
@@ -1213,7 +1242,9 @@ void rtl8812_set_FwMediaStatus_cmd(struct rtl_priv *rtlpriv, u16 mstatus_rpt)
 	SET_8812_H2CCMD_MSRRPT_PARM_MACID(u1JoinBssRptParm, macId);
 	SET_8812_H2CCMD_MSRRPT_PARM_MACID_END(u1JoinBssRptParm, macId_End);
 
-	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "[MacId],  Set MacId Ctrl(original) = 0x%x \n", u1JoinBssRptParm[0]<<16|u1JoinBssRptParm[1]<<8|u1JoinBssRptParm[2]);
+	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+		 "[MacId],  Set MacId Ctrl(original) = 0x%x \n",
+		 u1JoinBssRptParm[0]<<16|u1JoinBssRptParm[1]<<8|u1JoinBssRptParm[2]);
 
 	rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_MSRRPT, 3, u1JoinBssRptParm);
 }
@@ -1227,8 +1258,9 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 
 	PSMode = PS_MODE_MIN;		/* ULLI: fix for powermode on low bitrate streaming */
 
-	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, "%s: Mode=%d SmartPS=%d UAPSD=%d\n", __FUNCTION__,
-			PSMode, pwrpriv->smart_ps, rtlpriv->registrypriv.uapsd_enable);
+	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, 
+		 "%s: Mode=%d SmartPS=%d UAPSD=%d\n", __FUNCTION__,
+		PSMode, pwrpriv->smart_ps, rtlpriv->registrypriv.uapsd_enable);
 
 	switch (PSMode) {
 	case PS_MODE_ACTIVE:

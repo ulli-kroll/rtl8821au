@@ -287,7 +287,8 @@ void rtl8821au_led_control(struct rtl_priv *rtlpriv,
 		return;
 	}
 #endif	
-	RT_TRACE(rtlpriv, COMP_LED, DBG_LOUD, "ledaction %d\n", ledaction);
+	RT_TRACE(rtlpriv, COMP_LED, DBG_LOUD,
+		 "ledaction %d\n", ledaction);
 	_rtl8821au_sw_led_control(rtlpriv, ledaction);
 }
 

@@ -351,8 +351,7 @@ uint32_t ODM_Get_Rate_Bitmap(struct rtl_priv *rtlpriv, uint32_t macid,
 	case WIRELESS_MODE_AC_5G | WIRELESS_MODE_A:
 	case WIRELESS_MODE_AC_5G | WIRELESS_MODE_G:
 		if (rtlpriv->phy.rf_type == RF_1T1R) {
-			if (IS_HARDWARE_TYPE_8811AU(rtlhal) ||
-				(IS_HARDWARE_TYPE_8812AU(rtlhal) && IS_NORMAL_CHIP(rtlhal->version))) {
+			if ((IS_HARDWARE_TYPE_8812AU(rtlhal) && IS_NORMAL_CHIP(rtlhal->version))) {
 				if (IS_HARDWARE_TYPE_8821U(rtlhal)
 					&& (rtlpriv->phy.current_channel >= 149)) {
 					if (rssi_level == 1)				/* add by Gary for ac-series */

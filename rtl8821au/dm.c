@@ -2153,12 +2153,6 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 				EDCA_BE_DL = edca_setting_dl[IOTPeer];
 			}
 
-			if ((IS_HARDWARE_TYPE_8811AU(rtlhal))) {		/* add 8812AU/8812AE */
-				EDCA_BE_UL = 0x5ea42b;
-				EDCA_BE_DL = 0x5ea42b;
-				RT_TRACE(rtlpriv, COMP_TURBO, DBG_LOUD, "8812A: EDCA_BE_UL=0x%x EDCA_BE_DL =0x%x", EDCA_BE_UL, EDCA_BE_DL);
-			}
-
 			if (trafficIndex == DOWN_LINK)
 				edca_param = EDCA_BE_DL;
 			else

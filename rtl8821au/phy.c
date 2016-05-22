@@ -6784,18 +6784,6 @@ void rtl8821au_phy_sw_chnl_callback(struct rtl_priv *rtlpriv)
 		rtl8812au_fixspur(rtlpriv, rtlpriv->phy.current_chan_bw, channel);
 
 		rtl_set_rfreg(rtlpriv, path, RF_CHNLBW_Jaguar, MASKBYTE0, channel);
-
-		/* <20130104, Kordan> APK for MP chip is done on initialization from folder. */
-		if (IS_HARDWARE_TYPE_8811AU(rtlhal) &&
-		    (!IS_NORMAL_CHIP(rtlhal->version)) && channel > 14 ) {
-			/* <20121116, Kordan> For better result of APK. Asked by AlexWang. */
-			if (36 <= channel && channel <= 64)
-				rtl_set_rfreg(rtlpriv, path, RF_APK_Jaguar, bRFRegOffsetMask, 0x710E7);
-			else if (100 <= channel && channel <= 140)
-				rtl_set_rfreg(rtlpriv, path, RF_APK_Jaguar, bRFRegOffsetMask, 0x716E9);
-			else
-				rtl_set_rfreg(rtlpriv, path, RF_APK_Jaguar, bRFRegOffsetMask, 0x714E9);
-		}
 	}
 }
 

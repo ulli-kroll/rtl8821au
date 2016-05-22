@@ -4246,7 +4246,7 @@ void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 0);  	/* 0x8C4[30] = 0 */
 
 		}
-	} else if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+	} else if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		/* <20120914, Kordan> A workarould to resolve 2480Mhz spur by setting ADC clock as 160M. (Asked by Binson) */
 		if (Bandwidth == CHANNEL_WIDTH_20 && (Channel == 13 || Channel == 14))
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x3);  /* 0x8AC[9:8] = 11 */
@@ -6717,7 +6717,7 @@ int rtl8821au_phy_bb_config(struct rtl_priv *rtlpriv)
 	 */
 	rtStatus = _rtl8821au_phy_bb_with_headerfile(rtlpriv);
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		/* write 0x2C[30:25] = 0x2C[24:19] = CrystalCap */
 		crystal_cap = rtlefuse->crystalcap & 0x3F;
 		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0x7FF80000, (crystal_cap | (crystal_cap << 6)));

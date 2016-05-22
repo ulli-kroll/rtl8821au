@@ -34,7 +34,7 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 	uint8_t u1bTmp, u1bTmp2;
 
 	/* Reset MCU IO Wrapper- sugggest by SD1-Gimmy */
-	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
 		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2&(~BIT(3)));
 	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
@@ -46,7 +46,7 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN+1, u1bTmp&(~BIT(2)));
 
 	/* Enable MCU IO Wrapper */
-	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
 		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2 | (BIT(3)));
 	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
@@ -282,7 +282,7 @@ u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *rtlpriv)
 	uint8_t	RsvdPageNum = 0;
 	uint8_t	TxPageBndy = LAST_ENTRY_OF_TX_PKT_BUFFER_8812; /* default reseved 1 page for the IC type which is undefined. */
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		TxPageBndy = TX_PAGE_BOUNDARY_8812;
 	else
 		TxPageBndy = TX_PAGE_BOUNDARY_8821;
@@ -903,7 +903,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 	pmlmeext = &rtlpriv->mlmeextpriv;
 	pmlmeinfo = &pmlmeext->mlmext_info;
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		PageSize = 512;
 	else if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 		PageSize = PAGE_SIZE_TX_8821A;

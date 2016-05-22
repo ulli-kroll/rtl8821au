@@ -258,12 +258,12 @@ static void _rtl8821au_sw_led_control(struct rtl_priv *rtlpriv,
 	    ledaction == LED_CTL_NO_LINK ||
 	    ledaction == LED_CTL_START_TO_LINK ||
 	    ledaction == LED_CTL_POWER_ON) {
-		if (IS_HARDWARE_TYPE_8812(rtlhal))
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 			rtl8812au_sw_led_on(rtlpriv, &(usbpriv->ledpriv.SwLed0));
 		else
 			rtl8821au_sw_led_on(rtlpriv, &(usbpriv->ledpriv.SwLed0));
 	} else {
-		if (IS_HARDWARE_TYPE_8812(rtlhal))
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 			rtl8812au_sw_led_off(rtlpriv, &(usbpriv->ledpriv.SwLed0));
 		else
 			rtl8821au_sw_led_off(rtlpriv, &(usbpriv->ledpriv.SwLed0));

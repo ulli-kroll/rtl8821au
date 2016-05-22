@@ -2008,8 +2008,6 @@ enum hardware_type {
 // RTL8812 Series
 #define IS_HARDWARE_TYPE_8812AU(rtlhal)	\
 	(rtlhal->hw_type == HARDWARE_TYPE_RTL8812AU)
-#define IS_HARDWARE_TYPE_8812(rtlhal)	\
-	(IS_HARDWARE_TYPE_8812AU(rtlhal))
 
 // RTL8821 Series
 #define IS_HARDWARE_TYPE_8821AU(rtlhal)	\

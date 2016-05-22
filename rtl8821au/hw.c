@@ -654,7 +654,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		{
 			uint32_t	AMPDULen = *(uint8_t *)pval;
 
-			if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+			if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 				if (AMPDULen < VHT_AGG_SIZE_128K)
 					AMPDULen = (0x2000 << *(uint8_t *)pval) - 1;
 				else
@@ -943,19 +943,19 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 		 "%s SYS_CFG(0x%X)=0x%08x \n",
 		 __FUNCTION__, REG_SYS_CFG, value32);
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		chip_version = CHIP_8812;
 	else
 		chip_version = CHIP_8821;
 
 	chip_version |= ((value32 & RTL_ID) ? 0 : NORMAL_CHIP);
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		chip_version |= RF_TYPE_2T2R;	/* RF_2T2R; */
 	else
 		chip_version |= RF_TYPE_1T1R;	/*RF_1T1R; */
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		chip_version |= ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : 0);
 	else {
 		uint32_t vendor;
@@ -968,7 +968,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 		}
 	}
 	
-	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		u32 rtl_id = ((value32 & CHIP_VER_RTL_MASK) >> CHIP_VER_RTL_SHIFT) + 1;
 		
 		chip_version = (enum version_8821au) (chip_version | (rtl_id << 12));
@@ -2121,7 +2121,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 		goto exit;
 	}
 
-		if (IS_HARDWARE_TYPE_8812(rtlhal))
+		if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 			txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
 		else
 			txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
@@ -2175,7 +2175,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 
 	 _rtl8821au_phy_config_mac_with_headerfile(rtlpriv);
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		_InitQueueReservedPage_8812AUsb(rtlpriv);
 		_InitTxBufferBoundary_8812AUsb(rtlpriv);
 	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
@@ -2186,7 +2186,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	_rtl8821au_init_chipN_queue_priority(rtlpriv);
 	_InitPageBoundary_8812AUsb(rtlpriv);
 
-	if (IS_HARDWARE_TYPE_8812(rtlhal))
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		_InitTransferPageSize_8812AUsb(rtlpriv);
 
 	/* Get Rx PHY status in order to report RSSI and others. */

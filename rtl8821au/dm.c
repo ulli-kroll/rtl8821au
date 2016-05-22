@@ -1869,7 +1869,7 @@ static void rtl8821au_check_tx_power_tracking_thermalmeter(struct rtl_priv *rtlp
 		/* DBG_871X("Schedule TxPowerTracking direct call!!\n"); */
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 			rtl8812au_dm_txpower_tracking_callback_thermalmeter(rtlpriv);
-		if (IS_HARDWARE_TYPE_8821U(rtlhal))
+		if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 			rtl8821au_dm_txpower_tracking_callback_thermalmeter(rtlpriv);
 		 rtldm->tm_trigger = 0;
 	}
@@ -2211,7 +2211,7 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 		if (tmp1byte&HAL_8192C_HW_GPIO_WPS_BIT) {
 			bPbcPressed = true;
 		}
-	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL_8811A);
 		tmp1byte |= (BIT(4));
 		rtl_write_byte(rtlpriv, GPIO_IO_SEL_8811A, tmp1byte);	/* enable GPIO[2] as output mode */
@@ -2389,7 +2389,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	/* 1 Boundary Decision */
 	dm_dig_max = DM_DIG_MAX_NIC;
 
-	if (IS_HARDWARE_TYPE_8821U(rtlhal))
+	if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 		dm_dig_min = DM_DIG_MIN_NIC;
 	else
 		dm_dig_min = 0x1C;
@@ -2399,7 +2399,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 	if (rtlpriv->mac80211.link_state >= MAC80211_LINKED) {
 		/* 2 Modify DIG upper bound */
 		/* 2013.03.19 Luke: Modified upper bound for Netgear rental house test */
-		if (IS_HARDWARE_TYPE_8821U(rtlhal))
+		if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 			offset = 20;
 		else
 			offset = 10;

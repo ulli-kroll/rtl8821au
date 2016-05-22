@@ -173,7 +173,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 		if ((rtlpriv->phy.need_iqk = false == true)) {
 			if(IS_HARDWARE_TYPE_8812(rtlhal))
 				rtl8812au_phy_iq_calibrate(rtlpriv, false);
-			else if(IS_HARDWARE_TYPE_8821(rtlhal))
+			else if(IS_HARDWARE_TYPE_8821AU(rtlhal))
 				rtl8821au_phy_iq_calibrate(rtlpriv, false);
 
 			rtlpriv->phy.need_iqk = false;

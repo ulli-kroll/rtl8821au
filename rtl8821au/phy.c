@@ -182,7 +182,8 @@ static u32 _rtl8821au_phy_rf_serial_read(struct rtl_priv *rtlpriv, uint8_t eRFPa
 
 	/* <20120809, Kordan> CCA OFF(when entering), asked by James to avoid reading the wrong value. */
 	/* <20120828, Kordan> Toggling CCA would affect RF 0x0, skip it! */
-	if (Offset != 0x0 &&  !(IS_VENDOR_8812A_C_CUT(rtlhal->version) || IS_HARDWARE_TYPE_8821(rtlhal)))
+	if (Offset != 0x0 &&  !(IS_VENDOR_8812A_C_CUT(rtlhal->version) || 
+	    IS_HARDWARE_TYPE_8821AU(rtlhal)))
 		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0x8, 1);
 
 	Offset &= 0xff;
@@ -200,7 +201,7 @@ static u32 _rtl8821au_phy_rf_serial_read(struct rtl_priv *rtlpriv, uint8_t eRFPa
 	if (IS_VENDOR_8812A_TEST_CHIP(rtlhal->version) )
 		rtl_set_bbreg(rtlpriv, pphyreg->rfhssi_para2, bMaskDWord, Offset|BIT(8));
 
-	if (IS_VENDOR_8812A_C_CUT(rtlhal->version) || IS_HARDWARE_TYPE_8821(rtlhal))
+	if (IS_VENDOR_8812A_C_CUT(rtlhal->version) || IS_HARDWARE_TYPE_8821AU(rtlhal))
 		udelay(20);
 
 	if (bIsPIMode) {
@@ -213,7 +214,8 @@ static u32 _rtl8821au_phy_rf_serial_read(struct rtl_priv *rtlpriv, uint8_t eRFPa
 
 	/* <20120809, Kordan> CCA ON(when exiting), asked by James to avoid reading the wrong value. */
 	/* <20120828, Kordan> Toggling CCA would affect RF 0x0, skip it! */
-	if (Offset != 0x0 &&  ! (IS_VENDOR_8812A_C_CUT(rtlhal->version) || IS_HARDWARE_TYPE_8821(rtlhal)))
+	if (Offset != 0x0 &&  ! (IS_VENDOR_8812A_C_CUT(rtlhal->version) ||
+	    IS_HARDWARE_TYPE_8821AU(rtlhal)))
 		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0x8, 0);
 
 	return retValue;
@@ -4714,7 +4716,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		/* STOP Tx/Rx */
 		rtl_set_bbreg(rtlpriv, rOFDMCCKEN_Jaguar, bOFDMEN_Jaguar|bCCKEN_Jaguar, 0x00);
 
-		if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+		if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 			/* Turn off RF PA and LNA */
 			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar, 0xF000, 0x7);	/* 0xCB0[15:12] = 0x7 (LNA_On) */
 			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar, 0xF0, 0x7);	/* 0xCB0[7:4] = 0x7 (PAPE_A) */
@@ -4782,7 +4784,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 	} else {		/* 5G band */
 		u16	count = 0, reg41A = 0;
 
-		if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+		if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar, 0xF000, 0x5);	/* 0xCB0[15:12] = 0x5 (LNA_On) */
 			rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar, 0xF0, 0x4);	/* 0xCB0[7:4] = 0x4 (PAPE_A) */
 		}
@@ -4875,7 +4877,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 	}
 
 	/* <20120903, Kordan> Tx BB swing setting for RL6286, asked by Ynlin. */
-	if (IS_NORMAL_CHIP(rtlhal->version) || IS_HARDWARE_TYPE_8821(rtlhal)) {
+	if (IS_NORMAL_CHIP(rtlhal->version) || IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		s8	BBDiffBetweenBand = 0;
 		struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
 
@@ -6719,7 +6721,7 @@ int rtl8821au_phy_bb_config(struct rtl_priv *rtlpriv)
 		/* write 0x2C[30:25] = 0x2C[24:19] = CrystalCap */
 		crystal_cap = rtlefuse->crystalcap & 0x3F;
 		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0x7FF80000, (crystal_cap | (crystal_cap << 6)));
-	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		/* 0x2C[23:18] = 0x2C[17:12] = CrystalCap */
 		crystal_cap = rtlefuse->crystalcap & 0x3F;
 		rtl_set_bbreg(rtlpriv, REG_MAC_PHY_CTRL, 0xFFF000, (crystal_cap | (crystal_cap << 6)));

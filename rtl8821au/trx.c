@@ -397,7 +397,7 @@ static int32_t update_txdesc(struct xmit_frame *pxmitframe, uint8_t *pmem, int32
 	} else if ((pxmitframe->frame_tag&0x0f) == MGNT_FRAMETAG) {
 		/* DBG_8192C("pxmitframe->frame_tag == MGNT_FRAMETAG\n"); */
 
-		if (IS_HARDWARE_TYPE_8821(rtlhal))
+		if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 			SET_TX_DESC_MBSSID_8821(ptxdesc, pattrib->mbssid);
 
 		/* offset 20 */
@@ -1214,7 +1214,7 @@ static void query_rxphystatus(struct _rtw_dm *	pDM_Odm, struct _ODM_Phy_Status_I
 				if (PWDB_ALL > 100)
 					PWDB_ALL = 100;
 			}
-		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+		} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 			s8 Pout = -6;
 
 			switch (LNA_idx) {

@@ -138,7 +138,7 @@ static void rtl8821au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		case LED_PIN_LED0:
 		case LED_PIN_LED1:
 		case LED_PIN_LED2:
-			 if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+			 if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
 				LedCfg &= 0x20; 	/* Set to software control. */
 				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT(3)|BIT(5)));
@@ -214,7 +214,7 @@ static void rtl8821au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 		case LED_PIN_LED0:
 		case LED_PIN_LED1:
 		case LED_PIN_LED2:
-			if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+			if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
 				rtl_write_byte(rtlpriv, REG_LEDCFG2, ((LedCfg&0x20) & (~BIT(3)))|BIT(5)); /* SW control led0 on. */
 			}

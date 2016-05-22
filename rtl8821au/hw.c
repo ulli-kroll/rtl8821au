@@ -188,7 +188,7 @@ int rtl8821au_set_network_type(struct rtl_priv *rtlpriv, uint8_t mode)
 		 */
 		rtl_write_byte(rtlpriv, REG_BCN_CTRL, (DIS_TSF_UDT|EN_BCN_FUNCTION | EN_TXBCN_RPT|DIS_BCNQ_SUB));
 
-		if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+		if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 			/*  select BCN on port 0 */
 			rtl_write_byte(rtlpriv, REG_CCK_CHECK_8812,	rtl_read_byte(rtlpriv, REG_CCK_CHECK_8812)&(~BIT(5)));
 		}
@@ -659,7 +659,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 					AMPDULen = (0x2000 << *(uint8_t *)pval) - 1;
 				else
 					AMPDULen = 0x1ffff;
-			} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+			} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 				if (AMPDULen < HT_AGG_SIZE_64K)
 					AMPDULen = (0x2000 << *(uint8_t *)pval) - 1;
 				else
@@ -1200,7 +1200,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			rtlefuse->eeprom_vid = *((u16 *) &hwinfo[EEPROM_VID_8812AU]);
 			rtlefuse->eeprom_did = *((u16 *) &hwinfo[EEPROM_PID_8812AU]);
-		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+		} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 			rtlefuse->eeprom_vid = *((u16 *) &hwinfo[EEPROM_VID_8821AU]);
 			rtlefuse->eeprom_did = *((u16 *) &hwinfo[EEPROM_PID_8821AU]);
 		}
@@ -1226,7 +1226,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 			/* Read Permanent MAC address and set value to hardware */
 			memcpy(rtlpriv->mac80211.mac_addr, &hwinfo[EEPROM_MAC_ADDR_8812AU], ETH_ALEN);
-		} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+		} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 			/*  Read Permanent MAC address and set value to hardware */
 			memcpy(rtlpriv->mac80211.mac_addr, &hwinfo[EEPROM_MAC_ADDR_8821AU], ETH_ALEN);
 		}
@@ -1297,7 +1297,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 		rtlefuse->antenna_div_cfg = 0;
 	}
 
-	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+	if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		_rtl8821au_read_pa_type(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
 	} else {
 		_rtl8812au_read_pa_type(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
@@ -1395,7 +1395,7 @@ static void _InitBurstPktLen(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_USTIME_TSF, 0x50);
 	rtl_write_byte(rtlpriv, REG_USTIME_EDCA, 0x50);
 
-	if (IS_HARDWARE_TYPE_8821U(rtlhal))
+	if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 		speedvalue = BIT(7);
 	else
 		speedvalue = rtl_read_byte(rtlpriv, 0xff); /* check device operation speed: SS 0xff BIT(7) */
@@ -1445,7 +1445,7 @@ static void _InitBurstPktLen(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_PIFS, 0x00);
 
 	/* Suggention by SD1 Jong and Pisa, by Maddest 20130107. */
-	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+	if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		rtl_write_word(rtlpriv, REG_MAX_AGGR_NUM, 0x0a0a);
 		rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL, 0x80);
 		rtl_write_byte(rtlpriv, REG_AMPDU_MAX_TIME_8812, 0x5e);
@@ -1490,7 +1490,7 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 				 __func__);
 			return _FAIL;
 		}
-	} else if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		if (!rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_TESTCHIP_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_ENABLE_FLOW)) {
 			RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 				 "%s: run power on flow fail\n",
@@ -1520,7 +1520,7 @@ static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
 	 * Need remove below furture, suggest by Jackie.
 	 * if 0xF0[24] =1 (LDO), need to set the 0x7C[6] to 1.
 	 */
-	if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
+	if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		u1btmp = rtl_read_byte(rtlpriv, REG_SYS_CFG+3);
 		if (u1btmp & BIT(0)) { 	/* LDO mode. */
 			u1btmp = rtl_read_byte(rtlpriv, 0x7c);
@@ -2109,7 +2109,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	 * After discuss with BB team YN, reset after MAC power on to prevent RF
 	 * R/W error. Is it a right method?
 	 */
-	if (!IS_HARDWARE_TYPE_8821(rtlhal)) {
+	if (!IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		rtl_write_byte(rtlpriv, REG_RF_CTRL, 5);
 		rtl_write_byte(rtlpriv, REG_RF_CTRL, 7);
 		rtl_write_byte(rtlpriv, REG_RF_B_CTRL_8812, 5);
@@ -2178,7 +2178,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		_InitQueueReservedPage_8812AUsb(rtlpriv);
 		_InitTxBufferBoundary_8812AUsb(rtlpriv);
-	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		_InitQueueReservedPage_8821AUsb(rtlpriv);
 		_InitTxBufferBoundary_8821AUsb(rtlpriv);
 	}

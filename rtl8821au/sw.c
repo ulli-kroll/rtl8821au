@@ -193,7 +193,7 @@ void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 
 	if (IS_VENDOR_8812A_C_CUT(rtlhal->version))
 		bHwLDPCSupport = true;
-	else if (IS_HARDWARE_TYPE_8821(rtlhal))
+	else if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 		bHwLDPCSupport = false;
 	else
 		bHwLDPCSupport = false;

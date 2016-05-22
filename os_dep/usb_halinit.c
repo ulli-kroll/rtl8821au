@@ -104,7 +104,7 @@ static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_CR, 0x0);
 
 	/* Run LPS WL RFOFF flow */
-	if (IS_HARDWARE_TYPE_8821U(rtlhal))
+	if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 		rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_LPS_ENTER_FLOW);
 	else
 		rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_LPS_ENTER_FLOW);
@@ -124,7 +124,7 @@ static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_MCUFWDL, 0x00);
 
 	/* Card disable power action flow */
-	if (IS_HARDWARE_TYPE_8821U(rtlhal))
+	if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 		rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8821A_NIC_DISABLE_FLOW);
 	else
 		rtw_hal_pwrseqcmdparsing(rtlpriv, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, Rtl8812_NIC_DISABLE_FLOW);

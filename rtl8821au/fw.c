@@ -37,7 +37,7 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
 		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2&(~BIT(3)));
-	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
 		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2&(~BIT(0)));
 	}
@@ -49,7 +49,7 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 	if (IS_HARDWARE_TYPE_8812(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
 		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2 | (BIT(3)));
-	} else if (IS_HARDWARE_TYPE_8821(rtlhal)) {
+	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
 		u1bTmp2 = rtl_read_byte(rtlpriv, REG_RSV_CTRL+1);
 		rtl_write_byte(rtlpriv, REG_RSV_CTRL + 1, u1bTmp2 | (BIT(0)));
 	}
@@ -494,7 +494,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) 
 		fw_name = "rtlwifi/rtl8812aufw.bin";
 
-	if (IS_HARDWARE_TYPE_8821U(rtlhal))
+	if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 		fw_name = "rtlwifi/rtl8821aufw.bin";
 
 	pr_info("Loading firmware %s\n", fw_name);
@@ -905,7 +905,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 
 	if (IS_HARDWARE_TYPE_8812(rtlhal))
 		PageSize = 512;
-	else if (IS_HARDWARE_TYPE_8821(rtlhal))
+	else if (IS_HARDWARE_TYPE_8821AU(rtlhal))
 		PageSize = PAGE_SIZE_TX_8821A;
 
 	/*

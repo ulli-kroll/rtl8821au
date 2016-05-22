@@ -350,9 +350,10 @@ uint32_t ODM_Get_Rate_Bitmap(struct rtl_priv *rtlpriv, uint32_t macid,
 		break;
 	case WIRELESS_MODE_AC_5G | WIRELESS_MODE_A:
 	case WIRELESS_MODE_AC_5G | WIRELESS_MODE_G:
+		/* ULLI : strange rate bitmap for 2T2R deivcies */
 		if (rtlpriv->phy.rf_type == RF_1T1R) {
 			if ((IS_HARDWARE_TYPE_8812AU(rtlhal) && IS_NORMAL_CHIP(rtlhal->version))) {
-				if (IS_HARDWARE_TYPE_8821U(rtlhal)
+				if (IS_HARDWARE_TYPE_8821AU(rtlhal)
 					&& (rtlpriv->phy.current_channel >= 149)) {
 					if (rssi_level == 1)				/* add by Gary for ac-series */
 						rate_bitmap = 0x001f8000;

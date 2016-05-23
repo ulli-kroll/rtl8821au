@@ -2000,6 +2000,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv);
 
 enum hardware_type {
 	HARDWARE_TYPE_RTL8812AU,
+	HARDWARE_TYPE_RTL8814AU,
 	HARDWARE_TYPE_RTL8821AU,
 
 	HARDWARE_TYPE_MAX,
@@ -2008,6 +2009,8 @@ enum hardware_type {
 // RTL8812 Series
 #define IS_HARDWARE_TYPE_8812AU(rtlhal)	\
 	(rtlhal->hw_type == HARDWARE_TYPE_RTL8812AU)
+#define IS_HARDWARE_TYPE_8814AU(rtlhal)	\
+	(rtlhal->hw_type == HARDWARE_TYPE_RTL8814AU)
 
 // RTL8821 Series
 #define IS_HARDWARE_TYPE_8821AU(rtlhal)	\

@@ -108,8 +108,9 @@ enum rtl_desc_qsel {
 //HAL_VERSION			VersionID;
 
 enum version_8821au {
-	CHIP_8812 =	BIT(2),
-	CHIP_8821 = 	(BIT(0)|BIT(2)),
+	CHIP_8812 =	BIT(2),			/* 0b100 */
+	CHIP_8814 = 	(BIT(0)|BIT(2)),	/* 0b101 */
+	CHIP_8821 = 	(BIT(1)|BIT(2)),	/* 0b110 */
 	NORMAL_CHIP =	BIT(3),
 	RF_TYPE_1T1R =	(~(BIT(4)|BIT(5)|BIT(6))),
 	RF_TYPE_1T2R =	BIT(4),

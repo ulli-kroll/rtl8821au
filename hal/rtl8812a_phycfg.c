@@ -170,7 +170,7 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 		rtl8821au_dm_clean_txpower_tracking_state(rtlpriv);
 		PHY_SetTxPowerLevel8812(rtlpriv, rtlpriv->phy.current_channel);
 
-		if ((rtlpriv->phy.need_iqk = false == true)) {
+		if (rtlpriv->phy.need_iqk == true) {
 			if(IS_HARDWARE_TYPE_8812AU(rtlhal))
 				rtl8812au_phy_iq_calibrate(rtlpriv, false);
 			else if(IS_HARDWARE_TYPE_8821AU(rtlhal))

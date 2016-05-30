@@ -97,9 +97,6 @@ static int rtw_hwpdn_mode = 2;	/* 0:disable,1:enable,2: by EFUSE config */
 
 static int rtw_hwpwrp_detect = 0; /* HW power  ping detect 0:disable , 1:enable */
 
-/* ULLI: check var rtw_hw_wps_pbc */
-static int rtw_hw_wps_pbc = 1;
-
 #ifdef CONFIG_TX_MCAST2UNI
 int __rtw_mc2u_disable = 0;
 #endif
@@ -123,8 +120,6 @@ module_param(rtw_low_power, int, 0644);
 module_param(rtw_enusbss, int, 0644);
 module_param(rtw_hwpdn_mode, int, 0644);
 module_param(rtw_hwpwrp_detect, int, 0644);
-
-module_param(rtw_hw_wps_pbc, int, 0644);
 
 #ifdef CONFIG_TX_MCAST2UNI
 module_param(__rtw_mc2u_disable, int, 0644);
@@ -178,9 +173,6 @@ uint loadparam(struct rtl_priv *rtlpriv, struct net_device *ndev)
 #ifdef CONFIG_AUTOSUSPEND
 	registry_par->usbss_enable = (uint8_t)rtw_enusbss;	/* 0:disable,1:enable */
 #endif
-
-	registry_par->hw_wps_pbc = (uint8_t)rtw_hw_wps_pbc;
-
 	return status;
 }
 

@@ -2188,9 +2188,6 @@ static void dm_CheckPbcGPIO(struct rtl_priv *rtlpriv)
 	uint8_t	tmp1byte;
 	uint8_t	bPbcPressed = false;
 
-	if (!rtlpriv->registrypriv.hw_wps_pbc)
-		return;
-
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		tmp1byte = rtl_read_byte(rtlpriv, GPIO_IO_SEL);
 		tmp1byte |= (HAL_8192C_HW_GPIO_WPS_BIT);

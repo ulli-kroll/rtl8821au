@@ -2611,26 +2611,6 @@ static void rtl8821_dm_init_gpio_setting(struct rtl_priv *rtlpriv)
 
 }
 
-static void Update_ODM_ComInfo_8812(struct rtl_priv *rtlpriv)
-{
-	struct rtl_dm *rtldm = rtl_dm(rtlpriv);
-
-	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
-	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
-
-	int i;
-
-	ODM_CmnInfoHook(pDM_Odm, ODM_CMNINFO_SCAN, &(pmlmepriv->bScanInProcess));
-
-	for (i = 0; i < NUM_STA; i++) {
-		rtldm->pODM_StaInfo[i] = NULL;
-		/* pDM_Odm->pODM_StaInfo[i] = NULL; */
-	}
-}
-
-
 void rtl8812_dm_init(struct rtl_priv *rtlpriv)
 {
 	rtl8821_dm_init_gpio_setting(rtlpriv);
@@ -2638,7 +2618,6 @@ void rtl8812_dm_init(struct rtl_priv *rtlpriv)
 	rtlpriv->dm.dm_type = DM_TYPE_BYDRIVER;
 	rtlpriv->dm.dm_flag = 0;
 
-	Update_ODM_ComInfo_8812(rtlpriv);
 	ODM_DMInit(rtlpriv);
 
 	rtlpriv->fix_rate = 0xFF;

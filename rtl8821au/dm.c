@@ -422,7 +422,7 @@ static void rtl8812au_do_iqk(struct rtl_priv *rtlpriv, u8 DeltaThermalIndex,
  *---------------------------------------------------------------------------
  */
 
-static void rtl8812au_dm_pxpwr_track_set_pwr(struct rtl_priv *rtlpriv,
+static void rtl8812au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 					     enum pwr_track_control_method Method,
 					     u8 RFPath, u8 ChannelMappedIndex)
 {
@@ -1546,7 +1546,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 					efuse->eeprom_thermalmeter);
 
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
-					rtl8812au_dm_pxpwr_track_set_pwr(rtlpriv,
+					rtl8812au_dm_txpwr_track_set_pwr(rtlpriv,
 						BBSWING, p, index_for_channel);
 			} else {
 				RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
@@ -1555,7 +1555,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 					 efuse->eeprom_thermalmeter);
 
 				for (p = RF90_PATH_A; p < MAX_PATH_NUM_8812A; p++)
-					rtl8812au_dm_pxpwr_track_set_pwr(rtlpriv,
+					rtl8812au_dm_txpwr_track_set_pwr(rtlpriv,
 						BBSWING, p, index_for_channel);
 			}
 

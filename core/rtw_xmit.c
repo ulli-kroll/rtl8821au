@@ -503,7 +503,7 @@ static void update_attrib_vcs_info(struct rtl_priv *rtlpriv, struct xmit_frame *
 	} else {
 		while (true) {
 			/* IOT action */
-			if ((pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_ATHEROS)
+			if ((pmlmeinfo->assoc_AP_vendor == PEER_ATH)
 			 && (pattrib->ampdu_en == true)
 			 && (rtlpriv->securitypriv.dot11PrivacyAlgrthm == AESCCMP_ENCRYPTION)) {
 				pattrib->vcs_mode = CTS_TO_SELF;

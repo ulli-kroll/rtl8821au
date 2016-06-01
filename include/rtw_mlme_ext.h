@@ -214,42 +214,18 @@ typedef struct _RT_CHANNEL_PLAN_MAP
 	unsigned char	Index5G;
 }RT_CHANNEL_PLAN_MAP, *PRT_CHANNEL_PLAN_MAP;
 
-enum Associated_AP
-{
-	atherosAP	= 0,
-	broadcomAP	= 1,
-	ciscoAP		= 2,
-	marvellAP	= 3,
-	ralinkAP	= 4,
-	realtekAP	= 5,
-	airgocapAP 	= 6,
-	unknownAP	= 7,
-	maxAP,
+enum ap_peer {
+	PEER_UNKNOWN = 0,
+	PEER_RTL = 1,
+	PEER_RTL_92SE = 2,
+	PEER_BROAD = 3,
+	PEER_RAL = 4,
+	PEER_ATH = 5,
+	PEER_CISCO = 6,
+	PEER_MARV = 7,
+	PEER_AIRGO = 9,
+	PEER_MAX = 10,
 };
-
-typedef enum _HT_IOT_PEER
-{
-	HT_IOT_PEER_UNKNOWN 			= 0,
-	HT_IOT_PEER_REALTEK 			= 1,
-	HT_IOT_PEER_REALTEK_92SE 		= 2,
-	HT_IOT_PEER_BROADCOM 		= 3,
-	HT_IOT_PEER_RALINK 			= 4,
-	HT_IOT_PEER_ATHEROS 			= 5,
-	HT_IOT_PEER_CISCO 				= 6,
-	HT_IOT_PEER_MERU 				= 7,
-	HT_IOT_PEER_MARVELL 			= 8,
-	HT_IOT_PEER_REALTEK_SOFTAP 	= 9,// peer is RealTek SOFT_AP, by Bohn, 2009.12.17
-	HT_IOT_PEER_SELF_SOFTAP 		= 10, // Self is SoftAP
-	HT_IOT_PEER_AIRGO 				= 11,
-	HT_IOT_PEER_INTEL 				= 12,
-	HT_IOT_PEER_RTK_APCLIENT 		= 13,
-	HT_IOT_PEER_REALTEK_81XX 		= 14,
-	HT_IOT_PEER_REALTEK_WOW 		= 15,
-	HT_IOT_PEER_REALTEK_JAGUAR_BCUTAP = 16,
-	HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP = 17,
-	HT_IOT_PEER_MAX 				= 18
-}HT_IOT_PEER_E, *PHTIOT_PEER_E;
-
 
 enum SCAN_STATE
 {

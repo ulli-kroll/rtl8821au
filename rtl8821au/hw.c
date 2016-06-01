@@ -276,25 +276,12 @@ static void Hal_PatchwithJaguar_8812(struct rtl_priv *rtlpriv, RT_MEDIA_STATUS	M
 	struct mlme_ext_priv	*pmlmeext = &(rtlpriv->mlmeextpriv);
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 
-	if ((MediaStatus == RT_MEDIA_CONNECT)
-	  && (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_BCUTAP)) {
-		rtl_write_byte(rtlpriv, rVhtlen_Use_Lsig_Jaguar, 0x1);
-		rtl_write_byte(rtlpriv, REG_TCR+3, BIT(2));
-	} else {
-		rtl_write_byte(rtlpriv, rVhtlen_Use_Lsig_Jaguar, 0x3F);
-		rtl_write_byte(rtlpriv, REG_TCR+3, BIT(0)|BIT(1)|BIT(2));
-	}
+	rtl_write_byte(rtlpriv, rVhtlen_Use_Lsig_Jaguar, 0x3F);
+	rtl_write_byte(rtlpriv, REG_TCR+3, BIT(0)|BIT(1)|BIT(2));
 
 
-	if ((MediaStatus == RT_MEDIA_CONNECT)
-	   && ((pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_BCUTAP)
-	      || (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP))) {
-		rtlpriv->phy.reg_837 |= BIT(2);
-		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, rtlpriv->phy.reg_837);
-	} else {
-		rtlpriv->phy.reg_837 &= (~BIT(2));
-		rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, rtlpriv->phy.reg_837);
-	}
+	rtlpriv->phy.reg_837 &= (~BIT(2));
+	rtl_write_byte(rtlpriv, rBWIndication_Jaguar+3, rtlpriv->phy.reg_837);
 }
 
 void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
@@ -783,7 +770,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			uint32_t usNavUpper = *((u32 *)pval);
 
 			if (usNavUpper > HAL_NAV_UPPER_UNIT * 0xFF) {
-				RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, 
+				RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 					 "%s: [HW_VAR_NAV_UPPER] set value(0x%08X us) is larger than (%d * 0xFF)!\n",
 					 __FUNCTION__, usNavUpper, HAL_NAV_UPPER_UNIT);
 				break;
@@ -853,7 +840,7 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	default:
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, 
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 			 "%s: [WARNNING] variable(%d) not defined!\n",
 			 __FUNCTION__, variable);
 		break;
@@ -2086,7 +2073,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	/* Check if MAC has already power on. by tynli. 2011.05.27. */
 	value8 = rtl_read_byte(rtlpriv, REG_SYS_CLKR+1);
 	u1bRegCR = rtl_read_byte(rtlpriv, REG_CR);
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, 
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 		 " power-on :REG_SYS_CLKR 0x09=0x%02x. REG_CR 0x100=0x%02x.\n",
 		 value8, u1bRegCR);
 	if ((value8&BIT(3))  && (u1bRegCR != 0 && u1bRegCR != 0xEA)) {
@@ -2100,7 +2087,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 		 * state which is set before sleep under wowlan mode. 2012.01.04. by tynli.
 		 * pHalData->FwPSState = FW_PS_STATE_ALL_ON_88E;
 		 */
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, 
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 			 " MAC has not been powered on yet.\n");
 	}
 

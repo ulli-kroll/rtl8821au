@@ -608,13 +608,6 @@ static bool Get_RA_ShortGI(struct rtl_priv *rtlpriv, struct sta_info	*psta,
 
 	bShortGI = shortGIrate;
 
-	if (bShortGI && IsSupportedVHT(psta->wireless_mode)
-	 && (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP)
-	 && TEST_FLAG(psta->vhtpriv.ldpc_cap, LDPC_VHT_ENABLE_TX)) {
-		if (psta->vhtpriv.vht_highest_rate >= MGN_VHT2SS_MCS8)
-			bShortGI = false;
-	}
-
 	return bShortGI;
 }
 

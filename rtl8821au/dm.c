@@ -69,7 +69,7 @@ static const u32 txscalling_tbl[TXSCALE_TABLE_SIZE] = {
 
 static void rtl8821au_dm_dig(struct rtl_priv *rtlpriuv);
 
-static const u32 edca_setting_ul[HT_IOT_PEER_MAX] = {
+static const u32 edca_setting_ul[PEER_MAX] = {
 	0x5e4322,	/*  0 UNKNOWN */
 	0xa44f,		/*  1 REALTEK_90 */
 	0x5e4322,	/*  2 REALTEK_92SE */
@@ -77,14 +77,18 @@ static const u32 edca_setting_ul[HT_IOT_PEER_MAX] = {
 	0x5ea422,	/*  4 RALINK */
 	0x5ea322,	/*  5 ATHEROS */
 	0x3ea430,	/*  6 CISCO */
+#if 0
 	0x5ea42b,	/*  7 MERU */
+#endif
 	0x5ea44f,	/*  8 MARVELL */
+#if 0
 	0x5e4322,	/*  9 92U_AP */
 	0x5e4322,	/* 10 SELF_AP(DownLink/Tx) */
+#endif
 };
 
 
-static const u32 edca_setting_dl[HT_IOT_PEER_MAX] = {
+static const u32 edca_setting_dl[PEER_MAX] = {
 	0xa44f,		/*  0 UNKNOWN */
 	0x5ea44f,	/*  1 REALTEK_90 */
 	0x5e4322,	/*  2 REALTEK_92SE */
@@ -92,13 +96,17 @@ static const u32 edca_setting_dl[HT_IOT_PEER_MAX] = {
 	0xa44f,		/*  4 RALINK */
 	0xa630,		/*  5 ATHEROS */
 	0x5ea630,	/*  6 CISCO */
+#if 0
 	0x5ea42b,	/*  7 MERU */
+#endif
 	0xa44f,		/*  8 MARVELL */
+#if 0
 	0xa42b,		/*  9 92U_AP */
 	0xa42b		/* 10 SELF_AP(UpLink/Rx) */
+#endif
 };
 
-static const u32 edca_setting_gmode[HT_IOT_PEER_MAX] = {
+static const u32 edca_setting_gmode[PEER_MAX] = {
 	0x4322,		/*  0 UNKNOWN */
 	0xa44f,		/*  1 REALTEK_90 */
 	0x5e4322,	/*  2 REALTEK_92SE */
@@ -106,10 +114,14 @@ static const u32 edca_setting_gmode[HT_IOT_PEER_MAX] = {
 	0x5e4322,	/*  4 RALINK */
 	0x4322,		/*  5 ATHEROS */
 	0xa42b,		/*  6 CISCO */
+#if 0
 	0x5ea42b,	/*  7 MERU */
+#endif
 	0xa44f,		/*  8 MARVELL */
+#if 0
 	0x5e4322,	/*  9 92U_AP */
 	0x5ea42b	/* 10 SELF_AP */
+#endif
 };
 
 const u8 cckswing_table_ch1ch13_new[CCK_TABLE_SIZE][8] = {
@@ -353,7 +365,7 @@ static void rtl8821au_dm_initialize_txpower_tracking_thermalmeter(struct rtl_pri
 		u8 defaultSwingIndex = getSwingIndex(rtlpriv);
 
 
-		rtldm->default_ofdm_index = 
+		rtldm->default_ofdm_index =
 			(defaultSwingIndex == TXSCALE_TABLE_SIZE) ?
 			24 : defaultSwingIndex;
 		rtldm->default_cck_index = 24;
@@ -2111,7 +2123,7 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 
 	IOTPeer = pmlmeinfo->assoc_AP_vendor;
 
-	if (IOTPeer >=  HT_IOT_PEER_MAX) {
+	if (IOTPeer >=  PEER_MAX) {
 		goto dm_CheckEdcaTurbo_EXIT;
 	}
 
@@ -2121,7 +2133,7 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 		cur_rx_bytes = precvpriv->rx_bytes - precvpriv->last_rx_bytes;
 
 		/* traffic, TX or RX */
-		if ((IOTPeer == HT_IOT_PEER_RALINK) || (IOTPeer == HT_IOT_PEER_ATHEROS)) {
+		if ((IOTPeer == PEER_RAL) || (IOTPeer == PEER_ATH)) {
 			if (cur_tx_bytes > (cur_rx_bytes << 2)) {
 				/* Uplink TP is present. */
 				trafficIndex = UP_LINK;
@@ -2141,14 +2153,14 @@ static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 
 		if ((pDM_Odm->DM_EDCA_Table.prv_traffic_idx != trafficIndex) || (!rtlpriv->dm.current_turbo_edca)) {
 			/* merge from 92s_92c_merge temp brunch v2445    20120215 */
-			if ((IOTPeer == HT_IOT_PEER_CISCO)) {
+			if ((IOTPeer == PEER_CISCO)) {
 				EDCA_BE_DL = edca_setting_gmode[IOTPeer];
-			} else if ((IOTPeer == HT_IOT_PEER_AIRGO)) {
+			} else if ((IOTPeer == PEER_AIRGO)) {
 					EDCA_BE_DL = 0xa630;
-			} else if (IOTPeer == HT_IOT_PEER_MARVELL) {
+			} else if (IOTPeer == PEER_MARV) {
 				EDCA_BE_DL = edca_setting_dl[IOTPeer];
 				EDCA_BE_UL = edca_setting_ul[IOTPeer];
-			} else if (IOTPeer == HT_IOT_PEER_ATHEROS) {
+			} else if (IOTPeer == PEER_ATH) {
 				/* Set DL EDCA for Atheros peer to 0x3ea42b. Suggested by SD3 Wilson for ASUS TP issue. */
 				EDCA_BE_DL = edca_setting_dl[IOTPeer];
 			}

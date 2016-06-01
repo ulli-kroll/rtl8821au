@@ -3317,7 +3317,7 @@ void issue_asocrsp(struct rtl_priv *rtlpriv, unsigned short status, struct sta_i
 	}
 
 
-	if (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK)
+	if (pmlmeinfo->assoc_AP_vendor == PEER_RTL)
 	{
 		pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, 6 , REALTEK_96B_IE, &(pattrib->pktlen));
 	}
@@ -3605,7 +3605,7 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 		i += (pIE->Length + 2);
 	}
 
-	if (pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_REALTEK)
+	if (pmlmeinfo->assoc_AP_vendor == PEER_RTL)
 	{
 		pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, 6 , REALTEK_96B_IE, &(pattrib->pktlen));
 	}

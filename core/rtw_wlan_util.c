@@ -1587,7 +1587,7 @@ int support_short_GI(struct rtl_priv *rtlpriv, struct HT_caps_element *pHT_caps)
 	if (!(pmlmeinfo->HT_enable))
 		return _FAIL;
 
-	if ((pmlmeinfo->assoc_AP_vendor == HT_IOT_PEER_RALINK))
+	if ((pmlmeinfo->assoc_AP_vendor == PEER_RAL))
 		return _FAIL;
 
 	bit_offset = (pmlmeext->cur_bwmode & CHANNEL_WIDTH_40)? 6: 5;
@@ -1699,33 +1699,33 @@ unsigned char check_assoc_AP(uint8_t *pframe, uint len)
 				if ((_rtw_memcmp(pIE->data, ARTHEROS_OUI1, 3)) || (_rtw_memcmp(pIE->data, ARTHEROS_OUI2, 3)))
 				{
 					DBG_871X("link to Artheros AP\n");
-					return HT_IOT_PEER_ATHEROS;
+					return PEER_ATH;
 				}
 				else if ((_rtw_memcmp(pIE->data, BROADCOM_OUI1, 3))
 							|| (_rtw_memcmp(pIE->data, BROADCOM_OUI2, 3))
 							|| (_rtw_memcmp(pIE->data, BROADCOM_OUI2, 3)))
 				{
 					DBG_871X("link to Broadcom AP\n");
-					return HT_IOT_PEER_BROADCOM;
+					return PEER_BROAD;
 				}
 				else if (_rtw_memcmp(pIE->data, MARVELL_OUI, 3))
 				{
 					DBG_871X("link to Marvell AP\n");
-					return HT_IOT_PEER_MARVELL;
+					return PEER_MARV;
 				}
 				else if (_rtw_memcmp(pIE->data, RALINK_OUI, 3))
 				{
 					DBG_871X("link to Ralink AP\n");
-					return HT_IOT_PEER_RALINK;
+					return PEER_RAL;
 				}
 				else if (_rtw_memcmp(pIE->data, CISCO_OUI, 3))
 				{
 					DBG_871X("link to Cisco AP\n");
-					return HT_IOT_PEER_CISCO;
+					return PEER_CISCO;
 				}
 				else if (_rtw_memcmp(pIE->data, REALTEK_OUI, 3))
 				{
-					uint32_t	Vender = HT_IOT_PEER_REALTEK;
+					uint32_t	Vender = PEER_RTL;
 
 					if(pIE->Length >= 5) {
 						if(pIE->data[4]==1)
@@ -1736,22 +1736,7 @@ unsigned char check_assoc_AP(uint8_t *pframe, uint len)
 							if(pIE->data[5] & RT_HT_CAP_USE_92SE)
 							{
 								//bssDesc->BssHT.RT2RT_HT_Mode |= RT_HT_CAP_USE_92SE;
-								Vender = HT_IOT_PEER_REALTEK_92SE;
-							}
-						}
-
-						if(pIE->data[5] & RT_HT_CAP_USE_SOFTAP)
-							Vender = HT_IOT_PEER_REALTEK_SOFTAP;
-
-						if(pIE->data[4] == 2)
-						{
-							if(pIE->data[6] & RT_HT_CAP_USE_JAGUAR_BCUT) {
-								Vender = HT_IOT_PEER_REALTEK_JAGUAR_BCUTAP;
-								DBG_871X("link to Realtek JAGUAR_BCUTAP\n");
-							}
-							if(pIE->data[6] & RT_HT_CAP_USE_JAGUAR_CCUT) {
-								Vender = HT_IOT_PEER_REALTEK_JAGUAR_CCUTAP;
-								DBG_871X("link to Realtek JAGUAR_CCUTAP\n");
+								Vender = PEER_RTL_92SE;
 							}
 						}
 					}
@@ -1762,7 +1747,7 @@ unsigned char check_assoc_AP(uint8_t *pframe, uint len)
 				else if (_rtw_memcmp(pIE->data, AIRGOCAP_OUI,3))
 				{
 					DBG_871X("link to Airgo Cap\n");
-					return HT_IOT_PEER_AIRGO;
+					return PEER_AIRGO;
 				}
 				else
 				{
@@ -1777,7 +1762,7 @@ unsigned char check_assoc_AP(uint8_t *pframe, uint len)
 	}
 
 	DBG_871X("link to new AP\n");
-	return HT_IOT_PEER_UNKNOWN;
+	return PEER_UNKNOWN;
 }
 
 void update_IOT_info(struct rtl_priv *rtlpriv)
@@ -1787,16 +1772,16 @@ void update_IOT_info(struct rtl_priv *rtlpriv)
 
 	switch (pmlmeinfo->assoc_AP_vendor)
 	{
-		case HT_IOT_PEER_MARVELL:
+		case PEER_MARV:
 			pmlmeinfo->turboMode_cts2self = 1;
 			pmlmeinfo->turboMode_rtsen = 0;
 			break;
 
-		case HT_IOT_PEER_RALINK:
+		case PEER_RAL:
 			pmlmeinfo->turboMode_cts2self = 0;
 			pmlmeinfo->turboMode_rtsen = 1;
 			break;
-		case HT_IOT_PEER_REALTEK:
+		case PEER_RTL:
 			//rtw_write16(rtlpriv, 0x4cc, 0xffff);
 			//rtw_write16(rtlpriv, 0x546, 0x01c0);
 			//disable high power

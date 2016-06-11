@@ -4244,13 +4244,13 @@ static void _rtl8821au_phy_set_reg_bw(struct rtl_priv *rtlpriv, enum CHANNEL_WID
 }
 
 void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
-	u8 Channel)
+	u8 channel)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	/* C cut Item12 ADC FIFO CLOCK */
 	if(IS_VENDOR_8812A_C_CUT(rtlhal->version)) {
-		if(Bandwidth == CHANNEL_WIDTH_40 && Channel == 11)
+		if(Bandwidth == CHANNEL_WIDTH_40 && channel == 11)
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0xC00, 0x3);		/* 0x8AC[11:10] = 2'b11 */
 		else
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0xC00, 0x2);		/* 0x8AC[11:10] = 2'b10 */
@@ -4258,10 +4258,10 @@ void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 		/*
 		 *  <20120914, Kordan> A workarould to resolve 2480Mhz spur by setting ADC clock as 160M. (Asked by Binson)
 		 */
-		if (Bandwidth == CHANNEL_WIDTH_20 && (Channel == 13 || Channel == 14)) {
+		if (Bandwidth == CHANNEL_WIDTH_20 && (channel == 13 || channel == 14)) {
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x3);  		/* 0x8AC[9:8] = 2'b11 */
 			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 1);  	/* 0x8C4[30] = 1 */
-		} else if (Bandwidth == CHANNEL_WIDTH_40 && Channel == 11) {
+		} else if (Bandwidth == CHANNEL_WIDTH_40 && channel == 11) {
 			rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 1);  	/* 0x8C4[30] = 1 */
 		} else if (Bandwidth != CHANNEL_WIDTH_80) {
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x2);  		/* 0x8AC[9:8] = 2'b10 */
@@ -4270,9 +4270,9 @@ void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 		}
 	} else if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		/* <20120914, Kordan> A workarould to resolve 2480Mhz spur by setting ADC clock as 160M. (Asked by Binson) */
-		if (Bandwidth == CHANNEL_WIDTH_20 && (Channel == 13 || Channel == 14))
+		if (Bandwidth == CHANNEL_WIDTH_20 && (channel == 13 || channel == 14))
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x3);  /* 0x8AC[9:8] = 11 */
-		else if (Channel <= 14) /* 2.4G only */
+		else if (channel <= 14) /* 2.4G only */
 			rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x300, 0x2);  /* 0x8AC[9:8] = 10 */
 	}
 
@@ -4435,7 +4435,7 @@ uint32_t phy_get_tx_swing_8821au(struct rtl_priv *rtlpriv, enum band_type Band,
 	char reg_swing_5g = -1;	/* 0xff */
 	char swing_2g = -1 * reg_swing_2g;
 	char swing_5g = -1 * reg_swing_5g;
-	uint32_t	out = 0x200;
+	u32	out = 0x200;
 	const char auto_temp = -1;
 
 
@@ -4729,16 +4729,18 @@ static void phy_SetRFEReg8812(struct rtl_priv *rtlpriv,uint8_t Band)
 	}
 }
 
-void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
+void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 band)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	uint8_t				currentBand = rtlhal->current_bandtype;
+	struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
+	u8 current_band = rtlhal->current_bandtype;
+	char bb_diff_between_band = 0;
 
 	/* DBG_871X("==>rtl8821au_phy_switch_wirelessband() %s\n", ((Band==0)?"2.4G":"5G")); */
 
-	rtlhal->current_bandtype =(enum band_type)Band;
+	rtlhal->current_bandtype =(enum band_type)band;
 
-	if(Band == BAND_ON_2_4G) {	/* 2.4G band */
+	if(band == BAND_ON_2_4G) {	/* 2.4G band */
 
 		/* STOP Tx/Rx */
 		rtl_set_bbreg(rtlpriv, rOFDMCCKEN_Jaguar, bOFDMEN_Jaguar|bCCKEN_Jaguar, 0x00);
@@ -4766,7 +4768,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 		} else if(IS_VENDOR_8812A_MP_CHIP(rtlhal->version)) {
 			if(0 /* GetRegbENRFEType(rtlpriv) */)
 
-				phy_SetRFEReg8812(rtlpriv, Band);
+				phy_SetRFEReg8812(rtlpriv, band);
 			else {
 				/* PAPE_A (bypass RFE module in 2G) */
 				rtl_set_bbreg(rtlpriv, rA_RFE_Pinmux_Jaguar, 0x000000F0, 0x7);
@@ -4856,7 +4858,7 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 			rtl_set_bbreg(rtlpriv, rB_RFE_Jaguar, BIT(15), 0x0);
 		} else if(IS_VENDOR_8812A_MP_CHIP(rtlhal->version)) {
 			if(0 /* GetRegbENRFEType(rtlpriv) */)
-				phy_SetRFEReg8812(rtlpriv, Band);
+				phy_SetRFEReg8812(rtlpriv, band);
 			else {
 				/* PAPE_A (bypass RFE module in 2G) */
 				if (rtlhal->external_pa_5g) {
@@ -4905,34 +4907,34 @@ void rtl8821au_phy_switch_wirelessband(struct rtl_priv *rtlpriv, u8 Band)
 
 	/* <20120903, Kordan> Tx BB swing setting for RL6286, asked by Ynlin. */
 	if (IS_NORMAL_CHIP(rtlhal->version) || IS_HARDWARE_TYPE_8821AU(rtlhal)) {
-		s8	BBDiffBetweenBand = 0;
-		struct rtl_dm	*rtldm = rtl_dm(rtlpriv);
-
 		rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000,
-					 phy_get_tx_swing_8821au(rtlpriv, (enum band_type)Band, RF90_PATH_A)); // 0xC1C[31:21]
+			      phy_get_tx_swing_8821au(rtlpriv,
+					(enum band_type)band, RF90_PATH_A)); // 0xC1C[31:21]
 		rtl_set_bbreg(rtlpriv, rB_TxScale_Jaguar, 0xFFE00000,
-					 phy_get_tx_swing_8821au(rtlpriv, (enum band_type)Band, RF90_PATH_B)); // 0xE1C[31:21]
+			      phy_get_tx_swing_8821au(rtlpriv,
+					(enum band_type)band, RF90_PATH_B)); // 0xE1C[31:21]
 
 		/*
 		 *  <20121005, Kordan> When TxPowerTrack is ON, we should take care of the change of BB swing.
 		 *  That is, reset all info to trigger Tx power tracking.
 		 */
-		{
-			if (Band != currentBand) {
-				BBDiffBetweenBand = (rtldm->swing_diff_2g - rtldm->swing_diff_5g);
-				BBDiffBetweenBand = (Band == BAND_ON_2_4G) ? BBDiffBetweenBand : (-1 * BBDiffBetweenBand);
-				rtldm->default_ofdm_index += BBDiffBetweenBand*2;
-			}
-
-			rtl8821au_dm_clean_txpower_tracking_state(rtlpriv);
+		if (band != current_band) {
+			bb_diff_between_band =
+				rtldm->swing_diff_2g - rtldm->swing_diff_5g;
+			bb_diff_between_band =
+				(band == BAND_ON_2_4G) ?
+				bb_diff_between_band :
+				(-1 * bb_diff_between_band);
+			rtldm->default_ofdm_index += bb_diff_between_band*2;
 		}
+		rtl8821au_dm_clean_txpower_tracking_state(rtlpriv);
 	}
 
 	/* DBG_871X("<==rtl8821au_phy_switch_wirelessband():Switch Band OK.\n"); */
 }
 
-static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv, uint32_t power_index,
-	u8 path, u8 rate)
+static void _rtl8821au_phy_set_txpower_index(struct rtl_priv *rtlpriv,
+					     u8 power_index, u8 path, u8 rate)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
@@ -5362,36 +5364,40 @@ static void _rtl8821au_phy_set_txpower_level_by_path(struct rtl_priv *rtlpriv, u
 
 }
 static void _rtl8821au_phy_txpower_training_by_path(struct rtl_priv *rtlpriv,
-	enum CHANNEL_WIDTH BandWidth, uint8_t Channel, uint8_t RfPath)
+	enum CHANNEL_WIDTH BandWidth, u8 channel, u8 path)
 {
-	uint8_t	i;
-	uint32_t	PowerLevel, writeData, writeOffset;
+	u8	i;
+	u32 power_level, data, offset;
 
-	if(RfPath >=  rtlpriv->phy.num_total_rfpath)
+	if(path >=  rtlpriv->phy.num_total_rfpath)
 		return;
 
-	writeData = 0;
+	data = 0;
 
-	if (RfPath == RF90_PATH_A) {
-		PowerLevel = _rtl8821au_get_txpower_index(rtlpriv, RF90_PATH_A, MGN_MCS7, BandWidth, Channel);
-		writeOffset =  rA_TxPwrTraing_Jaguar;
+	if (path == RF90_PATH_A) {
+		power_level =
+			_rtl8821au_get_txpower_index(rtlpriv, RF90_PATH_A,
+				MGN_MCS7, BandWidth, channel);
+		offset =  rA_TxPwrTraing_Jaguar;
 	} else {
-		PowerLevel = _rtl8821au_get_txpower_index(rtlpriv, RF90_PATH_B, MGN_MCS7, BandWidth, Channel);
-		writeOffset =  rB_TxPwrTraing_Jaguar;
+		power_level =
+			_rtl8821au_get_txpower_index(rtlpriv, RF90_PATH_B,
+				MGN_MCS7, BandWidth, channel);
+		offset =  rB_TxPwrTraing_Jaguar;
 	}
 
 	for (i = 0; i < 3; i++) {
 		if(i == 0)
-			PowerLevel = PowerLevel - 10;
+			power_level = power_level - 10;
 		else if(i == 1)
-			PowerLevel = PowerLevel - 8;
+			power_level = power_level - 8;
 		else
-			PowerLevel = PowerLevel - 6;
+			power_level = power_level - 6;
 
-		writeData |= (((PowerLevel > 2)?(PowerLevel):2) << (i * 8));
+		data |= (((power_level > 2) ? (power_level) : 2) << (i * 8));
 	}
 
-	rtl_set_bbreg(rtlpriv, writeOffset, 0xffffff, writeData);
+	rtl_set_bbreg(rtlpriv, offset, 0xffffff, data);
 }
 
 
@@ -5530,44 +5536,39 @@ static void _phy_convert_txpower_dbm_to_relative_value(u32 *data, u8 start,
  */
 
 static s8 _rtl8821au_phy_get_txpower_by_rate(struct rtl_priv *rtlpriv,
-					     u8 Band, u8 RFPath,
-					     u8 TxNum, u8 Rate)
+					     u8 band, u8 path,
+					     u8 tx_num, u8 rate)
 {
 	struct rtl_phy *rtlphy = rtl_phy(rtlpriv);
-	s8 			value = 0, limit = 0;
-	u8			rateIndex = PHY_GetRateIndexOfTxPowerByRate( Rate );
+	s8 value = 0, limit = 0;
+	u8 rate_index = PHY_GetRateIndexOfTxPowerByRate(rate);
 
-#if 0
-	if ( ( pAdapter->registrypriv.RegEnableTxPowerByRate == 2 && pHalData->EEPROMRegulatory == 2 ) ||
-		   pAdapter->registrypriv.RegEnableTxPowerByRate == 0 )
-		return 0;
-#endif
-	if (Band != BAND_ON_2_4G && Band != BAND_ON_5G ) {
+	if (band != BAND_ON_2_4G && band != BAND_ON_5G ) {
 		RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD,
 			 "Invalid band %d in %s\n",
-			 Band, __func__);
+			 band, __func__);
 		return value;
 	}
-	if (RFPath > RF90_PATH_D) {
+	if (path > RF90_PATH_D) {
 		RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD,
 			 "Invalid RfPath %d in %s\n",
-			 RFPath, __func__);
+			 path, __func__);
 		return value;
 	}
-	if (TxNum >= RF_MAX_TX_NUM) {
+	if (tx_num >= RF_MAX_TX_NUM) {
 		RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD,
 			 "Invalid TxNum %d in %s\n",
-			 TxNum, __func__);
+			 tx_num, __func__);
 		return value;
 	}
-	if (rateIndex >= TX_PWR_BY_RATE_NUM_RATE) {
+	if (rate_index >= TX_PWR_BY_RATE_NUM_RATE) {
 		RT_TRACE(rtlpriv, COMP_IQK, DBG_LOUD,
-			"Invalid RateIndex %d in %s\n", rateIndex,
+			"Invalid RateIndex %d in %s\n", rate_index,
 			__func__);
 		return value;
 	}
 
-	value = rtlphy->tx_power_by_rate_offset[Band][RFPath][TxNum][rateIndex];
+	value = rtlphy->tx_power_by_rate_offset[band][path][tx_num][rate_index];
 
 	return value;
 

@@ -1789,7 +1789,7 @@ static void _rtl8812au_iqk_restore_afe(struct rtl_priv *rtlpriv,
 				       u32 *afe_backup, u32 *backup_afe_reg,
 				       u32 afe_num)
 {
-	uint32_t i;
+	u32 i;
 
 	rtl_set_bbreg(rtlpriv, 0x82c, BIT(31), 0x0); /* [31] = 0 --> Page C */
 	/* Reload AFE Parameters */
@@ -1868,17 +1868,17 @@ static void _rtl8821au_iqk_configure_mac(struct rtl_priv *rtlpriv)
 /* Maintained by BB James. */
 static void _rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 {
-	uint32_t macbb_backup[MACBB_REG_NUM],
+	u32 macbb_backup[MACBB_REG_NUM],
 		 afe_backup[AFE_REG_NUM];
 	u32 rfa_backup[RF_REG_NUM];
 	u32 rfb_backup[RF_REG_NUM];
-	uint32_t backup_macbb_reg[MACBB_REG_NUM] = {
+	u32 backup_macbb_reg[MACBB_REG_NUM] = {
 		0xb00, 0x520, 0x550, 0x808, 0x90c, 0xc00,
 		0xe00, 0x8c4, 0x838, 0x82c };
-	uint32_t backup_afe_reg[AFE_REG_NUM] = {
+	u32 backup_afe_reg[AFE_REG_NUM] = {
 		0xc5c, 0xc60, 0xc64, 0xc68, 0xcb8, 0xcb0, 0xcb4,
 		0xe5c, 0xe60, 0xe64, 0xe68, 0xeb8, 0xeb0, 0xeb4 };
-	uint32_t backup_rf_reg[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
+	u32 backup_rf_reg[RF_REG_NUM] = { 0x65, 0x8f, 0x0 };
 
 
 	_rtl8812au_iqk_backup_macbb(rtlpriv, macbb_backup, backup_macbb_reg, MACBB_REG_NUM);
@@ -1896,8 +1896,6 @@ static void _rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv)
 	_rtl8812au_iqk_restore_macbb(rtlpriv, macbb_backup, backup_macbb_reg, MACBB_REG_NUM);
 }
 
-
-
 void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, bool bReCovery)
 {
 	_rtl8812au_phy_iq_calibrate(rtlpriv);
@@ -1910,12 +1908,6 @@ void rtl8812au_phy_iq_calibrate(struct rtl_priv *rtlpriv, bool bReCovery)
 /*  from HalPhyRf_8821A.c						*/
 /*									*/
 /* ****************************************************************************** */
-
-
-
-
-
-
 
 
 #define cal_num 3
@@ -3075,32 +3067,32 @@ static char _rtl8821au_phy_get_txpower_limit(struct rtl_priv *rtlpriv,
 	return powerLimit;
 }
 
-static bool _rtl8821au_phy_get_chnl_index(uint8_t Channel, uint8_t *ChannelIdx)
+static bool _rtl8821au_phy_get_chnl_index(u8 channel, u8 *chnl_index)
 {
-	uint8_t channel5G[CHANNEL_MAX_NUMBER_5G] = {
+	uint8_t channel5g[CHANNEL_MAX_NUMBER_5G] = {
 		36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64,
 		100, 102, 104, 106, 108, 110, 112, 114, 116, 118, 120,
 		122, 124, 126, 128, 130, 132, 134, 136, 138, 140, 142,
 		144, 149, 151, 153, 155, 157, 159, 161, 163, 165, 167,
 		168, 169, 171, 173, 175, 177
 		};
-	uint8_t	i = 0;
-	bool bIn24G = true;
+	u8 i = 0;
+	bool in_24g = true;
 
-	if (Channel <= 14) {
-		bIn24G = true;
-		*ChannelIdx = Channel - 1;
+	if (channel <= 14) {
+		in_24g = true;
+		*chnl_index = channel - 1;
 	} else {
-		bIn24G = false;
+		in_24g = false;
 
-		for (i = 0; i < sizeof(channel5G)/sizeof(uint8_t); ++i) {
-			if (channel5G[i] == Channel) {
-				*ChannelIdx = i;
-				return bIn24G;
+		for (i = 0; i < sizeof(channel5g)/sizeof(u8); ++i) {
+			if (channel5g[i] == channel) {
+				*chnl_index = i;
+				return in_24g;
 			}
 		}
 	}
-	return bIn24G;
+	return in_24g;
 
 }
 
@@ -3109,26 +3101,26 @@ static bool _rtl8821au_phy_get_chnl_index(uint8_t Channel, uint8_t *ChannelIdx)
  */
 
 u8 _rtl8821au_get_txpower_index_base(struct rtl_priv *rtlpriv,
-				     u8 RFPath, u8 Rate,
+				     u8 path, u8 rate,
 				     enum CHANNEL_WIDTH BandWidth,
-				     u8 Channel,
-				     bool *bIn24G)
+				     u8 channel,
+				     bool *in_24g)
 {
 	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 
-	u8					i = 0;	//default set to 1S
-	u8					txPower = 0;
-	u8					chnlIdx = (Channel-1);
+	u8 i = 0;	//default set to 1S
+	u8 txpower = 0;
+	u8 index = (channel-1);
 
-	*bIn24G = _rtl8821au_phy_get_chnl_index(Channel, &chnlIdx);
+	*in_24g = _rtl8821au_phy_get_chnl_index(channel, &index);
 
 	//DBG_871X("[%s] Channel Index: %d\n", (*bIn24G?"2.4G":"5G"), chnlIdx);
 
-	if (*bIn24G) { //3 ============================== 2.4 G ==============================
-		if (IS_CCK_RATE(Rate)) {
-			txPower = rtlefuse->txpwrlevel_cck[RFPath][chnlIdx];
-		} else if (MGN_6M <= Rate) {
-			txPower = rtlefuse->txpwrlevel_ht40_1s[RFPath][chnlIdx];
+	if (*in_24g) { //3 ============================== 2.4 G ==============================
+		if (IS_CCK_RATE(rate)) {
+			txpower = rtlefuse->txpwrlevel_cck[path][index];
+		} else if (MGN_6M <= rate) {
+			txpower = rtlefuse->txpwrlevel_ht40_1s[path][index];
 		} else {
 			RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_WARNING,
 				 "INVALID Rate.\n");
@@ -3138,66 +3130,66 @@ u8 _rtl8821au_get_txpower_index_base(struct rtl_priv *rtlpriv,
 		//		((RFPath==0)?'A':'B'), Rate, chnlIdx, txPower);
 
 		// OFDM-1T
-		if ((MGN_6M <= Rate && Rate <= MGN_54M) && ! IS_CCK_RATE(Rate)) {
-			txPower += rtlefuse->txpwr_legacyhtdiff[RFPath][TX_1S];
+		if ((MGN_6M <= rate && rate <= MGN_54M) && ! IS_CCK_RATE(rate)) {
+			txpower += rtlefuse->txpwr_legacyhtdiff[path][TX_1S];
 			//DBG_871X("+PowerDiff 2.4G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_24G_Diff[RFPath][TX_1S]);
 		}
 
 		if (BandWidth == CHANNEL_WIDTH_20) {		// BW20-1S, BW20-2S
-			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht20diff[RFPath][TX_1S];
-			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht20diff[RFPath][TX_2S];
-			if ((MGN_MCS16 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT3SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht20diff[RFPath][TX_3S];
-			if ((MGN_MCS24 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT4SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht20diff[RFPath][TX_4S];
+			if ((MGN_MCS0 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT1SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht20diff[path][TX_1S];
+			if ((MGN_MCS8 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT2SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht20diff[path][TX_2S];
+			if ((MGN_MCS16 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT3SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht20diff[path][TX_3S];
+			if ((MGN_MCS24 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT4SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht20diff[path][TX_4S];
 
 			//DBG_871X("+PowerDiff 2.4G (RF-%c): (BW20-1S, BW20-2S, BW20-3S, BW20-4S) = (%d, %d, %d, %d)\n", ((RFPath==0)?'A':(RFPath==1)?'B':(RFPath==2)?'C':'D'),
 			//	pHalData->BW20_24G_Diff[RFPath][TX_1S], pHalData->BW20_24G_Diff[RFPath][TX_2S],
 			//	pHalData->BW20_24G_Diff[RFPath][TX_3S], pHalData->BW20_24G_Diff[RFPath][TX_4S]);
 		} else if (BandWidth == CHANNEL_WIDTH_40) {	// BW40-1S, BW40-2S
-			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht40diff[RFPath][TX_1S];
-			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht40diff[RFPath][TX_2S];
-			if ((MGN_MCS16 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT3SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht40diff[RFPath][TX_3S];
-			if ((MGN_MCS24 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT4SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht40diff[RFPath][TX_4S];
+			if ((MGN_MCS0 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT1SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht40diff[path][TX_1S];
+			if ((MGN_MCS8 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT2SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht40diff[path][TX_2S];
+			if ((MGN_MCS16 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT3SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht40diff[path][TX_3S];
+			if ((MGN_MCS24 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT4SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht40diff[path][TX_4S];
 
 			//DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S, BW40-3S, BW40-4S) = (%d, %d, %d, %d)\n", ((RFPath==0)?'A':(RFPath==1)?'B':(RFPath==2)?'C':'D'),
 			//	pHalData->BW40_24G_Diff[RFPath][TX_1S], pHalData->BW40_24G_Diff[RFPath][TX_2S],
 			//	pHalData->BW40_24G_Diff[RFPath][TX_3S], pHalData->BW40_24G_Diff[RFPath][TX_4S]);
 		} else if (BandWidth == CHANNEL_WIDTH_80) {	// Willis suggest adopt BW 40M power index while in BW 80 mode
-			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht40diff[RFPath][TX_1S];
-			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht40diff[RFPath][TX_2S];
-			if ((MGN_MCS16 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT3SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht40diff[RFPath][TX_3S];
-			if ((MGN_MCS24 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT4SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_ht40diff[RFPath][TX_4S];
+			if ((MGN_MCS0 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT1SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht40diff[path][TX_1S];
+			if ((MGN_MCS8 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT2SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht40diff[path][TX_2S];
+			if ((MGN_MCS16 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT3SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht40diff[path][TX_3S];
+			if ((MGN_MCS24 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT4SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_ht40diff[path][TX_4S];
 
 			//DBG_871X("+PowerDiff 2.4G (RF-%c): (BW40-1S, BW40-2S, BW40-3S, BW40-4T) = (%d, %d, %d, %d) P.S. Current is in BW 80MHz\n", ((RFPath==0)?'A':(RFPath==1)?'B':(RFPath==2)?'C':'D'),
 			//	pHalData->BW40_24G_Diff[RFPath][TX_1S], pHalData->BW40_24G_Diff[RFPath][TX_2S],
 			//	pHalData->BW40_24G_Diff[RFPath][TX_3S], pHalData->BW40_24G_Diff[RFPath][TX_4S]);
 		}
 	} else { //3 ============================== 5 G ==============================
-		if (MGN_6M <= Rate) {
-			txPower = rtlefuse->txpwr_5g_bw40base[RFPath][chnlIdx];
+		if (MGN_6M <= rate) {
+			txpower = rtlefuse->txpwr_5g_bw40base[path][index];
 		} else {
 			RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_WARNING,
 				 "INVALID Rate.\n");
@@ -3207,66 +3199,68 @@ u8 _rtl8821au_get_txpower_index_base(struct rtl_priv *rtlpriv,
 		//	((RFPath==0)?'A':'B'), Rate, chnlIdx, txPower);
 
 		// OFDM-1T
-		if ((MGN_6M <= Rate && Rate <= MGN_54M) && ! IS_CCK_RATE(Rate)) {
-			txPower += rtlefuse->txpwr_5g_ofdmdiff[RFPath][TX_1S];
+		if ((MGN_6M <= rate && rate <= MGN_54M) && ! IS_CCK_RATE(rate)) {
+			txpower += rtlefuse->txpwr_5g_ofdmdiff[path][TX_1S];
 			//DBG_871X("+PowerDiff 5G (RF-%c): (OFDM-1T) = (%d)\n", ((RFPath==0)?'A':'B'), pHalData->OFDM_5G_Diff[RFPath][TX_1S]);
 		}
 
 		if (BandWidth == CHANNEL_WIDTH_20) {		// BW20-1S, BW20-2S
-			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS31)  ||
-			    (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw20diff[RFPath][TX_1S];
-			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw20diff[RFPath][TX_2S];
-			if ((MGN_MCS16 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT3SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw20diff[RFPath][TX_3S];
-			if ((MGN_MCS24 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT4SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw20diff[RFPath][TX_4S];
+			if ((MGN_MCS0 <= rate && rate <= MGN_MCS31)  ||
+			    (MGN_VHT1SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw20diff[path][TX_1S];
+			if ((MGN_MCS8 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT2SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw20diff[path][TX_2S];
+			if ((MGN_MCS16 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT3SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw20diff[path][TX_3S];
+			if ((MGN_MCS24 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT4SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw20diff[path][TX_4S];
 
 			//DBG_871X("+PowerDiff 5G (RF-%c): (BW20-1S, BW20-2S, BW20-3S, BW20-4S) = (%d, %d, %d, %d)\n", ((RFPath==0)?'A':(RFPath==1)?'B':(RFPath==2)?'C':'D'),
 			//	pHalData->BW20_5G_Diff[RFPath][TX_1S], pHalData->BW20_5G_Diff[RFPath][TX_2S],
 			//	pHalData->BW20_5G_Diff[RFPath][TX_3S], pHalData->BW20_5G_Diff[RFPath][TX_4S]);
 		} else if (BandWidth == CHANNEL_WIDTH_40) {	// BW40-1S, BW40-2S
-			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS31)  ||
-			    (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw40diff[RFPath][TX_1S];
-			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw40diff[RFPath][TX_2S];
-			if ((MGN_MCS16 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT3SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw40diff[RFPath][TX_3S];
-			if ((MGN_MCS24 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT4SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw40diff[RFPath][TX_4S];
+			if ((MGN_MCS0 <= rate && rate <= MGN_MCS31)  ||
+			    (MGN_VHT1SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw40diff[path][TX_1S];
+			if ((MGN_MCS8 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT2SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw40diff[path][TX_2S];
+			if ((MGN_MCS16 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT3SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw40diff[path][TX_3S];
+			if ((MGN_MCS24 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT4SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw40diff[path][TX_4S];
 
 			//DBG_871X("+PowerDiff 5G(RF-%c): (BW40-1S, BW40-2S) = (%d, %d, %d, %d)\n", ((RFPath==0)?'A':(RFPath==1)?'B':(RFPath==2)?'C':'D'),
 			//	pHalData->BW40_5G_Diff[RFPath][TX_1S], pHalData->BW40_5G_Diff[RFPath][TX_2S],
 			//	pHalData->BW40_5G_Diff[RFPath][TX_3S], pHalData->BW40_5G_Diff[RFPath][TX_4S]);
 		} else if (BandWidth== CHANNEL_WIDTH_80) {	// BW80-1S, BW80-2S
 			// <20121220, Kordan> Get the index of array "Index5G_BW80_Base".
-			u8	channel5G_80M[CHANNEL_MAX_NUMBER_5G_80M] = {42, 58, 106, 122, 138, 155, 171};
-			for (i = 0; i < sizeof(channel5G_80M)/sizeof(u8); ++i)
-				if ( channel5G_80M[i] == Channel)
-					chnlIdx = i;
+			u8 channel5g_80m[CHANNEL_MAX_NUMBER_5G_80M] = {
+					42, 58, 106, 122, 138, 155, 171 };
 
-			txPower = rtlefuse->txpwr_5g_bw80base[RFPath][chnlIdx];
+			for (i = 0; i < sizeof(channel5g_80m)/sizeof(u8); ++i)
+				if (channel5g_80m[i] == channel)
+					index = i;
 
-			if ((MGN_MCS0 <= Rate && Rate <= MGN_MCS31)  ||
-			    (MGN_VHT1SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += + rtlefuse->txpwr_5g_bw80diff[RFPath][TX_1S];
-			if ((MGN_MCS8 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT2SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw80diff[RFPath][TX_2S];
-			if ((MGN_MCS16 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT3SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw80diff[RFPath][TX_3S];
-			if ((MGN_MCS23 <= Rate && Rate <= MGN_MCS31) ||
-			    (MGN_VHT4SS_MCS0 <= Rate && Rate <= MGN_VHT4SS_MCS9))
-				txPower += rtlefuse->txpwr_5g_bw80diff[RFPath][TX_4S];
+			txpower = rtlefuse->txpwr_5g_bw80base[path][index];
+
+			if ((MGN_MCS0 <= rate && rate <= MGN_MCS31)  ||
+			    (MGN_VHT1SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += + rtlefuse->txpwr_5g_bw80diff[path][TX_1S];
+			if ((MGN_MCS8 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT2SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw80diff[path][TX_2S];
+			if ((MGN_MCS16 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT3SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw80diff[path][TX_3S];
+			if ((MGN_MCS23 <= rate && rate <= MGN_MCS31) ||
+			    (MGN_VHT4SS_MCS0 <= rate && rate <= MGN_VHT4SS_MCS9))
+				txpower += rtlefuse->txpwr_5g_bw80diff[path][TX_4S];
 
 			//DBG_871X("+PowerDiff 5G(RF-%c): (BW80-1S, BW80-2S, BW80-3S, BW80-4S) = (%d, %d, %d, %d)\n",((RFPath==0)?'A':(RFPath==1)?'B':(RFPath==2)?'C':'D'),
 			//	pHalData->BW80_5G_Diff[RFPath][TX_1S], pHalData->BW80_5G_Diff[RFPath][TX_2S],
@@ -3274,15 +3268,15 @@ u8 _rtl8821au_get_txpower_index_base(struct rtl_priv *rtlpriv,
 		}
 	}
 
-	return txPower;
+	return txpower;
 }
 
-u8 phy_GetCurrentTxNum_8812A(struct rtl_priv *rtlpriv, u8 Rate)
+u8 phy_GetCurrentTxNum_8812A(struct rtl_priv *rtlpriv, u8 rate)
 {
 	u8	tx_num = 0;
 
-	if ((Rate >= MGN_MCS8 && Rate <= MGN_MCS15) ||
-		 (Rate >= MGN_VHT2SS_MCS0 && Rate <= MGN_VHT2SS_MCS9))
+	if ((rate >= MGN_MCS8 && rate <= MGN_MCS15) ||
+		 (rate >= MGN_VHT2SS_MCS0 && rate <= MGN_VHT2SS_MCS9))
 		tx_num = RF_2TX;
 	else
 		tx_num = RF_1TX;
@@ -3290,10 +3284,10 @@ u8 phy_GetCurrentTxNum_8812A(struct rtl_priv *rtlpriv, u8 Rate)
 	return tx_num;
 }
 
-static u8 PHY_GetRateIndexOfTxPowerByRate(u8 Rate)
+static u8 PHY_GetRateIndexOfTxPowerByRate(u8 rate)
 {
 	u8 index = 0;
-	switch (Rate) {
+	switch (rate) {
 	case MGN_1M:
 		index = 0;
 		break;
@@ -3549,7 +3543,7 @@ static u8 PHY_GetRateIndexOfTxPowerByRate(u8 Rate)
 
 	default:
 #if 0
-		DBG_871X("Invalid rate 0x%x in %s\n", Rate, __FUNCTION__ );
+		DBG_871X("Invalid rate 0x%x in %s\n", rate,  __FUNCTION__ );
 #endif
 		break;
 	};
@@ -3579,9 +3573,9 @@ static s8 _rtl8821au_phy_get_txpower_tracking_offset(struct rtl_priv *rtlpriv,
 	return offset;
 }
 
-static u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, u8 RFPath,
-			       u8 Rate, enum CHANNEL_WIDTH BandWidth,
-			       u8 Channel)
+static u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, u8 path,
+			       u8 rate, enum CHANNEL_WIDTH BandWidth,
+			       u8 channel)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
@@ -3589,26 +3583,27 @@ static u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, u8 RFPath,
 	bool in_24g = false;
 	s8 powerdiff_byrate = 0;
 
-	u8 tx_num = phy_GetCurrentTxNum_8812A(rtlpriv, Rate);
+	u8 tx_num = phy_GetCurrentTxNum_8812A(rtlpriv, rate);
 
 	//DBG_871X("===> PHY_GetTxPowerIndex_8812A\n");
 
-	txpower = (s8) _rtl8821au_get_txpower_index_base(rtlpriv, RFPath, Rate,
-							  BandWidth, Channel, &in_24g);
+	txpower = (s8) _rtl8821au_get_txpower_index_base(rtlpriv, path, rate,
+							  BandWidth, channel, &in_24g);
 
-	powerdiff_byrate = _rtl8821au_phy_get_txpower_by_rate(rtlpriv, (u8)(!in_24g), RFPath, tx_num, Rate );
+	powerdiff_byrate = _rtl8821au_phy_get_txpower_by_rate(rtlpriv,
+					(u8)(!in_24g), path, tx_num, rate );
 
 	limit = _rtl8821au_phy_get_txpower_limit(rtlpriv, (u8)(!in_24g),
 						 rtlpriv->phy.current_chan_bw,
-						 RFPath, Rate,
+						 path, rate,
 						 rtlpriv->phy.current_channel);
 
 	powerdiff_byrate = (powerdiff_byrate > limit) ? limit : powerdiff_byrate;
 	//DBG_871X("Rate-0x%x: (TxPower, PowerDiffByRate Path-%c) = (0x%X, %d)\n", Rate, ((RFPath==0)?'A':'B'), txPower, powerDiffByRate);
 
 	// We need to reduce power index for VHT MCS 8 & 9.
-	if (Rate == MGN_VHT1SS_MCS8 || Rate == MGN_VHT1SS_MCS9 ||
-		Rate == MGN_VHT2SS_MCS8 || Rate == MGN_VHT2SS_MCS9) {
+	if (rate == MGN_VHT1SS_MCS8 || rate == MGN_VHT1SS_MCS9 ||
+		rate == MGN_VHT2SS_MCS8 || rate == MGN_VHT2SS_MCS9) {
 		txpower += powerdiff_byrate;
 	} else {
 #ifdef CONFIG_USB_HCI
@@ -3632,27 +3627,27 @@ static u8 _rtl8821au_get_txpower_index(struct rtl_priv *rtlpriv, u8 RFPath,
 		// 2013/03/07 MH Asus add more request.
 		// 2013/03/14 MH Asus add one more request for the power control.
 		//
-		if (Channel >= 36) {
-			txPower += pMgntInfo->RegTPCLvl5g;
+		if (channel >= 36) {
+			txpower += pMgntInfo->RegTPCLvl5g;
 
-			if (txPower > pMgntInfo->RegTPCLvl5gD)
-				txPower -= pMgntInfo->RegTPCLvl5gD;
+			if (txpower > pMgntInfo->RegTPCLvl5gD)
+				txpower -= pMgntInfo->RegTPCLvl5gD;
 		} else {
 			txPower += pMgntInfo->RegTPCLvl;
 
 			if (txPower > pMgntInfo->RegTPCLvlD)
-				txPower -= pMgntInfo->RegTPCLvlD;
+				txpower -= pMgntInfo->RegTPCLvlD;
 		}
 #endif
 	}
 
-	txpower += _rtl8821au_phy_get_txpower_tracking_offset(rtlpriv, RFPath, Rate );
+	txpower += _rtl8821au_phy_get_txpower_tracking_offset(rtlpriv, path, rate );
 
 	// 2012/09/26 MH We need to take care high power device limiation to prevent destroy EXT_PA.
 	// This case had ever happened in CU/SU high power module. THe limitation = 0x20.
 	// But for 8812, we still not know the value.
 #if 0
-	phy_TxPwrAdjInPercentage(pAdapter, (u8 *)&txPower);
+	phy_TxPwrAdjInPercentage(pAdapter, (u8 *)&txpower);
 #endif
 
 	if(txpower > MAX_POWER_INDEX)
@@ -3842,27 +3837,30 @@ static void _rtl8821au_phy_config_bb_txpwr_lmt(struct rtl_priv *rtlpriv,
 static void _rtl8821au_phy_read_and_config_txpwr_lmt(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal	*rtlhal = rtl_hal(rtlpriv);
-	uint32_t i		= 0;
-	uint32_t ArrayLen       = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
-	u8 **Array		= RTL8821AU_TXPWR_LMT;
+	u32 i = 0;
+	u32 array_len;
+	u8 **array;
+
+	array_len = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
+	array = RTL8821AU_TXPWR_LMT;
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		ArrayLen = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
-		Array = RTL8812AU_TXPWR_LMT;
+		array_len = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
+		array = RTL8812AU_TXPWR_LMT;
 	} else {
-		ArrayLen = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
-		Array = RTL8821AU_TXPWR_LMT;
+		array_len = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
+		array = RTL8821AU_TXPWR_LMT;
 
 	}
 
-	for (i = 0; i < ArrayLen; i += 7) {
-		u8 *regulation = Array[i];
-		u8 *band = Array[i+1];
-		u8 *bandwidth = Array[i+2];
-		u8 *rate = Array[i+3];
-		u8 *rf_path = Array[i+4];
-		u8 *chnl = Array[i+5];
-		u8 *val = Array[i+6];
+	for (i = 0; i < array_len; i += 7) {
+		u8 *regulation = array[i];
+		u8 *band = array[i+1];
+		u8 *bandwidth = array[i+2];
+		u8 *rate = array[i+3];
+		u8 *rf_path = array[i+4];
+		u8 *chnl = array[i+5];
+		u8 *val = array[i+6];
 
 		_rtl8821au_phy_config_bb_txpwr_lmt(rtlpriv, regulation, band,
 						   bandwidth, rate, rf_path,
@@ -4285,28 +4283,32 @@ void rtl8812au_fixspur(struct rtl_priv *rtlpriv, enum CHANNEL_WIDTH Bandwidth,
 static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *rtlpriv)
 {
 	struct rtl_mac *mac = &(rtlpriv->mac80211);
-	uint8_t	SCSettingOf40 = 0, SCSettingOf20 = 0;
+	u8 sc_set_40 = 0, sc_set_20 = 0;
 
 	/*
 	 * DBG_871X("SCMapping: VHT Case: pHalData->CurrentChannelBW %d, pHalData->nCur80MhzPrimeSC %d, pHalData->nCur40MhzPrimeSC %d \n",pHalData->CurrentChannelBW,pHalData->nCur80MhzPrimeSC,pHalData->nCur40MhzPrimeSC);
 	 */
 	if(rtlpriv->phy.current_chan_bw== CHANNEL_WIDTH_80) {
 		if(mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER)
-			SCSettingOf40 = VHT_DATA_SC_40_LOWER_OF_80MHZ;
+			sc_set_40 = VHT_DATA_SC_40_LOWER_OF_80MHZ;
 		else if(mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER)
-			SCSettingOf40 = VHT_DATA_SC_40_UPPER_OF_80MHZ;
+			sc_set_40 = VHT_DATA_SC_40_UPPER_OF_80MHZ;
 		else
 			RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD,
 				 "SCMapping: Not Correct Primary40MHz Setting \n");
 
-		if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER) && (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER))
-			SCSettingOf20 = VHT_DATA_SC_20_LOWEST_OF_80MHZ;
-		else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER) && (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER))
-			SCSettingOf20 = VHT_DATA_SC_20_LOWER_OF_80MHZ;
-		else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER) && (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER))
-			SCSettingOf20 = VHT_DATA_SC_20_UPPER_OF_80MHZ;
-		else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER) && (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER))
-			SCSettingOf20 = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
+		if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER) &&
+		   (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER))
+			sc_set_20 = VHT_DATA_SC_20_LOWEST_OF_80MHZ;
+		else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER) &&
+		        (mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER))
+			sc_set_20 = VHT_DATA_SC_20_LOWER_OF_80MHZ;
+		else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER) &&
+			(mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER))
+			sc_set_20 = VHT_DATA_SC_20_UPPER_OF_80MHZ;
+		else if((mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER) &&
+			(mac->cur_80_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER))
+			sc_set_20 = VHT_DATA_SC_20_UPPERST_OF_80MHZ;
 		else
 			RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD,
 				 "SCMapping: Not Correct Primary40MHz Setting \n");
@@ -4316,9 +4318,9 @@ static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *rtlpriv)
 		 */
 
 		if(mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_UPPER)
-			SCSettingOf20 = VHT_DATA_SC_20_UPPER_OF_80MHZ;
+			sc_set_20 = VHT_DATA_SC_20_UPPER_OF_80MHZ;
 		else if(mac->cur_40_prime_sc == HAL_PRIME_CHNL_OFFSET_LOWER)
-			SCSettingOf20 = VHT_DATA_SC_20_LOWER_OF_80MHZ;
+			sc_set_20 = VHT_DATA_SC_20_LOWER_OF_80MHZ;
 		else
 			RT_TRACE(rtlpriv, COMP_POWER, DBG_LOUD,
 				 "SCMapping: Not Correct Primary40MHz Setting \n");
@@ -4327,21 +4329,22 @@ static u8 _rtl8821au_phy_get_secondary_chnl(struct rtl_priv *rtlpriv)
 	/*
 	 * DBG_871X("SCMapping: SC Value %x \n", ( (SCSettingOf40 << 4) | SCSettingOf20));
 	 */
-	return  ( (SCSettingOf40 << 4) | SCSettingOf20);
+	return (sc_set_40 << 4) | sc_set_20;
 }
 
 
 void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 {
-	uint8_t			SubChnlNum = 0;
-	uint8_t			L1pkVal = 0;
+	struct rtl_phy *rtlphy = &rtlpriv->phy;
+	u8 sub_chnl = 0;
+	u8 l1pk_val = 0;
 
 	/* 3 Set Reg668 Reg440 BW */
 	_rtl8821au_phy_set_reg_bw(rtlpriv, rtlpriv->phy.current_chan_bw);
 
 	/* 3 Set Reg483 */
-	SubChnlNum = _rtl8821au_phy_get_secondary_chnl(rtlpriv);
-	rtl_write_byte(rtlpriv, REG_DATA_SC_8812, SubChnlNum);
+	sub_chnl = _rtl8821au_phy_get_secondary_chnl(rtlpriv);
+	rtl_write_byte(rtlpriv, REG_DATA_SC_8812, sub_chnl);
 
 	/* DBG_871X("[BW:CHNL], phy_PostSetBwMode8812(), set BW=%s !!\n", GLBwSrc[pHalData->CurrentChannelBW]); */
 
@@ -4353,7 +4356,7 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 
 		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 4);	/* 0x864[20:18] = 3'b4 */
 
-		if(rtlpriv->phy.rf_type == RF_2T2R)
+		if(rtlphy->rf_type == RF_2T2R)
 			rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, 7);	/* 2R 0x848[25:22] = 0x7 */
 		else
 			rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, 8);	/* 1R 0x848[25:22] = 0x8 */
@@ -4363,23 +4366,23 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 	case CHANNEL_WIDTH_40:
 		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x003003C3, 0x00300201);	/* 0x8ac[21,20,9:6,1,0]=8'b11100000 */
 		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 0);		/* 0x8c4[30] = 1'b0 */
-		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x3C, SubChnlNum);
-		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
+		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x3C, sub_chnl);
+		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0xf0000000, sub_chnl);
 
 		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
 
-		if(rtlpriv->phy.reg_837 & BIT(2))
-			L1pkVal = 6;
+		if(rtlphy->reg_837 & BIT(2))
+			l1pk_val = 6;
 		else {
-			if(rtlpriv->phy.rf_type == RF_2T2R)
-				L1pkVal = 7;
+			if(rtlphy->rf_type == RF_2T2R)
+				l1pk_val = 7;
 			else
-				L1pkVal = 8;
+				l1pk_val = 8;
 		}
 
-		rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, L1pkVal);	/* 0x848[25:22] = 0x6 */
+		rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, l1pk_val);	/* 0x848[25:22] = 0x6 */
 
-		if(SubChnlNum == VHT_DATA_SC_20_UPPER_OF_80MHZ)
+		if(sub_chnl == VHT_DATA_SC_20_UPPER_OF_80MHZ)
 			rtl_set_bbreg(rtlpriv, rCCK_System_Jaguar, bCCK_System_Jaguar, 1);
 		else
 			rtl_set_bbreg(rtlpriv, rCCK_System_Jaguar, bCCK_System_Jaguar, 0);
@@ -4388,20 +4391,20 @@ void rtl8821au_phy_set_bw_mode_callback(struct rtl_priv *rtlpriv)
 	case CHANNEL_WIDTH_80:
 		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x003003C3, 0x00300202);	/* 0x8ac[21,20,9:6,1,0]=8'b11100010 */
 		rtl_set_bbreg(rtlpriv, rADC_Buf_Clk_Jaguar, BIT(30), 1);		/* 0x8c4[30] = 1 */
-		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x3C, SubChnlNum);
-		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0xf0000000, SubChnlNum);
+		rtl_set_bbreg(rtlpriv, rRFMOD_Jaguar, 0x3C, sub_chnl);
+		rtl_set_bbreg(rtlpriv, rCCAonSec_Jaguar, 0xf0000000, sub_chnl);
 
 		rtl_set_bbreg(rtlpriv, rFPGA0_XB_RFInterfaceOE, 0x001C0000, 2);	/* 0x864[20:18] = 3'b2 */
 
-		if(rtlpriv->phy.reg_837 & BIT(2))
-			L1pkVal = 5;
+		if(rtlphy->reg_837 & BIT(2))
+			l1pk_val = 5;
 		else {
-			if(rtlpriv->phy.rf_type == RF_2T2R)
-				L1pkVal = 6;
+			if(rtlphy->rf_type == RF_2T2R)
+				l1pk_val = 6;
 			else
-				L1pkVal = 7;
+				l1pk_val = 7;
 		}
-		rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, L1pkVal);	/* 0x848[25:22] = 0x5 */
+		rtl_set_bbreg(rtlpriv, rL1PeakTH_Jaguar, 0x03C00000, l1pk_val);	/* 0x848[25:22] = 0x5 */
 
 		break;
 

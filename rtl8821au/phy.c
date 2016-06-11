@@ -3841,11 +3841,8 @@ static void _rtl8821au_phy_read_and_config_txpwr_lmt(struct rtl_priv *rtlpriv)
 	u32 array_len;
 	u8 **array;
 
-	array_len = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
-	array = RTL8821AU_TXPWR_LMT;
-
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		array_len = RTL8821AU_TXPWR_LMT_ARRAY_LEN;
+		array_len = RTL8812AU_TXPWR_LMT_ARRAY_LEN;
 		array = RTL8812AU_TXPWR_LMT;
 	} else {
 		array_len = RTL8821AU_TXPWR_LMT_ARRAY_LEN;

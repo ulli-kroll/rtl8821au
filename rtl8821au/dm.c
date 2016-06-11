@@ -279,7 +279,7 @@ static void rtl8821au_cm_common_info_self_update(struct rtl_priv *rtlpriv)
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	u8 tmp;
 
-	rtlphy->cck_high_power = 
+	rtlphy->cck_high_power =
 		(bool) rtl_get_bbreg(rtlpriv, ODM_REG_CCK_RPT_FORMAT_11AC, ODM_BIT_CCK_RPT_FORMAT_11AC);
 	tmp = (u8) rtl_get_bbreg(rtlpriv, ODM_REG_BB_RX_PATH_11AC,
 				 ODM_BIT_BB_RX_PATH_11AC);
@@ -310,7 +310,7 @@ static void rtl8821au_dm_init_edca_turbo(struct rtl_priv *rtlpriv)
 	rtlpriv->dm.is_cur_rdlstate = false;
 	rtlpriv->dm.is_any_nonbepkts = false;
 
-	RT_TRACE(rtlpriv, COMP_TURBO, DBG_LOUD,	
+	RT_TRACE(rtlpriv, COMP_TURBO, DBG_LOUD,
 		 "Orginial VO PARAM: 0x%x\n",
 		 rtl_read_dword(rtlpriv, ODM_EDCA_VO_PARAM));
 	RT_TRACE(rtlpriv, COMP_TURBO, DBG_LOUD,
@@ -329,7 +329,7 @@ static u8 getSwingIndex(struct rtl_priv *rtlpriv)
 	u8		i = 0;
 	uint32_t	bbSwing;
 
-	bbSwing = phy_get_tx_swing_8821au(rtlpriv, 
+	bbSwing = phy_get_tx_swing_8821au(rtlpriv,
 			rtlpriv->rtlhal.current_bandtype, RF90_PATH_A);
 
 	for (i = 0; i < TXSCALE_TABLE_SIZE; ++i)
@@ -483,7 +483,7 @@ static void rtl8812au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 		/* 16QAM */
 		else if ((TxRate >= MGN_VHT1SS_MCS3) && (TxRate <= MGN_VHT1SS_MCS4))
 			PwrTrackingLimit = 32;		/* +4dB */
-		/* 64QAM */	
+		/* 64QAM */
 		else if ((TxRate >= MGN_VHT1SS_MCS5) && (TxRate <= MGN_VHT1SS_MCS6))
 			PwrTrackingLimit = 30;		/* +3dB */
 		/* 64QAM */
@@ -521,12 +521,12 @@ static void rtl8812au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 	RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
 		 "TxRate=0x%x, PwrTrackingLimit=%d\n",
 		 TxRate, PwrTrackingLimit);
-		 
+
 	if (Method == BBSWING) {
 		RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
 			 "===>rtl8812au_dm_pxpwr_track_set_pwr\n");
 		if (RFPath == RF90_PATH_A) {
-			finalBbSwingIdx[RF90_PATH_A] = 
+			finalBbSwingIdx[RF90_PATH_A] =
 				(rtldm->ofdm_index[RF90_PATH_A] > PwrTrackingLimit) ?
 				PwrTrackingLimit :
 				rtldm->ofdm_index[RF90_PATH_A];
@@ -536,7 +536,7 @@ static void rtl8812au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 				 finalBbSwingIdx[RF90_PATH_A]);
 			rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, txscalling_tbl[finalBbSwingIdx[RF90_PATH_A]]);
 		} else {
-			finalBbSwingIdx[RF90_PATH_B] = 
+			finalBbSwingIdx[RF90_PATH_B] =
 				(rtldm->ofdm_index[RF90_PATH_B] > PwrTrackingLimit) ?
 				PwrTrackingLimit :
 				rtldm->ofdm_index[RF90_PATH_B];
@@ -559,7 +559,7 @@ static void rtl8812au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 			if (Final_OFDM_Swing_Index > PwrTrackingLimit) {    /* BBSwing higher then Limit */
 				rtldm->remnant_cck_idx =
 					Final_OFDM_Swing_Index - PwrTrackingLimit;            /*  CCK Follow the same compensate value as Path A */
-				rtldm->remnant_ofdm_swing_idx[RFPath] = 
+				rtldm->remnant_ofdm_swing_idx[RFPath] =
 					Final_OFDM_Swing_Index - PwrTrackingLimit;
 
 				rtl_set_bbreg(rtlpriv, rA_TxScale_Jaguar, 0xFFE00000, txscalling_tbl[PwrTrackingLimit]);
@@ -677,7 +677,7 @@ static u8 rtl8818e_delta_swing_table_idx_24gb_n[] = {
 	0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5,  6,  6,  7,  7,
 	7,  7,  8,  8,  9,  9, 10, 10, 10, 11, 11, 11, 11};
 
-static u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 14, 14, 14, 14},
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
@@ -686,7 +686,7 @@ static u8 rtl8812ae_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-static u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 2, 3, 3, 4, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
@@ -695,7 +695,7 @@ static u8 rtl8812ae_delta_swing_table_idx_5gb_p[][DELTA_SWINGIDX_SIZE] = {
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-static u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15, 15},
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
@@ -704,7 +704,7 @@ static u8 rtl8812ae_delta_swing_table_idx_5ga_n[][DELTA_SWINGIDX_SIZE] = {
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15, 15},
 };
 
-static u8 rtl8812ae_delta_swing_table_idx_5ga_p[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5ga_p[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  8,  9, 10, 11,
@@ -757,7 +757,7 @@ static u8 rtl8812au_delta_swing_table_idx_24gccka_p[] = {
 *                           TxPowerTrack_USB_RFE3.TXT
 ******************************************************************************/
 
-static u8 rtl8812ae_delta_swing_table_idx_5gb_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5gb_n_rfe3[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 12, 13, 13, 14, 15, 16, 16, 17, 17, 18, 18},
 	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  7,  8,  8,  9,  9,
@@ -766,7 +766,7 @@ static u8 rtl8812ae_delta_swing_table_idx_5gb_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-static u8 rtl8812ae_delta_swing_table_idx_5gb_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5gb_p_rfe3[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 3, 3, 4, 5, 6,  7,  7,  8,  9,  9, 10, 10,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 2, 3, 3, 4, 4,  5,  6,  7,  8,  8,  9,  9,
@@ -775,7 +775,7 @@ static u8 rtl8812ae_delta_swing_table_idx_5gb_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-static u8 rtl8812ae_delta_swing_table_idx_5ga_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5ga_n_rfe3[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 13, 14, 15, 16, 16, 17, 17, 18, 18},
 	{0, 1, 1, 2, 3, 3, 4, 4, 5,  6,  6,  7,  7,  8,  9,  9,
@@ -784,7 +784,7 @@ static u8 rtl8812ae_delta_swing_table_idx_5ga_n_rfe3[][DELTA_SWINGIDX_SIZE] = {
 	10, 10, 11, 12, 13, 13, 14, 14, 15, 15, 16, 17, 18, 18},
 };
 
-static u8 rtl8812ae_delta_swing_table_idx_5ga_p_rfe3[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8812ae_delta_swing_table_idx_5ga_p_rfe3[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  7,  7,  8,  9,  9, 10, 10,
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 2, 3, 4, 4, 5, 5, 6,  7,  7,  8,  9,  9, 10, 11,
@@ -958,10 +958,10 @@ static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 		/* QPSK/BPSK */
 		else if ((TxRate >= MGN_MCS0) && (TxRate <= MGN_MCS2))
 			PwrTrackingLimit = 34;		/* +5dB */
-		/* 16QAM */	
+		/* 16QAM */
 		else if ((TxRate >= MGN_MCS3) && (TxRate <= MGN_MCS4))
 			PwrTrackingLimit = 32;		/* +4dB */
-		/* 64QAM */	
+		/* 64QAM */
 		else if ((TxRate >= MGN_MCS5) && (TxRate <= MGN_MCS7))
 			PwrTrackingLimit = 30;		/* +3dB */
 		/* 2 VHT */
@@ -971,7 +971,7 @@ static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 		/* 16QAM */
 		else if ((TxRate >= MGN_VHT1SS_MCS3) && (TxRate <= MGN_VHT1SS_MCS4))
 			PwrTrackingLimit = 32;		/* +4dB */
-		/* 64QAM */			
+		/* 64QAM */
 		else if ((TxRate >= MGN_VHT1SS_MCS5) && (TxRate <= MGN_VHT1SS_MCS6))
 			PwrTrackingLimit = 30;		/* +3dB */
 		/* 64QAM */
@@ -1003,7 +1003,7 @@ static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 	} else if (Method == MIX_MODE) {
 			RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
 				 "pDM_Odm->DefaultOfdmIndex=%d, pDM_Odm->Aboslute_OFDMSwingIdx[RFPath]=%d, RF_Path = %d\n",
-				 rtldm->default_ofdm_index, 
+				 rtldm->default_ofdm_index,
 				 rtldm->absolute_ofdm_swing_idx[RFPath], RFPath);
 
 			Final_OFDM_Swing_Index =
@@ -1078,7 +1078,7 @@ static void rtl8821au_dm_txpwr_track_set_pwr(struct rtl_priv *rtlpriv,
 *                           TxPowerTrack_USB.TXT
 ******************************************************************************/
 
-static u8 rtl8821au_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8821au_delta_swing_table_idx_5gb_n[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 14, 14, 14, 14},
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
@@ -1087,7 +1087,7 @@ static u8 rtl8821au_delta_swing_table_idx_5gb_n[][DELTA_SWINGIDX_SIZE] = {
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-static u8 rtl8821au_delta_swing_table_idx_5gb_p[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8821au_delta_swing_table_idx_5gb_p[][DEL_SW_IDX_SZ] = {
 	{0, 1, 1, 2, 2, 3, 3, 4, 5,  6,  7,  7,  8,  8,  9,  9,
 	10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 	{0, 1, 1, 2, 3, 3, 4, 5, 5,  6,  7,  7,  8,  8,  9,  9,
@@ -1096,7 +1096,7 @@ static u8 rtl8821au_delta_swing_table_idx_5gb_p[][DELTA_SWINGIDX_SIZE] = {
 	11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11},
 };
 
-static u8 rtl8821au_delta_swing_table_idx_5ga_n[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8821au_delta_swing_table_idx_5ga_n[][DEL_SW_IDX_SZ] = {
 	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,
 	9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15},
 	{0, 0, 0, 1, 2, 2, 3, 4, 5, 6,  6,  7,  7,  8,  8,  9,
@@ -1105,7 +1105,7 @@ static u8 rtl8821au_delta_swing_table_idx_5ga_n[][DELTA_SWINGIDX_SIZE] = {
 	9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15, 15, 15, 15},
 };
 
-static u8 rtl8821au_delta_swing_table_idx_5ga_p[][DELTA_SWINGIDX_SIZE] = {
+static u8 rtl8821au_delta_swing_table_idx_5ga_p[][DEL_SW_IDX_SZ] = {
 	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16,
 	16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16},
 	{1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12,  13,  14, 15, 16,
@@ -1335,11 +1335,11 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	/* 4 5. Calculate delta, delta_LCK, delta_IQK. */
 
 	/* "delta" here is used to determine whether thermal value changes or not. */
-	delta = (thermal_value > rtldm->thermalvalue) ? 
-		(thermal_value - rtldm->thermalvalue) : 
+	delta = (thermal_value > rtldm->thermalvalue) ?
+		(thermal_value - rtldm->thermalvalue) :
 		(rtldm->thermalvalue - thermal_value);
 	delta_lck = (thermal_value > rtldm->thermalvalue_lck) ?
-		(thermal_value - rtldm->thermalvalue_lck) : 
+		(thermal_value - rtldm->thermalvalue_lck) :
 		(rtldm->thermalvalue_lck - thermal_value);
 	delta_iqk = (thermal_value > rtldm->thermalvalue_iqk) ?
 		(thermal_value - rtldm->thermalvalue_iqk) :
@@ -1444,7 +1444,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 				rtldm->power_index_offset[p] = 0;
 			else
 				rtldm->power_index_offset[p] =
-					rtldm->delta_power_index[p] - 
+					rtldm->delta_power_index[p] -
 					rtldm->delta_power_index_last[p];      /* Power Index Diff between 2 times Power Tracking */
 
 			RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
@@ -1458,7 +1458,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 				rtldm->swing_idx_ofdm_base[p] +
 				rtldm->power_index_offset[p];
 			rtldm->cck_index =
-				rtldm->swing_idx_cck_base + 
+				rtldm->swing_idx_cck_base +
 				rtldm->power_index_offset[p];
 
 			rtldm->swing_idx_cck = rtldm->cck_index;
@@ -1466,7 +1466,7 @@ static void rtl8812au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 
 	       /* *************Print BB Swing Base and Index Offset************* */
 
-			RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD, 
+			RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
 				 "The 'CCK' final index(%d) = BaseIndex(%d) + PowerIndexOffset(%d)\n",
 				 rtldm->swing_idx_cck,
 				 rtldm->swing_idx_cck_base,
@@ -1612,7 +1612,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 	rtl8821au_get_delta_swing_table(rtlpriv, (u8 **)&up_a, (u8 **)&down_a,
 					 (u8 **)&up_b, (u8 **)&down_b);
 
-	RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD, 
+	RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
 		"===>ODM_TXPowerTrackingCallback_ThermalMeter, \n rtldm->BbSwingIdxCckBase: %d, rtldm->BbSwingIdxOfdmBase[A]: %d, rtldm->DefaultOfdmIndex: %d\n",
 		rtldm->swing_idx_cck_base,
 		rtldm->swing_idx_ofdm_base[RF90_PATH_A],
@@ -1681,7 +1681,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 		delta = (thermal_value > efuse->eeprom_thermalmeter) ?
 			(thermal_value - efuse->eeprom_thermalmeter) :
 			(efuse->eeprom_thermalmeter - thermal_value);
-		
+
 		if (delta >= TXSCALE_TABLE_SIZE)
 			delta = TXSCALE_TABLE_SIZE - 1;
 
@@ -1724,8 +1724,8 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 			if (rtldm->delta_power_index[p] == rtldm->delta_power_index_last[p])         /* If Thermal value changes but lookup table value still the same */
 				rtldm->power_index_offset[p] = 0;
 			else
-				rtldm->power_index_offset[p] = 
-					rtldm->delta_power_index[p] - 
+				rtldm->power_index_offset[p] =
+					rtldm->delta_power_index[p] -
 					rtldm->delta_power_index_last[p];      /* Power Index Diff between 2 times Power Tracking */
 
 			RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
@@ -1765,7 +1765,7 @@ static void rtl8821au_dm_txpower_tracking_callback_thermalmeter(struct rtl_priv 
 				rtldm->ofdm_index[p] = TXSCALE_TABLE_SIZE-1;
 			else if (rtldm->ofdm_index[p] < ofdm_min_index)
 				rtldm->ofdm_index[p] = ofdm_min_index;
-			
+
 		}
 		RT_TRACE(rtlpriv, COMP_POWER_TRACKING, DBG_LOUD,
 			 "\n\n========================================================================================================\n");
@@ -1969,7 +1969,7 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 	if (1) {
 		u64 curTxOkCnt = rtlpriv->xmitpriv.tx_bytes -
 				rtlpriv->xmitpriv.last_tx_bytes;
-			
+
 		u64 curRxOkCnt = rtlpriv->recvpriv.rx_bytes -
 				rtlpriv->recvpriv.last_rx_bytes;
 
@@ -2074,7 +2074,7 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 		rtlpriv->dm.entry_min_undec_sm_pwdb = tmpEntryMinPWDB;
 	else
 		rtlpriv->dm.entry_min_undec_sm_pwdb = 0;
-	
+
 	FindMinimumRSSI(rtlpriv);	/* get pdmpriv->MinUndecoratedPWDBForDM */
 
 	rtl_dm_dig->rssi_val_min = rtl_dm_dig->min_undec_pwdb_for_dm;
@@ -2090,15 +2090,15 @@ static void rtl8821au_dm_check_rssi_monitor(struct rtl_priv *rtlpriv)
 static void rtl8821au_dm_check_edca_turbo(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal =&(rtlpriv->rtlhal);
-	
+
 	u64		cur_tx_bytes = 0;
 	u64		cur_rx_bytes = 0;
 	uint32_t	EDCA_BE_UL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_UL[pMgntInfo->IOTPeer]; */
 	uint32_t	EDCA_BE_DL = 0x5ea42b;	/* Parameter suggested by Scott  */	/* edca_setting_DL[pMgntInfo->IOTPeer]; */
 	uint32_t	IOTPeer = 0;
-	
-	
-	
+
+
+
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct _rtw_dm *pDM_Odm = &(pHalData->odmpriv);
 	uint32_t 	trafficIndex;
@@ -2513,7 +2513,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 			    current_igi = dm_digtable->rssi_val_min;
 			else
 			    current_igi = dig_maxofmin;
-			    
+
 			RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD,
 				 "DIG: First Connect\n");
 		} else 	{
@@ -2565,7 +2565,7 @@ static void rtl8821au_dm_dig(struct rtl_priv *rtlpriv)
 		 "odm_DIG(): rx_gain_range_max=0x%x, rx_gain_range_min=0x%x\n",
 		 dm_digtable->rx_gain_max,
 		 dm_digtable->rx_gain_min);
-	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, 
+	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD,
 		 "odm_DIG(): TotalFA=%d\n",
 		 FalseAlmCnt->cnt_all);
 	RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD,
@@ -2668,7 +2668,7 @@ void rtl8821au_dm_write_dig(struct rtl_priv *rtlpriv, u8 current_igi)
 		if (rtlpriv->phy.rf_type != RF_1T1R)
 			rtl_set_bbreg(rtlpriv, ODM_REG_IGI_B_11AC, ODM_BIT_IGI_11AC, current_igi);
 
-		RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD, 
+		RT_TRACE(rtlpriv, COMP_DIG, DBG_LOUD,
 			"current_igi(0x%02x).\n", current_igi);
 		/* pDM_DigTable->PreIGValue = pDM_DigTable->CurIGValue; */
 		dm_digtable->cur_igvalue = current_igi;
@@ -2708,7 +2708,7 @@ static void _rtl_dm_diginit(struct rtl_priv *rtlpriv)
 
 	/* dm_digtable->Dig_Enable_Flag = true; */
 	/* dm_digtable->Dig_Ext_Port_Stage = DIG_EXT_PORT_STAGE_MAX; */
-	dm_digtable->cur_igvalue = 
+	dm_digtable->cur_igvalue =
 		(u8) rtl_get_bbreg(rtlpriv, ODM_REG_IGI_A_11AC, ODM_BIT_IGI_11AC);
 	/* dm_digtable->PreIGValue = 0x0; */
 	/* dm_digtable->CurSTAConnectState = dm_digtable->PreSTAConnectState = DIG_STA_DISCONNECT; */

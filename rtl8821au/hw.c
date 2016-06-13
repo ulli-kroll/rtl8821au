@@ -79,7 +79,7 @@ static void  _rtl8821au_resume_tx_beacon(struct rtl_priv *rtlpriv)
 void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 {
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
-	uint32_t	value32;
+	u32 value32;
 	/* reset TSF, enable update TSF, correcting TSF On Beacon */
 
 	/*
@@ -136,7 +136,7 @@ void rtl8821au_set_beacon_related_registers(struct rtl_priv *rtlpriv)
 int rtl8821au_set_network_type(struct rtl_priv *rtlpriv, uint8_t mode)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	uint8_t	val8;
+	u8 val8;
 
 	/* disable Port0 TSF update */
 	rtl_write_byte(rtlpriv, REG_BCN_CTRL, rtl_read_byte(rtlpriv, REG_BCN_CTRL)|DIS_TSF_UDT);
@@ -293,9 +293,9 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 	struct _rtw_hal *pHalData;
 	struct dm_priv *pdmpriv;
 	struct _rtw_dm *podmpriv;
-	uint8_t val8;
+	u8 val8;
 	u16 val16;
-	uint32_t val32;
+	u32 val32;
 	u8 idx;
 
 	pHalData = GET_HAL_DATA(rtlpriv);
@@ -336,9 +336,9 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_BSSID:
-		for (idx = 0 ; idx < 6; idx++) {
+		for (idx = 0 ; idx < 6; idx++)
 			rtl_write_byte(rtlpriv, (REG_BSSID + idx), pval[idx]);
-		}
+
 		break;
 
 	case HW_VAR_BASIC_RATE:
@@ -853,7 +853,7 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 	struct rtl_efuse *rtlefuse =  rtl_efuse(rtlpriv);
 	struct _rtw_hal *pHalData;
 	struct _rtw_dm *podmpriv;
-	uint8_t val8;
+	u8 val8;
 	u16 val16;
 
 	pHalData = GET_HAL_DATA(rtlpriv);
@@ -921,7 +921,7 @@ void Set_MSR(struct rtl_priv *rtlpriv, uint8_t type)
 
 void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 {
-	uint32_t	value32;
+	u32 value32;
 	enum version_8821au chip_version = VERSION_UNKNOWN;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
@@ -945,7 +945,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		chip_version |= ((value32 & VENDOR_ID) ? CHIP_VENDOR_UMC : 0);
 	else {
-		uint32_t vendor;
+		u32 vendor;
 
 		vendor = (value32 & EXT_VENDOR_ID) >> EXT_VENDOR_ID_SHIFT;
 		switch (vendor) {
@@ -954,18 +954,18 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 			break;
 		}
 	}
-	
+
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
 		u32 rtl_id = ((value32 & CHIP_VER_RTL_MASK) >> CHIP_VER_RTL_SHIFT) + 1;
-		
+
 		chip_version = (enum version_8821au) (chip_version | (rtl_id << 12));
 	} else {
 		u32 rtl_id = ((value32 & CHIP_VER_RTL_MASK) >> CHIP_VER_RTL_SHIFT);
-		
+
 		chip_version = (enum version_8821au) (chip_version | (rtl_id << 12));
 	}
-	
-#if 0	
+
+#if 0
 	/* value32 = rtl_read_dword(rtlpriv, REG_GPIO_OUTSTS); */
 	ChipVersion.ROMVer = 0;	/* ROM code version. */
 #endif
@@ -996,7 +996,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 }
 
 
-static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, uint32_t data)
+static bool _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, uint32_t data)
 {
 	bool status = true;
 	int32_t	count = 0;
@@ -1008,9 +1008,8 @@ static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, 
 	/* polling */
 	do {
 		value = rtl_read_dword(rtlpriv, REG_LLT_INIT);
-		if (_LLT_NO_ACTIVE == _LLT_OP_VALUE(value)) {
+		if (_LLT_NO_ACTIVE == _LLT_OP_VALUE(value))
 			break;
-		}
 
 		if (count > POLLING_LLT_THRESHOLD) {
 			status = false;
@@ -1024,8 +1023,8 @@ static int32_t _rtl8821au_llt_write(struct rtl_priv *rtlpriv, uint32_t address, 
 int32_t  _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bndy)
 {
 	bool status;
-	uint32_t i;
-	uint32_t Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
+	u32 i;
+	u32 Last_Entry_Of_TxPktBuf = LAST_ENTRY_OF_TX_PKT_BUFFER_8812;
 
 	for (i = 0; i < (txpktbuf_bndy - 1); i++) {
 		status = _rtl8821au_llt_write(rtlpriv, i, i + 1);
@@ -1096,7 +1095,7 @@ static void _rtl8812au_read_rfe_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	}
 #if 0
 	DBG_871X("RFE Type: 0x%2x\n", rtlhal->rfe_type);
-#endif	
+#endif
 }
 
 static void _rtl8812au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
@@ -1114,9 +1113,9 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
 	struct rtl_led_ctl *pledpriv = &(usbpriv->ledpriv);
-	uint8_t	tmp_u1b;
+	u8 tmp_u1b;
 	u8 hwinfo[HWSET_MAX_SIZE_JAGUAR];
-	u16 EEPROMId;
+	u16 eeprom_id;
 
 	/* Read all content in Efuse/EEPROM. */
 
@@ -1164,11 +1163,11 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	}
 
 	/*  Checl 0x8129 again for making sure autoload status!! */
-	EEPROMId = le16_to_cpu(*((u16 *)hwinfo));
-	if (EEPROMId != RTL_EEPROM_ID) {
+	eeprom_id = le16_to_cpu(*((u16 *)hwinfo));
+	if (eeprom_id != RTL_EEPROM_ID) {
 		RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD,
 			 "EEPROM ID(%#x) is invalid!!\n",
-			 EEPROMId);
+			 eeprom_id);
 		rtlefuse->autoload_failflag = true;
 	} else {
 		rtlefuse->autoload_failflag = false;
@@ -1225,7 +1224,7 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	}
 
 	_rtl88au_read_txpower_info_from_hwpg(rtlpriv, &rtlefuse->efuse_map[0][0], rtlefuse->autoload_failflag);
-	
+
 
 #if 0	/* ULLI check this in old source, may be vendor specific ?? */
 	/* ULLI from Hal_ReadBoardType8812A() */
@@ -1273,9 +1272,9 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 
 	if (!rtlefuse->autoload_failflag) {
 		u8 tmp;
-		
+
 		tmp = hwinfo[EEPROM_RF_BOARD_OPTION_8812];
-		
+
 		/*  Antenna Diversity setting. */
 		rtlefuse->antenna_div_cfg = (tmp & 0x18) >>3;
 		if (tmp == 0xFF)
@@ -1325,18 +1324,17 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 	}
 #endif
 	rtlefuse->board_type = ODM_BOARD_DEFAULT;
-	if (rtlhal->external_lna_2g != 0) {
+	if (rtlhal->external_lna_2g != 0)
 		rtlefuse->board_type |= ODM_BOARD_EXT_LNA;
-	}
-	if (rtlhal->external_lna_5g != 0) {
+
+	if (rtlhal->external_lna_5g != 0)
 		rtlefuse->board_type |= ODM_BOARD_EXT_LNA_5G;
-	}
-	if (rtlhal->external_pa_2g != 0) {
+
+	if (rtlhal->external_pa_2g != 0)
 		rtlefuse->board_type |= ODM_BOARD_EXT_PA;
-	}
-	if (rtlhal->external_pa_5g != 0) {
+
+	if (rtlhal->external_pa_5g != 0)
 		rtlefuse->board_type |= ODM_BOARD_EXT_PA_5G;
-	}
 
 	rtlhal->board_type = rtlefuse->board_type;
 
@@ -1344,17 +1342,16 @@ void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
 
 bool rtl8821au_gpio_radio_on_off_checking(struct rtl_priv *rtlpriv, u8 *valid)
 {
-	uint8_t	val8;
+	u8 val8;
 	enum rf_pwrstate rfpowerstate = ERFOFF;
 
-	{ /* rf on/off */
-		rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG)&~(BIT(3)));
-		val8 = rtl_read_byte(rtlpriv, REG_GPIO_IO_SEL);
-#if 0		
-		DBG_8192C("GPIO_IN=%02x\n", val8);
-#endif		
-		rfpowerstate = (val8 & BIT(3)) ? ERFON : ERFOFF;
-	}
+	rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, rtl_read_byte(rtlpriv, REG_MAC_PINMUX_CFG)&~(BIT(3)));
+	val8 = rtl_read_byte(rtlpriv, REG_GPIO_IO_SEL);
+#if 0
+	DBG_8192C("GPIO_IN=%02x\n", val8);
+#endif
+	rfpowerstate = (val8 & BIT(3)) ? ERFON : ERFOFF;
+
 	return rfpowerstate;
 }
 
@@ -1463,10 +1460,10 @@ static void _InitBurstPktLen(struct rtl_priv *rtlpriv)
 
 }
 
-static uint32_t _InitPowerOn8812AU(struct rtl_priv *rtlpriv)
+static uint32_t _rtl8821au_init_power_on(struct rtl_priv *rtlpriv)
 {
-	u16	u2btmp = 0;
-	uint8_t	u1btmp = 0;
+	u16 u2btmp = 0;
+	u8 u1btmp = 0;
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	if (IS_VENDOR_8821A_MP_CHIP(rtlhal->version)) {
@@ -1534,15 +1531,15 @@ void rtl8821au_disable_interrupt(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_HIMR0_8812, IMR_DISABLED_8812);
 	rtl_write_dword(rtlpriv, REG_HIMR1_8812, IMR_DISABLED_8812);
 }
-static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
+static void _rtl8821au_init_queue_reserved_page(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb  *rtlusb = rtl_usbdev(rtlpriv);
-	uint32_t numHQ = 0;
-	uint32_t numLQ = 0;
-	uint32_t numNQ = 0;
-	uint32_t numPubQ = 0;
-	uint32_t value32;
-	uint8_t	 value8;
+	u32 numHQ = 0;
+	u32 numLQ = 0;
+	u32 numNQ = 0;
+	u32 numPubQ = 0;
+	u32 value32;
+	u8 value8;
 
 	numPubQ = NORMAL_PAGE_NUM_PUBQ_8821;
 
@@ -1565,15 +1562,15 @@ static void _InitQueueReservedPage_8821AUsb(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_RQPN, value32);
 }
 
-static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
+static void _rtl8812au_init_queue_reserved_page(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb  *rtlusb = rtl_usbdev(rtlpriv);
-	uint32_t numHQ		= 0;
-	uint32_t numLQ		= 0;
-	uint32_t numNQ		= 0;
-	uint32_t numPubQ	= 0;
-	uint32_t value32;
-	uint8_t	value8;
+	u32 numHQ	= 0;
+	u32 numLQ	= 0;
+	u32 numNQ	= 0;
+	u32 numPubQ	= 0;
+	u32 value32;
+	u8 value8;
 
 	numPubQ = NORMAL_PAGE_NUM_PUBQ_8812;
 
@@ -1597,7 +1594,7 @@ static void _InitQueueReservedPage_8812AUsb(struct rtl_priv *rtlpriv)
 
 static void _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
 {
-	uint8_t	txpktbuf_bndy;
+	u8 txpktbuf_bndy;
 
 	txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
 
@@ -1610,7 +1607,7 @@ static void _InitTxBufferBoundary_8821AUsb(struct rtl_priv *rtlpriv)
 
 static void _InitTxBufferBoundary_8812AUsb(struct rtl_priv *rtlpriv)
 {
-	uint8_t	txpktbuf_bndy;
+	u8 txpktbuf_bndy;
 
 	txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
 
@@ -1692,12 +1689,12 @@ static void _rtl8821au_init_chipN_two_ep_priority(struct rtl_priv *rtlpriv)
 		break;
 	}
 
-		beQ	= valueLow;
-		bkQ	= valueLow;
-		viQ	= valueHi;
-		voQ	= valueHi;
-		mgtQ	= valueHi;
-		hiQ	= valueHi;
+	beQ	= valueLow;
+	bkQ	= valueLow;
+	viQ	= valueHi;
+	voQ	= valueHi;
+	mgtQ	= valueHi;
+	hiQ	= valueHi;
 
 	_rtl8821au_init_chipN_reg_priority(rtlpriv, beQ, bkQ, viQ, voQ, mgtQ, hiQ);
 
@@ -1707,12 +1704,12 @@ static void _rtl8821au_init_chipN_three_ep_priority(struct rtl_priv *rtlpriv)
 {
 	u16	beQ, bkQ, viQ, voQ, mgtQ, hiQ;
 
-		beQ	= QUEUE_LOW;
-		bkQ	= QUEUE_LOW;
-		viQ	= QUEUE_NORMAL;
-		voQ	= QUEUE_HIGH;
-		mgtQ 	= QUEUE_HIGH;
-		hiQ	= QUEUE_HIGH;
+	beQ	= QUEUE_LOW;
+	bkQ	= QUEUE_LOW;
+	viQ	= QUEUE_NORMAL;
+	voQ	= QUEUE_HIGH;
+	mgtQ 	= QUEUE_HIGH;
+	hiQ	= QUEUE_HIGH;
 
 	_rtl8821au_init_chipN_reg_priority(rtlpriv, beQ, bkQ, viQ, voQ, mgtQ, hiQ);
 }
@@ -1752,7 +1749,7 @@ static void _InitDriverInfoSize_8812A(struct rtl_priv *rtlpriv, uint8_t	drvInfoS
 
 static void _InitNetworkType_8812A(struct rtl_priv *rtlpriv)
 {
-	uint32_t	value32;
+	u32 value32;
 
 	value32 = rtl_read_dword(rtlpriv, REG_CR);
 	/*  TODO: use the other function to set network type */
@@ -1762,7 +1759,7 @@ static void _InitNetworkType_8812A(struct rtl_priv *rtlpriv)
 }
 
 
-static void _InitEDCA_8812AUsb(struct rtl_priv *rtlpriv)
+static void rtl8821au_init_edca(struct rtl_priv *rtlpriv)
 {
 	/* Set Spec SIFS (used in NAV) */
 	rtl_write_word(rtlpriv, REG_SPEC_SIFS, 0x100a);
@@ -1787,7 +1784,7 @@ static void _InitEDCA_8812AUsb(struct rtl_priv *rtlpriv)
 
 static void _InitRetryFunction_8812A(struct rtl_priv *rtlpriv)
 {
-	uint8_t	value8;
+	u8 value8;
 
 	value8 = rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL);
 	value8 |= EN_AMPDU_RTY_NEW;
@@ -1800,7 +1797,7 @@ static void _InitRetryFunction_8812A(struct rtl_priv *rtlpriv)
 	rtl_write_byte(rtlpriv, REG_ACKTO, 0x80);
 }
 
-static void _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
+static void _rtl8821au_init_wmac_setting(struct rtl_priv *rtlpriv)
 {
 	/* uint32_t			value32; */
 	/* u16			value16; */
@@ -1859,8 +1856,8 @@ static void _InitWMACSetting_8812A(struct rtl_priv *rtlpriv)
 
 static void _InitAdaptiveCtrl_8812AUsb(struct rtl_priv *rtlpriv)
 {
-	u16	value16;
-	uint32_t	value32;
+	u16 value16;
+	u32 value32;
 
 	/* Response Rate Set */
 	value32 = rtl_read_dword(rtlpriv, REG_RRSR);
@@ -1919,15 +1916,14 @@ static void _InitBeaconMaxError_8812A(struct rtl_priv *rtlpriv, bool	InfraMode)
  *---------------------------------------------------------------------------*/
 static void usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	uint32_t			value32;
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	u32 value32;
 
-		value32 = rtl_read_dword(rtlpriv, REG_TDECTRL);
-		value32 = value32 & ~(BLK_DESC_NUM_MASK << BLK_DESC_NUM_SHIFT);
-		value32 |= ((pHalData->UsbTxAggDescNum & BLK_DESC_NUM_MASK) << BLK_DESC_NUM_SHIFT);
+	value32 = rtl_read_dword(rtlpriv, REG_TDECTRL);
+	value32 = value32 & ~(BLK_DESC_NUM_MASK << BLK_DESC_NUM_SHIFT);
+	value32 |= ((pHalData->UsbTxAggDescNum & BLK_DESC_NUM_MASK) << BLK_DESC_NUM_SHIFT);
 
-		rtl_write_dword(rtlpriv, REG_TDECTRL, value32);
-
+	rtl_write_dword(rtlpriv, REG_TDECTRL, value32);
 }
 
 
@@ -1948,8 +1944,10 @@ static void usb_AggSettingTxUpdate_8812A(struct rtl_priv *rtlpriv)
  *---------------------------------------------------------------------------*/
 static void usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
-	uint8_t			valueDMA;
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	u8 valueDMA;
+	u16 temp;
+
 
 	valueDMA = rtl_read_byte(rtlpriv, REG_TRXDMA_CTRL);
 
@@ -1959,20 +1957,17 @@ static void usb_AggSettingRxUpdate_8812A(struct rtl_priv *rtlpriv)
 	 *
 	 * 2012/10/26 MH For TX throught start rate temp fix.
 	 */
-	{
-		u16			temp;
 
-		/* ULLI DMA on USB Device WTF ??? */
-		/* Adjust DMA page and thresh. */
-		temp = pHalData->RegAcUsbDmaSize | (pHalData->RegAcUsbDmaTime<<8);
-		rtl_write_word(rtlpriv, REG_RXDMA_AGG_PG_TH, temp);
-	}
+	/* ULLI DMA on USB Device WTF ??? */
+	/* Adjust DMA page and thresh. */
+	temp = pHalData->RegAcUsbDmaSize | (pHalData->RegAcUsbDmaTime<<8);
+	rtl_write_word(rtlpriv, REG_RXDMA_AGG_PG_TH, temp);
 
 	rtl_write_byte(rtlpriv, REG_TRXDMA_CTRL, valueDMA);
 }
 static void init_UsbAggregationSetting_8812A(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 
 	/* Tx aggregation setting */
 	usb_AggSettingTxUpdate_8812A(rtlpriv);
@@ -1986,7 +1981,7 @@ static void init_UsbAggregationSetting_8812A(struct rtl_priv *rtlpriv)
 
 static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 {
-	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
+	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 
 	if (pHalData->AntDivCfg == 0)
 		return;
@@ -2039,9 +2034,9 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
-	uint8_t	value8 = 0, u1bRegCR;
-	uint8_t	txpktbuf_bndy;
-	uint32_t	status = _SUCCESS;
+	u8	value8 = 0, u1bRegCR;
+	u8	txpktbuf_bndy;
+	u32	status = _SUCCESS;
 
 	/* ULLI : for debuging USB3 issue, getting USB ID during hw init */
 	struct rtl_usb_priv *usbpriv = rtl_usbpriv(rtlpriv);
@@ -2051,7 +2046,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
 	struct pwrctrl_priv *pwrctrlpriv = &rtlpriv->pwrctrlpriv;
 	enum rf_pwrstate eRfPowerStateToSet;
-	uint32_t init_start_time = jiffies;
+	u32 init_start_time = jiffies;
 
 	switch (udev->speed) {
 		case USB_SPEED_LOW :	speed = "LOW";
@@ -2103,10 +2098,9 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 		rtl_write_byte(rtlpriv, REG_RF_B_CTRL_8812, 7);
 	}
 
-	status = _InitPowerOn8812AU(rtlpriv);
-	if (status == _FAIL) {
+	status = _rtl8821au_init_power_on(rtlpriv);
+	if (status == _FAIL)
 		goto exit;
-	}
 
 		if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 			txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
@@ -2163,10 +2157,10 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	 _rtl8821au_phy_config_mac_with_headerfile(rtlpriv);
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-		_InitQueueReservedPage_8812AUsb(rtlpriv);
+		_rtl8812au_init_queue_reserved_page(rtlpriv);
 		_InitTxBufferBoundary_8812AUsb(rtlpriv);
 	} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
-		_InitQueueReservedPage_8821AUsb(rtlpriv);
+		_rtl8821au_init_queue_reserved_page(rtlpriv);
 		_InitTxBufferBoundary_8821AUsb(rtlpriv);
 	}
 
@@ -2184,9 +2178,9 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_ETHER_ADDR, mac->mac_addr);
 
 	_InitNetworkType_8812A(rtlpriv);	/* set msr */
-	_InitWMACSetting_8812A(rtlpriv);
+	_rtl8821au_init_wmac_setting(rtlpriv);
 	_InitAdaptiveCtrl_8812AUsb(rtlpriv);
-	_InitEDCA_8812AUsb(rtlpriv);
+	rtl8821au_init_edca(rtlpriv);
 
 	_InitRetryFunction_8812A(rtlpriv);
 	init_UsbAggregationSetting_8812A(rtlpriv);
@@ -2242,8 +2236,8 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 		rtl8821au_phy_switch_wirelessband(rtlpriv, BAND_ON_5G);
 
 	rtlpriv->cfg->ops->set_chnl_bw_handler(rtlpriv, rtlpriv->registrypriv.channel,
-					       CHANNEL_WIDTH_20, 
-					       HAL_PRIME_CHNL_OFFSET_DONT_CARE, 
+					       CHANNEL_WIDTH_20,
+					       HAL_PRIME_CHNL_OFFSET_DONT_CARE,
 					       HAL_PRIME_CHNL_OFFSET_DONT_CARE);
 
 	rtw_cam_reset_all_entry(rtlpriv);
@@ -2781,11 +2775,11 @@ static u8 _rtl8821au_get_chnl_group(u8 chnl)
 static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	bool autoload_fail)
 {
-	struct rtl_efuse *efuse = rtl_efuse(rtlpriv);
-	struct txpower_info_2g pwrInfo24G;
-	struct txpower_info_5g pwrInfo5G;
-	uint8_t	rfPath, ch, group, TxCount;
-	uint8_t	channel5G[CHANNEL_MAX_NUMBER_5G] = {
+	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
+	struct txpower_info_2g pwrinfo24g;
+	struct txpower_info_5g pwrinfo5g;
+	uint8_t	rf_path, ch, group, tx_count;
+	uint8_t	channel5g_80m[CHANNEL_MAX_NUMBER_5G] = {
 		 36,  38,  40,  42,  44,  46,  48,  50,  52,  54,  56,  58,
 		 60,  62,  64, 100, 102, 104, 106, 108, 110, 112, 114, 116,
 		118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140,
@@ -2795,27 +2789,28 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 	uint8_t	channel5G_80M[CHANNEL_MAX_NUMBER_5G_80M] = {
 		42, 58, 106, 122, 138, 155, 171};
 
-	_rtl8821au_read_power_value_fromprom(rtlpriv, &pwrInfo24G, &pwrInfo5G, hwinfo, autoload_fail);
+	_rtl8821au_read_power_value_fromprom(rtlpriv, &pwrinfo24g,
+			&pwrinfo5g, hwinfo, autoload_fail);
 
 	/*
 	 * if(!AutoLoadFail)
 	 * 	pHalData->bTXPowerDataReadFromEEPORM = true;
 	 */
 
-	for (rfPath = 0; rfPath < MAX_RF_PATH; rfPath++) {
+	for (rf_path = 0; rf_path < MAX_RF_PATH; rf_path++) {
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_2G; ch++) {
 			group = _rtl8821au_get_chnl_group(ch+1);
 
 			if (ch == (CHANNEL_MAX_NUMBER_2G-1)) {
-				efuse->txpwrlevel_cck[rfPath][ch] =
-					pwrInfo24G.index_cck_base[rfPath][5];
-				efuse->txpwrlevel_ht40_1s[rfPath][ch] =
-					pwrInfo24G.index_bw40_base[rfPath][group];
+				rtlefuse->txpwrlevel_cck[rf_path][ch] =
+					pwrinfo24g.index_cck_base[rf_path][5];
+				rtlefuse->txpwrlevel_ht40_1s[rf_path][ch] =
+					pwrinfo24g.index_bw40_base[rf_path][group];
 			} else {
-				efuse->txpwrlevel_cck[rfPath][ch] =
-					pwrInfo24G.index_cck_base[rfPath][group];
-				efuse->txpwrlevel_ht40_1s[rfPath][ch] =
-					pwrInfo24G.index_bw40_base[rfPath][group];
+				rtlefuse->txpwrlevel_cck[rf_path][ch] =
+					pwrinfo24g.index_cck_base[rf_path][group];
+				rtlefuse->txpwrlevel_ht40_1s[rf_path][ch] =
+					pwrinfo24g.index_bw40_base[rf_path][group];
 			}
 
 			/*
@@ -2826,9 +2821,10 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 		}
 
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G; ch++) {
-			group = _rtl8821au_get_chnl_group(channel5G[ch]);
+			group = _rtl8821au_get_chnl_group(channel5g_80m[ch]);
 
-			efuse->txpwr_5g_bw40base[rfPath][ch] = pwrInfo5G.index_bw40_base[rfPath][group];
+			rtlefuse->txpwr_5g_bw40base[rf_path][ch] = 
+				pwrinfo5g.index_bw40_base[rf_path][group];
 
 			/*
 			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);
@@ -2838,11 +2834,11 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G_80M; ch++) {
 			uint8_t	upper, lower;
 
-			group = _rtl8821au_get_chnl_group(channel5G_80M[ch]);
-			upper = pwrInfo5G.index_bw40_base[rfPath][group];
-			lower = pwrInfo5G.index_bw40_base[rfPath][group+1];
+			group = _rtl8821au_get_chnl_group(channel5g_80m[ch]);
+			upper = pwrinfo5g.index_bw40_base[rf_path][group];
+			lower = pwrinfo5g.index_bw40_base[rf_path][group+1];
 
-			efuse->txpwr_5g_bw80base[rfPath][ch] = (upper + lower) / 2;
+			rtlefuse->txpwr_5g_bw80base[rf_path][ch] = (upper + lower) / 2;
 
 			/*
 			 * DBG_871X("======= Path %d, ChannelIndex %d, Group %d=======\n",rfPath,ch, group);
@@ -2850,16 +2846,24 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 			 */
 		}
 
-		for (TxCount = 0; TxCount < MAX_TX_COUNT; TxCount++) {
-			efuse->txpwr_cckdiff[rfPath][TxCount]  = pwrInfo24G.cck_diff[rfPath][TxCount];
-			efuse->txpwr_legacyhtdiff[rfPath][TxCount] = pwrInfo24G.ofdm_diff[rfPath][TxCount];
-			efuse->txpwr_ht20diff[rfPath][TxCount] = pwrInfo24G.bw20_diff[rfPath][TxCount];
-			efuse->txpwr_ht40diff[rfPath][TxCount] = pwrInfo24G.bw40_diff[rfPath][TxCount];
+		for (tx_count = 0; tx_count < MAX_TX_COUNT; tx_count++) {
+			rtlefuse->txpwr_cckdiff[rf_path][tx_count]  =
+				pwrinfo24g.cck_diff[rf_path][tx_count];
+			rtlefuse->txpwr_legacyhtdiff[rf_path][tx_count] =
+				pwrinfo24g.ofdm_diff[rf_path][tx_count];
+			rtlefuse->txpwr_ht20diff[rf_path][tx_count] =
+				pwrinfo24g.bw20_diff[rf_path][tx_count];
+			rtlefuse->txpwr_ht40diff[rf_path][tx_count] =
+				pwrinfo24g.bw40_diff[rf_path][tx_count];
 
-			efuse->txpwr_5g_ofdmdiff[rfPath][TxCount] = pwrInfo5G.ofdm_diff[rfPath][TxCount];
-			efuse->txpwr_5g_bw20diff[rfPath][TxCount] = pwrInfo5G.bw20_diff[rfPath][TxCount];
-			efuse->txpwr_5g_bw40diff[rfPath][TxCount] = pwrInfo5G.bw40_diff[rfPath][TxCount];
-			efuse->txpwr_5g_bw80diff[rfPath][TxCount] = pwrInfo5G.bw80_diff[rfPath][TxCount];
+			rtlefuse->txpwr_5g_ofdmdiff[rf_path][tx_count] =
+				pwrinfo5g.ofdm_diff[rf_path][tx_count];
+			rtlefuse->txpwr_5g_bw20diff[rf_path][tx_count] =
+				pwrinfo5g.bw20_diff[rf_path][tx_count];
+			rtlefuse->txpwr_5g_bw40diff[rf_path][tx_count] =
+				pwrinfo5g.bw40_diff[rf_path][tx_count];
+			rtlefuse->txpwr_5g_bw80diff[rf_path][tx_count] =
+				pwrinfo5g.bw80_diff[rf_path][tx_count];
 /* #if DBG */
 		}
 	}
@@ -2868,15 +2872,17 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 	/* 2010/10/19 MH Add Regulator recognize for CU. */
 	if (!autoload_fail) {
 		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
-			efuse->eeprom_regulatory = (EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* BIT(0)~2 */
+			rtlefuse->eeprom_regulatory = 
+				(EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* BIT(0)~2 */
 		else
-			efuse->eeprom_regulatory = (hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* BIT(0)~2 */
+			rtlefuse->eeprom_regulatory = 
+				(hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* BIT(0)~2 */
 
 	} else {
-		efuse->eeprom_regulatory = 0;
+		rtlefuse->eeprom_regulatory = 0;
 	}
 	RT_TRACE(rtlpriv, COMP_EFUSE, DBG_LOUD,
 		 "EEPROMRegulatory = 0x%x\n",
-		 efuse->eeprom_regulatory);
+		 rtlefuse->eeprom_regulatory);
 
 }

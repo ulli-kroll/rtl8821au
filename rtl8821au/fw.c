@@ -31,7 +31,7 @@ static u8 Get_RA_LDPC_8812(struct sta_info *psta);
 void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	uint8_t u1bTmp, u1bTmp2;
+	u8 u1bTmp, u1bTmp2;
 
 	/* Reset MCU IO Wrapper- sugggest by SD1-Gimmy */
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
@@ -60,12 +60,11 @@ void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv)
 		 "_8051Reset8812(): 8051 reset success .\n");
 }
 
-static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num)
+static u8 _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num)
 {
-	uint8_t	read_down = false;
-	int 	retry_cnts = 100;
-
-	uint8_t valid;
+	u8 read_down = false;
+	int retry_cnts = 100;
+	u8 valid;
 
 	/* DBG_8192C(" _is_fw_read_cmd_down ,reg_1cc(%x),msg_box(%d)...\n",rtl_read_byte(rtlpriv,REG_HMETFR),msgbox_num); */
 
@@ -92,19 +91,19 @@ static uint8_t _is_fw_read_cmd_down(struct rtl_priv *rtlpriv, uint8_t msgbox_num
 *|31 - 0	  |
 *|ext_msg|
 ******************************************/
-static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv, 
-					u8 element_id, u32 cmd_len, 
+static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
+					u8 element_id, u32 cmd_len,
 					u8 *cmdbuffer)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	uint8_t bcmd_down = false;
+	u8 bcmd_down = false;
 	int32_t retry_cnts = 100;
-	uint8_t h2c_box_num;
-	uint32_t msgbox_addr;
-	uint32_t msgbox_ex_addr;
-	uint8_t cmd_idx, ext_cmd_len;
-	uint32_t h2c_cmd = 0;
-	uint32_t h2c_cmd_ex = 0;
+	u8 h2c_box_num;
+	u32 msgbox_addr;
+	u32 msgbox_ex_addr;
+	u8 cmd_idx, ext_cmd_len;
+	u32 h2c_cmd = 0;
+	u32 h2c_cmd_ex = 0;
 	int _unused;
 
 	_unused = mutex_lock_interruptible(&(rtl_usbdev(rtlpriv)->h2c_fwcmd_mutex));
@@ -128,21 +127,21 @@ static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
 			goto exit;
 		}
 
-		*(uint8_t *)(&h2c_cmd) = element_id;
+		*(u8 *)(&h2c_cmd) = element_id;
 
 		if (cmd_len <= 3) {
-			memcpy((uint8_t *)(&h2c_cmd)+1, cmdbuffer, cmd_len);
+			memcpy((u8 *)(&h2c_cmd)+1, cmdbuffer, cmd_len);
 		} else {
-			memcpy((uint8_t *)(&h2c_cmd)+1, cmdbuffer, 3);
+			memcpy((u8 *)(&h2c_cmd)+1, cmdbuffer, 3);
 			ext_cmd_len = cmd_len-3;
-			memcpy((uint8_t *)(&h2c_cmd_ex), cmdbuffer+3, ext_cmd_len);
+			memcpy((u8 *)(&h2c_cmd_ex), cmdbuffer+3, ext_cmd_len);
 
 			/* Write Ext command */
 			msgbox_ex_addr = REG_HMEBOX_EXT0_8812 + (h2c_box_num * RTL8812_EX_MESSAGE_BOX_SIZE);
 #ifdef CONFIG_H2C_EF
-			for (cmd_idx = 0; cmd_idx < ext_cmd_len; cmd_idx++) {
-				rtl_write_byte(rtlpriv, msgbox_ex_addr+cmd_idx, *((uint8_t *)(&h2c_cmd_ex)+cmd_idx));
-			}
+			for (cmd_idx = 0; cmd_idx < ext_cmd_len; cmd_idx++)
+				rtl_write_byte(rtlpriv, msgbox_ex_addr+cmd_idx, *((u8 *)(&h2c_cmd_ex)+cmd_idx));
+
 #else
 			h2c_cmd_ex = le32_to_cpu(h2c_cmd_ex);
 			rtl_write_dword(rtlpriv, msgbox_ex_addr, h2c_cmd_ex);
@@ -151,9 +150,10 @@ static void _rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
 		/* Write command */
 		msgbox_addr = REG_HMEBOX_0 + (h2c_box_num * RTL8812_MESSAGE_BOX_SIZE);
 #ifdef CONFIG_H2C_EF
-		for (cmd_idx = 0; cmd_idx < RTL8812_MESSAGE_BOX_SIZE; cmd_idx++) {
-			rtl_write_byte(rtlpriv, msgbox_addr+cmd_idx, *((uint8_t *)(&h2c_cmd)+cmd_idx));
-		}
+
+		for (cmd_idx = 0; cmd_idx < RTL8812_MESSAGE_BOX_SIZE; cmd_idx++)
+			rtl_write_byte(rtlpriv, msgbox_addr+cmd_idx, *((u8 *)(&h2c_cmd)+cmd_idx));
+
 #else
 		h2c_cmd = le32_to_cpu(h2c_cmd);
 		rtl_write_dword(rtlpriv, msgbox_addr, h2c_cmd);
@@ -175,8 +175,8 @@ exit:
 	mutex_unlock(&(rtl_usbdev(rtlpriv)->h2c_fwcmd_mutex));
 }
 
-void rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv, 
-					u8 element_id, u32 cmd_len, 
+void rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
+					u8 element_id, u32 cmd_len,
 					u8 *cmdbuffer)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
@@ -195,12 +195,11 @@ void rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv,
 
 uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param)
 {
-	uint8_t	res = _SUCCESS;
+	u8 res = _SUCCESS;
 
 	*((u32 *) param) = cpu_to_le32(*((u32 *) param));
 
 	rtl8821au_fill_h2c_cmd(rtlpriv, H2C_8812_RSSI_REPORT, 4, param);
-
 
 	return res;
 }
@@ -223,7 +222,7 @@ uint8_t	Get_VHT_ENI(uint32_t IOTAction, uint32_t WirelessMode, uint32_t	ratr_bit
 	return (Ret << 4);
 }
 
-void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, uint32_t bitmap, uint8_t *arg)
+void rtl8812_set_raid_cmd(struct rtl_priv *rtlpriv, u32 bitmap, u8 *arg)
 {
 	struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -292,9 +291,9 @@ u8 GetTxBufferRsvdPageNum8812(struct rtl_priv *rtlpriv)
 	return RsvdPageNum;
 }
 
-static void _rtl8821ae_enable_fw_download(struct rtl_priv *rtlpriv, bool enable)
+static void _rtl8821au_enable_fw_download(struct rtl_priv *rtlpriv, bool enable)
 {
-	uint8_t	tmp;
+	u8 tmp;
 
 	if (enable) {
 		/* MCU firmware download enable. */
@@ -316,23 +315,22 @@ static void _rtl8821ae_enable_fw_download(struct rtl_priv *rtlpriv, bool enable)
 
 #define MAX_REG_BOLCK_SIZE	196
 
-static int _BlockWrite_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t buffSize)
+static void _rtl8821au_fw_block_write(struct rtl_priv *rtlpriv,
+				      const u8 *buffer, u32 size)
 {
-	int ret = _SUCCESS;
-
-	uint32_t blockSize_p1 = 4;	/* (Default) Phase #1 : PCI muse use 4-byte write to download FW */
-	uint32_t blockSize_p2 = 8;	/* Phase #2 : Use 8-byte, if Phase#1 use big size to write FW. */
-	uint32_t blockSize_p3 = 1;	/* Phase #3 : Use 1-byte, the remnant of FW image. */
-	uint32_t blockCount_p1 = 0, blockCount_p2 = 0, blockCount_p3 = 0;
-	uint32_t remainSize_p1 = 0, remainSize_p2 = 0;
-	uint8_t	 *bufferPtr	= (uint8_t *)buffer;
-	uint32_t i = 0, offset = 0;
+	u32 blockSize_p1 = 4;	/* (Default) Phase #1 : PCI muse use 4-byte write to download FW */
+	u32 blockSize_p2 = 8;	/* Phase #2 : Use 8-byte, if Phase#1 use big size to write FW. */
+	u32 blockSize_p3 = 1;	/* Phase #3 : Use 1-byte, the remnant of FW image. */
+	u32 blockCount_p1 = 0, blockCount_p2 = 0, blockCount_p3 = 0;
+	u32 remainSize_p1 = 0, remainSize_p2 = 0;
+	u8  *bufferPtr	= (u8 *) buffer;
+	u32 i = 0, offset = 0;
 
 	blockSize_p1 = MAX_REG_BOLCK_SIZE;
 
 	/* 3 Phase #1 */
-	blockCount_p1 = buffSize / blockSize_p1;
-	remainSize_p1 = buffSize % blockSize_p1;
+	blockCount_p1 = size / blockSize_p1;
+	remainSize_p1 = size % blockSize_p1;
 
 	if (blockCount_p1) {
 		;
@@ -370,58 +368,48 @@ static int _BlockWrite_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t buf
 		}
 	}
 
-exit:
-	return ret;
 }
 
-
-
-static int _PageWrite_8812(struct rtl_priv *rtlpriv, uint32_t page,
-	void *buffer, uint32_t size)
+static void _rtl8821au_fw_page_write(struct rtl_priv *rtlpriv,
+				     u32 page, const u8 *buffer, u32 size)
 {
-	uint8_t value8;
-	uint8_t u8Page = (uint8_t) (page & 0x07) ;
+	u8 value8;
+	u8 u8page = (u8)(page & 0x07);
 
-	value8 = (rtl_read_byte(rtlpriv, REG_MCUFWDL+2) & 0xF8) | u8Page ;
+	value8 = (rtl_read_byte(rtlpriv, REG_MCUFWDL+2) & 0xF8) | u8page ;
 	rtl_write_byte(rtlpriv, REG_MCUFWDL+2, value8);
 
-	return _BlockWrite_8812(rtlpriv, buffer, size);
+	_rtl8821au_fw_block_write(rtlpriv, buffer, size);
 }
 
 
-static int _WriteFW_8812(struct rtl_priv *rtlpriv, void *buffer, uint32_t size)
+static int _rtl8821au_write_fw(struct rtl_priv *rtlpriv,
+			       u8 *buffer, u32 size)
 {
 	/*
 	 * Since we need dynamic decide method of dwonload fw, so we call this function to get chip version.
 	 * We can remove _ReadChipVersion from ReadpadapterInfo8192C later.
 	 */
+	int     ret = _SUCCESS;
+	u8 *bufferptr = (u8 *)buffer;
+	u32 pagenums, remainsize;
+	u32 page, offset;
 
-	int	ret = _SUCCESS;
-	uint32_t pageNums, remainSize;
-	uint32_t page, offset;
-	uint8_t	*bufferPtr = (uint8_t *)buffer;
-
-	pageNums = size / MAX_DLFW_PAGE_SIZE ;
+	pagenums = size / MAX_DLFW_PAGE_SIZE ;
 	/*
 	 * RT_ASSERT((pageNums <= 4), ("Page numbers should not greater then 4 \n"));
 	 */
 
-	remainSize = size % MAX_DLFW_PAGE_SIZE;
+	remainsize = size % MAX_DLFW_PAGE_SIZE;
 
-	for (page = 0; page < pageNums; page++) {
+	for (page = 0; page < pagenums; page++) {
 		offset = page * MAX_DLFW_PAGE_SIZE;
-		ret = _PageWrite_8812(rtlpriv, page, bufferPtr+offset, MAX_DLFW_PAGE_SIZE);
-
-		if (ret == _FAIL)
-			goto exit;
+		_rtl8821au_fw_page_write(rtlpriv, page, bufferptr+offset, MAX_DLFW_PAGE_SIZE);
 	}
-	if (remainSize) {
-		offset = pageNums * MAX_DLFW_PAGE_SIZE;
-		page = pageNums;
-		ret = _PageWrite_8812(rtlpriv, page, bufferPtr+offset, remainSize);
-
-		if (ret == _FAIL)
-			goto exit;
+	if (remainsize) {
+		offset = pagenums * MAX_DLFW_PAGE_SIZE;
+		page = pagenums;
+		_rtl8821au_fw_page_write(rtlpriv, page, bufferptr+offset, remainsize);
 
 	}
 
@@ -431,8 +419,9 @@ exit:
 
 static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 {
-	uint32_t	counter = 0;
-	uint32_t	value32;
+	int err = -EIO;
+	u32 counter = 0;
+	u32 value32;
 
 	/* polling CheckSum report */
 	do {
@@ -444,7 +433,7 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 	if (counter >= 6000) {
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
 			 "%s: chksum report fail! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
-		return _FAIL;
+		goto exit;
 	}
 	RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
 		 "%s: Checksum report OK! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
@@ -463,14 +452,16 @@ static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
 		if (value32 & WINTINI_RDY) {
 			RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
 				 "%s: Polling FW ready success!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
-			return _SUCCESS;
+			err = 0;
+			goto exit;
 		}
 		udelay(5);
 	} while (counter++ < 6000);
 
 	RT_TRACE(rtlpriv, COMP_ERR, DBG_LOUD,
 		 "%s: Polling FW ready fail!! REG_MCUFWDL:0x%08x\n", __FUNCTION__, value32);
-	return _FAIL;
+exit:
+	return err;
 }
 
 int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
@@ -491,7 +482,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 
 	pDM_Odm = &pHalData->odmpriv;
 
-	if (IS_HARDWARE_TYPE_8812AU(rtlhal)) 
+	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		fw_name = "rtlwifi/rtl8812aufw.bin";
 
 	if (IS_HARDWARE_TYPE_8821AU(rtlhal))
@@ -529,7 +520,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 
 	rtlhal->fw_version =  (u16)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
 	rtlhal->fw_subversion = (u16)GET_FIRMWARE_HDR_SUB_VER_8812(pFwHdr);
-/*	
+/*
 	pHalData->FirmwareSignature = (u16)GET_FIRMWARE_HDR_SIGNATURE_8812(pFwHdr);
 
 	DBG_871X ("%s: fw_ver=%d fw_subver=%d sig=0x%x\n",
@@ -555,13 +546,13 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 		rtl8821au_firmware_selfreset(rtlpriv);
 	}
 
-	_rtl8821ae_enable_fw_download(rtlpriv, true);
+	_rtl8821au_enable_fw_download(rtlpriv, true);
 	fwdl_start_time = jiffies;
 	while (1) {
 		/* reset the FWDL chksum */
 		rtl_write_byte(rtlpriv, REG_MCUFWDL, rtl_read_byte(rtlpriv, REG_MCUFWDL)|FWDL_ChkSum_rpt);
 
-		rtStatus = _WriteFW_8812(rtlpriv, rtlhal->pfirmware, rtlhal->fwsize);
+		rtStatus = _rtl8821au_write_fw(rtlpriv, rtlhal->pfirmware, rtlhal->fwsize);
 
 		if (rtStatus == _SUCCESS
 		   || (rtw_get_passing_time_ms(fwdl_start_time) > 500 && writeFW_retry++ >= 3))
@@ -572,7 +563,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 			 __FUNCTION__ , writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
 		);
 	}
-	_rtl8821ae_enable_fw_download(rtlpriv, false);
+	_rtl8821au_enable_fw_download(rtlpriv, false);
 	if (_SUCCESS != rtStatus) {
 		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
 			 "DL Firmware failed!\n");
@@ -591,7 +582,7 @@ Exit:
 
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 		"<=== FirmwareDownload91C()\n");
-	
+
 	return rtStatus;
 }
 
@@ -871,7 +862,7 @@ void ConstructNullFunctionData(
  * 						to Hw again and set the lengh in descriptor to the real beacon lengh.
  *  2009.10.15 by tynli.
  */
-static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
+static void rtl8812ae_set_fw_rsvdpagepkt(struct rtl_priv *rtlpriv, bool b_dl_finished)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct _rtw_hal *pHalData;
@@ -927,7 +918,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 	 */
 	CurtPktPageNum = (uint8_t)PageNum(BcnLen+TxDescLen, PageSize);
 
-	if (bDLFinished) {
+	if (b_dl_finished) {
 		TotalPageNum += CurtPktPageNum;
 		TotalPacketLen = (TotalPageNum*PageSize);
 		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
@@ -1041,7 +1032,7 @@ static void SetFwRsvdPagePkt_8812(struct rtl_priv *rtlpriv, bool bDLFinished)
 		dump_mgntframe_and_wait(rtlpriv, pcmdframe, 100);
 	}
 
-	if (!bDLFinished) {
+	if (!b_dl_finished) {
 		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
 			 "%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n",
 			 __FUNCTION__, TotalPacketLen, TotalPageNum);
@@ -1114,7 +1105,7 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 
 		do {
 			/* download rsvd page. */
-			SetFwRsvdPagePkt_8812(rtlpriv, false);
+			rtl8812ae_set_fw_rsvdpagepkt(rtlpriv, false);
 			DLBcnCount++;
 			do {
 				rtw_yield_os();
@@ -1152,7 +1143,7 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 				DLBcnCount = 0;
 				poll = 0;
 				do {
-					SetFwRsvdPagePkt_8812(rtlpriv, true);
+					rtl8812ae_set_fw_rsvdpagepkt(rtlpriv, true);
 					DLBcnCount++;
 
 					do {
@@ -1251,7 +1242,7 @@ void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode)
 
 	PSMode = PS_MODE_MIN;		/* ULLI: fix for powermode on low bitrate streaming */
 
-	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD, 
+	RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
 		 "%s: Mode=%d SmartPS=%d UAPSD=%d\n", __FUNCTION__,
 		PSMode, pwrpriv->smart_ps, rtlpriv->registrypriv.uapsd_enable);
 

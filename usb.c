@@ -46,7 +46,7 @@ static inline int rtw_inc_and_chk_continual_urb_error(struct rtl_usb *dvobj)
 
 int rtw_resume_process(struct rtl_priv *rtlpriv);
 
-static int usbctrl_vendorreq(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
+static int usbctrl_vendorreq_read(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct usb_device *udev = rtlusb->udev;
@@ -165,7 +165,124 @@ exit:
 
 }
 
+static int usbctrl_vendorreq_write(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
+{
+	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
+	struct usb_device *udev = rtlusb->udev;
+	int _unused;
 
+	unsigned int pipe;
+	int status = 0;
+	u32 tmp_buflen=0;
+	uint8_t reqtype;
+	uint8_t *pIo_buf;
+	int vendorreq_times = 0;
+
+	uint8_t tmp_buf[MAX_USB_IO_CTL_SIZE];
+
+	/* DBG_871X("%s %s:%d\n",__FUNCTION__, current->comm, current->pid); */
+
+	if((rtlpriv->bSurpriseRemoved) ||(rtlpriv->pwrctrlpriv.pnp_bstop_trx)){
+		status = -EPERM;
+		goto exit;
+	}
+
+	if(len>MAX_VENDOR_REQ_CMD_SIZE){
+		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "[%s] Buffer len error ,vendor request failed\n", __FUNCTION__ );
+		status = -EINVAL;
+		goto exit;
+	}
+
+#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
+	_unused = mutex_lock_interruptible(&rtlusb->usb_vendor_req_mutex);
+#endif
+
+
+	/* Acquire IO memory for vendorreq */
+#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
+	pIo_buf = rtlusb->usb_vendor_req_buf;
+#else
+	tmp_buflen = MAX_USB_IO_CTL_SIZE;
+
+	/*
+	 * Added by Albert 2010/02/09
+	 * For mstar platform, mstar suggests the address for USB IO should be 16 bytes alignment.
+	 * Trying to fix it here.
+	 */
+	pIo_buf = (tmp_buf==NULL)?NULL:tmp_buf + ALIGNMENT_UNIT -((__kernel_size_t)(tmp_buf) & 0x0f );
+#endif
+
+	if ( pIo_buf== NULL) {
+		RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "[%s] pIo_buf == NULL \n", __FUNCTION__ );
+		status = -ENOMEM;
+		goto release_mutex;
+	}
+
+	while (++vendorreq_times<= MAX_USBCTRL_VENDORREQ_TIMES) {
+		memset(pIo_buf, 0, len);
+
+		if (requesttype == 0x01) {
+			pipe = usb_rcvctrlpipe(udev, 0);	/* read_in */
+			reqtype =  REALTEK_USB_VENQT_READ;
+		} else {
+			pipe = usb_sndctrlpipe(udev, 0);	/* write_out */
+			reqtype =  REALTEK_USB_VENQT_WRITE;
+			memcpy( pIo_buf, pdata, len);
+		}
+
+		status = usb_control_msg(udev, pipe, request, reqtype, value, index, pIo_buf, len, RTW_USB_CONTROL_MSG_TIMEOUT);
+
+		if (status == len) {   // Success this control transfer. */
+			rtw_reset_continual_urb_error(rtlusb);
+			if (requesttype == 0x01) {
+				/* For Control read transfer, we have to copy the read data from pIo_buf to pdata. */
+				memcpy(pdata, pIo_buf,  len);
+			}
+		} else {
+			/* error cases */
+			RT_TRACE(rtlpriv, COMP_USB, DBG_LOUD, "reg 0x%x, usb %s %u fail, status:%d value=0x%x, vendorreq_times:%d\n"
+				, value,(requesttype == 0x01)?"read":"write" , len, status, *(u32*)pdata, vendorreq_times);
+
+			if (status < 0) {
+				if(status == (-ESHUTDOWN) || status == -ENODEV) {
+					rtlpriv->bSurpriseRemoved = true;
+				} else {
+					;
+				}
+			} else {
+				/* status != len && status >= 0 */
+
+				if(status > 0) {
+					if ( requesttype == 0x01 ) {
+						/* For Control read transfer, we have to copy the read data from pIo_buf to pdata. */
+						memcpy( pdata, pIo_buf,  len );
+					}
+				}
+			}
+
+			if(rtw_inc_and_chk_continual_urb_error(rtlusb) == true ){
+				rtlpriv->bSurpriseRemoved = true;
+				break;
+			}
+
+		}
+
+		/* firmware download is checksumed, don't retry */
+		if( (value >= FW_8821AU_START_ADDRESS ) || status == len )
+			break;
+
+	}
+
+	/* release IO memory used by vendorreq */
+
+release_mutex:
+#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
+	mutex_unlock(&rtlusb->usb_vendor_req_mutex);
+#endif
+exit:
+	return status;
+
+}
 
 static uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr)
 {
@@ -183,7 +300,7 @@ static uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr)
 	wvalue = (u16) (addr&0x0000ffff);
 	len = 1;
 
-	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_read(rtlpriv, request, wvalue, index, &data, len, requesttype);
 
 	return data;
 
@@ -205,7 +322,7 @@ static u16 usb_read16(struct rtl_priv *rtlpriv, uint32_t addr)
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 2;
 
-	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_read(rtlpriv, request, wvalue, index, &data, len, requesttype);
 
 	return data;
 
@@ -227,7 +344,7 @@ static uint32_t usb_read32(struct rtl_priv *rtlpriv, uint32_t addr)
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 4;
 
-	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_read(rtlpriv, request, wvalue, index, &data, len, requesttype);
 
 
 	return data;
@@ -252,7 +369,7 @@ static void usb_write8(struct rtl_priv *rtlpriv, uint32_t addr, uint8_t val)
 
 	data = val;
 
-	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, &data, len, requesttype);
 }
 
 static void usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val)
@@ -273,7 +390,7 @@ static void usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val)
 
 	data = val;
 
-	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, &data, len, requesttype);
 }
 
 static void usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val)
@@ -293,7 +410,7 @@ static void usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val)
 	len = 4;
 	data = val;
 
-	usbctrl_vendorreq(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, &data, len, requesttype);
 }
 
 static void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, void *pdata, u16 length)
@@ -313,7 +430,7 @@ static void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, void *pdata, u16
 	len = length;
 	memcpy(buf, pdata, len);
 
-	usbctrl_vendorreq(rtlpriv, request, wvalue, index, buf, len, requesttype);
+	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, buf, len, requesttype);
 }
 
 static void _rtl_usb_io_handler_init(struct device *dev,

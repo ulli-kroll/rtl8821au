@@ -46,10 +46,11 @@ static inline int rtw_inc_and_chk_continual_urb_error(struct rtl_usb *dvobj)
 
 int rtw_resume_process(struct rtl_priv *rtlpriv);
 
-static int usbctrl_vendorreq_read(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
+static int usbctrl_vendorreq_read(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct usb_device *udev = rtlusb->udev;
+	uint8_t requesttype = 0x01;     /* read_in */
 	int _unused;
 
 	unsigned int pipe;
@@ -165,10 +166,11 @@ exit:
 
 }
 
-static int usbctrl_vendorreq_write(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len, uint8_t requesttype)
+static int usbctrl_vendorreq_write(struct rtl_priv *rtlpriv, uint8_t request, u16 value, u16 index, void *pdata, u16 len)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
 	struct usb_device *udev = rtlusb->udev;
+	uint8_t requesttype = 0x00;             /* write_out */
 	int _unused;
 
 	unsigned int pipe;
@@ -287,20 +289,18 @@ exit:
 static uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr)
 {
 	uint8_t request;
-	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
 	uint8_t data = 0;
 
 	request = 0x05;
-	requesttype = 0x01;	/* read_in */
 	index = 0;		/* n/a */
 
 	wvalue = (u16) (addr&0x0000ffff);
 	len = 1;
 
-	usbctrl_vendorreq_read(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_read(rtlpriv, request, wvalue, index, &data, len);
 
 	return data;
 
@@ -309,20 +309,18 @@ static uint8_t usb_read8(struct rtl_priv *rtlpriv, uint32_t addr)
 static u16 usb_read16(struct rtl_priv *rtlpriv, uint32_t addr)
 {
 	uint8_t request;
-	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
 	u16 data = 0;
 
 	request = 0x05;
-	requesttype = 0x01;	/* read_in */
 	index = 0;		/* n/a */
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 2;
 
-	usbctrl_vendorreq_read(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_read(rtlpriv, request, wvalue, index, &data, len);
 
 	return data;
 
@@ -331,20 +329,18 @@ static u16 usb_read16(struct rtl_priv *rtlpriv, uint32_t addr)
 static uint32_t usb_read32(struct rtl_priv *rtlpriv, uint32_t addr)
 {
 	uint8_t request;
-	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
 	uint32_t data = 0;
 
 	request = 0x05;
-	requesttype = 0x01;	/* read_in */
 	index = 0;		/* n/a */
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 4;
 
-	usbctrl_vendorreq_read(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_read(rtlpriv, request, wvalue, index, &data, len);
 
 
 	return data;
@@ -354,14 +350,12 @@ static uint32_t usb_read32(struct rtl_priv *rtlpriv, uint32_t addr)
 static void usb_write8(struct rtl_priv *rtlpriv, uint32_t addr, uint8_t val)
 {
 	uint8_t request;
-	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
 	uint8_t data;
 
 	request = 0x05;
-	requesttype = 0x00;		/* write_out */
 	index = 0;			/* n/a */
 
 	wvalue = (u16)(addr&0x0000ffff);
@@ -369,20 +363,18 @@ static void usb_write8(struct rtl_priv *rtlpriv, uint32_t addr, uint8_t val)
 
 	data = val;
 
-	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, &data, len);
 }
 
 static void usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val)
 {
 	uint8_t request;
-	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
 	u16 data;
 
 	request = 0x05;
-	requesttype = 0x00;	/* write_out */
 	index = 0;		/* n/a */
 
 	wvalue = (u16)(addr&0x0000ffff);
@@ -390,47 +382,43 @@ static void usb_write16(struct rtl_priv *rtlpriv, uint32_t addr, u16 val)
 
 	data = val;
 
-	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, &data, len);
 }
 
 static void usb_write32(struct rtl_priv *rtlpriv, uint32_t addr, uint32_t val)
 {
 	uint8_t request;
-	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
 	uint32_t data;
 
 	request = 0x05;
-	requesttype = 0x00;	/* write_out */
 	index = 0;		/* n/a */
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 4;
 	data = val;
 
-	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, &data, len, requesttype);
+	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, &data, len);
 }
 
 static void usb_writeN(struct rtl_priv *rtlpriv, uint32_t addr, void *pdata, u16 length)
 {
 	uint8_t request;
-	uint8_t requesttype;
 	u16 wvalue;
 	u16 index;
 	u16 len;
 	uint8_t buf[VENDOR_CMD_MAX_DATA_LEN] = {0};
 
 	request = 0x05;
-	requesttype = 0x00;	/* write_out */
 	index = 0;		/* n/a */
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = length;
 	memcpy(buf, pdata, len);
 
-	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, buf, len, requesttype);
+	usbctrl_vendorreq_write(rtlpriv, request, wvalue, index, buf, len);
 }
 
 static void _rtl_usb_io_handler_init(struct device *dev,

@@ -318,56 +318,28 @@ static void _rtl8821au_enable_fw_download(struct rtl_priv *rtlpriv, bool enable)
 static void _rtl8821au_fw_block_write(struct rtl_priv *rtlpriv,
 				      const u8 *buffer, u32 size)
 {
-	u32 blockSize_p1 = 4;	/* (Default) Phase #1 : PCI muse use 4-byte write to download FW */
-	u32 blockSize_p2 = 8;	/* Phase #2 : Use 8-byte, if Phase#1 use big size to write FW. */
-	u32 blockSize_p3 = 1;	/* Phase #3 : Use 1-byte, the remnant of FW image. */
-	u32 blockCount_p1 = 0, blockCount_p2 = 0, blockCount_p3 = 0;
-	u32 remainSize_p1 = 0, remainSize_p2 = 0;
-	u8  *bufferPtr	= (u8 *) buffer;
-	u32 i = 0, offset = 0;
+	u32 blocksize = sizeof(u32);
+	u8 *bufferptr = (u8 *)buffer;
+	u32 *pu4byteptr = (u32 *)buffer;
+	u32 i, offset, blockcount, remainsize;
 
-	blockSize_p1 = MAX_REG_BOLCK_SIZE;
+	blockcount = size / blocksize;
+	remainsize = size % blocksize;
 
-	/* 3 Phase #1 */
-	blockCount_p1 = size / blockSize_p1;
-	remainSize_p1 = size % blockSize_p1;
-
-	if (blockCount_p1) {
-		;
+	for (i = 0; i < blockcount; i++) {
+		offset = i * blocksize;
+		rtl_write_dword(rtlpriv, (FW_8821AU_START_ADDRESS + offset),
+				*(pu4byteptr + i));
 	}
 
-	for (i = 0; i < blockCount_p1; i++) {
-		rtl_writeN(rtlpriv, (FW_8821AU_START_ADDRESS + i * blockSize_p1), (bufferPtr + i * blockSize_p1), blockSize_p1);
-	}
-
-
-	/* 3 Phase #2 */
-	if (remainSize_p1) {
-		offset = blockCount_p1 * blockSize_p1;
-
-		blockCount_p2 = remainSize_p1/blockSize_p2;
-		remainSize_p2 = remainSize_p1%blockSize_p2;
-
-		if (blockCount_p2) {
-			;
-		}
-
-		for (i = 0; i < blockCount_p2; i++) {
-			rtl_writeN(rtlpriv, (FW_8821AU_START_ADDRESS + offset + i*blockSize_p2), (bufferPtr + offset + i*blockSize_p2), blockSize_p2);
+	if (remainsize) {
+		offset = blockcount * blocksize;
+		bufferptr += offset;
+		for (i = 0; i < remainsize; i++) {
+			rtl_write_byte(rtlpriv, (FW_8821AU_START_ADDRESS +
+					offset + i), *(bufferptr + i));
 		}
 	}
-
-	/* 3 Phase #3 */
-	if (remainSize_p2) {
-		offset = (blockCount_p1 * blockSize_p1) + (blockCount_p2 * blockSize_p2);
-
-		blockCount_p3 = remainSize_p2 / blockSize_p3;
-
-		for (i = 0 ; i < blockCount_p3; i++) {
-			rtl_write_byte(rtlpriv, (FW_8821AU_START_ADDRESS + offset + i), *(bufferPtr + offset + i));
-		}
-	}
-
 }
 
 static void _rtl8821au_fw_page_write(struct rtl_priv *rtlpriv,

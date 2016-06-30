@@ -432,23 +432,15 @@ exit:
 	return err;
 }
 
-int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
+int rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
-	struct device *device = dvobj_to_dev(rtlusb);
 	const struct firmware *fw;
 	char *fw_name;
 	u8 *pfwdata;
 
 	int32_t	rtStatus = _SUCCESS;
-	uint8_t	writeFW_retry = 0;
-	uint32_t fwdl_start_time;
-	struct _rtw_hal *pHalData = GET_HAL_DATA(rtlpriv);
-	struct _rtw_dm *	pDM_Odm;
-	uint8_t				*pFwHdr = NULL;
-
-	pDM_Odm = &pHalData->odmpriv;
+	u8 *pfwhdr = NULL;
 
 	if (IS_HARDWARE_TYPE_8812AU(rtlhal))
 		fw_name = "rtlwifi/rtl8812aufw.bin";
@@ -458,7 +450,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 
 	pr_info("Loading firmware %s\n", fw_name);
 
-	if (request_firmware(&fw, fw_name, device)) {
+	if (request_firmware(&fw, fw_name, rtlpriv->io.dev)) {
 		RT_TRACE(rtlpriv, COMP_FW, DBG_EMERG, "Firmware %s not available\n", fw_name);
 		return -ENOENT;
 	}
@@ -483,11 +475,16 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 	rtlhal->fwsize = fw->size;
 	release_firmware(fw);
 
-	/* To Check Fw header. Added by tynli. 2009.12.04. */
-	pFwHdr = (uint8_t *) rtlhal->pfirmware;
+	/*
+	 * RTL8812AU / RTL8821AU use other firmware layout as defined in
+	 * struct rtlwifi_firmware_header
+	 */
 
-	rtlhal->fw_version =  (u16)GET_FIRMWARE_HDR_VERSION_8812(pFwHdr);
-	rtlhal->fw_subversion = (u16)GET_FIRMWARE_HDR_SUB_VER_8812(pFwHdr);
+	/* To Check Fw header. Added by tynli. 2009.12.04. */
+	pfwhdr = (u8 *) rtlhal->pfirmware;
+
+	rtlhal->fw_version =  (u16)GET_FIRMWARE_HDR_VERSION_8812(pfwhdr);
+	rtlhal->fw_subversion = (u16)GET_FIRMWARE_HDR_SUB_VER_8812(pfwhdr);
 /*
 	pHalData->FirmwareSignature = (u16)GET_FIRMWARE_HDR_SIGNATURE_8812(pFwHdr);
 
@@ -499,7 +496,7 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 		 __FUNCTION__, rtlhal->fw_version, rtlhal->fw_subversion);
 
 
-	if (IS_FW_HEADER_EXIST_8812(pFwHdr) || IS_FW_HEADER_EXIST_8821(pFwHdr)) {
+	if (IS_FW_HEADER_EXIST_8812(pfwhdr) || IS_FW_HEADER_EXIST_8821(pfwhdr)) {
 		/* Shift 32 bytes for FW header */
 		rtlhal->pfirmware += 32;
 		rtlhal->fwsize -= 32;
@@ -515,7 +512,6 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 	}
 
 	_rtl8821au_enable_fw_download(rtlpriv, true);
-	fwdl_start_time = jiffies;
 	/* reset the FWDL chksum */
 
 	rtl_write_byte(rtlpriv, REG_MCUFWDL, rtl_read_byte(rtlpriv, REG_MCUFWDL)|FWDL_ChkSum_rpt);

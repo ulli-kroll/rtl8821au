@@ -35,9 +35,9 @@
 
 
 void rtl8812au_set_fw_pwrmode_cmd(struct rtl_priv *rtlpriv, uint8_t PSMode);
-int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw);
+int rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw);
 void rtl8821au_firmware_selfreset(struct rtl_priv *rtlpriv);
-void rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv, u8 element_id, 
+void rtl8821au_fill_h2c_cmd(struct rtl_priv *rtlpriv, u8 element_id,
 			   u32 cmd_len, u8 *cmdbuffer);
 uint8_t rtl8812_set_rssi_cmd(struct rtl_priv *rtlpriv, uint8_t *param);
 void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstatus);

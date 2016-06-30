@@ -355,14 +355,13 @@ static void _rtl8821au_fw_page_write(struct rtl_priv *rtlpriv,
 }
 
 
-static int _rtl8821au_write_fw(struct rtl_priv *rtlpriv,
+static void _rtl8821au_write_fw(struct rtl_priv *rtlpriv,
 			       u8 *buffer, u32 size)
 {
 	/*
 	 * Since we need dynamic decide method of dwonload fw, so we call this function to get chip version.
 	 * We can remove _ReadChipVersion from ReadpadapterInfo8192C later.
 	 */
-	int     ret = _SUCCESS;
 	u8 *bufferptr = (u8 *)buffer;
 	u32 pagenums, remainsize;
 	u32 page, offset;
@@ -384,9 +383,6 @@ static int _rtl8821au_write_fw(struct rtl_priv *rtlpriv,
 		_rtl8821au_fw_page_write(rtlpriv, page, bufferptr+offset, remainsize);
 
 	}
-
-exit:
-	return ret;
 }
 
 static int32_t _rtl8821au_fw_free_to_go(struct rtl_priv *rtlpriv)
@@ -520,21 +516,12 @@ int32_t rtl8821au_download_fw(struct rtl_priv *rtlpriv, bool bUsedWoWLANFw)
 
 	_rtl8821au_enable_fw_download(rtlpriv, true);
 	fwdl_start_time = jiffies;
-	while (1) {
-		/* reset the FWDL chksum */
-		rtl_write_byte(rtlpriv, REG_MCUFWDL, rtl_read_byte(rtlpriv, REG_MCUFWDL)|FWDL_ChkSum_rpt);
+	/* reset the FWDL chksum */
 
-		rtStatus = _rtl8821au_write_fw(rtlpriv, rtlhal->pfirmware, rtlhal->fwsize);
+	rtl_write_byte(rtlpriv, REG_MCUFWDL, rtl_read_byte(rtlpriv, REG_MCUFWDL)|FWDL_ChkSum_rpt);
 
-		if (rtStatus == _SUCCESS
-		   || (rtw_get_passing_time_ms(fwdl_start_time) > 500 && writeFW_retry++ >= 3))
-			break;
+	_rtl8821au_write_fw(rtlpriv, rtlhal->pfirmware, rtlhal->fwsize);
 
-		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
-			 "%s writeFW_retry:%u, time after fwdl_start_time:%ums\n",
-			 __FUNCTION__ , writeFW_retry, rtw_get_passing_time_ms(fwdl_start_time)
-		);
-	}
 	_rtl8821au_enable_fw_download(rtlpriv, false);
 	if (_SUCCESS != rtStatus) {
 		RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,

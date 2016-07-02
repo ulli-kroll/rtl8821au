@@ -2405,7 +2405,6 @@ struct _rtw_hal {
 	//rf_ctrl
 	uint8_t	DefaultInitialGain[4];
 
-	uint8_t	bTXPowerDataReadFromEEPORM;
 	//uint8_t				EfuseMap[2][HWSET_MAX_SIZE_JAGUAR];
 
 

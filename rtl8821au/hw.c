@@ -2443,7 +2443,6 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 	u8 *hwinfo,
 	bool autoload_fail)
 {
-	 struct _rtw_hal	*pHalData = GET_HAL_DATA(rtlpriv);
 	uint32_t rfPath, eeAddr = EEPROM_TX_PWR_INX_8812, group, TxCount = 0;
 
 	memset(pwrinfo24g, 0, sizeof(*pwrinfo24g));
@@ -2500,8 +2499,6 @@ static void _rtl8821au_read_power_value_fromprom(struct rtl_priv *rtlpriv,
 		/* pHalData->bNOPG = true; */
 		return;
 	}
-
-	pHalData->bTXPowerDataReadFromEEPORM = true;		/* YJ,move,120316 */
 
 	for (rfPath = 0; rfPath < MAX_RF_PATH; rfPath++) {
 		/*  2.4G default value */

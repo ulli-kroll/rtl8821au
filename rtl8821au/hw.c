@@ -14,6 +14,7 @@
 #include "reg.h"
 #include "fw.h"
 #include "rf.h"
+#include "trx.h"
 #include "phy.h"
 #include "def.h"
 #include "dm.h"

@@ -38,14 +38,6 @@ typedef enum _RT_MEDIA_STATUS {
 
 #define MAX_DLFW_PAGE_SIZE			4096	// @ page : 4k bytes
 
-// BK, BE, VI, VO, HCCA, MANAGEMENT, COMMAND, HIGH, BEACON.
-//#define MAX_TX_QUEUE		9
-
-#define TX_SELE_HQ			BIT(0)		// High Queue
-#define TX_SELE_LQ			BIT(1)		// Low Queue
-#define TX_SELE_NQ			BIT(2)		// Normal Queue
-#define TX_SELE_EQ			BIT(3)		// Extern Queue
-
 #define PageNum_128(_Len)		(u32)(((_Len)>>7) + ((_Len)&0x7F ? 1:0))
 #define PageNum_256(_Len)		(u32)(((_Len)>>8) + ((_Len)&0xFF ? 1:0))
 #define PageNum_512(_Len)		(u32)(((_Len)>>9) + ((_Len)&0x1FF ? 1:0))

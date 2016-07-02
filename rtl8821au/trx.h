@@ -6,6 +6,14 @@ void rtl8821au_fill_fake_txdesc(struct rtl_priv *rtlpriv, uint8_t *pDesc,
 
 int rtl8821au_endpoint_mapping(struct rtl_priv *rtlpriv);
 
+// BK, BE, VI, VO, HCCA, MANAGEMENT, COMMAND, HIGH, BEACON.
+//#define MAX_TX_QUEUE		9
+
+#define TX_SELE_HQ			BIT(0)		// High Queue
+#define TX_SELE_LQ			BIT(1)		// Low Queue
+#define TX_SELE_NQ			BIT(2)		// Normal Queue
+#define TX_SELE_EQ			BIT(3)		// Extern Queue
+
 /* TX desc macros */
 
 // Dword 0

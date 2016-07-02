@@ -424,7 +424,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			val32 &= ~(RCR_CBSSID_DATA|RCR_CBSSID_BCN);
 		rtl_write_dword(rtlpriv, REG_RCR, val32);
 		break;
-
 	case HW_VAR_MLME_DISCONNECT:
 		{
 			/* Set RCR to not to receive data frame when NO LINK state
@@ -2748,14 +2747,16 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 	struct txpower_info_2g pwrinfo24g;
 	struct txpower_info_5g pwrinfo5g;
 	uint8_t	rf_path, ch, group, tx_count;
-	uint8_t	channel5g_80m[CHANNEL_MAX_NUMBER_5G] = {
-		 36,  38,  40,  42,  44,  46,  48,  50,  52,  54,  56,  58,
-		 60,  62,  64, 100, 102, 104, 106, 108, 110, 112, 114, 116,
-		118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140,
-		142, 144, 149, 151, 153, 155, 157, 159, 161, 163, 165, 167,
-		168, 169, 171, 173, 175, 177 };
+	u8	channel5g[CHANNEL_MAX_NUMBER_5G] = {
+		 36,  38,  40,  42,  44,  46,  48,
+		 50,  52,  54,  56,  58,  60,  62,  64,
+		100, 102, 104, 106, 108, 110, 112,
+		114, 116, 118, 120, 122, 124, 126, 128,
+		130, 132, 134, 136, 138, 140, 142, 144,
+		149, 151, 153, 155, 157, 159, 161,
+		163, 165, 167, 168, 169, 171, 173, 175, 177 };
 
-	uint8_t	channel5G_80M[CHANNEL_MAX_NUMBER_5G_80M] = {
+	u8	channel5g_80m[CHANNEL_MAX_NUMBER_5G_80M] = {
 		42, 58, 106, 122, 138, 155, 171};
 
 	_rtl8821au_read_power_value_fromprom(rtlpriv, &pwrinfo24g,
@@ -2790,7 +2791,7 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 		}
 
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G; ch++) {
-			group = _rtl8821au_get_chnl_group(channel5g_80m[ch]);
+			group = _rtl8821au_get_chnl_group(channel5g[ch]);
 
 			rtlefuse->txpwr_5g_bw40base[rf_path][ch] =
 				pwrinfo5g.index_bw40_base[rf_path][group];

@@ -314,16 +314,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 
 
-	case HW_VAR_RXDMA_AGG_PG_TH:
-		{
-			/*uint8_t	threshold = *((uint8_t *)val);
-			if ( threshold == 0)
-			{
-				threshold = pHalData->UsbRxAggPageCount;
-			}
-			rtl_write_byte(rtlpriv, REG_RXDMA_AGG_PG_TH, threshold);*/
-		}
-		break;
 	case HW_VAR_MEDIA_STATUS:
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x0c;
 		val8 |= *pval;

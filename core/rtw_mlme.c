@@ -2396,7 +2396,6 @@ void rtw_get_encrypt_decrypt_from_registrypriv(struct rtl_priv * rtlpriv)
 //the fucntion is at passive_level
 void rtw_joinbss_reset(struct rtl_priv *rtlpriv)
 {
-	uint8_t	threshold;
 	struct mlme_priv	*pmlmepriv = &rtlpriv->mlmepriv;
 
 	struct ht_priv		*phtpriv = &pmlmepriv->htpriv;
@@ -2411,16 +2410,6 @@ void rtw_joinbss_reset(struct rtl_priv *rtlpriv)
 
 	// TH=1 => means that invalidate usb rx aggregation
 	// TH=0 => means that validate usb rx aggregation, use init value.
-	if (phtpriv->ht_option)
-	{
-		threshold = 0;
-		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
-	}
-	else
-	{
-		threshold = 1;
-		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_RXDMA_AGG_PG_TH, (uint8_t *)(&threshold));
-	}
 }
 
 

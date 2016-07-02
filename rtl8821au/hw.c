@@ -1980,23 +1980,6 @@ static void init_UsbAggregationSetting_8812A(struct rtl_priv *rtlpriv)
 	pHalData->UsbRxHighSpeedMode = false;
 }
 
-static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
-{
-	struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-
-	if (pHalData->AntDivCfg == 0)
-		return;
-
-	rtl_write_byte(rtlpriv, REG_LEDCFG2, 0x82);
-
-	rtl_set_bbreg(rtlpriv, RFPGA0_XAB_RFPARAMETER, BIT(13), 0x01);
-
-	if (rtl_get_bbreg(rtlpriv, rFPGA0_XA_RFInterfaceOE, 0x300) == MAIN_ANT)
-		pHalData->CurAntenna = MAIN_ANT;
-	else
-		pHalData->CurAntenna = AUX_ANT;
-}
-
 static void _rtl8812au_bb8812_config_1t(struct rtl_priv *rtlpriv)
 {
 	/* BB OFDM RX Path_A */
@@ -2242,8 +2225,6 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 					       HAL_PRIME_CHNL_OFFSET_DONT_CARE);
 
 	rtw_cam_reset_all_entry(rtlpriv);
-
-	_InitAntenna_Selection_8812A(rtlpriv);
 
 	/*
 	 * HW SEQ CTRL
@@ -2824,7 +2805,7 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 		for (ch = 0 ; ch < CHANNEL_MAX_NUMBER_5G; ch++) {
 			group = _rtl8821au_get_chnl_group(channel5g_80m[ch]);
 
-			rtlefuse->txpwr_5g_bw40base[rf_path][ch] = 
+			rtlefuse->txpwr_5g_bw40base[rf_path][ch] =
 				pwrinfo5g.index_bw40_base[rf_path][group];
 
 			/*
@@ -2873,10 +2854,10 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 	/* 2010/10/19 MH Add Regulator recognize for CU. */
 	if (!autoload_fail) {
 		if (hwinfo[EEPROM_RF_BOARD_OPTION_8812] == 0xFF)
-			rtlefuse->eeprom_regulatory = 
+			rtlefuse->eeprom_regulatory =
 				(EEPROM_DEFAULT_BOARD_OPTION&0x7);	/* BIT(0)~2 */
 		else
-			rtlefuse->eeprom_regulatory = 
+			rtlefuse->eeprom_regulatory =
 				(hwinfo[EEPROM_RF_BOARD_OPTION_8812]&0x7);	/* BIT(0)~2 */
 
 	} else {

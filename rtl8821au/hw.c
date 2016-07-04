@@ -2002,6 +2002,16 @@ static int PHY_RFConfig8812(struct rtl_priv *rtlpriv)
 	return rtStatus;
 }
 
+void InitializeFirmwareVars8812(struct rtl_priv *rtlpriv)
+{
+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+
+	/* Init Fw LPS related. */
+	rtlpriv->pwrctrlpriv.fw_current_inpsmode = false;
+	/* Init H2C counter. by tynli. 2009.12.09. */
+	rtlhal->last_hmeboxnum = 0;
+}
+
 uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 {
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);

@@ -6077,8 +6077,6 @@ int rtw_scan_ch_decision(struct rtl_priv *rtlpriv, struct rtw_ieee80211_channel 
 	/* acquire channels from in */
 	j = 0;
 	for (i=0;i<in_num;i++) {
-		if (0)
-		DBG_871X(FUNC_ADPT_FMT" "CHAN_FMT"\n", FUNC_ADPT_ARG(rtlpriv), CHAN_ARG(&in[i]));
 		if(in[i].hw_value && !(in[i].flags & RTW_IEEE80211_CHAN_DISABLED)
 			&& (set_idx=rtw_ch_set_search_ch(pmlmeext->channel_set, in[i].hw_value)) >=0
 		)

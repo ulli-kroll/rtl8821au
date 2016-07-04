@@ -477,9 +477,6 @@ uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, in
 			if (ssid[i].SsidLength) {
 				memcpy(&psurveyPara->ssid[i], &ssid[i], sizeof(NDIS_802_11_SSID));
 				psurveyPara->ssid_num++;
-				if (0)
-				DBG_871X(FUNC_ADPT_FMT" ssid:(%s, %d)\n", FUNC_ADPT_ARG(rtlpriv),
-					psurveyPara->ssid[i].Ssid, psurveyPara->ssid[i].SsidLength);
 			}
 		}
 	}
@@ -491,9 +488,6 @@ uint8_t rtw_sitesurvey_cmd(struct rtl_priv  *rtlpriv, NDIS_802_11_SSID *ssid, in
 			if (ch[i].hw_value && !(ch[i].flags & RTW_IEEE80211_CHAN_DISABLED)) {
 				memcpy(&psurveyPara->ch[i], &ch[i], sizeof(struct rtw_ieee80211_channel));
 				psurveyPara->ch_num++;
-				if (0)
-				DBG_871X(FUNC_ADPT_FMT" ch:%u\n", FUNC_ADPT_ARG(rtlpriv),
-					psurveyPara->ch[i].hw_value);
 			}
 		}
 	}

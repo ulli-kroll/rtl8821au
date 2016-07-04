@@ -1091,40 +1091,6 @@ void rtl8821au_set_fw_joinbss_report_cmd(struct rtl_priv *rtlpriv, uint8_t mstat
 		 * the beacon TCB in the following code. 2011.11.23. by tynli.
 		 */
 
-		/* if (bcn_valid && rtlpriv->bEnterPnpSleep) */
-		if (0) {
-			if (bSendBeacon) {
-				rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BCN_VALID, NULL);
-				DLBcnCount = 0;
-				poll = 0;
-				do {
-					rtl8812ae_set_fw_rsvdpagepkt(rtlpriv, true);
-					DLBcnCount++;
-
-					do {
-						rtw_yield_os();
-						/*
-						 * rtw_mdelay_os(10);
-						 * check rsvd page download OK.
-						 */
-						rtlpriv->cfg->ops->get_hw_reg(rtlpriv, HW_VAR_BCN_VALID, (uint8_t *)(&bcn_valid));
-						poll++;
-					} while (!bcn_valid && (poll%10) != 0 && !rtlpriv->bSurpriseRemoved && !rtlpriv->bDriverStopped);
-				} while (!bcn_valid && DLBcnCount <= 100 && !rtlpriv->bSurpriseRemoved && !rtlpriv->bDriverStopped);
-
-				/* RT_ASSERT(bcn_valid, ("HalDownloadRSVDPage(): 2 Download RSVD page failed!\n")); */
-				if (rtlpriv->bSurpriseRemoved || rtlpriv->bDriverStopped) {
-				} else if (!bcn_valid)
-					RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
-						 "%s: 2 Download RSVD page failed! DLBcnCount:%u, poll:%u\n",
-						 __FUNCTION__ , DLBcnCount, poll);
-				else
-					RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
-						 "%s: 2 Download RSVD success! DLBcnCount:%u, poll:%u\n",
-						 __FUNCTION__, DLBcnCount, poll);
-			}
-		}
-
 		/* Enable Bcn */
 		/* SetBcnCtrlReg(rtlpriv, BIT(3), 0); */
 		/* SetBcnCtrlReg(rtlpriv, 0, BIT(4)); */

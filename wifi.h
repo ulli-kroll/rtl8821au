@@ -2444,7 +2444,6 @@ struct _rtw_hal {
 	bool	 bRDGEnable;
 
 	uint8_t	fw_ractrl;
-	uint8_t	RegTxPause;
 	// Beacon function related global variable.
 	uint8_t	RegFwHwTxQCtrl;
 	uint8_t	RegReg542;

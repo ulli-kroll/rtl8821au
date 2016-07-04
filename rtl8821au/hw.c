@@ -42,7 +42,6 @@ void rtl8821au_init_beacon_parameters(struct rtl_priv *rtlpriv)
 	rtl_write_word(rtlpriv, REG_BCNTCFG, 0x660F);
 
 	rtlusb->reg_bcn_ctrl_val = rtl_read_byte(rtlpriv, REG_BCN_CTRL);
-	pHalData->RegTxPause = rtl_read_byte(rtlpriv, REG_TXPAUSE);
 	pHalData->RegFwHwTxQCtrl = rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL+2);
 	pHalData->RegReg542 = rtl_read_byte(rtlpriv, REG_TBTT_PROHIBIT+2);
 	pHalData->RegCR_1 = rtl_read_byte(rtlpriv, REG_CR+1);

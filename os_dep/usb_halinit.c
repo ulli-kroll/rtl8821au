@@ -23,9 +23,11 @@
 #include <rtl8812a_hal.h>
 #include <../rtl8821au/phy.h>
 #include <../rtl8821au/reg.h>
+#include <../rtl8821au/pwrseq.h>
 #include <../rtl8821au/trx.h>
 #include <../rtl8821au/hw.h>
 #include <../rtl8821au/fw.h>
+#include <../pwrseqcmd.h>
 #include <hal_intf.h>
 
 #undef DBG_8192C
@@ -159,7 +161,7 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, REG_HISR0_8812, 0xFFFFFFFF);
 	rtl_write_dword(rtlpriv, REG_HISR1_8812, 0xFFFFFFFF);
 	rtlpriv->cfg->ops->disable_interrupt(rtlpriv);
-	
+
 	if (rtlpriv->hw_init_completed == true) {
 		_rtl8821au_poweroff_adapter(rtlpriv);
 #if 0	/* ULLI : we have no HW power down here ->pwrctrlpriv.bHWPowerdown = 0 */

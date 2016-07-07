@@ -17,8 +17,8 @@
  *
  *
  ******************************************************************************/
-#ifndef __HALPWRSEQCMD_H__
-#define __HALPWRSEQCMD_H__
+#ifndef __RTL8821AU_PWRSEQCMD_H__
+#define __RTL8821AU_PWRSEQCMD_H__
 
 #include <drv_types.h>
 

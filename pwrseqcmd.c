@@ -1,53 +1,4 @@
-/******************************************************************************
- *
- * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of version 2 of the GNU General Public License as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
- ******************************************************************************/
-/*++
-Copyright (c) Realtek Semiconductor Corp. All rights reserved.
-
-Module Name:
-	HalPwrSeqCmd.c
-
-Abstract:
-	Implement HW Power sequence configuration CMD handling routine for Realtek devices.
-
-Major Change History:
-	When       Who               What
-	---------- ---------------   -------------------------------
-	2011-10-26 Lucas            Modify to be compatible with SD4-CE driver.
-	2011-07-07 Roger            Create.
-
---*/
-#include <HalPwrSeqCmd.h>
-
-//
-//	Description:
-//		This routine deal with the Power Configuration CMDs parsing for RTL8723/RTL8188E Series IC.
-//
-//	Assumption:
-//		We should follow specific format which was released from HW SD.
-//
-//	2011.07.07, added by Roger.
-//
-
-/* ULLI : rtlwifi core.c
- * real name is rtl_hal_pwrseqcmdparsing ()
- */
+#include "pwrseqcmd.h"
 
 bool rtw_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
 				 u8 fabversion, u8 interface_type,
@@ -129,5 +80,4 @@ bool rtw_hal_pwrseqcmdparsing(struct rtl_priv *rtlpriv, u8 cut_version,
 
 	return true;
 }
-
 

@@ -30,36 +30,11 @@
 #include "rtl8812a_recv.h"
 #include "rtl8812a_xmit.h"
 #include "rtl8812a_cmd.h"
-#include "Hal8812PwrSeq.h"
-#include "Hal8821APwrSeq.h" //for 8821A/8811A
 #include "Hal8812PhyReg.h"
 #include "Hal8812PhyCfg.h"
 #ifdef DBG_CONFIG_ERROR_DETECT
 #include "rtl8812a_sreset.h"
 #endif
-
-#define Rtl8812_NIC_PWR_ON_FLOW				rtl8812_power_on_flow
-#define Rtl8812_NIC_RF_OFF_FLOW				rtl8812_radio_off_flow
-#define Rtl8812_NIC_DISABLE_FLOW				rtl8812_card_disable_flow
-#define Rtl8812_NIC_ENABLE_FLOW				rtl8812_card_enable_flow
-#define Rtl8812_NIC_SUSPEND_FLOW				rtl8812_suspend_flow
-#define Rtl8812_NIC_RESUME_FLOW				rtl8812_resume_flow
-#define Rtl8812_NIC_PDN_FLOW					rtl8812_hwpdn_flow
-#define Rtl8812_NIC_LPS_ENTER_FLOW			rtl8812_enter_lps_flow
-#define Rtl8812_NIC_LPS_LEAVE_FLOW				rtl8812_leave_lps_flow
-
-//---------------------------------------------------------------------
-//		RTL8821 Power Configuration CMDs for PCIe interface
-//---------------------------------------------------------------------
-#define Rtl8821A_NIC_PWR_ON_FLOW				rtl8821A_power_on_flow
-#define Rtl8821A_NIC_RF_OFF_FLOW				rtl8821A_radio_off_flow
-#define Rtl8821A_NIC_DISABLE_FLOW				rtl8821A_card_disable_flow
-#define Rtl8821A_NIC_ENABLE_FLOW				rtl8821A_card_enable_flow
-#define Rtl8821A_NIC_SUSPEND_FLOW				rtl8821A_suspend_flow
-#define Rtl8821A_NIC_RESUME_FLOW				rtl8821A_resume_flow
-#define Rtl8821A_NIC_PDN_FLOW					rtl8821A_hwpdn_flow
-#define Rtl8821A_NIC_LPS_ENTER_FLOW			rtl8821A_enter_lps_flow
-#define Rtl8821A_NIC_LPS_LEAVE_FLOW			rtl8821A_leave_lps_flow
 
 
 #if 1 // download firmware related data structure

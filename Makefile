@@ -19,6 +19,7 @@ CONFIG_PLATFORM_I386_PC = y
 RTLWIFI_FILES :=	cam.o \
 			debug.o \
 			efuse.o \
+			pwrseqcmd.o \
 			usb.o
 
 RTL8821AU_FILES	:=	rtl8821au/dm.o \
@@ -26,6 +27,7 @@ RTL8821AU_FILES	:=	rtl8821au/dm.o \
 			rtl8821au/hw.o \
 			rtl8821au/led.o \
 			rtl8821au/phy.o \
+			rtl8821au/pwrseq.o \
 			rtl8821au/rf.o \
 			rtl8821au/quirks.o \
 			rtl8821au/sw.o \
@@ -44,9 +46,6 @@ OS_FILES :=		os_dep/osdep_service.o \
 HAL_FILES 	:=	hal/hal_intf.o \
 			hal/hal_com.o \
 			hal/odm.o \
-			hal/HalPwrSeqCmd.o \
-			hal/Hal8812PwrSeq.o \
-			hal/Hal8821APwrSeq.o\
 			hal/rtl8812a_hal_init.o \
 			hal/rtl8812a_phycfg.o \
 			hal/rtl8812a_dm.o \

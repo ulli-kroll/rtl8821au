@@ -310,19 +310,9 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 		break;
 
-	/* ULLI : old Hw vars */
-
-
-
 	case HW_VAR_MEDIA_STATUS:
 		val8 = rtl_read_byte(rtlpriv, MSR) & 0x0c;
 		val8 |= *pval;
-		rtl_write_byte(rtlpriv, MSR, val8);
-		break;
-
-	case HW_VAR_MEDIA_STATUS1:
-		val8 = rtl_read_byte(rtlpriv, MSR) & 0x03;
-		val8 |= *pval << 2;
 		rtl_write_byte(rtlpriv, MSR, val8);
 		break;
 
@@ -365,14 +355,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			rtl_write_byte(rtlpriv, REG_RRSR+1, (BrateCfg>>8)&0xff);
 			rtl_write_byte(rtlpriv, REG_RRSR+2, rtl_read_byte(rtlpriv, REG_RRSR+2)&0xf0);
 		}
-		break;
-
-	case HW_VAR_TXPAUSE:
-		rtl_write_byte(rtlpriv, REG_TXPAUSE, *pval);
-		break;
-
-	case HW_VAR_BCN_FUNC:
-		hw_var_set_bcn_func(rtlpriv, variable, pval);
 		break;
 
 	case HW_VAR_CORRECT_TSF:
@@ -424,6 +406,165 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			val32 &= ~(RCR_CBSSID_DATA|RCR_CBSSID_BCN);
 		rtl_write_dword(rtlpriv, REG_RCR, val32);
 		break;
+
+	case HW_VAR_BEACON_INTERVAL:
+		rtl_write_word(rtlpriv, REG_BCN_INTERVAL, *(u16 *)pval);
+		break;
+
+	case HW_VAR_SLOT_TIME:
+		rtl_write_byte(rtlpriv, REG_SLOT, *pval);
+		break;
+
+	case HW_VAR_ACK_PREAMBLE:
+		{
+			uint8_t bShortPreamble = *pval;
+
+			/*  Joseph marked out for Netgear 3500 TKIP channel 7 issue.(Temporarily) */
+			val8 = (rtlpriv->mac80211.cur_40_prime_sc) << 5;
+			if (bShortPreamble)
+				val8 |= 0x80;
+			rtl_write_byte(rtlpriv, REG_RRSR+2, val8);
+		}
+		break;
+
+	case HW_VAR_ACM_CTRL:
+		{
+			uint8_t acm_ctrl;
+			uint8_t AcmCtrl;
+
+			acm_ctrl = *(uint8_t *)pval;
+			AcmCtrl = rtl_read_byte(rtlpriv, REG_ACMHWCTRL);
+
+			if (acm_ctrl > 1)
+				AcmCtrl = AcmCtrl | 0x1;
+
+			if (acm_ctrl & BIT(3))
+				AcmCtrl |= AcmHw_VoqEn;
+			else
+				AcmCtrl &= (~AcmHw_VoqEn);
+
+			if (acm_ctrl & BIT(2))
+				AcmCtrl |= AcmHw_ViqEn;
+			else
+				AcmCtrl &= (~AcmHw_ViqEn);
+
+			if (acm_ctrl & BIT(1))
+				AcmCtrl |= AcmHw_BeqEn;
+			else
+				AcmCtrl &= (~AcmHw_BeqEn);
+
+			RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
+				 "[HW_VAR_ACM_CTRL] Write 0x%X\n",
+				 AcmCtrl);
+			rtl_write_byte(rtlpriv, REG_ACMHWCTRL, AcmCtrl);
+		}
+		break;
+
+	case HW_VAR_AMPDU_MIN_SPACE:
+		pHalData->AMPDUDensity = *(uint8_t *)pval;
+		break;
+
+	case HW_VAR_AMPDU_FACTOR:
+		{
+			uint32_t	AMPDULen = *(uint8_t *)pval;
+
+			if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
+				if (AMPDULen < VHT_AGG_SIZE_128K)
+					AMPDULen = (0x2000 << *(uint8_t *)pval) - 1;
+				else
+					AMPDULen = 0x1ffff;
+			} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
+				if (AMPDULen < HT_AGG_SIZE_64K)
+					AMPDULen = (0x2000 << *(uint8_t *)pval) - 1;
+				else
+					AMPDULen = 0xffff;
+			}
+			AMPDULen |= BIT(31);
+			rtl_write_dword(rtlpriv, REG_AMPDU_MAX_LENGTH_8812, AMPDULen);
+		}
+		break;
+	case HW_VAR_H2C_FW_PWRMODE:
+		{
+			uint8_t psmode = *pval;
+
+			/*
+			 * Forece leave RF low power mode for 1T1R to prevent conficting setting in Fw power
+			 * saving sequence. 2010.06.07. Added by tynli. Suggested by SD3 yschang.
+			 */
+			rtl8812au_set_fw_pwrmode_cmd(rtlpriv, psmode);
+		}
+		break;
+
+	case HW_VAR_H2C_FW_JOINBSSRPT:
+		rtl8821au_set_fw_joinbss_report_cmd(rtlpriv, *pval);
+		break;
+
+	case HW_VAR_EFUSE_USAGE:
+		rtlefuse->efuse_usedpercentage = *pval;
+		break;
+
+	case HW_VAR_EFUSE_BYTES:
+		rtlefuse->efuse_usedbytes = *(u16 *)pval;
+		break;
+
+	case HW_VAR_NAV_UPPER:
+		{
+			uint32_t usNavUpper = *((u32 *)pval);
+
+			if (usNavUpper > HAL_NAV_UPPER_UNIT * 0xFF) {
+				RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
+					 "%s: [HW_VAR_NAV_UPPER] set value(0x%08X us) is larger than (%d * 0xFF)!\n",
+					 __FUNCTION__, usNavUpper, HAL_NAV_UPPER_UNIT);
+				break;
+			}
+
+			/*
+			 *  The value of ((usNavUpper + HAL_NAV_UPPER_UNIT - 1) / HAL_NAV_UPPER_UNIT)
+			 * is getting the upper integer.
+			 */
+			usNavUpper = (usNavUpper + HAL_NAV_UPPER_UNIT - 1) / HAL_NAV_UPPER_UNIT;
+			rtl_write_byte(rtlpriv, REG_NAV_UPPER, (uint8_t)usNavUpper);
+		}
+		break;
+
+	case HW_VAR_BCN_VALID:
+		{
+			/*
+			 * BCN_VALID, BIT(16) of REG_TDECTRL = BIT(0) of REG_TDECTRL+2, write 1 to clear, Clear by sw
+			 */
+			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL+2);
+			val8 |= BIT(0);
+			rtl_write_byte(rtlpriv, REG_TDECTRL+2, val8);
+		}
+		break;
+
+	default:
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
+			 "%s: [WARNNING] variable(%d) not defined!\n",
+			 __FUNCTION__, variable);
+		break;
+
+	/*
+	 *
+	 * ULLI : Border for HW_VARS not in RTLWIFI
+	 * ULLI : dicovered while working in rtlwifi branch
+	 *
+	 */
+
+	case HW_VAR_MEDIA_STATUS1:
+		val8 = rtl_read_byte(rtlpriv, MSR) & 0x03;
+		val8 |= *pval << 2;
+		rtl_write_byte(rtlpriv, MSR, val8);
+		break;
+
+	case HW_VAR_TXPAUSE:
+		rtl_write_byte(rtlpriv, REG_TXPAUSE, *pval);
+		break;
+
+	case HW_VAR_BCN_FUNC:
+		hw_var_set_bcn_func(rtlpriv, variable, pval);
+		break;
+
 	case HW_VAR_MLME_DISCONNECT:
 		{
 			/* Set RCR to not to receive data frame when NO LINK state
@@ -521,14 +662,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			 __FUNCTION__, __LINE__, rtl_read_dword(rtlpriv, REG_RCR));
 		break;
 
-	case HW_VAR_BEACON_INTERVAL:
-		rtl_write_word(rtlpriv, REG_BCN_INTERVAL, *(u16 *)pval);
-		break;
-
-	case HW_VAR_SLOT_TIME:
-		rtl_write_byte(rtlpriv, REG_SLOT, *pval);
-		break;
-
 	case HW_VAR_RESP_SIFS:
 		/*
 		 * SIFS_Timer = 0x0a0a0808;
@@ -539,18 +672,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		/*  RESP_SIFS for OFDM */
 		rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM, pval[2]); 	/* SIFS_T2T_OFDM (0x0a) */
 		rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM+1, pval[3]); 	/* SIFS_R2T_OFDM(0x0a) */
-		break;
-
-	case HW_VAR_ACK_PREAMBLE:
-		{
-			uint8_t bShortPreamble = *pval;
-
-			/*  Joseph marked out for Netgear 3500 TKIP channel 7 issue.(Temporarily) */
-			val8 = (rtlpriv->mac80211.cur_40_prime_sc) << 5;
-			if (bShortPreamble)
-				val8 |= 0x80;
-			rtl_write_byte(rtlpriv, REG_RRSR+2, val8);
-		}
 		break;
 
 	case HW_VAR_SEC_CFG:
@@ -590,78 +711,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		rtl_write_dword(rtlpriv, REG_EDCA_BK_PARAM, *(u32 *)pval);
 		break;
 
-	case HW_VAR_ACM_CTRL:
-		{
-			uint8_t acm_ctrl;
-			uint8_t AcmCtrl;
-
-			acm_ctrl = *(uint8_t *)pval;
-			AcmCtrl = rtl_read_byte(rtlpriv, REG_ACMHWCTRL);
-
-			if (acm_ctrl > 1)
-				AcmCtrl = AcmCtrl | 0x1;
-
-			if (acm_ctrl & BIT(3))
-				AcmCtrl |= AcmHw_VoqEn;
-			else
-				AcmCtrl &= (~AcmHw_VoqEn);
-
-			if (acm_ctrl & BIT(2))
-				AcmCtrl |= AcmHw_ViqEn;
-			else
-				AcmCtrl &= (~AcmHw_ViqEn);
-
-			if (acm_ctrl & BIT(1))
-				AcmCtrl |= AcmHw_BeqEn;
-			else
-				AcmCtrl &= (~AcmHw_BeqEn);
-
-			RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
-				 "[HW_VAR_ACM_CTRL] Write 0x%X\n",
-				 AcmCtrl);
-			rtl_write_byte(rtlpriv, REG_ACMHWCTRL, AcmCtrl);
-		}
-		break;
-
-	case HW_VAR_AMPDU_MIN_SPACE:
-		pHalData->AMPDUDensity = *(uint8_t *)pval;
-		break;
-
-	case HW_VAR_AMPDU_FACTOR:
-		{
-			uint32_t	AMPDULen = *(uint8_t *)pval;
-
-			if (IS_HARDWARE_TYPE_8812AU(rtlhal)) {
-				if (AMPDULen < VHT_AGG_SIZE_128K)
-					AMPDULen = (0x2000 << *(uint8_t *)pval) - 1;
-				else
-					AMPDULen = 0x1ffff;
-			} else if (IS_HARDWARE_TYPE_8821AU(rtlhal)) {
-				if (AMPDULen < HT_AGG_SIZE_64K)
-					AMPDULen = (0x2000 << *(uint8_t *)pval) - 1;
-				else
-					AMPDULen = 0xffff;
-			}
-			AMPDULen |= BIT(31);
-			rtl_write_dword(rtlpriv, REG_AMPDU_MAX_LENGTH_8812, AMPDULen);
-		}
-		break;
-	case HW_VAR_H2C_FW_PWRMODE:
-		{
-			uint8_t psmode = *pval;
-
-			/*
-			 * Forece leave RF low power mode for 1T1R to prevent conficting setting in Fw power
-			 * saving sequence. 2010.06.07. Added by tynli. Suggested by SD3 yschang.
-			 */
-			rtl8812au_set_fw_pwrmode_cmd(rtlpriv, psmode);
-		}
-		break;
-
-	case HW_VAR_H2C_FW_JOINBSSRPT:
-		rtl8821au_set_fw_joinbss_report_cmd(rtlpriv, *pval);
-		break;
-
 	case HW_VAR_INITIAL_GAIN:	/* ULLI not in rtlwifi */
 		{
 			struct dig_t *dm_digtable = &(rtlpriv->dm_digtable);
@@ -676,7 +725,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		}
 		break;
 
-
 #if (RATE_ADAPTIVE_SUPPORT == 1)
 	case HW_VAR_RPT_TIMER_SETTING:
 		{
@@ -686,13 +734,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		break;
 #endif
 
-	case HW_VAR_EFUSE_USAGE:
-		rtlefuse->efuse_usedpercentage = *pval;
-		break;
-
-	case HW_VAR_EFUSE_BYTES:
-		rtlefuse->efuse_usedbytes = *(u16 *)pval;
-		break;
 	case HW_VAR_FIFO_CLEARN_UP:
 		{
 			struct pwrctrl_priv *pwrpriv;
@@ -730,7 +771,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		}
 		break;
 
-
 #if (RATE_ADAPTIVE_SUPPORT == 1)
 	case HW_VAR_TX_RPT_MAX_MACID:
 		{
@@ -752,37 +792,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 
 			if (check_fwstate(pmlmepriv, WIFI_STATION_STATE))
 				Hal_PatchwithJaguar_8812(rtlpriv, mstatus);
-		}
-		break;
-
-	case HW_VAR_NAV_UPPER:
-		{
-			uint32_t usNavUpper = *((u32 *)pval);
-
-			if (usNavUpper > HAL_NAV_UPPER_UNIT * 0xFF) {
-				RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
-					 "%s: [HW_VAR_NAV_UPPER] set value(0x%08X us) is larger than (%d * 0xFF)!\n",
-					 __FUNCTION__, usNavUpper, HAL_NAV_UPPER_UNIT);
-				break;
-			}
-
-			/*
-			 *  The value of ((usNavUpper + HAL_NAV_UPPER_UNIT - 1) / HAL_NAV_UPPER_UNIT)
-			 * is getting the upper integer.
-			 */
-			usNavUpper = (usNavUpper + HAL_NAV_UPPER_UNIT - 1) / HAL_NAV_UPPER_UNIT;
-			rtl_write_byte(rtlpriv, REG_NAV_UPPER, (uint8_t)usNavUpper);
-		}
-		break;
-
-	case HW_VAR_BCN_VALID:
-		{
-			/*
-			 * BCN_VALID, BIT(16) of REG_TDECTRL = BIT(0) of REG_TDECTRL+2, write 1 to clear, Clear by sw
-			 */
-			val8 = rtl_read_byte(rtlpriv, REG_TDECTRL+2);
-			val8 |= BIT(0);
-			rtl_write_byte(rtlpriv, REG_TDECTRL+2, val8);
 		}
 		break;
 
@@ -828,12 +837,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 			rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM+1, R2T_SIFS);
 		}
 		break;
-
-	default:
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
-			 "%s: [WARNNING] variable(%d) not defined!\n",
-			 __FUNCTION__, variable);
-		break;
 	}
 }
 
@@ -850,9 +853,6 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 	podmpriv = &pHalData->odmpriv;
 
 	switch (variable) {
-	case HW_VAR_TXPAUSE:
-		*pval = rtl_read_byte(rtlpriv, REG_TXPAUSE);
-		break;
 
 	case HW_VAR_BCN_VALID:
 		{
@@ -886,15 +886,26 @@ void rtl8821au_get_hw_reg(struct rtl_priv *rtlpriv, u8 variable,u8 *pval)
 		*(u16 *)pval = rtlefuse->efuse_usedbytes;
 		break;
 
-	case HW_VAR_CHK_HI_QUEUE_EMPTY:
-		val16 = rtl_read_word(rtlpriv, REG_TXPKT_EMPTY);
-		*pval = (val16 & BIT(10)) ? true:false;
-		break;
-
 	default:
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 			 "%s: [WARNNING] variable(%d) not defined!\n",
 			 __FUNCTION__, variable);
+		break;
+
+	/*
+	 *
+	 * ULLI : Border for HW_VARS not in RTLWIFI
+	 * ULLI : dicovered while working in rtlwifi branch
+	 *
+	 */
+
+	case HW_VAR_TXPAUSE:
+		*pval = rtl_read_byte(rtlpriv, REG_TXPAUSE);
+		break;
+
+	case HW_VAR_CHK_HI_QUEUE_EMPTY:
+		val16 = rtl_read_word(rtlpriv, REG_TXPKT_EMPTY);
+		*pval = (val16 & BIT(10)) ? true:false;
 		break;
 	}
 }

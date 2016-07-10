@@ -500,8 +500,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	/* .free_hal_data = rtl8192c_free_hal_data, */
 
-	.read_adapter_info =	_rtl8821au_read_adapter_info,
-
 	/* .set_bwmode_handler = 	PHY_SetBWMode8192C; */
 	/* .set_channel_handler = 	PHY_SwChnl8192C; */
 

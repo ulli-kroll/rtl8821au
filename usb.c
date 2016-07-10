@@ -1907,7 +1907,7 @@ int rtw_usb_probe(struct usb_interface *pusb_intf, const struct usb_device_id *p
 	 _rtl_usb_init_rx(rtlpriv);
 
 	/* step read efuse/eeprom data and get mac_addr */
-	rtlpriv->cfg->ops->read_adapter_info(rtlpriv);
+	_rtl8821au_read_adapter_info(rtlpriv);
 
 	/* step 5. */
 	if(rtlpriv->cfg->ops->init_sw_vars(ndev) ==_FAIL) {

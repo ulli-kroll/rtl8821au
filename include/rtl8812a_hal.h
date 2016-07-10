@@ -126,6 +126,7 @@ void UpdateHalRAMask8812A(struct rtl_priv *rtlpriv, uint32_t mac_id, uint8_t rss
 // register
 void SetBcnCtrlReg(struct rtl_priv *rtlpriv, uint8_t SetBits, uint8_t ClearBits);
 void rtw_set_sta_info(struct rtl_priv *rtlpriv, struct sta_info *psta, bool bSet);
+void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
 
 #endif //__RTL8188E_HAL_H__
 

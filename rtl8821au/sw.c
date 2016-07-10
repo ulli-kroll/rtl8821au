@@ -29,8 +29,6 @@
 
 #define RTL8821AU_DRIVER_NAME		"rtl8821au"
 
-void rtl8812_free_hal_data(struct rtl_priv *rtlpriv);
-
 uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 {
 	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
@@ -512,8 +510,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.hal_xmit = 		rtl8812au_hal_xmit,
 	.mgnt_xmit = 		rtl8812au_mgnt_xmit,
 	.hal_xmitframe_enqueue = 	rtl8812au_hal_xmitframe_enqueue,
-
-	.free_hal_data =	rtl8812_free_hal_data,
 
 	.dm_init =		rtl8812_init_dm_priv,
 

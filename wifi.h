@@ -1946,8 +1946,6 @@ struct rtl_hal_ops {
 
 	u32	(*hal_deinit)(struct rtl_priv *rtlpriv);
 
-	void	(*free_hal_data)(struct rtl_priv *rtlpriv);
-
 	void	(*dm_init)(struct rtl_priv *rtlpriv);
 
 	void	(*read_adapter_info)(struct rtl_priv *rtlpriv);

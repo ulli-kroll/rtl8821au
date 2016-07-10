@@ -7,6 +7,7 @@
 #include <../rtl8821au/trx.h>
 #include <../rtl8821au/fw.h>
 #include <../rtl8821au/sw.h>
+#include <rtl8812a_hal.h>
 #include "debug.h"
 
 #undef DBG_871X
@@ -2021,7 +2022,7 @@ static uint8_t rtw_free_drv_sw(struct rtl_priv *rtlpriv)
 
 	/* rtw_mfree(rtlpriv); */
 
-	rtlpriv->cfg->ops->free_hal_data(rtlpriv);
+	rtl8812_free_hal_data(rtlpriv);
 
 	return _SUCCESS;
 

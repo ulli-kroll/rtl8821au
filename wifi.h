@@ -1948,9 +1948,6 @@ struct rtl_hal_ops {
 
 	void	(*free_hal_data)(struct rtl_priv *rtlpriv);
 
-	int32_t	(*init_recv_priv)(struct rtl_priv *rtlpriv);
-	void	(*free_recv_priv)(struct rtl_priv *rtlpriv);
-
 	void	(*dm_init)(struct rtl_priv *rtlpriv);
 
 	void	(*read_adapter_info)(struct rtl_priv *rtlpriv);

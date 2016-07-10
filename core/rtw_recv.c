@@ -22,6 +22,7 @@
 #include <linux/etherdevice.h>
 #include <drv_types.h>
 #include <rtw_ap.h>
+#include "rtl8812a_recv.h"
 
 #undef DBG_871X
 static inline void DBG_871X(const char *fmt, ...)
@@ -116,7 +117,7 @@ int _rtw_init_recv_priv(struct recv_priv *precvpriv, struct rtl_priv *rtlpriv)
 	sema_init(&precvpriv->allrxreturnevt, 0);
 
 
-	res = rtlpriv->cfg->ops->init_recv_priv(rtlpriv);
+	res = rtl8812au_init_recv_priv(rtlpriv);
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 	_init_timer(&precvpriv->signal_stat_timer, rtlpriv->ndev,
@@ -146,7 +147,7 @@ void _rtw_free_recv_priv (struct recv_priv *precvpriv)
 		rtw_vmfree(precvpriv->pallocated_frame_buf);
 	}
 
-	rtlpriv->cfg->ops->free_recv_priv(rtlpriv);
+	rtl8812au_free_recv_priv(rtlpriv);
 }
 
 struct recv_frame *_rtw_alloc_recvframe (struct __queue *pfree_recv_queue)

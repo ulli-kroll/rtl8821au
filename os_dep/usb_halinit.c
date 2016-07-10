@@ -74,20 +74,6 @@ static void _InitRxSetting_8812AU(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, 0x0700, 0x87654321);
 }
 
-
-/* Set CCK and OFDM Block "ON" */
-static void _BBTurnOnBlock(struct rtl_priv *rtlpriv)
-{
-	rtl_set_bbreg(rtlpriv, RFPGA0_RFMOD, bCCKEn, 0x1);
-	rtl_set_bbreg(rtlpriv, RFPGA0_RFMOD, bOFDMEn, 0x1);
-}
-
-enum {
-	Antenna_Lfet = 1,
-	Antenna_Right = 2,
-};
-
-
 static void _rtl8821au_poweroff_adapter(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);

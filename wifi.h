@@ -1948,8 +1948,6 @@ struct rtl_hal_ops {
 
 	void	(*free_hal_data)(struct rtl_priv *rtlpriv);
 
-	u32	(*inirp_deinit)(struct rtl_priv *rtlpriv);
-
 	int32_t	(*init_recv_priv)(struct rtl_priv *rtlpriv);
 	void	(*free_recv_priv)(struct rtl_priv *rtlpriv);
 
@@ -1981,7 +1979,6 @@ static void rtw_hal_fill_fake_txdesc (struct rtl_priv *rtlpriv, u8 *pDesc,
 /*Only for transition between old (RTW) and new (rtlwifi-lib) API */
 
 uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv);
-unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv);
 void rtl8812au_init_default_value(struct rtl_priv *rtlpriv);
 void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv);
 

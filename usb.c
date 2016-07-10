@@ -1107,7 +1107,7 @@ void usb_intf_stop(struct rtl_priv *rtlpriv)
 	}
 
 	/* cancel in irp */
-	rtlpriv->cfg->ops->inirp_deinit(rtlpriv);
+	usb_read_port_cancel(rtlpriv);
 
 	/* cancel out irp */
 	usb_write_port_cancel(rtlpriv);

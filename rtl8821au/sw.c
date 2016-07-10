@@ -174,7 +174,7 @@ uint8_t rtw_init_default_value(struct rtl_priv *rtlpriv)
 void rtw_vht_use_default_setting(struct rtl_priv *rtlpriv)
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-	
+
 	struct mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 	struct vht_priv *pvhtpriv = &pmlmepriv->vhtpriv;
 	struct registry_priv *pregistrypriv = &rtlpriv->registrypriv;
@@ -386,7 +386,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	 * New HAL functions with struct net_device  as first param
 	 * this can be (hopefully)switched to struct ieee80211_hw
 	 */
-	 
+
 	 /* ULLI : API table stolen form rtl8192cu */
 
 	.init_sw_vars	= rtl8821au_init_sw_vars,
@@ -405,9 +405,9 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	.hw_init =	 	rtl8812au_hw_init,
 
-#if 0	
+#if 0
 	.hw_disable = rtl8821au_card_disable,
-#endif	
+#endif
 
 	.set_network_type = rtl8821au_set_network_type,
 
@@ -417,22 +417,22 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.set_bcn_reg = rtl8821au_set_beacon_related_registers,
 	.set_bcn_intv = rtl8821au_set_beacon_interval,
 	.update_interrupt_mask = rtl8821_update_interrupt_mask,
-#endif	
+#endif
 
 	/* ULLI : check API */
 	.set_hw_reg =	 	rtl8821au_set_hw_reg,
 	.get_hw_reg = 		rtl8821au_get_hw_reg,
-	
+
 #if 0	/* ULLI : currently not known */
 	.update_rate_tbl = rtl8821_update_hal_rate_tbl,
-#endif	
+#endif
 
 #if 0	/* ULLI : somewhere in the tx path mess */
 	.fill_tx_desc = rtl8821au_tx_fill_desc,
 #endif
 	/* ULLI : maybe wrong API */
 	.fill_fake_txdesc	= rtl8821au_fill_fake_txdesc,
-	
+
 #if 0	/* ULLI : somewhere in the tx path mess */
 	.fill_tx_cmdesc = rtl8821au_tx_fill_cmddesc,
 #endif
@@ -502,8 +502,6 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	/* .free_hal_data = rtl8192c_free_hal_data, */
 
-	.inirp_deinit =		rtl8812au_inirp_deinit,
-
 	.init_recv_priv =	rtl8812au_init_recv_priv,
 	.free_recv_priv =	rtl8812au_free_recv_priv,
 	.read_adapter_info =	_rtl8821au_read_adapter_info,
@@ -546,7 +544,7 @@ static struct rtl_hal_usbint_cfg rtl8821au_interface_cfg = {
 	.usb_endpoint_mapping = rtl8821au_endpoint_mapping,
 #if 0
 	.usb_mq_to_hwq = rtl8192cu_mq_to_hwq,
-#endif	
+#endif
 };
 
 /* ULLI : shamelessly copied from rtlwifi */
@@ -659,9 +657,9 @@ static struct rtl_hal_cfg rtl8821au_hal_cfg = {
 	.maps[RTL_RC_VHT_RATE_1SS_MCS7] = DESC_RATEVHT1SS_MCS7,
 	.maps[RTL_RC_VHT_RATE_1SS_MCS8] = DESC_RATEVHT1SS_MCS8,
 	.maps[RTL_RC_VHT_RATE_1SS_MCS9] = DESC_RATEVHT1SS_MCS9,
-	
+
 	/* ULLI : VHT rates for 2SS are decided in base.c of rtlwifi */
-	
+
 	.maps[RTL_RC_VHT_RATE_2SS_MCS7] = DESC_RATEVHT2SS_MCS7,
 	.maps[RTL_RC_VHT_RATE_2SS_MCS8] = DESC_RATEVHT2SS_MCS8,
 	.maps[RTL_RC_VHT_RATE_2SS_MCS9] = DESC_RATEVHT2SS_MCS9,

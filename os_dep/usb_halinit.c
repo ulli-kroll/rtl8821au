@@ -143,12 +143,6 @@ uint32_t rtl8812au_hal_deinit(struct rtl_priv *rtlpriv)
 	return _SUCCESS;
 }
 
-unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv)
-{
-	usb_read_port_cancel(rtlpriv);
-	return _SUCCESS;
-}
-
 /*
  * -------------------------------------------------------------------
  *

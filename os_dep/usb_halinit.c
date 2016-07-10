@@ -195,18 +195,3 @@ void UpdateInterruptMask8812AU(struct rtl_priv *rtlpriv, uint8_t bHIMR0, uint32_
 		rtl_write_dword(rtlpriv, REG_HIMR1_8812, *himr);
 
 }
-
-void _update_response_rate(struct rtl_priv *rtlpriv, unsigned int mask)
-{
-	uint8_t	RateIndex = 0;
-	/* Set RRSR rate table. */
-	rtl_write_byte(rtlpriv, REG_RRSR, mask&0xff);
-	rtl_write_byte(rtlpriv, REG_RRSR+1, (mask>>8)&0xff);
-
-	/* Set RTS initial rate */
-	while (mask > 0x1) {
-		mask = (mask >> 1);
-		RateIndex++;
-	}
-	rtl_write_byte(rtlpriv, REG_INIRTS_RATE_SEL, RateIndex);
-}

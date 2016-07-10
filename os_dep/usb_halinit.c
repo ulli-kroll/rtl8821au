@@ -35,21 +35,6 @@ static inline void DBG_8192C(const char *fmt, ...)
 {
 }
 
-static void _dbg_dump_macreg(struct rtl_priv *rtlpriv)
-{
-	uint32_t offset = 0;
-	uint32_t val32 = 0;
-	uint32_t index = 0;
-
-	for (index = 0; index < 64; index++) {
-		offset = index*4;
-		val32 = rtl_read_dword(rtlpriv, offset);
-		DBG_8192C("offset : 0x%02x ,val:0x%08x\n", offset, val32);
-	}
-}
-
-
-
 
 /*
 ---------------------------------------------------------------
@@ -172,26 +157,3 @@ unsigned int rtl8812au_inirp_deinit(struct rtl_priv *rtlpriv)
  * -------------------------------------------------------------------
  */
 
-void UpdateInterruptMask8812AU(struct rtl_priv *rtlpriv, uint8_t bHIMR0, uint32_t AddMSR, uint32_t RemoveMSR)
-{
-	struct rtl_usb *rtlusb = rtl_usbdev(rtlpriv);
-
-	uint32_t *himr;
-
-	if (bHIMR0)
-		himr = &(rtlusb->irq_mask[0]);
-	else
-		himr = &(rtlusb->irq_mask[1]);
-
-	if (AddMSR)
-		*himr |= AddMSR;
-
-	if (RemoveMSR)
-		*himr &= (~RemoveMSR);
-
-	if (bHIMR0)
-		rtl_write_dword(rtlpriv, REG_HIMR0_8812, *himr);
-	else
-		rtl_write_dword(rtlpriv, REG_HIMR1_8812, *himr);
-
-}

@@ -1896,6 +1896,8 @@ struct rtl_hal_ops {
  *				  u32 buffer_len, bool bIsPsPoll);
 */
 
+	void    (*read_eeprom_info) (struct rtl_priv *rtlpriv);
+
 	void	(*fill_fake_txdesc) (struct rtl_priv *rtlpriv, u8 *pDesc,
 				     u32 BufferLen, u8 IsPsPoll, u8 IsBTQosNull);
 

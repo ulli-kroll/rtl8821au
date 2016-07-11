@@ -394,9 +394,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 	.read_chip_version =	rtl8821au_read_chip_version,
 	/* ULLI : somewhere in the source, nanme ?? ... */
 
-#if 0	/* ULLI : _rtl8821au_read_adapter_info(), maybe */
 	.read_eeprom_info = rtl8821au_read_eeprom_info,
-#endif
 
 	.enable_interrupt = rtl8821au_enable_interrupt,
 	.disable_interrupt = rtl8821au_disable_interrupt,

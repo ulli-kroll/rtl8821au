@@ -1108,7 +1108,7 @@ static void _rtl8821au_read_pa_type(struct rtl_priv *rtlpriv, u8 *hwinfo,
 static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *hwinfo,
 	bool autoload_fail);
 
-void _rtl8821au_read_adapter_info(struct rtl_priv *rtlpriv)
+void rtl8821au_read_eeprom_info(struct rtl_priv *rtlpriv)
 {
 	struct rtl_efuse *rtlefuse = rtl_efuse(rtlpriv);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);

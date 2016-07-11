@@ -1943,6 +1943,7 @@ struct rtl_hal_ops {
 	void	(*disable_interrupt)(struct rtl_priv *rtlpriv);
 
 	void	(*read_chip_version)(struct rtl_priv *rtlpriv);
+	void	(*hw_disable)(struct rtl_priv *rtlpriv);
 
 	/* Old HAL functions */
 

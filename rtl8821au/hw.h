@@ -12,6 +12,7 @@ int32_t	 _rtl8821au_llt_table_init(struct rtl_priv *rtlpriv, uint8_t txpktbuf_bn
 void rtl8821au_enable_interrupt(struct rtl_priv *rtlpriv);
 void rtl8821au_disable_interrupt(struct rtl_priv *rtlpriv);
 void rtl8821au_read_eeprom_info(struct rtl_priv *rtlpriv);
+void rtl8821au_card_disable(struct rtl_priv *rtlpriv);
 
 /* temporaly prototypes for transition */
 

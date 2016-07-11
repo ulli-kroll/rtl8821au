@@ -2877,3 +2877,9 @@ static void _rtl88au_read_txpower_info_from_hwpg(struct rtl_priv *rtlpriv, u8 *h
 		 rtlefuse->eeprom_regulatory);
 
 }
+
+void rtl8821au_card_disable(struct rtl_priv *rtlpriv)
+{
+	/* ULLI : currently empty, due no code in original driver */
+}
+

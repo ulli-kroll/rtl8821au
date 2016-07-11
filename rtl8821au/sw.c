@@ -401,9 +401,7 @@ static struct rtl_hal_ops rtl8821au_hal_ops = {
 
 	.hw_init =	 	rtl8812au_hw_init,
 
-#if 0
 	.hw_disable = rtl8821au_card_disable,
-#endif
 
 	.set_network_type = rtl8821au_set_network_type,
 

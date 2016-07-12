@@ -24,30 +24,6 @@ void rtw_cam_reset_all_entry(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[RWCAM], ul_command);
 }
 
-void CAM_empty_entry(struct rtl_priv *rtlpriv, uint8_t ucIndex)
-{
-	uint8_t i;
-	uint32_t	ulCommand = 0;
-	uint32_t	ulContent = 0;
-	uint32_t	ulEncAlgo = CAM_AES;
-
-	for (i = 0; i < CAM_CONTENT_COUNT; i++) {
-		/* filled id in CAM config 2 byte */
-		if (i == 0) {
-			ulContent |= (ucIndex & 0x03) | ((u16)(ulEncAlgo)<<2);
-			/* ulContent |= CAM_VALID; */
-		} else 	{
-			ulContent = 0;
-		}
-		/*  polling bit, and No Write enable, and address */
-		ulCommand = CAM_CONTENT_COUNT*ucIndex+i;
-		ulCommand = ulCommand | CAM_POLLINIG | CAM_WRITE;
-		/* write content 0 is equall to mark invalid */
-		rtl_write_dword(rtlpriv, WCAMI, ulContent);  /* delay_ms(40); */
-		rtl_write_dword(rtlpriv, RWCAM, ulCommand);  /* delay_ms(40); */
-	}
-}
-
 static void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key)
 {
 	unsigned int	i, val, addr;
@@ -204,6 +180,6 @@ u8 rtw_cam_add_one_entry(struct rtl_priv *rtlpriv, u8 *mac_addr,
 			      (u8 *)key_content, us_config);
 
 	RT_TRACE(rtlpriv, COMP_SEC, DBG_DMESG, "end\n");
-	
+
 	return 1;
 }

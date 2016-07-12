@@ -24,7 +24,8 @@ void rtw_cam_reset_all_entry(struct rtl_priv *rtlpriv)
 	rtl_write_dword(rtlpriv, rtlpriv->cfg->maps[RWCAM], ul_command);
 }
 
-static void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t *mac, uint8_t *key)
+static void write_cam(struct rtl_priv *rtlpriv, u8 entry, u16 us_config,
+		      u8 *mac_addr, u8 *key)
 {
 	unsigned int	i, val, addr;
 	//unsigned int    cmd;
@@ -33,23 +34,21 @@ static void write_cam(struct rtl_priv *rtlpriv, uint8_t entry, u16 ctrl, uint8_t
 
 	addr = entry << 3;
 
-	for (j = 5; j >= 0; j--)
-	{
-		switch (j)
-		{
-			case 0:
-				val = (ctrl | (mac[0] << 16) | (mac[1] << 24) );
-				break;
+	for (j = 5; j >= 0; j--) {
+		switch (j) {
+		case 0:
+			val = (us_config | (mac_addr[0] << 16) | (mac_addr[1] << 24) );
+			break;
 
-			case 1:
-				val = (mac[2] | ( mac[3] << 8) | (mac[4] << 16) | (mac[5] << 24));
-				break;
+		case 1:
+			val = (mac_addr[2] | ( mac_addr[3] << 8) |
+			       (mac_addr[4] << 16) | (mac_addr[5] << 24));
+			break;
 
-			default:
-				i = (j - 2) << 2;
-				val = (key[i] | (key[i+1] << 8) | (key[i+2] << 16) | (key[i+3] << 24));
-				break;
-
+		default:
+			i = (j - 2) << 2;
+			val = (key[i] | (key[i+1] << 8) | (key[i+2] << 16) | (key[i+3] << 24));
+			break;
 		}
 
 		cam_val[0] = val;

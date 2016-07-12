@@ -910,7 +910,7 @@ static void start_bss_network(struct net_device *ndev, uint8_t *pbuf)
 
 	//Set Security
 	val8 = (psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_8021X)? 0xcc: 0xcf;
-	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
+	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_WPA_CONFIG, (uint8_t *)(&val8));
 
 	//Beacon Control related register
 	rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_BEACON_INTERVAL, (uint8_t *)(&bcn_interval));

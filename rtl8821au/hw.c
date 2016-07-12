@@ -538,6 +538,11 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		}
 		break;
 
+	case HW_VAR_WPA_CONFIG:
+		rtl_write_byte(rtlpriv, REG_SECCFG, *((u8 *)pval));
+		break;
+
+
 	default:
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 			 "%s: [WARNNING] variable(%d) not defined!\n",
@@ -672,11 +677,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		/*  RESP_SIFS for OFDM */
 		rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM, pval[2]); 	/* SIFS_T2T_OFDM (0x0a) */
 		rtl_write_byte(rtlpriv, REG_RESP_SIFS_OFDM+1, pval[3]); 	/* SIFS_R2T_OFDM(0x0a) */
-		break;
-
-	case HW_VAR_SEC_CFG:
-		val8 = *pval;
-		rtl_write_byte(rtlpriv, REG_SECCFG, val8);
 		break;
 
 	case HW_VAR_CAM_WRITE:

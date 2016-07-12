@@ -4754,7 +4754,7 @@ void start_create_ibss(struct rtl_priv* rtlpriv)
 		//set_opmode_cmd(rtlpriv, adhoc);//removed
 
 		val8 = 0xcf;
-		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_WPA_CONFIG, (uint8_t *)(&val8));
 
 		//switch channel
 		//SelectChannel(rtlpriv, pmlmeext->cur_channel, HAL_PRIME_CHNL_OFFSET_DONT_CARE);
@@ -4818,7 +4818,7 @@ void start_clnt_join(struct rtl_priv* rtlpriv)
 
 		val8 = (pmlmeinfo->auth_algo == dot11AuthAlgrthm_8021X)? 0xcc: 0xcf;
 
-		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_WPA_CONFIG, (uint8_t *)(&val8));
 
 		//switch channel
 		//set_channel_bwmode(rtlpriv, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
@@ -4837,7 +4837,7 @@ void start_clnt_join(struct rtl_priv* rtlpriv)
 		Set_MSR(rtlpriv, WIFI_FW_ADHOC_STATE);
 
 		val8 = 0xcf;
-		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_SEC_CFG, (uint8_t *)(&val8));
+		rtlpriv->cfg->ops->set_hw_reg(rtlpriv, HW_VAR_WPA_CONFIG, (uint8_t *)(&val8));
 
 		//switch channel
 		set_channel_bwmode(rtlpriv, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);

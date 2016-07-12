@@ -725,15 +725,6 @@ void rtl8821au_set_hw_reg(struct rtl_priv *rtlpriv, u8 variable, u8 *pval)
 		}
 		break;
 
-#if (RATE_ADAPTIVE_SUPPORT == 1)
-	case HW_VAR_RPT_TIMER_SETTING:
-		{
-			val16 = *(u16 *)pval;
-			ODM_RA_Set_TxRPT_Time(podmpriv, val16);
-		}
-		break;
-#endif
-
 	case HW_VAR_FIFO_CLEARN_UP:
 		{
 			struct pwrctrl_priv *pwrpriv;

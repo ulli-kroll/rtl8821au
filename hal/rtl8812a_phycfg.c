@@ -109,12 +109,8 @@ static void PHY_HandleSwChnlAndSetBW8812(struct rtl_priv *rtlpriv,
 
 	/* skip change for channel or bandwidth is the same */
 	if(bSwitchChannel) {
-		if(rtlpriv->phy.current_channel != ChannelNum) {
-			if (HAL_IsLegalChannel(rtlpriv, ChannelNum))
-				bSwChnl = true;
-			else
-				return;
-		}
+		if(rtlpriv->phy.current_channel != ChannelNum)
+			bSwChnl = true;
 	}
 
 	if(bSetBandWidth) {

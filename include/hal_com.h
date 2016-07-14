@@ -53,8 +53,6 @@ hal_com_get_channel_plan(
 	bool			AutoLoadFail
 	);
 
-bool HAL_IsLegalChannel(struct rtl_priv *rtlpriv, u32 Channel);
-
 void	HalSetBrateCfg(
 	struct rtl_priv *	rtlpriv,
 	uint8_t			*mBratesOS,

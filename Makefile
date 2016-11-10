@@ -96,9 +96,10 @@ EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
 ARCH ?= $(SUBARCH)
 CROSS_COMPILE ?=
+KVER  := $(shell uname -r)
 PWD  := $(shell pwd)
 KSRC := /lib/modules/$(shell uname -r)/build
-MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
+MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless
 INSTALL_PREFIX :=
 endif
 
@@ -122,9 +123,13 @@ config_r:
 	@echo "make config"
 	/bin/bash script/Configure script/config.in
 
-installfw:
-	mkdir -p /lib/firmware/rtlwifi
-	cp -n firmware/* /lib/firmware/rtlwifi/.
+install:
+	install -p -m 644 $(MODULE_NAME).ko  $(MODDESTDIR)
+	/sbin/depmod -a ${KVER}
+
+uninstall:
+	rm -f $(MODDESTDIR)/$(MODULE_NAME).ko
+	/sbin/depmod -a ${KVER}
 
 .PHONY: modules clean
 

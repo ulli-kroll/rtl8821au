@@ -65,6 +65,7 @@ TESTED DEVICES:
 * Linksys WUSB 6300  
 * EDUP EP-AC1601  
 * TP-Link T1U Nano USB  
+* Jensen AirLink AL100ac  
 and some other unbranded ones.  
 
 with kernel 4.2 and up, lower kernel down to 3.10 will work too.

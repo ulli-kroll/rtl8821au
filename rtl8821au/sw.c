@@ -25,6 +25,7 @@
 
 #endif
 
+#include <linux/module.h>
 #include <linux/spinlock.h>
 
 #define RTL8821AU_DRIVER_NAME		"rtl8821au"

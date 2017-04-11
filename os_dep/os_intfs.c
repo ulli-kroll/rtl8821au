@@ -21,6 +21,7 @@
 
 #include <linux/ip.h>
 #include <linux/kthread.h>
+#include <linux/moduleparam.h>  // module_param(...)
 
 #include <drv_types.h>
 

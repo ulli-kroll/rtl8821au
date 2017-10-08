@@ -23,6 +23,8 @@
 #include <linux/kthread.h>
 
 #include <drv_types.h>
+#include <linux/module.h>
+
 
 /* module param defaults */
 static int rtw_channel = 1;/* ad-hoc support requirement */

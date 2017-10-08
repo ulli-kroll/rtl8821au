@@ -27,6 +27,7 @@
 //#define RTW_STATUS_TIMEDOUT -110
 
 #include <osdep_service_linux.h>
+#include <linux/sched/signal.h>
 
 #define RTW_TIMER_HDL_NAME(name) rtw_##name##_timer_hdl
 #define RTW_DECLARE_TIMER_HDL(name) void RTW_TIMER_HDL_NAME(name)(RTW_TIMER_HDL_ARGS)

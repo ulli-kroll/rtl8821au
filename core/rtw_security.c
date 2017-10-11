@@ -1415,8 +1415,7 @@ static int aes_cipher(uint8_t *key, uint	hdrlen,
     bitwise_xor(aes_out, mic_header2, chain_buffer);
     aes128k128d(key, chain_buffer, aes_out);
 
-	for (i = 0; i < num_blocks; i++)
-    {
+    for (i = 0; i < num_blocks; i++) {
         bitwise_xor(aes_out, &pframe[payload_index], chain_buffer);//bitwise_xor(aes_out, &message[payload_index], chain_buffer);
 
         payload_index += 16;
@@ -1424,27 +1423,25 @@ static int aes_cipher(uint8_t *key, uint	hdrlen,
     }
 
     /* Add on the final payload block if it needs padding */
-    if (payload_remainder > 0)
-    {
+    if (payload_remainder > 0) {
         for (j = 0; j < 16; j++) padded_buffer[j] = 0x00;
-        for (j = 0; j < payload_remainder; j++)
-        {
-            padded_buffer[j] = pframe[payload_index++];//padded_buffer[j] = message[payload_index++];
-        }
+	        for (j = 0; j < payload_remainder; j++) {
+	            padded_buffer[j] = pframe[payload_index++];//padded_buffer[j] = message[payload_index++];
+	        }
         bitwise_xor(aes_out, padded_buffer, chain_buffer);
         aes128k128d(key, chain_buffer, aes_out);
 
     }
 
-    for (j = 0 ; j < 8; j++) mic[j] = aes_out[j];
+    for (j = 0 ; j < 8; j++) mic[j] = aes_out[j]
+	;
 
     /* Insert MIC into payload */
     for (j = 0; j < 8; j++)
     	pframe[payload_index+j] = mic[j];	//message[payload_index+j] = mic[j];
 
-	payload_index = hdrlen + 8;
-	for (i=0; i< num_blocks; i++)
-    {
+    payload_index = hdrlen + 8;
+    for (i=0; i< num_blocks; i++) {
         construct_ctr_preload(
                                 ctr_preload,
                                 a4_exists,
@@ -1454,11 +1451,12 @@ static int aes_cipher(uint8_t *key, uint	hdrlen,
                                 i+1);
         aes128k128d(key, ctr_preload, aes_out);
         bitwise_xor(aes_out, &pframe[payload_index], chain_buffer);//bitwise_xor(aes_out, &message[payload_index], chain_buffer);
-        for (j=0; j<16;j++) pframe[payload_index++] = chain_buffer[j];//for (j=0; j<16;j++) message[payload_index++] = chain_buffer[j];
+        for (j=0; j<16;j++) pframe[payload_index++] = chain_buffer[j]
+		;//for (j=0; j<16;j++) message[payload_index++] = chain_buffer[j];
     }
 
-    if (payload_remainder > 0)          /* If there is a short final block, then pad it,*/
-    {                                   /* encrypt it and copy the unpadded part back   */
+    if (payload_remainder > 0) {        /* If there is a short final block, then pad it,*/
+					/* encrypt it and copy the unpadded part back   */
         construct_ctr_preload(
                                 ctr_preload,
                                 a4_exists,
@@ -1468,10 +1466,9 @@ static int aes_cipher(uint8_t *key, uint	hdrlen,
                                 num_blocks+1);
 
         for (j = 0; j < 16; j++) padded_buffer[j] = 0x00;
-        for (j = 0; j < payload_remainder; j++)
-        {
-            padded_buffer[j] = pframe[payload_index+j];//padded_buffer[j] = message[payload_index+j];
-        }
+	        for (j = 0; j < payload_remainder; j++) {
+	            padded_buffer[j] = pframe[payload_index+j];//padded_buffer[j] = message[payload_index+j];
+	        }
         aes128k128d(key, ctr_preload, aes_out);
         bitwise_xor(aes_out, padded_buffer, chain_buffer);
         for (j=0; j<payload_remainder;j++) pframe[payload_index++] = chain_buffer[j];//for (j=0; j<payload_remainder;j++) message[payload_index++] = chain_buffer[j];
@@ -1487,14 +1484,14 @@ static int aes_cipher(uint8_t *key, uint	hdrlen,
                         0);
 
     for (j = 0; j < 16; j++) padded_buffer[j] = 0x00;
-    for (j = 0; j < 8; j++)
-    {
-        padded_buffer[j] = pframe[j+hdrlen+8+plen];//padded_buffer[j] = message[j+hdrlen+8+plen];
-    }
+	    for (j = 0; j < 8; j++)  {
+	        padded_buffer[j] = pframe[j+hdrlen+8+plen];//padded_buffer[j] = message[j+hdrlen+8+plen];
+	    }
 
     aes128k128d(key, ctr_preload, aes_out);
     bitwise_xor(aes_out, padded_buffer, chain_buffer);
-    for (j=0; j<8;j++) pframe[payload_index++] = chain_buffer[j];//for (j=0; j<8;j++) message[payload_index++] = chain_buffer[j];
+    for (j=0; j<8;j++) pframe[payload_index++] = chain_buffer[j]
+	;//for (j=0; j<8;j++) message[payload_index++] = chain_buffer[j];
 
 	return _SUCCESS;
 }
@@ -1801,9 +1798,8 @@ static int aes_decipher(uint8_t *key, uint	hdrlen,
     for (j = 0; j < 8; j++)
     	message[payload_index+j] = mic[j];
 
-	payload_index = hdrlen + 8;
-	for (i=0; i< num_blocks; i++)
-    {
+     payload_index = hdrlen + 8;
+     for (i=0; i< num_blocks; i++) {
         construct_ctr_preload(
                                 ctr_preload,
                                 a4_exists,

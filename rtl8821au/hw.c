@@ -2099,10 +2099,10 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 		goto exit;
 	}
 
-		if (IS_HARDWARE_TYPE_8812(rtlhal))
-			txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
-		else
-			txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
+	if (IS_HARDWARE_TYPE_8812(rtlhal))
+		txpktbuf_bndy = TX_PAGE_BOUNDARY_8812;
+	else
+		txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
 
 	status =  _rtl8821au_llt_table_init(rtlpriv, txpktbuf_bndy);
 	if (status == _FAIL) {

@@ -470,7 +470,7 @@ void SetBWMode(struct rtl_priv *rtlpriv, unsigned short bwmode, unsigned char ch
 
 	_unused = mutex_lock_interruptible(&(rtl_usbdev(rtlpriv)->setbw_mutex));
 
-	rtlpriv->cfg->ops->set_bwmode_handler(rtlpriv, 
+	rtlpriv->cfg->ops->set_bwmode_handler(rtlpriv,
 					      (enum CHANNEL_WIDTH)bwmode, channel_offset);
 
 	mutex_unlock(&(rtl_usbdev(rtlpriv)->setbw_mutex));
@@ -1283,7 +1283,7 @@ _mismatch:
 	rtw_mfree(bssid);
 	return _FAIL;
 
-	
+
 }
 
 void update_beacon_info(struct rtl_priv *rtlpriv, uint8_t *pframe, uint pkt_len, struct sta_info *psta)
@@ -1956,7 +1956,7 @@ void update_bmc_sta_support_rate(struct rtl_priv *rtlpriv, uint32_t	 mac_id)
 	}
 	else
 	{
-		memcpy((pmlmeinfo->FW_sta_info[mac_id].SupportedRates), rtw_basic_rate_ofdm, 4);
+		memcpy((pmlmeinfo->FW_sta_info[mac_id].SupportedRates), rtw_basic_rate_ofdm, 3);
 	}
 }
 

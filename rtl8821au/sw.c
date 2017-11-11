@@ -18,6 +18,7 @@
 #include "hw.h"
 #include "led.h"
 #include "fw.h"
+#include "quirks.h"
 
 #include <rtl8812a_hal.h>
 
@@ -790,9 +791,11 @@ static int rtl8821au_probe(struct usb_interface *pusb_intf, const struct usb_dev
 				break;
 	}
 
-#if 0
 	dev_info(&pusb_intf->dev, "Register : %s USB-ID %04x:%04x as %s Speed\n",
 		driver_info, pdid->idVendor, pdid->idProduct, speed);
+#if 0
+	if (pdid->driver_info == RTL8812 && udev->speed == USB_SPEED_HIGH)
+		rtl8812au_test_usb3_switch(udev, USB_SPEED_SUPER);
 #endif
 	return rtw_usb_probe(pusb_intf, pdid, &rtl8821au_hal_cfg);
 }

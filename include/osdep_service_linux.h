@@ -41,7 +41,7 @@ __inline static struct list_head	*get_list_head(struct __queue	*queue)
 
 #define RTW_TIMER_HDL_ARGS void *FunctionContext
 
-__inline static void _init_timer(struct timer_list *ptimer,struct net_device *nic_hdl,void *pfunc,void* cntx)
+__inline static void _init_timer(struct timer_list *ptimer, void *pfunc,void* cntx)
 {
 	//setup_timer(ptimer, pfunc,(u32)cntx);
 	ptimer->function = pfunc;

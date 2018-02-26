@@ -509,7 +509,7 @@ void rtw_init_pwrctrl_priv(struct rtl_priv *rtlpriv)
 
 	pwrctrlpriv->btcoex_rfon = false;
 
-	_init_timer(&pwrctrlpriv->pwr_state_check_timer, rtlpriv->ndev, 
+	_init_timer(&pwrctrlpriv->pwr_state_check_timer,
 		    pwr_state_check_handler, rtlpriv);
 
 

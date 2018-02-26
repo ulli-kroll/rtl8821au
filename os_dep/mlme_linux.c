@@ -69,11 +69,11 @@ void rtw_init_mlme_timer(struct rtl_priv *rtlpriv)
 {
 	struct	mlme_priv *pmlmepriv = &rtlpriv->mlmepriv;
 
-	_init_timer(&(pmlmepriv->assoc_timer), rtlpriv->ndev, rtw_join_timeout_handler, rtlpriv);
+	_init_timer(&(pmlmepriv->assoc_timer), rtw_join_timeout_handler, rtlpriv);
 	//_init_timer(&(pmlmepriv->sitesurveyctrl.sitesurvey_ctrl_timer), rtlpriv->ndev, sitesurvey_ctrl_handler, rtlpriv);
-	_init_timer(&(pmlmepriv->scan_to_timer), rtlpriv->ndev, _rtw_scan_timeout_handler, rtlpriv);
+	_init_timer(&(pmlmepriv->scan_to_timer), _rtw_scan_timeout_handler, rtlpriv);
 
-	_init_timer(&(pmlmepriv->dynamic_chk_timer), rtlpriv->ndev, _dynamic_check_timer_handlder, rtlpriv);
+	_init_timer(&(pmlmepriv->dynamic_chk_timer), _dynamic_check_timer_handlder, rtlpriv);
 }
 
 extern void rtw_indicate_wx_assoc_event(struct rtl_priv *rtlpriv);
@@ -235,7 +235,7 @@ void _addba_timer_hdl(void *FunctionContext)
 void init_addba_retry_timer(struct rtl_priv *rtlpriv, struct sta_info *psta)
 {
 
-	_init_timer(&psta->addba_retry_timer, rtlpriv->ndev, _addba_timer_hdl, psta);
+	_init_timer(&psta->addba_retry_timer, _addba_timer_hdl, psta);
 }
 
 /*
@@ -256,8 +256,8 @@ void init_mlme_ext_timer(struct rtl_priv *rtlpriv)
 {
 	struct	mlme_ext_priv *pmlmeext = &rtlpriv->mlmeextpriv;
 
-	_init_timer(&pmlmeext->survey_timer, rtlpriv->ndev, _survey_timer_hdl, rtlpriv);
-	_init_timer(&pmlmeext->link_timer, rtlpriv->ndev, _link_timer_hdl, rtlpriv);
+	_init_timer(&pmlmeext->survey_timer, _survey_timer_hdl, rtlpriv);
+	_init_timer(&pmlmeext->link_timer, _link_timer_hdl, rtlpriv);
 	//_init_timer(&pmlmeext->ADDBA_timer, rtlpriv->ndev, _addba_timer_hdl, rtlpriv);
 
 	//_init_timer(&pmlmeext->reauth_timer, rtlpriv->ndev, _reauth_timer_hdl, rtlpriv);

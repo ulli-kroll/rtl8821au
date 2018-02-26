@@ -119,7 +119,7 @@ int _rtw_init_recv_priv(struct recv_priv *precvpriv, struct rtl_priv *rtlpriv)
 	res = rtlpriv->cfg->ops->init_recv_priv(rtlpriv);
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
-	_init_timer(&precvpriv->signal_stat_timer, rtlpriv->ndev,
+	_init_timer(&precvpriv->signal_stat_timer,
 		    RTW_TIMER_HDL_NAME(signal_stat), rtlpriv);
 
 	precvpriv->signal_stat_sampling_interval = 1000; /* ms */

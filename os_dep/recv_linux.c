@@ -368,7 +368,7 @@ void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
 {
 	struct rtl_priv *rtlpriv = preorder_ctrl->rtlpriv;
 
-	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), rtlpriv->ndev, _rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
+	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), _rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
 
 }
 

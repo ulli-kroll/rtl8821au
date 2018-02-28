@@ -41,19 +41,40 @@ __inline static struct list_head	*get_list_head(struct __queue	*queue)
 
 #define RTW_TIMER_HDL_ARGS void *FunctionContext
 
-__inline static void _init_timer(struct timer_list *ptimer, void *pfunc,void* cntx)
+struct _timer_list {
+       struct timer_list t;
+};
+
+__inline static void _init_timer(struct _timer_list *ptimer, void *pfunc,void* cntx)
 {
+	struct timer_list *t = &ptimer->t;
+
 	//setup_timer(ptimer, pfunc,(u32)cntx);
-	ptimer->function = pfunc;
-	ptimer->data = (unsigned long)cntx;
-	init_timer(ptimer);
+	t->function = pfunc;
+	t->data = (unsigned long)cntx;
+	init_timer(t);
 }
 
-__inline static void _set_timer(struct timer_list *ptimer,u32 delay_time)
+__inline static void _set_timer(struct _timer_list *ptimer,u32 delay_time)
 {
-	mod_timer(ptimer , (jiffies+(delay_time*HZ/1000)));
+	struct timer_list *t = &ptimer->t;
+
+	mod_timer(t , (jiffies+(delay_time*HZ/1000)));
 }
 
+__inline static unsigned char _del_timer_sync(struct _timer_list *ptimer)
+{
+	struct timer_list *t = &ptimer->t;
+
+	return del_timer_sync(t);
+}
+
+__inline static unsigned char del_timer_sync_ex(struct _timer_list *ptimer)
+{
+	struct timer_list *t = &ptimer->t;
+
+	return del_timer_sync(t);
+}
 static inline int rtw_netif_queue_stopped(struct net_device *ndev)
 {
 	return (netif_tx_queue_stopped(netdev_get_tx_queue(ndev, 0)) &&

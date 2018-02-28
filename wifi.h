@@ -1646,7 +1646,7 @@ struct pwrctrl_priv {
 	uint8_t		bInternalAutoSuspend;
 	uint8_t		bInSuspend;
 	uint8_t		bSupportRemoteWakeup;
-	struct timer_list	pwr_state_check_timer;
+	struct _timer_list	pwr_state_check_timer;
 	int		pwr_state_check_interval;
 	uint8_t		pwr_state_check_cnts;
 
@@ -1701,10 +1701,10 @@ struct rtl_works {
 	struct ieee80211_hw *hw;
 
 	/*timer */
-	struct timer_list watchdog_timer;
-	struct timer_list dualmac_easyconcurrent_retrytimer;
-	struct timer_list fw_clockoff_timer;
-	struct timer_list fast_antenna_training_timer;
+	struct _timer_list watchdog_timer;
+	struct _timer_list dualmac_easyconcurrent_retrytimer;
+	struct _timer_list fw_clockoff_timer;
+	struct _timer_list fast_antenna_training_timer;
 	/*task */
 	struct tasklet_struct irq_tasklet;
 	struct tasklet_struct irq_prepare_bcn_tasklet;

@@ -90,12 +90,6 @@ extern void	rtw_usleep_os(int us);
 extern u32 	rtw_atoi(u8* s);
 extern void rtw_yield_os(void);
 
-
-__inline static unsigned char del_timer_sync_ex(struct timer_list *ptimer)
-{
-	return del_timer_sync(ptimer);
-}
-
 static __inline void thread_enter(char *name)
 {
 	allow_signal(SIGTERM);

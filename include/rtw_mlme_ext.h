@@ -447,8 +447,8 @@ struct mlme_ext_priv
 	struct ss_res		sitesurvey_res;
 	struct mlme_ext_info	mlmext_info;//for sta/adhoc mode, including current scanning/connecting/connected related info.
                                                      //for ap mode, network includes ap's cap_info
-	struct timer_list	survey_timer;
-	struct timer_list	link_timer;
+	struct _timer_list	survey_timer;
+	struct _timer_list	link_timer;
 	//_timer		ADDBA_timer;
 	u16			chan_scan_time;
 

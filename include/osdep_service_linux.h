@@ -21,6 +21,7 @@
 #define __OSDEP_LINUX_SERVICE_H_
 
 #include <linux/netdevice.h>
+#include <linux/version.h>
 
 #ifdef CONFIG_USB_SUSPEND
 #define CONFIG_AUTOSUSPEND	1
@@ -43,16 +44,35 @@ __inline static struct list_head	*get_list_head(struct __queue	*queue)
 
 struct _timer_list {
        struct timer_list t;
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)
+       void (*function)(unsigned long);
+       unsigned long data;
+#endif
 };
+
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0))
+static void legacy_timer(struct timer_list *t)
+{
+       struct _timer_list *lt = from_timer(lt, t, t);
+
+       lt->function(lt->data);
+}
+#endif
 
 __inline static void _init_timer(struct _timer_list *ptimer, void *pfunc,void* cntx)
 {
 	struct timer_list *t = &ptimer->t;
 
 	//setup_timer(ptimer, pfunc,(u32)cntx);
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)
+       ptimer->data = (unsigned long)cntx;
+       ptimer->function = pfunc;
+       timer_setup(t, legacy_timer, 0);
+#else
 	t->function = pfunc;
 	t->data = (unsigned long)cntx;
 	init_timer(t);
+#endif
 }
 
 __inline static void _set_timer(struct _timer_list *ptimer,u32 delay_time)

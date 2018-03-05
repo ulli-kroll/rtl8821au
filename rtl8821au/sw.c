@@ -694,44 +694,44 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf);
 static struct usb_device_id rtw_usb_id_tbl[] ={
 	/* RTL8812AU */
 	/*=== Realtek demoboard ===*/
-	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8812),.driver_info = RTL8812},/* Default ID */
-	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x881A),.driver_info = RTL8812},/* Default ID */
-	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x881B),.driver_info = RTL8812},/* Default ID */
-	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x881C),.driver_info = RTL8812},/* Default ID */
+	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8812),.driver_info = HARDWARE_TYPE_RTL8812AU},/* Default ID */
+	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x881A),.driver_info = HARDWARE_TYPE_RTL8812AU},/* Default ID */
+	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x881B),.driver_info = HARDWARE_TYPE_RTL8812AU},/* Default ID */
+	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x881C),.driver_info = HARDWARE_TYPE_RTL8812AU},/* Default ID */
 	/*=== Customer ID ===*/
-	{USB_DEVICE(0x050D, 0x1109),.driver_info = RTL8812}, /* Belkin F9L1109 - SerComm */
-	{USB_DEVICE(0x2001, 0x330E),.driver_info = RTL8812}, /* D-Link - ALPHA */
-	{USB_DEVICE(0x7392, 0xA822),.driver_info = RTL8812}, /* Edimax - Edimax */
-	{USB_DEVICE(0x0DF6, 0x0074),.driver_info = RTL8812}, /* Sitecom - Edimax */
-	{USB_DEVICE(0x04BB, 0x0952),.driver_info = RTL8812}, /* I-O DATA - Edimax */
-	{USB_DEVICE(0x0789, 0x016E),.driver_info = RTL8812}, /* Logitec - Edimax */
-	{USB_DEVICE(0x0409, 0x0408),.driver_info = RTL8812}, /* NEC - */
-	{USB_DEVICE(0x0B05, 0x17D2),.driver_info = RTL8812}, /* ASUS - Edimax */
-	{USB_DEVICE(0x0E66, 0x0022),.driver_info = RTL8812}, /* HAWKING - Edimax */
-	{USB_DEVICE(0x0586, 0x3426),.driver_info = RTL8812}, /* ZyXEL - */
-	{USB_DEVICE(0x2001, 0x3313),.driver_info = RTL8812}, /* D-Link - ALPHA */
-	{USB_DEVICE(0x1058, 0x0632),.driver_info = RTL8812}, /* WD - Cybertan*/
-	{USB_DEVICE(0x1740, 0x0100),.driver_info = RTL8812}, /* EnGenius - EnGenius */
-	{USB_DEVICE(0x2019, 0xAB30),.driver_info = RTL8812}, /* Planex - Abocom */
-	{USB_DEVICE(0x07B8, 0x8812),.driver_info = RTL8812}, /* Abocom - Abocom */
-	{USB_DEVICE(0x2001, 0x3315),.driver_info = RTL8812}, /* D-Link - Cameo */
-	{USB_DEVICE(0x2001, 0x3316),.driver_info = RTL8812}, /* D-Link - Cameo */
-	{USB_DEVICE(0x20F4, 0x805B),.driver_info = RTL8812}, /* TRENDnet - Cameo */
-	{USB_DEVICE(0x13B1, 0x003F),.driver_info = RTL8812}, /* Linksys - SerComm */
-	{USB_DEVICE(0x2357, 0x0101),.driver_info = RTL8812}, /* TP-Link - T4U */
+	{USB_DEVICE(0x050D, 0x1109),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* Belkin F9L1109 - SerComm */
+	{USB_DEVICE(0x2001, 0x330E),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* D-Link - ALPHA */
+	{USB_DEVICE(0x7392, 0xA822),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* Edimax - Edimax */
+	{USB_DEVICE(0x0DF6, 0x0074),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* Sitecom - Edimax */
+	{USB_DEVICE(0x04BB, 0x0952),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* I-O DATA - Edimax */
+	{USB_DEVICE(0x0789, 0x016E),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* Logitec - Edimax */
+	{USB_DEVICE(0x0409, 0x0408),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* NEC - */
+	{USB_DEVICE(0x0B05, 0x17D2),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* ASUS - Edimax */
+	{USB_DEVICE(0x0E66, 0x0022),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* HAWKING - Edimax */
+	{USB_DEVICE(0x0586, 0x3426),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* ZyXEL - */
+	{USB_DEVICE(0x2001, 0x3313),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* D-Link - ALPHA */
+	{USB_DEVICE(0x1058, 0x0632),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* WD - Cybertan*/
+	{USB_DEVICE(0x1740, 0x0100),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* EnGenius - EnGenius */
+	{USB_DEVICE(0x2019, 0xAB30),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* Planex - Abocom */
+	{USB_DEVICE(0x07B8, 0x8812),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* Abocom - Abocom */
+	{USB_DEVICE(0x2001, 0x3315),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* D-Link - Cameo */
+	{USB_DEVICE(0x2001, 0x3316),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* D-Link - Cameo */
+	{USB_DEVICE(0x20F4, 0x805B),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* TRENDnet - Cameo */
+	{USB_DEVICE(0x13B1, 0x003F),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* Linksys - SerComm */
+	{USB_DEVICE(0x2357, 0x0101),.driver_info = HARDWARE_TYPE_RTL8812AU}, /* TP-Link - T4U */
 
 	/* RTL8821AU */
         /*=== Realtek demoboard ===*/
-	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x0811),.driver_info = RTL8821},/* Default ID */
-	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x0821),.driver_info = RTL8821},/* Default ID */
-	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8822),.driver_info = RTL8821},/* Default ID */
+	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x0811),.driver_info = HARDWARE_TYPE_RTL8821U},/* Default ID */
+	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x0821),.driver_info = HARDWARE_TYPE_RTL8821U},/* Default ID */
+	{USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8822),.driver_info = HARDWARE_TYPE_RTL8821U},/* Default ID */
 	/*=== Customer ID ===*/
-	{USB_DEVICE(0x7392, 0xA811),.driver_info = RTL8821}, /* Edimax - Edimax */
-	{USB_DEVICE(0x0BDA, 0xA811),.driver_info = RTL8821}, /* OUTLINK - Edimax */
-	{USB_DEVICE(0x7392, 0xA812),.driver_info = RTL8821}, /* Edimax - Edimax */
-	{USB_DEVICE(0x2001, 0x3314),.driver_info = RTL8821}, /* D-Link - Cameo */
-	{USB_DEVICE(0x0846, 0x9052),.driver_info = RTL8821}, /* Netgear - A6100 */
-	{USB_DEVICE(0x0411, 0x0242),.driver_info = RTL8821}, /* BUFFALO - Edimax */
+	{USB_DEVICE(0x7392, 0xA811),.driver_info = HARDWARE_TYPE_RTL8821U}, /* Edimax - Edimax */
+	{USB_DEVICE(0x0BDA, 0xA811),.driver_info = HARDWARE_TYPE_RTL8821U}, /* OUTLINK - Edimax */
+	{USB_DEVICE(0x7392, 0xA812),.driver_info = HARDWARE_TYPE_RTL8821U}, /* Edimax - Edimax */
+	{USB_DEVICE(0x2001, 0x3314),.driver_info = HARDWARE_TYPE_RTL8821U}, /* D-Link - Cameo */
+	{USB_DEVICE(0x0846, 0x9052),.driver_info = HARDWARE_TYPE_RTL8821U}, /* Netgear - A6100 */
+	{USB_DEVICE(0x0411, 0x0242),.driver_info = HARDWARE_TYPE_RTL8821U}, /* BUFFALO - Edimax */
 	{}	/* Terminating entry */
 };
 
@@ -783,17 +783,17 @@ static int rtl8821au_probe(struct usb_interface *pusb_intf, const struct usb_dev
 	}
 
 	switch (pdid->driver_info) {
-		case RTL8812 :	driver_info ="RTL8812";
+		case HARDWARE_TYPE_RTL8812AU :	driver_info ="HARDWARE_TYPE_RTL8812AU";
 				break;
 
-		case RTL8821 :	driver_info ="RTL8821";
+		case HARDWARE_TYPE_RTL8821U :	driver_info ="HARDWARE_TYPE_RTL8821U";
 				break;
 	}
 
 	dev_info(&pusb_intf->dev, "Register : %s USB-ID %04x:%04x as %s Speed\n",
 		driver_info, pdid->idVendor, pdid->idProduct, speed);
 #if 0
-	if (pdid->driver_info == RTL8812 && udev->speed == USB_SPEED_HIGH)
+	if (pdid->driver_info == HARDWARE_TYPE_RTL8812AU && udev->speed == USB_SPEED_HIGH)
 		rtl8812au_test_usb3_switch(udev, USB_SPEED_SUPER);
 #endif
 	return rtw_usb_probe(pusb_intf, pdid, &rtl8821au_hal_cfg);

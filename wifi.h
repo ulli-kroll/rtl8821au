@@ -746,7 +746,6 @@ struct rtl_hal {
 	bool enter_pnp_sleep;
 	bool wake_from_pnp_sleep;
 	bool wow_enabled;
-	__kernel_time_t last_suspend_sec;
 	u32 wowlan_fwsize;
 	u8 *wowlan_firmware;
 

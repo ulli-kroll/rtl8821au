@@ -73,10 +73,11 @@ void EFUSE_ShadowRead(struct rtl_priv *rtlpriv, u8 Type,
 
 }	// EFUSE_ShadowRead
 
-static void efuse_power_switch(struct rtl_priv *rtlpriv, u8 write, u8 pwrstate)
+static void efuse_power_switch(struct rtl_priv *rtlpriv, u8 pwrstate)
 {
 	uint8_t	tempval;
 	u16	tmpV16;
+	u8	write = false;
 #define EFUSE_ACCESS_ON_JAGUAR 0x69
 #define EFUSE_ACCESS_OFF_JAGUAR 0x00
 	if (pwrstate) {
@@ -287,9 +288,9 @@ exit:
 
 static void efuse_read_all_map(struct rtl_priv *rtlpriv, uint8_t *Efuse)
 {
-	efuse_power_switch(rtlpriv, false, true);
+	efuse_power_switch(rtlpriv, true);
 	read_efuse(rtlpriv, 0, rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE], Efuse);
-	efuse_power_switch(rtlpriv, false, false);
+	efuse_power_switch(rtlpriv, false);
 }
 
 uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t *data)
@@ -297,9 +298,9 @@ uint8_t rtw_efuse_map_read(struct rtl_priv *rtlpriv, u16 addr, u16 cnts, uint8_t
 	if ((addr + cnts) > rtlpriv->cfg->maps[EFUSE_HWSET_MAX_SIZE])
 		return _FAIL;
 
-	efuse_power_switch(rtlpriv, false, true);
+	efuse_power_switch(rtlpriv, true);
 	read_efuse(rtlpriv, addr, cnts, data);
-	efuse_power_switch(rtlpriv, false, false);
+	efuse_power_switch(rtlpriv, false);
 
 	return _SUCCESS;
 }

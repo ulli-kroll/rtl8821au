@@ -178,12 +178,6 @@ struct security_priv
 	uint8_t bWepDefaultKeyIdxSet;
 };
 
-struct sha256_state {
-	u64 length;
-	u32 state[8], curlen;
-	uint8_t buf[64];
-};
-
 #define GET_ENCRY_ALGO(psecuritypriv, psta, encry_algo, bmcst)\
 do{\
 	switch(psecuritypriv->dot11AuthAlgrthm)\

@@ -1990,10 +1990,6 @@ static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 
 	rtl_set_bbreg(rtlpriv, RFPGA0_XAB_RFPARAMETER, BIT(13), 0x01);
 
-	if (rtl_get_bbreg(rtlpriv, rFPGA0_XA_RFInterfaceOE, 0x300) == MAIN_ANT)
-		pHalData->CurAntenna = MAIN_ANT;
-	else
-		pHalData->CurAntenna = AUX_ANT;
 }
 
 static void _rtl8812au_bb8812_config_1t(struct rtl_priv *rtlpriv)

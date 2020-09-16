@@ -82,9 +82,6 @@ static void rtl8812au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 
 	{
 		switch (pLed->LedPin) {
-		case LED_PIN_GPIO0:
-			break;
-
 		case LED_PIN_LED0:
 			LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG0);
 			LedCfg &= 0x70; 	/* Set to software control. */
@@ -96,13 +93,6 @@ static void rtl8812au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 			LedCfg &= 0x70; 	/* Set to software control. */
 			rtl_write_byte(rtlpriv, REG_LEDCFG1, (LedCfg|BIT(3)|BIT(5)));
 			break;
-
-		case LED_PIN_LED2:
-			LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-			LedCfg &= 0x70; 	/* Set to software control. */
-			rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT(3)|BIT(5)));
-			break;
-
 		default:
 			break;
 		}
@@ -126,12 +116,8 @@ static void rtl8821au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 
 	{
 		switch (pLed->LedPin) {
-		case LED_PIN_GPIO0:
-			break;
-
 		case LED_PIN_LED0:
 		case LED_PIN_LED1:
-		case LED_PIN_LED2:
 			 if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
 				LedCfg &= 0x20; 	/* Set to software control. */
@@ -160,9 +146,6 @@ static void rtl8812au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 
 	{
 		switch (pLed->LedPin) {
-		case LED_PIN_GPIO0:
-			break;
-
 		case LED_PIN_LED0:
 			LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG0);
 			rtl_write_byte(rtlpriv, REG_LEDCFG0, (LedCfg&0x70)|BIT(5)); /* SW control led0 on. */
@@ -172,12 +155,6 @@ static void rtl8812au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 			LedCfg = rtl_read_byte(rtlpriv, (REG_LEDCFG1));
 			rtl_write_byte(rtlpriv, (REG_LEDCFG1), (LedCfg&0x70)|BIT(5)); /* SW control led1 on. */
 			break;
-
-		case LED_PIN_LED2:
-			LedCfg = rtl_read_byte(rtlpriv, (REG_LEDCFG2));
-			rtl_write_byte(rtlpriv, (REG_LEDCFG2), (LedCfg&0x70)|BIT(5)); /* SW control led1 on. */
-			break;
-
 		default:
 			break;
 		}
@@ -197,12 +174,8 @@ static void rtl8821au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 
 	 {
 		switch (pLed->LedPin) {
-		case LED_PIN_GPIO0:
-			break;
-
 		case LED_PIN_LED0:
 		case LED_PIN_LED1:
-		case LED_PIN_LED2:
 			if (IS_HARDWARE_TYPE_8821U(rtlhal)) {
 				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
 				rtl_write_byte(rtlpriv, REG_LEDCFG2, ((LedCfg&0x20) & (~BIT(3)))|BIT(5)); /* SW control led0 on. */

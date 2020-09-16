@@ -75,10 +75,8 @@ enum led_ctl_mode {
 };
 
 enum rtl_led_pin {
-	LED_PIN_GPIO0,
 	LED_PIN_LED0,
 	LED_PIN_LED1,
-	LED_PIN_LED2
 };
 
 

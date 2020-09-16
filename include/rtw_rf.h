@@ -163,11 +163,8 @@ typedef enum _PROTECTION_MODE{
 /* 2007/11/15 MH Define different RF type. */
 typedef	enum _RT_RF_TYPE_DEFINITION
 {
-	RF_1T2R = 0,
-	RF_2T4R = 1,
 	RF_2T2R = 2,
 	RF_1T1R = 3,
-	RF_2T2R_GREEN = 4,
 	RF_MAX_TYPE = 5,
 }RT_RF_TYPE_DEF_E;
 

@@ -975,11 +975,7 @@ void rtl8821au_read_chip_version(struct rtl_priv *rtlpriv)
 	value32 = rtl_read_dword(rtlpriv, REG_MULTI_FUNC_CTRL);
 	rtlpriv->phy.polarity_ctl = ((value32 & WL_HWPDN_SL) ? RT_POLARITY_HIGH_ACT : RT_POLARITY_LOW_ACT);
 
-	if (IS_1T2R(chip_version)) {
-		rtlpriv->phy.rf_type = RF_1T2R;
-		 rtlpriv->phy.num_total_rfpath = 2;
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "==> RF_Type : 1T2R\n");
-	} else if (IS_2T2R(chip_version)) {
+	if (IS_2T2R(chip_version)) {
 		rtlpriv->phy.rf_type = RF_2T2R;
 		 rtlpriv->phy.num_total_rfpath = 2;
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, "==> RF_Type : 2T2R\n");

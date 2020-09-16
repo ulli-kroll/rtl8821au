@@ -295,7 +295,7 @@ void VHT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE)
 
 	rf_type = rtlpriv->phy.rf_type;
 	
-	if ((rf_type == RF_1T1R) || (rf_type == RF_1T2R))
+	if ((rf_type == RF_1T1R))
 		vht_mcs[0] |= 0xfc;
 	else if (rf_type == RF_2T2R)
 		vht_mcs[0] |= 0xf0;
@@ -441,7 +441,7 @@ uint32_t rtw_build_vht_cap_ie(struct rtl_priv *rtlpriv, uint8_t *pbuf)
 	if (TEST_FLAG(pvhtpriv->stbc_cap, STBC_VHT_ENABLE_RX)) {
 		rf_type = rtlpriv->phy.rf_type;
 
-		if ((rf_type == RF_2T2R) || (rf_type == RF_1T2R)) {
+		if ((rf_type == RF_2T2R)) {
 			SET_VHT_CAPABILITY_ELE_RX_STBC(pcap, 2);
 		} else if (rf_type == RF_1T1R) {
 			SET_VHT_CAPABILITY_ELE_RX_STBC(pcap, 1);

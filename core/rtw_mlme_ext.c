@@ -3537,7 +3537,6 @@ void issue_assocreq(struct rtl_priv *rtlpriv)
 					break;
 
 				case RF_2T2R:
-				case RF_1T2R:
 				default:
 
 					if((pregpriv->rx_stbc == 0x3) ||//enable for 2.4/5 GHz

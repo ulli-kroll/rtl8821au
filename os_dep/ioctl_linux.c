@@ -2471,7 +2471,7 @@ void rf_reg_dump(struct rtl_priv *rtlpriv)
 	rf_type = rtlpriv->phy.rf_type;
 
 	printk("\n======= RF REG =======\n");
-	if ((RF_1T2R == rf_type) || (RF_1T1R == rf_type))
+	if ((RF_1T1R == rf_type))
 		path_nums = 1;
 	else
 		path_nums = 2;

@@ -954,7 +954,7 @@ void HT_caps_handler(struct rtl_priv *rtlpriv, PNDIS_802_11_VARIABLE_IEs pIE)
 	//update the MCS rates
 	for (i = 0; i < 16; i++)
 	{
-		if((rf_type == RF_1T1R) || (rf_type == RF_1T2R))
+		if((rf_type == RF_1T1R))
 		{
 			pmlmeinfo->HT_caps.u.HT_cap_element.MCS_rate[i] &= MCS_rate_1R[i];
 		}

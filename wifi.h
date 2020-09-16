@@ -2472,8 +2472,6 @@ struct _rtw_hal {
 	uint8_t	RegCR_1;
 	u16	RegRRSR;
 
-	uint8_t	AntDivCfg;
-
 	uint8_t	FwRsvdPageStartOffset; //2010.06.23. Added by tynli. Reserve page start offset except beacon in TxQ.
 
 	// 2010/12/10 MH Add for USB aggreation mode dynamic shceme.

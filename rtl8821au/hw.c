@@ -1983,12 +1983,7 @@ static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
 {
 	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
 
-	if (pHalData->AntDivCfg == 0)
-		return;
-
-	rtl_write_byte(rtlpriv, REG_LEDCFG2, 0x82);
-
-	rtl_set_bbreg(rtlpriv, RFPGA0_XAB_RFPARAMETER, BIT(13), 0x01);
+	return;
 
 }
 

@@ -86,15 +86,9 @@ static void rtl8812au_sw_led_off(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 			break;
 
 		case LED_PIN_LED0:
-			 if (pHalData->AntDivCfg == 0) {
-				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG0);
-				LedCfg &= 0x70; 	/* Set to software control. */
-				rtl_write_byte(rtlpriv, REG_LEDCFG0, (LedCfg|BIT(3)|BIT(5)));
-			} else {
-				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-				LedCfg &= 0xe0; 	/* Set to software control. */
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg|BIT(3)|BIT(7)|BIT(6)|BIT(5)));
-			}
+			LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG0);
+			LedCfg &= 0x70; 	/* Set to software control. */
+			rtl_write_byte(rtlpriv, REG_LEDCFG0, (LedCfg|BIT(3)|BIT(5)));
 			break;
 
 		case LED_PIN_LED1:
@@ -170,13 +164,8 @@ static void rtl8812au_sw_led_on(struct rtl_priv *rtlpriv, struct rtl_led *pLed)
 			break;
 
 		case LED_PIN_LED0:
-			if (pHalData->AntDivCfg == 0) {
-				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG0);
-				rtl_write_byte(rtlpriv, REG_LEDCFG0, (LedCfg&0x70)|BIT(5)); /* SW control led0 on. */
-			} else {
-				LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG2);
-				rtl_write_byte(rtlpriv, REG_LEDCFG2, (LedCfg&0xe0)|BIT(7)|BIT(6)|BIT(5)); /* SW control led0 on. */
-			}
+			LedCfg = rtl_read_byte(rtlpriv, REG_LEDCFG0);
+			rtl_write_byte(rtlpriv, REG_LEDCFG0, (LedCfg&0x70)|BIT(5)); /* SW control led0 on. */
 			break;
 
 		case LED_PIN_LED1:

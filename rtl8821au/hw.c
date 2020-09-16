@@ -2013,7 +2013,7 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 	struct rtl_mac *mac = rtl_mac(rtlpriv);
-	uint8_t	value8 = 0, u1bRegCR;
+	uint8_t	value8;
 	uint8_t	txpktbuf_bndy;
 	uint32_t	status = _SUCCESS;
 
@@ -2043,23 +2043,6 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 	dev_info(&udev->dev, "rtl8821au: hw_init USB-ID %04x:%04x %s %s %s-SPEED \n",
 		udev->descriptor.idVendor, udev->descriptor.idProduct,
 		udev->product, udev->manufacturer, speed);
-
-	/* Check if MAC has already power on. by tynli. 2011.05.27. */
-	value8 = rtl_read_byte(rtlpriv, REG_SYS_CLKR+1);
-	u1bRegCR = rtl_read_byte(rtlpriv, REG_CR);
-	RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " power-on :REG_SYS_CLKR 0x09=0x%02x. REG_CR 0x100=0x%02x.\n", value8, u1bRegCR);
-	if ((value8&BIT(3))  && (u1bRegCR != 0 && u1bRegCR != 0xEA)) {
-		/* pHalData->bMACFuncEnable = true; */
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " MAC has already power on.\n");
-	} else {
-		/*
-		 * pHalData->bMACFuncEnable = false;
-		 * Set FwPSState to ALL_ON mode to prevent from the I/O be return because of 32k
-		 * state which is set before sleep under wowlan mode. 2012.01.04. by tynli.
-		 * pHalData->FwPSState = FW_PS_STATE_ALL_ON_88E;
-		 */
-		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD, " MAC has not been powered on yet.\n");
-	}
 
 	/*
 	 * 2012/11/13 MH Revise for U2/U3 switch we can not update RF-A/B reset.

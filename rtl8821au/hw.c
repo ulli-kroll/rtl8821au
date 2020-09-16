@@ -1979,14 +1979,6 @@ static void init_UsbAggregationSetting_8812A(struct rtl_priv *rtlpriv)
 	pHalData->UsbRxHighSpeedMode = false;
 }
 
-static void _InitAntenna_Selection_8812A(struct rtl_priv *rtlpriv)
-{
-	 struct _rtw_hal	*pHalData	= GET_HAL_DATA(rtlpriv);
-
-	return;
-
-}
-
 static void _rtl8812au_bb8812_config_1t(struct rtl_priv *rtlpriv)
 {
 	/* BB OFDM RX Path_A */
@@ -2225,8 +2217,6 @@ uint32_t rtl8812au_hw_init(struct rtl_priv *rtlpriv)
 					       HAL_PRIME_CHNL_OFFSET_DONT_CARE);
 
 	rtw_cam_reset_all_entry(rtlpriv);
-
-	_InitAntenna_Selection_8812A(rtlpriv);
 
 	/*
 	 * HW SEQ CTRL

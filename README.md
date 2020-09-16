@@ -107,4 +107,5 @@ TODO:
 
 Adding cfg80211 interface is out of scope because of missing concurrency with STA/AP/Monitor Modes together. 
 
-Hans Ulli Kroll <ulli.kroll@googlemail.com>
+Hans Ulli Kroll <linux@ulli-kroll.de
+>
